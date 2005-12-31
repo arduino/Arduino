@@ -112,7 +112,7 @@ public class Editor extends JFrame
   JMenu serialRateSubMenu;
 
   //
-
+  //boolean debugging;
   boolean running;
   boolean presenting;
 
@@ -1289,6 +1289,17 @@ public class Editor extends JFrame
       buttons.running(false);
       thread = null;
     }
+  }
+
+
+  public void handleSerial() {
+//    if (!debugging) {
+//      console.clear();
+//      serialPort = new Serial(true);
+//      debugging = true;
+//    } else {
+//      doStop();
+//    }
   }
 
 
