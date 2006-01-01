@@ -336,7 +336,7 @@
 		33AF620E0965D67A00B514A9 /* registry.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = registry.jar; sourceTree = "<group>"; };
 		33AF620F0965D67A00B514A9 /* RXTXcomm.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = RXTXcomm.jar; sourceTree = "<group>"; };
 		33CF03B009662CA800F2C9A9 /* arduino.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = arduino.icns; path = dist/arduino.icns; sourceTree = "<group>"; };
-		33CF03B309662CB700F2C9A9 /* Arduino.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arduino.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		33CF03B309662CB700F2C9A9 /* Arduino.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Arduino.app; path = /Users/dmellis/Source/arduino/tags/0004/build/macosx/build/Development/Arduino.app; sourceTree = "<absolute>"; };
 		33FF01DC0965BD160016AC38 /* examples.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = examples.zip; sourceTree = "<group>"; };
 		33FF01DE0965BD160016AC38 /* about.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = about.jpg; sourceTree = "<group>"; };
 		33FF02770965BD160016AC38 /* buttons.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = buttons.gif; sourceTree = "<group>"; };
@@ -480,27 +480,12 @@
 		33FFFE910965BD110016AC38 /* run.sh */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = run.sh; sourceTree = "<group>"; };
 		33FFFE930965BD110016AC38 /* .cvsignore */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = .cvsignore; sourceTree = "<group>"; };
 		33FFFE940965BD110016AC38 /* Arduino.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Arduino.xcodeproj; sourceTree = "<group>"; };
-		33FFFE9A0965BD110016AC38 /* categories.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = categories.pbxbtree; sourceTree = "<group>"; };
-		33FFFE9B0965BD110016AC38 /* cdecls.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = cdecls.pbxbtree; sourceTree = "<group>"; };
-		33FFFE9C0965BD110016AC38 /* decls.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = decls.pbxbtree; sourceTree = "<group>"; };
-		33FFFE9D0965BD110016AC38 /* files.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = files.pbxbtree; sourceTree = "<group>"; };
-		33FFFE9E0965BD110016AC38 /* imports.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = imports.pbxbtree; sourceTree = "<group>"; };
-		33FFFE9F0965BD110016AC38 /* pbxindex.header */ = {isa = PBXFileReference; lastKnownFileType = file; path = pbxindex.header; sourceTree = "<group>"; };
-		33FFFEA00965BD110016AC38 /* protocols.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = protocols.pbxbtree; sourceTree = "<group>"; };
-		33FFFEA10965BD110016AC38 /* refs.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = refs.pbxbtree; sourceTree = "<group>"; };
-		33FFFEA30965BD110016AC38 /* control */ = {isa = PBXFileReference; lastKnownFileType = file; path = control; sourceTree = "<group>"; };
-		33FFFEA40965BD110016AC38 /* strings */ = {isa = PBXFileReference; lastKnownFileType = file; path = strings; sourceTree = "<group>"; };
-		33FFFEA50965BD110016AC38 /* subclasses.pbxbtree */ = {isa = PBXFileReference; lastKnownFileType = file; path = subclasses.pbxbtree; sourceTree = "<group>"; };
-		33FFFEA60965BD110016AC38 /* symbols0.pbxsymbols */ = {isa = PBXFileReference; lastKnownFileType = file; path = symbols0.pbxsymbols; sourceTree = "<group>"; };
-		33FFFEA90965BD110016AC38 /* Build App.hmap */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Build App.hmap"; sourceTree = "<group>"; };
-		33FFFEAB0965BD110016AC38 /* JavaFileList */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = JavaFileList; sourceTree = "<group>"; };
 		33FFFEAF0965BD110016AC38 /* burn.command */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = burn.command; sourceTree = "<group>"; };
 		33FFFEB30965BD110016AC38 /* FTDIUSBSerialDriver_v2_0_1.dmg */ = {isa = PBXFileReference; lastKnownFileType = file; path = FTDIUSBSerialDriver_v2_0_1.dmg; sourceTree = "<group>"; };
 		33FFFEB40965BD110016AC38 /* KeyspanUSAdrvr20.dmg */ = {isa = PBXFileReference; lastKnownFileType = file; path = KeyspanUSAdrvr20.dmg; sourceTree = "<group>"; };
 		33FFFEB50965BD110016AC38 /* DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = DS_Store; sourceTree = "<group>"; };
 		33FFFEB60965BD110016AC38 /* jikes */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = jikes; sourceTree = "<group>"; };
 		33FFFEB90965BD110016AC38 /* macosx_setup.command */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = macosx_setup.command; sourceTree = "<group>"; };
-		33FFFEBB0965BD110016AC38 /* RXTX.pkg */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.installer-pkg"; path = RXTX.pkg; sourceTree = "<group>"; };
 		33FFFEBC0965BD110016AC38 /* tools.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = tools.zip; sourceTree = "<group>"; };
 		33FFFEBD0965BD110016AC38 /* dist.sh */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = dist.sh; sourceTree = "<group>"; };
 		33FFFEBE0965BD110016AC38 /* make.sh */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = make.sh; sourceTree = "<group>"; };
@@ -713,7 +698,6 @@
 				33FF02B60965BD170016AC38 /* license.txt */,
 				33FF02B70965BD170016AC38 /* readme.txt */,
 				33FF02DC0965BD170016AC38 /* todo.txt */,
-				33CF03B309662CB700F2C9A9 /* Arduino.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -907,7 +891,6 @@
 			children = (
 				33FFFE930965BD110016AC38 /* .cvsignore */,
 				33FFFE940965BD110016AC38 /* Arduino.xcodeproj */,
-				33FFFE970965BD110016AC38 /* build */,
 				33FFFEAC0965BD110016AC38 /* dist */,
 				33FFFEBD0965BD110016AC38 /* dist.sh */,
 				33FFFEBE0965BD110016AC38 /* make.sh */,
@@ -922,75 +905,6 @@
 			children = (
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		33FFFE970965BD110016AC38 /* build */ = {
-			isa = PBXGroup;
-			children = (
-				33FFFE980965BD110016AC38 /* Arduino.build */,
-			);
-			path = build;
-			sourceTree = "<group>";
-		};
-		33FFFE980965BD110016AC38 /* Arduino.build */ = {
-			isa = PBXGroup;
-			children = (
-				33FFFE990965BD110016AC38 /* Arduino.pbxindex */,
-				33FFFEA70965BD110016AC38 /* Debug */,
-			);
-			path = Arduino.build;
-			sourceTree = "<group>";
-		};
-		33FFFE990965BD110016AC38 /* Arduino.pbxindex */ = {
-			isa = PBXGroup;
-			children = (
-				33FFFE9A0965BD110016AC38 /* categories.pbxbtree */,
-				33FFFE9B0965BD110016AC38 /* cdecls.pbxbtree */,
-				33FFFE9C0965BD110016AC38 /* decls.pbxbtree */,
-				33FFFE9D0965BD110016AC38 /* files.pbxbtree */,
-				33FFFE9E0965BD110016AC38 /* imports.pbxbtree */,
-				33FFFE9F0965BD110016AC38 /* pbxindex.header */,
-				33FFFEA00965BD110016AC38 /* protocols.pbxbtree */,
-				33FFFEA10965BD110016AC38 /* refs.pbxbtree */,
-				33FFFEA20965BD110016AC38 /* strings.pbxstrings */,
-				33FFFEA50965BD110016AC38 /* subclasses.pbxbtree */,
-				33FFFEA60965BD110016AC38 /* symbols0.pbxsymbols */,
-			);
-			path = Arduino.pbxindex;
-			sourceTree = "<group>";
-		};
-		33FFFEA20965BD110016AC38 /* strings.pbxstrings */ = {
-			isa = PBXGroup;
-			children = (
-				33FFFEA30965BD110016AC38 /* control */,
-				33FFFEA40965BD110016AC38 /* strings */,
-			);
-			path = strings.pbxstrings;
-			sourceTree = "<group>";
-		};
-		33FFFEA70965BD110016AC38 /* Debug */ = {
-			isa = PBXGroup;
-			children = (
-				33FFFEA80965BD110016AC38 /* Build App.build */,
-			);
-			path = Debug;
-			sourceTree = "<group>";
-		};
-		33FFFEA80965BD110016AC38 /* Build App.build */ = {
-			isa = PBXGroup;
-			children = (
-				33FFFEA90965BD110016AC38 /* Build App.hmap */,
-				33FFFEAA0965BD110016AC38 /* JavaClasses */,
-				33FFFEAB0965BD110016AC38 /* JavaFileList */,
-			);
-			path = "Build App.build";
-			sourceTree = "<group>";
-		};
-		33FFFEAA0965BD110016AC38 /* JavaClasses */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = JavaClasses;
 			sourceTree = "<group>";
 		};
 		33FFFEAC0965BD110016AC38 /* dist */ = {
@@ -1028,7 +942,6 @@
 		33FFFEBA0965BD110016AC38 /* serial */ = {
 			isa = PBXGroup;
 			children = (
-				33FFFEBB0965BD110016AC38 /* RXTX.pkg */,
 			);
 			path = serial;
 			sourceTree = "<group>";
