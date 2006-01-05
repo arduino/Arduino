@@ -72,7 +72,7 @@
 			name = App;
 			productInstallPath = "$(USER_APPS_DIR)";
 			productName = App;
-			productReference = 33CF03B309662CB700F2C9A9 /* Arduino.app */;
+			productReference = 33DD8FB6096AC8DA0013AF8F /* Arduino.app */;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
 <plist version=\"1.0\">
@@ -336,7 +336,7 @@
 		33AF620E0965D67A00B514A9 /* registry.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = registry.jar; sourceTree = "<group>"; };
 		33AF620F0965D67A00B514A9 /* RXTXcomm.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = RXTXcomm.jar; sourceTree = "<group>"; };
 		33CF03B009662CA800F2C9A9 /* arduino.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = arduino.icns; path = dist/arduino.icns; sourceTree = "<group>"; };
-		33CF03B309662CB700F2C9A9 /* Arduino.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Arduino.app; path = /Users/dmellis/Source/arduino/tags/0004/build/macosx/build/Development/Arduino.app; sourceTree = "<absolute>"; };
+		33DD8FB6096AC8DA0013AF8F /* Arduino.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arduino.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33FF01DC0965BD160016AC38 /* examples.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = examples.zip; sourceTree = "<group>"; };
 		33FF01DE0965BD160016AC38 /* about.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = about.jpg; sourceTree = "<group>"; };
 		33FF02770965BD160016AC38 /* buttons.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = buttons.gif; sourceTree = "<group>"; };
@@ -698,6 +698,7 @@
 				33FF02B60965BD170016AC38 /* license.txt */,
 				33FF02B70965BD170016AC38 /* readme.txt */,
 				33FF02DC0965BD170016AC38 /* todo.txt */,
+				33DD8FB6096AC8DA0013AF8F /* Arduino.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1008,7 +1009,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "unzip -ofd work/examples ../shared/dist/examples.zip\nunzip -ofd work dist/tools.zip";
+			shellScript = "unzip -ofd $BUILT_PRODUCTS_DIR/examples ../shared/dist/examples.zip\nunzip -ofd $BUILT_PRODUCTS_DIR dist/tools.zip";
 		};
 /* End PBXShellScriptBuildPhase section */
 
