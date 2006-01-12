@@ -156,13 +156,11 @@
 		33AF618F0965C54B00B514A9 /* RunnerClassLoader.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE570965BD110016AC38 /* RunnerClassLoader.java */; };
 		33AF61900965C54B00B514A9 /* MessageStream.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE320965BD110016AC38 /* MessageStream.java */; };
 		33AF61910965C54B00B514A9 /* SyntaxUtilities.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE6A0965BD110016AC38 /* SyntaxUtilities.java */; };
-		33AF61920965C54B00B514A9 /* ArduinoMessageSiphon.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE230965BD100016AC38 /* ArduinoMessageSiphon.java */; };
 		33AF61930965C54B00B514A9 /* PresentMode.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE550965BD110016AC38 /* PresentMode.java */; };
 		33AF61940965C54B00B514A9 /* STDCTokenTypes.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE410965BD110016AC38 /* STDCTokenTypes.java */; };
 		33AF61950965C54B00B514A9 /* CTokenMarker.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE600965BD110016AC38 /* CTokenMarker.java */; };
 		33AF61960965C54B00B514A9 /* CToken.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE360965BD110016AC38 /* CToken.java */; };
 		33AF61970965C54B00B514A9 /* WTreeParserTokenTypes.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE530965BD110016AC38 /* WTreeParserTokenTypes.java */; };
-		33AF61980965C54B00B514A9 /* Command.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE250965BD100016AC38 /* Command.java */; };
 		33AF61990965C54B00B514A9 /* Runner.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE560965BD110016AC38 /* Runner.java */; };
 		33AF619A0965C54B00B514A9 /* TNode.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE430965BD110016AC38 /* TNode.java */; };
 		33AF619B0965C54B00B514A9 /* KeywordMap.java in Sources */ = {isa = PBXBuildFile; fileRef = 33FFFE640965BD110016AC38 /* KeywordMap.java */; };
@@ -384,9 +382,7 @@
 		33FF02DC0965BD170016AC38 /* todo.txt */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; name = todo.txt; path = ../../todo.txt; sourceTree = SOURCE_ROOT; };
 		33FF07370965C2B10016AC38 /* avrlib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = avrlib; sourceTree = "<group>"; };
 		33FF07D50965C3560016AC38 /* targets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = targets; path = ../../targets; sourceTree = SOURCE_ROOT; };
-		33FFFE230965BD100016AC38 /* ArduinoMessageSiphon.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = ArduinoMessageSiphon.java; sourceTree = "<group>"; };
 		33FFFE240965BD100016AC38 /* Base.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = Base.java; sourceTree = "<group>"; };
-		33FFFE250965BD100016AC38 /* Command.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = Command.java; sourceTree = "<group>"; };
 		33FFFE260965BD100016AC38 /* Compiler.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = Compiler.java; sourceTree = "<group>"; };
 		33FFFE270965BD100016AC38 /* Editor.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = Editor.java; sourceTree = "<group>"; };
 		33FFFE280965BD100016AC38 /* EditorButtons.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = EditorButtons.java; sourceTree = "<group>"; };
@@ -705,9 +701,7 @@
 		33FFFE220965BD100016AC38 /* app */ = {
 			isa = PBXGroup;
 			children = (
-				33FFFE230965BD100016AC38 /* ArduinoMessageSiphon.java */,
 				33FFFE240965BD100016AC38 /* Base.java */,
-				33FFFE250965BD100016AC38 /* Command.java */,
 				33FFFE260965BD100016AC38 /* Compiler.java */,
 				33FFFE270965BD100016AC38 /* Editor.java */,
 				33FFFE280965BD100016AC38 /* EditorButtons.java */,
@@ -1009,7 +1003,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "unzip -ofd $BUILT_PRODUCTS_DIR/examples ../shared/dist/examples.zip\nunzip -ofd $BUILT_PRODUCTS_DIR dist/tools.zip";
+			shellScript = "unzip -od $BUILT_PRODUCTS_DIR/examples ../shared/dist/examples.zip\nunzip -od $BUILT_PRODUCTS_DIR dist/tools.zip";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1046,13 +1040,11 @@
 				33AF618F0965C54B00B514A9 /* RunnerClassLoader.java in Sources */,
 				33AF61900965C54B00B514A9 /* MessageStream.java in Sources */,
 				33AF61910965C54B00B514A9 /* SyntaxUtilities.java in Sources */,
-				33AF61920965C54B00B514A9 /* ArduinoMessageSiphon.java in Sources */,
 				33AF61930965C54B00B514A9 /* PresentMode.java in Sources */,
 				33AF61940965C54B00B514A9 /* STDCTokenTypes.java in Sources */,
 				33AF61950965C54B00B514A9 /* CTokenMarker.java in Sources */,
 				33AF61960965C54B00B514A9 /* CToken.java in Sources */,
 				33AF61970965C54B00B514A9 /* WTreeParserTokenTypes.java in Sources */,
-				33AF61980965C54B00B514A9 /* Command.java in Sources */,
 				33AF61990965C54B00B514A9 /* Runner.java in Sources */,
 				33AF619A0965C54B00B514A9 /* TNode.java in Sources */,
 				33AF619B0965C54B00B514A9 /* KeywordMap.java in Sources */,
