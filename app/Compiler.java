@@ -75,8 +75,16 @@ public class Compiler implements MessageConsumer {
     MessageStream pms = new MessageStream(this);
 
     String userdir = System.getProperty("user.dir") + File.separator;
+    
+//    LibraryManager libraryManager;
+//
+//    try {
+//      libraryManager = new LibraryManager();
+//    } catch (IOException e) {
+//      throw new RunnerException(e.getMessage());
+//    }
 
-    String baseCommandCompiler[] = new String[] {
+    String preCommandCompiler[] = new String[] {
       ((!Base.isMacOS()) ? "tools/avr/bin/avr-gcc" :
         userdir + "tools/avr/bin/avr-gcc"),
       "-c", // compile, don't link
@@ -86,11 +94,23 @@ public class Compiler implements MessageConsumer {
       "-w", // surpress all warnings
       "-mmcu=" + Preferences.get("build.mcu"),
       "-DF_CPU=" + Preferences.get("build.f_cpu"),
-      " ",
-      " "
     };
 
-    String baseCommandCompilerCPP[] = new String[] {
+    // use lib directories as include paths
+    //String[] libDirs = libraryManager.getFolderPaths();
+    String[] libDirs = new String[sketch.importedLibraries.size()];
+    
+    for (int i = 0; i < sketch.importedLibraries.size(); i++)
+      libDirs[i] = ((Library) sketch.importedLibraries.get(i)).getFolder().getPath();
+    
+    // Last two arguments will specify the file being compiled and the output file.
+    String[] baseCommandCompiler = new String[preCommandCompiler.length + libDirs.length + 2];
+    System.arraycopy(preCommandCompiler, 0, baseCommandCompiler, 0, preCommandCompiler.length);
+    for (int i = 0; i < libDirs.length; ++i) {
+      baseCommandCompiler[preCommandCompiler.length + i] = "-I" + libDirs[i];
+    }
+
+    String preCommandCompilerCPP[] = new String[] {
       ((!Base.isMacOS()) ? "tools/avr/bin/avr-g++" :
         userdir + "tools/avr/bin/avr-g++"),
       "-c", // compile, don't link
@@ -101,45 +121,45 @@ public class Compiler implements MessageConsumer {
       "-fno-exceptions",
       "-mmcu=" + Preferences.get("build.mcu"),
       "-DF_CPU=" + Preferences.get("build.f_cpu"),
-      " ",
-      " "
     };
 
-    String baseCommandLinker[] = new String[] {
+    // use lib directories as include paths
+    // Last two arguments will specify the file being compiled and the output file.
+    String[] baseCommandCompilerCPP = new String[preCommandCompilerCPP.length + libDirs.length + 2];
+    System.arraycopy(preCommandCompilerCPP, 0, baseCommandCompilerCPP, 0, preCommandCompilerCPP.length);
+    for (int i = 0; i < libDirs.length; ++i) {
+      baseCommandCompilerCPP[preCommandCompilerCPP.length + i] = "-I" + libDirs[i];
+    }
+
+    String preCommandLinker[] = new String[] {
       ((!Base.isMacOS()) ? "tools/avr/bin/avr-gcc" :
         userdir + "tools/avr/bin/avr-gcc"),
       " ",
       "-mmcu=" + Preferences.get("build.mcu"),
       "-o",
       " ",
-//      ((!Base.isMacOS()) ? "" : userdir) + "lib/uart.o",
-//      ((!Base.isMacOS()) ? "" : userdir) + "lib/buffer.o",
-//      ((!Base.isMacOS()) ? "" : userdir) + "lib/timer.o",
-//      ((!Base.isMacOS()) ? "" : userdir) + "lib/wiring.o",
-//      ((!Base.isMacOS()) ? "" : userdir) + "lib/pins_arduino.o",
-      //((!Base.isMacOS()) ? "lib/WApplet.o" :
-        //userdir + "lib/WApplet.o"),
-      //((!Base.isMacOS()) ? "lib/WSerial.o" :
-        //userdir + "lib/WSerial.o"),
-      //((!Base.isMacOS()) ? "lib/WTimer.o" :
-        //userdir + "lib/WTimer.o"),
-      //((!Base.isMacOS()) ? "lib/Servo.o" :
-        //userdir + "lib/Servo.o"),
-      ////((!Base.isMacOS()) ? "lib/Wire.o" :
-      ////  userdir + "lib/Wire.o"),
-      ////((!Base.isMacOS()) ? "lib/WServo.o" :
-      ////  userdir + "lib/WServo.o"),
-      //((!Base.isMacOS()) ? "lib/WDisplay.o" :
-        //userdir + "lib/WDisplay.o"),
-      //((!Base.isMacOS()) ? "lib/WEncoder.o" :
-        //userdir + "lib/WEncoder.o"),
-      //((!Base.isMacOS()) ? "lib/WInterrupts.o" :
-        //userdir + "lib/WInterrupts.o"),
-      //((!Base.isMacOS()) ? "lib/WCounter.o" :
-        //userdir + "lib/WCounter.o"),
-      //((!Base.isMacOS()) ? "tools/avr/avr/lib/libm.a" :
-        //userdir + "tools/avr/avr/lib/libm.a")
     };
+
+    // use lib object files during include
+    //String[] libObjectFiles = libraryManager.getObjectFiles();
+    
+    Vector libObjectFilesVec = new Vector();
+    
+    for (Iterator i = sketch.importedLibraries.iterator(); i.hasNext(); ) {
+      Library library = (Library) i.next();
+      File[] objectFiles = library.getObjectFiles();
+      for (int j = 0; j < objectFiles.length; j++)
+        libObjectFilesVec.add(objectFiles[j].getPath());
+    }
+    
+    String[] libObjectFiles = new String[libObjectFilesVec.size()];
+    libObjectFiles = (String[]) libObjectFilesVec.toArray(libObjectFiles);
+    
+    String[] baseCommandLinker = new String[preCommandLinker.length + libObjectFiles.length];
+    System.arraycopy(preCommandLinker, 0, baseCommandLinker, 0, preCommandLinker.length);
+    for (int i = 0; i < libObjectFiles.length; ++i) {
+      baseCommandLinker[preCommandLinker.length + i] = libObjectFiles[i];
+    }
 
     String baseCommandObjcopy[] = new String[] {
       ((!Base.isMacOS()) ? "tools/avr/bin/avr-objcopy" :
@@ -295,8 +315,8 @@ public class Compiler implements MessageConsumer {
       Process process;
       boolean compiling = true;
       for(int i = 0; i < fileCount; i++) {
-        baseCommandCompiler[8] = sourceNames[i];
-        baseCommandCompiler[9] = "-o"+ objectNames[i];
+        baseCommandCompiler[baseCommandCompiler.length - 2] = sourceNames[i];
+        baseCommandCompiler[baseCommandCompiler.length - 1] = "-o"+ objectNames[i];
         //System.arraycopy(baseCommandCompiler.length
         //for(int j = 0; j < baseCommandCompiler.length; j++) {
         //  System.out.println(baseCommandCompiler[j]);
@@ -325,8 +345,8 @@ public class Compiler implements MessageConsumer {
       }
 
       for(int i = 0; i < fileCountCPP; i++) {
-        baseCommandCompilerCPP[9] = sourceNamesCPP[i];
-        baseCommandCompilerCPP[10] = "-o"+ objectNamesCPP[i];
+        baseCommandCompilerCPP[baseCommandCompilerCPP.length - 2] = sourceNamesCPP[i];
+        baseCommandCompilerCPP[baseCommandCompilerCPP.length - 1] = "-o"+ objectNamesCPP[i];
         //for(int j = 0; j < baseCommandCompilerCPP.length; j++) {
         //  System.out.println(baseCommandCompilerCPP[j]);
         //}
@@ -526,15 +546,21 @@ public class Compiler implements MessageConsumer {
       String s1 = s.substring(partialStartIndex +
                               partialTempPath.length() + 1);
       //System.out.println(s1);
-      if (s1.indexOf("In function")!= -1) {
+      int colon = s1.indexOf(':');
+
+      if (s1.indexOf("In function") != -1 || colon == -1) {
         System.err.print(s1);
         //firstErrorFound = true;
         return;
       }
 
-      int colon = s1.indexOf(':');
-
-      int lineNumber = Integer.parseInt(s1.substring(0, colon));
+      int lineNumber;
+      try {
+        lineNumber = Integer.parseInt(s1.substring(0, colon));
+      } catch (NumberFormatException e) {
+        System.err.print(s1);
+        return;
+      }
       
       // the "1" corresponds to the amount of lines written to the main code
       // file by PdePreprocessor's writeHeader() routine before prototypes

@@ -74,6 +74,9 @@ public class PdePreprocessor {
   // stores number of built user-defined function prototypes
   public int prototypeCount = 0;
 
+  // stores number of included library headers written
+  public int headerCount = 0;
+
   /**
    * These may change in-between (if the prefs panel adds this option)
    * so grab them here on construction.
@@ -152,7 +155,8 @@ public class PdePreprocessor {
     PatternMatcher matcher = new Perl5Matcher();
     PatternCompiler compiler = new Perl5Compiler();
     //String mess = "^\\s*(import\\s+\\S+\\s*;)";
-    String mess = "^\\s*(import\\s+)(\\S+)(\\s*;)";
+    //String mess = "^\\s*(import\\s+)(\\S+)(\\s*;)";
+    String mess = "^\\s*(#include\\s+[<\"])(\\S+)([\">]\\s*)";
     java.util.Vector imports = new java.util.Vector();
 
     Pattern pattern = null;
@@ -163,14 +167,13 @@ public class PdePreprocessor {
       return null;
     }
 
-    /*
     do {
       PatternMatcherInput input = new PatternMatcherInput(program);
       if (!matcher.contains(input, pattern)) break;
 
       MatchResult result = matcher.getMatch();
       String piece1 = result.group(1).toString();
-      String piece2 = result.group(2).toString();  // the package name
+      String piece2 = result.group(2).toString();  // the header file name w/o quotes
       String piece3 = result.group(3).toString();
       String piece = piece1 + piece2 + piece3;
       int len = piece.length();
@@ -184,7 +187,7 @@ public class PdePreprocessor {
       //System.out.println("removing " + piece);
 
     } while (true);
-    */
+    
 
     extraImports = new String[imports.size()];
     imports.copyInto(extraImports);
@@ -236,23 +239,21 @@ public class PdePreprocessor {
     String returntype, functioname, parameterlist, prototype;
     java.util.LinkedList prototypes = new java.util.LinkedList();
     //System.out.println("prototypes:");
-    if (Preferences.get("build.extension").equals("cpp")) {
-      while(matcher.contains(input, pattern)){
-        result = matcher.getMatch();
-        //System.out.println(result);
-        returntype = result.group(1).toString();
-        functioname = result.group(2).toString();
-        parameterlist = result.group(3).toString().replace('\n', ' ');
-        prototype = returntype + " " + functioname + "(" + parameterlist + ");";
-        if(0 == functioname.compareTo("setup")){
-          continue;
-        }
-        if(0 == functioname.compareTo("loop")){
-          continue;
-        }
-        prototypes.add(prototype);
-        //System.out.println(prototype);
+    while(matcher.contains(input, pattern)){
+      result = matcher.getMatch();
+      //System.out.println(result);
+      returntype = result.group(1).toString();
+      functioname = result.group(2).toString();
+      parameterlist = result.group(3).toString().replace('\n', ' ');
+      prototype = returntype + " " + functioname + "(" + parameterlist + ");";
+      if(0 == functioname.compareTo("setup")){
+        continue;
       }
+      if(0 == functioname.compareTo("loop")){
+        continue;
+      }
+      prototypes.add(prototype);
+      //System.out.println(prototype);
     }
     // store # of prototypes so that line number reporting can be adjusted
     prototypeCount = prototypes.size();
@@ -263,6 +264,7 @@ public class PdePreprocessor {
     // through so that the line numbers when the compiler reports errors
     // match those that will be highlighted in the PDE IDE
     //
+    //System.out.println(program);
     WLexer lexer  = new WLexer(programReader);
     //lexer.setTokenObjectClass("antlr.CommonHiddenStreamToken");
     lexer.setTokenObjectClass("processing.app.preproc.CToken");
@@ -299,7 +301,7 @@ public class PdePreprocessor {
     // start parsing at the compilationUnit non-terminal
     //
     //parser.pdeProgram();
-    parser.translationUnit();
+    //parser.translationUnit();
 
     // set up the AST for traversal by PdeEmitter
     //
@@ -329,16 +331,18 @@ public class PdePreprocessor {
     // output the code
     //
     WEmitter emitter = new WEmitter(lexer.getPreprocessorInfoChannel());
-    File streamFile = new File(buildPath, name + "." + Preferences.get("build.extension"));
+    File streamFile = new File(buildPath, name + ".cpp");
     PrintStream stream = new PrintStream(new FileOutputStream(streamFile));
 
     //writeHeader(stream, extraImports, name);
     writeHeader(stream, name, prototypes);
+    //added to write the pde code to the cpp file
+    writeProgram(stream, name, program);
     emitter.setASTNodeType(TNode.class.getName());
     emitter.setOut(stream);
-    emitter.printDeclarations(rootNode);
+    //emitter.printDeclarations(rootNode);
     //emitter.print(rootNode);
-    emitter.translationUnit(parser.getAST());
+    //emitter.translationUnit(parser.getAST());
 
     writeFooter(stream);
     stream.close();
@@ -363,6 +367,12 @@ public class PdePreprocessor {
     return name;
   }
 
+  // Write the pde program to the cpp file
+  void writeProgram(PrintStream out, String className, String program) {
+    out.print(program);
+  }
+
+
   /**
    * Write any required header material (eg imports, class decl stuff)
    *
@@ -370,9 +380,20 @@ public class PdePreprocessor {
    * @param exporting           Is this being exported from PDE?
    * @param name                Name of the class being created.
    */
-  void writeHeader(PrintStream out, String className, java.util.LinkedList prototypes) {
+  void writeHeader(PrintStream out, String className, java.util.LinkedList prototypes)
+    throws IOException {
     out.print("#include \"WProgram.h\"\n");
+    /* Arduino doesn't automatically use all available libraries.
+    // print library headers
+    LibraryManager libraryManager = new LibraryManager();
+    String[] headerFiles = libraryManager.getHeaderFiles();
+    for(int i = 0; i < headerFiles.length; ++i){
+      out.print("#include \"" + headerFiles[i] + "\"\n");
+    }
 
+    // record number of header lines written for error line adjustment
+    headerCount = headerFiles.length;
+    */
     // print user defined prototypes
     while(0 < prototypes.size()){
       out.print(prototypes.removeFirst() + "\n");

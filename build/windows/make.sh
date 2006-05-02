@@ -14,30 +14,25 @@ else
   rm -f work/.DS_Store 
   #cp ../../lib/*.dll work
   cp dist/*.dll work
+  cp dist/run.bat work
+  chmod 755 work/run.bat
   
   # needs to make the dir because of packaging goofiness
   mkdir -p work/classes/arduino/app/preproc
   mkdir -p work/classes/arduino/app/syntax
   mkdir -p work/classes/arduino/app/tools
 
-#  echo Extracting examples...
- # cd work
-  #unzip -q examples.zip
- # rm examples.zip
- # cd ..
-
   echo Extracting reference...
-#  cd work
-#  unzip -q reference.zip
+  cd work
+  unzip reference.zip
   # necessary for launching reference from shell/command prompt
   # which is done internally to view reference
   #chmod +x reference/*.html
   # needed by 'help' menu
   #chmod +x reference/environment/*.html
   # chmod -R +x *.html doesn't seem to work
-
-#  rm reference.zip
- # cd ..
+  rm reference.zip
+  cd ..
 
   echo Extracting enormous JRE...
   unzip -q  -d work jre.zip
@@ -79,13 +74,14 @@ else
   cp -r ../../targets work/lib/
 
   # take care of the examples
-  mkdir work/examples
-  cd work/examples
-  cp ../../../shared/dist/examples.zip .
-  echo Extracting examples ...
-  unzip -q  -d . examples.zip
-  rm -f examples.zip
-  cd ../..
+  cp -r ../shared/dist/examples work/
+  #mkdir work/examples
+  #cd work/examples
+  #cp ../../../shared/dist/examples.zip .
+  #echo Extracting examples ...
+  #unzip -q  -d . examples.zip
+  #rm -f examples.zip
+  #cd ../..
 
   # chmod +x the crew
   find work -name "*.dll" -exec chmod +x {} ';'

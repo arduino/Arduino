@@ -1,7 +1,7 @@
 /* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
 
 /*
-  Part of the Arduino project - http://arduino.berlios.de/
+  Part of the Processing project - http://processing.org
 
   Copyright (c) 2004-05 Ben Fry and Casey Reas
   Copyright (c) 2001-04 Massachusetts Institute of Technology
@@ -19,8 +19,6 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  
-  $Id$
 */
 
 package processing.app;
@@ -67,7 +65,12 @@ public class Sketch {
   public File codeFolder;
 
   static final int PDE = 0;
-  static final int JAVA = 1;
+  static final int CPP = 1;
+  static final int C = 2;
+  static final int HEADER = 3;
+  
+  static final String flavorExtensionsReal[] = new String[] { ".pde", ".cpp", ".c", ".h" };
+  static final String flavorExtensionsShown[] = new String[] { "", ".cpp", ".c", ".h" };
 
   public SketchCode current;
   int codeCount;
@@ -83,7 +86,7 @@ public class Sketch {
   String classPath;
   String libraryPath;
   boolean externalRuntime;
-  Vector importedLibraries; // vec of File objects
+  public Vector importedLibraries; // vec of Library objects
 
   /**
    * path is location of the main .pde file, because this is also
@@ -103,6 +106,8 @@ public class Sketch {
     if (mainFilename.endsWith(".pde")) {
       name = mainFilename.substring(0, mainFilename.length() - 4);
     } else if (mainFilename.endsWith(".c")) {
+      name = mainFilename.substring(0, mainFilename.length() - 2);
+    } else if (mainFilename.endsWith(".h")) {
       name = mainFilename.substring(0, mainFilename.length() - 2);
     } else if (mainFilename.endsWith(".cpp")) {
       name = mainFilename.substring(0, mainFilename.length() - 4);
@@ -157,9 +162,11 @@ public class Sketch {
     for (int i = 0; i < list.length; i++) {
       if (list[i].endsWith(".pde")) codeCount++;
       else if (list[i].endsWith(".c")) codeCount++;
+      else if (list[i].endsWith(".h")) codeCount++;
       else if (list[i].endsWith(".cpp")) codeCount++;
       else if (list[i].endsWith(".pde.x")) hiddenCount++;
       else if (list[i].endsWith(".c.x")) hiddenCount++;
+      else if (list[i].endsWith(".h.x")) hiddenCount++;
       else if (list[i].endsWith(".cpp.x")) hiddenCount++;
     }
 
@@ -180,13 +187,19 @@ public class Sketch {
         code[codeCounter++] =
           new SketchCode(list[i].substring(0, list[i].length() - 2),
                       new File(folder, list[i]),
-                      JAVA);
+                      C);
+
+      } else if (list[i].endsWith(".h")) {
+        code[codeCounter++] =
+          new SketchCode(list[i].substring(0, list[i].length() - 2),
+                      new File(folder, list[i]),
+                      HEADER);
 
       } else if (list[i].endsWith(".cpp")) {
         code[codeCounter++] =
           new SketchCode(list[i].substring(0, list[i].length() - 4),
                       new File(folder, list[i]),
-                      JAVA);
+                      CPP);
 
       } else if (list[i].endsWith(".pde.x")) {
         hidden[hiddenCounter++] =
@@ -198,12 +211,17 @@ public class Sketch {
         hidden[hiddenCounter++] =
           new SketchCode(list[i].substring(0, list[i].length() - 4),
                       new File(folder, list[i]),
-                      JAVA);
+                      C);
+      } else if (list[i].endsWith(".h.x")) {
+        hidden[hiddenCounter++] =
+          new SketchCode(list[i].substring(0, list[i].length() - 4),
+                      new File(folder, list[i]),
+                      HEADER);
       } else if (list[i].endsWith(".cpp.x")) {
         hidden[hiddenCounter++] =
           new SketchCode(list[i].substring(0, list[i].length() - 6),
                       new File(folder, list[i]),
-                      JAVA);
+                      CPP);
       }
     }
 
@@ -314,8 +332,7 @@ public class Sketch {
     renamingCode = true;
     String prompt = (current == code[0]) ?
       "New name for sketch:" : "New name for file:";
-    String oldName =
-      (current.flavor == PDE) ? current.name : current.name + ".cpp";
+    String oldName = current.name + flavorExtensionsShown[current.flavor];
     editor.status.edit(prompt, oldName);
   }
 
@@ -348,6 +365,7 @@ public class Sketch {
     }
 
     if (newName.trim().equals(".c") ||
+        newName.trim().equals(".h") ||
         newName.trim().equals(".pde") ||
         newName.trim().equals(".cpp")) {
       return;
@@ -363,23 +381,28 @@ public class Sketch {
       newName = newName.substring(0, newName.length() - 4);
       newFlavor = PDE;
 
-    } else if (newName.endsWith(".c") || newName.endsWith(".cpp")) {
+    } else if (newName.endsWith(".c") || newName.endsWith(".cpp") ||
+      newName.endsWith(".h")) {
       // don't show this error if creating a new tab
       if (renamingCode && (code[0] == current)) {
         Base.showWarning("Problem with rename",
-                         "The main .pde file cannot be .c or .cpp file.\n" +
+                         "The main .pde file cannot be .c, .cpp, or .h file.\n" +
                          "(It may be time for your to graduate to a\n" +
                          "\"real\" programming environment)", null);
         return;
       }
 
       newFilename = newName;
-      if(newName.endsWith(".c"))
+      if(newName.endsWith(".c")) {
         newName = newName.substring(0, newName.length() - 2);
-      else if(newName.endsWith(".cpp"))
+        newFlavor = C;
+      } if(newName.endsWith(".h")) {
+        newName = newName.substring(0, newName.length() - 2);
+        newFlavor = HEADER;
+      } else if(newName.endsWith(".cpp")) {
         newName = newName.substring(0, newName.length() - 4);
-      newFlavor = JAVA;
-
+        newFlavor = CPP;
+      }
     } else {
       newFilename = newName + ".pde";
       newFlavor = PDE;
@@ -538,7 +561,7 @@ public class Sketch {
     sortCode();
 
     // set the new guy as current
-    setCurrent(newName);
+    setCurrent(newName + flavorExtensionsShown[newFlavor]);
 
     // update the tabs
     //editor.header.repaint();
@@ -572,7 +595,8 @@ public class Sketch {
     Object[] options = { "OK", "Cancel" };
     String prompt = (current == code[0]) ?
       "Are you sure you want to delete this sketch?" :
-      "Are you sure you want to delete \"" + current.name + "\"?";
+      "Are you sure you want to delete \"" + current.name +
+      flavorExtensionsShown[current.flavor] + "\"?";
     int result = JOptionPane.showOptionDialog(editor,
                                               prompt,
                                               "Delete",
@@ -684,9 +708,14 @@ public class Sketch {
 
   public void unhideCode(String what) {
     SketchCode unhideCode = null;
-
+    String name = what.substring(0,
+      (what.indexOf(".") == -1 ? what.length() : what.indexOf(".")));
+    String extension = what.indexOf(".") == -1 ? "" :
+      what.substring(what.indexOf("."));
+      
     for (int i = 0; i < hiddenCount; i++) {
-      if (hidden[i].name.equals(what)) {
+      if (hidden[i].name.equals(name) &&
+        Sketch.flavorExtensionsShown[hidden[i].flavor].equals(extension)) {
         //unhideIndex = i;
         unhideCode = hidden[i];
 
@@ -730,8 +759,8 @@ public class Sketch {
   /**
    * Sets the modified value for the code in the frontmost tab.
    */
-  public void setModified() {
-    current.modified = true;
+  public void setModified(boolean state) {
+    current.modified = state;
     calcModified();
   }
 
@@ -996,6 +1025,26 @@ public class Sketch {
     // it move instead of copy, they can do it by hand
     File sourceFile = new File(directory, filename);
 
+    // now do the work of adding the file
+    addFile(sourceFile);
+  }
+
+
+  /**
+   * Add a file to the sketch.
+   * <p/>
+   * .pde or .java files will be added to the sketch folder. <br/>
+   * .jar, .class, .dll, .jnilib, and .so files will all
+   * be added to the "code" folder. <br/>
+   * All other files will be added to the "data" folder.
+   * <p/>
+   * If they don't exist already, the "code" or "data" folder
+   * will be created.
+   * <p/>
+   * @return true if successful.
+   */
+  public boolean addFile(File sourceFile) {
+    String filename = sourceFile.getName();
     File destFile = null;
     boolean addingCode = false;
 
@@ -1012,6 +1061,7 @@ public class Sketch {
 
     } else if (filename.toLowerCase().endsWith(".pde") ||
                filename.toLowerCase().endsWith(".c") ||
+               filename.toLowerCase().endsWith(".h") ||
                filename.toLowerCase().endsWith(".cpp")) {
       destFile = new File(this.folder, filename);
       addingCode = true;
@@ -1028,7 +1078,7 @@ public class Sketch {
                           "This file has already been copied to the\n" +
                           "location where you're trying to add it.\n" +
                           "I ain't not doin nuthin'.", null);
-      return;
+      return false;
     }
 
     // in case the user is "adding" the code in an attempt
@@ -1036,10 +1086,12 @@ public class Sketch {
     if (!sourceFile.equals(destFile)) {
       try {
         Base.copyFile(sourceFile, destFile);
+
       } catch (IOException e) {
         Base.showWarning("Error adding file",
                             "Could not add '" + filename +
                             "' to the sketch.", e);
+        return false;
       }
     }
 
@@ -1050,9 +1102,15 @@ public class Sketch {
       if (newName.toLowerCase().endsWith(".pde")) {
         newName = newName.substring(0, newName.length() - 4);
         newFlavor = PDE;
-      } else {
+      } else if (newName.toLowerCase().endsWith(".c")) {
         newName = newName.substring(0, newName.length() - 2);
-        newFlavor = JAVA;
+        newFlavor = C;
+      } else if (newName.toLowerCase().endsWith(".h")) {
+        newName = newName.substring(0, newName.length() - 2);
+        newFlavor = HEADER;
+      } else { // ".cpp"
+        newName = newName.substring(0, newName.length() - 4);
+        newFlavor = CPP;
       }
 
       // see also "nameCode" for identical situation
@@ -1062,15 +1120,23 @@ public class Sketch {
       setCurrent(newName);
       editor.header.repaint();
     }
+    return true;
   }
 
 
   public void importLibrary(String jarPath) {
-    System.out.println(jarPath);
-/*    // make sure the user didn't hide the sketch folder
+    //System.out.println(jarPath);
+    // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    String list[] = Compiler.packageListFromClassPath(jarPath);
+    //String list[] = Compiler.packageListFromClassPath(jarPath);
+    FileFilter onlyHFiles = new FileFilter() {
+      public boolean accept(File file) {
+        return (file.getName()).endsWith(".h");
+      }
+    };
+    
+    File list[] = new File(jarPath).listFiles(onlyHFiles);
 
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
@@ -1082,15 +1148,15 @@ public class Sketch {
     // commented out, then this will be a problem.
     StringBuffer buffer = new StringBuffer();
     for (int i = 0; i < list.length; i++) {
-      buffer.append("import ");
-      buffer.append(list[i]);
-      buffer.append(".*;\n");
+      buffer.append("#include <");
+      buffer.append(list[i].getName());
+      buffer.append(">\n");
     }
     buffer.append('\n');
     buffer.append(editor.getText());
     editor.setText(buffer.toString(), 0, 0);  // scroll to start
-    setModified();
-*/  }
+    setModified(true);
+  }
 
 
   /**
@@ -1145,8 +1211,15 @@ public class Sketch {
    * based on a name (used by codeNew and codeRename).
    */
   protected void setCurrent(String findName) {
+    SketchCode unhideCode = null;
+    String name = findName.substring(0,
+      (findName.indexOf(".") == -1 ? findName.length() : findName.indexOf(".")));
+    String extension = findName.indexOf(".") == -1 ? "" :
+      findName.substring(findName.indexOf("."));
+
     for (int i = 0; i < codeCount; i++) {
-      if (findName.equals(code[i].name)) {
+      if (name.equals(code[i].name) &&
+        Sketch.flavorExtensionsShown[code[i].flavor].equals(extension)) {
         setCurrent(i);
         return;
       }
@@ -1264,6 +1337,11 @@ public class Sketch {
    */
   protected String build(Target target, String buildPath, String suggestedClassName)
     throws RunnerException {
+
+    // build unbuilt buildable libraries
+    // completely independent from sketch, so run all the time
+    editor.prepareLibraries();
+
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -1316,7 +1394,7 @@ public class Sketch {
       // check to see if multiple files that include a .java file
       externalRuntime = false;
       for (int i = 0; i < codeCount; i++) {
-        if (code[i].flavor == JAVA) {
+        if (code[i].flavor == C || code[i].flavor == CPP) {
           externalRuntime = true;
           break;
         }
@@ -1382,7 +1460,7 @@ public class Sketch {
         //System.out.println();
 
       } else {
-        code[0].preprocName = className + "." + Preferences.get("build.extension");
+        code[0].preprocName = className + ".cpp";
       }
 
       // store this for the compiler and the runtime
@@ -1406,7 +1484,8 @@ public class Sketch {
         }
       }
       errorLine -= code[errorFile].preprocOffset;
-      //errorLine -= preprocessor.prototypeCount;
+      errorLine -= preprocessor.prototypeCount;
+      errorLine -= preprocessor.headerCount;
 
       throw new RunnerException(re.getMessage(), errorFile,
                              errorLine, re.getColumn());
@@ -1447,7 +1526,8 @@ public class Sketch {
           }
         }
         errorLine -= code[errorFile].preprocOffset;
-        //errorLine -= preprocessor.prototypeCount;
+        errorLine -= preprocessor.prototypeCount;
+        errorLine -= preprocessor.headerCount;
 
         throw new RunnerException(tsre.getMessage(),
                                errorFile, errorLine, errorColumn);
@@ -1473,7 +1553,29 @@ public class Sketch {
 
     importedLibraries = new Vector();
     String imports[] = preprocessor.extraImports;
-    for (int i = 0; i < imports.length; i++) {
+    try {
+      LibraryManager libraryManager = new LibraryManager();
+      Collection libraries = libraryManager.getAll();
+      for (Iterator i = libraries.iterator(); i.hasNext(); ) {
+        Library library = (Library) i.next();
+        File[] headerFiles = library.getHeaderFiles();
+        
+        for (int j = 0; j < headerFiles.length; j++)
+          for (int k = 0; k < imports.length; k++)
+            if (headerFiles[j].getName().equals(imports[k]) &&
+              !importedLibraries.contains(library)) {
+              importedLibraries.add(library);
+              //System.out.println("Adding library " + library.getName());
+            }
+      }
+    } catch (IOException e) {
+      System.err.println("Error finding libraries:");
+      e.printStackTrace();
+      throw new RunnerException(e.getMessage());
+    }
+
+    //for (int i = 0; i < imports.length; i++) {
+      /*
       // remove things up to the last dot
       String entry = imports[i].substring(0, imports[i].lastIndexOf('.'));
       //System.out.println("found package " + entry);
@@ -1486,7 +1588,7 @@ public class Sketch {
 
       importedLibraries.add(libFolder);
       libraryPath += File.pathSeparator + libFolder.getAbsolutePath();
-
+      */
       /*
       String list[] = libFolder.list();
       if (list != null) {
@@ -1500,18 +1602,18 @@ public class Sketch {
         }
       }
       */
-    }
+    //}
 
 
     // 3. then loop over the code[] and save each .java file
 
     for (int i = 0; i < codeCount; i++) {
-      if (code[i].flavor == JAVA) {
+      if (code[i].flavor == CPP || code[i].flavor == C || code[i].flavor == HEADER) {
         // no pre-processing services necessary for java files
         // just write the the contents of 'program' to a .java file
         // into the build directory. uses byte stream and reader/writer
         // shtuff so that unicode bunk is properly handled
-        String filename = code[i].name + "." + Preferences.get("build.extension");
+        String filename = code[i].name + flavorExtensionsReal[code[i].flavor];
         try {
           Base.saveFile(code[i].program, new File(buildPath, filename));
         } catch (IOException e) {
@@ -1536,7 +1638,7 @@ public class Sketch {
     } catch (RunnerException re) {
       throw new RunnerException(re.getMessage(),
                                 re.file,
-                                re.line,// - preprocessor.prototypeCount,
+                                re.line - preprocessor.prototypeCount - preprocessor.headerCount,
                                 re.column);
     } catch (Exception ex) {
       // TODO better method for handling this?
@@ -1545,14 +1647,31 @@ public class Sketch {
     //System.out.println("success = " + success + " ... " + primaryClassName);
     return success ? primaryClassName : null;
   }
+  
+  protected void size(String buildPath, String suggestedClassName)
+    throws RunnerException {
+    long size = 0;
+    Sizer sizer = new Sizer(buildPath, suggestedClassName);
+    try {
+      size = sizer.computeSize();
+      System.out.println("Binary sketch size: " + size + " bytes (of a " +
+        Preferences.get("upload.maximum_size") + " byte maximum)");      
+    } catch (RunnerException e) {
+      System.err.println("Couldn't determine program size: " + e.getMessage());
+    }
+
+    if (size > Preferences.getInteger("upload.maximum_size"))
+      throw new RunnerException(
+        "Sketch too big; try deleting code, removing floats, or see " +
+        "http://www.arduino.cc/en/Main/FAQ for more advice.");
+  }
 
   protected String upload(String buildPath, String suggestedClassName)
     throws RunnerException {
 
     // download the program
     //
-    Uploader downloader =
-      new Uploader(buildPath, suggestedClassName, this);
+    Uploader uploader = new Uploader();
     // macos9 now officially broken.. see PdeCompilerJavac
     //PdeCompiler compiler =
     //  ((PdeBase.platform == PdeBase.MACOS9) ?
@@ -1563,12 +1682,12 @@ public class Sketch {
     // which is a wrapped around
     // (this will catch and parse errors during compilation
     // the messageStream will call message() for 'compiler')
-    MessageStream messageStream = new MessageStream(downloader);
+    //MessageStream messageStream = new MessageStream(downloader);
     //PrintStream leechErr = new PrintStream(messageStream);
     //boolean result = compiler.compileJava(leechErr);
     //return compiler.compileJava(leechErr);
     boolean success =
-      downloader.downloadJava(new PrintStream(messageStream));
+      uploader.uploadUsingPreferences(buildPath, suggestedClassName);
 
     return success ? suggestedClassName : null;
   }
@@ -1626,6 +1745,7 @@ public class Sketch {
 
     // build the sketch
     String foundName = build(target, appletFolder.getPath(), name);
+    size(appletFolder.getPath(), name);
     foundName = upload(appletFolder.getPath(), name);
     // (already reported) error during export, exit this function
     if (foundName == null) return false;

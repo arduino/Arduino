@@ -86,7 +86,8 @@ public class Sketchbook {
     examplesFolder = new File(System.getProperty("user.dir"), "examples");
     examplesPath = examplesFolder.getAbsolutePath();
 
-    librariesFolder = new File(System.getProperty("user.dir"), "libraries");
+    librariesFolder = new File(System.getProperty("user.dir"),
+      "lib" + File.separator + "targets" + File.separator + "libraries");
     librariesPath = librariesFolder.getAbsolutePath();
 
     String sketchbookPath = Preferences.get("sketchbook.path");
@@ -341,9 +342,11 @@ public class Sketchbook {
       // rebuild the "import library" menu
       librariesClassPath = "";
       importMenu.removeAll();
+      /*
       if (addLibraries(importMenu, new File(getSketchbookPath()))) {
         importMenu.addSeparator();
       }
+      */
       if (addLibraries(importMenu, examplesFolder)) {
         importMenu.addSeparator();
       }
@@ -382,10 +385,18 @@ public class Sketchbook {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  
+    ActionListener listener = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          editor.handleOpen(e.getActionCommand());
+        }
+      };
 
     try {
+      LibraryManager libManager = new LibraryManager();
       JMenu examplesMenu = new JMenu("Examples");
       addSketches(examplesMenu, examplesFolder);
+      libManager.populateExamplesMenu(examplesMenu, listener);
       menu.add(examplesMenu);
     } catch (IOException e) {
       e.printStackTrace();
@@ -542,11 +553,22 @@ public class Sketchbook {
           list[i].equals("CVS")) continue;
 
       File subfolder = new File(folder, list[i]);
-      File exported = new File(subfolder, "library");
-      File entry = new File(exported, list[i] + ".jar");
+      if (!subfolder.isDirectory()) continue;
+
+      //File exported = new File(subfolder, "library");
+      //File entry = new File(exported, list[i] + ".o");
+      FileFilter onlyHFiles = new FileFilter() {
+        public boolean accept(File file) {
+          return (file.getName()).endsWith(".h");
+        }
+      };
+      
+      // if the folder has header files
+      if (subfolder.listFiles(onlyHFiles).length > 0) {
       // if a .jar file of the same prefix as the folder exists
       // inside the 'library' subfolder of the sketch
-      if (entry.exists()) {
+      //if (entry.exists()) {
+        /*
         String sanityCheck = sanitizedName(list[i]);
         if (!sanityCheck.equals(list[i])) {
           String mess =
@@ -556,7 +578,8 @@ public class Sketchbook {
           Base.showMessage("Ignoring bad sketch name", mess);
           continue;
         }
-
+        */
+/*
         // get the path for all .jar files in this code folder
         String libraryClassPath =
           Compiler.contentsToClassPath(exported);
@@ -565,15 +588,15 @@ public class Sketchbook {
         librariesClassPath +=
           File.pathSeparatorChar + libraryClassPath;
         // need to associate each import with a library folder
-        String packages[] = new String[0];
-          //Compiler.packageListFromClassPath(libraryClassPath);
+        String packages[] =
+          Compiler.packageListFromClassPath(libraryClassPath);
         for (int k = 0; k < packages.length; k++) {
           importToLibraryTable.put(packages[k], exported);
         }
-
+*/
         JMenuItem item = new JMenuItem(list[i]);
         item.addActionListener(listener);
-        item.setActionCommand(entry.getAbsolutePath());
+        item.setActionCommand(subfolder.getAbsolutePath());
         menu.add(item);
         ifound = true;
 
@@ -589,7 +612,7 @@ public class Sketchbook {
       }
     }
     return ifound;
-  }
+  /*return false;*/  }
 
 
   /**
