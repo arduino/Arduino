@@ -21,12 +21,22 @@
 
   $Id: wiring.c 248 2007-02-03 15:36:30Z mellis $
 */
+//*******************************************************************************************
+//*	Jul 27,	2010	<MLS> = Mark Sproul msproul-at-skychariot.com
+//*	Jul 27,	2010	<MLS> Rewrite of analogWrite to better support various cpus
+//*	Jul 27,	2010	<MLS> Refactoring analogWrite() to test for register, not cpu, definitions. 
+//*	Jul 28,	2010	<MLS> submited enhancment request #307
+//*	Aug  3,	2010	<MLS> improved the #ifdefs, now compiles for atmega645
+//*	Sep  5,	2010	<MLS> V0019 was released, migrated changes into 0019
+//*	Sep 28,	2010	<MLS> V0020 was released, migrated changes into 0020
+//*******************************************************************************************
 
 #include "wiring_private.h"
 #include "pins_arduino.h"
 
 uint8_t analog_reference = DEFAULT;
 
+//*********************************************************************
 void analogReference(uint8_t mode)
 {
 	// can't actually set the register here because the default setting
