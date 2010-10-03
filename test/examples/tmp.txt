@@ -1,0 +1,53 @@
+Mark,
+
+Long story short. The format that you described, and the one I think is best matches our goal is the Python Unittest format. I think it's easily readable and parseable. The following summary comes from the Doug Hellman: http://www.doughellmann.com/PyMOTW/unittest/, Dive Into Python3 Unit Testing: http://diveintopython3.org/unit-testing.html, and UnitTest docs: http://docs.python.org/library/unittest.html
+
+Tests have 3 possible outcomes:
+
+ok
+The test passes.
+FAIL
+The test does not pass, and raises an AssertionError exception.
+ERROR
+The test raises an exception other than AssertionError.
+There is no explicit way to cause a test to âpassâ, so a testâs status depends on the presence (or absence) of an exception.
+
+//**Examples of each kind of variation: All use the verbose format which is better for us*******
+A test case is, space seperated:
+Name of test, Sub Routine invoked, Description, ..., [ok|fail|error]
+//******************example of success cases***********
+
+you@localhost:~/diveintopython3/examples$ python3 romantest3.py -v
+test_to_roman_known_values (__main__.KnownValues) to_roman should give known result with known input ... oktest_negative (__main__.ToRomanBadInput) to_roman should fail with negative input ... oktest_too_large (__main__.ToRomanBadInput) to_roman should fail with large input ... oktest_zero (__main__.ToRomanBadInput) to_roman should fail with 0 input ... ok----------------------------------------------------------------------Ran 4 tests in 0.016sOK
+
+
+//******One success, One Failure*********************
+
+you@localhost:~/diveintopython3/examples$ python3 romantest2.py -v
+test_to_roman_known_values (__main__.KnownValues) to_roman should give known result with known input ... oktest_too_large (__main__.ToRomanBadInput) to_roman should fail with large input ... FAIL  ======================================================================FAIL: to_roman should fail with large input----------------------------------------------------------------------Traceback (most recent call last):  File "romantest2.py", line 78, in test_too_large    self.assertRaises(roman2.OutOfRangeError, roman2.to_roman, 4000)AssertionError: OutOfRangeError not raised by to_roman                 ----------------------------------------------------------------------Ran 2 tests in 0.016sFAILED (failures=1)
+
+//***2 Successes*************
+you@localhost:~/diveintopython3/examples$ python3 romantest2.py -v
+test_to_roman_known_values (__main__.KnownValues)to_roman should give known result with known input ... oktest_too_large (__main__.ToRomanBadInput)to_roman should fail with large input ... ok                            ----------------------------------------------------------------------Ran 2 tests in 0.000sOK
+
+//****************4 tests, 2 failures**
+you@localhost:~/diveintopython3/examples$ python3 romantest3.py -v
+test_to_roman_known_values (__main__.KnownValues)to_roman should give known result with known input ... oktest_negative (__main__.ToRomanBadInput)to_roman should fail with negative input ... FAILtest_too_large (__main__.ToRomanBadInput)to_roman should fail with large input ... oktest_zero (__main__.ToRomanBadInput)to_roman should fail with 0 input ... FAIL======================================================================FAIL: to_roman should fail with negative input----------------------------------------------------------------------Traceback (most recent call last):  File "romantest3.py", line 86, in test_negative    self.assertRaises(roman3.OutOfRangeError, roman3.to_roman, -1)AssertionError: OutOfRangeError not raised by to_roman======================================================================FAIL: to_roman should fail with 0 input----------------------------------------------------------------------Traceback (most recent call last):  File "romantest3.py", line 82, in test_zero    self.assertRaises(roman3.OutOfRangeError, roman3.to_roman, 0)AssertionError: OutOfRangeError not raised by to_roman----------------------------------------------------------------------Ran 4 tests in 0.000sFAILED (failures=2)
+
+
+************************
+
+you@localhost:~/diveintopython3/examples$ python3 romantest4.py -v
+test_to_roman_known_values (__main__.KnownValues)to_roman should give known result with known input ... oktest_negative (__main__.ToRomanBadInput)to_roman should fail with negative input ... oktest_non_integer (__main__.ToRomanBadInput)to_roman should fail with non-integer input ... FAILtest_too_large (__main__.ToRomanBadInput)to_roman should fail with large input ... oktest_zero (__main__.ToRomanBadInput)to_roman should fail with 0 input ... ok======================================================================FAIL: to_roman should fail with non-integer input----------------------------------------------------------------------Traceback (most recent call last):  File "romantest4.py", line 90, in test_non_integer    self.assertRaises(roman4.NotIntegerError, roman4.to_roman, 0.5)AssertionError: NotIntegerError not raised by to_roman----------------------------------------------------------------------Ran 5 tests in 0.000sFAILED (failures=1)
+
+****Done with examples. ****************
+Testing definitions:
+test fixture
+A test fixture represents the preparation needed to perform one or more tests, and any associate cleanup actions. This may involve, for example, creating temporary or proxy databases, directories, or starting a server process.
+test case
+A test case is the smallest unit of testing. It checks for a specific response to a particular set of inputs. unittest provides a base class, TestCase, which may be used to create new test cases.
+test suite
+A test suite is a collection of test cases, test suites, or both. It is used to aggregate tests that should be executed together.
+test runner
+A test runner is a component which orchestrates the execution of tests and provides the outcome to the user. The runner may use a graphical interface, a textual interface, or return a special value to indicate the results of executing the tests.
+:wq!

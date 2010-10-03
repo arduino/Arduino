@@ -1,0 +1,15 @@
+test_to_roman_known_values (__main__.KnownValues) to_roman should give known result with known input ... ok
+test_too_large (__main__.ToRomanBadInput) to_roman should fail with large input ... FAIL  
+======================================================================
+FAIL: to_roman should fail with large input
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "romantest2.py", line 78, in test_too_large
+    self.assertRaises(roman2.OutOfRangeError, roman2.to_roman, 4000)
+AssertionError: OutOfRangeError not raised by to_roman                 
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.016s
+
+FAILED (failures=1)
+
