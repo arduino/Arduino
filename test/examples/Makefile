@@ -13,6 +13,12 @@ test2:
 test3:
 	cat ex3.txt
 
+test4:
+	cat ex6.txt
+
+test5:
+	cat ex7.txt
+
 arduinotest:
 	cat arduino.test
 

@@ -1,0 +1,53 @@
+===============================================================================
+[SKIPPED]: buildbot.test.regressions.test_import_unicode_changes.TestMySQLDBUnicodeChanges.testAsciiChange
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.regressions.test_import_unicode_changes.TestMySQLDBUnicodeChanges.testNonUnicodeChange
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.regressions.test_import_unicode_changes.TestMySQLDBUnicodeChanges.testUTF16Change
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.regressions.test_import_unicode_changes.TestMySQLDBUnicodeChanges.testUnicodeChange
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_get_current_version
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_get_db_version_empty
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_get_db_version_int
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_is_current_empty
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_is_current_empty_upgrade
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_scheduler_name_uniqueness
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_upgrade_empty
+
+MySQLdb not installed
+===============================================================================
+[SKIPPED]: buildbot.test.unit.test_db_schema_master.MySQLDBSchemaManager.test_upgrade_full
+
+MySQLdb not installed
+-------------------------------------------------------------------------------
+Ran 268 tests in 25.371s
+
+PASSED (skips=12, successes=256)
+
