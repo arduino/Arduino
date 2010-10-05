@@ -15,10 +15,9 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 28 September 2010 by Mark Sproul
 */
-//*******************************************************************************************
-//*	Sep 28,	2010	<MLS> V0020 was released, migrated changes into 0020
-//*******************************************************************************************
 
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
@@ -60,20 +59,18 @@ class HardwareSerial : public Stream
 };
 
 #if defined(UBRRH) || defined(UBRR0H)
-	extern HardwareSerial Serial;
+  extern HardwareSerial Serial;
 #elif defined(USBCON)
-	#include "usb_api.h"
+  #include "usb_api.h"
 #endif
-
-//#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #if defined(UBRR1H)
-	extern HardwareSerial Serial1;
+  extern HardwareSerial Serial1;
 #endif
 #if defined(UBRR2H)
-	extern HardwareSerial Serial2;
+  extern HardwareSerial Serial2;
 #endif
 #if defined(UBRR3H)
-	extern HardwareSerial Serial3;
+  extern HardwareSerial Serial3;
 #endif
 
 #endif
