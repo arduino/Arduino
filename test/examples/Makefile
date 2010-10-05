@@ -2,12 +2,12 @@
 
 all: test
 
-test: test1 test2 arduinotest
+test: success failure arduinotest
 
-test1:
+success:
 	cat arduino-success.test 
 
-test2:
+failure:
 	cat arduino-mixed.test
 
 test3:
