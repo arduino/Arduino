@@ -2,25 +2,16 @@
 
 all: test
 
-test: test1 test2 test3
+test: test1 test2 arduinotest
 
 test1:
-	cat ex1.txt
+	cat arduino-success.test 
 
 test2:
-	cat ex2.txt
-
-test3:
-	cat ex3.txt
-
-test4:
-	cat ex6.txt
-
-test5:
-	cat ex7.txt
+	cat arduino-mixed.test
 
 arduinotest:
-	cat arduino.test
+	cat arduino-success.test
 
 
 
