@@ -10,6 +10,9 @@ test1:
 test2:
 	cat arduino-mixed.test
 
+test3:
+	cat arduino1.test
+
 arduinotest:
 	cat arduino-success.test
 
