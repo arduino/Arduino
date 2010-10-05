@@ -1,36 +1,40 @@
-info.MANUFACTURER = Arduino                                 ... ok
-info.CPU-NAME = ATmega2560                                  ... ok
-info.GCC-Version = 4.3.2                                    ... ok
-info.AVR-LibC-Ver = 1.6.4                                   ... ok
-info.Compiled-date = Oct  3 2010                            ... ok
-Serial1                                                     ... ok
-Serial2                                                     ... ok
-Serial3                                                     ... ok
-PIN_IN_OUT 2/3 1-PWM 2-PWM                                  ... ok
-PIN_IN_OUT 4/5 1-PWM 2-PWM                                  ... FAIL
-PIN_IN_OUT 6/7 1-PWM 2-PWM                                  ... FAIL
-PIN_IN_OUT 8/9 1-PWM 2-PWM                                  ... FAIL
-PIN_IN_OUT 10/11 1-PWM 2-PWM                                ... FAIL
-PIN_IN_OUT 12/13 1-PWM 2-PWM                                ... FAIL
-PIN_IN_OUT 14/15                                            ... ok
-PIN_IN_OUT 16/17                                            ... ok
-PIN_IN_OUT 18/19                                            ... ok
-PIN_IN_OUT 20/21                                            ... FAIL
-PIN_IN_OUT 22/23                                            ... FAIL
-PIN_IN_OUT 24/25                                            ... FAIL
-PIN_IN_OUT 26/27                                            ... FAIL
-PIN_IN_OUT 28/29                                            ... FAIL
-PIN_IN_OUT 30/31                                            ... FAIL
-PIN_IN_OUT 32/33                                            ... FAIL
-PIN_IN_OUT 34/35                                            ... FAIL
-PIN_IN_OUT 36/37                                            ... FAIL
-PIN_IN_OUT 38/39                                            ... FAIL
-PIN_IN_OUT 40/41                                            ... FAIL
-PIN_IN_OUT 42/43                                            ... FAIL
-PIN_IN_OUT 44/45 1-PWM 2-PWM                                ... FAIL
-PIN_IN_OUT 46/47 1-PWM                                      ... ok
-PIN_IN_OUT 48/49                                            ... FAIL
-----------------------------
-Ran 27 tests in 22.170s
+info.MANUFACTURER    = Arduino
+info.CPU-NAME        = ATmega328P
+info.GCC-Version     = 4.3.2
+info.AVR-LibC-Ver    = 1.6.4
+info.Compiled-date   = Oct  4 2010
+info.Test-Suite-Name = general
+DigitalReadWrite_02                                         ... ok
+DigitalReadWrite_03                                         ... ok
+DigitalReadWrite_04                                         ... ok
+DigitalReadWrite_05                                         ... ok
+DigitalReadWrite_06                                         ... ok
+DigitalReadWrite_07                                         ... ok
+DigitalReadWrite_08                                         ... ok
+DigitalReadWrite_09                                         ... ok
+DigitalReadWrite_10                                         ... ok
+DigitalReadWrite_11                                         ... ok
+DigitalReadWrite_12                                         ... ok
+DigitalReadWrite_13                                         ... ok
+DigitalReadWrite_14                                         ... ok
+DigitalReadWrite_15                                         ... ok
+DigitalReadWrite_16                                         ... ok
+DigitalReadWrite_17                                         ... ok
+DigitalReadWrite_18                                         ... ok
+DigitalReadWrite_19                                         ... ok
+PWMoutput_03  (PWM=128 50% LOW 49% HIGH)                    ... ok
+PWMoutput_05  (PWM=128 50% LOW 49% HIGH)                    ... ok
+PWMoutput_06  (PWM=128 50% LOW 49% HIGH)                    ... ok
+PWMoutput_09  (PWM=128 50% LOW 49% HIGH)                    ... ok
+PWMoutput_10  (PWM=128 50% LOW 49% HIGH)                    ... ok
+PWMoutput_11  (PWM=128 50% LOW 49% HIGH)                    ... ok
+AnalogInput_00 (Low=   0 High= 472 helper pin=15)           ... FAIL
+AnalogInput_01 (Low= 477 High=1023 helper pin=14)           ... FAIL
+AnalogInput_02 (Low=   0 High= 474 helper pin=17)           ... FAIL
+AnalogInput_03 (Low= 479 High=1023 helper pin=16)           ... FAIL
+AnalogInput_04 (Low=   0 High= 470 helper pin=19)           ... FAIL
+AnalogInput_05 (Low= 475 High=1023 helper pin=18)           ... FAIL
+--------------------------
+Ran 30 tests in 7.326s
 
-FALIED (failures=19)
+FAILED (failures=6)
