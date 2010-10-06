@@ -16,6 +16,10 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+//************************************************************************
+//*	Sep 28,	2010	<MLS> V0020 was released, migrated changes into 0020
+//*	Oct  5,	2010	<MLS> V0020 was released, migrated changes into 0021
+//************************************************************************
 
 #ifndef Print_h
 #define Print_h
@@ -23,7 +27,13 @@
 #include <inttypes.h>
 #include <stdio.h> // for size_t
 
+#include <avr/pgmspace.h>
+
+
 #include "WString.h"
+
+#undef BIN
+
 
 #define DEC 10
 #define HEX 16
@@ -61,6 +71,10 @@ class Print
     void println(unsigned long, int = DEC);
     void println(double, int = 2);
     void println(void);
+    
+    
+    void print_P(prog_char *flashMemStr);
+    void println_P(prog_char *flashMemStr);
 };
 
 #endif

@@ -18,6 +18,10 @@
  
  Modified 23 November 2006 by David A. Mellis
  */
+//************************************************************************
+//*	Sep 28,	2010	<MLS> V0020 was released, migrated changes into 0020
+//*	Oct  5,	2010	<MLS> V0020 was released, migrated changes into 0021
+//************************************************************************
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -217,4 +221,29 @@ void Print::printFloat(double number, uint8_t digits)
     print(toPrint);
     remainder -= toPrint; 
   } 
+}
+
+
+//************************************************************************
+void Print::print_P(prog_char *flashMemStr)
+{
+char	theChar;
+int		ii;
+
+	ii		=	0;
+#if (FLASHEND > 0x10000)
+	while (theChar	=	pgm_read_byte_far(flashMemStr + ii++))
+#else
+	while (theChar	=	pgm_read_byte_near(flashMemStr + ii++))
+#endif
+	{
+		print(theChar);
+	}
+}
+
+//************************************************************************
+void Print::println_P(prog_char *flashMemStr)
+{
+	print_P(flashMemStr);
+	println();
 }

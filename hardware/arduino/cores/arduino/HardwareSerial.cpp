@@ -28,6 +28,7 @@
 //*	Aug 31,	2010	<MLS> The ATmega32U4 has uart1 but NOT uart0
 //*	Sep  5,	2010	<MLS> V0019 was released, migrated changes into 0019
 //*	Sep 28,	2010	<MLS> V0020 was released, migrated changes into 0020
+//*	Oct  1,	2010	<MLS> Added more constraints to handle atmega128rfa1
 //*******************************************************************************************
 
 #include <stdlib.h>
@@ -170,7 +171,7 @@ SIGNAL(USART1_RX_vect)
 
 
 //#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#if defined(USART2_RX_vect)
+#if defined(USART2_RX_vect) && defined(UDR2)
 //*******************************************************************************************
 SIGNAL(USART2_RX_vect)
 {
@@ -181,7 +182,7 @@ SIGNAL(USART2_RX_vect)
 	#error SIG_USART2_RECV
 #endif
 
-#if defined(USART3_RX_vect)
+#if defined(USART3_RX_vect) && defined(UDR3)
 //*******************************************************************************************
 SIGNAL(USART3_RX_vect)
 {

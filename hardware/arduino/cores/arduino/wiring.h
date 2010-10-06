@@ -21,6 +21,10 @@
 
   $Id$
 */
+//*******************************************************************************************
+//*	Sep 28,	2010	<MLS> V0020 was released, migrated changes into 0020
+//*	Oct  5,	2010	<MLS> V0020 was released, migrated changes into 0021
+//*******************************************************************************************
 
 #ifndef Wiring_h
 #define Wiring_h
@@ -38,6 +42,10 @@ extern "C"{
 
 #define INPUT 0x0
 #define OUTPUT 0x1
+
+#undef true
+#undef false
+
 
 #define true 0x1
 #define false 0x0
@@ -84,9 +92,18 @@ extern "C"{
 #define interrupts() sei()
 #define noInterrupts() cli()
 
-#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
-#define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
-#define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
+#if (F_CPU == 16000000L) || (F_CPU == 8000000L) || (F_CPU == 20000000L)
+	#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
+	#define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
+	#define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
+#else
+//*	Aug  4,	2010	<MLS> = Mark Sproul
+//*	if the clock is not an even multiple of 1000000, then the above causes drift
+//*	for example, (F_CPU == 14745600L)
+	#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
+	#define clockCyclesToMicroseconds(a) ( (a * 1000L) / (F_CPU / 1000L) )
+	#define microsecondsToClockCycles(a) (( (a) * (F_CPU / 1000) ) / 1000)
+#endif
 
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
