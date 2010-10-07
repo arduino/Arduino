@@ -963,6 +963,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
       if ( SerialPorts != null ) {
         System.setProperty("gnu.io.rxtx.SerialPorts", SerialPorts);
+        serialScanned = true;
       }
     }
 
