@@ -146,7 +146,7 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   #error SIG_USART1_RECV
 #endif
 
-#if defined(USART2_RX_vect)
+#if defined(USART2_RX_vect) && defined(UDR2)
   SIGNAL(USART2_RX_vect)
   {
     unsigned char c = UDR2;
@@ -156,7 +156,7 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   #error SIG_USART2_RECV
 #endif
 
-#if defined(USART3_RX_vect)
+#if defined(USART3_RX_vect) && defined(UDR3)
   SIGNAL(USART3_RX_vect)
   {
     unsigned char c = UDR3;

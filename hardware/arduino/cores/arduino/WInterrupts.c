@@ -48,7 +48,7 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
     // Enable the interrupt.
       
     switch (interruptNum) {
-#if defined(EICRA) && defined(EICRB)
+#if defined(EICRA) && defined(EICRB) && defined(EIMSK)
     case 2:
       EICRA = (EICRA & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
       EIMSK |= (1 << INT0);
@@ -86,25 +86,29 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
     #if defined(EICRA) && defined(ISC00) && defined(EIMSK)
       EICRA = (EICRA & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
       EIMSK |= (1 << INT0);
-    #elif defined(MCUCR) && defined(ISC00)
-      MCUCR  =  (MCUCR & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
-      GICR  |=  (1 << INT0);
+    #elif defined(MCUCR) && defined(ISC00) && defined(GICR)
+      MCUCR = (MCUCR & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
+      GICR |= (1 << INT0);
+    #elif defined(MCUCR) && defined(ISC00) && defined(GIMSK)
+      MCUCR = (MCUCR & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
+      GIMSK |= (1 << INT0);
     #else
       #error attachInterrupt not finished for this CPU (case 0)
     #endif
       break;
+
     case 1:
     #if defined(EICRA) && defined(ISC10) && defined(ISC11) && defined(EIMSK)
       EICRA = (EICRA & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
       EIMSK |= (1 << INT1);
     #elif defined(MCUCR) && defined(ISC10) && defined(ISC11) && defined(GICR)
-      MCUCR  =  (MCUCR & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
-      GICR  |=  (1 << INT1);
-    #elif defined(__AVR_ATmega645__) || defined(__AVR_ATmega169__)
-      //*  atmega645 and 169 dont have all of these control bits
-      #warning attachInterrupt may need some more work for this cpu (case 1)
+      MCUCR = (MCUCR & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
+      GICR |= (1 << INT1);
+    #elif defined(MCUCR) && defined(ISC10) && defined(GIMSK) && defined(GIMSK)
+      MCUCR = (MCUCR & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
+      GIMSK |= (1 << INT1);
     #else
-      #error attachInterrupt not finished for this CPU (case 1)
+      #warning attachInterrupt may need some more work for this cpu (case 1)
     #endif
       break;
 #endif
@@ -118,7 +122,7 @@ void detachInterrupt(uint8_t interruptNum) {
     // to the number of the EIMSK bit to clear, as this isn't true on the 
     // ATmega8.  There, INT0 is 6 and INT1 is 7.)
     switch (interruptNum) {
-#if defined(EICRA) && defined(EICRB)
+#if defined(EICRA) && defined(EICRB) && defined(EIMSK)
     case 2:
       EIMSK &= ~(1 << INT0);
       break;
@@ -149,20 +153,22 @@ void detachInterrupt(uint8_t interruptNum) {
       EIMSK &= ~(1 << INT0);
     #elif defined(GICR) && defined(ISC00)
       GICR &= ~(1 << INT0); // atmega32
+    #elif defined(GIMSK) && defined(INT0)
+      GIMSK &= ~(1 << INT0);
     #else
       #error detachInterrupt not finished for this cpu
     #endif
       break;
+
     case 1:
     #if defined(EIMSK) && defined(INT1)
       EIMSK &= ~(1 << INT1);
-    #elif defined(GICR) && defined(ISC00)
+    #elif defined(GICR) && defined(INT1)
       GICR &= ~(1 << INT1); // atmega32
-    #elif defined(__AVR_ATmega645__) || defined(__AVR_ATmega169__)
-      // atmega645 and 169 dont have all of these control bits
-      #warning detachInterrupt may need some more work for this cpu (case 1)
+    #elif defined(GIMSK) && defined(INT1)
+      GIMSK &= ~(1 << INT1);
     #else
-      #error detachInterrupt not finished for this cpu
+      #warning detachInterrupt may need some more work for this cpu (case 1)
     #endif
       break;
 #endif

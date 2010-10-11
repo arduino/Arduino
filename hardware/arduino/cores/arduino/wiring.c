@@ -80,7 +80,14 @@ unsigned long micros() {
 	
 	cli();
 	m = timer0_overflow_count;
+#if defined(TCNT0)
 	t = TCNT0;
+#elif defined(TCNT0L)
+	t = TCNT0L;
+#else
+	#error TIMER 0 not defined
+#endif
+
   
 #ifdef TIFR0
 	if ((TIFR0 & _BV(TOV0)) && (t < 255))
@@ -205,25 +212,39 @@ void init()
 	// note, however, that fast pwm mode can achieve a frequency of up
 	// 8 MHz (with a 16 MHz clock) at 50% duty cycle
 
+	TCCR1B = 0;
+
 	// set timer 1 prescale factor to 64
+#if defined(TCCR1B) && defined(CS11) && defined(CS10)
 	sbi(TCCR1B, CS11);
 	sbi(TCCR1B, CS10);
+#elif defined(TCCR1) && defined(CS11) && defined(CS10)
+	sbi(TCCR1, CS11);
+	sbi(TCCR1, CS10);
+#endif
 	// put timer 1 in 8-bit phase correct pwm mode
+#if defined(TCCR1A) && defined(WGM10)
 	sbi(TCCR1A, WGM10);
+#elif defined(TCCR1)
+	#warning this needs to be finished
+#endif
 
 	// set timer 2 prescale factor to 64
 #if defined(TCCR2) && defined(CS22)
 	sbi(TCCR2, CS22);
-#endif
-#if defined(TCCR2B) && defined(CS22)
+#elif defined(TCCR2B) && defined(CS22)
 	sbi(TCCR2B, CS22);
+#else
+	#warning Timer 2 not finished (may not be present on this CPU)
 #endif
+
 	// configure timer 2 for phase correct pwm (8-bit)
 #if defined(TCCR2) && defined(WGM20)
 	sbi(TCCR2, WGM20);
-#endif
-#if defined(TCCR2A) && defined(WGM20)
+#elif defined(TCCR2A) && defined(WGM20)
 	sbi(TCCR2A, WGM20);
+#else
+	#warning Timer 2 not finished (may not be present on this CPU)
 #endif
 
 #if defined(TCCR3B) && defined(CS31) && defined(WGM30)
@@ -244,6 +265,7 @@ void init()
 	sbi(TCCR5A, WGM50);		// put timer 3, 4, 5 in 8-bit phase correct pwm mode
 #endif
 
+#if defined(ADCSRA)
 	// set a2d prescale factor to 128
 	// 16 MHz / 128 = 125 KHz, inside the desired 50-200 KHz range.
 	// XXX: this will not work properly for other clock speeds, and
@@ -254,6 +276,7 @@ void init()
 
 	// enable a2d conversions
 	sbi(ADCSRA, ADEN);
+#endif
 
 	// the bootloader connects pins 0 and 1 to the USART; disconnect them
 	// here so they can be used as normal digital i/o; they will be
