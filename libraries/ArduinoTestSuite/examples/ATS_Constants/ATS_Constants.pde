@@ -1,5 +1,5 @@
 //************************************************************************
-//*	Arduino String Test
+//*	Arduino Test of Arduino Constants 
 //*		(C) 2010 by Rick Anderson
 //*		Open source as per standard Arduino code
 //*

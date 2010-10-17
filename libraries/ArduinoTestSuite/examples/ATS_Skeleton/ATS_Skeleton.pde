@@ -1,5 +1,5 @@
 //************************************************************************
-//*	Arduino String Test
+//*	Arduino Test Example Skeleton
 //*		(C) 2010 by Rick Anderson
 //*		Open source as per standard Arduino code
 //*
@@ -53,11 +53,9 @@ void setup()
 * Run the tests
 */
 
-  strcpy(testName, "1. Test of true test status");
-  ATS_PrintTestStatus(testName, true);
+  ATS_PrintTestStatus("1. Test of true test status", true);
   
-  strcpy(testName, "2. Test of false test status, this will fail.");
-  ATS_PrintTestStatus(testName, false);
+  ATS_PrintTestStatus("2. Test of false test status, this will fail.", false);
 
 
 /*
