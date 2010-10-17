@@ -35,13 +35,13 @@ void setup()
   short	ii;
   uint8_t	timerNumber;
   char testName[64];
-  
+
   gYotalErrors	=	0;
   gTestCount		=	0;
 
-/*
+  /*
 * Test Variable Setup
-*/
+   */
 
   Serial.begin(9600);
   delay(1000);
@@ -49,36 +49,45 @@ void setup()
   gTestStartTime	=	millis();
   ATS_PrintTestStart("Arduino", "Test of Arduino Constants");
 
-/*
+  /*
 * Run the tests
-*/
+   */
 
 
-//test true constant
-  strcpy(testName, "1. Test of true constant");
-  if (true != 0)
-  {
-    ATS_PrintTestStatus(testName, true);
-  }
-  else
-  {
-  ATS_PrintTestStatus(testName, false);
-  }
+  //test true constant
 
-//test false consts
-  strcpy(testName, "2. Test of false constant");
-  if (false == 0)
-  {
-    ATS_PrintTestStatus(testName, true);
-  }
-  else
-  {
-  ATS_PrintTestStatus(testName, false);
-  }
+  ATS_PrintTestStatus("1. Test of true constant", true == 1);
 
-/*
-* Test complete
-*/
+  //test false consts
+  ATS_PrintTestStatus( "2. Test of false constant", false == 0);
+
+  //Test of HIGH == 1
+  ATS_PrintTestStatus( "3. Test of HIGH == 1", HIGH == 1);
+
+  //Test of LOW ==  0
+  ATS_PrintTestStatus( "4. Test of LOW ==  0", LOW == 0);
+
+  //Test of INPUT == 1
+  ATS_PrintTestStatus( "5. Test of INPUT == 1", HIGH == 1);
+
+  //Test of OUTPUT ==  0
+  ATS_PrintTestStatus( "6. Test of OUTPUT ==  0", LOW == 0);
+
+  //test decimal
+  ATS_PrintTestStatus( "7. Test of decimal constant", 101 == ((1 * pow(10,2)) + (0 * pow(10,1)) + 1));
+
+  //test binary
+  ATS_PrintTestStatus( "8. Test of binary constant", B101 == 5);
+
+  //test octal
+  ATS_PrintTestStatus( "9. Test of octal constant", 0101 == 65);
+
+  //test hexadecimal
+  ATS_PrintTestStatus( "7. Test of hexadecimal constant", (0x101 == 257));
+
+  /*
+  * Test complete
+   */
   ATS_PrintTestEnd();
 
 }
@@ -90,6 +99,7 @@ void loop()
 
 
 }
+
 
 
 

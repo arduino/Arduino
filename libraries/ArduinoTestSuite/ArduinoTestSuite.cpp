@@ -197,9 +197,10 @@ int	sLen;
 
 
 //************************************************************************
-void	ATS_PrintProperty(	int		propertyTagNum,
-							char	*propertyName,
-							char	*propertyValue)
+//*	this is for internal use only, not made pubic to the API
+static void	ATS_PrintProperty(	int		propertyTagNum,
+								char	*propertyName,
+								char	*propertyValue)
 {
 char	lineBuffer[64];
 
