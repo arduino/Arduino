@@ -26,13 +26,12 @@
 
 void	ATS_PrintTestStart(char *manufName, char *testSuiteName);
 void	ATS_PrintTestEnd();
-void	ATS_PrintTestStatus(char *testString, boolean passed);
 boolean	ATS_Test_DigitalPin(uint8_t digitalPinToTest);
 boolean	ATS_Test_PWM_Pin(uint8_t digitalPinToTest);
 boolean	ATS_Test_AnalogInput(uint8_t analogPintoTest);
 boolean	ATS_Test_EEPROM(void);
 
-void	ATS_PrintProperty(	int		propertyTagNum,
+static void	ATS_PrintProperty(	int		propertyTagNum,
 							char	*propertyName,
 							char	*propertyValue);
 
