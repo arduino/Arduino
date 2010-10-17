@@ -9,25 +9,10 @@
 
 
 
-#ifdef __MWERKS__
-#include	"codewarrior.h"
-#else
-#include	<avr/pgmspace.h>
-#endif
-#include	<avr/io.h>
+
 #include	"WProgram.h"
 #include	"HardwareSerial.h"
-#include	"pins_arduino.h"
 #include	<ArduinoTestSuite.h>
-#include	"avr_cpunames.h"
-
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)
-#define	kBoard_PinCount		20
-#define	kBoard_AnalogCount	6
-#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#define	kBoard_PinCount		70
-#define	kBoard_AnalogCount	16
-#endif
 
 //************************************************************************
 void setup()
@@ -55,7 +40,6 @@ void setup()
 
 
   //test true constant
-
   ATS_PrintTestStatus("1. Test of true constant", true == 1);
 
   //test false consts
