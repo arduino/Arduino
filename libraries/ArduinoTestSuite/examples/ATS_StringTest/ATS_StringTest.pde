@@ -14,16 +14,14 @@
 //************************************************************************
 void setup()
 {
-
-  short	ii;
-  uint8_t	timerNumber;
+  
   char testName[64];
+  int startMemoryUsage;
 
-  gYotalErrors	=	0;
-  gTestCount		=	0;
+  ATS_begin("Arduino", "Test of String Library");
 
   /*
-* Test Variable Setup
+   * Test Variable Setup
    */
 
   String stringOne = String("stringThree = ");
@@ -31,15 +29,10 @@ void setup()
   String stringThree = String ();
   char charResult[100];
 
-  Serial.begin(9600);
-  delay(1000);
-
-  gTestStartTime	=	millis();
-  ATS_PrintTestStart("Arduino", "String Test");
 
 
   /*
-* Run the tests
+   * Run the tests
    */
 
   // adding a constant integer to a string:
@@ -77,7 +70,7 @@ void setup()
 
 
   /*
-* setup up String Comparison Operater Tests
+   * setup up String Comparison Operater Tests
    */
 
   stringOne = String("this");
@@ -121,13 +114,13 @@ void setup()
 
   // comparison operators can be used to compare strings for alphabetic sorting too:
 
-/*  uncommented the entire test fails.
-  stringOne = String("Brown");
+/*
+   stringOne = String("Brown");
    ATS_PrintTestStatus("14.  comparison operator < can be used to compare strings for alphabetic sorting ",stringOne < "Charles");
    ATS_PrintTestStatus("15.  comparison operator > can be used to compare strings for alphabetic sorting ",stringOne > "Adams");
    ATS_PrintTestStatus("16.  comparison operator <= can be used to compare strings for alphabetic sorting ",stringOne <= "Browne");
    ATS_PrintTestStatus("17.  comparison operator >= can be used to compare strings for alphabetic sorting ",stringOne >= "Brow");
-*/
+  */ 
 
 
   // the compareTo() operator also allows you to compare strings
@@ -141,31 +134,31 @@ void setup()
   stringTwo=  "Sensor: 150";
   ATS_PrintTestStatus("19.  The compareTo() String with integers", stringOne.compareTo(stringTwo) < 0);
 
-  // compareTo() String with numnber > String with number append integer, matches example code:
-  stringOne = "Sensor: ";
-  stringTwo=  "Sensor: ";
-  stringOne += 50;
-  stringTwo += 150;
-  ATS_PrintTestStatus("20.  The compareTo()  compare strings with appended integers", stringOne.compareTo(stringTwo) < 0);
-
+  
+// compareTo() String with numnber > String with number append integer, matches example code:
+   stringOne = "Sensor: ";
+   stringTwo=  "Sensor: ";
+   stringOne += 50;
+   stringTwo += 150;
+   ATS_PrintTestStatus("20.  The compareTo()  compare strings with appended integers", stringOne.compareTo(stringTwo) < 0);
+   
 
   /*
-* setup up String Append Operation Tests
+   * setup up String Append Operation Tests
    */
   // Serious awful problem here
   stringOne = String("Sensor ");
   stringTwo = String("value");
 
   stringOne += stringTwo;
-  // ATS_PrintTestStatus("N. Adding string to string += ",(strcmp(charResult,"Sensor value" )  == 0));
-  //ATS_PrintTestStatus("N. Adding string to string += ", stringOne.equals("Sensor value"));
+  ATS_PrintTestStatus("21. Adding string to string += ", stringOne.equals("Sensor value"));
 
-  ATS_PrintTestStatus("21.  The compareTo()  compare strings with appended integers", stringOne.compareTo(stringTwo) < 0);
+  ATS_PrintTestStatus("22.  The compareTo()  compare strings with appended integers", stringOne.compareTo(stringTwo) < 0);
   /*
     * Test complete
    */
-  ATS_PrintTestEnd();
 
+  ATS_end();
 
 }
 
@@ -176,6 +169,8 @@ void loop()
 
 
 }
+
+
 
 
 

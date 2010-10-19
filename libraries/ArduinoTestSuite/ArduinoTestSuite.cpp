@@ -14,19 +14,16 @@
 //*	  Lesser General Public License for more details.
 //************************************************************************
 //*	Aug 31,	2010	<MLS> Started on TestArduino
+//*	Oct 18,	2010	<MLS> Added memory testing
 //************************************************************************
 
-#ifdef __MWERKS__
-	#include	"codewarrior.h"
-//	#include	<stdlib.h>
-#else
-	#include	<avr/pgmspace.h>
-#endif
-
+#include	<avr/pgmspace.h>
 #include	<avr/io.h>
 #include	<avr/eeprom.h>
 
-#include	<ArduinoTestSuite.h>
+
+
+#include	"ArduinoTestSuite.h"
 
 
 #include	"WProgram.h"
@@ -56,7 +53,7 @@ enum
 	ATS_LIBC_version,
 	ATS_CompiledDate,
 	ATS_TestSuiteName,
-	ATS_ElapsedTime,
+	ATS_FreeMemory,
 	
 	
 };
@@ -73,7 +70,7 @@ prog_char	gTextMsg_GCC_VERSION[]			PROGMEM	=	"GCC-Version";
 prog_char	gTextMsg_AVR_LIBC[]				PROGMEM	=	"AVR-LibC-Ver";
 prog_char	gTextMsg_COMPILED_DATE[]		PROGMEM	=	"Compiled-date";
 prog_char	gTextMsg_TEST_SUITE_NAME[]		PROGMEM	=	"Test-Suite-Name";
-prog_char	gTextMsg_ELAPSED_TIME[]			PROGMEM	=	"Elapsed-time";
+prog_char	gTextMsg_memoryUsage[]			PROGMEM	=	"Free-memory";
 prog_char	gTextMsg_dotdotdot[]			PROGMEM	=	"... ";
 prog_char	gTextMsg_ok[]					PROGMEM	=	"ok";
 prog_char	gTextMsg_FAIL[]					PROGMEM	=	"FAIL";
@@ -108,10 +105,81 @@ void Serial_println_P(prog_char *flashMemStr)
 	Serial.println();
 }
 
+//************************************************************************
+//*	this is for internal use only, not made pubic to the API
+static void	ATS_PrintProperty(	int		propertyTagNum,
+								char	*propertyName,
+								char	*propertyValue)
+{
+char	lineBuffer[64];
+
+	strcpy_P(lineBuffer, gTextMsg_info);
+	switch(propertyTagNum)
+	{
+		case 0:
+			strcat(lineBuffer, propertyName);
+			break;
+			
+		case ATS_Manufacturer:
+			strcat_P(lineBuffer, gTextMsg_Manufacturer);
+			break;
+
+		case ATS_CPU:
+			strcat_P(lineBuffer, gTextMsg_CPUname);
+			break;
+
+		case ATS_GCC_version:
+			strcat_P(lineBuffer, gTextMsg_GCC_VERSION);
+			break;
+
+		case ATS_LIBC_version:
+			strcat_P(lineBuffer, gTextMsg_AVR_LIBC);
+			break;
+
+		case ATS_CompiledDate:
+			strcat_P(lineBuffer, gTextMsg_COMPILED_DATE);
+			break;
+
+		case ATS_TestSuiteName:
+			strcat_P(lineBuffer, gTextMsg_TEST_SUITE_NAME);
+			break;
+
+		case ATS_FreeMemory:
+			strcat_P(lineBuffer, gTextMsg_memoryUsage);
+			break;
+	}
+
+	while (strlen(lineBuffer) < 20)
+	{
+		strcat(lineBuffer, " ");
+	}
+	
+	strcat_P(lineBuffer, gTextMsg_spaceEqual);
+	if (propertyValue != 0)
+	{
+		strcat(lineBuffer, propertyValue);
+	}
+	Serial.println(lineBuffer);
+
+}
+
+
+
 
 //************************************************************************
-void	ATS_PrintTestStart(char *manufName, char *testSuiteName)
+void	ATS_begin(char *manufName, char *testSuiteName)
 {
+int		freeMemory;
+char	memoryMsg[48];
+
+	gYotalErrors	=	0;
+	gTestCount		=	0;
+
+	Serial.begin(9600);
+	delay(1000);
+	
+	gTestStartTime	=	millis();
+
 	Serial.println();
 	Serial.println();
 	Serial.println();
@@ -123,16 +191,20 @@ void	ATS_PrintTestStart(char *manufName, char *testSuiteName)
 	ATS_PrintProperty(ATS_CompiledDate,		0,	__DATE__);
 	ATS_PrintProperty(ATS_TestSuiteName,	0,	testSuiteName);
 
+	freeMemory	=	ATS_GetFreeMemory();
+	sprintf(memoryMsg, "%d bytes", freeMemory);
+	ATS_PrintProperty(ATS_FreeMemory,	0,	memoryMsg);
 
 	randomSeed(analogRead(0));
 
 }
 
 //************************************************************************
-void	ATS_PrintTestEnd()
+void	ATS_end()
 {
 long	seconds;
 long	milliSecs;
+
 
 	Serial_println_P(gTextMsg_dashLine);
 	
@@ -193,66 +265,6 @@ int	sLen;
 	Serial.println();
 	
 	gTestCount++;
-}
-
-
-//************************************************************************
-//*	this is for internal use only, not made pubic to the API
-static void	ATS_PrintProperty(	int		propertyTagNum,
-								char	*propertyName,
-								char	*propertyValue)
-{
-char	lineBuffer[64];
-
-	strcpy_P(lineBuffer, gTextMsg_info);
-	switch(propertyTagNum)
-	{
-		case 0:
-			strcat(lineBuffer, propertyName);
-			break;
-			
-		case ATS_Manufacturer:
-			strcat_P(lineBuffer, gTextMsg_Manufacturer);
-			break;
-
-		case ATS_CPU:
-			strcat_P(lineBuffer, gTextMsg_CPUname);
-			break;
-
-		case ATS_GCC_version:
-			strcat_P(lineBuffer, gTextMsg_GCC_VERSION);
-			break;
-
-		case ATS_LIBC_version:
-			strcat_P(lineBuffer, gTextMsg_AVR_LIBC);
-			break;
-
-		case ATS_CompiledDate:
-			strcat_P(lineBuffer, gTextMsg_COMPILED_DATE);
-			break;
-
-		case ATS_TestSuiteName:
-			strcat_P(lineBuffer, gTextMsg_TEST_SUITE_NAME);
-			break;
-
-		case ATS_ElapsedTime:
-			strcat_P(lineBuffer, gTextMsg_ELAPSED_TIME);
-			break;
-	}
-
-	while (strlen(lineBuffer) < 20)
-	{
-		strcat(lineBuffer, " ");
-	}
-	
-	strcat_P(lineBuffer, gTextMsg_spaceEqual);
-	if (propertyValue != 0)
-	{
-		strcat(lineBuffer, propertyValue);
-	}
-	Serial.println(lineBuffer);
-//	ATS_PrintTestStatus(lineBuffer, PASSED);
-
 }
 
 
@@ -674,6 +686,30 @@ char		reportString[48];
 
 
 
+//************************************************************************
+extern unsigned int __data_start;
+extern unsigned int __data_end;
+extern unsigned int __bss_start;
+extern unsigned int __bss_end;
+extern unsigned int __heap_start;
+extern void *__brkval;
 
+
+
+//************************************************************************
+int	ATS_GetFreeMemory()
+{
+int free_memory;
+
+	if((int)__brkval == 0)
+	{
+		free_memory = ((int)&free_memory) - ((int)&__bss_end);
+	}
+	else
+	{
+		free_memory = ((int)&free_memory) - ((int)__brkval);
+	}
+	return free_memory;
+}
 
 

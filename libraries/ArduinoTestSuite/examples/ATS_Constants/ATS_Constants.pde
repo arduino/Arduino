@@ -7,9 +7,6 @@
 //*	Oct 16,	2010	<ROA> Started on String Test
 //************************************************************************
 
-
-
-
 #include	"WProgram.h"
 #include	"HardwareSerial.h"
 #include	<ArduinoTestSuite.h>
@@ -17,22 +14,12 @@
 //************************************************************************
 void setup()
 {
-  short	ii;
-  uint8_t	timerNumber;
   char testName[64];
+  int		startMemoryUsage;
 
-  gYotalErrors	=	0;
-  gTestCount		=	0;
+  startMemoryUsage	=	ATS_GetFreeMemory();
 
-  /*
-* Test Variable Setup
-   */
-
-  Serial.begin(9600);
-  delay(1000);
-
-  gTestStartTime	=	millis();
-  ATS_PrintTestStart("Arduino", "Test of Arduino Constants");
+  ATS_begin("Arduino", "Test of Arduino Constants");
 
   /*
 * Run the tests
@@ -72,7 +59,8 @@ void setup()
   /*
   * Test complete
    */
-  ATS_PrintTestEnd();
+  ATS_ReportMemoryUsage(startMemoryUsage);
+  ATS_end();
 
 }
 
@@ -83,6 +71,7 @@ void loop()
 
 
 }
+
 
 
 

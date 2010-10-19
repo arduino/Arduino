@@ -14,36 +14,32 @@
 //************************************************************************
 void setup()
 {
-  short	ii;
-  uint8_t	timerNumber;
   char testName[64];
-  
-  gYotalErrors	=	0;
-  gTestCount		=	0;
+  int		startMemoryUsage;
 
-/*
-* Test Variable Setup
-*/
+  startMemoryUsage	=	ATS_GetFreeMemory();
 
-  Serial.begin(9600);
-  delay(1000);
+  ATS_begin("Arduino", "Skeleton Test");
 
-  gTestStartTime	=	millis();
-  ATS_PrintTestStart("Arduino", "Skeleton Test");
 
-/*
-* Run the tests
-*/
+  /*
+   * Run the tests
+   * Test one passes because result is set to true
+   * Test two fails becuase result is set to false
+   * You can test memory for any set of tests by using the ATS_ReportMemoryUsage test
+   * There is also a way to print current memeory for debugging
+   */
 
   ATS_PrintTestStatus("1. Test of true test status", true);
-  
+
   ATS_PrintTestStatus("2. Test of false test status, this will fail.", false);
 
 
-/*
-* Test complete
-*/
-  ATS_PrintTestEnd();
+  /*
+   * Test complete
+   */
+  ATS_ReportMemoryUsage(startMemoryUsage);
+  ATS_end();
 
 }
 
@@ -54,6 +50,7 @@ void loop()
 
 
 }
+
 
 
 

@@ -24,20 +24,43 @@
 #endif
 
 
-void	ATS_PrintTestStart(char *manufName, char *testSuiteName);
-void	ATS_PrintTestEnd();
+void	ATS_begin(char *manufName, char *testSuiteName);
+void	ATS_end();
+
 void	ATS_PrintTestStatus(char *testString, boolean passed);
 boolean	ATS_Test_DigitalPin(uint8_t digitalPinToTest);
 boolean	ATS_Test_PWM_Pin(uint8_t digitalPinToTest);
 boolean	ATS_Test_AnalogInput(uint8_t analogPintoTest);
 boolean	ATS_Test_EEPROM(void);
 
-static void	ATS_PrintProperty(	int		propertyTagNum,
-							char	*propertyName,
-							char	*propertyValue);
-
 short	ATS_TestSerialLoopback(HardwareSerial *theSerialPort, char *serialPortName);
 
+
+int		ATS_GetFreeMemory();
+
+//************************************************************************
+//*	this has to be an inline function because calling subroutines affects free memory
+inline void ATS_ReportMemoryUsage(int _memoryUsageAtStart)
+{
+int		freeMemoryAtEnd;
+int		lostMemory;
+boolean	memoryOK;
+char	memoryUsage[48];
+
+	freeMemoryAtEnd	=	ATS_GetFreeMemory();
+	lostMemory	=	_memoryUsageAtStart - freeMemoryAtEnd;
+	if (lostMemory == 0)
+	{
+		strcpy(memoryUsage, "Memory Usage");
+		memoryOK	=	true;
+	}
+	else
+	{
+		sprintf(memoryUsage, "Memory Usage (lost %d bytes)", lostMemory);
+		memoryOK	=	false;
+	}
+	ATS_PrintTestStatus(memoryUsage, memoryOK);
+}
 
 
 
