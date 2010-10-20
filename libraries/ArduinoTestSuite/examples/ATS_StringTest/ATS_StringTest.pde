@@ -22,6 +22,8 @@ void setup()
 
   /*
    * Test Variable Setup
+   * Best practive set all your test variables prior to teseting.
+   * This is required for Memory tests.
    */
 
   String stringOne = String("stringThree = ");

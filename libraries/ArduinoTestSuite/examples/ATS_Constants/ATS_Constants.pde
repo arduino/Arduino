@@ -4,7 +4,7 @@
 //*		Open source as per standard Arduino code
 //*
 //************************************************************************
-//*	Oct 16,	2010	<ROA> Started on String Test
+//*	Oct 16,	2010	<ROA>  Test of Arduino Constants
 //************************************************************************
 
 #include	"WProgram.h"
@@ -17,12 +17,11 @@ void setup()
   char testName[64];
   int		startMemoryUsage;
 
+ //Start memory usage must be site prior to ATS_begin
   startMemoryUsage	=	ATS_GetFreeMemory();
-
   ATS_begin("Arduino", "Test of Arduino Constants");
-
   /*
-* Run the tests
+   * Test Run Start
    */
 
 
@@ -57,7 +56,7 @@ void setup()
   ATS_PrintTestStatus( "7. Test of hexadecimal constant", (0x101 == 257));
 
   /*
-  * Test complete
+  * Test Run End
    */
   ATS_ReportMemoryUsage(startMemoryUsage);
   ATS_end();
