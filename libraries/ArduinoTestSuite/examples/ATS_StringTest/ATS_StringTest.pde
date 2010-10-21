@@ -15,7 +15,6 @@
 void setup()
 {
   
-  char testName[64];
   int startMemoryUsage;
 
   ATS_begin("Arduino", "Test of String Library");

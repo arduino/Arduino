@@ -14,7 +14,6 @@
 //************************************************************************
 void setup()
 {
-  char testName[64];
   int		startMemoryUsage;
   
   //startMemoryUsage must be set directly before ATS_begin

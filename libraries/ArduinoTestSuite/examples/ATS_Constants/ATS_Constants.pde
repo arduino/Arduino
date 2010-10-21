@@ -14,7 +14,6 @@
 //************************************************************************
 void setup()
 {
-  char testName[64];
   int		startMemoryUsage;
 
  //Start memory usage must be site prior to ATS_begin
