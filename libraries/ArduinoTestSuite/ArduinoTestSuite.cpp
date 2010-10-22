@@ -235,7 +235,7 @@ long	milliSecs;
 	Serial.println();
 	
 	//*	send control D to terminate (End Of File)
-	Serial.write(0x1a);
+	Serial.write(0x04);
 }
 
 
