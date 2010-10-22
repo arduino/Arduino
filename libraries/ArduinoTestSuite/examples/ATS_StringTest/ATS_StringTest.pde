@@ -15,13 +15,14 @@
 void setup()
 {
   
-  char testName[64];
   int startMemoryUsage;
 
   ATS_begin("Arduino", "Test of String Library");
 
   /*
    * Test Variable Setup
+   * Best practive set all your test variables prior to teseting.
+   * This is required for Memory tests.
    */
 
   String stringOne = String("stringThree = ");
