@@ -1,5 +1,16 @@
 Relevant files for the running the tests. For running the buildbot Master, and Slave for Continuous integration will go here for now.
 
-Probably need a better more thought out organzation for this.
+Code needed to run tests place in the testing/src directory.
+Makefile will be there to compile and send output to testing/bin
+The Makefiles, scripts, and binaries needed to rin tests will be all placed in testing/bin.
+
+All the related buildbot files will go into testing/buildbot
+
+Need to place spec for running tests.
+make compile testname board port
+make upload testname board port
+make getTestResult  testname board port
+
+This needs to be repeated for each board attached to the test box.
 
 
