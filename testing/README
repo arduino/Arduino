@@ -13,4 +13,9 @@ make getTestResult  testname board port
 
 This needs to be repeated for each board attached to the test box.
 
+Additional note. The AVR toolchain for Windows, Linux, and Mac OS X need to be indicated.
+
+Buildbot note:
+The slave will need to know which toolchain to run.
+
 
