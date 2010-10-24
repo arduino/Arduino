@@ -1,0 +1,248 @@
+#
+# Copyright 2010 Alan Burlison. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#  1. Redistributions of source code must retain the above copyright notice,
+#     this list of conditions and the following disclaimer.
+#
+#  2. Redistributions in binary form must reproduce the above copyright notice,
+#     this list of conditions and the following disclaimer in the documentation
+#     and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY ALAN BURLISON "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL ALAN BURLISON OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+# OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+# EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# Makefile for building Arduino projects outside of the Arduino environment
+#
+# This makefile should be included into a per-project Makefile of the following
+# form:
+#
+# ----------
+# BOARD	=	mega
+# PORT	=	/dev/term/0
+# INC_DIRS	=	../common
+# LIB_DIRS	=	../libraries/Task ../../libraries/VirtualWire
+# include ../../Makefile.master
+# ----------
+#
+# Where:
+#   BOARD    : Arduino board type, from $(ARD_HOME)/hardware/boards.txt
+#   PORT     : USB port
+#   INC_DIRS : List pf directories containing header files
+#   LIB_DIRS : List of directories containing library source
+#
+# Before using this Makefile you should adjust the following macros to suit
+# your environment, either by editing this file directly or by defining them in
+# the Makefile that includes this one:
+#   ARD_REV   : Arduino software revision, e.g. 0017, 0018
+#   ARD_HOME  : Installation directory of the Arduino software.
+#   MON_TERM  : terminal command for serial monitor
+#   MON_CMD   : serial monitor command
+#   MON_SPEED : serial monitor speed
+#
+
+# Global configuration.
+ARD_REV ?= 0018
+ARD_HOME ?= /opt/arduino
+MON_TERM ?= gnome-terminal
+MON_SPEED ?= 9600
+MON_CMD ?= tip
+
+### Nothing below here should require editing. ###
+
+# Check for the required definitions.
+
+ifndef BOARD
+    $(error $$(BOARD) not defined)
+endif
+ifndef PORT
+    $(error $$(PORT) not defined)
+endif
+
+# Version-specific settings
+ifeq ($(ARD_REV),0018)
+    ARD_BOARDS	=	$(ARD_HOME)/hardware/arduino/boards.txt
+    ARD_SRC_DIR	=	$(ARD_HOME)/hardware/arduino/cores/arduino
+    ARD_MAIN	=	$(ARD_SRC_DIR)/main.cpp
+else
+    ARD_BOARDS	=	$(ARD_HOME)/hardware/boards.txt
+    ARD_SRC_DIR	=	$(ARD_HOME)/hardware/cores/arduino
+    ARD_MAIN	=	$(ARD_SRC_DIR)/main.cxx
+endif
+
+# Standard macros.
+#PROGRAMMER ?= stk500v1
+SKETCH	=	$(notdir $(CURDIR))
+
+#ARD_BIN	=	$(ARD_HOME)/hardware/tools/gcc-avr/bin
+ARD_BIN	?=	$(ARD_HOME)/hardware/tools/avr/bin
+MCU := \
+    $(shell sed -n 's/$(BOARD)\.build\.mcu=\(.*\)/\1/p' < $(ARD_BOARDS))
+F_CPU := \
+    $(shell sed -n 's/$(BOARD)\.build\.f_cpu=\(.*\)/\1/p' < $(ARD_BOARDS))
+UPLOAD_SPEED := \
+    $(shell sed -n 's/$(BOARD)\.upload\.speed=\(.*\)/\1/p' < $(ARD_BOARDS))
+PROGRAMMER := \
+    $(shell sed -n 's/$(BOARD)\.upload\.protocol=\(.*\)/\1/p' < $(ARD_BOARDS))
+
+BUILD_DIR	=	build
+
+
+# Build tools.
+CC				=	$(ARD_BIN)/avr-gcc
+CXX				=	$(ARD_BIN)/avr-g++
+OBJCOPY			=	$(ARD_BIN)/avr-objcopy
+OBJDUMP			=	$(ARD_BIN)/avr-objdump
+AR				=	$(ARD_BIN)/avr-ar
+SIZE			=	$(ARD_BIN)/avr-size
+NM				=	$(ARD_BIN)/avr-nm
+#AVRDUDE		=	$(ARD_HOME)/hardware/tools/avrdude
+#AVRDUDE_CONF	=	$(ARD_HOME)/hardware/tools/avrdude.conf
+AVRDUDE			=	$(AVRDUDE_HOME)/bin/avrdude
+AVRDUDE_CONF	=	$(AVRDUDE_HOME)/etc/avrdude.conf
+RESET			=	$(ARD_HOME)/hardware/tools/ar-reset
+MKDIR			=	mkdir -p
+RM				=	rm -rf
+MV				=	mv -f
+
+# Compiler flags.
+ARD_FLAGS		=	-mmcu=$(MCU) -DF_CPU=$(F_CPU) -DARDUINO=$(ARD_REV)
+#C_FLAGS		=	-std=gnu99 -Wall -Wextra -Wundef -Wstrict-prototypes -Werror -Wno-old-style-declaration -Wno-unused-parameter -fdiagnostics-show-option
+C_FLAGS			=	-std=gnu99 -Wall -Wextra -Wundef -Wstrict-prototypes -Wno-old-style-declaration -Wno-unused-parameter -fdiagnostics-show-option
+#CXX_FLAGS		=	-Wall -Wextra -Wundef -Werror -Wno-unused-parameter -fdiagnostics-show-option
+CXX_FLAGS		=	-Wall -Wextra -Wundef -Wno-unused-parameter -fdiagnostics-show-option 
+
+# Optimiser flags.
+#     optimise for size, unsigned by default, pack data.
+#     separate sections, drop unused ones, shorten branches, jumps.
+#     don't inline, vectorise loops. no exceptions.
+#     no os preamble, use function calls in prologues.
+# http://gcc.gnu.org/onlinedocs/gcc-2.95.3/gcc.html
+# http://www.tty1.net/blog/2008-04-29-avr-gcc-optimisations_en.html
+# NB would like to add -fno-split-wide-types but that makes upload verify fail
+OPT_FLAGS	=	\
+    -Os -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
+    -ffunction-sections -fdata-sections -Wl,--gc-sections,--relax \
+    -fno-inline-small-functions -fno-tree-scev-cprop -fno-exceptions \
+    -ffreestanding -mcall-prologues
+
+# Arduino environment.
+ARD_C_SRC	=	$(wildcard $(ARD_SRC_DIR)/*.c)
+ARD_CXX_SRC	=	$(wildcard $(ARD_SRC_DIR)/*.cpp)
+ARD_C_OBJ	=	$(patsubst %.c,%.o,$(notdir $(ARD_C_SRC)))
+ARD_CXX_OBJ	=	$(patsubst %.cpp,%.o,$(notdir $(ARD_CXX_SRC)))
+ARD_LIB		=	arduino
+ARD_AR		=	$(BUILD_DIR)/lib$(ARD_LIB).a
+ARD_AR_OBJ	=	$(ARD_AR)($(ARD_C_OBJ) $(ARD_CXX_OBJ))
+ARD_LD_FLAG	=	-l$(ARD_LIB)
+
+# Workaround for http://gcc.gnu.org/bugzilla/show_bug.cgi?id=34734
+$(ARD_AR)(Tone.o) : CXX_FLAGS	=	-w
+
+# Sketch libraries.
+LIB_C_SRC	=	$(foreach ld,$(LIB_DIRS),$(wildcard $(ld)/*.c))
+LIB_CXX_SRC	=	$(foreach ld,$(LIB_DIRS),$(wildcard $(ld)/*.cpp))
+LIB_SRC	=	$(LIB_C_SRC) $(LIB_CXX_SRC)
+ifneq "$(strip $(LIB_C_SRC) $(LIB_CXX_SRC))" "" 
+	LIB_C_OBJ	=	$(patsubst %.c,%.o,$(notdir $(LIB_C_SRC)))
+	LIB_CXX_OBJ	=	$(patsubst %.cpp,%.o,$(notdir $(LIB_CXX_SRC)))
+	LIB_LIB	=	library
+	LIB_AR	=	$(BUILD_DIR)/lib$(LIB_LIB).a
+	LIB_AR_OBJ	=	$(LIB_AR)($(LIB_C_OBJ) $(LIB_CXX_OBJ))
+	LIB_LD_FLAG	=	-l$(LIB_LIB)
+endif
+
+# Sketch.
+SKT_PDE_SRC	=	$(wildcard *.pde)
+SKT_C_SRC	=	$(wildcard *.c)
+SKT_CXX_SRC	=	$(wildcard *.cpp)
+ifneq "$(strip $(SKT_PDE_SRC) $(SKT_C_SRC) $(SKT_CXX_SRC))" ""
+	SKT_C_OBJ	=	$(patsubst %.c,%.o,$(SKT_C_SRC))
+	SKT_CXX_OBJ	=	$(patsubst %.cpp,%.o,$(SKT_CXX_SRC)) $(IMAGE).o
+	SKT_LIB	=	sketch
+	SKT_AR	=	$(BUILD_DIR)/lib$(SKT_LIB).a
+	SKT_AR_OBJ	=	$(SKT_AR)/($(SKT_C_OBJ) $(SKT_CXX_OBJ))
+	SKT_LD_FLAG	=	-l$(SKT_LIB)
+endif
+
+# Other derived macros.
+IMAGE	=	$(BUILD_DIR)/$(SKETCH)
+INC_FLAGS	=	\
+    $(addprefix -I,$(INC_DIRS)) $(addprefix -I,$(LIB_DIRS)) -I$(ARD_SRC_DIR)
+VPATH	=	$(LIB_DIRS)
+
+# Definitions.
+define run-cc
+	$(CC) -c $(C_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) $(INC_FLAGS) $< -o $*.o
+	@ $(AR) rc $@ $*.o
+	@ $(RM) $*.o
+endef
+
+define run-cxx
+	$(CXX) -c $(CXX_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) $(INC_FLAGS) $< -o $*.o
+	@ $(AR) rc $@ $*.o
+	@ $(RM) $*.o
+endef
+
+# Rules.
+.PHONY : all clean upload monitor upload_monitor
+
+all : $(BUILD_DIR) $(IMAGE).hex
+
+clean :
+	$(RM) $(BUILD_DIR)/*
+
+$(BUILD_DIR) :
+	$(MKDIR) $@
+
+$(SKT_AR)($(IMAGE).o) : $(SKT_PDE_SRC)
+	echo '#include <WProgram.h>' > $(IMAGE).cpp
+	cat $^ $(ARD_MAIN) >> $(IMAGE).cpp
+	cd $(BUILD_DIR) && $(CXX) -c $(CXX_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) \
+	    -I.. $(subst -I../,-I../../,$(INC_FLAGS)) $(SKETCH).cpp \
+	    -o $(SKETCH).o
+	@ $(AR) rc $@ $*.o
+	@ $(RM) $*.o
+
+(%.o) : $(ARD_SRC_DIR)/%.c
+	$(run-cc)
+
+(%.o) : $(ARD_SRC_DIR)/%.cpp
+	$(run-cxx)
+
+(%.o) : %.c
+	$(run-cc)
+
+(%.o) : %.cpp
+	$(run-cxx)
+
+$(IMAGE).hex : $(ARD_AR_OBJ) $(LIB_AR_OBJ) $(SKT_AR_OBJ)
+	$(CXX) $(CXX_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) -L$(BUILD_DIR) \
+	    $(SKT_LD_FLAG) $(LIB_LD_FLAG) $(ARD_LD_FLAG) -o $(IMAGE).elf
+	$(OBJCOPY) -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load \
+	    --no-change-warnings --change-section-lma .eeprom=0 $(IMAGE).elf \
+	    $(IMAGE).eep
+	$(OBJCOPY) -O ihex -R .eeprom $(IMAGE).elf $(IMAGE).hex
+	$(SIZE) $(IMAGE).hex
+
+upload : clean all
+#	- pkill -f $(MON_CMD).*$(PORT)
+#	$(RESET) $(PORT)
+	$(AVRDUDE) -C$(AVRDUDE_CONF) -p$(MCU) -c$(PROGRAMMER) -P$(PORT) -b$(UPLOAD_SPEED) -D -Uflash:w:$(IMAGE).hex:i -q
+
+monitor :
+	LD_LIBRARY_PATH= LD_PRELOAD= \
+	    $(MON_TERM) -t '$(BOARD) $(PORT)' \
+	    -e '$(MON_CMD) -$(MON_SPEED) $(PORT)' &
+
+upload_monitor : upload monitor
