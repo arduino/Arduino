@@ -1,0 +1,4 @@
+-I../libraries/UnivGraphicsLib -I/Applications/Arduino.app/Contents/Resources/Java/libraries/EEPROM -I/Applications/Arduino.app/Contents/Resources/Java/libraries/Wire -I/Applications/Arduino.app/Contents/Resources/Java/libraries/Wire/utility -I/Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino /Applications/Arduino.app/Contents/Resources/Java/hardware/arduino/cores/arduino/WInterrupts.c -o WInterrupts.o
+
+
+ -I../../../build/linux/work/libraries/EEPROM -I../../../build/linux/work/libraries/ArduinoTestSuite -I../../../build/linux/work/libraries/Wire -I../../../build/linux/work/libraries/Wire/utility -I../../../build/linux/work/hardware/arduino/cores/arduino ../../../build/linux/work/hardware/arduino/cores/arduino/pins_arduino.c -o pins_arduino.o

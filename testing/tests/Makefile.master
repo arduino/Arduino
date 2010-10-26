@@ -81,7 +81,7 @@ else
 endif
 
 # Standard macros.
-#PROGRAMMER ?= stk500v1
+PROGRAMMER ?= stk500v1
 SKETCH	=	$(notdir $(CURDIR))
 
 #ARD_BIN	=	$(ARD_HOME)/hardware/tools/gcc-avr/bin
@@ -95,21 +95,20 @@ UPLOAD_SPEED := \
 PROGRAMMER := \
     $(shell sed -n 's/$(BOARD)\.upload\.protocol=\(.*\)/\1/p' < $(ARD_BOARDS))
 
-BUILD_DIR	=	build
+BUILD_DIR	?=	build
 
 
 # Build tools.
-CC				=	$(ARD_BIN)/avr-gcc
-CXX				=	$(ARD_BIN)/avr-g++
+CC			=	$(ARD_BIN)/avr-gcc
+CXX			=	$(ARD_BIN)/avr-g++
 OBJCOPY			=	$(ARD_BIN)/avr-objcopy
 OBJDUMP			=	$(ARD_BIN)/avr-objdump
-AR				=	$(ARD_BIN)/avr-ar
+AR			=	$(ARD_BIN)/avr-ar
 SIZE			=	$(ARD_BIN)/avr-size
-NM				=	$(ARD_BIN)/avr-nm
-#AVRDUDE		=	$(ARD_HOME)/hardware/tools/avrdude
-#AVRDUDE_CONF	=	$(ARD_HOME)/hardware/tools/avrdude.conf
-AVRDUDE			=	$(AVRDUDE_HOME)/bin/avrdude
-AVRDUDE_CONF	=	$(AVRDUDE_HOME)/etc/avrdude.conf
+NM			=	$(ARD_BIN)/avr-nm
+AVRDUDE_BIN		?=	/usr/bin	
+AVRDUDE			=	$(AVRDUDE_BIN)/avrdude
+AVRDUDE_CONF		?=	/etc/avrdude.conf
 RESET			=	$(ARD_HOME)/hardware/tools/ar-reset
 MKDIR			=	mkdir -p
 RM				=	rm -rf
@@ -125,7 +124,7 @@ CXX_FLAGS		=	-Wall -Wextra -Wundef -Wno-unused-parameter -fdiagnostics-show-opti
 # Optimiser flags.
 #     optimise for size, unsigned by default, pack data.
 #     separate sections, drop unused ones, shorten branches, jumps.
-#     don't inline, vectorise loops. no exceptions.
+#     don''t inline, vectorise loops. no exceptions.
 #     no os preamble, use function calls in prologues.
 # http://gcc.gnu.org/onlinedocs/gcc-2.95.3/gcc.html
 # http://www.tty1.net/blog/2008-04-29-avr-gcc-optimisations_en.html
@@ -142,7 +141,7 @@ ARD_CXX_SRC	=	$(wildcard $(ARD_SRC_DIR)/*.cpp)
 ARD_C_OBJ	=	$(patsubst %.c,%.o,$(notdir $(ARD_C_SRC)))
 ARD_CXX_OBJ	=	$(patsubst %.cpp,%.o,$(notdir $(ARD_CXX_SRC)))
 ARD_LIB		=	arduino
-ARD_AR		=	$(BUILD_DIR)/lib$(ARD_LIB).a
+ARD_AR		?=	$(BUILD_DIR)/lib$(ARD_LIB).a
 ARD_AR_OBJ	=	$(ARD_AR)($(ARD_C_OBJ) $(ARD_CXX_OBJ))
 ARD_LD_FLAG	=	-l$(ARD_LIB)
 
