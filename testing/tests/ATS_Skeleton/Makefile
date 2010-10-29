@@ -4,11 +4,15 @@
 
 BOARD			?= atmega328
 PORT			?= /dev/ttyUSB0
-ARD_HOME		?= ../../../build/linux/work
+#ARD_HOME		?= ../../../build/linux/work
+ARD_HOME	?= /home/ricklon/projects/Arduino/build/linux/work
 ARD_BIN		?= /usr/bin
 AVRDUDE_BIN	?= /usr/bin
 AVRDUDE_CONF	?=/etc/avrdude.conf
-LIB_DIRS  	=  $(ARD_HOME)/libraries/EEPROM $(ARD_HOME)/libraries/ArduinoTestSuite $(ARD_HOME)/libraries/Wire $(ARD_HOME)/libraries/Wire/utility
+#LIB_DIRS  	=  $(ARD_HOME)/libraries/EEPROM $(ARD_HOME)/libraries/ArduinoTestSuite $(ARD_HOME)/libraries/Wire $(ARD_HOME)/libraries/Wire/utility
+#LIB_DIRS = $(filter-out $(ARD_HOME)/libraries/Ethernet , $(wildcard $(ARD_HOME)/libraries/*)) $(ARD_HOME)/libraries/Wire/utility
+LIB_DIRS =  $(wildcard $(ARD_HOME)/libraries/*) $(ARD_HOME)/libraries/Wire/utility  $(ARD_HOME)/libraries/Ethernet/utility
+OUTPUT_DIR ?= OUT
 
 #SKETCH ?= 
 #BUILD_DIR

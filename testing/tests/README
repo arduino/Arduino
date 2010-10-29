@@ -1,0 +1,21 @@
+#Changes being implemented for running sketches
+Use boards.txt as the list of boards and properties.
+Must be able to build the custom libraries.
+Must be able to build the core libraries if needed.
+If possible autodetect the board type.
+Be able to specify a board type on command line.
+Be able to query the ports and identify all the boards attached.
+No need to go to any Java code for compiling.
+Be able to specify upload target specify board type, port and all
+appropriate targets executed, and upload occurs properly.
+
+Examples to start with:
+Dump all vars:
+make -f Makefile.runner env  "SKETCH=ATS_Skeleton"
+
+Make a sketch:
+make -f Makefile.runner all  "SKETCH=ATS_Skeleton"
+
+Clean:
+make -f Makefile.runner clean 
+

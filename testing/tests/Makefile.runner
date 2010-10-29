@@ -4,8 +4,9 @@
 
 BOARD			?= atmega328
 PORT			?= /dev/ttyUSB0
-#ARD_HOME		?= ../../../build/linux/work
-ARD_HOME	?= /home/ricklon/projects/Arduino/build/linux/work
+ARD_SRC_HOME		?= /home/ricklon/projects/Arduino
+ARD_HOME	?= $(ARD_SRC_HOME)/build/linux/work
+SKT_DIR		?= $(ARD_SRC_HOME)/testing/tests
 ARD_BIN		?= /usr/bin
 AVRDUDE_BIN	?= /usr/bin
 AVRDUDE_CONF	?=/etc/avrdude.conf
@@ -20,5 +21,5 @@ OUTPUT_DIR ?= OUT
 PROGRAMMER ?= stk500v1
 #PROGRAMMER ?= stk500v2
 
-#include Makefile.master
-include ../Makefile.master
+include Makefile.master
+#include ../Makefile.master
