@@ -90,9 +90,9 @@ MCU := \
     $(shell sed -n 's/$(BOARD)\.build\.mcu=\(.*\)/\1/p' < $(ARD_BOARDS))
 F_CPU := \
     $(shell sed -n 's/$(BOARD)\.build\.f_cpu=\(.*\)/\1/p' < $(ARD_BOARDS))
-UPLOAD_SPEED := \
+UPLOAD_SPEED ?= \
     $(shell sed -n 's/$(BOARD)\.upload\.speed=\(.*\)/\1/p' < $(ARD_BOARDS))
-PROGRAMMER := \
+PROGRAMMER ?= \
     $(shell sed -n 's/$(BOARD)\.upload\.protocol=\(.*\)/\1/p' < $(ARD_BOARDS))
 
 BUILD_DIR	=	$(OUTPUT_DIR)/build
@@ -162,9 +162,9 @@ ifneq "$(strip $(LIB_C_SRC) $(LIB_CXX_SRC))" ""
 endif
 
 # Sketch.
-SKT_PDE_SRC	=	$(SKT_DIR)/$(SKETCH)/$(wildcard *.pde)
-SKT_C_SRC	=	$(SKT_DIR)/$(SKETCH)/$(wildcard *.c)
-SKT_CXX_SRC	=	$(SKT_DIR)/$(SKETCH)/$(wildcard *.cpp)
+SKT_PDE_SRC	=	$(wildcard $(SKT_DIR)/$(SKETCH)/*.pde)
+SKT_C_SRC	=	$(wildcard $(SKT_DIR)/$(SKETCH)/*.c)
+SKT_CXX_SRC	=	$(wildcard $(SKT_DIR)/$(SKETCH)/*.cpp)
 ifneq "$(strip $(SKT_PDE_SRC) $(SKT_C_SRC) $(SKT_CXX_SRC))" ""
 	SKT_C_OBJ	=	$(patsubst %.c,%.o,$(SKT_C_SRC))
 	SKT_CXX_OBJ	=	$(patsubst %.cpp,%.o,$(SKT_CXX_SRC)) $(IMAGE).o
@@ -175,22 +175,21 @@ ifneq "$(strip $(SKT_PDE_SRC) $(SKT_C_SRC) $(SKT_CXX_SRC))" ""
 endif
 
 # Other derived macros.
-DIR_DEPTH ?= ../../
 IMAGE	=	$(BUILD_DIR)/$(SKETCH)
 INC_LIBDIR = $(addprefix -I,$(LIB_DIRS)) 
 INC_ARD_SRC = -I$(ARD_SRC_DIR)
-INC_FLAGS	=   $(addprefix -I$(DIR_DEPTH),$(INC_DIRS))
+INC_FLAGS	=   $(INC_ARD_SRC) $(INC_LIBDIR)
 VPATH	=	$(LIB_DIRS)
 
 # Definitions.
 define run-cc
-	$(CC) -c $(C_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) $(INC_FLAGS) $(INC_ARD_SRC) $(INC_LIBDIR) $< -o $*.o
+	$(CC) -c $(C_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) $(INC_FLAGS)  $< -o $*.o
 	@ $(AR) rc $@ $*.o
 	@ $(RM) $*.o
 endef
 
 define run-cxx
-	$(CXX) -c $(CXX_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) $(INC_FLAGS)  $(INC_ARD_SRC)  $(INC_LIBDIR) $< -o $*.o
+	$(CXX) -c $(CXX_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) $(INC_FLAGS)  $< -o $*.o
 	@ $(AR) rc $@ $*.o
 	@ $(RM) $*.o
 endef
@@ -201,7 +200,7 @@ endef
 all : $(BUILD_DIR) $(IMAGE).hex
 
 clean :
-	$(RM) $(OUTPUT_DIR)/*
+	$(RM) $(OUTPUT_DIR)
 
 $(BUILD_DIR) :
 	$(MKDIR) $@
@@ -210,7 +209,7 @@ $(SKT_AR)($(IMAGE).o) : $(SKT_PDE_SRC)
 	echo '#include <WProgram.h>' > $(IMAGE).cpp
 	cat $^ $(ARD_MAIN) >> $(IMAGE).cpp
 	cd $(BUILD_DIR) && $(CXX) -c $(CXX_FLAGS) $(OPT_FLAGS) $(ARD_FLAGS) \
-	    -I.. -I../.. $(subst -I../,-I../../,$(INC_FLAGS))  $(INC_ARD_SRC)  $(INC_LIBDIR) $(SKETCH).cpp \
+	    -I.. -I../.. $(subst -I../,-I../../,$(INC_FLAGS))   $(SKETCH).cpp \
 	    -o $(SKETCH).o
 	@ $(AR) rc $@ $*.o
 	@ $(RM) $*.o
