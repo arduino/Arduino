@@ -99,6 +99,8 @@ BUILD_DIR	=	$(OUTPUT_DIR)/build
 
 
 # Build tools.
+# if Windows append .exe to all
+
 CC			=	$(ARD_BIN)/avr-gcc
 CXX			=	$(ARD_BIN)/avr-g++
 OBJCOPY			=	$(ARD_BIN)/avr-objcopy
@@ -113,6 +115,10 @@ RESET			=	$(ARD_HOME)/hardware/tools/ar-reset
 MKDIR			=	mkdir -p
 RM				=	rm -rf
 MV				=	mv -f
+
+ifeq ($(TARGET_OS), windows)
+ $(addusuffix .exe,$(CC) $(CXX) $(OBJCOPY) $(OBJDUMP) $(AR) $(SIZE) $(NM) $(AVRDUDE) $(RESET))
+endif
 
 # Compiler flags.
 ARD_FLAGS		=	-mmcu=$(MCU) -DF_CPU=$(F_CPU) -DARDUINO=$(ARD_REV)
