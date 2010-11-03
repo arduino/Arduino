@@ -5,7 +5,7 @@
 
 #Board info
 BOARD		?= atmega328
-PORT		?= /dev/ttyUSB0
+PORT		?= /dev/tty.usbserial-A7004qgI
 UPLOAD_SPEED 	?= 57600
 
 #Arduino info
