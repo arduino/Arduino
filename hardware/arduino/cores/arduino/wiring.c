@@ -248,21 +248,21 @@ void init()
 #endif
 
 #if defined(TCCR3B) && defined(CS31) && defined(WGM30)
-	sbi(TCCR3B, CS31);		// set timer 3, 4, 5 prescale factor to 64
+	sbi(TCCR3B, CS31);		// set timer 3 prescale factor to 64
 	sbi(TCCR3B, CS30);
-	sbi(TCCR3A, WGM30);		// put timer 3, 4, 5 in 8-bit phase correct pwm mode
+	sbi(TCCR3A, WGM30);		// put timer 3 in 8-bit phase correct pwm mode
 #endif
 	
 #if defined(TCCR4B) && defined(CS41) && defined(WGM40)
-	sbi(TCCR4B, CS41);		// set timer 3, 4, 5 prescale factor to 64
+	sbi(TCCR4B, CS41);		// set timer 4 prescale factor to 64
 	sbi(TCCR4B, CS40);
-	sbi(TCCR4A, WGM40);		// put timer 3, 4, 5 in 8-bit phase correct pwm mode
+	sbi(TCCR4A, WGM40);		// put timer 4 in 8-bit phase correct pwm mode
 #endif
 
 #if defined(TCCR5B) && defined(CS51) && defined(WGM50)
-	sbi(TCCR5B, CS51);		// set timer 3, 4, 5 prescale factor to 64
+	sbi(TCCR5B, CS51);		// set timer 5 prescale factor to 64
 	sbi(TCCR5B, CS50);
-	sbi(TCCR5A, WGM50);		// put timer 3, 4, 5 in 8-bit phase correct pwm mode
+	sbi(TCCR5A, WGM50);		// put timer 5 in 8-bit phase correct pwm mode
 #endif
 
 #if defined(ADCSRA)

@@ -37,7 +37,7 @@
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
 // location to which to write the next incoming character and rx_buffer_tail
 // is the index of the location from which to read.
-#if (RAMEND < 1500)
+#if (RAMEND < 1000)
   #define RX_BUFFER_SIZE 32
 #else
   #define RX_BUFFER_SIZE 128

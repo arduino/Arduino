@@ -84,18 +84,9 @@ extern "C"{
 #define interrupts() sei()
 #define noInterrupts() cli()
 
-// Mark Sproul:
-// if the clock is not an even multiple of 1000000 the following causes drift
-// for example with F_CPU == 14745600L
-#if (F_CPU == 16000000L) || (F_CPU == 8000000L) || (F_CPU == 20000000L)
-        #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
-        #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
-        #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
-#else
-        #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
-        #define clockCyclesToMicroseconds(a) ( (a * 1000L) / (F_CPU / 1000L) )
-        #define microsecondsToClockCycles(a) (( (a) * (F_CPU / 1000) ) / 1000)
-#endif
+#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
+#define clockCyclesToMicroseconds(a) ( ((a) * 1000L) / (F_CPU / 1000L) )
+#define microsecondsToClockCycles(a) ( ((a) * (F_CPU / 1000L)) / 1000L )
 
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))

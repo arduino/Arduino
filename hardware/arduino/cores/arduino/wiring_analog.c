@@ -153,7 +153,7 @@ void analogWrite(uint8_t pin, int val)
 
 			#if defined(TCCR2) && defined(COM21)
 			case TIMER2:
-				// connect pwm to pin on timer 2, channel B
+				// connect pwm to pin on timer 2
 				sbi(TCCR2, COM21);
 				OCR2 = val; // set pwm duty
 				break;
@@ -239,7 +239,6 @@ void analogWrite(uint8_t pin, int val)
 				break;
 			#endif
 
-			// Mark Sproul: added this, Its missing from the main core files
 			#if defined(TCCR5A) && defined(COM5C1)
 			case TIMER5C:
 				// connect pwm to pin on timer 5, channel C
