@@ -6,3 +6,4 @@ Exec=arduino
 Icon=arduino
 Terminal=false
 Categories=Development;IDE;Electronics;
+MimeType=text/x-arduino
