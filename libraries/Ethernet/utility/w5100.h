@@ -199,8 +199,10 @@ private:
     write(address+1, _data & 0xFF);               \
   }                                               \
   static uint16_t read##name() {                  \
-    uint16_t res = read(address);                 \
-    res = (res << 8) + read(address + 1);         \
+    uint8_t hi = read(address);                   \
+    uint8_t lo = read(address + 1);               \
+    uint16_t res = hi;                            \
+    res = (res << 8) + lo;                        \
     return res;                                   \
   }
 #define __GP_REGISTER_N(name, address, size)      \
@@ -257,8 +259,10 @@ private:
     writeSn(_s, address+1, _data & 0xFF);                    \
   }                                                          \
   static uint16_t read##name(SOCKET _s) {                    \
-    uint16_t res = readSn(_s, address);                      \
-    res = (res << 8) + readSn(_s, address + 1);              \
+    uint8_t hi = readSn(_s, address);                        \
+    uint8_t lo = readSn(_s, address + 1);                    \
+    uint16_t res = hi;                                       \
+    res = (res << 8) + lo;                                   \
     return res;                                              \
   }
 #define __SOCKET_REGISTER_N(name, address, size)             \
