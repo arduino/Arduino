@@ -1,0 +1,6 @@
+app/bin/
+app/pde.jar
+build/.DS_Store
+build/macosx/work/
+core/bin/
+core/core.jar
