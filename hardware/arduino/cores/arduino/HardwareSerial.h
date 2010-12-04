@@ -60,13 +60,16 @@ class HardwareSerial : public Stream
       uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udre, uint8_t u2x);
     void begin(long);
     void end();
-    virtual int available(void);
-    virtual int peek(void);
-    virtual int peek(uint8_t);
-    virtual void remove(uint8_t);
-    virtual int read(void);
-    virtual void flush(void);
-    virtual void write(uint8_t);
+    
+    // @todo I think these only need to be declared virtual if HWSerial's going to be extended
+    int available(void);
+    int peek(void);
+    int peek(uint8_t);
+    void remove(uint8_t);
+    int read(void);
+    void flush(void);
+    void write(uint8_t);
+    
     using Print::write; // pull in write(str) and write(buf, size) from Print
 };
 

@@ -44,7 +44,7 @@ class Stream : public Print
      *
      * Default implementation for classes without a buffer.
      */
-    int peek(uint8_t offset) {
+    virtual int peek(uint8_t offset) {
       return (offset == 0) ? peek() : -1;
     }
     
@@ -53,7 +53,7 @@ class Stream : public Print
      *
      * Inefficient default implementation.
      */
-    void remove(uint8_t count) {
+    virtual void remove(uint8_t count) {
       for (uint8_t i = 0; i < count; i++) {
         read();
       }
