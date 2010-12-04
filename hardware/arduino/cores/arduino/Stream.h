@@ -28,8 +28,36 @@ class Stream : public Print
   public:
     virtual int available() = 0;
     virtual int read() = 0;
+    
+    /*
+     * Return the next byte waiting to be read.
+     */
     virtual int peek() = 0;
+    
+    /*
+     * Forces output to the underlying device.
+     */
     virtual void flush() = 0;
+    
+    /*
+     * Return the byte offset places from the beginning of the buffer.
+     *
+     * Default implementation for classes without a buffer.
+     */
+    int peek(uint8_t offset) {
+      return (offset == 0) ? peek() : -1;
+    }
+    
+    /*
+     * Remove count bytes from the buffer.
+     *
+     * Inefficient default implementation.
+     */
+    void remove(uint8_t count) {
+      for (uint8_t i = 0; i < count; i++) {
+        read();
+      }
+    }
 };
 
 #endif

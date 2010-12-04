@@ -37,12 +37,6 @@
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
 // location to which to write the next incoming character and rx_buffer_tail
 // is the index of the location from which to read.
-#if (RAMEND < 1000)
-  #define RX_BUFFER_SIZE 32
-#else
-  #define RX_BUFFER_SIZE 128
-#endif
-
 struct ring_buffer
 {
   unsigned char buffer[RX_BUFFER_SIZE];
@@ -236,11 +230,25 @@ int HardwareSerial::available(void)
 
 int HardwareSerial::peek(void)
 {
+    return peek(0);
+}
+
+int HardwareSerial::peek(uint8_t offset)
+{
   if (_rx_buffer->head == _rx_buffer->tail) {
     return -1;
   } else {
-    return _rx_buffer->buffer[_rx_buffer->tail];
+    return _rx_buffer->buffer[(_rx_buffer->tail + offset) % RX_BUFFER_SIZE];
   }
+}
+
+/**
+    Removes count number of bytes from the buffer.
+**/
+void HardwareSerial::remove(uint8_t count) {
+    if (_rx_buffer->head != _rx_buffer->tail) {
+        _rx_buffer->tail = (_rx_buffer->tail + count) % RX_BUFFER_SIZE;
+    }
 }
 
 int HardwareSerial::read(void)
