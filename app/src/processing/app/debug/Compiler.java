@@ -44,6 +44,7 @@ public class Compiler implements MessageConsumer {
   String buildPath;
   String primaryClassName;
   boolean verbose;
+  PrintWriter outputFile = null;
 
   RunnerException exception;
 
@@ -179,7 +180,24 @@ public class Compiler implements MessageConsumer {
     baseCommandLinker.add("-L" + buildPath);
     baseCommandLinker.add("-lm");
 
+    if (Preferences.getBoolean("compiler.map_file")) 
+      baseCommandLinker.add("-Wl,-Map," + sketch.getFolder() + File.separator + sketch.getName() + ".map");
+
     execAsynchronously(baseCommandLinker);
+
+    // 4a. create the size output
+    if (Preferences.getBoolean("compiler.detailed_size")) {
+      List baseCommandsize = new ArrayList(Arrays.asList(new String[] {
+        avrBasePath + "avr-size",
+        "-C",
+        "--mcu=" + boardPreferences.get("build.mcu"),
+        buildPath + File.separator + primaryClassName + ".elf"//,
+        //" > ",
+        //sketch.getFolder() + File.separator + sketch.getName() + ".size"
+      }));
+
+      execAsynchronously(baseCommandsize);      
+    }
 
     List baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
       avrBasePath + "avr-objcopy",
@@ -210,6 +228,18 @@ public class Compiler implements MessageConsumer {
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".hex");
     execAsynchronously(commandObjcopy);
     
+    // 7. produce the .lst file
+    if (Preferences.getBoolean("compiler.lst_file")) {
+      List baseCommandObjdump = new ArrayList(Arrays.asList(new String[] {
+        avrBasePath + "avr-objdump",
+        "-d",
+        "-S",
+        buildPath + File.separator + primaryClassName + ".elf"
+      }));
+
+      execAsynchronously(baseCommandObjdump, sketch.getFolder() + File.separator + sketch.getName() + ".lst");
+    }
+
     return true;
   }
 
@@ -261,6 +291,14 @@ public class Compiler implements MessageConsumer {
    * Either succeeds or throws a RunnerException fit for public consumption.
    */
   private void execAsynchronously(List commandList) throws RunnerException {
+    execAsynchronouslyFile (commandList, null);
+  }
+
+  private void execAsynchronously(List commandList, String outputFileName) throws RunnerException {
+    execAsynchronouslyFile (commandList, outputFileName);
+  }
+
+  private void execAsynchronouslyFile(List commandList, String outputFileName) throws RunnerException {
     String[] command = new String[commandList.size()];
     commandList.toArray(command);
     int result = 0;
@@ -274,6 +312,19 @@ public class Compiler implements MessageConsumer {
 
     firstErrorFound = false;  // haven't found any errors yet
     secondErrorFound = false;
+
+    if (outputFileName != null)
+    {
+      try {
+        File filename = new File (outputFileName);
+        FileWriter fout = new FileWriter (filename);
+        outputFile = new PrintWriter (fout, true);
+      } catch (IOException e) {
+        RunnerException re = new RunnerException(e.getMessage());
+        re.hideStackTrace();
+        throw re;
+      }
+    }
 
     Process process;
     
@@ -321,8 +372,14 @@ public class Compiler implements MessageConsumer {
       re.hideStackTrace();
       throw re;
     }
+    
+    if (outputFile != null)
+    {
+      outputFile.flush ();
+      outputFile.close ();
+      outputFile = null;
+    }
   }
-
 
   /**
    * Part of the MessageConsumer interface, this is called
@@ -333,49 +390,54 @@ public class Compiler implements MessageConsumer {
   public void message(String s) {
     int i;
 
-    // remove the build path so people only see the filename
-    // can't use replaceAll() because the path may have characters in it which
-    // have meaning in a regular expression.
-    if (!verbose) {
-      while ((i = s.indexOf(buildPath + File.separator)) != -1) {
-        s = s.substring(0, i) + s.substring(i + (buildPath + File.separator).length());
+    if (outputFile != null)
+      outputFile.print (s);
+    else
+    {
+      // remove the build path so people only see the filename
+      // can't use replaceAll() because the path may have characters in it which
+      // have meaning in a regular expression.
+      if (!verbose) {
+        while ((i = s.indexOf(buildPath + File.separator)) != -1) {
+          s = s.substring(0, i) + s.substring(i + (buildPath + File.separator).length());
+        }
       }
-    }
-  
-    // look for error line, which contains file name, line number,
-    // and at least the first line of the error message
-    String errorFormat = "([\\w\\d_]+.\\w+):(\\d+):\\s*error:\\s*(.*)\\s*";
-    String[] pieces = PApplet.match(s, errorFormat);
+
+      // look for error line, which contains file name, line number,
+      // and at least the first line of the error message
+      String errorFormat = "([\\w\\d_]+.\\w+):(\\d+):\\s*error:\\s*(.*)\\s*";
+      String[] pieces = PApplet.match(s, errorFormat);
 
 //    if (pieces != null && exception == null) {
 //      exception = sketch.placeException(pieces[3], pieces[1], PApplet.parseInt(pieces[2]) - 1);
 //      if (exception != null) exception.hideStackTrace();
 //    }
-    
-    if (pieces != null) {
-      RunnerException e = sketch.placeException(pieces[3], pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
-      // replace full file path with the name of the sketch tab (unless we're
-      // in verbose mode, in which case don't modify the compiler output)
-      if (e != null && !verbose) {
-        SketchCode code = sketch.getCode(e.getCodeIndex());
-        String fileName = code.isExtension(sketch.getDefaultExtension()) ? code.getPrettyName() : code.getFileName();
-        s = fileName + ":" + e.getCodeLine() + ": error: " + e.getMessage();        
+      if (pieces != null) {
+        RunnerException e = sketch.placeException(pieces[3], pieces[1], PApplet.parseInt(pieces[2]) - 1);
+
+        // replace full file path with the name of the sketch tab (unless we're
+        // in verbose mode, in which case don't modify the compiler output)
+        if (e != null && !verbose) {
+          SketchCode code = sketch.getCode(e.getCodeIndex());
+          String fileName = code.isExtension(sketch.getDefaultExtension()) ? code.getPrettyName() : code.getFileName();
+          s = fileName + ":" + e.getCodeLine() + ": error: " + e.getMessage();        
+        }
+
+        if (pieces[3].trim().equals("SPI.h: No such file or directory")) {
+          e = new RunnerException("Please import the SPI library from the Sketch > Import Library menu.");
+          s += "\nAs of Arduino 0019, the Ethernet library depends on the SPI library." +
+            "\nYou appear to be using it or another library that depends on the SPI library.";
+        }        
+
+        if (exception == null && e != null) {
+          exception = e;
+          exception.hideStackTrace();
+        }      
       }
-      
-      if (pieces[3].trim().equals("SPI.h: No such file or directory")) {
-        e = new RunnerException("Please import the SPI library from the Sketch > Import Library menu.");
-        s += "\nAs of Arduino 0019, the Ethernet library depends on the SPI library." +
-             "\nYou appear to be using it or another library that depends on the SPI library.";
-      }        
-      
-      if (exception == null && e != null) {
-        exception = e;
-        exception.hideStackTrace();
-      }      
+
+      System.err.print(s);
     }
-    
-    System.err.print(s);
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -411,13 +473,19 @@ public class Compiler implements MessageConsumer {
       "-c", // compile, don't link
       "-g", // include debugging info (so errors include line numbers)
       "-Os", // optimize for size
-      "-w", // surpress all warnings
       "-ffunction-sections", // place each function in its own section
       "-fdata-sections",
       "-mmcu=" + boardPreferences.get("build.mcu"),
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-DARDUINO=" + Base.REVISION,
     }));
+
+    if (!Preferences.getBoolean("compiler.show_all_warnings")) 
+      baseCommandCompiler.add("-w"); // suppress all warnings
+    else {
+      baseCommandCompiler.add("-W"); // show all warnings
+      baseCommandCompiler.add("-Wall"); // be aggressive with warnings
+    }
 		
     for (int i = 0; i < includePaths.size(); i++) {
       baseCommandCompiler.add("-I" + (String) includePaths.get(i));
@@ -439,7 +507,6 @@ public class Compiler implements MessageConsumer {
       "-c", // compile, don't link
       "-g", // include debugging info (so errors include line numbers)
       "-Os", // optimize for size
-      "-w", // surpress all warnings
       "-fno-exceptions",
       "-ffunction-sections", // place each function in its own section
       "-fdata-sections",
@@ -447,6 +514,13 @@ public class Compiler implements MessageConsumer {
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-DARDUINO=" + Base.REVISION,
     }));
+
+    if (!Preferences.getBoolean("compiler.show_all_warnings")) 
+      baseCommandCompilerCPP.add("-w"); // suppress all warnings
+    else {
+      baseCommandCompilerCPP.add("-W"); // show all warnings
+      baseCommandCompilerCPP.add("-Wall"); // be aggressive with warnings
+    }
 
     for (int i = 0; i < includePaths.size(); i++) {
       baseCommandCompilerCPP.add("-I" + (String) includePaths.get(i));
