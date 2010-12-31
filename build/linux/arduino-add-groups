@@ -10,7 +10,7 @@ fi
 login=$(perl -e 'print((getpwuid shift)[0])' $uid)
 
 for group in dialout lock; do
-    if ! groups $login | grep -q "\b$group\b"; then
+    if ! groups $login | grep -q " : .*\b$group\b"; then
 	missing_groups=${missing_groups:+$missing_groups,}$group
     fi
 done
