@@ -2,7 +2,7 @@
  
 if [[ `id -u` -ne 0 ]]; then
     for group in dialout lock; do
-	if ! groups | grep -q "\b$group\b"; then
+	if ! groups $USER | grep -q " : .*\b$group\b"; then
 	    missing_groups="$missing_groups\n$group"
 	fi
     done
