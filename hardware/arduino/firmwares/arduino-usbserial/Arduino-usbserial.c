@@ -206,13 +206,14 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 	UCSR1A = 0;
 	UCSR1C = 0;
 
-	/* Special case 57600 baud for compatibility with the ATmega328 bootloader. */	
-	UBRR1  = (CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600)
+	/* Special case 57600 baud for compatibility with the ATmega328 bootloader. */
+	bool compat = CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600;
+	UBRR1 = compat
 			 ? SERIAL_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS)
 			 : SERIAL_2X_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS);	
 
 	UCSR1C = ConfigMask;
-	UCSR1A = (CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600) ? 0 : (1 << U2X1);
+	UCSR1A = compat ? 0 : (1 << U2X1);
 	UCSR1B = ((1 << RXCIE1) | (1 << TXEN1) | (1 << RXEN1));
 }
 
