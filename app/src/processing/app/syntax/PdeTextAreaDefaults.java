@@ -111,6 +111,14 @@ public class PdeTextAreaDefaults extends TextAreaDefaults {
     inputHandler.addKeyBinding("S+PAGE_UP", InputHandler.SELECT_PREV_PAGE);
     inputHandler.addKeyBinding("S+PAGE_DOWN", InputHandler.SELECT_NEXT_PAGE);
 
+    // Some basic Emacs-keybindings
+    inputHandler.addKeyBinding("C+b", InputHandler.PREV_CHAR);
+    inputHandler.addKeyBinding("C+f", InputHandler.NEXT_CHAR);
+    inputHandler.addKeyBinding("C+p", InputHandler.PREV_LINE);
+    inputHandler.addKeyBinding("C+n", InputHandler.NEXT_LINE);
+    inputHandler.addKeyBinding("C+a", InputHandler.BEGIN_LINE);
+    inputHandler.addKeyBinding("C+e", InputHandler.END_LINE);
+
     inputHandler.addKeyBinding("LEFT", InputHandler.PREV_CHAR);
     inputHandler.addKeyBinding("S+LEFT", InputHandler.SELECT_PREV_CHAR);
     inputHandler.addKeyBinding(mod + "+LEFT", InputHandler.PREV_WORD);
