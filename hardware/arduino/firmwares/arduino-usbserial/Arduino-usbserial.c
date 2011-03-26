@@ -43,12 +43,16 @@ RingBuff_t USBtoUSART_Buffer;
 RingBuff_t USARTtoUSB_Buffer;
 
 /** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
-volatile struct
+typedef struct 
 {
 	uint8_t TxLEDPulse; /**< Milliseconds remaining for data Tx LED pulse */
 	uint8_t RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
 	uint8_t PingPongLEDPulse; /**< Milliseconds remaining for enumeration Tx/Rx ping-pong LED pulse */
-} PulseMSRemaining;
+} PulseMS;
+
+volatile PulseMS PulseMSRemaining;
+
+volatile uint8_t DTRGuard = 0x00;
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -83,7 +87,10 @@ int main(void)
 	
 	RingBuffer_InitBuffer(&USBtoUSART_Buffer);
 	RingBuffer_InitBuffer(&USARTtoUSB_Buffer);
-
+	
+	// Size optimization (may speed up as well): Make the adresses local
+	PulseMS *PulseMSRemainingPtr = &PulseMSRemaining;
+	uint8_t *DTRGuardPtr = &DTRGuard;
 	sei();
 
 	for (;;)
@@ -103,10 +110,13 @@ int main(void)
 		if ((TIFR0 & (1 << TOV0)) || (BufferCount > BUFFER_NEARLY_FULL))
 		{
 			TIFR0 |= (1 << TOV0);
-
+			
+			if (*DTRGuardPtr < 0xff)
+				(*DTRGuardPtr)++;
+			
 			if (USARTtoUSB_Buffer.Count) {
 				LEDs_TurnOnLEDs(LEDMASK_TX);
-				PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
+				PulseMSRemainingPtr->TxLEDPulse = TX_RX_LED_PULSE_MS;
 			}
 
 			/* Read bytes from the USART receive buffer into the USB IN endpoint */
@@ -114,20 +124,20 @@ int main(void)
 			  CDC_Device_SendByte(&VirtualSerial_CDC_Interface, RingBuffer_Remove(&USARTtoUSB_Buffer));
 			  
 			/* Turn off TX LED(s) once the TX pulse period has elapsed */
-			if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
+			if (PulseMSRemainingPtr->TxLEDPulse && !(--PulseMSRemainingPtr->TxLEDPulse))
 			  LEDs_TurnOffLEDs(LEDMASK_TX);
 
 			/* Turn off RX LED(s) once the RX pulse period has elapsed */
-			if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
+			if (PulseMSRemainingPtr->RxLEDPulse && !(--PulseMSRemainingPtr->RxLEDPulse))
 			  LEDs_TurnOffLEDs(LEDMASK_RX);
 		}
 		
 		/* Load the next byte from the USART transmit buffer into the USART */
 		if (!(RingBuffer_IsEmpty(&USBtoUSART_Buffer))) {
-		  Serial_TxByte(RingBuffer_Remove(&USBtoUSART_Buffer));
-		  	
-		  	LEDs_TurnOnLEDs(LEDMASK_RX);
-			PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
+			Serial_TxByte(RingBuffer_Remove(&USBtoUSART_Buffer));
+
+			LEDs_TurnOnLEDs(LEDMASK_RX);
+			PulseMSRemainingPtr->RxLEDPulse = TX_RX_LED_PULSE_MS;
 		}
 		
 		CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
@@ -151,7 +161,7 @@ void SetupHardware(void)
 	TCCR0B = (1 << CS02);
 	
 	/* Pull target /RESET line high */
-	AVR_RESET_LINE_PORT |= AVR_RESET_LINE_MASK;
+	AVR_RESET_LINE_PORT &= ~AVR_RESET_LINE_MASK;
 	AVR_RESET_LINE_DDR  |= AVR_RESET_LINE_MASK;
 }
 
@@ -234,9 +244,15 @@ ISR(USART1_RX_vect, ISR_BLOCK)
 void EVENT_CDC_Device_ControLineStateChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo)
 {
 	bool CurrentDTRState = (CDCInterfaceInfo->State.ControlLineStates.HostToDevice & CDC_CONTROL_LINE_OUT_DTR);
-
-	if (CurrentDTRState)
-	  AVR_RESET_LINE_PORT &= ~AVR_RESET_LINE_MASK;
-	else
-	  AVR_RESET_LINE_PORT |= AVR_RESET_LINE_MASK;
+	uint8_t *DTRGuardTemp = &DTRGuard;
+	
+	if (CurrentDTRState) {
+		AVR_RESET_LINE_PORT &= ~AVR_RESET_LINE_MASK;
+		*DTRGuardTemp = 0x00;
+	}
+	else {
+		if (*DTRGuardTemp > 0x60 && *DTRGuardTemp < 0xFF)
+		  AVR_RESET_LINE_PORT |= AVR_RESET_LINE_MASK;
+	}
+	
 }
