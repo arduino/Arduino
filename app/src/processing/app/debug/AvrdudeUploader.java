@@ -104,6 +104,10 @@ public class AvrdudeUploader extends Uploader  {
     Map<String, String> programmerPreferences = target.getProgrammers().get(programmer);
     List params = new ArrayList();
     params.add("-c" + programmerPreferences.get("protocol"));
+
+    if (programmerPreferences.get("bitclock") != null) {
+      params.add("-B" + Integer.parseInt(programmerPreferences.get("bitclock")));
+    }
     
     if ("usb".equals(programmerPreferences.get("communication"))) {
       params.add("-Pusb");
