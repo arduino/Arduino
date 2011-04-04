@@ -2275,7 +2275,7 @@ public class Editor extends JFrame implements RunnerListener {
     //if (!handleExportCheckModified()) return;
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
-    statusNotice("Uploading to I/O Board...");
+    statusNotice("Compiling and uploading to I/O Board...");
 
     new Thread(verbose ? exportAppHandler : exportHandler).start();
   }
