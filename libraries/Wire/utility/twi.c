@@ -315,6 +315,21 @@ void twi_stop(void)
 }
 
 /* 
+ * Function twi_stop_slv
+ * Desc     relinquishes bus master status
+ * Input    none
+ * Output   none
+ */
+void twi_stop_slv(void)
+{
+  // send stop condition
+  TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT);
+
+  // update twi state
+  twi_state = TWI_READY;
+}
+
+/* 
  * Function twi_releaseBus
  * Desc     releases bus control
  * Input    none
@@ -414,7 +429,7 @@ SIGNAL(TWI_vect)
         twi_rxBuffer[twi_rxBufferIndex] = '\0';
       }
       // sends ack and stops interface for clock stretching
-      twi_stop();
+      twi_stop_slv();
       // callback to user defined callback
       twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
       // since we submit rx buffer to "wire" library, we can reset it
