@@ -43,9 +43,116 @@
     #define ADC_DMASEL_gp  ADC_DMASEL0_bp
 #endif
 
+#if !defined(TCF1)
+#define USE_RTC
+#endif
+
 volatile unsigned long millis_count = 0;
 volatile unsigned long seconds_count = 0;
+#if defined(USE_RTC)
+volatile unsigned long rtc_millis = 0;
 
+/*! \brief RTC overflow interrupt service routine.
+ *
+ *  This ISR keeps track of the milliseconds 
+ */
+ISR(RTC_OVF_vect)
+{
+	rtc_millis = rtc_millis+4;
+}
+
+unsigned long millis()
+{
+ 	unsigned long m;
+ 	
+ 	uint8_t oldSREG = SREG;
+ 
+	// disable interrupts while we read rtc_millis or we might get an
+	// inconsistent value (e.g. in the middle of a write to rtc_millis)
+	cli();
+	m = rtc_millis;
+	SREG = oldSREG;
+
+	return m;
+}
+
+unsigned long micros(void) {
+	// TODO: Get real micros and not just millis*1000
+	unsigned long m;
+
+        uint8_t oldSREG = SREG;
+
+        // disable interrupts while we read rtc_millis or we might get an
+        // inconsistent value (e.g. in the middle of a write to rtc_millis)
+        cli();
+        m = rtc_millis;
+        SREG = oldSREG;
+
+        return m*1000;
+}
+
+/* Delay for the given number of microseconds.  Assumes a 8, 16 or 32 MHz clock. */
+void delayMicroseconds(unsigned long us)
+{
+        // calling avrlib's delay_us() function with low values (e.g. 1 or
+        // 2 microseconds) gives delays longer than desired.
+        //delay_us(us);
+
+#if F_CPU >= 32000000L
+	// for the 32 MHz clock built in all Xmega
+
+        // the following loop takes a eighth of a microsecond (4 cycles)
+        // per iteration, so execute it eight times for each microsecond of
+        // delay requested.
+        us <<= 3;
+
+        // account for the time taken in the preceeding commands.
+        us -= 3;
+#elif F_CPU >= 16000000L
+        // for the 16 MHz clock on most Arduino boards
+
+        // for a one-microsecond delay, simply return.  the overhead
+        // of the function call yields a delay of approximately 1 1/8 us.
+        if (--us == 0)
+                return;
+
+        // the following loop takes a quarter of a microsecond (4 cycles)
+        // per iteration, so execute it four times for each microsecond of
+        // delay requested.
+        us <<= 2;
+
+        // account for the time taken in the preceeding commands.
+        us -= 2;
+#else
+        // for the 8 MHz internal clock on the ATmega168
+
+        // for a one- or two-microsecond delay, simply return.  the overhead of
+        // the function calls takes more than two microseconds.  can't just
+        // subtract two, since us is unsigned; we'd overflow.
+        if (--us == 0)
+                return;
+        if (--us == 0)
+                return;
+
+        // the following loop takes half of a microsecond (4 cycles)
+        // per iteration, so execute it twice for each microsecond of
+        // delay requested.
+        us <<= 1;
+
+        // partially compensate for the time taken by the preceeding commands.
+        // we can't subtract any more than this or we'd overflow w/ small delays.
+        us--;
+#endif
+
+        // busy wait
+        __asm__ __volatile__ (
+                "1: sbiw %0,1" "\n\t" // 2 cycles
+                "brne 1b" : "=w" (us) : "0" (us) // 2 cycles
+        );
+}
+
+
+#else
 ISR(TCF0_OVF_vect)
 {
 	/// TODO: Do we need to call cli()?
@@ -102,19 +209,20 @@ unsigned long micros(void) {
 	return result;
 }
 
+/* Delay for the given number of microseconds.  Assumes a 8 or 16 MHz clock. */
+void delayMicroseconds(unsigned long us)
+{
+        unsigned long start = micros();
+
+        while (micros() - start <= us);
+}
+#endif // USE_RTC
+
 void delay(unsigned long ms)
 {
 	unsigned long start = millis();
 	
 	while (millis() - start <= ms);
-}
-
-/* Delay for the given number of microseconds.  Assumes a 8 or 16 MHz clock. */
-void delayMicroseconds(unsigned long us)
-{
-	unsigned long start = micros();
-	
-	while (micros() - start <= us);
 }
 
 static void initResetButton();
@@ -157,6 +265,18 @@ void init()
         // TODO: gc: ClkPer2 should really be 2x ClkSys for EBI to work (Xmega A doc, 4.10.1)
         // TODO: gc: ClkPer4 should really be 4x ClkSys for Hi-Res extensions (16.2)
 
+#ifdef USE_RTC
+	/* Turn on internal 32kHz. */
+	OSC.CTRL |= OSC_RC32KEN_bm;
+
+	do {
+		/* Wait for the 32kHz oscillator to stabilize. */
+	} while ( ( OSC.STATUS & OSC_RC32KRDY_bm ) == 0);
+		
+
+	/* Set internal 32kHz oscillator as clock source for RTC. */
+	CLK.RTCCTRL = CLK_RTCSRC_RCOSC_gc | CLK_RTCEN_bm;//1kHz
+#else
         /*************************************/
         /* Init real time clock for millis() */
 
@@ -179,7 +299,7 @@ void init()
         TCF1.CTRLB    = ( TCF1.CTRLB & ~TC1_WGMODE_gm ) | TC_WGMODE_NORMAL_gc;
         TCF1.CTRLD    = TC_EVACT_UPDOWN_gc | TC1_EVDLY_bm;
         TCF1.INTCTRLA = TC_OVFINTLVL_HI_gc;
-
+#endif
         /*************************************/
         /* Init I/O ports */
 	
@@ -228,6 +348,23 @@ void init()
 #if defined(PORTF) 
 	PORTCFG.MPCMASK = 0xFF; //do this for all pins of the following command
 	PORTF.PIN0CTRL  = PULLUP;
+#endif
+
+#if defined(USE_RTC)
+	do {
+		/* Wait until RTC is not busy. */
+	} while (  RTC.STATUS & RTC_SYNCBUSY_bm );
+	
+	/* Configure RTC period to 1 millisecond. */
+	RTC.PER = 0;//1ms
+	RTC.CNT = 0;
+	RTC.COMP = 0;
+	RTC.CTRL = ( RTC.CTRL & ~RTC_PRESCALER_gm ) | RTC_PRESCALER_DIV1_gc;
+
+	/* Enable overflow interrupt. */	
+	RTC.INTCTRL = ( RTC.INTCTRL & ~( RTC_COMPINTLVL_gm | RTC_OVFINTLVL_gm ) ) |
+	              RTC_OVFINTLVL_LO_gc |
+	              RTC_COMPINTLVL_OFF_gc;
 #endif
 
         /*************************************/
