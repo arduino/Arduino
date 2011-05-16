@@ -134,8 +134,23 @@ public class AvrdudeUploader extends Uploader  {
     fuses.add("-Ulock:w:" + boardPreferences.get("bootloader.unlock_bits") + ":m");
     if (boardPreferences.get("bootloader.extended_fuses") != null)
       fuses.add("-Uefuse:w:" + boardPreferences.get("bootloader.extended_fuses") + ":m");
-    fuses.add("-Uhfuse:w:" + boardPreferences.get("bootloader.high_fuses") + ":m");
-    fuses.add("-Ulfuse:w:" + boardPreferences.get("bootloader.low_fuses") + ":m");
+    if (boardPreferences.get("bootloader.high_fuses") != null)
+      fuses.add("-Uhfuse:w:" + boardPreferences.get("bootloader.high_fuses") + ":m");
+    if (boardPreferences.get("bootloader.low_fuses") != null)
+      fuses.add("-Ulfuse:w:" + boardPreferences.get("bootloader.low_fuses") + ":m");
+
+    if (boardPreferences.get("bootloader.fuse0") != null)
+      fuses.add("-Ufuse0:w:" + boardPreferences.get("bootloader.fuse0") + ":m");
+    if (boardPreferences.get("bootloader.fuse1") != null)
+      fuses.add("-Ufuse1:w:" + boardPreferences.get("bootloader.fuse1") + ":m");
+    if (boardPreferences.get("bootloader.fuse2") != null)
+      fuses.add("-Ufuse2:w:" + boardPreferences.get("bootloader.fuse2") + ":m");
+    if (boardPreferences.get("bootloader.fuse3") != null)
+      fuses.add("-Ufuse3:w:" + boardPreferences.get("bootloader.fuse3") + ":m");
+    if (boardPreferences.get("bootloader.fuse4") != null)
+      fuses.add("-Ufuse4:w:" + boardPreferences.get("bootloader.fuse4") + ":m");
+    if (boardPreferences.get("bootloader.fuse5") != null)
+      fuses.add("-Ufuse5:w:" + boardPreferences.get("bootloader.fuse5") + ":m");
 
     if (!avrdude(params, fuses))
       return false;

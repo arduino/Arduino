@@ -79,6 +79,13 @@ public class Compiler implements MessageConsumer {
       throw re;
     }
     String corePath;
+
+    if ( !boardPreferences.containsKey("build.board") ) {
+      boardPreferences.put("build.board", Preferences.get("board"));
+    }
+    if ( !boardPreferences.containsKey("build.mcu_family") ) {
+      boardPreferences.put("build.mcu_family", "ATMEGA");
+    }
     
     if (core.indexOf(':') == -1) {
       Target t = Base.getTarget();
@@ -390,6 +397,10 @@ public class Compiler implements MessageConsumer {
       "-mmcu=" + boardPreferences.get("build.mcu"),
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-DARDUINO=" + Base.REVISION,
+      "-DMCU_FAMILY=" + boardPreferences.get("build.mcu_family"),
+      "-DMCU_FAMILY_" + boardPreferences.get("build.mcu_family") + "=1",
+      "-DBOARD=" + boardPreferences.get("build.board"),
+      "-DBOARD_" + boardPreferences.get("build.board") + "=1",
     }));
 
     for (int i = 0; i < includePaths.size(); i++) {
@@ -417,6 +428,10 @@ public class Compiler implements MessageConsumer {
       "-mmcu=" + boardPreferences.get("build.mcu"),
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-DARDUINO=" + Base.REVISION,
+      "-DMCU_FAMILY=" + boardPreferences.get("build.mcu_family"),
+      "-DMCU_FAMILY_" + boardPreferences.get("build.mcu_family") + "=1",
+      "-DBOARD=" + boardPreferences.get("build.board"),
+      "-DBOARD_" + boardPreferences.get("build.board") + "=1",
     }));
 		
     for (int i = 0; i < includePaths.size(); i++) {
@@ -446,6 +461,10 @@ public class Compiler implements MessageConsumer {
       "-mmcu=" + boardPreferences.get("build.mcu"),
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-DARDUINO=" + Base.REVISION,
+      "-DMCU_FAMILY=" + boardPreferences.get("build.mcu_family"),
+      "-DMCU_FAMILY_" + boardPreferences.get("build.mcu_family") + "=1",
+      "-DBOARD=" + boardPreferences.get("build.board"),
+      "-DBOARD_" + boardPreferences.get("build.board") + "=1",
     }));
 
     for (int i = 0; i < includePaths.size(); i++) {
