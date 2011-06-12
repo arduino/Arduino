@@ -164,6 +164,7 @@ LICENSE:
 	#define F_CPU 16000000UL
 #endif
 
+#define	_BLINK_LOOP_COUNT_	(F_CPU / 2250)
 /*
  * UART Baudrate, AVRStudio AVRISP only accepts 115200 bps
  */
@@ -228,6 +229,13 @@ LICENSE:
 	#define SIGNATURE_BYTES 0x1E9801
 #elif defined (__AVR_ATmega2561__)
 	#define SIGNATURE_BYTES 0x1e9802
+#elif defined (__AVR_ATmega1284P__)
+	#define SIGNATURE_BYTES 0x1e9705
+#elif defined (__AVR_ATmega640__)
+	#define SIGNATURE_BYTES  0x1e9608
+#elif defined (__AVR_ATmega64__)
+	#define SIGNATURE_BYTES  0x1E9602
+
 #else
 	#error "no signature definition for MCU available"
 #endif
@@ -442,7 +450,16 @@ int main(void)
 	unsigned long	boot_timer;
 	unsigned int	boot_state;
 #ifdef ENABLE_MONITOR
-	unsigned int	exPointCntr	=	0;
+	unsigned int	exPointCntr		=	0;
+	unsigned int	rcvdCharCntr	=	0;
+#endif
+
+#if 1
+	asm volatile ( ".set __stack, %0" :: "i" (RAMEND) );
+	asm volatile ( "ldi	16, %0" :: "i" (RAMEND >> 8) );
+	asm volatile ( "out %0,16" :: "i" (AVR_STACK_POINTER_HI_ADDR) );
+	asm volatile ( "ldi	16, %0" :: "i" (RAMEND & 0x0ff) );
+	asm volatile ( "out %0,16" :: "i" (AVR_STACK_POINTER_LO_ADDR) );
 #endif
 
 
@@ -516,7 +533,7 @@ int main(void)
 				boot_state	=	1; // (after ++ -> boot_state=2 bootloader timeout, jump to main 0x00000 )
 			}
 		#ifdef BLINK_LED_WHILE_WAITING
-			if ((boot_timer % 7000) == 0)
+			if ((boot_timer % _BLINK_LOOP_COUNT_) == 0)
 			{
 				//*	toggle the LED
 				PROGLED_PORT	^=	(1<<PROGLED_PIN);	// turn LED ON
@@ -547,10 +564,12 @@ int main(void)
 				{
 				//	c	=	recchar();
 					c	=	recchar_timeout();
+					
 				}
+				rcvdCharCntr++;
 
 			#ifdef ENABLE_MONITOR
-				if (c == '!')
+				if ((c == '!')  && (rcvdCharCntr < 10))
 				{
 					exPointCntr++;
 					if (exPointCntr == 3)
@@ -1086,16 +1105,16 @@ void	PrintDecInt(int theNumber, int digitCnt);
 	prog_char	gTextMsg_Explorer[]			PROGMEM	=	"Arduino explorer stk500V2 by MLS";
 	prog_char	gTextMsg_Prompt[]			PROGMEM	=	"Bootloader>";
 	prog_char	gTextMsg_HUH[]				PROGMEM	=	"Huh?";
-	prog_char	gTextMsg_COMPILED_ON[]		PROGMEM	=	"Compiled on  = ";
-	prog_char	gTextMsg_CPU_Type[]			PROGMEM	=	"CPU Type     = ";
-	prog_char	gTextMsg_AVR_ARCH[]			PROGMEM	=	"__AVR_ARCH__ = ";
-	prog_char	gTextMsg_AVR_LIBC[]			PROGMEM	=	"AVR LibC Ver = ";
-	prog_char	gTextMsg_GCC_VERSION[]		PROGMEM	=	"GCC Version  = ";
-	prog_char	gTextMsg_CPU_SIGNATURE[]	PROGMEM	=	"CPU signature= ";
-	prog_char	gTextMsg_FUSE_BYTE_LOW[]	PROGMEM	=	"Low fuse     = ";
-	prog_char	gTextMsg_FUSE_BYTE_HIGH[]	PROGMEM	=	"High fuse    = ";
-	prog_char	gTextMsg_FUSE_BYTE_EXT[]	PROGMEM	=	"Ext fuse     = ";
-	prog_char	gTextMsg_FUSE_BYTE_LOCK[]	PROGMEM	=	"Lock fuse    = ";
+	prog_char	gTextMsg_COMPILED_ON[]		PROGMEM	=	"Compiled on = ";
+	prog_char	gTextMsg_CPU_Type[]			PROGMEM	=	"CPU Type    = ";
+	prog_char	gTextMsg_AVR_ARCH[]			PROGMEM	=	"__AVR_ARCH__= ";
+	prog_char	gTextMsg_AVR_LIBC[]			PROGMEM	=	"AVR LibC Ver= ";
+	prog_char	gTextMsg_GCC_VERSION[]		PROGMEM	=	"GCC Version = ";
+	prog_char	gTextMsg_CPU_SIGNATURE[]	PROGMEM	=	"CPU ID      = ";
+	prog_char	gTextMsg_FUSE_BYTE_LOW[]	PROGMEM	=	"Low fuse    = ";
+	prog_char	gTextMsg_FUSE_BYTE_HIGH[]	PROGMEM	=	"High fuse   = ";
+	prog_char	gTextMsg_FUSE_BYTE_EXT[]	PROGMEM	=	"Ext fuse    = ";
+	prog_char	gTextMsg_FUSE_BYTE_LOCK[]	PROGMEM	=	"Lock fuse   = ";
 	prog_char	gTextMsg_GCC_DATE_STR[]		PROGMEM	=	__DATE__;
 	prog_char	gTextMsg_AVR_LIBC_VER_STR[]	PROGMEM	=	__AVR_LIBC_VERSION_STRING__;
 	prog_char	gTextMsg_GCC_VERSION_STR[]	PROGMEM	=	__VERSION__;
@@ -1109,13 +1128,13 @@ void	PrintDecInt(int theNumber, int digitCnt);
 	prog_char	gTextMsg_SPACE[]			PROGMEM	=	" ";
 	prog_char	gTextMsg_WriteToEEprom[]	PROGMEM	=	"Writting EE";
 	prog_char	gTextMsg_ReadingEEprom[]	PROGMEM	=	"Reading EE";
-	prog_char	gTextMsg_EEPROMerrorCnt[]	PROGMEM	=	"eeprom error count=";
+	prog_char	gTextMsg_EEPROMerrorCnt[]	PROGMEM	=	"EE err cnt=";
 	prog_char	gTextMsg_PORT[]				PROGMEM	=	"PORT";
 
 
 //************************************************************************
 //*	Help messages
-	prog_char	gTextMsg_HELP_MSG_0[]		PROGMEM	=	"0=Zero address ctrs";
+	prog_char	gTextMsg_HELP_MSG_0[]		PROGMEM	=	"0=Zero addr";
 	prog_char	gTextMsg_HELP_MSG_QM[]		PROGMEM	=	"?=CPU stats";
 	prog_char	gTextMsg_HELP_MSG_AT[]		PROGMEM	=	"@=EEPROM test";
 	prog_char	gTextMsg_HELP_MSG_B[]		PROGMEM	=	"B=Blink LED";
@@ -1123,7 +1142,8 @@ void	PrintDecInt(int theNumber, int digitCnt);
 	prog_char	gTextMsg_HELP_MSG_F[]		PROGMEM	=	"F=Dump FLASH";
 	prog_char	gTextMsg_HELP_MSG_H[]		PROGMEM	=	"H=Help";
 	prog_char	gTextMsg_HELP_MSG_L[]		PROGMEM	=	"L=List I/O Ports";
-	prog_char	gTextMsg_HELP_MSG_Q[]		PROGMEM	=	"Q=Quit & jump to user pgm";
+//	prog_char	gTextMsg_HELP_MSG_Q[]		PROGMEM	=	"Q=Quit & jump to user pgm";
+	prog_char	gTextMsg_HELP_MSG_Q[]		PROGMEM	=	"Q=Quit";
 	prog_char	gTextMsg_HELP_MSG_R[]		PROGMEM	=	"R=Dump RAM";
 	prog_char	gTextMsg_HELP_MSG_V[]		PROGMEM	=	"V=show interrupt Vectors";
 	prog_char	gTextMsg_HELP_MSG_Y[]		PROGMEM	=	"Y=Port blink";
@@ -1142,7 +1162,11 @@ char	theChar;
 
 	while (theChar != 0)
 	{
+	#if (FLASHEND > 0x10000)
 		theChar	=	pgm_read_byte_far((uint32_t)dataPtr + ii);
+	#else
+		theChar	=	pgm_read_byte_near((uint32_t)dataPtr + ii);
+	#endif
 		if (theChar != 0)
 		{
 			sendchar(theChar);
@@ -1388,7 +1412,11 @@ unsigned char	*ramPtr;
 			switch(dumpWhat)
 			{
 				case kDUMP_FLASH:
+				#if (FLASHEND > 0x10000)
 					theValue	=	pgm_read_byte_far(myAddressPointer);
+				#else
+					theValue	=	pgm_read_byte_near(myAddressPointer);
+				#endif
 					break;
 
 				case kDUMP_EEPROM:
@@ -1435,7 +1463,11 @@ int		errorCount;
 	PrintFromPROGMEMln(gTextMsg_WriteToEEprom, 0);
 	PrintNewLine();
 	ii			=	0;
+#if (FLASHEND > 0x10000)
 	while (((theChar = pgm_read_byte_far(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#else
+	while (((theChar = pgm_read_byte_near(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#endif
 	{
 		eeprom_write_byte((uint8_t *)ii, theChar);
 		if (theChar == 0)
@@ -1456,7 +1488,11 @@ int		errorCount;
 	PrintNewLine();
 	errorCount	=	0;
 	ii			=	0;
+#if (FLASHEND > 0x10000)
 	while (((theChar = pgm_read_byte_far(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#else
+	while (((theChar = pgm_read_byte_near(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#endif
 	{
 		theEEPROMchar	=	eeprom_read_byte((uint8_t *)ii);
 		if (theEEPROMchar == 0)
