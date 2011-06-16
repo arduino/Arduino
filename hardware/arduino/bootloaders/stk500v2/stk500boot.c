@@ -79,6 +79,8 @@ LICENSE:
 //*	Jul 29,	2010	<MLS> Added recchar_timeout for timing out on bootloading
 //*	Aug 23,	2010	<MLS> Added support for atmega2561
 //*	Aug 26,	2010	<MLS> Removed support for BOOT_BY_SWITCH
+//*	Sep  8,	2010	<MLS> Added support for atmega16
+//*	Nov  9,	2010	<MLS> Fixed bug that 3 !!! in code would cause it to jump to monitor
 //************************************************************************
 
 
@@ -95,12 +97,21 @@ LICENSE:
 #include	"command.h"
 
 
-#if defined(_MEGA_BOARD_) || defined(_BOARD_AMBER128_) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)
+#if defined(_MEGA_BOARD_) || defined(_BOARD_AMBER128_) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) \
+	|| defined(__AVR_ATmega2561__) || defined(__AVR_ATmega1284P__) || defined(ENABLE_MONITOR)
+	#undef		ENABLE_MONITOR
 	#define		ENABLE_MONITOR
 	static void	RunMonitor(void);
 #endif
 
-//#define	_DEBUG_SERIAL_
+#ifndef EEWE
+	#define EEWE    1
+#endif
+#ifndef EEMWE
+	#define EEMWE   2
+#endif
+
+#define	_DEBUG_SERIAL_
 //#define	_DEBUG_WITH_LEDS_
 
 
@@ -131,8 +142,8 @@ LICENSE:
 	#define PROGLED_PORT	PORTD
 	#define PROGLED_DDR		DDRD
 	#define PROGLED_PIN		PINE7
-#elif defined( _CEREBOTPLUS_BOARD_ )
-	//*	this is for the Cerebot 2560 board
+#elif defined( _CEREBOTPLUS_BOARD_ ) || defined(_CEREBOT_II_BOARD_)
+	//*	this is for the Cerebot 2560 board and the Cerebot-ii
 	//*	onbarod leds are on PORTE4-7
 	#define PROGLED_PORT	PORTE
 	#define PROGLED_DDR		DDRE
@@ -149,6 +160,47 @@ LICENSE:
 	#define PROGLED_PORT	PORTA
 	#define PROGLED_DDR		DDRA
 	#define PROGLED_PIN		PINA3
+#elif defined( _BOARD_MEGA16 )
+	//*	onbarod led is PORTA7
+	#define PROGLED_PORT	PORTA
+	#define PROGLED_DDR		DDRA
+	#define PROGLED_PIN		PINA7
+	#define UART_BAUDRATE_DOUBLE_SPEED 0
+
+#elif defined( _BOARD_BAHBOT_ )
+	//*	dosent have an onboard LED but this is what will probably be added to this port
+	#define PROGLED_PORT	PORTB
+	#define PROGLED_DDR		DDRB
+	#define PROGLED_PIN		PINB0
+
+#elif defined( _BOARD_ROBOTX_ )
+	#define PROGLED_PORT	PORTB
+	#define PROGLED_DDR		DDRB
+	#define PROGLED_PIN		PINB6
+#elif defined( _BOARD_CUSTOM1284_BLINK_B0_ )
+	#define PROGLED_PORT	PORTB
+	#define PROGLED_DDR		DDRB
+	#define PROGLED_PIN		PINB0
+#elif defined( _BOARD_CUSTOM1284_ )
+	#define PROGLED_PORT	PORTD
+	#define PROGLED_DDR		DDRD
+	#define PROGLED_PIN		PIND5
+#elif defined( _AVRLIP_ )
+	#define PROGLED_PORT	PORTB
+	#define PROGLED_DDR		DDRB
+	#define PROGLED_PIN		PINB5
+#elif defined( _BOARD_STK500_ )
+	#define PROGLED_PORT	PORTA
+	#define PROGLED_DDR		DDRA
+	#define PROGLED_PIN		PINA7
+#elif defined( _BOARD_STK502_ )
+	#define PROGLED_PORT	PORTB
+	#define PROGLED_DDR		DDRB
+	#define PROGLED_PIN		PINB5
+#elif defined( _BOARD_STK525_ )
+	#define PROGLED_PORT	PORTB
+	#define PROGLED_DDR		DDRB
+	#define PROGLED_PIN		PINB7
 #else
 	#define PROGLED_PORT	PORTG
 	#define PROGLED_DDR		DDRG
@@ -164,6 +216,7 @@ LICENSE:
 	#define F_CPU 16000000UL
 #endif
 
+#define	_BLINK_LOOP_COUNT_	(F_CPU / 2250)
 /*
  * UART Baudrate, AVRStudio AVRISP only accepts 115200 bps
  */
@@ -228,12 +281,33 @@ LICENSE:
 	#define SIGNATURE_BYTES 0x1E9801
 #elif defined (__AVR_ATmega2561__)
 	#define SIGNATURE_BYTES 0x1e9802
+#elif defined (__AVR_ATmega1284P__)
+	#define SIGNATURE_BYTES 0x1e9705
+#elif defined (__AVR_ATmega640__)
+	#define SIGNATURE_BYTES  0x1e9608
+#elif defined (__AVR_ATmega64__)
+	#define SIGNATURE_BYTES  0x1E9602
+#elif defined (__AVR_ATmega169__)
+	#define SIGNATURE_BYTES  0x1e9405
+#elif defined (__AVR_AT90USB1287__)
+	#define SIGNATURE_BYTES  0x1e9782
 #else
 	#error "no signature definition for MCU available"
 #endif
 
 
-#if defined(__AVR_ATmega8__) || defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__) \
+#if defined(_BOARD_ROBOTX_) || defined(__AVR_AT90USB1287__) || defined(__AVR_AT90USB1286__)
+	#define	UART_BAUD_RATE_LOW			UBRR1L
+	#define	UART_STATUS_REG				UCSR1A
+	#define	UART_CONTROL_REG			UCSR1B
+	#define	UART_ENABLE_TRANSMITTER		TXEN1
+	#define	UART_ENABLE_RECEIVER		RXEN1
+	#define	UART_TRANSMIT_COMPLETE		TXC1
+	#define	UART_RECEIVE_COMPLETE		RXC1
+	#define	UART_DATA_REG				UDR1
+	#define	UART_DOUBLE_SPEED			U2X1
+
+#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega16__) || defined(__AVR_ATmega32__) \
 	|| defined(__AVR_ATmega8515__) || defined(__AVR_ATmega8535__)
 	/* ATMega8 with one USART */
 	#define	UART_BAUD_RATE_LOW			UBRRL
@@ -258,6 +332,28 @@ LICENSE:
 	#define	UART_RECEIVE_COMPLETE		RXC0
 	#define	UART_DATA_REG				UDR0
 	#define	UART_DOUBLE_SPEED			U2X0
+#elif defined(UBRR0L) && defined(UCSR0A) && defined(TXEN0)
+	/* ATMega with two USART, use UART0 */
+	#define	UART_BAUD_RATE_LOW			UBRR0L
+	#define	UART_STATUS_REG				UCSR0A
+	#define	UART_CONTROL_REG			UCSR0B
+	#define	UART_ENABLE_TRANSMITTER		TXEN0
+	#define	UART_ENABLE_RECEIVER		RXEN0
+	#define	UART_TRANSMIT_COMPLETE		TXC0
+	#define	UART_RECEIVE_COMPLETE		RXC0
+	#define	UART_DATA_REG				UDR0
+	#define	UART_DOUBLE_SPEED			U2X0
+#elif defined(UBRRL) && defined(UCSRA) && defined(UCSRB) && defined(TXEN) && defined(RXEN)
+	//* catch all
+	#define	UART_BAUD_RATE_LOW			UBRRL
+	#define	UART_STATUS_REG				UCSRA
+	#define	UART_CONTROL_REG			UCSRB
+	#define	UART_ENABLE_TRANSMITTER		TXEN
+	#define	UART_ENABLE_RECEIVER		RXEN
+	#define	UART_TRANSMIT_COMPLETE		TXC
+	#define	UART_RECEIVE_COMPLETE		RXC
+	#define	UART_DATA_REG				UDR
+	#define	UART_DOUBLE_SPEED			U2X
 #else
 	#error "no UART definition for MCU available"
 #endif
@@ -323,26 +419,16 @@ void __jumpMain(void)
 
 	asm volatile ( ".set __stack, %0" :: "i" (RAMEND) );
 
-//	ldi r16,high(RAMEND)
-//	out SPH,r16 ; Set stack pointer to top of RAM
+//*	et stack pointer to top of RAM
 
-//	asm volatile ( "ldi	16, 0x10");
 	asm volatile ( "ldi	16, %0" :: "i" (RAMEND >> 8) );
-//	asm volatile ( "out 0x3E,16");
-//	asm volatile ( "out %0,16" :: "i" (SPH_REG) );
 	asm volatile ( "out %0,16" :: "i" (AVR_STACK_POINTER_HI_ADDR) );
 
-//	asm volatile ( "ldi	16, 0x00");
 	asm volatile ( "ldi	16, %0" :: "i" (RAMEND & 0x0ff) );
-//	asm volatile ( "out 0x3d,16");
-//	asm volatile ( "out %0,16" :: "i" (SPL_REG) );
 	asm volatile ( "out %0,16" :: "i" (AVR_STACK_POINTER_LO_ADDR) );
-
-
 
 	asm volatile ( "clr __zero_reg__" );									// GCC depends on register r1 set to 0
 	asm volatile ( "out %0, __zero_reg__" :: "I" (_SFR_IO_ADDR(SREG)) );	// set SREG to 0
-//	asm volatile ( "rjmp main");											// jump to main()
 	asm volatile ( "jmp main");												// jump to main()
 }
 
@@ -403,7 +489,7 @@ uint32_t count = 0;
 		if (count > MAX_TIME_COUNT)
 		{
 		unsigned int	data;
-		#if (FLASHEND > 0x0FFFF)
+		#if (FLASHEND > 0x10000)
 			data	=	pgm_read_word_far(0);	//*	get the first word of the user program
 		#else
 			data	=	pgm_read_word_near(0);	//*	get the first word of the user program
@@ -442,7 +528,16 @@ int main(void)
 	unsigned long	boot_timer;
 	unsigned int	boot_state;
 #ifdef ENABLE_MONITOR
-	unsigned int	exPointCntr	=	0;
+	unsigned int	exPointCntr		=	0;
+	unsigned int	rcvdCharCntr	=	0;
+#endif
+
+#if 1
+	asm volatile ( ".set __stack, %0" :: "i" (RAMEND) );
+	asm volatile ( "ldi	16, %0" :: "i" (RAMEND >> 8) );
+	asm volatile ( "out %0,16" :: "i" (AVR_STACK_POINTER_HI_ADDR) );
+	asm volatile ( "ldi	16, %0" :: "i" (RAMEND & 0x0ff) );
+	asm volatile ( "out %0,16" :: "i" (AVR_STACK_POINTER_LO_ADDR) );
 #endif
 
 
@@ -450,7 +545,7 @@ int main(void)
 	boot_state	=	0;
 
 #ifdef BLINK_LED_WHILE_WAITING
-	boot_timeout	=	 20000;		//*	should be about 1 second
+	boot_timeout	=	 90000;		//*	should be about 4 seconds
 //	boot_timeout	=	170000;
 #else
 	boot_timeout	=	3500000; // 7 seconds , approx 2us per step when optimize "s"
@@ -516,7 +611,7 @@ int main(void)
 				boot_state	=	1; // (after ++ -> boot_state=2 bootloader timeout, jump to main 0x00000 )
 			}
 		#ifdef BLINK_LED_WHILE_WAITING
-			if ((boot_timer % 7000) == 0)
+			if ((boot_timer % _BLINK_LOOP_COUNT_) == 0)
 			{
 				//*	toggle the LED
 				PROGLED_PORT	^=	(1<<PROGLED_PIN);	// turn LED ON
@@ -547,10 +642,13 @@ int main(void)
 				{
 				//	c	=	recchar();
 					c	=	recchar_timeout();
+					
 				}
 
 			#ifdef ENABLE_MONITOR
-				if (c == '!')
+				rcvdCharCntr++;
+
+				if ((c == '!')  && (rcvdCharCntr < 10))
 				{
 					exPointCntr++;
 					if (exPointCntr == 3)
@@ -855,7 +953,8 @@ int main(void)
 						}
 						else
 						{
-						#if (!defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)  && !defined(__AVR_ATmega2561__))
+						#if (!defined(__AVR_ATmega1280__) && !defined(__AVR_ATmega2560__)  && !defined(__AVR_ATmega2561__)  && !defined(__AVR_ATmega1284P__)  && !defined(__AVR_ATmega640__))
+					//	#if (defined(EEARL) && defined(EEARH)  && defined(EEMWE)  && defined(EEWE)  && defined(EEDR))
 							/* write EEPROM */
 							do {
 								EEARL	=	address;			// Setup EEPROM address
@@ -890,11 +989,12 @@ int main(void)
 
 							// Read FLASH
 							do {
-	#if defined(RAMPZ)
+						//#if defined(RAMPZ)
+						#if (FLASHEND > 0x10000)
 								data	=	pgm_read_word_far(address);
-	#else
+						#else
 								data	=	pgm_read_word_near(address);
-	#endif
+						#endif
 								*p++	=	(unsigned char)data;		//LSB
 								*p++	=	(unsigned char)(data >> 8);	//MSB
 								address	+=	2;							// Select next word in memory
@@ -1056,6 +1156,8 @@ unsigned long	gEepromIndex;
 #define	true	1
 #define	false	0
 
+#include	"avr_cpunames.h"
+/*
 #if defined(__AVR_ATmega128__)
 	#define	kCPU_NAME	"ATmega128"
 #elif defined(__AVR_ATmega1280__)
@@ -1066,6 +1168,16 @@ unsigned long	gEepromIndex;
 	#define	kCPU_NAME	"ATmega2560"
 #elif defined(__AVR_ATmega2561__)
 	#define	kCPU_NAME	"ATmega2561"
+#elif defined(__AVR_ATmega1284P__)
+	#define	kCPU_NAME	"ATmega1284P"
+#elif defined(__AVR_ATmega640__)
+	#define	kCPU_NAME	"ATmega640"
+#else
+	#error cpu name not defined
+#endif
+*/
+#ifndef _AVR_CPU_NAME_
+	#error cpu name not defined
 #endif
 
 #ifdef _VECTORS_SIZE
@@ -1077,8 +1189,8 @@ unsigned long	gEepromIndex;
 
 void	PrintDecInt(int theNumber, int digitCnt);
 
-#ifdef kCPU_NAME
-	prog_char	gTextMsg_CPU_Name[]			PROGMEM	=	kCPU_NAME;
+#ifdef _AVR_CPU_NAME_
+	prog_char	gTextMsg_CPU_Name[]			PROGMEM	=	_AVR_CPU_NAME_;
 #else
 	prog_char	gTextMsg_CPU_Name[]			PROGMEM	=	"UNKNOWN";
 #endif
@@ -1086,16 +1198,16 @@ void	PrintDecInt(int theNumber, int digitCnt);
 	prog_char	gTextMsg_Explorer[]			PROGMEM	=	"Arduino explorer stk500V2 by MLS";
 	prog_char	gTextMsg_Prompt[]			PROGMEM	=	"Bootloader>";
 	prog_char	gTextMsg_HUH[]				PROGMEM	=	"Huh?";
-	prog_char	gTextMsg_COMPILED_ON[]		PROGMEM	=	"Compiled on  = ";
-	prog_char	gTextMsg_CPU_Type[]			PROGMEM	=	"CPU Type     = ";
-	prog_char	gTextMsg_AVR_ARCH[]			PROGMEM	=	"__AVR_ARCH__ = ";
-	prog_char	gTextMsg_AVR_LIBC[]			PROGMEM	=	"AVR LibC Ver = ";
-	prog_char	gTextMsg_GCC_VERSION[]		PROGMEM	=	"GCC Version  = ";
-	prog_char	gTextMsg_CPU_SIGNATURE[]	PROGMEM	=	"CPU signature= ";
-	prog_char	gTextMsg_FUSE_BYTE_LOW[]	PROGMEM	=	"Low fuse     = ";
-	prog_char	gTextMsg_FUSE_BYTE_HIGH[]	PROGMEM	=	"High fuse    = ";
-	prog_char	gTextMsg_FUSE_BYTE_EXT[]	PROGMEM	=	"Ext fuse     = ";
-	prog_char	gTextMsg_FUSE_BYTE_LOCK[]	PROGMEM	=	"Lock fuse    = ";
+	prog_char	gTextMsg_COMPILED_ON[]		PROGMEM	=	"Compiled on = ";
+	prog_char	gTextMsg_CPU_Type[]			PROGMEM	=	"CPU Type    = ";
+	prog_char	gTextMsg_AVR_ARCH[]			PROGMEM	=	"__AVR_ARCH__= ";
+	prog_char	gTextMsg_AVR_LIBC[]			PROGMEM	=	"AVR LibC Ver= ";
+	prog_char	gTextMsg_GCC_VERSION[]		PROGMEM	=	"GCC Version = ";
+	prog_char	gTextMsg_CPU_SIGNATURE[]	PROGMEM	=	"CPU ID      = ";
+	prog_char	gTextMsg_FUSE_BYTE_LOW[]	PROGMEM	=	"Low fuse    = ";
+	prog_char	gTextMsg_FUSE_BYTE_HIGH[]	PROGMEM	=	"High fuse   = ";
+	prog_char	gTextMsg_FUSE_BYTE_EXT[]	PROGMEM	=	"Ext fuse    = ";
+	prog_char	gTextMsg_FUSE_BYTE_LOCK[]	PROGMEM	=	"Lock fuse   = ";
 	prog_char	gTextMsg_GCC_DATE_STR[]		PROGMEM	=	__DATE__;
 	prog_char	gTextMsg_AVR_LIBC_VER_STR[]	PROGMEM	=	__AVR_LIBC_VERSION_STRING__;
 	prog_char	gTextMsg_GCC_VERSION_STR[]	PROGMEM	=	__VERSION__;
@@ -1109,13 +1221,13 @@ void	PrintDecInt(int theNumber, int digitCnt);
 	prog_char	gTextMsg_SPACE[]			PROGMEM	=	" ";
 	prog_char	gTextMsg_WriteToEEprom[]	PROGMEM	=	"Writting EE";
 	prog_char	gTextMsg_ReadingEEprom[]	PROGMEM	=	"Reading EE";
-	prog_char	gTextMsg_EEPROMerrorCnt[]	PROGMEM	=	"eeprom error count=";
+	prog_char	gTextMsg_EEPROMerrorCnt[]	PROGMEM	=	"EE err cnt=";
 	prog_char	gTextMsg_PORT[]				PROGMEM	=	"PORT";
 
 
 //************************************************************************
 //*	Help messages
-	prog_char	gTextMsg_HELP_MSG_0[]		PROGMEM	=	"0=Zero address ctrs";
+	prog_char	gTextMsg_HELP_MSG_0[]		PROGMEM	=	"0=Zero addr";
 	prog_char	gTextMsg_HELP_MSG_QM[]		PROGMEM	=	"?=CPU stats";
 	prog_char	gTextMsg_HELP_MSG_AT[]		PROGMEM	=	"@=EEPROM test";
 	prog_char	gTextMsg_HELP_MSG_B[]		PROGMEM	=	"B=Blink LED";
@@ -1123,7 +1235,8 @@ void	PrintDecInt(int theNumber, int digitCnt);
 	prog_char	gTextMsg_HELP_MSG_F[]		PROGMEM	=	"F=Dump FLASH";
 	prog_char	gTextMsg_HELP_MSG_H[]		PROGMEM	=	"H=Help";
 	prog_char	gTextMsg_HELP_MSG_L[]		PROGMEM	=	"L=List I/O Ports";
-	prog_char	gTextMsg_HELP_MSG_Q[]		PROGMEM	=	"Q=Quit & jump to user pgm";
+//	prog_char	gTextMsg_HELP_MSG_Q[]		PROGMEM	=	"Q=Quit & jump to user pgm";
+	prog_char	gTextMsg_HELP_MSG_Q[]		PROGMEM	=	"Q=Quit";
 	prog_char	gTextMsg_HELP_MSG_R[]		PROGMEM	=	"R=Dump RAM";
 	prog_char	gTextMsg_HELP_MSG_V[]		PROGMEM	=	"V=show interrupt Vectors";
 	prog_char	gTextMsg_HELP_MSG_Y[]		PROGMEM	=	"Y=Port blink";
@@ -1142,7 +1255,11 @@ char	theChar;
 
 	while (theChar != 0)
 	{
+	#if (FLASHEND > 0x10000)
 		theChar	=	pgm_read_byte_far((uint32_t)dataPtr + ii);
+	#else
+		theChar	=	pgm_read_byte_near((uint32_t)dataPtr + ii);
+	#endif
 		if (theChar != 0)
 		{
 			sendchar(theChar);
@@ -1388,7 +1505,11 @@ unsigned char	*ramPtr;
 			switch(dumpWhat)
 			{
 				case kDUMP_FLASH:
+				#if (FLASHEND > 0x10000)
 					theValue	=	pgm_read_byte_far(myAddressPointer);
+				#else
+					theValue	=	pgm_read_byte_near(myAddressPointer);
+				#endif
 					break;
 
 				case kDUMP_EEPROM:
@@ -1435,7 +1556,11 @@ int		errorCount;
 	PrintFromPROGMEMln(gTextMsg_WriteToEEprom, 0);
 	PrintNewLine();
 	ii			=	0;
+#if (FLASHEND > 0x10000)
 	while (((theChar = pgm_read_byte_far(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#else
+	while (((theChar = pgm_read_byte_near(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#endif
 	{
 		eeprom_write_byte((uint8_t *)ii, theChar);
 		if (theChar == 0)
@@ -1456,7 +1581,11 @@ int		errorCount;
 	PrintNewLine();
 	errorCount	=	0;
 	ii			=	0;
+#if (FLASHEND > 0x10000)
 	while (((theChar = pgm_read_byte_far(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#else
+	while (((theChar = pgm_read_byte_near(gTextMsg_Explorer + ii)) != '*') && (ii < 512))
+#endif
 	{
 		theEEPROMchar	=	eeprom_read_byte((uint8_t *)ii);
 		if (theEEPROMchar == 0)
@@ -1534,12 +1663,18 @@ unsigned long	absoluteAddr;
 
 	
 		//*	the AVR is LITTLE ENDIAN, swap the byte order
+	#if (FLASHEND > 0x10000)
 		byte1	=	pgm_read_byte_far(myMemoryPtr++);
 		byte2	=	pgm_read_byte_far(myMemoryPtr++);
-		word1	=	(byte2 << 8) + byte1;
-
 		byte3	=	pgm_read_byte_far(myMemoryPtr++);
 		byte4	=	pgm_read_byte_far(myMemoryPtr++);
+	#else
+		byte1	=	pgm_read_byte_near(myMemoryPtr++);
+		byte2	=	pgm_read_byte_near(myMemoryPtr++);
+		byte3	=	pgm_read_byte_near(myMemoryPtr++);
+		byte4	=	pgm_read_byte_near(myMemoryPtr++);
+	#endif
+		word1	=	(byte2 << 8) + byte1;
 		word2	=	(byte4 << 8) + byte3;
 
 
@@ -1596,7 +1731,11 @@ unsigned long	absoluteAddr;
 
 	#if defined(_INTERRUPT_NAMES_DEFINED_)
 		sendchar(0x20);
+	#if (FLASHEND > 0x10000)
 		stringPointer	=	pgm_read_word_far(&(gInterruptNameTable[vectorIndex]));
+	#else
+		stringPointer	=	pgm_read_word_near(&(gInterruptNameTable[vectorIndex]));
+	#endif
 		PrintFromPROGMEM((char *)stringPointer, 0);
 	#endif
 		PrintNewLine();

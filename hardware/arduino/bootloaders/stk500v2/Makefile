@@ -361,13 +361,22 @@ amber128: begin gccversion sizebefore build sizeafter end
 
 ############################################################
 #	Aug 23, 2010 	<MLS> Adding atmega2561 support
-m2561: MCU = atmega2561
-m2561: F_CPU = 8000000
-m2561: BOOTLOADER_ADDRESS = 3E000
-m2561: CFLAGS += -D_ANDROID_2561_ -DBAUDRATE=57600
-m2561: begin gccversion sizebefore build sizeafter end 
-			mv $(TARGET).hex stk500boot_v2_android2561.hex
+m2561_8mhz: MCU = atmega2561
+m2561_8mhz: F_CPU = 8000000
+m2561_8mhz: BOOTLOADER_ADDRESS = 3E000
+m2561_8mhz: CFLAGS += -D_ANDROID_2561_ -DBAUDRATE=57600
+m2561_8mhz: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_m2561_8mhz.hex
 
+
+############################################################
+#	Aug 23, 2010 	<MLS> Adding atmega2561 support
+m2561_16mhz: MCU = atmega2561
+m2561_16mhz: F_CPU = 16000000
+m2561_16mhz: BOOTLOADER_ADDRESS = 3E000
+m2561_16mhz: CFLAGS += -D_ANDROID_2561_ -DBAUDRATE=115200
+m2561_16mhz: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_m2561_16mhz.hex
 
 ############################################################
 #	avrdude: Device signature = 0x1e9801
@@ -380,19 +389,130 @@ m2561: begin gccversion sizebefore build sizeafter end
 cerebot:	MCU = atmega2560
 cerebot:	F_CPU = 8000000
 cerebot:	BOOTLOADER_ADDRESS = 3E000
-cerebot:	CFLAGS += -D_CEREBOTPLUS_BOARD_ -DBAUDRATE=38400 -DUART_BAUDRATE_DOUBLE_SPEED=1
+cerebot:	CFLAGS += -D_CEREBOTPLUS_BOARD_ -DBAUDRATE=38400 -DUART_BAUDRATE_DOUBLE_SPEED=1 -DENABLE_MONITOR
 cerebot:	begin gccversion sizebefore build sizeafter end 
 			mv $(TARGET).hex stk500boot_v2_cerebotplus.hex
 
 
 ############################################################
-#	Aug 23, 2010 	<MLS> Adding atmega2561 support
+cerebotii:	MCU = atmega64
+cerebotii:	F_CPU = 8000000
+cerebotii:	BOOTLOADER_ADDRESS = E000
+cerebotii:	CFLAGS += -D_CEREBOT_II_BOARD_ -DBAUDRATE=19200 -DUART_BAUDRATE_DOUBLE_SPEED=1 -DENABLE_MONITOR
+cerebotii:	begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_cerebotii.hex
+
+
+############################################################
+#	Aug 23, 2010 	<MLS> Adding atmega32 support
 penguino: MCU = atmega32
 penguino: F_CPU = 16000000
 penguino: BOOTLOADER_ADDRESS = 7800
 penguino: CFLAGS += -D_PENGUINO_ -DBAUDRATE=57600
 penguino: begin gccversion sizebefore build sizeafter end 
 			mv $(TARGET).hex stk500boot_v2_penguino.hex
+
+
+############################################################
+#	Sep 8, 2010 	<MLS> Adding atmega16 support
+atmega16: MCU = atmega16
+atmega16: F_CPU = 8000000
+atmega16: BOOTLOADER_ADDRESS = 3800
+atmega16: CFLAGS += -D_BOARD_MEGA16 -DBAUDRATE=57600
+atmega16: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_atmega16.hex
+
+
+############################################################
+#	Sep 8, 2010 	<MLS> Adding atmega16 support
+atmega16at16: MCU = atmega16
+atmega16at16: F_CPU = 16000000
+atmega16at16: BOOTLOADER_ADDRESS = 3800
+atmega16at16: CFLAGS += -D_BOARD_MEGA16 -DBAUDRATE=57600
+atmega16at16: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_atmega16at16.hex
+
+
+############################################################
+#	Sep 17, 2010 	<MLS> Adding BahBots 1284p
+bahbot: MCU = atmega1284p
+bahbot: F_CPU = 18432000
+bahbot: BOOTLOADER_ADDRESS = 1E000
+bahbot: CFLAGS += -D_BOARD_BAHBOT_ -DBAUDRATE=38400
+bahbot: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_bahbots1284.hex
+
+
+############################################################
+#	Sep 24, 2010 	<MLS> custom bootloader for ro-bot-x
+robotx: MCU = atmega640
+robotx: F_CPU = 16000000
+robotx: BOOTLOADER_ADDRESS = E000
+robotx: CFLAGS += -D_BOARD_ROBOTX_ -DBAUDRATE=38400 -DENABLE_MONITOR
+robotx: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_robotx640uart1.hex
+
+
+
+############################################################
+#	Oct 1, 2010 	<MLS> Adding custom 1284
+mega1284_20: MCU = atmega1284p
+mega1284_20: F_CPU = 20000000
+mega1284_20: BOOTLOADER_ADDRESS = 1E000
+mega1284_20: CFLAGS += -D_BOARD_CUSTOM1284_ -DBAUDRATE=115200
+mega1284_20: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_mega1284_20.hex
+
+
+############################################################
+#	Aug 23, 2010 	<MLS> Adding atmega32 support
+avrlip: MCU = atmega32
+avrlip: F_CPU = 4000000
+avrlip: BOOTLOADER_ADDRESS = 7800
+avrlip: CFLAGS += -D_AVRLIP_ -DBAUDRATE=38400 -DUART_BAUDRATE_DOUBLE_SPEED=1
+avrlip: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_avrlip_atmega32.hex
+
+
+############################################################
+#	Feb 27, 2011 	<MLS> Adding Stk500 with atmega16
+stk500: MCU = atmega16
+stk500: F_CPU = 16000000
+stk500: BOOTLOADER_ADDRESS = 3800
+stk500: CFLAGS += -D_BOARD_STK500_ -DBAUDRATE=57600 -DUART_BAUDRATE_DOUBLE_SPEED=1
+stk500: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_stk500_m16.hex
+
+
+############################################################
+#	Feb 27, 2011 	<MLS> Adding ATmega169 support (STK502)
+stk502: MCU = atmega169
+stk502: F_CPU = 8000000
+stk502: BOOTLOADER_ADDRESS = 3800
+stk502: CFLAGS += -D_BOARD_STK502_ -DBAUDRATE=57600 -DUART_BAUDRATE_DOUBLE_SPEED=1
+stk502: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_stk502.hex
+
+
+############################################################
+#	Feb 28, 2011 	<MLS> Adding __AVR_AT90USB1287__ via UART1 (STK525)
+stk525: MCU = at90usb1287
+stk525: F_CPU = 8000000
+stk525: BOOTLOADER_ADDRESS = 1E000
+stk525: CFLAGS += -D_BOARD_STK525_ -DBAUDRATE=115200 -DUART_BAUDRATE_DOUBLE_SPEED=1
+stk525: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_stk525.hex
+
+
+############################################################
+#	Oct 1, 2010 	<MLS> Adding custom 1284
+mega1284_18: MCU = atmega1284p
+mega1284_18: F_CPU = 18432000
+mega1284_18: BOOTLOADER_ADDRESS = 1E000
+mega1284_18: CFLAGS += -D_BOARD_CUSTOM1284_BLINK_B0_ -DBAUDRATE=115200
+mega1284_18: begin gccversion sizebefore build sizeafter end 
+			mv $(TARGET).hex stk500boot_v2_mega1284_18.hex
+
 
 
 # Default target.
