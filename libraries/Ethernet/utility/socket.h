@@ -16,5 +16,18 @@ extern uint16_t recvfrom(SOCKET s, uint8_t * buf, uint16_t len, uint8_t * addr, 
 
 extern uint16_t igmpsend(SOCKET s, const uint8_t * buf, uint16_t len);
 
+/*
+  @brief This function copies up to len bytes of data from buf into a UDP datagram to be
+  sent later by sendUDP.  Allows datagrams to be built up from a series of bufferData calls.
+  @return Number of bytes successfully buffered
+*/
+uint16_t bufferData(SOCKET s, uint16_t offset, const uint8_t* buf, uint16_t len);
+/*
+  @brief Send a TCP datagram built up from a sequence of connect() followed by one or more
+  calls to bufferData.
+  @return 1 if packet was successfully sent, or 0 if there was an error
+ */
+uint16_t sendTCP(SOCKET s);
+
 #endif
 /* _SOCKET_H_ */

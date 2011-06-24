@@ -19,6 +19,12 @@ Client::Client(uint8_t sock) : _sock(sock) {
 Client::Client(uint8_t *ip, uint16_t port) : _ip(ip), _port(port), _sock(MAX_SOCK_NUM) {
 }
 
+uint8_t Client::connect(uint8_t* remote_ip, uint16_t remote_port) {
+    _ip = remote_ip;
+    _port = remote_port;
+    return connect();
+}
+
 uint8_t Client::connect() {
   if (_sock != MAX_SOCK_NUM)
     return 0;
@@ -50,7 +56,7 @@ uint8_t Client::connect() {
       return 0;
     }
   }
-
+  _offset = 0;
   return 1;
 }
 
@@ -67,6 +73,23 @@ void Client::write(const char *str) {
 void Client::write(const uint8_t *buf, size_t size) {
   if (_sock != MAX_SOCK_NUM)
     send(_sock, buf, size);
+}
+
+uint16_t Client::addData(uint8_t b) {
+    return addData(&b, 1);
+}
+
+uint16_t Client::addData(uint8_t *buf, uint16_t len)
+{
+  uint16_t bytes_written = bufferData(_sock, _offset, buf, len);
+  _offset += bytes_written;
+  return bytes_written;
+}
+
+uint16_t Client::finishSendPacket()
+{
+  _offset = 0;
+  return sendTCP(_sock);
 }
 
 int Client::available() {

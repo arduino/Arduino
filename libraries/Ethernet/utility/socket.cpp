@@ -119,20 +119,7 @@ uint16_t send(SOCKET s, const uint8_t * buf, uint16_t len)
 
   // copy data
   W5100.send_data_processing(s, (uint8_t *)buf, ret);
-  W5100.execCmdSn(s, Sock_SEND);
-
-  /* +2008.01 bj */
-  while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK ) 
-  {
-    /* m2008.01 [bj] : reduce code */
-    if ( W5100.readSnSR(s) == SnSR::CLOSED )
-    {
-      close(s);
-      return 0;
-    }
-  }
-  /* +2008.01 bj */
-  W5100.writeSnIR(s, SnIR::SEND_OK);
+  ret = sendTCP(s);
   return ret;
 }
 
@@ -343,3 +330,36 @@ uint16_t igmpsend(SOCKET s, const uint8_t * buf, uint16_t len)
   return ret;
 }
 
+uint16_t bufferData(SOCKET s, uint16_t offset, const uint8_t* buf, uint16_t len)
+{
+  uint16_t ret =0;
+  if (len > W5100.getTXFreeSize(s))
+  {
+    ret = W5100.getTXFreeSize(s); // check size not to exceed MAX size.
+  }
+  else
+  {
+    ret = len;
+  }
+  W5100.send_data_processing_offset(s, offset, buf, ret);
+  return ret;
+}
+
+uint16_t sendTCP(SOCKET s)
+{
+  W5100.execCmdSn(s, Sock_SEND);
+
+  /* +2008.01 bj */
+  while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK )
+  {
+    /* m2008.01 [bj] : reduce code */
+    if ( W5100.readSnSR(s) == SnSR::CLOSED )
+    {
+      close(s);
+      return 0;
+    }
+  }
+  /* +2008.01 bj */
+  W5100.writeSnIR(s, SnIR::SEND_OK);
+  return 1;
+}
