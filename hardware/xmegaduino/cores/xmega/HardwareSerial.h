@@ -22,11 +22,11 @@
 
 #include <inttypes.h>
 
-#include "Print.h"
+#include "Stream.h"
 
 struct ring_buffer;
 
-class HardwareSerial : public Print
+class HardwareSerial : public Stream
 {
   private:
     ring_buffer *_rx_buffer;
@@ -43,9 +43,10 @@ class HardwareSerial : public Print
         uint8_t     out_bm);
     void begin(long);
     void end();
-    uint8_t available(void);
-    int read(void);
-    void flush(void);
+    virtual int available(void);
+    virtual int peek(void);
+    virtual int read(void);
+    virtual void flush(void);
     virtual void write(uint8_t);
     using Print::write; // pull in write(str) and write(buf, size) from Print
 };

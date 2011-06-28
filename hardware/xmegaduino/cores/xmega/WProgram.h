@@ -10,6 +10,8 @@
 #include "wiring.h"
 
 #ifdef __cplusplus
+#include "WCharacter.h"
+#include "WString.h"
 #include "HardwareSerial.h"
 
 uint16_t makeWord(uint16_t w);

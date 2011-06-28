@@ -19,6 +19,7 @@
   Modified 23 November 2006 by David A. Mellis
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
@@ -33,7 +34,8 @@
 // is the index of the location from which to read.
 #define RX_BUFFER_SIZE 128
 
-struct ring_buffer {
+struct ring_buffer
+{
   unsigned char buffer[RX_BUFFER_SIZE];
   int head;
   int tail;
@@ -41,7 +43,7 @@ struct ring_buffer {
 
 inline void store_char(unsigned char c, ring_buffer *rx_buffer)
 {
-  int i = (rx_buffer->head + 1) % RX_BUFFER_SIZE;
+  int i = (unsigned int)(rx_buffer->head + 1) % RX_BUFFER_SIZE;
 
   // if we should be storing the received character into the location
   // just before the tail (meaning that the head would advance to the
@@ -131,9 +133,18 @@ void HardwareSerial::end()
   _usart->CTRLA = (_usart->CTRLA & ~USART_RXCINTLVL_gm) | USART_RXCINTLVL_LO_gc;
 }
 
-uint8_t HardwareSerial::available(void)
+int HardwareSerial::available(void)
 {
-  return (RX_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % RX_BUFFER_SIZE;
+  return (unsigned int)(RX_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % RX_BUFFER_SIZE;
+}
+
+int HardwareSerial::peek(void)
+{
+  if (_rx_buffer->head == _rx_buffer->tail) {
+    return -1;
+  } else {
+    return _rx_buffer->buffer[_rx_buffer->tail];
+  }
 }
 
 int HardwareSerial::read(void)
@@ -143,13 +154,17 @@ int HardwareSerial::read(void)
     return -1;
   } else {
     unsigned char c = _rx_buffer->buffer[_rx_buffer->tail];
-    _rx_buffer->tail = (_rx_buffer->tail + 1) % RX_BUFFER_SIZE;
+    _rx_buffer->tail = (unsigned int)(_rx_buffer->tail + 1) % RX_BUFFER_SIZE;
     return c;
   }
 }
 
 void HardwareSerial::flush()
 {
+  // don't reverse this or there may be problems if the RX interrupt
+  // occurs after reading the value of rx_buffer_head but before writing
+  // the value to rx_buffer_tail; the previous value of rx_buffer_head
+  // may be written to rx_buffer_tail, making it appear as if the buffer
   // don't reverse this or there may be problems if the RX interrupt
   // occurs after reading the value of rx_buffer_head but before writing
   // the value to rx_buffer_tail; the previous value of rx_buffer_head
