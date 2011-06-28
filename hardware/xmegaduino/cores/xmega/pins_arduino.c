@@ -115,7 +115,7 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 #endif
 };
 
-#if BOARD_sfe == BOARD
+#if BOARD_sfe
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	// PORTLIST
@@ -176,7 +176,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	REPEAT8(NOT_ON_TIMER), // PORT F Switches
 	};
 
-#elif BOARD_xplain == BOARD
+#elif BOARD_xplain
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	// PORTLIST
@@ -224,7 +224,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	REPEAT8(NOT_ON_TIMER), // PORT F Switches
 	};
 
-#elif BOARD_xplain_arduino == BOARD
+#elif BOARD_xplain_arduino
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	// PORTLIST
