@@ -309,6 +309,13 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 const TC0_t* PROGMEM timer_to_tc0_PGM[] = {
 	NULL,
 
+	&TCC0,
+	&TCC0,
+	&TCC0,
+	&TCC0,
+	NULL,
+	NULL,
+
 	&TCD0,
 	&TCD0,
 	&TCD0,
@@ -326,6 +333,13 @@ const TC0_t* PROGMEM timer_to_tc0_PGM[] = {
 
 const TC1_t* PROGMEM timer_to_tc1_PGM[] = {
 	NULL,
+
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	&TCC1,
+	&TCC1,
 
 	NULL,
 	NULL,
@@ -350,6 +364,13 @@ const TC1_t* PROGMEM timer_to_tc1_PGM[] = {
 
 const uint8_t PROGMEM timer_to_channel_PGM[] = {
     NULL,
+
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
 
     0,
     1,

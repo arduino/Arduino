@@ -89,7 +89,7 @@ double analogReadFloat(uint8_t pin)
     return ((double)analogRead12(pin)) / ((double)0xFFF);
 }
 
-const uint8_t PROGMEM timer_to_channel_register_PGM[] = {
+const uint16_t PROGMEM timer_to_channel_register_PGM[] = {
     NULL,
 
     &TCC0.CCABUF,
