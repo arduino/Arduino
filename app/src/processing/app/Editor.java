@@ -1821,9 +1821,11 @@ public class Editor extends JFrame implements RunnerListener {
         String appletClassName = sketch.build(false);
         statusNotice("Done compiling.");
       } catch (Exception e) {
+        status.unprogress();
         statusError(e);
       }
 
+      status.unprogress();
       toolbar.deactivate(EditorToolbar.RUN);
     }
   }
@@ -1836,9 +1838,11 @@ public class Editor extends JFrame implements RunnerListener {
         String appletClassName = sketch.build(true);
         statusNotice("Done compiling.");
       } catch (Exception e) {
+        status.unprogress();
         statusError(e);
       }
 
+      status.unprogress();
       toolbar.deactivate(EditorToolbar.RUN);
     }
   }
@@ -2239,7 +2243,7 @@ public class Editor extends JFrame implements RunnerListener {
     //if (!handleExportCheckModified()) return;
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
-    statusNotice("Uploading to I/O Board...");
+    status.progress("Uploading to I/O Board...");
 
     new Thread(verbose ? exportAppHandler : exportHandler).start();
   }
@@ -2263,10 +2267,12 @@ public class Editor extends JFrame implements RunnerListener {
       } catch (RunnerException e) {
         //statusError("Error during upload.");
         //e.printStackTrace();
+        status.unprogress();
         statusError(e);
       } catch (Exception e) {
         e.printStackTrace();
       }
+      status.unprogress();
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
@@ -2292,10 +2298,12 @@ public class Editor extends JFrame implements RunnerListener {
       } catch (RunnerException e) {
         //statusError("Error during upload.");
         //e.printStackTrace();
+        status.unprogress();
         statusError(e);
       } catch (Exception e) {
         e.printStackTrace();
       }
+      status.unprogress();
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
