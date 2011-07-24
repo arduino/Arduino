@@ -297,7 +297,9 @@ boolean callback_openPath(SdFile& parentDir, char *filePathComponent,
   if (isLastComponent) {
     SDClass *p_SD = static_cast<SDClass*>(object);
     p_SD->file.open(parentDir, filePathComponent, p_SD->fileOpenMode);
-    p_SD->c = -1;
+    if (p_SD->fileOpenMode == FILE_WRITE) {
+      p_SD->file.seekSet(p_SD->file.fileSize());
+    }
     // TODO: Return file open result?
     return false;
   }
@@ -343,7 +345,7 @@ boolean SDClass::begin(uint8_t csPin) {
 }
 
 
-File SDClass::open(char *filepath, boolean write, boolean append) {
+File SDClass::open(char *filepath, uint8_t mode) {
   /*
 
      Open the supplied file path for reading or writing.
@@ -369,18 +371,7 @@ File SDClass::open(char *filepath, boolean write, boolean append) {
 
   // TODO: Allow for read&write? (Possibly not, as it requires seek.)
 
-  uint8_t oflag = O_RDONLY;
-
-  if (write) {
-    oflag = O_CREAT | O_WRITE;
-    if (append) {
-      oflag |= O_APPEND;
-    } else {
-      oflag |= O_TRUNC;
-    }
-  }
-  
-  fileOpenMode = oflag;
+  fileOpenMode = mode;
   walkPath(filepath, root, callback_openPath, this);
 
   return File();

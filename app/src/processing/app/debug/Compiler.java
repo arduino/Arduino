@@ -93,81 +93,79 @@ public class Compiler implements MessageConsumer {
 
     List<File> objectFiles = new ArrayList<File>();
 
-    List includePaths = new ArrayList();
-    includePaths.add(corePath);
-    
-    String runtimeLibraryName = buildPath + File.separator + "core.a";
+   // 0. include paths for core + all libraries
 
-    // 1. compile the core, outputting .o files to <buildPath> and then
-    // collecting them into the core.a library file.
+   List includePaths = new ArrayList();
+   includePaths.add(corePath);
+   for (File file : sketch.getImportedLibraries()) {
+     includePaths.add(file.getPath());
+   }
 
-    sketch.setCompilingProgress(20);
+   // 1. compile the sketch (already in the buildPath)
 
-    List<File> coreObjectFiles = 
-      compileFiles(avrBasePath, buildPath, includePaths,
-                   findFilesInPath(corePath, "S", true),
-                   findFilesInPath(corePath, "c", true),
-                   findFilesInPath(corePath, "cpp", true),
-                   boardPreferences);
-                   
-    List baseCommandAR = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-ar",
-      "rcs",
-      runtimeLibraryName
-    }));
+   sketch.setCompilingProgress(20);
+   objectFiles.addAll(
+     compileFiles(avrBasePath, buildPath, includePaths,
+               findFilesInPath(buildPath, "S", false),
+               findFilesInPath(buildPath, "c", false),
+               findFilesInPath(buildPath, "cpp", false),
+               boardPreferences));
 
-    for(File file : coreObjectFiles) {
-      List commandAR = new ArrayList(baseCommandAR);
-      commandAR.add(file.getAbsolutePath());
-      execAsynchronously(commandAR);
-    }
+   // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
 
-    sketch.setCompilingProgress(30);
+   sketch.setCompilingProgress(30);
+   for (File libraryFolder : sketch.getImportedLibraries()) {
+     File outputFolder = new File(buildPath, libraryFolder.getName());
+     File utilityFolder = new File(libraryFolder, "utility");
+     createFolder(outputFolder);
+     // this library can use includes in its utility/ folder
+     includePaths.add(utilityFolder.getAbsolutePath());
+     objectFiles.addAll(
+       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
+               findFilesInFolder(libraryFolder, "S", false),
+               findFilesInFolder(libraryFolder, "c", false),
+               findFilesInFolder(libraryFolder, "cpp", false),
+               boardPreferences));
+     outputFolder = new File(outputFolder, "utility");
+     createFolder(outputFolder);
+     objectFiles.addAll(
+       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
+               findFilesInFolder(utilityFolder, "S", false),
+               findFilesInFolder(utilityFolder, "c", false),
+               findFilesInFolder(utilityFolder, "cpp", false),
+               boardPreferences));
+     // other libraries should not see this library's utility/ folder
+     includePaths.remove(includePaths.size() - 1);
+   }
 
-    // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
+   // 3. compile the core, outputting .o files to <buildPath> and then
+   // collecting them into the core.a library file.
 
-    // use library directories as include paths for all libraries
-    for (File file : sketch.getImportedLibraries()) {
-      includePaths.add(file.getPath());
-    }
+   sketch.setCompilingProgress(40);
+  includePaths.clear();
+  includePaths.add(corePath);  // include path for core only
+  List<File> coreObjectFiles =
+    compileFiles(avrBasePath, buildPath, includePaths,
+              findFilesInPath(corePath, "S", true),
+              findFilesInPath(corePath, "c", true),
+              findFilesInPath(corePath, "cpp", true),
+              boardPreferences);
 
-    for (File libraryFolder : sketch.getImportedLibraries()) {
-      File outputFolder = new File(buildPath, libraryFolder.getName());
-      File utilityFolder = new File(libraryFolder, "utility");
-      createFolder(outputFolder);
-      // this library can use includes in its utility/ folder
-      includePaths.add(utilityFolder.getAbsolutePath());
-      objectFiles.addAll(
-        compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
-                     findFilesInFolder(libraryFolder, "S", false),
-                     findFilesInFolder(libraryFolder, "c", false),
-                     findFilesInFolder(libraryFolder, "cpp", false),
-                     boardPreferences));
-      outputFolder = new File(outputFolder, "utility");
-      createFolder(outputFolder);
-      objectFiles.addAll(
-        compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
-                     findFilesInFolder(utilityFolder, "S", false),
-                     findFilesInFolder(utilityFolder, "c", false),
-                     findFilesInFolder(utilityFolder, "cpp", false),
-                     boardPreferences));
-      // other libraries should not see this library's utility/ folder
-      includePaths.remove(includePaths.size() - 1);
-    }
-    sketch.setCompilingProgress(40);
-
-    // 3. compile the sketch (already in the buildPath)
-
-    objectFiles.addAll(
-      compileFiles(avrBasePath, buildPath, includePaths,
-                   findFilesInPath(buildPath, "S", false),
-                   findFilesInPath(buildPath, "c", false),
-                   findFilesInPath(buildPath, "cpp", false),
-                   boardPreferences));
-    sketch.setCompilingProgress(50);
+   String runtimeLibraryName = buildPath + File.separator + "core.a";
+   List baseCommandAR = new ArrayList(Arrays.asList(new String[] {
+     avrBasePath + "avr-ar",
+     "rcs",
+     runtimeLibraryName
+   }));
+   for(File file : coreObjectFiles) {
+     List commandAR = new ArrayList(baseCommandAR);
+     commandAR.add(file.getAbsolutePath());
+     execAsynchronously(commandAR);
+   }
 
     // 4. link it all together into the .elf file
 
+    sketch.setCompilingProgress(50);
     List baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
       avrBasePath + "avr-gcc",
       "-Os",

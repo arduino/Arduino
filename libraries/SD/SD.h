@@ -20,6 +20,9 @@
 #include <utility/SdFat.h>
 #include <utility/SdFatUtil.h>
 
+#define FILE_READ O_READ
+#define FILE_WRITE (O_READ | O_WRITE | O_CREAT)
+
 class File : public Stream {
 public:
   virtual void write(uint8_t);
@@ -29,6 +32,9 @@ public:
   virtual int peek();
   virtual int available();
   virtual void flush();
+  boolean seek(uint32_t pos);
+  uint32_t position();
+  uint32_t size();
   void close();
   operator bool();
 };
@@ -49,7 +55,7 @@ public:
   // Open the specified file/directory with the supplied mode (e.g. read or
   // write, etc). Returns a File object for interacting with the file.
   // Note that currently only one file can be open at a time.
-  File open(char *filename, boolean write = false, boolean append = true);
+  File open(char *filename, uint8_t mode = FILE_READ);
 
   // Methods to determine if the requested file path exists.
   boolean exists(char *filepath);
@@ -72,8 +78,6 @@ private:
   // it's probably not the best place for it.
   // It shouldn't be set directly--it is set via the parameters to `open`.
   int fileOpenMode;
-  
-  int c;
   
   friend class File;
   friend boolean callback_openPath(SdFile&, char *, boolean, void *); 

@@ -1519,8 +1519,8 @@ public class Sketch {
     }
     return null;
   }
-
-
+  
+  
   protected boolean exportApplet(boolean verbose) throws Exception {
     return exportApplet(tempBuildFolder.getAbsolutePath(), verbose);
   }
@@ -1530,7 +1530,7 @@ public class Sketch {
    * Handle export to applet.
    */
   public boolean exportApplet(String appletPath, boolean verbose)
-    throws RunnerException, IOException {
+    throws RunnerException, IOException, SerialException {
     
     // Make sure the user didn't hide the sketch folder
     ensureExistence();
@@ -1569,6 +1569,7 @@ public class Sketch {
 
     upload(appletFolder.getPath(), foundName, verbose);
     editor.status.progressUpdate(100);
+    
     return true;
   }
 
@@ -1600,7 +1601,7 @@ public class Sketch {
 
 
   protected String upload(String buildPath, String suggestedClassName, boolean verbose)
-    throws RunnerException {
+    throws RunnerException, SerialException {
 
     Uploader uploader;
 

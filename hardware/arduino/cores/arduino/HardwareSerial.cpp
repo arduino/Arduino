@@ -191,7 +191,7 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer,
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void HardwareSerial::begin(long baud)
+void HardwareSerial::begin(unsigned long baud)
 {
   uint16_t baud_setting;
   bool use_u2x = true;
@@ -204,6 +204,8 @@ void HardwareSerial::begin(long baud)
     use_u2x = false;
   }
 #endif
+
+try_again:
   
   if (use_u2x) {
     *_ucsra = 1 << _u2x;
@@ -211,6 +213,12 @@ void HardwareSerial::begin(long baud)
   } else {
     *_ucsra = 0;
     baud_setting = (F_CPU / 8 / baud - 1) / 2;
+  }
+  
+  if ((baud_setting > 4095) && use_u2x)
+  {
+    use_u2x = false;
+    goto try_again;
   }
 
   // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)

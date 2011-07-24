@@ -7,6 +7,7 @@
 #######################################
 
 SD	KEYWORD1
+File	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -14,10 +15,16 @@ SD	KEYWORD1
 begin	KEYWORD2
 exists	KEYWORD2
 mkdir	KEYWORD2
+remove	KEYWORD2
+rmdir	KEYWORD2
 open	KEYWORD2
 close	KEYWORD2
-
+seek	KEYWORD2
+position	KEYWORD2
+size	KEYWORD2	
 
 #######################################
 # Constants (LITERAL1)
 #######################################
+FILE_READ	LITERAL1
+FILE_WRITE	LITERAL1

@@ -67,7 +67,7 @@ class String
     int	lastIndexOf( char ch, unsigned int fromIndex ) const;
     int	lastIndexOf( const String &str ) const;
     int	lastIndexOf( const String &str, unsigned int fromIndex ) const;
-    const unsigned int length( ) const { return _length; }
+    unsigned int length( ) const { return _length; }
     void setCharAt(unsigned int index, const char ch);
     unsigned char startsWith( const String &prefix ) const;
     unsigned char startsWith( const String &prefix, unsigned int toffset ) const;
@@ -78,6 +78,7 @@ class String
     String trim( ) const;
     void getBytes(unsigned char *buf, unsigned int bufsize);
     void toCharArray(char *buf, unsigned int bufsize);
+    long toInt( );
     const String& concat( const String &str );
     String replace( char oldChar, char newChar );
     String replace( const String& match, const String& replace );
