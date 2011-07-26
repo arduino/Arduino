@@ -57,7 +57,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   static final int RUN      = 0;
-  static final int STOP     = 1;
+  static final int SCHEMATICS= 1;
 
   static final int NEW      = 2;
   static final int OPEN     = 3;
@@ -69,6 +69,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   static final int INACTIVE = 0;
   static final int ROLLOVER = 1;
   static final int ACTIVE   = 2;
+  static final int DISABLED = 3;
 
   Editor editor;
 
@@ -105,7 +106,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     //which[buttonCount++] = NOTHING;
     which[buttonCount++] = RUN;
-    which[buttonCount++] = STOP;
+    which[buttonCount++] = SCHEMATICS;
     which[buttonCount++] = NEW;
     which[buttonCount++] = OPEN;
     which[buttonCount++] = SAVE;
@@ -260,8 +261,9 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     for (int i = 0; i < buttonCount; i++) {
       if ((y > y1) && (x > x1[i]) &&
           (y < y2) && (x < x2[i])) {
-        //System.out.println("sel is " + i);
-        return i;
+        if (state[i] != DISABLED) {
+          return i;
+        }
       }
     }
     return -1;
@@ -269,10 +271,12 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   private void setState(int slot, int newState, boolean updateAfter) {
-    state[slot] = newState;
-    stateImage[slot] = buttonImages[which[slot]][newState];
-    if (updateAfter) {
-      repaint();
+    if (state[slot]!=DISABLED) {
+      state[slot] = newState;
+      stateImage[slot] = buttonImages[which[slot]][newState];
+      if (updateAfter) {
+        repaint();
+      }
     }
   }
 
@@ -315,8 +319,8 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       editor.handleRun(e.isShiftDown());
       break;
 
-    case STOP:
-      editor.handleStop();
+    case SCHEMATICS:
+      editor.handleSchematics();
       break;
 
     case OPEN:
@@ -373,6 +377,18 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   }
 
 
+  /**
+   * Set a particular button to be active.
+   */
+  public void disable(int what) {
+    if (buttonImages != null && which!=null && state!=null && stateImage!=null) {
+      state[what] = DISABLED;
+      stateImage[what] = buttonImages[which[what]][INACTIVE];
+      repaint();
+    } 
+  }
+
+  
   public Dimension getPreferredSize() {
     return getMinimumSize();
   }
