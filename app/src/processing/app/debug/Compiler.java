@@ -103,6 +103,7 @@ public class Compiler implements MessageConsumer {
 
    // 1. compile the sketch (already in the buildPath)
 
+   sketch.setCompilingProgress(20);
    objectFiles.addAll(
      compileFiles(avrBasePath, buildPath, includePaths,
                findFilesInPath(buildPath, "S", false),
@@ -112,6 +113,7 @@ public class Compiler implements MessageConsumer {
 
    // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
 
+   sketch.setCompilingProgress(30);
    for (File libraryFolder : sketch.getImportedLibraries()) {
      File outputFolder = new File(buildPath, libraryFolder.getName());
      File utilityFolder = new File(libraryFolder, "utility");
@@ -139,6 +141,7 @@ public class Compiler implements MessageConsumer {
    // 3. compile the core, outputting .o files to <buildPath> and then
    // collecting them into the core.a library file.
 
+   sketch.setCompilingProgress(40);
   includePaths.clear();
   includePaths.add(corePath);  // include path for core only
   List<File> coreObjectFiles =
@@ -162,6 +165,7 @@ public class Compiler implements MessageConsumer {
 
     // 4. link it all together into the .elf file
 
+    sketch.setCompilingProgress(50);
     List baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
       avrBasePath + "avr-gcc",
       "-Os",
@@ -180,6 +184,7 @@ public class Compiler implements MessageConsumer {
     baseCommandLinker.add("-lm");
 
     execAsynchronously(baseCommandLinker);
+    sketch.setCompilingProgress(60);
 
     List baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
       avrBasePath + "avr-objcopy",
@@ -201,6 +206,7 @@ public class Compiler implements MessageConsumer {
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".eep");
     execAsynchronously(commandObjcopy);
+    sketch.setCompilingProgress(70);
     
     // 6. build the .hex file
     commandObjcopy = new ArrayList(baseCommandObjcopy);
@@ -209,7 +215,8 @@ public class Compiler implements MessageConsumer {
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".hex");
     execAsynchronously(commandObjcopy);
-    
+    sketch.setCompilingProgress(90);
+   
     return true;
   }
 
