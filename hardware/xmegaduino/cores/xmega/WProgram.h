@@ -29,6 +29,24 @@ long random(long);
 long random(long, long);
 void randomSeed(unsigned int);
 long map(long, long, long, long, long);
+
+const static uint8_t A0 = 0;
+const static uint8_t A1 = 1;
+const static uint8_t A2 = 2;
+const static uint8_t A3 = 3;
+const static uint8_t A4 = 4;
+const static uint8_t A5 = 5;
+const static uint8_t A6 = 6;
+const static uint8_t A7 = 7;
+const static uint8_t A8 = 8;
+const static uint8_t A9 = 9;
+const static uint8_t A10 = 10;
+const static uint8_t A11 = 11;
+const static uint8_t A12 = 12;
+const static uint8_t A13 = 13;
+const static uint8_t A14 = 14;
+const static uint8_t A15 = 15;
+
 #endif
 
 #endif
