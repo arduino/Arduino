@@ -209,6 +209,20 @@ void DhcpClass::send_DHCP_MESSAGE(uint8_t messageType, uint16_t secondsElapsed)
     _dhcpUdpSocket.endPacket();
 }
 
+/**
+ * This is for reading all those fields that _may_ be longer than a single value.
+ * They rarely are, and this library only reads the first one, but failing to
+ * read the entire option _will_ get us lost in packet parsing
+ * @param option_length_total the original length of the option field.
+ * @param read_length how many bytes have already been read.
+ */
+inline void DhcpClass::chomp(uint8_t option_length_total, uint8_t read_length) {
+    while (option_length_total-- > read_length) {
+        _dhcpUdpSocket.readPacketByte();
+    }
+}
+
+
 uint8_t DhcpClass::parseDHCPResponse(unsigned long responseTimeout, uint32_t& transactionId)
 {
     uint8_t type = 0;
@@ -271,11 +285,13 @@ uint8_t DhcpClass::parseDHCPResponse(unsigned long responseTimeout, uint32_t& tr
                 case routersOnSubnet :
                     opt_len = _dhcpUdpSocket.read();
                     _dhcpUdpSocket.read(_dhcpGatewayIp, 4);
+                    chomp(opt_len, 4);
                     break;
                 
                 case dns :
                     opt_len = _dhcpUdpSocket.read();
                     _dhcpUdpSocket.read(_dhcpDnsServerIp, 4);
+                    chomp(opt_len, 4);
                     break;
                 
                 case dhcpServerIdentifier :
@@ -288,10 +304,7 @@ uint8_t DhcpClass::parseDHCPResponse(unsigned long responseTimeout, uint32_t& tr
                     else
                     {
                         // Skip over the rest of this option
-                        while (opt_len--)
-                        {
-                            _dhcpUdpSocket.read();
-                        }
+                        chomp(opt_len, 0);
                     }
                     break;
                 
@@ -299,10 +312,7 @@ uint8_t DhcpClass::parseDHCPResponse(unsigned long responseTimeout, uint32_t& tr
                 default :
                     opt_len = _dhcpUdpSocket.read();
                     // Skip over the rest of this option
-                    while (opt_len--)
-                    {
-                        _dhcpUdpSocket.read();
-                    }
+                    chomp(opt_len, 0);
                     break;
             }
         }
