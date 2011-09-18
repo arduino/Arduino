@@ -124,13 +124,14 @@ uint8_t TwoWire::endTransmission(void)
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-void TwoWire::send(uint8_t data)
+size_t TwoWire::write(uint8_t data)
 {
   if(transmitting){
   // in master transmitter mode
     // don't bother if buffer is full
     if(txBufferLength >= BUFFER_LENGTH){
-      return;
+      setWriteError();
+      return 0;
     }
     // put byte in tx buffer
     txBuffer[txBufferIndex] = data;
@@ -142,45 +143,31 @@ void TwoWire::send(uint8_t data)
     // reply to master
     twi_transmit(&data, 1);
   }
+  return 1;
 }
 
 // must be called in:
 // slave tx event callback
 // or after beginTransmission(address)
-void TwoWire::send(uint8_t* data, uint8_t quantity)
+size_t TwoWire::write(const uint8_t *data, size_t quantity)
 {
   if(transmitting){
   // in master transmitter mode
-    for(uint8_t i = 0; i < quantity; ++i){
-      send(data[i]);
+    for(size_t i = 0; i < quantity; ++i){
+      write(data[i]);
     }
   }else{
   // in slave send mode
     // reply to master
     twi_transmit(data, quantity);
   }
-}
-
-// must be called in:
-// slave tx event callback
-// or after beginTransmission(address)
-void TwoWire::send(char* data)
-{
-  send((uint8_t*)data, strlen(data));
-}
-
-// must be called in:
-// slave tx event callback
-// or after beginTransmission(address)
-void TwoWire::send(int data)
-{
-  send((uint8_t)data);
+  return quantity;
 }
 
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-uint8_t TwoWire::available(void)
+int TwoWire::available(void)
 {
   return rxBufferLength - rxBufferIndex;
 }
@@ -188,11 +175,9 @@ uint8_t TwoWire::available(void)
 // must be called in:
 // slave rx event callback
 // or after requestFrom(address, numBytes)
-uint8_t TwoWire::receive(void)
+int TwoWire::read(void)
 {
-  // default to returning null char
-  // for people using with char strings
-  uint8_t value = '\0';
+  int value = -1;
   
   // get each successive byte on each call
   if(rxBufferIndex < rxBufferLength){
@@ -201,6 +186,25 @@ uint8_t TwoWire::receive(void)
   }
 
   return value;
+}
+
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::peek(void)
+{
+  int value = -1;
+  
+  if(rxBufferIndex < rxBufferLength){
+    value = rxBuffer[rxBufferIndex];
+  }
+
+  return value;
+}
+
+void TwoWire::flush(void)
+{
+  // XXX: to be implemented.
 }
 
 // behind the scenes function that is called when data is received

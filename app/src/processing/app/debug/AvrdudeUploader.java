@@ -42,33 +42,28 @@ public class AvrdudeUploader extends Uploader  {
   public AvrdudeUploader() {
   }
 
-  // XXX: add support for uploading sketches using a programmer
-  public boolean uploadUsingPreferences(String buildPath, String className, boolean verbose)
+  public boolean uploadUsingPreferences(String buildPath, String className, boolean usingProgrammer)
   throws RunnerException, SerialException {
     this.verbose = verbose;
     Map<String, String> boardPreferences = Base.getBoardPreferences();
-    String uploadUsing = boardPreferences.get("upload.using");
-    if (uploadUsing == null) {
-      // fall back on global preference
-      uploadUsing = Preferences.get("upload.using");
-    }
-    if (uploadUsing.equals("bootloader")) {
-      return uploadViaBootloader(buildPath, className);
-    } else {
-      Target t;
 
-      if (uploadUsing.indexOf(':') == -1) {
-        t = Base.getTarget(); // the current target (associated with the board)
-      } else {
-        String targetName = uploadUsing.substring(0, uploadUsing.indexOf(':'));
-        t = Base.targetsTable.get(targetName);
-        uploadUsing = uploadUsing.substring(uploadUsing.indexOf(':') + 1);
+    // if no protocol is specified for this board, assume it lacks a 
+    // bootloader and upload using the selected programmer.
+    if (usingProgrammer || boardPreferences.get("upload.protocol") == null) {
+      String programmer = Preferences.get("programmer");
+      Target target = Base.getTarget();
+
+      if (programmer.indexOf(":") != -1) {
+        target = Base.targetsTable.get(programmer.substring(0, programmer.indexOf(":")));
+        programmer = programmer.substring(programmer.indexOf(":") + 1);
       }
-
-      Collection params = getProgrammerCommands(t, uploadUsing);
+      
+      Collection params = getProgrammerCommands(target, programmer);
       params.add("-Uflash:w:" + buildPath + File.separator + className + ".hex:i");
       return avrdude(params);
     }
+
+    return uploadViaBootloader(buildPath, className);
   }
   
   private boolean uploadViaBootloader(String buildPath, String className)
@@ -96,8 +91,14 @@ public class AvrdudeUploader extends Uploader  {
     return avrdude(commandDownloader);
   }
   
-  public boolean burnBootloader(String targetName, String programmer) throws RunnerException {
-    return burnBootloader(getProgrammerCommands(Base.targetsTable.get(targetName), programmer));
+  public boolean burnBootloader() throws RunnerException {
+    String programmer = Preferences.get("programmer");
+    Target target = Base.getTarget();
+    if (programmer.indexOf(":") != -1) {
+      target = Base.targetsTable.get(programmer.substring(0, programmer.indexOf(":")));
+      programmer = programmer.substring(programmer.indexOf(":") + 1);
+    }
+    return burnBootloader(getProgrammerCommands(target, programmer));
   }
   
   private Collection getProgrammerCommands(Target target, String programmer) {
@@ -190,14 +191,17 @@ public class AvrdudeUploader extends Uploader  {
   
   public boolean avrdude(Collection params) throws RunnerException {
     List commandDownloader = new ArrayList();
-    commandDownloader.add("avrdude");
-
-    // Point avrdude at its config file since it's in a non-standard location.
-    if (Base.isLinux()) {
-      // ???: is it better to have Linux users install avrdude themselves, in
-      // a way that it can find its own configuration file?
-      commandDownloader.add("-C" + Base.getHardwarePath() + "/tools/avrdude.conf");
-    } else {
+      
+    if(Base.isLinux()) {
+      if ((new File(Base.getHardwarePath() + "/tools/" + "avrdude")).exists()) {
+        commandDownloader.add(Base.getHardwarePath() + "/tools/" + "avrdude");
+        commandDownloader.add("-C" + Base.getHardwarePath() + "/tools/avrdude.conf");
+      } else {
+        commandDownloader.add("avrdude");
+      }
+    }
+    else {
+      commandDownloader.add(Base.getHardwarePath() + "/tools/avr/bin/" + "avrdude");
       commandDownloader.add("-C" + Base.getHardwarePath() + "/tools/avr/etc/avrdude.conf");
     }
 

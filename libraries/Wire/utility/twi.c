@@ -32,6 +32,7 @@
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #endif
 
+#include "pins_arduino.h"
 #include "twi.h"
 
 static volatile uint8_t twi_state;
@@ -63,23 +64,15 @@ void twi_init(void)
 {
   // initialize state
   twi_state = TWI_READY;
-
-  #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega328P__)
-    // activate internal pull-ups for twi
-    // as per note from atmega8 manual pg167
-    sbi(PORTC, 4);
-    sbi(PORTC, 5);
-  #else
-    // activate internal pull-ups for twi
-    // as per note from atmega128 manual pg204
-    sbi(PORTD, 0);
-    sbi(PORTD, 1);
-  #endif
+  
+  // activate internal pullups for twi.
+  digitalWrite(SDA, 1);
+  digitalWrite(SCL, 1);
 
   // initialize twi prescaler and bit rate
   cbi(TWSR, TWPS0);
   cbi(TWSR, TWPS1);
-  TWBR = ((CPU_FREQ / TWI_FREQ) - 16) / 2;
+  TWBR = ((F_CPU / TWI_FREQ) - 16) / 2;
 
   /* twi bit rate formula from atmega128 manual pg 204
   SCL Frequency = CPU Clock Frequency / (16 + (2 * TWBR))
@@ -232,7 +225,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
  *          2 not slave transmitter
  *          0 ok
  */
-uint8_t twi_transmit(uint8_t* data, uint8_t length)
+uint8_t twi_transmit(const uint8_t* data, uint8_t length)
 {
   uint8_t i;
 

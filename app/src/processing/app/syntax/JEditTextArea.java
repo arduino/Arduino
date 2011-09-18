@@ -17,6 +17,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
 import javax.swing.*;
+
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -2025,7 +2026,19 @@ public class JEditTextArea extends JComponent
       select(getMarkPosition(),xyToOffset(evt.getX(),evt.getY()));
     }
 
-    public void mouseMoved(MouseEvent evt) {}
+    final Cursor normalCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+    final Cursor handCursor = new Cursor(Cursor.HAND_CURSOR);
+    
+    public void mouseMoved(MouseEvent evt) {
+      int line = yToLine(evt.getY());
+      int offset = xToOffset(line, evt.getX());
+      boolean wantHandCursor = checkClickedURL(getLineText(line), offset) != null;
+      JComponent src = (JComponent) evt.getSource();
+      if (wantHandCursor)
+        src.setCursor(handCursor);
+      else
+        src.setCursor(normalCursor);
+    }
   }
 
   class FocusHandler implements FocusListener
@@ -2043,6 +2056,17 @@ public class JEditTextArea extends JComponent
       setCaretVisible(false);
       focusedComponent = null;
     }
+  }
+
+  public String checkClickedURL(String line, int offset) {
+    String[] parse = SyntaxUtilities.parseCommentUrls(line);
+    if (parse==null)
+      return null;
+    int start = parse[0].length();
+    int stop = start + parse[1].length();
+    if (offset<start|| offset>stop)
+      return null;
+    return parse[1];
   }
 
   class MouseHandler extends MouseAdapter
@@ -2095,6 +2119,13 @@ public class JEditTextArea extends JComponent
 
     private void doSingleClick(MouseEvent evt, int line,
                                int offset, int dot) {
+      // Check for click on urls
+      String clickedURL = checkClickedURL(getLineText(line), offset);
+      if (clickedURL != null) {
+        Base.openURL(clickedURL);
+        return;
+      }
+      
       if ((evt.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
         rectSelect = (evt.getModifiers() & InputEvent.CTRL_MASK) != 0;
         select(getMarkPosition(),dot);
