@@ -118,6 +118,7 @@ public class PdeTextAreaDefaults extends TextAreaDefaults {
     inputHandler.addKeyBinding("C+n", InputHandler.NEXT_LINE);
     inputHandler.addKeyBinding("C+a", InputHandler.BEGIN_LINE);
     inputHandler.addKeyBinding("C+e", InputHandler.END_LINE);
+    inputHandler.addKeyBinding("C+d", InputHandler.DELETE);
 
     inputHandler.addKeyBinding("LEFT", InputHandler.PREV_CHAR);
     inputHandler.addKeyBinding("S+LEFT", InputHandler.SELECT_PREV_CHAR);
