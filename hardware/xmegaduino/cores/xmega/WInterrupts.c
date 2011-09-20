@@ -29,8 +29,6 @@
 #include <avr/pgmspace.h>
 #include <stdio.h>
 
-#include "pins_arduino.h"
-#include "WConstants.h"
 #include "wiring_private.h"
 
 volatile static voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS];
@@ -56,7 +54,7 @@ void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode) {
       
   // Enable the interrupt.
   uint8_t  portIndex = digitalPinToPort(pin);
-  PORT_t*  port      = portRegister(portIndex);
+  PORT_t*  port      = portOutputRegister(portIndex);
   uint8_t* pinctrl   = &port->PIN0CTRL;
 
   pin = pin&7;
@@ -73,7 +71,7 @@ void detachInterrupt(uint8_t pin) {
   }
       
   uint8_t  portIndex = digitalPinToPort(pin);
-  PORT_t*  port      = portRegister(portIndex);
+  PORT_t*  port      = portOutputRegister(portIndex);
   uint8_t* pinctrl   = &port->PIN0CTRL;
 
   intFunc[pin] = 0;
@@ -93,7 +91,7 @@ void attachInterruptTwi(void (*userFunc)(void) ) {
 
 void PORT_INT( int portIndex )
 {
-  PORT_t*  port    = portRegister(portIndex);
+  PORT_t*  port    = portOutputRegister(portIndex);
   uint8_t* pinctrl = &port->PIN0CTRL;
   uint8_t  value   = port->IN;
   uint8_t  prev    = portLastValue[portIndex];

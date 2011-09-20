@@ -210,7 +210,7 @@ unsigned long micros(void) {
 }
 
 /* Delay for the given number of microseconds.  Assumes a 8 or 16 MHz clock. */
-void delayMicroseconds(unsigned long us)
+void delayMicroseconds(unsigned int us)
 {
         unsigned long start = micros();
 

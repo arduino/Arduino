@@ -77,7 +77,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
 	// before doing a digital write.
 	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
 
-	out = &portRegister(port)->OUT;
+	out = portOutputRegister(port);
 
 	if (val == LOW) *out &= ~bit;
 	else *out |= bit;

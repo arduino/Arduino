@@ -1,0 +1,260 @@
+/*
+  pins_arduino.h - Pin definition functions for Arduino
+  Part of Arduino - http://www.arduino.cc/
+
+  Copyright (c) 2007 David A. Mellis
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General
+  Public License along with this library; if not, write to the
+  Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+  Boston, MA  02111-1307  USA
+
+*/
+
+#ifndef Pins_Arduino_h
+#define Pins_Arduino_h
+
+#include <avr/pgmspace.h>
+
+#define REPEAT8(x) x, x, x, x, x, x, x, x
+#define BV0TO7 _BV(0), _BV(1), _BV(2), _BV(3), _BV(4), _BV(5), _BV(6), _BV(7)
+#define BV7TO0 _BV(7), _BV(6), _BV(5), _BV(4), _BV(3), _BV(2), _BV(1), _BV(0)
+
+#define NUM_DIGITAL_PINS            72
+#define NUM_ANALOG_INPUTS           16
+
+#define analogInputToDigitalPin(p)  ((p < 16) ? p : -1)
+#define digitalPinHasPWM(p)         (((p) >= 16 && (p) <= 21) || ((p) >= 24 && (p)<= 29) || ((p) >= 32 && (p)<= 37))
+
+const static uint8_t SS    = 20;
+const static uint8_t MOSI  = 21;
+const static uint8_t MISO  = 22;
+const static uint8_t SCK   = 23;
+const static uint8_t SS1   = 28;
+const static uint8_t MOSI1 = 29;
+const static uint8_t MISO1 = 30;
+const static uint8_t SCK1  = 31;
+const static uint8_t SS2   = 36;
+const static uint8_t MOSI2 = 37;
+const static uint8_t MISO2 = 38;
+const static uint8_t SCK2  = 39;
+const static uint8_t SS3   = 44;
+const static uint8_t MOSI3 = 45;
+const static uint8_t MISO3 = 46;
+const static uint8_t SCK3  = 47;
+
+const static uint8_t SDA = 16;
+const static uint8_t SCL = 17;
+const static uint8_t LED = 13;
+
+const static uint8_t A0 = 0;
+const static uint8_t A1 = 1;
+const static uint8_t A2 = 2;
+const static uint8_t A3 = 3;
+const static uint8_t A4 = 4;
+const static uint8_t A5 = 5;
+const static uint8_t A6 = 6;
+const static uint8_t A7 = 7;
+const static uint8_t A8 = 8;
+const static uint8_t A9 = 9;
+const static uint8_t A10 = 10;
+const static uint8_t A11 = 11;
+const static uint8_t A12 = 12;
+const static uint8_t A13 = 13;
+const static uint8_t A14 = 14;
+const static uint8_t A15 = 15;
+
+
+#define digitalPinToPCICR(p)    (((p) >= 0 && (p) <= 21) ? (&PCICR) : ((uint8_t *)0))
+#define digitalPinToPCICRbit(p) (((p) <= 7) ? 2 : (((p) <= 13) ? 0 : 1))
+#define digitalPinToPCMSK(p)    (((p) <= 7) ? (&PCMSK2) : (((p) <= 13) ? (&PCMSK0) : (((p) <= 21) ? (&PCMSK1) : ((uint8_t *)0))))
+#define digitalPinToPCMSKbit(p) (((p) <= 7) ? (p) : (((p) <= 13) ? ((p) - 8) : ((p) - 14)))
+
+#ifdef ARDUINO_MAIN
+
+// these arrays map port names (e.g. port B) to the
+// appropriate addresses for various functions (e.g. reading
+// and writing)
+const uint16_t PROGMEM port_to_mode_PGM[] = {
+	NOT_A_PORT,
+	(uint16_t) &PORTA_DIR,
+	(uint16_t) &PORTB_DIR,
+	(uint16_t) &PORTC_DIR,
+	(uint16_t) &PORTD_DIR,
+	(uint16_t) &PORTE_DIR,
+	(uint16_t) &PORTF_DIR,
+	(uint16_t) &PORTH_DIR,
+	(uint16_t) &PORTJ_DIR,
+	(uint16_t) &PORTK_DIR,
+};
+
+const uint16_t PROGMEM port_to_output_PGM[] = {
+	NOT_A_PORT,
+	(uint16_t) &PORTA,
+	(uint16_t) &PORTB,
+	(uint16_t) &PORTC,
+	(uint16_t) &PORTD,
+	(uint16_t) &PORTE,
+	(uint16_t) &PORTF,
+	(uint16_t) &PORTH,
+	(uint16_t) &PORTJ,
+	(uint16_t) &PORTK,
+};
+
+const uint16_t PROGMEM port_to_input_PGM[] = {
+	NOT_A_PORT,
+	(uint16_t) &PORTA_IN,
+	(uint16_t) &PORTB_IN,
+	(uint16_t) &PORTC_IN,
+	(uint16_t) &PORTD_IN,
+	(uint16_t) &PORTE_IN,
+	(uint16_t) &PORTF_IN,
+	(uint16_t) &PORTH_IN,
+	(uint16_t) &PORTJ_IN,
+	(uint16_t) &PORTK_IN,
+};
+
+const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
+	// PORTLIST
+	REPEAT8(PA), //  0 -  7
+	REPEAT8(PB), //  8 - 15
+	REPEAT8(PC), // 16 - 23
+	REPEAT8(PD), // 24 - 31
+	REPEAT8(PE), // 32 - 39
+	REPEAT8(PF), // 40 - 47
+	REPEAT8(PH), // 48 - 55
+	REPEAT8(PJ), // 56 - 63
+	REPEAT8(PK), // 64 - 71
+};
+
+const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
+	BV0TO7, // PORT A
+	BV0TO7, // PORT B
+	BV0TO7, // PORT C
+	BV0TO7, // PORT D
+	BV0TO7, // PORT E
+	BV0TO7, // PORT F
+	BV0TO7, // PORT H
+	BV0TO7, // PORT J
+	BV0TO7, // PORT K
+};
+
+const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
+	REPEAT8(NOT_ON_TIMER), // PORT A
+	REPEAT8(NOT_ON_TIMER), // PORT B
+	TIMER_C0A, // PORT C
+	TIMER_C0B,
+	TIMER_C0C,
+	TIMER_C0D,
+	TIMER_C1A,
+	TIMER_C1B,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	TIMER_D0A, // PORT D
+	TIMER_D0B,
+	TIMER_D0C,
+	TIMER_D0D,
+	TIMER_D1A,
+	TIMER_D1B,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	TIMER_E0A, // PORT E
+	TIMER_E0B,
+	TIMER_E0C,
+	TIMER_E0D,
+	TIMER_E1A,
+	TIMER_E1B,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	REPEAT8(NOT_ON_TIMER), // PORT F Switches
+};
+
+const TC0_t* PROGMEM timer_to_tc0_PGM[] = {
+	NULL,
+
+	&TCC0,
+	&TCC0,
+	&TCC0,
+	&TCC0,
+	NULL,
+	NULL,
+
+	&TCD0,
+	&TCD0,
+	&TCD0,
+	&TCD0,
+	NULL,
+	NULL,
+
+	&TCE0,
+	&TCE0,
+	&TCE0,
+	&TCE0,
+	NULL,
+	NULL,
+	};
+
+const TC1_t* PROGMEM timer_to_tc1_PGM[] = {
+	NULL,
+
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	&TCC1,
+	&TCC1,
+
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	&TCD1,
+	&TCD1,
+
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+
+	&TCE1,
+	&TCE1,
+};
+
+const uint8_t PROGMEM timer_to_channel_PGM[] = {
+    NULL,
+
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+
+    0,
+    1,
+    2,
+    3,
+    0,
+    1,
+};
+
+#endif
+
+#endif

@@ -36,18 +36,33 @@ extern "C"{
 #define LSBFIRST 0
 #define MSBFIRST 1
 
-#define CHANGE 1
-#define FALLING 2
-#define RISING 3
-
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#define INTERNAL1V1 2
-#define INTERNAL2V56 3
+// TODO: Move to a chip related header
+#if defined __AVR_ATxmega128A1__
+	#define CHANGE  0
+	#define FALLING 1
+	#define RISING  2
 #else
-#define INTERNAL 3
+	#define CHANGE  1
+	#define FALLING 2
+	#define RISING  3
 #endif
-#define DEFAULT 1
-#define EXTERNAL 0
+
+// TODO: Move to a chip related header
+#if defined __AVR_ATxmega128A1__
+	#define AREF_INTERNAL   0
+	#define AREF_VCC        1
+	#define AREF_EXTERNAL_A 2
+	#define AREF_EXTERNAL_B 3
+
+	#define INTERNAL   AREF_INTERNAL
+	#define DEFAULT    AREF_VCC
+	#define EXTERNAL   AREF_EXTERNAL_A
+#else
+	#define INTERNAL 3
+	#define DEFAULT 1
+	#define EXTERNAL 0
+#endif
+
 
 // undefine stdlib's abs if encountered
 #ifdef abs
@@ -125,6 +140,10 @@ extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
 // extern const uint8_t PROGMEM digital_pin_to_bit_PGM[];
 extern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];
 extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
+extern const TC0_t* PROGMEM timer_to_tc0_PGM[];
+extern const TC1_t* PROGMEM timer_to_tc1_PGM[];
+extern const uint16_t PROGMEM timer_to_channel_register_PGM[];
+extern const uint8_t PROGMEM timer_to_channel_PGM[];
 
 // Get the bit location within the hardware port of the given virtual pin.
 // This comes from the pins_*.c file for the active board configuration.
@@ -138,6 +157,9 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 #define portOutputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_output_PGM + (P))) )
 #define portInputRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_input_PGM + (P))) )
 #define portModeRegister(P) ( (volatile uint8_t *)( pgm_read_word( port_to_mode_PGM + (P))) )
+#define timerToTC0(T) ( (volatile TC0_t *)( pgm_read_word( timer_to_tc0_PGM + (T))) )
+#define timerToTC1(T) ( (volatile TC1_t *)( pgm_read_word( timer_to_tc1_PGM + (T))) )
+#define timerToChannel(T) ( (uint8_t)( pgm_read_word( timer_to_channel_PGM + (T))) )
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
@@ -155,23 +177,27 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 #define PL 12
 
 #define NOT_ON_TIMER 0
-#define TIMER0A 1
-#define TIMER0B 2
-#define TIMER1A 3
-#define TIMER1B 4
-#define TIMER2  5
-#define TIMER2A 6
-#define TIMER2B 7
 
-#define TIMER3A 8
-#define TIMER3B 9
-#define TIMER3C 10
-#define TIMER4A 11
-#define TIMER4B 12
-#define TIMER4C 13
-#define TIMER5A 14
-#define TIMER5B 15
-#define TIMER5C 16
+#define TIMER_C0A  1
+#define TIMER_C0B  2
+#define TIMER_C0C  3
+#define TIMER_C0D  4
+#define TIMER_C1A  5
+#define TIMER_C1B  6
+
+#define TIMER_D0A  7
+#define TIMER_D0B  8
+#define TIMER_D0C  9
+#define TIMER_D0D 10
+#define TIMER_D1A 11
+#define TIMER_D1B 12
+
+#define TIMER_E0A 13
+#define TIMER_E0B 14
+#define TIMER_E0C 15
+#define TIMER_E0D 16
+#define TIMER_E1A 17
+#define TIMER_E1B 18
 
 #ifdef __cplusplus
 } // extern "C"

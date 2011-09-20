@@ -126,7 +126,7 @@ const uint16_t PROGMEM timer_to_channel_register_PGM[] = {
 // to digital output.
 void analogWrite(uint8_t pin, int val)
 {
-    uint8_t            timer            = pgm_read_byte(digital_pin_to_timer_PGM + pin);
+    uint8_t            timer            = digitalPinToTimer(pin);
     TC0_t*             tc0              = timerToTC0(timer);
     TC1_t*             tc1              = timerToTC1(timer);
     uint8_t            channel          = timerToChannel(timer);

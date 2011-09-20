@@ -33,7 +33,7 @@ Version Modified By Date     Comments
 
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
-#include <wiring.h>
+#include "Arduino.h"
 #include <pins_arduino.h>
 
 // timerx_toggle_count:

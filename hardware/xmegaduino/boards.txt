@@ -4,11 +4,9 @@ sfe_jtag.name=SparkFun Xmega100 using jtag
 sfe_jtag.verbose=true
 
 sfe_jtag.build.mcu=atxmega128a1
-sfe_jtag.build.mcu_family=xmega
 sfe_jtag.build.f_cpu=32000000L
 sfe_jtag.build.core=xmega
-sfe_jtag.build.board=sfe
-sfe_jtag.build.verbose=true
+sfe_jtag.build.variant=sfe
 
 sfe_jtag.upload.using=dragonjtag
 sfe_jtag.upload.maximum_size=131072
@@ -36,11 +34,9 @@ sfe_pdi.name=SparkFun Xmega100 using pdi
 sfe_pdi.verbose=true
 
 sfe_pdi.build.mcu=atxmega128a1
-sfe_pdi.build.mcu_family=xmega
 sfe_pdi.build.f_cpu=32000000L
 sfe_pdi.build.core=xmega
-sfe_pdi.build.board=sfe
-sfe_pdi.build.verbose=true
+sfe_pdi.build.variant=sfe
 
 sfe_pdi.upload.using=avrisppdi
 sfe_pdi.upload.maximum_size=131072
@@ -66,11 +62,9 @@ sfe_pdi.bootloader.file=ATmegaBOOT_sfe.bin
 xplain_jtag.name=XPlain using jtag
 
 xplain_jtag.build.mcu=atxmega128a1
-xplain_jtag.build.mcu_family=xmega
 xplain_jtag.build.f_cpu=32000000L
 xplain_jtag.build.core=xmega
-xplain_jtag.build.board=xplain
-xplain_jtag.build.verbose=true
+xplain_jtag.build.variant=xplain
 
 xplain_jtag.upload.using=dragonjtag
 xplain_jtag.upload.maximum_size=131072
@@ -95,6 +89,11 @@ xplain_jtag.bootloader.file=ATmegaBOOT_xplain.bin
 
 xplain_lufa.name=XPlain using lufa
 
+xplain_lufa.build.mcu=atxmega128a1
+xplain_lufa.build.f_cpu=32000000L
+xplain_lufa.build.core=xmega
+xplain_lufa.build.variant=xplain
+
 xplain_lufa.upload.using=avrispmkii
 xplain_lufa.upload.protocol=arduino
 xplain_lufa.upload.maximum_size=131072
@@ -117,15 +116,14 @@ xplain_lufa.bootloader.fuse2=0xBF
 xplain_lufa.bootloader.fuse4=0xFE
 xplain_lufa.bootloader.fuse5=0xFD
 
-xplain_lufa.build.mcu=atxmega128a1
-xplain_lufa.build.mcu_family=xmega
-xplain_lufa.build.f_cpu=32000000L
-xplain_lufa.build.core=xmega
-xplain_lufa.build.board=xplain
-
 ##############################################################
 
 xplain_usb.name=XPlain using usb
+
+xplain_usb.build.mcu=atxmega128a1
+xplain_usb.build.f_cpu=32000000L
+xplain_usb.build.core=xmega
+xplain_usb.build.variant=xplain
 
 xplain_usb.upload.protocol=arduino
 xplain_usb.upload.maximum_size=131072
@@ -148,15 +146,14 @@ xplain_usb.bootloader.fuse2=0xBF
 xplain_usb.bootloader.fuse4=0xFE
 xplain_usb.bootloader.fuse5=0xFD
 
-xplain_usb.build.mcu=atxmega128a1
-xplain_usb.build.mcu_family=xmega
-xplain_usb.build.f_cpu=32000000L
-xplain_usb.build.core=xmega
-xplain_usb.build.board=xplain
-
 ##############################################################
 
 xplain_serial.name=XPlain using serial
+
+xplain_serial.build.mcu=atxmega128a1
+xplain_serial.build.f_cpu=32000000L
+xplain_serial.build.core=xmega
+xplain_serial.build.variant=xplain
 
 xplain_serial.upload.protocol=arduino
 xplain_serial.upload.maximum_size=131072
@@ -178,9 +175,3 @@ xplain_serial.bootloader.fuse1=0xFF
 xplain_serial.bootloader.fuse2=0xBF
 xplain_serial.bootloader.fuse4=0xFE
 xplain_serial.bootloader.fuse5=0xFD
-
-xplain_serial.build.mcu=atxmega128a1
-xplain_serial.build.mcu_family=xmega
-xplain_serial.build.f_cpu=32000000L
-xplain_serial.build.core=xmega
-xplain_serial.build.board=xplain
