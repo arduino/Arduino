@@ -46,8 +46,11 @@ int analogRead(uint8_t pin)
 #else
 	if (pin >= 14) pin -= 14; // allow for channel or pin numbers
 #endif
-
-#if defined(ADCSRB) && defined(MUX5)
+	
+#if defined(__AVR_ATmega32U4__)
+	pin = analogPinToChannel(pin);
+	ADCSRB = (ADCSRB & ~(1 << MUX5)) | (((pin >> 3) & 0x01) << MUX5);
+#elif defined(ADCSRB) && defined(MUX5)
 	// the MUX5 bit of ADCSRB selects whether we're reading from channels
 	// 0 to 7 (MUX5 low) or 8 to 15 (MUX5 high).
 	ADCSRB = (ADCSRB & ~(1 << MUX5)) | (((pin >> 3) & 0x01) << MUX5);
@@ -220,6 +223,14 @@ void analogWrite(uint8_t pin, int val)
 				// connect pwm to pin on timer 4, channel C
 				sbi(TCCR4A, COM4C1);
 				OCR4C = val; // set pwm duty
+				break;
+			#endif
+				
+			#if defined(TCCR4A) && defined(COM4D1)
+			case TIMER4D:
+				// connect pwm to pin on timer 4, channel D
+				sbi(TCCR4A, COM4D1);
+				OCR4D = val; // set pwm duty
 				break;
 			#endif
 
