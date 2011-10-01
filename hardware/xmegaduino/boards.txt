@@ -175,3 +175,33 @@ xplain_serial.bootloader.fuse1=0xFF
 xplain_serial.bootloader.fuse2=0xBF
 xplain_serial.bootloader.fuse4=0xFE
 xplain_serial.bootloader.fuse5=0xFD
+
+##############################################################
+
+akafuino.name=Akafuino X
+
+akafuino.build.mcu=atxmega32a4
+akafuino.build.f_cpu=32000000L
+akafuino.build.core=xmega
+akafuino.build.variant=akafuino
+
+akafuino.upload.protocol=avr109
+akafuino.upload.maximum_size=32768
+akafuino.upload.speed=115200
+
+akafuino.bootloader.path=akafuino
+akafuino.bootloader.file=akafuino-boot.hex
+akafuino.bootloader.unlock_bits=0x3F
+akafuino.bootloader.lock_bits=0x3F
+
+ FUSE BITS
+# fuse0: JTAGUSERID
+# fuse1: WDWP=0xF WDP=0xF
+# fuse2: Boot Loader Reset
+# fuse4: JTAGEN
+# fuse5: BODLVL=2.1V
+akafuino.bootloader.fuse0=0xFF
+akafuino.bootloader.fuse1=0xFF
+akafuino.bootloader.fuse2=0xBF
+akafuino.bootloader.fuse4=0xFE
+akafuino.bootloader.fuse5=0xFD
