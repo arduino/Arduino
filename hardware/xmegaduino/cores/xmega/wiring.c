@@ -92,7 +92,7 @@ unsigned long micros(void) {
 }
 
 /* Delay for the given number of microseconds.  Assumes a 8, 16 or 32 MHz clock. */
-void delayMicroseconds(unsigned long us)
+void delayMicroseconds(unsigned int us)
 {
         // calling avrlib's delay_us() function with low values (e.g. 1 or
         // 2 microseconds) gives delays longer than desired.
