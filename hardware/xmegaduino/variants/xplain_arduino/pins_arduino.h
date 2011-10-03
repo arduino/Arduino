@@ -33,6 +33,7 @@
 #define NUM_DIGITAL_PINS            20
 #define NUM_ANALOG_INPUTS           10
 #define analogInputToDigitalPin(p)  ((p < 16) ? p : -1)
+#define EXTERNAL_NUM_INTERRUPTS     20
 
 #define digitalPinHasPWM(p)         ((p) == 3 || (p) == 5 || (p) == 6 || (p) == 9 || (p) == 10 || (p) == 11)
 

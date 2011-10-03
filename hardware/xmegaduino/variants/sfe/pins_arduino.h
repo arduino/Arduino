@@ -32,6 +32,7 @@
 
 #define NUM_DIGITAL_PINS            72
 #define NUM_ANALOG_INPUTS           16
+#define EXTERNAL_NUM_INTERRUPTS     48
 
 #define analogInputToDigitalPin(p)  ((p < 16) ? p : -1)
 #define digitalPinHasPWM(p)         (((p) >= 16 && (p) <= 21) || ((p) >= 24 && (p)<= 29) || ((p) >= 32 && (p)<= 37))

@@ -44,22 +44,9 @@ extern "C"{
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #endif
 
-#define EXTERNAL_INT_0 0
-#define EXTERNAL_INT_1 1
-#define EXTERNAL_INT_2 2
-#define EXTERNAL_INT_3 3
-#define EXTERNAL_INT_4 4
-#define EXTERNAL_INT_5 5
-#define EXTERNAL_INT_6 6
-#define EXTERNAL_INT_7 7
-
-#if defined(__AVR_ATmega1280__)
-#define EXTERNAL_NUM_INTERRUPTS 8
-#elif defined(__AVR_ATxmega128A1__)
-// TODO: Use board macro rather than chip macro
-#define EXTERNAL_NUM_INTERRUPTS 48
-#else
-#define EXTERNAL_NUM_INTERRUPTS 2
+// EXTERNAL_NUM_INTERRUPTS has been moved to pins_arduino.h
+#if !defined(EXTERNAL_NUM_INTERRUPTS)
+#error "Please define EXTERNAL_NUM_INTERRUPTS in pins_arduino for your board"
 #endif
 
 typedef void (*voidFuncPtr)(void);
