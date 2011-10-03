@@ -75,12 +75,13 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
   PORT_t*  port      = portOutputRegister(portIndex);
   uint8_t* pinctrl   = &port->PIN0CTRL;
 
+  uint8_t pin = getBitFromBitField(digitalPinToBitMask(interruptNum));
   // put intFunc in sorted order
-  intFunc[(digitalPinToPort(interruptNum)-1)*8+getBitFromBitField(digitalPinToBitMask(interruptNum))] = userFunc;
+  intFunc[(digitalPinToPort(interruptNum)-1)*8+pin] = userFunc;
 
   port->INTCTRL  |= PORT_INT1LVL_LO_gc;
-  port->INT1MASK |= 1 << digitalPinToBitMask(interruptNum);
-  pinctrl[digitalPinToBitMask(interruptNum)]   |= mode;
+  port->INT1MASK |= digitalPinToBitMask(interruptNum);
+  pinctrl[pin]   |= mode;
   portLastValue[portIndex] = port->IN;
 }
 
@@ -93,13 +94,15 @@ void detachInterrupt(uint8_t interruptNum) {
   PORT_t*  port      = portOutputRegister(portIndex);
   uint8_t* pinctrl   = &port->PIN0CTRL;
 
-  intFunc[(digitalPinToPort(interruptNum)-1)*8+getBitFromBitField(digitalPinToBitMask(interruptNum))] = 0;
-  port->INT1MASK &= ~(1 << digitalPinToBitMask(interruptNum));
+  uint8_t pin = getBitFromBitField(digitalPinToBitMask(interruptNum));
+
+  intFunc[(digitalPinToPort(interruptNum)-1)*8+pin] = 0;
+  port->INT1MASK &= ~(digitalPinToBitMask(interruptNum));
   if ( 0 == port->INT1MASK ) {
     // No interrupts on any of ports pins, turn it off.
     port->INTCTRL &= ~PORT_INT1LVL_gm;
   }
-  pinctrl[digitalPinToBitMask(interruptNum)] &= ~PORT_ISC_gm;
+  pinctrl[pin] &= ~PORT_ISC_gm;
 }
 
 void PORT_INT( int portIndex )
