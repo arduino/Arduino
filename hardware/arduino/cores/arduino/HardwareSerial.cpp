@@ -289,6 +289,7 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
   _rxcie = rxcie;
   _udrie = udrie;
   _u2x = u2x;
+  _serial_buffer_wait = 0x1; //by default, wait for space.
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -384,11 +385,14 @@ size_t HardwareSerial::write(uint8_t c)
 {
   int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
 	
-  // If the output buffer is full, there's nothing for it other than to 
-  // wait for the interrupt handler to empty it a bit
-  // ???: return 0 here instead?
-  while (i == _tx_buffer->tail)
+  // If the output buffer is full, there's two options. Either quit or wait for interrupt handler to make space. User decides.
+ if(_serial_buffer_wait == 1) {
+	while (i == _tx_buffer->tail)
     ;
+	} else {
+	if(i == _tx_buffer->tail) { return 0; }
+	}
+
 	
   _tx_buffer->buffer[_tx_buffer->head] = c;
   _tx_buffer->head = i;
@@ -398,6 +402,9 @@ size_t HardwareSerial::write(uint8_t c)
   return 1;
 }
 
+void HardwareSerial::waitForBufferSpace(uint8_t v) {
+	_serial_buffer_wait = v;
+}
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
 #if defined(UBRRH) && defined(UBRRL)
