@@ -5,6 +5,22 @@
 // 12: MISO
 // 13: SCK
 
+//
+// target boards with an ICSP connector:
+//
+// -----------
+// - 5  3  1 -
+// - 6  4  2 -
+// -----------
+//
+// 1: MOSI
+// 2: +5V
+// 3: SCK
+// 4: MISO
+// 5: RESET
+// 6: GND
+//
+
 // Put an LED (with resistor) on the following pins:
 // 9: Heartbeat - shows the programmer is running
 // 8: Error - Lights up if something goes wrong (use red if that makes sense)
