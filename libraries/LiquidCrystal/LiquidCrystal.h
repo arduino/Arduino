@@ -81,7 +81,7 @@ public:
   void setCursor(uint8_t, uint8_t); 
   virtual void write(uint8_t);
   void command(uint8_t);
-private:
+protected:
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);
   void write8bits(uint8_t);
