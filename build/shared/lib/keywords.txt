@@ -179,6 +179,7 @@ parseInt	KEYWORD2
 parseFloat	KEYWORD2
 readBytes	KEYWORD2
 readBytesUntil	KEYWORD2
+waitForBufferSpace  KEYWORD2 
 
 setup	KEYWORD3	Setup
 loop	KEYWORD3	Loop
