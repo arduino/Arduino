@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For xmDAC
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+xmDAC	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+end	KEYWORD2
+write	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+DAC_PORT_A		LITERAL1
+DAC_PORT_B	 	LITERAL1
+SINGLE_CHANNEL_MODE	LITERAL1
+DUAL_CHANNEL_MODE	LITERAL1
+VREF_VCC		LITERAL1
+VREF_BANDGAP		LITERAL1
+VREF_AREF_PORT_A	LITERAL1
+VREF_AREF_PORT_B	LITERAL1
+

@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For xplDataFlash
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+xplDataFlash	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+getPageSize	KEYWORD2
+writeBuffer	KEYWORD2
+readBuffer	KEYWORD2
+clearBuffer	KEYWORD2
+write		KEYWORD2
+read		KEYWORD2
+chipErase	KEYWORD2
+getManufacturerId	KEYWORD2
+getDeviceId	KEYWORD2
+getSecurityRegister	KEYWORD2
+getStatus	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+SECURITY_BUFFER_SIZE	LITERAL1
+BUFFER_ID_1	 	LITERAL1
+BUFFER_ID_2		LITERAL1
+PAGESIZE_1024		LITERAL1
+PAGESIZE_1056		LITERAL1
+DATAFLASH_PAGES		LITERAL1
+
