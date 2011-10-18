@@ -30,14 +30,16 @@ const uint8_t xmDAC::SINGLE_CHANNEL_MODE=0x01;
 const uint8_t xmDAC::DUAL_CHANNEL_MODE=0x02;
 
 xmDAC::xmDAC(uint8_t port) {
-    if(port==DAC_PORT_A) {
-	this->port=port;
-	dac=&DACA;
-    }
-    else if(port==DAC_PORT_B) {
+    if(port==DAC_PORT_B) {
 	this->port=port;
 	dac=&DACB;
     }
+#ifdef DACA
+    else if(port==DAC_PORT_A) {
+	this->port=port;
+	dac=&DACA;
+    } 
+#endif
     else {
 	this->port=-1;
 	dac=NULL;

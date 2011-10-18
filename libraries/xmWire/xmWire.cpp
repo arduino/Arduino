@@ -15,12 +15,16 @@ xmWire::xmWire(uint8_t port) {
     this->port=port;
     if(this->port==TWI_PORT_C) 
 	twi=&TWIC;
+#ifdef TWID
     else if(this->port==TWI_PORT_D) 
-	twi=&TWID; 
+	twi=&TWID;
+#endif
     else if(this->port==TWI_PORT_E) 
-	twi=&TWIE; 
+	twi=&TWIE;
+#ifdef TWIF
     else if(this->port==TWI_PORT_F) 
-	twi=&TWIF; 
+	twi=&TWIF;
+#endif
     else {
 	twi=NULL;
 	this->port=TWI_PORT_NA;
@@ -74,8 +78,26 @@ int xmWire::begin(uint8_t address, uint8_t speed, int bufferSize) {
       TODO : enable pullups on SDA/SCL pin?
     */
     PORTCFG.MPCMASK |= (1<<PIN0)|(1<<PIN1); 
-    PORTD.PIN0CTRL = 0x38;    
-    PORTD.PIN1CTRL = 0x38;    
+    if (port == TWI_PORT_C) {
+    	PORTC.PIN0CTRL = 0x38;    
+    	PORTC.PIN1CTRL = 0x38;
+    }
+#ifdef TWID
+    else if (port == TWI_PORT_D) {
+    	PORTD.PIN0CTRL = 0x38;    
+    	PORTD.PIN1CTRL = 0x38;
+    }
+#endif
+    else if (port == TWI_PORT_E) {
+    	PORTE.PIN0CTRL = 0x38;    
+    	PORTE.PIN1CTRL = 0x38;
+    }
+#ifdef TWIF
+    else if (port == TWI_PORT_F) {
+    	PORTF.PIN0CTRL = 0x38;    
+    	PORTF.PIN1CTRL = 0x38;
+    }
+#endif
     twi->MASTER.CTRLA = TWI_MASTER_INTLVL_LO_gc 
 	| TWI_MASTER_RIEN_bm 
 	| TWI_MASTER_WIEN_bm 
@@ -254,9 +276,13 @@ void xmWire::onMasterInterrupt() {
   are not malloced until we call begin()
 */
 xmWire xmWireC(xmWire::TWI_PORT_C);
+#ifdef TWID
 xmWire xmWireD(xmWire::TWI_PORT_D);
+#endif
 xmWire xmWireE(xmWire::TWI_PORT_E);
+#ifdef TWIF
 xmWire xmWireF(xmWire::TWI_PORT_F);
+#endif
 
 /** 
  * The interrupt service routine for the 
@@ -266,6 +292,7 @@ ISR(TWIC_TWIM_vect) {
     xmWireC.onMasterInterrupt();
 }    
     
+#ifdef TWID
 /** 
  * The interrupt service routine for the 
  * MasterWire instance on port C
@@ -273,7 +300,8 @@ ISR(TWIC_TWIM_vect) {
 ISR(TWID_TWIM_vect) {
     xmWireD.onMasterInterrupt();
 }    
-    
+#endif
+
 /** 
  * The interrupt service routine for the 
  * MasterWire instance on port E
@@ -282,6 +310,7 @@ ISR(TWIE_TWIM_vect) {
     xmWireE.onMasterInterrupt();
 }    
     
+#ifdef TWIF
 /** 
  * The interrupt service routine for the 
  * MasterWire instance on port F
@@ -289,7 +318,7 @@ ISR(TWIE_TWIM_vect) {
 ISR(TWIF_TWIM_vect) {
     xmWireF.onMasterInterrupt();
 }    
-    
+#endif
  
   
 
