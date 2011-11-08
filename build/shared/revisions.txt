@@ -1,3 +1,7 @@
+ARDUINO 0023 - 2011.11.09
+
+* Added .inf files for R3 boards.
+
 ARDUINO 0022 - 2010.12.24
 
 [core / libraries]
