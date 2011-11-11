@@ -40,6 +40,7 @@ uint8_t TwoWire::txBufferLength = 0;
 uint8_t TwoWire::transmitting = 0;
 void (*TwoWire::user_onRequest)(void);
 void (*TwoWire::user_onReceive)(int);
+void (*TwoWire::user_onGcallReceive)(int);
 
 // Constructors ////////////////////////////////////////////////////////////////
 
@@ -208,12 +209,22 @@ void TwoWire::flush(void)
 }
 
 // behind the scenes function that is called when data is received
-void TwoWire::onReceiveService(uint8_t* inBytes, int numBytes)
+void TwoWire::onReceiveService(uint8_t* inBytes, int numBytes, uint8_t isGeneralCall)
 {
-  // don't bother if user hasn't registered a callback
-  if(!user_onReceive){
-    return;
-  }
+  //check if general call or normal receive
+	if(isGeneralCall){
+		// don't bother if user hasn't registered a general call callback
+		if(!user_onGcallReceive){
+			return;
+		}
+	}
+	else{
+		// don't bother if user hasn't registered a callback
+		if(!user_onReceive){
+			return;
+		}
+	}
+  
   // don't bother if rx buffer is in use by a master requestFrom() op
   // i know this drops data, but it allows for slight stupidity
   // meaning, they may not have read all the master requestFrom() data yet
@@ -228,8 +239,18 @@ void TwoWire::onReceiveService(uint8_t* inBytes, int numBytes)
   // set rx iterator vars
   rxBufferIndex = 0;
   rxBufferLength = numBytes;
-  // alert user program
-  user_onReceive(numBytes);
+	
+  if(isGeneralCall){
+	// alert user's general call receive callback
+	user_onGcallReceive(numBytes);
+  }
+  else{
+	// alert user's receive callback
+	user_onReceive(numBytes);
+  }
+
+	
+	
 }
 
 // behind the scenes function that is called when data is requested
@@ -247,16 +268,27 @@ void TwoWire::onRequestService(void)
   user_onRequest();
 }
 
-// sets function called on slave write
-void TwoWire::onReceive( void (*function)(int) )
+// sets function called when slave receives data from master at slave's address
+void TwoWire::onReceive( void (*recFunction)(int) )
 {
-  user_onReceive = function;
+  user_onReceive = recFunction;
 }
 
-// sets function called on slave read
-void TwoWire::onRequest( void (*function)(void) )
+// sets function called when slave receives data from master at slaves address 
+// and another function called when slave receives data from a general call 
+void TwoWire::onReceive( void (*recFunction)(int), void (*gcallRecFunction)(int) )
 {
-  user_onRequest = function;
+	user_onReceive = recFunction;
+	user_onGcallReceive = gcallRecFunction;
+	
+	//enable general call addressing
+	twi_enableGenCall();
+}
+
+// sets function called when master requests data from slave
+void TwoWire::onRequest( void (*reqFunction)(void) )
+{
+  user_onRequest = reqFunction;
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
