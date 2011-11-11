@@ -17,11 +17,14 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+#ifdef __AVR_XMEGA__
+
 #ifndef _WIREBUFFER_H_
 #define _WIREBUFFER_H_
 
 #include <inttypes.h>
-#include <WProgram.h>
+#include <Arduino.h>
 
 /** 
  * A very simple byte buffer class similar to the java.nio.ByteBuffer class
@@ -114,7 +117,11 @@ class ByteBuffer {
      * -1 otherwise
      */
     int get();
+
+	int peek();
 };
 
 #endif
+
+#endif // __AVR_XMEGA__
 

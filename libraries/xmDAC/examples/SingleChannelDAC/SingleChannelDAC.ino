@@ -14,10 +14,10 @@
 /*
  * Create a variable for the DAC on the hardware.
  * The ATXmega has at most two ports equipped with a DAC.
- * We use the DAC on Port A.
- * The signal is written to pin 2 on port A (PA2)
+ * We use the DAC on Port B.
+ * The signal is written to pin 2 on port B (PB2)
  */
-xmDAC dac=xmDAC(xmDAC::DAC_PORT_A);
+xmDAC dac=xmDAC(xmDAC::DAC_PORT_B);
 
 /**
  * Prepeare the DAC before outputting a signal.

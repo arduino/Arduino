@@ -17,6 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifdef __AVR_XMEGA__
+
 #include "ByteBuffer.h"
 
 ByteBuffer::ByteBuffer() {
@@ -109,3 +111,11 @@ int ByteBuffer::get() {
     return retval;
 };
 
+int ByteBuffer::peek() {
+    if(bufferSize<0 || bufferPosition==bufferLimit)
+	return -1;
+    int retval=(int)*(buffer+bufferPosition);
+    return retval;
+};
+
+#endif // __AVR_XMEGA__

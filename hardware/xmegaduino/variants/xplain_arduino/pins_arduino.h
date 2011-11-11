@@ -63,6 +63,10 @@ const static uint8_t A13 = 13;
 const static uint8_t A14 = 14;
 const static uint8_t A15 = 15;
 
+#define Wire xmWireC
+#define Wire1 xmWireD
+#define Wire2 xmWireE
+#define Wire3 xmWireF
 
 #define digitalPinToPCICR(p)    (((p) >= 0 && (p) <= 21) ? (&PCICR) : ((uint8_t *)0))
 #define digitalPinToPCICRbit(p) (((p) <= 7) ? 2 : (((p) <= 13) ? 0 : 1))

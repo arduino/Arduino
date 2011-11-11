@@ -53,6 +53,9 @@ const static uint8_t A3 = 25;
 const static uint8_t A4 = 26;
 const static uint8_t A5 = 27;
 
+#define Wire xmWireC
+#define Wire1 xmWireE
+
 #define digitalPinToPCICR(p)    (((p) >= 0 && (p) <= 21) ? (&PCICR) : ((uint8_t *)0))
 #define digitalPinToPCICRbit(p) (((p) <= 7) ? 2 : (((p) <= 13) ? 0 : 1))
 #define digitalPinToPCMSK(p)    (((p) <= 7) ? (&PCMSK2) : (((p) <= 13) ? (&PCMSK0) : (((p) <= 21) ? (&PCMSK1) : ((uint8_t *)0))))

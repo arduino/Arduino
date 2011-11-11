@@ -1,4 +1,6 @@
-#include "xmWire.h"
+#include "Wire.h"
+
+#ifdef __AVR_XMEGA__
 
 #include <avr/io.h>
 
@@ -115,8 +117,7 @@ int xmWire::begin(uint8_t address, uint8_t speed, int bufferSize) {
 }
 
 int xmWire::beginTransmission(uint8_t slaveAddress) {
-    if(!ready()) 
-	return TWI_BUSY;
+    while(!ready()); // Wait for Wire to become available
     if(slaveAddress==0 || slaveAddress>127)
 	return TWI_ERROR_ADDRESS;
     this->slaveAddress=slaveAddress;
@@ -124,26 +125,36 @@ int xmWire::beginTransmission(uint8_t slaveAddress) {
     return TWI_SUCCESS;   
 }
 
-int xmWire::send(uint8_t value) {
+size_t xmWire::write(uint8_t value) {
     if(slaveAddress==0) {
 	//no transdmission was started
-	return TWI_NOT_TRANSMITTING;
+	//return TWI_NOT_TRANSMITTING;
+		setWriteError();
+        return 0;
     }
     if(sendBuffer.put(value)) {
-	return TWI_OUT_OF_MEMORY;
+		//return TWI_OUT_OF_MEMORY;
+		setWriteError();
+		return 0;
     }
-    return TWI_SUCCESS;
+    //return TWI_SUCCESS;
+	return 1;
 }
     
-int xmWire::send(uint8_t *data, uint8_t quantity) {
+size_t xmWire::write(const uint8_t *data, size_t quantity) {
     if(slaveAddress==0) {
-	//no transdmission was started
-	return TWI_NOT_TRANSMITTING;
+		//no transdmission was started
+		//return TWI_NOT_TRANSMITTING;
+		setWriteError();
+		return 0;
     }
-    if(sendBuffer.put(data,quantity)) {
-	return TWI_OUT_OF_MEMORY;
-    }
-    return TWI_SUCCESS;
+	if(sendBuffer.put((uint8_t*)data, (int)quantity)) {
+		//return TWI_OUT_OF_MEMORY;
+		setWriteError();
+		return 0;
+	}
+    //return TWI_SUCCESS;
+	return quantity;
 }
 
 
@@ -169,8 +180,7 @@ int xmWire::endTransmission(int expectedByteCount) {
 }
 
 int xmWire::requestFrom(uint8_t slaveAddress, int expectedByteCount) {
-    if(!ready()) 
-	return TWI_BUSY;
+	while(!ready()); // Wait until not busy
     if(slaveAddress==0 || slaveAddress>127)
 	return TWI_ERROR_ADDRESS;
     if(expectedByteCount<=0 || expectedByteCount>receiveBuffer.size()) {
@@ -196,12 +206,28 @@ boolean xmWire::ready() {
     return (twi->MASTER.STATUS & 0x01)!=0;
 }
 
-uint8_t xmWire::available(void) {
+int xmWire::available(void) {
+    while(this->slaveReadSize > 0) delay(2); // Wait until we finish recieving
     return receiveBuffer.remaining();
 }
 
 uint8_t xmWire::receive(void) {
     return receiveBuffer.get();
+}
+
+int xmWire::read(void)
+{
+  return receiveBuffer.get();
+}
+
+int xmWire::peek(void)
+{
+  return receiveBuffer.peek();
+}
+
+void xmWire::flush(void)
+{
+	receiveBuffer.clear();
 }
 
 
@@ -320,7 +346,7 @@ ISR(TWIF_TWIM_vect) {
 }    
 #endif
  
-  
+#endif // __AVR_XMEGA__
 
     
 

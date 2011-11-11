@@ -17,6 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifndef __AVR_XMEGA__
+
 extern "C" {
   #include <stdlib.h>
   #include <string.h>
@@ -263,3 +265,4 @@ void TwoWire::onRequest( void (*function)(void) )
 
 TwoWire Wire = TwoWire();
 
+#endif // !__AVR_XMEGA__
