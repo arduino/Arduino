@@ -337,6 +337,12 @@ SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inv
   _buffer_overflow(false),
   _inverse_logic(inverse_logic)
 {
+  //set flag if rx and tx shares pin
+  if (transmitPin == receivePin)
+	 _sharedRxTx = 1;
+  else
+	 _sharedRxTx = 0;
+	
   setTX(transmitPin);
   setRX(receivePin);
 }
@@ -351,8 +357,11 @@ SoftwareSerial::~SoftwareSerial()
 
 void SoftwareSerial::setTX(uint8_t tx)
 {
-  pinMode(tx, OUTPUT);
-  digitalWrite(tx, HIGH);
+  //if rx and tx shares a pin, only set pin to output when writing
+  if(!_sharedRxTx){
+    pinMode(tx, OUTPUT);
+	digitalWrite(tx, HIGH);
+  }
   _transmitBitMask = digitalPinToBitMask(tx);
   uint8_t port = digitalPinToPort(tx);
   _transmitPortRegister = portOutputRegister(port);
@@ -450,6 +459,12 @@ size_t SoftwareSerial::write(uint8_t b)
   uint8_t oldSREG = SREG;
   cli();  // turn off interrupts for a clean txmit
 
+  //if rx and tx shares a pin, set pin to output when writing
+  if(_sharedRxTx){
+	 //_receivePin same as transmit pin
+	 pinMode(_receivePin, OUTPUT);
+	 digitalWrite(_receivePin, HIGH);
+  }
   // Write the start bit
   tx_pin_write(_inverse_logic ? HIGH : LOW);
   tunedDelay(_tx_delay + XMIT_START_ADJUSTMENT);
@@ -482,6 +497,12 @@ size_t SoftwareSerial::write(uint8_t b)
     }
 
     tx_pin_write(HIGH); // restore pin to natural state
+  }
+  if(_sharedRxTx){
+		
+	 pinMode(_receivePin, INPUT);
+	 if (!_inverse_logic)
+		digitalWrite(_receivePin, HIGH);  // pullup for normal logic!
   }
 
   SREG = oldSREG; // turn interrupts back on

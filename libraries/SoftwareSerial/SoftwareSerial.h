@@ -47,7 +47,8 @@ http://arduiniana.org.
 class SoftwareSerial : public Stream
 {
 private:
-  // per object data
+  // per object data	
+  uint8_t _sharedRxTx;
   uint8_t _receivePin;
   uint8_t _receiveBitMask;
   volatile uint8_t *_receivePortRegister;
