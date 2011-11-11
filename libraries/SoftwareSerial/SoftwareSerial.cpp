@@ -360,6 +360,9 @@ void SoftwareSerial::setTX(uint8_t tx)
   //if rx and tx shares a pin, only set pin to output when writing
   if(!_sharedRxTx){
     pinMode(tx, OUTPUT);
+	  
+	//@edbaafi - if inverse logic is allowed, why would line rest high 
+	//regardless if _invers_logic is set?  Was inverse logic added for rx-only?
 	digitalWrite(tx, HIGH);
   }
   _transmitBitMask = digitalPinToBitMask(tx);
@@ -498,11 +501,25 @@ size_t SoftwareSerial::write(uint8_t b)
 
     tx_pin_write(HIGH); // restore pin to natural state
   }
+
+  //if rx and tx shares a pin, set back to input when done writing
   if(_sharedRxTx){
 		
 	 pinMode(_receivePin, INPUT);
-	 if (!_inverse_logic)
+	  if (!_inverse_logic){
+		//@edbaafi - PORTx is already set to high for this pin
+		////but given questions about rest states when inverse logic, I'll leave this for clarity
 		digitalWrite(_receivePin, HIGH);  // pullup for normal logic!
+	  }
+	  else{
+		//disable pullup 
+		  
+		//@edbaafi - don't think this is happening by default by setting pinMode alone
+		////Haven't followed pinMode->portModeRegister->even_more_indirection but it appears to 
+		////simply set DDRB without initializing PORTx and previous (rest) state is HIGH
+		////(even when inverse logic - see questions above)
+		digitalWrite(_receivePin,LOW);
+	  }
   }
 
   SREG = oldSREG; // turn interrupts back on
