@@ -43,6 +43,7 @@ class HardwareSerial : public Stream
     uint8_t _rxcie;
     uint8_t _udrie;
     uint8_t _u2x;
+    uint8_t _serial_buffer_wait;
   public:
     HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
       volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
@@ -57,6 +58,7 @@ class HardwareSerial : public Stream
     virtual void flush(void);
     virtual size_t write(uint8_t);
     using Print::write; // pull in write(str) and write(buf, size) from Print
+    virtual void waitForBufferSpace(uint8_t);
 };
 
 #if defined(UBRRH) || defined(UBRR0H)
