@@ -1,0 +1,10 @@
+/app/bin
+/app/pde.jar
+/core/bin
+/core/core.jar
+/build/windows/*.zip
+/build/windows/work
+/build/linux/*.tgz
+/build/linux/work
+/build/macosx/*.dmg
+/build/macosx/work
