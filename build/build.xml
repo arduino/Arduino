@@ -96,8 +96,10 @@
       <fileset dir="shared/examples" />
     </copy>
     
-    <!-- Unzip documentation -->
-    <unzip dest="${target.path}" src="shared/reference.zip" overwrite="false"/>
+    <!-- copy documentation -->
+    <copy todir="${target.path}/reference">
+      <fileset dir="shared/reference" />
+    </copy>
     
     <!-- Write the revision file! -->
     <echo file="${target.path}/lib/version.txt" message="${version}" />
