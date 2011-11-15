@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>Arduino - Read </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://arduino.cc/en/favicon.png">
+  <link rel='stylesheet' href='arduinoUno.css' type='text/css' />
+    <!--HeaderText--><style type='text/css'><!--
+  ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
+  code { white-space: nowrap; }
+  .vspace { margin-top:1.33em; }
+  .indent { margin-left:40px; }
+  .outdent { margin-left:40px; text-indent:-40px; }
+  a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
+  a.createlink { text-decoration:none; position:relative; top:-0.5em;
+    font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
+  
+span.anchor {
+	float: left;
+	font-size: 10px;
+	margin-left: -10px;
+	width: 10px;
+    position:relative; top:-0.1em;
+	text-align: center;
+}
+span.anchor a { text-decoration: none; }
+span.anchor a:hover { text-decoration: underline; }
+ol.toc { text-indent:-20px; list-style: none; }
+ol.toc ol.toc { text-indent:-40px; }
+div.tocfloat { font-size: smaller; margin-bottom: 10px;
+    border-top: 1px dotted #555555; border-bottom: 1px dotted #555555;
+    padding-top: 5px; padding-bottom: 5px; 
+    width: 38%; float: right; margin-left: 10px; clear: right;
+    margin-right:-13px; padding-right: 13px; padding-left: 13px;
+    background-color: #eeeeee; }
+div.toc { font-size: smaller; 
+    padding: 5px; border: 1px dotted #cccccc;
+    background: #f7f7f7;
+    margin-bottom: 10px; }
+div.toc p { background-color: #f9f6d6;
+    margin-top:-5px;   padding-top: 5px;
+    margin-left:-5px;  padding-left: 5px;
+    margin-right:-5px; padding-right: 5px;
+    padding-bottom: 3px;
+    border-bottom:  1px dotted #cccccc; }.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border: 2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  td.markup1 { border-bottom: 1px solid #ccf; }
+  div.faq { margin-left:2em; }
+  div.faq p.question { margin: 1em 0 0.75em -2em; font-weight:bold; }
+  div.faq hr { margin-left: -2em; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+
+--></style><script type="text/javascript">
+function toggle(obj) {
+    var elstyle = document.getElementById(obj).style;
+    var text    = document.getElementById(obj + "tog");
+    if (elstyle.display == 'none') {
+        elstyle.display = 'block';
+        text.innerHTML = "hide";
+    } else {
+        elstyle.display = 'none';
+        text.innerHTML = "show";
+    }
+}
+</script>  <meta name='robots' content='index,follow' />
+
+  <meta name="verify-v1" content="TtxFIEJAB6zdJ509wLxjnapQzKAMNm9u0Wj4ho6wxIY=" />
+</head>
+<body>
+<div id="page">
+<!--PageHeaderFmt-->
+<div id="pageheader">
+  <div class="title"><a href='http://arduino.cc/en'>Arduino</a></div>
+  <div class="search">
+    <!-- SiteSearch Google -->
+    <FORM method=GET action="http://www.google.com/search">
+    <input type=hidden name=ie value=UTF-8>
+    <input type=hidden name=oe value=UTF-8>
+    <INPUT TYPE=text name=q size=25 maxlength=255 value="">
+    <INPUT type=submit name=btnG VALUE="search">
+    <input type=hidden name=domains value="http://www.arduino.cc/">
+    <input type=hidden name=sitesearch value="http://www.arduino.cc/">
+    </FORM>
+    <!-- SiteSearch Google -->
+  </div>
+</div>
+<!--/PageHeaderFmt-->
+<!--PageLeftFmt-->
+<div id="pagenav">
+  <div id="navbar">
+  	<p><a class='wikilink' href='http://arduino.cc/en/Main/Buy'>Buy</a>
+<a class='wikilink' href='http://arduino.cc/en/Main/Software'>Download</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='http://arduino.cc/en/Tutorial/HomePage'>Learning</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class='wikilink' href='http://arduino.cc/en/Main/Hardware'>Hardware</a>
+<a class='wikilink' href='FAQ.html'>FAQ</a>
+</p>
+<p class='vspace'></p>
+
+  </div>
+  <div id="navbar_external">
+ 	<a class="urllink" href="http://www.arduino.cc/blog/" rel="nofollow">Blog &raquo;</a><a class="urllink" href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl" rel="nofollow">Forum &raquo;</a><a class="urllink" href="http://www.arduino.cc/playground/" rel="nofollow">Playground &raquo;</a>
+  </div>
+</div>
+<!--/PageLeftFmt-->
+<div id="pagetext">
+<!--PageText-->
+<div id='wikitext'>
+<p><a class='wikilink' href='Serial.html'>Serial</a>
+</p>
+<p class='vspace'></p><h2>read()</h2>
+<h4>Description</h4>
+<p>Reads incoming serial data.
+</p>
+<p class='vspace'></p><h4>Syntax</h4>
+<p>Serial.read()
+</p>
+<p class='vspace'></p><p><em>Arduino Mega only:</em> <br />Serial1.read() <br />Serial2.read() <br />Serial3.read()
+</p>
+<p class='vspace'></p><h3>Parameters</h3>
+<p>None
+</p>
+<p class='vspace'></p><h4>Returns</h4>
+<p>the first byte of incoming serial data available (or -1 if no data is available)  - <em>int</em>
+</p>
+<p class='vspace'></p><h3>Example</h3>
+<pre>
+int incomingByte = 0;	// for incoming serial data
+
+void setup() {
+	Serial.begin(9600);	// opens serial port, sets data rate to 9600 bps
+}
+
+void loop() {
+
+	// send data only when you receive data:
+	if (Serial.available() &gt; 0) {
+		// read the incoming byte:
+		incomingByte = Serial.read();
+
+		// say what you got:
+		Serial.print("I received: ");
+		Serial.println(incomingByte, DEC);
+	}
+}
+
+
+</pre>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='wikilink' href='Serial_Available.html'>Serial.available</a>()
+</li><li><a class='wikilink' href='Serial_Flush.html'>Serial.flush</a>()
+</li><li><a class='wikilink' href='Serial_Peek.html'>Serial.peek</a>()
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+</div>
+
+
+<!-- AddThis Button BEGIN -->
+<script type="text/javascript">var addthis_language = "en";
+</script>
+<div class="addthis_container addthis_toolbox addthis_default_style" addthis:url="Serial_Read" addthis:title="Arduino Wiki English">
+<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=arduinoteam" class="addthis_button_compact">Share</a><span 
+class="addthis_separator">|</span><a class="addthis_button_email"></a><a class="addthis_button_favorites"></a><a class="addthis_button_print"></a><a 
+class="addthis_button_facebook"></a><a class="addthis_button_twitter"></a><script type="text/javascript" 
+src="http://s7.addthis.com/js/250/addthis_widget.js#username=arduinoteam"></script></div>
+<!-- AddThis Button END -->
+
+</div>
+<!--PageFooterFmt-->
+<div id="pagefooter">
+&copy;Arduino | 
+  <a href=.html'Serial_Read?action=edit.html'>Edit Page</a> | <a href='Serial_Read?action=diff.html'>Page History</a> | <a href='Serial_Read?action=print.html' target='_blank'>Printable View</a> | <a href='http://arduino.cc/en/Site/AllRecentChanges'>All Recent Site Changes</a>
+</div>
+<!--/PageFooterFmt-->
+</div>
+</body>
+</html>
