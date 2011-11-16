@@ -11,7 +11,7 @@
  * Ethernet shield attached to pins 10, 11, 12, 13
  
  created 15 March 2010
- updated 4 Sep 2010
+ updated 26 Oct 2011
  by Tom Igoe
  
  http://www.tigoe.net/pcomp/code/category/arduinowiring/873
@@ -28,6 +28,9 @@
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 
+// fill in an available IP address on your network here,
+// for manual configuration:
+IPAddress ip(10,0,1,20);
 // initialize the library instance:
 EthernetClient client;
 
@@ -47,6 +50,12 @@ void setup() {
   }
   // give the ethernet module time to boot up:
   delay(1000);
+  // start the Ethernet connection:
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    // Configure manually:
+    Ethernet.begin(mac, ip);
+  }
 }
 
 void loop() {
