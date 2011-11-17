@@ -240,7 +240,7 @@ const TC1_t* PROGMEM timer_to_tc1_PGM[] = {
 	};
 
 const uint8_t PROGMEM timer_to_channel_PGM[] = {
-    NULL,
+	NOT_ON_TIMER,
 
     0,
     1,

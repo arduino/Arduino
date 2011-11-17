@@ -22,6 +22,7 @@
   $Id: wiring.c 248 2007-02-03 15:36:30Z mellis $
 */
 
+#define ARDUINO_MAIN
 #include "wiring_private.h"
 #include "pins_arduino.h"
 
@@ -60,8 +61,8 @@ void pinMode(uint8_t pin, uint8_t mode)
 static inline void turnOffPWM(uint8_t timer) __attribute__ ((always_inline));
 static inline void turnOffPWM(uint8_t timer)
 {
-	TC0_t*  tc0 = timerToTC0(timer);
-	TC1_t*  tc1 = timerToTC0(timer);
+	TC0_t*  tc0 = (TC0_t*)timerToTC0(timer);
+	TC1_t*  tc1 = (TC1_t*)timerToTC0(timer);
         uint8_t channel = timerToChannel(timer);
 
         if ( tc0 ) {

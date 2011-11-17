@@ -68,16 +68,14 @@ volatile uint8_t timer5_pin_mask;
 
 #define AVAILABLE_TONE_PINS 1
 
-const uint8_t PROGMEM tone_pin_to_timer_PGM[] = { 2 /*, 1 */ };
-static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { 255 /*, 255 */ };
+//const uint8_t PROGMEM tone_pin_to_timer_PGM[] = { 2 /*, 1 */ };
+//static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { 255 /*, 255 */ };
 
 
-static int8_t toneBegin(uint8_t _pin)
+/*static int8_t toneBegin(uint8_t _pin)
 {
 	
   int8_t _timer = -1;
-	
-	/*
 
   // if we're already using the pin, the timer should be configured.  
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++) {
@@ -123,10 +121,9 @@ static int8_t toneBegin(uint8_t _pin)
         break;
     }
   }
-	 */
 
   return _timer;
-}
+}*/
 
 
 

@@ -227,7 +227,9 @@ void delay(unsigned long ms)
 
 static void initResetButton();
 static void initAdc();
+#if defined(ADCACAL0) || defined(ADCBCAL0)
 static uint8_t ReadCalibrationByte(uint8_t index);
+#endif // ADCACAL0 || ADCBCAL0
 
 void init()
 {
@@ -317,24 +319,24 @@ void init()
 	PORTCFG.MPCMASK = 0xFF; //do this for all pins of the following command
 	PORTA.PIN0CTRL  = PULLDOWN;
 	PORTA.DIR       = 0;
-#if defined ADCACAL0
+#if defined(ADCACAL0)
 // TODO: Linux avr-gcc doesn't seem to declare CAL[LH]
         ADCA.CALL       = ReadCalibrationByte( offsetof(NVM_PROD_SIGNATURES_t, ADCACAL0) );
         ADCA.CALH       = ReadCalibrationByte( offsetof(NVM_PROD_SIGNATURES_t, ADCACAL1) );
-#endif
+#endif // ADCACAL0
         initAdc(&ADCA);
 
 	PORTCFG.MPCMASK = 0xFF; //do this for all pins of the following command
 	PORTB.PIN0CTRL  = PULLDOWN;
 	PORTB.DIR       = 0;
 #if defined(ADCB) 
-#if defined ADCBCAL0 
+#if defined(ADCBCAL0) 
 // TODO: Linux avr-gcc doesn't seem to declare CAL[LH]
         ADCB.CALL       = ReadCalibrationByte( offsetof(NVM_PROD_SIGNATURES_t, ADCBCAL0) );
         ADCB.CALH       = ReadCalibrationByte( offsetof(NVM_PROD_SIGNATURES_t, ADCBCAL1) );
-#endif
+#endif // ADCBCAL0
         initAdc(&ADCB);
-#endif
+#endif // ADCB
 	
 	PORTCFG.MPCMASK = 0xFF; //do this for all pins of the following command
 	PORTC.PIN0CTRL  = OUT_PULL_CONFIG;
@@ -427,6 +429,7 @@ static void initAdc( ADC_t* adc ) {
                      ;
 }
 
+#if defined(ADCACAL0) || defined(ADCBCAL0)
 static uint8_t ReadCalibrationByte(uint8_t index)
 {
     NVM_CMD = NVM_CMD_READ_CALIB_ROW_gc;
@@ -435,6 +438,7 @@ static uint8_t ReadCalibrationByte(uint8_t index)
 
     return result;
 }
+#endif // ADCACAL0 || ADCBCAL0
 
 // TODO: Do this only for xplain board.
 

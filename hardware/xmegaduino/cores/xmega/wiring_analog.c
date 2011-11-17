@@ -90,29 +90,29 @@ double analogReadFloat(uint8_t pin)
 }
 
 const uint16_t PROGMEM timer_to_channel_register_PGM[] = {
-    NULL,
+	(uint16_t)NULL,
 
-    &TCC0.CCABUF,
-    &TCC0.CCBBUF,
-    &TCC0.CCCBUF,
-    &TCC0.CCDBUF,
-    &TCC1.CCABUF,
-    &TCC1.CCBBUF,
+    (uint16_t)&TCC0.CCABUF,
+    (uint16_t)&TCC0.CCBBUF,
+    (uint16_t)&TCC0.CCCBUF,
+    (uint16_t)&TCC0.CCDBUF,
+    (uint16_t)&TCC1.CCABUF,
+    (uint16_t)&TCC1.CCBBUF,
 
-    &TCD0.CCABUF,
-    &TCD0.CCBBUF,
-    &TCD0.CCCBUF,
-    &TCD0.CCDBUF,
-    &TCD1.CCABUF,
-    &TCD1.CCBBUF,
+    (uint16_t)&TCD0.CCABUF,
+    (uint16_t)&TCD0.CCBBUF,
+    (uint16_t)&TCD0.CCCBUF,
+    (uint16_t)&TCD0.CCDBUF,
+    (uint16_t)&TCD1.CCABUF,
+    (uint16_t)&TCD1.CCBBUF,
 
-    &TCE0.CCABUF,
-    &TCE0.CCBBUF,
-    &TCE0.CCCBUF,
-    &TCE0.CCDBUF,
+    (uint16_t)&TCE0.CCABUF,
+    (uint16_t)&TCE0.CCBBUF,
+    (uint16_t)&TCE0.CCCBUF,
+    (uint16_t)&TCE0.CCDBUF,
 #if defined(TCE1)
-    &TCE1.CCABUF,
-    &TCE1.CCBBUF,
+    (uint16_t)&TCE1.CCABUF,
+    (uint16_t)&TCE1.CCBBUF,
 #endif
 };
 
@@ -127,8 +127,8 @@ const uint16_t PROGMEM timer_to_channel_register_PGM[] = {
 void analogWrite(uint8_t pin, int val)
 {
     uint8_t            timer            = digitalPinToTimer(pin);
-    TC0_t*             tc0              = timerToTC0(timer);
-    TC1_t*             tc1              = timerToTC1(timer);
+    TC0_t*             tc0              = (TC0_t*)timerToTC0(timer);
+    TC1_t*             tc1              = (TC1_t*)timerToTC1(timer);
     uint8_t            channel          = timerToChannel(timer);
     volatile uint16_t* channel_register = timerToChannelRegister(timer);
 
