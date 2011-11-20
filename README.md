@@ -21,6 +21,8 @@ and has been active since September 2011. It supersedes the earlier xplainduino.
 Installation
 ============
 
+Download from [here](https://github.com/akafugu/Xmegaduino/downloads).
+
 * Windows
 * OS X
 * Linux
