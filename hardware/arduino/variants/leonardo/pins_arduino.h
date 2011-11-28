@@ -39,25 +39,25 @@ const static uint8_t SDA = 2;
 const static uint8_t SCL = 3;
 
 // Map SPI port to 'new' pins D14..D17
-const static uint8_t SS   = 14;
+const static uint8_t SS   = 17;
 const static uint8_t MOSI = 16;
-const static uint8_t MISO = 17;
+const static uint8_t MISO = 14;
 const static uint8_t SCK  = 15;
 
 // Mapping of analog pins as digital I/O
-// A6-A11 are already shared with digital pins
-const static uint8_t A0 = 14;
-const static uint8_t A1 = 15;
-const static uint8_t A2 = 16;
-const static uint8_t A3 = 17;
-const static uint8_t A4 = 18;
-const static uint8_t A5 = 19;
-const static uint8_t A6 = 4;
-const static uint8_t A7 = 6;
-const static uint8_t A8 = 8;
-const static uint8_t A9 = 9;
-const static uint8_t A10 = 10;
-const static uint8_t A11 = 12;
+// A6-A11 share with digital pins
+const static uint8_t A0 = 18;
+const static uint8_t A1 = 19;
+const static uint8_t A2 = 20;
+const static uint8_t A3 = 21;
+const static uint8_t A4 = 22;
+const static uint8_t A5 = 23;
+const static uint8_t A6 = 24;	// D4
+const static uint8_t A7 = 25;	// D6
+const static uint8_t A8 = 26;	// D8
+const static uint8_t A9 = 27;	// D9
+const static uint8_t A10 = 28;	// D10
+const static uint8_t A11 = 29;	// D12
 
 //	__AVR_ATmega32U4__ has an unusual mapping of pins to channels
 extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
@@ -78,28 +78,28 @@ extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
 // D4		A6		PD4					ADC8
 // D5#				PC6		???			OC3A/#OC4A
 // D6#		A7		PD7		FastPWM		#OC4D/ADC10
-// D7		Ain0	PE6					INT6/AIN0
+// D7				PE6					INT6/AIN0
 //
-// D8		A11		PB4					ADC11/PCINT4
-// D9#		A8		PB5		PWM16		OC1A/#OC4B/ADC12/PCINT5
-// D10#		A9		PB6		PWM16		OC1B/0c4B/ADC13/PCINT6
+// D8		A8		PB4					ADC11/PCINT4
+// D9#		A9		PB5		PWM16		OC1A/#OC4B/ADC12/PCINT5
+// D10#		A10		PB6		PWM16		OC1B/0c4B/ADC13/PCINT6
 // D11#				PB7		PWM8/16		0C0A/OC1C/#RTS/PCINT7
-// D12		A10		PD6					T1/#OC4D/ADC9
+// D12		A11		PD6					T1/#OC4D/ADC9
 // D13#				PC7		PWM10		CLK0/OC4A
 //
-//			A0		PF7					ADC7
-//			A1		PF6					ADC6
-//			A2		PF5					ADC5
-//			A3		PF4					ADC4
-//			A4		PF1					ADC1
-//			A5		PF0					ADC0
+// A0		D18		PF7					ADC7
+// A1		D19		PF6					ADC6
+// A2		D20 	PF5					ADC5
+// A3		D21 	PF4					ADC4
+// A4		D22		PF1					ADC1
+// A5		D23 	PF0					ADC0
 //
-// New pins D14..D17 to map SPI port to digitial pins
+// New pins D14..D17 to map SPI port to digital pins
 //
-// D14				PB0					RXLED,SS/PCINT0
-// D15				PB1					SCK,PCINT1
-// D16				PB2					MOSI,PCINT2
-// D17				PB3					MISO,PCINT3
+// MISO		D14		PB3					MISO,PCINT3
+// SCK		D15		PB1					SCK,PCINT1
+// MOSI		D16		PB2					MOSI,PCINT2
+// SS		D17		PB0					RXLED,SS/PCINT0
 //
 // TXLED			PD5
 // RXLED		    PB0
@@ -138,52 +138,78 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINF,
 };
 
-const uint8_t PROGMEM digital_pin_to_port_PGM[18] = {
-	PD, /* 0 */
-	PD,
-	PD,
-	PD,
-	PD,
-	PC, /* 5 */
-	PD, /* 6 */
-	PE, /* 7 */
+const uint8_t PROGMEM digital_pin_to_port_PGM[30] = {
+	PD, // D0 - PD2
+	PD,	// D1 - PD3
+	PD, // D2 - PD1
+	PD,	// D3 - PD0
+	PD,	// D4 - PD4
+	PC, // D5 - PC6
+	PD, // D6 - PD7
+	PE, // D7 - PE6
 	
-	PB, /* 8 */
-	PB,
-	PB,
-	PB,
+	PB, // D8 - PB4
+	PB,	// D9 - PB5
+	PB, // D10 - PB6
+	PB,	// D11 - PB7
+	PD, // D12 - PD6
+	PC, // D13 - PC7
 	
-	PD, /* 12 */
-	PC, /* 13 */
+	PB,	// D14 - MISO - PB3
+	PB,	// D15 - SCK - PB1
+	PB,	// D16 - MOSI - PB2
+	PB,	// D17 - SS - PB0
 	
-	PB,	/* 14 */
-	PB,	/* 15 */
-	PB,	/* 16 */
-	PB,	/* 17 */
+	PF,	// D18 - A0 - PF7
+	PF, // D19 - A1 - PF6
+	PF, // D20 - A2 - PF5
+	PF, // D21 - A3 - PF4
+	PF, // D22 - A4 - PF1
+	PF, // D23 - A5 - PF0
+	
+	PD, // D24 / D4 - A6 - PD4
+	PD, // D25 / D6 - A7 - PD7
+	PB, // D26 / D8 - A8 - PB4
+	PB, // D27 / D9 - A9 - PB5
+	PB, // D28 / D10 - A10 - PB6
+	PD, // D29 / D12 - A11 - PD6
 };
 
-const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[18] = {
-	_BV(2), /* 0, port D */
-	_BV(3),
-	_BV(1),
-	_BV(0),
-	_BV(4),
-	_BV(6), /* 5, port C */
-	_BV(7),	/* 6, port D */
-	_BV(6), /* 7, port E */
+const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[30] = {
+	_BV(2), // D0 - PD2
+	_BV(3),	// D1 - PD3
+	_BV(1), // D2 - PD1
+	_BV(0),	// D3 - PD0
+	_BV(4),	// D4 - PD4
+	_BV(6), // D5 - PC6
+	_BV(7), // D6 - PD7
+	_BV(6), // D7 - PE6
 	
-	_BV(4), /* 8, port B */
-	_BV(5),
-	_BV(6),
-	_BV(7),
+	_BV(4), // D8 - PB4
+	_BV(5),	// D9 - PB5
+	_BV(6), // D10 - PB6
+	_BV(7),	// D11 - PB7
+	_BV(6), // D12 - PD6
+	_BV(7), // D13 - PC7
 	
-	_BV(6),	/* 12 port D */
-	_BV(7),
+	_BV(3),	// D14 - MISO - PB3
+	_BV(1),	// D15 - SCK - PB1
+	_BV(2),	// D16 - MOSI - PB2
+	_BV(0),	// D17 - SS - PB0
 	
-	_BV(0), /* 14, port B */
-	_BV(1),
-	_BV(2),
-	_BV(3),
+	_BV(7),	// D18 - A0 - PF7
+	_BV(6), // D19 - A1 - PF6
+	_BV(5), // D20 - A2 - PF5
+	_BV(4), // D21 - A3 - PF4
+	_BV(1), // D22 - A4 - PF1
+	_BV(0), // D23 - A5 - PF0
+	
+	_BV(4), // D24 / D4 - A6 - PD4
+	_BV(7), // D25 / D6 - A7 - PD7
+	_BV(4), // D26 / D8 - A8 - PB4
+	_BV(5), // D27 / D9 - A9 - PB5
+	_BV(6), // D28 / D10 - A10 - PB6
+	_BV(6), // D29 / D12 - A11 - PD6
 };
 
 const uint8_t PROGMEM digital_pin_to_timer_PGM[18] = {
