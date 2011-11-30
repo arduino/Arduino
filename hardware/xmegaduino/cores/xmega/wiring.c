@@ -43,10 +43,6 @@
     #define ADC_DMASEL_gp  ADC_DMASEL0_bp
 #endif
 
-#if !defined(TCF1)
-#define USE_RTC
-#endif
-
 volatile unsigned long millis_count = 0;
 volatile unsigned long seconds_count = 0;
 #if defined(USE_RTC)
