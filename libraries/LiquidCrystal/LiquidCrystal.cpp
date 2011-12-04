@@ -79,6 +79,8 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
   else 
     _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
   
+  setRowOffsets(0x00, 0x40, 0x14, 0x54);  
+  
   begin(16, 1);  
 }
 
@@ -172,13 +174,24 @@ void LiquidCrystal::home()
 
 void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
 {
-  int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };
-  if ( row >= _numlines ) {
+//  int row_offsets[] = { 0x00, 0x40, 0x10, 0x50 };
+//  int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };	//*	default
+  if ( row > _numlines ) {
     row = _numlines-1;    // we count rows starting w/0
   }
   
   command(LCD_SETDDRAMADDR | (col + row_offsets[row]));
 }
+
+//*	added by MLS Dec 2011
+void LiquidCrystal::setRowOffsets(int row0, int row1, int row2, int row3)
+{
+	row_offsets[0]	=	row0;
+	row_offsets[1]	=	row1;
+	row_offsets[2]	=	row2;
+	row_offsets[3]	=	row3;
+}
+
 
 // Turn the display on/off (quickly)
 void LiquidCrystal::noDisplay() {
