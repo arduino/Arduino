@@ -1,6 +1,7 @@
 /*
   TwoWire.h - TWI/I2C library for Arduino & Wiring
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
+  Revised 31 May 2009 Christopher K. Johnson.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -52,6 +53,10 @@ class TwoWire : public Stream
     uint8_t endTransmission(void);
     uint8_t requestFrom(uint8_t, uint8_t);
     uint8_t requestFrom(int, int);
+    uint8_t requestFromAt(uint8_t, uint8_t, uint8_t);
+    uint8_t requestFromAt(int, int, int);
+    uint8_t requestFromAt2(uint8_t, int, uint8_t);
+    uint8_t requestFromAt2(int, int, int);
     virtual size_t write(uint8_t);
     virtual size_t write(const uint8_t *, size_t);
     virtual int available(void);
