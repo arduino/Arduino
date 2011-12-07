@@ -242,7 +242,8 @@ uint16_t sendto(SOCKET s, const uint8_t *buf, uint16_t len, uint8_t *addr, uint1
  * @brief	This function is an application I/F function which is used to receive the data in other then
  * 	TCP mode. This function is used to receive UDP, IP_RAW and MAC_RAW mode, and handle the header as well. 
  * 	
- * @return	This function return received data size for success else -1.
+ * @return  This function return received data size for success else a negative value indicating how many 
+ *      bytes of data were discarded due to insufficient buffer space.
  */
 uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t *port)
 {
@@ -268,8 +269,22 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
       data_len = head[6];
       data_len = (data_len << 8) + head[7];
 
-      W5100.read_data(s, (uint8_t *)ptr, buf, data_len); // data copy.
-      ptr += data_len;
+      if (data_len > len)
+      {
+  // read as much data as will fit into buf 
+        W5100.read_data(s, (uint8_t *)ptr, buf, len); // data copy.
+         
+        // skip over the extra bytes
+        ptr += data_len;
+        
+        // set a "failed" return code
+        data_len = len - data_len;
+      }
+      else
+      {
+  W5100.read_data(s, (uint8_t *)ptr, buf, data_len); // data copy.
+  ptr += data_len;
+      }
 
       W5100.writeSnRX_RD(s, ptr);
       break;
@@ -285,8 +300,22 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
       data_len = head[4];
       data_len = (data_len << 8) + head[5];
 
-      W5100.read_data(s, (uint8_t *)ptr, buf, data_len); // data copy.
-      ptr += data_len;
+      if (data_len > len)
+      {
+  // read as much data as will fit into buf
+  W5100.read_data(s, (uint8_t *)ptr, buf, len); // data copy.
+
+  // skip over the extra bytes
+  ptr += data_len;
+
+  // set a "failed" return code
+  data_len = len - data_len;
+      }
+      else
+      {
+  W5100.read_data(s, (uint8_t *)ptr, buf, data_len); // data copy.
+  ptr += data_len;
+      }
 
       W5100.writeSnRX_RD(s, ptr);
       break;
@@ -297,8 +326,23 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
       data_len = head[0];
       data_len = (data_len<<8) + head[1] - 2;
 
-      W5100.read_data(s,(uint8_t*) ptr,buf,data_len);
-      ptr += data_len;
+      if (data_len > len)
+      {
+  // read as much data as will fit into buf
+  W5100.read_data(s, (uint8_t *)ptr, buf, len); // data copy.
+
+  // skip over the extra bytes
+  ptr += data_len;
+
+  // set a "failed" return code
+  data_len = len - data_len;
+      }
+      else
+      {
+  W5100.read_data(s, (uint8_t*) ptr, buf, data_len); // data copy
+  ptr += data_len;
+      }
+
       W5100.writeSnRX_RD(s, ptr);
       break;
 
