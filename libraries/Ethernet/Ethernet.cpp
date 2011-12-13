@@ -10,7 +10,8 @@ uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = {
 
 int EthernetClass::begin(uint8_t *mac_address)
 {
-  DhcpClass dhcp;
+  _dhcp = new DhcpClass();
+
 
   // Initialise the basic info
   W5100.init();
@@ -18,15 +19,15 @@ int EthernetClass::begin(uint8_t *mac_address)
   W5100.setIPAddress(IPAddress(0,0,0,0).raw_address());
 
   // Now try to get our config info from a DHCP server
-  int ret = dhcp.beginWithDHCP(mac_address);
+  int ret = _dhcp->beginWithDHCP(mac_address);
   if(ret == 1)
   {
     // We've successfully found a DHCP server and got our configuration info, so set things
     // accordingly
-    W5100.setIPAddress(dhcp.getLocalIp().raw_address());
-    W5100.setGatewayIp(dhcp.getGatewayIp().raw_address());
-    W5100.setSubnetMask(dhcp.getSubnetMask().raw_address());
-    _dnsServerAddress = dhcp.getDnsServerIp();
+    W5100.setIPAddress(_dhcp->getLocalIp().raw_address());
+    W5100.setGatewayIp(_dhcp->getGatewayIp().raw_address());
+    W5100.setSubnetMask(_dhcp->getSubnetMask().raw_address());
+    _dnsServerAddress = _dhcp->getDnsServerIp();
   }
 
   return ret;
@@ -64,6 +65,12 @@ void EthernetClass::begin(uint8_t *mac, IPAddress local_ip, IPAddress dns_server
   W5100.setGatewayIp(gateway._address);
   W5100.setSubnetMask(subnet._address);
   _dnsServerAddress = dns_server;
+}
+
+void EthernetClass::maintain(){
+  if(_dhcp != NULL){
+    _dhcp->checkLease();  
+  }
 }
 
 IPAddress EthernetClass::localIP()
