@@ -379,10 +379,10 @@ uint8_t DhcpClass::parseDHCPResponse(unsigned long responseTimeout, uint32_t& tr
     return type;
 }
 
-void DhcpClass::checkLease(){
+int DhcpClass::checkLease(){
     unsigned long now = millis();
     signed long snow = (long)now;
-    int rc;
+    int rc=0;
     if (_lastCheck != 0){
         if ( snow - (long)_secTimeout >= 0 ){
             _renewInSec -= 1;
@@ -393,7 +393,7 @@ void DhcpClass::checkLease(){
         //if we have a lease but should renew, do it
         if (_dhcp_state == STATE_DHCP_LEASED && _renewInSec <=0){
             _dhcp_state = STATE_DHCP_REREQUEST;
-            request_DHCP_lease();
+            rc = 1 + request_DHCP_lease();
         }
 
         //if we have a lease or is renewing but should bind, do it
@@ -401,7 +401,7 @@ void DhcpClass::checkLease(){
             //this should basically restart completely
             _dhcp_state = STATE_DHCP_START;
             reset_DHCP_lease();
-            request_DHCP_lease();
+            rc = 3 + request_DHCP_lease();
         }
     }
     else{
@@ -409,6 +409,7 @@ void DhcpClass::checkLease(){
     }
 
     _lastCheck = now;
+    return rc;
 }
 
 IPAddress DhcpClass::getLocalIp()

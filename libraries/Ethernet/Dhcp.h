@@ -47,6 +47,12 @@
 #define HOST_NAME "WIZnet"
 #define DEFAULT_LEASE	(900) //default lease time in seconds
 
+#define DHCP_CHECK_NONE         (0)
+#define DHCP_CHECK_RENEW_FAIL   (1)
+#define DHCP_CHECK_RENEW_OK     (2)
+#define DHCP_CHECK_REBIND_FAIL  (3)
+#define DHCP_CHECK_REBIND_OK    (4)
+
 enum
 {
 	padOption		=	0,
@@ -165,7 +171,7 @@ public:
   IPAddress getDnsServerIp();
   
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
-  void checkLease();
+  int checkLease();
 };
 
 #endif
