@@ -1,11 +1,3 @@
-//******************************************************************************************
-//*	LiquidCrystal.h for Arduino
-//******************************************************************************************
-//*	Edit History
-//******************************************************************************************
-//*	Dec  4, 2011	<MLS> Added setRowOffsets
-//******************************************************************************************
-
 
 #ifndef LiquidCrystal_h
 #define LiquidCrystal_h
@@ -91,10 +83,8 @@ public:
   void setRowOffsets(int row1, int row2, int row3, int row4);
   void createChar(uint8_t, uint8_t[]);
   void setCursor(uint8_t, uint8_t); 
-  virtual size_t write(uint8_t);
+  virtual void write(uint8_t);
   void command(uint8_t);
-  
-  using Print::write;
 private:
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);

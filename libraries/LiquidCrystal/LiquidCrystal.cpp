@@ -1,9 +1,17 @@
+//******************************************************************************************
+//*	LiquidCrystal library for Arduino
+//******************************************************************************************
+//*	Edit History
+//******************************************************************************************
+//*	Dec  4, 2011	<MLS> Added setRowOffsets
+//******************************************************************************************
+
 #include "LiquidCrystal.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include "Arduino.h"
+#include "WProgram.h"
 
 // When the display powers up, it is configured as follows:
 //
@@ -183,7 +191,9 @@ void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
   command(LCD_SETDDRAMADDR | (col + row_offsets[row]));
 }
 
+//******************************************************************************************
 //*	added by MLS Dec 2011
+//*	this allows support for non standard LCD displays
 void LiquidCrystal::setRowOffsets(int row0, int row1, int row2, int row3)
 {
 	row_offsets[0]	=	row0;
@@ -271,9 +281,8 @@ inline void LiquidCrystal::command(uint8_t value) {
   send(value, LOW);
 }
 
-inline size_t LiquidCrystal::write(uint8_t value) {
+inline void LiquidCrystal::write(uint8_t value) {
   send(value, HIGH);
-  return 1; // assume sucess
 }
 
 /************ low level data pushing commands **********/
