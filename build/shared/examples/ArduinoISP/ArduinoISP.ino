@@ -47,12 +47,12 @@ void pulse(int pin, int times);
 
 void setup() {
   Serial.begin(19200);
-  pinMode(7, OUTPUT);
-  pulse(7, 2);
-  pinMode(8, OUTPUT);
-  pulse(8, 2);
-  pinMode(9, OUTPUT);
-  pulse(9, 2);
+  pinMode(LED_PMODE, OUTPUT);
+  pulse(LED_PMODE, 2);
+  pinMode(LED_ERR, OUTPUT);
+  pulse(LED_ERR, 2);
+  pinMode(LED_HB, OUTPUT);
+  pulse(LED_HB, 2);
 }
 
 int error=0;
