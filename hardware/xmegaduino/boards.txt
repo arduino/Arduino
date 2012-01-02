@@ -191,8 +191,8 @@ akafuino.upload.speed=115200
 
 akafuino.bootloader.path=akafuino
 akafuino.bootloader.file=akafuino-boot.hex
-akafuino.bootloader.unlock_bits=0x3F
-akafuino.bootloader.lock_bits=0x3F
+#akafuino.bootloader.unlock_bits=0x3F
+#akafuino.bootloader.lock_bits=0x3F
 
  FUSE BITS
 # fuse0: JTAGUSERID
@@ -200,8 +200,8 @@ akafuino.bootloader.lock_bits=0x3F
 # fuse2: Boot Loader Reset
 # fuse4: JTAGEN
 # fuse5: BODLVL=2.1V
-akafuino.bootloader.fuse0=0xFF
-akafuino.bootloader.fuse1=0xFF
+#akafuino.bootloader.fuse0=0xFF
+#akafuino.bootloader.fuse1=0xFF
 akafuino.bootloader.fuse2=0xBF
-akafuino.bootloader.fuse4=0xFE
+#akafuino.bootloader.fuse4=0xFE
 akafuino.bootloader.fuse5=0xFD
