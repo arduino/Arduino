@@ -68,31 +68,13 @@ const static uint8_t A5 = 27;
 // these arrays map port names (e.g. port B) to the
 // appropriate addresses for various functions (e.g. reading
 // and writing)
-const uint16_t PROGMEM port_to_mode_PGM[] = {
-	NOT_A_PORT,
-	(uint16_t) &PORTA_DIR,
-	(uint16_t) &PORTB_DIR,
-	(uint16_t) &PORTC_DIR,
-	(uint16_t) &PORTD_DIR,
-	(uint16_t) &PORTE_DIR,
-};
-
-const uint16_t PROGMEM port_to_output_PGM[] = {
+const uint16_t PROGMEM port_to_PGM[] = {
 	NOT_A_PORT,
 	(uint16_t) &PORTA,
 	(uint16_t) &PORTB,
 	(uint16_t) &PORTC,
 	(uint16_t) &PORTD,
 	(uint16_t) &PORTE,
-};
-
-const uint16_t PROGMEM port_to_input_PGM[] = {
-	NOT_A_PORT,
-	(uint16_t) &PORTA_IN,
-	(uint16_t) &PORTB_IN,
-	(uint16_t) &PORTC_IN,
-	(uint16_t) &PORTD_IN,
-	(uint16_t) &PORTE_IN,
 };
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {

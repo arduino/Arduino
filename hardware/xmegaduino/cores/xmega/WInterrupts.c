@@ -72,7 +72,7 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 
   // Enable the interrupt.
   uint8_t  portIndex = digitalPinToPort(interruptNum);
-  PORT_t*  port      = (PORT_t*)portOutputRegister(portIndex);
+  PORT_t*  port      = portRegister(portIndex);
   uint8_t* pinctrl   = (uint8_t*)&port->PIN0CTRL;
 
   uint8_t pin = getBitFromBitField(digitalPinToBitMask(interruptNum));
@@ -91,7 +91,7 @@ void detachInterrupt(uint8_t interruptNum) {
   }
       
   uint8_t  portIndex = digitalPinToPort(interruptNum);
-  PORT_t*  port      = (PORT_t*)portOutputRegister(portIndex);
+  PORT_t*  port      = portRegister(portIndex);
   uint8_t* pinctrl   = (uint8_t*)&port->PIN0CTRL;
 
   uint8_t pin = getBitFromBitField(digitalPinToBitMask(interruptNum));
@@ -107,7 +107,7 @@ void detachInterrupt(uint8_t interruptNum) {
 
 void PORT_INT( int portIndex )
 {
-  PORT_t*  port    = (PORT_t*)portOutputRegister(portIndex);
+  PORT_t*  port    = portRegister(portIndex);
   uint8_t* pinctrl = (uint8_t*)&port->PIN0CTRL;
   uint8_t  value   = port->IN;
   uint8_t  prev    = portLastValue[portIndex];
