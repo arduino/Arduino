@@ -26,10 +26,14 @@
 #include "wiring_private.h"
 #include "pins_arduino.h"
 
+// Defined in WInterrupts.c
+extern uint8_t getBitFromBitField(uint8_t input);
+
 void pinMode(uint8_t pin, uint8_t mode)
 {
 	
-	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t bitmask = digitalPinToBitMask(pin);
+	uint8_t bit = getBitFromBitField(bitmask);
 	uint8_t portIndex = digitalPinToPort(pin);
 	volatile PORT_t *port;
 
@@ -37,14 +41,23 @@ void pinMode(uint8_t pin, uint8_t mode)
 
 	// JWS: can I let the optimizer do this?
 	port = portRegister(portIndex);
+	uint8_t* pinctrl = (uint8_t*)&port->PIN0CTRL;
 
 	uint8_t oldSREG = SREG;
 	cli();
 
 	if (mode == INPUT) {
-		port->DIRCLR = bit;
+		port->DIRCLR = bitmask;
+		pinctrl[bit] &= ~PORT_OPC_gm; // Reset all pullups on that pin
+	} else if (mode == INPUT_PULLDOWN){
+		port->DIRCLR = bitmask;
+		pinctrl[bit] |= PORT_OPC_PULLDOWN_gc;
+	} else if (mode == INPUT_PULLUP){
+		port->DIRCLR = bitmask;
+		pinctrl[bit] |= PORT_OPC_PULLUP_gc;
 	} else {
-		port->DIRSET = bit;
+		port->DIRSET = bitmask;
+		pinctrl[bit] &= ~PORT_OPC_gm; // Reset all pullups on that pin
 	}
 
 	SREG = oldSREG;
