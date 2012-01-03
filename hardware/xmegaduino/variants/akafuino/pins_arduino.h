@@ -39,21 +39,21 @@
 #define analogInputToDigitalPin(p)  ((p < 6) ? (p) + 22 : -1)
 #define digitalPinHasPWM(p)         (((p) >= 2 && (p) <= 6) || ((p) >= 9 && (p)<= 11) || ((p) >= 14 && (p)<= 19))
 
-const static uint8_t SS    = 6;
-const static uint8_t MOSI  = 11;
-const static uint8_t MISO  = 12;
-const static uint8_t SCK   = 13;
+static const uint8_t SS    = 6;
+static const uint8_t MOSI  = 11;
+static const uint8_t MISO  = 12;
+static const uint8_t SCK   = 13;
 
-const static uint8_t SDA = 2;
-const static uint8_t SCL = 3;
-const static uint8_t LED_BUILTIN = 13;
+static const uint8_t SDA = 2;
+static const uint8_t SCL = 3;
+static const uint8_t LED_BUILTIN = 13;
 
-const static uint8_t A0 = 22;
-const static uint8_t A1 = 23;
-const static uint8_t A2 = 24;
-const static uint8_t A3 = 25;
-const static uint8_t A4 = 26;
-const static uint8_t A5 = 27;
+static const uint8_t A0 = 22;
+static const uint8_t A1 = 23;
+static const uint8_t A2 = 24;
+static const uint8_t A3 = 25;
+static const uint8_t A4 = 26;
+static const uint8_t A5 = 27;
 
 #define Wire xmWireC
 #define Wire1 xmWireE

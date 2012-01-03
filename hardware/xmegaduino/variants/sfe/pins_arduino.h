@@ -37,43 +37,43 @@
 #define analogInputToDigitalPin(p)  ((p < 16) ? p : -1)
 #define digitalPinHasPWM(p)         (((p) >= 16 && (p) <= 21) || ((p) >= 24 && (p)<= 29) || ((p) >= 32 && (p)<= 37))
 
-const static uint8_t SS    = 20;
-const static uint8_t MOSI  = 21;
-const static uint8_t MISO  = 22;
-const static uint8_t SCK   = 23;
-const static uint8_t SS1   = 28;
-const static uint8_t MOSI1 = 29;
-const static uint8_t MISO1 = 30;
-const static uint8_t SCK1  = 31;
-const static uint8_t SS2   = 36;
-const static uint8_t MOSI2 = 37;
-const static uint8_t MISO2 = 38;
-const static uint8_t SCK2  = 39;
-const static uint8_t SS3   = 44;
-const static uint8_t MOSI3 = 45;
-const static uint8_t MISO3 = 46;
-const static uint8_t SCK3  = 47;
+static const uint8_t SS    = 20;
+static const uint8_t MOSI  = 21;
+static const uint8_t MISO  = 22;
+static const uint8_t SCK   = 23;
+static const uint8_t SS1   = 28;
+static const uint8_t MOSI1 = 29;
+static const uint8_t MISO1 = 30;
+static const uint8_t SCK1  = 31;
+static const uint8_t SS2   = 36;
+static const uint8_t MOSI2 = 37;
+static const uint8_t MISO2 = 38;
+static const uint8_t SCK2  = 39;
+static const uint8_t SS3   = 44;
+static const uint8_t MOSI3 = 45;
+static const uint8_t MISO3 = 46;
+static const uint8_t SCK3  = 47;
 
-const static uint8_t SDA = 16;
-const static uint8_t SCL = 17;
-const static uint8_t LED_BUILTIN = 13;
+static const uint8_t SDA = 16;
+static const uint8_t SCL = 17;
+static const uint8_t LED_BUILTIN = 13;
 
-const static uint8_t A0 = 0;
-const static uint8_t A1 = 1;
-const static uint8_t A2 = 2;
-const static uint8_t A3 = 3;
-const static uint8_t A4 = 4;
-const static uint8_t A5 = 5;
-const static uint8_t A6 = 6;
-const static uint8_t A7 = 7;
-const static uint8_t A8 = 8;
-const static uint8_t A9 = 9;
-const static uint8_t A10 = 10;
-const static uint8_t A11 = 11;
-const static uint8_t A12 = 12;
-const static uint8_t A13 = 13;
-const static uint8_t A14 = 14;
-const static uint8_t A15 = 15;
+static const uint8_t A0 = 0;
+static const uint8_t A1 = 1;
+static const uint8_t A2 = 2;
+static const uint8_t A3 = 3;
+static const uint8_t A4 = 4;
+static const uint8_t A5 = 5;
+static const uint8_t A6 = 6;
+static const uint8_t A7 = 7;
+static const uint8_t A8 = 8;
+static const uint8_t A9 = 9;
+static const uint8_t A10 = 10;
+static const uint8_t A11 = 11;
+static const uint8_t A12 = 12;
+static const uint8_t A13 = 13;
+static const uint8_t A14 = 14;
+static const uint8_t A15 = 15;
 
 #define Wire xmWireC
 #define Wire1 xmWireD

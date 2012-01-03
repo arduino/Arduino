@@ -31,7 +31,7 @@
 
 #include "wiring_private.h"
 
-volatile static voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS];
+static volatile voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS];
 static uint8_t portLastValue[EXTERNAL_NUM_INTERRUPTS/8];
 // volatile static voidFuncPtr twiIntFunc;
 
