@@ -37,12 +37,8 @@
      3  1  0
      4  0  0
 
-  The circuits can be found at 
- 
-http://www.arduino.cc/en/Tutorial/Stepper
- 
- 
- */
+  The circuits can be found at http://www.arduino.cc/en/Tutorial/Stepper
+*/
 
 
 #include "Arduino.h"
@@ -112,7 +108,7 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int moto
 */
 void Stepper::setSpeed(long whatSpeed)
 {
-  this->step_delay = 60L * 1000L / this->number_of_steps / whatSpeed;
+  this->step_delay = 60L * 1000000L / this->number_of_steps / whatSpeed;
 }
 
 /*
@@ -126,14 +122,15 @@ void Stepper::step(int steps_to_move)
   // determine direction based on whether steps_to_mode is + or -:
   if (steps_to_move > 0) {this->direction = 1;}
   if (steps_to_move < 0) {this->direction = 0;}
-    
-    
+  
   // decrement the number of steps, moving one step each time:
   while(steps_left > 0) {
-  // move only if the appropriate delay has passed:
-  if (millis() - this->last_step_time >= this->step_delay) {
+    unsigned long now = micros();
+    long elapsed_time = now - this->last_step_time;
+    // move only if the appropriate delay has passed:
+    if (elapsed_time - this->last_step_time >= this->step_delay) {
       // get the timeStamp of when you stepped:
-      this->last_step_time = millis();
+      this->last_step_time = now;
       // increment or decrement the step number,
       // depending on direction:
       if (this->direction == 1) {
