@@ -37,8 +37,36 @@
      3  1  0
      4  0  0
 
-  The circuits can be found at 
-  http://www.arduino.cc/en/Tutorial/Stepper
+  For 4 wire configurations only, the motor can be driven with full-stepping (the default),
+  half-stepping, or a wave drive.
+
+  Half-stepping will halve the size of the motor's step, giving it double the resolution.
+  Remember that the amount of steps you pass to step() will be interpreted based on the current
+  value of the drive type. The sequence of control signals is as follows:
+
+  Step C0 C1 C2 C3
+     1  1  0  1  0
+     2  0  0  1  0
+     3  0  1  1  0
+     4  0  1  0  0
+     5  0  1  0  1
+     6  0  0  0  1
+     7  1  0  0  1
+     8  1  0  0  0
+
+  Wave drive mode only keeps one phase on a time. This means that the motor will use less power, but
+  will also only have half of the torque of full-stepping. The sequence of control signals is as
+  follows:
+
+  Step C0 C1 C2 C3
+     1  0  0  1  0
+     2  0  1  0  0
+     3  0  0  0  1
+     4  1  0  0  0
+
+  The circuits can be found at http://www.arduino.cc/en/Tutorial/Stepper
+  More info on the different types of drives can be found at
+  http://www.wikipedia.org/wiki/Stepper_motor#Phase_current_waveforms
 */
 
 // ensure this library description is only included once
@@ -48,6 +76,8 @@
 // library interface description
 class Stepper {
   public:
+    enum DriveType { FullStep, HalfStep, Wave };
+
     // constructors:
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int motor_pin_3, int motor_pin_4);
@@ -55,13 +85,26 @@ class Stepper {
     // speed setter method:
     void setSpeed(long whatSpeed);
 
+    // drive type setter method:
+    void setDriveType(DriveType drive_type);
+
     // mover method:
     void step(int number_of_steps);
 
     int version(void);
 
   private:
-    void stepMotor(int this_step);
+    void stepMotor();
+    void fullStepMotor();
+    void halfStepMotor();
+    void waveStepMotor();
+
+    // Only even rows are used for full-stepping.
+    // Only odd rows are used for wave-stepping.
+    // All rows are used for half-stepping.
+    static const int STEP_VALUES[8][4];
+
+    DriveType drive_type; // What kind of stepping to use. Defaults to full.
     
     int direction;        // Direction of rotation
     int speed;          // Speed in RPMs
@@ -80,4 +123,3 @@ class Stepper {
 };
 
 #endif
-

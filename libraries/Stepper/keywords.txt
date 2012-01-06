@@ -14,6 +14,7 @@ Stepper	KEYWORD1
 
 step	KEYWORD2
 setSpeed	KEYWORD2
+setDriveType KEYWORD2
 version	KEYWORD2
 
 ######################################
