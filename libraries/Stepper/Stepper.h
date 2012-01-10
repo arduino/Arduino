@@ -1,19 +1,23 @@
 /*
   Stepper.h - - Stepper library for Wiring/Arduino - Version 0.4
-  
+
   Original library     (0.1) by Tom Igoe.
   Two-wire modifications   (0.2) by Sebastian Gassner
   Combination version   (0.3) by Tom Igoe and David Mellis
   Bug fix for four-wire   (0.4) by Tom Igoe, bug fix from Noah Shibley
 
-  Drives a unipolar or bipolar stepper motor using  2 wires or 4 wires
+  Drives unipolar or bipolar stepper motors using 2 wires or 4 wires
+
+  You can drive multiple motors simultaneously by calling registerMotor() multiple times on the same
+  instance of Stepper. You can then either move one motor at a time, or all of them in unison using
+  void step(int[] steps) function.
 
   When wiring multiple stepper motors to a microcontroller,
-  you quickly run out of output pins, with each motor requiring 4 connections. 
+  you quickly run out of output pins, with each motor requiring 4 connections.
 
   By making use of the fact that at any time two of the four motor
   coils are the inverse  of the other two, the number of
-  control connections can be reduced from 4 to 2. 
+  control connections can be reduced from 4 to 2.
 
   A slightly modified circuit around a Darlington transistor array or an L293 H-bridge
   connects to only 2 microcontroler pins, inverts the signals received,
@@ -73,53 +77,97 @@
 #ifndef Stepper_h
 #define Stepper_h
 
+#include <inttypes.h>
+#include "utility/vector.h"
+
 // library interface description
 class Stepper {
   public:
     enum DriveType { FullStep, HalfStep, Wave };
 
     // constructors:
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int motor_pin_3, int motor_pin_4);
+    // Empty constructor
+    Stepper();
+    // The two constructors below will also add a motor as motor_id 0.
+    // steps_per_rev should be in full steps
+    Stepper(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2);
+    Stepper(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2, uint8_t motor_pin_3, uint8_t motor_pin_4);
 
-    // speed setter method:
-    void setSpeed(long whatSpeed);
+    // destructor
+    ~Stepper();
 
-    // drive type setter method:
+    // Registers an extra motor. The return value is the motor's id, and should be used to
+    // reference it in the future.
+    // steps_per_rev should be in full steps
+    uint8_t registerMotor(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2);
+    uint8_t registerMotor(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2, uint8_t motor_pin_3, uint8_t motor_pin_4);
+
+    // speed setter methods:
+    // Set the speed for all motors. in RPM
+    void setSpeed(long speed);
+    // Set the speed for a specific motor, in RPM
+    void setSpeed(uint8_t motor_id, long speed);
+
+    // drive type setter methods:
+    // Set the drive type for all motors.
     void setDriveType(DriveType drive_type);
+    // Set the drive type for a specific motor
+    void setDriveType(uint8_t motor_id, DriveType drive_type);
 
-    // mover method:
-    void step(int number_of_steps);
+    // mover methods:
+    // Move all motors the number_of_steps
+    void step(int steps_to_move);
+    // Move only the motor with motor_id number_of_steps
+    void step(uint8_t motor_id, int steps_to_move);
+    // Move all of the motors simultaneously. Each element in the number_of_steps array corresponds
+    // to the number of steps the motor with motor_id being the index of that element should be
+    // moved. steps_to_move must have exactly numMotors() elements. If you dont want some motors
+    // to move, set those values to 0.
+    void step(int steps_to_move[]);
 
-    int version(void);
+    // Aborts the step() loop once.
+    void halt();
+
+    // Sets a callback to call after each iteration of the step() loop. Set to NULL to disable.
+    // Remember that the callback should execute quickly and not block. The longer the callback
+    // takes the slower steps can be taken.
+    void setCallback(void (*callback)());
+
+    // Returns the number of motors registered.
+    uint8_t numMotors(void);
+
+    uint8_t version(void);
 
   private:
-    void stepMotor();
-    void fullStepMotor();
-    void halfStepMotor();
-    void waveStepMotor();
+    struct MotorInfo {
+      uint8_t* motor_pins; // motor pin numbers
+      uint8_t num_pins;
+
+      Stepper::DriveType drive_type; // What kind of stepping to use. Defaults to full.
+      unsigned long step_delay; // delay between steps, in micros, based on speed
+      int steps_per_rev; // total number of steps this motor can take
+
+      int step_number; // which step the motor is on
+      unsigned long last_step_time; // time stamp in micros of when the last step was taken
+    };
+
+    uint8_t registerMotor(int steps_per_rev, uint8_t motor_pins[], uint8_t num_pins);
+    void setupMotorPins(uint8_t motor_pins[], uint8_t num_pins);
+
+    // moves the motor specified one step.
+    void stepMotor(uint8_t motor_id);
+
+    // writes the given values to the motor pins.
+    void writeMotorPins(uint8_t motor_pins[], const uint8_t values[], uint8_t num_pins);
 
     // Only even rows are used for full-stepping.
     // Only odd rows are used for wave-stepping.
     // All rows are used for half-stepping.
-    static const int STEP_VALUES[8][4];
+    static const uint8_t STEP_VALUES[8][4];
 
-    DriveType drive_type; // What kind of stepping to use. Defaults to full.
-    
-    int direction;        // Direction of rotation
-    int speed;          // Speed in RPMs
-    unsigned long step_delay;    // delay between steps, in ms, based on speed
-    int number_of_steps;      // total number of steps this motor can take
-    int pin_count;        // whether you're driving the motor with 2 or 4 pins
-    int step_number;        // which step the motor is on
-    
-    // motor pin numbers:
-    int motor_pin_1;
-    int motor_pin_2;
-    int motor_pin_3;
-    int motor_pin_4;
-    
-    long last_step_time;      // time stamp in ms of when the last step was taken
+    Vector<MotorInfo*> motor_infos;
+    bool should_halt;
+    void (*callback)();
 };
 
 #endif

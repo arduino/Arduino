@@ -6,24 +6,29 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Stepper	KEYWORD1
+Stepper KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-step	KEYWORD2
-setSpeed	KEYWORD2
+registerMotor KEYWORD2
+halt KEYWORD2
+numMotors KEYWORD2
+setCallback KEYWORD2
 setDriveType KEYWORD2
-version	KEYWORD2
+setSpeed  KEYWORD2
+step  KEYWORD2
+version  KEYWORD2
 
 ######################################
 # Instances (KEYWORD2)
 #######################################
-direction	KEYWORD2
-speed	KEYWORD2
-
 
 #######################################
 # Constants (LITERAL1)
 #######################################
+
+FullStep LITERAL1
+HalfStep LITERAL1
+Wave LITERAL1
