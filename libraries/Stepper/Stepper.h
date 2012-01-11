@@ -128,6 +128,13 @@ class Stepper {
     // Aborts the step() loop once.
     void halt();
 
+    // Sets whether the steppers should hold their position after they finish stepping.
+    // This can only be done for 4-pin motor configurations, and will be ignored otherwise.
+    // This will only take effect after the next step() call finishes. Call step(0) if you want to
+    // have it take immediately.
+    void setHold(bool hold);
+    void setHold(uint8_t motor_id, bool hold);
+
     // Sets a callback to call after each iteration of the step() loop. Set to NULL to disable.
     // Remember that the callback should execute quickly and not block. The longer the callback
     // takes the slower steps can be taken.
@@ -149,6 +156,8 @@ class Stepper {
 
       int step_number; // which step the motor is on
       unsigned long last_step_time; // time stamp in micros of when the last step was taken
+
+      bool should_hold; // whether to hold the motor position when not stepping.
     };
 
     uint8_t registerMotor(int steps_per_rev, uint8_t motor_pins[], uint8_t num_pins);
@@ -164,6 +173,10 @@ class Stepper {
     // Only odd rows are used for wave-stepping.
     // All rows are used for half-stepping.
     static const uint8_t STEP_VALUES[8][4];
+
+    // Pin values that turn off current to a motor so that it does not hold its position.
+    // This is only possible for 4-pin configurations
+    static const uint8_t OFF_VALUES[4];
 
     Vector<MotorInfo*> motor_infos;
     bool should_halt;

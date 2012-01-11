@@ -6,7 +6,11 @@
   Combination version   (0.3) by Tom Igoe and David Mellis
   Bug fix for four-wire   (0.4) by Tom Igoe, bug fix from Noah Shibley
 
-  Drives a unipolar or bipolar stepper motor using  2 wires or 4 wires
+  Drives unipolar or bipolar stepper motors using 2 wires or 4 wires
+
+  You can drive multiple motors simultaneously by calling registerMotor() multiple times on the same
+  instance of Stepper. You can then either move one motor at a time, or all of them in unison using
+  void step(int[] steps) function.
 
   When wiring multiple stepper motors to a microcontroller,
   you quickly run out of output pins, with each motor requiring 4 connections.
@@ -91,6 +95,10 @@ const uint8_t Stepper::STEP_VALUES[8][4] = {
   {HIGH, LOW,  LOW,  LOW}  // not used for full-stepping
 };
 
+// Pin values that turn off current to a motor so that it does not hold its position.
+// This is only possible for 4-pin configurations
+const uint8_t Stepper::OFF_VALUES[] = { LOW, LOW, LOW, LOW };
+
 Stepper::Stepper() : should_halt(false), callback(NULL) {}
 
 /*
@@ -150,6 +158,7 @@ uint8_t Stepper::registerMotor(int steps_per_rev, uint8_t motor_pins[], uint8_t 
   motor_info->step_delay = 0UL;
   motor_info->step_number = 0;
   motor_info->steps_per_rev = steps_per_rev;
+  motor_info->should_hold = true;
 
   setupMotorPins(motor_pins, num_pins);
 
@@ -159,11 +168,14 @@ uint8_t Stepper::registerMotor(int steps_per_rev, uint8_t motor_pins[], uint8_t 
 
 void Stepper::setupMotorPins(uint8_t motor_pins[], uint8_t num_pins) {
   // Setup the pins on the microcontroller.
-  // Write LOW to each pin initially so the motor is not driven and current is not wasted.
   for (uint8_t i = 0; i < num_pins; i++) {
     pinMode(motor_pins[i], OUTPUT);
-    digitalWrite(motor_pins[i], LOW);
   }
+
+  // Write LOW to each pin initially so the motor is not driven and current is not wasted.
+  // This only really makes sense for a 4-pin motor, but it's still better than letting the pins of
+  // a 2-pin motor have random values.
+  writeMotorPins(motor_pins, Stepper::OFF_VALUES, num_pins);
 }
 
 /*
@@ -197,6 +209,19 @@ void Stepper::setDriveType(DriveType drive_type)
 void Stepper::setDriveType(uint8_t motor_id, DriveType drive_type)
 {
   this->motor_infos[motor_id]->drive_type = drive_type;
+}
+
+void Stepper::setHold(bool hold)
+{
+  uint8_t num_motors = numMotors();
+  for (uint8_t i = 0; i < num_motors; i++) {
+    setHold(i, hold);
+  }
+}
+
+void Stepper::setHold(uint8_t motor_id, bool hold)
+{
+  this->motor_infos[motor_id]->should_hold = hold;
 }
 
 /*
@@ -294,6 +319,15 @@ void Stepper::step(int steps_to_move[])
 
   // reset halt signal
   this->should_halt = false;
+
+  for (uint8_t i = 0; i < num_motors; i++) {
+    MotorInfo* motor_info = this->motor_infos[i];
+    // Only makes sense to do for 4-pin motors, but we still pass num_pins to writeMotorPins since a
+    // SEGFAULT would be really bad.
+    if (!motor_info->should_hold && motor_info->num_pins == 4) {
+      writeMotorPins(motor_info->motor_pins, Stepper::OFF_VALUES, motor_info->num_pins);
+    }
+  }
 }
 
 /*
