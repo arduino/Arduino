@@ -39,7 +39,18 @@ http://arduiniana.org.
 * Definitions
 ******************************************************************************/
 
+/******************************************************************************
+* Definitions
+******************************************************************************/
+
+#ifndef _SS_MAX_RX_BUFF    // Wrapping the definition allows custom configuration in sketches
 #define _SS_MAX_RX_BUFF 64 // RX buffer size
+#endif
+
+#ifndef GCC_VERSION
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#endif
+
 #ifndef GCC_VERSION
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 #endif
