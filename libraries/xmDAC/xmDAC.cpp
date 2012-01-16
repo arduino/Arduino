@@ -17,7 +17,7 @@
  */
 #include "xmDAC.h"
 
-#include "WProgram.h"
+#include "Arduino.h"
 #include <avr/io.h>
 
 const uint8_t xmDAC::VREF_BANDGAP=0x00; 
@@ -168,7 +168,7 @@ int xmDAC::write(int ch0, int ch1) {
     return 0;
 }
 
-boolean xmDAC::isEnabled() {
+bool xmDAC::isEnabled() {
     return enabled;
 }
 

@@ -18,7 +18,7 @@
 #ifndef _XMDAC_H_
 #define _XMDAC_H_
 
-#include "WProgram.h"
+#include "Arduino.h"
 #include <stdint.h>
 #include <avr/io.h>
 
@@ -80,7 +80,7 @@ class xmDAC {
     /** a pointer to the DAC registers of the port */
     DAC_t *dac;
     /** this is 1 if the dac is enabled */
-    boolean enabled;
+    bool enabled;
 
  public:
     /**
@@ -142,7 +142,7 @@ class xmDAC {
      * Tests if the DAC is enabled.
      * @return true if the DAC is ready to output a value, false otherwise.
      */
-    boolean isEnabled(); 
+    bool isEnabled();
 };
 
 
