@@ -46,6 +46,22 @@ void MultiStepper::setHold(bool hold)
   }
 }
 
+void MultiStepper::setDirectionPositive(bool direction_positive)
+{
+  uint8_t num_motors = numMotors();
+  for (uint8_t i = 0; i < num_motors; i++) {
+    this->steppers[i]->setDirectionPositive(direction_positive);
+  }
+}
+
+void MultiStepper::setStepsToMove(unsigned int steps_to_move)
+{
+  uint8_t num_motors = numMotors();
+  for (uint8_t i = 0; i < num_motors; i++) {
+    this->steppers[i]->setStepsToMove(steps_to_move);
+  }
+}
+
 void MultiStepper::step(int steps_to_move) {
   uint8_t num_motors = numMotors();
   int steps_to_move_array[num_motors];
