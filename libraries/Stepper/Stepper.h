@@ -8,10 +8,6 @@
 
   Drives unipolar or bipolar stepper motors using 2 wires or 4 wires
 
-  You can drive multiple motors simultaneously by calling registerMotor() multiple times on the same
-  instance of Stepper. You can then either move one motor at a time, or all of them in unison using
-  void step(int[] steps) function.
-
   When wiring multiple stepper motors to a microcontroller,
   you quickly run out of output pins, with each motor requiring 4 connections.
 
@@ -80,14 +76,15 @@
 #include <inttypes.h>
 #include "utility/vector.h"
 
+// forward declaration so it can be counted as a friend class.
+class MultiStepper;
+
 // library interface description
 class Stepper {
   public:
     enum DriveType { FullStep, HalfStep, Wave };
 
     // constructors:
-    // Empty constructor
-    Stepper();
     // The two constructors below will also add a motor as motor_id 0.
     // steps_per_rev should be in full steps
     Stepper(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2);
@@ -96,75 +93,51 @@ class Stepper {
     // destructor
     ~Stepper();
 
-    // Registers an extra motor. The return value is the motor's id, and should be used to
-    // reference it in the future.
-    // steps_per_rev should be in full steps
-    uint8_t registerMotor(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2);
-    uint8_t registerMotor(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2, uint8_t motor_pin_3, uint8_t motor_pin_4);
-
     // speed setter methods:
-    // Set the speed for all motors. in RPM
-    void setSpeed(long speed);
-    // Set the speed for a specific motor, in RPM
-    void setSpeed(uint8_t motor_id, long speed);
+    // Set the speed of the motor, in RPM
+    void setSpeed(unsigned int speed);
 
     // drive type setter methods:
-    // Set the drive type for all motors.
+    // Set the drive type of the motor.
     void setDriveType(DriveType drive_type);
-    // Set the drive type for a specific motor
-    void setDriveType(uint8_t motor_id, DriveType drive_type);
 
     // mover methods:
-    // Move all motors the number_of_steps
+    // Note that steps_to_move is an integer, with a max value of 2^15-1
     void step(int steps_to_move);
-    // Move only the motor with motor_id number_of_steps
-    void step(uint8_t motor_id, int steps_to_move);
-    // Move all of the motors simultaneously. Each element in the number_of_steps array corresponds
-    // to the number of steps the motor with motor_id being the index of that element should be
-    // moved. steps_to_move must have exactly numMotors() elements. If you dont want some motors
-    // to move, set those values to 0.
-    void step(int steps_to_move[]);
-
-    // Aborts the step() loop once.
-    void halt();
 
     // Sets whether the steppers should hold their position after they finish stepping.
     // This can only be done for 4-pin motor configurations, and will be ignored otherwise.
     // This will only take effect after the next step() call finishes. Call step(0) if you want to
     // have it take immediately.
     void setHold(bool hold);
-    void setHold(uint8_t motor_id, bool hold);
 
-    // Sets a callback to call after each iteration of the step() loop. Set to NULL to disable.
-    // Remember that the callback should execute quickly and not block. The longer the callback
-    // takes the slower steps can be taken.
-    void setCallback(void (*callback)());
+    void setDirectionPositive(bool direction_positive);
 
-    // Returns the number of motors registered.
-    uint8_t numMotors(void);
+    // sets a limit on how many steps should be moved
+    void setStepsToMove(unsigned int steps_to_move);
+
+    // returns how many steps are left to move.
+    // This is scaled based on the drive type (1 FullStep = 2 HalfSteps)
+    unsigned int getStepsLeftToMove();
+
+    void stepSlice();
 
     uint8_t version(void);
 
+    friend class MultiStepper;
+
+  protected:
+    // Helper method for stepSlice(). Takes the current time in microseconds.
+    // It is useful when needing to move multiple motors simultaneously. Having each motor calculate
+    // can make them out of sync, and slow since micros() take a long time to evaluate.
+    void stepSlice(const unsigned long now);
+
   private:
-    struct MotorInfo {
-      uint8_t* motor_pins; // motor pin numbers
-      uint8_t num_pins;
-
-      Stepper::DriveType drive_type; // What kind of stepping to use. Defaults to full.
-      unsigned long step_delay; // delay between steps, in micros, based on speed
-      int steps_per_rev; // total number of steps this motor can take
-
-      int step_number; // which step the motor is on
-      unsigned long last_step_time; // time stamp in micros of when the last step was taken
-
-      bool should_hold; // whether to hold the motor position when not stepping.
-    };
-
-    uint8_t registerMotor(int steps_per_rev, uint8_t motor_pins[], uint8_t num_pins);
-    void setupMotorPins(uint8_t motor_pins[], uint8_t num_pins);
+    // initialization
+    void init(int steps_per_rev, uint8_t motor_pins[], uint8_t num_pins);
 
     // moves the motor specified one step.
-    void stepMotor(uint8_t motor_id);
+    void stepMotor();
 
     // writes the given values to the motor pins.
     void writeMotorPins(uint8_t motor_pins[], const uint8_t values[], uint8_t num_pins);
@@ -178,9 +151,19 @@ class Stepper {
     // This is only possible for 4-pin configurations
     static const uint8_t OFF_VALUES[4];
 
-    Vector<MotorInfo*> motor_infos;
-    bool should_halt;
-    void (*callback)();
+    uint8_t* motor_pins; // motor pin numbers
+    uint8_t num_pins;
+
+    Stepper::DriveType drive_type; // What kind of stepping to use. Defaults to full.
+    unsigned long step_delay; // delay between steps, in micros, based on speed
+    int steps_per_rev; // total number of steps this motor can take
+    bool direction_positive; // if the direction to move is positive
+
+    unsigned int step_number; // which step the motor is on
+    unsigned int steps_to_move; // the number of steps left to take
+    unsigned long last_step_time; // time stamp in micros of when the last step was taken
+
+    bool should_hold; // whether to hold the motor position when not stepping.
 };
 
 #endif

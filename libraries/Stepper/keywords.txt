@@ -6,20 +6,32 @@
 # Datatypes (KEYWORD1)
 #######################################
 
+MultiStepper KEYWORD1
 Stepper KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-registerMotor KEYWORD2
-halt KEYWORD2
+getStepper KEYWORD2
 numMotors KEYWORD2
-setCallback KEYWORD2
+registerStepper KEYWORD2
 setDriveType KEYWORD2
+setHold KEYWORD2
+setSpeed KEYWORD2
+step KEYWORD2
+stepSlice KEYWORD2
+
+getStepsLeftToMove KEYWORD2
+halt KEYWORD2
+setDriveType KEYWORD2
+setDirectionPositive KEYWORD2
+setStepsToMove KEYWORD2
+setHold KEYWORD2
 setSpeed  KEYWORD2
-step  KEYWORD2
-version  KEYWORD2
+step KEYWORD2
+stepSlice KEYWORD2
+version KEYWORD2
 
 ######################################
 # Instances (KEYWORD2)
