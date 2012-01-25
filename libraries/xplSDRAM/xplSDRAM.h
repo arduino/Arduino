@@ -18,7 +18,7 @@
 #ifndef _XPLSDRAM_H_
 #define _XPLSDRAM_H_
 
-#include "WProgram.h"
+#include "Arduino.h"
 #include <stdint.h>
 #include <avr/io.h>
 

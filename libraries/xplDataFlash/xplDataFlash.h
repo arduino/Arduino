@@ -18,7 +18,7 @@
 #ifndef _XPLDATAFLASH_H_
 #define _XPLDATAFLASH_H_
 
-#include "WProgram.h"
+#include "Arduino.h"
 #include <stdint.h>
 #include <avr/io.h>
 
