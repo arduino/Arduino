@@ -614,15 +614,10 @@ void String::remove(unsigned int index, unsigned int count){
 	if (index >= len) { return; }
 	if (count <= 0) { return; }
 	if (index + count > len) { count = len - index; }
-	char temp[len - count];
-	for (int i = 0; i < index; i++)
-		temp[i] = buffer[i];
-	for(int i = (count + index); i < len; i++)
-		temp[i - (count)] = buffer[i];
-	char *p = temp;
+	char *writeTo = buffer + index;
 	len = len - count;
-	memcpy(buffer, p, len);
-	buffer[len] = '\0';
+	strncpy(writeTo, buffer + index + count,len - index);
+	buffer[len] = 0;
 }
 
 void String::toLowerCase(void)
