@@ -77,45 +77,36 @@ void HardwareSerial::begin(long baud)
 {
   uint16_t baud_setting;
   uint8_t bscale = 0;
+  uint32_t div1k;
   bool use_u2x;
 
   // TODO: Serial. Fix serial double clock.
   use_u2x = false;
 
   _port->DIRCLR = _in_bm;  // input
-  _port->DIRSET = _out_bm; // output
+  _port->OUTSET = _out_bm; // set output high
+  _port->DIRSET = _out_bm; // set to output
 
   // Reset flags
   _usart->CTRLB = 0;
-  
+
   // set the baud rate
-#if (F_CPU == 32000000L)
-  // Known good settings calculated from ProtoTalk Calc
-  // Baud rates less than 38400 can use the default algorithm
-  if (baud == 38400) {
-	  baud_setting = 3269;
-	  bscale = 10;
-  }
-  else if(baud == 57600) {
-	  baud_setting = 2158;
-	  bscale = 10;
-  }
-  else if(baud == 115200) {
-	  baud_setting = 1047;
-	  bscale = 10;
-  }
-  else
-#endif
-  if (use_u2x) {
-    _usart->CTRLB |= 1 << USART_CLK2X_bp;
-    baud_setting = ((F_CPU) / ((uint32_t)baud * 8) - 1);
-  } else {
-    baud_setting = ((F_CPU) / ((uint32_t)baud * 16) - 1);
-  }
-  _usart->BAUDCTRLA = (uint8_t)baud_setting;
-  _usart->BAUDCTRLB = (bscale << 4) | (baud_setting >> 8);
+  if (baud > (F_CPU/(use_u2x ? 16 : 32))) return; // Baudrate is set too high
 
+  div1k = ((F_CPU*(use_u2x ? 128UL : 64UL)) / baud) - 1024;
+  while ((div1k < 2096640UL) && (bscale < 7)) {
+    bscale++;
+    div1k <<= 1;
+  }
 
+  baud_setting = div1k >> 10;
+
+  _usart->BAUDCTRLA = baud_setting&0xff;
+  _usart->BAUDCTRLB = (baud_setting>>8) | ((16-bscale) << 4);
+
+  if(use_u2x)
+	_usart->CTRLB |= USART_CLK2X_bm;
+  
   // enable Rx and Tx
   _usart->CTRLB |= USART_RXEN_bm | USART_TXEN_bm;
   // enable interrupt
