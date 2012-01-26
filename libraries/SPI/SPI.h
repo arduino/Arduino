@@ -15,6 +15,35 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
 
+#if defined(__AVR_XMEGA__)
+  #define SPCR	SPIC.CTRL
+  #define SPSR	SPIC.STATUS
+  #define SPDR	SPIC.DATA
+  #define SPE	SPI_ENABLE_bp
+  #define MSTR	SPI_MASTER_bp
+  #define SPIF	SPI_IF_bp
+  #define SPIE	SPI_ENABLE_bp
+  #define DORD  SPI_DORD_bp
+
+#define SPI_CLOCK_DIV4   0x00
+#define SPI_CLOCK_DIV16  SPI_PRESCALER0_bm
+#define SPI_CLOCK_DIV64  SPI_PRESCALER1_bm
+#define SPI_CLOCK_DIV128 (SPI_PRESCALER0_bm | SPI_PRESCALER1_bm)
+#define SPI_CLOCK_DIV2   SPI_CLK2X_bm
+#define SPI_CLOCK_DIV8   (SPI_CLK2X_bm | SPI_PRESCALER0_bm)
+#define SPI_CLOCK_DIV32  (SPI_CLK2X_bm | SPI_PRESCALER1_bm)
+#define SPI_CLOCK_DIV64  (SPI_CLK2X_bm | SPI_PRESCALER0_bm | SPI_PRESCALER1_bm)
+
+#define SPI_MODE0 0x00
+#define SPI_MODE1 SPI_MODE0_bm
+#define SPI_MODE2 SPI_MODE1_bm
+#define SPI_MODE3 (SPI_MODE0_bm | SPI_MODE0_bm)
+
+#define SPI_MODE_MASK    SPI_MODE_gm
+#define SPI_CLOCK_MASK   SPI_PRESCALER_gm
+#define SPI_2XCLOCK_MASK SPI_CLK2X_bm
+
+#else
 #define SPI_CLOCK_DIV4 0x00
 #define SPI_CLOCK_DIV16 0x01
 #define SPI_CLOCK_DIV64 0x02
@@ -32,6 +61,7 @@
 #define SPI_MODE_MASK 0x0C  // CPOL = bit 3, CPHA = bit 2 on SPCR
 #define SPI_CLOCK_MASK 0x03  // SPR1 = bit 1, SPR0 = bit 0 on SPCR
 #define SPI_2XCLOCK_MASK 0x01  // SPI2X = bit 0 on SPSR
+#endif
 
 class SPIClass {
 public:

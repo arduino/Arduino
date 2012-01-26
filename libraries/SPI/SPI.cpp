@@ -55,7 +55,11 @@ void SPIClass::setDataMode(uint8_t mode)
 
 void SPIClass::setClockDivider(uint8_t rate)
 {
+#if defined(__AVR_XMEGA__)
+  SPCR = (SPCR & ~(SPI_CLOCK_MASK | SPI_2XCLOCK_MASK)) | (rate & (SPI_CLOCK_MASK | SPI_2XCLOCK_MASK));
+#else
   SPCR = (SPCR & ~SPI_CLOCK_MASK) | (rate & SPI_CLOCK_MASK);
   SPSR = (SPSR & ~SPI_2XCLOCK_MASK) | ((rate >> 2) & SPI_2XCLOCK_MASK);
+#endif
 }
 
