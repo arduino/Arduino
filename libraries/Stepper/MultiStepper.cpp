@@ -46,11 +46,11 @@ void MultiStepper::setHold(bool hold)
   }
 }
 
-void MultiStepper::setDirectionPositive(bool direction_positive)
+void MultiStepper::setDirection(bool forward)
 {
   uint8_t num_motors = numMotors();
   for (uint8_t i = 0; i < num_motors; i++) {
-    this->steppers[i]->setDirectionPositive(direction_positive);
+    this->steppers[i]->setDirection(forward);
   }
 }
 
@@ -80,7 +80,7 @@ void MultiStepper::step(int steps_to_move[])
 
     stepper->setStepsToMove(abs(steps_to_move[i]));
     // determine direction based on whether steps_to_mode is + or -:
-    stepper->setDirectionPositive(steps_to_move[i] > 0);
+    stepper->setDirection(steps_to_move[i] > 0);
   }
 
   while(true) {

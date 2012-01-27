@@ -2,7 +2,7 @@
 #include <stddef.h>
 
 #include <Arduino.h>
-#include "utility/vector.h"
+#include "utility/Vector.h"
 
 #include "Stepper.h"
 
@@ -23,6 +23,16 @@ const uint8_t Stepper::STEP_VALUES[8][4] = {
 // Pin values that turn off current to a motor so that it does not hold its position.
 // This is only possible for 4-pin configurations
 const uint8_t Stepper::OFF_VALUES[] = { LOW, LOW, LOW, LOW };
+
+Stepper::Stepper(const Stepper& copy)
+{
+  init(copy.steps_per_rev, copy.motor_pins, copy.num_pins);
+}
+
+Stepper& Stepper::operator=(const Stepper& copy) {
+  free(this->motor_pins);
+  init(copy.steps_per_rev, copy.motor_pins, copy.num_pins);
+}
 
 /*
  * two-wire constructor.
@@ -52,7 +62,7 @@ Stepper::~Stepper()
 
 void Stepper::init(int steps_per_rev, uint8_t motor_pins[], uint8_t num_pins)
 {
-  this->direction_positive = true;
+  this->forward = true;
   this->drive_type = FullStep;
   this->last_step_time = 0UL;
 
@@ -112,9 +122,9 @@ void Stepper::setHold(bool hold)
   }
 }
 
-void Stepper::setDirectionPositive(bool direction_positive)
+void Stepper::setDirection(bool forward)
 {
-  this->direction_positive = direction_positive;
+  this->forward = forward;
 }
 
 void Stepper::setStepsToMove(unsigned int steps_to_move)
@@ -134,7 +144,7 @@ unsigned int Stepper::getStepsLeftToMove()
 void Stepper::step(int steps_to_move) {
   setStepsToMove(abs(steps_to_move));
   // determine direction based on whether steps_to_mode is + or -:
-  setDirectionPositive(steps_to_move > 0);
+  setDirection(steps_to_move > 0);
 
   while(this->steps_to_move > 0) {
     stepSlice();
@@ -179,19 +189,26 @@ void Stepper::stepSlice(const unsigned long now)
   if (elapsed_time >= step_delay) {
     // get the timeStamp of when you stepped:
     this->last_step_time = now;
-    // increment or decrement the step number,
-    // depending on direction:
-    if (this->direction_positive) {
-      this->step_number++;
-    } else {
-      this->step_number--;
-    }
-    this->step_number %= steps_per_rev;
+
+    stepNow();
+
     // decrement the steps left:
     this->steps_to_move--;
-    // step the motor:
-    stepMotor();
   }
+}
+
+void Stepper::stepNow()
+{
+  // increment or decrement the step number,
+  // depending on direction:
+  if (this->forward) {
+    this->step_number++;
+  } else {
+    this->step_number--;
+  }
+  this->step_number %= steps_per_rev;
+  // step the motor:
+  stepMotor();
 }
 
 /*
@@ -201,7 +218,7 @@ void Stepper::stepMotor()
 {
   // Only write out the values if the configuration is valid.
   if (this->num_pins != 4 &&
-      this->num_pins != 2 && this->drive_type != FullStep) {
+      !(this->num_pins == 2 && this->drive_type == FullStep)) {
     return;
   }
 

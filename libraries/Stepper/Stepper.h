@@ -74,7 +74,7 @@
 #define Stepper_h
 
 #include <inttypes.h>
-#include "utility/vector.h"
+#include "utility/Vector.h"
 
 // forward declaration so it can be counted as a friend class.
 class MultiStepper;
@@ -87,11 +87,15 @@ class Stepper {
     // constructors:
     // The two constructors below will also add a motor as motor_id 0.
     // steps_per_rev should be in full steps
+    Stepper() {}
+    Stepper(const Stepper& copy);
     Stepper(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2);
     Stepper(int steps_per_rev, uint8_t motor_pin_1, uint8_t motor_pin_2, uint8_t motor_pin_3, uint8_t motor_pin_4);
 
     // destructor
     ~Stepper();
+
+    Stepper& operator=(const Stepper& copy);
 
     // speed setter methods:
     // Set the speed of the motor, in RPM
@@ -104,6 +108,9 @@ class Stepper {
     // mover methods:
     // Note that steps_to_move is an integer, with a max value of 2^15-1
     void step(int steps_to_move);
+    // Does a step without regard for speed or the steps left to move. After this method it will be
+    // just like no steps have happened with respect to speed and number of steps left.
+    void stepNow();
 
     // Sets whether the steppers should hold their position after they finish stepping.
     // This can only be done for 4-pin motor configurations, and will be ignored otherwise.
@@ -111,7 +118,7 @@ class Stepper {
     // have it take immediately.
     void setHold(bool hold);
 
-    void setDirectionPositive(bool direction_positive);
+    void setDirection(bool forward);
 
     // sets a limit on how many steps should be moved
     void setStepsToMove(unsigned int steps_to_move);
@@ -157,7 +164,7 @@ class Stepper {
     Stepper::DriveType drive_type; // What kind of stepping to use. Defaults to full.
     unsigned long step_delay; // delay between steps, in micros, based on speed
     int steps_per_rev; // total number of steps this motor can take
-    bool direction_positive; // if the direction to move is positive
+    bool forward; // whether to move forward or backward
 
     unsigned int step_number; // which step the motor is on
     unsigned int steps_to_move; // the number of steps left to take

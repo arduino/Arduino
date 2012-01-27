@@ -44,7 +44,7 @@ class MultiStepper {
     // Set the drive type for all motors.
     void setDriveType(Stepper::DriveType drive_type);
 
-    void setDirectionPositive(bool direction_positive);
+    void setDirection(bool forward);
 
     // sets a limit on how many steps should be moved
     void setStepsToMove(unsigned int steps_to_move);

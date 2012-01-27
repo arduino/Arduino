@@ -13,25 +13,25 @@ Stepper KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-getStepper KEYWORD2
-numMotors KEYWORD2
-registerStepper KEYWORD2
-setDriveType KEYWORD2
-setHold KEYWORD2
-setSpeed KEYWORD2
-step KEYWORD2
-stepSlice KEYWORD2
 
-getStepsLeftToMove KEYWORD2
-halt KEYWORD2
+# Common betwen Stepper and MultiStepper
 setDriveType KEYWORD2
-setDirectionPositive KEYWORD2
+setDirection KEYWORD2
 setStepsToMove KEYWORD2
 setHold KEYWORD2
 setSpeed  KEYWORD2
 step KEYWORD2
 stepSlice KEYWORD2
+
+# Unique to Stepper
+getStepsLeftToMove KEYWORD2
+stepNow KEYWORD2
 version KEYWORD2
+
+# Unique to MultiStepper
+getStepper KEYWORD2
+numMotors KEYWORD2
+registerStepper KEYWORD2
 
 ######################################
 # Instances (KEYWORD2)
