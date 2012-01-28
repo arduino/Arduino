@@ -242,6 +242,26 @@ const uint8_t PROGMEM timer_to_channel_PGM[] = {
     1,
 };
 
+const uint8_t PROGMEM adc_to_channel_PGM[] = {
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,  
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+};
+
+
 #endif
 
 #endif
