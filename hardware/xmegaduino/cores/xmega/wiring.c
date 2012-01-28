@@ -37,7 +37,7 @@
     #define ADC_EVACT_gp  ADC_EVACT0_bp
 #endif
 #if !defined ADC_CH_GAINFAC_gp
-    #define ADC_CH_GAINFAC_gp  ADC_CH_GAINFAC0_bp
+    #define ADC_CH_GAINFAC_gp  ADC_CH_GAIN_1X_gc
 #endif
 #if !defined ADC_DMASEL_gp
     #define ADC_DMASEL_gp  ADC_DMASEL0_bp
