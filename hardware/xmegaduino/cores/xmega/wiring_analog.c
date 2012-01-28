@@ -45,12 +45,15 @@ void analogReference(uint8_t mode)
 int analogRead12(uint8_t pin)
 {
     ADC_t* adc;
-    if ( pin < 12 ) {
+#if defined(ADCB) //Atxmega128a1 has 2 8 channel ADCs
+    if ( pin < 8 ) {
         adc = &ADCA;
-#if defined(ADCB)
     } else if ( pin < 16 ) {
         adc = &ADCB;
         pin -= 8;
+#else            //Atxmega32a4 has 1 12 channel ADC
+    if ( pin < 12 ) {
+        adc = &ADCA;
 #endif
     } else {
         return -1;
