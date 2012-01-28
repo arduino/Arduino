@@ -74,7 +74,7 @@ static inline void turnOffPWM(uint8_t timer) __attribute__ ((always_inline));
 static inline void turnOffPWM(uint8_t timer)
 {
 	TC0_t*  tc0 = (TC0_t*)timerToTC0(timer);
-	TC1_t*  tc1 = (TC1_t*)timerToTC0(timer);
+	TC1_t*  tc1 = (TC1_t*)timerToTC1(timer);
         uint8_t channel = timerToChannel(timer);
 
         if ( tc0 ) {
