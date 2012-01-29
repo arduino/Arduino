@@ -62,8 +62,8 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
 	}
 
 	// convert the reading to microseconds. The loop has been determined
-	// to be 20 clock cycles long and have about 16 clocks between the edge
+	// to be 21 clock cycles long and have about 32 clocks between the edge
 	// and the start of the loop. There will be some error introduced by
 	// the interrupt handlers.
-	return clockCyclesToMicroseconds(width * 21 + 16); 
+	return clockCyclesToMicroseconds(width * 21 + 32); 
 }
