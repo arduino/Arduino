@@ -159,6 +159,8 @@ void PORT_INT( int portIndex )
         call = 1;
     } else if ( PORT_ISC_FALLING_gc==mode && falling ) {
         call = 1;
+    } else if ( PORT_ISC_LEVEL_gc==mode && valueLow ) {
+        call = 1;
     }
     if ( call ) {
       intFunc[pin]();
