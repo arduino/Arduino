@@ -38,10 +38,10 @@ extern "C"{
 #define LSBFIRST 0
 #define MSBFIRST 1
 
-#define CHANGE  0
 #define RISING  1
 #define FALLING 2
 #define LEVEL   3
+#define CHANGE  4
 
 #define AREF_INTERNAL   0
 #define AREF_VCC        1
