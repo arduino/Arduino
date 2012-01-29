@@ -94,9 +94,9 @@ static inline void turnOffPWM(uint8_t timer)
 
 void digitalWrite(uint8_t pin, uint8_t val)
 {
-	
+	uint8_t bitmask = digitalPinToBitMask(pin);
+        uint8_t bit = getBitFromBitField(bitmask);
 	uint8_t timer = digitalPinToTimer(pin);
-	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t portIndex = digitalPinToPort(pin);
 	volatile PORT_t *port;
 
@@ -107,14 +107,26 @@ void digitalWrite(uint8_t pin, uint8_t val)
 	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
 
 	port = portRegister(portIndex);
+	uint8_t* pinctrl = (uint8_t*)&port->PIN0CTRL;
 
 	uint8_t oldSREG = SREG;
 	cli();
 
-	if (val == LOW) {
-		port->OUTCLR = bit;
-	} else {
-		port->OUTSET = bit;
+	if((port->DIR & bitmask) == 0) //if the pin is an input pit, change the pullup resistor instead of the input value
+	{
+		if (val == LOW) {
+                        pinctrl[bit] &= ~PORT_OPC_PULLUP_gc;
+                } else {
+                        pinctrl[bit] |= PORT_OPC_PULLUP_gc;
+                }
+	}
+	else
+	{
+		if (val == LOW) {
+			port->OUTCLR = bitmask;
+		} else {
+			port->OUTSET = bitmask;
+		}
 	}
 
 	SREG = oldSREG;
