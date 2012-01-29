@@ -41,6 +41,7 @@ extern "C"{
 #define CHANGE  0
 #define RISING  1
 #define FALLING 2
+#define LEVEL   3
 
 #define AREF_INTERNAL   0
 #define AREF_VCC        1
