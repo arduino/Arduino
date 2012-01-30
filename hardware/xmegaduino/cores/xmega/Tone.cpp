@@ -2,7 +2,7 @@
 
   A Tone Generator Library
 
-  Written by Brett Hagman
+  Written by Brett Hagman, Ported to xmega by Russell McClellan
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -28,277 +28,114 @@ Version Modified By Date     Comments
                     09/11/25 Changed pin toggle method to XOR
                     09/11/25 Fixed timer0 from being excluded
 0006    D Mellis    09/12/29 Replaced objects with functions
+-- See github history for history of the xmega version.
 
 *************************************************/
-
+#include "pins_arduino.h"
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
 #include "Arduino.h"
-#include <pins_arduino.h>
 
-// timerx_toggle_count:
-//  > 0 - duration specified
-//  = 0 - stopped
-//  < 0 - infinitely (until stop() method called, or new play() called)
+// For the xmega, this only ever can deal with a single pin.
+// The reason for this is the interrupts make the timing inherently imprecise.
+// I'm going to write a "precise tone generator" library that will support
+// multiple pins and will use waveform generation rather than interrupts.
+// with 16 bits accuracy and no interrupts we'd be in a similar accuracy situation
+// to professional synthesizers :-).
 
-#if !defined(__AVR_ATmega8__)
-volatile long timer0_toggle_count;
-volatile uint8_t *timer0_pin_port;
-volatile uint8_t timer0_pin_mask;
-#endif
+uint8_t tone_pin = 255; // as in the Arduino version, 255 means "no port."
+uint8_t tone_pin_port = 0;
+uint8_t tone_pin_mask = 0;
 
-volatile long timer1_toggle_count;
-volatile uint8_t *timer1_pin_port;
-volatile uint8_t timer1_pin_mask;
-volatile long timer2_toggle_count;
-volatile uint8_t *timer2_pin_port;
-volatile uint8_t timer2_pin_mask;
+// Just like the arduino version, we implement the timeout as countdown
+// on the number of toggles.  A negative value here  means that we never 
+// want to timeout.
+int32_t tone_toggle_count = 0;
 
-#if defined(__AVR_ATmega1280__)
-volatile long timer3_toggle_count;
-volatile uint8_t *timer3_pin_port;
-volatile uint8_t timer3_pin_mask;
-volatile long timer4_toggle_count;
-volatile uint8_t *timer4_pin_port;
-volatile uint8_t timer4_pin_mask;
-volatile long timer5_toggle_count;
-volatile uint8_t *timer5_pin_port;
-volatile uint8_t timer5_pin_mask;
-#endif
+// edit all these together, please!
+uint32_t prescales_available[] = {1, 2, 4, 8, 64, 256, 1024};
+uint8_t  prescales_shift_vs_previous[] = {0, 1, 1, 1, 3, 2, 2};
+uint8_t prescale_ctrla[] = {TC_CLKSEL_DIV1_gc, TC_CLKSEL_DIV2_gc,
+                            TC_CLKSEL_DIV4_gc, TC_CLKSEL_DIV8_gc,
+                            TC_CLKSEL_DIV64_gc, TC_CLKSEL_DIV256_gc,
+                            TC_CLKSEL_DIV1024_gc};
 
-#define AVAILABLE_TONE_PINS 1
+#define NUM_PRESCALES ( sizeof(prescales_available) / sizeof(uint32_t) )
 
-//const uint8_t PROGMEM tone_pin_to_timer_PGM[] = { 2 /*, 1 */ };
-//static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { 255 /*, 255 */ };
+// we use a 16 bit timer for extra precision.  good enough for the juno, good enough for us :-).  currently we don't use this timer anywhere else on the protomega.
+#define TONE_TIMER TCC1
+#define TONE_TIMER_OVF_vect TCC1_OVF_vect
 
-
-/*static int8_t toneBegin(uint8_t _pin)
+void noTone(uint8_t pin)
 {
-	
-  int8_t _timer = -1;
-
-  // if we're already using the pin, the timer should be configured.  
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++) {
-    if (tone_pins[i] == _pin) {
-      return pgm_read_byte(tone_pin_to_timer_PGM + i);
-    }
-  }
-  
-  // search for an unused timer.
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++) {
-    if (tone_pins[i] == 255) {
-      tone_pins[i] = _pin;
-      _timer = pgm_read_byte(tone_pin_to_timer_PGM + i);
-      break;
-    }
-  }
-  
-  if (_timer != -1)
+  if (pin == tone_pin)
   {
-    // Set timer specific stuff
-    // All timers in CTC mode
-    // 8 bit timers will require changing prescalar values,
-    // whereas 16 bit timers are set to either ck/1 or ck/64 prescalar
-    switch (_timer)
-    {
-      case 1:
-        // 16 bit timer
-        TCCR1A = 0;
-        TCCR1B = 0;
-        bitWrite(TCCR1B, WGM12, 1);
-        bitWrite(TCCR1B, CS10, 1);
-        timer1_pin_port = &portRegister(digitalPinToPort(_pin))->OUT;
-        timer1_pin_mask = digitalPinToBitMask(_pin);
-        break;
-      case 2:
-        // 8 bit timer
-        TCCR2A = 0;
-        TCCR2B = 0;
-        bitWrite(TCCR2A, WGM21, 1);
-        bitWrite(TCCR2B, CS20, 1);
-        timer2_pin_port = &portRegister(digitalPinToPort(_pin))->OUT;
-        timer2_pin_mask = digitalPinToBitMask(_pin);
-        break;
-    }
+    // no more tone!
+    tone_pin = 255;
+    
+    // turn off interrupt.
+    TONE_TIMER.INTCTRLA = TC_OVFINTLVL_OFF_gc;
   }
 
-  return _timer;
-}*/
-
-
+  // This is here rather than inside the conditional in order to maintain
+  // compatibility with the arduino.
+  digitalWrite(pin, LOW);
+  
+}
 
 // frequency (in hertz) and duration (in milliseconds).
-
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
+void tone(uint8_t pin, unsigned int frequency, unsigned long duration)
 {
-	/*
-  uint8_t prescalarbits = 0b001;
-  long toggle_count = 0;
-  uint32_t ocr = 0;
-  int8_t _timer;
+  if(frequency == 0)
+    noTone(pin);
 
-  _timer = toneBegin(_pin);
+  // set the pin to be an output.
+  pinMode(pin, OUTPUT);
 
-  if (_timer >= 0)
+  tone_pin = pin;
+  tone_pin_port = digitalPinToPort(pin);
+  tone_pin_mask = digitalPinToBitMask(pin);
+
+  if(duration > 0)
+    tone_toggle_count = 2* frequency * duration / 1000;
+  else
+    tone_toggle_count = -1;
+
+  // we're trying to set up an interrupt with a frequency of 2 * frequency, since we toggle the pin on each interrupt.  let's loop through the pre-scalers and try to find the best match.
+  uint32_t required_period = (F_CPU / frequency / 2);
+
+  // go through from fastest to slowest, since we want the most accurate possible.
+  for(int i = 0; i < NUM_PRESCALES; ++i)
   {
-    // Set the pinMode as OUTPUT
-    pinMode(_pin, OUTPUT);
-    
-    // if we are using an 8 bit timer, scan through prescalars to find the best fit
-    if (_timer == 0 || _timer == 2)
+    required_period >>= prescales_shift_vs_previous[i];
+    if(required_period <= 0x10000) // can we do this in 16 bits?
     {
-      ocr = F_CPU / frequency / 2 - 1;
-      prescalarbits = 0b001;  // ck/1: same for both timers
-      if (ocr > 255)
-      {
-        ocr = F_CPU / frequency / 2 / 8 - 1;
-        prescalarbits = 0b010;  // ck/8: same for both timers
-
-        if (_timer == 2 && ocr > 255)
-        {
-          ocr = F_CPU / frequency / 2 / 32 - 1;
-          prescalarbits = 0b011;
-        }
-
-        if (ocr > 255)
-        {
-          ocr = F_CPU / frequency / 2 / 64 - 1;
-          prescalarbits = _timer == 0 ? 0b011 : 0b100;
-
-          if (_timer == 2 && ocr > 255)
-          {
-            ocr = F_CPU / frequency / 2 / 128 - 1;
-            prescalarbits = 0b101;
-          }
-
-          if (ocr > 255)
-          {
-            ocr = F_CPU / frequency / 2 / 256 - 1;
-            prescalarbits = _timer == 0 ? 0b100 : 0b110;
-            if (ocr > 255)
-            {
-              // can't do any better than /1024
-              ocr = F_CPU / frequency / 2 / 1024 - 1;
-              prescalarbits = _timer == 0 ? 0b101 : 0b111;
-            }
-          }
-        }
-      }
-
-        TCCR2B = prescalarbits;
-    }
-    else
-    {
-      // two choices for the 16 bit timers: ck/1 or ck/64
-      ocr = F_CPU / frequency / 2 - 1;
-
-      prescalarbits = 0b001;
-      if (ocr > 0xffff)
-      {
-        ocr = F_CPU / frequency / 2 / 64 - 1;
-        prescalarbits = 0b011;
-      }
-
-      if (_timer == 1)
-        TCCR1B = (TCCR1B & 0b11111000) | prescalarbits;
-    }
-    
-
-    // Calculate the toggle count
-    if (duration > 0)
-    {
-      toggle_count = 2 * frequency * duration / 1000;
-    }
-    else
-    {
-      toggle_count = -1;
-    }
-
-    // Set the OCR for the given timer,
-    // set the toggle count,
-    // then turn on the interrupts
-    switch (_timer)
-    {
-
-      case 1:
-        OCR1A = ocr;
-        timer1_toggle_count = toggle_count;
-        bitWrite(TIMSK1, OCIE1A, 1);
-        break;
-      case 2:
-        OCR2A = ocr;
-        timer2_toggle_count = toggle_count;
-        bitWrite(TIMSK2, OCIE2A, 1);
-        break;
+      TONE_TIMER.CTRLA = prescale_ctrla[i];
+      TONE_TIMER.PERBUF = required_period - 1;
+      TONE_TIMER.CTRLB = ( TONE_TIMER.CTRLB & ~TC1_WGMODE_gm ) | TC_WGMODE_NORMAL_gc;
+      TONE_TIMER.CNT = 0;
+      // turn on a low-priority interrupt. the timing isn't going to be that great anyways because this is all interrupt based, so no point in being high priority.
+      TONE_TIMER.INTCTRLA = TC_OVFINTLVL_LO_gc;
+      break;
     }
   }
-	 */
 }
 
-
-void noTone(uint8_t _pin)
+// ISR routine is exactly the same as the arduino version.
+ISR(TONE_TIMER_OVF_vect)
 {
-	/*
-  int8_t _timer = -1;
   
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++) {
-    if (tone_pins[i] == _pin) {
-      _timer = pgm_read_byte(tone_pin_to_timer_PGM + i);
-      tone_pins[i] = 255;
-    }
-  }
-  
-  switch (_timer)
+  if(tone_toggle_count != 0)
   {
-    case 0:
-      TIMSK0 = 0;
-      break;
-    case 1:
-      TIMSK1 = 0;
-      break;
-    case 2:
-      TIMSK2 = 0;
-      break;
-  }
-
-  digitalWrite(_pin, 0);
-	 */
-}
-
-
-/*
-ISR(TIMER1_COMPA_vect)
-{
-  if (timer1_toggle_count != 0)
-  {
-    // toggle the pin
-    *timer1_pin_port ^= timer1_pin_mask;
-
-    if (timer1_toggle_count > 0)
-      timer1_toggle_count--;
+    // toggle the tone pin.
+    portRegister(tone_pin_port)->OUT = (portRegister(tone_pin_port)->IN) ^ tone_pin_mask;
+    
+    if(tone_toggle_count > 0)
+      --tone_toggle_count;
   }
   else
   {
-    TIMSK1 = 0;   // disable the interrupt
-    *timer1_pin_port &= ~(timer1_pin_mask);  // keep pin low after stop
+    // we've toggled our last toggle, buddy!
+    noTone(tone_pin);
   }
 }
-
-ISR(TIMER2_COMPA_vect)
-{
-
-  if (timer2_toggle_count != 0)
-  {
-    // toggle the pin
-    *timer2_pin_port ^= timer2_pin_mask;
-
-    if (timer2_toggle_count > 0)
-      timer2_toggle_count--;
-  }
-  else
-  {
-    TIMSK2 = 0;   // disable the interrupt
-    *timer2_pin_port &= ~(timer2_pin_mask);  // keep pin low after stop
-  }
-}
-*/
