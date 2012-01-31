@@ -91,12 +91,12 @@ typedef struct param {
   uint8_t selftimed;
   uint8_t lockbytes;
   uint8_t fusebytes;
-  int flashpoll;
-  int eeprompoll;
-  int pagesize;
-  int eepromsize;
-  int flashsize;
-}
+  uint8_t flashpoll;
+  uint16_t eeprompoll;
+  uint16_t pagesize;
+  uint16_t eepromsize;
+  uint32_t flashsize;
+} 
 parameter;
 
 parameter param;
