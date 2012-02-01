@@ -172,6 +172,18 @@ size_t HardwareSerial::write(uint8_t c)
   return 1;
 }
 
+void HardwareSerial::setIREnabled(bool enable)
+{
+	if(enable)
+	{
+		_usart->CTRLC |= USART_CMODE_IRDA_gc;
+	}
+	else
+	{
+		_usart->CTRLC &= ~USART_CMODE_IRDA_gc;
+	}
+}
+
 #include "serial_init.cpp"
 
 #if 1
