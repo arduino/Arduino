@@ -75,13 +75,21 @@ static inline void turnOffPWM(uint8_t timer)
 {
 	TC0_t*  tc0 = (TC0_t*)timerToTC0(timer);
 	TC1_t*  tc1 = (TC1_t*)timerToTC1(timer);
+#if defined(TCC2) || defined(TCD2)
+	TC2_t*  tc2 = (TC2_t*)timerToTC2(timer);
+#endif
         uint8_t channel = timerToChannel(timer);
 
         if ( tc0 ) {
         	tc0->CTRLB &= ~(TC0_CCAEN_bm << channel);
         } else if ( tc1 ) {
         	tc1->CTRLB &= ~(TC1_CCAEN_bm << channel);
-        }
+        } 
+#if defined(TCC2) || defined(TCD2)
+	else if ( tc2 ) {
+		tc2->CTRLB &= ~(1 << channel);
+	}
+#endif
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)

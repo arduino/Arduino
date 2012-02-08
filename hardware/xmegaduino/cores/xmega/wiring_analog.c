@@ -118,6 +118,49 @@ const uint16_t PROGMEM timer_to_channel_register_PGM[] = {
 #if defined(TCE1)
     (uint16_t)&TCE1.CCABUF,
     (uint16_t)&TCE1.CCBBUF,
+#else
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+#endif
+
+#if defined(TCC2)
+    (uint16_t)&TCC2.LCMPA,
+    (uint16_t)&TCC2.LCMPB,
+    (uint16_t)&TCC2.LCMPC,
+    (uint16_t)&TCC2.LCMPD,
+    (uint16_t)&TCC2.HCMPA,
+    (uint16_t)&TCC2.HCMPB,
+    (uint16_t)&TCC2.HCMPC,
+    (uint16_t)&TCC2.HCMPD,
+#else
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+#endif
+
+#if defined(TCD2)
+    (uint16_t)&TCD2.LCMPA,
+    (uint16_t)&TCD2.LCMPB,
+    (uint16_t)&TCD2.LCMPC,
+    (uint16_t)&TCD2.LCMPD,
+    (uint16_t)&TCD2.HCMPA,
+    (uint16_t)&TCD2.HCMPB,
+    (uint16_t)&TCD2.HCMPC,
+    (uint16_t)&TCD2.HCMPD,
+#else
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
+    (uint16_t)NULL,
 #endif
 };
 
@@ -134,6 +177,9 @@ void analogWrite(uint8_t pin, int val)
     uint8_t            timer            = digitalPinToTimer(pin);
     TC0_t*             tc0              = (TC0_t*)timerToTC0(timer);
     TC1_t*             tc1              = (TC1_t*)timerToTC1(timer);
+#if defined(TCC2) || defined(TCD2)
+    TC2_t*             tc2              = (TC2_t*)timerToTC2(timer);
+#endif
     uint8_t            channel          = timerToChannel(timer);
     volatile uint16_t* channel_register = timerToChannelRegister(timer);
 
@@ -173,7 +219,17 @@ void analogWrite(uint8_t pin, int val)
         tc1->CTRLA   = TC_CLKSEL_DIV64_gc;
         tc1->CTRLB   = ( tc1->CTRLB & ~TC1_WGMODE_gm ) | TC_WGMODE_DS_B_gc;
         tc1->CTRLB  |= TC1_CCAEN_bm << channel;
+    } 
+#if defined(TCC2) || defined(TCD2)
+    else if ( tc2 ) {
+	tc2->CTRLE = TC2_BYTEM_SPLITMODE_gc;
+	tc2->LPER = 0xFF;
+	tc2->HPER = 0xFF;
+	tc2->CTRLA  = TC2_CLKSEL_DIV64_gc;
+	tc2->CTRLB |= 1 << channel;
     }
+#endif
+    
 
     // Set value
     if ( channel_register ) {

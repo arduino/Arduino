@@ -125,6 +125,9 @@ extern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];
 extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 extern const TC0_t* PROGMEM timer_to_tc0_PGM[];
 extern const TC1_t* PROGMEM timer_to_tc1_PGM[];
+#if defined(TCC2) || defined(TCD2)
+extern const TC2_t* PROGMEM timer_to_tc2_PGM[];
+#endif
 extern const uint16_t PROGMEM timer_to_channel_register_PGM[];
 extern const uint8_t PROGMEM timer_to_channel_PGM[];
 extern const uint8_t PROGMEM adc_to_channel_PGM[];
@@ -141,6 +144,9 @@ extern const uint8_t PROGMEM adc_to_channel_PGM[];
 #define portRegister(P) ( (volatile PORT_t *)( pgm_read_word( port_to_PGM + (P))) )
 #define timerToTC0(T) ( (volatile TC0_t *)( pgm_read_word( timer_to_tc0_PGM + (T))) )
 #define timerToTC1(T) ( (volatile TC1_t *)( pgm_read_word( timer_to_tc1_PGM + (T))) )
+#if defined(TCC2) || defined(TCD2)
+#define timerToTC2(T) ( (volatile TC2_t *)( pgm_read_word( timer_to_tc2_PGM + (T))) )
+#endif
 #define timerToChannel(T) ( (uint8_t)( pgm_read_word( timer_to_channel_PGM + (T))) )
 #define adcToChannel(P) ( (uint8_t)( pgm_read_word( adc_to_channel_PGM + (P))) )
 
@@ -181,6 +187,24 @@ extern const uint8_t PROGMEM adc_to_channel_PGM[];
 #define TIMER_E0D 16
 #define TIMER_E1A 17
 #define TIMER_E1B 18
+
+#define TIMER_C2LA 19
+#define TIMER_C2LB 20
+#define TIMER_C2LC 21
+#define TIMER_C2LD 22
+#define TIMER_C2HA 23
+#define TIMER_C2HB 24
+#define TIMER_C2HC 25
+#define TIMER_C2HD 26
+
+#define TIMER_D2LA 27
+#define TIMER_D2LB 28
+#define TIMER_D2LC 29
+#define TIMER_D2LD 30
+#define TIMER_D2HA 31
+#define TIMER_D2HB 32
+#define TIMER_D2HC 33
+#define TIMER_D2HD 34
 
 #ifdef __cplusplus
 } // extern "C"
