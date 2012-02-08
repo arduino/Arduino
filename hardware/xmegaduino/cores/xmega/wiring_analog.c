@@ -45,7 +45,7 @@ void analogReference(uint8_t mode)
 int analogRead12(uint8_t pin)
 {
     ADC_t* adc;
-    if ( pin < 8 ) {
+    if ( pin < 12 ) {
         adc = &ADCA;
 #if defined(ADCB)
     } else if ( pin < 16 ) {
@@ -55,6 +55,8 @@ int analogRead12(uint8_t pin)
     } else {
         return -1;
     }
+
+    pin = adcToChannel(pin);
 
     adc->REFCTRL     = analog_reference << ADC_REFSEL_gp;
     adc->CH0.MUXCTRL = pin << ADC_CH_MUXPOS_gp; // Select pin for positive input

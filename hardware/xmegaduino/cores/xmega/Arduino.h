@@ -127,6 +127,7 @@ extern const TC0_t* PROGMEM timer_to_tc0_PGM[];
 extern const TC1_t* PROGMEM timer_to_tc1_PGM[];
 extern const uint16_t PROGMEM timer_to_channel_register_PGM[];
 extern const uint8_t PROGMEM timer_to_channel_PGM[];
+extern const uint8_t PROGMEM adc_to_channel_PGM[];
 
 // Get the bit location within the hardware port of the given virtual pin.
 // This comes from the pins_*.c file for the active board configuration.
@@ -141,6 +142,7 @@ extern const uint8_t PROGMEM timer_to_channel_PGM[];
 #define timerToTC0(T) ( (volatile TC0_t *)( pgm_read_word( timer_to_tc0_PGM + (T))) )
 #define timerToTC1(T) ( (volatile TC1_t *)( pgm_read_word( timer_to_tc1_PGM + (T))) )
 #define timerToChannel(T) ( (uint8_t)( pgm_read_word( timer_to_channel_PGM + (T))) )
+#define adcToChannel(P) ( (uint8_t)( pgm_read_word( adc_to_channel_PGM + (P))) )
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0

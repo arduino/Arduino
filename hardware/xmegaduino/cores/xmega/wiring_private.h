@@ -44,9 +44,9 @@ extern "C"{
 #endif
 
 // EXTERNAL_NUM_INTERRUPTS has been moved to pins_arduino.h
-#if !defined(EXTERNAL_NUM_INTERRUPTS)
-#error "Please define EXTERNAL_NUM_INTERRUPTS in pins_arduino for your board"
-#endif
+//#if !defined(EXTERNAL_NUM_INTERRUPTS)
+//#error "Please define EXTERNAL_NUM_INTERRUPTS in pins_arduino for your board"
+//#endif
 
 typedef void (*voidFuncPtr)(void);
 
