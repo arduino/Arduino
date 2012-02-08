@@ -58,17 +58,34 @@ Working features:
 * analogWrite
 * attachInterrupt, detachInterrupt, interrupts, noInterrupts
 * Upload using bootloader over usb port, D2/3, or D6/7.
-* Burn bootloader from arduino IDE
+* Burning bootloader from arduino IDE
 * DAC (using xmDAC library)
 * Wire
-* shiftOut, pulseIn (not tested)
+* shiftOut, shiftIn, pulseIn (not tested)
+* tone
+* SPI library
+* EEPROM library
 
 Todo:
 
 * analogReference
-* tone
-* Spi library
 * Ethernet library
 * Servo library
 * Stepper library
+
+Changelog
+=========
+
+Beta3:
+
+Big thanks goes out to Brendan Powers and Russell for their contributions 
+
+* xmDAC now works again
+* EEPROM library fixed
+* All baud rates are now dynamically calculated
+* SPI library ported
+* shiftIn function implemented
+* tone implemented using timer TCC1
+* LEVEL interrupt mode
+* Replicated Arduino's pullup behavior when writing to an input pin
 
