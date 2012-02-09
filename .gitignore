@@ -1,2 +1,4 @@
 build/macosx/work/
+build/windows/work/
 *.class
+*.jar
