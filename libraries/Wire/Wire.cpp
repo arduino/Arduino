@@ -109,6 +109,30 @@ void TwoWire::beginTransmission(int address)
   beginTransmission((uint8_t)address);
 }
 
+void TwoWire::beginTransmissionAt(uint8_t address, uint8_t offset)
+{
+  beginTransmission(address);
+  write(offset);
+}
+
+void TwoWire::beginTransmissionAt(int address, int offset)
+{
+  beginTransmissionAt((uint8_t)address, (uint8_t)offset);
+}
+
+void TwoWire::beginTransmissionAt2(uint8_t address, int offset)
+{
+  beginTransmission((uint8_t)address);
+  write((uint8_t)(offset >> 8));    // MSB of address transmitted first
+  write((uint8_t)(offset & 0xFF));  // LSB of address transmitted second
+  write((uint8_t)(offset & 0xFF));  // LSB of address transmitted second
+}
+
+void TwoWire::beginTransmissionAt2(int address, int offset)
+{
+  beginTransmissionAt2((uint8_t)address, offset);
+}
+
 uint8_t TwoWire::endTransmission(void)
 {
   // transmit buffer (blocking)

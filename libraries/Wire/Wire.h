@@ -49,6 +49,10 @@ class TwoWire : public Stream
     void begin(int);
     void beginTransmission(uint8_t);
     void beginTransmission(int);
+    void beginTransmissionAt(uint8_t,uint8_t);
+    void beginTransmissionAt(int,int);
+    void beginTransmissionAt2(uint8_t,int);
+    void beginTransmissionAt2(int,int);
     uint8_t endTransmission(void);
     uint8_t requestFrom(uint8_t, uint8_t);
     uint8_t requestFrom(int, int);
