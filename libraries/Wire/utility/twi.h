@@ -1,6 +1,7 @@
 /*
   twi.h - TWI/I2C library for Wiring & Arduino
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
+  Revised 9 June 2009 Christopher K. Johnson.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -34,13 +35,16 @@
 
   #define TWI_READY 0
   #define TWI_MRX   1
-  #define TWI_MTX   2
-  #define TWI_SRX   3
-  #define TWI_STX   4
+  #define TWI_MRXR  2
+  #define TWI_MTX   3
+  #define TWI_SRX   4
+  #define TWI_STX   5
   
   void twi_init(void);
   void twi_setAddress(uint8_t);
   uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t);
+  uint8_t twi_readFromAt(uint8_t, uint8_t, uint8_t*, uint8_t);
+  uint8_t twi_readFromAt2(uint8_t,uint16_t, uint8_t*, uint8_t);
   uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t);
   uint8_t twi_transmit(const uint8_t*, uint8_t);
   void twi_attachSlaveRxEvent( void (*)(uint8_t*, int) );

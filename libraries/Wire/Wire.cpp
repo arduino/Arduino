@@ -1,6 +1,7 @@
 /*
   TwoWire.cpp - TWI/I2C library for Wiring & Arduino
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
+  Revised 9 June 2009 Christopher K. Johnson.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -91,6 +92,46 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
 uint8_t TwoWire::requestFrom(int address, int quantity)
 {
   return requestFrom((uint8_t)address, (uint8_t)quantity);
+}
+
+uint8_t TwoWire::requestFromAt(uint8_t address, uint8_t offset, uint8_t quantity)
+{
+  // clamp to buffer length
+  if(quantity > BUFFER_LENGTH){
+    quantity = BUFFER_LENGTH;
+  }
+  // perform blocking read into buffer
+  uint8_t read = twi_readFromAt(address, offset, rxBuffer, quantity);
+  // set rx buffer iterator vars
+  rxBufferIndex = 0;
+  rxBufferLength = read;
+
+  return read;
+}
+
+uint8_t TwoWire::requestFromAt(int address, int offset, int quantity)
+{
+  return requestFromAt((uint8_t)address, (uint8_t)offset, (uint8_t)quantity);
+}
+
+uint8_t TwoWire::requestFromAt2(uint8_t address, int offset, uint8_t quantity)
+{
+  // clamp to buffer length
+  if(quantity > BUFFER_LENGTH){
+    quantity = BUFFER_LENGTH;
+  }
+  // perform blocking read into buffer
+  uint8_t read = twi_readFromAt2(address, offset, rxBuffer, quantity);
+  // set rx buffer iterator vars
+  rxBufferIndex = 0;
+  rxBufferLength = read;
+
+  return read;
+}
+
+uint8_t TwoWire::requestFromAt2(int address, int offset, int quantity)
+{
+  return requestFromAt2((uint8_t)address, offset, (uint8_t)quantity);
 }
 
 void TwoWire::beginTransmission(uint8_t address)
