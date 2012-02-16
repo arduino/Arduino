@@ -516,3 +516,22 @@ chibi.build.mcu=atmega328p
 chibi.build.f_cpu=8000000L
 chibi.build.core=arduino
 chibi.build.variant=standard
+
+##############################################################
+#	Added for Emartee in china
+#	by Mark Sproul msproul@skychariot.com June 2010
+freaduino.name=Freaduino ADK V1.0 (Arduino Mega2560)
+freaduino.upload.protocol=stk500
+freaduino.upload.maximum_size=258048
+freaduino.upload.speed=57600
+freaduino.bootloader.low_fuses=0xFF
+freaduino.bootloader.high_fuses=0xD8
+freaduino.bootloader.extended_fuses=0xFD
+freaduino.bootloader.path=atmega
+freaduino.bootloader.file=ATmegaBOOT_168_mega2560.hex
+freaduino.bootloader.unlock_bits=0x3F
+freaduino.bootloader.lock_bits=0x0F
+freaduino.build.mcu=atmega2560
+freaduino.build.f_cpu=16000000L
+freaduino.build.core=arduino
+freaduino.build.variant=mega
