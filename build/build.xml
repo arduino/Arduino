@@ -314,8 +314,9 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
-  <target name="linux-build" depends="revision-check, linux-checkos, subprojects-build" description="Build linux version">
+  <target name="linux-generic-build" depends="revision-check, linux-checkos, subprojects-build" description="Build linux version">
     <mkdir dir="linux/work" />
+    <mkdir dir="linux/work/lib" />
     
     <copy todir="linux/work">
       <fileset dir="shared" includes="lib/**" />
@@ -334,18 +335,27 @@
       <param name="target.path" value="linux/work" />
     </antcall>
 
-    <copy todir="linux/work/hardware">
-      <fileset dir="linux/dist" includes="tools/**" />
-    </copy>
-
-    <chmod perm="755" file="linux/work/hardware/tools/avrdude" />
-
     <copy todir="linux/work" file="linux/dist/arduino" />
     <chmod perm="755" file="linux/work/arduino" />
   </target>
 
-  <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
-    <copy tofile="linux/work/hardware/tools/avrdude" file="linux/dist/tools/avrdude64" overwrite="true" />
+  <target name="linux-build" depends="linux-generic-build" description="Build linux version">
+    <exec executable="tar">
+      <arg value="-C" />
+      <arg value="linux/work/hardware" />
+      <arg value="-xjf" />
+      <arg value="linux/dist/avr_tools_linux.tar.bz2" />
+    </exec>
+    <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial.so" overwrite="true" />
+  </target>
+
+  <target name="linux64-build" depends="linux-generic-build" description="Build linux (64-bit) version">
+    <exec executable="tar">
+      <arg value="-C" />
+      <arg value="linux/work/hardware" />
+      <arg value="-xjf" />
+      <arg value="linux/dist/avr_tools_linux64.tar.bz2" />
+    </exec>
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
   </target>
   
