@@ -497,6 +497,10 @@ int avrisp() {
         Serial.print("AVR ISP");
         Serial.print((char) STK_OK);
       }
+      else {
+        error++;
+        Serial.print((char) STK_NOSYNC);
+      }
       break;
     case 'A':
       get_version(getch());
@@ -573,6 +577,4 @@ int avrisp() {
       }
   }
 }
-
-
 
