@@ -66,7 +66,7 @@
 void pulse(int pin, int times);
 
 void setup() {
-  Serial.begin(19200);
+  Serial.begin(9600);
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
   pinMode(LED_ERR, OUTPUT);
@@ -510,9 +510,13 @@ int avrisp() {
       fill(5);
       empty_reply();
       break;
-
     case 'P':
-      start_pmode();
+      if (pmode) {
+        pulse(LED_ERR, 3);
+      }
+      else {
+        start_pmode();
+      }
       empty_reply();
       break;
     case 'U': // set address (word)
