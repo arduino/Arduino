@@ -43,6 +43,7 @@
 // - The SPI functions herein were developed for the AVR910_ARD programmer
 // - More information at http://code.google.com/p/mega-isp
 
+#include "SPI.h"
 #include "pins_arduino.h"
 #define RESET     SS
 
@@ -67,12 +68,17 @@ void pulse(int pin, int times);
 
 void setup() {
   Serial.begin(9600);
+  SPI.setDataMode(0);
+  SPI.setBitOrder(MSBFIRST);
+  // Clock Div can be 2,4,8,16,32,64, or 128
+  SPI.setClockDivider(SPI_CLOCK_DIV128);
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
   pinMode(LED_ERR, OUTPUT);
   pulse(LED_ERR, 2);
   pinMode(LED_HB, OUTPUT);
   pulse(LED_HB, 2);
+
 }
 
 int error = 0;
@@ -96,7 +102,7 @@ typedef struct param {
   uint16_t pagesize;
   uint16_t eepromsize;
   uint32_t flashsize;
-} 
+}
 parameter;
 
 parameter param;
@@ -164,33 +170,13 @@ void prog_lamp(int state) {
   }
 }
 
-void spi_init() {
-  uint8_t x;
-  SPCR = 0x53;
-  x = SPSR;
-  x = SPDR;
-}
-
-void spi_wait() {
-  do {
-  } while (!(SPSR & (1 << SPIF)));
-}
-
-uint8_t spi_send(uint8_t b) {
-  uint8_t reply;
-  SPDR = b;
-  spi_wait();
-  reply = SPDR;
-  return reply;
-}
-
 uint8_t spi_transaction(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
   uint8_t n;
-  spi_send(a);
-  n = spi_send(b);
+  SPI.transfer(a);
+  n = SPI.transfer(b);
   //if (n != a) error = -1;
-  n = spi_send(c);
-  return spi_send(d);
+  n = SPI.transfer(c);
+  return SPI.transfer(d);
 }
 
 void empty_reply() {
@@ -259,25 +245,19 @@ void set_parameters() {
 }
 
 void start_pmode() {
-  spi_init();
-  // following delays may not work on all targets...
-  pinMode(RESET, OUTPUT);
+  SPI.begin();
   digitalWrite(RESET, HIGH);
-  pinMode(SCK, OUTPUT);
+  pinMode(RESET, OUTPUT);
   digitalWrite(SCK, LOW);
-  delay(50);
+  delay(20);
   digitalWrite(RESET, LOW);
-  delay(50);
-  pinMode(MISO, INPUT);
-  pinMode(MOSI, OUTPUT);
   spi_transaction(0xAC, 0x53, 0x00, 0x00);
   pmode = 1;
 }
 
 void end_pmode() {
-  pinMode(MISO, INPUT);
-  pinMode(MOSI, INPUT);
-  pinMode(SCK, INPUT);
+  SPI.end();
+  digitalWrite(RESET, HIGH);
   pinMode(RESET, INPUT);
   pmode = 0;
 }
