@@ -678,6 +678,10 @@ public class Sketch {
     //new Exception().printStackTrace();
     current.setModified(state);
     calcModified();
+    // Remove any status notice, fx. done saving or done uploading,
+    // to avoid confusion about if the current code is the version
+    //in the board or not while debugging.
+    editor.statusNotice("");
   }
 
 
