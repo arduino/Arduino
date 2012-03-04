@@ -83,6 +83,11 @@ public class AvrdudeUploader extends Uploader  {
     commandDownloader.add("-D"); // don't erase
     commandDownloader.add("-Uflash:w:" + buildPath + File.separator + className + ".hex:i");
 
+    if (boardPreferences.get("upload.zigbee_d3_reset") != null &&
+        boardPreferences.get("upload.zigbee_d3_reset").toLowerCase().equals("true")) {
+      executeZigBeeD3Reset();
+    }
+
     if (boardPreferences.get("upload.disable_flushing") == null ||
         boardPreferences.get("upload.disable_flushing").toLowerCase().equals("false")) {
       flushSerialBuffer();

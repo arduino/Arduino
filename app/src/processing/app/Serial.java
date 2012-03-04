@@ -240,11 +240,13 @@ public class Serial implements SerialPortEventListener {
               System.arraycopy(buffer, 0, temp, 0, bufferLast);
               buffer = temp;
             }
-            //buffer[bufferLast++] = (byte) input.read();
+            char c = (char) input.read();
             if(monitor == true)
-              System.out.print((char) input.read());
+              System.out.print(c);
             if (this.consumer != null)
-              this.consumer.message("" + (char) input.read());
+              this.consumer.message("" + c);
+            else
+              buffer[bufferLast++] = (byte) c;
             
             /*
             System.err.println(input.available() + " " + 
@@ -511,7 +513,18 @@ public class Serial implements SerialPortEventListener {
    * (i.e. UTF8 or two-byte Unicode data), and send it as a byte array.
    */
   public void write(String what) {
-    write(what.getBytes());
+    byte bytes[] = new byte[what.length()];
+    for (int i = 0; i < what.length(); ++i) {
+      bytes[i] = what.charAt(i) < 128 ? (byte)what.charAt(i): (byte)(what.charAt(i) - 256);
+    }
+    if (monitor) {
+      String s = "serial write(" + what.length() + "):";
+      for (int i = 0; i < what.length(); ++i ) {
+        s = s + " 0x"+Integer.toHexString(bytes[i]);
+      }
+      System.out.println(s);
+    }
+    write(bytes);
   }
 
   public void setDTR(boolean state) {

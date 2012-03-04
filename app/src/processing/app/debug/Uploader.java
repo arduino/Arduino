@@ -63,6 +63,14 @@ public abstract class Uploader implements MessageConsumer  {
   
   boolean verbose;
 
+  //                             0      1    2     3     4     5      6    7     8      9    A      B     C     D    E     F 
+  static char[] remoteD3High = {0x7e, 0x00, 0x00, 0x17, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 
+                                'D', '3', 0x05, 0x00};
+  static char[] remoteD3Low =  {0x7e, 0x00, 0x00, 0x17, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 
+                                'D', '3', 0x04, 0x00};
+  static char[] exitAPIMode =  {0x7e, 0x00, 0x00, 0x08, 0x03, 'A', 'P', 0x00, 0x00};
+      
+
   public Uploader() {
   }
 
@@ -70,11 +78,113 @@ public abstract class Uploader implements MessageConsumer  {
     throws RunnerException, SerialException;
   
   public abstract boolean burnBootloader() throws RunnerException;
+  String computeZigBeeChecksum(char[] data) {
+    char length = (char)(data.length - 4);
+    if (length < 5) {
+      return null;
+    }
+    data[1] = (char) ((length >> 8) & 0xff);
+    data[2] = (char) (length & 0xff);
+
+    char csum = 0;
+    for (int i = 3; i < data.length - 1; ++i) {
+      csum = (char)(csum + data[i]);
+    }
+    csum = (char)(0xff - (csum & 0xFF));
+    data[data.length - 1] = csum;
+
+    String s = new String();
+    for (int i = 0; i <data.length; ++i) {
+      s = s+" 0x"+Integer.toHexString(data[i]);
+    }
+    
+    System.out.println("XBee Sending: " + s);
+
+    return new String(data);
+  }
+
+  String waitForResponse(Serial s) throws SerialException {
+    return waitForResponse(s, 2000);
+  }
+
+  String waitForResponse(Serial s, long time) throws SerialException {
+      for (int i = 0; i < time/10; ++i ) {
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {}
+
+        while (s.available() > 0) {
+          String str;
+          str = s.readString();
+          System.out.println("XBee Response: " + str);
+          if (s.available() == 0)
+            return str;
+        }
+      }
+      return null;
+  }
+
+  protected void executeZigBeeD3Reset() throws RunnerException, SerialException {
+    try {
+      Serial serialPort = new Serial(true);
+      serialPort.addListener(null);
+
+      serialPort.setDTR(true);
+      serialPort.setRTS(true);
+
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {}
+
+      String s = new String ("+++");
+      serialPort.write(s);
+
+      s = waitForResponse(serialPort);
+      // Enter 
+      serialPort.write("ATAP1\r\n");
+      s = waitForResponse(serialPort);
+
+      serialPort.write("ATID\r\n");
+      s = waitForResponse(serialPort);
+
+      serialPort.write("ATCN\r\n");
+      s = waitForResponse(serialPort);
+      
+      serialPort.write(computeZigBeeChecksum(remoteD3Low));
+      s = waitForResponse(serialPort);
+
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {}
+
+      serialPort.write(computeZigBeeChecksum(remoteD3High));
+      s = waitForResponse(serialPort);
+
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {}
+
+      serialPort.write(computeZigBeeChecksum(remoteD3Low));
+      s = waitForResponse(serialPort);
+
+      serialPort.write(computeZigBeeChecksum(exitAPIMode));
+      s = waitForResponse(serialPort);
+
+      serialPort.dispose();
+    } catch (SerialNotFoundException e) {
+      throw e;
+    } catch(Exception e) {
+      e.printStackTrace();
+      throw new RunnerException(e.getMessage());
+    }
+  }
+
   
   protected void flushSerialBuffer() throws RunnerException, SerialException {
     // Cleanup the serial buffer
     try {
       Serial serialPort = new Serial();
+      serialPort.addListener(null);
       byte[] readBuffer;
       while(serialPort.available() > 0) {
         readBuffer = serialPort.readBytes();
