@@ -32,6 +32,7 @@ void DhcpClass::reset_DHCP_lease(){
     memset(_dhcpLocalIp, 0, 20);
 }
 
+//return:0 on error, 1 if request is sent and response is received
 int DhcpClass::request_DHCP_lease(){
     
     uint8_t messageType = 0;
@@ -379,15 +380,44 @@ uint8_t DhcpClass::parseDHCPResponse(unsigned long responseTimeout, uint32_t& tr
     return type;
 }
 
+
+/*
+    returns:
+    0/DHCP_CHECK_NONE: nothing happened
+    1/DHCP_CHECK_RENEW_FAIL: renew failed
+    2/DHCP_CHECK_RENEW_OK: renew success
+    3/DHCP_CHECK_REBIND_FAIL: rebind fail
+    4/DHCP_CHECK_REBIND_OK: rebind success
+*/
 int DhcpClass::checkLease(){
+    //this uses a signed / unsigned trick to deal with millis overflow
     unsigned long now = millis();
     signed long snow = (long)now;
-    int rc=0;
+    int rc=DHCP_CHECK_NONE;
     if (_lastCheck != 0){
-        if ( snow - (long)_secTimeout >= 0 ){
-            _renewInSec -= 1;
-            _rebindInSec -= 1;
-            _secTimeout = snow + 1000;
+        signed long factor;
+        //calc how many ms past the timeout we are
+        factor = snow - (long)_secTimeout;
+        //if on or passed the timeout, reduce the counters
+        if ( factor >= 0 ){
+            //next timeout should be now plus 1000 ms minus parts of second in factor
+            _secTimeout = snow + 1000 - factor % 1000;
+            //how many seconds late are we, minimum 1
+            factor = factor / 1000 +1;
+            
+            //reduce the counters by that mouch
+            //if we can assume that the cycle time (factor) is fairly constant
+            //and if the remainder is less than cycle time * 2 
+            //do it early instead of late
+            if(_renewInSec < factor*2 )
+                _renewInSec = 0;
+            else
+                _renewInSec -= factor;
+            
+            if(_rebindInSec < factor*2 )
+                _rebindInSec = 0;
+            else
+                _rebindInSec -= factor;
         }
 
         //if we have a lease but should renew, do it

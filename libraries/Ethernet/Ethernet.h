@@ -25,7 +25,7 @@ public:
   void begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server);
   void begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway);
   void begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet);
-  void maintain();
+  int maintain();
 
   IPAddress localIP();
   IPAddress subnetMask();

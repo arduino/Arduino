@@ -67,10 +67,12 @@ void EthernetClass::begin(uint8_t *mac, IPAddress local_ip, IPAddress dns_server
   _dnsServerAddress = dns_server;
 }
 
-void EthernetClass::maintain(){
+int EthernetClass::maintain(){
+  int rc = DHCP_CHECK_NONE;
   if(_dhcp != NULL){
     //we have a pointer to dhcp, use it
-    switch (_dhcp->checkLease() ){
+    rc = _dhcp->checkLease();
+    switch ( rc ){
       case DHCP_CHECK_NONE:
         //nothing done
         break;
@@ -87,6 +89,7 @@ void EthernetClass::maintain(){
         break;
     }
   }
+  return rc;
 }
 
 IPAddress EthernetClass::localIP()

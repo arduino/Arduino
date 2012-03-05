@@ -42,9 +42,9 @@ import static processing.app.I18n._;
  * files and images, etc) that comes from that.
  */
 public class Base {
-  public static final int REVISION = 100;
+  public static final int REVISION = 101;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0100";
+  static String VERSION_NAME = "0101";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
@@ -1534,12 +1534,12 @@ public class Base {
   
   
   static public String getAvrBasePath() {
-    if(Base.isLinux()) {
-      return ""; // avr tools are installed system-wide and in the path
-    } else {
-      return getHardwarePath() + File.separator + "tools" +
-             File.separator + "avr" + File.separator + "bin" + File.separator;
-    }  
+    String path = getHardwarePath() + File.separator + "tools" +
+                  File.separator + "avr" + File.separator + "bin" + File.separator;
+    if (Base.isLinux() && !(new File(path)).exists()) {
+      return "";  // use distribution provided avr tools if bundled tools missing
+    }
+    return path;
   }
   
   
