@@ -40,8 +40,6 @@ class Stream : public Print
   private:
     unsigned long _timeout;      // number of milliseconds to wait for the next char before aborting timed read
     unsigned long _startMillis;  // used for timeout measurement
-    int timedRead();    // private method to read stream with timeout
-    int timedPeek();    // private method to peek stream with timeout
     int peekNextDigit(); // returns the next numeric digit in the stream or -1 if timeout
 
   public:
@@ -84,6 +82,8 @@ class Stream : public Print
   // Arduino String functions to be added here
 
   protected:
+  int timedRead();    // private method to read stream with timeout
+  int timedPeek();    // private method to peek stream with timeout
   long parseInt(char skipChar); // as above but the given skipChar is ignored
   // as above but the given skipChar is ignored
   // this allows format characters (typically commas) in values to be ignored
