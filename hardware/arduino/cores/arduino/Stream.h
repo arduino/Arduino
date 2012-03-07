@@ -54,6 +54,9 @@ class Stream : public Print
 
   void setTimeout(unsigned long timeout);  // sets maximum milliseconds to wait for stream data, default is 1 second
 
+  bool find(char target);   // reads data from the stream until the target character is found
+  // returns true if target character is found, false if timed out (see setTimeout)
+
   bool find(char *target);   // reads data from the stream until the target string is found
   // returns true if target string is found, false if timed out (see setTimeout)
 
