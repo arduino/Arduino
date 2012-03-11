@@ -1,4 +1,9 @@
-build/macosx/work/
 build/windows/work/
-*.class
-*.jar
+app/bin/
+app/pde.jar
+build/macosx/work/
+core/bin/
+core/core.jar
+build/macosx/arduino.xcworkspace/contents.xcworkspacedata
+
+build/macosx/arduino.xcworkspace/xcuserdata/mellis.xcuserdatad/UserInterfaceState.xcuserstate
