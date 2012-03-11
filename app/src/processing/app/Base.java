@@ -1529,7 +1529,7 @@ public class Base {
   
   
   static public String getAvrBasePath() {
-    if(Base.isLinux() && !(new File(Base.getHardwarePath() + "/tools/avr/bin")).exists()) {
+    if(Base.isLinux()) {
       return ""; // avr tools are installed system-wide and in the path
     } else {
       return getHardwarePath() + File.separator + "tools" +

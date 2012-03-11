@@ -199,8 +199,13 @@ public class AvrdudeUploader extends Uploader  {
   public boolean avrdude(Collection params) throws RunnerException {
     List commandDownloader = new ArrayList();
       
-    if(Base.isLinux() && !(new File(Base.getHardwarePath() + "/tools/avr/bin/" + "avrdude")).exists()) {
-      commandDownloader.add("avrdude");
+    if(Base.isLinux()) {
+      if ((new File(Base.getHardwarePath() + "/tools/" + "avrdude")).exists()) {
+        commandDownloader.add(Base.getHardwarePath() + "/tools/" + "avrdude");
+        commandDownloader.add("-C" + Base.getHardwarePath() + "/tools/avrdude.conf");
+      } else {
+        commandDownloader.add("avrdude");
+      }
     }
     else {
       commandDownloader.add(Base.getHardwarePath() + "/tools/avr/bin/" + "avrdude");
