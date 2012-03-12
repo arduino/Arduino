@@ -32,6 +32,7 @@ import javax.swing.*;
 
 import processing.app.syntax.*;
 import processing.core.*;
+import static processing.app.I18n._;
 
 
 
@@ -72,11 +73,11 @@ public class Preferences {
 
   // prompt text stuff
 
-  static final String PROMPT_YES     = "Yes";
-  static final String PROMPT_NO      = "No";
-  static final String PROMPT_CANCEL  = "Cancel";
-  static final String PROMPT_OK      = "OK";
-  static final String PROMPT_BROWSE  = "Browse";
+  static final String PROMPT_YES     = _("Yes");
+  static final String PROMPT_NO      = _("No");
+  static final String PROMPT_CANCEL  = _("Cancel");
+  static final String PROMPT_OK      = _("OK");
+  static final String PROMPT_BROWSE  = _("Browse");
 
   /**
    * Standardized width for buttons. Mac OS X 10.3 wants 70 as its default,
@@ -115,7 +116,7 @@ public class Preferences {
   JCheckBox exportSeparateBox;
   JCheckBox verboseCompilationBox;
   JCheckBox verboseUploadBox;
-  JCheckBox deletePreviousBox;
+  JCheckBox verifyUploadBox;
   JCheckBox externalEditorBox;
   JCheckBox memoryOverrideBox;
   JTextField memoryField;
@@ -144,8 +145,8 @@ public class Preferences {
     try {
       load(Base.getLibStream("preferences.txt"));
     } catch (Exception e) {
-      Base.showError(null, "Could not read default settings.\n" +
-                           "You'll need to reinstall Arduino.", e);
+      Base.showError(null, _("Could not read default settings.\n" +
+                             "You'll need to reinstall Arduino."), e);
     }
 
     // check for platform-specific properties in the defaults
@@ -174,9 +175,11 @@ public class Preferences {
         load(new FileInputStream(commandLinePrefs));
 
       } catch (Exception poe) {
-        Base.showError("Error",
-                       "Could not read preferences from " +
-                       commandLinePrefs, poe);
+        Base.showError(_("Error"),
+                       I18n.format(
+			 _("Could not read preferences from {0}"),
+			 commandLinePrefs
+		       ), poe);
       }
     } else if (!Base.isCommandLine()) {
       // next load user preferences file
@@ -193,11 +196,13 @@ public class Preferences {
           load(new FileInputStream(preferencesFile));
 
         } catch (Exception ex) {
-          Base.showError("Error reading preferences",
-                         "Error reading the preferences file. " +
-                         "Please delete (or move)\n" +
-                         preferencesFile.getAbsolutePath() +
-                         " and restart Arduino.", ex);
+          Base.showError(_("Error reading preferences"),
+			 I18n.format(
+			   _("Error reading the preferences file. " +
+			     "Please delete (or move)\n" +
+			     "{0} and restart Arduino."),
+			   preferencesFile.getAbsolutePath()
+			 ), ex);
         }
       }
     }    
@@ -209,7 +214,7 @@ public class Preferences {
     // setup dialog for the prefs
 
     //dialog = new JDialog(editor, "Preferences", true);
-    dialog = new JFrame("Preferences");
+    dialog = new JFrame(_("Preferences"));
     dialog.setResizable(false);
 
     Container pain = dialog.getContentPane();
@@ -229,7 +234,7 @@ public class Preferences {
     // Sketchbook location:
     // [...............................]  [ Browse ]
 
-    label = new JLabel("Sketchbook location:");
+    label = new JLabel(_("Sketchbook location:"));
     pain.add(label);
     d = label.getPreferredSize();
     label.setBounds(left, top, d.width, d.height);
@@ -244,7 +249,7 @@ public class Preferences {
         public void actionPerformed(ActionEvent e) {
           File dflt = new File(sketchbookLocationField.getText());
           File file =
-            Base.selectFolder("Select new sketchbook location", dflt, dialog);
+            Base.selectFolder(_("Select new sketchbook location"), dflt, dialog);
           if (file != null) {
             sketchbookLocationField.setText(file.getAbsolutePath());
           }
@@ -268,11 +273,11 @@ public class Preferences {
     // Editor font size [    ]
 
     Container box = Box.createHorizontalBox();
-    label = new JLabel("Editor font size: ");
+    label = new JLabel(_("Editor font size: "));
     box.add(label);
     fontSizeField = new JTextField(4);
     box.add(fontSizeField);
-    label = new JLabel("  (requires restart of Arduino)");
+    label = new JLabel(_("  (requires restart of Arduino)"));
     box.add(label);
     pain.add(box);
     d = box.getPreferredSize();
@@ -285,32 +290,29 @@ public class Preferences {
     // Show verbose output during: [ ] compilation [ ] upload
     
     box = Box.createHorizontalBox();
-    label = new JLabel("Show verbose output during: ");
+    label = new JLabel(_("Show verbose output during: "));
     box.add(label);
-    verboseCompilationBox = new JCheckBox("compilation ");
+    verboseCompilationBox = new JCheckBox(_("compilation "));
     box.add(verboseCompilationBox);
-    verboseUploadBox = new JCheckBox("upload");
+    verboseUploadBox = new JCheckBox(_("upload"));
     box.add(verboseUploadBox);
     pain.add(box);
     d = box.getPreferredSize();
     box.setBounds(left, top, d.width, d.height);
     top += d.height + GUI_BETWEEN;
+
+    // [ ] Verify code after upload
     
-
-    // [ ] Delete previous applet or application folder on export
-
-    deletePreviousBox =
-      new JCheckBox("Delete previous applet or application folder on export");
-    pain.add(deletePreviousBox);
-    d = deletePreviousBox.getPreferredSize();
-    deletePreviousBox.setBounds(left, top, d.width + 10, d.height);
+    verifyUploadBox = new JCheckBox("Verify code after upload");
+    pain.add(verifyUploadBox);
+    d = verifyUploadBox.getPreferredSize();
+    verifyUploadBox.setBounds(left, top, d.width + 10, d.height);
     right = Math.max(right, left + d.width);
     top += d.height + GUI_BETWEEN;
-
-
+    
     // [ ] Use external editor
 
-    externalEditorBox = new JCheckBox("Use external editor");
+    externalEditorBox = new JCheckBox(_("Use external editor"));
     pain.add(externalEditorBox);
     d = externalEditorBox.getPreferredSize();
     externalEditorBox.setBounds(left, top, d.width + 10, d.height);
@@ -320,7 +322,7 @@ public class Preferences {
 
     // [ ] Check for updates on startup
 
-    checkUpdatesBox = new JCheckBox("Check for updates on startup");
+    checkUpdatesBox = new JCheckBox(_("Check for updates on startup"));
     pain.add(checkUpdatesBox);
     d = checkUpdatesBox.getPreferredSize();
     checkUpdatesBox.setBounds(left, top, d.width + 10, d.height);
@@ -329,7 +331,7 @@ public class Preferences {
     
     // [ ] Update sketch files to new extension on save (.pde -> .ino)
     
-    updateExtensionBox = new JCheckBox("Update sketch files to new extension on save (.pde -> .ino)");
+    updateExtensionBox = new JCheckBox(_("Update sketch files to new extension on save (.pde -> .ino)"));
     pain.add(updateExtensionBox);
     d = updateExtensionBox.getPreferredSize();
     updateExtensionBox.setBounds(left, top, d.width + 10, d.height);
@@ -340,7 +342,7 @@ public class Preferences {
 
     if (Base.isWindows()) {
       autoAssociateBox =
-        new JCheckBox("Automatically associate .ino files with Arduino");
+        new JCheckBox(_("Automatically associate .ino files with Arduino"));
       pain.add(autoAssociateBox);
       d = autoAssociateBox.getPreferredSize();
       autoAssociateBox.setBounds(left, top, d.width + 10, d.height);
@@ -351,7 +353,7 @@ public class Preferences {
 
     // More preferences are in the ...
 
-    label = new JLabel("More preferences can be edited directly in the file");
+    label = new JLabel(_("More preferences can be edited directly in the file"));
     pain.add(label);
     d = label.getPreferredSize();
     label.setForeground(Color.gray);
@@ -380,7 +382,7 @@ public class Preferences {
     right = Math.max(right, left + d.width);
     top += d.height;
 
-    label = new JLabel("(edit only when Arduino is not running)");
+    label = new JLabel(_("(edit only when Arduino is not running)"));
     pain.add(label);
     d = label.getPreferredSize();
     label.setForeground(Color.gray);
@@ -489,9 +491,8 @@ public class Preferences {
     // put each of the settings into the table
     setBoolean("build.verbose", verboseCompilationBox.isSelected());
     setBoolean("upload.verbose", verboseUploadBox.isSelected());
-    setBoolean("export.delete_target_folder",
-               deletePreviousBox.isSelected());
-
+    setBoolean("upload.verify", verifyUploadBox.isSelected());
+    
 //    setBoolean("sketchbook.closing_last_window_quits",
 //               closingLastQuitsBox.isSelected());
     //setBoolean("sketchbook.prompt", sketchPromptBox.isSelected());
@@ -528,7 +529,7 @@ public class Preferences {
       set("editor.font", PApplet.join(pieces, ','));
 
     } catch (Exception e) {
-      System.err.println("ignoring invalid font size " + newSizeText);
+      System.err.println(I18n.format(_("ignoring invalid font size {0}"), newSizeText));
     }
 
     if (autoAssociateBox != null) {
@@ -548,8 +549,7 @@ public class Preferences {
     // set all settings entry boxes to their actual status
     verboseCompilationBox.setSelected(getBoolean("build.verbose"));
     verboseUploadBox.setSelected(getBoolean("upload.verbose"));
-    deletePreviousBox.
-      setSelected(getBoolean("export.delete_target_folder"));
+    verifyUploadBox.setSelected(getBoolean("upload.verify"));
 
     //closingLastQuitsBox.
     //  setSelected(getBoolean("sketchbook.closing_last_window_quits"));

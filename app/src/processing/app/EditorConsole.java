@@ -22,6 +22,7 @@
 */
 
 package processing.app;
+import static processing.app.I18n._;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -88,7 +89,9 @@ public class EditorConsole extends JScrollPane {
     Color bgColor    = Theme.getColor("console.color");
     Color fgColorOut = Theme.getColor("console.output.color");
     Color fgColorErr = Theme.getColor("console.error.color");
-    Font font        = Theme.getFont("console.font");
+    Font consoleFont = Theme.getFont("console.font");
+    Font editorFont = Preferences.getFont("editor.font");
+    Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
 
     stdStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdStyle, fgColorOut);
@@ -130,22 +133,24 @@ public class EditorConsole extends JScrollPane {
       // The files and folders are not deleted on exit because they may be 
       // needed for debugging or bug reporting.
       tempFolder = Base.createTempFolder("console");
+      tempFolder.deleteOnExit();
       try {
         String outFileName = Preferences.get("console.output.file");
         if (outFileName != null) {
           outFile = new File(tempFolder, outFileName);
+          outFile.deleteOnExit();
           stdoutFile = new FileOutputStream(outFile);
         }
 
         String errFileName = Preferences.get("console.error.file");
         if (errFileName != null) {
           errFile = new File(tempFolder, errFileName);
+          errFile.deleteOnExit();
           stderrFile = new FileOutputStream(errFile);
         }
       } catch (IOException e) {
-        Base.showWarning("Console Error",
-                         "A problem occurred while trying to open the\n" +
-                         "files used to store the console output.", e);
+        Base.showWarning(_("Console Error"),
+                         _("A problem occurred while trying to open the\nfiles used to store the console output."), e);
       }
       consoleOut = new PrintStream(new EditorConsoleStream(false));
       consoleErr = new PrintStream(new EditorConsoleStream(true));

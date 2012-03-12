@@ -194,7 +194,7 @@ akafuino.bootloader.file=akafuino-boot.hex
 #akafuino.bootloader.unlock_bits=0x3F
 #akafuino.bootloader.lock_bits=0x3F
 
- FUSE BITS
+# FUSE BITS
 # fuse0: JTAGUSERID
 # fuse1: WDWP=0xF WDP=0xF
 # fuse2: Boot Loader Reset
