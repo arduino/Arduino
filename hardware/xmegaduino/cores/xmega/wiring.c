@@ -298,6 +298,11 @@ void init()
         TCF1.CTRLD    = TC_EVACT_UPDOWN_gc | TC1_EVDLY_bm;
         TCF1.INTCTRLA = TC_OVFINTLVL_HI_gc;
 #endif
+
+#if defined(TCC2) || defined(TCD2)
+        // port C&D pwm uses EVCH7 for a div128 prescaled clock.
+        EVSYS.CH7MUX = EVSYS_CHMUX_PRESCALER_128_gc;
+#endif
         /*************************************/
         /* Init I/O ports */
 	
