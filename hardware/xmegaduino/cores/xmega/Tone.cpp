@@ -105,7 +105,7 @@ void tone(uint8_t pin, unsigned int frequency, unsigned long duration)
   uint32_t required_period = (F_CPU / frequency / 2);
 
   // go through from fastest to slowest, since we want the most accurate possible.
-  for(int i = 0; i < NUM_PRESCALES; ++i)
+  for(uint32_t i = 0; i < NUM_PRESCALES; ++i)
   {
     required_period >>= prescales_shift_vs_previous[i];
     if(required_period <= 0x10000) // can we do this in 16 bits?
