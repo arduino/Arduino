@@ -30,7 +30,9 @@ void W5100Class::init(void)
   SPI.begin();
   initSS();
   
-  writeMR(1<<RST);
+  writeMR(1<<RST);	//Issue a software reset to the W5100 chip.
+  delay(100);	//Wait for the chip to physically reset (it takes 10ms but manufacturer request 100ms).
+  //Continue with the setup of the internal registers:
   writeTMSR(0x55);
   writeRMSR(0x55);
 
