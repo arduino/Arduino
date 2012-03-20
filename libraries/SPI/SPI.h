@@ -16,13 +16,16 @@
 #include <avr/pgmspace.h>
 
 #if defined(__AVR_XMEGA__)
-  #define SPCR	SPIC.CTRL
-  #define SPSR	SPIC.STATUS
-  #define SPDR	SPIC.DATA
+  #if !defined(SPI_PORT)
+    #error "Please define SPI_PORT in pins_arduino for your board"
+  #endif
+  #define SPCR	SPI_PORT.CTRL
+  #define SPSR	SPI_PORT.STATUS
+  #define SPDR	SPI_PORT.DATA
   #define SPE	SPI_ENABLE_bp
   #define MSTR	SPI_MASTER_bp
-  #define SPIF	SPI_IF_bp
-  #define SPIE	SPI_ENABLE_bp
+  #define SPI_INT_FLAG	SPI_IF_bp
+  #define SPI_INT_EN	SPI_ENABLE_bp
   #define DORD  SPI_DORD_bp
 
 #define SPI_CLOCK_DIV4   0x00
@@ -32,7 +35,7 @@
 #define SPI_CLOCK_DIV2   SPI_CLK2X_bm
 #define SPI_CLOCK_DIV8   (SPI_CLK2X_bm | SPI_PRESCALER0_bm)
 #define SPI_CLOCK_DIV32  (SPI_CLK2X_bm | SPI_PRESCALER1_bm)
-#define SPI_CLOCK_DIV64  (SPI_CLK2X_bm | SPI_PRESCALER0_bm | SPI_PRESCALER1_bm)
+//#define SPI_CLOCK_DIV64  (SPI_CLK2X_bm | SPI_PRESCALER0_bm | SPI_PRESCALER1_bm)
 
 #define SPI_MODE0 0x00
 #define SPI_MODE1 SPI_MODE0_bm
@@ -44,6 +47,9 @@
 #define SPI_2XCLOCK_MASK SPI_CLK2X_bm
 
 #else
+#define SPI_INT_EN		SPIE
+#define SPI_INT_FLAG	SPIF
+
 #define SPI_CLOCK_DIV4 0x00
 #define SPI_CLOCK_DIV16 0x01
 #define SPI_CLOCK_DIV64 0x02
@@ -84,17 +90,23 @@ extern SPIClass SPI;
 
 byte SPIClass::transfer(byte _data) {
   SPDR = _data;
-  while (!(SPSR & _BV(SPIF)))
+  while (!(SPSR & _BV(SPI_INT_FLAG)))
     ;
   return SPDR;
 }
 
 void SPIClass::attachInterrupt() {
-  SPCR |= _BV(SPIE);
+#if defined(__AVR_XMEGA__)
+  SPI_PORT.INTCTRL  |= PORT_INT1LVL_LO_gc;
+#endif
+  SPCR |= _BV(SPI_INT_EN);
 }
 
 void SPIClass::detachInterrupt() {
-  SPCR &= ~_BV(SPIE);
+#if defined(__AVR_XMEGA__)
+  SPI_PORT.INTCTRL  &= ~PORT_INT1LVL_gm;
+#endif
+  SPCR &= ~_BV(SPI_INT_EN);
 }
 
 #endif

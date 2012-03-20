@@ -178,6 +178,33 @@ xplain_serial.bootloader.fuse5=0xFD
 
 ##############################################################
 
+xplain_pdi.name=XPlain using pdi
+
+xplain_pdi.build.mcu=atxmega128a1
+xplain_pdi.build.f_cpu=32000000L
+xplain_pdi.build.core=xmega
+xplain_pdi.build.variant=xplain
+
+xplain_pdi.upload.using=avrisppdi
+xplain_pdi.upload.maximum_size=131072
+
+xplain_pdi.bootloader.path=xplain
+xplain_pdi.bootloader.file=ATmegaBOOT_xplain.bin
+
+# FUSE BITS
+# fuse0: JTAGUSERID
+# fuse1: WDWP=0xF WDP=0xF
+# fuse2: Boot Loader Reset
+# fuse4: JTAGEN
+# fuse5: BODLVL=2.1V
+xplain_pdi.bootloader.fuse0=0xFF
+xplain_pdi.bootloader.fuse1=0xFF
+xplain_pdi.bootloader.fuse2=0xBF
+xplain_pdi.bootloader.fuse4=0xFE
+xplain_pdi.bootloader.fuse5=0xFD
+
+##############################################################
+
 akafuino.name=Akafuino X
 
 akafuino.build.mcu=atxmega32a4

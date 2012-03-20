@@ -225,7 +225,7 @@ void analogWrite(uint8_t pin, int val)
 	tc2->CTRLE = TC2_BYTEM_SPLITMODE_gc;
 	tc2->LPER = 0xFF;
 	tc2->HPER = 0xFF;
-	tc2->CTRLA  = TC2_CLKSEL_DIV64_gc;
+	tc2->CTRLA  = TC2_CLKSEL_EVCH7_gc; // wiring.c sets EVCH7 as a /128 prescaled clock.
 	tc2->CTRLB |= 1 << channel;
     }
 #endif
