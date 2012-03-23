@@ -24,9 +24,11 @@
 package processing.app;
 
 import processing.app.debug.AvrdudeUploader;
+import processing.app.debug.BasicUploader;
 import processing.app.debug.Compiler;
 import processing.app.debug.RunnerException;
 import processing.app.debug.Sizer;
+import processing.app.debug.Target;
 import processing.app.debug.Uploader;
 import processing.app.preproc.*;
 import processing.core.*;
@@ -1694,6 +1696,39 @@ public class Sketch {
         _("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
   }
 
+  /**
+   * Get the appropriate Uploader class to use.
+   *
+   * Currently this defaults to AvrdudeUploader.
+   * If you are using a programmer which has "programmer.uploader=basic", use BasicUploader
+   */
+  private Uploader getUploader(boolean usingProgrammer) {
+
+    // if no protocol is specified for this board, assume it lacks a 
+    // bootloader and upload using the selected programmer.
+    //
+    Map<String, String> boardPreferences = Base.getBoardPreferences();
+    if (usingProgrammer || boardPreferences.get("upload.protocol") == null) {
+      String programmer = Preferences.get("programmer");
+      Target target = Base.getTarget();
+
+      if (programmer.indexOf(":") != -1) {
+        target = Base.targetsTable.get(programmer.substring(0, programmer.indexOf(":")));
+        programmer = programmer.substring(programmer.indexOf(":") + 1);
+      }
+      Map<String, String> programmerPreferences = target.getProgrammers().get(programmer);
+
+      // If the programmer has "programmer.uploader=basic" specified, use the BasicUploader
+      //
+      if ("basic".equals(programmerPreferences.get("uploader"))) {
+        return new BasicUploader();
+      }
+    }
+
+    // Use AvrdudeUploader by default.
+    //
+    return new AvrdudeUploader();
+  }
 
   protected String upload(String buildPath, String suggestedClassName, boolean usingProgrammer)
     throws RunnerException, SerialException {
@@ -1702,7 +1737,7 @@ public class Sketch {
 
     // download the program
     //
-    uploader = new AvrdudeUploader();
+    uploader = getUploader(usingProgrammer);
     boolean success = uploader.uploadUsingPreferences(buildPath,
                                                       suggestedClassName,
                                                       usingProgrammer);

@@ -29,3 +29,9 @@ arduinoisp.speed=19200
 avrdoper.name=AVR-Doper
 avrdoper.communication=avrdoper
 avrdoper.protocol=stk500v2
+
+# bootloadHID
+bootloadhid.name=bootloadHID
+bootloadhid.uploader=basic
+bootloadhid.uploader.basic.command=bootloadHID.exe
+bootloadhid.uploader.basic.parameters=|-r
