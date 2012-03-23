@@ -114,6 +114,8 @@ public class AvrdudeUploader extends Uploader  {
       if (programmerPreferences.get("speed") != null) {
 	params.add("-b" + Integer.parseInt(programmerPreferences.get("speed")));
       }
+    } else if ("avrdoper".equals(programmerPreferences.get("communication"))) {
+      params.add("-Pavrdoper");
     }
     // XXX: add support for specifying the port address for parallel
     // programmers, although avrdude has a default that works in most cases.

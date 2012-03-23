@@ -24,3 +24,8 @@ arduinoisp.name=Arduino as ISP
 arduinoisp.communication=serial
 arduinoisp.protocol=stk500v1
 arduinoisp.speed=19200
+
+# AVR-Doper using HID
+avrdoper.name=AVR-Doper
+avrdoper.communication=avrdoper
+avrdoper.protocol=stk500v2
