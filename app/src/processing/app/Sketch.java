@@ -24,6 +24,7 @@
 package processing.app;
 
 import processing.app.debug.AvrdudeUploader;
+import processing.app.debug.MSP430Uploader;
 import processing.app.debug.Compiler;
 import processing.app.debug.RunnerException;
 import processing.app.debug.Sizer;
@@ -1702,10 +1703,15 @@ public class Sketch {
 
     // download the program
     //
-    uploader = new AvrdudeUploader();
+    if(Base.getArch() == "msp430"){
+    	uploader = new MSP430Uploader();
+    } else {
+    	uploader = new AvrdudeUploader();
+    }
+
     boolean success = uploader.uploadUsingPreferences(buildPath,
-                                                      suggestedClassName,
-                                                      usingProgrammer);
+			suggestedClassName,
+			usingProgrammer);
 
     return success ? suggestedClassName : null;
   }

@@ -2612,7 +2612,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
+  protected void onArchChanged() {
+      base.rebuildImportMenu(importMenu);
+  }
+  
   protected void onBoardOrPortChange() {
     Map<String, String> boardPreferences =  Base.getBoardPreferences();
     lineStatus.setBoardName(boardPreferences.get("name"));

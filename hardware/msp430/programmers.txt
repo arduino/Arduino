@@ -1,0 +1,6 @@
+# See: http://code.google.com/p/arduino/wiki/Platforms
+
+usbisp.name=MSP430 SBWx/JTAG
+usbisp.communication=usb
+usbisp.protocol=auto
+

@@ -61,6 +61,12 @@ public class Base {
     platformIndices.put("macosx", PConstants.MACOSX);
     platformIndices.put("linux", PConstants.LINUX);
   }
+  
+  static Map<String,String> archMap = new HashMap<String, String>(); 
+  static {
+    archMap.put("arduino", "avr");
+    archMap.put("msp430", "msp430");
+  }
   static Platform platform;
 
   static private boolean commandLine;
@@ -240,7 +246,10 @@ public class Base {
     // Get paths for the libraries and examples in the Processing folder
     //String workingDirectory = System.getProperty("user.dir");
     examplesFolder = getContentFile("examples");
-    librariesFolder = getContentFile("libraries");
+    String targetLibDir = new String("");
+    if(Preferences.get("target").equals("msp430")) 
+    	targetLibDir = "hardware/msp430/";
+    librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 
     // Get the sketchbook path, and make sure it's set properly
@@ -995,6 +1004,12 @@ public class Base {
       editor.onBoardOrPortChange();
     }  
   }
+  
+  public void onArchChanged() {
+	  for (Editor editor : editors) {
+		  editor.onArchChanged();
+	  }	  
+  }
 
   
   public void rebuildBoardsMenu(JMenu menu) {
@@ -1007,6 +1022,15 @@ public class Base {
           new AbstractAction(target.getBoards().get(board).get("name")) {
             public void actionPerformed(ActionEvent actionevent) {
               //System.out.println("Switching to " + target + ":" + board);
+              String n = (String)getValue("target");
+              String o = Preferences.get("target");
+              if(!n.equals(o)) {
+            	  String targetLibDir = new String("");
+            	  if(n.equals("msp430")) 
+            		  targetLibDir = "hardware/msp430/";
+            	  librariesFolder = getContentFile(targetLibDir + "libraries");
+            	  onArchChanged();
+              }
               Preferences.set("target", (String) getValue("target"));
               Preferences.set("board", (String) getValue("board"));
               onBoardOrPortChange();
@@ -1541,6 +1565,38 @@ public class Base {
     }
     return path;
   }
+
+  static public String getArch() {
+    return archMap.get(Preferences.get("target"));
+  }
+  
+  static public String toShortPath(String longpath) {
+    String shortpath = "";
+    longpath = longpath.replaceAll("\\s", "");
+    longpath = longpath.toUpperCase();
+    StringTokenizer tokenizer = new StringTokenizer(longpath, "\\");
+    while(tokenizer.hasMoreTokens() == true) {
+      String temp = tokenizer.nextToken();
+      if(temp.length() > 8)
+        temp = temp.substring(0, 6) + "~1";
+        shortpath += temp + "\\";
+    }
+    return shortpath;
+  }
+  
+  static public String getBasePath() {
+	    if(Base.isLinux()) {
+	      return ""; // avr tools are installed system-wide and in the path
+	    } else if (Base.isWindows()){
+	      String ret = toShortPath(getHardwarePath() + File.separator + "tools" +
+	        File.separator + getArch() + File.separator + "bin" + File.separator);
+	      return ret;
+	    } else {
+		  return getHardwarePath() + File.separator + "tools" +
+		    File.separator + getArch() + File.separator + "bin" + File.separator;
+	    }
+	  }
+
   
   
   static public Target getTarget() {

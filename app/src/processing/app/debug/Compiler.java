@@ -72,7 +72,8 @@ public class Compiler implements MessageConsumer {
     // the pms object isn't used for anything but storage
     MessageStream pms = new MessageStream(this);
 
-    String avrBasePath = Base.getAvrBasePath();
+
+    String basePath = Base.getBasePath();
     Map<String, String> boardPreferences = Base.getBoardPreferences();
     String core = boardPreferences.get("build.core");
     if (core == null) {
@@ -125,7 +126,7 @@ public class Compiler implements MessageConsumer {
 
    sketch.setCompilingProgress(30);
    objectFiles.addAll(
-     compileFiles(avrBasePath, buildPath, includePaths,
+     compileFiles(basePath, buildPath, includePaths,
                findFilesInPath(buildPath, "S", false),
                findFilesInPath(buildPath, "c", false),
                findFilesInPath(buildPath, "cpp", false),
@@ -141,7 +142,7 @@ public class Compiler implements MessageConsumer {
      // this library can use includes in its utility/ folder
      includePaths.add(utilityFolder.getAbsolutePath());
      objectFiles.addAll(
-       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
+       compileFiles(basePath, outputFolder.getAbsolutePath(), includePaths,
                findFilesInFolder(libraryFolder, "S", false),
                findFilesInFolder(libraryFolder, "c", false),
                findFilesInFolder(libraryFolder, "cpp", false),
@@ -149,7 +150,7 @@ public class Compiler implements MessageConsumer {
      outputFolder = new File(outputFolder, "utility");
      createFolder(outputFolder);
      objectFiles.addAll(
-       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
+       compileFiles(basePath, outputFolder.getAbsolutePath(), includePaths,
                findFilesInFolder(utilityFolder, "S", false),
                findFilesInFolder(utilityFolder, "c", false),
                findFilesInFolder(utilityFolder, "cpp", false),
@@ -166,19 +167,30 @@ public class Compiler implements MessageConsumer {
   includePaths.add(corePath);  // include path for core only
   if (variantPath != null) includePaths.add(variantPath);
   List<File> coreObjectFiles =
-    compileFiles(avrBasePath, buildPath, includePaths,
+    compileFiles(basePath, buildPath, includePaths,
               findFilesInPath(corePath, "S", true),
               findFilesInPath(corePath, "c", true),
               findFilesInPath(corePath, "cpp", true),
               boardPreferences);
 
-   String runtimeLibraryName = buildPath + File.separator + "core.a";
-   List baseCommandAR = new ArrayList(Arrays.asList(new String[] {
-     avrBasePath + "avr-ar",
-     "rcs",
-     runtimeLibraryName
-   }));
-   for(File file : coreObjectFiles) {
+  String arch = Base.getArch();
+  String runtimeLibraryName = buildPath + File.separator + "core.a";
+  List baseCommandAR;
+  if(arch == "msp430") { 
+    baseCommandAR = new ArrayList(Arrays.asList(new String[] {
+      basePath + "msp430-ar",
+      "rcs",
+      runtimeLibraryName
+    }));
+    } else {
+      baseCommandAR = new ArrayList(Arrays.asList(new String[] {
+        basePath + "avr-ar",
+        "rcs",
+        runtimeLibraryName
+    }));
+  }
+
+  for(File file : coreObjectFiles) {
      List commandAR = new ArrayList(baseCommandAR);
      commandAR.add(file.getAbsolutePath());
      execAsynchronously(commandAR);
@@ -192,15 +204,30 @@ public class Compiler implements MessageConsumer {
     if ( atmega2560.equals(boardPreferences.get("build.mcu")) ) {
         optRelax = new String(",--relax");
     }
-   sketch.setCompilingProgress(60);
-    List baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-gcc",
-      "-Os",
+    sketch.setCompilingProgress(60);
+    List baseCommandLinker;
+    if (arch == "msp430") { 
+        List objects = new ArrayList(baseCommandAR);
+        baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
+        basePath + "msp430-gcc",
+        "-Os",
+        // msp430 linker has an issue with main residing in an archive, cora.a in this case.
+        // -u,main works around this by forcing the linker to find a definition for main.
+        "-Wl,-gc-sections,-u,main", 
+        "-mmcu=" + boardPreferences.get("build.mcu"),
+        "-o",
+        buildPath + File.separator + primaryClassName + ".elf"
+      }));
+    } else {
+      baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
+        basePath + "avr-gcc",
+        "-Os",
       "-Wl,--gc-sections"+optRelax,
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-o",
-      buildPath + File.separator + primaryClassName + ".elf"
-    }));
+        "-mmcu=" + boardPreferences.get("build.mcu"),
+        "-o",
+        buildPath + File.separator + primaryClassName + ".elf"
+        }));
+    }
 
     for (File file : objectFiles) {
       baseCommandLinker.add(file.getAbsolutePath());
@@ -212,27 +239,39 @@ public class Compiler implements MessageConsumer {
 
     execAsynchronously(baseCommandLinker);
 
-    List baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-objcopy",
+    List baseCommandObjcopy;
+    if (arch == "msp430") { 
+    baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
+      basePath + "msp430-objcopy",
       "-O",
       "-R",
     }));
-    
-    List commandObjcopy;
+    } else {
+      baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
+        basePath + "avr-objcopy",
+        "-O",
+        "-R",
+      }));
 
-    // 5. extract EEPROM data (from EEMEM directive) to .eep file.
-    sketch.setCompilingProgress(70);
-    commandObjcopy = new ArrayList(baseCommandObjcopy);
-    commandObjcopy.add(2, "ihex");
-    commandObjcopy.set(3, "-j");
-    commandObjcopy.add(".eeprom");
-    commandObjcopy.add("--set-section-flags=.eeprom=alloc,load");
-    commandObjcopy.add("--no-change-warnings");
-    commandObjcopy.add("--change-section-lma");
-    commandObjcopy.add(".eeprom=0");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".eep");
-    execAsynchronously(commandObjcopy);
+    }
+    List commandObjcopy;
+    if (arch == "msp430") {
+      //nothing 
+    } else {
+        // 5. extract EEPROM data (from EEMEM directive) to .eep file.
+      sketch.setCompilingProgress(70);
+      commandObjcopy = new ArrayList(baseCommandObjcopy);
+      commandObjcopy.add(2, "ihex");
+      commandObjcopy.set(3, "-j");
+      commandObjcopy.add(".eeprom");
+      commandObjcopy.add("--set-section-flags=.eeprom=alloc,load");
+      commandObjcopy.add("--no-change-warnings");
+      commandObjcopy.add("--change-section-lma");
+      commandObjcopy.add(".eeprom=0");
+      commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
+      commandObjcopy.add(buildPath + File.separator + primaryClassName + ".eep");
+      execAsynchronously(commandObjcopy);
+    }
     
     // 6. build the .hex file
     sketch.setCompilingProgress(80);
@@ -249,7 +288,7 @@ public class Compiler implements MessageConsumer {
   }
 
 
-  private List<File> compileFiles(String avrBasePath,
+  private List<File> compileFiles(String basePath,
                                   String buildPath, List<File> includePaths,
                                   List<File> sSources, 
                                   List<File> cSources, List<File> cppSources,
@@ -261,7 +300,7 @@ public class Compiler implements MessageConsumer {
     for (File file : sSources) {
       String objectPath = buildPath + File.separator + file.getName() + ".o";
       objectPaths.add(new File(objectPath));
-      execAsynchronously(getCommandCompilerS(avrBasePath, includePaths,
+      execAsynchronously(getCommandCompilerS(basePath, includePaths,
                                              file.getAbsolutePath(),
                                              objectPath,
                                              boardPreferences));
@@ -274,7 +313,7 @@ public class Compiler implements MessageConsumer {
         File dependFile = new File(dependPath);
         objectPaths.add(objectFile);
         if (is_already_compiled(file, objectFile, dependFile, boardPreferences)) continue;
-        execAsynchronously(getCommandCompilerC(avrBasePath, includePaths,
+        execAsynchronously(getCommandCompilerC(basePath, includePaths,
                                                file.getAbsolutePath(),
                                                objectPath,
                                                boardPreferences));
@@ -287,7 +326,7 @@ public class Compiler implements MessageConsumer {
         File dependFile = new File(dependPath);
         objectPaths.add(objectFile);
         if (is_already_compiled(file, objectFile, dependFile, boardPreferences)) continue;
-        execAsynchronously(getCommandCompilerCPP(avrBasePath, includePaths,
+        execAsynchronously(getCommandCompilerCPP(basePath, includePaths,
                                                  file.getAbsolutePath(),
                                                  objectPath,
                                                  boardPreferences));
@@ -524,10 +563,10 @@ public class Compiler implements MessageConsumer {
 
   /////////////////////////////////////////////////////////////////////////////
 
-  static private List getCommandCompilerS(String avrBasePath, List includePaths,
+  static private List getCommandCompilerS(String basePath, List includePaths,
     String sourceName, String objectName, Map<String, String> boardPreferences) {
     List baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-gcc",
+      basePath + "avr-gcc",
       "-c", // compile, don't link
       "-g", // include debugging info (so errors include line numbers)
       "-assembler-with-cpp",
@@ -547,22 +586,39 @@ public class Compiler implements MessageConsumer {
   }
 
   
-  static private List getCommandCompilerC(String avrBasePath, List includePaths,
+  static private List getCommandCompilerC(String basePath, List includePaths,
     String sourceName, String objectName, Map<String, String> boardPreferences) {
+	 String arch = Base.getArch();
+     List baseCommandCompiler;
 
-    List baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-gcc",
-      "-c", // compile, don't link
-      "-g", // include debugging info (so errors include line numbers)
-      "-Os", // optimize for size
-      Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
-      "-ffunction-sections", // place each function in its own section
-      "-fdata-sections",
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+      if (arch == "msp430") {
+      baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
+        basePath + "msp430-gcc",
+        "-c", // compile, don't link
+        "-g", // include debugging info (so errors include line numbers)
+        "-Os", // optimize for size
+        Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+        "-ffunction-sections", // place each function in its own section
+        "-fdata-sections",
+        "-mmcu=" + boardPreferences.get("build.mcu"),
+        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-DARDUINO=" + Base.REVISION,
+      }));
+      } else { // default to avr
+        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
+        basePath + "avr-gcc",
+        "-c", // compile, don't link
+        "-g", // include debugging info (so errors include line numbers)
+        "-Os", // optimize for size
+        Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+        "-ffunction-sections", // place each function in its own section
+        "-fdata-sections",
+        "-mmcu=" + boardPreferences.get("build.mcu"),
+        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-MMD", // output dependancy info
-      "-DARDUINO=" + Base.REVISION,
-    }));
+        "-DARDUINO=" + Base.REVISION,
+        }));
+    }
 		
     for (int i = 0; i < includePaths.size(); i++) {
       baseCommandCompiler.add("-I" + (String) includePaths.get(i));
@@ -576,24 +632,41 @@ public class Compiler implements MessageConsumer {
   }
 	
 	
-  static private List getCommandCompilerCPP(String avrBasePath,
+  static private List getCommandCompilerCPP(String basePath,
     List includePaths, String sourceName, String objectName,
     Map<String, String> boardPreferences) {
     
-    List baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-g++",
-      "-c", // compile, don't link
-      "-g", // include debugging info (so errors include line numbers)
-      "-Os", // optimize for size
-      Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
-      "-fno-exceptions",
-      "-ffunction-sections", // place each function in its own section
-      "-fdata-sections",
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+    String arch = Base.getArch();
+    List baseCommandCompilerCPP;
+    if (arch == "msp430") {  
+      baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
+        basePath + "msp430-g++",
+        "-c", // compile, don't link
+        "-g", // include debugging info (so errors include line numbers)
+        "-Os", // optimize for size
+        Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+        "-ffunction-sections", // place each function in its own section
+        "-fdata-sections",
+        "-mmcu=" + boardPreferences.get("build.mcu"),
+        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-DARDUINO=" + Base.REVISION,
+      }));
+    } else { // default to avr
+      baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
+        basePath + "avr-g++",
+        "-c", // compile, don't link
+        "-g", // include debugging info (so errors include line numbers)
+        "-Os", // optimize for size
+        Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+        "-fno-exceptions",
+        "-ffunction-sections", // place each function in its own section
+        "-fdata-sections",
+        "-mmcu=" + boardPreferences.get("build.mcu"),
+        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-MMD", // output dependancy info
-      "-DARDUINO=" + Base.REVISION,
-    }));
+        "-DARDUINO=" + Base.REVISION,
+      }));
+    } 
 
     for (int i = 0; i < includePaths.size(); i++) {
       baseCommandCompilerCPP.add("-I" + (String) includePaths.get(i));

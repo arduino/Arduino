@@ -484,6 +484,7 @@
     
     <!-- Unzip AVR tools -->
     <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
+    <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
 
     <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
       <fileset file="windows/eeprom.h" />

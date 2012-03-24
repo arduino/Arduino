@@ -1,0 +1,32 @@
+##############################################################
+lpmsp430g2452.name=LaunchPad w/ msp430g2452
+lpmsp430g2452.upload.protocol=usb
+lpmsp430g2452.upload.maximum_size=8192
+lpmsp430g2452.bootloader.lock_bits=0x0F
+lpmsp430g2452.build.mcu=msp430g2452
+lpmsp430g2452.build.f_cpu=16000000L
+lpmsp430g2452.build.core=arduino
+lpmsp430g2452.build.variant=launchpad
+
+##############################################################
+
+lpmsp430g2231.name=LaunchPad w/ msp430g2231
+lpmsp430g2231.upload.protocol=usb
+lpmsp430g2231.upload.maximum_size=2048
+lpmsp430g2231.bootloader.lock_bits=0x0F
+lpmsp430g2231.build.mcu=msp430g2231
+lpmsp430g2231.build.f_cpu=1000000L
+lpmsp430g2231.build.core=arduino
+lpmsp430g2231.build.variant=launchpad
+
+##############################################################
+
+lpmsp430g2553.name=LaunchPad w/ msp430g2553
+lpmsp430g2553.upload.protocol=usb
+lpmsp430g2553.upload.maximum_size=16384
+lpmsp430g2553.bootloader.lock_bits=0x0F
+lpmsp430g2553.build.mcu=msp430g2553
+lpmsp430g2553.build.f_cpu=16000000L
+lpmsp430g2553.build.core=arduino
+lpmsp430g2553.build.variant=launchpad
+##############################################################
