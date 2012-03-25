@@ -52,24 +52,44 @@ public class MSP430Uploader extends Uploader{
 	throws RunnerException, SerialException {
 		this.verbose = verbose;
 		Map<String, String> boardPreferences = Base.getBoardPreferences();
-		//No serial programming support. Always upload using programmer.
+		//No serial programming support (yet). Upload using programmer (MSP430Flasher for windows and mspdebug for Mac OS X and Linux).
 
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
-		params.add("-n " + boardPreferences.get("build.mcu")); 
-		params.add("-w");
-		params.add(buildPath + File.separator + className + ".hex");
-		params.add("-g");
-		if(!Preferences.getBoolean("upload.verbose"))
+
+		if (Base.isMacOS() || Base.isLinux()) {
+			params.add(boardPreferences.get("upload.protocol"));
+			if(!Preferences.getBoolean("upload.verbose"))
 				params.add("-q");
+			params.add("--force-reset");
+			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
+			return mspdebug(params);
+		} else {
 		
-		params.add("-z[VCC]");
-		return MSP430Flasher(params);
+			params.add("-n " + boardPreferences.get("build.mcu")); 
+			params.add("-w");
+			params.add(buildPath + File.separator + className + ".hex");
+			params.add("-g");
+			if(!Preferences.getBoolean("upload.verbose"))
+					params.add("-q");
+			
+			params.add("-z[VCC]");
+			return MSP430Flasher(params);
+		}
 	}
 
 	public boolean burnBootloader() throws RunnerException {
 		//nothing do do for MSP430
 		return false;
+	}
+
+	public boolean mspdebug(Collection params) throws RunnerException {
+		List commandDownloader = new ArrayList();
+
+		commandDownloader.add(Base.getHardwarePath() + "/tools/msp430/mspdebug/mspdebug");
+		commandDownloader.addAll(params);
+		
+		return executeUploadCommand(commandDownloader);
 	}
 	
 	public boolean MSP430Flasher(Collection params) throws RunnerException {

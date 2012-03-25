@@ -1,6 +1,4 @@
 # See: http://code.google.com/p/arduino/wiki/Platforms
 
-usbisp.name=MSP430 SBWx/JTAG
-usbisp.communication=usb
-usbisp.protocol=auto
-
+rf2500.name=rf2500
+rf2500.protocol=rf2500
