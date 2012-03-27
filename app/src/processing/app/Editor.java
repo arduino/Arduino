@@ -150,7 +150,7 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   public Editor(Base ibase, String path, int[] location) {
-    super("Arduino");
+    super("Energia");
     this.base = ibase;
 
     Base.setIcon(this);
@@ -1099,7 +1099,7 @@ public class Editor extends JFrame implements RunnerListener {
     // macosx already has its own about menu
     if (!Base.isMacOS()) {
       menu.addSeparator();
-      item = new JMenuItem(_("About Arduino"));
+      item = new JMenuItem(_("About Energia"));
       item.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             base.handleAbout();
@@ -2163,7 +2163,7 @@ public class Editor extends JFrame implements RunnerListener {
     // Set the title of the window to "sketch_070752a - Processing 0126"
     setTitle(
       I18n.format(
-	_("{0} | Arduino {1}"),
+	_("{0} | Energia {1}"),
 	sketch.getName(),
 	Base.VERSION_NAME
       )

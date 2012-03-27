@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Arduino" default="build">
+<project name="Energia" default="build">
   <!--echo message="os.name = ${os.name}" /-->
   <!--echo message="os.arch = ${os.arch}" /-->
   <!--echo message="os.version = ${os.version}" /-->
@@ -20,7 +20,7 @@
   <condition property="platform" 
 	     value="linux64"><os family="unix" arch="amd64" /></condition>
 
-  <!-- Libraries required for running arduino -->
+  <!-- Libraries required for running energia -->
   <fileset dir=".." id="runtime.jars">
     <include name="core/core.jar" />
     <include name="app/pde.jar" />
@@ -31,16 +31,16 @@
     <include name="app/lib/ant-launcher.jar" />
   </fileset>
 
-  <target name="build" description="Build Arduino.">
+  <target name="build" description="Build Energia.">
     <antcall target="${platform}-build" />
   </target>
 
-  <target name="run" description="Run Arduino.">
+  <target name="run" description="Run Energia.">
     <antcall target="${platform}-run" />
   </target>
 
   <target name="dist" depends="revision-check"
-	  description="Build Arduino for distribution.">
+	  description="Build Energia for distribution.">
     <input message="Enter version number:" 
 	   addproperty="version"
 	   defaultvalue="${revision}" />
@@ -156,13 +156,13 @@
     <delete dir="macosx/work" />
     <delete dir="macosx/working_dir" />
     <delete dir="macosx/working.dmg" />
-    <delete file="macosx/arduino-*.dmg" />
+    <delete file="macosx/energia-*.dmg" />
   </target>
   
   <target name="macosx-checkos" unless="macosx">
     <echo>
       =======================================================
-      Arduino for Mac OS X can only be built on Mac OS X.
+      Energia for Mac OS X can only be built on Mac OS X.
       
       Bye. 
       =======================================================
@@ -174,34 +174,34 @@
     <mkdir dir="macosx/work" />
     
     <!-- assemble the pde -->
-    <copy todir="macosx/work/Arduino.app">
+    <copy todir="macosx/work/Energia.app">
       <fileset dir="macosx/template.app" includes="**"/>
     </copy>
     
 <!--    <rename src="macosx/work/template.app" 
-	    dest="macosx/work/Arduino.app" />
+	    dest="macosx/work/Energia.app" />
     <move file="macosx/work/template.app" 
-	  tofile="macosx/work/Arduino.app" />-->
+	  tofile="macosx/work/Energia.app" />-->
 
-    <chmod file="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="755" />
+    <chmod file="macosx/work/Energia.app/Contents/MacOS/JavaApplicationStub" perm="755" />
     
-    <copy todir="macosx/work/Arduino.app/Contents/Resources/Java" flatten="true">
+    <copy todir="macosx/work/Energia.app/Contents/Resources/Java" flatten="true">
       <fileset refid="runtime.jars"/>
     </copy>
     
-    <copy todir="macosx/work/Arduino.app/Contents/Resources/Java">
+    <copy todir="macosx/work/Energia.app/Contents/Resources/Java">
       <fileset dir="shared" includes="lib/**" />
       <fileset file="shared/revisions.txt" />
     </copy>
 
     <!-- Unzip AVR tools -->
-    <!-- <unzip dest="macosx/work/Arduino.app/Contents/Resources/Java/hardware" src="macosx/dist/tools-universal.zip" overwrite="false"/> -->
+    <!-- <unzip dest="macosx/work/Energia.app/Contents/Resources/Java/hardware" src="macosx/dist/tools-universal.zip" overwrite="false"/> -->
 
     <exec executable="unzip">
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
-      <arg value="macosx/work/Arduino.app/Contents/Resources/Java/hardware" />
+      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-universal.zip" />
     </exec>
 
@@ -210,50 +210,50 @@
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
-      <arg value="macosx/work/Arduino.app/Contents/Resources/Java/hardware" />
+      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-msp430.zip" />
     </exec>
 
 
-    <copy todir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
+    <copy todir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
       <fileset file="macosx/dist/eeprom.h" />
     </copy>
 
     <antcall target="assemble">
-      <param name="target.path" value="macosx/work/Arduino.app/Contents/Resources/Java" />
+      <param name="target.path" value="macosx/work/Energia.app/Contents/Resources/Java" />
     </antcall>
   </target>
 
   <target name="macosx-run" depends="macosx-build" description="Run Mac OS X version">
-    <exec executable="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" spawn="true"/>
+    <exec executable="macosx/work/Energia.app/Contents/MacOS/JavaApplicationStub" spawn="true"/>
   </target>
 
   <target name="macosx-dist" if="macosx" depends="macosx-build" description="Create a downloadable .zip for the Mac OS X version">
     <!-- The ant copy command does not preserve permissions. -->
-    <chmod file="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
+    <chmod file="macosx/work/Energia.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
     <chmod perm="+x">
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
+      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
+      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
+      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />
+      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />
+      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
+      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
     </chmod>
 
-    <replace file="macosx/work/Arduino.app/Contents/Info.plist"
+    <replace file="macosx/work/Energia.app/Contents/Info.plist"
              token="VERSION" value="${version}" />
-    <replace file="macosx/work/Arduino.app/Contents/Info.plist"
+    <replace file="macosx/work/Energia.app/Contents/Info.plist"
              token="REVISION" value="${revision}" />
     
     <exec executable="ditto" dir="macosx/work">
-      <arg line="-c -k -rsrc . ../arduino-${version}-macosx.zip" />
+      <arg line="-c -k -rsrc . ../energia-${version}-macosx.zip" />
     </exec>
 
     <echo>
       =======================================================
-      Arduino for Mac OS X was built. Grab the image from   
+      Energia for Mac OS X was built. Grab the image from   
       
-      macosx/arduino-${version}-macosx.zip
+      macosx/energia-${version}-macosx.zip
       =======================================================
     </echo>
   </target>
@@ -273,14 +273,14 @@
     </copy>
 
     <!-- The ant copy command does not preserve permissions. -->
-    <chmod file="macosx/working_dir/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
+    <chmod file="macosx/working_dir/Energia.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
     <chmod perm="+x">
-      <fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
-      <fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
+      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
+      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
+      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />
+      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />
+      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
+      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
     </chmod>
 
     <!-- Pause briefly for the OS to catch up with the DMG changes. 
@@ -294,9 +294,9 @@
       <arg line="detach macosx/working_dir" />
     </exec>
   
-    <delete file="macosx/arduino-*.dmg" />
+    <delete file="macosx/energia-*.dmg" />
     <exec executable="hdiutil">
-      <arg line="convert macosx/working.dmg -quiet -format UDZO -imagekey zlib-level=9 -o macosx/arduino-${version}.dmg" />
+      <arg line="convert macosx/working.dmg -quiet -format UDZO -imagekey zlib-level=9 -o macosx/energia-${version}.dmg" />
     </exec>
 
     <!-- Clean up the interim files. -->
@@ -305,9 +305,9 @@
     
     <echo>
       =======================================================
-      Arduino for Mac OS X was built. Grab the image from   
+      Energia for Mac OS X was built. Grab the image from   
       
-      macosx/arduino-${version}.dmg
+      macosx/energia-${version}.dmg
       =======================================================
     </echo>
   </target>
@@ -323,7 +323,7 @@
   <target name="linux-checkos" unless="linux">
     <echo>
       =======================================================
-      Arduino for Linux can only be built on on unix systems.
+      Energia for Linux can only be built on on unix systems.
       
       Bye. 
       =======================================================
@@ -352,8 +352,8 @@
       <param name="target.path" value="linux/work" />
     </antcall>
 
-    <copy todir="linux/work" file="linux/dist/arduino" />
-    <chmod perm="755" file="linux/work/arduino" />
+    <copy todir="linux/work" file="linux/dist/energia" />
+    <chmod perm="755" file="linux/work/energia" />
 
     <copy todir="linux/work/hardware">
       <fileset dir="linux/dist" includes="tools/**" />
@@ -385,12 +385,12 @@
   
   <target name="linux32-run" depends="linux32-build" 
 	  description="Run Linux (32-bit) version">
-    <exec executable="./linux/work/arduino" spawn="false"/>
+    <exec executable="./linux/work/energia" spawn="false"/>
   </target>
   
   <target name="linux64-run" depends="linux64-build" 
 	  description="Run Linux (64-bit) version">
-    <exec executable="./linux/work/arduino" spawn="false"/>
+    <exec executable="./linux/work/energia" spawn="false"/>
   </target>
 
   <target name="linux-dist" depends="build" 
@@ -406,37 +406,37 @@
 
 <!--
     <tar compression="gzip" basedir="linux/work" 
-	 destfile="linux/arduino-${version}.tgz" />
+	 destfile="linux/energia-${version}.tgz" />
 
-    <tar compression="gzip" destfile="linux/arduino-${version}-linux.tgz">
+    <tar compression="gzip" destfile="linux/energia-${version}-linux.tgz">
       <tarfileset dir="linux/work" 
-		  prefix="arduino-${version}" 
-		  excludes="arduino, 
+		  prefix="energia-${version}" 
+		  excludes="energia, 
 			    hardware/tools/avrdude,
 			    java/**"
 		  /> 
-      <tarfileset file="linux/work/arduino" filemode="755" prefix="arduino-${version}" />
+      <tarfileset file="linux/work/energia" filemode="755" prefix="energia-${version}" />
       <tarfileset file="linux/work/hardware/tools/avrdude" filemode="755" 
-		  prefix="arduino-${version}/hardware/tools" />
+		  prefix="energia-${version}/hardware/tools" />
     </tar>
 -->
-    <move file="linux/work" tofile="linux/arduino-${version}" />
+    <move file="linux/work" tofile="linux/energia-${version}" />
 
     <exec executable="tar" dir="linux">
       <arg value="-z"/>
       <arg value="-c"/>
       <arg value="-f"/>
-      <arg value="arduino-${version}-linux.tgz"/>
-      <arg value="arduino-${version}"/>
+      <arg value="energia-${version}-linux.tgz"/>
+      <arg value="energia-${version}"/>
     </exec>
 
-    <move file="linux/arduino-${version}" tofile="linux/work" />
+    <move file="linux/energia-${version}" tofile="linux/work" />
 
     <echo>
       =======================================================
-      Arduino for Linux was built. Grab the archive from   
+      Energia for Linux was built. Grab the archive from   
       
-      build/linux/arduino-${version}-linux.tgz
+      build/linux/energia-${version}-linux.tgz
       =======================================================
     </echo>
   </target>
@@ -459,7 +459,7 @@
   <target name="windows-checkos" unless="windows">
     <echo>
       =======================================================
-      Arduino for Windows can only be built on windows.
+      Energia for Windows can only be built on windows.
       
       Bye. 
       =======================================================
@@ -525,7 +525,7 @@
   
   <target name="windows-run" depends="windows-build" 
 	  description="Run windows version">
-    <exec executable="windows/work/arduino.exe" 
+    <exec executable="windows/work/energia.exe" 
 	  dir="windows/work" spawn="true"/>
   </target>
 
@@ -540,31 +540,31 @@
 
     <!--
     <zip basedir="windows/work" 
-	 prefix="arduino-${version}"
-	 destfile="windows/arduino-${version}.zip" />
+	 prefix="energia-${version}"
+	 destfile="windows/energia-${version}.zip" />
     <zip basedir="windows/work" 
-	 prefix="arduino-${version}"
-	 destfile="windows/arduino-${version}-expert.zip" 
+	 prefix="energia-${version}"
+	 destfile="windows/energia-${version}-expert.zip" 
 	 excludes="java/**" />
     -->
 
-    <zip destfile="windows/arduino-${version}-windows.zip">
+    <zip destfile="windows/energia-${version}-windows.zip">
       <zipfileset dir="windows/work" 
-		  prefix="arduino-${version}" />
+		  prefix="energia-${version}" />
     </zip>
 
-    <zip destfile="windows/arduino-${version}-windows-expert.zip">
+    <zip destfile="windows/energia-${version}-windows-expert.zip">
       <zipfileset dir="windows/work" 
-		  prefix="arduino-${version}" 
+		  prefix="energia-${version}" 
 		  excludes="java/**" />
     </zip>
     
     <echo>
       =======================================================
-      Arduino for Windows was built. Grab the archive from   
+      Energia for Windows was built. Grab the archive from   
       
-      windows/arduino-${version}-windows.zip
-      windows/arduino-${version}-windows-expert.zip
+      windows/energia-${version}-windows.zip
+      windows/energia-${version}-windows-expert.zip
       =======================================================
     </echo>
   </target>
@@ -580,9 +580,9 @@
 	   addproperty="version"
 	   defaultvalue="${revision}" />
 
-    <tar compression="gzip" destfile="arduino-${version}-src.tar.gz">
+    <tar compression="gzip" destfile="energia-${version}-src.tar.gz">
       <tarfileset dir="../" 
-		  prefix="arduino-${version}" 
+		  prefix="energia-${version}" 
 		  excludes="**/*.tgz,
 			     **/macosx/,
 			     **/windows/,
@@ -594,9 +594,9 @@
 
     <echo>
       =======================================================
-      Arduino source distribution was built. Grab the archive from   
+      Energia source distribution was built. Grab the archive from   
       
-      arduino-${version}-src.tar.gz
+      energia-${version}-src.tar.gz
       =======================================================
     </echo>
   </target>

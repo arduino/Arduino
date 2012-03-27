@@ -3,7 +3,7 @@
 <plist version="0.9">
   <dict>
     <key>CFBundleName</key>
-    <string>Arduino</string>
+    <string>Energia</string>
 
     <!-- all these need to change for new releases -->
     <key>CFBundleGetInfoString</key>
