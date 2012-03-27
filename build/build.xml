@@ -211,7 +211,7 @@
       <arg value="-n" />
       <arg value="-d" />
       <arg value="macosx/work/Arduino.app/Contents/Resources/Java/hardware" />
-      <arg value="macosx/dist/tools-universal.zip" />
+      <arg value="macosx/dist/tools-msp430.zip" />
     </exec>
 
 
