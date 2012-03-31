@@ -29,7 +29,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "Arduino.h"
+#include "Energia.h"
 #include "TimerSerial.h"
 
 ring_buffer tx_buffer = { {0}, 0, 0};

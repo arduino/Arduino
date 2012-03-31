@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include "Arduino.h"
+#include "Energia.h"
 #include "wiring_private.h"
 
 #if defined(__MSP430_HAS_USCI_)

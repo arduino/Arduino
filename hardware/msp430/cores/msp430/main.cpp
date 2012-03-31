@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include <Energia.h>
 
 int main(void)
 {

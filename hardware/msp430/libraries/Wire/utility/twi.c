@@ -28,7 +28,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "Arduino.h" // for digitalWrite
+#include "Energia.h" // for digitalWrite
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))

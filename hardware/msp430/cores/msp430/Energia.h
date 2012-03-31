@@ -1,5 +1,5 @@
-#ifndef Arduino_h
-#define Arduino_h
+#ifndef Energia_h
+#define Energia_h
 
 #include  "msp430.h"
 #include <stdint.h>

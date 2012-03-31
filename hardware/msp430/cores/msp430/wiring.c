@@ -30,7 +30,7 @@
 
   $Id$
 */
-#include "Arduino.h"
+#include "Energia.h"
 
 void initClocks(void);
 void inline enableGlobalInterrupts(void);

@@ -199,7 +199,9 @@ public class PdePreprocessor {
     int prototypeInsertionPoint = firstStatement(program);
   
     out.print(program.substring(0, prototypeInsertionPoint));
-    out.print("#include \"Arduino.h\"\n");    
+    String arch = Base.getArch();
+    if(arch == "msp430") out.print("#include \"Energia.h\"\n");    
+    else out.print("#include \"Arduino.h\"\n");    
     
     // print user defined prototypes
     for (int i = 0; i < prototypes.size(); i++) {
