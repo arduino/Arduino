@@ -2,6 +2,9 @@
   TimerSerial.h - Timer based serial library for MSP430
   Copyright (c) 2012 Robert Wessels.  All right reserved.
   Modeled after Nicholas Zambetti's HardwareSerial.
+  and
+  msp430softserial by Rick Kimball
+  https://github.com/RickKimball/msp430softserial/
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -33,8 +36,8 @@
 #define RX_PIN BIT2	// RXD on P1.2
 
 // TODO: support other baud rates
-#define TICKS_PER_BIT 104		// 9600 Baud, SMCLK=1MHz (1MHz/9600)=104
-#define TICKS_PER_BIT_DIV2 51		// Time for half a bit.
+#define TICKS_PER_BIT (F_CPU / 9600)		// 9600 Baud
+#define TICKS_PER_BIT_DIV2 (F_CPU / (9600*2))	// Time for half a bit.
 
 struct ring_buffer
 {
@@ -43,7 +46,7 @@ struct ring_buffer
 	volatile unsigned int tail;
 };
 
-#define ENABLE_RXDEBUG_PIN 1
+//#define ENABLE_RXDEBUG_PIN 1
 
 #define RXDEBUG_PIN_PORT  P1    // P1
 #define RXDEBUG_PIN     BIT6    // P1.6
@@ -63,18 +66,9 @@ struct ring_buffer
 #define _SoftSerial_ToggleRxDebugPin()
 #endif
 
-
 class TimerSerial : public Stream
 {
 private:
-	//uint8_t txBitCnt;		// Bit count, used when transmitting byte
-	//uint8_t rxBitCnt;
-	//uint8_t rxData;
-
-	//volatile unsigned int USARTTXBUF;
-
-	bool isReceiving;		// Status for when the device is receiving
-
 	ring_buffer *_rx_buffer;
 	ring_buffer *_tx_buffer;
 
@@ -88,10 +82,7 @@ public:
 	TimerSerial(void);
 	~TimerSerial(void);
 	void begin(void);
-	//bool listen(void);
 	void end(void);
-	//bool isListening(void) { return this == active_object; }
-	//bool overflow(void) { bool ret = _buffer_overflow; _buffer_overflow = false; return ret; }
 
 	virtual size_t write(uint8_t byte);
 	virtual int read(void);
