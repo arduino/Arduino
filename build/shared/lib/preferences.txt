@@ -242,8 +242,8 @@ run.present.exclusive = false
 run.present.exclusive.macosx = true
 
 # ARDUINO PREFERENCES
-board = uno
-target = arduino
+board = lpmsp430g2231
+target = msp430
 
 programmer = arduino:avrispmkii
 
