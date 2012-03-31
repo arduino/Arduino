@@ -33,25 +33,13 @@
 #include "Energia.h"
 
 void initClocks(void);
-void inline enableGlobalInterrupts(void);
-void inline disableGlobalInterrupts(void);
 void enableWatchDog(void);
+void disableWatchDog(void);
 
 void init(){
-	initClocks();
-	enableGlobalInterrupts();
-}
-
-void inline enableGlobalInterrupts(void)
-{
-	//enable global interrupts
-	_BIS_SR(GIE);
-}
-
-void inline disableGlobalInterrupts(void)
-{
-	//enable global interrupts
-	_BIC_SR(GIE);
+	disableWatchDog();
+	initClocks(); // initialize clocks
+        __eint();
 }
 
 void disableWatchDog(void)
@@ -77,8 +65,8 @@ void initClocks(void)
 	 * We default to 1MHz since all devices are able to support this.
 	 * Would be nice to have an API that would allow to bump up the speed.
 	 */
-	BCSCTL1 = CALBC1_1MHZ;
-	DCOCTL = CALDCO_1MHZ;
+	BCSCTL1 = CALBC1_16MHZ;
+	DCOCTL = CALDCO_16MHZ;
 
 	// SMCLK = DCO / DIVS = nMHz
 	BCSCTL2 &= ~(DIVS_0);
