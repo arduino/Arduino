@@ -36,7 +36,7 @@
 #include "Energia.h"
 #include "wiring_private.h"
 
-#if defined(__MSP430_HAS_USCI_)
+#if defined(__MSP430_HAS_USCI__)
 
 #include "HardwareSerial.h"
 
