@@ -88,7 +88,7 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
-#define SMCLK 1000000
+#define SMCLK F_CPU //SMCLK = F_CPU for now
 
 void HardwareSerial::begin(unsigned long baud)
 {
