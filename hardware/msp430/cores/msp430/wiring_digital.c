@@ -39,7 +39,7 @@ void pinMode(uint8_t pin, uint8_t mode)
 	uint8_t port = digitalPinToPort(pin);
 	volatile uint16_t *reg;
 
-	if (port == NOT_A_PIN) return;
+	if (port == NOT_A_PORT) return;
 
 	reg = portDirRegister(port);
 
@@ -55,7 +55,7 @@ int digitalRead(uint8_t pin)
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
 
-	if (port == NOT_A_PIN) return LOW;
+	if (port == NOT_A_PORT) return LOW;
 
 	if (*portInputRegister(port) & bit) return HIGH;
 	return LOW;
@@ -67,7 +67,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
 	uint8_t port = digitalPinToPort(pin);
 	volatile uint16_t *out;
 
-	if (port == NOT_A_PIN) return;
+	if (port == NOT_A_PORT) return;
 
 	out = portOutputRegister(port);
 
