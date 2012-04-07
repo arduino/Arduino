@@ -42,15 +42,81 @@ void analogReference(uint16_t mode)
 	analog_reference = mode;
 }
 
-/*
- * TODO: make this interrupt based so that we can wait in LPM0
- */
+//TODO: Can be a lot more efficient.
+//      - lower clock rated / input divider to conserve Energia.
+//      - pin configuration logic.
+//Arduino specifies ~490 Hz for analog out PWM so we follow suit.
+#define PWM_PERIOD F_CPU/490
+#define PWM_DUTY PWM_PERIOD / 255
+void analogWrite(uint8_t pin, int val)
+{
+        pinMode(pin, OUTPUT); // pin as output
+
+ 	if (val == 0)
+	{
+		digitalWrite(pin, LOW); // set pin to LOW when duty cycle is 0
+                                        // digitalWrite will take care of invalid pins
+	}
+	else if (val == 255)
+	{
+		digitalWrite(pin, HIGH); // set pin HIGH when duty cycle is 255
+                                         // digitalWrite will take care of invalid pins
+	}
+	else
+	{
+
+	        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
+	        uint8_t port = digitalPinToPort(pin);   // get pin port
+	        volatile uint16_t *sel;
+	        volatile uint16_t *sel2;
+                
+                if (port == NOT_A_PORT) return; // pin on timer?
+               
+	        sel = portSelRegister(port); // get the port function select register address
+		*sel |= bit;                 // set bit in pin function select register  
+                
+                //TODO: Firgure out a way to determine if SEL2 needs to be set
+	        //reg2 = portSel2Register(port); // get the port function select register address
+                
+                switch(digitalPinToTimer(pin)) {                // which timer and CCR?
+ 			//case: T0A0                            // CCR0 used as period register
+			case T0A1:                              // Timer0 / CCR1
+                                TA0CCR0 = PWM_PERIOD;           // PWM Period
+                                TA0CCTL1 = OUTMOD_7;            // reset/set
+                                TA0CCR1 = PWM_DUTY * val;       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                break;
+ 			case T0A2:                              // Timer0 / CCR1
+                                TA0CCR0 = PWM_PERIOD;           // PWM Period
+                                TA0CCTL2 = OUTMOD_7;            // reset/set
+                                TA0CCR2 = PWM_DUTY * val;       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                break;
+#if defined(__MSP430_HAS_T1A3__) 
+                        case T1A0:
+                        case T1A1:
+                        case T1A2:
+#endif
+#if defined(__MSP430_HAS_T2A3__) 
+                        case T2A0:
+                        case T2A1:
+                        case T2A2:
+#endif
+                        case NOT_ON_TIMER:
+			default:
+				if (val < 128) {
+					digitalWrite(pin, LOW);
+				} else {
+					digitalWrite(pin, HIGH);
+				}
+                }
+        }
+}
+
 uint16_t analogRead(uint8_t pin)
 {
 
 // make sure we have an ADC
-	// Pin has ADC functionality?
-
 #if defined(__MSP430_HAS_ADC10__)
 	//	0000 A0
 	//	0001 A1
@@ -62,6 +128,7 @@ uint16_t analogRead(uint8_t pin)
 	//	0111 A7
 	//	1010 Internal temperature sensor
 
+        // Pin has ADC functionality?
 	if(pin > 7 && pin != 10)
 		return 0;
 

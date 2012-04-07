@@ -47,7 +47,6 @@ static const uint8_t A7 = 7;
 static const uint8_t A10 = 10; // special. This is the internal temp sensor
 
 #ifdef ARDUINO_MAIN
-
 //                      +-\/-+
 //               VCC   1|    |28  GND
 //         (A0)  P1.0  2|    |27  XIN
@@ -71,6 +70,24 @@ const uint16_t port_to_dir[] = {
 #endif
 };
 
+const uint16_t port_to_sel[] = {
+	NOT_A_PORT,
+	(uint16_t) &P1SEL,
+	(uint16_t) &P2SEL,
+#ifdef __MSP430_HAS_PORT3_R__
+	(uint16_t) &P3SEL,
+#endif
+};
+
+const uint16_t port_to_sel2[] = {
+	NOT_A_PORT,
+	(uint16_t) &P1SEL2,
+	(uint16_t) &P2SEL2,
+#ifdef __MSP430_HAS_PORT3_R__
+	(uint16_t) &P3SEL2,
+#endif
+};
+
 const uint16_t port_to_input[] = {
 	NOT_A_PORT,
 	(uint16_t) &P1IN,
@@ -88,27 +105,32 @@ const uint16_t port_to_output[] = {
 #endif
 };
 
-const uint8_t digital_pin_to_port[] = {
-	NOT_A_PIN, /* 0 */
-	NOT_A_PIN, /* 1 */
-	P1, /* 2 */
-	P1, /* 3 */
-	P1, /* 4 */
-	P1, /* 5 */
-	P1, /* 6 */
-	P1, /* 7 */
-	P2, /* 8 */
-	P2, /* 9 */
-	P2, /* 10 */
-	P2, /* 11 */
-	P2, /* 12 */
-	P2, /* 13 */
-	P1, /* 14 */
-	P1, /* 15 */
+const uint8_t digital_pin_to_timer[] = {
+	NOT_ON_TIMER, /*  dummy */
+	NOT_ON_TIMER, /*  1 - VCC */
+	NOT_ON_TIMER, /*  2 - P1.0 */
+	T0A0,         /*  3 - P1.1 */
+	T0A1,         /*  4 - P1.2 */
+	NOT_ON_TIMER, /*  5 - P1.3 */
+//only g-series with 2 timers and comp have TA0.2 on P1.4??
+#if defined(__MSP430_HAS_T1A3__) && defined(__MSP430_HAS_CAPLUS__) 
+	T0A2,         /*  6 - P1.4 */
+#else
+	NOT_ON_TIMER, /*  6 - P1.4 */
+#endif
+	T0A0,         /*  7 - P1.5 */
+	NOT_ON_TIMER, /*  8 - P2.0 */
+	NOT_ON_TIMER, /*  9 - P2.1 */
+	NOT_ON_TIMER, /* 10 - P2.3 */
+	NOT_ON_TIMER, /* 11 - P2.4 */
+	NOT_ON_TIMER, /* 12 - P2.5 */
+	NOT_ON_TIMER, /* 13 - P2.6 */
+	T0A1,         /* 14 - P1.6 */
+	NOT_ON_TIMER, /* 15 - P1.7 */
 };
 
-const uint8_t digital_pin_to_timer[] = {
-	NOT_A_PIN, /* 0 */
+const uint8_t digital_pin_to_port[] = {
+	NOT_A_PIN, /* dummy */
 	NOT_A_PIN, /* 1 */
 	P1, /* 2 */
 	P1, /* 3 */

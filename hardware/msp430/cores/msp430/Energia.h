@@ -47,13 +47,18 @@ extern "C"{
 #define P6 6
 #define P7 7
 
-#define TIMER0A 1
-#define TIMER0B 2
-#define TIMER1A 3
-#define TIMER1B 4
-#define TIMER2  5
-#define TIMER2A 6
-#define TIMER2B 7
+#define T0A0 0
+#define T0A1 1
+#define T0A2 2
+#define T1A0 3
+#define T1A1 4
+#define T1A2 5
+#define T1A3 6
+#define T1A4 7
+#define T1A5 8
+#define T2A0 9
+#define T2A1 10
+#define T2A1 11
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
@@ -94,6 +99,7 @@ void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
 uint16_t analogRead(uint8_t);
+void analogWrite(uint8_t, int);
 void analogReference(uint16_t);
 
 void delay(uint32_t milliseconds);
@@ -101,9 +107,18 @@ void delay(uint32_t milliseconds);
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);
 
+extern const uint8_t digital_pin_to_timer[];
+extern const uint8_t digital_pin_to_port[];
+extern const uint8_t digital_pin_to_bit_mask[];
+extern const uint16_t port_to_sel[];
+extern const uint16_t port_to_sel2[];
+
 #define digitalPinToPort(P) ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
+#define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
 #define portDirRegister(P) ( (volatile uint16_t *)( port_to_dir[P]) )
+#define portSelRegister(P) ( (volatile uint16_t *)( port_to_sel[P]) )
+#define portSel2Register(P) ( (volatile uint16_t *)( port_to_sel2[P]) )
 #define portOutputRegister(P) ( (volatile uint16_t *)( port_to_output[P]) )
 #define portInputRegister(P) ( (volatile uint16_t *)( port_to_input[P]) )
 #define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
