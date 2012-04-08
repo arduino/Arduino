@@ -11,7 +11,7 @@
 //  Press push 2 to end
 //
 //  Tested on msp430g2452
-//  Binary sketch size = 6884 bytes out of 8192 bytes
+//  Binary sketch size = 2978 bytes out of 8192 bytes
 //
 
 #include "Wire.h"
@@ -30,10 +30,9 @@ void setup() {
   Wire.begin();
 }
 
+int16_t t;
 
-float getTemperature() {
-  int16_t t;
-
+void loop() {
   Wire.beginTransmission(_address); 
   Wire.write(0b00000000);      
   Wire.endTransmission(); 
@@ -44,23 +43,31 @@ float getTemperature() {
 
   Wire.endTransmission(); 
   if (t>0b100000000000) t -= 4096;
-  return t*0.0625;
-}
 
+  //  Float adds 6 kB
+  //  mySerial.print(t*0.0625, DEC);
+  //  mySerial.print("\n");
 
-void loop() 
-{
-  mySerial.print(getTemperature(), 2);
+  // Integer
+  t *= 10;  // one decimal place
+  t += 8;   // rounding
+  mySerial.print(t/160, DEC);
+  mySerial.print(".");
+  mySerial.print((t%160)/16, DEC);
   mySerial.print("\n");
 
   delay(500);
 
-  // required to avoid USB freeze for next upload
+  // PUSH2 required to avoid USB freeze for next upload
   if (digitalRead(PUSH2)==LOW) {
-    mySerial.print("\n\n*** End\n"); 
+    mySerial.print("\n*** End\n"); 
     mySerial.end();
     while(true); // endless loop
   }
 }
+
+
+
+
 
 
