@@ -44,6 +44,11 @@ uint8_t const SPI_QUARTER_SPEED = 2;
 #if MEGA_SOFT_SPI && (defined(__AVR_ATmega1280__)||defined(__AVR_ATmega2560__))
 #define SOFTWARE_SPI
 #endif  // MEGA_SOFT_SPI
+
+#if defined(__AVR_XMEGA__)
+#define SOFTWARE_SPI
+#endif  // __AVR_XMEGA__
+
 //------------------------------------------------------------------------------
 // SPI pin definitions
 //

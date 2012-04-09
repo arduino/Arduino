@@ -35,11 +35,11 @@ Requirements
 The LUFA project provides a replacement USB firmware that can act as a PDI programmer.
 You can also use a PDI programmer such as the AVR Dragon.
 
-* Sparkfun xmega100
+* [Sparkfun xmega100](http://www.sparkfun.com/products/9546)
 
 Requires a PDI programmer, such as the AVR Dragon in order to upload sketches and burn bootloaders.
 
-* Akafuino X
+* [Akafuino X](http://www.akafugu.jp/posts/products/akafuino/)
 
 Comes with a bootloader pre-installed and can be used directly from the Xmegaduino IDE.
 
@@ -76,7 +76,15 @@ Todo:
 Changelog
 =========
 
-Beta3:
+Beta4 (based on Arduino 1.0.1-rc2):
+
+* New avr-gcc 4.5.1, avr-libc 1.7.1 for all platforms (Windows, Mac OS X, Linux 32/64)
+* Linux now comes with bundled avr-gcc and avr-libc
+* Use correct SPI port on Akafuino X (pin 10-13)
+* Upload sketch to XPlain using PDI
+* Translated to 23 different languages (Thanks to Arduino)
+
+Beta3 (based on Arduino 1.0):
 
 Big thanks goes out to Brendan Powers and Russell for their contributions 
 
