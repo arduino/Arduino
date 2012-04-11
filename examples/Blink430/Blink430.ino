@@ -7,8 +7,8 @@
 //  LED2 on pin 14
 //
 
-const uint8_t LED1 = 2;
-const uint8_t LED2 = 14;
+#define LED1  2
+#define LED2 14
 
 
 void setup() {                

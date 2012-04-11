@@ -17,9 +17,10 @@
 #include "Wire.h"
 #include "TimerSerial.h"
 
+#define PUSH2  5 // PUSH to end
+#define _address 0x4b // strap ADDR0 - SCL
+
 TimerSerial mySerial;
-const uint8_t PUSH2 = 5;
-int8_t _address=0x4b; // strap ADDR0 - SCL
 
 void setup() {
   mySerial.begin();

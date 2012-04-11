@@ -11,9 +11,9 @@
 //  red -> green -> red+green -> none -> ...
 //
 
-const uint8_t LED1 = 2;
-const uint8_t LED2 = 14;
-const uint8_t PUSH2 = 5;
+#define LED1 2
+#define LED2 14
+#define PUSH2 5
 
 void setup() {                
   // initialise digital pins as outputs
