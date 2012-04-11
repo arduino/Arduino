@@ -58,7 +58,7 @@ extern "C"{
 #define T1A5 8
 #define T2A0 9
 #define T2A1 10
-#define T2A1 11
+#define T2A2 11
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
