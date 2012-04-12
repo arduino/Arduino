@@ -112,8 +112,8 @@ const uint8_t digital_pin_to_timer[] = {
 	T0A0,         /*  3 - P1.1 */
 	T0A1,         /*  4 - P1.2 */
 	NOT_ON_TIMER, /*  5 - P1.3 */
-//only g-series with 2 timers and comp have TA0.2 on P1.4??
-#if defined(__MSP430_HAS_T1A3__) && defined(__MSP430_HAS_CAPLUS__) 
+//TODO:only g-series with comp have TA0.2 on P1.4??
+#if defined(__MSP430_HAS_CAPLUS__)
 	T0A2,         /*  6 - P1.4 */
 #else
 	NOT_ON_TIMER, /*  6 - P1.4 */
