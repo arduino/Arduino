@@ -4,7 +4,7 @@ status.notice.bgcolor = #666666
 status.error.fgcolor = #ffffff
 status.error.bgcolor = #666666
 status.edit.fgcolor = #000000
-status.edit.bgcolor = #990000
+status.edit.bgcolor = #7e0000
 status.font = SansSerif,plain,12
 
 # GUI - TABS
@@ -20,16 +20,16 @@ console.font = Monospaced,plain,10
 console.font.macosx = Monaco,plain,12
 console.color = #000000
 console.output.color = #cccccc
-console.error.color = #ffffff
+console.error.color = #ffcc00
 
 # GUI - BUTTONS
-buttons.bgcolor = #990000
+buttons.bgcolor = #7e0000
 buttons.status.font = SansSerif,plain,12
 buttons.status.color = #ffffff
 
 # GUI - LINESTATUS
 linestatus.color = #ffffff
-linestatus.bgcolor = #990000
+linestatus.bgcolor = #7e0000 
 
 # EDITOR - DETAILS
 

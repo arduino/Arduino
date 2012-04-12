@@ -11,13 +11,14 @@
 //
 
 #include "TimerSerial.h"
+#define PUSH2 5
 
 TimerSerial mySerial;
-const uint8_t PUSH2 = 5;
 
 void setup() {
   mySerial.begin();
   mySerial.print("\n\n\n*** Serial test starts \n"); 
+  mySerial.print("PUSH2 to end\n"); 
   pinMode(PUSH2, INPUT);     
 }
 
