@@ -150,14 +150,21 @@ uint16_t analogRead(uint8_t pin)
 	//	0110 A6
 	//	0111 A7
 	//	1010 Internal temperature sensor
-
+        
+        //TODO: Only int. temp. sensor requires Tsample > 30us.
+        // The below ADC configuration applies this rule to all channels right now.
+        // ADC10CLK = 5MHz / 5 = 1Mhz
+        // Tsample = S&H / ADC10CLK = 64 / 1 MHz = 64 us
+        // Tconver = 13 / ADC10CLK = 13 / 1 MHz = 13 us
+        // Total time per sample = Tconvert + Tsample = 64 + 13 = 67 us = ~15k samples / sec
         if(pin > 7 && pin != 10)                        // ADC on pin?
                 return 0;
 	ADC10CTL0 &= ~ENC;                              // disable ADC
 	ADC10CTL0 = analog_reference +                  // set analog reference
-                    ADC10ON + ADC10SHT_2 + ADC10IE;     // turn ADC ON; sample + hold @ 16 × ADC10CLKs; Enable interrupts
-	ADC10CTL1 = ADC10SSEL_3 + (pin << 12);          // 
-	__delay_cycles (128);
+                    ADC10ON + ADC10SHT_3 + ADC10IE;     // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
+	ADC10CTL1 = ADC10SSEL_0 + ADC10DIV_5 +          // ADC10OSC as ADC10CLK (~5MHz) / 5 
+                        (pin << 12);                    // select channel
+	__delay_cycles (128);                           // Delay to allow Ref to settle
 	ADC10CTL0 |= ENC + ADC10SC;                     // enable ADC and start conversion
 	__bis_SR_register(CPUOFF + GIE);	        // LPM0 with interrupts enabled
 	return ADC10MEM;                                // return sampled value after returning to active mode in ADC10_ISR
