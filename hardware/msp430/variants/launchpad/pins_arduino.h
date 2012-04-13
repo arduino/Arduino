@@ -81,10 +81,20 @@ const uint16_t port_to_sel[] = {
 
 const uint16_t port_to_sel2[] = {
 	NOT_A_PORT,
+#ifdef P1SEL2_
 	(uint16_t) &P1SEL2,
+#else
+        NOT_A_PORT,
+#endif
+#ifdef P2SEL2_
 	(uint16_t) &P2SEL2,
-#ifdef __MSP430_HAS_PORT3_R__
+#else 
+        NOT_A_PORT,
+#endif
+#ifdef P3SEL2_
 	(uint16_t) &P3SEL2,
+#else
+        NOT_A_PORT,
 #endif
 };
 
