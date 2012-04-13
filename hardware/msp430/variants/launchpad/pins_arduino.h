@@ -48,16 +48,16 @@ static const uint8_t A10 = 10; // special. This is the internal temp sensor
 
 #ifdef ARDUINO_MAIN
 //                      +-\/-+
-//               VCC   1|    |28  GND
-//         (A0)  P1.0  2|    |27  XIN
-//         (A1)  P1.1  3|    |26  XOUT
-//         (A2)  P1.2  4|    |25  TEST
-//         (A3)  P1.3  5|    |24  RST#
-//         (A4)  P1.4  6|    |23  P1.7  (A7) (SCL)
-//         (A5)  P1.5  7|    |22  P1.6  (A6) (SDA)
-//               P2.0  8|    |21  P2.5
-//               P2.1  9|    |20  P2.4
-//               P2.2 10|    |19  P2.3
+//               VCC   1|    |20  GND
+//         (A0)  P1.0  2|    |19  XIN
+//         (A1)  P1.1  3|    |18  XOUT
+//         (A2)  P1.2  4|    |17  TEST
+//         (A3)  P1.3  5|    |16  RST#
+//         (A4)  P1.4  6|    |15  P1.7  (A7) (SCL) (MISO) depends on chip
+//         (A5)  P1.5  7|    |14  P1.6  (A6) (SDA) (MOSI)
+//               P2.0  8|    |13  P2.5
+//               P2.1  9|    |12  P2.4
+//               P2.2 10|    |11  P2.3
 //                      +----+
 //
 

@@ -1,7 +1,7 @@
 #ifndef Energia_h
 #define Energia_h
 
-#include  "msp430.h"
+#include <msp430.h>
 #include <stdint.h>
 #include <string.h>
 #include <math.h>

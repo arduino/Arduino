@@ -62,7 +62,12 @@ public class MSP430Uploader extends Uploader{
 			if(!Preferences.getBoolean("upload.verbose"))
 				params.add("-q");
 			params.add("--force-reset");
-			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
+			if ( Base.isLinux()) {
+				params.add("prog " + buildPath + File.separator + className + ".hex");
+			}
+			else { 
+				params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
+			}
 			return mspdebug(params);
 		} else {
 		
@@ -86,7 +91,11 @@ public class MSP430Uploader extends Uploader{
 	public boolean mspdebug(Collection params) throws RunnerException {
 		List commandDownloader = new ArrayList();
 
-		commandDownloader.add(Base.getHardwarePath() + "/tools/msp430/mspdebug/mspdebug");
+		if ( Base.isLinux()) {
+			commandDownloader.add("mspdebug"); // use the one in the PATH
+		} else {
+			commandDownloader.add(Base.getHardwarePath() + "/tools/msp430/mspdebug/mspdebug");
+		}
 		commandDownloader.addAll(params);
 		
 		return executeUploadCommand(commandDownloader);
