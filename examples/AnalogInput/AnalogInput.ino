@@ -10,58 +10,81 @@
 // This example code is in the public domain.
 // 
 // Revision: 
-//   Rei VILO, Mar 12, 2012
-//   One decimal place
+//   Rei VILO, Mar 12, 2012 - One decimal place
+//   Rei VILO, Mar 13, 2012 - More precise algorithm
+//   Rei VILO, Mar 14, 2012 - Average
 //   Press push 2 to end
-//   Tested on msp430g2452
-//   1936 bytes
+//   Tested on msp430g2452 and msp430g2553
+//   2116 bytes
 
 #include <TimerSerial.h>
 
-#define LED1 2 // LED is on pin 2 of the launchpad
-#define LED2 14
+#define redLED 2 // LED is on pin 2 of the launchpad
+#define greenLED 14
 #define TEMPSENSOR 10 // sensor is on channel 10
 #define PUSH2 5
+#define NUMBER 4 // take number / 2
 
 TimerSerial mySerial;
+int ledState = HIGH;
+uint8_t i = 0;
+uint32_t average = 0;
+uint32_t values[NUMBER];
+uint8_t j = 0;
+boolean flag = false;
+
 
 void setup() {
-  pinMode(LED1, OUTPUT);
-  pinMode(LED2, OUTPUT);
+  pinMode(redLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
   analogReference(INTERNAL1V5);
   mySerial.begin();
   pinMode(PUSH2, INPUT);   
 
+  digitalWrite(redLED, HIGH); 
+  digitalWrite(greenLED, LOW); 
+
+
   mySerial.print("\n\n\n*** MSP430 Thermometer \n"); 
   mySerial.print("Press PUSH2 to end\n"); 
+  mySerial.print("instant\taverage\n");
+
+  for (j=0; j<NUMBER; j++) values[j]=0;
+  average = 0;
+  j=0;
 }
 
-int ledState = LOW;
-uint32_t val = 0;
-uint8_t i = 0;
+void printDec(uint32_t ui) {
+  mySerial.print(ui/10, DEC);
+  mySerial.print(".");
+  mySerial.print(ui%10, DEC);
+}
 
 
 void loop() {
   ledState = !ledState;
 
-  digitalWrite(LED1, ledState); // flashing a LED is always a good idea!
-  digitalWrite(LED2, !ledState);// more is better!
+  // LEDs: green = ready; red = acquisition
+  digitalWrite(flag ? greenLED : redLED, ledState); 
 
-  if(i == 10) {
+  if (i == 10) {
     i = 0;
 
-    val = analogRead(TEMPSENSOR);
+    average -= values[j];
+    values[j] = ((uint32_t)analogRead(TEMPSENSOR)*27069 - 18169625) *10 >> 16;
+    average += values[j];
 
-    // Integer
-    val -= 673;  
-    val *= 10;   // one decimal place
-    val /= 3;
+    // Print measure 
+    printDec(values[j]);
+    mySerial.print("\t");
 
-    // Print temp 
-    mySerial.print(val/10, DEC);
-    mySerial.print(".");
-    mySerial.print(val%10, DEC);
+    // Print average 
+    if (flag) printDec(average/NUMBER);
     mySerial.print("\n");
+
+    j++; 
+    if (j==NUMBER) flag=true;
+    j %= NUMBER;
   }
 
   if (digitalRead(PUSH2)==LOW) {
@@ -73,6 +96,10 @@ void loop() {
 
   i++;
 }
+
+
+
+
 
 
 
