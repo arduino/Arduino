@@ -17,6 +17,9 @@ extern "C"{
 #define HIGH 0x1
 #define LOW  0x0
 
+#define LSBFIRST 0
+#define MSBFIRST 1
+
 #define FALLING 1
 #define RISING 0
 
@@ -95,6 +98,8 @@ void init(void);
 void setup(void);
 void loop(void);
 
+void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
