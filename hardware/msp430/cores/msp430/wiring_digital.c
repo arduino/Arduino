@@ -37,16 +37,25 @@ void pinMode(uint8_t pin, uint8_t mode)
 {
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
-	volatile uint16_t *reg;
+
+	volatile uint16_t *dir;
+	volatile uint16_t *ren;
+	volatile uint16_t *out;
 
 	if (port == NOT_A_PORT) return;
 
-	reg = portDirRegister(port);
+	dir = portDirRegister(port);
+	ren = portRenRegister(port);
+	out = portOutputRegister(port);
 
 	if (mode == INPUT) {
-		*reg &= ~bit;
-	} else {
-		*reg |= bit;
+		*dir &= ~bit;
+	} else if (mode == INPUT_PULLUP) {
+		*dir &= ~bit;
+                *out |= bit;
+                *ren |= bit;
+        } else {
+		*dir |= bit;
 	}
 }
 

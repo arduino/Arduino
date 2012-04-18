@@ -25,6 +25,7 @@ extern "C"{
 
 #define INPUT 0x0
 #define OUTPUT 0x1
+#define INPUT_PULLUP 0x2
 
 #define true 0x1
 #define false 0x0
@@ -124,6 +125,7 @@ extern const uint16_t port_to_sel2[];
 #define portDirRegister(P) ( (volatile uint16_t *)( port_to_dir[P]) )
 #define portSelRegister(P) ( (volatile uint16_t *)( port_to_sel[P]) )
 #define portSel2Register(P) ( (volatile uint16_t *)( port_to_sel2[P]) )
+#define portRenRegister(P) ( (volatile uint16_t *)( port_to_ren[P]) )
 #define portOutputRegister(P) ( (volatile uint16_t *)( port_to_output[P]) )
 #define portInputRegister(P) ( (volatile uint16_t *)( port_to_input[P]) )
 #define digitalPinToTimer(P) ( digital_pin_to_timer[P] )

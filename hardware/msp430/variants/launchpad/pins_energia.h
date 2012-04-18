@@ -79,6 +79,15 @@ const uint16_t port_to_sel[] = {
 #endif
 };
 
+const uint16_t port_to_ren[] = {
+	NOT_A_PORT,
+	(uint16_t) &P1REN,
+	(uint16_t) &P2REN,
+#ifdef __MSP430_HAS_PORT3_R__
+	(uint16_t) &P3REN,
+#endif
+};
+
 const uint16_t port_to_sel2[] = {
 	NOT_A_PORT,
 #ifdef P1SEL2_
