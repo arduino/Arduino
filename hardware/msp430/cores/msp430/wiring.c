@@ -58,32 +58,20 @@ void enableWatchDog(void)
 	IE1 |= WDTIE;
 }
 
-void Set_DCO(unsigned int Delta);
-
 void initClocks(void)
 {
-	/*
-	 * TODO:
-	 * A lot of the devices are capable of running at up to 16MHz using the calibrated register settings.
-	 * We default to 1MHz since all devices are able to support this.
-	 * Would be nice to have an API that would allow to bump up the speed.
-	 */
 #if defined(CALBC1_16MHZ_) && F_CPU >= 16000000L
 	BCSCTL1 = CALBC1_16MHZ;
 	DCOCTL = CALDCO_16MHZ;
-#pragma message("Clock set to 16MHz");
 #elif defined(CALBC1_12MHZ_) && (F_CPU >= 12000000L)
 	BCSCTL1 = CALBC1_12MHZ;
 	DCOCTL = CALDCO_12MHZ;
-#pragma message("Clock set to 12MHz");
 #elif defined(CALBC1_8MHZ_) && (F_CPU >= 8000000L)
 	BCSCTL1 = CALBC1_8MHZ;
 	DCOCTL = CALDCO_8MHZ;
-#pragma message("Clock set to 8MHz");
 #elif defined(CALBC1_1MHZ_) && (F_CPU >= 1000000L)
 	BCSCTL1 = CALBC1_1MHZ;
 	DCOCTL = CALDCO_1MHZ;
-#pragma message("Clock set to 1MHz");
 #else
         #warning No Suitable Frequency found!
 #endif
