@@ -1,6 +1,6 @@
 /*
   ************************************************************************
-  *	pins_arduino.h
+  *	pins_energia.h
   *
   *	Arduino core files for MSP430
   *		Copyright (c) 2012 Robert Wessels. All right reserved.

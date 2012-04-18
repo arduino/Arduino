@@ -30,7 +30,7 @@
 */
 
 #include "wiring_private.h"
-#include "pins_arduino.h"
+#include "pins_energia.h"
 
 uint16_t analog_reference = DEFAULT;
 

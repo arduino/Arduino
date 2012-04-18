@@ -31,7 +31,7 @@
 
 #define ARDUINO_MAIN
 #include "wiring_private.h"
-#include "pins_arduino.h"
+#include "pins_energia.h"
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
