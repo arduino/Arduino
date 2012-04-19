@@ -101,6 +101,7 @@ void loop(void);
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
@@ -118,6 +119,7 @@ extern const uint8_t digital_pin_to_port[];
 extern const uint8_t digital_pin_to_bit_mask[];
 extern const uint16_t port_to_sel[];
 extern const uint16_t port_to_sel2[];
+extern const uint16_t port_to_input[];
 
 #define digitalPinToPort(P) ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
