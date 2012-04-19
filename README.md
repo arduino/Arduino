@@ -75,7 +75,9 @@ Todo:
 
 Changelog
 =========
+
 Beta4b (based on Arduino 1.0.1-rc2) (2012-04-19):
+
 * Updated only for Mac OS X, removed dynamic dependencies on avr-gcc.
 
 Beta4 (based on Arduino 1.0.1-rc2):
