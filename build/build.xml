@@ -204,6 +204,7 @@
       <arg value="macosx/work/Arduino.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-universal.zip" />
     </exec>
+    <copy tofile="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/etc/avrdude.conf" file="macosx/dist/avrdude.conf" overwrite="true" />
 
     <antcall target="assemble">
       <param name="target.path" value="macosx/work/Arduino.app/Contents/Resources/Java" />
@@ -477,6 +478,7 @@
     
     <!-- Unzip AVR tools -->
     <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
+    <copy tofile="windows/work/hardware/tools/avr/etc/avrdude.conf" file="windows/dist/avrdude.conf" overwrite="true" />
 
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
