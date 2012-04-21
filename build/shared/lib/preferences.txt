@@ -248,9 +248,15 @@ target = arduino
 programmer = arduino:avrispmkii
 
 upload.using = bootloader
+upload.verify = true
 
 serial.port=COM1
 serial.databits=8
 serial.stopbits=1
 serial.parity=N
 serial.debug_rate=9600
+
+# I18 Preferences
+
+# default chosen language (none for none)
+editor.languages.current = 
