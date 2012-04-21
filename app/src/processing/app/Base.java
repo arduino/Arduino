@@ -29,6 +29,8 @@ import java.util.*;
 
 import javax.swing.*;
 
+import processing.app.debug.ZigBee;
+
 import processing.app.debug.Compiler;
 import processing.app.debug.Target;
 import processing.core.*;
@@ -790,6 +792,7 @@ public class Base {
 
       // This will store the sketch count as zero
       editors.remove(editor);
+      ZigBee.close();
       Editor.serialMonitor.closeSerialPort();
       storeSketches();
 
@@ -828,6 +831,7 @@ public class Base {
     // If quit is canceled, this will be replaced anyway
     // by a later handleQuit() that is not canceled.
     storeSketches();
+    ZigBee.close();
     Editor.serialMonitor.closeSerialPort();
 
     if (handleQuitEach()) {

@@ -266,29 +266,6 @@ fio.build.variant=eightanaloginputs
 
 ##############################################################
 
-fiozb.name=Arduino Fiozb via ZigBee
-
-fiozb.upload.protocol=arduino
-fiozb.upload.maximum_size=30720
-fiozb.upload.speed=57600
-fiozb.upload.zigbee_d3_reset=true
-fiozb.upload.disable_flushing=true
-
-fiozb.bootloader.low_fuses=0xFF
-fiozb.bootloader.high_fuses=0xDA
-fiozb.bootloader.extended_fuses=0x05
-fiozb.bootloader.path=arduino:atmega
-fiozb.bootloader.file=ATmegaBOOT_168_atmega328_pro_8MHz.hex
-fiozb.bootloader.unlock_bits=0x3F
-fiozb.bootloader.lock_bits=0x0F
-
-fiozb.build.mcu=atmega328p
-fiozb.build.f_cpu=8000000L
-fiozb.build.core=arduino
-fiozb.build.variant=eightanaloginputs
-
-##############################################################
-
 bt328.name=Arduino BT w/ ATmega328
 
 bt328.upload.protocol=arduino

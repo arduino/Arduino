@@ -268,6 +268,24 @@ public class Serial implements SerialPortEventListener {
     //System.err.println("out of event " + serialEvent.getEventType());
   }
 
+  public String waitForData(long time) throws SerialException {
+      for (int i = 0; i < time/10; ++i ) {
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {}
+
+        String str = new String("");
+        while (available() > 0) {
+          str = str + readString();
+          if (available() == 0)
+            return str;
+          try {
+            Thread.sleep(1); // give a bit of time for the next character. XXXXX (should be a function of bps)
+          } catch (InterruptedException e) {}
+        }
+      }
+      return null;
+  }
 
   /**
    * Returns the number of bytes that have been read from serial
@@ -490,6 +508,13 @@ public class Serial implements SerialPortEventListener {
 
   public void write(byte bytes[]) {
     try {
+      if (monitor) {
+        String s = "serial write(" + bytes.length + "):";
+        for (int i = 0; i < bytes.length; ++i ) {
+          s = s + " 0x"+Integer.toHexString(bytes[i]);
+        }
+        System.out.println(s);
+      }
       output.write(bytes);
       output.flush();   // hmm, not sure if a good idea
 
@@ -516,13 +541,6 @@ public class Serial implements SerialPortEventListener {
     byte bytes[] = new byte[what.length()];
     for (int i = 0; i < what.length(); ++i) {
       bytes[i] = what.charAt(i) < 128 ? (byte)what.charAt(i): (byte)(what.charAt(i) - 256);
-    }
-    if (monitor) {
-      String s = "serial write(" + what.length() + "):";
-      for (int i = 0; i < what.length(); ++i ) {
-        s = s + " 0x"+Integer.toHexString(bytes[i]);
-      }
-      System.out.println(s);
     }
     write(bytes);
   }
