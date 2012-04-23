@@ -95,27 +95,20 @@ public abstract class Uploader implements MessageConsumer  {
           if (dp == null || dp.length() != 2) {
             throw new RunnerException("Improperly Configured XBee: Unknwon DTR pin.");
           }
-          // turn on I/O
-          zb.executeCommand("IO", null, 100);
-          // Turn off D3
-          zb.executeCommand(dp, new Byte((byte)0), 100);
-          // Unbind the i/o
-          zb.executeCommand("IA", new Long(-1), 100);
-          zb.executeCommand("IU", new Byte((byte) 0), 100);
           // Pull the DTR low. XXXXX Fixme: magic numbers 4 and 5 should be encoded somewhere.
           zb.executeCommand(dp, new Byte((byte)5), 100);
-          zb.executeCommand("PR", new Long(0), 100);
+          zb.apply();
           try {
             Thread.sleep(100);
           } catch (InterruptedException e) {}
           zb.executeCommand(dp, new Byte((byte)4), 100);
+          zb.apply();
           try {
             Thread.sleep(100);
           } catch (InterruptedException e) {}
           // and back high again.
           zb.executeCommand(dp, new Byte((byte)5), 100);
-          zb.executeCommand("PR", new Long(2), 100);
-
+          zb.apply();
           ZigBee.close();
           System.err.println("XBee reset done.");
         } catch (ZigBeeException e) {
