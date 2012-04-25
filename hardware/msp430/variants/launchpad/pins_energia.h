@@ -46,6 +46,32 @@ static const uint8_t A6 = 6;
 static const uint8_t A7 = 7;
 static const uint8_t A10 = 10; // special. This is the internal temp sensor
 
+// Pin names based on the silkscreen
+//
+// What's the best way?
+//    static const uint8_t P10 = 2 
+// or 
+//    #define P10 2
+#define P10 2
+#define P11 3
+#define P12 4
+#define P13 5
+#define P14 6
+#define P15 7
+#define P20 8
+#define P21 9
+#define P22 10
+#define P23 11
+#define P24 12
+#define P25 13
+#define P16 14
+#define P17 15
+
+#define LED1 2
+#define LED2 14
+#define PUSH2 5
+
+
 #ifdef ARDUINO_MAIN
 //                      +-\/-+
 //               VCC   1|    |20  GND
