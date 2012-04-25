@@ -5,6 +5,7 @@
   *	Arduino core files for MSP430
   *		Copyright (c) 2012 Robert Wessels. All right reserved.
   *
+  *     Contribution: Rei VILO
   *
   ***********************************************************************
   Derived from:
@@ -46,33 +47,6 @@ static const uint8_t A6 = 6;
 static const uint8_t A7 = 7;
 static const uint8_t A10 = 10; // special. This is the internal temp sensor
 
-// Pin names based on the silkscreen
-//
-// What's the best way?
-//    static const uint8_t P10 = 2 
-// or 
-//    #define P10 2
-#define P10 2
-#define P11 3
-#define P12 4
-#define P13 5
-#define P14 6
-#define P15 7
-#define P20 8
-#define P21 9
-#define P22 10
-#define P23 11
-#define P24 12
-#define P25 13
-#define P16 14
-#define P17 15
-
-#define LED1 2
-#define LED2 14
-#define PUSH2 5
-
-
-#ifdef ARDUINO_MAIN
 //                      +-\/-+
 //               VCC   1|    |20  GND
 //         (A0)  P1.0  2|    |19  XIN
@@ -86,6 +60,31 @@ static const uint8_t A10 = 10; // special. This is the internal temp sensor
 //               P2.2 10|    |11  P2.3
 //                      +----+
 //
+
+// Pin names based on the silkscreen
+//
+static const uint8_t P1_0 = 2;
+static const uint8_t P1_1 = 3;
+static const uint8_t P1_2 = 4;
+static const uint8_t P1_3 = 5;
+static const uint8_t P1_4 = 6;
+static const uint8_t P1_5 = 7;
+static const uint8_t P2_0 = 8;
+static const uint8_t P2_1 = 9;
+static const uint8_t P2_2 = 10;
+static const uint8_t P2_3 = 11;
+static const uint8_t P2_4 = 12;
+static const uint8_t P2_5 = 13;
+static const uint8_t P1_6 = 14;
+static const uint8_t P1_7 = 15;
+
+static const uint8_t RED_LED = 2;
+static const uint8_t GREEN_LED = 14;
+static const uint8_t PUSH2 = 5;
+static const uint8_t TEMPSENSOR = 10; // depends on chip
+
+
+#ifdef ARDUINO_MAIN
 
 const uint16_t port_to_dir[] = {
 	NOT_A_PORT,

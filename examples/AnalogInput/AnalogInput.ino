@@ -15,14 +15,11 @@
 //   Rei VILO, Mar 14, 2012 - Average
 //   Press push 2 to end
 //   Tested on msp430g2452 and msp430g2553
-//   2116 bytes
+//   2196 bytes
 
 #include <TimerSerial.h>
 
-#define redLED 2 // LED is on pin 2 of the launchpad
-#define greenLED 14
-#define TEMPSENSOR 10 // sensor is on channel 10
-#define PUSH2 5
+// RED_LED, GREEN_LED, TEMPSENSOR, PUSH2 already defined
 #define NUMBER 4 // take number / 2
 
 TimerSerial mySerial;
@@ -35,14 +32,14 @@ boolean flag = false;
 
 
 void setup() {
-  pinMode(redLED, OUTPUT);
-  pinMode(greenLED, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
   analogReference(INTERNAL1V5);
   mySerial.begin();
   pinMode(PUSH2, INPUT);   
 
-  digitalWrite(redLED, HIGH); 
-  digitalWrite(greenLED, LOW); 
+  digitalWrite(RED_LED, HIGH); 
+  digitalWrite(GREEN_LED, LOW); 
 
 
   mySerial.print("\n\n\n*** MSP430 Thermometer \n"); 
@@ -65,7 +62,7 @@ void loop() {
   ledState = !ledState;
 
   // LEDs: green = ready; red = acquisition
-  digitalWrite(flag ? greenLED : redLED, ledState); 
+  digitalWrite(flag ? GREEN_LED : RED_LED, ledState); 
 
   if (i == 10) {
     i = 0;

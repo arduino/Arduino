@@ -11,7 +11,7 @@
 //
 
 #include "TimerSerial.h"
-#define PUSH2 5
+// PUSH2 already defined
 
 TimerSerial mySerial;
 

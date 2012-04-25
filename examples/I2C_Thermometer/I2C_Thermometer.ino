@@ -11,13 +11,13 @@
 //  Press push 2 to end
 //
 //  Tested on msp430g2452
-//  Binary sketch size = 2978 bytes out of 8192 bytes
+//  Binary sketch size = 3004 bytes out of 8192 bytes
 //
 
 #include "Wire.h"
 #include "TimerSerial.h"
 
-#define PUSH2  5 // PUSH to end
+// PUSH2 alreadey defined
 #define _address 0x4b // strap ADDR0 - SCL
 
 TimerSerial mySerial;

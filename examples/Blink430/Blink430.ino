@@ -7,7 +7,7 @@
 //  LED2 on pin 14
 //
 
-#define LED1  2
+#define LED1 2
 #define LED2 14
 
 

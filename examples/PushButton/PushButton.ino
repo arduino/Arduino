@@ -13,7 +13,7 @@
 
 #define LED1 2
 #define LED2 14
-#define PUSH2 5
+// PUSH2 already defined
 
 void setup() {                
   // initialise digital pins as outputs
