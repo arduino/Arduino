@@ -1,5 +1,6 @@
 #!/bin/bash
  
+export PATH=$PATH:/opt/mspgcc/bin
 APPDIR="$(dirname -- $(readlink -f -- "${0}") )"
 
 cd $APPDIR
