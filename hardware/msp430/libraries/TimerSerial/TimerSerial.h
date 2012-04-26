@@ -26,7 +26,6 @@
 
 #include <inttypes.h>
 #include <Stream.h>
-#include <legacymsp430.h>
 
 //TODO: Size should depend on how much RAM we have. 16 should be OK for most cases.
 

@@ -114,7 +114,7 @@ int TimerSerial::peek()
 }
 
 #define store_rxchar(c) { \
-	int i = (unsigned int)(rx_buffer.head + 1) % SERIAL_BUFFER_SIZE; \
+	unsigned int i = (unsigned int)(rx_buffer.head + 1) % SERIAL_BUFFER_SIZE; \
 	if ( i != rx_buffer.tail ) { \
 		rx_buffer.buffer[rx_buffer.head] = c; \
 		rx_buffer.head = i; \
@@ -169,7 +169,8 @@ size_t TimerSerial::write(uint8_t b)
 #endif /* TIMER0_A0_VECTOR */
 
 //Timer A0 interrupt service routine
-interrupt(TIMERA0_VECTOR) TimerSerial::TxIsr(void)
+__attribute__((interrupt(TIMERA0_VECTOR)))
+void TimerSerial::TxIsr(void)
 {
 	static uint8_t txBitCnt = 10;           // 1 Start bit + 8 data bits + 1 stop bit
 
@@ -194,7 +195,8 @@ interrupt(TIMERA0_VECTOR) TimerSerial::TxIsr(void)
 #endif /* TIMER0_A0_VECTOR */
 
 //Timer A1 interrupt service routine
-interrupt(TIMERA1_VECTOR) TimerSerial::RxIsr(void)
+__attribute__((interrupt(TIMERA1_VECTOR)))
+void TimerSerial::RxIsr(void)
 {
 	static unsigned char rxBitCnt = 8;
 	static unsigned char rxData = 0;
