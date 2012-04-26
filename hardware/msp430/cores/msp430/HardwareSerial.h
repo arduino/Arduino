@@ -32,7 +32,6 @@
 #include <inttypes.h>
 
 #include "Stream.h"
-#include <legacymsp430.h>
 
 struct ring_buffer;
 

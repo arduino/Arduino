@@ -189,7 +189,8 @@ void HardwareSerial::ProcessRXInt(void)
 	store_char(c, &rx_buffer);
 }
 
-interrupt(USCIAB0RX_VECTOR) HardwareSerial::USCI0RX_ISR(void)
+__attribute__((interrupt(USCIAB0RX_VECTOR)))
+void HardwareSerial::USCI0RX_ISR(void)
 {
 	SerialPtr->ProcessRXInt();
 }
@@ -207,7 +208,8 @@ void HardwareSerial::ProcessTXInt(void)
 	UCA0TXBUF = c;
 }
 
-interrupt(USCIAB0TX_VECTOR) HardwareSerial::USCI0TX_ISR(void)
+__attribute__((interrupt(USCIAB0TX_VECTOR))) 
+void HardwareSerial::USCI0TX_ISR(void)
 {
 	SerialPtr->ProcessTXInt();
 }
