@@ -2,18 +2,20 @@
  Input Pullup Serial
  
  This example demonstrates the use of pinMode(INPUT_PULLUP). It reads a 
- digital input on pin 2 and prints the results to the serial monitor.
+ digital input on pin 5 and prints the results to the serial monitor.
  
  The circuit: 
- * Momentary switch attached from pin 2 to ground 
- * Built-in LED on pin 13
+ * Momentary switch attached from pin 5 to ground 
+ * Built-in LED on pin 14
  
  Unlike pinMode(INPUT), there is no pull-down resistor necessary. An internal 
- 20K-ohm resistor is pulled to 5V. This configuration causes the input to 
+ resistor is pulled to 3.3V. This configuration causes the input to 
  read HIGH when the switch is open, and LOW when it is closed. 
  
  created 14 March 2012
  by Scott Fitzgerald
+ modified 27 Apr 2012
+ Robert Wessels
  
  http://www.arduino.cc/en/Tutorial/InputPullupSerial
  
@@ -24,9 +26,9 @@
 void setup(){
   //start serial connection
   Serial.begin(9600);
-  //configure pin2 as an input and enable the internal pull-up resistor
-  pinMode(2, INPUT_PULLUP);
-  pinMode(13, OUTPUT); 
+  //configure pin 5 as an input and enable the internal pull-up resistor
+  pinMode(PUSH2, INPUT_PULLUP);
+  pinMode(GREEN_LED, OUTPUT); 
 
 }
 
@@ -41,10 +43,10 @@ void loop(){
   // and LOW when it's pressed. Turn on pin 13 when the 
   // button's pressed, and off when it's not:
   if (sensorVal == HIGH) {
-    digitalWrite(13, LOW);
+    digitalWrite(GREEN_LED, LOW);
   } 
   else {
-    digitalWrite(13, HIGH);
+    digitalWrite(GREEN_LED, HIGH);
   }
 }
 

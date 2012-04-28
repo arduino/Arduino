@@ -19,6 +19,8 @@
  by David A. Mellis
  modified 30 Aug 2011
  by Limor Fried
+ modified 27 Apr 2012
+ Robert Wessels
  
 This example code is in the public domain.
  
@@ -27,8 +29,8 @@ This example code is in the public domain.
 
 // constants won't change. They're used here to 
 // set pin numbers:
-const int buttonPin = 2;     // the number of the pushbutton pin
-const int ledPin =  13;      // the number of the LED pin
+const int buttonPin = PUSH2;     // the number of the pushbutton pin
+const int ledPin =  GREEN_LED;      // the number of the LED pin
 
 // Variables will change:
 int ledState = HIGH;         // the current state of the output pin

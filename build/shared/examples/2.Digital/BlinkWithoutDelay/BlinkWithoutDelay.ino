@@ -14,6 +14,8 @@
  by David A. Mellis
  modified 8 Feb 2010
  by Paul Stoffregen
+ modified 27 Apr 2012
+ by Robert Wessels
  
  This example code is in the public domain.
 
@@ -23,7 +25,7 @@
 
 // constants won't change. Used here to 
 // set pin numbers:
-const int ledPin =  13;      // the number of the LED pin
+const int ledPin =  GREEN_LED;      // the number of the LED pin
 
 // Variables will change:
 int ledState = LOW;             // ledState used to set the LED

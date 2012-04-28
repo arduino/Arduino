@@ -10,14 +10,14 @@
  and on to off.
  	
  The circuit:
- * pushbutton attached to pin 2 from +5V
- * 10K resistor attached to pin 2 from ground
- * LED attached from pin 13 to ground (or use the built-in LED on
-   most Arduino boards)
+ * pushbutton attached to pin 5 from GND
+ * LED attached from pin 14 to ground through a 470 Ohm resistor
  
  created  27 Sep 2005
  modified 30 Aug 2011
  by Tom Igoe
+ modified 27 Apr 2012
+ Robert Wessels
 
 This example code is in the public domain.
  	
@@ -26,8 +26,8 @@ This example code is in the public domain.
  */
 
 // this constant won't change:
-const int  buttonPin = 2;    // the pin that the pushbutton is attached to
-const int ledPin = 13;       // the pin that the LED is attached to
+const int  buttonPin = PUSH2;    // the pin that the pushbutton is attached to
+const int ledPin = RED_LED;       // the pin that the LED is attached to
 
 // Variables will change:
 int buttonPushCounter = 0;   // counter for the number of button presses
@@ -36,7 +36,7 @@ int lastButtonState = 0;     // previous state of the button
 
 void setup() {
   // initialize the button pin as a input:
-  pinMode(buttonPin, INPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
   // initialize the LED as an output:
   pinMode(ledPin, OUTPUT);
   // initialize serial communication:
