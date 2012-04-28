@@ -12,12 +12,12 @@ int fadeAmount = 5;    // how many points to fade the LED by
 
 void setup()  { 
   // declare pin 9 to be an output:
-  pinMode(9, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
 } 
 
 void loop()  { 
   // set the brightness of pin 9:
-  analogWrite(9, brightness);    
+  analogWrite(GREEN_LED, brightness);    
 
   // change the brightness for next time through the loop:
   brightness = brightness + fadeAmount;

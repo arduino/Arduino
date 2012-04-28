@@ -7,11 +7,11 @@
 
 void setup() {
   Serial.begin(9600);
-  pinMode(2, INPUT);
+  pinMode(PUSH2, INPUT_PULLUP);
 }
 
 void loop() {
-  int sensorValue = digitalRead(2);
+  int sensorValue = digitalRead(PUSH2);
   Serial.println(sensorValue);
 }
 
