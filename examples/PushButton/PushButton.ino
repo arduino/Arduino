@@ -19,7 +19,7 @@ void setup() {
   // initialise digital pins as outputs
   pinMode(LED1, OUTPUT);     
   pinMode(LED2, OUTPUT);     
-  pinMode(PUSH2, INPUT);     
+  pinMode(PUSH2, INPUT_PULLUP);     
   lights(0);
 }
 
