@@ -38,15 +38,16 @@
  * This program uses "bit banging" to shift out the data. Some uC have a nice SPI peripheral
  * to do this without burning CPU cycles. We're not using that (at the moment). 
  *
+ * This demo also uses the MIC and Buzzer (some kind of scope)
+ *
  * TODO
  * ~~~~
- * - Do somthing with the buzzer and mic
  * - Make some defines to desichain more displays  
  */
 #include "font.h"
  
 // MIC and Buzzer
-#define AIN 2
+#define AIN 0 // Note: AIN0 == pin2
 #define BUZ1 3
 #define BUZ2 4
 
@@ -65,6 +66,8 @@
 const char *str = "}} Hello  World... }}";
 
 
+// Image buffer, you can modify the bits and they will be displayed on the 8x8 matrix with the sendImage() function
+unsigned char image[8] = {  0xFF, 0xFF, 0xFF, 0xFF,  0xFF, 0xFF, 0xFF, 0xFF };
 
 
 /**
@@ -78,6 +81,7 @@ void setup()
   pinMode(CLOCK, OUTPUT);
   pinMode(DATA, OUTPUT);
   pinMode(LATCH, OUTPUT);
+  analogReference(INTERNAL1V5);
 }
 
 // send 16 bits to LED tile (bits 0..7 are column, 8..15 are row) 
@@ -113,11 +117,6 @@ void sendImage(unsigned char *img)
   }
 }
 
-
-// Image buffer, you can modify the bits and they will be displayed on the 8x8 matrix
-unsigned char image[8] = {  0xFF, 0xFF, 0xFF, 0xFF,  0xFF, 0xFF, 0xFF, 0xFF };
-
-
 // Shift alls bytes in the image right and add a byte in the display buffer
 void shiftRight(unsigned char c)
 {
@@ -144,29 +143,86 @@ void shiftLeft(unsigned char c)
   image[7] = c;
 }
 
+#define ABS(a) ( (a<0 ? -a : a) )
+
+// tone: activate buzzer with frequency
+void tone(int t)
+{
+  for(int i=0;i<20000/t;i++)
+  {
+    digitalWrite(BUZ1, 1);
+    for(int j=0;j<t;j++) nop();
+    digitalWrite(BUZ1, 0);
+    for(int j=0;j<t;j++) nop();
+  }
+}
 
 /**
 *** main loop, keep refreshing the image
 **/
 void loop()
 {
+  int a =0, i=0, j=0, now, avg, prev, val;
+  sineWave();
+  for(i=0;i<20;i++)
+   tone(500*i);
+  showText(str);
+  
+  while(1)
+  {
+    sendImage(image);
+    if ( a++ > 20 ) // shift in new line
+    {  
+      a=0;      
+      now = analogRead(AIN)/2;
+      if ( now < 0 ) now = -now;
+      avg = (15 * avg + now) / 16;
+      val = ABS(avg-prev);
+      shiftLeft(  128>>val ); 
+      tone(100*val);    
+      prev = avg;
+    }
+  } 
+}
+
+// Sinewave example
+void sineWave()
+{
+  static const unsigned char wave[] = {4,5,6,6,7,7,7,6,6,5,4,2,1,1,0,0,0,1,1,2,4};
+  unsigned char j = 0, q;
+  for(int i=0; i<100;i++)
+  {
+    j = i % sizeof(wave);
+    tone(300+200*wave[j]); 
+    shiftLeft(1 << wave[j]);
+    for(q=0; q<20; q++) sendImage(image);
+  }
+}
+
+
+// display a text on the 8x8 display
+void showText(const char *txt)
+{
   int a =0, i=0, j=0;
   while(1)
   {
     sendImage(image);
-    if ( a++ > 50 ) // shift in new line
+    if ( a++ > 60 ) // shift in new line
     {  
       a=0;
       if ( j < 5 ) // copy character
-        shiftLeft( *(fontPtr(str[i]) + (unsigned int)j) );
+        shiftLeft( *(fontPtr(txt[i]) + (unsigned int)j) );
       else
+      {
         shiftLeft(0); // blank line
+        tone(500);
+      }
       if ( ++j > 5 ) // next character
       {
         j = 0;
-        if ( ++i >= strlen(str) ) 
-          i = 0; 
-      }
+        if ( ++i >= strlen(txt) ) 
+          return; 
+      } 
     }
   } 
 }
