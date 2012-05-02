@@ -36,6 +36,19 @@
 #define BV(x) (1 << (x))
 #endif
 
+#if defined(__MSP430_HAS_USCI__)
+static const uint8_t SS   = 8;  /* P2.0 */
+static const uint8_t SCK  = 7;  /* P1.5 */
+static const uint8_t MOSI = 15; /* P1.7 */
+static const uint8_t MISO = 14; /* P1.6 */
+#endif
+
+#if defined(__MSP430_HAS_USI__)
+static const uint8_t SS   = 8;  /* P2.0 */
+static const uint8_t SCK  = 7;  /* P1.5 */
+static const uint8_t MOSI = 14; /* P1.6 */
+static const uint8_t MISO = 15; /* P1.7 */
+#endif
 
 static const uint8_t A0 = 0;
 static const uint8_t A1 = 1;
