@@ -36,11 +36,6 @@
 #define SPI_CLOCK_DIV64  USIDIV_6
 #define SPI_CLOCK_DIV128 USIDIV_7
 
-static const uint8_t SS   = 8;  /* P2.0 */
-static const uint8_t SCK  = 7;  /* P1.5 */
-static const uint8_t MOSI = 14; /* P1.6 */
-static const uint8_t MISO = 15; /* P1.7 */
-
 #else
     #error "SPI not supported by hardware on this chip"
 #endif
