@@ -57,10 +57,6 @@
 #define DATA 14
 #define DELAYTIME 1 // microseconds to wait after setting pin
 
-// default launchpad pins (note: they overlap with the default connection of the booster pack!)
-#define SWITCH 4
-#define LED1 2
-#define LED2 14
 
 // The string to display:
 const char *str = "}} Hello  World... }}";
@@ -77,11 +73,18 @@ unsigned char image[8] = {  0xFF, 0xFF, 0xFF, 0xFF,  0xFF, 0xFF, 0xFF, 0xFF };
 void setup()
 {
   pinMode(BUZ1, OUTPUT);
-  pinMode(BUZ2, OUTPUT);
+  pinMode(BUZ2, OUTPUT); // note: also switch
   pinMode(CLOCK, OUTPUT);
   pinMode(DATA, OUTPUT);
   pinMode(LATCH, OUTPUT);
+  pinMode(PUSH2, INPUT_PULLUP);
   analogReference(INTERNAL1V5);
+}
+
+// Read switch status
+boolean button()
+{
+  return digitalRead(PUSH2) == 0;
 }
 
 // send 16 bits to LED tile (bits 0..7 are column, 8..15 are row) 
@@ -162,7 +165,7 @@ void tone(int t)
 **/
 void loop()
 {
-  int a =0, i=0, j=0, now, avg, prev, val;
+  int a =0, i=0, j=0, now=0, avg=0, prev=0, val=0;
   sineWave();
   for(i=0;i<20;i++)
    tone(500*i);
@@ -178,7 +181,9 @@ void loop()
       if ( now < 0 ) now = -now;
       avg = (15 * avg + now) / 16;
       val = ABS(avg-prev);
-      shiftLeft(  128>>val ); 
+      shiftLeft(  128>>val );
+      if ( button() )
+        avg = 0;
       tone(100*val);    
       prev = avg;
     }
@@ -215,6 +220,7 @@ void showText(const char *txt)
       else
       {
         shiftLeft(0); // blank line
+        sendImage(image);
         tone(500);
       }
       if ( ++j > 5 ) // next character
