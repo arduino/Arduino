@@ -32,7 +32,7 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 
-uint16_t analog_reference = DEFAULT;
+uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 void analogReference(uint16_t mode)
 {
@@ -46,9 +46,26 @@ void analogReference(uint16_t mode)
 //      - lower clock rated / input devider to conserve Energia.
 //      - pin configuration logic.
 
+// Note set frequency before sending analog value
+// Lowest fequency is defined by clock frequency F_CPU, and max counter value 2^16-1
+// fmin = F_CPU / 2^16
+void analogFrequency(uint32_t freq)
+{
+  if ( freq <= F_CPU/(4*65334L) ) { analog_div = ID_3; freq *=8; }  
+  else if ( freq <= F_CPU/(2*65334L) ) { analog_div = ID_2; freq *=4; }
+  else if ( freq <= F_CPU/(4*65334L) ) { analog_div = ID_1; freq *=2; }
+  analog_period = F_CPU/freq;
+}
+
+// Set the resulution (nr of counts for 100%), default = 255, large values may not work at all frequencies
+void analogResolution(uint16_t res)
+{
+  analog_res = res;
+}
+
 //Arduino specifies ~490 Hz for analog out PWM so we follow suit.
-#define PWM_PERIOD F_CPU/490
-#define PWM_DUTY PWM_PERIOD / 255
+#define PWM_PERIOD analog_period // F_CPU/490
+#define PWM_DUTY(x) ( (unsigned long)x*PWM_PERIOD / (unsigned long)analog_res )
 void analogWrite(uint8_t pin, int val)
 {
         pinMode(pin, OUTPUT); // pin as output
@@ -86,15 +103,15 @@ void analogWrite(uint8_t pin, int val)
 			case T0A1:                              // Timer0 / CCR1
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL1 = OUTMOD_7;            // reset/set
-                                TA0CCR1 = PWM_DUTY * val;       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                TA0CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1 + MC_2 + analog_div;       // SMCLK, up mode
                                 break;
 #if defined(__MSP430_HAS_TA3__) 
  			case T0A2:                              // Timer0 / CCR1
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL2 = OUTMOD_7;            // reset/set
-                                TA0CCR2 = PWM_DUTY * val;       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                TA0CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
 #if defined(__MSP430_HAS_T1A3__) 
@@ -102,14 +119,14 @@ void analogWrite(uint8_t pin, int val)
 			case T1A1:                              // Timer0 / CCR1
                                 TA1CCR0 = PWM_PERIOD;           // PWM Period
                                 TA1CCTL1 = OUTMOD_7;            // reset/set
-                                TA1CCR1 = PWM_DUTY * val;       // PWM duty cycle
-                                TA1CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                TA1CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
  			case T1A2:                              // Timer0 / CCR1
                                 TA1CCR0 = PWM_PERIOD;           // PWM Period
                                 TA1CCTL2 = OUTMOD_7;            // reset/set
-                                TA1CCR2 = PWM_DUTY * val;       // PWM duty cycle
-                                TA1CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                TA1CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
 #if defined(__MSP430_HAS_T2A3__)  
@@ -117,14 +134,14 @@ void analogWrite(uint8_t pin, int val)
 			case T2A1:                              // Timer0 / CCR1
                                 TA2CCR0 = PWM_PERIOD;           // PWM Period
                                 TA2CCTL1 = OUTMOD_7;            // reset/set
-                                TA2CCR1 = PWM_DUTY * val;       // PWM duty cycle
-                                TA2CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                TA2CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
  			case T2A2:                              // Timer0 / CCR1
                                 TA2CCR0 = PWM_PERIOD;           // PWM Period
                                 TA2CCTL2 = OUTMOD_7;            // reset/set
-                                TA2CCR2 = PWM_DUTY * val;       // PWM duty cycle
-                                TA2CTL = TASSEL_2 + MC_1;       // SMCLK, up mode
+                                TA2CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
                         case NOT_ON_TIMER:                      // not on a timer output pin
