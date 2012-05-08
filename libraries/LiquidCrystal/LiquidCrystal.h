@@ -1,5 +1,8 @@
+
 #ifndef LiquidCrystal_h
 #define LiquidCrystal_h
+
+#define	_SETROWOFFSET_SUPPORTED_
 
 #include <inttypes.h>
 #include "Print.h"
@@ -77,12 +80,11 @@ public:
   void autoscroll();
   void noAutoscroll();
 
+  void setRowOffsets(int row1, int row2, int row3, int row4);
   void createChar(uint8_t, uint8_t[]);
   void setCursor(uint8_t, uint8_t); 
-  virtual size_t write(uint8_t);
+  virtual void write(uint8_t);
   void command(uint8_t);
-  
-  using Print::write;
 private:
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);
@@ -101,6 +103,7 @@ private:
   uint8_t _initialized;
 
   uint8_t _numlines,_currline;
+  int row_offsets[4];
 };
 
 #endif
