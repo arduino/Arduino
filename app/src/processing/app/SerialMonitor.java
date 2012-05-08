@@ -218,6 +218,37 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
       serial = null;
     }
   }
+
+  public void pauseSerialPort() {
+    if (serial != null) {
+      message("*** PAUSED ****\r\n");
+      textArea.setEnabled(false);
+      textField.setEnabled(false);
+      sendButton.setEnabled(false);
+      serialRates.setEnabled(false);
+      lineEndings.setEnabled(false);
+      autoscrollBox.setEnabled(false);
+      serial.dispose();
+      serial = null;
+    }
+  }
+
+  public void unPauseSerialPort() {
+    if (serial == null) {
+      try {
+        openSerialPort();
+        message("*** UNPAUSED ****\r\n");
+        textArea.setEnabled(true);
+        textField.setEnabled(true);
+        sendButton.setEnabled(true);
+        serialRates.setEnabled(true);
+        lineEndings.setEnabled(true);
+        autoscrollBox.setEnabled(true);
+      } catch (SerialException e) {
+        System.err.println(e);
+      }
+    }
+  }
   
   public void message(final String s) {
     SwingUtilities.invokeLater(new Runnable() {
