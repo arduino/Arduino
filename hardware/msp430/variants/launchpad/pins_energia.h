@@ -2,7 +2,7 @@
   ************************************************************************
   *	pins_energia.h
   *
-  *	Arduino core files for MSP430
+  *	Energia core files for MSP430
   *		Copyright (c) 2012 Robert Wessels. All right reserved.
   *
   *     Contribution: Rei VILO
@@ -162,8 +162,10 @@ const uint16_t port_to_output[] = {
 #endif
 };
 
-// Defines for devices with 2x TA3 timers (e.g. MSP430g2553). On the 20pin devices, upto 3 analog outputs are available
-// T0A1, T1A1 and T1A2
+/* 
+ * Defines for devices with 2x TA3 timers (e.g. MSP430g2553). On the 20pin devices, upto 3 analog outputs are available
+ * T0A1, T1A1 and T1A2 
+ */
 const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /*  dummy */
 	NOT_ON_TIMER, /*  1 - VCC */
@@ -171,26 +173,30 @@ const uint8_t digital_pin_to_timer[] = {
 	T0A0,         /*  3 - P1.1, note: A0 output cannot be used with analogWrite */
 	T0A1,         /*  4 - P1.2 */
 	NOT_ON_TIMER, /*  5 - P1.3 */
-//TODO:only g-series with comp have TA0.2 on P1.4?? TI user manual is not clear on this. MSP430g2553 confirmed /not/ working
-#if defined(__MSP430_HAS_CAPLUS__)
-	T0A2,         /*  6 - P1.4 */
-#else
-	NOT_ON_TIMER, /*  6 - P1.4 */
-#endif
-	T0A0,         /*  7 - P1.5, note: A0 output cannot be used with analogWrite  */
-	T1A0,         /*  8 - P2.0, note: A0 output cannot be used with analogWrite */
+	NOT_ON_TIMER, /*  6 - P1.4 note: special case. Leaving as no timer due to difficulty determining if available */
+	T0A0,         /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
+#if defined(__MSP430_HAS_T1A3__) 
+	T1A0,         /*  8 - P2.0 note: A0 output cannot be used with analogWrite */
 	T1A1,         /*  9 - P2.1 */
 	T1A1,         /* 10 - P2.3 */
 	T1A0,         /* 11 - P2.4 note: A0 output cannot be used with analogWrite  */
 	T1A2,         /* 12 - P2.5 */
 	T1A2,         /* 13 - P2.6 */
+#else
+	NOT_ON_TIMER, /*  8 - P2.0 */
+	NOT_ON_TIMER, /*  9 - P2.1 */
+	NOT_ON_TIMER, /* 10 - P2.3 */
+	NOT_ON_TIMER, /* 11 - P2.4 */
+	NOT_ON_TIMER, /* 12 - P2.5 */
+	NOT_ON_TIMER, /* 13 - P2.6 */
+#endif
 	T0A1,         /* 14 - P1.6 */
-	NOT_ON_TIMER /* 15 - P1.7 */
-//  NOT_ON_TIMER,       /* 16 - /RESET */  
-// NOT_ON_TIMER,        /* 17 - TEST */  
-// T1A2,                /* 18 - XOUT - P2.7: TODO define this pin for devices that have it and also inlude GPIO definiton */
-// NOT_ON_TIMER,        /* 18 - XIN - P2.6: TODO  GPIO definition */
-// NOT_ON_TIMER,        /* 20 - GND */
+	NOT_ON_TIMER, /* 15 - P1.7 */
+	NOT_ON_TIMER, /* 16 - /RESET */  
+	NOT_ON_TIMER, /* 17 - TEST */  
+	NOT_ON_TIMER, /* 18 - XOUT - P2.7 */
+	T0A1,         /* 18 - XIN - P2.6: */
+	NOT_ON_TIMER, /* 20 - GND */
 };
 
 const uint8_t digital_pin_to_port[] = {
