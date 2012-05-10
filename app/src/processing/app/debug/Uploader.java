@@ -110,10 +110,8 @@ public abstract class Uploader implements MessageConsumer  {
           zb.executeCommand(dp, new Byte((byte)5), 100);
           zb.apply();
           ZigBee.close();
-          System.err.println("XBee reset done.");
         } catch (ZigBeeException e) {
           ZigBee.close();
-          e.printStackTrace();
           throw new RunnerException(e.getMessage());
         }
       } else {

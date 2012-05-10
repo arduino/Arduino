@@ -116,7 +116,6 @@ public class ZigBee implements MessageConsumer {
     }, 
     BD {
       void process(ZigBee zb, byte[] packet, int offset)  {
-        System.err.println("Processing BD");
         int ind = (int)bytesToNum(packet, offset, 8, packet.length - 1);
         if (ind < bpsValues.length) {
           zb.updateBps(bpsValues[ind]);
@@ -127,13 +126,11 @@ public class ZigBee implements MessageConsumer {
     },
     AP {
       void process(ZigBee zb, byte[] packet, int offset)  {
-        System.err.println("Proccessing AP");
         // Nothing to do.  Don't query AP.
       }
     },
     NB {
       void process(ZigBee zb, byte[] packet, int offset)  {
-      System.err.println("Processing NB");
       char b = (char)bytesToNum(packet, offset, 1, packet.length - 1);
       switch (b) {
       default:
@@ -158,19 +155,16 @@ public class ZigBee implements MessageConsumer {
     },
     SL {
         void process(ZigBee zb, byte[] packet, int offset)  {
-          System.err.println("Processing SL");
           zb.setSL((int)bytesToNum(packet, offset, 4, packet.length - 1));
         }
       },
     SH {
       void process(ZigBee zb, byte[] packet, int offset)  {
-        System.err.println("Processing SH");
         zb.setSH((int)bytesToNum(packet, offset, 4, packet.length - 1));
       }
     },
     DL {
       void process(ZigBee zb, byte[] packet, int offset) {
-        System.err.println("Processing DL");
         if (zb != getLocalNoCreate()) {
           return;
         }
@@ -179,7 +173,6 @@ public class ZigBee implements MessageConsumer {
     },
     DH {
       void process(ZigBee zb, byte[] packet, int offset) {
-        System.err.println("Processing DH");
         if (zb != getLocalNoCreate()) {
           return;
         }
@@ -187,30 +180,28 @@ public class ZigBee implements MessageConsumer {
       }
     },
     NI {
+      public boolean responseString = true;
       void process(ZigBee zb, byte[] packet, int offset) {
-        System.err.println("Processing NI");
         zb.updateNI(bytesToString(packet, offset, Math.min(20, packet.length - offset - 1)));
       }
     },
     MY {
       void process(ZigBee zb, byte[] packet, int offset) {
-        System.err.println("Processing MY");
         zb.updateAddress16((short)bytesToNum(packet, offset, 2, packet.length - 1));
       }
     },
     AC {
       void process(ZigBee zb, byte[] packet, int offset) {
-        System.err.println("Processing AC");
         // nothing to do.
       }
     },
     ID {
       void process(ZigBee zb, byte[] packet, int offset) {
-        System.err.println("Processing ID");
         zb.updatePan(new Long(bytesToNum(packet, offset, 4, packet.length - 1)));
       }
     };
     abstract void process(ZigBee zb, byte[] packet, int offset);
+    public boolean responseString = false;
   }
 
   int sl;
@@ -246,6 +237,7 @@ public class ZigBee implements MessageConsumer {
     public Date issued;
     public boolean broadcast;
     public Object status;
+    public Object response;
     public Object argument;
     public String commandString;
     public int retransmits;
@@ -343,7 +335,7 @@ public class ZigBee implements MessageConsumer {
     synchronized(getLocalLock) {
       if (local != null) {
         if (serialPort == null) {
-          serialPort = new Serial(true);
+          serialPort = new Serial();
           if (local.apiMode) {
             serialPort.addListener(local);
           }
@@ -360,7 +352,6 @@ public class ZigBee implements MessageConsumer {
         l.enterAPIMode();
         // Just queue up these commands and let the incoming 
         // api message processor deal with the results.
-        System.err.println("in API Mode.");
         l.executeCommand("SL", null, internalWait);
         l.executeCommand("SH", null, internalWait);
         l.executeCommand("NI", null, internalWait);
@@ -368,7 +359,6 @@ public class ZigBee implements MessageConsumer {
         l.executeCommand("ID", null, internalWait);
         l.executeCommand("DL", null, internalWait);
         l.executeCommand("DH", null, internalWait);
-        System.err.println("Executed Initialization Commands.");
 
         // Can't get profile id and manufacturer_id with out doing a loop back node id.
         l.bps = Long.parseLong(Preferences.get("serial.debug_rate"));
@@ -377,7 +367,6 @@ public class ZigBee implements MessageConsumer {
       } catch (Exception e) {
         close();
         local = null;
-        System.out.println(e.toString());
         e.printStackTrace();
         if (e instanceof ZigBeeException) {
           throw (ZigBeeException)e;
@@ -441,7 +430,6 @@ public class ZigBee implements MessageConsumer {
   }
 
   void setSL(int s) {
-    System.err.println("setSL s="+s);
     sl = s;
     slGood = true;
     if (slGood && shGood) {
@@ -450,7 +438,6 @@ public class ZigBee implements MessageConsumer {
   }
 
   void setSH(int s) {
-    System.err.println("setSH s="+s);
     sh = s;
     shGood = true;
     if (slGood && shGood) {
@@ -604,7 +591,7 @@ public class ZigBee implements MessageConsumer {
     } catch (InterruptedException ie) {
       // ignore it.
     }
-    return c.status;
+    return c.response;
   }
 
   public Object executeRemoteCommand(Command c, String command, Object argument, long wait) throws ZigBeeException, SerialException {
@@ -648,7 +635,7 @@ public class ZigBee implements MessageConsumer {
   // only works locally.
   void enterCommandMode() throws ZigBeeException, SerialException {
     if (serialPort == null) {
-      serialPort = new Serial(true);
+      serialPort = new Serial();
     }
     try {
       Thread.sleep(1000);
@@ -875,7 +862,6 @@ public class ZigBee implements MessageConsumer {
 
   public Object executeLocalCommand(Command c, String command, Object argument, long wait) throws ZigBeeException, SerialException {
     byte[] packet = buildLocalCommand(c, local_at_command, command, argument);
-    System.err.println("Local packet length = " + packet.length);
 
     sendCommand(packet);
 
@@ -887,14 +873,12 @@ public class ZigBee implements MessageConsumer {
   }
 
   void sendMessage(String s) {
-    System.err.println("sending message: "+s);
     if (consumer != null) {
       consumer.message(s);
     }
   }
  
   void sendStaticMessage(String s) {
-    System.err.println("sending static message: "+s);
     if (staticConsumer != null) {
       staticConsumer.message(s);
     }
@@ -911,9 +895,6 @@ public class ZigBee implements MessageConsumer {
   // part of the PdeMessageConsumer interface
   //
   public void message(String s) {
-    for (int i = 0; i < s.length(); ++i) {
-      System.err.println("message byte = 0x" + Integer.toHexString(s.charAt(i)));
-    }
     while (s != null && s.length() > 0) {
       if (incoming == null) {
         int start=s.indexOf(0x7e, 0);
@@ -938,13 +919,11 @@ public class ZigBee implements MessageConsumer {
         if (incoming.length() == 3) {
           continue;
         }
-        System.err.println("Got whole packet.");
         try {
           processIncomingPacket(incoming);
         } catch (Exception e) {
           e.printStackTrace();
         }
-        System.err.println("Clearing incoming.");
         incoming = null;
       } else {
         incoming = incoming + s; 
@@ -955,7 +934,6 @@ public class ZigBee implements MessageConsumer {
 
   public void processIncomingPacket(String s) throws ZigBeeException, SerialException {
     if (s.charAt(0) != 0x7e) {
-      System.err.println("ProcessIncomingPacket: bogus start character.");
       return; // bogus packet.
     }
 
@@ -966,10 +944,8 @@ public class ZigBee implements MessageConsumer {
       o = o + " 0x" + Integer.toHexString(s.charAt(i));
     }
     byte cksum = packet[packet.length - 1];
-    System.err.println(o);
     computeChecksum(packet);
     if (cksum != packet[packet.length - 1]) {
-      System.err.println("ProcessIncomingPacket: bad checksum.");
       return ; // bogus packet
     }
 
@@ -979,7 +955,6 @@ public class ZigBee implements MessageConsumer {
 
     switch (packet[3]) {
     case remote_command_response:
-      System.err.println("Remote command response.");
       zb = findOrCreateRemote(longAddressFromPacket(packet, 5), shortAddressFromPacket(packet, 13));
       offset = 15; // fall through
     case local_at_command_response:
@@ -987,7 +962,6 @@ public class ZigBee implements MessageConsumer {
       return;
     default:
       // Ignore packets we don't know what to do with.  It's in the spec.
-      System.err.println("ProcessIncomingPacket: ignoring unknown packet type: " + packet[3] + ".");
       return;
     }
   }
@@ -1003,7 +977,6 @@ public class ZigBee implements MessageConsumer {
   }
 
   void updateAddress64(long address64) {
-    System.err.println("updateAddress64 address=" + Long.toString(address64, 16));
     synchronized(this) {
       if (serialNumber != null && serialNumber.longValue() == address64) {
         return;
@@ -1023,7 +996,6 @@ public class ZigBee implements MessageConsumer {
   }
 
   void updateAddress16(short address16) {
-    System.err.println("updateAddress16 address16=" + Long.toString(address16, 16));
     synchronized(this) {
       if (address != null && address16 == address.shortValue()) {
         return;
@@ -1062,7 +1034,6 @@ public class ZigBee implements MessageConsumer {
 
   void processCommandResponse(byte[] packet, int offset) throws ZigBeeException, SerialException {
     String command = new String(packet, offset, 2); // commands are all 2 characters.
-    System.err.println("ProcessCommandResponse, command="+command);
     Command c;
     synchronized(outstandingCommands) {
       c = outstandingCommands.get(packet[4]);
@@ -1082,8 +1053,6 @@ public class ZigBee implements MessageConsumer {
 
     if (packet[offset+2] != 0) {
       // Need to get the message to the user.
-      System.err.println("Command " + command + " failed with code " + packet[offset+2]);
-      // Retransmit some errors.
       if (c != null && packet[offset + 2] == 4) {
         if (c.retransmits++ < c.maxRetransmits) {
           executeCommand(c, 0);
@@ -1101,18 +1070,24 @@ public class ZigBee implements MessageConsumer {
 
     // Did we get some data back as well?
     if (packet.length > offset + 4) {
-
       command = command.toUpperCase();
       ZigBeeCommands zbc;
       try {
         zbc = ZigBeeCommands.valueOf(command);
+        if (c != null) {
+          if (zbc.responseString) {
+            c.response = bytesToString(packet, offset+3, packet.length - offset - 1);
+          } else {
+            c.response = new Long(bytesToNum(packet, offset+3, 8, packet.length - 1));
+          }
+        }
+        zbc.process(this, packet, offset+3);
       } catch (IllegalArgumentException iae) {
-        System.err.println("processCommandResponse: unknown command.");
+        if (c != null) {
+          c.response = new Long(bytesToNum(packet, offset+3, 8, packet.length - 1));
+        }
         // unhandled message, just ignore it.
-        return;
       }
-      System.err.println("processingCommandResponse: processing.");
-      zbc.process(this, packet, offset+3);
     }
 
     // let any waiters know we are done.
@@ -1141,11 +1116,15 @@ public class ZigBee implements MessageConsumer {
     zb.connectToRemote(this);
   }
 
+  public void disconnect() {
+    connectedAddress = new Long(0);
+    sendStaticMessage("DL");
+  }
+
   void connectToRemote(ZigBee remote) throws ZigBeeException, SerialException {
     long remoteAddress = remote.getSerialNumber();
     int remoteLow = (int)remoteAddress;
     int remoteHigh = (int)(remoteAddress >>> 32);
-    System.err.println("remoteAddress = " + Long.toString(remoteAddress, 16) + ", low = " + Long.toString(remoteLow, 16) + ", high = " + Long.toString(remoteHigh, 16));
     executeCommand("DL", new Integer(remoteLow), internalWait);
     executeCommand("DH", new Integer(remoteHigh), internalWait);
     connectedAddress = remoteAddress;
@@ -1167,9 +1146,7 @@ public class ZigBee implements MessageConsumer {
       s = Long.toString(getSerialNumber(), 16);
     }
 
-    System.err.println("ZigBee.toString() connectedAddress = " + Long.toString(connectedAddress, 16));
     if (isConnected()) {
-      System.err.println("Connected");
       s = "Connected " + s;
     }
     return s;

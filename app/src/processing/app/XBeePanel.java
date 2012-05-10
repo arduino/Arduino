@@ -45,7 +45,6 @@ import java.awt.event.WindowEvent;
 
 import java.util.HashSet;
 
-
 import processing.app.debug.ZigBee;
 import processing.app.debug.MessageConsumer;
 import processing.app.Base;
@@ -59,6 +58,7 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
   JButton okButton;
   JButton cancelButton;
   JButton connectButton;
+  JButton refreshButton;
   JComboBox remoteComboBox;
   ZigBee local;
   static boolean foundZigBee;
@@ -121,6 +121,10 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
+    refreshButton = new JButton("Refresh");
+    refreshButton.setActionCommand("refresh");
+    refreshButton.addActionListener(this);
+
     connectButton = new JButton("Connect");
     connectButton.setActionCommand("connect");
     connectButton.addActionListener(this);
@@ -138,6 +142,7 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
     cancelButton.setActionCommand("cancel");
     cancelButton.addActionListener(this);
 
+    buttonPanel.add(refreshButton);
     buttonPanel.add(connectButton);
     buttonPanel.add(applyButton);
     buttonPanel.add(okButton);
@@ -152,7 +157,6 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
   // part of the PdeMessageConsumer interface
   //
   public void message(String s) {
-    System.err.println("Receiving message: "+s);
     // could only update that which has changed.  Would be better, but for now we will be lazy.
     populateComboBox();
   }
@@ -171,6 +175,18 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
       apply();
     } else if (c.equals("connect")) {
       connect();
+    } else if (c.equals("disconnect")) {
+      disconnect();
+      Preferences.setBoolean("XBee.port."+Preferences.get("serial.port"), false);
+    } else if (c.equals("refresh")) {
+      refresh();
+    }
+  }
+
+  void refresh() {
+    try {
+      ZigBee.searchForNodes();
+    } catch (Exception e) {
     }
   }
 
@@ -197,9 +213,21 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
       ZigBee zb = (ZigBee)remoteComboBox.getSelectedItem();
       if (zb != null) {
         zb.connect();
+        connectButton.setText("Disconnect");
+        connectButton.setActionCommand("disconnect");
       }
     } catch (Exception e) {
       Base.showWarning("Connect Failed", e.getMessage(), e);
+    }
+  }
+
+  void disconnect() {
+    try {
+      local.disconnect();
+      connectButton.setText("Connect");
+      connectButton.setActionCommand("connect");
+    } catch (Exception e) {
+      Base.showWarning("Disconnect Failed", e.getMessage(), e);
     }
   }
 
@@ -276,11 +304,15 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
         remoteZigBee.setZigBee(zb);
         if (zb.isConnected()) {
           if (connectButton != null) {
-            connectButton.setEnabled(false);
+            connectButton.setEnabled(true);
+            connectButton.setText("Disconnect");
+            connectButton.setActionCommand("disconnect");
           }
         } else {
           if (connectButton != null) {
             connectButton.setEnabled(true);
+            connectButton.setText("Connect");
+            connectButton.setActionCommand("connect");
           }
         }
         try {
@@ -302,7 +334,9 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
       remoteComboBox.removeItemListener(this);
       connectButton.removeActionListener(this);
       ZigBee.addStaticListener(null);
+      remoteZigBee.close();
       remoteZigBee = null;
+      localZigBee.close();
       localZigBee=null;
       applyButton = null;
       connectButton=null;

@@ -38,8 +38,11 @@ import java.awt.GridLayout;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.Document;
 
-class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
+class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener, DocumentListener {
 
   static final String bpsValues[] = {
     "1200",
@@ -75,6 +78,7 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
 
     add(new JLabel("Name"));
     name = new JTextField("");
+    name.getDocument().addDocumentListener(this);
     add (name);
 
     add(new JLabel("64 bit address"));
@@ -83,18 +87,22 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
 
     add(new JLabel("16 bit address"));
     address16 = new JTextField("");
+    address16.getDocument().addDocumentListener(this);
     add(address16);
 
     add(new JLabel("Network ID"));
     networkId = new JTextField("");
+    networkId.getDocument().addDocumentListener(this);
     add(networkId);
 
     add(new JLabel("BPS"));
     bps = new JComboBox(bpsValues);
+    bps.addActionListener(this);
     add(bps);
 
     add(new JLabel("Parity"));
     parity = new JComboBox(parityValues);
+    parity.addActionListener(this);
     add(parity);
 
     add(new JLabel("Write to NVRam: "));
@@ -103,6 +111,36 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
     write.addActionListener(this);
     add (write);
 
+  }
+
+  public void close() {
+    name.getDocument().removeDocumentListener(this);
+    name = null;
+    address64 = null;
+    address16.getDocument().removeDocumentListener(this);
+    address16 = null;
+    networkId.getDocument().removeDocumentListener(this);
+    networkId = null;
+    bps.removeActionListener(this);
+    bps = null;
+    parity.removeActionListener(this);
+    parity = null;
+    write.removeActionListener(this);
+    write = null;
+    dtrComboBox.removeActionListener(this);
+    dtrComboBox = null;
+  }
+
+  public void insertUpdate(DocumentEvent e) {
+    write.setEnabled(false);
+  }
+
+  public void removeUpdate(DocumentEvent e) {
+    write.setEnabled(false);
+  }
+
+  public void changedUpdate(DocumentEvent e) {
+    write.setEnabled(false);
   }
 
   public void actionPerformed(ActionEvent e) {
@@ -115,6 +153,8 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
         Base.showWarning("Unable to update XBee", ex.getMessage(), ex);
         return;
       }
+    } else {
+      write.setEnabled(false);
     }
   }
 
@@ -125,7 +165,7 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
     networkId.setEnabled(b);
     bps.setEnabled(b);
     parity.setEnabled(b);
-    write.setEnabled(b);
+    write.setEnabled(false);
     if (dtrComboBox != null) {
       dtrComboBox.setEnabled(b);
     }
@@ -152,7 +192,6 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
   // part of the PdeMessageConsumer interface
   //
   public void message(String s) {
-    System.err.println("Receiving message: "+s);
     // could only update that which has changed.  Would be better, but for now we will be lazy.
     reset();
   }
@@ -193,6 +232,7 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
           parity.setSelectedIndex(i);
         }
       }
+      write.setEnabled(true);
     }
   }
 
@@ -222,13 +262,11 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
         }
 
         if (Short.parseShort(address16.getText(), 16) != zb.getAddress()) {
-          System.err.println("Address16 updated, new address = " + address16.getText() + " old address = " + zb.getAddress());
           zb.setAddress(Short.valueOf(address16.getText(), 16));
           changed = true;
         }
 
         if (Long.parseLong(networkId.getText(), 16) != zb.getPan()) {
-          System.err.println("Pan updated, new pan = " + networkId.getText() + " old pan = " + zb.getPan());
           zb.setPan(Long.valueOf(networkId.getText(), 16));
           changed = true;
         }
@@ -250,8 +288,8 @@ class ZigBeePanel extends JPanel implements MessageConsumer, ActionListener {
         if (changed) {
           try {
             zb.apply();
+            write.setEnabled(true);
           } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw e;
           }
         }
