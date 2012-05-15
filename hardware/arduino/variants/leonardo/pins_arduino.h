@@ -29,6 +29,9 @@
 
 #define ARDUINO_MODEL_USB_PID	0x0034
 
+#define NUM_DIGITAL_PINS  30
+#define NUM_ANALOG_INPUTS 12
+
 #define TX_RX_LED_INIT	DDRD |= (1<<5), DDRB |= (1<<0)
 #define TXLED0			PORTD |= (1<<5)
 #define TXLED1			PORTD &= ~(1<<5)
@@ -138,7 +141,7 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINF,
 };
 
-const uint8_t PROGMEM digital_pin_to_port_PGM[30] = {
+const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PD, // D0 - PD2
 	PD,	// D1 - PD3
 	PD, // D2 - PD1
@@ -175,7 +178,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[30] = {
 	PD, // D29 / D12 - A11 - PD6
 };
 
-const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[30] = {
+const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(2), // D0 - PD2
 	_BV(3),	// D1 - PD3
 	_BV(1), // D2 - PD1
@@ -212,7 +215,7 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[30] = {
 	_BV(6), // D29 / D12 - A11 - PD6
 };
 
-const uint8_t PROGMEM digital_pin_to_timer_PGM[18] = {
+const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER,	
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
@@ -232,9 +235,24 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[18] = {
 	
 	NOT_ON_TIMER,	
 	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER
 };
 
-const uint8_t PROGMEM analog_pin_to_channel_PGM[12] = {
+const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 	7,	// A0				PF7					ADC7
 	6,	// A1				PF6					ADC6	
 	5,	// A2				PF5					ADC5	
