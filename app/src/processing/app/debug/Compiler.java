@@ -565,16 +565,33 @@ public class Compiler implements MessageConsumer {
 
   static private List getCommandCompilerS(String basePath, List includePaths,
     String sourceName, String objectName, Map<String, String> boardPreferences) {
-    List baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-      basePath + "avr-gcc",
-      "-c", // compile, don't link
-      "-g", // include debugging info (so errors include line numbers)
-      "-assembler-with-cpp",
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-      "-DARDUINO=" + Base.REVISION,
-    }));
-
+    String arch = Base.getArch();
+    
+    List baseCommandCompiler;
+    
+    if (arch == "msp430") {
+    	//as per
+    	//http://mspgcc.sourceforge.net/manual/x1522.html
+        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
+          basePath + "msp430-gcc",
+          "-c", // compile, don't link
+          "-g", // include debugging info (so errors include line numbers)
+          "-mmcu=" + boardPreferences.get("build.mcu"),
+          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-DARDUINO=" + Base.REVISION,
+        }));
+    } else {
+        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
+           basePath + "avr-gcc",
+          "-c", // compile, don't link
+          "-g", // include debugging info (so errors include line numbers)
+          "-assembler-with-cpp",
+          "-mmcu=" + boardPreferences.get("build.mcu"),
+          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-DARDUINO=" + Base.REVISION,
+        }));
+    }
+    
     for (int i = 0; i < includePaths.size(); i++) {
       baseCommandCompiler.add("-I" + (String) includePaths.get(i));
     }
