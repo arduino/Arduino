@@ -929,6 +929,8 @@ public class Editor extends JFrame implements RunnerListener {
     }
     JCheckBoxMenuItem selection = null;
     for (int i = 0; i < serialMenu.getItemCount(); i++) {
+      if (!(serialMenu.getItem(i) instanceof JCheckBoxMenuItem))
+	continue;
       JCheckBoxMenuItem item = ((JCheckBoxMenuItem)serialMenu.getItem(i));
       if (item == null) {
         System.out.println(_("name is null"));
@@ -955,7 +957,15 @@ public class Editor extends JFrame implements RunnerListener {
     //System.out.println("Clearing serial port menu.");
 	
     serialMenu.removeAll();
-    boolean empty = true;
+
+    rbMenuItem = new JMenuItem(_("Plug Now..."));
+    rbMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+	handlePlugNow();
+      }
+    });
+    serialMenu.add(rbMenuItem);
+    serialMenu.addSeparator();
 
     try
     {
@@ -971,12 +981,7 @@ public class Editor extends JFrame implements RunnerListener {
           rbMenuItem.addActionListener(serialMenuListener);
           //serialGroup.add(rbMenuItem);
           serialMenu.add(rbMenuItem);
-          empty = false;
         }
-      }
-      if (!empty) {
-        //System.out.println("enabling the serialMenu");
-        serialMenu.setEnabled(true);
       }
 
     }
@@ -986,15 +991,91 @@ public class Editor extends JFrame implements RunnerListener {
       System.out.println(_("error retrieving port list"));
       exception.printStackTrace();
     }
-	
-    if (serialMenu.getItemCount() == 0) {
-      serialMenu.setEnabled(false);
-    }
 
     //serialMenu.addSeparator();
     //serialMenu.add(item);
   }
 
+  private Vector getSerialPortNames() {
+    Vector ports = new Vector();
+    try {
+      Enumeration elem = CommPortIdentifier.getPortIdentifiers();
+      while (elem.hasMoreElements()) {
+	CommPortIdentifier id = (CommPortIdentifier)elem.nextElement();
+	if (id.getPortType() == CommPortIdentifier.PORT_SERIAL)
+	  ports.addElement(id.getName());
+      }
+    }
+    catch (Exception exception) {
+      System.out.println(_("error retrieving port list"));
+      exception.printStackTrace();
+    }
+    return ports;
+  }
+
+  protected void handlePlugNow() {
+    final JLabel portlabel = new JLabel(_("(not yet detected)"));
+    JLabel[] labels = {
+      new JLabel(_("Plug Arduino to PC now and click OK to select the serial port.")),
+      new JLabel(_("Detected port:")),
+      portlabel
+    };
+
+    JOptionPane pane = new JOptionPane(
+      labels,
+      JOptionPane.QUESTION_MESSAGE,
+      JOptionPane.OK_CANCEL_OPTION
+    );
+    pane.setOptions(new String[] { _("OK"), _("Cancel") });
+    pane.setInitialValue(_("Cancel"));
+    final JDialog dialog = pane.createDialog(this, _("Plug Now"));
+    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+    final Vector ports = getSerialPortNames();
+
+    //XXX You may want to disable "OK" button while no port is detected.
+    final javax.swing.Timer timer = new javax.swing.Timer(
+      300,	// 300 msec
+      new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	  Vector newports = getSerialPortNames();
+	  if (newports.indexOf(portlabel.getText()) < 0)
+	    portlabel.setText(_("(not yet detected)"));
+
+	  Iterator it = newports.iterator();
+	  while (it.hasNext()) {
+	    String portname = (String)it.next();
+	    //XXX not efficient
+	    if (ports.indexOf(portname) < 0) {
+	      portlabel.setText(portname);
+	      break;
+	    }
+	  }
+
+	  ports.clear();
+	  ports.addAll(newports);
+	}
+      }
+    );
+
+    timer.start();
+    dialog.setVisible(true);
+    timer.stop();
+
+    if (pane.getValue() == _("OK")) {
+      String portname = portlabel.getText();
+      if (portname != _("(not yet detected)")) {
+	System.out.println(
+	  I18n.format(_("Serial port \"{0}\" selected."), portname)
+	);
+	Preferences.set("serial.port", portname);
+	serialMonitor.closeSerialPort();
+	serialMonitor.setVisible(false);
+	serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
+	base.onBoardOrPortChange();
+      }
+    }
+  }
 
   protected JMenu buildHelpMenu() {
     // To deal with a Mac OS X 10.5 bug, add an extra space after the name
