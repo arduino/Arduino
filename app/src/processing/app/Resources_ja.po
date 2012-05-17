@@ -1381,7 +1381,7 @@ msgstr "nameがnullです"
 
 #: Editor.java:961
 msgid "Plug Now..."
-msgstr ""
+msgstr "いま接続する..."
 
 #: Editor.java:991 Editor.java:1010
 msgid "error retrieving port list"
@@ -1389,24 +1389,24 @@ msgstr "ポート名の一覧を取得できませんでした。"
 
 #: Editor.java:1017 Editor.java:1043 Editor.java:1067
 msgid "(not yet detected)"
-msgstr ""
+msgstr "（まだ検出されていません）"
 
 #: Editor.java:1019
 msgid "Plug Arduino to PC now and click OK to select the serial port."
-msgstr ""
+msgstr "ArduinoボードをPCに接続し、シリアルポートが検出されたらOKをクリックしてください。"
 
 #: Editor.java:1020
 msgid "Detected port:"
-msgstr ""
+msgstr "検出されたシリアルポート："
 
 #: Editor.java:1031
 msgid "Plug Now"
-msgstr ""
+msgstr "シリアルポートを接続する"
 
 #: Editor.java:1069
 #, java-format
 msgid "Serial port \"{0}\" selected."
-msgstr ""
+msgstr "シリアルポート「{0}」が選択されました。"
 
 #: Editor.java:1083
 msgid "Help"
