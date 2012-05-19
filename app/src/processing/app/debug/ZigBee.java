@@ -646,16 +646,15 @@ public class ZigBee implements MessageConsumer {
     String s = new String ("+++");
     serialPort.write(s);
 
-    s = serialPort.waitForData(1500);
+    do {
+      s = serialPort.waitForData(1500);
 
-    if (s != null) {
-      if (s.length() > 2) {
-        s = s.substring(0,2); // chop off any new lines etc.
+      if (s != null) {
+        if (s.indexOf("OK") >= 0) {
+          return;
+        }
       }
-      if (s.equalsIgnoreCase("OK")) {
-        return;
-      }
-    }
+    } while (s != null);
 
     close();
     throw new ZigBeeException("Unable to enter command mode.");

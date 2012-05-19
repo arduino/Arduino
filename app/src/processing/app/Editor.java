@@ -2295,10 +2295,10 @@ public class Editor extends JFrame implements RunnerListener {
   
   
   public boolean serialPrompt() {
-    int count = serialMenu.getItemCount();
+    int count = serialMenu.getItemCount()-2;
     Object[] names = new Object[count];
     for (int i = 0; i < count; i++) {
-      names[i] = ((JCheckBoxMenuItem)serialMenu.getItem(i)).getText();
+      names[i] = ((JCheckBoxMenuItem)serialMenu.getItem(i+2)).getText();
     }
 
     String result = (String)

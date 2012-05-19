@@ -72,12 +72,15 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
     if (!isXBee()) {
       Base.showWarning("XBee Not Found", null, null);
       dispose();
+      return;
     }
 
     try {
       local = ZigBee.getLocal();
     } catch (Exception e) {
       Base.showWarning("XBee Not Found", e.getMessage(), e);
+      dispose();
+      return;
     }
 
     JPanel localPanel = new JPanel();
@@ -233,6 +236,9 @@ public class XBeePanel extends JDialog implements ActionListener, MessageConsume
 
   void populateComboBox() {
     ZigBee[] z = ZigBee.getNodes();
+    if (local == null) {
+      return;
+    }
     HashSet<ZigBee> s = new HashSet<ZigBee>();
     for (int i = 0; i < remoteComboBox.getItemCount(); ++i) {
       s.add((ZigBee)remoteComboBox.getItemAt(i));
