@@ -1,1 +1,43 @@
-0006 energia
+0101E0006 energia
+
+[U] = Assigned and under development
+[X] = Completed
+[?] = Unassigned and needs work
+[ ] = Unassigned and needs an owner
+
+-= Higest priority first =-
+
+[ ] 
+    [ ] OS X serial driver bug
+    [ ] Windows driver compatibility with mspdebug / mspdebug compatibility with mspdebug
+ 
+@ Core functionality
+	Time
+		[ ] micros()
+
+	Advanced I/O
+		[ ] tone()
+		[ ] noTone()
+	
+	Random Numbers
+		[ ] randomSeed()
+		[ ] random()
+
+
+@ Libraries
+	Follow Arduino/Wiring API's if a Library exists
+	- http://arduino.cc/en/Reference/Libraries
+	- http://arduino.cc/playground/Main/LibraryList
+	- http://www.pjrc.com/teensy/td_libs.html
+	[ ] USCI I2C master/slave
+	[ ] USI I2C slave (master implemented but needs work)
+	[X] SPI support (needs testing)
+	[ ] CapTouch library
+	[ ] IRremote
+
+@ Documentation
+    [ ] Know issues list
+    [X] Bug fix / new feature review process
+    [ ] Incompatibilities
+    [X] Coding Style Guide
+

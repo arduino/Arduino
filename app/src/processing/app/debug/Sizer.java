@@ -42,12 +42,23 @@ public class Sizer implements MessageConsumer {
   }
   
   public long computeSize() throws RunnerException {
-    String avrBasePath = Base.getAvrBasePath();
-    String commandSize[] = new String[] {
-      avrBasePath + "avr-size",
-      " "
-    };
     
+    String commandSize[];
+    String arch = Base.getArch();
+    
+    if(arch == "msp430") {
+      String basePath = Base.getMSP430BasePath();
+      commandSize = new String[] {
+        basePath + "msp430-size",
+        " "
+      };
+    } else {
+      String basePath = Base.getAvrBasePath();
+      commandSize = new String[] {
+        basePath + "avr-size",
+        " "
+      };
+    }
     commandSize[1] = buildPath + File.separator + sketchName + ".hex";
 
     int r = 0;

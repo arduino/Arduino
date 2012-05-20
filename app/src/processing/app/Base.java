@@ -44,7 +44,7 @@ import static processing.app.I18n._;
 public class Base {
   public static final int REVISION = 101;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0006";
+  static String VERSION_NAME = "0101E0006";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
@@ -781,7 +781,7 @@ public class Base {
             "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
             "</style> </head>" +
             "<b>Are you sure you want to Quit?</b>" +
-            "<p>Closing the last open sketch will quit Arduino.");
+            "<p>Closing the last open sketch will quit Energia.");
 
         int result = JOptionPane.showOptionDialog(editor,
                                                   prompt,
@@ -1565,6 +1565,16 @@ public class Base {
     }
     return path;
   }
+
+  static public String getMSP430BasePath() {
+    String path = getHardwarePath() + File.separator + "tools" +
+                  File.separator + "msp430" + File.separator + "bin" + File.separator;
+    if (Base.isLinux() && !(new File(path)).exists()) {
+      return "";  // use distribution provided avr tools if bundled tools missing
+    }
+    return path;
+  }
+
 
   static public String getArch() {
     return archMap.get(Preferences.get("target"));
