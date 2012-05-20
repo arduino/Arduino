@@ -543,15 +543,18 @@ public class Editor extends JFrame implements RunnerListener {
       });
     fileMenu.add(item);
 
-    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
-        }
-      });
-    fileMenu.add(item);
+    if(!Preferences.get("target").equals("msp430")) {
+        item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
+        item.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              handleExport(true);
+            }
+        });
 
-    fileMenu.addSeparator();
+        fileMenu.add(item);
+
+        fileMenu.addSeparator();
+    }
 
     item = newJMenuItemShift(_("Page Setup"), 'P');
     item.addActionListener(new ActionListener() {
