@@ -116,7 +116,7 @@
 	<tokenfilter>
 	  <stringtokenizer suppressdelims="true"/>
 	  <!-- grab the thing from the first line that's 4 digits -->
-	  <containsregex pattern="(\d\d\d\d)" />
+	  <containsregex pattern="(\d\d\d\d\w\d\d\d\d)" />
 	</tokenfilter>
       </filterchain>
     </loadfile>
@@ -129,7 +129,7 @@
 	<tokenfilter>
 	  <linetokenizer />
 	  <containsregex pattern="String VERSION_NAME = "/>
-	  <replaceregex pattern="[^0-9]*" flags="g" replace=""/>
+	  <replaceregex pattern="[^0-9E]*" flags="g" replace=""/>
 	</tokenfilter>
       </filterchain>
     </loadfile>
