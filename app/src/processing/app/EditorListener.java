@@ -127,7 +127,15 @@ public class EditorListener {
       if (code == KeyEvent.VK_M) {
         event.consume();  // does nothing
         return false;
+      } // Unix style start/end of line bindings
+      else if ( code == KeyEvent.VK_A || code == KeyEvent.VK_E ) {
+        int cLine = textarea.getCaretLine();
+        int offset = (code == KeyEvent.VK_A)  ? textarea.getLineStartOffset(cLine) : textarea.getLineStopOffset(cLine) - 1;
+        textarea.setCaretPosition( offset );
+        event.consume();
+        return true;
       }
+
     }
 
     if ((event.getModifiers() & KeyEvent.META_MASK) != 0) {
