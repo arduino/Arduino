@@ -1,5 +1,5 @@
 //
-//  PushButton
+//  PushButton_430
 //
 //  © Rei VILO 2012
 // 
@@ -11,8 +11,8 @@
 //  red -> green -> red+green -> none -> ...
 //
 
-#define LED1 2
-#define LED2 14
+#define LED1 2 // GREEN_LED
+#define LED2 14 // RED_LED
 // PUSH2 already defined
 
 void setup() {                

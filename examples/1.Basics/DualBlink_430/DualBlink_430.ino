@@ -1,5 +1,5 @@
 //
-//  Blink430
+//  DualBlink_430
 //
 //  © Rei VILO 2012
 // 
@@ -7,8 +7,8 @@
 //  LED2 on pin 14
 //
 
-#define LED1 2
-#define LED2 14
+#define LED1 2 // RED_LED
+#define LED2 14 // GREEN_LED
 
 
 void setup() {                

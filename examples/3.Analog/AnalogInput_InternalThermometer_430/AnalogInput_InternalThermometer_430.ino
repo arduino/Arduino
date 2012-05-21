@@ -1,4 +1,5 @@
 //
+// AnalogInput_InternalThermometer_430
 // Analog Input - MSP430 Internal Thermometer
 // 
 // Demonstrates analog input by reading the internal temperature sensor. 

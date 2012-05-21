@@ -1,5 +1,5 @@
 //
-//  I2C_Thermometer
+//  I2C_TMP102_Thermometer_430
 //
 //  © Rei VILO 2012
 // 
