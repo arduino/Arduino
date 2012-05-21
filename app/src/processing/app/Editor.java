@@ -699,14 +699,16 @@ public class Editor extends JFrame implements RunnerListener {
     base.rebuildProgrammerMenu(programmerMenu);
     menu.add(programmerMenu);
 
-    item = new JMenuItem(_("Burn Bootloader"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handleBurnBootloader();
-      }
-    });
-    menu.add(item);
-        
+    if(!Preferences.get("target").equals("msp430")) {
+      item = new JMenuItem(_("Burn Bootloader"));
+      item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleBurnBootloader();
+        }
+      });
+      menu.add(item);
+    }
+    
     menu.addMenuListener(new MenuListener() {
       public void menuCanceled(MenuEvent e) {}
       public void menuDeselected(MenuEvent e) {}
