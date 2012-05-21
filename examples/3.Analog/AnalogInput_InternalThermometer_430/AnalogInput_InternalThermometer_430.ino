@@ -14,6 +14,7 @@
 //   Rei VILO, Mar 12, 2012 - One decimal place
 //   Rei VILO, Mar 13, 2012 - More precise algorithm
 //   Rei VILO, Mar 14, 2012 - Average
+//   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
 //   Press push 2 to end
 //   Tested on msp430g2452 and msp430g2553
 //   2196 bytes

@@ -3,41 +3,37 @@
 //
 //  © Rei VILO 2012
 // 
-//  LED1 on pin 2
-//  LED2 on pin 14
+// Revision
+//   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
 //
-
-#define LED1 2 // RED_LED
-#define LED2 14 // GREEN_LED
-
 
 void setup() {                
   // initialise digital pins as outputs
-  pinMode(LED1, OUTPUT);     
-  pinMode(LED2, OUTPUT);     
+  pinMode(RED_LED, OUTPUT);     
+  pinMode(GREEN_LED, OUTPUT);     
 }
 
 void loop() {
-  digitalWrite(LED1, HIGH);   // set the LED on
+  digitalWrite(RED_LED, HIGH);   // set the LED on
   delay(1000);                // wait for a second
-  digitalWrite(LED2, HIGH);   // set the LED on
-  digitalWrite(LED1, LOW);    // set the LED off
+  digitalWrite(GREEN_LED, HIGH);   // set the LED on
+  digitalWrite(RED_LED, LOW);    // set the LED off
   delay(2000);              
-  digitalWrite(LED1, HIGH); 
+  digitalWrite(RED_LED, HIGH); 
   delay(3000);              
-  digitalWrite(LED2, LOW);  
-  digitalWrite(LED1, LOW);  
+  digitalWrite(GREEN_LED, LOW);  
+  digitalWrite(RED_LED, LOW);  
   delay(500);              
-  digitalWrite(LED2, HIGH);
-  digitalWrite(LED1, HIGH);
+  digitalWrite(GREEN_LED, HIGH);
+  digitalWrite(RED_LED, HIGH);
   delay(500);              
-  digitalWrite(LED2, LOW); 
-  digitalWrite(LED1, LOW); 
+  digitalWrite(GREEN_LED, LOW); 
+  digitalWrite(RED_LED, LOW); 
   delay(500);              
-  digitalWrite(LED2, HIGH);
-  digitalWrite(LED1, HIGH);
+  digitalWrite(GREEN_LED, HIGH);
+  digitalWrite(RED_LED, HIGH);
   delay(500);              
-  digitalWrite(LED2, LOW); 
-  digitalWrite(LED1, LOW); 
+  digitalWrite(GREEN_LED, LOW); 
+  digitalWrite(RED_LED, LOW); 
   delay(500);              
 }

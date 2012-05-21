@@ -9,9 +9,11 @@
 //  Press push 2 to end
 //  Buffer size = 16, of which Enter
 //
+// Revision
+//   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
+//
 
 #include "TimerSerial.h"
-// PUSH2 already defined
 
 TimerSerial mySerial;
 

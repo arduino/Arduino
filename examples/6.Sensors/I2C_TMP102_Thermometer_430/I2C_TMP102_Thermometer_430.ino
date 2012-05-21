@@ -12,6 +12,9 @@
 //
 //  Tested on msp430g2452
 //  Binary sketch size = 3004 bytes out of 8192 bytes
+//  
+// Revision
+//   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
 //
 
 #include "Wire.h"
