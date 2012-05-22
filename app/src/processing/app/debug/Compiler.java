@@ -503,6 +503,16 @@ public class Compiler implements MessageConsumer {
               "to Wire.read() for consistency with other libraries.\n\n");
       }
 
+      if (pieces[3].trim().equals("'Mouse' was not declared in this scope")) {
+        error = _("'Mouse' only supported on the Arduino Leonardo");
+        //msg = _("\nThe 'Mouse' class is only supported on the Arduino Leonardo.\n\n");
+      }
+      
+      if (pieces[3].trim().equals("'Keyboard' was not declared in this scope")) {
+        error = _("'Keyboard' only supported on the Arduino Leonardo");
+        //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
+      }
+      
       RunnerException e = sketch.placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
       // replace full file path with the name of the sketch tab (unless we're
@@ -532,8 +542,10 @@ public class Compiler implements MessageConsumer {
       "-g", // include debugging info (so errors include line numbers)
       "-assembler-with-cpp",
       "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),      
       "-DARDUINO=" + Base.REVISION,
+      "-DUSB_VID=" + boardPreferences.get("build.vid"),
+      "-DUSB_PID=" + boardPreferences.get("build.pid"),
     }));
 
     for (int i = 0; i < includePaths.size(); i++) {
@@ -561,7 +573,9 @@ public class Compiler implements MessageConsumer {
       "-mmcu=" + boardPreferences.get("build.mcu"),
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-MMD", // output dependancy info
-      "-DARDUINO=" + Base.REVISION,
+      "-DUSB_VID=" + boardPreferences.get("build.vid"),
+      "-DUSB_PID=" + boardPreferences.get("build.pid"),
+      "-DARDUINO=" + Base.REVISION, 
     }));
 		
     for (int i = 0; i < includePaths.size(); i++) {
@@ -592,6 +606,8 @@ public class Compiler implements MessageConsumer {
       "-mmcu=" + boardPreferences.get("build.mcu"),
       "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
       "-MMD", // output dependancy info
+      "-DUSB_VID=" + boardPreferences.get("build.vid"),
+      "-DUSB_PID=" + boardPreferences.get("build.pid"),      
       "-DARDUINO=" + Base.REVISION,
     }));
 

@@ -18,7 +18,7 @@
  * Ethernet shield attached to pins 10, 11, 12, 13
  
  created 15 March 2010
- updated 16 Mar 2012
+ modified 9 Apr 2012
  by Tom Igoe with input from Usman Haque and Joe Saavedra
  
  http://arduino.cc/en/Tutorial/CosmClientString
@@ -57,8 +57,13 @@ boolean lastConnected = false;                 // state of the connection last t
 const unsigned long postingInterval = 10*1000;  //delay between updates to Cosm.com
 
 void setup() {
-  // start serial port:
+ // Open serial communications and wait for port to open:
   Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for Leonardo only
+  }
+
+
   // give the ethernet module time to boot up:
   delay(1000);
   // start the Ethernet connection:
