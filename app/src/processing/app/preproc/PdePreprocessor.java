@@ -196,9 +196,7 @@ public class PdePreprocessor {
 
   // Write the pde program to the cpp file
   protected void writeProgram(PrintStream out, String program, List<String> prototypes) {
-    int prototypeInsertionPoint = firstStatement(program);
-  
-    out.print(program.substring(0, prototypeInsertionPoint));
+ 
     String arch = Base.getArch();
     if(arch == "msp430") out.print("#include \"Energia.h\"\n");    
     else out.print("#include \"Arduino.h\"\n");    
@@ -207,8 +205,8 @@ public class PdePreprocessor {
     for (int i = 0; i < prototypes.size(); i++) {
       out.print(prototypes.get(i) + "\n");
     }
-    
-    out.print(program.substring(prototypeInsertionPoint));
+    out.print("#line 1\n");
+    out.print(program.substring(0));
   }
 
 
