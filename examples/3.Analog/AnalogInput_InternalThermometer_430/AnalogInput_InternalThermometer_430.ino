@@ -38,7 +38,7 @@ void setup() {
   pinMode(GREEN_LED, OUTPUT);
   analogReference(INTERNAL1V5);
   mySerial.begin();
-  pinMode(PUSH2, INPUT);   
+  pinMode(PUSH2, INPUT_PULLUP);   
 
   digitalWrite(RED_LED, HIGH); 
   digitalWrite(GREEN_LED, LOW); 

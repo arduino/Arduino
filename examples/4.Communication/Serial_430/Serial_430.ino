@@ -21,7 +21,7 @@ void setup() {
   mySerial.begin();
   mySerial.print("\n\n\n*** Serial test starts \n"); 
   mySerial.print("PUSH2 to end\n"); 
-  pinMode(PUSH2, INPUT);     
+  pinMode(PUSH2, INPUT_PULLUP);     
 }
 
 

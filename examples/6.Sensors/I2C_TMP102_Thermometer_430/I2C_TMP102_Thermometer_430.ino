@@ -29,7 +29,7 @@ void setup() {
   mySerial.begin();
   mySerial.print("\n\n\n*** Thermometer \n"); 
   mySerial.print("Press PUSH2 to end\n"); 
-  pinMode(PUSH2, INPUT);     
+  pinMode(PUSH2, INPUT_PULLUP);     
 
   Wire.begin();
 }
