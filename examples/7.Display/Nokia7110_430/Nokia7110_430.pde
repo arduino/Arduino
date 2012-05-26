@@ -31,7 +31,7 @@ uint8_t j = 0;
 uint8_t i = 0;
 boolean flag = false;
 
-boolean backlight = false;
+boolean backlight = true;
 
 
 //    P1.0    Reset
