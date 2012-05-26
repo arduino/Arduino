@@ -146,7 +146,7 @@ public class Preferences {
       load(Base.getLibStream("preferences.txt"));
     } catch (Exception e) {
       Base.showError(null, _("Could not read default settings.\n" +
-                             "You'll need to reinstall Arduino."), e);
+                             "You'll need to reinstall Energia."), e);
     }
 
     // check for platform-specific properties in the defaults
@@ -200,7 +200,7 @@ public class Preferences {
 			 I18n.format(
 			   _("Error reading the preferences file. " +
 			     "Please delete (or move)\n" +
-			     "{0} and restart Arduino."),
+			     "{0} and restart Energia."),
 			   preferencesFile.getAbsolutePath()
 			 ), ex);
         }
@@ -277,7 +277,7 @@ public class Preferences {
     box.add(label);
     fontSizeField = new JTextField(4);
     box.add(fontSizeField);
-    label = new JLabel(_("  (requires restart of Arduino)"));
+    label = new JLabel(_("  (requires restart of Energia)"));
     box.add(label);
     pain.add(box);
     d = box.getPreferredSize();
@@ -342,7 +342,7 @@ public class Preferences {
 
     if (Base.isWindows()) {
       autoAssociateBox =
-        new JCheckBox(_("Automatically associate .ino files with Arduino"));
+        new JCheckBox(_("Automatically associate .ino files with Energia"));
       pain.add(autoAssociateBox);
       d = autoAssociateBox.getPreferredSize();
       autoAssociateBox.setBounds(left, top, d.width + 10, d.height);
@@ -382,7 +382,7 @@ public class Preferences {
     right = Math.max(right, left + d.width);
     top += d.height;
 
-    label = new JLabel(_("(edit only when Arduino is not running)"));
+    label = new JLabel(_("(edit only when Energia is not running)"));
     pain.add(label);
     d = label.getPreferredSize();
     label.setForeground(Color.gray);
