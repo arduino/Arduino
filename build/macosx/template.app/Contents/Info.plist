@@ -25,7 +25,7 @@
 	<key>CFBundleIconFile</key>
 	<string>energia.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>cc.arduino.Arduino</string>
+	<string>nu.energia.Energia</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -39,7 +39,7 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>pde.icns</string>
 			<key>CFBundleTypeName</key>
-			<string>Arduino Source File</string>
+			<string>Energia Source File</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>text/plain</string>
