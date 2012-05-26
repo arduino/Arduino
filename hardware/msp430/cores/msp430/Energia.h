@@ -6,6 +6,8 @@
 #include <string.h>
 #include <math.h>
 
+#include "binary.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif
