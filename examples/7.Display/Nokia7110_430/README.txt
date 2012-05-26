@@ -1,40 +1,42 @@
 
-	embedXcode
-	----------------------------------
-	Embedded Computing Template on Xcode 4.3
+  Nokia7110_430b
+  Project
+  ----------------------------------
+  Developed with embedXcode
 
-	mpideXcode
-	----------------------------------
-	Embedded Computing Project on Xcode 4.3
-
-
-	© Rei VILO, 2010-2012
-	CC = BY NC SA
-
-	• Documentation
-	http://embedXcode.weebly.com/
-	
-	• GitHub repositories
-	https://github.com/rei-vilo/embedXcode
-	https://github.com/rei-vilo/mpideXcode
-	
-
-embedXcode • May 23, 2012 release 10 • LeafLabs Maple implementation
-mpideXcode • May 23, 2012 release 13 • LeafLabs Maple implementation
-Installation Guide • May 23, 2012 release 7 • LeafLabs Maple implementation
+  Project Nokia7110_430b
+  Created by Rei VILO on 26/05/12
+  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 
 
-Installation
-----------------------------------
-Check and create ~/Library/Developer/Xcode
-Copy the folder Templates into ~/Library/Developer/Xcode
-Read enclosed Installation Guide
+  Temperature from built-in thermometer
+  Push screen button to turn backlight on / off 
 
 
-Contributions
-----------------------------------
-See attached documents for detailed references
+  References
+  ----------------------------------
+  Based on 
+   . LCD BoosterPack by SugarAddict » Mon Jan 02, 2012 6:01 am
+     http://www.43oh.com/forum/viewtopic.php?p=15140#p15140
 
-----------------------------------
-End of file
+   . code by oPossum » Sat Mar 31, 2012 10:29 pm
+     http://www.43oh.com/forum/viewtopic.php?p=18568#p18568
+
+   . AnalogInput_InternalThermometer_430
+     Robert Wessels and Rei Vilo
+
+!!! To do: 
+   . use Energia pin names - done!
+   . use C++ instead of C
+   . simplify <template>
+   . implement library with .h and .cpp files
+
+
+  Developed with embedXcode
+  ----------------------------------
+  Embedded Computing Template on Xcode 4.3
+  © Rei VILO, 2010-2012
+  CC = BY NC SA
+  http:embedXcode.weebly.com/
+
 

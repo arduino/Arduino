@@ -1,11 +1,11 @@
 //
-//  nokia7110tl.cpp
+//  nokia7110_library.cpp
 //  Library C++ code
 //  ----------------------------------
 //  Developed with embedXcode
 //
-//  Project Nokia7110_430
-//  Created by Rei VILO on 25/05/12
+//  Project Nokia7110_430b
+//  Created by Rei VILO on 26/05/12
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //
 

@@ -1,17 +1,12 @@
 //
-//  nokia7110tl.h
+//  nokia7110_library.h
 //  Library header
 //  ----------------------------------
 //  Developed with embedXcode
 //
-//  Project Nokia7110_430
-//  Created by Rei VILO on 25/05/12
+//  Project Nokia7110_430b
+//  Created by Rei VILO on 26/05/12
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
-//
-//
-// Based on 
-// . code by oPossum » Sat Mar 31, 2012 10:29 pm
-//   http://www.43oh.com/forum/viewtopic.php?p=18568#p18568
 //
 
 // Core library
@@ -31,7 +26,7 @@
 #define LCD_430_nokia7110_library_h
 
 //
-namespace nokia7110 {
+//namespace nokia7110 {
     
     unsigned char PNONE;
     
@@ -41,8 +36,7 @@ namespace nokia7110 {
         lcd_data_repeat = 2     // One byte of data repeated
     } lcd_cmd_type;
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     struct Nokia7110
     {
         void write(const unsigned char *cmd, unsigned len, const lcd_cmd_type type = lcd_data);
@@ -63,8 +57,7 @@ namespace nokia7110 {
         void pd12(unsigned n, unsigned x, unsigned y);
     };
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::write(const unsigned char *cmd, unsigned len, const lcd_cmd_type type)
     {
         register unsigned mask;
@@ -100,8 +93,7 @@ namespace nokia7110 {
         if (&_EP != &PNONE) _EP |= _CE;
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::reset(void)
     {
         if (&_RP == &PNONE) {
@@ -151,8 +143,7 @@ namespace nokia7110 {
         __delay_cycles(_RD);
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::init(void)
     {
         static const unsigned char init[] = {
@@ -179,16 +170,14 @@ namespace nokia7110 {
         write(init, sizeof(init), lcd_command);
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::home(void)
     {
         static const unsigned char home[] = { 0xB0, 0x11, 0x02 };
         write(home, sizeof(home), lcd_command);
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::pos(unsigned char x, unsigned char y)
     {
         unsigned char c[3];
@@ -199,8 +188,7 @@ namespace nokia7110 {
         write(c, sizeof(c), lcd_command);
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::clear(unsigned char x)
     {
         for(unsigned y = 0; y < 9; ++y) {
@@ -209,8 +197,7 @@ namespace nokia7110 {
         }
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::fill(unsigned x, unsigned y, unsigned w, unsigned h, unsigned char z)
     {
         unsigned yy = y + h;
@@ -225,8 +212,7 @@ namespace nokia7110 {
         }
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::bitmap(const unsigned char *bmp, signed char x, signed char y, unsigned char w, unsigned char h)
     {
         unsigned char c[3];
@@ -351,16 +337,14 @@ namespace nokia7110 {
         0x00, 0x06, 0x09, 0x09, 0x06, // degrees
     };
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::print(char c)
     {
         write(&font[c - 32][0], 5);
         write(&font[0][0], 1);
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::print(const char *s)
     {
         while (*s) {
@@ -370,8 +354,7 @@ namespace nokia7110 {
         }
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::print(const char *s, unsigned char m)
     {
         unsigned char c;
@@ -386,8 +369,7 @@ namespace nokia7110 {
         }
     }
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::printv(unsigned char x, unsigned char y, char *s)
     {
         while (*s) {
@@ -440,15 +422,14 @@ namespace nokia7110 {
         0x1F,0x1F,0x00,0x00,0x01,0x03,0x06,0x0C,0x18,0x10,0x00
     };
     
-    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC,
-    volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
+    template <volatile unsigned char &_SP, unsigned char _CLK, unsigned char _DATA, volatile unsigned char &_CP, unsigned char _DC, volatile unsigned char &_EP, unsigned char _CE, volatile unsigned char &_RP, unsigned char _RST, unsigned _RD>
     void Nokia7110<_SP, _CLK, _DATA, _CP, _DC, _EP, _CE, _RP, _RST, _RD>::pd12(unsigned n, unsigned x, unsigned y)
     {
         pos(x, y);   write(num11x16[n], 11, lcd_data);
         pos(x, ++y); write(num11x16[n] + 11, 11, lcd_data);
     }
     
-} // namespace
+//} // namespace
 
 
 #endif

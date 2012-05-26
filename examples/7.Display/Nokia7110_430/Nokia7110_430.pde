@@ -1,12 +1,16 @@
 //
-//  Nokia7110_430.pde
+//  Nokia7110_430b.pde
 //  Sketch 
 //  ----------------------------------
 //  Developed with embedXcode
 //
-//  Project Nokia7110_430
-//  Created by Rei VILO on 25/05/12
+//  Project Nokia7110_430b
+//  Created by Rei VILO on 26/05/12
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
+//
+
+//
+// See ReadMe.txt for references
 //
 
 // Core library
@@ -19,36 +23,16 @@
 // Include application, user and local libraries
 #include "nokia7110_library.h"
 
-//
-// Nokia7110_430
-//
-// Based on 
-// . LCD BoosterPack by SugarAddict » Mon Jan 02, 2012 6:01 am
-//   http://www.43oh.com/forum/viewtopic.php?p=15140#p15140
-//
-// . code by oPossum » Sat Mar 31, 2012 10:29 pm
-//   http://www.43oh.com/forum/viewtopic.php?p=18568#p18568
-//
-// . AnalogInput_InternalThermometer_430
-//   Robert Wessels and Rei Vilo
-//
-// !!! To do: 
-// . use Energia pin names
-// . use C++ instead of C
-// . simplify <template>
-//
-
 // from AnalogInput_InternalThermometer_430 
-#define NUMBER 4 // take number / 2
+#define NUMBER 8 // take number / 2
 uint32_t average = 0;
 uint32_t values[NUMBER];
 uint8_t j = 0;
 uint8_t i = 0;
 boolean flag = false;
 
+boolean backlight = false;
 
-// !!! utility?
-using namespace nokia7110;
 
 //    P1.0    Reset
 //    P1.3    Temp Sensor (Not used)
@@ -92,6 +76,7 @@ void print_int(int i, const unsigned y) {
     while (x) lcd.pd12(10, x -= 12, y);
 }
 
+
 // Print integer from -999 to 9999 using 6 x 8 font
 void print_int(int i, unsigned x, const unsigned y) {
     if (i < -999 || i > 9999) return;
@@ -109,6 +94,30 @@ void print_int(int i, unsigned x, const unsigned y) {
     if (neg) lcd.print(x -= 6, y, '-');
     while (x > e) lcd.print(x -= 6, y, ' ');
 }
+
+
+// Print number with 1 decimal place passed as integer *10
+// from -9999=-999.9 to 99999=9999.9 using 12 x 16 font
+void print_dec1(int ui, const unsigned y) {
+    if (ui < -9999 || ui > 99999) return;
+    boolean neg = (ui < 0);
+    if (neg) ui = -ui;
+    unsigned x = 60;
+    
+    lcd.pd12(ui%10, x -= 12, y);
+    lcd.pd12(12, x -= 12, y); // .
+    ui /= 10;
+    
+    do {
+        lcd.pd12(ui%10, x -= 12, y);
+        ui /= 10;
+    } 
+    while (ui>0);
+    
+    if (neg) lcd.pd12(14, x -= 12, y);
+    while (x) lcd.pd12(10, x -= 12, y);
+}
+
 
 void draw_bargraph(int f) {
     int x, y, bg;
@@ -137,80 +146,46 @@ void draw_bargraph(int f) {
     }                                               //
 }
 
-unsigned adc;                                           // ADC value
-
-// !!! what the use for that?
-//#pragma vector = WDT_VECTOR                             // - Watchdog timer interrupt vector 
-//__interrupt void wdt_isr(void)                          // This interrupt will occur once per second
-//{                                                       //
-//    ++tt;                                               // Increment time_t
-//    __bic_SR_register_on_exit(LPM0_bits);               // Wakeup main code
-//}                                                       //
-//                                                        //
-//#pragma vector = ADC10_VECTOR                           // ADC conversion complete interrupt
-//__interrupt void ADC10_ISR(void)                        //
-//{                                                       //
-//    adc = ADC10MEM;                                     // Read ADC
-//    __bic_SR_register_on_exit(LPM0_bits);               // Wakeup main code
-//}                                                       //
 
 int x, y;
 char c;
-int dc, dk, df;                                     // Temperature in degrees C, K, and F
 
 
 // Add setup code 
 void setup() {
+    pinMode(P1_0, OUTPUT);     
+    pinMode(P1_1, OUTPUT);     
+    pinMode(P1_2, OUTPUT);     
     
-    // !!! this section is horrendous
-    WDTCTL = WDTPW | WDTHOLD;
+    pinMode(P2_0, OUTPUT);     
+    pinMode(P2_1, OUTPUT);     
+    pinMode(P2_2, OUTPUT);     
+    pinMode(P2_3, OUTPUT);     
+    pinMode(P2_4, OUTPUT);     
     
-    P1REN = RXD | SWITCH;
-    P1DIR = LCD_RESET; 
-    P1OUT = RXD | SWITCH | LCD_RESET;
+    pinMode(P2_5, INPUT_PULLUP);  
     
-    P2DIR = LCD_DC | LCD_CE | LCD_CLK | LCD_DATA;
-    P2REN = LCD_BTN;
-    P2OUT = LCD_DC | LCD_CE | LCD_CLK | LCD_BTN;
-
-    //    P2DIR = LCD_DC | LCD_CE | LCD_CLK | LCD_BACKLIGHT | LCD_DATA;
-    //    P2REN = LCD_BTN;
-    //    P2OUT = LCD_DC | LCD_CE | LCD_CLK | LCD_BACKLIGHT | LCD_BTN;
-
-    //    ADC10CTL0 = 0;                                      // Configure ADC
-    //    ADC10CTL1 = INCH_10 | ADC10DIV_3;                   //
-    //    ADC10CTL0 = SREF_1 | ADC10SHT_3 | REFON | ADC10ON | ADC10IE;
-    //    ADC10CTL0 |= ADC10IE;                               // Enable ADC conversion complete interrupt
-    //
-    // 32 kHz xtal loading
-    //BCSCTL3 = XCAP_1;                                 // 6 pF (default)
-    //    BCSCTL3 = XCAP_2;                                   // 10 pF
-    //BCSCTL3 = XCAP_3;                                 // 12.5 pF
-    //
-    WDTCTL = WDTPW | WDTTMSEL | WDTCNTCL | WDTSSEL;     // Use WDT as interval timer
-    IE1 |= WDTIE;                                       // Enable WDT interrupt
-    _EINT();                                            // Enable interrupts
-    // !!! end of the horrendous section
     
     // from AnalogInput_InternalThermometer_430 
     analogReference(INTERNAL1V5);
+    analogRead(TEMPSENSOR); // first reading usually wrong
+    
     for (j=0; j<NUMBER; j++) values[j]=0;
     average = 0;
     j=0;
     
-    if (true) {
-        lcd.reset();
-        lcd.init();
-        lcd.clear();
-        
+    lcd.reset();
+    lcd.init();
+    
+    if (false) {
+        lcd.clear();        
         lcd.print(30, 6, "MSP430");
         lcd.print(18, 7, "Nokia 7110");
         
-        // !!! isn't delay available?
-        __delay_cycles((uint64_t)30000000);
+        delay(3000);
     }
     
-    if (true) {
+    if (false) {
         lcd.clear();
         lcd.print(9, 7, "Character Set");
         x = 0;
@@ -220,7 +195,7 @@ void setup() {
             lcd.print(c);
             if (++x >= 16) x = 0, lcd.pos(x, ++y);
         }
-        __delay_cycles((uint64_t)30000000);
+        delay(3000); 
     }
     
     if (false) {
@@ -232,58 +207,57 @@ void setup() {
         print_int(8888, 5); 
         print_int(8888, 0, 7);  
         print_int(8888, 42, 7);
-        //    for(x = 15; x < 96; ++x) {
-        //      draw_bargraph(x);
-        //      __delay_cycles(200000);
-        //    }
-        __delay_cycles((uint64_t)30000000);
+        for(x = 15; x < 96; ++x) {
+            draw_bargraph(x);
+            __delay_cycles(200000);
+        }
+        delay(3000); 
     }
     
     if (true) {
         lcd.clear();                                        //
-        lcd.pd12(15, 48, 3);                                // Degrees
-        lcd.pd12(16, 59, 3);                                // F
-        //    lcd.print(24, 7, "\x7F""C");                        // C
-        //    lcd.print(66, 7, "\x7F""K");                        // K
+        lcd.print(12, 0, "Nokia7110_430");
+        lcd.print(12, 1, "Thermometer");
+        lcd.pd12(15, 60, 3);                                // o Degrees
+        lcd.pd12(16, 68, 3);                                // C
     }
-    
 }           
 
 
 // Add loop code 
-void loop() {                                           // for-ever
-    //        show_time(localtime(&tt));                      // Convert time_t to tm struct and show on LCD
-    //  __bis_SR_register(LPM0_bits + GIE);             // Sleep until WDT interrupt
-    //
-    //  ADC10CTL0 |= (ENC | ADC10SC);                   // Begin ADC conversion
-    //  __bis_SR_register(LPM0_bits + GIE);             // Sleep until conversion complete
-    //  //
-    //  // Convert to temperature
-    //  dc = ((27069L * adc) - 18169625L) >> 16;        // Vref = 1.5V
-    //  dk = ((27069L * adc) - 268467L) >> 16;          // Vref = 1.5V
-    //  df = ((48724L * adc) - 30634388L) >> 16;        // Vref = 1.5V
-    //  //
-    //  // Display on LCD
-    //  print_int(df, 5);                               // Degrees F
-    //  print_int(dc, 0, 7);                            // Degrees C
-    //  print_int(dk, 42, 7);                           // Degrees K
-    //  draw_bargraph(df);                              // Deg F Bargraph
-    
+void loop() {       
     
     // from AnalogInput_InternalThermometer_430
     if (i == 10) {
         i = 0;
         average -= values[j];
-        values[j] = ((uint32_t)analogRead(TEMPSENSOR)*27069 - 18169625) >> 16;
+        values[j] = ((uint32_t)analogRead(TEMPSENSOR)*27069 - 18169625) * 10 >> 16;
         average += values[j];
         j++; 
         if (j==NUMBER) flag=true;
         j %= NUMBER;
         
-        if (flag) print_int(average/NUMBER, 3);
+        if (flag) {
+            print_dec1((average/NUMBER), 3);
+            lcd.pos(0, 7);
+            lcd.print(backlight ? "Light on " : "Light off");
+        } else {
+            lcd.pos(0, 7);
+            lcd.print("Wait ");
+            lcd.pos(30, 7);
+            lcd.print('0'+NUMBER-j);
+        }
     }
     
-    __delay_cycles((uint64_t)10000000);
+    if (digitalRead(P2_5)==LOW) {
+        while (digitalRead(P2_5)==LOW); // debounce
+        backlight = ~backlight;
+        lcd.pos(0, 7);
+        lcd.print(backlight ? "Light on " : "Light off");
+        
+        digitalWrite(P2_1, (backlight ? HIGH : LOW));        
+    }
+	delay(100);
     i++;
 }                                                   
 
