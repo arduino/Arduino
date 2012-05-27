@@ -1,0 +1,102 @@
+; Copyright (c) 2007 Texas Instruments
+; MSP430 Application UART Installation file for Win2000/XP/Vista 
+;
+; Port drivers setup
+;
+; Supported operating systems:
+;   Windows 32-bit and 64-bit 
+
+[Version] 
+Signature="$Windows NT$"
+CatalogFile=430CDC.cat
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318} 
+Provider=%TI% 
+LayoutFile=layout.inf
+DriverVer=12/11/2007, 1.3
+
+[Manufacturer] 
+%TI%=DeviceList, NTamd64
+
+[DestinationDirs] 
+DefaultDestDir=12 
+
+[SourceDisksFiles]
+
+[SourceDisksNames]
+
+[DeviceList] 
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F432&MI_00
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F433
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F434&MI_00
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F435&MI_00
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F436&MI_00
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F437&MI_00
+%DESCRIPTION%=TIUSB, USB\Vid_0451&Pid_F438&MI_00
+
+[DeviceList.NTamd64] 
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F432&MI_00
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F433
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F434&MI_00
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F435&MI_00
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F436&MI_00
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F437&MI_00
+%DESCRIPTION%=TIUSB.NTamd64, USB\Vid_0451&Pid_F438&MI_00
+
+;------------------------------------------------------------------------------
+;  Windows 32-bit Sections
+;------------------------------------------------------------------------------
+
+[TIUSB.nt] 
+include=mdmcpq.inf
+CopyFiles=DriverCopyFiles
+AddReg=TIUSB.nt.AddReg 
+
+[DriverCopyFiles]
+usbser.sys,,,0x20
+
+[TIUSB.nt.AddReg] 
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider" 
+
+[TIUSB.nt.Services] 
+AddService=usbser, 0x00000002, DriverService
+
+[TIUSB.nt.HW]
+include=mdmcpq.inf
+
+[DriverService] 
+DisplayName=%DESCRIPTION% 
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys 
+
+;------------------------------------------------------------------------------
+;  Windows 64-bit Sections
+;------------------------------------------------------------------------------
+
+[TIUSB.NTamd64] 
+include=mdmcpq.inf
+CopyFiles=DriverCopyFiles
+AddReg=TIUSB.NTamd64.AddReg 
+
+[TIUSB.NTamd64.AddReg] 
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider" 
+
+[TIUSB.NTamd64.Services] 
+AddService=usbser, 0x00000002, DriverService
+
+[TIUSB.NTamd64.HW]
+include=mdmcpq.inf
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings] 
+TI="Texas Instruments"
+DESCRIPTION="MSP430 Application UART" 
