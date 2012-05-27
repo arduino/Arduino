@@ -37,6 +37,8 @@ void setup() {
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
   analogReference(INTERNAL1V5);
+  analogRead(TEMPSENSOR); // first reading usually wrong
+
   mySerial.begin();
   pinMode(PUSH2, INPUT_PULLUP);   
 
@@ -95,6 +97,7 @@ void loop() {
 
   i++;
 }
+
 
 
 
