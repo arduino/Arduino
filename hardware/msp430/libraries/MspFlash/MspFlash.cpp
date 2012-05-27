@@ -1,0 +1,59 @@
+/*
+  MspFlash.h - Read/Write flash memory library for MSP430 Energia 
+  Copyright (c) 2012 Peter Brier.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+#include "MspFlash.h"
+#include <msp430.h>
+
+// The Flash clock must be between 200 and 400 kHz to operate correctly
+// TODO: calculate correct devider (0..64) depending on clock frequenct (F_CPU)
+// Now we set F_CPU/64 is 250khz at F_CPU = 16MHz
+
+#define FLASHCLOCK FSSEL1+((F_CPU/400000L) & 63); // SCLK
+
+// erase flash, make sure pointer is in the segment you wish to erase, otherwise you may erase you program or some data
+void MspFlashClass::erase(unsigned char *flash)
+{
+  WDTCTL = WDTPW+WDTHOLD;   // Disable WDT
+  FCTL2 = FWKEY+FLASHCLOCK; // SMCLK/2
+  FCTL3 = FWKEY;            // Clear LOCK
+  FCTL1 = FWKEY+ERASE;      //Enable segment erase
+  *flash = 0;               // Dummy write, erase Segment
+  FCTL3 = FWKEY+LOCK;       // Done, set LOCK
+}
+
+// load from memory, at segment boundary
+void MspFlashClass::read(unsigned char *flash, unsigned char *dest, int len)
+{
+  while(len--)
+   *(dest++) = *(flash++); 
+}
+
+// save in to flash (at segment boundary)
+void MspFlashClass::write(unsigned char *flash, unsigned char *src, int len)
+{
+ WDTCTL = WDTPW+WDTHOLD;   // Disable WDT
+ FCTL2 = FWKEY+FLASHCLOCK; // SMCLK/2 
+ FCTL3 = FWKEY;            // Clear LOCK
+ FCTL1 = FWKEY+WRT;        // Enable write
+ while(len--)      // Copy data
+   *(flash++) = *(src++);
+ FCTL1 = FWKEY;            //Done. Clear WRT
+ FCTL3 = FWKEY+LOCK;       // Set LOCK
+}
+
+MspFlashClass Flash;
