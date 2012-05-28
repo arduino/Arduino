@@ -17,8 +17,8 @@
 // flags for display entry mode
 #define LCD_ENTRYRIGHT 0x00
 #define LCD_ENTRYLEFT 0x02
-#define LCD_ENTRYSHIFTINCREMENT 0x01
-#define LCD_ENTRYSHIFTDECREMENT 0x00
+#define LCD_ENTRYSHIFTENABLE 0x01
+#define LCD_ENTRYSHIFTDISABLE 0x00
 
 // flags for display on/off control
 #define LCD_DISPLAYON 0x04
@@ -98,9 +98,8 @@ private:
   uint8_t _displaycontrol;
   uint8_t _displaymode;
 
-  uint8_t _initialized;
-
-  uint8_t _numlines,_currline;
+  uint8_t _numcols;
+  uint8_t _numrows;
 };
 
 #endif

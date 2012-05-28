@@ -97,6 +97,9 @@ byte armsUp[8] = {
   0b01010
 };
 void setup() {
+  // set up the lcd's number of columns and rows:
+  lcd.begin(16, 2);
+
   // create a new character
   lcd.createChar(0, heart);
   // create a new character
@@ -108,8 +111,6 @@ void setup() {
   // create a new character
   lcd.createChar(4, armsUp);  
 
-  // set up the lcd's number of columns and rows: 
-  lcd.begin(16, 2);
   // Print a message to the lcd.
   lcd.print("I "); 
   lcd.write(0);

@@ -78,19 +78,17 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
   else 
     _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
-  
-  begin(16, 1);  
 }
 
-void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
-  if (lines > 1) {
+void LiquidCrystal::begin(uint8_t cols, uint8_t rows, uint8_t dotsize) {
+  if (rows > 1) {
     _displayfunction |= LCD_2LINE;
   }
-  _numlines = lines;
-  _currline = 0;
+  _numcols = cols;
+  _numrows = rows;
 
   // for some 1 line displays you can select a 10 pixel high font
-  if ((dotsize != 0) && (lines == 1)) {
+  if ((dotsize != 0) && (rows == 1)) {
     _displayfunction |= LCD_5x10DOTS;
   }
 
@@ -151,7 +149,7 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   clear();
 
   // Initialize to default text direction (for romance languages)
-  _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+  _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDISABLE;
   // set the entry mode
   command(LCD_ENTRYMODESET | _displaymode);
 
@@ -172,9 +170,9 @@ void LiquidCrystal::home()
 
 void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
 {
-  int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };
-  if ( row >= _numlines ) {
-    row = _numlines-1;    // we count rows starting w/0
+  int row_offsets[] = { 0x00, 0x40, _numcols, 0x40 + _numcols };
+  if ( row >= _numrows ) {
+    row = _numrows - 1;    // we count rows starting w/0
   }
   
   command(LCD_SETDDRAMADDR | (col + row_offsets[row]));
@@ -230,15 +228,15 @@ void LiquidCrystal::rightToLeft(void) {
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
-// This will 'right justify' text from the cursor
+// This will move the text on write, looks like a fixed cursor
 void LiquidCrystal::autoscroll(void) {
-  _displaymode |= LCD_ENTRYSHIFTINCREMENT;
+  _displaymode |= LCD_ENTRYSHIFTENABLE;
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
-// This will 'left justify' text from the cursor
+// This will fix the text and moves the cursor on write
 void LiquidCrystal::noAutoscroll(void) {
-  _displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
+  _displaymode &= ~LCD_ENTRYSHIFTENABLE;
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
