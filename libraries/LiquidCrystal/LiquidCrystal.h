@@ -51,9 +51,9 @@ public:
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
   LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
   LiquidCrystal(uint8_t rs, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
 
   void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 	    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
@@ -82,14 +82,13 @@ public:
   virtual size_t write(uint8_t);
   virtual void command(uint8_t);
   
+  inline LiquidCrystal& operator() (uint8_t x, uint8_t y) { setCursor(x,y); return *this;};  //use along w Streaming.h to support: lcd(col,line)<<"a="<<a;
   using Print::write;
 protected:
   LiquidCrystal();
 
   virtual void send(uint8_t, uint8_t);
-  virtual void write4bits(uint8_t);
-  virtual void write8bits(uint8_t);
-  virtual void pulseEnable();
+  virtual void writebits(uint8_t, uint8_t);
 
   uint8_t _rs_pin; // LOW: command.  HIGH: character.
   uint8_t _rw_pin; // LOW: write to LCD.  HIGH: read from LCD.
@@ -99,7 +98,7 @@ protected:
   uint8_t _displayfunction;
   uint8_t _displaycontrol;
   uint8_t _displaymode;
-
+  
   uint8_t _numcols;
   uint8_t _numrows;
 };
