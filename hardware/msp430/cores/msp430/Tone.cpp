@@ -33,7 +33,8 @@ Version Modified By Date     Comments
                     09/11/25 Fixed timer0 from being excluded
 0006    D Mellis    09/12/29 Replaced objects with functions
 0007    M Sproul    10/08/29 Changed #ifdefs from cpu to register
-0008    P Brier     12/05/29 Modified for TI MSP430 processor
+0008    P Brier     12/05/28 Modified for TI MSP430 processor
+0009    P Brier     12/05/29 Fixed problem with re-init of expired tone
 *************************************************/
 
 #include "wiring_private.h"
@@ -42,10 +43,10 @@ Version Modified By Date     Comments
 
 // local funcions
 static void initTimers();
-static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration, uint8_t init);
+static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration);
 static void stopTimer(uint8_t n);
 
-// timer clock frequency set to clock/8, at 1MHZ this gives an output freq range of ~[1Hz ..65Khz] and at 16Mhz this is ~[16Hz .. 1MHz]
+// timer clock frequency set to clock/8, at F_CPU = 1MHZ this gives an output freq range of ~[1Hz ..65Khz] and at 16Mhz this is ~[16Hz .. 1MHz]
 #define F_TIMER (F_CPU/8L)
 
 
@@ -78,7 +79,7 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
     if (tone_pins[i] == _pin) 
     {
-      setTimer(i, frequency, duration, 0);
+      setTimer(i, frequency, duration);
       return; // we are done, timer reprogrammed
     }
 
@@ -92,7 +93,7 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
       if ( tone_state == 0 ) 
         initTimers();
       pinMode(_pin, OUTPUT);
-      setTimer(i, frequency, duration, 1);
+      setTimer(i, frequency, duration);
       return; // we are done, timer set
     }
   // if we exit here, no unused timer was found, nothing is done
@@ -115,7 +116,7 @@ void noTone(uint8_t _pin)
 }
 
 
-// Initialize the timer
+// Initialize the timers - Set mode and Enable IRQ
 static void inline initTimers()
 {
   TA0CCTL0 = TA0CCTL1 = TA0CCTL0 = 0; // disable IRQs
@@ -125,31 +126,34 @@ static void inline initTimers()
 
 
 // Set the timer interval and duration
-// if init is true, we initialize the timer
-//
-static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration, uint8_t init)
+// frequency in [Hz] and duration in [msec]
+// we initialize the timer match value only if the tone was not running already, to prevent glitches when re-programming a running tone
+static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration)
 {
-  if ( frequency <= 0 ) return;
+  if ( frequency <= 0 ) 
+  {
+    tone_interval[n] = 0;
+    tone_periods[n] = 0;
+    return;
+  }
   tone_interval[n] = F_TIMER / (2L*frequency);
   if ( duration > 0 )
     tone_periods[n] = (duration * (F_TIMER/2)) / (1000L * tone_interval[n]);
   else
     tone_periods[n] = -1;
-  if ( !init ) // We are already initialized, no need to do that again, return
-    return;
-  switch( n ) // enable IRQ and set next match time in various timer compare registers
+  switch( n ) // enable IRQ and set next match time in various timer compare registers (if we where not enabled already)
   {
     case 0:
-      TA0CCTL0 = CCIE; 
-      TA0CCR0 = TAR + tone_interval[0];  
+      if ( ! (TA0CCTL0 & CCIE) ) TA0CCR0 = TAR + tone_interval[0];  
+      TA0CCTL0 = CCIE;       
       break;
     case 1:
-      TA0CCTL1 = CCIE;
-      TA0CCR1 = TAR + tone_interval[1];  
+      if ( !(TA0CCTL1 & CCIE) ) TA0CCR1 = TAR + tone_interval[1]; 
+      TA0CCTL1 = CCIE; 
       break;
     case 2:
+      if ( !(TA0CCTL2 & CCIE) ) TA0CCR2 = TAR + tone_interval[2];  
       TA0CCTL2 = CCIE;
-      TA0CCR2 = TAR + tone_interval[2];  
       break;
     }
 } 
@@ -168,7 +172,7 @@ static void inline stopTimer(uint8_t n)
 
 
 // Peform the isr magic, toggle output, decrease duation if > 0, and stop if duration == 0, continous if duration < 0
-// set new interval
+// set new interval - defined as macro to limit ISR overhead (at the expense of some code size)
 #define isrTimer(n,ccr) do { \
   *tone_out[n] ^= tone_bit[n]; \
   if ( tone_periods[n] == 0 ) stopTimer(n);\
