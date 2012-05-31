@@ -141,6 +141,7 @@ extern const uint16_t port_to_input[];
 
 // Implemented in wiring.c
 void delayMicroseconds(unsigned int us);
+unsigned long micros();
 unsigned long millis();
 
 #ifdef __cplusplus

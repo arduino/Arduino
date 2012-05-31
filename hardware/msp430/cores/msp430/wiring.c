@@ -87,6 +87,11 @@ void initClocks(void)
 const uint32_t WDT_FREQUENCY = SMCLK_FREQUENCY / WDT_DIVIDER;
 volatile uint32_t wdtCounter = 0;
 
+unsigned long micros()
+{
+    return (1000 * wdtCounter) / (WDT_FREQUENCY / 1000);
+}
+
 unsigned long millis()
 {
         return wdtCounter / (WDT_FREQUENCY / 1000);
