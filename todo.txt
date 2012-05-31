@@ -16,8 +16,8 @@
 		[ ] micros()
 
 	Advanced I/O
-		[ ] tone()
-		[ ] noTone()
+		[X] tone()
+		[X] noTone()
 	
 	Random Numbers
 		[ ] randomSeed()

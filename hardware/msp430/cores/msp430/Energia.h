@@ -127,6 +127,7 @@ extern const uint8_t digital_pin_to_bit_mask[];
 extern const uint16_t port_to_sel[];
 extern const uint16_t port_to_sel2[];
 extern const uint16_t port_to_input[];
+extern const uint16_t port_to_output[];
 
 #define digitalPinToPort(P) ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
