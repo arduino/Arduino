@@ -55,14 +55,40 @@
   area. You need to find the pointer to the start of the next segment. There is a macro define to do this: SEGPTR(x)
   A example that makes 2 segments available for flashing by allocating 3 segments of constant data:
 
+
+  Using the example:
+  ~~~~~~~~~~~~~~~~~~
+
+  On the launchpad; put the two UART jumpers in HARDWARE SERIAL position (horizontal position) and use the terminal window to connect
+  to the board (9600baud). 
+
+  'e' Erase the flash segment
+  'w' Write "Hello World" to the flash
+  'r' Read the contents of the flash, and print as byte values and characters. stop at the first NULL byte
+
+  - When you program the launchpad and read the flash, a single "0" character should be read (mem contains zero values)
+    Writing the flash before you have erased it is not possible (you cannot program OFF bits to ON bits)
+  - When you erase the flash, 0xFF values will be read back
+  - When you write the flash, "Hello World" will be read back
+
+
 */
 
 #include "MspFlash.h"
 
-const unsigned char data[2*SEGMENT_SIZE] = {0};
 
+// Two options to use for flash: One of the info flash segments, or a part of the program memory
+// either define a bit of constant program memory, and pass a pointer to the start of a segment to the flash functions,
+
+//*** Option 1: use program memory, uncomment these lines and you have 512 bytes of flash available (1024 bytes allocated) ****
+//const unsigned char data[2*SEGMENT_SIZE] = {0};
+//#define flash SEGPTR(data)
+//
+
+//*** Option 2: use one of the 64 byte info segments, uncomment this line. Use SEGMENT_B, SEGMENT_C or SEGMENT_D (each 64 bytes, 192 bytes in total)
 #define flash SEGMENT_D
-#define flash SEGPTR(data)
+//
+
 
 void setup() 
 {
