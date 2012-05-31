@@ -49,19 +49,26 @@ static void stopTimer(uint8_t n);
 // timer clock frequency set to clock/8, at F_CPU = 1MHZ this gives an output freq range of ~[1Hz ..65Khz] and at 16Mhz this is ~[16Hz .. 1MHz]
 #define F_TIMER (F_CPU/8L)
 
+#ifdef __MSP430_HAS_TA3__
+#define AVAILABLE_TONE_PINS 3
+#define SETARRAY(a) a,a,a
+#else
+#define AVAILABLE_TONE_PINS 2
+#define SETARRAY(a) a,a
+#endif
 
 
 // tone_duration:
 //  > 0 - duration specified
 //  = 0 - stopped
 //  < 0 - infinitely (until stop() method called, or new play() called)
-#define AVAILABLE_TONE_PINS 3
+
 static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
-static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { 255, 255, 255 };
-static uint8_t tone_bit[AVAILABLE_TONE_PINS] = { 255, 255, 255 };
-volatile static uint16_t *tone_out[AVAILABLE_TONE_PINS] = { 0,0,0};
-static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { -1,-1,-1 };
-static int16_t tone_periods[AVAILABLE_TONE_PINS] = { 0,0,0 };
+static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { SETARRAY(255) };
+static uint8_t tone_bit[AVAILABLE_TONE_PINS] = { SETARRAY(255)  };
+volatile static uint16_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
+static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { SETARRAY(-1)  };
+static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
 
 
 /**
@@ -77,14 +84,17 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 
   // find if we are using it at the moment, if so: update it
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
+  {
     if (tone_pins[i] == _pin) 
     {
       setTimer(i, frequency, duration);
       return; // we are done, timer reprogrammed
     }
+  }
 
   // new tone pin, find empty timer and set it
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
+  {
     if (tone_pins[i] == 255)      
     {
       tone_pins[i] = _pin;
@@ -96,6 +106,7 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
       setTimer(i, frequency, duration);
       return; // we are done, timer set
     }
+  }
   // if we exit here, no unused timer was found, nothing is done
 }
 
@@ -106,7 +117,8 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 void noTone(uint8_t _pin)
 {
   if ( _pin == 255 ) return; // Should not happen!
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++) {
+  for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
+  {
     if (tone_pins[i] == _pin) 
     {
       tone_pins[i] = 255;
@@ -119,8 +131,13 @@ void noTone(uint8_t _pin)
 // Initialize the timers - Set mode and Enable IRQ
 static void inline initTimers()
 {
-  TA0CCTL0 = TA0CCTL1 = TA0CCTL0 = 0; // disable IRQs
-  TA0CTL = TACLR + TASSEL_2 +  MC_2 + ID_3;       // clear, source=SMCLK/8, mode=continous count up
+  // disable IRQs
+  TA0CCTL0 = 0;
+  TA0CCTL1 = 0;
+#ifdef __MSP430_HAS_TA3__
+  TA0CCTL2 = 0;
+#endif
+  TA0CTL = TACLR + TASSEL_2 +  ID_3 + MC_2;       // clear counter, source=SMCLK/8, mode=continous count up
   tone_state = 1;  // init is done
 }
 
@@ -151,10 +168,12 @@ static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration)
       if ( !(TA0CCTL1 & CCIE) ) TA0CCR1 = TAR + tone_interval[1]; 
       TA0CCTL1 = CCIE; 
       break;
+#ifdef __MSP430_HAS_TA3__
     case 2:
       if ( !(TA0CCTL2 & CCIE) ) TA0CCR2 = TAR + tone_interval[2];  
       TA0CCTL2 = CCIE;
       break;
+#endif
     }
 } 
 
@@ -165,7 +184,9 @@ static void inline stopTimer(uint8_t n)
   {
     case 0: TA0CCTL0 = 0; break;
     case 1: TA0CCTL1 = 0; break;
+#ifdef __MSP430_HAS_TA3__
     case 2: TA0CCTL2 = 0; break;
+#endif
   }  
   *tone_out[n] &= ~tone_bit[n];
 }
@@ -195,6 +216,8 @@ void TIMER0_A1_ISR(void)
   switch ( TAIV ) 
   { 
     case 0x2: isrTimer(1, TA0CCR1); break; // CCR1
+#ifdef __MSP430_HAS_TA3__
     case 0x4: isrTimer(2, TA0CCR2); break; // CCR2
+#endif
   }  
 }
