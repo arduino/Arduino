@@ -578,7 +578,7 @@ public class Compiler implements MessageConsumer {
           "-g", // include debugging info (so errors include line numbers)
           "-mmcu=" + boardPreferences.get("build.mcu"),
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-DENERGIA=" + Base.REVISION,
+          "-DARDUINO=" + Base.REVISION,
         }));
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -619,7 +619,7 @@ public class Compiler implements MessageConsumer {
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-        "-DENERGIA=" + Base.REVISION,
+        "-DARDUINO=" + Base.REVISION,
       }));
       } else { // default to avr
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -666,7 +666,7 @@ public class Compiler implements MessageConsumer {
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-        "-DENERGIA=" + Base.REVISION,
+        "-DARDUINO=" + Base.REVISION,
       }));
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
