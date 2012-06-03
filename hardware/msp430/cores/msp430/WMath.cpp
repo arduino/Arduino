@@ -26,7 +26,30 @@
 extern "C" {
   #include "stdlib.h"
 }
-#if 0
+
+
+/*
+ * Internal srandom() and random() implmentation, 
+ * a simple pseudo-random number generator is the Multiply-with-carry method invented by George Marsaglia. 
+ * It is computationally fast and has good (albeit not cryptographically strong)
+ * From: http://en.wikipedia.org/wiki/Random_number_generation#Computational_methods
+ */
+static long  m_w =123;    /* must not be zero */
+static long  m_z =98765432;    /* must not be zero */
+
+static void srandom(long n)
+{
+  m_w = 123 ^ n;
+  m_z = 98765432 ^ n-1;
+}
+ 
+static unsigned long random()
+{
+  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
+  m_w = 18000 * (m_w & 65535) + (m_w >> 16);
+  return (m_z << 16) + m_w;  /* 32-bit result */
+}
+
 void randomSeed(unsigned int seed)
 {
   if (seed != 0) {
@@ -50,7 +73,7 @@ long random(long howsmall, long howbig)
   long diff = howbig - howsmall;
   return random(diff) + howsmall;
 }
-#endif
+
 
 long map(long x, long in_min, long in_max, long out_min, long out_max)
 {
