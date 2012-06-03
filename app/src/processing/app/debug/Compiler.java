@@ -579,6 +579,7 @@ public class Compiler implements MessageConsumer {
           "-mmcu=" + boardPreferences.get("build.mcu"),
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-DARDUINO=" + Base.REVISION,
+          "-DENERGIA=" + Base.EREVISION,
         }));
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -620,6 +621,7 @@ public class Compiler implements MessageConsumer {
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
         "-DARDUINO=" + Base.REVISION,
+        "-DENERGIA=" + Base.EREVISION,
       }));
       } else { // default to avr
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -632,7 +634,7 @@ public class Compiler implements MessageConsumer {
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-      "-MMD", // output dependancy info
+        "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
         }));
     }
@@ -667,6 +669,7 @@ public class Compiler implements MessageConsumer {
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
         "-DARDUINO=" + Base.REVISION,
+        "-DENERGIA=" + Base.EREVISION,
       }));
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
@@ -680,7 +683,7 @@ public class Compiler implements MessageConsumer {
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-      "-MMD", // output dependancy info
+        "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
       }));
     } 
