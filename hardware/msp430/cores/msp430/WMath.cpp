@@ -41,6 +41,8 @@ static void srandom(long n)
 {
   m_w = 123 ^ n;
   m_z = 98765432 ^ n-1;
+  if ( m_w == 0 ) m_w = 123;
+  if ( m_z == 0 ) m_z = 98765432;
 }
  
 static unsigned long random()
