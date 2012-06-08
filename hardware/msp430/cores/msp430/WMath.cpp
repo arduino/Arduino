@@ -25,8 +25,12 @@
 
 extern "C" {
   #include "stdlib.h"
+  /* Using interal random and srandom in file random.c 
+   * until msp430-libc adds supports for random and srandom */
+  extern long random(void);
+  extern void srandom(unsigned long __seed);
 }
-#if 0
+
 void randomSeed(unsigned int seed)
 {
   if (seed != 0) {
@@ -50,7 +54,7 @@ long random(long howsmall, long howbig)
   long diff = howbig - howsmall;
   return random(diff) + howsmall;
 }
-#endif
+
 
 long map(long x, long in_min, long in_max, long out_min, long out_max)
 {
