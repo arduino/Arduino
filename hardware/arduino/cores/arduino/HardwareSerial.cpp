@@ -79,7 +79,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   // just before the tail (meaning that the head would advance to the
   // current location of the tail), we're about to overflow the buffer
   // and so we don't write the character or advance the head.
-  if (i != buffer->tail) {
+  if (i != (int) buffer->tail) {
     buffer->buffer[buffer->head] = c;
     buffer->head = i;
   }
@@ -387,7 +387,7 @@ size_t HardwareSerial::write(uint8_t c)
   // If the output buffer is full, there's nothing for it other than to 
   // wait for the interrupt handler to empty it a bit
   // ???: return 0 here instead?
-  while (i == _tx_buffer->tail)
+  while (i == (int) _tx_buffer->tail)
     ;
 	
   _tx_buffer->buffer[_tx_buffer->head] = c;
