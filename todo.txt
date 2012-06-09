@@ -8,7 +8,7 @@
 
 [ ] 
     [ ] OS X serial driver bug
-    [X] Windows driver compatibility with mspdebug / mspdebug compatibility with mspdebug
+    [X] mspdebug compatibility with windows TI LaunchPad drivers
  
 @ Core functionality
 	Time
