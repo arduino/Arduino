@@ -33,6 +33,7 @@
 	[X] SPI support (needs testing)
 	[ ] CapTouch library
 	[A] IRremote
+	[ ] CapTouch API (see #39)
 
 @ Documentation
     [X] Know issues list (https://github.com/energia/Energia/wiki/Know-Issues)

@@ -52,7 +52,9 @@ public class MSP430Uploader extends Uploader{
 	throws RunnerException, SerialException {
 		this.verbose = verbose;
 		Map<String, String> boardPreferences = Base.getBoardPreferences();
-		//No serial programming support (yet). Upload using programmer (MSP430Flasher for windows and mspdebug for Mac OS X and Linux).
+		//No serial programming support (yet). 
+		//Upload using programmer (MSP430Flasher for windows and mspdebug for Mac OS X and Linux).
+		//added support for mspdebug for windows 
 
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
@@ -66,11 +68,11 @@ public class MSP430Uploader extends Uploader{
 				params.add("prog " + buildPath + File.separator + className + ".hex");
 			}
 			else { 
-				params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
+				params.add("prog " + buildPath + File.separator + className + ".hex");
 			}
 			return mspdebug(params);
 		} else {
-		
+/*			// code to access via MSP430_Flasher	
 			params.add("-n " + boardPreferences.get("build.mcu")); 
 			params.add("-w");
 			params.add(buildPath + File.separator + className + ".hex");
@@ -80,6 +82,16 @@ public class MSP430Uploader extends Uploader{
 			
 			params.add("-z[VCC]");
 			return MSP430Flasher(params);
+*/			
+//			params.add(boardPreferences.get("upload.protocol"));
+			params.add("tilib");       // always use the TI Lib on Windows, best integrate on this OS
+			params.add("-d");
+			params.add("USB");
+			if(!Preferences.getBoolean("upload.verbose"))
+				params.add("-q");
+			params.add("--force-reset");
+			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
+			return mspdebug(params);
 		}
 	}
 
@@ -93,8 +105,12 @@ public class MSP430Uploader extends Uploader{
 
 		if ( Base.isLinux()) {
 			commandDownloader.add("mspdebug"); // use the one in the PATH
-		} else {
+		} 
+		else if (Base.isMacOS()) {
 			commandDownloader.add(Base.getHardwarePath() + "/tools/msp430/mspdebug/mspdebug");
+		}
+		else {
+			commandDownloader.add(Base.getHardwarePath() + "\\tools\\msp430\\mspdebug\\mspdebug");
 		}
 		commandDownloader.addAll(params);
 		
