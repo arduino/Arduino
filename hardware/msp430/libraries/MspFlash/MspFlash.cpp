@@ -34,6 +34,7 @@ void MspFlashClass::erase(unsigned char *flash)
   FCTL1 = FWKEY+ERASE;      //Enable segment erase
   *flash = 0;               // Dummy write, erase Segment
   FCTL3 = FWKEY+LOCK;       // Done, set LOCK
+  WDTCTL = WDTPW;           // Enable WDT
 }
 
 // load from memory, at segment boundary
@@ -54,6 +55,7 @@ void MspFlashClass::write(unsigned char *flash, unsigned char *src, int len)
    *(flash++) = *(src++);
  FCTL1 = FWKEY;            //Done. Clear WRT
  FCTL3 = FWKEY+LOCK;       // Set LOCK
+  WDTCTL = WDTPW;           // Enable WDT  
 }
 
 MspFlashClass Flash;
