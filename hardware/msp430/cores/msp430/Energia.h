@@ -144,6 +144,8 @@ extern const uint16_t port_to_output[];
 void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
+void disableWatchDog();
+void enableWatchDog();
 
 #ifdef __cplusplus
 } // extern "C"
