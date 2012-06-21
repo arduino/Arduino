@@ -63,6 +63,9 @@ void TimerSerial::begin()
 
 void TimerSerial::end()
 {
+        while (TACCTL0 & CCIE) {
+		; // wait for previous xmit to finish
+	}
 	P1SEL = ~TX_PIN;        // P1 functions select to default
 	P1DIR = ~TX_PIN;        // Input
 }
