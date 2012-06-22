@@ -32,7 +32,6 @@
 
 void initClocks(void);
 void enableWatchDogIntervalMode(void);
-void disableWatchDog(void);
 
 void init()
 {
@@ -42,10 +41,15 @@ void init()
         __eint();
 }
 
-void disableWatchDog(void)
+void disableWatchDog()
 {
         /* Diable watchdog timer */
 	WDTCTL = WDTPW | WDTHOLD;
+}
+
+void enableWatchDog()
+{
+	enableWatchDogIntervalMode();
 }
 
 void enableWatchDogIntervalMode(void)

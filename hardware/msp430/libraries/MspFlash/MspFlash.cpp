@@ -18,6 +18,7 @@
 */
 #include "MspFlash.h"
 #include <msp430.h>
+#include <Energia.h>
 
 // The Flash clock must be between 200 and 400 kHz to operate correctly
 // TODO: calculate correct devider (0..64) depending on clock frequenct (F_CPU)
@@ -28,13 +29,13 @@
 // erase flash, make sure pointer is in the segment you wish to erase, otherwise you may erase you program or some data
 void MspFlashClass::erase(unsigned char *flash)
 {
-  WDTCTL = WDTPW+WDTHOLD;   // Disable WDT
+  disableWatchDog();        // Disable WDT
   FCTL2 = FWKEY+FLASHCLOCK; // SMCLK/2
   FCTL3 = FWKEY;            // Clear LOCK
   FCTL1 = FWKEY+ERASE;      //Enable segment erase
   *flash = 0;               // Dummy write, erase Segment
   FCTL3 = FWKEY+LOCK;       // Done, set LOCK
-  WDTCTL = WDTPW;           // Enable WDT
+  enableWatchDog();         // Enable WDT
 }
 
 // load from memory, at segment boundary
@@ -47,7 +48,7 @@ void MspFlashClass::read(unsigned char *flash, unsigned char *dest, int len)
 // save in to flash (at segment boundary)
 void MspFlashClass::write(unsigned char *flash, unsigned char *src, int len)
 {
- WDTCTL = WDTPW+WDTHOLD;   // Disable WDT
+ disableWatchDog();        // Disable WDT
  FCTL2 = FWKEY+FLASHCLOCK; // SMCLK/2 
  FCTL3 = FWKEY;            // Clear LOCK
  FCTL1 = FWKEY+WRT;        // Enable write
@@ -55,7 +56,7 @@ void MspFlashClass::write(unsigned char *flash, unsigned char *src, int len)
    *(flash++) = *(src++);
  FCTL1 = FWKEY;            //Done. Clear WRT
  FCTL3 = FWKEY+LOCK;       // Set LOCK
-  WDTCTL = WDTPW;           // Enable WDT  
+ enableWatchDog();         // Enable WDT
 }
 
 MspFlashClass Flash;
