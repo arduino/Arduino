@@ -1,6 +1,7 @@
 /*
   Servo.h - Interrupt driven Servo library for MSP430
   Copyright (c) 2012 Petr Baudis.  All right reserved.
+  Modified by Peter Brier 26-6-2012: Fixed timing/IRQ problem
 
   Derived from:
   Servo.h - Interrupt driven Servo library for Arduino using 16 bit timers- Version 2

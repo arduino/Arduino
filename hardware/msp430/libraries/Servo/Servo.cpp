@@ -1,6 +1,7 @@
 /*
  Servo.cpp - Interrupt driven Servo library for MSP430
  Copyright (c) 2012 Petr Baudis.  All right reserved.
+ Modified by Peter Brier 26-6-2012: Fixed timing/IRQ problem
 
  Derived from:
  Servo.cpp - Interrupt driven Servo library for Arduino using 16 bit timers- Version 2
@@ -24,6 +25,7 @@
 #include "Energia.h"
 #include "Servo.h"
 
+#define F_TIMER (F_CPU/8L)
 #define usToTicks(_us)    (( clockCyclesPerMicrosecond()* _us) / 8)     // converts microseconds to timer ticks (assumes prescale of 8)
 #define ticksToUs(_ticks) (( (unsigned)_ticks * 8)/ clockCyclesPerMicrosecond() ) // converts from ticks back to microseconds
 
@@ -51,6 +53,7 @@ static volatile unsigned int totalWait = 0; // Total amount waited so far in the
 static void
 Timer_A(void)
 {
+  static unsigned long wait;
   if (counter >= 0) {
     /* Turn pulse off. */
     digitalWrite(servos[counter].Pin.nbr, LOW);
@@ -65,14 +68,14 @@ Timer_A(void)
   if (counter < ServoCount) {
     /* Turn pulse on for the next servo. */
     digitalWrite(servos[counter].Pin.nbr, HIGH);
-
     /* And hold! */
     totalWait += servos[counter].ticks;
     CCR0 = servos[counter].ticks;
-
   } else {
     /* Wait for the remaining of REFRESH_INTERVAL. */
-    CCR0 = usToTicks(REFRESH_INTERVAL) - totalWait;
+    wait = usToTicks(REFRESH_INTERVAL) - totalWait;
+    totalWait = 0;
+    CCR0 = (wait < 1000 ? 1000 : wait);
     counter = -1;
   }
 }
@@ -175,14 +178,10 @@ void Servo::writeMicroseconds(int value)
     if( value < SERVO_MIN() )          // ensure pulse width is valid
       value = SERVO_MIN();
     else if( value > SERVO_MAX() )
-      value = SERVO_MAX();   
-    
-  	value = value - TRIM_DURATION;
+      value = SERVO_MAX();       
+    value = value - TRIM_DURATION;
     value = usToTicks(value);  // convert to ticks after compensating for interrupt overhead - 12 Aug 2009
-
-    CCTL0 = 0; // disable interrupt to avoid race condition
-    servos[channel].ticks = value;
-    CCTL0 = CCIE;
+    servos[channel].ticks = value; // this is atomic on a 16bit uC, no need to disable Interrupts
   } 
 }
 
