@@ -52,11 +52,20 @@ void enableWatchDog()
 	enableWatchDogIntervalMode();
 }
 
+#define SMCLK_FREQUENCY F_CPU
+#if (F_CPU >= 2000000L)
+#define WDT_DIVIDER 512
+#define WDT_DIV_BITS WDTIS1
+#else
+#define WDT_DIVIDER 64
+#define WDT_DIV_BITS WDTIS0+WDTIS1
+#endif
+
 void enableWatchDogIntervalMode(void)
 {
 	/* WDT Password + WDT interval mode + Watchdog clock source /512 + source from SMCLK
 	 * Note that we WDT is running in interval mode. WDT will not trigger a reset on expire in this mode. */
-	WDTCTL = WDTPW + WDTTMSEL + WDTIS1;
+	WDTCTL = WDTPW + WDTTMSEL + WDT_DIV_BITS;
  
 	/* WDT interrupt enable */
 	IE1 |= WDTIE;
@@ -85,8 +94,7 @@ void initClocks(void)
         BCSCTL3 |= LFXT1S_2; 
 }
 
-#define SMCLK_FREQUENCY F_CPU
-#define WDT_DIVIDER 512
+
 
 const uint32_t WDT_FREQUENCY = SMCLK_FREQUENCY / WDT_DIVIDER;
 volatile uint32_t wdtCounter = 0;
