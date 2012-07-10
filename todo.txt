@@ -34,6 +34,7 @@
 	[ ] CapTouch library
 	[A] IRremote
 	[ ] CapTouch API (see #39)
+	[ ] CC110L Air Module Booster Pack Library (see #80)
 
 @ Documentation
     [X] Know issues list (https://github.com/energia/Energia/wiki/Know-Issues)
