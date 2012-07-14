@@ -66,7 +66,7 @@ static void stopTimer(uint8_t n);
 static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
 static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { SETARRAY(255) };
 static uint8_t tone_bit[AVAILABLE_TONE_PINS] = { SETARRAY(255)  };
-volatile static uint8_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
+volatile static uint16_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
 static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { SETARRAY(-1)  };
 static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
 
@@ -161,16 +161,16 @@ static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration)
   switch( n ) // enable IRQ and set next match time in various timer compare registers (if we where not enabled already)
   {
     case 0:
-      if ( ! (TA0CCTL0 & CCIE) ) TA0CCR0 = TA0R + tone_interval[0];  
+      if ( ! (TA0CCTL0 & CCIE) ) TA0CCR0 = TAR + tone_interval[0];  
       TA0CCTL0 = CCIE;       
       break;
     case 1:
-      if ( !(TA0CCTL1 & CCIE) ) TA0CCR1 = TA0R + tone_interval[1]; 
+      if ( !(TA0CCTL1 & CCIE) ) TA0CCR1 = TAR + tone_interval[1]; 
       TA0CCTL1 = CCIE; 
       break;
 #ifdef __MSP430_HAS_TA3__
     case 2:
-      if ( !(TA0CCTL2 & CCIE) ) TA0CCR2 = TA0R + tone_interval[2];  
+      if ( !(TA0CCTL2 & CCIE) ) TA0CCR2 = TAR + tone_interval[2];  
       TA0CCTL2 = CCIE;
       break;
 #endif
@@ -213,7 +213,7 @@ void TIMER0_A0_ISR(void)
 __attribute__((interrupt(TIMER0_A1_VECTOR)))
 void TIMER0_A1_ISR(void)
 {
-  switch ( TA0IV ) 
+  switch ( TAIV ) 
   { 
     case 0x2: isrTimer(1, TA0CCR1); break; // CCR1
 #ifdef __MSP430_HAS_TA3__

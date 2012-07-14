@@ -72,16 +72,11 @@ void enableWatchDogIntervalMode(void)
 	WDTCTL = WDTPW + WDTTMSEL + WDTCNTCL + WDT_DIV_BITS;
  
 	/* WDT interrupt enable */
-#ifdef __MSP430_HAS_SFR__
-	SFRIE1 |= WDTIE;
-#else
 	IE1 |= WDTIE;
-#endif	
 }
 
 void initClocks(void)
 {
-#ifdef __MSP430_HAS_BC2__
 #if defined(CALBC1_16MHZ_) && F_CPU >= 16000000L
 	BCSCTL1 = CALBC1_16MHZ;
 	DCOCTL = CALDCO_16MHZ;
@@ -101,33 +96,10 @@ void initClocks(void)
 	BCSCTL2 &= ~(DIVS_0);
 	/* ACLK = VLO = ~ 12 KHz */
         BCSCTL3 |= LFXT1S_2; 
-#endif
-
-#ifdef __MSP430_HAS_CS__
-    CSCTL0 = CSKEY;                // Enable Access to CS Registers
-  
-    CSCTL2 &= ~SELM_7;             // Clear selected Main CLK Source
-    CSCTL2 |= SELM__DCOCLK;        // Use DCO as Main Clock Source
-    CSCTL3 &= ~(DIVM_3 | DIVS_3);  // clear DIVM Bits
-#if F_CPU >= 24000000L
-    CSCTL1 = DCOFSEL0 | DCOFSEL1 | DCORSEL;    //Level 2 / Range 1 : 24.0MHz
-#elif F_CPU >= 16000000L
-    CSCTL1 = DCORSEL;              //Level 0 / Range 1 : 16.0MHz
-#elif F_CPU >= 12000000L
-    CSCTL1 = DCOFSEL0 | DCOFSEL1 | DCORSEL;    //Level 2 / Range 1 : 24.0MHz
-    CSCTL3 |= DIVM_1;              // Div = 2
-#elif F_CPU >= 8000000L
-    CSCTL1 = DCOFSEL0 | DCOFSEL1;  //Level 2 / Range 0 : 8.0MHz
-#elif F_CPU >= 1000000L
-    CSCTL1 = DCOFSEL0 | DCOFSEL1;  //Level 2 / Range 0 : 8.0MHz
-    CSCTL3 |= DIVM_3;              // Div = 8
-#else
-        #warning No Suitable Frequency found!
-#endif
-////    CSCTL0 = 0;                    // Disable Access to CS Registers
-#endif
-
 }
+
+
+
 volatile uint32_t wdtCounter = 0;
 
 unsigned long micros()

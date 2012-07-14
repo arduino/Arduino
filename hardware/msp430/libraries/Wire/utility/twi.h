@@ -31,16 +31,9 @@
 
 #include <msp430.h>
 
-#if !defined (__MSP430_HAS_USI__) && !defined (__MSP430_HAS_USCI__) && !defined (__MSP430_HAS_EUSCI_B0__)
 #ifndef __MSP430_HAS_USI__
 #error "********** USI not available"
 #endif
-
-#if !defined (__MSP430_HAS_USCI__) && !defined (__MSP430_HAS_EUSCI_B0__)
-#error "********** USCI not available"
-#endif
-#endif
-
 
 #include <inttypes.h>
 
@@ -51,14 +44,6 @@
 #ifndef TWI_BUFFER_LENGTH
 #define TWI_BUFFER_LENGTH 16
 #endif
-
-
-#define TWI_READY 0
-#define TWI_MRX   1
-#define TWI_MTX   2
-#define TWI_SRX   3
-#define TWI_STX   4
-
 
 #define TWI_SND_START 0
 #define TWI_PREP_SLA_ADDR_ACK 1
@@ -81,8 +66,8 @@
 
 void twi_init(void);
 void twi_setAddress(uint8_t);
-uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t, uint8_t);
-uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t, uint8_t);
+uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t);
+uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t);
 uint8_t twi_transmit(const uint8_t*, uint8_t);
 void twi_attachSlaveRxEvent( void (*)(uint8_t*, int) );
 void twi_attachSlaveTxEvent( void (*)(void) );

@@ -25,18 +25,10 @@ extern "C"{
 #define FALLING 1
 #define RISING 0
 
-//#define INPUT 0x0
-//#define OUTPUT 0x1
-//#define INPUT_PULLUP 0x2
-//#define INPUT_PULLDOWN 0x3
-
 #define INPUT 0x0
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
-#define INPUT_PULLDOWN 0x4
-#define PORT_SELECTION0 0x10
-#define PORT_SELECTION1 0x20
-
+#define INPUT_PULLDOWN 0x3
 
 #define true 0x1
 #define false 0x0
@@ -54,59 +46,26 @@ extern "C"{
 #define EXTERNAL SREF_2
 #endif
 
-#if defined(__MSP430_HAS_ADC10_B__)
-#define DEFAULT ADC10SREF_0
-#define INTERNAL1V5 ADC10SREF_1 + ADC10REFON
-#define INTERNAL2V5 ADC10SREF_1 + ADC10REFON + ADC10REF2_5V
-#define EXTERNAL ADC10SREF_2
-#endif
+#define P1 1
+#define P2 2
+#define P3 3
+#define P4 4
+#define P5 5
+#define P6 6
+#define P7 7
 
-enum{
-  P1 = 1,
-  P2,
-#ifdef __MSP430_HAS_PORT3_R__
-  P3,
-#endif  
-#ifdef __MSP430_HAS_PORT4_R__
-  P4,
-#endif  
-#ifdef __MSP430_HAS_PORT5_R__
-  P5,
-#endif  
-#ifdef __MSP430_HAS_PORT6_R__
-  P6,
-#endif  
-#ifdef __MSP430_HAS_PORT7_R__
-  P7,
-#endif  
-#ifdef __MSP430_HAS_PORTJ_R__
-  PJ,
-#endif  
-  };
-
-enum{
-  T0A0,
-  T0A1,
-  T0A2,
-  T1A0,
-  T1A1,
-  T1A2,
-  T1A3,
-  T1A4,
-  T1A5,
-  T2A0,
-  T2A1,
-  T2A2,
-  T0B0,
-  T0B1,
-  T0B2,
-  T1B0,
-  T1B1,
-  T1B2,
-  T2B0,
-  T2B1,
-  T2B2
-  };
+#define T0A0 0
+#define T0A1 1
+#define T0A2 2
+#define T1A0 3
+#define T1A1 4
+#define T1A2 5
+#define T1A3 6
+#define T1A4 7
+#define T1A5 8
+#define T2A0 9
+#define T2A1 10
+#define T2A2 11
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
@@ -165,29 +124,21 @@ void detachInterrupt(uint8_t);
 extern const uint8_t digital_pin_to_timer[];
 extern const uint8_t digital_pin_to_port[];
 extern const uint8_t digital_pin_to_bit_mask[];
-extern const uint16_t port_to_sel0[];
-extern const uint16_t port_to_sel1[];
+extern const uint16_t port_to_sel[];
 extern const uint16_t port_to_sel2[];
 extern const uint16_t port_to_input[];
 extern const uint16_t port_to_output[];
 
-#define digitalPinToPort(P)    ( digital_pin_to_port[P] )
+#define digitalPinToPort(P) ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
-#define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
-#define portDirRegister(P)     ( (volatile uint8_t *)( port_to_dir[P]) )
-/* 
- * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1
- * So we can remap  PxSEL and PxSEL2   to   PxSEL0 and PxSEL1
-*/ 
-#define portSelRegister(P)     ( (volatile uint8_t *)( port_to_sel0[P]) )
-#define portSel2Register(P)    ( (volatile uint8_t *)( port_to_sel2[P]) )
-
-#define portSel0Register(P)    ( (volatile uint8_t *)( port_to_sel0[P]) )
-#define portSel1Register(P)    ( (volatile uint8_t *)( port_to_sel1[P]) )
-#define portRenRegister(P)     ( (volatile uint8_t *)( port_to_ren[P]) )
-#define portOutputRegister(P)  ( (volatile uint8_t *)( port_to_output[P]) )
-#define portInputRegister(P)   ( (volatile uint8_t *)( port_to_input[P]) )
-#define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
+#define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
+#define portDirRegister(P) ( (volatile uint16_t *)( port_to_dir[P]) )
+#define portSelRegister(P) ( (volatile uint16_t *)( port_to_sel[P]) )
+#define portSel2Register(P) ( (volatile uint16_t *)( port_to_sel2[P]) )
+#define portRenRegister(P) ( (volatile uint16_t *)( port_to_ren[P]) )
+#define portOutputRegister(P) ( (volatile uint16_t *)( port_to_output[P]) )
+#define portInputRegister(P) ( (volatile uint16_t *)( port_to_input[P]) )
+#define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
 
 // Implemented in wiring.c
 void delayMicroseconds(unsigned int us);

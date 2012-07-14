@@ -41,12 +41,8 @@ class HardwareSerial : public Stream
 		uint8_t lock;
 		ring_buffer *_rx_buffer;
 		ring_buffer *_tx_buffer;
-#if defined(__MSP430_HAS_EUSCI_A0__)
-		static void USCIA0_ISR (void);
-#else
 		static void USCI0RX_ISR (void);
 		static void USCI0TX_ISR (void);
-#endif		
 		void ProcessTXInt(void);
 		void ProcessRXInt(void);
 	public:
