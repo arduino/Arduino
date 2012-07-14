@@ -9,6 +9,8 @@
  * or the GNU Lesser General Public License version 2.1, both as
  * published by the Free Software Foundation.
  *
+ * 07-14-2012 - rick@kimballsoftware.com 
+ *    Fixed MODE2/MODE3 phase problems. Added logic to deal with USI5 errata.
  */
 
 #include <msp430.h>
@@ -23,15 +25,16 @@
  * the USICKPH flag is inverted when compared to the CPHA
  * value described in Motorola documentation.
  */
+#define SPI_DIV_MASK    (USIDIV0 | USIDIV1 | USIDIV2)
+#define SPI_LSBMSB_MASK (USILSB)
 
-#define SPI_MODE_0 (USICKPH)			/* CPOL=0 CPHA=0 */
-#define SPI_MODE_1 (0)                 	/* CPOL=0 CPHA=1 */
-#define SPI_MODE_2 (USICKPL | USICKPH)  /* CPOL=1 CPHA=0 */
-#define SPI_MODE_3 (USICKPL)			/* CPOL=1 CPHA=1 */
-
-#define SPI_MODE_MASK (USICKPL | USICKPH)
-#define SPI_DIV_MASK  (USIDIV0 | USIDIV1 | USIDIV2)
-#define SPI_LSBMSB_MASK USILSB
+/* deal with USI5 errata see: document slaz061b */
+enum USI5 {
+    USI5_NO_ADJUST=0,
+    USI5_ADJUST=1,
+    USI5_SENT=2,
+};
+static enum USI5 bResetAdjust;
 
 /**
  * spi_initialize() - Configure USI for SPI mode
@@ -44,20 +47,21 @@
 
 void spi_initialize(void)
 {
-    USICTL0 |= USISWRST;	                // put USI in reset mode, source USI clock from SMCLK
-    USICTL0 |= USIPE5 | USIPE6 | USIPE7 | USIMST | USIOE;
-    USICTL1 |= SPI_MODE_0;                  // use SPI MODE 0 - CPOL=0 CPHA=0
-    USICKCTL = USIDIV_2 | USISSEL_2;        // default speed 4MHz 16MHz/4
+    USICTL0  |= USISWRST;                   // put USI in reset mode, source USI clock from SMCLK
+    USICTL0  |= USIPE5 | USIPE6 | USIPE7 | USIMST | USIOE;
+    USICKCTL |= USIDIV_2 | USISSEL_2;       // default speed 4MHz 16MHz/4
+    USICTL1   = USICKPH;                    // SPI_MODE_0
 
-	P1OUT |= BIT5 | BIT6;                   // SPI OUTPUT PINS LOW
-	P1DIR = (P1DIR & ~BIT7) | BIT5 | BIT6;  // configure P1.5, P1.6, P1.7 for USI
+    P1OUT |= BIT5 | BIT6;                   // SPI OUTPUT PINS LOW
+    P1DIR = (P1DIR & ~BIT7) | BIT5 | BIT6;  // configure P1.5, P1.6, P1.7 for USI
 
-	USICTL0 &= ~USISWRST;			        // release USI for operation
+    USICTL0 &= ~USISWRST;                   // release USI for operation
+
+    bResetAdjust = USI5_ADJUST;
 }
 
-void spi_disable(void)
-{
-    USICTL0 |= USISWRST; // put USI in reset mode
+void spi_disable(void) {
+    USICTL0 |= USISWRST;        // put USI in reset mode
 }
 
 /**
@@ -66,12 +70,21 @@ void spi_disable(void)
 uint8_t spi_send(const uint8_t _data)
 {
     USISRL = _data;
-    USICNT = 8;
 
-	while (!(USIIFG & USICTL1))
-        ; // wait for an inbound character
+    // SPI master generates one additional clock after module reset if USICKPH is set.
+    if ( bResetAdjust == USI5_ADJUST ) {
+        USICNT=7;   // adjust first time send
+        bResetAdjust = USI5_SENT;
+    }
+    else {
+        USICNT = 8;
+    }
 
-	return USISRL; // reading clears RXIFG flag
+    while (!(USICTL1 & USIIFG)) {
+        ; // wait for an USICNT to decrement to 0
+    }
+
+    return USISRL; // reading clears RXIFG flag
 }
 
 /**
@@ -85,7 +98,7 @@ void spi_set_divisor(const uint16_t clkdiv)
 {
     USICTL0 |= USISWRST;        // put USI in reset mode
     USICKCTL = (USICKCTL & ~SPI_DIV_MASK) | clkdiv;
-    USICTL0 &= ~USISWRST;		// release for operation
+    USICTL0 &= ~USISWRST;        // release for operation
 }
 
 /**
@@ -112,22 +125,39 @@ void spi_set_datamode(const uint8_t mode)
 {
     USICTL0 |= USISWRST;        // put USI in reset mode while we make changes
     switch(mode) {
-    case 0: /* SPI_MODE0 */
-        USICTL1 = (USICTL1 & ~SPI_MODE_MASK) | SPI_MODE_0;
+    case 0:                   /* SPI_MODE0 */
+        USICKCTL &= ~USICKPL; /* CPOL=0 */
+        USICTL1  |= USICKPH;  /* CPHA=0 */
         break;
-    case 1: /* SPI_MODE1 */
-        USICTL1 = (USICTL1 & ~SPI_MODE_MASK) | SPI_MODE_1;
+
+    case 1:                   /* SPI_MODE1 */
+        USICKCTL &= ~USICKPL; /* CPOL=0 */
+        USICTL1  &= ~USICKPH; /* CPHA=1 */
         break;
-    case 2: /* SPI_MODE2 */
-        USICTL1 = (USICTL1 & ~SPI_MODE_MASK) | SPI_MODE_2;
+
+    case 2:                   /* SPI_MODE2 */
+        USICKCTL |= USICKPL;  /* CPOL=1 */
+        USICTL1  |= USICKPH;  /* CPHA=0 */
         break;
-    case 4: /* SPI_MODE3 */
-        USICTL1 = (USICTL1 & ~SPI_MODE_MASK) | SPI_MODE_3;
+
+    case 4:                   /* SPI_MODE3 */
+        USICKCTL |= USICKPL;  /* CPOL=1 */
+        USICTL1  &= ~USICKPH; /* CPHA=1 */
         break;
+
     default:
         break;
     }
     USICTL0 &= ~USISWRST;       // release for operation
+
+    if ( USICTL1 & USICKPH ) {
+        if ( bResetAdjust != USI5_SENT ) {
+            bResetAdjust = USI5_ADJUST;
+        }
+    }
+    else  {
+        bResetAdjust = USI5_NO_ADJUST;
+    }
 }
 #else
     //#warning "Error! This device doesn't have a USI peripheral"
