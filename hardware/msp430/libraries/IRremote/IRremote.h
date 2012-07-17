@@ -91,7 +91,7 @@ public:
 
 // Some useful constants
 
-#define USECPERTICK 26  // microseconds per clock interrupt tick // SH 071112 50->26
+#define USECPERTICK 50
 #define RAWBUF 76 // Length of raw duration buffer
 
 // Marks tend to be 100us too long, and spaces 100us too short
