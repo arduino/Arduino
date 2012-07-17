@@ -117,6 +117,87 @@ static const pin_map_t digitalPinMap[] = {
   {&DDRK, &PINK, &PORTK, 7}   // K7 69
 };
 //------------------------------------------------------------------------------
+#elif defined(__AVR_ATmega1284P__)
+// add this if use these other chips
+// ||defined(__AVR_ATmega644P__) || defined(__AVR_ATmega324P__)
+
+// ATMEL ATMEGA1284P / Mighty 1284p mapping
+//
+// Make it agree with the as-built hardware & pins_arduino.c
+//
+// ATMEL ATMEGA1284P
+//
+//                       +---\/---+
+//           (D 0) PB0  1|        |40  PA0 (AI 0 / D24)
+//           (D 1) PB1  2|        |39  PA1 (AI 1 / D25)
+//      INT2 (D 2) PB2  3|        |38  PA2 (AI 2 / D26)
+//       PWM (D 3) PB3  4|        |37  PA3 (AI 3 / D27)
+//    PWM/SS (D 4) PB4  5|        |36  PA4 (AI 4 / D28)
+//      MOSI (D 5) PB5  6|        |35  PA5 (AI 5 / D29)
+//  PWM/MISO (D 6) PB6  7|        |34  PA6 (AI 6 / D30)
+//   PWM/SCK (D 7) PB7  8|        |33  PA7 (AI 7 / D31)
+//                 RST  9|        |32  AREF
+//                 VCC 10|        |31  GND 
+//                 GND 11|        |30  AVCC
+//               XTAL2 12|        |29  PC7 (D 23)
+//               XTAL1 13|        |28  PC6 (D 22)
+//      RX0 (D 8)  PD0 14|        |27  PC5 (D 21) TDI
+//      TX0 (D 9)  PD1 15|        |26  PC4 (D 20) TDO
+// RX1/INT0 (D 10) PD2 16|        |25  PC3 (D 19) TMS
+// TX1/INT1 (D 11) PD3 17|        |24  PC2 (D 18) TCK
+//      PWM (D 12) PD4 18|        |23  PC1 (D 17) SDA
+//      PWM (D 13) PD5 19|        |22  PC0 (D 16) SCL
+//      PWM (D 14) PD6 20|        |21  PD7 (D 15) PWM
+//                       +--------+
+//
+
+
+// Two Wire (aka I2C) ports
+uint8_t const SDA_PIN = 17;  // C1 17
+uint8_t const SCL_PIN = 16;  // C0 16
+
+// SPI port
+uint8_t const SS_PIN =   4;  // physical 5, D 10  SS
+uint8_t const MOSI_PIN = 5;  // physical 6, D 11  MOSI
+uint8_t const MISO_PIN = 6;  // physical 7, D 12  MISO
+uint8_t const SCK_PIN =  7;  // physical 8, D 13  SCK
+
+static const pin_map_t digitalPinMap[] = {
+  {&DDRB, &PINB, &PORTB, 0},  // B0 0
+  {&DDRB, &PINB, &PORTB, 1},  // B1 1
+  {&DDRB, &PINB, &PORTB, 2},  // B2 2
+  {&DDRB, &PINB, &PORTB, 3},  // B3 3
+  {&DDRB, &PINB, &PORTB, 4},  // B4 4
+  {&DDRB, &PINB, &PORTB, 5},  // B5 5
+  {&DDRB, &PINB, &PORTB, 6},  // B6 6
+  {&DDRB, &PINB, &PORTB, 7},  // B7 7
+  {&DDRD, &PIND, &PORTD, 0},  // D0 8
+  {&DDRD, &PIND, &PORTD, 1},  // D1 9
+  {&DDRD, &PIND, &PORTD, 2},  // D2 10
+  {&DDRD, &PIND, &PORTD, 3},  // D3 11
+  {&DDRD, &PIND, &PORTD, 4},  // D4 12
+  {&DDRD, &PIND, &PORTD, 5},  // D5 13
+  {&DDRD, &PIND, &PORTD, 6},  // D6 14
+  {&DDRD, &PIND, &PORTD, 7},  // D7 15
+  {&DDRC, &PINC, &PORTC, 0},  // C0 16
+  {&DDRC, &PINC, &PORTC, 1},  // C1 17
+  {&DDRC, &PINC, &PORTC, 2},  // C2 18
+  {&DDRC, &PINC, &PORTC, 3},  // C3 19
+  {&DDRC, &PINC, &PORTC, 4},  // C4 20
+  {&DDRC, &PINC, &PORTC, 5},  // C5 21
+  {&DDRC, &PINC, &PORTC, 6},  // C6 22
+  {&DDRC, &PINC, &PORTC, 7},  // C7 23
+  {&DDRA, &PINA, &PORTA, 0},  // A0 24
+  {&DDRA, &PINA, &PORTA, 1},  // A1 25
+  {&DDRA, &PINA, &PORTA, 2},  // A2 26
+  {&DDRA, &PINA, &PORTA, 3},  // A3 27
+  {&DDRA, &PINA, &PORTA, 4},  // A4 28
+  {&DDRA, &PINA, &PORTA, 5},  // A5 29
+  {&DDRA, &PINA, &PORTA, 6},  // A6 30
+  {&DDRA, &PINA, &PORTA, 7}  // A7 31
+
+};
+//------------------------------------------------------------------------------
 #elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644__)
 // Sanguino
 
