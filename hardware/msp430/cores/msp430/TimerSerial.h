@@ -44,9 +44,9 @@
 
 struct ring_buffer
 {
-	unsigned char buffer[SERIAL_BUFFER_SIZE];
-	volatile unsigned int head;
-	volatile unsigned int tail;
+    unsigned char buffer[SERIAL_BUFFER_SIZE];
+    volatile unsigned int head;
+    volatile unsigned int tail;
 };
 
 class TimerSerial : public Stream
@@ -55,21 +55,21 @@ private:
     ring_buffer *_tx_buffer;
     ring_buffer *_rx_buffer;
 
-	void Transmit(void);
+    void Transmit(void);
 
 public:
-	TimerSerial(void);
+    TimerSerial(void);
 
-	void begin(unsigned long baud=TIMERSERIAL_BAUD);
-	void end(void);
+    void begin(unsigned long baud = TIMERSERIAL_BAUD);
+    void end(void);
 
-	virtual size_t write(uint8_t byte);
-	virtual int read(void);
-	virtual int available(void);
-	virtual void flush(void);
-	virtual int peek(void);
+    virtual size_t write(uint8_t byte);
+    virtual int read(void);
+    virtual int available(void);
+    virtual void flush(void);
+    virtual int peek(void);
 
-	using Print::write;
+    using Print::write;
 };
 
 #ifndef __MSP430_HAS_USCI__

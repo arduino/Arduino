@@ -12,7 +12,7 @@
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
   and
   msp430softserial by Rick Kimball
-  https://github.com/RickKimball
+  https://github.com7/RickKimball
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,6 @@ static ring_buffer tx_buffer = { {0}, 0, 0};
 static ring_buffer rx_buffer = { {0}, 0, 0};
 static volatile unsigned int USARTTXBUF;
 
-
 #ifndef __MSP430_HAS_USCI__
 TimerSerial Serial;
 #endif
@@ -49,23 +48,23 @@ TimerSerial::TimerSerial()
     _rx_buffer = &rx_buffer;
 }
 
-void TimerSerial::begin(unsigned long baud)  // we accept baud rate but ignore it, change in TimerSerial.h
+void TimerSerial::begin(unsigned long baud)
 {
-	P1OUT |= TX_PIN | RX_PIN;           // Initialize all GPIO
-	P1SEL |= TX_PIN | RX_PIN;           // Enabled Timer ISR function for TXD/RXD pins
-	P1DIR |= TX_PIN;                    // Enable TX_PIN for output
+    P1OUT |= TX_PIN | RX_PIN;           // Initialize all GPIO
+    P1SEL |= TX_PIN | RX_PIN;           // Enabled Timer ISR function for TXD/RXD pins
+    P1DIR |= TX_PIN;                    // Enable TX_PIN for output
 
-	TACCTL0 = OUT;                      // Set TXD Idle state as Mark = '1', +3.3 volts normal
-	TACCTL1 = SCS | CM1 | CAP | CCIE;   // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
-	TACTL = TASSEL_2 | MC_2 | TACLR;    // Clock TIMERA from SMCLK, run in continuous mode counting from to 0-0xFFFF
+    TACCTL0 = OUT;                      // Set TXD Idle state as Mark = '1', +3.3 volts normal
+    TACCTL1 = SCS | CM1 | CAP | CCIE;   // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
+    TACTL = TASSEL_2 | MC_2 | TACLR;    // Clock TIMERA from SMCLK, run in continuous mode counting from to 0-0xFFFF
 
 #if F_CPU == 1000000
-	if ( baud > 4800 ) { // limit maximum on slow CPU
-	    baud = 4800;
-	}
+    if ( baud > 4800 ) { // limit maximum on slow CPU
+        baud = 4800;
+    }
 #endif
 
-    TICKS_PER_BIT = F_CPU/baud;
+    TICKS_PER_BIT = F_CPU / baud;
     TICKS_PER_BIT_DIV2 = TICKS_PER_BIT >> 1;
 }
 
@@ -119,52 +118,53 @@ void TimerSerial::flush()
 
 int TimerSerial::peek()
 {
-	if (_rx_buffer->head == _rx_buffer->tail) {
-		return -1;
-	} else {
-		return _rx_buffer->buffer[_rx_buffer->tail];
-	}
+    if (_rx_buffer->head == _rx_buffer->tail) {
+        return -1;
+    }
+    else {
+        return _rx_buffer->buffer[_rx_buffer->tail];
+    }
 }
 void TimerSerial::Transmit()
 {
-	// make the next output at least TICKS_PER_BIT in the future
-	// so we don't stomp on the the stop bit from our previous xmt
+    // make the next output at least TICKS_PER_BIT in the future
+    // so we don't stomp on the the stop bit from our previous xmt
 
-	TACCR0 = TAR;               // resync with current TimerA clock
-	TACCR0 += TICKS_PER_BIT;    // setup the next timer tick
-	TACCTL0 = OUTMOD0 + CCIE;   // set TX_PIN HIGH and reenable interrupts
+    TACCR0 = TAR;               // resync with current TimerA clock
+    TACCR0 += TICKS_PER_BIT;    // setup the next timer tick
+    TACCTL0 = OUTMOD0 + CCIE;   // set TX_PIN HIGH and reenable interrupts
 
-	// now that we have set the next interrupt in motion
-	// we quickly need to set the TX data. Hopefully the
-	// next 2 lines happens before the next timer tick.
+    // now that we have set the next interrupt in motion
+    // we quickly need to set the TX data. Hopefully the
+    // next 2 lines happens before the next timer tick.
 
-	// Note: This code makes great use of multiple peripherals
-	//
-	// In the code above, we start with a busy wait on the CCIE
-	// interrupt flag. As soon as it is available, we setup the next
-	// send time and then enable the interrupt. Until that time happens,
-	// we have a few free cycles available to stuff the start and stop bits
-	// into the data buffer before the timer ISR kicks in and handles
-	// the event.  Note: if you are using a really slow clock or a really
-	// fast baud rate you could run into problems if the interrupt is
-	// triggered before you have finished with the USARTTXBUF
+    // Note: This code makes great use of multiple peripherals
+    //
+    // In the code above, we start with a busy wait on the CCIE
+    // interrupt flag. As soon as it is available, we setup the next
+    // send time and then enable the interrupt. Until that time happens,
+    // we have a few free cycles available to stuff the start and stop bits
+    // into the data buffer before the timer ISR kicks in and handles
+    // the event.  Note: if you are using a really slow clock or a really
+    // fast baud rate you could run into problems if the interrupt is
+    // triggered before you have finished with the USARTTXBUF
 
-	USARTTXBUF |= 0x100;    // Add the stop bit '1'
-	USARTTXBUF <<= 1;       // Add the start bit '0'
+    USARTTXBUF |= 0x100;    // Add the stop bit '1'
+    USARTTXBUF <<= 1;       // Add the start bit '0'
 }
 
 size_t TimerSerial::write(uint8_t b)
-{	
+{
     // TIMERA0 disables the interrupt flag when it has sent
-	// the final stop bit. While a transmit is in progress the
-	// interrupt is enabled
+    // the final stop bit. While a transmit is in progress the
+    // interrupt is enabled
     while (TACCTL0 & CCIE) {
-		; // wait for previous xmit to finish
-	}
+        ; // wait for previous xmit to finish
+    }
 
-	USARTTXBUF = b;
-	Transmit();
-	return 1;
+    USARTTXBUF = b;
+    Transmit();
+    return 1;
 }
 
 #ifndef TIMERA0_VECTOR
@@ -203,9 +203,9 @@ static void TimerSerial__TxIsr(void)
 __attribute__((interrupt(TIMERA1_VECTOR)))
 static void TimerSerial__RxIsr(void)
 {
-	static unsigned char rxBitCnt = 8;
-	static unsigned char rxData = 0;
-	volatile unsigned resetTAIV = TAIV; (void) resetTAIV;
+    static unsigned char rxBitCnt = 8;
+    static unsigned char rxData = 0;
+    volatile unsigned resetTAIV = TAIV; (void) resetTAIV;
 
     TACCR1 += TICKS_PER_BIT;            // Setup next time to sample
     if (TACCTL1 & CAP) {                // Is this the start bit?
