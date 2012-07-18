@@ -29,6 +29,7 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
+#ifdef __MSP430_HAS_USCI__
 #include <inttypes.h>
 
 #include "Stream.h"
@@ -60,5 +61,7 @@ class HardwareSerial : public Stream
 extern HardwareSerial Serial;
 
 extern void serialEventRun(void) __attribute__((weak));
+
+#endif // __MSP430_HAS_USCI__
 
 #endif

@@ -27,16 +27,20 @@
 #include <inttypes.h>
 #include <Stream.h>
 
-//TODO: Size should depend on how much RAM we have. 16 should be OK for most cases.
-
-#define SERIAL_BUFFER_SIZE 16
 
 #define TX_PIN BIT1	// TXD on P1.1
 #define RX_PIN BIT2	// RXD on P1.2
 
-// TODO: support other baud rates
-#define TICKS_PER_BIT (F_CPU / 9600)		// 9600 Baud
-#define TICKS_PER_BIT_DIV2 (F_CPU / (9600*2))	// Time for half a bit.
+// running at < 16MHz requires a lower baud rate
+#ifndef TIMERSERIAL_BAUD
+#if F_CPU > 1000000
+    #define TIMERSERIAL_BAUD 9600
+#else
+    #define TIMERSERIAL_BAUD 4800
+#endif
+#endif
+
+#define SERIAL_BUFFER_SIZE 16
 
 struct ring_buffer
 {
@@ -45,42 +49,18 @@ struct ring_buffer
 	volatile unsigned int tail;
 };
 
-//#define ENABLE_RXDEBUG_PIN 1
-
-#define RXDEBUG_PIN_PORT  P1    // P1
-#define RXDEBUG_PIN     BIT6    // P1.6
-
-#ifdef ENABLE_RXDEBUG_PIN
-#define _SoftSerial_RxDebugPinInit() { \
-    P1OUT |= RXDEBUG_PIN; \
-    P1DIR |= RXDEBUG_PIN; \
-}
-
-#define _SoftSerial_ToggleRxDebugPin() { \
-  P1OUT ^= RXDEBUG_PIN; \
-}
-
-#else
-#define _SoftSerial_RxDebugPinInit()
-#define _SoftSerial_ToggleRxDebugPin()
-#endif
-
 class TimerSerial : public Stream
 {
 private:
-	ring_buffer *_rx_buffer;
-	ring_buffer *_tx_buffer;
+    ring_buffer *_tx_buffer;
+    ring_buffer *_rx_buffer;
 
 	void Transmit(void);
-	static void TxIsr (void);
-	static void RxIsr (void);
-	void ProcessTxIsr(void);
-	void ProcessRxIsr(void);
 
 public:
 	TimerSerial(void);
-	~TimerSerial(void);
-	void begin(void);
+
+	void begin(unsigned long baud=TIMERSERIAL_BAUD);
 	void end(void);
 
 	virtual size_t write(uint8_t byte);
@@ -91,4 +71,9 @@ public:
 
 	using Print::write;
 };
+
+#ifndef __MSP430_HAS_USCI__
+extern TimerSerial Serial;
+#endif
+
 #endif

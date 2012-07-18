@@ -154,7 +154,11 @@ void enableWatchDog();
 #ifdef __cplusplus
 #include "WCharacter.h"
 #include "WString.h"
+#ifdef __MSP430_HAS_USCI__
 #include "HardwareSerial.h"
+#else
+#include "TimerSerial.h"
+#endif
 
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);
