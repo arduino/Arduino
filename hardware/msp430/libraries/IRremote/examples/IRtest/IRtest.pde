@@ -15,9 +15,9 @@
 // Dumps out the decode_results structure.
 // Call this after IRrecv::decode()
 // void * to work around compiler issue
-//void dump(void *v) {
-//  decode_results *results = (decode_results *)v
-void dump(decode_results *results) {
+void dump(void *v) {
+  decode_results *results = (decode_results *)v;
+//void dump(decode_results *results) {
   int count = results->rawlen;
   if (results->decode_type == UNKNOWN) {
     Serial.println("Could not decode message");

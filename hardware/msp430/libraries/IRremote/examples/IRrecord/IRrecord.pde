@@ -18,8 +18,8 @@
 #include <IRremote.h>
 
 int RECV_PIN = 11;
-int BUTTON_PIN = 12;
-int STATUS_PIN = 13;
+int BUTTON_PIN = 5;
+int STATUS_PIN = 2;
 
 IRrecv irrecv(RECV_PIN);
 IRsend irsend;
@@ -43,7 +43,7 @@ int toggle = 0; // The RC5/6 toggle state
 
 // Stores the code for later playback
 // Most of this code is just logging
-void storCode(void* v){
+void storeCode(void* v){
 	decode_results *results = (decode_results *)v;
 //void storeCode(decode_results *results) {
 
@@ -148,12 +148,12 @@ int lastButtonState;
 void loop() {
   // If button pressed, send the code.
   int buttonState = digitalRead(BUTTON_PIN);
-  if (lastButtonState == HIGH && buttonState == LOW) {
+  if (lastButtonState == LOW && buttonState == HIGH) {
     Serial.println("Released");
     irrecv.enableIRIn(); // Re-enable receiver
   }
 
-  if (buttonState) {
+  if (buttonState==LOW) {
     Serial.println("Pressed, sending");
     digitalWrite(STATUS_PIN, HIGH);
     sendCode(lastButtonState == buttonState);
@@ -168,10 +168,3 @@ void loop() {
   }
   lastButtonState = buttonState;
 }
-
-
-
-
-
-
-

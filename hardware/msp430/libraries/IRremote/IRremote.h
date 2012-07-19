@@ -17,7 +17,7 @@
 // If DEBUG is defined, a lot of debugging output will be printed during decoding.
 // TEST must be defined for the IRtest unittests to work.  It will make some
 // methods virtual, which will be slightly slower, which is why it is optional.
-//#define DEBUG
+// #define DEBUG
 // #define TEST
 
 // Results returned from the decoder

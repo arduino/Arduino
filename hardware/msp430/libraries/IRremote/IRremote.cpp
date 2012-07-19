@@ -64,7 +64,7 @@ int MATCH_SPACE(int measured_ticks, int desired_us) {
   return measured_ticks >= TICKS_LOW(desired_us - MARK_EXCESS) && measured_ticks <= TICKS_HIGH(desired_us + MARK_EXCESS); // SH 071112 - -> + in TICKS_HIGH
 }
 
-
+// Soojin Han: this function is for serial debug interface
 void debug_print(char* data)
 {
 	#ifdef DEBUG
@@ -236,34 +236,24 @@ IRrecv::IRrecv(int recvpin)
 // initialization
 void IRrecv::enableIRIn() {
   _DINT();   // disable interrupts
-  debug_print("_DINT");
   // setup pulse clock timer interrupt
+  
   //Prescale /8 (16M/8 = 0.5 microseconds per tick)
   // Therefore, the timer interval can range from 0.5 to 128 microseconds
   // depending on the reset value (255 to 0)
   TIMER_CONFIG_NORMAL();
-  debug_print("TIMER_CONFIG_NORMAL");
   
-  debug_print("before Timer_enable_intr");
-  debug_print("TA1CTL");
-  delay(100);
-  Serial.println(TA1CTL, BIN);
-  debug_print("TA1CCTL0");
-  delay(100);
-  Serial.println(TA1CCTL0, BIN);
-  debug_print("123456789abcdefg");
   //Timer_A Overflow Interrupt Enable
-  TIMER_ENABLE_INTR;		// SH 071112 If enable this, Serial stop to print...
-	debug_print("TIMER_ENABLE_INTR");
-	
+  TIMER_ENABLE_INTR;
+  
   TIMER_RESET;
-	debug_print("TIMER_RESET");
+
   _EINT();  // enable interrupts
-	debug_print("_EINT");
+
   // initialize state machine variables
   irparams.rcvstate = STATE_IDLE;
   irparams.rawlen = 0;
-	debug_print("state machine var init");
+
   // set pin modes
   pinMode(irparams.recvpin, INPUT);
 }
