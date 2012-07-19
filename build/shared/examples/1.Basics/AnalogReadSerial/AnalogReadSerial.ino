@@ -6,7 +6,7 @@
  */
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600); // msp430g2231 must use 4800
 }
 
 void loop() {
