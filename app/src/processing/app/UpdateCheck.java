@@ -50,7 +50,7 @@ import static processing.app.I18n._;
  */
 public class UpdateCheck implements Runnable {
   Base base;
-  String downloadURL = _("http://www.arduino.cc/latest.txt");
+  String downloadURL = _("http://www.energia.nu/latest.txt");
 
   static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -100,11 +100,11 @@ public class UpdateCheck implements Runnable {
       Preferences.set("update.last", String.valueOf(now));
 
       String prompt =
-        _("A new version of Arduino is available,\n" +
-          "would you like to visit the Arduino download page?");
+        _("A new version of Energia is available,\n" +
+          "would you like to visit the Energia download page?");
         
       if (base.activeEditor != null) {
-        if (latest > Base.REVISION) {
+        if (latest > Base.EREVISION) {
           Object[] options = { _("Yes"), _("No") };
           int result = JOptionPane.showOptionDialog(base.activeEditor,
                                                     prompt,
@@ -115,7 +115,7 @@ public class UpdateCheck implements Runnable {
                                                     options,
                                                     options[0]);
           if (result == JOptionPane.YES_OPTION) {
-            Base.openURL(_("http://www.arduino.cc/en/Main/Software"));
+            Base.openURL(_("http://www.energia.nu/en/download"));
           }
         }
       }
