@@ -29,7 +29,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include "Energia.h" // for digitalWrite
-
+ 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
 #endif
@@ -41,6 +41,7 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 #include "twi.h"
+#include "usci_isr_handler.h"
 
 static volatile uint8_t twi_state;
 static volatile uint8_t twi_sendStop;           // should the transaction end with a stop
@@ -82,7 +83,6 @@ static uint8_t twi_my_addr;
  */
 void twi_init(void)
 {
-
 	// initialize state
 	twi_state = TWI_IDLE;
 	twi_sendStop = true;		// default value
@@ -105,6 +105,10 @@ void twi_init(void)
 #endif
 
 #ifdef __MSP430_HAS_USCI__
+    /* Calling this dummy function prevents the linker
+     * from stripping the USCI interupt vectors.*/ 
+    usci_isr_install();
+
     P1SEL |= BIT6 + BIT7;                     // Assign I2C pins to USCI_B0
     P1SEL2|= BIT6 + BIT7;                     // Assign I2C pins to USCI_B0
 
@@ -118,8 +122,6 @@ void twi_init(void)
      * UCSYNC = Synchronous mode
 	 * UCCLK = SMCLK
      */
-    UCB0CTL1 =  UCSSEL_3 | UCSWRST;
-    UCB0CTL0 = UCMST | UCMODE_3 | UCSYNC;
 
     /*
      * Compute the clock divider that achieves the fastest speed less than or
@@ -130,8 +132,6 @@ void twi_init(void)
     UCB0BR0 = (unsigned char)((F_CPU / 400000) & 0xFF);
     UCB0BR1 = (unsigned char)((F_CPU / 400000) >> 8);
     UCB0CTL1 &= ~(UCSWRST);
-    //UCB0I2CIE |= (UCALIE|UCNACKIE|UCSTTIE|UCSTPIE); // Enable I2C interrupts
-    //UC0IE |= (UCB0RXIE);                            // Enable I2C interrupts
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
 
@@ -209,7 +209,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 #endif
 #ifdef __MSP430_HAS_USCI__
     UCB0CTL1 = UCSWRST;                      // Enable SW reset
-    UCB0CTL1 |= (UCSSEL_3);                  // I2C Master, synchronous mode
+    UCB0CTL1 |= (UCSSEL_2);                  // I2C Master, synchronous mode
     UCB0CTL0 |= (UCMST | UCMODE_3 | UCSYNC); // I2C Master, synchronous mode
     UCB0CTL1 &= ~(UCTR);                     // Configure in receive mode
     UCB0I2CSA = address;                     // Set Slave Address
@@ -306,7 +306,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     UCB0CTL1 |= UCTR;                        // Configure in transmit mode
     UCB0I2CSA = address;                     // Set Slave Address
     UCB0CTL1 &= ~UCSWRST;                    // Clear SW reset, resume operation
-    //UCB0I2CIE |= (UCALIE|UCNACKIE|UCSTPIE);  // Enable I2C interrupts
+    UCB0I2CIE |= (UCALIE|UCNACKIE|UCSTPIE);  // Enable I2C interrupts
     UC0IE |= UCB0TXIE;                     // Enable I2C interrupts
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
@@ -356,8 +356,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     UCB0CTLW0 |= UCTXSTT;                  // I2C start condition
 #endif
 
-	while(twi_state != TWI_IDLE)
-	{
+	while(twi_state != TWI_IDLE) {
 		continue;
 	}
 
@@ -577,10 +576,9 @@ mtre:
 }
 #endif
 #ifdef __MSP430_HAS_USCI__
-__attribute__((interrupt(USCIAB0TX_VECTOR)))
-void USCI_RX_TX_ISR(void)  // RX/TX Service
+//__attribute__((interrupt(USCIAB0TX_VECTOR)))
+void i2c_txrx_isr(void)  // RX/TX Service
 {
-
 	/* USCI I2C mode. USCI_B0 receive interrupt flag.
 	 * UCB0RXIFG is set when UCB0RXBUF has received a complete character. */
 	if (UC0IFG & UCB0RXIFG){
@@ -591,6 +589,7 @@ void USCI_RX_TX_ISR(void)  // RX/TX Service
 				/* All data send. Generate STOP condition */
 				UCB0CTL1 |= UCTXSTP;
 			if(twi_masterBufferIndex > twi_masterBufferLength ) {
+				UCB0CTL1 |= UCTXSTP;
 				twi_state = TWI_IDLE;    //Idle
 			} else {
 			}
@@ -605,8 +604,6 @@ void USCI_RX_TX_ISR(void)  // RX/TX Service
 				UCB0CTL1 |= UCTXNACK;   // Generate NACK condition
 			}
 		}
-
-		UC0IFG &= ~UCB0RXIFG;      // Clear USCI_B0 TX int flag
 	}
 	/* USCI I2C mode. USCI_B0 transmit interrupt flag.
 	 * UCB0TXIFG is set when UCB0TXBUF is empty.*/
@@ -644,8 +641,8 @@ void USCI_RX_TX_ISR(void)  // RX/TX Service
 	}
 }
 
-__attribute__((interrupt(USCIAB0RX_VECTOR)))
-void USCI_I2C_ISR(void)  // I2C Service
+//__attribute__((interrupt(USCIAB0RX_VECTOR)))
+void i2c_state_isr(void)  // I2C Service
 {
 	/* Arbitration lost interrupt flag */
 	if (UCB0STAT & UCALIFG) {
@@ -658,7 +655,6 @@ void USCI_I2C_ISR(void)  // I2C Service
 		/* TODO: This can just as well be an address NACK.
 		 * Figure out a way to distinguish between ANACK and DNACK */
 		twi_error = TWI_ERROR_DATA_NACK;
-		__bic_SR_register_on_exit(CPUOFF);
 	}
 	/* Start condition interrupt flag.
 	 * UCSTTIFG is automatically cleared if a STOP condition is received. */
@@ -699,7 +695,6 @@ void USCI_I2C_ISR(void)  // I2C Service
 			twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
 		}
 		twi_state =  TWI_IDLE;
-		__bic_SR_register_on_exit(CPUOFF);
 	}
 }
 #endif

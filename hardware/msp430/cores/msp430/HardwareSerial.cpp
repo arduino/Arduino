@@ -35,6 +35,7 @@
 #include <inttypes.h>
 #include "Energia.h"
 #include "wiring_private.h"
+#include "usci_isr_handler.h"
 
 #if defined(__MSP430_HAS_USCI__)
 
@@ -95,6 +96,9 @@ void HardwareSerial::begin(unsigned long baud)
 	unsigned int divider;
 	unsigned char mod, oversampling;
 
+	/* Calling this dummy function prevents the linker
+	 * from stripping the USCI interupt vectors.*/ 
+	usci_isr_install();
 	if (SMCLK/baud>=48) {                                                // requires SMCLK for oversampling
 		oversampling = 1;
 	}
@@ -124,7 +128,7 @@ void HardwareSerial::begin(unsigned long baud)
 	UCA0BR1 = divider>>8;
 	UCA0MCTL = (oversampling ? UCOS16:0) | mod;
 	UCA0CTL1 &= ~UCSWRST;
-	UC0IE = UCA0RXIE;
+	UC0IE |= UCA0RXIE;
 }
 
 void HardwareSerial::end()
@@ -178,40 +182,28 @@ size_t HardwareSerial::write(uint8_t c)
 	_tx_buffer->buffer[_tx_buffer->head] = c;
 	_tx_buffer->head = i;
 
-	IE2 |= UCA0TXIE;
+	UC0IE |= UCA0TXIE;
 
 	return 1;
 }
 
-void HardwareSerial::ProcessRXInt(void)
+void uart_rx_isr(void)
 {
 	unsigned char c = UCA0RXBUF;
 	store_char(c, &rx_buffer);
 }
 
-__attribute__((interrupt(USCIAB0RX_VECTOR)))
-void HardwareSerial::USCI0RX_ISR(void)
-{
-	SerialPtr->ProcessRXInt();
-}
-
-void HardwareSerial::ProcessTXInt(void)
+void uart_tx_isr(void)
 {
 	if (tx_buffer.head == tx_buffer.tail) {
 		// Buffer empty, so disable interrupts
-		IE2 &= ~UCA0TXIE;
+		UC0IE &= ~UCA0TXIE;
 		return;
 	}
 
 	unsigned char c = tx_buffer.buffer[tx_buffer.tail];
 	tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
 	UCA0TXBUF = c;
-}
-
-__attribute__((interrupt(USCIAB0TX_VECTOR))) 
-void HardwareSerial::USCI0TX_ISR(void)
-{
-	SerialPtr->ProcessTXInt();
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
