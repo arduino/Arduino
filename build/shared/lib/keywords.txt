@@ -62,6 +62,17 @@ unsigned	KEYWORD1
 void	KEYWORD1	Void
 while	KEYWORD1	While
 word	KEYWORD1	Word
+TimerSerial	KEYWORD1
+
+# [u]int{8|16|32|64}_t types keywords syntax colouring 
+int8_t	KEYWORD1
+int16_t	KEYWORD1
+int32_t	KEYWORD1
+int64_t	KEYWORD1
+uint8_t	KEYWORD1
+uint16_t	KEYWORD1
+uint32_t	KEYWORD1
+uint64_t	KEYWORD1
 
 # operators aren't highlighted, but may have documentation
 
@@ -181,6 +192,14 @@ parseInt	KEYWORD2
 parseFloat	KEYWORD2
 readBytes	KEYWORD2
 readBytesUntil	KEYWORD2
+
+# TimerSerial keywords syntax colouring 
+begin	KEYWORD2
+end	KEYWORD2
+read	KEYWORD2
+available	KEYWORD2
+flush	KEYWORD2
+listen	KEYWORD2
 
 setup	KEYWORD3	Setup
 loop	KEYWORD3	Loop
