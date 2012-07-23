@@ -698,6 +698,7 @@ void i2c_state_isr(void)  // I2C Service
 	/* Stop condition interrupt flag.
 	 * UCSTPIFG is automatically cleared when a START condition is received. */
 	if (UCB0STAT & UCSTPIFG) {
+		UCB0STAT &= ~UCSTPIFG;
 		if (twi_state ==  TWI_SRX) {
 			/* Callback to user defined callback */
 			twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
