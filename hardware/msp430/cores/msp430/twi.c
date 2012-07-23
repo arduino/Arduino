@@ -115,14 +115,13 @@ void twi_init(void)
     //Disable the USCI module and clears the other bits of control register
     UCB0CTL1 = UCSWRST;
 
-    /*
-     * Configure as I2C master mode.
-     * UCMST = Master mode
+     /*
+     * Configure as I2C Slave.
      * UCMODE_3 = I2C mode
      * UCSYNC = Synchronous mode
-	 * UCCLK = SMCLK
+     * UCCLK = SMCLK
      */
-
+    UCB0CTL0 = UCMODE_3 | UCSYNC;
     /*
      * Compute the clock divider that achieves the fastest speed less than or
      * equal to the desired speed.  The numerator is biased to favor a larger
@@ -131,7 +130,13 @@ void twi_init(void)
      */
     UCB0BR0 = (unsigned char)((F_CPU / 400000) & 0xFF);
     UCB0BR1 = (unsigned char)((F_CPU / 400000) >> 8);
+
     UCB0CTL1 &= ~(UCSWRST);
+
+    /* Set I2C state change interrupt mask */
+    UCB0I2CIE |= (UCALIE|UCNACKIE|UCSTTIE|UCSTPIE);
+    /* Enable state change and TX/RX interrupts */
+    UC0IE |= UCB0RXIE | UCB0TXIE;
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
 
@@ -151,7 +156,7 @@ void twi_init(void)
      * UCMST = Master mode
      * UCMODE_3 = I2C mode
      * UCSYNC = Synchronous mode
-	 * UCCLK = SMCLK
+     * UCCLK = SMCLK
      */
     UCB0CTLW0 = UCMST | UCMODE_3 | UCSSEL__SMCLK | UCSYNC | UCSWRST;
 
@@ -661,6 +666,7 @@ void i2c_state_isr(void)  // I2C Service
 	/* Start condition interrupt flag.
 	 * UCSTTIFG is automatically cleared if a STOP condition is received. */
 	 if (UCB0STAT & UCSTTIFG) {
+		UCB0STAT &= ~UCSTTIFG;
 		/* UCTR is automagically set by the USCI module upon a START condition. */
 		if (UCB0CTL1 &  UCTR) {
 			/* Slave TX mode. */

@@ -117,8 +117,8 @@ void HardwareSerial::begin(unsigned long baud)
 	}
 
 	SerialPtr = this;
-	P1SEL  = RXD + TXD;
-	P1SEL2  = RXD + TXD;
+	P1SEL  |= RXD + TXD;
+	P1SEL2  |= RXD + TXD;
 
 	UCA0CTL1 = UCSWRST;
 	UCA0CTL1 = UCSSEL_2;        //SMCLK
