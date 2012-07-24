@@ -43,7 +43,7 @@
 #include "twi.h"
 #include "usci_isr_handler.h"
 
-static volatile uint8_t twi_state;
+static volatile uint16_t twi_state;
 static volatile uint8_t twi_sendStop;           // should the transaction end with a stop
 static volatile uint8_t twi_inRepStart;         // in the middle of a repeated start
 
@@ -87,21 +87,15 @@ void twi_init(void)
 	twi_state = TWI_IDLE;
 	twi_sendStop = true;		// default value
 	twi_inRepStart = false;
-
-        /* TODO: implement pinMode_int as internal pinMode function to easier deal with PSELx */
-	//pinMode(TWISDA,TWISDA_SET_MODE);
-	//pinMode(TWISCL,TWISCL_SET_MODE);
-        
 #ifdef __MSP430_HAS_USI__
-        
         P1OUT |= 0xC0;                        // P1.6 & P1.7 Pullups, others to 0
         P1REN |= 0xC0;                       // P1.6 & P1.7 Pullups
-	USICTL0 = USIPE6+USIPE7+USIMST+USISWRST;  // SDA/SCL
-	USICTL1 = USII2C;                   // Enable I2C mode & USI interrupt
+	USICTL0 = USIPE6+USIPE7+USISWRST;  // SDA/SCL Reset and come up as Slave
+	USICTL1 = USII2C;                   // Enable I2C mode
 	USICKCTL = USIDIV_7+USISSEL_2+USICKPL;    // USI clk: SCL = SMCLK/128
 	USICNT |= USIIFGCC;                       // Disable automatic clear control
 	USICTL0 &= ~USISWRST;                     // Enable USI
-        USICTL1 |= USIIE;
+        USICTL1 |= USIIE | USISTTIE;		// USI counter and START condition interrupt enable.
 #endif
 
 #ifdef __MSP430_HAS_USCI__
@@ -210,6 +204,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 	uint8_t i;
 
 #ifdef __MSP430_HAS_USI__
+	USICTL1 &= ~USISTTIE;
 	USICTL0 |= USIMST; // USI master mode
 #endif
 #ifdef __MSP430_HAS_USCI__
@@ -301,6 +296,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
 	twi_sendStop = sendStop;
 
 #ifdef __MSP430_HAS_USI__
+	USICTL1 &= ~USISTTIE;
 	USICTL0 |= USIMST; // USI master mode
 #endif
 #ifdef __MSP430_HAS_USCI__
@@ -486,8 +482,14 @@ void send_start()
 __attribute__((interrupt(USI_VECTOR)))
 void USI_ISR(void)
 {
-	switch(twi_state){
+	if (!(USICTL0 & USIMST) && (USICTL1 &USISTTIFG)) {
+		twi_state = TWI_SL_START;
+	}
+	
+	if (USICTL1 & USISTP) {
+	}
 
+	switch(twi_state){
 	// Master transmit / receive
 	case TWI_SND_START:
 		send_start();
@@ -558,8 +560,98 @@ mtre:
 		twi_stop();
 		twi_state = TWI_EXIT;
 		break;
-	// Slave receiver
-	// Slave transmitter
+	/* Slave receiver / transmitter. */
+	
+	/* START condition received */
+	case TWI_SL_START:
+		/* clear START interrupt flag */
+		USICTL1 &= ~USISTTIFG;
+		/* bit counter to 8 */
+		USICNT = (USICNT & 0xE0) + 0x08;
+		twi_state = TWI_SL_PROC_ADDR;
+		break;
+	/* Process address */
+	case TWI_SL_PROC_ADDR:
+		/* Are we being addressed? */
+		if (twi_my_addr == (USISRL & ~0x1)) {
+			/* Read? */
+			if (USISRL & 0x01) {
+				// enter slave transmitter mode
+				twi_txBufferIndex = 0;
+				// set tx buffer length to be zero, to verify if user changes it
+				twi_txBufferLength = 0;
+				// request for txBuffer to be filled and length to be set
+				// note: user must call twi_transmit(bytes, length) to do this
+				twi_onSlaveTransmit();
+				// if they didn't change buffer & length, initialize it
+				if(0 == twi_txBufferLength){
+					twi_txBufferLength = 1;
+					twi_txBuffer[0] = 0x00;
+				}
+				twi_state = TWI_SL_SEND_BYTE;
+			} else
+				twi_state = TWI_SL_RECV_BYTE;
+
+			/* Send ACK */
+			USISRL = 0x00;
+		} else {
+			/* Send NACK */
+			USISRL = 0xFF;
+			twi_state = TWI_SL_RESET;
+		
+		}
+		/* SDA output */
+		USICTL0 |= USIOE;
+		/* Bit counter 1 */
+		USICNT |= 1;
+		break;
+
+	/* Slave transmit */
+
+	/* Transmit a byte */
+	case TWI_SL_SEND_BYTE:
+		/* Load transmit register */
+		// if there is more to send, ack, otherwise nack
+		if(twi_txBufferIndex < twi_txBufferLength){
+			USISRL = twi_txBuffer[twi_txBufferIndex++];
+			/* SDA output */
+			USICTL0 |= USIOE;
+			/* Bit counter is 8. */
+			USICNT |=  0x08;
+		}else{
+		}
+		twi_state = TWI_SL_PREP_DATA_ACK;
+		break;
+	/* Prepare to receive data (N)ACK */
+	case TWI_SL_PREP_DATA_ACK:
+		/* SDA input */
+		USICTL0 &= ~USIOE;
+		/* bit counter is 1 */
+		USICNT |= 0x01;
+		twi_state = TWI_SL_PROC_DATA_ACK;
+		break;
+	/* Process data (N)ACK */
+	case TWI_SL_PROC_DATA_ACK:
+		if (USISRL & 0x01) {
+			/* NACK */
+			/* Reset state machine */
+			twi_state = TWI_IDLE;
+		} else {
+			/* Load transmit register */
+			// if there is more to send, ack, otherwise nack
+			if(twi_txBufferIndex < twi_txBufferLength){
+				USISRL = twi_txBuffer[twi_txBufferIndex++];
+				/* SDA output */
+				USICTL0 |= USIOE;
+				/* Bit counter is 8. */
+				USICNT |=  0x08;
+				break;
+			}else{
+			}
+			twi_state = TWI_SL_PREP_DATA_ACK;
+		}
+		break;
+	/* Slave receive */
 	// All
 	case TWI_EXIT:
 		USISRL = 0x0FF; // USISRL = 1 to drive SDA high

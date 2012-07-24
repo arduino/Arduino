@@ -68,8 +68,17 @@
 #define TWI_MR_PREP_DATA_RECV 5
 #define TWI_MR_PROC_DATA_RECV 6
 #define TWI_MR_PREP_STOP 7
-#define TWI_EXIT 8
-#define TWI_IDLE 9
+
+#define TWI_SL_START 8
+#define TWI_SL_PROC_ADDR 9
+#define TWI_SL_SEND_BYTE 10
+#define TWI_SL_PREP_DATA_ACK 11
+#define TWI_SL_PROC_DATA_ACK 12
+#define TWI_SL_RECV_BYTE 13
+#define TWI_SL_RESET 14
+#define TWI_EXIT 15
+#define TWI_IDLE 16
+
 
 #define TWI_ERRROR_NO_ERROR 0
 #define TWI_ERROR_BUF_TO_LONG 1
