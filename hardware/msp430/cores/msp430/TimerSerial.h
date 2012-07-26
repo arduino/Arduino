@@ -27,7 +27,6 @@
 #include <inttypes.h>
 #include <Stream.h>
 
-
 #define TX_PIN BIT1	// TXD on P1.1
 #define RX_PIN BIT2	// RXD on P1.2
 
@@ -40,22 +39,10 @@
 #endif
 #endif
 
-#define SERIAL_BUFFER_SIZE 16
-
-struct ring_buffer
-{
-    unsigned char buffer[SERIAL_BUFFER_SIZE];
-    volatile unsigned int head;
-    volatile unsigned int tail;
-};
+#define SERIAL_BUFFER_SIZE 16 // works best as a power of 2
 
 class TimerSerial : public Stream
 {
-private:
-    ring_buffer *_tx_buffer;
-    ring_buffer *_rx_buffer;
-
-    void Transmit(void);
 
 public:
     TimerSerial(void);
