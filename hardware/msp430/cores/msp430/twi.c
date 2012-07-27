@@ -479,6 +479,33 @@ void send_start()
 }
 
 #ifdef __MSP430_HAS_USI__
+
+/* Work around for USI I2C slave no interrupt on STOP condition 
+ * Register this callback with attachInterrupt(P1_7, usi_i2c_stop, RISING);
+ * Once called check for USISTP in USICTL1 register.
+ */
+void usi_i2c_stop(void)
+{
+	if(!(USICTL1 & USISTP)) {
+		return;
+	}
+
+	/* No need to monitor while we are idle */
+	detachInterrupt(P1_7);
+	/* Terminate the string if there is room */
+	if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
+		twi_rxBuffer[twi_rxBufferIndex] = '\0';
+	}
+
+	/* Callback the user with data received */
+	twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
+	twi_state = TWI_IDLE;
+}
+
+/* Slave transmitter:
+ * START->PROC_ADDR->SEND_BYTE->SEND_BYTE->PREP_DATA_ACK->PROC_DATA_ACK->TWI_IDLE
+						^-------------^
+ */
 __attribute__((interrupt(USI_VECTOR)))
 void USI_ISR(void)
 {
@@ -486,9 +513,6 @@ void USI_ISR(void)
 		twi_state = TWI_SL_START;
 	}
 	
-	if (USICTL1 & USISTP) {
-	}
-
 	switch(twi_state){
 	// Master transmit / receive
 	case TWI_SND_START:
@@ -564,8 +588,13 @@ mtre:
 	
 	/* START condition received */
 	case TWI_SL_START:
+		/* Work around for I2C no interrupt on STOP condition
+		 * Register on start so that USI master will not suffer
+		 * from this work around.*/
+		attachInterrupt(P1_7, usi_i2c_stop, RISING);
 		/* clear START interrupt flag */
 		USICTL1 &= ~USISTTIFG;
+		USICTL0 &= ~USIOE;
 		/* bit counter to 8 */
 		USICNT = (USICNT & 0xE0) + 0x08;
 		twi_state = TWI_SL_PROC_ADDR;
@@ -589,39 +618,26 @@ mtre:
 					twi_txBuffer[0] = 0x00;
 				}
 				twi_state = TWI_SL_SEND_BYTE;
-			} else
+			} else {
+				twi_rxBufferIndex = 0;
 				twi_state = TWI_SL_RECV_BYTE;
-
+			}
 			/* Send ACK */
 			USISRL = 0x00;
 		} else {
 			/* Send NACK */
 			USISRL = 0xFF;
-			twi_state = TWI_SL_RESET;
-		
+			twi_state = TWI_EXIT;
 		}
 		/* SDA output */
 		USICTL0 |= USIOE;
 		/* Bit counter 1 */
 		USICNT |= 1;
 		break;
-
 	/* Slave transmit */
-
 	/* Transmit a byte */
 	case TWI_SL_SEND_BYTE:
-		/* Load transmit register */
-		// if there is more to send, ack, otherwise nack
-		if(twi_txBufferIndex < twi_txBufferLength){
-			USISRL = twi_txBuffer[twi_txBufferIndex++];
-			/* SDA output */
-			USICTL0 |= USIOE;
-			/* Bit counter is 8. */
-			USICNT |=  0x08;
-		}else{
-		}
-		twi_state = TWI_SL_PREP_DATA_ACK;
-		break;
+		goto sltr;
 	/* Prepare to receive data (N)ACK */
 	case TWI_SL_PREP_DATA_ACK:
 		/* SDA input */
@@ -635,28 +651,63 @@ mtre:
 		if (USISRL & 0x01) {
 			/* NACK */
 			/* Reset state machine */
-			twi_state = TWI_IDLE;
+			twi_state = TWI_EXIT;
+			/* Immediately trigger another interrupt by return here
+			 * and preventing USIIFG from being cleared. i
+			 * This will make it hit the TWI_EXIT state on the next interrupt */
+			return;
 		} else {
-			/* Load transmit register */
-			// if there is more to send, ack, otherwise nack
+sltr:
+			/* If there is more to send, ack, otherwise nack */
 			if(twi_txBufferIndex < twi_txBufferLength){
+				/* Load transmit register */
 				USISRL = twi_txBuffer[twi_txBufferIndex++];
 				/* SDA output */
 				USICTL0 |= USIOE;
 				/* Bit counter is 8. */
 				USICNT |=  0x08;
+				twi_state = TWI_SL_PREP_DATA_ACK;
 				break;
-			}else{
 			}
-			twi_state = TWI_SL_PREP_DATA_ACK;
+			/* Going into exit state will effectively make SDA 1 until the next START 
+			 * To the master this means reading FF for all bytes over the number queued. */
+			twi_state = TWI_EXIT;
+			/* Immediately trigger another interrupt by return here
+			 * and preventing USIIFG from being cleared. i
+			 * This will make it hit the TWI_EXIT state on the next interrupt */
+			return;
 		}
 		break;
 	/* Slave receive */
-	// All
+	case TWI_SL_RECV_BYTE:
+		/* SDA input */
+		USICTL0 &= ~USIOE;
+		/* Bit counter is 8. */
+		USICNT |=  0x08;
+		twi_state = TWI_SL_PROC_BYTE;
+		break;
+	case TWI_SL_PROC_BYTE:
+		if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
+			// put byte in buffer and ack
+			twi_rxBuffer[twi_rxBufferIndex++] = USISRL;
+			USISRL = 0x00;
+			twi_state = TWI_SL_RECV_BYTE;
+		} else {
+			// otherwise nack
+			USISRL = 0xFF;
+			twi_state = TWI_EXIT;
+		}
+		USICTL0 |= USIOE;
+		USICNT |= 0x01;
+		break;
+	/* All */
 	case TWI_EXIT:
-		USISRL = 0x0FF; // USISRL = 1 to drive SDA high
-		USICTL0 |= USIGE; // Transparent latch enabled
-		USICTL0 &= ~(USIGE+USIOE); // Latch/SDA output disabled
+		/* Load FF into output shift register */
+		USISRL = 0x0FF;
+		/* Output latch transparant. MSB of USISR to the SDO pin. */
+		USICTL0 |= USIGE;
+		/* Latch disabled and make SDA input */
+		USICTL0 &= ~(USIGE+USIOE);
 		twi_state = TWI_IDLE; //Idle
 		break;
 	case TWI_IDLE:

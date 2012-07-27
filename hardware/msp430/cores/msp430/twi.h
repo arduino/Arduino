@@ -75,9 +75,10 @@
 #define TWI_SL_PREP_DATA_ACK 11
 #define TWI_SL_PROC_DATA_ACK 12
 #define TWI_SL_RECV_BYTE 13
-#define TWI_SL_RESET 14
-#define TWI_EXIT 15
-#define TWI_IDLE 16
+#define TWI_SL_PROC_BYTE 14
+#define TWI_SL_RESET 15
+#define TWI_EXIT 16
+#define TWI_IDLE 17
 
 
 #define TWI_ERRROR_NO_ERROR 0
