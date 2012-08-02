@@ -43,7 +43,7 @@
 #include "twi.h"
 #include "usci_isr_handler.h"
 
-static volatile uint16_t twi_state;
+static volatile uint8_t twi_state;
 static volatile uint8_t twi_sendStop;           // should the transaction end with a stop
 static volatile uint8_t twi_inRepStart;         // in the middle of a repeated start
 
@@ -66,6 +66,7 @@ static volatile uint8_t twi_error;
 #ifdef __MSP430_HAS_USI__
 static uint8_t twi_slarw;
 static uint8_t twi_my_addr;
+
 #endif
 
 #ifdef __MSP430_HAS_USCI__
@@ -87,15 +88,29 @@ void twi_init(void)
 	twi_state = TWI_IDLE;
 	twi_sendStop = true;		// default value
 	twi_inRepStart = false;
+
 #ifdef __MSP430_HAS_USI__
-        P1OUT |= 0xC0;                        // P1.6 & P1.7 Pullups, others to 0
-        P1REN |= 0xC0;                       // P1.6 & P1.7 Pullups
-	USICTL0 = USIPE6+USIPE7+USISWRST;  // SDA/SCL Reset and come up as Slave
-	USICTL1 = USII2C;                   // Enable I2C mode
-	USICKCTL = USIDIV_7+USISSEL_2+USICKPL;    // USI clk: SCL = SMCLK/128
-	USICNT |= USIIFGCC;                       // Disable automatic clear control
-	USICTL0 &= ~USISWRST;                     // Enable USI
-        USICTL1 |= USIIE | USISTTIE;		// USI counter and START condition interrupt enable.
+
+	/* 100 KHz for all */
+#if (F_CPU >= 16000000L) || (F_CPU >= 12000000L)
+	USICKCTL = USIDIV_7;
+#elif defined(CALBC1_8MHZ_) && (F_CPU >= 8000000L)
+	USICKCTL = USIDIV_6;
+#elif defined(CALBC1_1MHZ_) && (F_CPU >= 1000000L)
+	USICKCTL = USIDIV_3;
+#endif
+	/* Enable USI I2C mode. */
+	USICTL1 = USII2C;
+	/* SDA/SCL port enable and hold in reset */
+	USICTL0 = (USIPE6 | USIPE7 | USISWRST);
+	/* SMCLK and SCL inactive state is high */
+	USICKCTL |= (USISSEL_2 | USICKPL);
+	/* Disable automatic clear control */
+	USICNT |= USIIFGCC;
+	/* Enable USI */
+	USICTL0 &= ~USISWRST;
+	/* Counter interrupt enable */
+	USICTL1 |= USIIE;
 #endif
 
 #ifdef __MSP430_HAS_USCI__
@@ -117,13 +132,13 @@ void twi_init(void)
      */
     UCB0CTL0 = UCMODE_3 | UCSYNC;
     /*
-     * Compute the clock divider that achieves the fastest speed less than or
-     * equal to the desired speed.  The numerator is biased to favor a larger
+     * Compute the clock divider that achieves less than or
+     * equal to 100kHz.  The numerator is biased to favor a larger
      * clock divider so that the resulting clock is always less than or equal
      * to the desired clock, never greater.
      */
-    UCB0BR0 = (unsigned char)((F_CPU / 400000) & 0xFF);
-    UCB0BR1 = (unsigned char)((F_CPU / 400000) >> 8);
+    UCB0BR0 = (unsigned char)((F_CPU / TWI_FREQ) & 0xFF);
+    UCB0BR1 = (unsigned char)((F_CPU / TWI_FREQ) >> 8);
 
     UCB0CTL1 &= ~(UCSWRST);
 
@@ -174,19 +189,16 @@ void twi_init(void)
  */
 void twi_setAddress(uint8_t address)
 {
-  // set twi own (slave) address
 #ifdef __MSP430_HAS_USI__
 	twi_my_addr = address << 1;
-	//TODO: enable start detect interrupt to kick off the state machine
 #endif
 #ifdef __MSP430_HAS_USCI__
-	// UCGCEN = respond to general Call
-    UCB0I2COA = address | UCGCEN;
+	/* UCGCEN = respond to general Call */
+	UCB0I2COA = (address | UCGCEN);
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
-	// UCGCEN = respond to general Call
-    UCB0I2COA0 = address | UCOAEN | UCGCEN;
-;
+	/* UCGCEN = respond to general Call */
+	UCB0I2COA0 = (address | UCOAEN | UCGCEN);
 #endif
 }
 
@@ -204,8 +216,10 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 	uint8_t i;
 
 #ifdef __MSP430_HAS_USI__
+	/* Disable START condition interrupt */
 	USICTL1 &= ~USISTTIE;
-	USICTL0 |= USIMST; // USI master mode
+	/* I2C master mode */
+	USICTL0 |= USIMST;
 #endif
 #ifdef __MSP430_HAS_USCI__
     UCB0CTL1 = UCSWRST;                      // Enable SW reset
@@ -214,8 +228,8 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     UCB0CTL1 &= ~(UCTR);                     // Configure in receive mode
     UCB0I2CSA = address;                     // Set Slave Address
     UCB0CTL1 &= ~UCSWRST;                    // Clear SW reset, resume operation
-    UCB0I2CIE |= (UCALIE|UCNACKIE|UCSTTIE|UCSTPIE); // Enable I2C interrupts
-    UC0IE |= (UCB0RXIE);                            // Enable I2C interrupts
+    UCB0I2CIE |= (UCALIE|UCNACKIE|UCSTPIE);  // Enable I2C interrupts
+    UC0IE |= (UCB0RXIE | UCB0TXIE);          // Enable I2C interrupts
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
     UCB0CTLW0 = UCSWRST;                      // Enable SW reset
@@ -240,7 +254,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 	// expected byte of data.
 
 #ifdef __MSP430_HAS_USI__
-	// build sla+w, slave device address + w bit
+	/* build sla+w, slave device address + w bit */
 	twi_slarw = 1;
 	twi_slarw |= address << 1;
 
@@ -267,7 +281,6 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 	if (twi_masterBufferIndex < length)
 		length = twi_masterBufferIndex;
 
-	// copy twi buffer to data
 	for(i = 0; i < length; ++i){
 		data[i] = twi_masterBuffer[i];
 	}
@@ -296,8 +309,10 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
 	twi_sendStop = sendStop;
 
 #ifdef __MSP430_HAS_USI__
+	/* Disable START condition interrupt */
 	USICTL1 &= ~USISTTIE;
-	USICTL0 |= USIMST; // USI master mode
+	/* I2C master mode */
+	USICTL0 |= USIMST;
 #endif
 #ifdef __MSP430_HAS_USCI__
     UCB0CTL1 = UCSWRST;                      // Enable SW reset
@@ -321,28 +336,27 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
 		return 0;
 	}
 
-	// ensure data will fit into buffer
+	/* Ensure data will fit into buffer */
 	if(length > TWI_BUFFER_LENGTH){
 		return TWI_ERROR_BUF_TO_LONG;
 	}
 
 
-	// initialize buffer iteration vars
+	/* initialize buffer iteration vars */
 	twi_masterBufferIndex = 0;
 	twi_masterBufferLength = length;
 
-	// copy data to twi buffer
 	for(i = 0; i < length; ++i){
 		twi_masterBuffer[i] = data[i];
 	}
 
 #ifdef __MSP430_HAS_USI__
-	// build sla+w, slave device address + w bit
+	/* build sla+w, slave device address + w bit */
 	twi_slarw = 0;
 	twi_slarw |= address << 1;
 	
 	twi_state = TWI_SND_START;
-	// this will trigger an interrupt kicking off the state machine in the isr
+	/* This will trigger an interrupt kicking off the state machine in the isr */
 	USICTL1 |= USIIFG;
 #endif
 #ifdef __MSP430_HAS_USCI__
@@ -355,6 +369,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     UCB0CTLW0 |= UCTXSTT;                  // I2C start condition
 #endif
 
+	/* Wait for the transaction to complete */
 	while(twi_state != TWI_IDLE) {
 		__bis_SR_register(LPM0_bits);
 	}
@@ -413,108 +428,27 @@ void twi_attachSlaveTxEvent( void (*function)(void) )
   twi_onSlaveTransmit = function;
 }
 
-/*
- * Function twi_start
- * Desc     sends start condition
- * Input    tx: 1 indicated tx, 0 indicated rx
- * Output   none
- */
-void twi_start()
-{
-}
-
-void twi_send() {
-#ifdef __MSP430_HAS_USI__
-	USISRL = 0xaa;          // Load data byte
-	USICNT |=  0x08;              // Bit counter = 8, start TX
-#endif
-#ifdef __MSP430_HAS_USCI__
-#endif
-#ifdef __MSP430_HAS_EUSCI_B0__
-#endif
-}
-/*
- * Function twi_stop
- * Desc     relinquishes bus master status
- * Input    none
- * Output   none
- */
-void twi_stop(void)
-{
-#ifdef __MSP430_HAS_USI__
-	USICTL0 |= USIOE;
-	USISRL = 0x00;
-	USICNT |=  0x01;
-#endif
-#ifdef __MSP430_HAS_USCI__
-#endif
-#ifdef __MSP430_HAS_EUSCI_B0__
-#endif
-}
-
-/*
- * Function twi_releaseBus
- * Desc     releases bus control
- * Input    none
- * Output   none
- */
-void twi_releaseBus(void)
-{
-
-}
-
 void send_start()
 {
 #ifdef __MSP430_HAS_USI__
-	USISRL = 0x00;                // Generate Start Condition...
+	USISRL = 0x00;
 	USICTL0 |= USIGE+USIOE;
 	USICTL0 &= ~USIGE;
 	USISRL = twi_slarw;
 	USICNT = (USICNT & 0xE0) + 0x08;
 #endif
-#ifdef __MSP430_HAS_USCI__
-#endif
-#ifdef __MSP430_HAS_EUSCI_B0__
-#endif
 }
 
 #ifdef __MSP430_HAS_USI__
-
-/* Work around for USI I2C slave no interrupt on STOP condition 
- * Register this callback with attachInterrupt(P1_7, usi_i2c_stop, RISING);
- * Once called check for USISTP in USICTL1 register.
- */
-void usi_i2c_stop(void)
-{
-	if(!(USICTL1 & USISTP)) {
-		return;
-	}
-
-	/* No need to monitor while we are idle */
-	detachInterrupt(P1_7);
-	/* Terminate the string if there is room */
-	if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
-		twi_rxBuffer[twi_rxBufferIndex] = '\0';
-	}
-
-	/* Callback the user with data received */
-	twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
-	twi_state = TWI_IDLE;
-}
-
-/* Slave transmitter:
- * START->PROC_ADDR->SEND_BYTE->SEND_BYTE->PREP_DATA_ACK->PROC_DATA_ACK->TWI_IDLE
-						^-------------^
- */
 __attribute__((interrupt(USI_VECTOR)))
 void USI_ISR(void)
 {
-	if (!(USICTL0 & USIMST) && (USICTL1 &USISTTIFG)) {
+	if (!(USICTL0 & USIMST) && (USICTL1 & USISTTIFG)) {
 		twi_state = TWI_SL_START;
 	}
 	
 	switch(twi_state){
-	// Master transmit / receive
+	/* Master transmit / receive */
 	case TWI_SND_START:
 		send_start();
 		twi_state = TWI_PREP_SLA_ADDR_ACK;
@@ -527,31 +461,42 @@ void USI_ISR(void)
 	case TWI_MT_PROC_ADDR_ACK:
 		if (USISRL & 0x01) {
 			twi_error = TWI_ERROR_ADDR_NACK;
-			twi_stop();
+			USICTL0 |= USIOE;
+			USISRL = 0x00;
+			USICNT |=  0x01;
 			twi_state = TWI_EXIT;
 			break;
 		}
+
 		if(twi_slarw & 1)
 			goto mtre;
 		else
 			goto mtpd;
-		// else fall through and process data ACK;
-	case TWI_MT_PREP_DATA_ACK: // reveive (N)ACK
-		USICTL0 &= ~USIOE; // SDA = input
-		USICNT |= 0x01; // Bit counter=1
+
+		break;
+	/* Prepare to receive data (N)ACK */
+	case TWI_MT_PREP_DATA_ACK:
+		/* SDA = input */
+		USICTL0 &= ~USIOE;
+		/* Bit counter = 1 */
+		USICNT |= 0x01;
 		twi_state = TWI_MT_PROC_DATA_ACK;
 		break;
 	case TWI_MT_PROC_DATA_ACK:
 mtpd:
 		if (USISRL & 0x01) {
 			twi_error = TWI_ERROR_DATA_NACK;
-			twi_stop();
+			USICTL0 |= USIOE;
+			USISRL = 0x00;
+			USICNT |=  0x01;
 			twi_state = TWI_EXIT;
 			break;
 		}
 
 		if(twi_masterBufferIndex == twi_masterBufferLength) {
-			twi_stop();
+			USICTL0 |= USIOE;
+			USISRL = 0x00;
+			USICNT |=  0x01;
 			twi_state = TWI_EXIT;
 			break;
 		}
@@ -564,12 +509,16 @@ mtpd:
 	// Master receiver
 mtre:
 	case TWI_MR_PREP_DATA_RECV:
-		USICTL0 &= ~USIOE; // SDA input
-		USICNT |=  0x08; // Bit counter = 8, RX data
+		/* SDA input */
+		USICTL0 &= ~USIOE;
+		/* bit counter = 8 */
+		USICNT |=  0x08;
 		twi_state = TWI_MR_PROC_DATA_RECV;
 		break;
 	case TWI_MR_PROC_DATA_RECV:
-		USICTL0 |= USIOE; // SDA output
+		/* SDA output */
+		USICTL0 |= USIOE;
+
 		twi_masterBuffer[twi_masterBufferIndex++] = USISRL;
 		if(twi_masterBufferIndex > twi_masterBufferLength ) {
 			USISRL = 0xFF; // that was the last byte send NACK
@@ -578,127 +527,14 @@ mtre:
 			USISRL = 0x00; // keep on receiving and send ACK
 			twi_state = TWI_MR_PREP_DATA_RECV;
 		}
+
 		USICNT |= 0x01;
 		break;
 	case TWI_MR_PREP_STOP:
-		twi_stop();
+		USICTL0 |= USIOE;
+		USISRL = 0x00;
+		USICNT |=  0x01;
 		twi_state = TWI_EXIT;
-		break;
-	/* Slave receiver / transmitter. */
-	
-	/* START condition received */
-	case TWI_SL_START:
-		/* Work around for I2C no interrupt on STOP condition
-		 * Register on start so that USI master will not suffer
-		 * from this work around.*/
-		attachInterrupt(P1_7, usi_i2c_stop, RISING);
-		/* clear START interrupt flag */
-		USICTL1 &= ~USISTTIFG;
-		USICTL0 &= ~USIOE;
-		/* bit counter to 8 */
-		USICNT = (USICNT & 0xE0) + 0x08;
-		twi_state = TWI_SL_PROC_ADDR;
-		break;
-	/* Process address */
-	case TWI_SL_PROC_ADDR:
-		/* Are we being addressed? */
-		if (twi_my_addr == (USISRL & ~0x1)) {
-			/* Read? */
-			if (USISRL & 0x01) {
-				// enter slave transmitter mode
-				twi_txBufferIndex = 0;
-				// set tx buffer length to be zero, to verify if user changes it
-				twi_txBufferLength = 0;
-				// request for txBuffer to be filled and length to be set
-				// note: user must call twi_transmit(bytes, length) to do this
-				twi_onSlaveTransmit();
-				// if they didn't change buffer & length, initialize it
-				if(0 == twi_txBufferLength){
-					twi_txBufferLength = 1;
-					twi_txBuffer[0] = 0x00;
-				}
-				twi_state = TWI_SL_SEND_BYTE;
-			} else {
-				twi_rxBufferIndex = 0;
-				twi_state = TWI_SL_RECV_BYTE;
-			}
-			/* Send ACK */
-			USISRL = 0x00;
-		} else {
-			/* Send NACK */
-			USISRL = 0xFF;
-			twi_state = TWI_EXIT;
-		}
-		/* SDA output */
-		USICTL0 |= USIOE;
-		/* Bit counter 1 */
-		USICNT |= 1;
-		break;
-	/* Slave transmit */
-	/* Transmit a byte */
-	case TWI_SL_SEND_BYTE:
-		goto sltr;
-	/* Prepare to receive data (N)ACK */
-	case TWI_SL_PREP_DATA_ACK:
-		/* SDA input */
-		USICTL0 &= ~USIOE;
-		/* bit counter is 1 */
-		USICNT |= 0x01;
-		twi_state = TWI_SL_PROC_DATA_ACK;
-		break;
-	/* Process data (N)ACK */
-	case TWI_SL_PROC_DATA_ACK:
-		if (USISRL & 0x01) {
-			/* NACK */
-			/* Reset state machine */
-			twi_state = TWI_EXIT;
-			/* Immediately trigger another interrupt by return here
-			 * and preventing USIIFG from being cleared. i
-			 * This will make it hit the TWI_EXIT state on the next interrupt */
-			return;
-		} else {
-sltr:
-			/* If there is more to send, ack, otherwise nack */
-			if(twi_txBufferIndex < twi_txBufferLength){
-				/* Load transmit register */
-				USISRL = twi_txBuffer[twi_txBufferIndex++];
-				/* SDA output */
-				USICTL0 |= USIOE;
-				/* Bit counter is 8. */
-				USICNT |=  0x08;
-				twi_state = TWI_SL_PREP_DATA_ACK;
-				break;
-			}
-			/* Going into exit state will effectively make SDA 1 until the next START 
-			 * To the master this means reading FF for all bytes over the number queued. */
-			twi_state = TWI_EXIT;
-			/* Immediately trigger another interrupt by return here
-			 * and preventing USIIFG from being cleared. i
-			 * This will make it hit the TWI_EXIT state on the next interrupt */
-			return;
-		}
-		break;
-	/* Slave receive */
-	case TWI_SL_RECV_BYTE:
-		/* SDA input */
-		USICTL0 &= ~USIOE;
-		/* Bit counter is 8. */
-		USICNT |=  0x08;
-		twi_state = TWI_SL_PROC_BYTE;
-		break;
-	case TWI_SL_PROC_BYTE:
-		if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
-			// put byte in buffer and ack
-			twi_rxBuffer[twi_rxBufferIndex++] = USISRL;
-			USISRL = 0x00;
-			twi_state = TWI_SL_RECV_BYTE;
-		} else {
-			// otherwise nack
-			USISRL = 0xFF;
-			twi_state = TWI_EXIT;
-		}
-		USICTL0 |= USIOE;
-		USICNT |= 0x01;
 		break;
 	/* All */
 	case TWI_EXIT:
@@ -708,19 +544,20 @@ sltr:
 		USICTL0 |= USIGE;
 		/* Latch disabled and make SDA input */
 		USICTL0 &= ~(USIGE+USIOE);
-		twi_state = TWI_IDLE; //Idle
+		twi_state = TWI_IDLE;
 		break;
 	case TWI_IDLE:
-                break; //Nothing to do fall thru and clear interrupt flag.
-
+                /* Nothing to do. Fall thru and clear interrupt flag. */
 	default:
-		break;// Should not happen.
+		break;
 	}
 
-	USICTL1 &= ~USIIFG; // Clear interrupt flag.
+	/* Clear counter interrupt */
+	USICTL1 &= ~USIIFG;
 
 }
-#endif
+#endif /* __MSP430_HAS_USI__ */
+
 #ifdef __MSP430_HAS_USCI__
 void i2c_txrx_isr(void)  // RX/TX Service
 {
