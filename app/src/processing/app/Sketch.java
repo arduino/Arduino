@@ -741,7 +741,7 @@ public class Sketch {
         if (Preferences.get("editor.update_extension") == null) {
           Object[] options = { _("OK"), _("Cancel") };
           int result = JOptionPane.showOptionDialog(editor,
-                                                    _("In Arduino 1.0, the default file extension has changed\n" +
+                                                    _("In Energia 1.0, the default file extension has changed\n" +
                                                       "from .pde to .ino.  New sketches (including those created\n" +
                                                       "by \"Save-As\" will use the new extension.  The extension\n" +
                                                       "of existing sketches will be updated on save, but you can\n" +

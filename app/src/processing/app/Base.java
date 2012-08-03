@@ -186,7 +186,7 @@ public class Base {
       String mess = e.getMessage();
       if (mess.indexOf("ch.randelshofer.quaqua.QuaquaLookAndFeel") == -1) {
         System.err.println(_("Non-fatal error while setting the Look & Feel."));
-        System.err.println(_("The error message follows, however Arduino should run fine."));
+        System.err.println(_("The error message follows, however Energia should run fine."));
         System.err.println(mess);
       }
     }
@@ -234,7 +234,7 @@ public class Base {
     } catch (ClassNotFoundException cnfe) {
       Base.showPlatforms();
       Base.showError(_("Please install JDK 1.5 or later"),
-                     _("Arduino requires a full JDK (not just a JRE)\n" +
+                     _("Energia requires a full JDK (not just a JRE)\n" +
                        "to run. Please install JDK 1.5 or later.\n" +
                        "More information can be found in the reference."), cnfe);
     }
@@ -263,9 +263,9 @@ public class Base {
       if (!skechbookFolder.exists()) {
         Base.showWarning(_("Sketchbook folder disappeared"),
                          _("The sketchbook folder no longer exists.\n" +
-                           "Arduino will switch to the default sketchbook\n" +
+                           "Energia will switch to the default sketchbook\n" +
                            "location, and create a new sketchbook folder if\n" +
-                           "necessary. Arduino will then stop talking about\n" +
+                           "necessary. Energia will then stop talking about\n" +
                            "himself in the third person."), null);
         sketchbookPath = null;
       }
@@ -637,7 +637,7 @@ public class Base {
   public void handleOpenPrompt() {
     // get the frontmost window frame for placing file dialog
     FileDialog fd = new FileDialog(activeEditor,
-                                   _("Open an Arduino sketch..."),
+                                   _("Open an Energia sketch..."),
                                    FileDialog.LOAD);
     // This was annoying people, so disabled it in 0125.
     //fd.setDirectory(Preferences.get("sketchbook.path"));
@@ -1116,7 +1116,7 @@ public class Base {
           } else {
             showWarning(_("Sketch Does Not Exist"),
                         _("The selected sketch no longer exists.\n" +
-                          "You may need to restart Arduino to update\n" +
+                          "You may need to restart Energia to update\n" +
                           "the sketchbook menu."), null);
           }
         }
@@ -1452,7 +1452,7 @@ public class Base {
         settingsFolder = platform.getSettingsFolder();
       } catch (Exception e) {
         showError(_("Problem getting data folder"),
-                  _("Error getting the Arduino data folder."), e);
+                  _("Error getting the Energia data folder."), e);
       }
     }
 
@@ -1460,7 +1460,7 @@ public class Base {
     if (!settingsFolder.exists()) {
       if (!settingsFolder.mkdirs()) {
         showError(_("Settings issues"),
-                  _("Arduino cannot run because it could not\n" +
+                  _("Energia cannot run because it could not\n" +
                     "create a folder to store your settings."), null);
       }
     }
@@ -1664,7 +1664,7 @@ public class Base {
 
     if (!result) {
       showError(_("You forgot your sketchbook"),
-                _("Arduino cannot run because it could not\n" +
+                _("Energia cannot run because it could not\n" +
                   "create a folder to store your sketchbook."), null);
     }
 

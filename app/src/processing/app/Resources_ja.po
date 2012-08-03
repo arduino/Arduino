@@ -1258,15 +1258,15 @@ msgid "Frequently Asked Questions"
 msgstr "よくある質問"
 
 #: Editor.java:1099
-msgid "Visit Arduino.cc"
-msgstr "Arduino.ccウェブサイトを開く"
+msgid "Visit Energia.nu"
+msgstr "Energia.nuウェブサイトを開く"
 
 #: Editor.java:1102
-msgid "http://arduino.cc/"
+msgid "http://energia.nu/"
 msgstr ""
 
 #: Editor.java:1110
-msgid "About Arduino"
+msgid "About Energia"
 msgstr "Arduinoについて..."
 
 #: Editor.java:1124
