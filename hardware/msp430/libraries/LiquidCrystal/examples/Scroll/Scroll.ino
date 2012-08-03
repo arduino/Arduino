@@ -9,19 +9,29 @@
  This sketch prints "Hello World!" to the LCD and uses the
  scrollDisplayLeft() and scrollDisplayRight() methods to scroll
  the text.
- 
-  The circuit:
- * LCD RS pin to digital pin 12
- * LCD Enable pin to digital pin 11
- * LCD D4 pin to digital pin 5
- * LCD D5 pin to digital pin 4
- * LCD D6 pin to digital pin 3
- * LCD D7 pin to digital pin 2
- * LCD R/W pin to ground
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
- 
+
+ The circuit:
+ =================================
+ LCD pin              Connect to
+ ---------------------------------
+ 01 - GND             GND, pot
+ 02 - VCC             +5V, pot
+ 03 - Contrast        Pot wiper
+ 04 - RS              Pin8 (P2.0)
+ 05 - R/W             GND
+ 06 - EN              Pin9 (P2.1)
+ 07 - DB0             GND
+ 08 - DB1             GND
+ 09 - DB2             GND
+ 10 - DB3             GND
+ 11 - DB4             Pin10 (P2.2)
+ 12 - DB5             Pin11 (P2.3)
+ 13 - DB6             Pin12 (P2.4)
+ 14 - DB7             Pin13 (P2.5)
+ 15 - BL+             +5V
+ 16 - BL-             GND
+ =================================
+
  Library originally added 18 Apr 2008
  by David A. Mellis
  library modified 5 Jul 2009
@@ -40,7 +50,7 @@
 #include <LiquidCrystal.h>
 
 // initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+LiquidCrystal lcd(P2_0, P2_1, P2_2, P2_3, P2_4, P2_5);
 
 void setup() {
   // set up the LCD's number of columns and rows: 
