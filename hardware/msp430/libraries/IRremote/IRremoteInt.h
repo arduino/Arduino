@@ -162,7 +162,7 @@ extern volatile irparams_t irparams;
 // TODO: update TIMER_CONFIG_NORMAL
 // need to alter the math?
 
-//   TA1CCR0 = SYSCLOCK * USECPERTICK / 1000000;  \
+//   TA1CCR0 = SYSCLOCK * USECPERTICK / 1000000;
 
 #define TIMER_CONFIG_NORMAL() ({               \
   TA1CTL = TASSEL_2 + MC_1;                    \

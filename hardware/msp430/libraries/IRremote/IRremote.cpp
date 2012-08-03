@@ -65,7 +65,7 @@ int MATCH_SPACE(int measured_ticks, int desired_us) {
 }
 
 // Soojin Han: this function is for serial debug interface
-void debug_print(char* data)
+void debug_print(const char *data)
 {
 	#ifdef DEBUG
 	delay(100);
@@ -659,7 +659,7 @@ int IRrecv::compare(unsigned int oldval, unsigned int newval) {
 
 // Use FNV hash algorithm: http://isthe.com/chongo/tech/comp/fnv/#FNV-param
 #define FNV_PRIME_32 16777619
-#define FNV_BASIS_32 2166136261
+#define FNV_BASIS_32 2166136261U
 
 /* Converts the raw code values into a 32-bit hash code.
  * Hopefully this code is unique for each button.
