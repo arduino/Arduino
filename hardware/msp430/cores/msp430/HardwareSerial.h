@@ -44,8 +44,6 @@ class HardwareSerial : public Stream
 		ring_buffer *_tx_buffer;
 		static void USCI0RX_ISR (void);
 		static void USCI0TX_ISR (void);
-		void ProcessTXInt(void);
-		void ProcessRXInt(void);
 	public:
 		HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer);
 		void begin(unsigned long);
