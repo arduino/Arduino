@@ -1611,7 +1611,6 @@ public class Base {
           + File.separator);
       return ret;
     } else {
-      System.out.println("getBasePath() ?? what");
       return getHardwarePath() + File.separator + "tools" + File.separator
           + getArch() + File.separator + "bin" + File.separator;
     }
