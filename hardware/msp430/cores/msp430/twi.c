@@ -285,6 +285,10 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 		data[i] = twi_masterBuffer[i];
 	}
 
+#ifdef __MSP430_HAS_USCI__
+	/* Ensure stop condition got sent before we exit. */
+	while (UCB0CTL1 & UCTXSTP);
+#endif
 	return length;
 }
 
@@ -373,6 +377,11 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
 	while(twi_state != TWI_IDLE) {
 		__bis_SR_register(LPM0_bits);
 	}
+
+#ifdef __MSP430_HAS_USCI__
+	/* Ensure stop condition got sent before we exit. */
+	while (UCB0CTL1 & UCTXSTP);
+#endif
 
 	return twi_error;
 }
@@ -630,6 +639,7 @@ void i2c_state_isr(void)  // I2C Service
 {
 	/* Arbitration lost interrupt flag */
 	if (UCB0STAT & UCALIFG) {
+		UCB0STAT &= ~UCALIFG;
 		/* TODO: Handle bus arbitration lost */
 	}
 	/* Not-acknowledge received interrupt flag. 
