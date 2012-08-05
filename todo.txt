@@ -1,4 +1,4 @@
-0101E0006 energia
+0101E0008 energia
 
 [A] = Assigned and under development
 [X] = Completed
@@ -28,13 +28,12 @@
 	- http://arduino.cc/en/Reference/Libraries
 	- http://arduino.cc/playground/Main/LibraryList
 	- http://www.pjrc.com/teensy/td_libs.html
-	[ ] USCI I2C master/slave
-	[ ] USI I2C slave (master implemented but needs work)
+	[X] USCI I2C master/slave
+	[ ] USI I2C slave
 	[X] SPI support (needs testing)
-	[ ] CapTouch library
-	[A] IRremote
+	[X] IRremote
 	[ ] CapTouch API (see #39)
-	[ ] CC110L Air Module Booster Pack Library (see #80)
+	[A] CC110L Air Module Booster Pack Library (see #80)
 
 @ Documentation
     [X] Know issues list (https://github.com/energia/Energia/wiki/Know-Issues)
