@@ -1,0 +1,319 @@
+#!/usr/bin/env bash
+
+# $Id: build-mspgcc 76 2012-04-09 06:25:10Z ice $
+
+# build and install GCC toolchain for MSP430
+# 
+#
+# prerequisites
+# - bash
+# - wget, GNU patch, GNU make
+# - things needed to build binutils, GCC and GDB
+# for more info: http://gcc.gnu.org/wiki/InstallingGCC
+#
+# For Ubuntu/Debian that means:
+# $ sudo apt-get install build-essential
+# $ sudo apt-get build-dep gcc
+# $ sudo apt-get install libgmp3-dev libmpfr-dev libmpc-dev
+# $ sudo apt-get install texinfo texi2html
+#
+# environment
+# - PREFIX - set to directory where toolchain is to be installed in
+#            (defaults to /opt/mspgcc)
+
+set -x # probably too verbose
+set -e # stop on any errors
+
+mspgcc_ver="20120406"
+binutils_lts_patches=""
+gcc_lts_patches=""
+gdb_lts_patches=""
+libc_lts_patches="sf3522752"
+mcu_lts_patches="sf3522088"
+
+# ---
+
+base_url="http://sourceforge.net/projects/mspgcc/files"
+lts_patches_url="${base_url}/Patches/LTS/${mspgcc_ver}"
+
+MSP430_ROOT="$( dirname -- $( readlink -f "${0}" ) )"
+
+ncpus=1
+uname_s="$( uname -s )"
+case "${uname_s}" in
+Linux|CYGWIN_NT)
+	G=""
+	ncpus="$( grep -c '^processor' /proc/cpuinfo )"
+	;;
+*BSD)
+	localbase="/usr/local"
+	[ "${uname_s}" = "NetBSD" ] && localbase="/usr/pkg"
+	GCC_CONFG_ARGS="--with-gmp=${localbase} --with-mpfr=${localbase}"
+	G="g"
+	ncpus="$( sysctl -n hw.ncpu )"
+	;;
+esac
+
+dl()
+{
+	local fn
+	# SF directlinks
+	fn="$( basename "${1%/download}" )"
+	[ -f "${fn}" ] && return
+	wget --content-disposition -qO "${fn}" "${1}"
+}
+
+xtr()
+{
+	local fn="${1}"
+	local dn="${2}"
+	[ -d "${dn}" ] && rm -rf ./"${dn}"
+	mkdir "${dn}"
+	cd "${dn}"
+	tar -xj --strip-components 1 -f ../"${fn}"
+	cd ../
+}
+
+if [ ! "${ncpus/[^0-9-]*/}" -o ${ncpus} -lt 1 ]
+then
+	ncpus=1
+fi
+
+[ -d "${PREFIX}" ] && {
+	echo "${PREFIX} exists, remove manually"
+	exit 1
+}
+
+[ -d BUILD ] && rm -rf ./BUILD
+
+exec > >( tee "${MSP430_ROOT}/build.log.$$" )
+exec 2>&1
+
+echo '!!! fetch+untar+patch mspgcc'
+dl "${base_url}/mspgcc/mspgcc-${mspgcc_ver}.tar.bz2"
+[ -d "mspgcc-${mspgcc_ver}"  ] && rm -rf ./"mspgcc-${mspgcc_ver}"
+tar xjf "mspgcc-${mspgcc_ver}.tar.bz2"
+
+echo '!!! extract versions'
+cd ./"mspgcc-${mspgcc_ver}"
+if [ -f msp430-binutils-*.patch ]
+then
+	set -- $( echo msp430-binutils-*.patch | sed -r 's!msp430-binutils-(.[^-]+)-(.[^.]+).patch!\1 \2!' )
+	binutils_upstream_ver="${1}"
+	binutils_patch_ver="${2}"
+	set --
+else
+	echo "Can not extract binutils version information"
+	exit 1
+fi
+if [ -f msp430-gcc-*.patch ]
+then
+	set -- $( echo msp430-gcc-*.patch | sed -r 's!msp430-gcc-(.[^-]+)-(.[^.]+).patch!\1 \2!' )
+	gcc_upstream_ver="${1}"
+	gcc_patch_ver="${2}"
+	set --
+else
+	echo "Can not extract gcc version information"
+	exit 1
+fi
+if [ -f msp430-gdb-*.patch ]
+then
+	set -- $( echo msp430-gdb-*.patch | sed -r 's!msp430-gdb-(.[^-]+)-(.[^.]+).patch!\1 \2!' )
+	gdb_upstream_ver="${1}"
+	gdb_patch_ver="${2}"
+	set --
+else
+	echo "Can not extract gdb version information"
+	exit 1
+fi
+if [ -f msp430-libc.version ]
+then
+	libc_ver="$(< msp430-libc.version )"
+else
+	echo "Can not extract libc version information"
+	exit 1
+fi
+if [ -f msp430mcu.version ]
+then
+	mcu_ver="$(< msp430mcu.version )"
+else
+	echo "Can not extract mcu version information"
+fi
+
+cd ../
+
+printf 'MSPGCC version:         %s\n' "${mspgcc_ver}"
+printf 'binutils version:       %s\n' "${binutils_upstream_ver}"
+printf 'binutils patch:         %s\n' "${binutils_patch_ver}"
+printf 'binutils LTS patches:   %s\n' "${binutils_lts_patches:-None}"
+printf 'GCC version:            %s\n' "${gcc_upstream_ver}"
+printf 'GCC patch:              %s\n' "${gcc_patch_ver}"
+printf 'GCC LTS patches:        %s\n' "${gcc_lts_patches:-None}"
+printf 'GDB version:            %s\n' "${gdb_upstream_ver}"
+printf 'GDB patch:              %s\n' "${gdb_patch_ver}"
+printf 'GDB LTS patches:        %s\n' "${gdb_lts_patches:-None}"
+printf 'libc version:           %s\n' "${libc_ver}"
+printf 'libc LTS patches:       %s\n' "${libc_lts_patches:-None}"
+printf 'MCU version:            %s\n' "${mcu_ver}"
+printf 'MCU LTS patches:        %s\n' "${mcu_lts_patches:-None}"
+
+MSP430MCU_ROOT="${MSP430_ROOT}/msp430mcu-${mcu_ver}"
+PREFIX="${PREFIX:-/opt/energia}"
+
+PATCH="${G}patch"
+MAKE="${G}make -j ${ncpus}"
+PATH=/opt/energia/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PATH=${PREFIX}/bin:${PATH}
+export PREFIX MSP430_ROOT MSP430MCU_ROOT MAKE
+
+echo '!!! fetch'
+dl "http://ftp.gnu.org/pub/gnu/binutils/binutils-${binutils_upstream_ver}.tar.bz2"
+dl "http://ftp.gnu.org/pub/gnu/gcc/gcc-${gcc_upstream_ver}/gcc-${gcc_upstream_ver}.tar.bz2"
+dl "http://ftp.gnu.org/pub/gnu/gdb/gdb-${gdb_upstream_ver}.tar.bz2"
+dl "${base_url}/msp430mcu/msp430mcu-${mcu_ver}.tar.bz2"
+dl "${base_url}/msp430-libc/msp430-libc-${libc_ver}.tar.bz2"
+
+echo '!!! untar+patch'
+xtr "binutils-${binutils_upstream_ver}.tar.bz2" "binutils"
+(
+	cd "binutils"
+	${PATCH} -p1 < "../mspgcc-${mspgcc_ver}/msp430-binutils-${binutils_upstream_ver}-${binutils_patch_ver}.patch"
+)
+
+xtr "gcc-${gcc_upstream_ver}.tar.bz2" "gcc"
+(
+	cd "gcc"
+	${PATCH} -p1 < "../mspgcc-${mspgcc_ver}/msp430-gcc-${gcc_upstream_ver}-${gcc_patch_ver}.patch"
+)
+
+xtr "gdb-${gdb_upstream_ver}.tar.bz2" "gdb"
+(
+	cd "gdb"
+	${PATCH} -p1 < "../mspgcc-${mspgcc_ver}/msp430-gdb-${gdb_upstream_ver}-${gdb_patch_ver}.patch"
+)
+
+[ -d "msp430mcu-${mcu_ver}" ] && rm -rf ./"msp430mcu-${mcu_ver}"
+tar xjf "msp430mcu-${mcu_ver}.tar.bz2"
+
+[ -d "msp430-libc-${libc_ver}" ] && rm -rf ./"msp430-libc-${libc_ver}"
+tar xjf "msp430-libc-${libc_ver}.tar.bz2"
+
+echo '!!! lts patches'
+if [ "${binutils_lts_patches}" ]
+then
+	for p in ${binutils_lts_patches}
+	do
+		rm -f "msp430-binutils-${binutils_upstream_ver}-${binutils_patch_ver}-${p}.patch"
+		dl "${lts_patches_url}/msp430-binutils-${binutils_upstream_ver}-${binutils_patch_ver}-${p}.patch/download"
+		(
+			cd "binutils"
+			${PATCH} -p1 < "../msp430-binutils-${binutils_upstream_ver}-${binutils_patch_ver}-${p}.patch"
+		)
+	done
+fi
+
+if [ "${gcc_lts_patches}" ]
+then
+	for p in ${gcc_lts_patches}
+	do
+		dl "${lts_patches_url}/msp430-gcc-${gcc_upstream_ver}-${gcc_patch_ver}-${p}.patch/download"
+		(
+			cd "gcc"
+			${PATCH} -p1 < "../msp430-gcc-${gcc_upstream_ver}-${gcc_patch_ver}-${p}.patch"
+		)
+	done
+fi
+
+if [ "${gdb_lts_patches}" ]
+then
+	for p in ${gdb_lts_patches}
+	do
+		dl "${lts_patches_url}/msp430-gdb-${gdb_upstream_ver}-${gdb_patch_ver}-${p}.patch/download"
+		(
+			cd "gdb"
+			${PATCH} -p1 < "../msp430-gdb-${gdb_upstream_ver}-${gdb_patch_ver}-${p}.patch"
+		)
+	done
+fi
+
+if [ "${libc_lts_patches}" ]
+then
+	for p in ${libc_lts_patches}
+	do
+		dl "${lts_patches_url}/msp430-libc-${libc_ver}-${p}.patch/download"
+		(
+			cd "msp430-libc-${libc_ver}"
+			${PATCH} -p1 < "../msp430-libc-${libc_ver}-${p}.patch"
+		)
+	done
+fi
+
+if [ "${mcu_lts_patches}" ]
+then
+	for p in ${mcu_lts_patches}
+	do
+		dl "${lts_patches_url}/msp430mcu-${mcu_ver}-${p}.patch/download"
+		(
+			cd "msp430mcu-${mcu_ver}"
+			${PATCH} -p1 < "../msp430mcu-${mcu_ver}-${p}.patch"
+		)
+	done
+fi
+
+echo '!!! binutils configure'
+mkdir -p BUILD/binutils
+cd BUILD/binutils
+"../../binutils/configure" \
+	--disable-nls \
+	--target=msp430 \
+	--prefix="${PREFIX}"
+echo '!!! binutils make'
+${MAKE}
+echo '!!! binutils check'
+${MAKE} check-gas RUNTESTFLAGS=msp430.exp
+echo '!!! binutils install'
+${MAKE} install
+cd ../../
+
+mkdir -p BUILD/gcc
+cd BUILD/gcc
+echo '!!! gcc configure'
+"../../gcc/configure" ${GCC_CONFG_ARGS} \
+	--enable-languages="c,c++" \
+	--disable-nls \
+	--target=msp430 \
+	--prefix="${PREFIX}" \
+	--with-pkgversion="MSPGCC ${mspgcc_ver}${gcc_lts_patches:+ (With patches: ${gcc_lts_patches})}"
+echo '!!! gcc make'
+${MAKE}
+echo '!!! gcc check'
+${MAKE} check-gcc RUNTESTFLAGS=msp430.exp
+echo '!!! gcc install'
+${MAKE} install
+cd ../../
+
+cd "msp430-libc-${libc_ver}/src"
+[ -d Build ] && rm -rf Build
+echo '!!! libc make'
+${MAKE} PREFIX="${PREFIX}"
+echo '!!! libc install'
+${MAKE} PREFIX="${PREFIX}" install
+cd ../../
+
+cd "msp430mcu-${mcu_ver}"
+echo '!!! mcu install'
+sh scripts/install.sh "${PREFIX}"
+cd ../
+
+mkdir -p BUILD/gdb
+cd BUILD/gdb
+echo '!!! gdb configure'
+"../../gdb/configure" \
+	--disable-nls \
+	--target=msp430 \
+	--prefix="${PREFIX}"
+echo '!!! gdb make'
+${MAKE}
+echo '!!! gdb install'
+${MAKE} install
+cd ../../

@@ -1571,7 +1571,7 @@ public class Base {
     String path = getHardwarePath() + File.separator + "tools" +
                   File.separator + "msp430" + File.separator + "bin" + File.separator;
     if (Base.isLinux() && !(new File(path)).exists()) {
-      return "";  // use distribution provided avr tools if bundled tools missing
+      return "";  // use msp430-gcc and mspdebug in PATH instead of platform version
     }
     return path;
   }
@@ -1596,18 +1596,26 @@ public class Base {
   }
   
   static public String getBasePath() {
-	    if(Base.isLinux()) {
-	      return ""; // avr tools are installed system-wide and in the path
-	    } else if (Base.isWindows()){
-	      String ret = toShortPath(getHardwarePath() + File.separator + "tools" +
-	        File.separator + getArch() + File.separator + "bin" + File.separator);
-	      return ret;
-	    } else {
-		  return getHardwarePath() + File.separator + "tools" +
-		    File.separator + getArch() + File.separator + "bin" + File.separator;
-	    }
-	  }
-
+    if (Base.isLinux()) {
+      if (getArch() == "msp430") {
+        String hwPath = getMSP430BasePath();
+        return hwPath;
+      }
+      else {
+        return getHardwarePath() + File.separator + "tools" + File.separator
+          + getArch() + File.separator + "bin" + File.separator;
+      }
+    } else if (Base.isWindows()) {
+      String ret = toShortPath(getHardwarePath() + File.separator + "tools"
+          + File.separator + getArch() + File.separator + "bin"
+          + File.separator);
+      return ret;
+    } else {
+      System.out.println("getBasePath() ?? what");
+      return getHardwarePath() + File.separator + "tools" + File.separator
+          + getArch() + File.separator + "bin" + File.separator;
+    }
+  }
   
   
   static public Target getTarget() {
