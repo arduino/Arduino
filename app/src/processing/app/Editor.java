@@ -1109,6 +1109,15 @@ public class Editor extends JFrame implements RunnerListener {
       });
     menu.add(item);
 
+    item = new JMenuItem(_("Goto the Wiki"));
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          Base.openURL(_("http://energia.nu/wiki"));
+        }
+      });
+    menu.add(item);
+
+
     item = new JMenuItem(_("File a Bug"));
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
