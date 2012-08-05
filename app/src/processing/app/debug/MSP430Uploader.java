@@ -104,7 +104,7 @@ public class MSP430Uploader extends Uploader{
 		List commandDownloader = new ArrayList();
 
 		if ( Base.isLinux()) {
-			commandDownloader.add("mspdebug"); // use the one in the PATH
+			commandDownloader.add(Base.getMSP430BasePath() + "mspdebug"); // tools/msp430/bin or one from PATH
 		} 
 		else if (Base.isMacOS()) {
 			commandDownloader.add(Base.getHardwarePath() + "/tools/msp430/mspdebug/mspdebug");

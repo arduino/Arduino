@@ -79,7 +79,9 @@
     
     <!-- copy shared tools folder -->
     <copy todir="${target.path}/tools">
-      <fileset dir="shared/tools" />
+      <fileset dir="shared/tools">
+        <exclude name="*avr*" />
+      </fileset>
     </copy>
     
     <!-- copy library folder -->
@@ -89,7 +91,9 @@
     
     <!-- copy hardware folder -->
     <copy todir="${target.path}/hardware">
-      <fileset dir="../hardware" />
+      <fileset dir="../hardware">
+      	<exclude name="**/arduino/" />
+      </fileset>
     </copy>
     
     <!-- copy shared examples folder -->
@@ -356,17 +360,25 @@
     <chmod perm="755" file="linux/work/energia" />
 
     <copy todir="linux/work/hardware">
-      <fileset dir="linux/dist" includes="tools/**" />
+      <fileset dir="linux/dist" includes="tools/**">
+      	<exclude name="**/avr*" />
+      </fileset>
     </copy>
 
-    <chmod perm="755" file="linux/work/hardware/tools/avrdude" />
+    <!--chmod perm="755" file="linux/work/hardware/tools/avrdude" /-->
   </target>
 
   <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
-    <!-- Unzip AVR tools -->
+    <!-- Unzip AVR tools
     <exec executable="tar" dir="linux/work/hardware">
       <arg value="-xjf"/>
       <arg value="../../avr_tools_linux32.tar.bz2"/>
+    </exec>
+    -->
+  	<!-- Unzip msp430 tools -->
+  	<exec executable="tar" dir="linux/work/hardware">
+      <arg value="-xjf"/>
+      <arg value="../../msp430_tools_linux32.tar.bz2"/>
     </exec>
   </target>
 
@@ -376,12 +388,13 @@
 
     <chmod perm="755" file="linux/work/hardware/tools/avrdude" />
 
-    <!-- Unzip AVR tools -->
+    <!-- Unzip AVR tools
     <exec executable="tar" dir="linux/work/hardware">
       <arg value="-xjf"/>
       <arg value="../../avr_tools_linux64.tar.bz2"/>
     </exec>
-  </target>
+    -->
+  </target> 
   
   <target name="linux32-run" depends="linux32-build" 
 	  description="Run Linux (32-bit) version">
