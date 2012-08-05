@@ -85,9 +85,11 @@
     </copy>
     
     <!-- copy library folder -->
+    <!--
     <copy todir="${target.path}/libraries">
       <fileset dir="../libraries" />
     </copy>
+    -->
     
     <!-- copy hardware folder -->
     <copy todir="${target.path}/hardware">
@@ -98,7 +100,9 @@
     
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
-      <fileset dir="shared/examples" />
+      <fileset dir="shared/examples">
+        <exclude name="**/ArduinoISP/"/>
+      </fileset>
     </copy>
     
     <!-- Unzip documentation -->
@@ -200,7 +204,7 @@
 
     <!-- Unzip AVR tools -->
     <!-- <unzip dest="macosx/work/Energia.app/Contents/Resources/Java/hardware" src="macosx/dist/tools-universal.zip" overwrite="false"/> -->
-
+    <!--
     <exec executable="unzip">
       <arg value="-q" />
       <arg value="-n" />
@@ -208,7 +212,7 @@
       <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-universal.zip" />
     </exec>
-
+    -->
     <!-- Unzip msp430 tools -->
     <exec executable="unzip">
       <arg value="-q" />
@@ -217,12 +221,11 @@
       <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-msp430.zip" />
     </exec>
-
-
+   <!--
     <copy todir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
       <fileset file="macosx/dist/eeprom.h" />
     </copy>
-
+   -->
     <antcall target="assemble">
       <param name="target.path" value="macosx/work/Energia.app/Contents/Resources/Java" />
     </antcall>
@@ -235,6 +238,7 @@
   <target name="macosx-dist" if="macosx" depends="macosx-build" description="Create a downloadable .zip for the Mac OS X version">
     <!-- The ant copy command does not preserve permissions. -->
     <chmod file="macosx/work/Energia.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
+<!--
     <chmod perm="+x">
       <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
       <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
@@ -243,7 +247,7 @@
       <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
       <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
     </chmod>
-
+-->
     <replace file="macosx/work/Energia.app/Contents/Info.plist"
              token="VERSION" value="${version}" />
     <replace file="macosx/work/Energia.app/Contents/Info.plist"
@@ -278,6 +282,7 @@
 
     <!-- The ant copy command does not preserve permissions. -->
     <chmod file="macosx/working_dir/Energia.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
+<!--
     <chmod perm="+x">
       <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
       <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
@@ -286,7 +291,7 @@
       <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
       <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
     </chmod>
-
+-->
     <!-- Pause briefly for the OS to catch up with the DMG changes. 
 	 This prevents "hdiutil: couldn't eject "disk3" - Resource busy"
 	 errors when ejecting the disk in the next step.
@@ -383,10 +388,10 @@
   </target>
 
   <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
-    <copy tofile="linux/work/hardware/tools/avrdude" file="linux/dist/tools/avrdude64" overwrite="true" />
+    <!-- <copy tofile="linux/work/hardware/tools/avrdude" file="linux/dist/tools/avrdude64" overwrite="true" /> -->
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
 
-    <chmod perm="755" file="linux/work/hardware/tools/avrdude" />
+    <!-- <chmod perm="755" file="linux/work/hardware/tools/avrdude" /> -->
 
     <!-- Unzip AVR tools
     <exec executable="tar" dir="linux/work/hardware">
@@ -506,13 +511,15 @@
     </copy>
     
     <!-- Unzip AVR tools -->
+    <!--
     <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
+    -->
     <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
-
+    <!--
     <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
       <fileset file="windows/eeprom.h" />
     </copy>
-
+    -->
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
     </antcall>
