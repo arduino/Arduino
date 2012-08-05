@@ -8,13 +8,13 @@ lpmsp430g2231.build.core=msp430
 lpmsp430g2231.build.variant=launchpad
 
 ##############################################################
-lpmsp430g2231f.name=LaunchPad w/ msp430g2231 (16MHz)
-lpmsp430g2231f.upload.protocol=rf2500
-lpmsp430g2231f.upload.maximum_size=2048
-lpmsp430g2231f.build.mcu=msp430g2231
-lpmsp430g2231f.build.f_cpu=16000000L
-lpmsp430g2231f.build.core=msp430
-lpmsp430g2231f.build.variant=launchpad
+#lpmsp430g2231f.name=LaunchPad w/ msp430g2231 (16MHz)
+#lpmsp430g2231f.upload.protocol=rf2500
+#lpmsp430g2231f.upload.maximum_size=2048
+#lpmsp430g2231f.build.mcu=msp430g2231
+#lpmsp430g2231f.build.f_cpu=16000000L
+#lpmsp430g2231f.build.core=msp430
+#lpmsp430g2231f.build.variant=launchpad
 
 ##############################################################
 lpmsp430g2452.name=LaunchPad w/ msp430g2452 (16MHz)
