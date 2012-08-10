@@ -38,9 +38,11 @@ class Print
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
   protected:
+    Print* attachedPrint; // if non-NULL, points to a Print instance where we should output
+                          // any sent/received data
     void setWriteError(int err = 1) { write_error = err; }
   public:
-    Print() : write_error(0) {}
+    Print() : write_error(0), attachedPrint(NULL) {}
   
     int getWriteError() { return write_error; }
     void clearWriteError() { setWriteError(0); }
@@ -49,6 +51,8 @@ class Print
     size_t write(const char *str) { return write((const uint8_t *)str, strlen(str)); }
     virtual size_t write(const uint8_t *buffer, size_t size);
     
+    void attach(Print& aPrint) { attachedPrint = &aPrint; };
+
     size_t print(const __FlashStringHelper *);
     size_t print(const String &);
     size_t print(const char[]);

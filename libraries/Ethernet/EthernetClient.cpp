@@ -97,6 +97,10 @@ int EthernetClient::read() {
   if ( recv(_sock, &b, 1) > 0 )
   {
     // recv worked
+    if (attachedPrint)
+    {
+      attachedPrint->print((char)b);
+    }
     return b;
   }
   else
@@ -107,7 +111,18 @@ int EthernetClient::read() {
 }
 
 int EthernetClient::read(uint8_t *buf, size_t size) {
-  return recv(_sock, buf, size);
+  int ret = recv(_sock, buf, size);
+  if (ret > 0)
+  {
+    if (attachedPrint)
+    {
+      for (int i=0; i < ret; i++)
+      {
+        attachedPrint->print((char)buf[i]);
+      }
+    }
+  }
+  return ret;
 }
 
 int EthernetClient::peek() {

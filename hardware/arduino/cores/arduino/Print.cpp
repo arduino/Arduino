@@ -46,6 +46,10 @@ size_t Print::print(const __FlashStringHelper *ifsh)
   while (1) {
     unsigned char c = pgm_read_byte(p++);
     if (c == 0) break;
+    if (attachedPrint)
+    {
+      attachedPrint->print(c);
+    }
     n += write(c);
   }
   return n;
@@ -55,6 +59,10 @@ size_t Print::print(const String &s)
 {
   size_t n = 0;
   for (uint16_t i = 0; i < s.length(); i++) {
+    if (attachedPrint)
+    {
+      attachedPrint->print(s[i]);
+    }
     n += write(s[i]);
   }
   return n;
@@ -62,11 +70,19 @@ size_t Print::print(const String &s)
 
 size_t Print::print(const char str[])
 {
+  if (attachedPrint)
+  {
+    attachedPrint->print(str);
+  }
   return write(str);
 }
 
 size_t Print::print(char c)
 {
+  if (attachedPrint)
+  {
+    attachedPrint->print(c);
+  }
   return write(c);
 }
 
@@ -88,6 +104,10 @@ size_t Print::print(unsigned int n, int base)
 size_t Print::print(long n, int base)
 {
   if (base == 0) {
+    if (attachedPrint)
+    {
+      attachedPrint->print(n);
+    }
     return write(n);
   } else if (base == 10) {
     if (n < 0) {
@@ -103,7 +123,14 @@ size_t Print::print(long n, int base)
 
 size_t Print::print(unsigned long n, int base)
 {
-  if (base == 0) return write(n);
+  if (base == 0)
+  {
+    if (attachedPrint)
+    {
+      attachedPrint->print(n);
+    }
+    return write(n);
+  }
   else return printNumber(n, base);
 }
 
@@ -219,6 +246,10 @@ size_t Print::printNumber(unsigned long n, uint8_t base) {
     *--str = c < 10 ? c + '0' : c + 'A' - 10;
   } while(n);
 
+  if (attachedPrint)
+  {
+    attachedPrint->print(str);
+  }
   return write(str);
 }
 
