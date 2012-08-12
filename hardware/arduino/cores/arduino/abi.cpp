@@ -1,7 +1,6 @@
 #include <abi.h>
 #include <stdint.h>
-// TODO Uncomment this once you have libstdc++
-//#include <exception>
+#include <exception>
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -48,14 +47,10 @@ void __cxa_guard_abort (__guard *g) {
 
 void __cxa_pure_virtual(void) {
     // We might want to write some diagnostics to uart in this case
-    // TODO Uncomment this once you have libstdc++
-    //std::terminate();
-    abort();
+    std::terminate();
 }
 
 void __cxa_deleted_virtual(void) {
     // We might want to write some diagnostics to uart in this case
-    // TODO Uncomment this once you have libstdc++
-    //std::terminate();
-    abort();
+    std::terminate();
 }
