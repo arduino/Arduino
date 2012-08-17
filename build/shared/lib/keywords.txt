@@ -1,7 +1,8 @@
 # LITERAL1 specifies constants
 
-HIGH	LITERAL1	Constants
 LOW	LITERAL1	Constants
+HIGH	LITERAL1	Constants
+TOGGLE	LITERAL1	Constants
 INPUT	LITERAL1	Constants
 INPUT_PULLUP	LITERAL1	Constants
 OUTPUT	LITERAL1	Constants
