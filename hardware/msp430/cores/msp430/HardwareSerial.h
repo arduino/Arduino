@@ -29,7 +29,7 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
-#ifdef __MSP430_HAS_USCI__
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include <inttypes.h>
 
 #include "Stream.h"
@@ -42,8 +42,12 @@ class HardwareSerial : public Stream
 		uint8_t lock;
 		ring_buffer *_rx_buffer;
 		ring_buffer *_tx_buffer;
+#if defined(__MSP430_HAS_EUSCI_A0__)
+		static void USCIA0_ISR (void);
+#else
 		static void USCI0RX_ISR (void);
 		static void USCI0TX_ISR (void);
+#endif		
 	public:
 		HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer);
 		void begin(unsigned long);

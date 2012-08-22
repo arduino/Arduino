@@ -35,3 +35,12 @@ lpmsp430g2553.build.core=msp430
 lpmsp430g2553.build.variant=launchpad
 
 ##############################################################
+lpmsp430fr5739.name=LaunchPad w/ msp430fr5739
+lpmsp430fr5739.upload.protocol=rf2500
+lpmsp430fr5739.upload.maximum_size=15872
+lpmsp430fr5739.build.mcu=msp430fr5739
+lpmsp430fr5739.build.f_cpu=16000000L
+lpmsp430fr5739.build.core=msp430
+lpmsp430fr5739.build.variant=fraunchpad
+
+##############################################################
