@@ -176,13 +176,19 @@ public class Compiler implements MessageConsumer {
   String arch = Base.getArch();
   String runtimeLibraryName = buildPath + File.separator + "core.a";
   List baseCommandAR;
-  if(arch == "msp430") { 
+  if(arch == "msp430")  {
     baseCommandAR = new ArrayList(Arrays.asList(new String[] {
       basePath + "msp430-ar",
       "rcs",
       runtimeLibraryName
     }));
-    } else {
+    } else if(arch == "lm4f") {
+      baseCommandAR = new ArrayList(Arrays.asList(new String[] { 
+        basePath + "arm-none-eabi-ar",
+        "rcs",
+        runtimeLibraryName
+    }));  	
+    }else {
       baseCommandAR = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-ar",
         "rcs",
@@ -207,7 +213,6 @@ public class Compiler implements MessageConsumer {
     sketch.setCompilingProgress(60);
     List baseCommandLinker;
     if (arch == "msp430") { 
-        List objects = new ArrayList(baseCommandAR);
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "msp430-gcc",
         "-Os",
@@ -216,6 +221,24 @@ public class Compiler implements MessageConsumer {
         "-Wl,-gc-sections,-u,main", 
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-o",
+        buildPath + File.separator + primaryClassName + ".elf"
+      }));
+    }else if (arch == "lm4f") { 
+        baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
+        basePath + "arm-none-eabi-gcc ",
+        //"--gc-sections"
+        "-mthumb",
+        "-mcpu=cortex-m4",
+        "-Os" ,
+        "-Wl,-ffunction-sections,-fdata-sections,-u,main -MD,-std=c99,-Wall,-pedantic",
+        "-DPART_${PART},-o",
+        //lm4f linker has same issue as msp430, hence the -u,main
+        /*"-Wl,-gc-sections,-u,main", 
+        "-mcpu=" + "cortex-m4",
+        "-o",*/
+       /* "-mthumb,-mcpu=cortex-m4,-O2,-ffunction-sections,-fdata-sections -MD",             
+        "-std=c99,-Wall,-pedantic,-DPART_${PART},-c",//from C:\Firmware\DriverLib\makedefs
+        "-mfloat-abi=hard","-o",*/
         buildPath + File.separator + primaryClassName + ".elf"
       }));
     } else {
@@ -246,6 +269,12 @@ public class Compiler implements MessageConsumer {
       "-O",
       "-R",
     }));
+    } else if (arch == "lm4f") {
+      baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
+        basePath + "arm-none-eabi-objcopy",
+        "-O",
+        "-R",
+      }));
     } else {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-objcopy",
@@ -255,7 +284,7 @@ public class Compiler implements MessageConsumer {
 
     }
     List commandObjcopy;
-    if (arch == "msp430") {
+    if ((arch == "msp430") || (arch == "lm4f")) {
       //nothing 
     } else {
         // 5. extract EEPROM data (from EEMEM directive) to .eep file.
@@ -409,7 +438,8 @@ public class Compiler implements MessageConsumer {
     commandList.toArray(command);
     int result = 0;
     
-    if (verbose || Preferences.getBoolean("build.verbose")) {
+    //if (verbose || Preferences.getBoolean("build.verbose")) {
+    if (true || Preferences.getBoolean("build.verbose")) {
       for(int j = 0; j < command.length; j++) {
         System.out.print(command[j] + " ");
       }
@@ -581,6 +611,19 @@ public class Compiler implements MessageConsumer {
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
         }));
+    } if (arch == "lm4f") {
+    	//as per
+    	//http://mspgcc.sourceforge.net/manual/x1522.html
+        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
+          basePath + "arm-non-eabi-gcc",
+          "-c", // compile, don't link
+          "-g", // include debugging info (so errors include line numbers)
+          "-mcpu=" + "cortex-m4",
+          "-mthumb",
+          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-DARDUINO=" + Base.REVISION,
+          "-DENERGIA=" + Base.EREVISION,
+        }));
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
            basePath + "avr-gcc",
@@ -623,7 +666,27 @@ public class Compiler implements MessageConsumer {
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
-      } else { // default to avr
+      }else if (arch == "lm4f") {
+        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
+        basePath + "arm-none-eabi-gcc",
+        "-mthumb ","-mcpu=cortex-m4 ","-mfpu=fpv4-sp-d16 -mfloat-abi=softfp ","-Os ","-ffunction-sections ","fdata-sections ","-MD ",
+        "-std=c99 ","-Wall ","-pedantic ","DPART_${PART} ","-c"
+        /*"-c", // compile, don't link
+        "-g", // include debugging info (so errors include line numbers)
+        "-Os", // optimize for size
+        Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+        "-ffunction-sections", // place each function in its own section
+        "-fdata-sections",
+        "-mcpu=" + "cortex-m4",
+        "-mthumb",
+        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-DARDUINO=" + Base.REVISION,
+        "-DENERGIA=" + Base.EREVISION,*/
+        /*"-mthumb,-mcpu=cortex-m4,-O2,-ffunction-sections,-fdata-sections -MD",             
+        "-std=c99,-Wall,-pedantic,-DPART_${PART},-c",//from C:\Firmware\DriverLib\makedefs
+        "-mfloat-abi=hard","-o",*/
+      }));
+      }else { // default to avr
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-gcc",
         "-c", // compile, don't link
@@ -671,6 +734,25 @@ public class Compiler implements MessageConsumer {
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
+    } 
+    else if (arch == "lm4f") {
+        baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
+          basePath + "arm-none-eabi-g++",
+          "-mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -MD -std=c99 -Wall",
+          "-pedantic -DPART_${PART} -c" // compile, don't link
+          /*"-g", // include debugging info (so errors include line numbers)
+          "-Os", // optimize for size
+          Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+          "-fno-exceptions",
+          "-ffunction-sections", // place each function in its own section
+          "-fdata-sections",
+          "-mcpu=" + "cortex-m4",
+          "-mthumb",
+          //"-mcpu=" + boardPreferences.get("build.mcu"),
+          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-MMD", // output dependancy info
+          "-DARDUINO=" + Base.REVISION,*/
+        }));
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-g++",

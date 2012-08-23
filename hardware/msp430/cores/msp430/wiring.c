@@ -38,7 +38,7 @@ void init()
         disableWatchDog();
 	initClocks();
         enableWatchDogIntervalMode();
-        __eint();
+        __eint(); //enable interrupts
 }
 
 void disableWatchDog()
