@@ -738,9 +738,8 @@ public class Compiler implements MessageConsumer {
     else if (arch == "lm4f") {
         baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-g++",
-          "-mthumb -mcpu=cortex-m4 -Os -ffunction-sections -fdata-sections -MD -std=c99 -Wall",
-          "-pedantic -DPART_${PART} -c" // compile, don't link
-          /*"-g", // include debugging info (so errors include line numbers)
+          "-c",
+          "-g", // include debugging info (so errors include line numbers)
           "-Os", // optimize for size
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-exceptions",
@@ -751,7 +750,7 @@ public class Compiler implements MessageConsumer {
           //"-mcpu=" + boardPreferences.get("build.mcu"),
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-MMD", // output dependancy info
-          "-DARDUINO=" + Base.REVISION,*/
+          "-DARDUINO=" + Base.REVISION,
         }));
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
