@@ -95,18 +95,12 @@ void analogWrite(uint8_t pin, int val)
 	        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
 	        uint8_t port = digitalPinToPort(pin);   // get pin port
 	        volatile uint8_t *sel;
-	        volatile uint8_t *sel2;
                 
                 if (port == NOT_A_PORT) return; // pin on timer?
                
 	        sel = portSelRegister(port); // get the port function select register address
 		*sel |= bit;                 // set bit in pin function select register  
-                
-                //TODO: Firgure out a better way to determine if SEL2 needs to be set
-	        if(bit == BV(4) && port == P1) {
-                        sel2 = portSel2Register(port); // get the port function select register address
-                        *sel2 |= bit;
-                }
+
                 switch(digitalPinToTimer(pin)) {                // which timer and CCR?
  			//case: T0A0                            // CCR0 used as period register
 			case T0A1:                              // TimerA0 / CCR1
@@ -156,18 +150,49 @@ void analogWrite(uint8_t pin, int val)
 #if defined(__MSP430_HAS_T0B3__) 
  			//case: T0B0                            // CCR0 used as period register
  			case T0B1:                              // TimerB0 / CCR1
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL1 = OUTMOD_7;            // reset/set
+                                TB0CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0B2:                              // TimerB0 / CCR1
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL2 = OUTMOD_7;            // reset/set
+                                TB0CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+#endif
+#if defined(__MSP430_HAS_T1B3__) 
+ 			//case: T1B0                            // CCR0 used as period register
+ 			case T1B1:                              // TimerB0 / CCR1
+                                TB1CCR0 = PWM_PERIOD;           // PWM Period
+                                TB1CCTL1 = OUTMOD_7;            // reset/set
+                                TB1CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T1B2:                              // TimerB0 / CCR1
                                 TB1CCR0 = PWM_PERIOD;           // PWM Period
                                 TB1CCTL2 = OUTMOD_7;            // reset/set
                                 TB1CCR2 = PWM_DUTY(val);       // PWM duty cycle
                                 TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
- 			case T0B2:                              // TimerB0 / CCR1
+#endif
+#if defined(__MSP430_HAS_T2B3__) 
+ 			//case: T1B0                            // CCR0 used as period register
+ 			case T2B1:                              // TimerB0 / CCR1
+                                TB2CCR0 = PWM_PERIOD;           // PWM Period
+                                TB2CCTL1 = OUTMOD_7;            // reset/set
+                                TB2CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T2B2:                              // TimerB0 / CCR1
                                 TB2CCR0 = PWM_PERIOD;           // PWM Period
                                 TB2CCTL2 = OUTMOD_7;            // reset/set
                                 TB2CCR2 = PWM_DUTY(val);       // PWM duty cycle
                                 TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
+ 
                         case NOT_ON_TIMER:                      // not on a timer output pin
 			default:                                // or TxA0 pin
 				if (val < 128) {
