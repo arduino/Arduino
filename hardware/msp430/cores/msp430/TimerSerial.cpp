@@ -144,7 +144,7 @@ int TimerSerial::peek()
 {
     register uint16_t temp_tail=rx_buffer.tail;
 
-    if (rx_buffer.head == temp_tail) {
+    if (rx_buffer.head != temp_tail) {
         return rx_buffer.buffer[temp_tail];
     }
     else {
