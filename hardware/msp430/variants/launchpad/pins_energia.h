@@ -196,10 +196,10 @@ const uint8_t digital_pin_to_timer[] = {
 #if defined(__MSP430_HAS_T1A3__) 
 	T1A0,         /*  8 - P2.0 note: A0 output cannot be used with analogWrite */
 	T1A1,         /*  9 - P2.1 */
-	T1A1,         /* 10 - P2.3 */
-	T1A0,         /* 11 - P2.4 note: A0 output cannot be used with analogWrite  */
-	T1A2,         /* 12 - P2.5 */
-	T1A2,         /* 13 - P2.6 */
+	T1A1,         /* 10 - P2.2 */
+	T1A0,         /* 11 - P2.3 note: A0 output cannot be used with analogWrite  */
+	T1A2,         /* 12 - P2.4 */
+	T1A2,         /* 13 - P2.5 */
 #else
 	NOT_ON_TIMER, /*  8 - P2.0 */
 	NOT_ON_TIMER, /*  9 - P2.1 */
@@ -213,7 +213,7 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /* 16 - /RESET */  
 	NOT_ON_TIMER, /* 17 - TEST */  
 	NOT_ON_TIMER, /* 18 - XOUT - P2.7 */
-	T0A1,         /* 18 - XIN - P2.6: */
+	T0A1,         /* 19 - XIN - P2.6: */
 	NOT_ON_TIMER, /* 20 - GND */
 };
 
