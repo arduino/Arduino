@@ -25,6 +25,7 @@ package processing.app;
 
 import processing.app.debug.AvrdudeUploader;
 import processing.app.debug.MSP430Uploader;
+import processing.app.debug.LM4FUploader;
 import processing.app.debug.Compiler;
 import processing.app.debug.RunnerException;
 import processing.app.debug.Sizer;
@@ -1624,7 +1625,7 @@ public class Sketch {
     // that will bubble up to whomever called build().
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
-      size(buildPath, primaryClassName);
+      //size(buildPath, primaryClassName);
       return primaryClassName;
     }
     return null;
@@ -1705,7 +1706,9 @@ public class Sketch {
     //
     if(Base.getArch() == "msp430"){
     	uploader = new MSP430Uploader();
-    } else {
+    }else if (Base.getArch() == "lm4f"){
+        uploader = new LM4FUploader();
+    }else {
     	uploader = new AvrdudeUploader();
     }
 

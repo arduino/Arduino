@@ -42,11 +42,12 @@ public class LM4FUploader extends Uploader{
 		} else {
 			//Standard cmd.exe call: lmflash -q ek-lm4f232 -v -r qs-rgb.bin
 			// code to access via LM4F_Flasher
-			params.add("-q" + boardPreferences.get("build.mcu"));
+			params.add("-q");
+			params.add(boardPreferences.get("build.mcu"));
 			params.add("-v");
 			params.add("-r");
 			//params.add("-w");
-			params.add(buildPath + File.separator + className + ".hex");
+			params.add(buildPath + File.separator + className + ".bin");
 			/*params.add("-g");
 			if(!Preferences.getBoolean("upload.verbose"))
 					params.add("-q");
