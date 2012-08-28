@@ -75,8 +75,8 @@ static ring_buffer_ts rx_buffer;
  static ring_buffer_ts tx_buffer; // required for the g2231, without it we get garbage
 #endif
 
-#ifndef __MSP430_HAS_USCI__
- TimerSerial Serial;
+#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_EUSCI_A0__)
+TimerSerial Serial;
 #endif
 
 TimerSerial::TimerSerial()
@@ -89,13 +89,12 @@ TimerSerial::TimerSerial()
 
 void TimerSerial::begin(register unsigned long baud)
 {
-    P1OUT |= TX_PIN | RX_PIN;           // Initialize all GPIO
-    P1SEL |= TX_PIN | RX_PIN;           // Enabled Timer ISR function for TXD/RXD pins
-    P1DIR |= TX_PIN;                    // Enable TX_PIN for output
+	pinMode_int(UARTRXD, UARTRXD_SET_MODE);
+	pinMode_int(UARTTXD, UARTTXD_SET_MODE);	
 
-    TACCTL0 = OUT;                      // Set TXD Idle state as Mark = '1', +3.3 volts normal
-    TACCTL1 = SCS | CM1 | CAP | CCIE;   // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
-    TACTL = TASSEL_2 | MC_2 | TACLR;    // Clock TIMERA from SMCLK, run in continuous mode counting from to 0-0xFFFF
+    TA0CCTL0 = OUT;                     // Set TXD Idle state as Mark = '1', +3.3 volts normal
+    TA0CCTL1 = SCS | CM1 | CAP | CCIE;  // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
+    TA0CTL = TASSEL_2 | MC_2 | TACLR;   // Clock TIMERA from SMCLK, run in continuous mode counting from to 0-0xFFFF
 
 #if F_CPU == 1000000
     baud = (baud<=4800) ? baud : 4800;  // force 4800 for slow F_CPU
@@ -107,12 +106,10 @@ void TimerSerial::begin(register unsigned long baud)
 
 void TimerSerial::end()
 {
-    while (TACCTL0 & CCIE) {
+    while (TA0CCTL0 & CCIE) {
         ; // wait for previous xmit to finish
     }
-
-    P1SEL &= ~TX_PIN;        // P1 functions revert back to default
-    P1DIR &= ~TX_PIN;        // Input
+	pinMode(UARTTXD, INPUT);	
 }
 
 int TimerSerial::read()
@@ -138,7 +135,7 @@ int TimerSerial::available()
 
 void TimerSerial::flush()
 {
-    while (TACCTL0 & CCIE) {
+    while (TA0CCTL0 & CCIE) {
         ; // wait for previous xmit to finish
     }
 }
@@ -160,16 +157,16 @@ size_t TimerSerial::write(uint8_t c)
     // TIMERA0 disables the interrupt flag when it has sent
     // the final stop bit. While a transmit is in progress the
     // interrupt is enabled
-    while (TACCTL0 & CCIE) {
+    while (TA0CCTL0 & CCIE) {
         ; // wait for previous xmit to finish
     }
 
     // make the next output at least TICKS_PER_BIT in the future
     // so we don't stomp on the the stop bit from our previous xmt
 
-    TACCR0 = TAR;               // resync with current TimerA clock
-    TACCR0 += TICKS_PER_BIT;    // setup the next timer tick
-    TACCTL0 = OUTMOD0 + CCIE;   // set TX_PIN HIGH and reenable interrupts
+    TA0CCR0 = TA0R;              // resync with current TimerA clock
+    TA0CCR0 += TICKS_PER_BIT;    // setup the next timer tick
+    TA0CCTL0 = OUTMOD0 + CCIE;   // set TX_PIN HIGH and reenable interrupts
 
     // now that we have set the next interrupt in motion
     // we quickly need to set the TX data. Hopefully the
@@ -192,23 +189,29 @@ size_t TimerSerial::write(uint8_t c)
     return 1;
 }
 
+
+#ifndef TIMER0_A0_VECTOR
+#define TIMER0_A0_VECTOR TIMERA0_VECTOR
+#endif /* TIMER0_A0_VECTOR */
+
 #ifndef __GNUC__
-#pragma vector = TIMERA0_VECTOR
+#pragma vector = TIMER0_A0_VECTOR
 __interrupt
 #else
-__attribute__((interrupt(TIMERA0_VECTOR)))
+__attribute__((interrupt(TIMER0_A0_VECTOR)))
 #endif
+//Timer0 A0 interrupt service routine
 static void TimerSerial__TxIsr(void)
 {
-    TACCR0 += TICKS_PER_BIT;        // setup next time to send a bit, OUT will be set then
+    TA0CCR0 += TICKS_PER_BIT;       // setup next time to send a bit, OUT will be set then
 
-    TACCTL0 |= OUTMOD2;             // reset OUT (set to 0) OUTMOD2|OUTMOD0 (0b101)
+    TA0CCTL0 |= OUTMOD2;            // reset OUT (set to 0) OUTMOD2|OUTMOD0 (0b101)
     if ( USARTTXBUF & 0x01 ) {      // look at LSB if 1 then set OUT high
-       TACCTL0 &= ~OUTMOD2;         // set OUT (set to 1) OUTMOD0 (0b001)
+       TA0CCTL0 &= ~OUTMOD2;        // set OUT (set to 1) OUTMOD0 (0b001)
     }
 
     if (!(USARTTXBUF >>= 1)) {      // All bits transmitted ?
-        TACCTL0 &= ~CCIE;           // disable interrupt, indicates we are done
+        TA0CCTL0 &= ~CCIE;          // disable interrupt, indicates we are done
     }
 }
 
@@ -222,21 +225,26 @@ static void TimerSerial__TxIsr(void)
     } \
 }
 
+#ifndef TIMER0_A1_VECTOR
+#define TIMER0_A1_VECTOR TIMERA1_VECTOR
+#endif /* TIMER0_A0_VECTOR */
+
 #ifndef __GNUC__
-#pragma vector = TIMERA1_VECTOR
+#pragma vector = TIMER0_A1_VECTOR
 __interrupt
 #else
-__attribute__((interrupt(TIMERA1_VECTOR)))
+__attribute__((interrupt(TIMER0_A1_VECTOR)))
 #endif
+//Timer A1 interrupt service routine
 static void TimerSerial__RxIsr(void)
 {
     static uint8x2_t rx_bits;               // persistent storage for data and mask. fits in one 16 bit register
     volatile uint16_t resetTAIVIFG;         // just reading TAIV will reset the interrupt flag
-    resetTAIVIFG=TAIV;(void)resetTAIVIFG;
+    resetTAIVIFG=TA0IV;(void)resetTAIVIFG;
 
     register uint16_t regCCTL1=TA0CCTL1;    // using a temp register provides a slight performance improvement
 
-    TA0CCR1 += TICKS_PER_BIT;               // Setup next time to sample
+    TA0CCR1 += TICKS_PER_BIT;            // Setup next time to sample
 
     if (regCCTL1 & CAP) {                   // Are we in capture mode? If so, this is a start bit
         TA0CCR1 += TICKS_PER_BIT_DIV2;      // adjust sample time, so next sample is in the middle of the bit width

@@ -1,5 +1,5 @@
 #include "Energia.h"
-#if defined(__MSP430_HAS_USCI__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include "usci_isr_handler.h"
 
 /* This dummy function ensures that, when called from any module that 
@@ -7,6 +7,20 @@
  * installed, the linker won't strip the vectors.*/
 void usci_isr_install(){}
 
+
+
+#if defined(__MSP430_HAS_EUSCI_A0__)
+__attribute__((interrupt(USCI_A0_VECTOR)))
+void USCIA0_ISR(void)
+{
+  switch ( UCA0IV ) 
+  { 
+    case USCI_UART_UCRXIFG: uart_rx_isr(); break;
+    case USCI_UART_UCTXIFG: uart_tx_isr(); break;
+  }  
+}
+
+#else // #if defined(__MSP430_HAS_EUSCI_A0__)
 /* USCI_Ax and USCI_Bx share the same TX interrupt vector.
  * UART: 
  *	USCIAB0TX_VECTOR services the UCA0TXIFG set in UC0IFG.
@@ -41,4 +55,5 @@ void USCIAB0RX_ISR(void)
 	if ((UCB0STAT & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
 		i2c_state_isr(); 
 }
-#endif
+#endif // #if defined(__MSP430_HAS_EUSCI_A0__)
+#endif // if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)

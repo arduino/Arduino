@@ -1,7 +1,7 @@
 #ifndef usci_isr_handler_h
 #define usci_isr_handler_h
 
-#ifdef __MSP430_HAS_USCI__
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
 
 #ifdef __cplusplus
 extern "C" {

@@ -32,7 +32,16 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 
+#if defined(__MSP430_HAS_ADC10__) && !defined(ADC10ENC)
+#define ADC10ENC ENC 
+#endif
+#if defined(__MSP430_HAS_ADC10__) && !defined(ADC10MEM0)
+#define ADC10MEM0 ADC10MEM 
+#endif
+
+#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
 uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
+#endif
 
 void analogReference(uint16_t mode)
 {
@@ -85,29 +94,23 @@ void analogWrite(uint8_t pin, int val)
 
 	        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
 	        uint8_t port = digitalPinToPort(pin);   // get pin port
-	        volatile uint16_t *sel;
-	        volatile uint16_t *sel2;
+	        volatile uint8_t *sel;
                 
                 if (port == NOT_A_PORT) return; // pin on timer?
                
 	        sel = portSelRegister(port); // get the port function select register address
 		*sel |= bit;                 // set bit in pin function select register  
-                
-                //TODO: Firgure out a better way to determine if SEL2 needs to be set
-	        if(bit == BV(4) && port == P1) {
-                        sel2 = portSel2Register(port); // get the port function select register address
-                        *sel2 |= bit;
-                }
+
                 switch(digitalPinToTimer(pin)) {                // which timer and CCR?
  			//case: T0A0                            // CCR0 used as period register
-			case T0A1:                              // Timer0 / CCR1
+			case T0A1:                              // TimerA0 / CCR1
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL1 = OUTMOD_7;            // reset/set
                                 TA0CCR1 = PWM_DUTY(val);       // PWM duty cycle
                                 TA0CTL = TASSEL_2 + MC_1 + analog_div;       // SMCLK, up mode
                                 break;
 #if defined(__MSP430_HAS_TA3__) 
- 			case T0A2:                              // Timer0 / CCR1
+ 			case T0A2:                              // TimerA0 / CCR2
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL2 = OUTMOD_7;            // reset/set
                                 TA0CCR2 = PWM_DUTY(val);       // PWM duty cycle
@@ -116,13 +119,13 @@ void analogWrite(uint8_t pin, int val)
 #endif
 #if defined(__MSP430_HAS_T1A3__) 
  			//case: T1A0                            // CCR0 used as period register
-			case T1A1:                              // Timer0 / CCR1
+			case T1A1:                              // TimerA1 / CCR1
                                 TA1CCR0 = PWM_PERIOD;           // PWM Period
                                 TA1CCTL1 = OUTMOD_7;            // reset/set
                                 TA1CCR1 = PWM_DUTY(val);       // PWM duty cycle
                                 TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
- 			case T1A2:                              // Timer0 / CCR1
+ 			case T1A2:                              // TimerA1 / CCR2
                                 TA1CCR0 = PWM_PERIOD;           // PWM Period
                                 TA1CCTL2 = OUTMOD_7;            // reset/set
                                 TA1CCR2 = PWM_DUTY(val);       // PWM duty cycle
@@ -131,19 +134,65 @@ void analogWrite(uint8_t pin, int val)
 #endif
 #if defined(__MSP430_HAS_T2A3__)  
  			//case: T2A0                            // CCR0 used as period register
-			case T2A1:                              // Timer0 / CCR1
+			case T2A1:                              // TimerA2 / CCR1
                                 TA2CCR0 = PWM_PERIOD;           // PWM Period
                                 TA2CCTL1 = OUTMOD_7;            // reset/set
                                 TA2CCR1 = PWM_DUTY(val);       // PWM duty cycle
                                 TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
- 			case T2A2:                              // Timer0 / CCR1
+ 			case T2A2:                              // TimerA2 / CCR2
                                 TA2CCR0 = PWM_PERIOD;           // PWM Period
                                 TA2CCTL2 = OUTMOD_7;            // reset/set
                                 TA2CCR2 = PWM_DUTY(val);       // PWM duty cycle
                                 TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
+#if defined(__MSP430_HAS_T0B3__) 
+ 			//case: T0B0                            // CCR0 used as period register
+ 			case T0B1:                              // TimerB0 / CCR1
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL1 = OUTMOD_7;            // reset/set
+                                TB0CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0B2:                              // TimerB0 / CCR1
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL2 = OUTMOD_7;            // reset/set
+                                TB0CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+#endif
+#if defined(__MSP430_HAS_T1B3__) 
+ 			//case: T1B0                            // CCR0 used as period register
+ 			case T1B1:                              // TimerB0 / CCR1
+                                TB1CCR0 = PWM_PERIOD;           // PWM Period
+                                TB1CCTL1 = OUTMOD_7;            // reset/set
+                                TB1CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T1B2:                              // TimerB0 / CCR1
+                                TB1CCR0 = PWM_PERIOD;           // PWM Period
+                                TB1CCTL2 = OUTMOD_7;            // reset/set
+                                TB1CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+#endif
+#if defined(__MSP430_HAS_T2B3__) 
+ 			//case: T1B0                            // CCR0 used as period register
+ 			case T2B1:                              // TimerB0 / CCR1
+                                TB2CCR0 = PWM_PERIOD;           // PWM Period
+                                TB2CCTL1 = OUTMOD_7;            // reset/set
+                                TB2CCR1 = PWM_DUTY(val);       // PWM duty cycle
+                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T2B2:                              // TimerB0 / CCR1
+                                TB2CCR0 = PWM_PERIOD;           // PWM Period
+                                TB2CCTL2 = OUTMOD_7;            // reset/set
+                                TB2CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+#endif
+ 
                         case NOT_ON_TIMER:                      // not on a timer output pin
 			default:                                // or TxA0 pin
 				if (val < 128) {
@@ -158,7 +207,7 @@ void analogWrite(uint8_t pin, int val)
 uint16_t analogRead(uint8_t pin)
 {
 // make sure we have an ADC
-#if defined(__MSP430_HAS_ADC10__)
+#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
     //  0000 A0
     //  0001 A1
     //  0010 A2
@@ -179,18 +228,27 @@ uint16_t analogRead(uint8_t pin)
         return 0;
     }
 
-    ADC10CTL0 &= ~ENC;                      // disable ADC
-    ADC10CTL0 = analog_reference |          // set analog reference
-            ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
+    ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
     ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5 |  // ADC10OSC as ADC10CLK (~5MHz) / 5
             (pin << 12);                    // select channel
+#if defined(__MSP430_HAS_ADC10__)
+    ADC10CTL0 = analog_reference |          // set analog reference
+            ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
+#endif
+#if defined(__MSP430_HAS_ADC10_B__)
+    ADC10CTL0 = analog_reference |          // set analog reference
+            ADC10ON | ADC10SHT_3;           // turn ADC ON; sample + hold @ 64 × ADC10CLKs
+    ADC10CTL1 |= ADC10SHP;                  // ADCCLK = MODOSC; sampling timer
+	ADC10IFG = 0;                           // Clear Flags
+	ADC10IE |= ADC10IE0;                    // Enable interrupts
+#endif
     __delay_cycles(128);                    // Delay to allow Ref to settle
-    ADC10CTL0 |= ENC | ADC10SC;             // enable ADC and start conversion
+    ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
     while (ADC10CTL1 & ADC10BUSY) {         // sleep and wait for completion
         __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
     }
 
-    return ADC10MEM;             // return sampled value after returning to active mode in ADC10_ISR
+    return ADC10MEM0;                       // return sampled value after returning to active mode in ADC10_ISR
 #else
     // no ADC
     return 0;
@@ -200,5 +258,8 @@ uint16_t analogRead(uint8_t pin)
 __attribute__((interrupt(ADC10_VECTOR)))
 void ADC10_ISR(void)
 {
+#if defined(__MSP430_HAS_ADC10_B__)
+	ADC10IFG = 0;                           // Clear Flags
+#endif
 	__bic_SR_register_on_exit(CPUOFF);        // return to active mode
 }
