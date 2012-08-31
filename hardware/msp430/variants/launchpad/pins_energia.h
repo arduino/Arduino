@@ -106,6 +106,8 @@ static const uint8_t P2_4 = 12;
 static const uint8_t P2_5 = 13;
 static const uint8_t P1_6 = 14;
 static const uint8_t P1_7 = 15;
+static const uint8_t P2_7 = 18;
+static const uint8_t P2_6 = 19;
 
 static const uint8_t RED_LED = 2;
 static const uint8_t GREEN_LED = 14;
@@ -234,6 +236,11 @@ const uint8_t digital_pin_to_port[] = {
 	P2, /* 13 */
 	P1, /* 14 */
 	P1, /* 15 */
+	NOT_A_PIN, /* 16 */
+	NOT_A_PIN, /* 17 */
+	P2, /* 18 */
+	P2, /* 19 */
+	NOT_A_PIN, /* 20 */
 };
 
 const uint8_t digital_pin_to_bit_mask[] = {
@@ -255,8 +262,8 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(7),     /* 15, port P1.7 */
 	NOT_A_PIN, /* 16, RST */
 	NOT_A_PIN, /* 17, TEST */
-	NOT_A_PIN, /* 18, XOUT */
-	NOT_A_PIN, /* 19, XIN */
+	BV(7),     /* 18, XOUT */
+	BV(6),     /* 19, XIN */
 	NOT_A_PIN, /* 20, GND */
 };
 #endif
