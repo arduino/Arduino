@@ -1660,9 +1660,11 @@ public class Sketch {
 //    }
 
     editor.status.progressNotice(_("Uploading..."));
-    upload(appletPath, foundName, usingProgrammer);
+    boolean success;
+    
+    success = upload(appletPath, foundName, usingProgrammer) != null ? true:false;
     editor.status.progressUpdate(100);
-    return true;
+    return success;
   }
 
   
