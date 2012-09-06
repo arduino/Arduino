@@ -30,94 +30,41 @@
 */
 #include "Energia.h"
 
+unsigned long ms_Counter = 0;
+unsigned long us_Counter = 0;
 void initClocks(void);
 void enableWatchDogIntervalMode(void);
-
+void enableSysTick(void)
 void init()
 {
-        disableWatchDog();
-	initClocks();
-        enableWatchDogIntervalMode();
-        __eint();
+	ROM_SysTickPeriodSet(ROM_SysCtlClockGet()/1000000);//1us
+    ROM_IntMasterEnable();
+    ROM_SysTickIntEnable();
+    ROM_SysTickEnable();
 }
-
-void disableWatchDog()
-{
-        /* Diable watchdog timer */
-	WDTCTL = WDTPW | WDTHOLD;
-}
-
-void enableWatchDog()
-{
-	enableWatchDogIntervalMode();
-}
-
-/* WDT_TICKS_PER_MILISECOND = (F_CPU / WDT_DIVIDER) / 1000
- * WDT_TICKS_PER_MILISECONDS = 1.953125 = 2 */
-#define SMCLK_FREQUENCY F_CPU
-#if (F_CPU >= 2000000L)
-#define WDT_TICKS_PER_MILISECOND 2
-#define WDT_DIVIDER 8192
-#define WDT_DIV_BITS WDTIS0
-#else
-#define WDT_TICKS_PER_MILISECOND 2
-#define WDT_DIVIDER 512
-#define WDT_DIV_BITS WDTIS1
-#endif
-
-void enableWatchDogIntervalMode(void)
-{
-	/* WDT Password + WDT interval mode + Watchdog clock source /512 + source from SMCLK
-	 * Note that we WDT is running in interval mode. WDT will not trigger a reset on expire in this mode. */
-	WDTCTL = WDTPW + WDTTMSEL + WDTCNTCL + WDT_DIV_BITS;
- 
-	/* WDT interrupt enable */
-	IE1 |= WDTIE;
-}
-
-void initClocks(void)
-{
-/*#if defined(CALBC1_16MHZ_) && F_CPU >= 16000000L
-	BCSCTL1 = CALBC1_16MHZ;
-	DCOCTL = CALDCO_16MHZ;
-#elif defined(CALBC1_12MHZ_) && (F_CPU >= 12000000L)
-	BCSCTL1 = CALBC1_12MHZ;
-	DCOCTL = CALDCO_12MHZ;
-#elif defined(CALBC1_8MHZ_) && (F_CPU >= 8000000L)
-	BCSCTL1 = CALBC1_8MHZ;
-	DCOCTL = CALDCO_8MHZ;
-#elif defined(CALBC1_1MHZ_) && (F_CPU >= 1000000L)
-	BCSCTL1 = CALBC1_1MHZ;
-	DCOCTL = CALDCO_1MHZ;*/
-#if F_CPU >= 16000000L
-#elif 
-#else
-        #warning No Suitable Frequency found!
-#endif
-	/* SMCLK = DCO / DIVS = nMHz */
-	BCSCTL2 &= ~(DIVS_0);
-	/* ACLK = VLO = ~ 12 KHz */
-        BCSCTL3 |= LFXT1S_2; 
-}
-
-
 
 volatile uint32_t wdtCounter = 0;
-
+void delay4Cycles(unsigned long ulCount)
+{
+    __asm("    nop\n"
+          "    sub     r0,r0, #1\n"
+          "    bne     delay4Cycles\n"
+          "    bx      lr");
+}
 unsigned long micros()
 {
-    return (1000 * wdtCounter) / WDT_TICKS_PER_MILISECOND;
+    return us_Counter;
 }
 
 unsigned long millis()
 {
-        return wdtCounter / WDT_TICKS_PER_MILISECOND;
+    return ms_Counter;
 }
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(unsigned int us)
 {
-#if F_CPU >= 20000000L
+#if F_CPU == 80000000L
 	/* For a one-microsecond delay, simply wait 2 cycle and return. The overhead
 	 * of the function call yields a delay of exactly one microsecond. */
 	__asm__ __volatile__ (
@@ -125,15 +72,28 @@ void delayMicroseconds(unsigned int us)
 		"nop");
 	if (--us == 0)
 		return;
-
-	/* The following loop takes a 1/5 of a microsecond (4 cycles)
-	 * per iteration, so execute it five times for each microsecond of
+	/* The following loop takes a 1/20 of a microsecond (4 cycles)
+	 * per iteration, so execute it 20 times for each microsecond of
 	 * delay requested. */
-	us = (us<<2) + us; // x5 us
+	us = ((us<<2) + us)<<4; // x20 us
 
 	/* Account for the time taken in the preceeding commands. */
-	us -= 2;
+	us -= 2;//TO-DO=Test this
+#elif F_CPU == 40000000L
+	/* For a one-microsecond delay, simply wait 2 cycle and return. The overhead
+	 * of the function call yields a delay of exactly one microsecond. */
+	__asm__ __volatile__ (
+		"nop" "\n\t"
+		"nop");
+	if (--us == 0)
+		return;
+	/* The following loop takes a 1/10 of a microsecond (4 cycles)
+	 * per iteration, so execute it 20 times for each microsecond of
+	 * delay requested. */
+	us = ((us<<2) + us)<<1; // x10 us
 
+	/* Account for the time taken in the preceeding commands. */
+	us -= 2;//TO-DO=Test this
 #elif F_CPU >= 16000000L
 	/* For the 16 MHz clock on most boards */
 
@@ -170,31 +130,23 @@ void delayMicroseconds(unsigned int us)
 	us--;
 #endif
 
-	/* Busy wait */
-        __asm__ __volatile__ (
-                /* even steven */
-                "L1: nop \n\t"   
-                /* 1 instruction */
-                "dec.w %[us] \n\t"
-                /* 2 instructions */
-                "jnz L1 \n\t"
-                : [us] "=r" (us) : "[us]" (us)
-        );
+	delay4Cycles(us);
 }
 
 /* (ab)use the WDT */
 void delay(uint32_t milliseconds)
 {
-	uint32_t wakeTime = wdtCounter + (milliseconds * WDT_TICKS_PER_MILISECOND);
+	delayMicroseconds(1000*milliseconds);
+/*	uint32_t wakeTime = wdtCounter + (milliseconds * WDT_TICKS_PER_MILISECOND);
         while(wdtCounter < wakeTime)
-                /* Wait for WDT interrupt in LMP0 */
-                __bis_status_register(LPM0_bits+GIE);
+                // Wait for WDT interrupt in LMP0
+                __bis_status_register(LPM0_bits+GIE);*/
 }
 
-__attribute__((interrupt(WDT_VECTOR)))
-void watchdog_isr (void)
+void
+SysTickIntHandler(void)
 {
-        wdtCounter++;
-        /* Exit from LMP3 on reti (this includes LMP0) */
-        __bic_status_register_on_exit(LPM3_bits);
+    us_Counter++;
+    if(!(us_Counter % 1000))
+        ms_Counter++;
 }

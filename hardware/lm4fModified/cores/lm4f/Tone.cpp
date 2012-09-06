@@ -46,52 +46,64 @@ static void initTimers();
 static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration);
 static void stopTimer(uint8_t n);
 
-// timer clock frequency set to clock/8, at F_CPU = 1MHZ this gives an output freq range of ~[1Hz ..65Khz] and at 16Mhz this is ~[16Hz .. 1MHz]
-#define F_TIMER (F_CPU/8L)
-
-#ifdef __MSP430_HAS_TA3__
-#define AVAILABLE_TONE_PINS 3
-#define SETARRAY(a) a,a,a
-#else
-#define AVAILABLE_TONE_PINS 2
-#define SETARRAY(a) a,a
-#endif
-
-
 // tone_duration:
 //  > 0 - duration specified
 //  = 0 - stopped
 //  < 0 - infinitely (until stop() method called, or new play() called)
 
 static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
+static uint8_t current_pin = 0;
 static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { SETARRAY(255) };
 static uint8_t tone_bit[AVAILABLE_TONE_PINS] = { SETARRAY(255)  };
 volatile static uint16_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
 static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { SETARRAY(-1)  };
 static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
+static unsigned long g_duration = 0;
+static uint32_t * tone_timer;
+void
+ToneIntHandler(void)
+{
+    //
+    // Clear the timer interrupt flag.
+    //
+    TimerIntClear(TIMER0_BASE, TIMER_TIMB_TIMEOUT);
 
+    //
+    // Update the periodic interrupt counter.
+    //
+    if(--g_duration == 0){
+    	IntDisable(INT_TIMER0B);
+    	TimerIntDisable(tone_timer,TIMER_TIMA_TIMEOUT << timer_to_ab[tone_timer]);
+    	TimerIntClear(tone_timer,TIMER_TIMA_TIMEOUT << timer_to_ab[tone_timer]);
+    	tone_state = 0;
+    }
 
+}
+    //
 /**
 *** tone() -- Output a tone (50% Dutycycle PWM signal) on a pin
 ***  pin: This pin is selected as output
-***  frequency: [Hertz] 
+***  frequency: [Hz]
 **   duration: [milliseconds], if duration <=0, then we output tone continously, otherwise tone is stopped after this time (output = 0)
 **/
 void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 {
   uint8_t port = digitalPinToPort(_pin);
   if (port == NOT_A_PORT) return;
-
-  // find if we are using it at the moment, if so: update it
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
-  {
-    if (tone_pins[i] == _pin) 
-    {
-      setTimer(i, frequency, duration);
-      return; // we are done, timer reprogrammed
-    }
+  if(tone_state == 0 || _pin == current_pin) {
+	  uint32_t * timerBase;
+	  IntMasterEnable();
+      if(timer >= WTIMER2) {
+      	timerBase = TIMER0_BASE + timer_to_offset[timer] - 8;
+      }
+      else {
+      	timerBase = TIMER0_BASE + timer_to_offset[timer];
+      }
+      ROM_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT << timer_to_ab[timer]);
+      PWMWrite(_pin, 256, 128, frequency);
+	  tone_state == 1;
+	  g_duration = duration*ROM_SysCtlClockGet()/1000;
   }
-
   // new tone pin, find empty timer and set it
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
   {
@@ -134,9 +146,6 @@ static void inline initTimers()
   // disable IRQs
   TA0CCTL0 = 0;
   TA0CCTL1 = 0;
-#ifdef __MSP430_HAS_TA3__
-  TA0CCTL2 = 0;
-#endif
   TA0CTL = TACLR + TASSEL_2 +  ID_3 + MC_2;       // clear counter, source=SMCLK/8, mode=continous count up
   tone_state = 1;  // init is done
 }

@@ -69,17 +69,17 @@ void pinMode(uint8_t pin, uint8_t mode)
     } else {//mode == OUTPUT
 		*dir |= bit;
 	}
+
 }
 
 int digitalRead(uint8_t pin)
 {
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
-	uint32_t data = portDATARegister(port)
 	if (port == NOT_A_PORT) return LOW;
 
-	if (*data & bit) return HIGH;
-	return LOW;
+	return GPIOPinRead(port, bit);
+
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)
@@ -91,18 +91,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
 
 	if (port == NOT_A_PORT) return;
 
-	/*
-	 * Clear bit in PxSEL register to select GPIO function. Other functions like analogWrite(...) 
-	 * will set this bit so need to clear it.
-	 */
-	sel = portAFSelRegister(port);	/* get the port function select register address */
-	*sel &= ~bit;			/* clear bit in pin function select register */
+	ROM_GPIOPinTypeGPIOOutput(port, bit);
+	GPIOPinWrite(port, bit, val);
 
-	out = portOutputRegister(port);
-
-	if (val == LOW) {
-		*out &= ~bit;
-	} else {
-		*out |= bit;
-	}
 }

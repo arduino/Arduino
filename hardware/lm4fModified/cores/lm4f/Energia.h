@@ -52,20 +52,52 @@ extern "C"{
 #define PE 5
 #define PF 6
 
-/*RGRNOTE: Not sure if it should be this format
+#define TIMA 0
+#define TIMB 8
+
 #define T0A0 0
 #define T0A1 1
-#define T0A2 2
-#define T1A0 3
-#define T1A1 4
-#define T1A2 5
-#define T1A3 6
-#define T1A4 7
-#define T1A5 8
-#define T2A0 9
-#define T2A1 10
-#define T2A2 11
-*/
+#define T0B0 2
+#define T0B1 3
+#define T1A0 4
+#define T1A1 5
+#define T1B0 6
+#define T1B1 7
+#define T2A0 8
+#define T2A1 9
+#define T2B 10
+#define T3A 11
+#define T3B 12
+#define T4A 13
+#define T4B 14
+#define T5A 15
+#define T5B 16
+#define WT0A 17
+#define WT0B 18
+#define WT1A 19
+#define WT1B 20
+#define WT2A 21
+#define WT2B 22
+#define WT3A 23
+#define WT3B 24
+#define WT4A 25
+#define WT4B 26
+#define WT5A 27
+#define WT5B 28
+
+#define TIMER0 0
+#define TIMER1 1
+#define TIMER2 2
+#define TIMER3 3
+#define TIMER4 4
+#define TIMER5 5
+#define WTIMER0 6
+#define WTIMER1 7
+#define WTIMER2 8
+#define WTIMER3 9
+#define WTIMER4 10
+#define WTIMER5 11
+
 
 #define T0CCP0 0
 #define T0CCP1 1
@@ -103,8 +135,8 @@ typedef uint8_t byte;
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-#define interrupts() __bis_SR_register(GIE)
-#define noInterrupts() __bic_SR_register(GIE)
+#define interrupts() ROM_IntMasterEnable()
+#define noInterrupts() ROM_IntMasterDisable()
 
 #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
@@ -156,7 +188,9 @@ extern const uint32_t port_to_base[];
 #define digitalPinToPort(P) ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
 #define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
-#define portDATARegister(P) ( (volatile uint32_t *)( port_to_base[P]) + 0x3FC )
+#define digitalPinToGPIOPin(P) digital_pin_to_gpio_pin[P] )
+#define portBASERegister(P) ( ((volatile uint32_t *)( port_to_base[P])))
+#define portDATARegister(P) ( ((volatile uint32_t *)( port_to_base[P])) + 0x3FC )
 #define portDIRRegister(P) ( ((volatile uint32_t *)( port_to_base[P])) + 0x400 )
 #define portAFSELRegister(P) ( ((volatile uint32_t *)( port_to_base[P])) + 0x420 )
 #define portPURRegister(P) ( ((volatile uint32_t *)( port_to_base[P])) + 0x510 )
