@@ -15,20 +15,18 @@
 //  
 // Revision
 //   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
+//   Rei VILO, Sep 09, 2012 - TimerSerial.h no longer required
 //
 
 #include "Wire.h"
-#include "TimerSerial.h"
 
 // PUSH2 alreadey defined
 #define _address 0x4b // strap ADDR0 - SCL
 
-TimerSerial mySerial;
-
 void setup() {
-  mySerial.begin();
-  mySerial.print("\n\n\n*** Thermometer \n"); 
-  mySerial.print("Press PUSH2 to end\n"); 
+  Serial.begin(9600);
+  Serial.print("\n\n\n*** Thermometer \n"); 
+  Serial.print("Press PUSH2 to end\n"); 
   pinMode(PUSH2, INPUT_PULLUP);     
 
   Wire.begin();
@@ -49,23 +47,23 @@ void loop() {
   if (t>0b100000000000) t -= 4096;
 
   //  Float adds 6 kB
-  //  mySerial.print(t*0.0625, DEC);
-  //  mySerial.print("\n");
+  //  Serial.print(t*0.0625, DEC);
+  //  Serial.print("\n");
 
   // Integer
   t *= 10;  // one decimal place
   t += 8;   // rounding
-  mySerial.print(t/160, DEC);
-  mySerial.print(".");
-  mySerial.print((t%160)/16, DEC);
-  mySerial.print("\n");
+  Serial.print(t/160, DEC);
+  Serial.print(".");
+  Serial.print((t%160)/16, DEC);
+  Serial.print("\n");
 
   delay(500);
 
   // PUSH2 required to avoid USB freeze for next upload
   if (digitalRead(PUSH2)==LOW) {
-    mySerial.print("\n*** End\n"); 
-    mySerial.end();
+    Serial.print("\n*** End\n"); 
+    Serial.end();
     while(true); // endless loop
   }
 }
