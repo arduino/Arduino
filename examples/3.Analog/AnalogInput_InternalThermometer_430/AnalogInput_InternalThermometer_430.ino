@@ -15,16 +15,14 @@
 //   Rei VILO, Mar 13, 2012 - More precise algorithm
 //   Rei VILO, Mar 14, 2012 - Average
 //   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
+//   Rei VILO, Sep 09, 2012 - TimerSerial.h no longer required
 //   Press push 2 to end
 //   Tested on msp430g2452 and msp430g2553
 //   2196 bytes
 
-#include <TimerSerial.h>
-
 // RED_LED, GREEN_LED, TEMPSENSOR, PUSH2 already defined
 #define NUMBER 4 // take number / 2
 
-TimerSerial mySerial;
 int ledState = HIGH;
 uint8_t i = 0;
 uint32_t average = 0;
@@ -39,16 +37,16 @@ void setup() {
   analogReference(INTERNAL1V5);
   analogRead(TEMPSENSOR); // first reading usually wrong
 
-  mySerial.begin();
+  Serial.begin(9600);
   pinMode(PUSH2, INPUT_PULLUP);   
 
   digitalWrite(RED_LED, HIGH); 
   digitalWrite(GREEN_LED, LOW); 
 
 
-  mySerial.print("\n\n\n*** MSP430 Thermometer \n"); 
-  mySerial.print("Press PUSH2 to end\n"); 
-  mySerial.print("instant\taverage\n");
+  Serial.print("\n\n\n*** MSP430 Thermometer \n"); 
+  Serial.print("Press PUSH2 to end\n"); 
+  Serial.print("instant\taverage\n");
 
   for (j=0; j<NUMBER; j++) values[j]=0;
   average = 0;
@@ -56,9 +54,9 @@ void setup() {
 }
 
 void printDec(uint32_t ui) {
-  mySerial.print(ui/10, DEC);
-  mySerial.print(".");
-  mySerial.print(ui%10, DEC);
+  Serial.print(ui/10, DEC);
+  Serial.print(".");
+  Serial.print(ui%10, DEC);
 }
 
 
@@ -77,11 +75,11 @@ void loop() {
 
     // Print measure 
     printDec(values[j]);
-    mySerial.print("\t");
+    Serial.print("\t");
 
     // Print average 
     if (flag) printDec(average/NUMBER);
-    mySerial.print("\n");
+    Serial.print("\n");
 
     j++; 
     if (j==NUMBER) flag=true;
@@ -89,8 +87,8 @@ void loop() {
   }
 
   if (digitalRead(PUSH2)==LOW) {
-    mySerial.print("\n\n*** End \n"); 
-    mySerial.end();
+    Serial.print("\n\n*** End \n"); 
+    Serial.end();
     while(true); // endless loop
   }
   delay(100);
