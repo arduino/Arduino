@@ -11,33 +11,31 @@
 //
 // Revision
 //   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
+//   Rei VILO, Sep 09, 2012 - TimerSerial.h no longer required
 //
 
-#include "TimerSerial.h"
-
-TimerSerial mySerial;
 
 void setup() {
-  mySerial.begin();
-  mySerial.print("\n\n\n*** Serial test starts \n"); 
-  mySerial.print("PUSH2 to end\n"); 
+  Serial.begin(9600);
+  Serial.print("\n\n\n*** Serial test starts \n"); 
+  Serial.print("PUSH2 to end\n"); 
   pinMode(PUSH2, INPUT_PULLUP);     
 }
 
 
 void loop() {
 
-  if (mySerial.available())   {
-    mySerial.print(char(mySerial.read()));
+  if (Serial.available())   {
+    Serial.print(char(Serial.read()));
   } 
   else {  
-    mySerial.print(".");
+    Serial.print(".");
     delay(500);
   }
   
   if (digitalRead(PUSH2)==LOW) {
-    mySerial.print("\n\n*** Serial test ends. \n"); 
-    mySerial.end();
+    Serial.print("\n\n*** Serial test ends. \n"); 
+    Serial.end();
     while(true); // endless loop
   }
 }
