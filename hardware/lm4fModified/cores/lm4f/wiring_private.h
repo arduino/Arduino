@@ -36,7 +36,7 @@
 
 #include "Energia.h"
 
-extern void PWMWrite(uint8_t pin, uint16_t analog_res, int duty, unsigned int freq);
+void PWMWrite(uint8_t pin, uint16_t analog_res, int duty, unsigned int freq);
 
 #ifdef __cplusplus
 extern "C"{

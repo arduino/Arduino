@@ -35,9 +35,11 @@
 #include <inttypes.h>
 #include "Energia.h"
 #include "wiring_private.h"
-#include "usci_isr_handler.h"
-
-//#if defined(__MSP430_HAS_USCI__)
+#include "driverlib/gpio.h"
+#include "driverlib/rom.h"
+#include "driverlib/pin_map.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
 
 #include "HardwareSerial.h"
 
@@ -93,42 +95,22 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
 
 void HardwareSerial::begin(unsigned long baud)
 {
-	unsigned int divider;
-	unsigned char mod, oversampling;
 
-	/* Calling this dummy function prevents the linker
-	 * from stripping the USCI interrupt vectors.*/
-	usci_isr_install();
-	if (SMCLK/baud>=48) {                                                // requires SMCLK for oversampling
-		oversampling = 1;
-	}
-	else {
-		oversampling= 0;
-	}
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    ROM_IntMasterEnable();
+    ROM_GPIOPinConfigure(GPIO_PA0_U0RX);
+    ROM_GPIOPinConfigure(GPIO_PA1_U0TX);
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    ROM_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    ROM_UARTConfigSetExpClk(UART0_BASE, ROM_SysCtlClockGet(), baud,
+                        (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+                         UART_CONFIG_PAR_NONE));
 
-	divider=(SMCLK<<4)/baud;
+    //Enable the UART interrupts
+    ROM_IntEnable(INT_UART0);
+    ROM_UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 
-	if(!oversampling) {
-		mod = ((divider&0xF)+1)&0xE;                                                // UCBRSx (bit 1-3)
-		divider >>=4;
-	} else {
-		mod = ((divider&0xf8)+0x8)&0xf0;                                            // UCBRFx (bit 4-7)
-		divider>>=8;
-	}
-
-	SerialPtr = this;
-	P1SEL  |= RXD + TXD;
-	P1SEL2  |= RXD + TXD;
-
-	UCA0CTL1 = UCSWRST;
-	UCA0CTL1 = UCSSEL_2;        //SMCLK
-	UCA0CTL0 = 0;
-	UCA0ABCTL = 0;
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTL = (oversampling ? UCOS16:0) | mod;
-	UCA0CTL1 &= ~UCSWRST;
-	UC0IE |= UCA0RXIE;
 }
 
 void HardwareSerial::end()
@@ -187,6 +169,38 @@ size_t HardwareSerial::write(uint8_t c)
 	return 1;
 }
 
+void
+UARTIntHandler(void)
+{
+    unsigned long ulStatus;
+
+    //
+    // Get the interrupt status.
+    //
+    ulStatus = ROM_UARTIntStatus(UART0_BASE, true);
+
+    //
+    // Clear the asserted interrupts.
+    //
+    ROM_UARTIntClear(UART0_BASE, ulStatus);
+
+    if(tx_buffer.head == tx_buffer.tail) {
+    	ROM_IntDisable(INT_UART0);
+        ROM_UARTIntDisable(UART0_BASE, UART_INT_RX | UART_INT_RT);
+    }
+
+    //
+    // Loop while there are characters in the receive FIFO.
+    //
+    while(ROM_UARTCharsAvail(UART0_BASE) && (tx_buffer.head != tx_buffer.tail))
+    {
+        //
+        // Read the next character from the UART and write it back to the UART.
+        //
+        ROM_UARTCharPutNonBlocking(UART0_BASE,
+                                   ROM_UARTCharGetNonBlocking(UART0_BASE));
+    }
+}
 void uart_rx_isr(void)
 {
 	unsigned char c = UCA0RXBUF;

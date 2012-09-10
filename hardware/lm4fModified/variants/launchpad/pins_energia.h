@@ -95,44 +95,6 @@ static const uint8_t PUSH1 = 5;
 static const uint8_t PUSH2 = 28;
 
 #ifdef ARDUINO_MAIN
-
-const uint16_t port_to_dir[] = {
-	NOT_A_PORT,
-	(uint16_t) GPIO_PORTA_DIR_R,
-	(uint16_t) GPIO_PORTB_DIR_R,
-	(uint16_t) GPIO_PORTC_DIR_R,
-	(uint16_t) GPIO_PORTD_DIR_R,
-	(uint16_t) GPIO_PORTE_DIR_R,
-	(uint16_t) GPIO_PORTF_DIR_R
-};
-
-const uint16_t port_to_afsel[] = {
-	NOT_A_PORT,
-	(uint16_t) GPIO_PORTA_AFSEL_R,
-	(uint16_t) GPIO_PORTB_AFSEL_R,
-	(uint16_t) GPIO_PORTC_AFSEL_R,
-	(uint16_t) GPIO_PORTD_AFSEL_R,
-	(uint16_t) GPIO_PORTE_AFSEL_R,
-	(uint16_t) GPIO_PORTF_AFSEL_R
-};
-const uint16_t port_to_pur[] = {
-	NOT_A_PORT,
-	(uint32_t) GPIO_PORTA_PUR_R,
-	(uint32_t) GPIO_PORTB_PUR_R,
-	(uint32_t) GPIO_PORTC_PUR_R,
-	(uint32_t) GPIO_PORTD_PUR_R,
-	(uint32_t) GPIO_PORTE_PUR_R,
-	(uint32_t) GPIO_PORTF_PUR_R
-};
-const uint16_t port_to_pdr[] = {
-	NOT_A_PORT,
-	(uint32_t) GPIO_PORTA_PDR_R,
-	(uint32_t) GPIO_PORTB_PDR_R,
-	(uint32_t) GPIO_PORTC_PDR_R,
-	(uint32_t) GPIO_PORTD_PDR_R,
-	(uint32_t) GPIO_PORTE_PDR_R,
-	(uint32_t) GPIO_PORTF_PDR_R
-};
 const uint16_t port_to_base[] = {
 	NOT_A_PORT,
 	(uint32_t) GPIO_PORTA_DATA_BITS_R,
@@ -142,42 +104,6 @@ const uint16_t port_to_base[] = {
 	(uint32_t) GPIO_PORTE_DATA_BITS_R,
 	(uint32_t) GPIO_PORTF_DATA_BITS_R
 };
-#define GPIO_DATA  0x000
-#define GPIO_DIR   0x400
-#define GPIO_IS    0x404
-#define GPIO_IBE   0x408
-#define GPIO_IEV   0x40C
-#define GPIO_IM    0x410
-#define GPIO_RIS   0x414
-#define GPIO_MIS   0x418
-#define GPIO_ICR   0x41C
-#define GPIO_AFSEL 0x420
-#define GPIO_DR2R  0x500
-#define GPIO_DR4R  0x504
-#define GPIO_DR8R  0x508
-#define GPIO_ODR    0x50C
-#define GPIO_PUR   0x510
-#define GPIO_PDR   0x514
-#define GPIO_SLR  0x518
-#define GPIO_DEN  0x51C
-#define GPIO_LOCK 0x520
-#define GPIO_CR  0x524
-#define GPIO_AMSEL  0x528
-#define GPIO_PCTL  0x52C
-#define GPIO_ADCCTL  0x530
-#define GPIO_MACTL  0x534
-#define GPIO_PeriphID4  0xFD0
-#define GPIO_PeriphID5  0xFD4
-#define GPIO_PeriphID6  0xFD8
-#define GPIO_PeriphID7 0xFDC
-#define GPIO_PeriphID0  0xFE0
-#define GPIO_PeriphID1  0xFE4
-#define GPIO_PeriphID2  0xFE8
-#define GPIO_PeriphID3  0xFEC
-#define GPIO_CellID0  0xFF0
-#define GPIO_CellID1  0xFF4
-#define GPIO_CellID2  0xFF8
-#define GPIO_CellID3  0xFFC
 
 const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, 	/*  dummy */
