@@ -539,6 +539,9 @@ public class Editor extends JFrame implements RunnerListener {
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           handleExport(false);
+          // Hide the serial monitor window. It will reopen at the appropriate time
+          // if "auto show" is enabled
+          serialMonitor.setVisible(false);
         }
       });
     fileMenu.add(item);
@@ -662,9 +665,24 @@ public class Editor extends JFrame implements RunnerListener {
     item = newJMenuItemShift(_("Serial Monitor"), 'M');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          handleSerial();
+          handleSerial(true);
         }
       });
+    menu.add(item);
+
+    // Create the "Auto Show Serial Monitor" menu item (a checkbox). Read the prefs
+    // to see if it should be enabled.
+    final boolean autoShowSerialMonitor = Preferences.getBoolean("serial.auto_show_monitor_window");
+    item = new JCheckBoxMenuItem("Auto Show Serial Monitor", autoShowSerialMonitor);
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // Make sure the choice in Preferences matches the checkbox state
+        JCheckBoxMenuItem checkboxMenuItem = (JCheckBoxMenuItem)e.getSource();
+        Preferences.setBoolean("serial.auto_show_monitor_window", checkboxMenuItem.isSelected());
+        // The pref needs to be saved so that other parts of the app will stay in sync
+        Preferences.save();
+      }
+    });
     menu.add(item);
     
     addTools(menu, Base.getToolsFolder());
@@ -941,7 +959,7 @@ public class Editor extends JFrame implements RunnerListener {
     //System.out.println(item.getLabel());
     Preferences.set("serial.port", name);
     serialMonitor.closeSerialPort();
-    serialMonitor.setVisible(false);
+
     serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
     //System.out.println("set to " + get("serial.port"));
   }
@@ -2371,15 +2389,25 @@ public class Editor extends JFrame implements RunnerListener {
   class DefaultExportHandler implements Runnable {
     public void run() {
 
+      boolean uploadSuccessful = false;
       try {
         serialMonitor.closeSerialPort();
-        serialMonitor.setVisible(false);
+
+        // If "auto show" is disabled make sure we hide the serial monitor window.
+        // This causes the IDE to act the way it always has in the the past.
+        if (Preferences.getBoolean("serial.auto_show_monitor_window")) {
+          serialMonitor.setVisible(true);
+        }
+        else {
+          serialMonitor.setVisible(false);
+        }
             
         uploading = true;
           
         boolean success = sketch.exportApplet(false);
         if (success) {
           statusNotice(_("Done uploading."));
+          uploadSuccessful = true;
         } else {
           // error message will already be visible
         }
@@ -2398,6 +2426,17 @@ public class Editor extends JFrame implements RunnerListener {
       }
       status.unprogress();
       uploading = false;
+
+      // If auto show is enabled make sure the serial monitor is hooked up and visible
+      if (uploadSuccessful) {
+        if (Preferences.getBoolean("serial.auto_show_monitor_window")) {
+          handleSerial(true);
+        }
+      }
+      else {
+        serialMonitor.setVisible(false);
+      }
+
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
     }
@@ -2409,7 +2448,6 @@ public class Editor extends JFrame implements RunnerListener {
 
       try {
         serialMonitor.closeSerialPort();
-        serialMonitor.setVisible(false);
             
         uploading = true;
           
@@ -2474,12 +2512,14 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  public void handleSerial() {
+  public void handleSerial(boolean makeVisible) {
     if (uploading) return;
     
     try {
       serialMonitor.openSerialPort();
-      serialMonitor.setVisible(true);
+      if (makeVisible) {
+        serialMonitor.setVisible(true);
+      }
     } catch (SerialException e) {
       statusError(e);
     }
