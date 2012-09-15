@@ -109,7 +109,7 @@ void analogWrite(uint8_t pin, int val)
                                 TA0CCR1 = PWM_DUTY(val);       // PWM duty cycle
                                 TA0CTL = TASSEL_2 + MC_1 + analog_div;       // SMCLK, up mode
                                 break;
-#if defined(__MSP430_HAS_TA3__) 
+#if defined(__MSP430_HAS_TA3__) || defined(__MSP430_HAS_T0A3__) 
  			case T0A2:                              // TimerA0 / CCR2
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL2 = OUTMOD_7;            // reset/set
