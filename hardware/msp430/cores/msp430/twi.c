@@ -75,7 +75,6 @@ static uint8_t twi_my_addr;
 #ifdef __MSP430_HAS_EUSCI_B0__
 #endif
 
-
 /*
  * Function twi_init
  * Desc     readys twi pins and sets twi bitrate
@@ -167,7 +166,7 @@ void twi_init(void)
      * UCSYNC = Synchronous mode
      * UCCLK = SMCLK
      */
-    UCB0CTLW0 = UCMST | UCMODE_3 | UCSSEL__SMCLK | UCSYNC | UCSWRST;
+    UCB0CTLW0 = UCMODE_3 | UCSSEL__SMCLK | UCSYNC | UCSWRST;
 
     /*
      * Compute the clock divider that achieves the fastest speed less than or
@@ -177,7 +176,7 @@ void twi_init(void)
      */
     UCB0BRW = (unsigned short)(F_CPU / 400000);
     UCB0CTLW0 &= ~(UCSWRST);
-    UCB0IE |= (UCRXIE0|UCALIE|UCNACKIE|UCSTTIE|UCSTPIE); // Enable I2C interrupts
+    UCB0IE |= (UCRXIE0|UCTXIE0|UCSTTIE|UCSTPIE); // Enable I2C interrupts
 #endif
 }
 
@@ -674,10 +673,6 @@ void i2c_state_isr(void)  // I2C Service
 				twi_txBufferLength = 1;
 				twi_txBuffer[0] = 0x00;
 			}
-			/* Enable I2C TX interrupts.
-			 * UCB0TXIFG is automagically set by the USCI module upon start condition
-			 * Enabling UCBTXIE will trigger a USCIAB0TX_VECTOR as soon as USCIAB0RX_VECTOR exits */
-			UC0IE |= (UCB0TXIE); // Enable I2C TX interrupts
 		} else {
 			/* Slave receive mode. */
 			twi_state =  TWI_SRX;
@@ -741,6 +736,7 @@ void USCI_B0_ISR(void)
         __bic_SR_register_on_exit(CPUOFF); // Exit LPM0                 
       break;
     case USCI_I2C_UCSTTIFG:    // USCI I2C Mode: UCSTTIFG
+		UCB0IFG &= ~UCSTTIFG;
 		if (twi_state ==  TWI_IDLE){
 			if (UCB0CTLW0 &  UCTR){
 				twi_state =  TWI_STX;      // Slave Transmit mode
@@ -760,19 +756,24 @@ void USCI_B0_ISR(void)
 				twi_state =  TWI_SRX;      // Slave receive mode
 				// indicate that rx buffer can be overwritten and ack
 				twi_rxBufferIndex = 0;
-
 			}
 		}
-		if (UCB0CTLW0 &  UCTR)
-			UCB0IE |= (UCTXIE0); // Enable I2C TX interrupts
       break;
     case USCI_I2C_UCSTPIFG:    // USCI I2C Mode: UCSTPIFG
+        	UCB0IFG &= ~UCSTPIFG;
 		if (twi_state ==  TWI_SRX){
 			// callback to user defined callback
 			twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
 		}
 		twi_state =  TWI_IDLE; // IDLE mode
-        __bic_SR_register_on_exit(CPUOFF); // Exit LPM0                 
+		/* Work around for:
+		 * If the master does a read and then a write the START interrupt occurs
+		 * but the RX interrupt never fires. Clearing bit 4 and 5 of UCB0CTLW0 solves this.
+		 * bit 4 and 5 are however marked as reserved in the datasheet.
+		 */
+		UCB0CTLW0 &= ~0x18;
+		
+		__bic_SR_register_on_exit(CPUOFF); // Exit LPM0                 
       break;
     case USCI_I2C_UCRXIFG3:    // USCI I2C Mode: UCRXIFG3
       break;
@@ -787,6 +788,7 @@ void USCI_B0_ISR(void)
     case USCI_I2C_UCTXIFG1:    // USCI I2C Mode: UCTXIFG1
       break;
     case USCI_I2C_UCRXIFG0:    // USCI I2C Mode: UCRXIFG0
+		UCB0IFG &= ~UCRXIFG;                  // Clear USCI_B0 TX int flag
 		if (twi_state ==  TWI_MRX) {      // Master receive mode
 			twi_masterBuffer[twi_masterBufferIndex++] = UCB0RXBUF; // Get RX data
 			if(twi_masterBufferIndex == twi_masterBufferLength ) 
@@ -807,6 +809,7 @@ void USCI_B0_ISR(void)
 		}
       break;
     case USCI_I2C_UCTXIFG0:    // USCI I2C Mode: UCTXIFG0
+		UCB0IFG &= ~UCTXIFG;                  // Clear USCI_B0 TX int flag
 		if (twi_state == TWI_MTX) {      // Master receive mode
 			// if there is data to send, send it, otherwise stop 
 			if(twi_masterBufferIndex < twi_masterBufferLength){
@@ -823,7 +826,6 @@ void USCI_B0_ISR(void)
 				 UCB0CTLW0 |= UCTXSTT;        
 				 twi_state = TWI_IDLE;
 			   }
-               UCB0IFG &= ~UCTXIFG;                  // Clear USCI_B0 TX int flag
 			}
 		} else {
 			// copy data to output register
