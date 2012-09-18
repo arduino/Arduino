@@ -54,13 +54,13 @@ static const uint8_t UARTTXD = 2;  /* Transmit Data (TXD) at P2.0 */
 #define UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
 #endif
 
-static const uint8_t A0  = 22;
-static const uint8_t A1  = 21;
-static const uint8_t A2  = 20;
-static const uint8_t A3  = 19;
-static const uint8_t A4  = 18;
-static const uint8_t A5  = 17;
-static const uint8_t A6  = 16;
+static const uint8_t A0  = 5;
+static const uint8_t A1  = 4;
+static const uint8_t A2  = 3;
+static const uint8_t A3  = 15;
+static const uint8_t A4  = 14;
+static const uint8_t A5  = 13;
+static const uint8_t A6  = 12;
 
 /* Layout of the 2x 12 pin headers.
    Header is _not_ compatible with LaunchPad!
@@ -127,9 +127,12 @@ static const uint8_t LED5 = 7;
 static const uint8_t LED6 = 8;
 static const uint8_t LED7 = 9;
 static const uint8_t LED8 = 10;
+/* For LaunchPad compatability */
+static const uint8_t RED_LED = 25;
+static const uint8_t GREEN_LED = 28;
 
 static const uint8_t PUSH1 = 23;
-static const uint8_t PUSH2 = 33;
+static const uint8_t PUSH2 = 29;
 
 #ifdef ARDUINO_MAIN
 
