@@ -61,6 +61,9 @@ static const uint8_t A3  = 15;
 static const uint8_t A4  = 14;
 static const uint8_t A5  = 13;
 static const uint8_t A6  = 12;
+static const uint8_t A7  = 2;
+static const uint8_t A9  = 1;
+static const uint8_t A10  = 0;
 
 /* Layout of the 2x 12 pin headers.
    Header is _not_ compatible with LaunchPad!
@@ -79,9 +82,9 @@ static const uint8_t A6  = 12;
 (PWM)                      (LED5)  P3.4  7|        |18  P3.2        (A4)
 (PWM)                      (LED6)  P3.5  8|        |17  P3.1        (A5)
 (PWM)                      (LED7)  P3.6  9|        |16  P3.0        (A6)
-(PWM)                      (LED8)  P3.7 10|        |15  P1.2             (PWM)
-(PWM) (SDA) (MOSI)                 P1.6 11|        |14  P1.1             (PWM)
-(PWM) (SCL) (MISO)                 P1.7 12|        |13  P1.0             (PWM)
+(PWM)                      (LED8)  P3.7 10|        |15  P1.2        (A7) (PWM)
+(PWM) (SDA) (MOSI)                 P1.6 11|        |14  P1.1        (A8) (PWM)
+(PWM) (SCL) (MISO)                 P1.7 12|        |13  P1.0        (A9) (PWM)
                                           +--------+
 
                                                ----+
