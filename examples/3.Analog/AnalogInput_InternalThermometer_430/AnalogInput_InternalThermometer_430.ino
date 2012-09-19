@@ -69,6 +69,7 @@ void loop() {
   if (i == 10) {
     i = 0;
 
+    // Formula: http://www.43oh.com/forum/viewtopic.php?p=18248#p18248
     average -= values[j];
     values[j] = ((uint32_t)analogRead(TEMPSENSOR)*27069 - 18169625) *10 >> 16;
     average += values[j];
@@ -95,6 +96,7 @@ void loop() {
 
   i++;
 }
+
 
 
 

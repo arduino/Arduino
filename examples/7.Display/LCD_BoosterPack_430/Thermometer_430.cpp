@@ -8,6 +8,7 @@
 //  Created by Rei VILO on 28/05/12
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //
+// Formula: http://www.43oh.com/forum/viewtopic.php?p=18248#p18248
 
 // Core library
 #if defined (__AVR_ATmega328P__) || defined(__AVR_ATmega2560__) // Arduino specific
