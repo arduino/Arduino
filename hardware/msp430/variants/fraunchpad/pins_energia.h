@@ -54,16 +54,22 @@ static const uint8_t UARTTXD = 2;  /* Transmit Data (TXD) at P2.0 */
 #define UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
 #endif
 
-static const uint8_t A0  = 5;
-static const uint8_t A1  = 4;
-static const uint8_t A2  = 3;
-static const uint8_t A3  = 15;
-static const uint8_t A4  = 14;
-static const uint8_t A5  = 13;
-static const uint8_t A6  = 12;
-static const uint8_t A7  = 2;
-static const uint8_t A9  = 1;
-static const uint8_t A10  = 0;
+/* Analog pins */
+static const uint8_t A0  = 5;  /* 22 - P1.5 */
+static const uint8_t A1  = 4;  /* 21 - P1.4 */
+static const uint8_t A2  = 3;  /* 20 - P1.3 */
+static const uint8_t A3  = 15; /* 19 - P3.3 */
+static const uint8_t A4  = 14; /* 18 - P3.2 */
+static const uint8_t A5  = 13; /* 17 - P3.1 */
+static const uint8_t A6  = 12; /* 16 - P3.0 */
+static const uint8_t A7  = 2;  /* 15 - P1.2 */
+static const uint8_t A8  = 1;  /* 14 - P1.1 */
+static const uint8_t A9  = 0;  /* 13 - P1.0 */
+
+/* 3-axes accelerometer pins */
+static const uint8_t ACC_X  = 12; /* (A6) 16 - P3.0 */
+static const uint8_t ACC_Y  = 13; /* (A5) 17 - P3.1 */
+static const uint8_t ACC_Z  = 14;; /* (A4) 18 - P3.0 */
 
 /* Layout of the 2x 12 pin headers.
    Header is _not_ compatible with LaunchPad!
