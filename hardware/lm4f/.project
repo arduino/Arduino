@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lm4f</name>
+	<name>lm4fModified</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -29,4 +29,21 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>org.eclipse.cdt.autotools.core.autotoolsNatureV2</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>cores/lm4f/startup_gcc.c</name>
+			<type>1</type>
+			<location>C:/Users/a0221048/Energia/hardware/lm4fModified/cores/lm4f/startup_gcc.c</location>
+		</link>
+		<link>
+			<name>cores/lm4f/uartstdio.c</name>
+			<type>1</type>
+			<location>C:/Users/a0221048/Energia/hardware/lm4fModified/cores/lm4f/uartstdio.c</location>
+		</link>
+		<link>
+			<name>cores/lm4f/uartstdio.h</name>
+			<type>1</type>
+			<location>C:/Users/a0221048/Energia/hardware/lm4fModified/cores/lm4f/uartstdio.h</location>
+		</link>
+	</linkedResources>
 </projectDescription>

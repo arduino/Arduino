@@ -20,7 +20,7 @@
 */
 
 #include "WString.h"
-
+#include "IntegerToString.h"
 
 /*********************************************/
 /*  Constructors                             */
