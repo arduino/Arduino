@@ -43,7 +43,7 @@ public class LM4FUploader extends Uploader{
 			//Standard cmd.exe call: lmflash -q ek-lm4f232 -v -r qs-rgb.bin
 			// code to access via LM4F_Flasher
 			params.add("-q");
-			params.add(boardPreferences.get("build.mcu"));
+			params.add("ek-lm4f120xl");
 			params.add("-v");
 			params.add("-r");
 			//params.add("-w");
