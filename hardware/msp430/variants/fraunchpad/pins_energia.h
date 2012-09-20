@@ -69,7 +69,9 @@ static const uint8_t A9  = 0;  /* 13 - P1.0 */
 /* 3-axes accelerometer pins */
 static const uint8_t ACC_X  = 12; /* (A6) 16 - P3.0 */
 static const uint8_t ACC_Y  = 13; /* (A5) 17 - P3.1 */
-static const uint8_t ACC_Z  = 14;; /* (A4) 18 - P3.0 */
+static const uint8_t ACC_Z  = 14; /* (A4) 18 - P3.0 */
+static const uint8_t ACC_ENABLE = 30; /* 30 - P2.7 */
+static const uint8_t NTC_ENABLE = 30; /* 30 - P2.7 */
 
 /* Layout of the 2x 12 pin headers.
    Header is _not_ compatible with LaunchPad!
@@ -300,6 +302,7 @@ const uint8_t digital_pin_to_port[] = {
 	PJ,          /* 27 PJ.2 - LED3 */
 	PJ,          /* 28 PJ.3 - LED4 */
 	P4,          /* 29 P4.1 - PUSH2 */
+	P2,          /* 30 P2.7 - ACC_ENABLE / NTC_ENABLE */
 };
 
 const uint8_t digital_pin_to_bit_mask[] = {
@@ -334,6 +337,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(2),       /* 27 - PJ.2 - LED3 */
 	BV(3),       /* 28 - PJ.3 - LED4 */
 	BV(1),       /* 29 - P4.1 - PUSH2 */
+	BV(7),       /* 30 - P2.7 - ACC_ENABLE / NTC_ENABLE */
 
 };
 #endif
