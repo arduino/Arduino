@@ -1,7 +1,7 @@
 // DHCP Library v0.3 - April 25, 2009
 // Author: Jordan Terrell - blog.jordanterrell.com
 
-#include "w5100.h"
+#include "utility/w5100.h"
 
 #include <string.h>
 #include <stdlib.h>

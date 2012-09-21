@@ -137,6 +137,12 @@ public class Compiler implements MessageConsumer {
    // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
 
    sketch.setCompilingProgress(40);
+   
+   for (File libraryFolder : sketch.getImportedLibraries()) {
+       copyRecursively(avrBasePath, libraryFolder, buildPath, objectFiles, includePaths, boardPreferences);
+   }
+
+   /*
    for (File libraryFolder : sketch.getImportedLibraries()) {
      File outputFolder = new File(buildPath, libraryFolder.getName());
      File utilityFolder = new File(libraryFolder, "utility");
@@ -160,7 +166,8 @@ public class Compiler implements MessageConsumer {
      // other libraries should not see this library's utility/ folder
      includePaths.remove(includePaths.size() - 1);
    }
-
+	*/
+	
    // 3. compile the core, outputting .o files to <buildPath> and then
    // collecting them into the core.a library file.
 
@@ -250,7 +257,32 @@ public class Compiler implements MessageConsumer {
    
     return true;
   }
-
+  
+  
+  private void copyRecursively(String avrBasePath, File folder, String where, List<File> objectFiles, List includePaths, Map<String, String> boardPreferences) throws RunnerException {
+    File outputFolder = new File(where, folder.getName());
+	createFolder(outputFolder);
+	
+	//if (folder.isDirectory()){
+	  File[] subdirList = folder.listFiles();
+	  if (subdirList != null){ //if it contains folder
+	    for (File child : subdirList) {
+	      copyRecursively(avrBasePath, child, outputFolder.getAbsolutePath(), objectFiles, includePaths, boardPreferences);
+	    }
+	  }
+	//}
+	
+	includePaths.add(folder.getAbsolutePath());
+	
+	objectFiles.addAll(
+       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
+               findFilesInFolder(folder, "S", false),
+               findFilesInFolder(folder, "c", false),
+               findFilesInFolder(folder, "cpp", false),
+               boardPreferences));
+	// other libraries should not see this library's utility/ folder
+     includePaths.remove(includePaths.size() - 1);
+  }
 
   private List<File> compileFiles(String avrBasePath,
                                   String buildPath, List<File> includePaths,
