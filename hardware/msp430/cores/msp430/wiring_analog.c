@@ -38,6 +38,10 @@
 #if defined(__MSP430_HAS_ADC10__) && !defined(ADC10MEM0)
 #define ADC10MEM0 ADC10MEM 
 #endif
+#if defined(__MSP430_HAS_ADC10_B__)
+#define REFV_MASK 0x70
+#define REF_MASK 0x31;
+#endif
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
 uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
@@ -224,23 +228,24 @@ uint16_t analogRead(uint8_t pin)
     // Tsample = S&H / ADC10CLK = 64 / 1 MHz = 64 us
     // Tconvert = 13 / ADC10CLK = 13 / 1 MHz = 13 us
     // Total time per sample = Tconvert + Tsample = 64 + 13 = 67 us = ~15k samples / sec
-    if (pin > 7 && pin != 10) {             // Is this a valid ADC pin?
-        return 0;
-    }
 
     ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
-    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5 |  // ADC10OSC as ADC10CLK (~5MHz) / 5
-            (pin << 12);                    // select channel
+    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5;   // ADC10OSC as ADC10CLK (~5MHz) / 5
 #if defined(__MSP430_HAS_ADC10__)
     ADC10CTL0 = analog_reference |          // set analog reference
             ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
+    ADC10CTL1 |= (pin << 12);               // select channel
+    ADC10AE0 = pin;                         // TODO: should this be masked off to only allow valid chan?
 #endif
 #if defined(__MSP430_HAS_ADC10_B__)
-    ADC10CTL0 = analog_reference |          // set analog reference
-            ADC10ON | ADC10SHT_3;           // turn ADC ON; sample + hold @ 64 × ADC10CLKs
+    while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
+    REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
+    ADC10MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
+    ADC10CTL0 = ADC10ON | ADC10SHT_4;       // turn ADC ON; sample + hold @ 64 × ADC10CLKs
     ADC10CTL1 |= ADC10SHP;                  // ADCCLK = MODOSC; sampling timer
-	ADC10IFG = 0;                           // Clear Flags
-	ADC10IE |= ADC10IE0;                    // Enable interrupts
+    ADC10CTL2 |= ADC10RES;                  // 10-bit resolution
+    ADC10IFG = 0;                           // Clear Flags
+    ADC10IE |= ADC10IE0;                    // Enable interrupts
 #endif
     __delay_cycles(128);                    // Delay to allow Ref to settle
     ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
@@ -248,7 +253,17 @@ uint16_t analogRead(uint8_t pin)
         __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
     }
 
-    return ADC10MEM0;                       // return sampled value after returning to active mode in ADC10_ISR
+#if defined(__MSP430_HAS_ADC10__)
+    /* POWER: Turn ADC and reference voltage off to conserve power */
+    ADC10CTL0 &= ~(ADC10ON | REFON);
+#endif
+
+#if defined(__MSP430_HAS_ADC10_B__)
+    /* POWER: Turn ADC and reference voltage off to conserve power */
+    ADC10CTL0 &= ~(ADC10ON);
+    REFCTL0 &= ~REFON;
+#endif
+    return ADC10MEM0;  // return sampled value after returning to active mode in ADC10_ISR
 #else
     // no ADC
     return 0;
@@ -258,8 +273,25 @@ uint16_t analogRead(uint8_t pin)
 __attribute__((interrupt(ADC10_VECTOR)))
 void ADC10_ISR(void)
 {
-#if defined(__MSP430_HAS_ADC10_B__)
-	ADC10IFG = 0;                           // Clear Flags
+#if defined(__MSP430_HAS_ADC10)
+    __bic_SR_register_on_exit(CPUOFF);        // return to active mode
 #endif
-	__bic_SR_register_on_exit(CPUOFF);        // return to active mode
+
+#if defined(__MSP430_HAS_ADC10_B__)
+
+    switch(ADC10IV,12) {
+        case  0: break;                          // No interrupt
+        case  2: break;                          // conversion result overflow
+        case  4: break;                          // conversion time overflow
+        case  6: break;                          // ADC10HI
+        case  8: break;                          // ADC10LO
+        case 10: break;                          // ADC10IN
+        case 12:
+                 __bic_SR_register_on_exit(CPUOFF);        // return to active mode
+                 break;                          // Clear CPUOFF bit from 0(SR)                         
+        default: break;
+    }
+
+    ADC10IFG = 0;                           // Clear Flags
+#endif
 }
