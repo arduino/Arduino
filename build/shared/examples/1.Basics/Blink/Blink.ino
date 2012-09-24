@@ -8,12 +8,12 @@
 void setup() {                
   // initialize the digital pin as an output.
   // Pin 14 has an LED connected on most Arduino boards:
-  pinMode(14, OUTPUT);     
+  pinMode(RED_LED, OUTPUT);     
 }
 
 void loop() {
-  digitalWrite(14, HIGH);   // set the LED on
+  digitalWrite(RED_LED, HIGH);   // set the LED on
   delay(1000);              // wait for a second
-  digitalWrite(14, LOW);    // set the LED off
+  digitalWrite(RED_LED, LOW);    // set the LED off
   delay(1000);              // wait for a second
 }

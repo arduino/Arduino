@@ -16,9 +16,15 @@
 //   Rei VILO, Mar 14, 2012 - Average
 //   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
 //   Rei VILO, Sep 09, 2012 - TimerSerial.h no longer required
+//   Rei VILO, Sep 24, 2012 - FraunchPad excluded
 //   Press push 2 to end
 //   Tested on msp430g2452 and msp430g2553
 //   2196 bytes
+
+#if defined(__MSP430G2452__) || defined(__MSP430G2553__) || defined(__MSP430G2231__) 
+#else
+#error Board not supported
+#endif
 
 // RED_LED, GREEN_LED, TEMPSENSOR, PUSH2 already defined
 #define NUMBER 4 // take number / 2

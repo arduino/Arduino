@@ -16,7 +16,12 @@
 // Revision
 //   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
 //   Rei VILO, Sep 09, 2012 - TimerSerial.h no longer required
-//
+//   Rei VILO, Sep 24, 2012 - FraunchPad excluded
+#if defined(__MSP430G2452__) || defined(__MSP430G2553__) || defined(__MSP430G2231__) 
+#else
+#error Board not supported
+#endif
+
 
 #include "Wire.h"
 

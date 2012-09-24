@@ -7,9 +7,8 @@
 //
 // Project FRAM_ACC
 //
-// Created by Rei Vilo, 22/09/12 19:47
-// http://embedxcode.weebly.com
-//
+// Created by Rei Vilo, Sept 22, 2012
+// Revised by Robert, Sept 23, 2012
 //
 // Copyright © Rei Vilo, 2012
 // Licence CC = BY NC SA
@@ -78,7 +77,8 @@ accelerometer_FR::accelerometer_FR() {
 }
 
 void accelerometer_FR::begin() {
-  pinMode(ACC_ENABLE, HIGH);
+  digitalWrite(ACC_ENABLE, HIGH);
+  
   _x = 0;
   _y = 0;
   _z = 0;
