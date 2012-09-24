@@ -37,7 +37,7 @@
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_B0__)
-static const uint8_t SS      = 17;  /* P1.3 */
+static const uint8_t SS      = 20;  /* P1.3 */
 static const uint8_t SCK     = 6;   /* P2.2 */
 static const uint8_t MOSI    = 11;  /* P1.6 aka SIMO */
 static const uint8_t MISO    = 12;  /* P1.7 aka SOMI */

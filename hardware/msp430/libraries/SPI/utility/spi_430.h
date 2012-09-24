@@ -14,7 +14,7 @@
 #ifndef _SPI_430_H_
 #define _SPI_430_H_
 
-#if defined(__MSP430_HAS_USCI__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_B0__)
 
 #define SPI_CLOCK_DIV1   1
 #define SPI_CLOCK_DIV2   2
