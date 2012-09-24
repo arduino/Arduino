@@ -5,7 +5,7 @@
 // 
 // Revision
 //   Rei VILO, May 21, 2012 - Updated with GREEN_LED, RED_LED and PUSH2
-//
+//   Rei VILO, Sep 25, 2012 - Support for FraunchPad
 
 void setup() {                
   // initialise digital pins as outputs
