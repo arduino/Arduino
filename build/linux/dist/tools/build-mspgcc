@@ -1,35 +1,59 @@
 #!/usr/bin/env bash
 
-# $Id: build-mspgcc 76 2012-04-09 06:25:10Z ice $
+# $Id: build-mspgcc 82 2012-09-06 12:28:33Z ice $
+
+# Copyright (c) 2011, 2012 Tamas Tevesz <ice@extreme.hu>
+# 
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 # build and install GCC toolchain for MSP430
-# 
 #
 # prerequisites
 # - bash
 # - wget, GNU patch, GNU make
 # - things needed to build binutils, GCC and GDB
-# for more info: http://gcc.gnu.org/wiki/InstallingGCC
-#
-# For Ubuntu/Debian that means:
-# $ sudo apt-get install build-essential
-# $ sudo apt-get build-dep gcc
-# $ sudo apt-get install libgmp3-dev libmpfr-dev libmpc-dev
-# $ sudo apt-get install texinfo texi2html
 #
 # environment
 # - PREFIX - set to directory where toolchain is to be installed in
-#            (defaults to /opt/mspgcc)
+#            (defaults to ${HOME}/opt/mspgcc)
+# - BUNDLE_SUPPORT_LIBS - if set to `yes', MPC, MPFR and GMP will be
+#            will be downloaded, built and installed along with the
+#            toolchain (useful for redistribution).
 
-set -x # probably too verbose
-set -e # stop on any errors
+# 2012-9-15 rk added latest FRAM gcc patch and changed defaults for
+#           PREFIX and BUNDLE_SUPPORT_LIBS to make it less dependent
+#           on external shared libs.
+
+# rm -rf BUILD bin* build.log* gcc* gdb* gm* mp* msp*
+
+set -e
 
 mspgcc_ver="20120406"
 binutils_lts_patches=""
-gcc_lts_patches=""
+gcc_lts_patches="sf3540953 sf3559978"
 gdb_lts_patches=""
 libc_lts_patches="sf3522752"
 mcu_lts_patches="sf3522088"
+
+: ${BUNDLE_SUPPORT_LIBS:-yes}
+
+if [ "${BUNDLE_SUPPORT_LIBS}" = "yes" ]
+then
+	# Minimum required versions as per gcc/INSTALL/prerequisites.html
+	mpc_version="0.8.1"
+	mpfr_version="2.4.2"
+	gmp_version="4.3.2"
+fi
 
 # ---
 
@@ -46,9 +70,12 @@ Linux|CYGWIN_NT)
 	ncpus="$( grep -c '^processor' /proc/cpuinfo )"
 	;;
 *BSD)
-	localbase="/usr/local"
-	[ "${uname_s}" = "NetBSD" ] && localbase="/usr/pkg"
-	GCC_CONFG_ARGS="--with-gmp=${localbase} --with-mpfr=${localbase}"
+	if [ "${BUNDLE_SUPPORT_LIBS}" != "yes" ]
+	then
+		localbase="/usr/local"
+		[ "${uname_s}" = "NetBSD" ] && localbase="/usr/pkg"
+		GCC_CONFG_ARGS="--with-gmp=${localbase} --with-mpfr=${localbase}"
+	fi
 	G="g"
 	ncpus="$( sysctl -n hw.ncpu )"
 	;;
@@ -67,11 +94,13 @@ xtr()
 {
 	local fn="${1}"
 	local dn="${2}"
+	local extr="j"
+	expr "${fn}" : '.*\.gz$' >/dev/null && extr="z"
 	[ -d "${dn}" ] && rm -rf ./"${dn}"
 	mkdir "${dn}"
-	cd "${dn}"
-	tar -xj --strip-components 1 -f ../"${fn}"
-	cd ../
+	pushd "${dn}" >/dev/null
+	${TAR} -x${extr} --strip-components 1 -f ../"${fn}"
+	popd >/dev/null
 }
 
 if [ ! "${ncpus/[^0-9-]*/}" -o ${ncpus} -lt 1 ]
@@ -158,11 +187,11 @@ printf 'MCU version:            %s\n' "${mcu_ver}"
 printf 'MCU LTS patches:        %s\n' "${mcu_lts_patches:-None}"
 
 MSP430MCU_ROOT="${MSP430_ROOT}/msp430mcu-${mcu_ver}"
-PREFIX="${PREFIX:-/opt/energia}"
+PREFIX="${PREFIX:-${HOME}/opt/mspgcc_energia}"
 
 PATCH="${G}patch"
 MAKE="${G}make -j ${ncpus}"
-PATH=/opt/energia/bin:/usr/sbin:/usr/bin:/sbin:/bin
+TAR="${G}tar"
 PATH=${PREFIX}/bin:${PATH}
 export PREFIX MSP430_ROOT MSP430MCU_ROOT MAKE
 
@@ -173,28 +202,49 @@ dl "http://ftp.gnu.org/pub/gnu/gdb/gdb-${gdb_upstream_ver}.tar.bz2"
 dl "${base_url}/msp430mcu/msp430mcu-${mcu_ver}.tar.bz2"
 dl "${base_url}/msp430-libc/msp430-libc-${libc_ver}.tar.bz2"
 
-echo '!!! untar+patch'
+if [ "${BUNDLE_SUPPORT_LIBS}" = "yes" ]
+then
+	dl "ftp://gmplib.org/pub/gmp-${gmp_version}/gmp-${gmp_version}.tar.bz2"
+	dl "http://www.mpfr.org/mpfr-${mpfr_version}/mpfr-${mpfr_version}.tar.bz2"
+	dl "http://www.multiprecision.org/mpc/download/mpc-${mpc_version}.tar.gz"
+fi
+
+echo '!!! untar+patch binutils'
 xtr "binutils-${binutils_upstream_ver}.tar.bz2" "binutils"
 (
 	cd "binutils"
 	${PATCH} -p1 < "../mspgcc-${mspgcc_ver}/msp430-binutils-${binutils_upstream_ver}-${binutils_patch_ver}.patch"
 )
 
+echo '!!! untar+patch gcc'
 xtr "gcc-${gcc_upstream_ver}.tar.bz2" "gcc"
 (
 	cd "gcc"
 	${PATCH} -p1 < "../mspgcc-${mspgcc_ver}/msp430-gcc-${gcc_upstream_ver}-${gcc_patch_ver}.patch"
 )
 
+if [ "${BUNDLE_SUPPORT_LIBS}" = "yes" ]
+then
+	echo '!!! untar+patch gcc support libs - gmp'
+	xtr "../gmp-${gmp_version}.tar.bz2" "gcc/gmp"
+	echo '!!! untar+patch gcc support libs - mpfr'
+	xtr "../mpfr-${mpfr_version}.tar.bz2" "gcc/mpfr"
+	echo '!!! untar+patch gcc support libs - mpc'
+	xtr "../mpc-${mpc_version}.tar.gz" "gcc/mpc"
+fi
+
+echo '!!! untar+patch gdb'
 xtr "gdb-${gdb_upstream_ver}.tar.bz2" "gdb"
 (
 	cd "gdb"
 	${PATCH} -p1 < "../mspgcc-${mspgcc_ver}/msp430-gdb-${gdb_upstream_ver}-${gdb_patch_ver}.patch"
 )
 
+echo '!!! untar msp430mcu'
 [ -d "msp430mcu-${mcu_ver}" ] && rm -rf ./"msp430mcu-${mcu_ver}"
 tar xjf "msp430mcu-${mcu_ver}.tar.bz2"
 
+echo '!!! untar msp430-libc'
 [ -d "msp430-libc-${libc_ver}" ] && rm -rf ./"msp430-libc-${libc_ver}"
 tar xjf "msp430-libc-${libc_ver}.tar.bz2"
 
