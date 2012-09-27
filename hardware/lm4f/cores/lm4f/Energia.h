@@ -1,22 +1,24 @@
-#ifndef Energia_h
-#define Energia_h
+#ifndef Energia_h 
+#define Energia_h 
 
-#include <stdint.h>
-#include <string.h>
+#include <stdint.h> 
+#include <string.h> 
 #include <math.h>
-#include <lm4f.h>
-
+#define TARGET_IS_BLIZZARD_RA1 
+#define UART_BUFFERED 
 #define PART_LM4F120H5QR
-#define TARGET_IS_BLIZZARD_RA1
-#define UART_BUFFERED
+#define HWREG(x) \
+        (*((volatile unsigned long *)(x))) 
 
-#include "binary.h"
-#include "inc/hw_types.h"
-#include "driverlib/gpio.h"
+#include "binary.h" 
+#include "inc/hw_types.h"  		 
+#include "inc/lm4f120h5qr.h"
+#include "driverlib/gpio.h" 
+#include "driverlib/pin_map.h"
 
 #ifdef __cplusplus
-extern "C"{
-#endif
+extern "C"{ 
+#endif 
 
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
@@ -65,61 +67,26 @@ extern "C"{
 #define T2B 10
 #define T3A 11
 #define T3B 12
-#define T4A 13
-#define T4B 14
-#define T5A 15
-#define T5B 16
-#define WT0A 17
-#define WT0B 18
-#define WT1A 19
-#define WT1B 20
-#define WT2A 21
-#define WT2B 22
-#define WT3A 23
-#define WT3B 24
-#define WT4A 25
-#define WT4B 26
-#define WT5A 27
-#define WT5B 28
+#define WT0A 13
+#define WT0B 14
+#define WT1A 15
+#define WT1B 16
+#define WT2A 17
+#define WT2B 18
+#define WT3A 19
+#define WT3B 20
+#define WT5A 21
+#define WT5B 22
 
 #define TIMER0 0
 #define TIMER1 1
 #define TIMER2 2
 #define TIMER3 3
-#define TIMER4 4
-#define TIMER5 5
-#define WTIMER0 6
-#define WTIMER1 7
-#define WTIMER2 8
-#define WTIMER3 9
-#define WTIMER4 10
-#define WTIMER5 11
-
-
-#define T0CCP0 0
-#define T0CCP1 1
-#define T1CCP0 2
-#define T1CCP1 3
-#define T2CCP0 4
-#define T2CCP1 5
-#define T3CCP0 6
-#define T3CCP1 7
-#define T4CCP0 8
-#define T4CCP1 9
-#define T5CCP0 10
-#define T5CCP1 11
-#define WT0CCP0 12
-#define WT0CCP1 13
-#define WT1CCP0 14
-#define WT1CCP1 15
-#define WT2CCP0 16
-#define WT2CCP1 17
-#define WT3CCP0 18
-#define WT3CCP1 19
-#define WT4CCP0 20
-#define WT4CCP1 21
-#define WT5CCP0 22
-#define WT5CCP1 23
+#define WTIMER0 4
+#define WTIMER1 5
+#define WTIMER2 6
+#define WTIMER3 7
+#define WTIMER5 9
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
@@ -179,15 +146,15 @@ extern const uint8_t digital_pin_to_port[];
 extern const uint8_t digital_pin_to_bit_mask[];
 extern const uint32_t timer_to_offset[];
 extern const uint8_t timer_to_ab[];
-extern const uint8_t digital_pin_to_gpio_pin[];
+extern const uint32_t timer_to_pin_config[];
 extern const uint32_t port_to_base[];
 
 #define digitalPinToPort(P)       ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P)    ( digital_pin_to_bit_mask[P] )
 #define digitalPinToTimer(P)      ( digital_pin_to_timer[P] )
-#define digitalPinToGPIOPin(P)    ( digital_pin_to_gpio_pin[P] )
 #define timerToAB(P)              ( timer_to_ab[P] )
 #define timerToOffset(P)          ( timer_to_offset[P] )
+#define timerToPinConfig(P)       ( timer_to_pin_config[P] )
 #define portBASERegister(P)       ((volatile uint32_t *) port_to_base[P])
 #define portDATARegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x3FC ))
 #define portDIRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x400 ))
@@ -229,8 +196,7 @@ extern const uint32_t port_to_base[];
 void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
-void disableWatchDog();
-void enableWatchDog();
+void timerInit();
 
 #ifdef __cplusplus
 } // extern "C"
@@ -244,7 +210,7 @@ void enableWatchDog();
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);
 
-#define word(...) makeWord(__VA_ARGS__)
+#define word(...) makeWord(__VA_ARGS__) 
 
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
 

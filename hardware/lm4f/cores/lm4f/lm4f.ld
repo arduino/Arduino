@@ -20,15 +20,15 @@
  * 
  * This is part of revision 9107 of the EK-LM4F232 Firmware Package.
  *
- *****************************************************************************/
+ *****************************************************************************/ 
 
-MEMORY
+MEMORY 
 {
-    FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 0x00040000
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000
+    FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 0x00040000 
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 
 }
 
-SECTIONS
+SECTIONS 
 {
     .text :
     {
@@ -49,9 +49,9 @@ SECTIONS
 
     .bss :
     {
-        _bss = .;
-        *(.bss*)
-        *(COMMON)
-        _ebss = .;
-    } > SRAM
-}
+        _bss = .; 
+        *(.bss*) 
+        *(COMMON) 
+        _ebss = .; 
+    } > SRAM 
+} 

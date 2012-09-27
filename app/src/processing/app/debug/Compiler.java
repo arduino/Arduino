@@ -226,13 +226,9 @@ public class Compiler implements MessageConsumer {
       }));
     }else if (arch == "lm4f") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
-        basePath + "arm-none-eabi-ld",
-        /*"-mthumb",
-        "-mcpu=cortex-m4",
-        "-mfpu=fpv4-sp-d16 -mfloat-abi=softfp",
-        "-Os",*/
+        basePath + "arm-none-eabi-gcc",
+        "-mthumb", "-mcpu=corex-m4","-Wl,--gc-sections",
         "-T", corePath + File.separator + "lm4f.ld",
-        "--gc-sections",//,-u,main",
         "--entry=ResetISR",
         "-o",
         buildPath + File.separator + primaryClassName + ".axf"
@@ -632,13 +628,6 @@ public class Compiler implements MessageConsumer {
           "-pedantic",
           "-DPART_${PART}",
           "-c",
-          /*"-c", // compile, don't link
-          "-g", // include debugging info (so errors include line numbers)
-          "-mcpu=" + "cortex-m4",
-          "-mthumb",
-          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-DARDUINO=" + Base.REVISION,
-          "-DENERGIA=" + Base.EREVISION,*/
         }));
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -687,7 +676,6 @@ public class Compiler implements MessageConsumer {
         basePath + "arm-none-eabi-gcc",
         "-mthumb",
         "-mcpu=cortex-m4",
-        //"-mfpu=fpv4-sp-d16 -mfloat-abi=softfp",
         "-Os",
         "-ffunction-sections",
         "-fdata-sections",
@@ -754,17 +742,11 @@ public class Compiler implements MessageConsumer {
           "-g", // include debugging info (so errors include line numbers)
           "-Os", // optimize for size
           "-Wall",
-          //Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-exceptions",
           "-ffunction-sections", // place each function in its own section
           "-fdata-sections",
           "-mcpu=" + "cortex-m4",
           "-mthumb",
-          //"-mcpu=" + boardPreferences.get("build.mcu"),
-          //"-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          //"-MMD", // output dependancy info
-          //"-DARDUINO=" + Base.REVISION,
-          //"-DENERGIA=" + Base.EREVISION,
         }));
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {

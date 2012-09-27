@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?ccsproject version="1.0"?>
+
+<projectOptions>
+<deviceVariant value="Cortex M.LM3S101"/>
+<deviceFamily value="TMS470"/>
+<deviceEndianness value="little"/>
+<codegenToolVersion value="4.9.5"/>
+<isElfFormat value="true"/>
+<connection value=""/>
+</projectOptions>

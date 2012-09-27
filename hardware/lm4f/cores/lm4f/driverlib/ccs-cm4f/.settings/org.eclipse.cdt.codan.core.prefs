@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+inEditor=false
+onBuild=false

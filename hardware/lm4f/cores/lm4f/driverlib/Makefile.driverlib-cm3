@@ -1,0 +1,106 @@
+#******************************************************************************
+#
+# Makefile.driverlib-cm3 - Rules for building the driver library.
+#
+# Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+# Software License Agreement
+# 
+# Texas Instruments (TI) is supplying this software for use solely and
+# exclusively on TI's microcontroller products. The software is owned by
+# TI and/or its suppliers, and is protected under applicable copyright
+# laws. You may not combine this software with "viral" open-source
+# software in order to form a larger program.
+# 
+# THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.
+# NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT
+# NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY
+# CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
+# DAMAGES, FOR ANY REASON WHATSOEVER.
+# 
+# This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+#
+#******************************************************************************
+
+#
+# Defines the directory suffix that this project uses.
+#
+SUFFIX=-cm3
+
+#
+# Set the processor variant.
+#
+VARIANT=cm3
+
+#
+# The base directory for StellarisWare.
+#
+ROOT=..
+
+#
+# Include the common make definitions.
+#
+include ${ROOT}/makedefs
+
+#
+# Where to find header files that do not live in the source directory.
+#
+IPATH=..
+
+#
+# The default rule, which causes the driver library to be built.
+#
+all: ${COMPILER}-cm3
+all: ${COMPILER}-cm3/libdriver-cm3.a
+
+#
+# The rule to clean out all the build products.
+#
+clean:
+	@rm -rf ${COMPILER}-cm3 ${wildcard *~}
+
+#
+# The rule to create the target directory.
+#
+${COMPILER}-cm3:
+	@mkdir -p ${COMPILER}-cm3
+
+#
+# Rules for building the driver library.
+#
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/adc.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/can.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/comp.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/cpu.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/eeprom.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/epi.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/ethernet.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/fan.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/flash.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/fpu.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/gpio.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/hibernate.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/i2c.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/i2s.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/interrupt.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/lpc.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/mpu.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/peci.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/pwm.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/qei.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/ssi.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/sysctl.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/sysexc.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/systick.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/timer.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/uart.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/udma.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/usb.o
+${COMPILER}-cm3/libdriver-cm3.a: ${COMPILER}-cm3/watchdog.o
+
+#
+# Include the automatically generated dependency files.
+#
+ifneq (${MAKECMDGOALS},clean)
+-include ${wildcard ${COMPILER}-cm3/*.d} __dummy__
+endif
