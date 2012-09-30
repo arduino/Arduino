@@ -71,6 +71,8 @@
 #define PWM                     0x03 // digital pin in PWM output mode
 #define SERVO                   0x04 // digital pin in Servo output mode
 #define SHIFT                   0x05 // shiftIn/shiftOut mode
+#define   SHIFT_MSB_FIRST       0x40 // shift msb, lsb
+#define   SHIFT_LENGTH          0x1F // up to 2 bytes and 3 bits for bits
 #define I2C                     0x06 // pin included in I2C setup
 #define TOTAL_PIN_MODES         7
 

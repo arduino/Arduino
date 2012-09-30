@@ -216,6 +216,13 @@ void setPinModeCallback(byte pin, int mode)
       pinConfig[pin] = OUTPUT;
     }
     break;
+  case SHIFT:
+    if (IS_PIN_DIGITAL(pin)) {
+      digitalWrite(PIN_TO_DIGITAL(pin), LOW); // disable PWM
+      pinMode(PIN_TO_DIGITAL(pin), OUTPUT);
+      pinConfig[pin] = SHIFT;
+    }
+    break;
   case PWM:
     if (IS_PIN_PWM(pin)) {
       pinMode(PIN_TO_PWM(pin), OUTPUT);
@@ -327,9 +334,28 @@ void sysexCallback(byte command, byte argc, byte *argv)
   byte slaveAddress;
   byte slaveRegister;
   byte data;
-  unsigned int delayTime; 
+  unsigned int delayTime;
+  byte clkPin;
+  byte dataPin;
   
   switch(command) {
+  case SHIFT_DATA:
+    dataPin = argv[0];
+    clkPin = argv[1];
+    mode = argv[2];
+    if ((pinConfig[dataPin] == SHIFT) && (pinConfig[clkPin] == SHIFT) &&
+      (argc > 3)  && (argc & 1)) {
+      for (byte i = 3; i < argc; i +=2) {
+        data = argv[i] + (argv[i + 1] << 7);
+        shiftOut(dataPin, clkPin,
+          ((mode & SHIFT_MSB_FIRST) ? ~LSBFIRST : LSBFIRST), data);
+      }
+    }
+    else {
+      Firmata.sendString("Improper shift data parameters");
+    }
+    break;
+    
   case I2C_REQUEST:
     mode = argv[1] & I2C_READ_WRITE_MODE_MASK;
     if (argv[1] & I2C_10BIT_ADDRESS_MODE_MASK) {
