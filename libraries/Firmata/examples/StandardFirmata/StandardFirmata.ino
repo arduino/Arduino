@@ -343,16 +343,47 @@ void sysexCallback(byte command, byte argc, byte *argv)
     dataPin = argv[0];
     clkPin = argv[1];
     mode = argv[2];
-    if ((pinConfig[dataPin] == SHIFT) && (pinConfig[clkPin] == SHIFT) &&
-      (argc > 3)  && (argc & 1)) {
-      for (byte i = 3; i < argc; i +=2) {
-        data = argv[i] + (argv[i + 1] << 7);
-        shiftOut(dataPin, clkPin,
-          ((mode & SHIFT_MSB_FIRST) ? ~LSBFIRST : LSBFIRST), data);
+    if ((pinConfig[dataPin] == SHIFT) && (pinConfig[clkPin] == SHIFT)) {
+      if (argc == 3) {
+        // read operation - set up read input pin, clocking output pin
+        pinMode(PIN_TO_DIGITAL(dataPin), INPUT);
+        if (mode & SHIFT_INPUT_PUP)
+          digitalWrite(PIN_TO_DIGITAL(dataPin), HIGH); // enable pull-up
+        pinMode(PIN_TO_DIGITAL(clkPin), OUTPUT);
+        digitalWrite(PIN_TO_DIGITAL(clkPin), LOW); // init to low
+         // get number of bytes to read - no bit counting support, yet
+        byte length = (mode & SHIFT_LENGTH) >> 3;
+        if (!length) length = 4;
+        // send out value read
+        Serial.write(START_SYSEX);
+        Serial.write(SHIFT_DATA);
+        Serial.write(dataPin); // mark data, so can handle asynchronously        
+        for (byte i = 1; i <= length; i++) {
+          data = shiftIn(dataPin, clkPin,
+            (mode & SHIFT_MSB_FIRST) ? ~LSBFIRST : LSBFIRST);
+          Serial.write(data & 0x7F);
+          Serial.write((data >> 7) & 1);
+        }
+        Serial.write(END_SYSEX);
+      }
+      else if ((argc > 3)  && (argc & 1)) {
+        // write operation - clock and data both outputs
+        pinMode(PIN_TO_DIGITAL(dataPin), OUTPUT);
+        digitalWrite(PIN_TO_DIGITAL(dataPin), LOW);
+        pinMode(PIN_TO_DIGITAL(clkPin), OUTPUT);
+        digitalWrite(PIN_TO_DIGITAL(clkPin), LOW);
+        for (byte i = 3; i < argc; i +=2) {
+          data = argv[i] | (argv[i + 1] << 7);
+          shiftOut(dataPin, clkPin,
+            ((mode & SHIFT_MSB_FIRST) ? ~LSBFIRST : LSBFIRST), data);
+        }
+      }
+      else {
+        Firmata.sendString("Improper shift length parameter");        
       }
     }
     else {
-      Firmata.sendString("Improper shift data parameters");
+      Firmata.sendString("Improper pin mode for shifting");
     }
     break;
     

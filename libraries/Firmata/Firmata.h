@@ -20,8 +20,8 @@
  * software can test whether it will be compatible with the currently
  * installed firmware. */
 #define FIRMATA_MAJOR_VERSION   2 // for non-compatible changes
-#define FIRMATA_MINOR_VERSION   3 // for backwards compatible changes
-#define FIRMATA_BUGFIX_VERSION  1 // for bugfix releases
+#define FIRMATA_MINOR_VERSION   4 // for backwards compatible changes
+#define FIRMATA_BUGFIX_VERSION  0 // for bugfix releases
 
 #define MAX_DATA_BYTES 32 // max number of data bytes in non-Sysex messages
 
@@ -71,10 +71,13 @@
 #define PWM                     0x03 // digital pin in PWM output mode
 #define SERVO                   0x04 // digital pin in Servo output mode
 #define SHIFT                   0x05 // shiftIn/shiftOut mode
-#define   SHIFT_MSB_FIRST       0x40 // shift msb, lsb
-#define   SHIFT_LENGTH          0x1F // up to 2 bytes and 3 bits for bits
 #define I2C                     0x06 // pin included in I2C setup
 #define TOTAL_PIN_MODES         7
+
+// mask bits for SHIFT pin mode byte
+#define   SHIFT_MSB_FIRST       0x40 // shift MSB in/out first
+#define   SHIFT_INPUT_PUP       0x20 // add a pullup to shift inputs
+#define   SHIFT_LENGTH          0x1F // up to 2 bytes and 3 bits for bits
 
 extern "C" {
 // callback function types
