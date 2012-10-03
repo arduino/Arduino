@@ -46,15 +46,38 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/uart.h"
-
 #include "HardwareSerial.h"
 
 #define TX_BUFFER_EMPTY    (txReadIndex == txWriteIndex)
-#define TX_BUFFER_FULL     (((txWriteIndex + 1) % TX_BUFFER_SIZE) == txReadIndex)
+#define TX_BUFFER_FULL     (((txWriteIndex + 1) % SERIAL_BUFFER_SIZE) == txReadIndex)
 
 #define RX_BUFFER_EMPTY    (rxReadIndex == rxWriteIndex)
-#define RX_BUFFER_FULL     (((rxWriteIndex + 1) % RX_BUFFER_SIZE) == rxReadIndex)
-HardwareSerial Serial;
+#define RX_BUFFER_FULL     (((rxWriteIndex + 1) % SERIAL_BUFFER_SIZE) == rxReadIndex)
+
+static const unsigned long g_ulUARTBase[3] =
+{
+    UART0_BASE, UART1_BASE, UART2_BASE
+};
+
+//*****************************************************************************
+//
+// The list of possible interrupts for the console UART.
+//
+//*****************************************************************************
+static const unsigned long g_ulUARTInt[3] =
+{
+    INT_UART0, INT_UART1, INT_UART2
+};
+
+//*****************************************************************************
+//
+// The list of UART peripherals.
+//
+//*****************************************************************************
+static const unsigned long g_ulUARTPeriph[3] =
+{
+    SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1, SYSCTL_PERIPH_UART2
+};
 // Constructors ////////////////////////////////////////////////////////////////
 HardwareSerial::HardwareSerial(void)
 {
@@ -62,7 +85,15 @@ HardwareSerial::HardwareSerial(void)
     txReadIndex = 0;
     rxWriteIndex = 0;
     rxReadIndex = 0;
-    uartBase = 0;
+    uartModule = 0;
+}
+HardwareSerial::HardwareSerial(unsigned long _uartModule)
+{
+    txWriteIndex = 0;
+    txReadIndex = 0;
+    rxWriteIndex = 0;
+    rxReadIndex = 0;
+    uartModule = _uartModule;
 }
 // Private Methods //////////////////////////////////////////////////////////////
 void 
@@ -94,23 +125,24 @@ HardwareSerial::primeTransmit(unsigned long ulBase)
         // Disable the UART interrupt. If we don't do this there is a race
         // condition which can cause the read index to be corrupted.
         //
-        MAP_IntDisable(INT_UART0);
-
+        ROM_IntDisable(g_ulUARTInt[uartModule]);
         //
         // Yes - take some characters out of the transmit buffer and feed
         // them to the UART transmit FIFO.
         //
-        while(MAP_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY)
+        while(ROM_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY)
         {
-            MAP_UARTCharPutNonBlocking(ulBase,
+
+            ROM_UARTCharPutNonBlocking(ulBase,
                                        txBuffer[txReadIndex]);
-            txWriteIndex = (txWriteIndex + 1) % TX_BUFFER_SIZE;
+                
+            txReadIndex = (txReadIndex + 1) % SERIAL_BUFFER_SIZE;
         }
 
         //
         // Reenable the UART interrupt.
         //
-        MAP_IntEnable(INT_UART0);
+        ROM_IntEnable(g_ulUARTInt[uartModule]);
     }
 }
 
@@ -122,48 +154,50 @@ HardwareSerial::begin(unsigned long baud)
     //
     // Initialize the UART.
     //
-    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+    ROM_SysCtlPeripheralEnable(g_ulUARTInt[uartModule]);
+    
+    //TODO:Add functionality for PinConfigure with variable uartModule 
     ROM_GPIOPinConfigure(GPIO_PA0_U0RX);
     ROM_GPIOPinConfigure(GPIO_PA1_U0TX);
+    
     ROM_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
     //
     // Only allow a single instance to be opened.
     //
-    ASSERT(uartBase == 0);
+    ASSERT(g_ulUARTBase[uartModule] == 0);
 	//
     // Check to make sure the UART peripheral is present.
     //
-    if(!MAP_SysCtlPeripheralPresent(UART0_BASE))
+    if(!ROM_SysCtlPeripheralPresent(g_ulUARTPeriph[uartModule]))
     {
         return;
     }
-	uartBase = UART0_BASE;
-	MAP_SysCtlPeripheralEnable(uartBase);
-	MAP_UARTConfigSetExpClk(uartBase, MAP_SysCtlClockGet(), baud,
+	ROM_SysCtlPeripheralEnable(g_ulUARTPeriph[uartModule]);
+	ROM_UARTConfigSetExpClk(g_ulUARTBase[uartModule], ROM_SysCtlClockGet(), baud,
                             (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
                              UART_CONFIG_WLEN_8));
     //
     // Set the UART to interrupt whenever the TX FIFO is almost empty or
     // when any character is received.
     //
-    MAP_UARTFIFOLevelSet(uartBase, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
+    ROM_UARTFIFOLevelSet(g_ulUARTBase[uartModule], UART_FIFO_TX1_8, UART_FIFO_RX1_8);
 	flushAll();
-	MAP_UARTIntDisable(uartBase, 0xFFFFFFFF);
-    MAP_UARTIntEnable(uartBase, UART_INT_RX | UART_INT_RT);
-    MAP_IntEnable(INT_UART0);
-	MAP_IntMasterEnable();
+	ROM_UARTIntDisable(g_ulUARTBase[uartModule], 0xFFFFFFFF);
+    ROM_UARTIntEnable(g_ulUARTBase[uartModule], UART_INT_RX | UART_INT_RT);
+    ROM_IntMasterEnable();
+    ROM_IntEnable(g_ulUARTInt[uartModule]);
+    
 
     //
     // Enable the UART operation.
     //
-    MAP_UARTEnable(uartBase);
+    ROM_UARTEnable(g_ulUARTBase[uartModule]);
 
 }
 
 void HardwareSerial::end()
 {
-    unsigned long ulInt = MAP_IntMasterDisable();
+    unsigned long ulInt = ROM_IntMasterDisable();
 	
 	flushAll();
 	
@@ -173,23 +207,23 @@ void HardwareSerial::end()
     //
     if(!ulInt)
     {
-        MAP_IntMasterEnable();
+        ROM_IntMasterEnable();
     }
 	
-    ROM_IntDisable(INT_UART0);
-    ROM_UARTIntDisable(UART0_BASE, UART_INT_RX | UART_INT_RT);
+    ROM_IntDisable(g_ulUARTInt[uartModule]);
+    ROM_UARTIntDisable(g_ulUARTBase[uartModule], UART_INT_RX | UART_INT_RT);
 
 }
 
 int HardwareSerial::available(void)
 {
     return((rxWriteIndex >= rxReadIndex) ? 
-		(rxWriteIndex - rxReadIndex) : RX_BUFFER_SIZE - (rxReadIndex - rxWriteIndex));
+		(rxWriteIndex - rxReadIndex) : SERIAL_BUFFER_SIZE - (rxReadIndex - rxWriteIndex));
 }
 
 int HardwareSerial::peek(void)
 {
-    unsigned char cChar;
+    unsigned char cChar = 0;
 
     //
     // Wait for a character to be received.
@@ -206,7 +240,6 @@ int HardwareSerial::peek(void)
     // Read a character from the buffer.
     //
     cChar = rxBuffer[rxReadIndex];
-
     //
     // Return the character to the caller.
     //
@@ -215,9 +248,8 @@ int HardwareSerial::peek(void)
 
 int HardwareSerial::read(void)
 {
-    
 	unsigned char cChar = peek();
-    rxReadIndex = ((rxReadIndex) + 1) % RX_BUFFER_SIZE;
+    rxReadIndex = ((rxReadIndex) + 1) % SERIAL_BUFFER_SIZE;
 	return(cChar);
 }
 
@@ -228,56 +260,54 @@ void HardwareSerial::flush()
     }
 }
 
-size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
+size_t HardwareSerial::write(uint8_t c)
 {
-    unsigned int uIdx;
 
+    unsigned int numTransmit = 0;
+        pinMode(BLUE_LED, OUTPUT);
+        digitalWrite(BLUE_LED, HIGH);
     //
     // Check for valid arguments.
     //
-    ASSERT(buffer != 0);
-    ASSERT(uartBase != 0);
+    ASSERT(c != 0);
 
     //
-    // Send the characters
-    //
-    for(uIdx = 0; uIdx < size; uIdx++)
+    // If the character to the UART is \n, then add a \r before it so that
+    // \n is translated to \n\r in the output.
+    //           
+
+    if(c == '\n')
     {
-        //
-        // If the character to the UART is \n, then add a \r before it so that
-        // \n is translated to \n\r in the output.
-        //
-        if(buffer[uIdx] == '\n')
-        {
-            if(!TX_BUFFER_FULL)
-            {
-                txBuffer[txWriteIndex] = '\r';
-			    txWriteIndex = (txWriteIndex + 1) % TX_BUFFER_SIZE;
-            }
-            else
-            {
-                //
-                // Buffer is full - discard remaining characters and return.
-                //
-                break;
-            }
-        }
-
-        //
-        // Send the character to the UART output.
-        //
         if(!TX_BUFFER_FULL)
         {
-            txBuffer[txWriteIndex] = buffer[uIdx];
-			txWriteIndex = (txWriteIndex + 1) % TX_BUFFER_SIZE;
+            txBuffer[txWriteIndex] = '\r';
+			txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
+            numTransmit ++;
         }
         else
         {
             //
             // Buffer is full - discard remaining characters and return.
             //
-            break;
+            return(numTransmit);
         }
+    }
+        
+    //
+    // Send the character to the UART output.
+    //
+    if(!TX_BUFFER_FULL)
+    {
+        txBuffer[txWriteIndex] = c;
+	    txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
+        numTransmit ++;
+    }
+    else
+    {
+        //
+        // Buffer is full - discard remaining characters and return.
+        //
+        return(numTransmit);
     }
 
     //
@@ -286,89 +316,75 @@ size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
     //
     if(!TX_BUFFER_EMPTY)
     {
-	    primeTransmit(uartBase);
-        MAP_UARTIntEnable(uartBase, UART_INT_TX);
+
+	    primeTransmit(g_ulUARTBase[uartModule]);
+        ROM_UARTIntEnable(g_ulUARTBase[uartModule], UART_INT_TX);
     }
 
     //
     // Return the number of characters written.
     //
-    return(uIdx);
-}
-
-size_t HardwareSerial::write(uint8_t c)
-{
-    write((const uint8_t *) &c,1);
-    return 1;
-}
-size_t HardwareSerial::write(const char *str) {
-    return write((const uint8_t *) str, strlen(str));
+    return(numTransmit);
 }
 
 void HardwareSerial::UARTIntHandler(void){
     unsigned long ulInts;
     long lChar;
-    //
     // Get and clear the current interrupt source(s)
     //
-    ulInts = MAP_UARTIntStatus(uartBase, true);
-    MAP_UARTIntClear(uartBase, ulInts);
-
-    //
+    ulInts = ROM_UARTIntStatus(g_ulUARTBase[uartModule], true);
+    ROM_UARTIntClear(g_ulUARTBase[uartModule], ulInts);
+    
     // Are we being interrupted because the TX FIFO has space available?
-    //
+    //        
     if(ulInts & UART_INT_TX)
     {
         //
         // Move as many bytes as we can into the transmit FIFO.
         //
-        primeTransmit(uartBase);
+        primeTransmit(g_ulUARTBase[uartModule]);
 
         //
         // If the output buffer is empty, turn off the transmit interrupt.
         //
         if(TX_BUFFER_EMPTY)
         {
-            MAP_UARTIntDisable(uartBase, UART_INT_TX);
+            ROM_UARTIntDisable(g_ulUARTBase[uartModule], UART_INT_TX);
         }
     }
-
-    //
-    // Are we being interrupted due to a received character?
-    //
     if(ulInts & (UART_INT_RX | UART_INT_RT))
     {
-        //
-        // Get all the available characters from the UART.
-        //
-        while(MAP_UARTCharsAvail(uartBase))
-        {
+        while(ROM_UARTCharsAvail(g_ulUARTBase[uartModule]))
+            {
+
             //
             // Read a character
             //
-            lChar = MAP_UARTCharGetNonBlocking(uartBase);
-
+            lChar = ROM_UARTCharGetNonBlocking(g_ulUARTBase[uartModule]);
             //
             // If there is space in the receive buffer, put the character
             // there, otherwise throw it away.
             //
+
             if(!RX_BUFFER_FULL)
             {
-                //
+
                 // Store the new character in the receive buffer
                 //
-                rxBuffer[rxWriteIndex] = 
-				    (unsigned char)(lChar & 0xFF);
-                rxReadIndex = ((rxReadIndex) + 1) % RX_BUFFER_SIZE;
-            }
-        }
 
-        //
-        // If we wrote anything to the transmit buffer, make sure it actually
-        // gets transmitted.
-        //
-        primeTransmit(uartBase);
-        MAP_UARTIntEnable(uartBase, UART_INT_TX);
+                rxBuffer[rxWriteIndex] =
+                    (unsigned char)(lChar & 0xFF);
+                rxWriteIndex = ((rxWriteIndex) + 1) % SERIAL_BUFFER_SIZE;
+                
+            }
+
+            //
+            // If we wrote anything to the transmit buffer, make sure it actually
+            // gets transmitted.
+            //
+        }
+        primeTransmit(g_ulUARTBase[uartModule]);
+        ROM_UARTIntEnable(g_ulUARTBase[uartModule], UART_INT_TX);
     }
 }
 
@@ -377,3 +393,6 @@ UART0IntHandler(void)
 {
     Serial.UARTIntHandler();
 }
+
+//Preinstantiate Object
+HardwareSerial Serial;

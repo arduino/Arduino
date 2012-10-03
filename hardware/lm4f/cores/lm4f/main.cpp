@@ -4,6 +4,7 @@
 #include "driverlib/sysctl.h"
 int main(void)
 {
+
     timerInit();
 	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);

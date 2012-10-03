@@ -32,35 +32,36 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define RX_BUFFER_SIZE     128
-#define TX_BUFFER_SIZE     1024
-
-//extern void serialEventRun(void) __attribute__((weak));
+#define SERIAL_BUFFER_SIZE     128
 class HardwareSerial : public Stream
 {
+
 	private:
-        unsigned char *txBuffer;
-        volatile unsigned long txWriteIndex;
-        volatile unsigned long txReadIndex;
-        unsigned char *rxBuffer;
-        volatile unsigned long rxWriteIndex;
-        volatile unsigned long rxReadIndex;
-        unsigned long uartBase;    
+        unsigned char txBuffer[SERIAL_BUFFER_SIZE];
+        unsigned long txWriteIndex;
+        unsigned long txReadIndex;
+        unsigned char rxBuffer[SERIAL_BUFFER_SIZE];
+        unsigned long rxWriteIndex;
+        unsigned long rxReadIndex;
+        unsigned long uartModule;
         void flushAll(void);
         void primeTransmit(unsigned long ulBase);
-	public:
+	
+    public:
 		HardwareSerial(void);
+        HardwareSerial(unsigned long _uartModule);
 		void begin(unsigned long);
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);
 		virtual int read(void);
 		virtual void flush(void);
-		virtual size_t write(uint8_t);
-		virtual size_t write(const uint8_t *buffer, size_t size);
-		virtual size_t write(const char *str);
         void UARTIntHandler(void);
+        virtual size_t write(uint8_t c);
+		using Print::write; // pull in write(str) and write(buf, size) from Print
+        
 };
+
 extern HardwareSerial Serial;
 extern "C" void UART0IntHandler(void);
 extern void serialEventRun(void) __attribute__((weak));

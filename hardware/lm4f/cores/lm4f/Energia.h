@@ -5,7 +5,6 @@
 #include <string.h> 
 #include <math.h>
 #define TARGET_IS_BLIZZARD_RA1 
-#define UART_BUFFERED 
 #define PART_LM4F120H5QR
 #define HWREG(x) \
         (*((volatile unsigned long *)(x))) 
@@ -23,6 +22,7 @@ extern "C"{
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
 #define NOT_ON_TIMER 0
+#define NOT_ON_ADC 0x10
 
 #define CHANGE 4
 #define FALLING 3
@@ -148,6 +148,7 @@ extern const uint32_t timer_to_offset[];
 extern const uint8_t timer_to_ab[];
 extern const uint32_t timer_to_pin_config[];
 extern const uint32_t port_to_base[];
+extern const uint32_t digital_pin_to_analog_in[];
 
 #define digitalPinToPort(P)       ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P)    ( digital_pin_to_bit_mask[P] )
@@ -155,6 +156,7 @@ extern const uint32_t port_to_base[];
 #define timerToAB(P)              ( timer_to_ab[P] )
 #define timerToOffset(P)          ( timer_to_offset[P] )
 #define timerToPinConfig(P)       ( timer_to_pin_config[P] )
+#define digitalPinToADCIn(P)      ( digital_pin_to_analog_in[P] )
 #define portBASERegister(P)       ((volatile uint32_t *) port_to_base[P])
 #define portDATARegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x3FC ))
 #define portDIRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x400 ))
@@ -203,7 +205,6 @@ void timerInit();
 #endif
 
 #ifdef __cplusplus
-#include "WCharacter.h"
 #include "WString.h"
 #include "HardwareSerial.h"
 

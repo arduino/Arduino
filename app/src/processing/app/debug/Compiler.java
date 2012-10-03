@@ -219,7 +219,6 @@ public class Compiler implements MessageConsumer {
         // msp430 linker has an issue with main residing in an archive, cora.a in this case.
         // -u,main works around this by forcing the linker to find a definition for main.
         "-Wl,-gc-sections,-u,main", 
-        
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-o",
         buildPath + File.separator + primaryClassName + ".elf"
@@ -228,6 +227,7 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
         "-mthumb", "-mcpu=corex-m4","-Wl,--gc-sections",
+        "-Wl,-Map=lm4f.map","-Woverloaded-virtual",
         "-T", corePath + File.separator + "lm4f.ld",
         "--entry=ResetISR",
         "-o",
@@ -742,6 +742,7 @@ public class Compiler implements MessageConsumer {
           "-g", // include debugging info (so errors include line numbers)
           "-Os", // optimize for size
           "-Wall",
+          "-Woverloaded-virtual",
           "-fno-exceptions",
           "-ffunction-sections", // place each function in its own section
           "-fdata-sections",

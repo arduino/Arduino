@@ -32,10 +32,12 @@
 
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
+
 #ifndef BV 
 #define BV(x) (1 << (x)) 
 #endif 
 #include "inc/hw_memmap.h"
+#include "driverlib/adc.h"
 
 //
 // Pin names based on the silkscreen
@@ -61,9 +63,9 @@ static const uint8_t PD_0 = 23;
 static const uint8_t PD_1 = 24;
 static const uint8_t PD_2 = 25;
 static const uint8_t PD_3 = 26;
-static const uint8_t PE_1 = 27;
+static const uint8_t PE_1 = 27; 
 static const uint8_t PE_2 = 28;
-static const uint8_t PE_3 = 29;
+static const uint8_t PE_3 = 29; 
 static const uint8_t PF_1 = 30;
 static const uint8_t PF_4 = 31;
 static const uint8_t PD_7 = 32;
@@ -75,6 +77,19 @@ static const uint8_t PC_4 = 37;
 static const uint8_t PB_3 = 38;
 static const uint8_t PF_3 = 39;
 static const uint8_t PF_2 = 40;
+
+static const uint8_t AIN0 =  29; //PE_3
+static const uint8_t AIN1 =  28; //PE_2
+static const uint8_t AIN2 =  27; //PE_1
+static const uint8_t AIN3 =  18; //PE_0
+static const uint8_t AIN4 =  26; //PD_3
+static const uint8_t AIN5 =  25; //PD_2
+static const uint8_t AIN6 =  24; //PD_1
+static const uint8_t AIN7 =  23; //PD_0
+static const uint8_t AIN8 =   6; //PE_5
+static const uint8_t AIN9 =   5; //PE_4
+static const uint8_t AIN10 =  7; //PB_4
+static const uint8_t AIN11 =  2; //PB_5
 
 static const uint8_t RED_LED = 30;
 static const uint8_t GREEN_LED = 40;
@@ -298,6 +313,49 @@ const uint32_t timer_to_pin_config[] = {
         GPIO_PD3_WT3CCP1,
         GPIO_PD6_WT5CCP0,
         GPIO_PD7_WT5CCP1,
+};
+const uint32_t digital_pin_to_analog_in[] = {
+        NOT_ON_ADC,     /*  dummy   */
+        NOT_ON_ADC,     /*  1 - 3.3V*/
+        ADC_CTL_CH7,	/*  2 - PB5 */
+        NOT_ON_ADC,     /*  3 - PB0 */
+        NOT_ON_ADC, 	/*  4 - PB1 */
+        ADC_CTL_CH9, 	/*  5 - PE4 */
+        ADC_CTL_CH8, 	/*  6 - PE5 */
+        ADC_CTL_CH10,   /*  7 - PB4 */
+        NOT_ON_ADC, 	/*  8 - PA5 */
+        NOT_ON_ADC, 	/*  9 - PA6 */
+        NOT_ON_ADC, 	/*  10 - PA7 */
+        NOT_ON_ADC, 	/*  11 - PA2 */
+        NOT_ON_ADC, 	/*  12 - PA3 */
+        NOT_ON_ADC, 	/*  13 - PA4 */
+        NOT_ON_ADC,     /*  14 - PB6 */
+        NOT_ON_ADC,     /*  15 - PB7 */
+        NOT_ON_ADC, 	/*  16 - RST */
+        NOT_ON_ADC,     /*  17 - PF0 */
+        ADC_CTL_CH3, 	/*  18 - PE0 */
+        NOT_ON_ADC,     /*  19 - PB2 */
+        NOT_ON_ADC, 	/*  20 - GND */
+        NOT_ON_ADC, 	/*  21 - VBUS */
+		NOT_ON_ADC, 	/*  22 - GND */
+        ADC_CTL_CH7,    /*  23 - PD0 */
+        ADC_CTL_CH6,    /*  24 - PD1 */
+        ADC_CTL_CH5,    /*  25 - PD2 */
+        ADC_CTL_CH4,	/*  26 - PD3 */
+        ADC_CTL_CH2, 	/*  27 - PE1 */
+        ADC_CTL_CH1, 	/*  28 - PE2 */
+        ADC_CTL_CH0, 	/*  29 - PE3 */
+        NOT_ON_ADC,     /*  30 - PF1 */
+        NOT_ON_ADC, 	/*  31 - PF4 */
+        NOT_ON_ADC,     /*  32 - PD7 */
+        NOT_ON_ADC,     /*  33 - PD6 */
+        NOT_ON_ADC,     /*  34 - PC7 */
+        NOT_ON_ADC,     /*  35 - PC6 */
+        NOT_ON_ADC,     /*  36 - PC5 */
+        NOT_ON_ADC,     /*  37 - PC4 */
+        NOT_ON_ADC,  	/*  38 - PB3 */
+        NOT_ON_ADC,		/*  39 - PF3 */
+        NOT_ON_ADC,     /*  40 - PF2 */
 };
 #endif
 #endif 

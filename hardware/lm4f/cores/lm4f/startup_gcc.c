@@ -21,6 +21,7 @@
 // This is part of revision 9107 of the RDK-IDM-SBC Firmware Package.
 //
 //*****************************************************************************
+#include "Energia.h"
 //*****************************************************************************
 //
 // Forward declaration of the default fault handlers.
@@ -43,7 +44,7 @@ extern void UART0IntHandler(void);
 // Reserve space for the system stack.
 //
 //*****************************************************************************
-static unsigned long pulStack[512];
+static unsigned long pulStack[128];
 
 //*****************************************************************************
 //
@@ -199,6 +200,8 @@ NmiSR(void)
     //
     while(1)
     {
+        pinMode(RED_LED, OUTPUT);
+        digitalWrite(RED_LED, HIGH);
     }
 }
 
@@ -217,6 +220,8 @@ FaultISR(void)
     //
     while(1)
     {
+                    pinMode(RED_LED, OUTPUT);
+    digitalWrite(RED_LED, HIGH);
     }
 }
 
@@ -235,5 +240,7 @@ IntDefaultHandler(void)
     //
     while(1)
     {
+                        pinMode(RED_LED, OUTPUT);
+    digitalWrite(RED_LED, HIGH);
     }
 }

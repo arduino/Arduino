@@ -97,15 +97,15 @@ uint16_t analogRead(uint8_t pin)
 {
     uint8_t port = digitalPinToPort(pin);
     uint16_t value = 0;
+    uint32_t channel = digitalPinToADCIn(pin);
     if ((pin < 6) || (pin > 9 && pin < 56)) { //invalid ADC pin
         return 0;
     }
 
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
-
     ROM_GPIOPinTypeADC((unsigned long) portBASERegister(port), digitalPinToBitMask(pin));
     ROM_ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
-    ROM_ADCSequenceStepConfigure(ADC0_BASE, 3, 0, ADC_CTL_CH0 | ADC_CTL_IE | ADC_CTL_END);
+    ROM_ADCSequenceStepConfigure(ADC0_BASE, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);
     ROM_ADCSequenceEnable(ADC0_BASE, 3);
     ROM_ADCIntClear(ADC0_BASE, 3);
     ROM_ADCProcessorTrigger(ADC0_BASE, 3);
@@ -116,3 +116,26 @@ uint16_t analogRead(uint8_t pin)
     ROM_ADCSequenceDataGet(ADC0_BASE, 3, (long unsigned int* ) &value);
     return value;
 }
+/*uint16_t analogRead(uint8_t pin, uint8_t module)
+{
+    uint8_t port = digitalPinToPort(pin);
+    uint16_t value = 0;
+    uint32_t channel = digitalPinToADCIn(pin);
+    uint32_t base = module ? ADC1_BASE : ADC0_BASE; 
+    if (channel = NOT_ON_ADC) { //invalid ADC pin
+        return 0;
+    }
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+    ROM_GPIOPinTypeADC((unsigned long) portBASERegister(port), digitalPinToBitMask(pin));
+    ROM_ADCSequenceConfigure(module, 3, ADC_TRIGGER_PROCESSOR, 0);
+    ROM_ADCSequenceStepConfigure(module, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);
+    ROM_ADCSequenceEnable(module, 3);
+    ROM_ADCIntClear(module, 3);
+    ROM_ADCProcessorTrigger(module, 3);
+    while(!ROM_ADCIntStatus(module, 3, false))
+    {
+    }
+	ROM_ADCIntClear(module, 3);
+    ROM_ADCSequenceDataGet(module, 3, (long unsigned int* ) &value);
+    return value;
+}*/
