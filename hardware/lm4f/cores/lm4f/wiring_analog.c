@@ -103,6 +103,7 @@ uint16_t analogRead(uint8_t pin)
     }
 
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
+
     ROM_GPIOPinTypeADC((unsigned long) portBASERegister(port), digitalPinToBitMask(pin));
     ROM_ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
     ROM_ADCSequenceStepConfigure(ADC0_BASE, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);
@@ -116,7 +117,7 @@ uint16_t analogRead(uint8_t pin)
     ROM_ADCSequenceDataGet(ADC0_BASE, 3, (long unsigned int* ) &value);
     return value;
 }
-/*uint16_t analogRead(uint8_t pin, uint8_t module)
+uint16_t analogRead(uint8_t pin, uint8_t module)
 {
     uint8_t port = digitalPinToPort(pin);
     uint16_t value = 0;
@@ -138,4 +139,4 @@ uint16_t analogRead(uint8_t pin)
 	ROM_ADCIntClear(module, 3);
     ROM_ADCSequenceDataGet(module, 3, (long unsigned int* ) &value);
     return value;
-}*/
+}
