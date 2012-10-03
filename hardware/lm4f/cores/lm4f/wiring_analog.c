@@ -98,7 +98,7 @@ uint16_t analogRead(uint8_t pin)
     uint8_t port = digitalPinToPort(pin);
     uint16_t value = 0;
     uint32_t channel = digitalPinToADCIn(pin);
-    if ((pin < 6) || (pin > 9 && pin < 56)) { //invalid ADC pin
+    if (pin == NOT_ON_ADC) { //invalid ADC pin
         return 0;
     }
 
@@ -117,6 +117,7 @@ uint16_t analogRead(uint8_t pin)
     ROM_ADCSequenceDataGet(ADC0_BASE, 3, (long unsigned int* ) &value);
     return value;
 }
+/*
 uint16_t analogRead(uint8_t pin, uint8_t module)
 {
     uint8_t port = digitalPinToPort(pin);
@@ -139,4 +140,4 @@ uint16_t analogRead(uint8_t pin, uint8_t module)
 	ROM_ADCIntClear(module, 3);
     ROM_ADCSequenceDataGet(module, 3, (long unsigned int* ) &value);
     return value;
-}
+}*/
