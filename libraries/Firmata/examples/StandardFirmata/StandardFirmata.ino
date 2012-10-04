@@ -379,11 +379,11 @@ void sysexCallback(byte command, byte argc, byte *argv)
         }
       }
       else {
-        Firmata.sendString("Improper shift length parameter");        
+//        Firmata.sendString("Improper shift length parameter");        
       }
     }
     else {
-      Firmata.sendString("Improper pin mode for shifting");
+//      Firmata.sendString("Improper pin mode for shifting");
     }
     break;
     
