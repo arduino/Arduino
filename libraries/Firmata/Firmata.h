@@ -74,11 +74,6 @@
 #define I2C                     0x06 // pin included in I2C setup
 #define TOTAL_PIN_MODES         7
 
-// mask bits for SHIFT pin mode byte
-#define   SHIFT_MSB_FIRST       0x40 // shift MSB in/out first
-#define   SHIFT_INPUT_PUP       0x20 // add a pullup to shift inputs
-#define   SHIFT_LENGTH          0x1F // up to 2 bytes and 3 bits for bits
-
 extern "C" {
 // callback function types
     typedef void (*callbackFunction)(byte, int);

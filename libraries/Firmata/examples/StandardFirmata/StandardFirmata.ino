@@ -40,6 +40,11 @@
 #define I2C_STOP_READING B00011000
 #define I2C_READ_WRITE_MODE_MASK B00011000
 #define I2C_10BIT_ADDRESS_MODE_MASK B00100000
+// mask bits for SHIFT pin mode byte
+#define   SHIFT_MSB_FIRST       0x40 // shift MSB in/out first
+#define   SHIFT_INPUT_PUP       0x20 // add a pullup to shift inputs
+#define   SHIFT_LENGTH          0x1F // up to 2 bytes and 3 bits for bits
+
 
 #define MAX_QUERIES 8
 #define MINIMUM_SAMPLING_INTERVAL 10
