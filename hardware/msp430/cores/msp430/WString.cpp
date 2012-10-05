@@ -140,6 +140,7 @@ unsigned char String::changeBuffer(unsigned int maxStrLen)
 	char *newbuffer = (char *)malloc(maxStrLen + 1);
 
 	if (newbuffer) {
+		strncpy(newbuffer, buffer, len);
 		free(buffer);
 		buffer = newbuffer;
 		capacity = maxStrLen;
