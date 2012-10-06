@@ -72,12 +72,12 @@ Timer_A(void)
     digitalWrite(servos[counter].Pin.nbr, HIGH);
     /* And hold! */
     totalWait += servos[counter].ticks;
-    CCR0 = servos[counter].ticks;
+    TA0CCR0 = servos[counter].ticks;
   } else {
     /* Wait for the remaining of REFRESH_INTERVAL. */
     wait = usToTicks(REFRESH_INTERVAL) - totalWait;
     totalWait = 0;
-    CCR0 = (wait < 1000 ? 1000 : wait);
+    TA0CCR0 = (wait < 1000 ? 1000 : wait);
     counter = -1;
   }
 }
@@ -106,15 +106,15 @@ static void enableTimer(void)
 
   Timer_A(); // enable first servo
 
-  CCTL0 = CCIE;                             // CCR0 interrupt enabled
-  TACTL = TASSEL_2 + MC_1 + ID_3;           // prescale SMCLK/8, upmode
+  TA0CCTL0 = CCIE;                             // CCR0 interrupt enabled
+  TA0CTL = TASSEL_2 + MC_1 + ID_3;           // prescale SMCLK/8, upmode
 }
 
 static void disableTimer(void)
 {
   // disable interrupt
-  CCTL0 = 0;
-  CCR0 = 0;
+  TA0CCTL0 = 0;
+  TA0CCR0 = 0;
 }
 
 
