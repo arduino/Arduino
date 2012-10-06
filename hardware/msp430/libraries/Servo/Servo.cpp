@@ -62,10 +62,12 @@ Timer_A(void)
   /* Service next servo, while skipping any inactive servo records. */
   do {
     counter++;
-  } while (!servos[counter].Pin.isActive && counter < ServoCount);
+  /* counter is nonnegative, so it is save to type cast to unsigned */
+  } while (!servos[counter].Pin.isActive && (unsigned)counter < ServoCount);
 
-  // Counter range is 0-ServoCount, the last count is used to complete the REFRESH_INTERVAL
-  if (counter < ServoCount) {
+  /* Counter range is 0-ServoCount, the last count is used to complete the REFRESH_INTERVAL 
+   * counter is nonnegative, so it is save to type cast to unsigned */
+  if ((unsigned)counter < ServoCount) {
     /* Turn pulse on for the next servo. */
     digitalWrite(servos[counter].Pin.nbr, HIGH);
     /* And hold! */
@@ -180,8 +182,8 @@ void Servo::writeMicroseconds(int value)
     else if( value > SERVO_MAX() )
       value = SERVO_MAX();       
     value = value - TRIM_DURATION;
-    value = usToTicks(value);  // convert to ticks after compensating for interrupt overhead - 12 Aug 2009
-    servos[channel].ticks = value; // this is atomic on a 16bit uC, no need to disable Interrupts
+    volatile int v = usToTicks(value);  // convert to ticks after compensating for interrupt overhead - 12 Aug 2009
+    servos[channel].ticks = v; // this is atomic on a 16bit uC, no need to disable Interrupts
   } 
 }
 
