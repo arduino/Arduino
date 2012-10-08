@@ -1,0 +1,12 @@
+[DEFAULT]
+BASEURL=http://www.embeddedrelated.com/showarticle/104.php
+[DOC#949]
+BASEURL=http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.embeddedrelated.com%2Fshowarticle%2F104.php&layout=button_count&show_faces=false&width=100&action=like&font=arial&layout=button_count
+ORIGURL=//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.embeddedrelated.com%2Fshowarticle%2F104.php&layout=button_count&show_faces=false&width=100&action=like&font=arial&layout=button_count
+[{000214A0-0000-0000-C000-000000000046}]
+Prop3=19,2
+[InternetShortcut]
+URL=http://www.embeddedrelated.com/showarticle/104.php
+IDList=
+IconFile=http://www.embeddedrelated.com/new/favicon.ico
+IconIndex=1

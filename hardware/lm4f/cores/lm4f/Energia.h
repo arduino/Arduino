@@ -75,8 +75,8 @@ extern "C"{
 #define WT2B 18
 #define WT3A 19
 #define WT3B 20
-#define WT5A 21
-#define WT5B 22
+#define WT5A 23
+#define WT5B 24
 
 #define TIMER0 0
 #define TIMER1 1

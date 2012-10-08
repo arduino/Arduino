@@ -317,7 +317,7 @@ const uint32_t timer_to_pin_config[] = {
 const uint32_t digital_pin_to_analog_in[] = {
         NOT_ON_ADC,     /*  dummy   */
         NOT_ON_ADC,     /*  1 - 3.3V*/
-        ADC_CTL_CH7,	/*  2 - PB5 */
+        ADC_CTL_CH11,	/*  2 - PB5 */
         NOT_ON_ADC,     /*  3 - PB0 */
         NOT_ON_ADC, 	/*  4 - PB1 */
         ADC_CTL_CH9, 	/*  5 - PE4 */

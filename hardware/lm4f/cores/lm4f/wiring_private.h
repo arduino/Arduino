@@ -36,11 +36,14 @@
 
 #include "Energia.h"
 
-void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq);
-
 #ifdef __cplusplus
 extern "C"{
 #endif
+
+void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq);
+uint8_t getTimerInterrupt(uint8_t timer);
+uint32_t getTimerBase(uint8_t timer);
+void ToneIntHandler(void);
 
 typedef void (*voidFuncPtr)(void);
 

@@ -30,15 +30,40 @@
  */
 
 #include "wiring_private.h"
-#include "pins_energia.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
+#include "inc/hw_ints.h"
 #include "driverlib/adc.h"
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/rom.h"
 #include "driverlib/timer.h"
+
+uint32_t getTimerBase(uint8_t timer) {
+
+    if(timer >= WT2A) {
+        return (WTIMER2_BASE + ((timerToOffset(timer) - 6) << 12));
+    }
+    else {
+        return (TIMER0_BASE + (timerToOffset(timer) << 12));
+    }
+
+}
+
+uint8_t getTimerInterrupt(uint8_t timer) {
+
+    if(timer < T3A) {
+        return(INT_TIMER0A + timer);
+    }
+    else if(timer == T3A || timer == T3B){
+        return (INT_TIMER3A + timer - 11);
+    }
+    else {
+        return(INT_TIMER4A + timer - 13);
+    }
+
+}
 
 //
 //empty function due to single reference
@@ -63,7 +88,7 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
         uint32_t periodPWM = ROM_SysCtlClockGet()/freq;
         uint32_t portBase = (uint32_t) portBASERegister(port);
         uint32_t offset = timerToOffset(timer);
-        uint32_t * timerBase = (uint32_t *) TIMER0_BASE;
+        uint32_t * timerBase = (uint32_t *) getTimerBase(timer);
         uint32_t timerAB = TIMER_A << timerToAB(timer);
 
         if(offset > TIMER3) {
@@ -96,15 +121,15 @@ void analogWrite(uint8_t pin, int val)//val=the duty cycle
 uint16_t analogRead(uint8_t pin)
 {
     uint8_t port = digitalPinToPort(pin);
-    uint16_t value = 0;
+    uint16_t value[1];
     uint32_t channel = digitalPinToADCIn(pin);
     if (pin == NOT_ON_ADC) { //invalid ADC pin
         return 0;
     }
 
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
-
-    ROM_GPIOPinTypeADC((unsigned long) portBASERegister(port), digitalPinToBitMask(pin));
+    ROM_ADCSequenceDisable(ADC_BASE,0);
+    ROM_GPIOPinTypeADC((uint32_t) portBASERegister(port), digitalPinToBitMask(pin));
     ROM_ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
     ROM_ADCSequenceStepConfigure(ADC0_BASE, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);
     ROM_ADCSequenceEnable(ADC0_BASE, 3);
@@ -114,30 +139,6 @@ uint16_t analogRead(uint8_t pin)
     {
     }
 	ROM_ADCIntClear(ADC0_BASE, 3);
-    ROM_ADCSequenceDataGet(ADC0_BASE, 3, (long unsigned int* ) &value);
-    return value;
+    ROM_ADCSequenceDataGet(ADC0_BASE, 3, (unsigned long*) value);
+    return value[0];
 }
-/*
-uint16_t analogRead(uint8_t pin, uint8_t module)
-{
-    uint8_t port = digitalPinToPort(pin);
-    uint16_t value = 0;
-    uint32_t channel = digitalPinToADCIn(pin);
-    uint32_t base = module ? ADC1_BASE : ADC0_BASE; 
-    if (channel = NOT_ON_ADC) { //invalid ADC pin
-        return 0;
-    }
-    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
-    ROM_GPIOPinTypeADC((unsigned long) portBASERegister(port), digitalPinToBitMask(pin));
-    ROM_ADCSequenceConfigure(module, 3, ADC_TRIGGER_PROCESSOR, 0);
-    ROM_ADCSequenceStepConfigure(module, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);
-    ROM_ADCSequenceEnable(module, 3);
-    ROM_ADCIntClear(module, 3);
-    ROM_ADCProcessorTrigger(module, 3);
-    while(!ROM_ADCIntStatus(module, 3, false))
-    {
-    }
-	ROM_ADCIntClear(module, 3);
-    ROM_ADCSequenceDataGet(module, 3, (long unsigned int* ) &value);
-    return value;
-}*/

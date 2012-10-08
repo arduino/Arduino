@@ -54,4 +54,8 @@ SECTIONS
         *(COMMON) 
         _ebss = .; 
     } > SRAM 
+
 } 
+
+
+
