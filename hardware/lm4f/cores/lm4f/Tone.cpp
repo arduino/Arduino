@@ -55,7 +55,6 @@ static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
 static uint8_t current_pin = 0;
 static long g_duration = 0;
 static uint8_t tone_timer = 0;
-static uint8_t toggle = 0;
 
 void
 ToneIntHandler(void)
@@ -89,7 +88,6 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
     	//Setup PWM
     	current_pin = _pin;
         tone_timer = digitalPinToTimer(_pin);
-        uint32_t timerBase = getTimerBase(tone_timer);
         tone_state = 1;
         g_duration = duration;
         PWMWrite(_pin, 256, 128, frequency);
@@ -114,7 +112,6 @@ void tone(uint8_t _pin, unsigned int frequency)
 
     if(tone_state == 0 || _pin == current_pin) {
         tone_timer = digitalPinToTimer(_pin);
-        uint32_t timerBase = getTimerBase(tone_timer);
         PWMWrite(_pin, 256, 128, frequency);
         tone_state = 1;
     }

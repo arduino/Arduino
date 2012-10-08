@@ -32,7 +32,7 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define SERIAL_BUFFER_SIZE     128
+#define SERIAL_BUFFER_SIZE     1024
 class HardwareSerial : public Stream
 {
 

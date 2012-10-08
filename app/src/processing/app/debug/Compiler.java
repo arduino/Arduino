@@ -225,10 +225,10 @@ public class Compiler implements MessageConsumer {
       }));
     }else if (arch == "lm4f") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
-        basePath + "arm-none-eabi-gcc",
+        basePath + "arm-none-eabi-g++",
         "-mthumb", "-mcpu=corex-m4","-Wl,--gc-sections",
         "-Wl,-Map=lm4f.map","-Woverloaded-virtual",
-        "-T", corePath + File.separator + "lm4f.ld",
+        "-T", corePath + File.separator + "lm4fcpp.ld",
         "--entry=ResetISR",
         "-o",
         buildPath + File.separator + primaryClassName + ".axf"
@@ -742,7 +742,7 @@ public class Compiler implements MessageConsumer {
           "-g", // include debugging info (so errors include line numbers)
           "-Os", // optimize for size
           "-Wall",
-          "-Woverloaded-virtual",
+          "-fno-rtti",
           "-fno-exceptions",
           "-ffunction-sections", // place each function in its own section
           "-fdata-sections",

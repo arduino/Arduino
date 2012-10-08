@@ -78,6 +78,7 @@ static const unsigned long g_ulUARTPeriph[3] =
 {
     SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1, SYSCTL_PERIPH_UART2
 };
+
 // Constructors ////////////////////////////////////////////////////////////////
 HardwareSerial::HardwareSerial(void)
 {
@@ -130,13 +131,14 @@ HardwareSerial::primeTransmit(unsigned long ulBase)
         // Yes - take some characters out of the transmit buffer and feed
         // them to the UART transmit FIFO.
         //
-        while(ROM_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY)
+        while(!TX_BUFFER_EMPTY)
         {
-
-            ROM_UARTCharPutNonBlocking(ulBase,
+            while(ROM_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY){
+                ROM_UARTCharPutNonBlocking(ulBase,
                                        txBuffer[txReadIndex]);
                 
-            txReadIndex = (txReadIndex + 1) % SERIAL_BUFFER_SIZE;
+                txReadIndex = (txReadIndex + 1) % SERIAL_BUFFER_SIZE;
+            }
         }
 
         //
@@ -255,17 +257,13 @@ int HardwareSerial::read(void)
 
 void HardwareSerial::flush()
 {
-    while(!TX_BUFFER_EMPTY)
-    {
-    }
+    while(!TX_BUFFER_EMPTY);
 }
 
 size_t HardwareSerial::write(uint8_t c)
 {
 
     unsigned int numTransmit = 0;
-        pinMode(BLUE_LED, OUTPUT);
-        digitalWrite(BLUE_LED, HIGH);
     //
     // Check for valid arguments.
     //
@@ -275,40 +273,25 @@ size_t HardwareSerial::write(uint8_t c)
     // If the character to the UART is \n, then add a \r before it so that
     // \n is translated to \n\r in the output.
     //           
+	
+	// If the output buffer is full, there's nothing for it other than to
+	// wait for the interrupt handler to empty it a bit
 
     if(c == '\n')
     {
-        if(!TX_BUFFER_FULL)
-        {
-            txBuffer[txWriteIndex] = '\r';
-			txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
-            numTransmit ++;
-        }
-        else
-        {
-            //
-            // Buffer is full - discard remaining characters and return.
-            //
-            return(numTransmit);
-        }
+        while (TX_BUFFER_FULL);
+        txBuffer[txWriteIndex] = '\r';
+		txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
+        numTransmit ++;
     }
         
     //
     // Send the character to the UART output.
     //
-    if(!TX_BUFFER_FULL)
-    {
-        txBuffer[txWriteIndex] = c;
-	    txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
-        numTransmit ++;
-    }
-    else
-    {
-        //
-        // Buffer is full - discard remaining characters and return.
-        //
-        return(numTransmit);
-    }
+    while (TX_BUFFER_FULL);
+    txBuffer[txWriteIndex] = c;
+    txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
+    numTransmit ++;
 
     //
     // If we have anything in the buffer, make sure that the UART is set
@@ -316,7 +299,6 @@ size_t HardwareSerial::write(uint8_t c)
     //
     if(!TX_BUFFER_EMPTY)
     {
-
 	    primeTransmit(g_ulUARTBase[uartModule]);
         ROM_UARTIntEnable(g_ulUARTBase[uartModule], UART_INT_TX);
     }
@@ -365,18 +347,10 @@ void HardwareSerial::UARTIntHandler(void){
             // If there is space in the receive buffer, put the character
             // there, otherwise throw it away.
             //
-
-            if(!RX_BUFFER_FULL)
-            {
-
-                // Store the new character in the receive buffer
-                //
-
-                rxBuffer[rxWriteIndex] =
-                    (unsigned char)(lChar & 0xFF);
-                rxWriteIndex = ((rxWriteIndex) + 1) % SERIAL_BUFFER_SIZE;
-                
-            }
+            while(RX_BUFFER_FULL);
+            rxBuffer[rxWriteIndex] =
+                (unsigned char)(lChar & 0xFF);
+            rxWriteIndex = ((rxWriteIndex) + 1) % SERIAL_BUFFER_SIZE;
 
             //
             // If we wrote anything to the transmit buffer, make sure it actually
