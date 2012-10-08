@@ -120,19 +120,19 @@ void analogWrite(uint8_t pin, int val)//val=the duty cycle
 
 uint16_t analogRead(uint8_t pin)
 {
+
     uint8_t port = digitalPinToPort(pin);
     uint16_t value[1];
     uint32_t channel = digitalPinToADCIn(pin);
     if (pin == NOT_ON_ADC) { //invalid ADC pin
         return 0;
     }
-
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
-    ROM_ADCSequenceDisable(ADC_BASE,0);
     ROM_GPIOPinTypeADC((uint32_t) portBASERegister(port), digitalPinToBitMask(pin));
     ROM_ADCSequenceConfigure(ADC0_BASE, 3, ADC_TRIGGER_PROCESSOR, 0);
     ROM_ADCSequenceStepConfigure(ADC0_BASE, 3, 0, channel | ADC_CTL_IE | ADC_CTL_END);
     ROM_ADCSequenceEnable(ADC0_BASE, 3);
+
     ROM_ADCIntClear(ADC0_BASE, 3);
     ROM_ADCProcessorTrigger(ADC0_BASE, 3);
     while(!ROM_ADCIntStatus(ADC0_BASE, 3, false))
