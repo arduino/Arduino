@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <project name="Energia" default="build">
   <!--echo message="os.name = ${os.name}" /-->
   <!--echo message="os.arch = ${os.arch}" /-->
@@ -221,7 +221,14 @@
       <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-msp430.zip" />
     </exec>
-   <!--
+    <!-- Unzip lm4f tools -->
+    <exec executable="unzip">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-d" />
+      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
+      <arg value="macosx/dist/tools-lm4f.zip" />
+    </exec>   <!--
     <copy todir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
       <fileset file="macosx/dist/eeprom.h" />
     </copy>
@@ -385,6 +392,11 @@
       <arg value="-xjf"/>
       <arg value="../../msp430_tools_linux32.tar.bz2"/>
     </exec>
+  	<!-- Unzip lm4f tools -->
+  	<exec executable="tar" dir="linux/work/hardware">
+      <arg value="-xjf"/>
+      <arg value="../../lm4f_tools_linux32.tar.bz2"/>
+    </exec>
   </target>
 
   <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
@@ -515,6 +527,8 @@
     <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
     -->
     <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
+
+    <unzip dest="windows/work/hardware" src="windows/lm4f_tools.zip" overwrite="false"/>
     <!--
     <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
       <fileset file="windows/eeprom.h" />

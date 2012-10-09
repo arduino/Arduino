@@ -543,7 +543,8 @@ public class Editor extends JFrame implements RunnerListener {
       });
     fileMenu.add(item);
 
-    if(!Preferences.get("target").equals("msp430")) {
+    if(!Preferences.get("target").equals("msp430") 
+    		|| !Preferences.get("target").equals("lm4f")) {
         item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -717,7 +718,6 @@ public class Editor extends JFrame implements RunnerListener {
         populateSerialMenu();
       }
     });
-
     return menu;
   }
 

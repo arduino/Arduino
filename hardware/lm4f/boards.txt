@@ -1,0 +1,10 @@
+##############################################################
+lplm4f120h5qr.name=StellarPad w/ lm4f120h5qr (80MHz)
+lplm4f120h5qr.upload.maximum_size=262144
+lplm4f120h5qr.build.mcu=ek-lm4f120xl
+lplm4f120h5qr.build.f_cpu=80000000L
+lplm4f120h5qr.build.core=lm4f
+lplm4f120h5qr.build.variant=stellarpad
+
+##############################################################
+ 
