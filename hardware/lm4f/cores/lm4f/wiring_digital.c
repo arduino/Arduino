@@ -76,8 +76,10 @@ int digitalRead(uint8_t pin)
     uint8_t port = digitalPinToPort(pin);
     uint32_t portBase = (uint32_t) portBASERegister(port);
     if (port == NOT_A_PORT) return LOW;
-
-    return ROM_GPIOPinRead(portBase, bit);
+    if(ROM_GPIOPinRead(portBase, bit)){
+    	return HIGH;
+    }
+    return LOW;
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)

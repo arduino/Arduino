@@ -31,6 +31,7 @@
 
 #include "wiring_private.h"
 #include "pins_energia.h"
+#include "driverlib/rom.h"
 
 /* Measures the length (in microseconds) of a pulse on the pin; state is HIGH
  * or LOW, the type of pulse to measure.  Works on pulses from 2-3 microseconds
@@ -43,8 +44,8 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
     // digitalRead() instead yields much coarser resolution.
     uint8_t bit = digitalPinToBitMask(pin);
     uint8_t port = digitalPinToPort(pin);
-    uint8_t stateMask = (state ? bit : 0);
-    unsigned long width = 0; // keep initialization out of time critical area
+    uint32_t portBase = (uint32_t) portBASERegister(port);
+	uint8_t stateMask = (state ? bit : 0);
 
     // convert the timeout from microseconds to a number of times through
     // the initial loop; it takes 11 clock cycles per iteration.
@@ -52,25 +53,26 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
     unsigned long maxloops = microsecondsToClockCycles(timeout) / 11;
 
     // wait for any previous pulse to end
-    while ((*portDATARegister(port) & bit) == stateMask)
+    while (ROM_GPIOPinRead(portBase, bit) == stateMask)
         if (numloops++ == maxloops)
             return 0;
 
     // wait for the pulse to start
-    while ((*portDATARegister(port) & bit) != stateMask)
+    while (ROM_GPIOPinRead(portBase, bit) != stateMask)
         if (numloops++ == maxloops)
             return 0;
 
     // wait for the pulse to stop
-    while ((*portDATARegister(port) & bit) == stateMask) {
+    unsigned long start = micros();
+
+    while (ROM_GPIOPinRead(portBase, bit) == stateMask) {
         if (numloops++ == maxloops)
             return 0;
-        width++;
     }
-
+    return(micros() - start);
     // convert the reading to microseconds. The loop has been determined
     // to be 13 clock cycles long and have about 11 clocks between the edge
     // and the start of the loop. There will be some error introduced by
     // the interrupt handlers.
-    return clockCyclesToMicroseconds(width * 13 + 11);
+    //return clockCyclesToMicroseconds(width * 13 + 11);
 }

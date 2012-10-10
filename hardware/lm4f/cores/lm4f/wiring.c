@@ -35,7 +35,7 @@
 
 void timerInit()
 {
-	ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
+    ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
                 SYSCTL_OSC_MAIN);
 
 	ROM_SysTickPeriodSet(ROM_SysCtlClockGet()/1000);//0.125us
@@ -45,19 +45,21 @@ void timerInit()
     //Initialize WTimer4 to be used as time-tracker since beginning of time
     //
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER4); //not tied to launchpad pin
-    ROM_TimerConfigure(WTIMER4_BASE, TIMER_CFG_PERIODIC_UP);
-    ROM_TimerLoadSet64(WTIMER4_BASE, 0);
+    ROM_TimerConfigure(WTIMER4_BASE, TIMER_CFG_PERIODIC);
+    ROM_TimerLoadSet64(WTIMER4_BASE, 0xFFFFFFFFFFFFFFFF); //start at 0 and count up
     ROM_TimerEnable(WTIMER4_BASE, TIMER_A);
+
 }
 
 unsigned long micros()
 {
-    return (ROM_TimerValueGet64(WTIMER4_BASE) / 80);
+    unsigned long cycles = 0xFFFFFFFFFFFFFFFF - ROM_TimerValueGet64(WTIMER4_BASE);
+    return (cycles / 80);
 }
 
 unsigned long millis()
 {
-    return (ROM_TimerValueGet64(WTIMER4_BASE) / 80000);
+    return (micros() / 1000);
 }
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */

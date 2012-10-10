@@ -39,9 +39,42 @@
 #include "wiring_private.h"
 #include "driverlib/rom.h"
 
+uint8_t portBits[7] = {0}; //index 0 = nothing
+void (*portFuncs[7])(void) = {0}; //index 0 = nothing
+
+void portAHandler(void) {
+    ROM_GPIOPinIntClear(GPIO_PORTA_BASE, portBits[PA]);
+    (*portFuncs[PA])();
+}
+void portBHandler(void) {
+    ROM_GPIOPinIntClear(GPIO_PORTB_BASE, portBits[PB]);
+    (*portFuncs[PB])();
+}
+void portCHandler(void) {
+    ROM_GPIOPinIntClear(GPIO_PORTC_BASE, portBits[PC]);
+    //(*portFuncs[PC])();
+}
+void portDHandler(void) {
+    ROM_GPIOPinIntClear(GPIO_PORTD_BASE, portBits[PD]);
+    (*portFuncs[PD])();
+}
+void portEHandler(void) {
+    ROM_GPIOPinIntClear(GPIO_PORTE_BASE, portBits[PE]);
+    (*portFuncs[PE])();
+}
+void portFHandler(void) {
+    ROM_GPIOPinIntClear(GPIO_PORTF_BASE, portBits[PF]);
+    (*portFuncs[PF])();
+}
+
+
+void (*portHands[7])(void) = { 0, &portAHandler, &portBHandler, &portCHandler,
+                        &portDHandler, &portEHandler, &portFHandler}; //index 0 = nothing
+
 void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
-    uint8_t bit = digitalPinToBitMask(interruptNum);
+	uint8_t bit = digitalPinToBitMask(interruptNum);
     uint8_t port = digitalPinToPort(interruptNum);
+    uint32_t portBase = (uint32_t) portBASERegister(port);
     int lm4fMode;
 
     switch(mode) {
@@ -62,20 +95,21 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
     }
 
     ROM_IntMasterDisable();
-    ROM_GPIOPinTypeGPIOInput(port, bit);
-    ROM_GPIOIntTypeSet(port, bit, lm4fMode);
-    GPIOPortIntRegister(port, userFunc);
-    ROM_GPIOPinIntEnable(port, bit);
+    ROM_GPIOPinIntClear(portBase, bit);
+    ROM_GPIOIntTypeSet(portBase, bit, lm4fMode);
+    portBits[port] = bit;
+    portFuncs[port] = userFunc;
+    GPIOPortIntRegister(portBase, portHands[port]);
+    ROM_GPIOPinIntEnable(portBase, bit);
     ROM_IntMasterEnable();
-    ROM_IntEnable(port);
 
 }
 
 void detachInterrupt(uint8_t interruptNum) {
     uint8_t bit = digitalPinToBitMask(interruptNum);
     uint8_t port = digitalPinToPort(interruptNum);
-
+    uint32_t portBase = (uint32_t) portBASERegister(port);
     if (port == NOT_A_PIN) return;
-    GPIOPinIntDisable(port, bit);
+    GPIOPinIntDisable(portBase, bit);
 
 }
