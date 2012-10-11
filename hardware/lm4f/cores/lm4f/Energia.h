@@ -17,7 +17,7 @@
 
 #ifdef __cplusplus
 extern "C"{ 
-#endif
+#endif 
 
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
@@ -75,8 +75,8 @@ extern "C"{
 #define WT2B 18
 #define WT3A 19
 #define WT3B 20
-#define WT5A 23
-#define WT5B 24
+#define WT5A 21
+#define WT5B 22
 
 #define TIMER0 0
 #define TIMER1 1
@@ -211,7 +211,7 @@ void timerInit();
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);
 
-#define word(...) makeWord(__VA_ARGS__) 
+#define word(...) makeWord(__VA_ARGS__)
 
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
 

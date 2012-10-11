@@ -35,6 +35,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include "inc/hw_types.h"
+#include "inc/hw_nvic.h"
 #include "driverlib/gpio.h"
 #include "wiring_private.h"
 #include "driverlib/rom.h"
@@ -42,34 +43,15 @@
 uint8_t portBits[7] = {0}; //index 0 = nothing
 void (*portFuncs[7])(void) = {0}; //index 0 = nothing
 
-void portAHandler(void) {
-    ROM_GPIOPinIntClear(GPIO_PORTA_BASE, portBits[PA]);
-    (*portFuncs[PA])();
+void gpioHandler(void) {
+	uint8_t activePort = 0;
+	uint32_t portBase = 0;
+	if(HWREG(NVIC_ACTIVE0) & 0x4000) activePort = PF;
+	for(;!(HWREG(NVIC_ACTIVE0) & (1 << (activePort-1)));activePort++);
+    portBase = (uint32_t) portBASERegister(activePort);
+    ROM_GPIOPinIntClear(portBase, portBits[activePort]);
+    (*portFuncs[activePort])();
 }
-void portBHandler(void) {
-    ROM_GPIOPinIntClear(GPIO_PORTB_BASE, portBits[PB]);
-    (*portFuncs[PB])();
-}
-void portCHandler(void) {
-    ROM_GPIOPinIntClear(GPIO_PORTC_BASE, portBits[PC]);
-    //(*portFuncs[PC])();
-}
-void portDHandler(void) {
-    ROM_GPIOPinIntClear(GPIO_PORTD_BASE, portBits[PD]);
-    (*portFuncs[PD])();
-}
-void portEHandler(void) {
-    ROM_GPIOPinIntClear(GPIO_PORTE_BASE, portBits[PE]);
-    (*portFuncs[PE])();
-}
-void portFHandler(void) {
-    ROM_GPIOPinIntClear(GPIO_PORTF_BASE, portBits[PF]);
-    (*portFuncs[PF])();
-}
-
-
-void (*portHands[7])(void) = { 0, &portAHandler, &portBHandler, &portCHandler,
-                        &portDHandler, &portEHandler, &portFHandler}; //index 0 = nothing
 
 void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 	uint8_t bit = digitalPinToBitMask(interruptNum);
@@ -99,7 +81,7 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
     ROM_GPIOIntTypeSet(portBase, bit, lm4fMode);
     portBits[port] = bit;
     portFuncs[port] = userFunc;
-    GPIOPortIntRegister(portBase, portHands[port]);
+    GPIOPortIntRegister(portBase, &gpioHandler);
     ROM_GPIOPinIntEnable(portBase, bit);
     ROM_IntMasterEnable();
 

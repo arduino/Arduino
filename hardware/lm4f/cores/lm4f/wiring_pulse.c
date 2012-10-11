@@ -69,7 +69,9 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
         if (numloops++ == maxloops)
             return 0;
     }
-    return(micros() - start);
+    unsigned long end = micros();
+    unsigned long result = end - start;
+    return(result);
     // convert the reading to microseconds. The loop has been determined
     // to be 13 clock cycles long and have about 11 clocks between the edge
     // and the start of the loop. There will be some error introduced by
