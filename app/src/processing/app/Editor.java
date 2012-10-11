@@ -2649,7 +2649,11 @@ public class Editor extends JFrame implements RunnerListener {
 
   protected void onBoardOrPortChange() {
     Map<String, String> boardPreferences =  Base.getBoardPreferences();
-    lineStatus.setBoardName(boardPreferences.get("name"));
+    String boardName = boardPreferences.get("name");
+    if (boardPreferences.containsKey("container")) {
+      boardName = boardPreferences.get("container") + " w/ " + boardName;
+    }
+    lineStatus.setBoardName(boardName);
     lineStatus.setSerialPort(Preferences.get("serial.port"));
     lineStatus.repaint();
   }

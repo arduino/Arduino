@@ -62,7 +62,8 @@ diecimila.build.variant=standard
 
 ##############################################################
 
-nano328.name=Arduino Nano w/ ATmega328
+nano328.name=ATmega328
+nano328.container=Arduino Nano
 
 nano328.upload.protocol=arduino
 nano328.upload.maximum_size=30720
@@ -83,7 +84,8 @@ nano328.build.variant=eightanaloginputs
 
 ##############################################################
 
-nano.name=Arduino Nano w/ ATmega168
+nano.name=ATmega168
+nano.container=Arduino Nano
 
 nano.upload.protocol=arduino
 nano.upload.maximum_size=14336
@@ -104,7 +106,8 @@ nano.build.variant=eightanaloginputs
 
 ##############################################################
 
-mega2560.name=Arduino Mega 2560 or Mega ADK
+mega2560.name=Mega 2560 or Mega ADK
+mega2560.container=Arduino Mega
 
 mega2560.upload.protocol=wiring
 mega2560.upload.maximum_size=258048
@@ -125,7 +128,8 @@ mega2560.build.variant=mega
 
 ##############################################################
 
-mega.name=Arduino Mega (ATmega1280)
+mega.name=ATmega1280
+mega.container=Arduino Mega
 
 mega.upload.protocol=arduino
 mega.upload.maximum_size=126976
@@ -167,7 +171,8 @@ leonardo.build.variant=leonardo
 
 ##############################################################
 
-mini328.name=Arduino Mini w/ ATmega328
+mini328.name=ATmega328
+mini328.container=Arduino Mini
 
 mini328.upload.protocol=arduino
 mini328.upload.maximum_size=28672
@@ -188,7 +193,8 @@ mini328.build.variant=eightanaloginputs
 
 ##############################################################
 
-mini.name=Arduino Mini w/ ATmega168
+mini.name=ATmega168
+mini.container=Arduino Mini
 
 mini.upload.protocol=arduino
 mini.upload.maximum_size=14336
@@ -251,7 +257,8 @@ fio.build.variant=eightanaloginputs
 
 ##############################################################
 
-bt328.name=Arduino BT w/ ATmega328
+bt328.name=ATmega328
+bt328.container=Arduino BT
 
 bt328.upload.protocol=arduino
 bt328.upload.maximum_size=28672
@@ -273,7 +280,8 @@ bt328.build.variant=eightanaloginputs
 
 ##############################################################
 
-bt.name=Arduino BT w/ ATmega168
+bt.name=ATmega168
+bt.container=Arduino BT
 
 bt.upload.protocol=arduino
 bt.upload.maximum_size=14336
@@ -295,7 +303,8 @@ bt.build.variant=eightanaloginputs
 
 ##############################################################
 
-lilypad328.name=LilyPad Arduino w/ ATmega328
+lilypad328.name=ATmega328
+lilypad328.container=LilyPad Arduino
 
 lilypad328.upload.protocol=arduino
 lilypad328.upload.maximum_size=30720
@@ -316,7 +325,8 @@ lilypad328.build.variant=standard
 
 ##############################################################
 
-lilypad.name=LilyPad Arduino w/ ATmega168
+lilypad.name=ATmega168
+lilypad.container=LilyPad Arduino
 
 lilypad.upload.protocol=arduino
 lilypad.upload.maximum_size=14336
@@ -337,7 +347,8 @@ lilypad.build.variant=standard
 
 ##############################################################
 
-pro5v328.name=Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328
+pro5v328.name=ATmega328 (5V, 16 MHz)
+pro5v328.container=Arduino Pro or Pro Mini
 
 pro5v328.upload.protocol=arduino
 pro5v328.upload.maximum_size=30720
@@ -358,7 +369,8 @@ pro5v328.build.variant=standard
 
 ##############################################################
 
-pro5v.name=Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega168
+pro5v.name=ATmega168 (5V, 16 MHz)
+pro5v.container=Arduino Pro or Pro Mini
 
 pro5v.upload.protocol=arduino
 pro5v.upload.maximum_size=14336
@@ -379,7 +391,8 @@ pro5v.build.variant=standard
 
 ##############################################################
 
-pro328.name=Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328
+pro328.name=ATmega328 (3.3V, 8 MHz)
+pro328.container=Arduino Pro or Pro Mini
 
 pro328.upload.protocol=arduino
 pro328.upload.maximum_size=30720
@@ -400,7 +413,8 @@ pro328.build.variant=standard
 
 ##############################################################
 
-pro.name=Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega168
+pro.name=ATmega168 (3.3V, 8 MHz)
+pro.container=Arduino Pro or Pro Mini
 
 pro.upload.protocol=arduino
 pro.upload.maximum_size=14336
@@ -421,7 +435,8 @@ pro.build.variant=standard
 
 ##############################################################
 
-atmega168.name=Arduino NG or older w/ ATmega168
+atmega168.name=ATmega168
+atmega168.container=Arduino NG or older
 
 atmega168.upload.protocol=arduino
 atmega168.upload.maximum_size=14336
@@ -442,7 +457,8 @@ atmega168.build.variant=standard
 
 ##############################################################
 
-atmega8.name=Arduino NG or older w/ ATmega8
+atmega8.name=ATmega8
+atmega8.container=Arduino NG or older
 
 atmega8.upload.protocol=arduino
 atmega8.upload.maximum_size=7168
