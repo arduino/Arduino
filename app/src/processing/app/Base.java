@@ -1026,7 +1026,7 @@ public class Base {
         }
         group.add(item);
         if (boardAttributes.containsKey("container")) {
-          JMenuItem container = findOrCreateBoardsSubmenuContainerIn(menu.getPopupMenu(), boardAttributes.get("container"));
+          JMenuItem container = findOrCreateBoardsSubmenuContainer(menu, boardAttributes.get("container"));
           container.add(item);
         } else {
           menu.add(item);
@@ -1035,15 +1035,15 @@ public class Base {
     }
   }
 
-  private JMenuItem findOrCreateBoardsSubmenuContainerIn(JPopupMenu menu, String label) {
-    for (MenuElement menuElement : menu.getSubElements()) {
+  private JMenuItem findOrCreateBoardsSubmenuContainer(JMenu boardMenu, String label) {
+    for (MenuElement menuElement : boardMenu.getPopupMenu().getSubElements()) {
       JMenuItem item = (JMenuItem) menuElement;
       if (label.equals(item.getText())) {
         return item;
       }
     }
     JMenu item = new JMenu(label);
-    menu.add(item);
+    boardMenu.add(item);
     return item;
   }
   
