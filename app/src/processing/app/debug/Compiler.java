@@ -228,6 +228,7 @@ public class Compiler implements MessageConsumer {
         basePath + "arm-none-eabi-g++",
         "-mthumb", "-mcpu=cortex-m4","-Wl,--gc-sections",
         "-Wl,-Map=lm4f.map","-Woverloaded-virtual",
+	"-nostartfiles", 
         "-T", corePath + File.separator + "lm4fcpp.ld",
         "--entry=ResetISR",
         "-o",
