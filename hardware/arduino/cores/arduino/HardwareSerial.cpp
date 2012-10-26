@@ -453,6 +453,12 @@ void HardwareSerial::flush()
   transmitting = false;
 }
 
+bool HardwareSerial::writeable()
+{
+  int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  return (i != _tx_buffer->tail);
+}
+
 size_t HardwareSerial::write(uint8_t c)
 {
   int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
