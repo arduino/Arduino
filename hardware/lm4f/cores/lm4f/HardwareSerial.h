@@ -46,11 +46,11 @@ class HardwareSerial : public Stream
         unsigned long uartModule;
         void flushAll(void);
         void primeTransmit(unsigned long ulBase);
-	
+
     public:
 		HardwareSerial(void);
-        HardwareSerial(unsigned long _uartModule);
 		void begin(unsigned long);
+		void selectModule(unsigned long);
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);

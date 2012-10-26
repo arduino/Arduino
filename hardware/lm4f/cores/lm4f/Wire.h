@@ -34,6 +34,7 @@ class TwoWire : public Stream
 		void begin();
 		void begin(uint8_t);
 		void begin(int);
+		void selectModule(unsigned long);
 		void beginTransmission(uint8_t);
 		void beginTransmission(int);
 		uint8_t endTransmission(void);

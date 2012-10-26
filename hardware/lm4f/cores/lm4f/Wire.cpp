@@ -149,10 +149,7 @@ TwoWire::TwoWire()
 {
     i2cModule = 0;
 }
-TwoWire::TwoWire(unsigned long _i2cModule)
-{
-    i2cModule = _i2cModule;
-}
+
 
 // Private Methods //////////////////////////////////////////////////////////////
 
@@ -197,6 +194,10 @@ void TwoWire::begin(uint8_t address)
   
 }
 
+void TwoWire::selectModule(unsigned long _i2cModule)
+{
+    i2cModule = _i2cModule;
+}
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
 {
