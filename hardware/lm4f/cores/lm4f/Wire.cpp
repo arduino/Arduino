@@ -143,19 +143,27 @@ uint8_t TwoWire::transmitting = 0;
 void (*TwoWire::user_onRequest)(void);
 void (*TwoWire::user_onReceive)(int);
 
+unsigned long TwoWire::i2cModule = 0;
+uint8_t TwoWire::slaveAddress = 0;
+
 // Constructors ////////////////////////////////////////////////////////////////
 
 TwoWire::TwoWire()
 {
-    i2cModule = 0;
 }
 
 
 // Private Methods //////////////////////////////////////////////////////////////
-
+//Process any errors
+uint8_t getError(uint8_t thrownError) {
+  if(thrownError == I2C_MASTER_ERR_ADDR_ACK) return(2);
+  else if(thrownError == I2C_MASTER_ERR_DATA_ACK) return(3);
+  else return(4);
+}
 
 // Public Methods //////////////////////////////////////////////////////////////
 
+//Initialize as a master
 void TwoWire::begin(void)
 {
   rxBufferIndex = 0;
@@ -163,7 +171,7 @@ void TwoWire::begin(void)
 
   txBufferIndex = 0;
   txBufferLength = 0;
-  
+
   SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
 
   //Configure GPIO pins for I2C operation
@@ -174,13 +182,16 @@ void TwoWire::begin(void)
   //Enable and initialize the I2Cx master module
   //false indicates that we're not using fast-speed transfers
   I2CMasterInitExpClk(MASTER_BASE, SysCtlClockGet(), false);   
+  slaveAddress = 0;
+  i2cModule = 0;
 }
 
+//Initialize as a slave
 void TwoWire::begin(uint8_t address)
 {
 
   begin();
-
+  slaveAddress = address;
   //Enable slave interrupts
   IntEnable(g_uli2cInt[i2cModule]);
   I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA);
@@ -197,6 +208,8 @@ void TwoWire::begin(uint8_t address)
 void TwoWire::selectModule(unsigned long _i2cModule)
 {
     i2cModule = _i2cModule;
+    if(slaveAddress != 0) begin(slaveAddress);
+    else begin();
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
@@ -205,44 +218,56 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
   if(quantity > BUFFER_LENGTH){
     quantity = BUFFER_LENGTH;
   }
-  
+
   //Select which slave we are requesting data from
   //true indicates we are reading from the slave
   I2CMasterSlaveAddrSet(MASTER_BASE, address, true);
   
   //Wait for bus to open up in the case of multiple masters present
-  while(I2CMasterBusBusy(MASTER_BASE)){};
-  
-  //Initiate burst receives
-  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_START);
-  
-  uint8_t i;
-  for(i = 0; i < quantity; i++) {
-  
-	while(I2CMasterBusy(MASTER_BASE)){};
-	I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_CONT);
-	
-	//Stop for any error
-	if (I2CMasterErr(MASTER_BASE) != I2C_MASTER_ERR_NONE) {
-	  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
-	  break;
-	}
-	
-	//Place data into rxBuffer
-	else {
-	  rxBuffer[rxBufferIndex] = I2CMasterDataGet(MASTER_BASE);
-	  rxBufferIndex = (rxBufferIndex + 1) % BUFFER_LENGTH;
-	  rxBufferLength++;
-	}
-	
-  }  
+  while(I2CMasterBusBusy(MASTER_BASE));
 
-  //release the bus if needed
-  if(sendStop) {
-	I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
+  if(quantity > 1) {
+
+	  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_START);
+	  while(I2CMasterBusy(MASTER_BASE));
+	  rxBuffer[rxBufferLength] = I2CMasterDataGet(MASTER_BASE);
+	  rxBufferLength = (rxBufferLength + 1) % BUFFER_LENGTH;
+
+	  for(int i = 1; i < (quantity - 1); i++) {
+
+		I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_CONT);
+		while(I2CMasterBusy(MASTER_BASE));
+
+	    if (I2CMasterErr(MASTER_BASE) != I2C_MASTER_ERR_NONE) {
+		  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
+		  break;
+		}
+		//Place data into rxBuffer
+		else {
+		  rxBuffer[rxBufferLength] = I2CMasterDataGet(MASTER_BASE);
+	      rxBufferLength = (rxBufferLength + 1) % BUFFER_LENGTH;
+		}
+	  }
+
+	  if(sendStop)
+		  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
+	  else
+		  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_CONT);
+	  while(I2CMasterBusy(MASTER_BASE));
+
+	  rxBuffer[rxBufferLength] = I2CMasterDataGet(MASTER_BASE);
+	  rxBufferLength = (rxBufferLength + 1) % BUFFER_LENGTH;
+  }
+  else
+  {
+	  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
+	  while(I2CMasterBusy(MASTER_BASE));
+	  rxBuffer[rxBufferLength] = I2CMasterDataGet(MASTER_BASE);
+	  rxBufferLength = (rxBufferLength + 1) % BUFFER_LENGTH;
   }
 
   return rxBufferLength;
+
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
@@ -276,51 +301,54 @@ void TwoWire::beginTransmission(int address)
 
 uint8_t TwoWire::endTransmission(uint8_t sendStop)
 {
+
   uint8_t error = I2C_MASTER_ERR_NONE;
+
   //Select which slave we are requesting data from
   //false indicates we are writing to the slave
   I2CMasterSlaveAddrSet(MASTER_BASE, txAddress, false);
   
   //Wait for bus to open up in the case of multiple masters present
   while(I2CMasterBusBusy(MASTER_BASE));
-  
+  I2CMasterDataPut(MASTER_BASE, txBuffer[0]);
+
   //Initiate burst transmissions
-  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_START);
-  
-  uint8_t i;
-  for(i = 0; i < txBufferLength; i++) {
-  
-	while(I2CMasterBusy(MASTER_BASE));
-	
-    I2CMasterDataPut(MASTER_BASE, txBuffer[txBufferIndex]);
-	I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
-	
-	//Stop for any error
-	error = I2CMasterErr(MASTER_BASE);
-	if (error != I2C_MASTER_ERR_NONE) {
-	  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
-	  switch(error){
-	    //Normally this would return a 1 for data being too long for buffer
-		//but that is not a valid error condition for Stellaris
-		case(I2C_MASTER_ERR_ADDR_ACK):
-		  error = 2;
-		  break;
-	    case(I2C_MASTER_ERR_DATA_ACK):
-		  error = 3;
-		  break;
-		default:
-		  error = 4;
+
+  if(txBufferLength > 1) {
+
+	  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_START);
+	  while(I2CMasterBusy(MASTER_BASE));
+
+	  for(int i = 1; i < (txBufferLength - 1); i++) {
+
+		I2CMasterDataPut(MASTER_BASE, txBuffer[i]);
+		I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
+
+		//check for error
+		error = I2CMasterErr(MASTER_BASE);
+		if (error != I2C_MASTER_ERR_NONE) {
+		  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
+		  error = getError(error);
+		}
 	  }
-	  break;
-	}
-	else {
-		txBufferIndex = (txBufferIndex + 1) % BUFFER_LENGTH;
-		txBufferLength = (txBufferLength + 1) % BUFFER_LENGTH;
-	}
+
+	  I2CMasterDataPut(MASTER_BASE, txBuffer[(txBufferLength - 1)]);
+
   }
+  else {
+	  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_SINGLE_SEND);
+  }
+  while(I2CMasterBusy(MASTER_BASE));
+  error = I2CMasterErr(MASTER_BASE);
+  if (error != I2C_MASTER_ERR_NONE)
+     error = getError(error);
+
   //release the bus if needed
   if(sendStop) {
     I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_FINISH);
+  }
+  else {
+    I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_CONT);
   }
 
   // reset tx buffer iterator vars

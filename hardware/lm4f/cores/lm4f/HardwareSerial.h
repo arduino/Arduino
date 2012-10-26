@@ -44,6 +44,7 @@ class HardwareSerial : public Stream
         unsigned long rxWriteIndex;
         unsigned long rxReadIndex;
         unsigned long uartModule;
+        unsigned long baudRate;
         void flushAll(void);
         void primeTransmit(unsigned long ulBase);
 

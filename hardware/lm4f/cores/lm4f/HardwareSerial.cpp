@@ -98,6 +98,11 @@ static const unsigned long g_ulUARTConfig[8][2] =
 	{GPIO_PD4_U6RX, GPIO_PD5_U6TX},	{GPIO_PE0_U7RX, GPIO_PE1_U7TX}
 };
 
+static const unsigned long g_ulUARTPort[8] =
+{
+	GPIO_PORTA_BASE, GPIO_PORTC_BASE, GPIO_PORTD_BASE, GPIO_PORTC_BASE,
+	GPIO_PORTC_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE, GPIO_PORTE_BASE
+};
 
 //*****************************************************************************
 //
@@ -179,29 +184,19 @@ HardwareSerial::primeTransmit(unsigned long ulBase)
 void
 HardwareSerial::begin(unsigned long baud)
 {
+	baudRate = baud;
     //
     // Initialize the UART.
     //
-    ROM_SysCtlPeripheralEnable(g_ulUARTInt[uartModule]);
+    ROM_SysCtlPeripheralEnable(g_ulUARTPeriph[uartModule]);
 
     //TODO:Add functionality for PinConfigure with variable uartModule
     ROM_GPIOPinConfigure(g_ulUARTConfig[uartModule][0]);
     ROM_GPIOPinConfigure(g_ulUARTConfig[uartModule][1]);
 
-    ROM_GPIOPinTypeUART(UART_BASE, g_ulUARTPins[uartModule]);
-    //
-    // Only allow a single instance to be opened.
-    //
-    ASSERT(UART_BASE == 0);
-	//
-    // Check to make sure the UART peripheral is present.
-    //
-    if(!ROM_SysCtlPeripheralPresent(g_ulUARTPeriph[uartModule]))
-    {
-        return;
-    }
-	ROM_SysCtlPeripheralEnable(g_ulUARTPeriph[uartModule]);
-	ROM_UARTConfigSetExpClk(UART_BASE, ROM_SysCtlClockGet(), baud,
+    ROM_GPIOPinTypeUART(g_ulUARTPort[uartModule], g_ulUARTPins[uartModule]);
+
+	ROM_UARTConfigSetExpClk(UART_BASE, ROM_SysCtlClockGet(), baudRate,
                             (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
                              UART_CONFIG_WLEN_8));
     //
@@ -215,17 +210,20 @@ HardwareSerial::begin(unsigned long baud)
     ROM_IntMasterEnable();
     ROM_IntEnable(g_ulUARTInt[uartModule]);
 
-
     //
     // Enable the UART operation.
     //
     ROM_UARTEnable(UART_BASE);
-
 }
+
 void
 HardwareSerial::selectModule(unsigned long module)
 {
+    ROM_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_RT);
+    ROM_IntDisable(g_ulUARTInt[uartModule]);
 	uartModule = module;
+	begin(baudRate);
+
 }
 
 void HardwareSerial::end()
@@ -245,7 +243,6 @@ void HardwareSerial::end()
 
     ROM_IntDisable(g_ulUARTInt[uartModule]);
     ROM_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_RT);
-
 }
 
 int HardwareSerial::available(void)
@@ -304,7 +301,7 @@ size_t HardwareSerial::write(uint8_t c)
     // If the character to the UART is \n, then add a \r before it so that
     // \n is translated to \n\r in the output.
     //
-	
+
 	// If the output buffer is full, there's nothing for it other than to
 	// wait for the interrupt handler to empty it a bit
 
@@ -315,7 +312,7 @@ size_t HardwareSerial::write(uint8_t c)
 		txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
         numTransmit ++;
     }
-        
+
     //
     // Send the character to the UART output.
     //
