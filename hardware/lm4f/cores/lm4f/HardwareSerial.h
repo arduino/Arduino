@@ -63,6 +63,6 @@ class HardwareSerial : public Stream
 };
 
 extern HardwareSerial Serial;
-extern "C" void UART0IntHandler(void);
+extern "C" void UARTIntHandler(void);
 extern void serialEventRun(void) __attribute__((weak));
 #endif
