@@ -44,13 +44,14 @@ class HardwareSerial : public Stream
         unsigned long rxWriteIndex;
         unsigned long rxReadIndex;
         unsigned long uartModule;
+        unsigned long baudRate;
         void flushAll(void);
         void primeTransmit(unsigned long ulBase);
-	
+
     public:
 		HardwareSerial(void);
-        HardwareSerial(unsigned long _uartModule);
 		void begin(unsigned long);
+		void selectModule(unsigned long);
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);
@@ -63,6 +64,6 @@ class HardwareSerial : public Stream
 };
 
 extern HardwareSerial Serial;
-extern "C" void UART0IntHandler(void);
+extern "C" void UARTIntHandler(void);
 extern void serialEventRun(void) __attribute__((weak));
 #endif
