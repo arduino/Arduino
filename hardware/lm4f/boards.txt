@@ -5,6 +5,7 @@ lplm4f120h5qr.build.mcu=cortex-m4
 lplm4f120h5qr.build.f_cpu=80000000L
 lplm4f120h5qr.build.core=lm4f
 lplm4f120h5qr.build.variant=stellarpad
+lplm4f120h5qr.ldscript=lm4fcpp.ld
 
 ##############################################################
  
