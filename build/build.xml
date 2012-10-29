@@ -534,6 +534,11 @@
     <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
 
     <unzip dest="windows/work/hardware" src="windows/lm4f_tools.zip" overwrite="false"/>
+    <copy tofile="windows/work/hardware/tools/lm4f/bin/lm4flash.exe"
+          file="windows/dist/tools/lm4flash.exe"
+          overwrite="true"
+        />
+    <chmod perm="755" file="linux/work/hardware/tools/lm4f/bin/lm4flash" />
     <!--
     <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
       <fileset file="windows/eeprom.h" />
