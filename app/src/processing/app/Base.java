@@ -1002,12 +1002,13 @@ public class Base {
   
   public void rebuildBoardsMenu(JMenu menu) {
     //System.out.println("rebuilding boards menu");
-    menu.removeAll();      
+    menu.removeAll();
     ButtonGroup group = new ButtonGroup();
     for (Target target : targetsTable.values()) {
       for (String board : target.getBoards().keySet()) {
-        AbstractAction action = 
-          new AbstractAction(target.getBoards().get(board).get("name")) {
+        Map<String, String> boardAttributes = target.getBoards().get(board);
+        AbstractAction action =
+          new AbstractAction(boardAttributes.get("name")) {
             public void actionPerformed(ActionEvent actionevent) {
               //System.out.println("Switching to " + target + ":" + board);
               Preferences.set("target", (String) getValue("target"));
@@ -1024,9 +1025,26 @@ public class Base {
           item.setSelected(true);
         }
         group.add(item);
-        menu.add(item);
+        if (boardAttributes.containsKey("container")) {
+          JMenuItem container = findOrCreateBoardsSubmenuContainer(menu, boardAttributes.get("container"));
+          container.add(item);
+        } else {
+          menu.add(item);
+        }
       }
     }
+  }
+
+  private JMenuItem findOrCreateBoardsSubmenuContainer(JMenu boardMenu, String label) {
+    for (MenuElement menuElement : boardMenu.getPopupMenu().getSubElements()) {
+      JMenuItem item = (JMenuItem) menuElement;
+      if (label.equals(item.getText())) {
+        return item;
+      }
+    }
+    JMenu item = new JMenu(label);
+    boardMenu.add(item);
+    return item;
   }
   
   
