@@ -28,15 +28,13 @@ public class LM4FUploader extends Uploader{
 		Collection params = new ArrayList();
 
 		if (Base.isMacOS() || Base.isLinux()) {
-			params.add(boardPreferences.get("upload.protocol"));
-			if(!Preferences.getBoolean("upload.verbose"))
-				params.add("-q");
-			params.add("--force-reset");
+			//params.add(boardPreferences.get("upload.protocol"));
 			if ( Base.isLinux()) {
-				params.add("prog " + buildPath + File.separator + className + ".hex");
+        // lm4flash rgb.bin 
+				params.add(buildPath + File.separator + className + ".bin");
 			}
 			else { 
-				params.add("prog " + buildPath + File.separator + className + ".hex");
+				params.add(buildPath + File.separator + className + ".bin");
 			}
 			return mspdebug(params);
 		} else {
@@ -76,7 +74,7 @@ public class LM4FUploader extends Uploader{
 		List commandDownloader = new ArrayList();
 
 		if ( Base.isLinux()) {
-			commandDownloader.add(Base.getLM4FBasePath() + "lm4f"); // tools/msp430/bin or one from PATH
+			commandDownloader.add(Base.getLM4FBasePath() + "lm4flash"); // "/tools/lm4f/bin/" + "lm4flash"
 		} 
 		else if (Base.isMacOS()) {
 			commandDownloader.add(Base.getHardwarePath() + "/tools/lm4f/openocd/openocd");

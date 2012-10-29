@@ -67,7 +67,7 @@ public class Sizer implements MessageConsumer {
       };
     }
     if(arch == "lm4f") {
-        commandSize[1] = buildPath + File.separator + sketchName + ".bin";    	
+      commandSize[1] = buildPath + File.separator + sketchName + ".elf";    	
     }else {
     	commandSize[1] = buildPath + File.separator + sketchName + ".hex";
     }
