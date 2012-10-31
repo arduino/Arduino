@@ -113,12 +113,18 @@ public class Sizer implements MessageConsumer {
     if (firstLine == null)
       firstLine = s;
     else {
+      String arch = Base.getArch();
       StringTokenizer st = new StringTokenizer(s, " ");
       try {
-        st.nextToken();
-        st.nextToken();
-        st.nextToken();
-        size = (new Integer(st.nextToken().trim())).longValue();
+        if(arch == "lm4f") {
+        	size = (new Integer(st.nextToken().trim())).longValue();
+        	size += (new Integer(st.nextToken().trim())).longValue();
+        } else {
+	    	st.nextToken();
+	    	st.nextToken();        	
+	        st.nextToken();
+	        size += (new Integer(st.nextToken().trim())).longValue();
+        }
       } catch (NoSuchElementException e) {
         exception = new RunnerException(e.toString());
       } catch (NumberFormatException e) {
