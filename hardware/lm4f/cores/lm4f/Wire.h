@@ -5,31 +5,39 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define BUFFER_LENGTH     16
+#define BUFFER_LENGTH     64
 
+#define IDLE 0
+#define MASTER_TX 1
+#define MASTER_RX 2
 
 class TwoWire : public Stream
 {
 
 	private:
 		static uint8_t rxBuffer[];
-		static uint8_t rxBufferIndex;
-		static uint8_t rxBufferLength;
+		static uint8_t rxReadIndex;
+		static uint8_t rxWriteIndex;
 
 		static uint8_t txAddress;
 		static uint8_t txBuffer[];
-		static uint8_t txBufferIndex;
-		static uint8_t txBufferLength;
+		static uint8_t txReadIndex;
+		static uint8_t txWriteIndex;
 
-		static unsigned long i2cModule;
+		static uint8_t i2cModule;
 		static uint8_t slaveAddress;
 
 		static uint8_t transmitting;
+		static uint8_t currentState;
 		static void (*user_onRequest)(void);
 		static void (*user_onReceive)(int);
 		static void onRequestService(void);
 		static void onReceiveService(uint8_t*, int);
 		
+		uint8_t getRxData(unsigned long cmd);
+		uint8_t sendTxData(unsigned long cmd, uint8_t data);
+		void forceStop(void);
+
     public:
 		TwoWire(void);
         TwoWire(unsigned long _i2cModule);
