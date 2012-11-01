@@ -226,12 +226,15 @@ public class Compiler implements MessageConsumer {
     }else if (arch == "lm4f") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
-        "-mthumb", "-mcpu=cortex-m4","-Wl,--gc-sections",
-        "-Wl,-Map=lm4f.map","-Woverloaded-virtual",
+        "-Os",
+        "-nostartfiles",
+        "-Wl,--gc-sections",
         "-T", corePath + File.separator + "lm4fcpp.ld",
         "--entry=ResetISR",
+        "-mthumb", "-mcpu=cortex-m4",
+        "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
         "-o",
-        buildPath + File.separator + primaryClassName + ".axf"
+        buildPath + File.separator + primaryClassName + ".elf",
       }));
     } else {
       baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
@@ -266,7 +269,6 @@ public class Compiler implements MessageConsumer {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-objcopy",
         "-O",
-      //  "-R",
       }));
     } else {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
@@ -298,10 +300,8 @@ public class Compiler implements MessageConsumer {
     sketch.setCompilingProgress(80);
     commandObjcopy = new ArrayList(baseCommandObjcopy);
     if (arch == "lm4f"){
-    	//commandObjcopy.add(2, "binary");
 	  	commandObjcopy.add(2, "binary");
-    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".axf");
-	    //commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
+    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
     }else {
 	    commandObjcopy.add(2, "ihex");
@@ -612,22 +612,17 @@ public class Compiler implements MessageConsumer {
           "-DENERGIA=" + Base.EREVISION,
         }));
     } if (arch == "lm4f") {
-    	//as per
-    	//http://mspgcc.sourceforge.net/manual/x1522.html
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
-          "-mthumb",
-          "-mcpu=cortex-m4",
-          //"-mfpu=fpv4-sp-d16 -mfloat-abi=softfp",
-          "-Os",
-          "-ffunction-sections",
-          "-fdata-sections",
-          "-MD",
-          "-std=c99",
-          "-Wall",
-          "-pedantic",
-          "-DPART_${PART}",
           "-c",
+          "-g",
+          "-assembler-with-cpp",
+          Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+          "-mthumb", "-mcpu=cortex-m4",
+          "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
+          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-DARDUINO=" + Base.REVISION,
+          "-DENERGIA=" + Base.EREVISION,
         }));
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -674,17 +669,17 @@ public class Compiler implements MessageConsumer {
       }else if (arch == "lm4f") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
-        "-mthumb",
-        "-mcpu=cortex-m4",
+        "-c",
+        "-g",
         "-Os",
+        Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections",
         "-fdata-sections",
-        "-MD",
-        "-std=c99",
-        "-Wall",
-        "-pedantic",
-        "-DPART_${PART}",
-        "-c",
+        "-mthumb", "-mcpu=cortex-m4",
+        "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
+        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-DARDUINO=" + Base.REVISION,
+        "-DENERGIA=" + Base.EREVISION,
       }));
       }else { // default to avr
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
@@ -741,13 +736,16 @@ public class Compiler implements MessageConsumer {
           "-c",
           "-g", // include debugging info (so errors include line numbers)
           "-Os", // optimize for size
-          "-Wall",
+          Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-rtti",
           "-fno-exceptions",
           "-ffunction-sections", // place each function in its own section
           "-fdata-sections",
-          "-mcpu=" + "cortex-m4",
-          "-mthumb",
+          "-mthumb", "-mcpu=cortex-m4",
+          "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
+          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-DARDUINO=" + Base.REVISION,
+          "-DENERGIA=" + Base.EREVISION,
         }));
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {

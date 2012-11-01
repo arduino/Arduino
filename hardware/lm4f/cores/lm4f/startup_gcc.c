@@ -274,6 +274,14 @@ void ResetISR(void) {
     (void)_bss; (void)_ebss; // get rid of unused warnings
 
     //
+    // Enable the floating-point unit before calling c++ ctors
+    //
+
+    HWREG(NVIC_CPAC) = ((HWREG(NVIC_CPAC) &
+                         ~(NVIC_CPAC_CP10_M | NVIC_CPAC_CP11_M)) |
+                         NVIC_CPAC_CP10_FULL | NVIC_CPAC_CP11_FULL);
+
+    //
     // call any global c++ ctors
     //
     cnt = __preinit_array_end - __preinit_array_start;

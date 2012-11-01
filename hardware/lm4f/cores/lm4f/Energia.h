@@ -10,6 +10,7 @@
         (*((volatile unsigned long *)(x))) 
 
 #include "binary.h" 
+#include "inc/hw_nvic.h"
 #include "inc/hw_types.h"  		 
 #include "inc/lm4f120h5qr.h"
 #include "driverlib/gpio.h" 

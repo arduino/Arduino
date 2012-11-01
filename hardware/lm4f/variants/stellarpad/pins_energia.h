@@ -92,8 +92,8 @@ static const uint8_t AIN10 =  7; //PB_4
 static const uint8_t AIN11 =  2; //PB_5
 
 static const uint8_t RED_LED = 30;
-static const uint8_t GREEN_LED = 40;
-static const uint8_t BLUE_LED = 39;
+static const uint8_t GREEN_LED = 39;
+static const uint8_t BLUE_LED = 40;
 
 static const uint8_t PUSH1 = 31;
 static const uint8_t PUSH2 = 17;
