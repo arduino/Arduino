@@ -303,11 +303,10 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
   //Select which slave we are requesting data from
   //true indicates we are reading from the slave
   I2CMasterSlaveAddrSet(MASTER_BASE, address, true);
-
   unsigned long cmd = 0;
   uint8_t runBit = (quantity) ? 1: 0;
   //uint8_t startBit = (currentState == IDLE) ? 2 : 0;//currentState ? 0 : 2;
-  uint8_t startBit = (currentState == MASTER_RX) ? 0 : 2;//currentState ? 0 : 2;
+  uint8_t startBit = 2;//currentState ? 0 : 2;
   uint8_t ackBit = 0x8;
 
   cmd = runBit | startBit | ackBit;
@@ -317,6 +316,8 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
   int i = 1;
 
   for (; i < quantity; i++) {
+	  //since NACK is being sent on last byte, a consecutive burst read will
+	  //need to send a start condition
 	  if(i == (quantity - 1)) {
 		  ackBit = 0;
 	  }
@@ -324,7 +325,6 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 	  error = getRxData(cmd);
 	  if(error) return i;
   }
-
 
   if(sendStop) {
 	  HWREG(MASTER_BASE + I2C_O_MCS) = 0x4;
