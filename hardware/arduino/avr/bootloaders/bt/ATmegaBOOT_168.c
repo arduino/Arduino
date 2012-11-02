@@ -680,7 +680,7 @@ putch(0x0D);
 				 "rjmp	write_page	\n\t"
 				 "block_done:		\n\t"
 				 "clr	__zero_reg__	\n\t"	//restore zero register
-#if defined __AVR_ATmega168__  || __AVR_ATmega328P__ || __AVR_ATmega_328__
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega_328__)
 				 : "=m" (SPMCSR) : "M" (PAGE_SIZE) : "r0","r16","r17","r24","r25","r28","r29","r30","r31"
 #else
 				 : "=m" (SPMCR) : "M" (PAGE_SIZE) : "r0","r16","r17","r24","r25","r28","r29","r30","r31"
@@ -712,7 +712,7 @@ putch(0x0D);
 		putch(0x14);
 		for (w=0;w < length.word;w++) {		        // Can handle odd and even lengths okay
 		    if (flags.eeprom) {	                        // Byte access EEPROM read
-#if defined __AVR_ATmega168__  || __AVR_ATmega328P__ || __AVR_ATmega328__
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__)
 			while(EECR & (1<<EEPE));
 			EEAR = (uint16_t)(void *)address.word;
 			EECR |= (1<<EERE);
