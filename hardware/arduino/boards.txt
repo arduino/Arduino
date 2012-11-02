@@ -501,3 +501,24 @@ atmega8.build.mcu=atmega8
 atmega8.build.f_cpu=16000000L
 atmega8.build.core=arduino
 atmega8.build.variant=standard
+
+##############################################################
+
+nanode.name=Nanode or Shrimp with 328 (not 328p)
+
+nanode.upload.protocol=arduino
+nanode.upload.maximum_size=30720
+nanode.upload.speed=57600
+
+nanode.bootloader.low_fuses=0xFF
+nanode.bootloader.high_fuses=0xDA
+nanode.bootloader.extended_fuses=0x05
+nanode.bootloader.path=atmega
+nanode.bootloader.file=ATmegaBOOT_168_atmega328_notp.hex
+nanode.bootloader.unlock_bits=0x3F
+nanode.bootloader.lock_bits=0x0F
+
+nanode.build.mcu=atmega328
+nanode.build.f_cpu=16000000L
+nanode.build.core=arduino
+nanode.build.variant=standard

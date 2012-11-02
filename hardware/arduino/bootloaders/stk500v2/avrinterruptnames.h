@@ -270,8 +270,8 @@
 
 
 //**************************************************************************************************
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)
-#pragma mark __AVR_ATmega168__ / __AVR_ATmega328P__
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__)
+#pragma mark __AVR_ATmega168__ / __AVR_ATmega328P__ / __AVR_ATmega328__
 
 #define	_INTERRUPT_NAMES_DEFINED_
 
