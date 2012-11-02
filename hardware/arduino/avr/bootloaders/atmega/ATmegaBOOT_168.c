@@ -578,7 +578,7 @@ int main(void)
 				/* if ((length.byte[0] & 0x01) == 0x01) length.word++;	//Even up an odd number of bytes */
 				if ((length.byte[0] & 0x01)) length.word++;	//Even up an odd number of bytes
 				cli();					//Disable interrupts, just to be sure
-#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__)
+#if defined(EEPE)
 				while(bit_is_set(EECR,EEPE));			//Wait for previous EEPROM writes to complete
 #else
 				while(bit_is_set(EECR,EEWE));			//Wait for previous EEPROM writes to complete
