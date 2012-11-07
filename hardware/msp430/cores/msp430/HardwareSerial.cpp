@@ -71,6 +71,13 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 	}
 }
 
+void serialEvent() __attribute__((weak));
+void serialEvent() {}
+
+void serialEventRun(void)
+{
+  if (Serial.available()) serialEvent();
+}
 // Constructors ////////////////////////////////////////////////////////////////
 
 HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
