@@ -43,11 +43,16 @@
 uint8_t portBits[7] = {0}; //index 0 = nothing
 void (*portFuncs[7])(void) = {0}; //index 0 = nothing
 
-void gpioHandler(void) {
+void GPIOIntHandler(void) {
 	uint8_t activePort = 0;
 	uint32_t portBase = 0;
+    
+    //
+    // Find which port triggered the interrupt
+    //
 	if(HWREG(NVIC_ACTIVE0) & 0x4000) activePort = PF;
 	for(;!(HWREG(NVIC_ACTIVE0) & (1 << (activePort-1)));activePort++);
+    
     portBase = (uint32_t) portBASERegister(activePort);
     ROM_GPIOPinIntClear(portBase, portBits[activePort]);
     (*portFuncs[activePort])();
@@ -81,7 +86,6 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
     ROM_GPIOIntTypeSet(portBase, bit, lm4fMode);
     portBits[port] = bit;
     portFuncs[port] = userFunc;
-    GPIOPortIntRegister(portBase, &gpioHandler);
     ROM_GPIOPinIntEnable(portBase, bit);
     ROM_IntMasterEnable();
 
@@ -92,6 +96,6 @@ void detachInterrupt(uint8_t interruptNum) {
     uint8_t port = digitalPinToPort(interruptNum);
     uint32_t portBase = (uint32_t) portBASERegister(port);
     if (port == NOT_A_PIN) return;
+    
     GPIOPinIntDisable(portBase, bit);
-
 }

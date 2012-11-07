@@ -40,9 +40,11 @@ static void IntDefaultHandler(void);
 //
 //*****************************************************************************
 extern int main(void);
+extern void GPIOIntHandler(void);
 extern void UARTIntHandler(void);
 extern void ToneIntHandler(void);
 extern void I2CIntHandler(void);
+
 //*****************************************************************************
 //
 // Reserve space for the system stack.
@@ -77,11 +79,11 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
     IntDefaultHandler,                      // The SysTick handler
-    IntDefaultHandler,                      // GPIO Port A
-    IntDefaultHandler,                      // GPIO Port B
-    IntDefaultHandler,                      // GPIO Port C
-    IntDefaultHandler,                      // GPIO Port D
-    IntDefaultHandler,                      // GPIO Port E
+    GPIOIntHandler,                         // GPIO Port A
+    GPIOIntHandler,                         // GPIO Port B
+    GPIOIntHandler,                         // GPIO Port C
+    GPIOIntHandler,                         // GPIO Port D
+    GPIOIntHandler,                         // GPIO Port E
     UARTIntHandler,                         // UART0 Rx and Tx
     UARTIntHandler,                         // UART1 Rx and Tx
     IntDefaultHandler,                      // SSI0 Rx and Tx

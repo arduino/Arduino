@@ -44,6 +44,7 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
 uint8_t getTimerInterrupt(uint8_t timer);
 uint32_t getTimerBase(uint8_t timer);
 void ToneIntHandler(void);
+void GPIOIntHandler(void);
 
 typedef void (*voidFuncPtr)(void);
 
