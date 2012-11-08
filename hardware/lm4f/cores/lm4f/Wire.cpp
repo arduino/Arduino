@@ -48,8 +48,8 @@
 #include "driverlib/i2c.h"
 #include "Wire.h"
 
-#define TX_BUFFER_EMPTY    txWriteIndex == 0
-#define TX_BUFFER_FULL     txWriteIndex == BUFFER_LENGTH
+#define TX_BUFFER_EMPTY    (txReadIndex == txWriteIndex)
+#define TX_BUFFER_FULL     (((txWriteIndex + 1) % BUFFER_LENGTH) == txReadIndex)
 
 #define RX_BUFFER_EMPTY    (rxReadIndex == rxWriteIndex)
 #define RX_BUFFER_FULL     (((rxWriteIndex + 1) % BUFFER_LENGTH) == rxReadIndex)
@@ -196,7 +196,6 @@ uint8_t TwoWire::sendTxData(unsigned long cmd, uint8_t data) {
 void TwoWire::forceStop(void) {
 
 	//force a stop to release the bus
-	HWREG(MASTER_BASE + 0x52C) = 0;//GPIO_PCTL
 	GPIOPinTypeGPIOOutput(g_uli2cBase[i2cModule],
 		  g_uli2cSCLPins[i2cModule] | g_uli2cSDAPins[i2cModule]);
     GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule], 0);
@@ -205,11 +204,14 @@ void TwoWire::forceStop(void) {
     GPIOPinWrite(g_uli2cBase[i2cModule],
     	  g_uli2cSDAPins[i2cModule], g_uli2cSDAPins[i2cModule]);
 
+    GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
+    GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
     //reset I2C controller
     //without resetting the I2C controller, the I2C module will
     //bring the bus back to it's erroneous state
     SysCtlPeripheralReset(g_uli2cPeriph[i2cModule]);
     while(!SysCtlPeripheralReady(g_uli2cPeriph[i2cModule]));
+    I2CMasterInitExpClk(MASTER_BASE, SysCtlClockGet(), false);
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -227,26 +229,20 @@ void TwoWire::begin(void)
 
   SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
 
-  //force a stop condition
-  if(!GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
-	  forceStop();
-
   //Configure GPIO pins for I2C operation
   GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
   GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
   GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
   GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
-
-  //Enable and initialize the I2Cx master module
-  //false indicates that we're not using fast-speed transfers
   I2CMasterInitExpClk(MASTER_BASE, SysCtlClockGet(), false);//max bus speed=400kHz for gyroscope
-  slaveAddress = 0;
-  i2cModule = 0;
+
+  //force a stop condition
+  if(!GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
+	  forceStop();
 
   //Handle any startup issues by pulsing SCL
-  if(I2CMasterBusBusy(MASTER_BASE) || I2CMasterErr(MASTER_BASE)){
+  if(I2CMasterBusBusy(MASTER_BASE) || I2CMasterErr(MASTER_BASE) || !GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule])){
 	  uint8_t doI = 0;
-	  HWREG(MASTER_BASE + 0x52C) = 0;//GPIO_PCTL
   	  GPIOPinTypeGPIOOutput(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
   	  unsigned long mask = 0;
   	  do{
@@ -257,10 +253,11 @@ void TwoWire::begin(void)
   		  }
   		  doI++;
   	  }while(I2CMasterBusBusy(MASTER_BASE) && doI < 100);
-  	  GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
-  	  GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
-  	  GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
+
   	  GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
+  	  if(!GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
+  		  forceStop();
+
   }
 
 }
@@ -268,13 +265,19 @@ void TwoWire::begin(void)
 //Initialize as a slave
 void TwoWire::begin(uint8_t address)
 {
-
-  begin();
+  SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
+  GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
+  GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
+  GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
+  GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
   slaveAddress = address;
+
   //Enable slave interrupts
   IntEnable(g_uli2cInt[i2cModule]);
-  I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA);
-  
+  I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA | I2C_SLAVE_INT_STOP);
+  HWREG(SLAVE_BASE + I2C_O_SICR) =
+		  I2C_SICR_DATAIC | I2C_SICR_STARTIC | I2C_SICR_STOPIC;
+
   //Setup as a slave device
   I2CMasterDisable(MASTER_BASE);
   I2CSlaveEnable(SLAVE_BASE);
@@ -282,6 +285,11 @@ void TwoWire::begin(uint8_t address)
   
   IntMasterEnable();
 
+}
+
+void TwoWire::begin(int address)
+{
+  begin((uint8_t)address);
 }
 
 void TwoWire::selectModule(unsigned long _i2cModule)
@@ -308,10 +316,12 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
   //uint8_t startBit = (currentState == IDLE) ? 2 : 0;//currentState ? 0 : 2;
   uint8_t startBit = 2;//currentState ? 0 : 2;
   uint8_t ackBit = 0x8;
-
-  cmd = runBit | startBit | ackBit;
+  if((quantity > 1) || !sendStop)
+	  cmd = runBit | startBit | ackBit;
+  else cmd = runBit | startBit | (sendStop << 2);
   error = getRxData(cmd);
   if(error) return 0;
+  currentState = MASTER_RX;
 
   int i = 1;
 
@@ -331,7 +341,6 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 	  while(I2CMasterBusy(MASTER_BASE));
 	  currentState = IDLE;
   }
-  else currentState = MASTER_RX;
 
   uint8_t bytesWritten = (rxWriteIndex >= oldWriteIndex) ?
 		 BUFFER_LENGTH - (rxWriteIndex - oldWriteIndex) : (oldWriteIndex - rxWriteIndex);
@@ -358,8 +367,6 @@ void TwoWire::beginTransmission(uint8_t address)
   transmitting = 1;
   // set address of targeted slave
   txAddress = address;
-  // reset tx buffer iterator vars
-  txWriteIndex = 0;
 }
 
 void TwoWire::beginTransmission(int address)
@@ -379,16 +386,19 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
   I2CMasterSlaveAddrSet(MASTER_BASE, txAddress, false);
   //Wait for bus to open up in the case of multiple masters present
 
-  uint8_t startBit = (currentState == MASTER_TX) ? 0 : 2;
-  uint8_t runBit = (txWriteIndex) ? 1 : 0;
+  //uint8_t startBit = (currentState == MASTER_TX) ? 0 : 2;
+  uint8_t startBit = 2;
+  uint8_t runBit = 1;
 
   cmd = runBit | startBit;
 
-  error = sendTxData(cmd,txBuffer[0]);
+  error = sendTxData(cmd,txBuffer[txReadIndex]);
+  txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
   if(error) return error;
 
-  for (int i = 1; i < txWriteIndex; i++) {
-	  error = sendTxData(runBit,txBuffer[i]);
+  while(!TX_BUFFER_EMPTY) {
+	  error = sendTxData(runBit,txBuffer[txReadIndex]);
+  	  txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 	  if(error) return getError(error);
   }
 
@@ -401,7 +411,6 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
 	  currentState = MASTER_TX;
   }
 
-  txWriteIndex = 0;
   // indicate that we are done transmitting
   transmitting = 0;
   return error;
@@ -430,12 +439,17 @@ size_t TwoWire::write(uint8_t data)
     }
     // put byte in tx buffer
     txBuffer[txWriteIndex] = data;
-    txWriteIndex++;
+    txWriteIndex = (txWriteIndex + 1) % BUFFER_LENGTH;
 
   }else{
   // in slave send mode
     // reply to master
-	I2CSlaveDataPut(SLAVE_BASE, data);
+	if(TX_BUFFER_FULL) {
+		I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+		txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
+	}
+	    txBuffer[txWriteIndex] = data;
+	    txWriteIndex = (txWriteIndex + 1) % BUFFER_LENGTH;
   }
   return 1;
 }
@@ -508,18 +522,72 @@ void TwoWire::onRequest( void (*function)(void) )
 
 void TwoWire::I2CIntHandler(void) {
 
-    I2CSlaveIntClear(SLAVE_BASE);
-	switch(I2CSlaveStatus(SLAVE_BASE)) {
+	//clear data interrupt
+	HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_DATAIC;
+	uint8_t startDetected = 0;
+	uint8_t stopDetected = 0;
+
+	if(HWREG(SLAVE_BASE + I2C_O_SRIS) & I2C_SLAVE_INT_START) {
+		startDetected = 1;
+	    //clear raw start interrupt
+	    HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_STARTIC;
+	}
+	else if(HWREG(SLAVE_BASE + I2C_O_SRIS) & I2C_SLAVE_INT_STOP) {
+		stopDetected = 1;
+	    HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_STOPIC;
+	}
+
+	switch(I2CSlaveStatus(SLAVE_BASE) & (I2C_SCSR_TREQ | I2C_SCSR_RREQ)) {
+
 		case(I2C_SLAVE_ACT_RREQ)://data received
-		    user_onReceive(available());
+			if(I2CSlaveStatus(SLAVE_BASE) & I2C_SCSR_FBR)
+				currentState = SLAVE_RX;
+			if(!RX_BUFFER_FULL) {
+				rxBuffer[rxWriteIndex] = I2CSlaveDataGet(SLAVE_BASE);
+				rxWriteIndex = (rxWriteIndex + 1) % BUFFER_LENGTH;
+			}
+
 			break;
+
 		case(I2C_SLAVE_ACT_TREQ)://data requested 
-		    user_onRequest();
+
+		    if(startDetected) {
+		        uint8_t oldWriteIndex = txWriteIndex;
+		        user_onRequest();
+
+		        //
+		        // send data if onRequest() wrote data that has
+		        // yet to be sent
+		        //
+		    	if(oldWriteIndex != txWriteIndex) {
+			    	I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+			    	txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
+		        }
+
+		    }
+
+		    else if(!TX_BUFFER_EMPTY){
+		    	I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+		    	txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
+		    }
+
+		    else
+		    	I2CSlaveDataPut(SLAVE_BASE, 0);
+
 			break;
+
 		default:
 			break;
 	}
+
+	if(stopDetected && currentState == SLAVE_RX) {
+		int avail = available();
+		user_onReceive(avail);
+		currentState = IDLE;
+	}
+
 }
+
 void
 I2CIntHandler(void)
 {

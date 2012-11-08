@@ -10,6 +10,7 @@
 #define IDLE 0
 #define MASTER_TX 1
 #define MASTER_RX 2
+#define SLAVE_RX 3
 
 class TwoWire : public Stream
 {
