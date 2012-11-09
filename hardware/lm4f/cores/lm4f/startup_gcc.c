@@ -40,7 +40,12 @@ static void IntDefaultHandler(void);
 //
 //*****************************************************************************
 extern int main(void);
-extern void GPIOIntHandler(void);
+extern void GPIOAIntHandler(void);
+extern void GPIOBIntHandler(void);
+extern void GPIOCIntHandler(void);
+extern void GPIODIntHandler(void);
+extern void GPIOEIntHandler(void);
+extern void GPIOFIntHandler(void);
 extern void UARTIntHandler(void);
 extern void ToneIntHandler(void);
 extern void I2CIntHandler(void);
@@ -79,11 +84,11 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
     IntDefaultHandler,                      // The SysTick handler
-    GPIOIntHandler,                         // GPIO Port A
-    GPIOIntHandler,                         // GPIO Port B
-    GPIOIntHandler,                         // GPIO Port C
-    GPIOIntHandler,                         // GPIO Port D
-    GPIOIntHandler,                         // GPIO Port E
+    GPIOAIntHandler,                        // GPIO Port A
+    GPIOBIntHandler,                        // GPIO Port B
+    GPIOCIntHandler,                        // GPIO Port C
+    GPIODIntHandler,                        // GPIO Port D
+    GPIOEIntHandler,                        // GPIO Port E
     UARTIntHandler,                         // UART0 Rx and Tx
     UARTIntHandler,                         // UART1 Rx and Tx
     IntDefaultHandler,                      // SSI0 Rx and Tx
@@ -109,7 +114,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Analog Comparator 2
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
-    IntDefaultHandler,                      // GPIO Port F
+    GPIOFIntHandler,                        // GPIO Port F
     IntDefaultHandler,                      // GPIO Port G
     IntDefaultHandler,                      // GPIO Port H
     UARTIntHandler,                         // UART2 Rx and Tx
