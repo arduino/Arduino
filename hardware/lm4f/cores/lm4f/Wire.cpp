@@ -247,7 +247,7 @@ void TwoWire::begin(void)
   	  unsigned long mask = 0;
   	  do{
   		  for(unsigned long i = 0; i < 10 ; i++) {
-  			  SysCtlDelay(SysCtlClockGet()/100000/3);//100Hz=desired frequency, delay iteration=3 cycles
+  			  ROM_SysCtlDelay(SysCtlClockGet()/100000/3);//100Hz=desired frequency, delay iteration=3 cycles
   			  mask = (i%2) ? g_uli2cSCLPins[i2cModule] : 0;
   			  GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule], mask);
   		  }
@@ -380,6 +380,9 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
   unsigned long cmd = 0;
 
   if(TX_BUFFER_EMPTY) return 0;
+
+  //Wait for any previous transaction to complete
+  while(I2CMasterBusBusy(MASTER_BASE));
 
   //Select which slave we are requesting data from
   //false indicates we are writing to the slave
