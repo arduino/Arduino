@@ -46,16 +46,18 @@ extern void GPIOCIntHandler(void);
 extern void GPIODIntHandler(void);
 extern void GPIOEIntHandler(void);
 extern void GPIOFIntHandler(void);
-extern void UARTIntHandler(void);
-extern void ToneIntHandler(void);
-extern void I2CIntHandler(void);
+
+/*
+ * create some overridable default signal handlers
+ */
+__attribute__((weak)) void UARTIntHandler(void) {}
+__attribute__((weak)) void ToneIntHandler(void) {}
+__attribute__((weak)) void I2CIntHandler(void) {}
 
 //*****************************************************************************
-//
-// Reserve space for the system stack.
-//
+// System stack start determined by ldscript, normally highest ram address
 //*****************************************************************************
-static unsigned long pulStack[512];
+extern unsigned _estack;
 
 //*****************************************************************************
 //
@@ -67,8 +69,7 @@ static unsigned long pulStack[512];
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) =
 {
-        (void (*)(void))((unsigned long)pulStack + sizeof(pulStack)),
-                                            // The initial stack pointer
+   (void *)&_estack,                        // The initial stack pointer, 0x20008000 32K
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
@@ -303,6 +304,35 @@ void ResetISR(void) {
     // call 'C' entry point, Energia never returns from main
     //
     main();
+}
+
+/**
+ * _sbrk - newlib memory allocation routine
+ */
+typedef char *caddr_t;
+
+caddr_t _sbrk (int incr)
+{
+    double current_sp;
+    extern char end asm ("end"); /* Defined by linker */
+    static char * heap_end;
+    char * prev_heap_end;
+
+    if (heap_end == NULL) {
+        heap_end = &end; /* first ram address after bss and data */
+    }
+
+    prev_heap_end = heap_end;
+
+    // simplistic approach to prevent the heap from corrupting the stack
+    // TBD: review for alternatives
+    if ( heap_end + incr < (caddr_t)&current_sp ) {
+        heap_end += incr;
+        return (caddr_t) prev_heap_end;
+    }
+    else {
+        return NULL;
+    }
 }
 
 //*****************************************************************************

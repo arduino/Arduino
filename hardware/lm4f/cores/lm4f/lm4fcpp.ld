@@ -65,5 +65,13 @@ SECTIONS
         *(COMMON)
         . = ALIGN(4); 
         _ebss = .; 
+        . = ALIGN(8);
+        _end = .;
     } > REGION_RAM 
 }
+
+/* end of allocated ram is start of heap, heap grows up towards stack*/
+PROVIDE(end = _end);
+
+/* top of stack starts at end of ram, stack grows down towards heap */
+PROVIDE (_estack = ORIGIN(ram) + LENGTH(ram));
