@@ -306,6 +306,8 @@ void ResetISR(void) {
     main();
 }
 
+void *__dso_handle = 0;
+
 /**
  * _sbrk - newlib memory allocation routine
  */
