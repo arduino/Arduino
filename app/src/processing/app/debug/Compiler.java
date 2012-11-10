@@ -227,7 +227,7 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
         "-Os",
-        "-nostartfiles",
+        "-nostartfiles","-nostdlib",
         "-Wl,--gc-sections",
         "-T", corePath + File.separator + "lm4fcpp.ld",
         "--entry=ResetISR",
@@ -253,8 +253,12 @@ public class Compiler implements MessageConsumer {
 
     baseCommandLinker.add(runtimeLibraryName);
     baseCommandLinker.add("-L" + buildPath);
-    if(arch != "lm4f"){
-    	baseCommandLinker.add("-lm");
+    if(arch == "lm4f"){
+      baseCommandLinker.add("-lc");
+      baseCommandLinker.add("-lm");
+      baseCommandLinker.add("-lgcc");
+    } else {
+      baseCommandLinker.add("-lm");
     }
     execAsynchronously(baseCommandLinker);
 
