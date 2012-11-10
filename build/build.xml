@@ -221,11 +221,24 @@
       <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-msp430.zip" />
     </exec>
-   <!--
+    <!-- Unzip lm4f tools -->
+    <exec executable="unzip">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-d" />
+      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
+      <arg value="macosx/dist/lm4f_tools.zip" />
+    </exec>
+    <copy tofile="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/bin/lm4flash"
+          file="macosx/dist/tools/lm4flash"
+          overwrite="true"
+        />
+    <chmod perm="755" file="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/bin/lm4flash" />
+    <!--
     <copy todir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
       <fileset file="macosx/dist/eeprom.h" />
     </copy>
-   -->
+    -->
     <antcall target="assemble">
       <param name="target.path" value="macosx/work/Energia.app/Contents/Resources/Java" />
     </antcall>
@@ -385,6 +398,16 @@
       <arg value="-xjf"/>
       <arg value="../../msp430_tools_linux32.tar.bz2"/>
     </exec>
+  	<!-- Unzip lm4f tools -->
+  	<exec executable="tar" dir="linux/work/hardware">
+      <arg value="-xjf"/>
+      <arg value="../../lm4f_tools_linux32.tar.bz2"/>
+    </exec>
+    <copy tofile="linux/work/hardware/tools/lm4f/bin/lm4flash"
+          file="linux/dist/tools/lm4flash"
+          overwrite="true"
+        />
+    <chmod perm="755" file="linux/work/hardware/tools/lm4f/bin/lm4flash" />
   </target>
 
   <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
@@ -515,6 +538,13 @@
     <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
     -->
     <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
+
+    <unzip dest="windows/work/hardware" src="windows/lm4f_tools.zip" overwrite="false"/>
+    <copy tofile="windows/work/hardware/tools/lm4f/bin/lm4flash.exe"
+          file="windows/dist/tools/lm4flash.exe"
+          overwrite="true"
+        />
+    <chmod perm="755" file="windows/work/hardware/tools/lm4f/bin/lm4flash.exe" />
     <!--
     <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
       <fileset file="windows/eeprom.h" />

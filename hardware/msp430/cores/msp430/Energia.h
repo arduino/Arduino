@@ -22,8 +22,9 @@ extern "C"{
 #define LSBFIRST 0
 #define MSBFIRST 1
 
-#define FALLING 1
-#define RISING 0
+#define CHANGE 1
+#define FALLING 2
+#define RISING 3
 
 #define INPUT 0x0
 #define OUTPUT 0x1

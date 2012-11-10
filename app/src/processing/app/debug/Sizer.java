@@ -52,15 +52,25 @@ public class Sizer implements MessageConsumer {
         basePath + "msp430-size",
         " "
       };
-    } else {
+    } 
+    else if (arch == "lm4f") {
+      String basePath = Base.getLM4FBasePath();
+      commandSize = new String[] {
+        basePath + "arm-none-eabi-size",
+        " "
+      };
+  	}else {
       String basePath = Base.getAvrBasePath();
       commandSize = new String[] {
         basePath + "avr-size",
         " "
       };
     }
-    commandSize[1] = buildPath + File.separator + sketchName + ".hex";
-
+    if(arch == "lm4f") {
+      commandSize[1] = buildPath + File.separator + sketchName + ".elf";    	
+    }else {
+    	commandSize[1] = buildPath + File.separator + sketchName + ".hex";
+    }
     int r = 0;
     try {
       exception = null;
@@ -103,12 +113,18 @@ public class Sizer implements MessageConsumer {
     if (firstLine == null)
       firstLine = s;
     else {
+      String arch = Base.getArch();
       StringTokenizer st = new StringTokenizer(s, " ");
       try {
-        st.nextToken();
-        st.nextToken();
-        st.nextToken();
-        size = (new Integer(st.nextToken().trim())).longValue();
+        if(arch == "lm4f") {
+        	size = (new Integer(st.nextToken().trim())).longValue();
+        	size += (new Integer(st.nextToken().trim())).longValue();
+        } else {
+	    	st.nextToken();
+	    	st.nextToken();        	
+	        st.nextToken();
+	        size += (new Integer(st.nextToken().trim())).longValue();
+        }
       } catch (NoSuchElementException e) {
         exception = new RunnerException(e.toString());
       } catch (NumberFormatException e) {

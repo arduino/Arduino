@@ -67,6 +67,7 @@ public class Base {
   static {
     archMap.put("arduino", "avr");
     archMap.put("msp430", "msp430");
+    archMap.put("lm4f", "lm4f");
   }
   static Platform platform;
 
@@ -250,6 +251,8 @@ public class Base {
     String targetLibDir = new String("");
     if(Preferences.get("target").equals("msp430")) 
     	targetLibDir = "hardware/msp430/";
+    else if (Preferences.get("target").equals("lm4f"))
+    	targetLibDir = "hardware/lm4f/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 
@@ -1029,6 +1032,8 @@ public class Base {
             	  String targetLibDir = new String("");
             	  if(n.equals("msp430")) 
             		  targetLibDir = "hardware/msp430/";
+            	  else if(n.equals("lm4f"))
+            		  targetLibDir = "hardware/lm4f/";
             	  librariesFolder = getContentFile(targetLibDir + "libraries");
             	  onArchChanged();
               }
@@ -1575,7 +1580,14 @@ public class Base {
     }
     return path;
   }
-
+  static public String getLM4FBasePath() {
+	    String path = getHardwarePath() + File.separator + "tools" +
+	                  File.separator + "lm4f" + File.separator + "bin" + File.separator;
+	    if (Base.isLinux() && !(new File(path)).exists()) {
+	      return "";  // use lm4f-gcc and mspdebug in PATH instead of platform version
+	    }
+	    return path;
+	  }
 
   static public String getArch() {
     return archMap.get(Preferences.get("target"));
@@ -1600,6 +1612,10 @@ public class Base {
       if (getArch() == "msp430") {
         String hwPath = getMSP430BasePath();
         return hwPath;
+      }
+      else if (getArch() == "lm4f") {
+    	  String hwPath = getLM4FBasePath();
+    	  return hwPath;
       }
       else {
         return getHardwarePath() + File.separator + "tools" + File.separator
