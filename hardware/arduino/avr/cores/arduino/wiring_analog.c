@@ -75,7 +75,8 @@ int analogRead(uint8_t pin)
 	sbi(ADCSRA, ADSC);
 
 	// ADSC is cleared when the conversion finishes
-	while (bit_is_set(ADCSRA, ADSC));
+	while (bit_is_set(ADCSRA, ADSC))
+		yield();
 
 	// we have to read ADCL first; doing so locks both ADCL
 	// and ADCH until ADCH is read.  reading ADCL second would

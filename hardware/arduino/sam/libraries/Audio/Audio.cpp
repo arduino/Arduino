@@ -54,7 +54,7 @@ size_t AudioClass::write(const uint32_t *data, size_t size) {
 		if (next == half || next == last) {
 			enqueue();
 			while (next == running)
-				;
+				yield();
 		}
 	}
 

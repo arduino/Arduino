@@ -104,14 +104,14 @@ void UARTClass::flush( void )
 {
   // Wait for transmission to complete
   while ((_pUart->UART_SR & UART_SR_TXRDY) != UART_SR_TXRDY)
-    ;
+    yield();
 }
 
 size_t UARTClass::write( const uint8_t uc_data )
 {
   // Check if the transmitter is ready
   while ((_pUart->UART_SR & UART_SR_TXRDY) != UART_SR_TXRDY)
-    ;
+    yield();
 
   // Send character
   _pUart->UART_THR = uc_data;

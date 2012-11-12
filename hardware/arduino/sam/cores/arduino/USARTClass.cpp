@@ -105,14 +105,14 @@ void USARTClass::flush( void )
 {
   // Wait for transmission to complete
   while ((_pUsart->US_CSR & US_CSR_TXRDY) != US_CSR_TXRDY)
-	;
+	yield();
 }
 
 size_t USARTClass::write( const uint8_t uc_data )
 {
   // Check if the transmitter is ready
   while ((_pUsart->US_CSR & US_CSR_TXRDY) != US_CSR_TXRDY)
-    ;
+    yield();
 
   // Send character
   _pUsart->US_THR = uc_data ;

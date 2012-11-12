@@ -113,7 +113,7 @@ extern int _write( int file, char *ptr, int len )
 
 		// Check if the transmitter is ready
 		  while ((UART->UART_SR & UART_SR_TXRDY) != UART_SR_TXRDY)
-			;
+			yield();
 
 		  // Send character
 		  UART->UART_THR = *ptr;
