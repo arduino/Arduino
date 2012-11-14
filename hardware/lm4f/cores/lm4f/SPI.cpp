@@ -17,32 +17,43 @@
 #include "driverlib/sysctl.h"
 #include "SPI.h"
 
-SPIClass SPI;
-
 uint8_t SPIClass::slaveSelect = PA_5;
 
 void SPIClass::begin(uint8_t ssPin) {
 
-	  SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI2);
-	  GPIOPinConfigure(GPIO_PB4_SSI2CLK);
-	  GPIOPinConfigure(GPIO_PB5_SSI2FSS);
-	  GPIOPinConfigure(GPIO_PB6_SSI2RX);
-	  GPIOPinConfigure(GPIO_PB7_SSI2TX);
-	  GPIOPinTypeSSI(GPIO_PORTB_BASE, GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 |
-	                 GPIO_PIN_7);
-	  /*
-	    Polarity Phase        Mode
-	  	  0 	   0   SSI_FRF_MOTO_MODE_0
-	      0        1   SSI_FRF_MOTO_MODE_1
-	      1        0   SSI_FRF_MOTO_MODE_2
-	      1        1   SSI_FRF_MOTO_MODE_3
-	  */
+	unsigned long initialData = 0;
 
-	  HWREG(SSI2_BASE + SSI_O_CR1) &= ~SSI_CR1_MS; //Master mode
-	  SSIEnable(SSI2_BASE);
-	  slaveSelect = ssPin;
-	  pinMode(slaveSelect, INPUT);
+	SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI2);
+	SSIDisable(SSI2_BASE);
+	GPIOPinConfigure(GPIO_PB4_SSI2CLK);
+	GPIOPinConfigure(GPIO_PB5_SSI2FSS);
+	GPIOPinConfigure(GPIO_PB6_SSI2RX);
+	GPIOPinConfigure(GPIO_PB7_SSI2TX);
+	GPIOPinTypeSSI(GPIO_PORTB_BASE, GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 |
+	               GPIO_PIN_7);
+	/*
+	  Polarity Phase        Mode
+	     0 	   0   SSI_FRF_MOTO_MODE_0
+	     0     1   SSI_FRF_MOTO_MODE_1
+	     1     0   SSI_FRF_MOTO_MODE_2
+	     1     1   SSI_FRF_MOTO_MODE_3
+	*/
 
+	slaveSelect = ssPin;
+	pinMode(slaveSelect, OUTPUT);
+	/*
+	 * Default to SSI2_BASE
+	 * System Clock, SPI_MODE_0, MASTER,
+	 * 4MHz bit rate, and 8 bit data
+	*/
+	SSIClockSourceSet(SSI2_BASE, SSI_CLOCK_SYSTEM);
+	SSIConfigSetExpClk(SSI2_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
+	  SSI_MODE_MASTER, 4000000, 8);
+	HWREG(SSI2_BASE + SSI_O_CR1) |= SSI_CR1_EOT;
+	SSIEnable(SSI2_BASE);
+
+	//clear out any initial data that might be present in the RX FIFO
+	while(SSIDataGetNonBlocking(SSI2_BASE, &initialData));
 }
 
 void SPIClass::begin() {
@@ -87,20 +98,21 @@ void SPIClass::setClockDivider(uint8_t divider){
 }
 uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
 
-	digitalWrite(ssPin, LOW);
+	unsigned long rxData;
 
-	SSIDataPutNonBlocking(SSI2_BASE, data);
+	digitalWrite(ssPin, LOW);
+	SSIDataPut(SSI2_BASE, data);
+	SSIDataGet(SSI2_BASE, &rxData);
+
 
 	while(SSIBusy(SSI2_BASE));
-
-	SSIDataGetNonBlocking(SSI2_BASE, (unsigned long *) &data);
 
 	if(transferMode == SPI_LAST)
 		digitalWrite(ssPin, HIGH);
 	else
 		digitalWrite(ssPin, LOW);
 
-	return data;
+	return (uint8_t) rxData;
 
 }
 
@@ -115,3 +127,5 @@ uint8_t SPIClass::transfer(uint8_t data) {
   return transfer(slaveSelect, data, SPI_LAST);
 
 }
+
+SPIClass SPI;

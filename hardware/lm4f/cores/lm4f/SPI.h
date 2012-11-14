@@ -64,12 +64,4 @@ public:
 
 extern SPIClass SPI;
 
-/*void SPIClass::attachInterrupt() {
-  SPCR |= _BV(SPIE);
-}
-
-void SPIClass::detachInterrupt() {
-  SPCR &= ~_BV(SPIE);
-}*/
-
 #endif
