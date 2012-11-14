@@ -41,6 +41,7 @@ void SPIClass::begin(uint8_t ssPin) {
 
 	slaveSelect = ssPin;
 	pinMode(slaveSelect, OUTPUT);
+
 	/*
 	 * Default to SSI2_BASE
 	 * System Clock, SPI_MODE_0, MASTER,
@@ -49,7 +50,6 @@ void SPIClass::begin(uint8_t ssPin) {
 	SSIClockSourceSet(SSI2_BASE, SSI_CLOCK_SYSTEM);
 	SSIConfigSetExpClk(SSI2_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
 	  SSI_MODE_MASTER, 4000000, 8);
-	HWREG(SSI2_BASE + SSI_O_CR1) |= SSI_CR1_EOT;
 	SSIEnable(SSI2_BASE);
 
 	//clear out any initial data that might be present in the RX FIFO
@@ -101,9 +101,8 @@ uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
 	unsigned long rxData;
 
 	digitalWrite(ssPin, LOW);
-	SSIDataPut(SSI2_BASE, data);
-	SSIDataGet(SSI2_BASE, &rxData);
 
+	SSIDataPut(SSI2_BASE, data);
 
 	while(SSIBusy(SSI2_BASE));
 
@@ -111,6 +110,8 @@ uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
 		digitalWrite(ssPin, HIGH);
 	else
 		digitalWrite(ssPin, LOW);
+
+	SSIDataGet(SSI2_BASE, &rxData);
 
 	return (uint8_t) rxData;
 
