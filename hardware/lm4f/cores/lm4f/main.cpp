@@ -2,6 +2,7 @@
 #include "inc/lm4f120h5qr.h"
 #include "driverlib/rom.h"
 #include "driverlib/sysctl.h"
+#include "driverlib/eeprom.h"
 
 int main(void)
 {
@@ -16,7 +17,14 @@ int main(void)
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 	
-    setup();
+	//Initialize EEPROM 
+	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0);
+    if(EEPROMInit() == EEPROM_INIT_ERROR) {
+    	if(EEPROMInit() != EEPROM_INIT_ERROR)
+    		EEPROMMassErase();
+    }
+    
+	setup();
 
     for (;;) {
         loop();
