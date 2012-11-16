@@ -54,7 +54,10 @@
 #define RX_BUFFER_EMPTY    (rxReadIndex == rxWriteIndex)
 #define RX_BUFFER_FULL     (((rxWriteIndex + 1) % BUFFER_LENGTH) == rxReadIndex)
 
-#define STOP_CONDITION	0x4
+#define RUN_BIT 	0x1
+#define START_BIT 	0x2
+#define STOP_BIT	0x4
+#define ACK_BIT 	0x8
 
 static const unsigned long g_uli2cMasterBase[4] =
 {
@@ -145,7 +148,7 @@ uint8_t TwoWire::currentState = 0;
 void (*TwoWire::user_onRequest)(void);
 void (*TwoWire::user_onReceive)(int);
 
-uint8_t TwoWire::i2cModule = 0;
+uint8_t TwoWire::i2cModule = 3;
 uint8_t TwoWire::slaveAddress = 0;
 // Constructors ////////////////////////////////////////////////////////////////
 
@@ -305,39 +308,40 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
   uint8_t oldWriteIndex = rxWriteIndex;
   uint8_t spaceAvailable = (rxWriteIndex >= rxReadIndex) ?
 		 BUFFER_LENGTH - (rxWriteIndex - rxReadIndex) : (rxReadIndex - rxWriteIndex);
+  
   if (quantity > spaceAvailable)
 	  quantity = spaceAvailable;
   if (!quantity) return 0;
+  
   //Select which slave we are requesting data from
   //true indicates we are reading from the slave
   I2CMasterSlaveAddrSet(MASTER_BASE, address, true);
+  
   unsigned long cmd = 0;
-  uint8_t runBit = (quantity) ? 1: 0;
-  //uint8_t startBit = (currentState == IDLE) ? 2 : 0;//currentState ? 0 : 2;
-  uint8_t startBit = 2;//currentState ? 0 : 2;
-  uint8_t ackBit = 0x8;
+  
   if((quantity > 1) || !sendStop)
-	  cmd = runBit | startBit | ackBit;
-  else cmd = runBit | startBit | (sendStop << 2);
+	  cmd = RUN_BIT | START_BIT | ACK_BIT;
+  else cmd = RUN_BIT | START_BIT | (sendStop << 2);
+  
   error = getRxData(cmd);
   if(error) return 0;
+  
   currentState = MASTER_RX;
 
-  int i = 1;
-
-  for (; i < quantity; i++) {
+  for (int i = 1; i < quantity; i++) {
 	  //since NACK is being sent on last byte, a consecutive burst read will
 	  //need to send a start condition
-	  if(i == (quantity - 1)) {
-		  ackBit = 0;
-	  }
-	  cmd = runBit | ackBit;
+	  if(i == (quantity - 1))
+		cmd = RUN_BIT;
+	  else
+		cmd = RUN_BIT | ACK_BIT;
+		
 	  error = getRxData(cmd);
 	  if(error) return i;
   }
 
   if(sendStop) {
-	  HWREG(MASTER_BASE + I2C_O_MCS) = 0x4;
+	  HWREG(MASTER_BASE + I2C_O_MCS) = STOP_BIT;
 	  while(I2CMasterBusy(MASTER_BASE));
 	  currentState = IDLE;
   }
@@ -377,33 +381,27 @@ void TwoWire::beginTransmission(int address)
 uint8_t TwoWire::endTransmission(uint8_t sendStop)
 {
   uint8_t error = I2C_MASTER_ERR_NONE;
-  unsigned long cmd = 0;
 
   if(TX_BUFFER_EMPTY) return 0;
 
   //Select which slave we are requesting data from
   //false indicates we are writing to the slave
   I2CMasterSlaveAddrSet(MASTER_BASE, txAddress, false);
-  //Wait for bus to open up in the case of multiple masters present
 
-  //uint8_t startBit = (currentState == MASTER_TX) ? 0 : 2;
-  uint8_t startBit = 2;
-  uint8_t runBit = 1;
-
-  cmd = runBit | startBit;
+  unsigned long cmd = RUN_BIT | START_BIT;
 
   error = sendTxData(cmd,txBuffer[txReadIndex]);
   txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
   if(error) return error;
 
   while(!TX_BUFFER_EMPTY) {
-	  error = sendTxData(runBit,txBuffer[txReadIndex]);
+	  error = sendTxData(RUN_BIT,txBuffer[txReadIndex]);
   	  txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 	  if(error) return getError(error);
   }
 
   if(sendStop) {
-	  HWREG(MASTER_BASE + I2C_O_MCS) = STOP_CONDITION;
+	  HWREG(MASTER_BASE + I2C_O_MCS) = STOP_BIT;
 	  while(I2CMasterBusy(MASTER_BASE));
 	  currentState = IDLE;
   }
