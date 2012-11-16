@@ -37,6 +37,7 @@
 
 #include "Energia.h"
 #include "inc/hw_types.h"
+#include "inc/hw_nvic.h"
 
 //*****************************************************************************
 //
