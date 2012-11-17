@@ -10,11 +10,12 @@
         (*((volatile unsigned long *)(x))) 
 
 #include "binary.h" 
-#include "inc/hw_nvic.h"
-#include "inc/hw_types.h"  		 
+#include "inc/hw_types.h"  		
+#include "inc/hw_nvic.h" 
 #include "inc/lm4f120h5qr.h"
 #include "driverlib/gpio.h" 
 #include "driverlib/pin_map.h"
+#include "driverlib/rom.h"
 
 #ifdef __cplusplus
 extern "C"{ 
@@ -38,6 +39,9 @@ extern "C"{
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
 #define INPUT_PULLDOWN 0x3
+
+#define SPI_LAST 0
+#define SPI_CONTINUE 1
 
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
@@ -209,6 +213,9 @@ void timerInit();
 #include "WCharacter.h"
 #include "WString.h"
 #include "HardwareSerial.h"
+#include "Wire.h"
+#include "SPI.h"
+#include "EEPROM.h"
 
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);
@@ -217,7 +224,8 @@ uint16_t makeWord(byte h, byte l);
 
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
 
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
+void tone(uint8_t _pin, unsigned int frequency);
+void tone(uint8_t _pin, unsigned int frequency, unsigned long duration);
 void noTone(uint8_t _pin);
 
 // WMath prototypes
