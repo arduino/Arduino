@@ -610,12 +610,13 @@ public class Compiler implements MessageConsumer {
           basePath + "msp430-gcc",
           "-c", // compile, don't link
           "-g", // include debugging info (so errors include line numbers)
+          "-assembler-with-cpp",
           "-mmcu=" + boardPreferences.get("build.mcu"),
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
         }));
-    } if (arch == "lm4f") {
+    } else if (arch == "lm4f") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
           "-c",
