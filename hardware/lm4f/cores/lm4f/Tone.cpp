@@ -60,6 +60,7 @@ void
 ToneIntHandler(void)
 {
     ROM_TimerIntClear(TIMER4_BASE, TIMER_A);
+
     //End of tone duration
     if(--g_duration <= 0) {
         	noTone(current_pin);
@@ -77,40 +78,45 @@ ToneIntHandler(void)
  **   duration: [milliseconds], if duration <=0, then we output tone continuously,
  **   otherwise tone is stopped after this time (output = 0)
  **/
- 
+
 void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 {
     uint8_t port = digitalPinToPort(_pin);
     if (port == NOT_A_PORT) return;
-	if (tone_state == 0 || _pin == current_pin) {
-		
-		if(duration) {
-		
-	    	//Setup PWM
-			current_pin = _pin;
-			tone_timer = digitalPinToTimer(_pin);
-			tone_state = 1;
-			g_duration = duration;
-			PWMWrite(_pin, 256, 128, frequency);
-			
-			//Setup interrupts for duration, interrupting at 1kHz
-			ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER4);
-			ROM_IntMasterEnable();
-			ROM_TimerConfigure(TIMER4_BASE, TIMER_CFG_PERIODIC);
-			ROM_TimerLoadSet(TIMER4_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
-			ROM_IntEnable(INT_TIMER4A);
-			ROM_TimerIntEnable(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
-			ROM_TimerEnable(TIMER4_BASE, TIMER_A);
-			
-		}
-		
-		//with no duration, no need to setup timer interrupt
-		else {
-			tone_timer = digitalPinToTimer(_pin);
-			PWMWrite(_pin, 256, 128, frequency);
-			tone_state = 1;
-		}
+    if (tone_state == 0 || _pin == current_pin) {
+
+    	//Setup PWM
+    	current_pin = _pin;
+        tone_timer = digitalPinToTimer(_pin);
+        uint32_t timerBase = getTimerBase(timerToOffset(tone_timer));
+        tone_state = 1;
+        g_duration = duration;
+        PWMWrite(_pin, 256, 128, frequency);
+
+        //Setup interrupts for duration, interrupting at 1kHz
+        ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER4);
+        ROM_IntMasterEnable();
+        ROM_TimerConfigure(TIMER4_BASE, TIMER_CFG_PERIODIC);
+        ROM_TimerLoadSet(TIMER4_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
+        ROM_IntEnable(INT_TIMER4A);
+        ROM_TimerIntEnable(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
+        ROM_TimerEnable(TIMER4_BASE, TIMER_A);
     }
+}
+
+void tone(uint8_t _pin, unsigned int frequency)
+{
+
+    uint8_t port = digitalPinToPort(_pin);
+
+    if (port == NOT_A_PORT) return;
+
+    if(tone_state == 0 || _pin == current_pin) {
+        tone_timer = digitalPinToTimer(_pin);
+        PWMWrite(_pin, 256, 128, frequency);
+        tone_state = 1;
+    }
+
 }
 
 /*
@@ -122,7 +128,7 @@ void noTone(uint8_t _pin)
 	uint8_t timer = digitalPinToTimer(_pin);
 
     if(timer == tone_timer) {
-		uint32_t timerBase = getTimerBase(timer);
+		uint32_t timerBase = getTimerBase(timerToOffset(timer));
 		uint32_t timerAB = TIMER_A << timerToAB(timer);
 		ROM_TimerIntDisable(timerBase, TIMER_TIMA_TIMEOUT << timerToAB(tone_timer));
 		ROM_TimerIntClear(timerBase, TIMER_TIMA_TIMEOUT << timerToAB(tone_timer));

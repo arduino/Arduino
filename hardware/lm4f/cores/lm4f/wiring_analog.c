@@ -40,13 +40,16 @@
 #include "driverlib/rom.h"
 #include "driverlib/timer.h"
 
-uint32_t getTimerBase(uint8_t timer) {
+uint32_t getTimerBase(uint32_t offset) {
 
-    if(timer >= WT2A) {
-        return (WTIMER2_BASE + ((timerToOffset(timer) - 6) << 12));
+    if(offset > WTIMER1) {
+        return (WTIMER2_BASE + ((offset - 6) << 12));
+    }
+    else if(offset < WTIMER0){
+        return (TIMER0_BASE + (offset << 12));
     }
     else {
-        return (TIMER0_BASE + (timerToOffset(timer) << 12));
+    	return WTIMER0_BASE + ((offset-4) << 12);
     }
 
 }
@@ -64,7 +67,16 @@ uint8_t getTimerInterrupt(uint8_t timer) {
     }
 
 }
+void enableTimerPeriph(uint32_t offset) {
 
+    if(offset > TIMER3) {
+        SysCtlPeripheralEnable((SYSCTL_PERIPH_WTIMER0 - 1) + (1 <<(offset-4)));
+    }
+    else {
+        SysCtlPeripheralEnable((SYSCTL_PERIPH_TIMER0 - 1) + (1 << offset));
+    }
+
+}
 //
 //empty function due to single reference
 //
@@ -74,47 +86,57 @@ void analogReference(uint16_t mode)
 
 void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq)
 {
-    uint8_t bit = digitalPinToBitMask(pin); // get pin bit
-    uint8_t port = digitalPinToPort(pin);   // get pin port
-    uint8_t timer = digitalPinToTimer(pin);
 
     if (duty == 0) {
         digitalWrite(pin, LOW);
     }
-    else if (duty > analog_res) {
-        duty = analog_res;
+    else if (duty >= analog_res) {
+        digitalWrite(pin, HIGH);
     }
     else {
-        uint32_t periodPWM = ROM_SysCtlClockGet()/freq;
+
+        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
+        uint8_t port = digitalPinToPort(pin);   // get pin port
+        uint8_t timer = digitalPinToTimer(pin);
         uint32_t portBase = (uint32_t) portBASERegister(port);
         uint32_t offset = timerToOffset(timer);
-        uint32_t * timerBase = (uint32_t *) getTimerBase(timer);
+        uint32_t * timerBase = (uint32_t *) getTimerBase(offset);
         uint32_t timerAB = TIMER_A << timerToAB(timer);
 
-        if(offset > TIMER3) {
-            SysCtlPeripheralEnable((SYSCTL_PERIPH_WTIMER0 - 1) + (1 <<(offset-4)));
-            timerBase = (uint32_t *)(WTIMER2_BASE + ((offset - 6) << 12));
-        }
-        else {
-            SysCtlPeripheralEnable((SYSCTL_PERIPH_TIMER0 - 1) + (1 << offset));
-            timerBase =(uint32_t *)(TIMER0_BASE + (offset << 12));
-        }
-
         if (port == NOT_A_PORT) return; 	// pin on timer?
+
+        uint64_t periodPWM = ROM_SysCtlClockGet()/freq;
+
+        enableTimerPeriph(offset);
         ROM_GPIOPinConfigure(timerToPinConfig(timer));
         ROM_GPIOPinTypeTimer((long unsigned int) portBase, bit);
-        ROM_TimerConfigure((long unsigned int) timerBase, TIMER_CFG_16_BIT_PAIR | (TIMER_CFG_A_PWM << timerToAB(timer)));
-        ROM_TimerLoadSet((long unsigned int) timerBase, timerAB, periodPWM & 0xFFFF);
-        ROM_TimerMatchSet((long unsigned int) timerBase, timerAB, ((analog_res-duty)*periodPWM/analog_res) & 0xFFFF);
-        if(periodPWM > 0xFFFF) {
+
+        //
+        // If using a 16-bit timer, with a periodPWM > 0xFFFF,
+        // need to use a prescaler
+        //
+        if((offset < WTIMER0) && (periodPWM > 0xFFFF)) {
             ROM_TimerPrescaleSet((unsigned long) timerBase, timerAB, (periodPWM & 0xFFFF0000) >> 16);
-            ROM_TimerPrescaleMatchSet((unsigned long) timerBase, timerAB, (((analog_res-duty)*periodPWM/analog_res) & 0xFFFF0000) >> 16);
+            ROM_TimerPrescaleMatchSet((unsigned long) timerBase, timerAB,
+                (((analog_res-duty)*periodPWM/analog_res) & 0xFFFF0000) >> 16);
         }
+
+        ROM_TimerConfigure((long unsigned int) timerBase,
+            TIMER_CFG_SPLIT_PAIR | (TIMER_CFG_A_PWM << timerToAB(timer)));
+
+        ROM_TimerLoadSet((long unsigned int) timerBase, timerAB, periodPWM);
+        ROM_TimerMatchSet((long unsigned int) timerBase, timerAB,
+                (analog_res-duty)*periodPWM/analog_res);
         ROM_TimerEnable((long unsigned int) timerBase, timerAB);
+
     }
 }
-void analogWrite(uint8_t pin, int val)//val=the duty cycle
+void analogWrite(uint8_t pin, int val)
 {
+    //
+    //  duty cycle(%) = val / 255;
+    //  Frequency of 490Hz specified by Arduino API
+    //
     PWMWrite(pin, 255, val, 490);
 }
 
