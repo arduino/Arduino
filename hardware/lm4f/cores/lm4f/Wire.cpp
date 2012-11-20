@@ -59,6 +59,8 @@
 #define STOP_BIT	0x4
 #define ACK_BIT 	0x8
 
+#define NOT_ACTIVE  0xA
+
 static const unsigned long g_uli2cMasterBase[4] =
 {
     I2C0_MASTER_BASE, I2C1_MASTER_BASE, 
@@ -143,12 +145,12 @@ uint8_t TwoWire::txReadIndex = 0;
 uint8_t TwoWire::txWriteIndex = 0;
 
 uint8_t TwoWire::transmitting = 0;
-uint8_t TwoWire::currentState = 0;
+uint8_t TwoWire::currentState = IDLE;
 
 void (*TwoWire::user_onRequest)(void);
 void (*TwoWire::user_onReceive)(int);
 
-uint8_t TwoWire::i2cModule = 3;
+uint8_t TwoWire::i2cModule = NOT_ACTIVE;
 uint8_t TwoWire::slaveAddress = 0;
 // Constructors ////////////////////////////////////////////////////////////////
 
@@ -222,13 +224,14 @@ void TwoWire::forceStop(void) {
 //Initialize as a master
 void TwoWire::begin(void)
 {
-  rxReadIndex = 0;
-  rxWriteIndex = 0;
 
-  txReadIndex = 0;
-  txWriteIndex = 0;
+  if(SPI.getModule() == BOOST_PACK_SPI) {
+	  SPI.end();
+  }
 
-  currentState = IDLE;
+  if(i2cModule == NOT_ACTIVE) {
+      i2cModule = BOOST_PACK_WIRE;
+  }
 
   SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
 
@@ -268,6 +271,15 @@ void TwoWire::begin(void)
 //Initialize as a slave
 void TwoWire::begin(uint8_t address)
 {
+
+  if(SPI.getModule() == BOOST_PACK_SPI) {
+	  SPI.end();
+  }
+
+  if(i2cModule == NOT_ACTIVE) {
+      i2cModule = BOOST_PACK_WIRE;
+  }
+
   SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
   GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
   GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
@@ -295,37 +307,30 @@ void TwoWire::begin(int address)
   begin((uint8_t)address);
 }
 
-void TwoWire::selectModule(unsigned long _i2cModule)
-{
-    i2cModule = _i2cModule;
-    if(slaveAddress != 0) begin(slaveAddress);
-    else begin();
-}
-
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
 {
   uint8_t error = 0;
   uint8_t oldWriteIndex = rxWriteIndex;
   uint8_t spaceAvailable = (rxWriteIndex >= rxReadIndex) ?
 		 BUFFER_LENGTH - (rxWriteIndex - rxReadIndex) : (rxReadIndex - rxWriteIndex);
-  
+
   if (quantity > spaceAvailable)
 	  quantity = spaceAvailable;
   if (!quantity) return 0;
-  
+
   //Select which slave we are requesting data from
   //true indicates we are reading from the slave
   I2CMasterSlaveAddrSet(MASTER_BASE, address, true);
-  
+
   unsigned long cmd = 0;
-  
+
   if((quantity > 1) || !sendStop)
 	  cmd = RUN_BIT | START_BIT | ACK_BIT;
   else cmd = RUN_BIT | START_BIT | (sendStop << 2);
-  
+
   error = getRxData(cmd);
   if(error) return 0;
-  
+
   currentState = MASTER_RX;
 
   for (int i = 1; i < quantity; i++) {
@@ -335,7 +340,7 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 		cmd = RUN_BIT;
 	  else
 		cmd = RUN_BIT | ACK_BIT;
-		
+
 	  error = getRxData(cmd);
 	  if(error) return i;
   }
@@ -595,5 +600,21 @@ I2CIntHandler(void)
     Wire.I2CIntHandler();
 }
 
+void TwoWire::setModule(unsigned long _i2cModule)
+{
+    i2cModule = _i2cModule;
+    if(slaveAddress != 0) begin(slaveAddress);
+    else begin();
+}
+
+uint8_t TwoWire::getModule(void)
+{
+	return i2cModule;
+}
+void TwoWire::end(void)
+{
+	if(slaveAddress != 0) I2CSlaveDisable(SLAVE_BASE);
+	else I2CMasterDisable(MASTER_BASE);
+}
 //Preinstantiate Object
 TwoWire Wire;

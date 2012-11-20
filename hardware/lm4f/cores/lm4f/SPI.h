@@ -26,6 +26,8 @@
 #define SPI_MODE2 0x40
 #define SPI_MODE3 0xC0
 
+#define BOOST_PACK_SPI 2
+
 class SPIClass {
 
 private:
@@ -34,10 +36,6 @@ private:
 	static uint8_t SSIModule;
 
 public:
-
-  // SPI Configuration methods
-
-  static void selectModule(uint8_t);
 
   static void begin(); // Default
   static void begin(uint8_t);
@@ -55,6 +53,11 @@ public:
   static uint8_t transfer(uint8_t);
   static uint8_t transfer(uint8_t, uint8_t);
   static uint8_t transfer(uint8_t, uint8_t, uint8_t);
+
+
+  //Stellarpad-specific functions
+  static void setModule(uint8_t);
+  static uint8_t getModule(void);
 
 };
 

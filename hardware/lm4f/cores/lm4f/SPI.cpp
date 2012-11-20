@@ -18,9 +18,10 @@
 #include "SPI.h"
 
 #define SSIBASE g_ulSSIBase[SSIModule]
+#define NOT_ACTIVE 0xA
 
 uint8_t SPIClass::slaveSelect = PA_5;
-uint8_t SPIClass::SSIModule = 2;
+uint8_t SPIClass::SSIModule = NOT_ACTIVE;
 
 static const unsigned long g_ulSSIBase[4] =
 {
@@ -73,14 +74,17 @@ static const unsigned long g_ulSSIPins[4] =
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
 };
 
-void SPIClass::selectModule(uint8_t module) {
-	SSIModule = module;
-	begin(slaveSelect);
-}
-
 void SPIClass::begin(uint8_t ssPin) {
 
 	unsigned long initialData = 0;
+
+	if(Wire.getModule() == BOOST_PACK_WIRE) {
+		Wire.end();
+	}
+
+    if(SSIModule == NOT_ACTIVE) {
+        SSIModule = BOOST_PACK_SPI;
+    }
 
 	SysCtlPeripheralEnable(g_ulSSIPeriph[SSIModule]);
 	SSIDisable(SSIBASE);
@@ -89,7 +93,7 @@ void SPIClass::begin(uint8_t ssPin) {
 	GPIOPinConfigure(g_ulSSIConfig[SSIModule][2]);
 	GPIOPinConfigure(g_ulSSIConfig[SSIModule][3]);
 	GPIOPinTypeSSI(g_ulSSIPort[SSIModule], g_ulSSIPins[SSIModule]);
-	
+
 	/*
 	  Polarity Phase        Mode
 	     0 	   0   SSI_FRF_MOTO_MODE_0
@@ -141,7 +145,7 @@ void SPIClass::setDataMode(uint8_t mode) {
 
 	HWREG(SSIBASE + SSI_O_CR0) &=
 			~(SSI_CR0_SPO | SSI_CR0_SPH);
-			
+
 	HWREG(SSIBASE + SSI_O_CR0) |= mode;
 
 }
@@ -184,6 +188,15 @@ uint8_t SPIClass::transfer(uint8_t data) {
 
   return transfer(slaveSelect, data, SPI_LAST);
 
+}
+
+void SPIClass::setModule(uint8_t module) {
+	SSIModule = module;
+	begin(slaveSelect);
+}
+
+uint8_t SPIClass::getModule(void) {
+	return SSIModule;
 }
 
 SPIClass SPI;

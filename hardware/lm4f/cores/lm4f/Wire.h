@@ -12,6 +12,8 @@
 #define MASTER_RX 2
 #define SLAVE_RX 3
 
+#define BOOST_PACK_WIRE 3
+
 class TwoWire : public Stream
 {
 
@@ -45,7 +47,6 @@ class TwoWire : public Stream
 		void begin();
 		void begin(uint8_t);
 		void begin(int);
-		void selectModule(unsigned long);
 		void beginTransmission(uint8_t);
 		void beginTransmission(int);
 		uint8_t endTransmission(void);
@@ -60,15 +61,21 @@ class TwoWire : public Stream
 		virtual int read(void);
 		virtual int peek(void);
 		virtual void flush(void);
-        void I2CIntHandler(void);
 		void onReceive( void (*)(int) );
 		void onRequest( void (*)(void) );
-	  
+
+
 	    inline size_t write(unsigned long n) { return write((uint8_t)n); }
 	    inline size_t write(long n) { return write((uint8_t)n); }
 	    inline size_t write(unsigned int n) { return write((uint8_t)n); }
 	    inline size_t write(int n) { return write((uint8_t)n); }
 	    using Print::write;
+
+		//Stellarpad-specific functions
+		void I2CIntHandler(void);
+		void setModule(unsigned long);
+		uint8_t getModule(void);
+		void end(void);
         
 };
 
