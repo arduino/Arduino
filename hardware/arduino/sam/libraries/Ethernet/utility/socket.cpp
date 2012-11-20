@@ -114,24 +114,24 @@ uint16_t send(SOCKET s, const uint8_t * buf, uint16_t len)
       ret = 0; 
       break;
     }
+    if (freesize >= ret)
+      break;
+    yield();
   } 
-  while (freesize < ret);
+  while (true);
 
   // copy data
   W5100.send_data_processing(s, (uint8_t *)buf, ret);
   W5100.execCmdSn(s, Sock_SEND);
 
-  /* +2008.01 bj */
   while ( (W5100.readSnIR(s) & SnIR::SEND_OK) != SnIR::SEND_OK ) 
   {
-    /* m2008.01 [bj] : reduce code */
     if ( W5100.readSnSR(s) == SnSR::CLOSED )
     {
       close(s);
       return 0;
     }
   }
-  /* +2008.01 bj */
   W5100.writeSnIR(s, SnIR::SEND_OK);
   return ret;
 }
