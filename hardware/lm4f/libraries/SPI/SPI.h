@@ -57,7 +57,6 @@ public:
 
   //Stellarpad-specific functions
   static void setModule(uint8_t);
-  static uint8_t getModule(void);
 
 };
 

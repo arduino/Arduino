@@ -78,10 +78,6 @@ void SPIClass::begin(uint8_t ssPin) {
 
 	unsigned long initialData = 0;
 
-	if(Wire.getModule() == BOOST_PACK_WIRE) {
-		Wire.end();
-	}
-
     if(SSIModule == NOT_ACTIVE) {
         SSIModule = BOOST_PACK_SPI;
     }
@@ -193,10 +189,6 @@ uint8_t SPIClass::transfer(uint8_t data) {
 void SPIClass::setModule(uint8_t module) {
 	SSIModule = module;
 	begin(slaveSelect);
-}
-
-uint8_t SPIClass::getModule(void) {
-	return SSIModule;
 }
 
 SPIClass SPI;

@@ -74,9 +74,7 @@ class TwoWire : public Stream
 		//Stellarpad-specific functions
 		void I2CIntHandler(void);
 		void setModule(unsigned long);
-		uint8_t getModule(void);
-		void end(void);
-        
+
 };
 
 extern TwoWire Wire;

@@ -225,10 +225,6 @@ void TwoWire::forceStop(void) {
 void TwoWire::begin(void)
 {
 
-  if(SPI.getModule() == BOOST_PACK_SPI) {
-	  SPI.end();
-  }
-
   if(i2cModule == NOT_ACTIVE) {
       i2cModule = BOOST_PACK_WIRE;
   }
@@ -271,10 +267,6 @@ void TwoWire::begin(void)
 //Initialize as a slave
 void TwoWire::begin(uint8_t address)
 {
-
-  if(SPI.getModule() == BOOST_PACK_SPI) {
-	  SPI.end();
-  }
 
   if(i2cModule == NOT_ACTIVE) {
       i2cModule = BOOST_PACK_WIRE;
@@ -607,14 +599,5 @@ void TwoWire::setModule(unsigned long _i2cModule)
     else begin();
 }
 
-uint8_t TwoWire::getModule(void)
-{
-	return i2cModule;
-}
-void TwoWire::end(void)
-{
-	if(slaveAddress != 0) I2CSlaveDisable(SLAVE_BASE);
-	else I2CMasterDisable(MASTER_BASE);
-}
 //Preinstantiate Object
 TwoWire Wire;
