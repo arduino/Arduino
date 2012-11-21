@@ -70,7 +70,7 @@ uint8_t getTimerInterrupt(uint8_t timer) {
 void enableTimerPeriph(uint32_t offset) {
 
     if(offset > TIMER3) {
-        SysCtlPeripheralEnable((SYSCTL_PERIPH_WTIMER0 - 1) + (1 <<(offset-4)));
+        SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER0 + offset - 4);
     }
     else {
         SysCtlPeripheralEnable((SYSCTL_PERIPH_TIMER0 - 1) + (1 << offset));
@@ -88,10 +88,12 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
 {
 
     if (duty == 0) {
+    	pinMode(pin, OUTPUT);
         digitalWrite(pin, LOW);
     }
     else if (duty >= analog_res) {
-        digitalWrite(pin, HIGH);
+    	pinMode(pin, OUTPUT);
+    	digitalWrite(pin, HIGH);
     }
     else {
 
