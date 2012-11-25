@@ -41,8 +41,7 @@ void W5100Class::init(void)
     SBASE[i] = TXBUF_BASE + SSIZE * i;
     RBASE[i] = RXBUF_BASE + RSIZE * i;
 
-    cmdSnTickets[i] = 0;
-    cmdSntNext[i] = 0;
+    cmdSnBusy[i] = false;
   }
 
 }
@@ -179,10 +178,10 @@ uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
 }
 
 void W5100Class::execCmdSn(SOCKET s, SockCMD _cmd) {
-  uint8_t turn = cmdSnTickets[s];
-  cmdSnTickets[s]++;
-  while (cmdSntNext[s] != turn)
-	  yield();
+  // Synchronize access to socket command register
+  while (cmdSnBusy[s])
+    yield();
+  cmdSnBusy[s] = true;
 
   // Send command to socket
   writeSnCR(s, _cmd);
@@ -190,5 +189,5 @@ void W5100Class::execCmdSn(SOCKET s, SockCMD _cmd) {
   while (readSnCR(s))
     yield();
 
-  cmdSntNext[s]++;
+  cmdSnBusy[s] = false;
 }

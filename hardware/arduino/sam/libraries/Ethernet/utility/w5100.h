@@ -321,8 +321,7 @@ private:
   uint16_t SBASE[SOCKETS]; // Tx buffer base address
   uint16_t RBASE[SOCKETS]; // Rx buffer base address
 
-  uint8_t cmdSnTickets[MAX_SOCK_NUM];
-  uint8_t cmdSntNext[MAX_SOCK_NUM];
+  bool cmdSnBusy[MAX_SOCK_NUM];
 };
 
 extern W5100Class W5100;
