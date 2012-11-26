@@ -8,8 +8,8 @@
 /// @n @a	Developed with [embedXcode](http://embedXcode.weebly.com)
 ///
 /// @author	Rei VILO
-/// @date	Nov 22, 2012
-/// @version	102
+/// @date	Nov 26, 2012
+/// @version	103
 ///
 /// @copyright	© Rei VILO, 2012
 /// @copyright	CC = BY NC SA
@@ -25,8 +25,8 @@
 /// @n @a	Developed with [embedXcode](http://embedXcode.weebly.com)
 ///
 /// @author	Rei VILO
-/// @date	Nov 22, 2012
-/// @version	102
+/// @date	Nov 26, 2012
+/// @version	103
 ///
 /// @copyright	© Rei VILO, 2012
 /// @copyright	CC = BY NC SA
@@ -129,29 +129,44 @@ void setup() {
 void loop() {
     
     Serial.println("Fading from BLACK to RED...");
-    fade(0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 8, 1000);
-    Serial.println("Fading from  to GREEN...");
-    fade(0x7f, 0x00, 0x00, 0x00, 0x7f, 0x00, 8, 1000);
+    fade(0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 32, 50);
+
+    Serial.println("Fading from RED to GREEN...");
+    fade(0x7f, 0x00, 0x00, 0x00, 0x7f, 0x00, 32, 50);
+
+    Serial.println("Fading from GREEN to BLACK...");
+    fade(0x00, 0x7f, 0x00, 0x00, 0x00, 0x00, 32, 50);
+    Serial.println("Fading from BLACK to GREEN...");
+    fade(0x00, 0x00, 0x00, 0x00, 0x7f, 0x00, 32, 50);
+
     Serial.println("Fading from GREEN to BLUE...");
-    fade(0x00, 0x7f, 0x00, 0x00, 0x00, 0x7f, 8, 1000);
+    fade(0x00, 0x7f, 0x00, 0x00, 0x00, 0x7f, 32, 50);
+
+    Serial.println("Fading from BLUE to BLACK...");
+    fade(0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 32, 50);
+    Serial.println("Fading from BLACK to BLUE...");
+    fade(0x00, 0x00, 0x00, 0x00, 0x00, 0x7f, 32, 50);
+    
     Serial.println("Fading from BLUE to RED...");
-    fade(0x00, 0x00, 0x7f, 0x7f, 0x00, 0x00, 8, 1000);
+    fade(0x00, 0x00, 0x7f, 0x7f, 0x00, 0x00, 32, 50);
+
     Serial.println("Fading from RED to BLACK...");
-    fade(0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 8, 1000);
+    fade(0x7f, 0x00, 0x00, 0x00, 0x00, 0x00, 32, 50);
     
     Serial.println("Fading from BLACK to WHITE...");
-    fade(0x00, 0x00, 0x00, 0x7f, 0x7f, 0x7f, 8, 1000);
+    fade(0x00, 0x00, 0x00, 0x7f, 0x7f, 0x7f, 32, 50);
     Serial.println("Blinking WHITE...");
     set(0x00, 0x00, 0x00);
-    delay(1000);
+    delay(500);
     set(0x7f, 0x7f, 0x7f);
-    delay(1000);
+    delay(500);
     set(0x00, 0x00, 0x00);
-    delay(1000);
+    delay(500);
     set(0x7f, 0x7f, 0x7f);
-    delay(1000);
+    delay(500);
     set(0x00, 0x00, 0x00);
     delay(1000);
 }
+
 
 
