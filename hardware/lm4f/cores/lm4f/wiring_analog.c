@@ -32,6 +32,7 @@
 #include "wiring_private.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
+#include "inc/hw_timer.h"
 #include "inc/hw_ints.h"
 #include "driverlib/adc.h"
 #include "driverlib/gpio.h"
@@ -39,6 +40,8 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/rom.h"
 #include "driverlib/timer.h"
+
+#define PWM_MODE 0x20A
 
 uint32_t getTimerBase(uint32_t offset) {
 
@@ -102,7 +105,7 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
         uint8_t timer = digitalPinToTimer(pin);
         uint32_t portBase = (uint32_t) portBASERegister(port);
         uint32_t offset = timerToOffset(timer);
-        uint32_t * timerBase = (uint32_t *) getTimerBase(offset);
+        uint32_t timerBase = getTimerBase(offset);
         uint32_t timerAB = TIMER_A << timerToAB(timer);
 
         if (port == NOT_A_PORT) return; 	// pin on timer?
@@ -114,22 +117,34 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
         ROM_GPIOPinTypeTimer((long unsigned int) portBase, bit);
 
         //
+        // Configure for half-width mode, allowing timers A and B to
+        // operate independently
+        //
+        HWREG(timerBase + TIMER_O_CFG) = 0x04;
+
+        if(timerAB == TIMER_A) {
+        	HWREG(timerBase + TIMER_O_CTL) &= ~TIMER_CTL_TAEN;
+        	HWREG(timerBase + TIMER_O_TAMR) = PWM_MODE;
+        }
+        else {
+        	HWREG(timerBase + TIMER_O_CTL) &= ~TIMER_CTL_TBEN;
+        	HWREG(timerBase + TIMER_O_TBMR) = PWM_MODE;
+        }
+        ROM_TimerLoadSet(timerBase, timerAB, periodPWM);
+        ROM_TimerMatchSet(timerBase, timerAB,
+                (analog_res-duty)*periodPWM/analog_res);
+
+        //
         // If using a 16-bit timer, with a periodPWM > 0xFFFF,
         // need to use a prescaler
         //
         if((offset < WTIMER0) && (periodPWM > 0xFFFF)) {
-            ROM_TimerPrescaleSet((unsigned long) timerBase, timerAB, (periodPWM & 0xFFFF0000) >> 16);
-            ROM_TimerPrescaleMatchSet((unsigned long) timerBase, timerAB,
+            ROM_TimerPrescaleSet(timerBase, timerAB,
+                (periodPWM & 0xFFFF0000) >> 16);
+            ROM_TimerPrescaleMatchSet(timerBase, timerAB,
                 (((analog_res-duty)*periodPWM/analog_res) & 0xFFFF0000) >> 16);
         }
-
-        ROM_TimerConfigure((long unsigned int) timerBase,
-            TIMER_CFG_SPLIT_PAIR | (TIMER_CFG_A_PWM << timerToAB(timer)));
-
-        ROM_TimerLoadSet((long unsigned int) timerBase, timerAB, periodPWM);
-        ROM_TimerMatchSet((long unsigned int) timerBase, timerAB,
-                (analog_res-duty)*periodPWM/analog_res);
-        ROM_TimerEnable((long unsigned int) timerBase, timerAB);
+        ROM_TimerEnable(timerBase, timerAB);
 
     }
 }
