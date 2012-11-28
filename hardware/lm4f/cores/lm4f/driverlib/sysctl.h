@@ -40,6 +40,10 @@
 #ifndef __SYSCTL_H__
 #define __SYSCTL_H__
 
+#ifdef __GNUC__
+#define gcc
+#endif
+
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
