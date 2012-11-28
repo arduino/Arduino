@@ -1,5 +1,9 @@
 #include <Arduino.h>
 
+extern "C" void setup(void) __attribute__((weak));
+extern "C" void loop(void) __attribute__((weak));
+
+__attribute__((weak))
 int main(void)
 {
 	init();
@@ -8,13 +12,12 @@ int main(void)
 	USBDevice.attach();
 #endif
 	
-	setup();
+	if (setup) setup();
     
 	for (;;) {
-		loop();
+		if (loop) loop();
 		if (serialEventRun) serialEventRun();
 	}
         
 	return 0;
 }
-
