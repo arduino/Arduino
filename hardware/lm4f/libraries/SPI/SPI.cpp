@@ -74,6 +74,15 @@ static const unsigned long g_ulSSIPins[4] =
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
 };
 
+SPIClass::SPIClass(void)
+{
+}
+
+SPIClass::SPIClass(uint8_t module)
+{
+	SSIModule = module;
+}
+  
 void SPIClass::begin(uint8_t ssPin) {
 
 	unsigned long initialData = 0;

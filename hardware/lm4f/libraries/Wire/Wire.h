@@ -43,7 +43,7 @@ class TwoWire : public Stream
 
     public:
 		TwoWire(void);
-        TwoWire(unsigned long _i2cModule);
+        TwoWire(unsigned long);
 		void begin();
 		void begin(uint8_t);
 		void begin(int);

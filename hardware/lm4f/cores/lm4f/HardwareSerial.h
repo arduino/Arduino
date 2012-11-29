@@ -50,6 +50,7 @@ class HardwareSerial : public Stream
 
     public:
 		HardwareSerial(void);
+		HardwareSerial(unsigned long);
 		void begin(unsigned long);
 		void selectModule(unsigned long);
 		void end(void);

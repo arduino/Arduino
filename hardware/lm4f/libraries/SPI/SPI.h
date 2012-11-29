@@ -37,6 +37,8 @@ private:
 
 public:
 
+  SPIClass(void);
+  SPIClass(uint8_t);
   static void begin(); // Default
   static void begin(uint8_t);
   static void end();

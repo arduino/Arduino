@@ -127,6 +127,14 @@ HardwareSerial::HardwareSerial(void)
     uartModule = 0;
 }
 
+HardwareSerial::HardwareSerial(unsigned long module) 
+{
+    txWriteIndex = 0;
+    txReadIndex = 0;
+    rxWriteIndex = 0;
+    rxReadIndex = 0;
+    uartModule = module;
+}
 // Private Methods //////////////////////////////////////////////////////////////
 void
 HardwareSerial::flushAll(void)

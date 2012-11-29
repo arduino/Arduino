@@ -158,8 +158,12 @@ TwoWire::TwoWire()
 {
 }
 
+TwoWire::TwoWire(unsigned long module)
+{
+	i2cModule = module;
+}
+
 // Private Methods //////////////////////////////////////////////////////////////
-//Process any errors
 
 uint8_t getError(uint8_t thrownError) {
   if(thrownError == I2C_MASTER_ERR_ADDR_ACK) return(2);
