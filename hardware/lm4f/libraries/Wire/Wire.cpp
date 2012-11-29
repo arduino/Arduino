@@ -170,15 +170,15 @@ uint8_t getError(uint8_t thrownError) {
 
 uint8_t TwoWire::getRxData(unsigned long cmd) {
 
-	if (currentState == IDLE) while(I2CMasterBusBusy(MASTER_BASE));
+	if (currentState == IDLE) while(ROM_I2CMasterBusBusy(MASTER_BASE));
 	HWREG(MASTER_BASE + I2C_O_MCS) = cmd;
-	while(I2CMasterBusy(MASTER_BASE));
-	uint8_t error = I2CMasterErr(MASTER_BASE);
+	while(ROM_I2CMasterBusy(MASTER_BASE));
+	uint8_t error = ROM_I2CMasterErr(MASTER_BASE);
 	if (error != I2C_MASTER_ERR_NONE) {
-        I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
+        ROM_I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
 	}
 	else {
-		rxBuffer[rxWriteIndex] = I2CMasterDataGet(MASTER_BASE);
+		rxBuffer[rxWriteIndex] = ROM_I2CMasterDataGet(MASTER_BASE);
 		rxWriteIndex = (rxWriteIndex + 1) % BUFFER_LENGTH;
 	}
 	return error;
@@ -187,36 +187,35 @@ uint8_t TwoWire::getRxData(unsigned long cmd) {
 
 uint8_t TwoWire::sendTxData(unsigned long cmd, uint8_t data) {
 
-    I2CMasterDataPut(MASTER_BASE, data);
+    ROM_I2CMasterDataPut(MASTER_BASE, data);
 
-    //if (currentState == IDLE) while(I2CMasterBusBusy(MASTER_BASE));
     HWREG(MASTER_BASE + I2C_O_MCS) = cmd;
-    while(I2CMasterBusy(MASTER_BASE));
-    uint8_t error = I2CMasterErr(MASTER_BASE);
+    while(ROM_I2CMasterBusy(MASTER_BASE));
+    uint8_t error = ROM_I2CMasterErr(MASTER_BASE);
     if (error != I2C_MASTER_ERR_NONE)
-		  I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
+		  ROM_I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_SEND_ERROR_STOP);
     return(getError(error));
 }
 
 void TwoWire::forceStop(void) {
 
 	//force a stop to release the bus
-	GPIOPinTypeGPIOOutput(g_uli2cBase[i2cModule],
+	ROM_GPIOPinTypeGPIOOutput(g_uli2cBase[i2cModule],
 		  g_uli2cSCLPins[i2cModule] | g_uli2cSDAPins[i2cModule]);
-    GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule], 0);
-    GPIOPinWrite(g_uli2cBase[i2cModule],
+    ROM_GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule], 0);
+    ROM_GPIOPinWrite(g_uli2cBase[i2cModule],
   		  g_uli2cSCLPins[i2cModule], g_uli2cSCLPins[i2cModule]);
-    GPIOPinWrite(g_uli2cBase[i2cModule],
+    ROM_GPIOPinWrite(g_uli2cBase[i2cModule],
     	  g_uli2cSDAPins[i2cModule], g_uli2cSDAPins[i2cModule]);
 
-    GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
-    GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
+    ROM_GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
+    ROM_GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
     //reset I2C controller
     //without resetting the I2C controller, the I2C module will
     //bring the bus back to it's erroneous state
-    SysCtlPeripheralReset(g_uli2cPeriph[i2cModule]);
-    while(!SysCtlPeripheralReady(g_uli2cPeriph[i2cModule]));
-    I2CMasterInitExpClk(MASTER_BASE, SysCtlClockGet(), false);
+    ROM_SysCtlPeripheralReset(g_uli2cPeriph[i2cModule]);
+    while(!ROM_SysCtlPeripheralReady(g_uli2cPeriph[i2cModule]));
+    ROM_I2CMasterInitExpClk(MASTER_BASE, ROM_SysCtlClockGet(), false);
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -229,35 +228,36 @@ void TwoWire::begin(void)
       i2cModule = BOOST_PACK_WIRE;
   }
 
-  SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
+  ROM_SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
 
   //Configure GPIO pins for I2C operation
-  GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
-  GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
-  GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
-  GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
-  I2CMasterInitExpClk(MASTER_BASE, SysCtlClockGet(), false);//max bus speed=400kHz for gyroscope
+  ROM_GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
+  ROM_GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
+  ROM_GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
+  ROM_GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
+  ROM_I2CMasterInitExpClk(MASTER_BASE, ROM_SysCtlClockGet(), false);//max bus speed=400kHz for gyroscope
 
   //force a stop condition
-  if(!GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
+  if(!ROM_GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
 	  forceStop();
 
   //Handle any startup issues by pulsing SCL
-  if(I2CMasterBusBusy(MASTER_BASE) || I2CMasterErr(MASTER_BASE) || !GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule])){
+  if(ROM_I2CMasterBusBusy(MASTER_BASE) || ROM_I2CMasterErr(MASTER_BASE) 
+	|| !ROM_GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule])){
 	  uint8_t doI = 0;
-  	  GPIOPinTypeGPIOOutput(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
+  	  ROM_GPIOPinTypeGPIOOutput(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
   	  unsigned long mask = 0;
   	  do{
   		  for(unsigned long i = 0; i < 10 ; i++) {
   			  ROM_SysCtlDelay(SysCtlClockGet()/100000/3);//100Hz=desired frequency, delay iteration=3 cycles
   			  mask = (i%2) ? g_uli2cSCLPins[i2cModule] : 0;
-  			  GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule], mask);
+  			  ROM_GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule], mask);
   		  }
   		  doI++;
-  	  }while(I2CMasterBusBusy(MASTER_BASE) && doI < 100);
+  	  }while(ROM_I2CMasterBusBusy(MASTER_BASE) && doI < 100);
 
-  	  GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
-  	  if(!GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
+  	  ROM_GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
+  	  if(!ROM_GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
   		  forceStop();
 
   }
@@ -272,25 +272,25 @@ void TwoWire::begin(uint8_t address)
       i2cModule = BOOST_PACK_WIRE;
   }
 
-  SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
-  GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
-  GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
-  GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
-  GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
+  ROM_SysCtlPeripheralEnable(g_uli2cPeriph[i2cModule]);
+  ROM_GPIOPinConfigure(g_uli2cConfig[i2cModule][0]);
+  ROM_GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
+  ROM_GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
+  ROM_GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
   slaveAddress = address;
 
   //Enable slave interrupts
-  IntEnable(g_uli2cInt[i2cModule]);
-  I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA | I2C_SLAVE_INT_STOP);
+  ROM_IntEnable(g_uli2cInt[i2cModule]);
+  ROM_I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA | I2C_SLAVE_INT_STOP);
   HWREG(SLAVE_BASE + I2C_O_SICR) =
 		  I2C_SICR_DATAIC | I2C_SICR_STARTIC | I2C_SICR_STOPIC;
 
   //Setup as a slave device
-  I2CMasterDisable(MASTER_BASE);
-  I2CSlaveEnable(SLAVE_BASE);
-  I2CSlaveInit(SLAVE_BASE, address); 
+  ROM_I2CMasterDisable(MASTER_BASE);
+  ROM_I2CSlaveEnable(SLAVE_BASE);
+  ROM_I2CSlaveInit(SLAVE_BASE, address); 
   
-  IntMasterEnable();
+  ROM_IntMasterEnable();
 
 }
 
@@ -312,7 +312,7 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 
   //Select which slave we are requesting data from
   //true indicates we are reading from the slave
-  I2CMasterSlaveAddrSet(MASTER_BASE, address, true);
+  ROM_I2CMasterSlaveAddrSet(MASTER_BASE, address, true);
 
   unsigned long cmd = 0;
 
@@ -339,7 +339,7 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 
   if(sendStop) {
 	  HWREG(MASTER_BASE + I2C_O_MCS) = STOP_BIT;
-	  while(I2CMasterBusy(MASTER_BASE));
+	  while(ROM_I2CMasterBusy(MASTER_BASE));
 	  currentState = IDLE;
   }
 
@@ -382,11 +382,11 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
   if(TX_BUFFER_EMPTY) return 0;
 
   //Wait for any previous transaction to complete
-  while(I2CMasterBusBusy(MASTER_BASE));
+  while(ROM_I2CMasterBusBusy(MASTER_BASE));
 
   //Select which slave we are requesting data from
   //false indicates we are writing to the slave
-  I2CMasterSlaveAddrSet(MASTER_BASE, txAddress, false);
+  ROM_I2CMasterSlaveAddrSet(MASTER_BASE, txAddress, false);
 
   unsigned long cmd = RUN_BIT | START_BIT;
 
@@ -402,7 +402,7 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
 
   if(sendStop) {
 	  HWREG(MASTER_BASE + I2C_O_MCS) = STOP_BIT;
-	  while(I2CMasterBusy(MASTER_BASE));
+	  while(ROM_I2CMasterBusy(MASTER_BASE));
 	  currentState = IDLE;
   }
   else {
@@ -443,7 +443,7 @@ size_t TwoWire::write(uint8_t data)
   // in slave send mode
     // reply to master
 	if(TX_BUFFER_FULL) {
-		I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+		ROM_I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
 		txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 	}
 	    txBuffer[txWriteIndex] = data;
@@ -535,10 +535,10 @@ void TwoWire::I2CIntHandler(void) {
 	    HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_STOPIC;
 	}
 
-	switch(I2CSlaveStatus(SLAVE_BASE) & (I2C_SCSR_TREQ | I2C_SCSR_RREQ)) {
+	switch(ROM_I2CSlaveStatus(SLAVE_BASE) & (I2C_SCSR_TREQ | I2C_SCSR_RREQ)) {
 
 		case(I2C_SLAVE_ACT_RREQ)://data received
-			if(I2CSlaveStatus(SLAVE_BASE) & I2C_SCSR_FBR)
+			if(ROM_I2CSlaveStatus(SLAVE_BASE) & I2C_SCSR_FBR)
 				currentState = SLAVE_RX;
 			if(!RX_BUFFER_FULL) {
 				rxBuffer[rxWriteIndex] = I2CSlaveDataGet(SLAVE_BASE);
@@ -558,19 +558,19 @@ void TwoWire::I2CIntHandler(void) {
 		        // yet to be sent
 		        //
 		    	if(oldWriteIndex != txWriteIndex) {
-			    	I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+			    	ROM_I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
 			    	txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 		        }
 
 		    }
 
 		    else if(!TX_BUFFER_EMPTY){
-		    	I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+		    	ROM_I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
 		    	txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 		    }
 
 		    else
-		    	I2CSlaveDataPut(SLAVE_BASE, 0);
+		    	ROM_I2CSlaveDataPut(SLAVE_BASE, 0);
 
 			break;
 
