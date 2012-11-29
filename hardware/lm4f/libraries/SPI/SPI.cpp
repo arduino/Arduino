@@ -82,13 +82,13 @@ void SPIClass::begin(uint8_t ssPin) {
         SSIModule = BOOST_PACK_SPI;
     }
 
-	SysCtlPeripheralEnable(g_ulSSIPeriph[SSIModule]);
-	SSIDisable(SSIBASE);
-	GPIOPinConfigure(g_ulSSIConfig[SSIModule][0]);
-	GPIOPinConfigure(g_ulSSIConfig[SSIModule][1]);
-	GPIOPinConfigure(g_ulSSIConfig[SSIModule][2]);
-	GPIOPinConfigure(g_ulSSIConfig[SSIModule][3]);
-	GPIOPinTypeSSI(g_ulSSIPort[SSIModule], g_ulSSIPins[SSIModule]);
+	ROM_SysCtlPeripheralEnable(g_ulSSIPeriph[SSIModule]);
+	ROM_SSIDisable(SSIBASE);
+	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][0]);
+	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][1]);
+	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][2]);
+	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][3]);
+	ROM_GPIOPinTypeSSI(g_ulSSIPort[SSIModule], g_ulSSIPins[SSIModule]);
 
 	/*
 	  Polarity Phase        Mode
@@ -106,13 +106,13 @@ void SPIClass::begin(uint8_t ssPin) {
 	 * System Clock, SPI_MODE_0, MASTER,
 	 * 4MHz bit rate, and 8 bit data
 	*/
-	SSIClockSourceSet(SSIBASE, SSI_CLOCK_SYSTEM);
-	SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
+	ROM_SSIClockSourceSet(SSIBASE, SSI_CLOCK_SYSTEM);
+	ROM_SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
 	  SSI_MODE_MASTER, 4000000, 8);
-	SSIEnable(SSIBASE);
+	ROM_SSIEnable(SSIBASE);
 
 	//clear out any initial data that might be present in the RX FIFO
-	while(SSIDataGetNonBlocking(SSIBASE, &initialData));
+	while(ROM_SSIDataGetNonBlocking(SSIBASE, &initialData));
 
 }
 
@@ -122,7 +122,7 @@ void SPIClass::begin() {
 }
 
 void SPIClass::end(uint8_t ssPin) {
-	SSIDisable(SSIBASE);
+	ROM_SSIDisable(SSIBASE);
 }
 
 void SPIClass::end() {
@@ -159,16 +159,16 @@ uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
 
 	digitalWrite(ssPin, LOW);
 
-	SSIDataPut(SSIBASE, data);
+	ROM_SSIDataPut(SSIBASE, data);
 
-	while(SSIBusy(SSIBASE));
+	while(ROM_SSIBusy(SSIBASE));
 
 	if(transferMode == SPI_LAST)
 		digitalWrite(ssPin, HIGH);
 	else
 		digitalWrite(ssPin, LOW);
 
-	SSIDataGet(SSIBASE, &rxData);
+	ROM_SSIDataGet(SSIBASE, &rxData);
 
 	return (uint8_t) rxData;
 
