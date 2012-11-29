@@ -18,9 +18,9 @@ int main(void)
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0);
-    if(EEPROMInit() == EEPROM_INIT_ERROR) {
-    	if(EEPROMInit() != EEPROM_INIT_ERROR)
-    		EEPROMMassErase();
+    if(ROM_EEPROMInit() == EEPROM_INIT_ERROR) {
+    	if(ROM_EEPROMInit() != EEPROM_INIT_ERROR)
+    		ROM_EEPROMMassErase();
     }
 
     //Unlock and commit NMI pins PD7 and PF0

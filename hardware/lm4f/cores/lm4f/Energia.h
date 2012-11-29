@@ -4,7 +4,7 @@
 #include <stdint.h> 
 #include <string.h> 
 #include <math.h>
-#define TARGET_IS_BLIZZARD_RA1 
+#define TARGET_IS_BLIZZARD_RA2 
 #define PART_LM4F120H5QR
 #define HWREG(x) \
         (*((volatile unsigned long *)(x))) 
