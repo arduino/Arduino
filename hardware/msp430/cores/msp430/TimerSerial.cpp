@@ -79,6 +79,14 @@ static ring_buffer_ts rx_buffer;
 TimerSerial Serial;
 #endif
 
+void serialEvent() __attribute__((weak));
+void serialEvent() {}
+
+void serialEventRun(void)
+{
+  if (Serial.available()) serialEvent();
+}
+
 TimerSerial::TimerSerial()
 {
 #if NEEDS_BUFF_PTR
