@@ -76,7 +76,7 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
                 #if defined(__MSP430_HAS_PORT2_R__)
                 case P2:
         		P2IE |= bit;
-	        	P2IFG &= bit;
+	        	P2IFG &= ~bit;
 		        P2IES = mode ? P2IES | bit : P2IES & ~bit;
 	                intFuncP2[bit_pos(bit)] = userFunc;
                         break;

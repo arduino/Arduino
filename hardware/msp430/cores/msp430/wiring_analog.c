@@ -235,7 +235,7 @@ uint16_t analogRead(uint8_t pin)
     ADC10CTL0 = analog_reference |          // set analog reference
             ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
     ADC10CTL1 |= (pin << 12);               // select channel
-    ADC10AE0 = pin;                         // TODO: should this be masked off to only allow valid chan?
+    ADC10AE0 = (1 << pin);                  // Disable input/output buffer on pin
 #endif
 #if defined(__MSP430_HAS_ADC10_B__)
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
