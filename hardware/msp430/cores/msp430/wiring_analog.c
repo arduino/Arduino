@@ -88,7 +88,7 @@ void analogWrite(uint8_t pin, int val)
 		digitalWrite(pin, LOW); // set pin to LOW when duty cycle is 0
                                         // digitalWrite will take care of invalid pins
 	}
-	else if (val == 255)
+	else if (val == analog_res)
 	{
 		digitalWrite(pin, HIGH); // set pin HIGH when duty cycle is 255
                                          // digitalWrite will take care of invalid pins
@@ -199,7 +199,7 @@ void analogWrite(uint8_t pin, int val)
  
                         case NOT_ON_TIMER:                      // not on a timer output pin
 			default:                                // or TxA0 pin
-				if (val < 128) {
+				if (val <= (analog_res >> 1)) {
 					digitalWrite(pin, LOW); // 
 				} else {
 					digitalWrite(pin, HIGH);
