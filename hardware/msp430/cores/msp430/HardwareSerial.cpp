@@ -140,9 +140,9 @@ void HardwareSerial::begin(unsigned long baud)
 #endif	
 	UCA0CTL1 &= ~UCSWRST;
 #if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE = UCRXIE;
+	UCA0IE |= UCRXIE;
 #else
-	UC0IE = UCA0RXIE;
+	UC0IE |= UCA0RXIE;
 #endif	
 }
 
