@@ -668,6 +668,7 @@ public class Compiler implements MessageConsumer {
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
@@ -683,6 +684,7 @@ public class Compiler implements MessageConsumer {
         "-mthumb", "-mcpu=cortex-m4",
         "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
@@ -731,6 +733,7 @@ public class Compiler implements MessageConsumer {
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
@@ -749,6 +752,7 @@ public class Compiler implements MessageConsumer {
           "-mthumb", "-mcpu=cortex-m4",
           "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+          "-MMD", // output dependancy info
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
         }));
