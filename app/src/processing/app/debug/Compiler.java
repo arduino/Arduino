@@ -442,8 +442,7 @@ public class Compiler implements MessageConsumer {
     commandList.toArray(command);
     int result = 0;
     
-    //if (verbose || Preferences.getBoolean("build.verbose")) {
-    if (true || Preferences.getBoolean("build.verbose")) {
+    if (verbose || Preferences.getBoolean("build.verbose")) {
       for(int j = 0; j < command.length; j++) {
         System.out.print(command[j] + " ");
       }
