@@ -88,7 +88,6 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
     	//Setup PWM
     	current_pin = _pin;
         tone_timer = digitalPinToTimer(_pin);
-        uint32_t timerBase = getTimerBase(timerToOffset(tone_timer));
         tone_state = 1;
         g_duration = duration;
         PWMWrite(_pin, 256, 128, frequency);

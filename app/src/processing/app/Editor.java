@@ -2644,6 +2644,7 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
   protected void onArchChanged() {
       base.rebuildImportMenu(importMenu);
+      base.rebuildExamplesMenu(examplesMenu);
   }
   
   protected void onBoardOrPortChange() {
