@@ -2046,6 +2046,9 @@ public class Base {
     return sketchbookFolder;
   }
 
+  static public Map<String, File> getImportToLibraryTable() {
+    return importToLibraryTable;
+  }
 
   /**
    * Check for a new sketchbook location.
