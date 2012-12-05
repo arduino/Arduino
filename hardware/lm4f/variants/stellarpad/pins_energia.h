@@ -33,6 +33,8 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
+#define __LM4F120H5QR__
+
 #ifndef BV 
 #define BV(x) (1 << (x)) 
 #endif 
