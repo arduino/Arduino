@@ -38,6 +38,8 @@ void init()
         disableWatchDog();
 	initClocks();
         enableWatchDogIntervalMode();
+	/* Clear P2.6 and P2.7 bits to default to GPIO */
+	P2SEL &= ~(BIT6|BIT7);
         __eint();
 }
 
