@@ -84,7 +84,7 @@ extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
   }
   else
   {
-    PIO_SetOutput( g_APinDescription[ulPin].pPort, g_APinDescription[ulPin].ulPin, ulVal, 0, PIO_PULLUP ) ;
+    PIO_SetOutput( g_APinDescription[ulPin].pPort, g_APinDescription[ulPin].ulPin, ulVal, 0, 0 ) ;
   }
 }
 
