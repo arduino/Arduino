@@ -57,9 +57,10 @@ static uint8_t twi_masterBufferLength;
 static uint8_t twi_txBuffer[TWI_BUFFER_LENGTH];
 static volatile uint8_t twi_txBufferIndex;
 static volatile uint8_t twi_txBufferLength;
-
+#if (defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_B0__))
 static uint8_t twi_rxBuffer[TWI_BUFFER_LENGTH];
 static volatile uint8_t twi_rxBufferIndex;
+#endif
 
 static volatile uint8_t twi_error;
 
