@@ -40,6 +40,9 @@ public:
 	virtual int read(void);
 	virtual void flush(void);
 	virtual size_t write(uint8_t);
+	virtual unsigned long baudrate(void);
+	virtual bool dtr(void);
+	virtual bool rts(void);
 	using Print::write; // pull in write(str) and write(buf, size) from Print
 	operator bool();
 };
