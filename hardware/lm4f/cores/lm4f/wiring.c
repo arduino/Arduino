@@ -29,6 +29,7 @@
   Boston, MA  02111-1307  USA
  */
 #include "Energia.h"
+#include "inc/hw_types.h"
 #include "driverlib/rom.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/timer.h"
@@ -48,7 +49,7 @@ void timerInit()
     ROM_TimerConfigure(WTIMER4_BASE, TIMER_CFG_PERIODIC);
     ROM_TimerLoadSet64(WTIMER4_BASE, 0xFFFFFFFFFFFFFFFF); //start at 0 and count up
     ROM_TimerEnable(WTIMER4_BASE, TIMER_A);
-
+    HWREG(0xE000E014) = 0x00FFFFFF;
 }
 
 unsigned long micros()
