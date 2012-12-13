@@ -12,10 +12,9 @@
 /// @version	1.03
 /// @n
 /// @copyright	© Rei VILO, 2012
-/// @copyright	CC = BY NC SA Attribution-NonCommercial-ShareAlike
+/// @copyright	CC = BY NC SA Attribution-NonCommercial-ShareAlike 
 ///
 /// @see		http://creativecommons.org/licenses/by-nc-sa/3.0/
-///
 /// @n	
 ///
 

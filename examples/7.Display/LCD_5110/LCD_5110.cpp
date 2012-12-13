@@ -24,15 +24,29 @@ uint8_t _pinSerialClock;
 uint8_t _pinPushButton;
 
 
+#if defined(__MSP430G2553__) // LaunchPad MSP430G2553 specific
 LCD_5110::LCD_5110() {
-  LCD_5110(P2_2,    // Chip Select
-           P2_4,    // Serial Clock
-           P2_0,    // Serial Data
-           P2_3,    // Data/Command
-           P1_0,    // Reset
-           P2_1,    // Backlight
-           PUSH2);  // Push Button 2
+    LCD_5110(P2_2,    // Chip Select
+             P2_4,    // Serial Clock
+             P2_0,    // Serial Data
+             P2_3,    // Data/Command
+             P1_0,    // Reset
+             P2_1,    // Backlight
+             PUSH2);   // Push Button 2
 }
+#elif defined(__LM4F120H5QR__) // StellarPad LM4F specific
+LCD_5110::LCD_5110() {
+    LCD_5110(PA_7,    // Chip Select
+             PA_3,    // Serial Clock
+             PA_5,    // Serial Data
+             PA_2,    // Data/Command
+             PB_5,    // Reset
+             PA_6,    // Backlight
+             PUSH2);   // Push Button 2
+}
+#else
+#error Platform not supported
+#endif
 
 LCD_5110::LCD_5110(uint8_t pinChipSelect, uint8_t pinSerialClock, uint8_t pinSerialData, uint8_t pinDataCommand, uint8_t pinReset, uint8_t pinBacklight, uint8_t pinPushButton) {
   _pinChipSelect  = pinChipSelect;
