@@ -44,8 +44,8 @@
 #endif
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
-uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
-#endif
+uint16_t analog_reference = DEFAULT; 
+
 
 void analogReference(uint16_t mode)
 {
@@ -54,6 +54,9 @@ void analogReference(uint16_t mode)
 	// there's something connected to AREF.
 	analog_reference = mode;
 }
+#endif
+
+uint16_t analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 //TODO: Can be a lot more efficiant.
 //      - lower clock rated / input devider to conserve Energia.
@@ -75,6 +78,7 @@ void analogResolution(uint16_t res)
 {
   analog_res = res;
 }
+
 
 //Arduino specifies ~490 Hz for analog out PWM so we follow suit.
 #define PWM_PERIOD analog_period // F_CPU/490
@@ -270,6 +274,8 @@ uint16_t analogRead(uint8_t pin)
 #endif
 }
 
+#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
+
 __attribute__((interrupt(ADC10_VECTOR)))
 void ADC10_ISR(void)
 {
@@ -295,3 +301,5 @@ void ADC10_ISR(void)
     ADC10IFG = 0;                           // Clear Flags
 #endif
 }
+
+#endif
