@@ -1,37 +1,70 @@
-//
-//  Thermometer_430.h 
-//  Library header
-//  ----------------------------------
-//  Developed with embedXcode
-//
-//  Project LCD_BoosterPack_430
-//  Created by Rei VILO on 28/05/12
-//  Copyright (c) 2012 http://embeddedcomputing.weebly.com
-//
+///
+/// @file	Thermometer_430.h
+/// @brief	Library header
+/// @details	MSP430 internal thermometer library
+/// @n	
+/// @n	
+/// @n @a	Developed with [embedXcode](http://embedXcode.weebly.com)
+/// @n
+/// @author	Rei VILO
+/// @author	http://embeddedcomputing.weebly.com
+/// @date	Dec 13, 2012
+/// @version	1.03
+/// @n
+/// @copyright	© Rei VILO, 2012
+/// @copyright	CC = BY NC SA Attribution-NonCommercial-ShareAlike
+///
+/// @see		http://creativecommons.org/licenses/by-nc-sa/3.0/
+///
+/// @n	
+///
 
 // Core library
-#if defined (__AVR_ATmega328P__) || defined(__AVR_ATmega2560__) // Arduino specific
-#include "WProgram.h" // #include "Arduino.h" for Arduino 1.0
-#elif defined(__32MX320F128H__) || defined(__32MX795F512L__) // chipKIT specific 
-#include "WProgram.h"
-#elif defined(__AVR_ATmega644P__) // Wiring specific
-#include "Wiring.h"
-#elif defined(__MSP430G2452__) || defined(__MSP430G2553__) || defined(__MSP430G2231__) // LaunchPad specific
+#if defined(__MSP430G2553__) // LaunchPad specific
 #include "Energia.h"
-#elif defined(MCU_STM32F103RB) || defined(MCU_STM32F103ZE) || defined(MCU_STM32F103CB) || defined(MCU_STM32F103RE) // Maple specific
-#include "WProgram.h"	
+#else
+#error Platform not supported
 #endif
 
 #ifndef Thermometer_430_h
 #define Thermometer_430_h
 
-#define NUMBER  8 // take number / 2
+///
+/// @brief	Number of measures for moving average
+/// @note	Take number / 2
+///
+#define NUMBER  8 
 
+///
+/// @brief	Thermometer_430 class
+///
 class Thermometer_430 {
 public:
+  ///
+  /// @brief	Constructor
+  ///
   Thermometer_430();
+  
+  ///
+  /// @brief	Initialisation
+  /// @details	Erase and perform measures NUMBER times to initialise moving average
+  ///
   void begin();
+  
+  ///
+  /// @brief	Read a new measure
+  ///
   void get();
+  
+  ///
+  /// @brief	Temperature based on moving average
+  /// @return	return temperature x 10 to avoid float
+  /// @code {.cpp}
+  /// Serial.print(temperatureX10()/10, DEC); // integer part
+  /// Serial.print(".");                      // decimal separator
+  /// Serial.print(temperatureX10()%10, DEC); // decimal part
+  /// @endcode
+  ///
   int32_t temperatureX10();
   
 private:
