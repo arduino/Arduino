@@ -6,7 +6,7 @@ Energia is a fork of Arduino for the Texas Instruments MSP430 Micro Controller.
 
 ## Supported MCUs
 
-* LaunchPad with MSP430G2231, MSP430G2452 or MPS430G2553
+* LaunchPad with MSP430G2231, MSP430G2452 or MSP430G2553
 * FraunchPad with MSP430FR5739
 * StellarPad with LM4F120H5QR *in development*
 
