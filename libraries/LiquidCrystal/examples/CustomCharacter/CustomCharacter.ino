@@ -98,23 +98,23 @@ byte armsUp[8] = {
 };
 void setup() {
   // create a new character
-  lcd.createChar(0, heart);
+  lcd.createChar(1, heart);
   // create a new character
-  lcd.createChar(1, smiley);
+  lcd.createChar(2, smiley);
   // create a new character
-  lcd.createChar(2, frownie);
+  lcd.createChar(3, frownie);
   // create a new character
-  lcd.createChar(3, armsDown);  
+  lcd.createChar(4, armsDown);  
   // create a new character
-  lcd.createChar(4, armsUp);  
+  lcd.createChar(5, armsUp);  
 
   // set up the lcd's number of columns and rows: 
   lcd.begin(16, 2);
   // Print a message to the lcd.
   lcd.print("I "); 
-  lcd.write(0);
-  lcd.print(" Arduino! ");
   lcd.write(1);
+  lcd.print(" Arduino! ");
+  lcd.write(2);
 
 }
 
@@ -126,11 +126,11 @@ void loop() {
   // set the cursor to the bottom row, 5th position:
   lcd.setCursor(4, 1);
   // draw the little man, arms down:
-  lcd.write(3);
+  lcd.write(4);
   delay(delayTime);
   lcd.setCursor(4, 1);
   // draw him arms up:
-  lcd.write(4);
+  lcd.write(5);
   delay(delayTime); 
 }
 
