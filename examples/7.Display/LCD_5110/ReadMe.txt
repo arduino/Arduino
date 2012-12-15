@@ -32,3 +32,10 @@
   CC = BY NC SA
   http:embedXcode.weebly.com/
 
+Developed with embedXcode
+  ----------------------------------
+  Embedded Computing Template on Xcode 4.3
+  © Rei VILO, 2010-2012
+  CC = BY NC SA
+  http:embedXcode.weebly.com/
+

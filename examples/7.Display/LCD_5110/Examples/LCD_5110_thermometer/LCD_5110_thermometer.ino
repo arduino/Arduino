@@ -11,7 +11,7 @@
 //
 
 // Core library
-#if defined(__MSP430G2452__) || defined(__MSP430G2553__) || defined(__MSP430G2231__) // LaunchPad specific
+#if defined(__MSP430G2553__) // LaunchPad MSP430G2553 specific
 #include "Energia.h"
 #else
 #error Board not supported
@@ -51,19 +51,20 @@ boolean	backlight = false;
 
 // Add setup code 
 void setup() {   
-    myThermometer.begin();
-    
     myScreen.begin();
     
-    myScreen.setFont(1);
-    myScreen.text(1, 1, "MSP430");
     myScreen.setFont(0);
-    myScreen.text(0, 5, "1234567890abcd");
+    myScreen.text(0, 0, "Hello");
+    myScreen.setFont(1);
+    myScreen.text(1, 2, "MSP430");
     
-    delay(2000);
+    delay(1000);
+    myThermometer.begin();
+    
     myScreen.clear();
-    myScreen.text(2, 0, "Thermometer");
-    myScreen.text(0, 5, "off");
+    myScreen.setFont(0);
+    myScreen.text(0, 0, "Thermometer");
+    myScreen.text(0, 5, "Light off");
     
 }
 
@@ -76,7 +77,7 @@ void loop() {
     if (myScreen.getButton()) {
         backlight = ~backlight;
         myScreen.setFont(0);
-        myScreen.text(0, 5, backlight ? "on " : "off");
+        myScreen.text(0, 5, backlight ? "Light on " : "Light off");
         myScreen.setBacklight(backlight);
     }
     
