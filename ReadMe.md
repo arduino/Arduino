@@ -14,8 +14,9 @@ Energia is a fork of Arduino for the Texas Instruments MSP430 Micro Controller.
 ## Links
 
 * [Website](http://energia.nu)
-* [GitHub repository](https://github.com/energia/Energia) (this page)
+* [GitHub repository](http://github.com/energia/Energia) (this page)
 * [Wiki](https://github.com/energia/Energia/wiki)
-* [Downloads](https://github.com/energia/Energia/downloads)
-* [Support forum hosted on 43oh.com](http://forum.43oh.com/forum/28-energia/)
-* [Report bug](https://github.com/energia/Energia/issues)
+* [Downloads](http://energia.nu/download/)
+* [Support forum for LaunchPad hosted on 43oh.com](http://forum.43oh.com/forum/28-energia/)
+* [Support forum for StellarPad hosted on Stellaristi.com](http://forum.stellarisiti.com/forum/63-energia/)
+* [Report bug](http://github.com/energia/Energia/issues)
