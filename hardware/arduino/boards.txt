@@ -522,3 +522,21 @@ atmega8.build.mcu=atmega8
 atmega8.build.f_cpu=16000000L
 atmega8.build.core=arduino
 atmega8.build.variant=standard
+
+##############################################################
+
+adafruit32u4.name=Adafruit Atmega32u4
+adafruit32u4.upload.protocol=avr109
+adafruit32u4.upload.maximum_size=28672
+adafruit32u4.upload.speed=1200
+adafruit32u4.bootloader.low_fuses=0xfc
+adafruit32u4.bootloader.high_fuses=0xd0
+adafruit32u4.bootloader.extended_fuses=0xc3
+adafruit32u4.bootloader.path=diskloader
+adafruit32u4.bootloader.file=DiskLoader-Leonardo.hex
+adafruit32u4.bootloader.unlock_bits=0x3F
+adafruit32u4.bootloader.lock_bits=0x2F
+adafruit32u4.build.mcu=atmega32u4
+adafruit32u4.build.f_cpu=16000000L
+adafruit32u4.build.core=arduino
+adafruit32u4.build.variant=leonardo
