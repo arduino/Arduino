@@ -200,9 +200,9 @@ extern const uint32_t digital_pin_to_analog_in[];
 #define portCellID3Register(P)    ((volatile uint32_t *)( port_to_base[P] + 0xFFC ))
 
 // Implemented in wiring.c
-void delayMicroseconds(uint32_t us);
-uint64_t micros();
-uint64_t millis();
+void delayMicroseconds(unsigned int us);
+unsigned long micros();
+unsigned long millis();
 void timerInit();
 
 #ifdef __cplusplus

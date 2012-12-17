@@ -52,22 +52,22 @@ void timerInit()
     HWREG(0xE000E014) = 0x00FFFFFF;
 }
 
-uint64_t micros()
+unsigned long micros()
 {
-    uint64_t cycles = 0xFFFFFFFFFFFFFFFF - ROM_TimerValueGet64(WTIMER4_BASE);
+    unsigned long cycles = 0xFFFFFFFFFFFFFFFF - ROM_TimerValueGet64(WTIMER4_BASE);
     return (cycles / 80);
 }
 
-uint64_t millis()
+unsigned long millis()
 {
     return (micros() / 1000);
 }
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
-void delayMicroseconds(uint32_t us)
+void delayMicroseconds(unsigned int us)
 {
-	volatile uint32_t elapsedTime;
-	uint32_t startTime = HWREG(0xE000E018);
+	volatile unsigned long elapsedTime;
+	unsigned long startTime = HWREG(0xE000E018);
 	do{
 		elapsedTime = startTime-(HWREG(0xE000E018) & 0x00FFFFFF);
 	}
@@ -78,7 +78,7 @@ void delayMicroseconds(uint32_t us)
 /* (ab)use the WDT */
 void delay(uint32_t milliseconds)
 {
-	uint32_t i;
+	unsigned long i;
 	for(i=0; i<milliseconds; i++){
 		delayMicroseconds(1000);
 	}
