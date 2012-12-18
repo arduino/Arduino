@@ -29,6 +29,10 @@
     <include name="app/lib/RXTXcomm.jar" />
     <include name="app/lib/ant.jar" />
     <include name="app/lib/ant-launcher.jar" />
+    <include name="app/lib/commons-codec-1.2.jar" />
+    <include name="app/lib/commons-httpclient-3.0.jar" />
+    <include name="app/lib/commons-logging-1.0.4.jar" />
+    <include name="app/lib/swing-layout-1.0.4.jar" />
   </fileset>
 
   <target name="build" description="Build Arduino.">

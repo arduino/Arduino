@@ -32,12 +32,15 @@ import javax.swing.*;
 
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
+import processing.app.forms.ImportLibraryFromURL;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.Maps;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
-import processing.app.javax.swing.filechooser.FileNameExtensionFilter;import processing.app.tools.MapWithSubkeys;
+import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
+import processing.app.tools.FromURLLibraryImporter;
+import processing.app.tools.MapWithSubkeys;
 import processing.app.tools.ZipDeflater;
 import processing.core.*;
 import static processing.app.I18n._;
@@ -1000,6 +1003,46 @@ public class Base {
       }
     });
     importMenu.add(addLibraryMenuItem);
+
+    JMenuItem addRemoteLibraryMenuItem = new JMenuItem(_("Add Library from URL..."));
+    addRemoteLibraryMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        final ImportLibraryFromURL urlDialog = new ImportLibraryFromURL(editor);
+        urlDialog.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent event) {
+            final String url = urlDialog.getUrl();
+            if (url == null || url.trim().length() == 0) {
+              editor.statusError("Empty URL");
+              return;
+            }
+
+            urlDialog.hideDownloadingLabel();
+            EventQueue.invokeLater(new Runnable() {
+              public void run() {
+                FromURLLibraryImporter importer = new FromURLLibraryImporter();
+                try {
+                  Base.this.importZipLibrary(editor, importer.fetchLibraryFrom(url));
+                  Base.this.onBoardOrPortChange();
+                  Base.this.rebuildImportMenu(Editor.importMenu, editor);
+                  Base.this.rebuildExamplesMenu(Editor.examplesMenu);
+                  urlDialog.dispose();
+                } catch (IllegalArgumentException e) {
+                  editor.statusError("Invalid URL");
+                } catch (IOException e) {
+                  editor.statusError(e);
+                } finally {
+                  urlDialog.showDownloadingLabel();
+                }
+              }
+            });
+          }
+        });
+
+        urlDialog.setLocationRelativeTo(editor);
+        urlDialog.setVisible(true);
+      }
+    });
+    importMenu.add(addRemoteLibraryMenuItem);
 
     // Split between user supplied libraries and IDE libraries
     Map<String, File> ideLibs = getIDELibs();
@@ -2682,6 +2725,10 @@ public class Base {
     }
 
     File sourceFile = fileChooser.getSelectedFile();
+    importZipLibrary(editor, sourceFile);
+  }
+
+  private void importZipLibrary(Editor editor, File sourceFile) {
     File tmpFolder = null;
 
     try {
