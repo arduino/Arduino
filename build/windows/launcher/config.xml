@@ -20,6 +20,10 @@
     <cp>lib/jna.jar</cp>
     <cp>lib/ecj.jar</cp>
     <cp>lib/RXTXcomm.jar</cp>
+    <cp>lib/commons-codec-1.2.jar</cp>
+    <cp>lib/commons-httpclient-3.0.jar</cp>
+    <cp>lib/commons-logging-1.0.4.jar</cp>
+    <cp>lib/swing-layout-1.0.4.jar</cp>
   </classPath>
   <jre>
     <path>java</path>
