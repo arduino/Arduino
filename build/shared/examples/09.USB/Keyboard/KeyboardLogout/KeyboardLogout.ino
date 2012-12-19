@@ -49,13 +49,13 @@ void loop() {
 
   switch (platform) {
   case OSX:
-   Keyboard.press(KEY_LEFT_GUI);
-   // Shift-Q logs out:
-   Keyboard.press(KEY_LEFT_SHIFT); 
-   Keyboard.press('Q');
+    Keyboard.press(KEY_LEFT_GUI);
+    // Shift-Q logs out:
+    Keyboard.press(KEY_LEFT_SHIFT); 
+    Keyboard.press('Q');
     delay(100);
     Keyboard.releaseAll();
-     // enter:
+    // enter:
     Keyboard.write(KEY_RETURN);  
     break;
   case WINDOWS:
@@ -82,7 +82,8 @@ void loop() {
     Keyboard.write(KEY_RETURN);
     break;
   }
-// do nothing:
+
+  // do nothing:
   while(true);
 }
 

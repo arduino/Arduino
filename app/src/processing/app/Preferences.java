@@ -33,6 +33,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
+import processing.app.helpers.PreferencesMap;
 import static processing.app.I18n._;
 
 
@@ -211,6 +212,12 @@ public class Preferences {
                              "You'll need to reinstall Arduino."), e);
     }
 
+    // set some runtime constants (not saved on preferences file)
+    File hardwareFolder = Base.getHardwareFolder();
+    table.put("runtime.hardware.path", hardwareFolder.getAbsolutePath());
+    table.put("runtime.ide.path", hardwareFolder.getParentFile().getAbsolutePath());
+    table.put("runtime.ide.version", "" + Base.REVISION);
+    
     // check for platform-specific properties in the defaults
     String platformExt = "." + Base.platform.getName();
     int platformExtLength = platformExt.length();
@@ -268,6 +275,9 @@ public class Preferences {
 
     // load the I18n module for internationalization
     I18n.init(Preferences.get("editor.languages.current"));
+
+    // set some other runtime constants (not saved on preferences file)
+    table.put("runtime.os", PConstants.platformNames[PApplet.platform]);
 
     // other things that have to be set explicitly for the defaults
     setColor("run.window.bgcolor", SystemColor.control);
@@ -737,6 +747,8 @@ public class Preferences {
     Enumeration e = table.keys(); //properties.propertyNames();
     while (e.hasMoreElements()) {
       String key = (String) e.nextElement();
+      if (key.startsWith("runtime."))
+        continue;
       writer.println(key + "=" + ((String) table.get(key)));
     }
 
@@ -911,4 +923,11 @@ public class Preferences {
 
     return new SyntaxStyle(color, italic, bold, underlined);
   }
+  
+  // get a copy of the Preferences
+  static public PreferencesMap getMap() 
+  {
+    return new PreferencesMap(table);
+  }
+  
 }
