@@ -68,6 +68,7 @@ extern void GPIOFIntHandler(void);
 __attribute__((weak)) void UARTIntHandler(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
+__attribute__((weak)) void Timer5IntHandler(void) {}
 
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
@@ -192,7 +193,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // Timer 5 subtimer A
+    Timer5IntHandler,                       // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // Wide Timer 0 subtimer A
     IntDefaultHandler,                      // Wide Timer 0 subtimer B
@@ -209,8 +210,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // FPU
     IntDefaultHandler,                      // PECI 0
     IntDefaultHandler,                      // LPC 0
-    IntDefaultHandler,                          // I2C4 Master and Slave
-    IntDefaultHandler,                          // I2C5 Master and Slave
+    IntDefaultHandler,                      // I2C4 Master and Slave
+    IntDefaultHandler,                      // I2C5 Master and Slave
     IntDefaultHandler,                      // GPIO Port M
     IntDefaultHandler,                      // GPIO Port N
     IntDefaultHandler,                      // Quadrature Encoder 2

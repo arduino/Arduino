@@ -57,7 +57,6 @@ size_t Print::print(const char str[])
 size_t Print::print(char c)
 {
     return write(c);
-    return write(c);
 }
 
 size_t Print::print(unsigned char b, int base)

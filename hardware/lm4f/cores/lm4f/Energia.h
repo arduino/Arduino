@@ -12,7 +12,6 @@
 #include "binary.h" 
 #include "inc/hw_types.h"  		
 #include "inc/hw_nvic.h" 
-#include "inc/lm4f120h5qr.h"
 #include "driverlib/gpio.h" 
 #include "driverlib/pin_map.h"
 #include "driverlib/rom.h"

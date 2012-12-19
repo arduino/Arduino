@@ -29,57 +29,77 @@
   Boston, MA  02111-1307  USA
  */
 #include "Energia.h"
-#include "inc/hw_types.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_timer.h"
 #include "driverlib/rom.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/timer.h"
 
+static unsigned long milliseconds = 0;
+
 void timerInit()
 {
+    //
+    //  Run at system clock at 80MHz
+    //
     ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
                 SYSCTL_OSC_MAIN);
 
-	ROM_SysTickPeriodSet(ROM_SysCtlClockGet()/1000);//0.125us
+    //
+    //  SysTick is used for delay() and delayMicroseconds()
+    //
+	ROM_SysTickPeriodSet(0x00FFFFFF);
     ROM_SysTickEnable();
 
     //
-    //Initialize WTimer4 to be used as time-tracker since beginning of time
+    //Initialize Timer5 to be used as time-tracker since beginning of time
     //
-    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER4); //not tied to launchpad pin
-    ROM_TimerConfigure(WTIMER4_BASE, TIMER_CFG_PERIODIC);
-    ROM_TimerLoadSet64(WTIMER4_BASE, 0xFFFFFFFFFFFFFFFF); //start at 0 and count up
-    ROM_TimerEnable(WTIMER4_BASE, TIMER_A);
-    HWREG(0xE000E014) = 0x00FFFFFF;
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER5); //not tied to launchpad pin
+    ROM_TimerConfigure(TIMER5_BASE, TIMER_CFG_PERIODIC_UP);
+
+    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
+
+    ROM_IntEnable(INT_TIMER5A);
+    ROM_TimerIntEnable(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
+
+    ROM_TimerEnable(TIMER5_BASE, TIMER_A);
+
+    ROM_IntMasterEnable();
+
 }
 
-unsigned long micros()
+unsigned long micros(void)
 {
-    unsigned long cycles = 0xFFFFFFFFFFFFFFFF - ROM_TimerValueGet64(WTIMER4_BASE);
-    return (cycles / 80);
+	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / 80);
 }
 
-unsigned long millis()
+unsigned long millis(void)
 {
-    return (micros() / 1000);
+	return milliseconds;
 }
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(unsigned int us)
 {
 	volatile unsigned long elapsedTime;
-	unsigned long startTime = HWREG(0xE000E018);
+	unsigned long startTime = HWREG(NVIC_ST_CURRENT);
 	do{
-		elapsedTime = startTime-(HWREG(0xE000E018) & 0x00FFFFFF);
+		elapsedTime = startTime-(HWREG(NVIC_ST_CURRENT) & 0x00FFFFFF);
 	}
 	while(elapsedTime <= us*80);
 }
 
-
-/* (ab)use the WDT */
 void delay(uint32_t milliseconds)
 {
-	unsigned long i;
-	for(i=0; i<milliseconds; i++){
-		delayMicroseconds(1000);
-	}
+		unsigned long i;
+		for(i=0; i<milliseconds; i++){
+			delayMicroseconds(1000);
+		}
+}
+
+void Timer5IntHandler(void)
+{
+    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
+
+	milliseconds++;
 }
