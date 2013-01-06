@@ -9,13 +9,14 @@
 ///
 /// @author	Rei VILO
 /// @author	embedXcode.weebly.com
-/// @date	déc. 22, 2012 14:26
-/// @version	101
+/// @date	Jan 06, 2013
+/// @version	102
 ///
 /// @copyright	© Rei VILO, 2012
 /// @copyright	CC = BY NC SA
 ///
-/// @see	ReadMe.txt for references
+/// @see	https://github.com/energia/Energia/issues/164
+/// @n		Rick Kimball
 ///
 // Core library - IDE-based
 #if defined(ENERGIA) // LaunchPad, FraunchPad and StellarPad specific

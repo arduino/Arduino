@@ -66,18 +66,17 @@ void spi_disable(void)
 
 /**
  * spi_send() - send a byte and recv response
+ * Fix by Rick Kimball
+ * see https://github.com/energia/Energia/issues/164
  */
 uint8_t spi_send(const uint8_t _data)
 {
-	while (!(UC0IFG & UCB0TXIFG))
-		; // wait for previous tx to complete
-
-	UCB0TXBUF = _data; // setting TXBUF clears the TXIFG flag
-
-	while (!(UC0IFG & UCB0RXIFG))
-		; // wait for an rx character?
-
-	return UCB0RXBUF; // reading clears RXIFG flag
+    UCB0TXBUF = _data; // setting TXBUF clears the TXIFG flag
+    
+    while (UCB0STAT & UCBUSY)
+        ; // wait for SPI TX/RX to finish
+    
+    return UCB0RXBUF; // reading clears RXIFG flag
 }
 
 /***SPI_MODE_0

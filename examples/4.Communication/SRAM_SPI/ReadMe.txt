@@ -12,7 +12,8 @@
 
   References
   ----------------------------------
-
+  https://github.com/energia/Energia/issues/164
+  Rick Kimball 
 
 
   embedXcode

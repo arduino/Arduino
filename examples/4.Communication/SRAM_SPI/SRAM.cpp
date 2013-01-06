@@ -49,7 +49,7 @@ void SRAM::write(uint16_t address, uint8_t * data, uint16_t length) {
         digitalWrite(_pinChipSelect, LOW);
         SPI.transfer(SRAM_WRITE);
         SPI.transfer(address >> 8);
-        SPI.transfer(address & 0xFF);
+        SPI.transfer(address & 0xff);
         for (uint16_t j=0; j<length; j++) SPI.transfer(data[j]);
         digitalWrite(_pinChipSelect, HIGH);
     }
@@ -60,14 +60,7 @@ void SRAM::read(uint16_t address, uint8_t * data, uint16_t length) {
         digitalWrite(_pinChipSelect, LOW);
         SPI.transfer(SRAM_READ);
         SPI.transfer(address >> 8);
-        SPI.transfer(address & 0xFF);
-        
-#ifdef __MSP430G2553__
-        ///
-        /// @note	Surprisingly with the MSP430G2553, this seems to be required!
-        ///
-        data[0] = SPI.transfer(0);
-#endif
+        SPI.transfer(address & 0xff);
         
         for (uint16_t j=0; j<length; j++) data[j] = SPI.transfer(0);
         

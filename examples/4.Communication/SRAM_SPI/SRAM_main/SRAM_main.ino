@@ -8,8 +8,8 @@
 ///
 /// @author	Rei VILO
 /// @author	embedXcode.weebly.com
-/// @date	déc. 22, 2012 14:26
-/// @version	101
+/// @date	Jan 06, 2013
+/// @version	102
 ///
 /// @copyright	© Rei VILO, 2012
 /// @copyright	CC = BY NC SA
@@ -32,8 +32,8 @@
 ///
 /// @author	Rei VILO
 /// @author	embedXcode.weebly.com
-/// @date	déc. 22, 2012 14:26
-/// @version	101
+/// @date	Jan 06, 2013
+/// @version	102
 ///
 /// @copyright	© Rei VILO, 2012
 /// @copyright	CC = BY NC SA
@@ -74,10 +74,6 @@
 // Core library for code-sense
 #include "Energia.h"
 
-// Include application, user and local libraries
-#include "SPI.h"
-#include "SRAM.h"
-
 // Define variables and constants
 #if defined(__MSP430G2553__)
 SRAM mySRAM(P1_4); // chip select on pin P1_4
@@ -94,23 +90,12 @@ uint8_t i = 'A';
 
 void setup (void)
 {
-    ///
-    /// @note SPI speed difference
-    /// *	SPI_CLOCK_DIV2 for MSP430G2553 gives 8 MHz
-    /// *	SPI_CLOCK_DIV2 for LM4F120H5QR gives 4 MHz!
-    ///
-    /// @warning SPI maximum speed
-    /// *	SPI_CLOCK_DIV8 for MSP430G2553
-    /// *	SPI_CLOCK_DIV2 for LM4F120H5QR
-    ///
-    
 #if defined(__MSP430G2553__)
     SPI.begin();
-    //  SPI.setClockDivider(SPI_CLOCK_DIV2); // for MSP430G2553 DIV2 = 8 MHz
-    SPI.setClockDivider(SPI_CLOCK_DIV8); // for MSP430G2553
+    SPI.setClockDivider(SPI_CLOCK_DIV2); // for MSP430G2553
 #elif defined(__LM4F120H5QR__)
     SPI.begin(2);
-    SPI.setClockDivider(SPI_CLOCK_DIV2); // for LM4F120H5QR = 4 MHz !
+    SPI.setClockDivider(SPI_CLOCK_DIV2); // for LM4F120H5QR
 #endif
     
     mySRAM.begin();
@@ -155,17 +140,21 @@ void loop (void)
         if ((j % modulo)+ 'A' == i) buffer[j]=i;
         Serial.print((char)buffer[j]);
     }
-    Serial.println();
     
     i++;
     if (i>modulo+'A') i = 'A';
+    Serial.print(" (");
+    Serial.print(i - 'A', DEC);
+    Serial.print(")");
+    Serial.println();
     
-    mySRAM.write(100, (uint8_t *) buffer, sizeof buffer);
+    mySRAM.write(300, (uint8_t *) buffer, sizeof buffer);
     
-    for (uint8_t j=0; j<MAX; j++) buffer[j]=0;
+    for (uint8_t j=0; j<MAX; j++) buffer[j]='-';
     
     Serial.print("read  <");
-    mySRAM.read(100, (uint8_t *) buffer, MAX);
+    
+    mySRAM.read(300, (uint8_t *) buffer, MAX);
     
     for (uint8_t j=0; j<MAX; j++) {
         Serial.print((char)buffer[j]);

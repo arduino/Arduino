@@ -82,15 +82,15 @@ SPIClass::SPIClass(uint8_t module)
 {
 	SSIModule = module;
 }
-  
+
 void SPIClass::begin(uint8_t ssPin) {
-
+    
 	unsigned long initialData = 0;
-
+    
     if(SSIModule == NOT_ACTIVE) {
         SSIModule = BOOST_PACK_SPI;
     }
-
+    
 	ROM_SysCtlPeripheralEnable(g_ulSSIPeriph[SSIModule]);
 	ROM_SSIDisable(SSIBASE);
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][0]);
@@ -98,31 +98,31 @@ void SPIClass::begin(uint8_t ssPin) {
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][2]);
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][3]);
 	ROM_GPIOPinTypeSSI(g_ulSSIPort[SSIModule], g_ulSSIPins[SSIModule]);
-
+    
 	/*
-	  Polarity Phase        Mode
-	     0 	   0   SSI_FRF_MOTO_MODE_0
-	     0     1   SSI_FRF_MOTO_MODE_1
-	     1     0   SSI_FRF_MOTO_MODE_2
-	     1     1   SSI_FRF_MOTO_MODE_3
-	*/
-
+     Polarity Phase        Mode
+     0 	   0   SSI_FRF_MOTO_MODE_0
+     0     1   SSI_FRF_MOTO_MODE_1
+     1     0   SSI_FRF_MOTO_MODE_2
+     1     1   SSI_FRF_MOTO_MODE_3
+     */
+    
 	slaveSelect = ssPin;
 	pinMode(slaveSelect, OUTPUT);
-
+    
 	/*
 	 * Default to
 	 * System Clock, SPI_MODE_0, MASTER,
 	 * 4MHz bit rate, and 8 bit data
-	*/
+     */
 	ROM_SSIClockSourceSet(SSIBASE, SSI_CLOCK_SYSTEM);
 	ROM_SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
-	  SSI_MODE_MASTER, 4000000, 8);
+                           SSI_MODE_MASTER, 8000000, 8);
 	ROM_SSIEnable(SSIBASE);
-
+    
 	//clear out any initial data that might be present in the RX FIFO
 	while(ROM_SSIDataGetNonBlocking(SSIBASE, &initialData));
-
+    
 }
 
 void SPIClass::begin() {
@@ -147,52 +147,52 @@ void SPIClass::setBitOrder(uint8_t bitOrder)
 }
 
 void SPIClass::setDataMode(uint8_t mode) {
-
+    
 	HWREG(SSIBASE + SSI_O_CR0) &=
-			~(SSI_CR0_SPO | SSI_CR0_SPH);
-
+    ~(SSI_CR0_SPO | SSI_CR0_SPH);
+    
 	HWREG(SSIBASE + SSI_O_CR0) |= mode;
-
+    
 }
 
 void SPIClass::setClockDivider(uint8_t divider){
-
-  //value must be even
-  HWREG(SSIBASE + SSI_O_CPSR) = divider;
-
+    
+    //value must be even
+    HWREG(SSIBASE + SSI_O_CPSR) = divider;
+    
 }
 
 uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
-
+    
 	unsigned long rxData;
-
+    
 	digitalWrite(ssPin, LOW);
-
+    
 	ROM_SSIDataPut(SSIBASE, data);
-
+    
 	while(ROM_SSIBusy(SSIBASE));
-
+    
 	if(transferMode == SPI_LAST)
 		digitalWrite(ssPin, HIGH);
 	else
 		digitalWrite(ssPin, LOW);
-
+    
 	ROM_SSIDataGet(SSIBASE, &rxData);
-
+    
 	return (uint8_t) rxData;
-
+    
 }
 
 uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data) {
-
-  return transfer(ssPin, data, SPI_LAST);
-
+    
+    return transfer(ssPin, data, SPI_LAST);
+    
 }
 
 uint8_t SPIClass::transfer(uint8_t data) {
-
-  return transfer(slaveSelect, data, SPI_LAST);
-
+    
+    return transfer(slaveSelect, data, SPI_LAST);
+    
 }
 
 void SPIClass::setModule(uint8_t module) {
