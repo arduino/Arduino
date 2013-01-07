@@ -3,6 +3,7 @@
 #include "Arduino.h"	
 #include "Print.h"
 #include "Client.h"
+#include "Dns.h"
 #include "IPAddress.h"
 
 class EthernetClient : public Client {
@@ -25,6 +26,16 @@ public:
 	virtual uint8_t connected();
 	virtual operator bool();
 
+
+	// non blocking variant of the connect  method,  
+	// 0 = failed, 1 = successful initialization, call connectionInitialized()
+	virtual int initializeConnection(IPAddress ip, uint16_t port);
+	// non blocking variant of the connect & DNS method, call connectionInitialized()
+	// 0 = failed, 1 = successful initialization, call connectionInitialized()
+	virtual int initializeConnection(const char *host, uint16_t port);
+	// 0 = still working, 1 = successful connection, 2 = connection failed
+	virtual uint8_t connectionInitialized();
+
 	friend class EthernetServer;
 
 	using Print::write;
@@ -32,6 +43,11 @@ public:
 private:
 	static uint16_t _srcport;
 	uint8_t _sock;
+	uint8_t _established;
+	uint8_t _dnsresolved;
+	uint16_t _port;
+
+	DNSClient* _dns;
 };
 
 #endif

@@ -13,6 +13,8 @@
 #define	STATE_DHCP_LEASED	3
 #define	STATE_DHCP_REREQUEST	4
 #define	STATE_DHCP_RELEASE	5
+#define	STATE_DHCP_CONNECTION_FAILED	6
+#define	STATE_DHCP_TIMEOUT	7
 
 #define DHCP_FLAGSBROADCAST	0x8000
 
@@ -52,6 +54,8 @@
 #define DHCP_CHECK_RENEW_OK     (2)
 #define DHCP_CHECK_REBIND_FAIL  (3)
 #define DHCP_CHECK_REBIND_OK    (4)
+#define DHCP_CHECK_RENEW_STARTED   (1)
+#define DHCP_CHECK_REBIND_STARTED  (2)
 
 enum
 {
@@ -156,14 +160,18 @@ private:
 	unsigned long _secTimeout;
 	uint8_t _dhcp_state;
 	EthernetUDP _dhcpUdpSocket;
+	uint32_t _startTime;
+	uint32_t _startResponseTime;
 
+	void init_new_DHCP_request();
 	int request_DHCP_lease();
+	int step_DHCP_lease();
 	void reset_DHCP_lease();
 	void presend_DHCP();
 	void send_DHCP_MESSAGE(uint8_t, uint16_t);
 	void printByte(char *, uint8_t);
 
-	uint8_t parseDHCPResponse(unsigned long responseTimeout, uint32_t& transactionId);
+	uint8_t tryParseDHCPResponse(uint32_t& transactionId);
 public:
 	IPAddress getLocalIp();
 	IPAddress getSubnetMask();
@@ -172,6 +180,15 @@ public:
 	IPAddress getDnsServerIp();
 
 	int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
+
+	// non blocking variant, call successful afterwards
+	void initialize(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout) ;
+
+	// 0 = not finished, 1 = finished and successful, 2 = finished but failed 
+	int successful();
+
+	// 0 = nothing needed, 1 = renew started, 2 = rebind started, if >0 call successful to wait for
+	// finishing the rebind/release
 	int checkLease();
 };
 
