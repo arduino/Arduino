@@ -29,7 +29,6 @@ import java.util.*;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -38,7 +37,7 @@ import processing.app.helpers.Maps;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
-import processing.app.tools.MapWithSubkeys;
+import processing.app.javax.swing.filechooser.FileNameExtensionFilter;import processing.app.tools.MapWithSubkeys;
 import processing.app.tools.ZipDeflater;
 import processing.core.*;
 import static processing.app.I18n._;
@@ -88,10 +87,10 @@ public class Base {
   static private File toolsFolder;
 
   static private List<File> librariesFolders;
-  
+
   // maps library name to their library folder
   static private Map<String, File> libraries;
-  
+
   // maps #included files to their library folder
   static Map<String, File> importToLibraryTable;
 
@@ -99,7 +98,7 @@ public class Base {
   // (both those in the p5/libs folder and those with lib subfolders
   // found in the sketchbook)
   static public String librariesClassPath;
-  
+
   static public Map<String, TargetPackage> packages;
 
   // Location for untitled items
@@ -114,6 +113,11 @@ public class Base {
 
 
   static public void main(String args[]) throws Exception {
+    initPlatform();
+
+    // run static initialization that grabs all the prefs
+    Preferences.init(null);
+
     try {
       File versionFile = getContentFile("lib/version.txt");
       if (versionFile.exists()) {
@@ -152,8 +156,6 @@ public class Base {
     }
     */
 
-    initPlatform();
-
 //    // Set the look and feel before opening the window
 //    try {
 //      platform.setLookAndFeel();
@@ -172,12 +174,6 @@ public class Base {
 
     // Make sure a full JDK is installed
     //initRequirements();
-
-    // run static initialization that grabs all the prefs
-    Preferences.init(null);
-
-    // load the I18n module for internationalization
-    I18n.init(Preferences.get("editor.languages.current"));
 
     // setup the theme coloring fun
     Theme.init();
@@ -273,7 +269,7 @@ public class Base {
         defaultFolder.mkdirs();
       }
     }
-    
+
     packages = new HashMap<String, TargetPackage>();
     loadHardware(getHardwareFolder());
     loadHardware(getSketchbookHardwareFolder());
@@ -282,12 +278,22 @@ public class Base {
 
     boolean opened = false;
     boolean doUpload = false;
+    boolean doVerify = false;
+    boolean doVerbose = false;
     String selectBoard = null;
     String selectPort = null;
     // Check if any files were passed in on the command line
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals("--upload")) {
         doUpload = true;
+        continue;
+      }
+      if (args[i].equals("--verify")) {
+        doVerify = true;
+        continue;
+      }
+      if (args[i].equals("--verbose") || args[i].equals("-v")) {
+        doVerbose = true;
         continue;
       }
       if (args[i].equals("--board")) {
@@ -320,16 +326,42 @@ public class Base {
       }
     }
 
-    if (doUpload) {
-      if (!opened)
-        throw new Exception(_("Can't open source sketch!"));
-      Thread.sleep(2000);
+    if (doUpload || doVerify) {
+      if (!opened) {
+        System.out.println(_("Can't open source sketch!"));
+        System.exit(2);
+      }
+      
+      // Set verbosity for command line build
+      Preferences.set("build.verbose", "" + doVerbose);
+      Preferences.set("upload.verbose", "" + doVerbose);
+
       Editor editor = editors.get(0);
-      if (selectPort != null)
-        editor.selectSerialPort(selectPort);
+      
+      // Wait until editor is initialized
+      while (!editor.status.isInitialized())
+        Thread.sleep(10);
+      
+      // Do board selection if requested
       if (selectBoard != null)
         selectBoard(selectBoard, editor);
-      editor.exportHandler.run();
+      
+      if (doUpload) {
+        // Build and upload
+        if (selectPort != null)
+          editor.selectSerialPort(selectPort);
+        editor.exportHandler.run();
+      } else {
+        // Build only
+        editor.runHandler.run();
+      }
+      
+      // Error during build or upload
+      int res = editor.status.mode;
+      if (res == EditorStatus.ERR)
+        System.exit(1);
+      
+      // No errors exit gracefully
       System.exit(0);
     }
 
@@ -974,6 +1006,8 @@ public class Base {
   }
 
   public Map<String, File> getIDELibs() {
+    if (libraries == null)
+      return new HashMap<String, File>();
     Map<String, File> ideLibs = new HashMap<String, File>(libraries);
     for (String lib : libraries.keySet()) {
       if (FileUtils.isSubDirectory(getSketchbookFolder(), libraries.get(lib)))
@@ -983,6 +1017,8 @@ public class Base {
   }
 
   public Map<String, File> getUserLibs() {
+    if (libraries == null)
+      return new HashMap<String, File>();
     Map<String, File> userLibs = new HashMap<String, File>(libraries);
     for (String lib : libraries.keySet()) {
       if (!FileUtils.isSubDirectory(getSketchbookFolder(), libraries.get(lib)))
@@ -993,7 +1029,7 @@ public class Base {
 
   public void rebuildImportMenu(JMenu importMenu, final Editor editor) {
     importMenu.removeAll();
-    
+
     JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -1006,34 +1042,44 @@ public class Base {
     importMenu.add(addLibraryMenuItem);
 
     // Split between user supplied libraries and IDE libraries
-    Map<String, File> ideLibs = getIDELibs();
-    Map<String, File> userLibs = getUserLibs();
-    try {
-      // Find the current target. Get the platform, and then select the
-      // correct name and core path.
-      PreferencesMap prefs = getTargetPlatform().getPreferences();
-      String targetname = prefs.get("name");
+    TargetPlatform targetPlatform = getTargetPlatform();
+    if (targetPlatform != null) {
+      Map<String, File> ideLibs = getIDELibs();
+      Map<String, File> userLibs = getUserLibs();
+      try {
+        // Find the current target. Get the platform, and then select the
+        // correct name and core path.
+        PreferencesMap prefs = targetPlatform.getPreferences();
+        String targetname = prefs.get("name");
 
-      JMenuItem platformItem = new JMenuItem(targetname);
-      platformItem.setEnabled(false);
-      importMenu.add(platformItem);
-      if (ideLibs.size()>0) {
-        importMenu.addSeparator();
-        addLibraries(importMenu, ideLibs);
+        if (false) {
+          // Hack to extract these words by gettext tool.
+          // These phrases are actually defined in the "platform.txt".
+          String notused = _("Arduino AVR Boards");
+          notused = _("Arduino ARM (32-bits) Boards");
+        }
+
+        JMenuItem platformItem = new JMenuItem(_(targetname));
+        platformItem.setEnabled(false);
+        importMenu.add(platformItem);
+        if (ideLibs.size() > 0) {
+          importMenu.addSeparator();
+          addLibraries(importMenu, ideLibs);
+        }
+        if (userLibs.size() > 0) {
+          importMenu.addSeparator();
+          addLibraries(importMenu, userLibs);
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-      if (userLibs.size()>0) {
-        importMenu.addSeparator();
-        addLibraries(importMenu, userLibs);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
   public void rebuildExamplesMenu(JMenu menu) {
     try {
       menu.removeAll();
-      
+
       // Add examples from distribution "example" folder
       boolean found = addSketches(menu, examplesFolder, false);
       if (found) menu.addSeparator();
@@ -1046,7 +1092,7 @@ public class Base {
         File folder = ideLibs.get(name);
         addSketchesSubmenu(menu, name, folder, false);
         // Allows "fat" libraries to have examples in the root folder
-        if (folder.getName().equals(Base.getTargetPlatform()))
+        if (folder.getName().equals(Base.getTargetPlatform().getName()))
           addSketchesSubmenu(menu, name, folder.getParentFile(), false);
       }
 
@@ -1067,14 +1113,14 @@ public class Base {
       e.printStackTrace();
     }
   }
-  
+
   public Map<String, File> scanLibraries(List<File> folders) {
-    Map<String, File> res = new HashMap<String, File>(); 
+    Map<String, File> res = new HashMap<String, File>();
     for (File folder : folders)
       res.putAll(scanLibraries(folder));
     return res;
   }
-  
+
   public Map<String, File> scanLibraries(File folder) {
     Map<String, File> res = new HashMap<String, File>();
     String list[] = folder.list(new OnlyDirs());
@@ -1094,7 +1140,7 @@ public class Base {
       }
 
       subfolder = scanFatLibrary(subfolder);
-      
+
       // (also replace previously found libs with the same name) 
       if (subfolder != null)
         res.put(libName, subfolder);
@@ -1110,7 +1156,7 @@ public class Base {
    * <br />
    * If a non-"FAT" library is detected, we assume that the library is suitable
    * for the current architecture and the libFolder parameter is returned.<br />
-   * 
+   *
    * @param libFolder
    * @return
    */
@@ -1127,18 +1173,22 @@ public class Base {
       return null;
     return archSubfolder;
   }
-  
+
   public void onBoardOrPortChange() {
+    TargetPlatform targetPlatform = getTargetPlatform();
+    if (targetPlatform == null)
+      return;
+    
     // Calculate paths for libraries and examples
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
-    
-    File platformFolder = getTargetPlatform().getFolder();
+
+    File platformFolder = targetPlatform.getFolder();
     librariesFolders = new ArrayList<File>();
     librariesFolders.add(getContentFile("libraries"));
     librariesFolders.add(new File(platformFolder, "libraries"));
     librariesFolders.add(getSketchbookLibrariesFolder());
-    
+
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
@@ -1147,11 +1197,16 @@ public class Base {
     // Populate importToLibraryTable
     importToLibraryTable = new HashMap<String, File>();
     for (File subfolder : libraries.values()) {
-      String packages[] = headerListFromIncludePath(subfolder);
-      for (String pkg : packages)
-        importToLibraryTable.put(pkg, subfolder);
+      try {
+        String packages[] = headerListFromIncludePath(subfolder);
+        for (String pkg : packages) {
+          importToLibraryTable.put(pkg, subfolder);
+        }
+      } catch (IOException e) {
+        showWarning(_("Error"), I18n.format("Unable to list header files in {0}", subfolder), e);
+      }
     }
-    
+
     // Update editors status bar
     for (Editor editor : editors)
       editor.onBoardOrPortChange();
@@ -1163,14 +1218,14 @@ public class Base {
     String selPackage = Preferences.get("target_package");
     String selPlatform = Preferences.get("target_platform");
     String selBoard = Preferences.get("board");
-    
+
     boolean first = true;
-    
+
     List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<JMenuItem>();
 
     ButtonGroup boardsButtonGroup = new ButtonGroup();
     Map<String, ButtonGroup> buttonGroupsMap = new HashMap<String, ButtonGroup>();
-    
+
     // Cycle through all packages
     for (TargetPackage targetPackage : packages.values()) {
       String packageName = targetPackage.getName();
@@ -1182,17 +1237,17 @@ public class Base {
         if (targetPlatform.getPreferences().get("name") == null || targetPlatform.getBoards().isEmpty()) {
           continue;
         }
-        
+
         // Add a title for each group of boards
         if (!first) {
           boardsMenu.add(new JSeparator());
         }
         first = false;
-        
-        JMenuItem separator = new JMenuItem(targetPlatform.getPreferences().get("name"));
+
+        JMenuItem separator = new JMenuItem(_(targetPlatform.getPreferences().get("name")));
         separator.setEnabled(false);
         boardsMenu.add(separator);
-        
+
         // For every platform cycle through all boards
         for (final String boardID : targetPlatform.getBoards().keySet()) {
           // Setup a menu item for the current board
@@ -1204,7 +1259,7 @@ public class Base {
             }
           };
           action.putValue("b", packageName + ":" + platformName + ":" + boardID);
-          
+
           JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
           boardsMenu.add(item);
           boardsButtonGroup.add(item);
@@ -1226,7 +1281,7 @@ public class Base {
                 for (final String customMenuOption : boardCustomMenu.getKeys()) {
                   @SuppressWarnings("serial")
                   Action subAction = new AbstractAction(_(boardCustomMenu.getValueOf(customMenuOption))) {
-                    @Override
+
                     public void actionPerformed(ActionEvent e) {
                       Preferences.set("target_package", (String) getValue("package"));
                       Preferences.set("target_platform", (String) getValue("platform"));
@@ -1249,7 +1304,7 @@ public class Base {
                   if (!buttonGroupsMap.containsKey(customMenuID)) {
                     buttonGroupsMap.put(customMenuID, new ButtonGroup());
                   }
-                  
+
                   item = new JRadioButtonMenuItem(subAction);
                   menu.add(item);
                   buttonGroupsMap.get(customMenuID).add(item);
@@ -1315,7 +1370,7 @@ public class Base {
     toolsMenu.add(menu);
     return menu;
   }
-  
+
   private static JMenuItem selectVisibleSelectedOrFirstMenuItem(JMenu menu) {
     JMenuItem firstVisible = null;
     for (int i = 0; i < menu.getItemCount(); i++) {
@@ -1329,14 +1384,14 @@ public class Base {
         }
       }
     }
-    
+
     if (firstVisible != null) {
       return firstVisible;
     }
-    
+
     throw new IllegalStateException("Menu has no enabled items");
   }
-  
+
   private static JMenuItem selectFirstEnabledMenuItem(JMenu menu) {
     for (int i = 0; i < menu.getItemCount(); i++) {
       JMenuItem item = menu.getItem(i);
@@ -1353,7 +1408,7 @@ public class Base {
     Preferences.set("target_package", split[0]);
     Preferences.set("target_platform", split[1]);
     Preferences.set("board", split[2]);
-    
+
     filterVisibilityOfSubsequentBoardMenus(split[2], 1);
 
     onBoardOrPortChange();
@@ -1397,6 +1452,9 @@ public class Base {
    */
   protected boolean addSketches(JMenu menu, File folder,
                                 final boolean replaceExisting) throws IOException {
+    if (folder == null)
+      return false;
+    
     // skip .DS_Store files, etc (this shouldn't actually be necessary)
     if (!folder.isDirectory()) return false;
 
@@ -1419,7 +1477,7 @@ public class Base {
       if (addSketchesSubmenu(menu, name, subfolder, replaceExisting))
         ifound = true;
     }
-    
+
     return ifound;  // actually ignored, but..
   }
 
@@ -1475,7 +1533,7 @@ public class Base {
       item.setActionCommand(entry.getAbsolutePath());
       menu.add(item);
       return true;
-    } 
+    }
 
     // don't create an extra menu level for a folder named "examples"
     if (folder.getName().equals("examples"))
@@ -1493,10 +1551,15 @@ public class Base {
 
     List<String> list = new ArrayList<String>(libs.keySet());
     Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
-    
+
     ActionListener listener = new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        activeEditor.getSketch().importLibrary(e.getActionCommand());
+      public void actionPerformed(ActionEvent event) {
+        String jarPath = event.getActionCommand();
+        try {
+          activeEditor.getSketch().importLibrary(jarPath);
+        } catch (IOException e) {
+          showWarning(_("Error"), I18n.format("Unable to list header files in {0}", jarPath), e);
+        }
       }
     };
 
@@ -1512,28 +1575,32 @@ public class Base {
       // XXX: DAM: should recurse here so that library folders can be nested
     }
   }
- 
+
   /**
    * Given a folder, return a list of the header files in that folder (but not
    * the header files in its sub-folders, as those should be included from
    * within the header files at the top-level).
    */
-  static public String[] headerListFromIncludePath(File path) {
-    return path.list(new OnlyFilesWithExtension(".h"));
+  static public String[] headerListFromIncludePath(File path) throws IOException {
+    String[] list = path.list(new OnlyFilesWithExtension(".h"));
+    if (list == null) {
+      throw new IOException();
+    }
+    return list;
   }
- 
+
   protected void loadHardware(File folder) {
     if (!folder.isDirectory()) return;
-    
+
     String list[] = folder.list(new OnlyDirs());
-    
+
     // if a bad folder or something like that, this might come back null
     if (list == null) return;
 
     // alphabetize list, since it's not always alpha order
     // replaced hella slow bubble sort with this feller for 0093
     Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
-    
+
     for (String target : list) {
       // Skip reserved 'tools' folder.
       if (target.equals("tools"))
@@ -1802,17 +1869,17 @@ public class Base {
     // before the other folders / paths get cached).
     return getContentFile("hardware");
   }
-  
+
   //Get the core libraries
   static public File getCoreLibraries(String path) {
-  	return getContentFile(path);	
+  	return getContentFile(path);
   }
-  
+
   static public String getHardwarePath() {
     return getHardwareFolder().getAbsolutePath();
   }
-  
-  
+
+
   static public String getAvrBasePath() {
     String path = getHardwarePath() + File.separator + "tools" +
                   File.separator + "avr" + File.separator + "bin" + File.separator;
@@ -1821,11 +1888,11 @@ public class Base {
     }
     return path;
   }
-  
-  
+
+
   /**
    * Returns the currently selected TargetPlatform.
-   * 
+   *
    * @return
    */
   static public TargetPlatform getTargetPlatform() {
@@ -1833,17 +1900,20 @@ public class Base {
     String platformName = Preferences.get("target_platform");
     return getTargetPlatform(packageName, platformName);
   }
-  
+
   /**
    * Returns a specific TargetPlatform searching Package/Platform
-   * 
+   *
    * @param packageName
    * @param platformName
    * @return
    */
   static public TargetPlatform getTargetPlatform(String packageName,
                                                  String platformName) {
-    return packages.get(packageName).get(platformName);
+    TargetPackage p = packages.get(packageName);
+    if (p == null)
+      return null;
+    return p.get(platformName);
   }
 
   static public TargetPlatform getCurrentTargetPlatformFromPackage(String pack) {
@@ -1893,8 +1963,8 @@ public class Base {
   static public String getSketchbookLibrariesPath() {
     return getSketchbookLibrariesFolder().getAbsolutePath();
   }
-  
-  
+
+
   static public File getSketchbookHardwareFolder() {
     return new File(getSketchbookFolder(), "hardware");
   }
@@ -2047,7 +2117,7 @@ public class Base {
     // don't use the low-res icon on Mac OS X; the window should
     // already have the right icon from the .app file.
     if (Base.isMacOS()) return;
-    
+
     Image image = Toolkit.getDefaultToolkit().createImage(PApplet.ICON_IMAGE);
     frame.setIconImage(image);
   }
@@ -2131,7 +2201,7 @@ public class Base {
   static public void showFAQ() {
     showReference(_("FAQ.html"));
   }
-  
+
 
   // .................................................................
 
@@ -2708,11 +2778,6 @@ public class Base {
             + "(ASCII only and no spaces, and it cannot start with a number)"),
                                   libName);
         editor.statusError(mess);
-        return;
-      }
-      String[] headerFiles = headerListFromIncludePath(libFolder);
-      if (headerFiles == null || headerFiles.length == 0) {
-        editor.statusError(_("Not a valid library: no header files found"));
         return;
       }
 
