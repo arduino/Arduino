@@ -35,6 +35,7 @@ import java.awt.print.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.List;
 import java.util.zip.*;
 
 import javax.swing.*;
@@ -95,7 +96,7 @@ public class Editor extends JFrame implements RunnerListener {
   // these menus are shared so that the board and serial port selections
   // are the same for all windows (since the board and serial port that are
   // actually used are determined by the preferences, which are shared)
-  static JMenu boardsMenu;
+  static List<JMenu> boardsMenus;
   static JMenu serialMenu;
 
   static SerialMenuListener serialMenuListener;
@@ -178,8 +179,12 @@ public class Editor extends JFrame implements RunnerListener {
           fileMenu.insert(sketchbookMenu, 2);
           fileMenu.insert(examplesMenu, 3);
           sketchMenu.insert(importMenu, 4);
-          toolsMenu.insert(boardsMenu, numTools);
-          toolsMenu.insert(serialMenu, numTools + 1);
+          int offset = 0;
+          for (JMenu menu : boardsMenus) {
+            toolsMenu.insert(menu, numTools + offset);
+            offset++;
+          }
+          toolsMenu.insert(serialMenu, numTools + offset);
         }
 
         // added for 1.0.5
@@ -189,7 +194,9 @@ public class Editor extends JFrame implements RunnerListener {
           fileMenu.remove(sketchbookMenu);
           fileMenu.remove(examplesMenu);
           sketchMenu.remove(importMenu);
-          toolsMenu.remove(boardsMenu);
+          for (JMenu menu : boardsMenus) {
+            toolsMenu.remove(menu);
+          }
           toolsMenu.remove(serialMenu);
         }
       });
@@ -627,7 +634,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (importMenu == null) {
       importMenu = new JMenu(_("Import Library..."));
-      base.rebuildImportMenu(importMenu);
+      base.rebuildImportMenu(importMenu, this);
     }
     sketchMenu.add(importMenu);
 
@@ -678,11 +685,13 @@ public class Editor extends JFrame implements RunnerListener {
     // XXX: DAM: these should probably be implemented using the Tools plugin
     // API, if possible (i.e. if it supports custom actions, etc.)
     
-    if (boardsMenu == null) {
-      boardsMenu = new JMenu(_("Board"));
-      base.rebuildBoardsMenu(boardsMenu);
+    if (boardsMenus == null) {
+      boardsMenus = new LinkedList<JMenu>();
+      base.rebuildBoardsMenu(toolsMenu, this);
+      //Debug: rebuild imports
+      importMenu.removeAll();
+      base.rebuildImportMenu(importMenu, this);
     }
-    menu.add(boardsMenu);
     
     if (serialMenuListener == null)
       serialMenuListener  = new SerialMenuListener();
@@ -718,7 +727,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   protected void addTools(JMenu menu, File sourceFolder) {
-    HashMap<String, JMenuItem> toolItems = new HashMap<String, JMenuItem>();
+    if (sourceFolder == null)
+      return;
+    
+    Map<String, JMenuItem> toolItems = new HashMap<String, JMenuItem>();
 
     File[] folders = sourceFolder.listFiles(new FileFilter() {
       public boolean accept(File folder) {
@@ -940,9 +952,16 @@ public class Editor extends JFrame implements RunnerListener {
     if (selection != null) selection.setState(true);
     //System.out.println(item.getLabel());
     Preferences.set("serial.port", name);
+    if (name.startsWith("/dev/"))
+      Preferences.set("serial.port.file", name.substring(5));
+    else
+      Preferences.set("serial.port.file", name);
     serialMonitor.closeSerialPort();
     serialMonitor.setVisible(false);
     serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
+
+    onBoardOrPortChange();
+
     //System.out.println("set to " + get("serial.port"));
   }
 
@@ -2492,7 +2511,7 @@ public class Editor extends JFrame implements RunnerListener {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         try {
-          Uploader uploader = new AvrdudeUploader();
+          Uploader uploader = new BasicUploader();
           if (uploader.burnBootloader()) {
             statusNotice(_("Done burning bootloader."));
           } else {
@@ -2648,7 +2667,7 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
   protected void onBoardOrPortChange() {
-    Map<String, String> boardPreferences =  Base.getBoardPreferences();
+    Map<String, String> boardPreferences = Base.getBoardPreferences();
     lineStatus.setBoardName(boardPreferences.get("name"));
     lineStatus.setSerialPort(Preferences.get("serial.port"));
     lineStatus.repaint();

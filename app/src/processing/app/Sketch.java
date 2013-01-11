@@ -23,26 +23,22 @@
 
 package processing.app;
 
-import processing.app.debug.AvrdudeUploader;
+import processing.app.debug.BasicUploader;
 import processing.app.debug.Compiler;
 import processing.app.debug.RunnerException;
 import processing.app.debug.Sizer;
 import processing.app.debug.Uploader;
+import processing.app.helpers.PreferencesMap;
 import processing.app.preproc.*;
 import processing.core.*;
 import static processing.app.I18n._;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.zip.*;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 
 /**
@@ -616,7 +612,7 @@ public class Sketch {
 
       } else {
         // delete the file
-        if (!current.deleteFile()) {
+        if (!current.deleteFile(tempBuildFolder)) {
           Base.showMessage(_("Couldn't do it"),
                            I18n.format(_("Could not delete \"{0}\"."), current.getFileName()));
           return;
@@ -1132,7 +1128,7 @@ public class Sketch {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    String list[] = Compiler.headerListFromIncludePath(jarPath);
+    String list[] = Base.headerListFromIncludePath(new File(jarPath));
 
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
@@ -1441,9 +1437,12 @@ public class Sketch {
     // grab the imports from the code just preproc'd
 
     importedLibraries = new ArrayList<File>();
-
+    //Remember to clear library path before building it.
+    libraryPath = "";
     for (String item : preprocessor.getExtraImports()) {
-      File libFolder = (File) Base.importToLibraryTable.get(item);
+
+        File libFolder = (File) Base.importToLibraryTable.get(item);
+        //If needed can Debug libraryPath here
 
       if (libFolder != null && !importedLibraries.contains(libFolder)) {
         importedLibraries.add(libFolder);
@@ -1577,9 +1576,7 @@ public class Sketch {
    *
    * @return null if compilation failed, main class name if not
    */
-  public String build(String buildPath, boolean verbose)
-    throws RunnerException {
-    
+  public String build(String buildPath, boolean verbose) throws RunnerException {
     // run the preprocessor
     editor.status.progressUpdate(20);
     String primaryClassName = preprocess(buildPath);
@@ -1588,12 +1585,11 @@ public class Sketch {
     // that will bubble up to whomever called build().
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
-      size(buildPath, primaryClassName);
+      size(compiler.getBuildPreferences());
       return primaryClassName;
     }
     return null;
-  }
-  
+  }  
   
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
     return exportApplet(tempBuildFolder.getAbsolutePath(), usingProgrammer);
@@ -1634,31 +1630,28 @@ public class Sketch {
     editor.status.progressUpdate(percent);
   }
 
-  
-  protected void size(String buildPath, String suggestedClassName)
-    throws RunnerException {
+
+  protected void size(PreferencesMap prefs) throws RunnerException {
     long size = 0;
-    String maxsizeString = Base.getBoardPreferences().get("upload.maximum_size");
-    if (maxsizeString == null) return;
+    String maxsizeString = prefs.get("upload.maximum_size");
+    if (maxsizeString == null)
+      return;
     long maxsize = Integer.parseInt(maxsizeString);
-    Sizer sizer = new Sizer(buildPath, suggestedClassName);
-      try {
+    Sizer sizer = new Sizer(prefs);
+    try {
       size = sizer.computeSize();
-      System.out.println(
-	I18n.format(
-	  _("Binary sketch size: {0} bytes (of a {1} byte maximum)"),
-	  size, maxsize
-	)
-      );
+      System.out.println(I18n
+              .format(_("Binary sketch size: {0} bytes (of a {1} byte maximum) - {2}% used"),
+                      size, maxsize, size * 100 / maxsize));
     } catch (RunnerException e) {
-      System.err.println(I18n.format(_("Couldn't determine program size: {0}"), e.getMessage()));
+      System.err.println(I18n.format(_("Couldn't determine program size: {0}"),
+                                     e.getMessage()));
     }
 
     if (size > maxsize)
       throw new RunnerException(
-        _("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
+          _("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
   }
-
 
   protected String upload(String buildPath, String suggestedClassName, boolean usingProgrammer)
     throws RunnerException, SerialException {
@@ -1667,7 +1660,7 @@ public class Sketch {
 
     // download the program
     //
-    uploader = new AvrdudeUploader();
+    uploader = new BasicUploader();
     boolean success = uploader.uploadUsingPreferences(buildPath,
                                                       suggestedClassName,
                                                       usingProgrammer);
@@ -1788,28 +1781,28 @@ public class Sketch {
    */
   public boolean isReadOnly() {
     String apath = folder.getAbsolutePath();
+    for (File folder : Base.getLibrariesPath()) {
+      if (apath.startsWith(folder.getAbsolutePath()))
+        return true;
+    }
     if (apath.startsWith(Base.getExamplesPath()) ||
-        apath.startsWith(Base.getLibrariesPath()) ||
         apath.startsWith(Base.getSketchbookLibrariesPath())) {
       return true;
+    }
 
-      // canWrite() doesn't work on directories
-      //} else if (!folder.canWrite()) {
-    } else {
-      // check to see if each modified code file can be written to
-      for (int i = 0; i < codeCount; i++) {
-        if (code[i].isModified() &&
-            code[i].fileReadOnly() &&
-            code[i].fileExists()) {
-          //System.err.println("found a read-only file " + code[i].file);
-          return true;
-        }
+    // canWrite() doesn't work on directories
+    // } else if (!folder.canWrite()) {
+    
+    // check to see if each modified code file can be written to
+    for (int i = 0; i < codeCount; i++) {
+      if (code[i].isModified() && code[i].fileReadOnly() &&
+          code[i].fileExists()) {
+        // System.err.println("found a read-only file " + code[i].file);
+        return true;
       }
-      //return true;
     }
     return false;
   }
-
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 

@@ -3,6 +3,8 @@
  
  This sketch demonstrates the Keyboard library.
  
+ For Leonardo and Due boards only.
+ 
  When you connect pin 2 to ground, it creates a new
  window with a key combination (CTRL-N),
  then types in the Blink sketch, then auto-formats the text
@@ -11,7 +13,7 @@
  a final key combination (CTRL-U).
  
  Circuit:
- * Arduino Leonardo or Micro
+ * Arduino Leonardo, Micro or Due
  * wire to connect D2 to ground.
  
  created 5 Mar 2012
