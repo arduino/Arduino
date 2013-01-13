@@ -28,12 +28,16 @@
 #include "Stream.h"
 
 struct ring_buffer;
+struct ring_buffer_16u;
 
 class HardwareSerial : public Stream
 {
   private:
     ring_buffer *_rx_buffer;
     ring_buffer *_tx_buffer;
+    ring_buffer_16u *_rx_buffer_16u;
+    ring_buffer_16u *_tx_buffer_16u;
+    volatile uint8_t *_UART_16bit_mode;
     volatile uint8_t *_ubrrh;
     volatile uint8_t *_ubrrl;
     volatile uint8_t *_ucsra;
@@ -46,37 +50,55 @@ class HardwareSerial : public Stream
     uint8_t _udrie;
     uint8_t _u2x;
     bool transmitting;
+
+    void (**_tx_finished_callback)();
+    void (**_rx_data_callback)();
+
+    size_t _write(unsigned int n);
   public:
-    HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
-      volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
-      volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
-      volatile uint8_t *ucsrc, volatile uint8_t *udr,
-      uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x);
+    HardwareSerial( ring_buffer *rx_buffer, ring_buffer *tx_buffer,
+                    ring_buffer_16u *rx_buffer_16u, ring_buffer_16u *tx_buffer_16u,
+                    volatile uint8_t *UART_16bit_mode,
+                    volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
+                    volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
+                    volatile uint8_t *ucsrc, volatile uint8_t *udr,
+                    uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x );
+
     void begin(unsigned long);
-    void begin(unsigned long, uint8_t);
+    void begin(unsigned long, uint16_t);
     void end();
+
+    void setTxFinishedCallback(void (*callback)());
+    void setRxDataCallback(void (*callback)());
+
     virtual int available(void);
     virtual int peek(void);
     virtual int read(void);
     virtual void flush(void);
-    virtual size_t write(uint8_t);
-    inline size_t write(unsigned long n) { return write((uint8_t)n); }
-    inline size_t write(long n) { return write((uint8_t)n); }
-    inline size_t write(unsigned int n) { return write((uint8_t)n); }
-    inline size_t write(int n) { return write((uint8_t)n); }
+    virtual size_t write(uint8_t c) { return _write(c); }
+    inline size_t write(unsigned long n) { return _write((uint16_t)n); }
+    inline size_t write(long n) { return _write((uint16_t)n); }
+    inline size_t write(unsigned int n) { return _write((uint16_t)n); }
+    inline size_t write(int n) { return _write((uint16_t)n); }
+
     using Print::write; // pull in write(str) and write(buf, size) from Print
     operator bool();
+    bool isTransmitting();
 };
 
 // Define config for Serial.begin(baud, config);
-#define SERIAL_5N1 0x00
-#define SERIAL_6N1 0x02
-#define SERIAL_7N1 0x04
-#define SERIAL_8N1 0x06
-#define SERIAL_5N2 0x08
-#define SERIAL_6N2 0x0A
-#define SERIAL_7N2 0x0C
-#define SERIAL_8N2 0x0E
+#define SERIAL_5N1 0x0000
+#define SERIAL_6N1 0x0002
+#define SERIAL_7N1 0x0004
+#define SERIAL_8N1 0x0006
+#define SERIAL_9N1 0x0106
+
+#define SERIAL_5N2 0x0008
+#define SERIAL_6N2 0x000A
+#define SERIAL_7N2 0x000C
+#define SERIAL_8N2 0x000E
+#define SERIAL_9N2 0x010E
+
 #define SERIAL_5E1 0x20
 #define SERIAL_6E1 0x22
 #define SERIAL_7E1 0x24
@@ -94,11 +116,13 @@ class HardwareSerial : public Stream
 #define SERIAL_7O2 0x3C
 #define SERIAL_8O2 0x3E
 
+#define UCSRB_NINTH_BIT 0
+
 #if defined(UBRRH) || defined(UBRR0H)
   extern HardwareSerial Serial;
 #elif defined(USBCON)
   #include "USBAPI.h"
-//  extern HardwareSerial Serial_;  
+//  extern HardwareSerial Serial_;
 #endif
 #if defined(UBRR1H)
   extern HardwareSerial Serial1;
