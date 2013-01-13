@@ -60,7 +60,7 @@
 
 
 // Include application, user and local libraries
-#include "spi.h"
+#include "SPI.h"
 #include "LCD_5110_SPI.h"
 
 // Variables
