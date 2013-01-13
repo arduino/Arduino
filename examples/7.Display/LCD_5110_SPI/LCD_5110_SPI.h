@@ -44,7 +44,7 @@
 #define LCD_5110_SPI_h
 #include "Terminal6.h"
 #include "Terminal12.h"
-#include "spi.h"
+#include "SPI.h"
 class LCD_5110_SPI {
 public:
 //
