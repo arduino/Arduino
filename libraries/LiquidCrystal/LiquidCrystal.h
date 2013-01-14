@@ -82,7 +82,13 @@ public:
   virtual size_t write(uint8_t);
   void command(uint8_t);
   
-  using Print::write;
+    // using Print::write;
+    // The above line was commented out to eliminate the ambiguous
+    // overloading of the write function, which caused compile error.  The problem
+    // was that it could not determine the the type of argument when using lcd.write(0);
+    // It would work if first defining a variable of type ] int or char or byte
+    // such as byte custHeartChar = 0; and then using lcd.write(custHeartChar);
+    
 private:
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);
