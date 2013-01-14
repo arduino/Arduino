@@ -89,7 +89,8 @@ void setup() {
     SPI.setDataMode(SPI_MODE0);
     
 #elif defined(__LM4F120H5QR__)
-    SPI.begin(2);
+    SPI.Select(2);
+    SPI.begin();
     SPI.setClockDivider(SPI_CLOCK_DIV128); // for LM4F120H5QR DIV2 = 4 MHz !
 #endif
     
