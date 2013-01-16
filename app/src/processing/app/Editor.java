@@ -100,6 +100,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   static SerialMenuListener serialMenuListener;
   static SerialMonitor serialMonitor;
+  boolean serialScanned;
   
   EditorHeader header;
   EditorStatus status;
@@ -956,6 +957,32 @@ public class Editor extends JFrame implements RunnerListener {
 	
     serialMenu.removeAll();
     boolean empty = true;
+
+    if ( System.getProperty("os.name").equals("Linux")
+         && ( serialScanned
+              || System.getProperty("gnu.io.rxtx.SerialPorts") == null ) ) {
+      String[] prefixes = {
+        "ttyS", "ttyUSB", "ttyACM"
+      };
+      String SerialPorts = null;
+      File devicesDir = new File("/dev/");
+      for ( String device : devicesDir.list() ) {
+        for ( String prefix : prefixes ) {
+          if ( device.startsWith(prefix) ) {
+            if ( SerialPorts == null ) {
+              SerialPorts = "/dev/" + device;
+            }
+            else {
+              SerialPorts += ":/dev/" + device;
+            }
+          }
+        }
+      }
+      if ( SerialPorts != null ) {
+        System.setProperty("gnu.io.rxtx.SerialPorts", SerialPorts);
+        serialScanned = true;
+      }
+    }
 
     try
     {
