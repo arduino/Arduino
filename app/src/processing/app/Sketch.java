@@ -1646,8 +1646,8 @@ public class Sketch {
       size = sizer.computeSize();
       System.out.println(
 	I18n.format(
-	  _("Binary sketch size: {0} bytes (of a {1} byte maximum)"),
-	  size, maxsize
+	  _("Binary sketch size: {0} bytes (of a {1} byte maximum) - {3}% used"),
+	  size, maxsize, (size*100)/maxsize
 	)
       );
     } catch (RunnerException e) {
