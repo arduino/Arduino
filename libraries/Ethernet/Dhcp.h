@@ -115,7 +115,7 @@ enum
 	dhcpMaxMsgSize		=	57,*/
 	dhcpT1value		=	58,
 	dhcpT2value		=	59,
-	/*dhcpClassIdentifier	=	60,*/
+	dhcpClassIdentifier	=	60,
 	dhcpClientIdentifier	=	61,
 	endOption		=	255
 };
@@ -135,6 +135,9 @@ typedef struct _RIP_MSG_FIXED
 	uint8_t  giaddr[4];
 	uint8_t  chaddr[6];
 }RIP_MSG_FIXED;
+
+typedef void (DhcpOptionParser)(uint8_t optionType, EthernetUDP *client);
+typedef void (DhcpOptionProvider)(uint8_t messageType, EthernetUDP *client);
 
 class DhcpClass {
 private:
@@ -156,6 +159,8 @@ private:
   unsigned long _secTimeout;
   uint8_t _dhcp_state;
   EthernetUDP _dhcpUdpSocket;
+  DhcpOptionProvider* _optionProvider;
+  DhcpOptionParser* _optionParser;
   
   int request_DHCP_lease();
   void reset_DHCP_lease();
@@ -165,6 +170,8 @@ private:
   
   uint8_t parseDHCPResponse(unsigned long responseTimeout, uint32_t& transactionId);
 public:
+  DhcpClass() : _optionParser(NULL), _optionProvider(NULL) {};
+
   IPAddress getLocalIp();
   IPAddress getSubnetMask();
   IPAddress getGatewayIp();
@@ -173,6 +180,9 @@ public:
   
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
   int checkLease();
+
+  void setOptionParser(DhcpOptionParser* optionParser);
+  void setOptionProvider(DhcpOptionProvider* optionProvider);
 };
 
 #endif
