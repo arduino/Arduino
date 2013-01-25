@@ -117,7 +117,7 @@ void SPIClass::begin(uint8_t ssPin) {
 	*/
 	ROM_SSIClockSourceSet(SSIBASE, SSI_CLOCK_SYSTEM);
 	ROM_SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
-	  SSI_MODE_MASTER, 4000000, 8);
+	  SSI_MODE_MASTER, 8000000, 8);
 	ROM_SSIEnable(SSIBASE);
 
 	//clear out any initial data that might be present in the RX FIFO
