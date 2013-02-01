@@ -32,7 +32,7 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
+//  modified by jean-claude RAGRIS  23/01/2013
 //*****************************************************************************
 
 #include "Energia.h"
@@ -66,9 +66,16 @@ extern void GPIOFIntHandler(void);
  * create some overridable default signal handlers
  */
 __attribute__((weak)) void UARTIntHandler(void) {}
+__attribute__((weak)) void UARTIntHandler1(void) {}
+__attribute__((weak)) void UARTIntHandler2(void) {}
+__attribute__((weak)) void UARTIntHandler3(void) {}
+__attribute__((weak)) void UARTIntHandler5(void) {}
+__attribute__((weak)) void UARTIntHandler6(void) {}
+__attribute__((weak)) void UARTIntHandler7(void) {}
+
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
-__attribute__((weak)) void Timer5IntHandler(void) {}
+__attribute__((weak)) void Timer5IntHandler(void) {} 
 
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
@@ -107,7 +114,7 @@ void (* const g_pfnVectors[])(void) =
     GPIODIntHandler,                        // GPIO Port D
     GPIOEIntHandler,                        // GPIO Port E
     UARTIntHandler,                         // UART0 Rx and Tx
-    UARTIntHandler,                         // UART1 Rx and Tx
+    UARTIntHandler1,                         // UART1 Rx and Tx
     IntDefaultHandler,                      // SSI0 Rx and Tx
     I2CIntHandler,                          // I2C0 Master and Slave
     IntDefaultHandler,                      // PWM Fault
@@ -134,7 +141,7 @@ void (* const g_pfnVectors[])(void) =
     GPIOFIntHandler,                        // GPIO Port F
     IntDefaultHandler,                      // GPIO Port G
     IntDefaultHandler,                      // GPIO Port H
-    UARTIntHandler,                         // UART2 Rx and Tx
+    UARTIntHandler2,                         // UART2 Rx and Tx
     IntDefaultHandler,                      // SSI1 Rx and Tx
     IntDefaultHandler,                      // Timer 3 subtimer A
     IntDefaultHandler,                      // Timer 3 subtimer B
@@ -160,11 +167,11 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // GPIO Port L
     IntDefaultHandler,                      // SSI2 Rx and Tx
     IntDefaultHandler,                      // SSI3 Rx and Tx
-    UARTIntHandler,                         // UART3 Rx and Tx
+    UARTIntHandler3,                         // UART3 Rx and Tx modified by JCR
     UARTIntHandler,                         // UART4 Rx and Tx
-    UARTIntHandler,                         // UART5 Rx and Tx
-    UARTIntHandler,                         // UART6 Rx and Tx
-    UARTIntHandler,                         // UART7 Rx and Tx
+    UARTIntHandler5,                         // UART5 Rx and Tx
+    UARTIntHandler6,                         // UART6 Rx and Tx
+    UARTIntHandler7,                         // UART7 Rx and Tx
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
@@ -193,7 +200,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    Timer5IntHandler,                       // Timer 5 subtimer A
+    IntDefaultHandler,                      // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // Wide Timer 0 subtimer A
     IntDefaultHandler,                      // Wide Timer 0 subtimer B
@@ -210,8 +217,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // FPU
     IntDefaultHandler,                      // PECI 0
     IntDefaultHandler,                      // LPC 0
-    IntDefaultHandler,                      // I2C4 Master and Slave
-    IntDefaultHandler,                      // I2C5 Master and Slave
+    IntDefaultHandler,                          // I2C4 Master and Slave
+    IntDefaultHandler,                          // I2C5 Master and Slave
     IntDefaultHandler,                      // GPIO Port M
     IntDefaultHandler,                      // GPIO Port N
     IntDefaultHandler,                      // Quadrature Encoder 2

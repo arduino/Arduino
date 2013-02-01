@@ -10,10 +10,10 @@ int main(void)
 
     timerInit();
 
-	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+	  ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
-	ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
+	  ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
 
@@ -27,7 +27,7 @@ int main(void)
     HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = 0x4C4F434B;
     HWREG(GPIO_PORTF_BASE + GPIO_O_CR) |= 0x1;
     HWREG(GPIO_PORTD_BASE + GPIO_O_LOCK) = 0x4C4F434B;
-    HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= 0x8;
+    HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= 0x80;
 
     setup();
 

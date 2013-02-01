@@ -177,6 +177,9 @@ Serial	KEYWORD3	Serial
 Serial1	KEYWORD3	Serial
 Serial2	KEYWORD3	Serial
 Serial3	KEYWORD3	Serial
+Serial5	KEYWORD3	Serial
+Serial6	KEYWORD3	Serial
+Serial7	KEYWORD3	Serial
 begin	KEYWORD2	Serial_Begin
 end	KEYWORD2	Serial_End
 peek	KEYWORD2	Serial_Peek

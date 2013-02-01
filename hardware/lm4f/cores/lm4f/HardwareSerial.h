@@ -5,7 +5,7 @@
   *	Arduino core files for MSP430
   *		Copyright (c) 2012 Robert Wessels. All right reserved.
   *
-  *
+  * modified by jean-claude RAGRIS 23/12/2013
   ***********************************************************************
   Derived from:
   HardwareSerial.cpp - Hardware serial library for Wiring
@@ -32,7 +32,7 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define SERIAL_BUFFER_SIZE     1024
+#define SERIAL_BUFFER_SIZE    1024
 class HardwareSerial : public Stream
 {
 
@@ -52,19 +52,40 @@ class HardwareSerial : public Stream
 		HardwareSerial(void);
 		HardwareSerial(unsigned long);
 		void begin(unsigned long);
-		void selectModule(unsigned long);
+
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);
 		virtual int read(void);
 		virtual void flush(void);
-        void UARTIntHandler(void);
-        virtual size_t write(uint8_t c);
-		using Print::write; // pull in write(str) and write(buf, size) from Print
-        
+    void UARTIntHandler(void);
+		void UARTIntHandler1(void);
+		void UARTIntHandler2(void);
+		void UARTIntHandler3(void);
+		void UARTIntHandler5(void);
+		void UARTIntHandler6(void);
+		void UARTIntHandler7(void);
+		
+    virtual size_t write(uint8_t c);
+		using Print::write; // pull in write(str) and write(buf, size) from Print        
 };
 
 extern HardwareSerial Serial;
+extern HardwareSerial Serial1;
+extern HardwareSerial Serial2;
+extern HardwareSerial Serial3;
+extern HardwareSerial Serial5;
+extern HardwareSerial Serial6;
+extern HardwareSerial Serial7;
+
+
 extern "C" void UARTIntHandler(void);
+extern "C" void UARTIntHandler1(void);
+extern "C" void UARTIntHandler2(void);
+extern "C" void UARTIntHandler3(void);
+extern "C" void UARTIntHandler5(void);
+extern "C" void UARTIntHandler6(void);
+extern "C" void UARTIntHandler7(void);
+
 extern void serialEventRun(void) __attribute__((weak));
 #endif

@@ -27,6 +27,7 @@
 
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
+  Modified 30 janvier 2013 by Jean-claude RAGRIS
  */
 
 #include <stdlib.h>
@@ -82,8 +83,8 @@ static const unsigned long g_ulUARTInt[8] =
 static const unsigned long g_ulUARTPeriph[8] =
 {
     SYSCTL_PERIPH_UART0, SYSCTL_PERIPH_UART1, SYSCTL_PERIPH_UART2,
-	SYSCTL_PERIPH_UART3, SYSCTL_PERIPH_UART4, SYSCTL_PERIPH_UART5,
-	SYSCTL_PERIPH_UART6, SYSCTL_PERIPH_UART7
+	  SYSCTL_PERIPH_UART3, SYSCTL_PERIPH_UART4, SYSCTL_PERIPH_UART5,
+	  SYSCTL_PERIPH_UART6, SYSCTL_PERIPH_UART7
 };
 //*****************************************************************************
 //
@@ -95,7 +96,7 @@ static const unsigned long g_ulUARTConfig[8][2] =
     {GPIO_PA0_U0RX, GPIO_PA1_U0TX}, {GPIO_PC4_U1RX, GPIO_PC5_U1TX},
     {GPIO_PD6_U2RX, GPIO_PD7_U2TX}, {GPIO_PC6_U3RX, GPIO_PC7_U3TX},
     {GPIO_PC4_U4RX, GPIO_PC5_U4TX},	{GPIO_PE4_U5RX, GPIO_PE5_U5TX},
-	{GPIO_PD4_U6RX, GPIO_PD5_U6TX},	{GPIO_PE0_U7RX, GPIO_PE1_U7TX}
+    {GPIO_PD4_U6RX, GPIO_PD5_U6TX},	{GPIO_PE0_U7RX, GPIO_PE1_U7TX}
 };
 
 static const unsigned long g_ulUARTPort[8] =
@@ -201,10 +202,12 @@ HardwareSerial::begin(unsigned long baud)
     //TODO:Add functionality for PinConfigure with variable uartModule
     ROM_GPIOPinConfigure(g_ulUARTConfig[uartModule][0]);
     ROM_GPIOPinConfigure(g_ulUARTConfig[uartModule][1]);
+    
+
 
     ROM_GPIOPinTypeUART(g_ulUARTPort[uartModule], g_ulUARTPins[uartModule]);
 
-	ROM_UARTConfigSetExpClk(UART_BASE, ROM_SysCtlClockGet(), baudRate,
+	  ROM_UARTConfigSetExpClk(UART_BASE, ROM_SysCtlClockGet(), baudRate,
                             (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
                              UART_CONFIG_WLEN_8));
     //
@@ -230,7 +233,7 @@ HardwareSerial::selectModule(unsigned long module)
     ROM_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_RT);
     ROM_IntDisable(g_ulUARTInt[uartModule]);
 	uartModule = module;
-	begin(baudRate);
+	begin(9600);
 
 }
 
@@ -404,5 +407,46 @@ UARTIntHandler(void)
     Serial.UARTIntHandler();
 }
 
-//Preinstantiate Object
-HardwareSerial Serial;
+void
+UARTIntHandler1(void)
+{
+	Serial1.UARTIntHandler();
+}
+
+void
+UARTIntHandler2(void)
+{
+	Serial2.UARTIntHandler();
+}
+ 
+void
+UARTIntHandler3(void)
+{
+	Serial3.UARTIntHandler();
+}
+void
+UARTIntHandler5(void)
+{
+	Serial5.UARTIntHandler();
+}
+void
+UARTIntHandler6(void)
+{
+	Serial6.UARTIntHandler();
+}
+void
+UARTIntHandler7(void)
+{
+	Serial7.UARTIntHandler();
+}
+//Preinstantiate Object (must be declared hier and not in sketch)
+HardwareSerial Serial(0);
+HardwareSerial Serial1(1);
+HardwareSerial Serial2(2);
+HardwareSerial Serial3(3);
+HardwareSerial Serial5(5);
+HardwareSerial Serial6(6);
+HardwareSerial Serial7(7);
+
+
+
