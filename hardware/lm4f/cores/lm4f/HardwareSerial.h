@@ -32,7 +32,7 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define SERIAL_BUFFER_SIZE    1024
+#define SERIAL_BUFFER_SIZE     1024
 class HardwareSerial : public Stream
 {
 
@@ -51,23 +51,24 @@ class HardwareSerial : public Stream
     public:
 		HardwareSerial(void);
 		HardwareSerial(unsigned long);
-		void begin(unsigned long);
-
+		
+        void begin(unsigned long);
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);
 		virtual int read(void);
 		virtual void flush(void);
-    void UARTIntHandler(void);
+        void UARTIntHandler(void);
 		void UARTIntHandler1(void);
-		void UARTIntHandler2(void);
+        void UARTIntHandler2(void);
 		void UARTIntHandler3(void);
 		void UARTIntHandler5(void);
 		void UARTIntHandler6(void);
 		void UARTIntHandler7(void);
 		
-    virtual size_t write(uint8_t c);
-		using Print::write; // pull in write(str) and write(buf, size) from Print        
+        virtual size_t write(uint8_t c);
+		using Print::write; // pull in write(str) and write(buf, size) from Print
+        
 };
 
 extern HardwareSerial Serial;

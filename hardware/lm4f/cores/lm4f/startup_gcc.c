@@ -32,7 +32,7 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//  modified by jean-claude RAGRIS  23/01/2013
+//
 //*****************************************************************************
 
 #include "Energia.h"
@@ -75,7 +75,7 @@ __attribute__((weak)) void UARTIntHandler7(void) {}
 
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
-__attribute__((weak)) void Timer5IntHandler(void) {} 
+__attribute__((weak)) void Timer5IntHandler(void) {}
 
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
@@ -167,7 +167,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // GPIO Port L
     IntDefaultHandler,                      // SSI2 Rx and Tx
     IntDefaultHandler,                      // SSI3 Rx and Tx
-    UARTIntHandler3,                         // UART3 Rx and Tx modified by JCR
+    UARTIntHandler3,                         // UART3 Rx and Tx
     UARTIntHandler,                         // UART4 Rx and Tx
     UARTIntHandler5,                         // UART5 Rx and Tx
     UARTIntHandler6,                         // UART6 Rx and Tx
@@ -200,7 +200,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    IntDefaultHandler,                      // Timer 5 subtimer A
+    IntDefaultHandler,                       // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // Wide Timer 0 subtimer A
     IntDefaultHandler,                      // Wide Timer 0 subtimer B
@@ -217,8 +217,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // FPU
     IntDefaultHandler,                      // PECI 0
     IntDefaultHandler,                      // LPC 0
-    IntDefaultHandler,                          // I2C4 Master and Slave
-    IntDefaultHandler,                          // I2C5 Master and Slave
+    IntDefaultHandler,                      // I2C4 Master and Slave
+    IntDefaultHandler,                      // I2C5 Master and Slave
     IntDefaultHandler,                      // GPIO Port M
     IntDefaultHandler,                      // GPIO Port N
     IntDefaultHandler,                      // Quadrature Encoder 2
