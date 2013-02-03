@@ -39,7 +39,7 @@ void USCIAB0TX_ISR(void)
 		uart_tx_isr();
 
 	/* USCI_B0 I2C TX RX interrupt. */
-	if ((UC0IFG & (UCB0TXIFG | UCB0RXIFG)) != 0)
+	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UC0IFG & (UCB0TXIFG | UCB0RXIFG)) != 0)
 		i2c_txrx_isr();
 
 }
