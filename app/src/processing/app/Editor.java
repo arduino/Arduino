@@ -981,6 +981,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     try
     {
+      String devicesListOutput = Base.getPlatform().preListAllCandidateDevices();
       for (Enumeration enumeration = CommPortIdentifier.getPortIdentifiers(); enumeration.hasMoreElements();)
       {
         CommPortIdentifier commportidentifier = (CommPortIdentifier)enumeration.nextElement();
@@ -991,7 +992,7 @@ public class Editor extends JFrame implements RunnerListener {
           String curr_port = commportidentifier.getName();
 
           String description = curr_port;
-          String additionalDescription = Base.getPlatform().resolveDeviceAttachedTo(curr_port, Base.packages);
+          String additionalDescription = Base.getPlatform().resolveDeviceAttachedTo(curr_port, Base.packages, devicesListOutput);
           if (additionalDescription != null) {
             description += " (" + additionalDescription + ")";
           }
