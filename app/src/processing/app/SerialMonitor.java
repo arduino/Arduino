@@ -37,6 +37,7 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
   private JTextField textField;
   private JButton sendButton;
   private JCheckBox autoscrollBox;
+  private JCheckBox sendAsBytesBox;
   private JComboBox lineEndings;
   private JComboBox serialRates;
   private int serialRate;
@@ -108,6 +109,13 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
     pane.setBorder(new EmptyBorder(4, 4, 4, 4));
     
     autoscrollBox = new JCheckBox(_("Autoscroll"), true);
+
+    sendAsBytesBox = new JCheckBox(_("Send as bytes"), false);
+    sendAsBytesBox.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        lineEndings.setVisible(!sendAsBytesBox.isSelected());
+      }
+    });
     
     lineEndings = new JComboBox(new String[] { _("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR") });
     lineEndings.addActionListener(new ActionListener() {
@@ -148,6 +156,8 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
     serialRates.setMaximumSize(serialRates.getMinimumSize());
 
     pane.add(autoscrollBox);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(sendAsBytesBox);
     pane.add(Box.createHorizontalGlue());
     pane.add(lineEndings);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
@@ -190,17 +200,89 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
     return location;
   }
 
+  private void sendAsBytes(String s) {
+    // Cut the string on every comma and trim the spaces
+    String[] strArr = s.split(" ?, ?");
+    int length = strArr.length;
+    // Array for holding each byte of the stringarray
+    byte[] byteArr = new byte[length];
+    try {
+      for (int i = 0; i < length; i++) {
+        byteArr[i] = stringToByte(strArr[i]);
+      }
+    } catch (ByteStringException e) {
+      // One of the numbers was not following the right format so end the send
+      // and display a dialog
+      String flawedStr = e.getMessage() != null ? e.getMessage() : "";
+      String message = I18n
+          .format(_("<html> "
+                    + "<head> <style type=\"text/css\">"
+//                    + "b '{' font: 13pt \"Lucida Grande\" '}'"
+//                    + "p '{' font: 11pt \"Lucida Grande\"; margin-top: 8px '}'"
+                    + "pre '{' font: 11pt \"Lucida Sans Typewriter\"'}'"
+                    + "</style> </head>"
+                    + "<b>{0}</b>"
+                    + "<p>You should have enter a comma seperated array of bytes.</p>"
+                    + "<p>The bytes must be formed as:</p>"
+                    + "<PRE>Hex      0xff<BR>Octal    0377<BR>Decimal  255<BR>Binary   11111111</PRE>"
+                    + "<p>(examples with their respective maximum values)</p></html>"),
+                  flawedStr);
+      JOptionPane.showMessageDialog(this, message, _("Malfomated String"),
+                                    JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+    serial.write(byteArr);
+  }
+
+  private static byte stringToByte(String s) throws ByteStringException {
+    final String regexHex = "0x([\\dabcdef]){2}";
+    final String regexOct = "0[0-3]([0-7]){2}";
+    final String regexDec = "(25[0-5]|2[0-4][0-9]|1\\d{2}|[1-9]\\d?)";
+    final String regexBin = "[01]{8}";
+
+    if (s.matches(regexHex)) {
+      // cut off the 0x and convert to int
+      return (byte) Integer.parseInt(s.substring(2), 16);
+    }
+    else if (s.matches(regexOct)) {
+      // cut off the 0 and convert to int
+      return (byte) Integer.parseInt(s.substring(1), 8);
+    }
+    else if (s.matches(regexDec)) {
+      // convert to int
+      return (byte) Integer.parseInt(s);
+    }
+    else if (s.matches(regexBin)) {
+      // convert to int
+      return (byte) Integer.parseInt(s,2);
+    }
+    // the imput is not the right format so throw exception
+    throw new ByteStringException(
+        I18n.format("''{0}'' is not a well formed string!", s));
+  }
+
   private void send(String s) {
     if (serial != null) {
-      switch (lineEndings.getSelectedIndex()) {
-        case 1: s += "\n"; break;
-        case 2: s += "\r"; break;
-        case 3: s += "\r\n"; break;
+      // See if we want to send it as bytes
+      if (sendAsBytesBox.isSelected()) {
+        sendAsBytes(s);
+      } else {
+        switch (lineEndings.getSelectedIndex()) {
+        case 1:
+          s += "\n";
+          break;
+        case 2:
+          s += "\r";
+          break;
+        case 3:
+          s += "\r\n";
+          break;
+        }
+        serial.write(s);
       }
-      serial.write(s);
     }
   }
-  
+
   public void openSerialPort() throws SerialException {
     if (serial != null) return;
   
