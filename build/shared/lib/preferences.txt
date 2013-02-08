@@ -259,6 +259,7 @@ serial.databits=8
 serial.stopbits=1
 serial.parity=N
 serial.debug_rate=9600
+serial.autostart=false
 
 # I18 Preferences
 

@@ -1,3 +1,10 @@
+﻿ARDUINO 1.5.3 BETA
+
+[ide]
+* Add preference serial.autostart to start serial monitor after a
+  successful upload (Martin Falatic)
+* Save editor.window.{width|height}.default values based on last
+  editor window closed (Martin Falatic)
 
 ARDUINO 1.5.3 BETA
 
