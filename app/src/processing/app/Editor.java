@@ -2398,14 +2398,14 @@ public class Editor extends JFrame implements RunnerListener {
   // DAM: in Arduino, this is upload
   class DefaultExportHandler implements Runnable {
     public void run() {
-
+      boolean success = false;
       try {
         serialMonitor.closeSerialPort();
         serialMonitor.setVisible(false);
             
         uploading = true;
           
-        boolean success = sketch.exportApplet(false);
+        success = sketch.exportApplet(false);
         if (success) {
           statusNotice(_("Done uploading."));
         } else {
@@ -2428,20 +2428,24 @@ public class Editor extends JFrame implements RunnerListener {
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
+      if (success && Preferences.getBoolean("serial.autostart")) {
+        statusNotice(_("Done uploading... Opening serial monitor."));
+        handleSerial();
+      }
     }
   }
 
   // DAM: in Arduino, this is upload (with verbose output)
   class DefaultExportAppHandler implements Runnable {
     public void run() {
-
+      boolean success = false;
       try {
         serialMonitor.closeSerialPort();
         serialMonitor.setVisible(false);
             
         uploading = true;
           
-        boolean success = sketch.exportApplet(true);
+        success = sketch.exportApplet(true);
         if (success) {
           statusNotice(_("Done uploading."));
         } else {
@@ -2464,6 +2468,10 @@ public class Editor extends JFrame implements RunnerListener {
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
+      if (success && Preferences.getBoolean("serial.autostart")) {
+        statusNotice(_("Done uploading... Opening serial monitor."));
+        handleSerial();
+      }
     }
   }
 
