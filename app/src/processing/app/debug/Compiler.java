@@ -254,8 +254,8 @@ public class Compiler implements MessageConsumer {
     baseCommandLinker.add(runtimeLibraryName);
     baseCommandLinker.add("-L" + buildPath);
     if(arch == "lm4f"){
-      baseCommandLinker.add("-lc");
       baseCommandLinker.add("-lm");
+      baseCommandLinker.add("-lc");
       baseCommandLinker.add("-lgcc");
     } else {
       baseCommandLinker.add("-lm");
