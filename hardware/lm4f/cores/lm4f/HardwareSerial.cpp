@@ -383,11 +383,11 @@ void HardwareSerial::UARTIntHandler(void){
             // If there is space in the receive buffer, put the character
             // there, otherwise throw it away.
             //
-            while(RX_BUFFER_FULL);
+            while(RX_BUFFER_FULL) {
             rxBuffer[rxWriteIndex] =
                 (unsigned char)(lChar & 0xFF);
             rxWriteIndex = ((rxWriteIndex) + 1) % SERIAL_BUFFER_SIZE;
-
+	    }
             //
             // If we wrote anything to the transmit buffer, make sure it actually
             // gets transmitted.
