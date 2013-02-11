@@ -246,7 +246,6 @@ void SoftwareSerial::setRX(uint8_t rx)
 
 void SoftwareSerial::begin(long speed)
 {
-  Serial.println("in begin");
   _rx_delay_centering = _rx_delay_intrabit = _rx_delay_stopbit = _tx_delay = 0;
 
   for (unsigned i=0; i<sizeof(table)/sizeof(table[0]); ++i)
@@ -261,7 +260,6 @@ void SoftwareSerial::begin(long speed)
       break;
     }
   }
-  Serial.println("post find in table");
 
   // Set up RX interrupts, but only if we have a valid RX baud rate
   if (_rx_delay_stopbit)
