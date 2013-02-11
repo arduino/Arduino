@@ -1859,6 +1859,9 @@ public class JEditTextArea extends JComponent
         painter.invalidateLineRange(line,firstLine + visibleLines);
         updateScrollBars();
       }
+    
+    // Restore caret
+    this.setCaretPosition(evt.getOffset());
   }
 
   class ScrollLayout implements LayoutManager
