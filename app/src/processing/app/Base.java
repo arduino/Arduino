@@ -1655,15 +1655,44 @@ public class Base {
   }
   
   static public String toShortPath(String longpath) {
-    String shortpath = "";
-    longpath = longpath.replaceAll("\\s", "");
+    String shortpath = "", sub = "";
+    //longpath = longpath.replaceAll("\\s", "");
     longpath = longpath.toUpperCase();
     StringTokenizer tokenizer = new StringTokenizer(longpath, "\\");
     while(tokenizer.hasMoreTokens() == true) {
       String temp = tokenizer.nextToken();
-      if(temp.length() > 8)
-        temp = temp.substring(0, 6) + "~1";
-        shortpath += temp + "\\";
+      if(temp.length() > 8 && temp.indexOf(" ")>-1) // Long and with spaces
+      {
+		int thisFile = 1;
+		sub = temp.substring(0, 6);
+		
+		// Find if there are more files
+		File dir = new File(shortpath);
+  		for (File child : dir.listFiles()) 
+  		{
+  			String originalName = child.getName().toUpperCase();
+  			String tempName = originalName.replaceAll("\\s", "");
+  			int l = tempName.length();
+  			
+  			if(tempName.substring(0, l>6 ? 6:l).compareTo(sub)==0)
+  			{
+  				if(originalName.compareTo(temp)==0)
+  					break;
+  				else
+  					thisFile++;
+  			}
+  		}
+  		String ext = "";
+  		
+  		if(temp.indexOf(".")>0) // There is an extension to add
+  		{
+  			ext = temp.substring(temp.lastIndexOf(".")+1);
+  			ext = "." + ext.substring(0,ext.length()>3?3:ext.length());
+  		}
+  		
+        temp = sub + "~" + thisFile + ext;
+      }
+      shortpath += temp + "\\";
     }
     return shortpath;
   }
