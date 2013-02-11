@@ -1189,10 +1189,11 @@ public class Base {
     //menu.addActionListener(listener);
 
     boolean ifound = false;
+	boolean skipLibraryFolder = folder.equals((Base.getSketchbookFolder()));
 
     for (int i = 0; i < list.length; i++) {
-      if ((list[i].charAt(0) == '.') ||
-          list[i].equals("CVS")) continue;
+      if ((list[i].charAt(0) == '.') || list[i].startsWith("__disabled_") || list[i].equals("CVS") || 
+      	(skipLibraryFolder && list[i].compareToIgnoreCase("libraries")==0)) continue;
 
       File subfolder = new File(folder, list[i]);
       if (!subfolder.isDirectory()) continue;
@@ -1256,6 +1257,7 @@ public class Base {
       public boolean accept(File dir, String name) {
         // skip .DS_Store files, .svn folders, etc
         if (name.charAt(0) == '.') return false;
+        if (name.startsWith("__disabled_")) return false;
         if (name.equals("CVS")) return false;
         return (new File(dir, name).isDirectory());
       }
