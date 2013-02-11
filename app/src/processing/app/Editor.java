@@ -1701,6 +1701,7 @@ public class Editor extends JFrame implements RunnerListener {
    * Implements Edit &rarr; Cut.
    */
   public void handleCut() {
+  	selectLineIfNeeded();
     textarea.cut();
     sketch.setModified(true);
   }
@@ -1710,6 +1711,7 @@ public class Editor extends JFrame implements RunnerListener {
    * Implements Edit &rarr; Copy.
    */
   public void handleCopy() {
+  	selectLineIfNeeded();
     textarea.copy();
   }
 
@@ -2802,6 +2804,17 @@ public class Editor extends JFrame implements RunnerListener {
       super.show(component, x, y);
     }
   }
+  
+  	// Selects a complete line if nothing is selected
+	private void selectLineIfNeeded()
+	{
+		if (!isSelectionActive()) 
+		{
+		    int lineNo = textarea.getLineOfOffset(textarea.getCaretPosition());
+		    textarea.select(getLineStartOffset(lineNo), getLineStopOffset(lineNo));
+		}
+	}
+  
   // Search a JEditTextArea for a selected reference, returning the reference is valid, or null 
   public String searchReference(JEditTextArea jtext)
     {
