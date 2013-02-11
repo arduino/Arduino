@@ -75,9 +75,10 @@ public class AvrdudeUploader extends Uploader  {
     // avrdude wants "stk500v1" to distinguish it from stk500v2
     if (protocol.equals("stk500"))
       protocol = "stk500v1";
+    String uploadPort = Preferences.get("serial.port");
     commandDownloader.add("-c" + protocol);
-    commandDownloader.add(
-      "-P" + (Base.isWindows() ? "\\\\.\\" : "") + Preferences.get("serial.port"));
+    commandDownloader.add("-P" + (Base.isWindows() ? "\\\\.\\" : "")
+        + uploadPort);
     commandDownloader.add(
       "-b" + Integer.parseInt(boardPreferences.get("upload.speed")));
     commandDownloader.add("-D"); // don't erase
