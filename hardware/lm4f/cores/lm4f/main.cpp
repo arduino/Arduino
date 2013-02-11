@@ -27,12 +27,13 @@ int main(void)
     HWREG(GPIO_PORTF_BASE + GPIO_O_LOCK) = 0x4C4F434B;
     HWREG(GPIO_PORTF_BASE + GPIO_O_CR) |= 0x1;
     HWREG(GPIO_PORTD_BASE + GPIO_O_LOCK) = 0x4C4F434B;
-    HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= 0x8;
+    HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= 0x80;
 
     setup();
 
     for (;;) {
         loop();
+        if (serialEventRun) serialEventRun();
     }
 
 }

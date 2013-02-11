@@ -383,7 +383,9 @@ void HardwareSerial::UARTIntHandler(void){
             // If there is space in the receive buffer, put the character
             // there, otherwise throw it away.
             //
-            while(RX_BUFFER_FULL);
+            uint8_t volatile full = RX_BUFFER_FULL;
+            if(full) break;
+
             rxBuffer[rxWriteIndex] =
                 (unsigned char)(lChar & 0xFF);
             rxWriteIndex = ((rxWriteIndex) + 1) % SERIAL_BUFFER_SIZE;
@@ -404,5 +406,82 @@ UARTIntHandler(void)
     Serial.UARTIntHandler();
 }
 
-//Preinstantiate Object
+void
+UARTIntHandler1(void)
+{
+    Serial1.UARTIntHandler();
+}
+
+void
+UARTIntHandler2(void)
+{
+    Serial2.UARTIntHandler();
+}
+
+void
+UARTIntHandler3(void)
+{
+    Serial3.UARTIntHandler();
+}
+
+void
+UARTIntHandler4(void)
+{
+    Serial4.UARTIntHandler();
+}
+
+void
+UARTIntHandler5(void)
+{
+    Serial5.UARTIntHandler();
+}
+
+void
+UARTIntHandler6(void)
+{
+    Serial6.UARTIntHandler();
+}
+
+void
+UARTIntHandler7(void)
+{
+    Serial7.UARTIntHandler();
+}
+
+void serialEvent() __attribute__((weak));
+void serialEvent() {}
+void serialEvent1() __attribute__((weak));
+void serialEvent1() {}
+void serialEvent2() __attribute__((weak));
+void serialEvent2() {}
+void serialEvent3() __attribute__((weak));
+void serialEvent3() {}
+void serialEvent4() __attribute__((weak));
+void serialEvent4() {}
+void serialEvent5() __attribute__((weak));
+void serialEvent5() {}
+void serialEvent6() __attribute__((weak));
+void serialEvent6() {}
+void serialEvent7() __attribute__((weak));
+void serialEvent7() {}
+
+void serialEventRun(void)
+{
+    if (Serial.available()) serialEvent();
+    if (Serial1.available()) serialEvent1();
+    if (Serial2.available()) serialEvent2();
+    if (Serial3.available()) serialEvent3();
+    if (Serial4.available()) serialEvent4();
+    if (Serial5.available()) serialEvent5();
+    if (Serial6.available()) serialEvent6();
+    if (Serial7.available()) serialEvent7();
+}
+
 HardwareSerial Serial;
+HardwareSerial Serial1(1);
+HardwareSerial Serial2(2);
+HardwareSerial Serial3(3);
+HardwareSerial Serial4(4);
+HardwareSerial Serial5(5);
+HardwareSerial Serial6(6);
+HardwareSerial Serial7(7);

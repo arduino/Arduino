@@ -65,6 +65,22 @@ class HardwareSerial : public Stream
 };
 
 extern HardwareSerial Serial;
+extern HardwareSerial Serial1;
+extern HardwareSerial Serial2;
+extern HardwareSerial Serial3;
+extern HardwareSerial Serial4;
+extern HardwareSerial Serial5;
+extern HardwareSerial Serial6;
+extern HardwareSerial Serial7;
+
 extern "C" void UARTIntHandler(void);
+extern "C" void UARTIntHandler1(void);
+extern "C" void UARTIntHandler2(void);
+extern "C" void UARTIntHandler3(void);
+extern "C" void UARTIntHandler4(void);
+extern "C" void UARTIntHandler5(void);
+extern "C" void UARTIntHandler6(void);
+extern "C" void UARTIntHandler7(void);
+
 extern void serialEventRun(void) __attribute__((weak));
 #endif
