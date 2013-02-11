@@ -2119,6 +2119,7 @@ public class JEditTextArea extends JComponent
 
   class DragHandler implements MouseMotionListener
   {
+  	int prevStart = -1, prevStop = -1;
     public void mouseDragged(MouseEvent evt)
     {
       if (popup != null && popup.isVisible()) return;
@@ -2127,6 +2128,18 @@ public class JEditTextArea extends JComponent
         setSelectionRectangular((evt.getModifiers()
                                  & InputEvent.CTRL_MASK) != 0);
         select(getMarkPosition(),xyToOffset(evt.getX(),evt.getY()));
+        
+		int start = getSelectionStartLine(), stop =getSelectionStopLine();
+		//int selectedLines = Math.max(stop,start)-Math.min(stop,start);
+		int selectedLines = stop-start;
+		
+        if(start!=stop && (prevStart!=start || prevStop!=stop) && selectedLines>getVisibleLines())
+        {
+        	try { Thread.sleep(10*(Math.max(20-(selectedLines-getVisibleLines()),4))); }  catch (Exception e) {} 
+        		
+        	prevStart =	start;
+        	prevStop =stop;
+        }
       } else {
         int line = yToLine(evt.getY());
         if ( selectWord ) {
