@@ -952,7 +952,7 @@ public class Base {
   }
 
 
-  protected void rebuildToolbarMenu(JMenu menu) {
+  protected int rebuildToolbarMenu(JMenu menu) {
     JMenuItem item;
     menu.removeAll();
 
@@ -978,15 +978,25 @@ public class Base {
 
     //System.out.println("rebuilding examples menu");
     // Add each of the subfolders of examples directly to the menu
+    int n = 0;
     try {
-      boolean found = addSketches(menu, examplesFolder, true);
-      if (found) menu.addSeparator();
-      found = addSketches(menu, getSketchbookLibrariesFolder(), true);
-      if (found) menu.addSeparator();
-      addSketches(menu, librariesFolder, true);
+      JMenu temp = new JMenu("Examples");
+      boolean found = addSketches(temp, examplesFolder, true);
+      if (found) {menu.add(temp); n++;};
+
+	  temp = new JMenu("Contributed Libraries");
+      found = addSketches(temp, getSketchbookLibrariesFolder(), true);
+      if (found) {menu.add(temp); n++;};
+      
+      temp = new JMenu("Libraries");
+      addSketches(temp, librariesFolder, true);
+      menu.add(temp);
+      n++;
     } catch (IOException e) {
       e.printStackTrace();
     }
+    
+    return n;
   }
 
 
@@ -1003,7 +1013,7 @@ public class Base {
   }
 
 
-  public void rebuildImportMenu(JMenu importMenu) {
+  public int rebuildImportMenu(JMenu importMenu) {
     //System.out.println("rebuilding import menu");
     importMenu.removeAll();
 
@@ -1025,14 +1035,15 @@ public class Base {
       File sketchbookLibraries = getSketchbookLibrariesFolder();
       boolean found = addLibraries(importMenu, sketchbookLibraries);
       if (found) {
-        JMenuItem contrib = new JMenuItem(_("Contributed"));
+        /*JMenuItem contrib = new JMenuItem(_("Contributed"));
         contrib.setEnabled(false);
-        importMenu.insert(contrib, separatorIndex);
+        importMenu.insert(contrib, separatorIndex);*/
         importMenu.insertSeparator(separatorIndex);
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
+    return separatorIndex;
   }
 
 
