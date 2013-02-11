@@ -266,16 +266,11 @@ void SoftwareSerial::begin(long speed)
   {
     attachInterrupt(_receivePin, SoftwareSerial::handle_interrupt, FALLING);
 
-    Serial.println("pre delay");
-    Serial.print("_tx_delay: ");
-    Serial.println(_tx_delay);
     tunedDelay(_tx_delay); // if we were low this establishes the end
   }
-  Serial.println("post stopbit");
 
 
   listen();
-  Serial.println("post listen");
 }
 
 void SoftwareSerial::end()
