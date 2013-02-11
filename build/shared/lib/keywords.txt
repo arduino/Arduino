@@ -181,7 +181,7 @@ Serial4	KEYWORD3	Serial
 Serial5	KEYWORD3	Serial
 Serial6	KEYWORD3	Serial
 Serial7	KEYWORD3	Serial
-write	KEYWORD2	Serial_Begin
+write	KEYWORD2	Serial_Write
 begin	KEYWORD2	Serial_Begin
 end	KEYWORD2	Serial_End
 peek	KEYWORD2	Serial_Peek
