@@ -207,8 +207,13 @@ public class SketchCode {
     document = d;
   }
   
+  // Maximum clipboard size
+  private final int undoLimit = 10000;
   
   public UndoManager getUndo() {
+  	if(undo.getLimit()!=undoLimit)
+  		undo.setLimit(undoLimit);
+  		
     return undo;
   }
   
