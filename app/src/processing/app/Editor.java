@@ -1085,7 +1085,8 @@ public class Editor extends JFrame implements RunnerListener {
         }
       });
     menu.add(item);
-
+    menu.addSeparator();
+	
     item = new JMenuItem(_("Frequently Asked Questions"));
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
