@@ -26,7 +26,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-
+import java.util.regex.*;
 import javax.swing.*;
 
 import processing.app.debug.Compiler;
@@ -586,6 +586,49 @@ public class Base {
     }
   }
 
+  private void findInsertPoint(Editor editor)
+  {
+    // Find the start point
+    String t = editor.getText();
+    
+    try {
+		Pattern regex = Pattern.compile("void\\s+setup\\s*\\(\\s*\\)");
+		Matcher regexMatcher = regex.matcher(t);
+		while (regexMatcher.find()) 
+		{
+			int totalLeftBracketsOpened = 0;
+			
+			for(int i = regexMatcher.end(); i<t.length(); i++)
+			{
+				// Search the closing bracket
+				if(t.charAt(i)=='{')
+					totalLeftBracketsOpened++;
+				else
+					if(t.charAt(i)=='}')
+					{
+						if(--totalLeftBracketsOpened==0)
+						{
+							// Find input point here
+							for(int j = i-1; j > regexMatcher.end();j--)
+							{
+								int c = t.charAt(j);
+								
+								if(c!=10 && c!=13)
+								{
+									editor.setSelection(++j,j);
+									break;
+								}
+							}
+							break;
+						}
+					}
+			}
+			break;
+		} 
+	} catch (PatternSyntaxException ex) {
+		// Syntax error in the regular expression
+	}
+  }
 
   /**
    * Replace the sketch in the current window with a new untitled document.
@@ -607,6 +650,7 @@ public class Base {
       String path = createNewUntitled();
       if (path != null) {
         activeEditor.handleOpenInternal(path);
+        findInsertPoint(activeEditor);
         activeEditor.untitled = true;
       }
 //      return true;
@@ -630,6 +674,7 @@ public class Base {
     activeEditor.internalCloseRunner();
 
     boolean loaded = activeEditor.handleOpenInternal(path);
+    findInsertPoint(activeEditor);
     if (!loaded) {
       // replace the document without checking if that's ok
       handleNewReplaceImpl();
@@ -754,7 +799,7 @@ public class Base {
     editor.setVisible(true);
 
 //    System.err.println("exiting handleOpen");
-
+	findInsertPoint(editor);
     return editor;
   }
 
