@@ -634,6 +634,34 @@ public class Editor extends JFrame implements RunnerListener {
       });
     sketchMenu.add(item);
 
+	sketchMenu.addSeparator();
+
+	item = new JMenuItem(_("Copy Hex File as Path"));
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+        	String s = sketch.getSketchHexFilePath(true);
+        	if(sketch==null?false: s.length()>0)
+        	{
+          		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(s),null);
+        	}
+        	else
+        	{
+        		 Base.showMessage(_("No Hex File"),
+                           _("There is no Hex for this Sketch yet. Verify the Sketch first"));
+        	}
+        }
+      });
+    sketchMenu.add(item);
+    
+    
+    
+    item = newJMenuItemAlt(_("Show Compilation Folder"), 'R');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          Base.openFolder(sketch.getTempBuildFolder());
+        }
+      });
+    sketchMenu.add(item);
 //    item = newJMenuItemShift("Verify / Compile (verbose)", 'R');
 //    item.addActionListener(new ActionListener() {
 //        public void actionPerformed(ActionEvent e) {
