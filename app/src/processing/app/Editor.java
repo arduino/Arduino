@@ -177,7 +177,7 @@ public class Editor extends JFrame implements RunnerListener {
           // re-add the sub-menus that are shared by all windows
           fileMenu.insert(sketchbookMenu, 2);
           fileMenu.insert(examplesMenu, 3);
-          sketchMenu.insert(importMenu, 4);
+          sketchMenu.insert(importMenu, 7);
           toolsMenu.insert(boardsMenu, numTools);
           toolsMenu.insert(serialMenu, numTools + 1);
         }
@@ -216,7 +216,8 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (toolbarMenu == null) {
       toolbarMenu = new JMenu();
-      base.rebuildToolbarMenu(toolbarMenu);
+      int n =base.rebuildToolbarMenu(toolbarMenu);
+      MenuScroller.setScrollerFor(toolbarMenu, -1,-1, 2,n>0?n+1:0);
     }
     toolbar = new EditorToolbar(this, toolbarMenu);
     upper.add(toolbar);
@@ -501,13 +502,14 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (sketchbookMenu == null) {
       sketchbookMenu = new JMenu(_("Sketchbook"));
+      MenuScroller.setScrollerFor(sketchbookMenu);
       base.rebuildSketchbookMenu(sketchbookMenu);
     }
     fileMenu.add(sketchbookMenu);
 
     if (examplesMenu == null) {
       examplesMenu = new JMenu(_("Examples"));
-      base.rebuildExamplesMenu(examplesMenu);
+      rebuildExamplesMenu();
     }
     fileMenu.add(examplesMenu);
 
@@ -597,8 +599,29 @@ public class Editor extends JFrame implements RunnerListener {
     }
     return fileMenu;
   }
+  
+  private void rebuildExamplesMenu(){
+      base.rebuildExamplesMenu(examplesMenu);
 
-
+      int upper = 0, lower = 0;
+      for(int i=0;i<examplesMenu.getMenuComponentCount();i++)
+      {
+      	//System.out.println(examplesMenu.getMenuComponent(i).getClass().getName());
+      	if(examplesMenu.getMenuComponent(i).getClass().getName().contains("Separator"))
+	      	if(upper==0)
+	      	{
+		    	upper = i;
+	      	}
+	      	else
+	      	{
+	      		lower = examplesMenu.getItemCount()-i;
+	      		break;
+	      	}
+      }
+      MenuScroller.setScrollerFor(examplesMenu,-1,-1,upper>0?upper+1:0,lower);
+  }
+  	
+  
   protected JMenu buildSketchMenu() {
     JMenuItem item;
     sketchMenu = new JMenu(_("Sketch"));
@@ -652,6 +675,52 @@ public class Editor extends JFrame implements RunnerListener {
       });
     sketchMenu.add(item);
 
+	sketchMenu.addSeparator();
+
+    if (importMenu == null) {
+      importMenu = new JMenu(_("Import Library"));
+      int n = base.rebuildImportMenu(importMenu);
+      MenuScroller.setScrollerFor(importMenu,-1,-1,n+1,0);
+    }
+    sketchMenu.add(importMenu);
+    
+	// This is the library manager, since is not OS agnostic, for now it is disabled
+	/*if(Base.isWindows()) 
+	{
+	    item = new JMenuItem(_("Manage Libraries..."));
+	    item.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+          
+				try {
+					(new Thread(new Runnable() { 
+					public void run() { 
+						try
+						{
+							String path = Base.getSketchbookLibrariesPath(), libs = "";
+						
+							for(File lib : Base.getLibraries())
+							{
+								if(lib.getPath().contains(path))
+									libs += (libs.length()==0? "":"|") + lib.getName();
+							}
+						
+						Process p = Runtime.getRuntime().exec(new String[] {Base.getHardwarePath() + "/../erw/" + "libman", "\"" + path + "\"","\"" + libs + "\""});
+						p.waitFor();
+						}
+						catch (Throwable t) {
+						}
+						
+						base.rebuildImportMenu(importMenu);
+						rebuildExamplesMenu();
+						base.rebuildToolbarMenu(toolbarMenu);
+					}})).start(); 
+				} catch (Throwable t) {
+				}
+	        }
+	      });
+	    sketchMenu.add(item);
+	}*/
+
     return sketchMenu;
   }
 
@@ -684,6 +753,7 @@ public class Editor extends JFrame implements RunnerListener {
     
     if (boardsMenu == null) {
       boardsMenu = new JMenu(_("Board"));
+      MenuScroller.setScrollerFor(boardsMenu);
       base.rebuildBoardsMenu(boardsMenu);
     }
     menu.add(boardsMenu);
