@@ -560,7 +560,10 @@ public class Base {
 
     // Make an empty pde file
     File newbieFile = new File(newbieDir, newbieName + ".ino");
-    new FileOutputStream(newbieFile);  // create the file
+    FileOutputStream f = new FileOutputStream(newbieFile);  // create the file
+    f.write(("void setup()\n{\n  // This code will only run once, after each powerup or reset of the board\n  "+
+    	"\n}\n\nvoid loop()\n{\n  // This code will loops consecutively\n  \n}").getBytes());
+    f.close();
     return newbieFile.getAbsolutePath();
   }
 
