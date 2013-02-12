@@ -527,10 +527,11 @@ public class Serial implements SerialPortEventListener {
    * it may be because the DLL doesn't have its exec bit set.
    * Why the hell that'd be the case, who knows.
    */
-  static public String[] list() {
-    Vector list = new Vector();
+  static public List<String> list() {
+    List<String> list = new ArrayList<String>();
     try {
       //System.err.println("trying");
+      @SuppressWarnings("unchecked")
       Enumeration portList = CommPortIdentifier.getPortIdentifiers();
       //System.err.println("got port list");
       while (portList.hasMoreElements()) {
@@ -540,7 +541,7 @@ public class Serial implements SerialPortEventListener {
 
         if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
           String name = portId.getName();
-          list.addElement(name);
+          list.add(name);
         }
       }
 
@@ -553,9 +554,7 @@ public class Serial implements SerialPortEventListener {
       errorMessage("ports", e);
     }
     //System.err.println("move out");
-    String outgoing[] = new String[list.size()];
-    list.copyInto(outgoing);
-    return outgoing;
+    return list;
   }
 
 
