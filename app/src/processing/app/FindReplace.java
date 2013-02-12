@@ -114,7 +114,7 @@ public class FindReplace extends JFrame implements ActionListener {
     wrapAroundBox.setSelected(wrapAround);
     pain.add(wrapAroundBox);
     
-    searchAllFilesBox = new JCheckBox(_("Search all Sketch Tabs"));
+    searchAllFilesBox = new JCheckBox(_("Search All Tabs"));
     searchAllFilesBox.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           searchAllFiles = searchAllFilesBox.isSelected();
@@ -192,15 +192,15 @@ public class FindReplace extends JFrame implements ActionListener {
 
     ignoreCaseBox.setBounds(EDGE + labelDimension.width + SMALL,
                             ypos,
-                            (fieldWidth-SMALL)/4, fieldHeight);
+                            (fieldWidth-SMALL)/3, fieldHeight);
 
-    wrapAroundBox.setBounds(EDGE + labelDimension.width + SMALL + (fieldWidth-SMALL)/4 + SMALL,
+    wrapAroundBox.setBounds(EDGE + labelDimension.width + SMALL + (fieldWidth-SMALL)/3 + SMALL,
                             ypos,
-                            (fieldWidth-SMALL)/4, fieldHeight);
+                            (fieldWidth-SMALL)/3, fieldHeight);
 
-	searchAllFilesBox.setBounds(EDGE + labelDimension.width + SMALL + (int)((fieldWidth-SMALL)/1.9) + SMALL,
+	searchAllFilesBox.setBounds(EDGE + labelDimension.width + SMALL + (int)((fieldWidth-SMALL)/1.5) + SMALL,
                             ypos,
-                            (fieldWidth-SMALL)/2, fieldHeight);
+                            (int)((fieldWidth-SMALL)/1.5), fieldHeight);
 
     ypos += fieldHeight + SMALL;
 
