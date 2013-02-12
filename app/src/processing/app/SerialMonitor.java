@@ -40,6 +40,7 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
   private JComboBox lineEndings;
   private JComboBox serialRates;
   private int serialRate;
+  public Boolean isOpenPending; // Flag to handle schedule opening
 
   public SerialMonitor(String port) {
     super(port);
@@ -202,6 +203,7 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
   }
   
   public void openSerialPort() throws SerialException {
+  	isOpenPending = false;
     if (serial != null) return;
   
     serial = new Serial(port, serialRate);

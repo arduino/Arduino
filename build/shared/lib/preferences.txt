@@ -255,3 +255,4 @@ serial.databits=8
 serial.stopbits=1
 serial.parity=N
 serial.debug_rate=9600
+serial.open_monitor=false

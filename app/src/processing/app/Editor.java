@@ -537,10 +537,20 @@ public class Editor extends JFrame implements RunnerListener {
       });
     fileMenu.add(saveAsMenuItem);
 
+	fileMenu.addSeparator();
+
     item = newJMenuItem(_("Upload"), 'U');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          handleExport(false);
+          handleExport(false,false);
+        }
+      });
+    fileMenu.add(item);
+    
+    item = newJMenuItem(_("Upload and then Open Serial Monitor"), 'M');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleExport(false,true);
         }
       });
     fileMenu.add(item);
@@ -550,7 +560,7 @@ public class Editor extends JFrame implements RunnerListener {
         item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              handleExport(true);
+              handleExport(true,false);
             }
         });
 
@@ -2457,17 +2467,29 @@ public class Editor extends JFrame implements RunnerListener {
    * Made synchronized to (hopefully) avoid problems of people
    * hitting export twice, quickly, and horking things up.
    */
-  synchronized public void handleExport(final boolean usingProgrammer) {
+  
+  synchronized public void handleExport(final boolean usingProgrammer, final boolean showSerialMonitor) {
     //if (!handleExportCheckModified()) return;
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
     status.progress(_("Uploading to I/O Board..."));
-
+	
+	if(!usingProgrammer)
+		exportHandler = new DefaultExportHandler(showSerialMonitor);
+		
     new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
   }
 
   // DAM: in Arduino, this is upload
   class DefaultExportHandler implements Runnable {
+
+  	DefaultExportHandler(Boolean openSerial) { 
+  		serialMonitor.isOpenPending = openSerial; // Open serial monitor when ending
+  	}
+  	DefaultExportHandler() { 
+  		if(serialMonitor != null)
+  			serialMonitor.isOpenPending = false; // Do not serial monitor when ending, as default
+  	}
     public void run() {
 
       try {
@@ -2479,8 +2501,13 @@ public class Editor extends JFrame implements RunnerListener {
         boolean success = sketch.exportApplet(false);
         if (success) {
           statusNotice(_("Done uploading."));
+          if(serialMonitor.isOpenPending)
+          {
+          	serialMonitor.openSerialPort();
+        	serialMonitor.setVisible(true);
+          }
         } else {
-            statusError(_("Upload failed."));
+          // error message will already be visible
         }
       } catch (SerialNotFoundException e) {
         populateSerialMenu();
@@ -2499,6 +2526,7 @@ public class Editor extends JFrame implements RunnerListener {
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
+      serialMonitor.isOpenPending = false;
     }
   }
 
@@ -2574,8 +2602,11 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   public void handleSerial() {
-    if (uploading) return;
-    
+    if (uploading)
+    {
+    	serialMonitor.isOpenPending = true; // Open serial when ending 
+    	return;
+    }
     try {
       serialMonitor.openSerialPort();
       serialMonitor.setVisible(true);

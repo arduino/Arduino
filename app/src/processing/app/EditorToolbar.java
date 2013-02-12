@@ -35,15 +35,22 @@ import javax.swing.event.*;
  * run/stop/etc buttons for the ide
  */
 public class EditorToolbar extends JComponent implements MouseInputListener, KeyListener {
-
+  /** Open the serial mode automatically always, reverts default action. */
+  static final boolean autoOpenSerialMonitor = Preferences.getBoolean("serial.open_monitor");
+  
   /** Rollover titles for each button. */
   static final String title[] = {
-    _("Verify"), _("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
+    _("Verify"), autoOpenSerialMonitor ?  _("Upload and then Open Serial Monitor"):_("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
+  };
+  
+  /** Titles for each button when the control key is pressed. */ 
+  static final String titleControl[] = {
+    _("Verify"), !autoOpenSerialMonitor ?  _("Upload and then Open Serial Monitor"):_("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
   };
 
   /** Titles for each button when the shift key is pressed. */ 
   static final String titleShift[] = {
-    _("Verify"), _("Upload Using Programmer"), _("New Editor Window"), _("Open in Another Window"), _("Save"), _("Serial Monitor")
+    _("Verify (w/ Verbose Output)"), _("Upload Using Programmer"), _("New Editor Window"), _("Open in Another Window"), _("Save"), _("Serial Monitor")
   };
 
   static final int BUTTON_COUNT  = title.length;
@@ -94,7 +101,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   Font statusFont;
   Color statusColor;
 
-  boolean shiftPressed;
+  boolean shiftPressed, controlPressed;
 
   public EditorToolbar(Editor editor, JMenu menu) {
     this.editor = editor;
@@ -200,10 +207,16 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     */
     if (currentRollover != -1) {
       int statusY = (BUTTON_HEIGHT + g.getFontMetrics().getAscent()) / 2;
-      String status = shiftPressed ? titleShift[currentRollover] : title[currentRollover];
+      String status = shiftPressed ? titleShift[currentRollover] : (controlPressed ? titleControl[currentRollover] : title[currentRollover]);
+           
       if (currentRollover != SERIAL)
         g.drawString(status, (buttonCount-1) * BUTTON_WIDTH + 3 * BUTTON_GAP, statusY);
       else {
+      	// Pending
+		if(editor.serialMonitor.isOpenPending!=null)
+			if(editor.serialMonitor.isOpenPending)
+				status += " (Monitor will open after upload)";
+  		
         int statusX = x1[SERIAL] - BUTTON_GAP;
         statusX -= g.getFontMetrics().stringWidth(status);
         g.drawString(status, statusX, statusY);
@@ -215,7 +228,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     if (!isEnabled()) {
       screen.setColor(new Color(0,0,0,100));
       screen.fillRect(0, 0, getWidth(), getHeight());
-  }
+  	}
   }
 
 
@@ -321,7 +334,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     switch (sel) {
     case RUN:
-      editor.handleRun(false);
+      editor.handleRun(e.isShiftDown());
       break;
 
 //    case STOP:
@@ -346,11 +359,13 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       break;
 
     case EXPORT:
-      editor.handleExport(e.isShiftDown());
+      boolean t = e.isControlDown();
+      editor.handleExport(e.isShiftDown(),autoOpenSerialMonitor ? !t : t); // Control is down if autoOpenSerialMonitor is true in preferences
       break;
 
     case SERIAL:
       editor.handleSerial();
+      handleMouse(e);
       break;
     }
   }
@@ -401,13 +416,21 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
       shiftPressed = true;
       repaint();
-}
+	}
+    if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+      controlPressed = true;
+      repaint();
+    }
   }
 
 
   public void keyReleased(KeyEvent e) {
     if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
       shiftPressed = false;
+      repaint();
+    }
+    if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+      controlPressed = false;
       repaint();
     }
   }
