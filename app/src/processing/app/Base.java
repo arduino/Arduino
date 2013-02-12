@@ -561,8 +561,8 @@ public class Base {
     // Make an empty pde file
     File newbieFile = new File(newbieDir, newbieName + ".ino");
     FileOutputStream f = new FileOutputStream(newbieFile);  // create the file
-    f.write(("void setup()\n{\n  // This code will only run once, after each powerup or reset of the board\n  "+
-    	"\n}\n\nvoid loop()\n{\n  // This code will loops consecutively\n  \n}").getBytes());
+    f.write(("void setup()\n{\n  // put your setup code here, to run once:\n  "+
+    	"\n}\n\nvoid loop()\n{\n  // put your main code here, to run repeatedly:\n  \n}").getBytes());
     f.close();
     return newbieFile.getAbsolutePath();
   }
