@@ -1300,8 +1300,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItem(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK));
     return menuItem;
   }
 
@@ -1311,9 +1310,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItemShift(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    modifiers |= ActionEvent.SHIFT_MASK;
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK));
     return menuItem;
   }
 
@@ -1324,8 +1321,6 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItemAlt(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    //int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    //menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
     menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_ALT_KEY_MASK));
     return menuItem;
   }
