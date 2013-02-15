@@ -60,8 +60,6 @@ static const uint8_t A7 = 21;
 #define digitalPinToPCMSK(p)    (((p) <= 7) ? (&PCMSK2) : (((p) <= 13) ? (&PCMSK0) : (((p) <= 21) ? (&PCMSK1) : ((uint8_t *)0))))
 #define digitalPinToPCMSKbit(p) (((p) <= 7) ? (p) : (((p) <= 13) ? ((p) - 8) : ((p) - 14)))
 
-#ifdef ARDUINO_MAIN
-
 // On the Arduino board, digital pins are also used
 // for the analog output (software PWM).  Analog input
 // pins are a separate set.
@@ -105,31 +103,31 @@ static const uint8_t A7 = 21;
 // these arrays map port names (e.g. port B) to the
 // appropriate addresses for various functions (e.g. reading
 // and writing)
-const uint16_t PROGMEM port_to_mode_PGM[] = {
+const static volatile uint8_t *port_to_mode[] = {
 	NOT_A_PORT,
 	NOT_A_PORT,
-	(uint16_t) &DDRB,
-	(uint16_t) &DDRC,
-	(uint16_t) &DDRD,
+	&DDRB,
+	&DDRC,
+	&DDRD,
 };
 
-const uint16_t PROGMEM port_to_output_PGM[] = {
+const static volatile uint8_t *port_to_output[] = {
 	NOT_A_PORT,
 	NOT_A_PORT,
-	(uint16_t) &PORTB,
-	(uint16_t) &PORTC,
-	(uint16_t) &PORTD,
+	&PORTB,
+	&PORTC,
+	&PORTD,
 };
 
-const uint16_t PROGMEM port_to_input_PGM[] = {
+const static volatile uint8_t *port_to_input[] = {
 	NOT_A_PORT,
 	NOT_A_PORT,
-	(uint16_t) &PINB,
-	(uint16_t) &PINC,
-	(uint16_t) &PIND,
+	&PINB,
+	&PINC,
+	&PIND,
 };
 
-const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
+const static uint8_t digital_pin_to_port[] = {
 	PD, /* 0 */
 	PD,
 	PD,
@@ -152,7 +150,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PC,
 };
 
-const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
+const static uint8_t digital_pin_to_bit_mask[] = {
 	_BV(0), /* 0, port D */
 	_BV(1),
 	_BV(2),
@@ -175,7 +173,7 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(5),
 };
 
-const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
+const static uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /* 0 - port D */
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
@@ -212,7 +210,5 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 };
-
-#endif
 
 #endif

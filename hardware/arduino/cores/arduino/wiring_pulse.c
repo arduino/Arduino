@@ -31,6 +31,7 @@
  * before the start of the pulse. */
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
 {
+  /*
 	// cache the port and bit of the pin in order to speed up the
 	// pulse width measuring loop and achieve finer resolution.  calling
 	// digitalRead() instead yields much coarser resolution.
@@ -66,4 +67,6 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
 	// and the start of the loop. There will be some error introduced by
 	// the interrupt handlers.
 	return clockCyclesToMicroseconds(width * 21 + 16); 
+  */
+  return 0;
 }
