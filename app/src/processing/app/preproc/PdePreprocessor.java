@@ -207,7 +207,7 @@ public class PdePreprocessor {
     for (int i = 0; i < prototypes.size(); i++) {
       out.print(prototypes.get(i) + "\n");
     }
-    
+    out.println("#line 1");
     out.print(program.substring(prototypeInsertionPoint));
   }
 
