@@ -47,30 +47,68 @@ extern "C" {
 
 #include "pins_arduino.h"
 
+// The extern PROGMEM versions of each of these is for runtime lookups,
+// the static const versions are for lookups when the pin is known at compile time
+// (see the below inline functions, and wiring_digital.c)
+// Source of the pin mappings is pins_arduino.h
+
+extern const uint16_t PROGMEM port_to_mode_P[];
+static const uint16_t port_to_mode[] = { PORT_TO_MODE };
+
+extern const uint16_t PROGMEM port_to_output_P[];
+static const uint16_t port_to_output[] = { PORT_TO_OUTPUT };
+
+extern const uint16_t PROGMEM port_to_input_P[];
+static const uint16_t port_to_input[] = { PORT_TO_INPUT };
+
+extern const uint8_t PROGMEM digital_pin_to_port_P[];
+static const uint8_t digital_pin_to_port[] = { DIGITAL_PIN_TO_PORT };
+
+extern const uint8_t PROGMEM digital_pin_to_bit_mask_P[];
+static const uint8_t digital_pin_to_bit_mask[] = { DIGITAL_PIN_TO_BIT_MASK };
+
+extern const uint8_t PROGMEM digital_pin_to_timer_P[];
+static const uint8_t digital_pin_to_timer[] = { DIGITAL_PIN_TO_TIMER };
+
 __attribute__((always_inline))
 static inline uint8_t digitalPinToPort(uint8_t pin) {
-  return digital_pin_to_port[pin];
+  return __builtin_constant_p(pin) ? digital_pin_to_port[pin]
+    : pgm_read_byte( digital_pin_to_port_P + pin );
 }
 
 __attribute__((always_inline))
 static inline volatile uint8_t *portOutputRegister(uint8_t port_idx) {
-  return (volatile uint8_t *)port_to_output[port_idx];
+  return (volatile uint8_t *)( __builtin_constant_p(port_idx) ?
+                               port_to_output[port_idx]
+                               : pgm_read_word( port_to_output_P + port_idx) );
 }
 
 __attribute__((always_inline))
 static inline volatile uint8_t *portDirectionRegister(uint8_t port_idx) {
-  return (volatile uint8_t *)port_to_mode[port_idx];
+  return (volatile uint8_t *)( __builtin_constant_p(port_idx) ?
+                               port_to_mode[port_idx]
+                               : pgm_read_word( port_to_mode_P + port_idx ) );
 }
 
 __attribute__((always_inline))
 static inline volatile uint8_t *portInputRegister(uint8_t port_idx) {
-  return (volatile uint8_t *)port_to_input[port_idx];
+  return (volatile uint8_t *)( __builtin_constant_p(port_idx) ?
+                               port_to_input[port_idx]
+                               : pgm_read_word( port_to_input_P + port_idx ) );
 }
 
 __attribute__((always_inline))
 static inline uint8_t digitalPinToBitMask(uint8_t pin) {
-  return digital_pin_to_bit_mask[pin];
+  return __builtin_constant_p(pin) ? digital_pin_to_bit_mask[pin]
+    : pgm_read_byte( digital_pin_to_bit_mask_P + pin );
 }
+
+__attribute__((always_inline))
+static inline uint8_t digitalPinToTimer(uint8_t pin) {
+  return __builtin_constant_p(pin) ? digital_pin_to_timer[pin]
+    : pgm_read_byte( digital_pin_to_timer_P + pin );
+}
+
 
 /*
 * Check if a given pin can be accessed in a single instruction.
@@ -78,29 +116,30 @@ static inline uint8_t digitalPinToBitMask(uint8_t pin) {
 * When accessing lower 32 IO ports we can use SBI/CBI instructions, which are atomic. However
 * other IO ports require load+modify+store and we need to make them atomic by disabling
 * interrupts.
+*
+* This routine only returns true if the port is known at compile time, because
+* we'll be using memory mapped I/O regardless in the latter case.
 */
 __attribute__((always_inline))
 static inline int portIsAtomic(volatile uint8_t *port) {
   /* SBI/CBI instructions only work on lower 32 IO ports */
-  return port <= (volatile uint8_t*) & _SFR_IO8(0x1F);
+  return __builtin_constant_p(port) && port <= (volatile uint8_t*) & _SFR_IO8(0x1F);
 }
 
 __attribute__((always_inline))
-static inline void _pinModeClause(uint8_t pin, uint8_t mode) {
-  // At this point 'pin' is always known at compile time, 'mode' might be
-  const uint8_t port = digital_pin_to_port[pin];
+static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
+  const uint8_t port = digitalPinToPort(pin);
   volatile uint8_t *dir = portDirectionRegister(port);
   volatile uint8_t *out = portOutputRegister(port);
-  const uint8_t bitmask = digital_pin_to_bit_mask[pin];
+  const uint8_t bitmask = digitalPinToBitMask(pin);
 
   if (pin >= NUM_DIGITAL_PINS) return;
 
-  // We can only do this w/o disabling interrupts is if 'mode'
-  // is known at compile time, the direction register can use sbi/cbi
-  // & we're setting output...
-  if(__builtin_constant_p(mode) && portIsAtomic(dir) && (mode == OUTPUT)) {
+  // We can only do this w/o disabling interrupts if setting output,
+  // and the direction register can use sbi/cbi
+  if(portIsAtomic(dir) && (mode == OUTPUT)) {
     *dir |= bitmask;
-  }  else { // Otherwise, need to disable interrupts at minimum...
+  }  else { // Otherwise, we need to disable interrupts...
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
       if(mode == INPUT_PULLUP) {
         *out |= bitmask;
@@ -114,86 +153,10 @@ static inline void _pinModeClause(uint8_t pin, uint8_t mode) {
       }
     }
   }
-}
-#define _PINMODECLAUSE(P) case P: _pinModeClause(P, mode); break
 
-__attribute__((always_inline))
-static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
-  switch(pin) {
-    _PINMODECLAUSE(0);
-    _PINMODECLAUSE(1);
-    _PINMODECLAUSE(2);
-    _PINMODECLAUSE(3);
-    _PINMODECLAUSE(4);
-    _PINMODECLAUSE(5);
-    _PINMODECLAUSE(6);
-    _PINMODECLAUSE(7);
-    _PINMODECLAUSE(8);
-    _PINMODECLAUSE(9);
-    _PINMODECLAUSE(10);
-    _PINMODECLAUSE(11);
-    _PINMODECLAUSE(12);
-    _PINMODECLAUSE(13);
-    _PINMODECLAUSE(14);
-    _PINMODECLAUSE(15);
-    _PINMODECLAUSE(16);
-    _PINMODECLAUSE(17);
-    _PINMODECLAUSE(18);
-    _PINMODECLAUSE(19);
-    _PINMODECLAUSE(20);
-    _PINMODECLAUSE(21);
-    _PINMODECLAUSE(22);
-    _PINMODECLAUSE(23);
-    _PINMODECLAUSE(24);
-    _PINMODECLAUSE(25);
-    _PINMODECLAUSE(26);
-    _PINMODECLAUSE(27);
-    _PINMODECLAUSE(28);
-    _PINMODECLAUSE(29);
-    _PINMODECLAUSE(30);
-    _PINMODECLAUSE(31);
-    _PINMODECLAUSE(32);
-    _PINMODECLAUSE(33);
-    _PINMODECLAUSE(34);
-    _PINMODECLAUSE(35);
-    _PINMODECLAUSE(36);
-    _PINMODECLAUSE(37);
-    _PINMODECLAUSE(38);
-    _PINMODECLAUSE(39);
-    _PINMODECLAUSE(40);
-    _PINMODECLAUSE(41);
-    _PINMODECLAUSE(42);
-    _PINMODECLAUSE(43);
-    _PINMODECLAUSE(44);
-    _PINMODECLAUSE(45);
-    _PINMODECLAUSE(46);
-    _PINMODECLAUSE(47);
-    _PINMODECLAUSE(48);
-    _PINMODECLAUSE(49);
-    _PINMODECLAUSE(50);
-    _PINMODECLAUSE(51);
-    _PINMODECLAUSE(52);
-    _PINMODECLAUSE(53);
-    _PINMODECLAUSE(54);
-    _PINMODECLAUSE(55);
-    _PINMODECLAUSE(56);
-    _PINMODECLAUSE(57);
-    _PINMODECLAUSE(58);
-    _PINMODECLAUSE(59);
-    _PINMODECLAUSE(60);
-    _PINMODECLAUSE(61);
-    _PINMODECLAUSE(62);
-    _PINMODECLAUSE(63);
-    _PINMODECLAUSE(64);
-    _PINMODECLAUSE(65);
-    _PINMODECLAUSE(66);
-    _PINMODECLAUSE(67);
-    _PINMODECLAUSE(68);
-    _PINMODECLAUSE(69);
-  }
 }
 
-void pinModeRuntime(uint8_t, uint8_t);
+void _pinModeRuntime(uint8_t, uint8_t);
 
 __attribute__((always_inline))
 static inline void pinMode(uint8_t pin, uint8_t mode) {
@@ -201,14 +164,14 @@ static inline void pinMode(uint8_t pin, uint8_t mode) {
   if(__builtin_constant_p(pin))
     _pinModeInline(pin,mode);
   else
-    pinModeRuntime(pin,mode);
+    _pinModeRuntime(pin,mode);
 }
 
 
 __attribute__((always_inline))
-static inline void turnOffPWM(uint8_t timer)
+static inline void _turnOffPWMInline(uint8_t pin)
 {
-  // Timer should always be known at compile time here
+  const uint8_t timer = digitalPinToTimer(pin);
   switch (timer)
     {
 #if defined(TCCR1A) && defined(COM1A1)
@@ -267,18 +230,25 @@ static inline void turnOffPWM(uint8_t timer)
     }
 }
 
+void _turnOffPWMRuntime(uint8_t pin);
 
 __attribute__((always_inline))
-static inline void _digitalWriteClause(uint8_t pin, uint8_t value) {
-  // At this point 'pin' is always known at compile time, 'value' might be
-  const uint8_t port = digital_pin_to_port[pin];
+static inline void turnOffPWM(const uint8_t pin) {
+  if(__builtin_constant_p(pin))
+    _turnOffPWMInline(pin);
+  else
+    _turnOffPWMRuntime(pin);
+}
+
+__attribute__((always_inline))
+static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
+  const uint8_t port = digitalPinToPort(pin);
   volatile uint8_t *out = portOutputRegister(port);
-  const uint8_t bitmask = digital_pin_to_bit_mask[pin];
-  const uint8_t timer = digital_pin_to_timer[pin];
+  const uint8_t bitmask = digitalPinToBitMask(pin);
 
   if (pin >= NUM_DIGITAL_PINS) return;
 
-  turnOffPWM(timer);
+  turnOffPWM(pin);
 
   if(portIsAtomic(out)) {
     // Output is a single instruction write
@@ -297,83 +267,6 @@ static inline void _digitalWriteClause(uint8_t pin, uint8_t value) {
     }
   }
 }
-#define _DIGITALWRITECLAUSE(P) case P: _digitalWriteClause(P, value); break
-
-__attribute__((always_inline))
-static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
-  switch(pin) {
-    _DIGITALWRITECLAUSE(0);
-    _DIGITALWRITECLAUSE(1);
-    _DIGITALWRITECLAUSE(2);
-    _DIGITALWRITECLAUSE(3);
-    _DIGITALWRITECLAUSE(4);
-    _DIGITALWRITECLAUSE(5);
-    _DIGITALWRITECLAUSE(6);
-    _DIGITALWRITECLAUSE(7);
-    _DIGITALWRITECLAUSE(8);
-    _DIGITALWRITECLAUSE(9);
-    _DIGITALWRITECLAUSE(10);
-    _DIGITALWRITECLAUSE(11);
-    _DIGITALWRITECLAUSE(12);
-    _DIGITALWRITECLAUSE(13);
-    _DIGITALWRITECLAUSE(14);
-    _DIGITALWRITECLAUSE(15);
-    _DIGITALWRITECLAUSE(16);
-    _DIGITALWRITECLAUSE(17);
-    _DIGITALWRITECLAUSE(18);
-    _DIGITALWRITECLAUSE(19);
-    _DIGITALWRITECLAUSE(20);
-    _DIGITALWRITECLAUSE(21);
-    _DIGITALWRITECLAUSE(22);
-    _DIGITALWRITECLAUSE(23);
-    _DIGITALWRITECLAUSE(24);
-    _DIGITALWRITECLAUSE(25);
-    _DIGITALWRITECLAUSE(26);
-    _DIGITALWRITECLAUSE(27);
-    _DIGITALWRITECLAUSE(28);
-    _DIGITALWRITECLAUSE(29);
-    _DIGITALWRITECLAUSE(30);
-    _DIGITALWRITECLAUSE(31);
-    _DIGITALWRITECLAUSE(32);
-    _DIGITALWRITECLAUSE(33);
-    _DIGITALWRITECLAUSE(34);
-    _DIGITALWRITECLAUSE(35);
-    _DIGITALWRITECLAUSE(36);
-    _DIGITALWRITECLAUSE(37);
-    _DIGITALWRITECLAUSE(38);
-    _DIGITALWRITECLAUSE(39);
-    _DIGITALWRITECLAUSE(40);
-    _DIGITALWRITECLAUSE(41);
-    _DIGITALWRITECLAUSE(42);
-    _DIGITALWRITECLAUSE(43);
-    _DIGITALWRITECLAUSE(44);
-    _DIGITALWRITECLAUSE(45);
-    _DIGITALWRITECLAUSE(46);
-    _DIGITALWRITECLAUSE(47);
-    _DIGITALWRITECLAUSE(48);
-    _DIGITALWRITECLAUSE(49);
-    _DIGITALWRITECLAUSE(50);
-    _DIGITALWRITECLAUSE(51);
-    _DIGITALWRITECLAUSE(52);
-    _DIGITALWRITECLAUSE(53);
-    _DIGITALWRITECLAUSE(54);
-    _DIGITALWRITECLAUSE(55);
-    _DIGITALWRITECLAUSE(56);
-    _DIGITALWRITECLAUSE(57);
-    _DIGITALWRITECLAUSE(58);
-    _DIGITALWRITECLAUSE(59);
-    _DIGITALWRITECLAUSE(60);
-    _DIGITALWRITECLAUSE(61);
-    _DIGITALWRITECLAUSE(62);
-    _DIGITALWRITECLAUSE(63);
-    _DIGITALWRITECLAUSE(64);
-    _DIGITALWRITECLAUSE(65);
-    _DIGITALWRITECLAUSE(66);
-    _DIGITALWRITECLAUSE(67);
-    _DIGITALWRITECLAUSE(68);
-    _DIGITALWRITECLAUSE(69);
-  }
-}
 
 void _digitalWriteRuntime(uint8_t, uint8_t);
 
@@ -388,97 +281,18 @@ static inline void digitalWrite(uint8_t pin, uint8_t value) {
 
 
 __attribute__((always_inline))
-static inline uint8_t _digitalReadClause(uint8_t pin) {
-  // At this point 'pin' is always known at compile time
-  const uint8_t port = digital_pin_to_port[pin];
+static inline int _digitalReadInline(uint8_t pin) {
+  const uint8_t port = digitalPinToPort(pin);
   const volatile uint8_t *in = portInputRegister(port);
-  const uint8_t bitmask = digital_pin_to_bit_mask[pin];
-  const uint8_t timer = digital_pin_to_timer[pin];
+  const uint8_t bitmask = digitalPinToBitMask(pin);
 
   if (port == NOT_A_PIN) return LOW;
   if (pin >= NUM_DIGITAL_PINS) return LOW;
 
-  turnOffPWM(timer);
+  turnOffPWM(pin);
 
   if (*in & bitmask) return HIGH;
   return LOW;
-}
-#define _DIGITALREADCLAUSE(P) case P: return _digitalReadClause(P);
-
-__attribute__((always_inline))
-static inline int _digitalReadInline(uint8_t pin) {
-  switch(pin) {
-    _DIGITALREADCLAUSE(0);
-    _DIGITALREADCLAUSE(1);
-    _DIGITALREADCLAUSE(2);
-    _DIGITALREADCLAUSE(3);
-    _DIGITALREADCLAUSE(4);
-    _DIGITALREADCLAUSE(5);
-    _DIGITALREADCLAUSE(6);
-    _DIGITALREADCLAUSE(7);
-    _DIGITALREADCLAUSE(8);
-    _DIGITALREADCLAUSE(9);
-    _DIGITALREADCLAUSE(10);
-    _DIGITALREADCLAUSE(11);
-    _DIGITALREADCLAUSE(12);
-    _DIGITALREADCLAUSE(13);
-    _DIGITALREADCLAUSE(14);
-    _DIGITALREADCLAUSE(15);
-    _DIGITALREADCLAUSE(16);
-    _DIGITALREADCLAUSE(17);
-    _DIGITALREADCLAUSE(18);
-    _DIGITALREADCLAUSE(19);
-    _DIGITALREADCLAUSE(20);
-    _DIGITALREADCLAUSE(21);
-    _DIGITALREADCLAUSE(22);
-    _DIGITALREADCLAUSE(23);
-    _DIGITALREADCLAUSE(24);
-    _DIGITALREADCLAUSE(25);
-    _DIGITALREADCLAUSE(26);
-    _DIGITALREADCLAUSE(27);
-    _DIGITALREADCLAUSE(28);
-    _DIGITALREADCLAUSE(29);
-    _DIGITALREADCLAUSE(30);
-    _DIGITALREADCLAUSE(31);
-    _DIGITALREADCLAUSE(32);
-    _DIGITALREADCLAUSE(33);
-    _DIGITALREADCLAUSE(34);
-    _DIGITALREADCLAUSE(35);
-    _DIGITALREADCLAUSE(36);
-    _DIGITALREADCLAUSE(37);
-    _DIGITALREADCLAUSE(38);
-    _DIGITALREADCLAUSE(39);
-    _DIGITALREADCLAUSE(40);
-    _DIGITALREADCLAUSE(41);
-    _DIGITALREADCLAUSE(42);
-    _DIGITALREADCLAUSE(43);
-    _DIGITALREADCLAUSE(44);
-    _DIGITALREADCLAUSE(45);
-    _DIGITALREADCLAUSE(46);
-    _DIGITALREADCLAUSE(47);
-    _DIGITALREADCLAUSE(48);
-    _DIGITALREADCLAUSE(49);
-    _DIGITALREADCLAUSE(50);
-    _DIGITALREADCLAUSE(51);
-    _DIGITALREADCLAUSE(52);
-    _DIGITALREADCLAUSE(53);
-    _DIGITALREADCLAUSE(54);
-    _DIGITALREADCLAUSE(55);
-    _DIGITALREADCLAUSE(56);
-    _DIGITALREADCLAUSE(57);
-    _DIGITALREADCLAUSE(58);
-    _DIGITALREADCLAUSE(59);
-    _DIGITALREADCLAUSE(60);
-    _DIGITALREADCLAUSE(61);
-    _DIGITALREADCLAUSE(62);
-    _DIGITALREADCLAUSE(63);
-    _DIGITALREADCLAUSE(64);
-    _DIGITALREADCLAUSE(65);
-    _DIGITALREADCLAUSE(66);
-    _DIGITALREADCLAUSE(67);
-    _DIGITALREADCLAUSE(68);
-    _DIGITALREADCLAUSE(69);
-  }
 }
 
 int _digitalReadRuntime(uint8_t);

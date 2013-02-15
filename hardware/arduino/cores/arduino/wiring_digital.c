@@ -28,12 +28,17 @@
 #include "wiring_private.h"
 #include "pin_functions.h"
 
-// This are versions from pin_functions.h, but where the pin isn't known
+// This are versions that call back into, where the pin isn't known
 // at compile-time.
-//
-// The inlined versions are designed to compile down to jump tables.
 
-void pinModeRuntime(uint8_t pin, uint8_t mode)
+const uint16_t port_to_mode_P[] = { PORT_TO_MODE };
+const uint16_t PROGMEM port_to_output_P[] = { PORT_TO_OUTPUT };
+const uint16_t PROGMEM port_to_input_P[] = { PORT_TO_INPUT };
+const uint8_t PROGMEM digital_pin_to_port_P[] = { DIGITAL_PIN_TO_PORT };
+const uint8_t PROGMEM digital_pin_to_bit_mask_P[] = { DIGITAL_PIN_TO_BIT_MASK };
+const uint8_t PROGMEM digital_pin_to_timer_P[] = { DIGITAL_PIN_TO_TIMER };
+
+void _pinModeRuntime(uint8_t pin, uint8_t mode)
 {
   _pinModeInline(pin, mode);
 }
@@ -47,3 +52,9 @@ int _digitalReadRuntime(uint8_t pin)
 {
   return _digitalReadInline(pin);
 }
+
+void _turnOffPWMRuntime(uint8_t pin)
+{
+  _turnOffPWMInline(pin);
+}
+
