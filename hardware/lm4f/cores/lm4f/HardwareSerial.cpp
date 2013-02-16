@@ -225,7 +225,7 @@ HardwareSerial::begin(unsigned long baud)
 }
 
 void
-HardwareSerial::selectModule(unsigned long module)
+HardwareSerial::setModule(unsigned long module)
 {
     ROM_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_RT);
     ROM_IntDisable(g_ulUARTInt[uartModule]);

@@ -52,7 +52,7 @@ class HardwareSerial : public Stream
 		HardwareSerial(void);
 		HardwareSerial(unsigned long);
 		void begin(unsigned long);
-		void selectModule(unsigned long);
+		void setModule(unsigned long);
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);

@@ -197,6 +197,7 @@ parseInt	KEYWORD2
 parseFloat	KEYWORD2
 readBytes	KEYWORD2
 readBytesUntil	KEYWORD2
+setModule	KEYWORD2	SetModule
 
 # TimerSerial keywords syntax colouring 
 begin	KEYWORD2
