@@ -86,13 +86,11 @@ inline boolean isDigit(int c)
 }
 
 
-//TODO: mspgcc does not seem to have isgraph?!?
-
-//// Checks for any printable character except space.
-//inline boolean isGraph(int c)
-//{
-//  return ( isgraph (c) == 0 ? false : true);
-//}
+// Checks for any printable character except space.
+inline boolean isGraph(int c)
+{
+  return ( isgraph (c) == 0 ? false : true);
+}
 
 
 // Checks for a lower-case character.
