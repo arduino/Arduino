@@ -8,6 +8,7 @@ sfe_jtag.build.f_cpu=32000000L
 sfe_jtag.build.core=xmega
 sfe_jtag.build.variant=sfe
 
+sfe_jtag.upload.tool=avrdude
 sfe_jtag.upload.using=dragonjtag
 sfe_jtag.upload.maximum_size=131072
 
@@ -17,6 +18,7 @@ sfe_jtag.upload.maximum_size=131072
 # fuse2: Boot Loader Reset
 # fuse4: JTAGEN
 # fuse5: BODLVL=2.1V
+sfe_jtag.bootloader.tool=avrdude
 sfe_jtag.bootloader.fuse0=0xFF
 sfe_jtag.bootloader.fuse1=0xFF
 #sfe_jtag.bootloader.fuse2=0xBF
@@ -38,6 +40,7 @@ sfe_pdi.build.f_cpu=32000000L
 sfe_pdi.build.core=xmega
 sfe_pdi.build.variant=sfe
 
+sfe_pdi.upload.tool=avrdude
 sfe_pdi.upload.using=avrisppdi
 sfe_pdi.upload.maximum_size=131072
 
@@ -47,6 +50,7 @@ sfe_pdi.upload.maximum_size=131072
 # fuse2: Boot Loader Reset
 # fuse4: JTAGEN
 # fuse5: BODLVL=2.1V
+sfe_pdi.bootloader.tool=avrdude
 sfe_pdi.bootloader.fuse0=0xFF
 sfe_pdi.bootloader.fuse1=0xFF
 sfe_pdi.bootloader.fuse2=0xBF
@@ -66,6 +70,7 @@ xplain_jtag.build.f_cpu=32000000L
 xplain_jtag.build.core=xmega
 xplain_jtag.build.variant=xplain
 
+xplain_jtag.upload.tool=avrdude
 xplain_jtag.upload.using=dragonjtag
 xplain_jtag.upload.maximum_size=131072
 
@@ -75,6 +80,7 @@ xplain_jtag.upload.maximum_size=131072
 # fuse2: Boot Loader Reset
 # fuse4: JTAGEN
 # fuse5: BODLVL=2.1V
+xplain_jtag.bootloader.tool=avrdude
 xplain_jtag.bootloader.fuse0=0xFF
 xplain_jtag.bootloader.fuse1=0xFF
 xplain_jtag.bootloader.fuse2=0xBF
@@ -94,11 +100,13 @@ xplain_lufa.build.f_cpu=32000000L
 xplain_lufa.build.core=xmega
 xplain_lufa.build.variant=xplain
 
+xplain_lufa.upload.tool=avrdude
 xplain_lufa.upload.using=avrispmkii
 xplain_lufa.upload.protocol=arduino
 xplain_lufa.upload.maximum_size=131072
 xplain_lufa.upload.speed=9600
 
+xplain_lufa.bootloader.tool=avrdude
 xplain_lufa.bootloader.path=xplain
 xplain_lufa.bootloader.file=ATmegaBOOT_xplain.bin
 xplain_lufa.bootloader.unlock_bits=0x3F
@@ -125,10 +133,12 @@ xplain_usb.build.f_cpu=32000000L
 xplain_usb.build.core=xmega
 xplain_usb.build.variant=xplain
 
+xplain_usb.upload.tool=avrdude
 xplain_usb.upload.protocol=arduino
 xplain_usb.upload.maximum_size=131072
 xplain_usb.upload.speed=9600
 
+xplain_usb.bootloader.tool=avrdude
 xplain_usb.bootloader.path=xplain
 xplain_usb.bootloader.file=ATmegaBOOT_xplain.bin
 xplain_usb.bootloader.unlock_bits=0x3F
@@ -155,10 +165,12 @@ xplain_serial.build.f_cpu=32000000L
 xplain_serial.build.core=xmega
 xplain_serial.build.variant=xplain
 
+xplain_serial.upload.tool=avrdude
 xplain_serial.upload.protocol=arduino
 xplain_serial.upload.maximum_size=131072
 xplain_serial.upload.speed=57600
 
+xplain_serial.bootloader.tool=avrdude
 xplain_serial.bootloader.path=xplain
 xplain_serial.bootloader.file=ATmegaBOOT_xplain.bin
 xplain_serial.bootloader.unlock_bits=0x3F
@@ -185,9 +197,11 @@ xplain_pdi.build.f_cpu=32000000L
 xplain_pdi.build.core=xmega
 xplain_pdi.build.variant=xplain
 
+xplain_pdi.upload.tool=avrdude
 xplain_pdi.upload.using=avrisppdi
 xplain_pdi.upload.maximum_size=131072
 
+xplain_pdi.bootloader.tool=avrdude
 xplain_pdi.bootloader.path=xplain
 xplain_pdi.bootloader.file=ATmegaBOOT_xplain.bin
 
@@ -212,10 +226,12 @@ akafuino.build.f_cpu=32000000L
 akafuino.build.core=xmega
 akafuino.build.variant=akafuino
 
+akafuino.upload.tool=avrdude
 akafuino.upload.protocol=avr109
 akafuino.upload.maximum_size=32768
 akafuino.upload.speed=115200
 
+akafuino.bootloader.tool=avrdude
 akafuino.bootloader.path=akafuino
 akafuino.bootloader.file=akafuino-boot.hex
 #akafuino.bootloader.unlock_bits=0x3F
