@@ -184,6 +184,10 @@ void HardwareSerial::setIREnabled(bool enable)
 	}
 }
 
+HardwareSerial::operator bool() {
+  return true;
+}
+
 #include "serial_init.inc"
 
 #if 1
