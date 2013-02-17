@@ -184,7 +184,7 @@ void HardwareSerial::setIREnabled(bool enable)
 	}
 }
 
-#include "serial_init.cpp"
+#include "serial_init.inc"
 
 #if 1
 // TODO: Move to diag.{c h}
