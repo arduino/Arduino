@@ -47,6 +47,8 @@ extern "C" {
 
 #include "pins_arduino.h"
 
+#define INLINED __attribute__((always_inline)) static inline
+
 // The extern PROGMEM versions of each of these is for runtime lookups,
 // the static const versions are for lookups when the pin is known at compile time
 // (see the below inline functions, and wiring_digital.c)
@@ -70,8 +72,7 @@ static const uint8_t digital_pin_to_bit_mask[] = { DIGITAL_PIN_TO_BIT_MASK };
   extern const uint8_t PROGMEM digital_pin_to_timer_P[];
   static const uint8_t digital_pin_to_timer[] = { DIGITAL_PIN_TO_TIMER };
 
-__attribute__((always_inline))
-static inline uint8_t digitalPinToPort(uint8_t pin) {
+INLINED uint8_t digitalPinToPort(uint8_t pin) {
   return __builtin_constant_p(pin) ? digital_pin_to_port[pin]
     : pgm_read_byte( digital_pin_to_port_P + pin );
 }
@@ -81,35 +82,30 @@ static inline uint8_t digitalPinToPort(uint8_t pin) {
  * at runtime:
  */
 
-__attribute__((always_inline))
-static inline volatile uint8_t *portOutputRegister(uint8_t port_idx) {
+INLINED volatile uint8_t *portOutputRegister(uint8_t port_idx) {
   return (volatile uint8_t *)( __builtin_constant_p(port_idx) ?
                                port_to_output[port_idx]
                                : pgm_read_word( port_to_output_P + port_idx) );
 }
 
-__attribute__((always_inline))
-static inline volatile uint8_t *portDirectionRegister(uint8_t port_idx) {
+INLINED volatile uint8_t *portDirectionRegister(uint8_t port_idx) {
   return (volatile uint8_t *)( __builtin_constant_p(port_idx) ?
                                port_to_mode[port_idx]
                                : pgm_read_word( port_to_mode_P + port_idx ) );
 }
 
-__attribute__((always_inline))
-static inline volatile uint8_t *portInputRegister(uint8_t port_idx) {
+INLINED volatile uint8_t *portInputRegister(uint8_t port_idx) {
   return (volatile uint8_t *)( __builtin_constant_p(port_idx) ?
                                port_to_input[port_idx]
                                : pgm_read_word( port_to_input_P + port_idx ) );
 }
 
-__attribute__((always_inline))
-static inline uint8_t digitalPinToBitMask(uint8_t pin) {
+INLINED uint8_t digitalPinToBitMask(uint8_t pin) {
   return __builtin_constant_p(pin) ? digital_pin_to_bit_mask[pin]
     : pgm_read_byte( digital_pin_to_bit_mask_P + pin );
 }
 
-__attribute__((always_inline))
-static inline uint8_t digitalPinToTimer(uint8_t pin) {
+INLINED uint8_t digitalPinToTimer(uint8_t pin) {
   return __builtin_constant_p(pin) ? digital_pin_to_timer[pin]
     : pgm_read_byte( digital_pin_to_timer_P + pin );
 }
@@ -130,8 +126,7 @@ static inline uint8_t digitalPinToTimer(uint8_t pin) {
 * comparison...
 *
 */
-__attribute__((always_inline))
-static inline int portIsAtomic(uint8_t pin, volatile uint8_t *port) {
+INLINED int portIsAtomic(uint8_t pin, volatile uint8_t *port) {
   /* SBI/CBI instructions only work on lower 32 IO ports */
   return __builtin_constant_p(pin) && (uint16_t)port <= 0x1F + __SFR_OFFSET;
 }
@@ -160,8 +155,7 @@ static inline int portIsAtomic(uint8_t pin, volatile uint8_t *port) {
  *
  */
 
-__attribute__((always_inline))
-static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
+INLINED void _pinModeInline(uint8_t pin, uint8_t mode) {
   const uint8_t port = digitalPinToPort(pin);
   volatile uint8_t *dir = portDirectionRegister(port);
   volatile uint8_t *out = portOutputRegister(port);
@@ -197,8 +191,7 @@ static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
 
 void _pinModeRuntime(uint8_t, uint8_t);
 
-__attribute__((always_inline))
-static inline void pinMode(uint8_t pin, uint8_t mode) {
+INLINED void pinMode(uint8_t pin, uint8_t mode) {
   // If we know the pin number, inline directly. Otherwise make a function call.
   if(__builtin_constant_p(pin))
     _pinModeInline(pin,mode);
@@ -207,8 +200,7 @@ static inline void pinMode(uint8_t pin, uint8_t mode) {
 }
 
 
-__attribute__((always_inline))
-static inline void _turnOffPWMInline(uint8_t pin)
+INLINED void _turnOffPWMInline(uint8_t pin)
 {
   const uint8_t timer = digitalPinToTimer(pin);
   switch (timer)
@@ -271,16 +263,14 @@ static inline void _turnOffPWMInline(uint8_t pin)
 
 void _turnOffPWMRuntime(uint8_t pin);
 
-__attribute__((always_inline))
-static inline void turnOffPWM(const uint8_t pin) {
+INLINED void turnOffPWM(const uint8_t pin) {
   if(__builtin_constant_p(pin))
     _turnOffPWMInline(pin);
   else
     _turnOffPWMRuntime(pin);
 }
 
-__attribute__((always_inline))
-static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
+INLINED void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
   const uint8_t port = digitalPinToPort(pin);
   volatile uint8_t *out = portOutputRegister(port);
   const uint8_t bitmask = digitalPinToBitMask(pin);
@@ -308,8 +298,7 @@ static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
 
 void _digitalWriteRuntime(uint8_t, uint8_t);
 
-__attribute__((always_inline))
-static inline void digitalWrite(uint8_t pin, uint8_t value) {
+INLINED void digitalWrite(uint8_t pin, uint8_t value) {
   // If we know the pin number, inline directly. Otherwise make a function call.
   if(__builtin_constant_p(pin))
     _digitalWriteInline(pin,value);
@@ -318,8 +307,7 @@ static inline void digitalWrite(uint8_t pin, uint8_t value) {
 }
 
 
-__attribute__((always_inline))
-static inline int _digitalReadInline(uint8_t pin) {
+INLINED int _digitalReadInline(uint8_t pin) {
   const uint8_t port = digitalPinToPort(pin);
   const volatile uint8_t *in = portInputRegister(port);
   const uint8_t bitmask = digitalPinToBitMask(pin);
@@ -335,8 +323,7 @@ static inline int _digitalReadInline(uint8_t pin) {
 
 int _digitalReadRuntime(uint8_t);
 
-__attribute__((always_inline))
-static inline int digitalRead(uint8_t pin) {
+INLINED int digitalRead(uint8_t pin) {
   // If we know the pin number, inline directly. Otherwise make a function call.
   if(__builtin_constant_p(pin))
     return _digitalReadInline(pin);
