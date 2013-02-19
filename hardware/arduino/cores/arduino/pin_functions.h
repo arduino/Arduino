@@ -67,14 +67,19 @@ static const uint8_t digital_pin_to_port[] = { DIGITAL_PIN_TO_PORT };
 extern const uint8_t PROGMEM digital_pin_to_bit_mask_P[];
 static const uint8_t digital_pin_to_bit_mask[] = { DIGITAL_PIN_TO_BIT_MASK };
 
-extern const uint8_t PROGMEM digital_pin_to_timer_P[];
-static const uint8_t digital_pin_to_timer[] = { DIGITAL_PIN_TO_TIMER };
+  extern const uint8_t PROGMEM digital_pin_to_timer_P[];
+  static const uint8_t digital_pin_to_timer[] = { DIGITAL_PIN_TO_TIMER };
 
 __attribute__((always_inline))
 static inline uint8_t digitalPinToPort(uint8_t pin) {
   return __builtin_constant_p(pin) ? digital_pin_to_port[pin]
     : pgm_read_byte( digital_pin_to_port_P + pin );
 }
+
+/* These internal lookup functions will automatically resolve from the static const
+ * tables if evaluated at compile time, or the PROGMEM tables if evaluated
+ * at runtime:
+ */
 
 __attribute__((always_inline))
 static inline volatile uint8_t *portOutputRegister(uint8_t port_idx) {
@@ -121,8 +126,8 @@ static inline uint8_t digitalPinToTimer(uint8_t pin) {
 * we'll be using memory mapped I/O regardless in the latter case.
 *
 * We test __builtin_constant_p on pin not port because testing the latter doesn't
-* work in gcc 4.3.2, although gcc 4.3.2 is perfectly capable of optimising away
-* the comparison test...
+* work in gcc 4.3.2, although gcc 4.3.2 does successfully optimise away the
+* comparison...
 *
 */
 __attribute__((always_inline))
@@ -130,6 +135,30 @@ static inline int portIsAtomic(uint8_t pin, volatile uint8_t *port) {
   /* SBI/CBI instructions only work on lower 32 IO ports */
   return __builtin_constant_p(pin) && (uint16_t)port <= 0x1F + __SFR_OFFSET;
 }
+
+
+/*
+ * The following functions (pinMode, digitalWrite, digitalRead,
+ * turnOffPWM) all follow a pattern:
+ *
+ * _xxxxInline is a version of the function that is capable of being
+ * inlined at compile time. Where the pin number is known at compile
+ * time, this function can optimise down to the minimal number of
+ * instructions possible. The function still works adequately even
+ * if the pin number is not known at compile time.
+ *
+ * _xxxxRuntime is an extern version of the function suitable for
+ * being called at runtime (for when the pin number is not known at
+ * compile time.) The implementation is in wiring_digital.c, but it
+ * actually just inlines _xxxxInline to provide the matching
+ * non-inline implementation.
+ *
+ * 'xxxx' is the actual version of the function, which just chooses
+ * between _xxxxInline (inlined) or _xxxxRuntime (called
+ * conventionally) at compile time, based on whether the pin number is
+ * known.
+ *
+ */
 
 __attribute__((always_inline))
 static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
@@ -147,7 +176,7 @@ static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
   }  else { // Otherwise, we need to disable interrupts...
     uint8_t oldSREG = SREG;
     cli();
-    
+
     if(mode == INPUT_PULLUP) {
       *out |= bitmask;
     } else if(mode == INPUT) {
@@ -266,7 +295,7 @@ static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
       *out &= ~bitmask;
   }
   else {
-    // Output is non-atomic
+    // Output is non-atomic so we need to disable interrupts
     uint8_t oldSREG = SREG;
     cli();
 
