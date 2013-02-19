@@ -169,28 +169,30 @@ static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
 
   if (pin >= NUM_DIGITAL_PINS) return;
 
-  // We can only do this w/o disabling interrupts if setting output,
-  // and the direction register can use sbi/cbi
-  if(portIsAtomic(pin, dir) && (mode == OUTPUT)) {
-    *dir |= bitmask;
-  }  else { // Otherwise, we need to disable interrupts...
-    uint8_t oldSREG = SREG;
+  // We can only do this without disabling interrupts if
+  // both registers can use sbi/cbi
+  const int is_atomic = portIsAtomic(pin, dir)
+    && ((__builtin_constant_p(mode) && mode == OUTPUT) || portIsAtomic(pin, out));
+  uint8_t oldSREG;
+
+  if(!is_atomic) { // Resolves at compile time
+    oldSREG = SREG;
     cli();
-
-    if(mode == INPUT_PULLUP) {
-      *out |= bitmask;
-    } else if(mode == INPUT) {
-      *out &= ~bitmask;
-    }
-    if(mode == INPUT_PULLUP || mode == INPUT) {
-      *dir &= ~bitmask;
-    } else {
-      *dir |= bitmask;
-    }
-
-    SREG = oldSREG;
   }
 
+  if(mode == INPUT_PULLUP) {
+    *out |= bitmask;
+  } else if(mode == INPUT) {
+    *out &= ~bitmask;
+  }
+  if(mode == INPUT_PULLUP || mode == INPUT) {
+    *dir &= ~bitmask;
+  } else {
+    *dir |= bitmask;
+  }
+
+  if(!is_atomic) // Resolves at compile time
+    SREG = oldSREG;
 }
 
 void _pinModeRuntime(uint8_t, uint8_t);
@@ -287,25 +289,21 @@ static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
 
   turnOffPWM(pin);
 
-  if(portIsAtomic(pin, out)) {
-    // Output is a single instruction write
-    if(value)
-      *out |= bitmask;
-    else
-      *out &= ~bitmask;
-  }
-  else {
-    // Output is non-atomic so we need to disable interrupts
-    uint8_t oldSREG = SREG;
+  const int is_atomic = portIsAtomic(pin, out); // Resolves at compile time
+
+  uint8_t oldSREG;
+  if(!is_atomic) { // Resolves at compile time
+    oldSREG = SREG;
     cli();
-
-    if(value)
-      *out |= bitmask;
-    else
-      *out &= ~bitmask;
-
-    SREG = oldSREG;
   }
+
+  if(value)
+    *out |= bitmask;
+  else
+    *out &= ~bitmask;
+
+  if(!is_atomic) // Resolves at compile time
+    SREG = oldSREG;
 }
 
 void _digitalWriteRuntime(uint8_t, uint8_t);
