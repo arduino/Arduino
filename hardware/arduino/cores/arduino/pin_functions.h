@@ -119,11 +119,17 @@ static inline uint8_t digitalPinToTimer(uint8_t pin) {
 *
 * This routine only returns true if the port is known at compile time, because
 * we'll be using memory mapped I/O regardless in the latter case.
+*
+* The correct argument for this function should be 'volatile uint8_t *const port', but
+* gcc seems unable to evaluate __builtin_constant_p correctly on that type, so we cast to
+* a plain int in ther caller... which oddly seems to work. Same with using __SFR_OFFSET
+* instead of the _SFR_IO_REG_P macro or _SFR_IO8.
+*
 */
 __attribute__((always_inline))
-static inline int portIsAtomic(volatile uint8_t *port) {
+static inline int portIsAtomic(uint16_t port) {
   /* SBI/CBI instructions only work on lower 32 IO ports */
-  return __builtin_constant_p(port) && port <= (volatile uint8_t*) & _SFR_IO8(0x1F);
+  return __builtin_constant_p(port) && port <= 0x1F + __SFR_OFFSET;
 }
 
 __attribute__((always_inline))
@@ -137,7 +143,7 @@ static inline void _pinModeInline(uint8_t pin, uint8_t mode) {
 
   // We can only do this w/o disabling interrupts if setting output,
   // and the direction register can use sbi/cbi
-  if(portIsAtomic(dir) && (mode == OUTPUT)) {
+  if(portIsAtomic((uint16_t)dir) && (mode == OUTPUT)) {
     *dir |= bitmask;
   }  else { // Otherwise, we need to disable interrupts...
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
@@ -250,7 +256,7 @@ static inline void _digitalWriteInline(const uint8_t pin, const uint8_t value) {
 
   turnOffPWM(pin);
 
-  if(portIsAtomic(out)) {
+  if(portIsAtomic((uint16_t)out)) {
     // Output is a single instruction write
     if(value)
       *out |= bitmask;
