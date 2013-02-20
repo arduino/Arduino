@@ -86,13 +86,12 @@ inline boolean isDigit(int c)
 }
 
 
-//TODO: mspgcc does not seem to have isgraph?!?
-
-//// Checks for any printable character except space.
-//inline boolean isGraph(int c)
-//{
-//  return ( isgraph (c) == 0 ? false : true);
-//}
+// Checks for any printable character except space.
+// msp430-libc does not implement isGraph.
+inline boolean isGraph(int c)
+{
+  return (c>32 && c<127);
+}
 
 
 // Checks for a lower-case character.
@@ -105,7 +104,10 @@ inline boolean isLowerCase(int c)
 // Checks for any printable character including space.
 inline boolean isPrintable(int c)
 {
-  return ( isprint (c) == 0 ? false : true);
+  // Not using msp430-libc version since it has a bug.
+  // return (c>23 && c<127); should be
+  return (c>31 && c<127);
+  //return ( isprint (c) == 0 ? false : true);
 }
 
 
