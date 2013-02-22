@@ -58,6 +58,33 @@ public class Compiler implements MessageConsumer {
 	
   private RunnerException exception;
   
+  List<String> getLocalIncludePaths(List<String> includePaths, File programFile)
+    throws RunnerException {
+    List<String> allIncludePaths = new ArrayList<String>(includePaths);
+    try {
+      String program = Base.loadFile(programFile);
+
+      String importRegexp = "^\\s*#include\\s*[<\"](\\S+)[\">]";
+
+      String[][] pieces = PApplet.matchAll(program, importRegexp);
+
+      if (pieces != null) {
+        for (int i = 0; i < pieces.length; i++) {
+          File libFolder = (File) Base.getImportToLibraryTable().get(pieces[i][1]); // the package name
+          //If needed can Debug libraryPath here
+          if (libFolder != null && !allIncludePaths.contains(libFolder.getPath())) {
+            allIncludePaths.add(libFolder.getPath());
+          }
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      throw new RunnerException(I18n.format(_("Problem opening file {0}"), programFile.getAbsolutePath()));
+    }        
+
+    return allIncludePaths;
+  }
+  
   /**
    * Compile sketch.
    *
@@ -211,7 +238,10 @@ public class Compiler implements MessageConsumer {
       objectPaths.add(objectFile);
       if (is_already_compiled(file, objectFile, dependFile, prefs))
         continue;
-      String[] cmd = getCommandCompilerC(includePaths, file.getAbsolutePath(),
+      
+      List<String> localIncludePaths = getLocalIncludePaths(includePaths, file);
+
+      String[] cmd = getCommandCompilerC(localIncludePaths, file.getAbsolutePath(),
                                          objectPath);
       execAsynchronously(cmd);
     }
@@ -224,7 +254,10 @@ public class Compiler implements MessageConsumer {
       objectPaths.add(objectFile);
       if (is_already_compiled(file, objectFile, dependFile, prefs))
         continue;
-      String[] cmd = getCommandCompilerCPP(includePaths,
+
+      List<String> localIncludePaths = getLocalIncludePaths(includePaths, file);
+
+      String[] cmd = getCommandCompilerCPP(localIncludePaths,
                                            file.getAbsolutePath(), objectPath);
       execAsynchronously(cmd);
     }

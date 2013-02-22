@@ -1426,12 +1426,36 @@ public class Sketch {
     libraryPath = "";
     for (String item : preprocessor.getExtraImports()) {
 
-        File libFolder = (File) Base.importToLibraryTable.get(item);
-        //If needed can Debug libraryPath here
+      File libFolder = (File) Base.importToLibraryTable.get(item);
+      //If needed can Debug libraryPath here
 
       if (libFolder != null && !importedLibraries.contains(libFolder)) {
         importedLibraries.add(libFolder);
+        
+       File headerFile = new File(libFolder.getAbsolutePath() + File.separator + item);
+       try {
+          String program = Base.loadFile(headerFile);
+
+          String importRegexp = "^\\s*#include\\s*[<\"](\\S+)[\">]";
+
+          String[][] pieces = PApplet.matchAll(program, importRegexp);
+
+          if (pieces != null) {
+            for (int i = 0; i < pieces.length; i++) {
+              File libFolder2 = (File) Base.importToLibraryTable.get(pieces[i][1]); // the package name
+              //If needed can Debug libraryPath here
+              if (libFolder2 != null && !importedLibraries.contains(libFolder2)) {
+                importedLibraries.add(libFolder2);
+              }
+            }
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+          throw new RunnerException(I18n.format(_("Problem opening file {0}"), headerFile.getAbsolutePath()));
+        }        
+        
         //classPath += Compiler.contentsToClassPath(libFolder);
+        // This is never used ... toss it?
         libraryPath += File.pathSeparator + libFolder.getAbsolutePath();
       }
     }
