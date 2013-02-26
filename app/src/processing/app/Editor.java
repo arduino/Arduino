@@ -1300,8 +1300,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItem(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK));
     return menuItem;
   }
 
@@ -1311,9 +1310,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItemShift(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    modifiers |= ActionEvent.SHIFT_MASK;
-    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
+    menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK));
     return menuItem;
   }
 
@@ -1324,8 +1321,6 @@ public class Editor extends JFrame implements RunnerListener {
    */
   static public JMenuItem newJMenuItemAlt(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
-    //int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-    //menuItem.setAccelerator(KeyStroke.getKeyStroke(what, modifiers));
     menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_ALT_KEY_MASK));
     return menuItem;
   }
@@ -2047,16 +2042,15 @@ public class Editor extends JFrame implements RunnerListener {
                                       JOptionPane.YES_NO_CANCEL_OPTION,
                                       JOptionPane.QUESTION_MESSAGE);
 
-      if (result == JOptionPane.YES_OPTION) {
+      switch (result) {
+      case JOptionPane.YES_OPTION:
         return handleSave(true);
-
-      } else if (result == JOptionPane.NO_OPTION) {
+      case JOptionPane.NO_OPTION:
         return true;  // ok to continue
-
-      } else if (result == JOptionPane.CANCEL_OPTION) {
-        return false;
-
-      } else {
+      case JOptionPane.CANCEL_OPTION:
+      case JOptionPane.CLOSED_OPTION:	// Escape key pressed
+	return false;
+      default:
         throw new IllegalStateException();
       }
 
