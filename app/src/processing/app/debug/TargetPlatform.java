@@ -53,19 +53,41 @@ public class TargetPlatform {
       String notused = _("Processor");
     }
 
+    PreferencesMap boardPreferences = new PreferencesMap();
+
     try {
       File boardsFile = new File(_folder, "boards.txt");
       if (boardsFile.exists() && boardsFile.canRead()) {
-        PreferencesMap boardPreferences = new PreferencesMap();
         boardPreferences.load(boardsFile);
-        boards = boardPreferences.createFirstLevelMap();
-        customMenus = MapWithSubkeys.createFrom(boards.get("menu"));
-        boards.remove("menu");
       }
     } catch (Exception e) {
-      e.printStackTrace();
-      System.err.println("Error loading boards from boards.txt: " + e);
     }
+
+    try {
+      File boardsDir = new File(_folder, "boards");
+      if (boardsDir.isDirectory()) {
+        for (String name : boardsDir.list()) {
+          if (name.endsWith(".txt")) {
+            try {
+              File boardsFile = new File(boardsDir, name);
+              if (boardsFile.exists()) {
+                boardPreferences.load(boardsFile);
+              }
+            } catch (Exception e) {
+            }
+          }
+        }
+      }
+    } catch (Exception e) {
+    }
+
+    if (boardPreferences.size() == 0) {
+      System.err.println("No board definitions found in boards.txt and boards directory");
+    }
+
+    boards = boardPreferences.createFirstLevelMap();
+    customMenus = MapWithSubkeys.createFrom(boards.get("menu"));
+    boards.remove("menu");
 
     try {
       File platformsFile = new File(_folder, "platform.txt");
