@@ -1638,6 +1638,12 @@ public class JEditTextArea extends JComponent
    */
   public void copy()
   {
+  	if(selectionStart == selectionEnd) // Nothing selected
+  	{
+  		int lineNo = getLineOfOffset(getCaretPosition());
+  		select(getLineStartOffset(lineNo), getLineStopOffset(lineNo));
+  	}
+  	
     if(selectionStart != selectionEnd)
       {
         Clipboard clipboard = getToolkit().getSystemClipboard();
