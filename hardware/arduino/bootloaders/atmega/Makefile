@@ -49,7 +49,7 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
 
 OBJ        = $(PROGRAM).o
-OPTIMIZE   = -O2
+OPTIMIZE   = -Os
 
 DEFS       = 
 LIBS       =
@@ -165,6 +165,21 @@ atmega328_isp: HFUSE = DA
 atmega328_isp: LFUSE = FF
 atmega328_isp: EFUSE = 05
 atmega328_isp: isp
+
+atmega328_notp: TARGET = atmega328_notp
+atmega328_notp: MCU_TARGET = atmega328
+atmega328_notp: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=1' -DBAUD_RATE=57600
+atmega328_notp: AVR_FREQ = 16000000L 
+atmega328_notp: LDSECTION  = --section-start=.text=0x7800
+atmega328_notp: $(PROGRAM)_atmega328_notp.hex
+
+atmega328_notp_isp: atmega328_notp
+atmega328_notp_isp: TARGET = atmega328
+atmega328_notp_isp: MCU_TARGET = atmega328
+atmega328_notp_isp: HFUSE = DA
+atmega328_notp_isp: LFUSE = FF
+atmega328_notp_isp: EFUSE = 05
+atmega328_notp_isp: isp
 
 atmega328_pro8: TARGET = atmega328_pro_8MHz
 atmega328_pro8: MCU_TARGET = atmega328p
