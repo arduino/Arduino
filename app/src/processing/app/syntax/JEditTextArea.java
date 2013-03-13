@@ -1641,7 +1641,7 @@ public class JEditTextArea extends JComponent
   	if(selectionStart == selectionEnd) // Nothing selected
   	{
   		int lineNo = getLineOfOffset(getCaretPosition());
-  		select(getLineStartOffset(lineNo), getLineStopOffset(lineNo));
+  		select(getLineStartOffset(lineNo), getSafeLineStopOffset(lineNo));
   	}
   	
     if(selectionStart != selectionEnd)
