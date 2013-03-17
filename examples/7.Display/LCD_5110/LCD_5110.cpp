@@ -34,6 +34,16 @@ LCD_5110::LCD_5110() {
              P2_1,    // Backlight
              PUSH2);   // Push Button 2
 }
+#elif defined(__MSP430G2452__) // LaunchPad MSP430G2452 specific
+LCD_5110::LCD_5110() {
+    LCD_5110(P2_2,    // Chip Select
+             P2_4,    // Serial Clock
+             P2_0,    // Serial Data
+             P2_3,    // Data/Command
+             P1_0,    // Reset
+             P2_1,    // Backlight
+             PUSH2);   // Push Button 2
+}
 #elif defined(__LM4F120H5QR__) // StellarPad LM4F specific
 LCD_5110::LCD_5110() {
     LCD_5110(PA_7,    // Chip Select
