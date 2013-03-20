@@ -315,7 +315,7 @@ public class Base {
    * The complement to "storePreferences", this is called when the
    * application is first launched.
    */
-  protected boolean restoreSketches() {
+   protected boolean restoreSketches() {
     // figure out window placement
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -764,40 +764,21 @@ public class Base {
 //      if (Preferences.getBoolean("sketchbook.closing_last_window_quits") ||
 //          (editor.untitled && !editor.getSketch().isModified())) {
       if (Base.isMacOS()) {
-        Object[] options = { "OK", "Cancel" };
-        String prompt =
-          _("<html> " +
-            "<head> <style type=\"text/css\">"+
-            "b { font: 13pt \"Lucida Grande\" }"+
-            "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
-            "</style> </head>" +
-            "<b>Are you sure you want to Quit?</b>" +
-            "<p>Closing the last open sketch will quit Arduino.");
-
-        int result = JOptionPane.showOptionDialog(editor,
-                                                  prompt,
-                                                  _("Quit"),
-                                                  JOptionPane.YES_NO_OPTION,
-                                                  JOptionPane.QUESTION_MESSAGE,
-                                                  null,
-                                                  options,
-                                                  options[0]);
-        if (result == JOptionPane.NO_OPTION ||
-            result == JOptionPane.CLOSED_OPTION) {
-          return false;
-        }
+        editors.remove(editor);
+        editor.setVisible(false);
       }
+      else {
+        // This will store the sketch count as zero
+        editors.remove(editor);
+        Editor.serialMonitor.closeSerialPort();
+        storeSketches();
+          
+        // Save out the current prefs state
+        Preferences.save();
 
-      // This will store the sketch count as zero
-      editors.remove(editor);
-      Editor.serialMonitor.closeSerialPort();
-      storeSketches();
-
-      // Save out the current prefs state
-      Preferences.save();
-
-      // Since this wasn't an actual Quit event, call System.exit()
-      System.exit(0);
+        // Since this wasn't an actual Quit event, call System.exit()
+        System.exit(0);
+      }
 
     } else {
       // More than one editor window open,
