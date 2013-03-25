@@ -16,6 +16,10 @@
 // W5100 controller instance
 W5100Class W5100;
 
+// Chip select pins
+volatile uint8_t *cs_reg, *cs_out;
+uint8_t  cs_bit;
+
 #define TX_RX_MAX_BUF_SIZE 2048
 #define TX_BUF 0x1100
 #define RX_BUF (TX_BUF + TX_RX_MAX_BUF_SIZE)
