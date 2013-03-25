@@ -23,8 +23,12 @@ W5100Class W5100;
 #define TXBUF_BASE 0x4000
 #define RXBUF_BASE 0x6000
 
-void W5100Class::init(void)
+void W5100Class::init(uint8_t csPin)
 {
+  cs_reg = portModeRegister(digitalPinToPort(csPin));
+  cs_out = portOutputRegister(digitalPinToPort(csPin));
+  cs_bit = digitalPinToBitMask(csPin); 
+  
   delay(300);
 
   SPI.begin();
