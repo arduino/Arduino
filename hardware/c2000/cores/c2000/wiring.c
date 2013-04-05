@@ -172,7 +172,7 @@ void initPie(void)
 
     EALLOW;
     for(i=0; i < 125; i++)
-        *Dest++ = rsvd_ISR;
+        *Dest++ = (Uint32) rsvd_ISR;
     EDIS;
 
     // Enable the PIE Vector Table
