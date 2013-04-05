@@ -2,8 +2,8 @@
   ************************************************************************
   *	WInterrupts.c
   *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Arduino core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
   *
   *
   ***********************************************************************
@@ -51,88 +51,90 @@
 : (A) == 1u << 7 ? 7 \
 : 0)
 
-#define NUM_INTS_PER_PORT 8
-static volatile voidFuncPtr intFuncP1[NUM_INTS_PER_PORT];
-#if defined(__MSP430_HAS_PORT2_R__)
-static volatile voidFuncPtr intFuncP2[NUM_INTS_PER_PORT];
-#endif
 
-void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
- 	uint8_t bit = digitalPinToBitMask(interruptNum);
-	uint8_t port = digitalPinToPort(interruptNum);
+static volatile voidFuncPtr intFuncP1;
+static volatile voidFuncPtr intFuncP2;
+static volatile voidFuncPtr intFuncP3;
+
+
+
+interrupt void Port_1(void)
+{
+	intFuncP1();
+	PieCtrlRegs.PIEACK.bit.ACK1  = 1;
+}
+
+
+interrupt void Port_2(void)
+{
+	intFuncP2();
+	PieCtrlRegs.PIEACK.bit.ACK1  = 1;
+}
+
+interrupt void Port_3(void)
+{
+	intFuncP3();
+	PieCtrlRegs.PIEACK.bit.ACK12  = 1;
+}
+
+
+
+void attachInterrupt(uint8_t pin, uint8_t interruptNum, void (*userFunc)(void), int mode) {
+ 	uint32_t bit = digitalPinToPort(pin);
         	
         
-        if ((port == NOT_A_PIN) || !((mode == FALLING) || (mode == RISING))) return;
+        if (bit == NOT_A_PIN) return;
         
-        __dint();
+        DINT;
         
-        switch(port) {
-                case P1:
-        		P1IE |= bit;
-	        	P1IFG &= ~bit;
-		        P1IES = mode ? P1IES | bit : P1IES & ~bit;
-                        intFuncP1[bit_pos(bit)] = userFunc;
-                        break;
-                #if defined(__MSP430_HAS_PORT2_R__)
-                case P2:
-        		P2IE |= bit;
-	        	P2IFG &= bit;
-		        P2IES = mode ? P2IES | bit : P2IES & ~bit;
-	                intFuncP2[bit_pos(bit)] = userFunc;
-                        break;
-                #endif
+        switch(interruptNum) {
+                case 1:
+                	PieVectTable.XINT1 = Port_1;
+                	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
+                	GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = pin;
+                	XIntruptRegs.XINT1CR.bit.POLARITY = mode;
+                	XIntruptRegs.XINT1CR.bit.ENABLE = 1;
+					intFuncP1 = userFunc;
+					break;
+                case 2:
+                	PieVectTable.XINT2 = Port_2;
+                	PieCtrlRegs.PIEIER1.bit.INTx5 = 1;
+                	GpioIntRegs.GPIOXINT2SEL.bit.GPIOSEL = pin;
+                	XIntruptRegs.XINT2CR.bit.POLARITY = mode;
+                	XIntruptRegs.XINT2CR.bit.ENABLE = 1;
+					intFuncP2 = userFunc;
+					break;
+                case 3:
+                	PieVectTable.XINT3 = Port_3;
+                	PieCtrlRegs.PIEIER12.bit.INTx1 = 1;
+                	GpioIntRegs.GPIOXINT3SEL.bit.GPIOSEL = pin;
+                	XIntruptRegs.XINT3CR.bit.POLARITY = mode;
+                	XIntruptRegs.XINT3CR.bit.ENABLE = 1;
+					intFuncP3 = userFunc;
+					break;
                 default:
                         break;
         }
        
-        __eint();
+        EINT;
 }
 
 void detachInterrupt(uint8_t interruptNum) {
- 	uint8_t bit = digitalPinToBitMask(interruptNum);
-	uint8_t port = digitalPinToPort(interruptNum);
-	
-        if (port == NOT_A_PIN) return;
         
-        switch(port) {
-                case P1:
-        		P1IE &= ~bit;
-		        intFuncP1[bit_pos(bit)] = 0;
-                        break;
-                #if defined(__MSP430_HAS_PORT2_R__)
-                case P2:
-        		P2IE &= ~bit;
-		        intFuncP2[bit_pos(bit)] = 0;
-                        break;
-                #endif
+        switch(interruptNum) {
+                case 1:
+                	XIntruptRegs.XINT1CR.bit.ENABLE = 0;
+					intFuncP1 = rsvd_ISR;
+					break;
+                case 2:
+                	XIntruptRegs.XINT2CR.bit.ENABLE = 0;
+					intFuncP2 = rsvd_ISR;
+					break;
+                case 3:
+                	XIntruptRegs.XINT3CR.bit.ENABLE = 0;
+					intFuncP3 = rsvd_ISR;
+					break;
                 default:
                         break;
-        } 
+        }
 }
-
-
-__attribute__((interrupt(PORT1_VECTOR)))
-void Port_1(void)
-{
-	uint8_t i;
-	for(i = 0; i < 8; i++) {
-		if((P1IFG & BV(i)) && intFuncP1[i]) {
-			intFuncP1[i]();
-			P1IFG &= ~BV(i);
-		}
-	}
-}
-
-#if defined(__MSP430_HAS_PORT2_R__)
-__attribute__((interrupt(PORT2_VECTOR)))
-void Port_2(void)
-{
-	uint8_t i;
-	for(i = 0; i < 8; i++) {
-		if((P2IFG & BV(i)) && intFuncP2[i]) {
-			intFuncP2[i]();
-			P2IFG &= ~BV(i);
-		}
-	}
-}
-#endif

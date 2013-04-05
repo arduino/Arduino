@@ -64,7 +64,7 @@ String::String(unsigned char value, unsigned char base)
 {
 	init();
 	char buf[9];
-	utoa(value, buf, base);
+	std::ltoa(value, buf);//, base);
 	*this = buf;
 }
 
@@ -72,7 +72,8 @@ String::String(int value, unsigned char base)
 {
 	init();
 	char buf[18];
-	itoa(value, buf, base);
+	std::ltoa(value, buf);//, base);
+	//itoa(value, buf, base);
 	*this = buf;
 }
 
@@ -80,7 +81,8 @@ String::String(unsigned int value, unsigned char base)
 {
 	init();
 	char buf[17];
-	utoa(value, buf, base);
+	std::ltoa(value, buf);//, base);
+	//utoa(value, buf, base);
 	*this = buf;
 }
 
@@ -88,7 +90,7 @@ String::String(long value, unsigned char base)
 {
 	init();
 	char buf[34];
-	ltoa(value, buf, base);
+	std::ltoa(value, buf);//, base);
 	*this = buf;
 }
 
@@ -96,7 +98,8 @@ String::String(unsigned long value, unsigned char base)
 {
 	init();
 	char buf[33];
-	ultoa(value, buf, base);
+	std::ltoa(value, buf);//, base);
+	//ultoa(value, buf, base);
 	*this = buf;
 }
 
@@ -140,6 +143,7 @@ unsigned char String::changeBuffer(unsigned int maxStrLen)
 	char *newbuffer = (char *)malloc(maxStrLen + 1);
 
 	if (newbuffer) {
+		strncpy(newbuffer, buffer, len);
 		free(buffer);
 		buffer = newbuffer;
 		capacity = maxStrLen;
@@ -254,35 +258,40 @@ unsigned char String::concat(char c)
 unsigned char String::concat(unsigned char num)
 {
 	char buf[4];
-	itoa(num, buf, 10);
+	std::ltoa(num, buf);//, 10);
+	//itoa(num, buf, 10);
 	return concat(buf, strlen(buf));
 }
 
 unsigned char String::concat(int num)
 {
 	char buf[7];
-	itoa(num, buf, 10);
+	std::ltoa(num, buf);//, 10);
+	//itoa(num, buf, 10);
 	return concat(buf, strlen(buf));
 }
 
 unsigned char String::concat(unsigned int num)
 {
 	char buf[6];
-	utoa(num, buf, 10);
+	std::ltoa(num, buf);//, 10);
+	//utoa(num, buf, 10);
 	return concat(buf, strlen(buf));
 }
 
 unsigned char String::concat(long num)
 {
 	char buf[12];
-	ltoa(num, buf, 10);
+	std::ltoa(num, buf);//, 10);
+	//ltoa(num, buf, 10);
 	return concat(buf, strlen(buf));
 }
 
 unsigned char String::concat(unsigned long num)
 {
 	char buf[11];
-	ultoa(num, buf, 10);
+	std::ltoa(num, buf);//, 10);
+	//ultoa(num, buf, 10);
 	return concat(buf, strlen(buf));
 }
 

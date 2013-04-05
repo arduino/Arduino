@@ -31,74 +31,247 @@
 #include "Energia.h"
 
 void initClocks(void);
-void enableWatchDogIntervalMode(void);
 
-void init()
+interrupt void rsvd_ISR(void)      // For test
 {
-        disableWatchDog();
-	initClocks();
-        enableWatchDogIntervalMode();
-        __eint();
+  asm ("      ESTOP0");
+  for(;;);
 }
 
 void disableWatchDog()
 {
-        /* Diable watchdog timer */
-	WDTCTL = WDTPW | WDTHOLD;
+	EALLOW;
+	SysCtrlRegs.WDCR= 0x0068;
+	EDIS;
+
 }
+
+void serviceWatchDog(void)
+{
+    EALLOW;
+    SysCtrlRegs.WDKEY = 0x0055;
+    SysCtrlRegs.WDKEY = 0x00AA;
+    EDIS;
+}
+
 
 void enableWatchDog()
 {
-	enableWatchDogIntervalMode();
+	EALLOW;
+	SysCtrlRegs.WDCR= 0x0028;
+	EDIS;
 }
 
 /* WDT_TICKS_PER_MILISECOND = (F_CPU / WDT_DIVIDER) / 1000
  * WDT_TICKS_PER_MILISECONDS = 1.953125 = 2 */
 #define SMCLK_FREQUENCY F_CPU
-#if (F_CPU >= 2000000L)
-#define WDT_TICKS_PER_MILISECOND 2
-#define WDT_DIVIDER 8192
-#define WDT_DIV_BITS WDTIS0
-#else
-#define WDT_TICKS_PER_MILISECOND 2
-#define WDT_DIVIDER 512
-#define WDT_DIV_BITS WDTIS1
-#endif
+#define WDT_TICKS_PER_MILISECOND (2*SMCLK_FREQUENCY/1000000)
+#define WDT_DIV_BITS WDT_MDLY_0_5
 
-void enableWatchDogIntervalMode(void)
+
+
+void initFlash(void)
 {
-	/* WDT Password + WDT interval mode + Watchdog clock source /512 + source from SMCLK
-	 * Note that we WDT is running in interval mode. WDT will not trigger a reset on expire in this mode. */
-	WDTCTL = WDTPW + WDTTMSEL + WDTCNTCL + WDT_DIV_BITS;
- 
-	/* WDT interrupt enable */
-	IE1 |= WDTIE;
+   EALLOW;
+   //Enable Flash Pipeline mode to improve performance
+   //of code executed from Flash.
+   FlashRegs.FOPT.bit.ENPIPE = 1;
+
+   //                CAUTION
+   //Minimum waitstates required for the flash operating
+   //at a given CPU rate must be characterized by TI.
+   //Refer to the datasheet for the latest information.
+
+#if F_CPU >= 60000000L
+	//Set the Paged Waitstate for the Flash
+	FlashRegs.FBANKWAIT.bit.PAGEWAIT = 2;
+
+	//Set the Random Waitstate for the Flash
+	FlashRegs.FBANKWAIT.bit.RANDWAIT = 2;
+
+	//Set the Waitstate for the OTP
+	FlashRegs.FOTPWAIT.bit.OTPWAIT = 2;
+
+#elif F_CPU >= 40000000L
+	//Set the Paged Waitstate for the Flash
+	FlashRegs.FBANKWAIT.bit.PAGEWAIT = 1;
+
+	//Set the Random Waitstate for the Flash
+	FlashRegs.FBANKWAIT.bit.RANDWAIT = 1;
+
+	//Set the Waitstate for the OTP
+	FlashRegs.FOTPWAIT.bit.OTPWAIT = 1;
+
+#elif F_CPU >= 20000000L
+	//Set the Paged Waitstate for the Flash
+	FlashRegs.FBANKWAIT.bit.PAGEWAIT = 0;
+
+	//Set the Random Waitstate for the Flash
+	FlashRegs.FBANKWAIT.bit.RANDWAIT = 0;
+
+	//Set the Waitstate for the OTP
+	FlashRegs.FOTPWAIT.bit.OTPWAIT = 0;
+#endif
+   //                CAUTION
+   //ONLY THE DEFAULT VALUE FOR THESE 2 REGISTERS SHOULD BE USED
+   FlashRegs.FSTDBYWAIT.bit.STDBYWAIT = 0x01FF;
+   FlashRegs.FACTIVEWAIT.bit.ACTIVEWAIT = 0x01FF;
+   EDIS;
+
+   //Force a pipeline flush to ensure that the write to
+   //the last register configured occurs before returning.
+
+   asm(" RPT #7 || NOP");
 }
+
+void initPie(void)
+{
+    int16    i;
+    Uint32 *Dest = (void *) &PieVectTable;
+
+    // Disable Interrupts at the CPU level:
+    DINT;
+
+    // Disable the PIE
+    PieCtrlRegs.PIECTRL.bit.ENPIE = 0;
+
+    // Clear all PIEIER registers:
+    PieCtrlRegs.PIEIER1.all = 0;
+    PieCtrlRegs.PIEIER2.all = 0;
+    PieCtrlRegs.PIEIER3.all = 0;
+    PieCtrlRegs.PIEIER4.all = 0;
+    PieCtrlRegs.PIEIER5.all = 0;
+    PieCtrlRegs.PIEIER6.all = 0;
+    PieCtrlRegs.PIEIER7.all = 0;
+    PieCtrlRegs.PIEIER8.all = 0;
+    PieCtrlRegs.PIEIER9.all = 0;
+    PieCtrlRegs.PIEIER10.all = 0;
+    PieCtrlRegs.PIEIER11.all = 0;
+    PieCtrlRegs.PIEIER12.all = 0;
+
+    // Clear all PIEIFR registers:
+    PieCtrlRegs.PIEIFR1.all = 0;
+    PieCtrlRegs.PIEIFR2.all = 0;
+    PieCtrlRegs.PIEIFR3.all = 0;
+    PieCtrlRegs.PIEIFR4.all = 0;
+    PieCtrlRegs.PIEIFR5.all = 0;
+    PieCtrlRegs.PIEIFR6.all = 0;
+    PieCtrlRegs.PIEIFR7.all = 0;
+    PieCtrlRegs.PIEIFR8.all = 0;
+    PieCtrlRegs.PIEIFR9.all = 0;
+    PieCtrlRegs.PIEIFR10.all = 0;
+    PieCtrlRegs.PIEIFR11.all = 0;
+    PieCtrlRegs.PIEIFR12.all = 0;
+
+
+
+    // Do not write over first 3 32-bit locations (these locations are
+    // initialized by Boot ROM with boot variables)
+
+    Dest = Dest + 3;
+
+    EALLOW;
+    for(i=0; i < 125; i++)
+        *Dest++ = rsvd_ISR;
+    EDIS;
+
+    // Enable the PIE Vector Table
+    PieCtrlRegs.PIECTRL.bit.ENPIE = 1;
+
+    EINT;
+}
+
+
 
 void initClocks(void)
 {
-#if defined(CALBC1_16MHZ_) && F_CPU >= 16000000L
-	BCSCTL1 = CALBC1_16MHZ;
-	DCOCTL = CALDCO_16MHZ;
-#elif defined(CALBC1_12MHZ_) && (F_CPU >= 12000000L)
-	BCSCTL1 = CALBC1_12MHZ;
-	DCOCTL = CALDCO_12MHZ;
-#elif defined(CALBC1_8MHZ_) && (F_CPU >= 8000000L)
-	BCSCTL1 = CALBC1_8MHZ;
-	DCOCTL = CALDCO_8MHZ;
-#elif defined(CALBC1_1MHZ_) && (F_CPU >= 1000000L)
-	BCSCTL1 = CALBC1_1MHZ;
-	DCOCTL = CALDCO_1MHZ;
+
+    volatile Uint16 iVol;
+
+	//Calibrate ADC
+    EALLOW;
+    SysCtrlRegs.PCLKCR0.bit.ADCENCLK = 1; // Enable ADC peripheral clock
+    (*Device_cal)();
+    SysCtrlRegs.PCLKCR0.bit.ADCENCLK = 0; // Return ADC clock to original state
+
+    //Select internal oscillator 1
+    SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 0;
+	SysCtrlRegs.CLKCTL.bit.OSCCLKSRCSEL=0;  // Clk Src = INTOSC1
+	SysCtrlRegs.CLKCTL.bit.XCLKINOFF=1;     // Turn off XCLKIN
+	SysCtrlRegs.CLKCTL.bit.XTALOSCOFF=1;    // Turn off XTALOSC
+	SysCtrlRegs.CLKCTL.bit.INTOSC2OFF=1;    // Turn off INTOSC2
+
+    EDIS;
+
+
+    // Make sure the PLL is not running in limp mode
+    if (SysCtrlRegs.PLLSTS.bit.MCLKSTS != 0)
+    {
+       EALLOW;
+       // OSCCLKSRC1 failure detected. PLL running in limp mode.
+       // Re-enable missing clock logic.
+       SysCtrlRegs.PLLSTS.bit.MCLKCLR = 1;
+       EDIS;
+       // Replace this line with a call to an appropriate
+       // SystemShutdown(); function.
+       asm("        ESTOP0");     // Uncomment for debugging purposes
+    }
+
+    // DIVSEL MUST be 0 before PLLCR can be changed from
+    // 0x0000. It is set to 0 by an external reset XRSn
+    // This puts us in 1/4
+    if (SysCtrlRegs.PLLSTS.bit.DIVSEL != 0)
+    {
+        EALLOW;
+        SysCtrlRegs.PLLSTS.bit.DIVSEL = 0;
+        EDIS;
+    }
+
+
+
+	EALLOW;
+	// Before setting PLLCR turn off missing clock detect logic
+	SysCtrlRegs.PLLSTS.bit.MCLKOFF = 1;
+#if F_CPU >= 60000000L
+	SysCtrlRegs.PLLCR.bit.DIV = 0x0C;
+#elif F_CPU >= 50000000L
+	SysCtrlRegs.PLLCR.bit.DIV = 0x0A;
+#elif F_CPU >= 40000000L
+	SysCtrlRegs.PLLCR.bit.DIV = 0x08;
+#elif F_CPU >= 3000000L
+	SysCtrlRegs.PLLCR.bit.DIV = 0x06;
+#elif F_CPU >= 2000000L
+	SysCtrlRegs.PLLCR.bit.DIV = 0x04;
 #else
         #warning No Suitable Frequency found!
 #endif
-	/* SMCLK = DCO / DIVS = nMHz */
-	BCSCTL2 &= ~(DIVS_0);
-	/* ACLK = VLO = ~ 12 KHz */
-        BCSCTL3 |= LFXT1S_2; 
+	EDIS;
+
+
+	// Uncomment to disable the watchdog
+	disableWatchDog();
+
+	while(SysCtrlRegs.PLLSTS.bit.PLLLOCKS != 1)
+	{
+	   // Uncomment to service the watchdog
+	   // ServiceDog();
+	}
+
+	EALLOW;
+	SysCtrlRegs.PLLSTS.bit.MCLKOFF = 0;
+	EDIS;
+
+
+
+	EALLOW;
+	SysCtrlRegs.PLLSTS.bit.DIVSEL = 2;
+	EDIS;
+
+
+
+
+
 }
-
-
 
 volatile uint32_t wdtCounter = 0;
 
@@ -115,84 +288,29 @@ unsigned long millis()
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(unsigned int us)
 {
-#if F_CPU >= 20000000L
-	/* For a one-microsecond delay, simply wait 2 cycle and return. The overhead
-	 * of the function call yields a delay of exactly one microsecond. */
-	__asm__ __volatile__ (
-		"nop" "\n\t"
-		"nop");
-	if (--us == 0)
-		return;
-
-	/* The following loop takes a 1/5 of a microsecond (4 cycles)
-	 * per iteration, so execute it five times for each microsecond of
-	 * delay requested. */
-	us = (us<<2) + us; // x5 us
-
-	/* Account for the time taken in the preceeding commands. */
-	us -= 2;
-
-#elif F_CPU >= 16000000L
-	/* For the 16 MHz clock on most boards */
-
-	/* For a one-microsecond delay, simply return.  the overhead
-	 * of the function call yields a delay of approximately 1 1/8 us. */
-	if (--us == 0)
-		return;
-
-	/* The following loop takes a quarter of a microsecond (4 cycles)
-	 * per iteration, so execute it four times for each microsecond of
-	 * delay requested. */
-	us <<= 2;
-
-	/* Account for the time taken in the preceeding commands. */
-	us -= 2;
-#else
-	/* For the 1 MHz */
-
-	/* For a one- or two-microsecond delay, simply return.  the overhead of
-	 * the function calls takes more than two microseconds.  can't just
-	 * subtract two, since us is unsigned; we'd overflow. */
-	if (--us == 0)
-		return;
-	if (--us == 0)
-		return;
-
-	/* The following loop takes 4 microsecond (4 cycles)
-	 * per iteration, so execute it ones for each 4 microsecond of
-	 * delay requested. */
-	us >>= 2;
-
-	/* Partially compensate for the time taken by the preceeding commands.
-	 * we can't subtract any more than this or we'd overflow w/ small delays. */
-	us--;
-#endif
-
-	/* Busy wait */
-        __asm__ __volatile__ (
-                /* even steven */
-                "L1: nop \n\t"   
-                /* 1 instruction */
-                "dec.w %[us] \n\t"
-                /* 2 instructions */
-                "jnz L1 \n\t"
-                : [us] "=r" (us) : "[us]" (us)
-        );
+	DELAY_US(us);
 }
 
 /* (ab)use the WDT */
 void delay(uint32_t milliseconds)
 {
-	uint32_t wakeTime = wdtCounter + (milliseconds * WDT_TICKS_PER_MILISECOND);
-        while(wdtCounter < wakeTime)
-                /* Wait for WDT interrupt in LMP0 */
-                __bis_status_register(LPM0_bits+GIE);
+	DELAY_US(milliseconds * 1000);
 }
 
-__attribute__((interrupt(WDT_VECTOR)))
-void watchdog_isr (void)
+
+void init()
 {
-        wdtCounter++;
-        /* Exit from LMP3 on reti (this includes LMP0) */
-        __bic_status_register_on_exit(LPM3_bits);
+	disableWatchDog();
+
+	initClocks();
+
+	//Copy RAM functions
+	memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (size_t)&RamfuncsLoadSize);
+
+	//Setup flash waitstates
+	initFlash();
+
+	initPie();
+
+	EINT;
 }

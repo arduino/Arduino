@@ -27,11 +27,10 @@
 #include <inttypes.h>
 #include <Stream.h>
 
-
 #define TX_PIN BIT1	// TXD on P1.1
 #define RX_PIN BIT2	// RXD on P1.2
 
-// running at < 16MHz requires a lower baud rate
+// running at < 3MHz requires a lower baud rate
 #ifndef TIMERSERIAL_BAUD
 #if F_CPU > 1000000
     #define TIMERSERIAL_BAUD 9600
@@ -40,23 +39,15 @@
 #endif
 #endif
 
-#define SERIAL_BUFFER_SIZE 16
-
-struct ring_buffer
-{
-    unsigned char buffer[SERIAL_BUFFER_SIZE];
-    volatile unsigned int head;
-    volatile unsigned int tail;
-};
+#if defined(__MSP430G2231__)
+ #define NEEDS_BUFF_PTR 1 // sadly, the g2231 seems to have a problem if we don't use the original structure
+ struct ring_buffer_ts; // forward declaration
+#else
+ #define NEEDS_BUFF_PTR 0 // everything else is happy to run fully optimized
+#endif
 
 class TimerSerial : public Stream
 {
-private:
-    ring_buffer *_tx_buffer;
-    ring_buffer *_rx_buffer;
-
-    void Transmit(void);
-
 public:
     TimerSerial(void);
 
@@ -70,10 +61,18 @@ public:
     virtual int peek(void);
 
     using Print::write;
-};
 
-#ifndef __MSP430_HAS_USCI__
-extern TimerSerial Serial;
+private:
+
+#if NEEDS_BUFF_PTR
+    ring_buffer_ts *_rx_buffer; // gcc seems to get confused on the g2231 without this
+    ring_buffer_ts *_tx_buffer;
 #endif
 
+};
+
+#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_EUSCI_A0__)
+extern TimerSerial Serial;
+#endif
+extern void serialEventRun(void);// __attribute__((weak));
 #endif

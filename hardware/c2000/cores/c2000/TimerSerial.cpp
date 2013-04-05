@@ -2,8 +2,8 @@
   ************************************************************************
   *	TimerSerial.cpp
   *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Arduino core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
   *
   *
   ***********************************************************************
@@ -12,7 +12,7 @@
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
   and
   msp430softserial by Rick Kimball
-  https://github.com7/RickKimball
+  https://github.com/RickKimball
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -32,36 +32,80 @@
 #include "Energia.h"
 #include "TimerSerial.h"
 
+#define SERIAL_BUFFER_SIZE 16
+
+#ifndef TIMERA0_VECTOR
+ #define TIMERA0_VECTOR TIMER0_A0_VECTOR
+#endif /* TIMER0_A0_VECTOR */
+
+#ifndef TIMERA1_VECTOR
+ #define TIMERA1_VECTOR TIMER0_A1_VECTOR
+#endif /* TIMERA1_VECTOR */
+
+struct ring_buffer_ts
+{
+    volatile unsigned int head;
+    volatile unsigned int tail;
+    unsigned char buffer[SERIAL_BUFFER_SIZE];
+};
+
+/**
+ * uint8x2_t - optimized structure storage for ISR. Fits our static variables in one register
+ *             This tweak allows the ISR to use one less register saving a push and pop
+ *             We also save a couple of instructions being able to write to both values with
+ *             one mov.w instruction.
+ */
+typedef union uint8x2_t {
+    //---------- word access
+    uint16_t mask_data;     // access both as a word: mask is low byte, data is high byte
+    //--- or --- individual byte access
+    struct {
+        uint8_t mask:8;     // bit mask to set data bits. Also used as a loop end flag
+        uint8_t data:8;     // working value for bits received
+    } b;
+} uint8x2_t;
+
+// --- ---
+static volatile unsigned int USARTTXBUF;
 static uint16_t TICKS_PER_BIT;
 static uint16_t TICKS_PER_BIT_DIV2;
-static ring_buffer tx_buffer = { {0}, 0, 0};
-static ring_buffer rx_buffer = { {0}, 0, 0};
-static volatile unsigned int USARTTXBUF;
+static ring_buffer_ts rx_buffer;
 
-#ifndef __MSP430_HAS_USCI__
+#if NEEDS_BUFF_PTR
+ static ring_buffer_ts tx_buffer; // required for the g2231, without it we get garbage
+#endif
+
+#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_EUSCI_A0__)
 TimerSerial Serial;
 #endif
 
-TimerSerial::TimerSerial()
+void serialEvent() __attribute__((weak));
+void serialEvent() {}
+
+void serialEventRun(void)
 {
-    _tx_buffer = &tx_buffer;
-    _rx_buffer = &rx_buffer;
+  if (Serial.available()) serialEvent();
 }
 
-void TimerSerial::begin(unsigned long baud)
+TimerSerial::TimerSerial()
 {
-    P1OUT |= TX_PIN | RX_PIN;           // Initialize all GPIO
-    P1SEL |= TX_PIN | RX_PIN;           // Enabled Timer ISR function for TXD/RXD pins
-    P1DIR |= TX_PIN;                    // Enable TX_PIN for output
+#if NEEDS_BUFF_PTR
+    _rx_buffer = &rx_buffer;
+    _tx_buffer = &tx_buffer;
+#endif
+}
 
-    TACCTL0 = OUT;                      // Set TXD Idle state as Mark = '1', +3.3 volts normal
-    TACCTL1 = SCS | CM1 | CAP | CCIE;   // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
-    TACTL = TASSEL_2 | MC_2 | TACLR;    // Clock TIMERA from SMCLK, run in continuous mode counting from to 0-0xFFFF
+void TimerSerial::begin(register unsigned long baud)
+{
+	pinMode_int(UARTRXD, UARTRXD_SET_MODE);
+	pinMode_int(UARTTXD, UARTTXD_SET_MODE);	
+
+    TA0CCTL0 = OUT;                     // Set TXD Idle state as Mark = '1', +3.3 volts normal
+    TA0CCTL1 = SCS | CM1 | CAP | CCIE;  // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
+    TA0CTL = TASSEL_2 | MC_2 | TACLR;   // Clock TIMERA from SMCLK, run in continuous mode counting from to 0-0xFFFF
 
 #if F_CPU == 1000000
-    if ( baud > 4800 ) { // limit maximum on slow CPU
-        baud = 4800;
-    }
+    baud = (baud<=4800) ? baud : 4800;  // force 4800 for slow F_CPU
 #endif
 
     TICKS_PER_BIT = F_CPU / baud;
@@ -70,69 +114,67 @@ void TimerSerial::begin(unsigned long baud)
 
 void TimerSerial::end()
 {
-    while (TACCTL0 & CCIE) {
+    while (TA0CCTL0 & CCIE) {
         ; // wait for previous xmit to finish
     }
-    P1SEL &= ~TX_PIN;        // P1 functions select to default
-    P1DIR &= ~TX_PIN;        // Input
+	pinMode(UARTTXD, INPUT);	
 }
 
 int TimerSerial::read()
 {
-	int c = -1;
-    __disable_interrupt();
-              // This prevents the RX_ISR from modifying them
-              // while we are trying to read and modify
+    register uint16_t temp_tail=rx_buffer.tail;
 
-    if (_rx_buffer->head != _rx_buffer->tail) {
-        c = (uint8_t) _rx_buffer->buffer[_rx_buffer->tail];
-        _rx_buffer->tail = (unsigned int)(_rx_buffer->tail + 1) % SERIAL_BUFFER_SIZE;
-	}
-        
-    __enable_interrupt();
-	
-    return c;
+    if (rx_buffer.head != temp_tail) {
+        uint8_t c = rx_buffer.buffer[temp_tail++];
+        rx_buffer.tail = temp_tail % SERIAL_BUFFER_SIZE;
+        return c;
+    }
+    else {
+        return -1;
+    }
 }
 
 int TimerSerial::available()
 {
-    int cnt;
-
-    __disable_interrupt();
-              // This prevents the RX_ISR from modifying them
-              // while we are trying to read and modify
-
-    cnt = (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % SERIAL_BUFFER_SIZE;
-
-    __enable_interrupt();
+    unsigned cnt = (rx_buffer.head - rx_buffer.tail) % SERIAL_BUFFER_SIZE;
 
     return cnt;
 }
 
 void TimerSerial::flush()
 {
-    while (TACCTL0 & CCIE) {
+    while (TA0CCTL0 & CCIE) {
         ; // wait for previous xmit to finish
     }
 }
 
 int TimerSerial::peek()
 {
-    if (_rx_buffer->head == _rx_buffer->tail) {
-        return -1;
+    register uint16_t temp_tail=rx_buffer.tail;
+
+    if (rx_buffer.head != temp_tail) {
+        return rx_buffer.buffer[temp_tail];
     }
     else {
-        return _rx_buffer->buffer[_rx_buffer->tail];
+        return -1;
     }
 }
-void TimerSerial::Transmit()
+
+size_t TimerSerial::write(uint8_t c)
 {
+    // TIMERA0 disables the interrupt flag when it has sent
+    // the final stop bit. While a transmit is in progress the
+    // interrupt is enabled
+    while (TA0CCTL0 & CCIE) {
+        ; // wait for previous xmit to finish
+    }
+
     // make the next output at least TICKS_PER_BIT in the future
     // so we don't stomp on the the stop bit from our previous xmt
 
-    TACCR0 = TAR;               // resync with current TimerA clock
-    TACCR0 += TICKS_PER_BIT;    // setup the next timer tick
-    TACCTL0 = OUTMOD0 + CCIE;   // set TX_PIN HIGH and reenable interrupts
+    TA0CCR0 = TA0R;              // resync with current TimerA clock
+    TA0CCR0 += TICKS_PER_BIT;    // setup the next timer tick
+    TA0CCTL0 = OUTMOD0 + CCIE;   // set TX_PIN HIGH and reenable interrupts
 
     // now that we have set the next interrupt in motion
     // we quickly need to set the TX data. Hopefully the
@@ -149,80 +191,82 @@ void TimerSerial::Transmit()
     // fast baud rate you could run into problems if the interrupt is
     // triggered before you have finished with the USARTTXBUF
 
-    USARTTXBUF |= 0x100;    // Add the stop bit '1'
-    USARTTXBUF <<= 1;       // Add the start bit '0'
-}
-
-size_t TimerSerial::write(uint8_t b)
-{
-    // TIMERA0 disables the interrupt flag when it has sent
-    // the final stop bit. While a transmit is in progress the
-    // interrupt is enabled
-    while (TACCTL0 & CCIE) {
-        ; // wait for previous xmit to finish
-    }
-
-    USARTTXBUF = b;
-    Transmit();
+    register unsigned value = c | 0x100;  // add stop bit '1'
+    value <<= 1;            // Add the start bit '0'
+    USARTTXBUF=value;       // queue up the byte for xmit
     return 1;
 }
 
-#ifndef TIMERA0_VECTOR
-#define TIMERA0_VECTOR TIMER0_A0_VECTOR
+
+#ifndef TIMER0_A0_VECTOR
+#define TIMER0_A0_VECTOR TIMERA0_VECTOR
 #endif /* TIMER0_A0_VECTOR */
 
-//Timer A0 interrupt service routine
-__attribute__((interrupt(TIMERA0_VECTOR)))
+#ifndef __GNUC__
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt
+#else
+__attribute__((interrupt(TIMER0_A0_VECTOR)))
+#endif
+//Timer0 A0 interrupt service routine
 static void TimerSerial__TxIsr(void)
 {
-    TACCR0 += TICKS_PER_BIT;        // setup next time to send a bit, OUT will be set then
+    TA0CCR0 += TICKS_PER_BIT;       // setup next time to send a bit, OUT will be set then
 
-    TACCTL0 |= OUTMOD2;             // reset OUT (set to 0) OUTMOD2|OUTMOD0 (0b101)
+    TA0CCTL0 |= OUTMOD2;            // reset OUT (set to 0) OUTMOD2|OUTMOD0 (0b101)
     if ( USARTTXBUF & 0x01 ) {      // look at LSB if 1 then set OUT high
-       TACCTL0 &= ~OUTMOD2;         // set OUT (set to 1) OUTMOD0 (0b001)
+       TA0CCTL0 &= ~OUTMOD2;        // set OUT (set to 1) OUTMOD0 (0b001)
     }
 
     if (!(USARTTXBUF >>= 1)) {      // All bits transmitted ?
-        TACCTL0 &= ~CCIE;           // disable interrupt, indicates we are done
+        TA0CCTL0 &= ~CCIE;          // disable interrupt, indicates we are done
     }
 }
 
 #define store_rxchar(c) { \
-    unsigned int i = (unsigned int)(rx_buffer.head + 1) % SERIAL_BUFFER_SIZE; \
-    if ( i != rx_buffer.tail ) { \
-        rx_buffer.buffer[rx_buffer.head] = c; \
-        rx_buffer.head = i; \
+    register unsigned int next_head;\
+    next_head = rx_buffer.head;\
+    rx_buffer.buffer[next_head++]=c; \
+    next_head %= SERIAL_BUFFER_SIZE; \
+    if ( next_head != rx_buffer.tail ) { \
+        rx_buffer.head = next_head; \
     } \
 }
 
-#ifndef TIMERA1_VECTOR
-#define TIMERA1_VECTOR TIMER0_A1_VECTOR
+#ifndef TIMER0_A1_VECTOR
+#define TIMER0_A1_VECTOR TIMERA1_VECTOR
 #endif /* TIMER0_A0_VECTOR */
 
+#ifndef __GNUC__
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt
+#else
+__attribute__((interrupt(TIMER0_A1_VECTOR)))
+#endif
 //Timer A1 interrupt service routine
-__attribute__((interrupt(TIMERA1_VECTOR)))
 static void TimerSerial__RxIsr(void)
 {
-    static unsigned char rxBitCnt = 8;
-    static unsigned char rxData = 0;
-    volatile unsigned resetTAIV = TAIV; (void) resetTAIV;
+    static uint8x2_t rx_bits;               // persistent storage for data and mask. fits in one 16 bit register
+    volatile uint16_t resetTAIVIFG;         // just reading TAIV will reset the interrupt flag
+    resetTAIVIFG=TA0IV;(void)resetTAIVIFG;
 
-    TACCR1 += TICKS_PER_BIT;            // Setup next time to sample
-    if (TACCTL1 & CAP) {                // Is this the start bit?
-        TACCTL1 &= ~CAP;                // Switch capture to compare mode
-        TACCR1 += TICKS_PER_BIT_DIV2;   // Sample from the middle of D0
+    register uint16_t regCCTL1=TA0CCTL1;    // using a temp register provides a slight performance improvement
+
+    TA0CCR1 += TICKS_PER_BIT;            // Setup next time to sample
+
+    if (regCCTL1 & CAP) {                   // Are we in capture mode? If so, this is a start bit
+        TA0CCR1 += TICKS_PER_BIT_DIV2;      // adjust sample time, so next sample is in the middle of the bit width
+        rx_bits.mask_data = 0x0001;         // initialize both values, set data to 0x00 and mask to 0x01
+        TA0CCTL1 = regCCTL1 & ~CAP;         // Switch from capture mode to compare mode
     }
     else {
-        rxData >>= 1;
-        if (TACCTL1 & SCCI) {           // Get bit waiting in receive latch
-            rxData |= 0x80;
+        if (regCCTL1 & SCCI) {              // sampled bit value from receive latch
+            rx_bits.b.data|=rx_bits.b.mask; // if latch is high, then set the bit using the sliding mask
         }
-        rxBitCnt--;
-        if (rxBitCnt == 0) {            // All bits RXed?
-            store_rxchar(rxData);       // Store in ring_buffer
-            rxBitCnt = 8;               // Re-load bit counter
-            TACCTL1 |= CAP;             // Switch compare to capture mode
-            TACCR1 += TICKS_PER_BIT;    // account for the stop bit
+
+        if (!(rx_bits.b.mask <<= 1)) {      // Are all bits received? Use the mask to end loop
+            store_rxchar(rx_bits.b.data);   // Store the bits into the rx_buffer
+            TA0CCTL1 = regCCTL1 | CAP;      // Switch back to capture mode and wait for next start bit (HI->LOW)
         }
     }
 }

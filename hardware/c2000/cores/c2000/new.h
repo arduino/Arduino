@@ -10,7 +10,8 @@
 void * operator new(size_t size);
 void operator delete(void * ptr); 
 
-__extension__ typedef int __guard __attribute__((mode (__DI__)));
+//Yet another TI compiler hack...
+__extension__ typedef int __guard;// __attribute__((mode (__DI__)));
 
 extern "C" int __cxa_guard_acquire(__guard *);
 extern "C" void __cxa_guard_release (__guard *);

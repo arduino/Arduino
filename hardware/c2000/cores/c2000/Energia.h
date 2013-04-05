@@ -1,7 +1,11 @@
 #ifndef Energia_h
 #define Energia_h
 
-#include <F2802x_Device.h>
+#ifdef __cplusplus
+typedef unsigned char _Bool;
+#endif
+#include <F2802x_device.h>
+#include "f2802x_common/include/F2802x_DefaultISR.h"
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
@@ -12,7 +16,6 @@
 extern "C"{
 #endif
 
-#define NOT_A_PORT 0
 #define NOT_A_PIN 0
 #define NOT_ON_TIMER 0
 
@@ -22,16 +25,16 @@ extern "C"{
 #define LSBFIRST 0
 #define MSBFIRST 1
 
-#define FALLING 1
-#define RISING 0
+#define FALLING 0
+#define RISING 1
+#define CHANGE 3
 
 #define INPUT 0x0
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
-#define INPUT_PULLDOWN 0x3
-
-#define true 0x1
-#define false 0x0
+#define INPUT_PULLDOWN 0x4
+#define PORT_SELECTION0 0x10
+#define PORT_SELECTION1 0x20
 
 #define PI 3.1415926535897932384626433832795
 #define HALF_PI 1.5707963267948966192313216916398
@@ -46,26 +49,42 @@ extern "C"{
 #define EXTERNAL SREF_2
 #endif
 
-#define P1 1
-#define P2 2
-#define P3 3
-#define P4 4
-#define P5 5
-#define P6 6
-#define P7 7
+#if defined(__MSP430_HAS_ADC10_B__)
+#define DEFAULT ADC10SREF_0
+#define INTERNAL1V5 ADC10SREF_1 + REFON + REFVSEL_0
+#define INTERNAL2V5 ADC10SREF_1 + REFON + REFVSEL_2
+#define EXTERNAL ADC10SREF_2
+#endif
 
-#define T0A0 0
-#define T0A1 1
-#define T0A2 2
-#define T1A0 3
-#define T1A1 4
-#define T1A2 5
-#define T1A3 6
-#define T1A4 7
-#define T1A5 8
-#define T2A0 9
-#define T2A1 10
-#define T2A2 11
+enum{
+  PWM1A,
+  PWM1B,
+  PWM2A,
+  PWM2B,
+  PWM3A,
+  PWM3B
+  };
+
+enum{
+	NOT_A_PORT=0,
+	PORT_A_1,
+	PORT_A_2,
+	PORT_B_1,
+};
+
+// The following pointer to a function call calibrates the ADC and internal oscillators
+#define Device_cal (void   (*)(void))0x3D7C80
+
+// DO NOT MODIFY THIS LINE.
+#define DELAY_US(A)  DSP28x_usDelay(((((long double) A * 1000.0L) / (long double)(F_CPU/1000000L)) - 9.0L) / 5.0L)
+
+
+// These are defined by the linker (see F2808.cmd)
+extern void* RamfuncsLoadStart;
+extern void* RamfuncsLoadSize;
+extern void* RamfuncsRunStart;
+
+
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
@@ -106,6 +125,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 void pinMode(uint8_t, uint8_t);
+void pinMode_int(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
 uint16_t analogRead(uint8_t);
@@ -118,27 +138,35 @@ void analogResolution(uint16_t);
 
 void delay(uint32_t milliseconds);
 
-void attachInterrupt(uint8_t, void (*)(void), int mode);
-void detachInterrupt(uint8_t);
+void attachInterrupt(uint8_t pin, uint8_t interruptNum, void (*userFunc)(void), int mode);
+void detachInterrupt(uint8_t interruptNum);
 
-extern const uint8_t digital_pin_to_timer[];
-extern const uint8_t digital_pin_to_port[];
-extern const uint8_t digital_pin_to_bit_mask[];
-extern const uint16_t port_to_sel[];
-extern const uint16_t port_to_sel2[];
-extern const uint16_t port_to_input[];
-extern const uint16_t port_to_output[];
+extern const uint32_t digital_pin_to_timer[];
+extern const uint32_t digital_pin_to_port[];
+extern const uint32_t digital_pin_to_bit_mask[];
+//extern const uint16_t port_to_sel0[];
+//extern const uint16_t port_to_sel1[];
+//extern const uint16_t port_to_sel2[];
+extern const uint32_t* port_to_input[];
+extern const uint32_t* port_to_output[];
 
-#define digitalPinToPort(P) ( digital_pin_to_port[P] )
+#define digitalPinToPort(P)    ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
-#define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
-#define portDirRegister(P) ( (volatile uint16_t *)( port_to_dir[P]) )
-#define portSelRegister(P) ( (volatile uint16_t *)( port_to_sel[P]) )
-#define portSel2Register(P) ( (volatile uint16_t *)( port_to_sel2[P]) )
-#define portRenRegister(P) ( (volatile uint16_t *)( port_to_ren[P]) )
-#define portOutputRegister(P) ( (volatile uint16_t *)( port_to_output[P]) )
-#define portInputRegister(P) ( (volatile uint16_t *)( port_to_input[P]) )
-#define digitalPinToTimer(P) ( digital_pin_to_timer[P] )
+#define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
+#define portDirRegister(P)     ( (volatile uint32_t *)( port_to_dir[P]) )
+/* 
+ * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1
+ * So we can remap  PxSEL and PxSEL2   to   PxSEL0 and PxSEL1
+*/ 
+#define portSelRegister(P)     ( (volatile uint8_t *)( port_to_sel0[P]) )
+#define portSel2Register(P)    ( (volatile uint8_t *)( port_to_sel2[P]) )
+
+#define portSel0Register(P)    ( (volatile uint8_t *)( port_to_sel0[P]) )
+#define portSel1Register(P)    ( (volatile uint8_t *)( port_to_sel1[P]) )
+#define portRenRegister(P)     ( (volatile uint8_t *)( port_to_ren[P]) )
+#define portOutputRegister(P)  ( (volatile uint32_t *)( port_to_output[P]) )
+#define portInputRegister(P)   ( (volatile uint8_t *)( port_to_input[P]) )
+#define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
 
 // Implemented in wiring.c
 void delayMicroseconds(unsigned int us);
@@ -154,7 +182,7 @@ void enableWatchDog();
 #ifdef __cplusplus
 #include "WCharacter.h"
 #include "WString.h"
-#ifdef __MSP430_HAS_USCI__
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include "HardwareSerial.h"
 #else
 #include "TimerSerial.h"
