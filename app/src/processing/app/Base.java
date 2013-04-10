@@ -31,6 +31,7 @@ import javax.swing.*;
 
 import processing.app.debug.Compiler;
 import processing.app.debug.Target;
+import processing.app.tools.ZipDeflater;
 import processing.core.*;
 import static processing.app.I18n._;
 
@@ -942,10 +943,20 @@ public class Base {
   }
 
 
-  public void rebuildImportMenu(JMenu importMenu) {
-    //System.out.println("rebuilding import menu");
+  public void rebuildImportMenu(JMenu importMenu, final Editor editor) {
     importMenu.removeAll();
-
+    
+    JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
+    addLibraryMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Base.this.handleAddZipLibrary(editor);
+        Base.this.onBoardOrPortChange();
+        Base.this.rebuildImportMenu(Editor.importMenu, editor);
+      }
+    });
+    importMenu.add(addLibraryMenuItem);
+    importMenu.addSeparator();
+    
     // reset the set of libraries
     libraries = new HashSet<File>();
 
@@ -997,7 +1008,7 @@ public class Base {
   }
 
   
-  public void rebuildBoardsMenu(JMenu menu) {
+  public void rebuildBoardsMenu(JMenu menu, final Editor editor) {
     //System.out.println("rebuilding boards menu");
     menu.removeAll();      
     ButtonGroup group = new ButtonGroup();
@@ -2360,6 +2371,27 @@ public class Base {
       if (file.isDirectory()) {
         listFiles(basePath, newPath, vector);
       }
+    }
+  }
+
+
+  public void handleAddZipLibrary(Editor editor) {
+    String prompt = _("Select a zip file containing the library you'd like to add");
+    FileDialog fd = new FileDialog(editor, prompt, FileDialog.LOAD);
+    fd.setDirectory(System.getProperty("user.home"));
+    fd.setVisible(true);
+
+    String directory = fd.getDirectory();
+    String filename = fd.getFile();
+    if (filename == null) return;
+
+    File sourceFile = new File(directory, filename);
+    try {
+      ZipDeflater zipDeflater = new ZipDeflater(sourceFile, getSketchbookLibrariesFolder());
+      zipDeflater.deflate();
+      editor.statusNotice(_("Library added to your libraries. Check \"Import library\" menu"));
+    } catch (IOException e) {
+      editor.statusError(e);      
     }
   }
 }
