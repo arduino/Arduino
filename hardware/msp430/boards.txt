@@ -6,6 +6,7 @@ lpmsp430g2231.build.mcu=msp430g2231
 lpmsp430g2231.build.f_cpu=1000000L
 lpmsp430g2231.build.core=msp430
 lpmsp430g2231.build.variant=launchpad
+lpmsp430g2231.upload.maximum_ram_size=256
 
 ##############################################################
 #lpmsp430g2231f.name=LaunchPad w/ msp430g2231 (16MHz)
@@ -24,6 +25,7 @@ lpmsp430g2452.build.mcu=msp430g2452
 lpmsp430g2452.build.f_cpu=16000000L
 lpmsp430g2452.build.core=msp430
 lpmsp430g2452.build.variant=launchpad
+lpmsp430g2452.upload.maximum_ram_size=256
 
 ##############################################################
 lpmsp430g2553.name=LaunchPad w/ msp430g2553 (16MHz)
@@ -33,6 +35,7 @@ lpmsp430g2553.build.mcu=msp430g2553
 lpmsp430g2553.build.f_cpu=16000000L
 lpmsp430g2553.build.core=msp430
 lpmsp430g2553.build.variant=launchpad
+lpmsp430g2553.upload.maximum_ram_size=256
 
 ##############################################################
 lpmsp430fr5739.name=FraunchPad w/ msp430fr5739
@@ -42,5 +45,6 @@ lpmsp430fr5739.build.mcu=msp430fr5739
 lpmsp430fr5739.build.f_cpu=16000000L
 lpmsp430fr5739.build.core=msp430
 lpmsp430fr5739.build.variant=fraunchpad
+lpmsp430fr5739.upload.maximum_ram_size=1024
 
 ##############################################################
