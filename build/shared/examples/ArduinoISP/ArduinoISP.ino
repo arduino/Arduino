@@ -65,6 +65,8 @@
 
 void pulse(int pin, int times);
 
+//make sure that baudrate in /hardware/arduino/programmers.txt
+//and in avrdude command has the same baudrate 
 void setup() {
   Serial.begin(19200);
   pinMode(LED_PMODE, OUTPUT);
