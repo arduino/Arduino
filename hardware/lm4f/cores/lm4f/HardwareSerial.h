@@ -33,6 +33,10 @@
 #include "Stream.h"
 
 #define SERIAL_BUFFER_SIZE     1024
+
+#define UART1_PORTB	0 
+#define UART1_PORTC	1
+
 class HardwareSerial : public Stream
 {
 
@@ -53,6 +57,7 @@ class HardwareSerial : public Stream
 		HardwareSerial(unsigned long);
 		void begin(unsigned long);
 		void setModule(unsigned long);
+		void setPins(unsigned long);
 		void end(void);
 		virtual int available(void);
 		virtual int peek(void);
