@@ -39,6 +39,19 @@
 
 class HardwareSerial : public Stream
 {
+  public:
+    // Describes the blocking behaviour for writing (note that flushing
+    // will _always_ block until the transmission is complete).
+    enum blocking_behaviour {
+      // Never block, discard data when buffer is full
+      SERIAL_BLOCK_NEVER = 0,
+      // Block only when interrupts are enabled
+      SERIAL_BLOCK_INTERRUPTIBLE = 1 << 0,
+      // Block only when interrupts are disabled
+      SERIAL_BLOCK_NON_INTERRUPTIBLE = 1 << 1,
+      // Always block, never discard data
+      SERIAL_BLOCK_ALWAYS = SERIAL_BLOCK_INTERRUPTIBLE | SERIAL_BLOCK_NON_INTERRUPTIBLE,
+    };
   protected:
     volatile uint8_t *_ubrrh;
     volatile uint8_t *_ubrrl;
@@ -48,6 +61,7 @@ class HardwareSerial : public Stream
     volatile uint8_t *_udr;
     // Has any byte been written to the UART since begin()
     bool _written;
+    blocking_behaviour _blocking;
 
     volatile uint8_t _rx_buffer_head;
     volatile uint8_t _rx_buffer_tail;
@@ -68,6 +82,8 @@ class HardwareSerial : public Stream
     void begin(unsigned long);
     void begin(unsigned long, uint8_t);
     void end();
+    void setBlocking(blocking_behaviour when);
+    blocking_behaviour getBlocking();
     virtual int available(void);
     virtual int peek(void);
     virtual int read(void);

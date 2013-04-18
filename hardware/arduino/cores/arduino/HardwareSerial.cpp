@@ -253,6 +253,7 @@ HardwareSerial::HardwareSerial(
   _ucsrb = ucsrb;
   _ucsrc = ucsrc;
   _udr = udr;
+  _blocking = SERIAL_BLOCK_ALWAYS;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -310,6 +311,16 @@ void HardwareSerial::end()
   
   // clear any received data
   _rx_buffer_head = _rx_buffer_tail;
+}
+
+void HardwareSerial::setBlocking(blocking_behaviour when)
+{
+  _blocking = when;
+}
+
+HardwareSerial::blocking_behaviour HardwareSerial::getBlocking()
+{
+  return _blocking;
 }
 
 int HardwareSerial::available(void)
@@ -374,6 +385,8 @@ size_t HardwareSerial::write(uint8_t c)
     // wait for the interrupt handler to empty it a bit
     while (i == _tx_buffer_tail) {
       if (!interrupts_enabled) {
+	if (!(_blocking & SERIAL_BLOCK_NON_INTERRUPTIBLE))
+	  return 0;
 	// Interrupts were disabled at the start of this function, so we
 	// can't just enable them (that would allow other interrupts to
 	// trigger as well!). We'll have to poll the data register empty
@@ -382,6 +395,8 @@ size_t HardwareSerial::write(uint8_t c)
 	if(bit_is_set(*_ucsra, UDRE0))
 	  _tx_udr_empty_irq();
       } else {
+	if (!(_blocking & SERIAL_BLOCK_INTERRUPTIBLE))
+	  return 0;
 	// Interrupts were enabled, so we can temporarily enable them so
 	// our tx interrupt can fire and free up some space. Note that we
 	// can't just use the UDRE polling approach here instead of
