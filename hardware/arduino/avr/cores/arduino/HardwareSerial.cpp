@@ -25,6 +25,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+#include <util/atomic.h>
+#include <avr/cpufunc.h>
 #include "Arduino.h"
 #include "wiring_private.h"
 
@@ -245,27 +247,33 @@ void HardwareSerial::end()
 
 int HardwareSerial::available(void)
 {
-  return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_BUFFER_SIZE;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_BUFFER_SIZE;
+  }
 }
 
 int HardwareSerial::peek(void)
 {
-  if (_rx_buffer_head == _rx_buffer_tail) {
-    return -1;
-  } else {
-    return _rx_buffer[_rx_buffer_tail];
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    if (_rx_buffer_head == _rx_buffer_tail) {
+      return -1;
+    } else {
+      return _rx_buffer[_rx_buffer_tail];
+    }
   }
 }
 
 int HardwareSerial::read(void)
 {
-  // if the head isn't ahead of the tail, we don't have any characters
-  if (_rx_buffer_head == _rx_buffer_tail) {
-    return -1;
-  } else {
-    unsigned char c = _rx_buffer[_rx_buffer_tail];
-    _rx_buffer_tail = (unsigned int)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
-    return c;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    // if the head isn't ahead of the tail, we don't have any characters
+    if (_rx_buffer_head == _rx_buffer_tail) {
+      return -1;
+    } else {
+      unsigned char c = _rx_buffer[_rx_buffer_tail];
+      _rx_buffer_tail = (unsigned int)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+      return c;
+    }
   }
 }
 
@@ -291,30 +299,44 @@ void HardwareSerial::flush()
 
 size_t HardwareSerial::write(uint8_t c)
 {
-  int i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
-	
-  // If the output buffer is full, there's nothing for it other than to 
-  // wait for the interrupt handler to empty it a bit
-  while (i == _tx_buffer_tail) {
-    if (bit_is_clear(SREG, SREG_I)) {
-      // Interrupts are disabled, so we'll have to poll the data
-      // register empty flag ourselves. If it is set, pretend an
-      // interrupt has happened and call the handler to free up
-      // space for us.
-      if(bit_is_set(*_ucsra, UDRE0))
-	_tx_udr_empty_irq();
-    } else {
-      // nop, the interrupt handler will free up space for us
-    }
-  }
+  bool interrupts_enabled = bit_is_set(SREG, SREG_I);
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    int i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
 
-  _tx_buffer[_tx_buffer_head] = c;
-  _tx_buffer_head = i;
-	
-  sbi(*_ucsrb, UDRIE0);
-  _written = true;
-  
-  return 1;
+    // If the output buffer is full, there's nothing for it other than to 
+    // wait for the interrupt handler to empty it a bit
+    while (i == _tx_buffer_tail) {
+      if (!interrupts_enabled) {
+	// Interrupts were disabled at the start of this function, so we
+	// can't just enable them (that would allow other interrupts to
+	// trigger as well!). We'll have to poll the data register empty
+	// flag ourselves. If it is set, pretend an interrupt has happened
+	// and call the handler to free up space for us.
+	if(bit_is_set(*_ucsra, UDRE0))
+	  _tx_udr_empty_irq();
+      } else {
+	// Interrupts were enabled, so we can temporarily enable them so
+	// our tx interrupt can fire and free up some space. Note that we
+	// can't just use the UDRE polling approach here instead of
+	// enabling interrupts, since that would prevent other
+	// interrupts from triggering while we wait for room.
+	NONATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+	  _NOP(); // Any pending interrupts will trigger here
+	}
+	// Recalculate i, since other interrupt handlers might have
+	// written to our buffer
+	i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+      }
+    }
+
+    _tx_buffer[_tx_buffer_head] = c;
+    _tx_buffer_head = i;
+
+    sbi(*_ucsrb, UDRIE0);
+    _written = true;
+
+    return 1;
+  }
 }
 
 HardwareSerial::operator bool() {
