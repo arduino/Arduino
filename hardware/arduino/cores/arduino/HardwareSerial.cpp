@@ -284,7 +284,7 @@ try_again:
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
 
-  transmitting = false;
+  _written = false;
 
   sbi(*_ucsrb, RXEN0);
   sbi(*_ucsrb, TXEN0);
@@ -326,6 +326,8 @@ try_again:
   // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
+
+  _written = false;
 
   //set the data bits, parity, and stop bits
 #if defined(__AVR_ATmega8__)
@@ -382,9 +384,15 @@ int HardwareSerial::read(void)
 
 void HardwareSerial::flush()
 {
-  // UDR is kept full while the buffer is not empty, so TXC triggers when EMPTY && SENT
-  while (transmitting && bit_is_clear(*_ucsra, TXC0));
-  transmitting = false;
+  // If we have never written a byte, no need to flush. This special
+  // case is needed since there is no way to force the TXC (transmit
+  // complete) bit to 1 during initialization
+  if (!_written)
+    return;
+
+  // UDR is kept full while the buffer is not empty, so TXC triggers
+  // when EMPTY && SENT
+  while (bit_is_clear(*_ucsra, TXC0));
 }
 
 size_t HardwareSerial::write(uint8_t c)
@@ -401,8 +409,10 @@ size_t HardwareSerial::write(uint8_t c)
   _tx_buffer_head = i;
 	
   sbi(*_ucsrb, UDRIE0);
-  // clear the TXC bit -- "can be cleared by writing a one to its bit location"
-  transmitting = true;
+  _written = true;
+  // clear the TXC bit -- "can be cleared by writing a one to its bit
+  // location". This makes sure flush() won't return until the bytes
+  // actually got written
   sbi(*_ucsra, TXC0);
   
   return 1;
