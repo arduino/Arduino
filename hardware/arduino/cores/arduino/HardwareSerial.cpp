@@ -265,7 +265,6 @@ void HardwareSerial::begin(unsigned long baud)
 void HardwareSerial::begin(unsigned long baud, byte config)
 {
   uint16_t baud_setting;
-  uint8_t current_config;
   bool use_u2x = true;
 
 #if F_CPU == 16000000UL
