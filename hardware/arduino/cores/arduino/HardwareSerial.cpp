@@ -259,44 +259,7 @@ HardwareSerial::HardwareSerial(
 
 void HardwareSerial::begin(unsigned long baud)
 {
-  uint16_t baud_setting;
-  bool use_u2x = true;
-
-#if F_CPU == 16000000UL
-  // hardcoded exception for compatibility with the bootloader shipped
-  // with the Duemilanove and previous boards and the firmware on the 8U2
-  // on the Uno and Mega 2560.
-  if (baud == 57600) {
-    use_u2x = false;
-  }
-#endif
-
-try_again:
-  
-  if (use_u2x) {
-    *_ucsra = 1 << U2X0;
-    baud_setting = (F_CPU / 4 / baud - 1) / 2;
-  } else {
-    *_ucsra = 0;
-    baud_setting = (F_CPU / 8 / baud - 1) / 2;
-  }
-  
-  if ((baud_setting > 4095) && use_u2x)
-  {
-    use_u2x = false;
-    goto try_again;
-  }
-
-  // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
-  *_ubrrh = baud_setting >> 8;
-  *_ubrrl = baud_setting;
-
-  _written = false;
-
-  sbi(*_ucsrb, RXEN0);
-  sbi(*_ucsrb, TXEN0);
-  sbi(*_ucsrb, RXCIE0);
-  cbi(*_ucsrb, UDRIE0);
+  begin(baud, SERIAL_8N1);
 }
 
 void HardwareSerial::begin(unsigned long baud, byte config)
