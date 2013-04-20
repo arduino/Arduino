@@ -315,7 +315,8 @@ size_t HardwareSerial::write(uint8_t c)
     // Check for valid arguments.
     //
     ASSERT(c != 0);
-
+/*
+    //this is not necessary: https://github.com/energia/Energia/issues/225
     //
     // If the character to the UART is \n, then add a \r before it so that
     // \n is translated to \n\r in the output.
@@ -331,7 +332,7 @@ size_t HardwareSerial::write(uint8_t c)
 		txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
         numTransmit ++;
     }
-
+*/
     //
     // Send the character to the UART output.
     //
