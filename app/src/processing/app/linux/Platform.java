@@ -22,12 +22,15 @@
 
 package processing.app.linux;
 
-import java.io.File;
-
-import javax.swing.UIManager;
-
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.Executor;
 import processing.app.Preferences;
+import processing.app.debug.TargetPackage;
+import processing.app.tools.ExternalProcessExecutor;
 import processing.core.PConstants;
+
+import java.io.*;
+import java.util.Map;
 
 
 /**
@@ -123,5 +126,29 @@ public class Platform extends processing.app.Platform {
   @Override
   public String getName() {
     return PConstants.platformNames[PConstants.LINUX];
+  }
+
+  @Override
+  public String resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Executor executor = new ExternalProcessExecutor(baos);
+
+    try {
+      CommandLine toDevicePath = CommandLine.parse("udevadm info -q path -n " + serial);
+      executor.execute(toDevicePath);
+      String devicePath = new String(baos.toByteArray());
+      baos.reset();
+      CommandLine commandLine = CommandLine.parse("udevadm info --query=property -p " + devicePath);
+      executor.execute(commandLine);
+      String vidPid = new UDevAdmParser().extractVIDAndPID(new String(baos.toByteArray()));
+
+      if (vidPid == null) {
+        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+      }
+
+      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
+    } catch (IOException e) {
+      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+    }
   }
 }
