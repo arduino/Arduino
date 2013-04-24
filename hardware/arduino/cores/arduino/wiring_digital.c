@@ -26,153 +26,35 @@
 
 #define ARDUINO_MAIN
 #include "wiring_private.h"
-#include "pins_arduino.h"
+#include "pin_functions.h"
 
-void pinMode(uint8_t pin, uint8_t mode)
+// This are versions that call back into, where the pin isn't known
+// at compile-time.
+
+const uint16_t port_to_mode_P[] = { PORT_TO_MODE };
+const uint16_t PROGMEM port_to_output_P[] = { PORT_TO_OUTPUT };
+const uint16_t PROGMEM port_to_input_P[] = { PORT_TO_INPUT };
+const uint8_t PROGMEM digital_pin_to_port_P[] = { DIGITAL_PIN_TO_PORT };
+const uint8_t PROGMEM digital_pin_to_bit_mask_P[] = { DIGITAL_PIN_TO_BIT_MASK };
+const uint8_t PROGMEM digital_pin_to_timer_P[] = { DIGITAL_PIN_TO_TIMER };
+
+void _pinModeRuntime(uint8_t pin, uint8_t mode)
 {
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
-	volatile uint8_t *reg, *out;
-
-	if (port == NOT_A_PIN) return;
-
-	// JWS: can I let the optimizer do this?
-	reg = portModeRegister(port);
-	out = portOutputRegister(port);
-
-	if (mode == INPUT) { 
-		uint8_t oldSREG = SREG;
-                cli();
-		*reg &= ~bit;
-		*out &= ~bit;
-		SREG = oldSREG;
-	} else if (mode == INPUT_PULLUP) {
-		uint8_t oldSREG = SREG;
-                cli();
-		*reg &= ~bit;
-		*out |= bit;
-		SREG = oldSREG;
-	} else {
-		uint8_t oldSREG = SREG;
-                cli();
-		*reg |= bit;
-		SREG = oldSREG;
-	}
+  _pinModeInline(pin, mode);
 }
 
-// Forcing this inline keeps the callers from having to push their own stuff
-// on the stack. It is a good performance win and only takes 1 more byte per
-// user than calling. (It will take more bytes on the 168.)
-//
-// But shouldn't this be moved into pinMode? Seems silly to check and do on
-// each digitalread or write.
-//
-// Mark Sproul:
-// - Removed inline. Save 170 bytes on atmega1280
-// - changed to a switch statment; added 32 bytes but much easier to read and maintain.
-// - Added more #ifdefs, now compiles for atmega645
-//
-//static inline void turnOffPWM(uint8_t timer) __attribute__ ((always_inline));
-//static inline void turnOffPWM(uint8_t timer)
-static void turnOffPWM(uint8_t timer)
+void _digitalWriteRuntime(uint8_t pin, uint8_t val)
 {
-	switch (timer)
-	{
-		#if defined(TCCR1A) && defined(COM1A1)
-		case TIMER1A:   cbi(TCCR1A, COM1A1);    break;
-		#endif
-		#if defined(TCCR1A) && defined(COM1B1)
-		case TIMER1B:   cbi(TCCR1A, COM1B1);    break;
-		#endif
-		
-		#if defined(TCCR2) && defined(COM21)
-		case  TIMER2:   cbi(TCCR2, COM21);      break;
-		#endif
-		
-		#if defined(TCCR0A) && defined(COM0A1)
-		case  TIMER0A:  cbi(TCCR0A, COM0A1);    break;
-		#endif
-		
-		#if defined(TIMER0B) && defined(COM0B1)
-		case  TIMER0B:  cbi(TCCR0A, COM0B1);    break;
-		#endif
-		#if defined(TCCR2A) && defined(COM2A1)
-		case  TIMER2A:  cbi(TCCR2A, COM2A1);    break;
-		#endif
-		#if defined(TCCR2A) && defined(COM2B1)
-		case  TIMER2B:  cbi(TCCR2A, COM2B1);    break;
-		#endif
-		
-		#if defined(TCCR3A) && defined(COM3A1)
-		case  TIMER3A:  cbi(TCCR3A, COM3A1);    break;
-		#endif
-		#if defined(TCCR3A) && defined(COM3B1)
-		case  TIMER3B:  cbi(TCCR3A, COM3B1);    break;
-		#endif
-		#if defined(TCCR3A) && defined(COM3C1)
-		case  TIMER3C:  cbi(TCCR3A, COM3C1);    break;
-		#endif
-
-		#if defined(TCCR4A) && defined(COM4A1)
-		case  TIMER4A:  cbi(TCCR4A, COM4A1);    break;
-		#endif					
-		#if defined(TCCR4A) && defined(COM4B1)
-		case  TIMER4B:  cbi(TCCR4A, COM4B1);    break;
-		#endif
-		#if defined(TCCR4A) && defined(COM4C1)
-		case  TIMER4C:  cbi(TCCR4A, COM4C1);    break;
-		#endif			
-		#if defined(TCCR4C) && defined(COM4D1)
-		case TIMER4D:	cbi(TCCR4C, COM4D1);	break;
-		#endif			
-			
-		#if defined(TCCR5A)
-		case  TIMER5A:  cbi(TCCR5A, COM5A1);    break;
-		case  TIMER5B:  cbi(TCCR5A, COM5B1);    break;
-		case  TIMER5C:  cbi(TCCR5A, COM5C1);    break;
-		#endif
-	}
+  _digitalWriteInline(pin, val);
 }
 
-void digitalWrite(uint8_t pin, uint8_t val)
+int _digitalReadRuntime(uint8_t pin)
 {
-	uint8_t timer = digitalPinToTimer(pin);
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
-	volatile uint8_t *out;
-
-	if (port == NOT_A_PIN) return;
-
-	// If the pin that support PWM output, we need to turn it off
-	// before doing a digital write.
-	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
-
-	out = portOutputRegister(port);
-
-	uint8_t oldSREG = SREG;
-	cli();
-
-	if (val == LOW) {
-		*out &= ~bit;
-	} else {
-		*out |= bit;
-	}
-
-	SREG = oldSREG;
+  return _digitalReadInline(pin);
 }
 
-int digitalRead(uint8_t pin)
+void _turnOffPWMRuntime(uint8_t pin)
 {
-	uint8_t timer = digitalPinToTimer(pin);
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
-
-	if (port == NOT_A_PIN) return LOW;
-
-	// If the pin that support PWM output, we need to turn it off
-	// before getting a digital reading.
-	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
-
-	if (*portInputRegister(port) & bit) return HIGH;
-	return LOW;
+  _turnOffPWMInline(pin);
 }
+
