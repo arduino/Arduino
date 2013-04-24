@@ -59,18 +59,7 @@ const u16 STRING_LANGUAGE[2] = {
  */
 
 #ifndef USB_PRODUCT
-// Use a hardcoded product name
-#if USB_PID == 0x8036
-#define USB_PRODUCT     'A','r','d','u','i','n','o',' ','L','e','o','n','a','r','d','o'
-#elif USB_PID == 0x8037
-#define USB_PRODUCT 	 'A','r','d','u','i','n','o',' ','M','i','c','r','o'
-#elif USB_PID == 0x803C
-#define USB_PRODUCT     'A','r','d','u','i','n','o',' ','E','s','p','l','o','r','a'
-#elif USB_PID == 0x9208
-#define USB_PRODUCT  	 'L','i','l','y','P','a','d','U','S','B'
-#else
 #define USB_PRODUCT     'U','S','B',' ','I','O',' ','B','o','a','r','d'
-#endif
 #endif
 
 static const u8 _IPRODUCT[] = { USB_PRODUCT };
