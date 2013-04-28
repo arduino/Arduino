@@ -14,7 +14,7 @@ class USBDevice_
 public:
 	USBDevice_();
 	bool configured();
-
+	
 	void attach();
 	void detach();	// Serial port goes down too...
 	void poll();
@@ -32,7 +32,7 @@ private:
 public:
 	void begin(uint16_t baud_count);
 	void end(void);
-
+	
 	virtual int available(void);
 	virtual void accept(void);
 	virtual int peek(void);
@@ -74,6 +74,98 @@ extern Mouse_ Mouse;
 //================================================================================
 //	Keyboard
 
+// USB HID based keycodes
+// as taken from: http://www.usb.org/developers/devclass_docs/Hut1_11.pdf
+#define KEYCODE_LEFT_CTRL		0xE0
+#define KEYCODE_LEFT_SHIFT		0xE1
+#define KEYCODE_LEFT_ALT		0xE2
+#define KEYCODE_LEFT_GUI		0xE3
+#define KEYCODE_RIGHT_CTRL		0xE4
+#define KEYCODE_RIGHT_SHIFT		0xE5
+#define KEYCODE_RIGHT_ALT		0xE6
+#define KEYCODE_RIGHT_GUI		0xE7
+
+#define KEYCODE_UP_ARROW		0x52
+#define KEYCODE_DOWN_ARROW		0x51
+#define KEYCODE_LEFT_ARROW		0x50
+#define KEYCODE_RIGHT_ARROW		0x4F
+#define KEYCODE_BACKSPACE		0x2A
+#define KEYCODE_TAB				0x2B
+#define KEYCODE_RETURN			0x28
+#define KEYCODE_ESC				0x29
+#define KEYCODE_INSERT			0x49
+#define KEYCODE_DELETE			0xD4
+#define KEYCODE_PAGE_UP			0x4B
+#define KEYCODE_PAGE_DOWN		0x4E
+#define KEYCODE_HOME			0x4A
+#define KEYCODE_END				0x4D
+#define KEYCODE_CAPS_LOCK		0x39
+#define KEYCODE_F1				0x3A
+#define KEYCODE_F2				0x3B
+#define KEYCODE_F3				0x3C
+#define KEYCODE_F4				0x3D
+#define KEYCODE_F5				0x3E
+#define KEYCODE_F6				0x3F
+#define KEYCODE_F7				0x40
+#define KEYCODE_F8				0x41
+#define KEYCODE_F9				0x42
+#define KEYCODE_F10				0x43
+#define KEYCODE_F11				0x44
+#define KEYCODE_F12				0x45
+
+#define KEYCODE_ENTER				KEYCODE_RETURN
+#define KEYCODE_SPACEBAR			0x2C
+#define	KEYCODE_PRINT_SCREEN		0x46
+#define KEYCODE_SCROLL_LOCK			0x47
+#define KEYCODE_PAUSE				0x48
+#define KEYCODE_KEYPAD_NUM_LOCK		0x53
+#define KEYCODE_KEYPAD_RETURN		0x58
+#define KEYCODE_KEYPAD_ENTER		KEYCODE_KEYPAD_RETURN
+#define KEYCODE_KEYPAD_END			0x59
+#define KEYCODE_KEYPAD_DOWN_ARROW	0x5A
+#define KEYCODE_KEYPAD_PAGE_DOWN	0x5B
+#define KEYCODE_KEYPAD_LEFT_ARROW	0x5C
+#define KEYCODE_KEYPAD_RIGHT_ARROW	0x5E
+#define KEYCODE_KEYPAD_HOME			0x5F
+#define KEYCODE_KEYPAD_UP_ARROW		0x60
+#define KEYCODE_KEYPAD_PAGE_UP		0x61
+#define KEYCODE_KEYPAD_INSERT		0x62
+#define KEYCODE_KEYPAD_DELETE		0x63
+#define KEYCODE_APPLICATION			0x65
+#define KEYCODE_POWER				0x66
+#define KEYCODE_F13					0x68
+#define KEYCODE_F14					0x69
+#define KEYCODE_F15					0x6A
+#define KEYCODE_F16					0x6B
+#define KEYCODE_F17					0x6C
+#define KEYCODE_F18					0x6D
+#define KEYCODE_F19					0x6E
+#define KEYCODE_F20					0x6F
+#define KEYCODE_F21					0x70
+#define KEYCODE_F22					0x71
+#define KEYCODE_F23					0x72
+#define KEYCODE_F24					0x73
+#define KEYCODE_EXECUTE				0x74
+#define KEYCODE_HELP				0x75
+#define KEYCODE_MENU				0x76
+#define KEYCODE_SELECT				0x77
+#define KEYCODE_STOP				0x78
+#define KEYCODE_AGAIN				0x79
+#define KEYCODE_UNDO				0x7A
+#define KEYCODE_CUT					0x7B
+#define KEYCODE_COPY				0x7C
+#define KEYCODE_PASTE				0x7D
+#define KEYCODE_FIND				0x7E
+#define KEYCODE_MUTE				0x7F
+#define KEYCODE_VOLUME_UP			0x80
+#define KEYCODE_VOLUME_DOWN			0x81
+#define KEYCODE_CANCEL				0x9B
+#define KEYCODE_CLEAR				0x9C
+#define KEYCODE_PRIOR				0x9D
+#define KEYCODE_KEYPAD_TAB			0xBA
+#define KEYCODE_KEYPAD_BACKSPACE	0xBB
+
+// ASCII based keys
 #define KEY_LEFT_CTRL		0x80
 #define KEY_LEFT_SHIFT		0x81
 #define KEY_LEFT_ALT		0x82
@@ -111,12 +203,15 @@ extern Mouse_ Mouse;
 #define KEY_F11				0xCC
 #define KEY_F12				0xCD
 
+#define KEY_ENTER			KEY_RETURN
+
 //	Low level key report: up to 6 keys and shift, ctrl etc at once
+#define KEYREPORT_KEYCOUNT	0x06
 typedef struct
 {
 	uint8_t modifiers;
 	uint8_t reserved;
-	uint8_t keys[6];
+	uint8_t keys[KEYREPORT_KEYCOUNT];
 } KeyReport;
 
 class Keyboard_ : public Print
@@ -131,6 +226,8 @@ public:
 	virtual size_t write(uint8_t k);
 	virtual size_t press(uint8_t k);
 	virtual size_t release(uint8_t k);
+	virtual size_t pressKeycode(uint8_t k, uint8_t send);
+	virtual size_t releaseKeycode(uint8_t k, uint8_t send);
 	virtual void releaseAll(void);
 };
 extern Keyboard_ Keyboard;
