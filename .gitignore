@@ -1,3 +1,4 @@
+.DS_STORE
 app/bin/
 app/pde.jar
 build/macosx/work/
