@@ -10,4 +10,5 @@
 <linkerCommandFile value="28027_RAM_lnk.cmd"/>
 <rts value="libc.a"/>
 <templateProperties value="id=com.ti.common.project.core.emptyProjectWithMainTemplate,"/>
+<isTargetManual value="false"/>
 </projectOptions>

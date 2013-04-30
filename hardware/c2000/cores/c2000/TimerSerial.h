@@ -65,14 +65,17 @@ public:
 private:
 
 #if NEEDS_BUFF_PTR
-    ring_buffer_ts *_rx_buffer; // gcc seems to get confused on the g2231 without this
-    ring_buffer_ts *_tx_buffer;
+    ring_buffer_ts *_timer_rx_buffer; // gcc seems to get confused on the g2231 without this
+    ring_buffer_ts *_timer_tx_buffer;
 #endif
 
 };
 
-#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_EUSCI_A0__)
-extern TimerSerial Serial;
-#endif
+//#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_EUSCI_A0__)
+extern TimerSerial timerSerial;
+//#endif
 extern void serialEventRun(void);// __attribute__((weak));
 #endif
+
+void xint1_isr(void);
+void cpu_timer0_isr(void);

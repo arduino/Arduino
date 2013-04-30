@@ -1,3 +1,4 @@
+
 /*
   ************************************************************************
   *	HardwareSerial.cpp
@@ -24,26 +25,20 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  
+
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
 */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
 #include "Energia.h"
 #include "wiring_private.h"
-#include "usci_isr_handler.h"
-
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
-
+#include "sci_isr_handler.h"
 #include "HardwareSerial.h"
 
 HardwareSerial *SerialPtr;
-
-
 
 #define SERIAL_BUFFER_SIZE 16
 
@@ -71,7 +66,8 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 	}
 }
 
-void serialEvent() __attribute__((weak));
+void serialEvent();
+
 void serialEvent() {}
 
 void serialEventRun(void)
@@ -87,63 +83,75 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
-#define SMCLK F_CPU //SMCLK = F_CPU for now
+#define CPU_FREQ     60E6        // Default = 60 MHz. Change to 50E6 for 50 MHz devices
+#define LSPCLK_FREQ CPU_FREQ/4
 
 void HardwareSerial::begin(unsigned long baud)
 {
-	unsigned int mod, divider;
-	unsigned char oversampling;
-	
-	/* Calling this dummy function prevents the linker
-	 * from stripping the USCI interupt vectors.*/ 
-	usci_isr_install();
-	if (SMCLK/baud>=48) {                                                // requires SMCLK for oversampling
-		oversampling = 1;
-	}
-	else {
-		oversampling= 0;
-	}
 
-	divider=(SMCLK<<4)/baud;
+	   EALLOW;
+	/* Enable internal pull-up for the selected pins */
+	/* Disable internal pull-up for the selected output pins
+	   to reduce power consumption. */
+	// Pull-ups can be enabled or disabled disabled by the user.
 
-	SerialPtr = this;
+		GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;    // Enable pull-up for GPIO28 (SCIRXDA)
+		GpioCtrlRegs.GPAPUD.bit.GPIO29 = 1;	   // Disable pull-up for GPIO29 (SCITXDA)
 
-	pinMode_int(UARTRXD, UARTRXD_SET_MODE);
-	pinMode_int(UARTTXD, UARTTXD_SET_MODE);	
+	/* Set qualification for selected pins to asynch only */
+	// Inputs are synchronized to SYSCLKOUT by default.
+	// This will select asynch (no qualification) for the selected pins.
 
-	UCA0CTL1 = UCSWRST;
-	UCA0CTL1 = UCSSEL_2;                                // SMCLK
-	UCA0CTL0 = 0;
-	UCA0ABCTL = 0;
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	if(!oversampling) {
-		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
-		divider >>=4;
-	} else {
-		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) – INT(N/16)] × 16)
-		divider>>=8;
-	}
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTLW = (oversampling ? UCOS16:0) | mod;
-#else
-	if(!oversampling) {
-		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
-		divider >>=4;
-	} else {
-		mod = ((divider&0xf8)+0x8)&0xf0;                // UCBRFx (bit 4-7)
-		divider>>=8;
-	}
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTL = (unsigned char)(oversampling ? UCOS16:0) | mod;
-#endif	
-	UCA0CTL1 &= ~UCSWRST;
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE |= UCRXIE;
-#else
-	UC0IE |= UCA0RXIE;
-#endif	
+		GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 3;  // Asynch input GPIO28 (SCIRXDA)
+
+	/* Configure SCI-A pins using GPIO regs*/
+	// This specifies which of the possible GPIO pins will be SCI functional pins.
+
+		GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 1;   // Configure GPIO28 for SCIRXDA operation
+		GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 1;   // Configure GPIO29 for SCITXDA operation
+
+	    EDIS;
+
+	// ISR functions found within this file.
+	    EALLOW;	// This is needed to write to EALLOW protected registers
+	    PieVectTable.SCIRXINTA = &uart_rx_isr;
+	    PieVectTable.SCITXINTA = &uart_tx_isr;
+	    EDIS;   // This is needed to disable write to EALLOW protected registers
+
+	// Note: Clocks were turned on to the SCIA peripheral
+	// in the InitSysCtrl() function
+	    EALLOW;
+	    SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;      // SCI-A
+	    EDIS;
+
+	   	SciaRegs.SCICCR.all =0x0007;   // 1 stop bit,  No loopback
+	                                     // No parity,8 char bits,
+	                                     // async mode, idle-line protocol
+	  	SciaRegs.SCICTL1.all =0x0003;  // enable TX, RX, internal SCICLK,
+	                                     // Disable RX ERR, SLEEP, TXWAKE
+	  	SciaRegs.SCICTL2.all =0x0003;
+	  	SciaRegs.SCICTL2.bit.TXINTENA =1;
+	  	SciaRegs.SCICTL2.bit.RXBKINTENA =1;
+	    SciaRegs.SCIHBAUD    = (unsigned int)(LSPCLK_FREQ/(baud*8)-1)>>8 ;
+	    SciaRegs.SCILBAUD    = (unsigned int)(LSPCLK_FREQ/(baud*8)-1)&0x00FF;
+	  	//SciaRegs.SCICCR.bit.LOOPBKENA =0; // Disable loop back
+	    SciaRegs.SCIFFTX.all=0xC020;
+	    SciaRegs.SCIFFRX.all=0x0021;
+	    SciaRegs.SCIFFCT.all=0x0;
+
+	  	SciaRegs.SCICTL1.all =0x0023;     // Relinquish SCI from Reset
+
+
+	  	SciaRegs.SCIFFTX.bit.TXFIFOXRESET=1;
+	  	SciaRegs.SCIFFRX.bit.RXFIFORESET=1;
+
+	  	// Enable interrupts required for the sci
+	  	PieCtrlRegs.PIECTRL.bit.ENPIE = 1;   // Enable the PIE block
+	  	PieCtrlRegs.PIEIER9.bit.INTx1=1;     // PIE Group 9, INT1
+	  	PieCtrlRegs.PIEIER9.bit.INTx2=1;     // PIE Group 9, INT2
+	  	IER = 0x100;	// Enable CPU INT
+	  	EINT;
+
 }
 
 void HardwareSerial::end()
@@ -152,6 +160,11 @@ void HardwareSerial::end()
 	while (_tx_buffer->head != _tx_buffer->tail);
 
 	_rx_buffer->head = _rx_buffer->tail;
+
+	// Disable the FIFO interrupts
+	SciaRegs.SCIFFTX.bit.TXFFIENA = 0;
+	SciaRegs.SCIFFRX.bit.RXFFIENA = 0;
+
 }
 
 int HardwareSerial::available(void)
@@ -188,50 +201,54 @@ void HardwareSerial::flush()
 size_t HardwareSerial::write(uint8_t c)
 {
 	unsigned int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
-	
+
 	// If the output buffer is full, there's nothing for it other than to
 	// wait for the interrupt handler to empty it a bit
-	// ???: return 0 here instead?
+	// return 0 here instead?
 	while (i == _tx_buffer->tail);
-	
+
 	_tx_buffer->buffer[_tx_buffer->head] = c;
 	_tx_buffer->head = i;
 
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE |= UCTXIE;
-#else
-	UC0IE |= UCA0TXIE;
-#endif	
+	//SciaRegs.SCICTL2.bit.TXINTENA =1;
+	SciaRegs.SCIFFTX.bit.TXFFIENA = 1;
 
 	return 1;
 }
 
-void uart_rx_isr(void)
+
+
+interrupt void uart_rx_isr(void)
 {
-	unsigned char c = UCA0RXBUF;
+	unsigned char c = SciaRegs.SCIRXBUF.all;
 	store_char(c, &rx_buffer);
+
+	SciaRegs.SCIFFRX.bit.RXFFOVRCLR=1;   // Clear Overflow flag
+    SciaRegs.SCIFFRX.bit.RXFFINTCLR=1;   // Clear Interrupt flag
+
+	PieCtrlRegs.PIEACK.all|=0x100;       // Issue PIE ack
+
 }
 
-void uart_tx_isr(void)
+interrupt void uart_tx_isr(void)
 {
 	if (tx_buffer.head == tx_buffer.tail) {
 		// Buffer empty, so disable interrupts
-#if defined(__MSP430_HAS_EUSCI_A0__)
-		UCA0IE &= ~UCTXIE;
-		UCA0IFG |= UCTXIFG;    // Set Flag again
-#else
-		UC0IE &= ~UCA0TXIE;
-#endif	
+		//SciaRegs.SCICTL2.bit.TXINTENA =0;
+		SciaRegs.SCIFFTX.bit.TXFFIENA = 0;
+		SciaRegs.SCIFFTX.bit.TXFFINTCLR=1;	// Clear SCI Interrupt flag
+		PieCtrlRegs.PIEACK.all|=0x100;
 		return;
 	}
 
 	unsigned char c = tx_buffer.buffer[tx_buffer.tail];
 	tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
-	UCA0TXBUF = c;
+	SciaRegs.SCITXBUF = c;
+
+	SciaRegs.SCIFFTX.bit.TXFFINTCLR=1;	// Clear SCI Interrupt flag
+	PieCtrlRegs.PIEACK.all|=0x100;       // Issue PIE ack
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
 HardwareSerial Serial(&rx_buffer, &tx_buffer);
-
-#endif

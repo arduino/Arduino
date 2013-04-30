@@ -26,6 +26,16 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>F28027.cmd</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/cmd/F28027.cmd</locationURI>
+		</link>
+		<link>
+			<name>F2802x_CodeStartBranch.asm</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/source/F2802x_CodeStartBranch.asm</locationURI>
+		</link>
+		<link>
 			<name>F2802x_GlobalVariableDefs.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_headers/source/F2802x_GlobalVariableDefs.c</locationURI>
