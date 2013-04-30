@@ -38,7 +38,7 @@
 #include "Energia.h"
 #include "inc/hw_types.h"
 #include "inc/hw_nvic.h"
-
+#include "syscalls.h"
 //*****************************************************************************
 //
 // Forward declaration of the default fault handlers.
@@ -329,37 +329,6 @@ void ResetISR(void) {
     main();
 }
 
-void *__dso_handle = 0;
-
-/**
- * _sbrk - newlib memory allocation routine
- */
-typedef char *caddr_t;
-
-caddr_t _sbrk (int incr)
-{
-    double current_sp;
-    extern char end asm ("end"); /* Defined by linker */
-    static char * heap_end;
-    char * prev_heap_end;
-
-    if (heap_end == NULL) {
-        heap_end = &end; /* first ram address after bss and data */
-    }
-
-    prev_heap_end = heap_end;
-
-    // simplistic approach to prevent the heap from corrupting the stack
-    // TBD: review for alternatives
-    if ( heap_end + incr < (caddr_t)&current_sp ) {
-        heap_end += incr;
-        return (caddr_t) prev_heap_end;
-    }
-    else {
-        return NULL;
-    }
-}
-
 //*****************************************************************************
 //
 // This is the code that gets called when the processor receives a NMI.  This
@@ -406,4 +375,88 @@ static void IntDefaultHandler(void) {
     while (1) {
         ; // trap any handler not defined
     }
+}
+
+/* syscall stuff */
+void *__dso_handle = 0;
+
+/**
+ * _sbrk - newlib memory allocation routine
+ */
+typedef char *caddr_t;
+
+caddr_t _sbrk (int incr)
+{
+    double current_sp;
+    extern char end asm ("end"); /* Defined by linker */
+    static char * heap_end;
+    char * prev_heap_end;
+
+    if (heap_end == NULL) {
+        heap_end = &end; /* first ram address after bss and data */
+    }
+
+    prev_heap_end = heap_end;
+
+    // simplistic approach to prevent the heap from corrupting the stack
+    // TBD: review for alternatives
+    if ( heap_end + incr < (caddr_t)&current_sp ) {
+        heap_end += incr;
+        return (caddr_t) prev_heap_end;
+    }
+    else {
+        return NULL;
+    }
+}
+
+extern int link( char *cOld, char *cNew )
+{
+    return -1 ;
+}
+
+extern int _close( int file )
+{
+    return -1 ;
+}
+
+extern int _fstat( int file, struct stat *st )
+{
+    st->st_mode = S_IFCHR ;
+
+    return 0 ;
+}
+
+extern int _isatty( int file )
+{
+    return 1 ;
+}
+
+extern int _lseek( int file, int ptr, int dir )
+{
+    return 0 ;
+}
+
+extern int _read(int file, char *ptr, int len)
+{
+    return 0 ;
+}
+
+extern int _write( int file, char *ptr, int len )
+{
+    return len;
+}
+
+extern void _kill( int pid, int sig )
+{
+    return ;
+}
+
+extern int _getpid ( void )
+{
+    return -1 ;
+}
+
+extern void _exit (void)
+{
+
 }
