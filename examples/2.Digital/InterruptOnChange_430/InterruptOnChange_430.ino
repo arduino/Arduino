@@ -16,6 +16,7 @@ uint8_t volatile edge;
 void setup() {
   pinMode(RED_LED, OUTPUT);
   digitalWrite(RED_LED, LOW);
+  pinMode(PUSH2, INPUT_PULLUP);
 
   edge = FALLING;
   attachInterrupt(PUSH2, func, FALLING);
