@@ -54,9 +54,9 @@
 // to which to write the next incoming character and tail is the index of the
 // location from which to read.
 #if (RAMEND < 1000)
-  #define SERIAL_BUFFER_SIZE 16
+  #define SERIAL_BUFFER_SIZE 16U
 #else
-  #define SERIAL_BUFFER_SIZE 64
+  #define SERIAL_BUFFER_SIZE 64U
 #endif
 
 struct ring_buffer
@@ -89,7 +89,7 @@ struct ring_buffer
 
 inline void store_char(unsigned char c, ring_buffer *buffer)
 {
-  int i = (unsigned int)(buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  unsigned int i = (unsigned int)(buffer->head + 1) % SERIAL_BUFFER_SIZE;
 
   // if we should be storing the received character into the location
   // just before the tail (meaning that the head would advance to the
@@ -120,18 +120,20 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #endif
   {
   #if defined(UDR0)
+    unsigned char c;
     if (bit_is_clear(UCSR0A, UPE0)) {
-      unsigned char c = UDR0;
+      c = UDR0;
       store_char(c, &rx_buffer);
     } else {
-      unsigned char c = UDR0;
+      c = UDR0;
     };
   #elif defined(UDR)
+    unsigned char c;
     if (bit_is_clear(UCSRA, PE)) {
-      unsigned char c = UDR;
+      c = UDR;
       store_char(c, &rx_buffer);
     } else {
-      unsigned char c = UDR;
+      c = UDR;
     };
   #else
     #error UDR not defined
@@ -146,11 +148,12 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #define serialEvent1_implemented
   ISR(USART1_RX_vect)
   {
+    unsigned char c;
     if (bit_is_clear(UCSR1A, UPE1)) {
-      unsigned char c = UDR1;
+      c = UDR1;
       store_char(c, &rx_buffer1);
     } else {
-      unsigned char c = UDR1;
+      c = UDR1;
     };
   }
 #endif
@@ -161,11 +164,12 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #define serialEvent2_implemented
   ISR(USART2_RX_vect)
   {
+    unsigned char c;
     if (bit_is_clear(UCSR2A, UPE2)) {
-      unsigned char c = UDR2;
+      c = UDR2;
       store_char(c, &rx_buffer2);
     } else {
-      unsigned char c = UDR2;
+      c = UDR2;
     };
   }
 #endif
@@ -176,11 +180,12 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #define serialEvent3_implemented
   ISR(USART3_RX_vect)
   {
+    unsigned char c;
     if (bit_is_clear(UCSR3A, UPE3)) {
-      unsigned char c = UDR3;
+      c = UDR3;
       store_char(c, &rx_buffer3);
     } else {
-      unsigned char c = UDR3;
+      c = UDR3;
     };
   }
 #endif
@@ -365,7 +370,6 @@ try_again:
 void HardwareSerial::begin(unsigned long baud, byte config)
 {
   uint16_t baud_setting;
-  uint8_t current_config;
   bool use_u2x = true;
 
 #if F_CPU == 16000000UL
@@ -453,13 +457,14 @@ int HardwareSerial::read(void)
 void HardwareSerial::flush()
 {
   // UDR is kept full while the buffer is not empty, so TXC triggers when EMPTY && SENT
-  while (transmitting && ! (*_ucsra & _BV(TXC0)));
+  while (transmitting && ! (*_ucsra & _BV(TXC0)))
+	  ;
   transmitting = false;
 }
 
 size_t HardwareSerial::write(uint8_t c)
 {
-  int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  unsigned int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
 	
   // If the output buffer is full, there's nothing for it other than to 
   // wait for the interrupt handler to empty it a bit

@@ -5,6 +5,7 @@
 uno.name=Arduino Uno
 uno.upload.protocol=arduino
 uno.upload.maximum_size=32256
+uno.upload.maximum_data_size=2048
 uno.upload.speed=115200
 uno.bootloader.low_fuses=0xff
 uno.bootloader.high_fuses=0xde
@@ -24,6 +25,7 @@ atmega328.name=Arduino Duemilanove w/ ATmega328
 
 atmega328.upload.protocol=arduino
 atmega328.upload.maximum_size=30720
+atmega328.upload.maximum_data_size=2048
 atmega328.upload.speed=57600
 
 atmega328.bootloader.low_fuses=0xFF
@@ -45,6 +47,7 @@ diecimila.name=Arduino Diecimila or Duemilanove w/ ATmega168
 
 diecimila.upload.protocol=arduino
 diecimila.upload.maximum_size=14336
+diecimila.upload.maximum_data_size=1024
 diecimila.upload.speed=19200
 
 diecimila.bootloader.low_fuses=0xff
@@ -66,6 +69,7 @@ nano328.name=Arduino Nano w/ ATmega328
 
 nano328.upload.protocol=arduino
 nano328.upload.maximum_size=30720
+nano328.upload.maximum_data_size=2048
 nano328.upload.speed=57600
 
 nano328.bootloader.low_fuses=0xFF
@@ -87,6 +91,7 @@ nano.name=Arduino Nano w/ ATmega168
 
 nano.upload.protocol=arduino
 nano.upload.maximum_size=14336
+nano.upload.maximum_data_size=1024
 nano.upload.speed=19200
 
 nano.bootloader.low_fuses=0xff
@@ -213,6 +218,7 @@ mini328.name=Arduino Mini w/ ATmega328
 
 mini328.upload.protocol=arduino
 mini328.upload.maximum_size=28672
+mini328.upload.maximum_data_size=2048
 mini328.upload.speed=115200
 
 mini328.bootloader.low_fuses=0xff
@@ -234,6 +240,7 @@ mini.name=Arduino Mini w/ ATmega168
 
 mini.upload.protocol=arduino
 mini.upload.maximum_size=14336
+mini.upload.maximum_data_size=1024
 mini.upload.speed=19200
 
 mini.bootloader.low_fuses=0xff
@@ -255,6 +262,7 @@ ethernet.name=Arduino Ethernet
 
 ethernet.upload.protocol=arduino
 ethernet.upload.maximum_size=32256
+ethernet.upload.maximum_data_size=2048
 ethernet.upload.speed=115200
 
 ethernet.bootloader.low_fuses=0xff
@@ -276,6 +284,7 @@ fio.name=Arduino Fio
 
 fio.upload.protocol=arduino
 fio.upload.maximum_size=30720
+fio.upload.maximum_data_size=2048
 fio.upload.speed=57600
 
 fio.bootloader.low_fuses=0xFF
@@ -297,6 +306,7 @@ bt328.name=Arduino BT w/ ATmega328
 
 bt328.upload.protocol=arduino
 bt328.upload.maximum_size=28672
+bt328.upload.maximum_data_size=2048
 bt328.upload.speed=19200
 bt328.upload.disable_flushing=true
 
@@ -319,6 +329,7 @@ bt.name=Arduino BT w/ ATmega168
 
 bt.upload.protocol=arduino
 bt.upload.maximum_size=14336
+bt.upload.maximum_data_size=1024
 bt.upload.speed=19200
 bt.upload.disable_flushing=true
 
@@ -362,6 +373,7 @@ lilypad328.name=LilyPad Arduino w/ ATmega328
 
 lilypad328.upload.protocol=arduino
 lilypad328.upload.maximum_size=30720
+lilypad328.upload.maximum_data_size=2048
 lilypad328.upload.speed=57600
 
 lilypad328.bootloader.low_fuses=0xFF
@@ -383,6 +395,7 @@ lilypad.name=LilyPad Arduino w/ ATmega168
 
 lilypad.upload.protocol=arduino
 lilypad.upload.maximum_size=14336
+lilypad.upload.maximum_data_size=1024
 lilypad.upload.speed=19200
 
 lilypad.bootloader.low_fuses=0xe2
@@ -404,6 +417,7 @@ pro5v328.name=Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328
 
 pro5v328.upload.protocol=arduino
 pro5v328.upload.maximum_size=30720
+pro5v328.upload.maximum_data_size=2048
 pro5v328.upload.speed=57600
 
 pro5v328.bootloader.low_fuses=0xFF
@@ -425,6 +439,7 @@ pro5v.name=Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega168
 
 pro5v.upload.protocol=arduino
 pro5v.upload.maximum_size=14336
+pro5v.upload.maximum_data_size=1024
 pro5v.upload.speed=19200
 
 pro5v.bootloader.low_fuses=0xff
@@ -446,6 +461,7 @@ pro328.name=Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328
 
 pro328.upload.protocol=arduino
 pro328.upload.maximum_size=30720
+pro328.upload.maximum_data_size=2048
 pro328.upload.speed=57600
 
 pro328.bootloader.low_fuses=0xFF
@@ -467,6 +483,7 @@ pro.name=Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega168
 
 pro.upload.protocol=arduino
 pro.upload.maximum_size=14336
+pro.upload.maximum_data_size=1024
 pro.upload.speed=19200
 
 pro.bootloader.low_fuses=0xc6
@@ -488,6 +505,7 @@ atmega168.name=Arduino NG or older w/ ATmega168
 
 atmega168.upload.protocol=arduino
 atmega168.upload.maximum_size=14336
+atmega168.upload.maximum_data_size=1024
 atmega168.upload.speed=19200
 
 atmega168.bootloader.low_fuses=0xff

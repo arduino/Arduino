@@ -33,7 +33,9 @@ import java.util.*;
 public class Sizer implements MessageConsumer {
   private String buildPath, sketchName;
   private String firstLine;
-  private long size;
+  private long textSize;
+  private long dataSize;
+  private long eepromSize;
   private RunnerException exception;
 
   public Sizer(String buildPath, String sketchName) {
@@ -41,19 +43,22 @@ public class Sizer implements MessageConsumer {
     this.sketchName = sketchName;
   }
   
-  public long computeSize() throws RunnerException {
+  public long[] computeSize() throws RunnerException {
     String avrBasePath = Base.getAvrBasePath();
     String commandSize[] = new String[] {
       avrBasePath + "avr-size",
+      "-A",
       " "
     };
     
-    commandSize[1] = buildPath + File.separator + sketchName + ".hex";
+    commandSize[2] = buildPath + File.separator + sketchName + ".elf";
 
     int r = 0;
     try {
       exception = null;
-      size = -1;
+      textSize = -1;
+      dataSize = -1;
+      eepromSize = -1;
       firstLine = null;
       Process process = Runtime.getRuntime().exec(commandSize);
       MessageSiphon in = new MessageSiphon(process.getInputStream(), this);
@@ -80,10 +85,10 @@ public class Sizer implements MessageConsumer {
     if (exception != null)
       throw exception;
       
-    if (size == -1)
+    if (textSize == -1)
       throw new RunnerException(firstLine);
       
-    return size;
+    return new long[] { textSize, dataSize, eepromSize };
   }
   
   public void message(String s) {
@@ -92,10 +97,27 @@ public class Sizer implements MessageConsumer {
     else {
       StringTokenizer st = new StringTokenizer(s, " ");
       try {
-        st.nextToken();
-        st.nextToken();
-        st.nextToken();
-        size = (new Integer(st.nextToken().trim())).longValue();
+	String section = st.nextToken();
+	if(!section.startsWith("."))
+	  return;
+	long bytes = (new Integer(st.nextToken().trim())).longValue();
+	//long addr = (new Integer(st.nextToken().trim())).longValue();
+	//System.out.println("Section: " + section + " with " + bytes + " bytes at address " + addr);
+	if(section.equals(".text") || section.equals(".data") || section.equals(".bootloader")) {
+	  if(textSize < 0)
+	    textSize = 0;
+	  textSize += bytes;
+	}
+	if(section.equals(".data") || section.equals(".bss") || section.equals(".noinit")) {
+	  if(dataSize < 0)
+	    dataSize = 0;
+	  dataSize += bytes;
+	}
+	if(section.equals(".eeprom")) {
+	  if(eepromSize < 0)
+	    eepromSize = 0;
+	  eepromSize += bytes;
+	}
       } catch (NoSuchElementException e) {
         exception = new RunnerException(e.toString());
       } catch (NumberFormatException e) {
