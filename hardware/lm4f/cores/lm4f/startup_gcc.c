@@ -38,7 +38,10 @@
 #include "Energia.h"
 #include "inc/hw_types.h"
 #include "inc/hw_nvic.h"
-#include "syscalls.h"
+#include <stdio.h>
+#include <stdarg.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 //*****************************************************************************
 //
 // Forward declaration of the default fault handlers.
