@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Increment </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Variables</h2>
+<p>A variable is a way of naming and storing a value for later use by the program, such as data from a sensor or an intermediate value used in a calculation.
+</p>
+<p class='vspace'></p><h4>Declaring Variables</h4>
+<p>Before they are used, all variables have to be declared. Declaring a variable means defining its type, and optionally, setting an initial value (initializing the variable). Variables do not have to be initialized (assigned a value) when they are declared, but it is often useful.
+</p>
+<p class='vspace'></p><pre>
+int inputVariable1;
+int inputVariable2 = 0;     // both are correct
+
+</pre>
+<p class='vspace'></p><p>Programmers should consider the size of the numbers they wish to store in choosing variable types. Variables will roll over when the value stored exceeds the space assigned to store it. See below for an example.
+</p>
+<p class='vspace'></p><h4>Variable Scope</h4>
+<p>Another important choice that programmers face is where to declare variables. The specific place that variables are declared influences how various functions in a program will <em>see</em> the variable. This is called variable <a class='wikilink' href='Scope.html'>scope</a>.
+</p>
+<p class='vspace'></p><h4>Initializing Variables</h4>
+<p>Variables may be <em>initialized</em> (assigned a starting value) when they are declared or not. It is always good programming practice however to double check that a variable has valid data in it, before it is accessed for some other purpose.
+</p>
+<p class='vspace'></p><p>Example:
+</p><pre> int calibrationVal = 17;  // declare calibrationVal and set initial value
+
+</pre>
+<p class='vspace'></p><h4>Variable Rollover</h4>
+<p>When variables are made to exceed their maximum capacity they "roll over" back to their minimum capacity, note that this happens in both directions.
+</p>
+<p class='vspace'></p><pre>   int x
+   x = -32,768;
+   x = x - 1;       // x now contains 32,767 - rolls over in neg. direction
+</pre>
+<p class='vspace'></p><pre>   x = 32,767;
+   x = x + 1;       // x now contains -32,768 - rolls over
+</pre>
+<p class='vspace'></p><h4>Using Variables</h4>
+<p>Once variables have been declared, they are used by setting the variable equal to the value one wishes to store with the <a class='wikilink' href='Assignment.html'>assignment operator</a> (single equal sign). The assignment operator tells the program to put whatever is on the right side of the equal sign into the variable on the left side.
+</p>
+<p class='vspace'></p><pre>
+inputVariable1 = 7;             // sets the variable named inputVariable1 to 7
+inputVariable2 = analogRead(2); // sets the variable named inputVariable2 to the 
+                                // (digitized) input voltage read from analog pin #2
+</pre>
+<p class='vspace'></p><h4>Examples</h4>
+<pre> int lightSensVal;
+   char currentLetter;
+   unsigned long speedOfLight = 186000UL;
+   char errorMessage = {"choose another option"}; // see string 
+</pre>
+<p class='vspace'></p><p>Once a variable has been set (assigned a value), you can test its value to see if it meets certain conditions, or you can use its value directly. For  instance, the following code tests whether the inputVariable2 is less than 100, then sets a delay based on inputVariable2 which is a minimum of 100:
+</p>
+<p class='vspace'></p><pre>
+if (inputVariable2 &lt; 100)
+{
+  inputVariable2 = 100;
+}
+
+delay(inputVariable2);
+</pre>
+<p class='vspace'></p><p>This example shows all three useful operations with variables. It tests the variable ( <code>if (inputVariable2 &lt; 100)</code> ), it sets the variable if it passes the test ( <code>inputVariable2 = 100</code> ), and it uses the value of the variable as an input parameter to the delay() function (<code> delay(inputVariable2)</code> )
+</p>
+<p class='vspace'></p><p><strong>Style Note:</strong> You should give your variables descriptive names, so as to make your code more readable. Variable names like <strong>tiltSensor</strong> or <strong>pushButton</strong> help you (and anyone else reading your code) understand what the variable represents. Variable names like <strong>var</strong> or <strong>value</strong>, on the other hand, do little to make your code readable.
+</p>
+<p class='vspace'></p><p>You can name a variable any word that is not already one of the keywords in Energia. Avoid beginning variable names with numeral characters.
+</p>
+<p class='vspace'></p><h4>Some variable types</h4>
+<ul><li><a class='wikilink' href='Char.html'>char</a>
+</li><li><a class='wikilink' href='Byte.html'>byte</a>
+</li><li><a class='wikilink' href='Int.html'>int</a>
+</li><li><a class='wikilink' href='UnsignedInt.html'>unsigned int</a>
+</li><li><a class='wikilink' href='Long.html'>long</a>
+</li><li><a class='wikilink' href='UnsignedLong.html'>unsigned long</a>
+</li><li><a class='wikilink' href='Float.html'>float</a>
+</li><li><a class='wikilink' href='Double.html'>double</a>
+</li></ul><p class='vspace'></p><h4>Variable Scope</h4>
+<ul><li><a class='urllink' href='scope.html' rel='nofollow'>Variable Scope</a>
+</li></ul>
+<p class='vspace'></p><h4>See also</h4>
+<p><ul><li><a class='wikilink' href='Arithmetic.html'>+=</a> (compound addition)</li>
+<li><a class='wikilink' href='Arithmetic.html'>-=</a> (compound subtraction)</li></ul>
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

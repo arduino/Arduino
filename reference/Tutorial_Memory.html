@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Getting Started </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Memory</h2>
+<p>There are four pools of memory in the microcontrollers used on current LaunchPad boards :
+</p><ul><li>Flash memory (program space), is where the Energia sketch is stored.
+</li><li>SRAM (static random access memory) is where the sketch creates and manipulates variables when it runs.
+</li><li>FRAM (ferroelectric random access memory) is a faster and better version of SRAM.
+</li><li>EEPROM is memory space that programmers can use to store long-term information.
+</li></ul>
+<p class='vspace'></p><p><strong>Your LaunchPad will only have a specific combination of the above options, refer to your specific datasheet to find out exact memory information</strong>. Flash memory, FRAM, and EEPROM memory are non-volatile (the information persists after the power is turned off). SRAM is volatile and will be lost when the power is cycled.
+</p>
+<p class='vspace'></p><p>Memory is super important when writing software for microcontrollers.  You can write code to do amazing things but if it doesn't fit on your device, it won't run.  Make sure you get a LaunchPad with the specs that will fit your intended applications.
+</p>
+<p class='vspace'></p><p>It's easy to use all your memory up by having lots of strings in your program.  For example, a declaration like:
+</p>
+<p class='vspace'></p><p>char message[] = "I support the Energia Community.";
+</p>
+<p class='vspace'></p><p>puts 32 bytes into SRAM (each character takes a byte).  This might not seem like a lot, but it doesn't take long to get to 2048, especially if you have a large amount of text to send to a display, or a large lookup table, for example.
+</p>
+<p class='vspace'></p><p>If you run out of SRAM, your program may fail in unexpected ways; it will appear to upload successfully, but not run, or run strangely.  To check if this is happening, you can try commenting out or shortening the strings or other data structures in your sketch (without changing the code).  If it then runs successfully, you're probably running out of SRAM.  There are a few things you can do to address this problem:
+</p>
+<p class='vspace'></p><ul><li>If your sketch talks to a program running on a (desktop/laptop) computer, you can try shifting data or calculations to the computer, reducing the load on the LaunchPad.
+<p class='vspace'></p></li><li>If you have lookup tables or other large arrays, use the smallest data type necessary to store the values you need; for example, an <a class='wikilink' href='Int.html'>int</a> takes up two bytes, while a <a class='wikilink' href='Byte.html'>byte</a> uses only one (but can store a smaller range of values).
+<p class='vspace'></p></li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

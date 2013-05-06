@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Bitshift </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>bitshift left (&lt;&lt;), bitshift right (&gt;&gt;)</h2>
+<h4>Description</h4>
+<p>From <em>The Bitmath Tutorial</em>  in The Playground
+</p>
+<p class='vspace'></p><p>There are two bit shift operators in C++: the left shift operator &lt;&lt; and the right shift operator &gt;&gt;. These operators cause the bits in the left operand to be shifted left or right by the number of positions specified by the right operand.<br /><br />More on bitwise math may be found <a class='urllink' href='http://www.arduino.cc/playground/Code/BitMath' rel='nofollow'>here.</a>
+</p>
+<p class='vspace'></p><h4>Syntax</h4>
+<p>variable &lt;&lt; number_of_bits
+</p>
+<p class='vspace'></p><p>variable &gt;&gt; number_of_bits 
+</p>
+<p class='vspace'></p><h4>Parameters</h4>
+<p>variable - (byte, int, long)
+number_of_bits integer &lt;= 32
+</p>
+<p class='vspace'></p><h4>Example:</h4>
+<pre>    int a = 5;        // binary: 0000000000000101
+    int b = a &lt;&lt; 3;   // binary: 0000000000101000, or 40 in decimal
+    int c = b &gt;&gt; 3;   // binary: 0000000000000101, or back to 5 like we started with
+</pre>
+<p class='vspace'></p><p>When you shift a value x by y bits (x &lt;&lt; y), the leftmost y bits in x are lost, literally shifted out of existence:
+</p>
+<p class='vspace'></p><pre>    int a = 5;        // binary: 0000000000000101
+    int b = a &lt;&lt; 14;  // binary: 0100000000000000 - the first 1 in 101 was discarded
+</pre>
+<p class='vspace'></p><p>If you are certain that none of the ones in a value are being shifted into oblivion, a simple way to think of the left-shift operator is that it multiplies the left operand by 2 raised to the right operand power. For example, to generate powers of 2, the following expressions can be employed:
+</p>
+<p class='vspace'></p><pre>    1 &lt;&lt;  0  ==    1
+    1 &lt;&lt;  1  ==    2
+    1 &lt;&lt;  2  ==    4
+    1 &lt;&lt;  3  ==    8
+    ...
+    1 &lt;&lt;  8  ==  256
+    1 &lt;&lt;  9  ==  512
+    1 &lt;&lt; 10  == 1024
+    ...
+</pre>
+<p class='vspace'></p><p>When you shift x right by y bits (x &gt;&gt; y), and the highest bit in x is a 1, the behavior depends on the exact data type of x. If x is of type int, the highest bit is the sign bit, determining whether x is negative or not, as we have discussed above. In that case, the sign bit is copied into lower bits, for esoteric historical reasons:
+</p>
+<p class='vspace'></p><pre>    int x = -16;     // binary: 1111111111110000
+    int y = x &gt;&gt; 3;  // binary: 1111111111111110
+</pre>
+<p class='vspace'></p><p>This behavior, called sign extension, is often not the behavior you want. Instead, you may wish zeros to be shifted in from the left. It turns out that the right shift rules are different for unsigned int expressions, so you can use a typecast to suppress ones being copied from the left:
+</p>
+<p class='vspace'></p><pre>    int x = -16;                   // binary: 1111111111110000
+    int y = (unsigned int)x &gt;&gt; 3;  // binary: 0001111111111110
+</pre>
+<p class='vspace'></p><p>If you are careful to avoid sign extension, you can use the right-shift operator &gt;&gt; as a way to divide by powers of 2. For example:
+</p>
+<p class='vspace'></p><pre>    int x = 1000;
+    int y = x &gt;&gt; 3;   // integer division of 1000 by 8, causing y = 125.
+</pre>
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

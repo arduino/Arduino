@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - SoftwareSerial </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style> 
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2><span class='wikiword'>SoftwareSerial</span> Library</h2>
+<p>The Arduino hardware has built-in support for serial communication on pins 0 and 1 (which also goes to the computer via the USB connection). The native serial support happens via a piece of hardware (built into the chip) called  a <a class='urllink' href='http://en.wikipedia.org/wiki/UART' rel='nofollow'>UART</a>. This hardware allows the Atmega chip to receive serial communication even while working on other tasks, as long as there room in the 64 byte serial buffer.
+</p>
+<p class='vspace'></p><p>The <span class='wikiword'>SoftwareSerial</span> library has been developed to allow serial communication on other digital pins of the Arduino, using software to replicate the functionality (hence the name "<span class='wikiword'>SoftwareSerial</span>"). It is possible to have multiple software serial ports with speeds up to 115200 bps. A parameter enables  inverted signaling for devices which require that protocol.
+</p>
+<p class='vspace'></p><p>The version of <span class='wikiword'>SoftwareSerial</span> included in 1.0 and later is based on the <a class='urllink' href='http://arduiniana.org/libraries/newsoftserial' rel='nofollow'>NewSoftSerial library</a> by Mikal Hart.
+</p>
+<p class='vspace'></p><h4>Limitations</h4>
+<p>The library has the following known limitations:
+</p>
+<p class='vspace'></p><ul><li>If using multiple software serial ports, only one can receive data at a time. 
+</li><li>Not all pins on the Mega and Mega 2560 support change interrupts, so only the following can be used for RX: 10, 11, 12, 13,  50, 51, 52, 53,  62, 63, 64, 65, 66, 67, 68, 69
+</li></ul><p class='vspace'></p><h4>Example</h4>
+<div  class='code' >
+<p class='vspace'></p><p>
+<div class='sourceblock ' id='sourceblock1'>
+  <div class='sourceblocktext'><div class="arduino"><span class="co2">#include &lt;SoftwareSerial.h&gt;</span><br />
+<br />
+SoftwareSerial mySerial<span class="br0">&#40;</span><span class="nu0">2</span><span class="sy0">,</span> <span class="nu0">3</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+<br />
+<span class="kw1">void</span> <span class="kw3">setup</span><span class="br0">&#40;</span><span class="br0">&#41;</span> &nbsp;<br />
+<span class="br0">&#123;</span><br />
+&nbsp; <span class="kw1">Serial</span>.<span class="kw1">begin</span><span class="br0">&#40;</span><span class="nu0">57600</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+&nbsp; <span class="kw1">Serial</span>.<span class="kw1">println</span><span class="br0">&#40;</span><span class="st0">&quot;Goodnight moon!&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+<br />
+&nbsp; <span class="co1">// set the data rate for the SoftwareSerial port</span><br />
+&nbsp; mySerial.<span class="kw1">begin</span><span class="br0">&#40;</span><span class="nu0">4800</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+&nbsp; mySerial.<span class="kw1">println</span><span class="br0">&#40;</span><span class="st0">&quot;Hello, world?&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+<span class="br0">&#125;</span><br />
+<br />
+<span class="kw1">void</span> <span class="kw3">loop</span><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="co1">// run over and over</span><br />
+<span class="br0">&#123;</span><br />
+&nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span>mySerial.<span class="kw1">available</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br />
+&nbsp; &nbsp; <span class="kw1">Serial</span>.<span class="kw1">write</span><span class="br0">&#40;</span>mySerial.<span class="kw1">read</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+&nbsp; <span class="kw1">if</span> <span class="br0">&#40;</span><span class="kw1">Serial</span>.<span class="kw1">available</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><br />
+&nbsp; &nbsp; mySerial.<span class="kw1">write</span><span class="br0">&#40;</span><span class="kw1">Serial</span>.<span class="kw1">read</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
+<span class="br0">&#125;</span></div></div>
+  <div class='sourceblocklink'><a href='#' type='text/plain'>[Get Code]</a></div>
+</div>
+
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h4>Functions</h4>
+<ul><li><a class='wikilink' href='SoftwareSerialConstructor.html'>SoftwareSerial</a>()
+</li><li><a class='wikilink' href='SoftwareSerialAvailable.html'>available</a>()
+</li><li><a class='wikilink' href='SoftwareSerialBegin.html'>begin</a>()
+</li><li><a class='wikilink' href='SoftwareSerialIsListening.html'>isListening</a>()
+</li><li><a class='wikilink' href='SoftwareSerialOverflow.html'>overflow</a>()
+</li><li><a class='wikilink' href='SoftwareSerialRead.html'>read</a>()
+</li><li><a class='wikilink' href='SoftwareSerialPrint.html'>print</a>()
+</li><li><a class='wikilink' href='SoftwareSerialPrintln.html'>println</a>()
+</li><li><a class='wikilink' href='SoftwareSerialListen.html'>listen</a>()
+</li><li><a class='wikilink' href='SoftwareSerialWrite.html'>write</a>()
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

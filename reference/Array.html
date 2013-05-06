@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Array </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Arrays</h2>
+<p>An array is a collection of variables that are accessed with an index number. Arrays in the C programming language, on which Energia is based, can be complicated, but using simple arrays is relatively straightforward.
+</p>
+<p class='vspace'></p><h4>Creating (Declaring) an Array</h4>
+<p>All of the methods below are valid ways to create (declare) an array.
+</p>
+<p class='vspace'></p><pre>
+  int myInts[6];
+  int myPins[] = {2, 4, 8, 3, 6};
+  int mySensVals[6] = {2, 4, -8, 3, 2};
+  char message[6] = "hello";
+
+</pre>
+<p class='vspace'></p><p>You can declare an array without initializing it as in myInts.<br /><br />In myPins we declare an array without explicitly choosing a size. The compiler counts the elements and creates an array of the appropriate size.
+</p>
+<p class='vspace'></p><p>Finally you can both initialize and size your array, as in mySensVals. Note that when declaring an array of type char, one more element than your initialization is required, to hold the required null character.
+</p>
+<p class='vspace'></p><h4>Accessing an Array</h4>
+<p>Arrays are <strong>zero indexed</strong>, that is, referring to the array initialization above, the first element of the array is at index 0, hence<br /><br /><code>mySensVals[0] == 2, mySensVals[1] == 4,</code> and so forth.
+</p>
+<p class='vspace'></p><p>It also means that in an array with ten elements, index nine is the last element. Hence:
+</p><pre>
+int myArray[10]={9,3,2,4,3,2,7,8,9,11};
+     // myArray[9]    contains 11
+     // myArray[10]   is invalid and contains random information (other memory address)      
+
+</pre>
+<p class='vspace'></p><p>For this reason you should be careful in accessing arrays. Accessing past the end of an array (using an index number greater than your declared array size - 1) is reading from memory that is in use for other purposes. Reading from these locations is probably not going to do much except yield invalid data. Writing to random memory locations is definitely a bad idea and can often lead to unhappy results such as crashes or program malfunction. This can also be a difficult bug to track down.
+</p>
+<p class='vspace'></p><p>Unlike BASIC or JAVA, the C compiler does no checking to see if array access is within legal bounds of the array size that you have declared.
+</p>
+<p class='vspace'></p><h4>To assign a value to an array:</h4>
+<pre>
+mySensVals[0] = 10;
+</pre>
+<p class='vspace'></p><h4>To retrieve a value from an array:</h4>
+<p><code>x = mySensVals[4]</code>;
+</p>
+<p class='vspace'></p><h4>Arrays and FOR Loops</h4>
+<p>Arrays are often manipulated inside <strong>for</strong> loops, where the loop counter is used as the index for each array element. For example, to print the elements of an array over the serial port, you could do something like this:
+</p>
+<p class='vspace'></p><pre>
+int i;
+for (i = 0; i &lt; 5; i = i + 1) {
+  Serial.println(myPins[i]);
+}
+</pre><h4>Example</h4>
+<p>For a complete program that demonstrates the use of arrays, see the array example in the Tutorials.</a>.
+</p>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='urllink' href='VariableDeclaration.html' rel='nofollow'>Variable Declaration</a>
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Comparison </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='selflink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Energia/Arduino/Processing Language Comparison</h2>
+<p>The Energia language (based on Arduino and Wiring) is implemented in C/C++, and therefore has some differences from the Processing language, which is based on Java.
+</p>
+<p class='vspace'></p><h3>Arrays</h3>
+<table  width='75%' cellspacing='0' cellpadding='5'>
+<tr>
+<td  width='33%' bgcolor='#CCCCCC' valign='top'> <em>Energia</em></td>
+<td  width='33%' bgcolor='#999999' valign='top'> <em>Arduino</em></td>
+<td  width='33%' bgcolor='#CCCCCC' valign='top'> <em>Processing</em></td>
+</tr>
+<tr>
+<td  valign='top'> int bar[8]; <br clear='all' /> bar[0] = 1;</td>
+<td  valign='top'> int bar[8]; <br clear='all' /> bar[0] = 1;</td>
+<td  valign='top'> int[] bar = new int[8]; <br clear='all' /> bar[0] = 1;</td>
+</tr>
+<tr>
+<td  bgcolor='#CCCCCC' valign='top'> int foo[] = { 0, 1, 2 };</td>
+<td  bgcolor='#999999' valign='top'> int foo[] = { 0, 1, 2 };</td>
+<td   bgcolor='#CCCCCC' valign='top'> int foo[] = { 0, 1, 2 }; <br clear='all' /> <em>or</em> <br clear='all' /> int[] foo = { 0, 1, 2 };</td>
+</tr>
+</table>
+<p class='vspace'></p><h3>Loops</h3>
+<table  width='75%' cellspacing='0' cellpadding='5'>
+<tr>
+<td  width='33%' bgcolor='#CCCCCC' valign='top'> <em>Energia</em></td>
+<td  width='33%' bgcolor='#999999' valign='top'> <em>Arduino</em></td>
+<td  width='33%' bgcolor='#CCCCCC' valign='top'> <em>Processing</em></td>
+</tr>
+<tr>
+<td  valign='top'> int i; <br clear='all' /> for (i = 0; i &lt; 5; i++) {  ... }</td>
+<td  valign='top'> int i; <br clear='all' /> for (i = 0; i &lt; 5; i++) {  ... }</td>
+<td  valign='top'> for (int i = 0; i &lt; 5; i++) { ... }</td>
+</tr>
+</table>
+<p class='vspace'></p><h3>Printing</h3>
+<table  width='75%' cellspacing='0' cellpadding='5'>
+<tr>
+<td  width='33%' bgcolor='#CCCCCC' valign='top'> <em>Energia</em></td>
+<td  width='33%' bgcolor='#999999' valign='top'> <em>Arduino</em></td>
+<td  width='33%' bgcolor='#CCCCCC' valign='top'> <em>Processing</em></td>
+</tr>
+<tr>
+<td  valign='top'> Serial.println("hello world");</td>
+<td  valign='top'> Serial.println("hello world");</td>
+<td  valign='top'> println("hello world");</td>
+</tr>
+<tr>
+<td  bgcolor='#999999' valign='top'> int i = 5; <br clear='all' /> Serial.println(i); </td>
+<td  bgcolor='#999999' valign='top'> int i = 5; <br clear='all' /> Serial.println(i); </td>
+<td  bgcolor='#CCCCCC' valign='top'> int i = 5; <br clear='all' /> println(i);</td>
+</tr>
+<tr>
+<td  valign='top'> int i = 5; <br clear='all' /> Serial.print("i = "); <br clear='all' /> Serial.print(i); <br clear='all' /> Serial.println();</td>
+<td  valign='top'> int i = 5; <br clear='all' /> Serial.print("i = "); <br clear='all' /> Serial.print(i); <br clear='all' /> Serial.println();</td>
+<td  valign='top'> int i = 5; <br clear='all' /> println("i = " + i);</td>
+</tr>
+</table>
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

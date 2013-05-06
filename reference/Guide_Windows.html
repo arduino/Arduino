@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Windows </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h1>Setup Energia on Windows</h1>
+
+<p>Need help? The Energia <a href="http://www.43oh.com/forum/viewforum.php?f=38" target="_blank">discussion forum</a> is hosted on 43oh.com.
+</p>
+<h2>Installing the LaunchPad drivers</h2>
+<p>To use Energia you will need to have the LaunchPad drivers installed.
+</p>
+<h5>For Windows Users</h5>
+<p>If TI's Code Composer Studio 5.x with MSP430 suport is already installed on your computer then the drivers are already installed. Skip to the next step.
+</p>
+<ol>
+<li>Download the LaunchPad drivers for Windows: <a href="https://github.com/energia/Energia/raw/gh-pages/files/EZ430-UART.zip" target="_blank">LaunchPad CDC drivers zip file for Windows 32 and 64 bit</a></li>
+<li>Unzip and double click DPinst.exe for Windows 32bit or DPinst64.exe for Windows 64 bit.</li>
+<li>Follow the installer instructions.</li>
+</ol>
+<h5><a class='wikilink' href='Guide_MacOSX.html'>Mac OS X Users</a> & <a class='wikilink' href='Guide_Linux.html'>Linux Users</a></h5>
+
+
+<h2>Download Energia</h2>
+<p>The most recent release of Energia can be downloaded from the <a href="http://energia.nu/download" target="_blank">download</a> page.
+</p>
+
+<h5>Windows Users</h5>
+<p>Double click and extract the energia-0101EXXXX-windows.zip file to a desired location.
+</p>
+
+<h2>Starting Energia</h2>
+<p>Double click Energia.exe (Windows users). Energia will start and an empty Sketch window will appear.
+<img src="../reference/img/EnergiaMainWindow.png"></p>
+<h2>Selecting the Serial Port</h2>
+
+
+<p>Select <i><b>Serial Port</b></i> from the <i><b>Tools</b></i> menu to view the available serial ports. On windows, they will be listed as COMXXX port and usually a higher number is the LaunchPad com port. 
+<br /><br /><img src="../reference/img/EnergiaSerialPort.png"></p><p>For more on configuring your Launchpad for serial communication, see <a class="internal present" href="../reference/Serial.html">Serial Communication</a></p>
+
+<h2>Selecting the Board</h2>
+
+
+<p>To select the board or rather the msp430 in your LaunchPad, select <i><b>Board</b></i> from the <i><b>Tools</b></i> menu and choose the board that matched the msp430 in the LaunchPad.
+<br /><br /><img src="../reference/img/EnergiaBoardSelect.png"></p>
+<h2>Uploading Your First Blinky Sketch</h2>
+
+
+<p>To load the Blinky example into the editor, select Blink from the <i><b>Blink</b></i> from the <i><b>File-&gt;Examples-&gt;1.Basics</b></i> menu.
+<br /><br /><img src="../reference/img/Blink.jpg"><br /><br />
+To compile and upload the Sketch to the LaunchPad click the Upload button.
+<br /><br /><img src="../reference/img/Upload.jpg"><br /><br />
+If all is well then the green LED on your LaunchPad is happily blinking. Congratulations, you have uploaded your first Sketch. Energia includes many more examples to get you started with your electronic project. Need help? The Energia <a href="http://www.43oh.com/forum/viewforum.php?f=38" target="_blank">discussion forum</a> is hosted on 43oh.com.</p>
+
+</li></ul><p class='vspace'></p>
+<p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='Guide_Windows?action=edit.html'>Edit Page</a> | <a href='Guide_Windows?action=diff.html'>Page History</a> | <a href='Guide_Windows?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

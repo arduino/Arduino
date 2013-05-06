@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Libraries </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='selflink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Stepper</h2>
+<h3>Overview</h3>
+<pre>
+/*
+  Stepper.h - - Stepper library for Wiring/Arduino - Version 0.4
+  
+  Original library     (0.1) by Tom Igoe.
+  Two-wire modifications   (0.2) by Sebastian Gassner
+  Combination version   (0.3) by Tom Igoe and David Mellis
+  Bug fix for four-wire   (0.4) by Tom Igoe, bug fix from Noah Shibley
+
+  Drives a unipolar or bipolar stepper motor using  2 wires or 4 wires
+
+  When wiring multiple stepper motors to a microcontroller,
+  you quickly run out of output pins, with each motor requiring 4 connections. 
+
+  By making use of the fact that at any time two of the four motor
+  coils are the inverse  of the other two, the number of
+  control connections can be reduced from 4 to 2. 
+
+  A slightly modified circuit around a Darlington transistor array or an L293 H-bridge
+  connects to only 2 microcontroler pins, inverts the signals received,
+  and delivers the 4 (2 plus 2 inverted ones) output signals required
+  for driving a stepper motor.
+
+  The sequence of control signals for 4 control wires is as follows:
+
+  Step C0 C1 C2 C3
+     1  1  0  1  0
+     2  0  1  1  0
+     3  0  1  0  1
+     4  1  0  0  1
+
+  The sequence of controls signals for 2 control wires is as follows
+  (columns C1 and C2 from above):
+
+  Step C0 C1
+     1  0  1
+     2  1  1
+     3  1  0
+     4  0  0
+
+  The circuits can be found at 
+  http://www.arduino.cc/en/Tutorial/Stepper
+*/
+</pre>
+<h3>Library methods</h3>
+<h3>Installation</h3>
+Download from here: 
+<h3>Demo Sketch</h3>
+<pre>
+
+</pre>
+<h3>Applications</h3>
+<h3>How it works</h3>
+<h3>Error Messages</h3>
+<h3>Bugs, Suggestions, Questions</h3>
+<p>Contact the Library Author
+</p>
+
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a> | <a class='wikilink' href='Libraries.html'>Libraries Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

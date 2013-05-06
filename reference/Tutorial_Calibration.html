@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Analog I/O</em>
+</p>
+<p class='vspace'></p><h3>Calibration</h3>
+<p>This example demonstrates one techinque for calibrating sensor input.  The LaunchPad board takes sensor readings for five seconds during the startup, and tracks the highest and lowest values it gets. These sensor readings during the first five seconds of the sketch execution define the minimum and maximum of expected values for the readings taken during the loop.
+</p>
+<p class='vspace'></p><h3>Hardware Required</h3>
+<div  class='BOM' >
+<p class='vspace'></p><ul><li>LaunchPad board
+</li><li>(1) LED
+</li><li>(1) analog sensor (a photocell will do)
+</li><li>(1) 10K ohm resistor
+</li><li>(1) 220 ohm resistor 
+</li><li>breadboard
+</li><li>hook-up wire
+</li></ul></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>Analog sensor (e.g. potentiometer, light sensor) on analog input 3.  LED on digital pin 2.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img width='250px' src='../reference/img/Calibration_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p><p>Connect an LED to digital pin 2 with a 220 ohm current limiting resistor. Connect a photocell to 3V and then to analog pin 3 with a 10K ohm resistor as a reference to ground. 
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<p class='vspace'></p><div><img width='400px' src='../reference/img/Calibration_schem.png' alt='' title='' /></div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>Before the setup, you set initial values for the minimum and maximum like so:
+</p>
+<p class='vspace'></p>
+<pre>
+int sensorMin = 1023;        // minimum sensor value
+int sensorMax = 0;           // maximum sensor value
+</pre>
+<p class='vspace'></p><p>These may seem backwards. Initially, you set the minimum high and read for anything  lower than that, saving it as the new minimum. Likewise, you set the maximum low and read for anything higher as the new maximum, like so:
+</p>
+<p class='vspace'></p>
+<pre>
+// calibrate during the first five seconds 
+while (millis() < 5000) {
+   sensorValue = analogRead(sensorPin);
+
+   // record the maximum sensor value
+   if (sensorValue > sensorMax) {
+     sensorMax = sensorValue;
+   }
+
+   // record the minimum sensor value
+   if (sensorValue < sensorMin) {
+     sensorMin = sensorValue;
+   }
+}
+</pre>
+<p class='vspace'></p><p>This way, any further readings you take can be mapped to the range between this minimum and maximum like so:
+</p>
+<p class='vspace'></p>
+<pre>
+// apply the calibration to the sensor reading
+sensorValue = map(sensorValue, sensorMin, sensorMax, 0, 255);
+</pre>
+<p class='vspace'></p><h3>Code</h3>
+<p class='vspace'></p><p>Here's the whole program:
+</p>
+<pre>
+/*
+  Calibration
+ 
+  Demonstrates one technique for calibrating sensor input.  The
+  sensor readings during the first five seconds of the sketch
+  execution define the minimum and maximum of expected values
+  attached to the sensor pin.
+ 
+  The sensor minimum and maximum initial values may seem backwards.
+  Initially, you set the minimum high and listen for anything 
+  lower, saving it as the new minimum. Likewise, you set the
+  maximum low and listen for anything higher as the new maximum.
+ 
+  The circuit:
+  * Analog sensor (potentiometer will do) attached to analog input 0
+  * LED attached from digital pin 9 to ground
+ 
+  created 29 Oct 2008
+  By David A Mellis
+  modified 30 Aug 2011
+  By Tom Igoe
+ 
+  This example code is in the public domain.
+ 
+*/
+
+// These constants won't change:
+const int sensorPin = A3;    // pin that the sensor is attached to
+const int ledPin = 2;        // pin that the LED is attached to
+
+// variables:
+int sensorValue = 0;         // the sensor value
+int sensorMin = 1023;        // minimum sensor value
+int sensorMax = 0;           // maximum sensor value
+
+
+void setup() {
+  // turn on LED to signal the start of the calibration period:
+  pinMode(14, OUTPUT);
+  digitalWrite(14, HIGH);
+
+  // calibrate during the first five seconds 
+  while (millis() < 5000) {
+    sensorValue = analogRead(sensorPin);
+
+    // record the maximum sensor value
+    if (sensorValue > sensorMax) {
+      sensorMax = sensorValue;
+    }
+
+    // record the minimum sensor value
+    if (sensorValue < sensorMin) {
+      sensorMin = sensorValue;
+    }
+  }
+
+  // signal the end of the calibration period
+  digitalWrite(14, LOW);
+}
+
+void loop() {
+  // read the sensor:
+  sensorValue = analogRead(sensorPin);
+
+  // apply the calibration to the sensor reading
+  sensorValue = map(sensorValue, sensorMin, sensorMax, 0, 255);
+
+  // in case the sensor value is outside the range seen during calibration
+  sensorValue = constrain(sensorValue, 0, 255);
+
+  // fade the LED using the calibrated value:
+  analogWrite(ledPin, sensorValue);
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='While.html'>while</a>()
+</li><li><a class='wikilink' href='Millis.html'>millis</a>()
+</li><li><a class='wikilink' href='Constrain.html'>constrain</a>()
+</li><li><a class='wikilink' href='Map.html'>map</a>()
+</li><li><a class='wikilink' href='If.html'>If</a>()
+</li><li><a class='wikilink' href='Tutorial_AnalogInput.html'>AnalogInput</a> - use a potentiometer to control the blinking of an LED
+</li><li><a class='wikilink' href='Tutorial_AnalogInOutSerial.html'>AnalogInOutSerial</a> - read an analog pin, map the result, and use that data to dim or brighten an LED
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a> - use an analog input to fade an LED
+</li><li><a class='wikilink' href='Tutorial_Smoothing.html'>Smoothing</a> - smooth multiple readings of an analog input
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

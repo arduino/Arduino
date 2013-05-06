@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - BitwiseAnd </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Bitwise AND (&amp;), Bitwise OR (|),  Bitwise XOR (^)</h2>
+<h4>Bitwise AND (&amp;)</h4>
+<p>The bitwise operators perform their calculations at the bit level of variables. They help solve a wide range of common programming problems. Much of the material below is from an excellent tutorial on bitwise math wihch may be found <a class='urllink' href='http://www.arduino.cc/playground/Code/BitMath' rel='nofollow'>here.</a>
+</p>
+<p class='vspace'></p><h4>Description and Syntax</h4>
+<p>Below are descriptions and syntax for all of the operators. Further details may be found in the referenced tutorial.
+</p>
+<p class='vspace'></p><h4>Bitwise AND (&amp;)</h4>
+<p>The bitwise AND operator in C++ is a single ampersand, &amp;, used between two other integer expressions. Bitwise AND operates on each bit position of the surrounding expressions independently, according to this rule: if both input bits are 1, the resulting output is 1, otherwise the output is 0. Another way of expressing this is:
+</p>
+<p class='vspace'></p><pre>    0  0  1  1    operand1
+    0  1  0  1    operand2
+    ----------
+    0  0  0  1    (operand1 &amp; operand2) - returned result
+</pre>
+<p class='vspace'></p><p>In Energia, the type int is a 16-bit value, so using &amp; between two int expressions causes 16 simultaneous AND operations to occur. In a code fragment like:
+</p>
+<p class='vspace'></p><pre>    int a =  92;    // in binary: 0000000001011100
+    int b = 101;    // in binary: 0000000001100101
+    int c = a &amp; b;  // result:    0000000001000100, or 68 in decimal.
+</pre>
+<p class='vspace'></p><p>Each of the 16 bits in a and b are processed by using the bitwise AND, and all 16 resulting bits are stored in c, resulting in the value 01000100 in binary, which is 68 in decimal.
+</p>
+<p class='vspace'></p><p>One of the most common uses of bitwise AND is to select a particular bit (or bits) from an integer value, often called masking. See below for an example
+</p>
+<p class='vspace'></p><h4>Bitwise OR (|)</h4>
+<p>The bitwise OR operator in C++ is the vertical bar symbol, |. Like the &amp; operator, | operates independently each bit in its two surrounding integer expressions, but what it does is different (of course). The bitwise OR of two bits is 1 if either or both of the input bits is 1, otherwise it is 0. In other words:
+</p>
+<p class='vspace'></p><pre>    0  0  1  1    operand1
+    0  1  0  1    operand2
+    ----------
+    0  1  1  1    (operand1 | operand2) - returned result
+</pre>
+<p class='vspace'></p><p>Here is an example of the bitwise OR used in a snippet of C++ code:
+</p>
+<p class='vspace'></p><pre>    int a =  92;    // in binary: 0000000001011100
+    int b = 101;    // in binary: 0000000001100101
+    int c = a | b;  // result:    0000000001111101, or 125 in decimal.
+</pre>
+<p class='vspace'></p><h4>Example Program</h4>
+<p>A common job for the bitwise AND and OR operators is what programmers call Read-Modify-Write on a port. On microcontrollers, a port is an 8 bit number that represents something about the condition of the pins. Writing to a port controls all of the pins at once. 
+</p>
+<p class='vspace'></p><p>P1OUT is a built-in constant that refers to the output states of digital pins 0,1,2,3,4,5,6,7. If there is 1 in an bit position, then that pin is HIGH. (The pins already need to be set to outputs with the pinMode() command.) So if we write <code>P1OUT = B00110001;</code> we have made pins 2,3 &amp; 7 HIGH. 
+One slight hitch here is that we <em>may</em> also have changed the state of Pins 1 &amp; 2, which are used by the LaunchPad for serial communications, so we may have interfered with serial communication. To avoid this interference, we will need to preserve the states of bit 1 and 2 with the following mask: B00000110.
+</p>
+<p class='vspace'></p><pre>     Our algorithm for the program is:
+</pre><ul><li>Get P1OUT and clear out only the bits corresponding to the pins we wish to control (with bitwise AND).
+</li><li>Combine the modified P1OUT value with the new value for the pins under control (with biwise OR).
+</li>
+<li>Pin 1 and Pin 2 are reserved for serial communication.</li></ul><p class='vspace'></p><pre>int i;     // counter variable
+int j;
+
+void setup(){
+P1DIR = P1DIR | B11111001; // set direction bits for pins 2 to 7, leave 0 and 1 untouched (xx | 00 == xx)
+// same as pinMode(pin, OUTPUT) for pins 2 to 7
+Serial.begin(9600);
+}
+
+void loop(){
+for (i=0; i&lt;64; i++){
+
+P1OUT = P1OUT &amp; B00000110;  // clear out bits 2 - 7, leave pins 0 and 1 untouched (xx &amp; 11 == xx)
+j = i; 
+bit = j &amp 1; // retain bit 0
+j = (j &lt;&lt; 2);   // shift variable up to pins 3 - 7 and 0 - to avoid pins 1 and 2
+j = j | bit;  // OR shifted bits from 1 - 7 with bit 0
+P1OUT = P1OUT | j;          // combine the port information with the new information for LED pins
+Serial.println(P1OUT, BIN); // debug to show masking
+delay(100);
+   }
+}
+</pre>
+<p class='vspace'></p><h4>Bitwise XOR (^)</h4>
+<p>There is a somewhat unusual operator in C++ called bitwise EXCLUSIVE OR, also known as bitwise XOR. (In English this is usually pronounced "eks-or".) The bitwise XOR operator is written using the caret symbol ^. This operator is very similar to the bitwise OR operator |, only it evaluates to 0 for a given bit position when both of the input bits for that position are 1:
+</p>
+<p class='vspace'></p><pre>    0  0  1  1    operand1
+    0  1  0  1    operand2
+    ----------
+    0  1  1  0    (operand1 ^ operand2) - returned result
+</pre>
+<p class='vspace'></p><p>Another way to look at bitwise XOR is that each bit in the result is a 1 if the input bits are different, or 0 if they are the same.
+</p>
+<p class='vspace'></p><p>Here is a simple code example:
+</p>
+<p class='vspace'></p><pre>    int x = 12;     // binary: 1100
+    int y = 10;     // binary: 1010
+    int z = x ^ y;  // binary: 0110, or decimal 6
+</pre>
+<p class='vspace'></p><p>The ^ operator is often used to toggle (i.e. change from 0 to 1, or 1 to 0) some of the bits in an integer expression.  In a bitwise OR operation if there is a 1 in the mask bit, that bit is inverted; if there is a 0, the bit is not inverted and stays the same. Below is a program to blink digital pin 0.
+</p>
+<p class='vspace'></p><pre>
+// Blink_Pin_0
+// demo for Exclusive OR
+void setup(){
+P1DIR = P1DIR | B000000001; // set digital pin five as OUTPUT 
+}
+
+void loop(){
+P1OUT = P1OUT ^ B00000001;  // invert bit 5 (digital pin 5), leave others untouched
+delay(100);
+}
+</pre>
+<p class='vspace'></p><p>See Also
+</p><ul><li><a class='wikilink' href='Boolean.html'>&amp;&amp;</a>(Boolean AND)
+</li><li><a class='wikilink' href='Boolean.html'>||</a>(Boolean OR)
+</li></ul>
+<p class='vspace'></p>
+<p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Getting Started </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>First Sketch</h2>
+<p>In the getting started guide (<a class='wikilink' href='Guide_Windows.html'>Windows</a>, <a class='wikilink' href='Guide_MacOSX.html'>Mac OS X</a>, <a class='urllink' href='Guide_Linux.html' rel='nofollow'>Linux</a>), you uploaded a sketch that blinks an LED.  In this tutorial, you'll learn how each part of that sketch works.
+</p>
+<p class='vspace'></p><h3>Sketch</h3>
+<p>A <em>sketch</em> is the name that Energia uses for a program.  It's the unit of code that is uploaded to and run on a LaunchPad board.
+</p>
+<p class='vspace'></p><h3>Comments</h3>
+<p>The first few lines of the <a class='wikilink' href='Tutorial_Blink.html'>Blink</a> sketch are a <em>comment</em>:
+</p>
+<p class='vspace'></p>
+<pre>
+/*
+*  Blink
+*  The basic Energia Example. 
+*  Turns on an LED on for one second, then off for one second, repeatedly.
+*  Pin 6 has an LED connected on MSP430 boards, has a name 'RED_LED' in the code.
+*/
+</pre>
+
+</p>
+<p class='vspace'></p><p>Everything between the <code>/*</code> and <code>*/</code> is ignored by the LaunchPad when it runs the sketch (the <code>*</code> at the start of each line is only there to make the comment look pretty, and isn't required).  It's there for people reading the code: to explain what the program does, how it works, or why it's written the way it is.  It's a good practice to comment your sketches, and to keep the comments up-to-date when you modify the code.  This helps other people to learn from or modify your code.  
+</p>
+<p class='vspace'></p><p>There's another style for short, single-line comments.  These start with <code>//</code> and continue to the end of the line.  For example, in the line:
+</p>
+<p class='vspace'></p><p>
+<pre>
+int ledPin = 14;  // LED connected to digital pin 14
+</pre>
+<p class='vspace'></p><p>the message "LED connected to digital pin 14" is a comment.
+</p>
+<p class='vspace'></p><h3>Variables</h3>
+<p>A <em>variable</em> is a place for storing a piece of data.  It has a name, a type, and a value.  For example, the line from the Blink sketch above declares a variable with the name <code>ledPin</code>, the type <code>int</code>, and an initial value of 14.  It's being used to indicate which LaunchPad pin the LED is connected to.  Every time the name <code>ledPin</code> appears in the code, its value will be retrieved.  In this case, the person writing the program could have chosen not to bother creating the <code>ledPin</code> variable and instead have simply written 14 everywhere they needed to specify a pin number.  The advantage of using a variable is that it's easier to move the LED to a different pin: you only need to edit the one line that assigns the initial value to the variable.  
+</p>
+<p class='vspace'></p><p>Often, however, the value of a variable will change while the sketch runs.  For example, you could store the value read from an input into a variable.  There's more information in the <a class='wikilink' href='Tutorial_Variables.html'>Variables tutorial</a>.
+</p>
+<p class='vspace'></p><h3>Functions</h3>
+<p>A <em>function</em> (otherwise known as a <em>procedure</em> or <em>sub-routine</em>) is a named piece of code that can be used from elsewhere in a sketch.  For example, here's the definition of the <code>setup()</code> function from the Blink example:
+</p>
+<p class='vspace'></p>
+<pre>
+void setup()
+{
+  pinMode(ledPin, OUTPUT);      // sets the digital pin as output
+}
+</pre>
+<p class='vspace'></p><p>The first line provides information about the function, like its name, "setup".  The text before and after the name specify its return type and parameters: these will be explained later.  The code between the <code>{</code> and <code>}</code> is called the <em>body</em> of the function: what the function does.  
+</p>
+<p class='vspace'></p><p>You can <em>call</em> a function that's already been defined (either in your sketch or as part of the <a class='wikilink' href='index.html'>Energia language</a>).  For example, the line <code>pinMode(ledPin, OUTPUT);</code> calls the <code>pinMode()</code> function, passing it two <em>parameters</em>: <code>ledPin</code> and <code>OUTPUT</code>.  These parameters are used by the <code>pinMode()</code> function to decide which pin and mode to set.  
+</p>
+<p class='vspace'></p><h3>pinMode(), digitalWrite(), and delay()</h3>
+<p>The <code>pinMode()</code> function configures a pin as either an input or an output.  To use it, you pass it the number of the pin to configure and the constant INPUT or OUTPUT.  When configured as an input, a pin can detect the state of a sensor like a pushbutton; this is discussed in a <a class='wikilink' href='Tutorial_DigitalReadSerial.html'>later tutorial</a>.  As an output, it can drive an actuator like an LED.
+</p>
+<p class='vspace'></p><p>The <code>digitalWrite()</code> functions outputs a value on a pin.  For example, the line:
+</p>
+<p class='vspace'></p>
+<pre>
+digitalWrite(ledPin, HIGH);
+</pre>
+<p class='vspace'></p><p>set the <code>ledPin</code> (pin 14) to HIGH, or ~3 volts.  Writing a LOW to pin connects it to ground, or 0 volts.  
+</p>
+<p class='vspace'></p><p>The <code>delay()</code> causes the LaunchPad to wait for the specified number of milliseconds before continuing on to the next line.  There are 1000 milliseconds in a second, so the line:
+</p>
+<p class='vspace'></p>
+<pre>
+delay(1000);
+</pre>
+<p class='vspace'></p><p>creates a delay of one second.  
+</p>
+<p class='vspace'></p><h3>setup() and loop()</h3>
+<p>There are two special functions that are a part of every Energia sketch: <code>setup()</code> and <code>loop()</code>.  The <code>setup()</code> is called once, when the sketch starts.  It's a good place to do setup tasks like setting pin modes or initializing libraries.  The <code>loop()</code> function is called over and over and is heart of most sketches.  You need to include both functions in your sketch, even if you don't need them for anything.  
+</p>
+<p class='vspace'></p><h3>Exercises</h3>
+<p><strong>1. Change the code so that the LED is on for 100 milliseconds and off for 1000.</strong>
+</p>
+<p class='vspace'></p><p><strong>2. Change the code so that the LED turns on when the sketch starts and stays on.</strong>
+</p>
+<p class='vspace'></p><h4>See Also</h4>
+<ul><li><a class='wikilink' href='Setup.html'>setup()</a>
+</li><li><a class='wikilink' href='Loop.html'>loop()</a>
+</li><li><a class='wikilink' href='PinMode.html'>pinMode()</a>
+</li><li><a class='wikilink' href='DigitalWrite.html'>digitalWrite()</a>
+</li><li><a class='wikilink' href='Delay.html'>delay()</a>
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>
