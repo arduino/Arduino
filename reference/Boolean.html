@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Boolean </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h1>Boolean Operators </h1>
+<p>These can be used inside the condition of an <a class='wikilink' href='If.html'>if</a> statement.
+</p>
+<p class='vspace'></p><h3>&amp;&amp; (logical and)</h3>
+<p>True only if both operands are true, e.g.
+</p><pre>
+if (digitalRead(2) == HIGH  &amp;&amp; digitalRead(3) == HIGH) { // read two switches 
+  // ...
+} 
+</pre><p>is true only if both inputs are high.
+</p>
+<p class='vspace'></p><h3>|| (logical or)</h3>
+<p>True if either operand is true, e.g.
+</p><pre>
+if (x &gt; 0 || y &gt; 0) {
+  // ...
+} 
+</pre><p>is true if either x or y is greater than 0.
+</p>
+<p class='vspace'></p><h3>! (not)</h3>
+<p>True if the operand is false, e.g.
+</p><pre>
+if (!x) { 
+  // ...
+} 
+</pre><p>is true if x is false (i.e. if x equals 0).
+</p>
+<p class='vspace'></p><h4>Warning</h4>
+<p>Make sure you don't mistake the boolean AND operator, &amp;&amp; (double ampersand) for the bitwise AND operator &amp; (single ampersand). They are entirely different beasts.
+</p>
+<p class='vspace'></p><p>Similarly, do not confuse the boolean || (double pipe) operator with the bitwise OR operator | (single pipe).
+</p>
+<p class='vspace'></p><p>The bitwise not ~ (tilde) looks much different than the boolean not ! (exclamation point or "bang" as the programmers say) but you still have to be sure which one you want where.
+</p>
+<p class='vspace'></p><h4>Examples</h4>
+<pre>
+if (a &gt;= 10 &amp;&amp; a &lt;= 20){}   // true if a is between 10 and 20
+
+</pre>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='wikilink' href='BitwiseAnd.html'>&amp;</a> (bitwise AND)
+</li><li><a class='wikilink' href='BitwiseAnd.html'>|</a> (bitwise OR)
+</li><li><a class='wikilink' href='BitwiseXorNot.html'>~</a> (bitwise NOT
+</li><li><a class='wikilink' href='If.html'>if</a>
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Static </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Static</h2>
+<p>The static keyword is used to create variables that are visible to only one function. However unlike local variables that get created and destroyed every time a function is called, static variables persist beyond the function call, preserving their data between function calls.
+</p>
+<p class='vspace'></p><p>Variables declared as static will only be created and initialized the first time a function is called.
+</p>
+<p class='vspace'></p><h4>Example</h4>
+<pre>
+
+
+/* RandomWalk
+* Paul Badger 2007
+* RandomWalk wanders up and down randomly between two
+* endpoints. The maximum move in one loop is governed by
+* the parameter "stepsize".
+* A static variable is moved up and down a random amount.
+* This technique is also known as "pink noise" and "drunken walk".
+*/
+
+#define randomWalkLowRange -20
+#define randomWalkHighRange 20
+int stepsize;
+
+int thisTime;
+int total;
+
+void setup()
+{
+  Serial.begin(9600);
+}
+
+void loop()
+{        //  test randomWalk function
+  stepsize = 5;
+  thisTime = randomWalk(stepsize);
+  Serial.println(thisTime);
+   delay(10);
+}
+
+int randomWalk(int moveSize){
+  static int  place;     // variable to store value in random walk - declared static so that it stores
+                         // values in between function calls, but no other functions can change its value
+
+  place = place + (random(-moveSize, moveSize + 1));
+
+  if (place &lt; randomWalkLowRange){                    // check lower and upper limits
+    place = place + (randomWalkLowRange - place);     // reflect number back in positive direction
+  }
+  else if(place &gt; randomWalkHighRange){
+    place = place - (place - randomWalkHighRange);     // reflect number back in negative direction
+  }
+
+  return place;
+}
+
+
+</pre>
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

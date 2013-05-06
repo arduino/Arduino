@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Getting Started </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>PWM</h2>
+<p>The Fading example demonstrates the use of analog output (PWM) to fade an LED. It is available in the File-&gt;Sketchbook-&gt;Examples-&gt;Analog menu of the Energia IDE.
+</p>
+<p class='vspace'></p><p>Pulse Width Modulation, or PWM, is a technique for getting analog results with digital means. Digital control is used to create a square wave, a signal switched between on and off. This on-off pattern can simulate voltages in between full on (~3 Volts) and off (0 Volts) by changing the portion of the time the signal spends on versus the time that the signal spends off. The duration of "on time" is called the pulse width. To get varying analog values, you change, or modulate, that pulse width. If you repeat this on-off pattern fast enough with an LED for example, the result is as if the signal is a steady voltage between 0 and 3v controlling the brightness of the LED.
+</p>
+<p class='vspace'></p><p>In the graphic below, the green lines represent a regular time period. This duration or period is the inverse of the PWM frequency. In other words, with the LaunchPad's PWM frequency at about 500Hz, the green lines would measure 2 milliseconds each. A call to <a class='wikilink' href='AnalogWrite.html'>analogWrite</a>() is on a scale of 0 - 255, such that analogWrite(255) requests a 100% duty cycle (always on), and analogWrite(127) is a 50% duty cycle (on half the time) for example.
+</p>
+<p class='vspace'></p><div><img src='../reference/img/pwm.gif' alt='' title='' /></div>
+<p class='vspace'></p><p>Once you get this example running, grab your LaunchPad and shake it back and forth. What you are doing here is essentially mapping time across the space. To our eyes, the movement blurs each LED blink into a line. As the LED fades in and out, those little lines will grow and shrink in length. Now you are seeing the pulse width.
+</p>
+<p class='vspace'></p><p><em>Written by Timothy Hirzel, Modified by Mark Easley</em>
+</p>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

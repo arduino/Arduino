@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - MacOSX </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h1>Setup Energia on Mac OS X</h1>
+
+<p>Need help? The Energia <a href="http://www.43oh.com/forum/viewforum.php?f=38" target="_blank">discussion forum</a> is hosted on 43oh.com.
+</p>
+<h2>Installing the LaunchPad drivers</h2>
+<p>To use Energia you will need to have the LaunchPad drivers installed.
+</p>
+
+<h5>For Mac OS X Users</h5>
+<ol>
+<li>Download the LaunchPad drivers for Mac OS X: <a href="https://github.com/energia/Energia/raw/gh-pages/files/MSP430LPCDC-1.0.3b.zip" target="_blank">LaunchPad CDC drivers zip file for Mac OS X</a></li>
+<li>Unzip and double click MSP430LPCDC 1.0.3b.pkg</li>
+<li>Follow the instructions.</li>
+</ol>
+<h5><a class='wikilink' href='Guide_Windows.html'>Windows Users</a> & <a class='wikilink' href='Guide_Linux.html'>Linux Users</a></h5>
+
+<h2>Download Energia</h2>
+<p>The most recent release of Energia can be downloaded from the <a href="http://energia.nu/download" target="_blank">download</a> page.
+</p>
+
+<h5>Mac OS X Users</h5>
+<p>Double click the energia-0101EXXXX-macosx.dmg file and drag the Energia application onto the Application folder.
+</p>
+
+<p>Download and install <a href="http://support.apple.com/kb/DL1515" target="_blank">Java for OS X</a> from Apple.
+</p>
+<p>On OS X 10.8, as Energia 0101E0009 isn't signed, proceed as follow:
+</p>
+
+<ul>
+<li>First time you use Energia, press `ctrl` and click on Energia, choose `Open` on the menu.</li>
+<li>A window states Energia isn't signed and asks for confirmation to launch it: confirm and Energia starts.</li>
+<li>This procedure isn't required after.</li>
+</ul>
+If a window pop-ups and claims 
+	“Energia” is damaged and can't be opened. You should move it to the Trash" 
+don't panic! 
+
+<p>The "damaged application" message is a cryptic reminder that Energia isn't signed and thus not truth-worthy according to Mountain Lion.
+</p>
+<p>Proceed as follow:
+</p>
+<ol>
+<li>Launch Systems Preferences on the Apple menu</li>
+<li>Select Security and Privacy</li>
+<li>Click on the padlock, type your password and confirm</li>
+<li>Select Authorise the apps downloaded from everywhere and confirm</li>
+<li>Go back to the folder containing Energia </li>
+<li>Ctrl-click on Energia and select Open</li>
+<li>If a message asks you to confirm, confirm</li>
+<li>Once Energia is running, go back the the Systems Preferences and select the previous setting for Authorise the apps, either Mac App Store or Mac App Store and Identified developers.</li>
+<li>Next time you double-click on Energia, the application will be launched normally.</li>
+</ol>
+<h2>Starting Energia</h2>
+<p>Double click Energia.app (Mac OS X users). Energia will start and an empty Sketch window will appear.
+<img src="../reference/img/EnergiaMainWindow.png"></p>
+<h2>Selecting the Serial Port</h2>
+
+
+<p>Select <i><b>Serial Port</b></i> from the <i><b>Tools</b></i> menu to view the available serial ports. On windows, they will be listed as COMXXX port and usually a higher number is the LaunchPad com port. On Mac OS X they will be listed as /dev/cu.uart-XXXX. <i><b>On Mac OS X make sure to select the /dev/cu.uart-XXXX and NOT the /dev/tty.uart-XXX</b></i>
+<br /><br /><img src="../reference/img/EnergiaSerialPort.png"></p><p>For more on configuring your Launchpad for serial communication, see <a class="internal present" href="/energia/Energia/wiki/Serial-Communication">Serial-Communication</a></p>
+
+<h2>Selecting the Board</h2>
+
+
+<p>To select the board or rather the msp430 in your LaunchPad, select <i><b>Board</b></i> from the <i><b>Tools</b></i> menu and choose the board that matched the msp430 in the LaunchPad.
+<br /><br /><img src="../reference/img/EnergiaBoardSelect.png"></p>
+<h2>Uploading Your First Blinky Sketch</h2>
+
+
+<p>To load the Blinky example into the editor, select Blink from the <i><b>Blink</b></i> from the <i><b>File-&gt;Examples-&gt;1.Basics</b></i> menu.
+<br /><br /><img src="../reference/img/Blink.jpg"><br /><br />
+To compile and upload the Sketch to the LaunchPad click the Upload button.
+<br /><br /><img src="../reference/img/Upload.jpg"><br /><br />
+If all is well then the green LED on your LaunchPad is happily blinking. Congratulations, you have uploaded your first Sketch. Energia includes many more examples to get you started with your electronic project. Need help? The Energia <a href="http://www.43oh.com/forum/viewforum.php?f=38" target="_blank">discussion forum</a> is hosted on 43oh.com.</p>
+
+</li></ul><p class='vspace'></p>
+<p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='Guide_MacOSX?action=edit.html'>Edit Page</a> | <a href='Guide_MacOSX?action=diff.html'>Page History</a> | <a href='Guide_MacOSX?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

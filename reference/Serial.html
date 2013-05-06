@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Serial </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>Serial</h2>
+<p class='vspace'></p>
+<table><tr><td  width='55%' valign='top'>
+<p>This guide will help you get started with serial communication on your Launchpad under Energia.
+<br />
+It is important to note that there are several revisions of the Launchpad in the wild. Only the latest version (1.5) ships with a hardware UART (serial port). If you have a revision 1.5 board in hand, it is usually a good idea to enable the hardware UART, as it will improve performance versus a software UART. The hardware UART also allows the Arduino serial library to be used normally (meaning less work to port your code to the 430)!
+</p>
+<u><h3>Hardware Configuration</h3></u>
+<p>
+There are several versions of the Launchpad in the wild, and as each package ships with two different MSPs, the array of configurations can be bewildering to the user new to the Launchpad platform or new to microcontroller programming in general. The latest Launchpad, (v1.5) ships with a <a href="http://www.ti.com/product/msp430g2553" target="_blank">MSP430G2553</a> seated in the DIP socket, as pictured in figure 1.
+</p>
+<img src="../reference/img/M430G2553.jpg"><br />
+Figure 1: MSP430 chip with hardware UART.
+<p>
+It is ultimately the chip in the socket that determines the availability of hardware Serial, as all versions of the launchpad board can be reconfigured to support MSP430 chips with a hardware UART if you have them on hand.
+<b>The other chip that ships in the Launchpad v1.5 box is an <a href="http://www.ti.com/product/msp430g2452" target="_blank">MSP430G2452</a>, which does not have an onboard hardware UART. Therefore, even if you have Launchpad v1.5 it is advisable to check that you have the right chip inserted before proceeding</b></p>
+<p>
+If your Launchpad is version 1.4 or earlier, the chips that it shipped with have no hardware UART and thus, no hardware configuration is necessary, but you must use the SoftwareSerial library included in Energia to communicate over the serial port. Unfortunately, software serial communication will use more CPU cycles than the hardware option. With that in mind, if you are coming from the Arduino world, it might be worth the cost to obtain a 1.5 or later Launchpad or a replacement MSP430 such as the <a href="http://www.ti.com/product/msp430g2553" target="_blank">MSP430G2553</a>. <b>If you have a chip such as the MSP430G2553 with hardware UART and would like to use a revision 1.4 or earlier launchpad, see the guide below</b>
+</p>
+<p>
+If your Launchpad is version 1.5 it will be labeled "MSP-EXP430G2" with the text "Rev 1.5" in smaller type immediately below, as pictured. In order to enable the Hardware UART on the launchpad, you must manually change the jumper positions on header J3 to match those pictured in figure 2, by rotating them 90 degrees from the position they shipped in. A diagram is silkscreened on the board for clarity.
+</p>
+<img src="../reference/img/Launchpad.jpg"><br />
+Figure 2: Launchpad Revision 1.5 with jumpers set for hardware UART
+<br /><p>
+The Launchpad 1.5 ships with the jumpers in their default position (software UART only) to mimic the behavior of earlier revisions of the Launchpad. By rotating the jumpers, you can use the <a href="Serial.html" target="_blank">Energia Serial Library</a> normally.
+</p>
+
+<u><h3>Software Configuration</h3></u>
+<h4>Hardware UART</h4>
+<p>
+For hardware UART users, the configuration is extremely simple -- it behaves exactly the same as on the Arduino platform. It is noteworthy however, that <b>the onboard Launchpad USB to serial bridge is limited to 9600 baud</b>, as opposed to the higher baud rates available on recent Arduino boards like as the Uno
+</p>
+<br /><img src="../reference/img/EnergiaHardwareSerial.png"><br />
+Figure 3: Screenshot of Energia code using the hardware UART.
+<br />
+
+<h4>Software UART</h4>
+<p>Information to be added.</p>
+<u><h3>Hardware UART on Launchpad 1.4</h3></u>
+
+<p>If you have a Launchpad of v1.4 (versions that have no 'Rev x.x' printed below the 'MSP-EXP430G2' label are pre 1.5) is is possible to use hardware UART by replacing the MSP430 with a newer model, such as the MSP430G2553 and then cross connecting the serial pins in header J3.</p>
+
+<p class='vspace'></p></td><td  width='10%' valign='top'>
+<p class='vspace'></p></td><td  width='35%' valign='top'>
+<p class='vspace'></p><h4>Functions</h4>
+<ul><li><a class='wikilink' href='Serial_Available.html'>available</a>()
+</li><li><a class='wikilink' href='Serial_Begin.html'>begin</a>()
+</li><li><a class='wikilink' href='Serial_End.html'>end</a>()
+</li><li><a class='wikilink' href='Serial_Find.html'>find</a>()
+</li><li><a class='wikilink' href='Serial_FindUntil.html'>findUntil</a>()
+</li><li><a class='wikilink' href='Serial_Flush.html'>flush</a>()
+</li><li><a class='wikilink' href='Serial_ParseFloat.html'>parseFloat</a>()
+</li><li><a class='wikilink' href='Serial_ParseInt.html'>parseInt</a>()
+</li><li><a class='wikilink' href='Serial_Peek.html'>peek</a>()
+</li><li><a class='wikilink' href='Serial_Print.html'>print</a>()
+</li><li><a class='wikilink' href='Serial_Println.html'>println</a>()
+</li><li><a class='wikilink' href='Serial_Read.html'>read</a>()
+</li><li><a class='wikilink' href='Serial_ReadBytes.html'>readBytes</a>()
+</li><li><a class='wikilink' href='Serial_ReadBytesUntil.html'>readBytesUntil</a>()
+</li><li><a class='wikilink' href='Serial_setTimeout.html'>setTimeout</a>()
+</li><li><a class='wikilink' href='Serial_Write.html'>write</a>()
+</li></ul><p class='vspace'></p>
+</td></tr></table>
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>
