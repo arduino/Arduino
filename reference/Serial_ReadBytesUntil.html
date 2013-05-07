@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Energia Reference - Println </title>
+  <title>Energia Reference - Read </title>
   <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
   <link rel='stylesheet' href='energiaWideRender.css' 
 type='text/css' />
@@ -48,56 +48,32 @@ type='text/css' />
 <div id='wikitext'>
 <p><a class='wikilink' href='Serial.html'>Serial</a>
 </p>
-<p class='vspace'></p><h2>println()</h2>
+<p class='vspace'></p><h2>readBytesUntil()</h2>
 <h3>Description</h3>
-<p>Prints data to the serial port as human-readable ASCII text followed by a carriage return character (ASCII 13, or '\r') and a newline character (ASCII 10, or '\n'). This command takes the same forms as <a class='wikilink' href='Serial_Print.html'>Serial.print</a>().
+<p>Serial.readBytesUntil() reads characters from the serial buffer into an array. The function terminates if the terminator character is detected, the determined length has been read, or it times out (see <a href='Serial_SetTimeout.html'>Serial.setTimeout()</a>). Serial.readBytesUntil() returns the number of characters read into the buffer. A 0 means no valid data was found. Serial.readBytesUntil() inherits from the <a class='wikilink' href='Stream.html'>Stream</a> utility class.
 </p>
 <p class='vspace'></p><h3>Syntax</h3>
-<p>Serial.println(val) <br />Serial.println(val, format)
+<p>Serial.readBytes(character, buffer, length)
 </p>
 <p class='vspace'></p><h3>Parameters</h3>
-<p>val: the value to print - any data type
+<p>character : the character to search for (char)
 </p>
-<p class='vspace'></p><p>format: specifies the number base (for integral data types) or number of decimal places (for floating point types)
+<p>buffer: the buffer to store the bytes in (char[] or byte[])
+</p>
+<p>length : the number of bytes to read (int)
 </p>
 <p class='vspace'></p><h3>Returns</h3>
-<p>byte<br />println() will return the number of bytes written, though reading that number is optional
+<p>byte
 </p>
-<p class='vspace'></p><h3>Example:</h3>
+<p class='vspace'></p><h3>Example</h3>
 <pre>
-/*
-  Analog input
 
-  reads an analog input on analog in 0, prints the value out.
-
-  created 24 March 2006
-  by Tom Igoe
-*/
-
-int analogValue = 0;    // variable to hold the analog value
-
-void setup() {
-  // open the serial port at 9600 bps:
-  Serial.begin(9600);
-}
-
-void loop() {
-  // read the analog input on pin 0:
-  analogValue = analogRead(0);
-
-  // print it out in many formats:
-  Serial.println(analogValue);       // print as an ASCII-encoded decimal
-  Serial.println(analogValue, DEC);  // print as an ASCII-encoded decimal
-  Serial.println(analogValue, HEX);  // print as an ASCII-encoded hexadecimal
-  Serial.println(analogValue, OCT);  // print as an ASCII-encoded octal
-  Serial.println(analogValue, BIN);  // print as an ASCII-encoded binary
-
-  // delay 10 milliseconds before the next reading:
-  delay(10);
-}
 </pre>
 <p class='vspace'></p><h4>See also</h4>
-<ul><li><a class='wikilink' href='Serial_Print.html'>Serial.print</a>()
+<ul><li><a class='wikilink' href='Stream_ReadBytesUntil.html'>Stream.readBytesUntil</a>()
+</li><li><a class='wikilink' href='Serial_Available.html'>Serial.available</a>()
+</li><li><a class='wikilink' href='Serial_Flush.html'>Serial.flush</a>()
+</li><li><a class='wikilink' href='Serial_Peek.html'>Serial.peek</a>()
 </li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
 </p>
 <p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
@@ -113,7 +89,7 @@ void loop() {
   <!--PageFooterFmt-->
   <div id="pagefooter">
 &copy;Energia | 
-  <a href='Serial_Println?action=edit.html'>Edit Page</a> | <a href='Serial_Println?action=diff.html'>Page History</a> | <a href='Serial_Println?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  <a href='Serial_Read?action=edit.html'>Edit Page</a> | <a href='Serial_Read?action=diff.html'>Page History</a> | <a href='Serial_Read?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
   </div>
   <!--/PageFooterFmt-->
 

@@ -49,7 +49,7 @@ type='text/css' />
 <p><a class='wikilink' href='Serial.html'>Serial</a>
 </p>
 <p class='vspace'></p><h2>print()</h2>
-<h4>Description</h4>
+<h3>Description</h3>
 <p>Prints data to the serial port as human-readable ASCII text.  This command can take many forms.  Numbers are printed using an ASCII character for each digit.  Floats are similarly printed as ASCII digits, defaulting to two decimal places.  Bytes are sent as a single character.  Characters and strings are sent as is. For example:
 </p><ul><li>Serial.print(78) gives "78"
 </li><li>Serial.print(1.23456) gives "1.23"
@@ -67,18 +67,18 @@ type='text/css' />
 </p><ul><li>Serial.print(F(“Hello World”))
 </li></ul><p class='vspace'></p><p>To send a single byte, use  <a class='wikilink' href='Serial_Write.html'>Serial.write</a>().
 </p>
-<p class='vspace'></p><h4>Syntax</h4>
+<p class='vspace'></p><h3>Syntax</h3>
 <p>Serial.print(val) <br />Serial.print(val, format)
 </p>
-<p class='vspace'></p><h4>Parameters</h4>
+<p class='vspace'></p><h3>Parameters</h3>
 <p>val: the value to print - any data type
 </p>
 <p class='vspace'></p><p>format: specifies the number base (for integral data types) or number of decimal places (for floating point types)
 </p>
-<p class='vspace'></p><h4>Returns</h4>
+<p class='vspace'></p><h3>Returns</h3>
 <p>byte<br />print() will return the number of bytes written, though reading that number is optional
 </p>
-<p class='vspace'></p><h4>Example:</h4>
+<p class='vspace'></p><h3>Example:</h3>
 <pre>
 /*
   Uses a FOR loop for data and prints a number in various formats.
