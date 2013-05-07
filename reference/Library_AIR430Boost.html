@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Libraries </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='selflink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>AIR430Boost (ETSI/FCC)</h2>
+<h3>Overview</h3>
+The AIR430Boost (ETSI/FCC) library is a proprietary-RF driver for the 430Boost-CC110L Boosterpack. 
+It provides a simple public interface for the application to interact with the CC110L transceiver 
+and create Point-to-Point (PPP) or Star networks.
+
+<h3>Library methods</h3>
+
+<!-- begin() method -->
+<h4>begin()</h4>
+<ul>
+<p><h5>Description</h5>
+Sets up the SPI peripheral and I/O, radio (GDO0) interrupt I/O, and initialize the radio session.
+</p>
+<p><h5>Syntax</h5>
+Radio.begin(address, channel, power)
+</p>
+<p><h5>Parameters</h5>
+address: default device address used for hardware message filtering - <em>uint8_t</em><br />
+channel: default frequency to receive/transmit on. Valid values are:</br>
+<ul>
+	<li>CHANNEL_1 - ETSI 868.3MHz; FCC/IC 903MHz</li>
+	<li>CHANNEL_2 - ETSI 868.8MHz; FCC/IC 904MHz</li>
+	<li>CHANNEL_3 - ETSI 869.3MHz; FCC/IC 905MHz</li>
+	<li>CHANNEL_4 - ETSI 869.8MHz; FCC/IC 906MHz</li>
+</ul>
+power: default output power level to transmit at. Valid values are:</br>
+<ul>
+	<li>POWER_4_DBM - 4dBm</li>
+	<li>POWER_4_DBM - 4dBm</li>
+	<li>POWER_3_DBM - 3dBm</li>
+	<li>POWER_2_DBM - 2dBm</li>
+	<li>POWER_1_DBM - 1dBm</li>
+	<li>POWER_0_DBM - 0dBm</li>
+</ul>
+</p>
+<p><h5>Returns</h5>
+Nothing
+</p>
+<p><h5>Example</h5>
+<pre>
+void setup()
+{
+	Radio.begin(0x01, CHANNEL_1, POWER_MAX);
+}
+</pre>
+</p>
+</ul>
+
+<!-- end() method -->
+<h4>end()</h4>
+<ul>
+<p><h5>Description</h5>
+Closes the radio session.
+</p>
+<p><h5>Syntax</h5>
+Radio.end()
+</p>
+<p><h5>Parameters</h5>
+None
+</p>
+<p><h5>Returns</h5>
+Nothing
+</p>
+</ul>
+
+<!-- busy() method -->
+<h4>busy()</h4>
+<ul>
+<p><h5>Description</h5>
+Radio busy indicator (transmitter active flag).
+</p>
+<p><h5>Syntax</h5>
+Radio.busy()
+</p>
+<p><h5>Parameters</h5>
+None</p>
+<p><h5>Returns</h5>
+True if the transmitter is currently in use; false otherwise.
+</p>
+<p><h5>Example</h5>
+<pre>
+void loop()
+{
+	// ...
+	if (!Radio.busy())
+	{
+		// Transmit a message if the radio isn't busy transmitting something already.
+		Radio.transmit(...);
+	}
+	// ...
+}
+</pre>
+</p>
+</ul>
+
+<!-- setAddress() method -->
+<h4>setAddress()</h4>
+<ul>
+<p><h5>Description</h5>
+Sets device address. This address is used for hardware message filtering. If a message is received 
+but does not match the device address and is not a broadcast (message sent to broadcast address of 
+0x00), the message is automatically discarded; the radio driver is never notified.
+</p>
+<p><h5>Syntax</h5>
+Radio.setAddress(address)
+</p>
+<p><h5>Parameters</h5>
+address: the device address of the receiving node - <em>uint8_t</em>
+</p>
+<p><h5>Returns</h5>
+Nothing
+</p>
+</ul>
+
+<!-- setChannel() method -->
+<h4>setChannel()</h4>
+<ul>
+<p><h5>Description</h5>
+Sets the operating frequency.
+</p>
+<p><h5>Syntax</h5>
+Radio.setChannel(channel)
+</p>
+<p><h5>Parameters</h5>
+channel: frequency to receive/transmit on. Valid values are:</br>
+<ul>
+	<li>CHANNEL_1 - ETSI 868.3MHz; FCC/IC 903MHz</li>
+	<li>CHANNEL_2 - ETSI 868.8MHz; FCC/IC 904MHz</li>
+	<li>CHANNEL_3 - ETSI 869.3MHz; FCC/IC 905MHz</li>
+	<li>CHANNEL_4 - ETSI 869.8MHz; FCC/IC 906MHz</li>
+</ul>
+</p>
+<p><h5>Returns</h5>
+Nothing
+</p>
+</ul>
+
+<!-- setPower() method -->
+<h4>setPower()</h4>
+<ul>
+<p><h5>Description</h5>
+Sets the operating transmit output power.
+</p>
+<p><h5>Syntax</h5>
+Radio.setPower(power)
+</p>
+<p><h5>Parameters</h5>
+power: output power level to transmit at. Valid values are:</br>
+<ul>
+	<li>POWER_4_DBM - 4dBm</li>
+	<li>POWER_4_DBM - 4dBm</li>
+	<li>POWER_3_DBM - 3dBm</li>
+	<li>POWER_2_DBM - 2dBm</li>
+	<li>POWER_1_DBM - 1dBm</li>
+	<li>POWER_0_DBM - 0dBm</li>
+</ul>
+</p>
+<p><h5>Returns</h5>
+Nothing
+</p>
+</ul>
+
+<!-- getRssi() method -->
+<h4>getRssi()</h4>
+<ul>
+<p><h5>Description</h5>
+Read the receive signal strength indicator (RSSI) for the last received data stream.
+</p>
+<p><h5>Syntax</h5>
+Radio.getRssi()
+</p>
+<p><h5>Parameters</h5>
+None
+</p>
+<p><h5>Returns</h5>
+RSSI value in absolute dBm increments - <em>int8_t</em>
+</p>
+</ul>
+
+<!-- getLqi() method -->
+<h4>getLqi()</h4>
+<ul>
+<p><h5>Description</h5>
+Read the link quality indicator (LQI) for the last received data stream.
+</p>
+<p><h5>Syntax</h5>
+Radio.getLqi()
+</p>
+<p><h5>Parameters</h5>
+None
+</p>
+<p><h5>Returns</h5>
+LQI value - <em>uint8_t</em>
+</p>
+</ul>
+
+<!-- getCrcBit() method -->
+<h4>getCrcBit()</h4>
+<ul>
+<p><h5>Description</h5>
+Read the cyclic redundancy check (CRC) bit for the last received data stream.
+</p>
+<p><h5>Syntax</h5>
+Radio.getCrcBit()
+</p>
+<p><h5>Parameters</h5>
+None
+</p>
+<p><h5>Returns</h5>
+CRC bit value. 1 if valid, 0 otherwise - <em>uint8_t</em>
+</p>
+</ul>
+
+<!-- transmit() method -->
+<h4>transmit()</h4>
+<ul>
+<p><h5>Description</h5>
+Build a data stream from the data field provided and transmit the resulting message over-the-air 
+to a specified address.
+</p>
+<p><h5>Syntax</h5>
+Radio.transmit(address, dataField, length)
+</p>
+<p><h5>Parameters</h5>
+address: default device address used for hardware message filtering - <em>uint8_t</em><br />
+dataField: payload for the data stream - <em>uint8_t*</em><br />
+length: number of bytes in the data field buffer - <em>uint8_t</em><br />
+</p>
+<p><h5>Returns</h5>
+Nothing
+</p>
+<p><h5>Example</h5>
+<pre>
+// Data to write to radio TX FIFO (60 bytes MAX.)
+unsigned char txData[6] = { 0x30, 'A', 'i', 'r', '!', '\0' };    
+// ...
+
+void loop()
+{
+	// ...
+	// Load the txData into the radio TX FIFO and transmit it to the broadcast
+	// address.
+	Radio.transmit(ADDRESS_BROADCAST, txData, 6);
+	// ...
+}
+</pre>
+</p>
+</ul>
+
+<!-- receiverOn() method -->
+<h4>receiverOn()</h4>
+<ul>
+<p><h5>Description</h5>
+Turn on the radio receiver and listen until a message is received or a timeout occurs.
+</p>
+<p><h5>Syntax</h5>
+Radio.receiverOn(dataField, length, timeout)
+</p>
+<p><h5>Parameters</h5>
+dataField: buffer that stores the data field. This buffer is assumed to be large enough to 
+store the largest expected data field - <em>uint8_t*</em><br />
+length: size of the data field in bytes - <em>uint8_t</em><br />
+timeout: (maximum) period to listen for in milliseconds - <em>uint16_t</em>
+</p>
+<p><h5>Returns</h5>
+Number of bytes read from the RX FIFO that were copied into the data field - <em>uint8_t</em>
+</p>
+<p><h5>Example</h5>
+<pre>
+// Data to read from radio RX FIFO (60 bytes MAX.)
+unsigned char rxData[6] = { '\0', '\0', '\0', '\0', '\0', '\0' };
+// ...
+
+void loop()
+{
+	// Turn on the receiver and listen for incoming data. Timeout after 1 seconds.
+	// The receiverOn() method returns the number of bytes copied to rxData.
+	if (Radio.receiverOn(rxData, sizeof(rxData), 1000) > 0)
+	{
+		// Data has been received and has been copied to the rxData buffer provided to 
+		// the receiverOn() method.
+	}
+}
+</pre>
+</p>
+</ul>
+
+<h3>Installation</h3>
+Download from here: <a href="https://github.com/energia/Energia" target="_blank" >https://github.com/energia/Energia</a><br />
+<em>Note: The AIR430Boost library is provided with the latest version of Energia.</em>
+<h3>Demo Sketch</h3>
+<pre>
+/**
+ *  WirelessTest - test transceiver sketch using AIR430Boost FCC driver.
+ *  Copyright (C) 2012-2013 Anaren Microwave, Inc.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ * 
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ *  This example demonstrates usage of the AIR430BoostETSI library which uses
+ *  the 430Boost-CC110L AIR Module BoosterPack created by Anaren Microwave, Inc.
+ *  and available through the TI eStore, for the European Union.
+ *
+ *  ----------------------------------------------------------------------------
+ *
+ *  Note: This file is part of AIR430Boost.
+ *
+ *  ----------------------------------------------------------------------------
+ *
+ *  Description
+ *  ===========
+ *
+ *  Each radio will send a message consisting of: 1 byte counter, 5 byte static 
+ *  text. The counter will count from 0 to 9 and will rollover. Each radio will 
+ *  wait in receive mode for approximately one second. Upon receiving data, or 
+ *  timeout of one second, the radio receive function will return. If valid data 
+ *  was received, the radio's receiverOn() method will return the number of bytes
+ *  that were received. In this example, the data can be monitored on the serial 
+ *  port (please refer to printTxData() and printRxData() functions).
+ *
+ *  ----------------------------------------------------------------------------
+ * 
+ *  This example assumes that two BoosterPacks will be used to showcase the 
+ *  wireless radio communication functionality. This same code should be 
+ *  programmed to both LaunchPad development kits.
+ *
+ *  This BoosterPack relies on the SPI hardware peripheral and two additional 
+ *  GPIO lines for SPI chip-select and GDO0 for packet handling. They use pins 18 
+ *  and 19 respectively. 
+ *
+ *  In the default configuration, this BoosterPack is not compatible with an 
+ *  external crystal oscillator. This can be changed, if necessary, and would
+ *  require reconfiguration of the BoosterPack hardware and changes to the 
+ *  AIR430BoostFCC library. Refer to the BoosterPack User's Manual if necessary.
+ *
+ *  For complete information, please refer to the BoosterPack User's Manual available at:
+ *  https://www.anaren.com/air/cc110l-air-module-boosterpack-embedded-antenna-module-anaren
+ *  
+ *  To purchase the 430Boost-CC110L AIR module BoosterPack kit, please visit the TI eStore at:
+ *  https://estore.ti.com/430BOOST-CC110L-CC110L-RF-Module-BoosterPack-P2734.aspx
+ */
+
+// The AIR430BoostFCC library uses the SPI library internally. Energia does not
+// copy the library to the output folder unless it is referenced here.
+// The order of includes is also important due to this fact.
+#include <SPI.h>
+#include <AIR430BoostFCC.h>
+
+// -----------------------------------------------------------------------------
+/**
+ *  Global data
+ */
+
+// Data to write to radio TX FIFO (60 bytes MAX.)
+unsigned char txData[6] = { 0x30, 'A', 'i', 'r', '!', '\0' };    
+
+// Data to read from radio RX FIFO (60 bytes MAX.)
+unsigned char rxData[6] = { '\0', '\0', '\0', '\0', '\0', '\0' };
+
+// -----------------------------------------------------------------------------
+// Debug print functions
+
+void printTxData()
+{
+  Serial.print("TX (DATA): ");
+  Serial.println((char*)txData); 
+}
+
+void printRxData()
+{
+  /**
+   *  The following illustrates various information that can be obtained when
+   *  receiving a message. This includes: the received data and associated 
+   *  status information (RSSI, LQI, and CRC_OK bit).
+   */
+  Serial.print("RX (DATA, RSSI, LQI, CRCBIT): ");
+  Serial.print("(");
+  Serial.print((char*)rxData);
+  Serial.print(", ");
+  Serial.print(Radio.getRssi());
+  Serial.print(", ");
+  Serial.print(Radio.getLqi());
+  Serial.print(", ");
+  Serial.print(Radio.getCrcBit());
+  Serial.println(")");
+}
+
+// -----------------------------------------------------------------------------
+// Main example
+
+void setup()
+{
+  // The radio library uses the SPI library internally, this call initializes
+  // SPI/CSn and GDO0 lines. Also setup initial address, channel, and TX power.
+  Radio.begin(0x01, CHANNEL_1, POWER_MAX);
+
+  // Setup serial for debug printing.
+  Serial.begin(9600);
+  
+  /**
+   *  Setup LED for example demonstration purposes.
+   *
+   *  Note: Set radio first to ensure that GDO2 line isn't being driven by the 
+   *  MCU as it is an output from the radio.
+   */
+  pinMode(RED_LED, OUTPUT);
+  digitalWrite(RED_LED, LOW);   // set the LED on
+}
+
+void loop()
+{
+  // Load the txData into the radio TX FIFO and transmit it to the broadcast
+  // address.
+  Radio.transmit(ADDRESS_BROADCAST, txData, 6);
+  printTxData();                    // TX debug information
+  
+  // Increment tx data sequence number ('0'-'9' ASCII) for next transmission.
+  if (txData[0] >= '0' && txData[0] < '9')
+  {
+    txData[0]++;
+  }
+  else
+  {
+    txData[0] = '0';
+  }
+  
+  /**
+   *  The radio transmitter and receiver cannot be operated at the same time.
+   *  Wait until transmit completes before turning on the receiver. Please note
+   *  that the radio is considered busy when it is transmitting.
+   *
+   *  WARNING: If busy is not checked between two successive radio operations
+   *  receiverOn/transmit, the radio may not perform the specified task. The
+   *  radio must be complete with the transmission before it can begin the next
+   */
+  while (Radio.busy());
+  
+  // Turn on the receiver and listen for incoming data. Timeout after 1 seconds.
+  // The receiverOn() method returns the number of bytes copied to rxData.
+  if (Radio.receiverOn(rxData, sizeof(rxData), 1000) > 0)
+  {
+    /**
+     *  Data has been received and has been copied to the rxData buffer provided
+     *  to the receiverOn() method. At this point, rxData is available. See
+     *  printRxData() for more information.
+     */
+    digitalWrite(RED_LED, HIGH);
+    printRxData();                  // RX debug information
+  }
+  digitalWrite(RED_LED, LOW);
+}
+</pre>
+<h3>Bugs, Suggestions, Applications</h3>
+<p>Contact Anaren AIR support at <a href="mailto:air@anaren.com">air@anaren.com</a>, or visit the <a href="http://forum.43oh.com/topic/3781-energia-library-anaren-cc110l-air-boosterpack/" target="_blank">Forum</a>.
+</p>
+
+<p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a> | <a class='wikilink' href='Libraries.html'>Libraries Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

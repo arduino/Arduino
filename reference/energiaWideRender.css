@@ -26,7 +26,7 @@ h2 {
 	color: #333;
 	margin-top: 30px;
 }
-h3, h4 {
+h3 {
 	color: #d50000; //#e34c00;
 	font-family: "Lucida Sans", Lucida, Verdana, sans-serif;
 	font-weight: normal !important;
@@ -41,6 +41,26 @@ h3 a {
 }
 h3 a:hover {
 	font-weight: bold;
+}
+h4 {
+	color: #000;
+	font-family: "Lucida Sans", Lucida, Verdana, sans-serif;
+	font-weight: bold !important;
+	margin-bottom: 5px;
+	font-size: 90%;
+	letter-spacing: 0.1em;
+}
+h4 a {
+	border-bottom-color: #e3a586 !important;
+	color: #d50000 !important; //#e34c00
+	font-weight: bold;
+}
+h4 a:hover {
+	font-weight: bold;
+}
+h5 {
+	font-weight: bold !important;
+	margin-bottom: 3px;
 }
 hr {
 	border-top: 1px dotted #555;
