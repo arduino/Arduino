@@ -53,7 +53,7 @@ type='text/css' />
 </p>
 <p class='vspace'></p><div  class='BOM' >
 <h3>Hardware Required</h3>
-<ul><li>LaunchPad Board
+<ul><li>MSP-EXP430G2 LaunchPad
 </li><li>pushbutton [available already on-board as part of the LaunchPad]
 </li><li>LED [available already on-board as a part of the Launchpad]
 </li><li>momentary button or switch
@@ -82,15 +82,15 @@ type='text/css' />
 <p class='vspace'></p><h3>Code Explanation</h3>
 <p>In the program, pin 14, which has green LED connected to it, is set up as output in the setup function. 
 </p>
-<code>pinMode(ledPin, OUTPUT);</code>
+<pre>pinMode(ledPin, OUTPUT);</pre>
 <p class='vspace'></p>
 <p>Here the ledpin refers to the GREEN_LED which is set as output. The push button which is connected to pin 5 is set up as input. The pull-up resistor connected to this pin is enabled.
 </p>
-<code>pinMode(buttonPin, INPUT_PULLUP);</code>
+<pre>pinMode(buttonPin, INPUT_PULLUP);</pre>
 <p class='vspace'></p>
 <p>In the main loop, the state of the pushbutton is saved in the variable "reading". 
 </p>
-<code>int reading = digitalRead(buttonPin);</code>
+<pre>int reading = digitalRead(buttonPin);</pre>
 <p class='vspace'></p>
 <p>If the state of the pushbutton has changed from its previous stored state, then the time at which it was pressed is obtained with the help of millis( ) and saved.
 </p>

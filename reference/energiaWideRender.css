@@ -17,6 +17,9 @@ body {
 img {
 	margin-bottom: 1em;
 }
+pre {
+	background: #F5F5F5;
+}
 h1 {
 	font-family: "Lucida Sans", Lucida, Verdana, sans-serif;
 	color: #333;

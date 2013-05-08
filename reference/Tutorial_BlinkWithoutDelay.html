@@ -53,7 +53,7 @@ type='text/css' />
 </p>
 <p class='vspace'></p><div  class='BOM' >
 <h3>Hardware Required</h3>
-<ul><li>LaunchPad Board
+<ul><li>MSP-EXP430G2 LaunchPad
 </li><li>LED [available already on-board as a part of the Launchpad]
 </li></ul><p class='vspace'></p></div>
 <h3>Relevant Groundwork</h3>
@@ -61,7 +61,7 @@ type='text/css' />
 </p>
 <p>This code below demonstrates how to blink the LED without using delay(). It keeps track of the last time the Launchpad turned the LED on or off. Then, each time through loop(), it checks if a long enough interval has passed. If it has, it toggles the LED on or off. 
 </p>
-<p>MSP430 LaunchPad has LED attached to pin 0 and pin 6 on the board itself as shown above in the image. If you run the below code example with no hardware attached, you should see that LED blink.
+<p>MSP430 LaunchPad has LED attached to pin 2 and pin 14 on the board itself as shown above in the image. If you run the below code example with no hardware attached, you should see that LED blink.
 </p>
 <p class='vspace'></p><h3>Circuit</h3>
 <div  class='circuit' >
@@ -75,16 +75,16 @@ type='text/css' />
 <p class='vspace'></p><h3>Code Explanation</h3>
 <p>In the program, pin 14 is set up as output in the setup function. 
 </p>
-<code>pinMode(ledPin, OUTPUT);</code>
+<pre>pinMode(ledPin, OUTPUT);</pre>
 <p>Here the ledpin refers to the GREEN_LED which is set as output.
 </p> 
 <p>In the main loop, in order to measure delay without using the delay function, current time, which is the time elapsed in milliseconds since the Launchpad was booted up is obtained using millis ( ). The difference of this current time with the previous time ( which is 0 initially) when LED blinked  is checked. If the difference exceeds the delay time interval ,
 </p>
-<code>if(currentMillis - previousMillis > interval)</code>
+<pre>if(currentMillis - previousMillis > interval)</pre>
 <p class='vspace'></p>
 <p>Then, the last time when LED binked is saved ,
 </p>
-<code>previousMillis = currentMillis;</code>  
+<pre>previousMillis = currentMillis;</pre>  
 <p class='vspace'></p>
 <p>The state of the LED is now switched. If LED is ON, then it is turned off and vice-versa.
 </p>
@@ -127,7 +127,8 @@ const int ledPin =  GREEN_LED;      // the number of the LED pin
 int ledState = LOW;             // ledState used to set the LED
 long previousMillis = 0;        // will store last time LED was updated
 
-// the follow variables is a long because the time, measured in miliseconds, will quickly become a bigger //number than can be stored in an int.
+// the follow variables is a long because the time, measured in miliseconds, will quickly become a bigger 
+// number than can be stored in an int.
 long interval = 1000;           // interval at which to blink (milliseconds)
 
 void setup() {

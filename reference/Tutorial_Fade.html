@@ -53,14 +53,14 @@ type='text/css' />
 </p>
 <p class='vspace'></p><div  class='BOM' >
 <h3>Hardware Required</h3>
-<ul><li>LaunchPad Board
+<ul><li>MSP-EXP430G2 LaunchPad
 </li><li>10k ohm resistor
 </li><li>breadboard
 </li><li>hook-up wire 
 </li><li>LED (available on-board)
 </li></ul><p class='vspace'></p></div>
 <h3>Relevant Groundwork</h3>
-<p>We can fade a LED at varying brightness levels between ON & OFF. This can be done with the help of <a href='AnalogWrite.html'>analogWrite( )</a>. The function call to analogWrite(),will generate a steady square wave of the specified duty cycle until the next call to analogWrite( ) and write the value to the specified pin. Refer to the following link <a href='https://github.com/energia/Energia/wiki/Hardware'>https://github.com/energia/Energia/wiki/Hardware</a> to know the pins which can be used for analogWrite( ). In this example, we use pin 14 .
+<p>We can fade a LED at varying brightness levels between ON & OFF. This can be done with the help of <a href='AnalogWrite.html'>analogWrite( )</a>. The function call to analogWrite(),will generate a steady square wave of the specified duty cycle until the next call to analogWrite( ) and write the value to the specified pin. Refer to the <a href='PinMapping.html'>pin mapping guide</a> to know the pins which can be used for analogWrite( ). In this example, we use pin 14 .
 </p><p class='vspace'></p>
 <u>For on-board LED:</u>
 <p class='vspace'></p>
@@ -127,7 +127,7 @@ void loop()  {
 <h3>Working Video</h3>
 (Insert Video Here)
 <h3>Try it out:</h3>
-
+- Fade multiple LEDs in a cool pattern
 <p class='vspace'></p><h3>See Also:</h3>
 <ul><li><a class='wikilink' href='Setup.html'>setup</a>()
 </li><li><a class='wikilink' href='Loop.html'>loop</a>()

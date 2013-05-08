@@ -49,10 +49,10 @@ type='text/css' />
 <p><em>Examples &gt; Analog</em>
 </p>
 <p class='vspace'></p><h3>Analog Input</h3>
-<p>A potentiometer is a simple knob that provides a variable resistance, which you can read into the LaunchPad board as an analog value.  In this example, you'll connect a poterntiometer to one of the LaunchPad's analog inputs to control the rate at which the built-in LED on pin 2 blinks.
+<p>A potentiometer is a simple knob that provides a variable resistance, which you can read into the LaunchPad board as an analog value.  In this example, you'll connect a potentiometer to one of the LaunchPad's analog inputs to control the rate at which the built-in LED on pin 2 blinks.
 </p>
 <p class='vspace'></p><h3>Hardware Required</h3>
-<ul><li>LaunchPad Board
+<ul><li>MSP430 LaunchPad
 </li><li>Potentiometer
 </li><li>built-in LED on pin 2
 </li></ul>
@@ -104,8 +104,6 @@ type='text/css' />
  
   This example code is in the public domain.
  
-  http://arduino.cc/en/Tutorial/AnalogInput
- 
 */
 
 int sensorPin = A3;    // select the input pin for the potentiometer
@@ -133,6 +131,7 @@ void loop() {
 <h3>Working Video</h3>
 (Insert Video Here)
 <h3>Try it out:</h3>
+- incorporate multiple analog signals into the program
 <p class='vspace'></p><h3>See Also:</h3>
 <ul><li><a class='wikilink' href='PinMode.html'>pinMode</a>()
 </li><li><a class='wikilink' href='AnalogRead.html'>analogRead</a>()

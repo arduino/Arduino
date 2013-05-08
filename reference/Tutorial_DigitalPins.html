@@ -49,7 +49,7 @@ type='text/css' />
 <h2>Digital Pins</h2>
 <p>The pins on the LaunchPad can be configured as either inputs or outputs.  This document explains the functioning of the pins in those modes. While the title of this document refers to digital pins, it is important to note that vast majority of LaunchPad analog pins, may be configured, and used, in exactly the same manner as digital pins.
 </p>
-<p class='vspace'></p><h3>Properties of Pins Configured as INPUT</h3>
+<p class='vspace'></p><h4>Properties of Pins Configured as INPUT</h4>
 <p>LaunchPad pins default to inputs, so they don't need to be explicitly declared as inputs with pinMode(). Pins configured as inputs are said to be in a high-impedance state. One way of explaining this is that input pins make extremely small demands on the circuit that they are sampling, say equivalent to a series resistor of 100 megohm in front of the pin. This means that it takes very little current to move the input pin from one state to another, and can make the pins useful for such tasks as implementing a capacitive touch sensor, reading an LED as a photodiode, or reading an analog sensor.
 <p class='vspace'></p><p>This also means however, that input pins with nothing connected to them, or with wires connected to them that are not connected to other circuits, will report seemingly random changes in pin state, picking up electrical noise from the environment, or capacitively coupling the state of a nearby pin. 
 </p>
@@ -59,7 +59,7 @@ type='text/css' />
 </p>
 <p class='vspace'></p><p>Short circuits on LaunchPad pins, or attempting to run high current devices from them, can damage or destroy the output transistors in the pin, or damage the entire TI chip. Often this will result in a "dead" pin in the microcontroller but the remaining chip will still function adequately. For this reason it is a good idea to connect OUTPUT pins to other devices with 470&#937; or 1k resistors, unless maximum current draw from the pins is required for a particular application.
 </p>
-<p class='vspace'></p><h3>Defining Digital Pins, INPUT and OUTPUT</h3>
+<p class='vspace'></p><h4>Defining Digital Pins, INPUT and OUTPUT</h4>
 <p>Digital pins can be used either as <strong>INPUT</strong> or <strong>OUTPUT</strong>. Changing a pin from INPUT TO OUTPUT with pinMode() drastically changes the electrical behavior of the pin.
 </p>
 

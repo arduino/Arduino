@@ -49,13 +49,13 @@ type='text/css' />
 <p><em>Examples &gt; Basics</em>
 </p>
 <p class='vspace'></p><h3>Blink</h3>
-<p>This example shows how to program msp430 to blink its LED using Energia.
+<p>This example shows how to program MSP430 to blink its LED using Energia.
 </p>
 <h3>Hardware Required</h3>
-<ul><li>Msp430 Launchpad</li>
+<ul><li>MSP-EXP430G2 LaunchPad</li>
 <li>LED [ available already as a part of the Launchpad]</li></ul>
 <h3>Relevant groundwork</h3>
-<p>Msp430 has two led pins already attached on the Launchpad. MSP430 has two I/O ports ; P0 & P1, with eight I/O lines each. The two leds are connected to port 1. The red led is connected pin 0/ P1.0 and the green led  is  connected to pin 6/p1.4.  The eight lines of  two ports can be individually  programmed with the help of dedicated port control registers. 
+<p>MSP430 has two led pins already attached on the Launchpad. MSP430 has two I/O ports ; P0 & P1, with eight I/O lines each. The two leds are connected to port 1. The red led is connected pin 2/ P1.0 and the green led  is  connected to pin 14/p1.6.  The eight lines of  two ports can be individually  programmed with the help of dedicated port control registers. 
 </p><p class='vspace'></p>
 <strong><u>P1DIR:</u></strong>
 <p> This control register is used in configuring the respective lines of the port as input or output. 
@@ -65,7 +65,7 @@ type='text/css' />
 </p>
 <p>Ex : The below  bit field configuration of P1DIR shows that Line 0 of port 1 is set as output.
 </p>
-<table border='1'>
+<table border='1' cellspacing='2' cellpadding='2'>
 <tr><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr>
 <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
 </table><p class='vspace'></p>
@@ -76,12 +76,12 @@ type='text/css' />
 </p>
 <p>Ex : The below  bit field configuration of P1OUT  shows that Line 0 of port 1 is set to 1.
 </p>
-<table border='1'>
+<table border='1' cellspacing='2' cellpadding='2'>
 <tr><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr>
 <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
 </table>
 <h3>Circuit</h3>
-<p>MSP430G2 LaunchPad has  LED attached to pin 0 and pin 6 on the board itself as shown above in the image. If you run the below code  example with no hardware attached, you should see that LED blink.
+<p>MSP430G2 LaunchPad has  LED attached to pin 0 and pin 14 on the board itself as shown above in the image. If you run the below code  example with no hardware attached, you should see that LED blink.
 </p>
 <img height='250px' src='../reference/img/Blink_bb.png' alt='' title='' />
 <p>image developed using <a href='http://fritzing.org'>Fritzing</a>. For more circuit examples, see the <a href='http://fritzing.org/projects'>Fritzing project page</a>.
@@ -89,7 +89,7 @@ type='text/css' />
 <h3>Schematic</h3>
 <img height='400px' src='../reference/img/Blink_schem.png' alt='' title='' />
 <h3>Code Explanation</h3>
-<p>In the program , the first thing you do is to initialize pin 6 [ RED_LED] as an output pin with the line:
+<p>In the program , the first thing you do is to initialize pin 2 [ RED_LED] as an output pin with the line:
 </p>
 <pre>
 pinMode(RED_LED, OUTPUT);
@@ -99,12 +99,12 @@ pinMode(RED_LED, OUTPUT);
 <pre>
 digitalWrite(RED_LED, HIGH);
 </pre><p class='vspace'></p>
-<p>This supplies 5 volts to pin 6. That creates a voltage difference across the pins of the LED, and lights it up. Then you turn it off with the line:
+<p>This supplies 3 volts to pin 2. That creates a voltage difference across the pins of the LED, and lights it up. Then you turn it off with the line:
 </p>
 <pre>
 digitalWrite(RED_LINE, LOW);
 </pre><p class='vspace'></p>
-<p>That takes pin 6 back to 0 volts, and turns the LED off. In between the on and the off, you want enough time for a person to see the change, so the delay() commands tell the MSP430 to do nothing for 1000 milliseconds, or one second. When you use the delay() command, nothing else happens for that amount of time. 
+<p>That takes pin 2 back to 0 volts, and turns the LED off. In between the on and the off, you want enough time for a person to see the change, so the delay() commands tell the MSP430 to do nothing for 1000 milliseconds, or one second. When you use the delay() command, nothing else happens for that amount of time. 
 </p>
 <h3>Code</h3>
 <pre>
@@ -112,7 +112,7 @@ digitalWrite(RED_LINE, LOW);
   Blink
   The basic Energia example.
   Turns on an LED on for one second, then off for one second, repeatedly.
-  Pin 6 has an LED connected on MSP430 boards, has a name 'RED_LED' in the code.
+  Pin 2 has an LED connected on MSP430 boards, has a name 'RED_LED' in the code.
 */
   
 // the setup routine runs once when you press reset:

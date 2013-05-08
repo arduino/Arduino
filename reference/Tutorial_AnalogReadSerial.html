@@ -53,24 +53,25 @@ type='text/css' />
 </p>
 <p class='vspace'></p><div  class='BOM' >
 <h3>Hardware Required</h3>
-<ul><li>LaunchPad Board
+<ul><li>MSP-EXP430G2 LaunchPad
 </li><li>10-kilohm Potentiometer
 </li><li>hook-up wire
 </li></ul></div>
 <p class='vspace'></p><h3>Relevant Groundwork</h3>
-<p class='vspace'></p><h3>Circuit</h3>
-<p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to 5 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 5 volts. When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the <strong>analog voltage</strong> that you're reading as an input. 
+<p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to ~3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3 volts. When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the <strong>analog voltage</strong> that you're reading as an input. 
 </p>
 <p>The LaunchPad has a circuit inside called an <strong>analog-to-digital converter</strong> that reads this changing voltage and converts it to a number between 0 and 1023. When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 3 volts going to the pin and the input value is 1023. In between, analogRead() returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin.
 </p>
+<p class='vspace'></p><p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to 3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3 volts.  When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the <strong>analog voltage</strong> that you're reading as an input.  
+</p>
+<p class='vspace'></p><p>The LaunchPad has a circuit inside called an <strong>analog-to-digital converter</strong> that reads this changing voltage and converts it to a number between 0 and 1023.  When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 3 volts going to the pin and the input value is 1023. In between, <a class='wikilink' href='AnalogRead.html'>analogRead</a>() returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
 <div  class='circuit' >
 <p class='vspace'></p><div><img height='300px' src='../reference/img/AnalogReadSerial_bb.png' alt='' title='' /></a></div>
 <p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
 </p>
-<p class='vspace'></p><p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to 5 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 5 volts.  When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the <strong>analog voltage</strong> that you're reading as an input.  
-</p>
-<p class='vspace'></p><p>The LaunchPad has a circuit inside called an <strong>analog-to-digital converter</strong> that reads this changing voltage and converts it to a number between 0 and 1023.  When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 5 volts going to the pin and the input value is 1023. In between, <a class='wikilink' href='AnalogRead.html'>analogRead</a>() returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin.
-</p></div>
+</div>
 <p class='vspace'></p><h3>Schematic</h3>
 <div  class='circuit' >
 <div><img height='400px' src='../reference/img/AnalogReadSerial_schem.png' alt='' title='' /></a></div>
@@ -95,7 +96,7 @@ type='text/css' />
 /*
   AnalogReadSerial
   Reads an analog input on pin 0, prints the result to the serial monitor.
-  Attach the center pin of a potentiometer to pin A3, and the outside pins to +5V and ground.
+  Attach the center pin of a potentiometer to pin A3, and the outside pins to ~3V and ground.
 
   This example code is in the public domain.
 */

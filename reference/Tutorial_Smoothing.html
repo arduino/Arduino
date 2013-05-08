@@ -53,7 +53,7 @@ type='text/css' />
 </p>
 <p class='vspace'></p><div  class='BOM' >
 <h3>Hardware Required</h3>
-<ul><li>LaunchPad Board
+<ul><li>MSP-EXP430G2 LaunchPad
 </li><li>a variable resistor, like a potentiometer
 </li></ul><p class='vspace'></p></div>
 <h3>Relevant Groundwork</h3>
@@ -76,7 +76,6 @@ type='text/css' />
 <p class='vspace'></p><h3>Code Explanation</h3>
 <p>In the program below, the very first thing that you do will in the setup function is to begin serial communications, at 9600 bits of data per second, between your LaunchPad and your computer with the line:
 </p>
-<p class='vspace'></p><h3>Code</h3>
 <pre>
 Serial.begin(9600);
 </pre>
@@ -100,7 +99,7 @@ Serial.println(voltage);
 </pre>
 <p class='vspace'></p><p>Now, when you open your Serial Monitor in the Energia development environment (by clicking the button directly to the right of the "Upload" button in the header of the program), you should see a steady stream of numbers ranging from 0.0 - 3.0. As you turn the pot, the values will change, corresponding to the voltage coming into pin A3.
 </p>
-<p class='vspace'></p>
+<p class='vspace'></p><h3>Code</h3>
 <pre>
 /*
   ReadAnalogVoltage
@@ -129,6 +128,7 @@ void loop() {
 <h3>Working Video</h3>
 (Insert Video Here)
 <h3>Try it out:</h3>
+- add an LED to the program that reacts to the potentiometer
 <p class='vspace'></p><h3>See Also:</h3>
 <ul><li><a class='wikilink' href='Setup.html'>setup</a>()
 </li><li><a class='wikilink' href='Loop.html'>loop</a>()
