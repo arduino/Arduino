@@ -1,17 +1,21 @@
 /*
- Fade
+  Fade
  
- This example shows how to fade an LED on pin 9
- using the analogWrite() function.
+  This example shows how to fade an LED on pin 14
+  using the analogWrite() function.
  
- This example code is in the public domain.
+  Hardware Required:
+  * MSP-EXP430G2 LaunchPad
+  
+  This example code is in the public domain.
  
- */
+*/
+
 int brightness = 0;    // how bright the LED is
 int fadeAmount = 5;    // how many points to fade the LED by
 
 void setup()  { 
-  // declare pin 9 to be an output:
+  // declare pin 14 to be an output:
   pinMode(GREEN_LED, OUTPUT);
 } 
 

@@ -95,7 +95,7 @@ type='text/css' />
 <pre>
 /*
   AnalogReadSerial
-  Reads an analog input on pin 0, prints the result to the serial monitor.
+  Reads an analog input on pin A3, prints the result to the serial monitor.
   Attach the center pin of a potentiometer to pin A3, and the outside pins to ~3V and ground.
 
   This example code is in the public domain.
@@ -109,7 +109,7 @@ void setup() {
 
 // the loop routine runs over and over again forever:
 void loop() {
-  // read the input on analog pin 0:
+  // read the input on analog pin A3:
   int sensorValue = analogRead(A3);
   // print out the value you read:
   Serial.println(sensorValue);
