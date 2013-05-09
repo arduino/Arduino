@@ -1,37 +1,43 @@
 /*
   Conditionals - while statement
  
- This example demonstrates the use of  while() statements.
+  This example demonstrates the use of  while() statements.
  
- While the pushbutton is pressed, the sketch runs the calibration routine.
- The  sensor readings during the while loop define the minimum and maximum 
- of expected values from the photo resistor.
+  While the pushbutton is pressed, the sketch runs the calibration routine.
+  The  sensor readings during the while loop define the minimum and maximum 
+  of expected values from the photo resistor.
  
- This is a variation on the calibrate example.
+  This is a variation on the calibrate example.
  
- The circuit:
- * photo resistor connected from +5V to analog in pin 0
- * 10K resistor connected from ground to analog in pin 0
- * LED connected from digital pin 9 to ground through 220 ohm resistor
- * pushbutton attached from pin 2 to +5V
- * 10K resistor attached from pin 2 to ground
+  The circuit:
+  * photo resistor connected from +3V to analog in pin A3
+  * 10K resistor connected from ground to analog in pin A3
+  * LED connected from digital pin 14 to ground through 220 ohm resistor
+  * pushbutton attached from pin 6 to +3V
+  * 10K resistor attached from pin 6 to ground
  
- created 17 Jan 2009
- modified 30 Aug 2011
- by Tom Igoe
+  created 17 Jan 2009
+  by Tom Igoe
+  modified 30 Apr 2013
+  by Adrian Fernandez
+  
+  Hardware Required:
+  * MSP-EXP430G2 LaunchPad
+  * (1) digital pushbutton or switch
+  * (1) photocell, or analog sensor
+  * (2) 10k ohm resistors
+  * breadboard
  
- This example code is in the public domain.
+  This example code is in the public domain.
 
- http://arduino.cc/en/Tutorial/WhileLoop
- 
- */
+*/
 
 
 // These constants won't change:
-const int sensorPin = A2;       // pin that the sensor is attached to
-const int ledPin = 9;           // pin that the LED is attached to
-const int indicatorLedPin = 13; // pin that the built-in LED is attached to
-const int buttonPin = 2;        // pin that the button is attached to
+const int sensorPin = A3;       // pin that the sensor is attached to
+const int ledPin = 14;           // pin that the LED is attached to
+const int indicatorLedPin = 2; // pin that the built-in LED is attached to
+const int buttonPin = 6;        // pin that the button is attached to
 
 
 // These variables will change:
