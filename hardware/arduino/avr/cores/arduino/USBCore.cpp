@@ -49,31 +49,39 @@ const u16 STRING_LANGUAGE[2] = {
 	0x0409	// English
 };
 
-const u16 STRING_IPRODUCT[17] = {
-	(3<<8) | (2+2*16),
-#if USB_PID == 0x8036	
-	'A','r','d','u','i','n','o',' ','L','e','o','n','a','r','d','o'
-#elif USB_PID == 0x8037
-	'A','r','d','u','i','n','o',' ','M','i','c','r','o',' ',' ',' '
-#elif USB_PID == 0x803C
-	'A','r','d','u','i','n','o',' ','E','s','p','l','o','r','a',' '
-#elif USB_PID == 0x9208
-	'L','i','l','y','P','a','d','U','S','B',' ',' ',' ',' ',' ',' '
-#else
-	'U','S','B',' ','I','O',' ','B','o','a','r','d',' ',' ',' ',' '
-#endif
-};
+/*
+ * Some gotchas when setting USB_MANUFACTURER & USB_PRODUCT from boards.txt:
+ *
+ * - Must be specified in the character format shown
+ * - Must not contain spaces, or spaces must be escaped as numeric 32
+ *
+ * See provided boards.txt for examples.
+ */
 
-const u16 STRING_IMANUFACTURER[12] = {
-	(3<<8) | (2+2*11),
-#if USB_VID == 0x2341
-	'A','r','d','u','i','n','o',' ','L','L','C'
-#elif USB_VID == 0x1b4f
-	'S','p','a','r','k','F','u','n',' ',' ',' '
-#else
-	'U','n','k','n','o','w','n',' ',' ',' ',' '
+#ifndef USB_PRODUCT
+#define USB_PRODUCT     'U','S','B',' ','I','O',' ','B','o','a','r','d'
 #endif
-};
+
+static const u8 _IPRODUCT[] = { USB_PRODUCT };
+static const u8 _IPRODUCT_LEN = 2 + sizeof(_IPRODUCT)*2;
+// Product name descriptor payload
+const u16 STRING_IPRODUCT[_IPRODUCT_LEN] = { (3<<8) | _IPRODUCT_LEN, USB_PRODUCT };
+
+#if USB_VID == 0x2341
+#define USB_MANUFACTURER	'A','r','d','u','i','n','o',' ','L','L','C'
+#elif USB_VID == 0x1b4f
+#define USB_IMANUFACTUTER	'S','p','a','r','k','F','u','n'
+#else
+#ifndef USB_MANUFACTURER
+// Fall through to unknown if no manufacturer name was provided in a macro
+#define USB_MANUFACTURER	'U','n','k','n','o','w','n'
+#endif
+#endif
+
+static const u8 _IMANUFACTURER[] = { USB_MANUFACTURER };
+static const u8 _IMANUFACTURER_LEN = 2 + sizeof(_IMANUFACTURER)*2;
+// Manufacturer name descriptor payload
+const u16 STRING_IMANUFACTURER[_IMANUFACTURER_LEN] = { (3<<8) | _IMANUFACTURER_LEN, USB_MANUFACTURER };
 
 #ifdef CDC_ENABLED
 #define DEVICE_CLASS 0x02
@@ -476,7 +484,6 @@ bool SendDescriptor(Setup& setup)
 		return HID_GetDescriptor(t);
 #endif
 
-	u8 desc_length = 0;
 	const u8* desc_addr = 0;
 	if (USB_DEVICE_DESCRIPTOR_TYPE == t)
 	{
@@ -498,8 +505,7 @@ bool SendDescriptor(Setup& setup)
 
 	if (desc_addr == 0)
 		return false;
-	if (desc_length == 0)
-		desc_length = pgm_read_byte(desc_addr);
+        u8 desc_length = pgm_read_byte(desc_addr);
 
 	USB_SendControl(TRANSFER_PGM,desc_addr,desc_length);
 	return true;
