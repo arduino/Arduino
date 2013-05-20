@@ -875,6 +875,10 @@ public class Base {
     // Close the running window, avoid window boogers with multiple sketches
     editor.internalCloseRunner();
 
+	int[] location = editor.getPlacement();
+    Preferences.setInteger("editor.window.width.default", location[2]);
+    Preferences.setInteger("editor.window.height.default", location[3]);
+
     if (editors.size() == 1) {
       // For 0158, when closing the last window /and/ it was already an
       // untitled sketch, just give up and let the user quit.
