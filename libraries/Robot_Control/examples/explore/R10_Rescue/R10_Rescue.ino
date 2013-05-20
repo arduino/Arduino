@@ -53,8 +53,10 @@ void setup(){
   Robot.text("Start", 5, 5);
   
   // use this to calibrate the line following algorithm
+  // uncomment one or the other to see the different behaviors of the robot
+  // Robot.lineFollowConfig(11, 5, 50, 10);
   Robot.lineFollowConfig(14, 9, 50, 10);
-
+  
   // run the rescue sequence  
   rescueSequence();
   Robot.text("Found obstacle", 5, 12);
@@ -63,7 +65,7 @@ void setup(){
   Robot.text("Found track", 5, 19);
   // run the rescue sequence a second time
   rescueSequence();
-  Robot.text("Found obstacle", 5, 24);
+  Robot.text("Found obstacle", 5, 26);
   
   // here you could go on ...
  
