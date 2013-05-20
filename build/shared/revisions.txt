@@ -1,4 +1,4 @@
-﻿ARDUINO 1.5.3 BETA
+﻿ARDUINO 1.5.X BETA
 
 [ide]
 * Add preference serial.autostart to start serial monitor after a
