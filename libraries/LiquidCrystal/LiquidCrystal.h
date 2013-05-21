@@ -17,8 +17,8 @@
 // flags for display entry mode
 #define LCD_ENTRYRIGHT 0x00
 #define LCD_ENTRYLEFT 0x02
-#define LCD_ENTRYSHIFTINCREMENT 0x01
-#define LCD_ENTRYSHIFTDECREMENT 0x00
+#define LCD_ENTRYSHIFTENABLE 0x01
+#define LCD_ENTRYSHIFTDISABLE 0x00
 
 // flags for display on/off control
 #define LCD_DISPLAYON 0x04
@@ -51,15 +51,15 @@ public:
 		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
   LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
   LiquidCrystal(uint8_t rs, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
 
   void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 	    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 	    uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
     
-  void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
+  virtual void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
   void clear();
   void home();
@@ -80,14 +80,15 @@ public:
   void createChar(uint8_t, uint8_t[]);
   void setCursor(uint8_t, uint8_t); 
   virtual size_t write(uint8_t);
-  void command(uint8_t);
+  virtual void command(uint8_t);
   
+  inline LiquidCrystal& operator() (uint8_t x, uint8_t y) { setCursor(x,y); return *this;};  //use along w Streaming.h to support: lcd(col,line)<<"a="<<a;
   using Print::write;
-private:
-  void send(uint8_t, uint8_t);
-  void write4bits(uint8_t);
-  void write8bits(uint8_t);
-  void pulseEnable();
+protected:
+  LiquidCrystal();
+
+  virtual void send(uint8_t, uint8_t);
+  virtual void writebits(uint8_t, uint8_t);
 
   uint8_t _rs_pin; // LOW: command.  HIGH: character.
   uint8_t _rw_pin; // LOW: write to LCD.  HIGH: read from LCD.
@@ -97,10 +98,9 @@ private:
   uint8_t _displayfunction;
   uint8_t _displaycontrol;
   uint8_t _displaymode;
-
-  uint8_t _initialized;
-
-  uint8_t _numlines,_currline;
+  
+  uint8_t _numcols;
+  uint8_t _numrows;
 };
 
 #endif
