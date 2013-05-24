@@ -56,6 +56,13 @@ void loop() {
       if (client.available()) {
         char c = client.read();
         Serial.write(c);
+        // NOTE:
+        // if the client intermittently loses its connection and you are trying to send 
+        // a large amount of bytes to the client you may experience a TX buffer overflow, 
+        // to avoid this problem before using client.println first check using client.free()
+        // if there is enough room in the output buffer to allocate your data
+        // *********************************************************************************
+        //
         // if you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so you can send a reply
