@@ -19,7 +19,7 @@
  * LCD D7 pin to digital pin 2
  * LCD R/W pin to ground
  * 10K potentiometer: ends to +5V and ground, wiper to LCD VO pin (pin 3)
- * Another 10K potentiometer on pin A0 (Optional)
+ * Another 10K potentiometer with wiper connected to pin analog pin 0 (Optional)
  
  created 21 Mar 2011
  by Tom Igoe
@@ -114,6 +114,7 @@ void setup() {
   // set up the lcd's number of columns and rows: 
   lcd.begin(16, 2);
   // Print a message to the lcd.
+  lcd.setCursor(1, 0);
   lcd.print("I "); 
   lcd.write((byte)0);
   lcd.print(" Arduino! ");
