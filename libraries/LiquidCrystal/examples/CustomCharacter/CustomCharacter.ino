@@ -1,13 +1,14 @@
 /*
   LiquidCrystal Library - Custom Characters
  
- Demonstrates how to add custom characters on an LCD  display.  
+ Demonstrates how to add custom characters on an LCD display.  
  The LiquidCrystal library works with all LCD displays that are 
  compatible with the  Hitachi HD44780 driver. There are many of 
  them out there, and you can usually tell them by the 16-pin interface.
+ This example uses a 16x2 LCD display, but the code can be easily adapted for different sized displays.
  
  This sketch prints "I <heart> Arduino!" and a little dancing man
- to the LCD.
+ to the LCD. Attaching a potentiometer to Analog pin 0 will allow you to control the speed of the dancing man.
  
   The circuit:
  * LCD RS pin to digital pin 12
@@ -17,21 +18,23 @@
  * LCD D6 pin to digital pin 3
  * LCD D7 pin to digital pin 2
  * LCD R/W pin to ground
- * 10K potentiometer:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
- * 10K poterntiometer on pin A0
+ * 10K potentiometer: ends to +5V and ground, wiper to LCD VO pin (pin 3)
+ * Another 10K potentiometer on pin A0 (Optional)
  
- created21 Mar 2011
+ created 21 Mar 2011
  by Tom Igoe
  Based on Adafruit's example at
  https://github.com/adafruit/SPI_VFD/blob/master/examples/createChar/createChar.pde
+ 
+ updated 26 May 2013
+ by Nathan Bookham
+ Fixed incompatibility with newer Arduino software and updated documentation. Centered custom character animation for a 16x2 display and updated link for character generator as previous link is dead.
  
  This example code is in the public domain.
  http://www.arduino.cc/en/Tutorial/LiquidCrystal
  
  Also useful:
- http://icontexto.com/charactercreator/
+ http://mikeyancey.com/hamcalc/lcd_characters.php (code is buggy - just copy the custom character values.
  
  */
 
@@ -112,9 +115,9 @@ void setup() {
   lcd.begin(16, 2);
   // Print a message to the lcd.
   lcd.print("I "); 
-  lcd.write(0);
+  lcd.write((byte)0);
   lcd.print(" Arduino! ");
-  lcd.write(1);
+  lcd.write((byte)1);
 
 }
 
@@ -124,11 +127,11 @@ void loop() {
   // map the result to 200 - 1000:
   int delayTime = map(sensorReading, 0, 1023, 200, 1000);
   // set the cursor to the bottom row, 5th position:
-  lcd.setCursor(4, 1);
+  lcd.setCursor(7, 1);
   // draw the little man, arms down:
   lcd.write(3);
   delay(delayTime);
-  lcd.setCursor(4, 1);
+  lcd.setCursor(7, 1);
   // draw him arms up:
   lcd.write(4);
   delay(delayTime); 
