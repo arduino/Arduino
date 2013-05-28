@@ -67,22 +67,21 @@ ISR(TIMER0_OVF_vect)
 unsigned long millis()
 {
 	unsigned long m;
-	uint8_t oldSREG = SREG;
 
-	// disable interrupts while we read timer0_millis or we might get an
+	// disable overflow interrupt while we read timer0_millis or we might get an
 	// inconsistent value (e.g. in the middle of a write to timer0_millis)
-	cli();
+	// See: http://forum.arduino.cc/index.php?topic=168864.0
+	TIMSK0 &= ~(1 << TOIE0); // Clear Overflow Interrupt Enable
 	m = timer0_millis;
-	SREG = oldSREG;
-
+	TIMSK0 |= 1 << TOIE0; // Sets Overflow Interrupt Enable
 	return m;
 }
 
 unsigned long micros() {
 	unsigned long m;
-	uint8_t oldSREG = SREG, t;
+	uint8_t t;
 	
-	cli();
+	TIMSK0 &= ~(1 << TOIE0); // Clear Overflow Interrupt Enable
 	m = timer0_overflow_count;
 #if defined(TCNT0)
 	t = TCNT0;
@@ -101,7 +100,7 @@ unsigned long micros() {
 		m++;
 #endif
 
-	SREG = oldSREG;
+	TIMSK0 |= 1 << TOIE0; // Sets Overflow Interrupt Enable
 	
 	return ((m << 8) + t) * (64 / clockCyclesPerMicrosecond());
 }
