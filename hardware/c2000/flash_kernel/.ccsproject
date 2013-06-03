@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?ccsproject version="1.0"?>
+
+<projectOptions>
+<deviceVariant value="TMS320C28XX.TMS320F28027"/>
+<deviceFamily value="C2000"/>
+<codegenToolVersion value="6.3.0.A13150"/>
+<isElfFormat value="false"/>
+<connection value=""/>
+<linkerCommandFile value="28027_RAM_lnk.cmd"/>
+<rts value="libc.a"/>
+<templateProperties value="id=com.ti.common.project.core.emptyProjectWithMainTemplate,"/>
+<isTargetManual value="false"/>
+</projectOptions>
