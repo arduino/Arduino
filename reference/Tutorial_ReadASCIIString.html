@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Communication</em>
+</p>
+<p class='vspace'></p><h3>ReadASCIIString</h3>
+<p>This sketch uses the <a href='Serial_ParseInt.html'>Serial.parseInt()</a> function to locate values separated by a non-alphanumeric character. Often people use a comma to indicate different pieces of information (this format is commonly referred to as comma-separated-values), but other characters like a space or a period will work too. The values are parsed into ints and used to determine the color of a RGB LED. You'll use the serial monitor to send strings like "5,220,70" to the LaunchPad to change the lights.
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>Breadboard
+</li><li>Hookup wire
+</li><li>Common anode RGB LED
+</li><li>Three 220 ohm resistors
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>You'll need five wires to make the circuit below. Connect a red wire to one of the long vertical rows on your breadboard. Connect the other end to the 3V pin on your LaunchPad Board. Place an RGB LED on your breadboard. Check the datasheet for your specific LED to verify the pins. Connect the power rail you just created to the common anode on the LED. With your remaining wires, connect your red cathode to pin 3, green cathode to pin 5, and blue cathode to pin 6 in series with the resistors. 
+</p>
+<p>RGB LEDs with a common anode share a common power pin. Instead of turning a pin HIGH to illuminate the LED, you need to turn the pin LOW, to create a voltage difference across the diode. So sending 255 via analogWrite() turns the LED off, while a value of 0 turns it on at full brightness. In the code below, you'll use a little bit of math on the Energia side, so you can send values which correspond to the expected brightness. Essentially, instead of using <code>analogWrite(pin, brightness)</code>, you'll be calling <code>analogWrite(pin, 255-brightness)</code>.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img height='250px' src='../reference/img/ReadASCIIString_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/ReadASCIIString_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>You'll first set up some <a href='VariableDeclaration.html'>global variables</a> for the pins your LED will connect to. This will make it easier to differentiate which one is red, green, and blue in the main part of your program:
+</p>
+<pre>
+const int redPin = 9;
+const int greenPin = 10;
+const int bluePin = 12;
+</pre>
+<p>In your <a href='Setup.html'>setup()</a>, begin serial communication at 9600 bits of data per second between LaunchPad and your computer with the line:
+</p>
+<code>Serial.begin(9600);</code>
+<p class='vspace'></p><p>Also in the setup, you'll want to configure the pins as outputs:
+</p>
+<pre>
+pinMode(redPin, OUTPUT);  
+pinMode(greenPin, OUTPUT);
+pinMode(bluePin, OUTPUT);
+</pre>
+<p>In the <a href='Loop.html'>loop()</a>, check to see if there is any data in the serial buffer. By making this a <a href='While.html'>while()</a> statement, it will run as long as there is information waiting to be read :
+</p>
+<code>while (Serial.available() > 0) {</code>
+<p class='vspace'></p><p>Next, declare some local variables for storing the serial information. This will be the brightness of the LEDs. Using <a href='Serial_ParseInt.html'>Serial.parseInt()</a> to separate the data by commas, read the information into your variables:
+</p>
+<pre>
+int red = Serial.parseInt();
+int green = Serial.parseInt();
+int blue = Serial.parseInt();
+</pre>
+<p>Once you've read the data into your variables, check for the newline character to proceed:
+</p>
+<code>if (Serial.read() == '\n') {</code>
+<p class='vspace'></p><p>Using <a href='Constrain.html'>constrain()</a>, you can keep the values in an acceptable range for PWM control. This way, if the value was outside the range of what PWM can send, it will be limited to a valid number. By subtracting this value from 255 you will be formatting the value to use with a common anode LED. As explained above, these LEDs will illuminate when there is a voltage difference between the anode and the pin connected to the LaunchPad:
+</p>
+<pre>
+red = 255 - constrain(red, 0, 255);
+green = 255 - constrain(green, 0, 255);
+blue = 255 - constrain(blue, 0, 255);
+</pre>
+<p>Now that you have formatted the values for PWM, use analogWrite() to change the color of the LED. Because you subtracted your value from 255 in the step above:
+</p>
+<pre>
+analogWrite(redPin, red);
+analogWrite(greenPin, green);
+analogWrite(bluePin, blue);
+</pre>
+<p>Send the value of each LED back to the serial monitor in one string as HEX values : 
+</p>
+<pre>
+Serial.print(red, HEX);
+Serial.print(green, HEX);
+Serial.println(blue, HEX);
+</pre>
+<p>Finally, close up your brackets from the if statement, while statement, and main loop :
+</p>
+<pre>
+  }
+ }
+}
+</pre>
+<p>Once you have programmed the LaunchPad, open your Serial monitor. Make sure you have chosen to send a newline character when sending a message. Enter values between 0-255 for the lights in the following format : Red,Green,Blue. (i.e. 123,321,132) Once you have sent the values to the Launchpad, the attached LED will turn the color you specified, and you will receive the HEX values in the serial monitor.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Reading a serial ASCII-encoded string.
+
+  This sketch demonstrates the Serial parseInt() function.
+  It looks for an ASCII string of comma-separated values.
+  It parses them into ints, and uses those to fade an RGB LED.
+
+  Circuit: Common-anode RGB LED wired like so:
+  * Red cathode: digital pin 9
+  * Green cathode: digital pin 10
+  * blue cathode: digital pin 12
+  * anode: +3V
+
+  created 13 Apr 2012
+  by Tom Igoe
+  Modified 12 Apr 2013
+  by Sean Alvarado
+  
+  This example code is in the public domain.
+*/
+
+// pins for the LEDs:
+const int redPin = 9;
+const int greenPin = 10;
+const int bluePin = 12;
+
+void setup() {
+ // initialize serial:
+ Serial.begin(9600);
+ // make the pins outputs:
+ pinMode(redPin, OUTPUT); 
+ pinMode(greenPin, OUTPUT); 
+ pinMode(bluePin, OUTPUT); 
+
+}
+
+void loop() {
+// if there's any serial available, read it:
+while (Serial.available() > 0) {
+
+  // look for the next valid integer in the incoming serial stream:
+  int red = Serial.parseInt(); 
+  // do it again:
+  int green = Serial.parseInt(); 
+  // do it again:
+  int blue = Serial.parseInt(); 
+
+  // look for the newline. That's the end of your
+  // sentence:
+  if (Serial.read() == '\n') {
+  // constrain the values to 0 - 255 
+  // if you're using a common-cathode LED, just use "constrain(color, 0, 255);"
+  red = constrain(red, 0, 255);
+  green = constrain(green, 0, 255);
+  blue = constrain(blue, 0, 255);
+
+  // fade the red, green, and blue legs of the LED: 
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
+
+  // print the three numbers in one string as hexadecimal:
+  Serial.print(red, HEX);
+  Serial.print(green, HEX);
+  Serial.println(blue, HEX);
+  }
+ }
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- play around with your RGB LED in a new way
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='If.html'>if</a>()
+</li><li><a class='wikilink' href='While.html'>while</a>()
+</li><li><a class='wikilink' href='Serial.html'>serial</a>()
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponseASCII.html'>Serial Call and Response ASCII</a> - sending multiple vairables using a call-and-response (handshaking) method, and ASCII-encoding the values before sending.
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

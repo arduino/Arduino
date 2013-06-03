@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Control Structures</em>
+</p>
+<p class='vspace'></p><h3>Switch (case) Statement, used with sensor input</h3>
+<p>Switch statements allow mulitple choices in which sections of code to run for a given conditional.
+</p>
+<p class='vspace'></p><h3>Hardware Required</h3>
+<ul><li>MSP430 LaunchPad
+</li><li>(5) <span class='wikiword'>LEDs</span>
+</li><li>(5) 220 ohm resistors 
+</li><li>breadboard
+</li><li>hook-up wire
+</li></ul><p class='vspace'></p
+<h3>Relevant Groundwork</h3>
+<p>An if statement allows you to choose between two discrete options, TRUE or FALSE.  When there are more than two options, you can use multiple if statements, or you can use the <a class='wikilink' href='SwitchCase.html'><strong>switch</strong></a> statement.  Switch allows you to choose between several discrete options. 
+</p>
+<p class='vspace'></p><p>This tutorial shows you how to use switch to turn on one of several different <span class='wikiword'>LEDs</span> based on a byte of data received serially. The sketch listens for serial input, and turns on a different LED for the characters a, b, c, d, or e.
+</p>
+<p>Five <span class='wikiword'>LEDs</span> are attached to digital pins 2, 3, 4, 5, and 6 in series through 220 ohm resistors.  
+</p>
+<p class='vspace'></p><p>To make this sketch work, your LaunchPad must be connected to your computer. Open the Serial Monitor, and send the characters a, b, c, d, or e, or anything else.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<p class='vspace'></p><div><img width='250px' src='../reference/img/SwitchCase2_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p><p><h3>Schematic:</h3>
+</p>
+<p class='vspace'></p><div><img width='400px' src='../reference/img/SwitchCase2_schem.png' alt='' title='' /></div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>None.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Switch statement  with serial input
+ 
+  Demonstrates the use of a switch statement.  The switch
+  statement allows you to choose from among a set of discrete values
+  of a variable.  It's like a series of if statements.
+ 
+  To see this sketch in action, open the Serial monitor and send any character.
+  The characters a, b, c, d, and e, will turn on LEDs.  Any other character will turn
+  the LEDs off.
+ 
+  The circuit:
+  * 5 LEDs attached to digital pins 2 through 6 through 220-ohm resistors
+ 
+  created 1 Jul 2009
+  by Tom Igoe 
+  modified 30 Apr 2013
+  by Adrian Fernandez 
+ 
+  This example code is in the public domain.
+   
+ */
+
+void setup() {
+  // initialize serial communication:
+  Serial.begin(9600); 
+  // initialize the LED pins:
+  for (int thisPin = 2; thisPin < 7; thisPin++) {
+    pinMode(thisPin, OUTPUT);
+  } 
+}
+
+void loop() {
+  // read the sensor:
+  if (Serial.available() > 0) {
+    int inByte = Serial.read();
+    // do something different depending on the character received.  
+    // The switch statement expects single number values for each case;
+    // in this exmaple, though, you're using single quotes to tell
+    // the controller to get the ASCII value for the character.  For 
+    // example 'a' = 97, 'b' = 98, and so forth:
+
+    switch (inByte) {
+    case 'a':    
+      digitalWrite(2, HIGH);
+      break;
+    case 'b':    
+      digitalWrite(3, HIGH);
+      break;
+    case 'c':    
+      digitalWrite(4, HIGH);
+      break;
+    case 'd':    
+      digitalWrite(5, HIGH);
+      break;
+    case 'e':    
+      digitalWrite(6, HIGH);
+      break;
+    default:
+      // turn all the LEDs off:
+      for (int thisPin = 2; thisPin < 7; thisPin++) {
+        digitalWrite(thisPin, LOW);
+      }
+    } 
+  }
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- use a switch case to integrate with a button
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Serial_Begin.html'>serial.begin()</a>
+</li><li><a class='wikilink' href='Serial_Read.html'>serial.read()</a>
+</li><li><a class='wikilink' href='Serial_Available.html'>serial.available()</a>
+</li><li><a class='wikilink' href='SwitchCase.html'>switch() case</a>
+</li><li><a class='wikilink' href='DigitalWrite.html'>digitalWrite()</a>
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponse.html'>Serial Call Response</a> - send multiple variables using a call and response (handshaking) method.
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponseASCII.html'>Serial Call and Response ASCII</a> - send multiple vairables using a call-and-response (handshaking) method, and ASCII-encoding the values before sending.
+</li><li><a class='wikilink' href='Tutorial_IfStatement.html'>If Statement</a> - how to use an if statement to change output conditions based on changing input conditions.
+</li><li><a class='wikilink' href='Tutorial_ForLoop.html'>For Loop</a>: - controlling multiple <span class='wikiword'>LEDs</span> with a for loop.
+</li><li><a class='wikilink' href='Tutorial_Array.html'>Array</a>: a variation on the For Loop example that demonstrates how to use an array.
+</li><li><a class='wikilink' href='Tutorial_WhileLoop.html'>While Loop</a>: how to use a while loop to calibrate a sensor while a button is being read.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase.html'>Switch Case</a>: how to choose between a discrete number of values.  Equivalent to multiple If statements. This example shows how to divide a sensor's range into a set of four bands and to take four different actions depending on which band the result is in.
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

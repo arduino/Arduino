@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Control Structures</em>
+</p>
+<p class='vspace'></p><h3>If Statement (Conditional Statement)</h3>
+<p>If statements are conditional, which means it allows you to execute certain sections of code when certain conditionals are met. If this thing happens, then do that thing.
+</p>
+<p class='vspace'></p><h3>Hardware Required</h3>
+<ul><li>MSP430 LaunchPad
+</li><li>(1) Potentiometer or variable resistor
+</li><li>(1) 220 ohm resistor 
+</li><li>(1) LED
+</li><li>hook-up wire
+</li></ul><p class='vspace'></p>
+<h3>Relevant Groundwork</h3>
+<p>The <a class='wikilink' href='If.html'><strong>if()</strong></a> statement is the most basic of all programming control structures.  It allows you to make something happen or not depending on whether a given condition is true or not.  It looks like this:
+</p>
+<p class='vspace'></p>
+<pre>
+if (someCondition) {
+   // do stuff if the condition is true
+}
+</pre>
+<p class='vspace'></p><p>There is a common variation called if-else that looks like this:
+</p>
+<p class='vspace'></p>
+<pre>
+if (someCondition) {
+   // do stuff if the condition is true
+} else {
+   // do stuff if the condition is false
+}
+</pre>
+<p class='vspace'></p><p>There's also the else-if, where you can check a second condition if the first is false:
+</p>
+<p class='vspace'></p><pre>
+if (someCondition) {
+   // do stuff if the condition is true
+} else if (anotherCondition) {
+   // do stuff only if the first condition is false
+   // and the second condition is true
+}
+</pre>
+<p class='vspace'></p><p>You'll use if statements all the time.  The example below turns on an LED on pin 2 (the built-in LED on the MSP-EXP430G2 LaunchPad) if the value read on an analog input goes above a certain threshold.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<p class='vspace'></p><div><img width='250px' src='../reference/img/IfStatement_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p><p><h3>Schematic:</h3>
+</p>
+<p class='vspace'></p><div><img width='400px' src='../reference/img/IfStatement_schem.png' alt='' title='' /></div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In the code below, a variable called <code>analogValue</code> is used to store the data collected from a potentiometer connected to the LaunchPad on <code>analogPin A3</code>. This data is then compared to a threshold value. If the analog value is found to be above the set threshold the LED connected to digital pin 2 is turned on. If analogValue is found to be <code>&lt;</code> threshold, the LED remains off. 
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Conditionals - If statement
+ 
+  This example demonstrates the use of if() statements.
+  It reads the state of a potentiometer (an analog input) and turns on an LED
+  only if the LED goes above a certain threshold level. It prints the analog value
+  regardless of the level.
+ 
+  The circuit:
+  * potentiometer connected to analog pin A3.
+    Center pin of the potentiometer goes to the analog pin.
+    side pins of the potentiometer go to +3V and ground
+  * LED connected from digital pin 2 to ground
+ 
+  * Note: On the MSP-EXP430G2 LaunchPad boards, there is already an LED connected 
+    to pin 2, so you don't need any extra components for this example.
+ 
+  created 17 Jan 2009
+  by Tom Igoe
+  modified 16 Apr 2013
+  by Tom Igoe
+
+  This example code is in the public domain.
+ 
+*/
+ 
+// These constants won't change:
+const int analogPin = A3;    // pin that the sensor is attached to
+const int ledPin = 2;       // pin that the LED is attached to
+const int threshold = 400;   // an arbitrary threshold level that's in the range of the analog input
+
+void setup() {
+  // initialize the LED pin as an output:
+  pinMode(ledPin, OUTPUT);
+  // initialize serial communications:
+  Serial.begin(9600);
+}
+
+void loop() {
+  // read the value of the potentiometer:
+  int analogValue = analogRead(analogPin);
+
+  // if the analog value is high enough, turn on the LED:
+  if (analogValue > threshold) {
+    digitalWrite(ledPin, HIGH);
+  } 
+  else {
+    digitalWrite(ledPin,LOW); 
+  }
+
+  // print the analog value:
+  Serial.println(analogValue);
+  delay(1);        // delay in between reads for stability
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- use an if statement with two conditionals using && or || <br />
+- try nesting if statements
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='If.html'>if()</a>
+</li><li><a class='wikilink' href='Else.html'>if...else</a>
+</li><li><a class='wikilink' href='AnalogRead.html'>analogRead()</a>
+</li><li><a class='wikilink' href='DigitalWrite.html'>digitalWrite()</a>
+</li><li><a class='wikilink' href='Serial_Begin.html'>serial.begin()</a>
+</li><li><a class='wikilink' href='Serial_Print.html'>serial.print()</a>
+</li><li><a class='wikilink' href='Tutorial_ForLoop.html'>For Loop</a> - Control multiple <span class='wikiword'>LEDs</span> with a For Loop.
+</li><li><a class='wikilink' href='Tutorial_WhileLoop.html'>While Loop</a> - Use a While Loop to calibrate a sensor while a button is being pressed.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase.html'>Switch Case</a> - Choose between a number of discrete values in a manner that is the equivalent of using multiples If  statements. This example shows how to divide a sensor's range into a set of four bands and to take four different actions depending on which band the result is in.
+</li><li><a class='wikilink' href='Tutorial_Array.html'>Array</a>: a variation on the For Loop example that demonstrates how to use an array.
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

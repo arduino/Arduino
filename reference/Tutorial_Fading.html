@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Analog I/O</em>
+</p>
+<p class='vspace'></p><h3>Fading</h3>
+<p>Demonstrates the use of analog output (<a class='wikilink' href='Tutorial_PWM.html'>Pulse Width Modulation (PWM)</a>) to fade an LED.  PWM is a technique for getting an analog-like behavior from a digital output by switching it off and on very fast.
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>10k ohm resistor
+</li><li>breadboard
+</li><li>hook-up wire 
+</li><li>LED (available on-board)
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p>An LED connected to digital output pin 14 through a 220-ohm resistor. Note that pin 14 is connected to the green LED on the MSP-EXP430G2 LaunchPad. Also, it is important to note that not all pins on the LaunchPad are capable of generating a PWM signal using the analogWrite() function. To see all of the pins that support analogWrite(), visit the <a href='PinMapping.html'>Energia pin-mapping guide</a>.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div><img width='250px' src='../reference/img/Fading_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div><img width='400px' src='../reference/img/Fading_schem.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>None.  See comments below.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Fading
+ 
+  This example shows how to fade an LED using the analogWrite() function.
+ 
+  The circuit:
+  * LED attached from digital pin 14 to ground.
+ 
+  Created 1 Nov 2008
+  By David A. Mellis
+  modified 16 Apr 2013
+  By Adrian Fernandez
+ 
+ 
+  This example code is in the public domain.
+  
+*/
+
+
+int ledPin = 14;    // LED connected to digital pin 9
+
+void setup()  { 
+  // nothing happens in setup 
+} 
+
+void loop()  { 
+  // fade in from min to max in increments of 5 points:
+  for(int fadeValue = 0 ; fadeValue <= 255; fadeValue +=5) { 
+    // sets the value (range from 0 to 255):
+    analogWrite(ledPin, fadeValue);         
+    // wait for 30 milliseconds to see the dimming effect    
+    delay(30);                            
+  } 
+
+  // fade out from max to min in increments of 5 points:
+  for(int fadeValue = 255 ; fadeValue >= 0; fadeValue -=5) { 
+    // sets the value (range from 0 to 255):
+    analogWrite(ledPin, fadeValue);         
+    // wait for 30 milliseconds to see the dimming effect    
+    delay(30);                            
+  } 
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='For.html'>for</a>()
+</li><li><a class='wikilink' href='AnalogWrite.html'>analogWrite</a>()
+</li><li><a class='wikilink' href='Delay.html'>delay</a>()
+</li><li><a class='wikilink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a> - read a potentiometer, print its state to the serial monitor
+</li><li><a class='wikilink' href='Tutorial_AnalogInOutSerial.html'>AnalogInOutSerial</a> - read an analog input, map its values, and then use that information to dim or brighten an LED. 
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a> - use an analog input to fade an LED
+</li><li><a class='wikilink' href='Tutorial_Calibration.html'>Calibration</a> - calibrating analog sensor readings
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

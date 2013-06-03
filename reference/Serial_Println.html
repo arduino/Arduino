@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Println </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><a class='wikilink' href='Serial.html'>Serial</a>
+</p>
+<p class='vspace'></p><h2>println()</h2>
+<h3>Description</h3>
+<p>Prints data to the serial port as human-readable ASCII text followed by a carriage return character (ASCII 13, or '\r') and a newline character (ASCII 10, or '\n'). This command takes the same forms as <a class='wikilink' href='Serial_Print.html'>Serial.print</a>().
+</p>
+<p class='vspace'></p><h3>Syntax</h3>
+<p>Serial.println(val) <br />Serial.println(val, format)
+</p>
+<p class='vspace'></p><h3>Parameters</h3>
+<p>val: the value to print - any data type
+</p>
+<p class='vspace'></p><p>format: specifies the number base (for integral data types) or number of decimal places (for floating point types)
+</p>
+<p class='vspace'></p><h3>Returns</h3>
+<p>byte<br />println() will return the number of bytes written, though reading that number is optional
+</p>
+<p class='vspace'></p><h3>Example:</h3>
+<pre>
+/*
+  Analog input
+
+  reads an analog input on analog in 0, prints the value out.
+
+  created 24 March 2006
+  by Tom Igoe
+*/
+
+int analogValue = 0;    // variable to hold the analog value
+
+void setup() {
+  // open the serial port at 9600 bps:
+  Serial.begin(9600);
+}
+
+void loop() {
+  // read the analog input on pin 0:
+  analogValue = analogRead(0);
+
+  // print it out in many formats:
+  Serial.println(analogValue);       // print as an ASCII-encoded decimal
+  Serial.println(analogValue, DEC);  // print as an ASCII-encoded decimal
+  Serial.println(analogValue, HEX);  // print as an ASCII-encoded hexadecimal
+  Serial.println(analogValue, OCT);  // print as an ASCII-encoded octal
+  Serial.println(analogValue, BIN);  // print as an ASCII-encoded binary
+
+  // delay 10 milliseconds before the next reading:
+  delay(10);
+}
+</pre>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='wikilink' href='Serial_Print.html'>Serial.print</a>()
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='Serial_Println?action=edit.html'>Edit Page</a> | <a href='Serial_Println?action=diff.html'>Page History</a> | <a href='Serial_Println?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

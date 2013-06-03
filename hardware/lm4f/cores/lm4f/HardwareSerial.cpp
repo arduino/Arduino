@@ -48,7 +48,6 @@
 #include "driverlib/uart.h"
 #include "HardwareSerial.h"
 
-
 #define TX_BUFFER_EMPTY    (txReadIndex == txWriteIndex)
 #define TX_BUFFER_FULL     (((txWriteIndex + 1) % SERIAL_BUFFER_SIZE) == txReadIndex)
 
@@ -87,7 +86,7 @@ static const unsigned long g_ulUARTPeriph[8] =
 };
 //*****************************************************************************
 //
-// The list of UART gpio configurations.
+// The list of UART GPIO configurations.
 //
 //*****************************************************************************
 static const unsigned long g_ulUARTConfig[8][2] =
@@ -104,11 +103,6 @@ static const unsigned long g_ulUARTPort[8] =
 	GPIO_PORTC_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE, GPIO_PORTE_BASE
 };
 
-//*****************************************************************************
-//
-// The list of i2c gpio configurations.
-//
-//*****************************************************************************
 static const unsigned long g_ulUARTPins[8] =
 {
     GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_4 | GPIO_PIN_5,
@@ -233,6 +227,23 @@ HardwareSerial::setModule(unsigned long module)
 	begin(baudRate);
 
 }
+void 
+HardwareSerial::setPins(unsigned long pins)
+{
+	if(pins == UART1_PORTB)
+	{
+		ROM_GPIOPinConfigure(GPIO_PB0_U1RX);
+		ROM_GPIOPinConfigure(GPIO_PB1_U1TX);
+		ROM_GPIOPinTypeUART(GPIO_PORTB_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+	}
+	else
+	{
+		//Default UART1 Pin Muxing
+		ROM_GPIOPinConfigure(g_ulUARTConfig[1][0]);
+		ROM_GPIOPinConfigure(g_ulUARTConfig[1][1]);
+		ROM_GPIOPinTypeUART(g_ulUARTPort[1], g_ulUARTPins[1]);
+	}
+}
 
 void HardwareSerial::end()
 {
@@ -304,7 +315,8 @@ size_t HardwareSerial::write(uint8_t c)
     // Check for valid arguments.
     //
     ASSERT(c != 0);
-
+/*
+    //this is not necessary: https://github.com/energia/Energia/issues/225
     //
     // If the character to the UART is \n, then add a \r before it so that
     // \n is translated to \n\r in the output.
@@ -320,7 +332,7 @@ size_t HardwareSerial::write(uint8_t c)
 		txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
         numTransmit ++;
     }
-
+*/
     //
     // Send the character to the UART output.
     //

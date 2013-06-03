@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - AttachInterrupt </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>attachInterrupt(interrupt, function, mode)</h2>
+<p class='vspace'></p><h4>Description</h4>
+<p>Specifies a function to call when an external interrupt occurs.  Replaces any previous function that was attached to the interrupt.  Most Arduino boards have two external interrupts: numbers 0 (on digital pin 2) and 1 (on digital pin 3).  The Arduino Mega has an additional four: numbers 2 (pin 21), 3 (pin 20), 4 (pin 19), and 5 (pin 18).
+</p>
+<p class='vspace'></p><h4>Parameters</h4>
+<p><strong>interrupt</strong>: the number of the interrupt (<em>int</em>)
+</p>
+<p class='vspace'></p><p><strong>function</strong>: the function to call when the interrupt occurs; this function must take no parameters and return nothing. This function is sometimes referred to as an <em>interrupt service routine.</em>
+</p>
+<p class='vspace'></p><p><strong>mode</strong> defines when the interrupt should be triggered. Four contstants are predefined as valid values:
+</p><ul><li><strong>LOW</strong> to trigger the interrupt whenever the pin is low, 
+</li><li><strong>CHANGE</strong> to trigger the interrupt whenever the pin changes value
+</li><li><strong>RISING</strong> to trigger when the pin goes from low to high, 
+</li><li><strong>FALLING</strong> for when the pin goes from high to low.
+</li></ul><p class='vspace'></p><h4>Returns</h4>
+<p>none
+</p>
+<p class='vspace'></p><h4>Note</h4>
+<p><em>Inside the attached function, delay() won't work and the value returned by millis() will not increment.  Serial data received while in the function may be lost.  You should declare as volatile any variables that you modify within the attached function.</em>
+</p>
+<p class='vspace'></p><h4>Using Interrupts</h4>
+<p>Interrupts are useful for making things happen automatically in microcontroller programs, and can help solve timing problems. A good task for using an interrupt might be reading a rotary encoder, monitoring user input.
+</p>
+<p class='vspace'></p><p>If you wanted to insure that a program always caught the pulses from a rotary encoder, never missing a pulse, it would make it very tricky to write a program to do anything else, because the program would need to constantly poll the sensor lines for the encoder, in order to catch pulses when they occurred. Other sensors have a similar interface dynamic too, such as trying to read a sound sensor that is trying to catch a click, or an infrared slot sensor (photo-interrupter) trying to catch a coin drop. In all of these situations, using an interrupt can free the microcontroller to get some other work done while not missing the doorbell.
+</p>
+<p class='vspace'></p><h4>Example</h4>
+<pre>
+volatile int state = HIGH;
+volatile int flag = HIGH;
+int count = 0;
+
+void setup()
+{
+  Serial.begin(9600);
+
+  pinMode(GREEN_LED, OUTPUT);
+  digitalWrite(GREEN_LED, state);
+  attachInterrupt(PUSH2, blink, FALLING); // Interrupt is fired whenever button is pressed
+}
+
+void loop()
+{
+  digitalWrite(GREEN_LED, state); //LED starts ON
+  if(flag) {
+    count++;
+    Serial.println(count);
+    flag = LOW;
+  }
+}
+
+void blink()
+{
+  state = !state;
+  flag = HIGH;
+}
+</pre>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='wikilink' href='DetachInterrupt.html'>detachInterrupt</a>
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

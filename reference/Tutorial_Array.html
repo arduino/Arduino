@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Control Structures</em>
+</p>
+<p class='vspace'></p><h3>Arrays</h3>
+<p>An array is a container of multiple values.  Arrays are used to store blocks of data that need to be grouped together. 
+</p>
+<p class='vspace'></p><h3>Hardware Required</h3>
+<ul><li>MSP430 LaunchPad
+</li><li>(9) 220 ohm resistors
+</li><li>(9) <span class='wikiword'>LEDs</span>
+</li><li>hook-up wire
+</li><li>breadboard
+</li></ul>
+<h3>Relevant Groundwork</h3>
+<p>This variation on the <a class='wikilink' href='Tutorial_ForLoop.html'>For Loop</a> example shows how to use an <a class='wikilink' href='Array.html'><strong>array</strong></a>.  An array is a variable with multiple parts.  If you think of a variable as a cup that holds values, you might think of an array as an ice cube tray. It's like a series of linked cups, all of which can hold the same maximum value.
+</p>
+<p class='vspace'></p><p>The <a class='wikilink' href='Tutorial_ForLoop.html'>For Loop</a> example shows you how to light up a series of <span class='wikiword'>LEDs</span> attached to pins 2 through 10 of the LaunchPad, with certain limitations (the pins have to be numbered contiguously, and the <span class='wikiword'>LEDs</span> have to be turned on in sequence).  
+</p>
+<p class='vspace'></p><p>This example shows you how you can turn on a sequence of pins whose numbers are neither contiguous nor necessarily sequential.  To do this is, you can put the pin numbers in an <strong>array</strong> and then use <strong>for loops</strong> to iterate over the array.
+</p>
+<p class='vspace'></p><p>This example makes use of 9 <span class='wikiword'>LEDs</span> connected to the pins 2 - 10 on the board using 220 Ohm resistors, just like in the For Loop. However, here the order of the <span class='wikiword'>LEDs</span> is determined by their order in the array, not by their physical order.
+</p>
+<p class='vspace'></p><p>This technique of putting the pins in an array is very handy. You don't have to have the pins sequential to one another, or even in the same order.  You can rearrange them however you want.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<p>Connect nine LEDS, with 220 ohm resistors in series, to digital pins 2-10 on your LaunchPad.
+</p>
+<p class='vspace'></p><div><img width='250px' src='../reference/img/Array_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p><p><h3>Schematic:</h3>
+</p>
+<p class='vspace'></p><div><img width='400px' src='../reference/img/Array_schem.png' alt='' title='' /></a></div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>None.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Arrays
+ 
+  Demonstrates the use of  an array to hold pin numbers
+  in order to iterate over the pins in a sequence. 
+  Lights multiple LEDs in sequence, then in reverse.
+ 
+  Unlike the For Loop tutorial, where the pins have to be
+  contiguous, here the pins can be in any random order.
+ 
+  The circuit:
+  * LEDs from pins 2 through 10 to ground
+ 
+  created 2006
+  by David A. Mellis
+  modified 16 Apr 2013
+  by Adrian Fernandez 
+
+  This example code is in the public domain.
+ 
+*/
+
+int timer = 100;           // The higher the number, the slower the timing.
+int ledPins[] = { 
+  4, 10, 2, 6, 5, 3, 7, 9, 8};       // an array of pin numbers to which LEDs are attached
+int pinCount = 9;           // the number of pins (i.e. the length of the array)
+
+void setup() {
+  // the array elements are numbered from 0 to (pinCount - 1).
+  // use a for loop to initialize each pin as an output:
+  for (int thisPin = 0; thisPin < pinCount; thisPin++)  {
+    pinMode(ledPins[thisPin], OUTPUT);      
+  }
+}
+
+void loop() {
+  // loop from the lowest pin to the highest:
+  for (int thisPin = 0; thisPin < pinCount; thisPin++) { 
+    // turn the pin on:
+    digitalWrite(ledPins[thisPin], HIGH);   
+    delay(timer);                  
+    // turn the pin off:
+    digitalWrite(ledPins[thisPin], LOW);    
+
+  }
+
+  // loop from the highest pin to the lowest:
+  for (int thisPin = pinCount - 1; thisPin >= 0; thisPin--) { 
+    // turn the pin on:
+    digitalWrite(ledPins[thisPin], HIGH);
+    delay(timer);
+    // turn the pin off:
+    digitalWrite(ledPins[thisPin], LOW);
+  }
+}
+</pre>
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='PinMode.html'>pinMode()</a>
+</li><li><a class='wikilink' href='DigitalWrite.html'>digitalWrite()</a>
+</li><li><a class='wikilink' href='For.html'>for()</a>
+</li><li><a class='wikilink' href='Delay.html'>delay()</a>
+</li><li><a class='wikilink' href='Tutorial_ForLoop.html'>For Loop</a> - Control multiple <span class='wikiword'>LEDs</span> with a For Loop.
+</li><li><a class='wikilink' href='Tutorial_WhileLoop.html'>While Loop</a> - Use a While Loop to calibrate a sensor while a button is being pressed.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase.html'>Switch Case</a> - Choose between a number of discrete values in a manner that is the equivalent of using multiples If statements. This example shows how to divide a sensor's range into a set of four bands and to take four different actions depending on which band the result is in.
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

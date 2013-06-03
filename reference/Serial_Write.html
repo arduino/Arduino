@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Write </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style> 
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><a class='wikilink' href='Serial.html'>Serial</a>
+</p>
+<p class='vspace'></p><h2>write()</h2>
+<h3>Description</h3>
+<p>Writes binary data to the serial port.  This data is sent as a byte or series of bytes; to send the characters representing the digits of a number use the <a class='wikilink' href='Serial_Print.html'>print</a>() function instead.
+</p>
+<p class='vspace'></p><h3>Syntax</h3>
+<p>Serial.write(val) <br />Serial.write(str) <br />Serial.write(buf, len)
+</p>
+<p class='vspace'></p><h3>Parameters</h3>
+<p>val: a value to send as a single byte
+</p>
+<p class='vspace'></p><p>str: a string to send as a series of bytes
+</p>
+<p class='vspace'></p><p>buf: an array to send as a series of bytes
+</p>
+<p class='vspace'></p><p>len: the length of the buffer
+</p>
+<p class='vspace'></p><h3>Returns</h3>
+<p>byte<br />write() will return the number of bytes written, though reading that number is optional
+</p>
+<p class='vspace'></p><h3>Example</h3>
+<pre>
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  Serial.write(45); // send a byte with the value 45
+
+   int bytesSent = Serial.write("hello"); //send the string "hello" and return the length of the string.
+}
+</pre>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='wikilink' href='Serial_Read.html'>read</a>()
+</li><li><a class='wikilink' href='Serial_Print.html'>print</a>()
+</li><li><a class='wikilink' href='Serial_Println.html'>println</a>()
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='Serial_Write?action=edit.html'>Edit Page</a> | <a href='Serial_Write?action=diff.html'>Page History</a> | <a href='Serial_Write?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

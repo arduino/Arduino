@@ -1,33 +1,39 @@
 /*
   Conditionals - If statement
  
- This example demonstrates the use of if() statements.
- It reads the state of a potentiometer (an analog input) and turns on an LED
- only if the LED goes above a certain threshold level. It prints the analog value
- regardless of the level.
+  This example demonstrates the use of if() statements.
+  It reads the state of a potentiometer (an analog input) and turns on an LED
+  only if the LED goes above a certain threshold level. It prints the analog value
+  regardless of the level.
  
- The circuit:
- * potentiometer connected to analog pin 0.
- Center pin of the potentiometer goes to the analog pin.
- side pins of the potentiometer go to +5V and ground
- * LED connected from digital pin 13 to ground
+  The circuit:
+  * potentiometer connected to analog pin A3.
+    Center pin of the potentiometer goes to the analog pin.
+    side pins of the potentiometer go to +3V and ground
+  * LED connected from digital pin 2 to ground
  
- * Note: On most Arduino boards, there is already an LED on the board
- connected to pin 13, so you don't need any extra components for this example.
+  * Note: On the MSP-EXP430G2 LaunchPad boards, there is already an LED connected 
+    to pin 2, so you don't need any extra components for this example.
  
- created 17 Jan 2009
- modified 30 Aug 2011
- by Tom Igoe
+  created 17 Jan 2009
+  by Tom Igoe
+  modified 16 Apr 2013
+  by Tom Igoe
 
-This example code is in the public domain.
+  Hardware Required:
+  * MSP-EXP430G2 LaunchPad
+  * Potentiometer
+  * 220 ohm resistor
+  * LED
+  * hook-up wire
+  
+  This example code is in the public domain.
  
-http://arduino.cc/en/Tutorial/IfStatement
- 
- */
+*/
  
 // These constants won't change:
-const int analogPin = A0;    // pin that the sensor is attached to
-const int ledPin = 13;       // pin that the LED is attached to
+const int analogPin = A3;    // pin that the sensor is attached to
+const int ledPin = 2;       // pin that the LED is attached to
 const int threshold = 400;   // an arbitrary threshold level that's in the range of the analog input
 
 void setup() {
@@ -51,6 +57,6 @@ void loop() {
 
   // print the analog value:
   Serial.println(analogValue);
-
+  delay(1);        // delay in between reads for stability
 }
 

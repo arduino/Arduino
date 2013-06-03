@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Communication</em>
+</p>
+<p class='vspace'></p><h3>Physical Pixel</h3>
+<p>This example uses the MSP430 Launchpad  to receive data from the computer. The Launchpad turns on an LED when it receives the character 'H', and turns off the LED when it receives the character 'L'. The data can be sent from the Energia serial monitor, or another program like Processing (see code below).
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>LED [on-board as part of the LaunchPad]
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>For this example, it is easier to use the built-in LED on the LaunchPad corresponding to Pin 2 for Red or Pin 14 for Green.  You can attach an LED externally to pin 9 on the Launchpad where the long leg, or anode, goes to pin 9. The short leg, or cathode, goes to ground. 
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img height='250px' src='../reference/img/PhysicalPixel_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/PhysicalPixel_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<h4>Energia</h4>
+<p>The LaunchPad will look for ASCII characters that will be sent from the Energia Serial Monitor in order to turn an LED on the LaunchPad board on (High) or off (Low).  When an 'H' is written in the Serial Monitor, the LED will turn on, when an 'L' is written into the monitor, the LED will turn off.  We begin by initializing a constant (in this code ledPin) to the value of 14 or the pin associated with the Green LED on the LaunchPad board.  We also need a new variable called incomingByte that will save the ASCII character read by the Serial Monitor.  
+</p>
+<p>In the setup() section, we initialize <a href='Serial.html'>Serial</a> communication and set the pin associated to the Green LED (Pin 14) as an output.  
+</p>
+<p>In the loop() section, the <a href='Serial_Available.html'>Serial.available()</a> will look for characters read from the Serial Monitor.  This is inside an if statement that will continuously run while the Serial is available.  We set our variable incomingByte to what is being read from the Serial Monitor.  There are 2 if statements that follow.  The first controls what will happen when an 'H' is read in the Serial Monitor.  If an 'H' is received, it will set the Green LED High using the digitalWrite() function.  The second if statement controls what happens when an 'L' is received.  Very similar to the previous statement, only difference is when 'L' is seen, the LED goes Low.       
+</p>
+<h4>Processing</h4>
+<p>The Processing code will send data to the COM port to control what happens to the LED.  The Processing code generates a window that has a grey box inside surrounded by a blackbackground.  When you place your mouse cursor into the grey box, Processing will send 'H' to the port enabling the Green LED to go high.  When the cursor is not in the grey box, Processing will send 'L' to the port turning the LED low.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Physical Pixel
+
+  An example of using the Launchpad to receive data from the 
+  computer. In this case, the Launchpad turns on an LED when
+  it receives the character 'H', and turns off the LED when it
+  receives the character 'L'.
+
+  The data can be sent from the Energia serial monitor, or another
+  program like Processing.
+
+  The circuit:
+  * LED connected from digital pin 14 to ground
+
+  created 2006
+  by David A. Mellis
+  modified 30 Aug 2011
+  by Tom Igoe and Scott Fitzgerald
+  Modified 15 April 2013
+  By Sean Alvarado
+
+  This example code is in the public domain.
+
+*/
+
+const int ledPin = 14; // the pin that the Green LED that is    attached to on Launchpad 
+int incomingByte; // a variable to read incoming serial data into
+
+void setup() {
+  // initialize serial communication:
+  Serial.begin(9600);
+  // initialize the LED pin as an output:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // see if there's incoming serial data:
+  if (Serial.available() > 0) {
+    // read the oldest byte in the serial buffer:
+    incomingByte = Serial.read();
+    // if it's a capital H (ASCII 72), turn on the LED:
+    if (incomingByte == 'H') {
+      digitalWrite(ledPin, HIGH);
+    } 
+    // if it's an L (ASCII 76) turn off the LED:
+    if (incomingByte == 'L') {
+      digitalWrite(ledPin, LOW);
+    }
+  }
+}
+
+/* Processing code for this example
+
+// mouseover serial 
+
+// Demonstrates how to send data to the Launchpad I/O board, in order to 
+// turn ON a light if the mouse is over a square and turn it off 
+// if the mouse is not. 
+
+// created 2003-4
+// based on examples by Casey Reas and Hernando Barragan
+// modified 30 Aug 2011
+// by Tom Igoe
+// modified 15 April 2013
+// by Sean Alvarado
+// This example code is in the public domain.
+
+
+
+import processing.serial.*; 
+
+float boxX;
+float boxY;
+int boxSize = 20;
+boolean mouseOverBox = false;
+
+Serial port; 
+
+void setup() {
+  size(200, 200);
+  boxX = width/2.0;
+  boxY = height/2.0;
+  rectMode(RADIUS); 
+
+  // List all the available serial ports in the output pane. 
+  // You will need to choose the port that the Launchpad is 
+  // connected to from this list. The first port in the list is 
+  // port #0 and the third port in the list is port #2. 
+  println(Serial.list()); 
+
+  // Open the port that the Launchpad is connected to (in this case #0) 
+  // Make sure to open the port at the same speed Energia is using (9600bps) 
+  port = new Serial(this, Serial.list()[0], 9600); // In the [] you will place the number corresponding to the COM your LaunchPad is connected to
+
+}
+
+void draw() { 
+  background(0);
+
+  // Test if the cursor is over the box 
+  if (mouseX > boxX-boxSize && mouseX < boxX+boxSize && mouseY > boxY-boxSize && mouseY < boxY+boxSize) {
+    mouseOverBox = true; 
+    // draw a line around the box and change its color:
+    stroke(255); 
+    fill(153);
+    // send an 'H' to indicate mouse is over square:
+    port.write('H'); 
+  } 
+  else {
+    // return the box to its inactive state:
+    stroke(153);
+    fill(153);
+    // send an 'L' to turn the LED off: 
+    port.write('L'); 
+    mouseOverBox = false;
+  }
+
+  // Draw the box
+  rect(boxX, boxY, boxSize, boxSize);
+}
+
+*/
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Serial.html'>serial</a>()
+</li><li><a class='wikilink' href='Serial_Read.html'>serial.read</a>()
+</li><li><a class='wikilink' href='If.html'>if</a>()
+</li><li><a class='wikilink' href='Tutorial_Dimmer.html'>Dimmer</a> - move the mouse to change the brightness of an LED.
+</li><li><a class='wikilink' href='Tutorial_Graph.html'>Graph</a> - send data to the computer and graph it in Processing.
+</li><li><a class='wikilink' href='Tutorial_VirtualColorMixer.html'>Virtual Color Mixer</a> - send multiple variables from a LaunchPad to the computer and read them in Processing. 
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponse.html'>Serial Call Response</a> - send multiple variables using a call and response (handshaking) method.
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponseASCII.html'>Serial Call and Response ASCII</a> - send multiple vairables using a call-and-response (handshaking) method, and ASCII-encoding the values before sending.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase2.html'>Serial Input (Switch (case) Statement)</a> - How to take different actions based 0n characters received by the serial port. 
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

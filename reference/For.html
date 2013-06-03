@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - For </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><h2>for statements</h2>
+<h4>Desciption</h4>
+<p>The <strong>for</strong> statement is used to repeat a block of statements enclosed in curly braces. An increment counter is usually used to increment and terminate the loop. The <strong>for</strong> statement is useful for any repetitive operation, and is often used in combination with arrays to operate on collections of data/pins.
+</p>
+<p class='vspace'></p><p>There are three parts to the <strong>for</strong> loop header:
+</p>
+<p class='vspace'></p><p><code><strong>for</strong> (<strong>initialization</strong>;<strong> condition</strong>;<strong>  increment</strong>) {</code>
+</p>
+<p class='vspace'></p><p><code> //statement(s);</code>
+</p>
+<p class='vspace'></p><p><code>}</code>
+</p><div><img height='220px' src='http://arduino.cc/en/uploads/Reference/ForLoopIllustrated.png' alt='' title='' /></div>
+<p class='vspace'></p><p>The <strong>initialization</strong> happens first and exactly once.  Each time through the loop, the <strong>condition</strong> is tested; if it's true, the statement block, and the <strong>increment</strong> is executed, then the <strong>condition</strong> is tested again.  When the <strong>condition</strong> becomes false, the loop ends.
+</p>
+<p class='vspace'></p><h4>Example</h4>
+<pre>
+// Dim an LED using a PWM pin
+int PWMpin = GREEN_LED; // LED in series with resistor on pin 14
+
+void setup()
+{
+  // no setup needed
+}
+
+void loop()
+{
+   for (int i=0; i &lt;= 255; i++){
+      analogWrite(PWMpin, i);
+      delay(10);
+   } 
+}
+
+</pre>
+<p class='vspace'></p><h4>Coding Tips</h4>
+<p>The C <strong>for</strong> loop is much more flexible than <strong>for</strong> loops found in some other computer languages, including BASIC. Any or all of the three header elements may be omitted, although the semicolons are required. Also the statements for initialization, condition, and increment can be any valid C statements with unrelated variables, and use any C datatypes including floats. These types of unusual <strong>for</strong> statements may provide solutions to some rare programming problems. 
+</p>
+<p class='vspace'></p><p>For example, using a multiplication in the increment line will generate a logarithmic progression:<br />
+</p><pre>for(int x = 2; x &lt; 100; x = x * 1.5){
+println(x);
+}
+</pre>
+<p class='vspace'></p><p>Generates: 2,3,4,6,9,13,19,28,42,63,94
+</p>
+<p class='vspace'></p><p>Another example, fade an LED up and down with one <strong>for</strong> loop:
+</p>
+<p class='vspace'></p><pre>void loop()
+{
+   int x = 1;
+   for (int i = 0; i &gt; -1; i = i + x){
+      analogWrite(PWMpin, i);
+      if (i == 255) x = -1;             // switch direction at peak
+      delay(10);
+   } 
+}
+</pre>
+<p class='vspace'></p><h4>See also</h4>
+<ul><li><a class='wikilink' href='While.html'>while</a>
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia Reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

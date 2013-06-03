@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Strings</em>
+</p>
+<p class='vspace'></p><h3>String Comparison Operators</h3>
+<p>The String comparison operators, ==, !=,>, < ,>=, <= , and the functionsequals() and equalsIgoreCase() allow you to make alphabetic comparisons between Strings. They're useful for sorting and alphabetizing, among other things.
+</p>
+<h3>Relevant Groundwork</h3>
+<p>The operator == and the function equals() perform identically. It's just a matter of which you prefer. So
+<pre>
+ if (stringOne.equals(stringTwo)) {
+</pre><p class='vspace'></p>
+<p>is identical to
+</p><p class='vspace'></p>
+<pre>
+ if (stringOne == stringTwo) {
+</pre><p class='vspace'></p>
+<p>The greater than and less than operators evaluate strings in alphabetical order, on the first character where the two differ. So, for example "a" < "b" and "1" < "2", but "999"> "1000" because 9 comes after 1.
+</p><p class='vspace'></p>
+<p><strong>Caution:</strong> String comparison operators can be confusing when you're comparing numeric strings, because you're used to thinking of them as numbers, not strings. If you have to compare numbers, compare them as ints, floats, or longs, and not as Strings.
+</p>
+<h3>Hardware Required</h3>
+<ul>
+<li>MSP-EXP430G2 LaunchPad</li>
+</ul>
+<h3>Circuit</h3>
+<p>Only LaunchPad is required for this example.
+</p>
+<img height='250px' src='../reference/img/Blink_bb.png' alt='' title='' />
+<p>image developed using <a href='http://fritzing.org'>Fritzing</a>. For more circuit examples, see the <a href='http://fritzing.org/projects'>Fritzing project page</a>.
+</p>
+<h3>Schematic</h3>
+<img height='400px' src='../reference/img/Blink_schem.png' alt='' title='' />
+<h3>Code Explanation</h3>
+<p>In the program, we compare two strings in several different ways.
+</p>
+<h3>Code</h3>
+<pre>
+/*
+  Comparing Strings 
+ 
+ Examples of how to compare strings using the comparison operators
+ 
+ created 27 July 2010
+ modified 2 Apr 2012
+ by Tom Igoe
+ 
+ This example code is in the public domain.
+ */
+
+String stringOne, stringTwo;
+
+void setup() {
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+
+  stringOne = String("this");
+  stringTwo = String("that");
+  // send an intro:
+  Serial.println("\n\nComparing Strings:");
+  Serial.println();
+
+}
+
+void loop() {
+  // two strings equal:
+  if (stringOne == "this") {
+    Serial.println("StringOne == \"this\""); 
+  }
+  // two strings not equal:
+  if (stringOne != stringTwo) {
+    Serial.println(stringOne + " =! " + stringTwo);
+  }
+
+  // two strings not equal (case sensitivity matters):
+  stringOne = "This";
+  stringTwo = "this";
+  if (stringOne != stringTwo) {
+    Serial.println(stringOne + " =! " + stringTwo);
+  }
+  // you can also use equals() to see if two strings are the same:
+  if (stringOne.equals(stringTwo)) {
+    Serial.println(stringOne + " equals " + stringTwo);
+  } 
+  else {
+    Serial.println(stringOne + " does not equal " + stringTwo);
+  }
+
+  // or perhaps you want to ignore case:
+  if (stringOne.equalsIgnoreCase(stringTwo)) {
+    Serial.println(stringOne + " equals (ignoring case) " + stringTwo);
+  } 
+  else {
+    Serial.println(stringOne + " does not equal (ignoring case) " + stringTwo);
+  }
+
+  // a numeric string compared to the number it represents:
+  stringOne = "1";
+  int numberOne = 1;
+  if (stringOne.toInt() == numberOne) {
+    Serial.println(stringOne + " = " + numberOne);
+  }
+
+
+
+  // two numeric strings compared:
+  stringOne = "2";
+  stringTwo = "1";
+  if (stringOne >= stringTwo) {
+    Serial.println(stringOne + " >= " + stringTwo);
+  }
+
+  // comparison operators can be used to compare strings for alphabetic sorting too:
+  stringOne = String("Brown");
+  if (stringOne < "Charles") {
+    Serial.println(stringOne + " < Charles"); 
+  }
+
+  if (stringOne > "Adams") {
+    Serial.println(stringOne + " > Adams"); 
+  }
+
+  if (stringOne <= "Browne") {
+    Serial.println(stringOne + " <= Browne"); 
+  }
+
+
+  if (stringOne >= "Brow") {
+    Serial.println(stringOne + " >= Brow"); 
+  }
+
+  // the compareTo() operator also allows you to compare strings
+  // it evaluates on the first character that's different.
+  // if the first character of the string you're comparing to
+  // comes first in alphanumeric order, then compareTo() is greater than 0:
+  stringOne = "Cucumber";
+  stringTwo = "Cucuracha";
+  if (stringOne.compareTo(stringTwo) < 0 ) {
+    Serial.println(stringOne + " comes before " + stringTwo); 
+  } 
+  else {
+    Serial.println(stringOne + " comes after " + stringTwo);    
+  }
+
+  delay(10000);  // because the next part is a loop:
+
+  // compareTo() is handy when you've got strings with numbers in them too:
+
+  while (true) {
+    stringOne = "Sensor: ";
+    stringTwo= "Sensor: ";
+
+    stringOne += analogRead(A0); 
+    stringTwo += analogRead(A5);
+
+    if (stringOne.compareTo(stringTwo) < 0 ) {
+      Serial.println(stringOne + " comes before " + stringTwo); 
+    } 
+    else {
+      Serial.println(stringOne + " comes after " + stringTwo); 
+
+    }
+  }
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+<p>- Use string comparison to blink an LED when strings are equal
+</p>
+<p class='vspace'></p><p><strong>See Also</strong>
+</p><ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='Serial_Println.html'>println</a>()
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

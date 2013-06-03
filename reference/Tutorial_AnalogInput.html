@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Analog</em>
+</p>
+<p class='vspace'></p><h3>Analog Input</h3>
+<p>A potentiometer is a simple knob that provides a variable resistance, which you can read into the LaunchPad board as an analog value.  In this example, you'll connect a potentiometer to one of the LaunchPad's analog inputs to control the rate at which the built-in LED on pin 2 blinks.
+</p>
+<p class='vspace'></p><h3>Hardware Required</h3>
+<ul><li>MSP430 LaunchPad
+</li><li>Potentiometer
+</li><li>built-in LED on pin 2
+</li></ul>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>Connect three wires to the LaunchPad board.  The first goes to ground from one of the outer pins of the potentiometer.  The second goes from ~3 volts to the other outer pin of the potentiometer.  The third goes from analog input A3 to the middle pin of the potentiometer.  
+</p>
+<p class='vspace'></p><p>For this example, it is possible to use the LaunchPad board's built in LED attached to pin 2. To use an additional LED, attach its longer leg (the positive leg, or anode), to digital pin 2, and it's shorter leg (the negative leg, or cathode) to the ground (gnd) pin next to pin 2. Because of the low amount of current coming from digital pin 2, it is not necessary to use a current limiting resistor in this particular case. 
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div><img width='250px' src='../reference/img/AnalogInput_bb.png' alt='' title='' /></a></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p><h3>Schematic</h3>
+<p class='vspace'></p><div><img height='400px' src='../reference/img/AnalogInput_schem.png' alt='' title='' /></div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In the beginning of this program, the variable <code>sensorPin</code> is set to to analog channel A3, where your potentiometer is attached, and <code>ledPin</code> is set to digital pin 2. You'll also create another variable, <code>sensorValue</code> i to store the values read from your sensor. 
+</p>
+<p class='vspace'></p><p>The <code>analogRead()</code> command converts the input voltage range, 0 to ~3 volts, to a digital value between 0 and 1023.  This is done by a circuit inside the LaunchPad called an <strong>analog-to-digital converter</strong> or <strong>ADC</strong>. 
+</p>
+<p class='vspace'></p><p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the center pin (or wiper) of the potentiometer.  This changes the relative resistances between the center pin and the two outside pins, giving you a different voltage at the analog input.  When the shaft is turned all the way in one direction, there is no resistance between the center pin and the pin connected to ground. The voltage at the center pin then is 0 volts, and <code>analogRead()</code> returns 0.  When the shaft is turned all the way in the other direction, there is no resistance between the center pin and the pin connected to ~3 volts. The voltage at the center pin then is ~3 volts, and <code>analogRead()</code> returns 1023.  In between, <a class='wikilink' href='AnalogRead.html'><code>analogRead()</code></a> returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin.
+</p>
+<p class='vspace'></p><p>That value, stored in <code>sensorValue</code>, is used to set a <code>delay()</code> for your blink cycle. The higher the value, the longer the cycle, the smaller the value, the shorter the cycle. 
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Analog Input
+  Demonstrates analog input by reading an analog sensor on analog channel A3 and
+  turning on and off a light emitting diode(LED)  connected to digital pin 2. 
+  The amount of time the LED will be on and off depends on
+  the value obtained by analogRead(). 
+ 
+ 
+  The circuit:
+  * Potentiometer attached to analog channel A3
+  * center pin of the potentiometer to the analog pin
+  * one side pin (either one) to ground
+  * the other side pin to ~3V
+  * LED anode (long leg) attached to digital output 2
+  * LED cathode (short leg) attached to ground
+ 
+  * Note: MSP430 LaunchPad has a built-in LED attached 
+    to pin 2 on the board, the LED is optional.
+ 
+ 
+  Created by David Cuartielles
+  modified 27 Mar 2013
+  By Adrian Fernandez
+ 
+  This example code is in the public domain.
+ 
+*/
+
+int sensorPin = A3;    // select the input pin for the potentiometer
+int ledPin = 2;      // select the pin for the LED
+int sensorValue = 0;  // variable to store the value coming from the sensor
+
+void setup() {
+  // declare the ledPin as an OUTPUT:
+  pinMode(ledPin, OUTPUT);  
+}
+
+void loop() {
+  // read the value from the sensor:
+  sensorValue = analogRead(sensorPin);    
+  // turn the ledPin on
+  digitalWrite(ledPin, HIGH);  
+  // stop the program for <sensorValue> milliseconds:
+  delay(sensorValue);          
+  // turn the ledPin off:        
+  digitalWrite(ledPin, LOW);   
+  // stop the program for for <sensorValue> milliseconds:
+  delay(sensorValue);                  
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- incorporate multiple analog signals into the program
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='PinMode.html'>pinMode</a>()
+</li><li><a class='wikilink' href='AnalogRead.html'>analogRead</a>()
+</li><li><a class='wikilink' href='DigitalWrite.html'>digitalWrite</a>()
+</li><li><a class='wikilink' href='Delay.html'>delay</a>()
+</li><li><a class='wikilink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a> - read a potentiometer, print it's state to the serial monitor
+</li><li><a class='wikilink' href='Tutorial_AnalogInOutSerial.html'>AnalogInOutSerial</a> - read an analog input, map its values, and then use that information to dim or brighten an LED. 
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a> - use an analog input to fade an LED
+</li><li><a class='wikilink' href='Tutorial_Calibration.html'>Calibration</a> - calibrating analog sensor readings
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

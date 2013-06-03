@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Analog</em>
+</p>
+<p class='vspace'></p><h3>Analog In, Out Serial</h3>
+<p>This example shows how to read an analog input pin, map the result to a range from 0 to 255, and then use that result to set the pulsewidth modulation (PWM) of an output pin to dim or brighten an LED. 
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>Potentiometer
+</li><li>LED
+</li><li>220 ohm resistor
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>Connect one pin from your pot to 3V, the center pin to analog channel A3 (pin 5), and the remaining pin to ground. Next, connect a 220 ohm current limiting resistor to digital pin 2, with an LED in series. The long, positive leg (the anode) of the LED should be connected to the output from the resistor, with the shorter, negative leg (the cathode) connected to ground. 
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img height='250px' src='../reference/img/AnalogInOutSerial_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/AnalogInOutSerial_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In the program below, after declaring two pin assignments (analog channel A3 for your potentiometer and digital pin 2 for your LED)  and two variables, <code>sensorValue</code> and <code>outputValue</code>,  the only thing that you do will in the setup function is to begin serial communication.
+</p>
+<p class='vspace'></p><p>Next, in the main loop of the code, <code>sensorValue</code> is assigned to store the raw analog value coming in from the potentiometer. Because the LaunchPad has an <code>analogRead</code> resolution of 0-1023, and an <code>analogWrite</code> resolution of only 0-255, this raw data from the potentiometer needs to be scaled before using it to dim the LED. 
+</p>
+<p class='vspace'></p><p>In order to scale this value, use a function called <a class='wikilink' href='Map.html'><code>map()</code></a>
+</p>
+<p class='vspace'></p>
+<pre>
+outputValue = map(sensorValue, 0, 1023, 0, 255);
+</pre>
+<p class='vspace'></p><p><code>outputValue</code> is assigned to equal the scaled value from the potentiometer. <code>map()</code> accepts five arguments: The value to be mapped, the low range and high range of the raw data, and the low and high values for that data to be scaled too. In this case, the sensor data is mapped down from its original range of 0 to 1023 to 0 to 255.
+</p>
+<p class='vspace'></p><p>The newly mapped sensor data is then output to the <code>analogOutPin</code> dimming or brightening the LED as the potentiometer is turned. Finally, both the raw and scaled sensor values are sent to the Energia serial window in a steady stream of data. 
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Analog input, analog output, serial output
+ 
+ Reads an analog input pin, maps the result to a range from 0 to 255
+ and uses the result to set the pulsewidth modulation (PWM) of an output pin.
+ Also prints the results to the serial monitor.
+ 
+ The circuit:
+ * potentiometer connected to analog channel A3.
+   Center pin of the potentiometer goes to the analog pin.
+   side pins of the potentiometer go to ~3V and ground
+ * LED connected from digital pin 2 to ground
+ 
+ created 29 Dec. 2008
+ modified 27 March 2013
+ by Adrian Fernandez
+ 
+ This example code is in the public domain.
+ 
+ */
+
+// These constants won't change.  They're used to give names
+// to the pins used:
+const int analogInPin = A3;  // Analog input pin that the potentiometer is attached to
+const int analogOutPin = 2; // Analog output pin that the LED is attached to
+
+int sensorValue = 0;        // value read from the pot
+int outputValue = 0;        // value output to the PWM (analog out)
+
+void setup() {
+  // initialize serial communications at 9600 bps:
+  Serial.begin(9600); 
+}
+
+void loop() {
+  // read the analog in value:
+  sensorValue = analogRead(analogInPin);            
+  // map it to the range of the analog out:
+  outputValue = map(sensorValue, 0, 1023, 0, 255);  
+  // change the analog out value:
+  analogWrite(analogOutPin, outputValue);           
+
+  // print the results to the serial monitor:
+  Serial.print("sensor = " );                       
+  Serial.print(sensorValue);      
+  Serial.print("\t output = ");      
+  Serial.println(outputValue);   
+
+  // wait 2 milliseconds before the next loop
+  // for the analog-to-digital converter to settle
+  // after the last reading:
+  delay(2);                     
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- incorporate mulitple analog signals into the program
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Map.html'>map</a>()
+</li><li><a class='wikilink' href='AnalogRead.html'>analogRead</a>()
+</li><li><a class='wikilink' href='AnalogWrite.html'>analogWrite</a>()
+</li><li><a class='wikilink' href='Serial.html'>serial</a>()
+</li><li><a class='wikilink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a> - read a potentiometer, print the state out to the serial monitor
+</li><li><a class='wikilink' href='Tutorial_AnalogInput.html'>AnalogInput</a> - use a potentiometer to control the blinking of an LED
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a> - use an analog input to fade an LED
+</li><li><a class='wikilink' href='Tutorial_Calibration.html'>Calibration</a> - calibrating analog sensor readings
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Basics</em>
+</p>
+<p class='vspace'></p><h3>Digital Read Serial</h3>
+<p>This example shows you how to monitor the state of a switch by establishing <a class='wikilink' href='Serial.html'>serial communication</a> between your LaunchPad and your computer over USB. 
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>A momentary switch, button, or toggle switch
+</li><li>10k ohm resistor
+</li><li>breadboard
+</li><li>hook-up wire 
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p>Any input pin can be used to connect to an external pushbutton. To see what pins support external pushbuttons, refer to the hardware <a href='PinMapping.html'>pin mapping guide</a>.
+</p><p class='vspace'></p>
+<u>For on-board pushbutton:</u>
+<p>You can use the pushbutton on the LaunchPad to complete this exercise.
+</p><p class='vspace'></p>
+<u>For an external pushbutton:</u>
+<p>Connect three wires to the LaunchPad board. The first two, red and black, connect to the two long vertical rows on the side of the breadboard to provide access to the 3 volt supply and ground. The third wire goes from digital pin 5 (P1.3) to one leg of the pushbutton. That same leg of the button connects through a pull-up resistor (here 10 KOhms) to VCC (~3V). The other leg of the button connects to ground.
+</p><p class='vspace'></p>
+<p>Pushbuttons or switches connect two points in a circuit when you press them. When the pushbutton is open (unpressed) there is no connection between the two legs of the pushbutton, so the pin is connected to VCC (through the pull-up resistor) and reads as HIGH, or 1. When the button is closed (pressed), it makes a connection between its two legs, connecting the pin to ground, so that the pin reads as LOW, or 0.
+</p><p class='vspace'></p>
+<p>If you disconnect the digital i/o pin from everything, the LED may blink erratically. This is because the input is "floating" - that is, it doesn't have a solid connection to voltage or ground, and it will randomly return either HIGH or LOW. That's why you need a pull-up resistor in the circuit.
+</p><p class='vspace'></p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<div><img height='250px' src='../reference/img/DigitalReadSerial_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p><p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/DigitalReadSerial_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In the program below, the very first thing that you do will in the setup function is to begin serial communications, at 9600 bits of data per second, between your LaunchPad and your computer with the line:
+</p>
+<p class='vspace'></p><p><code>Serial.begin(9600);</code>
+</p>
+<p class='vspace'></p><p>Next, initialize digital pin 5, the pin that will read the output from your button, as an input:
+</p>
+<p class='vspace'></p>
+<pre>
+pinMode(5,INPUT_PULLUP); //For on-board we need to enable internal pullup resistor
+pinMode(5,INPUT); //For external pushbutton we need to use an external pullup resistor
+</pre>
+<p class='vspace'></p><p>Now that your setup has been completed, move into the main loop of your code. When your button is pressed, current will freely flow through your circuit, and when it is not pressed, the input pin will be connected to ground through the 10-kilohm resistor. This is a digital input, meaning that the switch can only be in either an on state (seen by your LaunchPad as a "1", or HIGH) or an off state (seen by your LaunchPad as a "0", or LOW), with nothing in between.
+</p>
+<p class='vspace'></p><p>The first thing you need to do in the main loop of your program is to establish a variable to hold the information coming in from your switch. Since the information coming in from the switch will be either a "1" or a "0", you can use an int datatype. Call this variable sensorValue, and set it to equal whatever is being read on digital pin 5. You can accomplish all this with just one line of code
+</p>
+<p class='vspace'></p><p><code>int sensorValue = digitalRead(5);</code>
+</p>
+<p class='vspace'></p><p>Once the LaunchPad has read the input, make it print this information back to the computer as a decimal value. You can do this with the command Serial.println() in our last line of code:
+</p>
+<p class='vspace'></p><p><code>Serial.println(sensorValue);</code> 
+</p>
+<p class='vspace'></p><p>Now, when you open your Serial Monitor in the Energia environment, you will see a stream of "1"s if your switch is open, or "0"s if your switch is closed.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<strong>Code Example 1: With on-board pushbutton</strong>
+<pre>
+/*
+  DigitalReadSerial with on-board Pushbutton
+  Reads a digital input on pin 5, prints the result to the serial monitor 
+ 
+  This example code is in the public domain.
+*/
+
+// digital pin 5 has a pushbutton attached to it. Give it a name:
+int pushButton = 5;
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+  // make the on-board pushbutton's pin an input pullup:
+  pinMode(pushButton, INPUT_PULLUP);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input pin:
+  int buttonState = digitalRead(pushButton);
+  // print out the state of the button:
+  Serial.println(buttonState);
+  delay(1);        // delay in between reads for stability
+}
+</pre>
+<strong>Code Example 2: With external pushbutton</strong>
+<pre>
+/*
+  DigitalReadSerial with External Pushbutton
+ Reads a digital input on pin 5, prints the result to the serial monitor 
+ 
+ This example code is in the public domain.
+ */
+
+// digital pin 5 has a pushbutton attached to it. Give it a name:
+int pushButton = 5;
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+  // make the pushbutton's pin an input:
+  // NOTE this is different from the on-board pushbutton
+  pinMode(pushButton, INPUT);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input pin:
+  int buttonState = digitalRead(pushButton);
+  // print out the state of the button:
+  Serial.println(buttonState);
+  delay(1);        // delay in between reads for stability
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='PinMode.html'>pinMode</a>()   
+</li><li><a class='wikilink' href='DigitalRead.html'>digitalRead</a>() 
+</li><li><a class='wikilink' href='Delay.html'>delay</a>()
+</li><li><a class='wikilink' href='Int.html'>int</a>
+</li><li><a class='wikilink' href='Serial.html'>serial</a>
+</li><li><a class='wikilink' href='Tutorial_DigitalPins.html'>DigitalPins</a>
+</li><li><a class='wikilink' href='Tutorial_BareMinimum.html'>BareMinimum</a>: The bare minimum of code needed to start an Energia sketch.
+</li><li><a class='wikilink' href='Tutorial_Blink.html'>Blink</a>: Turn an LED on and off.
+</li><li><a class='selflink' href='Tutorial_DigitalReadSerial.html'>DigitalReadSerial</a>: Read a switch, print the state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a>: Read a potentiometer, print it's state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a>: Demonstrates the use of analog output to fade an LED.
+</li><li><a class='wikilink' href='Tutorial_ReadAnalogVoltage.html'>ReadAnalogVoltage</a> : Reads an analog input and prints the voltage to the serial monitor
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

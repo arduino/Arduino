@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Basics</em>
+</p>
+<p class='vspace'></p><h3>Fading</h3>
+<p>This program illustrates how to fade LED ON & OFF with the help of <a href='AnalogWrite.html'>analogWrite( )</a>.
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>10k ohm resistor
+</li><li>breadboard
+</li><li>hook-up wire 
+</li><li>LED (available on-board)
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p>We can fade a LED at varying brightness levels between ON & OFF. This can be done with the help of <a href='AnalogWrite.html'>analogWrite( )</a>. The function call to analogWrite(),will generate a steady square wave of the specified duty cycle until the next call to analogWrite( ) and write the value to the specified pin. Refer to the <a href='PinMapping.html'>pin mapping guide</a> to know the pins which can be used for analogWrite( ). In this example, we use pin 14 .
+</p><p class='vspace'></p>
+<u>For on-board LED:</u>
+<p class='vspace'></p>
+<p>No external circuitry is required, if MSP430 onboard LED is used.
+</p><p class='vspace'></p>
+<u>For external LED:</u>
+<p class='vspace'></p>
+<p>Connect the anode (the longer, positive leg) of your LED to output pin 14 on your  Launchpad through a 220-ohm resistor. Connect the cathode (the shorter, negative leg) directly to ground. The circuit is as shown above.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<div><img height='250px' src='../reference/img/Fading_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p><p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/Fading_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In set up function, After declaring pin 14  to be your <code>ledPin</code>, there is nothing to do in the setup() function of your code. 
+</p><p class='vspace'></p>
+<p>The analogWrite() function that you will be using in the main loop of your code requires two arguments: One telling the function which pin to write to, and one indicating what PWM value to write.
+</p><p class='vspace'></p>
+<p>In order to fade your LED off and on, gradually increase your PWM value from 0 (all the way off) to 255 (all the way on), and then back to 0 once again to complete the cycle. In the sketch below, the PWM value is set using a variable called brightness. Each time through the loop, it increases by the value of the variable fadeAmount.
+</p><p class='vspace'></p>
+<p>If brightness is at either extreme of its value (either 0 or 255), then fadeAmount is changed to its negative. In other words, if fadeAmount is 5, then it is set to -5. If it's -5, then it's set to 5. The next time through the loop, this change causes brightness to change direction as well.
+</p><p class='vspace'></p>
+<p>analogWrite() can change the PWM value very fast, so the delay at the end of the sketch controls the speed of the fade.
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Fade
+ 
+  This example shows how to fade an LED on pin 14
+  using the analogWrite() function.
+ 
+  This example code is in the public domain.
+ 
+*/
+
+int brightness = 0;    // how bright the LED is
+int fadeAmount = 5;    // how many points to fade the LED by
+
+void setup()  { 
+  // declare pin 14 to be an output:
+  pinMode(GREEN_LED, OUTPUT);
+} 
+
+void loop()  { 
+  // set the brightness of pin 9:
+  analogWrite(GREEN_LED, brightness);    
+
+  // change the brightness for next time through the loop:
+  brightness = brightness + fadeAmount;
+
+  // reverse the direction of the fading at the ends of the fade: 
+  if (brightness == 0 || brightness == 255) {
+    fadeAmount = -fadeAmount ; 
+  }     
+  // wait for 30 milliseconds to see the dimming effect    
+  delay(30);                            
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- Fade multiple LEDs in a cool pattern
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='AnalogWrite.html'>analogWrite</a>()   
+</li><li><a class='wikilink' href='Int.html'>int</a>() 
+</li><li><a class='wikilink' href='For.html'>for</a>()
+</li><li><a class='wikilink' href='Tutorial_PWM.html'>PWM</a>
+</li><li><a class='wikilink' href='Tutorial_BareMinimum.html'>BareMinimum</a>: The bare minimum of code needed to start an Energia sketch.
+</li><li><a class='wikilink' href='Tutorial_Blink.html'>Blink</a>: Turn an LED on and off.
+</li><li><a class='selflink' href='Tutorial_DigitalReadSerial.html'>DigitalReadSerial</a>: Read a switch, print the state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a>: Read a potentiometer, print it's state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a>: Demonstrates the use of analog output to fade an LED.
+</li><li><a class='wikilink' href='Tutorial_ReadAnalogVoltage.html'>ReadAnalogVoltage</a> : Reads an analog input and prints the voltage to the serial monitor.
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

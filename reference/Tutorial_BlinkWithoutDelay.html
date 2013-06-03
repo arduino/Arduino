@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Digital</em>
+</p>
+<p class='vspace'></p><h3>Blink without delay</h3>
+<p>This example shows how to program MSP430 LaunchPad to blink its LED without using delay function using Energia.
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>LED [available already on-board as a part of the Launchpad]
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>Using delay ( ) while trying to blink the LED helps in discerning the blinking of LED, which otherwise would be difficult in noticing. The disadvantage of using delay function is, it brings all activities to halt. Sometimes when you need to do two things at once, For example, you might want to blink an LED (or some other time-sensitive function) while reading a button press or other input. In this case, you can't use delay(), or you'd stop everything else the program while the LED blinked. The program might miss the button press if it happens during the delay( ).
+</p>
+<p>This code below demonstrates how to blink the LED without using delay(). It keeps track of the last time the Launchpad turned the LED on or off. Then, each time through loop(), it checks if a long enough interval has passed. If it has, it toggles the LED on or off. 
+</p>
+<p>MSP430 LaunchPad has LED attached to pin 2 and pin 14 on the board itself as shown above in the image. If you run the below code example with no hardware attached, you should see that LED blink.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<div><img height='250px' src='../reference/img/Blink_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p><p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/Blink_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In the program, pin 14 is set up as output in the setup function. 
+</p>
+<pre>pinMode(ledPin, OUTPUT);</pre>
+<p>Here the ledpin refers to the GREEN_LED which is set as output.
+</p> 
+<p>In the main loop, in order to measure delay without using the delay function, current time, which is the time elapsed in milliseconds since the Launchpad was booted up is obtained using millis ( ). The difference of this current time with the previous time ( which is 0 initially) when LED blinked  is checked. If the difference exceeds the delay time interval ,
+</p>
+<pre>if(currentMillis - previousMillis > interval)</pre>
+<p class='vspace'></p>
+<p>Then, the last time when LED binked is saved ,
+</p>
+<pre>previousMillis = currentMillis;</pre>  
+<p class='vspace'></p>
+<p>The state of the LED is now switched. If LED is ON, then it is turned off and vice-versa.
+</p>
+<pre>
+if (ledState == LOW)
+      ledState = HIGH;
+else
+      ledState = LOW;
+</pre>
+<p>The state of the output pin connected to LED reflects this accordingly,
+</p>
+<code>digitalWrite(ledPin, ledState);</code>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/* Blink without Delay
+ 
+  Turns on and off a light emitting diode(LED) connected to a digital  
+  pin, without using the delay() function.  This means that other code
+  can run at the same time without being interrupted by the LED code.
+  
+  In MSP430 Launchpad, there is already an LED on the board that's 
+  attached to pin 14, so no hardware is needed for this example. 
+ 
+  created 2005
+  by David A. Mellis
+  modified 8 Feb 2010
+  by Paul Stoffregen
+  modified 27 Apr 2012
+  by Robert Wessels
+*/
+
+// Pin 14 has an LED connected on MSP430 boards, has a name 'GREEN_LED' in the code.
+
+
+// constants won't change. Used here to 
+// set pin numbers:
+const int ledPin =  GREEN_LED;      // the number of the LED pin
+
+// Variables will change:
+int ledState = LOW;             // ledState used to set the LED
+long previousMillis = 0;        // will store last time LED was updated
+
+// the follow variables is a long because the time, measured in miliseconds, will quickly become a bigger 
+// number than can be stored in an int.
+long interval = 1000;           // interval at which to blink (milliseconds)
+
+void setup() {
+  // set the digital pin as output:
+  pinMode(ledPin, OUTPUT);      
+}
+
+void loop()
+{
+  // here is where you'd put code that needs to be running all the time.
+ // check to see if it's time to blink the LED; that is, if the 
+  // difference between the current time and last time you blinked 
+  // the LED is bigger than the interval at which you want to 
+  // blink the LED.
+  unsigned long currentMillis = millis();
+ 
+  if(currentMillis - previousMillis > interval) {
+    // save the last time you blinked the LED 
+    previousMillis = currentMillis;   
+
+    // if the LED is off turn it on and vice-versa:
+    if (ledState == LOW)
+      ledState = HIGH;
+    else
+      ledState = LOW;
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(ledPin, ledState);
+  }
+}
+
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+<p>- alternate blinking between two LEDs
+</p>
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='Millis.html'>millis</a>() 
+</li><li><a class='wikilink' href='Tutorial_BareMinimum.html'>BareMinimum</a>: The bare minimum of code needed to start an Energia sketch.
+</li><li><a class='wikilink' href='Tutorial_Blink.html'>Blink</a>: Turn an LED on and off.
+</li><li><a class='wikilink' href='Tutorial_DigitalReadSerial.html'>DigitalReadSerial</a>: Read a switch, print the state out to the Energia Serial Monitor.
+</li></ul>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Basics</em>
+</p>
+<p class='vspace'></p><h3>Analog Read Serial</h3>
+<p>This example shows you how to read analog input from the physical world using a potentiometer. A potentiometer is a simple mechanical device that provides a varying amount of resistance when its shaft is turned. By passing voltage through a potentiometer and into an analog input on your LaunchPad,  it is possible to measure the amount of resistance produced by a potentiometer (or pot for short) as an analog value. In this example you will monitor the state of your potentiometer after establishing serial communication between your LaunchPad and your computer.
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>10-kilohm Potentiometer
+</li><li>hook-up wire
+</li></ul></div>
+<p class='vspace'></p><h3>Relevant Groundwork</h3>
+<p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to ~3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3 volts. When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the <strong>analog voltage</strong> that you're reading as an input. 
+</p>
+<p>The LaunchPad has a circuit inside called an <strong>analog-to-digital converter</strong> that reads this changing voltage and converts it to a number between 0 and 1023. When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 3 volts going to the pin and the input value is 1023. In between, analogRead() returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin.
+</p>
+<p class='vspace'></p><p>By turning the shaft of the potentiometer, you change the amount of resistance on either side of the wiper which is connected to the center pin of the potentiometer. This changes the voltage at the center pin. When the resistance between the center and the side connected to 3 volts is close to zero (and the resistance on the other side is close to 10 kilohms), the voltage at the center pin nears 3 volts.  When the resistances are reversed, the voltage at the center pin nears 0 volts, or ground. This voltage is the <strong>analog voltage</strong> that you're reading as an input.  
+</p>
+<p class='vspace'></p><p>The LaunchPad has a circuit inside called an <strong>analog-to-digital converter</strong> that reads this changing voltage and converts it to a number between 0 and 1023.  When the shaft is turned all the way in one direction, there are 0 volts going to the pin, and the input value is 0. When the shaft is turned all the way in the opposite direction, there are 3 volts going to the pin and the input value is 1023. In between, <a class='wikilink' href='AnalogRead.html'>analogRead</a>() returns a number between 0 and 1023 that is proportional to the amount of voltage being applied to the pin.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img height='300px' src='../reference/img/AnalogReadSerial_bb.png' alt='' title='' /></a></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+</div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/AnalogReadSerial_schem.png' alt='' title='' /></a></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>In the program below, the only thing that you do will in the setup function is to begin serial communications, at 9600 bits of data per second, between your LaunchPad and your computer with the command:
+</p>
+<p class='vspace'></p><p><code>Serial.begin(9600);</code>
+</p>
+<p class='vspace'></p><p>Next, in the main loop of your code, you need to establish a variable to store the resistance value (which will be between 0 and 1023, perfect for an <a class='wikilink' href='Int.html'><code>int</code></a> datatype) coming in from your potentiometer connected to Analog Pin 3:
+</p>
+<p class='vspace'></p><p><code> int sensorValue = analogRead(A3);</code>
+</p>
+<p class='vspace'></p><p>Finally, you need to print this information to your serial window as a decimal (<code>DEC</code>) value. You can do this with the command <a class='wikilink' href='Serial_Println.html'>Serial.println</a>()  in your last line of code:
+</p>
+<p class='vspace'></p><p><code> Serial.println(sensorValue, DEC)</code>
+</p>
+<p class='vspace'></p><p>Now, when you open your Serial Monitor in the Energia development environment (by clicking the button directly to the right of the "Upload" button in the header of the program), you should see a steady stream of numbers ranging from 0-1023, correlating to the position of the pot. As you turn your potentiometer, these numbers will respond almost instantly.
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  AnalogReadSerial
+  Reads an analog input on pin A3, prints the result to the serial monitor.
+  Attach the center pin of a potentiometer to pin A3, and the outside pins to ~3V and ground.
+
+  This example code is in the public domain.
+*/
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input on analog pin A3:
+  int sensorValue = analogRead(A3);
+  // print out the value you read:
+  Serial.println(sensorValue);
+  delay(1); // delay in between reads for stability
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+- read all the analog pins and verify they behave properly
+<h3>See Also: </h3>
+<ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='AnalogRead.html'>analogRead</a>() 
+</li><li><a class='wikilink' href='Int.html'>int</a>
+</li><li><a class='wikilink' href='Serial.html'>serial</a>
+</li><li><a class='wikilink' href='Tutorial_BareMinimum.html'>BareMinimum</a>: The bare minimum of code needed to start an Energia sketch.
+</li><li><a class='wikilink' href='Tutorial_Blink.html'>Blink</a>: Turn an LED on and off.
+</li><li><a class='wikilink' href='Tutorial_DigitalReadSerial.html'>DigitalReadSerial</a>: Read a switch, print the state out to the Energia Serial Monitor.
+</li><li><a class='selflink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a>: Read a potentiometer, print it's state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a>: Demonstrates the use of analog output to fade an LED.
+</li><li><a class='wikilink' href='Tutorial_ReadAnalogVoltage.html'>ReadAnalogVoltage</a> : Reads an analog input and prints the voltage to the serial monitor
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

@@ -266,6 +266,11 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 #ifdef __MSP430_HAS_USCI__
     twi_state =  TWI_MRX;                     // Master receive mode
     UCB0CTL1 |= UCTXSTT;                      // I2C start condition
+
+    if(length == 1) {                         // When only receiving 1 byte..
+        while(UCB0CTL1 & UCTXSTT);            // Wait for start bit to be sent
+        UCB0CTL1 |= UCTXSTP;                  // Send I2C stop condition after recv
+    }
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
     twi_state =  TWI_MRX;                     // Master receive mode

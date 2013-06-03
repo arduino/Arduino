@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - MSP430 LaunchPad </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Guide to the MSP430 LaunchPad (MSP-EXP430G2)</h2>
+<p>Energia supports the LaunchPad with msp430g2231, msp430g2452 and msp430g2553. These are the most popular devices. V1.4 and earlier LaunchPad shipped with msp430g2231. The 430BOOST-SENSE1 ships with the msp430g2452 and LaunchPad v1.5 ships with msp430g2553.
+Pin numbering for the LaunchPad variant in Energia follows the pin numbering of the header on the LaunchPad (see pin mapping diagram below for details). Example: LED1 can be turned on with:
+</p>
+
+<pre> pinMode(2, OUTPUT);
+ digitalWrite(2, HIGH);
+</pre>
+
+
+<p>Pins can also be address by there alternative names P1_0 ... P1_7 and P2_0 ... P2_5. See Energia/hardware/msp430/variants/launchpad/pins_energia.h for details. The LaunchPad pins_energia.h is <a href="https://github.com/energia/Energia/blob/master/hardware/msp430/variants/launchpad/pins_energia.h" target="_blank">here</a> on github.
+</p>
+
+<pre> pinMode(P1_0, OUTPUT);
+ digitalWrite(P1_0, HIGH);
+</pre>
+
+
+<p>LED1, LED2, S2 and internal temp sensor can also be addressed by the alternative names:
+</p>
+
+<pre> RED_LED
+ GREEN_LED;
+ PUSH2;
+ TEMPSENSOR;
+</pre>
+
+
+<p>To turn on the red LED.
+</p>
+
+<pre> pinMode(RED_LED, OUTPUT);
+ digitalWrite(RED_LED, HIGH);
+</pre>
+<p>The following diagrams show the complete pin map for the LaunchPad MSP430G2452 and MSP430G2553 in Energia. 
+</p>
+<h3>LaunchPad MSP430G2452</h3>
+<p>For the MSP430G2452, the jumpers J3 for serial port are unchanged although their order changes according to the revision of the LaunchPad board, revision 1.5 or 1.4.
+<img src="../reference/img/LaunchPadMSP430G2452-v1.5.jpg" height="600" width="850"><img src="../reference/img/LaunchPadMSP430G2452-v1.4.jpg" height="600" width="850"><br /></p>
+
+<h3>LaunchPad MSP430G2553</h3>
+
+
+<p><font color="red"><b>CAUTION </b><br />
+For the MSP430G2553, the jumpers J3 for serial port depend on the revision of the LaunchPad board, revision 1.5 (<i>top</i>)</font>
+<img src="../reference/img/LaunchPadMSP430G2553-V1.5.jpg" height="600" width="850"></p>
+<p><font color="red">or revision 1.4 (<i>bottom</i>). <br />See <a href="Serial.html" target="_blank">Hardware UART on Launchpad 1.4</a><br /></font><br /></p><p align="center">
+<img src="../reference/img/LaunchPadMSP430G2553-v1.4.jpg" height="600" width="850"></p>
+<br /><p>V1.5 and later of the launchpad shipped without pull-up resistors (C24 R34 47Kohm) on PUSH2 (S2 or P1_3 or pin 5). This is to reduce power consumption (77uA) if port P1_3 is driven LOW.
+On your LaunchPad just below the "M" in the text "MSP-EXP430G2" see if R34 is missing. To make sketches that are using PUSH2 on newer launchpads work, the pinMode has to be changed to enable the internal pull-up resistor in the MSP430. This is a simple change
+</p>
+<p>e.g. <code>pinMode(PUSH2, INPUT);</code> becomes <code>pinMode(PUSH2, INPUT_PULLUP);</code>
+or <code>pinMode(P1_3, INPUT);</code> becomes <code>pinMode(P1_3, INPUT_PULLUP);</code>
+</p>
+
+
+<h3>Serial port communication, Hardware UART</h3>
+<ul><li>(Launchpad board v1.5) If you need to use the hardware UART on say an MSP430G2553, you need to rotate the RX/TX jumpers (Rickta59 on IRC)</li></ul>
+
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

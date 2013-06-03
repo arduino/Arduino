@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Getting Started </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Digital Pins</h2>
+<p>The pins on the LaunchPad can be configured as either inputs or outputs.  This document explains the functioning of the pins in those modes. While the title of this document refers to digital pins, it is important to note that vast majority of LaunchPad analog pins, may be configured, and used, in exactly the same manner as digital pins.
+</p>
+<p class='vspace'></p><h4>Properties of Pins Configured as INPUT</h4>
+<p>LaunchPad pins default to inputs, so they don't need to be explicitly declared as inputs with pinMode(). Pins configured as inputs are said to be in a high-impedance state. One way of explaining this is that input pins make extremely small demands on the circuit that they are sampling, say equivalent to a series resistor of 100 megohm in front of the pin. This means that it takes very little current to move the input pin from one state to another, and can make the pins useful for such tasks as implementing a capacitive touch sensor, reading an LED as a photodiode, or reading an analog sensor.
+<p class='vspace'></p><p>This also means however, that input pins with nothing connected to them, or with wires connected to them that are not connected to other circuits, will report seemingly random changes in pin state, picking up electrical noise from the environment, or capacitively coupling the state of a nearby pin. 
+</p>
+
+<p class='vspace'></p><h4>Properties of Pins Configured as OUTPUT</h4>
+<p>Pins configured as <strong>OUTPUT</strong> with pinMode() are said to be in a low-impedance state. This means that they can provide a substantial amount of current to other circuits. LaunchPad pins can source (provide positive current) or sink (provide negative current) up to 40 mA (milliamps) of current to other devices/circuits. This makes them useful for powering LED's and some sensors but useless for driving motors and relays. Pins configured as outputs can also be damaged or destroyed if short circuited to either ground or 3 volt power rails. The amount of current provided by a LaunchPad pin is not enough to power many sensors, relays, or motors, and some interface circuitry will be required. 
+</p>
+<p class='vspace'></p><p>Short circuits on LaunchPad pins, or attempting to run high current devices from them, can damage or destroy the output transistors in the pin, or damage the entire TI chip. Often this will result in a "dead" pin in the microcontroller but the remaining chip will still function adequately. For this reason it is a good idea to connect OUTPUT pins to other devices with 470&#937; or 1k resistors, unless maximum current draw from the pins is required for a particular application.
+</p>
+<p class='vspace'></p><h4>Defining Digital Pins, INPUT and OUTPUT</h4>
+<p>Digital pins can be used either as <strong>INPUT</strong> or <strong>OUTPUT</strong>. Changing a pin from INPUT TO OUTPUT with pinMode() drastically changes the electrical behavior of the pin.
+</p>
+
+<p class='vspace'></p><h4>Pins Configured as Input Pullup</h4>
+<p>LaunchPad pins can be configured as <strong>INPUT_PULLUP</strong>. Often it is useful to steer an input pin to a known state if no input is present. This can be done by adding a pullup resistor (to ~3V), or a pulldown resistor (resistor to ground) on the input, with 10K being a common value.
+There are also convenient pullup resistors built into the LaunchPad that can be accessed from software. These built-in pullup resistors are accessed in the following manner.
+</p>
+<pre>
+pinMode(pin, INPUT_PULLUP);           // set pin to input and enable internal pullup resistor
+</pre>
+<p class='vspace'></p><p>Note that the pullup resistors provide enough current to dimly light an LED connected to a pin that has been configured as an input. If LED's in a project seem to be working, but very dimly, this is likely what is going on, and the programmer has forgotten to use pinMode() to set the pins to outputs.
+</p>
+<p class='vspace'></p><p>Note also that the pullup resistors are controlled by the same registers (internal chip memory locations) that control whether a pin is HIGH or LOW. Consequently a pin that is configured to have pullup resistors turned on when the pin is an INPUT, will have the pin configured as HIGH if the pin is then swtiched to an OUTPUT with pinMode(). This works in the other direction as well, and an output pin that is left in a HIGH state will have the pullup resistors set if switched to an input with pinMode().
+</p>
+<p class='vspace'></p><h4>Pins Configured as Input Pulldown</h4>
+<p>Pins can be configured to support pulldown resistors.
+<p class='vspace'></p>NOTE: Launchpad on-board button does not support <strong>INPUT_PULLDOWN</strong> for PinMode().  
+</p>
+<pre>
+pinMode(pin, INPUT_PULLDOWN);           // set pin to input and enable internal pulldown resistor
+</pre>
+<p class='vspace'></p><h4>See Also</h4>
+<ul><li><a class='wikilink' href='PinMode.html'>pinMode()</a>
+</li><li><a class='wikilink' href='DigitalWrite.html'>digitalWrite()</a>
+</li><li><a class='wikilink' href='DigitalRead.html'>digitalRead()</a>
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

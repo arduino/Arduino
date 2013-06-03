@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Energia Build Process</h2>
+<h3>Overview</h3>
+<p>A number of things have to happen for your Energia code to get onto the LaunchPad board.  First, the Energia environment performs some small transformations to make sure that the code is correct C or C++ (two common programming languages).  It then gets passed to a compiler (MSPGCC), which turns the human readable code into machine readable instructions (or object files).  Then, your code gets combined with (linked against), the standard Energia libraries that provide basic functions like digitalWrite() or Serial.print().  The result is a single Intel hex file, which contains the specific bytes that need to be written to the program memory of the chip on the LaunchPad.  This file is then uploaded to the board: transmitted over the USB or serial connection via the bootloader already on the chip or with external programming hardware.
+</p>
+<p class='vspace'></p><h3>Multi-file sketches</h3>
+<p>A sketch can contain multiple files (tabs).  To manage them, click on the right-facing arrow just above the scroll bar near the top of the environment.  Tabs have one of four extensions: no extension, .c, .cpp, or .h (if you provide any other extension, the period will be converted to an underscore).  When your sketch is compiled, all tabs with no extension are concatenated together to form the "main sketch file".  Tabs with .c or .cpp extensions are compiled separately.  To use tabs with a .h extension, you need to #include it (using "double quotes" not &lt;angle brackets&gt;).  
+</p>
+<p class='vspace'></p><h3>Transformations to the main sketch file</h3>
+<p>The Energia environment performs a few transformations to your main sketch file (the concatenation of all the tabs in the sketch without extensions) before passing it to the compiler.  
+</p>
+<p class='vspace'></p><p>First, #include "Energia.h", or for versions less than 1.0, #include "<span class='wikiword'>WProgram</span>.h" is added to the top of your sketch. This header file (found in &lt;ENERGIA&gt;/hardware/cores/&lt;CORE&gt;/) includes all the defintions needed for the standard Energia core. 
+</p>
+<p class='vspace'></p><p>Next, the environment searches for function definitions within your main sketch file and creates declarations (prototypes) for them.  These are inserted after any comments or pre-processor statements (#includes or #defines), but before any other statements (including type declarations).  This means that if you want to use a custom type as a function argument, you should declare it within a separate header file.  Also, this generation isn't perfect: it won't create prototypes for functions that have default argument values, or which are declared within a namespace or class. 
+</p>
+<p class='vspace'></p><p>Finally, the contents of the current target's main.cxx file are appended to the bottom of your sketch.  
+</p>
+<p class='vspace'></p><h3>Targets</h3>
+<p>The Energia environment supports multiple target boards with different chips, CPU speeds, etc.  These are defined in a board <a class='wikilink' href='Guide_Preferences.html'>preferences file</a>.  Relevant variables include:
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.name: the name to display in the Boards menu
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.build.mcu: the microcontroller on the board.
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.f_cpu: the clock speed at which the microcontroller operates.
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.core: which sub-directory of the hardware/cores/ directory to link sketches against (normally "energia").
+</p>
+<p class='vspace'></p><p>Also useful is this setting in the main preferences.txt file:
+</p>
+<p class='vspace'></p><p>build.verbose: whether or not to print debugging messages while building a sketch (e.g. "false").  If true, will print the complete command line of each external command executed as part of the build process.
+</p>
+<p class='vspace'></p><p><em>Note:</em> build.extension is <strong>unused</strong> - the main sketch file is always treated as a .cpp file.
+</p>
+<p class='vspace'></p><h3>Build process</h3>
+<p>Sketches are compiled by MSPGCC.
+</p>
+<p class='vspace'></p><p>The include path includes the sketch's directory, the target directory (&lt;ENERGIA&gt;/hardware/core/&lt;CORE&gt;/), as well as any library directories (in &lt;ENERGIA&gt;/hardware/libraries/) which contain a header file which is included by the main sketch file.
+</p>
+<p class='vspace'></p><p>When you verify a sketch, it is built in a temporary directory in the system temp directory (e.g. /tmp on the Mac).  When you upload it, it is built in the applet/ subdirectory of the sketch's directory (which you can access with the "Show Sketch Folder" item in the "Sketch" menu).
+</p>
+<p class='vspace'></p><p>The .c and .cpp files of the target are compiled and output with .o extensions to this directory, as is the main sketch file and any other .c or .cpp files in the sketch and any .c or .cpp files in any libraries which are #included in the sketch.
+</p>
+<p class='vspace'></p><p>These .o files are then linked together into a static library and the main sketch file is linked against this library.  Only the parts of the library needed for your sketch are included in the final .hex file, reducing the size of most sketches.
+</p>
+<p class='vspace'></p><p>The .hex file is the final output of the compilation which is then uploaded to the board.  During a "Verify" the .hex file is written to /tmp (on Mac and Linux) or \Documents and Settings\&lt;USER&gt;\Local Settings\Temp (on Windows).  During upload, it's written to the applet sub-directory of the sketch directory (which you can open with the "Show Sketch Folder" item in the Sketch menu).
+</p>
+<p class='vspace'></p><h3>Upload process</h3>
+<p>Sketches are uploaded by mspflasher.
+</p>
+<p class='vspace'></p><p>The upload process is also controlled by variables in the boards and main preferences files.  Those in the boards file include:
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.upload.protocol: the protocol that avrdude should use to talk to the board (typically "stk500").
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.upload.speed: the speed (baud rate) avrdude should use when uploading sketches (typically "19200").
+</p>
+<p class='vspace'></p><p>&lt;BOARD&gt;.upload.maximum_size: the maximum size for a sketch on the board (dependent on the chip and the size of the bootloader).
+</p>
+<p class='vspace'></p><p>And in the main preferences file:
+</p>
+<p class='vspace'></p><p>upload.verbose: whether or not to dump debugging messages while upload a sketch to a board (defaults to "false").
+</p>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

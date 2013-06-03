@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Communication</em>
+</p>
+<p class='vspace'></p><h3>Dimmer</h3>
+<p>This example shows how to send data from a personal computer to a the MSP430 LaunchPad,  to control the brightness of an LED. The data is sent in individual bytes, each of which ranges in value from 0 to 255. The LaunchPad reads these bytes and uses them to set the brightness of the LED. You can send bytes to the LaunchPad from any software that can access the computer serial port. Example for <a href='http://www.processing.org'>Processing</a> is shown below.
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>LED
+</li><li>220 ohm resistor
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>The Serial Monitor in Energia, allows you to send and read information between the Launchpad and the computer connected to it.  
+</p>
+<p>A Green LED is connected to pin 14 on the Launchpad. Use an appropriate resistor as needed if connecting an LED from a Breadboard. For most common LEDs, you can usually do without the resistor, as the current output of the digital I/O pins is limited.
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img height='250px' src='../reference/img/Dimmer_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/Dimmer_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<p>The Processing sketch in the code sample below will send bytes out the serial port to the LaunchPad to dim the LED.</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Dimmer
+
+  Demonstrates the sending data from the computer to the Launchpad,
+  in this case to control the brightness of an LED. The data is sent
+  in individual bytes, each of which ranges from 0 to 255. The Launchpad
+  reads these bytes and uses them to set the brightness of the LED.
+
+  The circuit:
+  LED attached from digital pin 2 to ground.
+  Serial connection to Processing, Max/MSP, or another serial application
+
+  created 2006
+  by David A. Mellis
+  modified 30 Aug 2011
+  by Tom Igoe and Scott Fitzgerald
+  Modified 15 April 2013
+  By Sean Alvarado
+
+  This example code is in the public domain.
+
+*/
+
+const int ledPin = 14; // the pin that the Green LED is attached to on the Launchpad
+
+void setup()
+{
+  // initialize the serial communication:
+  Serial.begin(9600);
+  // initialize the ledPin as an output:
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  byte brightness;
+
+  // check if data has been sent from the computer:
+  if (Serial.available()) {
+    // read the most recent byte (which will be from 0 to 255):
+    brightness = Serial.read();
+    // set the brightness of the LED:
+    analogWrite(ledPin, brightness);
+  }
+}
+
+
+/* 
+// Processing code for this example
+// Dimmer - sends bytes over a serial port
+// by David A. Mellis
+// Modified 16 April 2013
+// by Sean Alvarado
+// This example code is in the public domain.
+
+import processing.serial.*;
+Serial port;
+
+void setup() {
+  size(256, 150);
+
+  println("Available serial ports:");
+  println(Serial.list());
+
+  // Uses the first port in this list (number 0). Change this to
+  // select the port corresponding to your Launchpad. The last
+  // parameter (e.g. 9600) is the speed of the communication. It
+  // has to correspond to the value passed to Serial.begin() in your
+  // Energia sketch.
+  port = new Serial(this, Serial.list()[0], 9600); 
+
+  // If you know the name of the port used by the Launchpad, you
+  // can specify it directly like this.
+  //port = new Serial(this, "COM1", 9600);
+}
+
+void draw() {
+  // draw a gradient from black to white
+  for (int i = 0; i < 256; i++) {
+    stroke(i);
+    line(i, 0, i, 150);
+  }
+
+  // write the current X-position of the mouse to the serial port as
+  // a single byte
+  port.write(mouseX);
+}
+*/
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Serial.html'>serial</a>()
+</li><li><a class='wikilink' href='Serial_Read.html'>serial.read</a>()
+</li><li><a class='wikilink' href='AnalogRead.html'>analogRead</a>()
+</li><li><a class='wikilink' href='AnalogWrite.html'>analogWrite</a>()
+</li><li><a class='wikilink' href='Tutorial_Graph.html'>Graph</a> - send data to the computer and graph it in Processing.
+</li><li><a class='wikilink' href='Tutorial_PhysicalPixel.html'>Physical Pixel</a> - turn an LED on and off by sending data from Processing.
+</li><li><a class='wikilink' href='Tutorial_VirtualColorMixer.html'>Virtual Color Mixer</a> - send multiple variables from a LaunchPad to the computer and read them in Processing. 
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponse.html'>Serial Call Response</a> - send multiple variables using a call and response (handshaking) method.
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponseASCII.html'>Serial Call and Response ASCII</a> - send multiple vairables using a call-and-response (handshaking) method, and ASCII-encoding the values before sending.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase2.html'>Serial Input (Switch (case) Statement)</a> - How to take different actions based 0n characters received by the serial port. 
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

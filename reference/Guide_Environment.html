@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Environment </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Energia Development Environment</h2>
+<p>The Energia development environment contains a text editor for writing code, a message area, a text console, a toolbar with buttons for common functions, and a series of menus.  It connects to the LaunchPad hardware to upload programs and communicate with them.
+</p>
+<p class='vspace'></p><p>Software written using Energia are called <strong>sketches</strong>. These sketches are written in the text editor. Sketches are saved with the file extension .ino. It has features for cutting/pasting and for searching/replacing text. The message area gives feedback while saving and exporting and also displays errors. The console displays text output by the Energia environment including complete error messages and other information. The bottom righthand corner of the window displays the current board and serial port. The toolbar buttons allow you to verify and upload programs, create, open, and save sketches, and open the serial monitor:
+</p>
+<p class='vspace'></p><p><strong>NB: Versions of the IDE prior to 1.0 saved sketches with the extension .pde. It is possible to open these files with version 1.0, you will be prompted to save the sketch with the .ino extension on save.</strong>
+</p>
+<p class='vspace'></p>
+<p class='vspace'></p><table  width='100%'><tr><td  width='40' valign='top'>
+<p class='vspace'></p><div><img src='../reference/img/VerifyButton.png' alt='' title='' /></div>
+<p class='vspace'></p></td><td  valign='top'>
+<p class='vspace'></p><p><em>Verify</em> <br clear='all' /> Checks your code for errors.
+</p>
+<p class='vspace'></p></td></tr><tr><td  valign='top'>
+<p class='vspace'></p><div><img src='../reference/img/UploadButton.png' alt='' title='' /></div>
+<p class='vspace'></p></td><td  valign='top'>
+<p class='vspace'></p><p><em>Upload</em> <br clear='all' />  Compiles your code and uploads it to the Energia I/O board.  See <a href='#uploading'>uploading</a> below for details.
+</p>
+<p class='vspace'></p><p>Note: If you are using an external programmer, you can hold down the "shift" key on your computer when using this icon. The text will change to "Upload using Programmer" 
+</p>
+<p class='vspace'></p></td></tr><tr><td  valign='top'>
+<p class='vspace'></p><div><img src='../reference/img/NewButton.png' alt='' title='' /></div>
+<p class='vspace'></p></td><td  valign='top'>
+<p class='vspace'></p><p><em>New</em> <br clear='all' />  Creates a new sketch.
+</p>
+<p class='vspace'></p></td></tr><tr><td  valign='top'>
+<p class='vspace'></p><div><img src='../reference/img/OpenButton.png' alt='' title='' /></div>
+<p class='vspace'></p></td><td  valign='top'>
+<p class='vspace'></p><p><em>Open</em> <br clear='all' />  Presents a menu of all the sketches in your sketchbook.  Clicking one will open it within the current window. 
+</p>
+<p class='vspace'></p><p>Note: due to a bug in Java, this menu doesn't scroll; if you need to open a sketch late in the list, use the <strong>File | Sketchbook</strong> menu instead.
+</p>
+<p class='vspace'></p></td></tr><tr><td  valign='top'>
+<p class='vspace'></p><div><img src='../reference/img/SaveButton.png' alt='' title='' /></div>
+<p class='vspace'></p></td><td  valign='top'>
+<p class='vspace'></p><p><em>Save</em> <br clear='all' />  Saves your sketch.
+</p>
+<p class='vspace'></p></td></tr><tr><td  valign='top'>
+<p class='vspace'></p><div><img src='../reference/img/SerialMonitorButton.png' alt='' title='' /></div>
+<p class='vspace'></p></td><td  valign='top'>
+<p class='vspace'></p><p><em>Serial Monitor</em> <br clear='all' />  Opens the <a href='#serialmonitor'>serial monitor</a>.
+</p>
+<p class='vspace'></p></td></tr></table>
+<p class='vspace'></p><p>Additional commands are found within the five menus: <strong>File</strong>, <strong>Edit</strong>, <strong>Sketch</strong>, <strong>Tools</strong>, <strong>Help</strong>. The menus are context sensitive which means only those items relevant to the work currently being carried out are available.
+</p>
+<p class='vspace'></p><h4>Edit</h4>
+<ul><li><em>Copy for Forum</em> <br clear='all' /> Copies the code of your sketch to the clipboard in a form suitable for posting to the forum, complete with syntax coloring.
+<p class='vspace'></p></li><li><em>Copy as HTML</em> <br clear='all' /> Copies the code of your sketch to the clipboard as HTML, suitable for embedding in web pages.
+</li></ul><p class='vspace'></p><h4>Sketch</h4>
+<ul><li><em>Verify/Compile</em> <br clear='all' /> Checks your sketch for errors.
+<p class='vspace'></p></li><li><em>Show Sketch Folder</em> <br clear='all' /> Opens the current sketch folder.
+<p class='vspace'></p></li><li><em>Add File...</em> <br clear='all' /> Adds a source file to the sketch (it will be copied from its current location). The new file appears in a new tab in the sketch window. Files can be removed from the sketch using the tab menu.
+<p class='vspace'></p></li><li><em>Import Library</em> <br clear='all' /> Adds a library to your sketch by inserting #include statements at the code of your code.  For more details, see <a href='#libraries'>libraries</a> below.
+</li></ul><p class='vspace'></p><h4>Tools</h4>
+<ul><li><em>Auto Format</em> <br clear='all' /> This formats your code nicely: i.e. indents it so that opening and closing curly braces line up, and that the statements instead curly braces are indented more.
+<p class='vspace'></p></li><li><em>Archive Sketch</em> <br clear='all' /> Archives a copy of the current sketch in .zip format. The archive is placed in the same directory as the sketch.
+<p class='vspace'></p></li><li><em>Serial Monitor</em> <br clear='all' /> Open the Serial Monitor.
+<p class='vspace'></p></li><li><em>Board</em> <br clear='all' /> Select the board that you're using. See below for <a href='#boards'>descriptions of the various boards</a>.
+<p class='vspace'></p></li><li><em>Serial Port</em> <br clear='all' /> This menu contains all the serial devices (real or virtual) on your machine.  It should automatically refresh every time you open the top-level tools menu.
+<p class='vspace'></p></li><li><em>Programmer</em> <br clear='all' /> For selecting a harware programmer when programming a board or chip and not using the onboard USB-serial connection. Normally you won't need this.
+</li></ul><p class='vspace'></p><p><a name='sketchbook' id='sketchbook'></a>
+</p><h3>Sketchbook</h3>
+<p>The Energia environment uses the concept of a sketchbook: a standard place to store your programs (or sketches).  The sketches in your sketchbook can be opened from the <strong>File &gt; Sketchbook</strong> menu or from the <strong>Open</strong> button on the toolbar.  The first time you run Energia, it will automatically create a directory for your sketchbook.  You can view or change the location of the sketchbook location from with the <strong>Preferences</strong> dialog.
+</p>
+<p class='vspace'></p><h3>Tabs, Multiple Files, and Compilation</h3>
+<p>Allows you to manage sketches with more than one file (each of which appears in its own tab).  These can be normal Energia code files (no extension), C files (.c extension), C++ files (.cpp), or header files (.h). 
+</p>
+<p class='vspace'></p><p><a name='uploading' id='uploading'></a>
+</p><h3>Uploading</h3>
+<p>Before uploading your sketch, you need to select the correct items from the <strong>Tools &gt; Board</strong> and  <strong>Tools &gt; Serial Port</strong> menus.  The <a href='#boards'>boards</a> are described below.  On the Mac, the serial port is probably something like <strong>/dev/tty.usbmodem241</strong> or <strong>/dev/<span class='wikiword'>tty.USA19QW1b1P1</span>.1</strong> (for a serial board connected with a Keyspan USB-to-Serial adapter).  On Windows, it's probably <strong><span class='wikiword'>COM1</span></strong> or <strong><span class='wikiword'>COM2</span></strong> (for a serial board) or <strong><span class='wikiword'>COM4</span></strong>, <strong><span class='wikiword'>COM5</span></strong>, <strong><span class='wikiword'>COM7</span></strong>, or higher (for a USB board) - to find out, you look for USB serial device in the ports section of the Windows Device Manager.  On Linux, it should be <strong>/dev/ttyUSB0</strong>, <strong>/dev/ttyUSB1</strong> or similar.
+</p>
+<p class='vspace'></p><p>Once you've selected the correct serial port and board, press the upload button in the toolbar or select the <strong>Upload</strong> item from the <strong>File</strong> menu.  Current LaunchPad boards will reset automatically and begin the upload. The Energia environment will display a message when the upload is complete, or show an error.  
+</p>
+<p class='vspace'></p><p><a name='libraries' id='libraries'></a>
+</p><h3>Libraries</h3>
+<p>Libraries provide extra functionality for use in sketches, e.g. working with hardware or manipulating data.  To use a library in a sketch, select it from the <strong>Sketch &gt; Import Library</strong> menu.  This will insert one or more <strong>#include</strong> statements at the top of the sketch and compile the library with your sketch.  Because libraries are uploaded to the board with your sketch, they increase the amount of space it takes up.  If a sketch no longer needs a library, simply delete its <strong>#include</strong> statements from the top of your code.
+</p>
+<p class='vspace'></p><p>There is a <a class='wikilink' href='Libraries.html'>list of libraries</a> in the reference.  Some libraries are included with the Energia software.  Others can be downloaded from a variety of sources.  To install these third-party libraries, create a directory called <strong>libraries</strong> within your <a href='#sketchbook'>sketchbook directory</a>.  Then unzip the library there.  For example, to install the <span class='wikiword'>DateTime</span> library, its files should be in the <strong>/<span class='wikiword'>libraries/DateTime</span></strong> sub-folder of your sketchbook folder.
+</p>
+<p class='vspace'></p><p>To write your own library, see <a class='wikilink' href='Tutorial_Library.html'>this tutorial</a>.
+</p>
+<p class='vspace'></p><p><a name='thirdpartyhardware' id='thirdpartyhardware'></a>
+</p><h3>Third-Party Hardware</h3>
+<p>Support for third-party hardware can be added to the <strong>hardware</strong> directory of your sketchbook directory.  Platforms installed there may include board definitions (which appear in the board menu), core libraries, bootloaders, and programmer definitions.  To install, create the <strong>hardware</strong> directory, then unzip the third-party platform into its own sub-directory.  (Don't use "energia" as the sub-directory name or you'll override the built-in Energia platform.)  To uninstall, simply delete its directory.  
+</p>
+<p class='vspace'></p><p><a name='serialmonitor' id='serialmonitor'></a>
+</p><h3>Serial Monitor</h3>
+<p>Displays serial data being sent from the LaunchPad board (USB or serial board).  To send data to the board, enter text and click on the "send" button or press enter.  Choose the baud rate from the drop-down that matches the rate passed to <strong>Serial.begin</strong> in your sketch.  Note that on Mac or Linux, the LaunchPad board will reset (rerun your sketch from the beginning) when you connect with the serial monitor.
+</p>
+<p class='vspace'></p><p><a name='preferences' id='preferences'></a>
+</p><h3>Preferences</h3>
+<p>Some preferences can be set in the preferences dialog (found under the <strong>Energia</strong> menu on the Mac, or <strong>File</strong> on Windows and Linux).  The rest can be found in the preferences file, whose location is shown in the preference dialog.
+</p>
+<p class='vspace'></p><p><a name='boards' id='boards'></a>
+</p><h3>Boards</h3>
+<p>The board selection has two effects: it sets the parameters (e.g. CPU speed and baud rate) used when compiling and uploading sketches; and sets and the file and fuse settings used by the burn bootloader command.  Some of the board definitions differ only in the latter, so even if you've been uploading successfully with a particular selection you'll want to check it before burning the bootloader.
+</p>
+<p class='vspace'></p>
+<p>For instructions on installing support for other boards, see <a href='#thirdpartyhardware'>third-party hardware</a> above.
+</p>
+<p class='vspace'></p></li></ul>
+<p class='vspace'></p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='Guide_Environment?action=edit.html'>Edit Page</a> | <a href='Guide_Environment?action=diff.html'>Page History</a> | <a href='Guide_Environment?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

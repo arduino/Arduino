@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Getting Started </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Getting Started with Energia</h2>
+<table  width='100%' border='0' cellpadding='5' cellspacing='0'><tr><td  width='67%' valign='top'>
+<p><a class='wikilink' href='Guide_Introduction.html'>Introduction</a>: What Energia is and why you'd want to use it.
+</p>
+<p class='vspace'></p><p>Installation: Step-by-step instructions for setting up the Energia software and connecting it to a Texas Instruments LaunchPad board. 
+</p>
+<p class='vspace'></p><ul><li><a class='wikilink' href='Guide_Windows.html'>Windows</a>
+</li><li><a class='wikilink' href='Guide_MacOSX.html'>Mac OS X</a>
+</li><li><a class='wikilink' href='Guide_Linux.html' rel='nofollow'>Linux</a>
+</li></ul><p class='vspace'></p><p><a class='wikilink' href='Guide_Environment.html'>Environment</a>: Description of the Energia development environment.
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_Troubleshooting.html'>Troubleshooting</a>: Advice on what to do if things don't work.
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_Preferences.html'>Preferences</a>: the Energia preferences file contains many options for customizing the way Energia compiles and upload sketches.
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_BuildProcess.html'>Build Process</a>: find out what steps your sketch goes through on its way to the LaunchPad board.
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='PinMapping.html'>Pin Mapping</a>: a complete list of all Pin Mapping images and instructions for each Energia supported hardware board.
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='Libraries.html'>Libraries</a>: a complete list of all add-on libraries supported by Energia.
+</p>
+<p class='vspace'></p><h2>Foundations</h2>
+<p>This page contains explanations of some of the elements of the LaunchPad hardware and Energia software and the concepts behind them.  
+</p><h3>Basics</h3>
+<ul><li><a class='wikilink' href='Tutorial_Sketch.html'>Sketch</a>: The various components of a sketch and how they work.
+</li></ul><p class='vspace'></p><h3>Microcontrollers</h3>
+<ul><li><a class='wikilink' href='Tutorial_DigitalPins.html'>Digital Pins</a>: How the pins work and what it means for them to be configured as inputs or outputs.
+<p class='vspace'></p></li><li><a class='wikilink' href='Tutorial_AnalogInputPins.html'>Analog Input Pins</a>: Details about the analog-to-digital conversion and other uses of the pins.
+<p class='vspace'></p></li><li><a class='wikilink' href='Tutorial_PWM.html'>PWM</a>: How the analogWrite() function simulates an analog output using pulse-width modulation.
+<p class='vspace'></p></li><li><a class='wikilink' href='Tutorial_Memory.html'>Memory</a>: The various types of memory available on the LaunchPad board.
+</li></ul><p class='vspace'></p><h3>Programming Technique</h3>
+<ul><li><a class='wikilink' href='VariableDeclaration.html'>Variables</a> How to define and use variables. 
+<p class='vspace'></p></li><li><a class='wikilink' href='FunctionDeclaration.html'>Functions</a>: How to define and use functions.
+<p class='vspace'></p></li><li><a class='wikilink' href='Tutorial_Library.html'>Libraries</a>: How to write your own library.
+</li></ul><p class='vspace'></p>
+<h2>Tutorials</h2>
+<h3>Core Functions</h3>
+<p>Simple programs that demonstrate basic Energia commands.  These are included with the Energia environment; to open them, click the Open button on the toolbar and look in the <strong>examples</strong> folder.
+</p>
+<p class='vspace'></p><h4>1.Basics</h4>
+<ul><li><a class='wikilink' href='Tutorial_BareMinimum.html'>BareMinimum</a>: The bare minimum of code needed to start an Energia sketch.
+</li><li><a class='wikilink' href='Tutorial_Blink.html'>Blink</a>: Turn an LED on and off.
+</li><li><a class='wikilink' href='Tutorial_DigitalReadSerial.html'>DigitalReadSerial</a>: Read a switch, print the state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_AnalogReadSerial.html'>AnalogReadSerial</a>: Read a potentiometer, print it's state out to the Energia Serial Monitor.
+</li><li><a class='wikilink' href='Tutorial_Fade.html'>Fade</a>: Demonstrates the use of analog output to fade an LED.
+</li><li><a class='wikilink' href='Tutorial_ReadAnalogVoltage.html'>ReadAnalogVoltage</a> : Reads an analog input and prints the voltage to the serial monitor
+</li></ul><p class='vspace'></p><h4>2.Digital</h4>
+<ul><li><a class='wikilink' href='Tutorial_BlinkWithoutDelay.html'>Blink Without Delay</a>: blinking an LED without using the delay() function.
+</li><li><a class='wikilink' href='Tutorial_Button.html'>Button</a>: use a pushbutton to control an LED.
+</li><li><a class='wikilink' href='Tutorial_Debounce.html'>Debounce</a>: read a pushbutton, filtering noise.
+</li><li><a class='wikilink' href='Tutorial_ButtonStateChange.html'>Button State Change</a>: counting the number of button pushes.
+</li><li><a class='wikilink' href='Tutorial_InputPullupSerial.html'>Input Pullup Serial</a>: Demonstrates the use of INPUT_PULLUP with pinMode().
+
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Tone'>Tone</a>: play a melody with a Piezo speaker.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Tone2'>Pitch follower</a>: play a pitch on a piezo speaker depending on an analog input.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Tone3'>Simple Keyboard</a>: a three-key musical keyboard using force sensors and a piezo speaker.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Tone4'>Tone4</a>: play tones on multiple speakers sequentially using the tone() command.
+</li></ul><p class='vspace'></p><h4>3.Analog</h4>
+<ul><li><a class='wikilink' href='Tutorial_AnalogInOutSerial.html'>AnalogInOutSerial</a>: read an analog input pin, map the result, and then use that data to dim or brighten an LED.
+</li><li><a class='wikilink' href='Tutorial_AnalogInput.html'>Analog Input</a>: use a potentiometer to control the blinking of an LED.
+</li><li><a class='wikilink' href='Tutorial_AnalogWrite.html'>AnalogWrite</a>: fade 7  <span class='wikiword'>LEDs</span> on and off, one by one, using an MSP430G2 LaunchPad board.
+</li><li><a class='wikilink' href='Tutorial_Calibration.html'>Calibration</a>: define a maximum and minimum for expected analog sensor values.
+</li><li><a class='wikilink' href='Tutorial_Fading.html'>Fading</a>: use an analog output (PWM pin) to fade an LED.
+</li><li><a class='wikilink' href='Tutorial_Smoothing.html'>Smoothing</a>: smooth multiple readings of an analog input.
+</li></ul><p class='vspace'></p><h4>4.Communication</h4>
+<p><em>These examples include code that allows the LaunchPad to talk to Processing sketches running on the computer.  For more information or to download Processing, see <a class='urllink' href='http://processing.org/' rel='nofollow'>processing.org</a>.</em> 
+</p>
+<p class='vspace'></p><ul><li><a class='wikilink' href='Tutorial_ReadASCIIString.html'>ReadASCIIString</a>: parse a comma-separated string of ints to fade an LED
+</li><li><a class='wikilink' href='Tutorial_ASCIITable.html'>ASCII Table</a>: demonstrates Energia's advanced serial output functions.
+</li><li><a class='wikilink' href='Tutorial_Dimmer.html'>Dimmer</a>: move the mouse to change the brightness of an LED.
+</li><li><a class='wikilink' href='Tutorial_Graph.html'>Graph</a>: send data to the computer and graph it in Processing.
+</li><li><a class='wikilink' href='Tutorial_PhysicalPixel.html'>Physical Pixel</a>: turn a LED on and off  by sending data to your LaunchPad from Processing.
+</li><li><a class='wikilink' href='Tutorial_VirtualColorMixer.html'>Virtual Color Mixer</a>: send multiple variables from LaunchPad to your computer and read them in Processing.
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponse.html'>Serial Call Response</a>: send multiple vairables using a call-and-response (handshaking) method.
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponseASCII.html'>Serial Call Response ASCII</a>: send multiple variables using a call-and-response (handshaking) method, and ASCII-encode the values before sending.
+</li><li><a class='wikilink' href='Tutorial_SerialEvent.html'>SerialEvent</a>: Demonstrates the use of <span class='wikiword'>SerialEvent</span>(). 
+</li><li><a class='wikilink' href='Tutorial_SwitchCase2.html'>Serial input (Switch (case) Statement)</a>: how to take different actions based on characters received by the serial port.
+
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Midi'>MIDI</a>: send MIDI note messages serially.
+</li><li><a class='wikilink' href='Tutorial_MultiSerial.html'>MultiSerial</a>: use two of the serial ports available on the LaunchPad. 
+</li></ul><p class='vspace'></p><h4>5.Control Structures</h4>
+<ul><li><a class='wikilink' href='Tutorial_IfStatement.html'>If Statement</a> (Conditional): how to use an if statement to change output conditions based on changing input conditions.
+</li><li><a class='wikilink' href='Tutorial_ForLoop.html'>For Loop</a>: controlling multiple <span class='wikiword'>LEDs</span> with a for loop.
+</li><li><a class='wikilink' href='Tutorial_Array.html'>Array</a>: a variation on the For Loop example that demonstrates how to use an array.
+</li><li><a class='wikilink' href='Tutorial_WhileLoop.html'>While Loop</a>: how to use a while loop to calibrate a sensor while a button is being read.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase.html'>Switch Case</a>: how to choose between a discrete number of values.  Equivalent to multiple If statements. This example shows how to divide a sensor's range into a set of four bands and to take four different actions depending on which band the result is in.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase2.html'>Switch Case 2</a>: a second switch-case example, showing how to take different actions based in characters received in the serial port.
+</li></ul><p class='vspace'></p><h4>6.Strings</h4>
+<ul><li><a class='wikilink' href='Tutorial_StringAdditionOperator.html'>StringAdditionOperator</a>: add strings together in a variety of ways.
+</li><li><a class='wikilink' href='Tutorial_StringAppendOperator.html'>StringAppendOperator</a>: append data to strings.
+</li><li><a class='wikilink' href='Tutorial_StringCaseChanges.html'>StringCaseChanges</a>: change the case of a string.
+</li><li><a class='wikilink' href='Tutorial_StringCharacters.html'>StringCharacters</a>: get/set the value of a specific character in a string.
+</li><li><a class='wikilink' href='Tutorial_StringComparisonOperators.html'>StringComparisonOperators</a>: compare strings alphabetically.
+</li><li><a class='wikilink' href='Tutorial_StringConstructors.html'>StringConstructors</a>: how to initialize string objects.
+</li><li><a class='wikilink' href='Tutorial_StringIndexOf.html'>StringIndexOf</a>: look for the first/last instance of a character in a string.
+</li><li><a class='wikilink' href='Tutorial_StringLengthTrim.html'>StringLength &amp; StringLengthTrim</a>: get and trim the length of a string.
+</li><li><a class='wikilink' href='Tutorial_StringReplace.html'>StringReplace</a>: replace individual characters in a string.
+</li><li><a class='wikilink' href='Tutorial_StringStartsWithEndsWith.html'>StringStartsWithEndsWith</a>: check which characters/substrings a given string starts or ends with. 
+</li><li><a class='wikilink' href='Tutorial_StringSubstring.html'>StringSubstring</a>: look for "phrases" within a given string.
+</li></ul><p class='vspace'></p><h4>7.Sensors</h4>
+<ul><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/ADXL3xx'>ADXL3xx</a>: read an <span class='wikiword'>ADXL3xx</span> accelerometer.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Knock'>Knock</a>: detect knocks with a piezo element.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Memsic2125'>Memsic2125 </a>: two-axis acceleromoter.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/Ping'>Ping</a>: detecting objects with an ultrasonic range finder.
+</li></ul><p class='vspace'></p><h4>8.Display</h4>
+<ul><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/BarGraph'>LED Bar Graph</a>: how to make an LED bar graph.
+</li><li><a class='wikilink' href='http://arduino.cc/en/Tutorial/RowColumnScanning'>Row Column Scanning</a>: how to control an 8x8 matrix of <span class='wikiword'>LEDs</span>.
+</li></ul>
+
+<p class='vspace'></p><h2>Extending and Developing Energia</h2>
+<table  width='100%' border='0' cellpadding='5' cellspacing='0'><tr><td  width='50%' valign='top'>
+<p><strong>Software</strong>
+</p>
+<p class='vspace'></p><ul><li><a class='wikilink' href='Tutorial_Library.html'>Writing a Library</a>: creating libraries to extend the functionality of Energia.  Goes step-by-step through the process of making a library from a sketch.
+<p class='vspace'></p></li><li><a class='wikilink' href='Guide_Preferences.html'>Preferences</a>: the Energia preferences file contains many options for customizing the way Energia compiles and upload sketches.
+<p class='vspace'></p></li><li><a class='wikilink' href='Guide_BuildProcess.html'>Build Process</a>: find out what steps your sketch goes through on its way to the LaunchPad board.
+<p class='vspace'></p></li><li><a class='urllink' href='https://github.com/energia/Energia' rel='nofollow'>Source</a>: online browsing of the Energia source code (<em>on an external website</em>)
+<p class='vspace'></p></li><li><a class='urllink' href='https://github.com/energia/Energia/issues' rel='nofollow'>Bugs</a>: the current list of Energia software bugs (<em>on an external website</em>). 
+<p class='vspace'></p></li><li><a class='urllink' href='https://github.com/energia/Energia/wiki' rel='nofollow'>Wiki</a>: Energia project technical details, enhancements, issues, references can be found on the Wiki  (<em>on an external website</em>). 
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p>Energia sketches are C/C++ based and compiled with the open-source compiler MSPGCC.  The Energia language comes from <a class='urllink' href='http://wiring.org.co/' rel='nofollow'>Wiring</a>.  The Energia environment is based on <a class='urllink' href='http://processing.org/' rel='nofollow'>Processing</a> and includes modifications made by Wiring.
+</p><p class='vspace'></p><p><strong>Hardware</strong>
+</p>
+<p class='vspace'></p></li><li><a class='urllink' href='http://www.ti.com/byob' rel='nofollow'>BYOB (Build Your Own BoosterPack)</a>: instructions for designing and building your own LaunchPad compatible BoosterPack.
+</li></ul>
+<p class='vspace'></p><p>Other resources:
+</p>
+<p class='vspace'></p></li><li><a class='urllink' href='http://ladyada.net/make/mintyboost/process.html' rel='nofollow'>Minty Boost process</a>: no microcontroller, but a great explanation on how to put together a kit, from idea to product.
+</li></ul><p class='vspace'></p></td></tr></table>
+<p class='vspace'></p></td>
+<td  width='33%' valign='top'>
+<p><a href='https://github.com/energia/Energia'><strong>Energia Source Code</strong></a></p>
+<p class='vspace'></p>
+<p><a href='http://forum.43oh.com/forum/28-energia/'><strong>Official 43oh Energia Forum</strong></a></p>
+<p class='vspace'></p>
+<p><a href='http://forum.stellarisiti.com/forum/63-energia/'><strong>Official Stellarisiti Energia Forum</strong></a></p>
+<p class='vspace'></p>
+<p><a href='https://github.com/energia/Energia/wiki'><strong>Energia GitHub Wiki</strong></a></p>
+<p class='vspace'></p>
+<p>Board instructions and pin mapping:</p>
+<p class='vspace'></p>
+<ul>
+<li><a class='wikilink' href='Guide_MSP430LaunchPad.html'>MSP430 LaunchPad</a></li>
+<li><a class='wikilink' href='Guide_MSP430FraunchPad.html'>MSP430 FraunchPad</a></li>
+<li><a class='wikilink' href='Guide_C2000LaunchPad.html'>C2000 LaunchPad</a></li>
+<li><a class='wikilink' href='Guide_StellarisLaunchPad.html'>Stellaris LaunchPad</a></li>
+<li><a class='wikilink' href='Guide_TivaCSeriesLaunchPad.html'>Tiva C Series LaunchPad</a></li>
+</ul>
+<p class='vspace'></p>
+<p>BoosterPack pin mapping:</p>
+<ul>
+<li><a class='wikilink' href='Guide_EducationalBoosterPack.html'>Educational BoosterPack</a>
+<li><a class='wikilink' href='Guide_CapacitiveTouchBoosterPack.html'>Capacitive Touch BoosterPack</a></li>
+<li><a class='wikilink' href='Guide_AnarenCC110LAIRBoosterPack.html'>Anaren CC110L AIR BoosterPack</a></li>
+</ul>
+
+
+<p class='vspace'></p></td></tr></table>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href='#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

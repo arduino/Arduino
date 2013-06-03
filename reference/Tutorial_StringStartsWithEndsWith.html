@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Strings</em>
+</p>
+<p class='vspace'></p><h3>String StartsWith and EndsWith Functions</h3>
+<p>The String functions <a href='StringStartsWith.html'>startsWith</a>() and <a href='StringEndsWith.html'>endsWith</a>() allow you to check what character or substring a given String starts or ends with. They're basically special cases of <a href='StringSubstring.html'>substring</a>.
+</p>
+<h3>Relevant Groundwork</h3>
+<p>None
+</p>
+<h3>Hardware Required</h3>
+<ul>
+<li>MSP-EXP430G2 LaunchPad</li>
+</ul>
+<h3>Circuit</h3>
+<p>Only LaunchPad is required for this example.
+</p>
+<img height='250px' src='../reference/img/Blink_bb.png' alt='' title='' />
+<p>image developed using <a href='http://fritzing.org'>Fritzing</a>. For more circuit examples, see the <a href='http://fritzing.org/projects'>Fritzing project page</a>.
+</p>
+<h3>Schematic</h3>
+<img height='400px' src='../reference/img/Blink_schem.png' alt='' title='' />
+<h3>Code Explanation</h3>
+<p>startsWith() and endsWith() can be used to look for a particular message header, or for a single character at the end of a String. They can also be used with an offset to look for a substring starting at a particular position. For example:
+</p>
+<pre>
+  stringOne = "HTTP/1.1 200 OK";
+  if (stringOne.startsWith("200 OK", 9)) {
+    Serial.println("Got an OK from the server"); 
+  }
+</pre><p class='vspace'></p>
+<p>This is functionally the same as this:
+</p>
+<pre>
+  stringOne = "HTTP/1.1 200 OK";
+  if (stringOne.substring(9) == "200 OK") {
+    Serial.println("Got an OK from the server"); 
+  }
+</pre>
+<p><strong>Caution:</strong> If you look for a position that's outside the range of the string,you'll get unpredictable results. For example, in the example above stringOne.startsWith("200 OK", 16) wouldn't check against the String itself, but whatever is in memory just beyond it. For best results, make sure the index values you use for startsWith and endsWith are between 0 and the String's length().
+</p><p class='vspace'></p>
+<h3>Code</h3>
+<pre>
+/*
+  String startWith() and endsWith()
+ 
+ Examples of how to use startsWith() and endsWith() in a String
+ 
+ created 27 July 2010
+ modified 2 Apr 2012
+ by Tom Igoe
+ 
+ This example code is in the public domain.
+ */
+
+void setup() {
+  // Open serial communications and wait for port to open:
+  Serial.begin(9600);
+
+  // send an intro:
+  Serial.println("\n\nString startsWith() and endsWith():");
+  Serial.println();
+}
+
+void loop() {
+  // startsWith() checks to see if a String starts with a particular substring:
+  String stringOne = "HTTP/1.1 200 OK";
+  Serial.println(stringOne);
+  if (stringOne.startsWith("HTTP/1.1")) {
+    Serial.println("Server's using http version 1.1"); 
+  } 
+
+  // you can also look for startsWith() at an offset position in the string:
+  stringOne = "HTTP/1.1 200 OK";
+  if (stringOne.startsWith("200 OK", 9)) {
+    Serial.println("Got an OK from the server"); 
+  } 
+
+  // endsWith() checks to see if a String ends with a particular character:
+  String sensorReading = "sensor = ";
+  sensorReading += analogRead(A0);
+  Serial.print (sensorReading);
+  if (sensorReading.endsWith(0)) {
+    Serial.println(". This reading is divisible by ten"); 
+  } 
+  else {
+    Serial.println(". This reading is not divisible by ten"); 
+
+  }
+
+  // do nothing while true:
+  while(true);
+}
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+<p>- Blink an LED if a string starts with a vowel
+</p>
+<p class='vspace'></p><p><strong>See Also</strong>
+</p><ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='Serial_Println.html'>println</a>()
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

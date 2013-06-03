@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Troubleshooting </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<h2>Energia Troubleshooting</h2>
+
+<p class='vspace'></p><p><a name='upload' id='upload'></a>
+</p><h3>Why I can't upload my programs to the LaunchPad board?</h3>
+<p>There are many pieces involved in getting a program onto your LaunchPad board, and if any of them aren't right, the upload can fail.  They include: the drivers for the board, the board and serial port selections in Energia, access to the serial port, the physical connection to the board, firmware, the bootloader on the main microcontroller on the board, the microcontroller's fuse settings, and more.  Here are some specific suggestions for troubleshooting each of the pieces.
+</p>
+<p class='vspace'></p><p><em>Energia Software</em>
+</p>
+<p class='vspace'></p><ul><li>Make sure you have the right item selected in the <strong>Tools &gt; Board</strong> menu. For more information on the board menu items, see the <a class='wikilink' href='Guide_Environment.html'>guide to the Energia environment</a>.
+<p class='vspace'></p></li><li>Then, check that the proper port is selected in the "Tools &gt; Serial Port" menu (if your port doesn't appear, restart the IDE with the board connected to the computer).  If you don't seem to have a serial port for your LaunchPad board, see the following information about drivers.
+</li></ul><p class='vspace'></p><p><em>Drivers</em>
+</p>
+<p class='vspace'></p><p>Drivers provide a way for software on your computer (i.e. Energia) to talk to hardware you connect to your computer (the LaunchPad board).  In the case of Energia, the drivers work by providing a virtual serial port (or virtual COM port).  
+</p>
+<p class='vspace'></p><p>The easiest way to check if the drivers for your board are installed correctly is by opening the <strong>Tools &gt; Serial Port</strong> menu in Energia with the LaunchPad board connected to your computer.  Additional menu items should appear relative to when you open the menu without the LaunchPad connected to your computer.  Note that it shouldn't matter what name the LaunchPad board's serial port gets assigned as long as that's the one you pick from the menu.
+</p>
+<p class='vspace'></p><p><em>Access to the Serial Port</em>
+</p>
+<p class='vspace'></p><ul><li>On Windows, if the software is slow to start or crashes on launch, or the Tools menu is slow to open, you may need to disable Bluetooth serial ports or other networked COM ports in the Device Manager.  Energia scans all the serial (COM) ports on your computer when it starts and when you open the Tools menu, and these networked ports can sometimes cause large delays or crashes.  
+<p class='vspace'></p></li><li>Check that you're not running any programs that scan all serial ports, like USB Cellular Wifi Dongle software (e.g. from Sprint or Verizon), PDA sync applications, Bluetooth-USB drivers (e.g. <span class='wikiword'>BlueSoleil</span>), virtual daemon tools, etc.
+<p class='vspace'></p></li><li>Make sure you don't have firewall software that blocks access to the serial port (e.g. <span class='wikiword'>ZoneAlarm</span>).
+<p class='vspace'></p></li><li>You may need to quit Processing, PD, vvvv, etc. if you're using them to read data over the USB or serial connection to the LaunchPad board.
+<p class='vspace'></p></li><li>On Linux, you might try running Energia as root, at least temporarily to see if fixes the upload.
+</li></ul><p class='vspace'></p><p><em>Physical Connection</em>
+</p>
+<p class='vspace'></p><ul><li>First make sure your board is on (the power LED is on) and connected to the computer.
+<p class='vspace'></p></li><li>The LaunchPad may have trouble connecting to a Mac through a USB hub.  If nothing appears in your "Tools &gt; Serial Port" menu, try plugging the board directly to your computer and restarting the Energia IDE.
+<p class='vspace'></p></li><li>Disconnect digital pins 0 and 1 while uploading as they are shared with serial communication with the computer (they can connected and used after the code has been uploaded).
+<p class='vspace'></p></li><li>Try uploading with nothing connected to the board (apart from the USB cable, of course).
+<p class='vspace'></p></li><li>Make sure the board isn't touching anything metallic or conductive.
+<p class='vspace'></p></li><li>Try a different USB cable; sometimes they don't work.
+</li></ul><p class='vspace'></p><p><em>Auto-Reset</em>
+</p>
+<p class='vspace'></p><ul><li>If you have a board that doesn't support auto-reset, be sure that you are resetting the board a couple of seconds before uploading. 
+<p class='vspace'></p></li><li>However, on some computers, you may need to press the reset button on the board (or unplug and replug the board, called "cycling") after you hit the upload button in Energia.  Try different intervals of time between the two, up to 10 seconds or more.
+<p class='vspace'></p></li><li>If you get this error:  <code>[VP 1] Device is not responding correctly.</code>  try uploading again (i.e. reset the board and press the download button a second time).
+
+</li></ul><p class='vspace'></p><p><br clear='all' />
+</p>
+<p class='vspace'></p><p>If it still doesn't work, you can ask for help in the forum.  Please include the following information:
+</p>
+<p class='vspace'></p><ul><li>Your operating system.
+<p class='vspace'></p></li><li>What kind of board you have.  
+<p class='vspace'></p></li><li>Whether or not you were ever able to upload to the board.  If so, what were you doing with the board before / when it stopped working, and what software have you recently added or removed from your computer?
+<p class='vspace'></p></li><li>The messages displayed when you try to upload with verbose output enabled.  To do this, hold down the shift key while clicking on the upload button in the toolbar.
+</li></ul><p class='vspace'></p><h3>Why do I get a java.<span class='wikiword'>lang.StackOverflowError</span> when I try to compile my program?</h3>
+<p>The Energia environment does some preliminary processing on your sketch by manipulating the code using regular expressions.  This sometimes gets confused by certain strings of text.  If you see an error like:
+</p>
+<p class='vspace'></p><pre>
+java.lang.StackOverflowError
+at java.util.Vector.addElement(Unknown Source)
+at java.util.Stack.push(Unknown Source)
+at com.oroinc.text.regex.Perl5Matcher._pushState(Perl5Matcher.java) 
+</pre>
+<p class='vspace'></p><p>or: 
+</p>
+<p class='vspace'></p><pre>
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java)
+	at com.oroinc.text.regex.Perl5Matcher._match(Perl5Matcher.java) 
+</pre>
+<p class='vspace'></p><p>this is what's happening.  Look for unusual sequences involving "double-quotes", "single-quotes", \backslashes, comments, etc.  For example, missing quotes can cause problems and so can the sequence '\"' (use '"' instead).
+</p>
+<p class='vspace'></p>
+<p class='vspace'></p><h3>What if my board doesn't turn on (the power LED doesn't light up)?</h3>
+<p>It is probably a jumper issue. You may need to reposition your jumpers.  If you are positive it isn't that, you may need to change USB cables or double check your USB port is working.</p>
+<p class='vspace'></p><h3>What should I do if I get an error when launching energia.exe on Windows?</h3>
+<p>If you get an error when double-clicking the energia.exe executable on Windows, for example:
+</p>
+<p class='vspace'></p><p><code>Energia has encountered a problem and needs to close.</code>
+</p>
+<p class='vspace'></p><p>You'll need to launch Energia using the run.bat file.  Please be patient, the Energia environment may take some time to open.
+</p>
+<p class='vspace'></p><h3>Why won't Energia run on old versions of Mac OS X?</h3>
+<p>If you get an error like this:
+</p>
+<p class='vspace'></p><pre>Link (dyld) error: 
+
+dyld: /Applications/energia-0004/Energia 04.app/Contents/MacOS/Energia Undefined symbols: 
+/Applications/energia-0004/librxtxSerial.jnilib undefined reference to _printf$LDBL128 expected to be defined in /usr/lib/libSystem.B.dylib 
+</pre>
+<p class='vspace'></p><p>you probably need to upgrade to Max OS X 10.3.9 or later.  Older versions have incompatible versions of some system libraries.
+</p>
+<p class='vspace'></p><h3>What do I do if I get an <span class='wikiword'>UnsatisfiedLinkError</span> error (about native library librxtxSerial.jnilib) when launching Energia?</h3>
+<p>If you get an error like this when launching Energia:
+</p>
+<p class='vspace'></p><p><code>Uncaught exception in main method: java.<span class='wikiword'>lang.UnsatisfiedLinkError</span>: Native Library /Users/anu/Desktop/energia-0002/librxtxSerial.jnilib already loaded in another classloader</code>
+</p>
+<p class='vspace'></p><p>you probably have an old version of the communications library lying around.  Search for comm.jar or jcl.jar in /System/Library/<span class='wikiword'>Frameworks/JavaVM</span>.framework/ or in directories in your CLASSPATH or PATH environment variables.
+</p>
+<p class='vspace'></p><h3>What about the error "Could not find the main class."?</h3>
+<p>If you get this error when launching Energia:
+</p>
+<p class='vspace'></p><p><code>Java Virtual Machine Launcher: Could not find the main class. Program will exit.</code>
+</p>
+<p class='vspace'></p><p>Make sure that you correctly extracted the contents of the Energia .zip file - in particular that the <strong>lib</strong> directory is directly inside of the Energia directory and contains the file <strong>pde.jar</strong>.
+</p>
+<p class='vspace'></p><h3>What can I do about cygwin conflicts on Windows?</h3>
+<p>If you already have cygwin installed on your machine, you might get an error like this when you try to compile a sketch in Energia:
+</p>
+<p class='vspace'></p><p><code> 6 [main] ? (3512) C:\Dev\energia-0006\tools\avr\bin\avr-gcc.exe: *** fatal error - C:\Dev\energia-0006\tools\avr\bin\avr-gcc.exe: *** system shared memory version mismatch detected - 0x75BE0084/0x75BE009C.</code>
+</p>
+<p class='vspace'></p><p><code>This problem is probably due to using incompatible versions of the cygwin DLL.</code>
+</p>
+<p class='vspace'></p><p><code>Search for cygwin1.dll using the Windows Start-&gt;Find/Search facility and delete all but the most recent version.  The most recent version *should* reside in x:\cygwin\bin, where 'x' is the drive on which you have installed the cygwin distribution.  Rebooting is also suggested if you are unable to find another cygwin DLL.</code>
+</p>
+<p class='vspace'></p><p>If so, first make sure that you don't have cygwin running when you use Energia.  If that doesn't help, you can try deleting cygwin1.dll from the Energia directory and replacing it with the cygwin1.dll from your existing cygwin install (probably in c:\cygwin\bin).  
+</p>
+<p class='vspace'></p><h3>Why does do the Energia software and the Tools menu take a long time to open (on Windows)?</h3>
+<p>If Energia takes a long time to start up and appears to freeze when you try to open the Tools menu, there by a conflict with another device on your system.  Energia, on startup and when you open the Tools menu, tries to get a list of all the COM ports on your computer.  It's possible that a COM port created by one of the devices on your computer slows down this process.  Take a look in the Device Manager.  Try disabling the devices that provide COM ports (e.g. Bluetooth devices).
+</p>
+<p class='vspace'></p><p><a name='serialport' id='serialport'></a>
+</p><h3>Why doesn't my board show in the Tools | Serial Port menu ?</h3>
+<p>Make sure that the board is plugged in: the serial port menu refreshes whenever you open the <strong>Tools</strong> menu, so if you just unplugged the board, it won't be in the menu.
+</p>
+<p class='vspace'></p><p>Check that you're not running any programs that scan all serial ports, like PDA sync applications, Bluetooth-USB drivers (e.g. <span class='wikiword'>BlueSoleil</span>), virtual daemon tools, etc.
+</p>
+<p class='vspace'></p><h3>What if I get a gnu.<span class='wikiword'>io.PortInUseException</span> when uploading code or using the serial monitor (on the Mac)?</h3>
+<pre>
+Error inside Serial.&lt;init&gt;() 
+gnu.io.PortInUseException: Unknown Application 
+     at gnu.io.CommPortIdentifier.open(CommPortIdentifier.java:354) 
+     at processing.app.Serial.&lt;init&gt;(Serial.java:127) 
+     at processing.app.Serial.&lt;init&gt;(Serial.java:72) 
+
+</pre>
+<p class='vspace'></p><p>This probably means that the port is actually in use by another application.  Please make sure that you're not running other programs that access serial or USB ports, like PDA sync application, bluetooth device managers, certain firewalls, etc.  Also, note that some programs (e.g. Max/MSP) keep the serial port open even when not using it - you may to need to close any patches that use the serial port or quit the application entirely.
+</p>
+<p class='vspace'></p><h3>Why does my sketch appear to upload successfully but not do anything?</h3>
+<p>You have selected the wrong item from the Tools &gt; Microcontroller menu.  Make sure the selected microcontroller corresponds to the one on your board.
+</p>
+<p class='vspace'></p><p>Alternatively, the sketch may be too big for the board.  If yours is bigger, only part of the sketch will be uploaded, but the software won't know, and your board will continually reset, pause, reset.
+</p>
+<p class='vspace'></p><h3>How can I reduce the size of my sketch?</h3>
+<p class='vspace'></p><p>If you're using floating point, try to rewrite your code with integer math, which should save you a decent amount of code size.  Delete any <strong>#include</strong> statements at the top of your sketch for libraries that you're not using.
+</p>
+<p class='vspace'></p><p>Otherwise, see if you can make your program shorter.  
+</p>
+<p class='vspace'></p><p>We're always working to reduce the size of the Energia core to leave more room for your sketches.
+</p>
+<p class='vspace'></p><h3>Why do I get errors about undeclared functions or undeclared types?</h3>
+<p>The Energia environment attempts to automatically generate prototypes for your functions, so that you can order them as you like in your sketch.  This process, however, isn't perfect, and sometimes leads to obscure error messages.
+</p>
+<p class='vspace'></p><p>If you declare a custom type in your code and create a function that accepts or returns a value of that type, you'll get an error when you try to compile the sketch.  This is because the automatically-generated prototype for that function will appear above the type definition.  
+</p>
+<p class='vspace'></p><p>If you declare a function with a two-word return type (e.g. "unsigned int") the environment will not realize it's a function and will not create a prototype for it.  That means you need to provide your own, or place the definition of the function above any calls to it.
+</p>
+<p class='vspace'></p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia getting started guide is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on Arduino reference.  Code samples in the guide are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='Guide_Troubleshooting?action=edit.html'>Edit Page</a> | <a href='Guide_Troubleshooting?action=diff.html'>Page History</a> | <a href='Guide_Troubleshooting?action=print.html' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

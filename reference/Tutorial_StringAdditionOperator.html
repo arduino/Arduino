@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Strings</em>
+</p>
+<p class='vspace'></p><h3>String Addition Operators</h3>
+<p>This example shows how to add strings together with different techniques.
+</p>
+<h3>Hardware Required</h3>
+<ul>
+<li>MSP-EXP430G2 LaunchPad</li>
+</ul>
+<h3>Relevant Groundwork</h3>
+<p>You can add Strings together in a variety of ways. This is called concatenation and it results in the original String being longer by the length of the String or character array with which you concatenate it. The + operator allows you to combine a String with another String, with a constant character array, an ASCII representation of a constant or variable number, or a constant character.
+</p>
+<pre>
+  // adding a constant integer to a string:
+  stringThree =  stringOne + 123;
+
+  // adding a constant long interger to a string:
+  stringThree = stringOne + 123456789;
+
+  // adding a constant character to a string:
+  stringThree =  stringOne + 'A';
+
+  // adding a constant string to a string:
+  stringThree =  stringOne +  "abc";
+
+  // adding two Strings together:
+  stringThree = stringOne + stringTwo;
+</pre><p class='vspace'></p>
+<p>You can also use the + operator to add the results of a function to a String, if the function returns one of the allowed data types mentioned above. For example,
+</p>
+<pre>
+  stringThree = stringOne + millis();
+</pre><p class='vspace'></p>
+<p>This is allowable since the millis() function returns a long integer, which can be added to a String. You could also do this:
+</p>
+<pre>
+  stringThree = stringOne + analogRead(A0);
+</pre><p class='vspace'></p>
+<p>because analogRead() returns an integer. String concatenation can be very useful when you need to display a combination of values and the descriptions of those values into one String to display via serial communication, on an LCD display, over an Ethernet connection, or anywhere that Strings are useful.
+Caution: You should be careful about concatenating multiple variable types on the same line, as you may get unexpected results. For example:
+</p>
+<pre>
+  int sensorValue = analogRead(A0); 
+  String stringOne = "Sensor value: ";
+  String stringThree = stringOne + sensorValue;
+  Serial.println(stringThree);
+</pre><p class='vspace'></p>
+results in "Sensor Value: 402" or whatever the analogRead() result is, but
+<pre>
+  int sensorValue = analogRead(A0); 
+  String stringThree = "Sensor value: " + sensorValue;
+  Serial.println(stringThree);
+</pre><p class='vspace'></p>
+<p>gives unpredictable results because stringThree never got an initial value before you started concatenating different data types.
+Here's another example where improper initialization will cause errors:
+</p>
+<pre>
+Serial.println("I want " + analogRead(A0) + " donuts");
+</pre><p class='vspace'></p>
+<p>This won't compile because the compiler doesn't handle the operator precedence correctly. On the other hand, the following will compile, but it won't run as expected:
+</p>
+<pre>
+  int sensorValue = analogRead(A0); 
+  String stringThree = "I want " + sensorValue;
+  Serial.println(stringThree  + " donuts");
+</pre><p class='vspace'></p>
+<p>
+It doesn't run correctly for the same reason as before: stringThree never got an initial value before you started concatenating different data types.
+For best results, initialize your Strings before you concatenate them.
+</p>
+<h3>Circuit</h3>
+<p>Only LaunchPad is required for this example.
+</p>
+<img height='250px' src='../reference/img/Blink_bb.png' alt='' title='' />
+<p>image developed using <a href='http://fritzing.org'>Fritzing</a>. For more circuit examples, see the <a href='http://fritzing.org/projects'>Fritzing project page</a>.
+</p>
+<h3>Schematic</h3>
+<img height='400px' src='../reference/img/Blink_schem.png' alt='' title='' />
+<h3>Code Explanation</h3>
+<p>In the program , we first declare three strings. We then demonstrate various concatenation examples. 
+</p>
+<h3>Code</h3>
+<pre>
+/*
+  Adding Strings together
+ Here's a working example of several different concatenation examples
+ Examples of how to add strings together
+ You can also add several different data types to string, as shown here:
+ 
+ 
+ This example code is in the public domain. 
+ */
+
+// declare three strings:
+String stringOne, stringTwo, stringThree;
+
+void setup() {
+  // initialize serial and wait for port to open:
+  Serial.begin(9600);
+
+  stringOne = String("stringThree = ");
+  stringTwo = String("this string");
+  stringThree = String ();
+  // send an intro:
+  Serial.println("\n\nAdding strings together (concatenation):");
+  Serial.println();
+}
+
+void loop() {
+  // adding a constant integer to a string:
+  stringThree =  stringOne + 123;
+  Serial.println(stringThree);    // prints "stringThree = 123"
+
+  // adding a constant long interger to a string:
+  stringThree = stringOne + 123456789;
+  Serial.println(stringThree);    // prints " You added 123456789"
+
+  // adding a constant character to a string:
+  stringThree =  stringOne + 'A';
+  Serial.println(stringThree);    // prints "You added A"
+
+  // adding a constant string to a string:
+  stringThree =  stringOne +  "abc";
+  Serial.println(stringThree);    // prints "You added abc"
+
+  stringThree = stringOne + stringTwo;
+  Serial.println(stringThree);    // prints "You added this string"
+
+  // adding a variable integer to a string:
+  int sensorValue = analogRead(A0);
+  stringOne = "Sensor value: ";
+  stringThree = stringOne  + sensorValue;
+  Serial.println(stringThree);    // prints "Sensor Value: 401" or whatever value analogRead(A0) has
+
+  // adding a variable long integer to a string:
+  long currentTime = millis();
+  stringOne="millis() value: ";
+  stringThree = stringOne + millis();
+  Serial.println(stringThree);    // prints "The millis: 345345" or whatever value currentTime has
+
+  // do nothing while true:
+  while(true);
+}
+
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+<p>- Concat multiple strings together and print to serial
+</p>
+<p class='vspace'></p><p><strong>See Also</strong>
+</p><ul><li><a class='wikilink' href='Setup.html'>setup</a>()
+</li><li><a class='wikilink' href='Loop.html'>loop</a>()
+</li><li><a class='wikilink' href='Serial_Println.html'>println</a>()
+</li></ul>
+
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>

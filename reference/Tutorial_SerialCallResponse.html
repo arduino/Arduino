@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Energia Reference - Tutorials </title>
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel='stylesheet' href='energiaWideRender.css' 
+type='text/css' />
+    <!--HeaderText--><style type='text/css'></style>  
+  <meta name='robots' content='index,follow' />
+  <meta name="Author" content="Robert Wessels" />
+  <meta name="Publisher" content="Energia" />
+  <meta name="Keywords" content="Energia, Wiring, Processing, Maker, LaunchPad, Arduino, Texas Instruments, Sketch, MSP430, mspgcc, mpsdebug, Electronic Arts, Programming, C, C++, Robert Wessels" />
+  <meta name="Description" content="Energia is a rapid prototyping platform for the Texas Instruments MCU Launchpad. Energia is based on Wiring and Arduino and uses the Processing IDE." />
+  <meta name="Copyright" content="All contents copyright Robert Wessels" />
+
+</head>
+<body>
+<div id="page">
+  <!--PageHeaderFmt-->
+  <div id="pageheader">
+    <div class="title"><a href='http://energia.nu'>Energia</a></div>
+  </div>
+  <!--/PageHeaderFmt-->
+
+  <!--PageLeftFmt-->
+  <div id="pagenav">
+    <div id="navbar">
+  	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
+<a class='wikilink' href='http://energia.nu/download'>Download</a>
+<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
+<a class='wikilink' href='Guide_index.html'>Getting Started</a>
+<a class='wikilink' href='index.html'>Reference</a>
+<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq/">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+</p>
+
+
+<p class='vspace'></p>
+
+    </div>
+  </div>
+  <!--/PageLeftFmt-->
+
+  <div id="pagetext">
+  <!--PageText-->
+<div id='wikitext'>
+<p><em>Examples &gt; Communication</em>
+</p>
+<p class='vspace'></p><h3>Serial Call and Response (handshaking)</h3>
+<p>This example demonstrates multi-byte communication from the MSP430 LaunchPad to the computer using a call-and-response (handshaking) method. This sketch sends an ASCII A (byte of value 65) on startup and repeats that until it gets a serial response from the computer. Then it sends three sensor values as single bytes, and waits for another response from the computer. You can use the Energia serial monitor to view the sent data, or it can be read by Processing (see code below). 
+</p>
+<p class='vspace'></p><div  class='BOM' >
+<h3>Hardware Required</h3>
+<ul><li>MSP-EXP430G2 LaunchPad
+</li><li>Two potentiometers
+</li><li>momentary switch/button
+</li><li>Three 10K ohm resistors
+</li><li>breadboard
+</li><li>hook-up wire
+</li></ul><p class='vspace'></p></div>
+<h3>Relevant Groundwork</h3>
+<p class='vspace'></p><p>In this code, we use the function <a href='Serial_Write.html'>Serial.write()</a>.  This function writes the value of what is in the function as binary data to the Serial Monitor.  For instance if we put Serial.write(100); into Energia sketch, when we open the Serial monitor, we will see a string of 'd' written on the Serial Monitor which 100 in decimal corresponds to 'd' in ASCII.  
+</p>
+<p>Connect analog sensors to analog input pin 0 and 1 with 10K ohm resistors used as voltage dividers. Connect a pushbutton or switch to digital I/O pin 2 with a 10Kohm resistor as a reference to ground. 
+</p>
+<p class='vspace'></p><h3>Circuit</h3>
+<div  class='circuit' >
+<p class='vspace'></p><div><img height='250px' src='../reference/img/SerialCallResponse_bb.png' alt='' title='' /></div>
+<p class='vspace'></p><p><span style='font-size:83%'>image developed using <a class='urllink' href='http://www.fritzing.org' rel='nofollow'>Fritzing</a>. For more circuit examples, see the <a class='urllink' href='http://fritzing.org/projects/' rel='nofollow'>Fritzing project page</a> </span>
+</p>
+<p class='vspace'></p></div>
+<p class='vspace'></p><h3>Schematic</h3>
+<div  class='circuit' >
+<div><img height='400px' src='../reference/img/SerialCallResponse_schem.png' alt='' title='' /></div>
+</div>
+<p class='vspace'></p><h3>Code Explanation</h3>
+<h4>Energia</h4>
+<p>At the start of the program, the Serial Monitor will display a string of 'A' until another ASCII character is written in the Serial Monitor.  Once another character is received, the values of the three sensor attached to the LaunchPad will be displayed on the Serial Monitor as ASCII characters.  
+</p>
+<h4>Processing</h4>
+<p>The Processing code will display a window with a grey circle inside.  Changing the sensors will change the position of the grey circle inside the Processing window.  
+</p>
+<p class='vspace'></p><h3>Code</h3>
+<pre>
+/*
+  Serial Call and Response
+
+  This program sends an ASCII A (byte of value 65) on startup
+  and repeats that until it gets some data in.
+  Then it waits for a byte in the serial port, and 
+  sends three sensor values whenever it gets a byte in.
+
+  Thanks to Greg Shakar and Scott Fitzgerald for the improvements
+
+  The circuit:
+  * potentiometers attached to analog inputs 0 and 1 
+  * pushbutton attached to digital I/O 11
+
+  Created 26 Sept. 2005
+  by Tom Igoe
+  modified 24 April 2012
+  by Tom Igoe and Scott Fitzgerald
+  Modified 19 April 2013
+  By Sean Alvarado
+
+  This example code is in the public domain.
+
+*/
+int firstSensor = 0; // first analog sensor
+int secondSensor = 0; // second analog sensor
+int thirdSensor = 0; // digital sensor
+int inByte = 0; // incoming serial byte
+
+void setup()
+{
+  // start serial port at 9600 bps:
+  Serial.begin(9600);
+
+  pinMode(11, INPUT); // digital sensor is on digital pin 11
+  establishContact(); // send a byte to establish contact until receiver responds 
+}
+
+void loop()
+{
+  // if we get a valid byte, read analog ins:
+  if (Serial.available() > 0) {
+    // get incoming byte:
+    inByte = Serial.read();
+    // read first analog input, divide by 4 to make the range 0-255:
+    firstSensor = analogRead(A0)/4;
+    // delay 10ms to let the ADC recover:
+    delay(10);
+    // read second analog input, divide by 4 to make the range 0-255:
+    secondSensor = analogRead(A1)/4;
+    // read switch, map it to 0 or 255L
+    thirdSensor = map(digitalRead(11), 0, 1, 0, 255); 
+    // send sensor values:
+    Serial.write(firstSensor);
+    Serial.write(secondSensor);
+    Serial.write(thirdSensor); 
+  }
+}
+
+void establishContact() {
+  while (Serial.available() <= 0) {
+    Serial.println('A'); // send a capital A
+    delay(300);
+  }
+}
+
+/*
+Processing sketch to run with this example:
+
+// This example code is in the public domain.
+
+import processing.serial.*;
+
+int bgcolor; // Background color
+int fgcolor; // Fill color
+Serial myPort; // The serial port
+int[] serialInArray = new int[3]; // Where we'll put what we receive
+int serialCount = 0; // A count of how many bytes we receive
+int xpos, ypos; // Starting position of the ball
+boolean firstContact = false; // Whether we've heard from the microcontroller
+
+void setup() {
+  size(256, 256); // Stage size
+  noStroke(); // No border on the next thing drawn
+
+  // Set the starting position of the ball (middle of the stage)
+  xpos = width/2;
+  ypos = height/2;
+
+  // Print a list of the serial ports, for debugging purposes:
+  println(Serial.list());
+
+  // I know that the first port in the serial list on my mac
+  // is always my FTDI adaptor, so I open Serial.list()[0].
+  // On Windows machines, this generally opens COM1.
+  // Open whatever port is the one you're using.
+  String portName = Serial.list()[0];
+  myPort = new Serial(this, portName, 9600);
+}
+
+void draw() {
+  background(bgcolor);
+  fill(fgcolor);
+  // Draw the shape
+  ellipse(xpos, ypos, 20, 20);
+}
+
+void serialEvent(Serial myPort) {
+  // read a byte from the serial port:
+  int inByte = myPort.read();
+  // if this is the first byte received, and it's an A,
+  // clear the serial buffer and note that you've
+  // had first contact from the microcontroller. 
+  // Otherwise, add the incoming byte to the array:
+  if (firstContact == false) {
+    if (inByte == 'A') { 
+      myPort.clear(); // clear the serial port buffer
+      firstContact = true; // you've had first contact from the microcontroller
+      myPort.write('A'); // ask for more
+    } 
+  } 
+  else {
+    // Add the latest byte from the serial port to array:
+    serialInArray[serialCount] = inByte;
+    serialCount++;
+
+    // If we have 3 bytes:
+    if (serialCount > 2 ) {
+      xpos = serialInArray[0];
+      ypos = serialInArray[1];
+      fgcolor = serialInArray[2];
+
+      // print the values (for debugging purposes only):
+      println(xpos + "\t" + ypos + "\t" + fgcolor);
+
+      // Send a capital A to request new sensor readings:
+      myPort.write('A');
+     // Reset serialCount:
+     serialCount = 0;
+    }
+  }
+}
+*/
+</pre>
+<h3>Working Video</h3>
+(Insert Video Here)
+<h3>Try it out:</h3>
+
+<p class='vspace'></p><h3>See Also:</h3>
+<ul><li><a class='wikilink' href='Serial.html'>serial</a>()
+</li><li><a class='wikilink' href='Serial_Begin.html'>serial.begin</a>()
+</li><li><a class='wikilink' href='Serial_Available.html'>serial.available</a>()
+</li><li><a class='wikilink' href='Serial_Print.html'>serial.print</a>()
+</li><li><a class='wikilink' href='AnalogRead.html'>analogRead</a>()
+</li><li><a class='wikilink' href='Tutorial_Dimmer.html'>Dimmer</a> - move the mouse to change the brightness of an LED.
+</li><li><a class='wikilink' href='Tutorial_Graph.html'>Graph</a> - send data to the computer and graph it in Processing.
+</li><li><a class='wikilink' href='Tutorial_PhysicalPixel.html'>Physical Pixel</a> - turn an LED on and off by sending data from Processing.
+</li><li><a class='wikilink' href='Tutorial_VirtualColorMixer.html'>Virtual Color Mixer</a> - send multiple variables from an LaunchPad to the computer and read them in Processing. 
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponse.html'>Serial Call Response</a> - send multiple variables using a call and response (handshaking) method.
+</li><li><a class='wikilink' href='Tutorial_SerialCallResponseASCII.html'>Serial Call and Response ASCII</a> - send multiple vairables using a call-and-response (handshaking) method, and ASCII-encoding the values before sending.
+</li><li><a class='wikilink' href='Tutorial_SwitchCase2.html'>Serial Input (Switch (case) Statement)</a> - How to take different actions based 0n characters received by the serial port. 
+</li></ul><p class='vspace'></p>
+<p class='vspace'></p><p><a class='wikilink' href='Guide_index.html'>Getting Started Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Energia reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Energia reference is based on the Arduino reference. Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+
+  </div>
+
+  <!--PageFooterFmt-->
+  <div id="pagefooter">
+&copy;Energia | 
+  <a href='#'>Edit Page</a> | <a href='#'>Page History</a> | <a href=#' target='_blank'>Printable View</a> | <a href='#'>All Recent Site Changes</a>
+  </div>
+  <!--/PageFooterFmt-->
+
+</div>
+</body>
+</html>
