@@ -470,10 +470,12 @@ size_t HardwareSerial::write(uint8_t c)
   _tx_buffer->buffer[_tx_buffer->head] = c;
   _tx_buffer->head = i;
 	
-  sbi(*_ucsrb, _udrie);
   // clear the TXC bit -- "can be cleared by writing a one to its bit location"
   transmitting = true;
   sbi(*_ucsra, TXC0);
+
+  // enabling interrupts after the TXC bit has been set
+  sbi(*_ucsrb, _udrie);
   
   return 1;
 }
