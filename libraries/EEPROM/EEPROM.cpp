@@ -44,7 +44,7 @@ uint8_t EEPROMClass::read(int address)
 
 void EEPROMClass::write(int address, uint8_t value)
 {
-	eeprom_write_byte((unsigned char *) address, value);
+	eeprom_update_byte((unsigned char *) address, value);
 }
 
 EEPROMClass EEPROM;
