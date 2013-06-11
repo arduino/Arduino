@@ -78,6 +78,7 @@ public class Compiler implements MessageConsumer {
     String basePath = Base.getBasePath();
     Map<String, String> boardPreferences = Base.getBoardPreferences();
     String core = boardPreferences.get("build.core");
+    String arch = Base.getArch();
     if (core == null) {
     	RunnerException re = new RunnerException(_("No board selected; please choose a board from the Tools > Board menu."));
       re.hideStackTrace();
@@ -112,6 +113,16 @@ public class Compiler implements MessageConsumer {
       }
     }
 
+    String rtsIncPath = null;
+    String rtsLibPath = null;
+    if (arch == "c2000") {
+    	Target t = Base.getTarget();
+    	File rtsIncFolder = new File(new File(new File(t.getFolder(), "..\\tools"), "c2000"), "include");
+    	File rtsLibFolder = new File(new File(new File(t.getFolder(), "..\\tools"), "c2000"), "lib");
+    	rtsIncPath = rtsIncFolder.getAbsolutePath();
+    	rtsLibPath = rtsLibFolder.getAbsolutePath();
+    }
+
     List<File> objectFiles = new ArrayList<File>();
 
    // 0. include paths for core + all libraries
@@ -120,6 +131,7 @@ public class Compiler implements MessageConsumer {
    List includePaths = new ArrayList();
    includePaths.add(corePath);
    if (variantPath != null) includePaths.add(variantPath);
+   if (rtsIncPath != null) includePaths.add(rtsIncPath);
    for (File file : sketch.getImportedLibraries()) {
      includePaths.add(file.getPath());
    }
@@ -168,6 +180,7 @@ public class Compiler implements MessageConsumer {
    sketch.setCompilingProgress(50);
   includePaths.clear();
   includePaths.add(corePath);  // include path for core only
+  if (rtsIncPath != null) includePaths.add(rtsIncPath);
   if (variantPath != null) includePaths.add(variantPath);
   List<File> coreObjectFiles =
     compileFiles(basePath, buildPath, includePaths,
@@ -176,7 +189,7 @@ public class Compiler implements MessageConsumer {
               findFilesInPath(corePath, "cpp", true),
               boardPreferences);
 
-  String arch = Base.getArch();
+
   String runtimeLibraryName = buildPath + File.separator + "core.a";
   List baseCommandAR;
   if(arch == "msp430")  {
@@ -194,7 +207,7 @@ public class Compiler implements MessageConsumer {
     } else  if(arch == "c2000"){
       baseCommandAR = new ArrayList(Arrays.asList(new String[] {
 	    basePath + "ar2000",
-	    "-rs",
+	    "r",
 	    runtimeLibraryName
     }));
     }else {
@@ -205,11 +218,13 @@ public class Compiler implements MessageConsumer {
     }));
   }
 
-  for(File file : coreObjectFiles) {
-     List commandAR = new ArrayList(baseCommandAR);
-     commandAR.add(file.getAbsolutePath());
-     execAsynchronously(commandAR);
-   }
+//  if(arch != "c2000"){
+	  for(File file : coreObjectFiles) {
+	     List commandAR = new ArrayList(baseCommandAR);
+	     commandAR.add(file.getAbsolutePath());
+	     execAsynchronously(commandAR);
+	   }
+//  }
 
     // 4. link it all together into the .elf file
     // For atmega2560, need --relax linker option to link larger
@@ -247,12 +262,48 @@ public class Compiler implements MessageConsumer {
       }));
     } else if (arch == "c2000") { 
         List objects = new ArrayList(baseCommandAR);
+        
+        includePaths.clear();
+        includePaths.add(corePath);  // include path for core only
+        if (rtsIncPath != null) includePaths.add(rtsIncPath);
+        if (variantPath != null) includePaths.add(variantPath);
+        if (rtsIncPath != null) includePaths.add(rtsLibPath);
+       
+        
         //TODO: Test linker arugments
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
-        basePath + "lnk2000",
-        "-o",
-        buildPath + File.separator + primaryClassName + ".elf"
-      }));
+        basePath + "cl2000"}));
+        baseCommandLinker.add("-v28");//compile for unified memory model
+        baseCommandLinker.add("-ml");//compile for unified memory model
+        baseCommandLinker.add("-mt");//compile for unified memory model
+        baseCommandLinker.add("-g");//compile for unified memory model
+        baseCommandLinker.add("--gcc");//compile for unified memory model
+        baseCommandLinker.add("--define=ENERGIA=" + Base.EREVISION);
+        baseCommandLinker.add("--define=F_CPU=" + boardPreferences.get("build.f_cpu"));
+        baseCommandLinker.add("--define=ARDUINO=" + Base.REVISION);
+        baseCommandLinker.add("--diag_warning=225");//compile for unified memory model
+        baseCommandLinker.add("--display_error_number");//compile for unified memory model
+        baseCommandLinker.add("--diag_wrap=off");//compile for unified memory model
+        baseCommandLinker.add("-z");//compile for unified memory model
+        baseCommandLinker.add("--stack_size=0x300");//compile for unified memory model
+        baseCommandLinker.add("-m\"Energia_C2000_Test.map\"");//compile for unified memory model
+        baseCommandLinker.add("--warn_sections");//compile for unified memory model
+        for (int i = 0; i < includePaths.size(); i++) {
+        	baseCommandLinker.add("-i" + '\"' + (String) includePaths.get(i)+ '\"' );
+        } 
+        baseCommandLinker.add("--reread_libs");//compile for unified memory model
+        baseCommandLinker.add("--display_error_number");//compile for unified memory model
+        baseCommandLinker.add("--diag_wrap=off");//compile for unified memory model
+        baseCommandLinker.add("--rom_model");//compile for unified memory model
+        baseCommandLinker.add("-o" + buildPath + File.separator + primaryClassName + ".out");
+//        "-o",
+//        buildPath + File.separator + primaryClassName + ".elf"
+        
+        
+
+
+
+
     } else {
       baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-gcc",
@@ -269,12 +320,17 @@ public class Compiler implements MessageConsumer {
     }
 
     baseCommandLinker.add(runtimeLibraryName);
-    baseCommandLinker.add("-L" + buildPath);
     if(arch == "lm4f"){
+      baseCommandLinker.add("-L" + buildPath);
       baseCommandLinker.add("-lm");
       baseCommandLinker.add("-lc");
       baseCommandLinker.add("-lgcc");
-    } else {
+    } if(arch == "c2000"){
+        baseCommandLinker.add("-l" + boardPreferences.get("build.rts"));
+        baseCommandLinker.add(corePath + "\\f2802x_common\\cmd\\F28027.cmd");
+        baseCommandLinker.add(corePath + "\\f2802x_headers\\cmd\\F2802x_Headers_nonBIOS.cmd");
+    }else {
+      baseCommandLinker.add("-L" + buildPath);
       baseCommandLinker.add("-lm");
     }
     execAsynchronously(baseCommandLinker);
@@ -293,11 +349,10 @@ public class Compiler implements MessageConsumer {
       }));
     }else if (arch == "c2000") { 
 	//TODO: Figure out object copy
-    baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
-      basePath + "msp430-objcopy",
-      "-O",
-      "-R",
-    }));
+    baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {basePath + "hex2000"}));
+    baseCommandObjcopy.add("-boot");
+    baseCommandObjcopy.add("-sci8");
+    baseCommandObjcopy.add("-a");
     } else {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-objcopy",
@@ -331,6 +386,10 @@ public class Compiler implements MessageConsumer {
 	  	commandObjcopy.add(2, "binary");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
+    }else if (arch == "c2000"){
+    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".out");
+    	commandObjcopy.add("-o");
+    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".txt");
     }else {
 	    commandObjcopy.add(2, "ihex");
 	    commandObjcopy.add(".eeprom"); // remove eeprom data
@@ -472,6 +531,7 @@ public class Compiler implements MessageConsumer {
       }
       System.out.println();
     }
+    System.out.println(Arrays.toString(command));
 
     firstErrorFound = false;  // haven't found any errors yet
     secondErrorFound = false;
@@ -659,21 +719,29 @@ public class Compiler implements MessageConsumer {
           "-DENERGIA=" + Base.EREVISION,
         }));
     } else if (arch == "c2000") {
-    	//as per
-    	//http://mspgcc.sourceforge.net/manual/x1522.html
-    	//TODO: Figure out compiler args....updated needs testing
-        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-          basePath + "cl2000",
-          "-v28",//compile for c28x
-          "-02",//optimize level 2
-          "-mt",//compile for large memory model
-          "-ml",//compile for unified memory model
-          "-g", // include debugging info (so errors include line numbers)
-          //"-mmcu=" + boardPreferences.get("build.mcu"),
-          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-DARDUINO=" + Base.REVISION,
-          "-DENERGIA=" + Base.EREVISION
-        }));
+    	
+        String[] filePrefix = new String[2];
+        filePrefix = sourceName.split(".s");
+      	//TODO: Figure out compiler args...updated needs testing
+        baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {basePath + "cl2000"}));
+        baseCommandCompiler.add("-v28");//compile for c28x
+        baseCommandCompiler.add("--asm_extension=S");//change assembly extension so it picks up S files
+        baseCommandCompiler.add("-ml");//compile for unified memory model
+        baseCommandCompiler.add("-mt");//compile for large memory model
+        baseCommandCompiler.add("-g"); // include debugging info (so errors include line numbers)
+        for (int i = 0; i < includePaths.size(); i++) {
+        	baseCommandCompiler.add("--include_path=" + '\"' + (String) includePaths.get(i)+ '\"' );
+        }      
+        baseCommandCompiler.add("--gcc");//enable gcc extensions
+        baseCommandCompiler.add("--define=ENERGIA=" + Base.EREVISION);
+        baseCommandCompiler.add("--define=F_CPU=" + boardPreferences.get("build.f_cpu"));
+        baseCommandCompiler.add("--define=ARDUINO=" + Base.REVISION);
+        baseCommandCompiler.add("--diag_warning=225");
+        baseCommandCompiler.add("--display_error_number");
+        baseCommandCompiler.add("--diag_wrap=off");
+        baseCommandCompiler.add("--entry_point=code_start");
+        baseCommandCompiler.add("--preproc_with_compile");
+        baseCommandCompiler.add("--preproc_dependency=" + '\"' + filePrefix[0]+".pp" + '\"');
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
            basePath + "avr-gcc",
@@ -687,11 +755,21 @@ public class Compiler implements MessageConsumer {
     }
     
     for (int i = 0; i < includePaths.size(); i++) {
-      baseCommandCompiler.add("-I" + (String) includePaths.get(i));
+    	if(arch == "c2000"){
+//    		baseCommandCompilerCPP.add("--include_path=" + '\"' + (String) includePaths.get(i)+ '\"' );
+    	}else{
+    		baseCommandCompiler.add("-I" + (String) includePaths.get(i));
+    	}
     }
 
-    baseCommandCompiler.add(sourceName);
-    baseCommandCompiler.add("-o"+ objectName);
+    if(arch == "c2000"){
+    	baseCommandCompiler.add('\"' + sourceName + '\"');
+    	baseCommandCompiler.add("--output_file=" + objectName);
+    }else{
+    	baseCommandCompiler.add(sourceName);
+    	baseCommandCompiler.add("-o");
+    	baseCommandCompiler.add(objectName);
+    }
 
     return baseCommandCompiler;
   }
@@ -734,20 +812,29 @@ public class Compiler implements MessageConsumer {
         "-DENERGIA=" + Base.EREVISION,
       }));
       } else if (arch == "c2000") {
-    	  //TODO: Figure out compiler args...updated needs testing
-      baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-          basePath + "cl2000",
-          "-v28",//compile for c28x
-          "-02",//optimize level 2
-          "-mt",//compile for large memory model
-          "-ml",//compile for unified memory model
-          "-g", // include debugging info (so errors include line numbers)
-          //"-mmcu=" + boardPreferences.get("build.mcu"),
-          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-DARDUINO=" + Base.REVISION,
-          "-DENERGIA=" + Base.EREVISION      
-        
-      }));
+      	
+          String[] filePrefix = new String[2];
+          filePrefix = sourceName.split(".c");
+        	//TODO: Figure out compiler args...updated needs testing
+          baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {basePath + "cl2000"}));
+          baseCommandCompiler.add("-v28");//compile for c28x
+          //baseCommandCompiler.add("-O2");//optimize level 2
+          baseCommandCompiler.add("-ml");//compile for unified memory model
+          baseCommandCompiler.add("-mt");//compile for large memory model
+          baseCommandCompiler.add("-g"); // include debugging info (so errors include line numbers)
+          for (int i = 0; i < includePaths.size(); i++) {
+        	  baseCommandCompiler.add("--include_path=" + '\"' + (String) includePaths.get(i)+ '\"' );
+          }      
+          baseCommandCompiler.add("--gcc");//enable gcc extensions
+          baseCommandCompiler.add("--define=ENERGIA=" + Base.EREVISION);
+          baseCommandCompiler.add("--define=F_CPU=" + boardPreferences.get("build.f_cpu"));
+          baseCommandCompiler.add("--define=ARDUINO=" + Base.REVISION);
+          baseCommandCompiler.add("--diag_warning=225");
+          baseCommandCompiler.add("--display_error_number");
+          baseCommandCompiler.add("--diag_wrap=off");
+          baseCommandCompiler.add("--preproc_with_compile");
+          baseCommandCompiler.add("--preproc_dependency=" + '\"' + filePrefix[0]+".pp" + '\"');
+
       }else { // default to avr
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-gcc",
@@ -764,13 +851,22 @@ public class Compiler implements MessageConsumer {
         }));
     }
 		
-    for (int i = 0; i < includePaths.size(); i++) {
-      baseCommandCompiler.add("-I" + (String) includePaths.get(i));
-    }
+      for (int i = 0; i < includePaths.size(); i++) {
+      	if(arch == "c2000"){
+//      		baseCommandCompilerCPP.add("--include_path=" + '\"' + (String) includePaths.get(i)+ '\"' );
+      	}else{
+      		baseCommandCompiler.add("-I" + (String) includePaths.get(i));
+      	}
+      }
 
-    baseCommandCompiler.add(sourceName);
-    baseCommandCompiler.add("-o");
-    baseCommandCompiler.add(objectName);
+      if(arch == "c2000"){
+    	  baseCommandCompiler.add('\"' + sourceName + '\"');
+    	  baseCommandCompiler.add("--output_file=" + objectName);
+      }else{
+    	  baseCommandCompiler.add(sourceName);
+    	  baseCommandCompiler.add("-o");
+    	  baseCommandCompiler.add(objectName);
+      }
 
     return baseCommandCompiler;
   }
@@ -816,20 +912,29 @@ public class Compiler implements MessageConsumer {
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
         }));
-    }else if (arch == "c2000") {  
+    }else if (arch == "c2000") {
+    	
+      String[] filePrefix = new String[2];
+      filePrefix = sourceName.split(".cpp");
     	//TODO: Figure out compiler args...updated needs testing
-      baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
-          basePath + "cl2000",
-          "-v28",//compile for c28x
-          "-02",//optimize level 2
-          "-mt",//compile for large memory model
-          "-ml",//compile for unified memory model
-          "-g", // include debugging info (so errors include line numbers)
-          //"-mmcu=" + boardPreferences.get("build.mcu"),
-          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-DARDUINO=" + Base.REVISION,
-          "-DENERGIA=" + Base.EREVISION   
-      }));
+      baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {basePath + "cl2000"}));
+      baseCommandCompilerCPP.add("-v28");//compile for c28x
+      //baseCommandCompilerCPP.add("-O2");//optimize level 2
+      baseCommandCompilerCPP.add("-ml");//compile for unified memory model
+      baseCommandCompilerCPP.add("-mt");//compile for large memory model
+      baseCommandCompilerCPP.add("-g"); // include debugging info (so errors include line numbers)
+      for (int i = 0; i < includePaths.size(); i++) {
+      	baseCommandCompilerCPP.add("--include_path=" + '\"' + (String) includePaths.get(i)+ '\"' );
+      }      
+      baseCommandCompilerCPP.add("--gcc");//enable gcc extensions
+      baseCommandCompilerCPP.add("--define=ENERGIA=" + Base.EREVISION);
+      baseCommandCompilerCPP.add("--define=F_CPU=" + boardPreferences.get("build.f_cpu"));
+      baseCommandCompilerCPP.add("--define=ARDUINO=" + Base.REVISION);
+      baseCommandCompilerCPP.add("--diag_warning=225");
+      baseCommandCompilerCPP.add("--display_error_number");
+      baseCommandCompilerCPP.add("--diag_wrap=off");
+      baseCommandCompilerCPP.add("--preproc_with_compile");
+      baseCommandCompilerCPP.add("--preproc_dependency=" + '\"' + filePrefix[0]+".pp" + '\"');
     } else { // default to avr
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-g++",
@@ -841,19 +946,28 @@ public class Compiler implements MessageConsumer {
         "-ffunction-sections", // place each function in its own section
         "-fdata-sections",
         "-mmcu=" + boardPreferences.get("build.mcu"),
-        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
+        "--define=F_CPU=" + boardPreferences.get("build.f_cpu"),
         "-MMD", // output dependancy info
-        "-DARDUINO=" + Base.REVISION,
+        "-define=ARDUINO=" + Base.REVISION,
       }));
     } 
 
     for (int i = 0; i < includePaths.size(); i++) {
-      baseCommandCompilerCPP.add("-I" + (String) includePaths.get(i));
+    	if(arch == "c2000"){
+//    		baseCommandCompilerCPP.add("--include_path=" + '\"' + (String) includePaths.get(i)+ '\"' );
+    	}else{
+    		 baseCommandCompilerCPP.add("-I" + (String) includePaths.get(i));
+    	}
     }
 
-    baseCommandCompilerCPP.add(sourceName);
-    baseCommandCompilerCPP.add("-o");
-    baseCommandCompilerCPP.add(objectName);
+    if(arch == "c2000"){
+        baseCommandCompilerCPP.add('\"' + sourceName + '\"');
+    	baseCommandCompilerCPP.add("--output_file=" + objectName);
+    }else{
+        baseCommandCompilerCPP.add(sourceName);
+    	baseCommandCompilerCPP.add("-o");
+    	baseCommandCompilerCPP.add(objectName);
+    }
 
     return baseCommandCompilerCPP;
   }

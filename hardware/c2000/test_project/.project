@@ -31,9 +31,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/cmd/F28027.cmd</locationURI>
 		</link>
 		<link>
-			<name>F2802x_CodeStartBranch.asm</name>
+			<name>F2802x_CodeStartBranch.s</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/source/F2802x_CodeStartBranch.asm</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/source/F2802x_CodeStartBranch.s</locationURI>
 		</link>
 		<link>
 			<name>F2802x_GlobalVariableDefs.c</name>

@@ -190,7 +190,7 @@ const uint32_t digital_pin_to_port[] = {
 		NOT_A_PIN, /* 13, RST */
 		NOT_A_PIN, /* 14, RST */
 		NOT_A_PIN, /* 15, RST */
-		PORT_A_1,     /* 16, port P2.3 */
+		PORT_A_2,     /* 16, port P2.3 */
 		PORT_A_2,     /* 17, port P2.4 */
 		PORT_A_2,     /* 18, port P2.5 */
 		PORT_A_2,     /* 19, port P1.6 */

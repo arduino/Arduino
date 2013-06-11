@@ -46,53 +46,115 @@ import javax.swing.*;
 import gnu.io.*;
 
 public class C2000Uploader extends Uploader{
+	private Serial serial;
+	private String port;
+	private int serialRate;
+	
+
 	public C2000Uploader() {
+		this.port = Preferences.get("serial.port");
 	}
+	  
 	public boolean uploadUsingPreferences(String buildPath, String className, boolean usingProgrammer)
 	throws RunnerException, SerialException {
+		Scanner kernelScanner;
+		int testInt, rcvInt;
+		String testString;
+		
 		this.verbose = verbose;
 		Map<String, String> boardPreferences = Base.getBoardPreferences();
-		//No serial programming support (yet). 
-		//Upload using programmer (MSP430Flasher for windows and mspdebug for Mac OS X and Linux).
-		//added support for mspdebug for windows 
+		
+		//Setup serial objects
+	    serialRate = Preferences.getInteger("serial.debug_rate");
+		serial = new Serial(port, serialRate);
+		
+		//TODO Add pop up box that explains how to configure board for serial flashing
+		System.out.println("Put C2000 LaunchPad switches Up-Down-Down and press the reset button");
 
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
+		
+		//Find our flash kernel
+	    File flashKernel = new File(new File(new File(target.getFolder(), "flash_kernel"),"Debug"), "flash_kernel.txt");
+	    String flashKernelPath = flashKernel.getAbsolutePath();
 
-		if (Base.isMacOS() || Base.isLinux()) {
-			params.add(boardPreferences.get("upload.protocol"));
-			if(!Preferences.getBoolean("upload.verbose"))
-				params.add("-q");
-			params.add("--force-reset");
-			if ( Base.isLinux()) {
-				params.add("prog " + buildPath + File.separator + className + ".hex");
-			}
-			else { 
-				params.add("prog " + buildPath + File.separator + className + ".hex");
-			}
-			return mspdebug(params);
-		} else {
-/*			// code to access via MSP430_Flasher	
-			params.add("-n " + boardPreferences.get("build.mcu")); 
-			params.add("-w");
-			params.add(buildPath + File.separator + className + ".hex");
-			params.add("-g");
-			if(!Preferences.getBoolean("upload.verbose"))
-					params.add("-q");
-			
-			params.add("-z[VCC]");
-			return MSP430Flasher(params);
-*/			
-//			params.add(boardPreferences.get("upload.protocol"));
-			params.add("tilib");       // always use the TI Lib on Windows, best integrate on this OS
-			params.add("-d");
-			params.add("USB");
-			if(!Preferences.getBoolean("upload.verbose"))
-				params.add("-q");
-			params.add("--force-reset");
-			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
-			return mspdebug(params);
+	    //Try to open Flash Kernel for reading
+	    try {
+			kernelScanner = new Scanner(new FileReader(flashKernel));
+		} catch (FileNotFoundException e) {
+			System.err.println("Energia couldn't find the flash kernel for the C2000 LaunchPad.");
+			System.err.println("Uploading aborted.");
+			serial.dispose();
+			return false;
 		}
+	    
+	    //Read start of file
+	    testString = kernelScanner.next();
+	    
+	    //Autobaud only works up to 38.4k baud on C2k LP
+	    serial.write('A');
+	    while(serial.available() == 0){
+	    	
+	    }
+    	rcvInt = serial.readChar();
+    	rcvInt = serial.readChar();
+    	rcvInt = serial.readChar();
+    	rcvInt = serial.readChar();
+    	if(rcvInt != 'A'){
+    		System.err.println("Autobaud Failed.  Try a baud rate below 38.4k.");
+			serial.dispose();
+    		return false;
+    	}
+	    
+	    //Load the flash kernel
+	    while(kernelScanner.hasNextInt(16)){
+	    	testInt = kernelScanner.nextInt(16);
+	    	serial.write(testInt);
+	    	rcvInt = serial.readChar();
+	    	if(rcvInt != testInt){
+	    		System.err.println("Uploading flash kernel failed.");
+				serial.dispose();
+	    		return false;
+	    	}
+	    }
+	    
+
+//		if (Base.isMacOS() || Base.isLinux()) {
+//			params.add(boardPreferences.get("upload.protocol"));
+//			if(!Preferences.getBoolean("upload.verbose"))
+//				params.add("-q");
+//			params.add("--force-reset");
+//			if ( Base.isLinux()) {
+//				params.add("prog " + buildPath + File.separator + className + ".hex");
+//			}
+//			else { 
+//				params.add("prog " + buildPath + File.separator + className + ".hex");
+//			}
+//			return mspdebug(params);
+//		} else {
+///*			// code to access via MSP430_Flasher	
+//			params.add("-n " + boardPreferences.get("build.mcu")); 
+//			params.add("-w");
+//			params.add(buildPath + File.separator + className + ".hex");
+//			params.add("-g");
+//			if(!Preferences.getBoolean("upload.verbose"))
+//					params.add("-q");
+//			
+//			params.add("-z[VCC]");
+//			return MSP430Flasher(params);
+//*/			
+////			params.add(boardPreferences.get("upload.protocol"));
+//			params.add("tilib");       // always use the TI Lib on Windows, best integrate on this OS
+//			params.add("-d");
+//			params.add("USB");
+//			if(!Preferences.getBoolean("upload.verbose"))
+//				params.add("-q");
+//			params.add("--force-reset");
+//			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
+//			return mspdebug(params);
+//		}
+		serial.dispose();
+	    return true;
 	}
 
 	public boolean burnBootloader() throws RunnerException {

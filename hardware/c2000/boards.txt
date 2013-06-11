@@ -6,6 +6,6 @@ lptms320f28027.build.mcu=TMS320F28027
 lptms320f28027.build.f_cpu=60000000L
 lptms320f28027.build.core=c2000
 lptms320f28027.build.variant=launchpad
-
+lptms320f28027.build.rts=rts2800_ml.lib
 ##############################################################
 

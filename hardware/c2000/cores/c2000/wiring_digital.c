@@ -35,32 +35,36 @@
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
 
 	volatile uint32_t *dir;
-//	volatile uint8_t *ren;
+	volatile uint8_t *sel;
 	volatile uint32_t *out;
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
+	dir = portDirRegister(port);
+	sel = portSelRegister(port);
+	out = portOutputRegister(port);
+
+
 
 	if (port == NOT_A_PORT) return;
 
-	dir = portDirRegister(port);
-//	ren = portRenRegister(port);
-	out = portOutputRegister(port);
-
-	if (mode == INPUT) {
-		*dir &= ~bit;
-	} else if (mode == INPUT_PULLUP) {
-		*dir &= ~bit;
-                *out |= bit;
-//                *ren |= bit;
-        } else if (mode == INPUT_PULLDOWN) {
-		*dir &= ~bit;
-                *out &= ~bit;
-//                *ren |= bit;
-        } else {
-		*dir |= bit;
+	if(pin > 31){
+		pin -= 31;
 	}
+
+	EALLOW;
+	//Turn off peripheral function
+	if(port == PORT_A_2){
+		*sel &= ~(0x03 << (pin * 2));
+	}else{
+		*sel &= ~(0x03 << ((pin-16) * 2));
+	}
+	*dir &= ~(1 << pin);
+	*dir |= (mode << pin);
+
+	EDIS;
+
 }
 
 void pinMode_int(uint8_t pin, uint8_t mode)
@@ -148,33 +152,8 @@ void digitalWrite(uint8_t pin, uint8_t val)
 
 	if (port == NOT_A_PORT) return;
 
-//	/*
-//	 * Clear bit in PxSEL register to select GPIO function. Other functions like analogWrite(...)
-//	 * will set this bit so need to clear it.
-//	 */
-//	#if (defined(P1SEL_) || defined(P1SEL))
-//	sel = portSel0Register(port);	/* get the port function select register address */
-//	*sel &= ~bit;			/* clear bit in pin function select register */
-//	#if (defined(P1SEL2_) || defined(P1SEL2))
-//	sel = portSel2Register(port);	/* get the port function select register address */
-//	*sel &= ~bit;			/* clear bit in pin function select register */
-//	#endif
-//	#endif
-//
-//	#if (defined(P1SEL0_) || defined(P1SEL0))
-//	sel = portSel0Register(port);	/* get the port function select register address */
-//	*sel &= ~bit;			/* clear bit in pin function select register */
-//	#if (defined(P1SEL1_) || defined(P1SEL1))
-//	sel = portSel1Register(port);	/* get the port function select register address */
-//	*sel &= ~bit;			/* clear bit in pin function select register */
-//	#endif
-//	#endif
 
-	/*
-//	out = portOutputRegister(port);
- *
- */
-	out = ( (volatile uint32_t *)( port_to_output[port]) );
+	out = portOutputRegister(port);
 
 	if (val == LOW) {
 		*out &= ~bit;

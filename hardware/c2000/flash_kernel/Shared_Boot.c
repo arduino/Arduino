@@ -178,7 +178,7 @@ Uint32 GetLongData()
 // This function reads 8 reserved words in the header.
 // None of these reserved words are used by the
 // this boot loader at this time, they may be used in
-// future devices for enhancments.  Loaders that use
+// future devices for enhancements.  Loaders that use
 // these words use their own read function.
 //-------------------------------------------------
 

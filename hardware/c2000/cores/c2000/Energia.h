@@ -76,7 +76,8 @@ enum{
 #define Device_cal (void   (*)(void))0x3D7C80
 
 // DO NOT MODIFY THIS LINE.
-#define DELAY_US(A)  DSP28x_usDelay(((((long double) A * 1000.0L) / (long double)(F_CPU/1000000L)) - 9.0L) / 5.0L)
+//#define DELAY_US(A)  DSP28x_usDelay((unsigned long)((((long double) A * 1000.0L) / (long double)(1000000000L/F_CPU)) - 9.0L) / 5.0L)
+#define DELAY_US(A)  DSP28x_usDelay((uint32_t)((((long double) A * 1000.0L) / (long double)16.667L) - 9.0L) / 5.0L)
 
 
 // These are defined by the linker (see F2808.cmd)
@@ -158,7 +159,7 @@ extern const uint32_t* port_to_output[];
  * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1
  * So we can remap  PxSEL and PxSEL2   to   PxSEL0 and PxSEL1
 */ 
-#define portSelRegister(P)     ( (volatile uint8_t *)( port_to_sel0[P]) )
+#define portSelRegister(P)     ( (volatile uint8_t *)( port_to_sel[P]) )
 #define portSel2Register(P)    ( (volatile uint8_t *)( port_to_sel2[P]) )
 
 #define portSel0Register(P)    ( (volatile uint8_t *)( port_to_sel0[P]) )
@@ -169,7 +170,7 @@ extern const uint32_t* port_to_output[];
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
 
 // Implemented in wiring.c
-void delayMicroseconds(unsigned int us);
+void delayMicroseconds(uint32_t us);
 unsigned long micros();
 unsigned long millis();
 void disableWatchDog();
