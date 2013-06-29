@@ -142,6 +142,10 @@ void EthernetClient::stop() {
 
   EthernetClass::_server_port[_sock] = 0;
   _sock = MAX_SOCK_NUM;
+
+  if (onDisconnect){
+    onDisconnect(*this);
+  }
 }
 
 uint8_t EthernetClient::connected() {
@@ -162,4 +166,12 @@ uint8_t EthernetClient::status() {
 
 EthernetClient::operator bool() {
   return _sock != MAX_SOCK_NUM;
+}
+
+uint8_t EthernetClient::getId() {
+  return _sock;
+}
+
+void EthernetClient::registerDisconnectCallback(Callback *callback){
+  onDisconnect = callback;
 }

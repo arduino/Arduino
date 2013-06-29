@@ -11,7 +11,13 @@ public:
   EthernetClient();
   EthernetClient(uint8_t sock);
 
+  //Callback definition
+  typedef void Callback(EthernetClient &socket);
+  // Callbacks
+  void registerDisconnectCallback(Callback *callback);
+
   uint8_t status();
+  uint8_t getId();
   virtual int connect(IPAddress ip, uint16_t port);
   virtual int connect(const char *host, uint16_t port);
   virtual size_t write(uint8_t);
@@ -30,6 +36,8 @@ public:
   using Print::write;
 
 private:
+  Callback *onDisconnect;
+
   static uint16_t _srcport;
   uint8_t _sock;
 };
