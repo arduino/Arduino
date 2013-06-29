@@ -92,6 +92,7 @@ const DeviceDescriptor USB_DeviceDescriptorA =
 //==================================================================
 
 volatile u8 _usbConfiguration = 0;
+volatile u8 _usbCurrentStatus = 0; // meaning of bits see usb_20.pdf, Figure 9-4. Information Returned by a GetStatus() Request to a Device
 
 static inline void WaitIN(void)
 {
@@ -527,16 +528,37 @@ ISR(USB_COM_vect)
 	{
 		//	Standard Requests
 		u8 r = setup.bRequest;
+		u16 wValue = setup.wValueL | (setup.wValueH << 8);
 		if (GET_STATUS == r)
 		{
-			Send8(0);		// TODO
-			Send8(0);
+			if(requestType == (REQUEST_DEVICETOHOST | REQUEST_STANDARD | REQUEST_DEVICE))
+			{
+				Send8(_usbCurrentStatus);
+				Send8(0);
+			}
+			else
+			{
+				// TODO: handle the HALT state of an endpoint here
+				// see "Figure 9-6. Information Returned by a GetStatus() Request to an Endpoint" in usb_20.pdf for more information
+				Send8(0);
+				Send8(0);
+			}
 		}
 		else if (CLEAR_FEATURE == r)
 		{
+			if((requestType == (REQUEST_HOSTTODEVICE | REQUEST_STANDARD | REQUEST_DEVICE))
+				&& (wValue == DEVICE_REMOTE_WAKEUP))
+			{
+				_usbCurrentStatus &= ~FEATURE_REMOTE_WAKEUP_ENABLED;
+			}
 		}
 		else if (SET_FEATURE == r)
 		{
+			if((requestType == (REQUEST_HOSTTODEVICE | REQUEST_STANDARD | REQUEST_DEVICE))
+				&& (wValue == DEVICE_REMOTE_WAKEUP))
+			{
+				_usbCurrentStatus |= FEATURE_REMOTE_WAKEUP_ENABLED;
+			}
 		}
 		else if (SET_ADDRESS == r)
 		{
@@ -644,6 +666,7 @@ USBDevice_::USBDevice_()
 void USBDevice_::attach()
 {
 	_usbConfiguration = 0;
+	_usbCurrentStatus = 0;
 	UHWCON = 0x01;						// power internal reg
 	USBCON = (1<<USBE)|(1<<FRZCLK);		// clock frozen, usb enabled
 #if F_CPU == 16000000UL
@@ -679,6 +702,24 @@ bool USBDevice_::configured()
 
 void USBDevice_::poll()
 {
+}
+
+
+bool USBDevice_::wakeupHost()
+{
+	// clear any previous wakeup request which might have been set but could be processed at that time
+	// e.g. because the host was not suspended at that time
+	UDCON &= ~(1 << RMWKUP);
+
+	if(!(UDCON & (1 << RMWKUP)) && (_usbCurrentStatus & FEATURE_REMOTE_WAKEUP_ENABLED))
+	{
+		// This short version will only work, when the device has not been suspended. Currently the
+		// Arduino core doesn't handle SUSPEND at all, so this is ok.
+		UDCON |= (1 << RMWKUP); // send the wakeup request
+		return true;
+	}
+
+	return false;
 }
 
 #endif /* if defined(USBCON) */

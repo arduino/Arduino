@@ -18,6 +18,7 @@ public:
 	void attach();
 	void detach();	// Serial port goes down too...
 	void poll();
+	bool wakeupHost(); // returns false, when wakeup cannot be processed
 };
 extern USBDevice_ USBDevice;
 
