@@ -11,6 +11,11 @@ extern "C" {
 EthernetServer::EthernetServer(uint16_t port)
 {
   _port = port;
+  onConnect = NULL;
+}
+
+void EthernetServer::registerConnectCallback(Callback *callback) {
+    onConnect = callback;
 }
 
 void EthernetServer::begin()
@@ -21,6 +26,8 @@ void EthernetServer::begin()
       socket(sock, SnMR::TCP, _port, 0);
       listen(sock);
       EthernetClass::_server_port[sock] = _port;
+      EthernetClass::_is_new[sock] = true;
+
       break;
     }
   }  
@@ -39,7 +46,11 @@ void EthernetServer::accept()
       } 
       else if (client.status() == SnSR::CLOSE_WAIT && !client.available()) {
         client.stop();
-      }
+      }else{
+		if ( onConnect ){
+			onConnect(client);
+		}
+	  }
     } 
   }
 

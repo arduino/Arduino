@@ -15,6 +15,7 @@ private:
   IPAddress _dnsServerAddress;
   DhcpClass* _dhcp;
 public:
+  static uint8_t _is_new[MAX_SOCK_NUM];
   static uint8_t _state[MAX_SOCK_NUM];
   static uint16_t _server_port[MAX_SOCK_NUM];
   // Initialise the Ethernet shield to use the provided MAC address and gain the rest of the
