@@ -128,10 +128,14 @@ void EthernetClient::stop() {
   if (_sock == MAX_SOCK_NUM)
     return;
 
+  if (onDisconnect){
+    onDisconnect(*this);
+  }
+
   // attempt to close the connection gracefully (send a FIN to other side)
   disconnect(_sock);
   unsigned long start = millis();
-
+  
   // wait a second for the connection to close
   while (status() != SnSR::CLOSED && millis() - start < 1000)
     delay(1);
@@ -143,9 +147,6 @@ void EthernetClient::stop() {
   EthernetClass::_server_port[_sock] = 0;
   _sock = MAX_SOCK_NUM;
 
-  if (onDisconnect){
-    onDisconnect(*this);
-  }
 }
 
 uint8_t EthernetClient::connected() {
