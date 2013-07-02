@@ -93,6 +93,7 @@ const DeviceDescriptor USB_DeviceDescriptorA =
 
 volatile u8 _usbConfiguration = 0;
 volatile u8 _usbCurrentStatus = 0; // meaning of bits see usb_20.pdf, Figure 9-4. Information Returned by a GetStatus() Request to a Device
+volatile u8 _usbSuspendState = 0; // copy of UDINT to check SUSPI and WAKEUPI bits
 
 static inline void WaitIN(void)
 {
@@ -614,11 +615,39 @@ void USB_Flush(u8 ep)
 		ReleaseTX();
 }
 
+static inline void USB_ClockDisable()
+{
+	USBCON = (USBCON & ~(1<<OTGPADE)) | (1<<FRZCLK); // freeze clock and disable VBUS Pad
+	PLLCSR &= ~(1<<PLLE);  // stop PLL
+}
+
+static inline void USB_ClockEnable()
+{
+	UHWCON |= (1<<UVREGE);			// power internal reg
+	USBCON = (1<<USBE) | (1<<FRZCLK);	// clock frozen, usb enabled
+#if F_CPU == 16000000UL
+	PLLCSR = (1<<PINDIV);                   // Need 16 MHz xtal
+#elif F_CPU == 8000000UL
+	PLLCSR = 0x00;				// Need 8 MHz xtal
+#endif
+	PLLCSR |= (1<<PLLE);
+	while (!(PLLCSR & (1<<PLOCK)))		// wait for lock pll
+	{
+	}
+
+	// Some tests on specific versions of macosx (10.7.3), reported some
+	// strange behaviuors when the board is reset using the serial
+	// port touch at 1200 bps. This delay fixes this behaviour.
+	delay(1);
+	USBCON = (USBCON & ~(1<<FRZCLK)) | (1<<OTGPADE);	// start USB clock, enable VBUS Pad
+}
+
+
 //	General interrupt
 ISR(USB_GEN_vect)
 {
 	u8 udint = UDINT;
-	UDINT = 0;
+	UDINT &= ~((1<<EORSTI) | (1<<SOFI)); // clear the IRQ flags for the IRQs which are handled here, except WAKEUPI and SUSPI (see below)
 
 	//	End of Reset
 	if (udint & (1<<EORSTI))
@@ -642,6 +671,32 @@ ISR(USB_GEN_vect)
 			TXLED0;
 		if (RxLEDPulse && !(--RxLEDPulse))
 			RXLED0;
+	}
+
+	// the WAKEUPI interrupt is triggered as soon as there are non-idle patterns on the data
+	// lines. Thus, the WAKEUPI interrupt can occur even if the controller is not in the "suspend" mode.
+	// Therefore the we enable it only when USB is suspended
+	if (udint & (1<<WAKEUPI))
+	{
+		UDIEN = (UDIEN & ~(1<<WAKEUPE)) | (1<<SUSPE); // Disable interrupts for WAKEUP and enable interrupts for SUSPEND 
+
+		//TODO
+		// WAKEUPI shall be cleared by software (USB clock inputs must be enabled before).
+		//USB_ClockEnable();
+		UDINT &= ~(1<<WAKEUPI);
+		_usbSuspendState = (1<<WAKEUPI);
+	}
+	else if (udint & (1<<SUSPI)) // only one of the WAKEUPI / SUSPI bits can be active at time
+	{
+		// disable SUSPEND interrupts, because the SUSPI IRQ flag is not cleared and would trigger end endless IRQ loop
+		// the SUSPI flag is needed to detect the current suspend state in wakeupHost
+		UDIEN = (UDIEN & ~(1<<SUSPE)) | (1<<WAKEUPE); // Disable interrupts for SUSPEND and enable interrupts for WAKEUP 
+
+		//TODO
+		//USB_ClockDisable();
+
+		UDINT &= ~((1<<WAKEUPI) | (1<<SUSPI)); // clear any already pending WAKEUP IRQs and the SUSPI request
+		_usbSuspendState = (1<<SUSPI);
 	}
 }
 
@@ -667,24 +722,10 @@ void USBDevice_::attach()
 {
 	_usbConfiguration = 0;
 	_usbCurrentStatus = 0;
-	UHWCON = 0x01;						// power internal reg
-	USBCON = (1<<USBE)|(1<<FRZCLK);		// clock frozen, usb enabled
-#if F_CPU == 16000000UL
-	PLLCSR = 0x12;						// Need 16 MHz xtal
-#elif F_CPU == 8000000UL
-	PLLCSR = 0x02;						// Need 8 MHz xtal
-#endif
-	while (!(PLLCSR & (1<<PLOCK)))		// wait for lock pll
-		;
+	USB_ClockEnable();
 
-	// Some tests on specific versions of macosx (10.7.3), reported some
-	// strange behaviuors when the board is reset using the serial
-	// port touch at 1200 bps. This delay fixes this behaviour.
-	delay(1);
-
-	USBCON = ((1<<USBE)|(1<<OTGPADE));	// start USB clock
-	UDIEN = (1<<EORSTE)|(1<<SOFE);		// Enable interrupts for EOR (End of Reset) and SOF (start of frame)
-	UDCON = 0;							// enable attach resistor
+	UDIEN = (1<<EORSTE) | (1<<SOFE) | (1<<SUSPE);	// Enable interrupts for EOR (End of Reset), SOF (start of frame) and SUSPEND
+	UDCON &= ~((1<<RSTCPU | (1<<LSM) | (1<<RMWKUP) | (1<<DETACH)));	// enable attach resistor, set full speed mode
 	
 	TX_RX_LED_INIT;
 }
@@ -711,10 +752,13 @@ bool USBDevice_::wakeupHost()
 	// e.g. because the host was not suspended at that time
 	UDCON &= ~(1 << RMWKUP);
 
-	if(!(UDCON & (1 << RMWKUP)) && (_usbCurrentStatus & FEATURE_REMOTE_WAKEUP_ENABLED))
+	if(!(UDCON & (1 << RMWKUP))
+	  && (_usbSuspendState & (1<<SUSPI))
+	  && (_usbCurrentStatus & FEATURE_REMOTE_WAKEUP_ENABLED))
 	{
 		// This short version will only work, when the device has not been suspended. Currently the
 		// Arduino core doesn't handle SUSPEND at all, so this is ok.
+		USB_ClockEnable();
 		UDCON |= (1 << RMWKUP); // send the wakeup request
 		return true;
 	}
