@@ -640,6 +640,7 @@ static inline void USB_ClockEnable()
 	// port touch at 1200 bps. This delay fixes this behaviour.
 	delay(1);
 	USBCON = (USBCON & ~(1<<FRZCLK)) | (1<<OTGPADE);	// start USB clock, enable VBUS Pad
+	UDCON &= ~((1<<RSTCPU) | (1<<LSM) | (1<<RMWKUP) | (1<<DETACH));	// enable attach resistor, set full speed mode
 }
 
 
@@ -684,19 +685,17 @@ ISR(USB_GEN_vect)
 		// WAKEUPI shall be cleared by software (USB clock inputs must be enabled before).
 		//USB_ClockEnable();
 		UDINT &= ~(1<<WAKEUPI);
-		_usbSuspendState = (1<<WAKEUPI);
+		_usbSuspendState = (_usbSuspendState & ~(1<<SUSPI)) | (1<<WAKEUPI);
 	}
 	else if (udint & (1<<SUSPI)) // only one of the WAKEUPI / SUSPI bits can be active at time
 	{
-		// disable SUSPEND interrupts, because the SUSPI IRQ flag is not cleared and would trigger end endless IRQ loop
-		// the SUSPI flag is needed to detect the current suspend state in wakeupHost
 		UDIEN = (UDIEN & ~(1<<SUSPE)) | (1<<WAKEUPE); // Disable interrupts for SUSPEND and enable interrupts for WAKEUP 
 
 		//TODO
 		//USB_ClockDisable();
 
 		UDINT &= ~((1<<WAKEUPI) | (1<<SUSPI)); // clear any already pending WAKEUP IRQs and the SUSPI request
-		_usbSuspendState = (1<<SUSPI);
+		_usbSuspendState = (_usbSuspendState & ~(1<<WAKEUPI)) | (1<<SUSPI);
 	}
 }
 
@@ -722,10 +721,11 @@ void USBDevice_::attach()
 {
 	_usbConfiguration = 0;
 	_usbCurrentStatus = 0;
+	_usbSuspendState = 0;
 	USB_ClockEnable();
 
+	UDINT &= ~((1<<WAKEUPI) | (1<<SUSPI)); // clear already pending WAKEUP / SUSPEND requests
 	UDIEN = (1<<EORSTE) | (1<<SOFE) | (1<<SUSPE);	// Enable interrupts for EOR (End of Reset), SOF (start of frame) and SUSPEND
-	UDCON &= ~((1<<RSTCPU | (1<<LSM) | (1<<RMWKUP) | (1<<DETACH)));	// enable attach resistor, set full speed mode
 	
 	TX_RX_LED_INIT;
 }
