@@ -2,6 +2,8 @@
 
 /* Copyright (c) 2011, Peter Barrett  
 **  
+** Sleep/Wakeup/SystemControl support added by Michael Dreher
+**
 ** Permission to use, copy, modify, and/or distribute this software for  
 ** any purpose with or without fee is hereby granted, provided that the  
 ** above copyright notice and this permission notice appear in all copies.  
@@ -43,16 +45,20 @@ Keyboard_ Keyboard;
 #define RAWHID_TX_SIZE 64
 #define RAWHID_RX_SIZE 64
 
+#define HID_REPORTID_MOUSE (1)
+#define HID_REPORTID_KEYBOARD (2)
+#define HID_REPORTID_RAWHID (3)
+#define HID_REPORTID_SYSTEMCONTROL (4)
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
 	
-	//	Mouse
+    //  Mouse
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 54
     0x09, 0x02,                    // USAGE (Mouse)
     0xa1, 0x01,                    // COLLECTION (Application)
     0x09, 0x01,                    //   USAGE (Pointer)
     0xa1, 0x00,                    //   COLLECTION (Physical)
-    0x85, 0x01,                    //     REPORT_ID (1)
+    0x85, HID_REPORTID_MOUSE,      //     REPORT_ID (1)
     0x05, 0x09,                    //     USAGE_PAGE (Button)
     0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
     0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
@@ -76,34 +82,64 @@ const u8 _hidReportDescriptor[] = {
     0xc0,                          //   END_COLLECTION
     0xc0,                          // END_COLLECTION
 
-	//	Keyboard
+    //  Keyboard
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 47
     0x09, 0x06,                    // USAGE (Keyboard)
     0xa1, 0x01,                    // COLLECTION (Application)
-    0x85, 0x02,                    //   REPORT_ID (2)
+    0x85, HID_REPORTID_KEYBOARD,   //   REPORT_ID (2)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
    
-	0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
+    0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
     0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
     0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
     0x75, 0x01,                    //   REPORT_SIZE (1)
     
-	0x95, 0x08,                    //   REPORT_COUNT (8)
+    0x95, 0x08,                    //   REPORT_COUNT (8)
     0x81, 0x02,                    //   INPUT (Data,Var,Abs)
     0x95, 0x01,                    //   REPORT_COUNT (1)
     0x75, 0x08,                    //   REPORT_SIZE (8)
     0x81, 0x03,                    //   INPUT (Cnst,Var,Abs)
-    
-	0x95, 0x06,                    //   REPORT_COUNT (6)
+
+    0x95, 0x06,                    //   REPORT_COUNT (6)
     0x75, 0x08,                    //   REPORT_SIZE (8)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
     0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
     
-	0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
+    0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
     0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
+    0xc0,                          // END_COLLECTION
+
+    //  System Control (Power Down, Sleep, Wakeup, ...)
+    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+    0x09, 0x80,                    // USAGE (System Control)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x85, HID_REPORTID_SYSTEMCONTROL,// REPORT_ID (4)
+    0x09, 0x81,                    //   USAGE (System Power Down)
+    0x09, 0x82,                    //   USAGE (System Sleep)
+    0x09, 0x83,                    //   USAGE (System Wakeup)
+    0x09, 0x8E,                    //   USAGE (System Cold Restart)
+    0x09, 0x8F,                    //   USAGE (System Warm Restart)
+    0x09, 0xA0,                    //   USAGE (System Dock)
+    0x09, 0xA1,                    //   USAGE (System Undock)
+    0x09, 0xA7,                    //   USAGE (System Speaker Mute)
+    0x09, 0xA8,                    //   USAGE (System Hibernate)
+    // although these display usages are not that important, they don't cost much more than declaring
+    // the otherwise necessary constant fill bits
+    0x09, 0xB0,                    //   USAGE (System Display Invert)
+    0x09, 0xB1,                    //   USAGE (System Display Internal)
+    0x09, 0xB2,                    //   USAGE (System Display External)
+    0x09, 0xB3,                    //   USAGE (System Display Both)
+    0x09, 0xB4,                    //   USAGE (System Display Dual)
+    0x09, 0xB5,                    //   USAGE (System Display Toggle Intern/Extern)
+    0x09, 0xB6,                    //   USAGE (System Display Swap)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
+    0x75, 0x01,                    //   REPORT_SIZE (1)
+    0x95, 0x10,                    //   REPORT_COUNT (16)
+    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
     0xc0,                          // END_COLLECTION
 
 #if RAWHID_ENABLED
@@ -112,7 +148,7 @@ const u8 _hidReportDescriptor[] = {
 	0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
 
 	0xA1, 0x01,				// Collection 0x01
-    0x85, 0x03,             // REPORT_ID (3)
+	0x85, HID_REPORTID_RAWHID,		// REPORT_ID (3)
 	0x75, 0x08,				// report size = 8 bits
 	0x15, 0x00,				// logical minimum = 0
 	0x26, 0xFF, 0x00,		// logical maximum = 255
@@ -228,7 +264,7 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	m[1] = x;
 	m[2] = y;
 	m[3] = wheel;
-	HID_SendReport(1,m,4);
+	HID_SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
 }
 
 void Mouse_::buttons(uint8_t b)
@@ -275,7 +311,7 @@ void Keyboard_::end(void)
 
 void Keyboard_::sendReport(KeyReport* keys)
 {
-	HID_SendReport(2,keys,sizeof(KeyReport));
+	HID_SendReport(HID_REPORTID_KEYBOARD,keys,sizeof(*keys));
 }
 
 extern
@@ -460,6 +496,38 @@ size_t Keyboard_::press(uint8_t k)
 	}
 	sendReport(&_keyReport);
 	return 1;
+}
+
+// System Control
+//  k is one of the SYSTEM_CONTROL defines which come from the HID usage table "Generic Desktop Page (0x01)"
+// in "HID Usage Tables" (HUT1_12v2.pdf)
+size_t Keyboard_::systemControl(uint8_t k) 
+{
+	if(k <= 16)
+	{
+		u16 mask = 0;
+		u8 m[2];
+
+		if(k > 0)
+		{
+			mask = 1 << (k - 1);
+		}
+
+		m[0] = LSB(mask);
+		m[1] = MSB(mask);
+		HID_SendReport(HID_REPORTID_SYSTEMCONTROL,m,sizeof(m));
+
+		// these are all OSCs, so send a clear to make it possible to send it again later
+		m[0] = 0;
+		m[1] = 0;
+		HID_SendReport(HID_REPORTID_SYSTEMCONTROL,m,sizeof(m));
+		return 1;
+	}
+	else
+	{
+		setWriteError();
+		return 0;
+	}
 }
 
 // release() takes the specified key out of the persistent key report and
