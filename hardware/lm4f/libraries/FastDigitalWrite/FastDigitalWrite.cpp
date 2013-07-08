@@ -29,11 +29,16 @@
 
 
 // Code
-fastDigitalOutputPin::fastDigitalOutputPin(uint8_t pinChipSelect)
+fastDigitalOutputPin::fastDigitalOutputPin()
 {
-    _port   = portOutputRegister(digitalPinToPort(pinChipSelect));
-    _bit    = digitalPinToBitMask(pinChipSelect);
-    pinMode(pinChipSelect, OUTPUT);
+    ;
+}
+
+void fastDigitalOutputPin::begin(uint8_t outputPin)
+{
+    _port = portOutputRegister(digitalPinToPort(outputPin));
+    _bit  = digitalPinToBitMask(outputPin);
+    pinMode(outputPin, OUTPUT);
 }
 
 void fastDigitalOutputPin::setHIGH()
