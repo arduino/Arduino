@@ -6,6 +6,11 @@
  * it under the terms of either the GNU General Public License version 2
  * or the GNU Lesser General Public License version 2.1, both as
  * published by the Free Software Foundation.
+ *
+ * Improvements for StellarPad LM4F
+ * ---
+ * Four SPI ports for StellarPad - reaper7 - Jul 08, 2013
+ *
  */
 
 #include "wiring_private.h"
@@ -17,11 +22,11 @@
 #include "driverlib/sysctl.h"
 #include "SPI.h"
 
-#define SSIBASE g_ulSSIBase[SSIModule]
-#define NOT_ACTIVE 0xA
 
-uint8_t SPIClass::slaveSelect = PA_5;
-uint8_t SPIClass::SSIModule = NOT_ACTIVE;
+//#define NOT_ACTIVE 0xA
+
+#define SSIBASE g_ulSSIBase[SSIModule]
+#define SSELPIN g_u8SlaveSelPins[SSIModule]
 
 static const unsigned long g_ulSSIBase[4] =
 {
@@ -46,10 +51,11 @@ static const unsigned long g_ulSSIPeriph[4] =
 //*****************************************************************************
 static const unsigned long g_ulSSIConfig[4][4] =
 {
-    {GPIO_PA2_SSI0CLK, GPIO_PA3_SSI0FSS, GPIO_PA4_SSI0RX, GPIO_PA5_SSI0TX},
-    {GPIO_PF2_SSI1CLK, GPIO_PF3_SSI1FSS, GPIO_PF0_SSI1RX, GPIO_PF1_SSI1TX},
-    {GPIO_PB4_SSI2CLK, GPIO_PB5_SSI2FSS, GPIO_PB6_SSI2RX, GPIO_PB7_SSI2TX},
-    {GPIO_PD0_SSI3CLK, GPIO_PD1_SSI3FSS, GPIO_PD2_SSI3RX, GPIO_PD3_SSI3TX},};
+  {GPIO_PA2_SSI0CLK, GPIO_PA3_SSI0FSS, GPIO_PA4_SSI0RX, GPIO_PA5_SSI0TX},
+  {GPIO_PF2_SSI1CLK, GPIO_PF3_SSI1FSS, GPIO_PF0_SSI1RX, GPIO_PF1_SSI1TX},
+  {GPIO_PB4_SSI2CLK, GPIO_PB5_SSI2FSS, GPIO_PB6_SSI2RX, GPIO_PB7_SSI2TX},
+  {GPIO_PD0_SSI3CLK, GPIO_PD1_SSI3FSS, GPIO_PD2_SSI3RX, GPIO_PD3_SSI3TX}
+};
 
 //*****************************************************************************
 //
@@ -58,7 +64,7 @@ static const unsigned long g_ulSSIConfig[4][4] =
 //*****************************************************************************
 static const unsigned long g_ulSSIPort[4] =
 {
-    GPIO_PORTA_BASE, GPIO_PORTF_BASE, GPIO_PORTB_BASE, GPIO_PORTD_BASE
+  GPIO_PORTA_BASE, GPIO_PORTF_BASE, GPIO_PORTB_BASE, GPIO_PORTD_BASE
 };
 
 //*****************************************************************************
@@ -74,23 +80,36 @@ static const unsigned long g_ulSSIPins[4] =
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
 };
 
+//*****************************************************************************
+//
+// The list of SlaveSelect Default Pins.
+//
+//*****************************************************************************
+static const uint8_t g_u8SlaveSelPins[4] =
+{
+  PA_3, PF_3, PB_5, PD_1
+};
+
 SPIClass::SPIClass(void)
 {
+	SSIModule = BOOST_PACK_SPI;
+	slaveSelect = SSELPIN;
 }
 
-SPIClass::SPIClass(uint8_t module)
+SPIClass::SPIClass(unsigned long module)
 {
 	SSIModule = module;
+	slaveSelect = SSELPIN;
 }
   
-void SPIClass::begin(uint8_t ssPin) {
+void SPIClass::begin(unsigned long ssPin) {
 
 	unsigned long initialData = 0;
-
-    if(SSIModule == NOT_ACTIVE) {
-        SSIModule = BOOST_PACK_SPI;
-    }
-
+/*
+  if(SSIModule == NOT_ACTIVE) {
+    SSIModule = BOOST_PACK_SPI;
+  }
+*/
 	ROM_SysCtlPeripheralEnable(g_ulSSIPeriph[SSIModule]);
 	ROM_SSIDisable(SSIBASE);
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][0]);
@@ -113,11 +132,10 @@ void SPIClass::begin(uint8_t ssPin) {
 	/*
 	 * Default to
 	 * System Clock, SPI_MODE_0, MASTER,
-	 * 4MHz bit rate, and 8 bit data
+	 * 8MHz bit rate, and 8 bit data
 	*/
 	ROM_SSIClockSourceSet(SSIBASE, SSI_CLOCK_SYSTEM);
-	ROM_SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,
-	  SSI_MODE_MASTER, 8000000, 8);
+	ROM_SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, 16000000, 8);
 	ROM_SSIEnable(SSIBASE);
 
 	//clear out any initial data that might be present in the RX FIFO
@@ -126,11 +144,10 @@ void SPIClass::begin(uint8_t ssPin) {
 }
 
 void SPIClass::begin() {
-	//default to MSP430 launchpad ssPin
-	begin(PA_5);
+	begin(SSELPIN);
 }
 
-void SPIClass::end(uint8_t ssPin) {
+void SPIClass::end(unsigned long ssPin) {
 	ROM_SSIDisable(SSIBASE);
 }
 
@@ -138,7 +155,7 @@ void SPIClass::end() {
 	end(slaveSelect);
 }
 
-void SPIClass::setBitOrder(uint8_t ssPin, uint8_t bitOrder)
+void SPIClass::setBitOrder(unsigned long ssPin, uint8_t bitOrder)
 {
 }
 
@@ -155,14 +172,14 @@ void SPIClass::setDataMode(uint8_t mode) {
 
 }
 
-void SPIClass::setClockDivider(uint8_t divider){
+void SPIClass::setClockDivider(uint8_t divider) {
 
   //value must be even
   HWREG(SSIBASE + SSI_O_CPSR) = divider;
 
 }
 
-uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
+uint8_t SPIClass::transfer(unsigned long ssPin, uint8_t data, uint8_t transferMode) {
 
 	unsigned long rxData;
 
@@ -183,7 +200,7 @@ uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
 
 }
 
-uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data) {
+uint8_t SPIClass::transfer(unsigned long ssPin, uint8_t data) {
 
   return transfer(ssPin, data, SPI_LAST);
 
@@ -195,9 +212,18 @@ uint8_t SPIClass::transfer(uint8_t data) {
 
 }
 
-void SPIClass::setModule(uint8_t module) {
-	SSIModule = module;
-	begin(slaveSelect);
+void SPIClass::setModule(unsigned long module) {
+  SSIModule = module;
+  begin(SSELPIN);
 }
 
-SPIClass SPI;
+void SPIClass::setModule(unsigned long module, unsigned long ssPin) {
+  SSIModule = module;
+  begin(ssPin);
+}
+
+//SPIClass SPI;
+SPIClass SPI0(0);
+SPIClass SPI1(1);
+SPIClass SPI2(2);
+SPIClass SPI3(3);
