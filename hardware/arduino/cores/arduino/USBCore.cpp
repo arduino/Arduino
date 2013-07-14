@@ -634,6 +634,8 @@ static inline void USB_ClockEnable()
 	PLLCSR |= (1<<PINDIV);                   // Need 16 MHz xtal
 #elif F_CPU == 8000000UL
 	PLLCSR &= ~(1<<PINDIV);                  // Need  8 MHz xtal
+#else
+#error "Clock rate of F_CPU not supported"
 #endif
 
 // AT90USB646, AT90USB647, AT90USB1286, AT90USB1287 
@@ -646,11 +648,13 @@ static inline void USB_ClockEnable()
 	// For AT90USB64x only. Do not use with AT90USB128x.
 	PLLCSR = (PLLCSR & ~(1<<PLLP0)) | ((1<<PLLP2) | (1<<PLLP1)); // Need 16 MHz xtal
 #else
-#error "USB Chip not supported, please defined method of PLL initialization yourself"
+#error "USB Chip not supported, please defined method of USB PLL initialization"
 #endif
 #elif F_CPU == 8000000UL
 	// for Atmel AT90USB128x and AT90USB64x
 	PLLCSR = (PLLCSR & ~(1<<PLLP2)) | ((1<<PLLP1) | (1<<PLLP0)); // Need 8 MHz xtal
+#else
+#error "Clock rate of F_CPU not supported"
 #endif
 #endif
 
