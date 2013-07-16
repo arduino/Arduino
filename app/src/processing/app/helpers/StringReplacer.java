@@ -45,41 +45,51 @@ public class StringReplacer {
     }
 
     // Split the resulting string in arguments
-    return quotedSplit(src, '"', false);
+    return quotedSplit(src, '"');
   }
 
-  public static String[] quotedSplit(String src, char escapeChar,
-                                     boolean acceptEmptyArguments)
+  // Split a string into a list of space-delimited arguments
+  //
+  // Arguments containing spaces can be escaped by quoting with 'quoteChar'.
+  // Arguments entirely enclosed by 'quoteChar' will have quotes stripped,
+  // arguments where quoteChar is inside another part of the argument string (ie -DNAME="VALUE PARTS")
+  // will have the quotes retained.
+  public static String[] quotedSplit(String src, char quoteChar)
       throws Exception {
-    String quote = "" + escapeChar;
     List<String> res = new ArrayList<String>();
-    String escapedArg = null;
-    boolean escaping = false;
-    for (String i : src.split(" ")) {
-      if (!escaping) {
-        if (!i.startsWith(quote)) {
-          if (i.trim().length() != 0 || acceptEmptyArguments)
-            res.add(i);
-          continue;
+    String arg = "";
+    boolean quoting = false;
+    boolean quoting_instr = false;
+
+    for(char c : src.toCharArray()) {
+      if(quoting) {
+        if(c == quoteChar) {
+          if(quoting_instr)
+            arg += quoteChar;
+          res.add(arg);
+          arg = "";
+          quoting = false;
+        } else {
+          arg += c;
         }
-
-        escaping = true;
-        i = i.substring(1);
-        escapedArg = "";
       }
-
-      if (!i.endsWith(quote)) {
-        escapedArg += i + " ";
-        continue;
+      else { // not quoting
+        if(c == ' ') {
+          res.add(arg);
+          arg = "";
+        } else if(c == quoteChar) {
+          quoting = true;
+          quoting_instr = arg.length() > 0;
+          if(quoting_instr)
+            arg += quoteChar;
+        } else {
+          arg += c;
+        }
       }
-
-      escapedArg += i.substring(0, i.length() - 1);
-      if (escapedArg.trim().length() != 0 || acceptEmptyArguments)
-        res.add(escapedArg);
-      escaping = false;
     }
-    if (escaping)
-      throw new Exception("Invalid quoting: no closing '" + escapeChar +
+
+    if (quoting)
+      throw new Exception("Invalid quoting: no closing '" + quoteChar +
           "' char found.");
     return res.toArray(new String[0]);
   }
