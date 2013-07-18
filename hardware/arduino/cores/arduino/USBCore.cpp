@@ -656,6 +656,8 @@ static inline void USB_ClockEnable()
 #else
 #error "Clock rate of F_CPU not supported"
 #endif
+#else
+#error "USB Chip not supported, please defined method of USB PLL initialization"
 #endif
 
 	PLLCSR |= (1<<PLLE);
