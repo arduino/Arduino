@@ -154,11 +154,8 @@ public:
 	void begin(void);
 	void end(void);
 	virtual size_t write(uint8_t k);
-	virtual size_t writeRaw(uint8_t c);
 	virtual size_t press(uint8_t k);
-	virtual size_t pressRaw(uint8_t k);
 	virtual size_t release(uint8_t k);
-	virtual size_t releaseRaw(uint8_t k);
 	virtual void releaseAll(void);
 	virtual size_t systemControl(uint8_t k);
 };
