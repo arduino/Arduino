@@ -49,10 +49,11 @@ Keyboard_ Keyboard;
 #define HID_REPORTID_KEYBOARD (2)
 #define HID_REPORTID_RAWHID (3)
 #define HID_REPORTID_SYSTEMCONTROL (4)
+#define HID_REPORTID_MOUSE_ABS (5)
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
 	
-    //  Mouse
+    //  Mouse relative
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 54
     0x09, 0x02,                    // USAGE (Mouse)
     0xa1, 0x01,                    // COLLECTION (Application)
@@ -81,6 +82,38 @@ const u8 _hidReportDescriptor[] = {
     0x81, 0x06,                    //     INPUT (Data,Var,Rel)
     0xc0,                          //   END_COLLECTION
     0xc0,                          // END_COLLECTION
+
+#ifdef MOUSE_ABS_ENABLED
+    //  Mouse absolute
+    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+    0x09, 0x02,                    // USAGE (Mouse)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x09, 0x01,                    //   USAGE (Pointer)
+    0xa1, 0x00,                    //   COLLECTION (Physical)
+    0x85, HID_REPORTID_MOUSE_ABS,  //     REPORT_ID (5)
+    0x05, 0x09,                    //     USAGE_PAGE (Button)
+    0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
+    0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
+    0x95, 0x03,                    //     REPORT_COUNT (3)
+    0x75, 0x01,                    //     REPORT_SIZE (1)
+    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+    0x95, 0x01,                    //     REPORT_COUNT (1)
+    0x75, 0x05,                    //     REPORT_SIZE (5)
+    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
+    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+    0x09, 0x30,                    //     USAGE (X)
+    0x09, 0x31,                    //     USAGE (Y)
+    0x09, 0x38,                    //     USAGE (Wheel)
+    0x16, 0x00, 0x80,              //     LOGICAL_MINIMUM (-32768)
+    0x26, 0xff, 0x7f,              //     LOGICAL_MAXIMUM (32767)
+    0x75, 0x10,                    //     REPORT_SIZE (16)
+    0x95, 0x03,                    //     REPORT_COUNT (3)
+    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+    0xc0,                          //   END_COLLECTION
+    0xc0,                          // END_COLLECTION
+#endif
 
     //  Keyboard
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 47
@@ -267,6 +300,28 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	m[3] = wheel;
 	HID_SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
 }
+
+#ifdef MOUSE_ABS_ENABLED
+// all parameters have the range of -32768 to 32767 and must be scaled to screen pixels
+// some examples:
+//   x=0,y=0 is the middle of the screen
+//   x=-32768,y=-32768 is the top left corner
+//   x=32767,y=-32768 is the top right corner
+//   x=32767,y=32767 is the bottom right corner
+//   x=-32768,y=32767 is the bottom left corner
+void Mouse_::moveAbs(int16_t x, int16_t y, int16_t wheel)
+{
+	u8 m[7];
+	m[0] = _buttons; // TODO: is it a good idea to take over the _buttons from relative report here or should it be left out?
+	m[1] = LSB(x);
+	m[2] = MSB(x);
+	m[3] = LSB(y);
+	m[4] = MSB(y);
+	m[5] = LSB(wheel);
+	m[6] = MSB(wheel);
+	HID_SendReport(HID_REPORTID_MOUSE_ABS,m,sizeof(m));
+}
+#endif
 
 void Mouse_::buttons(uint8_t b)
 {
