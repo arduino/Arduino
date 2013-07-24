@@ -30,6 +30,11 @@ rightToLeft	KEYWORD2
 scrollDisplayLeft	KEYWORD2
 scrollDisplayRight	KEYWORD2
 createChar	KEYWORD2
+getCursorPos 	KEYWORD2
+getCharAt	KEYWORD2
+getChars 	KEYWORD2
+deleteLast	KEYWORD2
+deleteAt	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

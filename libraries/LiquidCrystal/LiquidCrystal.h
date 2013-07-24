@@ -58,7 +58,7 @@ public:
   void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
 	    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
 	    uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-    
+
   void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
   void clear();
@@ -78,15 +78,25 @@ public:
   void noAutoscroll();
 
   void createChar(uint8_t, uint8_t[]);
-  void setCursor(uint8_t, uint8_t); 
+  void setCursor(uint8_t, uint8_t);
+  void getCursorPos(int &col, int &row);
+  char getCharAt(uint8_t col, uint8_t row);
+  char getCharAt(uint8_t col, uint8_t row, uint8_t ret);
+  char* getChars(uint8_t col, uint8_t row, uint8_t chars);
+  void deleteLast();
+  void deleteAt(uint8_t col, uint8_t row);
   virtual size_t write(uint8_t);
   void command(uint8_t);
-  
+
   using Print::write;
 private:
+
+  uint8_t readBusyFlagAndAddress();
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);
   void write8bits(uint8_t);
+  uint8_t read4bits();
+  uint8_t read8bits();
   void pulseEnable();
 
   uint8_t _rs_pin; // LOW: command.  HIGH: character.
