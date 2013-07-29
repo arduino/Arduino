@@ -2,8 +2,8 @@
    ************************************************************************
   *	wiring_pulse.c
   *
-  *	Energia core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Energia core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
   *
   *
   ***********************************************************************

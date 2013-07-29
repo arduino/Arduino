@@ -61,6 +61,7 @@
 								<option id="com.ti.ccstudio.buildDefinitions.C2000_6.3.linkerID.LIBRARY.1716980715" name="Include library file or command file as input (--library, -l)" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.3.linkerID.LIBRARY" valueType="libs">
 									<listOptionValue builtIn="false" value="&quot;libc.a&quot;"/>
 								</option>
+								<option id="com.ti.ccstudio.buildDefinitions.C2000_6.3.linkerID.ENTRY_POINT.2088398264" name="Specify program entry point for the output module (--entry_point, -e)" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.3.linkerID.ENTRY_POINT" value="_InitBoot" valueType="string"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_6.3.exeLinker.inputType__CMD_SRCS.891491082" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.3.exeLinker.inputType__CMD_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_6.3.exeLinker.inputType__CMD2_SRCS.1231990926" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.3.exeLinker.inputType__CMD2_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.C2000_6.3.exeLinker.inputType__GEN_CMDS.482839384" name="Generated Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.C2000_6.3.exeLinker.inputType__GEN_CMDS"/>

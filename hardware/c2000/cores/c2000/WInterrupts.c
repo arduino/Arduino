@@ -86,36 +86,39 @@ void attachInterrupt(uint8_t pin, uint8_t interruptNum, void (*userFunc)(void), 
         if (bit == NOT_A_PIN) return;
         
         DINT;
-        
+        EALLOW;
         switch(interruptNum) {
                 case 1:
                 	PieVectTable.XINT1 = Port_1;
                 	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
+                	IER |= M_INT1;
                 	GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = pin;
                 	XIntruptRegs.XINT1CR.bit.POLARITY = mode;
-                	XIntruptRegs.XINT1CR.bit.ENABLE = 1;
 					intFuncP1 = userFunc;
+                	XIntruptRegs.XINT1CR.bit.ENABLE = 1;
 					break;
                 case 2:
                 	PieVectTable.XINT2 = Port_2;
                 	PieCtrlRegs.PIEIER1.bit.INTx5 = 1;
+                	IER |= M_INT1;
                 	GpioIntRegs.GPIOXINT2SEL.bit.GPIOSEL = pin;
                 	XIntruptRegs.XINT2CR.bit.POLARITY = mode;
-                	XIntruptRegs.XINT2CR.bit.ENABLE = 1;
 					intFuncP2 = userFunc;
+                	XIntruptRegs.XINT2CR.bit.ENABLE = 1;
 					break;
                 case 3:
                 	PieVectTable.XINT3 = Port_3;
                 	PieCtrlRegs.PIEIER12.bit.INTx1 = 1;
+                	IER |= M_INT12;
                 	GpioIntRegs.GPIOXINT3SEL.bit.GPIOSEL = pin;
                 	XIntruptRegs.XINT3CR.bit.POLARITY = mode;
-                	XIntruptRegs.XINT3CR.bit.ENABLE = 1;
 					intFuncP3 = userFunc;
+                	XIntruptRegs.XINT3CR.bit.ENABLE = 1;
 					break;
                 default:
                         break;
         }
-       
+       EDIS;
         EINT;
 }
 

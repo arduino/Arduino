@@ -2,8 +2,8 @@
   ************************************************************************
   *	HardwareSerial.cpp
   *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Arduino core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
   *
   *
   ***********************************************************************
@@ -39,29 +39,35 @@ void pinMode(uint8_t pin, uint8_t mode)
 	volatile uint32_t *dir;
 	volatile uint8_t *sel;
 	volatile uint32_t *out;
+	volatile uint32_t *pud;
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
 	dir = portDirRegister(port);
 	sel = portSelRegister(port);
 	out = portOutputRegister(port);
-
-
+	pud = portPullupRegister(port);
 
 	if (port == NOT_A_PORT) return;
 
 	if(pin > 31){
-		pin -= 31;
+		pin -= 32;
 	}
 
 	EALLOW;
 	//Turn off peripheral function
 	if(port == PORT_A_2){
-		*sel &= ~(0x03 << (pin * 2));
+		*sel &= ~((uint32_t)0x03 << ((pin-16) * 2));
 	}else{
-		*sel &= ~(0x03 << ((pin-16) * 2));
+		*sel &= ~((uint32_t)0x03 << (pin * 2));
 	}
-	*dir &= ~(1 << pin);
-	*dir |= (mode << pin);
+	*dir &= ~((uint32_t)1 << pin);
+	*dir |= ((uint32_t)(mode & 0x01) << pin);
+
+	if(mode == INPUT_PULLUP){
+		*pud &= ~((uint32_t)1 << pin);
+	}else{
+		*pud |= ((uint32_t)1 << pin);
+	}
 
 	EDIS;
 
@@ -89,9 +95,6 @@ void pinMode_int(uint8_t pin, uint8_t mode)
 		*dir &= ~bit;
 		if (mode & INPUT_PULLUP) {
                 *out |= bit;
-//                *ren |= bit;
-        } else if (mode & INPUT_PULLDOWN) {
-                *out &= ~bit;
 //                *ren |= bit;
         }
 	}

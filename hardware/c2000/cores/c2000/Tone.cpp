@@ -1,4 +1,12 @@
-/* Tone.cpp
+/*
+  *************************************************************************
+  *	tone.c
+  *
+  *	Energia core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
+  *
+  *
+  ***********************************************************************
 
   A Tone Generator Library - Modified for Energia
   Implements up to 3 (software) PWM outputs using TIMERA0 compare registers and IRQ. 
@@ -45,17 +53,15 @@ Version Modified By Date     Comments
 static void initTimers();
 static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration);
 static void stopTimer(uint8_t n);
+interrupt void cpu_timer1_isr(void);
+interrupt void cpu_timer2_isr(void);
 
 // timer clock frequency set to clock/8, at F_CPU = 1MHZ this gives an output freq range of ~[1Hz ..65Khz] and at 16Mhz this is ~[16Hz .. 1MHz]
-#define F_TIMER (F_CPU/8L)
+#define F_TIMER (F_CPU/60L)
 
-#ifdef __MSP430_HAS_TA3__
-#define AVAILABLE_TONE_PINS 3
-#define SETARRAY(a) a,a,a
-#else
+
 #define AVAILABLE_TONE_PINS 2
 #define SETARRAY(a) a,a
-#endif
 
 
 // tone_duration:
@@ -66,7 +72,7 @@ static void stopTimer(uint8_t n);
 static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
 static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { SETARRAY(255) };
 static uint8_t tone_bit[AVAILABLE_TONE_PINS] = { SETARRAY(255)  };
-volatile static uint8_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
+volatile static uint32_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
 static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { SETARRAY(-1)  };
 static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
 
@@ -99,7 +105,7 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
     {
       tone_pins[i] = _pin;
       tone_bit[i] = digitalPinToBitMask(_pin);
-      tone_out[i] = portOutputRegister(port); 
+      tone_out[i] = portOutputRegister(port);
       if ( tone_state == 0 ) 
         initTimers();
       pinMode(_pin, OUTPUT);
@@ -131,13 +137,26 @@ void noTone(uint8_t _pin)
 // Initialize the timers - Set mode and Enable IRQ
 static void inline initTimers()
 {
-  // disable IRQs
-  TA0CCTL0 = 0;
-  TA0CCTL1 = 0;
-#ifdef __MSP430_HAS_TA3__
-  TA0CCTL2 = 0;
-#endif
-  TA0CTL = TACLR + TASSEL_2 +  ID_3 + MC_2;       // clear counter, source=SMCLK/8, mode=continous count up
+   EALLOW;  // This is needed to write to EALLOW protected registers
+   PieVectTable.TINT1 = &cpu_timer1_isr;
+   PieVectTable.TINT2 = &cpu_timer2_isr;
+   IER |= M_INT13;
+   IER |= M_INT14;
+   EDIS;    // This is needed to disable write to EALLOW protected registers
+
+
+	CpuTimer1Regs.TPR.all  = 0;
+	CpuTimer1Regs.TPRH.all = 0;
+	CpuTimer1Regs.TCR.bit.TSS = 1;
+	CpuTimer1Regs.TCR.bit.TIE = 0;
+	//divide by 60 to get 1MHz timer
+	CpuTimer1Regs.TPR.bit.TDDR = 59;
+	CpuTimer2Regs.TPR.all  = 0;
+	CpuTimer2Regs.TPRH.all = 0;
+	CpuTimer2Regs.TCR.bit.TSS = 1;
+	CpuTimer2Regs.TCR.bit.TIE = 0;
+	CpuTimer2Regs.TPR.bit.TDDR = 59;
+
   tone_state = 1;  // init is done
 }
 
@@ -161,19 +180,19 @@ static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration)
   switch( n ) // enable IRQ and set next match time in various timer compare registers (if we where not enabled already)
   {
     case 0:
-      if ( ! (TA0CCTL0 & CCIE) ) TA0CCR0 = TA0R + tone_interval[0];  
-      TA0CCTL0 = CCIE;       
+      if ( CpuTimer1Regs.TCR.bit.TIE == 0 ){
+    	  CpuTimer1Regs.PRD.all =  tone_interval[0];
+      }
+  	  CpuTimer1Regs.TCR.bit.TIE = 1;
+  	  CpuTimer1Regs.TCR.bit.TSS = 0;
       break;
     case 1:
-      if ( !(TA0CCTL1 & CCIE) ) TA0CCR1 = TA0R + tone_interval[1]; 
-      TA0CCTL1 = CCIE; 
+        if ( CpuTimer2Regs.TCR.bit.TIE == 0 ){
+      	    CpuTimer2Regs.PRD.all =  tone_interval[1];
+        }
+    	CpuTimer2Regs.TCR.bit.TIE = 1;
+    	CpuTimer2Regs.TCR.bit.TSS = 0;
       break;
-#ifdef __MSP430_HAS_TA3__
-    case 2:
-      if ( !(TA0CCTL2 & CCIE) ) TA0CCR2 = TA0R + tone_interval[2];  
-      TA0CCTL2 = CCIE;
-      break;
-#endif
     }
 } 
 
@@ -182,12 +201,13 @@ static void inline stopTimer(uint8_t n)
 {
   switch( n )
   {
-    case 0: TA0CCTL0 = 0; break;
-    case 1: TA0CCTL1 = 0; break;
-#ifdef __MSP430_HAS_TA3__
-    case 2: TA0CCTL2 = 0; break;
-#endif
-  }  
+    case 0:
+    	CpuTimer1Regs.TCR.bit.TSS = 1;
+    	break;
+    case 1:
+    	CpuTimer2Regs.TCR.bit.TSS = 1;
+    	break;
+  }
   *tone_out[n] &= ~tone_bit[n];
 }
 
@@ -198,26 +218,15 @@ static void inline stopTimer(uint8_t n)
   *tone_out[n] ^= tone_bit[n]; \
   if ( tone_periods[n] == 0 ) stopTimer(n);\
   else if ( tone_periods[n] > 0) tone_periods[n]--; \
-  ccr += tone_interval[n]; \
-} while(0)
+}while(0)
 
 
-// TIMERA vector (CCR0)
-__attribute__((interrupt(TIMER0_A0_VECTOR)))
-void TIMER0_A0_ISR(void)
+interrupt void cpu_timer1_isr(void)
 {
-  isrTimer(0, TA0CCR0);
+	isrTimer(0, CpuTimer1Regs.PRD.all);
 }
 
-// TAIV vector (CCR1/CCR2)
-__attribute__((interrupt(TIMER0_A1_VECTOR)))
-void TIMER0_A1_ISR(void)
+interrupt void cpu_timer2_isr(void)
 {
-  switch ( TA0IV ) 
-  { 
-    case 0x2: isrTimer(1, TA0CCR1); break; // CCR1
-#ifdef __MSP430_HAS_TA3__
-    case 0x4: isrTimer(2, TA0CCR2); break; // CCR2
-#endif
-  }  
+	isrTimer(1, CpuTimer2Regs.PRD.all);
 }

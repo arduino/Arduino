@@ -6,17 +6,25 @@ extern Uint32 SCI_Boot();
 
 void (*ApplicationPtr) (void);
 
-int main(void) {
+Uint32 main(void) {
 	//GPIO and SCI are still setup from Sci_Boot()
 	//Setup sysctl and pll
    DisableDog();
    IntOsc1Sel();
    InitPll(DSP28_PLLCR,DSP28_DIVSEL);
 
-	ApplicationPtr = (void(*)(void))SCI_Boot();
+   DELAY_US(5000);
 
-	if(ApplicationPtr)
-		ApplicationPtr();
+//	ApplicationPtr = (void(*)(void))SCI_Boot();
+//
+//	if(ApplicationPtr)
+//		ApplicationPtr();
 
-	return 0;
+	return SCI_Boot();
+
+//	asm(" .ref _ExitBoot");
+//    asm(" BF  _ExitBoot,UNC");
+
+//   return 0;
+
 }

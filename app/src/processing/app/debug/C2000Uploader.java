@@ -39,13 +39,15 @@ import processing.app.Preferences;
 import processing.app.Serial;
 import processing.app.SerialException;
 
+import java.awt.Component;
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
 import javax.swing.*;
+
 import gnu.io.*;
 
-public class C2000Uploader extends Uploader{
+public class C2000Uploader extends Uploader implements MessageConsumer{
 	private Serial serial;
 	private String port;
 	private int serialRate;
@@ -57,7 +59,7 @@ public class C2000Uploader extends Uploader{
 	  
 	public boolean uploadUsingPreferences(String buildPath, String className, boolean usingProgrammer)
 	throws RunnerException, SerialException {
-		Scanner kernelScanner;
+		Scanner kernelScanner, appScanner;
 		int testInt, rcvInt;
 		String testString;
 		
@@ -68,8 +70,10 @@ public class C2000Uploader extends Uploader{
 	    serialRate = Preferences.getInteger("serial.debug_rate");
 		serial = new Serial(port, serialRate);
 		
-		//TODO Add pop up box that explains how to configure board for serial flashing
 		System.out.println("Put C2000 LaunchPad switches Up-Down-Down and press the reset button");
+		Component frame = null;
+		JOptionPane.showMessageDialog(frame,
+			    "Put C2000 LaunchPad serial switch up and the boot switches Up-Down-Down and press the reset button before clicking OK.");
 
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
@@ -97,9 +101,6 @@ public class C2000Uploader extends Uploader{
 	    	
 	    }
     	rcvInt = serial.readChar();
-    	rcvInt = serial.readChar();
-    	rcvInt = serial.readChar();
-    	rcvInt = serial.readChar();
     	if(rcvInt != 'A'){
     		System.err.println("Autobaud Failed.  Try a baud rate below 38.4k.");
 			serial.dispose();
@@ -110,6 +111,9 @@ public class C2000Uploader extends Uploader{
 	    while(kernelScanner.hasNextInt(16)){
 	    	testInt = kernelScanner.nextInt(16);
 	    	serial.write(testInt);
+		    while(serial.available() == 0){
+		    	
+		    }
 	    	rcvInt = serial.readChar();
 	    	if(rcvInt != testInt){
 	    		System.err.println("Uploading flash kernel failed.");
@@ -118,44 +122,61 @@ public class C2000Uploader extends Uploader{
 	    	}
 	    }
 	    
-
-//		if (Base.isMacOS() || Base.isLinux()) {
-//			params.add(boardPreferences.get("upload.protocol"));
-//			if(!Preferences.getBoolean("upload.verbose"))
-//				params.add("-q");
-//			params.add("--force-reset");
-//			if ( Base.isLinux()) {
-//				params.add("prog " + buildPath + File.separator + className + ".hex");
-//			}
-//			else { 
-//				params.add("prog " + buildPath + File.separator + className + ".hex");
-//			}
-//			return mspdebug(params);
-//		} else {
-///*			// code to access via MSP430_Flasher	
-//			params.add("-n " + boardPreferences.get("build.mcu")); 
-//			params.add("-w");
-//			params.add(buildPath + File.separator + className + ".hex");
-//			params.add("-g");
-//			if(!Preferences.getBoolean("upload.verbose"))
-//					params.add("-q");
-//			
-//			params.add("-z[VCC]");
-//			return MSP430Flasher(params);
-//*/			
-////			params.add(boardPreferences.get("upload.protocol"));
-//			params.add("tilib");       // always use the TI Lib on Windows, best integrate on this OS
-//			params.add("-d");
-//			params.add("USB");
-//			if(!Preferences.getBoolean("upload.verbose"))
-//				params.add("-q");
-//			params.add("--force-reset");
-//			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
-//			return mspdebug(params);
-//		}
+	    //TODO Load the user application
+	    
+		//Find our application image
+	    File appImage = new File(buildPath + File.separator + className + ".txt");
+	    //Try to open application image for reading
+	    try {
+			appScanner = new Scanner(new FileReader(appImage));
+		} catch (FileNotFoundException e) {
+			System.err.println("Energia couldn't find the application image for the C2000 LaunchPad.");
+			System.err.println("Uploading aborted.");
+			serial.dispose();
+			return false;
+		}
+	    
+	    //Read start of file
+	    testString = appScanner.next();
+	    
+	    //Autobaud only works up to 38.4k baud on C2k LP
+	    serial.write('A');
+	    while(serial.available() == 0){
+	    	
+	    }
+    	rcvInt = serial.readChar();
+    	if(rcvInt != 'A'){
+    		System.err.println("Autobaud Failed.  Try a baud rate below 38.4k.");
+			serial.dispose();
+    		return false;
+    	}
+	    
+	    //Load the flash kernel
+	    while(appScanner.hasNextInt(16)){
+	    	testInt = appScanner.nextInt(16);
+	    	serial.write(testInt);
+		    while(serial.available() == 0){
+		    	
+		    }
+	    	rcvInt = serial.readChar();
+	    	if(rcvInt != testInt){
+	    		System.err.println("Uploading flash kernel failed.");
+				serial.dispose();
+	    		return false;
+	    	}
+	    }
+	    
+	    //Close the serial port
 		serial.dispose();
 	    return true;
 	}
+	
+//	  public void message(final String s) {
+//		    SwingUtilities.invokeLater(new Runnable() {
+//		      public void run() {
+//		    	  System.out.println(s);
+//		      }});
+//		  }
 
 	public boolean burnBootloader() throws RunnerException {
 		//nothing do do for MSP430

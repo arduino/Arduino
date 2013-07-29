@@ -17,7 +17,7 @@ extern "C"{
 #endif
 
 #define NOT_A_PIN 0
-#define NOT_ON_TIMER 0
+//#define NOT_ON_TIMER 0
 
 #define HIGH 0x1
 #define LOW  0x0
@@ -32,7 +32,6 @@ extern "C"{
 #define INPUT 0x0
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
-#define INPUT_PULLDOWN 0x4
 #define PORT_SELECTION0 0x10
 #define PORT_SELECTION1 0x20
 
@@ -42,21 +41,8 @@ extern "C"{
 #define DEG_TO_RAD 0.017453292519943295769236907684886
 #define RAD_TO_DEG 57.295779513082320876798154814105
 
-#if defined(__MSP430_HAS_ADC10__)
-#define DEFAULT SREF_0
-#define INTERNAL1V5 SREF_1 + REFON
-#define INTERNAL2V5 SREF_1 + REFON + REF2_5V
-#define EXTERNAL SREF_2
-#endif
-
-#if defined(__MSP430_HAS_ADC10_B__)
-#define DEFAULT ADC10SREF_0
-#define INTERNAL1V5 ADC10SREF_1 + REFON + REFVSEL_0
-#define INTERNAL2V5 ADC10SREF_1 + REFON + REFVSEL_2
-#define EXTERNAL ADC10SREF_2
-#endif
-
 enum{
+  NOT_ON_TIMER,
   PWM1A,
   PWM1B,
   PWM2A,
@@ -98,8 +84,8 @@ typedef uint8_t byte;
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-#define interrupts() __bis_SR_register(GIE)
-#define noInterrupts() __bic_SR_register(GIE)
+#define interrupts() EINT
+#define noInterrupts() DINT
 
 #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
@@ -166,6 +152,7 @@ extern const uint32_t* port_to_output[];
 #define portSel1Register(P)    ( (volatile uint8_t *)( port_to_sel1[P]) )
 #define portRenRegister(P)     ( (volatile uint8_t *)( port_to_ren[P]) )
 #define portOutputRegister(P)  ( (volatile uint32_t *)( port_to_output[P]) )
+#define portPullupRegister(P)  ( (volatile uint32_t *)( port_to_pullup[P]) )
 #define portInputRegister(P)   ( (volatile uint8_t *)( port_to_input[P]) )
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
 
@@ -187,6 +174,7 @@ void enableWatchDog();
 #include "HardwareSerial.h"
 //#else
 #include "TimerSerial.h"
+#include "Wire.h"
 //#endif
 
 uint16_t makeWord(uint16_t w);

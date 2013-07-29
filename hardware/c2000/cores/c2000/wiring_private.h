@@ -2,7 +2,7 @@
   ************************************************************************
   *	wiring_private.h
   *
-  *	Arduino core files for MSP430
+  *	Arduino core files for C2000
   *		Copyright (c) 2012 Robert Wessels. All right reserved.
   *
   *

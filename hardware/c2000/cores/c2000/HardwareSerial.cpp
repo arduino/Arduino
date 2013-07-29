@@ -3,8 +3,8 @@
   ************************************************************************
   *	HardwareSerial.cpp
   *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Arduino core files for C2000
+  *		Copyright (c) 2012 Eric Ma. All right reserved.
   *
   *
   ***********************************************************************
@@ -122,6 +122,7 @@ void HardwareSerial::begin(unsigned long baud)
 	// in the InitSysCtrl() function
 	    EALLOW;
 	    SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;      // SCI-A
+	    SysCtrlRegs.LOSPCP.bit.LSPCLK = 1;          //LSPCLK = SYSCLK/2
 	    EDIS;
 
 	   	SciaRegs.SCICCR.all =0x0007;   // 1 stop bit,  No loopback
@@ -132,8 +133,8 @@ void HardwareSerial::begin(unsigned long baud)
 	  	SciaRegs.SCICTL2.all =0x0003;
 	  	SciaRegs.SCICTL2.bit.TXINTENA =1;
 	  	SciaRegs.SCICTL2.bit.RXBKINTENA =1;
-	    SciaRegs.SCIHBAUD    = (unsigned int)(LSPCLK_FREQ/(baud*8)-1)>>8 ;
-	    SciaRegs.SCILBAUD    = (unsigned int)(LSPCLK_FREQ/(baud*8)-1)&0x00FF;
+	    SciaRegs.SCIHBAUD    = (unsigned int)((F_CPU/(SysCtrlRegs.LOSPCP.bit.LSPCLK * 2))/(baud*8)-1)>>8 ;
+	    SciaRegs.SCILBAUD    = (unsigned int)((F_CPU/(SysCtrlRegs.LOSPCP.bit.LSPCLK * 2))/(baud*8)-1)&0x00FF;
 	  	//SciaRegs.SCICCR.bit.LOOPBKENA =0; // Disable loop back
 	    SciaRegs.SCIFFTX.all=0xC020;
 	    SciaRegs.SCIFFRX.all=0x0021;

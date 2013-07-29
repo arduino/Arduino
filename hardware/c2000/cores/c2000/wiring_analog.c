@@ -2,8 +2,8 @@
   ************************************************************************
   *	wiring_analog.c
   *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Arduino core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
   *
   *
   ***********************************************************************
@@ -32,7 +32,13 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 
+#include "F2802x_common/include/F2802x_EPwm_defines.h"
 
+
+//(60Mhz / 2)/ 490Hz = 61224 = TBPRD
+#define EPWM1_TIMER_TBPRD  61224  // Period register
+#define EPWM2_TIMER_TBPRD  61224  // Period register
+#define EPWM3_TIMER_TBPRD  61224  // Period register
 
 uint16_t analog_reference = 0;
 
@@ -69,36 +75,141 @@ void analogResolution(uint16_t res)
   analog_res = res;
 }
 
+void InitEPwm()
+{
+   EALLOW;
+   SysCtrlRegs.PCLKCR1.bit.EPWM1ENCLK =1;
+   SysCtrlRegs.PCLKCR1.bit.EPWM2ENCLK =1;
+   SysCtrlRegs.PCLKCR1.bit.EPWM3ENCLK =1;
+   SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 0;
+
+   // Setup TBCLK
+   EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;       // Set timer period
+   EPwm1Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm1Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm1Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm1Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm1Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm1Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm1Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm1Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm1Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+   // Set Compare values
+   EPwm1Regs.CMPA.all = 0;    // Set compare A value
+   EPwm1Regs.CMPB = 0;              // Set Compare B value
+
+   // Set actions
+   EPwm1Regs.AQCTLA.bit.ZRO = AQ_SET;            // Set PWM1A on Zero
+   EPwm1Regs.AQCTLA.bit.CAU = AQ_CLEAR;          // Clear PWM1A on event A, up count
+
+   EPwm1Regs.AQCTLB.bit.ZRO = AQ_SET;            // Set PWM1B on Zero
+   EPwm1Regs.AQCTLB.bit.CBU = AQ_CLEAR;          // Clear PWM1B on event B, up count
+
+   // Setup TBCLK
+   EPwm2Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm2Regs.TBPRD = EPWM2_TIMER_TBPRD;       // Set timer period
+   EPwm2Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm2Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm2Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm2Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm2Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm2Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm2Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm2Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm2Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+   // Set Compare values
+   EPwm2Regs.CMPA.all = 0;       // Set compare A value
+   EPwm2Regs.CMPB = 0;                 // Set Compare B value
+
+   // Set actions
+   EPwm2Regs.AQCTLA.bit.ZRO = AQ_SET;             // Clear PWM2A on Period
+   EPwm2Regs.AQCTLA.bit.CAU = AQ_CLEAR;               // Set PWM2A on event A, up count
+
+   EPwm2Regs.AQCTLB.bit.ZRO = AQ_SET;             // Clear PWM2B on Period
+   EPwm2Regs.AQCTLB.bit.CBU = AQ_CLEAR;               // Set PWM2B on event B, up count
+
+   // Setup TBCLK
+   EPwm3Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm3Regs.TBPRD = EPWM3_TIMER_TBPRD;       // Set timer period
+   EPwm3Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm3Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm3Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm3Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm3Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm3Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm3Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm3Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm3Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+  // Set Compare values
+   EPwm3Regs.CMPA.all = 0; // Set compare A value
+   EPwm3Regs.CMPB = 0;           // Set Compare B value
+
+   // Set Actions
+   EPwm3Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM3A on event B, up count
+   EPwm3Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM3A on event B, up count
+
+   EPwm3Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM3B on Zero
+   EPwm3Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM3B on Zero
+
+   SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 1;
+   EDIS;
+}
+
 void analogInit(void)
 {
+	analogResolution(255);
+
+	//ADC Setup
     EALLOW;
     SysCtrlRegs.PCLKCR0.bit.ADCENCLK = 1;
     (*Device_cal)();
-    EDIS;
+//    EDIS;
 
-    EALLOW;
+//    EALLOW;
     AdcRegs.ADCCTL1.bit.ADCBGPWD  = 1;      // Power ADC BG
     AdcRegs.ADCCTL1.bit.ADCREFPWD = 1;      // Power reference
     AdcRegs.ADCCTL1.bit.ADCPWDN   = 1;      // Power ADC
     AdcRegs.ADCCTL1.bit.ADCENABLE = 1;      // Enable ADC
     AdcRegs.ADCCTL1.bit.ADCREFSEL = 0;      // Select interal BG
-    EDIS;
+//    EDIS;
 
     delay(1);
 
     AdcRegs.ADCSOC0CTL.bit.CHSEL= 0;	//A0
-    AdcRegs.ADCSOC1CTL.bit.CHSEL= 1;	//A1
-    AdcRegs.ADCSOC2CTL.bit.CHSEL= 2;	//A2
-    AdcRegs.ADCSOC3CTL.bit.CHSEL= 3;	//A3
-    AdcRegs.ADCSOC4CTL.bit.CHSEL= 4;	//A4
-    AdcRegs.ADCSOC5CTL.bit.CHSEL= 6;	//A6
-    AdcRegs.ADCSOC6CTL.bit.CHSEL= 7;	//A7
-    AdcRegs.ADCSOC7CTL.bit.CHSEL= 9;	//B1
-    AdcRegs.ADCSOC8CTL.bit.CHSEL= 10;	//B2
-    AdcRegs.ADCSOC9CTL.bit.CHSEL= 11;	//B3
-    AdcRegs.ADCSOC10CTL.bit.CHSEL= 12;	//B4
-    AdcRegs.ADCSOC11CTL.bit.CHSEL= 14;	//B6
-    AdcRegs.ADCSOC12CTL.bit.CHSEL= 15;	//B7
+//    AdcRegs.ADCSOC1CTL.bit.CHSEL= 1;	//A1
+//    AdcRegs.ADCSOC2CTL.bit.CHSEL= 2;	//A2
+//    AdcRegs.ADCSOC3CTL.bit.CHSEL= 3;	//A3
+//    AdcRegs.ADCSOC4CTL.bit.CHSEL= 4;	//A4
+//    AdcRegs.ADCSOC5CTL.bit.CHSEL= 6;	//A6
+//    AdcRegs.ADCSOC6CTL.bit.CHSEL= 7;	//A7
+//    AdcRegs.ADCSOC7CTL.bit.CHSEL= 9;	//B1
+//    AdcRegs.ADCSOC8CTL.bit.CHSEL= 10;	//B2
+//    AdcRegs.ADCSOC9CTL.bit.CHSEL= 11;	//B3
+//    AdcRegs.ADCSOC10CTL.bit.CHSEL= 12;	//B4
+//    AdcRegs.ADCSOC11CTL.bit.CHSEL= 14;	//B6
+//    AdcRegs.ADCSOC12CTL.bit.CHSEL= 15;	//B7
+    AdcRegs.ADCSOC1CTL.bit.CHSEL= 0;	//A1
+    AdcRegs.ADCSOC2CTL.bit.CHSEL= 0;	//A2
+    AdcRegs.ADCSOC3CTL.bit.CHSEL= 0;	//A3
+    AdcRegs.ADCSOC4CTL.bit.CHSEL= 0;	//A4
+    AdcRegs.ADCSOC5CTL.bit.CHSEL= 0;	//A6
+    AdcRegs.ADCSOC6CTL.bit.CHSEL= 0;	//A7
+    AdcRegs.ADCSOC7CTL.bit.CHSEL= 0;	//B1
+    AdcRegs.ADCSOC8CTL.bit.CHSEL= 0;	//B2
+    AdcRegs.ADCSOC9CTL.bit.CHSEL= 0;	//B3
+    AdcRegs.ADCSOC10CTL.bit.CHSEL= 0;	//B4
+    AdcRegs.ADCSOC11CTL.bit.CHSEL= 0;	//B6
+    AdcRegs.ADCSOC12CTL.bit.CHSEL= 0;	//B7
     AdcRegs.ADCSOC13CTL.bit.CHSEL= 0;
     AdcRegs.ADCSOC14CTL.bit.CHSEL= 0;
     AdcRegs.ADCSOC15CTL.bit.CHSEL= 0;
@@ -136,6 +247,16 @@ void analogInit(void)
     AdcRegs.ADCSOC13CTL.bit.TRIGSEL = 0;
     AdcRegs.ADCSOC14CTL.bit.TRIGSEL = 0;
     AdcRegs.ADCSOC15CTL.bit.TRIGSEL = 0;
+
+    //Assert interrupt for EOC1 and enable interrupt
+    AdcRegs.INTSEL1N2.bit.INT1SEL = 1;
+    AdcRegs.INTSEL1N2.bit.INT1E = 1;
+
+    //ePWM Setup
+    InitEPwm();
+
+
+    EDIS;
 }
 
 
@@ -144,7 +265,7 @@ void analogInit(void)
 #define PWM_DUTY(x) ( (unsigned long)x*PWM_PERIOD / (unsigned long)analog_res )
 void analogWrite(uint8_t pin, int val)
 {
-        pinMode(pin, OUTPUT); // pin as output
+    pinMode(pin, OUTPUT); // pin as output
 
  	if (val == 0)
 	{
@@ -159,108 +280,52 @@ void analogWrite(uint8_t pin, int val)
 	else
 	{
 
-	        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
-	        uint8_t port = digitalPinToPort(pin);   // get pin port
-	        volatile uint8_t *sel;
+	    uint8_t bit = digitalPinToBitMask(pin); // get pin bit
+	    uint8_t port = digitalPinToPort(pin);   // get pin port
+	    volatile uint8_t *sel;
                 
-                if (port == NOT_A_PORT) return; // pin on timer?
+        if (port == NOT_A_PORT) return; // pin on timer?
                
 //	        sel = portSelRegister(port); // get the port function select register address
 		*sel |= bit;                 // set bit in pin function select register  
 
-                switch(digitalPinToTimer(pin)) {                // which timer and CCR?
-// 			//case: T0A0                            // CCR0 used as period register
-//			case T0A1:                              // TimerA0 / CCR1
-//                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-//                                TA0CCTL1 = OUTMOD_7;            // reset/set
-//                                TA0CCR1 = PWM_DUTY(val);       // PWM duty cycle
-//                                TA0CTL = TASSEL_2 + MC_1 + analog_div;       // SMCLK, up mode
-//                                break;
-//#if defined(__MSP430_HAS_TA3__) || defined(__MSP430_HAS_T0A3__)
-// 			case T0A2:                              // TimerA0 / CCR2
-//                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-//                                TA0CCTL2 = OUTMOD_7;            // reset/set
-//                                TA0CCR2 = PWM_DUTY(val);       // PWM duty cycle
-//                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-//#endif
-//#if defined(__MSP430_HAS_T1A3__)
-// 			//case: T1A0                            // CCR0 used as period register
-//			case T1A1:                              // TimerA1 / CCR1
-//                                TA1CCR0 = PWM_PERIOD;           // PWM Period
-//                                TA1CCTL1 = OUTMOD_7;            // reset/set
-//                                TA1CCR1 = PWM_DUTY(val);       // PWM duty cycle
-//                                TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-// 			case T1A2:                              // TimerA1 / CCR2
-//                                TA1CCR0 = PWM_PERIOD;           // PWM Period
-//                                TA1CCTL2 = OUTMOD_7;            // reset/set
-//                                TA1CCR2 = PWM_DUTY(val);       // PWM duty cycle
-//                                TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-//#endif
-//#if defined(__MSP430_HAS_T2A3__)
-// 			//case: T2A0                            // CCR0 used as period register
-//			case T2A1:                              // TimerA2 / CCR1
-//                                TA2CCR0 = PWM_PERIOD;           // PWM Period
-//                                TA2CCTL1 = OUTMOD_7;            // reset/set
-//                                TA2CCR1 = PWM_DUTY(val);       // PWM duty cycle
-//                                TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-// 			case T2A2:                              // TimerA2 / CCR2
-//                                TA2CCR0 = PWM_PERIOD;           // PWM Period
-//                                TA2CCTL2 = OUTMOD_7;            // reset/set
-//                                TA2CCR2 = PWM_DUTY(val);       // PWM duty cycle
-//                                TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-//#endif
-//#if defined(__MSP430_HAS_T0B3__)
-// 			//case: T0B0                            // CCR0 used as period register
-// 			case T0B1:                              // TimerB0 / CCR1
-//                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-//                                TB0CCTL1 = OUTMOD_7;            // reset/set
-//                                TB0CCR1 = PWM_DUTY(val);       // PWM duty cycle
-//                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-// 			case T0B2:                              // TimerB0 / CCR1
-//                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-//                                TB0CCTL2 = OUTMOD_7;            // reset/set
-//                                TB0CCR2 = PWM_DUTY(val);       // PWM duty cycle
-//                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-//#endif
-//#if defined(__MSP430_HAS_T1B3__)
-// 			//case: T1B0                            // CCR0 used as period register
-// 			case T1B1:                              // TimerB0 / CCR1
-//                                TB1CCR0 = PWM_PERIOD;           // PWM Period
-//                                TB1CCTL1 = OUTMOD_7;            // reset/set
-//                                TB1CCR1 = PWM_DUTY(val);       // PWM duty cycle
-//                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-// 			case T1B2:                              // TimerB0 / CCR1
-//                                TB1CCR0 = PWM_PERIOD;           // PWM Period
-//                                TB1CCTL2 = OUTMOD_7;            // reset/set
-//                                TB1CCR2 = PWM_DUTY(val);       // PWM duty cycle
-//                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-//#endif
-//#if defined(__MSP430_HAS_T2B3__)
-// 			//case: T1B0                            // CCR0 used as period register
-// 			case T2B1:                              // TimerB0 / CCR1
-//                                TB2CCR0 = PWM_PERIOD;           // PWM Period
-//                                TB2CCTL1 = OUTMOD_7;            // reset/set
-//                                TB2CCR1 = PWM_DUTY(val);       // PWM duty cycle
-//                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-// 			case T2B2:                              // TimerB0 / CCR1
-//                                TB2CCR0 = PWM_PERIOD;           // PWM Period
-//                                TB2CCTL2 = OUTMOD_7;            // reset/set
-//                                TB2CCR2 = PWM_DUTY(val);       // PWM duty cycle
-//                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-//                                break;
-//#endif
+		EALLOW;
+        switch(digitalPinToTimer(pin)) {                // which pwm?
+
+			case PWM1A:                              // EPwm1A
+                            GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 1;  //Enable PWM output on this pin
+                            EPwm1Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+			case PWM1B:                              // EPwm1B
+            				GpioCtrlRegs.GPAMUX1.bit.GPIO1 = 1;  //Enable PWM output on this pin
+            				EPwm1Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+            				break;
+
+			case PWM2A:                              // EPwm2A
+                            GpioCtrlRegs.GPAMUX1.bit.GPIO2 = 1;  //Enable PWM output on this pin
+                            EPwm2Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+ 			case PWM2B:                              // EPwm2B
+                			GpioCtrlRegs.GPAMUX1.bit.GPIO3 = 1;  //Enable PWM output on this pin
+                			EPwm2Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                			break;
+
+			case PWM3A:                              // EPwm3A
+                            GpioCtrlRegs.GPAMUX1.bit.GPIO4 = 1;  //Enable PWM output on this pin
+                            EPwm3Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+ 			case PWM3B:                              // EPwm3B
+                			GpioCtrlRegs.GPAMUX1.bit.GPIO5 = 1;  //Enable PWM output on this pin
+                			EPwm3Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                			break;
+
+
+
  
-                        case NOT_ON_TIMER:                      // not on a timer output pin
+            case NOT_ON_TIMER:                      // not on a timer output pin
 			default:                                // or TxA0 pin
 				if (val <= (analog_res >> 1)) {
 					digitalWrite(pin, LOW); // 
@@ -269,6 +334,7 @@ void analogWrite(uint8_t pin, int val)
 				}
                 }
         }
+ 	EDIS;
 }
 
 uint16_t analogRead(uint8_t pin)
@@ -278,65 +344,19 @@ uint16_t analogRead(uint8_t pin)
 		analogInit();
 	}
 
-	AdcRegs.ADCSOCFRC1.all = BV(pin);
+	//Setup SOC1 to sample selected pin
+	AdcRegs.ADCSOC1CTL.bit.CHSEL = pin;
+	//Force SOC 0 and 1
+	AdcRegs.ADCSOCFRC1.all = 3;
 
-#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
-    //  0000 A0
-    //  0001 A1
-    //  0010 A2
-    //  0011 A3
-    //  0100 A4
-    //  0101 A5
-    //  0110 A6
-    //  0111 A7
-    //  1010 Internal temperature sensor
+	while(AdcRegs.ADCINTFLG.bit.ADCINT1 != 1){
+		//wait until conversion is done
+	}
+	AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-    //TODO: Only int. temp. sensor requires Tsample > 30us.
-    // The below ADC configuration applies this rule to all channels right now.
-    // ADC10CLK = 5MHz / 5 = 1Mhz
-    // Tsample = S&H / ADC10CLK = 64 / 1 MHz = 64 us
-    // Tconvert = 13 / ADC10CLK = 13 / 1 MHz = 13 us
-    // Total time per sample = Tconvert + Tsample = 64 + 13 = 67 us = ~15k samples / sec
+	return (AdcResult.ADCRESULT1);
 
-    ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
-    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5;   // ADC10OSC as ADC10CLK (~5MHz) / 5
-#if defined(__MSP430_HAS_ADC10__)
-    ADC10CTL0 = analog_reference |          // set analog reference
-            ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
-    ADC10CTL1 |= (pin << 12);               // select channel
-    ADC10AE0 = (1 << pin);                  // Disable input/output buffer on pin
-#endif
-#if defined(__MSP430_HAS_ADC10_B__)
-    while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
-    REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
-    ADC10MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
-    ADC10CTL0 = ADC10ON | ADC10SHT_4;       // turn ADC ON; sample + hold @ 64 × ADC10CLKs
-    ADC10CTL1 |= ADC10SHP;                  // ADCCLK = MODOSC; sampling timer
-    ADC10CTL2 |= ADC10RES;                  // 10-bit resolution
-    ADC10IFG = 0;                           // Clear Flags
-    ADC10IE |= ADC10IE0;                    // Enable interrupts
-#endif
-    __delay_cycles(128);                    // Delay to allow Ref to settle
-    ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
-    while (ADC10CTL1 & ADC10BUSY) {         // sleep and wait for completion
-        __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
-    }
 
-#if defined(__MSP430_HAS_ADC10__)
-    /* POWER: Turn ADC and reference voltage off to conserve power */
-    ADC10CTL0 &= ~(ADC10ON | REFON);
-#endif
-
-#if defined(__MSP430_HAS_ADC10_B__)
-    /* POWER: Turn ADC and reference voltage off to conserve power */
-    ADC10CTL0 &= ~(ADC10ON);
-    REFCTL0 &= ~REFON;
-#endif
-    return ADC10MEM0;  // return sampled value after returning to active mode in ADC10_ISR
-#else
-    // no ADC
-    return 0;
-#endif
 }
 
 

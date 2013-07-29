@@ -145,6 +145,14 @@ const uint32_t* port_to_output[] = {
 	(const uint32_t *) &GpioDataRegs.GPBDAT.all
 };
 
+const uint32_t* port_to_pullup[] = {
+	NOT_A_PORT,
+	(const uint32_t *) &GpioCtrlRegs.GPAPUD.all,
+	(const uint32_t *) &GpioCtrlRegs.GPAPUD.all,
+	(const uint32_t *) &GpioCtrlRegs.GPBPUD.all,
+	(const uint32_t *) &GpioCtrlRegs.GPBPUD.all
+};
+
 /* 
  * Defines for devices with 2x TA3 timers (e.g. MSP430g2553). On the 20pin devices, upto 3 analog outputs are available
  * T0A1, T1A1 and T1A2 

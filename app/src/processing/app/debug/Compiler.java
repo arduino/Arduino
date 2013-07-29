@@ -294,6 +294,7 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker.add("--reread_libs");//compile for unified memory model
         baseCommandLinker.add("--display_error_number");//compile for unified memory model
         baseCommandLinker.add("--diag_wrap=off");//compile for unified memory model
+        baseCommandLinker.add("--entry_point=code_start");//compile for unified memory model
         baseCommandLinker.add("--rom_model");//compile for unified memory model
         baseCommandLinker.add("-o" + buildPath + File.separator + primaryClassName + ".out");
 //        "-o",

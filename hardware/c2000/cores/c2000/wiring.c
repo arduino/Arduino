@@ -286,15 +286,20 @@ unsigned long millis()
 }
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
-void delayMicroseconds(unsigned int us)
+void delayMicroseconds(uint32_t us)
 {
-	DELAY_US(us);
+	long double test1, test2, test3, test4;
+	test1 = ((long double) us * 1000.0L);
+	test2 = (const long double)(1000000000/F_CPU);
+	test3 =	((test1 / test2) - 9.0L) / 5.0L;
+//	DELAY_US(us);
+	DSP28x_usDelay((unsigned long)test3);
 }
 
 /* (ab)use the WDT */
 void delay(uint32_t milliseconds)
 {
-	DELAY_US(milliseconds * 1000);
+	delayMicroseconds(milliseconds * 1000);
 }
 
 
@@ -311,6 +316,8 @@ void init()
 	initFlash();
 
 	initPie();
+
+	analogInit();
 
 	EINT;
 }
