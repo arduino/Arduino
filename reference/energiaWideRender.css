@@ -94,6 +94,12 @@ a:hover {
 a.addthis_button_compact, a.addthis_button_print, a.addthis_button_email, a.addthis_button_favorites, a.addthis_button_facebook, a.addthis_button_twitter {
 	border-bottom: 0 solid white;
 }
+
+.important
+{
+	color: #d50000;
+	font-weight: bold;
+}
 input {
 	font-size: 100%;
 	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
