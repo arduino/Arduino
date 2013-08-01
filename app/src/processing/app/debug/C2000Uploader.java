@@ -92,6 +92,8 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 			return false;
 		}
 	    
+		System.out.println("Flash kernel found...loading");
+	    
 	    //Read start of file
 	    testString = kernelScanner.next();
 	    
@@ -122,6 +124,9 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 	    	}
 	    }
 	    
+		System.out.println("Flash kernel load complete");
+		
+	    
 	    //TODO Load the user application
 	    
 		//Find our application image
@@ -136,8 +141,17 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 			return false;
 		}
 	    
-	    //Read start of file
+		System.out.println("Application found...loading");
+	    
+		//Read start of file
 	    testString = appScanner.next();
+	    
+	    //Wait for our kernel to boot
+	    try {
+	        Thread.sleep(100);
+	    } catch(InterruptedException ex) {
+	        Thread.currentThread().interrupt();
+	    }
 	    
 	    //Autobaud only works up to 38.4k baud on C2k LP
 	    serial.write('A');
@@ -166,6 +180,9 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 	    	}
 	    }
 	    
+
+		System.out.println("Application loaded");
+	    
 	    //Close the serial port
 		serial.dispose();
 	    return true;
@@ -183,29 +200,5 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 		return false;
 	}
 
-	public boolean mspdebug(Collection params) throws RunnerException {
-		List commandDownloader = new ArrayList();
 
-		if ( Base.isLinux()) {
-			commandDownloader.add(Base.getMSP430BasePath() + "mspdebug"); // tools/msp430/bin or one from PATH
-		} 
-		else if (Base.isMacOS()) {
-			commandDownloader.add(Base.getHardwarePath() + "/tools/msp430/mspdebug/mspdebug");
-		}
-		else {
-			commandDownloader.add(Base.getHardwarePath() + "\\tools\\msp430\\mspdebug\\mspdebug");
-		}
-		commandDownloader.addAll(params);
-		
-		return executeUploadCommand(commandDownloader);
-	}
-	
-	public boolean MSP430Flasher(Collection params) throws RunnerException {
-		List commandDownloader = new ArrayList();
-
-		commandDownloader.add(Base.toShortPath(Base.getHardwarePath()) + "\\tools\\msp430\\MSP430Flasher\\" + "MSP430Flasher.exe");
-		commandDownloader.addAll(params);
-		
-		return executeUploadCommand(commandDownloader);
-	}
 }

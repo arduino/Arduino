@@ -13,7 +13,7 @@ Uint32 main(void) {
    IntOsc1Sel();
    InitPll(DSP28_PLLCR,DSP28_DIVSEL);
 
-   DELAY_US(5000);
+   DELAY_US(100);
 
 //	ApplicationPtr = (void(*)(void))SCI_Boot();
 //
