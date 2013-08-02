@@ -1,6 +1,6 @@
 /*
   ************************************************************************
-  *	HardwareSerial.cpp
+  *	wiring_digital.c
   *
   *	Arduino core files for MSP430
   *		Copyright (c) 2012 Robert Wessels. All right reserved.

@@ -35,17 +35,24 @@
 #if defined(__MSP430_HAS_ADC10__) && !defined(ADC10ENC)
 #define ADC10ENC ENC 
 #endif
-#if defined(__MSP430_HAS_ADC10__) && !defined(ADC10MEM0)
-#define ADC10MEM0 ADC10MEM 
+#if defined(__MSP430_HAS_ADC10__)
+#define ADCxMEM0 ADC10MEM 
+#endif
+#if defined(__MSP430_HAS_ADC10_A__)
+#define ADCxMEM0 ADC10MEM 
 #endif
 #if defined(__MSP430_HAS_ADC10_B__)
 #define REFV_MASK 0x70
 #define REF_MASK 0x31;
+#define ADCxMEM0 ADC10MEM0 
 #endif
-
-#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
-uint16_t analog_reference = DEFAULT; 
-
+#if defined(__MSP430_HAS_ADC12_PLUS__)
+#define REFV_MASK 0x0F00
+#define REF_MASK 0x31;
+#define ADCxMEM0 ADC12MEM0 
+#endif
+#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
+uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 void analogReference(uint16_t mode)
 {
@@ -56,7 +63,6 @@ void analogReference(uint16_t mode)
 }
 #endif
 
-uint16_t analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 //TODO: Can be a lot more efficiant.
 //      - lower clock rated / input devider to conserve Energia.
@@ -125,6 +131,26 @@ void analogWrite(uint8_t pin, int val)
                                 TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
+#if defined(__MSP430_HAS_TA5__) || defined(__MSP430_HAS_T0A5__) 
+ 			case T0A2:                              // TimerA0 / CCR2
+                                TA0CCR0 = PWM_PERIOD;           // PWM Period
+                                TA0CCTL2 = OUTMOD_7;            // reset/set
+                                TA0CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0A3:                              // TimerA0 / CCR3
+                                TA0CCR0 = PWM_PERIOD;           // PWM Period
+                                TA0CCTL3 = OUTMOD_7;            // reset/set
+                                TA0CCR3 = PWM_DUTY(val);       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0A4:                              // TimerA0 / CCR4
+                                TA0CCR0 = PWM_PERIOD;           // PWM Period
+                                TA0CCTL4 = OUTMOD_7;            // reset/set
+                                TA0CCR4 = PWM_DUTY(val);       // PWM duty cycle
+                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+#endif
 #if defined(__MSP430_HAS_T1A3__) 
  			//case: T1A0                            // CCR0 used as period register
 			case T1A1:                              // TimerA1 / CCR1
@@ -155,7 +181,7 @@ void analogWrite(uint8_t pin, int val)
                                 TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
-#if defined(__MSP430_HAS_T0B3__) 
+#if defined(__MSP430_HAS_T0B3__) || defined(__MSP430_HAS_T0B7__) 
  			//case: T0B0                            // CCR0 used as period register
  			case T0B1:                              // TimerB0 / CCR1
                                 TB0CCR0 = PWM_PERIOD;           // PWM Period
@@ -167,6 +193,33 @@ void analogWrite(uint8_t pin, int val)
                                 TB0CCR0 = PWM_PERIOD;           // PWM Period
                                 TB0CCTL2 = OUTMOD_7;            // reset/set
                                 TB0CCR2 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+#endif
+#if defined(__MSP430_HAS_T0B7__) 
+ 			//case: T0B7                            // CCR0 used as period register
+ 			case T0B3:                              // TimerB0 / CCR3
+                                TB0CCR3 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL3 = OUTMOD_7;            // reset/set
+                                TB0CCR3 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0B4:                              // TimerB0 / CCR4
+                                TB0CCR4 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL4 = OUTMOD_7;            // reset/set
+                                TB0CCR4 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0B5:                              // TimerB0 / CCR5
+                                TB0CCR5 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL5 = OUTMOD_7;            // reset/set
+                                TB0CCR5 = PWM_DUTY(val);       // PWM duty cycle
+                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+                                break;
+ 			case T0B6:                              // TimerB0 / CCR6
+                                TB0CCR6 = PWM_PERIOD;           // PWM Period
+                                TB0CCTL6 = OUTMOD_7;            // reset/set
+                                TB0CCR6 = PWM_DUTY(val);       // PWM duty cycle
                                 TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
 #endif
@@ -215,7 +268,7 @@ void analogWrite(uint8_t pin, int val)
 uint16_t analogRead(uint8_t pin)
 {
 // make sure we have an ADC
-#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
+#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
     //  0000 A0
     //  0001 A1
     //  0010 A2
@@ -233,15 +286,24 @@ uint16_t analogRead(uint8_t pin)
     // Tconvert = 13 / ADC10CLK = 13 / 1 MHz = 13 us
     // Total time per sample = Tconvert + Tsample = 64 + 13 = 67 us = ~15k samples / sec
 
+#if defined(__MSP430_HAS_ADC10__)
     ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
     ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5;   // ADC10OSC as ADC10CLK (~5MHz) / 5
-#if defined(__MSP430_HAS_ADC10__)
     ADC10CTL0 = analog_reference |          // set analog reference
             ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
     ADC10CTL1 |= (pin << 12);               // select channel
     ADC10AE0 = (1 << pin);                  // Disable input/output buffer on pin
+    __delay_cycles(128);                    // Delay to allow Ref to settle
+    ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
+    while (ADC10CTL1 & ADC10BUSY) {         // sleep and wait for completion
+        __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
+    }
+    /* POWER: Turn ADC and reference voltage off to conserve power */
+    ADC10CTL0 &= ~(ADC10ON | REFON);
 #endif
 #if defined(__MSP430_HAS_ADC10_B__)
+    ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
+    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
     REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
     ADC10MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
@@ -250,41 +312,54 @@ uint16_t analogRead(uint8_t pin)
     ADC10CTL2 |= ADC10RES;                  // 10-bit resolution
     ADC10IFG = 0;                           // Clear Flags
     ADC10IE |= ADC10IE0;                    // Enable interrupts
-#endif
     __delay_cycles(128);                    // Delay to allow Ref to settle
     ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
     while (ADC10CTL1 & ADC10BUSY) {         // sleep and wait for completion
         __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
     }
-
-#if defined(__MSP430_HAS_ADC10__)
-    /* POWER: Turn ADC and reference voltage off to conserve power */
-    ADC10CTL0 &= ~(ADC10ON | REFON);
-#endif
-
-#if defined(__MSP430_HAS_ADC10_B__)
     /* POWER: Turn ADC and reference voltage off to conserve power */
     ADC10CTL0 &= ~(ADC10ON);
     REFCTL0 &= ~REFON;
 #endif
-    return ADC10MEM0;  // return sampled value after returning to active mode in ADC10_ISR
+#if defined(__MSP430_HAS_ADC12_PLUS__)
+    ADC12CTL0 &= ~ADC12ENC;                 // disable ADC
+    ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_5;   // ADC12OSC as ADC12CLK (~5MHz) / 5
+    while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
+    REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
+    ADC12MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
+    ADC12CTL0 = ADC12ON | ADC12SHT0_4;      // turn ADC ON; sample + hold @ 64 × ADC10CLKs
+    ADC12CTL1 |= ADC12SHP;                  // ADCCLK = MODOSC; sampling timer
+    ADC12CTL2 |= ADC12RES1;                 // 12-bit resolution
+    ADC12IFG = 0;                           // Clear Flags
+    ADC12IE |= ADC12IE0;                    // Enable interrupts
+    __delay_cycles(128);                    // Delay to allow Ref to settle
+    ADC12CTL0 |= ADC12ENC | ADC12SC;        // enable ADC and start conversion
+    while (ADC12CTL1 & ADC12BUSY) {         // sleep and wait for completion
+        __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
+    }
+    /* POWER: Turn ADC and reference voltage off to conserve power */
+    ADC12CTL0 &= ~(ADC12ON);
+    REFCTL0 &= ~REFON;
+#endif
+    return ADCxMEM0;  // return sampled value after returning to active mode in ADC10_ISR
 #else
     // no ADC
     return 0;
 #endif
 }
 
-#if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__)
-
+#if defined(__MSP430_HAS_ADC10)
 __attribute__((interrupt(ADC10_VECTOR)))
 void ADC10_ISR(void)
 {
-#if defined(__MSP430_HAS_ADC10)
     __bic_SR_register_on_exit(CPUOFF);        // return to active mode
+}
 #endif
 
 #if defined(__MSP430_HAS_ADC10_B__)
-
+__attribute__((interrupt(ADC10_VECTOR)))
+void ADC10_ISR(void)
+{
     switch(ADC10IV,12) {
         case  0: break;                          // No interrupt
         case  2: break;                          // conversion result overflow
@@ -299,7 +374,26 @@ void ADC10_ISR(void)
     }
 
     ADC10IFG = 0;                           // Clear Flags
-#endif
 }
+#endif
 
+#if defined(__MSP430_HAS_ADC12_PLUS__)
+__attribute__((interrupt(ADC12_VECTOR)))
+void ADC12_ISR(void)
+{
+    switch(ADC12IV,12) {
+        case  0: break;                          // No interrupt
+        case  2: break;                          // conversion result overflow
+        case  4: break;                          // conversion time overflow
+        case  6: break;                          // ADC12HI
+        case  8: break;                          // ADC12LO
+        case 10: break;                          // ADC12IN
+        case 12:
+				 ADC12IFG = 0;                   // Clear Flags
+                 __bic_SR_register_on_exit(CPUOFF);        // return to active mode
+                 break;                          // Clear CPUOFF bit from 0(SR)                         
+        default: break;
+    }
+
+}
 #endif

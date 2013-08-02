@@ -1,5 +1,5 @@
 #include "Energia.h"
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include "usci_isr_handler.h"
 
 /* This dummy function ensures that, when called from any module that 
@@ -9,7 +9,14 @@ void usci_isr_install(){}
 
 
 
-#if defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+#ifndef USCI_UART_UCRXIFG
+#define USCI_UART_UCRXIFG USCI_UCRXIFG
+#endif
+#ifndef USCI_UART_UCTXIFG
+#define USCI_UART_UCTXIFG USCI_UCTXIFG
+#endif
+#ifndef USE_USCI_A1
 __attribute__((interrupt(USCI_A0_VECTOR)))
 void USCIA0_ISR(void)
 {
@@ -19,8 +26,18 @@ void USCIA0_ISR(void)
     case USCI_UART_UCTXIFG: uart_tx_isr(); break;
   }  
 }
-
-#else // #if defined(__MSP430_HAS_EUSCI_A0__)
+#else
+__attribute__((interrupt(USCI_A1_VECTOR)))
+void USCIA1_ISR(void)
+{
+  switch ( UCA1IV ) 
+  { 
+    case USCI_UART_UCRXIFG: uart_rx_isr(); break;
+    case USCI_UART_UCTXIFG: uart_tx_isr(); break;
+  }  
+}
+#endif
+#else // #if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 /* USCI_Ax and USCI_Bx share the same TX interrupt vector.
  * UART: 
  *	USCIAB0TX_VECTOR services the UCA0TXIFG set in UC0IFG.
@@ -55,5 +72,5 @@ void USCIAB0RX_ISR(void)
 	if ((UCB0STAT & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
 		i2c_state_isr(); 
 }
-#endif // #if defined(__MSP430_HAS_EUSCI_A0__)
+#endif // #if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 #endif // if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)

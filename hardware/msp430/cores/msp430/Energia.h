@@ -56,6 +56,14 @@ extern "C"{
 #define EXTERNAL ADC10SREF_2
 #endif
 
+#if defined(__MSP430_HAS_ADC12_PLUS__)
+#define DEFAULT ADC12SREF_1
+#define INTERNAL1V2 ADC12SREF_1 + REFON + REFVSEL_0
+#define INTERNAL2V0 ADC12SREF_1 + REFON + REFVSEL_1
+#define INTERNAL2V5 ADC12SREF_1 + REFON + REFVSEL_2
+#define EXTERNAL ADC12SREF_2
+#endif
+
 enum{
   P1 = 1,
   P2,
@@ -74,6 +82,9 @@ enum{
 #ifdef __MSP430_HAS_PORT7_R__
   P7,
 #endif  
+#ifdef __MSP430_HAS_PORT8_R__
+  P8,
+#endif  
 #ifdef __MSP430_HAS_PORTJ_R__
   PJ,
 #endif  
@@ -83,6 +94,8 @@ enum{
   T0A0,
   T0A1,
   T0A2,
+  T0A3,
+  T0A4,
   T1A0,
   T1A1,
   T1A2,
@@ -95,6 +108,10 @@ enum{
   T0B0,
   T0B1,
   T0B2,
+  T0B3,
+  T0B4,
+  T0B5,
+  T0B6,
   T1B0,
   T1B1,
   T1B2,
@@ -199,7 +216,7 @@ void enableWatchDog();
 #ifdef __cplusplus
 #include "WCharacter.h"
 #include "WString.h"
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include "HardwareSerial.h"
 #else
 #include "TimerSerial.h"

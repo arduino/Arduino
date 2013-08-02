@@ -29,10 +29,9 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include <inttypes.h>
-
-#include "Stream.h"
+#include <Stream.h>
 
 struct ring_buffer;
 

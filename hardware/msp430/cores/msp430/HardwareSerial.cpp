@@ -37,12 +37,56 @@
 #include "wiring_private.h"
 #include "usci_isr_handler.h"
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 
 #include "HardwareSerial.h"
 
 HardwareSerial *SerialPtr;
 
+
+#ifndef USE_USCI_A1
+#define UCAxCTLW0     UCA0CTLW0 
+#define UCAxCTL0      UCA0CTL0
+#define UCAxCTL1      UCA0CTL1   
+#define UCAxCTL0      UCA0CTL0   
+#define UCAxBRW       UCA0BRW   
+#define UCAxBR0       UCA0BR0    
+#define UCAxBR1       UCA0BR1    
+#define UCAxMCTL      UCA0MCTL  
+#define UCAxMCTLW     UCA0MCTLW  
+#define UCAxSTAT      UCA0STAT  
+#define UCAxRXBUF     UCA0RXBUF 
+#define UCAxTXBUF     UCA0TXBUF 
+#define UCAxABCTL     UCA0ABCTL 
+#define UCAxIRCTL     UCA0IRCTL 
+#define UCAxIRTCTL    UCA0IRTCTL 
+#define UCAxIRRCTL    UCA0IRRCTL 
+#define UCAxICTL      UCA0ICTL  
+#define UCAxIE        UCA0IE     
+#define UCAxIFG       UCA0IFG    
+#define UCAxIV        UCA0IV    
+#else
+#define UCAxCTLW0     UCA1CTLW0 
+#define UCAxCTL0      UCA1CTL0
+#define UCAxCTL1      UCA1CTL1   
+#define UCAxCTL0      UCA1CTL0   
+#define UCAxBRW       UCA1BRW   
+#define UCAxBR0       UCA1BR0    
+#define UCAxBR1       UCA1BR1    
+#define UCAxMCTL      UCA1MCTL  
+#define UCAxMCTLW     UCA1MCTLW  
+#define UCAxSTAT      UCA1STAT  
+#define UCAxRXBUF     UCA1RXBUF 
+#define UCAxTXBUF     UCA1TXBUF 
+#define UCAxABCTL     UCA1ABCTL 
+#define UCAxIRCTL     UCA1IRCTL 
+#define UCAxIRTCTL    UCA1IRTCTL 
+#define UCAxIRRCTL    UCA1IRRCTL 
+#define UCAxICTL      UCA1ICTL  
+#define UCAxIE        UCA1IE     
+#define UCAxIFG       UCA1IFG    
+#define UCAxIV        UCA1IV    
+#endif
 
 
 #define SERIAL_BUFFER_SIZE 16
@@ -111,10 +155,10 @@ void HardwareSerial::begin(unsigned long baud)
 	pinMode_int(UARTRXD, UARTRXD_SET_MODE);
 	pinMode_int(UARTTXD, UARTTXD_SET_MODE);	
 
-	UCA0CTL1 = UCSWRST;
-	UCA0CTL1 = UCSSEL_2;                                // SMCLK
-	UCA0CTL0 = 0;
-	UCA0ABCTL = 0;
+	UCAxCTL1 = UCSWRST;
+	UCAxCTL1 = UCSSEL_2;                                // SMCLK
+	UCAxCTL0 = 0;
+	UCAxABCTL = 0;
 #if defined(__MSP430_HAS_EUSCI_A0__)
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
@@ -123,9 +167,9 @@ void HardwareSerial::begin(unsigned long baud)
 		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) – INT(N/16)] × 16)
 		divider>>=8;
 	}
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTLW = (oversampling ? UCOS16:0) | mod;
+	UCAxBR0 = divider;
+	UCAxBR1 = divider>>8;
+	UCAxMCTLW = (oversampling ? UCOS16:0) | mod;
 #else
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
@@ -134,13 +178,13 @@ void HardwareSerial::begin(unsigned long baud)
 		mod = ((divider&0xf8)+0x8)&0xf0;                // UCBRFx (bit 4-7)
 		divider>>=8;
 	}
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTL = (unsigned char)(oversampling ? UCOS16:0) | mod;
+	UCAxBR0 = divider;
+	UCAxBR1 = divider>>8;
+	UCAxMCTL = (unsigned char)(oversampling ? UCOS16:0) | mod;
 #endif	
-	UCA0CTL1 &= ~UCSWRST;
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE |= UCRXIE;
+	UCAxCTL1 &= ~UCSWRST;
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+	UCAxIE |= UCRXIE;
 #else
 	UC0IE |= UCA0RXIE;
 #endif	
@@ -197,8 +241,8 @@ size_t HardwareSerial::write(uint8_t c)
 	_tx_buffer->buffer[_tx_buffer->head] = c;
 	_tx_buffer->head = i;
 
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE |= UCTXIE;
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+	UCAxIE |= UCTXIE;
 #else
 	UC0IE |= UCA0TXIE;
 #endif	
@@ -208,7 +252,7 @@ size_t HardwareSerial::write(uint8_t c)
 
 void uart_rx_isr(void)
 {
-	unsigned char c = UCA0RXBUF;
+	unsigned char c = UCAxRXBUF;
 	store_char(c, &rx_buffer);
 }
 
@@ -216,9 +260,9 @@ void uart_tx_isr(void)
 {
 	if (tx_buffer.head == tx_buffer.tail) {
 		// Buffer empty, so disable interrupts
-#if defined(__MSP430_HAS_EUSCI_A0__)
-		UCA0IE &= ~UCTXIE;
-		UCA0IFG |= UCTXIFG;    // Set Flag again
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+		UCAxIE &= ~UCTXIE;
+		UCAxIFG |= UCTXIFG;    // Set Flag again
 #else
 		UC0IE &= ~UCA0TXIE;
 #endif	
@@ -227,7 +271,7 @@ void uart_tx_isr(void)
 
 	unsigned char c = tx_buffer.buffer[tx_buffer.tail];
 	tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
-	UCA0TXBUF = c;
+	UCAxTXBUF = c;
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
