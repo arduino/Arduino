@@ -14,8 +14,9 @@
 #include <msp430.h>
 #include <stdint.h>
 #include "spi_430.h"
+#include <Energia.h>
 
-#ifdef __MSP430_HAS_USCI__
+#if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__) || defined(__MSP430_HAS_USCI__)
 
 /**
  * USCI flags for various the SPI MODEs
@@ -41,17 +42,31 @@
  * P1.7 - MOSI aka SIMO
  *
  */
+
+/* Calculate divisor to keep SPI clock close to 4MHz but never over */
+#ifndef SPI_CLOCK_SPEED
+#define SPI_CLOCK_SPEED 4000000L
+#endif
+
+#if F_CPU < 4000000L
+#define SPI_CLOCK_DIV() 1 
+#else
+#define SPI_CLOCK_DIV() ((F_CPU / SPI_CLOCK_SPEED) + (F_CPU % SPI_CLOCK_SPEED == 0 ? 0:1))
+#endif
+
+#define SPI_CLOCK_DIV_DEFAULT (F_CPU / 4)
+
 void spi_initialize(void)
 {
 	UCB0CTL1 = UCSWRST | UCSSEL_2;      // Put USCI in reset mode, source USCI clock from SMCLK
 	UCB0CTL0 = SPI_MODE_0 | UCMSB | UCSYNC | UCMST;  // Use SPI MODE 0 - CPOL=0 CPHA=0
 
-	P1OUT  |= (BIT5 | BIT7);            // SPI output pins low
-	P1SEL  |= BIT5 | BIT6 | BIT7;	    // configure P1.5, P1.6, P1.7 for USCI
-	P1SEL2 |= BIT5 | BIT6 | BIT7;       // more required SPI configuration
+	pinMode_int(SCK, SPISCK_SET_MODE);
+	pinMode_int(MOSI, SPIMOSI_SET_MODE);
+	pinMode_int(MISO, SPIMISO_SET_MODE);
 
-	UCB0BR0 = SPI_CLOCK_DIV4 & 0xFF;   // set initial speed to 4MHz
-	UCB0BR1 = (SPI_CLOCK_DIV4 >> 8 ) & 0xFF;
+	UCB0BR0 = SPI_CLOCK_DIV() & 0xFF;   // set initial speed to 4MHz
+	UCB0BR1 = (SPI_CLOCK_DIV() >> 8 ) & 0xFF;
 
 	UCB0CTL1 &= ~UCSWRST;			    // release USCI for operation
 }
