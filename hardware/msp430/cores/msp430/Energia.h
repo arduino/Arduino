@@ -24,6 +24,7 @@ extern "C"{
 
 #define RISING 0
 #define FALLING 1
+#define CHANGE 2
 
 #define INPUT 0x0
 #define OUTPUT 0x1
@@ -69,25 +70,25 @@ enum{
   P2,
 #ifdef __MSP430_HAS_PORT3_R__
   P3,
-#endif  
+#endif
 #ifdef __MSP430_HAS_PORT4_R__
   P4,
-#endif  
+#endif
 #ifdef __MSP430_HAS_PORT5_R__
   P5,
-#endif  
+#endif
 #ifdef __MSP430_HAS_PORT6_R__
   P6,
-#endif  
+#endif
 #ifdef __MSP430_HAS_PORT7_R__
   P7,
-#endif  
+#endif
 #ifdef __MSP430_HAS_PORT8_R__
   P8,
-#endif  
+#endif
 #ifdef __MSP430_HAS_PORTJ_R__
   PJ,
-#endif  
+#endif
   };
 
 enum{
@@ -188,10 +189,10 @@ extern const uint16_t port_to_output[];
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
 #define portDirRegister(P)     ( (volatile uint8_t *)( port_to_dir[P]) )
-/* 
+/*
  * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1
  * So we can remap  PxSEL and PxSEL2   to   PxSEL0 and PxSEL1
-*/ 
+*/
 #define portSelRegister(P)     ( (volatile uint8_t *)( port_to_sel0[P]) )
 #define portSel2Register(P)    ( (volatile uint8_t *)( port_to_sel2[P]) )
 
