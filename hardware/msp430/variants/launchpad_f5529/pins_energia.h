@@ -302,6 +302,17 @@ const uint16_t port_to_sel2[] = {
 #endif
 };
 
+const uint16_t port_to_pmap[] = {
+	NOT_A_PORT,
+	NOT_A_PORT,
+	NOT_A_PORT,
+	(uint16_t) &P4MAP0,
+	NOT_A_PORT,
+	NOT_A_PORT,
+	NOT_A_PORT,
+	NOT_A_PORT,
+};
+
 
 /* 
  * Defines for devices with 2x TA3 timers (e.g. MSP430g2553). On the 20pin devices, upto 3 analog outputs are available

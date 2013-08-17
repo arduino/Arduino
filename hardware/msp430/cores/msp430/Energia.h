@@ -160,7 +160,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 void pinMode(uint8_t, uint8_t);
-void pinMode_int(uint8_t, uint8_t);
+void pinMode_int(uint8_t, uint16_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
 uint16_t analogRead(uint8_t);
@@ -184,6 +184,7 @@ extern const uint16_t port_to_sel1[];
 extern const uint16_t port_to_sel2[];
 extern const uint16_t port_to_input[];
 extern const uint16_t port_to_output[];
+extern const uint16_t port_to_pmap[];
 
 #define digitalPinToPort(P)    ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
@@ -201,6 +202,7 @@ extern const uint16_t port_to_output[];
 #define portRenRegister(P)     ( (volatile uint8_t *)( port_to_ren[P]) )
 #define portOutputRegister(P)  ( (volatile uint8_t *)( port_to_output[P]) )
 #define portInputRegister(P)   ( (volatile uint8_t *)( port_to_input[P]) )
+#define portPMReg(P)           ( (volatile uint8_t *)( port_to_pmap[P]) )
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
 
 // Implemented in wiring.c
