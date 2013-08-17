@@ -303,6 +303,7 @@ const uint16_t port_to_sel2[] = {
 };
 
 const uint16_t port_to_pmap[] = {
+	NOT_A_PORT,	/* PMAP starts at port P1 */
 	NOT_A_PORT,
 	NOT_A_PORT,
 	NOT_A_PORT,

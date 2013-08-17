@@ -33,6 +33,16 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 
+#define bit_pos(A) ((A) == 1u << 0 ? 0 \
+: (A) == 1u << 1 ? 1 \
+: (A) == 1u << 2 ? 2 \
+: (A) == 1u << 3 ? 3 \
+: (A) == 1u << 4 ? 4 \
+: (A) == 1u << 5 ? 5 \
+: (A) == 1u << 6 ? 6 \
+: (A) == 1u << 7 ? 7 \
+: 0)
+
 void pinMode(uint8_t pin, uint8_t mode)
 {
 	uint8_t bit = digitalPinToBitMask(pin);
@@ -163,6 +173,7 @@ int digitalRead(uint8_t pin)
 {
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
+	volatile uint8_t *sel;
 
 	if (port == NOT_A_PORT) return LOW;
 
