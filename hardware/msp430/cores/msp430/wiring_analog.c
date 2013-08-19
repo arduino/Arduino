@@ -123,7 +123,7 @@ void analogWrite(uint8_t pin, int val)
                                 TA0CCR1 = PWM_DUTY(val);       // PWM duty cycle
                                 TA0CTL = TASSEL_2 + MC_1 + analog_div;       // SMCLK, up mode
                                 break;
-#if defined(__MSP430_HAS_TA3__) || defined(__MSP430_HAS_T0A3__) 
+#if defined(__MSP430_HAS_TA3__) || defined(__MSP430_HAS_T0A3__) || defined(__MSP430_HAS_T0A5__) || defined(__MSP430_HAS_TA5__) 
  			case T0A2:                              // TimerA0 / CCR2
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL2 = OUTMOD_7;            // reset/set
@@ -132,12 +132,6 @@ void analogWrite(uint8_t pin, int val)
                                 break;
 #endif
 #if defined(__MSP430_HAS_TA5__) || defined(__MSP430_HAS_T0A5__) 
- 			case T0A2:                              // TimerA0 / CCR2
-                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-                                TA0CCTL2 = OUTMOD_7;            // reset/set
-                                TA0CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
-                                break;
  			case T0A3:                              // TimerA0 / CCR3
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
                                 TA0CCTL3 = OUTMOD_7;            // reset/set
@@ -197,27 +191,26 @@ void analogWrite(uint8_t pin, int val)
                                 break;
 #endif
 #if defined(__MSP430_HAS_T0B7__) 
- 			//case: T0B7                            // CCR0 used as period register
  			case T0B3:                              // TimerB0 / CCR3
-                                TB0CCR3 = PWM_PERIOD;           // PWM Period
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
                                 TB0CCTL3 = OUTMOD_7;            // reset/set
                                 TB0CCR3 = PWM_DUTY(val);       // PWM duty cycle
                                 TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
  			case T0B4:                              // TimerB0 / CCR4
-                                TB0CCR4 = PWM_PERIOD;           // PWM Period
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
                                 TB0CCTL4 = OUTMOD_7;            // reset/set
                                 TB0CCR4 = PWM_DUTY(val);       // PWM duty cycle
                                 TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
  			case T0B5:                              // TimerB0 / CCR5
-                                TB0CCR5 = PWM_PERIOD;           // PWM Period
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
                                 TB0CCTL5 = OUTMOD_7;            // reset/set
                                 TB0CCR5 = PWM_DUTY(val);       // PWM duty cycle
                                 TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
                                 break;
  			case T0B6:                              // TimerB0 / CCR6
-                                TB0CCR6 = PWM_PERIOD;           // PWM Period
+                                TB0CCR0 = PWM_PERIOD;           // PWM Period
                                 TB0CCTL6 = OUTMOD_7;            // reset/set
                                 TB0CCR6 = PWM_DUTY(val);       // PWM duty cycle
                                 TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
