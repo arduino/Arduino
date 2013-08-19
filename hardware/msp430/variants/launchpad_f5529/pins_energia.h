@@ -45,11 +45,11 @@ static const uint8_t TWISDA  = 37;  /* P3.0 */
 static const uint8_t TWISCL  = 38;  /* P3.1 */
 static const uint8_t UARTRXD = 52;  /* Receive  Data (RXD) at P4.5 */
 static const uint8_t UARTTXD = 51;  /* Transmit Data (TXD) at P4.4 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
-#define TWISCL_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/)
-#define UARTRXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | INPUT)
-#define UARTTXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | OUTPUT)
-#define SPISCK_SET_MODE (PORT_SELECTION0)
+#define TWISDA_SET_MODE  (PORT_SELECTION0 )
+#define TWISCL_SET_MODE  (PORT_SELECTION0 )
+#define UARTRXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1RXD << 8) | INPUT)
+#define UARTTXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1TXD << 8) | OUTPUT)
+#define SPISCK_SET_MODE  (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
@@ -69,14 +69,25 @@ static const uint8_t A7  = 7;
 static const uint8_t A10 = 10; // special. This is the internal temp sensor
 
 //       May add Pin Mapping here
+//                                  --\/--                                                    --\/--
+//                            3.3v |1   21| 5.0v                          (TA2.2)-----> P2.5 |40  20| GND
+//              (TB0.0)-----> P5.6 |2   22| GND                           (TA2.1)-----> P2.4 |39  19| P2.0 <-----(TA1.1)
+//                            P3.4 |3   23| P6.0 (A0)                     (TA0.4)-----> P1.5 |38  18| P2.2
+//                            P3.3 |4   24| P6.1 (A1)                     (TA0.3)-----> P1.4 |37  17| P7.4 <-----(TB0.2)
+//                            P1.6 |5   25| P6.2 (A2)                     (TA0.2)-----> P1.3 |36  16| RST
+//                       (A6) P6.6 |6   26| P6.3 (A3)                     (TA0.1)-----> P1.2 |35  15| P3.0 <-------------(UCB0SIMO)
+//                            P3.2 |7   27| P6.4 (A4)                                   P4.3 |34  14| P3.1 <-------------(UCB0SOMI)
+//                            P2.7 |8   28| P7.0 (A12)                                  P4.0 |33  13| P2.6
+// (PM_USB1CLK)-------------> P4.2 |9   29| P3.6 <-----(TB0.6)                          P3.7 |32  12| P2.3 <-----(TA2.0)
+// (PM_UCB1SDA)-------------> P4.1 |10  30| P3.5 <-----(TB0.5)                          P8.2 |31  11| P8.1
+//                                  +----+                                                    +----+
 //       
-//       
-//       
-//       
-//       
-//       
-//       
-//       
+//      -+ 
+//   41  | PUSH1 
+//   42  | PUSH2 
+//   43  | LED1 (RED) 
+//   44  | LED2 (GREEN) 
+//      -+ 
 //       
 //       
 //       
@@ -129,11 +140,11 @@ static const uint8_t P6_5 = 2;
 static const uint8_t P6_7 = 3;
 static const uint8_t P6_6 = 4;
 
-static const uint8_t RED_LED = 21;
-static const uint8_t GREEN_LED = 54;
-static const uint8_t PUSH1 = 30;
-static const uint8_t PUSH2 = 22;
-static const uint8_t TEMPSENSOR = 10; // depends on chip
+static const uint8_t RED_LED = 43;
+static const uint8_t GREEN_LED = 44;
+static const uint8_t PUSH1 = 41;
+static const uint8_t PUSH2 = 42;
+static const uint8_t TEMPSENSOR = 10;
 
 
 #ifdef ARDUINO_MAIN

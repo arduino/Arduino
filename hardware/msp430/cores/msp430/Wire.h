@@ -73,7 +73,7 @@ class TwoWire : public Stream
     virtual int peek(void);
     virtual void flush(void);
 #define USCI_ERROR "\n*********\nI2C Slave is not implemented for this MSP430. \nConsider using using a MSP430 with USCI peripheral e.g. MSP430G2553.\n*********\n"
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__)
     void onReceive( void (*)(int) );
     void onRequest( void (*)(void) );
 #else
