@@ -54,6 +54,8 @@ static const uint8_t UARTTXD = 46;  /* Transmit Data (TXD) at P4.4 */
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
 
+#define DEBUG_UART_MODULE 1
+
 #if defined(__MSP430_HAS_USCI_A1__)
 #define USE_USCI_A1
 #endif
