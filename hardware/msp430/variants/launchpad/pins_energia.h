@@ -30,8 +30,8 @@
   Boston, MA  02111-1307  USA
 */
 
-#ifndef Pins_Arduino_h
-#define Pins_Arduino_h
+#ifndef Pins_Energia_h
+#define Pins_Energia_h
 #ifndef BV
 #define BV(x) (1 << (x))
 #endif
@@ -43,16 +43,18 @@ static const uint8_t MOSI    = 15; /* P1.7 */
 static const uint8_t MISO    = 14; /* P1.6 */
 static const uint8_t TWISDA  = 14;  /* P1.6 */
 static const uint8_t TWISCL  = 15;  /* P1.7 */
-static const uint8_t UARTRXD = 3;  /* Receive  Data (RXD) at P1.1 */
-static const uint8_t UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
+static const uint8_t DEBUG_UARTRXD = 3;  /* Receive  Data (RXD) at P1.1 */
+static const uint8_t DEBUG_UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
 #define TWISDA_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
 #define TWISCL_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/)
-#define UARTRXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | INPUT)
-#define UARTTXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | OUTPUT)
+#define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | INPUT)
+#define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | OUTPUT)
 #define SPISCK_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #define SPIMISO_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #endif
+
+#define DEBUG_UART_MODULE_OFFSET 0x0
 
 #if defined(__MSP430_HAS_USI__)
 static const uint8_t SS   = 8;  /* P2.0 */
@@ -68,6 +70,8 @@ static const uint8_t UARTTXD = 3;  /* Transmit Data (TXD) at P1.1 */
 #define UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
 #define UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
 #endif
+
+#define DEBUG_UART_MODULE 0x0
 
 static const uint8_t A0  = 0;
 static const uint8_t A1  = 1;

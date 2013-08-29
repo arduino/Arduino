@@ -97,8 +97,8 @@ TimerSerial::TimerSerial()
 
 void TimerSerial::begin(register unsigned long baud)
 {
-	pinMode_int(UARTRXD, UARTRXD_SET_MODE);
-	pinMode_int(UARTTXD, UARTTXD_SET_MODE);	
+	pinMode_int(DEBUG_UARTRXD, DEBUG_UARTRXD_SET_MODE);
+	pinMode_int(DEBUG_UARTTXD, DEBUG_UARTTXD_SET_MODE);	
 
     TA0CCTL0 = OUT;                     // Set TXD Idle state as Mark = '1', +3.3 volts normal
     TA0CCTL1 = SCS | CM1 | CAP | CCIE;  // Sync TACLK and MCLK, Detect Neg Edge, Enable Capture mode and RX Interrupt
@@ -117,7 +117,7 @@ void TimerSerial::end()
     while (TA0CCTL0 & CCIE) {
         ; // wait for previous xmit to finish
     }
-	pinMode(UARTTXD, INPUT);	
+	pinMode(DEBUG_UARTTXD, INPUT);	
 }
 
 int TimerSerial::read()

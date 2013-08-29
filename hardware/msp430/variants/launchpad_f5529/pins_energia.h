@@ -43,18 +43,24 @@ static const uint8_t MOSI    = 15;  /* P3.0 */
 static const uint8_t MISO    = 14;  /* P3.1 */
 static const uint8_t TWISDA  = 15;  /* P3.0 */
 static const uint8_t TWISCL  = 14;  /* P3.1 */
-static const uint8_t UARTRXD = 45;  /* Receive  Data (RXD) at P4.5 */
-static const uint8_t UARTTXD = 46;  /* Transmit Data (TXD) at P4.4 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 )
-#define TWISCL_SET_MODE  (PORT_SELECTION0 )
-#define UARTRXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1RXD << 8) | INPUT)
-#define UARTTXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1TXD << 8) | OUTPUT)
-#define SPISCK_SET_MODE  (PORT_SELECTION0)
+static const uint8_t DEBUG_UARTRXD = 45;  /* Receive  Data (RXD) at P4.5 */
+static const uint8_t DEBUG_UARTTXD = 46;  /* Transmit Data (TXD) at P4.4 */
+static const uint8_t AUX_UARTRXD = 3;  /* Receive  Data (RXD) at P4.5 */
+static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
+#define TWISDA_SET_MODE (PORT_SELECTION0)
+#define TWISCL_SET_MODE (PORT_SELECTION0)
+#define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1RXD << 8) | INPUT)
+#define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1TXD << 8) | OUTPUT)
+#define AUX_UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
+#define AUX_UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
+#define SPISCK_SET_MODE (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
 
-#define DEBUG_UART_MODULE 1
+#define DEBUG_UART_MODULE_OFFSET 0x40
+#define AUX_UART_MODULE_OFFSET 0x0
+#define SERIAL1_AVAILABLE 1
 
 #if defined(__MSP430_HAS_USCI_A1__)
 #define USE_USCI_A1
@@ -75,37 +81,34 @@ static const uint8_t A13  = 13;
 static const uint8_t A14  = 14;
 static const uint8_t A15  = 15;
 
-//
-// F5529 LaunchPad pin mapping
-//
-//                                  --\/--                                                    --\/--
-//                            3.3v |1   21| 5.0v                          (TA2.2)-----> P2.5 |40  20| GND
-//              (TB0.0)-----> P5.6 |2   22| GND                           (TA2.1)-----> P2.4 |39  19| P2.0 <-----(TA1.1)
-//   (UCA0RXD)--------------> P3.4 |3   23| P6.0 (A0)                     (TA0.4)-----> P1.5 |38  18| P2.2
-//   (UCA0TXD)--------------> P3.3 |4   24| P6.1 (A1)                     (TA0.3)-----> P1.4 |37  17| P7.4 <-----(TB0.2)
-//                            P1.6 |5   25| P6.2 (A2)                     (TA0.2)-----> P1.3 |36  16| RST
-//                       (A6) P6.6 |6   26| P6.3 (A3)                     (TA0.1)-----> P1.2 |35  15| P3.0 <-------------(UCB0SIMO) (UCB0SCL)
-//                            P3.2 |7   27| P6.4 (A4)                                   P4.3 |34  14| P3.1 <-------------(UCB0SOMI) (UCB0SDA)
-//                            P2.7 |8   28| P7.0 (A12)                                  P4.0 |33  13| P2.6
-// (PM_UCB1CLK)-------------> P4.2 |9   29| P3.6 <-----(TB0.6)                          P3.7 |32  12| P2.3 <-----(TA2.0)
-// (PM_UCB1SDA)-------------> P4.1 |10  30| P3.5 <-----(TB0.5)                          P8.2 |31  11| P8.1
-//                                  +----+                                                    +----+
-//
-//    -+
-//   41| P2.1 (PUSH1)
-//   42| P1.1 (PUSH2)
-//   43| P1.0 (LED1 - RED)
-//   44| P4.7 (LED2 - GREEN)
-//   45| P4.5 (UART RXD -> ezFET)
-//   46| P4.4 (UART TXD -> ezFET)
-//    -+
-//
-//
-//
-//
+/*
+ F5529 LaunchPad pin mapping
 
-// Pin names based on the silkscreen
-//
+                               +--\/--+                                 +--\/--+
+                          3.3v |1   21| 5.0v               (TA2.2) P2.5 |40  20| GND
+                  (TB0.0) P5.6 |2   22| GND                (TA2.1) P2.4 |39  19| P2.0 (TA1.1)
+     (UCA0RXD -> Serial1) P3.4 |3   23| P6.0 (A0)          (TA0.4) P1.5 |38  18| P2.2
+     (UCA0TXD -> Serial1) P3.3 |4   24| P6.1 (A1)          (TA0.3) P1.4 |37  17| P7.4 (TB0.2)
+                          P1.6 |5   25| P6.2 (A2)          (TA0.2) P1.3 |36  16| RST
+                     (A6) P6.6 |6   26| P6.3 (A3)          (TA0.1) P1.2 |35  15| P3.0 (UCB0SIMO) (UCB0SCL)
+                          P3.2 |7   27| P6.4 (A4)                  P4.3 |34  14| P3.1 (UCB0SOMI) (UCB0SDA)
+                          P2.7 |8   28| P7.0 (A12)                 P4.0 |33  13| P2.6
+             (PM_UCB1CLK) P4.2 |9   29| P3.6 (TB0.6)               P3.7 |32  12| P2.3 (TA2.0)
+             (PM_UCB1SDA) P4.1 |10  30| P3.5 (TB0.5)               P8.2 |31  11| P8.1
+                               +------+                                 +------+
+
+                                 ----+
+                                   41| P2.1 (PUSH1)
+                                   42| P1.1 (PUSH2)
+                                   43| P1.0 (LED1 - RED)
+                                   44| P4.7 (LED2 - GREEN)
+                                   45| P4.5 (UCA1RXD -> ezFET -> Serial)
+                                   46| P4.4 (UCA1TXD -> ezFET -> Serial)
+                                 ----+
+*/
+
+/* Pin names based on the silkscreen */
+
 /* PIN1 = 3.3v */
 static const uint8_t P5_6 = 2;
 static const uint8_t P3_4 = 3;

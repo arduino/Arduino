@@ -30,8 +30,8 @@
   Boston, MA  02111-1307  USA
 */
 
-#ifndef Pins_Arduino_h
-#define Pins_Arduino_h
+#ifndef Pins_Energia_h
+#define Pins_Energia_h
 #ifndef BV
 #define BV(x) (1 << (x))
 #endif
@@ -48,10 +48,11 @@ static const uint8_t TWISCL  = 12;  /* P1.7 */
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_A0__)
-static const uint8_t UARTRXD = 5;  /* Receive  Data (RXD) at P2.1 */
-static const uint8_t UARTTXD = 2;  /* Transmit Data (TXD) at P2.0 */
-#define UARTRXD_SET_MODE (PORT_SELECTION1 | INPUT)
-#define UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
+static const uint8_t DEBUG_UARTRXD = 5;  /* Receive  Data (RXD) at P2.1 */
+static const uint8_t DEBUG_UARTTXD = 2;  /* Transmit Data (TXD) at P2.0 */
+#define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION1 | INPUT)
+#define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
+#define DEBUG_UART_MODULE_OFFSET 0x00
 #endif
 
 /* Analog pins */

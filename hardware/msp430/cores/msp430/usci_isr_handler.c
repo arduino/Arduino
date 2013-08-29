@@ -2,7 +2,6 @@
 #if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) \
  || defined(__MSP430_HAS_EUSCI_A0__)|| defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__) 
 #include "usci_isr_handler.h"
-
 /* This dummy function ensures that, when called from any module that 
  * is interested in having the USCIAB0TX_VECTOR and USCIAB0TX_VECTOR
  * installed, the linker won't strip the vectors.*/
@@ -16,24 +15,31 @@ void usci_isr_install(){}
 #define USCI_UART_UCTXIFG USCI_UCTXIFG
 #endif
 
-#ifndef USE_USCI_A1
+#define USCI_A1_OFFSET (__MSP430_BASEADDRESS_USCI_A1__ - __MSP430_BASEADDRESS_USCI_A0__)
+
+extern CHardwareSerial *Serial;
+#ifdef SERIAL1_AVAILABLE
+extern CHardwareSerial *Serial1;
+#endif
+
 __attribute__((interrupt(USCI_A0_VECTOR)))
 void USCIA0_ISR(void)
 {
-  switch ( UCA0IV ) 
-  { 
-    case USCI_UART_UCRXIFG: uart_rx_isr(); break;
-    case USCI_UART_UCTXIFG: uart_tx_isr(); break;
-  }  
+	switch ( UCA0IV )
+	{
+		case USCI_UART_UCRXIFG: uart_rx_isr(0); break;
+		case USCI_UART_UCTXIFG: uart_tx_isr(0); break;
+	}
 }
-#else
+
+#ifdef __MSP430_HAS_USCI_A1__ 
 __attribute__((interrupt(USCI_A1_VECTOR)))
 void USCIA1_ISR(void)
 {
   switch ( UCA1IV ) 
-  { 
-    case USCI_UART_UCRXIFG: uart_rx_isr(); break;
-    case USCI_UART_UCTXIFG: uart_tx_isr(); break;
+  {
+    case USCI_UART_UCRXIFG: uart_rx_isr(0x40); break;
+    case USCI_UART_UCTXIFG: uart_tx_isr(0x40); break;
   }  
 }
 #endif
@@ -83,7 +89,7 @@ void USCIAB0TX_ISR(void)
 {
 	/* USCI_A0 UART interrupt? */
 	if (UC0IFG & UCA0TXIFG)
-		uart_tx_isr();
+		uart_tx_isr(0);
 
 	/* USCI_B0 I2C TX RX interrupt. */
 	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UC0IFG & (UCB0TXIFG | UCB0RXIFG)) != 0)
@@ -96,7 +102,7 @@ void USCIAB0RX_ISR(void)
 {
 	/* USCI_A0 UART interrupt? */
 	if (UC0IFG & UCA0RXIFG)
-		uart_rx_isr();
+		uart_rx_isr(0);
 
 	/* USCI_B0 I2C state change interrupt. */
 	if ((UCB0STAT & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
