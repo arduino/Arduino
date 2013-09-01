@@ -85,10 +85,7 @@ public class AvrdudeUploader extends Uploader  {
     // this wait a moment for the bootloader to enumerate. On Windows, also must
     // deal with the fact that the COM port number changes from bootloader to
     // sketch.
-    if (boardPreferences.get("bootloader.path") != null &&
-        (boardPreferences.get("bootloader.path").equals("caterina") ||
-         boardPreferences.get("bootloader.path").equals("caterina-Arduino_Robot") ||
-         boardPreferences.get("bootloader.path").equals("caterina-LilyPadUSB"))) {
+    if (doResetOn1200BpsComPortConnect(boardPreferences)) {
       String caterinaUploadPort = null;
       try {
         // Toggle 1200 bps on selected serial port to force board reset.
@@ -181,10 +178,7 @@ public class AvrdudeUploader extends Uploader  {
     // port reconnects (or timeout after a few seconds if the sketch port never comes back).
     // Doing this saves users from accidentally opening Serial Monitor on the soon-to-be-orphaned
     // bootloader port.
-    if (true == avrdudeResult && boardPreferences.get("bootloader.path") != null &&
-        (boardPreferences.get("bootloader.path").equals("caterina") ||
-         boardPreferences.get("bootloader.path").equals("caterina-Arduino_Robot") ||
-         boardPreferences.get("bootloader.path").equals("caterina-LilyPadUSB"))) {
+    if (true == avrdudeResult && doResetOn1200BpsComPortConnect(boardPreferences)) {
       try {
         Thread.sleep(500);
       } catch (InterruptedException ex) { }
@@ -210,6 +204,22 @@ public class AvrdudeUploader extends Uploader  {
     }
     
     return avrdudeResult;
+  }
+
+  private boolean doResetOn1200BpsComPortConnect(Map<String, String> boardPreferences) {
+    if (boardPreferences.get("bootloader.path") != null &&
+        (boardPreferences.get("bootloader.path").equals("caterina") ||
+         boardPreferences.get("bootloader.path").equals("caterina-Arduino_Robot") ||
+         boardPreferences.get("bootloader.path").equals("caterina-LilyPadUSB"))) {
+      return true;
+    }
+
+    if (boardPreferences.get("upload.reset_on_1200bps_com_port_connect") != null &&
+        boardPreferences.get("upload.reset_on_1200bps_com_port_connect").equals("true")) {
+      return true;
+    }
+
+    return false;
   }
   
   public boolean burnBootloader() throws RunnerException {
