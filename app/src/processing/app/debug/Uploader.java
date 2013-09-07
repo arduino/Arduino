@@ -123,7 +123,16 @@ public abstract class Uploader implements MessageConsumer  {
         }
         System.out.println();
       }
-      Process process = Runtime.getRuntime().exec(commandArray);
+
+      Process process;
+
+      if (Base.isMacOS()) {
+        String envp[] = { "DYLD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/mspdebug" };
+        process = Runtime.getRuntime().exec(commandArray, envp);
+      } else {
+        process = Runtime.getRuntime().exec(commandArray);
+      }
+
       new MessageSiphon(process.getInputStream(), this);
       new MessageSiphon(process.getErrorStream(), this);
 
