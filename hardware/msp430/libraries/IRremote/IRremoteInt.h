@@ -178,7 +178,6 @@ extern volatile irparams_t irparams;
 
 // defines for blinking the (Green) LED
 // MSP430 launchpad also has RED_LED
-#define GREEN_LED		P1_0
 #define BLINKLED       GREEN_LED
 #define BLINKLED_ON()  (digitalWrite(BLINKLED, HIGH))
 #define BLINKLED_OFF() (digitalWrite(BLINKLED, LOW))
