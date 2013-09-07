@@ -110,7 +110,7 @@ static const uint8_t A15  = 15;
 /* Pin names based on the silkscreen */
 
 /* PIN1 = 3.3v */
-static const uint8_t P5_6 = 2;
+static const uint8_t P6_5 = 2;
 static const uint8_t P3_4 = 3;
 static const uint8_t P3_3 = 4;
 static const uint8_t P1_6 = 5;
@@ -154,6 +154,13 @@ static const uint8_t P2_4 = 39;
 static const uint8_t P2_5 = 40;
 
 /* Extra pins not on the header + temp sensor */
+static const uint8_t P2_1 = 41;
+static const uint8_t P1_1 = 42;
+static const uint8_t P1_0 = 43;
+static const uint8_t P4_7 = 44;
+static const uint8_t P4_5 = 45;
+static const uint8_t P4_4 = 46;
+
 static const uint8_t PUSH1 = 41;
 static const uint8_t PUSH2 = 42;
 static const uint8_t RED_LED = 43;
@@ -345,7 +352,7 @@ const uint8_t digital_pin_to_timer[] = {
 const uint8_t digital_pin_to_port[] = {
 	NOT_A_PIN, /* dummy */
 	NOT_A_PIN, /* 1 */
-	P5,        /* 2 */
+	P6,        /* 2 */
 	P3,        /* 3 */
 	P3,        /* 4 */
 	P1,        /* 5 */
@@ -395,7 +402,7 @@ const uint8_t digital_pin_to_port[] = {
 const uint8_t digital_pin_to_bit_mask[] = {
 	NOT_A_PIN, /* 0,  pin count starts at 1 */
 	NOT_A_PIN, /* 1 */
-	BV(6),     /* 2 */
+	BV(5),     /* 2 */
 	BV(4),     /* 3 */
 	BV(3),     /* 4 */
 	BV(6),     /* 5 */
