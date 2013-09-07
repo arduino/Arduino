@@ -1115,7 +1115,8 @@ public class Base {
     }
   }
   
-  
+
+/*  
   public void rebuildProgrammerMenu(JMenu menu) {
     //System.out.println("rebuilding programmer menu");
     menu.removeAll();      
@@ -1142,7 +1143,7 @@ public class Base {
       }
     }
   }
-
+*/
 
   /**
    * Scan a folder recursively, and add any sketches found to the menu

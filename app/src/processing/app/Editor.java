@@ -805,6 +805,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(serialMenu);
     menu.addSeparator();
     
+/*
     JMenu programmerMenu = new JMenu(_("Programmer"));
     base.rebuildProgrammerMenu(programmerMenu);
     menu.add(programmerMenu);
@@ -818,16 +819,14 @@ public class Editor extends JFrame implements RunnerListener {
       });
       menu.add(item);
     }
-    
-    if(Preferences.get("target").equals("msp430")) {
-        item = new JMenuItem(_("Update programmer"));
-        item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-          handleDoFetUpdate();
-          }
-        });
-        menu.add(item);
+*/    
+    item = new JMenuItem(_("Update programmer"));
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleDoFetUpdate();
       }
+    });
+    menu.add(item);
 
     menu.addMenuListener(new MenuListener() {
       public void menuCanceled(MenuEvent e) {}
