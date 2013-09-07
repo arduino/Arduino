@@ -1672,7 +1672,7 @@ public class Sketch {
     // download the program
     //
     if(Base.getArch() == "msp430"){
-    	uploader = new MSP430Uploader();
+    	uploader = new MSP430Uploader(editor);
     }else if (Base.getArch() == "lm4f"){
         uploader = new LM4FUploader();
     }else {

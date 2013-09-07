@@ -105,6 +105,7 @@ public abstract class Uploader implements MessageConsumer  {
   protected boolean executeUploadCommand(Collection commandDownloader) 
     throws RunnerException
   {
+	exception = null;
     firstErrorFound = false;  // haven't found any errors yet
     secondErrorFound = false;
     notFoundError = false;
@@ -145,14 +146,7 @@ public abstract class Uploader implements MessageConsumer  {
         return false;
     } catch (Exception e) {
       String msg = e.getMessage();
-      if ((msg != null) && (msg.indexOf("uisp: not found") != -1) && (msg.indexOf("avrdude: not found") != -1)) {
-        //System.err.println("uisp is missing");
-        //JOptionPane.showMessageDialog(editor.base,
-        //                              "Could not find the compiler.\n" +
-        //                              "uisp is missing from your PATH,\n" +
-        //                              "see readme.txt for help.",
-        //                              "Compiler error",
-        //                              JOptionPane.ERROR_MESSAGE);
+      if ((msg != null) && ((msg.indexOf("update needed") != -1) || (msg.indexOf("update failed") != -1))) {
         return false;
       } else {
         e.printStackTrace();
@@ -213,6 +207,14 @@ public abstract class Uploader implements MessageConsumer  {
       exception = new RunnerException(_("Wrong microcontroller found.  Did you select the right board from the Tools > Board menu?"));
       return;
     }
+    if (s.indexOf("--allow-fw-update") != -1) {
+    	exception = new RunnerException(_("update needed"));
+    }
+
+    if (s.indexOf("Update failed") != -1) {
+    	exception = new RunnerException(_("update failed"));
+    }
+
   }
 
 
