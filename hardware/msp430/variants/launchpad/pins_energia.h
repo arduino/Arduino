@@ -63,12 +63,12 @@ static const uint8_t MOSI = 14; /* P1.6 */
 static const uint8_t MISO = 15; /* P1.7 */
 static const uint8_t TWISDA  = 14;  /* P1.7 */
 static const uint8_t TWISCL  = 15;  /* P1.6 */
-static const uint8_t UARTRXD = 4;  /* Receive  Data (RXD) at P1.2 */
-static const uint8_t UARTTXD = 3;  /* Transmit Data (TXD) at P1.1 */
+static const uint8_t DEBUG_UARTRXD = 4;  /* Receive  Data (RXD) at P1.2 */
+static const uint8_t DEBUG_UARTTXD = 3;  /* Transmit Data (TXD) at P1.1 */
 #define TWISDA_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
 #define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
-#define UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
-#define UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
+#define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
+#define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
 #endif
 
 #define DEBUG_UART_MODULE 0x0
