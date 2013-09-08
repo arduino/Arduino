@@ -69,9 +69,6 @@ public class FindReplace extends JFrame implements ActionListener {
   JCheckBox wrapAroundBox;
   static boolean wrapAround = true;
 
-  JCheckBox searchAllFilesBox;
-  static boolean searchAllFiles = false;
-
   public FindReplace(Editor editor) {
     super("Find");
     setResizable(false);
@@ -113,15 +110,6 @@ public class FindReplace extends JFrame implements ActionListener {
       });
     wrapAroundBox.setSelected(wrapAround);
     pain.add(wrapAroundBox);
-    
-    searchAllFilesBox = new JCheckBox(_("Search all Sketch Tabs"));
-    searchAllFilesBox.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          searchAllFiles = searchAllFilesBox.isSelected();
-        }
-      });
-    searchAllFilesBox.setSelected(searchAllFiles);
-    pain.add(searchAllFilesBox);
 
     JPanel buttons = new JPanel();
     
@@ -192,13 +180,9 @@ public class FindReplace extends JFrame implements ActionListener {
 
     ignoreCaseBox.setBounds(EDGE + labelDimension.width + SMALL,
                             ypos,
-                            (fieldWidth-SMALL)/4, fieldHeight);
+                            (fieldWidth-SMALL)/2, fieldHeight);
 
-    wrapAroundBox.setBounds(EDGE + labelDimension.width + SMALL + (fieldWidth-SMALL)/4 + SMALL,
-                            ypos,
-                            (fieldWidth-SMALL)/4, fieldHeight);
-
-	searchAllFilesBox.setBounds(EDGE + labelDimension.width + SMALL + (int)((fieldWidth-SMALL)/1.9) + SMALL,
+    wrapAroundBox.setBounds(EDGE + labelDimension.width + SMALL + (fieldWidth-SMALL)/2 + SMALL,
                             ypos,
                             (fieldWidth-SMALL)/2, fieldHeight);
 
@@ -307,9 +291,8 @@ public class FindReplace extends JFrame implements ActionListener {
   // look for the next instance of the find string to be found
   // once found, select it (and go to that line)
 
-  private boolean find(boolean wrap,boolean backwards,boolean searchTabs,int originTab) {
+  private boolean find(boolean wrap,boolean backwards ) {
 
-	boolean wrapNeeded = false;
     String search = findField.getText();
     //System.out.println("finding for " + search + " " + findString);
     // this will catch "find next" being called when no search yet
@@ -330,7 +313,7 @@ public class FindReplace extends JFrame implements ActionListener {
       nextIndex = text.indexOf(search, selectionEnd);
       if (wrap && nextIndex == -1) {
         // if wrapping, a second chance is ok, start from beginning
-        wrapNeeded = true;
+        nextIndex = text.indexOf(search, 0);
       }
     } else {
       //int selectionStart = editor.textarea.getSelectionStart();
@@ -343,58 +326,16 @@ public class FindReplace extends JFrame implements ActionListener {
       }
       if (wrap && nextIndex == -1) {
         // if wrapping, a second chance is ok, start from the end
-        wrapNeeded = true;
+        nextIndex = text.lastIndexOf(search);
       }
     }
 
-    if (nextIndex == -1) {
-      //Nothing found on this tab: Search other tabs if required
-      if(searchTabs)
-      {
-      	//editor.
-      	Sketch sketch = editor.getSketch();
-      	if(sketch.getCodeCount()>1)
-      	{
-      		int realCurrentTab = sketch.getCodeIndex(sketch.getCurrentCode());
-      		
-      		if(originTab!=realCurrentTab)
-      		{
-	      		if(originTab <0)
-	      			originTab = realCurrentTab;
-
-				if(!wrap)
-					if((!backwards && realCurrentTab+1 >= sketch.getCodeCount()) || (backwards && realCurrentTab-1 < 0))
-						return false; // Can't continue without wrap
-				
-				if(backwards)
-				{
-	      			sketch.handlePrevCode();
-	      			this.setVisible(true);
-	      			int l = editor.getText().length()-1;
-	      			editor.setSelection(l,l);
-				}
-	      		else
-	      		{
-	      			sketch.handleNextCode();
-	      			this.setVisible(true);
-	      			editor.setSelection(0,0);
-	      		}
-	      				
-	      		return find(wrap,backwards,searchTabs,originTab);
-      		}
-      	}
-      }
-      
-      if(wrapNeeded)
-      		nextIndex = backwards? text.lastIndexOf(search):text.indexOf(search, 0);
-    }
-   	
-   	if (nextIndex != -1) {
+    if (nextIndex != -1) {
       editor.setSelection(nextIndex, nextIndex + search.length());
-      return true;
-   	}
-   
-    return false;
+    } else {
+      //Toolkit.getDefaultToolkit().beep();
+    }
+    return nextIndex != -1;
   }
 
 
@@ -422,11 +363,11 @@ public class FindReplace extends JFrame implements ActionListener {
    */
   public void replaceAll() {
     // move to the beginning
-    //editor.setSelection(0, 0);
+    editor.setSelection(0, 0);
 
     boolean foundAtLeastOne = false;
     while ( true ) {
-      if ( find(true,false,searchAllFiles,-1)) {
+      if ( find(false,false) ) {
         foundAtLeastOne = true;
         replace();
      } else {
@@ -444,13 +385,13 @@ public class FindReplace extends JFrame implements ActionListener {
   }
 
   public void findNext() {
-    if ( !find( wrapAround, false, searchAllFiles,-1 ) ) {
+    if ( !find( wrapAround, false ) ) {
       Toolkit.getDefaultToolkit().beep();
     }
   }
 
   public void findPrevious() {
-    if ( !find( wrapAround, true, searchAllFiles,-1 ) ) {
+    if ( !find( wrapAround, true ) ) {
       Toolkit.getDefaultToolkit().beep();
     }
   }
