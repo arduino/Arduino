@@ -1713,9 +1713,9 @@ public class Base {
           + getArch() + File.separator + "bin" + File.separator;
       }
     } else if (Base.isWindows()) {
-      String ret = toShortPath(getHardwarePath() + File.separator + "tools"
+      String ret = getHardwarePath() + File.separator + "tools"
           + File.separator + getArch() + File.separator + "bin"
-          + File.separator);
+          + File.separator;
       return ret;
     } else {
       return getHardwarePath() + File.separator + "tools" + File.separator
