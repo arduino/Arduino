@@ -30,9 +30,9 @@
 
 #ifndef TwoWire_h
 #define TwoWire_h
-
 #include <inttypes.h>
 #include "Stream.h"
+#include <msp430.h>
 
 #define BUFFER_LENGTH 16
 

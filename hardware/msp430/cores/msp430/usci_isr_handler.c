@@ -49,23 +49,23 @@ void USCIA1_ISR(void)
 __attribute__((interrupt(USCI_B0_VECTOR)))
 void USCIB0_ISR(void)
 {
-	/* USCI_B0 I2C TX RX interrupt. */
-	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UCB0IFG & (UCTXIFG | UCRXIFG)) != 0)
-		i2c_txrx_isr();
 	/* USCI_B0 I2C state change interrupt. */
 	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UCB0IFG & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
 		i2c_state_isr(); 
+	/* USCI_B0 I2C TX RX interrupt. */
+	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UCB0IFG & (UCTXIFG | UCRXIFG)) != 0)
+		i2c_txrx_isr();
 }
 #else
 __attribute__((interrupt(USCI_B1_VECTOR)))
 void USCIB1_ISR(void)
 {
-	/* USCI_B1 I2C TX RX interrupt. */
-	if ((UCB1CTL0 & UCMODE_3) == UCMODE_3 && (UCB1IFG & (UCTXIFG | UCRXIFG)) != 0)
-		i2c_txrx_isr();
 	/* USCI_B1 I2C state change interrupt. */
 	if ((UCB1CTL0 & UCMODE_3) == UCMODE_3 && (UCB1IFG & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
 		i2c_state_isr(); 
+	/* USCI_B1 I2C TX RX interrupt. */
+	if ((UCB1CTL0 & UCMODE_3) == UCMODE_3 && (UCB1IFG & (UCTXIFG | UCRXIFG)) != 0)
+		i2c_txrx_isr();
   }  
 }
 #endif
