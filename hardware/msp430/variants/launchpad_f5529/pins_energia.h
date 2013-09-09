@@ -90,10 +90,10 @@ static const uint8_t A15  = 15;
      (UCA0RXD -> Serial1) P3.4 |3   23| P6.0 (A0)          (TA0.4) P1.5 |38  18| P2.2
      (UCA0TXD -> Serial1) P3.3 |4   24| P6.1 (A1)          (TA0.3) P1.4 |37  17| P7.4 (TB0.2)
                           P1.6 |5   25| P6.2 (A2)          (TA0.2) P1.3 |36  16| RST
-                     (A6) P6.6 |6   26| P6.3 (A3)          (TA0.1) P1.2 |35  15| P3.0 (UCB0SIMO) (UCB0SCL)
-                          P3.2 |7   27| P6.4 (A4)                  P4.3 |34  14| P3.1 (UCB0SOMI) (UCB0SDA)
+                     (A6) P6.6 |6   26| P6.3 (A3)          (TA0.1) P1.2 |35  15| P3.0 (UCB0SIMO) (UCB0SDA)
+                          P3.2 |7   27| P6.4 (A4)                  P4.3 |34  14| P3.1 (UCB0SOMI) (UCB0SCL)
                           P2.7 |8   28| P7.0 (A12)                 P4.0 |33  13| P2.6
-             (PM_UCB1CLK) P4.2 |9   29| P3.6 (TB0.6)               P3.7 |32  12| P2.3 (TA2.0)
+             (PM_UCB1SCL) P4.2 |9   29| P3.6 (TB0.6)               P3.7 |32  12| P2.3 (TA2.0)
              (PM_UCB1SDA) P4.1 |10  30| P3.5 (TB0.5)               P8.2 |31  11| P8.1
                                +------+                                 +------+
 
