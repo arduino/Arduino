@@ -129,6 +129,10 @@ public abstract class Uploader implements MessageConsumer  {
       if (Base.isMacOS()) {
         String envp[] = { "DYLD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/mspdebug" };
         process = Runtime.getRuntime().exec(commandArray, envp);
+      } else if(Base.isLinux()) {
+        String envp[] = { "LD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/bin" };
+        process = Runtime.getRuntime().exec(commandArray, envp);
+
       } else {
         process = Runtime.getRuntime().exec(commandArray);
       }
