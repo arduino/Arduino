@@ -1,0 +1,23 @@
+#!/bin/bash
+
+uid=${PKEXEC_UID:-${SUDO_UID}}
+
+if [[ -z $uid ]]; then
+    echo "Could not determine which user to add to the groups."
+    exit 2
+fi
+
+login=$(perl -e 'print((getpwuid shift)[0])' $uid)
+
+for group in dialout lock; do
+    if ! groups $login | grep -q " : .*\b$group\b"; then
+	missing_groups=${missing_groups:+$missing_groups,}$group
+    fi
+done
+
+if [[ -n $missing_groups ]]; then
+    exec usermod -a -G $missing_groups $login
+else
+    echo "No required groups are missing for this user."
+    exit 1
+fi

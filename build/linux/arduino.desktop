@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Arduino
+Comment=An IDE for Arduino-compatible electronics prototyping platforms
+Exec=arduino
+Icon=arduino
+Terminal=false
+Categories=Development;IDE;Electronics;
+MimeType=text/x-arduino
