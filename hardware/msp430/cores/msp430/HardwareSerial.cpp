@@ -240,7 +240,7 @@ void uart_tx_isr(uint8_t offset)
 {
 #ifdef SERIAL1_AVAILABLE
 	/* Debug uart aka Serial always gets rx_buffer and aux aka Serial1 gets rx_buffer1 */
-	ring_buffer *tx_buffer_ptr = (offset == DEBUG_UART_MODULE_OFFSET) ? &tx_buffer : &tx_buffer;
+	ring_buffer *tx_buffer_ptr = (offset == DEBUG_UART_MODULE_OFFSET) ? &tx_buffer : &tx_buffer1;
 #else
 	ring_buffer *tx_buffer_ptr = &tx_buffer;
 #endif
