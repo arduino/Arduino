@@ -1,8 +1,7 @@
 /*
   USB serial test
  
- Receives from the hardware serial, sends to USB serial.
- Receives from USB serial, sends to hardware serial.
+ Receives from USB serial and Echos back the data.
  
  
  created back in the mists of time
@@ -16,6 +15,7 @@
 #include <USBSerial.h>
 
 USBSerial mySerial(1); // USB
+uint8_t i = 0;
 
 void setup()  
 {
@@ -24,11 +24,6 @@ void setup()
   pinMode(RED_LED, OUTPUT);     
   pinMode(GREEN_LED, OUTPUT);     
   
-  // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  Serial.println("Goodnight moon!");
-  digitalWrite(RED_LED, HIGH);    // set the LED on
-
   // open the USBSerial port
   mySerial.begin();
   mySerial.println("Hello USB world");
@@ -38,7 +33,10 @@ void setup()
 void loop() // run over and over
 {
   if (mySerial.available())
-    Serial.write(mySerial.read());
-  if (Serial.available())
-    mySerial.write(Serial.read());
+  {
+    mySerial.write(mySerial.read());
+    i ^= HIGH;                   // Toggle value
+    digitalWrite(RED_LED, i);    // toggle the LED
+  }
+
 }  

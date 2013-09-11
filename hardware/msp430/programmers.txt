@@ -3,5 +3,5 @@
 rf2500.name=rf2500
 rf2500.protocol=rf2500
 
-tiusb.name=tiusb
-tiusb.protocol=tiusb
+tilib.name=tilib
+tilib.protocol=tilib
