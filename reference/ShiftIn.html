@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Energia Reference - ShiftIn </title>
-  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/favicon.png">
+  <link rel="shortcut icon" type="image/x-icon" href="http://energia.nu/img/eicon.png">
   <link rel='stylesheet' href='energiaWideRender.css' 
 type='text/css' />
     <!--HeaderText--><style type='text/css'></style>  
@@ -27,13 +27,12 @@ type='text/css' />
     <div id="navbar">
   	<p><a class='wikilink' href='http://energia.nu/'>Home</a>
 <a class='wikilink' href='http://energia.nu/download'>Download</a>
-<a class="wikilink" href="http://energia.nu/buy/">Buy</a>
 <a class='wikilink' href='Guide_index.html'>Getting Started</a>
 <a class='wikilink' href='index.html'>Reference</a>
-<a class="wikilink" href="http://energia.nu/help/">Getting Help</a>
-<a class="nav" href="http://energia.nu/faq/">FAQ</a>
-<a class="wikilink" href="http://energia.nu/projects/">Projects Using Energia</a>
-<a class="nav" href="http://energia.nu/contact/">Contact Us</a>
+<a class="wikilink" href="http://energia.nu/help.html">Getting Help</a>
+<a class="nav" href="http://energia.nu/faq.html">FAQ</a>
+<a class="wikilink" href="http://energia.nu/projects.html">Projects Using Energia</a>
+<a class="nav" href="http://energia.nu/contact.html">Contact Us</a>
 </p>
 
 
@@ -46,13 +45,11 @@ type='text/css' />
   <div id="pagetext">
   <!--PageText-->
 <div id='wikitext'>
-<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='index.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
-</p>
 <p class='vspace'></p><h2>shiftIn()</h2>
 <h4>Description</h4>
 <p>Shifts in a byte of data one bit at a time.  Starts from either the most (i.e. the leftmost) or least (rightmost) significant bit.  For each bit, the clock pin is pulled high, the next bit is read from the data line, and then the clock pin is taken low.
 </p>
-<p class='vspace'></p><p>Note: this is a software implementation; Arduino also provides an <a class='wikilink' href='SPI.html'>SPI library</a> that uses the hardware implementation, which is faster but only works on specific pins.
+<p class='vspace'></p><p>Note: this is a software implementation; Arduino also provides an <a class='wikilink' href='Library_SPI.html'>SPI library</a> that uses the hardware implementation, which is faster but only works on specific pins.
 </p>
 <p class='vspace'></p><h4>Syntax</h4>
 <p>shiftIn(dataPin, clockPin, bitOrder)
@@ -69,7 +66,7 @@ type='text/css' />
 </p>
 <p class='vspace'></p><h4>See also</h4>
 <ul><li><a class='wikilink' href='ShiftOut.html'>shiftOut()</a>
-</li><li><a class='wikilink' href='SPI.html'>SPI</a>
+</li><li><a class='wikilink' href='Library_SPI.html'>SPI</a>
 </li></ul><p class='vspace'></p><p><a class='wikilink' href='index.html'>Reference Home</a>
 </p>
 <p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://forum.43oh.com/forum/28-energia/' rel='nofollow'>Forum</a>.</em>
