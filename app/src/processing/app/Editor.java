@@ -1090,6 +1090,13 @@ public class Editor extends JFrame implements RunnerListener {
         {
           //System.out.println("Adding port to serial port menu: " + commportidentifier);
           String curr_port = commportidentifier.getName();
+
+          if (Base.isMacOS()) {
+                if(curr_port.indexOf("tty.uart") == -1
+                && curr_port.indexOf("tty.usbmodem") == -1
+                && curr_port.indexOf("tty.usbserial") == -1) continue;  
+          }
+
           rbMenuItem = new JCheckBoxMenuItem(curr_port, curr_port.equals(Preferences.get("serial.port")));
           rbMenuItem.addActionListener(serialMenuListener);
           //serialGroup.add(rbMenuItem);
