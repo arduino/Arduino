@@ -32,7 +32,7 @@
 *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 *****************************************************************************/
-#include "energia.h"
+#include "Energia.h"
 #include <msp430.h>
 #include "wlan.h" 
 #include "evnt_handler.h"    // callback function declaration

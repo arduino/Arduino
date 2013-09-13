@@ -1,7 +1,7 @@
 
 
 #include "SPI.h"
-#include "SimplelinkWiFi.h"
+#include "SimplelinkWifi.h"
 #include "wifi.h"
 
 #include "Energia.h"
