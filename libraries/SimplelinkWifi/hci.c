@@ -45,7 +45,7 @@
 #include "interface.h"
 #include "evnt_handler.h"
 #include "wlan.h"
-#include "energia.h"
+#include "Energia.h"
 
 #define SL_PATCH_PORTION_SIZE		(1000)
 
