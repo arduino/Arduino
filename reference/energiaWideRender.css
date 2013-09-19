@@ -80,6 +80,11 @@ ul {
 	list-style-image: url(img/bullet.gif);
 	list-style-position: inside;
 }
+
+h4.inline {
+  display: inline;
+}
+
 a, a:link {
 	color: #000;
 	text-decoration: none !important;
@@ -134,7 +139,7 @@ input:focus {
 	border: none;
 	display: block;
 	text-indent: -9999em;
-	background: url(img/energia.png) no-repeat;
+	background: url(img/Energia.png) no-repeat;
 	height: 180px;/*116*/
 	width: 452px;/*170*/
 }
@@ -172,17 +177,21 @@ input:focus {
 	border-right: solid 1px #000;
 //	border-left: 1px solid #000;
 }
+
+#navbar a.left {
+	border-left: 1px solid #000;
+}
 #navbar a:hover {
 	background: #7e0000;
-	border-right: solid 1px #000;
-	border-left: 1px solid #000;
+//	border-right: solid 1px #000;
+//	border-left: 1px solid #000;
 }
 #navbar a:active {
 	line-height: 27px;
 	background: #e34c00;
-	border: 1px solid #dfa70a;
-	border-left: 1px solid #3cbaa9;
-	border-right: 1px solid #d09b09;
+//	border: 1px solid #dfa70a;
+//	border-left: 1px solid #3cbaa9;
+//	border-right: 1px solid #d09b09;
 }
 #navbar a.selflink {
 	line-height: 27px;
