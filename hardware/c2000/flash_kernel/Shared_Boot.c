@@ -28,13 +28,16 @@
 
 // GetWordData is a pointer to the function that interfaces to the peripheral.
 // Each loader assigns this pointer to it's particular GetWordData function.
-uint16fptr GetWordData;
+uint16fptr GetOnlyWordData;
 
 // Function prototypes
 Uint32 GetLongData();
-void   CopyData(void);
+//void   CopyData(void);
 void ReadReservedFn(void);
+//After flash_program, send checksum to PC
+void SendCheckSum();
 
+#pragma CODE_SECTION(CopyData, "ramfuncs");
 //Programming Buffer
 Uint16 progBuf[PROG_BUFFER_LENGTH];
 //Flash Status Structure
@@ -42,7 +45,6 @@ FLASH_ST FlashStatus;
 
 extern Uint32 Flash_CPUScaleFactor;
 extern void (*Flash_CallbackPtr) (void);
-
 
 //#################################################
 // void CopyData(void)
@@ -83,12 +85,13 @@ void CopyData()
    if(status != STATUS_SUCCESS)
    {
 	   //TODO fix so that it returns a serial error and reboot device
-       return 0;
+       return;
    }
 
-
+   // After Flash Erase, send the checksum to PC program.
+   SendCheckSum();
    // Get the size in words of the first block
-   BlockHeader.BlockSize = (*GetWordData)();
+   BlockHeader.BlockSize = (*GetOnlyWordData)();
 
    // While the block size is > 0 copy the data
    // to the DestAddr.  There is no error checking
@@ -106,48 +109,54 @@ void CopyData()
 		      BlockHeader.ProgBuffAddr = (Uint32)progBuf;
 		      for(i = 1; i <= PROG_BUFFER_LENGTH; i++)
 		      {
-		          wordData = (*GetWordData)();
+		          wordData = (*GetOnlyWordData)();
 		          *(Uint16 *)BlockHeader.ProgBuffAddr++ = wordData;
 		      }
 		      status = Flash_Program((Uint16 *) BlockHeader.DestAddr, (Uint16 *)progBuf, PROG_BUFFER_LENGTH, &FlashStatus);
 		      if(status != STATUS_SUCCESS)
 		      {
-		          return 0;
+		          return;
 		      }
 		      BlockHeader.DestAddr += PROG_BUFFER_LENGTH;
+		      // After Flash program, send the checksum to PC program.
+		      SendCheckSum();
 	      }
 	      //Program the leftovers
 	      BlockHeader.ProgBuffAddr = (Uint32)progBuf;
 	      for(i = 1; i <= (BlockHeader.BlockSize % PROG_BUFFER_LENGTH); i++)
 	      {
-	          wordData = (*GetWordData)();
+	          wordData = (*GetOnlyWordData)();
 	          *(Uint16 *)BlockHeader.ProgBuffAddr++ = wordData;
 	      }
 	      status = Flash_Program((Uint16 *) BlockHeader.DestAddr, (Uint16 *)progBuf, (BlockHeader.BlockSize % PROG_BUFFER_LENGTH), &FlashStatus);
 	      if(status != STATUS_SUCCESS)
 	      {
-	          return 0;
+	          return;
 	      }
+	      // After Flash program, send the checksum to PC program.
+	      SendCheckSum();
 	  }else{
 		  //Block will fit into our buffer so we'll program it all at once
 	      BlockHeader.DestAddr = GetLongData();
 	      BlockHeader.ProgBuffAddr = (Uint32)progBuf;
 	      for(i = 1; i <= BlockHeader.BlockSize; i++)
 	      {
-	          wordData = (*GetWordData)();
+	          wordData = (*GetOnlyWordData)();
 	          *(Uint16 *)BlockHeader.ProgBuffAddr++ = wordData;
 	      }
 	      status = Flash_Program((Uint16 *) BlockHeader.DestAddr, (Uint16 *)progBuf, BlockHeader.BlockSize, &FlashStatus);
 	      if(status != STATUS_SUCCESS)
 	      {
-	          return 0;
+	          return;
 	      }
+	      // After Flash program, send the checksum to PC program.
+	      SendCheckSum();
 	  }
 
 
 
       // Get the size of the next block
-      BlockHeader.BlockSize = (*GetWordData)();
+      BlockHeader.BlockSize = (*GetOnlyWordData)();
    }
    return;
 }
@@ -164,10 +173,10 @@ Uint32 GetLongData()
     Uint32 longData;
 
     // Fetch the upper 1/2 of the 32-bit value
-    longData = ( (Uint32)(*GetWordData)() << 16);
+    longData = ( (Uint32)(*GetOnlyWordData)() << 16);
 
     // Fetch the lower 1/2 of the 32-bit value
-    longData |= (Uint32)(*GetWordData)();
+    longData |= (Uint32)(*GetOnlyWordData)();
 
     return longData;
 }
@@ -188,7 +197,19 @@ void ReadReservedFn()
     // Read and discard the 8 reserved words.
     for(i = 1; i <= 8; i++)
     {
-       GetWordData();
+    	GetOnlyWordData();
     }
     return;
+}
+
+//#################################################
+// void SendCheckSum(void)
+//-----------------------------------------------------
+// This function sends checksum to PC program
+// After flash memory erases or writes something, this functions will be running
+//-----------------------------------------------------
+void SendCheckSum()
+{
+	   SciaRegs.SCITXBUF = 'C';
+	   return;
 }

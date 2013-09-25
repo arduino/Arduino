@@ -67,6 +67,7 @@
 //
 typedef Uint16 (* uint16fptr)();
 extern  uint16fptr GetWordData;
+extern  uint16fptr GetOnlyWordData;
 extern  void (*Flash_CallbackPtr) (void);
 extern  Uint32 Flash_CPUScaleFactor;
 extern  Uint16 EmuKey;

@@ -42,7 +42,9 @@ import processing.app.SerialException;
 import java.awt.Component;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.Delayed;
 import java.util.zip.*;
+
 import javax.swing.*;
 
 import gnu.io.*;
@@ -51,17 +53,36 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 	private Serial serial;
 	private String port;
 	private int serialRate;
+	int testInt, rcvInt;
 	
 
 	public C2000Uploader() {
 		this.port = Preferences.get("serial.port");
 	}
-	  
+	
+	//After Flash erase or Flash program, PC program is waiting for feedback
+	boolean CheckFeedback()
+	{
+		while(serial.available() == 0)
+		{		 	
+		    	
+		}
+
+		rcvInt = serial.readChar();
+
+		if(rcvInt != 'C'){
+		System.err.println("Uploading flash kernel failed.");
+			serial.dispose();
+			return false;
+		}
+		rcvInt = 0;		
+		return true;
+	}
+	
 	public boolean uploadUsingPreferences(String buildPath, String className, boolean usingProgrammer)
 	throws RunnerException, SerialException {
 		Scanner kernelScanner, appScanner;
-		int testInt, rcvInt;
-		String testString;
+		String testString;		
 		
 		this.verbose = verbose;
 		Map<String, String> boardPreferences = Base.getBoardPreferences();
@@ -69,6 +90,8 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 		//Setup serial objects
 	    serialRate = Preferences.getInteger("serial.debug_rate");
 		serial = new Serial(port, serialRate);
+		
+		
 		
 		System.out.println("Put C2000 LaunchPad switches Up-Down-Down and press the reset button");
 		Component frame = null;
@@ -108,23 +131,22 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 			serial.dispose();
     		return false;
     	}
+    	
+
+	    int CountInt;
+	    CountInt = 0;
 	    
 	    //Load the flash kernel
 	    while(kernelScanner.hasNextInt(16)){
 	    	testInt = kernelScanner.nextInt(16);
 	    	serial.write(testInt);
-		    while(serial.available() == 0){
-		    	
-		    }
-	    	rcvInt = serial.readChar();
-	    	if(rcvInt != testInt){
-	    		System.err.println("Uploading flash kernel failed.");
-				serial.dispose();
-	    		return false;
-	    	}
+	    	
+	    	CountInt++;
 	    }
 	    
 		System.out.println("Flash kernel load complete");
+
+		System.out.println("Flash kernel CountInt is " + CountInt);
 		
 	    
 	    //TODO Load the user application
@@ -154,6 +176,9 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 	    }
 	    
 	    //Autobaud only works up to 38.4k baud on C2k LP
+
+	    CountInt = 0;
+	    serial.clear();
 	    serial.write('A');
 	    while(serial.available() == 0){
 	    	
@@ -164,25 +189,90 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 			serial.dispose();
     		return false;
     	}
-	    
 	    //Load the flash kernel
 	    while(appScanner.hasNextInt(16)){
+
+	    	CountInt++;
 	    	testInt = appScanner.nextInt(16);
 	    	serial.write(testInt);
-		    while(serial.available() == 0){
-		    	
-		    }
-	    	rcvInt = serial.readChar();
-	    	if(rcvInt != testInt){
-	    		System.err.println("Uploading flash kernel failed.");
-				serial.dispose();
-	    		return false;
-	    	}
+
+	    	//22 contains Keyvalue and reserved words and Entry address
+	    	if(CountInt == 22)
+	    	{	   
+	    		CountInt =0x00;
+	    		break ;
+	    	}	    		    		    	
 	    }
 	    
+	    if(!CheckFeedback())
+	    	return false;
 
-		System.out.println("Application loaded");
+    	int wordData;
+    	int byteData;
+    	int j;
+    	int totalCount = 0;
+    	
+    	wordData = 0x0000;
+    	byteData = 0x0000;
+    	
+	    //Load the flash kernel
+	    while(appScanner.hasNextInt(16)){
+
+	    	testInt = appScanner.nextInt(16);
+	    	serial.write(testInt);	 
+	    	
+	    	// Get a dest addr
+	    	if(CountInt == 0x00 )
+	    	{		    	
+	    		wordData = testInt;		
+	    	}
+	    	else if(CountInt == 0x01)
+	    	{
+		    	byteData = testInt;		    	
+		    	// form the wordData from the MSB:LSB
+		    	wordData |= (byteData << 8);
+	    	}	    	   		    	
+
+	    	CountInt++;	  
+	    	totalCount++; 
+		    	
+	    	//If the next block size is 0, exit the while loop. 
+		    if(wordData == 0x00 && CountInt > 1)
+		    {
+		    	
+	    		for(j=0;j<10000000;j++);
+	    		
+	    		wordData = 0x0000;
+	        	byteData = 0x0000;
+	        	
+		    	break;		    
+		    }		    	
+		    //If the block size is bigger than 0x400 words, every 0x400 words later it takes time for flash program. Them waiting for feedback.
+		    else if((CountInt - 6) % 0x800 ==0 && CountInt > 6)
+		    {
+		    	if(!CheckFeedback())
+			    	return false;
+		    }
+		    //If CountInt meets the block size, countint and dest addr will be initialized. 
+		    else if(CountInt == 2*(wordData + 3))
+	    	{	    		
+		    	if(!CheckFeedback())
+			    	return false;
+		    	
+	    		wordData = 0x0000;
+	        	byteData = 0x0000;
+	        	CountInt = 0x00;
+	    	}	    		    		    	
+	    }	    
 	    
+	    
+    	///////////
+		System.out.println("Application loaded");
+		
+		/* debugging for flash program
+		System.out.println("CountInt is " + CountInt);
+		System.out.println("TotalInt is " + totalCount);
+		*/
 	    //Close the serial port
 		serial.dispose();
 	    return true;

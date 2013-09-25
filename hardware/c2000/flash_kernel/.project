@@ -24,26 +24,4 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>F2802x_GlobalVariableDefs.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_headers/source/F2802x_GlobalVariableDefs.c</locationURI>
-		</link>
-		<link>
-			<name>F2802x_Headers_nonBIOS.cmd</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_headers/cmd/F2802x_Headers_nonBIOS.cmd</locationURI>
-		</link>
-		<link>
-			<name>F2802x_SysCtrl.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/source/F2802x_SysCtrl.c</locationURI>
-		</link>
-		<link>
-			<name>F2802x_usDelay.S</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/source/F2802x_usDelay.S</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

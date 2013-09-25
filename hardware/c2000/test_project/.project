@@ -26,11 +26,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Device_I2C.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/Device_I2C.cpp</locationURI>
-		</link>
-		<link>
 			<name>F28027.cmd</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/f2802x_common/cmd/F28027.cmd</locationURI>

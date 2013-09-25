@@ -26,6 +26,8 @@
 inline void SCIA_Init(void);
 inline void SCIA_AutobaudLock(void);
 Uint16 SCIA_GetWordData(void);
+Uint16 SCIA_GetOnlyWordData(void);
+
 
 // External functions
 extern void CopyData(void);
@@ -49,20 +51,20 @@ Uint32 SCI_Boot()
    Uint32 EntryAddr;
 
    // Asign GetWordData to the SCI-A version of the
-   // function.  GetWordData is a pointer to a function.
-   GetWordData = SCIA_GetWordData;
+   // function.  GetOnlyWordData is a pointer to a function.
+   // This version doesn't send echo back each character.
+   GetOnlyWordData = SCIA_GetOnlyWordData;
 
    SCIA_Init();
    SCIA_AutobaudLock();
 
    // If the KeyValue was invalid, abort the load
    // and return the flash entry point. 
-   if (SCIA_GetWordData() != 0x08AA) return FLASH_ENTRY_POINT;
+   if (SCIA_GetOnlyWordData() != 0x08AA) return FLASH_ENTRY_POINT;
 
    ReadReservedFn();
 
    EntryAddr = GetLongData();   
-
    CopyData();
 
    return EntryAddr;
@@ -153,27 +155,52 @@ inline void SCIA_AutobaudLock()
 
 Uint16 SCIA_GetWordData()
 {
-   Uint16 wordData;
-   Uint16 byteData;
-  
-   wordData = 0x0000;
-   byteData = 0x0000;
-   
-   // Fetch the LSB and verify back to the host
-   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { } 
-   wordData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
-   SciaRegs.SCITXBUF = wordData;
+	   Uint16 wordData;
+	   Uint16 byteData;
 
-   // Fetch the MSB and verify back to the host
-   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { } 
-   byteData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
-   SciaRegs.SCITXBUF = byteData;
-   
-   // form the wordData from the MSB:LSB
-   wordData |= (byteData << 8);
+	   wordData = 0x0000;
+	   byteData = 0x0000;
 
-   return wordData;
+	   // Fetch the LSB and verify back to the host
+	   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { }
+	   wordData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
+	   SciaRegs.SCITXBUF = wordData;
+
+	   // Fetch the MSB and verify back to the host
+	   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { }
+	   byteData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
+	   SciaRegs.SCITXBUF = byteData;
+
+	   // form the wordData from the MSB:LSB
+	   wordData |= (byteData << 8);
+
+	   return wordData;
 }
+
+Uint16 SCIA_GetOnlyWordData()
+{
+	   Uint16 wordData;
+	   Uint16 byteData;
+
+	   wordData = 0x0000;
+	   byteData = 0x0000;
+
+	   // Fetch the LSB and verify back to the host
+	   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { }
+	   wordData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
+	   //SciaRegs.SCITXBUF = wordData;
+
+	   // Fetch the MSB and verify back to the host
+	   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { }
+	   byteData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
+	   //SciaRegs.SCITXBUF = byteData;
+
+	   // form the wordData from the MSB:LSB
+	   wordData |= (byteData << 8);
+
+	   return wordData;
+}
+
 
 // EOF-------
 
