@@ -29,27 +29,32 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 #include <inttypes.h>
-
-#include "Stream.h"
+#include <Stream.h>
 
 struct ring_buffer;
 
 class HardwareSerial : public Stream
 {
 	private:
-		uint8_t lock;
 		ring_buffer *_rx_buffer;
 		ring_buffer *_tx_buffer;
-#if defined(__MSP430_HAS_EUSCI_A0__)
-		static void USCIA0_ISR (void);
-#else
-		static void USCI0RX_ISR (void);
-		static void USCI0TX_ISR (void);
-#endif		
+		uint8_t uartOffset;
+		uint16_t rxPinMode;
+		uint16_t txPinMode;
+		uint8_t rxPin;
+		uint8_t txPin;
+		uint8_t lock;
 	public:
-		HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer);
+		HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer, uint8_t uartOffset, uint16_t rxPinMode, uint16_t txPinMode, uint8_t rxPin, uint8_t txPin)
+		: _rx_buffer(rx_buffer)
+		, _tx_buffer(tx_buffer)
+		, uartOffset(uartOffset)
+		, rxPinMode(rxPinMode)
+		, txPinMode(txPinMode)
+		, rxPin(rxPin)
+		, txPin(txPin) {}
 		void begin(unsigned long);
 		void end();
 		virtual int available(void);
@@ -61,9 +66,9 @@ class HardwareSerial : public Stream
 };
 
 extern HardwareSerial Serial;
+extern HardwareSerial Serial1;
 
 extern void serialEventRun(void) __attribute__((weak));
 
-#endif // __MSP430_HAS_USCI__
-
+#endif
 #endif

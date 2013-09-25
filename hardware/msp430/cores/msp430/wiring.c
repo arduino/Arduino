@@ -112,7 +112,7 @@ void initClocks(void)
         BCSCTL3 |= LFXT1S_2; 
 #endif
 
-#ifdef __MSP430_HAS_CS__
+#if defined(__MSP430_HAS_CS__) && defined(__MSP430_HAS_FRAM_FR5XX__)
     CSCTL0 = CSKEY;                // Enable Access to CS Registers
   
     CSCTL2 &= ~SELM_7;             // Clear selected Main CLK Source
@@ -136,7 +136,112 @@ void initClocks(void)
 //    CSCTL0 = 0;                    // Disable Access to CS Registers
 #endif // __MSP430_HAS_CS__
 
+#if defined(__MSP430_HAS_CS__) && defined(__MSP430_HAS_FRAM__)
+    CSCTL0 = CSKEY;                // Enable Access to CS Registers
+  
+    CSCTL2 &= ~SELM_7;             // Clear selected Main CLK Source
+    CSCTL2 |= SELM__DCOCLK;        // Use DCO as Main Clock Source
+    CSCTL3 &= ~(DIVM_3 | DIVS_3);  // clear DIVM Bits
+#if F_CPU >= 24000000L
+    FRCTL0 = FWPW | NACCESS_2;     // add 2 waitstaite
+    CSCTL1 = DCOFSEL_6 | DCORSEL;  //Level 6 / Range 1 : 24.0MHz
+#elif F_CPU >= 16000000L
+    FRCTL0 = FWPW | NACCESS_1;     // add 1 waitstaite
+    CSCTL1 = DCOFSEL_4 | DCORSEL;  //Level 4 / Range 1 : 16.0MHz
+#elif F_CPU >= 12000000L
+    FRCTL0 = FWPW | NACCESS_1;     // add 1 waitstaite
+    CSCTL1 = DCOFSEL_6 | DCORSEL;  //Level 6 / Range 1 : 24.0MHz
+    CSCTL3 |= DIVM_1;              // Div = 2
+#elif F_CPU >= 8000000L
+    CSCTL1 = DCOFSEL_3 | DCORSEL;  //Level 3 / Range 1 : 8.0MHz
+#elif F_CPU >= 1000000L
+    CSCTL1 = DCOFSEL_3 | DCORSEL;  //Level 3 / Range 1 : 8.0MHz
+    CSCTL3 |= DIVM_3;              // Div = 8
+#else
+        #warning No Suitable Frequency found!
+#endif
+//    CSCTL0 = 0;                    // Disable Access to CS Registers
+#endif // __MSP430_HAS_CS__
+
+#if defined(__MSP430_HAS_UCS__)
+     PMMCTL0_H = PMMPW_H;             // open PMM
+	 SVSMLCTL &= ~SVSMLRRL_7;         // reset
+	 PMMCTL0_L = PMMCOREV_0;          //
+	 
+	 PMMIFG &= ~(SVSMLDLYIFG|SVMLVLRIFG|SVMLIFG);  // clear flags
+	 SVSMLCTL = (SVSMLCTL & ~SVSMLRRL_7) | SVSMLRRL_1;
+	 while ((PMMIFG & SVSMLDLYIFG) == 0); // wait till settled
+	 while ((PMMIFG & SVMLIFG) == 0); // wait for flag
+	 PMMCTL0_L = (PMMCTL0_L & ~PMMCOREV_3) | PMMCOREV_1; // set VCore for lext Speed
+	 while ((PMMIFG & SVMLVLRIFG) == 0);  // wait till level reached
+
+	 PMMIFG &= ~(SVSMLDLYIFG|SVMLVLRIFG|SVMLIFG);  // clear flags
+	 SVSMLCTL = (SVSMLCTL & ~SVSMLRRL_7) | SVSMLRRL_2;
+	 while ((PMMIFG & SVSMLDLYIFG) == 0); // wait till settled
+	 while ((PMMIFG & SVMLIFG) == 0); // wait for flag
+	 PMMCTL0_L = (PMMCTL0_L & ~PMMCOREV_3) | PMMCOREV_2; // set VCore for lext Speed
+	 while ((PMMIFG & SVMLVLRIFG) == 0);  // wait till level reached
+
+	 PMMIFG &= ~(SVSMLDLYIFG|SVMLVLRIFG|SVMLIFG);  // clear flags
+	 SVSMLCTL = (SVSMLCTL & ~SVSMLRRL_7) | SVSMLRRL_3;
+	 while ((PMMIFG & SVSMLDLYIFG) == 0); // wait till settled
+	 while ((PMMIFG & SVMLIFG) == 0); // wait for flag
+	 PMMCTL0_L = (PMMCTL0_L & ~PMMCOREV_3) | PMMCOREV_3; // set VCore for lext Speed
+	 while ((PMMIFG & SVMLVLRIFG) == 0);  // wait till level reached
+	 
+     PMMCTL0_H = 0;                   // lock PMM
+
+     UCSCTL0 = 0;                     // set lowest Frequency
+#if F_CPU >= 25000000L
+     UCSCTL1 = DCORSEL_6;             //Range 6
+     UCSCTL2 = 0x1176;                //Loop Control Setting
+	 UCSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 UCSCTL4 = SELA__REFOCLK|SELM__DCOCLK|SELS__DCOCLK;  //Select clock sources
+	 UCSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 24000000L
+     UCSCTL1 = DCORSEL_6;             //Range 6
+     UCSCTL2 = 0x116D;                //Loop Control Setting
+	 UCSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 UCSCTL4 = SELA__REFOCLK|SELM__DCOCLK|SELS__DCOCLK;  //Select clock sources
+	 UCSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 16000000L
+     UCSCTL1 = DCORSEL_6;             //Range 6
+     UCSCTL2 = 0x11E7;                //Loop Control Setting
+	 UCSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 UCSCTL4 = SELA__REFOCLK|SELM__DCOCLKDIV|SELS__DCOCLKDIV;  //Select clock sources
+	 UCSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 12000000L
+     UCSCTL1 = DCORSEL_6;             //Range 6
+     UCSCTL2 = 0x116D;                //Loop Control Setting
+	 UCSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 UCSCTL4 = SELA__REFOCLK|SELM__DCOCLKDIV|SELS__DCOCLKDIV;  //Select clock sources
+	 UCSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 8000000L
+     UCSCTL1 = DCORSEL_5;             //Range 6
+     UCSCTL2 = 0x10F3;                //Loop Control Setting
+	 UCSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 UCSCTL4 = SELA__REFOCLK|SELM__DCOCLKDIV|SELS__DCOCLKDIV;  //Select clock sources
+	 UCSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 1000000L
+     UCSCTL1 = DCORSEL_2;             //Range 6
+     UCSCTL2 = 0x101D;                //Loop Control Setting
+	 UCSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 UCSCTL4 = SELA__REFOCLK|SELM__DCOCLKDIV|SELS__DCOCLKDIV;  //Select clock sources
+	 UCSCTL7 &= ~(0x07);               //Clear Fault flags
+#else
+        #warning No Suitable Frequency found!
+#endif
+#endif // __MSP430_HAS_UCS__
+
+#if defined(LOCKLPM5)
+     // This part is required for FR59xx device to unlock the IOs
+     PMMCTL0_H = PMMPW_H;           // open PMM
+	 PM5CTL0 &= ~LOCKLPM5;          // clear lock bit for ports
+     PMMCTL0_H = 0;                 // lock PMM
+#endif
+
 }
+volatile uint32_t wdtCounter = 0;
 
 unsigned long micros()
 {

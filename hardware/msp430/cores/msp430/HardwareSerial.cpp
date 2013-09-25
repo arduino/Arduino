@@ -37,13 +37,29 @@
 #include "wiring_private.h"
 #include "usci_isr_handler.h"
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 
 #include "HardwareSerial.h"
 
-HardwareSerial *SerialPtr;
-
-
+#define UCAxCTLW0     UCA0CTLW0 
+#define UCAxCTL0      UCA0CTL0
+#define UCAxCTL1      UCA0CTL1
+#define UCAxBRW       UCA0BRW
+#define UCAxBR0       UCA0BR0
+#define UCAxBR1       UCA0BR1
+#define UCAxMCTL      UCA0MCTL
+#define UCAxMCTLW     UCA0MCTLW
+#define UCAxSTAT      UCA0STAT
+#define UCAxRXBUF     UCA0RXBUF
+#define UCAxTXBUF     UCA0TXBUF
+#define UCAxABCTL     UCA0ABCTL
+#define UCAxIRCTL     UCA0IRCTL
+#define UCAxIRTCTL    UCA0IRTCTL
+#define UCAxIRRCTL    UCA0IRRCTL
+#define UCAxICTL      UCA0ICTL
+#define UCAxIE        UCA0IE
+#define UCAxIFG       UCA0IFG
+#define UCAxIV        UCA0IV
 
 #define SERIAL_BUFFER_SIZE 16
 
@@ -56,6 +72,10 @@ struct ring_buffer
 
 ring_buffer rx_buffer  =  { { 0 }, 0, 0 };
 ring_buffer tx_buffer  =  { { 0 }, 0, 0 };
+#ifdef SERIAL1_AVAILABLE
+ring_buffer rx_buffer1  =  { { 0 }, 0, 0 };
+ring_buffer tx_buffer1  =  { { 0 }, 0, 0 };
+#endif
 
 inline void store_char(unsigned char c, ring_buffer *buffer)
 {
@@ -73,17 +93,17 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 
 void serialEvent() __attribute__((weak));
 void serialEvent() {}
+#ifdef SERIAL1_AVAILABLE
+void serialEvent1() __attribute__((weak));
+void serialEvent1() {}
+#endif
 
 void serialEventRun(void)
 {
-  if (Serial.available()) serialEvent();
-}
-// Constructors ////////////////////////////////////////////////////////////////
-
-HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
-{
-	_rx_buffer = rx_buffer;
-	_tx_buffer = tx_buffer;
+	if (Serial.available()) serialEvent();
+#ifdef SERIAL1_AVAILABLE
+	if (Serial1.available()) serialEvent1();
+#endif
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -106,15 +126,13 @@ void HardwareSerial::begin(unsigned long baud)
 
 	divider=(SMCLK<<4)/baud;
 
-	SerialPtr = this;
+	pinMode_int(rxPin, rxPinMode);
+	pinMode_int(txPin, txPinMode);
 
-	pinMode_int(UARTRXD, UARTRXD_SET_MODE);
-	pinMode_int(UARTTXD, UARTTXD_SET_MODE);	
-
-	UCA0CTL1 = UCSWRST;
-	UCA0CTL1 = UCSSEL_2;                                // SMCLK
-	UCA0CTL0 = 0;
-	UCA0ABCTL = 0;
+	*(&(UCAxCTL1) + uartOffset) = UCSWRST;
+	*(&(UCAxCTL1) + uartOffset) = UCSSEL_2;                                // SMCLK
+	*(&(UCAxCTL0) + uartOffset) = 0;
+	*(&(UCAxABCTL) + uartOffset) = 0;
 #if defined(__MSP430_HAS_EUSCI_A0__)
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
@@ -123,9 +141,9 @@ void HardwareSerial::begin(unsigned long baud)
 		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) – INT(N/16)] × 16)
 		divider>>=8;
 	}
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTLW = (oversampling ? UCOS16:0) | mod;
+	*(&(UCAxBR0) + uartOffset) = divider;
+	*(&(UCAxBR1) + uartOffset) = divider>>8;
+	*(&(UCAxMCTLW) + uartOffset)= (oversampling ? UCOS16:0) | mod;
 #else
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
@@ -134,15 +152,15 @@ void HardwareSerial::begin(unsigned long baud)
 		mod = ((divider&0xf8)+0x8)&0xf0;                // UCBRFx (bit 4-7)
 		divider>>=8;
 	}
-	UCA0BR0 = divider;
-	UCA0BR1 = divider>>8;
-	UCA0MCTL = (unsigned char)(oversampling ? UCOS16:0) | mod;
+	*(&(UCAxBR0) + uartOffset)= divider;
+	*(&(UCAxBR1) + uartOffset) = divider>>8;
+	*(&(UCAxMCTL) + uartOffset) = (unsigned char)(oversampling ? UCOS16:0) | mod;
 #endif	
-	UCA0CTL1 &= ~UCSWRST;
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE |= UCRXIE;
+	*(&(UCAxCTL1) + uartOffset) &= ~UCSWRST;
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+	*(&(UCAxIE) + uartOffset) |= UCRXIE;
 #else
-	UC0IE |= UCA0RXIE;
+	*(&(UC0IE) + uartOffset) |= UCA0RXIE;
 #endif	
 }
 
@@ -197,41 +215,55 @@ size_t HardwareSerial::write(uint8_t c)
 	_tx_buffer->buffer[_tx_buffer->head] = c;
 	_tx_buffer->head = i;
 
-#if defined(__MSP430_HAS_EUSCI_A0__)
-	UCA0IE |= UCTXIE;
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+	*(&(UCAxIE) + uartOffset) |= UCTXIE;
 #else
-	UC0IE |= UCA0TXIE;
+	*(&(UC0IE) + uartOffset) |= UCA0TXIE;
 #endif	
 
 	return 1;
 }
 
-void uart_rx_isr(void)
+void uart_rx_isr(uint8_t offset)
 {
-	unsigned char c = UCA0RXBUF;
-	store_char(c, &rx_buffer);
+#ifdef SERIAL1_AVAILABLE
+	/* Debug uart aka Serial always gets rx_buffer and aux aka Serial1 gets rx_buffer1 */
+	ring_buffer *rx_buffer_ptr = (offset == DEBUG_UART_MODULE_OFFSET) ? &rx_buffer:&rx_buffer1;
+#else
+	ring_buffer *rx_buffer_ptr = &rx_buffer;
+#endif
+	unsigned char c = *(&(UCAxRXBUF) + offset);
+	store_char(c, rx_buffer_ptr);
 }
 
-void uart_tx_isr(void)
+void uart_tx_isr(uint8_t offset)
 {
-	if (tx_buffer.head == tx_buffer.tail) {
-		// Buffer empty, so disable interrupts
-#if defined(__MSP430_HAS_EUSCI_A0__)
-		UCA0IE &= ~UCTXIE;
-		UCA0IFG |= UCTXIFG;    // Set Flag again
+#ifdef SERIAL1_AVAILABLE
+	/* Debug uart aka Serial always gets rx_buffer and aux aka Serial1 gets rx_buffer1 */
+	ring_buffer *tx_buffer_ptr = (offset == DEBUG_UART_MODULE_OFFSET) ? &tx_buffer : &tx_buffer1;
 #else
-		UC0IE &= ~UCA0TXIE;
+	ring_buffer *tx_buffer_ptr = &tx_buffer;
+#endif
+	if (tx_buffer_ptr->head == tx_buffer_ptr->tail) {
+		// Buffer empty, so disable interrupts
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+		*(&(UCAxIE) + offset) &= ~UCTXIE;
+		*(&(UCAxIFG) + offset) |= UCTXIFG;    // Set Flag again
+#else
+		*(&(UC0IE) + offset) &= ~UCA0TXIE;
 #endif	
 		return;
 	}
 
-	unsigned char c = tx_buffer.buffer[tx_buffer.tail];
-	tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
-	UCA0TXBUF = c;
+	unsigned char c = tx_buffer_ptr->buffer[tx_buffer_ptr->tail];
+	tx_buffer_ptr->tail = (tx_buffer_ptr->tail + 1) % SERIAL_BUFFER_SIZE;
+	*(&(UCAxTXBUF) + offset) = c;
 }
-
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
-HardwareSerial Serial(&rx_buffer, &tx_buffer);
+HardwareSerial Serial(&rx_buffer, &tx_buffer, DEBUG_UART_MODULE_OFFSET, DEBUG_UARTRXD_SET_MODE, DEBUG_UARTTXD_SET_MODE, DEBUG_UARTRXD, DEBUG_UARTTXD);
+#ifdef SERIAL1_AVAILABLE
+HardwareSerial Serial1(&rx_buffer1, &tx_buffer1, AUX_UART_MODULE_OFFSET, AUX_UARTRXD_SET_MODE, DEBUG_UARTTXD_SET_MODE, AUX_UARTRXD, AUX_UARTTXD);
+#endif
 
 #endif

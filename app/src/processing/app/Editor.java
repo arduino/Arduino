@@ -142,6 +142,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   FindReplace find;
 
+  Runnable doFetUpdateHandler;
   Runnable runHandler;
   Runnable presentHandler;
   Runnable stopHandler;
@@ -804,6 +805,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(serialMenu);
     menu.addSeparator();
     
+/*
     JMenu programmerMenu = new JMenu(_("Programmer"));
     base.rebuildProgrammerMenu(programmerMenu);
     menu.add(programmerMenu);
@@ -817,7 +819,15 @@ public class Editor extends JFrame implements RunnerListener {
       });
       menu.add(item);
     }
-    
+*/    
+    item = new JMenuItem(_("Update programmer"));
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleDoFetUpdate();
+      }
+    });
+    menu.add(item);
+
     menu.addMenuListener(new MenuListener() {
       public void menuCanceled(MenuEvent e) {}
       public void menuDeselected(MenuEvent e) {}
@@ -1080,6 +1090,13 @@ public class Editor extends JFrame implements RunnerListener {
         {
           //System.out.println("Adding port to serial port menu: " + commportidentifier);
           String curr_port = commportidentifier.getName();
+
+          if (Base.isMacOS()) {
+                if(curr_port.indexOf("tty.uart") == -1
+                && curr_port.indexOf("tty.usbmodem") == -1
+                && curr_port.indexOf("tty.usbserial") == -1) continue;  
+          }
+
           rbMenuItem = new JCheckBoxMenuItem(curr_port, curr_port.equals(Preferences.get("serial.port")));
           rbMenuItem.addActionListener(serialMenuListener);
           //serialGroup.add(rbMenuItem);
@@ -1531,7 +1548,10 @@ public class Editor extends JFrame implements RunnerListener {
 
   public void setHandlers(Runnable runHandler, Runnable presentHandler,
                           Runnable stopHandler,
-                          Runnable exportHandler, Runnable exportAppHandler) {
+                          Runnable exportHandler, 
+                          Runnable exportAppHandler,
+                          Runnable doFetUpdateHandler) {
+	this.doFetUpdateHandler = doFetUpdateHandler;
     this.runHandler = runHandler;
     this.presentHandler = presentHandler;
     this.stopHandler = stopHandler;
@@ -1541,6 +1561,7 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   public void resetHandlers() {
+	doFetUpdateHandler = new DefaultDoFetUpdateHandler();
     runHandler = new DefaultRunHandler();
     presentHandler = new DefaultPresentHandler();
     stopHandler = new DefaultStopHandler();
@@ -2505,7 +2526,7 @@ public class Editor extends JFrame implements RunnerListener {
         	serialMonitor.setVisible(true);
           }
         } else {
-          // error message will already be visible
+        	statusNotice(_("Upload failed."));
         }
       } catch (SerialNotFoundException e) {
         populateSerialMenu();
@@ -2639,6 +2660,46 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
+  protected void handleDoFetUpdate() {
+	    console.clear();
+	    internalCloseRunner();
+	    running = true;
+	    status.progressIndeterminate(_("Updating programmer (this may take a minute)..."));
+
+	    // do this to advance/clear the terminal window / dos prompt / etc
+	    for (int i = 0; i < 10; i++) System.out.println();
+
+	    // clear the console on each run, unless the user doesn't want to
+	    if (Preferences.getBoolean("console.auto_clear")) {
+	      console.clear();
+	    }
+
+	    // Cannot use invokeLater() here, otherwise it gets
+	    // placed on the event thread and causes a hang--bad idea all around.
+	    new Thread(doFetUpdateHandler).start();
+	  }
+
+  class DefaultDoFetUpdateHandler implements Runnable {
+	    public void run() {
+	        try {
+		          MSP430Uploader uploader = new MSP430Uploader(Editor.this);
+		          if (uploader.doFetUpdate()) {
+		            statusNotice(_("Done updating programmer."));
+		          } else {
+		            statusError(_("Error while updating programmer."));
+		            // error message will already be visible
+		          }
+		        } catch (RunnerException e) {
+		          statusError(_("Error while burning bootloader."));
+		          e.printStackTrace();
+		        } catch (Exception e) {
+		          statusError(_("Error while burning bootloader."));
+		          e.printStackTrace();
+		        }
+
+	      status.unprogress();
+	    }
+	  }
   /**
    * Handler for File &rarr; Page Setup.
    */

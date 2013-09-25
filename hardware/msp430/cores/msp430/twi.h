@@ -31,12 +31,12 @@
 
 #include <msp430.h>
 
-#if !defined (__MSP430_HAS_USI__) && !defined (__MSP430_HAS_USCI__) && !defined (__MSP430_HAS_EUSCI_B0__)
+#if !defined (__MSP430_HAS_USI__) && !defined (__MSP430_HAS_USCI__) && !defined (__MSP430_HAS_USCI_B0__) && !defined (__MSP430_HAS_EUSCI_B0__)
 #ifndef __MSP430_HAS_USI__
 #error "********** USI not available"
 #endif
 
-#if !defined (__MSP430_HAS_USCI__) && !defined (__MSP430_HAS_EUSCI_B0__)
+#if !defined (__MSP430_HAS_USCI__) && !defined (__MSP430_HAS_USCI_B0__) && !defined (__MSP430_HAS_EUSCI_B0__)
 #error "********** USCI not available"
 #endif
 #endif

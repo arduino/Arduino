@@ -38,6 +38,9 @@ import processing.app.Base;
 import processing.app.Preferences;
 import processing.app.Serial;
 import processing.app.SerialException;
+import processing.app.Editor;
+import javax.swing.JOptionPane;
+
 
 import java.io.*;
 import java.util.*;
@@ -46,15 +49,16 @@ import javax.swing.*;
 import gnu.io.*;
 
 public class MSP430Uploader extends Uploader{
-	public MSP430Uploader() {
+	private Editor editor;
+
+	public MSP430Uploader(Editor editor) {
+		this.editor = editor;
 	}
+
 	public boolean uploadUsingPreferences(String buildPath, String className, boolean usingProgrammer)
 	throws RunnerException, SerialException {
 		this.verbose = verbose;
 		Map<String, String> boardPreferences = Base.getBoardPreferences();
-		//No serial programming support (yet). 
-		//Upload using programmer (MSP430Flasher for windows and mspdebug for Mac OS X and Linux).
-		//added support for mspdebug for windows 
 
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
@@ -66,33 +70,48 @@ public class MSP430Uploader extends Uploader{
 			params.add("--force-reset");
 			if ( Base.isLinux()) {
 				params.add("prog " + buildPath + File.separator + className + ".hex");
-			}
-			else { 
+			} else { 
 				params.add("prog " + buildPath + File.separator + className + ".hex");
 			}
-			return mspdebug(params);
 		} else {
-/*			// code to access via MSP430_Flasher	
-			params.add("-n " + boardPreferences.get("build.mcu")); 
-			params.add("-w");
-			params.add(buildPath + File.separator + className + ".hex");
-			params.add("-g");
-			if(!Preferences.getBoolean("upload.verbose"))
-					params.add("-q");
-			
-			params.add("-z[VCC]");
-			return MSP430Flasher(params);
-*/			
-//			params.add(boardPreferences.get("upload.protocol"));
 			params.add("tilib");       // always use the TI Lib on Windows, best integrate on this OS
-			params.add("-d");
-			params.add("USB");
-			if(!Preferences.getBoolean("upload.verbose"))
-				params.add("-q");
+			if(!Preferences.getBoolean("upload.verbose")) params.add("-q");
 			params.add("--force-reset");
 			params.add("\"prog " + buildPath + File.separator + className + ".hex\"");
-			return mspdebug(params);
 		}
+
+		boolean ret = mspdebug(params);
+		int retry = 0;
+		if(exception == null) return ret;
+		if (ret == false && (exception.message.indexOf("update needed") != -1)) {
+			JOptionPane.showMessageDialog(editor, 
+					"Oops, the firmware of your Launchpad programmer needs an update.\n"
+					+ " You will need to update before you can upload your Sketch.\n"
+					+ " To update, select \"Update programmer\" from the \"Tools\" menu\n"
+					+ "", "Firmware update needed", JOptionPane.ERROR_MESSAGE);
+		}
+
+		return ret;
+	}
+
+	public boolean doFetUpdate()
+		  throws RunnerException, SerialException {
+
+		Collection params = new ArrayList();
+		Map<String, String> boardPreferences = Base.getBoardPreferences();
+
+		if (Base.isMacOS() || Base.isLinux()) {
+			params.add(boardPreferences.get("upload.protocol"));
+		} else {
+			params.add("tilib");       // always use the TI Lib on Windows, best integrate on this OS
+		}
+
+		params.add("--allow-fw-update");
+		params.add("\"exit\"");
+
+		boolean ret = true;
+	    ret = mspdebug(params);
+		return ret;
 	}
 
 	public boolean burnBootloader() throws RunnerException {

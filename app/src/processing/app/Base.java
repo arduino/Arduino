@@ -43,9 +43,9 @@ import static processing.app.I18n._;
  */
 public class Base {
   public static final int REVISION = 101;
-  public static final int EREVISION = 9;
+  public static final int EREVISION = 10;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0101E0009";
+  static String VERSION_NAME = "0101E0010";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
@@ -1120,7 +1120,8 @@ public class Base {
     }
   }
   
-  
+
+/*  
   public void rebuildProgrammerMenu(JMenu menu) {
     //System.out.println("rebuilding programmer menu");
     menu.removeAll();      
@@ -1147,7 +1148,7 @@ public class Base {
       }
     }
   }
-
+*/
 
   /**
    * Scan a folder recursively, and add any sketches found to the menu
@@ -1732,9 +1733,9 @@ public class Base {
           + getArch() + File.separator + "bin" + File.separator;
       }
     } else if (Base.isWindows()) {
-      String ret = toShortPath(getHardwarePath() + File.separator + "tools"
+      String ret = getHardwarePath() + File.separator + "tools"
           + File.separator + getArch() + File.separator + "bin"
-          + File.separator);
+          + File.separator;
       return ret;
     } else {
       return getHardwarePath() + File.separator + "tools" + File.separator

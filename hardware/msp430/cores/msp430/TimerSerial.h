@@ -71,7 +71,7 @@ private:
 
 };
 
-#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_EUSCI_A0__)
+#if !defined(__MSP430_HAS_USCI__) && !defined(__MSP430_HAS_USCI_A0__) && !defined(__MSP430_HAS_USCI_A1__) && !defined(__MSP430_HAS_EUSCI_A0__)
 extern TimerSerial Serial;
 #endif
 extern void serialEventRun(void) __attribute__((weak));

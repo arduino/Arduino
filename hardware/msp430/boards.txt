@@ -49,3 +49,24 @@ lpmsp430fr5739.build.variant=fraunchpad
 lpmsp430fr5739.upload.maximum_ram_size=1024
 
 ##############################################################
+
+lpmsp430f5529.name=LaunchPad w/ msp430f5529 (16MHz)
+lpmsp430f5529.upload.protocol=tilib
+lpmsp430f5529.upload.maximum_size=131072
+lpmsp430f5529.build.mcu=msp430f5529
+lpmsp430f5529.build.f_cpu=16000000L
+lpmsp430f5529.build.core=msp430
+lpmsp430f5529.build.variant=launchpad_f5529
+lpmsp430f5529.upload.maximum_ram_size=1024
+
+##############################################################
+lpmsp430f5529_25.name=LaunchPad w/ msp430f5529 (25MHz)
+lpmsp430f5529_25.upload.protocol=tilib
+lpmsp430f5529_25.upload.maximum_size=131072
+lpmsp430f5529_25.build.mcu=msp430f5529
+lpmsp430f5529_25.build.f_cpu=25000000L
+lpmsp430f5529_25.build.core=msp430
+lpmsp430f5529_25.build.variant=launchpad_f5529
+lpmsp430f5529_25.upload.maximum_ram_size=1024
+
+##############################################################

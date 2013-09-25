@@ -105,6 +105,7 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
   protected boolean executeUploadCommand(Collection commandDownloader) 
     throws RunnerException
   {
+	exception = null;
     firstErrorFound = false;  // haven't found any errors yet
     secondErrorFound = false;
     notFoundError = false;
@@ -122,7 +123,20 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
         }
         System.out.println();
       }
-      Process process = Runtime.getRuntime().exec(commandArray);
+
+      Process process;
+
+      if (Base.isMacOS()) {
+        String envp[] = { "DYLD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/mspdebug" };
+        process = Runtime.getRuntime().exec(commandArray, envp);
+      } else if(Base.isLinux()) {
+        String envp[] = { "LD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/bin" };
+        process = Runtime.getRuntime().exec(commandArray, envp);
+
+      } else {
+        process = Runtime.getRuntime().exec(commandArray);
+      }
+
       new MessageSiphon(process.getInputStream(), this);
       new MessageSiphon(process.getErrorStream(), this);
 
@@ -145,14 +159,7 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
         return false;
     } catch (Exception e) {
       String msg = e.getMessage();
-      if ((msg != null) && (msg.indexOf("uisp: not found") != -1) && (msg.indexOf("avrdude: not found") != -1)) {
-        //System.err.println("uisp is missing");
-        //JOptionPane.showMessageDialog(editor.base,
-        //                              "Could not find the compiler.\n" +
-        //                              "uisp is missing from your PATH,\n" +
-        //                              "see readme.txt for help.",
-        //                              "Compiler error",
-        //                              JOptionPane.ERROR_MESSAGE);
+      if ((msg != null) && ((msg.indexOf("update needed") != -1) || (msg.indexOf("update failed") != -1))) {
         return false;
       } else {
         e.printStackTrace();
@@ -213,6 +220,14 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
       exception = new RunnerException(_("Wrong microcontroller found.  Did you select the right board from the Tools > Board menu?"));
       return;
     }
+    if (s.indexOf("--allow-fw-update") != -1) {
+    	exception = new RunnerException(_("update needed"));
+    }
+
+    if (s.indexOf("Update failed") != -1) {
+    	exception = new RunnerException(_("update failed"));
+    }
+
   }
 
 
