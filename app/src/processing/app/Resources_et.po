@@ -840,7 +840,7 @@ msgstr "Vali pilt või muu andmefail visandi juurde kopeerimiseks"
 #: Sketch.java:1047
 #, java-format
 msgid "Replace the existing version of {0}?"
-msgstr "Kas vaherada {0} olemasolev versioon?"
+msgstr "Kas vahetada {0} olemasolev versioon?"
 
 #: Sketch.java:1069 Sketch.java:1092
 msgid "Error adding file"
@@ -1565,7 +1565,7 @@ msgstr "  (vajab Arduino taaskäivitamist)"
 
 #: Preferences.java:367 Preferences.java:357
 msgid "Show verbose output during: "
-msgstr "Näita detailsemat väljndit:"
+msgstr "Näita detailsemat väljundit:"
 
 #: Preferences.java:369 Preferences.java:359
 msgid "compilation "
