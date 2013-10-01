@@ -1,3 +1,6 @@
+
+* Added attachInterruptToPin command (Rob Tillaart)
+
 ARDUINO 1.5.7 BETA
 
 [core]

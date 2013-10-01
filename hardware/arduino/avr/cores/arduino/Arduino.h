@@ -244,4 +244,22 @@ long map(long, long, long, long, long);
 
 #include "pins_arduino.h"
 
+static inline boolean attachInterruptToPin(uint8_t pin, void (*userFunc)(void), int mode)
+{
+  int irq = digitalPinToInterrupt(pin);
+  if (irq == NOT_AN_INTERRUPT)
+    return false;
+  attachInterrupt(irq, userFunc, mode);
+  return true;
+}
+
+static inline boolean detachInterruptFromPin(uint8_t pin)
+{
+  int irq = digitalPinToInterrupt(pin);
+  if (irq == NOT_AN_INTERRUPT)
+    return false;
+  detachInterrupt(irq);
+  return true;
+}
+
 #endif

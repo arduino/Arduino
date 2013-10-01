@@ -29,6 +29,10 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode);
 
 void detachInterrupt(uint32_t pin);
 
+boolean attachInterruptToPin(uint8_t pin, void (*userFunc)(void), int mode);
+
+boolean detachInterruptFromPin(uint8_t pin);
+
 #ifdef __cplusplus
 }
 #endif
