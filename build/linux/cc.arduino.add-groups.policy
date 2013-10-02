@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+"-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+"http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+  
+  <vendor>Arduino</vendor>
+  <vendor_url>http://arduino.cc/</vendor_url>
+  
+  <action id="cc.arduino.add-groups.policy">
+    <description>Add the user to groups required to access USB and serial ports.</description>
+    <message>Authentication is required to add the current user to the required groups.</message>
+    <icon_name>arduino</icon_name>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_admin</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/libexec/arduino-add-groups</annotate>
+  </action>
+  
+</policyconfig>

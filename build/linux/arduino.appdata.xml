@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">arduino.desktop</id>
+  <licence>CC BY-SA</licence>
+  <description>
+    <p>
+      Arduino is an open-source electronics prototyping platform based
+      on flexible, easy-to-use hardware and software.  It's intended for
+      artists, designers, hobbyists, and anyone interested in creating
+      interactive objects or environments.
+    </p>
+    <p>
+      Included is an integrated development environment that can be used
+      to develop and upload code to compatible micro-controllers.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default" width="490" height="588">http://labs.arduino.cc/uploads/ADK/GettingStarted/201203_screenshot_arduino_1-0.png</screenshot>
+    <screenshot width="410" height="410">http://arduino.cc/en/uploads/Main/arduino_due_in_hand.jpg</screenshot>
+  </screenshots>
+  <url type="homepage">http://arduino.cc/</url>
+  <updatecontact>arduino.appdata.xml@mavit.org.uk</updatecontact>
+</application>

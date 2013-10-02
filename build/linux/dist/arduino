@@ -1,5 +1,18 @@
 #!/bin/sh
  
+if [[ `id -u` -ne 0 ]]; then
+    for group in dialout lock; do
+	if ! groups $USER | grep -q " : .*\b$group\b"; then
+	    missing_groups="$missing_groups\n$group"
+	fi
+    done
+
+    if [[ -n $missing_groups ]] && zenity --title=Arduino --window-icon=/usr/share/icons/hicolor/16x16/apps/arduino.png --question --text "You need to be a member of the following groups to upload code to an Arduino microcontroller over the USB or serial ports:\n$missing_groups" --ok-label='Add' --cancel-label='Ignore'; then
+	pkexec /usr/libexec/arduino-add-groups \
+	    && zenity --title=Arduino --window-icon=/usr/share/icons/hicolor/16x16/apps/arduino.png --info --text "You must log out and log in again before any changes will take effect."
+    fi
+fi
+
 APPDIR="$(dirname -- "$(readlink -f -- "${0}")" )"
 
 cd "$APPDIR"
