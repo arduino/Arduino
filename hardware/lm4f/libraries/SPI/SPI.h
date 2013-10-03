@@ -12,6 +12,7 @@
 #define _SPI_H_INCLUDED
 
 #include <stdio.h>
+#include <Energia.h>
 
 #define SPI_CLOCK_DIV2 2
 #define SPI_CLOCK_DIV4 4
