@@ -675,13 +675,13 @@ public class Editor extends JFrame implements RunnerListener {
     final boolean autoShowSerialMonitor = Preferences.getBoolean("serial.auto_show_monitor_window");
     item = new JCheckBoxMenuItem("Auto Show Serial Monitor", autoShowSerialMonitor);
     item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        // Make sure the choice in Preferences matches the checkbox state
-        JCheckBoxMenuItem checkboxMenuItem = (JCheckBoxMenuItem)e.getSource();
-        Preferences.setBoolean("serial.auto_show_monitor_window", checkboxMenuItem.isSelected());
-        // The pref needs to be saved so that other parts of the app will stay in sync
-        Preferences.save();
-      }
+     public void actionPerformed(ActionEvent e) {
+       // Make sure the choice in Preferences matches the checkbox state
+       JCheckBoxMenuItem checkboxMenuItem = (JCheckBoxMenuItem)e.getSource();
+       Preferences.setBoolean("serial.auto_show_monitor_window", checkboxMenuItem.isSelected());
+       // The pref needs to be saved so that other parts of the app will stay in sync
+       Preferences.save();
+     }
     });
     menu.add(item);
     
@@ -959,7 +959,6 @@ public class Editor extends JFrame implements RunnerListener {
     //System.out.println(item.getLabel());
     Preferences.set("serial.port", name);
     serialMonitor.closeSerialPort();
-
     serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
     //System.out.println("set to " + get("serial.port"));
   }
@@ -1911,6 +1910,10 @@ public class Editor extends JFrame implements RunnerListener {
   class DefaultRunHandler implements Runnable {
     public void run() {
       try {
+        // Ensure the serial monitor window is closed until after we successfully 
+        // upload a sketch
+        serialMonitor.setVisible(false);
+
         sketch.prepare();
         sketch.build(false);
         statusNotice(_("Done compiling."));
@@ -2388,20 +2391,15 @@ public class Editor extends JFrame implements RunnerListener {
   // DAM: in Arduino, this is upload
   class DefaultExportHandler implements Runnable {
     public void run() {
+    
+      // Hide the serial monitor window until we are certain the sketch
+      // uploaded successfully
+      serialMonitor.setVisible(false);
 
       boolean uploadSuccessful = false;
       try {
         serialMonitor.closeSerialPort();
 
-        // If "auto show" is disabled make sure we hide the serial monitor window.
-        // This causes the IDE to act the way it always has in the the past.
-        if (Preferences.getBoolean("serial.auto_show_monitor_window")) {
-          serialMonitor.setVisible(true);
-        }
-        else {
-          serialMonitor.setVisible(false);
-        }
-            
         uploading = true;
           
         boolean success = sketch.exportApplet(false);
