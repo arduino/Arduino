@@ -167,6 +167,48 @@ leonardo.build.variant=leonardo
 
 ##############################################################
 
+esplora.name=Arduino Esplora
+esplora.upload.protocol=avr109
+esplora.upload.maximum_size=28672
+esplora.upload.speed=57600
+esplora.upload.disable_flushing=true
+esplora.bootloader.low_fuses=0xff
+esplora.bootloader.high_fuses=0xd8
+esplora.bootloader.extended_fuses=0xcb
+esplora.bootloader.path=caterina
+esplora.bootloader.file=Caterina-Esplora.hex
+esplora.bootloader.unlock_bits=0x3F
+esplora.bootloader.lock_bits=0x2F
+esplora.build.mcu=atmega32u4
+esplora.build.f_cpu=16000000L
+esplora.build.vid=0x2341
+esplora.build.pid=0x803C
+esplora.build.core=arduino
+esplora.build.variant=leonardo
+
+##############################################################
+
+micro.name=Arduino Micro
+micro.upload.protocol=avr109
+micro.upload.maximum_size=28672
+micro.upload.speed=57600
+micro.upload.disable_flushing=true
+micro.bootloader.low_fuses=0xff
+micro.bootloader.high_fuses=0xd8
+micro.bootloader.extended_fuses=0xcb
+micro.bootloader.path=caterina
+micro.bootloader.file=Caterina-Micro.hex
+micro.bootloader.unlock_bits=0x3F
+micro.bootloader.lock_bits=0x2F
+micro.build.mcu=atmega32u4
+micro.build.f_cpu=16000000L
+micro.build.vid=0x2341
+micro.build.pid=0x8037
+micro.build.core=arduino
+micro.build.variant=micro
+
+##############################################################
+
 mini328.name=Arduino Mini w/ ATmega328
 
 mini328.upload.protocol=arduino
@@ -292,6 +334,27 @@ bt.build.mcu=atmega168
 bt.build.f_cpu=16000000L
 bt.build.core=arduino
 bt.build.variant=eightanaloginputs
+
+##############################################################
+
+LilyPadUSB.name=LilyPad Arduino USB
+LilyPadUSB.upload.protocol=avr109
+LilyPadUSB.upload.maximum_size=28672
+LilyPadUSB.upload.speed=57600
+LilyPadUSB.upload.disable_flushing=true
+LilyPadUSB.bootloader.low_fuses=0xff
+LilyPadUSB.bootloader.high_fuses=0xd8
+LilyPadUSB.bootloader.extended_fuses=0xce
+LilyPadUSB.bootloader.path=caterina-LilyPadUSB
+LilyPadUSB.bootloader.file=Caterina-LilyPadUSB.hex
+LilyPadUSB.bootloader.unlock_bits=0x3F
+LilyPadUSB.bootloader.lock_bits=0x2F
+LilyPadUSB.build.mcu=atmega32u4
+LilyPadUSB.build.f_cpu=8000000L
+LilyPadUSB.build.vid=0x1B4F
+LilyPadUSB.build.pid=0x9208
+LilyPadUSB.build.core=arduino
+LilyPadUSB.build.variant=leonardo
 
 ##############################################################
 
@@ -451,7 +514,7 @@ atmega8.upload.speed=19200
 atmega8.bootloader.low_fuses=0xdf
 atmega8.bootloader.high_fuses=0xca
 atmega8.bootloader.path=atmega8
-atmega8.bootloader.file=ATmegaBOOT.hex
+atmega8.bootloader.file=ATmegaBOOT-prod-firmware-2009-11-07.hex
 atmega8.bootloader.unlock_bits=0x3F
 atmega8.bootloader.lock_bits=0x0F
 
@@ -459,3 +522,46 @@ atmega8.build.mcu=atmega8
 atmega8.build.f_cpu=16000000L
 atmega8.build.core=arduino
 atmega8.build.variant=standard
+
+##############################################################
+
+robotControl.name=Arduino Robot Control
+robotControl.upload.protocol=avr109
+robotControl.upload.maximum_size=28672
+robotControl.upload.speed=57600
+robotControl.upload.disable_flushing=true
+robotControl.bootloader.low_fuses=0xff
+robotControl.bootloader.high_fuses=0xd8
+robotControl.bootloader.extended_fuses=0xcb
+robotControl.bootloader.path=caterina-Arduino_Robot
+robotControl.bootloader.file=Caterina-Robot-Control.hex
+robotControl.bootloader.unlock_bits=0x3F
+robotControl.bootloader.lock_bits=0x2F
+robotControl.build.mcu=atmega32u4
+robotControl.build.f_cpu=16000000L
+robotControl.build.vid=0x2341
+robotControl.build.pid=0x8038
+robotControl.build.core=robot
+robotControl.build.variant=robot_control
+
+##############################################################
+
+robotMotor.name=Arduino Robot Motor
+robotMotor.upload.protocol=avr109
+robotMotor.upload.maximum_size=28672
+robotMotor.upload.speed=57600
+robotMotor.upload.disable_flushing=true
+robotMotor.bootloader.low_fuses=0xff
+robotMotor.bootloader.high_fuses=0xd8
+robotMotor.bootloader.extended_fuses=0xcb
+robotMotor.bootloader.path=caterina-Arduino_Robot
+robotMotor.bootloader.file=Caterina-Robot-Motor.hex
+robotMotor.bootloader.unlock_bits=0x3F
+robotMotor.bootloader.lock_bits=0x2F
+robotMotor.build.mcu=atmega32u4
+robotMotor.build.f_cpu=16000000L
+robotMotor.build.vid=0x2341
+robotMotor.build.pid=0x8039
+robotMotor.build.core=robot
+robotMotor.build.variant=robot_motor
+

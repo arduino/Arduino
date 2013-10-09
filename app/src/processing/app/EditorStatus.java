@@ -27,6 +27,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import java.awt.datatransfer.*;
+import static processing.app.I18n._;
+
 
 /**
  * Panel just below the editing area that contains status messages.
@@ -68,6 +71,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   JButton okButton;
   JTextField editField;
   JProgressBar progressBar;
+  JButton copyErrorButton;
 
   //Thread promptThread;
   int response;
@@ -108,6 +112,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   public void notice(String message) {
     mode = NOTICE;
     this.message = message;
+    copyErrorButton.setVisible(false);
     //update();
     repaint();
   }
@@ -120,6 +125,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   public void error(String message) {
     mode = ERR;
     this.message = message;
+    copyErrorButton.setVisible(true);
     repaint();
   }
 
@@ -177,6 +183,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
     this.message = message;
     progressBar.setIndeterminate(false);
     progressBar.setVisible(true);
+    copyErrorButton.setVisible(false);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     repaint();
   }
@@ -189,6 +196,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
     progressBar.setIndeterminate(true);
     progressBar.setValue(50);
     progressBar.setVisible(true);
+    copyErrorButton.setVisible(false);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     repaint();
   }
@@ -207,6 +215,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
     if (Preferences.getBoolean("editor.beep.compile")) {
       Toolkit.getDefaultToolkit().beep();
     }
+    if (progressBar == null) return;
     progressBar.setVisible(false);
     progressBar.setValue(0);
     setCursor(null);
@@ -216,6 +225,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   
   public void progressUpdate(int value)
   {
+    if (progressBar == null) return;
     progressBar.setValue(value);
     repaint();
   }
@@ -290,8 +300,8 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
 
   protected void setup() {
     if (okButton == null) {
-      cancelButton = new JButton(Preferences.PROMPT_CANCEL);
-      okButton = new JButton(Preferences.PROMPT_OK);
+      cancelButton = new JButton(I18n.PROMPT_CANCEL);
+      okButton = new JButton(I18n.PROMPT_OK);
 
       cancelButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -438,6 +448,32 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
       add(progressBar);
       progressBar.setVisible(false);
       
+      copyErrorButton = new JButton(
+         "<html>" + _("Copy error") + "<br>" + _("to clipboard") + "</html>");
+      Font font = copyErrorButton.getFont();
+      font = new Font(font.getName(), font.getStyle(), (int) (font.getSize()*0.7));
+      copyErrorButton.setFont(font);
+      copyErrorButton.setHorizontalAlignment(JLabel.CENTER);
+      add(copyErrorButton);
+      copyErrorButton.setVisible(false);
+      copyErrorButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          String message="";
+          if ((Preferences.getBoolean("build.verbose")) == false) {
+            message = "  " + _("This report would have more information with") + "\n";
+            message += "  \"" + _("Show verbose output during compilation") + "\"\n";
+            message += "  " + _("enabled in File > Preferences.") + "\n";
+          }
+          message += _("Arduino: ") + Base.VERSION_NAME + " (" + System.getProperty("os.name") + "), ";
+          message += _("Board: ") + "\"" + Base.getBoardPreferences().get("name") + "\"\n";
+          message += editor.console.consoleTextPane.getText().trim();
+          Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+          StringSelection data = new StringSelection(message);
+          clipboard.setContents(data, null);
+          Clipboard unixclipboard = Toolkit.getDefaultToolkit().getSystemSelection();
+          if (unixclipboard != null) unixclipboard.setContents(data, null);
+        }
+      });
     }
   }
 
@@ -470,6 +506,10 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
     editField.setBounds(yesLeft - Preferences.BUTTON_WIDTH, editTop,
                         editWidth, editHeight);
     progressBar.setBounds(noLeft, editTop, editWidth, editHeight);
+
+    Dimension copyErrorButtonSize = copyErrorButton.getPreferredSize();
+    copyErrorButton.setLocation(sizeW - copyErrorButtonSize.width - 5, top);
+    copyErrorButton.setSize(copyErrorButtonSize.width, Preferences.BUTTON_HEIGHT);
   }
 
 

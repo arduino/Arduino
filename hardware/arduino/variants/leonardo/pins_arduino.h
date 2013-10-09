@@ -27,6 +27,72 @@
 
 #include <avr/pgmspace.h>
 
+// Workaround for wrong definitions in "iom32u4.h".
+// This should be fixed in the AVR toolchain.
+#undef UHCON
+#undef UHINT
+#undef UHIEN
+#undef UHADDR
+#undef UHFNUM
+#undef UHFNUML
+#undef UHFNUMH
+#undef UHFLEN
+#undef UPINRQX
+#undef UPINTX
+#undef UPNUM
+#undef UPRST
+#undef UPCONX
+#undef UPCFG0X
+#undef UPCFG1X
+#undef UPSTAX
+#undef UPCFG2X
+#undef UPIENX
+#undef UPDATX
+#undef TCCR2A
+#undef WGM20
+#undef WGM21
+#undef COM2B0
+#undef COM2B1
+#undef COM2A0
+#undef COM2A1
+#undef TCCR2B
+#undef CS20
+#undef CS21
+#undef CS22
+#undef WGM22
+#undef FOC2B
+#undef FOC2A
+#undef TCNT2
+#undef TCNT2_0
+#undef TCNT2_1
+#undef TCNT2_2
+#undef TCNT2_3
+#undef TCNT2_4
+#undef TCNT2_5
+#undef TCNT2_6
+#undef TCNT2_7
+#undef OCR2A
+#undef OCR2_0
+#undef OCR2_1
+#undef OCR2_2
+#undef OCR2_3
+#undef OCR2_4
+#undef OCR2_5
+#undef OCR2_6
+#undef OCR2_7
+#undef OCR2B
+#undef OCR2_0
+#undef OCR2_1
+#undef OCR2_2
+#undef OCR2_3
+#undef OCR2_4
+#undef OCR2_5
+#undef OCR2_6
+#undef OCR2_7
+
+#define NUM_DIGITAL_PINS  30
+#define NUM_ANALOG_INPUTS 12
+
 #define TX_RX_LED_INIT	DDRD |= (1<<5), DDRB |= (1<<0)
 #define TXLED0			PORTD |= (1<<5)
 #define TXLED1			PORTD &= ~(1<<5)
@@ -141,7 +207,7 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINF,
 };
 
-const uint8_t PROGMEM digital_pin_to_port_PGM[30] = {
+const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PD, // D0 - PD2
 	PD,	// D1 - PD3
 	PD, // D2 - PD1
@@ -178,7 +244,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[30] = {
 	PD, // D29 / D12 - A11 - PD6
 };
 
-const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[30] = {
+const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(2), // D0 - PD2
 	_BV(3),	// D1 - PD3
 	_BV(1), // D2 - PD1
@@ -215,7 +281,7 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[30] = {
 	_BV(6), // D29 / D12 - A11 - PD6
 };
 
-const uint8_t PROGMEM digital_pin_to_timer_PGM[16] = {
+const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER,	
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
@@ -235,9 +301,24 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[16] = {
 	
 	NOT_ON_TIMER,	
 	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
+	NOT_ON_TIMER,
 };
 
-const uint8_t PROGMEM analog_pin_to_channel_PGM[12] = {
+const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 	7,	// A0				PF7					ADC7
 	6,	// A1				PF6					ADC6	
 	5,	// A2				PF5					ADC5	

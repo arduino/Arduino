@@ -38,7 +38,7 @@ import java.util.zip.*;
 
 public class Compiler implements MessageConsumer {
   static final String BUGS_URL =
-    _("http://code.google.com/p/arduino/issues/list");
+    _("http://github.com/arduino/Arduino/issues");
   static final String SUPER_BADNESS =
     I18n.format(_("Compiler error, please submit this code to {0}"), BUGS_URL);
 
@@ -644,14 +644,18 @@ public class Compiler implements MessageConsumer {
    * not the header files in its sub-folders, as those should be included from
    * within the header files at the top-level).
    */
-  static public String[] headerListFromIncludePath(String path) {
+  static public String[] headerListFromIncludePath(String path) throws IOException {
     FilenameFilter onlyHFiles = new FilenameFilter() {
       public boolean accept(File dir, String name) {
         return name.endsWith(".h");
       }
     };
-    
-    return (new File(path)).list(onlyHFiles);
+
+    String[] list = (new File(path)).list(onlyHFiles);
+    if (list == null) {
+      throw new IOException();
+    }
+    return list;
   }
   
   static public ArrayList<File> findFilesInPath(String path, String extension,
