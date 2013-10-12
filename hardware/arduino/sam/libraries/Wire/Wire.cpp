@@ -137,6 +137,33 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 	return readed;
 }
 
+// Added function to provide repeated starts
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t reg_address, uint8_t reg_address_length) {
+	if (quantity > BUFFER_LENGTH)
+		quantity = BUFFER_LENGTH;
+
+	// perform blocking read into buffer
+	int readed = 0;
+    
+	    TWI_StartRead(twi, address, reg_address, reg_address_length);  // request register and read
+	do {
+		// Stop condition must be set during the reception of last byte
+		if (readed + 1 == quantity)
+			TWI_SendSTOPCondition( twi);
+
+		TWI_WaitByteReceived(twi, RECV_TIMEOUT);
+		rxBuffer[readed++] = TWI_ReadByte(twi);
+	} while (readed < quantity);
+	TWI_WaitTransferComplete(twi, RECV_TIMEOUT);
+
+	// set rx buffer iterator vars
+	rxBufferIndex = 0;
+	rxBufferLength = readed;
+
+	return readed;
+}
+
+
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity) {
 	return requestFrom((uint8_t) address, (uint8_t) quantity, (uint8_t) true);
 }
