@@ -152,11 +152,12 @@ void digitalWrite(uint8_t pin, uint8_t val)
 	uint8_t oldSREG = SREG;
 	cli();
 
-	if (val == LOW) {
+	if (val == LOW)
 		*out &= ~bit;
-	} else {
+    else if (val == TOGGLE)
+		*out ^= bit;
+    else
 		*out |= bit;
-	}
 
 	SREG = oldSREG;
 }
