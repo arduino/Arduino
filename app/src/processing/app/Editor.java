@@ -74,6 +74,13 @@ public class Editor extends JFrame implements RunnerListener {
    */
   boolean untitled;
 
+  /**
+   * true if ports are to be scanned automatically
+   */
+  static boolean autoscanSerial = false;
+  static JCheckBoxMenuItem JCMIautoscanSerial;
+  static JMenuItem JMIrescanSerial;
+
   PageFormat pageFormat;
   PrinterJob printerJob;
 
@@ -709,7 +716,9 @@ public class Editor extends JFrame implements RunnerListener {
       public void menuDeselected(MenuEvent e) {}
       public void menuSelected(MenuEvent e) {
         //System.out.println("Tools menu selected.");
-        populateSerialMenu();
+        if(autoscanSerial | (serialMenu == null) ) {
+          populateSerialMenu();
+        }
       }
     });
 
@@ -902,8 +911,21 @@ public class Editor extends JFrame implements RunnerListener {
     //public SerialMenuListener() { }
 
     public void actionPerformed(ActionEvent e) {
-      selectSerialPort(((JCheckBoxMenuItem)e.getSource()).getText());
-      base.onBoardOrPortChange();
+      System.out.print("Serial Menu Action\n");
+      if(e.getSource() == JCMIautoscanSerial) {
+        //setAutoscan(!autoscanSerial);
+    	System.out.print("toggle\n");
+        toggleAutoscan();
+      }
+      else if(e.getSource() == JMIrescanSerial) {
+    	System.out.print("rescan\n");
+    	populateSerialMenu();
+      }
+      else {
+    	System.out.print("port\n");
+    	selectSerialPort(((JMenuItem)e.getSource()).getText());
+        base.onBoardOrPortChange();
+      }
     }
 
     /*
@@ -917,7 +939,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
     */
   }
-  
+
+  protected void setAutoscan(boolean enabled) {
+    autoscanSerial = enabled;
+    JCMIautoscanSerial.setState(enabled);
+    JMIrescanSerial.setEnabled(!enabled);
+  }
+
+  protected void toggleAutoscan() {
+	System.out.print(_("toggling Autoscan..."));
+    autoscanSerial = !autoscanSerial;
+    JCMIautoscanSerial.setState(autoscanSerial);
+    JMIrescanSerial.setEnabled(!autoscanSerial);
+  }
+
   protected void selectSerialPort(String name) {
     if(serialMenu == null) {
       System.out.println(_("serialMenu is null"));
@@ -928,7 +963,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     JCheckBoxMenuItem selection = null;
-    for (int i = 0; i < serialMenu.getItemCount(); i++) {
+    for (int i = 0; i < serialMenu.getItemCount()-3; i++) {
       JCheckBoxMenuItem item = ((JCheckBoxMenuItem)serialMenu.getItem(i));
       if (item == null) {
         System.out.println(_("name is null"));
@@ -988,10 +1023,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
 	
     if (serialMenu.getItemCount() == 0) {
-      serialMenu.setEnabled(false);
+      //serialMenu.setEnabled(false);
+      rbMenuItem = new JMenuItem("(No serial ports detected)");
+      rbMenuItem.setEnabled(false);
+      serialMenu.add(rbMenuItem);
     }
 
-    //serialMenu.addSeparator();
+    serialMenu.addSeparator();
+    JCMIautoscanSerial = new JCheckBoxMenuItem("Auto-Scan", autoscanSerial);
+    JCMIautoscanSerial.addActionListener(serialMenuListener);
+    serialMenu.add(JCMIautoscanSerial);
+    JMIrescanSerial = new JMenuItem("Rescan Ports");
+    JMIrescanSerial.setEnabled(!autoscanSerial);
+    JMIrescanSerial.addActionListener(serialMenuListener);
+    serialMenu.add(JMIrescanSerial);
     //serialMenu.add(item);
   }
 
