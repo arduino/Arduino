@@ -111,12 +111,6 @@ unsigned char* UINT16_TO_STREAM_f (unsigned char *p, unsigned short u16)
 
 	*(p)++ = (unsigned char)(u16);
 	*(p)++ = (unsigned char)((u16) >> 8);
-	
-	/*
-	p[0]=((unsigned char *)(&u16))[0];
-	p[1]=((unsigned char *)(&u16))[1];
-	p+=2;
-	*/
 	return p;
 }
 
@@ -137,7 +131,7 @@ unsigned char* UINT16_TO_STREAM_f (unsigned char *p, unsigned short u16)
 unsigned short STREAM_TO_UINT16_f(char* p, unsigned short offset)
 {
         return (unsigned short)((unsigned short)((unsigned short)
-								(*(p + offset + 1)&0xFF) << 8) + (unsigned short)(*(p + offset)&0xFF));
+								(*(p + offset + 1)) << 8) + (unsigned short)(*(p + offset)));
 }
 
 //*****************************************************************************

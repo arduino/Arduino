@@ -102,7 +102,9 @@ extern "C" {
 
 #define  IOCTL_SOCKET_EVENTMASK
 // 0809 natalie comment #105
+#ifndef ENOBUFS
 #define ENOBUFS                 55          // No buffer space available
+#endif
 
 #define __FD_SETSIZE            32
 

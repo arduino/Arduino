@@ -144,10 +144,9 @@ void waitForConnection(void)
 
     sockaddr clientaddr;  
     socklen_t addrlen;
-    volatile int bytesRecvd = 0;
+    //volatile int bytesRecvd = 0;
     volatile long bytesSent = 0;
     int clientDescriptor = -1;
-    char clientIP[4];
     
     fd_set readsds;
     long maxFD;
@@ -184,10 +183,6 @@ void waitForConnection(void)
                 // setCC3000MachineState(CC3000_CLIENT_CONNECTED);
                 // terminalPrint("Client ");
                 // Read IP and print
-                clientIP[0] = clientaddr.sa_data[2];
-                clientIP[1] = clientaddr.sa_data[3];
-                clientIP[2] = clientaddr.sa_data[4];
-                clientIP[3] = clientaddr.sa_data[5];
 
                 // printIpAddr(clientIP);
                 // terminalPrint(" Connected\r\n");
@@ -202,9 +197,7 @@ void waitForConnection(void)
                         if(ret > 0)
                         {  
                           memset(requestBuffer, 0, 8);
-                          bytesRecvd = recv(clientDescriptor, requestBuffer, sizeof(requestBuffer), 0);
-                          int temp = bytesRecvd;
-
+                          //bytesRecvd = recv(clientDescriptor, requestBuffer, sizeof(requestBuffer), 0);
                         }
                         
                         

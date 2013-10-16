@@ -531,9 +531,10 @@ SpiPauseSpi(void)
 void 
 SpiResumeSpi(void)
 {
+	tSLInformation.WlanInterruptEnable();
 	//digitalWrite(P8_1,HIGH);
-	attachInterrupt(IRQpin, IntSpiGPIOHandler, FALLING);
-	if (! digitalRead(IRQpin))IntSpiGPIOHandler();
+	//attachInterrupt(IRQpin, IntSpiGPIOHandler, FALLING);
+	//if (! digitalRead(IRQpin))IntSpiGPIOHandler();
 	//SPI_IRQ_PORT |= SPI_IRQ_PIN;
 }
 

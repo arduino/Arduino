@@ -1,6 +1,5 @@
-
-#include "SimplelinkWifi.h"
-#include "wifi.h"
+#include "utility/SimplelinkWifi.h"
+#include "WiFi.h"
 #define socket_overflow 2
 
 WiFiServer::WiFiServer(uint16_t _port)

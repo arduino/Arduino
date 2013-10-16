@@ -50,7 +50,6 @@
 #include "Energia.h"
 
 
-
 //Enable this flag if and only if you must comply with BSD socket 
 //close() function
 #ifdef _API_USE_BSD_CLOSE
@@ -491,7 +490,6 @@ gethostbyname(char * hostname, unsigned short usNameLen,
 	SimpleLinkWaitEvent(HCI_EVNT_BSD_GETHOSTBYNAME, &ret);
 	
 	errno = ret.retVal;
-	
 	(*((long*)out_ip_addr)) = ret.outputAddress;
 	
 	return (errno);

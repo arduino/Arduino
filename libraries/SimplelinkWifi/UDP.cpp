@@ -1,5 +1,5 @@
-#include "SimplelinkWifi.h"
-#include "wifi.h"
+#include "utility/SimplelinkWifi.h"
+#include "WiFi.h"
 
 #define NO_SOCKET_AVAIL 255
 

@@ -511,7 +511,7 @@ hci_unsol_event_handler(char *event_hdr)
 		case HCI_EVNT_DATA_UNSOL_FREE_BUFF:
 			{
 				hci_event_unsol_flowcontrol_handler(event_hdr);
-				
+
 				NumberOfReleasedPackets = tSLInformation.NumberOfReleasedPackets;
 				NumberOfSentPackets = tSLInformation.NumberOfSentPackets;
 								
@@ -711,8 +711,7 @@ void set_socket_active_status(long Sd, long Status)
 //!					 number of free buffer in the SL device.
 //
 //*****************************************************************************
-long
-hci_event_unsol_flowcontrol_handler(char *pEvent)
+long __attribute__((optimize("O0"))) hci_event_unsol_flowcontrol_handler(char *pEvent)
 {
 	
 	long temp, value;
