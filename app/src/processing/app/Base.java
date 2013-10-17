@@ -48,6 +48,7 @@ import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
+import processing.app.tools.MenuScroller;
 import processing.app.tools.ZipDeflater;
 import processing.core.*;
 import static processing.app.I18n._;
@@ -581,11 +582,11 @@ public class Base {
 
 
   protected int[] nextEditorLocation() {
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
     int defaultWidth = Preferences.getInteger("editor.window.width.default");
     int defaultHeight = Preferences.getInteger("editor.window.height.default");
 
     if (activeEditor == null) {
+      Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
       // If no current active editor, use default placement
       return new int[] {
           (screen.width - defaultWidth) / 2,
@@ -594,13 +595,15 @@ public class Base {
       };
 
     } else {
+      Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+
       // With a currently active editor, open the new window
       // using the same dimensions, but offset slightly.
       synchronized (editors) {
         final int OVER = 50;
         // In release 0160, don't
         //location = activeEditor.getPlacement();
-        Editor lastOpened = editors.get(editors.size() - 1);
+        Editor lastOpened = activeEditor;
         int[] location = lastOpened.getPlacement();
         // Just in case the bounds for that window are bad
         location[0] += OVER;
@@ -1100,15 +1103,15 @@ public class Base {
     return libraries.filterLibrariesInSubfolder(getSketchbookFolder());
   }
 
-  public void rebuildImportMenu(JMenu importMenu, final Editor editor) {
+  public void rebuildImportMenu(JMenu importMenu) {
     importMenu.removeAll();
 
     JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        Base.this.handleAddLibrary(editor);
+        Base.this.handleAddLibrary();
         Base.this.onBoardOrPortChange();
-        Base.this.rebuildImportMenu(Editor.importMenu, editor);
+        Base.this.rebuildImportMenu(Editor.importMenu);
         Base.this.rebuildExamplesMenu(Editor.examplesMenu);
       }
     });
@@ -1370,7 +1373,7 @@ public class Base {
 
               onBoardOrPortChange();
               Sketch.buildSettingChanged();
-              rebuildImportMenu(Editor.importMenu, editor);
+              rebuildImportMenu(Editor.importMenu);
               rebuildExamplesMenu(Editor.examplesMenu);
             }
           };
@@ -1486,7 +1489,7 @@ public class Base {
 
     onBoardOrPortChange();
     Sketch.buildSettingChanged();
-    rebuildImportMenu(Editor.importMenu, editor);
+    rebuildImportMenu(Editor.importMenu);
     rebuildExamplesMenu(Editor.examplesMenu);
   }
 
@@ -1523,35 +1526,39 @@ public class Base {
    * should replace the sketch in the current window, or false when the
    * sketch should open in a new window.
    */
-  protected boolean addSketches(JMenu menu, File folder,
-                                final boolean replaceExisting) throws IOException {
+  protected boolean addSketches(JMenu menu, File folder, final boolean replaceExisting) throws IOException {
     if (folder == null)
       return false;
 
-    // skip .DS_Store files, etc (this shouldn't actually be necessary)
     if (!folder.isDirectory()) return false;
 
-    String[] list = folder.list();
+    File[] files = folder.listFiles();
     // If a bad folder or unreadable or whatever, this will come back null
-    if (list == null) return false;
+    if (files == null) return false;
 
-    // Alphabetize list, since it's not always alpha order
-    Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
+    // Alphabetize files, since it's not always alpha order
+    Arrays.sort(files, new Comparator<File>() {
+      @Override
+      public int compare(File file, File file2) {
+        return file.getName().compareToIgnoreCase(file2.getName());
+      }
+    });
 
     boolean ifound = false;
 
-    for (String name : list) {
-      if ((name.charAt(0) == '.') ||
-          name.equals("CVS")) continue;
+    for (File subfolder : files) {
+      if (FileUtils.isSCCSOrHiddenFile(subfolder)) {
+        continue;
+      }
 
-      File subfolder = new File(folder, name);
       if (!subfolder.isDirectory()) continue;
 
-      if (addSketchesSubmenu(menu, name, subfolder, replaceExisting))
+      if (addSketchesSubmenu(menu, subfolder.getName(), subfolder, replaceExisting)) {
         ifound = true;
+      }
     }
 
-    return ifound;  // actually ignored, but..
+    return ifound;
   }
 
   private boolean addSketchesSubmenu(JMenu menu, Library lib,
@@ -1626,8 +1633,10 @@ public class Base {
     // not a sketch folder, but maybe a subfolder containing sketches
     JMenu submenu = new JMenu(name);
     boolean found = addSketches(submenu, folder, replaceExisting);
-    if (found)
+    if (found) {
       menu.add(submenu);
+      MenuScroller.setScrollerFor(submenu);
+    }
     return found;
   }
 
@@ -2844,7 +2853,7 @@ public class Base {
     }
   }
 
-  public void handleAddLibrary(Editor editor) {
+  public void handleAddLibrary() {
     JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
     fileChooser.setDialogTitle(_("Select a zip file or a folder containing the library you'd like to add"));
     fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -2853,7 +2862,7 @@ public class Base {
     Dimension preferredSize = fileChooser.getPreferredSize();
     fileChooser.setPreferredSize(new Dimension(preferredSize.width + 200, preferredSize.height + 200));
 
-    int returnVal = fileChooser.showOpenDialog(editor);
+    int returnVal = fileChooser.showOpenDialog(activeEditor);
 
     if (returnVal != JFileChooser.APPROVE_OPTION) {
       return;
@@ -2875,7 +2884,7 @@ public class Base {
           }
           sourceFile = foldersInTmpFolder[0];
         } catch (IOException e) {
-          editor.statusError(e);
+          activeEditor.statusError(e);
           return;
         }
       }
@@ -2888,23 +2897,23 @@ public class Base {
             + "Library names must contain only basic letters and numbers.\n"
             + "(ASCII only and no spaces, and it cannot start with a number)"),
                                   libName);
-        editor.statusError(mess);
+        activeEditor.statusError(mess);
         return;
       }
 
       // copy folder
       File destinationFolder = new File(getSketchbookLibrariesFolder(), sourceFile.getName());
       if (!destinationFolder.mkdir()) {
-        editor.statusError(I18n.format(_("A library named {0} already exists"), sourceFile.getName()));
+        activeEditor.statusError(I18n.format(_("A library named {0} already exists"), sourceFile.getName()));
         return;
       }
       try {
         FileUtils.copy(sourceFile, destinationFolder);
       } catch (IOException e) {
-        editor.statusError(e);
+        activeEditor.statusError(e);
         return;
       }
-      editor.statusNotice(_("Library added to your libraries. Check \"Import library\" menu"));
+      activeEditor.statusNotice(_("Library added to your libraries. Check \"Import library\" menu"));
     } finally {
       // delete zip created temp folder, if exists
       FileUtils.recursiveDelete(tmpFolder);

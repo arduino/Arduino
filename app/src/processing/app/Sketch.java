@@ -23,6 +23,7 @@
 
 package processing.app;
 
+import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.UploaderAndMonitorFactory;
 
 import cc.arduino.packages.Uploader;
@@ -1667,7 +1668,14 @@ public class Sketch {
     TargetPlatform target = Base.getTargetPlatform();
     String board = Preferences.get("board");
 
-    Uploader uploader = new UploaderAndMonitorFactory().newUploader(target.getBoards().get(board), Preferences.get("serial.port"));
+    BoardPort boardPort = Base.getDiscoveryManager().find(Preferences.get("serial.port"));
+
+    if (boardPort == null) {
+      editor.statusError(I18n.format("Board at {0} is not available", Preferences.get("serial.port")));
+      return false;
+    }
+
+    Uploader uploader = new UploaderAndMonitorFactory().newUploader(target.getBoards().get(board), boardPort);
 
     boolean success = false;
     do {

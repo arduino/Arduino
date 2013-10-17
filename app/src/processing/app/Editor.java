@@ -209,11 +209,6 @@ public class Editor extends JFrame implements RunnerListener {
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
 
-    if (serialMonitor == null) {
-      serialMonitor = new UploaderAndMonitorFactory().newMonitor(Preferences.get("serial.port"), base);
-      serialMonitor.setIconImage(getIconImage());
-    }
-
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
@@ -651,7 +646,7 @@ public class Editor extends JFrame implements RunnerListener {
     if (importMenu == null) {
       importMenu = new JMenu(_("Import Library..."));
       MenuScroller.setScrollerFor(importMenu);
-      base.rebuildImportMenu(importMenu, this);
+      base.rebuildImportMenu(importMenu);
     }
     sketchMenu.add(importMenu);
 
@@ -706,13 +701,14 @@ public class Editor extends JFrame implements RunnerListener {
       boardsMenus = new LinkedList<JMenu>();
 
       JMenu boardsMenu = new JMenu(_("Board"));
+      MenuScroller.setScrollerFor(boardsMenu);
       Editor.boardsMenus.add(boardsMenu);
       toolsMenu.add(boardsMenu);
 
       base.rebuildBoardsMenu(toolsMenu, this);
       //Debug: rebuild imports
       importMenu.removeAll();
-      base.rebuildImportMenu(importMenu, this);
+      base.rebuildImportMenu(importMenu);
     }
 
     if (serialMenu == null)
@@ -907,7 +903,8 @@ public class Editor extends JFrame implements RunnerListener {
   protected JMenu addInternalTools(JMenu menu) {
     JMenuItem item;
 
-    item = createToolMenuItem("processing.app.tools.AutoFormat");
+    item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
+    item.setName("menuToolsAutoFormat");
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     item.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
     menu.add(item);
@@ -971,13 +968,14 @@ public class Editor extends JFrame implements RunnerListener {
       Preferences.set("serial.port.file", name.substring(5));
     else
       Preferences.set("serial.port.file", name);
-    try {
-      serialMonitor.close();
-    } catch (Exception e) {
-      // ignore
+    if (serialMonitor != null) {
+      try {
+        serialMonitor.close();
+        serialMonitor.setVisible(false);
+      } catch (Exception e) {
+        // ignore
+      }
     }
-    serialMonitor.setVisible(false);
-    serialMonitor = new UploaderAndMonitorFactory().newMonitor(Preferences.get("serial.port"), base);
 
     onBoardOrPortChange();
 
@@ -2389,8 +2387,10 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
 
       try {
-        serialMonitor.close();
-        serialMonitor.setVisible(false);
+        if (serialMonitor != null) {
+          serialMonitor.close();
+          serialMonitor.setVisible(false);
+        }
 
         uploading = true;
 
@@ -2429,8 +2429,10 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
 
       try {
-        serialMonitor.close();
-        serialMonitor.setVisible(false);
+        if (serialMonitor != null) {
+          serialMonitor.close();
+          serialMonitor.setVisible(false);
+        }
 
         uploading = true;
 
@@ -2501,6 +2503,25 @@ public class Editor extends JFrame implements RunnerListener {
 
   public void handleSerial() {
     if (uploading) return;
+
+    if (serialMonitor != null) {
+      try {
+        serialMonitor.close();
+        serialMonitor.setVisible(false);
+      } catch (Exception e) {
+        // noop
+      }
+    }
+
+    BoardPort port = Base.getDiscoveryManager().find(Preferences.get("serial.port"));
+
+    if (port == null) {
+      statusError(I18n.format("Board at {0} is not available", Preferences.get("serial.port")));
+      return;
+    }
+
+    serialMonitor = new UploaderAndMonitorFactory().newMonitor(port, base);
+    serialMonitor.setIconImage(getIconImage());
 
     boolean success = false;
     do {

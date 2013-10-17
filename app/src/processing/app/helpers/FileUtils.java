@@ -1,14 +1,14 @@
 package processing.app.helpers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 public class FileUtils {
 
+  private static final List<String> SOURCE_CONTROL_FOLDERS = Arrays.asList("CVS", "RCS", ".git", ".svn", ".hg", ".bzr");
   private static final Pattern BACKSLASH = Pattern.compile("\\\\");
 
   /**
@@ -162,5 +162,30 @@ public class FileUtils {
 
   public static String getLinuxPathFrom(File file) {
     return BACKSLASH.matcher(file.getAbsolutePath()).replaceAll("/");
+  }
+
+  public static boolean isSCCSOrHiddenFile(File file) {
+    return file.isHidden() || file.getName().charAt(0) == '.' || (file.isDirectory() && SOURCE_CONTROL_FOLDERS.contains(file.getName()));
+  }
+
+  public static String readFileToString(File file) throws IOException {
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+      StringBuilder sb = new StringBuilder();
+      String line;
+      while ((line = reader.readLine()) != null) {
+        sb.append(line).append("\n");
+      }
+      return sb.toString();
+    } finally {
+      if (reader != null) {
+        try {
+          reader.close();
+        } catch (IOException e) {
+          // noop
+        }
+      }
+    }
   }
 }
