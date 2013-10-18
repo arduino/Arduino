@@ -40,6 +40,11 @@
 #define I2C_STOP_READING B00011000
 #define I2C_READ_WRITE_MODE_MASK B00011000
 #define I2C_10BIT_ADDRESS_MODE_MASK B00100000
+// mask bits for SHIFT pin mode byte
+#define   SHIFT_MSB_FIRST       0x40 // shift MSB in/out first
+#define   SHIFT_INPUT_PUP       0x20 // add a pullup to shift inputs
+#define   SHIFT_LENGTH          0x1F // up to 4 bytes and 3 bits for bits
+
 
 #define MAX_QUERIES 8
 #define MINIMUM_SAMPLING_INTERVAL 10
@@ -216,6 +221,13 @@ void setPinModeCallback(byte pin, int mode)
       pinConfig[pin] = OUTPUT;
     }
     break;
+  case SHIFT:
+    if (IS_PIN_DIGITAL(pin)) {
+      digitalWrite(PIN_TO_DIGITAL(pin), LOW); // disable PWM
+      pinMode(PIN_TO_DIGITAL(pin), OUTPUT);
+      pinConfig[pin] = SHIFT;
+    }
+    break;
   case PWM:
     if (IS_PIN_PWM(pin)) {
       pinMode(PIN_TO_PWM(pin), OUTPUT);
@@ -327,9 +339,59 @@ void sysexCallback(byte command, byte argc, byte *argv)
   byte slaveAddress;
   byte slaveRegister;
   byte data;
-  unsigned int delayTime; 
+  unsigned int delayTime;
+  byte clkPin;
+  byte dataPin;
   
   switch(command) {
+  case SHIFT_DATA:
+    dataPin = argv[0];
+    clkPin = argv[1];
+    mode = argv[2];
+    if ((pinConfig[dataPin] == SHIFT) && (pinConfig[clkPin] == SHIFT)) {
+      if (argc == 3) {
+        // read operation - set up read input pin, clocking output pin
+        pinMode(PIN_TO_DIGITAL(dataPin), INPUT);
+        if (mode & SHIFT_INPUT_PUP)
+          digitalWrite(PIN_TO_DIGITAL(dataPin), HIGH); // enable pull-up
+        pinMode(PIN_TO_DIGITAL(clkPin), OUTPUT);
+        digitalWrite(PIN_TO_DIGITAL(clkPin), LOW); // init to low
+         // get number of bytes to read - no bit counting support, yet
+        byte length = (mode & SHIFT_LENGTH) >> 3;
+        if (!length) length = 4;
+        // send out value read
+        Serial.write(START_SYSEX);
+        Serial.write(SHIFT_DATA);
+        Serial.write(dataPin); // mark data, so can handle asynchronously        
+        for (byte i = 1; i <= length; i++) {
+          data = shiftIn(dataPin, clkPin,
+            (mode & SHIFT_MSB_FIRST) ? ~LSBFIRST : LSBFIRST);
+          Serial.write(data & 0x7F);
+          Serial.write((data >> 7) & 1);
+        }
+        Serial.write(END_SYSEX);
+      }
+      else if ((argc > 3)  && (argc & 1)) {
+        // write operation - clock and data both outputs
+        pinMode(PIN_TO_DIGITAL(dataPin), OUTPUT);
+        digitalWrite(PIN_TO_DIGITAL(dataPin), LOW);
+        pinMode(PIN_TO_DIGITAL(clkPin), OUTPUT);
+        digitalWrite(PIN_TO_DIGITAL(clkPin), LOW);
+        for (byte i = 3; i < argc; i +=2) {
+          data = argv[i] | (argv[i + 1] << 7);
+          shiftOut(dataPin, clkPin,
+            ((mode & SHIFT_MSB_FIRST) ? ~LSBFIRST : LSBFIRST), data);
+        }
+      }
+      else {
+//        Firmata.sendString("Improper shift length parameter");        
+      }
+    }
+    else {
+//      Firmata.sendString("Improper pin mode for shifting");
+    }
+    break;
+    
   case I2C_REQUEST:
     mode = argv[1] & I2C_READ_WRITE_MODE_MASK;
     if (argv[1] & I2C_10BIT_ADDRESS_MODE_MASK) {
