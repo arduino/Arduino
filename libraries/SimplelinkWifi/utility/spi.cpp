@@ -46,7 +46,6 @@
 
 #include "evnt_handler.h"
 #include "board.h"
-#include <msp430.h>
 
 
 #define READ                    3
@@ -200,9 +199,7 @@ int init_spi(void)
 	DEASSERT_CS();
 	SPI.setBitOrder(MSBFIRST);
 	SPI.setDataMode(SPI_MODE1);
-	SPI.setClockDivider(SPI_CLOCK_DIV8);
 
-	
 	return(ESUCCESS);
 	
 }
@@ -226,12 +223,12 @@ SpiFirstWrite(unsigned char *ucBuf, unsigned short usLength)
 	ASSERT_CS();
 	
 	// Assuming we are running on 24 MHz ~50 micro delay is 1200 cycles;
-	__delay_cycles(1200);
+	delayMicroseconds(50);
 	
 	// SPI writes first 4 bytes of data
 	SpiWriteDataSynchronous(ucBuf, 4);
 	
-	__delay_cycles(1200);
+	delayMicroseconds(50);
 	
 	SpiWriteDataSynchronous(ucBuf + 4, usLength - 4);
 	
@@ -330,6 +327,7 @@ SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 		// check for a missing interrupt between the CS assertion and enabling back the interrupts
 		if (tSLInformation.ReadWlanInterruptPin() == 0)
 		{
+		
             SpiWriteDataSynchronous(sSpiInformation.pTxPacket, sSpiInformation.usTxPacketLength);
 			sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
 			DEASSERT_CS();
@@ -360,19 +358,12 @@ SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 void
 SpiWriteDataSynchronous(unsigned char *data, unsigned short size)
 {
-//if(data[SPI_HEADER_SIZE+5]=='\n')digitalWrite(P8_1,LOW);
-//digitalWrite(P8_1,LOW);
-
 	while (size)
-	{   	
-
+	{
 		SPI.transfer(*data);
 		size --;
 		data++;
 	}
-	
-
-	
 }
 
 //*****************************************************************************
@@ -590,7 +581,6 @@ SpiTriggerRxProcessing(void)
 
 void IntSpiGPIOHandler(void)
 {
-
 	if (sSpiInformation.ulSpiState == eSPI_STATE_POWERUP)
 	{
 		//This means IRQ line was low call a callback of HCI Layer to inform 

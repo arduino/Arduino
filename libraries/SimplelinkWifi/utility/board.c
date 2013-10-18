@@ -33,7 +33,6 @@
 *
 *****************************************************************************/
 #include "Energia.h"
-#include <msp430.h>
 #include "wlan.h" 
 #include "evnt_handler.h"    // callback function declaration
 #include "nvmem.h"
@@ -67,13 +66,13 @@ void pio_init()
 	pinMode(ENpin, OUTPUT);
 	digitalWrite(ENpin, LOW);
 
-	pinMode(IRQpin, INPUT);
+	pinMode(IRQpin, INPUT_PULLUP);
 
 	// Configure the SPI CS
 	pinMode(CSpin, OUTPUT);
 	digitalWrite(CSpin, HIGH);
 
-	__delay_cycles(12000000);
+	delay(500);
 }
 //*****************************************************************************
 //
@@ -108,7 +107,6 @@ void WlanInterruptEnable()
 {
 	attachInterrupt(IRQpin, IntSpiGPIOHandler, FALLING);
 	if (!digitalRead(IRQpin)) {
-		P2IFG &= ~BIT0;
 		IntSpiGPIOHandler();
 	}
 }
