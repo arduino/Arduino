@@ -28,7 +28,6 @@ int WiFiClient::available()
 	fd_set readsds, errorsds;
 	FD_ZERO(&readsds);
 	FD_ZERO(&errorsds);
-
 	FD_SET(clientSocket, &readsds);
 	FD_SET(clientSocket, &errorsds);
 
@@ -43,7 +42,6 @@ int WiFiClient::available()
 		ret = select(clientSocket+1, &readsds, NULL, &errorsds, &timeout);
 		if(!FD_ISSET(clientSocket, &readsds)) return 0;
 		rx_buf_fill = recv(((long)clientSocket)&0xFF, rx_buf, 16, 0);//RX_BUF_SIZE
-		__delay_cycles(200);
 
 		if(rx_buf_fill <= 0) {
 			rx_buf_pos = 0;
@@ -128,10 +126,7 @@ int WiFiClient::connect(IPAddress ip, uint16_t port) {
 
 	if ((clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) >=0)
 	{
-		__delay_cycles(100);
-
 		if (sl_connect(clientSocket, (sockaddr *)&clientSocketAddr, addrlen) >=0) {
-			__delay_cycles(100);
 			WiFi.countSocket(1);
 			return 1;
 		}
@@ -144,7 +139,6 @@ int WiFiClient::connect(IPAddress ip, uint16_t port) {
 size_t WiFiClient::write(uint8_t b)
 {
 	send(((long)clientSocket)&0xFF, &b, 1, 0);
-	__delay_cycles(1200); //add this delay for sending time finish
 	return 1;
 }
 
@@ -165,7 +159,6 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size)
 			i = send(((long)clientSocket)&0xFF, buf+i, TX_BUF_SIZE, 0);
 			//i+=TX_BUF_SIZE;
 		}
-	__delay_cycles(1200); //add this delay for sending time finish
 	}while( i < strlen);
 
 	return strlen;

@@ -1,4 +1,3 @@
-#include <msp430.h>
 #include "wlan.h" 
 #include "evnt_handler.h"    // callback function declaration
 #include "nvmem.h"

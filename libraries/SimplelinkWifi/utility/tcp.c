@@ -79,10 +79,7 @@ void initServer(void)
     {
         serverError(SERV_ERR_SOCKET);
         wlan_stop();
-        while(1)
-        {
-            __nop();	//__no_operation();
-        }
+        while(1);
     }
 
     // Open port
@@ -172,7 +169,7 @@ void waitForConnection(void)
               	mdnsAdvertiser(1,DevServname,strlen(DevServname));
 				SendmDNSAdvertisment = 0;
               }
-			  __delay_cycles(6000000);
+			  //__delay_cycles(6000000);
             }
             
 
@@ -202,8 +199,8 @@ void waitForConnection(void)
                         
                         
 
-                        __nop();	//__no_operation();
-                        __delay_cycles(10000);
+                        //__nop();	//__no_operation();
+                        //__delay_cycles(10000);
                         
                         ret = select(maxFD, NULL, &readsds, NULL, &timeout);
                         if(ret >0)
@@ -253,7 +250,7 @@ void waitForConnection(void)
                         }
                           
                     // }
-                __delay_cycles(1000);
+                //__delay_cycles(1000);
             }
             else if(clientDescriptor == SOCKET_INACTIVE_ERR)
             {

@@ -58,7 +58,6 @@ WiFiServer::WiFiServer(uint16_t _port)
 {
 
 	send(((long)clientDescriptor)&0xFF, &b, 1, 0);
-	__delay_cycles(1200); //add this delay for sending time finish
     return 1;
 }
  

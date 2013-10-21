@@ -125,7 +125,7 @@ int WiFiUDP::endPacket()
 
 
 	sendto( (long)udpSocket2 &0xFF, &packetBuffer, sizeof(packetBuffer), 0, &udpSocketAddr2, sizeof(sockaddr));
-	__delay_cycles(1200); //add this delay for sending time finish
+	//__delay_cycles(1200); //add this delay for sending time finish
 	return 0;
 }
 void WiFiUDP::stop() {

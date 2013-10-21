@@ -60,7 +60,7 @@ int WiFiClass::begin(char* ssid)
 
 	while (ulCC3000Connected  == 0)
 	{
-		__delay_cycles(6000000);
+		delay(100);
 	}
 
 	return status;
@@ -82,7 +82,7 @@ int WiFiClass::begin(char* ssid, const char* pass)
 
 	while (ulCC3000Connected  == 0)
 	{
-		__delay_cycles(6000000);
+		delay(100);
 	}
 
 	return status;
@@ -104,7 +104,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, unsigned char *key)
 	
 	while (ulCC3000Connected  == 0)
 	{
-		__delay_cycles(6000000);
+		delay(100);
 	}
 
 	return status;
@@ -127,7 +127,7 @@ int WiFiClass::begin()
 	int i=0;
 	while (i<5)
 	{
-		__delay_cycles(6000000);
+		delay(100);
 		i++;
 	}
 
@@ -214,7 +214,7 @@ int WiFiClass::startSmartConfig()
 	//Wait until CC3000 is disconnected
 	while (ulCC3000Connected == 1)
 	{
-		__delay_cycles(1000);
+		//__delay_cycles(1000);
 	}
 	
 	// Trigger the Smart Config process
@@ -230,7 +230,7 @@ int WiFiClass::startSmartConfig()
 	while (ulSmartConfigFinished == 0)
 	{
 		
-		__delay_cycles(6000000);
+		//__delay_cycles(6000000);
 		
 		
 	}
@@ -257,7 +257,7 @@ int WiFiClass::startSmartConfig()
 	// reset the CC3000
 	wlan_stop();
 	
-	__delay_cycles(6000000);
+	//__delay_cycles(6000000);
 
 	wlan_start(0);
 	
