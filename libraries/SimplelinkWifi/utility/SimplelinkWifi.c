@@ -57,11 +57,9 @@ unsigned char pucCC3000_Rx_Buffer[CC3000_APP_BUFFER_SIZE + CC3000_RX_BUFFER_OVER
 //!		      device and operates a LED1 to have an on-board indication
 //
 //*****************************************************************************
-
+#include <Energia.h>
 void CC3000_UsynchCallback(long lEventType, char * data, unsigned char length)
 {
-  
-  
 	if (lEventType == HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE)
 	{
 		ulSmartConfigFinished = 1;

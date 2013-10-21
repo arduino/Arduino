@@ -32,7 +32,7 @@ class WiFiClass
 	int hostByName(const char* aHostname, IPAddress& aResult);
 	char* SSID();
 	uint8_t* macAddress(uint8_t* mac);
-	//int startSmartConfig();
+	int startSmartConfig();
 	bool countSocket(bool add_sock);
 	friend class TCPclient;
 	friend class TCPserver;

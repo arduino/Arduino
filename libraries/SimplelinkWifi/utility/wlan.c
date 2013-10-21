@@ -47,7 +47,7 @@
 #include "nvmem.h"
 #include "security.h"
 #include "evnt_handler.h"
-
+#include "Energia.h"
 
 volatile sSimplLinkInformation tSLInformation;
 
@@ -280,7 +280,6 @@ wlan_start(unsigned short usPatchesAvailableAtHost)
 	
 	// ASIC 1273 chip enable: toggle WLAN EN line
 	tSLInformation.WriteWlanPin( WLAN_ENABLE );
-	
 	if (ulSpiIRQState)
 	{
 		// wait till the IRQ line goes low
