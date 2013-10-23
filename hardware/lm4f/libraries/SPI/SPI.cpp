@@ -20,7 +20,6 @@
 #define SSIBASE g_ulSSIBase[SSIModule]
 #define NOT_ACTIVE 0xA
 
-uint8_t SPIClass::slaveSelect = PA_5;
 uint8_t SPIClass::SSIModule = NOT_ACTIVE;
 
 static const unsigned long g_ulSSIBase[4] =
@@ -83,7 +82,7 @@ SPIClass::SPIClass(uint8_t module)
 	SSIModule = module;
 }
   
-void SPIClass::begin(uint8_t ssPin) {
+void SPIClass::begin() {
 
 	unsigned long initialData = 0;
 
@@ -107,9 +106,6 @@ void SPIClass::begin(uint8_t ssPin) {
 	     1     1   SSI_FRF_MOTO_MODE_3
 	*/
 
-	slaveSelect = ssPin;
-	pinMode(slaveSelect, OUTPUT);
-
 	/*
 	 * Default to
 	 * System Clock, SPI_MODE_0, MASTER,
@@ -125,17 +121,8 @@ void SPIClass::begin(uint8_t ssPin) {
 
 }
 
-void SPIClass::begin() {
-	//default to MSP430 launchpad ssPin
-	begin(PA_5);
-}
-
-void SPIClass::end(uint8_t ssPin) {
-	ROM_SSIDisable(SSIBASE);
-}
-
 void SPIClass::end() {
-	end(slaveSelect);
+	ROM_SSIDisable(SSIBASE);
 }
 
 void SPIClass::setBitOrder(uint8_t ssPin, uint8_t bitOrder)
@@ -162,20 +149,13 @@ void SPIClass::setClockDivider(uint8_t divider){
 
 }
 
-uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
+uint8_t SPIClass::transfer(uint8_t data) {
 
 	unsigned long rxData;
-
-	digitalWrite(ssPin, LOW);
 
 	ROM_SSIDataPut(SSIBASE, data);
 
 	while(ROM_SSIBusy(SSIBASE));
-
-	if(transferMode == SPI_LAST)
-		digitalWrite(ssPin, HIGH);
-	else
-		digitalWrite(ssPin, LOW);
 
 	ROM_SSIDataGet(SSIBASE, &rxData);
 
@@ -183,21 +163,9 @@ uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode) {
 
 }
 
-uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data) {
-
-  return transfer(ssPin, data, SPI_LAST);
-
-}
-
-uint8_t SPIClass::transfer(uint8_t data) {
-
-  return transfer(slaveSelect, data, SPI_LAST);
-
-}
-
 void SPIClass::setModule(uint8_t module) {
 	SSIModule = module;
-	begin(slaveSelect);
+	begin();
 }
 
 SPIClass SPI;
