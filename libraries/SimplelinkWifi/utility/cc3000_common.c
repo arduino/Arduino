@@ -130,8 +130,7 @@ unsigned char* UINT16_TO_STREAM_f (unsigned char *p, unsigned short u16)
 
 unsigned short STREAM_TO_UINT16_f(char* p, unsigned short offset)
 {
-        return (unsigned short)((unsigned short)((unsigned short)
-								(*(p + offset + 1)) << 8) + (unsigned short)(*(p + offset)));
+	return (((*(p + offset + 1)) << 8) & 0xFF00 | (*(p + offset)) & 0xFF);
 }
 
 //*****************************************************************************

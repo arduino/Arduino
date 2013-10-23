@@ -20,12 +20,14 @@ class WiFiClass
 	void setENpin(uint8_t pin);
 	void setIRQpin(uint8_t pin);
 	int begin();
+	int begin(int patchesAvailableAtHost);
 	int begin(char* ssid);
 	int begin(char* ssid, const char* pass);
 	int begin(char* ssid, uint8_t key_idx, unsigned char* key );
 	int disconnect(void);
 	uint8_t status();
 	static unsigned char* firmwareVersion();
+	int updateFirmware();
 	IPAddress localIP();
 	IPAddress subnetMask();
 	IPAddress gatewayIP();

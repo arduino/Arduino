@@ -51,7 +51,7 @@
 #include "socket.h"
 #include "netapp.h"
 #include "interface.h"
-
+#include <Energia.h>
  
 
 //*****************************************************************************
@@ -497,12 +497,12 @@ long
 hci_unsol_event_handler(char *event_hdr)
 {
 	char * data = NULL;
-	long event_type;
+	unsigned short event_type;
 	unsigned long NumberOfReleasedPackets;
 	unsigned long NumberOfSentPackets;
-	
+
 	STREAM_TO_UINT16(event_hdr, HCI_EVENT_OPCODE_OFFSET,event_type);
-	
+
 	if (event_type & HCI_EVNT_UNSOL_BASE)
 	{
 		switch(event_type)
