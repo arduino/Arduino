@@ -264,7 +264,8 @@ int WiFiClass::updateFirmware() {
 	wlan_stop();
 	/* Give it a second to stop */
 	delay(1000);
-	/* Start indicating that there is a patch available */
+	/* Start and indicate that there is a patch available */
+	pio_init();
 	wlan_start(1);
 	
 	return_status = 1;
