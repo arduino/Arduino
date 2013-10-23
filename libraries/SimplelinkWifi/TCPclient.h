@@ -1,3 +1,5 @@
+#ifndef tcpclient_h
+#define tcpclient_h
 #include "IPAddress.h"
 #include "Print.h"
 #include "Client.h"
@@ -30,3 +32,4 @@ class WiFiClient : public Client
 	
 	using Print::write;
 };
+#endif

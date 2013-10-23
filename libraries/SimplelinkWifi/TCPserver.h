@@ -1,5 +1,5 @@
-#ifndef TCPSERVER_h
-#define TCPSERVER_h
+#ifndef tcpserver_h
+#define tcpserver_h
 #include "utility/SimplelinkWifi.h"
 
 class WiFiServer

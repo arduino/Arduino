@@ -1,5 +1,5 @@
-#ifndef WIFI_h
-#define WIFI_h
+#ifndef wifi_h
+#define wifi_h
 #include "utility/SimplelinkWifi.h"
 #include "IPAddress.h"
 #include "TCPclient.h"
