@@ -81,6 +81,7 @@ void InitEPwm()
    SysCtrlRegs.PCLKCR1.bit.EPWM1ENCLK =1;
    SysCtrlRegs.PCLKCR1.bit.EPWM2ENCLK =1;
    SysCtrlRegs.PCLKCR1.bit.EPWM3ENCLK =1;
+   SysCtrlRegs.PCLKCR1.bit.EPWM4ENCLK =1;
    SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 0;
 
    // Setup TBCLK
@@ -160,6 +161,32 @@ void InitEPwm()
 
    EPwm3Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM3B on Zero
    EPwm3Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM3B on Zero
+
+   // Setup TBCLK
+   EPwm4Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm4Regs.TBPRD = EPWM3_TIMER_TBPRD;       // Set timer period
+   EPwm4Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm4Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm4Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm4Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm4Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm4Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm4Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm4Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm4Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+  // Set Compare values
+   EPwm4Regs.CMPA.all = 0; // Set compare A value
+   EPwm4Regs.CMPB = 0;           // Set Compare B value
+
+   // Set Actions
+   EPwm4Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM3A on event B, up count
+   EPwm4Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM3A on event B, up count
+
+   EPwm4Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM3B on Zero
+   EPwm4Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM3B on Zero
 
    SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 1;
    EDIS;
@@ -267,24 +294,25 @@ void analogWrite(uint8_t pin, int val)
 {
     pinMode(pin, OUTPUT); // pin as output
 
- 	if (val == 0)
-	{
-		digitalWrite(pin, LOW); // set pin to LOW when duty cycle is 0
-                                        // digitalWrite will take care of invalid pins
-	}
-	else if (val == analog_res)
-	{
-		digitalWrite(pin, HIGH); // set pin HIGH when duty cycle is 255
+    if (val == 0)
+    {
+        digitalWrite(pin, LOW); // set pin to LOW when duty cycle is 0
+                        // digitalWrite will take care of invalid pins
+    }
+    else if (val == analog_res)
+    {
+        digitalWrite(pin, HIGH); // set pin HIGH when duty cycle is 255
                                          // digitalWrite will take care of invalid pins
-	}
-	else
-	{
+    }
+    else
+    {
 
-	    uint8_t bit = digitalPinToBitMask(pin); // get pin bit
-	    uint8_t port = digitalPinToPort(pin);   // get pin port
-	    volatile uint8_t *sel;
+        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
+        uint8_t port = digitalPinToPort(pin);   // get pin port
+        volatile uint8_t *sel;
                 
-        if (port == NOT_A_PORT) return; // pin on timer?
+        if (port == NOT_A_PORT) 
+            return; // pin on timer?
                
 //	        sel = portSelRegister(port); // get the port function select register address
 		*sel |= bit;                 // set bit in pin function select register  
@@ -322,6 +350,16 @@ void analogWrite(uint8_t pin, int val)
                 			EPwm3Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
                 			break;
 
+			case PWM4A:                              // EPwm4A
+                            GpioCtrlRegs.GPAMUX1.bit.GPIO6 = 1;  //Enable PWM output on this pin
+                            EPwm4Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+ 			case PWM4B:                              // EPwm4B
+                			GpioCtrlRegs.GPAMUX1.bit.GPIO7 = 1;  //Enable PWM output on this pin
+                			EPwm4Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                			break;
+
 
 
  
@@ -343,11 +381,13 @@ uint16_t analogRead(uint8_t pin)
 	if(SysCtrlRegs.PCLKCR0.bit.ADCENCLK == 0){
 		analogInit();
 	}
-
+	
+	EALLOW;
 	//Setup SOC1 to sample selected pin
 	AdcRegs.ADCSOC1CTL.bit.CHSEL = pin;
 	//Force SOC 0 and 1
 	AdcRegs.ADCSOCFRC1.all = 3;
+	EDIS;
 
 	while(AdcRegs.ADCINTFLG.bit.ADCINT1 != 1){
 		//wait until conversion is done

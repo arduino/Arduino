@@ -48,7 +48,9 @@ enum{
   PWM2A,
   PWM2B,
   PWM3A,
-  PWM3B
+  PWM3B,
+  PWM4A,
+  PWM4B
   };
 
 enum{

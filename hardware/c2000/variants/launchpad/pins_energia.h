@@ -164,8 +164,8 @@ const uint32_t digital_pin_to_timer[] = {
 	PWM2B,        /*  3 - P1.1, note: A0 output cannot be used with analogWrite */
 	PWM3A,        /*  4 - P1.2 */
 	PWM3B,        /*  5 - P1.3 */
-	NOT_ON_TIMER, /*  6 - P1.4 note: special case. Leaving as no timer due to difficulty determining if available */
-	NOT_ON_TIMER, /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
+	PWM4A, /*  6 - P1.4 note: special case. Leaving as no timer due to difficulty determining if available */
+	PWM4B, /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
 	NOT_ON_TIMER, /*  8 - P2.0 */
 	NOT_ON_TIMER, /*  9 - P2.1 */
 	NOT_ON_TIMER, /* 10 - P2.3 */
@@ -179,6 +179,20 @@ const uint32_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /* 18 - XOUT - P2.7 */
 	NOT_ON_TIMER, /* 18 - XIN - P2.6: */
 	NOT_ON_TIMER, /* 20 - GND */
+	NOT_ON_TIMER, //21
+	NOT_ON_TIMER, //22
+	NOT_ON_TIMER, //23
+	NOT_ON_TIMER, //24
+	NOT_ON_TIMER, //25
+	NOT_ON_TIMER, //26
+	NOT_ON_TIMER, //27
+	NOT_ON_TIMER, //28
+	NOT_ON_TIMER, //29
+	NOT_ON_TIMER, //30
+	NOT_ON_TIMER, //31
+	NOT_ON_TIMER, //32
+	NOT_ON_TIMER, //33
+	NOT_ON_TIMER, //34
 };
 
 const uint32_t digital_pin_to_port[] = {
