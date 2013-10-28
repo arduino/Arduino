@@ -1,34 +1,9 @@
-/* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
-/*
-  Sizer - computes the size of a .hex file
-  Part of the Arduino project - http://www.arduino.cc/
-
-  Copyright (c) 2006 David A. Mellis
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software Foundation,
-  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  
-  $Id$
-*/
-
 package processing.app.debug;
-
-import processing.app.Base;
 
 import java.io.*;
 import java.util.*;
+
+import processing.app.*;
 
 public class Sizer implements MessageConsumer {
   private String buildPath, sketchName;
@@ -40,34 +15,40 @@ public class Sizer implements MessageConsumer {
     this.buildPath = buildPath;
     this.sketchName = sketchName;
   }
-  
-  public long computeSize() throws RunnerException {
-    String avrBasePath = Base.getAvrBasePath();
-    String commandSize[] = new String[] {
-      avrBasePath + "avr-size",
-      " "
-    };
-    
-    commandSize[1] = buildPath + File.separator + sketchName + ".hex";
 
-    int r = 0;
+  public long computeSize() throws RunnerException {
+    String userdir = System.getProperty("user.dir") + File.separator;
+    String avrBasePath;
+    if(Base.isMacOS()) {
+      avrBasePath = new String("Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/");
+    }
+    else if(Base.isLinux()) {
+      avrBasePath = new String("");
+    }
+    else {
+      avrBasePath = new String(userdir + "hardware/tools/avr/bin/");
+    }
+    String commandSize[] = new String[] {
+        avrBasePath + "avr-objdump",
+        "-h",
+        ""
+    };
+
+    commandSize[2] = buildPath + File.separator + sketchName + ".elf";
+
     try {
       exception = null;
       size = -1;
       firstLine = null;
       Process process = Runtime.getRuntime().exec(commandSize);
-      MessageSiphon in = new MessageSiphon(process.getInputStream(), this);
-      MessageSiphon err = new MessageSiphon(process.getErrorStream(), this);
-
+      MessageSiphon messageSiphon = new MessageSiphon(process.getInputStream(), this);
       boolean running = true;
-
       while(running) {
         try {
-          if (in.thread != null)
-            in.thread.join();
-          if (err.thread != null)
-            err.thread.join();
-          r = process.waitFor();
+          process.waitFor();
+          if (messageSiphon.getThread() != null) {
+            Thread.sleep(100);
+          }
           running = false;
         } catch (InterruptedException intExc) { }
       }
@@ -76,33 +57,40 @@ public class Sizer implements MessageConsumer {
       // some sub-class has overridden it to do so, thus we need to check for
       // it.  See: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1166589459
       exception = new RunnerException(
-        (e.toString() == null) ? e.getClass().getName() + r : e.toString() + r);
+                                      (e.toString() == null) ? e.getClass().getName() : e.toString());
     }
-    
+
     if (exception != null)
       throw exception;
-      
+
     if (size == -1)
       throw new RunnerException(firstLine);
-      
-    return size;
+
+    return size+1;
   }
-  
+
+  public int data = 0;
   public void message(String s) {
     if (firstLine == null)
       firstLine = s;
     else {
-      StringTokenizer st = new StringTokenizer(s, " ");
-      try {
-        st.nextToken();
-        st.nextToken();
-        st.nextToken();
-        size = (new Integer(st.nextToken().trim())).longValue();
-      } catch (NoSuchElementException e) {
-        exception = new RunnerException(e.toString());
-      } catch (NumberFormatException e) {
-        exception = new RunnerException(e.toString());
-      }
+      size+=checkTag(s," .text ");
+      data+=checkTag(s," .data ");
+      data+=checkTag(s," .bss ");
+      //    exception = new RunnerException(e.toString());
+
     }
+  }
+
+  private int checkTag(String s, String tag){
+    int size=0;
+    int p = s.indexOf(tag);
+    if(p != -1){
+      s=s.substring(p+6).trim();
+      p=s.indexOf(" ");
+      if(p != -1)
+        size = Integer.parseInt(s.substring(0,p).trim(),16);
+    }
+    return size;
   }
 }

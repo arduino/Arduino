@@ -98,7 +98,7 @@ public class Sketch {
    */
   private String libraryPath;
   /**
-   * List of library folders. 
+   * List of library folders.
    */
   private ArrayList<File> importedLibraries;
 
@@ -365,8 +365,8 @@ public class Sketch {
     if (!validExtension(newExtension)) {
       Base.showWarning(_("Problem with rename"),
                        I18n.format(
-			 _("\".{0}\" is not a valid extension."), newExtension
-		       ), null);
+      _("\".{0}\" is not a valid extension."), newExtension
+          ), null);
       return;
     }
 
@@ -399,33 +399,33 @@ public class Sketch {
       if (newName.equalsIgnoreCase(c.getFileName())) {
         Base.showMessage(_("Nope"),
                          I18n.format(
-			   _("A file named \"{0}\" already exists in \"{1}\""),
-			   c.getFileName(),
-			   folder.getAbsolutePath()
-			 ));
+        _("A file named \"{0}\" already exists in \"{1}\""),
+        c.getFileName(),
+        folder.getAbsolutePath()
+      ));
         return;
       }
     }
-    
+
     // In Arduino, don't allow a .cpp file with the same name as the sketch,
     // because the sketch is concatenated into a file with that name as part
-    // of the build process.  
+    // of the build process.
     if (newName.equals(getName() + ".cpp")) {
       Base.showMessage(_("Nope"),
                        _("You can't have a .cpp file with the same name as the sketch."));
       return;
     }
-    
+
     if (renamingCode && currentIndex == 0) {
       for (int i = 1; i < codeCount; i++) {
         if (sanitaryName.equalsIgnoreCase(code[i].getPrettyName()) &&
           code[i].getExtension().equalsIgnoreCase("cpp")) {
           Base.showMessage(_("Nope"),
                            I18n.format(
-			     _("You can't rename the sketch to \"{0}\"\n" +
-			       "because the sketch already has a .cpp file with that name."),
-			     sanitaryName
-			   ));
+          _("You can't rename the sketch to \"{0}\"\n" +
+            "because the sketch already has a .cpp file with that name."),
+          sanitaryName
+        ));
           return;
         }
       }
@@ -458,10 +458,10 @@ public class Sketch {
         if (newFolder.exists()) {
           Base.showWarning(_("Cannot Rename"),
                            I18n.format(
-			     _("Sorry, a sketch (or folder) named " +
+          _("Sorry, a sketch (or folder) named " +
                                "\"{0}\" already exists."),
-			     newName
-			   ), null);
+          newName
+        ), null);
           return;
         }
 
@@ -484,10 +484,10 @@ public class Sketch {
         if (!current.renameTo(newFile, newExtension)) {
           Base.showWarning(_("Error"),
                            I18n.format(
-			     _("Could not rename \"{0}\" to \"{1}\""),
-			     current.getFileName(),
-			     newFile.getName()
-			   ), null);
+          _("Could not rename \"{0}\" to \"{1}\""),
+          current.getFileName(),
+          newFile.getName()
+        ), null);
           return;
         }
 
@@ -529,10 +529,10 @@ public class Sketch {
         if (!current.renameTo(newFile, newExtension)) {
           Base.showWarning(_("Error"),
                            I18n.format(
-			     _("Could not rename \"{0}\" to \"{1}\""),
-			     current.getFileName(),
-			     newFile.getName()
-			   ), null);
+          _("Could not rename \"{0}\" to \"{1}\""),
+          current.getFileName(),
+          newFile.getName()
+        ), null);
           return;
         }
       }
@@ -545,11 +545,11 @@ public class Sketch {
         }
       } catch (IOException e) {
         Base.showWarning(_("Error"),
-			 I18n.format(
+      I18n.format(
                            "Could not create the file \"{0}\" in \"{1}\"",
-			   newFile,
-			   folder.getAbsolutePath()
-			 ), e);
+        newFile,
+        folder.getAbsolutePath()
+      ), e);
         return;
       }
       SketchCode newCode = new SketchCode(newFile, newExtension);
@@ -735,7 +735,7 @@ public class Sketch {
           return name.toLowerCase().endsWith(".pde");
         }
       });
-      
+
       if (pdeFiles != null && pdeFiles.length > 0) {
         if (Preferences.get("editor.update_extension") == null) {
           Object[] options = { _("OK"), _("Cancel") };
@@ -753,12 +753,12 @@ public class Sketch {
                                                     null,
                                                     options,
                                                     options[0]);
-          
+
           if (result != JOptionPane.OK_OPTION) return false; // save cancelled
-          
+
           Preferences.setBoolean("editor.update_extension", true);
         }
-        
+
         if (Preferences.getBoolean("editor.update_extension")) {
           // Do rename of all .pde files to new .ino extension
           for (File pdeFile : pdeFiles)
@@ -768,14 +768,14 @@ public class Sketch {
     }
 
     for (int i = 0; i < codeCount; i++) {
-      if (code[i].isModified()) 
+      if (code[i].isModified())
         code[i].save();
     }
     calcModified();
     return true;
   }
 
-  
+
   protected boolean renameCodeToInoExtension(File pdeFile) {
     for (SketchCode c : code) {
       if (!c.getFile().equals(pdeFile))
@@ -787,7 +787,7 @@ public class Sketch {
     }
     return false;
   }
-  
+
 
   /**
    * Handles 'Save As' for a sketch.
@@ -861,11 +861,11 @@ public class Sketch {
       if (newName.equalsIgnoreCase(code[i].getPrettyName()) &&
         code[i].getExtension().equalsIgnoreCase("cpp")) {
         Base.showMessage(_("Nope"),
-			 I18n.format(
+      I18n.format(
                            _("You can't save the sketch as \"{0}\"\n" +
                              "because the sketch already has a .cpp file with that name."),
-			   newName
-			 ));
+        newName
+      ));
         return false;
       }
     }
@@ -1068,7 +1068,7 @@ public class Sketch {
       if (!muchSuccess) {
         Base.showWarning(_("Error adding file"),
                          I18n.format(_("Could not delete the existing ''{0}'' file."), filename),
-			 null);
+      null);
         return false;
       }
     }
@@ -1091,7 +1091,7 @@ public class Sketch {
       } catch (IOException e) {
         Base.showWarning(_("Error adding file"),
                          I18n.format(_("Could not add ''{0}'' to the sketch."), filename),
-			 e);
+      e);
         return false;
       }
     }
@@ -1216,13 +1216,13 @@ public class Sketch {
       // need to be recompiled, or if the board does not
       // use setting build.dependency
       //Base.removeDir(tempBuildFolder);
-      
+
       // note that we can't remove the builddir itself, otherwise
       // the next time we start up, internal runs using Runner won't
       // work because the build dir won't exist at startup, so the classloader
       // will ignore the fact that that dir is in the CLASSPATH in run.sh
       Base.removeDescendants(tempBuildFolder);
-      
+
       deleteFilesOnNextBuild = false;
     } else {
       // delete only stale source files, from the previously
@@ -1240,7 +1240,7 @@ public class Sketch {
         }
       }
     }
-    
+
     // Create a fresh applet folder (needed before preproc is run below)
     //tempBuildFolder.mkdirs();
   }
@@ -1282,8 +1282,8 @@ public class Sketch {
   private static boolean deleteFilesOnNextBuild = true;
 
   /**
-   * When running from the editor, take care of preparations before running 
-   * the build. 
+   * When running from the editor, take care of preparations before running
+   * the build.
    */
   public void prepare() {
     // make sure the user didn't hide the sketch folder
@@ -1479,7 +1479,7 @@ public class Sketch {
     return importedLibraries;
   }
 
-  
+
   /**
    * Map an error from a set of processed .java files back to its location
    * in the actual sketch.
@@ -1489,7 +1489,7 @@ public class Sketch {
    * @return A RunnerException to be sent to the editor, or null if it wasn't
    *         possible to place the exception to the sketch code.
    */
-//  public RunnerException placeExceptionAlt(String message, 
+//  public RunnerException placeExceptionAlt(String message,
 //                                        String filename, int line) {
 //    String appletJavaFile = appletClassName + ".java";
 //    SketchCode errorCode = null;
@@ -1521,14 +1521,14 @@ public class Sketch {
 //      line--;
 //
 //      // getMessage() will be what's shown in the editor
-//      RunnerException exception = 
+//      RunnerException exception =
 //        new RunnerException(message, codeIndex, line, -1);
 //      exception.hideStackTrace();
 //      return exception;
 //    }
 //    return null;
 //  }
-  
+
 
   /**
    * Map an error from a set of processed .java files back to its location
@@ -1539,8 +1539,8 @@ public class Sketch {
    * @return A RunnerException to be sent to the editor, or null if it wasn't
    *         possible to place the exception to the sketch code.
    */
-  public RunnerException placeException(String message, 
-                                        String dotJavaFilename, 
+  public RunnerException placeException(String message,
+                                        String dotJavaFilename,
                                         int dotJavaLine) {
     int codeIndex = 0; //-1;
     int codeLine = -1;
@@ -1582,7 +1582,7 @@ public class Sketch {
       }
     }
     // could not find a proper line number, so deal with this differently.
-    // but if it was in fact the .java file we're looking for, though, 
+    // but if it was in fact the .java file we're looking for, though,
     // send the error message through.
     // this is necessary because 'import' statements will be at a line
     // that has a lower number than the preproc offset, for instance.
@@ -1614,7 +1614,7 @@ public class Sketch {
    */
   public String build(String buildPath, boolean verbose)
     throws RunnerException {
-    
+
     // run the preprocessor
     editor.status.progressUpdate(20);
     String primaryClassName = preprocess(buildPath);
@@ -1628,8 +1628,8 @@ public class Sketch {
     }
     return null;
   }
-  
-  
+
+
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
     return exportApplet(tempBuildFolder.getAbsolutePath(), usingProgrammer);
   }
@@ -1642,7 +1642,7 @@ public class Sketch {
     throws RunnerException, IOException, SerialException {
 
     prepare();
-      
+
     // build the sketch
     editor.status.progressNotice(_("Compiling sketch..."));
     String foundName = build(appletPath, false);
@@ -1664,34 +1664,46 @@ public class Sketch {
     return true;
   }
 
-  
+
   public void setCompilingProgress(int percent) {
     editor.status.progressUpdate(percent);
   }
 
-  
+
   protected void size(String buildPath, String suggestedClassName)
-    throws RunnerException {
+      throws RunnerException {
     long size = 0;
     String maxsizeString = Base.getBoardPreferences().get("upload.maximum_size");
     if (maxsizeString == null) return;
     long maxsize = Integer.parseInt(maxsizeString);
+
+    String maxramString = Base.getBoardPreferences().get("upload.maximum_ram_size");
+    long maxram = maxramString == null ? 1024 : Integer.parseInt(maxramString);
+
+    String warningramString = Base.getBoardPreferences().get("upload.warning_ram_size");
+    long warningram = warningramString == null ? maxram/2 : Integer.parseInt(warningramString);
+
     Sizer sizer = new Sizer(buildPath, suggestedClassName);
-      try {
+    try {
       size = sizer.computeSize();
-      System.out.println(
-	I18n.format(
-	  _("Binary sketch size: {0} bytes (of a {1} byte maximum)"),
-	  size, maxsize
-	)
-      );
+      System.out.println("Binary sketch size: " + size + " bytes (of a " +
+          maxsize + " byte maximum)");
+      System.out.println("Chip memory sram: " + sizer.data +
+                         " bytes (of a " +maxram+ " byte maximum)");
     } catch (RunnerException e) {
-      System.err.println(I18n.format(_("Couldn't determine program size: {0}"), e.getMessage()));
+      e.printStackTrace();
     }
+
+    if (sizer.data > maxram)
+      throw new RunnerException(
+                                "Allowable chip memory exceeded; see http://www.arduino.cc/en/Reference/PROGMEM to reduce ram size");
+
+    if (sizer.data > warningram)
+      System.err.println("Warning Large amount of chip memory used.  Consider using PROGMEM, http://www.arduino.cc/en/Reference/PROGMEM, to reduce ram size ");
 
     if (size > maxsize)
       throw new RunnerException(
-        _("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
+          "Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it.");
   }
 
 
@@ -1766,9 +1778,9 @@ public class Sketch {
     return false;
   }
 
-  
+
   /**
-   * Export to application via GUI. 
+   * Export to application via GUI.
    */
   protected boolean exportApplication() throws IOException, RunnerException {
     return false;
@@ -1902,7 +1914,7 @@ public class Sketch {
   public List<String> getHiddenExtensions() {
     return hiddenExtensions;
   }
-  
+
   /**
    * Returns a String[] array of proper extensions.
    */
