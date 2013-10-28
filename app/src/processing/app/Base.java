@@ -324,6 +324,7 @@ public class Base {
     boolean doVerbose = false;
     String selectBoard = null;
     String selectPort = null;
+    String currentDirectory = System.getProperty("user.dir");
     // Check if any files were passed in on the command line
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals("--upload")) {
@@ -350,6 +351,12 @@ public class Base {
           selectPort = args[i];
         continue;
       }
+      if (args[i].equals("--curdir")) {
+        i++;
+        if (i < args.length)
+          currentDirectory = args[i];
+        continue;
+      }
       String path = args[i];
       // Fix a problem with systems that use a non-ASCII languages. Paths are
       // being passed in with 8.3 syntax, which makes the sketch loader code
@@ -362,6 +369,9 @@ public class Base {
         } catch (IOException e) {
           e.printStackTrace();
         }
+      }
+      if (!new File(path).isAbsolute()) {
+        path = new File(currentDirectory, path).getAbsolutePath();
       }
       if (handleOpen(path) != null) {
         opened = true;
@@ -386,7 +396,7 @@ public class Base {
 
       // Do board selection if requested
       if (selectBoard != null)
-        selectBoard(selectBoard, editor);
+        selectBoard(selectBoard);
 
       if (doUpload) {
         // Build and upload
@@ -1292,9 +1302,7 @@ public class Base {
 
         // Cycle through all boards of this platform
         for (TargetBoard board : targetPlatform.getBoards().values()) {
-          JMenuItem item = createBoardMenusAndCustomMenus(
-                                                          editor,
-                                                          menuItemsToClickAfterStartup,
+          JMenuItem item = createBoardMenusAndCustomMenus(menuItemsToClickAfterStartup,
                                                           buttonGroupsMap,
                                                           board, targetPlatform, targetPackage);
           boardsMenu.add(item);
@@ -1314,10 +1322,9 @@ public class Base {
   }
 
   private JRadioButtonMenuItem createBoardMenusAndCustomMenus(
-                                              final Editor editor,
-                                              List<JMenuItem> menuItemsToClickAfterStartup,
-                                              Map<String, ButtonGroup> buttonGroupsMap,
-                                              TargetBoard board, TargetPlatform targetPlatform, TargetPackage targetPackage)
+          List<JMenuItem> menuItemsToClickAfterStartup,
+          Map<String, ButtonGroup> buttonGroupsMap,
+          TargetBoard board, TargetPlatform targetPlatform, TargetPackage targetPackage)
       throws Exception {
     String selPackage = Preferences.get("target_package");
     String selPlatform = Preferences.get("target_platform");
@@ -1331,7 +1338,7 @@ public class Base {
     @SuppressWarnings("serial")
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
-        selectBoard((String) getValue("b"), editor);
+        selectBoard((String) getValue("b"));
       }
     };
     action.putValue("b", packageName + ":" + platformName + ":" + boardId);
@@ -1360,7 +1367,7 @@ public class Base {
               Preferences.set("target_package", (String) getValue("package"));
               Preferences.set("target_platform", (String) getValue("platform"));
               Preferences.set("board", (String) getValue("board"));
-              Preferences.set("custom_" + menuId, (String) getValue("board") + "_" + (String) getValue("custom_menu_option"));
+              Preferences.set("custom_" + menuId, getValue("board") + "_" + getValue("custom_menu_option"));
 
               filterVisibilityOfSubsequentBoardMenus((String) getValue("board"), currentIndex);
 
@@ -1472,13 +1479,22 @@ public class Base {
   }
 
 
-  private void selectBoard(String selectBoard, Editor editor) {
+  private void selectBoard(String selectBoard) {
     String[] split = selectBoard.split(":");
     Preferences.set("target_package", split[0]);
     Preferences.set("target_platform", split[1]);
-    Preferences.set("board", split[2]);
+    String boardId = split[2];
+    Preferences.set("board", boardId);
 
-    filterVisibilityOfSubsequentBoardMenus(split[2], 1);
+    if (split.length > 3) {
+      String[] customsParts = split[3].split(",");
+      for (String customParts : customsParts) {
+        String[] keyValue = customParts.split("=");
+        Preferences.set("custom_" + keyValue[0].trim(), boardId + "_" + keyValue[1].trim());
+      }
+    }
+
+    filterVisibilityOfSubsequentBoardMenus(boardId, 1);
 
     onBoardOrPortChange();
     Sketch.buildSettingChanged();
