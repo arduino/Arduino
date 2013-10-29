@@ -1,3 +1,8 @@
+// Enter here the name (=SSID) and password of your WiFi LAN
+
+#define WLAN_SSID       "energia"        // cannot be longer than 32 characters!
+#define WLAN_PASS       "supersecret"
+
  /*
   Web  Server
  
@@ -18,8 +23,8 @@
 #include "SPI.h"
 #include "WiFi.h"
 
-char ssid[] = "energia";     //  your network SSID (name) 
-char pass[] = "supersecret";     //  your network SSID (name) 
+char ssid[] = WLAN_SSID;     //  your network SSID (name) 
+char pass[] = WLAN_PASS;     //  your network SSID (name) 
 
 WiFiServer server(80);
 WiFiClient client;
@@ -35,8 +40,8 @@ void setup() {
 
   pinMode(RED_LED, OUTPUT);
   pinMode(GREEN_LED, OUTPUT);
-  pinMode(PUSH1, INPUT);
-  pinMode(PUSH2, INPUT);
+  pinMode(PUSH1, INPUT_PULLUP); // released = HIGH, pressed = LOW
+  pinMode(PUSH2, INPUT_PULLUP);
   
   delay(10);
 
