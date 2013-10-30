@@ -12,6 +12,7 @@ Uint32 main(void) {
    DisableDog();
    IntOsc1Sel();
    InitPll(DSP28_PLLCR,DSP28_DIVSEL);
+   InitFlash();
 
    DELAY_US(100);
 

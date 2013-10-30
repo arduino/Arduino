@@ -45,6 +45,7 @@ FLASH_ST FlashStatus;
 
 extern Uint32 Flash_CPUScaleFactor;
 extern void (*Flash_CallbackPtr) (void);
+unsigned int checksum;
 
 //#################################################
 // void CopyData(void)
@@ -210,6 +211,17 @@ void ReadReservedFn()
 //-----------------------------------------------------
 void SendCheckSum()
 {
-	   SciaRegs.SCITXBUF = 'C';
-	   return;
+	while(!SciaRegs.SCICTL2.bit.TXRDY)
+	{
+	}
+	SciaRegs.SCITXBUF = checksum & 0xFF;
+
+	while(!SciaRegs.SCICTL2.bit.TXRDY)
+	{
+	}
+	SciaRegs.SCITXBUF = (checksum >> 8) & 0xFF;
+
+	checksum = 0;
+
+   return;
 }

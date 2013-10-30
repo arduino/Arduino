@@ -34,6 +34,8 @@ extern void CopyData(void);
 Uint32 GetLongData(void);
 extern void ReadReservedFn(void);
 
+extern unsigned int checksum;
+
 
 //#################################################
 // Uint32 SCI_Boot(void)
@@ -57,6 +59,7 @@ Uint32 SCI_Boot()
 
    SCIA_Init();
    SCIA_AutobaudLock();
+   checksum = 0;
 
    // If the KeyValue was invalid, abort the load
    // and return the flash entry point. 
@@ -171,6 +174,8 @@ Uint16 SCIA_GetWordData()
 	   byteData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
 	   SciaRegs.SCITXBUF = byteData;
 
+	   checksum += wordData + byteData;
+
 	   // form the wordData from the MSB:LSB
 	   wordData |= (byteData << 8);
 
@@ -194,6 +199,8 @@ Uint16 SCIA_GetOnlyWordData()
 	   while(SciaRegs.SCIRXST.bit.RXRDY != 1) { }
 	   byteData =  (Uint16)SciaRegs.SCIRXBUF.bit.RXDT;
 	   //SciaRegs.SCITXBUF = byteData;
+
+	   checksum += wordData + byteData;
 
 	   // form the wordData from the MSB:LSB
 	   wordData |= (byteData << 8);

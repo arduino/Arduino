@@ -112,6 +112,7 @@ SECTIONS
    codestart        : > BEGIN,     PAGE = 0
    ramfuncs         : > RAMM0      PAGE = 0
    .text            : > PRAML0,    PAGE = 0
+   .InitBoot        : > PRAML0,    PAGE = 0
    .cinit           : > RAMM0,     PAGE = 0
    .pinit           : > RAMM0,     PAGE = 0
    .switch          : > RAMM0,     PAGE = 0
