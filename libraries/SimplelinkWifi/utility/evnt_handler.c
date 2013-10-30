@@ -51,7 +51,7 @@
 #include "socket.h"
 #include "netapp.h"
 #include "interface.h"
-
+#include <Energia.h>
  
 
 //*****************************************************************************
@@ -497,12 +497,12 @@ long
 hci_unsol_event_handler(char *event_hdr)
 {
 	char * data = NULL;
-	long event_type;
+	unsigned short event_type;
 	unsigned long NumberOfReleasedPackets;
 	unsigned long NumberOfSentPackets;
-	
+
 	STREAM_TO_UINT16(event_hdr, HCI_EVENT_OPCODE_OFFSET,event_type);
-	
+
 	if (event_type & HCI_EVNT_UNSOL_BASE)
 	{
 		switch(event_type)
@@ -511,7 +511,7 @@ hci_unsol_event_handler(char *event_hdr)
 		case HCI_EVNT_DATA_UNSOL_FREE_BUFF:
 			{
 				hci_event_unsol_flowcontrol_handler(event_hdr);
-				
+
 				NumberOfReleasedPackets = tSLInformation.NumberOfReleasedPackets;
 				NumberOfSentPackets = tSLInformation.NumberOfSentPackets;
 								
@@ -711,8 +711,7 @@ void set_socket_active_status(long Sd, long Status)
 //!					 number of free buffer in the SL device.
 //
 //*****************************************************************************
-long
-hci_event_unsol_flowcontrol_handler(char *pEvent)
+long __attribute__((optimize("O0"))) hci_event_unsol_flowcontrol_handler(char *pEvent)
 {
 	
 	long temp, value;

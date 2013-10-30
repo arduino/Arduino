@@ -1,14 +1,18 @@
-#ifndef WIFI_h
-#define WIFI_h
-#include "SimplelinkWifi.h"
+#ifndef wifi_h
+#define wifi_h
+#include "utility/SimplelinkWifi.h"
 #include "IPAddress.h"
+#include "TCPclient.h"
+#include "TCPserver.h"
 
-
+#define WL_FW_VER_LENGTH 2
 
 class WiFiClass
 {
 	private:
-    	static void init();	
+	static void init();	
+	static tNetappIpconfigRetArgs ipConfig;
+	static unsigned char fwVersion[WL_FW_VER_LENGTH];
 	public:
 	
 	WiFiClass();
@@ -16,12 +20,24 @@ class WiFiClass
 	void setENpin(uint8_t pin);
 	void setIRQpin(uint8_t pin);
 	int begin();
+	int begin(int patchesAvailableAtHost);
 	int begin(char* ssid);
-	int begin(char* ssid, unsigned char* pass);
+	int begin(char* ssid, const char* pass);
 	int begin(char* ssid, uint8_t key_idx, unsigned char* key );
+	int disconnect(void);
 	uint8_t status();
-	//int startSmartConfig();
+	static unsigned char* firmwareVersion();
+	int updateFirmware();
+	IPAddress localIP();
+	IPAddress subnetMask();
+	IPAddress gatewayIP();
+	int hostByName(const char* aHostname, IPAddress& aResult);
+	char* SSID();
+	uint8_t* macAddress(uint8_t* mac);
+	int startSmartConfig();
 	bool countSocket(bool add_sock);
+	friend class TCPclient;
+	friend class TCPserver;
 };
 
 extern WiFiClass WiFi;
@@ -29,50 +45,7 @@ extern WiFiClass WiFi;
 
 // client
 
-class WiFiClient{
-private:
-  unsigned short int port;
-  long clientSocket;
-  uint8_t rx_buf[16];
-  int rx_buf_pos;
-  int rx_buf_fill;
-  sockaddr clientSocketAddr;
-public:
-	WiFiClient();
-	WiFiClient(long sock);
-	int available();
-	int read();
-	int connect(IPAddress ip, uint16_t port);
-	uint8_t connected();
-	operator bool();
-	size_t write(uint8_t);
-	size_t print(char*);
-	size_t print(uint16_t);
-	size_t println(uint16_t);
-	size_t println(char*);
-	size_t println();
-	void stop();
-	
-	friend class WiFiClass;
-
-};
-
 // server
-class WiFiServer {
-private:
-  unsigned short int port;
-  long serverSocket;
-  sockaddr serverSocketAddr;
-  long clientDescriptor;
-public:
-  WiFiServer(uint16_t);
-  WiFiClient available();
-  void begin();
-  size_t write(uint8_t);
-
-  friend class WiFiClass;
-
-};
 
 
 #define UDP_TX_PACKET_MAX_SIZE 24

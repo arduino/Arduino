@@ -81,7 +81,7 @@ extern "C"
 #endif
 
 #include <stdint.h>
-#include "hal_macros.h"
+#include "HAL_MACROS.h"
 
 /*******************************************************************************
  * Macros

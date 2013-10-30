@@ -1,6 +1,5 @@
-
-#include "SimplelinkWifi.h"
-#include "wifi.h"
+#include "utility/SimplelinkWifi.h"
+#include "WiFi.h"
 #define socket_overflow 2
 
 WiFiServer::WiFiServer(uint16_t _port)
@@ -59,7 +58,6 @@ WiFiServer::WiFiServer(uint16_t _port)
 {
 
 	send(((long)clientDescriptor)&0xFF, &b, 1, 0);
-	__delay_cycles(1200); //add this delay for sending time finish
     return 1;
 }
  

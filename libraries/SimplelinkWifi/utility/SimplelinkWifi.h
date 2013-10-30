@@ -1,5 +1,5 @@
 #ifndef __SimplelinkWifi_H__
-#define	__SimplelinkWifi_H__
+#define __SimplelinkWifi_H__
 
 #include "hci.h"
 #include "interface.h"

@@ -79,10 +79,7 @@ void initServer(void)
     {
         serverError(SERV_ERR_SOCKET);
         wlan_stop();
-        while(1)
-        {
-            __nop();	//__no_operation();
-        }
+        while(1);
     }
 
     // Open port
@@ -144,10 +141,9 @@ void waitForConnection(void)
 
     sockaddr clientaddr;  
     socklen_t addrlen;
-    volatile int bytesRecvd = 0;
+    //volatile int bytesRecvd = 0;
     volatile long bytesSent = 0;
     int clientDescriptor = -1;
-    char clientIP[4];
     
     fd_set readsds;
     long maxFD;
@@ -173,7 +169,7 @@ void waitForConnection(void)
               	mdnsAdvertiser(1,DevServname,strlen(DevServname));
 				SendmDNSAdvertisment = 0;
               }
-			  __delay_cycles(6000000);
+			  //__delay_cycles(6000000);
             }
             
 
@@ -184,10 +180,6 @@ void waitForConnection(void)
                 // setCC3000MachineState(CC3000_CLIENT_CONNECTED);
                 // terminalPrint("Client ");
                 // Read IP and print
-                clientIP[0] = clientaddr.sa_data[2];
-                clientIP[1] = clientaddr.sa_data[3];
-                clientIP[2] = clientaddr.sa_data[4];
-                clientIP[3] = clientaddr.sa_data[5];
 
                 // printIpAddr(clientIP);
                 // terminalPrint(" Connected\r\n");
@@ -202,15 +194,13 @@ void waitForConnection(void)
                         if(ret > 0)
                         {  
                           memset(requestBuffer, 0, 8);
-                          bytesRecvd = recv(clientDescriptor, requestBuffer, sizeof(requestBuffer), 0);
-                          int temp = bytesRecvd;
-
+                          //bytesRecvd = recv(clientDescriptor, requestBuffer, sizeof(requestBuffer), 0);
                         }
                         
                         
 
-                        __nop();	//__no_operation();
-                        __delay_cycles(10000);
+                        //__nop();	//__no_operation();
+                        //__delay_cycles(10000);
                         
                         ret = select(maxFD, NULL, &readsds, NULL, &timeout);
                         if(ret >0)
@@ -260,7 +250,7 @@ void waitForConnection(void)
                         }
                           
                     // }
-                __delay_cycles(1000);
+                //__delay_cycles(1000);
             }
             else if(clientDescriptor == SOCKET_INACTIVE_ERR)
             {

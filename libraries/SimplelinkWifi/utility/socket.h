@@ -102,7 +102,9 @@ extern "C" {
 
 #define  IOCTL_SOCKET_EVENTMASK
 // 0809 natalie comment #105
+#ifndef ENOBUFS
 #define ENOBUFS                 55          // No buffer space available
+#endif
 
 #define __FD_SETSIZE            32
 
@@ -140,6 +142,9 @@ typedef long int __fd_mask;
 #define __FDELT(d)              ((d) / __NFDBITS)
 #define __FDMASK(d)             ((__fd_mask) 1 << ((d) % __NFDBITS))
 
+#ifdef fd_set
+#undef fd_set
+#endif
 // fd_set for select and pselect.
 typedef struct
 {
@@ -161,9 +166,25 @@ typedef struct
 #define __FD_ISSET(d, set)     (__FDS_BITS (set)[__FDELT (d)] & __FDMASK (d))
 
 // Access macros for 'fd_set'.
+#ifdef FD_SET
+#undef FD_SET
+#endif
 #define FD_SET(fd, fdsetp)      __FD_SET (fd, fdsetp)
+
+#ifdef FD_CLR
+#undef FD_CLR
+#endif
+
 #define FD_CLR(fd, fdsetp)      __FD_CLR (fd, fdsetp)
+
+#ifdef FD_ISSET
+#undef FD_ISSET
+#endif
 #define FD_ISSET(fd, fdsetp)    __FD_ISSET (fd, fdsetp)
+
+#ifdef FD_ZERO
+#undef FD_ZERO
+#endif
 #define FD_ZERO(fdsetp)         __FD_ZERO (fdsetp)
 
 //Use in case of Big Endian only

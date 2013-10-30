@@ -224,6 +224,10 @@ size_t HardwareSerial::write(uint8_t c)
 	return 1;
 }
 
+HardwareSerial::operator bool() {
+	return true;
+}
+
 void uart_rx_isr(uint8_t offset)
 {
 #ifdef SERIAL1_AVAILABLE

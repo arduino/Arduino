@@ -111,12 +111,6 @@ unsigned char* UINT16_TO_STREAM_f (unsigned char *p, unsigned short u16)
 
 	*(p)++ = (unsigned char)(u16);
 	*(p)++ = (unsigned char)((u16) >> 8);
-	
-	/*
-	p[0]=((unsigned char *)(&u16))[0];
-	p[1]=((unsigned char *)(&u16))[1];
-	p+=2;
-	*/
 	return p;
 }
 
@@ -136,8 +130,7 @@ unsigned char* UINT16_TO_STREAM_f (unsigned char *p, unsigned short u16)
 
 unsigned short STREAM_TO_UINT16_f(char* p, unsigned short offset)
 {
-        return (unsigned short)((unsigned short)((unsigned short)
-								(*(p + offset + 1)&0xFF) << 8) + (unsigned short)(*(p + offset)&0xFF));
+	return ((((*(p + offset + 1)) << 8) & 0xFF00) | ((*(p + offset)) & 0xFF));
 }
 
 //*****************************************************************************
@@ -156,10 +149,10 @@ unsigned short STREAM_TO_UINT16_f(char* p, unsigned short offset)
 
 unsigned long STREAM_TO_UINT32_f(char* p, unsigned short offset)
 {
-        return (unsigned long)((unsigned long)((unsigned long)
-							 (*(p + offset + 3)) << 24) + (unsigned long)((unsigned long)
-							 (*(p + offset + 2)) << 16) + (unsigned long)((unsigned long)
-							 (*(p + offset + 1)) << 8) + (unsigned long)(*(p + offset)));
+	return ((((uint32_t)(*(p + offset + 3)) << 24) & 0xFF000000) |
+		(((uint32_t)(*(p + offset + 2)) << 16) & 0xFF0000) |
+		(((uint32_t)(*(p + offset + 1)) << 8) & 0xFF00) |
+		((uint32_t)(*(p + offset)) & 0xFF));
 }
 
 
