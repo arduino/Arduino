@@ -23,6 +23,12 @@
 #include "SPI.h"
 #include "WiFi.h"
 
+// Prototypes
+void printConfig();
+void printWifiData();
+void printIndex();
+void printHelp();
+
 char ssid[] = WLAN_SSID;     //  your network SSID (name) 
 char pass[] = WLAN_PASS;     //  your network SSID (name) 
 
