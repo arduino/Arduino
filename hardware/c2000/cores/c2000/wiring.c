@@ -69,7 +69,7 @@ void enableWatchDog()
 #define WDT_DIV_BITS WDT_MDLY_0_5
 
 
-
+#pragma CODE_SECTION(initFlash, "ramfuncs");
 void initFlash(void)
 {
    EALLOW;
