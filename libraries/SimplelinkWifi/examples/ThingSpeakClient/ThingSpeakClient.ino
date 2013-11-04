@@ -62,11 +62,12 @@ void setup()
 {
   // Start Serial for debugging on the Serial Monitor
   Serial.begin(115200);
-  delay(100);
-   // Set communication pins for CC3000
-  WiFi.setCSpin(P2_2);
-  WiFi.setENpin(P6_5);
-  WiFi.setIRQpin(P2_0);
+
+  // Set communication pins for CC3000
+  WiFi.setCSpin(18);  // 18: P2_2 @ F5529, PE_0 @ LM4F/TM4C
+  WiFi.setENpin(2);   //  2: P6_5 @ F5529, PB_5 @ LM4F/TM4C
+  WiFi.setIRQpin(19); // 19: P2_0 @ F5529, PB_2 @ LM4F/TM4C
+
   // Start WiFi
   startWiFi();
 }
