@@ -80,7 +80,7 @@ PrintWelcome(void)
 		return;
 	}
 
-	_tprintf(_T("\nSerial Firmware Upgrade Example\n"));
+	_tprintf(_T("\nC2000 Serial Firmware Upgrader\n"));
 	_tprintf(_T("Copyright (c) 2013 Texas Instruments Incorporated.  All rights reserved.\n\n"));
 }
 
@@ -101,26 +101,30 @@ ShowHelp(void)
 	}
 
 	_tprintf(_T("This application may be used to download images to a Texas Instruments\n"));
-	_tprintf(_T("C2000 microcontroller in the SCI boot mode.\n"));
+	_tprintf(_T("C2000 microcontroller in the SCI boot mode.\n\n"));
 	_tprintf(_T("Supported parameters are:\n\n"));
 
-	_tprintf(_T("-f <file> - The file name for download use.  This file must be in the SCI boot format.\n"));
-	_tprintf(_T("-k <file> - The file name for flash kernel.  This file must be in the SCI boot format.\n"));
+	_tprintf(_T("-f <file>    - The file name for download use.\n"));
+	_tprintf(_T("               This file must be in the SCI boot format.\n"));
+	_tprintf(_T("-k <file>    - The file name for flash kernel.\n"));
+	_tprintf(_T("               This file must be in the SCI boot format.\n"));
 	_tprintf(_T("-p COM<num>  - Set the COM port to be used for communications.\n"));
-	_tprintf(_T("-b <num>  - Set the baud rate for the COM port.\n"));
-	_tprintf(_T("-? or -h  - Show this help.\n"));
-	_tprintf(_T("-q        - Quiet mode. Disable output to stdio.\n"));
-	_tprintf(_T("-w        - Wait for a key press before exiting.\n"));
-	_tprintf(_T("-v        - Enable verbose output\n\n"));
-	_tprintf(_T("Examples:\n\n"));
-	_tprintf(_T("   dfuprog -f program.bin -a 0x1800\n\n"));
-	_tprintf(_T("Writes binary file program.bin to the device at address 0x1800\n\n"));
-	_tprintf(_T("   dfuprog -i 1 -f program.dfu\n\n"));
-	_tprintf(_T("Writes DFU-formatted file program.dfu to the second connected\n"));
-	_tprintf(_T("device (index 1) at the address found in the DFU file prefix.\n\n"));
-	_tprintf(_T("   dfuprog -u -f appimage.dfu\n\n"));
-	_tprintf(_T("Reads the current board application image into DFU-formatted file\n"));
-	_tprintf(_T("appimage.dfu\n\n"));
+	_tprintf(_T("-b <num>     - Set the baud rate for the COM port.\n"));
+	_tprintf(_T("-? or -h     - Show this help.\n"));
+	_tprintf(_T("-q           - Quiet mode. Disable output to stdio.\n"));
+	_tprintf(_T("-w           - Wait for a key press before exiting.\n"));
+	_tprintf(_T("-v           - Enable verbose output\n\n"));
+	_tprintf(_T("-f, -k, and -p are mandatory parameters.  If baud rate is omitted, \nthe communications will occur at 9600 baud.\n\n"));
+
+
+	_tprintf(_T("Example:\n\n"));
+	_tprintf(_T("serial_loader2000 -f application.txt -k flash_kernel.txt -p COM4 -b 38400\n"));
+	_tprintf(_T("Writes an application in application.txt to flash of the target device using\n"));
+    _tprintf(_T("the kernel in flash_kernel.txt.  COM port 4 is used to do the load \nat 38400 Baud.\n\n"));
+
+	_tprintf(_T("Application and kernel files must be in the SCI8 boot format. \nThese can be generated using the hex2000 utility.  An example of how to do \nthis follows:\nhex2000 application.out -boot -sci8 -a -o application.txt\n\n"));
+
+
 }
 
 //*****************************************************************************
@@ -408,7 +412,7 @@ DownloadImage(void)
 	if (sendData[0] != rcvData)
 		return(12);
 
-
+	VERBOSEPRINT(_T("\nKernel AutoBaud Successful"));
 	//Find the start of the kernel data
 	getc(Kfh);
 	getc(Kfh);
@@ -433,7 +437,9 @@ DownloadImage(void)
 
 	}
 
-	Sleep(200);
+	VERBOSEPRINT(_T("\nKernel Loaded"));
+	Sleep(5000);
+	VERBOSEPRINT(_T("\nDone Waiting for kernel boot...attempting autobaud"));
 	PurgeComm(file, PURGE_RXCLEAR);
 	//Do AutoBaud
 	sendData[0] = 'A';
@@ -447,6 +453,7 @@ DownloadImage(void)
 	if (sendData[0] != rcvData)
 		return(12);
 
+	VERBOSEPRINT(_T("\nApplication AutoBaud Successful"));
 	//Find the start of the application data
 	txCount = 0;
 	checksum = 0;
@@ -487,7 +494,6 @@ DownloadImage(void)
 	checksum = 0;
 	int j;
 	int totalCount = 0;
-	QUIETPRINT(_T("\n\n\n\n"));
 	wordData = 0x0000;
 	byteData = 0x0000;
 	fileStatus = 1;
@@ -501,7 +507,6 @@ DownloadImage(void)
 		fileStatus = fscanf_s(Afh, "%x ", &sendData[0]);
 		if (fileStatus == 0)
 			break;
-		QUIETPRINT(_T("%x\n"), sendData[0]);
 		WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
 		checksum += sendData[0];
 
@@ -575,6 +580,7 @@ DownloadImage(void)
 		}
 	}
 
+	VERBOSEPRINT(_T("\nApplication Load Successful"));
 
 }
 
@@ -592,7 +598,8 @@ _tmain(int argc, TCHAR* argv[])
 	int iDevIndex;
 	bool bCompleted;
 	bool bDeviceFound;
-	TCHAR baudString[64];
+	TCHAR baudString[32];
+	TCHAR comString[32];
 	DWORD error;
 
 
@@ -604,7 +611,9 @@ _tmain(int argc, TCHAR* argv[])
 
 	//Try opening the COM Port
 	// open the comm port.
-	file = CreateFile((LPCWSTR)g_pszComPort,
+	//Append stupid windows crap to COM port name
+	_stprintf(comString, _T("\\\\.\\%s"), g_pszComPort);
+	file = CreateFile((LPCWSTR)comString,
 		GENERIC_READ | GENERIC_WRITE,
 		0,
 		NULL,
@@ -614,7 +623,7 @@ _tmain(int argc, TCHAR* argv[])
 
 	//Check if COM port opened correctly
 	if (INVALID_HANDLE_VALUE == file) {
-		QUIETPRINT(_T("Unable to open COM port...does someone else have it open?\n"));
+		QUIETPRINT(_T("Unable to open COM port %s...does someone else have it open?\n"), g_pszComPort);
 		ExitApp(1);
 	}
 
