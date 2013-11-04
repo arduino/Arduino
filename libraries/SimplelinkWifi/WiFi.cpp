@@ -5,8 +5,8 @@
 
 #define DISABLE	(0)
 #define ENABLE	(1)
-extern volatile unsigned long ulSmartConfigFinished, ulCC3000Connected,ulCC3000DHCP,
-OkToDoShutDown, ulCC3000DHCP_configured;
+extern volatile unsigned long ulSmartConfigFinished, ulCC3000Connected, ulCC3000DHCP,
+OkToDoShutDown, ulCC3000DHCP_configured, ulCC3000WasConnected;
 extern volatile unsigned char ucStopSmartConfig;
 
 tNetappIpconfigRetArgs WiFiClass::ipConfig = {{0}};
@@ -15,6 +15,11 @@ unsigned char WiFiClass::fwVersion[] = {0, 0};
 extern uint8_t CSpin;
 extern uint8_t ENpin;
 extern uint8_t IRQpin;
+
+// Array of data to cache the information related to the networks discovered
+char WiFiClass::_networkSsid[][WL_SSID_MAX_LENGTH] = {{"1"},{"2"},{"3"},{"4"},{"5"}};
+int32_t WiFiClass::_networkRssi[WL_NETWORKS_LIST_MAXNUM] = { 0 };
+uint8_t WiFiClass::_networkEncr[WL_NETWORKS_LIST_MAXNUM] = { 0 };
 
 // Simple Config Prefix
 const char aucCC3000_prefix[] = {'T', 'T', 'T'};
@@ -52,6 +57,8 @@ int WiFiClass::begin(char* ssid)
 	pio_init();
 	init_spi();
 
+	ulCC3000WasConnected = 0;
+
 	wlan_init(CC3000_UsynchCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch, ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
 	
 	wlan_start(0);
@@ -77,6 +84,8 @@ int WiFiClass::begin(char* ssid, const char* pass)
 	uint8_t status=0;
 	pio_init();
 	init_spi();
+
+	ulCC3000WasConnected = 0;
 
 	wlan_init(CC3000_UsynchCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch, ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
 
@@ -104,6 +113,8 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, unsigned char *key)
 	pio_init();
 	init_spi();
 
+	ulCC3000WasConnected = 0;
+
 	wlan_init(CC3000_UsynchCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch, ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
 	
 	wlan_start(0);
@@ -128,6 +139,8 @@ int WiFiClass::begin(int patchesAvailableAtHost)
 {
 	pio_init();
 	init_spi();
+
+	ulCC3000WasConnected = 0;
 
 	wlan_init( CC3000_UsynchCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch, ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
 
@@ -156,14 +169,80 @@ int WiFiClass::begin()
 
 int WiFiClass::disconnect()
 {
-//	if(wlan_ioctl_statusget() == WLAN_STATUS_CONNECTED);
-//		wlan_disconnect();
+	if(ulCC3000Connected)
+		wlan_disconnect();
+
 	return 1;
 }
+
+void WiFiClass::config()
+{
+	uint32_t zero = 0x0;
+
+	begin();
+	netapp_dhcp(&zero, &zero, &zero, &zero);
+
+	wlan_stop();
+	delay(1000);
+	wlan_start(0);
+}
+
+void WiFiClass::config(IPAddress local_ip)
+{
+	uint32_t zero = 0x0;
+	uint32_t ip = (uint32_t)local_ip;
+
+	begin();
+	netapp_dhcp(&ip, &zero, &zero, &zero);
+
+	wlan_stop();
+	delay(1000);
+	wlan_start(0);
+}
+
+void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
+{
+	uint32_t zero = 0x0;
+	netapp_dhcp((uint32_t *)&local_ip, &zero, &zero, (uint32_t *)&dns_server);
+	wlan_stop();
+	wlan_start(0);
+
+}
+
+void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway)
+{
+	uint32_t zero = 0x0;
+	uint32_t ip = (uint32_t)local_ip;
+	uint32_t dns = (uint32_t)dns_server;
+	uint32_t gw = (uint32_t)gateway;
+
+	begin();
+	netapp_dhcp(&ip, &zero, &gw, &dns);
+
+	wlan_stop();
+	delay(1000);
+	wlan_start(0);
+}
+
+void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
+{
+	uint32_t ip = (uint32_t)local_ip;
+	uint32_t dns = (uint32_t)dns_server;
+	uint32_t gw = (uint32_t)gateway;
+	uint32_t sn = (uint32_t)subnet;
+
+	begin();
+	netapp_dhcp(&ip, &sn, &gw, &dns);
+
+	wlan_stop();
+	delay(1000);
+	wlan_start(0);
+}
+
 uint8_t WiFiClass::status()
 {
 	if(ulCC3000Connected == 0)
-		return WL_DISCONNECTED;
+		return ulCC3000WasConnected ? WL_CONNECTION_LOST:WL_DISCONNECTED;
 	else
 		return WL_CONNECTED;
 }
@@ -204,6 +283,27 @@ char* WiFiClass::SSID()
 	return (char *)ipConfig.uaSSID;
 }
 
+char* WiFiClass::SSID(uint8_t networkItem)
+{
+	if (networkItem >= WL_NETWORKS_LIST_MAXNUM)
+		return NULL;
+	return _networkSsid[networkItem];
+}
+
+int32_t WiFiClass::RSSI(uint8_t networkItem)
+{
+	if (networkItem >= WL_NETWORKS_LIST_MAXNUM)
+		return 0;
+	return _networkRssi[networkItem];
+}
+
+uint8_t WiFiClass::encryptionType(uint8_t networkItem)
+{
+	if (networkItem >= WL_NETWORKS_LIST_MAXNUM)
+		return 0;
+	return _networkEncr[networkItem];
+}
+
 uint8_t* WiFiClass::macAddress(uint8_t* mac)
 {
 	tNetappIpconfigRetArgs config;
@@ -212,7 +312,8 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
 	return mac;
 }
 
-int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult) {
+int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
+{
 	uint32_t ip;
 	int ret = gethostbyname((char *)aHostname, strlen(aHostname), &ip);
 	aResult = ntohl(ip);
@@ -303,6 +404,7 @@ int WiFiClass::updateFirmware() {
 		 * Note that the array itself is changing between the different Service Packs */
 		ucStatus_Dr = nvmem_write_patch(NVMEM_WLAN_DRIVER_SP_FILEID, drv_length, wlan_drv_patch);
 	}
+	if(ucStatus_Dr != 0) return 0;
 	
 	ucStatus_FW = 1;
 	
@@ -312,13 +414,62 @@ int WiFiClass::updateFirmware() {
 		 * Note that the array itself is changing between the different Service Packs */
 		ucStatus_FW = nvmem_write_patch(NVMEM_WLAN_FW_SP_FILEID, fw_length, fw_patch);
 	}
-	
+
+	if(ucStatus_FW != 0) return 0;
+
 	/* Init board and request to load with patches. */
 	wlan_stop();
 	delay(1000);
 	wlan_start(0);
+	return 1;
 }
 
+
+int8_t WiFiClass::scanNetworks()
+{
+	unsigned long aiIntervalList[NUM_CHANNELS];
+	uint8_t rval;
+	uint8_t numOfNetworks = 0;
+
+	scanResults sr;
+
+	for (int i=0; i<NUM_CHANNELS; i++) {
+		aiIntervalList[i] = 2000;
+	}
+
+	rval = wlan_ioctl_set_scan_params(
+		1,		// enable start application scan
+		100,		// minimum dwell time on each channel
+		100,		// maximum dwell time on each channel
+		5,		// number of probe requests
+		0x7ff,		// channel mask
+		-80,		// RSSI threshold
+		0,		// SNR threshold
+		205,		// probe TX power
+		aiIntervalList	// table of scan intervals per channel
+	);
+
+	if(rval != 0) return 0;
+	// Give it 5 sec to complete the scan
+	delay(5000);
+
+	do {
+		if(wlan_ioctl_get_scan_results(2000, (unsigned char *)&sr) != 0) return 0;
+
+		if(sr.isValid != 1 || !strlen((const char*)sr.ssid_name)) continue; //Result not valid
+		/* only have space for WL_NETWORKS_LIST_MAXNUM
+		 * Continue to clear the list */
+		if(numOfNetworks > WL_NETWORKS_LIST_MAXNUM - 1) continue;
+
+		memcpy(_networkSsid[numOfNetworks], sr.ssid_name, WL_SSID_MAX_LENGTH);
+		_networkRssi[numOfNetworks] = -sr.rssi;
+		_networkEncr[numOfNetworks] = sr.securityMode;
+		numOfNetworks++;
+
+	} while (sr.numNetworksFound > 0);
+
+	return numOfNetworks;
+}
 
 int WiFiClass::startSmartConfig()
 {
