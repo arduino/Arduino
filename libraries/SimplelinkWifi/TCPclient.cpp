@@ -4,6 +4,8 @@
 extern WiFiClass WiFi;
 #define socket_overflow 2
 
+extern fd_set gConnectedSockets;
+
 WiFiClient::WiFiClient() : clientSocket(255) {
 	rx_buf_pos=0;
 	rx_buf_fill=0;
@@ -20,7 +22,7 @@ int WiFiClient::available()
 {
 	if(clientSocket == 255) return 0;
 
-	int ret = 0;
+	int ret;
 	timeval timeout;
 	memset(&timeout, 0, sizeof(timeval));
 	timeout.tv_sec = 0;
@@ -30,13 +32,6 @@ int WiFiClient::available()
 	FD_ZERO(&errorsds);
 	FD_SET(clientSocket, &readsds);
 	FD_SET(clientSocket, &errorsds);
-
-//	int wRecvTimeout = 5;
-//	setsockopt (clientSocket, SOL_SOCKET, SOCKOPT_RECV_TIMEOUT, &wRecvTimeout, sizeof(wRecvTimeout));
-//	// Nothing more to do if no packet received
-//	if (ret <= 0) {
-//		return 0;
-//	}
 
 	if(!rx_buf_fill){
 		ret = select(clientSocket+1, &readsds, NULL, &errorsds, &timeout);
@@ -54,12 +49,31 @@ int WiFiClient::available()
 
 int WiFiClient::read(uint8_t* buf, size_t size)
 {
-	return 0;
+	size_t i = 0;
+	uint8_t *ptr = buf;
+	int b;
+
+	if(!size) return -1;
+
+	while(i < size) {
+		b = (uint8_t) read();
+
+		if(b < 0)
+			return i;
+
+		*ptr = b;
+		ptr++;
+		i++;
+	}
+
+	return i;
 }
 
 int WiFiClient::peek()
 {
-	return 0;
+	if(!available()) return 0;
+
+	return rx_buf[rx_buf_pos];
 }
 
 void WiFiClient::flush() {
@@ -74,9 +88,13 @@ int WiFiClient::read()
 	if (!available())
 		return -1;
 
-	b=rx_buf[rx_buf_pos];
+	b = rx_buf[rx_buf_pos];
 	rx_buf_pos++;
-	if(rx_buf_pos>=rx_buf_fill){rx_buf_pos=0;rx_buf_fill=0;}
+
+	if(rx_buf_pos >= rx_buf_fill) {
+		rx_buf_pos=0;
+		rx_buf_fill=0;
+	}
 
 	return b;
 }
@@ -84,23 +102,11 @@ int WiFiClient::read()
 uint8_t WiFiClient::connected()
 {
 	if(clientSocket == 255) return 0;
-	if(available()) return 1;
-	/* TODO: Danger! This assumes that the connection has been close
-	 * if there is no data available.
-	 * The correct thing to do would be to figure out if the connections is still alive.
-	 * send() does the trick but for some reason the CC3000 ends up running out of buffers so no go!
-	 */ 
-	return 0;
-
-//	if((send( clientSocket, "", 0, 0) <= 0)) {
-//		return 0;
-//	} else {
-//		return 1;
-//	}
+	return !(!FD_ISSET(clientSocket, &gConnectedSockets) && !available());
 }
 
 WiFiClient::operator bool() {
-  return clientSocket != 255;
+	return clientSocket != 255;
 }
 
 int WiFiClient::connect(const char* host, uint16_t port) {
@@ -128,6 +134,8 @@ int WiFiClient::connect(IPAddress ip, uint16_t port) {
 	{
 		if (sl_connect(clientSocket, (sockaddr *)&clientSocketAddr, addrlen) >=0) {
 			WiFi.countSocket(1);
+			/* Indicate that the socket is connected in the fd_set */
+			FD_SET(clientSocket, &gConnectedSockets);
 			return 1;
 		}
 	}

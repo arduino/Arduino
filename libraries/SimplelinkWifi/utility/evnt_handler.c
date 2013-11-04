@@ -594,9 +594,10 @@ hci_unsol_event_handler(char *event_hdr)
 			break;
 		case HCI_EVNT_BSD_TCP_CLOSE_WAIT:
 			{
+				data = (char*)(event_hdr) + HCI_EVENT_HEADER_SIZE;
 				if( tSLInformation.sWlanCB )
 				{
-					tSLInformation.sWlanCB(event_type, NULL, 0);
+					tSLInformation.sWlanCB(event_type, data, 1);
 				}
 			}
 			break;

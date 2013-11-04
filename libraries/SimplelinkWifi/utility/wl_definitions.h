@@ -8,6 +8,8 @@
 #ifndef WL_DEFINITIONS_H_
 #define WL_DEFINITIONS_H_
 
+// Number of channels available
+#define NUM_CHANNELS 16
 // Maximum size of a SSID
 #define WL_SSID_MAX_LENGTH 32
 // Length of passphrase. Valid lengths are 8-63.
@@ -28,7 +30,7 @@
 #define WL_MAX_ATTEMPT_CONNECTION	10
 
 typedef enum {
-		WL_NO_SHIELD = 255,
+	WL_NO_SHIELD = 255,
         WL_IDLE_STATUS = 0,
         WL_NO_SSID_AVAIL,
         WL_SCAN_COMPLETED,
@@ -39,14 +41,23 @@ typedef enum {
 } wl_status_t;
 
 /* Encryption modes */
-enum wl_enc_type {  /* Values map to 802.11 encryption suites... */
-        ENC_TYPE_WEP  = 5,
+enum wl_enc_type {
+        ENC_TYPE_NONE = 0,
+        ENC_TYPE_WEP  = 1,
         ENC_TYPE_TKIP = 2,
-        ENC_TYPE_CCMP = 4,
-        /* ... except these two, 7 and 8 are reserved in 802.11-2007 */
-        ENC_TYPE_NONE = 7,
-        ENC_TYPE_AUTO = 8
+        ENC_TYPE_CCMP = 3,
+        ENC_TYPE_AUTO = 4
 };
 
-
+typedef struct scanResults {
+        unsigned long numNetworksFound;
+        unsigned long results;
+        unsigned isValid:1;
+        unsigned rssi:7;
+        unsigned securityMode:2;
+        unsigned ssidLength:6;
+        unsigned short frameTime;
+        unsigned char ssid_name[WL_SSID_MAX_LENGTH];
+        unsigned char bssid[6];
+        } scanResults;
 #endif /* WL_DEFINITIONS_H_ */
