@@ -39,7 +39,7 @@ static const uint8_t SCK  = 52;
 
 static const uint8_t SDA = 20;
 static const uint8_t SCL = 21;
-static const uint8_t LED_BUILTIN = 13;
+#define LED_BUILTIN 13
 
 static const uint8_t A0 = 54;
 static const uint8_t A1 = 55;
@@ -82,6 +82,8 @@ static const uint8_t A15 = 69;
                                 ( ((p) == 53) ? 0 : \
                                 ( (((p) >= 62) && ((p) <= 69)) ? ((p) - 62) : \
                                 0 ) ) ) ) ) )
+
+#define digitalPinToInterrupt(p) ((p) == 2 ? 0 : ((p) == 3 ? 1 : ((p) >= 18 && (p) <= 21 ? 23 - (p) : NOT_AN_INTERRUPT)))
 
 #ifdef ARDUINO_MAIN
 

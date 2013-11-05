@@ -56,6 +56,11 @@ extern "C"{
 
 // Number of pins defined in PinDescription array
 #define PINS_COUNT           (79u)
+#define NUM_DIGITAL_PINS     (53u)
+#define NUM_ANALOG_INPUTS    (12u)
+
+// Interrupts
+#define digitalPinToInterrupt(p)  ((p) < NUM_DIGITAL_PINS ? (p) : -1)
 
 // LEDs
 #define PIN_LED_13           (13u)
@@ -64,6 +69,7 @@ extern "C"{
 #define PIN_LED              PIN_LED_13
 #define PIN_LED2             PIN_LED_RXL
 #define PIN_LED3             PIN_LED_TXL
+#define LED_BUILTIN          13
 
 /*
  * SPI Interfaces

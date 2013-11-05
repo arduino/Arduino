@@ -10,6 +10,7 @@ ARDUINO 1.5.5 BETA
 * Added warning message when opening sketches with additional files with illegal names
 * (windows) Upgraded embedded Java runtime to version 7: much faster startup
 * Improved files open/save dialogs
+* Added line numbers, can be enabled/disabled from preferences (Cayci Gorlitsky)
 
 [libraries]
 * avr: Fixed buffer overflow in File::doBuffer() (dreggy)
@@ -25,6 +26,8 @@ ARDUINO 1.5.5 BETA
 * avr: Added yun variant with LED_BUILTIN definition
 * avr: Refactored Mega* variants definitions in boards.txt (Kristian Sloth Lauszus)
 * avr: Removed File object destructor. In order to free memory allocated by a File object the safest way is to call its close() method
+* Added digitalPinToInterrupt variant macro (Paul Stoffregen)
+* avr: added variant file for Arduino Ethernet
 
 ARDUINO 1.5.4 BETA 2013.09.10
 
