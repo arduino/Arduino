@@ -850,7 +850,7 @@ msgstr ""
 
 #: Sketch.java:1684
 #, java-format
-msgid "Binary sketch size: {0} bytes (of a {1} byte maximum)"
+msgid "Binary sketch size: {0} bytes (of a {1} byte maximum), filling {2}%"
 msgstr ""
 
 #: Sketch.java:1689
