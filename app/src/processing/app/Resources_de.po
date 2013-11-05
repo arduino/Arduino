@@ -850,8 +850,8 @@ msgstr "Uploaden..."
 
 #: Sketch.java:1684
 #, java-format
-msgid "Binary sketch size: {0} bytes (of a {1} byte maximum)"
-msgstr "Binäre Sketchgröße: {0} Bytes (von einem Maximum von {1} Bytes)"
+msgid "Binary sketch size: {0} bytes (of a {1} byte maximum), filling {2}%"
+msgstr "Binäre Sketchgröße: {0} Bytes (von einem Maximum von {1} Bytes), füllt {2}%"
 
 #: Sketch.java:1689
 msgid "Couldn't determine program size: {0}"
