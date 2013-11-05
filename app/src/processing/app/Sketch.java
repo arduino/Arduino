@@ -1513,7 +1513,7 @@ public class Sketch {
 //        }
 //      }
 //    }
-//    int codeIndex = getCodeIndex(errorCode);s
+//    int codeIndex = getCodeIndex(errorCode);
 //
 //    if (codeIndex != -1) {
 //      //System.out.println("got line num " + lineNumber);
