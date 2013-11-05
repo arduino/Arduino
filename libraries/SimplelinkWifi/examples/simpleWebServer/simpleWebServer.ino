@@ -152,8 +152,12 @@ void printConfig()
   client.println("<h1 align=center><font color=\"red\">Welcome To CC3000 Web Server</font></h1>");
   
   // the content of the HTTP response follows the header:
-  client.println("GREEN_LED <a href=\"/GREEN_LED_H\">HIGH</a> <a href=\"/GREEN_LED_L\">LOW</a><br>");
-  client.println("RED_LED <a href=\"/RED_LED_H\">HIGH</a> <a href=\"/RED_LED_L\">LOW</a><br><br>");
+  // Added: nicer buttons
+  client.print("<font color='green'>GREEN_LED</font> <button onclick=\"location.href='/GREEN_LED_H'\">HIGH</button>");
+  client.println(" <button onclick=\"location.href='/GREEN_LED_L'\">LOW</button><br>");
+  client.print("<font color='red'>RED_LED</font> <button onclick=\"location.href='/RED_LED_H'\">HIGH</button>");
+  client.println(" <button onclick=\"location.href='/RED_LED_L'\">LOW</button><br><br>");
+
   client.println("PUSH1 ");
   if(digitalRead(PUSH1))client.print("is HIGH<br>");
   else client.print("is LOW<br>");
