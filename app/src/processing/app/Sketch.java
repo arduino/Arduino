@@ -1647,7 +1647,7 @@ public class Sketch {
       System.out.println(
 	I18n.format(
 	  _("Binary sketch size: {0} bytes (of a {1} byte maximum), filling {2}%"),
-	  size, maxsize, size/maxsize
+	  size, maxsize, (size*100)/maxsize
 	)
       );
     } catch (RunnerException e) {
