@@ -1513,7 +1513,7 @@ public class Sketch {
 //        }
 //      }
 //    }
-//    int codeIndex = getCodeIndex(errorCode);
+//    int codeIndex = getCodeIndex(errorCode);s
 //
 //    if (codeIndex != -1) {
 //      //System.out.println("got line num " + lineNumber);
@@ -1646,8 +1646,8 @@ public class Sketch {
       size = sizer.computeSize();
       System.out.println(
 	I18n.format(
-	  _("Binary sketch size: {0} bytes (of a {1} byte maximum)"),
-	  size, maxsize
+	  _("Binary sketch size: {0} bytes (of a {1} byte maximum), filling {2}%"),
+	  size, maxsize, size/maxsize
 	)
       );
     } catch (RunnerException e) {
