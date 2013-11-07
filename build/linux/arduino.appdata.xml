@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
   <id type="desktop">arduino.desktop</id>
-  <licence>CC BY-SA</licence>
+  <licence>CC-BY-SA</licence>
   <description>
     <p>
       Arduino is an open-source electronics prototyping platform based
