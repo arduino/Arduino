@@ -15,8 +15,8 @@
     </p>
   </description>
   <screenshots>
-    <screenshot type="default" width="490" height="588">http://labs.arduino.cc/uploads/ADK/GettingStarted/201203_screenshot_arduino_1-0.png</screenshot>
-    <screenshot width="410" height="410">http://arduino.cc/en/uploads/Main/arduino_due_in_hand.jpg</screenshot>
+    <screenshot type="default" width="624" height="351">http://mavit.fedorapeople.org/appdata/arduino-screenshot.png</screenshot>
+    <screenshot width="704" height="396">http://mavit.fedorapeople.org/appdata/arduino-photo.jpg</screenshot>
   </screenshots>
   <url type="homepage">http://arduino.cc/</url>
   <updatecontact>arduino.appdata.xml@mavit.org.uk</updatecontact>
