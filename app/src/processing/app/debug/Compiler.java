@@ -38,8 +38,12 @@ import processing.app.I18n;
 import processing.app.Preferences;
 import processing.app.Sketch;
 import processing.app.SketchCode;
+import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringReplacer;
+import processing.app.helpers.filefilters.OnlyDirs;
+import processing.app.packages.Library;
 import processing.core.PApplet;
 
 public class Compiler implements MessageConsumer {
@@ -55,7 +59,8 @@ public class Compiler implements MessageConsumer {
   private PreferencesMap prefs;
   private boolean verbose;
   private boolean sketchIsCompiled;
-	
+  private String targetArch;
+  
   private RunnerException exception;
   
   /**
@@ -71,7 +76,7 @@ public class Compiler implements MessageConsumer {
                          String _primaryClassName, boolean _verbose)
       throws RunnerException {
     sketch = _sketch;
-    verbose = _verbose;
+    verbose = _verbose || Preferences.getBoolean("build.verbose");
     sketchIsCompiled = false;
     objectFiles = new ArrayList<File>();
 
@@ -83,9 +88,17 @@ public class Compiler implements MessageConsumer {
     includePaths.add(prefs.get("build.core.path"));
     if (prefs.get("build.variant.path").length() != 0)
       includePaths.add(prefs.get("build.variant.path"));
-    for (File file : sketch.getImportedLibraries())
-      includePaths.add(file.getPath());
-
+    for (Library lib : sketch.getImportedLibraries()) {
+      if (verbose)
+        System.out.println(I18n
+            .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
+                    lib.getFolder(), lib.isPre15Lib() ? "(pre-1.5)" : ""));
+      for (File folder : lib.getSrcFolders(targetArch))
+        includePaths.add(folder.getPath());
+    }
+    if (verbose)
+      System.out.println();
+    
     // 1. compile the sketch (already in the buildPath)
     sketch.setCompilingProgress(30);
     compileSketch(includePaths);
@@ -128,11 +141,29 @@ public class Compiler implements MessageConsumer {
       throw re;
     }
 
+    // Check if the board needs a platform from another package 
     TargetPlatform targetPlatform = Base.getTargetPlatform();
-
+    TargetPlatform corePlatform = null;
+    PreferencesMap boardPreferences = Base.getBoardPreferences();
+    String core = boardPreferences.get("build.core");
+    if (core.contains(":")) {
+      String[] split = core.split(":");
+      core = split[1];
+      corePlatform = Base.getTargetPlatform(split[0], targetPlatform.getId());
+      if (corePlatform == null) {
+        RunnerException re = new RunnerException(I18n
+            .format(_("Selected board depends on '{0}' core (not installed)."),
+                    split[0]));
+        re.hideStackTrace();
+        throw re;
+      }
+    }
+    
     // Merge all the global preference configuration in order of priority
     PreferencesMap p = new PreferencesMap();
     p.putAll(Preferences.getMap());
+    if (corePlatform != null)
+      p.putAll(corePlatform.getPreferences());
     p.putAll(targetPlatform.getPreferences());
     p.putAll(Base.getBoardPreferences());
     for (String k : p.keySet()) {
@@ -142,26 +173,23 @@ public class Compiler implements MessageConsumer {
 
     p.put("build.path", _buildPath);
     p.put("build.project_name", _primaryClassName);
+    targetArch = targetPlatform.getId();
+    p.put("build.arch", targetArch.toUpperCase());
     
     if (!p.containsKey("compiler.path"))
       p.put("compiler.path", Base.getAvrBasePath());
 
     // Core folder
-    String core = p.get("build.core");
-    TargetPlatform tp;
-    if (!core.contains(":")) {
+    TargetPlatform tp = corePlatform;
+    if (tp == null)
       tp = targetPlatform;
-    } else {
-      String[] split = core.split(":", 2);
-      tp = Base.getTargetPlatform(split[0], Preferences.get("target_platform"));
-      core = split[1];
-    }
     File coreFolder = new File(tp.getFolder(), "cores");
     coreFolder = new File(coreFolder, core);
+    p.put("build.core", core);
     p.put("build.core.path", coreFolder.getAbsolutePath());
     
     // System Folder
-    File systemFolder = targetPlatform.getFolder();
+    File systemFolder = tp.getFolder();
     systemFolder = new File(systemFolder, "system");
     p.put("build.system.path", systemFolder.getAbsolutePath());
     
@@ -173,8 +201,7 @@ public class Compiler implements MessageConsumer {
         t = targetPlatform;
       } else {
         String[] split = variant.split(":", 2);
-        t = Base
-            .getTargetPlatform(split[0], Preferences.get("target_platform"));
+        t = Base.getTargetPlatform(split[0], targetPlatform.getId());
         variant = split[1];
       }
       File variantFolder = new File(t.getFolder(), "variants");
@@ -209,7 +236,7 @@ public class Compiler implements MessageConsumer {
       File objectFile = new File(objectPath);
       File dependFile = new File(dependPath);
       objectPaths.add(objectFile);
-      if (is_already_compiled(file, objectFile, dependFile, prefs))
+      if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
         continue;
       String[] cmd = getCommandCompilerC(includePaths, file.getAbsolutePath(),
                                          objectPath);
@@ -222,7 +249,7 @@ public class Compiler implements MessageConsumer {
       File objectFile = new File(objectPath);
       File dependFile = new File(dependPath);
       objectPaths.add(objectFile);
-      if (is_already_compiled(file, objectFile, dependFile, prefs))
+      if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
         continue;
       String[] cmd = getCommandCompilerCPP(includePaths,
                                            file.getAbsolutePath(), objectPath);
@@ -232,10 +259,10 @@ public class Compiler implements MessageConsumer {
     return objectPaths;
   }
 
-  private boolean is_already_compiled(File src, File obj, File dep, Map<String, String> prefs) {
+  private boolean isAlreadyCompiled(File src, File obj, File dep, Map<String, String> prefs) {
     boolean ret=true;
     try {
-      //System.out.println("\n  is_already_compiled: begin checks: " + obj.getPath());
+      //System.out.println("\n  isAlreadyCompiled: begin checks: " + obj.getPath());
       if (!obj.exists()) return false;  // object file (.o) does not exist
       if (!dep.exists()) return false;  // dep file (.d) does not exist
       long src_modified = src.lastModified();
@@ -258,8 +285,8 @@ public class Compiler implements MessageConsumer {
             String objpath = obj.getCanonicalPath();
             File linefile = new File(line);
             String linepath = linefile.getCanonicalPath();
-            //System.out.println("  is_already_compiled: obj =  " + objpath);
-            //System.out.println("  is_already_compiled: line = " + linepath);
+            //System.out.println("  isAlreadyCompiled: obj =  " + objpath);
+            //System.out.println("  isAlreadyCompiled: line = " + linepath);
             if (objpath.compareTo(linepath) == 0) {
               need_obj_parse = false;
               continue;
@@ -282,15 +309,15 @@ public class Compiler implements MessageConsumer {
             ret = false;  // prerequisite modified since object was compiled
             break;
           }
-          //System.out.println("  is_already_compiled:  prerequisite ok");
+          //System.out.println("  isAlreadyCompiled:  prerequisite ok");
         }
       }
       reader.close();
     } catch (Exception e) {
       return false;  // any error reading dep file = recompile it
     }
-    if (ret && (verbose || Preferences.getBoolean("build.verbose"))) {
-      System.out.println("  Using previously compiled: " + obj.getPath());
+    if (ret && verbose) {
+      System.out.println(I18n.format(_("Using previously compiled file: {0}"), obj.getPath()));
     }
     return ret;
   }
@@ -315,7 +342,7 @@ public class Compiler implements MessageConsumer {
       return;
     int result = 0;
 
-    if (verbose || Preferences.getBoolean("build.verbose")) {
+    if (verbose) {
       for (String c : command)
         System.out.print(c + " ");
       System.out.println();
@@ -325,9 +352,8 @@ public class Compiler implements MessageConsumer {
     secondErrorFound = false;
 
     Process process;
-    
     try {
-      process = Runtime.getRuntime().exec(command);
+      process = ProcessUtils.exec(command);
     } catch (IOException e) {
       RunnerException re = new RunnerException(e.getMessage());
       re.hideStackTrace();
@@ -550,12 +576,19 @@ public class Compiler implements MessageConsumer {
                                              boolean recurse) {
     List<File> files = new ArrayList<File>();
 
-    if (folder.listFiles() == null)
+    if (FileUtils.isSCCSOrHiddenFile(folder)) {
       return files;
+    }
 
-    for (File file : folder.listFiles()) {
-      if (file.getName().startsWith("."))
+    File[] listFiles = folder.listFiles();
+    if (listFiles == null) {
+      return files;
+    }
+
+    for (File file : listFiles) {
+      if (FileUtils.isSCCSOrHiddenFile(file)) {
         continue; // skip hidden files
+      }
 
       if (file.getName().endsWith("." + extension))
         files.add(file);
@@ -578,26 +611,49 @@ public class Compiler implements MessageConsumer {
   // 2. compile the libraries, outputting .o files to:
   // <buildPath>/<library>/
   void compileLibraries(List<String> includePaths) throws RunnerException {
-
-    for (File libraryFolder : sketch.getImportedLibraries()) {
-      String outputPath = prefs.get("build.path");
-      File outputFolder = new File(outputPath, libraryFolder.getName());
-      File utilityFolder = new File(libraryFolder, "utility");
-      createFolder(outputFolder);
-      // this library can use includes in its utility/ folder
-      includePaths.add(utilityFolder.getAbsolutePath());
-
-      objectFiles.addAll(compileFiles(outputFolder.getAbsolutePath(),
-                                      libraryFolder, false, includePaths));
-      outputFolder = new File(outputFolder, "utility");
-      createFolder(outputFolder);
-      objectFiles.addAll(compileFiles(outputFolder.getAbsolutePath(),
-                                      utilityFolder, false, includePaths));
-      // other libraries should not see this library's utility/ folder
-      includePaths.remove(includePaths.size() - 1);
+    File outputPath = new File(prefs.get("build.path"));
+    for (Library lib : sketch.getImportedLibraries()) {
+      for (File folder : lib.getSrcFolders(targetArch)) {
+        if (lib.isPre15Lib()) {
+          compileLibrary(outputPath, folder, includePaths);
+        } else {
+          recursiveCompileLibrary(outputPath, folder, includePaths);
+        }
+      }
     }
   }
-	
+
+  private void recursiveCompileLibrary(File outputPath, File libraryFolder, List<String> includePaths) throws RunnerException {
+    File newOutputPath = compileFilesInFolder(outputPath, libraryFolder, includePaths);
+    for (File subFolder : libraryFolder.listFiles(new OnlyDirs())) {
+      recursiveCompileLibrary(newOutputPath, subFolder, includePaths);
+    }
+  }
+
+  private File compileFilesInFolder(File outputPath, File libraryFolder, List<String> includePaths) throws RunnerException {
+    File outputFolder = new File(outputPath, libraryFolder.getName());
+    createFolder(outputFolder);
+    objectFiles.addAll(compileFiles(outputFolder.getAbsolutePath(), libraryFolder, false, includePaths));
+    return outputFolder;
+  }
+
+  private void compileLibrary(File outputPath, File libraryFolder, List<String> includePaths) throws RunnerException {
+    File outputFolder = new File(outputPath, libraryFolder.getName());
+    File utilityFolder = new File(libraryFolder, "utility");
+    createFolder(outputFolder);
+    // this library can use includes in its utility/ folder
+    includePaths.add(utilityFolder.getAbsolutePath());
+
+    objectFiles.addAll(compileFiles(outputFolder.getAbsolutePath(),
+            libraryFolder, false, includePaths));
+    outputFolder = new File(outputFolder, "utility");
+    createFolder(outputFolder);
+    objectFiles.addAll(compileFiles(outputFolder.getAbsolutePath(),
+            utilityFolder, false, includePaths));
+    // other libraries should not see this library's utility/ folder
+    includePaths.remove(includePaths.size() - 1);
+  }
+
   // 3. compile the core, outputting .o files to <buildPath> and then
   // collecting them into the core.a library file.
   void compileCore()

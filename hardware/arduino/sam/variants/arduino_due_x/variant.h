@@ -20,6 +20,16 @@
 #define _VARIANT_ARDUINO_DUE_X_
 
 /*----------------------------------------------------------------------------
+ *        Definitions
+ *----------------------------------------------------------------------------*/
+
+/** Frequency of the board main oscillator */
+#define VARIANT_MAINOSC		12000000
+
+/** Master clock frequency */
+#define VARIANT_MCK			84000000
+
+/*----------------------------------------------------------------------------
  *        Headers
  *----------------------------------------------------------------------------*/
 
@@ -41,28 +51,16 @@ extern "C"{
 #endif
 
 /*----------------------------------------------------------------------------
- *        Definitions
- *----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-
-#define ArduinoDueX_DevEd
-
-/** Name of the board */
-#define VARIANT_NAME		"Arduino_DueX_Dev_Ed"
-
-/** Frequency of the board main oscillator */
-#define VARIANT_MAINOSC		12000000
-
-/** Master clock frequency */
-#define VARIANT_MCK			84000000
-
-/*----------------------------------------------------------------------------
  *        Pins
  *----------------------------------------------------------------------------*/
 
 // Number of pins defined in PinDescription array
 #define PINS_COUNT           (79u)
+#define NUM_DIGITAL_PINS     (53u)
+#define NUM_ANALOG_INPUTS    (12u)
+
+// Interrupts
+#define digitalPinToInterrupt(p)  ((p) < NUM_DIGITAL_PINS ? (p) : -1)
 
 // LEDs
 #define PIN_LED_13           (13u)
@@ -71,6 +69,7 @@ extern "C"{
 #define PIN_LED              PIN_LED_13
 #define PIN_LED2             PIN_LED_RXL
 #define PIN_LED3             PIN_LED_TXL
+#define LED_BUILTIN          13
 
 /*
  * SPI Interfaces
@@ -91,7 +90,7 @@ extern "C"{
 #define BOARD_SPI_SS1        (4u)
 #define BOARD_SPI_SS2        (52u)
 #define BOARD_SPI_SS3        PIN_SPI_SS3
-#define BOARD_SPI_DEFAULT_SS BOARD_SPI_SS2
+#define BOARD_SPI_DEFAULT_SS BOARD_SPI_SS3
 
 #define BOARD_PIN_TO_SPI_PIN(x) \
 	(x==BOARD_SPI_SS0 ? PIN_SPI_SS0 : \
@@ -164,6 +163,18 @@ static const uint8_t DAC1 = 67;
 static const uint8_t CANRX = 68;
 static const uint8_t CANTX = 69;
 #define ADC_RESOLUTION		12
+
+/*
+ * Complementary CAN pins
+ */
+static const uint8_t CAN1RX = 88;
+static const uint8_t CAN1TX = 89;
+
+// CAN0
+#define PINS_CAN0            (90u)
+// CAN1
+#define PINS_CAN1            (91u)
+
 
 /*
  * DACC

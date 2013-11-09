@@ -93,7 +93,7 @@ editor.font=Monospaced,plain,12
 editor.font.macosx = Monaco,plain,10
 
 # anti-aliased text, turned off by default
-editor.antialias=false
+editor.antialias=true
 
 # color to be used for background when 'external editor' enabled
 editor.external=false
@@ -103,6 +103,9 @@ editor.caret.blink=true
 
 # area that's not in use by the text (replaced with tildes)
 editor.invalid=false
+
+# show line numbers in editor
+editor.linenumbers = false
 
 # enable ctrl-ins, shift-ins, shift-delete for cut/copy/paste
 # on windows and linux, but disable on the mac
@@ -246,6 +249,8 @@ target_package = arduino
 target_platform = avr
 board = uno
 software=ARDUINO
+# Warn when data segment uses greater than this percentage
+build.warn_data_percentage = 75
 
 programmer = arduino:avrispmkii
 

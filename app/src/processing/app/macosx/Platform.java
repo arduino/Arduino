@@ -22,19 +22,21 @@
 
 package processing.app.macosx;
 
-import java.awt.Insets;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Method;
-import java.net.URI;
-
-import javax.swing.UIManager;
-
 import com.apple.eio.FileManager;
-
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.Executor;
 import processing.app.Base;
+import processing.app.debug.TargetPackage;
+import processing.app.tools.ExternalProcessExecutor;
 import processing.core.PApplet;
 import processing.core.PConstants;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.Map;
 
 
 /**
@@ -85,7 +87,7 @@ public class Platform extends processing.app.Platform {
 
 
   public File getSettingsFolder() throws Exception {
-    return new File(getLibraryFolder(), "Arduino");
+    return new File(getLibraryFolder(), "Arduino15");
   }
 
 
@@ -202,4 +204,36 @@ public class Platform extends processing.app.Platform {
     return PConstants.platformNames[PConstants.MACOSX];
   }
 
+  @Override
+  public String resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+    if (devicesListOutput == null) {
+      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+    }
+
+    try {
+      String vidPid = new SystemProfilerParser().extractVIDAndPID(devicesListOutput, serial);
+
+      if (vidPid == null) {
+        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+      }
+
+      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
+    } catch (IOException e) {
+      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+    }
+  }
+
+  @Override
+  public String preListAllCandidateDevices() {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Executor executor = new ExternalProcessExecutor(baos);
+
+    try {
+      CommandLine toDevicePath = CommandLine.parse("/usr/sbin/system_profiler SPUSBDataType");
+      executor.execute(toDevicePath);
+      return new String(baos.toByteArray());
+    } catch (Throwable e) {
+      return super.preListAllCandidateDevices();
+    }
+  }
 }

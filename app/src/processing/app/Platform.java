@@ -24,11 +24,17 @@ package processing.app;
 import static processing.app.I18n._;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.UIManager;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
 import processing.core.PConstants;
 
 
@@ -76,7 +82,7 @@ public class Platform {
   public File getSettingsFolder() throws Exception {
     // otherwise make a .processing directory int the user's home dir
     File home = new File(System.getProperty("user.home"));
-    File dataFolder = new File(home, ".arduino");
+    File dataFolder = new File(home, ".arduino15");
     return dataFolder;
 
     /*
@@ -129,10 +135,50 @@ public class Platform {
       showLauncherWarning();
     }
   }
-  
-  
-  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
-  
+
+  public String resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+    return null;
+  }
+
+  public String preListAllCandidateDevices() {
+    return null;
+  }
+
+  protected String resolveDeviceByVendorIdProductId(Map<String, TargetPackage> packages, String readVIDPID) {
+    for (TargetPackage targetPackage : packages.values()) {
+      for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
+        for (TargetBoard board : targetPlatform.getBoards().values()) {
+          List<String> vids = new LinkedList<String>(board.getPreferences().subTree("vid").values());
+          if (!vids.isEmpty()) {
+            List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid").values());
+            for (int i = 0; i< vids.size(); i++) {
+              String vidPid = vids.get(i) + "_" + pids.get(i);
+              if (vidPid.toUpperCase().equals(readVIDPID)) {
+                return board.getName();
+              }
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public String resolveDeviceByBoardID(Map<String, TargetPackage> packages, String boardId) {
+    for (TargetPackage targetPackage : packages.values()) {
+      for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
+        for (TargetBoard board : targetPlatform.getBoards().values()) {
+          if (boardId.equals(board.getId())) {
+            return board.getName();
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
 
   public interface CLibrary extends Library {
     CLibrary INSTANCE = (CLibrary)Native.loadLibrary("c", CLibrary.class);

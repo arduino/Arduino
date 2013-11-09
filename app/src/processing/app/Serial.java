@@ -159,6 +159,8 @@ public class Serial implements SerialPortEventListener {
           if (portId.getName().equals(iname)) {
             //System.out.println("looking for "+iname);
             port = (SerialPort)portId.open("serial madness", 2000);
+            port.setDTR(true);
+            port.setRTS(true);
             input = port.getInputStream();
             output = port.getOutputStream();
             port.setSerialPortParams(rate, databits, stopbits, parity);
@@ -217,24 +219,15 @@ public class Serial implements SerialPortEventListener {
   //public void key(java.awt.event.KeyEvent e) { }
 
 
-  public void dispose() {
-    try {
-      // do io streams need to be closed first?
-      if (input != null) input.close();
-      if (output != null) output.close();
+  public void dispose() throws IOException {
+    // do io streams need to be closed first?
+    if (input != null) input.close();
+    if (output != null) output.close();
 
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
     input = null;
     output = null;
 
-    try {
-      if (port != null) port.close();  // close the port
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    if (port != null) port.close();  // close the port
     port = null;
   }
   
@@ -559,11 +552,10 @@ public class Serial implements SerialPortEventListener {
     try {
       //System.err.println("trying");
       @SuppressWarnings("unchecked")
-      Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+      Enumeration<CommPortIdentifier> portList = CommPortIdentifier.getPortIdentifiers();
       //System.err.println("got port list");
       while (portList.hasMoreElements()) {
-        CommPortIdentifier portId = 
-          (CommPortIdentifier) portList.nextElement();
+        CommPortIdentifier portId = portList.nextElement();
         //System.out.println(portId);
 
         if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {

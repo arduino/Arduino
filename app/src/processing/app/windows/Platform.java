@@ -22,17 +22,23 @@
 
 package processing.app.windows;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.Executor;
 import processing.app.Base;
 import processing.app.Preferences;
+import processing.app.debug.TargetPackage;
+import processing.app.tools.ExternalProcessExecutor;
 import processing.app.windows.Registry.REGISTRY_ROOT_KEY;
 import processing.core.PApplet;
 import processing.core.PConstants;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 
 // http://developer.apple.com/documentation/QuickTime/Conceptual/QT7Win_Update_Guide/Chapter03/chapter_3_section_1.html
@@ -188,7 +194,7 @@ public class Platform extends processing.app.Platform {
     String appDataPath =
       Registry.getStringValue(REGISTRY_ROOT_KEY.CURRENT_USER, keyPath, "AppData");
 
-    File dataFolder = new File(appDataPath, "Arduino");
+    File dataFolder = new File(appDataPath, "Arduino15");
     return dataFolder;
   }
 
@@ -309,4 +315,41 @@ public class Platform extends processing.app.Platform {
     return PConstants.platformNames[PConstants.WINDOWS];
   }
 
+  @Override
+  public String resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+    if (devicesListOutput == null) {
+      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+    }
+
+    try {
+      String vidPid = new ListComPortsParser().extractVIDAndPID(devicesListOutput, serial);
+
+      if (vidPid == null) {
+        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+      }
+
+      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
+    } catch (IOException e) {
+      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+    }
+  }
+
+  /*
+  Temporarly disabled due to https://github.com/arduino/Arduino/issues/1573
+  @Override
+  public String preListAllCandidateDevices() {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    Executor executor = new ExternalProcessExecutor(baos);
+
+    try {
+      String listComPorts = new File(System.getProperty("user.dir"), "hardware/tools/listComPorts.exe").getCanonicalPath();
+
+      CommandLine toDevicePath = CommandLine.parse(listComPorts);
+      executor.execute(toDevicePath);
+      return new String(baos.toByteArray());
+    } catch (Throwable e) {
+      return super.preListAllCandidateDevices();
+    }
+  }
+  */
 }

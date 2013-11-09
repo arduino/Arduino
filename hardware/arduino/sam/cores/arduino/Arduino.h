@@ -24,6 +24,12 @@
 #include <string.h>
 #include <math.h>
 
+// some libraries and sketches depend on this
+// AVR stuff, assuming Arduino.h or WProgram.h
+// automatically includes it...
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
+
 #include "binary.h"
 
 #ifdef __cplusplus
@@ -40,12 +46,6 @@ extern "C"{
 #define microsecondsToClockCycles(a) ( (a) * (SystemCoreClock / 1000000L) )
 
 void yield(void);
-
-#include "wiring.h"
-#include "wiring_digital.h"
-#include "wiring_analog.h"
-#include "wiring_shift.h"
-#include "WInterrupts.h"
 
 /* sketch */
 extern void setup( void ) ;
@@ -64,6 +64,8 @@ extern void loop( void ) ;
 
 //#define NOT_A_PIN 0  // defined in pio.h/EPioType
 #define NOT_A_PORT           0
+
+#define NOT_AN_INTERRUPT -1
 
 typedef enum _EExt_Interrupts
 {
@@ -194,6 +196,12 @@ extern const PinDescription g_APinDescription[] ;
 
 // Include board variant
 #include "variant.h"
+
+#include "wiring.h"
+#include "wiring_digital.h"
+#include "wiring_analog.h"
+#include "wiring_shift.h"
+#include "WInterrupts.h"
 
 // USB Device
 #define USB_VID            0x2341 // arduino LLC vid

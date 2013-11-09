@@ -281,6 +281,12 @@ extern const PinDescription g_APinDescription[]=
   { PIOB, PIO_PB15A_CANRX1,     ID_PIOB, PIO_PERIPH_A, PIO_DEFAULT, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // CANRX1
   { PIOB, PIO_PB14A_CANTX1,     ID_PIOB, PIO_PERIPH_A, PIO_DEFAULT, PIN_ATTR_DIGITAL,                  NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER }, // CANTX1
 
+  // 90 .. 91 - "All CAN pins" masks
+  // 90 - CAN0 all pins
+  { PIOA, PIO_PA1A_CANRX0|PIO_PA0A_CANTX0, ID_PIOA, PIO_PERIPH_A, PIO_DEFAULT, (PIN_ATTR_DIGITAL|PIN_ATTR_COMBO), NO_ADC,  NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },
+  // 91 - CAN1 all pins
+  { PIOB, PIO_PB15A_CANRX1|PIO_PB14A_CANTX1, ID_PIOB, PIO_PERIPH_A, PIO_DEFAULT, (PIN_ATTR_DIGITAL|PIN_ATTR_COMBO), NO_ADC, NO_ADC, NOT_ON_PWM,  NOT_ON_TIMER },
+
   // END
   { NULL, 0, 0, PIO_NOT_A_PIN, PIO_DEFAULT, 0, NO_ADC, NO_ADC, NOT_ON_PWM, NOT_ON_TIMER }
 } ;
@@ -295,6 +301,8 @@ extern const PinDescription g_APinDescription[]=
 RingBuffer rx_buffer1;
 
 UARTClass Serial(UART, UART_IRQn, ID_UART, &rx_buffer1);
+void serialEvent() __attribute__((weak));
+void serialEvent() { }
 
 // IT handlers
 void UART_Handler(void)
@@ -311,8 +319,14 @@ RingBuffer rx_buffer3;
 RingBuffer rx_buffer4;
 
 USARTClass Serial1(USART0, USART0_IRQn, ID_USART0, &rx_buffer2);
+void serialEvent1() __attribute__((weak));
+void serialEvent1() { }
 USARTClass Serial2(USART1, USART1_IRQn, ID_USART1, &rx_buffer3);
+void serialEvent2() __attribute__((weak));
+void serialEvent2() { }
 USARTClass Serial3(USART3, USART3_IRQn, ID_USART3, &rx_buffer4);
+void serialEvent3() __attribute__((weak));
+void serialEvent3() { }
 
 // IT handlers
 void USART0_Handler(void)
@@ -328,6 +342,16 @@ void USART1_Handler(void)
 void USART3_Handler(void)
 {
   Serial3.IrqHandler();
+}
+
+// ----------------------------------------------------------------------------
+
+void serialEventRun(void)
+{
+  if (Serial.available()) serialEvent();
+  if (Serial1.available()) serialEvent1();
+  if (Serial2.available()) serialEvent2();
+  if (Serial3.available()) serialEvent3();
 }
 
 // ----------------------------------------------------------------------------
@@ -394,6 +418,18 @@ void init( void )
     g_APinDescription[PINS_USB].ulPinType,
     g_APinDescription[PINS_USB].ulPin,
     g_APinDescription[PINS_USB].ulPinConfiguration);
+
+  // Initialize CAN pins
+  PIO_Configure(
+    g_APinDescription[PINS_CAN0].pPort,
+    g_APinDescription[PINS_CAN0].ulPinType,
+    g_APinDescription[PINS_CAN0].ulPin,
+    g_APinDescription[PINS_CAN0].ulPinConfiguration);
+  PIO_Configure(
+    g_APinDescription[PINS_CAN1].pPort,
+    g_APinDescription[PINS_CAN1].ulPinType,
+    g_APinDescription[PINS_CAN1].ulPin,
+    g_APinDescription[PINS_CAN1].ulPinConfiguration);
 
   // Initialize Analog Controller
   pmc_enable_periph_clk(ID_ADC);

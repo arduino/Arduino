@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
 <project name="Arduino PDE" default="build">
 
+  <path id="class.path">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>
+    <pathelement path="../core/core.jar"/>
+  </path>
+
+  <path id="class.path.test">
+    <path refid="class.path"/>
+    <pathelement location="bin/"/>
+    <fileset dir="test-lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
   <target name="clean" description="Clean the build directories">
     <delete dir="bin" />
     <delete dir="test-bin" />
@@ -32,19 +48,47 @@
     <fail if="windows" unless="java_home"
 	  message="The JAVA_HOME variable must be set to the location of a full JDK. For instance, on Windows, this might be c:\jdk1.6.0_18." />
 
+    <condition property="work.dir" value="../build/macosx/work/Arduino.app/Contents/Resources/Java/">
+      <os family="mac"/>
+    </condition>
+    <condition property="java.additional.library.path" value=".">
+      <os family="mac"/>
+    </condition>
+    <condition property="java.additional.jvmargs" value="-d32">
+      <os family="mac"/>
+    </condition>
+    <condition property="work.dir" value="../build/windows/work/">
+      <os family="windows"/>
+    </condition>
+    <condition property="java.additional.library.path" value=".">
+      <os family="windows"/>
+    </condition>
+    <condition property="java.additional.jvmargs" value="-Ddummy=0">
+      <os family="windows"/>
+    </condition>
+    <condition property="work.dir" value="../build/linux/work/">
+      <os family="unix"/>
+    </condition>
+    <condition property="java.additional.library.path" value="lib">
+      <os family="unix"/>
+    </condition>
+    <condition property="java.additional.jvmargs" value="-Ddummy=0">
+      <os family="unix"/>
+    </condition>
+
 <!--
     <dirname property="blah" file="${java.home}" />
     <echo message="here! ${java.home}/lib/tools.jar or there: ${blah}" />
     <echo message="override ${env.JAVA_HOME}/lib/tools.jar" />
     <fail />
 -->
-    <javac source="1.5" target="1.5"
+    <javac source="1.6" target="1.6"
 	   srcdir="src"
 	   destdir="bin"
 	   encoding="UTF-8"
 	   includeAntRuntime="false"
 	   debug="true"
-	   classpath="../core/core.jar; ${env.JAVA_HOME}/lib/tools.jar; lib/apple.jar; lib/ecj.jar; lib/jna.jar; lib/RXTXcomm.jar" />
+	   classpathref="class.path" />
     <copy todir="bin" overwrite="true" verbose="true">
       <fileset dir="src" includes="**/*.properties" />
     </copy>
@@ -53,40 +97,30 @@
   <target name="test" depends="compile" description="Runs the test">
     <mkdir dir="test-bin"/>
 
-    <javac source="1.5" target="1.5"
+    <javac source="1.6" target="1.6"
            srcdir="test"
            destdir="test-bin"
            encoding="UTF-8"
            includeAntRuntime="false"
-           debug="true">
-      <classpath>
-        <pathelement location="bin"/>
-        <pathelement location="../core/core.jar"/>
-        <pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
-        <pathelement location="lib/apple.jar"/>
-        <pathelement location="lib/ecj.jar"/>
-        <pathelement location="lib/jna.jar"/>
-        <pathelement location="lib/RXTXcomm.jar"/>
-        <pathelement location="test-lib/junit-4.11.jar"/>
-      </classpath>
+           debug="true"
+           classpathref="class.path.test">
     </javac>
 
     <copy todir="test-bin" overwrite="true" verbose="true">
       <fileset dir="test" includes="**/*.zip" />
       <fileset dir="test" includes="**/*.txt" />
+      <fileset dir="test" includes="**/*.properties" />
+      <fileset dir="test" includes="**/*.ino" />
     </copy>
 
-    <junit printsummary="yes">
+    <junit printsummary="yes" dir="${work.dir}" fork="true">
+      <jvmarg value="-Djava.library.path=${java.additional.library.path}"/>
+      <jvmarg value="${java.additional.jvmargs}"/>
       <classpath>
         <pathelement location="bin"/>
         <pathelement location="test-bin"/>
-        <pathelement location="../core/core.jar"/>
-        <pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
-        <pathelement location="lib/apple.jar"/>
-        <pathelement location="lib/ecj.jar"/>
-        <pathelement location="lib/jna.jar"/>
-        <pathelement location="lib/RXTXcomm.jar"/>
-        <pathelement location="test-lib/junit-4.11.jar"/>
+        <pathelement path="../build/macosx/work/Arduino.app/Contents/Resources/Java/quaqua.jar"/>
+        <path refid="class.path.test"/>
       </classpath>
 
       <formatter type="xml"/>
@@ -94,13 +128,14 @@
       <batchtest fork="yes" todir="test-bin">
         <fileset dir="test">
           <include name="**/*Test.java"/>
+          <exclude name="**/Abstract*.java"/>
         </fileset>
       </batchtest>
     </junit>
 
   </target>
 
-  <target name="build" depends="test" description="Build PDE">
+  <target name="build" depends="compile" description="Build PDE">
     <jar basedir="bin" destfile="pde.jar" />
   </target>
 </project>
