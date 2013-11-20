@@ -2,7 +2,7 @@
 //
 // sysexc.c - Routines for the System Exception Module.
 //
-// Copyright (c) 2011-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2011-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,10 +44,46 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_ints.h"
+#include "inc/hw_sysctl.h"
 #include "inc/hw_sysexc.h"
 #include "inc/hw_types.h"
+#include "driverlib/debug.h"
 #include "driverlib/interrupt.h"
+
+//*****************************************************************************
+//
+//! Returns the interrupt number for a system exception.
+//!
+//! This function returns the interrupt number for a system exception.
+//!
+//! \return Returns the system exception interrupt number.
+//
+//*****************************************************************************
+static uint32_t
+_SysExcIntNumberGet(void)
+{
+    uint32_t ui32Int;
+
+    //
+    // Get the interrupt number based on the class.
+    //
+    if(CLASS_IS_BLIZZARD)
+    {
+        ui32Int = INT_SYSEXC_BLIZZARD;
+    }
+    else if(CLASS_IS_SNOWFLAKE)
+    {
+        ui32Int = INT_SYSEXC_SNOWFLAKE;
+    }
+    else
+    {
+        ui32Int = 0;
+    }
+    return(ui32Int);
+}
 
 //*****************************************************************************
 //
@@ -71,15 +107,24 @@
 void
 SysExcIntRegister(void (*pfnHandler)(void))
 {
+    uint32_t ui32Int;
+
+    //
+    // Get the system exception interrupt number.
+    //
+    ui32Int = _SysExcIntNumberGet();
+
+    ASSERT(ui32Int != 0);
+
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_SYSEXC, pfnHandler);
+    IntRegister(ui32Int, pfnHandler);
 
     //
     // Enable the system exception interrupt.
     //
-    IntEnable(INT_SYSEXC);
+    IntEnable(ui32Int);
 }
 
 //*****************************************************************************
@@ -100,28 +145,37 @@ SysExcIntRegister(void (*pfnHandler)(void))
 void
 SysExcIntUnregister(void)
 {
+    uint32_t ui32Int;
+
+    //
+    // Get the system exception interrupt number.
+    //
+    ui32Int = _SysExcIntNumberGet();
+
+    ASSERT(ui32Int != 0);
+
     //
     // Disable the system exception interrupt.
     //
-    IntDisable(INT_SYSEXC);
+    IntDisable(ui32Int);
 
     //
     // Unregister the system exception interrupt handler.
     //
-    IntUnregister(INT_SYSEXC);
+    IntUnregister(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Enables individual system exception interrupt sources.
 //!
-//! \param ulIntFlags is the bit mask of the interrupt sources to be enabled.
+//! \param ui32IntFlags is the bit mask of the interrupt sources to be enabled.
 //!
 //! This function enables the indicated system exception interrupt sources.
 //! Only the sources that are enabled can be reflected to the processor
 //! interrupt; disabled sources have no effect on the processor.
 //!
-//! The \e ulIntFlags parameter is the logical OR of any of the following:
+//! The \e ui32IntFlags parameter is the logical OR of any of the following:
 //!
 //! - \b SYSEXC_INT_FP_IXC - Floating-point inexact exception interrupt
 //! - \b SYSEXC_INT_FP_OFC - Floating-point overflow exception interrupt
@@ -134,25 +188,26 @@ SysExcIntUnregister(void)
 //
 //*****************************************************************************
 void
-SysExcIntEnable(unsigned long ulIntFlags)
+SysExcIntEnable(uint32_t ui32IntFlags)
 {
     //
     // Enable the specified interrupts.
     //
-    HWREG(SYSEXC_IM) |= ulIntFlags;
+    HWREG(SYSEXC_IM) |= ui32IntFlags;
 }
 
 //*****************************************************************************
 //
 //! Disables individual system exception interrupt sources.
 //!
-//! \param ulIntFlags is the bit mask of the interrupt sources to be disabled.
+//! \param ui32IntFlags is the bit mask of the interrupt sources to be
+//! disabled.
 //!
 //! This function disables the indicated system exception interrupt sources.
 //! Only sources that are enabled can be reflected to the processor interrupt;
 //! disabled sources have no effect on the processor.
 //!
-//! The \e ulIntFlags parameter is the logical OR of any of the following:
+//! The \e ui32IntFlags parameter is the logical OR of any of the following:
 //!
 //! - \b SYSEXC_INT_FP_IXC - Floating-point inexact exception interrupt
 //! - \b SYSEXC_INT_FP_OFC - Floating-point overflow exception interrupt
@@ -165,12 +220,12 @@ SysExcIntEnable(unsigned long ulIntFlags)
 //
 //*****************************************************************************
 void
-SysExcIntDisable(unsigned long ulIntFlags)
+SysExcIntDisable(uint32_t ui32IntFlags)
 {
     //
     // Disable the specified interrupts.
     //
-    HWREG(SYSEXC_IM) &= ~(ulIntFlags);
+    HWREG(SYSEXC_IM) &= ~(ui32IntFlags);
 }
 
 //*****************************************************************************
@@ -190,8 +245,8 @@ SysExcIntDisable(unsigned long ulIntFlags)
 //! \b SYSEXC_INT_FP_IDC.
 //
 //*****************************************************************************
-unsigned long
-SysExcIntStatus(tBoolean bMasked)
+uint32_t
+SysExcIntStatus(bool bMasked)
 {
     //
     // Return either the interrupt status or the raw interrupt status as
@@ -211,14 +266,14 @@ SysExcIntStatus(tBoolean bMasked)
 //
 //! Clears system exception interrupt sources.
 //!
-//! \param ulIntFlags is a bit mask of the interrupt sources to be cleared.
+//! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
 //!
 //! This function clears the specified system exception interrupt sources, so
 //! that they no longer assert.  This function must be called in the interrupt
 //! handler to keep the interrupt from being recognized again immediately upon
 //! exit.
 //!
-//! The \e ulIntFlags parameter is the logical OR of any of the following:
+//! The \e ui32IntFlags parameter is the logical OR of any of the following:
 //!
 //! - \b SYSEXC_INT_FP_IXC - Floating-point inexact exception interrupt
 //! - \b SYSEXC_INT_FP_OFC - Floating-point overflow exception interrupt
@@ -240,12 +295,12 @@ SysExcIntStatus(tBoolean bMasked)
 //
 //*****************************************************************************
 void
-SysExcIntClear(unsigned long ulIntFlags)
+SysExcIntClear(uint32_t ui32IntFlags)
 {
     //
     // Clear the requested interrupt sources.
     //
-    HWREG(SYSEXC_IC) = ulIntFlags;
+    HWREG(SYSEXC_IC) = ui32IntFlags;
 }
 
 //*****************************************************************************

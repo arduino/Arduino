@@ -2,7 +2,7 @@
 //
 // hw_nvic.h - Macros used when accessing the NVIC hardware.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -45,13 +45,11 @@
 // The following are defines for the NVIC register addresses.
 //
 //*****************************************************************************
-#define NVIC_INT_TYPE           0xE000E004  // Interrupt Controller Type Reg
 #define NVIC_ACTLR              0xE000E008  // Auxiliary Control
 #define NVIC_ST_CTRL            0xE000E010  // SysTick Control and Status
                                             // Register
 #define NVIC_ST_RELOAD          0xE000E014  // SysTick Reload Value Register
 #define NVIC_ST_CURRENT         0xE000E018  // SysTick Current Value Register
-#define NVIC_ST_CAL             0xE000E01C  // SysTick Calibration Value Reg
 #define NVIC_EN0                0xE000E100  // Interrupt 0-31 Set Enable
 #define NVIC_EN1                0xE000E104  // Interrupt 32-54 Set Enable
 #define NVIC_EN2                0xE000E108  // Interrupt 64-95 Set Enable
@@ -155,14 +153,6 @@
 
 //*****************************************************************************
 //
-// The following are defines for the bit fields in the NVIC_INT_TYPE register.
-//
-//*****************************************************************************
-#define NVIC_INT_TYPE_LINES_M   0x0000001F  // Number of interrupt lines (x32)
-#define NVIC_INT_TYPE_LINES_S   0
-
-//*****************************************************************************
-//
 // The following are defines for the bit fields in the NVIC_ACTLR register.
 //
 //*****************************************************************************
@@ -203,52 +193,10 @@
 
 //*****************************************************************************
 //
-// The following are defines for the bit fields in the NVIC_ST_CAL register.
-//
-//*****************************************************************************
-#define NVIC_ST_CAL_NOREF       0x80000000  // No reference clock
-#define NVIC_ST_CAL_SKEW        0x40000000  // Clock skew
-#define NVIC_ST_CAL_ONEMS_M     0x00FFFFFF  // 1ms reference value
-#define NVIC_ST_CAL_ONEMS_S     0
-
-//*****************************************************************************
-//
 // The following are defines for the bit fields in the NVIC_EN0 register.
 //
 //*****************************************************************************
 #define NVIC_EN0_INT_M          0xFFFFFFFF  // Interrupt Enable
-#define NVIC_EN0_INT0           0x00000001  // Interrupt 0 enable
-#define NVIC_EN0_INT1           0x00000002  // Interrupt 1 enable
-#define NVIC_EN0_INT2           0x00000004  // Interrupt 2 enable
-#define NVIC_EN0_INT3           0x00000008  // Interrupt 3 enable
-#define NVIC_EN0_INT4           0x00000010  // Interrupt 4 enable
-#define NVIC_EN0_INT5           0x00000020  // Interrupt 5 enable
-#define NVIC_EN0_INT6           0x00000040  // Interrupt 6 enable
-#define NVIC_EN0_INT7           0x00000080  // Interrupt 7 enable
-#define NVIC_EN0_INT8           0x00000100  // Interrupt 8 enable
-#define NVIC_EN0_INT9           0x00000200  // Interrupt 9 enable
-#define NVIC_EN0_INT10          0x00000400  // Interrupt 10 enable
-#define NVIC_EN0_INT11          0x00000800  // Interrupt 11 enable
-#define NVIC_EN0_INT12          0x00001000  // Interrupt 12 enable
-#define NVIC_EN0_INT13          0x00002000  // Interrupt 13 enable
-#define NVIC_EN0_INT14          0x00004000  // Interrupt 14 enable
-#define NVIC_EN0_INT15          0x00008000  // Interrupt 15 enable
-#define NVIC_EN0_INT16          0x00010000  // Interrupt 16 enable
-#define NVIC_EN0_INT17          0x00020000  // Interrupt 17 enable
-#define NVIC_EN0_INT18          0x00040000  // Interrupt 18 enable
-#define NVIC_EN0_INT19          0x00080000  // Interrupt 19 enable
-#define NVIC_EN0_INT20          0x00100000  // Interrupt 20 enable
-#define NVIC_EN0_INT21          0x00200000  // Interrupt 21 enable
-#define NVIC_EN0_INT22          0x00400000  // Interrupt 22 enable
-#define NVIC_EN0_INT23          0x00800000  // Interrupt 23 enable
-#define NVIC_EN0_INT24          0x01000000  // Interrupt 24 enable
-#define NVIC_EN0_INT25          0x02000000  // Interrupt 25 enable
-#define NVIC_EN0_INT26          0x04000000  // Interrupt 26 enable
-#define NVIC_EN0_INT27          0x08000000  // Interrupt 27 enable
-#define NVIC_EN0_INT28          0x10000000  // Interrupt 28 enable
-#define NVIC_EN0_INT29          0x20000000  // Interrupt 29 enable
-#define NVIC_EN0_INT30          0x40000000  // Interrupt 30 enable
-#define NVIC_EN0_INT31          0x80000000  // Interrupt 31 enable
 
 //*****************************************************************************
 //
@@ -256,29 +204,6 @@
 //
 //*****************************************************************************
 #define NVIC_EN1_INT_M          0xFFFFFFFF  // Interrupt Enable
-#define NVIC_EN1_INT32          0x00000001  // Interrupt 32 enable
-#define NVIC_EN1_INT33          0x00000002  // Interrupt 33 enable
-#define NVIC_EN1_INT34          0x00000004  // Interrupt 34 enable
-#define NVIC_EN1_INT35          0x00000008  // Interrupt 35 enable
-#define NVIC_EN1_INT36          0x00000010  // Interrupt 36 enable
-#define NVIC_EN1_INT37          0x00000020  // Interrupt 37 enable
-#define NVIC_EN1_INT38          0x00000040  // Interrupt 38 enable
-#define NVIC_EN1_INT39          0x00000080  // Interrupt 39 enable
-#define NVIC_EN1_INT40          0x00000100  // Interrupt 40 enable
-#define NVIC_EN1_INT41          0x00000200  // Interrupt 41 enable
-#define NVIC_EN1_INT42          0x00000400  // Interrupt 42 enable
-#define NVIC_EN1_INT43          0x00000800  // Interrupt 43 enable
-#define NVIC_EN1_INT44          0x00001000  // Interrupt 44 enable
-#define NVIC_EN1_INT45          0x00002000  // Interrupt 45 enable
-#define NVIC_EN1_INT46          0x00004000  // Interrupt 46 enable
-#define NVIC_EN1_INT47          0x00008000  // Interrupt 47 enable
-#define NVIC_EN1_INT48          0x00010000  // Interrupt 48 enable
-#define NVIC_EN1_INT49          0x00020000  // Interrupt 49 enable
-#define NVIC_EN1_INT50          0x00040000  // Interrupt 50 enable
-#define NVIC_EN1_INT51          0x00080000  // Interrupt 51 enable
-#define NVIC_EN1_INT52          0x00100000  // Interrupt 52 enable
-#define NVIC_EN1_INT53          0x00200000  // Interrupt 53 enable
-#define NVIC_EN1_INT54          0x00400000  // Interrupt 54 enable
 
 //*****************************************************************************
 //
@@ -307,38 +232,6 @@
 //
 //*****************************************************************************
 #define NVIC_DIS0_INT_M         0xFFFFFFFF  // Interrupt Disable
-#define NVIC_DIS0_INT0          0x00000001  // Interrupt 0 disable
-#define NVIC_DIS0_INT1          0x00000002  // Interrupt 1 disable
-#define NVIC_DIS0_INT2          0x00000004  // Interrupt 2 disable
-#define NVIC_DIS0_INT3          0x00000008  // Interrupt 3 disable
-#define NVIC_DIS0_INT4          0x00000010  // Interrupt 4 disable
-#define NVIC_DIS0_INT5          0x00000020  // Interrupt 5 disable
-#define NVIC_DIS0_INT6          0x00000040  // Interrupt 6 disable
-#define NVIC_DIS0_INT7          0x00000080  // Interrupt 7 disable
-#define NVIC_DIS0_INT8          0x00000100  // Interrupt 8 disable
-#define NVIC_DIS0_INT9          0x00000200  // Interrupt 9 disable
-#define NVIC_DIS0_INT10         0x00000400  // Interrupt 10 disable
-#define NVIC_DIS0_INT11         0x00000800  // Interrupt 11 disable
-#define NVIC_DIS0_INT12         0x00001000  // Interrupt 12 disable
-#define NVIC_DIS0_INT13         0x00002000  // Interrupt 13 disable
-#define NVIC_DIS0_INT14         0x00004000  // Interrupt 14 disable
-#define NVIC_DIS0_INT15         0x00008000  // Interrupt 15 disable
-#define NVIC_DIS0_INT16         0x00010000  // Interrupt 16 disable
-#define NVIC_DIS0_INT17         0x00020000  // Interrupt 17 disable
-#define NVIC_DIS0_INT18         0x00040000  // Interrupt 18 disable
-#define NVIC_DIS0_INT19         0x00080000  // Interrupt 19 disable
-#define NVIC_DIS0_INT20         0x00100000  // Interrupt 20 disable
-#define NVIC_DIS0_INT21         0x00200000  // Interrupt 21 disable
-#define NVIC_DIS0_INT22         0x00400000  // Interrupt 22 disable
-#define NVIC_DIS0_INT23         0x00800000  // Interrupt 23 disable
-#define NVIC_DIS0_INT24         0x01000000  // Interrupt 24 disable
-#define NVIC_DIS0_INT25         0x02000000  // Interrupt 25 disable
-#define NVIC_DIS0_INT26         0x04000000  // Interrupt 26 disable
-#define NVIC_DIS0_INT27         0x08000000  // Interrupt 27 disable
-#define NVIC_DIS0_INT28         0x10000000  // Interrupt 28 disable
-#define NVIC_DIS0_INT29         0x20000000  // Interrupt 29 disable
-#define NVIC_DIS0_INT30         0x40000000  // Interrupt 30 disable
-#define NVIC_DIS0_INT31         0x80000000  // Interrupt 31 disable
 
 //*****************************************************************************
 //
@@ -346,30 +239,6 @@
 //
 //*****************************************************************************
 #define NVIC_DIS1_INT_M         0xFFFFFFFF  // Interrupt Disable
-#define NVIC_DIS1_INT32         0x00000001  // Interrupt 32 disable
-#define NVIC_DIS1_INT33         0x00000002  // Interrupt 33 disable
-#define NVIC_DIS1_INT34         0x00000004  // Interrupt 34 disable
-#define NVIC_DIS1_INT35         0x00000008  // Interrupt 35 disable
-#define NVIC_DIS1_INT36         0x00000010  // Interrupt 36 disable
-#define NVIC_DIS1_INT37         0x00000020  // Interrupt 37 disable
-#define NVIC_DIS1_INT38         0x00000040  // Interrupt 38 disable
-#define NVIC_DIS1_INT39         0x00000080  // Interrupt 39 disable
-#define NVIC_DIS1_INT40         0x00000100  // Interrupt 40 disable
-#define NVIC_DIS1_INT41         0x00000200  // Interrupt 41 disable
-#define NVIC_DIS1_INT42         0x00000400  // Interrupt 42 disable
-#define NVIC_DIS1_INT43         0x00000800  // Interrupt 43 disable
-#define NVIC_DIS1_INT44         0x00001000  // Interrupt 44 disable
-#define NVIC_DIS1_INT45         0x00002000  // Interrupt 45 disable
-#define NVIC_DIS1_INT46         0x00004000  // Interrupt 46 disable
-#define NVIC_DIS1_INT47         0x00008000  // Interrupt 47 disable
-#define NVIC_DIS1_INT48         0x00010000  // Interrupt 48 disable
-#define NVIC_DIS1_INT49         0x00020000  // Interrupt 49 disable
-#define NVIC_DIS1_INT50         0x00040000  // Interrupt 50 disable
-#define NVIC_DIS1_INT51         0x00080000  // Interrupt 51 disable
-#define NVIC_DIS1_INT52         0x00100000  // Interrupt 52 disable
-#define NVIC_DIS1_INT53         0x00200000  // Interrupt 53 disable
-#define NVIC_DIS1_INT54         0x00400000  // Interrupt 54 disable
-#define NVIC_DIS1_INT55         0x00800000  // Interrupt 55 disable
 
 //*****************************************************************************
 //
@@ -398,38 +267,6 @@
 //
 //*****************************************************************************
 #define NVIC_PEND0_INT_M        0xFFFFFFFF  // Interrupt Set Pending
-#define NVIC_PEND0_INT0         0x00000001  // Interrupt 0 pend
-#define NVIC_PEND0_INT1         0x00000002  // Interrupt 1 pend
-#define NVIC_PEND0_INT2         0x00000004  // Interrupt 2 pend
-#define NVIC_PEND0_INT3         0x00000008  // Interrupt 3 pend
-#define NVIC_PEND0_INT4         0x00000010  // Interrupt 4 pend
-#define NVIC_PEND0_INT5         0x00000020  // Interrupt 5 pend
-#define NVIC_PEND0_INT6         0x00000040  // Interrupt 6 pend
-#define NVIC_PEND0_INT7         0x00000080  // Interrupt 7 pend
-#define NVIC_PEND0_INT8         0x00000100  // Interrupt 8 pend
-#define NVIC_PEND0_INT9         0x00000200  // Interrupt 9 pend
-#define NVIC_PEND0_INT10        0x00000400  // Interrupt 10 pend
-#define NVIC_PEND0_INT11        0x00000800  // Interrupt 11 pend
-#define NVIC_PEND0_INT12        0x00001000  // Interrupt 12 pend
-#define NVIC_PEND0_INT13        0x00002000  // Interrupt 13 pend
-#define NVIC_PEND0_INT14        0x00004000  // Interrupt 14 pend
-#define NVIC_PEND0_INT15        0x00008000  // Interrupt 15 pend
-#define NVIC_PEND0_INT16        0x00010000  // Interrupt 16 pend
-#define NVIC_PEND0_INT17        0x00020000  // Interrupt 17 pend
-#define NVIC_PEND0_INT18        0x00040000  // Interrupt 18 pend
-#define NVIC_PEND0_INT19        0x00080000  // Interrupt 19 pend
-#define NVIC_PEND0_INT20        0x00100000  // Interrupt 20 pend
-#define NVIC_PEND0_INT21        0x00200000  // Interrupt 21 pend
-#define NVIC_PEND0_INT22        0x00400000  // Interrupt 22 pend
-#define NVIC_PEND0_INT23        0x00800000  // Interrupt 23 pend
-#define NVIC_PEND0_INT24        0x01000000  // Interrupt 24 pend
-#define NVIC_PEND0_INT25        0x02000000  // Interrupt 25 pend
-#define NVIC_PEND0_INT26        0x04000000  // Interrupt 26 pend
-#define NVIC_PEND0_INT27        0x08000000  // Interrupt 27 pend
-#define NVIC_PEND0_INT28        0x10000000  // Interrupt 28 pend
-#define NVIC_PEND0_INT29        0x20000000  // Interrupt 29 pend
-#define NVIC_PEND0_INT30        0x40000000  // Interrupt 30 pend
-#define NVIC_PEND0_INT31        0x80000000  // Interrupt 31 pend
 
 //*****************************************************************************
 //
@@ -437,30 +274,6 @@
 //
 //*****************************************************************************
 #define NVIC_PEND1_INT_M        0xFFFFFFFF  // Interrupt Set Pending
-#define NVIC_PEND1_INT32        0x00000001  // Interrupt 32 pend
-#define NVIC_PEND1_INT33        0x00000002  // Interrupt 33 pend
-#define NVIC_PEND1_INT34        0x00000004  // Interrupt 34 pend
-#define NVIC_PEND1_INT35        0x00000008  // Interrupt 35 pend
-#define NVIC_PEND1_INT36        0x00000010  // Interrupt 36 pend
-#define NVIC_PEND1_INT37        0x00000020  // Interrupt 37 pend
-#define NVIC_PEND1_INT38        0x00000040  // Interrupt 38 pend
-#define NVIC_PEND1_INT39        0x00000080  // Interrupt 39 pend
-#define NVIC_PEND1_INT40        0x00000100  // Interrupt 40 pend
-#define NVIC_PEND1_INT41        0x00000200  // Interrupt 41 pend
-#define NVIC_PEND1_INT42        0x00000400  // Interrupt 42 pend
-#define NVIC_PEND1_INT43        0x00000800  // Interrupt 43 pend
-#define NVIC_PEND1_INT44        0x00001000  // Interrupt 44 pend
-#define NVIC_PEND1_INT45        0x00002000  // Interrupt 45 pend
-#define NVIC_PEND1_INT46        0x00004000  // Interrupt 46 pend
-#define NVIC_PEND1_INT47        0x00008000  // Interrupt 47 pend
-#define NVIC_PEND1_INT48        0x00010000  // Interrupt 48 pend
-#define NVIC_PEND1_INT49        0x00020000  // Interrupt 49 pend
-#define NVIC_PEND1_INT50        0x00040000  // Interrupt 50 pend
-#define NVIC_PEND1_INT51        0x00080000  // Interrupt 51 pend
-#define NVIC_PEND1_INT52        0x00100000  // Interrupt 52 pend
-#define NVIC_PEND1_INT53        0x00200000  // Interrupt 53 pend
-#define NVIC_PEND1_INT54        0x00400000  // Interrupt 54 pend
-#define NVIC_PEND1_INT55        0x00800000  // Interrupt 55 pend
 
 //*****************************************************************************
 //
@@ -489,38 +302,6 @@
 //
 //*****************************************************************************
 #define NVIC_UNPEND0_INT_M      0xFFFFFFFF  // Interrupt Clear Pending
-#define NVIC_UNPEND0_INT0       0x00000001  // Interrupt 0 unpend
-#define NVIC_UNPEND0_INT1       0x00000002  // Interrupt 1 unpend
-#define NVIC_UNPEND0_INT2       0x00000004  // Interrupt 2 unpend
-#define NVIC_UNPEND0_INT3       0x00000008  // Interrupt 3 unpend
-#define NVIC_UNPEND0_INT4       0x00000010  // Interrupt 4 unpend
-#define NVIC_UNPEND0_INT5       0x00000020  // Interrupt 5 unpend
-#define NVIC_UNPEND0_INT6       0x00000040  // Interrupt 6 unpend
-#define NVIC_UNPEND0_INT7       0x00000080  // Interrupt 7 unpend
-#define NVIC_UNPEND0_INT8       0x00000100  // Interrupt 8 unpend
-#define NVIC_UNPEND0_INT9       0x00000200  // Interrupt 9 unpend
-#define NVIC_UNPEND0_INT10      0x00000400  // Interrupt 10 unpend
-#define NVIC_UNPEND0_INT11      0x00000800  // Interrupt 11 unpend
-#define NVIC_UNPEND0_INT12      0x00001000  // Interrupt 12 unpend
-#define NVIC_UNPEND0_INT13      0x00002000  // Interrupt 13 unpend
-#define NVIC_UNPEND0_INT14      0x00004000  // Interrupt 14 unpend
-#define NVIC_UNPEND0_INT15      0x00008000  // Interrupt 15 unpend
-#define NVIC_UNPEND0_INT16      0x00010000  // Interrupt 16 unpend
-#define NVIC_UNPEND0_INT17      0x00020000  // Interrupt 17 unpend
-#define NVIC_UNPEND0_INT18      0x00040000  // Interrupt 18 unpend
-#define NVIC_UNPEND0_INT19      0x00080000  // Interrupt 19 unpend
-#define NVIC_UNPEND0_INT20      0x00100000  // Interrupt 20 unpend
-#define NVIC_UNPEND0_INT21      0x00200000  // Interrupt 21 unpend
-#define NVIC_UNPEND0_INT22      0x00400000  // Interrupt 22 unpend
-#define NVIC_UNPEND0_INT23      0x00800000  // Interrupt 23 unpend
-#define NVIC_UNPEND0_INT24      0x01000000  // Interrupt 24 unpend
-#define NVIC_UNPEND0_INT25      0x02000000  // Interrupt 25 unpend
-#define NVIC_UNPEND0_INT26      0x04000000  // Interrupt 26 unpend
-#define NVIC_UNPEND0_INT27      0x08000000  // Interrupt 27 unpend
-#define NVIC_UNPEND0_INT28      0x10000000  // Interrupt 28 unpend
-#define NVIC_UNPEND0_INT29      0x20000000  // Interrupt 29 unpend
-#define NVIC_UNPEND0_INT30      0x40000000  // Interrupt 30 unpend
-#define NVIC_UNPEND0_INT31      0x80000000  // Interrupt 31 unpend
 
 //*****************************************************************************
 //
@@ -528,30 +309,6 @@
 //
 //*****************************************************************************
 #define NVIC_UNPEND1_INT_M      0xFFFFFFFF  // Interrupt Clear Pending
-#define NVIC_UNPEND1_INT32      0x00000001  // Interrupt 32 unpend
-#define NVIC_UNPEND1_INT33      0x00000002  // Interrupt 33 unpend
-#define NVIC_UNPEND1_INT34      0x00000004  // Interrupt 34 unpend
-#define NVIC_UNPEND1_INT35      0x00000008  // Interrupt 35 unpend
-#define NVIC_UNPEND1_INT36      0x00000010  // Interrupt 36 unpend
-#define NVIC_UNPEND1_INT37      0x00000020  // Interrupt 37 unpend
-#define NVIC_UNPEND1_INT38      0x00000040  // Interrupt 38 unpend
-#define NVIC_UNPEND1_INT39      0x00000080  // Interrupt 39 unpend
-#define NVIC_UNPEND1_INT40      0x00000100  // Interrupt 40 unpend
-#define NVIC_UNPEND1_INT41      0x00000200  // Interrupt 41 unpend
-#define NVIC_UNPEND1_INT42      0x00000400  // Interrupt 42 unpend
-#define NVIC_UNPEND1_INT43      0x00000800  // Interrupt 43 unpend
-#define NVIC_UNPEND1_INT44      0x00001000  // Interrupt 44 unpend
-#define NVIC_UNPEND1_INT45      0x00002000  // Interrupt 45 unpend
-#define NVIC_UNPEND1_INT46      0x00004000  // Interrupt 46 unpend
-#define NVIC_UNPEND1_INT47      0x00008000  // Interrupt 47 unpend
-#define NVIC_UNPEND1_INT48      0x00010000  // Interrupt 48 unpend
-#define NVIC_UNPEND1_INT49      0x00020000  // Interrupt 49 unpend
-#define NVIC_UNPEND1_INT50      0x00040000  // Interrupt 50 unpend
-#define NVIC_UNPEND1_INT51      0x00080000  // Interrupt 51 unpend
-#define NVIC_UNPEND1_INT52      0x00100000  // Interrupt 52 unpend
-#define NVIC_UNPEND1_INT53      0x00200000  // Interrupt 53 unpend
-#define NVIC_UNPEND1_INT54      0x00400000  // Interrupt 54 unpend
-#define NVIC_UNPEND1_INT55      0x00800000  // Interrupt 55 unpend
 
 //*****************************************************************************
 //
@@ -580,38 +337,6 @@
 //
 //*****************************************************************************
 #define NVIC_ACTIVE0_INT_M      0xFFFFFFFF  // Interrupt Active
-#define NVIC_ACTIVE0_INT0       0x00000001  // Interrupt 0 active
-#define NVIC_ACTIVE0_INT1       0x00000002  // Interrupt 1 active
-#define NVIC_ACTIVE0_INT2       0x00000004  // Interrupt 2 active
-#define NVIC_ACTIVE0_INT3       0x00000008  // Interrupt 3 active
-#define NVIC_ACTIVE0_INT4       0x00000010  // Interrupt 4 active
-#define NVIC_ACTIVE0_INT5       0x00000020  // Interrupt 5 active
-#define NVIC_ACTIVE0_INT6       0x00000040  // Interrupt 6 active
-#define NVIC_ACTIVE0_INT7       0x00000080  // Interrupt 7 active
-#define NVIC_ACTIVE0_INT8       0x00000100  // Interrupt 8 active
-#define NVIC_ACTIVE0_INT9       0x00000200  // Interrupt 9 active
-#define NVIC_ACTIVE0_INT10      0x00000400  // Interrupt 10 active
-#define NVIC_ACTIVE0_INT11      0x00000800  // Interrupt 11 active
-#define NVIC_ACTIVE0_INT12      0x00001000  // Interrupt 12 active
-#define NVIC_ACTIVE0_INT13      0x00002000  // Interrupt 13 active
-#define NVIC_ACTIVE0_INT14      0x00004000  // Interrupt 14 active
-#define NVIC_ACTIVE0_INT15      0x00008000  // Interrupt 15 active
-#define NVIC_ACTIVE0_INT16      0x00010000  // Interrupt 16 active
-#define NVIC_ACTIVE0_INT17      0x00020000  // Interrupt 17 active
-#define NVIC_ACTIVE0_INT18      0x00040000  // Interrupt 18 active
-#define NVIC_ACTIVE0_INT19      0x00080000  // Interrupt 19 active
-#define NVIC_ACTIVE0_INT20      0x00100000  // Interrupt 20 active
-#define NVIC_ACTIVE0_INT21      0x00200000  // Interrupt 21 active
-#define NVIC_ACTIVE0_INT22      0x00400000  // Interrupt 22 active
-#define NVIC_ACTIVE0_INT23      0x00800000  // Interrupt 23 active
-#define NVIC_ACTIVE0_INT24      0x01000000  // Interrupt 24 active
-#define NVIC_ACTIVE0_INT25      0x02000000  // Interrupt 25 active
-#define NVIC_ACTIVE0_INT26      0x04000000  // Interrupt 26 active
-#define NVIC_ACTIVE0_INT27      0x08000000  // Interrupt 27 active
-#define NVIC_ACTIVE0_INT28      0x10000000  // Interrupt 28 active
-#define NVIC_ACTIVE0_INT29      0x20000000  // Interrupt 29 active
-#define NVIC_ACTIVE0_INT30      0x40000000  // Interrupt 30 active
-#define NVIC_ACTIVE0_INT31      0x80000000  // Interrupt 31 active
 
 //*****************************************************************************
 //
@@ -619,30 +344,6 @@
 //
 //*****************************************************************************
 #define NVIC_ACTIVE1_INT_M      0xFFFFFFFF  // Interrupt Active
-#define NVIC_ACTIVE1_INT32      0x00000001  // Interrupt 32 active
-#define NVIC_ACTIVE1_INT33      0x00000002  // Interrupt 33 active
-#define NVIC_ACTIVE1_INT34      0x00000004  // Interrupt 34 active
-#define NVIC_ACTIVE1_INT35      0x00000008  // Interrupt 35 active
-#define NVIC_ACTIVE1_INT36      0x00000010  // Interrupt 36 active
-#define NVIC_ACTIVE1_INT37      0x00000020  // Interrupt 37 active
-#define NVIC_ACTIVE1_INT38      0x00000040  // Interrupt 38 active
-#define NVIC_ACTIVE1_INT39      0x00000080  // Interrupt 39 active
-#define NVIC_ACTIVE1_INT40      0x00000100  // Interrupt 40 active
-#define NVIC_ACTIVE1_INT41      0x00000200  // Interrupt 41 active
-#define NVIC_ACTIVE1_INT42      0x00000400  // Interrupt 42 active
-#define NVIC_ACTIVE1_INT43      0x00000800  // Interrupt 43 active
-#define NVIC_ACTIVE1_INT44      0x00001000  // Interrupt 44 active
-#define NVIC_ACTIVE1_INT45      0x00002000  // Interrupt 45 active
-#define NVIC_ACTIVE1_INT46      0x00004000  // Interrupt 46 active
-#define NVIC_ACTIVE1_INT47      0x00008000  // Interrupt 47 active
-#define NVIC_ACTIVE1_INT48      0x00010000  // Interrupt 48 active
-#define NVIC_ACTIVE1_INT49      0x00020000  // Interrupt 49 active
-#define NVIC_ACTIVE1_INT50      0x00040000  // Interrupt 50 active
-#define NVIC_ACTIVE1_INT51      0x00080000  // Interrupt 51 active
-#define NVIC_ACTIVE1_INT52      0x00100000  // Interrupt 52 active
-#define NVIC_ACTIVE1_INT53      0x00200000  // Interrupt 53 active
-#define NVIC_ACTIVE1_INT54      0x00400000  // Interrupt 54 active
-#define NVIC_ACTIVE1_INT55      0x00800000  // Interrupt 55 active
 
 //*****************************************************************************
 //
@@ -1173,7 +874,6 @@
 #define NVIC_CPUID_VAR_M        0x00F00000  // Variant Number
 #define NVIC_CPUID_CON_M        0x000F0000  // Constant
 #define NVIC_CPUID_PARTNO_M     0x0000FFF0  // Part Number
-#define NVIC_CPUID_PARTNO_CM3   0x0000C230  // Cortex-M3 processor
 #define NVIC_CPUID_PARTNO_CM4   0x0000C240  // Cortex-M4 processor
 #define NVIC_CPUID_REV_M        0x0000000F  // Revision Number
 
@@ -1190,25 +890,24 @@
 #define NVIC_INT_CTRL_ISR_PRE   0x00800000  // Debug Interrupt Handling
 #define NVIC_INT_CTRL_ISR_PEND  0x00400000  // Interrupt Pending
 #define NVIC_INT_CTRL_VEC_PEN_M 0x000FF000  // Interrupt Pending Vector Number
-#define NVIC_INT_CTRL_VEC_PEN_NMI \
+#define NVIC_INT_CTRL_VEC_PEN_NMI                                             \
                                 0x00002000  // NMI
-#define NVIC_INT_CTRL_VEC_PEN_HARD \
+#define NVIC_INT_CTRL_VEC_PEN_HARD                                            \
                                 0x00003000  // Hard fault
-#define NVIC_INT_CTRL_VEC_PEN_MEM \
+#define NVIC_INT_CTRL_VEC_PEN_MEM                                             \
                                 0x00004000  // Memory management fault
-#define NVIC_INT_CTRL_VEC_PEN_BUS \
+#define NVIC_INT_CTRL_VEC_PEN_BUS                                             \
                                 0x00005000  // Bus fault
-#define NVIC_INT_CTRL_VEC_PEN_USG \
+#define NVIC_INT_CTRL_VEC_PEN_USG                                             \
                                 0x00006000  // Usage fault
-#define NVIC_INT_CTRL_VEC_PEN_SVC \
+#define NVIC_INT_CTRL_VEC_PEN_SVC                                             \
                                 0x0000B000  // SVCall
-#define NVIC_INT_CTRL_VEC_PEN_PNDSV \
+#define NVIC_INT_CTRL_VEC_PEN_PNDSV                                           \
                                 0x0000E000  // PendSV
-#define NVIC_INT_CTRL_VEC_PEN_TICK \
+#define NVIC_INT_CTRL_VEC_PEN_TICK                                            \
                                 0x0000F000  // SysTick
 #define NVIC_INT_CTRL_RET_BASE  0x00000800  // Return to Base
 #define NVIC_INT_CTRL_VEC_ACT_M 0x000000FF  // Interrupt Pending Vector Number
-#define NVIC_INT_CTRL_VEC_PEN_S 12
 #define NVIC_INT_CTRL_VEC_ACT_S 0
 
 //*****************************************************************************
@@ -1216,8 +915,7 @@
 // The following are defines for the bit fields in the NVIC_VTABLE register.
 //
 //*****************************************************************************
-#define NVIC_VTABLE_BASE        0x20000000  // Vector Table Base
-#define NVIC_VTABLE_OFFSET_M    0x1FFFFC00  // Vector Table Offset
+#define NVIC_VTABLE_OFFSET_M    0xFFFFFC00  // Vector Table Offset
 #define NVIC_VTABLE_OFFSET_S    10
 
 //*****************************************************************************
@@ -1308,7 +1006,7 @@
 #define NVIC_SYS_HND_CTRL_SVC   0x00008000  // SVC Call Pending
 #define NVIC_SYS_HND_CTRL_BUSP  0x00004000  // Bus Fault Pending
 #define NVIC_SYS_HND_CTRL_MEMP  0x00002000  // Memory Management Fault Pending
-#define NVIC_SYS_HND_CTRL_USAGEP \
+#define NVIC_SYS_HND_CTRL_USAGEP                                              \
                                 0x00001000  // Usage Fault Pending
 #define NVIC_SYS_HND_CTRL_TICK  0x00000800  // SysTick Exception Active
 #define NVIC_SYS_HND_CTRL_PNDSV 0x00000400  // PendSV Exception Active
@@ -1449,7 +1147,6 @@
 // The following are defines for the bit fields in the NVIC_MPU_ATTR register.
 //
 //*****************************************************************************
-#define NVIC_MPU_ATTR_M         0xFFFF0000  // Attributes
 #define NVIC_MPU_ATTR_XN        0x10000000  // Instruction Access Disable
 #define NVIC_MPU_ATTR_AP_M      0x07000000  // Access Privilege
 #define NVIC_MPU_ATTR_AP_NO_NO  0x00000000  // prv: no access, usr: no access
@@ -1521,11 +1218,11 @@
 #define NVIC_MPU_ATTR1_XN       0x10000000  // Instruction Access Disable
 #define NVIC_MPU_ATTR1_AP_M     0x07000000  // Access Privilege
 #define NVIC_MPU_ATTR1_TEX_M    0x00380000  // Type Extension Mask
-#define NVIC_MPU_ATTR1_SHAREABLE \
+#define NVIC_MPU_ATTR1_SHAREABLE                                              \
                                 0x00040000  // Shareable
-#define NVIC_MPU_ATTR1_CACHEABLE \
+#define NVIC_MPU_ATTR1_CACHEABLE                                              \
                                 0x00020000  // Cacheable
-#define NVIC_MPU_ATTR1_BUFFRABLE \
+#define NVIC_MPU_ATTR1_BUFFRABLE                                              \
                                 0x00010000  // Bufferable
 #define NVIC_MPU_ATTR1_SRD_M    0x0000FF00  // Subregion Disable Bits
 #define NVIC_MPU_ATTR1_SIZE_M   0x0000003E  // Region Size Mask
@@ -1550,11 +1247,11 @@
 #define NVIC_MPU_ATTR2_XN       0x10000000  // Instruction Access Disable
 #define NVIC_MPU_ATTR2_AP_M     0x07000000  // Access Privilege
 #define NVIC_MPU_ATTR2_TEX_M    0x00380000  // Type Extension Mask
-#define NVIC_MPU_ATTR2_SHAREABLE \
+#define NVIC_MPU_ATTR2_SHAREABLE                                              \
                                 0x00040000  // Shareable
-#define NVIC_MPU_ATTR2_CACHEABLE \
+#define NVIC_MPU_ATTR2_CACHEABLE                                              \
                                 0x00020000  // Cacheable
-#define NVIC_MPU_ATTR2_BUFFRABLE \
+#define NVIC_MPU_ATTR2_BUFFRABLE                                              \
                                 0x00010000  // Bufferable
 #define NVIC_MPU_ATTR2_SRD_M    0x0000FF00  // Subregion Disable Bits
 #define NVIC_MPU_ATTR2_SIZE_M   0x0000003E  // Region Size Mask
@@ -1579,11 +1276,11 @@
 #define NVIC_MPU_ATTR3_XN       0x10000000  // Instruction Access Disable
 #define NVIC_MPU_ATTR3_AP_M     0x07000000  // Access Privilege
 #define NVIC_MPU_ATTR3_TEX_M    0x00380000  // Type Extension Mask
-#define NVIC_MPU_ATTR3_SHAREABLE \
+#define NVIC_MPU_ATTR3_SHAREABLE                                              \
                                 0x00040000  // Shareable
-#define NVIC_MPU_ATTR3_CACHEABLE \
+#define NVIC_MPU_ATTR3_CACHEABLE                                              \
                                 0x00020000  // Cacheable
-#define NVIC_MPU_ATTR3_BUFFRABLE \
+#define NVIC_MPU_ATTR3_BUFFRABLE                                              \
                                 0x00010000  // Bufferable
 #define NVIC_MPU_ATTR3_SRD_M    0x0000FF00  // Subregion Disable Bits
 #define NVIC_MPU_ATTR3_SIZE_M   0x0000003E  // Region Size Mask
@@ -1596,16 +1293,16 @@
 //*****************************************************************************
 #define NVIC_DBG_CTRL_DBGKEY_M  0xFFFF0000  // Debug key mask
 #define NVIC_DBG_CTRL_DBGKEY    0xA05F0000  // Debug key
-#define NVIC_DBG_CTRL_S_RESET_ST \
+#define NVIC_DBG_CTRL_S_RESET_ST                                              \
                                 0x02000000  // Core has reset since last read
-#define NVIC_DBG_CTRL_S_RETIRE_ST \
+#define NVIC_DBG_CTRL_S_RETIRE_ST                                             \
                                 0x01000000  // Core has executed insruction
                                             // since last read
 #define NVIC_DBG_CTRL_S_LOCKUP  0x00080000  // Core is locked up
 #define NVIC_DBG_CTRL_S_SLEEP   0x00040000  // Core is sleeping
 #define NVIC_DBG_CTRL_S_HALT    0x00020000  // Core status on halt
 #define NVIC_DBG_CTRL_S_REGRDY  0x00010000  // Register read/write available
-#define NVIC_DBG_CTRL_C_SNAPSTALL \
+#define NVIC_DBG_CTRL_C_SNAPSTALL                                             \
                                 0x00000020  // Breaks a stalled load/store
 #define NVIC_DBG_CTRL_C_MASKINT 0x00000008  // Mask interrupts when stepping
 #define NVIC_DBG_CTRL_C_STEP    0x00000004  // Step the core

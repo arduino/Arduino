@@ -2,7 +2,7 @@
 //
 // uart.h - Defines and Macros for the UART.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __UART_H__
-#define __UART_H__
+#ifndef __DRIVERLIB_UART_H__
+#define __DRIVERLIB_UART_H__
 
 //*****************************************************************************
 //
@@ -54,9 +54,11 @@ extern "C"
 //*****************************************************************************
 //
 // Values that can be passed to UARTIntEnable, UARTIntDisable, and UARTIntClear
-// as the ulIntFlags parameter, and returned from UARTIntStatus.
+// as the ui32IntFlags parameter, and returned from UARTIntStatus.
 //
 //*****************************************************************************
+#define UART_INT_DMATX          0x20000     // DMA TX interrupt
+#define UART_INT_DMARX          0x10000     // DMA RX interrupt
 #define UART_INT_9BIT           0x1000      // 9-bit address match interrupt
 #define UART_INT_OE             0x400       // Overrun Error Interrupt Mask
 #define UART_INT_BE             0x200       // Break Error Interrupt Mask
@@ -72,10 +74,10 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to UARTConfigSetExpClk as the ulConfig parameter
-// and returned by UARTConfigGetExpClk in the pulConfig parameter.
+// Values that can be passed to UARTConfigSetExpClk as the ui32Config parameter
+// and returned by UARTConfigGetExpClk in the pui32Config parameter.
 // Additionally, the UART_CONFIG_PAR_* subset can be passed to
-// UARTParityModeSet as the ulParity parameter, and are returned by
+// UARTParityModeSet as the ui32Parity parameter, and are returned by
 // UARTParityModeGet.
 //
 //*****************************************************************************
@@ -96,8 +98,8 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to UARTFIFOLevelSet as the ulTxLevel parameter and
-// returned by UARTFIFOLevelGet in the pulTxLevel.
+// Values that can be passed to UARTFIFOLevelSet as the ui32TxLevel parameter
+// and returned by UARTFIFOLevelGet in the pui32TxLevel.
 //
 //*****************************************************************************
 #define UART_FIFO_TX1_8         0x00000000  // Transmit interrupt at 1/8 Full
@@ -108,8 +110,8 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to UARTFIFOLevelSet as the ulRxLevel parameter and
-// returned by UARTFIFOLevelGet in the pulRxLevel.
+// Values that can be passed to UARTFIFOLevelSet as the ui32RxLevel parameter
+// and returned by UARTFIFOLevelGet in the pui32RxLevel.
 //
 //*****************************************************************************
 #define UART_FIFO_RX1_8         0x00000000  // Receive interrupt at 1/8 Full
@@ -189,79 +191,57 @@ extern "C"
 // API Function prototypes
 //
 //*****************************************************************************
-extern void UARTParityModeSet(unsigned long ulBase, unsigned long ulParity);
-extern unsigned long UARTParityModeGet(unsigned long ulBase);
-extern void UARTFIFOLevelSet(unsigned long ulBase, unsigned long ulTxLevel,
-                             unsigned long ulRxLevel);
-extern void UARTFIFOLevelGet(unsigned long ulBase, unsigned long *pulTxLevel,
-                             unsigned long *pulRxLevel);
-extern void UARTConfigSetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
-                                unsigned long ulBaud, unsigned long ulConfig);
-extern void UARTConfigGetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
-                                unsigned long *pulBaud,
-                                unsigned long *pulConfig);
-extern void UARTEnable(unsigned long ulBase);
-extern void UARTDisable(unsigned long ulBase);
-extern void UARTFIFOEnable(unsigned long ulBase);
-extern void UARTFIFODisable(unsigned long ulBase);
-extern void UARTEnableSIR(unsigned long ulBase, tBoolean bLowPower);
-extern void UARTDisableSIR(unsigned long ulBase);
-extern tBoolean UARTCharsAvail(unsigned long ulBase);
-extern tBoolean UARTSpaceAvail(unsigned long ulBase);
-extern long UARTCharGetNonBlocking(unsigned long ulBase);
-extern long UARTCharGet(unsigned long ulBase);
-extern tBoolean UARTCharPutNonBlocking(unsigned long ulBase,
-                                       unsigned char ucData);
-extern void UARTCharPut(unsigned long ulBase, unsigned char ucData);
-extern void UARTBreakCtl(unsigned long ulBase, tBoolean bBreakState);
-extern tBoolean UARTBusy(unsigned long ulBase);
-extern void UARTIntRegister(unsigned long ulBase, void(*pfnHandler)(void));
-extern void UARTIntUnregister(unsigned long ulBase);
-extern void UARTIntEnable(unsigned long ulBase, unsigned long ulIntFlags);
-extern void UARTIntDisable(unsigned long ulBase, unsigned long ulIntFlags);
-extern unsigned long UARTIntStatus(unsigned long ulBase, tBoolean bMasked);
-extern void UARTIntClear(unsigned long ulBase, unsigned long ulIntFlags);
-extern void UARTDMAEnable(unsigned long ulBase, unsigned long ulDMAFlags);
-extern void UARTDMADisable(unsigned long ulBase, unsigned long ulDMAFlags);
-extern unsigned long UARTRxErrorGet(unsigned long ulBase);
-extern void UARTRxErrorClear(unsigned long ulBase);
-extern void UARTSmartCardEnable(unsigned long ulBase);
-extern void UARTSmartCardDisable(unsigned long ulBase);
-extern void UARTModemControlSet(unsigned long ulBase,
-                                unsigned long ulControl);
-extern void UARTModemControlClear(unsigned long ulBase,
-                                  unsigned long ulControl);
-extern unsigned long UARTModemControlGet(unsigned long ulBase);
-extern unsigned long UARTModemStatusGet(unsigned long ulBase);
-extern void UARTFlowControlSet(unsigned long ulBase, unsigned long ulMode);
-extern unsigned long UARTFlowControlGet(unsigned long ulBase);
-extern void UARTTxIntModeSet(unsigned long ulBase, unsigned long ulMode);
-extern unsigned long UARTTxIntModeGet(unsigned long ulBase);
-extern void UARTClockSourceSet(unsigned long ulBase, unsigned long ulSource);
-extern unsigned long UARTClockSourceGet(unsigned long ulBase);
-extern void UART9BitEnable(unsigned long ulBase);
-extern void UART9BitDisable(unsigned long ulBase);
-extern void UART9BitAddrSet(unsigned long ulBase, unsigned char ucAddr,
-                            unsigned char ucMask);
-extern void UART9BitAddrSend(unsigned long ulBase, unsigned char ucAddr);
-
-//*****************************************************************************
-//
-// Several UART APIs have been renamed, with the original function name being
-// deprecated.  These defines provide backward compatibility.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-#include "driverlib/sysctl.h"
-#define UARTConfigSet(a, b, c)                         \
-        UARTConfigSetExpClk(a, SysCtlClockGet(), b, c)
-#define UARTConfigGet(a, b, c)                         \
-        UARTConfigGetExpClk(a, SysCtlClockGet(), b, c)
-#define UARTCharNonBlockingGet(a) \
-        UARTCharGetNonBlocking(a)
-#define UARTCharNonBlockingPut(a, b) \
-        UARTCharPutNonBlocking(a, b)
-#endif
+extern void UARTParityModeSet(uint32_t ui32Base, uint32_t ui32Parity);
+extern uint32_t UARTParityModeGet(uint32_t ui32Base);
+extern void UARTFIFOLevelSet(uint32_t ui32Base, uint32_t ui32TxLevel,
+                             uint32_t ui32RxLevel);
+extern void UARTFIFOLevelGet(uint32_t ui32Base, uint32_t *pui32TxLevel,
+                             uint32_t *pui32RxLevel);
+extern void UARTConfigSetExpClk(uint32_t ui32Base, uint32_t ui32UARTClk,
+                                uint32_t ui32Baud, uint32_t ui32Config);
+extern void UARTConfigGetExpClk(uint32_t ui32Base, uint32_t ui32UARTClk,
+                                uint32_t *pui32Baud, uint32_t *pui32Config);
+extern void UARTEnable(uint32_t ui32Base);
+extern void UARTDisable(uint32_t ui32Base);
+extern void UARTFIFOEnable(uint32_t ui32Base);
+extern void UARTFIFODisable(uint32_t ui32Base);
+extern void UARTEnableSIR(uint32_t ui32Base, bool bLowPower);
+extern void UARTDisableSIR(uint32_t ui32Base);
+extern bool UARTCharsAvail(uint32_t ui32Base);
+extern bool UARTSpaceAvail(uint32_t ui32Base);
+extern int32_t UARTCharGetNonBlocking(uint32_t ui32Base);
+extern int32_t UARTCharGet(uint32_t ui32Base);
+extern bool UARTCharPutNonBlocking(uint32_t ui32Base, unsigned char ucData);
+extern void UARTCharPut(uint32_t ui32Base, unsigned char ucData);
+extern void UARTBreakCtl(uint32_t ui32Base, bool bBreakState);
+extern bool UARTBusy(uint32_t ui32Base);
+extern void UARTIntRegister(uint32_t ui32Base, void (*pfnHandler)(void));
+extern void UARTIntUnregister(uint32_t ui32Base);
+extern void UARTIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern void UARTIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern uint32_t UARTIntStatus(uint32_t ui32Base, bool bMasked);
+extern void UARTIntClear(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern void UARTDMAEnable(uint32_t ui32Base, uint32_t ui32DMAFlags);
+extern void UARTDMADisable(uint32_t ui32Base, uint32_t ui32DMAFlags);
+extern uint32_t UARTRxErrorGet(uint32_t ui32Base);
+extern void UARTRxErrorClear(uint32_t ui32Base);
+extern void UARTSmartCardEnable(uint32_t ui32Base);
+extern void UARTSmartCardDisable(uint32_t ui32Base);
+extern void UARTModemControlSet(uint32_t ui32Base, uint32_t ui32Control);
+extern void UARTModemControlClear(uint32_t ui32Base, uint32_t ui32Control);
+extern uint32_t UARTModemControlGet(uint32_t ui32Base);
+extern uint32_t UARTModemStatusGet(uint32_t ui32Base);
+extern void UARTFlowControlSet(uint32_t ui32Base, uint32_t ui32Mode);
+extern uint32_t UARTFlowControlGet(uint32_t ui32Base);
+extern void UARTTxIntModeSet(uint32_t ui32Base, uint32_t ui32Mode);
+extern uint32_t UARTTxIntModeGet(uint32_t ui32Base);
+extern void UARTClockSourceSet(uint32_t ui32Base, uint32_t ui32Source);
+extern uint32_t UARTClockSourceGet(uint32_t ui32Base);
+extern void UART9BitEnable(uint32_t ui32Base);
+extern void UART9BitDisable(uint32_t ui32Base);
+extern void UART9BitAddrSet(uint32_t ui32Base, uint8_t ui8Addr,
+                            uint8_t ui8Mask);
+extern void UART9BitAddrSend(uint32_t ui32Base, uint8_t ui8Addr);
 
 //*****************************************************************************
 //
@@ -272,4 +252,4 @@ extern void UART9BitAddrSend(unsigned long ulBase, unsigned char ucAddr);
 }
 #endif
 
-#endif //  __UART_H__
+#endif // __DRIVERLIB_UART_H__

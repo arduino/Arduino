@@ -2,7 +2,7 @@
 //
 // eeprom.h - Prototypes for the EEPROM driver.
 //
-// Copyright (c) 2010-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2010-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __EEPROM_H__
-#define __EEPROM_H__
+#ifndef __DRIVERLIB_EEPROM_H__
+#define __DRIVERLIB_EEPROM_H__
 
 //*****************************************************************************
 //
@@ -81,8 +81,8 @@ extern "C"
 #define EEPROM_INIT_RETRY   1
 
 //
-//! This value may be returned from a call to EEPROMInit(). It indicates that a
-//! previous data or protection write operation was interrupted by a reset
+//! This value may be returned from a call to EEPROMInit().  It indicates that
+//! a previous data or protection write operation was interrupted by a reset
 //! event and that the EEPROM peripheral was unable to clean up after the
 //! problem.  This situation may be resolved with another reset or may be fatal
 //! depending upon the cause of the problem.  For example, if the voltage to
@@ -145,7 +145,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to EEPROMBlockProtectSet() in the ulProtect
+// Values that can be passed to EEPROMBlockProtectSet() in the ui32Protect
 // parameter, and returned by EEPROMBlockProtectGet().
 //
 //*****************************************************************************
@@ -196,7 +196,7 @@ extern "C"
 //
 //! Returns the EEPROM block number containing a given offset address.
 //!
-//! \param ulAddr is the linear, byte address of the EEPROM location whose
+//! \param ui32Addr is the linear, byte address of the EEPROM location whose
 //! block number is to be returned.  This is a zero-based offset from the start
 //! of the EEPROM storage.
 //!
@@ -209,13 +209,13 @@ extern "C"
 //! address.
 //
 //*****************************************************************************
-#define EEPROMBlockFromAddr(ulAddr) ((ulAddr) >> 6)
+#define EEPROMBlockFromAddr(ui32Addr) ((ui32Addr) >> 6)
 
 //*****************************************************************************
 //
 //! Returns the offset address of the first word in an EEPROM block.
 //!
-//! \param ulBlock is the index of the EEPROM block whose first word address
+//! \param ui32Block is the index of the EEPROM block whose first word address
 //! is to be returned.
 //!
 //! This macro may be used to determine the address of the first word in a
@@ -225,40 +225,7 @@ extern "C"
 //! \return Returns the address of the first word in the given EEPROM block.
 //
 //*****************************************************************************
-#define EEPROMAddrFromBlock(ulBlock) ((ulBlock) << 6)
-
-//*****************************************************************************
-//
-// Prototypes for the APIs.
-//
-//*****************************************************************************
-extern unsigned long EEPROMInit(void);
-extern unsigned long EEPROMSizeGet(void);
-extern unsigned long EEPROMBlockCountGet(void);
-extern void EEPROMRead(unsigned long *pulData, unsigned long ulAddress,
-                       unsigned long ulCount);
-extern unsigned long EEPROMProgram(unsigned long *pulData,
-                                   unsigned long ulAddress,
-                                   unsigned long ulCount);
-extern unsigned long EEPROMProgramNonBlocking(unsigned long ulData,
-                                              unsigned long ulAddress);
-extern unsigned long EEPROMStatusGet(void);
-extern unsigned long EEPROMMassErase(void);
-extern unsigned long EEPROMBlockProtectGet(unsigned long ulBlock);
-extern unsigned long EEPROMBlockProtectSet(unsigned long ulBlock,
-                                           unsigned long ulProtect);
-extern unsigned long EEPROMBlockPasswordSet(unsigned long ulBlock,
-                                            unsigned long *pulPassword,
-                                            unsigned long ulCount);
-extern unsigned long EEPROMBlockLock(unsigned long ulBlock);
-extern unsigned long EEPROMBlockUnlock(unsigned long ulBlock,
-                                       unsigned long *pulPassword,
-                                       unsigned long ulCount);
-extern void EEPROMBlockHide(unsigned long ulBlock);
-extern void EEPROMIntEnable(unsigned long ulIntFlags);
-extern void EEPROMIntDisable(unsigned long ulIntFlags);
-extern unsigned long EEPROMIntStatus(tBoolean bMasked);
-extern void EEPROMIntClear(unsigned long ulIntFlags);
+#define EEPROMAddrFromBlock(ui32Block) ((ui32Block) << 6)
 
 //*****************************************************************************
 //
@@ -269,6 +236,39 @@ extern void EEPROMIntClear(unsigned long ulIntFlags);
 
 //*****************************************************************************
 //
+// Prototypes for the APIs.
+//
+//*****************************************************************************
+extern uint32_t EEPROMInit(void);
+extern uint32_t EEPROMSizeGet(void);
+extern uint32_t EEPROMBlockCountGet(void);
+extern void EEPROMRead(uint32_t *pui32Data, uint32_t ui32Address,
+                       uint32_t ui32Count);
+extern uint32_t EEPROMProgram(uint32_t *pui32Data,
+                              uint32_t ui32Address,
+                              uint32_t ui32Count);
+extern uint32_t EEPROMProgramNonBlocking(uint32_t ui32Data,
+                                         uint32_t ui32Address);
+extern uint32_t EEPROMStatusGet(void);
+extern uint32_t EEPROMMassErase(void);
+extern uint32_t EEPROMBlockProtectGet(uint32_t ui32Block);
+extern uint32_t EEPROMBlockProtectSet(uint32_t ui32Block,
+                                      uint32_t ui32Protect);
+extern uint32_t EEPROMBlockPasswordSet(uint32_t ui32Block,
+                                       uint32_t *pui32Password,
+                                       uint32_t ui32Count);
+extern uint32_t EEPROMBlockLock(uint32_t ui32Block);
+extern uint32_t EEPROMBlockUnlock(uint32_t ui32Block,
+                                  uint32_t *pui32Password,
+                                  uint32_t ui32Count);
+extern void EEPROMBlockHide(uint32_t ui32Block);
+extern void EEPROMIntEnable(uint32_t ui32IntFlags);
+extern void EEPROMIntDisable(uint32_t ui32IntFlags);
+extern uint32_t EEPROMIntStatus(bool bMasked);
+extern void EEPROMIntClear(uint32_t ui32IntFlags);
+
+//*****************************************************************************
+//
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
@@ -276,4 +276,4 @@ extern void EEPROMIntClear(unsigned long ulIntFlags);
 }
 #endif
 
-#endif // __EEPROM_H__
+#endif // __DRIVERLIB_EEPROM_H__

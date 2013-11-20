@@ -2,7 +2,7 @@
 //
 // pwm.c - API for the PWM modules
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_pwm.h"
@@ -74,7 +76,7 @@
 //! \internal
 //! Checks a PWM generator number.
 //!
-//! \param ulGen is the generator number.
+//! \param ui32Gen is the generator number.
 //!
 //! This function determines if a PWM generator number is valid.
 //!
@@ -83,11 +85,11 @@
 //
 //*****************************************************************************
 #ifdef DEBUG
-static tBoolean
-PWMGenValid(unsigned long ulGen)
+static bool
+_PWMGenValid(uint32_t ui32Gen)
 {
-    return((ulGen == PWM_GEN_0) || (ulGen == PWM_GEN_1) ||
-           (ulGen == PWM_GEN_2) || (ulGen == PWM_GEN_3));
+    return((ui32Gen == PWM_GEN_0) || (ui32Gen == PWM_GEN_1) ||
+           (ui32Gen == PWM_GEN_2) || (ui32Gen == PWM_GEN_3));
 }
 #endif
 
@@ -96,7 +98,7 @@ PWMGenValid(unsigned long ulGen)
 //! \internal
 //! Checks a PWM output number.
 //!
-//! \param ulPWMOut is the output number.
+//! \param ui32PWMOut is the output number.
 //!
 //! This function determines if a PWM output number is valid.
 //!
@@ -105,13 +107,13 @@ PWMGenValid(unsigned long ulGen)
 //
 //*****************************************************************************
 #ifdef DEBUG
-static tBoolean
-PWMOutValid(unsigned long ulPWMOut)
+static bool
+_PWMOutValid(uint32_t ui32PWMOut)
 {
-    return((ulPWMOut == PWM_OUT_0) || (ulPWMOut == PWM_OUT_1) ||
-           (ulPWMOut == PWM_OUT_2) || (ulPWMOut == PWM_OUT_3) ||
-           (ulPWMOut == PWM_OUT_4) || (ulPWMOut == PWM_OUT_5) ||
-           (ulPWMOut == PWM_OUT_6) || (ulPWMOut == PWM_OUT_7));
+    return((ui32PWMOut == PWM_OUT_0) || (ui32PWMOut == PWM_OUT_1) ||
+           (ui32PWMOut == PWM_OUT_2) || (ui32PWMOut == PWM_OUT_3) ||
+           (ui32PWMOut == PWM_OUT_4) || (ui32PWMOut == PWM_OUT_5) ||
+           (ui32PWMOut == PWM_OUT_6) || (ui32PWMOut == PWM_OUT_7));
 }
 #endif
 
@@ -119,10 +121,10 @@ PWMOutValid(unsigned long ulPWMOut)
 //
 //! Configures a PWM generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to configure.  This parameter must be one
-//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param ulConfig is the configuration for the PWM generator.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to configure.  This parameter must be
+//! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Config is the configuration for the PWM generator.
 //!
 //! This function is used to set the mode of operation for a PWM generator.
 //! The counting mode, synchronization mode, and debug behavior are all
@@ -157,7 +159,7 @@ PWMOutValid(unsigned long ulPWMOut)
 //! processor is restarted.  If configured to continue running, it keeps
 //! counting as if nothing had happened.
 //!
-//! The \e ulConfig parameter contains the desired configuration.  It is the
+//! The \e ui32Config parameter contains the desired configuration.  It is the
 //! logical OR of the following:
 //!
 //! - \b PWM_GEN_MODE_DOWN or \b PWM_GEN_MODE_UP_DOWN to specify the counting
@@ -195,48 +197,49 @@ PWMOutValid(unsigned long ulPWMOut)
 //
 //*****************************************************************************
 void
-PWMGenConfigure(unsigned long ulBase, unsigned long ulGen,
-                unsigned long ulConfig)
+PWMGenConfigure(uint32_t ui32Base, uint32_t ui32Gen,
+                uint32_t ui32Config)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Compute the generator's base address.
     //
-    ulGen = PWM_GEN_BADDR(ulBase, ulGen);
+    ui32Gen = PWM_GEN_BADDR(ui32Base, ui32Gen);
 
     //
     // Change the global configuration of the generator.
     //
-    HWREG(ulGen + PWM_O_X_CTL) = ((HWREG(ulGen + PWM_O_X_CTL) &
-                                   ~(PWM_X_CTL_MODE | PWM_X_CTL_DEBUG |
-                                     PWM_X_CTL_LATCH | PWM_X_CTL_MINFLTPER |
-                                     PWM_X_CTL_FLTSRC | PWM_X_CTL_DBFALLUPD_M |
-                                     PWM_X_CTL_DBRISEUPD_M |
-                                     PWM_X_CTL_DBCTLUPD_M |
-                                     PWM_X_CTL_GENBUPD_M |
-                                     PWM_X_CTL_GENAUPD_M |
-                                     PWM_X_CTL_LOADUPD | PWM_X_CTL_CMPAUPD |
-                                     PWM_X_CTL_CMPBUPD)) | ulConfig);
+    HWREG(ui32Gen + PWM_O_X_CTL) = ((HWREG(ui32Gen + PWM_O_X_CTL) &
+                                     ~(PWM_X_CTL_MODE | PWM_X_CTL_DEBUG |
+                                       PWM_X_CTL_LATCH | PWM_X_CTL_MINFLTPER |
+                                       PWM_X_CTL_FLTSRC |
+                                       PWM_X_CTL_DBFALLUPD_M |
+                                       PWM_X_CTL_DBRISEUPD_M |
+                                       PWM_X_CTL_DBCTLUPD_M |
+                                       PWM_X_CTL_GENBUPD_M |
+                                       PWM_X_CTL_GENAUPD_M |
+                                       PWM_X_CTL_LOADUPD | PWM_X_CTL_CMPAUPD |
+                                       PWM_X_CTL_CMPBUPD)) | ui32Config);
 
     //
     // Set the individual PWM generator controls.
     //
-    if(ulConfig & PWM_X_CTL_MODE)
+    if(ui32Config & PWM_X_CTL_MODE)
     {
         //
         // In up/down count mode, set the signal high on up count comparison
         // and low on down count comparison (that is, center align the
         // signals).
         //
-        HWREG(ulGen + PWM_O_X_GENA) = (PWM_X_GENA_ACTCMPAU_ONE |
-                                       PWM_X_GENA_ACTCMPAD_ZERO);
-        HWREG(ulGen + PWM_O_X_GENB) = (PWM_X_GENB_ACTCMPBU_ONE |
-                                       PWM_X_GENB_ACTCMPBD_ZERO);
+        HWREG(ui32Gen + PWM_O_X_GENA) = (PWM_X_GENA_ACTCMPAU_ONE |
+                                         PWM_X_GENA_ACTCMPAD_ZERO);
+        HWREG(ui32Gen + PWM_O_X_GENB) = (PWM_X_GENB_ACTCMPBU_ONE |
+                                         PWM_X_GENB_ACTCMPBD_ZERO);
     }
     else
     {
@@ -244,10 +247,10 @@ PWMGenConfigure(unsigned long ulBase, unsigned long ulGen,
         // In down count mode, set the signal high on load and low on count
         // comparison (that is, left align the signals).
         //
-        HWREG(ulGen + PWM_O_X_GENA) = (PWM_X_GENA_ACTLOAD_ONE |
-                                       PWM_X_GENA_ACTCMPAD_ZERO);
-        HWREG(ulGen + PWM_O_X_GENB) = (PWM_X_GENB_ACTLOAD_ONE |
-                                       PWM_X_GENB_ACTCMPBD_ZERO);
+        HWREG(ui32Gen + PWM_O_X_GENA) = (PWM_X_GENA_ACTLOAD_ONE |
+                                         PWM_X_GENA_ACTCMPAD_ZERO);
+        HWREG(ui32Gen + PWM_O_X_GENB) = (PWM_X_GENB_ACTLOAD_ONE |
+                                         PWM_X_GENB_ACTCMPBD_ZERO);
     }
 }
 
@@ -255,10 +258,10 @@ PWMGenConfigure(unsigned long ulBase, unsigned long ulGen,
 //
 //! Sets the period of a PWM generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to be modified.  This parameter must be
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to be modified.  This parameter must be
 //! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param ulPeriod specifies the period of PWM generator output, measured
+//! \param ui32Period specifies the period of PWM generator output, measured
 //! in clock ticks.
 //!
 //! This function sets the period of the specified PWM generator block, where
@@ -272,31 +275,31 @@ PWMGenConfigure(unsigned long ulBase, unsigned long ulGen,
 //
 //*****************************************************************************
 void
-PWMGenPeriodSet(unsigned long ulBase, unsigned long ulGen,
-                unsigned long ulPeriod)
+PWMGenPeriodSet(uint32_t ui32Base, uint32_t ui32Gen,
+                uint32_t ui32Period)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Compute the generator's base address.
     //
-    ulGen = PWM_GEN_BADDR(ulBase, ulGen);
+    ui32Gen = PWM_GEN_BADDR(ui32Base, ui32Gen);
 
     //
     // Set the reload register based on the mode.
     //
-    if(HWREG(ulGen + PWM_O_X_CTL) & PWM_X_CTL_MODE)
+    if(HWREG(ui32Gen + PWM_O_X_CTL) & PWM_X_CTL_MODE)
     {
         //
         // In up/down count mode, set the reload register to half the requested
         // period.
         //
-        ASSERT((ulPeriod / 2) < 65536);
-        HWREG(ulGen + PWM_O_X_LOAD) = ulPeriod / 2;
+        ASSERT((ui32Period / 2) < 65536);
+        HWREG(ui32Gen + PWM_O_X_LOAD) = ui32Period / 2;
     }
     else
     {
@@ -304,8 +307,8 @@ PWMGenPeriodSet(unsigned long ulBase, unsigned long ulGen,
         // In down count mode, set the reload register to the requested period
         // minus one.
         //
-        ASSERT((ulPeriod <= 65536) && (ulPeriod != 0));
-        HWREG(ulGen + PWM_O_X_LOAD) = ulPeriod - 1;
+        ASSERT((ui32Period <= 65536) && (ui32Period != 0));
+        HWREG(ui32Gen + PWM_O_X_LOAD) = ui32Period - 1;
     }
 }
 
@@ -313,9 +316,9 @@ PWMGenPeriodSet(unsigned long ulBase, unsigned long ulGen,
 //
 //! Gets the period of a PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to query.  This parameter must be one of
-//! \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to query.  This parameter must be one
+//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //!
 //! This function gets the period of the specified PWM generator block.  The
 //! period of the generator block is defined as the number of PWM clock ticks
@@ -329,36 +332,36 @@ PWMGenPeriodSet(unsigned long ulBase, unsigned long ulGen,
 //! in PWM clock ticks.
 //
 //*****************************************************************************
-unsigned long
-PWMGenPeriodGet(unsigned long ulBase, unsigned long ulGen)
+uint32_t
+PWMGenPeriodGet(uint32_t ui32Base, uint32_t ui32Gen)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Compute the generator's base address.
     //
-    ulGen = PWM_GEN_BADDR(ulBase, ulGen);
+    ui32Gen = PWM_GEN_BADDR(ui32Base, ui32Gen);
 
     //
     // Figure out the counter mode.
     //
-    if(HWREG(ulGen + PWM_O_X_CTL) & PWM_X_CTL_MODE)
+    if(HWREG(ui32Gen + PWM_O_X_CTL) & PWM_X_CTL_MODE)
     {
         //
         // The period is twice the reload register value.
         //
-        return(HWREG(ulGen + PWM_O_X_LOAD) * 2);
+        return(HWREG(ui32Gen + PWM_O_X_LOAD) * 2);
     }
     else
     {
         //
         // The period is the reload register value plus one.
         //
-        return(HWREG(ulGen + PWM_O_X_LOAD) + 1);
+        return(HWREG(ui32Gen + PWM_O_X_LOAD) + 1);
     }
 }
 
@@ -366,8 +369,8 @@ PWMGenPeriodGet(unsigned long ulBase, unsigned long ulGen)
 //
 //! Enables the timer/counter for a PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to be enabled.  This parameter must be
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to be enabled.  This parameter must be
 //! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //!
 //! This function allows the PWM clock to drive the timer/counter for the
@@ -377,26 +380,26 @@ PWMGenPeriodGet(unsigned long ulBase, unsigned long ulGen)
 //
 //*****************************************************************************
 void
-PWMGenEnable(unsigned long ulBase, unsigned long ulGen)
+PWMGenEnable(uint32_t ui32Base, uint32_t ui32Gen)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Enable the PWM generator.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_CTL) |= PWM_X_CTL_ENABLE;
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_CTL) |= PWM_X_CTL_ENABLE;
 }
 
 //*****************************************************************************
 //
 //! Disables the timer/counter for a PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to be disabled.  This parameter must be
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to be disabled.  This parameter must be
 //! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //!
 //! This function blocks the PWM clock from driving the timer/counter for the
@@ -406,29 +409,30 @@ PWMGenEnable(unsigned long ulBase, unsigned long ulGen)
 //
 //*****************************************************************************
 void
-PWMGenDisable(unsigned long ulBase, unsigned long ulGen)
+PWMGenDisable(uint32_t ui32Base, uint32_t ui32Gen)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Disable the PWM generator.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, + ulGen) + PWM_O_X_CTL) &= ~(PWM_X_CTL_ENABLE);
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_CTL) &=
+        ~(PWM_X_CTL_ENABLE);
 }
 
 //*****************************************************************************
 //
 //! Sets the pulse width for the specified PWM output.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulPWMOut is the PWM output to modify.  This parameter must be one
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOut is the PWM output to modify.  This parameter must be one
 //! of \b PWM_OUT_0, \b PWM_OUT_1, \b PWM_OUT_2, \b PWM_OUT_3, \b PWM_OUT_4,
 //! \b PWM_OUT_5, \b PWM_OUT_6, or \b PWM_OUT_7.
-//! \param ulWidth specifies the width of the positive portion of the pulse.
+//! \param ui32Width specifies the width of the positive portion of the pulse.
 //!
 //! This function sets the pulse width for the specified PWM output, where the
 //! pulse width is defined as the number of PWM clock ticks.
@@ -440,55 +444,55 @@ PWMGenDisable(unsigned long ulBase, unsigned long ulGen)
 //
 //*****************************************************************************
 void
-PWMPulseWidthSet(unsigned long ulBase, unsigned long ulPWMOut,
-                 unsigned long ulWidth)
+PWMPulseWidthSet(uint32_t ui32Base, uint32_t ui32PWMOut,
+                 uint32_t ui32Width)
 {
-    unsigned long ulGenBase, ulReg;
+    uint32_t ui32GenBase, ui32Reg;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMOutValid(ulPWMOut));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMOutValid(ui32PWMOut));
 
     //
     // Compute the generator's base address.
     //
-    ulGenBase = PWM_OUT_BADDR(ulBase, ulPWMOut);
+    ui32GenBase = PWM_OUT_BADDR(ui32Base, ui32PWMOut);
 
     //
     // If the counter is in up/down count mode, divide the width by two.
     //
-    if(HWREG(ulGenBase + PWM_O_X_CTL) & PWM_X_CTL_MODE)
+    if(HWREG(ui32GenBase + PWM_O_X_CTL) & PWM_X_CTL_MODE)
     {
-        ulWidth /= 2;
+        ui32Width /= 2;
     }
 
     //
     // Get the period.
     //
-    ulReg = HWREG(ulGenBase + PWM_O_X_LOAD);
+    ui32Reg = HWREG(ui32GenBase + PWM_O_X_LOAD);
 
     //
     // Make sure the width is not too large.
     //
-    ASSERT(ulWidth < ulReg);
+    ASSERT(ui32Width < ui32Reg);
 
     //
     // Compute the compare value.
     //
-    ulReg = ulReg - ulWidth;
+    ui32Reg = ui32Reg - ui32Width;
 
     //
     // Write to the appropriate registers.
     //
-    if(PWM_IS_OUTPUT_ODD(ulPWMOut))
+    if(PWM_IS_OUTPUT_ODD(ui32PWMOut))
     {
-        HWREG(ulGenBase + PWM_O_X_CMPB) = ulReg;
+        HWREG(ui32GenBase + PWM_O_X_CMPB) = ui32Reg;
     }
     else
     {
-        HWREG(ulGenBase + PWM_O_X_CMPA) = ulReg;
+        HWREG(ui32GenBase + PWM_O_X_CMPA) = ui32Reg;
     }
 }
 
@@ -496,9 +500,9 @@ PWMPulseWidthSet(unsigned long ulBase, unsigned long ulPWMOut,
 //
 //! Gets the pulse width of a PWM output.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulPWMOut is the PWM output to query.  This parameter must be one of
-//! \b PWM_OUT_0, \b PWM_OUT_1, \b PWM_OUT_2, \b PWM_OUT_3, \b PWM_OUT_4,
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOut is the PWM output to query.  This parameter must be one
+//! of \b PWM_OUT_0, \b PWM_OUT_1, \b PWM_OUT_2, \b PWM_OUT_3, \b PWM_OUT_4,
 //! \b PWM_OUT_5, \b PWM_OUT_6, or \b PWM_OUT_7.
 //!
 //! This function gets the currently programmed pulse width for the specified
@@ -510,105 +514,105 @@ PWMPulseWidthSet(unsigned long ulBase, unsigned long ulPWMOut,
 //! \return Returns the width of the pulse in PWM clock ticks.
 //
 //*****************************************************************************
-unsigned long
-PWMPulseWidthGet(unsigned long ulBase, unsigned long ulPWMOut)
+uint32_t
+PWMPulseWidthGet(uint32_t ui32Base, uint32_t ui32PWMOut)
 {
-    unsigned long ulGenBase, ulReg, ulLoad;
+    uint32_t ui32GenBase, ui32Reg, ui32Load;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMOutValid(ulPWMOut));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMOutValid(ui32PWMOut));
 
     //
     // Compute the generator's base address.
     //
-    ulGenBase = PWM_OUT_BADDR(ulBase, ulPWMOut);
+    ui32GenBase = PWM_OUT_BADDR(ui32Base, ui32PWMOut);
 
     //
     // Then compute the pulse width.  If mode is UpDown, set
     // width = (load - compare) * 2.  Otherwise, set width = load - compare.
     //
-    ulLoad = HWREG(ulGenBase + PWM_O_X_LOAD);
-    if(PWM_IS_OUTPUT_ODD(ulPWMOut))
+    ui32Load = HWREG(ui32GenBase + PWM_O_X_LOAD);
+    if(PWM_IS_OUTPUT_ODD(ui32PWMOut))
     {
-        ulReg = HWREG(ulGenBase + PWM_O_X_CMPB);
+        ui32Reg = HWREG(ui32GenBase + PWM_O_X_CMPB);
     }
     else
     {
-        ulReg = HWREG(ulGenBase + PWM_O_X_CMPA);
+        ui32Reg = HWREG(ui32GenBase + PWM_O_X_CMPA);
     }
-    ulReg = ulLoad - ulReg;
+    ui32Reg = ui32Load - ui32Reg;
 
     //
     // If in up/down count mode, double the pulse width.
     //
-    if(HWREG(ulGenBase + PWM_O_X_CTL) & PWM_X_CTL_MODE)
+    if(HWREG(ui32GenBase + PWM_O_X_CTL) & PWM_X_CTL_MODE)
     {
-        ulReg = ulReg * 2;
+        ui32Reg = ui32Reg * 2;
     }
 
     //
     // Return the pulse width.
     //
-    return(ulReg);
+    return(ui32Reg);
 }
 
 //*****************************************************************************
 //
 //! Enables the PWM dead band output and sets the dead band delays.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to modify.  This parameter must be one
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to modify.  This parameter must be one
 //! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param usRise specifies the width of delay from the rising edge.
-//! \param usFall specifies the width of delay from the falling edge.
+//! \param ui16Rise specifies the width of delay from the rising edge.
+//! \param ui16Fall specifies the width of delay from the falling edge.
 //!
-//! This function sets the dead bands for the specified PWM generator,
-//! where the dead bands are defined as the number of \b PWM clock ticks
-//! from the rising or falling edge of the generator's \b OutA signal.
-//! Note that this function causes the coupling of \b OutB to \b OutA.
+//! This function sets the dead bands for the specified PWM generator, where
+//! the dead bands are defined as the number of \b PWM clock ticks from the
+//! rising or falling edge of the generator's \b OutA signal.  Note that this
+//! function causes the coupling of \b OutB to \b OutA.
 //!
 //! \return None.
 //
-//****************************************************************************
+//*****************************************************************************
 void
-PWMDeadBandEnable(unsigned long ulBase, unsigned long ulGen,
-                  unsigned short usRise, unsigned short usFall)
+PWMDeadBandEnable(uint32_t ui32Base, uint32_t ui32Gen,
+                  uint16_t ui16Rise, uint16_t ui16Fall)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT(usRise < 4096);
-    ASSERT(usFall < 4096);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT(ui16Rise < 4096);
+    ASSERT(ui16Fall < 4096);
 
     //
     // Compute the generator's base address.
     //
-    ulGen = PWM_GEN_BADDR(ulBase, ulGen);
+    ui32Gen = PWM_GEN_BADDR(ui32Base, ui32Gen);
 
     //
     // Write the dead band delay values.
     //
-    HWREG(ulGen + PWM_O_X_DBRISE) = usRise;
-    HWREG(ulGen + PWM_O_X_DBFALL) = usFall;
+    HWREG(ui32Gen + PWM_O_X_DBRISE) = ui16Rise;
+    HWREG(ui32Gen + PWM_O_X_DBFALL) = ui16Fall;
 
     //
     // Enable the deadband functionality.
     //
-    HWREG(ulGen + PWM_O_X_DBCTL) |= PWM_X_DBCTL_ENABLE;
+    HWREG(ui32Gen + PWM_O_X_DBCTL) |= PWM_X_DBCTL_ENABLE;
 }
 
 //*****************************************************************************
 //
 //! Disables the PWM dead band output.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to modify. This parameter must be one of
-//! \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to modify.  This parameter must be one
+//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //!
 //! This function disables the dead band mode for the specified PWM generator.
 //! Doing so decouples the \b OutA and \b OutB signals.
@@ -617,18 +621,18 @@ PWMDeadBandEnable(unsigned long ulBase, unsigned long ulGen,
 //
 //*****************************************************************************
 void
-PWMDeadBandDisable(unsigned long ulBase, unsigned long ulGen)
+PWMDeadBandDisable(uint32_t ui32Base, uint32_t ui32Gen)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Disable the deadband functionality.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_DBCTL) &=
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_DBCTL) &=
         ~(PWM_X_DBCTL_ENABLE);
 }
 
@@ -636,8 +640,8 @@ PWMDeadBandDisable(unsigned long ulBase, unsigned long ulGen)
 //
 //! Synchronizes all pending updates.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGenBits are the PWM generator blocks to be updated.  This
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32GenBits are the PWM generator blocks to be updated.  This
 //! parameter must be the logical OR of any of \b PWM_GEN_0_BIT,
 //! \b PWM_GEN_1_BIT, \b PWM_GEN_2_BIT, or \b PWM_GEN_3_BIT.
 //!
@@ -649,68 +653,68 @@ PWMDeadBandDisable(unsigned long ulBase, unsigned long ulGen)
 //
 //*****************************************************************************
 void
-PWMSyncUpdate(unsigned long ulBase, unsigned long ulGenBits)
+PWMSyncUpdate(uint32_t ui32Base, uint32_t ui32GenBits)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(!(ulGenBits & ~(PWM_GEN_0_BIT | PWM_GEN_1_BIT | PWM_GEN_2_BIT |
-                           PWM_GEN_3_BIT)));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32GenBits & ~(PWM_GEN_0_BIT | PWM_GEN_1_BIT | PWM_GEN_2_BIT |
+                             PWM_GEN_3_BIT)));
 
     //
     // Synchronize pending PWM register changes.
     //
-    HWREG(ulBase + PWM_O_CTL) = ulGenBits;
+    HWREG(ui32Base + PWM_O_CTL) = ui32GenBits;
 }
 
 //*****************************************************************************
 //
 //! Synchronizes the counters in one or multiple PWM generator blocks.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGenBits are the PWM generator blocks to be synchronized.  This
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32GenBits are the PWM generator blocks to be synchronized.  This
 //! parameter must be the logical OR of any of \b PWM_GEN_0_BIT,
 //! \b PWM_GEN_1_BIT, \b PWM_GEN_2_BIT, or \b PWM_GEN_3_BIT.
 //!
-//! For the selected PWM module, this function synchronizes the time base
-//! of the generator blocks by causing the specified generator counters to be
+//! For the selected PWM module, this function synchronizes the time base of
+//! the generator blocks by causing the specified generator counters to be
 //! reset to zero.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-PWMSyncTimeBase(unsigned long ulBase, unsigned long ulGenBits)
+PWMSyncTimeBase(uint32_t ui32Base, uint32_t ui32GenBits)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(!(ulGenBits & ~(PWM_GEN_0_BIT | PWM_GEN_1_BIT | PWM_GEN_2_BIT |
-                           PWM_GEN_3_BIT)));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32GenBits & ~(PWM_GEN_0_BIT | PWM_GEN_1_BIT | PWM_GEN_2_BIT |
+                             PWM_GEN_3_BIT)));
 
     //
     // Synchronize the counters in the specified generators by writing to the
     // module's synchronization register.
     //
-    HWREG(ulBase + PWM_O_SYNC) = ulGenBits;
+    HWREG(ui32Base + PWM_O_SYNC) = ui32GenBits;
 }
 
 //*****************************************************************************
 //
 //! Enables or disables PWM outputs.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulPWMOutBits are the PWM outputs to be modified.  This parameter
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOutBits are the PWM outputs to be modified.  This parameter
 //! must be the logical OR of any of \b PWM_OUT_0_BIT, \b PWM_OUT_1_BIT,
 //! \b PWM_OUT_2_BIT, \b PWM_OUT_3_BIT, \b PWM_OUT_4_BIT, \b PWM_OUT_5_BIT,
 //! \b PWM_OUT_6_BIT, or \b PWM_OUT_7_BIT.
 //! \param bEnable determines if the signal is enabled or disabled.
 //!
-//! This function enables or disables the selected PWM outputs.  The
-//! outputs are selected using the parameter \e ulPWMOutBits.  The parameter
-//! \e bEnable determines the state of the selected outputs.  If \e bEnable is
+//! This function enables or disables the selected PWM outputs.  The outputs
+//! are selected using the parameter \e ui32PWMOutBits.  The parameter \e
+//! bEnable determines the state of the selected outputs.  If \e bEnable is
 //! \b true, then the selected PWM outputs are enabled, or placed in the active
 //! state.  If \e bEnable is \b false, then the selected outputs are disabled
 //! or placed in the inactive state.
@@ -719,16 +723,16 @@ PWMSyncTimeBase(unsigned long ulBase, unsigned long ulGenBits)
 //
 //*****************************************************************************
 void
-PWMOutputState(unsigned long ulBase, unsigned long ulPWMOutBits,
-               tBoolean bEnable)
+PWMOutputState(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+               bool bEnable)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(!(ulPWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
-                              PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
-                              PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32PWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
+                                PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
+                                PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
 
     //
     // Read the module's ENABLE output control register and set or clear the
@@ -736,11 +740,11 @@ PWMOutputState(unsigned long ulBase, unsigned long ulPWMOutBits,
     //
     if(bEnable == true)
     {
-        HWREG(ulBase + PWM_O_ENABLE) |= ulPWMOutBits;
+        HWREG(ui32Base + PWM_O_ENABLE) |= ui32PWMOutBits;
     }
     else
     {
-        HWREG(ulBase + PWM_O_ENABLE) &= ~(ulPWMOutBits);
+        HWREG(ui32Base + PWM_O_ENABLE) &= ~(ui32PWMOutBits);
     }
 }
 
@@ -748,15 +752,15 @@ PWMOutputState(unsigned long ulBase, unsigned long ulPWMOutBits,
 //
 //! Selects the inversion mode for PWM outputs.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulPWMOutBits are the PWM outputs to be modified.  This parameter
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOutBits are the PWM outputs to be modified.  This parameter
 //! must be the logical OR of any of \b PWM_OUT_0_BIT, \b PWM_OUT_1_BIT,
 //! \b PWM_OUT_2_BIT, \b PWM_OUT_3_BIT, \b PWM_OUT_4_BIT, \b PWM_OUT_5_BIT,
 //! \b PWM_OUT_6_BIT, or \b PWM_OUT_7_BIT.
 //! \param bInvert determines if the signal is inverted or passed through.
 //!
 //! This function is used to select the inversion mode for the selected PWM
-//! outputs.  The outputs are selected using the parameter \e ulPWMOutBits.
+//! outputs.  The outputs are selected using the parameter \e ui32PWMOutBits.
 //! The parameter \e bInvert determines the inversion mode for the selected
 //! outputs.  If \e bInvert is \b true, this function causes the specified
 //! PWM output signals to be inverted or made active low.  If \e bInvert is
@@ -767,16 +771,16 @@ PWMOutputState(unsigned long ulBase, unsigned long ulPWMOutBits,
 //
 //*****************************************************************************
 void
-PWMOutputInvert(unsigned long ulBase, unsigned long ulPWMOutBits,
-                tBoolean bInvert)
+PWMOutputInvert(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+                bool bInvert)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(!(ulPWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
-                              PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
-                              PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32PWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
+                                PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
+                                PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
 
     //
     // Read the module's INVERT output control register and set or clear the
@@ -784,11 +788,11 @@ PWMOutputInvert(unsigned long ulBase, unsigned long ulPWMOutBits,
     //
     if(bInvert == true)
     {
-        HWREG(ulBase + PWM_O_INVERT) |= ulPWMOutBits;
+        HWREG(ui32Base + PWM_O_INVERT) |= ui32PWMOutBits;
     }
     else
     {
-        HWREG(ulBase + PWM_O_INVERT) &= ~(ulPWMOutBits);
+        HWREG(ui32Base + PWM_O_INVERT) &= ~(ui32PWMOutBits);
     }
 }
 
@@ -797,8 +801,8 @@ PWMOutputInvert(unsigned long ulBase, unsigned long ulPWMOutBits,
 //! Specifies the level of PWM outputs suppressed in response to a fault
 //! condition.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulPWMOutBits are the PWM outputs to be modified.  This parameter
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOutBits are the PWM outputs to be modified.  This parameter
 //! must be the logical OR of any of \b PWM_OUT_0_BIT, \b PWM_OUT_1_BIT,
 //! \b PWM_OUT_2_BIT, \b PWM_OUT_3_BIT, \b PWM_OUT_4_BIT, \b PWM_OUT_5_BIT,
 //! \b PWM_OUT_6_BIT, or \b PWM_OUT_7_BIT.
@@ -807,10 +811,10 @@ PWMOutputInvert(unsigned long ulBase, unsigned long ulPWMOutBits,
 //!
 //! This function determines whether a PWM output pin that is suppressed in
 //! response to a fault condition is driven high or low.  The affected outputs
-//! are selected using the parameter \e ulPWMOutBits.  The parameter
+//! are selected using the parameter \e ui32PWMOutBits.  The parameter
 //! \e bDriveHigh determines the output level for the pins identified by
-//! \e ulPWMOutBits.  If \e bDriveHigh is \b true then the selected outputs are
-//! driven high when a fault is detected.  If it is \e false, the pins are
+//! \e ui32PWMOutBits.  If \e bDriveHigh is \b true then the selected outputs
+//! are driven high when a fault is detected.  If it is \e false, the pins are
 //! driven low.
 //!
 //! In a fault condition, pins which have not been configured to be suppressed
@@ -823,16 +827,16 @@ PWMOutputInvert(unsigned long ulBase, unsigned long ulPWMOutBits,
 //
 //*****************************************************************************
 void
-PWMOutputFaultLevel(unsigned long ulBase, unsigned long ulPWMOutBits,
-                    tBoolean bDriveHigh)
+PWMOutputFaultLevel(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+                    bool bDriveHigh)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(!(ulPWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
-                              PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
-                              PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32PWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
+                                PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
+                                PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
 
     //
     // Read the module's FAULT output control register and set or clear the
@@ -840,11 +844,11 @@ PWMOutputFaultLevel(unsigned long ulBase, unsigned long ulPWMOutBits,
     //
     if(bDriveHigh == true)
     {
-        HWREG(ulBase + PWM_O_FAULTVAL) |= ulPWMOutBits;
+        HWREG(ui32Base + PWM_O_FAULTVAL) |= ui32PWMOutBits;
     }
     else
     {
-        HWREG(ulBase + PWM_O_FAULTVAL) &= ~(ulPWMOutBits);
+        HWREG(ui32Base + PWM_O_FAULTVAL) &= ~(ui32PWMOutBits);
     }
 }
 
@@ -852,8 +856,8 @@ PWMOutputFaultLevel(unsigned long ulBase, unsigned long ulPWMOutBits,
 //
 //! Specifies the state of PWM outputs in response to a fault condition.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulPWMOutBits are the PWM outputs to be modified.  This parameter
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOutBits are the PWM outputs to be modified.  This parameter
 //! must be the  logical OR of any of \b PWM_OUT_0_BIT, \b PWM_OUT_1_BIT,
 //! \b PWM_OUT_2_BIT, \b PWM_OUT_3_BIT, \b PWM_OUT_4_BIT, \b PWM_OUT_5_BIT,
 //! \b PWM_OUT_6_BIT, or \b PWM_OUT_7_BIT.
@@ -861,7 +865,7 @@ PWMOutputFaultLevel(unsigned long ulBase, unsigned long ulPWMOutBits,
 //! through during an active fault condition.
 //!
 //! This function sets the fault handling characteristics of the selected PWM
-//! outputs.  The outputs are selected using the parameter \e ulPWMOutBits.
+//! outputs.  The outputs are selected using the parameter \e ui32PWMOutBits.
 //! The parameter \e bFaultSuppress determines the fault handling
 //! characteristics for the selected outputs.  If \e bFaultSuppress is \b true,
 //! then the selected outputs are made inactive.  If \e bFaultSuppress is
@@ -876,16 +880,16 @@ PWMOutputFaultLevel(unsigned long ulBase, unsigned long ulPWMOutBits,
 //
 //*****************************************************************************
 void
-PWMOutputFault(unsigned long ulBase, unsigned long ulPWMOutBits,
-               tBoolean bFaultSuppress)
+PWMOutputFault(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+               bool bFaultSuppress)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(!(ulPWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
-                              PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
-                              PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32PWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
+                                PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
+                                PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
 
     //
     // Read the module's FAULT output control register and set or clear the
@@ -893,11 +897,11 @@ PWMOutputFault(unsigned long ulBase, unsigned long ulPWMOutBits,
     //
     if(bFaultSuppress == true)
     {
-        HWREG(ulBase + PWM_O_FAULT) |= ulPWMOutBits;
+        HWREG(ui32Base + PWM_O_FAULT) |= ui32PWMOutBits;
     }
     else
     {
-        HWREG(ulBase + PWM_O_FAULT) &= ~(ulPWMOutBits);
+        HWREG(ui32Base + PWM_O_FAULT) &= ~(ui32PWMOutBits);
     }
 }
 
@@ -905,9 +909,9 @@ PWMOutputFault(unsigned long ulBase, unsigned long ulPWMOutBits,
 //
 //! Gets the PWM generator interrupt number.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator in question.  This parameter must be one
-//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator in question.  This parameter must be
+//! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //!
 //! This function returns the interrupt number of the corresponding PWM
 //! generator.
@@ -915,20 +919,31 @@ PWMOutputFault(unsigned long ulBase, unsigned long ulPWMOutBits,
 //! \return Returns the interrupt number.
 //
 //*****************************************************************************
-static unsigned long
-PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
+static uint32_t
+_PWMGenIntNumberGet(uint32_t ui32Base, uint32_t ui32Gen)
 {
     //
     // Determine the generator and PWM module in question.
     //
-    switch(ulBase + ulGen)
+    switch(ui32Base + ui32Gen)
     {
         //
         // The first PWM generator in the first PWM module.
         //
         case PWM0_BASE + PWM_GEN_0:
         {
-            return(INT_PWM0_0);
+            if(CLASS_IS_BLIZZARD)
+            {
+                return(INT_PWM0_0_BLIZZARD);
+            }
+            else if(CLASS_IS_SNOWFLAKE)
+            {
+                return(INT_PWM0_0_SNOWFLAKE);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -936,7 +951,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM0_BASE + PWM_GEN_1:
         {
-            return(INT_PWM0_1);
+            if(CLASS_IS_SNOWFLAKE)
+            {
+                return(INT_PWM0_1_SNOWFLAKE);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -944,7 +966,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM0_BASE + PWM_GEN_2:
         {
-            return(INT_PWM0_2);
+            if(CLASS_IS_SNOWFLAKE)
+            {
+                return(INT_PWM0_2_SNOWFLAKE);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -952,7 +981,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM0_BASE + PWM_GEN_3:
         {
-            return(INT_PWM0_3);
+            if(CLASS_IS_SNOWFLAKE)
+            {
+                return(INT_PWM0_3_SNOWFLAKE);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -960,7 +996,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM1_BASE + PWM_GEN_0:
         {
-            return(INT_PWM1_0);
+            if(CLASS_IS_BLIZZARD)
+            {
+                return(INT_PWM1_0_BLIZZARD);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -968,7 +1011,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM1_BASE + PWM_GEN_1:
         {
-            return(INT_PWM1_1);
+            if(CLASS_IS_BLIZZARD)
+            {
+                return(INT_PWM1_1_BLIZZARD);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -976,7 +1026,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM1_BASE + PWM_GEN_2:
         {
-            return(INT_PWM1_2);
+            if(CLASS_IS_BLIZZARD)
+            {
+                return(INT_PWM1_2_BLIZZARD);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -984,7 +1041,14 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
         //
         case PWM1_BASE + PWM_GEN_3:
         {
-            return(INT_PWM1_3);
+            if(CLASS_IS_BLIZZARD)
+            {
+                return(INT_PWM1_3_BLIZZARD);
+            }
+            else
+            {
+                return(0);
+            }
         }
 
         //
@@ -1001,9 +1065,9 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
 //
 //! Registers an interrupt handler for the specified PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator in question.  This parameter must be one
-//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator in question.  This parameter must be
+//! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //! \param pfnIntHandler is a pointer to the function to be called when the PWM
 //! generator interrupt occurs.
 //!
@@ -1021,40 +1085,42 @@ PWMGenIntGet(unsigned long ulBase, unsigned long ulGen)
 //
 //*****************************************************************************
 void
-PWMGenIntRegister(unsigned long ulBase, unsigned long ulGen,
+PWMGenIntRegister(uint32_t ui32Base, uint32_t ui32Gen,
                   void (*pfnIntHandler)(void))
 {
-    unsigned long ulInt;
+    uint32_t ui32Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Get the interrupt number associated with the specified generator.
     //
-    ulInt = PWMGenIntGet(ulBase, ulGen);
+    ui32Int = _PWMGenIntNumberGet(ui32Base, ui32Gen);
+
+    ASSERT(ui32Int != 0);
 
     //
     // Register the interrupt handler.
     //
-    IntRegister(ulInt, pfnIntHandler);
+    IntRegister(ui32Int, pfnIntHandler);
 
     //
     // Enable the PWMx interrupt.
     //
-    IntEnable(ulInt);
+    IntEnable(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Removes an interrupt handler for the specified PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator in question.  This parameter must be one
-//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator in question.  This parameter must be
+//! one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //!
 //! This function unregisters the interrupt handler for the specified
 //! PWM generator block.  This function also disables the corresponding
@@ -1069,37 +1135,39 @@ PWMGenIntRegister(unsigned long ulBase, unsigned long ulGen,
 //
 //*****************************************************************************
 void
-PWMGenIntUnregister(unsigned long ulBase, unsigned long ulGen)
+PWMGenIntUnregister(uint32_t ui32Base, uint32_t ui32Gen)
 {
-    unsigned long ulInt;
+    uint32_t ui32Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Get the interrupt number associated with the specified generator.
     //
-    ulInt = PWMGenIntGet(ulBase, ulGen);
+    ui32Int = _PWMGenIntNumberGet(ui32Base, ui32Gen);
+
+    ASSERT(ui32Int != 0);
 
     //
     // Disable the PWMx interrupt.
     //
-    IntDisable(ulInt);
+    IntDisable(ui32Int);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(ulInt);
+    IntUnregister(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Gets the PWM fault interrupt number.
 //!
-//! \param ulBase is the base address of the PWM module.
+//! \param ui32Base is the base address of the PWM module.
 //!
 //! This function returns the fault interrupt number of the corresponding
 //! PWM module.
@@ -1107,13 +1175,25 @@ PWMGenIntUnregister(unsigned long ulBase, unsigned long ulGen)
 //! \return Returns the interrupt number.
 //
 //*****************************************************************************
-static unsigned long
-PWMFaultIntGet(unsigned long ulBase)
+static uint32_t
+_PWMFaultIntNumberGet(uint32_t ui32Base)
 {
     //
     // Return the fault interrupt number.
     //
-    return((ulBase == PWM0_BASE) ? INT_PWM0_FAULT : INT_PWM1_FAULT);
+    if(CLASS_IS_BLIZZARD)
+    {
+        return((ui32Base == PWM0_BASE) ? INT_PWM0_FAULT_BLIZZARD :
+               INT_PWM1_FAULT_BLIZZARD);
+    }
+    else if(CLASS_IS_SNOWFLAKE)
+    {
+        return((ui32Base == PWM0_BASE) ? INT_PWM0_FAULT_SNOWFLAKE : 0);
+    }
+    else
+    {
+        return(0);
+    }
 }
 
 //*****************************************************************************
@@ -1121,7 +1201,7 @@ PWMFaultIntGet(unsigned long ulBase)
 //! Registers an interrupt handler for a fault condition detected in a PWM
 //! module.
 //!
-//! \param ulBase is the base address of the PWM module.
+//! \param ui32Base is the base address of the PWM module.
 //! \param pfnIntHandler is a pointer to the function to be called when the PWM
 //! fault interrupt occurs.
 //!
@@ -1138,36 +1218,38 @@ PWMFaultIntGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-PWMFaultIntRegister(unsigned long ulBase, void (*pfnIntHandler)(void))
+PWMFaultIntRegister(uint32_t ui32Base, void (*pfnIntHandler)(void))
 {
-    unsigned long ulInt;
+    uint32_t ui32Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
 
     //
     // Get the interrupt number associated with the specified module.
     //
-    ulInt = PWMFaultIntGet(ulBase);
+    ui32Int = _PWMFaultIntNumberGet(ui32Base);
+
+    ASSERT(ui32Int != 0);
 
     //
     // Register the interrupt handler, returning an error if one occurs.
     //
-    IntRegister(ulInt, pfnIntHandler);
+    IntRegister(ui32Int, pfnIntHandler);
 
     //
     // Enable the PWM fault interrupt.
     //
-    IntEnable(ulInt);
+    IntEnable(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Removes the PWM fault condition interrupt handler.
 //!
-//! \param ulBase is the base address of the PWM module.
+//! \param ui32Base is the base address of the PWM module.
 //!
 //! This function removes the interrupt handler for a PWM fault interrupt
 //! from the selected PWM module.  This function also disables the PWM
@@ -1181,44 +1263,46 @@ PWMFaultIntRegister(unsigned long ulBase, void (*pfnIntHandler)(void))
 //
 //*****************************************************************************
 void
-PWMFaultIntUnregister(unsigned long ulBase)
+PWMFaultIntUnregister(uint32_t ui32Base)
 {
-    unsigned long ulInt;
+    uint32_t ui32Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
 
     //
     // Get the interrupt number associated with the specified module.
     //
-    ulInt = PWMFaultIntGet(ulBase);
+    ui32Int = _PWMFaultIntNumberGet(ui32Base);
+
+    ASSERT(ui32Int != 0);
 
     //
     // Disable the PWM fault interrupt.
     //
-    IntDisable(ulInt);
+    IntDisable(ui32Int);
 
     //
     // Unregister the interrupt handler, returning an error if one occurs.
     //
-    IntUnregister(ulInt);
+    IntUnregister(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Enables interrupts and triggers for the specified PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to have interrupts and triggers enabled.
-//! This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or
-//! \b PWM_GEN_3.
-//! \param ulIntTrig specifies the interrupts and triggers to be enabled.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to have interrupts and triggers
+//! enabled.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
+//! \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32IntTrig specifies the interrupts and triggers to be enabled.
 //!
 //! This function unmasks the specified interrupt(s) and trigger(s) by setting
 //! the specified bits of the interrupt/trigger enable register for the
-//! specified PWM generator.  The \e ulIntTrig parameter is the logical OR of
+//! specified PWM generator.  The \e ui32IntTrig parameter is the logical OR of
 //! \b PWM_INT_CNT_ZERO, \b PWM_INT_CNT_LOAD, \b PWM_INT_CNT_AU,
 //! \b PWM_INT_CNT_AD, \b PWM_INT_CNT_BU, \b PWM_INT_CNT_BD,
 //! \b PWM_TR_CNT_ZERO, \b PWM_TR_CNT_LOAD, \b PWM_TR_CNT_AU, \b PWM_TR_CNT_AD,
@@ -1228,39 +1312,39 @@ PWMFaultIntUnregister(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-PWMGenIntTrigEnable(unsigned long ulBase, unsigned long ulGen,
-                    unsigned long ulIntTrig)
+PWMGenIntTrigEnable(uint32_t ui32Base, uint32_t ui32Gen,
+                    uint32_t ui32IntTrig)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulIntTrig & ~(PWM_INT_CNT_ZERO | PWM_INT_CNT_LOAD |
-                          PWM_INT_CNT_AU | PWM_INT_CNT_AD | PWM_INT_CNT_BU |
-                          PWM_INT_CNT_BD | PWM_TR_CNT_ZERO | PWM_TR_CNT_LOAD |
-                          PWM_TR_CNT_AU | PWM_TR_CNT_AD | PWM_TR_CNT_BU |
-                          PWM_TR_CNT_BD)) == 0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32IntTrig & ~(PWM_INT_CNT_ZERO | PWM_INT_CNT_LOAD |
+                            PWM_INT_CNT_AU | PWM_INT_CNT_AD | PWM_INT_CNT_BU |
+                            PWM_INT_CNT_BD | PWM_TR_CNT_ZERO |
+                            PWM_TR_CNT_LOAD | PWM_TR_CNT_AU | PWM_TR_CNT_AD |
+                            PWM_TR_CNT_BU | PWM_TR_CNT_BD)) == 0);
 
     //
     // Enable the specified interrupts/triggers.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_INTEN) |= ulIntTrig;
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_INTEN) |= ui32IntTrig;
 }
 
 //*****************************************************************************
 //
 //! Disables interrupts for the specified PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to have interrupts and triggers disabled.
-//! This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or
-//! \b PWM_GEN_3.
-//! \param ulIntTrig specifies the interrupts and triggers to be disabled.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to have interrupts and triggers
+//! disabled.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
+//! \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32IntTrig specifies the interrupts and triggers to be disabled.
 //!
 //! This function masks the specified interrupt(s) and trigger(s) by clearing
 //! the specified bits of the interrupt/trigger enable register for the
-//! specified PWM generator.  The \e ulIntTrig parameter is the logical OR of
+//! specified PWM generator.  The \e ui32IntTrig parameter is the logical OR of
 //! \b PWM_INT_CNT_ZERO, \b PWM_INT_CNT_LOAD, \b PWM_INT_CNT_AU,
 //! \b PWM_INT_CNT_AD, \b PWM_INT_CNT_BU, \b PWM_INT_CNT_BD,
 //! \b PWM_TR_CNT_ZERO, \b PWM_TR_CNT_LOAD, \b PWM_TR_CNT_AU, \b PWM_TR_CNT_AD,
@@ -1270,33 +1354,33 @@ PWMGenIntTrigEnable(unsigned long ulBase, unsigned long ulGen,
 //
 //*****************************************************************************
 void
-PWMGenIntTrigDisable(unsigned long ulBase, unsigned long ulGen,
-                     unsigned long ulIntTrig)
+PWMGenIntTrigDisable(uint32_t ui32Base, uint32_t ui32Gen,
+                     uint32_t ui32IntTrig)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulIntTrig & ~(PWM_INT_CNT_ZERO | PWM_INT_CNT_LOAD |
-                          PWM_INT_CNT_AU | PWM_INT_CNT_AD | PWM_INT_CNT_BU |
-                          PWM_INT_CNT_BD | PWM_TR_CNT_ZERO | PWM_TR_CNT_LOAD |
-                          PWM_TR_CNT_AU | PWM_TR_CNT_AD | PWM_TR_CNT_BU |
-                          PWM_TR_CNT_BD)) == 0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32IntTrig & ~(PWM_INT_CNT_ZERO | PWM_INT_CNT_LOAD |
+                            PWM_INT_CNT_AU | PWM_INT_CNT_AD | PWM_INT_CNT_BU |
+                            PWM_INT_CNT_BD | PWM_TR_CNT_ZERO |
+                            PWM_TR_CNT_LOAD | PWM_TR_CNT_AU | PWM_TR_CNT_AD |
+                            PWM_TR_CNT_BU | PWM_TR_CNT_BD)) == 0);
 
     //
     // Disable the specified interrupts/triggers.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_INTEN) &= ~(ulIntTrig);
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_INTEN) &= ~(ui32IntTrig);
 }
 
 //*****************************************************************************
 //
 //! Gets interrupt status for the specified PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to query.  This parameter must be one of
-//! \b PWM_GEN_0,  \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to query.  This parameter must be one
+//! of \b PWM_GEN_0,  \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
 //! \param bMasked specifies whether masked or raw interrupt status is
 //! returned.
 //!
@@ -1308,19 +1392,19 @@ PWMGenIntTrigDisable(unsigned long ulBase, unsigned long ulGen,
 //! PWM generator.
 //
 //*****************************************************************************
-unsigned long
-PWMGenIntStatus(unsigned long ulBase, unsigned long ulGen, tBoolean bMasked)
+uint32_t
+PWMGenIntStatus(uint32_t ui32Base, uint32_t ui32Gen, bool bMasked)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
 
     //
     // Compute the generator's base address.
     //
-    ulGen = PWM_GEN_BADDR(ulBase, ulGen);
+    ui32Gen = PWM_GEN_BADDR(ui32Base, ui32Gen);
 
     //
     // Read and return the specified generator's raw or enabled interrupt
@@ -1328,11 +1412,11 @@ PWMGenIntStatus(unsigned long ulBase, unsigned long ulGen, tBoolean bMasked)
     //
     if(bMasked == true)
     {
-        return(HWREG(ulGen + PWM_O_X_ISC));
+        return(HWREG(ui32Gen + PWM_O_X_ISC));
     }
     else
     {
-        return(HWREG(ulGen + PWM_O_X_RIS));
+        return(HWREG(ui32Gen + PWM_O_X_RIS));
     }
 }
 
@@ -1340,14 +1424,14 @@ PWMGenIntStatus(unsigned long ulBase, unsigned long ulGen, tBoolean bMasked)
 //
 //! Clears the specified interrupt(s) for the specified PWM generator block.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator to query.  This parameter must be one of
-//! \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param ulInts specifies the interrupts to be cleared.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator to query.  This parameter must be one
+//! of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32Ints specifies the interrupts to be cleared.
 //!
-//! This funciton clears the specified interrupt(s) by writing a 1 to the
+//! This function clears the specified interrupt(s) by writing a 1 to the
 //! specified bits of the interrupt status register for the specified PWM
-//! generator.  The \e ulInts parameter is the logical OR of
+//! generator.  The \e ui32Ints parameter is the logical OR of
 //! \b PWM_INT_CNT_ZERO, \b PWM_INT_CNT_LOAD, \b PWM_INT_CNT_AU,
 //! \b PWM_INT_CNT_AD, \b PWM_INT_CNT_BU, or \b PWM_INT_CNT_BD.
 //!
@@ -1364,30 +1448,30 @@ PWMGenIntStatus(unsigned long ulBase, unsigned long ulGen, tBoolean bMasked)
 //
 //*****************************************************************************
 void
-PWMGenIntClear(unsigned long ulBase, unsigned long ulGen, unsigned long ulInts)
+PWMGenIntClear(uint32_t ui32Base, uint32_t ui32Gen, uint32_t ui32Ints)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulInts & ~(PWM_INT_CNT_ZERO | PWM_INT_CNT_LOAD | PWM_INT_CNT_AU |
-                       PWM_INT_CNT_AD | PWM_INT_CNT_BU | PWM_INT_CNT_BD)) ==
-           0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32Ints &
+            ~(PWM_INT_CNT_ZERO | PWM_INT_CNT_LOAD | PWM_INT_CNT_AU |
+              PWM_INT_CNT_AD | PWM_INT_CNT_BU | PWM_INT_CNT_BD)) == 0);
 
     //
     // Clear the requested interrupts by writing ones to the specified bit
     // of the module's interrupt enable register.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_ISC) = ulInts;
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_ISC) = ui32Ints;
 }
 
 //*****************************************************************************
 //
 //! Enables generator and fault interrupts for a PWM module.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGenFault contains the interrupts to be enabled.  This parameter
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32GenFault contains the interrupts to be enabled.  This parameter
 //! must be a logical OR of any of \b PWM_INT_GEN_0, \b PWM_INT_GEN_1,
 //! \b PWM_INT_GEN_2, \b PWM_INT_GEN_3, \b PWM_INT_FAULT0, \b PWM_INT_FAULT1,
 //! \b PWM_INT_FAULT2, or \b PWM_INT_FAULT3.
@@ -1399,29 +1483,29 @@ PWMGenIntClear(unsigned long ulBase, unsigned long ulGen, unsigned long ulInts)
 //
 //*****************************************************************************
 void
-PWMIntEnable(unsigned long ulBase, unsigned long ulGenFault)
+PWMIntEnable(uint32_t ui32Base, uint32_t ui32GenFault)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT((ulGenFault & ~(PWM_INT_GEN_0 | PWM_INT_GEN_1 | PWM_INT_GEN_2 |
-                           PWM_INT_GEN_3 | PWM_INT_FAULT0 | PWM_INT_FAULT1 |
-                           PWM_INT_FAULT2 | PWM_INT_FAULT3)) == 0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT((ui32GenFault & ~(PWM_INT_GEN_0 | PWM_INT_GEN_1 | PWM_INT_GEN_2 |
+                             PWM_INT_GEN_3 | PWM_INT_FAULT0 | PWM_INT_FAULT1 |
+                             PWM_INT_FAULT2 | PWM_INT_FAULT3)) == 0);
 
     //
     // Read the module's interrupt enable register and enable interrupts
     // for the specified PWM generators.
     //
-    HWREG(ulBase + PWM_O_INTEN) |= ulGenFault;
+    HWREG(ui32Base + PWM_O_INTEN) |= ui32GenFault;
 }
 
 //*****************************************************************************
 //
 //! Disables generator and fault interrupts for a PWM module.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGenFault contains the interrupts to be disabled.  This parameter
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32GenFault contains the interrupts to be disabled.  This parameter
 //! must be a logical OR of any of \b PWM_INT_GEN_0, \b PWM_INT_GEN_1,
 //! \b PWM_INT_GEN_2, \b PWM_INT_GEN_3, \b PWM_INT_FAULT0, \b PWM_INT_FAULT1,
 //! \b PWM_INT_FAULT2, or \b PWM_INT_FAULT3.
@@ -1433,28 +1517,28 @@ PWMIntEnable(unsigned long ulBase, unsigned long ulGenFault)
 //
 //*****************************************************************************
 void
-PWMIntDisable(unsigned long ulBase, unsigned long ulGenFault)
+PWMIntDisable(uint32_t ui32Base, uint32_t ui32GenFault)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT((ulGenFault & ~(PWM_INT_GEN_0 | PWM_INT_GEN_1 | PWM_INT_GEN_2 |
-                           PWM_INT_GEN_3 | PWM_INT_FAULT0 | PWM_INT_FAULT1 |
-                           PWM_INT_FAULT2 | PWM_INT_FAULT3)) == 0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT((ui32GenFault & ~(PWM_INT_GEN_0 | PWM_INT_GEN_1 | PWM_INT_GEN_2 |
+                             PWM_INT_GEN_3 | PWM_INT_FAULT0 | PWM_INT_FAULT1 |
+                             PWM_INT_FAULT2 | PWM_INT_FAULT3)) == 0);
 
     //
     // Read the module's interrupt enable register and disable interrupts
     // for the specified PWM generators.
     //
-    HWREG(ulBase + PWM_O_INTEN) &= ~(ulGenFault);
+    HWREG(ui32Base + PWM_O_INTEN) &= ~(ui32GenFault);
 }
 
 //*****************************************************************************
 //
 //! Clears the fault interrupt for a PWM module.
 //!
-//! \param ulBase is the base address of the PWM module.
+//! \param ui32Base is the base address of the PWM module.
 //!
 //! This function clears the fault interrupt by writing to the appropriate bit
 //! of the interrupt status register for the selected PWM module.
@@ -1477,24 +1561,24 @@ PWMIntDisable(unsigned long ulBase, unsigned long ulGenFault)
 //
 //*****************************************************************************
 void
-PWMFaultIntClear(unsigned long ulBase)
+PWMFaultIntClear(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
 
     //
     // Write the only writeable bit in the module's interrupt register.
     //
-    HWREG(ulBase + PWM_O_ISC) = PWM_ISC_INTFAULT0;
+    HWREG(ui32Base + PWM_O_ISC) = PWM_ISC_INTFAULT0;
 }
 
 //*****************************************************************************
 //
 //! Gets the interrupt status for a PWM module.
 //!
-//! \param ulBase is the base address of the PWM module.
+//! \param ui32Base is the base address of the PWM module.
 //! \param bMasked specifies whether masked or raw interrupt status is
 //! returned.
 //!
@@ -1507,24 +1591,24 @@ PWMFaultIntClear(unsigned long ulBase)
 //! \b PWM_INT_FAULT3.
 //!
 //*****************************************************************************
-unsigned long
-PWMIntStatus(unsigned long ulBase, tBoolean bMasked)
+uint32_t
+PWMIntStatus(uint32_t ui32Base, bool bMasked)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
 
     //
     // Read and return either the module's raw or enabled interrupt status.
     //
     if(bMasked == true)
     {
-        return(HWREG(ulBase + PWM_O_ISC));
+        return(HWREG(ui32Base + PWM_O_ISC));
     }
     else
     {
-        return(HWREG(ulBase + PWM_O_RIS));
+        return(HWREG(ui32Base + PWM_O_RIS));
     }
 }
 
@@ -1532,12 +1616,12 @@ PWMIntStatus(unsigned long ulBase, tBoolean bMasked)
 //
 //! Clears the fault interrupt for a PWM module.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulFaultInts specifies the fault interrupts to clear.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32FaultInts specifies the fault interrupts to clear.
 //!
 //! This function clears one or more fault interrupts by writing to the
 //!  appropriate bit of the PWM interrupt status register.  The parameter
-//! \e ulFaultInts must be the logical OR of any of \b PWM_INT_FAULT0,
+//! \e ui32FaultInts must be the logical OR of any of \b PWM_INT_FAULT0,
 //! \b PWM_INT_FAULT1, \b PWM_INT_FAULT2, or \b PWM_INT_FAULT3.
 //!
 //! When running on a device supporting extended PWM fault handling, the fault
@@ -1561,19 +1645,19 @@ PWMIntStatus(unsigned long ulBase, tBoolean bMasked)
 //
 //*****************************************************************************
 void
-PWMFaultIntClearExt(unsigned long ulBase, unsigned long ulFaultInts)
+PWMFaultIntClearExt(uint32_t ui32Base, uint32_t ui32FaultInts)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT((ulFaultInts & ~(PWM_INT_FAULT0 | PWM_INT_FAULT1 |
-                            PWM_INT_FAULT2 | PWM_INT_FAULT3)) == 0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT((ui32FaultInts & ~(PWM_INT_FAULT0 | PWM_INT_FAULT1 |
+                              PWM_INT_FAULT2 | PWM_INT_FAULT3)) == 0);
 
     //
     // Clear the supplied fault bits.
     //
-    HWREG(ulBase + PWM_O_ISC) = ulFaultInts;
+    HWREG(ui32Base + PWM_O_ISC) = ui32FaultInts;
 }
 
 //*****************************************************************************
@@ -1581,13 +1665,13 @@ PWMFaultIntClearExt(unsigned long ulBase, unsigned long ulFaultInts)
 //! Configures the minimum fault period and fault pin senses for a given
 //! PWM generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator for which fault configuration is being
-//! set. This function must be one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2,
-//! or \b PWM_GEN_3.
-//! \param ulMinFaultPeriod is the minimum fault active period expressed in
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator for which fault configuration is being
+//! set.  This function must be one of \b PWM_GEN_0, \b PWM_GEN_1,
+//! \b PWM_GEN_2, or \b PWM_GEN_3.
+//! \param ui32MinFaultPeriod is the minimum fault active period expressed in
 //! PWM clock cycles.
-//! \param ulFaultSenses indicates which sense of each FAULT input should be
+//! \param ui32FaultSenses indicates which sense of each FAULT input should be
 //! considered the ``asserted'' state.  Valid values are logical OR
 //! combinations of \b PWM_FAULTn_SENSE_HIGH and \b PWM_FAULTn_SENSE_LOW.
 //!
@@ -1595,7 +1679,7 @@ PWMFaultIntClearExt(unsigned long ulBase, unsigned long ulFaultInts)
 //! along with the sense of each of the 4 possible fault inputs.  The minimum
 //! fault period is expressed in PWM clock cycles and takes effect only if
 //! PWMGenConfigure() is called with flag \b PWM_GEN_MODE_FAULT_PER set in the
-//! \e ulConfig parameter.  When a fault input is asserted, the minimum fault
+//! \e ui32Config parameter.  When a fault input is asserted, the minimum fault
 //! period timer ensures that it remains asserted for at least the number of
 //! clock cycles specified.
 //!
@@ -1606,45 +1690,47 @@ PWMFaultIntClearExt(unsigned long ulBase, unsigned long ulFaultInts)
 //
 //*****************************************************************************
 void
-PWMGenFaultConfigure(unsigned long ulBase, unsigned long ulGen,
-                     unsigned long ulMinFaultPeriod,
-                     unsigned long ulFaultSenses)
+PWMGenFaultConfigure(uint32_t ui32Base, uint32_t ui32Gen,
+                     uint32_t ui32MinFaultPeriod,
+                     uint32_t ui32FaultSenses)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT(ulMinFaultPeriod < PWM_X_MINFLTPER_M);
-    ASSERT((ulFaultSenses & ~(PWM_FAULT0_SENSE_HIGH | PWM_FAULT0_SENSE_LOW |
-                              PWM_FAULT1_SENSE_HIGH | PWM_FAULT1_SENSE_LOW |
-                              PWM_FAULT2_SENSE_HIGH | PWM_FAULT2_SENSE_LOW |
-                              PWM_FAULT3_SENSE_HIGH | PWM_FAULT3_SENSE_LOW)) ==
-           0);
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT(ui32MinFaultPeriod < PWM_X_MINFLTPER_M);
+    ASSERT((ui32FaultSenses & ~(PWM_FAULT0_SENSE_HIGH | PWM_FAULT0_SENSE_LOW |
+                                PWM_FAULT1_SENSE_HIGH | PWM_FAULT1_SENSE_LOW |
+                                PWM_FAULT2_SENSE_HIGH | PWM_FAULT2_SENSE_LOW |
+                                PWM_FAULT3_SENSE_HIGH |
+                                PWM_FAULT3_SENSE_LOW)) == 0);
 
     //
     // Write the minimum fault period.
     //
-    HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_MINFLTPER) = ulMinFaultPeriod;
+    HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_MINFLTPER) =
+        ui32MinFaultPeriod;
 
     //
     // Write the fault senses.
     //
-    HWREG(PWM_GEN_EXT_BADDR(ulBase, ulGen) + PWM_O_X_FLTSEN) = ulFaultSenses;
+    HWREG(PWM_GEN_EXT_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSEN) =
+        ui32FaultSenses;
 }
 
 //*****************************************************************************
 //
 //! Configures the set of fault triggers for a given PWM generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator for which fault triggers are being set.
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator for which fault triggers are being set.
 //! This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1, \b PWM_GEN_2, or
 //! \b PWM_GEN_3.
-//! \param ulGroup indicates the subset of possible faults that are to be
+//! \param ui32Group indicates the subset of possible faults that are to be
 //! configured.  This parameter must be \b PWM_FAULT_GROUP_0 or
 //! \b PWM_FAULT_GROUP_1.
-//! \param ulFaultTriggers defines the set of inputs that are to contribute
+//! \param ui32FaultTriggers defines the set of inputs that are to contribute
 //! towards generation of the fault signal to the given PWM generator.  For
 //! \b PWM_FAULT_GROUP_0, this is the logical OR of \b PWM_FAULT_FAULT0,
 //! \b PWM_FAULT_FAULT1, \b PWM_FAULT_FAULT2, or \b PWM_FAULT_FAULT3.  For
@@ -1657,11 +1743,11 @@ PWMGenFaultConfigure(unsigned long ulBase, unsigned long ulGen,
 //! to generate a fault condition to a given PWM generator.  By default, all
 //! generators use only FAULT0 (for backwards compatibility) but if
 //! PWMGenConfigure() is called with flag \b PWM_GEN_MODE_FAULT_SRC in the
-//! \e ulConfig parameter, extended fault handling is enabled and this function
-//! must be called to configure the fault triggers.
+//! \e ui32Config parameter, extended fault handling is enabled and this
+//! function must be called to configure the fault triggers.
 //!
 //! The fault signal to the PWM generator is generated by ORing together each
-//! of the signals specified in the \e ulFaultTriggers parameter after having
+//! of the signals specified in the \e ui32FaultTriggers parameter after having
 //! adjusted the sense of each FAULTn input based on the configuration
 //! previously set using a call to PWMGenFaultConfigure().
 //!
@@ -1672,36 +1758,38 @@ PWMGenFaultConfigure(unsigned long ulBase, unsigned long ulGen,
 //
 //*****************************************************************************
 void
-PWMGenFaultTriggerSet(unsigned long ulBase, unsigned long ulGen,
-                      unsigned long ulGroup, unsigned long ulFaultTriggers)
+PWMGenFaultTriggerSet(uint32_t ui32Base, uint32_t ui32Gen,
+                      uint32_t ui32Group, uint32_t ui32FaultTriggers)
 {
     //
     // Check for valid parameters.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_0) || (ulGroup == PWM_FAULT_GROUP_1));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_0) &&
-           ((ulFaultTriggers & ~(PWM_FAULT_FAULT0 | PWM_FAULT_FAULT1 |
-                                 PWM_FAULT_FAULT2 | PWM_FAULT_FAULT3)) == 0));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_1) &&
-           ((ulFaultTriggers & ~(PWM_FAULT_DCMP0 | PWM_FAULT_DCMP1 |
-                                 PWM_FAULT_DCMP2 | PWM_FAULT_DCMP3 |
-                                 PWM_FAULT_DCMP4 | PWM_FAULT_DCMP5 |
-                                 PWM_FAULT_DCMP6 | PWM_FAULT_DCMP7)) == 0));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_0) ||
+           (ui32Group == PWM_FAULT_GROUP_1));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_0) &&
+           ((ui32FaultTriggers & ~(PWM_FAULT_FAULT0 | PWM_FAULT_FAULT1 |
+                                   PWM_FAULT_FAULT2 | PWM_FAULT_FAULT3)) ==
+            0));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_1) &&
+           ((ui32FaultTriggers & ~(PWM_FAULT_DCMP0 | PWM_FAULT_DCMP1 |
+                                   PWM_FAULT_DCMP2 | PWM_FAULT_DCMP3 |
+                                   PWM_FAULT_DCMP4 | PWM_FAULT_DCMP5 |
+                                   PWM_FAULT_DCMP6 | PWM_FAULT_DCMP7)) == 0));
 
     //
     // Write the fault triggers to the appropriate register.
     //
-    if(ulGroup == PWM_FAULT_GROUP_0)
+    if(ui32Group == PWM_FAULT_GROUP_0)
     {
-        HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_FLTSRC0) =
-            ulFaultTriggers;
+        HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSRC0) =
+            ui32FaultTriggers;
     }
     else
     {
-        HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_FLTSRC1) =
-            ulFaultTriggers;
+        HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSRC1) =
+            ui32FaultTriggers;
     }
 }
 
@@ -1710,12 +1798,12 @@ PWMGenFaultTriggerSet(unsigned long ulBase, unsigned long ulGen,
 //! Returns the set of fault triggers currently configured for a given PWM
 //! generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator for which fault triggers are being
-//! queried. This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator for which fault triggers are being
+//! queried.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
 //! \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param ulGroup indicates the subset of faults that are being queried.  This
-//! parameter must be \b PWM_FAULT_GROUP_0 or \b PWM_FAULT_GROUP_1.
+//! \param ui32Group indicates the subset of faults that are being queried.
+//! This parameter must be \b PWM_FAULT_GROUP_0 or \b PWM_FAULT_GROUP_1.
 //!
 //! This function allows an application to query the current set of inputs that
 //! contribute to the generation of a fault condition to a given PWM generator.
@@ -1732,27 +1820,28 @@ PWMGenFaultTriggerSet(unsigned long ulBase, unsigned long ulGen,
 //! \b PWM_FAULT_DCMP5, \b PWM_FAULT_DCMP6, or \b PWM_FAULT_DCMP7.
 //
 //*****************************************************************************
-unsigned long
-PWMGenFaultTriggerGet(unsigned long ulBase, unsigned long ulGen,
-                      unsigned long ulGroup)
+uint32_t
+PWMGenFaultTriggerGet(uint32_t ui32Base, uint32_t ui32Gen,
+                      uint32_t ui32Group)
 {
     //
     // Check for valid parameters.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_0) || (ulGroup == PWM_FAULT_GROUP_1));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_0) ||
+           (ui32Group == PWM_FAULT_GROUP_1));
 
     //
     // Return the current fault triggers.
     //
-    if(ulGroup == PWM_FAULT_GROUP_0)
+    if(ui32Group == PWM_FAULT_GROUP_0)
     {
-        return(HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_FLTSRC0));
+        return(HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSRC0));
     }
     else
     {
-        return(HWREG(PWM_GEN_BADDR(ulBase, ulGen) + PWM_O_X_FLTSRC1));
+        return(HWREG(PWM_GEN_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSRC1));
     }
 }
 
@@ -1760,18 +1849,18 @@ PWMGenFaultTriggerGet(unsigned long ulBase, unsigned long ulGen,
 //
 //! Returns the current state of the fault triggers for a given PWM generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator for which fault trigger states are being
-//! queried.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator for which fault trigger states are
+//! being queried.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
 //! \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param ulGroup indicates the subset of faults that are being queried.  This
-//! parameter must be \b PWM_FAULT_GROUP_0 or \b PWM_FAULT_GROUP_1.
+//! \param ui32Group indicates the subset of faults that are being queried.
+//! This parameter must be \b PWM_FAULT_GROUP_0 or \b PWM_FAULT_GROUP_1.
 //!
 //! This function allows an application to query the current state of each of
 //! the fault trigger inputs to a given PWM generator.  The current state of
 //! each fault trigger input is returned unless PWMGenConfigure() has
 //! previously been called with flag \b PWM_GEN_MODE_FAULT_LATCHED in the
-//! \e ulConfig parameter, in which case the returned status is the latched
+//! \e ui32Config parameter, in which case the returned status is the latched
 //! fault trigger status.
 //!
 //! If latched faults are configured, the application must call
@@ -1790,27 +1879,28 @@ PWMGenFaultTriggerGet(unsigned long ulBase, unsigned long ulGen,
 //! \b PWM_FAULT_DCMP5, \b PWM_FAULT_DCMP6, or \b PWM_FAULT_DCMP7.
 //
 //*****************************************************************************
-unsigned long
-PWMGenFaultStatus(unsigned long ulBase, unsigned long ulGen,
-                  unsigned long ulGroup)
+uint32_t
+PWMGenFaultStatus(uint32_t ui32Base, uint32_t ui32Gen,
+                  uint32_t ui32Group)
 {
     //
     // Check for valid parameters.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_0) || (ulGroup == PWM_FAULT_GROUP_1));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_0) ||
+           (ui32Group == PWM_FAULT_GROUP_1));
 
     //
     // Return the current fault status.
     //
-    if(ulGroup == PWM_FAULT_GROUP_0)
+    if(ui32Group == PWM_FAULT_GROUP_0)
     {
-        return(HWREG(PWM_GEN_EXT_BADDR(ulBase, ulGen) + PWM_O_X_FLTSTAT0));
+        return(HWREG(PWM_GEN_EXT_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSTAT0));
     }
     else
     {
-        return(HWREG(PWM_GEN_EXT_BADDR(ulBase, ulGen) + PWM_O_X_FLTSTAT1));
+        return(HWREG(PWM_GEN_EXT_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSTAT1));
     }
 }
 
@@ -1818,19 +1908,19 @@ PWMGenFaultStatus(unsigned long ulBase, unsigned long ulGen,
 //
 //! Clears one or more latched fault triggers for a given PWM generator.
 //!
-//! \param ulBase is the base address of the PWM module.
-//! \param ulGen is the PWM generator for which fault trigger states are being
-//! queried.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Gen is the PWM generator for which fault trigger states are
+//! being queried.  This parameter must be one of \b PWM_GEN_0, \b PWM_GEN_1,
 //! \b PWM_GEN_2, or \b PWM_GEN_3.
-//! \param ulGroup indicates the subset of faults that are being queried.
+//! \param ui32Group indicates the subset of faults that are being queried.
 //! This parameter must be \b PWM_FAULT_GROUP_0 or \b PWM_FAULT_GROUP_1.
-//! \param ulFaultTriggers is the set of fault triggers which are to be
+//! \param ui32FaultTriggers is the set of fault triggers which are to be
 //! cleared.
 //!
 //! This function allows an application to clear the fault triggers for a
 //! given PWM generator.  This function is only required if PWMGenConfigure()
 //! has previously been called with flag \b PWM_GEN_MODE_FAULT_LATCHED in
-//! parameter \e ulConfig.
+//! parameter \e ui32Config.
 //!
 //! \note This function is only available on devices supporting extended PWM
 //! fault handling.
@@ -1839,37 +1929,231 @@ PWMGenFaultStatus(unsigned long ulBase, unsigned long ulGen,
 //
 //*****************************************************************************
 void
-PWMGenFaultClear(unsigned long ulBase, unsigned long ulGen,
-                 unsigned long ulGroup, unsigned long ulFaultTriggers)
+PWMGenFaultClear(uint32_t ui32Base, uint32_t ui32Gen,
+                 uint32_t ui32Group, uint32_t ui32FaultTriggers)
 {
     //
     // Check for valid parameters.
     //
-    ASSERT((ulBase == PWM0_BASE) || (ulBase == PWM1_BASE));
-    ASSERT(PWMGenValid(ulGen));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_0) || (ulGroup == PWM_FAULT_GROUP_1));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_0) &&
-           ((ulFaultTriggers & ~(PWM_FAULT_FAULT0 | PWM_FAULT_FAULT1 |
-                                 PWM_FAULT_FAULT2 | PWM_FAULT_FAULT3)) == 0));
-    ASSERT((ulGroup == PWM_FAULT_GROUP_1) &&
-           ((ulFaultTriggers & ~(PWM_FAULT_DCMP0 | PWM_FAULT_DCMP1 |
-                                 PWM_FAULT_DCMP2 | PWM_FAULT_DCMP3 |
-                                 PWM_FAULT_DCMP4 | PWM_FAULT_DCMP5 |
-                                 PWM_FAULT_DCMP6 | PWM_FAULT_DCMP7)) == 0));
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(_PWMGenValid(ui32Gen));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_0) ||
+           (ui32Group == PWM_FAULT_GROUP_1));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_0) &&
+           ((ui32FaultTriggers & ~(PWM_FAULT_FAULT0 | PWM_FAULT_FAULT1 |
+                                   PWM_FAULT_FAULT2 | PWM_FAULT_FAULT3)) ==
+            0));
+    ASSERT((ui32Group == PWM_FAULT_GROUP_1) &&
+           ((ui32FaultTriggers & ~(PWM_FAULT_DCMP0 | PWM_FAULT_DCMP1 |
+                                   PWM_FAULT_DCMP2 | PWM_FAULT_DCMP3 |
+                                   PWM_FAULT_DCMP4 | PWM_FAULT_DCMP5 |
+                                   PWM_FAULT_DCMP6 | PWM_FAULT_DCMP7)) == 0));
 
     //
     // Clear the given faults.
     //
-    if(ulGroup == PWM_FAULT_GROUP_0)
+    if(ui32Group == PWM_FAULT_GROUP_0)
     {
-        HWREG(PWM_GEN_EXT_BADDR(ulBase, ulGen) + PWM_O_X_FLTSTAT0) =
-            ulFaultTriggers;
+        HWREG(PWM_GEN_EXT_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSTAT0) =
+            ui32FaultTriggers;
     }
     else
     {
-        HWREG(PWM_GEN_EXT_BADDR(ulBase, ulGen) + PWM_O_X_FLTSTAT1) =
-            ulFaultTriggers;
+        HWREG(PWM_GEN_EXT_BADDR(ui32Base, ui32Gen) + PWM_O_X_FLTSTAT1) =
+            ui32FaultTriggers;
     }
+}
+
+//*****************************************************************************
+///
+//! Sets the PWM clock configuration.
+//!
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32Config is the configuration for the PWM clock; it must be one of
+//! \b PWM_SYSCLK_DIV_1, \b PWM_SYSCLK_DIV_2, \b PWM_SYSCLK_DIV_4,
+//! \b PWM_SYSCLK_DIV_8, \b PWM_SYSCLK_DIV_16, \b PWM_SYSCLK_DIV_32, or
+//! \b PWM_SYSCLK_DIV_64.
+//!
+//! This function sets the PWM clock divider as the PWM clock source.  It also
+//! configures the clock frequency to the PWM module as a division of the
+//! system clock.  This clock is used by the PWM module to generate PWM
+//! signals; its rate forms the basis for all PWM signals.
+//!
+//! \note This function should only be used with Snowflake class devices.  For
+//! other class devices SysCtlPWMClockSet() function should be used.
+//!
+//! \note The clocking of the PWM is dependent upon the system clock rate as
+//! configured by SysCtlClockFreqSet().
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+PWMClockSet(uint32_t ui32Base, uint32_t ui32Config)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT((ui32Config == PWM_SYSCLK_DIV_2) ||
+           (ui32Config == PWM_SYSCLK_DIV_4) ||
+           (ui32Config == PWM_SYSCLK_DIV_8) ||
+           (ui32Config == PWM_SYSCLK_DIV_16) ||
+           (ui32Config == PWM_SYSCLK_DIV_32) ||
+           (ui32Config == PWM_SYSCLK_DIV_64));
+
+    //
+    // Set the PWM clock configuration into the PWM clock configuration
+    // register.
+    //
+    HWREG(ui32Base + PWM_O_CC) = ((HWREG(ui32Base + PWM_O_CC) &
+                                   ~(PWM_CC_USEPWM | PWM_CC_PWMDIV_M)) |
+                                  ui32Config);
+}
+
+//*****************************************************************************
+//
+//! Gets the current PWM clock configuration.
+//!
+//! \param ui32Base is the base address of the PWM module.
+//!
+//! This function returns the current PWM clock configuration.
+//!
+//! \note This function should only be used with Snowflake class devices.  For
+//! other class devices SysCtlPWMClockGet() function should be used.
+//!
+//! \return Returns the current PWM clock configuration; is one of
+//! \b PWM_SYSCLK_DIV_1, \b PWM_SYSCLK_DIV_2, \b PWM_SYSCLK_DIV_4,
+//! \b PWM_SYSCLK_DIV_8, \b PWM_SYSCLK_DIV_16, \b PWM_SYSCLK_DIV_32,
+//! or \b PWM_SYSCLK_DIV_64.
+//
+//*****************************************************************************
+uint32_t
+PWMClockGet(uint32_t ui32Base)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+
+    //
+    // Return the current PWM clock configuration.  Make sure that
+    // PWM_SYSCLK_DIV_1 is returned in all cases where the divider is disabled.
+    //
+    if(!(HWREG(ui32Base + PWM_O_CC) & PWM_CC_USEPWM))
+    {
+        //
+        // The divider is not active so reflect this in the value we return.
+        //
+        return(PWM_SYSCLK_DIV_1);
+    }
+    else
+    {
+        //
+        // The divider is active so directly return the masked register value.
+        //
+        return(HWREG(ui32Base + PWM_O_CC) & (PWM_CC_USEPWM | PWM_CC_PWMDIV_M));
+    }
+}
+
+//*****************************************************************************
+//
+//! Sets the update mode or synchronization mode to the PWM outputs.
+//!
+//! \param ui32Base is the base address of the PWM module.
+//! \param ui32PWMOutBits are the PWM outputs to be modified.  This parameter
+//! must be the logical OR of any of \b PWM_OUT_0_BIT, \b PWM_OUT_1_BIT,
+//! \b PWM_OUT_2_BIT, \b PWM_OUT_3_BIT, \b PWM_OUT_4_BIT, \b PWM_OUT_5_BIT,
+//! \b PWM_OUT_6_BIT, or \b PWM_OUT_7_BIT.
+//! \param ui32Mode specifies the enable update mode to use when enabling or
+//! disabling PWM outputs.
+//!
+//! This function sets one of three possible update modes to enable or disable
+//! the requested PWM outputs.  The \e ui32Mode parameter controls when changes
+//! made via calls to PWMOutputState() take effect.  Possible values are:
+//!
+//! - \b PWM_OUTPUT_MODE_NO_SYNC, which enables/disables changes to take effect
+//! immediately.
+//! - \b PWM_OUTPUT_MODE_SYNC_LOCAL, which causes changes to take effect when
+//! the local PWM generator's count next reaches 0.
+//! - \b PWM_OUTPUT_MODE_SYNC_GLOBAL, which causes changes to take effect when
+//! the local PWM generator's count next reaches 0 following a call to
+//! PWMSyncUpdate() which specifies the same generator in its \e ui32GenBits
+//! parameter.
+//!
+//! \note This function is only available on Snowflake class devices.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+PWMOutputUpdateMode(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+                    uint32_t ui32Mode)
+{
+    uint_fast8_t ui8Index;
+    uint32_t ui32PWMOutputMask;
+    uint32_t ui32UpdateValueMask;
+    uint32_t ui32UpdateValue;
+    uint32_t ui32Temp;
+
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == PWM0_BASE) || (ui32Base == PWM1_BASE));
+    ASSERT(!(ui32PWMOutBits & ~(PWM_OUT_0_BIT | PWM_OUT_1_BIT | PWM_OUT_2_BIT |
+                                PWM_OUT_3_BIT | PWM_OUT_4_BIT | PWM_OUT_5_BIT |
+                                PWM_OUT_6_BIT | PWM_OUT_7_BIT)));
+    ASSERT((ui32Mode == PWM_OUTPUT_MODE_NO_SYNC) ||
+           (ui32Mode == PWM_OUTPUT_MODE_SYNC_LOCAL) ||
+           (ui32Mode == PWM_OUTPUT_MODE_SYNC_GLOBAL));
+
+    //
+    // Initialize the local variables
+    //
+    ui8Index = 0;
+    ui32PWMOutputMask = 1;
+    ui32UpdateValue = 0;
+    ui32UpdateValueMask = 0;
+
+    //
+    // Loop to find out which PWM outputs are to be modified.
+    //
+    while(ui8Index < 8)
+    {
+        //
+        // Check if this PWM output is to be modified.
+        //
+        if(ui32PWMOutputMask & ui32PWMOutBits)
+        {
+            //
+            // Set the update mode value for the requested PWM output by
+            // writing to the appropriate field.
+            //
+            ui32UpdateValue |= ui32Mode << (ui8Index * 2);
+
+            //
+            // Compute the mask for the bits to be updated.
+            //
+            ui32UpdateValueMask |= 3 << (ui8Index * 2);
+        }
+
+        //
+        // Update the PWM output to be checked and the index.
+        //
+        ui32PWMOutputMask = ui32PWMOutputMask << 1;
+        ui8Index++;
+    }
+
+    //
+    // Read the Enable Update register and mask the bits that are to be
+    // updated.
+    //
+    ui32Temp = ~ui32UpdateValueMask & HWREG(ui32Base + PWM_O_ENUPD);
+
+    //
+    // Write the updated values to Enable Update register.
+    //
+    HWREG(ui32Base + PWM_O_ENUPD) = ui32Temp | ui32UpdateValue;
 }
 
 //*****************************************************************************

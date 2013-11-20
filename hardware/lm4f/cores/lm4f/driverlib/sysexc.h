@@ -2,7 +2,7 @@
 //
 // sysexc.h - Prototypes for the System Exception Module routines.
 //
-// Copyright (c) 2011-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2011-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __SYSEXC_H__
-#define __SYSEXC_H__
+#ifndef __DRIVERLIB_SYSEXC_H__
+#define __DRIVERLIB_SYSEXC_H__
 
 //*****************************************************************************
 //
@@ -54,7 +54,7 @@ extern "C"
 //*****************************************************************************
 //
 // Values that can be passed to SysExcIntEnable, SysExcIntDisable, and
-// SysExcIntClear as the ulIntFlags parameter, and returned from
+// SysExcIntClear as the ui32IntFlags parameter, and returned from
 // SysExcIntStatus.
 //
 //*****************************************************************************
@@ -72,10 +72,10 @@ extern "C"
 //*****************************************************************************
 extern void SysExcIntRegister(void (*pfnHandler)(void));
 extern void SysExcIntUnregister(void);
-extern void SysExcIntEnable(unsigned long ulIntFlags);
-extern void SysExcIntDisable(unsigned long ulIntFlags);
-extern unsigned long SysExcIntStatus(tBoolean bMasked);
-extern void SysExcIntClear(unsigned long ulIntFlags);
+extern void SysExcIntEnable(uint32_t ui32IntFlags);
+extern void SysExcIntDisable(uint32_t ui32IntFlags);
+extern uint32_t SysExcIntStatus(bool bMasked);
+extern void SysExcIntClear(uint32_t ui32IntFlags);
 
 //*****************************************************************************
 //
@@ -86,4 +86,4 @@ extern void SysExcIntClear(unsigned long ulIntFlags);
 }
 #endif
 
-#endif // __SYSEXC_H__
+#endif // __DRIVERLIB_SYSEXC_H__

@@ -2,7 +2,7 @@
 //
 // interrupt.c - Driver for the NVIC Interrupt Controller.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_ints.h"
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
@@ -57,7 +59,7 @@
 // preemption priority bits.
 //
 //*****************************************************************************
-static const unsigned long g_pulPriority[] =
+static const uint32_t g_pui32Priority[] =
 {
     NVIC_APINT_PRIGROUP_0_8, NVIC_APINT_PRIGROUP_1_7, NVIC_APINT_PRIGROUP_2_6,
     NVIC_APINT_PRIGROUP_3_5, NVIC_APINT_PRIGROUP_4_4, NVIC_APINT_PRIGROUP_5_3,
@@ -70,7 +72,7 @@ static const unsigned long g_pulPriority[] =
 // the priority encoding for that interrupt.
 //
 //*****************************************************************************
-static const unsigned long g_pulRegs[] =
+static const uint32_t g_pui32Regs[] =
 {
     0, NVIC_SYS_PRI1, NVIC_SYS_PRI2, NVIC_SYS_PRI3, NVIC_PRI0, NVIC_PRI1,
     NVIC_PRI2, NVIC_PRI3, NVIC_PRI4, NVIC_PRI5, NVIC_PRI6, NVIC_PRI7,
@@ -88,7 +90,7 @@ static const unsigned long g_pulRegs[] =
 // interrupt.
 //
 //*****************************************************************************
-static const unsigned long g_pulEnRegs[] =
+static const uint32_t g_pui32EnRegs[] =
 {
     NVIC_EN0, NVIC_EN1, NVIC_EN2, NVIC_EN3, NVIC_EN4
 };
@@ -100,7 +102,7 @@ static const unsigned long g_pulEnRegs[] =
 // interrupt.
 //
 //*****************************************************************************
-static const unsigned long g_pulDisRegs[] =
+static const uint32_t g_pui32Dii16Regs[] =
 {
     NVIC_DIS0, NVIC_DIS1, NVIC_DIS2, NVIC_DIS3, NVIC_DIS4
 };
@@ -111,7 +113,7 @@ static const unsigned long g_pulDisRegs[] =
 // only) and the register that contains the interrupt pend for that interrupt.
 //
 //*****************************************************************************
-static const unsigned long g_pulPendRegs[] =
+static const uint32_t g_pui32PendRegs[] =
 {
     NVIC_PEND0, NVIC_PEND1, NVIC_PEND2, NVIC_PEND3, NVIC_PEND4
 };
@@ -123,7 +125,7 @@ static const unsigned long g_pulPendRegs[] =
 // interrupt.
 //
 //*****************************************************************************
-static const unsigned long g_pulUnpendRegs[] =
+static const uint32_t g_pui32UnpendRegs[] =
 {
     NVIC_UNPEND0, NVIC_UNPEND1, NVIC_UNPEND2, NVIC_UNPEND3, NVIC_UNPEND4
 };
@@ -135,14 +137,14 @@ static const unsigned long g_pulUnpendRegs[] =
 //!
 //! This is the default interrupt handler for all interrupts.  It simply loops
 //! forever so that the system state is preserved for observation by a
-//! debugger.  Since interrupts should be disabled before unregistering the
-//! corresponding handler, this should never be called.
+//! debugger.  Since interrupts must be disabled before unregistering the
+//! corresponding handler, this should never be called during normal operation.
 //!
 //! \return None.
 //
 //*****************************************************************************
 static void
-IntDefaultHandler(void)
+_IntDefaultHandler(void)
 {
     //
     // Go into an infinite loop.
@@ -162,6 +164,12 @@ IntDefaultHandler(void)
 // address given in the corresponding location in this list.
 //
 //*****************************************************************************
+//
+// Set the size of the vector table to the largest number of interrupts of
+// any device
+//
+#undef NUM_INTERRUPTS
+#define NUM_INTERRUPTS                          155
 #if defined(ewarm)
 #pragma data_alignment=1024
 static __no_init void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) @ "VTABLE";
@@ -174,7 +182,7 @@ void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__ ((aligned(1024)));
 void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void);
 #else
 static __attribute__((section("vtable")))
-void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__ ((aligned(1024)));
+void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__((aligned(1024)));
 #endif
 
 //*****************************************************************************
@@ -188,14 +196,14 @@ void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__ ((aligned(1024)));
 //! \note Previously, this function had no return value.  As such, it was
 //! possible to include <tt>interrupt.h</tt> and call this function without
 //! having included <tt>hw_types.h</tt>.  Now that the return is a
-//! <tt>tBoolean</tt>, a compiler error occurs in this case.  The solution
+//! <tt>bool</tt>, a compiler error occurs in this case.  The solution
 //! is to include <tt>hw_types.h</tt> before including <tt>interrupt.h</tt>.
 //!
 //! \return Returns \b true if interrupts were disabled when the function was
 //! called or \b false if they were initially enabled.
 //
 //*****************************************************************************
-tBoolean
+bool
 IntMasterEnable(void)
 {
     //
@@ -216,14 +224,14 @@ IntMasterEnable(void)
 //! \note Previously, this function had no return value.  As such, it was
 //! possible to include <tt>interrupt.h</tt> and call this function without
 //! having included <tt>hw_types.h</tt>.  Now that the return is a
-//! <tt>tBoolean</tt>, a compiler error occurs in this case.  The solution
+//! <tt>bool</tt>, a compiler error occurs in this case.  The solution
 //! is to include <tt>hw_types.h</tt> before including <tt>interrupt.h</tt>.
 //!
 //! \return Returns \b true if interrupts were already disabled when the
 //! function was called or \b false if they were initially enabled.
 //
 //*****************************************************************************
-tBoolean
+bool
 IntMasterDisable(void)
 {
     //
@@ -236,7 +244,7 @@ IntMasterDisable(void)
 //
 //! Registers a function to be called when an interrupt occurs.
 //!
-//! \param ulInterrupt specifies the interrupt in question.
+//! \param ui32Interrupt specifies the interrupt in question.
 //! \param pfnHandler is a pointer to the function to be called.
 //!
 //! This function is used to specify the handler function to be called when the
@@ -260,55 +268,55 @@ IntMasterDisable(void)
 //
 //*****************************************************************************
 void
-IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void))
+IntRegister(uint32_t ui32Interrupt, void (*pfnHandler)(void))
 {
-    unsigned long ulIdx, ulValue;
+    uint32_t ui32Idx, ui32Value;
 
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Make sure that the RAM vector table is correctly aligned.
     //
-    ASSERT(((unsigned long)g_pfnRAMVectors & 0x000003ff) == 0);
+    ASSERT(((uint32_t)g_pfnRAMVectors & 0x000003ff) == 0);
 
     //
     // See if the RAM vector table has been initialized.
     //
-    if(HWREG(NVIC_VTABLE) != (unsigned long)g_pfnRAMVectors)
+    if(HWREG(NVIC_VTABLE) != (uint32_t)g_pfnRAMVectors)
     {
         //
         // Copy the vector table from the beginning of FLASH to the RAM vector
         // table.
         //
-        ulValue = HWREG(NVIC_VTABLE);
-        for(ulIdx = 0; ulIdx < NUM_INTERRUPTS; ulIdx++)
+        ui32Value = HWREG(NVIC_VTABLE);
+        for(ui32Idx = 0; ui32Idx < NUM_INTERRUPTS; ui32Idx++)
         {
-            g_pfnRAMVectors[ulIdx] = (void (*)(void))HWREG((ulIdx * 4) +
-                                                     ulValue);
+            g_pfnRAMVectors[ui32Idx] = (void (*)(void))HWREG((ui32Idx * 4) +
+                                                             ui32Value);
         }
 
         //
         // Point the NVIC at the RAM vector table.
         //
-        HWREG(NVIC_VTABLE) = (unsigned long)g_pfnRAMVectors;
+        HWREG(NVIC_VTABLE) = (uint32_t)g_pfnRAMVectors;
     }
 
     //
     // Save the interrupt handler.
     //
-    g_pfnRAMVectors[ulInterrupt] = pfnHandler;
+    g_pfnRAMVectors[ui32Interrupt] = pfnHandler;
 }
 
 //*****************************************************************************
 //
 //! Unregisters the function to be called when an interrupt occurs.
 //!
-//! \param ulInterrupt specifies the interrupt in question.
+//! \param ui32Interrupt specifies the interrupt in question.
 //!
-//! This function is used to indicate that no handler should be called when the
+//! This function is used to indicate that no handler is called when the
 //! given interrupt is asserted to the processor.  The interrupt source is
 //! automatically disabled (via IntDisable()) if necessary.
 //!
@@ -319,47 +327,47 @@ IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void))
 //
 //*****************************************************************************
 void
-IntUnregister(unsigned long ulInterrupt)
+IntUnregister(uint32_t ui32Interrupt)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Reset the interrupt handler.
     //
-    g_pfnRAMVectors[ulInterrupt] = IntDefaultHandler;
+    g_pfnRAMVectors[ui32Interrupt] = _IntDefaultHandler;
 }
 
 //*****************************************************************************
 //
 //! Sets the priority grouping of the interrupt controller.
 //!
-//! \param ulBits specifies the number of bits of preemptable priority.
+//! \param ui32Bits specifies the number of bits of preemptable priority.
 //!
 //! This function specifies the split between preemptable priority levels and
 //! sub-priority levels in the interrupt priority specification.  The range of
 //! the grouping values are dependent upon the hardware implementation; on
-//! the Stellaris family, three bits are available for hardware interrupt
-//! prioritization and therefore priority grouping values of three through
-//! seven have the same effect.
+//! the Tiva C and E Series family, three bits are available for hardware
+//! interrupt prioritization and therefore priority grouping values of three
+//! through seven have the same effect.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-IntPriorityGroupingSet(unsigned long ulBits)
+IntPriorityGroupingSet(uint32_t ui32Bits)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBits < NUM_PRIORITY);
+    ASSERT(ui32Bits < NUM_PRIORITY);
 
     //
     // Set the priority grouping.
     //
-    HWREG(NVIC_APINT) = NVIC_APINT_VECTKEY | g_pulPriority[ulBits];
+    HWREG(NVIC_APINT) = NVIC_APINT_VECTKEY | g_pui32Priority[ui32Bits];
 }
 
 //*****************************************************************************
@@ -372,25 +380,25 @@ IntPriorityGroupingSet(unsigned long ulBits)
 //! \return The number of bits of preemptable priority.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 IntPriorityGroupingGet(void)
 {
-    unsigned long ulLoop, ulValue;
+    uint32_t ui32Loop, ui32Value;
 
     //
     // Read the priority grouping.
     //
-    ulValue = HWREG(NVIC_APINT) & NVIC_APINT_PRIGROUP_M;
+    ui32Value = HWREG(NVIC_APINT) & NVIC_APINT_PRIGROUP_M;
 
     //
     // Loop through the priority grouping values.
     //
-    for(ulLoop = 0; ulLoop < NUM_PRIORITY; ulLoop++)
+    for(ui32Loop = 0; ui32Loop < NUM_PRIORITY; ui32Loop++)
     {
         //
         // Stop looping if this value matches.
         //
-        if(ulValue == g_pulPriority[ulLoop])
+        if(ui32Value == g_pui32Priority[ui32Loop])
         {
             break;
         }
@@ -399,15 +407,15 @@ IntPriorityGroupingGet(void)
     //
     // Return the number of priority bits.
     //
-    return(ulLoop);
+    return(ui32Loop);
 }
 
 //*****************************************************************************
 //
 //! Sets the priority of an interrupt.
 //!
-//! \param ulInterrupt specifies the interrupt in question.
-//! \param ucPriority specifies the priority of the interrupt.
+//! \param ui32Interrupt specifies the interrupt in question.
+//! \param ui8Priority specifies the priority of the interrupt.
 //!
 //! This function is used to set the priority of an interrupt.  When multiple
 //! interrupts are asserted simultaneously, the ones with the highest priority
@@ -416,7 +424,7 @@ IntPriorityGroupingGet(void)
 //! interrupt priority.
 //!
 //! The hardware priority mechanism only looks at the upper N bits of the
-//! priority level (where N is 3 for the Stellaris family), so any
+//! priority level (where N is 3 for the Tiva C and E Series family), so any
 //! prioritization must be performed in those bits.  The remaining bits can be
 //! used to sub-prioritize the interrupt sources, and may be used by the
 //! hardware priority mechanism on a future part.  This arrangement allows
@@ -427,29 +435,29 @@ IntPriorityGroupingGet(void)
 //
 //*****************************************************************************
 void
-IntPrioritySet(unsigned long ulInterrupt, unsigned char ucPriority)
+IntPrioritySet(uint32_t ui32Interrupt, uint8_t ui8Priority)
 {
-    unsigned long ulTemp;
+    uint32_t ui32Temp;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulInterrupt >= 4) && (ulInterrupt < NUM_INTERRUPTS));
+    ASSERT((ui32Interrupt >= 4) && (ui32Interrupt < NUM_INTERRUPTS));
 
     //
     // Set the interrupt priority.
     //
-    ulTemp = HWREG(g_pulRegs[ulInterrupt >> 2]);
-    ulTemp &= ~(0xFF << (8 * (ulInterrupt & 3)));
-    ulTemp |= ucPriority << (8 * (ulInterrupt & 3));
-    HWREG(g_pulRegs[ulInterrupt >> 2]) = ulTemp;
+    ui32Temp = HWREG(g_pui32Regs[ui32Interrupt >> 2]);
+    ui32Temp &= ~(0xFF << (8 * (ui32Interrupt & 3)));
+    ui32Temp |= ui8Priority << (8 * (ui32Interrupt & 3));
+    HWREG(g_pui32Regs[ui32Interrupt >> 2]) = ui32Temp;
 }
 
 //*****************************************************************************
 //
 //! Gets the priority of an interrupt.
 //!
-//! \param ulInterrupt specifies the interrupt in question.
+//! \param ui32Interrupt specifies the interrupt in question.
 //!
 //! This function gets the priority of an interrupt.  See IntPrioritySet() for
 //! a definition of the priority value.
@@ -458,26 +466,26 @@ IntPrioritySet(unsigned long ulInterrupt, unsigned char ucPriority)
 //! specified.
 //
 //*****************************************************************************
-long
-IntPriorityGet(unsigned long ulInterrupt)
+int32_t
+IntPriorityGet(uint32_t ui32Interrupt)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulInterrupt >= 4) && (ulInterrupt < NUM_INTERRUPTS));
+    ASSERT((ui32Interrupt >= 4) && (ui32Interrupt < NUM_INTERRUPTS));
 
     //
     // Return the interrupt priority.
     //
-    return((HWREG(g_pulRegs[ulInterrupt >> 2]) >> (8 * (ulInterrupt & 3))) &
-           0xFF);
+    return((HWREG(g_pui32Regs[ui32Interrupt >> 2]) >>
+            (8 * (ui32Interrupt & 3))) & 0xFF);
 }
 
 //*****************************************************************************
 //
 //! Enables an interrupt.
 //!
-//! \param ulInterrupt specifies the interrupt to be enabled.
+//! \param ui32Interrupt specifies the interrupt to be enabled.
 //!
 //! The specified interrupt is enabled in the interrupt controller.  Other
 //! enables for the interrupt (such as at the peripheral level) are unaffected
@@ -487,51 +495,51 @@ IntPriorityGet(unsigned long ulInterrupt)
 //
 //*****************************************************************************
 void
-IntEnable(unsigned long ulInterrupt)
+IntEnable(uint32_t ui32Interrupt)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Determine the interrupt to enable.
     //
-    if(ulInterrupt == FAULT_MPU)
+    if(ui32Interrupt == FAULT_MPU)
     {
         //
         // Enable the MemManage interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_MEM;
     }
-    else if(ulInterrupt == FAULT_BUS)
+    else if(ui32Interrupt == FAULT_BUS)
     {
         //
         // Enable the bus fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_BUS;
     }
-    else if(ulInterrupt == FAULT_USAGE)
+    else if(ui32Interrupt == FAULT_USAGE)
     {
         //
         // Enable the usage fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_USAGE;
     }
-    else if(ulInterrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == FAULT_SYSTICK)
     {
         //
         // Enable the System Tick interrupt.
         //
         HWREG(NVIC_ST_CTRL) |= NVIC_ST_CTRL_INTEN;
     }
-    else if(ulInterrupt >= 16)
+    else if(ui32Interrupt >= 16)
     {
         //
         // Enable the general interrupt.
         //
-        HWREG(g_pulEnRegs[(ulInterrupt - 16) / 32]) =
-            1 << ((ulInterrupt - 16) & 31);
+        HWREG(g_pui32EnRegs[(ui32Interrupt - 16) / 32]) =
+            1 << ((ui32Interrupt - 16) & 31);
     }
 }
 
@@ -539,7 +547,7 @@ IntEnable(unsigned long ulInterrupt)
 //
 //! Disables an interrupt.
 //!
-//! \param ulInterrupt specifies the interrupt to be disabled.
+//! \param ui32Interrupt specifies the interrupt to be disabled.
 //!
 //! The specified interrupt is disabled in the interrupt controller.  Other
 //! enables for the interrupt (such as at the peripheral level) are unaffected
@@ -549,51 +557,51 @@ IntEnable(unsigned long ulInterrupt)
 //
 //*****************************************************************************
 void
-IntDisable(unsigned long ulInterrupt)
+IntDisable(uint32_t ui32Interrupt)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Determine the interrupt to disable.
     //
-    if(ulInterrupt == FAULT_MPU)
+    if(ui32Interrupt == FAULT_MPU)
     {
         //
         // Disable the MemManage interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_MEM);
     }
-    else if(ulInterrupt == FAULT_BUS)
+    else if(ui32Interrupt == FAULT_BUS)
     {
         //
         // Disable the bus fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_BUS);
     }
-    else if(ulInterrupt == FAULT_USAGE)
+    else if(ui32Interrupt == FAULT_USAGE)
     {
         //
         // Disable the usage fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_USAGE);
     }
-    else if(ulInterrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == FAULT_SYSTICK)
     {
         //
         // Disable the System Tick interrupt.
         //
         HWREG(NVIC_ST_CTRL) &= ~(NVIC_ST_CTRL_INTEN);
     }
-    else if(ulInterrupt >= 16)
+    else if(ui32Interrupt >= 16)
     {
         //
         // Disable the general interrupt.
         //
-        HWREG(g_pulDisRegs[(ulInterrupt - 16) / 32]) =
-            1 << ((ulInterrupt - 16) & 31);
+        HWREG(g_pui32Dii16Regs[(ui32Interrupt - 16) / 32]) =
+            1 << ((ui32Interrupt - 16) & 31);
     }
 }
 
@@ -601,7 +609,7 @@ IntDisable(unsigned long ulInterrupt)
 //
 //! Returns if a peripheral interrupt is enabled.
 //!
-//! \param ulInterrupt specifies the interrupt to check.
+//! \param ui32Interrupt specifies the interrupt to check.
 //!
 //! This function checks if the specified interrupt is enabled in the interrupt
 //! controller.
@@ -609,73 +617,73 @@ IntDisable(unsigned long ulInterrupt)
 //! \return A non-zero value if the interrupt is enabled.
 //
 //*****************************************************************************
-unsigned long
-IntIsEnabled(unsigned long ulInterrupt)
+uint32_t
+IntIsEnabled(uint32_t ui32Interrupt)
 {
-    unsigned long ulRet;
+    uint32_t ui32Ret;
 
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Initialize the return value.
     //
-    ulRet = 0;
+    ui32Ret = 0;
 
     //
     // Determine the interrupt to disable.
     //
-    if(ulInterrupt == FAULT_MPU)
+    if(ui32Interrupt == FAULT_MPU)
     {
         //
         // Check the MemManage interrupt.
         //
-        ulRet = HWREG(NVIC_SYS_HND_CTRL) & NVIC_SYS_HND_CTRL_MEM;
+        ui32Ret = HWREG(NVIC_SYS_HND_CTRL) & NVIC_SYS_HND_CTRL_MEM;
     }
-    else if(ulInterrupt == FAULT_BUS)
+    else if(ui32Interrupt == FAULT_BUS)
     {
         //
         // Check the bus fault interrupt.
         //
-        ulRet = HWREG(NVIC_SYS_HND_CTRL) & NVIC_SYS_HND_CTRL_BUS;
+        ui32Ret = HWREG(NVIC_SYS_HND_CTRL) & NVIC_SYS_HND_CTRL_BUS;
     }
-    else if(ulInterrupt == FAULT_USAGE)
+    else if(ui32Interrupt == FAULT_USAGE)
     {
         //
         // Check the usage fault interrupt.
         //
-        ulRet = HWREG(NVIC_SYS_HND_CTRL) & NVIC_SYS_HND_CTRL_USAGE;
+        ui32Ret = HWREG(NVIC_SYS_HND_CTRL) & NVIC_SYS_HND_CTRL_USAGE;
     }
-    else if(ulInterrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == FAULT_SYSTICK)
     {
         //
         // Check the System Tick interrupt.
         //
-        ulRet = HWREG(NVIC_ST_CTRL) & NVIC_ST_CTRL_INTEN;
+        ui32Ret = HWREG(NVIC_ST_CTRL) & NVIC_ST_CTRL_INTEN;
     }
-    else if(ulInterrupt >= 16)
+    else if(ui32Interrupt >= 16)
     {
         //
         // Check the general interrupt.
         //
-        ulRet = HWREG(g_pulEnRegs[(ulInterrupt - 16) / 32]) &
-                (1 << ((ulInterrupt - 16) & 31));
+        ui32Ret = HWREG(g_pui32EnRegs[(ui32Interrupt - 16) / 32]) &
+                  (1 << ((ui32Interrupt - 16) & 31));
     }
-    return(ulRet);
+    return(ui32Ret);
 }
 
 //*****************************************************************************
 //
 //! Pends an interrupt.
 //!
-//! \param ulInterrupt specifies the interrupt to be pended.
+//! \param ui32Interrupt specifies the interrupt to be pended.
 //!
 //! The specified interrupt is pended in the interrupt controller.  Pending an
 //! interrupt causes the interrupt controller to execute the corresponding
 //! interrupt handler at the next available time, based on the current
-//! interrupt state priorities. For example, if called by a higher priority
+//! interrupt state priorities.  For example, if called by a higher priority
 //! interrupt handler, the specified interrupt handler is not called until
 //! after the current interrupt handler has completed execution.  The interrupt
 //! must have been enabled for it to be called.
@@ -684,44 +692,44 @@ IntIsEnabled(unsigned long ulInterrupt)
 //
 //*****************************************************************************
 void
-IntPendSet(unsigned long ulInterrupt)
+IntPendSet(uint32_t ui32Interrupt)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Determine the interrupt to pend.
     //
-    if(ulInterrupt == FAULT_NMI)
+    if(ui32Interrupt == FAULT_NMI)
     {
         //
         // Pend the NMI interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_NMI_SET;
     }
-    else if(ulInterrupt == FAULT_PENDSV)
+    else if(ui32Interrupt == FAULT_PENDSV)
     {
         //
         // Pend the PendSV interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PEND_SV;
     }
-    else if(ulInterrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == FAULT_SYSTICK)
     {
         //
         // Pend the SysTick interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PENDSTSET;
     }
-    else if(ulInterrupt >= 16)
+    else if(ui32Interrupt >= 16)
     {
         //
         // Pend the general interrupt.
         //
-        HWREG(g_pulPendRegs[(ulInterrupt - 16) / 32]) =
-            1 << ((ulInterrupt - 16) & 31);
+        HWREG(g_pui32PendRegs[(ui32Interrupt - 16) / 32]) =
+            1 << ((ui32Interrupt - 16) & 31);
     }
 }
 
@@ -729,48 +737,48 @@ IntPendSet(unsigned long ulInterrupt)
 //
 //! Un-pends an interrupt.
 //!
-//! \param ulInterrupt specifies the interrupt to be un-pended.
+//! \param ui32Interrupt specifies the interrupt to be un-pended.
 //!
 //! The specified interrupt is un-pended in the interrupt controller.  This
-//! will cause any previously generated interrupts that have not been handled
-//! yet (due to higher priority interrupts or the interrupt no having been
+//! causes any previously generated interrupts that have not been handled
+//! yet (due to higher priority interrupts or the interrupt not having been
 //! enabled yet) to be discarded.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-IntPendClear(unsigned long ulInterrupt)
+IntPendClear(uint32_t ui32Interrupt)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    ASSERT(ui32Interrupt < NUM_INTERRUPTS);
 
     //
     // Determine the interrupt to unpend.
     //
-    if(ulInterrupt == FAULT_PENDSV)
+    if(ui32Interrupt == FAULT_PENDSV)
     {
         //
         // Unpend the PendSV interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_UNPEND_SV;
     }
-    else if(ulInterrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == FAULT_SYSTICK)
     {
         //
         // Unpend the SysTick interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PENDSTCLR;
     }
-    else if(ulInterrupt >= 16)
+    else if(ui32Interrupt >= 16)
     {
         //
         // Unpend the general interrupt.
         //
-        HWREG(g_pulUnpendRegs[(ulInterrupt - 16) / 32]) =
-            1 << ((ulInterrupt - 16) & 31);
+        HWREG(g_pui32UnpendRegs[(ui32Interrupt - 16) / 32]) =
+            1 << ((ui32Interrupt - 16) & 31);
     }
 }
 
@@ -778,7 +786,7 @@ IntPendClear(unsigned long ulInterrupt)
 //
 //! Sets the priority masking level
 //!
-//! \param ulPriorityMask is the priority level that is masked.
+//! \param ui32PriorityMask is the priority level that is masked.
 //!
 //! This function sets the interrupt priority masking level so that all
 //! interrupts at the specified or lesser priority level are masked.  Masking
@@ -791,16 +799,19 @@ IntPendClear(unsigned long ulInterrupt)
 //! and interrupts with a numerical priority of 4 and greater are blocked.
 //!
 //! The hardware priority mechanism only looks at the upper N bits of the
-//! priority level (where N is 3 for the Stellaris family), so any
+//! priority level (where N is 3 for the Tiva C and E Series family), so any
 //! prioritization must be performed in those bits.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-IntPriorityMaskSet(unsigned long ulPriorityMask)
+IntPriorityMaskSet(uint32_t ui32PriorityMask)
 {
-    CPUbasepriSet(ulPriorityMask);
+    //
+    // Set the priority mask.
+    //
+    CPUbasepriSet(ui32PriorityMask);
 }
 
 //*****************************************************************************
@@ -817,16 +828,48 @@ IntPriorityMaskSet(unsigned long ulPriorityMask)
 //! and interrupts with a numerical priority of 4 and greater are blocked.
 //!
 //! The hardware priority mechanism only looks at the upper N bits of the
-//! priority level (where N is 3 for the Stellaris family), so any
+//! priority level (where N is 3 for the Tiva C and E Series family), so any
 //! prioritization must be performed in those bits.
 //!
 //! \return Returns the value of the interrupt priority level mask.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 IntPriorityMaskGet(void)
 {
+    //
+    // Return the current priority mask.
+    //
     return(CPUbasepriGet());
+}
+
+//*****************************************************************************
+//
+//! Triggers an interrupt.
+//!
+//! \param ui32Interrupt specifies the interrupt to be triggered.
+//!
+//! This function performs a software trigger of an interrupt.  The interrupt
+//! controller behaves as if the corresponding interrupt line was asserted, and
+//! the interrupt is handled in the same manner (meaning that it must be
+//! enabled in order to be processed, and the processing is based on its
+//! priority with respect to other unhandled interrupts).
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+IntTrigger(uint32_t ui32Interrupt)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Interrupt >= 16) && (ui32Interrupt < NUM_INTERRUPTS));
+
+    //
+    // Trigger this interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = ui32Interrupt - 16;
 }
 
 //*****************************************************************************

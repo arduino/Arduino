@@ -2,7 +2,7 @@
 //
 // fpu.h - Prototypes for the floatint point manipulation routines.
 //
-// Copyright (c) 2011-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2011-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __FPU_H__
-#define __FPU_H__
+#ifndef __DRIVERLIB_FPU_H__
+#define __DRIVERLIB_FPU_H__
 
 //*****************************************************************************
 //
@@ -53,7 +53,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to FPUHalfPrecisionSet as the ulMode parameter.
+// Values that can be passed to FPUHalfPrecisionSet as the ui32Mode parameter.
 //
 //*****************************************************************************
 #define FPU_HALF_IEEE           0x00000000
@@ -61,7 +61,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to FPUNaNModeSet as the ulMode parameter.
+// Values that can be passed to FPUNaNModeSet as the ui32Mode parameter.
 //
 //*****************************************************************************
 #define FPU_NAN_PROPAGATE       0x00000000
@@ -69,7 +69,8 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to FPUFlushToZeroModeSet as the ulMode parameter.
+// Values that can be passed to FPUFlushToZeroModeSet as the ui32Mode
+// parameter.
 //
 //*****************************************************************************
 #define FPU_FLUSH_TO_ZERO_DIS   0x00000000
@@ -77,7 +78,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to FPURoundingModeSet as the ulMode parameter.
+// Values that can be passed to FPURoundingModeSet as the ui32Mode parameter.
 //
 //*****************************************************************************
 #define FPU_ROUND_NEAREST       0x00000000
@@ -95,10 +96,10 @@ extern void FPUDisable(void);
 extern void FPUStackingEnable(void);
 extern void FPULazyStackingEnable(void);
 extern void FPUStackingDisable(void);
-extern void FPUHalfPrecisionModeSet(unsigned long ulMode);
-extern void FPUNaNModeSet(unsigned long ulMode);
-extern void FPUFlushToZeroModeSet(unsigned long ulMode);
-extern void FPURoundingModeSet(unsigned long ulMode);
+extern void FPUHalfPrecisionModeSet(uint32_t ui32Mode);
+extern void FPUNaNModeSet(uint32_t ui32Mode);
+extern void FPUFlushToZeroModeSet(uint32_t ui32Mode);
+extern void FPURoundingModeSet(uint32_t ui32Mode);
 
 //*****************************************************************************
 //
@@ -109,4 +110,4 @@ extern void FPURoundingModeSet(unsigned long ulMode);
 }
 #endif
 
-#endif // __FPU_H__
+#endif // __DRIVERLIB_FPU_H__

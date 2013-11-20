@@ -3,7 +3,7 @@
 // fpu.c - Routines for manipulating the floating-point unit in the Cortex-M
 //         processor.
 //
-// Copyright (c) 2011-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2011-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -45,6 +45,7 @@
 //
 //*****************************************************************************
 
+#include <stdint.h>
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
 #include "driverlib/fpu.h"
@@ -181,8 +182,8 @@ FPUStackingDisable(void)
 //
 //! Selects the format of half-precision floating-point values.
 //!
-//! \param ulMode is the format for half-precision floating-point value, which
-//! is either \b FPU_HALF_IEEE or \b FPU_HALF_ALTERNATE.
+//! \param ui32Mode is the format for half-precision floating-point value,
+//! which is either \b FPU_HALF_IEEE or \b FPU_HALF_ALTERNATE.
 //!
 //! This function selects between the IEEE half-precision floating-point
 //! representation and the Cortex-M processor alternative representation.  The
@@ -197,19 +198,19 @@ FPUStackingDisable(void)
 //
 //*****************************************************************************
 void
-FPUHalfPrecisionModeSet(unsigned long ulMode)
+FPUHalfPrecisionModeSet(uint32_t ui32Mode)
 {
     //
     // Set the half-precision floating-point format.
     //
-    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_AHP)) | ulMode;
+    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_AHP)) | ui32Mode;
 }
 
 //*****************************************************************************
 //
 //! Selects the NaN mode.
 //!
-//! \param ulMode is the mode for NaN results; which is either
+//! \param ui32Mode is the mode for NaN results; which is either
 //! \b FPU_NAN_PROPAGATE or \b FPU_NAN_DEFAULT.
 //!
 //! This function selects the handling of NaN results during floating-point
@@ -223,19 +224,19 @@ FPUHalfPrecisionModeSet(unsigned long ulMode)
 //
 //*****************************************************************************
 void
-FPUNaNModeSet(unsigned long ulMode)
+FPUNaNModeSet(uint32_t ui32Mode)
 {
     //
     // Set the NaN mode.
     //
-    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_DN)) | ulMode;
+    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_DN)) | ui32Mode;
 }
 
 //*****************************************************************************
 //
 //! Selects the flush-to-zero mode.
 //!
-//! \param ulMode is the flush-to-zero mode; which is either
+//! \param ui32Mode is the flush-to-zero mode; which is either
 //! \b FPU_FLUSH_TO_ZERO_DIS or \b FPU_FLUSH_TO_ZERO_EN.
 //!
 //! This function enables or disables the flush-to-zero mode of the
@@ -251,25 +252,25 @@ FPUNaNModeSet(unsigned long ulMode)
 //
 //*****************************************************************************
 void
-FPUFlushToZeroModeSet(unsigned long ulMode)
+FPUFlushToZeroModeSet(uint32_t ui32Mode)
 {
     //
     // Set the flush-to-zero mode.
     //
-    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_FZ)) | ulMode;
+    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_FZ)) | ui32Mode;
 }
 
 //*****************************************************************************
 //
 //! Selects the rounding mode for floating-point results.
 //!
-//! \param ulMode is the rounding mode.
+//! \param ui32Mode is the rounding mode.
 //!
 //! This function selects the rounding mode for floating-point results.  After
 //! a floating-point operation, the result is rounded toward the specified
 //! value.  The default mode is \b FPU_ROUND_NEAREST.
 //!
-//! The following rounding modes are available (as specified by \e ulMode):
+//! The following rounding modes are available (as specified by \e ui32Mode):
 //!
 //! - \b FPU_ROUND_NEAREST - round toward the nearest value
 //! - \b FPU_ROUND_POS_INF - round toward positive infinity
@@ -283,12 +284,12 @@ FPUFlushToZeroModeSet(unsigned long ulMode)
 //
 //*****************************************************************************
 void
-FPURoundingModeSet(unsigned long ulMode)
+FPURoundingModeSet(uint32_t ui32Mode)
 {
     //
     // Set the rounding mode.
     //
-    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_RMODE_M)) | ulMode;
+    HWREG(NVIC_FPDSC) = (HWREG(NVIC_FPDSC) & ~(NVIC_FPDSC_RMODE_M)) | ui32Mode;
 }
 
 //*****************************************************************************

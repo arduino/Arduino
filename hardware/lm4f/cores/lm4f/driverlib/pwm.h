@@ -2,7 +2,7 @@
 //
 // pwm.h - API function protoypes for Pulse Width Modulation (PWM) ports
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __PWM_H__
-#define __PWM_H__
+#ifndef __DRIVERLIB_PWM_H__
+#define __DRIVERLIB_PWM_H__
 
 //*****************************************************************************
 //
@@ -53,7 +53,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// The following defines are passed to PWMGenConfigure() as the ulConfig
+// The following defines are passed to PWMGenConfigure() as the ui32Config
 // parameter and specify the configuration of the PWM generator.
 //
 //*****************************************************************************
@@ -120,9 +120,6 @@ extern "C"
 #define PWM_INT_GEN_1           0x00000002  // Generator 1 interrupt
 #define PWM_INT_GEN_2           0x00000004  // Generator 2 interrupt
 #define PWM_INT_GEN_3           0x00000008  // Generator 3 interrupt
-#ifndef DEPRECATED
-#define PWM_INT_FAULT           0x00010000  // Fault interrupt
-#endif
 #define PWM_INT_FAULT0          0x00010000  // Fault0 interrupt
 #define PWM_INT_FAULT1          0x00020000  // Fault1 interrupt
 #define PWM_INT_FAULT2          0x00040000  // Fault2 interrupt
@@ -221,70 +218,101 @@ extern "C"
 
 //*****************************************************************************
 //
+// Defines that can be passed to the PWMClockSet() API as the ui32Config
+// parameter, and can be returned by the PWMClockGet() API.
+//
+//*****************************************************************************
+#define PWM_SYSCLK_DIV_1        0x00000000  // PWM clock is system clock
+#define PWM_SYSCLK_DIV_2        0x00000100  // PWM clock is system clock /2
+#define PWM_SYSCLK_DIV_4        0x00000101  // PWM clock is system clock /4
+#define PWM_SYSCLK_DIV_8        0x00000102  // PWM clock is system clock /8
+#define PWM_SYSCLK_DIV_16       0x00000103  // PWM clock is system clock /16
+#define PWM_SYSCLK_DIV_32       0x00000104  // PWM clock is system clock /32
+#define PWM_SYSCLK_DIV_64       0x00000105  // PWM clock is system clock /64
+
+//*****************************************************************************
+//
+// Defines passed to PWMOutputUpdateMode() to identify the synchronization mode
+// to use when enabling or disabling outputs using PWMOutputState().
+//
+//*****************************************************************************
+#define PWM_OUTPUT_MODE_NO_SYNC 0x00000000 // Updates to occur immediately
+#define PWM_OUTPUT_MODE_SYNC_LOCAL \
+                                0x00000002 // Updates are locally synchronized
+#define PWM_OUTPUT_MODE_SYNC_GLOBAL \
+                                0x00000003 // Updates are globally synchronized
+
+//*****************************************************************************
+//
 // API Function prototypes
 //
 //*****************************************************************************
-extern void PWMGenConfigure(unsigned long ulBase, unsigned long ulGen,
-                            unsigned long ulConfig);
-extern void PWMGenPeriodSet(unsigned long ulBase, unsigned long ulGen,
-                            unsigned long ulPeriod);
-extern unsigned long PWMGenPeriodGet(unsigned long ulBase,
-                                     unsigned long ulGen);
-extern void PWMGenEnable(unsigned long ulBase, unsigned long ulGen);
-extern void PWMGenDisable(unsigned long ulBase, unsigned long ulGen);
-extern void PWMPulseWidthSet(unsigned long ulBase, unsigned long ulPWMOut,
-                             unsigned long ulWidth);
-extern unsigned long PWMPulseWidthGet(unsigned long ulBase,
-                                      unsigned long ulPWMOut);
-extern void PWMDeadBandEnable(unsigned long ulBase, unsigned long ulGen,
-                              unsigned short usRise, unsigned short usFall);
-extern void PWMDeadBandDisable(unsigned long ulBase, unsigned long ulGen);
-extern void PWMSyncUpdate(unsigned long ulBase, unsigned long ulGenBits);
-extern void PWMSyncTimeBase(unsigned long ulBase, unsigned long ulGenBits);
-extern void PWMOutputState(unsigned long ulBase, unsigned long ulPWMOutBits,
-                           tBoolean bEnable);
-extern void PWMOutputInvert(unsigned long ulBase, unsigned long ulPWMOutBits,
-                            tBoolean bInvert);
-extern void PWMOutputFaultLevel(unsigned long ulBase,
-                                unsigned long ulPWMOutBits,
-                                tBoolean bDriveHigh);
-extern void PWMOutputFault(unsigned long ulBase, unsigned long ulPWMOutBits,
-                           tBoolean bFaultSuppress);
-extern void PWMGenIntRegister(unsigned long ulBase, unsigned long ulGen,
+extern void PWMGenConfigure(uint32_t ui32Base, uint32_t ui32Gen,
+                            uint32_t ui32Config);
+extern void PWMGenPeriodSet(uint32_t ui32Base, uint32_t ui32Gen,
+                            uint32_t ui32Period);
+extern uint32_t PWMGenPeriodGet(uint32_t ui32Base,
+                                uint32_t ui32Gen);
+extern void PWMGenEnable(uint32_t ui32Base, uint32_t ui32Gen);
+extern void PWMGenDisable(uint32_t ui32Base, uint32_t ui32Gen);
+extern void PWMPulseWidthSet(uint32_t ui32Base, uint32_t ui32PWMOut,
+                             uint32_t ui32Width);
+extern uint32_t PWMPulseWidthGet(uint32_t ui32Base,
+                                 uint32_t ui32PWMOut);
+extern void PWMDeadBandEnable(uint32_t ui32Base, uint32_t ui32Gen,
+                              uint16_t ui16Rise, uint16_t ui16Fall);
+extern void PWMDeadBandDisable(uint32_t ui32Base, uint32_t ui32Gen);
+extern void PWMSyncUpdate(uint32_t ui32Base, uint32_t ui32GenBits);
+extern void PWMSyncTimeBase(uint32_t ui32Base, uint32_t ui32GenBits);
+extern void PWMOutputState(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+                           bool bEnable);
+extern void PWMOutputInvert(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+                            bool bInvert);
+extern void PWMOutputFaultLevel(uint32_t ui32Base,
+                                uint32_t ui32PWMOutBits,
+                                bool bDriveHigh);
+extern void PWMOutputFault(uint32_t ui32Base, uint32_t ui32PWMOutBits,
+                           bool bFaultSuppress);
+extern void PWMGenIntRegister(uint32_t ui32Base, uint32_t ui32Gen,
                               void (*pfnIntHandler)(void));
-extern void PWMGenIntUnregister(unsigned long ulBase, unsigned long ulGen);
-extern void PWMFaultIntRegister(unsigned long ulBase,
+extern void PWMGenIntUnregister(uint32_t ui32Base, uint32_t ui32Gen);
+extern void PWMFaultIntRegister(uint32_t ui32Base,
                                 void (*pfnIntHandler)(void));
-extern void PWMFaultIntUnregister(unsigned long ulBase);
-extern void PWMGenIntTrigEnable(unsigned long ulBase, unsigned long ulGen,
-                                unsigned long ulIntTrig);
-extern void PWMGenIntTrigDisable(unsigned long ulBase, unsigned long ulGen,
-                                 unsigned long ulIntTrig);
-extern unsigned long PWMGenIntStatus(unsigned long ulBase, unsigned long ulGen,
-                                     tBoolean bMasked);
-extern void PWMGenIntClear(unsigned long ulBase, unsigned long ulGen,
-                           unsigned long ulInts);
-extern void PWMIntEnable(unsigned long ulBase, unsigned long ulGenFault);
-extern void PWMIntDisable(unsigned long ulBase, unsigned long ulGenFault);
-extern void PWMFaultIntClear(unsigned long ulBase);
-extern unsigned long PWMIntStatus(unsigned long ulBase, tBoolean bMasked);
-extern void PWMFaultIntClearExt(unsigned long ulBase,
-                                unsigned long ulFaultInts);
-extern void PWMGenFaultConfigure(unsigned long ulBase, unsigned long ulGen,
-                                 unsigned long ulMinFaultPeriod,
-                                 unsigned long ulFaultSenses);
-extern void PWMGenFaultTriggerSet(unsigned long ulBase, unsigned long ulGen,
-                                  unsigned long ulGroup,
-                                  unsigned long ulFaultTriggers);
-extern unsigned long PWMGenFaultTriggerGet(unsigned long ulBase,
-                                           unsigned long ulGen,
-                                           unsigned long ulGroup);
-extern unsigned long PWMGenFaultStatus(unsigned long ulBase,
-                                       unsigned long ulGen,
-                                       unsigned long ulGroup);
-extern void PWMGenFaultClear(unsigned long ulBase, unsigned long ulGen,
-                             unsigned long ulGroup,
-                             unsigned long ulFaultTriggers);
+extern void PWMFaultIntUnregister(uint32_t ui32Base);
+extern void PWMGenIntTrigEnable(uint32_t ui32Base, uint32_t ui32Gen,
+                                uint32_t ui32IntTrig);
+extern void PWMGenIntTrigDisable(uint32_t ui32Base, uint32_t ui32Gen,
+                                 uint32_t ui32IntTrig);
+extern uint32_t PWMGenIntStatus(uint32_t ui32Base, uint32_t ui32Gen,
+                                bool bMasked);
+extern void PWMGenIntClear(uint32_t ui32Base, uint32_t ui32Gen,
+                           uint32_t ui32Ints);
+extern void PWMIntEnable(uint32_t ui32Base, uint32_t ui32GenFault);
+extern void PWMIntDisable(uint32_t ui32Base, uint32_t ui32GenFault);
+extern void PWMFaultIntClear(uint32_t ui32Base);
+extern uint32_t PWMIntStatus(uint32_t ui32Base, bool bMasked);
+extern void PWMFaultIntClearExt(uint32_t ui32Base,
+                                uint32_t ui32FaultInts);
+extern void PWMGenFaultConfigure(uint32_t ui32Base, uint32_t ui32Gen,
+                                 uint32_t ui32MinFaultPeriod,
+                                 uint32_t ui32FaultSenses);
+extern void PWMGenFaultTriggerSet(uint32_t ui32Base, uint32_t ui32Gen,
+                                  uint32_t ui32Group,
+                                  uint32_t ui32FaultTriggers);
+extern uint32_t PWMGenFaultTriggerGet(uint32_t ui32Base,
+                                      uint32_t ui32Gen,
+                                      uint32_t ui32Group);
+extern uint32_t PWMGenFaultStatus(uint32_t ui32Base,
+                                  uint32_t ui32Gen,
+                                  uint32_t ui32Group);
+extern void PWMGenFaultClear(uint32_t ui32Base, uint32_t ui32Gen,
+                             uint32_t ui32Group,
+                             uint32_t ui32FaultTriggers);
+extern void PWMClockSet(uint32_t ui32Base, uint32_t ui32Config);
+extern uint32_t PWMClockGet(uint32_t ui32Base);
+extern void PWMOutputUpdateMode(uint32_t ui32Base,
+                                uint32_t ui32PWMOutBits,
+                                uint32_t ui32Mode);
 
 //*****************************************************************************
 //
@@ -295,4 +323,4 @@ extern void PWMGenFaultClear(unsigned long ulBase, unsigned long ulGen,
 }
 #endif
 
-#endif // __PWM_H__
+#endif // __DRIVERLIB_PWM_H__

@@ -2,7 +2,7 @@
 //
 // qei.c - Driver for the Quadrature Encoder with Index.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,10 +44,13 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_qei.h"
 #include "inc/hw_types.h"
+#include "inc/hw_sysctl.h"
 #include "driverlib/debug.h"
 #include "driverlib/interrupt.h"
 #include "driverlib/qei.h"
@@ -56,7 +59,7 @@
 //
 //! Enables the quadrature encoder.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function enables operation of the quadrature encoder module.  The
 //! module must be configured before it is enabled.
@@ -67,24 +70,24 @@
 //
 //*****************************************************************************
 void
-QEIEnable(unsigned long ulBase)
+QEIEnable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Enable the QEI module.
     //
-    HWREG(ulBase + QEI_O_CTL) |= QEI_CTL_ENABLE;
+    HWREG(ui32Base + QEI_O_CTL) |= QEI_CTL_ENABLE;
 }
 
 //*****************************************************************************
 //
 //! Disables the quadrature encoder.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function disables operation of the quadrature encoder module.
 //!
@@ -92,31 +95,31 @@ QEIEnable(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIDisable(unsigned long ulBase)
+QEIDisable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Disable the QEI module.
     //
-    HWREG(ulBase + QEI_O_CTL) &= ~(QEI_CTL_ENABLE);
+    HWREG(ui32Base + QEI_O_CTL) &= ~(QEI_CTL_ENABLE);
 }
 
 //*****************************************************************************
 //
 //! Configures the quadrature encoder.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
-//! \param ulConfig is the configuration for the quadrature encoder.  See below
-//! for a description of this parameter.
-//! \param ulMaxPosition specifies the maximum position value.
+//! \param ui32Base is the base address of the quadrature encoder module.
+//! \param ui32Config is the configuration for the quadrature encoder.  See
+//! below for a description of this parameter.
+//! \param ui32MaxPosition specifies the maximum position value.
 //!
 //! This function configures the operation of the quadrature encoder.  The
-//! \e ulConfig parameter provides the configuration of the encoder and is the
-//! logical OR of several values:
+//! \e ui32Config parameter provides the configuration of the encoder and is
+//! the logical OR of several values:
 //!
 //! - \b QEI_CONFIG_CAPTURE_A or \b QEI_CONFIG_CAPTURE_A_B specify if edges
 //!   on channel A or on both channels A and B should be counted by the
@@ -129,7 +132,7 @@ QEIDisable(unsigned long ulBase)
 //! - \b QEI_CONFIG_NO_SWAP or \b QEI_CONFIG_SWAP to specify if the signals
 //!   provided on ChA and ChB should be swapped before being processed.
 //!
-//! \e ulMaxPosition is the maximum value of the position integrator and is
+//! \e ui32MaxPosition is the maximum value of the position integrator and is
 //! the value used to reset the position capture when in index reset mode and
 //! moving in the reverse (negative) direction.
 //!
@@ -137,33 +140,33 @@ QEIDisable(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIConfigure(unsigned long ulBase, unsigned long ulConfig,
-             unsigned long ulMaxPosition)
+QEIConfigure(uint32_t ui32Base, uint32_t ui32Config,
+             uint32_t ui32MaxPosition)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Write the new configuration to the hardware.
     //
-    HWREG(ulBase + QEI_O_CTL) = ((HWREG(ulBase + QEI_O_CTL) &
-                                  ~(QEI_CTL_CAPMODE | QEI_CTL_RESMODE |
-                                    QEI_CTL_SIGMODE | QEI_CTL_SWAP)) |
-                                 ulConfig);
+    HWREG(ui32Base + QEI_O_CTL) = ((HWREG(ui32Base + QEI_O_CTL) &
+                                    ~(QEI_CTL_CAPMODE | QEI_CTL_RESMODE |
+                                      QEI_CTL_SIGMODE | QEI_CTL_SWAP)) |
+                                   ui32Config);
 
     //
     // Set the maximum position.
     //
-    HWREG(ulBase + QEI_O_MAXPOS) = ulMaxPosition;
+    HWREG(ui32Base + QEI_O_MAXPOS) = ui32MaxPosition;
 }
 
 //*****************************************************************************
 //
 //! Gets the current encoder position.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function returns the current position of the encoder.  Depending upon
 //! the configuration of the encoder, and the incident of an index pulse, this
@@ -174,26 +177,26 @@ QEIConfigure(unsigned long ulBase, unsigned long ulConfig,
 //! \return The current position of the encoder.
 //
 //*****************************************************************************
-unsigned long
-QEIPositionGet(unsigned long ulBase)
+uint32_t
+QEIPositionGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Return the current position counter.
     //
-    return(HWREG(ulBase + QEI_O_POS));
+    return(HWREG(ui32Base + QEI_O_POS));
 }
 
 //*****************************************************************************
 //
 //! Sets the current encoder position.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
-//! \param ulPosition is the new position for the encoder.
+//! \param ui32Base is the base address of the quadrature encoder module.
+//! \param ui32Position is the new position for the encoder.
 //!
 //! This function sets the current position of the encoder; the encoder
 //! position is then measured relative to this value.
@@ -202,24 +205,24 @@ QEIPositionGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIPositionSet(unsigned long ulBase, unsigned long ulPosition)
+QEIPositionSet(uint32_t ui32Base, uint32_t ui32Position)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Set the position counter.
     //
-    HWREG(ulBase + QEI_O_POS) = ulPosition;
+    HWREG(ui32Base + QEI_O_POS) = ui32Position;
 }
 
 //*****************************************************************************
 //
 //! Gets the current direction of rotation.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function returns the current direction of rotation.  In this case,
 //! current means the most recently detected direction of the encoder; it may
@@ -230,25 +233,25 @@ QEIPositionSet(unsigned long ulBase, unsigned long ulPosition)
 //! reverse direction.
 //
 //*****************************************************************************
-long
-QEIDirectionGet(unsigned long ulBase)
+int32_t
+QEIDirectionGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Return the direction of rotation.
     //
-    return((HWREG(ulBase + QEI_O_STAT) & QEI_STAT_DIRECTION) ? -1 : 1);
+    return((HWREG(ui32Base + QEI_O_STAT) & QEI_STAT_DIRECTION) ? -1 : 1);
 }
 
 //*****************************************************************************
 //
 //! Gets the encoder error indicator.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function returns the error indicator for the quadrature encoder.  It
 //! is an error for both of the signals of the quadrature input to change at
@@ -257,25 +260,25 @@ QEIDirectionGet(unsigned long ulBase)
 //! \return Returns \b true if an error has occurred and \b false otherwise.
 //
 //*****************************************************************************
-tBoolean
-QEIErrorGet(unsigned long ulBase)
+bool
+QEIErrorGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Return the error indicator.
     //
-    return((HWREG(ulBase + QEI_O_STAT) & QEI_STAT_ERROR) ? true : false);
+    return((HWREG(ui32Base + QEI_O_STAT) & QEI_STAT_ERROR) ? true : false);
 }
 
 //*****************************************************************************
 //
 //! Enables the velocity capture.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function enables operation of the velocity capture in the quadrature
 //! encoder module.  The module must be configured before velocity capture is
@@ -287,24 +290,24 @@ QEIErrorGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIVelocityEnable(unsigned long ulBase)
+QEIVelocityEnable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Enable the velocity capture.
     //
-    HWREG(ulBase + QEI_O_CTL) |= QEI_CTL_VELEN;
+    HWREG(ui32Base + QEI_O_CTL) |= QEI_CTL_VELEN;
 }
 
 //*****************************************************************************
 //
 //! Disables the velocity capture.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function disables operation of the velocity capture in the quadrature
 //! encoder module.
@@ -313,68 +316,68 @@ QEIVelocityEnable(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIVelocityDisable(unsigned long ulBase)
+QEIVelocityDisable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Disable the velocity capture.
     //
-    HWREG(ulBase + QEI_O_CTL) &= ~(QEI_CTL_VELEN);
+    HWREG(ui32Base + QEI_O_CTL) &= ~(QEI_CTL_VELEN);
 }
 
 //*****************************************************************************
 //
 //! Configures the velocity capture.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
-//! \param ulPreDiv specifies the predivider applied to the input quadrature
+//! \param ui32Base is the base address of the quadrature encoder module.
+//! \param ui32PreDiv specifies the predivider applied to the input quadrature
 //! signal before it is counted; can be one of \b QEI_VELDIV_1,
 //! \b QEI_VELDIV_2, \b QEI_VELDIV_4, \b QEI_VELDIV_8, \b QEI_VELDIV_16,
 //! \b QEI_VELDIV_32, \b QEI_VELDIV_64, or \b QEI_VELDIV_128.
-//! \param ulPeriod specifies the number of clock ticks over which to measure
+//! \param ui32Period specifies the number of clock ticks over which to measure
 //! the velocity; must be non-zero.
 //!
 //! This function configures the operation of the velocity capture portion of
 //! the quadrature encoder.  The position increment signal is predivided as
-//! specified by \e ulPreDiv before being accumulated by the velocity capture.
-//! The divided signal is accumulated over \e ulPeriod system clock before
-//! being saved and resetting the accumulator.
+//! specified by \e ui32PreDiv before being accumulated by the velocity
+//! capture.  The divided signal is accumulated over \e ui32Period system clock
+//! before being saved and resetting the accumulator.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-QEIVelocityConfigure(unsigned long ulBase, unsigned long ulPreDiv,
-                     unsigned long ulPeriod)
+QEIVelocityConfigure(uint32_t ui32Base, uint32_t ui32PreDiv,
+                     uint32_t ui32Period)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
-    ASSERT(!(ulPreDiv & ~(QEI_CTL_VELDIV_M)));
-    ASSERT(ulPeriod != 0);
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
+    ASSERT(!(ui32PreDiv & ~(QEI_CTL_VELDIV_M)));
+    ASSERT(ui32Period != 0);
 
     //
     // Set the velocity predivider.
     //
-    HWREG(ulBase + QEI_O_CTL) = ((HWREG(ulBase + QEI_O_CTL) &
-                                  ~(QEI_CTL_VELDIV_M)) | ulPreDiv);
+    HWREG(ui32Base + QEI_O_CTL) = ((HWREG(ui32Base + QEI_O_CTL) &
+                                    ~(QEI_CTL_VELDIV_M)) | ui32PreDiv);
 
     //
     // Set the timer period.
     //
-    HWREG(ulBase + QEI_O_LOAD) = ulPeriod - 1;
+    HWREG(ui32Base + QEI_O_LOAD) = ui32Period - 1;
 }
 
 //*****************************************************************************
 //
 //! Gets the current encoder speed.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function returns the current speed of the encoder.  The value returned
 //! is the number of pulses detected in the specified time period; this number
@@ -385,33 +388,86 @@ QEIVelocityConfigure(unsigned long ulBase, unsigned long ulPreDiv,
 //! \return Returns the number of pulses captured in the given time period.
 //
 //*****************************************************************************
-unsigned long
-QEIVelocityGet(unsigned long ulBase)
+uint32_t
+QEIVelocityGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Return the speed capture value.
     //
-    return(HWREG(ulBase + QEI_O_SPEED));
+    return(HWREG(ui32Base + QEI_O_SPEED));
+}
+
+//*****************************************************************************
+//
+//! Returns the quadrature encoder interrupt number.
+//!
+//! \param ui32Base is the base address of the selected quadrature encoder
+//!
+//! This function returns the interrupt number for the quadrature encoder with
+//! the base address passed in the \e ui32Base parameter.
+//!
+//! \return Returns a quadrature encoder interrupt number or 0 if the interrupt
+//! does not exist.
+//
+//*****************************************************************************
+static uint32_t
+_QEIIntNumberGet(uint32_t ui32Base)
+{
+    uint32_t ui32Int;
+
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
+
+    //
+    // Find the valid interrupt number for this quadrature encoder.
+    //
+    if(CLASS_IS_BLIZZARD)
+    {
+        if(ui32Base == QEI0_BASE)
+        {
+            ui32Int = INT_QEI0_BLIZZARD;
+        }
+        else
+        {
+            ui32Int = INT_QEI1_BLIZZARD;
+        }
+    }
+    else if(CLASS_IS_SNOWFLAKE)
+    {
+        if(ui32Base == QEI0_BASE)
+        {
+            ui32Int = INT_QEI0_SNOWFLAKE;
+        }
+        else
+        {
+            ui32Int = 0;
+        }
+    }
+    else
+    {
+        ui32Int = 0;
+    }
+
+    return(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Registers an interrupt handler for the quadrature encoder interrupt.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //! \param pfnHandler is a pointer to the function to be called when the
 //! quadrature encoder interrupt occurs.
 //!
 //! This function registers the handler to be called when a quadrature encoder
 //! interrupt occurs.  This function enables the global interrupt in the
 //! interrupt controller; specific quadrature encoder interrupts must be
-//! enabled via QEIIntEnable(). It is the interrupt handler's responsibility to
-//! clear the interrupt source via QEIIntClear().
+//! enabled via QEIIntEnable().  It is the interrupt handler's responsibility
+//! to clear the interrupt source via QEIIntClear().
 //!
 //! \sa IntRegister() for important information about registering interrupt
 //! handlers.
@@ -420,36 +476,38 @@ QEIVelocityGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
+QEIIntRegister(uint32_t ui32Base, void (*pfnHandler)(void))
 {
-    unsigned long ulInt;
+    uint32_t ui32Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Determine the interrupt number based on the QEI module.
     //
-    ulInt = (ulBase == QEI0_BASE) ? INT_QEI0 : INT_QEI1;
+    ui32Int = _QEIIntNumberGet(ui32Base);
+
+    ASSERT(ui32Int != 0);
 
     //
     // Register the interrupt handler, returning an error if an error occurs.
     //
-    IntRegister(ulInt, pfnHandler);
+    IntRegister(ui32Int, pfnHandler);
 
     //
     // Enable the quadrature encoder interrupt.
     //
-    IntEnable(ulInt);
+    IntEnable(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Unregisters an interrupt handler for the quadrature encoder interrupt.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //!
 //! This function unregisters the handler to be called when a quadrature
 //! encoder interrupt occurs.  This function also masks off the interrupt in
@@ -462,37 +520,39 @@ QEIIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
 //
 //*****************************************************************************
 void
-QEIIntUnregister(unsigned long ulBase)
+QEIIntUnregister(uint32_t ui32Base)
 {
-    unsigned long ulInt;
+    uint32_t ui32Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Determine the interrupt number based on the QEI module.
     //
-    ulInt = (ulBase == QEI0_BASE) ? INT_QEI0 : INT_QEI1;
+    ui32Int = _QEIIntNumberGet(ui32Base);
+
+    ASSERT(ui32Int != 0);
 
     //
     // Disable the interrupt.
     //
-    IntDisable(ulInt);
+    IntDisable(ui32Int);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(ulInt);
+    IntUnregister(ui32Int);
 }
 
 //*****************************************************************************
 //
 //! Enables individual quadrature encoder interrupt sources.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
-//! \param ulIntFlags is a bit mask of the interrupt sources to be enabled.
+//! \param ui32Base is the base address of the quadrature encoder module.
+//! \param ui32IntFlags is a bit mask of the interrupt sources to be enabled.
 //! Can be any of the \b QEI_INTERROR, \b QEI_INTDIR, \b QEI_INTTIMER, or
 //! \b QEI_INTINDEX values.
 //!
@@ -504,25 +564,25 @@ QEIIntUnregister(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-QEIIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
+QEIIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Enable the specified interrupts.
     //
-    HWREG(ulBase + QEI_O_INTEN) |= ulIntFlags;
+    HWREG(ui32Base + QEI_O_INTEN) |= ui32IntFlags;
 }
 
 //*****************************************************************************
 //
 //! Disables individual quadrature encoder interrupt sources.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
-//! \param ulIntFlags is a bit mask of the interrupt sources to be disabled.
+//! \param ui32Base is the base address of the quadrature encoder module.
+//! \param ui32IntFlags is a bit mask of the interrupt sources to be disabled.
 //! This parameter can be any of the \b QEI_INTERROR, \b QEI_INTDIR,
 //! \b QEI_INTTIMER, or \b QEI_INTINDEX values.
 //!
@@ -534,42 +594,42 @@ QEIIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
 //
 //*****************************************************************************
 void
-QEIIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
+QEIIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Disable the specified interrupts.
     //
-    HWREG(ulBase + QEI_O_INTEN) &= ~(ulIntFlags);
+    HWREG(ui32Base + QEI_O_INTEN) &= ~(ui32IntFlags);
 }
 
 //*****************************************************************************
 //
 //! Gets the current interrupt status.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
+//! \param ui32Base is the base address of the quadrature encoder module.
 //! \param bMasked is false if the raw interrupt status is required and true if
 //! the masked interrupt status is required.
 //!
 //! This function returns the interrupt status for the quadrature encoder
-//! module. Either the raw interrupt status or the status of interrupts that
+//! module.  Either the raw interrupt status or the status of interrupts that
 //! are allowed to reflect to the processor can be returned.
 //!
 //! \return Returns the current interrupt status, enumerated as a bit field of
 //! \b QEI_INTERROR, \b QEI_INTDIR, \b QEI_INTTIMER, and \b QEI_INTINDEX.
 //
 //*****************************************************************************
-unsigned long
-QEIIntStatus(unsigned long ulBase, tBoolean bMasked)
+uint32_t
+QEIIntStatus(uint32_t ui32Base, bool bMasked)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Return either the interrupt status or the raw interrupt status as
@@ -577,11 +637,11 @@ QEIIntStatus(unsigned long ulBase, tBoolean bMasked)
     //
     if(bMasked)
     {
-        return(HWREG(ulBase + QEI_O_ISC));
+        return(HWREG(ui32Base + QEI_O_ISC));
     }
     else
     {
-        return(HWREG(ulBase + QEI_O_RIS));
+        return(HWREG(ui32Base + QEI_O_RIS));
     }
 }
 
@@ -589,8 +649,8 @@ QEIIntStatus(unsigned long ulBase, tBoolean bMasked)
 //
 //! Clears quadrature encoder interrupt sources.
 //!
-//! \param ulBase is the base address of the quadrature encoder module.
-//! \param ulIntFlags is a bit mask of the interrupt sources to be cleared.
+//! \param ui32Base is the base address of the quadrature encoder module.
+//! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
 //! This parameter can be any of the \b QEI_INTERROR, \b QEI_INTDIR,
 //! \b QEI_INTTIMER, or \b QEI_INTINDEX values.
 //!
@@ -612,17 +672,17 @@ QEIIntStatus(unsigned long ulBase, tBoolean bMasked)
 //
 //*****************************************************************************
 void
-QEIIntClear(unsigned long ulBase, unsigned long ulIntFlags)
+QEIIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == QEI0_BASE) || (ulBase == QEI1_BASE));
+    ASSERT((ui32Base == QEI0_BASE) || (ui32Base == QEI1_BASE));
 
     //
     // Clear the requested interrupt sources.
     //
-    HWREG(ulBase + QEI_O_ISC) = ulIntFlags;
+    HWREG(ui32Base + QEI_O_ISC) = ui32IntFlags;
 }
 
 //*****************************************************************************

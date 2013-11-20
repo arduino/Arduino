@@ -2,7 +2,7 @@
 //
 // mpu.h - Defines and Macros for the memory protection unit.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __MPU_H__
-#define __MPU_H__
+#ifndef __DRIVERLIB_MPU_H__
+#define __DRIVERLIB_MPU_H__
 
 //*****************************************************************************
 //
@@ -138,15 +138,15 @@ extern "C"
 // API Function prototypes
 //
 //*****************************************************************************
-extern void MPUEnable(unsigned long ulMPUConfig);
+extern void MPUEnable(uint32_t ui32MPUConfig);
 extern void MPUDisable(void);
-extern unsigned long MPURegionCountGet(void);
-extern void MPURegionEnable(unsigned long ulRegion);
-extern void MPURegionDisable(unsigned long ulRegion);
-extern void MPURegionSet(unsigned long ulRegion, unsigned long ulAddr,
-                         unsigned long ulFlags);
-extern void MPURegionGet(unsigned long ulRegion, unsigned long *pulAddr,
-                         unsigned long *pulFlags);
+extern uint32_t MPURegionCountGet(void);
+extern void MPURegionEnable(uint32_t ui32Region);
+extern void MPURegionDisable(uint32_t ui32Region);
+extern void MPURegionSet(uint32_t ui32Region, uint32_t ui32Addr,
+                         uint32_t ui32Flags);
+extern void MPURegionGet(uint32_t ui32Region, uint32_t *pui32Addr,
+                         uint32_t *pui32Flags);
 extern void MPUIntRegister(void (*pfnHandler)(void));
 extern void MPUIntUnregister(void);
 
@@ -159,4 +159,4 @@ extern void MPUIntUnregister(void);
 }
 #endif
 
-#endif //  __MPU_H__
+#endif // __DRIVERLIB_MPU_H__

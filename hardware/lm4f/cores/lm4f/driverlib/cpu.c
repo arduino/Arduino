@@ -3,7 +3,7 @@
 // cpu.c - Instruction wrappers for special CPU instructions needed by the
 //         drivers.
 //
-// Copyright (c) 2006-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2006-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -34,10 +34,11 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
+#include <stdint.h>
 #include "driverlib/cpu.h"
 
 //*****************************************************************************
@@ -47,10 +48,10 @@
 //
 //*****************************************************************************
 #if defined(codered) || defined(gcc) || defined(sourcerygxx)
-unsigned long __attribute__((naked))
+uint32_t __attribute__((naked))
 CPUcpsid(void)
 {
-    unsigned long ulRet;
+    uint32_t ui32Ret;
 
     //
     // Read PRIMASK and disable interrupts.
@@ -58,7 +59,7 @@ CPUcpsid(void)
     __asm("    mrs     r0, PRIMASK\n"
           "    cpsid   i\n"
           "    bx      lr\n"
-          : "=r" (ulRet));
+          : "=r" (ui32Ret));
 
     //
     // The return is handled in the inline assembly, but the compiler will
@@ -66,11 +67,11 @@ CPUcpsid(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return(ui32Ret);
 }
 #endif
 #if defined(ewarm)
-unsigned long
+uint32_t
 CPUcpsid(void)
 {
     //
@@ -89,7 +90,7 @@ CPUcpsid(void)
 #pragma diag_default=Pe940
 #endif
 #if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm unsigned long
+__asm uint32_t
 CPUcpsid(void)
 {
     //
@@ -101,7 +102,7 @@ CPUcpsid(void)
 }
 #endif
 #if defined(ccs)
-unsigned long
+uint32_t
 CPUcpsid(void)
 {
     //
@@ -129,17 +130,17 @@ CPUcpsid(void)
 //
 //*****************************************************************************
 #if defined(codered) || defined(gcc) || defined(sourcerygxx)
-unsigned long __attribute__((naked))
+uint32_t __attribute__((naked))
 CPUprimask(void)
 {
-    unsigned long ulRet;
+    uint32_t ui32Ret;
 
     //
     // Read PRIMASK and disable interrupts.
     //
     __asm("    mrs     r0, PRIMASK\n"
           "    bx      lr\n"
-          : "=r" (ulRet));
+          : "=r" (ui32Ret));
 
     //
     // The return is handled in the inline assembly, but the compiler will
@@ -147,11 +148,11 @@ CPUprimask(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return(ui32Ret);
 }
 #endif
 #if defined(ewarm)
-unsigned long
+uint32_t
 CPUprimask(void)
 {
     //
@@ -169,7 +170,7 @@ CPUprimask(void)
 #pragma diag_default=Pe940
 #endif
 #if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm unsigned long
+__asm uint32_t
 CPUprimask(void)
 {
     //
@@ -180,7 +181,7 @@ CPUprimask(void)
 }
 #endif
 #if defined(ccs)
-unsigned long
+uint32_t
 CPUprimask(void)
 {
     //
@@ -207,10 +208,10 @@ CPUprimask(void)
 //
 //*****************************************************************************
 #if defined(codered) || defined(gcc) || defined(sourcerygxx)
-unsigned long __attribute__((naked))
+uint32_t __attribute__((naked))
 CPUcpsie(void)
 {
-    unsigned long ulRet;
+    uint32_t ui32Ret;
 
     //
     // Read PRIMASK and enable interrupts.
@@ -218,7 +219,7 @@ CPUcpsie(void)
     __asm("    mrs     r0, PRIMASK\n"
           "    cpsie   i\n"
           "    bx      lr\n"
-          : "=r" (ulRet));
+          : "=r" (ui32Ret));
 
     //
     // The return is handled in the inline assembly, but the compiler will
@@ -226,11 +227,11 @@ CPUcpsie(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return(ui32Ret);
 }
 #endif
 #if defined(ewarm)
-unsigned long
+uint32_t
 CPUcpsie(void)
 {
     //
@@ -249,7 +250,7 @@ CPUcpsie(void)
 #pragma diag_default=Pe940
 #endif
 #if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm unsigned long
+__asm uint32_t
 CPUcpsie(void)
 {
     //
@@ -261,7 +262,7 @@ CPUcpsie(void)
 }
 #endif
 #if defined(ccs)
-unsigned long
+uint32_t
 CPUcpsie(void)
 {
     //
@@ -337,9 +338,8 @@ CPUwfi(void)
 //*****************************************************************************
 #if defined(codered) || defined(gcc) || defined(sourcerygxx)
 void __attribute__((naked))
-CPUbasepriSet(unsigned long ulNewBasepri)
+CPUbasepriSet(uint32_t ui32NewBasepri)
 {
-
     //
     // Set the BASEPRI register
     //
@@ -349,7 +349,7 @@ CPUbasepriSet(unsigned long ulNewBasepri)
 #endif
 #if defined(ewarm)
 void
-CPUbasepriSet(unsigned long ulNewBasepri)
+CPUbasepriSet(uint32_t ui32NewBasepri)
 {
     //
     // Set the BASEPRI register
@@ -359,7 +359,7 @@ CPUbasepriSet(unsigned long ulNewBasepri)
 #endif
 #if defined(rvmdk) || defined(__ARMCC_VERSION)
 __asm void
-CPUbasepriSet(unsigned long ulNewBasepri)
+CPUbasepriSet(uint32_t ui32NewBasepri)
 {
     //
     // Set the BASEPRI register
@@ -370,7 +370,7 @@ CPUbasepriSet(unsigned long ulNewBasepri)
 #endif
 #if defined(ccs)
 void
-CPUbasepriSet(unsigned long ulNewBasepri)
+CPUbasepriSet(uint32_t ui32NewBasepri)
 {
     //
     // Set the BASEPRI register
@@ -385,17 +385,17 @@ CPUbasepriSet(unsigned long ulNewBasepri)
 //
 //*****************************************************************************
 #if defined(codered) || defined(gcc) || defined(sourcerygxx)
-unsigned long __attribute__((naked))
+uint32_t __attribute__((naked))
 CPUbasepriGet(void)
 {
-    unsigned long ulRet;
+    uint32_t ui32Ret;
 
     //
     // Read BASEPRI
     //
     __asm("    mrs     r0, BASEPRI\n"
           "    bx      lr\n"
-          : "=r" (ulRet));
+          : "=r" (ui32Ret));
 
     //
     // The return is handled in the inline assembly, but the compiler will
@@ -403,11 +403,11 @@ CPUbasepriGet(void)
     // that this does not result in any code being produced because of the
     // naked attribute).
     //
-    return(ulRet);
+    return(ui32Ret);
 }
 #endif
 #if defined(ewarm)
-unsigned long
+uint32_t
 CPUbasepriGet(void)
 {
     //
@@ -425,7 +425,7 @@ CPUbasepriGet(void)
 #pragma diag_default=Pe940
 #endif
 #if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm unsigned long
+__asm uint32_t
 CPUbasepriGet(void)
 {
     //
@@ -436,7 +436,7 @@ CPUbasepriGet(void)
 }
 #endif
 #if defined(ccs)
-unsigned long
+uint32_t
 CPUbasepriGet(void)
 {
     //

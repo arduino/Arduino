@@ -2,7 +2,7 @@
 //
 // hw_gpio.h - Defines and Macros for GPIO hardware.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -70,12 +70,19 @@
 #define GPIO_O_ADCCTL           0x00000530  // GPIO ADC Control
 #define GPIO_O_DMACTL           0x00000534  // GPIO DMA Control
 #define GPIO_O_SI               0x00000538  // GPIO Select Interrupt
+#define GPIO_O_DR12R            0x0000053C  // GPIO 12-mA Drive Select
+#define GPIO_O_WAKEPEN          0x00000540  // GPIO Wake Pin Enable
+#define GPIO_O_WAKELVL          0x00000544  // GPIO Wake Level
+#define GPIO_O_WAKESTAT         0x00000548  // GPIO Wake Status
+#define GPIO_O_PP               0x00000FC0  // GPIO Peripheral Property
+#define GPIO_O_PC               0x00000FC4  // GPIO Peripheral Configuration
 
 //*****************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_IM register.
 //
 //*****************************************************************************
+#define GPIO_IM_DMAIME          0x00000100  // GPIO uDMA Interrupt Mask Enable
 #define GPIO_IM_GPIO_M          0x000000FF  // GPIO Interrupt Mask Enable
 #define GPIO_IM_GPIO_S          0
 
@@ -84,6 +91,7 @@
 // The following are defines for the bit fields in the GPIO_O_RIS register.
 //
 //*****************************************************************************
+#define GPIO_RIS_DMARIS         0x00000100  // GPIO uDMA Interrupt Raw Status
 #define GPIO_RIS_GPIO_M         0x000000FF  // GPIO Interrupt Raw Status
 #define GPIO_RIS_GPIO_S         0
 
@@ -92,6 +100,8 @@
 // The following are defines for the bit fields in the GPIO_O_MIS register.
 //
 //*****************************************************************************
+#define GPIO_MIS_DMAMIS         0x00000100  // GPIO uDMA Masked Interrupt
+                                            // Status
 #define GPIO_MIS_GPIO_M         0x000000FF  // GPIO Masked Interrupt Status
 #define GPIO_MIS_GPIO_S         0
 
@@ -100,6 +110,7 @@
 // The following are defines for the bit fields in the GPIO_O_ICR register.
 //
 //*****************************************************************************
+#define GPIO_ICR_DMAIC          0x00000100  // GPIO uDMA Interrupt Clear
 #define GPIO_ICR_GPIO_M         0x000000FF  // GPIO Interrupt Clear
 #define GPIO_ICR_GPIO_S         0
 
@@ -113,10 +124,7 @@
                                             // and may be modified
 #define GPIO_LOCK_LOCKED        0x00000001  // The GPIOCR register is locked
                                             // and may not be modified
-#define GPIO_LOCK_KEY           0x1ACCE551  // Unlocks the GPIO_CR register
-#define GPIO_LOCK_KEY_DD        0x4C4F434B  // Unlocks the GPIO_CR register on
-                                            // DustDevil-class devices and
-                                            // later
+#define GPIO_LOCK_KEY           0x4C4F434B  // Unlocks the GPIO_CR register
 
 //*****************************************************************************
 //
@@ -127,66 +135,77 @@
 
 //*****************************************************************************
 //
-// The following definitions are deprecated.
+// The following are defines for the bit fields in the GPIO_O_DR12R register.
 //
 //*****************************************************************************
-#ifndef DEPRECATED
+#define GPIO_DR12R_DRV12_M      0x000000FF  // Output Pad 12-mA Drive Enable
+#define GPIO_DR12R_DRV12_12MA   0x00000001  // The corresponding GPIO pin has
+                                            // 12-mA drive. This encoding is
+                                            // only valid if the GPIOPP EDE bit
+                                            // is set and the appropriate
+                                            // GPIOPC EDM bit field is
+                                            // programmed to 0x3
 
 //*****************************************************************************
 //
-// The following are deprecated defines for the GPIO register offsets.
+// The following are defines for the bit fields in the GPIO_O_WAKEPEN register.
 //
 //*****************************************************************************
-#define GPIO_O_PeriphID4        0x00000FD0
-#define GPIO_O_PeriphID5        0x00000FD4
-#define GPIO_O_PeriphID6        0x00000FD8
-#define GPIO_O_PeriphID7        0x00000FDC
-#define GPIO_O_PeriphID0        0x00000FE0
-#define GPIO_O_PeriphID1        0x00000FE4
-#define GPIO_O_PeriphID2        0x00000FE8
-#define GPIO_O_PeriphID3        0x00000FEC
-#define GPIO_O_PCellID0         0x00000FF0
-#define GPIO_O_PCellID1         0x00000FF4
-#define GPIO_O_PCellID2         0x00000FF8
-#define GPIO_O_PCellID3         0x00000FFC
+#define GPIO_WAKEPEN_WAKEP4     0x00000010  // P[4] Wake Enable
 
 //*****************************************************************************
 //
-// The following are deprecated defines for the GPIO Register reset values.
+// The following are defines for the bit fields in the GPIO_O_WAKELVL register.
 //
 //*****************************************************************************
-#define GPIO_RV_DEN             0x000000FF  // Digital input enable reg RV
-#define GPIO_RV_PUR             0x000000FF  // Pull up select reg RV
-#define GPIO_RV_DR2R            0x000000FF  // 2ma drive select reg RV
-#define GPIO_RV_PCellID1        0x000000F0
-#define GPIO_RV_PCellID3        0x000000B1
-#define GPIO_RV_PeriphID0       0x00000061
-#define GPIO_RV_PeriphID1       0x00000010
-#define GPIO_RV_PCellID0        0x0000000D
-#define GPIO_RV_PCellID2        0x00000005
-#define GPIO_RV_PeriphID2       0x00000004
-#define GPIO_RV_LOCK            0x00000001  // Lock register RV
-#define GPIO_RV_PeriphID7       0x00000000
-#define GPIO_RV_PDR             0x00000000  // Pull down select reg RV
-#define GPIO_RV_IC              0x00000000  // Interrupt clear reg RV
-#define GPIO_RV_SLR             0x00000000  // Slew rate control enable reg RV
-#define GPIO_RV_ODR             0x00000000  // Open drain select reg RV
-#define GPIO_RV_IBE             0x00000000  // Interrupt both edges reg RV
-#define GPIO_RV_AFSEL           0x00000000  // Mode control select reg RV
-#define GPIO_RV_IS              0x00000000  // Interrupt sense reg RV
-#define GPIO_RV_IM              0x00000000  // Interrupt mask reg RV
-#define GPIO_RV_PeriphID4       0x00000000
-#define GPIO_RV_PeriphID5       0x00000000
-#define GPIO_RV_DR8R            0x00000000  // 8ma drive select reg RV
-#define GPIO_RV_RIS             0x00000000  // Raw interrupt status reg RV
-#define GPIO_RV_DR4R            0x00000000  // 4ma drive select reg RV
-#define GPIO_RV_IEV             0x00000000  // Intterupt event reg RV
-#define GPIO_RV_DIR             0x00000000  // Data direction reg RV
-#define GPIO_RV_PeriphID6       0x00000000
-#define GPIO_RV_PeriphID3       0x00000000
-#define GPIO_RV_DATA            0x00000000  // Data register reset value
-#define GPIO_RV_MIS             0x00000000  // Masked interrupt status reg RV
+#define GPIO_WAKELVL_WAKELVL4   0x00000010  // P[4] Wake Level
 
-#endif
+//*****************************************************************************
+//
+// The following are defines for the bit fields in the GPIO_O_WAKESTAT
+// register.
+//
+//*****************************************************************************
+#define GPIO_WAKESTAT_STAT4     0x00000010  // P[4] Wake State
+
+//*****************************************************************************
+//
+// The following are defines for the bit fields in the GPIO_O_PP register.
+//
+//*****************************************************************************
+#define GPIO_PP_EDE             0x00000001  // Extended Drive Enable
+
+//*****************************************************************************
+//
+// The following are defines for the bit fields in the GPIO_O_PC register.
+//
+//*****************************************************************************
+#define GPIO_PC_EDM7_M          0x0000C000  // Extended Drive Mode Bit 7
+#define GPIO_PC_EDM6_M          0x00003000  // Extended Drive Mode Bit 6
+#define GPIO_PC_EDM5_M          0x00000C00  // Extended Drive Mode Bit 5
+#define GPIO_PC_EDM4_M          0x00000300  // Extended Drive Mode Bit 4
+#define GPIO_PC_EDM3_M          0x000000C0  // Extended Drive Mode Bit 3
+#define GPIO_PC_EDM2_M          0x00000030  // Extended Drive Mode Bit 2
+#define GPIO_PC_EDM1_M          0x0000000C  // Extended Drive Mode Bit 1
+#define GPIO_PC_EDM0_M          0x00000003  // Extended Drive Mode Bit 0
+#define GPIO_PC_EDM0_DISABLE    0x00000000  // Drive values of 2, 4 and 8 mA
+                                            // are maintained. GPIO n Drive
+                                            // Select (GPIODRnR) registers
+                                            // function as normal
+#define GPIO_PC_EDM0_6MA        0x00000001  // An additional 6 mA option is
+                                            // provided
+#define GPIO_PC_EDM0_PLUS2MA    0x00000003  // A 2 mA driver is always enabled;
+                                            // setting the corresponding
+                                            // GPIODR4R register bit adds 2 mA
+                                            // and setting the corresponding
+                                            // GPIODR8R of GPIODR12R register
+                                            // bit adds an additional 4 mA
+#define GPIO_PC_EDM7_S          14
+#define GPIO_PC_EDM6_S          12
+#define GPIO_PC_EDM5_S          10
+#define GPIO_PC_EDM4_S          8
+#define GPIO_PC_EDM3_S          6
+#define GPIO_PC_EDM2_S          4
+#define GPIO_PC_EDM1_S          2
 
 #endif // __HW_GPIO_H__

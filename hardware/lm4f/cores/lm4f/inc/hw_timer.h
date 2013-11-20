@@ -2,7 +2,7 @@
 //
 // hw_timer.h - Defines and macros used when accessing the timer.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -71,7 +71,10 @@
 #define TIMER_O_TBPS            0x00000060  // GPTM Timer B Prescale Snapshot
 #define TIMER_O_TAPV            0x00000064  // GPTM Timer A Prescale Value
 #define TIMER_O_TBPV            0x00000068  // GPTM Timer B Prescale Value
+#define TIMER_O_DMAEV           0x0000006C  // GPTM DMA Event
+#define TIMER_O_ADCEV           0x00000070  // GPTM ADC Event
 #define TIMER_O_PP              0x00000FC0  // GPTM Peripheral Properties
+#define TIMER_O_CC              0x00000FC8  // GPTM Clock Configuration
 
 //*****************************************************************************
 //
@@ -91,6 +94,24 @@
 // The following are defines for the bit fields in the TIMER_O_TAMR register.
 //
 //*****************************************************************************
+#define TIMER_TAMR_TCACT_M      0x0000E000  // Timer Compare Action Select
+#define TIMER_TAMR_TCACT_NONE   0x00000000  // Disable compare operations
+#define TIMER_TAMR_TCACT_TOGGLE 0x00002000  // Toggle State on Time-Out
+#define TIMER_TAMR_TCACT_CLRTO  0x00004000  // Clear CCP on Time-Out
+#define TIMER_TAMR_TCACT_SETTO  0x00006000  // Set CCP on Time-Out
+#define TIMER_TAMR_TCACT_SETTOGTO                                             \
+                                0x00008000  // Set CCP immediately and toggle
+                                            // on Time-Out
+#define TIMER_TAMR_TCACT_CLRTOGTO                                             \
+                                0x0000A000  // Clear CCP immediately and toggle
+                                            // on Time-Out
+#define TIMER_TAMR_TCACT_SETCLRTO                                             \
+                                0x0000C000  // Set CCP immediately and clear on
+                                            // Time-Out
+#define TIMER_TAMR_TCACT_CLRSETTO                                             \
+                                0x0000E000  // Clear CCP immediately and set on
+                                            // Time-Out
+#define TIMER_TAMR_TACINTD      0x00001000  // One-shot/Periodic Interrupt Mode
 #define TIMER_TAMR_TAPLO        0x00000800  // GPTM Timer A PWM Legacy
                                             // Operation
 #define TIMER_TAMR_TAMRSU       0x00000400  // GPTM Timer A Match Register
@@ -116,6 +137,24 @@
 // The following are defines for the bit fields in the TIMER_O_TBMR register.
 //
 //*****************************************************************************
+#define TIMER_TBMR_TCACT_M      0x0000E000  // Timer Compare Action Select
+#define TIMER_TBMR_TCACT_NONE   0x00000000  // Disable compare operations
+#define TIMER_TBMR_TCACT_TOGGLE 0x00002000  // Toggle State on Time-Out
+#define TIMER_TBMR_TCACT_CLRTO  0x00004000  // Clear CCP on Time-Out
+#define TIMER_TBMR_TCACT_SETTO  0x00006000  // Set CCP on Time-Out
+#define TIMER_TBMR_TCACT_SETTOGTO                                             \
+                                0x00008000  // Set CCP immediately and toggle
+                                            // on Time-Out
+#define TIMER_TBMR_TCACT_CLRTOGTO                                             \
+                                0x0000A000  // Clear CCP immediately and toggle
+                                            // on Time-Out
+#define TIMER_TBMR_TCACT_SETCLRTO                                             \
+                                0x0000C000  // Set CCP immediately and clear on
+                                            // Time-Out
+#define TIMER_TBMR_TCACT_CLRSETTO                                             \
+                                0x0000E000  // Clear CCP immediately and set on
+                                            // Time-Out
+#define TIMER_TBMR_TBCINTD      0x00001000  // One-Shot/Periodic Interrupt Mode
 #define TIMER_TBMR_TBPLO        0x00000800  // GPTM Timer B PWM Legacy
                                             // Operation
 #define TIMER_TBMR_TBMRSU       0x00000400  // GPTM Timer B Match Register
@@ -218,6 +257,15 @@
 #define TIMER_SYNC_SYNCWT2_TATB 0x00030000  // A timeout event for both Timer A
                                             // and Timer B of GPTM 32/64-Bit
                                             // Timer 2 is triggered
+#define TIMER_SYNC_SYNCT7_M     0x0000C000  // Synchronize GPTM Timer 7
+#define TIMER_SYNC_SYNCT7_NONE  0x00000000  // GPT7 is not affected
+#define TIMER_SYNC_SYNCT7_TA    0x00004000  // A timeout event for Timer A of
+                                            // GPTM7 is triggered
+#define TIMER_SYNC_SYNCT7_TB    0x00008000  // A timeout event for Timer B of
+                                            // GPTM7 is triggered
+#define TIMER_SYNC_SYNCT7_TATB  0x0000C000  // A timeout event for both Timer A
+                                            // and Timer B of GPTM7 is
+                                            // triggered
 #define TIMER_SYNC_SYNCWT1_M    0x0000C000  // Synchronize GPTM 32/64-Bit Timer
                                             // 1
 #define TIMER_SYNC_SYNCWT1_NONE 0x00000000  // GPTM 32/64-Bit Timer 1 is not
@@ -244,6 +292,15 @@
 #define TIMER_SYNC_SYNCWT0_TATB 0x00003000  // A timeout event for both Timer A
                                             // and Timer B of GPTM 32/64-Bit
                                             // Timer 0 is triggered
+#define TIMER_SYNC_SYNCT6_M     0x00003000  // Synchronize GPTM Timer 6
+#define TIMER_SYNC_SYNCT6_NONE  0x00000000  // GPTM6 is not affected
+#define TIMER_SYNC_SYNCT6_TA    0x00001000  // A timeout event for Timer A of
+                                            // GPTM6 is triggered
+#define TIMER_SYNC_SYNCT6_TB    0x00002000  // A timeout event for Timer B of
+                                            // GPTM6 is triggered
+#define TIMER_SYNC_SYNCT6_TATB  0x00003000  // A timeout event for both Timer A
+                                            // and Timer B of GPTM6 is
+                                            // triggered
 #define TIMER_SYNC_SYNCT5_M     0x00000C00  // Synchronize GPTM 16/32-Bit Timer
                                             // 5
 #define TIMER_SYNC_SYNCT5_NONE  0x00000000  // GPTM 16/32-Bit Timer 5 is not
@@ -330,6 +387,8 @@
 //*****************************************************************************
 #define TIMER_IMR_WUEIM         0x00010000  // GPTM Write Update Error
                                             // Interrupt Mask
+#define TIMER_IMR_DMABIM        0x00002000  // GPTM Timer B DMA Done Interrupt
+                                            // Mask
 #define TIMER_IMR_TBMIM         0x00000800  // GPTM Timer B Match Interrupt
                                             // Mask
 #define TIMER_IMR_CBEIM         0x00000400  // GPTM Timer B Capture Mode Event
@@ -337,6 +396,8 @@
 #define TIMER_IMR_CBMIM         0x00000200  // GPTM Timer B Capture Mode Match
                                             // Interrupt Mask
 #define TIMER_IMR_TBTOIM        0x00000100  // GPTM Timer B Time-Out Interrupt
+                                            // Mask
+#define TIMER_IMR_DMAAIM        0x00000020  // GPTM Timer A DMA Done Interrupt
                                             // Mask
 #define TIMER_IMR_TAMIM         0x00000010  // GPTM Timer A Match Interrupt
                                             // Mask
@@ -355,6 +416,8 @@
 //*****************************************************************************
 #define TIMER_RIS_WUERIS        0x00010000  // GPTM Write Update Error Raw
                                             // Interrupt
+#define TIMER_RIS_DMABRIS       0x00002000  // GPTM Timer B DMA Done Raw
+                                            // Interrupt Status
 #define TIMER_RIS_TBMRIS        0x00000800  // GPTM Timer B Match Raw Interrupt
 #define TIMER_RIS_CBERIS        0x00000400  // GPTM Timer B Capture Mode Event
                                             // Raw Interrupt
@@ -362,6 +425,8 @@
                                             // Raw Interrupt
 #define TIMER_RIS_TBTORIS       0x00000100  // GPTM Timer B Time-Out Raw
                                             // Interrupt
+#define TIMER_RIS_DMAARIS       0x00000020  // GPTM Timer A DMA Done Raw
+                                            // Interrupt Status
 #define TIMER_RIS_TAMRIS        0x00000010  // GPTM Timer A Match Raw Interrupt
 #define TIMER_RIS_RTCRIS        0x00000008  // GPTM RTC Raw Interrupt
 #define TIMER_RIS_CAERIS        0x00000004  // GPTM Timer A Capture Mode Event
@@ -378,6 +443,8 @@
 //*****************************************************************************
 #define TIMER_MIS_WUEMIS        0x00010000  // GPTM Write Update Error Masked
                                             // Interrupt
+#define TIMER_MIS_DMABMIS       0x00002000  // GPTM Timer B DMA Done Masked
+                                            // Interrupt
 #define TIMER_MIS_TBMMIS        0x00000800  // GPTM Timer B Match Masked
                                             // Interrupt
 #define TIMER_MIS_CBEMIS        0x00000400  // GPTM Timer B Capture Mode Event
@@ -385,6 +452,8 @@
 #define TIMER_MIS_CBMMIS        0x00000200  // GPTM Timer B Capture Mode Match
                                             // Masked Interrupt
 #define TIMER_MIS_TBTOMIS       0x00000100  // GPTM Timer B Time-Out Masked
+                                            // Interrupt
+#define TIMER_MIS_DMAAMIS       0x00000020  // GPTM Timer A DMA Done Masked
                                             // Interrupt
 #define TIMER_MIS_TAMMIS        0x00000010  // GPTM Timer A Match Masked
                                             // Interrupt
@@ -403,6 +472,8 @@
 //*****************************************************************************
 #define TIMER_ICR_WUECINT       0x00010000  // 32/64-Bit GPTM Write Update
                                             // Error Interrupt Clear
+#define TIMER_ICR_DMABINT       0x00002000  // GPTM Timer B DMA Done Interrupt
+                                            // Clear
 #define TIMER_ICR_TBMCINT       0x00000800  // GPTM Timer B Match Interrupt
                                             // Clear
 #define TIMER_ICR_CBECINT       0x00000400  // GPTM Timer B Capture Mode Event
@@ -410,6 +481,8 @@
 #define TIMER_ICR_CBMCINT       0x00000200  // GPTM Timer B Capture Mode Match
                                             // Interrupt Clear
 #define TIMER_ICR_TBTOCINT      0x00000100  // GPTM Timer B Time-Out Interrupt
+                                            // Clear
+#define TIMER_ICR_DMAAINT       0x00000020  // GPTM Timer A DMA Done Interrupt
                                             // Clear
 #define TIMER_ICR_TAMCINT       0x00000010  // GPTM Timer A Match Interrupt
                                             // Clear
@@ -428,12 +501,6 @@
 //*****************************************************************************
 #define TIMER_TAILR_M           0xFFFFFFFF  // GPTM Timer A Interval Load
                                             // Register
-#define TIMER_TAILR_TAILRH_M    0xFFFF0000  // GPTM Timer A Interval Load
-                                            // Register High
-#define TIMER_TAILR_TAILRL_M    0x0000FFFF  // GPTM Timer A Interval Load
-                                            // Register Low
-#define TIMER_TAILR_TAILRH_S    16
-#define TIMER_TAILR_TAILRL_S    0
 #define TIMER_TAILR_S           0
 
 //*****************************************************************************
@@ -443,9 +510,6 @@
 //*****************************************************************************
 #define TIMER_TBILR_M           0xFFFFFFFF  // GPTM Timer B Interval Load
                                             // Register
-#define TIMER_TBILR_TBILRL_M    0x0000FFFF  // GPTM Timer B Interval Load
-                                            // Register
-#define TIMER_TBILR_TBILRL_S    0
 #define TIMER_TBILR_S           0
 
 //*****************************************************************************
@@ -455,10 +519,6 @@
 //
 //*****************************************************************************
 #define TIMER_TAMATCHR_TAMR_M   0xFFFFFFFF  // GPTM Timer A Match Register
-#define TIMER_TAMATCHR_TAMRH_M  0xFFFF0000  // GPTM Timer A Match Register High
-#define TIMER_TAMATCHR_TAMRL_M  0x0000FFFF  // GPTM Timer A Match Register Low
-#define TIMER_TAMATCHR_TAMRH_S  16
-#define TIMER_TAMATCHR_TAMRL_S  0
 #define TIMER_TAMATCHR_TAMR_S   0
 
 //*****************************************************************************
@@ -468,9 +528,7 @@
 //
 //*****************************************************************************
 #define TIMER_TBMATCHR_TBMR_M   0xFFFFFFFF  // GPTM Timer B Match Register
-#define TIMER_TBMATCHR_TBMRL_M  0x0000FFFF  // GPTM Timer B Match Register Low
 #define TIMER_TBMATCHR_TBMR_S   0
-#define TIMER_TBMATCHR_TBMRL_S  0
 
 //*****************************************************************************
 //
@@ -520,10 +578,6 @@
 //
 //*****************************************************************************
 #define TIMER_TAR_M             0xFFFFFFFF  // GPTM Timer A Register
-#define TIMER_TAR_TARH_M        0xFFFF0000  // GPTM Timer A Register High
-#define TIMER_TAR_TARL_M        0x0000FFFF  // GPTM Timer A Register Low
-#define TIMER_TAR_TARH_S        16
-#define TIMER_TAR_TARL_S        0
 #define TIMER_TAR_S             0
 
 //*****************************************************************************
@@ -532,8 +586,6 @@
 //
 //*****************************************************************************
 #define TIMER_TBR_M             0xFFFFFFFF  // GPTM Timer B Register
-#define TIMER_TBR_TBRL_M        0x00FFFFFF  // GPTM Timer B
-#define TIMER_TBR_TBRL_S        0
 #define TIMER_TBR_S             0
 
 //*****************************************************************************
@@ -542,10 +594,6 @@
 //
 //*****************************************************************************
 #define TIMER_TAV_M             0xFFFFFFFF  // GPTM Timer A Value
-#define TIMER_TAV_TAVH_M        0xFFFF0000  // GPTM Timer A Value High
-#define TIMER_TAV_TAVL_M        0x0000FFFF  // GPTM Timer A Register Low
-#define TIMER_TAV_TAVH_S        16
-#define TIMER_TAV_TAVL_S        0
 #define TIMER_TAV_S             0
 
 //*****************************************************************************
@@ -554,8 +602,6 @@
 //
 //*****************************************************************************
 #define TIMER_TBV_M             0xFFFFFFFF  // GPTM Timer B Value
-#define TIMER_TBV_TBVL_M        0x0000FFFF  // GPTM Timer B Register
-#define TIMER_TBV_TBVL_S        0
 #define TIMER_TBV_S             0
 
 //*****************************************************************************
@@ -600,9 +646,58 @@
 
 //*****************************************************************************
 //
+// The following are defines for the bit fields in the TIMER_O_DMAEV register.
+//
+//*****************************************************************************
+#define TIMER_DMAEV_TBMDMAEN    0x00000800  // GPTM Timer B Mode Match DMA
+                                            // Trigger Enable
+#define TIMER_DMAEV_CBEDMAEN    0x00000400  // GPTM Capture B Event DMA Trigger
+                                            // Enable
+#define TIMER_DMAEV_CBMDMAEN    0x00000200  // GPTM Capture B Match DMA Trigger
+                                            // Enable
+#define TIMER_DMAEV_TBTODMAEN   0x00000100  // GPTM Timer B Time-Out DMA
+                                            // Trigger Enable
+#define TIMER_DMAEV_TAMDMAEN    0x00000010  // GPTM Timer A Mode Match DMA
+                                            // Trigger Enable
+#define TIMER_DMAEV_RTCDMAEN    0x00000008  // GPTM RTC DMA Trigger Enable
+#define TIMER_DMAEV_CAEDMAEN    0x00000004  // GPTM Capture A Event DMA Trigger
+                                            // Enable
+#define TIMER_DMAEV_CAMDMAEN    0x00000002  // GPTM Capture A Match DMA Trigger
+                                            // Enable
+#define TIMER_DMAEV_TATODMAEN   0x00000001  // GPTM Timer A Time-Out DMA
+                                            // Trigger Enable
+
+//*****************************************************************************
+//
+// The following are defines for the bit fields in the TIMER_O_ADCEV register.
+//
+//*****************************************************************************
+#define TIMER_ADCEV_TBMADCEN    0x00000800  // GPTM Timer B Mode Match ADC
+                                            // Trigger Enable
+#define TIMER_ADCEV_CBEADCEN    0x00000400  // GPTM Capture B Event ADC Trigger
+                                            // Enable
+#define TIMER_ADCEV_CBMADCEN    0x00000200  // GPTM Capture B Match ADC Trigger
+                                            // Enable
+#define TIMER_ADCEV_TBTOADCEN   0x00000100  // GPTM Timer B Time-Out ADC
+                                            // Trigger Enable
+#define TIMER_ADCEV_TAMADCEN    0x00000010  // GPTM Timer A Mode Match ADC
+                                            // Trigger Enable
+#define TIMER_ADCEV_RTCADCEN    0x00000008  // GPTM RTC ADC Trigger Enable
+#define TIMER_ADCEV_CAEADCEN    0x00000004  // GPTM Capture A Event ADC Trigger
+                                            // Enable
+#define TIMER_ADCEV_CAMADCEN    0x00000002  // GPTM Capture A Match ADC Trigger
+                                            // Enable
+#define TIMER_ADCEV_TATOADCEN   0x00000001  // GPTM Timer A Time-Out ADC
+                                            // Trigger Enable
+
+//*****************************************************************************
+//
 // The following are defines for the bit fields in the TIMER_O_PP register.
 //
 //*****************************************************************************
+#define TIMER_PP_ALTCLK         0x00000040  // Alternate Clock Source
+#define TIMER_PP_SYNCCNT        0x00000020  // Synchronize Start
+#define TIMER_PP_CHAIN          0x00000010  // Chain with Other Timers
 #define TIMER_PP_SIZE_M         0x0000000F  // Count Size
 #define TIMER_PP_SIZE_16        0x00000000  // Timer A and Timer B counters are
                                             // 16 bits each with an 8-bit
@@ -613,147 +708,9 @@
 
 //*****************************************************************************
 //
-// The following definitions are deprecated.
+// The following are defines for the bit fields in the TIMER_O_CC register.
 //
 //*****************************************************************************
-#ifndef DEPRECATED
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_CFG
-// register.
-//
-//*****************************************************************************
-#define TIMER_CFG_CFG_MSK       0x00000007  // Configuration options mask
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_CTL
-// register.
-//
-//*****************************************************************************
-#define TIMER_CTL_TBEVENT_MSK   0x00000C00  // TimerB event mode mask
-#define TIMER_CTL_TAEVENT_MSK   0x0000000C  // TimerA event mode mask
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_RIS
-// register.
-//
-//*****************************************************************************
-#define TIMER_RIS_CBEMIS        0x00000400  // CaptureB event masked int status
-#define TIMER_RIS_CBMMIS        0x00000200  // CaptureB match masked int status
-#define TIMER_RIS_TBTOMIS       0x00000100  // TimerB time out masked int stat
-#define TIMER_RIS_RTCMIS        0x00000008  // RTC masked int status
-#define TIMER_RIS_CAEMIS        0x00000004  // CaptureA event masked int status
-#define TIMER_RIS_CAMMIS        0x00000002  // CaptureA match masked int status
-#define TIMER_RIS_TATOMIS       0x00000001  // TimerA time out masked int stat
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_TAILR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TAILR_TAILRH      0xFFFF0000  // TimerB load val in 32 bit mode
-#define TIMER_TAILR_TAILRL      0x0000FFFF  // TimerA interval load value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_TBILR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TBILR_TBILRL      0x0000FFFF  // TimerB interval load value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the
-// TIMER_O_TAMATCHR register.
-//
-//*****************************************************************************
-#define TIMER_TAMATCHR_TAMRH    0xFFFF0000  // TimerB match val in 32 bit mode
-#define TIMER_TAMATCHR_TAMRL    0x0000FFFF  // TimerA match value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the
-// TIMER_O_TBMATCHR register.
-//
-//*****************************************************************************
-#define TIMER_TBMATCHR_TBMRL    0x0000FFFF  // TimerB match load value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_TAR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TAR_TARH          0xFFFF0000  // TimerB val in 32 bit mode
-#define TIMER_TAR_TARL          0x0000FFFF  // TimerA value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_O_TBR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TBR_TBRL          0x0000FFFF  // TimerB value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the reset values of the timer
-// registers.
-//
-//*****************************************************************************
-#define TIMER_RV_TAILR          0xFFFFFFFF  // TimerA interval load reg RV
-#define TIMER_RV_TAR            0xFFFFFFFF  // TimerA register RV
-#define TIMER_RV_TAMATCHR       0xFFFFFFFF  // TimerA match register RV
-#define TIMER_RV_TBILR          0x0000FFFF  // TimerB interval load reg RV
-#define TIMER_RV_TBMATCHR       0x0000FFFF  // TimerB match register RV
-#define TIMER_RV_TBR            0x0000FFFF  // TimerB register RV
-#define TIMER_RV_TAPR           0x00000000  // TimerA prescale register RV
-#define TIMER_RV_CFG            0x00000000  // Configuration register RV
-#define TIMER_RV_TBPMR          0x00000000  // TimerB prescale match regi RV
-#define TIMER_RV_TAPMR          0x00000000  // TimerA prescale match reg RV
-#define TIMER_RV_CTL            0x00000000  // Control register RV
-#define TIMER_RV_ICR            0x00000000  // Interrupt clear register RV
-#define TIMER_RV_TBMR           0x00000000  // TimerB mode register RV
-#define TIMER_RV_MIS            0x00000000  // Masked interrupt status reg RV
-#define TIMER_RV_RIS            0x00000000  // Interrupt status register RV
-#define TIMER_RV_TBPR           0x00000000  // TimerB prescale register RV
-#define TIMER_RV_IMR            0x00000000  // Interrupt mask register RV
-#define TIMER_RV_TAMR           0x00000000  // TimerA mode register RV
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_TnMR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TNMR_TNAMS        0x00000008  // Alternate mode select
-#define TIMER_TNMR_TNCMR        0x00000004  // Capture mode - count or time
-#define TIMER_TNMR_TNTMR_MSK    0x00000003  // Timer mode mask
-#define TIMER_TNMR_TNTMR_1_SHOT 0x00000001  // Mode - one shot
-#define TIMER_TNMR_TNTMR_PERIOD 0x00000002  // Mode - periodic
-#define TIMER_TNMR_TNTMR_CAP    0x00000003  // Mode - capture
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_TnPR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TNPR_TNPSR        0x000000FF  // TimerN prescale value
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the TIMER_TnPMR
-// register.
-//
-//*****************************************************************************
-#define TIMER_TNPMR_TNPSMR      0x000000FF  // TimerN prescale match value
-
-#endif
+#define TIMER_CC_ALTCLK         0x00000001  // Alternate Clock Source
 
 #endif // __HW_TIMER_H__

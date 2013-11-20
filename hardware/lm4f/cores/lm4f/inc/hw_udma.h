@@ -2,7 +2,7 @@
 //
 // hw_udma.h - Macros for use in accessing the UDMA registers.
 //
-// Copyright (c) 2007-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2007-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -83,13 +83,13 @@
 #define UDMA_STAT_STATE_M       0x000000F0  // Control State Machine Status
 #define UDMA_STAT_STATE_IDLE    0x00000000  // Idle
 #define UDMA_STAT_STATE_RD_CTRL 0x00000010  // Reading channel controller data
-#define UDMA_STAT_STATE_RD_SRCENDP \
+#define UDMA_STAT_STATE_RD_SRCENDP                                            \
                                 0x00000020  // Reading source end pointer
-#define UDMA_STAT_STATE_RD_DSTENDP \
+#define UDMA_STAT_STATE_RD_DSTENDP                                            \
                                 0x00000030  // Reading destination end pointer
-#define UDMA_STAT_STATE_RD_SRCDAT \
+#define UDMA_STAT_STATE_RD_SRCDAT                                             \
                                 0x00000040  // Reading source data
-#define UDMA_STAT_STATE_WR_DSTDAT \
+#define UDMA_STAT_STATE_WR_DSTDAT                                             \
                                 0x00000050  // Writing destination data
 #define UDMA_STAT_STATE_WAIT    0x00000060  // Waiting for uDMA request to
                                             // clear
@@ -375,6 +375,8 @@
 #define UDMA_CHCTL_SRCSIZE_8    0x00000000  // Byte
 #define UDMA_CHCTL_SRCSIZE_16   0x01000000  // Half-word
 #define UDMA_CHCTL_SRCSIZE_32   0x02000000  // Word
+#define UDMA_CHCTL_DSTPROT0     0x00200000  // Destination Privilege Access
+#define UDMA_CHCTL_SRCPROT0     0x00040000  // Source Privilege Access
 #define UDMA_CHCTL_ARBSIZE_M    0x0003C000  // Arbitration Size
 #define UDMA_CHCTL_ARBSIZE_1    0x00000000  // 1 Transfer
 #define UDMA_CHCTL_ARBSIZE_2    0x00004000  // 2 Transfers
@@ -390,57 +392,23 @@
 #define UDMA_CHCTL_XFERSIZE_M   0x00003FF0  // Transfer Size (minus 1)
 #define UDMA_CHCTL_NXTUSEBURST  0x00000008  // Next Useburst
 #define UDMA_CHCTL_XFERMODE_M   0x00000007  // uDMA Transfer Mode
-#define UDMA_CHCTL_XFERMODE_STOP \
+#define UDMA_CHCTL_XFERMODE_STOP                                              \
                                 0x00000000  // Stop
-#define UDMA_CHCTL_XFERMODE_BASIC \
+#define UDMA_CHCTL_XFERMODE_BASIC                                             \
                                 0x00000001  // Basic
-#define UDMA_CHCTL_XFERMODE_AUTO \
+#define UDMA_CHCTL_XFERMODE_AUTO                                              \
                                 0x00000002  // Auto-Request
-#define UDMA_CHCTL_XFERMODE_PINGPONG \
+#define UDMA_CHCTL_XFERMODE_PINGPONG                                          \
                                 0x00000003  // Ping-Pong
-#define UDMA_CHCTL_XFERMODE_MEM_SG \
+#define UDMA_CHCTL_XFERMODE_MEM_SG                                            \
                                 0x00000004  // Memory Scatter-Gather
-#define UDMA_CHCTL_XFERMODE_MEM_SGA \
+#define UDMA_CHCTL_XFERMODE_MEM_SGA                                           \
                                 0x00000005  // Alternate Memory Scatter-Gather
-#define UDMA_CHCTL_XFERMODE_PER_SG \
+#define UDMA_CHCTL_XFERMODE_PER_SG                                            \
                                 0x00000006  // Peripheral Scatter-Gather
-#define UDMA_CHCTL_XFERMODE_PER_SGA \
+#define UDMA_CHCTL_XFERMODE_PER_SGA                                           \
                                 0x00000007  // Alternate Peripheral
                                             // Scatter-Gather
 #define UDMA_CHCTL_XFERSIZE_S   4
-
-//*****************************************************************************
-//
-// The following definitions are deprecated.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the Micro Direct Memory Access
-// register addresses.
-//
-//*****************************************************************************
-#define UDMA_CHALT              0x400FF500  // DMA Channel Alternate Select
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UDMA_ENASET
-// register.
-//
-//*****************************************************************************
-#define UDMA_ENASET_CHENSET_M   0xFFFFFFFF  // Channel [n] Enable Set
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UDMA_CHALT
-// register.
-//
-//*****************************************************************************
-#define UDMA_CHALT_M            0xFFFFFFFF  // Channel [n] Alternate Assignment
-                                            // Select
-
-#endif
 
 #endif // __HW_UDMA_H__

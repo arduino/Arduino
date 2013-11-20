@@ -2,7 +2,7 @@
 //
 // gpio.h - Defines and Macros for GPIO API.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __GPIO_H__
-#define __GPIO_H__
+#ifndef __DRIVERLIB_GPIO_H__
+#define __DRIVERLIB_GPIO_H__
 
 //*****************************************************************************
 //
@@ -53,8 +53,8 @@ extern "C"
 
 //*****************************************************************************
 //
-// The following values define the bit field for the ucPins argument to several
-// of the APIs.
+// The following values define the bit field for the ui8Pins argument to
+// several of the APIs.
 //
 //*****************************************************************************
 #define GPIO_PIN_0              0x00000001  // GPIO pin 0
@@ -68,7 +68,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to GPIODirModeSet as the ulPinIO parameter, and
+// Values that can be passed to GPIODirModeSet as the ui32PinIO parameter, and
 // returned from GPIODirModeGet.
 //
 //*****************************************************************************
@@ -78,114 +78,112 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to GPIOIntTypeSet as the ulIntType parameter, and
-// returned from GPIOIntTypeGet.
+// Values that can be passed to GPIOIntTypeSet as the ui32IntType parameter,
+// and returned from GPIOIntTypeGet.
 //
 //*****************************************************************************
 #define GPIO_FALLING_EDGE       0x00000000  // Interrupt on falling edge
 #define GPIO_RISING_EDGE        0x00000004  // Interrupt on rising edge
 #define GPIO_BOTH_EDGES         0x00000001  // Interrupt on both edges
 #define GPIO_LOW_LEVEL          0x00000002  // Interrupt on low level
-#define GPIO_HIGH_LEVEL         0x00000007  // Interrupt on high level
+#define GPIO_HIGH_LEVEL         0x00000006  // Interrupt on high level
 #define GPIO_DISCRETE_INT       0x00010000  // Interrupt for individual pins
 
 //*****************************************************************************
 //
-// Values that can be passed to GPIOPadConfigSet as the ulStrength parameter,
-// and returned by GPIOPadConfigGet in the *pulStrength parameter.
+// Values that can be passed to GPIOPadConfigSet as the ui32Strength parameter,
+// and returned by GPIOPadConfigGet in the *pui32Strength parameter.
 //
 //*****************************************************************************
 #define GPIO_STRENGTH_2MA       0x00000001  // 2mA drive strength
 #define GPIO_STRENGTH_4MA       0x00000002  // 4mA drive strength
+#define GPIO_STRENGTH_6MA       0x00000065  // 6mA drive strength
 #define GPIO_STRENGTH_8MA       0x00000004  // 8mA drive strength
 #define GPIO_STRENGTH_8MA_SC    0x0000000C  // 8mA drive with slew rate control
-
+#define GPIO_STRENGTH_10MA      0x00000075  // 10mA drive strength
+#define GPIO_STRENGTH_12MA      0x00000077  // 12mA drive strength
 
 //*****************************************************************************
 //
-// Values that can be passed to GPIOPadConfigSet as the ulPadType parameter,
-// and returned by GPIOPadConfigGet in the *pulPadType parameter.
+// Values that can be passed to GPIOPadConfigSet as the ui32PadType parameter,
+// and returned by GPIOPadConfigGet in the *pui32PadType parameter.
 //
 //*****************************************************************************
 #define GPIO_PIN_TYPE_STD       0x00000008  // Push-pull
 #define GPIO_PIN_TYPE_STD_WPU   0x0000000A  // Push-pull with weak pull-up
 #define GPIO_PIN_TYPE_STD_WPD   0x0000000C  // Push-pull with weak pull-down
 #define GPIO_PIN_TYPE_OD        0x00000009  // Open-drain
-#define GPIO_PIN_TYPE_OD_WPU    0x0000000B  // Open-drain with weak pull-up
-#define GPIO_PIN_TYPE_OD_WPD    0x0000000D  // Open-drain with weak pull-down
 #define GPIO_PIN_TYPE_ANALOG    0x00000000  // Analog comparator
+#define GPIO_PIN_TYPE_WAKE_HIGH 0x00000208  // Hibernate wake, high
+#define GPIO_PIN_TYPE_WAKE_LOW  0x00000108  // Hibernate wake, low
+
+//*****************************************************************************
+//
+// Values that can be passed to GPIOIntEnable() and GPIOIntDisable() functions
+// in the ui32IntFlags parameter.
+//
+//*****************************************************************************
+#define GPIO_INT_PIN_0          0x00000001
+#define GPIO_INT_PIN_1          0x00000002
+#define GPIO_INT_PIN_2          0x00000004
+#define GPIO_INT_PIN_3          0x00000008
+#define GPIO_INT_PIN_4          0x00000010
+#define GPIO_INT_PIN_5          0x00000020
+#define GPIO_INT_PIN_6          0x00000040
+#define GPIO_INT_PIN_7          0x00000080
+#define GPIO_INT_DMA            0x00000100
 
 //*****************************************************************************
 //
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern void GPIODirModeSet(unsigned long ulPort, unsigned char ucPins,
-                           unsigned long ulPinIO);
-extern unsigned long GPIODirModeGet(unsigned long ulPort, unsigned char ucPin);
-extern void GPIOIntTypeSet(unsigned long ulPort, unsigned char ucPins,
-                           unsigned long ulIntType);
-extern unsigned long GPIOIntTypeGet(unsigned long ulPort, unsigned char ucPin);
-extern void GPIOPadConfigSet(unsigned long ulPort, unsigned char ucPins,
-                             unsigned long ulStrength,
-                             unsigned long ulPadType);
-extern void GPIOPadConfigGet(unsigned long ulPort, unsigned char ucPin,
-                             unsigned long *pulStrength,
-                             unsigned long *pulPadType);
-extern void GPIOPinIntEnable(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinIntDisable(unsigned long ulPort, unsigned char ucPins);
-extern long GPIOPinIntStatus(unsigned long ulPort, tBoolean bMasked);
-extern void GPIOPinIntClear(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPortIntRegister(unsigned long ulPort,
-                                void (*pfnIntHandler)(void));
-extern void GPIOPortIntUnregister(unsigned long ulPort);
-extern long GPIOPinRead(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinWrite(unsigned long ulPort, unsigned char ucPins,
-                         unsigned char ucVal);
-extern void GPIOPinConfigure(unsigned long ulPinConfig);
-extern void GPIOPinTypeADC(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeCAN(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeComparator(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeEPI(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeEthernetLED(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeEthernetMII(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeFan(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeGPIOInput(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeGPIOOutput(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeGPIOOutputOD(unsigned long ulPort,
-                                    unsigned char ucPins);
-extern void GPIOPinTypeI2C(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeI2CSCL(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeI2S(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeLPC(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypePECIRx(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypePECITx(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypePWM(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeQEI(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeSSI(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeTimer(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeUART(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeUSBAnalog(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOPinTypeUSBDigital(unsigned long ulPort, unsigned char ucPins);
-extern void GPIODMATriggerEnable(unsigned long ulPort, unsigned char ucPins);
-extern void GPIODMATriggerDisable(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOADCTriggerEnable(unsigned long ulPort, unsigned char ucPins);
-extern void GPIOADCTriggerDisable(unsigned long ulPort, unsigned char ucPins);
-
-//****************************************************************************
-//
-// The definitions for GPIOPinConfigure previously resided in this file but
-// have been moved to pin_map.h and made part-specific (in other words, only
-// those definitions that are valid based on the selected part, as defined by
-// PART_<partnum>, will be made available).  For backwards compatibility,
-// pin_map.h is included here so that the expected definitions will still be
-// available (though part-specific now, so some that were previously available
-// but inappropriate for the given part will not be available).
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-#include "pin_map.h"
-#endif
+extern void GPIODirModeSet(uint32_t ui32Port, uint8_t ui8Pins,
+                           uint32_t ui32PinIO);
+extern uint32_t GPIODirModeGet(uint32_t ui32Port, uint8_t ui8Pin);
+extern void GPIOIntTypeSet(uint32_t ui32Port, uint8_t ui8Pins,
+                           uint32_t ui32IntType);
+extern uint32_t GPIOIntTypeGet(uint32_t ui32Port, uint8_t ui8Pin);
+extern void GPIOPadConfigSet(uint32_t ui32Port, uint8_t ui8Pins,
+                             uint32_t ui32Strength, uint32_t ui32PadType);
+extern void GPIOPadConfigGet(uint32_t ui32Port, uint8_t ui8Pin,
+                             uint32_t *pui32Strength, uint32_t *pui32PadType);
+extern void GPIOIntEnable(uint32_t ui32Port, uint32_t ui32IntFlags);
+extern void GPIOIntDisable(uint32_t ui32Port, uint32_t ui32IntFlags);
+extern uint32_t GPIOIntStatus(uint32_t ui32Port, bool bMasked);
+extern void GPIOIntClear(uint32_t ui32Port, uint32_t ui32IntFlags);
+extern void GPIOIntRegister(uint32_t ui32Port, void (*pfnIntHandler)(void));
+extern void GPIOIntUnregister(uint32_t ui32Port);
+extern int32_t GPIOPinRead(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinWrite(uint32_t ui32Port, uint8_t ui8Pins, uint8_t ui8Val);
+extern void GPIOPinConfigure(uint32_t ui32PinConfig);
+extern void GPIOPinTypeADC(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeCAN(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeComparator(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeEPI(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeEthernetLED(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeEthernetMII(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeFan(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeGPIOInput(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeGPIOOutput(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeGPIOOutputOD(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeI2C(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeI2CSCL(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeLCD(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypePWM(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeQEI(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeSSI(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeTimer(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeUART(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeUSBAnalog(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeUSBDigital(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeWakeHigh(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOPinTypeWakeLow(uint32_t ui32Port, uint8_t ui8Pins);
+extern uint32_t GPIOPinWakeStatus(uint32_t ui32Port);
+extern void GPIODMATriggerEnable(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIODMATriggerDisable(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOADCTriggerEnable(uint32_t ui32Port, uint8_t ui8Pins);
+extern void GPIOADCTriggerDisable(uint32_t ui32Port, uint8_t ui8Pins);
 
 //*****************************************************************************
 //
@@ -196,4 +194,4 @@ extern void GPIOADCTriggerDisable(unsigned long ulPort, unsigned char ucPins);
 }
 #endif
 
-#endif //  __GPIO_H__
+#endif // __DRIVERLIB_GPIO_H__

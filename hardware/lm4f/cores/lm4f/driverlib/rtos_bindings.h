@@ -1,9 +1,9 @@
 //*****************************************************************************
 //
-// rtos_bindings.h - Macros ulIntIDended to aid porting of StellarisWare modules
+// rtos_bindings.h - Macros intended to aid porting of TivaWare modules
 //                   for use with an RTOS.
 //
-// Copyright (c) 2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2012-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -34,26 +34,27 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
-#ifndef RTOS_BINDINGS_H_
-#define RTOS_BINDINGS_H_
+
+#ifndef __DRIVERLIB_RTOS_BINDINGS_H__
+#define __DRIVERLIB_RTOS_BINDINGS_H__
 
 #ifdef USE_RTOS
 //*****************************************************************************
 //
-// If an RTOS is in use, implement a header file called "stellaris_rtos.h"
+// If an RTOS is in use, implement a header file called "tiva_rtos.h"
 // which contains RTOS-specific versions of each of the macros defined below
 // and make sure it appears on the include path set when you build your
 // project.
 //
 // Note that there is no default implementation of this header file included
-// in StellarisWare - it is your responsibility to create it specifically for
+// in TivaWare - it is your responsibility to create it specifically for
 // your RTOS.
 //
 //*****************************************************************************
-#include "stellaris_rtos.h"
+#include "tiva_rtos.h"
 
 #else
 //*****************************************************************************
@@ -61,8 +62,8 @@
 // When no RTOS is in use, the follow macros compile to either nothing or a
 // minimal implementation that works in a bare-metal environment.
 //
-// Each of these macros must be redefined in stellaris_rtos.h if you are using
-// StellarisWare under an RTOS.
+// Each of these macros must be redefined in tiva_rtos.h if you are using
+// TivaWare under an RTOS.
 //
 //*****************************************************************************
 
@@ -91,7 +92,7 @@
 // for the DriverLib Interrupt driver.
 //
 // The macros defined here represent interrupt-control functions that may be
-// called from within StellarisWare code.  It is expected that application
+// called from within TivaWare code.  It is expected that application
 // code will use RTOS-specific functions to control interrupt priority, to
 // pend interrupts and to perform runtime vector manipulation.  As a result,
 // no macros are defined to wrap any of these functions from interrupt.c.
@@ -99,9 +100,9 @@
 //*****************************************************************************
 #define OS_INT_MASTER_ENABLE() MAP_IntMasterEnable()
 #define OS_INT_MASTER_DISABLE() MAP_IntMasterDisable()
-#define OS_INT_DISABLE(ulIntID) MAP_IntDisable(ulIntID)
-#define OS_INT_ENABLE(ulIntID) MAP_IntEnable(ulIntID)
+#define OS_INT_DISABLE(ui32IntID) MAP_IntDisable(ui32IntID)
+#define OS_INT_ENABLE(ui32IntID) MAP_IntEnable(ui32IntID)
 
 #endif // USE_RTOS
 
-#endif // RTOS_BINDINGS_H_
+#endif // __DRIVERLIB_RTOS_BINDINGS_H__
