@@ -24,6 +24,8 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
 */
 
 #ifndef TwoWire_h
@@ -59,16 +61,21 @@ class TwoWire : public Stream
     void beginTransmission(uint8_t);
     void beginTransmission(int);
     uint8_t endTransmission(void);
+    uint8_t endTransmission(uint8_t);
     uint8_t requestFrom(uint8_t, uint8_t);
+    uint8_t requestFrom(uint8_t, uint8_t, uint8_t);
     uint8_t requestFrom(int, int);
+    uint8_t requestFrom(int, int, int);
     virtual size_t write(uint8_t);
     virtual size_t write(const uint8_t *, size_t);
     virtual int available(void);
     virtual int read(void);
     virtual int peek(void);
-	virtual void flush(void);
+    virtual void flush(void);
+
     void onReceive( void (*)(int) );
     void onRequest( void (*)(void) );
+
   
     inline size_t write(unsigned long n) { return write((uint8_t)n); }
     inline size_t write(long n) { return write((uint8_t)n); }

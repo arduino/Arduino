@@ -2,8 +2,8 @@
   ************************************************************************
   *	twi.c
   *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *	Arduino core files for C2000
+  *		Copyright (c) 2012 Trey German. All right reserved.
   *
   *
   ***********************************************************************
@@ -29,7 +29,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include "Energia.h" // for digitalWrite
-
+ 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
 #endif
@@ -38,12 +38,21 @@
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #endif
 
+#include "wiring_private.h"
 #include "pins_energia.h"
 #include "twi.h"
+#include "sci_isr_handler.h"
+
+// Clock Settings for I2C module
+
+#define SYSCLKOUT 60*10^6 // Frequency of I2C i/p clk
+#define MODCLK    10*10^6 // Frequency of module clk must be between 7-10Mhz, selecting 10Mhz
+#define CLKL      10      // Clock high
+#define CLKH      5       // clock low
 
 static volatile uint8_t twi_state;
-static uint8_t twi_slarw;
-static uint8_t twi_my_addr;
+static volatile uint8_t twi_sendStop;           // should the transaction end with a stop
+static volatile uint8_t twi_inRepStart;         // in the middle of a repeated start
 
 static void (*twi_onSlaveTransmit)(void);
 static void (*twi_onSlaveReceive)(uint8_t*, int);
@@ -55,11 +64,15 @@ static uint8_t twi_masterBufferLength;
 static uint8_t twi_txBuffer[TWI_BUFFER_LENGTH];
 static volatile uint8_t twi_txBufferIndex;
 static volatile uint8_t twi_txBufferLength;
-
-//static uint8_t twi_rxBuffer[TWI_BUFFER_LENGTH];
+#if (defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_B0__))
+static uint8_t twi_rxBuffer[TWI_BUFFER_LENGTH];
 static volatile uint8_t twi_rxBufferIndex;
+#endif
 
 static volatile uint8_t twi_error;
+
+static uint8_t twi_slarw;
+//static uint8_t twi_my_addr;
 
 /*
  * Function twi_init
@@ -67,21 +80,58 @@ static volatile uint8_t twi_error;
  * Input    none
  * Output   none
  */
+
+int i = 0;
 void twi_init(void)
 {
 
-	__bic_SR_register(GIE);
-	P1OUT = 0xC0;                             // P1.6 & P1.7 Pullups, others to 0
-	P1REN |= 0xC0;                            // P1.6 & P1.7 Pullups
+EALLOW;
 
-	USICTL0 = USIPE6+USIPE7+USIMST+USISWRST;  // SDA/SCL
-	USICTL1 = USII2C+USIIE;                   // Enable I2C mode & USI interrupt
-	USICKCTL = USIDIV_7+USISSEL_2+USICKPL;    // USI clk: SCL = SMCLK/128
-	USICNT |= USIIFGCC;                       // Disable automatic clear control
-	USICTL0 &= ~USISWRST;                     // Enable USI
-	USICTL1 &= ~USIIFG;                       // Clear pending flag
-	__bis_SR_register(GIE);
+SysCtrlRegs.PCLKCR0.bit.I2CAENCLK = 1;
+
+/* Enable internal pull-up for the selected pins */
+// Pull-ups can be enabled or disabled disabled by the user.
+// This will enable the pullups for the specified pins.
+// Comment out other unwanted lines.
+
+   // GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;    // Enable pull-up for GPIO28 (SDAA)
+   // GpioCtrlRegs.GPAPUD.bit.GPIO29 = 0;       // Enable pull-up for GPIO29 (SCLA)
+
+    GpioCtrlRegs.GPBPUD.bit.GPIO32 = 0;    // Enable pull-up for GPIO32 (SDAA)
+    GpioCtrlRegs.GPBPUD.bit.GPIO33 = 0;       // Enable pull-up for GPIO33 (SCLA)
+
+/* Set qualification for selected pins to asynch only */
+// This will select asynch (no qualification) for the selected pins.
+// Comment out other unwanted lines.
+
+    //GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 3;  // Asynch input GPIO28 (SDAA)
+    //GpioCtrlRegs.GPAQSEL2.bit.GPIO29 = 3;  // Asynch input GPIO29 (SCLA)
+
+    GpioCtrlRegs.GPBQSEL1.bit.GPIO32 = 3;  // Asynch input GPIO32 (SDAA)
+    GpioCtrlRegs.GPBQSEL1.bit.GPIO33 = 3;  // Asynch input GPIO33 (SCLA)
+
+/* Configure I2C pins using GPIO regs*/
+// This specifies which of the possible GPIO pins will be I2C functional pins.
+// Comment out other unwanted lines.
+
+   // GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 2;   // Configure GPIO28 for SDAA operation
+   // GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 2;   // Configure GPIO29 for SCLA operation
+
+    GpioCtrlRegs.GPBMUX1.bit.GPIO32 = 1;   // Configure GPIO32 for SDAA operation
+    GpioCtrlRegs.GPBMUX1.bit.GPIO33 = 1;   // Configure GPIO33 for SCLA operation
+
+    EDIS;
+
+
+I2caRegs.I2CMDR.bit.IRS = 0;                     // Reset I2C module 
+I2caRegs.I2CPSC.all = (SYSCLKOUT / MODCLK )- 1;  // Setting the prescalar value
+I2caRegs.I2CCLKL = CLKL;                         // CLOCK LOW
+I2caRegs.I2CCLKH = CLKH;                         // CLOCK HIGH
+I2caRegs.I2CMDR.bit.IRS = 1;                     // Set I2C module
+
 }
+
+//*************************************************************************************************************
 
 /*
  * Function twi_setAddress
@@ -89,11 +139,14 @@ void twi_init(void)
  * Input    none
  * Output   none
  */
+
 void twi_setAddress(uint8_t address)
 {
-	twi_my_addr = address << 1;
-	//TODO: enable start detect interrupt to kick off the state machine
+I2caRegs.I2CSAR = address; 
 }
+
+//**************************************************************************************************************
+
 
 /*
  * Function twi_readFrom
@@ -104,49 +157,75 @@ void twi_setAddress(uint8_t address)
  *          length: number of bytes to read into array
  * Output   number of bytes read
  */
-uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length)
+uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop)
 {
-	uint8_t i;
 
-	USICTL0 |= USIMST; // USI master mode
-	// ensure data will fit into buffer
+
+// ensure data will fit into buffer
 	if(TWI_BUFFER_LENGTH < length){
 		return 0;
 	}
 
-	// initialize buffer iteration vars
+// initialize buffer iteration vars
 	twi_masterBufferIndex = 0;
-	twi_masterBufferLength = length-1;  // This is not intuitive, read on...
-	// On receive, the previously configured ACK/NACK setting is transmitted in
-	// response to the received byte before the interrupt is signalled.
-	// Therefor we must actually set NACK when the _next_ to last byte is
-	// received, causing that NACK to be sent in response to receiving the last
-	// expected byte of data.
+	twi_masterBufferLength = length-1;
 
-	// build sla+w, slave device address + w bit
-	twi_slarw = 1;
-	twi_slarw |= address << 1;
+// Configuring the Master in Master-Transmitter mode initially 
+do
+{
+while(I2caRegs.I2CSTR.bit.BB == 1); // Wait until the I2C bus is not busy
+I2caRegs.I2CSAR = address;          // Slave address
+I2caRegs.I2CCNT = length;           // count of number of bytes to be read from slave
 
-	// send start condition
-	twi_state = TWI_SND_START;
-	// this will trigger an interrupt kicking off the state machine in the isr
-	USICTL1 |= USIIFG;
+// is the address copied from I2CSAR TO I2CDXR AND THEN TO I2CXTR ?? or should we directly copy the address to I2CDXR ??
 
-	// wait for read operation to complete
-	while(twi_state != TWI_IDLE){
-		continue;
-	}
+twi_slarw = 0;                        // bit to indicate read
+twi_slarw |= address << 1;
+twi_state = TWI_SND_START;            // send start condition
+I2caRegs.I2CMDR.all = 0x0620;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
 
-	if (twi_masterBufferIndex < length)
-		length = twi_masterBufferIndex;
+// should the control word be 0X0620 or 0x2620 ?? 
 
-	// copy twi buffer to data
-	for(i = 0; i < length; ++i){
+while(I2caRegs.I2CSTR.bit.XRDY == 0); // Wait until the transmit register is ready
+
+I2caRegs.I2CDXR = twi_slarw; // Put the control byte [ address + r/w bit] into transmit register
+
+while(I2caRegs.I2CSTR.bit.ARDY) 
+  { // wait for the transmission to finish
+    if(I2caRegs.I2CSTR.bit.NACK == 1) 
+     { // if we get a NACK from slave during this transmission
+       I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
+       break;
+     }
+  }
+} while(I2caRegs.I2CSTR.bit.NACK == 1);
+
+// Configuring the Master in Master-reciever  mode to start recieving data from slave
+twi_state =  TWI_MRX;   // Master reciever state
+
+I2caRegs.I2CMDR.bit.STP = 1; // Set a  stop bit. Because we need to change to non repeat mode. 
+I2caRegs.I2CMDR.bit.TRX = 0; // set master as reciever
+I2caRegs.I2CMDR.bit.FDF = 1; // support free data format
+
+
+while ( i < length)
+{
+while(I2caRegs.I2CSTR.bit.RRDY != 1);
+twi_masterBuffer[twi_masterBufferIndex++] = I2caRegs.I2CDRR;
+i++;
+}
+
+if (i== length)
+I2caRegs.I2CMDR.bit.NACKMOD = 1; // sending a NACK after last byte has been recieved.
+
+for(i = 0; i < length; ++i){
 		data[i] = twi_masterBuffer[i];
 	}
 
-	return length;
+return length;
 }
+
+//**********************************************************************************************************************************************
 
 /*
  * Function twi_writeTo
@@ -162,71 +241,98 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length)
  *          3 .. data send, NACK received
  *          4 .. other twi error (lost bus arbitration, bus error, ..)
  */
-uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait)
+uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop)
 {
 	uint8_t i;
 	twi_error = TWI_ERRROR_NO_ERROR;
-	USICTL0 |= USIMST; // USI master mode
-	if(length == 0) {
+	twi_sendStop = sendStop;
+
+//************** Getting the buffer ready ********************************************
+
+if(length == 0) {
 		return 0;
 	}
 
-	// ensure data will fit into buffer
+	/* Ensure data will fit into buffer */
 	if(length > TWI_BUFFER_LENGTH){
 		return TWI_ERROR_BUF_TO_LONG;
 	}
 
 
-	// initialize buffer iteration vars
+	/* initialize buffer iteration vars */
 	twi_masterBufferIndex = 0;
 	twi_masterBufferLength = length;
 
-	// copy data to twi buffer
 	for(i = 0; i < length; ++i){
 		twi_masterBuffer[i] = data[i];
 	}
 
-	// build sla+w, slave device address + w bit
-	twi_slarw = 0;
-	twi_slarw |= address << 1;
-	twi_state = TWI_SND_START;
-	// this will trigger an interrupt kicking off the state machine in the isr
-	USICTL1 |= USIIFG;
 
-	while(twi_state != TWI_IDLE)
-	{
-		continue;
-	}
 
-	return twi_error;
-}
+// ***************** Configuring the Master in Master-Transmitter mode initially to send control information ****************
+//do
+//{
+while(I2caRegs.I2CSTR.bit.BB == 1); // Wait until the I2C bus is not busy
+I2caRegs.I2CSAR = address;          // Slave address
+I2caRegs.I2CCNT = length;           // count of number of bytes to be written to slave
 
-/*
- * Function twi_transmit
- * Desc     fills slave tx buffer with data
- *          must be called in slave tx event callback
- * Input    data: pointer to byte array
- *          length: number of bytes in array
- * Output   1 length too long for buffer
- *          2 not slave transmitter
- *          0 ok
- */
-uint8_t twi_transmit(const uint8_t* data, uint8_t length)
+// is the address copied from I2CSAR TO I2CDXR AND THEN TO I2CXTR ?? or should we directly copy the address to I2CDXR ??
+
+twi_slarw = 1;                        // bit to indicate write
+twi_slarw |= address << 1;
+twi_state = TWI_SND_START;            // send start condition
+I2caRegs.I2CMDR.all = 0x0E20;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
+
+// should the control word be 0X0620 or 0x2620 ?? 
+
+while(I2caRegs.I2CSTR.bit.XRDY == 0); // Wait until the transmit register is ready
+
+I2caRegs.I2CDXR = twi_slarw; // Put the control byte [ address + r/w bit] into transmit register
+
+while(I2caRegs.I2CSTR.bit.ARDY) 
+  { // wait for the transmission to finish
+    if(I2caRegs.I2CSTR.bit.NACK == 1) 
+     { // if we get a NACK from slave during this transmission
+       I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
+       twi_error= TWI_ERROR_ADDR_NACK;
+       //return twi_error;
+       break;
+     }
+  }
+
+if(twi_error==TWI_ERROR_ADDR_NACK )
+    return twi_error;
+
+ 
+//return twi_error;
+ 
+//} while(I2caRegs.I2CSTR.bit.NACK == 1);
+
+//********************* Configuring the master in master-transmitter mode *************************************************
+
+I2caRegs.I2CMDR.bit.FDF = 1; // support free data format
+
+while ( i < length)
 {
-  uint8_t i;
-
-  // ensure data will fit into buffer
-  if(TWI_BUFFER_LENGTH < length){
-    return 1;
-  }
-  // set length and copy data into tx buffer
-  twi_txBufferLength = length;
-  for(i = 0; i < length; ++i){
-    twi_txBuffer[i] = data[i];
-  }
-
-  return 0;
+while(I2caRegs.I2CSTR.bit.XRDY != 1);
+I2caRegs.I2CDXR= twi_masterBuffer[i];
+while(I2caRegs.I2CSTR.bit.ARDY==0);
+   // wait for the transmission to finish
+    if(I2caRegs.I2CSTR.bit.NACK == 1) 
+     { // if we get a NACK from slave during this transmission
+       I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
+       twi_error= TWI_ERROR_DATA_NACK;
+       break;
+     }
+  i++;
 }
+
+// automaticall STOP condition issued when i=length because STP= 1
+
+return twi_error;
+}
+
+//******************************************************************************************************************************
 
 /*
  * Function twi_attachSlaveRxEvent
@@ -250,198 +356,44 @@ void twi_attachSlaveTxEvent( void (*function)(void) )
   twi_onSlaveTransmit = function;
 }
 
-/*
- * Function twi_start
- * Desc     sends start condition
- * Input    tx: 1 indicated tx, 0 indicated rx
- * Output   none
- */
-void twi_start()
-{
-}
+//************************************************************************************************************************************
 
-void twi_send() {
-	USISRL = 0xaa;          // Load data byte
-	USICNT |=  0x08;              // Bit counter = 8, start TX
-}
-/*
- * Function twi_stop
- * Desc     relinquishes bus master status
- * Input    none
- * Output   none
- */
-void twi_stop(void)
-{
-	USICTL0 |= USIOE;
-	USISRL = 0x00;
-	USICNT |=  0x01;
-}
 
 /*
- * Function twi_releaseBus
- * Desc     releases bus control
- * Input    none
- * Output   none
+ * Function twi_transmit
+ * Desc     fills slave tx buffer with data
+ *          must be called in slave tx event callback
+ * Input    data: pointer to byte array
+ *          length: number of bytes in array
+ * Output   1 length too long for buffer
+ *          2 not slave transmitter
+ *          0 ok
  */
-void twi_releaseBus(void)
+uint8_t twi_transmit(const uint8_t* data, uint8_t length)
 {
+  uint8_t i;
 
+  twi_state =  TWI_STX;                     // Slave transmit mode
+  
+  // ensure data will fit into buffer
+  if(TWI_BUFFER_LENGTH < length){
+    return 1;
+  }
+  // set length and copy data into tx buffer
+  twi_txBufferLength = length;
+  for(i = 0; i < length; ++i){
+    twi_txBuffer[i] = data[i];
+  }
+
+  return 0;
 }
 
-#if 0
-//__attribute__((interrupt(USI_VECTOR)))
-void USI_ISR(void)
-{
-	switch(twi_state){
-	// All Master
-	case TWI_SND_START:// sent start condition
-		USISRL = 0x00;                // Generate Start Condition...
-		USICTL0 |= USIGE+USIOE;
-		USICTL0 &= ~USIGE;
-		USISRL = twi_slarw;
-		USICNT = (USICNT & 0xE0) + 0x08;
-		twi_state = TWI_RECV_SLA_ACK;
 
-		break;
-	case TWI_RECV_SLA_ACK: // reveive (N)ACK
 
-		USICTL0 &= ~USIOE; // SDA = input
-		USICNT |= 0x01; // Bit counter=1
-		twi_state = TWI_PROC_SLA_ACK;
-		break;
-	case TWI_PROC_SLA_ACK:
-		if ((USISRL & 0x01) || (twi_masterBufferIndex == twi_masterBufferLength)){
-			if(twi_masterBufferIndex == 0) {
-				//we haven't advance so must be an address NACK
-				twi_error = TWI_ERROR_ADDR_NACK;
-			} else if (twi_masterBufferIndex < twi_masterBufferLength){
-				twi_error = TWI_ERROR_DATA_NACK;
-			}
-			twi_stop();
-			twi_state = TWI_EXIT;
-		} else { // ACK received
-			USICTL0 |= USIOE;
-			USISRL = twi_masterBuffer[twi_masterBufferIndex++];
-			USICNT |=  0x08;
-			twi_state = TWI_RECV_SLA_ACK;
-		}
-		// if receive data set counter to 8 and SDA to in
-		// then go to receive data processing stage
 
-		break;
-	//case TWI_PROC_SLA_DATA:
-	//	if not the last byte,
-	case TWI_EXIT:
-		USISRL = 0x0FF; // USISRL = 1 to drive SDA high
-		USICTL0 |= USIGE; // Transparent latch enabled
-		USICTL0 &= ~(USIGE+USIOE); // Latch/SDA output disabled
-		twi_state = TWI_IDLE; //Idle
-		break;
-	}
 
-	USICTL1 &= ~USIIFG; // !!!Clear pending flag!!!
 
-}
-#endif
 
-void send_start()
-{
-	USISRL = 0x00;                // Generate Start Condition...
-	USICTL0 |= USIGE+USIOE;
-	USICTL0 &= ~USIGE;
-	USISRL = twi_slarw;
-	USICNT = (USICNT & 0xE0) + 0x08;
-}
 
-__attribute__((interrupt(USI_VECTOR)))
-void foo(void)
-{
-	switch(twi_state){
 
-	// Master transmit / receive
-	case TWI_SND_START:
-		send_start();
-		twi_state = TWI_PREP_SLA_ADDR_ACK;
-		break;
-	case TWI_PREP_SLA_ADDR_ACK: // reveive (N)ACK
-		USICTL0 &= ~USIOE; // SDA = input
-		USICNT |= 0x01; // Bit counter=1
-		twi_state = TWI_MT_PROC_ADDR_ACK;
-		break;
-	case TWI_MT_PROC_ADDR_ACK:
-		if (USISRL & 0x01) {
-			twi_error = TWI_ERROR_ADDR_NACK;
-			twi_stop();
-			twi_state = TWI_EXIT;
-			break;
-		}
-		if(twi_slarw & 1)
-			goto mtre;
-		else
-			goto mtpd;
-		// else fall through and process data ACK;
-	case TWI_MT_PREP_DATA_ACK: // reveive (N)ACK
-		USICTL0 &= ~USIOE; // SDA = input
-		USICNT |= 0x01; // Bit counter=1
-		twi_state = TWI_MT_PROC_DATA_ACK;
-		break;
-	case TWI_MT_PROC_DATA_ACK:
-mtpd:
-		if (USISRL & 0x01) {
-			twi_error = TWI_ERROR_DATA_NACK;
-			twi_stop();
-			twi_state = TWI_EXIT;
-			break;
-		}
 
-		if(twi_masterBufferIndex == twi_masterBufferLength) {
-			twi_stop();
-			twi_state = TWI_EXIT;
-			break;
-		}
-
-		USICTL0 |= USIOE;
-		USISRL = twi_masterBuffer[twi_masterBufferIndex++];
-		USICNT |=  0x08;
-		twi_state = TWI_MT_PREP_DATA_ACK;
-		break;
-	// Master receiver
-mtre:
-	case TWI_MR_PREP_DATA_RECV:
-		USICTL0 &= ~USIOE; // SDA input
-		USICNT |=  0x08; // Bit counter = 8, RX data
-		twi_state = TWI_MR_PROC_DATA_RECV;
-		break;
-	case TWI_MR_PROC_DATA_RECV:
-		USICTL0 |= USIOE; // SDA output
-		twi_masterBuffer[twi_masterBufferIndex++] = USISRL;
-		if(twi_masterBufferIndex > twi_masterBufferLength ) {
-			USISRL = 0xFF; // that was the last byte send NACK
-			twi_state = TWI_MR_PREP_STOP;
-		} else {
-			USISRL = 0x00; // keep on receiving and send ACK
-			twi_state = TWI_MR_PREP_DATA_RECV;
-		}
-		USICNT |= 0x01;
-		break;
-	case TWI_MR_PREP_STOP:
-		twi_stop();
-		twi_state = TWI_EXIT;
-		break;
-	// Slave receiver
-	// Slave transmitter
-	// All
-	case TWI_EXIT:
-		USISRL = 0x0FF; // USISRL = 1 to drive SDA high
-		USICTL0 |= USIGE; // Transparent latch enabled
-		USICTL0 &= ~(USIGE+USIOE); // Latch/SDA output disabled
-		twi_state = TWI_IDLE; //Idle
-		break;
-
-	default:
-		break;//should not happen handle error
-	}
-
-	USICTL1 &= ~USIIFG; // !!!Clear pending flag!!!
-
-}

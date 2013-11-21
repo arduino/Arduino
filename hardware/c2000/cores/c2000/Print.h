@@ -31,6 +31,8 @@
 #define OCT 8
 #define BIN 2
 
+typedef unsigned char uint8_t;
+
 class Print
 {
   private:

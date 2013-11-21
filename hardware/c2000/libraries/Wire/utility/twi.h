@@ -29,12 +29,10 @@
 #ifndef twi_h
 #define twi_h
 
-#include <msp430.h>
-
-#ifndef __MSP430_HAS_USI__
-#error "********** USI not available"
+#ifdef __cplusplus
+typedef unsigned char _Bool;
 #endif
-
+#include <F2802x_device.h>
 #include <inttypes.h>
 
 #ifndef TWI_FREQ
@@ -45,6 +43,14 @@
 #define TWI_BUFFER_LENGTH 16
 #endif
 
+
+#define TWI_READY 0
+#define TWI_MRX   1
+#define TWI_MTX   2
+#define TWI_SRX   3
+#define TWI_STX   4
+
+
 #define TWI_SND_START 0
 #define TWI_PREP_SLA_ADDR_ACK 1
 #define TWI_MT_PROC_ADDR_ACK 2
@@ -53,8 +59,18 @@
 #define TWI_MR_PREP_DATA_RECV 5
 #define TWI_MR_PROC_DATA_RECV 6
 #define TWI_MR_PREP_STOP 7
-#define TWI_EXIT 8
-#define TWI_IDLE 9
+
+#define TWI_SL_START 8
+#define TWI_SL_PROC_ADDR 9
+#define TWI_SL_SEND_BYTE 10
+#define TWI_SL_PREP_DATA_ACK 11
+#define TWI_SL_PROC_DATA_ACK 12
+#define TWI_SL_RECV_BYTE 13
+#define TWI_SL_PROC_BYTE 14
+#define TWI_SL_RESET 15
+#define TWI_EXIT 16
+#define TWI_IDLE 17
+
 
 #define TWI_ERRROR_NO_ERROR 0
 #define TWI_ERROR_BUF_TO_LONG 1
@@ -66,8 +82,8 @@
 
 void twi_init(void);
 void twi_setAddress(uint8_t);
-uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t);
-uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t);
+uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t, uint8_t);
+uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t, uint8_t);
 uint8_t twi_transmit(const uint8_t*, uint8_t);
 void twi_attachSlaveRxEvent( void (*)(uint8_t*, int) );
 void twi_attachSlaveTxEvent( void (*)(void) );
