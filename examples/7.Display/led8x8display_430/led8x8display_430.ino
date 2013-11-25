@@ -42,7 +42,7 @@
  *
  * TODO
  * ~~~~
- * - Make some defines to desichain more displays  
+ * - Use hardware SPI and interrupts instead of bit-banging  
  */
 #include "font.h"
  
@@ -57,13 +57,16 @@
 #define DATA 14
 #define DELAYTIME 1 // microseconds to wait after setting pin
 
+#define TILES 6 // number of tiles
+#define SPEED 4 // smaller number is faster 
+
 
 // The string to display:
-const char *str = "}} Hello  World... }}";
+const char *str = "}} Hello  World... good morning! }}";
 
 
 // Image buffer, you can modify the bits and they will be displayed on the 8x8 matrix with the sendImage() function
-unsigned char image[8] = {  0xFF, 0xFF, 0xFF, 0xFF,  0xFF, 0xFF, 0xFF, 0xFF };
+unsigned char image[8*TILES];
 
 
 /**
@@ -72,6 +75,7 @@ unsigned char image[8] = {  0xFF, 0xFF, 0xFF, 0xFF,  0xFF, 0xFF, 0xFF, 0xFF };
 **/
 void setup()
 {
+  memset(image,0xFF,sizeof(image));
   pinMode(BUZ1, OUTPUT);
   pinMode(BUZ2, OUTPUT); // note: also switch
   pinMode(CLOCK, OUTPUT);
@@ -87,24 +91,20 @@ boolean button()
   return digitalRead(PUSH2) == 0;
 }
 
-// send 16 bits to LED tile (bits 0..7 are column, 8..15 are row) 
+// send bits to tiles, each 8x8 tile receives 16 bits to LED tile (bits 0..7 are column, 8..15 are row) 
 void sendData(unsigned short data)
 {
   for(unsigned short i=0; i<16; i++)
   {
-   if ( data & ((unsigned short)1<<i)  )
-     digitalWrite(DATA, 1);
-   else
-    digitalWrite(DATA, 0);
-   delayMicroseconds(DELAYTIME);
-   digitalWrite(CLOCK,1);
-   delayMicroseconds(DELAYTIME);
-   digitalWrite(CLOCK,0);
-  } 
-   delayMicroseconds(DELAYTIME);
-  digitalWrite(LATCH,1);
-   delayMicroseconds(DELAYTIME);
-  digitalWrite(LATCH,0);
+    if ( data & ((unsigned short)1<<i)  )
+      digitalWrite(DATA, 1);
+    else
+      digitalWrite(DATA, 0);
+    nop();
+    digitalWrite(CLOCK,1);
+    nop();
+    digitalWrite(CLOCK,0);
+  }
 }
 
 // scan an image on the LED tile
@@ -112,38 +112,38 @@ void sendData(unsigned short data)
 void sendImage(unsigned char *img)
 {
   unsigned short data;
-  for(int i=0;i<8;i++)
+  for(unsigned int i=0;i<8;i++)
   {
-     data = (1<<8)<<i;
-     data |= *img++;
-     sendData(data);
+    for(unsigned int n=0;n<TILES;n++)
+    {
+      data = (1<<8)<<i;
+      data |= *(img+i+(8*n));
+      sendData(data);
+    }
+     // Latch data 
+  nop();
+  digitalWrite(LATCH,1);
+  nop(); 
+  digitalWrite(LATCH,0);
   }
+
+ 
 }
 
 // Shift alls bytes in the image right and add a byte in the display buffer
 void shiftRight(unsigned char c)
 {
-  image[7] = image[6];
-  image[6] = image[5];
-  image[5] = image[4];
-  image[4] = image[3];
-  image[3] = image[2];
-  image[2] = image[1];
-  image[1] = image[0];
+  for(unsigned short i=((8*TILES)-1); i>1; i--)
+    image[i] = image[i-1];
   image[0] = c;
 }
 
 // Shift all bytes in the image buffer left and add byte in the display buffer
 void shiftLeft(unsigned char c)
 {
-  image[0] = image[1];
-  image[1] = image[2];
-  image[2] = image[3];
-  image[3] = image[4];
-  image[4] = image[5];
-  image[5] = image[6];
-  image[6] = image[7];
-  image[7] = c;
+  for(unsigned short i=0; i<((8*TILES)-1); i++)
+    image[i] = image[i+1];
+  image[(8*TILES)-1] = c;
 }
 
 #define ABS(a) ( (a<0 ? -a : a) )
@@ -174,7 +174,7 @@ void loop()
   while(1)
   {
     sendImage(image);
-    if ( a++ > 20 ) // shift in new line
+    if ( a++ > SPEED ) // shift in new line
     {  
       a=0;      
       now = analogRead(AIN)/2;
@@ -193,14 +193,14 @@ void loop()
 // Sinewave example
 void sineWave()
 {
-  static const unsigned char wave[] = {4,5,6,6,7,7,7,6,6,5,4,2,1,1,0,0,0,1,1,2,4};
+  static const unsigned char wave[] = {4,5,6,6,7,7,7,6,6,5,4,3,2,1,1,0,0,0,1,1,2,3,4};
   unsigned char j = 0, q;
-  for(int i=0; i<100;i++)
+  for(int i=0; i<60;i++)
   {
     j = i % sizeof(wave);
-    tone(300+200*wave[j]); 
+    tone(600+200*wave[j]); 
     shiftLeft(1 << wave[j]);
-    for(q=0; q<20; q++) sendImage(image);
+    for(q=0; q<2; q++) sendImage(image);
   }
 }
 
@@ -212,7 +212,7 @@ void showText(const char *txt)
   while(1)
   {
     sendImage(image);
-    if ( a++ > 60 ) // shift in new line
+    if ( a++ > SPEED ) // shift in new line
     {  
       a=0;
       if ( j < 5 ) // copy character
@@ -221,7 +221,7 @@ void showText(const char *txt)
       {
         shiftLeft(0); // blank line
         sendImage(image);
-        tone(500);
+      // tone(500);
       }
       if ( ++j > 5 ) // next character
       {
