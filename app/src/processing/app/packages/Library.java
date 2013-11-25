@@ -1,7 +1,6 @@
 package processing.app.packages;
 
-import processing.app.helpers.FileUtils;
-import processing.app.helpers.PreferencesMap;
+import static processing.app.helpers.StringUtils.wildcardMatch;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +9,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static processing.app.helpers.StringUtils.wildcardMatch;
+import processing.app.helpers.FileUtils;
+import processing.app.helpers.PreferencesMap;
 
 public class Library {
 
@@ -31,17 +31,12 @@ public class Library {
       .asList(new String[] { "architectures", "author", "core-dependencies",
           "dependencies", "email", "name", "paragraph", "sentence", "url",
           "version" });
-  private static final List<String> OPTIONAL_FOLDERS = Arrays
-      .asList(new String[] { "arch", "examples", "extras", "src" });
-  private static final List<String> OPTIONAL_FILES = Arrays
-      .asList(new String[] { "keywords.txt", "library.properties" });
-
 
   /**
    * Scans inside a folder and create a Library object out of it. Automatically
    * detects pre-1.5 libraries. Automatically fills metadata from
    * library.properties file if found.
-   *
+   * 
    * @param libFolder
    * @return
    */
@@ -74,18 +69,14 @@ public class Library {
     if (!srcFolder.exists() || !srcFolder.isDirectory())
       throw new IOException("Missing 'src' folder");
 
-    // 3. check if root folder contains prohibited stuff
+    // 3. Warn if root folder contains development leftovers
     for (File file : libFolder.listFiles()) {
       if (file.isDirectory()) {
         if (FileUtils.isSCCSOrHiddenFile(file)) {
-          System.out.println("WARNING: Ignoring spurious " + file.getName() + " folder in '" + properties.get("name") + "' library");
+          System.out.println("WARNING: Spurious " + file.getName() +
+              " folder in '" + properties.get("name") + "' library");
           continue;
         }
-        if (!OPTIONAL_FOLDERS.contains(file.getName()))
-          throw new IOException("Invalid folder '" + file.getName() + "'.");
-      } else {
-        if (!OPTIONAL_FILES.contains(file.getName()))
-          throw new IOException("Invalid file '" + file.getName() + "'.");
       }
     }
 
