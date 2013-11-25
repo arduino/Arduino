@@ -1824,7 +1824,7 @@ SysCtlDelay(uint32_t ui32Count)
           "    bx      lr");
 }
 #endif
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 void __attribute__((naked))
 SysCtlDelay(uint32_t ui32Count)
 {
