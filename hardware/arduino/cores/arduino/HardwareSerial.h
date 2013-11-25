@@ -94,6 +94,10 @@ class HardwareSerial : public Stream
 #define SERIAL_7O2 0x3C
 #define SERIAL_8O2 0x3E
 
+#define SERIAL_ERROR_FRAME   0x01
+#define SERIAL_ERROR_OVERRUN 0x02
+#define SERIAL_ERROR_PARITY  0x04
+
 #if defined(UBRRH) || defined(UBRR0H)
   extern HardwareSerial Serial;
 #elif defined(USBCON)

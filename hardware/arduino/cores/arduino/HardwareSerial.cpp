@@ -69,22 +69,27 @@ struct ring_buffer
 #if defined(USBCON)
   ring_buffer rx_buffer = { { 0 }, 0, 0};
   ring_buffer tx_buffer = { { 0 }, 0, 0};
+  uint8_t errorBits = 0;
 #endif
 #if defined(UBRRH) || defined(UBRR0H)
   ring_buffer rx_buffer  =  { { 0 }, 0, 0 };
   ring_buffer tx_buffer  =  { { 0 }, 0, 0 };
+  uint8_t errorBits = 0;
 #endif
 #if defined(UBRR1H)
   ring_buffer rx_buffer1  =  { { 0 }, 0, 0 };
   ring_buffer tx_buffer1  =  { { 0 }, 0, 0 };
+  uint8_t errorBits1 = 0;
 #endif
 #if defined(UBRR2H)
   ring_buffer rx_buffer2  =  { { 0 }, 0, 0 };
   ring_buffer tx_buffer2  =  { { 0 }, 0, 0 };
+  uint8_t errorBits2 = 0;
 #endif
 #if defined(UBRR3H)
   ring_buffer rx_buffer3  =  { { 0 }, 0, 0 };
   ring_buffer tx_buffer3  =  { { 0 }, 0, 0 };
+  uint8_t errorBits3 = 0;
 #endif
 
 inline void store_char(unsigned char c, ring_buffer *buffer)
@@ -110,6 +115,8 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #else
   void serialEvent() __attribute__((weak));
   void serialEvent() {}
+  void serialError(int) __attribute__((weak));
+  void serialError(int) {}
   #define serialEvent_implemented
 #if defined(USART_RX_vect)
   ISR(USART_RX_vect)
@@ -120,18 +127,32 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #endif
   {
   #if defined(UDR0)
-    if (bit_is_clear(UCSR0A, UPE0)) {
+    if (bit_is_set(UCSR0A, FE0)) {
+      errorBits |= SERIAL_ERROR_FRAME;
       unsigned char c = UDR0;
-      store_char(c, &rx_buffer);
+    } else if (bit_is_set(UCSR0A, DOR0)) {
+      errorBits |= SERIAL_ERROR_OVERRUN;
+      unsigned char c = UDR0;
+    } else if (bit_is_set(UCSR0A, UPE0)) {
+      errorBits |= SERIAL_ERROR_PARITY;
+      unsigned char c = UDR0;
     } else {
       unsigned char c = UDR0;
+      store_char(c, &rx_buffer);
     };
   #elif defined(UDR)
-    if (bit_is_clear(UCSRA, PE)) {
+    if (bit_is_set(UCSRA, FE)) {
+      errorBits |= SERIAL_ERROR_FRAME;
       unsigned char c = UDR;
-      store_char(c, &rx_buffer);
+    } else if (bit_is_set(UCSRA, DOR)) {
+      errorBits |= SERIAL_ERROR_OVERRUN;
+      unsigned char c = UDR;
+    } else if (bit_is_set(UCSRA, PE)) {
+      errorBits |= SERIAL_ERROR_PARITY;
+      unsigned char c = UDR;
     } else {
       unsigned char c = UDR;
+      store_char(c, &rx_buffer);
     };
   #else
     #error UDR not defined
@@ -143,14 +164,23 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #if defined(USART1_RX_vect)
   void serialEvent1() __attribute__((weak));
   void serialEvent1() {}
+  void serialError1(int) __attribute__((weak));
+  void serialError1(int) {}
   #define serialEvent1_implemented
   ISR(USART1_RX_vect)
   {
-    if (bit_is_clear(UCSR1A, UPE1)) {
+    if (bit_is_set(UCSR1A, FE1)) {
+      errorBits1 |= SERIAL_ERROR_FRAME;
       unsigned char c = UDR1;
-      store_char(c, &rx_buffer1);
+    } else if (bit_is_set(UCSR1A, DOR1)) {
+      errorBits1 |= SERIAL_ERROR_OVERRUN;
+      unsigned char c = UDR1;
+    } else if (bit_is_set(UCSR1A, UPE1)) {
+      errorBits1 |= SERIAL_ERROR_PARITY;
+      unsigned char c = UDR1;
     } else {
       unsigned char c = UDR1;
+      store_char(c, &rx_buffer1);
     };
   }
 #endif
@@ -158,14 +188,23 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #if defined(USART2_RX_vect) && defined(UDR2)
   void serialEvent2() __attribute__((weak));
   void serialEvent2() {}
+  void serialError2(int) __attribute__((weak));
+  void serialError2(int) {}
   #define serialEvent2_implemented
   ISR(USART2_RX_vect)
   {
-    if (bit_is_clear(UCSR2A, UPE2)) {
+    if (bit_is_set(UCSR2A, FE2)) {
+      errorBits2 |= SERIAL_ERROR_FRAME;
       unsigned char c = UDR2;
-      store_char(c, &rx_buffer2);
+    } else if (bit_is_set(UCSR2A, DOR2)) {
+      errorBits2 |= SERIAL_ERROR_OVERRUN;
+      unsigned char c = UDR2;
+    } else if (bit_is_set(UCSR2A, UPE2)) {
+      errorBits2 |= SERIAL_ERROR_PARITY;
+      unsigned char c = UDR2;
     } else {
       unsigned char c = UDR2;
+      store_char(c, &rx_buffer2);
     };
   }
 #endif
@@ -173,14 +212,23 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #if defined(USART3_RX_vect) && defined(UDR3)
   void serialEvent3() __attribute__((weak));
   void serialEvent3() {}
+  void serialError3(int) __attribute__((weak));
+  void serialError3(int) {}
   #define serialEvent3_implemented
   ISR(USART3_RX_vect)
   {
-    if (bit_is_clear(UCSR3A, UPE3)) {
+    if (bit_is_set(UCSR3A, FE3)) {
+      errorBits3 |= SERIAL_ERROR_FRAME;
       unsigned char c = UDR3;
-      store_char(c, &rx_buffer3);
+    } else if (bit_is_set(UCSR3A, DOR3)) {
+      errorBits3 |= SERIAL_ERROR_OVERRUN;
+      unsigned char c = UDR3;
+    } else if (bit_is_set(UCSR3A, UPE3)) {
+      errorBits3 |= SERIAL_ERROR_PARITY;
+      unsigned char c = UDR3;
     } else {
       unsigned char c = UDR3;
+      store_char(c, &rx_buffer3);
     };
   }
 #endif
@@ -188,15 +236,19 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 void serialEventRun(void)
 {
 #ifdef serialEvent_implemented
+  if (errorBits) { serialError(errorBits); errorBits = 0; }
   if (Serial.available()) serialEvent();
 #endif
 #ifdef serialEvent1_implemented
+  if (errorBits1) { serialError1(errorBits1); errorBits1 = 0; }
   if (Serial1.available()) serialEvent1();
 #endif
 #ifdef serialEvent2_implemented
+  if (errorBits2) { serialError2(errorBits2); errorBits2 = 0; }
   if (Serial2.available()) serialEvent2();
 #endif
 #ifdef serialEvent3_implemented
+  if (errorBits3) { serialError3(errorBits3); errorBits3 = 0; }
   if (Serial3.available()) serialEvent3();
 #endif
 }
