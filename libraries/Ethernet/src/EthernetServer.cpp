@@ -83,7 +83,9 @@ size_t EthernetServer::write(const uint8_t *buffer, size_t size)
 
     if (EthernetClass::_server_port[sock] == _port &&
       client.status() == SnSR::ESTABLISHED) {
-      n += client.write(buffer, size);
+      size_t res = client.write(buffer, size);
+      if (res > n)
+	n = res;
     }
   }
   
