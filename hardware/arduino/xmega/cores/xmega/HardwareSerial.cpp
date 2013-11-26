@@ -196,6 +196,15 @@ HardwareSerial::operator bool() {
   return true;
 }
 
+#define SERIAL_DEFINE(name, usart_port, port_nr) \
+ring_buffer name##rx_buffer = { { 0 }, 0, 0 }; \
+ISR(USART##usart_port##port_nr##_RXC_vect) \
+{ \
+  unsigned char c = USART##usart_port##port_nr.DATA; \
+  store_char(c, &name##rx_buffer); \
+} \
+HardwareSerial name (&name##rx_buffer, &USART##usart_port##port_nr, &PORT##usart_port, (port_nr ? PIN6_bm : PIN2_bm), (port_nr ? PIN7_bm : PIN3_bm));
+
 #include "serial_init.inc"
 
 // Assume that USART always start from C0 and goes up
