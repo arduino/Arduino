@@ -73,7 +73,7 @@ HardwareSerial::HardwareSerial(
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void HardwareSerial::begin(long baud)
+void HardwareSerial::begin(unsigned long baud)
 {
   uint16_t baud_setting;
   uint8_t bscale = 0;
@@ -114,6 +114,14 @@ void HardwareSerial::begin(long baud)
 
   // Char size, parity and stop bits: 8N1
   _usart->CTRLC = USART_CHSIZE_8BIT_gc | USART_PMODE_DISABLED_gc;
+}
+
+void HardwareSerial::begin(unsigned long baud, byte config)
+{
+  begin(baud);
+
+  // Set char size, parity and stop bits
+  _usart->CTRLC = config;
 }
 
 void HardwareSerial::end()
@@ -190,28 +198,74 @@ HardwareSerial::operator bool() {
 
 #include "serial_init.inc"
 
-#if 1
-// TODO: Move to diag.{c h}
-
-extern "C" void diag_ln() {
-    Serial2.println();
-}
-
-extern "C" void diag(const char* str) {
-    Serial2.print(str);
-}
-
-extern "C" void diagln(const char* str) {
-    diag(str);
-    diag_ln();
-}
-
-extern "C" void diagN(long n) {
-    Serial2.print(n);
-}
-
-extern "C" void diagN2(long n, int base) {
-    Serial2.print(n,base);
-}
-
+// Assume that USART always start from C0 and goes up
+// At this stage we are only interested in the amount of USARTs
+#if defined(USARTC0_RXC_vect)
+  void serialEvent() __attribute__((weak));
+  void serialEvent() {}
+  #define serialEvent_implemented
 #endif
+#if defined(USARTC1_RXC_vect)
+  void serialEvent1() __attribute__((weak));
+  void serialEvent1() {}
+  #define serialEvent1_implemented
+#endif
+#if defined(USARTD0_RXC_vect)
+  void serialEvent2() __attribute__((weak));
+  void serialEvent2() {}
+  #define serialEvent2_implemented
+#endif
+#if defined(USARTD1_RXC_vect)
+  void serialEvent3() __attribute__((weak));
+  void serialEvent3() {}
+  #define serialEvent3_implemented
+#endif
+#if defined(USARTE0_RXC_vect)
+  void serialEvent4() __attribute__((weak));
+  void serialEvent4() {}
+  #define serialEvent4_implemented
+#endif
+#if defined(USARTE1_RXC_vect)
+  void serialEvent5() __attribute__((weak));
+  void serialEvent5() {}
+  #define serialEvent5_implemented
+#endif
+#if defined(USARTF0_RXC_vect)
+  void serialEvent6() __attribute__((weak));
+  void serialEvent6() {}
+  #define serialEvent6_implemented
+#endif
+#if defined(USARTF1_RXC_vect)
+  void serialEvent7() __attribute__((weak));
+  void serialEvent7() {}
+  #define serialEvent7_implemented
+#endif
+
+
+void serialEventRun(void)
+{
+#ifdef serialEvent_implemented
+  if (Serial.available()) serialEvent();
+#endif
+#ifdef serialEvent1_implemented
+  if (Serial1.available()) serialEvent1();
+#endif
+#ifdef serialEvent2_implemented
+  if (Serial2.available()) serialEvent2();
+#endif
+#ifdef serialEvent3_implemented
+  if (Serial3.available()) serialEvent3();
+#endif
+#ifdef serialEvent4_implemented
+  if (Serial4.available()) serialEvent4();
+#endif
+#ifdef serialEvent5_implemented
+  if (Serial5.available()) serialEvent5();
+#endif
+#ifdef serialEvent6_implemented
+  if (Serial6.available()) serialEvent6();
+#endif
+#ifdef serialEvent7_implemented
+  if (Serial7.available()) serialEvent7();
+#endif
+}
