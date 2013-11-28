@@ -31,6 +31,7 @@ import processing.app.debug.*;
 import processing.app.debug.Compiler;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.FileUtils;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
 import processing.app.preproc.*;
@@ -97,6 +98,12 @@ public class Sketch {
   private LibraryList importedLibraries;
 
   /**
+   * File inside the build directory that contains the build options
+   * used for the last build.
+   */
+  static final String BUILD_PREFS_FILE = "buildprefs.txt";
+
+  /**
    * path is location of the main .pde file, because this is also
    * simplest to use when opening the file from the finder/explorer.
    */
@@ -151,7 +158,7 @@ public class Sketch {
    * Another exception is when an external editor is in use,
    * in which case the load happens each time "run" is hit.
    */
-  protected void load() {
+  protected void load() throws IOException {
     codeFolder = new File(folder, "code");
     dataFolder = new File(folder, "data");
 
@@ -193,6 +200,10 @@ public class Sketch {
         }
       }
     }
+
+    if (codeCount == 0)
+      throw new IOException(_("No valid code files found"));
+
     // Remove any code that wasn't proper
     code = (SketchCode[]) PApplet.subset(code, 0, codeCount);
 
@@ -1178,12 +1189,12 @@ public class Sketch {
   /**
    * Cleanup temporary files used during a build/run.
    */
-  protected void cleanup() {
+  protected void cleanup(boolean force) {
     // if the java runtime is holding onto any files in the build dir, we
     // won't be able to delete them, so we need to force a gc here
     System.gc();
 
-    if (deleteFilesOnNextBuild) {
+    if (force) {
       // delete the entire directory and all contents
       // when we know something changed and all objects
       // need to be recompiled, or if the board does not
@@ -1195,8 +1206,6 @@ public class Sketch {
       // work because the build dir won't exist at startup, so the classloader
       // will ignore the fact that that dir is in the CLASSPATH in run.sh
       Base.removeDescendants(tempBuildFolder);
-
-      deleteFilesOnNextBuild = false;
     } else {
       // delete only stale source files, from the previously
       // compiled sketch.  This allows multiple windows to be
@@ -1247,18 +1256,11 @@ public class Sketch {
    */
   //protected String compile() throws RunnerException {
 
-  // called when any setting changes that requires all files to be recompiled
-  public static void buildSettingChanged() {
-    deleteFilesOnNextBuild = true;
-  }
-
-  private static boolean deleteFilesOnNextBuild = true;
-
   /**
    * When running from the editor, take care of preparations before running
    * the build.
    */
-  public void prepare() {
+  public void prepare() throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -1282,12 +1284,6 @@ public class Sketch {
       load();
     }
 
-    // in case there were any boogers left behind
-    // do this here instead of after exiting, since the exit
-    // can happen so many different ways.. and this will be
-    // better connected to the dataFolder stuff below.
-    cleanup();
-
 //    // handle preprocessing the main file's code
 //    return build(tempBuildFolder.getAbsolutePath());
   }
@@ -1308,11 +1304,11 @@ public class Sketch {
    * @param buildPath Location to copy all the .java files
    * @return null if compilation failed, main class name if not
    */
-  public String preprocess(String buildPath) throws RunnerException {
-    return preprocess(buildPath, new PdePreprocessor());
+  public void preprocess(String buildPath) throws RunnerException {
+    preprocess(buildPath, new PdePreprocessor());
   }
 
-  public String preprocess(String buildPath, PdePreprocessor preprocessor) throws RunnerException {
+  public void preprocess(String buildPath, PdePreprocessor preprocessor) throws RunnerException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -1368,18 +1364,12 @@ public class Sketch {
     // 2. run preproc on that code using the sugg class name
     //    to create a single .java file and write to buildpath
 
-    String primaryClassName = null;
-
     try {
       // Output file
       File streamFile = new File(buildPath, name + ".cpp");
       FileOutputStream outputStream = new FileOutputStream(streamFile);
       preprocessor.write(outputStream);
       outputStream.close();
-
-      // store this for the compiler and the runtime
-      primaryClassName = name + ".cpp";
-
     } catch (FileNotFoundException fnfe) {
       fnfe.printStackTrace();
       String msg = _("Build folder disappeared or could not be written");
@@ -1428,7 +1418,6 @@ public class Sketch {
         sc.addPreprocOffset(headerOffset);
       }
     }
-    return primaryClassName;
   }
 
 
@@ -1521,6 +1510,46 @@ public class Sketch {
     return build(tempBuildFolder.getAbsolutePath(), verbose);
   }
 
+  /**
+   * Check if the build preferences used on the previous build in
+   * buildPath match the ones given.
+   */
+  protected boolean buildPreferencesChanged(File buildPrefsFile, String newBuildPrefs) {
+    // No previous build, so no match
+    if (!buildPrefsFile.exists())
+      return true;
+
+    String previousPrefs;
+    try {
+      previousPrefs = FileUtils.readFileToString(buildPrefsFile);
+    } catch (IOException e) {
+      System.err.println(_("Could not read prevous build preferences file, rebuilding all"));
+      return true;
+    }
+
+    if (!previousPrefs.equals(newBuildPrefs)) {
+      System.out.println(_("Build options changed, rebuilding all"));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Returns the build preferences of the given compiler as a string.
+   * Only includes build-specific preferences, to make sure unrelated
+   * preferences don't cause a rebuild (in particular preferences that
+   * change on every start, like last.ide.xxx.daterun). */
+  protected String buildPrefsString(Compiler compiler) {
+    PreferencesMap buildPrefs = compiler.getBuildPreferences();
+    String res = "";
+    SortedSet<String> treeSet = new TreeSet<String>(buildPrefs.keySet());
+    for (String k : treeSet) {
+      if (k.startsWith("build.") || k.startsWith("compiler.") || k.startsWith("recipes."))
+        res += k + " = " + buildPrefs.get(k) + "\n";
+    }
+    return res;
+  }
 
   /**
    * Preprocess and compile all the code for this sketch.
@@ -1532,14 +1561,33 @@ public class Sketch {
    * @return null if compilation failed, main class name if not
    */
   public String build(String buildPath, boolean verbose) throws RunnerException {
+    String primaryClassName = name + ".cpp";
+    Compiler compiler = new Compiler(this, buildPath, primaryClassName);
+    File buildPrefsFile = new File(buildPath, BUILD_PREFS_FILE);
+    String newBuildPrefs = buildPrefsString(compiler);
+
+    // Do a forced cleanup (throw everything away) if the previous
+    // build settings do not match the previous ones
+    boolean prefsChanged = buildPreferencesChanged(buildPrefsFile, newBuildPrefs);
+    cleanup(prefsChanged);
+
+    if (prefsChanged) {
+      try {
+        PrintWriter out = new PrintWriter(buildPrefsFile);
+        out.print(newBuildPrefs);
+        out.close();
+      } catch (IOException e) {
+        System.err.println(_("Could not write build preferences file"));
+      }
+    }
+
     // run the preprocessor
     editor.status.progressUpdate(20);
-    String primaryClassName = preprocess(buildPath);
+    preprocess(buildPath);
 
     // compile the program. errors will happen as a RunnerException
     // that will bubble up to whomever called build().
-    Compiler compiler = new Compiler();
-    if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
+    if (compiler.compile(verbose)) {
       size(compiler.getBuildPreferences());
       return primaryClassName;
     }

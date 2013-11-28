@@ -318,13 +318,14 @@ public class Base {
     // Setup board-dependent variables.
     onBoardOrPortChange();
 
-    boolean opened = false;
     boolean doUpload = false;
     boolean doVerify = false;
     boolean doVerbose = false;
     String selectBoard = null;
     String selectPort = null;
     String currentDirectory = System.getProperty("user.dir");
+    List<String> filenames = new LinkedList<String>();
+
     // Check if any files were passed in on the command line
     for (int i = 0; i < args.length; i++) {
       if (args[i].equals("--upload")) {
@@ -343,61 +344,81 @@ public class Base {
         i++;
         if (i < args.length)
           selectBoard = args[i];
+	else
+	  showError(null, "Argument required for --board", 3);
         continue;
       }
       if (args[i].equals("--port")) {
         i++;
         if (i < args.length)
           selectPort = args[i];
+	else
+	  showError(null, "Argument required for --port", 3);
         continue;
       }
       if (args[i].equals("--curdir")) {
         i++;
         if (i < args.length)
           currentDirectory = args[i];
+	else
+	  showError(null, "Argument required for --curdir", 3);
         continue;
       }
-      String path = args[i];
+      if (args[i].equals("--pref")) {
+        i++;
+        if (i < args.length)
+          processPrefArgument(args[i]);
+	else
+	  showError(null, "Argument required for --pref", 3);
+        continue;
+      }
+      if (args[i].startsWith("--"))
+        showError(null, I18n.format(_("unknown option: {0}"), args[i]), 3);
+
+      filenames.add(args[i]);
+    }
+
+    if ((doUpload || doVerify) && filenames.size() != 1)
+        showError(null, _("Must specify exactly one sketch file"), 3);
+
+    for (String path: filenames) {
       // Fix a problem with systems that use a non-ASCII languages. Paths are
       // being passed in with 8.3 syntax, which makes the sketch loader code
       // unhappy, since the sketch folder naming doesn't match up correctly.
       // http://dev.processing.org/bugs/show_bug.cgi?id=1089
       if (isWindows()) {
         try {
-          File file = new File(args[i]);
+          File file = new File(path);
           path = file.getCanonicalPath();
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
+
       if (!new File(path).isAbsolute()) {
         path = new File(currentDirectory, path).getAbsolutePath();
       }
-      if (handleOpen(path) != null) {
-        opened = true;
+
+      if (handleOpen(path, nextEditorLocation(), !(doUpload || doVerify)) == null) {
+        String mess = I18n.format(_("Failed to open sketch: \"{0}\""), path);
+        // Open failure is fatal in upload/verify mode
+        if (doUpload || doVerify)
+          showError(null, mess, 2);
+        else
+          showWarning(null, mess, null);
       }
     }
 
     if (doUpload || doVerify) {
-      if (!opened) {
-        System.out.println(_("Can't open source sketch!"));
-        System.exit(2);
-      }
-
       // Set verbosity for command line build
       Preferences.set("build.verbose", "" + doVerbose);
       Preferences.set("upload.verbose", "" + doVerbose);
 
       Editor editor = editors.get(0);
 
-      // Wait until editor is initialized
-      while (!editor.status.isInitialized())
-        Thread.sleep(10);
-
       // Do board selection if requested
-      if (selectBoard != null)
-        selectBoard(selectBoard);
-
+      processBoardArgument(selectBoard);
+    
       if (doUpload) {
         // Build and upload
         if (selectPort != null)
@@ -418,11 +439,10 @@ public class Base {
     }
 
     // Check if there were previously opened sketches to be restored
-    if (restoreSketches())
-      opened = true;
+    restoreSketches();
 
     // Create a new empty window (will be replaced with any files to be opened)
-    if (!opened) {
+    if (editors.isEmpty()) {
       handleNew();
     }
 
@@ -430,6 +450,62 @@ public class Base {
     if (Preferences.getBoolean("update.check")) {
       new UpdateCheck(this);
     }
+  }
+
+  protected void processBoardArgument(String selectBoard) {
+    // No board selected? Nothing to do
+    if (selectBoard == null)
+        return;
+
+    String[] split = selectBoard.split(":", 4);
+
+    if (split.length < 3) {
+      showError(null, I18n.format(_("{0}: Invalid board name, it should be of the form \"package:arch:board\" or \"package:arch:board:options\""), selectBoard), 3);
+    }
+
+    TargetPackage targetPackage = getTargetPackage(split[0]);
+    if (targetPackage == null) {
+      showError(null, I18n.format(_("{0}: Unknown package"), split[0]), 3);
+    }
+
+    TargetPlatform targetPlatform = targetPackage.get(split[1]);
+    if (targetPlatform == null) {
+      showError(null, I18n.format(_("{0}: Unknown architecture"), split[1]), 3);
+    }
+
+    TargetBoard targetBoard = targetPlatform.getBoard(split[2]);
+    if (targetBoard == null) {
+      showError(null, I18n.format(_("{0}: Unknown board"), split[2]), 3);
+    }
+
+    selectBoard(targetBoard);
+
+    if (split.length > 3) {
+      String[] options = split[3].split(",");
+      for (String option : options) {
+        String[] keyValue = option.split("=", 2);
+
+        if (keyValue.length != 2)
+            showError(null, I18n.format(_("{0}: Invalid option, should be of the form \"name=value\""), option, targetBoard.getId()), 3);
+        String key = keyValue[0].trim();
+        String value = keyValue[1].trim();
+
+        if (!targetBoard.hasMenu(key))
+          showError(null, I18n.format(_("{0}: Invalid option for board \"{1}\""), key, targetBoard.getId()), 3);
+        if (targetBoard.getMenuLabel(key, value) == null)
+          showError(null, I18n.format(_("{0}: Invalid option for \"{1}\" option for board \"{2}\""), value, key, targetBoard.getId()), 3);
+
+        Preferences.set("custom_" + key, targetBoard.getId() + "_" + value);
+      }
+    }
+  }
+
+  protected void processPrefArgument(String arg) {
+    String[] split = arg.split("=", 2);
+    if (split.length != 2 || split[0].isEmpty())
+      showError(null, I18n.format(_("{0}: Invalid argument to --pref, should be of the form \"pref=value\""), arg), 3);
+
+    Preferences.set(split[0], split[1]);
   }
 
   public Map<String, Map<String, Object>> getBoardsViaNetwork() {
@@ -494,7 +570,7 @@ public class Base {
         location = nextEditorLocation();
       }
       // If file did not exist, null will be returned for the Editor
-      if (handleOpen(path, location) != null) {
+      if (handleOpen(path, location, true) != null) {
         opened++;
       }
     }
@@ -808,11 +884,11 @@ public class Base {
    * @throws Exception 
    */
   public Editor handleOpen(String path) throws Exception {
-    return handleOpen(path, nextEditorLocation());
+    return handleOpen(path, nextEditorLocation(), true);
   }
 
 
-  protected Editor handleOpen(String path, int[] location) throws Exception {
+  protected Editor handleOpen(String path, int[] location, boolean showEditor) throws Exception {
 //    System.err.println("entering handleOpen " + path);
 
     File file = new File(path);
@@ -880,7 +956,8 @@ public class Base {
 
     // now that we're ready, show the window
     // (don't do earlier, cuz we might move it based on a window being closed)
-    editor.setVisible(true);
+    if (showEditor)
+	    editor.setVisible(true);
 
 //    System.err.println("exiting handleOpen");
 
@@ -1347,10 +1424,10 @@ public class Base {
     @SuppressWarnings("serial")
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
-        selectBoard((String) getValue("b"));
+        selectBoard((TargetBoard)getValue("b"));
       }
     };
-    action.putValue("b", packageName + ":" + platformName + ":" + boardId);
+    action.putValue("b", board);
 
     JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
 
@@ -1373,23 +1450,11 @@ public class Base {
           @SuppressWarnings("serial")
           Action subAction = new AbstractAction(_(boardCustomMenu.get(customMenuOption))) {
             public void actionPerformed(ActionEvent e) {
-              Preferences.set("target_package", (String) getValue("package"));
-              Preferences.set("target_platform", (String) getValue("platform"));
-              Preferences.set("board", (String) getValue("board"));
-              Preferences.set("custom_" + menuId, getValue("board") + "_" + getValue("custom_menu_option"));
-
-              filterVisibilityOfSubsequentBoardMenus((String) getValue("board"), currentIndex);
-
-              onBoardOrPortChange();
-              Sketch.buildSettingChanged();
-              rebuildImportMenu(Editor.importMenu);
-              rebuildExamplesMenu(Editor.examplesMenu);
+              Preferences.set("custom_" + menuId, ((TargetBoard)getValue("board")).getId() + "_" + getValue("custom_menu_option"));
             }
           };
-          subAction.putValue("board", boardId);
+          subAction.putValue("board", board);
           subAction.putValue("custom_menu_option", customMenuOption);
-          subAction.putValue("package", packageName);
-          subAction.putValue("platform", platformName);
 
           if (!buttonGroupsMap.containsKey(menuId)) {
             buttonGroupsMap.put(menuId, new ButtonGroup());
@@ -1410,12 +1475,12 @@ public class Base {
     return item;
   }
 
-  private static void filterVisibilityOfSubsequentBoardMenus(String boardID, int fromIndex) {
+  private static void filterVisibilityOfSubsequentBoardMenus(TargetBoard board, int fromIndex) {
     for (int i = fromIndex; i < Editor.boardsMenus.size(); i++) {
       JMenu menu = Editor.boardsMenus.get(i);
       for (int m = 0; m < menu.getItemCount(); m++) {
         JMenuItem menuItem = menu.getItem(m);
-        menuItem.setVisible(menuItem.getAction().getValue("board").equals(boardID));
+        menuItem.setVisible(menuItem.getAction().getValue("board").equals(board));
       }
       menu.setVisible(ifThereAreVisibleItemsOn(menu));
 
@@ -1488,25 +1553,17 @@ public class Base {
   }
 
 
-  private void selectBoard(String selectBoard) {
-    String[] split = selectBoard.split(":");
-    Preferences.set("target_package", split[0]);
-    Preferences.set("target_platform", split[1]);
-    String boardId = split[2];
-    Preferences.set("board", boardId);
+  private void selectBoard(TargetBoard targetBoard) {
+    TargetPlatform targetPlatform = targetBoard.getContainerPlatform();
+    TargetPackage targetPackage = targetPlatform.getContainerPackage();
 
-    if (split.length > 3) {
-      String[] customsParts = split[3].split(",");
-      for (String customParts : customsParts) {
-        String[] keyValue = customParts.split("=");
-        Preferences.set("custom_" + keyValue[0].trim(), boardId + "_" + keyValue[1].trim());
-      }
-    }
+    Preferences.set("target_package", targetPackage.getId());
+    Preferences.set("target_platform", targetPlatform.getId());
+    Preferences.set("board", targetBoard.getId());
 
-    filterVisibilityOfSubsequentBoardMenus(boardId, 1);
+    filterVisibilityOfSubsequentBoardMenus(targetBoard, 1);
 
     onBoardOrPortChange();
-    Sketch.buildSettingChanged();
     rebuildImportMenu(Editor.importMenu);
     rebuildExamplesMenu(Editor.examplesMenu);
   }
@@ -2008,6 +2065,15 @@ public class Base {
     return path;
   }
 
+  /**
+   * Returns a specific TargetPackage
+   *
+   * @param packageName
+   * @return
+   */
+  static public TargetPackage getTargetPackage(String packageName) {
+    return packages.get(packageName);
+  }
 
   /**
    * Returns the currently selected TargetPlatform.
@@ -2352,12 +2418,20 @@ public class Base {
   }
 
 
+  static public void showError(String title, String message, Throwable e) {
+    showError(title, message, e, 1);
+  }
+
+  static public void showError(String title, String message, int exit_code) {
+    showError(title, message, null, exit_code);
+  }
+
   /**
    * Show an error message that's actually fatal to the program.
    * This is an error that can't be recovered. Use showWarning()
    * for errors that allow P5 to continue running.
    */
-  static public void showError(String title, String message, Throwable e) {
+  static public void showError(String title, String message, Throwable e, int exit_code) {
     if (title == null) title = _("Error");
 
     if (commandLine) {
@@ -2368,7 +2442,7 @@ public class Base {
                                     JOptionPane.ERROR_MESSAGE);
     }
     if (e != null) e.printStackTrace();
-    System.exit(1);
+    System.exit(exit_code);
   }
 
 
