@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2013-09-10 11:16+0000\n"
+"PO-Revision-Date: 2013-11-20 10:43+0000\n"
 "Last-Translator: Valentin Laskov <laskov@festa.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/projects/p/arduino-ide-15/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +103,7 @@ msgstr "Възникна грешка при опита за корекция к
 msgid ""
 "An unknown error occurred while trying to load\n"
 "platform-specific code for your machine."
-msgstr "Възникна непозната грешка при опит за зареждане\nна специфичен за платформата код за машината Ви."
+msgstr "Възникна непозната грешка при опит да се зареди\nспецифичен за платформата код на машината Ви."
 
 #: Preferences.java:85
 msgid "Arabic"
@@ -143,13 +143,13 @@ msgstr "Arduino AVR платки"
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your settings."
-msgstr "Ардуино не може да работи, понеже не може да\nсъздаде папка за съхранение на Вашите настройки."
+msgstr "Ардуино не може да тръгне, понеже не може да\nсъздаде папка за съхранение на Вашите настройки."
 
 #: Base.java:1889
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr "Ардуино не може да работи, понеже не може да\nсъздаде папка за съхранение на Вашия скицник."
+msgstr "Ардуино не може да тръгне, понеже не може да\nсъздаде папка за съхранение на Вашия скицник."
 
 #: Base.java:240
 msgid ""
@@ -354,9 +354,9 @@ msgstr "Копиране"
 msgid "Copy as HTML"
 msgstr "Копиране като HTML"
 
-#: ../../../processing/app/EditorStatus.java:456
-msgid "Copy error"
-msgstr "Грешка при копиране"
+#: ../../../processing/app/EditorStatus.java:455
+msgid "Copy error messages"
+msgstr ""
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -529,6 +529,10 @@ msgstr "Устройството не отговаря, проверете да�
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Отхвърли всички промени и презареди скицата?"
+
+#: ../../../processing/app/Preferences.java:438
+msgid "Display line numbers"
+msgstr ""
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -1350,6 +1354,10 @@ msgstr "Папката със скици изчезна"
 msgid "Sketchbook location:"
 msgstr "Местоположение на скицника:"
 
+#: ../../../processing/app/Base.java:785
+msgid "Sketches (*.ino, *.pde)"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
 msgstr "Словенски"
@@ -1410,7 +1418,7 @@ msgstr "Класът Udp беше преименуван на EthernetUdp."
 
 #: Base.java:192
 msgid "The error message follows, however Arduino should run fine."
-msgstr "Следва текстът на грешката, все-пак Ардуино ще работи добре."
+msgstr "Следва текстът на грешката, но все-пак Ардуино би трябвало да работи добре."
 
 #: Editor.java:2147
 #, java-format
@@ -1444,7 +1452,7 @@ msgid ""
 "The selected sketch no longer exists.\n"
 "You may need to restart Arduino to update\n"
 "the sketchbook menu."
-msgstr "Избраната скица вече не съществува.\nМоже да е нужно да рестартирате Ардуино за да\nсе обнови менюто на скицника."
+msgstr "Избраната скица вече не съществува.\nМоже да се наложи да рестартирате Ардуино, за да\nсе обнови менюто на скицника."
 
 #: Base.java:1430
 #, java-format
@@ -1590,6 +1598,16 @@ msgstr "Търси маркираното"
 #: Preferences.java:409
 msgid "Use external editor"
 msgstr "Ползвай външен редактор"
+
+#: ../../../processing/app/debug/Compiler.java:94
+#, java-format
+msgid "Using library {0} in folder: {1} {2}"
+msgstr ""
+
+#: ../../../processing/app/debug/Compiler.java:320
+#, java-format
+msgid "Using previously compiled file: {0}"
+msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
@@ -1773,7 +1791,7 @@ msgstr "разрешено във Файл > Предпочитания."
 
 #: Base.java:2090
 msgid "environment"
-msgstr "обкръжение"
+msgstr "среда"
 
 #: Editor.java:1108
 msgid "http://arduino.cc/"
