@@ -27,34 +27,63 @@
 
 #include "Stream.h"
 
-struct ring_buffer;
+// Define constants and variables for buffering incoming serial data.  We're
+// using a ring buffer (I think), in which head is the index of the location
+// to which to write the next incoming character and tail is the index of the
+// location from which to read.
+#if (RAMEND < 1000)
+  #define SERIAL_BUFFER_SIZE 16
+#else
+  #define SERIAL_BUFFER_SIZE 64
+#endif
 
 class HardwareSerial : public Stream
 {
-  private:
-    ring_buffer *_rx_buffer;
-    ring_buffer *_tx_buffer;
+  public:
+    // Describes the blocking behaviour for writing (note that flushing
+    // will _always_ block until the transmission is complete).
+    enum blocking_behaviour {
+      // Never block, discard data when buffer is full
+      SERIAL_BLOCK_NEVER = 0,
+      // Block only when interrupts are enabled
+      SERIAL_BLOCK_INTERRUPTIBLE = 1 << 0,
+      // Block only when interrupts are disabled
+      SERIAL_BLOCK_NON_INTERRUPTIBLE = 1 << 1,
+      // Always block, never discard data
+      SERIAL_BLOCK_ALWAYS = SERIAL_BLOCK_INTERRUPTIBLE | SERIAL_BLOCK_NON_INTERRUPTIBLE,
+    };
+  protected:
     volatile uint8_t *_ubrrh;
     volatile uint8_t *_ubrrl;
     volatile uint8_t *_ucsra;
     volatile uint8_t *_ucsrb;
     volatile uint8_t *_ucsrc;
     volatile uint8_t *_udr;
-    uint8_t _rxen;
-    uint8_t _txen;
-    uint8_t _rxcie;
-    uint8_t _udrie;
-    uint8_t _u2x;
-    bool transmitting;
+    // Has any byte been written to the UART since begin()
+    bool _written;
+    blocking_behaviour _blocking;
+
+    volatile uint8_t _rx_buffer_head;
+    volatile uint8_t _rx_buffer_tail;
+    volatile uint8_t _tx_buffer_head;
+    volatile uint8_t _tx_buffer_tail;
+
+    // Don't put any members after these buffers, since only the first
+    // 32 bytes of this struct can be accessed quickly using the ldd
+    // instruction.
+    unsigned char _rx_buffer[SERIAL_BUFFER_SIZE];
+    unsigned char _tx_buffer[SERIAL_BUFFER_SIZE];
+
   public:
-    HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
+    HardwareSerial(
       volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
       volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
-      volatile uint8_t *ucsrc, volatile uint8_t *udr,
-      uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x);
+      volatile uint8_t *ucsrc, volatile uint8_t *udr);
     void begin(unsigned long);
     void begin(unsigned long, uint8_t);
     void end();
+    void setBlocking(blocking_behaviour when);
+    blocking_behaviour getBlocking();
     virtual int available(void);
     virtual int peek(void);
     virtual int read(void);
@@ -66,6 +95,10 @@ class HardwareSerial : public Stream
     inline size_t write(int n) { return write((uint8_t)n); }
     using Print::write; // pull in write(str) and write(buf, size) from Print
     operator bool();
+
+    // Interrupt handlers - Not intended to be called externally
+    void _rx_complete_irq(void);
+    void _tx_udr_empty_irq(void);
 };
 
 // Define config for Serial.begin(baud, config);

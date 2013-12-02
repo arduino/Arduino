@@ -25,6 +25,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+#include <util/atomic.h>
+#include <avr/cpufunc.h>
 #include "Arduino.h"
 #include "wiring_private.h"
 
@@ -34,72 +36,50 @@
 
 #include "HardwareSerial.h"
 
-/*
- * on ATmega8, the uart and its bits are not numbered, so there is no "TXC0"
- * definition.
- */
+// Ensure that the various bit positions we use are available with a 0
+// postfix, so we can always use the values for UART0 for all UARTs. The
+// alternative, passing the various values for each UART to the
+// HardwareSerial constructor also works, but makes the code bigger and
+// slower.
 #if !defined(TXC0)
 #if defined(TXC)
+// On ATmega8, the uart and its bits are not numbered, so there is no TXC0 etc.
 #define TXC0 TXC
+#define RXEN0 RXEN
+#define TXEN0 TXEN
+#define RXCIE0 RXCIE
+#define UDRIE0 UDRIE
+#define U2X0 U2X
+#define UPE0 UPE
 #elif defined(TXC1)
 // Some devices have uart1 but no uart0
 #define TXC0 TXC1
+#define RXEN0 RXEN1
+#define TXEN0 TXEN1
+#define RXCIE0 RXCIE1
+#define UDRIE0 UDRIE1
+#define U2X0 U2X1
+#define UPE0 UPE1
 #else
-#error TXC0 not definable in HardwareSerial.h
+#error No UART found in HardwareSerial.cpp
 #endif
-#endif
+#endif // !defined TXC0
 
-// Define constants and variables for buffering incoming serial data.  We're
-// using a ring buffer (I think), in which head is the index of the location
-// to which to write the next incoming character and tail is the index of the
-// location from which to read.
-#if (RAMEND < 1000)
-  #define SERIAL_BUFFER_SIZE 16
-#else
-  #define SERIAL_BUFFER_SIZE 64
+// Check at compiletime that it is really ok to use the bit positions of
+// UART0 for the other UARTs as well, in case these values ever get
+// changed for future hardware.
+#if defined(TXC1) && (TXC1 != TXC0 || RXEN1 != RXEN0 || RXCIE1 != RXCIE0 || \
+		      UDRIE1 != UDRIE0 || U2X1 != U2X0 || UPE1 != UPE0)
+#error "Not all bit positions for UART1 are the same as for UART0"
 #endif
-
-struct ring_buffer
-{
-  unsigned char buffer[SERIAL_BUFFER_SIZE];
-  volatile unsigned int head;
-  volatile unsigned int tail;
-};
-
-#if defined(USBCON)
-  ring_buffer rx_buffer = { { 0 }, 0, 0};
-  ring_buffer tx_buffer = { { 0 }, 0, 0};
+#if defined(TXC2) && (TXC2 != TXC0 || RXEN2 != RXEN0 || RXCIE2 != RXCIE0 || \
+		      UDRIE2 != UDRIE0 || U2X2 != U2X0 || UPE2 != UPE0)
+#error "Not all bit positions for UART2 are the same as for UART0"
 #endif
-#if defined(UBRRH) || defined(UBRR0H)
-  ring_buffer rx_buffer  =  { { 0 }, 0, 0 };
-  ring_buffer tx_buffer  =  { { 0 }, 0, 0 };
+#if defined(TXC3) && (TXC3 != TXC0 || RXEN3 != RXEN0 || RXCIE3 != RXCIE0 || \
+		      UDRIE3 != UDRIE0 || U3X3 != U3X0 || UPE3 != UPE0)
+#error "Not all bit positions for UART3 are the same as for UART0"
 #endif
-#if defined(UBRR1H)
-  ring_buffer rx_buffer1  =  { { 0 }, 0, 0 };
-  ring_buffer tx_buffer1  =  { { 0 }, 0, 0 };
-#endif
-#if defined(UBRR2H)
-  ring_buffer rx_buffer2  =  { { 0 }, 0, 0 };
-  ring_buffer tx_buffer2  =  { { 0 }, 0, 0 };
-#endif
-#if defined(UBRR3H)
-  ring_buffer rx_buffer3  =  { { 0 }, 0, 0 };
-  ring_buffer tx_buffer3  =  { { 0 }, 0, 0 };
-#endif
-
-inline void store_char(unsigned char c, ring_buffer *buffer)
-{
-  int i = (unsigned int)(buffer->head + 1) % SERIAL_BUFFER_SIZE;
-
-  // if we should be storing the received character into the location
-  // just before the tail (meaning that the head would advance to the
-  // current location of the tail), we're about to overflow the buffer
-  // and so we don't write the character or advance the head.
-  if (i != buffer->tail) {
-    buffer->buffer[buffer->head] = c;
-    buffer->head = i;
-  }
-}
 
 #if !defined(USART0_RX_vect) && defined(USART1_RX_vect)
 // do nothing - on the 32u4 the first USART is USART1
@@ -119,23 +99,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   ISR(USART_RXC_vect) // ATmega8
 #endif
   {
-  #if defined(UDR0)
-    if (bit_is_clear(UCSR0A, UPE0)) {
-      unsigned char c = UDR0;
-      store_char(c, &rx_buffer);
-    } else {
-      unsigned char c = UDR0;
-    };
-  #elif defined(UDR)
-    if (bit_is_clear(UCSRA, PE)) {
-      unsigned char c = UDR;
-      store_char(c, &rx_buffer);
-    } else {
-      unsigned char c = UDR;
-    };
-  #else
-    #error UDR not defined
-  #endif
+    Serial._rx_complete_irq();
   }
 #endif
 #endif
@@ -146,12 +110,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #define serialEvent1_implemented
   ISR(USART1_RX_vect)
   {
-    if (bit_is_clear(UCSR1A, UPE1)) {
-      unsigned char c = UDR1;
-      store_char(c, &rx_buffer1);
-    } else {
-      unsigned char c = UDR1;
-    };
+    Serial1._rx_complete_irq();
   }
 #endif
 
@@ -161,12 +120,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #define serialEvent2_implemented
   ISR(USART2_RX_vect)
   {
-    if (bit_is_clear(UCSR2A, UPE2)) {
-      unsigned char c = UDR2;
-      store_char(c, &rx_buffer2);
-    } else {
-      unsigned char c = UDR2;
-    };
+    Serial2._rx_complete_irq();
   }
 #endif
 
@@ -176,12 +130,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #define serialEvent3_implemented
   ISR(USART3_RX_vect)
   {
-    if (bit_is_clear(UCSR3A, UPE3)) {
-      unsigned char c = UDR3;
-      store_char(c, &rx_buffer3);
-    } else {
-      unsigned char c = UDR3;
-    };
+    Serial3._rx_complete_irq();
   }
 #endif
 
@@ -218,27 +167,7 @@ ISR(USART0_UDRE_vect)
 ISR(USART_UDRE_vect)
 #endif
 {
-  if (tx_buffer.head == tx_buffer.tail) {
-	// Buffer empty, so disable interrupts
-#if defined(UCSR0B)
-    cbi(UCSR0B, UDRIE0);
-#else
-    cbi(UCSRB, UDRIE);
-#endif
-  }
-  else {
-    // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer.buffer[tx_buffer.tail];
-    tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
-	
-  #if defined(UDR0)
-    UDR0 = c;
-  #elif defined(UDR)
-    UDR = c;
-  #else
-    #error UDR not defined
-  #endif
-  }
+  Serial._tx_udr_empty_irq();
 }
 #endif
 #endif
@@ -246,156 +175,116 @@ ISR(USART_UDRE_vect)
 #ifdef USART1_UDRE_vect
 ISR(USART1_UDRE_vect)
 {
-  if (tx_buffer1.head == tx_buffer1.tail) {
-	// Buffer empty, so disable interrupts
-    cbi(UCSR1B, UDRIE1);
-  }
-  else {
-    // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer1.buffer[tx_buffer1.tail];
-    tx_buffer1.tail = (tx_buffer1.tail + 1) % SERIAL_BUFFER_SIZE;
-	
-    UDR1 = c;
-  }
+  Serial1._tx_udr_empty_irq();
 }
 #endif
 
 #ifdef USART2_UDRE_vect
 ISR(USART2_UDRE_vect)
 {
-  if (tx_buffer2.head == tx_buffer2.tail) {
-	// Buffer empty, so disable interrupts
-    cbi(UCSR2B, UDRIE2);
-  }
-  else {
-    // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer2.buffer[tx_buffer2.tail];
-    tx_buffer2.tail = (tx_buffer2.tail + 1) % SERIAL_BUFFER_SIZE;
-	
-    UDR2 = c;
-  }
+  Serial2._tx_udr_empty_irq();
 }
 #endif
 
 #ifdef USART3_UDRE_vect
 ISR(USART3_UDRE_vect)
 {
-  if (tx_buffer3.head == tx_buffer3.tail) {
-	// Buffer empty, so disable interrupts
-    cbi(UCSR3B, UDRIE3);
-  }
-  else {
-    // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer3.buffer[tx_buffer3.tail];
-    tx_buffer3.tail = (tx_buffer3.tail + 1) % SERIAL_BUFFER_SIZE;
-	
-    UDR3 = c;
-  }
+  Serial3._tx_udr_empty_irq();
 }
 #endif
 
 
+// Actual interrupt handlers //////////////////////////////////////////////////////////////
+
+void HardwareSerial::_rx_complete_irq(void)
+{
+  if (bit_is_clear(*_ucsra, UPE0)) {
+    // No Parity error, read byte and store it in the buffer if there is
+    // room
+    unsigned char c = *_udr;
+    int i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+
+    // if we should be storing the received character into the location
+    // just before the tail (meaning that the head would advance to the
+    // current location of the tail), we're about to overflow the buffer
+    // and so we don't write the character or advance the head.
+    if (i != _rx_buffer_tail) {
+      _rx_buffer[_rx_buffer_head] = c;
+      _rx_buffer_head = i;
+    }
+  } else {
+    // Parity error, read byte but discard it
+    unsigned char c = *_udr;
+  };
+}
+
+void HardwareSerial::_tx_udr_empty_irq(void)
+{
+  // If interrupts are enabled, there must be more data in the output
+  // buffer. Send the next byte
+  unsigned char c = _tx_buffer[_tx_buffer_tail];
+  _tx_buffer_tail = (_tx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+
+  *_udr = c;
+
+  // clear the TXC bit -- "can be cleared by writing a one to its bit
+  // location". This makes sure flush() won't return until the bytes
+  // actually got written
+  sbi(*_ucsra, TXC0);
+
+  if (_tx_buffer_head == _tx_buffer_tail) {
+    // Buffer empty, so disable interrupts
+    cbi(*_ucsrb, UDRIE0);
+  }
+}
+
 // Constructors ////////////////////////////////////////////////////////////////
 
-HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
+HardwareSerial::HardwareSerial(
   volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
   volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
-  volatile uint8_t *ucsrc, volatile uint8_t *udr,
-  uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x)
+  volatile uint8_t *ucsrc, volatile uint8_t *udr)
 {
-  _rx_buffer = rx_buffer;
-  _tx_buffer = tx_buffer;
+  _tx_buffer_head = _tx_buffer_tail = 0;
+  _rx_buffer_head = _rx_buffer_tail = 0;
   _ubrrh = ubrrh;
   _ubrrl = ubrrl;
   _ucsra = ucsra;
   _ucsrb = ucsrb;
   _ucsrc = ucsrc;
   _udr = udr;
-  _rxen = rxen;
-  _txen = txen;
-  _rxcie = rxcie;
-  _udrie = udrie;
-  _u2x = u2x;
+  _blocking = SERIAL_BLOCK_ALWAYS;
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
 
 void HardwareSerial::begin(unsigned long baud)
 {
-  uint16_t baud_setting;
-  bool use_u2x = true;
-
-#if F_CPU == 16000000UL
-  // hardcoded exception for compatibility with the bootloader shipped
-  // with the Duemilanove and previous boards and the firmware on the 8U2
-  // on the Uno and Mega 2560.
-  if (baud == 57600) {
-    use_u2x = false;
-  }
-#endif
-
-try_again:
-  
-  if (use_u2x) {
-    *_ucsra = 1 << _u2x;
-    baud_setting = (F_CPU / 4 / baud - 1) / 2;
-  } else {
-    *_ucsra = 0;
-    baud_setting = (F_CPU / 8 / baud - 1) / 2;
-  }
-  
-  if ((baud_setting > 4095) && use_u2x)
-  {
-    use_u2x = false;
-    goto try_again;
-  }
-
-  // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
-  *_ubrrh = baud_setting >> 8;
-  *_ubrrl = baud_setting;
-
-  transmitting = false;
-
-  sbi(*_ucsrb, _rxen);
-  sbi(*_ucsrb, _txen);
-  sbi(*_ucsrb, _rxcie);
-  cbi(*_ucsrb, _udrie);
+  begin(baud, SERIAL_8N1);
 }
 
 void HardwareSerial::begin(unsigned long baud, byte config)
 {
-  uint16_t baud_setting;
-  uint8_t current_config;
-  bool use_u2x = true;
+  // Try u2x mode first
+  uint16_t baud_setting = (F_CPU / 4 / baud - 1) / 2;
+  *_ucsra = 1 << U2X0;
 
-#if F_CPU == 16000000UL
-  // hardcoded exception for compatibility with the bootloader shipped
-  // with the Duemilanove and previous boards and the firmware on the 8U2
-  // on the Uno and Mega 2560.
-  if (baud == 57600) {
-    use_u2x = false;
-  }
-#endif
-
-try_again:
-  
-  if (use_u2x) {
-    *_ucsra = 1 << _u2x;
-    baud_setting = (F_CPU / 4 / baud - 1) / 2;
-  } else {
+  // hardcoded exception for 57600 for compatibility with the bootloader
+  // shipped with the Duemilanove and previous boards and the firmware
+  // on the 8U2 on the Uno and Mega 2560. Also, The baud_setting cannot
+  // be > 4095, so switch back to non-u2x mode if the baud rate is too
+  // low.
+  if (((F_CPU == 16000000UL) && (baud == 57600)) || (baud_setting >4095))
+  {
     *_ucsra = 0;
     baud_setting = (F_CPU / 8 / baud - 1) / 2;
-  }
-  
-  if ((baud_setting > 4095) && use_u2x)
-  {
-    use_u2x = false;
-    goto try_again;
   }
 
   // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
+
+  _written = false;
 
   //set the data bits, parity, and stop bits
 #if defined(__AVR_ATmega8__)
@@ -403,79 +292,133 @@ try_again:
 #endif
   *_ucsrc = config;
   
-  sbi(*_ucsrb, _rxen);
-  sbi(*_ucsrb, _txen);
-  sbi(*_ucsrb, _rxcie);
-  cbi(*_ucsrb, _udrie);
+  sbi(*_ucsrb, RXEN0);
+  sbi(*_ucsrb, TXEN0);
+  sbi(*_ucsrb, RXCIE0);
+  cbi(*_ucsrb, UDRIE0);
 }
 
 void HardwareSerial::end()
 {
   // wait for transmission of outgoing data
-  while (_tx_buffer->head != _tx_buffer->tail)
+  while (_tx_buffer_head != _tx_buffer_tail)
     ;
 
-  cbi(*_ucsrb, _rxen);
-  cbi(*_ucsrb, _txen);
-  cbi(*_ucsrb, _rxcie);  
-  cbi(*_ucsrb, _udrie);
+  cbi(*_ucsrb, RXEN0);
+  cbi(*_ucsrb, TXEN0);
+  cbi(*_ucsrb, RXCIE0);
+  cbi(*_ucsrb, UDRIE0);
   
   // clear any received data
-  _rx_buffer->head = _rx_buffer->tail;
+  _rx_buffer_head = _rx_buffer_tail;
+}
+
+void HardwareSerial::setBlocking(blocking_behaviour when)
+{
+  _blocking = when;
+}
+
+HardwareSerial::blocking_behaviour HardwareSerial::getBlocking()
+{
+  return _blocking;
 }
 
 int HardwareSerial::available(void)
 {
-  return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % SERIAL_BUFFER_SIZE;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_BUFFER_SIZE;
+  }
 }
 
 int HardwareSerial::peek(void)
 {
-  if (_rx_buffer->head == _rx_buffer->tail) {
-    return -1;
-  } else {
-    return _rx_buffer->buffer[_rx_buffer->tail];
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    if (_rx_buffer_head == _rx_buffer_tail) {
+      return -1;
+    } else {
+      return _rx_buffer[_rx_buffer_tail];
+    }
   }
 }
 
 int HardwareSerial::read(void)
 {
-  // if the head isn't ahead of the tail, we don't have any characters
-  if (_rx_buffer->head == _rx_buffer->tail) {
-    return -1;
-  } else {
-    unsigned char c = _rx_buffer->buffer[_rx_buffer->tail];
-    _rx_buffer->tail = (unsigned int)(_rx_buffer->tail + 1) % SERIAL_BUFFER_SIZE;
-    return c;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    // if the head isn't ahead of the tail, we don't have any characters
+    if (_rx_buffer_head == _rx_buffer_tail) {
+      return -1;
+    } else {
+      unsigned char c = _rx_buffer[_rx_buffer_tail];
+      _rx_buffer_tail = (unsigned int)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+      return c;
+    }
   }
 }
 
 void HardwareSerial::flush()
 {
-  // UDR is kept full while the buffer is not empty, so TXC triggers when EMPTY && SENT
-  while (transmitting && ! (*_ucsra & _BV(TXC0)));
-  transmitting = false;
+  // If we have never written a byte, no need to flush. This special
+  // case is needed since there is no way to force the TXC (transmit
+  // complete) bit to 1 during initialization
+  if (!_written)
+    return;
+
+  while (bit_is_set(*_ucsrb, UDRIE0) || bit_is_clear(*_ucsra, TXC0)) {
+    if (bit_is_clear(SREG, SREG_I) && bit_is_set(*_ucsrb, UDRIE0))
+	// Interrupts are globally disabled, but the DR empty
+	// interrupt should be enabled, so poll the DR empty flag to
+	// prevent deadlock
+	if (bit_is_set(*_ucsra, UDRE0))
+	  _tx_udr_empty_irq();
+  }
+  // If we get here, nothing is queued anymore (DRIE is disabled) and
+  // the hardware finished tranmission (TXC is set).
 }
 
 size_t HardwareSerial::write(uint8_t c)
 {
-  int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
-	
-  // If the output buffer is full, there's nothing for it other than to 
-  // wait for the interrupt handler to empty it a bit
-  // ???: return 0 here instead?
-  while (i == _tx_buffer->tail)
-    ;
-	
-  _tx_buffer->buffer[_tx_buffer->head] = c;
-  _tx_buffer->head = i;
-	
-  sbi(*_ucsrb, _udrie);
-  // clear the TXC bit -- "can be cleared by writing a one to its bit location"
-  transmitting = true;
-  sbi(*_ucsra, TXC0);
-  
-  return 1;
+  bool interrupts_enabled = bit_is_set(SREG, SREG_I);
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    int i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+
+    // If the output buffer is full, there's nothing for it other than to 
+    // wait for the interrupt handler to empty it a bit
+    while (i == _tx_buffer_tail) {
+      if (!interrupts_enabled) {
+	if (!(_blocking & SERIAL_BLOCK_NON_INTERRUPTIBLE))
+	  return 0;
+	// Interrupts were disabled at the start of this function, so we
+	// can't just enable them (that would allow other interrupts to
+	// trigger as well!). We'll have to poll the data register empty
+	// flag ourselves. If it is set, pretend an interrupt has happened
+	// and call the handler to free up space for us.
+	if(bit_is_set(*_ucsra, UDRE0))
+	  _tx_udr_empty_irq();
+      } else {
+	if (!(_blocking & SERIAL_BLOCK_INTERRUPTIBLE))
+	  return 0;
+	// Interrupts were enabled, so we can temporarily enable them so
+	// our tx interrupt can fire and free up some space. Note that we
+	// can't just use the UDRE polling approach here instead of
+	// enabling interrupts, since that would prevent other
+	// interrupts from triggering while we wait for room.
+	NONATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+	  _NOP(); // Any pending interrupts will trigger here
+	}
+	// Recalculate i, since other interrupt handlers might have
+	// written to our buffer
+	i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+      }
+    }
+
+    _tx_buffer[_tx_buffer_head] = c;
+    _tx_buffer_head = i;
+
+    sbi(*_ucsrb, UDRIE0);
+    _written = true;
+
+    return 1;
+  }
 }
 
 HardwareSerial::operator bool() {
@@ -485,9 +428,9 @@ HardwareSerial::operator bool() {
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
 #if defined(UBRRH) && defined(UBRRL)
-  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UCSRC, &UDR, RXEN, TXEN, RXCIE, UDRIE, U2X);
+  HardwareSerial Serial(&UBRRH, &UBRRL, &UCSRA, &UCSRB, &UCSRC, &UDR);
 #elif defined(UBRR0H) && defined(UBRR0L)
-  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UCSR0C, &UDR0, RXEN0, TXEN0, RXCIE0, UDRIE0, U2X0);
+  HardwareSerial Serial(&UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UCSR0C, &UDR0);
 #elif defined(USBCON)
   // do nothing - Serial object and buffers are initialized in CDC code
 #else
@@ -495,13 +438,13 @@ HardwareSerial::operator bool() {
 #endif
 
 #if defined(UBRR1H)
-  HardwareSerial Serial1(&rx_buffer1, &tx_buffer1, &UBRR1H, &UBRR1L, &UCSR1A, &UCSR1B, &UCSR1C, &UDR1, RXEN1, TXEN1, RXCIE1, UDRIE1, U2X1);
+  HardwareSerial Serial1(&UBRR1H, &UBRR1L, &UCSR1A, &UCSR1B, &UCSR1C, &UDR1);
 #endif
 #if defined(UBRR2H)
-  HardwareSerial Serial2(&rx_buffer2, &tx_buffer2, &UBRR2H, &UBRR2L, &UCSR2A, &UCSR2B, &UCSR2C, &UDR2, RXEN2, TXEN2, RXCIE2, UDRIE2, U2X2);
+  HardwareSerial Serial2(&UBRR2H, &UBRR2L, &UCSR2A, &UCSR2B, &UCSR2C, &UDR2);
 #endif
 #if defined(UBRR3H)
-  HardwareSerial Serial3(&rx_buffer3, &tx_buffer3, &UBRR3H, &UBRR3L, &UCSR3A, &UCSR3B, &UCSR3C, &UDR3, RXEN3, TXEN3, RXCIE3, UDRIE3, U2X3);
+  HardwareSerial Serial3(&UBRR3H, &UBRR3L, &UCSR3A, &UCSR3B, &UCSR3C, &UDR3);
 #endif
 
 #endif // whole file
