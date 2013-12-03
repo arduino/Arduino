@@ -1360,9 +1360,19 @@ public class Base {
     Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
     
     for (String target : list) {
-      File subfolder = new File(folder, target);
-      targetsTable.put(target, new Target(target, subfolder));
+    	
+    	//Check to ensure compiler is installed before displaying C2000 Support
+    	if(target.equals("c2000")){
+    		if(Base.getC2000BasePath() != ""){
+      	      File subfolder = new File(folder, target);
+      	      targetsTable.put(target, new Target(target, subfolder));
+    		}
+    	}else{
+    	      File subfolder = new File(folder, target);
+    	      targetsTable.put(target, new Target(target, subfolder));
+    	}
     }
+    
   }
 
 
@@ -1661,7 +1671,8 @@ public class Base {
   static public String getC2000BasePath() {
 	    String path = getHardwarePath() + File.separator + "tools" +
 	                  File.separator + "c2000" + File.separator + "bin" + File.separator;
-	    if (Base.isLinux() && !(new File(path)).exists()) {
+	    
+	    if (Base.isLinux() || !(new File(path)).exists()) {
 	      return "";  // use msp430-gcc and mspdebug in PATH instead of platform version
 	    }
 	    return path;
