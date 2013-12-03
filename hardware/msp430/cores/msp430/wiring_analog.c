@@ -281,7 +281,7 @@ uint16_t analogRead(uint8_t pin)
 
 #if defined(__MSP430_HAS_ADC10__)
     ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
-    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5;   // ADC10OSC as ADC10CLK (~5MHz) / 5
+    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_4;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     ADC10CTL0 = analog_reference |          // set analog reference
             ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
     ADC10CTL1 |= (pin << 12);               // select channel
@@ -296,7 +296,7 @@ uint16_t analogRead(uint8_t pin)
 #endif
 #if defined(__MSP430_HAS_ADC10_B__)
     ADC10CTL0 &= ~ADC10ENC;                 // disable ADC
-    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_5;   // ADC10OSC as ADC10CLK (~5MHz) / 5
+    ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_4;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
     REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
     ADC10MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
@@ -316,15 +316,15 @@ uint16_t analogRead(uint8_t pin)
 #endif
 #if defined(__MSP430_HAS_ADC12_PLUS__)
     ADC12CTL0 &= ~ADC12ENC;                 // disable ADC
-    ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_5;   // ADC12OSC as ADC12CLK (~5MHz) / 5
+    ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_4;   // ADC12OSC as ADC12CLK (~5MHz) / 5
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
-	if (pin == 10) {// if Temp Sensor 
-      REFCTL0 = (INTERNAL1V5 & REF_MASK);   // Set reference to internal 1.5V
-      ADC12MCTL0 = pin | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
-	} else {
-      REFCTL0 = (analog_reference & REF_MASK); // Set reference using masking off the SREF bits. See Energia.h.
-      ADC12MCTL0 = pin | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
-	}
+    if (pin == TEMPSENSOR) {// if Temp Sensor 
+        REFCTL0 = (INTERNAL1V5 & REF_MASK);                  // Set reference to internal 1.5V
+        ADC12MCTL0 = pin | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
+    } else {
+        REFCTL0 = (analog_reference & REF_MASK);                  // Set reference using masking off the SREF bits. See Energia.h.
+        ADC12MCTL0 = pin | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
+    }
     ADC12CTL0 = ADC12ON | ADC12SHT0_4;      // turn ADC ON; sample + hold @ 64 × ADC10CLKs
     ADC12CTL1 |= ADC12SHP;                  // ADCCLK = MODOSC; sampling timer
     ADC12CTL2 |= ADC12RES1;                 // 12-bit resolution
