@@ -473,9 +473,6 @@
     <chmod perm="755" file="linux/work/hardware/tools/adk2tool" />
     <chmod perm="755" file="linux/work/hardware/tools/adk2install" />
 
-    <copy todir="linux/work" file="linux/dist/arduino" />
-    <chmod perm="755" file="linux/work/arduino" />
-
     <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="linux" usetimestamp="true" />
     <unzip src="linux/libastylej-2.03.zip" dest="linux" overwrite="true"/>
     <copy file="linux/libastylej/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
@@ -499,10 +496,6 @@
   </target>
 
   <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
-    <copy tofile="linux/work/hardware/tools/avrdude" file="linux/dist/tools/avrdude64" overwrite="true" />
-
-    <chmod perm="755" file="linux/work/hardware/tools/avrdude" />
-
     <!-- Unzip ARM tools -->
     <antcall target="unzip-arm-toolchain">
       <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
