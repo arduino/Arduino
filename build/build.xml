@@ -26,6 +26,10 @@
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <!-- Define these to false skip installing the toolchains and native
+       libraries. E.g., run ant -Dinstall_toolchains=false  -->
+  <property name="install_toolchains" value="true" />
+  <property name="install_native_libs" value="true" />
 
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
@@ -227,7 +231,7 @@
     </antcall>
   </target>
 
-  <target name="macosx-toolchains">
+  <target name="macosx-toolchains" if="${install_toolchains}">
     <exec executable="unzip">
       <arg value="-q" />
       <arg value="-n" />
@@ -260,7 +264,7 @@
     </delete>
   </target>
 
-  <target name="macosx-native-libs">
+  <target name="macosx-native-libs" if="${install_native_libs}">
     <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="macosx" usetimestamp="true" />
     <unzip src="macosx/libastylej-2.03.zip" dest="macosx" overwrite="true"/>
     <copy file="macosx/libastylej/libastylej.jnilib" todir="macosx/work/Arduino.app/Contents/Resources/Java/lib/" />
@@ -463,7 +467,7 @@
     <chmod perm="755" file="linux/work/arduino" />
   </target>
 
-  <target name="linux-native-libs">
+  <target name="linux-native-libs" if="${install_native_libs}">
     <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="linux" usetimestamp="true" />
     <unzip src="linux/libastylej-2.03.zip" dest="linux" overwrite="true"/>
     <copy file="linux/libastylej/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
@@ -476,7 +480,7 @@
   <target name="linux64-build" depends="linux-build, linux64-toolchains, linux-native-libs"
 	  description="Build linux (64-bit) version" />
 
-  <target name="linux-toolchains">
+  <target name="linux-toolchains" if="${install_toolchains}">
     <mkdir dir="linux/work/hardware/tools" />
     <copy file="linux/dist/tools/adk2install" todir="linux/work/hardware/tools" />
     <copy file="linux/dist/tools/adk2tool" todir="linux/work/hardware/tools" />
@@ -490,7 +494,7 @@
     <chmod perm="755" file="linux/work/hardware/tools/adk2install" />
   </target>
 
-  <target name="linux32-toolchains" depends="linux-toolchains">
+  <target name="linux32-toolchains" depends="linux-toolchains" if="${install_toolchains}">
     <!-- Unzip ARM tools -->
     <antcall target="unzip-arm-toolchain">
       <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
@@ -505,7 +509,7 @@
     </exec>
   </target>
 
-  <target name="linux64-toolchains" depends="linux-toolchains">
+  <target name="linux64-toolchains" depends="linux-toolchains" if="${install_toolchains}">
     <!-- Unzip ARM tools -->
     <antcall target="unzip-arm-toolchain">
       <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
@@ -689,13 +693,13 @@
     </chmod>
   </target>
 
-  <target name="windows-native-libs">
+  <target name="windows-native-libs" if="${install_native_libs}">
     <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="windows" usetimestamp="true" />
     <unzip src="windows/libastylej-2.03.zip" dest="windows" overwrite="true"/>
     <copy file="windows/libastylej/AStylej.dll" todir="windows/work/lib" />
   </target>
 
-  <target name="windows-toolchains">
+  <target name="windows-toolchains" if="${install_toolchains}">
     <!-- Unzip AVR tools -->
     <get src="http://downloads.arduino.cc/WinAVR-20081205-arduino-2.zip" dest="windows" usetimestamp="true" skipexisting="true" verbose="true" />
     <unzip dest="windows/work/hardware" src="windows/WinAVR-20081205-arduino-2.zip" overwrite="false"/>
