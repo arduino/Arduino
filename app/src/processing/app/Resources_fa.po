@@ -52,7 +52,7 @@ msgstr "نمونه‌ها"
 
 #: Editor.java:514 Editor.java:1977
 msgid "Close"
-msgstr "یستن"
+msgstr "بستن"
 
 #: Editor.java:522 Editor.java:2017 Editor.java:2421 EditorToolbar.java:41
 #: EditorToolbar.java:46
@@ -213,7 +213,7 @@ msgstr "رونوشت به عنوان اچ‌تی‌ام‌ال"
 
 #: Editor.java:1175 Editor.java:2684
 msgid "Paste"
-msgstr "الساق"
+msgstr "الصاق"
 
 #: Editor.java:1184 Editor.java:2692
 msgid "Select All"
