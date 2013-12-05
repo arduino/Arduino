@@ -101,8 +101,21 @@
   <!-- - - - - - - - - -->
   <!-- Basic Assembly  -->
   <!-- - - - - - - - - -->
+  <target name="copy-hardware">
+    <!-- copy hardware folder -->
+    <copy todir="${target.path}/hardware">
+      <fileset dir="../hardware">
+        <exclude name="arduino/sam/system/CMSIS/Device/ATMEL/*/svd/"/>
+        <exclude name="arduino/sam/system/CMSIS/Device/ATMEL/*/html/"/>
+        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/ARM/*M0*"/>
+        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/ARM/*M4*"/>
+        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/GCC/*M0*"/>
+        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/GCC/*M4*"/>
+      </fileset>
+    </copy>
+  </target>
 
-  <target name="assemble">
+  <target name="assemble" depends="copy-hardware">
     <fail unless="target.path"
 	  message="Do not call assemble from the command line." />
 
@@ -114,18 +127,6 @@
     <!-- copy library folder -->
     <copy todir="${target.path}/libraries">
       <fileset dir="../libraries" />
-    </copy>
-
-    <!-- copy hardware folder -->
-    <copy todir="${target.path}/hardware">
-      <fileset dir="../hardware">
-        <exclude name="arduino/sam/system/CMSIS/Device/ATMEL/*/svd/"/>
-        <exclude name="arduino/sam/system/CMSIS/Device/ATMEL/*/html/"/>
-        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/ARM/*M0*"/>
-        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/ARM/*M4*"/>
-        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/GCC/*M0*"/>
-        <exclude name="arduino/sam/system/CMSIS/CMSIS/Lib/GCC/*M4*"/>
-      </fileset>
     </copy>
 
     <!-- copy shared examples folder -->
