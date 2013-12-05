@@ -180,9 +180,6 @@ public class Compiler implements MessageConsumer {
     targetArch = targetPlatform.getId();
     p.put("build.arch", targetArch.toUpperCase());
     
-    if (!p.containsKey("compiler.path"))
-      p.put("compiler.path", Base.getAvrBasePath());
-
     // Core folder
     TargetPlatform tp = corePlatform;
     if (tp == null)
@@ -351,7 +348,7 @@ public class Compiler implements MessageConsumer {
 
     Process process;
     try {
-      process = ProcessUtils.exec(command, verbose);
+      process = ProcessUtils.execWithSystemFallback(command, verbose);
     } catch (IOException e) {
       RunnerException re = new RunnerException(e.getMessage());
       re.hideStackTrace();

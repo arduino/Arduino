@@ -2048,16 +2048,6 @@ public class Base {
     return getHardwareFolder().getAbsolutePath();
   }
 
-
-  static public String getAvrBasePath() {
-    String path = getHardwarePath() + File.separator + "tools" +
-                  File.separator + "avr" + File.separator + "bin" + File.separator;
-    if (Base.isLinux() && !(new File(path)).exists()) {
-      return "";  // use distribution provided avr tools if bundled tools missing
-    }
-    return path;
-  }
-
   /**
    * Returns a specific TargetPackage
    *

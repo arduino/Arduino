@@ -94,7 +94,7 @@ public abstract class Uploader implements MessageConsumer {
     int result = -1;
 
     try {
-      Process process = ProcessUtils.exec(command, verbose);
+      Process process = ProcessUtils.execWithSystemFallback(command, verbose);
       new MessageSiphon(process.getInputStream(), this);
       new MessageSiphon(process.getErrorStream(), this);
 

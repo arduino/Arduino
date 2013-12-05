@@ -68,7 +68,7 @@ public class Sizer implements MessageConsumer {
       textSize = -1;
       dataSize = -1;
       eepromSize = -1;
-      Process process = ProcessUtils.exec(cmd, false);
+      Process process = ProcessUtils.execWithSystemFallback(cmd, false);
       MessageSiphon in = new MessageSiphon(process.getInputStream(), this);
       MessageSiphon err = new MessageSiphon(process.getErrorStream(), this);
 
