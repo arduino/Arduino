@@ -346,18 +346,12 @@ public class Compiler implements MessageConsumer {
       return;
     int result = 0;
 
-    if (verbose) {
-      for (String c : command)
-        System.out.print(c + " ");
-      System.out.println();
-    }
-
     firstErrorFound = false;  // haven't found any errors yet
     secondErrorFound = false;
 
     Process process;
     try {
-      process = ProcessUtils.exec(command);
+      process = ProcessUtils.exec(command, verbose);
     } catch (IOException e) {
       RunnerException re = new RunnerException(e.getMessage());
       re.hideStackTrace();

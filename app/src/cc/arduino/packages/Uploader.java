@@ -94,12 +94,7 @@ public abstract class Uploader implements MessageConsumer {
     int result = -1;
 
     try {
-      if (verbose) {
-        for (String c : command)
-          System.out.print(c + " ");
-        System.out.println();
-      }
-      Process process = ProcessUtils.exec(command);
+      Process process = ProcessUtils.exec(command, verbose);
       new MessageSiphon(process.getInputStream(), this);
       new MessageSiphon(process.getErrorStream(), this);
 
