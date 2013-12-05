@@ -30,6 +30,11 @@
        libraries. E.g., run ant -Dinstall_toolchains=false  -->
   <property name="install_toolchains" value="true" />
   <property name="install_native_libs" value="true" />
+  <!-- Define this to true to make the $target/work/hardware/arduino
+       a symlink instead of a copy. This makes development easier,
+       because you can change core files without having to re-run ant.
+       Enable by passing -Dlink_hardware=true to ant. -->
+  <property name="link_hardware" value="false" />
 
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
@@ -101,7 +106,14 @@
   <!-- - - - - - - - - -->
   <!-- Basic Assembly  -->
   <!-- - - - - - - - - -->
-  <target name="copy-hardware">
+  <target name="clean-hardware">
+    <!-- Clean up old symlink and directory -->
+    <symlink action="delete" link="${target.path}/hardware/arduino" failonerror="false" />
+    <delete dir="${target.path}/hardware" failonerror="false" />
+    <mkdir dir="${target.path}/hardware" />
+  </target>
+
+  <target name="copy-hardware" depends="clean-hardware" unless="${link_hardware}">
     <!-- copy hardware folder -->
     <copy todir="${target.path}/hardware">
       <fileset dir="../hardware">
@@ -115,7 +127,16 @@
     </copy>
   </target>
 
-  <target name="assemble" depends="copy-hardware">
+  <target name="link-hardware" depends="clean-hardware" if="${link_hardware}">
+    <fail if="windows"
+          message="link_hardware not supported on Windows" />
+
+    <symlink link="${target.path}/hardware/arduino"
+             resource="${basedir}/../hardware/arduino"
+	     failonerror="true"/>
+  </target>
+
+  <target name="assemble" depends="copy-hardware, link-hardware">
     <fail unless="target.path"
 	  message="Do not call assemble from the command line." />
 
