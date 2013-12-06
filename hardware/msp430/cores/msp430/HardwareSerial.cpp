@@ -129,6 +129,8 @@ void HardwareSerial::begin(unsigned long baud)
 	pinMode_int(rxPin, rxPinMode);
 	pinMode_int(txPin, txPinMode);
 
+	delay(10);
+
 	*(&(UCAxCTL1) + uartOffset) = UCSWRST;
 	*(&(UCAxCTL1) + uartOffset) = UCSSEL_2;                                // SMCLK
 	*(&(UCAxCTL0) + uartOffset) = 0;
