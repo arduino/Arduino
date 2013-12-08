@@ -1,6 +1,7 @@
 package processing.app.helpers;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -188,4 +189,30 @@ public class FileUtils {
       }
     }
   }
+  
+  /**
+   * Recursively find all files in a folder with the specified extension
+   * 
+   * @param folder
+   * @param extensions
+   * @return
+   */
+  public static List<File> listAllFilesWithExtension(File folder, String... extensions) {
+    List<File> result = new ArrayList<File>();
+    for (File file : folder.listFiles()) {
+      if (file.isDirectory()) {
+        result.addAll(listAllFilesWithExtension(file, extensions));
+        continue;
+      }
+
+      for (String ext : extensions) {
+        if (file.getName().endsWith(ext)) {
+          result.add(file);
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
 }
