@@ -32,16 +32,16 @@ import processing.app.debug.Compiler;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.FileUtils;
+import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibraryResolver;
 import processing.app.preproc.*;
 import processing.core.*;
 import static processing.app.I18n._;
 
-import java.awt.*;
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -1116,7 +1116,7 @@ public class Sketch {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    String list[] = Base.headerListFromIncludePath(jarPath);
+    String list[] = jarPath.list(new OnlyFilesWithExtension(".h"));
 
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
@@ -1389,13 +1389,29 @@ public class Sketch {
     // grab the imports from the code just preproc'd
 
     importedLibraries = new LibraryList();
+    LibraryResolver resolver = Base.getLibraryResolver();
     for (String item : preprocessor.getExtraImports()) {
-      Library lib = Base.importToLibraryTable.get(item);
+      Library lib = resolver.importToLibrary(item);
       if (lib != null && !importedLibraries.contains(lib)) {
         importedLibraries.add(lib);
       }
     }
-
+    
+    // extend the import list with the library dependency tree
+    while (true) {
+      LibraryList dependencies = new LibraryList();
+      for (Library library : importedLibraries) {
+        for (Library dependency : library.getResolvedDependencies()) {
+          if (importedLibraries.contains(dependency))
+            continue;
+          dependencies.addOrReplace(dependency);
+        }
+      }
+      if (dependencies.size() == 0)
+        break;
+      importedLibraries.addAll(dependencies);
+    }
+    
     // 3. then loop over the code[] and save each .java file
 
     for (SketchCode sc : code) {

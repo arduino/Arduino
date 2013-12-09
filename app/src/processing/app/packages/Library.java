@@ -26,6 +26,7 @@ public class Library {
   private File folder, srcFolder, archFolder;
   private List<String> architectures;
   private boolean pre15Lib;
+  protected LibraryList resolvedDependencies;
 
   private static final List<String> MANDATORY_PROPERTIES = Arrays
       .asList(new String[] { "architectures", "author", "core-dependencies",
@@ -187,6 +188,10 @@ public class Library {
 
   public List<String> getDependencies() {
     return dependencies;
+  }
+
+  public LibraryList getResolvedDependencies() {
+    return resolvedDependencies;
   }
 
   public String getEmail() {
