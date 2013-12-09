@@ -67,7 +67,7 @@ public class HeuristicResolver implements LibraryResolver {
 
     // Resolve all libraries dependencies
     for (Library library : libraries)
-      library.resolvedDependencies = resolve(library, arch);
+      library.resolvedDependencies = findLibraryDependencies(library, arch);
   }
 
   /**
@@ -77,7 +77,7 @@ public class HeuristicResolver implements LibraryResolver {
    * @param arch
    * @return A LibraryList containing the dependencies
    */
-  private LibraryList resolve(Library library, String arch) {
+  private LibraryList findLibraryDependencies(Library library, String arch) {
     List<File> headers = new ArrayList<File>();
     for (File folder : library.getSrcFolders(arch)) {
       List<File> files = FileUtils.listAllFilesWithExtension(folder, ".h",
@@ -87,7 +87,7 @@ public class HeuristicResolver implements LibraryResolver {
 
     LibraryList result = new LibraryList();
     for (File header : headers)
-      result.addOrReplaceAll(resolveHeader(header, headers, library));
+      result.addOrReplaceAll(findHeaderDependencies(header, headers, library));
     return result;
   }
 
@@ -98,8 +98,9 @@ public class HeuristicResolver implements LibraryResolver {
    * @param exclusionList
    * @param library
    */
-  private LibraryList resolveHeader(File headerFile, List<File> exclusionList,
-                                    Library library) {
+  private LibraryList findHeaderDependencies(File headerFile,
+                                             List<File> exclusionList,
+                                             Library library) {
     LibraryList res = new LibraryList();
 
     // Extract #includes from header file
