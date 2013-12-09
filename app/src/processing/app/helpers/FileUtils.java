@@ -194,14 +194,20 @@ public class FileUtils {
    * Recursively find all files in a folder with the specified extension
    * 
    * @param folder
+   *          Folder to look into
+   * @param recursive
+   *          <b>true</b> will recursively find all files in sub-folders
    * @param extensions
+   *          A list of file extensions to search
    * @return
    */
-  public static List<File> listAllFilesWithExtension(File folder, String... extensions) {
+  public static List<File> listAllFilesWithExtension(File folder,
+                                                     boolean recursive,
+                                                     String... extensions) {
     List<File> result = new ArrayList<File>();
     for (File file : folder.listFiles()) {
-      if (file.isDirectory()) {
-        result.addAll(listAllFilesWithExtension(file, extensions));
+      if (recursive && file.isDirectory()) {
+        result.addAll(listAllFilesWithExtension(file, true, extensions));
         continue;
       }
 

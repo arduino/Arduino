@@ -79,9 +79,10 @@ public class HeuristicResolver implements LibraryResolver {
    */
   private LibraryList findLibraryDependencies(Library library, String arch) {
     List<File> headers = new ArrayList<File>();
+    boolean recursive = !library.isPre15Lib();
     for (File folder : library.getSrcFolders(arch)) {
-      List<File> files = FileUtils.listAllFilesWithExtension(folder, ".h",
-                                                             ".c", ".cpp");
+      List<File> files = FileUtils
+          .listAllFilesWithExtension(folder, recursive, ".h", ".c", ".cpp");
       headers.addAll(files);
     }
 
