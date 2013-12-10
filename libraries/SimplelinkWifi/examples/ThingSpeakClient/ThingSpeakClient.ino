@@ -75,7 +75,7 @@ void setup()
 void loop()
 {
   // Read value from Temperature Sensor
-  String analogPin0 = String(analogRead(A10), DEC);
+  String analogPin0 = String(analogRead(A0), DEC);
   // Read push button S1
   String digitalPin = String(digitalRead(PUSH1), DEC);
 

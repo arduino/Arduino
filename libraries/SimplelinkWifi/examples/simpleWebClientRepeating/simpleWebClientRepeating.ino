@@ -28,7 +28,7 @@ int status = WL_IDLE_STATUS;
 WiFiClient client;
 
 // server address:
-IPAddress server(50, 63, 97, 1); // numeric IP for Energia.nu (no DNS)
+IPAddress server(50, 62, 217, 1); // numeric IP for Energia.nu (no DNS)
 //char server[] = "energia.nu";  // name address for Energia.nu (using DNS)
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds

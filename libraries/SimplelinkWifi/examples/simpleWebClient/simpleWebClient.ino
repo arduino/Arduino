@@ -21,7 +21,7 @@ int keyIndex = 0;            // your network key Index number (needed only for W
 
 // if you don't want to use DNS (and reduce your sketch size)
 // use the numeric IP instead of the name for the server:
-IPAddress server(50, 63, 97, 1); // numeric IP for Energia.nu (no DNS)
+IPAddress server(50, 62, 217, 1); // numeric IP for Energia.nu (no DNS)
 //char server[] = "energia.nu";    // name address for Energia.nu (using DNS)
 
 // Initialize the WiFi client library
