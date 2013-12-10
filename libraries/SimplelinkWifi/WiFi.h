@@ -59,49 +59,4 @@ class WiFiClass
 
 extern WiFiClass WiFi;
 
-
-// client
-
-// server
-
-
-#define UDP_TX_PACKET_MAX_SIZE 24
-
-class WiFiUDP {
-private:
-  unsigned short int port;
-  long udpSocket;
-  sockaddr udpSocketAddr;
-  volatile unsigned int bytesRecvd;
-  int packetSize;
-  unsigned char packetBuffer[25]; //25 is from basic wifi application  pucCC3000_Rx_Buffer[CC3000_APP_BUFFER_SIZE + CC3000_RX_BUFFER_OVERHEAD_SIZE];
-  unsigned char rx_buf[25];
-  long udpSocket2;
-  sockaddr udpSocketAddr2;  
-
-public:
-  WiFiUDP();  // Constructor
-  uint8_t begin(uint16_t);	// initialize, start listening on specified port. Returns 1 if successful, 0 if there are no sockets available to use
-
-  int beginPacket(IPAddress ip, uint16_t _port);
-  
-
-  int endPacket();
-
-  size_t write(const uint8_t *buffer, size_t size);
-  
-
-  int parsePacket();
-  int available();
-
-
-  int read(char* buffer, size_t len);
-  void stop();
-  
-  friend class WiFiClass;
-
-  
-
-};
-
 #endif
