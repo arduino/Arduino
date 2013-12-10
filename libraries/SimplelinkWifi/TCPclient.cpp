@@ -1,8 +1,8 @@
 #include "utility/SimplelinkWifi.h"
 #include "WiFi.h"
 #include "Energia.h"
+
 extern WiFiClass WiFi;
-#define socket_overflow 2
 
 extern fd_set gConnectedSockets;
 
@@ -16,6 +16,7 @@ WiFiClient::WiFiClient(long _sock) : clientSocket(_sock) {
 	rx_buf_pos=0;
 	rx_buf_fill=0;
 	no_more_bytes = 0;
+	FD_CLR(_sock, &gConnectedSockets);
 }
 
 int WiFiClient::available()
@@ -34,9 +35,9 @@ int WiFiClient::available()
 	FD_SET(clientSocket, &errorsds);
 
 	if(!rx_buf_fill){
-		ret = select(clientSocket+1, &readsds, NULL, &errorsds, &timeout);
+		ret = select(clientSocket + 1, &readsds, NULL, &errorsds, &timeout);
 		if(!FD_ISSET(clientSocket, &readsds)) return 0;
-		rx_buf_fill = recv(((long)clientSocket)&0xFF, rx_buf, 16, 0);//RX_BUF_SIZE
+		rx_buf_fill = recv(((long)clientSocket) & 0xFF, rx_buf, 16, 0);
 
 		if(rx_buf_fill <= 0) {
 			rx_buf_pos = 0;
@@ -56,12 +57,12 @@ int WiFiClient::read(uint8_t* buf, size_t size)
 	if(!size) return -1;
 
 	while(i < size) {
-		b = (uint8_t) read();
+		b = read();
 
 		if(b < 0)
 			return i;
 
-		*ptr = b;
+		*ptr = (uint8_t) b;
 		ptr++;
 		i++;
 	}
@@ -150,7 +151,6 @@ size_t WiFiClient::write(uint8_t b)
 	return 1;
 }
 
-
 size_t WiFiClient::write(const uint8_t *buf, size_t size)
 {
 
@@ -160,12 +160,10 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size)
 
 	do{
 		if(strlen-i<TX_BUF_SIZE){
-			i = send(((long)clientSocket)&0xFF, buf+i, strlen-i, 0);
-			//i=strlen;
+			i += send(((long)clientSocket)&0xFF, buf+i, strlen-i, 0);
 		}
 		else {
-			i = send(((long)clientSocket)&0xFF, buf+i, TX_BUF_SIZE, 0);
-			//i+=TX_BUF_SIZE;
+			i += send(((long)clientSocket)&0xFF, buf+i, TX_BUF_SIZE, 0);
 		}
 	}while( i < strlen);
 
@@ -177,6 +175,7 @@ void WiFiClient::stop() {
 		return;
 
 	closesocket(clientSocket);
+	FD_CLR(clientSocket, &gConnectedSockets);
 	WiFi.countSocket(0);
 	clientSocket = 255;
 }
