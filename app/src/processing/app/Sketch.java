@@ -26,6 +26,7 @@ package processing.app;
 import processing.app.debug.AvrdudeUploader;
 import processing.app.debug.MSP430Uploader;
 import processing.app.debug.LM4FUploader;
+import processing.app.debug.C2000Uploader;
 import processing.app.debug.Compiler;
 import processing.app.debug.RunnerException;
 import processing.app.debug.Sizer;
@@ -1675,6 +1676,8 @@ public class Sketch {
     	uploader = new MSP430Uploader(editor);
     }else if (Base.getArch() == "lm4f"){
         uploader = new LM4FUploader();
+    } else if(Base.getArch() == "c2000"){
+    	uploader = new C2000Uploader();
     }else {
     	uploader = new AvrdudeUploader();
     }

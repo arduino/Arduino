@@ -68,6 +68,7 @@ public class Base {
     archMap.put("arduino", "avr");
     archMap.put("msp430", "msp430");
     archMap.put("lm4f", "lm4f");
+    archMap.put("c2000", "c2000");
   }
   static Platform platform;
 
@@ -253,6 +254,8 @@ public class Base {
     	targetLibDir = "hardware/msp430/";
     else if (Preferences.get("target").equals("lm4f"))
     	targetLibDir = "hardware/lm4f/";
+    else if (Preferences.get("target").equals("c2000")) 
+    	targetLibDir = "hardware/c2000/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 
@@ -1093,6 +1096,8 @@ public class Base {
             		  targetLibDir = "hardware/msp430/";
             	  else if(n.equals("lm4f"))
             		  targetLibDir = "hardware/lm4f/";
+				  else if(n.equals("c2000")) 
+            		  targetLibDir = "hardware/c2000/";
             	  librariesFolder = getContentFile(targetLibDir + "libraries");
             	  onArchChanged();
               }
@@ -1355,9 +1360,19 @@ public class Base {
     Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
     
     for (String target : list) {
-      File subfolder = new File(folder, target);
-      targetsTable.put(target, new Target(target, subfolder));
+    	
+    	//Check to ensure compiler is installed before displaying C2000 Support
+    	if(target.equals("c2000")){
+    		if(Base.getC2000BasePath() != ""){
+      	      File subfolder = new File(folder, target);
+      	      targetsTable.put(target, new Target(target, subfolder));
+    		}
+    	}else{
+    	      File subfolder = new File(folder, target);
+    	      targetsTable.put(target, new Target(target, subfolder));
+    	}
     }
+    
   }
 
 
@@ -1651,6 +1666,18 @@ public class Base {
 	    return path;
 	  }
 
+
+  //TODO: check tools path
+  static public String getC2000BasePath() {
+	    String path = getHardwarePath() + File.separator + "tools" +
+	                  File.separator + "c2000" + File.separator + "bin" + File.separator;
+	    
+	    if (Base.isLinux() || !(new File(path)).exists()) {
+	      return "";  // use msp430-gcc and mspdebug in PATH instead of platform version
+	    }
+	    return path;
+	  }
+
   static public String getArch() {
     return archMap.get(Preferences.get("target"));
   }
@@ -1707,6 +1734,10 @@ public class Base {
       else if (getArch() == "lm4f") {
     	  String hwPath = getLM4FBasePath();
     	  return hwPath;
+      }
+      else if (getArch() == "c2000") {
+          String hwPath = getC2000BasePath();
+          return hwPath;
       }
       else {
         return getHardwarePath() + File.separator + "tools" + File.separator

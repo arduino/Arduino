@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?ccsproject version="1.0"?>
+
+<projectOptions>
+<deviceVariant value="TMS320C28XX.TMS320F28027"/>
+<deviceEndianness value="little"/>
+<codegenToolVersion value="6.0.2"/>
+<isElfFormat value="false"/>
+<rts value=""/>
+<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate,"/>
+<deviceFamily value="C2000"/>
+</projectOptions>
