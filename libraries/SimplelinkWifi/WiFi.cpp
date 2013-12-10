@@ -30,8 +30,6 @@ const unsigned char smartconfigkey[] = {0x73,0x6d,0x61,0x72,0x74,0x63,0x6f,0x6e,
 uint8_t calculator_socket_number = 0;
 WiFiClass::WiFiClass()
 {
-	// Driver initialization
-	init();
 }
 
 void WiFiClass::setCSpin(uint8_t pin){
@@ -47,7 +45,16 @@ void WiFiClass::setIRQpin(uint8_t pin){
 
 void WiFiClass::init()
 {
-	//nothing to be done for init
+	/* default */
+	uint32_t aucDHCP = 14400;
+	/* default */
+	uint32_t aucARP = 3600;
+	/* default */
+	uint32_t aucKeepalive = 10;
+	/* inifinity */
+	uint32_t aucInactivity = 0;
+
+	netapp_timeout_values(&aucDHCP, &aucARP, &aucKeepalive, &aucInactivity);
 }
 
 // connect to an open AP
@@ -67,6 +74,8 @@ int WiFiClass::begin(char* ssid)
 	wlan_ioctl_set_connection_policy(DISABLE, DISABLE, DISABLE);
 
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE|HCI_EVNT_WLAN_UNSOL_INIT|HCI_EVNT_WLAN_ASYNC_PING_REPORT);
+
+	init();
 
 	wlan_connect(WLAN_SEC_UNSEC, ssid, strlen(ssid), NULL, NULL, 0);
 
@@ -89,12 +98,15 @@ int WiFiClass::begin(char* ssid, const char* pass)
 
 	wlan_init(CC3000_UsynchCallback, sendWLFWPatch, sendDriverPatch, sendBootLoaderPatch, ReadWlanInterruptPin, WlanInterruptEnable, WlanInterruptDisable, WriteWlanPin);
 
+	
 	wlan_start(0);
 
 	/* This will ensure that CC3000 does not attempt to connect to a previously configuration from SmartConfig session */
 	wlan_ioctl_set_connection_policy(DISABLE, DISABLE, DISABLE);
 
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE|HCI_EVNT_WLAN_UNSOL_INIT|HCI_EVNT_WLAN_ASYNC_PING_REPORT);
+
+	init();
 
 	wlan_connect(WLAN_SEC_WPA2, ssid, strlen(ssid), NULL, (unsigned char *)pass, strlen((char *)(pass)));
 
@@ -124,6 +136,8 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, unsigned char *key)
 
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE|HCI_EVNT_WLAN_UNSOL_INIT|HCI_EVNT_WLAN_ASYNC_PING_REPORT);
 
+	init();
+
 	wlan_connect(WLAN_SEC_WEP, ssid, strlen(ssid), NULL, key, key_idx);
 	
 	while (ulCC3000Connected  == 0)
@@ -147,6 +161,8 @@ int WiFiClass::begin(int patchesAvailableAtHost)
 	wlan_start(patchesAvailableAtHost);
 
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE|HCI_EVNT_WLAN_UNSOL_INIT|HCI_EVNT_WLAN_ASYNC_PING_REPORT);
+
+	init();
 
 	ucStopSmartConfig   = 0;
 
@@ -528,6 +544,8 @@ int WiFiClass::startSmartConfig()
 
 	// Mask out all non-required events
 	wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE|HCI_EVNT_WLAN_UNSOL_INIT|HCI_EVNT_WLAN_ASYNC_PING_REPORT);
+
+	init();
 
 	return 0;
 }
