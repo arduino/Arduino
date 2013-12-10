@@ -2,7 +2,7 @@
 //
 // adc.h - ADC headers for using the ADC driver functions.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __ADC_H__
-#define __ADC_H__
+#ifndef __DRIVERLIB_ADC_H__
+#define __DRIVERLIB_ADC_H__
 
 //*****************************************************************************
 //
@@ -53,7 +53,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to ADCSequenceConfigure as the ulTrigger
+// Values that can be passed to ADCSequenceConfigure as the ui32Trigger
 // parameter.
 //
 //*****************************************************************************
@@ -67,11 +67,12 @@ extern "C"
 #define ADC_TRIGGER_PWM1        0x00000007  // PWM1 event
 #define ADC_TRIGGER_PWM2        0x00000008  // PWM2 event
 #define ADC_TRIGGER_PWM3        0x00000009  // PWM3 event
+#define ADC_TRIGGER_NEVER       0x0000000E  // Never Trigger
 #define ADC_TRIGGER_ALWAYS      0x0000000F  // Always event
 
 //*****************************************************************************
 //
-// Values that can be passed to ADCSequenceStepConfigure as the ulConfig
+// Values that can be passed to ADCSequenceStepConfigure as the ui32Config
 // parameter.
 //
 //*****************************************************************************
@@ -115,7 +116,7 @@ extern "C"
 //*****************************************************************************
 //
 // Values that can be passed to ADCComparatorConfigure as part of the
-// ulConfig parameter.
+// ui32Config parameter.
 //
 //*****************************************************************************
 #define ADC_COMP_TRIG_NONE      0x00000000  // Trigger Disabled
@@ -168,7 +169,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to ADCPhaseDelaySet as the ulPhase parameter and
+// Values that can be passed to ADCPhaseDelaySet as the ui32Phase parameter and
 // returned from ADCPhaseDelayGet.
 //
 //*****************************************************************************
@@ -191,20 +192,12 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to ADCReferenceSet as the ulRef parameter.
+// Values that can be passed to ADCReferenceSet as the ui32Ref parameter.
 //
 //*****************************************************************************
 #define ADC_REF_INT             0x00000000  // Internal reference
 #define ADC_REF_EXT_3V          0x00000001  // External 3V reference
 #define ADC_REF_EXT_1V          0x00000003  // External 1V reference
-
-//*****************************************************************************
-//
-// Values that can be passed to ADCResolutionSet as the ulResolution parameter.
-//
-//*****************************************************************************
-#define ADC_RES_10BIT           0x00000000  // 10-bit resolution
-#define ADC_RES_12BIT           0x00000010  // 12-bit resolution
 
 //*****************************************************************************
 //
@@ -230,74 +223,68 @@ extern "C"
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern void ADCIntRegister(unsigned long ulBase, unsigned long ulSequenceNum,
+extern void ADCIntRegister(uint32_t ui32Base, uint32_t ui32SequenceNum,
                            void (*pfnHandler)(void));
-extern void ADCIntUnregister(unsigned long ulBase,
-                             unsigned long ulSequenceNum);
-extern void ADCIntDisable(unsigned long ulBase, unsigned long ulSequenceNum);
-extern void ADCIntEnable(unsigned long ulBase, unsigned long ulSequenceNum);
-extern unsigned long ADCIntStatus(unsigned long ulBase,
-                                  unsigned long ulSequenceNum,
-                                  tBoolean bMasked);
-extern void ADCIntClear(unsigned long ulBase, unsigned long ulSequenceNum);
-extern void ADCSequenceEnable(unsigned long ulBase,
-                              unsigned long ulSequenceNum);
-extern void ADCSequenceDisable(unsigned long ulBase,
-                               unsigned long ulSequenceNum);
-extern void ADCSequenceConfigure(unsigned long ulBase,
-                                 unsigned long ulSequenceNum,
-                                 unsigned long ulTrigger,
-                                 unsigned long ulPriority);
-extern void ADCSequenceStepConfigure(unsigned long ulBase,
-                                     unsigned long ulSequenceNum,
-                                     unsigned long ulStep,
-                                     unsigned long ulConfig);
-extern long ADCSequenceOverflow(unsigned long ulBase,
-                                unsigned long ulSequenceNum);
-extern void ADCSequenceOverflowClear(unsigned long ulBase,
-                                     unsigned long ulSequenceNum);
-extern long ADCSequenceUnderflow(unsigned long ulBase,
-                                 unsigned long ulSequenceNum);
-extern void ADCSequenceUnderflowClear(unsigned long ulBase,
-                                      unsigned long ulSequenceNum);
-extern long ADCSequenceDataGet(unsigned long ulBase,
-                               unsigned long ulSequenceNum,
-                               unsigned long *pulBuffer);
-extern void ADCProcessorTrigger(unsigned long ulBase,
-                                unsigned long ulSequenceNum);
-extern void ADCSoftwareOversampleConfigure(unsigned long ulBase,
-                                           unsigned long ulSequenceNum,
-                                           unsigned long ulFactor);
-extern void ADCSoftwareOversampleStepConfigure(unsigned long ulBase,
-                                               unsigned long ulSequenceNum,
-                                               unsigned long ulStep,
-                                               unsigned long ulConfig);
-extern void ADCSoftwareOversampleDataGet(unsigned long ulBase,
-                                         unsigned long ulSequenceNum,
-                                         unsigned long *pulBuffer,
-                                         unsigned long ulCount);
-extern void ADCHardwareOversampleConfigure(unsigned long ulBase,
-                                           unsigned long ulFactor);
-extern void ADCComparatorConfigure(unsigned long ulBase, unsigned long ulComp,
-                                   unsigned long ulConfig);
-extern void ADCComparatorRegionSet(unsigned long ulBase, unsigned long ulComp,
-                                   unsigned long ulLowRef,
-                                   unsigned long ulHighRef);
-extern void ADCComparatorReset(unsigned long ulBase, unsigned long ulComp,
-                               tBoolean bTrigger, tBoolean bInterrupt);
-extern void ADCComparatorIntDisable(unsigned long ulBase,
-                                    unsigned long ulSequenceNum);
-extern void ADCComparatorIntEnable(unsigned long ulBase,
-                                   unsigned long ulSequenceNum);
-extern unsigned long ADCComparatorIntStatus(unsigned long ulBase);
-extern void ADCComparatorIntClear(unsigned long ulBase,
-                                  unsigned long ulStatus);
-extern void ADCReferenceSet(unsigned long ulBase, unsigned long ulRef);
-extern unsigned long ADCReferenceGet(unsigned long ulBase);
-extern void ADCResolutionSet(unsigned long ulBase, unsigned long ulResolution);
-extern unsigned long ADCResolutionGet(unsigned long ulBase);
-extern void ADCPhaseDelaySet(unsigned long ulBase, unsigned long ulPhase);
-extern unsigned long ADCPhaseDelayGet(unsigned long ulBase);
+extern void ADCIntUnregister(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCIntDisable(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCIntEnable(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern uint32_t ADCIntStatus(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                             bool bMasked);
+extern void ADCIntClear(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCSequenceEnable(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCSequenceDisable(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCSequenceConfigure(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                                 uint32_t ui32Trigger, uint32_t ui32Priority);
+extern void ADCSequenceStepConfigure(uint32_t ui32Base,
+                                     uint32_t ui32SequenceNum,
+                                     uint32_t ui32Step, uint32_t ui32Config);
+extern int32_t ADCSequenceOverflow(uint32_t ui32Base,
+                                   uint32_t ui32SequenceNum);
+extern void ADCSequenceOverflowClear(uint32_t ui32Base,
+                                     uint32_t ui32SequenceNum);
+extern int32_t ADCSequenceUnderflow(uint32_t ui32Base,
+                                    uint32_t ui32SequenceNum);
+extern void ADCSequenceUnderflowClear(uint32_t ui32Base,
+                                      uint32_t ui32SequenceNum);
+extern int32_t ADCSequenceDataGet(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                                  uint32_t *pui32Buffer);
+extern void ADCProcessorTrigger(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCSoftwareOversampleConfigure(uint32_t ui32Base,
+                                           uint32_t ui32SequenceNum,
+                                           uint32_t ui32Factor);
+extern void ADCSoftwareOversampleStepConfigure(uint32_t ui32Base,
+                                               uint32_t ui32SequenceNum,
+                                               uint32_t ui32Step,
+                                               uint32_t ui32Config);
+extern void ADCSoftwareOversampleDataGet(uint32_t ui32Base,
+                                         uint32_t ui32SequenceNum,
+                                         uint32_t *pui32Buffer,
+                                         uint32_t ui32Count);
+extern void ADCHardwareOversampleConfigure(uint32_t ui32Base,
+                                           uint32_t ui32Factor);
+extern void ADCComparatorConfigure(uint32_t ui32Base, uint32_t ui32Comp,
+                                   uint32_t ui32Config);
+extern void ADCComparatorRegionSet(uint32_t ui32Base, uint32_t ui32Comp,
+                                   uint32_t ui32LowRef, uint32_t ui32HighRef);
+extern void ADCComparatorReset(uint32_t ui32Base, uint32_t ui32Comp,
+                               bool bTrigger, bool bInterrupt);
+extern void ADCComparatorIntDisable(uint32_t ui32Base,
+                                    uint32_t ui32SequenceNum);
+extern void ADCComparatorIntEnable(uint32_t ui32Base,
+                                   uint32_t ui32SequenceNum);
+extern uint32_t ADCComparatorIntStatus(uint32_t ui32Base);
+extern void ADCComparatorIntClear(uint32_t ui32Base, uint32_t ui32Status);
+extern void ADCIntDisableEx(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern void ADCIntEnableEx(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern uint32_t ADCIntStatusEx(uint32_t ui32Base, bool bMasked);
+extern void ADCIntClearEx(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern void ADCSequenceDMAEnable(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern void ADCSequenceDMADisable(uint32_t ui32Base, uint32_t ui32SequenceNum);
+extern bool ADCBusy(uint32_t ui32Base);
+extern void ADCReferenceSet(uint32_t ui32Base, uint32_t ui32Ref);
+extern uint32_t ADCReferenceGet(uint32_t ui32Base);
+extern void ADCPhaseDelaySet(uint32_t ui32Base, uint32_t ui32Phase);
+extern uint32_t ADCPhaseDelayGet(uint32_t ui32Base);
 
 //*****************************************************************************
 //
@@ -308,4 +295,4 @@ extern unsigned long ADCPhaseDelayGet(unsigned long ulBase);
 }
 #endif
 
-#endif // __ADC_H__
+#endif // __DRIVERLIB_ADC_H__

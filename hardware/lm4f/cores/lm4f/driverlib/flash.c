@@ -2,7 +2,7 @@
 //
 // flash.c - Driver for programming the on-chip flash.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_flash.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_sysctl.h"
@@ -58,12 +60,24 @@
 // Memory Protection Program Enable (FMPPE) register.
 //
 //*****************************************************************************
-static const unsigned long g_pulFMPPERegs[] =
+static const uint32_t g_pui32FMPPERegs[] =
 {
-    FLASH_FMPPE,
+    FLASH_FMPPE0,
     FLASH_FMPPE1,
     FLASH_FMPPE2,
-    FLASH_FMPPE3
+    FLASH_FMPPE3,
+    FLASH_FMPPE4,
+    FLASH_FMPPE5,
+    FLASH_FMPPE6,
+    FLASH_FMPPE7,
+    FLASH_FMPPE8,
+    FLASH_FMPPE9,
+    FLASH_FMPPE10,
+    FLASH_FMPPE11,
+    FLASH_FMPPE12,
+    FLASH_FMPPE13,
+    FLASH_FMPPE14,
+    FLASH_FMPPE15,
 };
 
 //*****************************************************************************
@@ -72,66 +86,40 @@ static const unsigned long g_pulFMPPERegs[] =
 // Memory Protection Read Enable (FMPRE) register.
 //
 //*****************************************************************************
-static const unsigned long g_pulFMPRERegs[] =
+static const uint32_t g_pui32FMPRERegs[] =
 {
-    FLASH_FMPRE,
+    FLASH_FMPRE0,
     FLASH_FMPRE1,
     FLASH_FMPRE2,
-    FLASH_FMPRE3
+    FLASH_FMPRE3,
+    FLASH_FMPRE4,
+    FLASH_FMPRE5,
+    FLASH_FMPRE6,
+    FLASH_FMPRE7,
+    FLASH_FMPRE8,
+    FLASH_FMPRE9,
+    FLASH_FMPRE10,
+    FLASH_FMPRE11,
+    FLASH_FMPRE12,
+    FLASH_FMPRE13,
+    FLASH_FMPRE14,
+    FLASH_FMPRE15,
 };
-
-//*****************************************************************************
-//
-//! Gets the number of processor clocks per micro-second.
-//!
-//! This function returns the number of clocks per micro-second, as presently
-//! known by the flash controller. This function is only valid on Sandstorm-
-//! and Fury-class devices.
-//!
-//! \return Returns the number of processor clocks per micro-second.
-//
-//*****************************************************************************
-unsigned long
-FlashUsecGet(void)
-{
-    //
-    // Return the number of clocks per micro-second.
-    //
-    return(HWREG(FLASH_USECRL) + 1);
-}
-
-//*****************************************************************************
-//
-//! Sets the number of processor clocks per micro-second.
-//!
-//! \param ulClocks is the number of processor clocks per micro-second.
-//!
-//! This function is used to tell the flash controller the number of processor
-//! clocks per micro-second.  This value must be programmed correctly or the
-//! flash most likely will not program correctly; it has no affect on reading
-//! flash. This function is only valid on Sandstorm- and Fury-class devices.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-FlashUsecSet(unsigned long ulClocks)
-{
-    //
-    // Set the number of clocks per micro-second.
-    //
-    HWREG(FLASH_USECRL) = ulClocks - 1;
-}
 
 //*****************************************************************************
 //
 //! Erases a block of flash.
 //!
-//! \param ulAddress is the start address of the flash block to be erased.
+//! \param ui32Address is the start address of the flash block to be erased.
 //!
 //! This function erases a 1-kB block of the on-chip flash.  After erasing,
 //! the block is filled with 0xFF bytes.  Read-only and execute-only blocks
 //! cannot be erased.
+//!
+//! The flash block size is device-class dependent.  All Blizzard-class TM4C
+//! devices use 1KB blocks but Snowflake-class TM4C devices use 16KB blocks.
+//! Please consult the datasheet for your device to determine the block size in
+//! use.
 //!
 //! This function does not return until the block has been erased.
 //!
@@ -139,13 +127,13 @@ FlashUsecSet(unsigned long ulClocks)
 //! specified or the block is write-protected.
 //
 //*****************************************************************************
-long
-FlashErase(unsigned long ulAddress)
+int32_t
+FlashErase(uint32_t ui32Address)
 {
     //
     // Check the arguments.
     //
-    ASSERT(!(ulAddress & (FLASH_ERASE_SIZE - 1)));
+    ASSERT(!(ui32Address & (FLASH_ERASE_SIZE - 1)));
 
     //
     // Clear the flash access and error interrupts.
@@ -156,7 +144,7 @@ FlashErase(unsigned long ulAddress)
     //
     // Erase the block.
     //
-    HWREG(FLASH_FMA) = ulAddress;
+    HWREG(FLASH_FMA) = ui32Address;
     HWREG(FLASH_FMC) = FLASH_FMC_WRKEY | FLASH_FMC_ERASE;
 
     //
@@ -185,11 +173,11 @@ FlashErase(unsigned long ulAddress)
 //
 //! Programs flash.
 //!
-//! \param pulData is a pointer to the data to be programmed.
-//! \param ulAddress is the starting address in flash to be programmed.  Must
+//! \param pui32Data is a pointer to the data to be programmed.
+//! \param ui32Address is the starting address in flash to be programmed.  Must
 //! be a multiple of four.
-//! \param ulCount is the number of bytes to be programmed.  Must be a multiple
-//! of four.
+//! \param ui32Count is the number of bytes to be programmed.  Must be a
+//! multiple of four.
 //!
 //! This function programs a sequence of words into the on-chip flash.
 //! Each word in a page of flash can only be programmed one time between an
@@ -205,15 +193,14 @@ FlashErase(unsigned long ulAddress)
 //! \return Returns 0 on success, or -1 if a programming error is encountered.
 //
 //*****************************************************************************
-long
-FlashProgram(unsigned long *pulData, unsigned long ulAddress,
-             unsigned long ulCount)
+int32_t
+FlashProgram(uint32_t *pui32Data, uint32_t ui32Address, uint32_t ui32Count)
 {
     //
     // Check the arguments.
     //
-    ASSERT(!(ulAddress & 3));
-    ASSERT(!(ulCount & 3));
+    ASSERT(!(ui32Address & 3));
+    ASSERT(!(ui32Count & 3));
 
     //
     // Clear the flash access and error interrupts.
@@ -222,74 +209,39 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
                            FLASH_FCMISC_INVDMISC | FLASH_FCMISC_PROGMISC);
 
     //
-    // See if this device has a write buffer.
+    // Loop over the words to be programmed.
     //
-    if(HWREG(SYSCTL_NVMSTAT) & SYSCTL_NVMSTAT_FWB)
+    while(ui32Count)
     {
         //
-        // Loop over the words to be programmed.
+        // Set the address of this block of words.
         //
-        while(ulCount)
+        HWREG(FLASH_FMA) = ui32Address & ~(0x7f);
+
+        //
+        // Loop over the words in this 32-word block.
+        //
+        while(((ui32Address & 0x7c) || (HWREG(FLASH_FWBVAL) == 0)) &&
+              (ui32Count != 0))
         {
             //
-            // Set the address of this block of words.
+            // Write this word into the write buffer.
             //
-            HWREG(FLASH_FMA) = ulAddress & ~(0x7f);
-
-            //
-            // Loop over the words in this 32-word block.
-            //
-            while(((ulAddress & 0x7c) || (HWREG(FLASH_FWBVAL) == 0)) &&
-                  (ulCount != 0))
-            {
-                //
-                // Write this word into the write buffer.
-                //
-                HWREG(FLASH_FWBN + (ulAddress & 0x7c)) = *pulData++;
-                ulAddress += 4;
-                ulCount -= 4;
-            }
-
-            //
-            // Program the contents of the write buffer into flash.
-            //
-            HWREG(FLASH_FMC2) = FLASH_FMC2_WRKEY | FLASH_FMC2_WRBUF;
-
-            //
-            // Wait until the write buffer has been programmed.
-            //
-            while(HWREG(FLASH_FMC2) & FLASH_FMC2_WRBUF)
-            {
-            }
+            HWREG(FLASH_FWBN + (ui32Address & 0x7c)) = *pui32Data++;
+            ui32Address += 4;
+            ui32Count -= 4;
         }
-    }
-    else
-    {
+
         //
-        // Loop over the words to be programmed.
+        // Program the contents of the write buffer into flash.
         //
-        while(ulCount)
+        HWREG(FLASH_FMC2) = FLASH_FMC2_WRKEY | FLASH_FMC2_WRBUF;
+
+        //
+        // Wait until the write buffer has been programmed.
+        //
+        while(HWREG(FLASH_FMC2) & FLASH_FMC2_WRBUF)
         {
-            //
-            // Program the next word.
-            //
-            HWREG(FLASH_FMA) = ulAddress;
-            HWREG(FLASH_FMD) = *pulData;
-            HWREG(FLASH_FMC) = FLASH_FMC_WRKEY | FLASH_FMC_WRITE;
-
-            //
-            // Wait until the word has been programmed.
-            //
-            while(HWREG(FLASH_FMC) & FLASH_FMC_WRITE)
-            {
-            }
-
-            //
-            // Increment to the next word.
-            //
-            pulData++;
-            ulAddress += 4;
-            ulCount -= 4;
         }
     }
 
@@ -312,7 +264,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
 //
 //! Gets the protection setting for a block of flash.
 //!
-//! \param ulAddress is the start address of the flash block to be queried.
+//! \param ui32Address is the start address of the flash block to be queried.
 //!
 //! This function gets the current protection for the specified 2-kB block
 //! of flash.  Each block can be read/write, read-only, or execute-only.
@@ -325,48 +277,36 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
 //
 //*****************************************************************************
 tFlashProtection
-FlashProtectGet(unsigned long ulAddress)
+FlashProtectGet(uint32_t ui32Address)
 {
-    unsigned long ulFMPRE, ulFMPPE;
-    unsigned long ulBank;
+    uint32_t ui32FMPRE, ui32FMPPE;
+    uint32_t ui32Bank;
 
     //
     // Check the argument.
     //
-    ASSERT(!(ulAddress & (FLASH_PROTECT_SIZE - 1)));
+    ASSERT(!(ui32Address & (FLASH_PROTECT_SIZE - 1)));
 
     //
     // Calculate the Flash Bank from Base Address, and mask off the Bank
-    // from ulAddress for subsequent reference.
+    // from ui32Address for subsequent reference.
     //
-    ulBank = (((ulAddress / FLASH_PROTECT_SIZE) / 32) % 4);
-    ulAddress &= ((FLASH_PROTECT_SIZE * 32) - 1);
+    ui32Bank = (((ui32Address / FLASH_PROTECT_SIZE) / 32) % 4);
+    ui32Address &= ((FLASH_PROTECT_SIZE * 32) - 1);
 
     //
     // Read the appropriate flash protection registers for the specified
     // flash bank.
     //
-    ulFMPRE = HWREG(g_pulFMPRERegs[ulBank]);
-    ulFMPPE = HWREG(g_pulFMPPERegs[ulBank]);
-
-    //
-    // For Stellaris Sandstorm-class devices, revision C1 and C2, the upper
-    // bits of the FMPPE register are used for JTAG protect options, and are
-    // not available for the FLASH protection scheme.  When Querying Block
-    // Protection, assume these bits are 1.
-    //
-    if(CLASS_IS_SANDSTORM && (REVISION_IS_C1 || REVISION_IS_C2))
-    {
-        ulFMPRE |= (FLASH_FMP_BLOCK_31 | FLASH_FMP_BLOCK_30);
-    }
+    ui32FMPRE = HWREG(g_pui32FMPRERegs[ui32Bank]);
+    ui32FMPPE = HWREG(g_pui32FMPPERegs[ui32Bank]);
 
     //
     // Check the appropriate protection bits for the block of memory that
     // is specified by the address.
     //
-    switch((((ulFMPRE >> (ulAddress / FLASH_PROTECT_SIZE)) &
-             FLASH_FMP_BLOCK_0) << 1) |
-           ((ulFMPPE >> (ulAddress / FLASH_PROTECT_SIZE)) & FLASH_FMP_BLOCK_0))
+    switch((((ui32FMPRE >> (ui32Address / FLASH_PROTECT_SIZE)) & 0x1) << 1) |
+           ((ui32FMPPE >> (ui32Address / FLASH_PROTECT_SIZE)) & 0x1))
     {
         //
         // This block is marked as execute only (that is, it can not be erased
@@ -403,7 +343,7 @@ FlashProtectGet(unsigned long ulAddress)
 //
 //! Sets the protection setting for a block of flash.
 //!
-//! \param ulAddress is the start address of the flash block to be protected.
+//! \param ui32Address is the start address of the flash block to be protected.
 //! \param eProtect is the protection to be applied to the block.  Can be one
 //! of \b FlashReadWrite, \b FlashReadOnly, or \b FlashExecuteOnly.
 //!
@@ -424,55 +364,40 @@ FlashProtectGet(unsigned long ulAddress)
 //! protection was specified.
 //
 //*****************************************************************************
-long
-FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
+int32_t
+FlashProtectSet(uint32_t ui32Address, tFlashProtection eProtect)
 {
-    unsigned long ulProtectRE, ulProtectPE;
-    unsigned long ulBank;
+    uint32_t ui32ProtectRE, ui32ProtectPE;
+    uint32_t ui32Bank;
 
     //
     // Check the argument.
     //
-    ASSERT(!(ulAddress & (FLASH_PROTECT_SIZE - 1)));
+    ASSERT(!(ui32Address & (FLASH_PROTECT_SIZE - 1)));
     ASSERT((eProtect == FlashReadWrite) || (eProtect == FlashReadOnly) ||
            (eProtect == FlashExecuteOnly));
 
     //
     // Convert the address into a block number.
     //
-    ulAddress /= FLASH_PROTECT_SIZE;
+    ui32Address /= FLASH_PROTECT_SIZE;
 
     //
-    // ulAddress contains a "raw" block number.  Derive the Flash Bank from
-    // the "raw" block number, and convert ulAddress to a "relative"
+    // ui32Address contains a "raw" block number.  Derive the Flash Bank from
+    // the "raw" block number, and convert ui32Address to a "relative"
     // block number.
     //
-    ulBank = ((ulAddress / 32) % 4);
-    ulAddress %= 32;
+    ui32Bank = ((ui32Address / 32) % 4);
+    ui32Address %= 32;
 
     //
     // Get the current protection for the specified flash bank.
     //
-    ulProtectRE = HWREG(g_pulFMPRERegs[ulBank]);
-    ulProtectPE = HWREG(g_pulFMPPERegs[ulBank]);
+    ui32ProtectRE = HWREG(g_pui32FMPRERegs[ui32Bank]);
+    ui32ProtectPE = HWREG(g_pui32FMPPERegs[ui32Bank]);
 
     //
-    // For Stellaris Sandstorm-class devices, revision C1 and C2, the upper
-    // bits of the FMPPE register are used for JTAG protect options, and are
-    // not available for the FLASH protection scheme.  When setting protection,
-    // check to see if block 30 or 31 and protection is FlashExecuteOnly.  If
-    // so, return an error condition.
-    //
-    if(CLASS_IS_SANDSTORM && (REVISION_IS_C1 || REVISION_IS_C2))
-    {
-        if((ulAddress >= 30) && (eProtect == FlashExecuteOnly))
-        {
-            return(-1);
-        }
-    }
-
-    //
-    // Set the protection based on the requested proection.
+    // Set the protection based on the requested protection.
     //
     switch(eProtect)
     {
@@ -484,8 +409,8 @@ FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
             //
             // Turn off the read and program bits for this block.
             //
-            ulProtectRE &= ~(FLASH_FMP_BLOCK_0 << ulAddress);
-            ulProtectPE &= ~(FLASH_FMP_BLOCK_0 << ulAddress);
+            ui32ProtectRE &= ~(0x1 << ui32Address);
+            ui32ProtectPE &= ~(0x1 << ui32Address);
 
             //
             // We're done handling this protection.
@@ -501,8 +426,7 @@ FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
             //
             // The block can not be made read only if it is execute only.
             //
-            if(((ulProtectRE >> ulAddress) & FLASH_FMP_BLOCK_0) !=
-               FLASH_FMP_BLOCK_0)
+            if(((ui32ProtectRE >> ui32Address) & 0x1) != 0x1)
             {
                 return(-1);
             }
@@ -510,7 +434,7 @@ FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
             //
             // Make this block read only.
             //
-            ulProtectPE &= ~(FLASH_FMP_BLOCK_0 << ulAddress);
+            ui32ProtectPE &= ~(0x1 << ui32Address);
 
             //
             // We're done handling this protection.
@@ -528,10 +452,8 @@ FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
             // The block can not be made read/write if it is not already
             // read/write.
             //
-            if((((ulProtectRE >> ulAddress) & FLASH_FMP_BLOCK_0) !=
-                FLASH_FMP_BLOCK_0) ||
-               (((ulProtectPE >> ulAddress) & FLASH_FMP_BLOCK_0) !=
-                FLASH_FMP_BLOCK_0))
+            if((((ui32ProtectRE >> ui32Address) & 0x1) != 0x1) ||
+               (((ui32ProtectPE >> ui32Address) & 0x1) != 0x1))
             {
                 return(-1);
             }
@@ -544,23 +466,10 @@ FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
     }
 
     //
-    // For Stellaris Sandstorm-class devices, revision C1 and C2, the upper
-    // bits of the FMPPE register are used for JTAG options, and are not
-    // available for the FLASH protection scheme.  When setting block
-    // protection, ensure that these bits are not altered.
-    //
-    if(CLASS_IS_SANDSTORM && (REVISION_IS_C1 || REVISION_IS_C2))
-    {
-        ulProtectRE &= ~(FLASH_FMP_BLOCK_31 | FLASH_FMP_BLOCK_30);
-        ulProtectRE |= (HWREG(g_pulFMPRERegs[ulBank]) &
-                        (FLASH_FMP_BLOCK_31 | FLASH_FMP_BLOCK_30));
-    }
-
-    //
     // Set the new protection for the specified flash bank.
     //
-    HWREG(g_pulFMPRERegs[ulBank]) = ulProtectRE;
-    HWREG(g_pulFMPPERegs[ulBank]) = ulProtectPE;
+    HWREG(g_pui32FMPRERegs[ui32Bank]) = ui32ProtectRE;
+    HWREG(g_pui32FMPPERegs[ui32Bank]) = ui32ProtectPE;
 
     //
     // Success.
@@ -581,23 +490,20 @@ FlashProtectSet(unsigned long ulAddress, tFlashProtection eProtect)
 //! \return Returns 0 on success, or -1 if a hardware error is encountered.
 //
 //*****************************************************************************
-long
+int32_t
 FlashProtectSave(void)
 {
-    unsigned long ulTemp, ulLimit;
+    uint32_t ui32Temp;
 
     //
-    // If running on a Sandstorm-class device, only trigger a save of the first
-    // two protection registers (FMPRE and FMPPE).  Otherwise, save the
-    // entire bank of flash protection registers.
+    // Save the entire bank of 8 flash protection registers.
     //
-    ulLimit = CLASS_IS_SANDSTORM ? 2 : 8;
-    for(ulTemp = 0; ulTemp < ulLimit; ulTemp++)
+    for(ui32Temp = 0; ui32Temp < 8; ui32Temp++)
     {
         //
         // Tell the flash controller to write the flash protection register.
         //
-        HWREG(FLASH_FMA) = ulTemp;
+        HWREG(FLASH_FMA) = ui32Temp;
         HWREG(FLASH_FMC) = FLASH_FMC_WRKEY | FLASH_FMC_COMT;
 
         //
@@ -618,8 +524,8 @@ FlashProtectSave(void)
 //
 //! Gets the user registers.
 //!
-//! \param pulUser0 is a pointer to the location to store USER Register 0.
-//! \param pulUser1 is a pointer to the location to store USER Register 1.
+//! \param pui32User0 is a pointer to the location to store USER Register 0.
+//! \param pui32User1 is a pointer to the location to store USER Register 1.
 //!
 //! This function reads the contents of user registers (0 and 1), and
 //! stores them in the specified locations.
@@ -627,28 +533,20 @@ FlashProtectSave(void)
 //! \return Returns 0 on success, or -1 if a hardware error is encountered.
 //
 //*****************************************************************************
-long
-FlashUserGet(unsigned long *pulUser0, unsigned long *pulUser1)
+int32_t
+FlashUserGet(uint32_t *pui32User0, uint32_t *pui32User1)
 {
     //
     // Verify that the pointers are valid.
     //
-    ASSERT(pulUser0 != 0);
-    ASSERT(pulUser1 != 0);
-
-    //
-    // Verify that hardware supports user registers.
-    //
-    if(CLASS_IS_SANDSTORM)
-    {
-        return(-1);
-    }
+    ASSERT(pui32User0 != 0);
+    ASSERT(pui32User1 != 0);
 
     //
     // Get and store the current value of the user registers.
     //
-    *pulUser0 = HWREG(FLASH_USERREG0);
-    *pulUser1 = HWREG(FLASH_USERREG1);
+    *pui32User0 = HWREG(FLASH_USERREG0);
+    *pui32User1 = HWREG(FLASH_USERREG1);
 
     //
     // Success.
@@ -660,8 +558,8 @@ FlashUserGet(unsigned long *pulUser0, unsigned long *pulUser1)
 //
 //! Sets the user registers.
 //!
-//! \param ulUser0 is the value to store in USER Register 0.
-//! \param ulUser1 is the value to store in USER Register 1.
+//! \param ui32User0 is the value to store in USER Register 0.
+//! \param ui32User1 is the value to store in USER Register 1.
 //!
 //! This function sets the contents of the user registers (0 and 1) to
 //! the specified values.
@@ -669,22 +567,14 @@ FlashUserGet(unsigned long *pulUser0, unsigned long *pulUser1)
 //! \return Returns 0 on success, or -1 if a hardware error is encountered.
 //
 //*****************************************************************************
-long
-FlashUserSet(unsigned long ulUser0, unsigned long ulUser1)
+int32_t
+FlashUserSet(uint32_t ui32User0, uint32_t ui32User1)
 {
-    //
-    // Verify that hardware supports user registers.
-    //
-    if(CLASS_IS_SANDSTORM)
-    {
-        return(-1);
-    }
-
     //
     // Save the new values into the user registers.
     //
-    HWREG(FLASH_USERREG0) = ulUser0;
-    HWREG(FLASH_USERREG1) = ulUser1;
+    HWREG(FLASH_USERREG0) = ui32User0;
+    HWREG(FLASH_USERREG1) = ui32User1;
 
     //
     // Success.
@@ -705,17 +595,9 @@ FlashUserSet(unsigned long ulUser0, unsigned long ulUser1)
 //! \return Returns 0 on success, or -1 if a hardware error is encountered.
 //
 //*****************************************************************************
-long
+int32_t
 FlashUserSave(void)
 {
-    //
-    // Verify that hardware supports user registers.
-    //
-    if(CLASS_IS_SANDSTORM)
-    {
-        return(-1);
-    }
-
     //
     // Setting the MSB of FMA will trigger a permanent save of a USER
     // register.  Bit 0 will indicate User 0 (0) or User 1 (1).
@@ -775,12 +657,12 @@ FlashIntRegister(void (*pfnHandler)(void))
     //
     // Register the interrupt handler, returning an error if an error occurs.
     //
-    IntRegister(INT_FLASH, pfnHandler);
+    IntRegister(INT_FLASH_BLIZZARD, pfnHandler);
 
     //
     // Enable the flash interrupt.
     //
-    IntEnable(INT_FLASH);
+    IntEnable(INT_FLASH_BLIZZARD);
 }
 
 //*****************************************************************************
@@ -803,19 +685,19 @@ FlashIntUnregister(void)
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_FLASH);
+    IntDisable(INT_FLASH_BLIZZARD);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_FLASH);
+    IntUnregister(INT_FLASH_BLIZZARD);
 }
 
 //*****************************************************************************
 //
 //! Enables individual flash controller interrupt sources.
 //!
-//! \param ulIntFlags is a bit mask of the interrupt sources to be enabled.
+//! \param ui32IntFlags is a bit mask of the interrupt sources to be enabled.
 //! Can be any of the \b FLASH_INT_PROGRAM or \b FLASH_INT_ACCESS values.
 //!
 //! This function enables the indicated flash controller interrupt sources.
@@ -826,19 +708,19 @@ FlashIntUnregister(void)
 //
 //*****************************************************************************
 void
-FlashIntEnable(unsigned long ulIntFlags)
+FlashIntEnable(uint32_t ui32IntFlags)
 {
     //
     // Enable the specified interrupts.
     //
-    HWREG(FLASH_FCIM) |= ulIntFlags;
+    HWREG(FLASH_FCIM) |= ui32IntFlags;
 }
 
 //*****************************************************************************
 //
 //! Disables individual flash controller interrupt sources.
 //!
-//! \param ulIntFlags is a bit mask of the interrupt sources to be disabled.
+//! \param ui32IntFlags is a bit mask of the interrupt sources to be disabled.
 //! Can be any of the \b FLASH_INT_PROGRAM or \b FLASH_INT_ACCESS values.
 //!
 //! This function disables the indicated flash controller interrupt sources.
@@ -849,12 +731,12 @@ FlashIntEnable(unsigned long ulIntFlags)
 //
 //*****************************************************************************
 void
-FlashIntDisable(unsigned long ulIntFlags)
+FlashIntDisable(uint32_t ui32IntFlags)
 {
     //
     // Disable the specified interrupts.
     //
-    HWREG(FLASH_FCIM) &= ~(ulIntFlags);
+    HWREG(FLASH_FCIM) &= ~(ui32IntFlags);
 }
 
 //*****************************************************************************
@@ -872,8 +754,8 @@ FlashIntDisable(unsigned long ulIntFlags)
 //! \b FLASH_INT_PROGRAM and \b FLASH_INT_ACCESS.
 //
 //*****************************************************************************
-unsigned long
-FlashIntStatus(tBoolean bMasked)
+uint32_t
+FlashIntStatus(bool bMasked)
 {
     //
     // Return either the interrupt status or the raw interrupt status as
@@ -893,7 +775,7 @@ FlashIntStatus(tBoolean bMasked)
 //
 //! Clears flash controller interrupt sources.
 //!
-//! \param ulIntFlags is the bit mask of the interrupt sources to be cleared.
+//! \param ui32IntFlags is the bit mask of the interrupt sources to be cleared.
 //! Can be any of the \b FLASH_INT_PROGRAM or \b FLASH_INT_AMISC values.
 //!
 //! The specified flash controller interrupt sources are cleared, so that they
@@ -913,12 +795,12 @@ FlashIntStatus(tBoolean bMasked)
 //
 //*****************************************************************************
 void
-FlashIntClear(unsigned long ulIntFlags)
+FlashIntClear(uint32_t ui32IntFlags)
 {
     //
     // Clear the flash interrupt.
     //
-    HWREG(FLASH_FCMISC) = ulIntFlags;
+    HWREG(FLASH_FCMISC) = ui32IntFlags;
 }
 
 //*****************************************************************************

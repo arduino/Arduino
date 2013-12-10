@@ -209,13 +209,14 @@ HardwareSerial::begin(unsigned long baud)
 	flushAll();
 	ROM_UARTIntDisable(UART_BASE, 0xFFFFFFFF);
     ROM_UARTIntEnable(UART_BASE, UART_INT_RX | UART_INT_RT);
-    ROM_IntMasterEnable();
     ROM_IntEnable(g_ulUARTInt[uartModule]);
 
     //
     // Enable the UART operation.
     //
     ROM_UARTEnable(UART_BASE);
+
+    SysCtlDelay(100);
 }
 
 void

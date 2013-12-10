@@ -2,7 +2,7 @@
 //
 // rom.h - Macros to facilitate calling functions in the ROM.
 //
-// Copyright (c) 2007-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2007-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,362 +33,443 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __ROM_H__
-#define __ROM_H__
+#ifndef __DRIVERLIB_ROM_H__
+#define __DRIVERLIB_ROM_H__
 
 //*****************************************************************************
 //
 // Pointers to the main API tables.
 //
 //*****************************************************************************
-#define ROM_APITABLE            ((unsigned long *)0x01000010)
+#define ROM_APITABLE            ((uint32_t *)0x01000010)
 #define ROM_VERSION             (ROM_APITABLE[0])
-#define ROM_UARTTABLE           ((unsigned long *)(ROM_APITABLE[1]))
-#define ROM_SSITABLE            ((unsigned long *)(ROM_APITABLE[2]))
-#define ROM_I2CTABLE            ((unsigned long *)(ROM_APITABLE[3]))
-#define ROM_GPIOTABLE           ((unsigned long *)(ROM_APITABLE[4]))
-#define ROM_ADCTABLE            ((unsigned long *)(ROM_APITABLE[5]))
-#define ROM_COMPARATORTABLE     ((unsigned long *)(ROM_APITABLE[6]))
-#define ROM_FLASHTABLE          ((unsigned long *)(ROM_APITABLE[7]))
-#define ROM_PWMTABLE            ((unsigned long *)(ROM_APITABLE[8]))
-#define ROM_QEITABLE            ((unsigned long *)(ROM_APITABLE[9]))
-#define ROM_SYSTICKTABLE        ((unsigned long *)(ROM_APITABLE[10]))
-#define ROM_TIMERTABLE          ((unsigned long *)(ROM_APITABLE[11]))
-#define ROM_WATCHDOGTABLE       ((unsigned long *)(ROM_APITABLE[12]))
-#define ROM_SYSCTLTABLE         ((unsigned long *)(ROM_APITABLE[13]))
-#define ROM_INTERRUPTTABLE      ((unsigned long *)(ROM_APITABLE[14]))
-#define ROM_ETHERNETTABLE       ((unsigned long *)(ROM_APITABLE[15]))
-#define ROM_USBTABLE            ((unsigned long *)(ROM_APITABLE[16]))
-#define ROM_UDMATABLE           ((unsigned long *)(ROM_APITABLE[17]))
-#define ROM_CANTABLE            ((unsigned long *)(ROM_APITABLE[18]))
-#define ROM_HIBERNATETABLE      ((unsigned long *)(ROM_APITABLE[19]))
-#define ROM_MPUTABLE            ((unsigned long *)(ROM_APITABLE[20]))
-#define ROM_SOFTWARETABLE       ((unsigned long *)(ROM_APITABLE[21]))
-#define ROM_I2STABLE            ((unsigned long *)(ROM_APITABLE[22]))
-#define ROM_EPITABLE            ((unsigned long *)(ROM_APITABLE[23]))
-#define ROM_EEPROMTABLE         ((unsigned long *)(ROM_APITABLE[24]))
-#define ROM_FANTABLE            ((unsigned long *)(ROM_APITABLE[25]))
-#define ROM_FPUTABLE            ((unsigned long *)(ROM_APITABLE[26]))
-#define ROM_LPCTABLE            ((unsigned long *)(ROM_APITABLE[27]))
-#define ROM_PECITABLE           ((unsigned long *)(ROM_APITABLE[28]))
-#define ROM_SMBUSTABLE          ((unsigned long *)(ROM_APITABLE[29]))
-#define ROM_SYSEXCTABLE         ((unsigned long *)(ROM_APITABLE[30]))
+#define ROM_UARTTABLE           ((uint32_t *)(ROM_APITABLE[1]))
+#define ROM_SSITABLE            ((uint32_t *)(ROM_APITABLE[2]))
+#define ROM_I2CTABLE            ((uint32_t *)(ROM_APITABLE[3]))
+#define ROM_GPIOTABLE           ((uint32_t *)(ROM_APITABLE[4]))
+#define ROM_ADCTABLE            ((uint32_t *)(ROM_APITABLE[5]))
+#define ROM_COMPARATORTABLE     ((uint32_t *)(ROM_APITABLE[6]))
+#define ROM_FLASHTABLE          ((uint32_t *)(ROM_APITABLE[7]))
+#define ROM_PWMTABLE            ((uint32_t *)(ROM_APITABLE[8]))
+#define ROM_QEITABLE            ((uint32_t *)(ROM_APITABLE[9]))
+#define ROM_SYSTICKTABLE        ((uint32_t *)(ROM_APITABLE[10]))
+#define ROM_TIMERTABLE          ((uint32_t *)(ROM_APITABLE[11]))
+#define ROM_WATCHDOGTABLE       ((uint32_t *)(ROM_APITABLE[12]))
+#define ROM_SYSCTLTABLE         ((uint32_t *)(ROM_APITABLE[13]))
+#define ROM_INTERRUPTTABLE      ((uint32_t *)(ROM_APITABLE[14]))
+#define ROM_USBTABLE            ((uint32_t *)(ROM_APITABLE[16]))
+#define ROM_UDMATABLE           ((uint32_t *)(ROM_APITABLE[17]))
+#define ROM_CANTABLE            ((uint32_t *)(ROM_APITABLE[18]))
+#define ROM_HIBERNATETABLE      ((uint32_t *)(ROM_APITABLE[19]))
+#define ROM_MPUTABLE            ((uint32_t *)(ROM_APITABLE[20]))
+#define ROM_SOFTWARETABLE       ((uint32_t *)(ROM_APITABLE[21]))
+#define ROM_EPITABLE            ((uint32_t *)(ROM_APITABLE[23]))
+#define ROM_EEPROMTABLE         ((uint32_t *)(ROM_APITABLE[24]))
+#define ROM_FANTABLE            ((uint32_t *)(ROM_APITABLE[25]))
+#define ROM_FPUTABLE            ((uint32_t *)(ROM_APITABLE[26]))
+#define ROM_LPCTABLE            ((uint32_t *)(ROM_APITABLE[27]))
+#define ROM_PECITABLE           ((uint32_t *)(ROM_APITABLE[28]))
+#define ROM_SMBUSTABLE          ((uint32_t *)(ROM_APITABLE[29]))
+#define ROM_SYSEXCTABLE         ((uint32_t *)(ROM_APITABLE[30]))
+#define ROM_CIRTABLE            ((uint32_t *)(ROM_APITABLE[31]))
+#define ROM_KBSCANTABLE         ((uint32_t *)(ROM_APITABLE[32]))
+#define ROM_LEDSEQTABLE         ((uint32_t *)(ROM_APITABLE[33]))
+#define ROM_ONEWIRETABLE        ((uint32_t *)(ROM_APITABLE[34]))
+#define ROM_PS2TABLE            ((uint32_t *)(ROM_APITABLE[36]))
+#define ROM_SPIFLASHTABLE       ((uint32_t *)(ROM_APITABLE[38]))
+#define ROM_LPCBTABLE           ((uint32_t *)(ROM_APITABLE[40]))
+#define ROM_LCDTABLE            ((uint32_t *)(ROM_APITABLE[41]))
+#define ROM_EMACTABLE           ((uint32_t *)(ROM_APITABLE[42]))
+#define ROM_AESTABLE            ((uint32_t *)(ROM_APITABLE[43]))
+#define ROM_CRCTABLE            ((uint32_t *)(ROM_APITABLE[44]))
+#define ROM_DESTABLE            ((uint32_t *)(ROM_APITABLE[45]))
+#define ROM_SHAMD5TABLE         ((uint32_t *)(ROM_APITABLE[46]))
+#define ROM_PORT80TABLE         ((uint32_t *)(ROM_APITABLE[47]))
 
 //*****************************************************************************
 //
 // Macros for calling ROM functions in the ADC API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceDataGet                                                \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum,                               \
-                   unsigned long *pulBuffer))ROM_ADCTABLE[0])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32SequenceNum,                               \
+                      uint32_t *pui32Buffer))ROM_ADCTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulSequenceNum,                      \
-                            tBoolean bMasked))ROM_ADCTABLE[3])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32SequenceNum,                              \
+                       bool bMasked))ROM_ADCTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceEnable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceDisable                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceConfigure                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum,                               \
-                   unsigned long ulTrigger,                                   \
-                   unsigned long ulPriority))ROM_ADCTABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum,                                  \
+                   uint32_t ui32Trigger,                                      \
+                   uint32_t ui32Priority))ROM_ADCTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceStepConfigure                                          \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum,                               \
-                   unsigned long ulStep,                                      \
-                   unsigned long ulConfig))ROM_ADCTABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum,                                  \
+                   uint32_t ui32Step,                                         \
+                   uint32_t ui32Config))ROM_ADCTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceOverflow                                               \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[9])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32SequenceNum))ROM_ADCTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceOverflowClear                                          \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceUnderflow                                              \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[11])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32SequenceNum))ROM_ADCTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCSequenceUnderflowClear                                         \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[12])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCProcessorTrigger                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[13])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCHardwareOversampleConfigure                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFactor))ROM_ADCTABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Factor))ROM_ADCTABLE[14])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorConfigure                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp,                                      \
-                   unsigned long ulConfig))ROM_ADCTABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp,                                         \
+                   uint32_t ui32Config))ROM_ADCTABLE[15])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorRegionSet                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp,                                      \
-                   unsigned long ulLowRef,                                    \
-                   unsigned long ulHighRef))ROM_ADCTABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp,                                         \
+                   uint32_t ui32LowRef,                                       \
+                   uint32_t ui32HighRef))ROM_ADCTABLE[16])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorReset                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp,                                      \
-                   tBoolean bTrigger,                                         \
-                   tBoolean bInterrupt))ROM_ADCTABLE[17])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp,                                         \
+                   bool bTrigger,                                             \
+                   bool bInterrupt))ROM_ADCTABLE[17])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorIntDisable                                           \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[18])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[18])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorIntEnable                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSequenceNum))ROM_ADCTABLE[19])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[19])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorIntStatus                                            \
-        ((unsigned long (*)(unsigned long ulBase))ROM_ADCTABLE[20])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_ADCTABLE[20])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCComparatorIntClear                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulStatus))ROM_ADCTABLE[21])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Status))ROM_ADCTABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCReferenceSet                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulRef))ROM_ADCTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Ref))ROM_ADCTABLE[22])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCReferenceGet                                                   \
-        ((unsigned long (*)(unsigned long ulBase))ROM_ADCTABLE[23])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_ADCTABLE[23])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCPhaseDelaySet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPhase))ROM_ADCTABLE[24])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Phase))ROM_ADCTABLE[24])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ADCPhaseDelayGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_ADCTABLE[25])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_ADCTABLE[25])
 #endif
-#if defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_ADCResolutionSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulResolution))ROM_ADCTABLE[26])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCIntClearEx                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_ADCTABLE[28])
 #endif
-#if defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_ADCResolutionGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_ADCTABLE[27])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCIntDisableEx                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_ADCTABLE[29])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCIntEnableEx                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_ADCTABLE[30])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCIntStatusEx                                                    \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_ADCTABLE[31])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCSequenceDMAEnable                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[32])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCSequenceDMADisable                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SequenceNum))ROM_ADCTABLE[33])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_ADCBusy                                                           \
+        ((bool (*)(uint32_t ui32Base))ROM_ADCTABLE[34])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the AES API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESIntStatus                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_AESTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESAuthLengthSet                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Length))ROM_AESTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESConfigSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_AESTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataAuth                                                       \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src,                                        \
+                   uint32_t ui32Length,                                       \
+                   uint32_t *pui32Tag))ROM_AESTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataProcess                                                    \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src,                                        \
+                   uint32_t *pui32Dest,                                       \
+                   uint32_t ui32Length))ROM_AESTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataProcessAuth                                                \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src,                                        \
+                   uint32_t *pui32Dest,                                       \
+                   uint32_t ui32Length,                                       \
+                   uint32_t *pui32AuthSrc,                                    \
+                   uint32_t ui32AuthLength,                                   \
+                   uint32_t *pui32Tag))ROM_AESTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataRead                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Dest))ROM_AESTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataReadNonBlocking                                            \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Dest))ROM_AESTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataWrite                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_AESTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDataWriteNonBlocking                                           \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_AESTABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDMADisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_AESTABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESDMAEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_AESTABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESIntClear                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_AESTABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESIntDisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_AESTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESIntEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_AESTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESIVSet                                                          \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32IVdata))ROM_AESTABLE[15])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESKey1Set                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Key,                                        \
+                   uint32_t ui32Keysize))ROM_AESTABLE[16])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESKey2Set                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Key,                                        \
+                   uint32_t ui32Keysize))ROM_AESTABLE[17])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESKey3Set                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Key))ROM_AESTABLE[18])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESLengthSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint64_t ui64Length))ROM_AESTABLE[19])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESReset                                                          \
+        ((void (*)(uint32_t ui32Base))ROM_AESTABLE[20])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_AESTagRead                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32TagData))ROM_AESTABLE[21])
 #endif
 
 //*****************************************************************************
@@ -396,193 +477,226 @@
 // Macros for calling ROM functions in the CAN API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntClr))ROM_CANTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntClr))ROM_CANTABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANInit                                                           \
-        ((void (*)(unsigned long ulBase))ROM_CANTABLE[1])
+        ((void (*)(uint32_t ui32Base))ROM_CANTABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANEnable                                                         \
-        ((void (*)(unsigned long ulBase))ROM_CANTABLE[2])
+        ((void (*)(uint32_t ui32Base))ROM_CANTABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANDisable                                                        \
-        ((void (*)(unsigned long ulBase))ROM_CANTABLE[3])
+        ((void (*)(uint32_t ui32Base))ROM_CANTABLE[3])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANBitTimingSet                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tCANBitClkParms *pClkParms))ROM_CANTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   tCANBitClkParms *psClkParms))ROM_CANTABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANBitTimingGet                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tCANBitClkParms *pClkParms))ROM_CANTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   tCANBitClkParms *psClkParms))ROM_CANTABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANMessageSet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulObjID,                                     \
-                   tCANMsgObject *pMsgObject,                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32ObjID,                                        \
+                   tCANMsgObject *psMsgObject,                                \
                    tMsgObjType eMsgType))ROM_CANTABLE[6])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANMessageGet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulObjID,                                     \
-                   tCANMsgObject *pMsgObject,                                 \
-                   tBoolean bClrPendingInt))ROM_CANTABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32ObjID,                                        \
+                   tCANMsgObject *psMsgObject,                                \
+                   bool bClrPendingInt))ROM_CANTABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANStatusGet                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tCANStsReg eStatusReg))ROM_CANTABLE[8])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       tCANStsReg eStatusReg))ROM_CANTABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANMessageClear                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulObjID))ROM_CANTABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32ObjID))ROM_CANTABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_CANTABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_CANTABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_CANTABLE[11])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_CANTABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tCANIntStsReg eIntStsReg))ROM_CANTABLE[12])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       tCANIntStsReg eIntStsReg))ROM_CANTABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANRetryGet                                                       \
-        ((tBoolean (*)(unsigned long ulBase))ROM_CANTABLE[13])
+        ((bool (*)(uint32_t ui32Base))ROM_CANTABLE[13])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANRetrySet                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bAutoRetry))ROM_CANTABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bAutoRetry))ROM_CANTABLE[14])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANErrCntrGet                                                     \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       unsigned long *pulRxCount,                             \
-                       unsigned long *pulTxCount))ROM_CANTABLE[15])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32RxCount,                                    \
+                   uint32_t *pui32TxCount))ROM_CANTABLE[15])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_CANBitRateSet                                                     \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulSourceClock,                      \
-                            unsigned long ulBitRate))ROM_CANTABLE[16])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32SourceClock,                              \
+                       uint32_t ui32BitRate))ROM_CANTABLE[16])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the CIR API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRIntStatus                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_CIRTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRConfigGet                                                      \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_CIRTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRConfigSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_CIRTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRIntClear                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_CIRTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRIntDisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_CIRTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRIntEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_CIRTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRRxCountGet                                                     \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t *pui32Output,                                 \
+                       uint32_t *pui32Silence))ROM_CIRTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRRxDisable                                                      \
+        ((void (*)(uint32_t ui32Base))ROM_CIRTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRRxEnable                                                       \
+        ((void (*)(uint32_t ui32Base))ROM_CIRTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRRxMinMaxSet                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Min10uS,                                        \
+                   uint8_t ui8MaxOutput50uS,                                  \
+                   uint8_t ui8MaxSilence50uS,                                 \
+                   bool bMaxSilenceIsError))ROM_CIRTABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRRxStatusGet                                                    \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_CIRTABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRRxWaitForOutput                                                \
+        ((void (*)(uint32_t ui32Base))ROM_CIRTABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRTxDisable                                                      \
+        ((void (*)(uint32_t ui32Base))ROM_CIRTABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRTxEnable                                                       \
+        ((void (*)(uint32_t ui32Base))ROM_CIRTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRTxCountSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Output,                                       \
+                   uint32_t ui32Silence))ROM_CIRTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CIRTxStatusGet                                                    \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_CIRTABLE[15])
 #endif
 
 //*****************************************************************************
@@ -590,91 +704,183 @@
 // Macros for calling ROM functions in the Comparator API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorIntClear                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp))ROM_COMPARATORTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp))ROM_COMPARATORTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorConfigure                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp,                                      \
-                   unsigned long ulConfig))ROM_COMPARATORTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp,                                         \
+                   uint32_t ui32Config))ROM_COMPARATORTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorRefSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulRef))ROM_COMPARATORTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Ref))ROM_COMPARATORTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorValueGet                                                \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       unsigned long ulComp))ROM_COMPARATORTABLE[3])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp))ROM_COMPARATORTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorIntEnable                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp))ROM_COMPARATORTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp))ROM_COMPARATORTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorIntDisable                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulComp))ROM_COMPARATORTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp))ROM_COMPARATORTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_ComparatorIntStatus                                               \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       unsigned long ulComp,                                  \
-                       tBoolean bMasked))ROM_COMPARATORTABLE[6])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Comp,                                         \
+                   bool bMasked))ROM_COMPARATORTABLE[6])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the CRC API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CRCConfigSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CRCConfig))ROM_CRCTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CRCDataProcess                                                    \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t *pui32DataIn,                                 \
+                       uint32_t ui32DataLength,                               \
+                       bool bPPResult))ROM_CRCTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CRCDataWrite                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Data))ROM_CRCTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CRCResultRead                                                     \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bPPResult))ROM_CRCTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_CRCSeedSet                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Seed))ROM_CRCTABLE[4])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the DES API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESIntStatus                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_DESTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESConfigSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_DESTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDataRead                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Dest))ROM_DESTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDataReadNonBlocking                                            \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Dest))ROM_DESTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDataProcess                                                    \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src,                                        \
+                   uint32_t *pui32Dest,                                       \
+                   uint32_t ui32Length))ROM_DESTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDataWrite                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_DESTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDataWriteNonBlocking                                           \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_DESTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDMADisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_DESTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESDMAEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_DESTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESIntClear                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_DESTABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESIntDisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_DESTABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESIntEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_DESTABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESIVSet                                                          \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32IVdata))ROM_DESTABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESKeySet                                                         \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Key))ROM_DESTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESLengthSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Length))ROM_DESTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_DESReset                                                          \
+        ((void (*)(uint32_t ui32Base))ROM_DESTABLE[15])
 #endif
 
 //*****************************************************************************
@@ -682,87 +888,122 @@
 // Macros for calling ROM functions in the EEPROM API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMRead                                                        \
-        ((void (*)(unsigned long *pulData,                                    \
-                   unsigned long ulAddress,                                   \
-                   unsigned long ulCount))ROM_EEPROMTABLE[0])
+        ((void (*)(uint32_t *pui32Data,                                       \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32Count))ROM_EEPROMTABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockCountGet                                               \
-        ((unsigned long (*)(void))ROM_EEPROMTABLE[1])
+        ((uint32_t (*)(void))ROM_EEPROMTABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockHide                                                   \
-        ((void (*)(unsigned long ulBlock))ROM_EEPROMTABLE[2])
+        ((void (*)(uint32_t ui32Block))ROM_EEPROMTABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockLock                                                   \
-        ((unsigned long (*)(unsigned long ulBlock))ROM_EEPROMTABLE[3])
+        ((uint32_t (*)(uint32_t ui32Block))ROM_EEPROMTABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockPasswordSet                                            \
-        ((unsigned long (*)(unsigned long ulBlock,                            \
-                            unsigned long *pulPassword,                       \
-                            unsigned long ulCount))ROM_EEPROMTABLE[4])
+        ((uint32_t (*)(uint32_t ui32Block,                                    \
+                       uint32_t *pui32Password,                               \
+                       uint32_t ui32Count))ROM_EEPROMTABLE[4])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockProtectGet                                             \
-        ((unsigned long (*)(unsigned long ulBlock))ROM_EEPROMTABLE[5])
+        ((uint32_t (*)(uint32_t ui32Block))ROM_EEPROMTABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockProtectSet                                             \
-        ((unsigned long (*)(unsigned long ulBlock,                            \
-                            unsigned long ulProtect))ROM_EEPROMTABLE[6])
+        ((uint32_t (*)(uint32_t ui32Block,                                    \
+                       uint32_t ui32Protect))ROM_EEPROMTABLE[6])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMBlockUnlock                                                 \
-        ((unsigned long (*)(unsigned long ulBlock,                            \
-                            unsigned long *pulPassword,                       \
-                            unsigned long ulCount))ROM_EEPROMTABLE[7])
+        ((uint32_t (*)(uint32_t ui32Block,                                    \
+                       uint32_t *pui32Password,                               \
+                       uint32_t ui32Count))ROM_EEPROMTABLE[7])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMIntClear                                                    \
-        ((void (*)(unsigned long ulIntFlags))ROM_EEPROMTABLE[8])
+        ((void (*)(uint32_t ui32IntFlags))ROM_EEPROMTABLE[8])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMIntDisable                                                  \
-        ((void (*)(unsigned long ulIntFlags))ROM_EEPROMTABLE[9])
+        ((void (*)(uint32_t ui32IntFlags))ROM_EEPROMTABLE[9])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMIntEnable                                                   \
-        ((void (*)(unsigned long ulIntFlags))ROM_EEPROMTABLE[10])
+        ((void (*)(uint32_t ui32IntFlags))ROM_EEPROMTABLE[10])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMIntStatus                                                   \
-        ((unsigned long (*)(tBoolean bMasked))ROM_EEPROMTABLE[11])
+        ((uint32_t (*)(bool bMasked))ROM_EEPROMTABLE[11])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_EEPROMMassErase                                                   \
-        ((unsigned long (*)(void))ROM_EEPROMTABLE[12])
+        ((uint32_t (*)(void))ROM_EEPROMTABLE[12])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMProgram                                                     \
-        ((unsigned long (*)(unsigned long *pulData,                           \
-                            unsigned long ulAddress,                          \
-                            unsigned long ulCount))ROM_EEPROMTABLE[13])
+        ((uint32_t (*)(uint32_t *pui32Data,                                   \
+                       uint32_t ui32Address,                                  \
+                       uint32_t ui32Count))ROM_EEPROMTABLE[13])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMProgramNonBlocking                                          \
-        ((unsigned long (*)(unsigned long ulData,                             \
-                            unsigned long ulAddress))ROM_EEPROMTABLE[14])
+        ((uint32_t (*)(uint32_t ui32Data,                                     \
+                       uint32_t ui32Address))ROM_EEPROMTABLE[14])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMSizeGet                                                     \
-        ((unsigned long (*)(void))ROM_EEPROMTABLE[15])
+        ((uint32_t (*)(void))ROM_EEPROMTABLE[15])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMStatusGet                                                   \
-        ((unsigned long (*)(void))ROM_EEPROMTABLE[16])
+        ((uint32_t (*)(void))ROM_EEPROMTABLE[16])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EEPROMInit                                                        \
-        ((unsigned long (*)(void))ROM_EEPROMTABLE[17])
+        ((uint32_t (*)(void))ROM_EEPROMTABLE[17])
 #endif
 
 //*****************************************************************************
@@ -770,390 +1011,363 @@
 // Macros for calling ROM functions in the EPI API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_EPITABLE[0])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_EPITABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIModeSet                                                        \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulMode))ROM_EPITABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Mode))ROM_EPITABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIDividerSet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDivider))ROM_EPITABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Divider))ROM_EPITABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIConfigSDRAMSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulRefresh))ROM_EPITABLE[3])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Refresh))ROM_EPITABLE[3])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIConfigGPModeSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulFrameCount,                                \
-                   unsigned long ulMaxWait))ROM_EPITABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32FrameCount,                                   \
+                   uint32_t ui32MaxWait))ROM_EPITABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIConfigHB8Set                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulMaxWait))ROM_EPITABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32MaxWait))ROM_EPITABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIConfigHB16Set                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulMaxWait))ROM_EPITABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32MaxWait))ROM_EPITABLE[6])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIAddressMapSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulMap))ROM_EPITABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Map))ROM_EPITABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadConfigure                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulDataSize,                                  \
-                   unsigned long ulAddress))ROM_EPITABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32DataSize,                                     \
+                   uint32_t ui32Address))ROM_EPITABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadStart                                           \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulCount))ROM_EPITABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Count))ROM_EPITABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadStop                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel))ROM_EPITABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_EPITABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadCount                                           \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_EPITABLE[11])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_EPITABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadAvail                                           \
-        ((unsigned long (*)(unsigned long ulBase))ROM_EPITABLE[12])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_EPITABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadGet32                                           \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulCount,                            \
-                            unsigned long *pulBuf))ROM_EPITABLE[13])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Count,                                    \
+                       uint32_t *pui32Buf))ROM_EPITABLE[13])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadGet16                                           \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulCount,                            \
-                            unsigned short *pusBuf))ROM_EPITABLE[14])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Count,                                    \
+                       uint16_t *pui16Buf))ROM_EPITABLE[14])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPINonBlockingReadGet8                                            \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulCount,                            \
-                            unsigned char *pucBuf))ROM_EPITABLE[15])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Count,                                    \
+                       uint8_t *pui8Buf))ROM_EPITABLE[15])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIFIFOConfig                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_EPITABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_EPITABLE[16])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIWriteFIFOCountGet                                              \
-        ((unsigned long (*)(unsigned long ulBase))ROM_EPITABLE[17])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_EPITABLE[17])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_EPITABLE[18])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_EPITABLE[18])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_EPITABLE[19])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_EPITABLE[19])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIIntErrorStatus                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_EPITABLE[20])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_EPITABLE[20])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_EPIIntErrorClear                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulErrFlags))ROM_EPITABLE[21])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32ErrFlags))ROM_EPITABLE[21])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIDividerCSSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t ui32Divider))ROM_EPITABLE[22])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIDMATxCount                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Count))ROM_EPITABLE[23])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIConfigHB8CSSet                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t ui32Config))ROM_EPITABLE[24])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIConfigHB16CSSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t ui32Config))ROM_EPITABLE[25])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIConfigHB8TimingSet                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t ui32Config))ROM_EPITABLE[26])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIConfigHB16TimingSet                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t ui32Config))ROM_EPITABLE[27])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIPSRAMConfigRegSet                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t ui32CR))ROM_EPITABLE[28])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIPSRAMConfigRegRead                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS))ROM_EPITABLE[29])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIPSRAMConfigRegGetNonBlocking                                   \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint32_t *pui32CR))ROM_EPITABLE[30])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EPIPSRAMConfigRegGet                                              \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32CS))ROM_EPITABLE[31])
 #endif
 
 //*****************************************************************************
 //
-// Macros for calling ROM functions in the Ethernet API.
+// Macros for calling ROM functions in the EMAC API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetIntClear                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_ETHERNETTABLE[0])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACIntStatus                                                     \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_EMACTABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetInitExpClk                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEthClk))ROM_ETHERNETTABLE[1])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACAddrGet                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Index,                                        \
+                   uint8_t *pui8MACAddr))ROM_EMACTABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetConfigSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_ETHERNETTABLE[2])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACAddrSet                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Index,                                        \
+                   const uint8_t *pui8MACAddr))ROM_EMACTABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetConfigGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_ETHERNETTABLE[3])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACConfigGet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Config,                                     \
+                   uint32_t *pui32Mode,                                       \
+                   uint32_t *pui32RxMaxFrameSize))ROM_EMACTABLE[3])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetMACAddrSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char *pucMACAddr))ROM_ETHERNETTABLE[4])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACConfigSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32ModeFlags,                                    \
+                   uint32_t ui32RxMaxFrameSize))ROM_EMACTABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetMACAddrGet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char *pucMACAddr))ROM_ETHERNETTABLE[5])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACDMAStateGet                                                   \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_EMACTABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_ETHERNETTABLE[6])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACFrameFilterGet                                                \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_EMACTABLE[6])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetDisable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_ETHERNETTABLE[7])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACFrameFilterSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32FilterOpts))ROM_EMACTABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPacketAvail                                               \
-        ((tBoolean (*)(unsigned long ulBase))ROM_ETHERNETTABLE[8])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACInit                                                          \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SysClk,                                       \
+                   uint32_t ui32BusConfig,                                    \
+                   uint32_t ui32RxBurst,                                      \
+                   uint32_t ui32TxBurst,                                      \
+                   uint32_t ui32DescSkipSize))ROM_EMACTABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetSpaceAvail                                                \
-        ((tBoolean (*)(unsigned long ulBase))ROM_ETHERNETTABLE[9])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACIntClear                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_EMACTABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPacketGetNonBlocking                                      \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned char *pucBuf,                                     \
-                   long lBufLen))ROM_ETHERNETTABLE[10])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACIntDisable                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_EMACTABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPacketGet                                                 \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned char *pucBuf,                                     \
-                   long lBufLen))ROM_ETHERNETTABLE[11])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACIntEnable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_EMACTABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPacketPutNonBlocking                                      \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned char *pucBuf,                                     \
-                   long lBufLen))ROM_ETHERNETTABLE[12])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACPHYConfigSet                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_EMACTABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPacketPut                                                 \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned char *pucBuf,                                     \
-                   long lBufLen))ROM_ETHERNETTABLE[13])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACPHYPowerOff                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8PhyAddr))ROM_EMACTABLE[13])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetIntEnable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_ETHERNETTABLE[14])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACPHYPowerOn                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8PhyAddr))ROM_EMACTABLE[14])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetIntDisable                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_ETHERNETTABLE[15])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACPHYRead                                                       \
+        ((uint16_t (*)(uint32_t ui32Base,                                     \
+                        uint8_t ui8PhyAddr,                                   \
+                       uint8_t ui8RegAddr))ROM_EMACTABLE[15])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetIntStatus                                                 \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_ETHERNETTABLE[16])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACPHYWrite                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8PhyAddr,                                        \
+                   uint8_t ui8RegAddr,                                        \
+                   uint16_t ui16Data))ROM_EMACTABLE[16])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPHYWrite                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucRegAddr,                                   \
-                   unsigned long ulData))ROM_ETHERNETTABLE[17])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACReset                                                         \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[17])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPHYRead                                                   \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned char ucRegAddr))ROM_ETHERNETTABLE[18])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxDisable                                                     \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[18])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_UpdateEthernet                                                    \
-        ((void (*)(unsigned long ulClock))ROM_ETHERNETTABLE[19])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxDMACurrentBufferGet                                         \
+        ((uint8_t * (*)(uint32_t ui32Base))ROM_EMACTABLE[19])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPHYAddrSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAddr))ROM_ETHERNETTABLE[20])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxDMACurrentDescriptorGet                                     \
+        ((tEMACDMADescriptor * (*)(uint32_t ui32Base))ROM_EMACTABLE[20])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPHYPowerOff                                               \
-        ((void (*)(unsigned long ulBase))ROM_ETHERNETTABLE[21])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxDMADescriptorListGet                                        \
+        ((tEMACDMADescriptor * (*)(uint32_t ui32Base))ROM_EMACTABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_EthernetPHYPowerOn                                                \
-        ((void (*)(unsigned long ulBase))ROM_ETHERNETTABLE[22])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxDMADescriptorListSet                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   tEMACDMADescriptor *pDescriptor))ROM_EMACTABLE[22])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxDMAPollDemand                                               \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[23])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxEnable                                                      \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[24])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACRxWatchdogTimerSet                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Timeout))ROM_EMACTABLE[25])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACStatusGet                                                     \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_EMACTABLE[26])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxDisable                                                     \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[27])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxDMACurrentBufferGet                                         \
+        ((uint8_t * (*)(uint32_t ui32Base))ROM_EMACTABLE[28])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxDMACurrentDescriptorGet                                     \
+        ((tEMACDMADescriptor * (*)(uint32_t ui32Base))ROM_EMACTABLE[29])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxDMADescriptorListGet                                        \
+        ((tEMACDMADescriptor * (*)(uint32_t ui32Base))ROM_EMACTABLE[30])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxDMADescriptorListSet                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   tEMACDMADescriptor *pDescriptor))ROM_EMACTABLE[31])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxDMAPollDemand                                               \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[32])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxEnable                                                      \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[33])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACTxFlush                                                       \
+        ((void (*)(uint32_t ui32Base))ROM_EMACTABLE[34])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_EMACHashFilterSet                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32HashHi,                                       \
+                   uint32_t ui32HashLo))ROM_EMACTABLE[39])
 #endif
 
 //*****************************************************************************
@@ -1161,92 +1375,128 @@
 // Macros for calling ROM functions in the Fan API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_FANTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_FANTABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelConfigAuto                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulConfig))ROM_FANTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config))ROM_FANTABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelConfigManual                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulConfig))ROM_FANTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config))ROM_FANTABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelDisable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel))ROM_FANTABLE[3])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_FANTABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelDutyGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_FANTABLE[4])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_FANTABLE[4])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelDutySet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulDuty))ROM_FANTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Duty))ROM_FANTABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelEnable                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel))ROM_FANTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_FANTABLE[6])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelRPMGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_FANTABLE[7])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_FANTABLE[7])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelRPMSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulRPM))ROM_FANTABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32RPM))ROM_FANTABLE[8])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelStatus                                                  \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_FANTABLE[9])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_FANTABLE[9])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanChannelsGet                                                    \
-        ((unsigned long (*)(unsigned long ulBase))ROM_FANTABLE[10])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_FANTABLE[10])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_FANTABLE[11])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_FANTABLE[11])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_FANTABLE[12])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_FANTABLE[12])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FanIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_FANTABLE[13])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_FANTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_FanFractionalRPMDisable                                           \
+        ((void (*)(uint32_t ui32Base))ROM_FANTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_FanFractionalRPMEnable                                            \
+        ((void (*)(uint32_t ui32Base))ROM_FANTABLE[15])
 #endif
 
 //*****************************************************************************
@@ -1254,164 +1504,94 @@
 // Macros for calling ROM functions in the Flash API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashProgram                                                      \
-        ((long (*)(unsigned long *pulData,                                    \
-                   unsigned long ulAddress,                                   \
-                   unsigned long ulCount))ROM_FLASHTABLE[0])
+        ((int32_t (*)(uint32_t *pui32Data,                                    \
+                      uint32_t ui32Address,                                   \
+                      uint32_t ui32Count))ROM_FLASHTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_FlashUsecGet                                                      \
-        ((unsigned long (*)(void))ROM_FLASHTABLE[1])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_FlashUsecSet                                                      \
-        ((void (*)(unsigned long ulClocks))ROM_FLASHTABLE[2])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashErase                                                        \
-        ((long (*)(unsigned long ulAddress))ROM_FLASHTABLE[3])
+        ((int32_t (*)(uint32_t ui32Address))ROM_FLASHTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashProtectGet                                                   \
-        ((tFlashProtection (*)(unsigned long ulAddress))ROM_FLASHTABLE[4])
+        ((tFlashProtection (*)(uint32_t ui32Address))ROM_FLASHTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashProtectSet                                                   \
-        ((long (*)(unsigned long ulAddress,                                   \
-                   tFlashProtection eProtect))ROM_FLASHTABLE[5])
+        ((int32_t (*)(uint32_t ui32Address,                                   \
+                      tFlashProtection eProtect))ROM_FLASHTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashProtectSave                                                  \
-        ((long (*)(void))ROM_FLASHTABLE[6])
+        ((int32_t (*)(void))ROM_FLASHTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashUserGet                                                      \
-        ((long (*)(unsigned long *pulUser0,                                   \
-                   unsigned long *pulUser1))ROM_FLASHTABLE[7])
+        ((int32_t (*)(uint32_t *pui32User0,                                   \
+                      uint32_t *pui32User1))ROM_FLASHTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashUserSet                                                      \
-        ((long (*)(unsigned long ulUser0,                                     \
-                   unsigned long ulUser1))ROM_FLASHTABLE[8])
+        ((int32_t (*)(uint32_t ui32User0,                                     \
+                      uint32_t ui32User1))ROM_FLASHTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashUserSave                                                     \
-        ((long (*)(void))ROM_FLASHTABLE[9])
+        ((int32_t (*)(void))ROM_FLASHTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashIntEnable                                                    \
-        ((void (*)(unsigned long ulIntFlags))ROM_FLASHTABLE[10])
+        ((void (*)(uint32_t ui32IntFlags))ROM_FLASHTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashIntDisable                                                   \
-        ((void (*)(unsigned long ulIntFlags))ROM_FLASHTABLE[11])
+        ((void (*)(uint32_t ui32IntFlags))ROM_FLASHTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashIntStatus                                                    \
-        ((unsigned long (*)(tBoolean bMasked))ROM_FLASHTABLE[12])
+        ((uint32_t (*)(bool bMasked))ROM_FLASHTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FlashIntClear                                                     \
-        ((void (*)(unsigned long ulIntFlags))ROM_FLASHTABLE[13])
+        ((void (*)(uint32_t ui32IntFlags))ROM_FLASHTABLE[13])
 #endif
 
 //*****************************************************************************
@@ -1419,48 +1599,66 @@
 // Macros for calling ROM functions in the FPU API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUEnable                                                         \
         ((void (*)(void))ROM_FPUTABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUDisable                                                        \
         ((void (*)(void))ROM_FPUTABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUFlushToZeroModeSet                                             \
-        ((void (*)(unsigned long ulMode))ROM_FPUTABLE[2])
+        ((void (*)(uint32_t ui32Mode))ROM_FPUTABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUHalfPrecisionModeSet                                           \
-        ((void (*)(unsigned long ulMode))ROM_FPUTABLE[3])
+        ((void (*)(uint32_t ui32Mode))ROM_FPUTABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPULazyStackingEnable                                             \
         ((void (*)(void))ROM_FPUTABLE[4])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUNaNModeSet                                                     \
-        ((void (*)(unsigned long ulMode))ROM_FPUTABLE[5])
+        ((void (*)(uint32_t ui32Mode))ROM_FPUTABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPURoundingModeSet                                                \
-        ((void (*)(unsigned long ulMode))ROM_FPUTABLE[6])
+        ((void (*)(uint32_t ui32Mode))ROM_FPUTABLE[6])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUStackingDisable                                                \
         ((void (*)(void))ROM_FPUTABLE[7])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_FPUStackingEnable                                                 \
         ((void (*)(void))ROM_FPUTABLE[8])
 #endif
@@ -1470,412 +1668,343 @@
 // Macros for calling ROM functions in the GPIO API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinWrite                                                      \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins,                                      \
-                   unsigned char ucVal))ROM_GPIOTABLE[0])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins,                                           \
+                   uint8_t ui8Val))ROM_GPIOTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIODirModeSet                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins,                                      \
-                   unsigned long ulPinIO))ROM_GPIOTABLE[1])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins,                                           \
+                   uint32_t ui32PinIO))ROM_GPIOTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIODirModeGet                                                    \
-        ((unsigned long (*)(unsigned long ulPort,                             \
-                            unsigned char ucPin))ROM_GPIOTABLE[2])
+        ((uint32_t (*)(uint32_t ui32Port,                                     \
+                       uint8_t ui8Pin))ROM_GPIOTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOIntTypeSet                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins,                                      \
-                   unsigned long ulIntType))ROM_GPIOTABLE[3])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins,                                           \
+                   uint32_t ui32IntType))ROM_GPIOTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOIntTypeGet                                                    \
-        ((unsigned long (*)(unsigned long ulPort,                             \
-                            unsigned char ucPin))ROM_GPIOTABLE[4])
+        ((uint32_t (*)(uint32_t ui32Port,                                     \
+                       uint8_t ui8Pin))ROM_GPIOTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPadConfigSet                                                  \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins,                                      \
-                   unsigned long ulStrength,                                  \
-                   unsigned long ulPadType))ROM_GPIOTABLE[5])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins,                                           \
+                   uint32_t ui32Strength,                                     \
+                   uint32_t ui32PadType))ROM_GPIOTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPadConfigGet                                                  \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPin,                                       \
-                   unsigned long *pulStrength,                                \
-                   unsigned long *pulPadType))ROM_GPIOTABLE[6])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pin,                                            \
+                   uint32_t *pui32Strength,                                   \
+                   uint32_t *pui32PadType))ROM_GPIOTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_GPIOPinIntEnable                                                  \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[7])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_GPIOPinIntDisable                                                 \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[8])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_GPIOPinIntStatus                                                  \
-        ((long (*)(unsigned long ulPort,                                      \
-                   tBoolean bMasked))ROM_GPIOTABLE[9])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_GPIOPinIntClear                                                   \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[10])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinRead                                                       \
-        ((long (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[11])
+        ((int32_t (*)(uint32_t ui32Port,                                      \
+                      uint8_t ui8Pins))ROM_GPIOTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeCAN                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[12])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeComparator                                             \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[13])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeGPIOInput                                              \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[14])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[14])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeGPIOOutput                                             \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[15])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[15])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeI2C                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[16])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[16])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypePWM                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[17])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[17])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeQEI                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[18])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[18])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeSSI                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[19])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[19])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeTimer                                                  \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[20])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[20])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeUART                                                   \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[21])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[21])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeGPIOOutputOD                                           \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[22])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[22])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeADC                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[23])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[23])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeUSBDigital                                             \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[24])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[24])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_GPIOPinTypeI2S                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[25])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinConfigure                                                  \
-        ((void (*)(unsigned long ulPinConfig))ROM_GPIOTABLE[26])
+        ((void (*)(uint32_t ui32PinConfig))ROM_GPIOTABLE[26])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_GPIOPinTypeEthernetLED                                            \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[27])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeUSBAnalog                                              \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[28])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[28])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeEPI                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[29])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[29])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_GPIOPinTypeEthernetMII                                            \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[30])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIODMATriggerEnable                                              \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[31])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[31])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIODMATriggerDisable                                             \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[32])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[32])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOADCTriggerEnable                                              \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[33])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[33])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOADCTriggerDisable                                             \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[34])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[34])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeFan                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[35])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[35])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeLPC                                                    \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[36])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[36])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_GPIOPinTypePECIRx                                                 \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[37])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[37])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_GPIOPinTypePECITx                                                 \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[38])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[38])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_GPIOPinTypeI2CSCL                                                 \
-        ((void (*)(unsigned long ulPort,                                      \
-                   unsigned char ucPins))ROM_GPIOTABLE[39])
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[39])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeCIR                                                    \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[40])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeKBRow                                                  \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[41])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeKBColumn                                               \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[42])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeLEDSeq                                                 \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[43])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeOneWire                                                \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[44])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypePS2                                                    \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[46])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeWakeHigh                                               \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[48])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeWakeLow                                                \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[49])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypePECIAnalog                                             \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[50])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOIntClear                                                      \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint32_t ui32IntFlags))ROM_GPIOTABLE[51])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOIntDisable                                                    \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint32_t ui32IntFlags))ROM_GPIOTABLE[52])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOIntEnable                                                     \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint32_t ui32IntFlags))ROM_GPIOTABLE[53])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOIntStatus                                                     \
+        ((uint32_t (*)(uint32_t ui32Port,                                     \
+                       bool bMasked))ROM_GPIOTABLE[54])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinWakeStatus                                                 \
+        ((uint32_t (*)(uint32_t ui32Port))ROM_GPIOTABLE[55])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_GPIOPinTypeLCD                                                    \
+        ((void (*)(uint32_t ui32Port,                                         \
+                   uint8_t ui8Pins))ROM_GPIOTABLE[56])
 #endif
 
 //*****************************************************************************
@@ -1883,283 +2012,257 @@
 // Macros for calling ROM functions in the Hibernate API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateIntClear                                                 \
-        ((void (*)(unsigned long ulIntFlags))ROM_HIBERNATETABLE[0])
+        ((void (*)(uint32_t ui32IntFlags))ROM_HIBERNATETABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateEnableExpClk                                             \
-        ((void (*)(unsigned long ulHibClk))ROM_HIBERNATETABLE[1])
+        ((void (*)(uint32_t ui32HibClk))ROM_HIBERNATETABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateDisable                                                  \
         ((void (*)(void))ROM_HIBERNATETABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_HibernateClockSelect                                              \
-        ((void (*)(unsigned long ulClockInput))ROM_HIBERNATETABLE[3])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCEnable                                                \
         ((void (*)(void))ROM_HIBERNATETABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCDisable                                               \
         ((void (*)(void))ROM_HIBERNATETABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateWakeSet                                                  \
-        ((void (*)(unsigned long ulWakeFlags))ROM_HIBERNATETABLE[6])
+        ((void (*)(uint32_t ui32WakeFlags))ROM_HIBERNATETABLE[6])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateWakeGet                                                  \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[7])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateLowBatSet                                                \
-        ((void (*)(unsigned long ulLowBatFlags))ROM_HIBERNATETABLE[8])
+        ((void (*)(uint32_t ui32LowBatFlags))ROM_HIBERNATETABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateLowBatGet                                                \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[9])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCSet                                                   \
-        ((void (*)(unsigned long ulRTCValue))ROM_HIBERNATETABLE[10])
+        ((void (*)(uint32_t ui32RTCValue))ROM_HIBERNATETABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCGet                                                   \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[11])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_HibernateRTCMatch0Set                                             \
-        ((void (*)(unsigned long ulMatch))ROM_HIBERNATETABLE[12])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_HibernateRTCMatch0Get                                             \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[13])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_HibernateRTCMatch1Set                                             \
-        ((void (*)(unsigned long ulMatch))ROM_HIBERNATETABLE[14])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_HibernateRTCMatch1Get                                             \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[15])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCTrimSet                                               \
-        ((void (*)(unsigned long ulTrim))ROM_HIBERNATETABLE[16])
+        ((void (*)(uint32_t ui32Trim))ROM_HIBERNATETABLE[16])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCTrimGet                                               \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[17])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[17])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateDataSet                                                  \
-        ((void (*)(unsigned long *pulData,                                    \
-                   unsigned long ulCount))ROM_HIBERNATETABLE[18])
+        ((void (*)(uint32_t *pui32Data,                                       \
+                   uint32_t ui32Count))ROM_HIBERNATETABLE[18])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateDataGet                                                  \
-        ((void (*)(unsigned long *pulData,                                    \
-                   unsigned long ulCount))ROM_HIBERNATETABLE[19])
+        ((void (*)(uint32_t *pui32Data,                                       \
+                   uint32_t ui32Count))ROM_HIBERNATETABLE[19])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRequest                                                  \
         ((void (*)(void))ROM_HIBERNATETABLE[20])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateIntEnable                                                \
-        ((void (*)(unsigned long ulIntFlags))ROM_HIBERNATETABLE[21])
+        ((void (*)(uint32_t ui32IntFlags))ROM_HIBERNATETABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateIntDisable                                               \
-        ((void (*)(unsigned long ulIntFlags))ROM_HIBERNATETABLE[22])
+        ((void (*)(uint32_t ui32IntFlags))ROM_HIBERNATETABLE[22])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateIntStatus                                                \
-        ((unsigned long (*)(tBoolean bMasked))ROM_HIBERNATETABLE[23])
+        ((uint32_t (*)(bool bMasked))ROM_HIBERNATETABLE[23])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateIsActive                                                 \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[24])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[24])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_HibernateRTCSSMatch0Set                                           \
-        ((void (*)(unsigned long ulMatch))ROM_HIBERNATETABLE[25])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_HibernateRTCSSMatch0Get                                           \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[26])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateRTCSSGet                                                 \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[27])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[27])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateClockConfig                                              \
-        ((void (*)(unsigned long ulConfig))ROM_HIBERNATETABLE[28])
+        ((void (*)(uint32_t ui32Config))ROM_HIBERNATETABLE[28])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateBatCheckStart                                            \
         ((void (*)(void))ROM_HIBERNATETABLE[29])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_HibernateBatCheckDone                                             \
-        ((unsigned long (*)(void))ROM_HIBERNATETABLE[30])
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[30])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateGPIORetentionEnable                                      \
+        ((void (*)(void))ROM_HIBERNATETABLE[31])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateGPIORetentionDisable                                     \
+        ((void (*)(void))ROM_HIBERNATETABLE[32])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateGPIORetentionGet                                         \
+        ((bool (*)(void))ROM_HIBERNATETABLE[33])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateCounterMode                                              \
+        ((void (*)(uint32_t ui32Config))ROM_HIBERNATETABLE[34])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateCalendarSet                                              \
+        ((void (*)(struct tm *psTime))ROM_HIBERNATETABLE[35])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateCalendarGet                                              \
+        ((int (*)(struct tm *psTime))ROM_HIBERNATETABLE[36])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateCalendarMatchSet                                         \
+        ((void (*)(uint32_t ui32Index,                                        \
+                   struct tm *psTime))ROM_HIBERNATETABLE[37])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateCalendarMatchGet                                         \
+        ((void (*)(uint32_t ui32Index,                                        \
+                   struct tm *psTime))ROM_HIBERNATETABLE[38])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperDisable                                            \
+        ((void (*)(void))ROM_HIBERNATETABLE[39])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperEnable                                             \
+        ((void (*)(void))ROM_HIBERNATETABLE[40])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperEventsClear                                        \
+        ((void (*)(void))ROM_HIBERNATETABLE[41])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperEventsConfig                                       \
+        ((void (*)(uint32_t ui32Config))ROM_HIBERNATETABLE[42])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperEventsGet                                          \
+        ((bool (*)(uint32_t ui32Index,                                        \
+                   uint32_t *pui32RTC,                                        \
+                   uint32_t *pui32Event))ROM_HIBERNATETABLE[43])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperExtOscValid                                        \
+        ((bool (*)(void))ROM_HIBERNATETABLE[44])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperExtOscRecover                                      \
+        ((void (*)(void))ROM_HIBERNATETABLE[45])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperIODisable                                          \
+        ((void (*)(uint32_t ui32Input))ROM_HIBERNATETABLE[46])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperIOEnable                                           \
+        ((void (*)(uint32_t ui32Input,                                        \
+                   uint32_t ui32Config))ROM_HIBERNATETABLE[47])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateTamperStatusGet                                          \
+        ((uint32_t (*)(void))ROM_HIBERNATETABLE[48])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_HibernateRTCSSMatchGet                                            \
+        ((uint32_t (*)(uint32_t ui32Match))ROM_HIBERNATETABLE[51])
 #endif
 
 //*****************************************************************************
@@ -2167,572 +2270,219 @@
 // Macros for calling ROM functions in the I2C API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterDataPut                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucData))ROM_I2CTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Data))ROM_I2CTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterInitExpClk                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulI2CClk,                                    \
-                   tBoolean bFast))ROM_I2CTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32I2CClk,                                       \
+                   bool bFast))ROM_I2CTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveInit                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucSlaveAddr))ROM_I2CTABLE[2])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterEnable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[3])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[4])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterDisable                                                  \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[5])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveDisable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[6])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntEnable                                                \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[7])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntEnable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[8])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntDisable                                               \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[9])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntDisable                                                \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[10])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntStatus                                                \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       tBoolean bMasked))ROM_I2CTABLE[11])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   bool bMasked))ROM_I2CTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntStatus                                                 \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       tBoolean bMasked))ROM_I2CTABLE[12])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntClear                                                 \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[13])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntClear                                                  \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[14])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterSlaveAddrSet                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucSlaveAddr,                                 \
-                   tBoolean bReceive))ROM_I2CTABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8SlaveAddr,                                      \
+                   bool bReceive))ROM_I2CTABLE[15])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterBusy                                                     \
-        ((tBoolean (*)(unsigned long ulBase))ROM_I2CTABLE[16])
+        ((bool (*)(uint32_t ui32Base))ROM_I2CTABLE[16])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterBusBusy                                                  \
-        ((tBoolean (*)(unsigned long ulBase))ROM_I2CTABLE[17])
+        ((bool (*)(uint32_t ui32Base))ROM_I2CTABLE[17])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterControl                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulCmd))ROM_I2CTABLE[18])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Cmd))ROM_I2CTABLE[18])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterErr                                                      \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[19])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[19])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterDataGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[20])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[20])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveStatus                                                    \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[21])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveDataPut                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucData))ROM_I2CTABLE[22])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveDataGet                                                   \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[23])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UpdateI2C                                                         \
         ((void (*)(void))ROM_I2CTABLE[24])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntEnableEx                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[25])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntDisableEx                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[26])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntStatusEx                                               \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_I2CTABLE[27])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveIntClearEx                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[28])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntEnableEx                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[29])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[29])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntDisableEx                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[30])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[30])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntStatusEx                                              \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_I2CTABLE[31])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_I2CTABLE[31])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterIntClearEx                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[32])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[32])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterTimeoutSet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulValue))ROM_I2CTABLE[33])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Value))ROM_I2CTABLE[33])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveACKOverride                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bEnable))ROM_I2CTABLE[34])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveACKValueSet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bACK))ROM_I2CTABLE[35])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_I2CSlaveAddressSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAddrNum,                                   \
-                   unsigned char ucSlaveAddr))ROM_I2CTABLE[37])
-#endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_I2CMasterLineStateGet                                             \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[38])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[38])
 #endif
-
-//*****************************************************************************
-//
-// Macros for calling ROM functions in the I2S API.
-//
-//*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_I2STABLE[0])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CTxFIFOConfigSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[39])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxEnable                                                       \
-        ((void (*)(unsigned long ulBase))ROM_I2STABLE[1])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CTxFIFOFlush                                                    \
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[40])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxDisable                                                      \
-        ((void (*)(unsigned long ulBase))ROM_I2STABLE[2])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CRxFIFOConfigSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[41])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxDataPut                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulData))ROM_I2STABLE[3])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CRxFIFOFlush                                                    \
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[42])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxDataPutNonBlocking                                           \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulData))ROM_I2STABLE[4])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CFIFOStatus                                                     \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[43])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxConfigSet                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_I2STABLE[5])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CFIFODataPut                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Data))ROM_I2CTABLE[44])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxFIFOLimitSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulLevel))ROM_I2STABLE[6])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CFIFODataPutNonBlocking                                         \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint8_t ui8Data))ROM_I2CTABLE[45])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxFIFOLimitGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2STABLE[7])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CFIFODataGet                                                    \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[46])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxFIFOLevelGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2STABLE[8])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CFIFODataGetNonBlocking                                         \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint8_t *pui8Data))ROM_I2CTABLE[47])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxEnable                                                       \
-        ((void (*)(unsigned long ulBase))ROM_I2STABLE[9])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CMasterBurstLengthSet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Length))ROM_I2CTABLE[48])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxDisable                                                      \
-        ((void (*)(unsigned long ulBase))ROM_I2STABLE[10])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CMasterBurstCountGet                                            \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[49])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxDataGet                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long *pulData))ROM_I2STABLE[11])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxDataGetNonBlocking                                           \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long *pulData))ROM_I2STABLE[12])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxConfigSet                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_I2STABLE[13])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxFIFOLimitSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulLevel))ROM_I2STABLE[14])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxFIFOLimitGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2STABLE[15])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SRxFIFOLevelGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2STABLE[16])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxRxEnable                                                     \
-        ((void (*)(unsigned long ulBase))ROM_I2STABLE[17])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxRxDisable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_I2STABLE[18])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2STxRxConfigSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_I2STABLE[19])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SMasterClockSelect                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulMClock))ROM_I2STABLE[20])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2STABLE[21])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2STABLE[22])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_I2SIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2STABLE[23])
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_I2CMasterGlitchFilterConfigSet                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[54])
 #endif
 
 //*****************************************************************************
@@ -2740,124 +2490,378 @@
 // Macros for calling ROM functions in the Interrupt API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntEnable                                                         \
-        ((void (*)(unsigned long ulInterrupt))ROM_INTERRUPTTABLE[0])
+        ((void (*)(uint32_t ui32Interrupt))ROM_INTERRUPTTABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntMasterEnable                                                   \
-        ((tBoolean (*)(void))ROM_INTERRUPTTABLE[1])
+        ((bool (*)(void))ROM_INTERRUPTTABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntMasterDisable                                                  \
-        ((tBoolean (*)(void))ROM_INTERRUPTTABLE[2])
+        ((bool (*)(void))ROM_INTERRUPTTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntDisable                                                        \
-        ((void (*)(unsigned long ulInterrupt))ROM_INTERRUPTTABLE[3])
+        ((void (*)(uint32_t ui32Interrupt))ROM_INTERRUPTTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPriorityGroupingSet                                            \
-        ((void (*)(unsigned long ulBits))ROM_INTERRUPTTABLE[4])
+        ((void (*)(uint32_t ui32Bits))ROM_INTERRUPTTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPriorityGroupingGet                                            \
-        ((unsigned long (*)(void))ROM_INTERRUPTTABLE[5])
+        ((uint32_t (*)(void))ROM_INTERRUPTTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPrioritySet                                                    \
-        ((void (*)(unsigned long ulInterrupt,                                 \
-                   unsigned char ucPriority))ROM_INTERRUPTTABLE[6])
+        ((void (*)(uint32_t ui32Interrupt,                                    \
+                   uint8_t ui8Priority))ROM_INTERRUPTTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPriorityGet                                                    \
-        ((long (*)(unsigned long ulInterrupt))ROM_INTERRUPTTABLE[7])
+        ((int32_t (*)(uint32_t ui32Interrupt))ROM_INTERRUPTTABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPendSet                                                        \
-        ((void (*)(unsigned long ulInterrupt))ROM_INTERRUPTTABLE[8])
+        ((void (*)(uint32_t ui32Interrupt))ROM_INTERRUPTTABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPendClear                                                      \
-        ((void (*)(unsigned long ulInterrupt))ROM_INTERRUPTTABLE[9])
+        ((void (*)(uint32_t ui32Interrupt))ROM_INTERRUPTTABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPriorityMaskSet                                                \
-        ((void (*)(unsigned long ulPriorityMask))ROM_INTERRUPTTABLE[10])
+        ((void (*)(uint32_t ui32PriorityMask))ROM_INTERRUPTTABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_IntPriorityMaskGet                                                \
-        ((unsigned long (*)(void))ROM_INTERRUPTTABLE[11])
+        ((uint32_t (*)(void))ROM_INTERRUPTTABLE[11])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_IntIsEnabled                                                      \
+        ((uint32_t (*)(uint32_t ui32Interrupt))ROM_INTERRUPTTABLE[12])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the KBScan API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanIntStatus                                                   \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_KBSCANTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanConfigGet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t *pui8ScanRows,                                     \
+                   uint8_t *pui8ScanCols,                                     \
+                   uint16_t *pui16ScanRowDelayuS,                             \
+                   uint16_t *pui16ScanRatemS,                                 \
+                   uint32_t *pui32Flags))ROM_KBSCANTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanConfigSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8ScanRows,                                       \
+                   uint8_t ui8ScanCols,                                       \
+                   uint16_t ui16ScanRowDelayuS,                               \
+                   uint16_t ui16ScanRatemS,                                   \
+                   uint32_t ui32Flags))ROM_KBSCANTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanDisable                                                     \
+        ((void (*)(uint32_t ui32Base))ROM_KBSCANTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanEnable                                                      \
+        ((void (*)(uint32_t ui32Base))ROM_KBSCANTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanIntClear                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_KBSCANTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanIntDisable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_KBSCANTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanIntEnable                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_KBSCANTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanStatusGet                                                   \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t *pui32RowChange,                              \
+                       uint8_t *pui32Cols))ROM_KBSCANTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_KBScanTrigger                                                     \
+        ((void (*)(uint32_t ui32Base))ROM_KBSCANTABLE[9])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the LCD API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIntStatus                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_LCDTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDClockReset                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Clocks))ROM_LCDTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDDMAConfigSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_LCDTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDCommandWrite                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint16_t ui16Cmd))ROM_LCDTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDConfigSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_LCDTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDDataRead                                                    \
+        ((uint16_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32CS))ROM_LCDTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDDataWrite                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint16_t ui16Data))ROM_LCDTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDDMADisable                                                  \
+        ((void (*)(uint32_t ui32Base))ROM_LCDTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDDMAWrite                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   const uint32_t *pui32Data,                                 \
+                   uint32_t ui32Count))ROM_LCDTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDIndexedRead                                                 \
+        ((uint16_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32CS,                                       \
+                       uint16_t ui16Addr))ROM_LCDTABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDIndexedWrite                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   uint16_t ui16Addr,                                         \
+                   uint16_t ui16Data))ROM_LCDTABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDStatusRead                                                  \
+        ((uint16_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32CS))ROM_LCDTABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIDDTimingSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32CS,                                           \
+                   const tLCDIDDTiming *pTiming))ROM_LCDTABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIntClear                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LCDTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIntDisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LCDTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDIntEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LCDTABLE[15])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDModeSet                                                        \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint8_t ui8Mode,                                       \
+                       uint32_t ui32PixClk,                                   \
+                       uint32_t ui32SysClk))ROM_LCDTABLE[16])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterACBiasIntCountSet                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Count))ROM_LCDTABLE[17])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterConfigSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint8_t ui8PalLoadDelay))ROM_LCDTABLE[18])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterDisable                                                  \
+        ((void (*)(uint32_t ui32Base))ROM_LCDTABLE[19])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterEnable                                                   \
+        ((void (*)(uint32_t ui32Base))ROM_LCDTABLE[20])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterFrameBufferSet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Buffer,                                         \
+                   uint32_t *pui32Addr,                                       \
+                   uint32_t ui32NumBytes))ROM_LCDTABLE[21])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterPaletteSet                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Type,                                         \
+                   uint32_t *pui32PalAddr,                                    \
+                   const uint32_t *pui32SrcColors,                            \
+                   uint32_t ui32Start,                                        \
+                   uint32_t ui32Count))ROM_LCDTABLE[22])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterSubPanelConfigSet                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags,                                        \
+                   uint32_t ui32BottomLines,                                  \
+                   uint32_t ui32DefaultPixel))ROM_LCDTABLE[23])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterSubPanelDisable                                          \
+        ((void (*)(uint32_t ui32Base))ROM_LCDTABLE[24])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterSubPanelEnable                                           \
+        ((void (*)(uint32_t ui32Base))ROM_LCDTABLE[25])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LCDRasterTimingSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   const tLCDRasterTiming *pTiming))ROM_LCDTABLE[26])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the LEDSeq API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqIntStatus                                                   \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_LEDSEQTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqConfigGet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Sequencer,                                      \
+                   uint8_t *pui8StepIndex,                                    \
+                   uint8_t *pui8NumSteps,                                     \
+                   uint32_t *pui32Flags))ROM_LEDSEQTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqConfigSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Sequencer,                                      \
+                   uint8_t ui8StepIndex,                                      \
+                   uint8_t ui8NumSteps,                                       \
+                   uint32_t ui32Flags))ROM_LEDSEQTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqDisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Sequence))ROM_LEDSEQTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Sequence))ROM_LEDSEQTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqIntClear                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LEDSEQTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqIntDisable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LEDSEQTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqIntEnable                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LEDSEQTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqSequenceGet                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8StartIndex,                                     \
+                   uint32_t *pui32Steps,                                      \
+                   uint8_t ui8NumSteps))ROM_LEDSEQTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LEDSeqSequenceSet                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8StartIndex,                                     \
+                   uint32_t *pui32Steps,                                      \
+                   uint8_t ui8NumSteps))ROM_LEDSEQTABLE[9])
 #endif
 
 //*****************************************************************************
@@ -2865,244 +2869,529 @@
 // Macros for calling ROM functions in the LPC API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_LPCTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LPCTABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCByteRead                                                       \
-        ((unsigned char (*)(unsigned long ulBase,                             \
-                            unsigned long ulOffset))ROM_LPCTABLE[1])
+        ((uint8_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Offset))ROM_LPCTABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCByteWrite                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulOffset,                                    \
-                   unsigned char ucData))ROM_LPCTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint8_t ui8Data))ROM_LPCTABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelConfigCOMxSet                                           \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulAddress,                                   \
-                   unsigned long ulOffset,                                    \
-                   unsigned long ulCOMxMode))ROM_LPCTABLE[3])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32Offset,                                       \
+                   uint32_t ui32COMxMode))ROM_LPCTABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelConfigGet                                               \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel,                          \
-                            unsigned long *pulAddress,                        \
-                            unsigned long *pulOffset,                         \
-                            unsigned long *pulCOMxMode))ROM_LPCTABLE[4])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel,                                  \
+                       uint32_t *pui32Address,                                \
+                       uint32_t *pui32Offset,                                 \
+                       uint32_t *pui32COMxMode))ROM_LPCTABLE[4])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelConfigEPSet                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulAddress,                                   \
-                   unsigned long ulOffset))ROM_LPCTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32Offset))ROM_LPCTABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelConfigMBSet                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulAddress,                                   \
-                   unsigned long ulOffset))ROM_LPCTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32Offset))ROM_LPCTABLE[6])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelDMAConfigGet                                            \
-        ((unsigned long (*)(unsigned long ulBase))ROM_LPCTABLE[7])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCTABLE[7])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelDMAConfigSet                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulMask))ROM_LPCTABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Mask))ROM_LPCTABLE[8])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelDisable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel))ROM_LPCTABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_LPCTABLE[9])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelEnable                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel))ROM_LPCTABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_LPCTABLE[10])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelStatusClear                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulStatus))ROM_LPCTABLE[11])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Status))ROM_LPCTABLE[11])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelStatusGet                                               \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_LPCTABLE[12])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_LPCTABLE[12])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelStatusSet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulStatus))ROM_LPCTABLE[13])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Status))ROM_LPCTABLE[13])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCCOMxIntClear                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_LPCTABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LPCTABLE[14])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCCOMxIntDisable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_LPCTABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LPCTABLE[15])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCCOMxIntEnable                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_LPCTABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LPCTABLE[16])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCCOMxIntStatus                                                  \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_LPCTABLE[17])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_LPCTABLE[17])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCConfigGet                                                      \
-        ((unsigned long (*)(unsigned long ulBase))ROM_LPCTABLE[18])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCTABLE[18])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCConfigSet                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_LPCTABLE[19])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_LPCTABLE[19])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCHalfWordRead                                                   \
-        ((unsigned short (*)(unsigned long ulBase,                            \
-                             unsigned long ulOffset))ROM_LPCTABLE[20])
+        ((uint16_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Offset))ROM_LPCTABLE[20])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCHalfWordWrite                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulOffset,                                    \
-                   unsigned short usData))ROM_LPCTABLE[21])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint16_t ui16Data))ROM_LPCTABLE[21])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIRQClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIRQ))ROM_LPCTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IRQ))ROM_LPCTABLE[22])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIRQConfig                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bIRQPulse,                                        \
-                   tBoolean bIRQOnChange))ROM_LPCTABLE[23])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bIRQPulse,                                            \
+                   bool bIRQOnChange))ROM_LPCTABLE[23])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIRQGet                                                         \
-        ((unsigned long (*)(unsigned long ulBase))ROM_LPCTABLE[24])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCTABLE[24])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIRQSend                                                        \
-        ((void (*)(unsigned long ulBase))ROM_LPCTABLE[25])
+        ((void (*)(uint32_t ui32Base))ROM_LPCTABLE[25])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIRQSet                                                         \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIRQ))ROM_LPCTABLE[26])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IRQ))ROM_LPCTABLE[26])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_LPCTABLE[27])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LPCTABLE[27])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_LPCTABLE[28])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_LPCTABLE[28])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_LPCTABLE[29])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_LPCTABLE[29])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCSCIAssert                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulCount))ROM_LPCTABLE[30])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Count))ROM_LPCTABLE[30])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCStatusGet                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long *pulCount,                          \
-                            unsigned long *pulPoolSize))ROM_LPCTABLE[31])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t *pui32Count,                                  \
+                       uint32_t *pui32PoolSize))ROM_LPCTABLE[31])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCWordRead                                                       \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulOffset))ROM_LPCTABLE[32])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Offset))ROM_LPCTABLE[32])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCWordWrite                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulOffset,                                    \
-                   unsigned long ulData))ROM_LPCTABLE[33])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint32_t ui32Data))ROM_LPCTABLE[33])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCChannelPoolAddressGet                                          \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_LPCTABLE[34])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_LPCTABLE[34])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCStatusBlockAddressGet                                          \
-        ((unsigned (*)(unsigned long ulBase))ROM_LPCTABLE[35])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCTABLE[35])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_LPCStatusBlockAddressSet                                          \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulAddress,                                   \
-                   tBoolean bEnabled))ROM_LPCTABLE[36])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Address,                                      \
+                   bool bEnabled))ROM_LPCTABLE[36])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the LPCB API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIntClear                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint64_t ui64IntFlags))ROM_LPCBTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBByteRead                                                      \
+        ((uint8_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Offset))ROM_LPCBTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBByteWrite                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint8_t ui8Data))ROM_LPCBTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelConfigCOMxSet                                          \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32COMxMode))ROM_LPCBTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelConfigGet                                              \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel,                                  \
+                       uint32_t *pui32Address,                                \
+                       uint32_t *pui32Offset,                                 \
+                       uint32_t *pui32COMxMode))ROM_LPCBTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelConfigEPSet                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32Offset))ROM_LPCBTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelConfigMBSet                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32Offset))ROM_LPCBTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelDMAConfigGet                                           \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCBTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelDMAConfigSet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32Mask))ROM_LPCBTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelDisable                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_LPCBTABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelEnable                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_LPCBTABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelStatusClear                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint64_t ui64Status))ROM_LPCBTABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelStatusGet                                              \
+        ((uint64_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_LPCBTABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelStatusSet                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint64_t ui64Status))ROM_LPCBTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBConfigGet                                                     \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCBTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBConfigSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_LPCBTABLE[15])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBHalfWordRead                                                  \
+        ((uint16_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Offset))ROM_LPCBTABLE[16])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBHalfWordWrite                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint16_t ui16Data))ROM_LPCBTABLE[17])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIRQClear                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IRQ))ROM_LPCBTABLE[18])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIRQConfig                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bIRQOnChange))ROM_LPCBTABLE[19])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIRQGet                                                        \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCBTABLE[20])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIRQSend                                                       \
+        ((void (*)(uint32_t ui32Base))ROM_LPCBTABLE[21])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIRQSet                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IRQ))ROM_LPCBTABLE[22])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIntDisable                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint64_t ui64IntFlags))ROM_LPCBTABLE[23])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIntEnable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint64_t ui64IntFlags))ROM_LPCBTABLE[24])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBIntStatus                                                     \
+        ((uint64_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_LPCBTABLE[25])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBSCIAssert                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Count))ROM_LPCBTABLE[26])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBStatusGet                                                     \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t *pui32Count,                                  \
+                       uint32_t *pui32PoolSize))ROM_LPCBTABLE[27])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBWordRead                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Offset))ROM_LPCBTABLE[28])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBWordWrite                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint32_t ui32Data))ROM_LPCBTABLE[29])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelPoolAddressGet                                         \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_LPCBTABLE[30])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBStatusBlockAddressGet                                         \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_LPCBTABLE[31])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBStatusBlockAddressSet                                         \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Address,                                      \
+                   bool bEnabled))ROM_LPCBTABLE[32])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelConfigCOMSet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   uint32_t ui32Address,                                      \
+                   uint32_t ui32COMMode))ROM_LPCBTABLE[38])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelConfigCOMGet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   uint32_t *pui32Address,                                    \
+                   uint32_t *pui32COMMode))ROM_LPCBTABLE[39])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMIntEnable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   uint32_t ui32Flags))ROM_LPCBTABLE[40])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMIntDisable                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   uint32_t ui32Flags))ROM_LPCBTABLE[41])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMCTSSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   bool bValue))ROM_LPCBTABLE[42])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMDSRSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   bool bValue))ROM_LPCBTABLE[43])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMStatusGet                                                  \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32COM))ROM_LPCBTABLE[44])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMInterceptRXFIFOWrite                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32COM,                                          \
+                   uint8_t ui8Data))ROM_LPCBTABLE[45])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBCOMInterceptTXFIFORead                                        \
+        ((uint8_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32COM))ROM_LPCBTABLE[46])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBChannelStallClear                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_LPCBTABLE[47])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_LPCBRTCAddressSet                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Address))ROM_LPCBTABLE[51])
 #endif
 
 //*****************************************************************************
@@ -3110,79 +3399,124 @@
 // Macros for calling ROM functions in the MPU API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPUEnable                                                         \
-        ((void (*)(unsigned long ulMPUConfig))ROM_MPUTABLE[0])
+        ((void (*)(uint32_t ui32MPUConfig))ROM_MPUTABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPUDisable                                                        \
         ((void (*)(void))ROM_MPUTABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPURegionCountGet                                                 \
-        ((unsigned long (*)(void))ROM_MPUTABLE[2])
+        ((uint32_t (*)(void))ROM_MPUTABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPURegionEnable                                                   \
-        ((void (*)(unsigned long ulRegion))ROM_MPUTABLE[3])
+        ((void (*)(uint32_t ui32Region))ROM_MPUTABLE[3])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPURegionDisable                                                  \
-        ((void (*)(unsigned long ulRegion))ROM_MPUTABLE[4])
+        ((void (*)(uint32_t ui32Region))ROM_MPUTABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPURegionSet                                                      \
-        ((void (*)(unsigned long ulRegion,                                    \
-                   unsigned long ulAddr,                                      \
-                   unsigned long ulFlags))ROM_MPUTABLE[5])
+        ((void (*)(uint32_t ui32Region,                                       \
+                   uint32_t ui32Addr,                                         \
+                   uint32_t ui32Flags))ROM_MPUTABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_MPURegionGet                                                      \
-        ((void (*)(unsigned long ulRegion,                                    \
-                   unsigned long *pulAddr,                                    \
-                   unsigned long *pulFlags))ROM_MPUTABLE[6])
+        ((void (*)(uint32_t ui32Region,                                       \
+                   uint32_t *pui32Addr,                                       \
+                   uint32_t *pui32Flags))ROM_MPUTABLE[6])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the OneWire API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireIntStatus                                                  \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_ONEWIRETABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireBusReset                                                   \
+        ((void (*)(uint32_t ui32Base))ROM_ONEWIRETABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireBusStatus                                                  \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_ONEWIRETABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireDataGet                                                    \
+        ((void (*)(uint32_t u3i2Base,                                         \
+                   uint32_t *pui32Data))ROM_ONEWIRETABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireDataGetNonBlocking                                         \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Data))ROM_ONEWIRETABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireInit                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32InitFlags))ROM_ONEWIRETABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireIntClear                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_ONEWIRETABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireIntDisable                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_ONEWIRETABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireIntEnable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_ONEWIRETABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireTransaction                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32OpFlags,                                      \
+                   uint32_t ui32Data,                                         \
+                   uint32_t ui32BitCnt))ROM_ONEWIRETABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireDMADisable                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAFlags))ROM_ONEWIRETABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_OneWireDMAEnable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAFlags))ROM_ONEWIRETABLE[11])
 #endif
 
 //*****************************************************************************
@@ -3190,145 +3524,302 @@
 // Macros for calling ROM functions in the PECI API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIIntClear                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_PECITABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_PECITABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIAdvCmdSend                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucCmd,                                       \
-                   unsigned char ucHidRe,                                     \
-                   unsigned char ucDomain,                                    \
-                   unsigned char ucProcAdd,                                   \
-                   unsigned long ulArg,                                       \
-                   unsigned char ucSize,                                      \
-                   unsigned long ulData0,                                     \
-                   unsigned long ulData1))ROM_PECITABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Cmd,                                            \
+                   uint8_t ui8HidRe,                                          \
+                   uint8_t ui8Domain,                                         \
+                   uint8_t ui8Proi8Add,                                       \
+                   uint32_t ui32Arg,                                          \
+                   uint8_t ui8Size,                                           \
+                   uint32_t ui32Data0,                                        \
+                   uint32_t ui32Data1))ROM_PECITABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIAdvCmdSendNonBlocking                                         \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned char ucCmd,                              \
-                            unsigned char ucHidRe,                            \
-                            unsigned char ucDomain,                           \
-                            unsigned char ucProcAdd,                          \
-                            unsigned long ulArg,                              \
-                            unsigned char ucSize,                             \
-                            unsigned long ulData0,                            \
-                            unsigned long ulData1))ROM_PECITABLE[2])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint8_t ui8Cmd,                                        \
+                       uint8_t ui8HidRe,                                      \
+                       uint8_t ui8Domain,                                     \
+                       uint8_t ui8Proi8Add,                                   \
+                       uint32_t ui32Arg,                                      \
+                       uint8_t ui8Size,                                       \
+                       uint32_t ui32Data0,                                    \
+                       uint32_t ui32Data1))ROM_PECITABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIAdvCmdStatusGet                                               \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long *pulData0,                          \
-                            unsigned long *pulData1))ROM_PECITABLE[3])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t *pui32Data0,                                  \
+                       uint32_t *pui32Data1))ROM_PECITABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIConfigGet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPECIClk,                                   \
-                   unsigned long *pulBaud,                                    \
-                   unsigned long *pulPoll,                                    \
-                   unsigned long *pulOffset,                                  \
-                   unsigned long *pulRetry))ROM_PECITABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PECIClk,                                      \
+                   uint32_t *pui32Baud,                                       \
+                   uint32_t *pui32Poll,                                       \
+                   uint32_t *pui32Offset,                                     \
+                   uint32_t *pui32Retry))ROM_PECITABLE[4])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIConfigSet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPECIClk,                                   \
-                   unsigned long ulBaud,                                      \
-                   unsigned long ulPoll,                                      \
-                   unsigned long ulOffset,                                    \
-                   unsigned long ulRetry))ROM_PECITABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PECIClk,                                      \
+                   uint32_t ui32Baud,                                         \
+                   uint32_t ui32Poll,                                         \
+                   uint32_t ui32Offset,                                       \
+                   uint32_t ui32Retry))ROM_PECITABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainMaxReadClear                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDomain))ROM_PECITABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain))ROM_PECITABLE[6])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainValueClear                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDomain))ROM_PECITABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain))ROM_PECITABLE[7])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainConfigGet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDomain,                                    \
-                   unsigned long *pulHigh,                                    \
-                   unsigned long *pulLow))ROM_PECITABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain,                                       \
+                   uint32_t *pui32High,                                       \
+                   uint32_t *pui32Low))ROM_PECITABLE[8])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainConfigSet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDomain,                                    \
-                   unsigned long ulHigh,                                      \
-                   unsigned long ulLow))ROM_PECITABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain,                                       \
+                   uint32_t ui32High,                                         \
+                   uint32_t ui32Low))ROM_PECITABLE[9])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainDisable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDomain))ROM_PECITABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain))ROM_PECITABLE[10])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainEnable                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDomain))ROM_PECITABLE[11])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain))ROM_PECITABLE[11])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainMaxReadGet                                              \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulDomain))ROM_PECITABLE[12])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Domain))ROM_PECITABLE[12])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIDomainValueGet                                                \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulDomain))ROM_PECITABLE[13])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Domain))ROM_PECITABLE[13])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIIntDisable                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_PECITABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_PECITABLE[14])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIIntEnable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags,                                  \
-                   unsigned long ulIntMode))ROM_PECITABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags,                                     \
+                   uint32_t ui32IntMode))ROM_PECITABLE[15])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIIntStatus                                                     \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_PECITABLE[16])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_PECITABLE[16])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIBypassEnable                                                  \
-        ((void (*)(unsigned long ulBase))ROM_PECITABLE[17])
+        ((void (*)(uint32_t ui32Base))ROM_PECITABLE[17])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PECIBypassDisable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_PECITABLE[18])
+        ((void (*)(uint32_t ui32Base))ROM_PECITABLE[18])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PECIDomainAverageConfigSet                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Domain,                                       \
+                   uint32_t ui32Config))ROM_PECITABLE[19])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PECIDomainAverageGet                                              \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Domain))ROM_PECITABLE[20])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PECIDomainAverageConfigGet                                        \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Domain))ROM_PECITABLE[21])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PECIBaudGet                                                       \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32PECIClk))ROM_PECITABLE[22])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the Port80 API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_Port80DataWrite                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint16_t ui16Data))ROM_PORT80TABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_Port80Config                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_PORT80TABLE[1])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the PS2 API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2IntStatus                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Bus,                                      \
+                       bool bMasked))ROM_PS2TABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2CommandWrite                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus,                                          \
+                   uint8_t ui8Command,                                        \
+                   bool bExpectAck,                                           \
+                   uint8_t ui8RxCount))ROM_PS2TABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2ConfigGet                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Bus))ROM_PS2TABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2ConfigSet                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus,                                          \
+                   uint32_t ui32Flags))ROM_PS2TABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2DataRead                                                       \
+        ((uint8_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Bus,                                       \
+                      bool bMoreExpected,                                     \
+                      uint32_t *pui32Type))ROM_PS2TABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2Disable                                                        \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus))ROM_PS2TABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2Enable                                                         \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus))ROM_PS2TABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2InhibitClear                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus))ROM_PS2TABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2InhibitSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus))ROM_PS2TABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2IntClear                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus,                                          \
+                   uint32_t ui32IntFlags))ROM_PS2TABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2IntDisable                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus,                                          \
+                   uint32_t ui32IntFlags))ROM_PS2TABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2IntEnable                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Bus,                                          \
+                   uint32_t ui32IntFlags))ROM_PS2TABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PS2StatusGet                                                      \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Bus,                                      \
+                       uint32_t *pui32Type))ROM_PS2TABLE[12])
 #endif
 
 //*****************************************************************************
@@ -3336,366 +3827,273 @@
 // Macros for calling ROM functions in the PWM API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMPulseWidthSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPWMOut,                                    \
-                   unsigned long ulWidth))ROM_PWMTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PWMOut,                                       \
+                   uint32_t ui32Width))ROM_PWMTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenConfigure                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulConfig))ROM_PWMTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32Config))ROM_PWMTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenPeriodSet                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulPeriod))ROM_PWMTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32Period))ROM_PWMTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenPeriodGet                                                   \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulGen))ROM_PWMTABLE[3])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Gen))ROM_PWMTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen))ROM_PWMTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen))ROM_PWMTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen))ROM_PWMTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen))ROM_PWMTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMPulseWidthGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulPWMOut))ROM_PWMTABLE[6])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32PWMOut))ROM_PWMTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMDeadBandEnable                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned short usRise,                                     \
-                   unsigned short usFall))ROM_PWMTABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint16_t ui16Rise,                                         \
+                   uint16_t ui16Fall))ROM_PWMTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMDeadBandDisable                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen))ROM_PWMTABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen))ROM_PWMTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMSyncUpdate                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGenBits))ROM_PWMTABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32GenBits))ROM_PWMTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMSyncTimeBase                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGenBits))ROM_PWMTABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32GenBits))ROM_PWMTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMOutputState                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPWMOutBits,                                \
-                   tBoolean bEnable))ROM_PWMTABLE[11])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PWMOutBits,                                   \
+                   bool bEnable))ROM_PWMTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMOutputInvert                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPWMOutBits,                                \
-                   tBoolean bInvert))ROM_PWMTABLE[12])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PWMOutBits,                                   \
+                   bool bInvert))ROM_PWMTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMOutputFault                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPWMOutBits,                                \
-                   tBoolean bFaultSuppress))ROM_PWMTABLE[13])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PWMOutBits,                                   \
+                   bool bFaultSuppress))ROM_PWMTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenIntTrigEnable                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulIntTrig))ROM_PWMTABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32IntTrig))ROM_PWMTABLE[14])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenIntTrigDisable                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulIntTrig))ROM_PWMTABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32IntTrig))ROM_PWMTABLE[15])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenIntStatus                                                   \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulGen,                              \
-                            tBoolean bMasked))ROM_PWMTABLE[16])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Gen,                                      \
+                       bool bMasked))ROM_PWMTABLE[16])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenIntClear                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulInts))ROM_PWMTABLE[17])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32Ints))ROM_PWMTABLE[17])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGenFault))ROM_PWMTABLE[18])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32GenFault))ROM_PWMTABLE[18])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGenFault))ROM_PWMTABLE[19])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32GenFault))ROM_PWMTABLE[19])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMFaultIntClear                                                  \
-        ((void (*)(unsigned long ulBase))ROM_PWMTABLE[20])
+        ((void (*)(uint32_t ui32Base))ROM_PWMTABLE[20])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_PWMTABLE[21])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_PWMTABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMOutputFaultLevel                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPWMOutBits,                                \
-                   tBoolean bDriveHigh))ROM_PWMTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PWMOutBits,                                   \
+                   bool bDriveHigh))ROM_PWMTABLE[22])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMFaultIntClearExt                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFaultInts))ROM_PWMTABLE[23])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32FaultInts))ROM_PWMTABLE[23])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenFaultConfigure                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulMinFaultPeriod,                            \
-                   unsigned long ulFaultSenses))ROM_PWMTABLE[24])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32MinFaultPeriod,                               \
+                   uint32_t ui32FaultSenses))ROM_PWMTABLE[24])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenFaultTriggerSet                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulGroup,                                     \
-                   unsigned long ulFaultTriggers))ROM_PWMTABLE[25])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32Group,                                        \
+                   uint32_t ui32FaultTriggers))ROM_PWMTABLE[25])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenFaultTriggerGet                                             \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulGen,                              \
-                            unsigned long ulGroup))ROM_PWMTABLE[26])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Gen,                                      \
+                       uint32_t ui32Group))ROM_PWMTABLE[26])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenFaultStatus                                                 \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulGen,                              \
-                            unsigned long ulGroup))ROM_PWMTABLE[27])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Gen,                                      \
+                       uint32_t ui32Group))ROM_PWMTABLE[27])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_PWMGenFaultClear                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulGen,                                       \
-                   unsigned long ulGroup,                                     \
-                   unsigned long ulFaultTriggers))ROM_PWMTABLE[28])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Gen,                                          \
+                   uint32_t ui32Group,                                        \
+                   uint32_t ui32FaultTriggers))ROM_PWMTABLE[28])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PWMClockSet                                                       \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_PWMTABLE[29])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PWMClockGet                                                       \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_PWMTABLE[30])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_PWMOutputUpdateMode                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PWMOutBits,                                   \
+                   uint32_t ui32Mode))ROM_PWMTABLE[31])
 #endif
 
 //*****************************************************************************
@@ -3703,179 +4101,212 @@
 // Macros for calling ROM functions in the QEI API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIPositionGet                                                    \
-        ((unsigned long (*)(unsigned long ulBase))ROM_QEITABLE[0])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_QEITABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIEnable                                                         \
-        ((void (*)(unsigned long ulBase))ROM_QEITABLE[1])
+        ((void (*)(uint32_t ui32Base))ROM_QEITABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIDisable                                                        \
-        ((void (*)(unsigned long ulBase))ROM_QEITABLE[2])
+        ((void (*)(uint32_t ui32Base))ROM_QEITABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIConfigure                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulMaxPosition))ROM_QEITABLE[3])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config,                                       \
+                   uint32_t ui32MaxPosition))ROM_QEITABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIPositionSet                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPosition))ROM_QEITABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Position))ROM_QEITABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIDirectionGet                                                   \
-        ((long (*)(unsigned long ulBase))ROM_QEITABLE[5])
+        ((int32_t (*)(uint32_t ui32Base))ROM_QEITABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIErrorGet                                                       \
-        ((tBoolean (*)(unsigned long ulBase))ROM_QEITABLE[6])
+        ((bool (*)(uint32_t ui32Base))ROM_QEITABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIVelocityEnable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_QEITABLE[7])
+        ((void (*)(uint32_t ui32Base))ROM_QEITABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIVelocityDisable                                                \
-        ((void (*)(unsigned long ulBase))ROM_QEITABLE[8])
+        ((void (*)(uint32_t ui32Base))ROM_QEITABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIVelocityConfigure                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulPreDiv,                                    \
-                   unsigned long ulPeriod))ROM_QEITABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32PreDiv,                                       \
+                   uint32_t ui32Period))ROM_QEITABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIVelocityGet                                                    \
-        ((unsigned long (*)(unsigned long ulBase))ROM_QEITABLE[10])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_QEITABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_QEITABLE[11])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_QEITABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_QEITABLE[12])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_QEITABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_QEITABLE[13])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_QEITABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_QEIIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_QEITABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_QEITABLE[14])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the SHAMD5 API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5IntStatus                                                   \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_SHAMD5TABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5ConfigSet                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Mode))ROM_SHAMD5TABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5DataProcess                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32DataSrc,                                    \
+                   uint32_t ui32DataLength,                                   \
+                   uint32_t *pui32HashResult))ROM_SHAMD5TABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5DataWrite                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_SHAMD5TABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5DataWriteNonBlocking                                        \
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_SHAMD5TABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5DMADisable                                                  \
+        ((void (*)(uint32_t ui32Base))ROM_SHAMD5TABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5DMAEnable                                                   \
+        ((void (*)(uint32_t ui32Base))ROM_SHAMD5TABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5HashLengthSet                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Length))ROM_SHAMD5TABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5HMACKeySet                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_SHAMD5TABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5HMACPPKeyGenerate                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Key,                                        \
+                   uint32_t *pui32PPKey))ROM_SHAMD5TABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5HMACPPKeySet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Src))ROM_SHAMD5TABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5HMACProcess                                                 \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32DataSrc,                                    \
+                   uint32_t ui32DataLength,                                   \
+                   uint32_t *pui32HashResult))ROM_SHAMD5TABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5IntClear                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_SHAMD5TABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5IntDisable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_SHAMD5TABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5IntEnable                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_SHAMD5TABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5Reset                                                       \
+        ((void (*)(uint32_t ui32Base))ROM_SHAMD5TABLE[15])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SHAMD5ResultRead                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Dest))ROM_SHAMD5TABLE[16])
 #endif
 
 //*****************************************************************************
@@ -3883,349 +4314,626 @@
 // Macros for calling ROM functions in the SMBus API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterIntProcess                                             \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[0])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusARPDisable                                                   \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[1])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusARPEnable                                                    \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[2])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusARPUDIDPacketDecode                                          \
         ((void (*)(tSMBusUDID *pUDID,                                         \
-                   unsigned char *pucAddress,                                 \
-                   unsigned char *pucData))ROM_SMBUSTABLE[3])
+                   uint8_t *pui8Address,                                      \
+                   uint8_t *pui8Data))ROM_SMBUSTABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusARPUDIDPacketEncode                                          \
         ((void (*)(tSMBusUDID *pUDID,                                         \
-                   unsigned char ucAddress,                                   \
-                   unsigned char *pucData))ROM_SMBUSTABLE[4])
+                   uint8_t ui8Address,                                        \
+                   uint8_t *pui8Data))ROM_SMBUSTABLE[4])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPAssignAddress                                       \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char *pucData))ROM_SMBUSTABLE[5])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPGetUDIDDir                                          \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char *pucData))ROM_SMBUSTABLE[6])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[6])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPGetUDIDGen                                          \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char *pucData))ROM_SMBUSTABLE[7])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[7])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPNotifyMaster                                        \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char *pucData))ROM_SMBUSTABLE[8])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[8])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPPrepareToARP                                        \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[9])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[9])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPResetDeviceDir                                      \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress))ROM_SMBUSTABLE[10])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress))ROM_SMBUSTABLE[10])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterARPResetDeviceGen                                      \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[11])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[11])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterBlockProcessCall                                       \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucCommand,                           \
-                           unsigned char *pucTxData,                          \
-                           unsigned char ucTxSize,                            \
-                           unsigned char *pucRxData))ROM_SMBUSTABLE[12])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Command,                                \
+                           uint8_t *pui8TxData,                               \
+                           uint8_t ui8TxSize,                                 \
+                           uint8_t *pui8RxData))ROM_SMBUSTABLE[12])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterBlockRead                                              \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucCommand,                           \
-                           unsigned char *pucData))ROM_SMBUSTABLE[13])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Command,                                \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[13])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterBlockWrite                                             \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucCommand,                           \
-                           unsigned char *pucData,                            \
-                           unsigned char ucSize))ROM_SMBUSTABLE[14])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Command,                                \
+                           uint8_t *pui8Data,                                 \
+                           uint8_t ui8Size))ROM_SMBUSTABLE[14])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterByteReceive                                            \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char *pucData))ROM_SMBUSTABLE[15])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[15])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterByteSend                                               \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucData))ROM_SMBUSTABLE[16])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Data))ROM_SMBUSTABLE[16])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterByteWordRead                                           \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucCommand,                           \
-                           unsigned char *pucData,                            \
-                           unsigned char ucSize))ROM_SMBUSTABLE[17])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Command,                                \
+                           uint8_t *pui8Data,                                 \
+                           uint8_t ui8Size))ROM_SMBUSTABLE[17])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterByteWordWrite                                          \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucCommand,                           \
-                           unsigned char *pucData,                            \
-                           unsigned char ucSize))ROM_SMBUSTABLE[18])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Command,                                \
+                           uint8_t *pui8Data,                                 \
+                           uint8_t ui8Size))ROM_SMBUSTABLE[18])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterHostNotify                                             \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucOwnSlaveAddress,                   \
-                           unsigned char *pucData))ROM_SMBUSTABLE[19])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8OwnSlaveAddress,                        \
+                           uint8_t *pui8Data))ROM_SMBUSTABLE[19])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterI2CRead                                                \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char *pucData,                            \
-                           unsigned char ucSize))ROM_SMBUSTABLE[20])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t *pui8Data,                                 \
+                           uint8_t ui8Size))ROM_SMBUSTABLE[20])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterI2CWrite                                               \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char *pucData,                            \
-                           unsigned char ucSize))ROM_SMBUSTABLE[21])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t *pui8Data,                                 \
+                           uint8_t ui8Size))ROM_SMBUSTABLE[21])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterI2CWriteRead                                           \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char *pucTxData,                          \
-                           unsigned char ucTxSize,                            \
-                           unsigned char *pucRxData,                          \
-                           unsigned char ucRxSize))ROM_SMBUSTABLE[22])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t *pui8TxData,                               \
+                           uint8_t ui8TxSize,                                 \
+                           uint8_t *pui8RxData,                               \
+                           uint8_t ui8RxSize))ROM_SMBUSTABLE[22])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterInit                                                   \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   unsigned long ulI2CBase,                                   \
-                   unsigned long ulSMBusClock))ROM_SMBUSTABLE[23])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   uint32_t ui32I2CBase,                                      \
+                   uint32_t ui32SMBusClock))ROM_SMBUSTABLE[23])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterIntEnable                                              \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[24])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[24])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterProcessCall                                            \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           unsigned char ucCommand,                           \
-                           unsigned char *pucTxData,                          \
-                           unsigned char *pucRxData))ROM_SMBUSTABLE[25])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           uint8_t ui8Command,                                \
+                           uint8_t *pui8TxData,                               \
+                           uint8_t *pui8RxData))ROM_SMBUSTABLE[25])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusMasterQuickCommand                                           \
-        ((tSMBusStatus (*)(tSMBus *pSMBus,                                    \
-                           unsigned char ucTargetAddress,                     \
-                           tBoolean bData))ROM_SMBUSTABLE[26])
+        ((tSMBusStatus (*)(tSMBus *psSMBus,                                   \
+                           uint8_t ui8TargetAddress,                          \
+                           bool bData))ROM_SMBUSTABLE[26])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusPECDisable                                                   \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[27])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[27])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusPECEnable                                                    \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[28])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[28])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusRxPacketSizeGet                                              \
-        ((unsigned char (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[29])
+        ((uint8_t (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[29])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveACKSend                                                 \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   tBoolean bACK))ROM_SMBUSTABLE[30])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   bool bACK))ROM_SMBUSTABLE[30])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveAddressSet                                              \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   unsigned char ucAddressNum,                                \
-                   unsigned char ucSlaveAddress))ROM_SMBUSTABLE[31])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   uint8_t ui8AddressNum,                                     \
+                   uint8_t ui8SlaveAddress))ROM_SMBUSTABLE[31])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveARPFlagARGet                                            \
-        ((tBoolean (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[32])
+        ((bool (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[32])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveARPFlagARSet                                            \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   tBoolean bValue))ROM_SMBUSTABLE[33])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   bool bValue))ROM_SMBUSTABLE[33])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveARPFlagAVGet                                            \
-        ((tBoolean (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[34])
+        ((bool (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[34])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveARPFlagAVSet                                            \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   tBoolean bValue))ROM_SMBUSTABLE[35])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   bool bValue))ROM_SMBUSTABLE[35])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveBlockTransferDisable                                    \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[36])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[36])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveBlockTransferEnable                                     \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[37])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[37])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveCommandGet                                              \
-        ((unsigned char (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[38])
+        ((uint8_t (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[38])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveI2CDisable                                              \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[39])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[39])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveI2CEnable                                               \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[40])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[40])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveInit                                                    \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   unsigned long ulI2CBase))ROM_SMBUSTABLE[41])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   uint32_t ui32I2CBase))ROM_SMBUSTABLE[41])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveIntAddressGet                                           \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[42])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[42])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveIntEnable                                               \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[43])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[43])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveIntProcess                                              \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[44])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[44])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveManualACKDisable                                        \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[45])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[45])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveManualACKEnable                                         \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[46])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[46])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveManualACKStatusGet                                      \
-        ((tBoolean (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[47])
+        ((bool (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[47])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveProcessCallDisable                                      \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[48])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[48])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveProcessCallEnable                                       \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[49])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[49])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveRxBufferSet                                             \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   unsigned char *pucData,                                    \
-                   unsigned char ucSize))ROM_SMBUSTABLE[50])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   uint8_t *pui8Data,                                         \
+                   uint8_t ui8Size))ROM_SMBUSTABLE[50])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveTransferInit                                            \
-        ((void (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[51])
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[51])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveTxBufferSet                                             \
-        ((void (*)(tSMBus *pSMBus,                                            \
-                   unsigned char *pucData,                                    \
-                   unsigned char ucSize))ROM_SMBUSTABLE[52])
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   uint8_t *pui8Data,                                         \
+                   uint8_t ui8Size))ROM_SMBUSTABLE[52])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveUDIDSet                                                 \
-        ((void (*)(tSMBus *pSMBus,                                            \
+        ((void (*)(tSMBus *psSMBus,                                           \
                    tSMBusUDID *pUDID))ROM_SMBUSTABLE[53])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusStatusGet                                                    \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[54])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[54])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SMBusSlaveDataSend                                                \
-        ((tSMBusStatus (*)(tSMBus *pSMBus))ROM_SMBUSTABLE[55])
+        ((tSMBusStatus (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[55])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SMBusFIFOEnable                                                   \
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[56])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SMBusFIFODisable                                                  \
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[57])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SMBusDMAEnable                                                    \
+        ((void (*)(tSMBus *psSMBus,                                           \
+                   uint8_t ui8TxChannel,                                      \
+                   uint8_t ui8RxChannel))ROM_SMBUSTABLE[58])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SMBusDMADisable                                                   \
+        ((void (*)(tSMBus *psSMBus))ROM_SMBUSTABLE[59])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the SPIFlash API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashIntHandler                                                \
+        ((uint32_t (*)(tSPIFlashState *pState))ROM_SPIFLASHTABLE[0])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashInit                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Clock,                                        \
+                   uint32_t ui32BitRate))ROM_SPIFLASHTABLE[1])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashWriteStatus                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Status))ROM_SPIFLASHTABLE[2])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashPageProgram                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   const uint8_t *pui8Data,                                   \
+                   uint32_t ui32Count))ROM_SPIFLASHTABLE[3])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashPageProgramNonBlocking                                    \
+        ((void (*)(tSPIFlashState *pState,                                    \
+                   uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   const uint8_t *pui8Data,                                   \
+                   uint32_t ui32Count,                                        \
+                   bool bUseDMA,                                              \
+                   uint32_t ui32TxChannel))ROM_SPIFLASHTABLE[4])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashRead                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count))ROM_SPIFLASHTABLE[5])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashReadNonBlocking                                           \
+        ((void (*)(tSPIFlashState *pState,                                    \
+                   uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count,                                        \
+                   bool bUseDMA,                                              \
+                   uint32_t ui32TxChannel,                                    \
+                   uint32_t ui32RxChannel))ROM_SPIFLASHTABLE[6])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashWriteDisable                                              \
+        ((void (*)(uint32_t ui32Base))ROM_SPIFLASHTABLE[7])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashReadStatus                                                \
+        ((uint8_t (*)(uint32_t ui32Base))ROM_SPIFLASHTABLE[8])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashWriteEnable                                               \
+        ((void (*)(uint32_t ui32Base))ROM_SPIFLASHTABLE[9])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashFastRead                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count))ROM_SPIFLASHTABLE[10])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashFastReadNonBlocking                                       \
+        ((void (*)(tSPIFlashState *pState,                                    \
+                   uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count,                                        \
+                   bool bUseDMA,                                              \
+                   uint32_t ui32TxChannel,                                    \
+                   uint32_t ui32RxChannel))ROM_SPIFLASHTABLE[11])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashSectorErase                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr))ROM_SPIFLASHTABLE[12])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashDualRead                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count))ROM_SPIFLASHTABLE[13])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashDualReadNonBlocking                                       \
+        ((void (*)(tSPIFlashState *pState,                                    \
+                   uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count,                                        \
+                   bool bUseDMA,                                              \
+                   uint32_t ui32TxChannel,                                    \
+                   uint32_t ui32RxChannel))ROM_SPIFLASHTABLE[14])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashBlockErase32                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr))ROM_SPIFLASHTABLE[15])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashQuadRead                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count))ROM_SPIFLASHTABLE[16])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashQuadReadNonBlocking                                       \
+        ((void (*)(tSPIFlashState *pState,                                    \
+                   uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr,                                         \
+                   uint8_t *pui8Data,                                         \
+                   uint32_t ui32Count,                                        \
+                   bool bUseDMA,                                              \
+                   uint32_t ui32TxChannel,                                    \
+                   uint32_t ui32RxChannel))ROM_SPIFLASHTABLE[17])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashReadID                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t *pui8ManufacturerID,                               \
+                   uint16_t *pui16DeviceID))ROM_SPIFLASHTABLE[18])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashChipErase                                                 \
+        ((void (*)(uint32_t ui32Base))ROM_SPIFLASHTABLE[19])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SPIFlashBlockErase64                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Addr))ROM_SPIFLASHTABLE[20])
 #endif
 
 //*****************************************************************************
@@ -4233,192 +4941,163 @@
 // Macros for calling ROM functions in the SSI API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDataPut                                                        \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulData))ROM_SSITABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Data))ROM_SSITABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIConfigSetExpClk                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSSIClk,                                    \
-                   unsigned long ulProtocol,                                  \
-                   unsigned long ulMode,                                      \
-                   unsigned long ulBitRate,                                   \
-                   unsigned long ulDataWidth))ROM_SSITABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32SSIClk,                                       \
+                   uint32_t ui32Protocol,                                     \
+                   uint32_t ui32Mode,                                         \
+                   uint32_t ui32BitRate,                                      \
+                   uint32_t ui32DataWidth))ROM_SSITABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIEnable                                                         \
-        ((void (*)(unsigned long ulBase))ROM_SSITABLE[2])
+        ((void (*)(uint32_t ui32Base))ROM_SSITABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDisable                                                        \
-        ((void (*)(unsigned long ulBase))ROM_SSITABLE[3])
+        ((void (*)(uint32_t ui32Base))ROM_SSITABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_SSITABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_SSITABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_SSITABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_SSITABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_SSITABLE[6])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_SSITABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIIntClear                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_SSITABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_SSITABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDataPutNonBlocking                                             \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulData))ROM_SSITABLE[8])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Data))ROM_SSITABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDataGet                                                        \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long *pulData))ROM_SSITABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32Data))ROM_SSITABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDataGetNonBlocking                                             \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long *pulData))ROM_SSITABLE[10])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t *pui32Data))ROM_SSITABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UpdateSSI                                                         \
         ((void (*)(void))ROM_SSITABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDMAEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDMAFlags))ROM_SSITABLE[12])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAFlags))ROM_SSITABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIDMADisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDMAFlags))ROM_SSITABLE[13])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAFlags))ROM_SSITABLE[13])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIBusy                                                           \
-        ((tBoolean (*)(unsigned long ulBase))ROM_SSITABLE[14])
+        ((bool (*)(uint32_t ui32Base))ROM_SSITABLE[14])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIClockSourceGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_SSITABLE[15])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_SSITABLE[15])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SSIClockSourceSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSource))ROM_SSITABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Source))ROM_SSITABLE[16])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SSIAdvModeSet                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Mode))ROM_SSITABLE[17])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SSIAdvDataPutFrameEnd                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Data))ROM_SSITABLE[18])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SSIAdvDataPutFrameEndNonBlocking                                  \
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Data))ROM_SSITABLE[19])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SSIAdvFrameHoldEnable                                             \
+        ((void (*)(uint32_t ui32Base))ROM_SSITABLE[20])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SSIAdvFrameHoldDisable                                            \
+        ((void (*)(uint32_t ui32Base))ROM_SSITABLE[21])
 #endif
 
 //*****************************************************************************
@@ -4426,409 +5105,310 @@
 // Macros for calling ROM functions in the SysCtl API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlSleep                                                       \
         ((void (*)(void))ROM_SYSCTLTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlSRAMSizeGet                                                 \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[1])
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlFlashSizeGet                                                \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[2])
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_SysCtlPinPresent                                                  \
-        ((tBoolean (*)(unsigned long ulPin))ROM_SYSCTLTABLE[3])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralPresent                                           \
-        ((tBoolean (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[4])
+        ((bool (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralReset                                             \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[5])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralEnable                                            \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[6])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralDisable                                           \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[7])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralSleepEnable                                       \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[8])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralSleepDisable                                      \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[9])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralDeepSleepEnable                                   \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[10])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralDeepSleepDisable                                  \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[11])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralClockGating                                       \
-        ((void (*)(tBoolean bEnable))ROM_SYSCTLTABLE[12])
+        ((void (*)(bool bEnable))ROM_SYSCTLTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlIntEnable                                                   \
-        ((void (*)(unsigned long ulInts))ROM_SYSCTLTABLE[13])
+        ((void (*)(uint32_t ui32Ints))ROM_SYSCTLTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlIntDisable                                                  \
-        ((void (*)(unsigned long ulInts))ROM_SYSCTLTABLE[14])
+        ((void (*)(uint32_t ui32Ints))ROM_SYSCTLTABLE[14])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlIntClear                                                    \
-        ((void (*)(unsigned long ulInts))ROM_SYSCTLTABLE[15])
+        ((void (*)(uint32_t ui32Ints))ROM_SYSCTLTABLE[15])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlIntStatus                                                   \
-        ((unsigned long (*)(tBoolean bMasked))ROM_SYSCTLTABLE[16])
+        ((uint32_t (*)(bool bMasked))ROM_SYSCTLTABLE[16])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_SysCtlLDOSet                                                      \
-        ((void (*)(unsigned long ulVoltage))ROM_SYSCTLTABLE[17])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_SysCtlLDOGet                                                      \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[18])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlReset                                                       \
         ((void (*)(void))ROM_SYSCTLTABLE[19])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlDeepSleep                                                   \
         ((void (*)(void))ROM_SYSCTLTABLE[20])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlResetCauseGet                                               \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[21])
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[21])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlResetCauseClear                                             \
-        ((void (*)(unsigned long ulCauses))ROM_SYSCTLTABLE[22])
+        ((void (*)(uint32_t ui32Causes))ROM_SYSCTLTABLE[22])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlClockSet                                                    \
-        ((void (*)(unsigned long ulConfig))ROM_SYSCTLTABLE[23])
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[23])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlClockGet                                                    \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[24])
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[24])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlPWMClockSet                                                 \
-        ((void (*)(unsigned long ulConfig))ROM_SYSCTLTABLE[25])
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[25])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlPWMClockGet                                                 \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[26])
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[26])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlADCSpeedSet                                                 \
-        ((void (*)(unsigned long ulSpeed))ROM_SYSCTLTABLE[27])
+        ((void (*)(uint32_t ui32Speed))ROM_SYSCTLTABLE[27])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlADCSpeedGet                                                 \
-        ((unsigned long (*)(void))ROM_SYSCTLTABLE[28])
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[28])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_SysCtlGPIOAHBEnable                                               \
-        ((void (*)(unsigned long ulGPIOPeripheral))ROM_SYSCTLTABLE[29])
-#endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_SysCtlGPIOAHBDisable                                              \
-        ((void (*)(unsigned long ulGPIOPeripheral))ROM_SYSCTLTABLE[30])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlUSBPLLEnable                                                \
         ((void (*)(void))ROM_SYSCTLTABLE[31])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlUSBPLLDisable                                               \
         ((void (*)(void))ROM_SYSCTLTABLE[32])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2)
-#define ROM_SysCtlI2SMClkSet                                                  \
-        ((unsigned long (*)(unsigned long ulInputClock,                       \
-                            unsigned long ulMClk))ROM_SYSCTLTABLE[33])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlDelay                                                       \
-        ((void (*)(unsigned long ulCount))ROM_SYSCTLTABLE[34])
+        ((void (*)(uint32_t ui32Count))ROM_SYSCTLTABLE[34])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralReady                                             \
-        ((tBoolean (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[35])
+        ((bool (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[35])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralPowerOn                                           \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[36])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[36])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPeripheralPowerOff                                          \
-        ((void (*)(unsigned long ulPeripheral))ROM_SYSCTLTABLE[37])
+        ((void (*)(uint32_t ui32Peripheral))ROM_SYSCTLTABLE[37])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlMOSCConfigSet                                               \
-        ((void (*)(unsigned long ulConfig))ROM_SYSCTLTABLE[44])
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[44])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysCtlPIOSCCalibrate                                              \
-        ((unsigned long (*)(unsigned long ulType))ROM_SYSCTLTABLE[45])
+        ((uint32_t (*)(uint32_t ui32Type))ROM_SYSCTLTABLE[45])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_SysCtlDeepSleepClockSet                                           \
-        ((void (*)(unsigned long ulConfig))ROM_SYSCTLTABLE[46])
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[46])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlDeepSleepClockConfigSet                                     \
+        ((void (*)(uint32_t ui32Div,                                          \
+                   uint32_t ui32Config))ROM_SYSCTLTABLE[47])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlClockFreqSet                                                \
+        ((uint32_t (*)(uint32_t ui32Config,                                   \
+                       uint32_t ui32SysClock))ROM_SYSCTLTABLE[48])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlLPCLowPowerConfigSet                                        \
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[49])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlLPCLowPowerStatusGet                                        \
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[50])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlResetBehaviorSet                                            \
+        ((void (*)(uint32_t ui32Behavior))ROM_SYSCTLTABLE[51])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlResetBehaviorGet                                            \
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[52])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlFlashSectorSizeGet                                          \
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[54])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlVoltageEventConfig                                          \
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[55])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlVoltageEventStatus                                          \
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[56])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlVoltageEventClear                                           \
+        ((void (*)(uint32_t ui32Status))ROM_SYSCTLTABLE[57])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlNMIStatus                                                   \
+        ((uint32_t (*)(void))ROM_SYSCTLTABLE[58])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlNMIClear                                                    \
+        ((void (*)(uint32_t ui32Status))ROM_SYSCTLTABLE[59])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlClockOutConfig                                              \
+        ((void (*)(uint32_t ui32Config,                                       \
+                   uint32_t ui32Div))ROM_SYSCTLTABLE[60])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlAltClkConfig                                                \
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[61])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlLDOConfigSet                                                \
+        ((void (*)(uint32_t ui32Config))ROM_SYSCTLTABLE[62])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_SysCtlBrownOutConfigSet                                           \
+        ((void (*)(uint32_t ui32Config,                                       \
+                   uint32_t ui32Delay))ROM_SYSCTLTABLE[63])
 #endif
 
 //*****************************************************************************
@@ -4836,25 +5416,33 @@
 // Macros for calling ROM functions in the SysExc API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysExcIntStatus                                                   \
-        ((unsigned long (*)(tBoolean bMasked))ROM_SYSEXCTABLE[0])
+        ((uint32_t (*)(bool bMasked))ROM_SYSEXCTABLE[0])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysExcIntClear                                                    \
-        ((void (*)(unsigned long ulIntFlags))ROM_SYSEXCTABLE[1])
+        ((void (*)(uint32_t ui32IntFlags))ROM_SYSEXCTABLE[1])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysExcIntDisable                                                  \
-        ((void (*)(unsigned long ulIntFlags))ROM_SYSEXCTABLE[2])
+        ((void (*)(uint32_t ui32IntFlags))ROM_SYSEXCTABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysExcIntEnable                                                   \
-        ((void (*)(unsigned long ulIntFlags))ROM_SYSEXCTABLE[3])
+        ((void (*)(uint32_t ui32IntFlags))ROM_SYSEXCTABLE[3])
 #endif
 
 //*****************************************************************************
@@ -4862,82 +5450,54 @@
 // Macros for calling ROM functions in the SysTick API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickValueGet                                                   \
-        ((unsigned long (*)(void))ROM_SYSTICKTABLE[0])
+        ((uint32_t (*)(void))ROM_SYSTICKTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickEnable                                                     \
         ((void (*)(void))ROM_SYSTICKTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickDisable                                                    \
         ((void (*)(void))ROM_SYSTICKTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickIntEnable                                                  \
         ((void (*)(void))ROM_SYSTICKTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickIntDisable                                                 \
         ((void (*)(void))ROM_SYSTICKTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickPeriodSet                                                  \
-        ((void (*)(unsigned long ulPeriod))ROM_SYSTICKTABLE[5])
+        ((void (*)(uint32_t ui32Period))ROM_SYSTICKTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_SysTickPeriodGet                                                  \
-        ((unsigned long (*)(void))ROM_SYSTICKTABLE[6])
+        ((uint32_t (*)(void))ROM_SYSTICKTABLE[6])
 #endif
 
 //*****************************************************************************
@@ -4945,300 +5505,264 @@
 // Macros for calling ROM functions in the Timer API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerIntClear                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_TIMERTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_TIMERTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerEnable                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer))ROM_TIMERTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer))ROM_TIMERTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerDisable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer))ROM_TIMERTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer))ROM_TIMERTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerConfigure                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_TIMERTABLE[3])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_TIMERTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerControlLevel                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   tBoolean bInvert))ROM_TIMERTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   bool bInvert))ROM_TIMERTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1)
 #define ROM_TimerControlTrigger                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   tBoolean bEnable))ROM_TIMERTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   bool bEnable))ROM_TIMERTABLE[5])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerControlEvent                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   unsigned long ulEvent))ROM_TIMERTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   uint32_t ui32Event))ROM_TIMERTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerControlStall                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   tBoolean bStall))ROM_TIMERTABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   bool bStall))ROM_TIMERTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerRTCEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_TIMERTABLE[8])
+        ((void (*)(uint32_t ui32Base))ROM_TIMERTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerRTCDisable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_TIMERTABLE[9])
+        ((void (*)(uint32_t ui32Base))ROM_TIMERTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerPrescaleSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   unsigned long ulValue))ROM_TIMERTABLE[10])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   uint32_t ui32Value))ROM_TIMERTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerPrescaleGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulTimer))ROM_TIMERTABLE[11])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Timer))ROM_TIMERTABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerPrescaleMatchSet                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   unsigned long ulValue))ROM_TIMERTABLE[12])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   uint32_t ui32Value))ROM_TIMERTABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerPrescaleMatchGet                                             \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulTimer))ROM_TIMERTABLE[13])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Timer))ROM_TIMERTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerLoadSet                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   unsigned long ulValue))ROM_TIMERTABLE[14])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   uint32_t ui32Value))ROM_TIMERTABLE[14])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerLoadGet                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulTimer))ROM_TIMERTABLE[15])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Timer))ROM_TIMERTABLE[15])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerValueGet                                                     \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulTimer))ROM_TIMERTABLE[16])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Timer))ROM_TIMERTABLE[16])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerMatchSet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   unsigned long ulValue))ROM_TIMERTABLE[17])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   uint32_t ui32Value))ROM_TIMERTABLE[17])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerMatchGet                                                     \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulTimer))ROM_TIMERTABLE[18])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Timer))ROM_TIMERTABLE[18])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerIntEnable                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_TIMERTABLE[19])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_TIMERTABLE[19])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerIntDisable                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_TIMERTABLE[20])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_TIMERTABLE[20])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerIntStatus                                                    \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_TIMERTABLE[21])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_TIMERTABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerControlWaitOnTrigger                                         \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimer,                                     \
-                   tBoolean bWait))ROM_TIMERTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timer,                                        \
+                   bool bWait))ROM_TIMERTABLE[22])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerLoadSet64                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long long ullValue))ROM_TIMERTABLE[23])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint64_t ui64Value))ROM_TIMERTABLE[23])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerLoadGet64                                                    \
-        ((unsigned long long (*)(unsigned long ulBase))ROM_TIMERTABLE[24])
+        ((uint64_t (*)(uint32_t ui32Base))ROM_TIMERTABLE[24])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerValueGet64                                                   \
-        ((unsigned long long (*)(unsigned long ulBase))ROM_TIMERTABLE[25])
+        ((uint64_t (*)(uint32_t ui32Base))ROM_TIMERTABLE[25])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerMatchSet64                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long long ullValue))ROM_TIMERTABLE[26])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint64_t ui64Value))ROM_TIMERTABLE[26])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_TimerMatchGet64                                                   \
-        ((unsigned long long (*)(unsigned long ulBase))ROM_TIMERTABLE[27])
+        ((uint64_t (*)(uint32_t ui32Base))ROM_TIMERTABLE[27])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerClockSourceGet                                               \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_TIMERTABLE[28])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerClockSourceSet                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Source))ROM_TIMERTABLE[29])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerADCEventGet                                                  \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_TIMERTABLE[30])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerADCEventSet                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32ADCEvent))ROM_TIMERTABLE[31])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerDMAEventGet                                                  \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_TIMERTABLE[32])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerDMAEventSet                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAEvent))ROM_TIMERTABLE[33])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_TimerSynchronize                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Timers))ROM_TIMERTABLE[34])
 #endif
 
 //*****************************************************************************
@@ -5246,386 +5770,326 @@
 // Macros for calling ROM functions in the UART API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTCharPut                                                       \
-        ((void (*)(unsigned long ulBase,                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
                    unsigned char ucData))ROM_UARTTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTParityModeSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulParity))ROM_UARTTABLE[1])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Parity))ROM_UARTTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTParityModeGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_UARTTABLE[2])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTFIFOLevelSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTxLevel,                                   \
-                   unsigned long ulRxLevel))ROM_UARTTABLE[3])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32TxLevel,                                      \
+                   uint32_t ui32RxLevel))ROM_UARTTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTFIFOLevelGet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long *pulTxLevel,                                 \
-                   unsigned long *pulRxLevel))ROM_UARTTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t *pui32TxLevel,                                    \
+                   uint32_t *pui32RxLevel))ROM_UARTTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTConfigSetExpClk                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulUARTClk,                                   \
-                   unsigned long ulBaud,                                      \
-                   unsigned long ulConfig))ROM_UARTTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32UARTClk,                                      \
+                   uint32_t ui32Baud,                                         \
+                   uint32_t ui32Config))ROM_UARTTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTConfigGetExpClk                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulUARTClk,                                   \
-                   unsigned long *pulBaud,                                    \
-                   unsigned long *pulConfig))ROM_UARTTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32UARTClk,                                      \
+                   uint32_t *pui32Baud,                                       \
+                   uint32_t *pui32Config))ROM_UARTTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTEnable                                                        \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[7])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTDisable                                                       \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[8])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTEnableSIR                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bLowPower))ROM_UARTTABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bLowPower))ROM_UARTTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTDisableSIR                                                    \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[10])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTCharsAvail                                                    \
-        ((tBoolean (*)(unsigned long ulBase))ROM_UARTTABLE[11])
+        ((bool (*)(uint32_t ui32Base))ROM_UARTTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTSpaceAvail                                                    \
-        ((tBoolean (*)(unsigned long ulBase))ROM_UARTTABLE[12])
+        ((bool (*)(uint32_t ui32Base))ROM_UARTTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTCharGetNonBlocking                                            \
-        ((long (*)(unsigned long ulBase))ROM_UARTTABLE[13])
+        ((int32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTCharGet                                                       \
-        ((long (*)(unsigned long ulBase))ROM_UARTTABLE[14])
+        ((int32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[14])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTCharPutNonBlocking                                            \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       unsigned char ucData))ROM_UARTTABLE[15])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   unsigned char ucData))ROM_UARTTABLE[15])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTBreakCtl                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bBreakState))ROM_UARTTABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bBreakState))ROM_UARTTABLE[16])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTIntEnable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_UARTTABLE[17])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_UARTTABLE[17])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTIntDisable                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_UARTTABLE[18])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_UARTTABLE[18])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTIntStatus                                                     \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_UARTTABLE[19])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_UARTTABLE[19])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTIntClear                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_UARTTABLE[20])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_UARTTABLE[20])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UpdateUART                                                        \
         ((void (*)(void))ROM_UARTTABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTDMAEnable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDMAFlags))ROM_UARTTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAFlags))ROM_UARTTABLE[22])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTDMADisable                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDMAFlags))ROM_UARTTABLE[23])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32DMAFlags))ROM_UARTTABLE[23])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTFIFOEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[24])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[24])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTFIFODisable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[25])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[25])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTBusy                                                          \
-        ((tBoolean (*)(unsigned long ulBase))ROM_UARTTABLE[26])
+        ((bool (*)(uint32_t ui32Base))ROM_UARTTABLE[26])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTTxIntModeSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulMode))ROM_UARTTABLE[27])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Mode))ROM_UARTTABLE[27])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTTxIntModeGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_UARTTABLE[28])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[28])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTRxErrorGet                                                    \
-        ((unsigned long (*)(unsigned long ulBase))ROM_UARTTABLE[29])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[29])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTRxErrorClear                                                  \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[30])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[30])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTClockSourceSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSource))ROM_UARTTABLE[31])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Source))ROM_UARTTABLE[31])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UARTClockSourceGet                                                \
-        ((unsigned long (*)(unsigned long ulBase))ROM_UARTTABLE[32])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[32])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UART9BitEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[33])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[33])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UART9BitDisable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_UARTTABLE[34])
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[34])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UART9BitAddrSet                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAddr,                                      \
-                   unsigned char ucMask))ROM_UARTTABLE[35])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Addr,                                           \
+                   uint8_t ui8Mask))ROM_UARTTABLE[35])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UART9BitAddrSend                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAddr))ROM_UARTTABLE[36])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Addr))ROM_UARTTABLE[36])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTSmartCardDisable                                              \
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[37])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTSmartCardEnable                                               \
+        ((void (*)(uint32_t ui32Base))ROM_UARTTABLE[38])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTModemControlClear                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Control))ROM_UARTTABLE[39])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTModemControlGet                                               \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[40])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTModemControlSet                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Control))ROM_UARTTABLE[41])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTModemStatusGet                                                \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[42])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTFlowControlGet                                                \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_UARTTABLE[43])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_UARTFlowControlSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Mode))ROM_UARTTABLE[44])
 #endif
 
 //*****************************************************************************
@@ -5633,230 +6097,183 @@
 // Macros for calling ROM functions in the uDMA API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelTransferSet                                            \
-        ((void (*)(unsigned long ulChannelStructIndex,                        \
-                   unsigned long ulMode,                                      \
+        ((void (*)(uint32_t ui32ChannelStructIndex,                           \
+                   uint32_t ui32Mode,                                         \
                    void *pvSrcAddr,                                           \
                    void *pvDstAddr,                                           \
-                   unsigned long ulTransferSize))ROM_UDMATABLE[0])
+                   uint32_t ui32TransferSize))ROM_UDMATABLE[0])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAEnable                                                        \
         ((void (*)(void))ROM_UDMATABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMADisable                                                       \
         ((void (*)(void))ROM_UDMATABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAErrorStatusGet                                                \
-        ((unsigned long (*)(void))ROM_UDMATABLE[3])
+        ((uint32_t (*)(void))ROM_UDMATABLE[3])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAErrorStatusClear                                              \
         ((void (*)(void))ROM_UDMATABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelEnable                                                 \
-        ((void (*)(unsigned long ulChannelNum))ROM_UDMATABLE[5])
+        ((void (*)(uint32_t ui32ChannelNum))ROM_UDMATABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelDisable                                                \
-        ((void (*)(unsigned long ulChannelNum))ROM_UDMATABLE[6])
+        ((void (*)(uint32_t ui32ChannelNum))ROM_UDMATABLE[6])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelIsEnabled                                              \
-        ((tBoolean (*)(unsigned long ulChannelNum))ROM_UDMATABLE[7])
+        ((bool (*)(uint32_t ui32ChannelNum))ROM_UDMATABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAControlBaseSet                                                \
         ((void (*)(void *pControlTable))ROM_UDMATABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAControlBaseGet                                                \
         ((void * (*)(void))ROM_UDMATABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelRequest                                                \
-        ((void (*)(unsigned long ulChannelNum))ROM_UDMATABLE[10])
+        ((void (*)(uint32_t ui32ChannelNum))ROM_UDMATABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelAttributeEnable                                        \
-        ((void (*)(unsigned long ulChannelNum,                                \
-                   unsigned long ulAttr))ROM_UDMATABLE[11])
+        ((void (*)(uint32_t ui32ChannelNum,                                   \
+                   uint32_t ui32Attr))ROM_UDMATABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelAttributeDisable                                       \
-        ((void (*)(unsigned long ulChannelNum,                                \
-                   unsigned long ulAttr))ROM_UDMATABLE[12])
+        ((void (*)(uint32_t ui32ChannelNum,                                   \
+                   uint32_t ui32Attr))ROM_UDMATABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelAttributeGet                                           \
-        ((unsigned long (*)(unsigned long ulChannelNum))ROM_UDMATABLE[13])
+        ((uint32_t (*)(uint32_t ui32ChannelNum))ROM_UDMATABLE[13])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelControlSet                                             \
-        ((void (*)(unsigned long ulChannelStructIndex,                        \
-                   unsigned long ulControl))ROM_UDMATABLE[14])
+        ((void (*)(uint32_t ui32ChannelStructIndex,                           \
+                   uint32_t ui32Control))ROM_UDMATABLE[14])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelSizeGet                                                \
-        ((unsigned long (*)(unsigned long ulChannelStructIndex))ROM_UDMATABLE[15])
+        ((uint32_t (*)(uint32_t ui32ChannelStructIndex))ROM_UDMATABLE[15])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelModeGet                                                \
-        ((unsigned long (*)(unsigned long ulChannelStructIndex))ROM_UDMATABLE[16])
+        ((uint32_t (*)(uint32_t ui32ChannelStructIndex))ROM_UDMATABLE[16])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelSelectSecondary                                        \
-        ((void (*)(unsigned long ulSecPeriphs))ROM_UDMATABLE[17])
+        ((void (*)(uint32_t ui32SecPeriphs))ROM_UDMATABLE[17])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelSelectDefault                                          \
-        ((void (*)(unsigned long ulDefPeriphs))ROM_UDMATABLE[18])
+        ((void (*)(uint32_t ui32DefPeriphs))ROM_UDMATABLE[18])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAIntStatus                                                     \
-        ((unsigned long (*)(void))ROM_UDMATABLE[19])
+        ((uint32_t (*)(void))ROM_UDMATABLE[19])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAIntClear                                                      \
-        ((void (*)(unsigned long ulChanMask))ROM_UDMATABLE[20])
+        ((void (*)(uint32_t ui32ChanMask))ROM_UDMATABLE[20])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAControlAlternateBaseGet                                       \
         ((void * (*)(void))ROM_UDMATABLE[21])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelScatterGatherSet                                       \
-        ((void (*)(unsigned long ulChannelNum,                                \
-                   unsigned ulTaskCount,                                      \
+        ((void (*)(uint32_t ui32ChannelNum,                                   \
+                   uint32_t ui32TaskCount,                                    \
                    void *pvTaskList,                                          \
-                   unsigned long ulIsPeriphSG))ROM_UDMATABLE[22])
+                   uint32_t ui32IsPeriphSG))ROM_UDMATABLE[22])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_uDMAChannelAssign                                                 \
-        ((void (*)(unsigned long ulMapping))ROM_UDMATABLE[23])
+        ((void (*)(uint32_t ui32Mapping))ROM_UDMATABLE[23])
 #endif
 
 //*****************************************************************************
@@ -5864,629 +6281,670 @@
 // Macros for calling ROM functions in the USB API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_USBIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[0])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevAddrGet                                                     \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[1])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevAddrSet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulAddress))ROM_USBTABLE[2])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Address))ROM_USBTABLE[2])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevConnect                                                     \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[3])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[3])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevDisconnect                                                  \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[4])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevEndpointConfigSet                                           \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulMaxPacketSize,                             \
-                   unsigned long ulFlags))ROM_USBTABLE[5])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32MaxPacketSize,                                \
+                   uint32_t ui32Flags))ROM_USBTABLE[5])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevEndpointDataAck                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   tBoolean bIsLastPacket))ROM_USBTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   bool bIsLastPacket))ROM_USBTABLE[6])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevEndpointStall                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[7])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[7])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevEndpointStallClear                                          \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[8])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevEndpointStatusClear                                         \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[9])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[9])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDataGet                                                \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned char *pucData,                                    \
-                   unsigned long *pulSize))ROM_USBTABLE[10])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Endpoint,                                  \
+                      uint8_t *pui8Data,                                      \
+                      uint32_t *pui32Size))ROM_USBTABLE[10])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDataPut                                                \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned char *pucData,                                    \
-                   unsigned long ulSize))ROM_USBTABLE[11])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Endpoint,                                  \
+                      uint8_t *pui8Data,                                      \
+                      uint32_t ui32Size))ROM_USBTABLE[11])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDataSend                                               \
-        ((long (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulTransType))ROM_USBTABLE[12])
+        ((int32_t (*)(uint32_t ui32Base,                                      \
+                      uint32_t ui32Endpoint,                                  \
+                      uint32_t ui32TransType))ROM_USBTABLE[12])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDataToggleClear                                        \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[13])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[13])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointStatus                                                 \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulEndpoint))ROM_USBTABLE[14])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Endpoint))ROM_USBTABLE[14])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBFIFOAddrGet                                                    \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulEndpoint))ROM_USBTABLE[15])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Endpoint))ROM_USBTABLE[15])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBFIFOConfigGet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long *pulFIFOAddress,                             \
-                   unsigned long *pulFIFOSize,                                \
-                   unsigned long ulFlags))ROM_USBTABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t *pui32FIFOAddress,                                \
+                   uint32_t *pui32FIFOSize,                                   \
+                   uint32_t ui32Flags))ROM_USBTABLE[16])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBFIFOConfigSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFIFOAddress,                               \
-                   unsigned long ulFIFOSize,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[17])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32FIFOAddress,                                  \
+                   uint32_t ui32FIFOSize,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[17])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBFIFOFlush                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[18])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[18])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBFrameNumberGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[19])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[19])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostAddrGet                                                    \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulEndpoint,                         \
-                            unsigned long ulFlags))ROM_USBTABLE[20])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Endpoint,                                 \
+                       uint32_t ui32Flags))ROM_USBTABLE[20])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostAddrSet                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulAddr,                                      \
-                   unsigned long ulFlags))ROM_USBTABLE[21])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Addr,                                         \
+                   uint32_t ui32Flags))ROM_USBTABLE[21])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostEndpointConfig                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulMaxPacketSize,                             \
-                   unsigned long ulNAKPollInterval,                           \
-                   unsigned long ulTargetEndpoint,                            \
-                   unsigned long ulFlags))ROM_USBTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32MaxPacketSize,                                \
+                   uint32_t ui32NAKPollInterval,                              \
+                   uint32_t ui32TargetEndpoint,                               \
+                   uint32_t ui32Flags))ROM_USBTABLE[22])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostEndpointDataAck                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint))ROM_USBTABLE[23])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint))ROM_USBTABLE[23])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostEndpointDataToggle                                         \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   tBoolean bDataToggle,                                      \
-                   unsigned long ulFlags))ROM_USBTABLE[24])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   bool bDataToggle,                                          \
+                   uint32_t ui32Flags))ROM_USBTABLE[24])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostEndpointStatusClear                                        \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[25])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[25])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostHubAddrGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulEndpoint,                         \
-                            unsigned long ulFlags))ROM_USBTABLE[26])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Endpoint,                                 \
+                       uint32_t ui32Flags))ROM_USBTABLE[26])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostHubAddrSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulAddr,                                      \
-                   unsigned long ulFlags))ROM_USBTABLE[27])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Addr,                                         \
+                   uint32_t ui32Flags))ROM_USBTABLE[27])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostPwrDisable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[28])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[28])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostPwrEnable                                                  \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[29])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[29])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostPwrConfig                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_USBTABLE[30])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Flags))ROM_USBTABLE[30])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostPwrFaultDisable                                            \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[31])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[31])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostPwrFaultEnable                                             \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[32])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[32])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostRequestIN                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint))ROM_USBTABLE[33])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint))ROM_USBTABLE[33])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostRequestStatus                                              \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[34])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[34])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostReset                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bStart))ROM_USBTABLE[35])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bStart))ROM_USBTABLE[35])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostResume                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bStart))ROM_USBTABLE[36])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bStart))ROM_USBTABLE[36])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostSpeedGet                                                   \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[37])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[37])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostSuspend                                                    \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[38])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[38])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_USBIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_USBTABLE[39])
-#endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_USBIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_USBTABLE[40])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevEndpointConfigGet                                           \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long *pulMaxPacketSize,                           \
-                   unsigned long *pulFlags))ROM_USBTABLE[41])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t *pui32MaxPacketSize,                              \
+                   uint32_t *pui32Flags))ROM_USBTABLE[41])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDMAEnable                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[42])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[42])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDMADisable                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulFlags))ROM_USBTABLE[43])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[43])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDataAvail                                              \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulEndpoint))ROM_USBTABLE[44])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Endpoint))ROM_USBTABLE[44])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
-#define ROM_USBOTGHostRequest                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bHNP))ROM_USBTABLE[45])
-#endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBModeGet                                                        \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[46])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[46])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBEndpointDMAChannel                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulEndpoint,                                  \
-                   unsigned long ulChannel))ROM_USBTABLE[47])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Channel))ROM_USBTABLE[47])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBIntDisableControl                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_USBTABLE[48])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_USBTABLE[48])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBIntEnableControl                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_USBTABLE[49])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_USBTABLE[49])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBIntStatusControl                                               \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[50])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[50])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBIntDisableEndpoint                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_USBTABLE[51])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_USBTABLE[51])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBIntEnableEndpoint                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_USBTABLE[52])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_USBTABLE[52])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBIntStatusEndpoint                                              \
-        ((unsigned long (*)(unsigned long ulBase))ROM_USBTABLE[53])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[53])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBHostMode                                                       \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[54])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[54])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBDevMode                                                        \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[55])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[55])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBPHYPowerOff                                                    \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[56])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[56])
 #endif
-#if defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBPHYPowerOn                                                     \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[57])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[57])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_UpdateUSB                                                         \
-        ((void (*)(unsigned char *pucDescriptorInfo))ROM_USBTABLE[58])
+        ((void (*)(uint8_t *pui8DescriptorInfo))ROM_USBTABLE[58])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_USBOTGMode                                                        \
-        ((void (*)(unsigned long ulBase))ROM_USBTABLE[59])
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[59])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHostRequestINClear                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint))ROM_USBTABLE[60])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBNumEndpointsGet                                                \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[61])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBClockDisable                                                   \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[62])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBClockEnable                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Div,                                          \
+                   uint32_t ui32Flags))ROM_USBTABLE[63])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBControllerVersion                                              \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[64])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDevLPMConfig                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_USBTABLE[65])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDevLPMDisable                                                  \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[66])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDevLPMEnable                                                   \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[67])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDevLPMRemoteWake                                               \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[68])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDevSpeedGet                                                    \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[69])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelAddressGet                                           \
+        ((void * (*)(uint32_t ui32Base,                                       \
+                     uint32_t ui32Channel))ROM_USBTABLE[70])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelAddressSet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   void *pvAddress))ROM_USBTABLE[71])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelConfigSet                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Config))ROM_USBTABLE[72])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelDisable                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_USBTABLE[73])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelEnable                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_USBTABLE[74])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelIntDisable                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_USBTABLE[75])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelIntEnable                                            \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel))ROM_USBTABLE[76])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelCountGet                                             \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_USBTABLE[77])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelCountSet                                             \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Count,                                        \
+                   uint32_t ui32Channel))ROM_USBTABLE[78])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelIntStatus                                            \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[79])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelStatus                                               \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint32_t ui32Channel))ROM_USBTABLE[80])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBDMAChannelStatusClear                                          \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Channel,                                      \
+                   uint32_t ui32Status))ROM_USBTABLE[81])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHighSpeed                                                      \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bEnable))ROM_USBTABLE[82])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHostEndpointPing                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   bool bEnable))ROM_USBTABLE[83])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHostEndpointSpeed                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Flags))ROM_USBTABLE[84])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHostLPMConfig                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32ResumeTime,                                   \
+                   uint32_t ui32Config))ROM_USBTABLE[85])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHostLPMResume                                                  \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[86])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBHostLPMSend                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Address,                                      \
+                   uint32_t uiEndpoint))ROM_USBTABLE[87])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBLPMIntDisable                                                  \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Ints))ROM_USBTABLE[88])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBLPMIntEnable                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Ints))ROM_USBTABLE[89])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBLPMIntStatus                                                   \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[90])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBLPMLinkStateGet                                                \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_USBTABLE[91])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBEndpointPacketCountSet                                         \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Endpoint,                                     \
+                   uint32_t ui32Count))ROM_USBTABLE[92])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBULPIConfig                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_USBTABLE[93])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBULPIDisable                                                    \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[94])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBULPIEnable                                                     \
+        ((void (*)(uint32_t ui32Base))ROM_USBTABLE[95])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBULPIRegRead                                                    \
+        ((uint8_t (*)(uint32_t ui32Base,                                      \
+                      uint8_t ui8Reg))ROM_USBTABLE[96])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBULPIRegWrite                                                   \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Reg,                                            \
+                   uint8_t ui8Data))ROM_USBTABLE[97])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBOTGSessionRequest                                              \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bStart))ROM_USBTABLE[98])
+#endif
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_USBModeConfig                                                     \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Mode))ROM_USBTABLE[103])
 #endif
 
 //*****************************************************************************
@@ -6494,178 +6952,120 @@
 // Macros for calling ROM functions in the Watchdog API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogIntClear                                                  \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[0])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[0])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogRunning                                                   \
-        ((tBoolean (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[1])
+        ((bool (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[1])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[2])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[2])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogResetEnable                                               \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[3])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[3])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogResetDisable                                              \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[4])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[4])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogLock                                                      \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[5])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[5])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogUnlock                                                    \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[6])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[6])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogLockState                                                 \
-        ((tBoolean (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[7])
+        ((bool (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[7])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogReloadSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulLoadVal))ROM_WATCHDOGTABLE[8])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32LoadVal))ROM_WATCHDOGTABLE[8])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogReloadGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[9])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[9])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogValueGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[10])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[10])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogIntEnable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[11])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[11])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogIntStatus                                                 \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_WATCHDOGTABLE[12])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_WATCHDOGTABLE[12])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogStallEnable                                               \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[13])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[13])
 #endif
-#if defined(TARGET_IS_DUSTDEVIL_RA0) || \
-    defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogStallDisable                                              \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[14])
+        ((void (*)(uint32_t ui32Base))ROM_WATCHDOGTABLE[14])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_WatchdogIntTypeSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulType))ROM_WATCHDOGTABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Type))ROM_WATCHDOGTABLE[15])
 #endif
 
 //*****************************************************************************
@@ -6673,72 +7073,53 @@
 // Macros for calling ROM functions in the Software API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_Crc16Array                                                        \
-        ((unsigned short (*)(unsigned long ulWordLen,                         \
-                             const unsigned long *pulData))ROM_SOFTWARETABLE[1])
+        ((uint16_t (*)(uint32_t ui32WordLen,                                  \
+                       const uint32_t *pui32Data))ROM_SOFTWARETABLE[1])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_Crc16Array3                                                       \
-        ((void (*)(unsigned long ulWordLen,                                   \
-                   const unsigned long *pulData,                              \
-                   unsigned short *pusCrc3))ROM_SOFTWARETABLE[2])
+        ((void (*)(uint32_t ui32WordLen,                                      \
+                   const uint32_t *pui32Data,                                 \
+                   uint16_t *pui16Crc3))ROM_SOFTWARETABLE[2])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_Crc16                                                             \
-        ((unsigned short (*)(unsigned short usCrc,                            \
-                             const unsigned char *pucData,                    \
-                             unsigned long ulCount))ROM_SOFTWARETABLE[3])
+        ((uint16_t (*)(uint16_t ui16Crc,                                      \
+                       const uint8_t *pui8Data,                               \
+                       uint32_t ui32Count))ROM_SOFTWARETABLE[3])
 #endif
-#if defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_Crc8CCITT                                                         \
-        ((unsigned char (*)(unsigned char ucCrc,                              \
-                            const unsigned char *pucData,                     \
-                            unsigned long ulCount))ROM_SOFTWARETABLE[4])
+        ((uint8_t (*)(uint8_t ui8Crc,                                         \
+                      const uint8_t *pui8Data,                                \
+                      uint32_t ui32Count))ROM_SOFTWARETABLE[4])
 #endif
-#if defined(TARGET_IS_TEMPEST_RB1) || \
-    defined(TARGET_IS_TEMPEST_RC1) || \
-    defined(TARGET_IS_TEMPEST_RC3) || \
-    defined(TARGET_IS_TEMPEST_RC5) || \
-    defined(TARGET_IS_FIRESTORM_RA2) || \
-    defined(TARGET_IS_BLIZZARD_RA1) || \
-    defined(TARGET_IS_BLIZZARD_RA2)
+#if defined(TARGET_IS_SNOWFLAKE_RA0)
+#define ROM_Crc32                                                             \
+        ((uint32_t (*)(uint32_t ui32Crc,                                      \
+                       const uint8_t *pui8Data,                               \
+                       uint32_t ui32Count))ROM_SOFTWARETABLE[5])
+#endif
+#if defined(TARGET_IS_BLIZZARD_RA1) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RA3) ||                                        \
+    defined(TARGET_IS_BLIZZARD_RB1) ||                                        \
+    defined(TARGET_IS_SNOWFLAKE_RA0)
 #define ROM_pvAESTable                                                        \
         ((void *)&(ROM_SOFTWARETABLE[7]))
 #endif
 
-//*****************************************************************************
-//
-// Deprecated ROM functions.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-#ifdef ROM_FlashIntStatus
-#define ROM_FlashIntGetStatus \
-        ROM_FlashIntStatus
-#endif
-#ifdef ROM_USBDevEndpointConfigSet
-#define ROM_USBDevEndpointConfig \
-        ROM_USBDevEndpointConfigSet
-#endif
-#ifdef ROM_USBHostPwrConfig
-#define ROM_USBHostPwrFaultConfig \
-        ROM_USBHostPwrConfig
-#endif
-#endif
-
-#endif // __ROM_H__
+#endif // __DRIVERLIB_ROM_H__

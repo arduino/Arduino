@@ -2,7 +2,7 @@
 //
 // cpu.h - Prototypes for the CPU instruction wrapper functions.
 //
-// Copyright (c) 2006-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2006-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,16 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __CPU_H__
-#define __CPU_H__
-
-#ifdef __GNUC__
-#define gcc
-#endif
+#ifndef __DRIVERLIB_CPU_H__
+#define __DRIVERLIB_CPU_H__
 
 //*****************************************************************************
 //
@@ -60,12 +56,12 @@ extern "C"
 // Prototypes.
 //
 //*****************************************************************************
-extern unsigned long CPUcpsid(void);
-extern unsigned long CPUcpsie(void);
-extern unsigned long CPUprimask(void);
+extern uint32_t CPUcpsid(void);
+extern uint32_t CPUcpsie(void);
+extern uint32_t CPUprimask(void);
 extern void CPUwfi(void);
-extern unsigned long CPUbasepriGet(void);
-extern void CPUbasepriSet(unsigned long ulNewBasepri);
+extern uint32_t CPUbasepriGet(void);
+extern void CPUbasepriSet(uint32_t ui32NewBasepri);
 
 //*****************************************************************************
 //
@@ -76,4 +72,4 @@ extern void CPUbasepriSet(unsigned long ulNewBasepri);
 }
 #endif
 
-#endif // __CPU_H__
+#endif // __DRIVERLIB_CPU_H__

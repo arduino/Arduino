@@ -2,7 +2,7 @@
 //
 // adc.c - Driver for the ADC.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_adc.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
@@ -75,14 +77,57 @@
 // sequencers.
 //
 //*****************************************************************************
-static unsigned char g_pucOversampleFactor[3];
+static uint8_t g_pui8OversampleFactor[3];
+
+//*****************************************************************************
+//
+//! Returns the interrupt number for a given ADC base address and sequence
+//! number.
+//!
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//!
+//! This function returns the interrupt number for the ADC module and sequence
+//! number provided in the \e ui32Base and \e ui32SequenceNum parameters.
+//!
+//! \return Returns the ADC sequence interrupt number or 0 if the interrupt
+//! does not exist.
+//
+//*****************************************************************************
+static uint_fast8_t
+_ADCIntNumberGet(uint32_t ui32Base, uint32_t ui32SequenceNum)
+{
+    uint_fast8_t ui8Int;
+
+    //
+    // Determine the interrupt to register based on the sequence number.
+    //
+    if(CLASS_IS_BLIZZARD)
+    {
+        ui8Int = ((ui32Base == ADC0_BASE) ?
+                  (INT_ADC0SS0_BLIZZARD + ui32SequenceNum) :
+                  (INT_ADC0SS0_BLIZZARD + ui32SequenceNum));
+    }
+    else if(CLASS_IS_SNOWFLAKE)
+    {
+        ui8Int = ((ui32Base == ADC0_BASE) ?
+                  (INT_ADC0SS0_SNOWFLAKE + ui32SequenceNum) :
+                  (INT_ADC1SS0_SNOWFLAKE + ui32SequenceNum));
+    }
+    else
+    {
+        ui8Int = 0;
+    }
+
+    return(ui8Int);
+}
 
 //*****************************************************************************
 //
 //! Registers an interrupt handler for an ADC interrupt.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //! \param pfnHandler is a pointer to the function to be called when the
 //! ADC sample sequence interrupt occurs.
 //!
@@ -99,40 +144,40 @@ static unsigned char g_pucOversampleFactor[3];
 //
 //*****************************************************************************
 void
-ADCIntRegister(unsigned long ulBase, unsigned long ulSequenceNum,
+ADCIntRegister(uint32_t ui32Base, uint32_t ui32SequenceNum,
                void (*pfnHandler)(void))
 {
-    unsigned long ulInt;
+    uint_fast8_t ui8Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Determine the interrupt to register based on the sequence number.
     //
-    ulInt = ((ulBase == ADC0_BASE) ? (INT_ADC0SS0 + ulSequenceNum) :
-             (INT_ADC1SS0 + ulSequenceNum));
+    ui8Int = _ADCIntNumberGet(ui32Base, ui32SequenceNum);
+    ASSERT(ui8Int != 0);
 
     //
     // Register the interrupt handler.
     //
-    IntRegister(ulInt, pfnHandler);
+    IntRegister(ui8Int, pfnHandler);
 
     //
     // Enable the timer interrupt.
     //
-    IntEnable(ulInt);
+    IntEnable(ui8Int);
 }
 
 //*****************************************************************************
 //
 //! Unregisters the interrupt handler for an ADC interrupt.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function unregisters the interrupt handler.  This function disables
 //! the global interrupt in the interrupt controller; the sequence interrupt
@@ -145,39 +190,39 @@ ADCIntRegister(unsigned long ulBase, unsigned long ulSequenceNum,
 //
 //*****************************************************************************
 void
-ADCIntUnregister(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCIntUnregister(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
-    unsigned long ulInt;
+    uint_fast8_t ui8Int;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Determine the interrupt to unregister based on the sequence number.
     //
-    ulInt = ((ulBase == ADC0_BASE) ? (INT_ADC0SS0 + ulSequenceNum) :
-             (INT_ADC1SS0 + ulSequenceNum));
+    ui8Int = _ADCIntNumberGet(ui32Base, ui32SequenceNum);
+    ASSERT(ui8Int != 0);
 
     //
     // Disable the interrupt.
     //
-    IntDisable(ulInt);
+    IntDisable(ui8Int);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(ulInt);
+    IntUnregister(ui8Int);
 }
 
 //*****************************************************************************
 //
 //! Disables a sample sequence interrupt.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function disables the requested sample sequence interrupt.
 //!
@@ -185,26 +230,26 @@ ADCIntUnregister(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCIntDisable(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCIntDisable(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Disable this sample sequence interrupt.
     //
-    HWREG(ulBase + ADC_O_IM) &= ~(1 << ulSequenceNum);
+    HWREG(ui32Base + ADC_O_IM) &= ~(1 << ui32SequenceNum);
 }
 
 //*****************************************************************************
 //
 //! Enables a sample sequence interrupt.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function enables the requested sample sequence interrupt.  Any
 //! outstanding interrupts are cleared before enabling the sample sequence
@@ -214,52 +259,51 @@ ADCIntDisable(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCIntEnable(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCIntEnable(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Clear any outstanding interrupts on this sample sequence.
     //
-    HWREG(ulBase + ADC_O_ISC) = 1 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_ISC) = 1 << ui32SequenceNum;
 
     //
     // Enable this sample sequence interrupt.
     //
-    HWREG(ulBase + ADC_O_IM) |= 1 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_IM) |= 1 << ui32SequenceNum;
 }
 
 //*****************************************************************************
 //
 //! Gets the current interrupt status.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //! \param bMasked is false if the raw interrupt status is required and true if
 //! the masked interrupt status is required.
 //!
 //! This function returns the interrupt status for the specified sample
-//! sequence. Either the raw interrupt status or the status of interrupts that
+//! sequence.  Either the raw interrupt status or the status of interrupts that
 //! are allowed to reflect to the processor can be returned.
 //!
 //! \return The current raw or masked interrupt status.
 //
 //*****************************************************************************
-unsigned long
-ADCIntStatus(unsigned long ulBase, unsigned long ulSequenceNum,
-             tBoolean bMasked)
+uint32_t
+ADCIntStatus(uint32_t ui32Base, uint32_t ui32SequenceNum, bool bMasked)
 {
-    unsigned long ulTemp;
+    uint32_t ui32Temp;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Return either the interrupt status or the raw interrupt status as
@@ -267,35 +311,36 @@ ADCIntStatus(unsigned long ulBase, unsigned long ulSequenceNum,
     //
     if(bMasked)
     {
-        ulTemp = HWREG(ulBase + ADC_O_ISC) & (0x10001 << ulSequenceNum);
+        ui32Temp = HWREG(ui32Base + ADC_O_ISC) & (0x10001 << ui32SequenceNum);
     }
     else
     {
-        ulTemp = HWREG(ulBase + ADC_O_RIS) & (0x10000 | (1 << ulSequenceNum));
+        ui32Temp = (HWREG(ui32Base + ADC_O_RIS) &
+                    (0x10000 | (1 << ui32SequenceNum)));
 
         //
         // If the digital comparator status bit is set, reflect it to the
         // appropriate sequence bit.
         //
-        if(ulTemp & 0x10000)
+        if(ui32Temp & 0x10000)
         {
-            ulTemp |= 0xF0000;
-            ulTemp &= ~(0x10000 << ulSequenceNum);
+            ui32Temp |= 0xF0000;
+            ui32Temp &= ~(0x10000 << ui32SequenceNum);
         }
     }
 
     //
     // Return the interrupt status
     //
-    return(ulTemp);
+    return(ui32Temp);
 }
 
 //*****************************************************************************
 //
 //! Clears sample sequence interrupt source.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! The specified sample sequence interrupt is cleared, so that it no longer
 //! asserts.  This function must be called in the interrupt handler to keep
@@ -314,26 +359,26 @@ ADCIntStatus(unsigned long ulBase, unsigned long ulSequenceNum,
 //
 //*****************************************************************************
 void
-ADCIntClear(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCIntClear(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Clear the interrupt.
     //
-    HWREG(ulBase + ADC_O_ISC) = 1 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_ISC) = 1 << ui32SequenceNum;
 }
 
 //*****************************************************************************
 //
 //! Enables a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! Allows the specified sample sequence to be captured when its trigger is
 //! detected.  A sample sequence must be configured before it is enabled.
@@ -342,26 +387,26 @@ ADCIntClear(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCSequenceEnable(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCSequenceEnable(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Enable the specified sequence.
     //
-    HWREG(ulBase + ADC_O_ACTSS) |= 1 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_ACTSS) |= 1 << ui32SequenceNum;
 }
 
 //*****************************************************************************
 //
 //! Disables a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! Prevents the specified sample sequence from being captured when its trigger
 //! is detected.  A sample sequence should be disabled before it is configured.
@@ -370,29 +415,29 @@ ADCSequenceEnable(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCSequenceDisable(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCSequenceDisable(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Disable the specified sequences.
     //
-    HWREG(ulBase + ADC_O_ACTSS) &= ~(1 << ulSequenceNum);
+    HWREG(ui32Base + ADC_O_ACTSS) &= ~(1 << ui32SequenceNum);
 }
 
 //*****************************************************************************
 //
 //! Configures the trigger source and priority of a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
-//! \param ulTrigger is the trigger source that initiates the sample sequence;
-//! must be one of the \b ADC_TRIGGER_* values.
-//! \param ulPriority is the relative priority of the sample sequence with
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//! \param ui32Trigger is the trigger source that initiates the sample
+//! sequence; must be one of the \b ADC_TRIGGER_* values.
+//! \param ui32Priority is the relative priority of the sample sequence with
 //! respect to the other sample sequences.
 //!
 //! This function configures the initiation criteria for a sample sequence.
@@ -401,7 +446,7 @@ ADCSequenceDisable(unsigned long ulBase, unsigned long ulSequenceNum)
 //! and sequencer three captures a single sample.  The trigger condition and
 //! priority (with respect to other sample sequencer execution) are set.
 //!
-//! The \e ulTrigger parameter can take on the following values:
+//! The \e ui32Trigger parameter can take on the following values:
 //!
 //! - \b ADC_TRIGGER_PROCESSOR - A trigger generated by the processor, via the
 //!                              ADCProcessorTrigger() function.
@@ -412,7 +457,7 @@ ADCSequenceDisable(unsigned long ulBase, unsigned long ulSequenceNum)
 //! - \b ADC_TRIGGER_COMP2 - A trigger generated by the third analog
 //!                          comparator; configured with ComparatorConfigure().
 //! - \b ADC_TRIGGER_EXTERNAL - A trigger generated by an input from the Port
-//!                             B4 pin. Note that some microcontrollers can
+//!                             B4 pin.  Note that some microcontrollers can
 //!                             select from any GPIO using the
 //!                             GPIOADCTriggerEnable() function.
 //! - \b ADC_TRIGGER_TIMER - A trigger generated by a timer; configured with
@@ -429,91 +474,92 @@ ADCSequenceDisable(unsigned long ulBase, unsigned long ulSequenceNum)
 //!                           sample sequence to capture repeatedly (so long as
 //!                           there is not a higher priority source active).
 //!
-//! Note that not all trigger sources are available on all Stellaris family
+//! Note that not all trigger sources are available on all Tiva family
 //! members; consult the data sheet for the device in question to determine the
 //! availability of triggers.
 //!
-//! The \e ulPriority parameter is a value between 0 and 3, where 0 represents
-//! the highest priority and 3 the lowest.  Note that when programming the
-//! priority among a set of sample sequences, each must have unique priority;
-//! it is up to the caller to guarantee the uniqueness of the priorities.
+//! The \e ui32Priority parameter is a value between 0 and 3, where 0
+//! represents the highest priority and 3 the lowest.  Note that when
+//! programming the priority among a set of sample sequences, each must have
+//! unique priority; it is up to the caller to guarantee the uniqueness of the
+//! priorities.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-ADCSequenceConfigure(unsigned long ulBase, unsigned long ulSequenceNum,
-                     unsigned long ulTrigger, unsigned long ulPriority)
+ADCSequenceConfigure(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                     uint32_t ui32Trigger, uint32_t ui32Priority)
 {
     //
     // Check the arugments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
-    ASSERT((ulTrigger == ADC_TRIGGER_PROCESSOR) ||
-           (ulTrigger == ADC_TRIGGER_COMP0) ||
-           (ulTrigger == ADC_TRIGGER_COMP1) ||
-           (ulTrigger == ADC_TRIGGER_COMP2) ||
-           (ulTrigger == ADC_TRIGGER_EXTERNAL) ||
-           (ulTrigger == ADC_TRIGGER_TIMER) ||
-           (ulTrigger == ADC_TRIGGER_PWM0) ||
-           (ulTrigger == ADC_TRIGGER_PWM1) ||
-           (ulTrigger == ADC_TRIGGER_PWM2) ||
-           (ulTrigger == ADC_TRIGGER_PWM3) ||
-           (ulTrigger == ADC_TRIGGER_ALWAYS));
-    ASSERT(ulPriority < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
+    ASSERT((ui32Trigger == ADC_TRIGGER_PROCESSOR) ||
+           (ui32Trigger == ADC_TRIGGER_COMP0) ||
+           (ui32Trigger == ADC_TRIGGER_COMP1) ||
+           (ui32Trigger == ADC_TRIGGER_COMP2) ||
+           (ui32Trigger == ADC_TRIGGER_EXTERNAL) ||
+           (ui32Trigger == ADC_TRIGGER_TIMER) ||
+           (ui32Trigger == ADC_TRIGGER_PWM0) ||
+           (ui32Trigger == ADC_TRIGGER_PWM1) ||
+           (ui32Trigger == ADC_TRIGGER_PWM2) ||
+           (ui32Trigger == ADC_TRIGGER_PWM3) ||
+           (ui32Trigger == ADC_TRIGGER_ALWAYS));
+    ASSERT(ui32Priority < 4);
 
     //
     // Compute the shift for the bits that control this sample sequence.
     //
-    ulSequenceNum *= 4;
+    ui32SequenceNum *= 4;
 
     //
     // Set the trigger event for this sample sequence.
     //
-    HWREG(ulBase + ADC_O_EMUX) = ((HWREG(ulBase + ADC_O_EMUX) &
-                                   ~(0xf << ulSequenceNum)) |
-                                  ((ulTrigger & 0xf) << ulSequenceNum));
+    HWREG(ui32Base + ADC_O_EMUX) = ((HWREG(ui32Base + ADC_O_EMUX) &
+                                     ~(0xf << ui32SequenceNum)) |
+                                    ((ui32Trigger & 0xf) << ui32SequenceNum));
 
     //
     // Set the priority for this sample sequence.
     //
-    HWREG(ulBase + ADC_O_SSPRI) = ((HWREG(ulBase + ADC_O_SSPRI) &
-                                    ~(0xf << ulSequenceNum)) |
-                                   ((ulPriority & 0x3) << ulSequenceNum));
+    HWREG(ui32Base + ADC_O_SSPRI) = ((HWREG(ui32Base + ADC_O_SSPRI) &
+                                      ~(0xf << ui32SequenceNum)) |
+                                     ((ui32Priority & 0x3) <<
+                                      ui32SequenceNum));
 }
 
 //*****************************************************************************
 //
 //! Configure a step of the sample sequencer.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
-//! \param ulStep is the step to be configured.
-//! \param ulConfig is the configuration of this step; must be a logical OR of
-//! \b ADC_CTL_TS, \b ADC_CTL_IE, \b ADC_CTL_END, \b ADC_CTL_D, one of the
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//! \param ui32Step is the step to be configured.
+//! \param ui32Config is the configuration of this step; must be a logical OR
+//! of \b ADC_CTL_TS, \b ADC_CTL_IE, \b ADC_CTL_END, \b ADC_CTL_D, one of the
 //! input channel selects (\b ADC_CTL_CH0 through \b ADC_CTL_CH23), and one of
 //! the digital comparator selects (\b ADC_CTL_CMP0 through \b ADC_CTL_CMP7).
 //!
 //! This function configures the ADC for one step of a sample sequence.  The
-//! ADC can be configured for single-ended or differential operation
-//! (the \b ADC_CTL_D bit selects differential operation when set), the
-//! channel to be sampled can be chosen (the \b ADC_CTL_CH0 through
-//! \b ADC_CTL_CH23 values), and the internal temperature sensor can be
-//! selected (the \b ADC_CTL_TS bit).  Additionally, this step can be defined
-//! as the last in the sequence (the \b ADC_CTL_END bit) and it can be
-//! configured to cause an interrupt when the step is complete (the
-//! \b ADC_CTL_IE bit).  If the digital comparators are present on the device,
-//! this step may also be configured to send the ADC sample to the selected
-//! comparator using \b ADC_CTL_CMP0 through \b ADC_CTL_CMP7. The configuration
-//! is used by the ADC at the appropriate time when the trigger for
-//! this sequence occurs.
+//! ADC can be configured for single-ended or differential operation (the
+//! \b ADC_CTL_D bit selects differential operation when set), the channel to
+//! be sampled can be chosen (the \b ADC_CTL_CH0 through \b ADC_CTL_CH23
+//! values), and the internal temperature sensor can be selected (the
+//! \b ADC_CTL_TS bit).  Additionally, this step can be defined as the last in
+//! the sequence (the \b ADC_CTL_END bit) and it can be configured to cause an
+//! interrupt when the step is complete (the \b ADC_CTL_IE bit).  If the
+//! digital comparators are present on the device, this step may also be
+//! configured to send the ADC sample to the selected comparator using
+//! \b ADC_CTL_CMP0 through \b ADC_CTL_CMP7.  The configuration is used by the
+//! ADC at the appropriate time when the trigger for this sequence occurs.
 //!
 //! \note If the Digital Comparator is present and enabled using the
 //! \b ADC_CTL_CMP0 through \b ADC_CTL_CMP7 selects, the ADC sample is NOT
 //! written into the ADC sequence data FIFO.
 //!
-//! The \e ulStep parameter determines the order in which the samples are
+//! The \e ui32Step parameter determines the order in which the samples are
 //! captured by the ADC when the trigger occurs.  It can range from zero to
 //! seven for the first sample sequencer, from zero to three for the second and
 //! third sample sequencer, and can only be zero for the fourth sample
@@ -534,71 +580,69 @@ ADCSequenceConfigure(unsigned long ulBase, unsigned long ulSequenceNum,
 //
 //*****************************************************************************
 void
-ADCSequenceStepConfigure(unsigned long ulBase, unsigned long ulSequenceNum,
-                         unsigned long ulStep, unsigned long ulConfig)
+ADCSequenceStepConfigure(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                         uint32_t ui32Step, uint32_t ui32Config)
 {
-    unsigned long ulTemp;
+    uint32_t ui32Temp;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
-    ASSERT(((ulSequenceNum == 0) && (ulStep < 8)) ||
-           ((ulSequenceNum == 1) && (ulStep < 4)) ||
-           ((ulSequenceNum == 2) && (ulStep < 4)) ||
-           ((ulSequenceNum == 3) && (ulStep < 1)));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
+    ASSERT(((ui32SequenceNum == 0) && (ui32Step < 8)) ||
+           ((ui32SequenceNum == 1) && (ui32Step < 4)) ||
+           ((ui32SequenceNum == 2) && (ui32Step < 4)) ||
+           ((ui32SequenceNum == 3) && (ui32Step < 1)));
 
     //
     // Get the offset of the sequence to be configured.
     //
-    ulBase += ADC_SEQ + (ADC_SEQ_STEP * ulSequenceNum);
+    ui32Base += ADC_SEQ + (ADC_SEQ_STEP * ui32SequenceNum);
 
     //
     // Compute the shift for the bits that control this step.
     //
-    ulStep *= 4;
+    ui32Step *= 4;
 
     //
     // Set the analog mux value for this step.
     //
-    HWREG(ulBase + ADC_SSMUX) = ((HWREG(ulBase + ADC_SSMUX) &
-                                  ~(0x0000000f << ulStep)) |
-                                 ((ulConfig & 0x0f) << ulStep));
+    HWREG(ui32Base + ADC_SSMUX) = ((HWREG(ui32Base + ADC_SSMUX) &
+                                    ~(0x0000000f << ui32Step)) |
+                                   ((ui32Config & 0x0f) << ui32Step));
 
     //
     // Set the upper bits of the analog mux value for this step.
     //
-    HWREG(ulBase + ADC_SSEMUX) = ((HWREG(ulBase + ADC_SSEMUX) &
-                                  ~(0x0000000f << ulStep)) |
-                                  (((ulConfig & 0xf00) >> 8) << ulStep));
+    HWREG(ui32Base + ADC_SSEMUX) = ((HWREG(ui32Base + ADC_SSEMUX) &
+                                     ~(0x0000000f << ui32Step)) |
+                                    (((ui32Config & 0xf00) >> 8) << ui32Step));
 
     //
     // Set the control value for this step.
     //
-    HWREG(ulBase + ADC_SSCTL) = ((HWREG(ulBase + ADC_SSCTL) &
-                                  ~(0x0000000f << ulStep)) |
-                                 (((ulConfig & 0xf0) >> 4) << ulStep));
+    HWREG(ui32Base + ADC_SSCTL) = ((HWREG(ui32Base + ADC_SSCTL) &
+                                    ~(0x0000000f << ui32Step)) |
+                                   (((ui32Config & 0xf0) >> 4) << ui32Step));
 
     //
-    // Enable digital comparator if specified in the ulConfig bit-fields.
+    // Enable digital comparator if specified in the ui32Config bit-fields.
     //
-    if(ulConfig & 0x000F0000)
+    if(ui32Config & 0x000F0000)
     {
         //
         // Program the comparator for the specified step.
         //
-        ulTemp = HWREG(ulBase + ADC_SSDC);
-        ulTemp &= ~(0xF << ulStep);
-        ulTemp |= (((ulConfig & 0x00070000) >> 16) << ulStep);
-        HWREG(ulBase + ADC_SSDC) = ulTemp;
+        ui32Temp = HWREG(ui32Base + ADC_SSDC);
+        ui32Temp &= ~(0xF << ui32Step);
+        ui32Temp |= (((ui32Config & 0x00070000) >> 16) << ui32Step);
+        HWREG(ui32Base + ADC_SSDC) = ui32Temp;
 
         //
         // Enable the comparator.
         //
-        ulTemp = HWREG(ulBase + ADC_SSOP);
-        ulTemp |= (1 << ulStep);
-        HWREG(ulBase + ADC_SSOP) = ulTemp;
+        HWREG(ui32Base + ADC_SSOP) |= (1 << ui32Step);
     }
 
     //
@@ -606,9 +650,7 @@ ADCSequenceStepConfigure(unsigned long ulBase, unsigned long ulSequenceNum,
     //
     else
     {
-        ulTemp = HWREG(ulBase + ADC_SSOP);
-        ulTemp &= ~(1 << ulStep);
-        HWREG(ulBase + ADC_SSOP) = ulTemp;
+        HWREG(ui32Base + ADC_SSOP) &= ~(1 << ui32Step);
     }
 }
 
@@ -616,8 +658,8 @@ ADCSequenceStepConfigure(unsigned long ulBase, unsigned long ulSequenceNum,
 //
 //! Determines if a sample sequence overflow occurred.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function determines if a sample sequence overflow has occurred.
 //! Overflow happens if the captured samples are not read from the FIFO before
@@ -627,27 +669,27 @@ ADCSequenceStepConfigure(unsigned long ulBase, unsigned long ulSequenceNum,
 //! was.
 //
 //*****************************************************************************
-long
-ADCSequenceOverflow(unsigned long ulBase, unsigned long ulSequenceNum)
+int32_t
+ADCSequenceOverflow(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Determine if there was an overflow on this sequence.
     //
-    return(HWREG(ulBase + ADC_O_OSTAT) & (1 << ulSequenceNum));
+    return(HWREG(ui32Base + ADC_O_OSTAT) & (1 << ui32SequenceNum));
 }
 
 //*****************************************************************************
 //
 //! Clears the overflow condition on a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function clears an overflow condition on one of the sample sequences.
 //! The overflow condition must be cleared in order to detect a subsequent
@@ -657,26 +699,26 @@ ADCSequenceOverflow(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCSequenceOverflowClear(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCSequenceOverflowClear(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Clear the overflow condition for this sequence.
     //
-    HWREG(ulBase + ADC_O_OSTAT) = 1 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_OSTAT) = 1 << ui32SequenceNum;
 }
 
 //*****************************************************************************
 //
 //! Determines if a sample sequence underflow occurred.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function determines if a sample sequence underflow has occurred.
 //! Underflow happens if too many samples are read from the FIFO.
@@ -685,57 +727,57 @@ ADCSequenceOverflowClear(unsigned long ulBase, unsigned long ulSequenceNum)
 //! was.
 //
 //*****************************************************************************
-long
-ADCSequenceUnderflow(unsigned long ulBase, unsigned long ulSequenceNum)
+int32_t
+ADCSequenceUnderflow(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Determine if there was an underflow on this sequence.
     //
-    return(HWREG(ulBase + ADC_O_USTAT) & (1 << ulSequenceNum));
+    return(HWREG(ui32Base + ADC_O_USTAT) & (1 << ui32SequenceNum));
 }
 
 //*****************************************************************************
 //
 //! Clears the underflow condition on a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
-//! This function clears an underflow condition on one of the sample sequencers.
-//! The underflow condition must be cleared in order to detect a subsequent
-//! underflow condition (it otherwise causes no harm).
+//! This function clears an underflow condition on one of the sample
+//! sequencers.  The underflow condition must be cleared in order to detect a
+//! subsequent underflow condition (it otherwise causes no harm).
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-ADCSequenceUnderflowClear(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCSequenceUnderflowClear(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Clear the underflow condition for this sequence.
     //
-    HWREG(ulBase + ADC_O_USTAT) = 1 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_USTAT) = 1 << ui32SequenceNum;
 }
 
 //*****************************************************************************
 //
 //! Gets the captured data for a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
-//! \param pulBuffer is the address where the data is stored.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//! \param pui32Buffer is the address where the data is stored.
 //!
 //! This function copies data from the specified sample sequencer output FIFO
 //! to a memory resident buffer.  The number of samples available in the
@@ -747,52 +789,53 @@ ADCSequenceUnderflowClear(unsigned long ulBase, unsigned long ulSequenceNum)
 //! \return Returns the number of samples copied to the buffer.
 //
 //*****************************************************************************
-long
-ADCSequenceDataGet(unsigned long ulBase, unsigned long ulSequenceNum,
-                   unsigned long *pulBuffer)
+int32_t
+ADCSequenceDataGet(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                   uint32_t *pui32Buffer)
 {
-    unsigned long ulCount;
+    uint32_t ui32Count;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Get the offset of the sequence to be read.
     //
-    ulBase += ADC_SEQ + (ADC_SEQ_STEP * ulSequenceNum);
+    ui32Base += ADC_SEQ + (ADC_SEQ_STEP * ui32SequenceNum);
 
     //
     // Read samples from the FIFO until it is empty.
     //
-    ulCount = 0;
-    while(!(HWREG(ulBase + ADC_SSFSTAT) & ADC_SSFSTAT0_EMPTY) && (ulCount < 8))
+    ui32Count = 0;
+    while(!(HWREG(ui32Base + ADC_SSFSTAT) & ADC_SSFSTAT0_EMPTY) &&
+          (ui32Count < 8))
     {
         //
         // Read the FIFO and copy it to the destination.
         //
-        *pulBuffer++ = HWREG(ulBase + ADC_SSFIFO);
+        *pui32Buffer++ = HWREG(ui32Base + ADC_SSFIFO);
 
         //
         // Increment the count of samples read.
         //
-        ulCount++;
+        ui32Count++;
     }
 
     //
     // Return the number of samples read.
     //
-    return(ulCount);
+    return(ui32Count);
 }
 
 //*****************************************************************************
 //
 //! Causes a processor trigger for a sample sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number, with
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number, with
 //! \b ADC_TRIGGER_WAIT or \b ADC_TRIGGER_SIGNAL optionally ORed into it.
 //!
 //! This function triggers a processor-initiated sample sequence if the sample
@@ -807,28 +850,28 @@ ADCSequenceDataGet(unsigned long ulBase, unsigned long ulSequenceNum,
 //
 //*****************************************************************************
 void
-ADCProcessorTrigger(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCProcessorTrigger(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT((ulSequenceNum & 0xf) < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Generate a processor trigger for this sample sequence.
     //
-    HWREG(ulBase + ADC_O_PSSI) |= ((ulSequenceNum & 0xffff0000) |
-                                   (1 << (ulSequenceNum & 0xf)));
+    HWREG(ui32Base + ADC_O_PSSI) |= ((ui32SequenceNum & 0xffff0000) |
+                                     (1 << (ui32SequenceNum & 0xf)));
 }
 
 //*****************************************************************************
 //
 //! Configures the software oversampling factor of the ADC.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
-//! \param ulFactor is the number of samples to be averaged.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//! \param ui32Factor is the number of samples to be averaged.
 //!
 //! This function configures the software oversampling for the ADC, which can
 //! be used to provide better resolution on the sampled data.  Oversampling is
@@ -846,112 +889,112 @@ ADCProcessorTrigger(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCSoftwareOversampleConfigure(unsigned long ulBase,
-                               unsigned long ulSequenceNum,
-                               unsigned long ulFactor)
+ADCSoftwareOversampleConfigure(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                               uint32_t ui32Factor)
 {
-    unsigned long ulValue;
+    uint32_t ui32Value;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 3);
-    ASSERT(((ulFactor == 2) || (ulFactor == 4) || (ulFactor == 8)) &&
-           ((ulSequenceNum == 0) || (ulFactor != 8)));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 3);
+    ASSERT(((ui32Factor == 2) || (ui32Factor == 4) || (ui32Factor == 8)) &&
+           ((ui32SequenceNum == 0) || (ui32Factor != 8)));
 
     //
     // Convert the oversampling factor to a shift factor.
     //
-    for(ulValue = 0, ulFactor >>= 1; ulFactor; ulValue++, ulFactor >>= 1)
+    for(ui32Value = 0, ui32Factor >>= 1; ui32Factor;
+        ui32Value++, ui32Factor >>= 1)
     {
     }
 
     //
     // Save the shift factor.
     //
-    g_pucOversampleFactor[ulSequenceNum] = ulValue;
+    g_pui8OversampleFactor[ui32SequenceNum] = ui32Value;
 }
 
 //*****************************************************************************
 //
 //! Configures a step of the software oversampled sequencer.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
-//! \param ulStep is the step to be configured.
-//! \param ulConfig is the configuration of this step.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//! \param ui32Step is the step to be configured.
+//! \param ui32Config is the configuration of this step.
 //!
 //! This function configures a step of the sample sequencer when using the
 //! software oversampling feature.  The number of steps available depends on
 //! the oversampling factor set by ADCSoftwareOversampleConfigure().  The value
-//! of \e ulConfig is the same as defined for ADCSequenceStepConfigure().
+//! of \e ui32Config is the same as defined for ADCSequenceStepConfigure().
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-ADCSoftwareOversampleStepConfigure(unsigned long ulBase,
-                                   unsigned long ulSequenceNum,
-                                   unsigned long ulStep,
-                                   unsigned long ulConfig)
+ADCSoftwareOversampleStepConfigure(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                                   uint32_t ui32Step, uint32_t ui32Config)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 3);
-    ASSERT(((ulSequenceNum == 0) &&
-            (ulStep < (8 >> g_pucOversampleFactor[ulSequenceNum]))) ||
-           (ulStep < (4 >> g_pucOversampleFactor[ulSequenceNum])));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 3);
+    ASSERT(((ui32SequenceNum == 0) &&
+            (ui32Step < (8 >> g_pui8OversampleFactor[ui32SequenceNum]))) ||
+           (ui32Step < (4 >> g_pui8OversampleFactor[ui32SequenceNum])));
 
     //
     // Get the offset of the sequence to be configured.
     //
-    ulBase += ADC_SEQ + (ADC_SEQ_STEP * ulSequenceNum);
+    ui32Base += ADC_SEQ + (ADC_SEQ_STEP * ui32SequenceNum);
 
     //
     // Compute the shift for the bits that control this step.
     //
-    ulStep *= 4 << g_pucOversampleFactor[ulSequenceNum];
+    ui32Step *= 4 << g_pui8OversampleFactor[ui32SequenceNum];
 
     //
     // Loop through the hardware steps that make up this step of the software
     // oversampled sequence.
     //
-    for(ulSequenceNum = 1 << g_pucOversampleFactor[ulSequenceNum];
-        ulSequenceNum; ulSequenceNum--)
+    for(ui32SequenceNum = 1 << g_pui8OversampleFactor[ui32SequenceNum];
+        ui32SequenceNum; ui32SequenceNum--)
     {
         //
         // Set the analog mux value for this step.
         //
-        HWREG(ulBase + ADC_SSMUX) = ((HWREG(ulBase + ADC_SSMUX) &
-                                      ~(0x0000000f << ulStep)) |
-                                     ((ulConfig & 0x0f) << ulStep));
+        HWREG(ui32Base + ADC_SSMUX) = ((HWREG(ui32Base + ADC_SSMUX) &
+                                        ~(0x0000000f << ui32Step)) |
+                                       ((ui32Config & 0x0f) << ui32Step));
 
         //
         // Set the upper bits of the analog mux value for this step.
         //
-        HWREG(ulBase + ADC_SSEMUX) = ((HWREG(ulBase + ADC_SSEMUX) &
-                                      ~(0x0000000f << ulStep)) |
-                                      (((ulConfig & 0xf00) >> 8) << ulStep));
+        HWREG(ui32Base + ADC_SSEMUX) = ((HWREG(ui32Base + ADC_SSEMUX) &
+                                         ~(0x0000000f << ui32Step)) |
+                                        (((ui32Config & 0xf00) >> 8) <<
+                                         ui32Step));
 
         //
         // Set the control value for this step.
         //
-        HWREG(ulBase + ADC_SSCTL) = ((HWREG(ulBase + ADC_SSCTL) &
-                                      ~(0x0000000f << ulStep)) |
-                                     (((ulConfig & 0xf0) >> 4) << ulStep));
-        if(ulSequenceNum != 1)
+        HWREG(ui32Base + ADC_SSCTL) = ((HWREG(ui32Base + ADC_SSCTL) &
+                                        ~(0x0000000f << ui32Step)) |
+                                       (((ui32Config & 0xf0) >> 4) <<
+                                        ui32Step));
+        if(ui32SequenceNum != 1)
         {
-            HWREG(ulBase + ADC_SSCTL) &= ~((ADC_SSCTL0_IE0 |
-                                            ADC_SSCTL0_END0) << ulStep);
+            HWREG(ui32Base + ADC_SSCTL) &= ~((ADC_SSCTL0_IE0 |
+                                              ADC_SSCTL0_END0) << ui32Step);
         }
 
         //
         // Go to the next hardware step.
         //
-        ulStep += 4;
+        ui32Step += 4;
     }
 }
 
@@ -959,10 +1002,10 @@ ADCSoftwareOversampleStepConfigure(unsigned long ulBase,
 //
 //! Gets the captured data for a sample sequence using software oversampling.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
-//! \param pulBuffer is the address where the data is stored.
-//! \param ulCount is the number of samples to be read.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//! \param pui32Buffer is the address where the data is stored.
+//! \param ui32Count is the number of samples to be read.
 //!
 //! This function copies data from the specified sample sequence output FIFO to
 //! a memory resident buffer with software oversampling applied.  The requested
@@ -976,46 +1019,47 @@ ADCSoftwareOversampleStepConfigure(unsigned long ulBase,
 //
 //*****************************************************************************
 void
-ADCSoftwareOversampleDataGet(unsigned long ulBase, unsigned long ulSequenceNum,
-                             unsigned long *pulBuffer, unsigned long ulCount)
+ADCSoftwareOversampleDataGet(uint32_t ui32Base, uint32_t ui32SequenceNum,
+                             uint32_t *pui32Buffer, uint32_t ui32Count)
 {
-    unsigned long ulIdx, ulAccum;
+    uint32_t ui32Idx, ui32Accum;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 3);
-    ASSERT(((ulSequenceNum == 0) &&
-            (ulCount < (8 >> g_pucOversampleFactor[ulSequenceNum]))) ||
-           (ulCount < (4 >> g_pucOversampleFactor[ulSequenceNum])));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 3);
+    ASSERT(((ui32SequenceNum == 0) &&
+            (ui32Count < (8 >> g_pui8OversampleFactor[ui32SequenceNum]))) ||
+           (ui32Count < (4 >> g_pui8OversampleFactor[ui32SequenceNum])));
 
     //
     // Get the offset of the sequence to be read.
     //
-    ulBase += ADC_SEQ + (ADC_SEQ_STEP * ulSequenceNum);
+    ui32Base += ADC_SEQ + (ADC_SEQ_STEP * ui32SequenceNum);
 
     //
     // Read the samples from the FIFO until it is empty.
     //
-    while(ulCount--)
+    while(ui32Count--)
     {
         //
         // Compute the sum of the samples.
         //
-        ulAccum = 0;
-        for(ulIdx = 1 << g_pucOversampleFactor[ulSequenceNum]; ulIdx; ulIdx--)
+        ui32Accum = 0;
+        for(ui32Idx = 1 << g_pui8OversampleFactor[ui32SequenceNum]; ui32Idx;
+            ui32Idx--)
         {
             //
             // Read the FIFO and add it to the accumulator.
             //
-            ulAccum += HWREG(ulBase + ADC_SSFIFO);
+            ui32Accum += HWREG(ui32Base + ADC_SSFIFO);
         }
 
         //
         // Write the averaged sample to the output buffer.
         //
-        *pulBuffer++ = ulAccum >> g_pucOversampleFactor[ulSequenceNum];
+        *pui32Buffer++ = ui32Accum >> g_pui8OversampleFactor[ui32SequenceNum];
     }
 }
 
@@ -1023,8 +1067,8 @@ ADCSoftwareOversampleDataGet(unsigned long ulBase, unsigned long ulSequenceNum,
 //
 //! Configures the hardware oversampling factor of the ADC.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulFactor is the number of samples to be averaged.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Factor is the number of samples to be averaged.
 //!
 //! This function configures the hardware oversampling for the ADC, which can
 //! be used to provide better resolution on the sampled data.  Oversampling is
@@ -1040,46 +1084,47 @@ ADCSoftwareOversampleDataGet(unsigned long ulBase, unsigned long ulSequenceNum,
 //!
 //! Enabling hardware averaging increases the precision of the ADC at the cost
 //! of throughput.  For example, enabling 4x oversampling reduces the
-//! throughput of a 250 K samples/second ADC to 62.5 K samples/second.
+//! throughput of a 250 k samples/second ADC to 62.5 k samples/second.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-ADCHardwareOversampleConfigure(unsigned long ulBase, unsigned long ulFactor)
+ADCHardwareOversampleConfigure(uint32_t ui32Base, uint32_t ui32Factor)
 {
-    unsigned long ulValue;
+    uint32_t ui32Value;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(((ulFactor == 0) || (ulFactor == 2) || (ulFactor == 4) ||
-           (ulFactor == 8) || (ulFactor == 16) || (ulFactor == 32) ||
-           (ulFactor == 64)));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(((ui32Factor == 0) || (ui32Factor == 2) || (ui32Factor == 4) ||
+            (ui32Factor == 8) || (ui32Factor == 16) || (ui32Factor == 32) ||
+            (ui32Factor == 64)));
 
     //
     // Convert the oversampling factor to a shift factor.
     //
-    for(ulValue = 0, ulFactor >>= 1; ulFactor; ulValue++, ulFactor >>= 1)
+    for(ui32Value = 0, ui32Factor >>= 1; ui32Factor;
+        ui32Value++, ui32Factor >>= 1)
     {
     }
 
     //
     // Write the shift factor to the ADC to configure the hardware oversampler.
     //
-    HWREG(ulBase + ADC_O_SAC) = ulValue;
+    HWREG(ui32Base + ADC_O_SAC) = ui32Value;
 }
 
 //*****************************************************************************
 //
 //! Configures an ADC digital comparator.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulComp is the index of the comparator to configure.
-//! \param ulConfig is the configuration of the comparator.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Comp is the index of the comparator to configure.
+//! \param ui32Config is the configuration of the comparator.
 //!
-//! This function configures a comparator.  The \e ulConfig parameter is
+//! This function configures a comparator.  The \e ui32Config parameter is
 //! the result of a logical OR operation between the \b ADC_COMP_TRIG_xxx, and
 //! \b ADC_COMP_INT_xxx values.
 //!
@@ -1143,65 +1188,66 @@ ADCHardwareOversampleConfigure(unsigned long ulBase, unsigned long ulFactor)
 //
 //*****************************************************************************
 void
-ADCComparatorConfigure(unsigned long ulBase, unsigned long ulComp,
-                       unsigned long ulConfig)
+ADCComparatorConfigure(uint32_t ui32Base, uint32_t ui32Comp,
+                       uint32_t ui32Config)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulComp < 8);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32Comp < 8);
 
     //
     // Save the new setting.
     //
-    HWREG(ulBase + ADC_O_DCCTL0 + (ulComp * 4)) = ulConfig;
+    HWREG(ui32Base + ADC_O_DCCTL0 + (ui32Comp * 4)) = ui32Config;
 }
 
 //*****************************************************************************
 //
 //! Defines the ADC digital comparator regions.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulComp is the index of the comparator to configure.
-//! \param ulLowRef is the reference point for the low/mid band threshold.
-//! \param ulHighRef is the reference point for the mid/high band threshold.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Comp is the index of the comparator to configure.
+//! \param ui32LowRef is the reference point for the low/mid band threshold.
+//! \param ui32HighRef is the reference point for the mid/high band threshold.
 //!
 //! The ADC digital comparator operation is based on three ADC value regions:
 //! - \b low-band is defined as any ADC value less than or equal to the
-//! \e ulLowRef value.
-//! - \b mid-band is defined as any ADC value greater than the \e ulLowRef
-//! value but less than or equal to the \e ulHighRef value.
-//! - \b high-band is defined as any ADC value greater than the \e ulHighRef
-//! value.
+//!   \e ui32LowRef value.
+//! - \b mid-band is defined as any ADC value greater than the \e ui32LowRef
+//!   value but less than or equal to the \e ui32HighRef value.
+//! - \b high-band is defined as any ADC value greater than the \e ui32HighRef
+//!   value.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-ADCComparatorRegionSet(unsigned long ulBase, unsigned long ulComp,
-                       unsigned long ulLowRef, unsigned long ulHighRef)
+ADCComparatorRegionSet(uint32_t ui32Base, uint32_t ui32Comp,
+                       uint32_t ui32LowRef, uint32_t ui32HighRef)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulComp < 8);
-    ASSERT((ulLowRef < 1024) && (ulLowRef <= ulHighRef));
-    ASSERT(ulHighRef < 1024);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32Comp < 8);
+    ASSERT((ui32LowRef < 1024) && (ui32LowRef <= ui32HighRef));
+    ASSERT(ui32HighRef < 1024);
 
     //
     // Save the new region settings.
     //
-    HWREG(ulBase + ADC_O_DCCMP0 + (ulComp * 4)) = (ulHighRef << 16) | ulLowRef;
+    HWREG(ui32Base + ADC_O_DCCMP0 + (ui32Comp * 4)) = ((ui32HighRef << 16) |
+                                                       ui32LowRef);
 }
 
 //*****************************************************************************
 //
 //! Resets the current ADC digital comparator conditions.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Comp is the index of the comparator.
 //! \param bTrigger is the flag to indicate reset of Trigger conditions.
 //! \param bInterrupt is the flag to indicate reset of Interrupt conditions.
 //!
@@ -1213,39 +1259,40 @@ ADCComparatorRegionSet(unsigned long ulBase, unsigned long ulComp,
 //
 //*****************************************************************************
 void
-ADCComparatorReset(unsigned long ulBase, unsigned long ulComp,
-                   tBoolean bTrigger, tBoolean bInterrupt)
+ADCComparatorReset(uint32_t ui32Base, uint32_t ui32Comp, bool bTrigger,
+                   bool bInterrupt)
 {
-    unsigned long ulTemp = 0;
+    uint32_t ui32Temp;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulComp < 8);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32Comp < 8);
 
     //
     // Set the appropriate bits to reset the trigger and/or interrupt
     // comparator conditions.
     //
+    ui32Temp = 0;
     if(bTrigger)
     {
-        ulTemp |= (1 << (16 + ulComp));
+        ui32Temp |= (1 << (16 + ui32Comp));
     }
     if(bInterrupt)
     {
-        ulTemp |= (1 << ulComp);
+        ui32Temp |= (1 << ui32Comp);
     }
 
-    HWREG(ulBase + ADC_O_DCRIC) = ulTemp;
+    HWREG(ui32Base + ADC_O_DCRIC) = ui32Temp;
 }
 
 //*****************************************************************************
 //
 //! Disables a sample sequence comparator interrupt.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function disables the requested sample sequence comparator interrupt.
 //!
@@ -1253,26 +1300,26 @@ ADCComparatorReset(unsigned long ulBase, unsigned long ulComp,
 //
 //*****************************************************************************
 void
-ADCComparatorIntDisable(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCComparatorIntDisable(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Disable this sample sequence comparator interrupt.
     //
-    HWREG(ulBase + ADC_O_IM) &= ~(0x10000 << ulSequenceNum);
+    HWREG(ui32Base + ADC_O_IM) &= ~(0x10000 << ui32SequenceNum);
 }
 
 //*****************************************************************************
 //
 //! Enables a sample sequence comparator interrupt.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulSequenceNum is the sample sequence number.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
 //!
 //! This function enables the requested sample sequence comparator interrupt.
 //!
@@ -1280,25 +1327,25 @@ ADCComparatorIntDisable(unsigned long ulBase, unsigned long ulSequenceNum)
 //
 //*****************************************************************************
 void
-ADCComparatorIntEnable(unsigned long ulBase, unsigned long ulSequenceNum)
+ADCComparatorIntEnable(uint32_t ui32Base, uint32_t ui32SequenceNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT(ulSequenceNum < 4);
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
 
     //
     // Enable this sample sequence interrupt.
     //
-    HWREG(ulBase + ADC_O_IM) |= 0x10000 << ulSequenceNum;
+    HWREG(ui32Base + ADC_O_IM) |= 0x10000 << ui32SequenceNum;
 }
 
 //*****************************************************************************
 //
 //! Gets the current comparator interrupt status.
 //!
-//! \param ulBase is the base address of the ADC module.
+//! \param ui32Base is the base address of the ADC module.
 //!
 //! This function returns the digital comparator interrupt status bits.  This
 //! status is sequence agnostic.
@@ -1306,26 +1353,26 @@ ADCComparatorIntEnable(unsigned long ulBase, unsigned long ulSequenceNum)
 //! \return The current comparator interrupt status.
 //
 //*****************************************************************************
-unsigned long
-ADCComparatorIntStatus(unsigned long ulBase)
+uint32_t
+ADCComparatorIntStatus(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
 
     //
     // Return the digital comparator interrupt status.
     //
-    return(HWREG(ulBase + ADC_O_DCISC));
+    return(HWREG(ui32Base + ADC_O_DCISC));
 }
 
 //*****************************************************************************
 //
 //! Clears sample sequence comparator interrupt source.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulStatus is the bit-mapped interrupts status to clear.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Status is the bit-mapped interrupts status to clear.
 //!
 //! The specified interrupt status is cleared.
 //!
@@ -1333,27 +1380,211 @@ ADCComparatorIntStatus(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-ADCComparatorIntClear(unsigned long ulBase, unsigned long ulStatus)
+ADCComparatorIntClear(uint32_t ui32Base, uint32_t ui32Status)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
 
     //
     // Clear the interrupt.
     //
-    HWREG(ulBase + ADC_O_DCISC) = ulStatus;
+    HWREG(ui32Base + ADC_O_DCISC) = ui32Status;
+}
+
+//*****************************************************************************
+//
+//! Disables ADC interrupt sources.
+//!
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32IntFlags is the bit mask of the interrupt sources to disable.
+//!
+//! This function disables the indicated ADC interrupt sources.  Only the
+//! sources that are enabled can be reflected to the processor interrupt;
+//! disabled sources have no effect on the processor.
+//!
+//! The \e ui32IntFlags parameter is the logical OR of any of the following:
+//!
+//! - \b ADC_INT_SS0 - interrupt due to ADC sample sequence 0.
+//! - \b ADC_INT_SS1 - interrupt due to ADC sample sequence 1.
+//! - \b ADC_INT_SS2 - interrupt due to ADC sample sequence 2.
+//! - \b ADC_INT_SS3 - interrupt due to ADC sample sequence 3.
+//! - \b ADC_INT_DMA_SS0 - interrupt due to DMA on ADC sample sequence 0.
+//! - \b ADC_INT_DMA_SS1 - interrupt due to DMA on ADC sample sequence 1.
+//! - \b ADC_INT_DMA_SS2 - interrupt due to DMA on ADC sample sequence 2.
+//! - \b ADC_INT_DMA_SS3 - interrupt due to DMA on ADC sample sequence 3.
+//! - \b ADC_INT_DCON_SS0 - interrupt due to digital comparator on ADC sample
+//!   sequence 0.
+//! - \b ADC_INT_DCON_SS1 - interrupt due to digital comparator on ADC sample
+//!   sequence 1.
+//! - \b ADC_INT_DCON_SS2 - interrupt due to digital comparator on ADC sample
+//!   sequence 2.
+//! - \b ADC_INT_DCON_SS3 - interrupt due to digital comparator on ADC sample
+//!   sequence 3.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ADCIntDisableEx(uint32_t ui32Base, uint32_t ui32IntFlags)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+
+    //
+    // Disable the requested interrupts.
+    //
+    HWREG(ui32Base + ADC_O_IM) &= ~ui32IntFlags;
+}
+
+//*****************************************************************************
+//
+//! Enables ADC interrupt sources.
+//!
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32IntFlags is the bit mask of the interrupt sources to disable.
+//!
+//! This function enables the indicated ADC interrupt sources.  Only the
+//! sources that are enabled can be reflected to the processor interrupt;
+//! disabled sources have no effect on the processor.
+//!
+//! The \e ui32IntFlags parameter is the logical OR of any of the following:
+//!
+//! - \b ADC_INT_SS0 - interrupt due to ADC sample sequence 0.
+//! - \b ADC_INT_SS1 - interrupt due to ADC sample sequence 1.
+//! - \b ADC_INT_SS2 - interrupt due to ADC sample sequence 2.
+//! - \b ADC_INT_SS3 - interrupt due to ADC sample sequence 3.
+//! - \b ADC_INT_DMA_SS0 - interrupt due to DMA on ADC sample sequence 0.
+//! - \b ADC_INT_DMA_SS1 - interrupt due to DMA on ADC sample sequence 1.
+//! - \b ADC_INT_DMA_SS2 - interrupt due to DMA on ADC sample sequence 2.
+//! - \b ADC_INT_DMA_SS3 - interrupt due to DMA on ADC sample sequence 3.
+//! - \b ADC_INT_DCON_SS0 - interrupt due to digital comparator on ADC sample
+//!   sequence 0.
+//! - \b ADC_INT_DCON_SS1 - interrupt due to digital comparator on ADC sample
+//!   sequence 1.
+//! - \b ADC_INT_DCON_SS2 - interrupt due to digital comparator on ADC sample
+//!   sequence 2.
+//! - \b ADC_INT_DCON_SS3 - interrupt due to digital comparator on ADC sample
+//!   sequence 3.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ADCIntEnableEx(uint32_t ui32Base, uint32_t ui32IntFlags)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+
+    //
+    // Enable the requested interrupts.
+    //
+    HWREG(ui32Base + ADC_O_IM) |= ui32IntFlags;
+}
+
+//*****************************************************************************
+//
+//! Gets interrupt status for the specified ADC module.
+//!
+//! \param ui32Base is the base address of the ADC module.
+//! \param bMasked specifies whether masked or raw interrupt status is
+//! returned.
+//!
+//! If \e bMasked is set as \b true, then the masked interrupt status is
+//! returned; otherwise, the raw interrupt status is returned.
+//!
+//! \return Returns the current interrupt status for the specified ADC module.
+//! The value returned is the logical OR of the \b ADC_INT_* values that are
+//! currently active.
+//
+//*****************************************************************************
+uint32_t
+ADCIntStatusEx(uint32_t ui32Base, bool bMasked)
+{
+    uint32_t ui32Temp;
+
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+
+    //
+    // Return either the masked interrupt status or the raw interrupt status as
+    // requested.
+    //
+    if(bMasked)
+    {
+        ui32Temp = HWREG(ui32Base + ADC_O_ISC);
+    }
+    else
+    {
+        //
+        // Read the Raw interrupt status to see if a digital comparator
+        // interrupt is active.
+        //
+        ui32Temp = HWREG(ui32Base + ADC_O_RIS);
+
+        //
+        // Since, the raw interrupt status only indicates that any one of the
+        // digital comparators caused an interrupt, if the raw interrupt status
+        // is set then the return value is modified to indicate that all sample
+        // sequences have a pending digital comparator interrupt.
+        // This is exactly how the hardware works so the return code is
+        // modified to match this behavior.
+        //
+        if(ui32Temp & ADC_RIS_INRDC)
+        {
+            ui32Temp |= (ADC_INT_DCON_SS3 | ADC_INT_DCON_SS2 |
+                         ADC_INT_DCON_SS1 | ADC_INT_DCON_SS0);
+        }
+    }
+    return(ui32Temp);
+}
+
+//*****************************************************************************
+//
+//! Clears the specified ADC interrupt sources.
+//!
+//! \param ui32Base is the base address of the ADC port.
+//! \param ui32IntFlags is the bit mask of the interrupt sources to disable.
+//!
+//! Clears the interrupt for the specified interrupt source(s).
+//!
+//! The \e ui32IntFlags parameter is the logical OR of the \b ADC_INT_* values.
+//! See the ADCIntEnableEx() function for the list of possible \b ADC_INT*
+//! values.
+//!
+//! \note Because there is a write buffer in the Cortex-M processor, it may
+//! take several clock cycles before the interrupt source is actually cleared.
+//! Therefore, it is recommended that the interrupt source be cleared early in
+//! the interrupt handler (as opposed to the very last action) to avoid
+//! returning from the interrupt handler before the interrupt source is
+//! actually cleared.  Failure to do so may result in the interrupt handler
+//! being immediately reentered (because the interrupt controller still sees
+//! the interrupt source asserted).
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ADCIntClearEx(uint32_t ui32Base, uint32_t ui32IntFlags)
+{
+    HWREG(ui32Base + ADC_O_ISC) |= ui32IntFlags;
 }
 
 //*****************************************************************************
 //
 //! Selects the ADC reference.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulRef is the reference to use.
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Ref is the reference to use.
 //!
-//! The ADC reference is set as specified by \e ulRef.  It must be one of
+//! The ADC reference is set as specified by \e ui32Ref.  It must be one of
 //! \b ADC_REF_INT, \b ADC_REF_EXT_3V, or \b ADC_REF_EXT_1V for internal or
 //! external reference.  If \b ADC_REF_INT is chosen, then an internal 3V
 //! reference is used and no external reference is needed.  If
@@ -1369,27 +1600,27 @@ ADCComparatorIntClear(unsigned long ulBase, unsigned long ulStatus)
 //
 //*****************************************************************************
 void
-ADCReferenceSet(unsigned long ulBase, unsigned long ulRef)
+ADCReferenceSet(uint32_t ui32Base, uint32_t ui32Ref)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT((ulRef == ADC_REF_INT) || (ulRef == ADC_REF_EXT_3V) ||
-           (ulRef == ADC_REF_EXT_1V));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT((ui32Ref == ADC_REF_INT) || (ui32Ref == ADC_REF_EXT_3V) ||
+           (ui32Ref == ADC_REF_EXT_1V));
 
     //
     // Set the reference.
     //
-    HWREG(ulBase + ADC_O_CTL) = (HWREG(ulBase + ADC_O_CTL) & ~ADC_CTL_VREF_M) |
-                                ulRef;
+    HWREG(ui32Base + ADC_O_CTL) =
+        (HWREG(ui32Base + ADC_O_CTL) & ~ADC_CTL_VREF_M) | ui32Ref;
 }
 
 //*****************************************************************************
 //
 //! Returns the current setting of the ADC reference.
 //!
-//! \param ulBase is the base address of the ADC module.
+//! \param ui32Base is the base address of the ADC module.
 //!
 //! Returns the value of the ADC reference setting.  The returned value is one
 //! of \b ADC_REF_INT, \b ADC_REF_EXT_3V, or \b ADC_REF_EXT_1V.
@@ -1401,90 +1632,26 @@ ADCReferenceSet(unsigned long ulBase, unsigned long ulRef)
 //! \return The current setting of the ADC reference.
 //
 //*****************************************************************************
-unsigned long
-ADCReferenceGet(unsigned long ulBase)
+uint32_t
+ADCReferenceGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
 
     //
     // Return the value of the reference.
     //
-    return(HWREG(ulBase + ADC_O_CTL) & ADC_CTL_VREF_M);
-}
-
-//*****************************************************************************
-//
-//! Selects the ADC resolution.
-//!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulResolution is the ADC bit resolution.
-//!
-//! The ADC resolution is set as specified by \e ulResolution.  It must be one
-//! of \b ADC_RES_12BIT or \b ADC_RES_10BIT.
-//!
-//! \note The ADC resolution can only be set on parts that are capable of
-//! changing ADC resolution mode.  Consult the data sheet for your part to
-//! determine if it is capable of operating in more than one resolution mode.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-ADCResolutionSet(unsigned long ulBase, unsigned long ulResolution)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT((ulResolution == ADC_RES_10BIT) || (ulResolution == ADC_RES_12BIT));
-
-    //
-    // Set the resolution.
-    //
-    HWREG(ulBase + ADC_O_CTL) = (HWREG(ulBase + ADC_O_CTL) & ~ADC_CTL_RES) |
-                                ulResolution;
-}
-
-//*****************************************************************************
-//
-//! Gets the setting of ADC resolution.
-//!
-//! \param ulBase is the base address of the ADC module.
-//!
-//! The ADC resolution is returned as one of \b ADC_RES_12BIT or
-//! \b ADC_RES_10BIT.
-//!
-//! \note The value returned by this function is only meaningful if used on a
-//! part that is capable of changing ADC resolution mode.  Consult the
-//! data sheet for your part to determine if it is capable of operating in
-//! more than one resolution mode.
-//!
-//! \return The current setting of the ADC resolution.
-//
-//*****************************************************************************
-unsigned long
-ADCResolutionGet(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-
-    //
-    // Get the resolution and return it to the caller.
-    //
-    return(HWREG(ulBase + ADC_O_CTL) & ADC_CTL_RES);
+    return(HWREG(ui32Base + ADC_O_CTL) & ADC_CTL_VREF_M);
 }
 
 //*****************************************************************************
 //
 //! Sets the phase delay between a trigger and the start of a sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
-//! \param ulPhase is the phase delay, specified as one of \b ADC_PHASE_0,
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32Phase is the phase delay, specified as one of \b ADC_PHASE_0,
 //! \b ADC_PHASE_22_5, \b ADC_PHASE_45, \b ADC_PHASE_67_5, \b ADC_PHASE_90,
 //! \b ADC_PHASE_112_5, \b ADC_PHASE_135, \b ADC_PHASE_157_5, \b ADC_PHASE_180,
 //! \b ADC_PHASE_202_5, \b ADC_PHASE_225, \b ADC_PHASE_247_5, \b ADC_PHASE_270,
@@ -1506,32 +1673,32 @@ ADCResolutionGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-ADCPhaseDelaySet(unsigned long ulBase, unsigned long ulPhase)
+ADCPhaseDelaySet(uint32_t ui32Base, uint32_t ui32Phase)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
-    ASSERT((ulPhase == ADC_PHASE_0) || (ulPhase == ADC_PHASE_22_5) ||
-           (ulPhase == ADC_PHASE_45) || (ulPhase == ADC_PHASE_67_5) ||
-           (ulPhase == ADC_PHASE_90) || (ulPhase == ADC_PHASE_112_5) ||
-           (ulPhase == ADC_PHASE_135) || (ulPhase == ADC_PHASE_157_5) ||
-           (ulPhase == ADC_PHASE_180) || (ulPhase == ADC_PHASE_202_5) ||
-           (ulPhase == ADC_PHASE_225) || (ulPhase == ADC_PHASE_247_5) ||
-           (ulPhase == ADC_PHASE_270) || (ulPhase == ADC_PHASE_292_5) ||
-           (ulPhase == ADC_PHASE_315) || (ulPhase == ADC_PHASE_337_5));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT((ui32Phase == ADC_PHASE_0) || (ui32Phase == ADC_PHASE_22_5) ||
+           (ui32Phase == ADC_PHASE_45) || (ui32Phase == ADC_PHASE_67_5) ||
+           (ui32Phase == ADC_PHASE_90) || (ui32Phase == ADC_PHASE_112_5) ||
+           (ui32Phase == ADC_PHASE_135) || (ui32Phase == ADC_PHASE_157_5) ||
+           (ui32Phase == ADC_PHASE_180) || (ui32Phase == ADC_PHASE_202_5) ||
+           (ui32Phase == ADC_PHASE_225) || (ui32Phase == ADC_PHASE_247_5) ||
+           (ui32Phase == ADC_PHASE_270) || (ui32Phase == ADC_PHASE_292_5) ||
+           (ui32Phase == ADC_PHASE_315) || (ui32Phase == ADC_PHASE_337_5));
 
     //
     // Set the phase delay.
     //
-    HWREG(ulBase + ADC_O_SPC) = ulPhase;
+    HWREG(ui32Base + ADC_O_SPC) = ui32Phase;
 }
 
 //*****************************************************************************
 //
 //! Gets the phase delay between a trigger and the start of a sequence.
 //!
-//! \param ulBase is the base address of the ADC module.
+//! \param ui32Base is the base address of the ADC module.
 //!
 //! This function gets the current phase delay between the detection of an ADC
 //! trigger event and the start of the sample sequence.
@@ -1543,18 +1710,107 @@ ADCPhaseDelaySet(unsigned long ulBase, unsigned long ulPhase)
 //! \b ADC_PHASE_292_5, \b ADC_PHASE_315, or \b ADC_PHASE_337_5.
 //
 //*****************************************************************************
-unsigned long
-ADCPhaseDelayGet(unsigned long ulBase)
+uint32_t
+ADCPhaseDelayGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == ADC0_BASE) || (ulBase == ADC1_BASE));
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
 
     //
     // Return the phase delay.
     //
-    return(HWREG(ulBase + ADC_O_SPC));
+    return(HWREG(ui32Base + ADC_O_SPC));
+}
+
+//*****************************************************************************
+//
+//! Enables DMA for sample sequencers.
+//!
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//!
+//! Allows DMA requests to be generated based on the FIFO level of the sample
+//! sequencer.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ADCSequenceDMAEnable(uint32_t ui32Base, uint32_t ui32SequenceNum)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
+
+    //
+    // Enable the DMA on the specified sequencer.
+    //
+    HWREG(ui32Base + ADC_O_ACTSS) |= 0x100 << ui32SequenceNum;
+}
+
+//*****************************************************************************
+//
+//! Disables DMA for sample sequencers.
+//!
+//! \param ui32Base is the base address of the ADC module.
+//! \param ui32SequenceNum is the sample sequence number.
+//!
+//! Prevents the specified sample sequencer from generating DMA requests.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+ADCSequenceDMADisable(uint32_t ui32Base, uint32_t ui32SequenceNum)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+    ASSERT(ui32SequenceNum < 4);
+
+    //
+    // Disable the DMA on the specified sequencer.
+    //
+    HWREG(ui32Base + ADC_O_ACTSS) &= ~(0x100 << ui32SequenceNum);
+}
+
+//*****************************************************************************
+//
+//! Determines whether the ADC is busy or not.
+//!
+//! \param ui32Base is the base address of the ADC.
+//!
+//! This function allows the caller to determine whether or not the ADC is
+//! currently sampling .  If \b false is returned, then the ADC is not
+//! sampling data.
+//!
+//! Use this function to detect that the ADC is finished sampling data before
+//! putting the device into deep sleep.  Before using this function, it is
+//! highly recommended that the event trigger is changed to
+//! \b ADC_TRIGGER_NEVER on all enabled sequencers to prevent the ADC from
+//! starting after checking the busy status.
+//!
+//! \return Returns \b true if the ADC is sampling or \b false if all
+//! samples are complete.
+//
+//*****************************************************************************
+bool
+ADCBusy(uint32_t ui32Base)
+{
+    //
+    // Check the argument.
+    //
+    ASSERT((ui32Base == ADC0_BASE) || (ui32Base == ADC1_BASE));
+
+    //
+    // Determine if the ADC is busy.
+    //
+    return((HWREG(ui32Base + ADC_O_ACTSS) & ADC_ACTSS_BUSY) ? true : false);
 }
 
 //*****************************************************************************

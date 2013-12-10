@@ -31,8 +31,9 @@
   Modified 24 November 2006 by David A. Mellis
   Modified 1 August 2010 by Mark Sproul
  */
-
+#include <Energia.h>
 #include <inttypes.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "inc/hw_types.h"
 #include "inc/hw_nvic.h"
@@ -50,9 +51,9 @@ static void (*cbFuncsF[8])(void);
 
 void GPIOAIntHandler(void) {
 	uint32_t i;
-	uint32_t isr = ROM_GPIOPinIntStatus(GPIO_PORTA_BASE, true);
+	uint32_t isr = GPIOIntStatus(GPIO_PORTA_BASE, true);
 
-	ROM_GPIOPinIntClear(GPIO_PORTA_BASE, isr);
+	GPIOIntClear(GPIO_PORTA_BASE, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -64,9 +65,9 @@ void GPIOAIntHandler(void) {
 
 void GPIOBIntHandler(void) {
 	uint32_t i;
-	uint32_t isr = ROM_GPIOPinIntStatus(GPIO_PORTB_BASE, true);
+	uint32_t isr = GPIOIntStatus(GPIO_PORTB_BASE, true);
 
-	ROM_GPIOPinIntClear(GPIO_PORTB_BASE, isr);
+	GPIOIntClear(GPIO_PORTB_BASE, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -78,9 +79,9 @@ void GPIOBIntHandler(void) {
 
 void GPIOCIntHandler(void) {
 	uint32_t i;
-	uint32_t isr = ROM_GPIOPinIntStatus(GPIO_PORTC_BASE, true);
+	uint32_t isr = GPIOIntStatus(GPIO_PORTC_BASE, true);
 
-	ROM_GPIOPinIntClear(GPIO_PORTC_BASE, isr);
+	GPIOIntClear(GPIO_PORTC_BASE, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -92,9 +93,9 @@ void GPIOCIntHandler(void) {
 
 void GPIODIntHandler(void) {
 	uint32_t i;
-	uint32_t isr = ROM_GPIOPinIntStatus(GPIO_PORTD_BASE, true);
+	uint32_t isr = GPIOIntStatus(GPIO_PORTD_BASE, true);
 
-	ROM_GPIOPinIntClear(GPIO_PORTD_BASE, isr);
+	GPIOIntClear(GPIO_PORTD_BASE, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -106,9 +107,9 @@ void GPIODIntHandler(void) {
 
 void GPIOEIntHandler(void) {
 	uint32_t i;
-	uint32_t isr = ROM_GPIOPinIntStatus(GPIO_PORTE_BASE, true);
+	uint32_t isr = GPIOIntStatus(GPIO_PORTE_BASE, true);
 
-	ROM_GPIOPinIntClear(GPIO_PORTE_BASE, isr);
+	GPIOIntClear(GPIO_PORTE_BASE, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -120,9 +121,9 @@ void GPIOEIntHandler(void) {
 
 void GPIOFIntHandler(void) {
 	uint32_t i;
-	uint32_t isr = ROM_GPIOPinIntStatus(GPIO_PORTF_BASE, true);
+	uint32_t isr = GPIOIntStatus(GPIO_PORTF_BASE, true);
 
-	ROM_GPIOPinIntClear(GPIO_PORTF_BASE, isr);
+	GPIOIntClear(GPIO_PORTF_BASE, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -157,9 +158,9 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 	}
 
 	ROM_IntMasterDisable();
-	ROM_GPIOPinIntClear(portBase, bit);
+	GPIOIntClear(portBase, bit);
 	ROM_GPIOIntTypeSet(portBase, bit, lm4fMode);
-	ROM_GPIOPinIntEnable(portBase, bit);
+	GPIOIntEnable(portBase, bit);
 
 	for (i=0; i<8; i++, bit>>=1) {
 		if ((bit & 0x1) == 1)
@@ -206,7 +207,7 @@ void detachInterrupt(uint8_t interruptNum) {
 
 	if (port == NOT_A_PIN) return;
 
-	ROM_GPIOPinIntDisable(portBase, bit);
+	GPIOIntDisable(portBase, bit);
 
 	for (i=0; i<8; i++, bit>>=1) {
 		if ((bit & 0x1) == 1)

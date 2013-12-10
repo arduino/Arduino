@@ -2,7 +2,7 @@
 //
 // hw_uart.h - Macros and defines used when accessing the UART hardware.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -61,9 +61,6 @@
 #define UART_O_MIS              0x00000040  // UART Masked Interrupt Status
 #define UART_O_ICR              0x00000044  // UART Interrupt Clear
 #define UART_O_DMACTL           0x00000048  // UART DMA Control
-#define UART_O_LCTL             0x00000090  // UART LIN Control
-#define UART_O_LSS              0x00000094  // UART LIN Snap Shot
-#define UART_O_LTIM             0x00000098  // UART LIN Timer
 #define UART_O_9BITADDR         0x000000A4  // UART 9-Bit Self Address
 #define UART_O_9BITAMASK        0x000000A8  // UART 9-Bit Self Address Mask
 #define UART_O_PP               0x00000FC0  // UART Peripheral Properties
@@ -167,7 +164,6 @@
 #define UART_CTL_RXE            0x00000200  // UART Receive Enable
 #define UART_CTL_TXE            0x00000100  // UART Transmit Enable
 #define UART_CTL_LBE            0x00000080  // UART Loop Back Enable
-#define UART_CTL_LIN            0x00000040  // LIN Mode Enable
 #define UART_CTL_HSE            0x00000020  // High-Speed Enable
 #define UART_CTL_EOT            0x00000010  // End of Transmission
 #define UART_CTL_SMART          0x00000008  // ISO 7816 Smart Card Support
@@ -200,11 +196,11 @@
 // The following are defines for the bit fields in the UART_O_IM register.
 //
 //*****************************************************************************
-#define UART_IM_LME5IM          0x00008000  // LIN Mode Edge 5 Interrupt Mask
-#define UART_IM_LME1IM          0x00004000  // LIN Mode Edge 1 Interrupt Mask
-#define UART_IM_LMSBIM          0x00002000  // LIN Mode Sync Break Interrupt
-                                            // Mask
+#define UART_IM_DMATXIM         0x00020000  // Transmit DMA Interrupt Mask
+#define UART_IM_DMARXIM         0x00010000  // Receive DMA Interrupt Mask
 #define UART_IM_9BITIM          0x00001000  // 9-Bit Mode Interrupt Mask
+#define UART_IM_EOTIM           0x00000800  // End of Transmission Interrupt
+                                            // Mask
 #define UART_IM_OEIM            0x00000400  // UART Overrun Error Interrupt
                                             // Mask
 #define UART_IM_BEIM            0x00000200  // UART Break Error Interrupt Mask
@@ -229,13 +225,12 @@
 // The following are defines for the bit fields in the UART_O_RIS register.
 //
 //*****************************************************************************
-#define UART_RIS_LME5RIS        0x00008000  // LIN Mode Edge 5 Raw Interrupt
+#define UART_RIS_DMATXRIS       0x00020000  // Transmit DMA Raw Interrupt
                                             // Status
-#define UART_RIS_LME1RIS        0x00004000  // LIN Mode Edge 1 Raw Interrupt
-                                            // Status
-#define UART_RIS_LMSBRIS        0x00002000  // LIN Mode Sync Break Raw
-                                            // Interrupt Status
+#define UART_RIS_DMARXRIS       0x00010000  // Receive DMA Raw Interrupt Status
 #define UART_RIS_9BITRIS        0x00001000  // 9-Bit Mode Raw Interrupt Status
+#define UART_RIS_EOTRIS         0x00000800  // End of Transmission Raw
+                                            // Interrupt Status
 #define UART_RIS_OERIS          0x00000400  // UART Overrun Error Raw Interrupt
                                             // Status
 #define UART_RIS_BERIS          0x00000200  // UART Break Error Raw Interrupt
@@ -264,14 +259,14 @@
 // The following are defines for the bit fields in the UART_O_MIS register.
 //
 //*****************************************************************************
-#define UART_MIS_LME5MIS        0x00008000  // LIN Mode Edge 5 Masked Interrupt
+#define UART_MIS_DMATXMIS       0x00020000  // Transmit DMA Masked Interrupt
                                             // Status
-#define UART_MIS_LME1MIS        0x00004000  // LIN Mode Edge 1 Masked Interrupt
+#define UART_MIS_DMARXMIS       0x00010000  // Receive DMA Masked Interrupt
                                             // Status
-#define UART_MIS_LMSBMIS        0x00002000  // LIN Mode Sync Break Masked
-                                            // Interrupt Status
 #define UART_MIS_9BITMIS        0x00001000  // 9-Bit Mode Masked Interrupt
                                             // Status
+#define UART_MIS_EOTMIS         0x00000800  // End of Transmission Masked
+                                            // Interrupt Status
 #define UART_MIS_OEMIS          0x00000400  // UART Overrun Error Masked
                                             // Interrupt Status
 #define UART_MIS_BEMIS          0x00000200  // UART Break Error Masked
@@ -300,11 +295,11 @@
 // The following are defines for the bit fields in the UART_O_ICR register.
 //
 //*****************************************************************************
-#define UART_ICR_LME5IC         0x00008000  // LIN Mode Edge 5 Interrupt Clear
-#define UART_ICR_LME1IC         0x00004000  // LIN Mode Edge 1 Interrupt Clear
-#define UART_ICR_LMSBIC         0x00002000  // LIN Mode Sync Break Interrupt
-                                            // Clear
+#define UART_ICR_DMATXIC        0x00020000  // Transmit DMA Interrupt Clear
+#define UART_ICR_DMARXIC        0x00010000  // Receive DMA Interrupt Clear
 #define UART_ICR_9BITIC         0x00001000  // 9-Bit Mode Interrupt Clear
+#define UART_ICR_EOTIC          0x00000800  // End of Transmission Interrupt
+                                            // Clear
 #define UART_ICR_OEIC           0x00000400  // Overrun Error Interrupt Clear
 #define UART_ICR_BEIC           0x00000200  // Break Error Interrupt Clear
 #define UART_ICR_PEIC           0x00000100  // Parity Error Interrupt Clear
@@ -332,35 +327,6 @@
 
 //*****************************************************************************
 //
-// The following are defines for the bit fields in the UART_O_LCTL register.
-//
-//*****************************************************************************
-#define UART_LCTL_BLEN_M        0x00000030  // Sync Break Length
-#define UART_LCTL_BLEN_13T      0x00000000  // Sync break length is 13T bits
-                                            // (default)
-#define UART_LCTL_BLEN_14T      0x00000010  // Sync break length is 14T bits
-#define UART_LCTL_BLEN_15T      0x00000020  // Sync break length is 15T bits
-#define UART_LCTL_BLEN_16T      0x00000030  // Sync break length is 16T bits
-#define UART_LCTL_MASTER        0x00000001  // LIN Master Enable
-
-//*****************************************************************************
-//
-// The following are defines for the bit fields in the UART_O_LSS register.
-//
-//*****************************************************************************
-#define UART_LSS_TSS_M          0x0000FFFF  // Timer Snap Shot
-#define UART_LSS_TSS_S          0
-
-//*****************************************************************************
-//
-// The following are defines for the bit fields in the UART_O_LTIM register.
-//
-//*****************************************************************************
-#define UART_LTIM_TIMER_M       0x0000FFFF  // Timer Value
-#define UART_LTIM_TIMER_S       0
-
-//*****************************************************************************
-//
 // The following are defines for the bit fields in the UART_O_9BITADDR
 // register.
 //
@@ -383,6 +349,8 @@
 // The following are defines for the bit fields in the UART_O_PP register.
 //
 //*****************************************************************************
+#define UART_PP_MSE             0x00000008  // Modem Support Extended
+#define UART_PP_MS              0x00000004  // Modem Support
 #define UART_PP_NB              0x00000002  // 9-Bit Support
 #define UART_PP_SC              0x00000001  // Smart Card Support
 
@@ -394,129 +362,5 @@
 #define UART_CC_CS_M            0x0000000F  // UART Baud Clock Source
 #define UART_CC_CS_SYSCLK       0x00000000  // The system clock (default)
 #define UART_CC_CS_PIOSC        0x00000005  // PIOSC
-
-//*****************************************************************************
-//
-// The following definitions are deprecated.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the UART register offsets.
-//
-//*****************************************************************************
-#define UART_O_LCR_H            0x0000002C  // Line Control Register, HIGH byte
-#define UART_O_PeriphID4        0x00000FD0
-#define UART_O_PeriphID5        0x00000FD4
-#define UART_O_PeriphID6        0x00000FD8
-#define UART_O_PeriphID7        0x00000FDC
-#define UART_O_PeriphID0        0x00000FE0
-#define UART_O_PeriphID1        0x00000FE4
-#define UART_O_PeriphID2        0x00000FE8
-#define UART_O_PeriphID3        0x00000FEC
-#define UART_O_PCellID0         0x00000FF0
-#define UART_O_PCellID1         0x00000FF4
-#define UART_O_PCellID2         0x00000FF8
-#define UART_O_PCellID3         0x00000FFC
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UART_O_DR
-// register.
-//
-//*****************************************************************************
-#define UART_DR_DATA_MASK       0x000000FF  // UART data
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UART_O_IBRD
-// register.
-//
-//*****************************************************************************
-#define UART_IBRD_DIVINT_MASK   0x0000FFFF  // Integer baud-rate divisor
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UART_O_FBRD
-// register.
-//
-//*****************************************************************************
-#define UART_FBRD_DIVFRAC_MASK  0x0000003F  // Fractional baud-rate divisor
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UART_O_LCR_H
-// register.
-//
-//*****************************************************************************
-#define UART_LCR_H_SPS          0x00000080  // Stick Parity Select
-#define UART_LCR_H_WLEN         0x00000060  // Word length
-#define UART_LCR_H_WLEN_5       0x00000000  // 5 bit data
-#define UART_LCR_H_WLEN_6       0x00000020  // 6 bit data
-#define UART_LCR_H_WLEN_7       0x00000040  // 7 bit data
-#define UART_LCR_H_WLEN_8       0x00000060  // 8 bit data
-#define UART_LCR_H_FEN          0x00000010  // Enable FIFO
-#define UART_LCR_H_STP2         0x00000008  // Two Stop Bits Select
-#define UART_LCR_H_EPS          0x00000004  // Even Parity Select
-#define UART_LCR_H_PEN          0x00000002  // Parity Enable
-#define UART_LCR_H_BRK          0x00000001  // Send Break
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UART_O_IFLS
-// register.
-//
-//*****************************************************************************
-#define UART_IFLS_RX_MASK       0x00000038  // RX FIFO level mask
-#define UART_IFLS_TX_MASK       0x00000007  // TX FIFO level mask
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the UART_O_ICR
-// register.
-//
-//*****************************************************************************
-#define UART_ICR_LME5MIC        0x00008000  // LIN Mode Edge 5 Interrupt Clear
-#define UART_ICR_LME1MIC        0x00004000  // LIN Mode Edge 1 Interrupt Clear
-#define UART_ICR_LMSBMIC        0x00002000  // LIN Mode Sync Break Interrupt
-                                            // Clear
-#define UART_RSR_ANY            (UART_RSR_OE | UART_RSR_BE | UART_RSR_PE | \
-                                 UART_RSR_FE)
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the Reset Values for UART
-// Registers.
-//
-//*****************************************************************************
-#define UART_RV_CTL             0x00000300
-#define UART_RV_PCellID1        0x000000F0
-#define UART_RV_PCellID3        0x000000B1
-#define UART_RV_FR              0x00000090
-#define UART_RV_PeriphID2       0x00000018
-#define UART_RV_IFLS            0x00000012
-#define UART_RV_PeriphID0       0x00000011
-#define UART_RV_PCellID0        0x0000000D
-#define UART_RV_PCellID2        0x00000005
-#define UART_RV_PeriphID3       0x00000001
-#define UART_RV_PeriphID4       0x00000000
-#define UART_RV_LCR_H           0x00000000
-#define UART_RV_PeriphID6       0x00000000
-#define UART_RV_DR              0x00000000
-#define UART_RV_RSR             0x00000000
-#define UART_RV_ECR             0x00000000
-#define UART_RV_PeriphID5       0x00000000
-#define UART_RV_RIS             0x00000000
-#define UART_RV_FBRD            0x00000000
-#define UART_RV_IM              0x00000000
-#define UART_RV_MIS             0x00000000
-#define UART_RV_ICR             0x00000000
-#define UART_RV_PeriphID1       0x00000000
-#define UART_RV_PeriphID7       0x00000000
-#define UART_RV_IBRD            0x00000000
-
-#endif
 
 #endif // __HW_UART_H__

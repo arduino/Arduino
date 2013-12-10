@@ -1,5 +1,5 @@
 #include <Energia.h>
-#include "inc/lm4f120h5qr.h"
+#include "inc/tm4c123gh6pm.h"
 #include "inc/hw_gpio.h"
 #include "driverlib/rom.h"
 #include "driverlib/sysctl.h"

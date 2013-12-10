@@ -2,7 +2,7 @@
 //
 // eeprom.c - Driver for programming the on-chip EEPROM.
 //
-// Copyright (c) 2010-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2010-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_eeprom.h"
 #include "inc/hw_flash.h"
 #include "inc/hw_ints.h"
@@ -61,10 +63,10 @@
 // device and the total EEPROM storage in bytes from the EESIZE register.
 //
 //*****************************************************************************
-#define BLOCKS_FROM_EESIZE(x) (((x) & EEPROM_EESIZE_BLKCNT_M) >>               \
-                              EEPROM_EESIZE_BLKCNT_S)
-#define SIZE_FROM_EESIZE(x)   ((((x) & EEPROM_EESIZE_WORDCNT_M) >>             \
-                              EEPROM_EESIZE_WORDCNT_S) * 4)
+#define BLOCKS_FROM_EESIZE(x) (((x) & EEPROM_EESIZE_BLKCNT_M) >>              \
+                               EEPROM_EESIZE_BLKCNT_S)
+#define SIZE_FROM_EESIZE(x)   ((((x) & EEPROM_EESIZE_WORDCNT_M) >>            \
+                                EEPROM_EESIZE_WORDCNT_S) * 4)
 
 //*****************************************************************************
 //
@@ -78,7 +80,7 @@
 // The key value required to initiate a mass erase.
 //
 //*****************************************************************************
-#define EEPROM_MASS_ERASE_KEY ((unsigned long)0xE37B << EEPROM_EEDBGME_KEY_S)
+#define EEPROM_MASS_ERASE_KEY ((uint32_t)0xE37B << EEPROM_EEDBGME_KEY_S)
 
 //*****************************************************************************
 //
@@ -89,21 +91,21 @@
 //
 //*****************************************************************************
 static void
-EEPROMSetSectorMask(unsigned long ulAddress)
+_EEPROMSectorMaskSet(uint32_t ui32Address)
 {
-    unsigned long ulMask;
+    uint32_t ui32Mask;
 
     //
     // Determine which page contains the passed EEPROM address.  The 2KB EEPROM
     // is implemented in 16KB of flash with each 1KB sector of flash holding
     // values for 32 consecutive EEPROM words (or 128 bytes).
     //
-    ulMask = ~(1 << (ulAddress >> 7));
+    ui32Mask = ~(1 << (ui32Address >> 7));
 
     SysCtlDelay(10);
     HWREG(0x400FD0FC) = 3;
     SysCtlDelay(10);
-    HWREG(0x400AE2C0) = ulMask;
+    HWREG(0x400AE2C0) = ui32Mask;
     SysCtlDelay(10);
     HWREG(0x400FD0FC) = 0;
     SysCtlDelay(10);
@@ -116,7 +118,7 @@ EEPROMSetSectorMask(unsigned long ulAddress)
 //
 //*****************************************************************************
 static void
-EEPROMClearSectorMask(void)
+_EEPROMSectorMaskClear(void)
 {
     SysCtlDelay(10);
     HWREG(0x400FD0FC) = 3;
@@ -133,7 +135,7 @@ EEPROMClearSectorMask(void)
 //
 //*****************************************************************************
 static void
-EEPROMWaitForDone(void)
+_EEPROMWaitForDone(void)
 {
     //
     // Is the EEPROM still busy?
@@ -150,23 +152,23 @@ EEPROMWaitForDone(void)
 //
 //! Performs any necessary recovery in case of power failures during write.
 //!
-//! This function must be called after SysCtlPeripheralEnable() and before
-//! the EEPROM is accessed to check for errors resulting from power failure
-//! during a previous write operation.  The function detects these errors
-//! and performs as much recovery as possible before returning information to
-//! the caller on whether or not a previous data write was lost and must
-//! be retried.
+//! This function \b must be called after SysCtlPeripheralEnable() and before
+//! the EEPROM is accessed.  It is used to check for errors in the EEPROM state
+//! such as from power fail during a previous write operation.  The function
+//! detects these errors and performs as much recovery as possible before
+//! returning information to the caller on whether or not a previous data write
+//! was lost and must be retried.
 //!
 //! In cases where \b EEPROM_INIT_RETRY is returned, the application is
 //! responsible for determining which data write may have been lost and
 //! rewriting this data.  If \b EEPROM_INIT_ERROR is returned, the EEPROM was
 //! unable to recover its state.  This condition may or may not be resolved on
-//! future resets depending upon the cause of the fault. For example, if the
+//! future resets depending upon the cause of the fault.  For example, if the
 //! supply voltage is unstable, retrying the operation once the voltage is
 //! stabilized may clear the error.
 //!
-//! Failure to call this function after a reset may lead to permanent data loss
-//! if the EEPROM is later written!
+//! Failure to call this function after a reset may lead to incorrect operation
+//! or permanent data loss if the EEPROM is later written.
 //!
 //! \return Returns \b EEPROM_INIT_OK if no errors were detected,
 //! \b EEPROM_INIT_RETRY if a previous write operation may have been
@@ -175,10 +177,10 @@ EEPROMWaitForDone(void)
 //! operation.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 EEPROMInit(void)
 {
-    unsigned long ulStatus;
+    uint32_t ui32Status;
 
     //
     // Insert a small delay (6 cycles + call overhead) to guard against the
@@ -192,18 +194,18 @@ EEPROMInit(void)
     //
     // Make sure the EEPROM has finished its reset processing.
     //
-    EEPROMWaitForDone();
+    _EEPROMWaitForDone();
 
     //
     // Read the EESUPP register to see if any errors have been reported.
     //
-    ulStatus = HWREG(EEPROM_EESUPP);
+    ui32Status = HWREG(EEPROM_EESUPP);
 
     //
     // Did an error of some sort occur during a previous attempt to write to
     // the EEPROM?
     //
-    if(ulStatus & (EEPROM_EESUPP_PRETRY | EEPROM_EESUPP_ERETRY))
+    if(ui32Status & (EEPROM_EESUPP_PRETRY | EEPROM_EESUPP_ERETRY))
     {
         //
         // Perform a second reset to allow the EEPROM a chance to correct
@@ -215,14 +217,14 @@ EEPROMInit(void)
         // Wait for the EEPROM to complete it's reset processing once again.
         //
         SysCtlDelay(2);
-        EEPROMWaitForDone();
+        _EEPROMWaitForDone();
 
         //
         // Read EESUPP once again to determine if the error conditions are
         // cleared.
         //
-        ulStatus = HWREG(EEPROM_EESUPP);
-        if(ulStatus & (EEPROM_EESUPP_PRETRY | EEPROM_EESUPP_ERETRY))
+        ui32Status = HWREG(EEPROM_EESUPP);
+        if(ui32Status & (EEPROM_EESUPP_PRETRY | EEPROM_EESUPP_ERETRY))
         {
             return(EEPROM_INIT_ERROR);
         }
@@ -247,7 +249,7 @@ EEPROMInit(void)
 //! \return Returns the total number of bytes in the EEPROM.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 EEPROMSizeGet(void)
 {
     //
@@ -266,81 +268,95 @@ EEPROMSizeGet(void)
 //! obtained via a call to the EEPROMSizeGet() function, by the number of
 //! blocks returned by this function.
 //!
-//! \return Returns the total number of bytes in the device EEPROM.
+//! \return Returns the total number of blocks in the device EEPROM.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 EEPROMBlockCountGet(void)
 {
     //
     // Extract the number of blocks and return it to the caller.
     //
+#ifdef EEPROM_SIZE_LIMIT
+    //
+    // If a size limit has been specified, fake the number of blocks to match.
+    //
+    return(EEPROM_SIZE_LIMIT / 48);
+#else
+    //
+    // Return the actual number of blocks supported by the hardware.
+    //
     return(BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+#endif
 }
 
 //*****************************************************************************
 //
 //! Reads data from the EEPROM.
 //!
-//! \param pulData is a pointer to storage for the data read from the EEPROM.
-//! This pointer must point to at least \e ulCount bytes of available memory.
-//! \param ulAddress is the byte address within the EEPROM from which data is
+//! \param pui32Data is a pointer to storage for the data read from the EEPROM.
+//! This pointer must point to at least \e ui32Count bytes of available memory.
+//! \param ui32Address is the byte address within the EEPROM from which data is
 //! to be read.  This value must be a multiple of 4.
-//! \param ulCount is the number of bytes of data to read from the EEPROM.
+//! \param ui32Count is the number of bytes of data to read from the EEPROM.
 //! This value must be a multiple of 4.
 //!
 //! This function may be called to read a number of words of data from a
 //! word-aligned address within the EEPROM.  Data read is copied into the
-//! buffer pointed to by the \e pulData parameter.
+//! buffer pointed to by the \e pui32Data parameter.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-EEPROMRead(unsigned long *pulData, unsigned long ulAddress,
-           unsigned long ulCount)
+EEPROMRead(uint32_t *pui32Data, uint32_t ui32Address, uint32_t ui32Count)
 {
     //
     // Check parameters in a debug build.
     //
-    ASSERT(pulData);
-    ASSERT(ulAddress < SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT((ulAddress + ulCount) <= SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT((ulAddress & 3) == 0);
-    ASSERT((ulCount & 3) == 0);
+    ASSERT(pui32Data);
+    ASSERT(ui32Address < SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT((ui32Address + ui32Count) <=
+           SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT((ui32Address & 3) == 0);
+    ASSERT((ui32Count & 3) == 0);
 
     //
     // Set the block and offset appropriately to read the first word.
     //
-    HWREG(EEPROM_EEBLOCK) = EEPROMBlockFromAddr(ulAddress);
-    HWREG(EEPROM_EEOFFSET) = OFFSET_FROM_ADDR(ulAddress);
+    HWREG(EEPROM_EEBLOCK) = EEPROMBlockFromAddr(ui32Address);
+    HWREG(EEPROM_EEOFFSET) = OFFSET_FROM_ADDR(ui32Address);
 
     //
     // Convert the byte count to a word count.
     //
-    ulCount /= 4;
+    ui32Count /= 4;
 
     //
     // Read each word in turn.
     //
-    while(ulCount)
+    while(ui32Count)
     {
         //
         // Read the next word through the autoincrementing register.
         //
-        *pulData = HWREG(EEPROM_EERDWRINC);
+        *pui32Data = HWREG(EEPROM_EERDWRINC);
 
         //
         // Move on to the next word.
         //
-        pulData++;
-        ulCount--;
+        pui32Data++;
+        ui32Count--;
 
         //
         // Do we need to move to the next block?  This is the case if the
-        // offset register has just wrapped back to 0.
+        // offset register has just wrapped back to 0.  Note that we only
+        // write the block register if we have more data to read.  If this
+        // register is written, the hardware expects a read or write operation
+        // next.  If a mass erase is requested instead, the mass erase will
+        // fail.
         //
-        if(HWREG(EEPROM_EEOFFSET) == 0)
+        if(ui32Count && (HWREG(EEPROM_EEOFFSET) == 0))
         {
             HWREG(EEPROM_EEBLOCK) += 1;
         }
@@ -351,10 +367,10 @@ EEPROMRead(unsigned long *pulData, unsigned long ulAddress,
 //
 //! Writes data to the EEPROM.
 //!
-//! \param pulData points to the first word of data to write to the EEPROM.
-//! \param ulAddress defines the byte address within the EEPROM that the data
+//! \param pui32Data points to the first word of data to write to the EEPROM.
+//! \param ui32Address defines the byte address within the EEPROM that the data
 //! is to be written to.  This value must be a multiple of 4.
-//! \param ulCount defines the number of bytes of data that is to be written.
+//! \param ui32Count defines the number of bytes of data that is to be written.
 //! This value must be a multiple of 4.
 //!
 //! This function may be called to write data into the EEPROM at a given
@@ -367,20 +383,20 @@ EEPROMRead(unsigned long *pulData, unsigned long ulAddress,
 //! \b EEPROM_RC_WORKING.
 //
 //*****************************************************************************
-unsigned long
-EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
-              unsigned long ulCount)
+uint32_t
+EEPROMProgram(uint32_t *pui32Data, uint32_t ui32Address, uint32_t ui32Count)
 {
-    unsigned long ulStatus;
+    uint32_t ui32Status;
 
     //
     // Check parameters in a debug build.
     //
-    ASSERT(pulData);
-    ASSERT(ulAddress < SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT((ulAddress + ulCount) <= SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT((ulAddress & 3) == 0);
-    ASSERT((ulCount & 3) == 0);
+    ASSERT(pui32Data);
+    ASSERT(ui32Address < SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT((ui32Address + ui32Count) <=
+           SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT((ui32Address & 3) == 0);
+    ASSERT((ui32Count & 3) == 0);
 
     //
     // Make sure the EEPROM is idle before we start.
@@ -390,25 +406,25 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
         //
         // Read the status.
         //
-        ulStatus = HWREG(EEPROM_EEDONE);
+        ui32Status = HWREG(EEPROM_EEDONE);
     }
-    while(ulStatus & EEPROM_EEDONE_WORKING);
+    while(ui32Status & EEPROM_EEDONE_WORKING);
 
     //
     // Set the block and offset appropriately to program the first word.
     //
-    HWREG(EEPROM_EEBLOCK) = EEPROMBlockFromAddr(ulAddress);
-    HWREG(EEPROM_EEOFFSET) = OFFSET_FROM_ADDR(ulAddress);
+    HWREG(EEPROM_EEBLOCK) = EEPROMBlockFromAddr(ui32Address);
+    HWREG(EEPROM_EEOFFSET) = OFFSET_FROM_ADDR(ui32Address);
 
     //
     // Convert the byte count to a word count.
     //
-    ulCount /= 4;
+    ui32Count /= 4;
 
     //
     // Write each word in turn.
     //
-    while(ulCount)
+    while(ui32Count)
     {
         //
         // This is a workaround for a silicon problem on Blizzard rev A.  We
@@ -417,14 +433,13 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
         //
         if(CLASS_IS_BLIZZARD && REVISION_IS_A0)
         {
-            EEPROMSetSectorMask(ulAddress);
-            ulAddress += 4;
+            _EEPROMSectorMaskSet(ui32Address);
         }
 
         //
         // Write the next word through the autoincrementing register.
         //
-        HWREG(EEPROM_EERDWRINC) = *pulData;
+        HWREG(EEPROM_EERDWRINC) = *pui32Data;
 
         //
         // Wait for the write to complete.
@@ -434,16 +449,16 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             // Read the status.
             //
-            ulStatus = HWREG(EEPROM_EEDONE);
+            ui32Status = HWREG(EEPROM_EEDONE);
         }
-        while(ulStatus & EEPROM_EEDONE_WORKING);
+        while(ui32Status & EEPROM_EEDONE_WORKING);
 
         //
         // Make sure we completed the write without errors.  Note that we
         // must check this per-word because write permission can be set per
         // block resulting in only a section of the write not being performed.
         //
-        if(ulStatus & (EEPROM_EEDONE_NOPERM | EEPROM_EEDONE_INVPL))
+        if(ui32Status & (EEPROM_EEDONE_NOPERM | EEPROM_EEDONE_INVPL))
         {
             //
             // An error was reported that would prevent the values from
@@ -451,22 +466,26 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             if(CLASS_IS_BLIZZARD && REVISION_IS_A0)
             {
-                EEPROMClearSectorMask();
+                _EEPROMSectorMaskClear();
             }
-            return(ulStatus);
+            return(ui32Status);
         }
 
         //
         // Move on to the next word.
         //
-        pulData++;
-        ulCount--;
+        pui32Data++;
+        ui32Count--;
 
         //
         // Do we need to move to the next block?  This is the case if the
-        // offset register has just wrapped back to 0.
+        // offset register has just wrapped back to 0.  Note that we only
+        // write the block register if we have more data to read.  If this
+        // register is written, the hardware expects a read or write operation
+        // next.  If a mass erase is requested instead, the mass erase will
+        // fail.
         //
-        if(HWREG(EEPROM_EEOFFSET) == 0)
+        if(ui32Count && (HWREG(EEPROM_EEOFFSET) == 0))
         {
             HWREG(EEPROM_EEBLOCK) += 1;
         }
@@ -478,7 +497,7 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
     //
     if(CLASS_IS_BLIZZARD && REVISION_IS_A0)
     {
-        EEPROMClearSectorMask();
+        _EEPROMSectorMaskClear();
     }
 
     //
@@ -491,17 +510,17 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
 //
 //! Writes a word to the EEPROM.
 //!
-//! \param ulData is the word to write to the EEPROM.
-//! \param ulAddress defines the byte address within the EEPROM to which the
+//! \param ui32Data is the word to write to the EEPROM.
+//! \param ui32Address defines the byte address within the EEPROM to which the
 //! data is to be written.  This value must be a multiple of 4.
 //!
 //! This function is intended to allow EEPROM programming under interrupt
-//! control. It may be called to start the process of writing a single word of
+//! control.  It may be called to start the process of writing a single word of
 //! data into the EEPROM at a given word-aligned address.  The call is
-//! asynchronous and returna immediately without waiting for the write to
+//! asynchronous and returns immediately without waiting for the write to
 //! complete.  Completion of the operation is signaled by means of an
 //! interrupt from the EEPROM module.  The EEPROM peripheral shares a single
-//! interrupt vector with the flash memory subsystem, \e INT_FLASH.
+//! interrupt vector with the flash memory subsystem, \b INT_FLASH.
 //!
 //! \return Returns status and error information in the form of a logical OR
 //! combinations of \b EEPROM_RC_INVPL, \b EEPROM_RC_WRBUSY,
@@ -511,34 +530,34 @@ EEPROMProgram(unsigned long *pulData, unsigned long ulAddress,
 //! an error.
 //
 //*****************************************************************************
-unsigned long
-EEPROMProgramNonBlocking(unsigned long ulData, unsigned long ulAddress)
+uint32_t
+EEPROMProgramNonBlocking(uint32_t ui32Data, uint32_t ui32Address)
 {
     //
     // Check parameters in a debug build.
     //
-    ASSERT(ulAddress < SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT((ulAddress & 3) == 0);
+    ASSERT(ui32Address < SIZE_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT((ui32Address & 3) == 0);
 
     //
     // This is a workaround for a silicon problem on Blizzard rev A.
     //
     if(CLASS_IS_BLIZZARD && REVISION_IS_A0)
     {
-        EEPROMSetSectorMask(ulAddress);
+        _EEPROMSectorMaskSet(ui32Address);
     }
 
     //
     // Set the block and offset appropriately to program the desired word.
     //
-    HWREG(EEPROM_EEBLOCK) = EEPROMBlockFromAddr(ulAddress);
-    HWREG(EEPROM_EEOFFSET) = OFFSET_FROM_ADDR(ulAddress);
+    HWREG(EEPROM_EEBLOCK) = EEPROMBlockFromAddr(ui32Address);
+    HWREG(EEPROM_EEOFFSET) = OFFSET_FROM_ADDR(ui32Address);
 
     //
     // Write the new word using the auto-incrementing register just in case
     // the caller wants to write follow-on words using direct register access
     //
-    HWREG(EEPROM_EERDWRINC) = ulData;
+    HWREG(EEPROM_EERDWRINC) = ui32Data;
 
     //
     // Return the current status to the caller.
@@ -565,7 +584,7 @@ EEPROMProgramNonBlocking(unsigned long ulData, unsigned long ulAddress)
 //! \b EEPROM_RC_WORKING.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 EEPROMMassErase(void)
 {
     //
@@ -573,7 +592,7 @@ EEPROMMassErase(void)
     //
     if(CLASS_IS_BLIZZARD && REVISION_IS_A0)
     {
-        EEPROMClearSectorMask();
+        _EEPROMSectorMaskClear();
     }
 
     //
@@ -584,7 +603,7 @@ EEPROMMassErase(void)
     //
     // Wait for completion.
     //
-    EEPROMWaitForDone();
+    _EEPROMWaitForDone();
 
     //
     // Reset the peripheral.  This is required so that all protection
@@ -597,7 +616,7 @@ EEPROMMassErase(void)
     // Wait for completion again.
     //
     SysCtlDelay(2);
-    EEPROMWaitForDone();
+    _EEPROMWaitForDone();
 
     //
     // Pass any error codes back to the caller.
@@ -609,8 +628,8 @@ EEPROMMassErase(void)
 //
 //! Returns the current protection level for an EEPROM block.
 //!
-//! \param ulBlock is the block number for which the protection level is to be
-//! queried.
+//! \param ui32Block is the block number for which the protection level is to
+//! be queried.
 //!
 //! This function returns the current protection settings for a given
 //! EEPROM block.  If block 0 is currently locked, it must be unlocked prior
@@ -621,18 +640,18 @@ EEPROMMassErase(void)
 //! \b EEPROM_PROT_SUPERVISOR_ONLY.
 //
 //*****************************************************************************
-unsigned long
-EEPROMBlockProtectGet(unsigned long ulBlock)
+uint32_t
+EEPROMBlockProtectGet(uint32_t ui32Block)
 {
     //
     // Parameter validity check.
     //
-    ASSERT(ulBlock < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT(ui32Block < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
 
     //
     // Set the current block.
     //
-    HWREG(EEPROM_EEBLOCK) = ulBlock;
+    HWREG(EEPROM_EEBLOCK) = ui32Block;
 
     //
     // Return the protection flags for this block.
@@ -644,9 +663,9 @@ EEPROMBlockProtectGet(unsigned long ulBlock)
 //
 //! Set the current protection options for an EEPROM block.
 //!
-//! \param ulBlock is the block number for which the protection options are to
-//! be set.
-//! \param ulProtect consists of one of the values \b EEPROM_PROT_RW_LRO_URW,
+//! \param ui32Block is the block number for which the protection options are
+//! to be set.
+//! \param ui32Protect consists of one of the values \b EEPROM_PROT_RW_LRO_URW,
 //! \b EEPROM_PROT_NA_LNA_URW or \b EEPROM_PROT_RO_LNA_URO optionally ORed with
 //! \b EEPROM_PROT_SUPERVISOR_ONLY.
 //!
@@ -685,23 +704,23 @@ EEPROMBlockProtectGet(unsigned long ulBlock)
 //! conditions.
 //
 //*****************************************************************************
-unsigned long
-EEPROMBlockProtectSet(unsigned long ulBlock, unsigned long ulProtect)
+uint32_t
+EEPROMBlockProtectSet(uint32_t ui32Block, uint32_t ui32Protect)
 {
     //
     // Parameter validity check.
     //
-    ASSERT(ulBlock < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT(ui32Block < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
 
     //
     // Set the current block.
     //
-    HWREG(EEPROM_EEBLOCK) = ulBlock;
+    HWREG(EEPROM_EEBLOCK) = ui32Block;
 
     //
     // Set the protection options for this block.
     //
-    HWREG(EEPROM_EEPROT) = ulProtect;
+    HWREG(EEPROM_EEPROT) = ui32Protect;
 
     //
     // Wait for the write to complete.
@@ -723,24 +742,24 @@ EEPROMBlockProtectSet(unsigned long ulBlock, unsigned long ulProtect)
 //
 //! Sets the password used to protect an EEPROM block.
 //!
-//! \param ulBlock is the EEPROM block number for which the password is to be
+//! \param ui32Block is the EEPROM block number for which the password is to be
 //! set.
-//! \param pulPassword points to an array of unsigned long values comprising
+//! \param pui32Password points to an array of uint32_t values comprising
 //! the password to set.  Each element may be any 32-bit value other than
-//! 0xFFFFFFFF. This array must contain the number of elements given by the
-//! \b ulCount parameter.
-//! \param ulCount provides the number of unsigned longs in the \b ulPassword.
+//! 0xFFFFFFFF.  This array must contain the number of elements given by the
+//! \e ui32Count parameter.
+//! \param ui32Count provides the number of uint32_ts in the \e ui32Password.
 //! Valid values are 1, 2 and 3.
 //!
 //! This function allows the password used to unlock an EEPROM block to be
 //! set.  Valid passwords may be either 32, 64 or 96 bits comprising words
-//! with any value other than 0xFFFFFFFF. The password may only be set once.
+//! with any value other than 0xFFFFFFFF.  The password may only be set once.
 //! Any further attempts to set the password result in an error.  Once the
 //! password is set, the block remains unlocked until EEPROMBlockLock() is
 //! called for that block or block 0, or a reset occurs.
 //!
 //! If a password is set on block 0, this affects locking of the peripheral as
-//! a whole. When block 0 is locked, all other EEPROM blocks are inaccessible
+//! a whole.  When block 0 is locked, all other EEPROM blocks are inaccessible
 //! until block 0 is unlocked.  Once block 0 is unlocked, other blocks
 //! become accessible according to any passwords set on those blocks and the
 //! protection set for that block via a call to EEPROMBlockProtectSet().
@@ -751,45 +770,45 @@ EEPROMBlockProtectSet(unsigned long ulBlock, unsigned long ulProtect)
 //! conditions.
 //
 //*****************************************************************************
-unsigned long
-EEPROMBlockPasswordSet(unsigned long ulBlock, unsigned long *pulPassword,
-                       unsigned long ulCount)
+uint32_t
+EEPROMBlockPasswordSet(uint32_t ui32Block, uint32_t *pui32Password,
+                       uint32_t ui32Count)
 {
-    unsigned long ulReg;
+    uint32_t ui32Reg;
 
     //
     // Check parameters in a debug build.
     //
-    ASSERT(pulPassword);
-    ASSERT(ulBlock < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT(ulCount <= 3);
+    ASSERT(pui32Password);
+    ASSERT(ui32Block < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT(ui32Count <= 3);
 
     //
     // Set the block number whose password we are about to write.
     //
-    HWREG(EEPROM_EEBLOCK) = ulBlock;
+    HWREG(EEPROM_EEBLOCK) = ui32Block;
 
     //
     // Start with the first password word.
     //
-    ulReg = EEPROM_EEPASS0;
+    ui32Reg = EEPROM_EEPASS0;
 
     //
     // Write the password.
     //
-    while(ulCount)
+    while(ui32Count)
     {
         //
         // Start the process of writing the password.
         //
-        HWREG(ulReg) = *pulPassword;
+        HWREG(ui32Reg) = *pui32Password;
 
         //
         // Update values in preparation for writing the next word.
         //
-        pulPassword++;
-        ulReg += 4;
-        ulCount--;
+        pui32Password++;
+        ui32Reg += 4;
+        ui32Count--;
 
         //
         // Wait for the last word write to complete or an error to be reported.
@@ -812,7 +831,7 @@ EEPROMBlockPasswordSet(unsigned long ulBlock, unsigned long *pulPassword,
 //
 //! Locks a password-protected EEPROM block.
 //!
-//! \param ulBlock is the EEPROM block number which is to be locked.
+//! \param ui32Block is the EEPROM block number which is to be locked.
 //!
 //! This function locks an EEPROM block that has previously been protected by
 //! writing a password.  Access to the block once it is locked is determined
@@ -827,18 +846,18 @@ EEPROMBlockPasswordSet(unsigned long ulBlock, unsigned long *pulPassword,
 //! would be the case if no password was set) or 0 if locked.
 //!
 //*****************************************************************************
-unsigned long
-EEPROMBlockLock(unsigned long ulBlock)
+uint32_t
+EEPROMBlockLock(uint32_t ui32Block)
 {
     //
     // Check parameters in a debug build.
     //
-    ASSERT(ulBlock < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT(ui32Block < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
 
     //
     // Select the block we are going to lock.
     //
-    HWREG(EEPROM_EEBLOCK) = ulBlock;
+    HWREG(EEPROM_EEBLOCK) = ui32Block;
 
     //
     // Lock the block.
@@ -855,11 +874,11 @@ EEPROMBlockLock(unsigned long ulBlock)
 //
 //! Unlocks a password-protected EEPROM block.
 //!
-//! \param ulBlock is the EEPROM block number which is to be unlocked.
-//! \param pulPassword points to an array of unsigned long values containing
-//! the password for the blockt.  Each element must match the password
+//! \param ui32Block is the EEPROM block number which is to be unlocked.
+//! \param pui32Password points to an array of uint32_t values containing
+//! the password for the block.  Each element must match the password
 //! originally set via a call to EEPROMBlockPasswordSet().
-//! \param ulCount provides the number of unsigned longs in the \b pulPassword
+//! \param ui32Count provides the number of elements in the \e pui32Password
 //! array and must match the value originally passed to
 //! EEPROMBlockPasswordSet().  Valid values are 1, 2 and 3.
 //!
@@ -880,21 +899,21 @@ EEPROMBlockLock(unsigned long ulBlock)
 //! locked.
 //!
 //*****************************************************************************
-unsigned long
-EEPROMBlockUnlock(unsigned long ulBlock, unsigned long *pulPassword,
-                  unsigned long ulCount)
+uint32_t
+EEPROMBlockUnlock(uint32_t ui32Block, uint32_t *pui32Password,
+                  uint32_t ui32Count)
 {
     //
     // Check parameters in a debug build.
     //
-    ASSERT(pulPassword);
-    ASSERT(ulBlock < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
-    ASSERT(ulCount <= 3);
+    ASSERT(pui32Password);
+    ASSERT(ui32Block < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT(ui32Count <= 3);
 
     //
     // Set the block that we are trying to unlock.
     //
-    HWREG(EEPROM_EEBLOCK) = ulBlock;
+    HWREG(EEPROM_EEBLOCK) = ui32Block;
 
     //
     // Write the unlock register with 0xFFFFFFFF to reset the unlock
@@ -907,15 +926,15 @@ EEPROMBlockUnlock(unsigned long ulBlock, unsigned long *pulPassword,
     // We need to write the password words in the opposite order when unlocking
     // compared to locking so start at the end of the array.
     //
-    pulPassword += (ulCount - 1);
+    pui32Password += (ui32Count - 1);
 
     //
     // Write the supplied password to unlock the block.
     //
-    while(ulCount)
+    while(ui32Count)
     {
-        HWREG(EEPROM_EEUNLOCK) = *pulPassword--;
-        ulCount--;
+        HWREG(EEPROM_EEUNLOCK) = *pui32Password--;
+        ui32Count--;
     }
 
     //
@@ -928,7 +947,7 @@ EEPROMBlockUnlock(unsigned long ulBlock, unsigned long *pulPassword,
 //
 //! Hides an EEPROM block until the next reset.
 //!
-//! \param ulBlock is the EEPROM block number which is to be hidden.
+//! \param ui32Block is the EEPROM block number which is to be hidden.
 //!
 //! This function hides an EEPROM block other than block 0.  Once hidden, a
 //! block is completely inaccessible until the next reset.  This mechanism
@@ -941,44 +960,44 @@ EEPROMBlockUnlock(unsigned long ulBlock, unsigned long *pulPassword,
 //!
 //*****************************************************************************
 void
-EEPROMBlockHide(unsigned long ulBlock)
+EEPROMBlockHide(uint32_t ui32Block)
 {
     //
     // Check parameters in a debug build.
     //
-    ASSERT(!ulBlock);
-    ASSERT(ulBlock < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
+    ASSERT(!ui32Block);
+    ASSERT(ui32Block < BLOCKS_FROM_EESIZE(HWREG(EEPROM_EESIZE)));
 
     //
     // Hide the requested block.
     //
-    HWREG(EEPROM_EEHIDE) = (1 << ulBlock);
+    HWREG(EEPROM_EEHIDE) = (1 << ui32Block);
 }
 
 //*****************************************************************************
 //
 //! Enables the EEPROM interrupt.
 //!
-//! \param ulIntFlags indicates which EEPROM interrupt source to enable.  This
-//! must be \b EEPROM_INT_PROGRAM currently.
+//! \param ui32IntFlags indicates which EEPROM interrupt source to enable.
+//! This must be \b EEPROM_INT_PROGRAM currently.
 //!
 //! This function enables the EEPROM interrupt.  When enabled, an interrupt
 //! is generated when any EEPROM write or erase operation completes.  The
 //! EEPROM peripheral shares a single interrupt vector with the flash memory
 //! subsystem, \b INT_FLASH.  This function is provided as a convenience but
 //! the EEPROM interrupt can also be enabled using a call to FlashIntEnable()
-//! passing FLASH_INT_EEPROM in the \b ulIntFlags parameter.
+//! passing FLASH_INT_EEPROM in the \e ui32IntFlags parameter.
 //!
 //! \return None.
 //!
 //*****************************************************************************
 void
-EEPROMIntEnable(unsigned long ulIntFlags)
+EEPROMIntEnable(uint32_t ui32IntFlags)
 {
     //
     // Look for valid interrupt sources.
     //
-    ASSERT(ulIntFlags == EEPROM_INT_PROGRAM);
+    ASSERT(ui32IntFlags == EEPROM_INT_PROGRAM);
 
     //
     // Enable interrupts from the EEPROM module.
@@ -995,26 +1014,26 @@ EEPROMIntEnable(unsigned long ulIntFlags)
 //
 //! Disables the EEPROM interrupt.
 //!
-//! \param ulIntFlags indicates which EEPROM interrupt source to disable.  This
-//! must be \b EEPROM_INT_PROGRAM currently.
+//! \param ui32IntFlags indicates which EEPROM interrupt source to disable.
+//! This must be \b EEPROM_INT_PROGRAM currently.
 //!
 //! This function disables the EEPROM interrupt and prevents calls to the
 //! interrupt vector when any EEPROM write or erase operation completes.  The
 //! EEPROM peripheral shares a single interrupt vector with the flash memory
-//! subsystem, \e INT_FLASH.    This function is provided as a convenience but
+//! subsystem, \b INT_FLASH.  This function is provided as a convenience but
 //! the EEPROM interrupt can also be disabled using a call to FlashIntDisable()
-//! passing FLASH_INT_EEPROM in the \b ulIntFlags parameter.
+//! passing FLASH_INT_EEPROM in the \e ui32IntFlags parameter.
 //!
 //! \return None.
 //!
 //*****************************************************************************
 void
-EEPROMIntDisable(unsigned long ulIntFlags)
+EEPROMIntDisable(uint32_t ui32IntFlags)
 {
     //
     // Look for valid interrupt sources.
     //
-    ASSERT(ulIntFlags == EEPROM_INT_PROGRAM);
+    ASSERT(ui32IntFlags == EEPROM_INT_PROGRAM);
 
     //
     // Disable the EEPROM interrupt in the flash controller module.
@@ -1032,7 +1051,7 @@ EEPROMIntDisable(unsigned long ulIntFlags)
 //! Reports the state of the EEPROM interrupt.
 //!
 //! \param bMasked determines whether the masked or unmasked state of the
-//! interrupt is to be returned. If bMasked is \e true, the masked state is
+//! interrupt is to be returned.  If bMasked is \b true, the masked state is
 //! returned, otherwise the unmasked state is returned.
 //!
 //! This function allows an application to query the state of the EEPROM
@@ -1043,8 +1062,8 @@ EEPROMIntDisable(unsigned long ulIntFlags)
 //! 0 otherwise.
 //
 //*****************************************************************************
-unsigned long
-EEPROMIntStatus(tBoolean bMasked)
+uint32_t
+EEPROMIntStatus(bool bMasked)
 {
     if(bMasked)
     {
@@ -1054,7 +1073,7 @@ EEPROMIntStatus(tBoolean bMasked)
         // the appropriate EEPROM flag if it is.
         //
         return((HWREG(FLASH_FCMISC) & FLASH_FCMISC_EMISC) ?
-                EEPROM_INT_PROGRAM : 0);
+               EEPROM_INT_PROGRAM : 0);
     }
     else
     {
@@ -1075,7 +1094,7 @@ EEPROMIntStatus(tBoolean bMasked)
 //
 //! Clears the EEPROM interrupt.
 //!
-//! \param ulIntFlags indicates which interrupt sources to clear.  Currently,
+//! \param ui32IntFlags indicates which interrupt sources to clear.  Currently,
 //! the only valid value is \b EEPROM_INT_PROGRAM.
 //!
 //! This function allows an application to clear the EEPROM interrupt.
@@ -1093,7 +1112,7 @@ EEPROMIntStatus(tBoolean bMasked)
 //!
 //*****************************************************************************
 void
-EEPROMIntClear(unsigned long ulIntFlags)
+EEPROMIntClear(uint32_t ui32IntFlags)
 {
     //
     // Clear the flash interrupt.
@@ -1106,7 +1125,7 @@ EEPROMIntClear(unsigned long ulIntFlags)
     //
     if(CLASS_IS_BLIZZARD && REVISION_IS_A0)
     {
-        EEPROMClearSectorMask();
+        _EEPROMSectorMaskClear();
     }
 }
 
@@ -1126,7 +1145,7 @@ EEPROMIntClear(unsigned long ulIntFlags)
 //! \b EEPROM_RC_WKERASE, and \b EEPROM_RC_WORKING.
 //!
 //*****************************************************************************
-unsigned long
+uint32_t
 EEPROMStatusGet(void)
 {
     return(HWREG(EEPROM_EEDONE));

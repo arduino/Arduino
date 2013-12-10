@@ -2,7 +2,7 @@
 //
 // comp.c - Driver for the analog comparator.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_comp.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
@@ -56,11 +58,11 @@
 //
 //! Configures a comparator.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator to configure.
-//! \param ulConfig is the configuration of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator to configure.
+//! \param ui32Config is the configuration of the comparator.
 //!
-//! This function configures a comparator.  The \e ulConfig parameter is the
+//! This function configures a comparator.  The \e ui32Config parameter is the
 //! result of a logical OR operation between the \b COMP_TRIG_xxx,
 //! \b COMP_INT_xxx, \b COMP_ASRCP_xxx, and \b COMP_OUTPUT_xxx values.
 //!
@@ -103,34 +105,31 @@
 //! to a device pin.
 //! - \b COMP_OUTPUT_INVERT to enable an inverted output from the comparator to
 //! a device pin.
-//! - \b COMP_OUTPUT_NONE is deprecated and behaves the same as
-//! \b COMP_OUTPUT_NORMAL.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-ComparatorConfigure(unsigned long ulBase, unsigned long ulComp,
-                    unsigned long ulConfig)
+ComparatorConfigure(uint32_t ui32Base, uint32_t ui32Comp, uint32_t ui32Config)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Configure this comparator.
     //
-    HWREG(ulBase + (ulComp * 0x20) + COMP_O_ACCTL0) = ulConfig;
+    HWREG(ui32Base + (ui32Comp * 0x20) + COMP_O_ACCTL0) = ui32Config;
 }
 
 //*****************************************************************************
 //
 //! Sets the internal reference voltage.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulRef is the desired reference voltage.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Ref is the desired reference voltage.
 //!
 //! This function sets the internal reference voltage value.  The voltage is
 //! specified as one of the following values:
@@ -169,25 +168,25 @@ ComparatorConfigure(unsigned long ulBase, unsigned long ulComp,
 //
 //*****************************************************************************
 void
-ComparatorRefSet(unsigned long ulBase, unsigned long ulRef)
+ComparatorRefSet(uint32_t ui32Base, uint32_t ui32Ref)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
+    ASSERT(ui32Base == COMP_BASE);
 
     //
     // Set the voltage reference voltage as requested.
     //
-    HWREG(ulBase + COMP_O_ACREFCTL) = ulRef;
+    HWREG(ui32Base + COMP_O_ACREFCTL) = ui32Ref;
 }
 
 //*****************************************************************************
 //
 //! Gets the current comparator output value.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //!
 //! This function retrieves the current value of the comparator output.
 //!
@@ -195,20 +194,21 @@ ComparatorRefSet(unsigned long ulBase, unsigned long ulRef)
 //! the comparator output is low.
 //
 //*****************************************************************************
-tBoolean
-ComparatorValueGet(unsigned long ulBase, unsigned long ulComp)
+bool
+ComparatorValueGet(uint32_t ui32Base, uint32_t ui32Comp)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Return the appropriate value based on the comparator's present output
     // value.
     //
-    if(HWREG(ulBase + (ulComp * 0x20) + COMP_O_ACSTAT0) & COMP_ACSTAT0_OVAL)
+    if(HWREG(ui32Base + (ui32Comp * 0x20) + COMP_O_ACSTAT0) &
+       COMP_ACSTAT0_OVAL)
     {
         return(true);
     }
@@ -222,14 +222,14 @@ ComparatorValueGet(unsigned long ulBase, unsigned long ulComp)
 //
 //! Registers an interrupt handler for the comparator interrupt.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //! \param pfnHandler is a pointer to the function to be called when the
 //! comparator interrupt occurs.
 //!
-//! This function sets the handler to be called when the comparator interrupt occurs
-//! and enables the interrupt in the interrupt controller.  It is the interrupt
-//! handler's responsibility to clear the interrupt source via
+//! This function sets the handler to be called when the comparator interrupt
+//! occurs and enables the interrupt in the interrupt controller.  It is the
+//! interrupt handler's responsibility to clear the interrupt source via
 //! ComparatorIntClear().
 //!
 //! \sa IntRegister() for important information about registering interrupt
@@ -239,41 +239,41 @@ ComparatorValueGet(unsigned long ulBase, unsigned long ulComp)
 //
 //*****************************************************************************
 void
-ComparatorIntRegister(unsigned long ulBase, unsigned long ulComp,
+ComparatorIntRegister(uint32_t ui32Base, uint32_t ui32Comp,
                       void (*pfnHandler)(void))
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Register the interrupt handler, returning an error if an error occurs.
     //
-    IntRegister(INT_COMP0 + ulComp, pfnHandler);
+    IntRegister(INT_COMP0_BLIZZARD + ui32Comp, pfnHandler);
 
     //
     // Enable the interrupt in the interrupt controller.
     //
-    IntEnable(INT_COMP0 + ulComp);
+    IntEnable(INT_COMP0_BLIZZARD + ui32Comp);
 
     //
     // Enable the comparator interrupt.
     //
-    HWREG(ulBase + COMP_O_ACINTEN) |= 1 << ulComp;
+    HWREG(ui32Base + COMP_O_ACINTEN) |= 1 << ui32Comp;
 }
 
 //*****************************************************************************
 //
 //! Unregisters an interrupt handler for a comparator interrupt.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //!
 //! This function clears the handler to be called when a comparator interrupt
-//! occurs.  This function also masks off the interrupt in the interrupt controller
-//! so that the interrupt handler no longer is called.
+//! occurs.  This function also masks off the interrupt in the interrupt
+//! controller so that the interrupt handler no longer is called.
 //!
 //! \sa IntRegister() for important information about registering interrupt
 //! handlers.
@@ -282,36 +282,36 @@ ComparatorIntRegister(unsigned long ulBase, unsigned long ulComp,
 //
 //*****************************************************************************
 void
-ComparatorIntUnregister(unsigned long ulBase, unsigned long ulComp)
+ComparatorIntUnregister(uint32_t ui32Base, uint32_t ui32Comp)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Disable the comparator interrupt.
     //
-    HWREG(ulBase + COMP_O_ACINTEN) &= ~(1 << ulComp);
+    HWREG(ui32Base + COMP_O_ACINTEN) &= ~(1 << ui32Comp);
 
     //
     // Disable the interrupt in the interrupt controller.
     //
-    IntDisable(INT_COMP0 + ulComp);
+    IntDisable(INT_COMP0_BLIZZARD + ui32Comp);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_COMP0 + ulComp);
+    IntUnregister(INT_COMP0_BLIZZARD + ui32Comp);
 }
 
 //*****************************************************************************
 //
 //! Enables the comparator interrupt.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //!
 //! This function enables generation of an interrupt from the specified
 //! comparator.  Only enabled comparator interrupts can be reflected
@@ -321,26 +321,26 @@ ComparatorIntUnregister(unsigned long ulBase, unsigned long ulComp)
 //
 //*****************************************************************************
 void
-ComparatorIntEnable(unsigned long ulBase, unsigned long ulComp)
+ComparatorIntEnable(uint32_t ui32Base, uint32_t ui32Comp)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Enable the comparator interrupt.
     //
-    HWREG(ulBase + COMP_O_ACINTEN) |= 1 << ulComp;
+    HWREG(ui32Base + COMP_O_ACINTEN) |= 1 << ui32Comp;
 }
 
 //*****************************************************************************
 //
 //! Disables the comparator interrupt.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //!
 //! This function disables generation of an interrupt from the specified
 //! comparator.  Only enabled comparator interrupts can be reflected
@@ -350,45 +350,44 @@ ComparatorIntEnable(unsigned long ulBase, unsigned long ulComp)
 //
 //*****************************************************************************
 void
-ComparatorIntDisable(unsigned long ulBase, unsigned long ulComp)
+ComparatorIntDisable(uint32_t ui32Base, uint32_t ui32Comp)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Disable the comparator interrupt.
     //
-    HWREG(ulBase + COMP_O_ACINTEN) &= ~(1 << ulComp);
+    HWREG(ui32Base + COMP_O_ACINTEN) &= ~(1 << ui32Comp);
 }
 
 //*****************************************************************************
 //
 //! Gets the current interrupt status.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //! \param bMasked is \b false if the raw interrupt status is required and
 //! \b true if the masked interrupt status is required.
 //!
-//! This function returns the interrupt status for the comparator.  Either the raw or
-//! the masked interrupt status can be returned.
+//! This function returns the interrupt status for the comparator.  Either the
+//! raw or the masked interrupt status can be returned.
 //!
 //! \return \b true if the interrupt is asserted and \b false if it is not
 //! asserted.
 //
 //*****************************************************************************
-tBoolean
-ComparatorIntStatus(unsigned long ulBase, unsigned long ulComp,
-                    tBoolean bMasked)
+bool
+ComparatorIntStatus(uint32_t ui32Base, uint32_t ui32Comp, bool bMasked)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Return either the interrupt status or the raw interrupt status as
@@ -396,11 +395,13 @@ ComparatorIntStatus(unsigned long ulBase, unsigned long ulComp,
     //
     if(bMasked)
     {
-        return(((HWREG(ulBase + COMP_O_ACMIS) >> ulComp) & 1) ? true : false);
+        return(((HWREG(ui32Base + COMP_O_ACMIS) >> ui32Comp) & 1) ? true :
+               false);
     }
     else
     {
-        return(((HWREG(ulBase + COMP_O_ACRIS) >> ulComp) & 1) ? true : false);
+        return(((HWREG(ui32Base + COMP_O_ACRIS) >> ui32Comp) & 1) ? true :
+               false);
     }
 }
 
@@ -408,8 +409,8 @@ ComparatorIntStatus(unsigned long ulBase, unsigned long ulComp,
 //
 //! Clears a comparator interrupt.
 //!
-//! \param ulBase is the base address of the comparator module.
-//! \param ulComp is the index of the comparator.
+//! \param ui32Base is the base address of the comparator module.
+//! \param ui32Comp is the index of the comparator.
 //!
 //! The comparator interrupt is cleared, so that it no longer asserts.  This
 //! fucntion must be called in the interrupt handler to keep the handler from
@@ -429,18 +430,18 @@ ComparatorIntStatus(unsigned long ulBase, unsigned long ulComp,
 //
 //*****************************************************************************
 void
-ComparatorIntClear(unsigned long ulBase, unsigned long ulComp)
+ComparatorIntClear(uint32_t ui32Base, uint32_t ui32Comp)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == COMP_BASE);
-    ASSERT(ulComp < 3);
+    ASSERT(ui32Base == COMP_BASE);
+    ASSERT(ui32Comp < 3);
 
     //
     // Clear the interrupt.
     //
-    HWREG(ulBase + COMP_O_ACMIS) = 1 << ulComp;
+    HWREG(ui32Base + COMP_O_ACMIS) = 1 << ui32Comp;
 }
 
 //*****************************************************************************

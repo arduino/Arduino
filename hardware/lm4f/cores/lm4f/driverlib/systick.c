@@ -2,7 +2,7 @@
 //
 // systick.c - Driver for the SysTick timer in NVIC.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_ints.h"
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
@@ -200,8 +202,8 @@ SysTickIntDisable(void)
 //
 //! Sets the period of the SysTick counter.
 //!
-//! \param ulPeriod is the number of clock ticks in each period of the SysTick
-//! counter and must be between 1 and 16,777,216, inclusive.
+//! \param ui32Period is the number of clock ticks in each period of the
+//! SysTick counter and must be between 1 and 16,777,216, inclusive.
 //!
 //! This function sets the rate at which the SysTick counter wraps, which
 //! equates to the number of processor clocks between interrupts.
@@ -209,24 +211,24 @@ SysTickIntDisable(void)
 //! \note Calling this function does not cause the SysTick counter to reload
 //! immediately.  If an immediate reload is required, the \b NVIC_ST_CURRENT
 //! register must be written.  Any write to this register clears the SysTick
-//! counter to 0 and causes a reload with the \e ulPeriod supplied here on
+//! counter to 0 and causes a reload with the \e ui32Period supplied here on
 //! the next clock after SysTick is enabled.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-SysTickPeriodSet(unsigned long ulPeriod)
+SysTickPeriodSet(uint32_t ui32Period)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulPeriod > 0) && (ulPeriod <= 16777216));
+    ASSERT((ui32Period > 0) && (ui32Period <= 16777216));
 
     //
     // Set the period of the SysTick counter.
     //
-    HWREG(NVIC_ST_RELOAD) = ulPeriod - 1;
+    HWREG(NVIC_ST_RELOAD) = ui32Period - 1;
 }
 
 //*****************************************************************************
@@ -239,7 +241,7 @@ SysTickPeriodSet(unsigned long ulPeriod)
 //! \return Returns the period of the SysTick counter.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 SysTickPeriodGet(void)
 {
     //
@@ -258,7 +260,7 @@ SysTickPeriodGet(void)
 //! \return Returns the current value of the SysTick counter.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 SysTickValueGet(void)
 {
     //

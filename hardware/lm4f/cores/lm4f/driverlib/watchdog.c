@@ -2,7 +2,7 @@
 //
 // watchdog.c - Driver for the Watchdog Timer Module.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
@@ -56,7 +58,7 @@
 //
 //! Determines if the watchdog timer is enabled.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function checks to see if the watchdog timer is enabled.
 //!
@@ -64,114 +66,108 @@
 //! if it is not.
 //
 //*****************************************************************************
-tBoolean
-WatchdogRunning(unsigned long ulBase)
+bool
+WatchdogRunning(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // See if the watchdog timer module is enabled, and return.
     //
-    return(HWREG(ulBase + WDT_O_CTL) & WDT_CTL_INTEN);
+    return(HWREG(ui32Base + WDT_O_CTL) & WDT_CTL_INTEN);
 }
 
 //*****************************************************************************
 //
 //! Enables the watchdog timer.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function enables the watchdog timer counter and interrupt.
 //!
 //! \note This function has no effect if the watchdog timer has been locked.
 //!
-//! \sa WatchdogLock(), WatchdogUnlock()
-//!
 //! \return None.
 //
 //*****************************************************************************
 void
-WatchdogEnable(unsigned long ulBase)
+WatchdogEnable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Enable the watchdog timer module.
     //
-    HWREG(ulBase + WDT_O_CTL) |= WDT_CTL_INTEN;
+    HWREG(ui32Base + WDT_O_CTL) |= WDT_CTL_INTEN;
 }
 
 //*****************************************************************************
 //
 //! Enables the watchdog timer reset.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function enables the capability of the watchdog timer to issue a reset
 //! to the processor after a second timeout condition.
 //!
 //! \note This function has no effect if the watchdog timer has been locked.
 //!
-//! \sa WatchdogLock(), WatchdogUnlock()
-//!
 //! \return None.
 //
 //*****************************************************************************
 void
-WatchdogResetEnable(unsigned long ulBase)
+WatchdogResetEnable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Enable the watchdog reset.
     //
-    HWREG(ulBase + WDT_O_CTL) |= WDT_CTL_RESEN;
+    HWREG(ui32Base + WDT_O_CTL) |= WDT_CTL_RESEN;
 }
 
 //*****************************************************************************
 //
 //! Disables the watchdog timer reset.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function disables the capability of the watchdog timer to issue a
 //! reset to the processor after a second timeout condition.
 //!
 //! \note This function has no effect if the watchdog timer has been locked.
 //!
-//! \sa WatchdogLock(), WatchdogUnlock()
-//!
 //! \return None.
 //
 //*****************************************************************************
 void
-WatchdogResetDisable(unsigned long ulBase)
+WatchdogResetDisable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Disable the watchdog reset.
     //
-    HWREG(ulBase + WDT_O_CTL) &= ~(WDT_CTL_RESEN);
+    HWREG(ui32Base + WDT_O_CTL) &= ~(WDT_CTL_RESEN);
 }
 
 //*****************************************************************************
 //
 //! Enables the watchdog timer lock mechanism.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function locks out write access to the watchdog timer configuration
 //! registers.
@@ -180,25 +176,25 @@ WatchdogResetDisable(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-WatchdogLock(unsigned long ulBase)
+WatchdogLock(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Lock out watchdog register writes.  Writing anything to the WDT_O_LOCK
     // register causes the lock to go into effect.
     //
-    HWREG(ulBase + WDT_O_LOCK) = WDT_LOCK_LOCKED;
+    HWREG(ui32Base + WDT_O_LOCK) = WDT_LOCK_LOCKED;
 }
 
 //*****************************************************************************
 //
 //! Disables the watchdog timer lock mechanism.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function enables write access to the watchdog timer configuration
 //! registers.
@@ -207,24 +203,24 @@ WatchdogLock(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-WatchdogUnlock(unsigned long ulBase)
+WatchdogUnlock(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Unlock watchdog register writes.
     //
-    HWREG(ulBase + WDT_O_LOCK) = WDT_LOCK_UNLOCK;
+    HWREG(ui32Base + WDT_O_LOCK) = WDT_LOCK_UNLOCK;
 }
 
 //*****************************************************************************
 //
 //! Gets the state of the watchdog timer lock mechanism.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function returns the lock state of the watchdog timer registers.
 //!
@@ -232,112 +228,108 @@ WatchdogUnlock(unsigned long ulBase)
 //! \b false if they are not locked.
 //
 //*****************************************************************************
-tBoolean
-WatchdogLockState(unsigned long ulBase)
+bool
+WatchdogLockState(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Get the lock state.
     //
-    return((HWREG(ulBase + WDT_O_LOCK) == WDT_LOCK_LOCKED) ? true : false);
+    return((HWREG(ui32Base + WDT_O_LOCK) == WDT_LOCK_LOCKED) ? true : false);
 }
 
 //*****************************************************************************
 //
 //! Sets the watchdog timer reload value.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
-//! \param ulLoadVal is the load value for the watchdog timer.
+//! \param ui32Base is the base address of the watchdog timer module.
+//! \param ui32LoadVal is the load value for the watchdog timer.
 //!
 //! This function configures the value to load into the watchdog timer when the
 //! count reaches zero for the first time; if the watchdog timer is running
 //! when this function is called, then the value is immediately loaded into the
-//! watchdog timer counter.  If the \e ulLoadVal parameter is 0, then an
+//! watchdog timer counter.  If the \e ui32LoadVal parameter is 0, then an
 //! interrupt is immediately generated.
 //!
 //! \note This function has no effect if the watchdog timer has been locked.
-//!
-//! \sa WatchdogLock(), WatchdogUnlock(), WatchdogReloadGet()
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-WatchdogReloadSet(unsigned long ulBase, unsigned long ulLoadVal)
+WatchdogReloadSet(uint32_t ui32Base, uint32_t ui32LoadVal)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Set the load register.
     //
-    HWREG(ulBase + WDT_O_LOAD) = ulLoadVal;
+    HWREG(ui32Base + WDT_O_LOAD) = ui32LoadVal;
 }
 
 //*****************************************************************************
 //
 //! Gets the watchdog timer reload value.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function gets the value that is loaded into the watchdog timer when
 //! the count reaches zero for the first time.
 //!
-//! \sa WatchdogReloadSet()
-//!
 //! \return None.
 //
 //*****************************************************************************
-unsigned long
-WatchdogReloadGet(unsigned long ulBase)
+uint32_t
+WatchdogReloadGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Get the load register.
     //
-    return(HWREG(ulBase + WDT_O_LOAD));
+    return(HWREG(ui32Base + WDT_O_LOAD));
 }
 
 //*****************************************************************************
 //
 //! Gets the current watchdog timer value.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function reads the current value of the watchdog timer.
 //!
 //! \return Returns the current value of the watchdog timer.
 //
 //*****************************************************************************
-unsigned long
-WatchdogValueGet(unsigned long ulBase)
+uint32_t
+WatchdogValueGet(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Get the current watchdog timer register value.
     //
-    return(HWREG(ulBase + WDT_O_VALUE));
+    return(HWREG(ui32Base + WDT_O_VALUE));
 }
 
 //*****************************************************************************
 //
 //! Registers an interrupt handler for the watchdog timer interrupt.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //! \param pfnHandler is a pointer to the function to be called when the
 //! watchdog timer interrupt occurs.
 //!
@@ -360,29 +352,29 @@ WatchdogValueGet(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
+WatchdogIntRegister(uint32_t ui32Base, void (*pfnHandler)(void))
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_WATCHDOG, pfnHandler);
+    IntRegister(INT_WATCHDOG_BLIZZARD, pfnHandler);
 
     //
     // Enable the watchdog timer interrupt.
     //
-    IntEnable(INT_WATCHDOG);
+    IntEnable(INT_WATCHDOG_BLIZZARD);
 }
 
 //*****************************************************************************
 //
 //! Unregisters an interrupt handler for the watchdog timer interrupt.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function does the actual unregistering of the interrupt handler.  This
 //! function clears the handler to be called when a watchdog timer interrupt
@@ -402,58 +394,56 @@ WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
 //
 //*****************************************************************************
 void
-WatchdogIntUnregister(unsigned long ulBase)
+WatchdogIntUnregister(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_WATCHDOG);
+    IntDisable(INT_WATCHDOG_BLIZZARD);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_WATCHDOG);
+    IntUnregister(INT_WATCHDOG_BLIZZARD);
 }
 
 //*****************************************************************************
 //
 //! Enables the watchdog timer interrupt.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function enables the watchdog timer interrupt.
 //!
 //! \note This function has no effect if the watchdog timer has been locked.
 //!
-//! \sa WatchdogLock(), WatchdogUnlock(), WatchdogEnable()
-//!
 //! \return None.
 //
 //*****************************************************************************
 void
-WatchdogIntEnable(unsigned long ulBase)
+WatchdogIntEnable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Enable the watchdog interrupt.
     //
-    HWREG(ulBase + WDT_O_CTL) |= WDT_CTL_INTEN;
+    HWREG(ui32Base + WDT_O_CTL) |= WDT_CTL_INTEN;
 }
 
 //*****************************************************************************
 //
 //! Gets the current watchdog timer interrupt status.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //! \param bMasked is \b false if the raw interrupt status is required and
 //! \b true if the masked interrupt status is required.
 //!
@@ -465,13 +455,13 @@ WatchdogIntEnable(unsigned long ulBase)
 //! watchdog interrupt is active, and a 0 indicates that it is not active.
 //
 //*****************************************************************************
-unsigned long
-WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
+uint32_t
+WatchdogIntStatus(uint32_t ui32Base, bool bMasked)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Return either the interrupt status or the raw interrupt status as
@@ -479,11 +469,11 @@ WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
     //
     if(bMasked)
     {
-        return(HWREG(ulBase + WDT_O_MIS));
+        return(HWREG(ui32Base + WDT_O_MIS));
     }
     else
     {
-        return(HWREG(ulBase + WDT_O_RIS));
+        return(HWREG(ui32Base + WDT_O_RIS));
     }
 }
 
@@ -491,7 +481,7 @@ WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
 //
 //! Clears the watchdog timer interrupt.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! The watchdog timer interrupt source is cleared, so that it no longer
 //! asserts.
@@ -509,28 +499,28 @@ WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
 //
 //*****************************************************************************
 void
-WatchdogIntClear(unsigned long ulBase)
+WatchdogIntClear(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Clear the interrupt source.
     //
-    HWREG(ulBase + WDT_O_ICR) = WDT_INT_TIMEOUT;
+    HWREG(ui32Base + WDT_O_ICR) = WDT_RIS_WDTRIS;
 }
 
 //*****************************************************************************
 //
 //! Sets the type of interrupt generated by the watchdog.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
-//! \param ulType is the type of interrupt to generate.
+//! \param ui32Base is the base address of the watchdog timer module.
+//! \param ui32Type is the type of interrupt to generate.
 //!
 //! This function sets the type of interrupt that is generated if the watchdog
-//! timer expires.  \e ulType can be either \b WATCHDOG_INT_TYPE_INT to
+//! timer expires.  \e ui32Type can be either \b WATCHDOG_INT_TYPE_INT to
 //! generate a standard interrupt (the default) or \b WATCHDOG_INT_TYPE_NMI to
 //! generate a non-maskable interrupt (NMI).
 //!
@@ -538,7 +528,7 @@ WatchdogIntClear(unsigned long ulBase)
 //! enabled with WatchdogIntEnable(), and it must still be cleared inside the
 //! NMI handler with WatchdogIntClear().
 //!
-//! \note The ability to select an NMI interrupt varies with the Stellaris part
+//! \note The ability to select an NMI interrupt varies with the Tiva part
 //! in use.  Please consult the datasheet for the part you are using to
 //! determine whether this support is available.
 //!
@@ -546,27 +536,27 @@ WatchdogIntClear(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-WatchdogIntTypeSet(unsigned long ulBase, unsigned long ulType)
+WatchdogIntTypeSet(uint32_t ui32Base, uint32_t ui32Type)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
-    ASSERT((ulType == WATCHDOG_INT_TYPE_INT) ||
-           (ulType == WATCHDOG_INT_TYPE_NMI));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
+    ASSERT((ui32Type == WATCHDOG_INT_TYPE_INT) ||
+           (ui32Type == WATCHDOG_INT_TYPE_NMI));
 
     //
     // Set the interrupt type.
     //
-    HWREG(ulBase + WDT_O_CTL) =
-        (HWREG(ulBase + WDT_O_CTL) & ~WDT_CTL_INTTYPE) | ulType;
+    HWREG(ui32Base + WDT_O_CTL) = (HWREG(ui32Base + WDT_O_CTL) &
+                                   ~WDT_CTL_INTTYPE) | ui32Type;
 }
 
 //*****************************************************************************
 //
 //! Enables stalling of the watchdog timer during debug events.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function allows the watchdog timer to stop counting when the processor
 //! is stopped by the debugger.  By doing so, the watchdog is prevented from
@@ -580,24 +570,24 @@ WatchdogIntTypeSet(unsigned long ulBase, unsigned long ulType)
 //
 //*****************************************************************************
 void
-WatchdogStallEnable(unsigned long ulBase)
+WatchdogStallEnable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Enable timer stalling.
     //
-    HWREG(ulBase + WDT_O_TEST) |= WDT_TEST_STALL;
+    HWREG(ui32Base + WDT_O_TEST) |= WDT_TEST_STALL;
 }
 
 //*****************************************************************************
 //
 //! Disables stalling of the watchdog timer during debug events.
 //!
-//! \param ulBase is the base address of the watchdog timer module.
+//! \param ui32Base is the base address of the watchdog timer module.
 //!
 //! This function disables the debug mode stall of the watchdog timer.  By
 //! doing so, the watchdog timer continues to count regardless of the processor
@@ -607,17 +597,17 @@ WatchdogStallEnable(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-WatchdogStallDisable(unsigned long ulBase)
+WatchdogStallDisable(uint32_t ui32Base)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulBase == WATCHDOG0_BASE) || (ulBase == WATCHDOG1_BASE));
+    ASSERT((ui32Base == WATCHDOG0_BASE) || (ui32Base == WATCHDOG1_BASE));
 
     //
     // Disable timer stalling.
     //
-    HWREG(ulBase + WDT_O_TEST) &= ~(WDT_TEST_STALL);
+    HWREG(ui32Base + WDT_O_TEST) &= ~(WDT_TEST_STALL);
 }
 
 //*****************************************************************************

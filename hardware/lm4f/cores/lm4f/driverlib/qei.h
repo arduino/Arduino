@@ -2,7 +2,7 @@
 //
 // qei.h - Prototypes for the Quadrature Encoder Driver.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __QEI_H__
-#define __QEI_H__
+#ifndef __DRIVERLIB_QEI_H__
+#define __DRIVERLIB_QEI_H__
 
 //*****************************************************************************
 //
@@ -53,7 +53,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to QEIConfigure as the ulConfig paramater.
+// Values that can be passed to QEIConfigure as the ui32Config paramater.
 //
 //*****************************************************************************
 #define QEI_CONFIG_CAPTURE_A    0x00000000  // Count on ChA edges only
@@ -67,7 +67,8 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to QEIVelocityConfigure as the ulPreDiv parameter.
+// Values that can be passed to QEIVelocityConfigure as the ui32PreDiv
+// parameter.
 //
 //*****************************************************************************
 #define QEI_VELDIV_1            0x00000000  // Predivide by 1
@@ -82,7 +83,7 @@ extern "C"
 //*****************************************************************************
 //
 // Values that can be passed to QEIEnableInts, QEIDisableInts, and QEIClearInts
-// as the ulIntFlags parameter, and returned by QEIGetIntStatus.
+// as the ui32IntFlags parameter, and returned by QEIGetIntStatus.
 //
 //*****************************************************************************
 #define QEI_INTERROR            0x00000008  // Phase error detected
@@ -95,25 +96,25 @@ extern "C"
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern void QEIEnable(unsigned long ulBase);
-extern void QEIDisable(unsigned long ulBase);
-extern void QEIConfigure(unsigned long ulBase, unsigned long ulConfig,
-                         unsigned long ulMaxPosition);
-extern unsigned long QEIPositionGet(unsigned long ulBase);
-extern void QEIPositionSet(unsigned long ulBase, unsigned long ulPosition);
-extern long QEIDirectionGet(unsigned long ulBase);
-extern tBoolean QEIErrorGet(unsigned long ulBase);
-extern void QEIVelocityEnable(unsigned long ulBase);
-extern void QEIVelocityDisable(unsigned long ulBase);
-extern void QEIVelocityConfigure(unsigned long ulBase, unsigned long ulPreDiv,
-                                 unsigned long ulPeriod);
-extern unsigned long QEIVelocityGet(unsigned long ulBase);
-extern void QEIIntRegister(unsigned long ulBase, void (*pfnHandler)(void));
-extern void QEIIntUnregister(unsigned long ulBase);
-extern void QEIIntEnable(unsigned long ulBase, unsigned long ulIntFlags);
-extern void QEIIntDisable(unsigned long ulBase, unsigned long ulIntFlags);
-extern unsigned long QEIIntStatus(unsigned long ulBase, tBoolean bMasked);
-extern void QEIIntClear(unsigned long ulBase, unsigned long ulIntFlags);
+extern void QEIEnable(uint32_t ui32Base);
+extern void QEIDisable(uint32_t ui32Base);
+extern void QEIConfigure(uint32_t ui32Base, uint32_t ui32Config,
+                         uint32_t ui32MaxPosition);
+extern uint32_t QEIPositionGet(uint32_t ui32Base);
+extern void QEIPositionSet(uint32_t ui32Base, uint32_t ui32Position);
+extern int32_t QEIDirectionGet(uint32_t ui32Base);
+extern bool QEIErrorGet(uint32_t ui32Base);
+extern void QEIVelocityEnable(uint32_t ui32Base);
+extern void QEIVelocityDisable(uint32_t ui32Base);
+extern void QEIVelocityConfigure(uint32_t ui32Base, uint32_t ui32PreDiv,
+                                 uint32_t ui32Period);
+extern uint32_t QEIVelocityGet(uint32_t ui32Base);
+extern void QEIIntRegister(uint32_t ui32Base, void (*pfnHandler)(void));
+extern void QEIIntUnregister(uint32_t ui32Base);
+extern void QEIIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern void QEIIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags);
+extern uint32_t QEIIntStatus(uint32_t ui32Base, bool bMasked);
+extern void QEIIntClear(uint32_t ui32Base, uint32_t ui32IntFlags);
 
 //*****************************************************************************
 //
@@ -124,4 +125,4 @@ extern void QEIIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 }
 #endif
 
-#endif // __QEI_H__
+#endif // __DRIVERLIB_QEI_H__

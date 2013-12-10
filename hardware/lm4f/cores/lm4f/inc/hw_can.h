@@ -2,7 +2,7 @@
 //
 // hw_can.h - Defines and macros used when accessing the CAN controllers.
 //
-// Copyright (c) 2006-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2006-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -182,9 +182,6 @@
 //*****************************************************************************
 #define CAN_IF1CRQ_BUSY         0x00008000  // Busy Flag
 #define CAN_IF1CRQ_MNUM_M       0x0000003F  // Message Number
-#define CAN_IF1CRQ_MNUM_RSVD    0x00000000  // 0 is not a valid message number;
-                                            // it is interpreted as 0x20, or
-                                            // object 32
 #define CAN_IF1CRQ_MNUM_S       0
 
 //*****************************************************************************
@@ -295,9 +292,6 @@
 //*****************************************************************************
 #define CAN_IF2CRQ_BUSY         0x00008000  // Busy Flag
 #define CAN_IF2CRQ_MNUM_M       0x0000003F  // Message Number
-#define CAN_IF2CRQ_MNUM_RSVD    0x00000000  // 0 is not a valid message number;
-                                            // it is interpreted as 0x20, or
-                                            // object 32
 #define CAN_IF2CRQ_MNUM_S       0
 
 //*****************************************************************************
@@ -464,308 +458,5 @@
 //*****************************************************************************
 #define CAN_MSG2VAL_MSGVAL_M    0x0000FFFF  // Message Valid Bits
 #define CAN_MSG2VAL_MSGVAL_S    0
-
-//*****************************************************************************
-//
-// The following definitions are deprecated.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the CAN register offsets.
-//
-//*****************************************************************************
-#define CAN_O_MSGINT1           0x00000140  // Intr. Pending in Msg Obj 1 reg
-#define CAN_O_MSGINT2           0x00000144  // Intr. Pending in Msg Obj 2 reg
-#define CAN_O_MSGVAL1           0x00000160  // Message Valid in Msg Obj 1 reg
-#define CAN_O_MSGVAL2           0x00000164  // Message Valid in Msg Obj 2 reg
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_STS
-// register.
-//
-//*****************************************************************************
-#define CAN_STS_LEC_MSK         0x00000007  // Last Error Code
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_ERR
-// register.
-//
-//*****************************************************************************
-#define CAN_ERR_REC_MASK        0x00007F00  // Receive error counter status
-#define CAN_ERR_TEC_MASK        0x000000FF  // Transmit error counter status
-#define CAN_ERR_REC_SHIFT       8           // Receive error counter bit pos
-#define CAN_ERR_TEC_SHIFT       0           // Transmit error counter bit pos
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_BIT
-// register.
-//
-//*****************************************************************************
-#define CAN_BIT_TSEG2           0x00007000  // Time segment after sample point
-#define CAN_BIT_TSEG1           0x00000F00  // Time segment before sample point
-#define CAN_BIT_SJW             0x000000C0  // (Re)Synchronization jump width
-#define CAN_BIT_BRP             0x0000003F  // Baud rate prescaler
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_INT
-// register.
-//
-//*****************************************************************************
-#define CAN_INT_INTID_MSK       0x0000FFFF  // Interrupt Identifier
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_TST
-// register.
-//
-//*****************************************************************************
-#define CAN_TST_TX_MSK          0x00000060  // Overide control of CAN_TX pin
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_BRPE
-// register.
-//
-//*****************************************************************************
-#define CAN_BRPE_BRPE           0x0000000F  // Baud rate prescaler extension
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_TXRQ1
-// register.
-//
-//*****************************************************************************
-#define CAN_TXRQ1_TXRQST        0x0000FFFF  // Transmission Request Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_TXRQ2
-// register.
-//
-//*****************************************************************************
-#define CAN_TXRQ2_TXRQST        0x0000FFFF  // Transmission Request Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_NWDA1
-// register.
-//
-//*****************************************************************************
-#define CAN_NWDA1_NEWDATA       0x0000FFFF  // New Data Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_NWDA2
-// register.
-//
-//*****************************************************************************
-#define CAN_NWDA2_NEWDATA       0x0000FFFF  // New Data Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_MSGINT1
-// register.
-//
-//*****************************************************************************
-#define CAN_MSGINT1_INTPND      0x0000FFFF  // Interrupt Pending Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_MSGINT2
-// register.
-//
-//*****************************************************************************
-#define CAN_MSGINT2_INTPND      0x0000FFFF  // Interrupt Pending Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_MSGVAL1
-// register.
-//
-//*****************************************************************************
-#define CAN_MSGVAL1_MSGVAL      0x0000FFFF  // Message Valid Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_O_MSGVAL2
-// register.
-//
-//*****************************************************************************
-#define CAN_MSGVAL2_MSGVAL      0x0000FFFF  // Message Valid Bits
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the reset values of the can
-// registers.
-//
-//*****************************************************************************
-#define CAN_RV_IF1MSK2          0x0000FFFF
-#define CAN_RV_IF1MSK1          0x0000FFFF
-#define CAN_RV_IF2MSK1          0x0000FFFF
-#define CAN_RV_IF2MSK2          0x0000FFFF
-#define CAN_RV_BIT              0x00002301
-#define CAN_RV_CTL              0x00000001
-#define CAN_RV_IF1CRQ           0x00000001
-#define CAN_RV_IF2CRQ           0x00000001
-#define CAN_RV_TXRQ2            0x00000000
-#define CAN_RV_IF2DB1           0x00000000
-#define CAN_RV_INT              0x00000000
-#define CAN_RV_IF1DB2           0x00000000
-#define CAN_RV_BRPE             0x00000000
-#define CAN_RV_IF2DA2           0x00000000
-#define CAN_RV_MSGVAL2          0x00000000
-#define CAN_RV_TXRQ1            0x00000000
-#define CAN_RV_IF1MCTL          0x00000000
-#define CAN_RV_IF1DB1           0x00000000
-#define CAN_RV_STS              0x00000000
-#define CAN_RV_MSGINT1          0x00000000
-#define CAN_RV_IF1DA2           0x00000000
-#define CAN_RV_TST              0x00000000
-#define CAN_RV_IF1ARB1          0x00000000
-#define CAN_RV_IF1ARB2          0x00000000
-#define CAN_RV_NWDA2            0x00000000
-#define CAN_RV_IF2CMSK          0x00000000
-#define CAN_RV_NWDA1            0x00000000
-#define CAN_RV_IF1DA1           0x00000000
-#define CAN_RV_IF2DA1           0x00000000
-#define CAN_RV_IF2MCTL          0x00000000
-#define CAN_RV_MSGVAL1          0x00000000
-#define CAN_RV_IF1CMSK          0x00000000
-#define CAN_RV_ERR              0x00000000
-#define CAN_RV_IF2ARB2          0x00000000
-#define CAN_RV_MSGINT2          0x00000000
-#define CAN_RV_IF2ARB1          0x00000000
-#define CAN_RV_IF2DB2           0x00000000
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1CRQ
-// and CAN_IF1CRQ registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFCRQ_BUSY          0x00008000  // Busy flag status
-#define CAN_IFCRQ_MNUM_MSK      0x0000003F  // Message Number
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1CMSK
-// and CAN_IF2CMSK registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFCMSK_WRNRD        0x00000080  // Write, not Read
-#define CAN_IFCMSK_MASK         0x00000040  // Access Mask Bits
-#define CAN_IFCMSK_ARB          0x00000020  // Access Arbitration Bits
-#define CAN_IFCMSK_CONTROL      0x00000010  // Access Control Bits
-#define CAN_IFCMSK_CLRINTPND    0x00000008  // Clear interrupt pending Bit
-#define CAN_IFCMSK_TXRQST       0x00000004  // Access Tx request bit (WRNRD=1)
-#define CAN_IFCMSK_NEWDAT       0x00000004  // Access New Data bit (WRNRD=0)
-#define CAN_IFCMSK_DATAA        0x00000002  // DataA access - bytes 0 to 3
-#define CAN_IFCMSK_DATAB        0x00000001  // DataB access - bytes 4 to 7
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1MSK1
-// and CAN_IF2MSK1 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFMSK1_MSK          0x0000FFFF  // Identifier Mask
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1MSK2
-// and CAN_IF2MSK2 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFMSK2_MXTD         0x00008000  // Mask extended identifier
-#define CAN_IFMSK2_MDIR         0x00004000  // Mask message direction
-#define CAN_IFMSK2_MSK          0x00001FFF  // Mask identifier
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1ARB1
-// and CAN_IF2ARB1 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFARB1_ID           0x0000FFFF  // Identifier
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1ARB2
-// and CAN_IF2ARB2 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFARB2_MSGVAL       0x00008000  // Message valid
-#define CAN_IFARB2_XTD          0x00004000  // Extended identifier
-#define CAN_IFARB2_DIR          0x00002000  // Message direction
-#define CAN_IFARB2_ID           0x00001FFF  // Message identifier
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1MCTL
-// and CAN_IF2MCTL registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFMCTL_NEWDAT       0x00008000  // New Data
-#define CAN_IFMCTL_MSGLST       0x00004000  // Message lost
-#define CAN_IFMCTL_INTPND       0x00002000  // Interrupt pending
-#define CAN_IFMCTL_UMASK        0x00001000  // Use acceptance mask
-#define CAN_IFMCTL_TXIE         0x00000800  // Transmit interrupt enable
-#define CAN_IFMCTL_RXIE         0x00000400  // Receive interrupt enable
-#define CAN_IFMCTL_RMTEN        0x00000200  // Remote enable
-#define CAN_IFMCTL_TXRQST       0x00000100  // Transmit request
-#define CAN_IFMCTL_EOB          0x00000080  // End of buffer
-#define CAN_IFMCTL_DLC          0x0000000F  // Data length code
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1DA1
-// and CAN_IF2DA1 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFDA1_DATA          0x0000FFFF  // Data - bytes 1 and 0
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1DA2
-// and CAN_IF2DA2 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFDA2_DATA          0x0000FFFF  // Data - bytes 3 and 2
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1DB1
-// and CAN_IF2DB1 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFDB1_DATA          0x0000FFFF  // Data - bytes 5 and 4
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the CAN_IF1DB2
-// and CAN_IF2DB2 registers.
-// Note: All bits may not be available in all registers.
-//
-//*****************************************************************************
-#define CAN_IFDB2_DATA          0x0000FFFF  // Data - bytes 7 and 6
-
-#endif
 
 #endif // __HW_CAN_H__

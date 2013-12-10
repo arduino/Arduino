@@ -2,7 +2,7 @@
 //
 // interrupt.h - Prototypes for the NVIC Interrupt Controller Driver.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __INTERRUPT_H__
-#define __INTERRUPT_H__
+#ifndef __DRIVERLIB_INTERRUPT_H__
+#define __DRIVERLIB_INTERRUPT_H__
 
 //*****************************************************************************
 //
@@ -64,22 +64,23 @@ extern "C"
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern tBoolean IntMasterEnable(void);
-extern tBoolean IntMasterDisable(void);
-extern void IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void));
-extern void IntUnregister(unsigned long ulInterrupt);
-extern void IntPriorityGroupingSet(unsigned long ulBits);
-extern unsigned long IntPriorityGroupingGet(void);
-extern void IntPrioritySet(unsigned long ulInterrupt,
-                           unsigned char ucPriority);
-extern long IntPriorityGet(unsigned long ulInterrupt);
-extern void IntEnable(unsigned long ulInterrupt);
-extern void IntDisable(unsigned long ulInterrupt);
-extern unsigned long IntIsEnabled(unsigned long ulInterrupt);
-extern void IntPendSet(unsigned long ulInterrupt);
-extern void IntPendClear(unsigned long ulInterrupt);
-extern void IntPriorityMaskSet(unsigned long ulPriorityMask);
-extern unsigned long IntPriorityMaskGet(void);
+extern bool IntMasterEnable(void);
+extern bool IntMasterDisable(void);
+extern void IntRegister(uint32_t ui32Interrupt, void (*pfnHandler)(void));
+extern void IntUnregister(uint32_t ui32Interrupt);
+extern void IntPriorityGroupingSet(uint32_t ui32Bits);
+extern uint32_t IntPriorityGroupingGet(void);
+extern void IntPrioritySet(uint32_t ui32Interrupt,
+                           uint8_t ui8Priority);
+extern int32_t IntPriorityGet(uint32_t ui32Interrupt);
+extern void IntEnable(uint32_t ui32Interrupt);
+extern void IntDisable(uint32_t ui32Interrupt);
+extern uint32_t IntIsEnabled(uint32_t ui32Interrupt);
+extern void IntPendSet(uint32_t ui32Interrupt);
+extern void IntPendClear(uint32_t ui32Interrupt);
+extern void IntPriorityMaskSet(uint32_t ui32PriorityMask);
+extern uint32_t IntPriorityMaskGet(void);
+extern void IntTrigger(uint32_t ui32Interrupt);
 
 //*****************************************************************************
 //
@@ -90,4 +91,4 @@ extern unsigned long IntPriorityMaskGet(void);
 }
 #endif
 
-#endif // __INTERRUPT_H__
+#endif // __DRIVERLIB_INTERRUPT_H__

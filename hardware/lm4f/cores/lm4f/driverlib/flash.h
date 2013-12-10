@@ -2,7 +2,7 @@
 //
 // flash.h - Prototypes for the flash driver.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __FLASH_H__
-#define __FLASH_H__
+#ifndef __DRIVERLIB_FLASH_H__
+#define __DRIVERLIB_FLASH_H__
 
 //*****************************************************************************
 //
@@ -84,35 +84,22 @@ tFlashProtection;
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern unsigned long FlashUsecGet(void);
-extern void FlashUsecSet(unsigned long ulClocks);
-extern long FlashErase(unsigned long ulAddress);
-extern long FlashProgram(unsigned long *pulData, unsigned long ulAddress,
-                         unsigned long ulCount);
-extern tFlashProtection FlashProtectGet(unsigned long ulAddress);
-extern long FlashProtectSet(unsigned long ulAddress,
-                            tFlashProtection eProtect);
-extern long FlashProtectSave(void);
-extern long FlashUserGet(unsigned long *pulUser0, unsigned long *pulUser1);
-extern long FlashUserSet(unsigned long ulUser0, unsigned long ulUser1);
-extern long FlashUserSave(void);
+extern int32_t FlashErase(uint32_t ui32Address);
+extern int32_t FlashProgram(uint32_t *pui32Data, uint32_t ui32Address,
+                            uint32_t ui32Count);
+extern tFlashProtection FlashProtectGet(uint32_t ui32Address);
+extern int32_t FlashProtectSet(uint32_t ui32Address,
+                               tFlashProtection eProtect);
+extern int32_t FlashProtectSave(void);
+extern int32_t FlashUserGet(uint32_t *pui32User0, uint32_t *pui32User1);
+extern int32_t FlashUserSet(uint32_t ui32User0, uint32_t ui32User1);
+extern int32_t FlashUserSave(void);
 extern void FlashIntRegister(void (*pfnHandler)(void));
 extern void FlashIntUnregister(void);
-extern void FlashIntEnable(unsigned long ulIntFlags);
-extern void FlashIntDisable(unsigned long ulIntFlags);
-extern unsigned long FlashIntStatus(tBoolean bMasked);
-extern void FlashIntClear(unsigned long ulIntFlags);
-
-//*****************************************************************************
-//
-// Deprecated function names.  These definitions ensure backwards compatibility
-// but new code should avoid using deprecated function names since these will
-// be removed at some point in the future.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-#define FlashIntGetStatus       FlashIntStatus
-#endif
+extern void FlashIntEnable(uint32_t ui32IntFlags);
+extern void FlashIntDisable(uint32_t ui32IntFlags);
+extern uint32_t FlashIntStatus(bool bMasked);
+extern void FlashIntClear(uint32_t ui32IntFlags);
 
 //*****************************************************************************
 //
@@ -123,4 +110,4 @@ extern void FlashIntClear(unsigned long ulIntFlags);
 }
 #endif
 
-#endif // __FLASH_H__
+#endif // __DRIVERLIB_FLASH_H__

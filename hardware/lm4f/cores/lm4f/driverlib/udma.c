@@ -2,7 +2,7 @@
 //
 // udma.c - Driver for the micro-DMA controller.
 //
-// Copyright (c) 2007-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2007-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
@@ -44,6 +44,8 @@
 //
 //*****************************************************************************
 
+#include <stdbool.h>
+#include <stdint.h>
 #include "inc/hw_sysctl.h"
 #include "inc/hw_types.h"
 #include "inc/hw_udma.h"
@@ -100,7 +102,7 @@ uDMADisable(void)
 //! \return Returns non-zero if a uDMA error is pending.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 uDMAErrorStatusGet(void)
 {
     //
@@ -133,7 +135,7 @@ uDMAErrorStatusClear(void)
 //
 //! Enables a uDMA channel for operation.
 //!
-//! \param ulChannelNum is the channel number to enable.
+//! \param ui32ChannelNum is the channel number to enable.
 //!
 //! This function enables a specific uDMA channel for use.  This function must
 //! be used to enable a channel before it can be used to perform a uDMA
@@ -147,24 +149,24 @@ uDMAErrorStatusClear(void)
 //
 //*****************************************************************************
 void
-uDMAChannelEnable(unsigned long ulChannelNum)
+uDMAChannelEnable(uint32_t ui32ChannelNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
 
     //
     // Set the bit for this channel in the enable set register.
     //
-    HWREG(UDMA_ENASET) = 1 << (ulChannelNum & 0x1f);
+    HWREG(UDMA_ENASET) = 1 << (ui32ChannelNum & 0x1f);
 }
 
 //*****************************************************************************
 //
 //! Disables a uDMA channel for operation.
 //!
-//! \param ulChannelNum is the channel number to disable.
+//! \param ui32ChannelNum is the channel number to disable.
 //!
 //! This function disables a specific uDMA channel.  Once disabled, a channel
 //! cannot respond to uDMA transfer requests until re-enabled via
@@ -174,24 +176,24 @@ uDMAChannelEnable(unsigned long ulChannelNum)
 //
 //*****************************************************************************
 void
-uDMAChannelDisable(unsigned long ulChannelNum)
+uDMAChannelDisable(uint32_t ui32ChannelNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
 
     //
     // Set the bit for this channel in the enable clear register.
     //
-    HWREG(UDMA_ENACLR) = 1 << (ulChannelNum & 0x1f);
+    HWREG(UDMA_ENACLR) = 1 << (ui32ChannelNum & 0x1f);
 }
 
 //*****************************************************************************
 //
 //! Checks if a uDMA channel is enabled for operation.
 //!
-//! \param ulChannelNum is the channel number to check.
+//! \param ui32ChannelNum is the channel number to check.
 //!
 //! This function checks to see if a specific uDMA channel is enabled.  This
 //! function can be used to check the status of a transfer, as the channel is
@@ -200,26 +202,27 @@ uDMAChannelDisable(unsigned long ulChannelNum)
 //! \return Returns \b true if the channel is enabled, \b false if disabled.
 //
 //*****************************************************************************
-tBoolean
-uDMAChannelIsEnabled(unsigned long ulChannelNum)
+bool
+uDMAChannelIsEnabled(uint32_t ui32ChannelNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
 
     //
     // AND the specified channel bit with the enable register and return the
     // result.
     //
-    return((HWREG(UDMA_ENASET) & (1 << (ulChannelNum & 0x1f))) ? true : false);
+    return((HWREG(UDMA_ENASET) & (1 << (ui32ChannelNum & 0x1f))) ? true :
+           false);
 }
 
 //*****************************************************************************
 //
 //! Sets the base address for the channel control table.
 //!
-//! \param pControlTable is a pointer to the 1024-byte-aligned base address
+//! \param psControlTable is a pointer to the 1024-byte-aligned base address
 //! of the uDMA channel control table.
 //!
 //! This function configures the base address of the channel control table.
@@ -236,19 +239,19 @@ uDMAChannelIsEnabled(unsigned long ulChannelNum)
 //
 //*****************************************************************************
 void
-uDMAControlBaseSet(void *pControlTable)
+uDMAControlBaseSet(void *psControlTable)
 {
     //
     // Check the arguments.
     //
-    ASSERT(((unsigned long)pControlTable & ~0x3FF) ==
-            (unsigned long)pControlTable);
-    ASSERT((unsigned long)pControlTable >= 0x20000000);
+    ASSERT(((uint32_t)psControlTable & ~0x3FF) ==
+           (uint32_t)psControlTable);
+    ASSERT((uint32_t)psControlTable >= 0x20000000);
 
     //
     // Program the base address into the register.
     //
-    HWREG(UDMA_CTLBASE) = (unsigned long)pControlTable;
+    HWREG(UDMA_CTLBASE) = (uint32_t)psControlTable;
 }
 
 //*****************************************************************************
@@ -297,12 +300,12 @@ uDMAControlAlternateBaseGet(void)
 //
 //! Requests a uDMA channel to start a transfer.
 //!
-//! \param ulChannelNum is the channel number on which to request a uDMA
+//! \param ui32ChannelNum is the channel number on which to request a uDMA
 //! transfer.
 //!
 //! This function allows software to request a uDMA channel to begin a
 //! transfer.  This function could be used for performing a memory-to-memory
-//! transfer or if for some reason, a transfer needs to be initiated by
+//! transfer, or if for some reason a transfer needs to be initiated by
 //! software instead of the peripheral associated with that channel.
 //!
 //! \note If the channel is \b UDMA_CHANNEL_SW and interrupts are used, then
@@ -314,29 +317,29 @@ uDMAControlAlternateBaseGet(void)
 //
 //*****************************************************************************
 void
-uDMAChannelRequest(unsigned long ulChannelNum)
+uDMAChannelRequest(uint32_t ui32ChannelNum)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
 
     //
     // Set the bit for this channel in the software uDMA request register.
     //
-    HWREG(UDMA_SWREQ) = 1 << (ulChannelNum & 0x1f);
+    HWREG(UDMA_SWREQ) = 1 << (ui32ChannelNum & 0x1f);
 }
 
 //*****************************************************************************
 //
 //! Enables attributes of a uDMA channel.
 //!
-//! \param ulChannelNum is the channel to configure.
-//! \param ulAttr is a combination of attributes for the channel.
+//! \param ui32ChannelNum is the channel to configure.
+//! \param ui32Attr is a combination of attributes for the channel.
 //!
 //! This function is used to enable attributes of a uDMA channel.
 //!
-//! The \e ulAttr parameter is the logical OR of any of the following:
+//! The \e ui32Attr parameter is the logical OR of any of the following:
 //!
 //! - \b UDMA_ATTR_USEBURST is used to restrict transfers to use only burst
 //!   mode.
@@ -350,53 +353,53 @@ uDMAChannelRequest(unsigned long ulChannelNum)
 //
 //*****************************************************************************
 void
-uDMAChannelAttributeEnable(unsigned long ulChannelNum, unsigned long ulAttr)
+uDMAChannelAttributeEnable(uint32_t ui32ChannelNum, uint32_t ui32Attr)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
-    ASSERT((ulAttr & ~(UDMA_ATTR_USEBURST | UDMA_ATTR_ALTSELECT |
-                       UDMA_ATTR_HIGH_PRIORITY | UDMA_ATTR_REQMASK)) == 0);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
+    ASSERT((ui32Attr & ~(UDMA_ATTR_USEBURST | UDMA_ATTR_ALTSELECT |
+                         UDMA_ATTR_HIGH_PRIORITY | UDMA_ATTR_REQMASK)) == 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelNum parameter, extract just the channel number
+    // passed as the ui32ChannelNum parameter, extract just the channel number
     // from this parameter.
     //
-    ulChannelNum &= 0x1f;
+    ui32ChannelNum &= 0x1f;
 
     //
-    // Set the useburst bit for this channel if set in ulConfig.
+    // Set the useburst bit for this channel if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_USEBURST)
+    if(ui32Attr & UDMA_ATTR_USEBURST)
     {
-        HWREG(UDMA_USEBURSTSET) = 1 << ulChannelNum;
+        HWREG(UDMA_USEBURSTSET) = 1 << ui32ChannelNum;
     }
 
     //
     // Set the alternate control select bit for this channel,
-    // if set in ulConfig.
+    // if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_ALTSELECT)
+    if(ui32Attr & UDMA_ATTR_ALTSELECT)
     {
-        HWREG(UDMA_ALTSET) = 1 << ulChannelNum;
+        HWREG(UDMA_ALTSET) = 1 << ui32ChannelNum;
     }
 
     //
-    // Set the high priority bit for this channel, if set in ulConfig.
+    // Set the high priority bit for this channel, if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_HIGH_PRIORITY)
+    if(ui32Attr & UDMA_ATTR_HIGH_PRIORITY)
     {
-        HWREG(UDMA_PRIOSET) = 1 << ulChannelNum;
+        HWREG(UDMA_PRIOSET) = 1 << ui32ChannelNum;
     }
 
     //
-    // Set the request mask bit for this channel, if set in ulConfig.
+    // Set the request mask bit for this channel, if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_REQMASK)
+    if(ui32Attr & UDMA_ATTR_REQMASK)
     {
-        HWREG(UDMA_REQMASKSET) = 1 << ulChannelNum;
+        HWREG(UDMA_REQMASKSET) = 1 << ui32ChannelNum;
     }
 }
 
@@ -404,12 +407,12 @@ uDMAChannelAttributeEnable(unsigned long ulChannelNum, unsigned long ulAttr)
 //
 //! Disables attributes of a uDMA channel.
 //!
-//! \param ulChannelNum is the channel to configure.
-//! \param ulAttr is a combination of attributes for the channel.
+//! \param ui32ChannelNum is the channel to configure.
+//! \param ui32Attr is a combination of attributes for the channel.
 //!
 //! This function is used to disable attributes of a uDMA channel.
 //!
-//! The \e ulAttr parameter is the logical OR of any of the following:
+//! The \e ui32Attr parameter is the logical OR of any of the following:
 //!
 //! - \b UDMA_ATTR_USEBURST is used to restrict transfers to use only burst
 //!   mode.
@@ -423,53 +426,53 @@ uDMAChannelAttributeEnable(unsigned long ulChannelNum, unsigned long ulAttr)
 //
 //*****************************************************************************
 void
-uDMAChannelAttributeDisable(unsigned long ulChannelNum, unsigned long ulAttr)
+uDMAChannelAttributeDisable(uint32_t ui32ChannelNum, uint32_t ui32Attr)
 {
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
-    ASSERT((ulAttr & ~(UDMA_ATTR_USEBURST | UDMA_ATTR_ALTSELECT |
-                       UDMA_ATTR_HIGH_PRIORITY | UDMA_ATTR_REQMASK)) == 0);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
+    ASSERT((ui32Attr & ~(UDMA_ATTR_USEBURST | UDMA_ATTR_ALTSELECT |
+                         UDMA_ATTR_HIGH_PRIORITY | UDMA_ATTR_REQMASK)) == 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelNum parameter, extract just the channel number
+    // passed as the ui32ChannelNum parameter, extract just the channel number
     // from this parameter.
     //
-    ulChannelNum &= 0x1f;
+    ui32ChannelNum &= 0x1f;
 
     //
-    // Clear the useburst bit for this channel if set in ulConfig.
+    // Clear the useburst bit for this channel if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_USEBURST)
+    if(ui32Attr & UDMA_ATTR_USEBURST)
     {
-        HWREG(UDMA_USEBURSTCLR) = 1 << ulChannelNum;
+        HWREG(UDMA_USEBURSTCLR) = 1 << ui32ChannelNum;
     }
 
     //
     // Clear the alternate control select bit for this channel, if set in
-    // ulConfig.
+    // ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_ALTSELECT)
+    if(ui32Attr & UDMA_ATTR_ALTSELECT)
     {
-        HWREG(UDMA_ALTCLR) = 1 << ulChannelNum;
+        HWREG(UDMA_ALTCLR) = 1 << ui32ChannelNum;
     }
 
     //
-    // Clear the high priority bit for this channel, if set in ulConfig.
+    // Clear the high priority bit for this channel, if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_HIGH_PRIORITY)
+    if(ui32Attr & UDMA_ATTR_HIGH_PRIORITY)
     {
-        HWREG(UDMA_PRIOCLR) = 1 << ulChannelNum;
+        HWREG(UDMA_PRIOCLR) = 1 << ui32ChannelNum;
     }
 
     //
-    // Clear the request mask bit for this channel, if set in ulConfig.
+    // Clear the request mask bit for this channel, if set in ui32Config.
     //
-    if(ulAttr & UDMA_ATTR_REQMASK)
+    if(ui32Attr & UDMA_ATTR_REQMASK)
     {
-        HWREG(UDMA_REQMASKCLR) = 1 << ulChannelNum;
+        HWREG(UDMA_REQMASKCLR) = 1 << ui32ChannelNum;
     }
 }
 
@@ -477,7 +480,7 @@ uDMAChannelAttributeDisable(unsigned long ulChannelNum, unsigned long ulAttr)
 //
 //! Gets the enabled attributes of a uDMA channel.
 //!
-//! \param ulChannelNum is the channel to configure.
+//! \param ui32ChannelNum is the channel to configure.
 //!
 //! This function returns a combination of flags representing the attributes of
 //! the uDMA channel.
@@ -493,79 +496,79 @@ uDMAChannelAttributeDisable(unsigned long ulChannelNum, unsigned long ulAttr)
 //!   peripheral for this channel.
 //
 //*****************************************************************************
-unsigned long
-uDMAChannelAttributeGet(unsigned long ulChannelNum)
+uint32_t
+uDMAChannelAttributeGet(uint32_t ui32ChannelNum)
 {
-    unsigned long ulAttr = 0;
+    uint32_t ui32Attr = 0;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelNum parameter, extract just the channel number
+    // passed as the ui32ChannelNum parameter, extract just the channel number
     // from this parameter.
     //
-    ulChannelNum &= 0x1f;
+    ui32ChannelNum &= 0x1f;
 
     //
     // Check to see if useburst bit is set for this channel.
     //
-    if(HWREG(UDMA_USEBURSTSET) & (1 << ulChannelNum))
+    if(HWREG(UDMA_USEBURSTSET) & (1 << ui32ChannelNum))
     {
-        ulAttr |= UDMA_ATTR_USEBURST;
+        ui32Attr |= UDMA_ATTR_USEBURST;
     }
 
     //
     // Check to see if the alternate control bit is set for this channel.
     //
-    if(HWREG(UDMA_ALTSET) & (1 << ulChannelNum))
+    if(HWREG(UDMA_ALTSET) & (1 << ui32ChannelNum))
     {
-        ulAttr |= UDMA_ATTR_ALTSELECT;
+        ui32Attr |= UDMA_ATTR_ALTSELECT;
     }
 
     //
     // Check to see if the high priority bit is set for this channel.
     //
-    if(HWREG(UDMA_PRIOSET) & (1 << ulChannelNum))
+    if(HWREG(UDMA_PRIOSET) & (1 << ui32ChannelNum))
     {
-        ulAttr |= UDMA_ATTR_HIGH_PRIORITY;
+        ui32Attr |= UDMA_ATTR_HIGH_PRIORITY;
     }
 
     //
     // Check to see if the request mask bit is set for this channel.
     //
-    if(HWREG(UDMA_REQMASKSET) & (1 << ulChannelNum))
+    if(HWREG(UDMA_REQMASKSET) & (1 << ui32ChannelNum))
     {
-        ulAttr |= UDMA_ATTR_REQMASK;
+        ui32Attr |= UDMA_ATTR_REQMASK;
     }
 
     //
     // Return the configuration flags.
     //
-    return(ulAttr);
+    return(ui32Attr);
 }
 
 //*****************************************************************************
 //
 //! Sets the control parameters for a uDMA channel control structure.
 //!
-//! \param ulChannelStructIndex is the logical OR of the uDMA channel number
+//! \param ui32ChannelStructIndex is the logical OR of the uDMA channel number
 //! with \b UDMA_PRI_SELECT or \b UDMA_ALT_SELECT.
-//! \param ulControl is logical OR of several control values to set the control
-//! parameters for the channel.
+//! \param ui32Control is logical OR of several control values to set the
+//! control parameters for the channel.
 //!
 //! This function is used to set control parameters for a uDMA transfer.  These
 //! parameters are typically not changed often.
 //!
-//! The \e ulChannelStructIndex parameter should be the logical OR of the
+//! The \e ui32ChannelStructIndex parameter should be the logical OR of the
 //! channel number with one of \b UDMA_PRI_SELECT or \b UDMA_ALT_SELECT to
 //! choose whether the primary or alternate data structure is used.
 //!
-//! The \e ulControl parameter is the logical OR of five values: the data size,
-//! the source address increment, the destination address increment, the
+//! The \e ui32Control parameter is the logical OR of five values: the data
+//! size, the source address increment, the destination address increment, the
 //! arbitration size, and the use burst flag.  The choices available for each
 //! of these values is described below.
 //!
@@ -597,65 +600,64 @@ uDMAChannelAttributeGet(unsigned long ulChannelNum)
 //
 //*****************************************************************************
 void
-uDMAChannelControlSet(unsigned long ulChannelStructIndex,
-                      unsigned long ulControl)
+uDMAChannelControlSet(uint32_t ui32ChannelStructIndex, uint32_t ui32Control)
 {
-    tDMAControlTable *pCtl;
+    tDMAControlTable *psCtl;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelStructIndex & 0xffff) < 64);
+    ASSERT((ui32ChannelStructIndex & 0xffff) < 64);
     ASSERT(HWREG(UDMA_CTLBASE) != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelStructIndex parameter, extract just the channel
+    // passed as the ui32ChannelStructIndex parameter, extract just the channel
     // index from this parameter.
     //
-    ulChannelStructIndex &= 0x3f;
+    ui32ChannelStructIndex &= 0x3f;
 
     //
     // Get the base address of the control table.
     //
-    pCtl = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
+    psCtl = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
 
     //
     // Get the current control word value and mask off the fields to be
     // changed, then OR in the new settings.
     //
-    pCtl[ulChannelStructIndex].ulControl =
-        ((pCtl[ulChannelStructIndex].ulControl &
+    psCtl[ui32ChannelStructIndex].ui32Control =
+        ((psCtl[ui32ChannelStructIndex].ui32Control &
           ~(UDMA_CHCTL_DSTINC_M |
             UDMA_CHCTL_DSTSIZE_M |
             UDMA_CHCTL_SRCINC_M |
             UDMA_CHCTL_SRCSIZE_M |
             UDMA_CHCTL_ARBSIZE_M |
             UDMA_CHCTL_NXTUSEBURST)) |
-         ulControl);
+         ui32Control);
 }
 
 //*****************************************************************************
 //
 //! Sets the transfer parameters for a uDMA channel control structure.
 //!
-//! \param ulChannelStructIndex is the logical OR of the uDMA channel number
+//! \param ui32ChannelStructIndex is the logical OR of the uDMA channel number
 //! with either \b UDMA_PRI_SELECT or \b UDMA_ALT_SELECT.
-//! \param ulMode is the type of uDMA transfer.
+//! \param ui32Mode is the type of uDMA transfer.
 //! \param pvSrcAddr is the source address for the transfer.
 //! \param pvDstAddr is the destination address for the transfer.
-//! \param ulTransferSize is the number of data items to transfer.
+//! \param ui32TransferSize is the number of data items to transfer.
 //!
 //! This function is used to configure the parameters for a uDMA transfer.
 //! These parameters are typically changed often.  The function
 //! uDMAChannelControlSet() MUST be called at least once for this channel prior
 //! to calling this function.
 //!
-//! The \e ulChannelStructIndex parameter should be the logical OR of the
+//! The \e ui32ChannelStructIndex parameter should be the logical OR of the
 //! channel number with one of \b UDMA_PRI_SELECT or \b UDMA_ALT_SELECT to
 //! choose whether the primary or alternate data structure is used.
 //!
-//! The \e ulMode parameter should be one of the following values:
+//! The \e ui32Mode parameter should be one of the following values:
 //!
 //! - \b UDMA_MODE_STOP stops the uDMA transfer.  The controller sets the mode
 //!   to this value at the end of a transfer.
@@ -675,8 +677,8 @@ uDMAChannelControlSet(unsigned long ulChannelStructIndex,
 //! according to the item size.  The compiler takes care of this alignment if
 //! the pointers are pointing to storage of the appropriate data type.
 //!
-//! The \e ulTransferSize parameter is the number of data items, not the number
-//! of bytes.
+//! The \e ui32TransferSize parameter is the number of data items, not the
+//! number of bytes.
 //!
 //! The two scatter-gather modes, memory and peripheral, are actually different
 //! depending on whether the primary or alternate control structure is
@@ -705,53 +707,53 @@ uDMAChannelControlSet(unsigned long ulChannelStructIndex,
 //
 //*****************************************************************************
 void
-uDMAChannelTransferSet(unsigned long ulChannelStructIndex,
-                       unsigned long ulMode, void *pvSrcAddr, void *pvDstAddr,
-                       unsigned long ulTransferSize)
+uDMAChannelTransferSet(uint32_t ui32ChannelStructIndex, uint32_t ui32Mode,
+                       void *pvSrcAddr, void *pvDstAddr,
+                       uint32_t ui32TransferSize)
 {
-    tDMAControlTable *pControlTable;
-    unsigned long ulControl;
-    unsigned long ulInc;
-    unsigned long ulBufferBytes;
+    tDMAControlTable *psControlTable;
+    uint32_t ui32Control;
+    uint32_t ui32Inc;
+    uint32_t ui32BufferBytes;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelStructIndex & 0xffff) < 64);
+    ASSERT((ui32ChannelStructIndex & 0xffff) < 64);
     ASSERT(HWREG(UDMA_CTLBASE) != 0);
-    ASSERT(ulMode <= UDMA_MODE_PER_SCATTER_GATHER);
-    ASSERT((unsigned long)pvSrcAddr >= 0x20000000);
-    ASSERT((unsigned long)pvDstAddr >= 0x20000000);
-    ASSERT((ulTransferSize != 0) && (ulTransferSize <= 1024));
+    ASSERT(ui32Mode <= UDMA_MODE_PER_SCATTER_GATHER);
+    ASSERT((uint32_t)pvSrcAddr >= 0x20000000);
+    ASSERT((uint32_t)pvDstAddr >= 0x20000000);
+    ASSERT((ui32TransferSize != 0) && (ui32TransferSize <= 1024));
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelStructIndex parameter, extract just the channel
+    // passed as the ui32ChannelStructIndex parameter, extract just the channel
     // index from this parameter.
     //
-    ulChannelStructIndex &= 0x3f;
+    ui32ChannelStructIndex &= 0x3f;
 
     //
     // Get the base address of the control table.
     //
-    pControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
+    psControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
 
     //
     // Get the current control word value and mask off the mode and size
     // fields.
     //
-    ulControl = (pControlTable[ulChannelStructIndex].ulControl &
-                 ~(UDMA_CHCTL_XFERSIZE_M | UDMA_CHCTL_XFERMODE_M));
+    ui32Control = (psControlTable[ui32ChannelStructIndex].ui32Control &
+                   ~(UDMA_CHCTL_XFERSIZE_M | UDMA_CHCTL_XFERMODE_M));
 
     //
     // Adjust the mode if the alt control structure is selected.
     //
-    if(ulChannelStructIndex & UDMA_ALT_SELECT)
+    if(ui32ChannelStructIndex & UDMA_ALT_SELECT)
     {
-        if((ulMode == UDMA_MODE_MEM_SCATTER_GATHER) ||
-           (ulMode == UDMA_MODE_PER_SCATTER_GATHER))
+        if((ui32Mode == UDMA_MODE_MEM_SCATTER_GATHER) ||
+           (ui32Mode == UDMA_MODE_PER_SCATTER_GATHER))
         {
-            ulMode |= UDMA_MODE_ALT_SELECT;
+            ui32Mode |= UDMA_MODE_ALT_SELECT;
         }
     }
 
@@ -759,42 +761,42 @@ uDMAChannelTransferSet(unsigned long ulChannelStructIndex,
     // Set the transfer size and mode in the control word (but don't write the
     // control word yet as it could kick off a transfer).
     //
-    ulControl |= ulMode | ((ulTransferSize - 1) << 4);
+    ui32Control |= ui32Mode | ((ui32TransferSize - 1) << 4);
 
     //
     // Get the address increment value for the source, from the control word.
     //
-    ulInc = (ulControl & UDMA_CHCTL_SRCINC_M);
+    ui32Inc = (ui32Control & UDMA_CHCTL_SRCINC_M);
 
     //
     // Compute the ending source address of the transfer.  If the source
     // increment is set to none, then the ending address is the same as the
     // beginning.
     //
-    if(ulInc != UDMA_SRC_INC_NONE)
+    if(ui32Inc != UDMA_SRC_INC_NONE)
     {
-        ulInc = ulInc >> 26;
-        ulBufferBytes = ulTransferSize << ulInc;
-        pvSrcAddr = (void *)((unsigned long)pvSrcAddr + ulBufferBytes - 1);
+        ui32Inc = ui32Inc >> 26;
+        ui32BufferBytes = ui32TransferSize << ui32Inc;
+        pvSrcAddr = (void *)((uint32_t)pvSrcAddr + ui32BufferBytes - 1);
     }
 
     //
     // Load the source ending address into the control block.
     //
-    pControlTable[ulChannelStructIndex].pvSrcEndAddr = pvSrcAddr;
+    psControlTable[ui32ChannelStructIndex].pvSrcEndAddr = pvSrcAddr;
 
     //
     // Get the address increment value for the destination, from the control
     // word.
     //
-    ulInc = ulControl & UDMA_CHCTL_DSTINC_M;
+    ui32Inc = ui32Control & UDMA_CHCTL_DSTINC_M;
 
     //
     // Compute the ending destination address of the transfer.  If the
     // destination increment is set to none, then the ending address is the
     // same as the beginning.
     //
-    if(ulInc != UDMA_DST_INC_NONE)
+    if(ui32Inc != UDMA_DST_INC_NONE)
     {
         //
         // There is a special case if this is setting up a scatter-gather
@@ -802,50 +804,50 @@ uDMAChannelTransferSet(unsigned long ulChannelStructIndex,
         // the alternate structure for this channel instead of calculating
         // the end of the buffer in the normal way.
         //
-        if((ulMode == UDMA_MODE_MEM_SCATTER_GATHER) ||
-           (ulMode == UDMA_MODE_PER_SCATTER_GATHER))
+        if((ui32Mode == UDMA_MODE_MEM_SCATTER_GATHER) ||
+           (ui32Mode == UDMA_MODE_PER_SCATTER_GATHER))
         {
             pvDstAddr =
-                (void *)&pControlTable[ulChannelStructIndex |
-                                       UDMA_ALT_SELECT].ulSpare;
+                (void *)&psControlTable[ui32ChannelStructIndex |
+                                        UDMA_ALT_SELECT].ui32Spare;
         }
         //
         // Not a scatter-gather transfer, calculate end pointer normally.
         //
         else
         {
-            ulInc = ulInc >> 30;
-            ulBufferBytes = ulTransferSize << ulInc;
-            pvDstAddr = (void *)((unsigned long)pvDstAddr + ulBufferBytes - 1);
+            ui32Inc = ui32Inc >> 30;
+            ui32BufferBytes = ui32TransferSize << ui32Inc;
+            pvDstAddr = (void *)((uint32_t)pvDstAddr + ui32BufferBytes - 1);
         }
     }
 
     //
     // Load the destination ending address into the control block.
     //
-    pControlTable[ulChannelStructIndex].pvDstEndAddr = pvDstAddr;
+    psControlTable[ui32ChannelStructIndex].pvDstEndAddr = pvDstAddr;
 
     //
     // Write the new control word value.
     //
-    pControlTable[ulChannelStructIndex].ulControl = ulControl;
+    psControlTable[ui32ChannelStructIndex].ui32Control = ui32Control;
 }
 
 //*****************************************************************************
 //
 //! Configures a uDMA channel for scatter-gather mode.
 //!
-//! \param ulChannelNum is the uDMA channel number.
-//! \param ulTaskCount is the number of scatter-gather tasks to execute.
+//! \param ui32ChannelNum is the uDMA channel number.
+//! \param ui32TaskCount is the number of scatter-gather tasks to execute.
 //! \param pvTaskList is a pointer to the beginning of the scatter-gather
 //! task list.
-//! \param ulIsPeriphSG is a flag to indicate it is a peripheral scatter-gather
-//! transfer (else it is memory scatter-gather transfer)
+//! \param ui32IsPeriphSG is a flag to indicate it is a peripheral
+//! scatter-gather transfer (else it is memory scatter-gather transfer)
 //!
 //! This function is used to configure a channel for scatter-gather mode.
 //! The caller must have already set up a task list and must pass a pointer to
 //! the start of the task list as the \e pvTaskList parameter.  The
-//! \e ulTaskCount parameter is the count of tasks in the task list, not the
+//! \e ui32TaskCount parameter is the count of tasks in the task list, not the
 //! size of the task list.  The flag \e bIsPeriphSG should be used to indicate
 //! if scatter-gather should be configured for peripheral or memory
 //! operation.
@@ -856,51 +858,51 @@ uDMAChannelTransferSet(unsigned long ulChannelStructIndex,
 //
 //*****************************************************************************
 void
-uDMAChannelScatterGatherSet(unsigned long ulChannelNum, unsigned ulTaskCount,
-                            void *pvTaskList, unsigned long ulIsPeriphSG)
+uDMAChannelScatterGatherSet(uint32_t ui32ChannelNum, uint32_t ui32TaskCount,
+                            void *pvTaskList, uint32_t ui32IsPeriphSG)
 {
-    tDMAControlTable *pControlTable;
-    tDMAControlTable *pTaskTable;
+    tDMAControlTable *psControlTable;
+    tDMAControlTable *psTaskTable;
 
     //
     // Check the parameters
     //
-    ASSERT((ulChannelNum & 0xffff) < 32);
+    ASSERT((ui32ChannelNum & 0xffff) < 32);
     ASSERT(HWREG(UDMA_CTLBASE) != 0);
     ASSERT(pvTaskList != 0);
-    ASSERT(ulTaskCount <= 1024);
-    ASSERT(ulTaskCount != 0);
+    ASSERT(ui32TaskCount <= 1024);
+    ASSERT(ui32TaskCount != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelNum parameter, extract just the channel number
+    // passed as the ui32ChannelNum parameter, extract just the channel number
     // from this parameter.
     //
-    ulChannelNum &= 0x1f;
+    ui32ChannelNum &= 0x1f;
 
     //
     // Get the base address of the control table.
     //
-    pControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
+    psControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
 
     //
     // Get a handy pointer to the task list
     //
-    pTaskTable = (tDMAControlTable *)pvTaskList;
+    psTaskTable = (tDMAControlTable *)pvTaskList;
 
     //
     // Compute the ending address for the source pointer.  This address is the
     // last element of the last task in the task table
     //
-    pControlTable[ulChannelNum].pvSrcEndAddr =
-        &pTaskTable[ulTaskCount - 1].ulSpare;
+    psControlTable[ui32ChannelNum].pvSrcEndAddr =
+        &psTaskTable[ui32TaskCount - 1].ui32Spare;
 
     //
     // Compute the ending address for the destination pointer.  This address
     // is the end of the alternate structure for this channel.
     //
-    pControlTable[ulChannelNum].pvDstEndAddr =
-        &pControlTable[ulChannelNum | UDMA_ALT_SELECT].ulSpare;
+    psControlTable[ui32ChannelNum].pvDstEndAddr =
+        &psControlTable[ui32ChannelNum | UDMA_ALT_SELECT].ui32Spare;
 
     //
     // Compute the control word.  Most configurable items are fixed for
@@ -908,20 +910,29 @@ uDMAChannelScatterGatherSet(unsigned long ulChannelNum, unsigned ulTaskCount,
     // size must be 4.  The count is the number of items in the task list
     // times 4 (4 words per task).
     //
-    pControlTable[ulChannelNum].ulControl =
+    psControlTable[ui32ChannelNum].ui32Control =
         (UDMA_CHCTL_DSTINC_32 | UDMA_CHCTL_DSTSIZE_32 |
          UDMA_CHCTL_SRCINC_32 | UDMA_CHCTL_SRCSIZE_32 |
          UDMA_CHCTL_ARBSIZE_4 |
-         (((ulTaskCount * 4) - 1) << UDMA_CHCTL_XFERSIZE_S) |
-         (ulIsPeriphSG ? UDMA_CHCTL_XFERMODE_PER_SG :
+         (((ui32TaskCount * 4) - 1) << UDMA_CHCTL_XFERSIZE_S) |
+         (ui32IsPeriphSG ? UDMA_CHCTL_XFERMODE_PER_SG :
           UDMA_CHCTL_XFERMODE_MEM_SG));
+
+    //
+    // Scatter-gather operations can leave the alt bit set.  So if doing
+    // back to back scatter-gather transfers, the second attempt may not
+    // work correctly because the alt bit is set.  Therefore, clear the
+    // alt bit here to ensure that it is always cleared before a new SG
+    // transfer is started.
+    //
+    HWREG(UDMA_ALTCLR) = 1 << ui32ChannelNum;
 }
 
 //*****************************************************************************
 //
 //! Gets the current transfer size for a uDMA channel control structure.
 //!
-//! \param ulChannelStructIndex is the logical OR of the uDMA channel number
+//! \param ui32ChannelStructIndex is the logical OR of the uDMA channel number
 //! with either \b UDMA_PRI_SELECT or \b UDMA_ALT_SELECT.
 //!
 //! This function is used to get the uDMA transfer size for a channel.  The
@@ -933,42 +944,42 @@ uDMAChannelScatterGatherSet(unsigned long ulChannelNum, unsigned ulTaskCount,
 //! \return Returns the number of items remaining to transfer.
 //
 //*****************************************************************************
-unsigned long
-uDMAChannelSizeGet(unsigned long ulChannelStructIndex)
+uint32_t
+uDMAChannelSizeGet(uint32_t ui32ChannelStructIndex)
 {
-    tDMAControlTable *pControlTable;
-    unsigned long ulControl;
+    tDMAControlTable *psControlTable;
+    uint32_t ui32Control;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelStructIndex & 0xffff) < 64);
+    ASSERT((ui32ChannelStructIndex & 0xffff) < 64);
     ASSERT(HWREG(UDMA_CTLBASE) != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelStructIndex parameter, extract just the channel
+    // passed as the ui32ChannelStructIndex parameter, extract just the channel
     // index from this parameter.
     //
-    ulChannelStructIndex &= 0x3f;
+    ui32ChannelStructIndex &= 0x3f;
 
     //
     // Get the base address of the control table.
     //
-    pControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
+    psControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
 
     //
     // Get the current control word value and mask off all but the size field
     // and the mode field.
     //
-    ulControl = (pControlTable[ulChannelStructIndex].ulControl &
-                 (UDMA_CHCTL_XFERSIZE_M | UDMA_CHCTL_XFERMODE_M));
+    ui32Control = (psControlTable[ui32ChannelStructIndex].ui32Control &
+                   (UDMA_CHCTL_XFERSIZE_M | UDMA_CHCTL_XFERMODE_M));
 
     //
     // If the size field and mode field are 0 then the transfer is finished
     // and there are no more items to transfer
     //
-    if(ulControl == 0)
+    if(ui32Control == 0)
     {
         return(0);
     }
@@ -982,7 +993,7 @@ uDMAChannelSizeGet(unsigned long ulChannelStructIndex)
         //
         // Shift the size field and add one, then return to user.
         //
-        return((ulControl >> 4) + 1);
+        return((ui32Control >> 4) + 1);
     }
 }
 
@@ -990,7 +1001,7 @@ uDMAChannelSizeGet(unsigned long ulChannelStructIndex)
 //
 //! Gets the transfer mode for a uDMA channel control structure.
 //!
-//! \param ulChannelStructIndex is the logical OR of the uDMA channel number
+//! \param ui32ChannelStructIndex is the logical OR of the uDMA channel number
 //! with either \b UDMA_PRI_SELECT or \b UDMA_ALT_SELECT.
 //!
 //! This function is used to get the transfer mode for the uDMA channel and
@@ -1003,66 +1014,67 @@ uDMAChannelSizeGet(unsigned long ulChannelStructIndex)
 //! \b UDMA_MODE_MEM_SCATTER_GATHER, or \b UDMA_MODE_PER_SCATTER_GATHER.
 //
 //*****************************************************************************
-unsigned long
-uDMAChannelModeGet(unsigned long ulChannelStructIndex)
+uint32_t
+uDMAChannelModeGet(uint32_t ui32ChannelStructIndex)
 {
-    tDMAControlTable *pControlTable;
-    unsigned long ulControl;
+    tDMAControlTable *psControlTable;
+    uint32_t ui32Control;
 
     //
     // Check the arguments.
     //
-    ASSERT((ulChannelStructIndex & 0xffff) < 64);
+    ASSERT((ui32ChannelStructIndex & 0xffff) < 64);
     ASSERT(HWREG(UDMA_CTLBASE) != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
-    // passed as the ulChannelStructIndex parameter, extract just the channel
+    // passed as the ui32ChannelStructIndex parameter, extract just the channel
     // index from this parameter.
     //
-    ulChannelStructIndex &= 0x3f;
+    ui32ChannelStructIndex &= 0x3f;
 
     //
     // Get the base address of the control table.
     //
-    pControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
+    psControlTable = (tDMAControlTable *)HWREG(UDMA_CTLBASE);
 
     //
     // Get the current control word value and mask off all but the mode field.
     //
-    ulControl = (pControlTable[ulChannelStructIndex].ulControl &
-                 UDMA_CHCTL_XFERMODE_M);
+    ui32Control = (psControlTable[ui32ChannelStructIndex].ui32Control &
+                   UDMA_CHCTL_XFERMODE_M);
 
     //
     // Check if scatter/gather mode, and if so, mask off the alt bit.
     //
-    if(((ulControl & ~UDMA_MODE_ALT_SELECT) == UDMA_MODE_MEM_SCATTER_GATHER) ||
-       ((ulControl & ~UDMA_MODE_ALT_SELECT) == UDMA_MODE_PER_SCATTER_GATHER))
+    if(((ui32Control & ~UDMA_MODE_ALT_SELECT) ==
+        UDMA_MODE_MEM_SCATTER_GATHER) ||
+       ((ui32Control & ~UDMA_MODE_ALT_SELECT) == UDMA_MODE_PER_SCATTER_GATHER))
     {
-        ulControl &= ~UDMA_MODE_ALT_SELECT;
+        ui32Control &= ~UDMA_MODE_ALT_SELECT;
     }
 
     //
     // Return the mode to the caller.
     //
-    return(ulControl);
+    return(ui32Control);
 }
 
 //*****************************************************************************
 //
 //! Selects the secondary peripheral for a set of uDMA channels.
 //!
-//! \param ulSecPeriphs is the logical OR of the uDMA channels for which to use
-//! the secondary peripheral, instead of the default peripheral.
+//! \param ui32SecPeriphs is the logical OR of the uDMA channels for which to
+//! use the secondary peripheral, instead of the default peripheral.
 //!
 //! This function is used to select the secondary peripheral assignment for a
 //! set of uDMA channels.  By selecting the secondary peripheral assignment for
 //! a channel, the default peripheral assignment is no longer available for
 //! that channel.
 //!
-//! The parameter \e ulSecPeriphs can be the logical OR of any of the following
-//! macros.  If one of the macros below is in the list passed to this function,
-//! then the secondary peripheral (marked as \b _SEC_) is selected.
+//! The parameter \e ui32SecPeriphs can be the logical OR of any of the
+//! following macros.  If one of the macros below is in the list passed to this
+//! function, then the secondary peripheral (marked as \b _SEC_) is selected.
 //!
 //! - \b UDMA_DEF_USBEP1RX_SEC_UART2RX
 //! - \b UDMA_DEF_USBEP1TX_SEC_UART2TX
@@ -1099,27 +1111,27 @@ uDMAChannelModeGet(unsigned long ulChannelStructIndex)
 //
 //*****************************************************************************
 void
-uDMAChannelSelectSecondary(unsigned long ulSecPeriphs)
+uDMAChannelSelectSecondary(uint32_t ui32SecPeriphs)
 {
     //
     // Select the secondary peripheral for the specified channels.
     //
-    HWREG(UDMA_CHASGN) |= ulSecPeriphs;
+    HWREG(UDMA_CHASGN) |= ui32SecPeriphs;
 }
 
 //*****************************************************************************
 //
 //! Selects the default peripheral for a set of uDMA channels.
 //!
-//! \param ulDefPeriphs is the logical OR of the uDMA channels for which to use
-//! the default peripheral, instead of the secondary peripheral.
+//! \param ui32DefPeriphs is the logical OR of the uDMA channels for which to
+//! use the default peripheral, instead of the secondary peripheral.
 //!
 //! This function is used to select the default peripheral assignment for a set
 //! of uDMA channels.
 //!
-//! The parameter \e ulDefPeriphs can be the logical OR of any of the following
-//! macros.  If one of the macros below is in the list passed to this function,
-//! then the default peripheral (marked as \b _DEF_) is selected.
+//! The parameter \e ui32DefPeriphs can be the logical OR of any of the
+//! following macros.  If one of the macros below is in the list passed to this
+//! function, then the default peripheral (marked as \b _DEF_) is selected.
 //!
 //! - \b UDMA_DEF_USBEP1RX_SEC_UART2RX
 //! - \b UDMA_DEF_USBEP1TX_SEC_UART2TX
@@ -1156,25 +1168,25 @@ uDMAChannelSelectSecondary(unsigned long ulSecPeriphs)
 //
 //*****************************************************************************
 void
-uDMAChannelSelectDefault(unsigned long ulDefPeriphs)
+uDMAChannelSelectDefault(uint32_t ui32DefPeriphs)
 {
     //
     // Select the default peripheral for the specified channels.
     //
-    HWREG(UDMA_CHASGN) &= ~ulDefPeriphs;
+    HWREG(UDMA_CHASGN) &= ~ui32DefPeriphs;
 }
 
 //*****************************************************************************
 //
 //! Registers an interrupt handler for the uDMA controller.
 //!
-//! \param ulIntChannel identifies which uDMA interrupt is to be registered.
+//! \param ui32IntChannel identifies which uDMA interrupt is to be registered.
 //! \param pfnHandler is a pointer to the function to be called when the
 //! interrupt is activated.
 //!
 //! This function registers and enables the handler to be called when the uDMA
-//! controller generates an interrupt.  The \e ulIntChannel parameter should be
-//! one of the following:
+//! controller generates an interrupt.  The \e ui32IntChannel parameter should
+//! be one of the following:
 //!
 //! - \b UDMA_INT_SW to register an interrupt handler to process interrupts
 //!   from the uDMA software channel (UDMA_CHANNEL_SW)
@@ -1193,33 +1205,34 @@ uDMAChannelSelectDefault(unsigned long ulDefPeriphs)
 //
 //*****************************************************************************
 void
-uDMAIntRegister(unsigned long ulIntChannel, void (*pfnHandler)(void))
+uDMAIntRegister(uint32_t ui32IntChannel, void (*pfnHandler)(void))
 {
     //
     // Check the arguments.
     //
     ASSERT(pfnHandler);
-    ASSERT((ulIntChannel == UDMA_INT_SW) || (ulIntChannel == UDMA_INT_ERR));
+    ASSERT((ui32IntChannel == UDMA_INT_SW) ||
+           (ui32IntChannel == UDMA_INT_ERR));
 
     //
     // Register the interrupt handler.
     //
-    IntRegister(ulIntChannel, pfnHandler);
+    IntRegister(ui32IntChannel, pfnHandler);
 
     //
     // Enable the memory management fault.
     //
-    IntEnable(ulIntChannel);
+    IntEnable(ui32IntChannel);
 }
 
 //*****************************************************************************
 //
 //! Unregisters an interrupt handler for the uDMA controller.
 //!
-//! \param ulIntChannel identifies which uDMA interrupt to unregister.
+//! \param ui32IntChannel identifies which uDMA interrupt to unregister.
 //!
 //! This function disables and unregisters the handler to be called for the
-//! specified uDMA interrupt.  The \e ulIntChannel parameter should be one of
+//! specified uDMA interrupt.  The \e ui32IntChannel parameter should be one of
 //! \b UDMA_INT_SW or \b UDMA_INT_ERR as documented for the function
 //! uDMAIntRegister().
 //!
@@ -1230,17 +1243,17 @@ uDMAIntRegister(unsigned long ulIntChannel, void (*pfnHandler)(void))
 //
 //*****************************************************************************
 void
-uDMAIntUnregister(unsigned long ulIntChannel)
+uDMAIntUnregister(uint32_t ui32IntChannel)
 {
     //
     // Disable the interrupt.
     //
-    IntDisable(ulIntChannel);
+    IntDisable(ui32IntChannel);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(ulIntChannel);
+    IntUnregister(ui32IntChannel);
 }
 
 //*****************************************************************************
@@ -1262,17 +1275,9 @@ uDMAIntUnregister(unsigned long ulIntChannel)
 //! is requesting an interrupt.  Multiple bits can be set.
 //
 //*****************************************************************************
-unsigned long
+uint32_t
 uDMAIntStatus(void)
 {
-    //
-    // Check feature availability
-    //
-    ASSERT(!CLASS_IS_SANDSTORM);
-    ASSERT(!CLASS_IS_FURY);
-    ASSERT(!CLASS_IS_DUSTDEVIL);
-    ASSERT(!CLASS_IS_TEMPEST);
-
     //
     // Return the value of the uDMA interrupt status register
     //
@@ -1283,12 +1288,12 @@ uDMAIntStatus(void)
 //
 //! Clears uDMA interrupt status.
 //!
-//! \param ulChanMask is a 32-bit mask with one bit for each uDMA channel.
+//! \param ui32ChanMask is a 32-bit mask with one bit for each uDMA channel.
 //!
 //! This function clears bits in the uDMA interrupt status register according
-//! to which bits are set in \e ulChanMask. There is one bit for each channel.
-//! If a a bit is set in \e ulChanMask, then that corresponding channel's
-//! interrupt status is cleared (if it was set).
+//! to which bits are set in \e ui32ChanMask.  There is one bit for each
+//! channel.  If a a bit is set in \e ui32ChanMask, then that corresponding
+//! channel's interrupt status is cleared (if it was set).
 //!
 //! \note This function is only available on devices that have the DMA Channel
 //! Interrupt Status Register (DMACHIS).  Please consult the data sheet for
@@ -1298,36 +1303,28 @@ uDMAIntStatus(void)
 //
 //*****************************************************************************
 void
-uDMAIntClear(unsigned long ulChanMask)
+uDMAIntClear(uint32_t ui32ChanMask)
 {
-    //
-    // Check feature availability
-    //
-    ASSERT(!CLASS_IS_SANDSTORM);
-    ASSERT(!CLASS_IS_FURY);
-    ASSERT(!CLASS_IS_DUSTDEVIL);
-    ASSERT(!CLASS_IS_TEMPEST);
-
     //
     // Clear the requested bits in the uDMA interrupt status register
     //
-    HWREG(UDMA_CHIS) = ulChanMask;
+    HWREG(UDMA_CHIS) = ui32ChanMask;
 }
 
 //*****************************************************************************
 //
 //! Assigns a peripheral mapping for a uDMA channel.
 //!
-//! \param ulMapping is a macro specifying the peripheral assignment for
+//! \param ui32Mapping is a macro specifying the peripheral assignment for
 //! a channel.
 //!
 //! This function assigns a peripheral mapping to a uDMA channel.  It is
 //! used to select which peripheral is used for a uDMA channel.  The parameter
-//! \e ulMapping should be one of the macros named \b UDMA_CHn_tttt from the
+//! \e ui32Mapping should be one of the macros named \b UDMA_CHn_tttt from the
 //! header file \e udma.h.  For example, to assign uDMA channel 0 to the
 //! UART2 RX channel, the parameter should be the macro \b UDMA_CH0_UART2RX.
 //!
-//! Please consult the Stellaris data sheet for a table showing all the
+//! Please consult the Tiva data sheet for a table showing all the
 //! possible peripheral assignments for the uDMA channels for a particular
 //! device.
 //!
@@ -1339,40 +1336,35 @@ uDMAIntClear(unsigned long ulChanMask)
 //
 //*****************************************************************************
 void
-uDMAChannelAssign(unsigned long ulMapping)
+uDMAChannelAssign(uint32_t ui32Mapping)
 {
-    unsigned long ulMapReg;
-    unsigned long ulMapShift;
-    unsigned long ulChannelNum;
+    uint32_t ui32MapReg;
+    uint_fast8_t ui8MapShift;
+    uint_fast8_t ui8ChannelNum;
 
     //
     // Check the parameters
     //
-    ASSERT((ulMapping & 0xffffff00) < 0x00050000);
-    ASSERT(!CLASS_IS_SANDSTORM);
-    ASSERT(!CLASS_IS_FURY);
-    ASSERT(!CLASS_IS_DUSTDEVIL);
-    ASSERT(!CLASS_IS_TEMPEST);
-    ASSERT(!CLASS_IS_FIRESTORM);
+    ASSERT((ui32Mapping & 0xffffff00) < 0x00050000);
 
     //
     // Extract the channel number and map encoding value from the parameter.
     //
-    ulChannelNum = ulMapping & 0xff;
-    ulMapping = ulMapping >> 16;
+    ui8ChannelNum = ui32Mapping & 0xff;
+    ui32Mapping = ui32Mapping >> 16;
 
     //
     // Find the uDMA channel mapping register and shift value to use for this
     // channel
     //
-    ulMapReg = UDMA_CHMAP0 + ((ulChannelNum / 8) * 4);
-    ulMapShift = (ulChannelNum % 8) * 4;
+    ui32MapReg = UDMA_CHMAP0 + (uint32_t)((ui8ChannelNum / 8) * 4);
+    ui8MapShift = (ui8ChannelNum % 8) * 4;
 
     //
     // Set the channel map encoding for this channel
     //
-    HWREG(ulMapReg) = (HWREG(ulMapReg) & ~(0xf << ulMapShift)) |
-                      ulMapping << ulMapShift;
+    HWREG(ui32MapReg) = (HWREG(ui32MapReg) & ~(0xf << ui8MapShift)) |
+                        ui32Mapping << ui8MapShift;
 }
 
 //*****************************************************************************

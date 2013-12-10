@@ -1,13 +1,13 @@
 #ifndef Energia_h 
 #define Energia_h 
 
-#include <stdint.h> 
+#include <stdint.h>
+#include <stdbool.h> 
 #include <string.h> 
 #include <math.h>
-#define TARGET_IS_BLIZZARD_RA2 
+#define TARGET_IS_BLIZZARD_RB1
+#define PART_TM4C1233H6PM
 #define PART_LM4F120H5QR
-#define HWREG(x) \
-        (*((volatile unsigned long *)(x))) 
 
 #include "binary.h" 
 #include "inc/hw_types.h"  		

@@ -2,7 +2,7 @@
 //
 // comp.h - Prototypes for the analog comparator driver.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,12 +33,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Peripheral Driver Library.
+// This is part of revision 2.0.1.11577 of the Tiva Peripheral Driver Library.
 //
 //*****************************************************************************
 
-#ifndef __COMP_H__
-#define __COMP_H__
+#ifndef __DRIVERLIB_COMP_H__
+#define __DRIVERLIB_COMP_H__
 
 //*****************************************************************************
 //
@@ -53,10 +53,10 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to ComparatorConfigure() as the ulConfig
-// parameter.  For each group (i.e. COMP_TRIG_xxx, COMP_INT_xxx, etc.), one of
-// the values may be selected and combined together with values from the other
-// groups via a logical OR.
+// Values that can be passed to ComparatorConfigure() as the ui32Config
+// parameter.  For each group (in other words, COMP_TRIG_xxx, COMP_INT_xxx, and
+// so on), one of the values may be selected and combined together with values
+// from the other groups via a logical OR.
 //
 //*****************************************************************************
 #define COMP_TRIG_NONE          0x00000000  // No ADC trigger
@@ -73,15 +73,12 @@ extern "C"
 #define COMP_ASRCP_PIN          0x00000000  // Dedicated Comp+ pin
 #define COMP_ASRCP_PIN0         0x00000200  // Comp0+ pin
 #define COMP_ASRCP_REF          0x00000400  // Internal voltage reference
-#ifndef DEPRECATED
-#define COMP_OUTPUT_NONE        0x00000000  // No comparator output
-#endif
 #define COMP_OUTPUT_NORMAL      0x00000000  // Comparator output normal
 #define COMP_OUTPUT_INVERT      0x00000002  // Comparator output inverted
 
 //*****************************************************************************
 //
-// Values that can be passed to ComparatorSetRef() as the ulRef parameter.
+// Values that can be passed to ComparatorSetRef() as the ui32Ref parameter.
 //
 //*****************************************************************************
 #define COMP_REF_OFF            0x00000000  // Turn off the internal reference
@@ -119,19 +116,18 @@ extern "C"
 // Prototypes for the APIs.
 //
 //*****************************************************************************
-extern void ComparatorConfigure(unsigned long ulBase, unsigned long ulComp,
-                                unsigned long ulConfig);
-extern void ComparatorRefSet(unsigned long ulBase, unsigned long ulRef);
-extern tBoolean ComparatorValueGet(unsigned long ulBase, unsigned long ulComp);
-extern void ComparatorIntRegister(unsigned long ulBase, unsigned long ulComp,
+extern void ComparatorConfigure(uint32_t ui32Base, uint32_t ui32Comp,
+                                uint32_t ui32Config);
+extern void ComparatorRefSet(uint32_t ui32Base, uint32_t ui32Ref);
+extern bool ComparatorValueGet(uint32_t ui32Base, uint32_t ui32Comp);
+extern void ComparatorIntRegister(uint32_t ui32Base, uint32_t ui32Comp,
                                   void (*pfnHandler)(void));
-extern void ComparatorIntUnregister(unsigned long ulBase,
-                                    unsigned long ulComp);
-extern void ComparatorIntEnable(unsigned long ulBase, unsigned long ulComp);
-extern void ComparatorIntDisable(unsigned long ulBase, unsigned long ulComp);
-extern tBoolean ComparatorIntStatus(unsigned long ulBase, unsigned long ulComp,
-                                    tBoolean bMasked);
-extern void ComparatorIntClear(unsigned long ulBase, unsigned long ulComp);
+extern void ComparatorIntUnregister(uint32_t ui32Base, uint32_t ui32Comp);
+extern void ComparatorIntEnable(uint32_t ui32Base, uint32_t ui32Comp);
+extern void ComparatorIntDisable(uint32_t ui32Base, uint32_t ui32Comp);
+extern bool ComparatorIntStatus(uint32_t ui32Base, uint32_t ui32Comp,
+                                bool bMasked);
+extern void ComparatorIntClear(uint32_t ui32Base, uint32_t ui32Comp);
 
 //*****************************************************************************
 //
@@ -142,4 +138,4 @@ extern void ComparatorIntClear(unsigned long ulBase, unsigned long ulComp);
 }
 #endif
 
-#endif // __COMP_H__
+#endif // __DRIVERLIB_COMP_H__

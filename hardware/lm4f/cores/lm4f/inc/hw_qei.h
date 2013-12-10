@@ -2,7 +2,7 @@
 //
 // hw_qei.h - Macros used when accessing the QEI hardware.
 //
-// Copyright (c) 2005-2012 Texas Instruments Incorporated.  All rights reserved.
+// Copyright (c) 2005-2013 Texas Instruments Incorporated.  All rights reserved.
 // Software License Agreement
 // 
 //   Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // 
-// This is part of revision 9453 of the Stellaris Firmware Development Package.
+// This is part of revision 2.0.1.11577 of the Tiva Firmware Development Package.
 //
 //*****************************************************************************
 
@@ -174,43 +174,5 @@
 #define QEI_ISC_DIR             0x00000004  // Direction Change Interrupt
 #define QEI_ISC_TIMER           0x00000002  // Velocity Timer Expired Interrupt
 #define QEI_ISC_INDEX           0x00000001  // Index Pulse Interrupt
-
-//*****************************************************************************
-//
-// The following definitions are deprecated.
-//
-//*****************************************************************************
-#ifndef DEPRECATED
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the bit fields in the QEI_ISC
-// register.
-//
-//*****************************************************************************
-#define QEI_INT_ERROR           0x00000008  // Phase error detected
-#define QEI_INT_DIR             0x00000004  // Direction change
-#define QEI_INT_TIMER           0x00000002  // Velocity timer expired
-#define QEI_INT_INDEX           0x00000001  // Index pulse detected
-
-//*****************************************************************************
-//
-// The following are deprecated defines for the reset values for the QEI
-// registers.
-//
-//*****************************************************************************
-#define QEI_RV_POS              0x00000000  // Current position register
-#define QEI_RV_LOAD             0x00000000  // Velocity timer load register
-#define QEI_RV_CTL              0x00000000  // Configuration and control reg
-#define QEI_RV_RIS              0x00000000  // Raw interrupt status register
-#define QEI_RV_ISC              0x00000000  // Interrupt status register
-#define QEI_RV_SPEED            0x00000000  // Velocity speed register
-#define QEI_RV_INTEN            0x00000000  // Interrupt enable register
-#define QEI_RV_STAT             0x00000000  // Status register
-#define QEI_RV_COUNT            0x00000000  // Velocity pulse count register
-#define QEI_RV_MAXPOS           0x00000000  // Maximum position register
-#define QEI_RV_TIME             0x00000000  // Velocity timer register
-
-#endif
 
 #endif // __HW_QEI_H__

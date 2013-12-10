@@ -459,7 +459,9 @@ extern int _getpid ( void )
     return -1 ;
 }
 
+/*
 extern void _exit (void)
 {
 
 }
+*/
