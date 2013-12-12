@@ -63,13 +63,13 @@
 
 static const unsigned long g_uli2cMasterBase[4] =
 {
-    I2C0_MASTER_BASE, I2C1_MASTER_BASE, 
-	I2C2_MASTER_BASE, I2C3_MASTER_BASE
+    I2C0_BASE, I2C1_BASE, 
+	I2C2_BASE, I2C3_BASE
 };
 static const unsigned long g_uli2cSlaveBase[4] =
 {
-    I2C0_SLAVE_BASE, I2C1_SLAVE_BASE, 
-	I2C2_SLAVE_BASE, I2C3_SLAVE_BASE
+    I2C0_BASE, I2C1_BASE, 
+	I2C2_BASE, I2C3_BASE
 };
 
 //*****************************************************************************
@@ -285,14 +285,14 @@ void TwoWire::begin(uint8_t address)
 
   //Enable slave interrupts
   ROM_IntEnable(g_uli2cInt[i2cModule]);
-  ROM_I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA | I2C_SLAVE_INT_STOP);
+  I2CSlaveIntEnableEx(SLAVE_BASE, I2C_SLAVE_INT_DATA | I2C_SLAVE_INT_STOP);
   HWREG(SLAVE_BASE + I2C_O_SICR) =
 		  I2C_SICR_DATAIC | I2C_SICR_STARTIC | I2C_SICR_STOPIC;
 
   //Setup as a slave device
   ROM_I2CMasterDisable(MASTER_BASE);
-  ROM_I2CSlaveEnable(SLAVE_BASE);
-  ROM_I2CSlaveInit(SLAVE_BASE, address); 
+  I2CSlaveEnable(SLAVE_BASE);
+  I2CSlaveInit(SLAVE_BASE, address); 
   
   ROM_IntMasterEnable();
 
@@ -447,7 +447,7 @@ size_t TwoWire::write(uint8_t data)
   // in slave send mode
     // reply to master
 	if(TX_BUFFER_FULL) {
-		ROM_I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+		I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
 		txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 	}
 	    txBuffer[txWriteIndex] = data;
@@ -539,10 +539,10 @@ void TwoWire::I2CIntHandler(void) {
 	    HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_STOPIC;
 	}
 
-	switch(ROM_I2CSlaveStatus(SLAVE_BASE) & (I2C_SCSR_TREQ | I2C_SCSR_RREQ)) {
+	switch(I2CSlaveStatus(SLAVE_BASE) & (I2C_SCSR_TREQ | I2C_SCSR_RREQ)) {
 
 		case(I2C_SLAVE_ACT_RREQ)://data received
-			if(ROM_I2CSlaveStatus(SLAVE_BASE) & I2C_SCSR_FBR)
+			if(I2CSlaveStatus(SLAVE_BASE) & I2C_SCSR_FBR)
 				currentState = SLAVE_RX;
 			if(!RX_BUFFER_FULL) {
 				rxBuffer[rxWriteIndex] = I2CSlaveDataGet(SLAVE_BASE);
@@ -562,19 +562,19 @@ void TwoWire::I2CIntHandler(void) {
 		        // yet to be sent
 		        //
 		    	if(oldWriteIndex != txWriteIndex) {
-			    	ROM_I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+			    	I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
 			    	txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 		        }
 
 		    }
 
 		    else if(!TX_BUFFER_EMPTY){
-		    	ROM_I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
+		    	I2CSlaveDataPut(SLAVE_BASE, txBuffer[txReadIndex]);
 		    	txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
 		    }
 
 		    else
-		    	ROM_I2CSlaveDataPut(SLAVE_BASE, 0);
+		    	I2CSlaveDataPut(SLAVE_BASE, 0);
 
 			break;
 
