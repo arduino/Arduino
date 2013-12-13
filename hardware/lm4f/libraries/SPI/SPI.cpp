@@ -20,7 +20,6 @@
 #define SSIBASE g_ulSSIBase[SSIModule]
 #define NOT_ACTIVE 0xA
 
-uint8_t SPIClass::SSIModule = NOT_ACTIVE;
 
 static const unsigned long g_ulSSIBase[4] =
 {
@@ -75,6 +74,7 @@ static const unsigned long g_ulSSIPins[4] =
 
 SPIClass::SPIClass(void)
 {
+	SSIModule = NOT_ACTIVE;
 }
 
 SPIClass::SPIClass(uint8_t module)
