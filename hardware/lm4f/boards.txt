@@ -1,5 +1,15 @@
 ##############################################################
-lplm4f120h5qr.name=StellarPad w/ lm4f120h5qr (80MHz)
+lplm4f120h5qr.name=LaunchPad (Stellaris) w/ lm4f120 (80MHz)
+lplm4f120h5qr.upload.maximum_size=262144
+lplm4f120h5qr.build.mcu=cortex-m4
+lplm4f120h5qr.build.f_cpu=80000000L
+lplm4f120h5qr.build.core=lm4f
+lplm4f120h5qr.build.variant=stellarpad
+lplm4f120h5qr.ldscript=lm4fcpp.ld
+lplm4f120h5qr.upload.maximum_ram_size=32768
+
+##############################################################
+lplm4f120h5qr.name=LaunchPad (TivaC) w/ tm4c123 (80MHz)
 lplm4f120h5qr.upload.maximum_size=262144
 lplm4f120h5qr.build.mcu=cortex-m4
 lplm4f120h5qr.build.f_cpu=80000000L
