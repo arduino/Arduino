@@ -9,7 +9,7 @@ lplm4f120h5qr.ldscript=lm4fcpp.ld
 lplm4f120h5qr.upload.maximum_ram_size=32768
 
 ##############################################################
-lptm4c1230c3pm.name=LaunchPad (TivaC) w/ tm4c123 (80MHz)
+lptm4c1230c3pm.name=LaunchPad (Tiva C) w/ tm4c123 (80MHz)
 lptm4c1230c3pm.upload.maximum_size=262144
 lptm4c1230c3pm.build.mcu=cortex-m4
 lptm4c1230c3pm.build.f_cpu=80000000L
