@@ -49,10 +49,10 @@
 #include "HardwareSerial.h"
 
 #define TX_BUFFER_EMPTY    (txReadIndex == txWriteIndex)
-#define TX_BUFFER_FULL     (((txWriteIndex + 1) % SERIAL_BUFFER_SIZE) == txReadIndex)
+#define TX_BUFFER_FULL     (((txWriteIndex + 1) % txBufferSize) == txReadIndex)
 
 #define RX_BUFFER_EMPTY    (rxReadIndex == rxWriteIndex)
-#define RX_BUFFER_FULL     (((rxWriteIndex + 1) % SERIAL_BUFFER_SIZE) == rxReadIndex)
+#define RX_BUFFER_FULL     (((rxWriteIndex + 1) % rxBufferSize) == rxReadIndex)
 
 #define UART_BASE g_ulUARTBase[uartModule]
 
@@ -119,6 +119,11 @@ HardwareSerial::HardwareSerial(void)
     rxWriteIndex = 0;
     rxReadIndex = 0;
     uartModule = 0;
+
+    txBuffer = (unsigned char *) 0xFFFFFFFF;
+    rxBuffer = (unsigned char *) 0xFFFFFFFF;
+    txBufferSize = SERIAL_BUFFER_SIZE;
+    rxBufferSize = SERIAL_BUFFER_SIZE;
 }
 
 HardwareSerial::HardwareSerial(unsigned long module) 
@@ -128,6 +133,11 @@ HardwareSerial::HardwareSerial(unsigned long module)
     rxWriteIndex = 0;
     rxReadIndex = 0;
     uartModule = module;
+
+    txBuffer = (unsigned char *) 0xFFFFFFFF;
+    rxBuffer = (unsigned char *) 0xFFFFFFFF;
+    txBufferSize = SERIAL_BUFFER_SIZE;
+    rxBufferSize = SERIAL_BUFFER_SIZE;
 }
 // Private Methods //////////////////////////////////////////////////////////////
 void
@@ -170,7 +180,7 @@ HardwareSerial::primeTransmit(unsigned long ulBase)
                 ROM_UARTCharPutNonBlocking(ulBase,
                                        txBuffer[txReadIndex]);
 
-                txReadIndex = (txReadIndex + 1) % SERIAL_BUFFER_SIZE;
+                txReadIndex = (txReadIndex + 1) % txBufferSize;
             }
         }
 
@@ -216,7 +226,24 @@ HardwareSerial::begin(unsigned long baud)
     //
     ROM_UARTEnable(UART_BASE);
 
+    // Allocate TX & RX buffers
+    if (txBuffer != (unsigned char *)0xFFFFFFFF)  // Catch attempts to re-init this Serial instance by freeing old buffer first
+        free(txBuffer);
+    if (rxBuffer != (unsigned char *)0xFFFFFFFF)  // Catch attempts to re-init this Serial instance by freeing old buffer first
+        free(rxBuffer);
+    txBuffer = (unsigned char *) malloc(txBufferSize);
+    rxBuffer = (unsigned char *) malloc(rxBufferSize);
+
     SysCtlDelay(100);
+}
+
+void
+HardwareSerial::setBufferSize(unsigned long txsize, unsigned long rxsize)
+{
+    if (txsize > 0)
+        txBufferSize = txsize;
+    if (rxsize > 0)
+        rxBufferSize = rxsize;
 }
 
 void
