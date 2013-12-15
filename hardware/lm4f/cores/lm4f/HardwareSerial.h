@@ -32,7 +32,7 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define SERIAL_BUFFER_SIZE     1024
+#define SERIAL_BUFFER_SIZE     64
 
 #define UART1_PORTB	0 
 #define UART1_PORTC	1
@@ -41,10 +41,12 @@ class HardwareSerial : public Stream
 {
 
 	private:
-        unsigned char txBuffer[SERIAL_BUFFER_SIZE];
+        unsigned char *txBuffer;
+        unsigned long txBufferSize;
         unsigned long txWriteIndex;
         unsigned long txReadIndex;
-        unsigned char rxBuffer[SERIAL_BUFFER_SIZE];
+        unsigned char *rxBuffer;
+        unsigned long rxBufferSize;
         unsigned long rxWriteIndex;
         unsigned long rxReadIndex;
         unsigned long uartModule;
@@ -56,6 +58,7 @@ class HardwareSerial : public Stream
 		HardwareSerial(void);
 		HardwareSerial(unsigned long);
 		void begin(unsigned long);
+		void setBufferSize(unsigned long, unsigned long);
 		void setModule(unsigned long);
 		void setPins(unsigned long);
 		void end(void);
