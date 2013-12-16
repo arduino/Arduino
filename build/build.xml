@@ -177,8 +177,21 @@
     </echo>
     <fail message="wrong platform (${os.name})" />
   </target>
-  
-  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
+
+  <property name="arm.tools.local" value="arm_tools_mac.tar.bz2"/>
+  <available property="exists.dep.arm" file="macosx/dist/${arm.tools.local}"/>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps"
+    if="dep.arm.default.ok"
+    unless="exists.dep.arm">
+    <property name="arm.tools.remote" value="http://energia.nu/files/arm_tools_mac.tar.bz2"/>
+
+    <!-- Get arm tools -->
+    <get src="${arm.tools.remote}" dest="macosx/dist/${arm.tools.local}"/>
+  </target>
+
+  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
     
     <!-- assemble the pde -->
@@ -221,14 +234,13 @@
       <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
       <arg value="macosx/dist/tools-msp430.zip" />
     </exec>
-    <!-- Unzip lm4f tools -->
-    <exec executable="unzip">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-d" />
-      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
-      <arg value="macosx/dist/lm4f_tools.zip" />
+
+    <!-- Unzip arm tools -->
+    <exec executable="tar" dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools">
+      <arg value="-xjf"/>
+      <arg value="${user.dir}/macosx/dist/arm_tools_mac.tar.bz2"/>
     </exec>
+
     <copy tofile="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/bin/lm4flash"
           file="macosx/dist/tools/lm4flash"
           overwrite="true"

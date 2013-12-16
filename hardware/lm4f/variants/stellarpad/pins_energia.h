@@ -34,6 +34,7 @@
 #define Pins_Arduino_h
 
 #define __LM4F120H5QR__
+#define __TM4C123GH6PM__
 
 #ifndef BV 
 #define BV(x) (1 << (x)) 

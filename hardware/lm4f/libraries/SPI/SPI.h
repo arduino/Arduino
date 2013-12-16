@@ -33,26 +33,26 @@ class SPIClass {
 
 private:
 
-	static uint8_t SSIModule;
+	uint8_t SSIModule;
 
 public:
 
   SPIClass(void);
   SPIClass(uint8_t);
-  static void begin(); // Default
-  static void end();
+  void begin(); // Default
+  void end();
 
-  static void setBitOrder(uint8_t);
-  static void setBitOrder(uint8_t, uint8_t);
+  void setBitOrder(uint8_t);
+  void setBitOrder(uint8_t, uint8_t);
 
-  static void setDataMode(uint8_t);
+  void setDataMode(uint8_t);
 
-  static void setClockDivider(uint8_t);
+  void setClockDivider(uint8_t);
 
-  static uint8_t transfer(uint8_t);
+  uint8_t transfer(uint8_t);
 
   //Stellarpad-specific functions
-  static void setModule(uint8_t);
+  void setModule(uint8_t);
 
 };
 

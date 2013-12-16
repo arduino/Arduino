@@ -254,7 +254,7 @@ public class Compiler implements MessageConsumer {
         "-nostartfiles","-nostdlib",
         "-Wl,--gc-sections",
         "-T", corePath + File.separator + "lm4fcpp.ld",
-        "--entry=ResetISR",
+        "-Wl,--entry=ResetISR",
         "-mthumb", "-mcpu=cortex-m4",
         "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
         "-o",
