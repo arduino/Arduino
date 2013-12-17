@@ -15,6 +15,6 @@ int main(void)
 		if (serialEventRun) serialEventRun();
 	}
 
-	return 0;
+//	return 0;
 }
 

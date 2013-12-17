@@ -740,7 +740,6 @@ public class Compiler implements MessageConsumer {
         baseCommandCompiler.add("--diag_warning=225");
         baseCommandCompiler.add("--display_error_number");
         baseCommandCompiler.add("--diag_wrap=off");
-        baseCommandCompiler.add("--entry_point=code_start");
         baseCommandCompiler.add("--preproc_with_compile");
         baseCommandCompiler.add("--preproc_dependency=" + '\"' + filePrefix[0]+".pp" + '\"');
     } else {

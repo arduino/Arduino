@@ -161,68 +161,71 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 {
 
 
-// ensure data will fit into buffer
+	// ensure data will fit into buffer
 	if(TWI_BUFFER_LENGTH < length){
 		return 0;
 	}
 
-// initialize buffer iteration vars
+	// initialize buffer iteration vars
 	twi_masterBufferIndex = 0;
 	twi_masterBufferLength = length-1;
 
-// Configuring the Master in Master-Transmitter mode initially 
-do
-{
-while(I2caRegs.I2CSTR.bit.BB == 1); // Wait until the I2C bus is not busy
-I2caRegs.I2CSAR = address;          // Slave address
-I2caRegs.I2CCNT = length;           // count of number of bytes to be read from slave
+	// Configuring the Master in Master-Transmitter mode initially
+	while(I2caRegs.I2CSTR.bit.NACK == 1)
+	{
 
-// is the address copied from I2CSAR TO I2CDXR AND THEN TO I2CXTR ?? or should we directly copy the address to I2CDXR ??
+	while(I2caRegs.I2CSTR.bit.BB == 1); // Wait until the I2C bus is not busy
+	I2caRegs.I2CSAR = address;          // Slave address
+	I2caRegs.I2CCNT = length;           // count of number of bytes to be read from slave
 
-twi_slarw = 0;                        // bit to indicate read
-twi_slarw |= address << 1;
-twi_state = TWI_SND_START;            // send start condition
-I2caRegs.I2CMDR.all = 0x0620;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
+	// is the address copied from I2CSAR TO I2CDXR AND THEN TO I2CXTR ?? or should we directly copy the address to I2CDXR ??
 
-// should the control word be 0X0620 or 0x2620 ?? 
+	twi_slarw = 0;                        // bit to indicate read
+	twi_slarw |= address << 1;
+	twi_state = TWI_SND_START;            // send start condition
+	I2caRegs.I2CMDR.all = 0x0620;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
 
-while(I2caRegs.I2CSTR.bit.XRDY == 0); // Wait until the transmit register is ready
+	// should the control word be 0X0620 or 0x2620 ??
 
-I2caRegs.I2CDXR = twi_slarw; // Put the control byte [ address + r/w bit] into transmit register
+	while(I2caRegs.I2CSTR.bit.XRDY == 0); // Wait until the transmit register is ready
 
-while(I2caRegs.I2CSTR.bit.ARDY) 
-  { // wait for the transmission to finish
-    if(I2caRegs.I2CSTR.bit.NACK == 1) 
-     { // if we get a NACK from slave during this transmission
-       I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
-       break;
-     }
-  }
-} while(I2caRegs.I2CSTR.bit.NACK == 1);
+	I2caRegs.I2CDXR = twi_slarw; // Put the control byte [ address + r/w bit] into transmit register
 
-// Configuring the Master in Master-reciever  mode to start recieving data from slave
-twi_state =  TWI_MRX;   // Master reciever state
+	while(I2caRegs.I2CSTR.bit.ARDY)
+	{ // wait for the transmission to finish
+		if(I2caRegs.I2CSTR.bit.NACK == 1)
+		{ 	// if we get a NACK from slave during this transmission
+			I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
+			break;
+		}
+	}
 
-I2caRegs.I2CMDR.bit.STP = 1; // Set a  stop bit. Because we need to change to non repeat mode. 
-I2caRegs.I2CMDR.bit.TRX = 0; // set master as reciever
-I2caRegs.I2CMDR.bit.FDF = 1; // support free data format
+	}
+
+	// Configuring the Master in Master-reciever  mode to start recieving data from slave
+	twi_state =  TWI_MRX;   // Master reciever state
+
+	I2caRegs.I2CMDR.bit.STP = 1; // Set a  stop bit. Because we need to change to non repeat mode.
+	I2caRegs.I2CMDR.bit.TRX = 0; // set master as reciever
+	I2caRegs.I2CMDR.bit.FDF = 1; // support free data format
 
 
-while ( i < length)
-{
-while(I2caRegs.I2CSTR.bit.RRDY != 1);
-twi_masterBuffer[twi_masterBufferIndex++] = I2caRegs.I2CDRR;
-i++;
-}
+	while ( i < length)
+	{
+		while(I2caRegs.I2CSTR.bit.RRDY != 1);
+		twi_masterBuffer[twi_masterBufferIndex++] = I2caRegs.I2CDRR;
+		i++;
+	}
 
-if (i== length)
-I2caRegs.I2CMDR.bit.NACKMOD = 1; // sending a NACK after last byte has been recieved.
+	if (i== length){
+		I2caRegs.I2CMDR.bit.NACKMOD = 1; // sending a NACK after last byte has been recieved.
+	}
 
-for(i = 0; i < length; ++i){
+	for(i = 0; i < length; ++i){
 		data[i] = twi_masterBuffer[i];
 	}
 
-return length;
+	return length;
 }
 
 //**********************************************************************************************************************************************

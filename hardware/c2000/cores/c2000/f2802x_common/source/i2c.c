@@ -37,8 +37,9 @@
 //! otherwise.
 //
 //*****************************************************************************
-#ifdef DEBUG
+#ifndef NDEBUG
 bool_t I2C_isHandleValid(I2C_Handle i2cHandle)
+
 {
     return ((i2cHandle == (I2C_Handle) &I2caRegs));
 }
@@ -540,7 +541,7 @@ I2C_IntSource_e I2C_getIntSource(I2C_Handle i2cHandle)
     I2C_Obj *i2c = (I2C_Obj *)i2cHandle;
 
     // Return the i2c status 
-    return (i2c->I2CISRC);
+    return ((I2C_IntSource_e)(i2c->I2CISRC));
 }
 
 //*****************************************************************************
@@ -565,7 +566,7 @@ I2C_Status_e I2C_getStatus(I2C_Handle i2cHandle)
     I2C_Obj *i2c = (I2C_Obj *)i2cHandle;
 
     // Return the i2c status 
-    return (i2c->I2CSTR);
+    return ((I2C_Status_e)(i2c->I2CSTR));
 }
 //
 ////*****************************************************************************
@@ -752,7 +753,7 @@ void I2C_setSlaveAddress(I2C_Handle i2cHandle, const uint16_t slaveAddress)
     
 
     // Must enable the device before doing anything else.
-    I2C_enableSlave(i2cHandle);
+    I2C_setSlave(i2cHandle);
 
     // Set up the slave address.
     i2c->I2COAR = slaveAddress;

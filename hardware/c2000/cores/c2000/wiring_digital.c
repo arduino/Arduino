@@ -38,13 +38,10 @@ void pinMode(uint8_t pin, uint8_t mode)
 
 	volatile uint32_t *dir;
 	volatile uint8_t *sel;
-	volatile uint32_t *out;
 	volatile uint32_t *pud;
-	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
 	dir = portDirRegister(port);
 	sel = portSelRegister(port);
-	out = portOutputRegister(port);
 	pud = portPullupRegister(port);
 
 	if (port == NOT_A_PORT) return;
@@ -79,14 +76,11 @@ void pinMode_int(uint8_t pin, uint8_t mode)
 	uint8_t port = digitalPinToPort(pin);
 
 	volatile uint32_t *dir;
-//	volatile uint8_t *ren;
 	volatile uint32_t *out;
-//	volatile uint8_t *sel;
 
 	if (port == NOT_A_PORT) return;
 
 	dir = portDirRegister(port);
-//	ren = portRenRegister(port);
 	out = portOutputRegister(port);
 
 	if (mode & OUTPUT) {
@@ -95,50 +89,15 @@ void pinMode_int(uint8_t pin, uint8_t mode)
 		*dir &= ~bit;
 		if (mode & INPUT_PULLUP) {
                 *out |= bit;
-//                *ren |= bit;
         }
 	}
-
-//	#if (defined(P1SEL_) || defined(P1SEL))
-//	sel = portSel0Register(port);	/* get the port function select register address */
-//	if (mode & PORT_SELECTION0) {
-//		*sel |= bit;
-//    } else {
-//		*sel &= ~bit;
-//	}
-//	#if (defined(P1SEL2_) || defined(P1SEL2))
-//	sel = portSel2Register(port);	/* get the port function select register address */
-//	if (mode & PORT_SELECTION1) {
-//		*sel |= bit;
-//    } else {
-//		*sel &= ~bit;
-//	}
-//	#endif
-//	#endif
-//
-//	#if (defined(P1SEL0_) || defined(P1SEL0))
-//	sel = portSel0Register(port);	/* get the port function select register address */
-//	if (mode & PORT_SELECTION0) {
-//		*sel |= bit;
-//    } else {
-//		*sel &= ~bit;
-//	}
-//	#if (defined(P1SEL1_) || defined(P1SEL1))
-//	sel = portSel1Register(port);	/* get the port function select register address */
-//	if (mode & PORT_SELECTION1) {
-//		*sel |= bit;
-//    } else {
-//		*sel &= ~bit;
-//	}
-//	#endif
-//	#endif
 
 }
 
 int digitalRead(uint8_t pin)
 {
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
+	uint32_t bit = digitalPinToBitMask(pin);
+	uint32_t port = digitalPinToPort(pin);
 
 	if (port == NOT_A_PORT) return LOW;
 
@@ -148,10 +107,9 @@ int digitalRead(uint8_t pin)
 
 void digitalWrite(uint8_t pin, uint8_t val)
 {
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
+	uint32_t bit = digitalPinToBitMask(pin);
+	uint32_t port = digitalPinToPort(pin);
 	volatile uint32_t *out;
-	volatile uint32_t *sel;
 
 	if (port == NOT_A_PORT) return;
 

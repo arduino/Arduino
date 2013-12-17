@@ -88,7 +88,7 @@
 		<link>
 			<name>Wire.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/Wire.cpp</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/libraries/Wire/Wire.cpp</locationURI>
 		</link>
 		<link>
 			<name>main.cpp</name>
@@ -108,7 +108,7 @@
 		<link>
 			<name>twi.c</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/cores/c2000/twi.c</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/libraries/Wire/utility/twi.c</locationURI>
 		</link>
 		<link>
 			<name>wiring.c</name>

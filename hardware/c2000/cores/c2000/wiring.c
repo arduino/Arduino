@@ -32,6 +32,9 @@
 
 void initClocks(void);
 
+extern void DSP28x_usDelay(Uint32 Count);
+extern void analogInit(void);
+
 interrupt void rsvd_ISR(void)      // For test
 {
   asm ("      ESTOP0");
@@ -288,12 +291,7 @@ unsigned long millis()
 /* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(uint32_t us)
 {
-	long double test1, test2, test3, test4;
-	test1 = ((long double) us * 1000.0L);
-	test2 = (const long double)(1000000000/F_CPU);
-	test3 =	((test1 / test2) - 9.0L) / 5.0L;
-//	DELAY_US(us);
-	DSP28x_usDelay((unsigned long)test3);
+	DSP28x_usDelay(((((long double) us * 1000.0L) / ((long double)(1000000000/F_CPU))) - 9.0L) / 5.0L);
 }
 
 /* (ab)use the WDT */

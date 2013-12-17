@@ -52,7 +52,8 @@ void analogReference(uint16_t mode)
 }
 
 
-uint16_t analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
+uint32_t analog_period = F_CPU/490;
+uint16_t analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 //TODO: Can be a lot more efficiant.
 //      - lower clock rated / input devider to conserve Energia.
@@ -307,15 +308,10 @@ void analogWrite(uint8_t pin, int val)
     else
     {
 
-        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
         uint8_t port = digitalPinToPort(pin);   // get pin port
-        volatile uint8_t *sel;
                 
         if (port == NOT_A_PORT) 
             return; // pin on timer?
-               
-//	        sel = portSelRegister(port); // get the port function select register address
-		*sel |= bit;                 // set bit in pin function select register  
 
 		EALLOW;
         switch(digitalPinToTimer(pin)) {                // which pwm?

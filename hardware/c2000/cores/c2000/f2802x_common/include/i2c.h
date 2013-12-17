@@ -390,6 +390,10 @@ typedef struct I2C_Obj  *I2C_Handle;
 void I2C_setupClock(I2C_Handle i2cHandle, const uint16_t preScalar,
         const  uint16_t bitTimeLow, const uint16_t bitTimeHigh);
 
+#ifndef NDEBUG
+extern bool_t I2C_isHandleValid(I2C_Handle i2cHandle);
+#endif
+
 ////*****************************************************************************
 //// Interrupt defines.
 ////*****************************************************************************
