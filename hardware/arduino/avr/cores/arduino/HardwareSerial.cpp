@@ -301,6 +301,15 @@ size_t HardwareSerial::write(uint8_t c)
 {
   bool interrupts_enabled = bit_is_set(SREG, SREG_I);
   ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    // If the buffer and the data register is empty, just write the byte
+    // to the data register and be done. This shortcut helps
+    // significantly improve the effective datarate at high (>
+    // 500kbit/s) bitrates, where interrupt overhead becomes a slowdown.
+    if (_tx_buffer_head == _tx_buffer_tail && bit_is_set(*_ucsra, UDRE0)) {
+      *_udr = c;
+      sbi(*_ucsra, TXC0);
+      return 1;
+    }
     int i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
 
     // If the output buffer is full, there's nothing for it other than to 
