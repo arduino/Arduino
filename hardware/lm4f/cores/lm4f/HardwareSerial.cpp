@@ -7,6 +7,10 @@
  *
  *
  ***********************************************************************
+
+ 2013-12-23 Limited size for RX and TX buffers, by spirilis
+
+ 
   Derived from:
   HardwareSerial.cpp - Hardware serial library for Wiring
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
@@ -295,7 +299,7 @@ void HardwareSerial::end()
 int HardwareSerial::available(void)
 {
     return((rxWriteIndex >= rxReadIndex) ?
-		(rxWriteIndex - rxReadIndex) : SERIAL_BUFFER_SIZE - (rxReadIndex - rxWriteIndex));
+		(rxWriteIndex - rxReadIndex) : rxBufferSize - (rxReadIndex - rxWriteIndex));
 }
 
 int HardwareSerial::peek(void)
@@ -326,7 +330,7 @@ int HardwareSerial::peek(void)
 int HardwareSerial::read(void)
 {
 	unsigned char cChar = peek();
-    rxReadIndex = ((rxReadIndex) + 1) % SERIAL_BUFFER_SIZE;
+    rxReadIndex = ((rxReadIndex) + 1) % rxBufferSize;
 	return(cChar);
 }
 
@@ -357,7 +361,7 @@ size_t HardwareSerial::write(uint8_t c)
     {
         while (TX_BUFFER_FULL);
         txBuffer[txWriteIndex] = '\r';
-		txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
+		txWriteIndex = (txWriteIndex + 1) % txBufferSize;
         numTransmit ++;
     }
 */
@@ -366,7 +370,7 @@ size_t HardwareSerial::write(uint8_t c)
     //
     while (TX_BUFFER_FULL);
     txBuffer[txWriteIndex] = c;
-    txWriteIndex = (txWriteIndex + 1) % SERIAL_BUFFER_SIZE;
+    txWriteIndex = (txWriteIndex + 1) % txBufferSize;
     numTransmit ++;
 
     //
@@ -428,7 +432,7 @@ void HardwareSerial::UARTIntHandler(void){
 
             rxBuffer[rxWriteIndex] =
                 (unsigned char)(lChar & 0xFF);
-            rxWriteIndex = ((rxWriteIndex) + 1) % SERIAL_BUFFER_SIZE;
+            rxWriteIndex = ((rxWriteIndex) + 1) % rxBufferSize;
 
             //
             // If we wrote anything to the transmit buffer, make sure it actually
