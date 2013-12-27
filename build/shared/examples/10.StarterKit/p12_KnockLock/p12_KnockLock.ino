@@ -130,6 +130,9 @@ void loop(){
       // unlock the box
       locked = false;
 
+      // reset the number of valid knocks
+      numberOfKnocks = 0;
+
       // move the servo to the unlocked position
       myServo.write(0);
 
