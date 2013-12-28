@@ -2063,11 +2063,10 @@ public class Sketch {
     for (int i = 0; i < c.length; i++) {
       if (((c[i] >= '0') && (c[i] <= '9')) ||
           ((c[i] >= 'a') && (c[i] <= 'z')) ||
-          ((c[i] >= 'A') && (c[i] <= 'Z'))) {
+          ((c[i] >= 'A') && (c[i] <= 'Z')) ||
+          (c[i] == '_') || (c[i] == '-')) {
         buffer.append(c[i]);
 
-      } else {
-        buffer.append('_');
       }
     }
     // let's not be ridiculous about the length of filenames.
