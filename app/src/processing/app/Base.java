@@ -950,6 +950,9 @@ public class Base {
   }
 
 
+  // NOTE(remoun): This method is called whenever the Sketch > Import Library
+  // menu is expanded, so make sure not to break that completely.
+  // Showing an error dialog and skipping invalid entries is fine.
   public void rebuildImportMenu(final Editor editor) {
     JMenu importMenu = Editor.importMenu;
     importMenu.removeAll();
