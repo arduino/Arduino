@@ -950,15 +950,16 @@ public class Base {
   }
 
 
-  public void rebuildImportMenu(JMenu importMenu, final Editor editor) {
+  public void rebuildImportMenu(final Editor editor) {
+    JMenu importMenu = Editor.importMenu;
     importMenu.removeAll();
-    
+
     JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Base.this.handleAddLibrary(editor);
         Base.this.onBoardOrPortChange();
-        Base.this.rebuildImportMenu(Editor.importMenu, editor);
+        Base.this.rebuildImportMenu(editor);
         Base.this.rebuildExamplesMenu(Editor.examplesMenu);
       }
     });

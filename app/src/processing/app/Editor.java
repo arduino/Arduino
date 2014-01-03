@@ -632,12 +632,12 @@ public class Editor extends JFrame implements RunnerListener {
       importMenu.addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
           if (e.getStateChange() == ItemEvent.SELECTED) {
-            base.rebuildImportMenu(importMenu, Editor.this);
+            base.rebuildImportMenu(Editor.this);
           }
         }
       });
       // Rebuild the import menu here, so it's faster the first time it expands.
-      base.rebuildImportMenu(importMenu, this);
+      base.rebuildImportMenu(this);
     }
     sketchMenu.add(importMenu);
 
