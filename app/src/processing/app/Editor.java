@@ -629,6 +629,14 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (importMenu == null) {
       importMenu = new JMenu(_("Import Library..."));
+      importMenu.addItemListener(new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+          if (e.getStateChange() == ItemEvent.SELECTED) {
+            base.rebuildImportMenu(importMenu, Editor.this);
+          }
+        }
+      });
+      // Rebuild the import menu here, so it's faster the first time it expands.
       base.rebuildImportMenu(importMenu, this);
     }
     sketchMenu.add(importMenu);
