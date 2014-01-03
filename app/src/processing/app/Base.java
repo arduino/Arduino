@@ -1016,8 +1016,7 @@ public class Base {
     }  
   }
 
-  
-  public void rebuildBoardsMenu(JMenu menu, final Editor editor) {
+  public void rebuildBoardsMenu(JMenu menu) {
     //System.out.println("rebuilding boards menu");
     menu.removeAll();      
     ButtonGroup group = new ButtonGroup();
