@@ -23,6 +23,7 @@
 package processing.app.macosx;
 
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
@@ -42,6 +43,12 @@ import processing.core.PConstants;
  */
 public class Platform extends processing.app.Platform {
 
+  public Platform() {
+    // workaround for in OS X port of openJdk: 
+    //http://mail.openjdk.java.net/pipermail/macosx-port-dev/2013-January/005261.html
+    Toolkit.getDefaultToolkit();
+  }
+  
   public void setLookAndFeel() throws Exception {
     // Use the Quaqua L & F on OS X to make JFileChooser less awful
     UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");

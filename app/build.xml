@@ -44,7 +44,7 @@
 	   encoding="UTF-8"
 	   includeAntRuntime="false"
 	   debug="true"
-	   classpath="../core/core.jar; ${env.JAVA_HOME}/lib/tools.jar; lib/ant.jar; lib/ant-launcher.jar; lib/apple.jar; lib/ecj.jar; lib/jna.jar; lib/RXTXcomm.jar" />
+	   classpath="../core/core.jar; ${env.JAVA_HOME}/lib/tools.jar; lib/ant.jar; lib/ant-launcher.jar; lib/apple.jar; lib/ecj.jar; lib/jna.jar; lib/nrjavaserial.jar" />
     <copy todir="bin" overwrite="true" verbose="true">
       <fileset dir="src" includes="**/*.properties" />
     </copy>

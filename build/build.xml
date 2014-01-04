@@ -26,7 +26,7 @@
     <include name="app/pde.jar" />
     <include name="app/lib/ecj.jar" />
     <include name="app/lib/jna.jar" />
-    <include name="app/lib/RXTXcomm.jar" />
+    <include name="app/lib/nrjavaserial.jar" />
     <include name="app/lib/ant.jar" />
     <include name="app/lib/ant-launcher.jar" />
   </fileset>
