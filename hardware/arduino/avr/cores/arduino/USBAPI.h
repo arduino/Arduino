@@ -123,11 +123,12 @@ extern Mouse_ Mouse;
 #define KEY_F12				0xCD
 
 //	Low level key report: up to 6 keys and shift, ctrl etc at once
+#define KEYREPORT_KEYCOUNT	0x06
 typedef struct
 {
 	uint8_t modifiers;
 	uint8_t reserved;
-	uint8_t keys[6];
+	uint8_t keys[KEYREPORT_KEYCOUNT];
 } KeyReport;
 
 class Keyboard_ : public Print
