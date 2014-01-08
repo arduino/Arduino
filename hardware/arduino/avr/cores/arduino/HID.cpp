@@ -43,6 +43,9 @@ Keyboard_ Keyboard;
 #define RAWHID_TX_SIZE 64
 #define RAWHID_RX_SIZE 64
 
+#define HID_REPORTID_MOUSE (1)
+#define HID_REPORTID_KEYBOARD (2)
+#define HID_REPORTID_RAWHID (3)
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
 	
@@ -52,7 +55,7 @@ const u8 _hidReportDescriptor[] = {
     0xa1, 0x01,                    // COLLECTION (Application)
     0x09, 0x01,                    //   USAGE (Pointer)
     0xa1, 0x00,                    //   COLLECTION (Physical)
-    0x85, 0x01,                    //     REPORT_ID (1)
+    0x85, HID_REPORTID_MOUSE,      //     REPORT_ID (1)
     0x05, 0x09,                    //     USAGE_PAGE (Button)
     0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
     0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
@@ -80,7 +83,7 @@ const u8 _hidReportDescriptor[] = {
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 47
     0x09, 0x06,                    // USAGE (Keyboard)
     0xa1, 0x01,                    // COLLECTION (Application)
-    0x85, 0x02,                    //   REPORT_ID (2)
+    0x85, HID_REPORTID_KEYBOARD,   //   REPORT_ID (2)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
    
 	0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
@@ -112,7 +115,7 @@ const u8 _hidReportDescriptor[] = {
 	0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
 
 	0xA1, 0x01,				// Collection 0x01
-    0x85, 0x03,             // REPORT_ID (3)
+	0x85, HID_REPORTID_RAWHID,		// REPORT_ID (3)
 	0x75, 0x08,				// report size = 8 bits
 	0x15, 0x00,				// logical minimum = 0
 	0x26, 0xFF, 0x00,		// logical maximum = 255
@@ -228,7 +231,7 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	m[1] = x;
 	m[2] = y;
 	m[3] = wheel;
-	HID_SendReport(1,m,4);
+	HID_SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
 }
 
 void Mouse_::buttons(uint8_t b)
@@ -275,7 +278,7 @@ void Keyboard_::end(void)
 
 void Keyboard_::sendReport(KeyReport* keys)
 {
-	HID_SendReport(2,keys,sizeof(KeyReport));
+	HID_SendReport(HID_REPORTID_KEYBOARD,keys,sizeof(*keys));
 }
 
 extern
