@@ -90,7 +90,8 @@ const u8 _hidReportDescriptor[] = {
     0x85, HID_REPORTID_KEYBOARD,   //   REPORT_ID (2)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
    
-	0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
+    // Keyboard Modifiers (shift, alt, ...)
+    0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
     0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
     0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
@@ -101,15 +102,15 @@ const u8 _hidReportDescriptor[] = {
     0x95, 0x01,                    //   REPORT_COUNT (1)
     0x75, 0x08,                    //   REPORT_SIZE (8)
     0x81, 0x03,                    //   INPUT (Cnst,Var,Abs)
-    
-	0x95, 0x06,                    //   REPORT_COUNT (6)
+
+    // Keyboard keys
+    0x95, 0x06,                    //   REPORT_COUNT (6)
     0x75, 0x08,                    //   REPORT_SIZE (8)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-    0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
+    0x26, 0xDF, 0x00,              //   LOGICAL_MAXIMUM (239)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-    
-	0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
-    0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
+    0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
+    0x29, 0xDF,                    //   USAGE_MAXIMUM (Left Control - 1)
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
     0xc0,                          // END_COLLECTION
 
