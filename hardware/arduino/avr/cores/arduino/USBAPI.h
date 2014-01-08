@@ -122,6 +122,30 @@ extern Mouse_ Mouse;
 #define KEY_F11				0xCC
 #define KEY_F12				0xCD
 
+
+// System Control values for Keyboard_::systemControl()
+//  these defines come from the HID usage table "Generic Desktop Page (0x01)"
+//  in the USB standard document "HID Usage Tables" (HUT1_12v2.pdf)
+//  Currently this list contains only OSC (one shot control) values,
+//  the implementation of systemControl will have to be changed when
+//  adding OOC or RTC values.
+#define SYSTEM_CONTROL_POWER_DOWN              1
+#define SYSTEM_CONTROL_SLEEP                   2
+#define SYSTEM_CONTROL_WAKEUP                  3
+#define SYSTEM_CONTROL_COLD_RESTART            4
+#define SYSTEM_CONTROL_WARM_RESTART            5
+#define SYSTEM_CONTROL_DOCK                    6
+#define SYSTEM_CONTROL_UNDOCK                  7
+#define SYSTEM_CONTROL_SPEAKER_MUTE            8
+#define SYSTEM_CONTROL_HIBERNATE               9
+#define SYSTEM_CONTROL_DISPLAY_INVERT         10
+#define SYSTEM_CONTROL_DISPLAY_INTERNAL       11
+#define SYSTEM_CONTROL_DISPLAY_EXTERNAL       12
+#define SYSTEM_CONTROL_DISPLAY_BOTH           13
+#define SYSTEM_CONTROL_DISPLAY_DUAL           14
+#define SYSTEM_CONTROL_DISPLAY_TOGGLE_INT_EXT 15
+#define SYSTEM_CONTROL_DISPLAY_SWAP           16
+
 //	Low level key report: up to 6 keys and shift, ctrl etc at once
 #define KEYREPORT_KEYCOUNT	0x06
 typedef struct
@@ -144,6 +168,7 @@ public:
 	virtual size_t press(uint8_t k);
 	virtual size_t release(uint8_t k);
 	virtual void releaseAll(void);
+	virtual size_t systemControl(uint8_t k);
 };
 extern Keyboard_ Keyboard;
 
