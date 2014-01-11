@@ -113,6 +113,7 @@ public:
 	void end(void);
 	void click(uint8_t b = MOUSE_LEFT);
 	void move(signed char x, signed char y, signed char wheel = 0);	
+	void moveAbs(int16_t x, int16_t y, int16_t wheel); // all parameters have the range of -32768 to 32767 and must be scaled to screen pixels
 	void press(uint8_t b = MOUSE_LEFT);		// press LEFT by default
 	void release(uint8_t b = MOUSE_LEFT);	// release LEFT by default
 	bool isPressed(uint8_t b = MOUSE_LEFT);	// check LEFT by default
