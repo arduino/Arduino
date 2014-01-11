@@ -95,6 +95,8 @@ typedef uint8_t byte;
 
 void init(void);
 
+#include "toggle.cpp"
+
 inline void toggle (bool&, bool change = true);
 
 void pinMode(uint8_t, uint8_t);
