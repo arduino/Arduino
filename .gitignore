@@ -28,7 +28,6 @@ build/linux/libastylej*
 test-bin
 *.iml
 .idea
-
+.DS_Store
 hardware/arduino/avr/libraries/Bridge/examples/XivelyClient/passwords.h
-
-hardware/arduino/avr/libraries/Bridge/examples/.DS_Store
+avr-toolchain-*.zip
