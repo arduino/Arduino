@@ -118,6 +118,7 @@ public class Compiler implements MessageConsumer {
    sketch.setCompilingProgress(20);
    List includePaths = new ArrayList();
    includePaths.add(corePath);
+   includePaths.add(buildPath);
    if (variantPath != null) includePaths.add(variantPath);
    for (File file : sketch.getImportedLibraries()) {
      includePaths.add(file.getPath());
