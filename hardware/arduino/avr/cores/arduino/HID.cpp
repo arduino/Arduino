@@ -50,6 +50,7 @@ Keyboard_ Keyboard;
 #define HID_REPORTID_RAWHID (3)
 #define HID_REPORTID_SYSTEMCONTROL (4)
 #define HID_REPORTID_MOUSE_ABS (5)
+#define HID_REPORTID_CONSUMERCONTROL (6)
 
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
@@ -197,6 +198,25 @@ const u8 _hidReportDescriptor[] = {
 	0x91, 0x02,				// Output (array)
 	0xC0					// end collection
 #endif
+        0x05, 0x0c,                     // USAGE_PAGE (Consumer Devices) 
+         0x09, 0x01,                    // USAGE (Consumer Control) 
+         0xa1, 0x01,                    // COLLECTION (Application) 
+         0x85, HID_REPORTID_CONSUMERCONTROL,                    // REPORT_ID (6) 
+         0x09, 0xe2,                    // USAGE (Mute) 0x01 
+         0x09, 0xe9,                    // USAGE (Volume Up) 0x02 
+         0x09, 0xea,                    // USAGE (Volume Down) 0x03 
+         0x09, 0xcd,                    // USAGE (Play/Pause) 0x04 
+         0x09, 0xb7,                    // USAGE (Stop) 0x05 
+         0x09, 0xb6,                    // USAGE (Scan Previous Track) 0x06 
+         0x09, 0xb5,                    // USAGE (Scan Next Track) 0x07 
+         0x09, 0xb8,                    // USAGE (Eject) 0x08
+         0x15, 0x00,                    // LOGICAL_MINIMUM (0) 
+         0x25, 0x01,                    // LOGICAL_MAXIMUM (1) 
+         0x75, 0x01,                    // REPORT_SIZE (1) 
+         0x95, 0x0f,                    // REPORT_COUNT (8) 
+         0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+         0xc0, 
+
 };
 
 extern const HIDDescriptor _hidInterface PROGMEM;
@@ -584,6 +604,39 @@ size_t Keyboard_::systemControl(uint8_t k)
 		return 0;
 	}
 }
+
+// Consumer Control
+//  k is one of the CONSUMER_CONTROL defines which come from the HID usage table "Consumer Devices Page (0x0c)"
+// in "HID Usage Tables" (HUT1_12v2.pdf)
+size_t Keyboard_::consumerControl(uint8_t k) 
+{
+	if(k <= 8)
+	{
+		u16 mask = 0;
+		u8 m[2];
+
+		if(k > 0)
+		{
+			mask = 1 << (k - 1);
+		}
+
+		m[0] = LSB(mask);
+		m[1] = MSB(mask);
+		HID_SendReport(HID_REPORTID_CONSUMERCONTROL,m,sizeof(m));
+
+		// these are all OSCs, so send a clear to make it possible to send it again later
+		m[0] = 0;
+		m[1] = 0;
+		HID_SendReport(HID_REPORTID_CONSUMERCONTROL,m,sizeof(m));
+		return 1;
+	}
+	else
+	{
+		setWriteError();
+		return 0;
+	}
+}
+
 
 // release() takes the specified key out of the persistent key report and
 // sends the report.  This tells the OS the key is no longer pressed and that
