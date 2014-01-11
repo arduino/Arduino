@@ -30,11 +30,29 @@
 void MspFlashClass::erase(unsigned char *flash)
 {
   disableWatchDog();        // Disable WDT
+#ifdef __MSP430_HAS_FLASH2__
   FCTL2 = FWKEY+FLASHCLOCK; // SMCLK/2
   FCTL3 = FWKEY;            // Clear LOCK
   FCTL1 = FWKEY+ERASE;      //Enable segment erase
   *flash = 0;               // Dummy write, erase Segment
   FCTL3 = FWKEY+LOCK;       // Done, set LOCK
+#else
+  while (FCTL3 & BUSY)      // Wait for till busy flag is 0
+  {
+    __no_operation();
+  }
+
+  FCTL3 = FWKEY;            // Clear Lock bit
+  FCTL1 = FWKEY+ERASE;      // Set Erase bit
+  *flash = 0;               // Dummy write, erase Segment
+
+  while (FCTL3 & BUSY)      // Wait for till busy flag is 0
+  {
+    __no_operation();
+  }
+
+  FCTL3 = FWKEY+LOCK;       // Set LOCK bit
+#endif
   enableWatchDog();         // Enable WDT
 }
 
@@ -49,13 +67,22 @@ void MspFlashClass::read(unsigned char *flash, unsigned char *dest, int len)
 void MspFlashClass::write(unsigned char *flash, unsigned char *src, int len)
 {
  disableWatchDog();        // Disable WDT
+#ifdef __MSP430_HAS_FLASH2__
  FCTL2 = FWKEY+FLASHCLOCK; // SMCLK/2 
  FCTL3 = FWKEY;            // Clear LOCK
  FCTL1 = FWKEY+WRT;        // Enable write
- while(len--)      // Copy data
+ while(len--)              // Copy data
    *(flash++) = *(src++);
  FCTL1 = FWKEY;            //Done. Clear WRT
  FCTL3 = FWKEY+LOCK;       // Set LOCK
+#else
+ FCTL3 = FWKEY;            // Clear Lock bit
+ FCTL1 = FWKEY+WRT;        // Set Erase bit
+ while(len--)              // Copy data
+   *(flash++) = *(src++);
+ FCTL1 = FWKEY;            // Done. Clear WRT
+ FCTL3 = FWKEY+LOCK;       // Set LOCK
+#endif
  enableWatchDog();         // Enable WDT
 }
 

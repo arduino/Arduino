@@ -55,13 +55,24 @@
 #define MSP_FLASH_h
 
 #define SEGMENT_SIZE 512 // main segment size (smallest flasheable area)
+#ifdef __MSP430_HAS_FLASH2__
 #define INFO_SIZE 64 // information flah sizes (SEG_A to SEG_D)
+#else
+#define INFO_SIZE 128 // information flah sizes (SEG_A to SEG_D)
+#endif
 
+#ifdef __MSP430_HAS_FLASH2__
 // segment addresses of 64 byte segments
 #define SEGMENT_D ((unsigned char*)0x1000)
 #define SEGMENT_C ((unsigned char*)0x1000+64)
 #define SEGMENT_B ((unsigned char*)0x1000+128)
 // #define SEGMENT_A ((unsigned char*)0x1000+192) // NOTE: Contains chip calibarion data, do not change or erase (the protection bit should prevent this happening)
+#else
+#define SEGMENT_D ((unsigned char*)0x1800)
+#define SEGMENT_C ((unsigned char*)0x1800+128)
+#define SEGMENT_B ((unsigned char*)0x1800+256)
+// #define SEGMENT_A ((unsigned char*)0x1800+348) // NOTE: Contains chip calibarion data, do not change or erase (the protection bit should prevent this happening)
+#endif
 
 // Segment start addresses of 512 byte segments 0..63 (depending on device flash size)
 #define SEGMENT(x) ( (unsigned char*) 0xFFFF - (x)*SEG_SIZE )
