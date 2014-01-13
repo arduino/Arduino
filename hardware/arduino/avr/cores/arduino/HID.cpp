@@ -24,7 +24,7 @@
 
 #if defined(USBCON)
 #ifdef HID_ENABLED
-//#define MOUSE_ABS_ENABLED
+#define HID_MOUSE_ABS_ENABLED
 //#define RAWHID_ENABLED
 
 //	Singletons for mouse and keyboard
