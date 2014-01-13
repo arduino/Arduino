@@ -188,8 +188,11 @@ public:
 	virtual size_t write(uint8_t k);
 	virtual size_t press(uint8_t k);
 	virtual size_t release(uint8_t k);
-	virtual size_t pressKeycode(uint8_t k, uint8_t send);
-	virtual size_t releaseKeycode(uint8_t k, uint8_t send);
+	virtual size_t writeKeycode(uint8_t k);
+	virtual size_t pressKeycode(uint8_t k);
+	virtual size_t releaseKeycode(uint8_t k);
+	virtual size_t addKeycodeToReport(uint8_t k);
+	virtual size_t removeKeycodeFromReport(uint8_t k);
 	virtual void releaseAll(void);
 	virtual size_t systemControl(uint8_t k);
     virtual size_t consumerControl(uint8_t k);
