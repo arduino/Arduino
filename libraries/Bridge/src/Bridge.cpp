@@ -17,7 +17,6 @@
 */
 
 #include "Bridge.h"
-#include <util/crc16.h>
 
 BridgeClass::BridgeClass(Stream &_stream) :
   index(0), stream(_stream), started(false), max_retries(0) {
@@ -58,9 +57,9 @@ void BridgeClass::begin() {
 
     // Reset the brigde to check if it is running
     uint8_t cmd[] = {'X', 'X', '1', '0', '0'};
-    uint8_t res[1];
+    uint8_t res[4];
     max_retries = 50;
-    uint16_t l = transfer(cmd, 5, res, 1);
+    uint16_t l = transfer(cmd, 5, res, 4);
     if (l == TRANSFER_TIMEOUT) {
       // Bridge didn't start...
       // Maybe the board is starting-up?
@@ -71,6 +70,14 @@ void BridgeClass::begin() {
     }
     if (res[0] != 0)
       while (true);
+
+    // Detect bridge version
+    if (l == 4) {
+      bridgeVersion = (res[1]-'0')*100 + (res[2]-'0')*10 + (res[3]-'0');
+    } else {
+      // Bridge v1.0.0 didn't send any version info
+      bridgeVersion = 100;
+    }
 
     max_retries = 50;
     return;
@@ -94,11 +101,23 @@ unsigned int BridgeClass::get(const char *key, uint8_t *value, unsigned int maxl
   return l;
 }
 
-void BridgeClass::crcUpdate(uint8_t c) {
+#if defined(ARDUINO_ARCH_AVR)
+// AVR use an optimized implementation of CRC
+#include <util/crc16.h>
+#else
+// Generic implementation for non-AVR architectures
+uint16_t _crc_ccitt_update(uint16_t crc, uint8_t data)
+{
+  data ^= crc & 0xff;
+  data ^= data << 4;
+  return ((((uint16_t)data << 8) | ((crc >> 8) & 0xff)) ^
+          (uint8_t)(data >> 4) ^
+          ((uint16_t)data << 3));
+}
+#endif
 
+void BridgeClass::crcUpdate(uint8_t c) {
   CRC = _crc_ccitt_update(CRC, c);
-  //CRC = CRC ^ c;
-  //CRC = (CRC >> 8) + (CRC << 8);
 }
 
 void BridgeClass::crcReset() {

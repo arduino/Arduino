@@ -43,52 +43,52 @@
 #define D4 TKD4
 #define D5 TKD5
 
-static const uint8_t RX  = 0;
-static const uint8_t TX  = 1;
-static const uint8_t SDA = 2;
-static const uint8_t SCL = 3;
+#define RX  0
+#define TX  1
+#define SDA 2
+#define SCL 3
 
 // Map SPI port to 'new' pins D14..D17
-static const uint8_t SS   = 17;
-static const uint8_t MOSI = 16;
-static const uint8_t MISO = 14;
-static const uint8_t SCK  = 15;
+#define SS   17
+#define MOSI 16
+#define MISO 14
+#define SCK  15
 
 // Mapping of analog pins as digital I/O
 // A6-A11 share with digital pins
-static const uint8_t A0 = 18;
-static const uint8_t A1 = 19;
-static const uint8_t A2 = 20;
-static const uint8_t A3 = 21;
-static const uint8_t A4 = 22;
-static const uint8_t A5 = 23;
-static const uint8_t A6 = 24;	// D4
-static const uint8_t A7 = 25;	// D6
-static const uint8_t A8 = 26;	// D8
-static const uint8_t A9 = 27;	// D9
-static const uint8_t A10 = 28;	// D10
-static const uint8_t A11 = 29;	// D12
+#define A0  18
+#define A1  19
+#define A2  20
+#define A3  21
+#define A4  22
+#define A5  23
+#define A6  24  // D4
+#define A7  25  // D6
+#define A8  26  // D8
+#define A9  27  // D9
+#define A10 28  // D10
+#define A11 29  // D12
 
 // Specific Mapping for the Control Board
-static const uint8_t KEY 	= 18;  	// AD0
-static const uint8_t MUX_IN = 24; 	// ADC8 - A6
-static const uint8_t MUXA 	= 6;  	// D5 - TKD4
-static const uint8_t MUXB 	= 11;  	// D11
-static const uint8_t MUXC 	= 12;  	// D12 - TKD5
-static const uint8_t MUXD 	= 13;   // D13
-static const uint8_t BUZZ 	= 5;   	// D5
-static const uint8_t POT 	= 23;  	// AD5
-static const uint8_t DC_LCD = 10; 	// D10
-static const uint8_t LCD_CS = 9;  	// D9
-static const uint8_t RST_LCD = 7; 	// D6
-static const uint8_t CARD_CS = 8;   // D8
-static const uint8_t TKD0	 = 19;  // ADC6 - A1
-static const uint8_t TKD1	 = 20;  // ADC5 - A2
-static const uint8_t TKD2	 = 21;  // ADC4 - A3
-static const uint8_t TKD3	 = 22;  // ADC1 - A4
-static const uint8_t TKD4	 = 6;   // D5 - MUXA
-static const uint8_t TKD5	 = 12;  // D12 - MUXC
-static const uint8_t LED1	 = 17;  // D17 - RX_Led
+#define KEY     18  // AD0
+#define MUX_IN  24 	// ADC8 - A6
+#define MUXA    6  	// D5 - TKD4
+#define MUXB    11  // D11
+#define MUXC    12  // D12 - TKD5
+#define MUXD    13  // D13
+#define BUZZ    5   // D5
+#define POT     23  // AD5
+#define DC_LCD  10 	// D10
+#define LCD_CS  9  	// D9
+#define RST_LCD 7   // D6
+#define CARD_CS 8   // D8
+#define TKD0    19  // ADC6 - A1
+#define TKD1    20  // ADC5 - A2
+#define TKD2    21  // ADC4 - A3
+#define TKD3    22  // ADC1 - A4
+#define TKD4    6   // D5 - MUXA
+#define TKD5    12  // D12 - MUXC
+#define LED1    17  // D17 - RX_Led
 
 //	__AVR_ATmega32U4__ has an unusual mapping of pins to channels
 extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
@@ -280,4 +280,24 @@ const uint8_t PROGMEM analog_pin_to_channel_PGM[12] = {
 };
 
 #endif /* ARDUINO_MAIN */
+
+// These serial port names are intended to allow libraries and architecture-neutral
+// sketches to automatically default to the correct port name for a particular type
+// of use.  For example, a GPS module would normally connect to SERIAL_PORT_HARDWARE_OPEN,
+// the first hardware serial port whose RX/TX pins are not dedicated to another use.
+//
+// SERIAL_PORT_MONITOR        Port which normally prints to the Arduino Serial Monitor
+//
+// SERIAL_PORT_USBVIRTUAL     Port which is USB virtual serial
+//
+// SERIAL_PORT_LINUXBRIDGE    Port which connects to a Linux system via Bridge library
+//
+// SERIAL_PORT_HARDWARE       Hardware serial port, physical RX & TX pins.
+//
+// SERIAL_PORT_HARDWARE_OPEN  Hardware serial ports which are open for use.  Their RX & TX
+//                            pins are NOT connected to anything by default.
+#define SERIAL_PORT_MONITOR        Serial
+#define SERIAL_PORT_USBVIRTUAL     Serial
+#define SERIAL_PORT_HARDWARE       Serial1
+
 #endif /* Pins_Arduino_h */

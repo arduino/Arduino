@@ -130,6 +130,7 @@ uint32_t analogRead(uint32_t ulPin)
 #endif
 
 #if defined __SAM3X8E__ || defined __SAM3X8H__
+	static uint32_t latestSelectedChannel = -1;
 	switch ( g_APinDescription[ulPin].ulAnalogChannel )
 	{
 		// Handling ADC 12 bits channels
@@ -147,7 +148,12 @@ uint32_t analogRead(uint32_t ulPin)
 		case ADC11 :
 
 			// Enable the corresponding channel
-			adc_enable_channel( ADC, ulChannel );
+			if (ulChannel != latestSelectedChannel) {
+				adc_enable_channel( ADC, ulChannel );
+				if ( latestSelectedChannel != -1 )
+					adc_disable_channel( ADC, latestSelectedChannel );
+				latestSelectedChannel = ulChannel;
+			}
 
 			// Start the ADC
 			adc_start( ADC );
@@ -159,9 +165,6 @@ uint32_t analogRead(uint32_t ulPin)
 			// Read the value
 			ulValue = adc_get_latest_value(ADC);
 			ulValue = mapResolution(ulValue, ADC_RESOLUTION, _readResolution);
-
-			// Disable the corresponding channel
-			adc_disable_channel(ADC, ulChannel);
 
 			break;
 

@@ -58,6 +58,15 @@
  * _Nbr_16timers indicates how many 16 bit timers are available.
  */
 
+// Architecture specific include
+#if defined(ARDUINO_ARCH_AVR)
+#include "avr/ServoTimers.h"
+#elif defined(ARDUINO_ARCH_SAM)
+#include "sam/ServoTimers.h"
+#else
+#error "This library only supports boards with an AVR or SAM processor."
+#endif
+
 #define Servo_VERSION           2     // software version of this library
 
 #define MIN_PULSE_WIDTH       544     // the shortest pulse sent to a servo  

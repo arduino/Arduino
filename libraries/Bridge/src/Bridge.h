@@ -36,7 +36,7 @@ class BridgeClass {
     unsigned int get(const char *key, uint8_t *buff, unsigned int size);
     unsigned int get(const char *key, char *value, unsigned int maxlen)
     {
-      get(key, reinterpret_cast<uint8_t *>(value), maxlen);
+      return get(key, reinterpret_cast<uint8_t *>(value), maxlen);
     }
 
     // Trasnfer a frame (with error correction and response)
@@ -61,12 +61,18 @@ class BridgeClass {
       return transfer(buff1, len1, buff2, len2, NULL, 0, rxbuff, rxlen);
     }
 
+    uint16_t getBridgeVersion()
+    {
+      return bridgeVersion;
+    }
+
     static const int TRANSFER_TIMEOUT = 0xFFFF;
 
   private:
     uint8_t index;
     int timedRead(unsigned int timeout);
     void dropAll();
+    uint16_t bridgeVersion;
 
   private:
     void crcUpdate(uint8_t c);
