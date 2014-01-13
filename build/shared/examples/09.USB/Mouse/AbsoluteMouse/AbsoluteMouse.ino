@@ -1,6 +1,6 @@
 /* AbsoluteMouse.ino
  
-    For ATmega32U4 based boards (like the Leonardo and Micro
+    For ATmega32U4 based boards (like the Leonardo and Micro)
 
     * This code is an API demo for the USB HID Absolute Mouse positioning API.
       It does not require any circut external to your Arduino
