@@ -683,8 +683,8 @@ static inline void USB_ClockEnable()
 	}
 
 	// Some tests on specific versions of macosx (10.7.3), reported some
-	// strange behaviuors when the board is reset using the serial
-	// port touch at 1200 bps. This delay fixes this behaviour.
+	// strange behaviors when the board is reset using the serial
+	// port touch at 1200 bps. This delay fixes this behavior.
 	delay(1);
 	USBCON = (USBCON & ~(1<<FRZCLK)) | (1<<OTGPADE);	// start USB clock, enable VBUS Pad
 
