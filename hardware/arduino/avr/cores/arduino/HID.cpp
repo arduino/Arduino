@@ -533,9 +533,15 @@ uint8_t USBPutChar(uint8_t c);
  // to the persistent key report and sends the report.  Because of the way 
  // USB HID works, the host acts like the key remains pressed until we 
  // call releaseKeycode(), releaseAll(), or otherwise clear the report and resend.
- // When send is set to FALSE (= 0x00) no sendReport() is executed. This comes in
- // handy when combining key presses (e.g. SHIFT+A).
- size_t Keyboard_::pressKeycode(uint8_t k, uint8_t send) 
+ size_t Keyboard_::pressKeycode(uint8_t k)
+ {
+    if (!addKeycodeToReport(k)) {
+        return 0;
+    }
+	sendReport(&_keyReport);
+ }
+
+ size_t Keyboard_::addKeycodeToReport(uint8_t k)
  {
  	uint8_t index = 0;
  	uint8_t done = 0;
@@ -570,9 +576,6 @@ uint8_t USBPutChar(uint8_t c);
  		}
  	}
  	
- 	if (0 != send) {
- 		sendReport(&_keyReport);
- 	}
  	return 1;
  }
  
@@ -594,7 +597,7 @@ uint8_t USBPutChar(uint8_t c);
  				if (k & SHIFT) {
  					// it's a capital letter or other character reached with shift
  					// the left shift modifier
- 					pressKeycode(HID_KEYBOARD_LEFT_SHIFT, 0);
+ 					addKeycodeToReport(HID_KEYBOARD_LEFT_SHIFT);
  					k = k ^ SHIFT;
  				}
  			} else {
@@ -603,7 +606,7 @@ uint8_t USBPutChar(uint8_t c);
  		}
  	}
  	
- 	pressKeycode(k, 1);
+ 	pressKeycode(k);
  	return 1;
  }
  
@@ -676,7 +679,15 @@ size_t Keyboard_::consumerControl(uint8_t k)
 // it shouldn't be repeated any more.
 // When send is set to FALSE (= 0) no sendReport() is executed. This comes in
 // handy when combining key releases (e.g. SHIFT+A).
-size_t Keyboard_::releaseKeycode(uint8_t k, uint8_t send) 
+size_t Keyboard_::releaseKeycode(uint8_t k)
+{
+	if (!removeKeycodeFromReport(k)) {
+		return 0;
+	}
+	sendReport(&_keyReport);
+}
+
+size_t Keyboard_::removeKeycodeFromReport(uint8_t k)
 {
 	uint8_t indexA;
 	uint8_t indexB;
@@ -715,9 +726,6 @@ size_t Keyboard_::releaseKeycode(uint8_t k, uint8_t send)
 		}
 	}		
 	
-	if (send) {
-		sendReport(&_keyReport);
-	}
 	return 1;
 }
 
@@ -741,7 +749,7 @@ size_t Keyboard_::release(uint8_t k)
 				if ((k & SHIFT)) {
 					// it's a capital letter or other character reached with shift
 					// the left shift modifier
-					releaseKeycode(HID_KEYBOARD_LEFT_SHIFT, 0);
+					removeKeycodeFromReport(HID_KEYBOARD_LEFT_SHIFT);
 					k = k ^ SHIFT;
 				}
 			} else {
@@ -750,7 +758,7 @@ size_t Keyboard_::release(uint8_t k)
 		}
 	}
 	
-	releaseKeycode(k, 1);
+	releaseKeycode(k);
 	return 1;
 }
 
@@ -771,6 +779,13 @@ size_t Keyboard_::write(uint8_t c)
 	uint8_t p = press(c);  // Keydown
 	release(c);            // Keyup
 	return p;              // just return the result of press() since release() almost always returns 1
+}
+
+size_t Keyboard_::writeKeycode(uint8_t c)
+{	
+	uint8_t p = pressKeycode(c);		// Keydown
+	uint8_t r = releaseKeycode(c);		// Keyup
+	return (p);					// just return the result of pressKeycode() since release() almost always returns 1
 }
 
 #endif
