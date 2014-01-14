@@ -110,7 +110,7 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
 
         if (port == NOT_A_PORT) return; 	// pin on timer?
 
-        uint32_t periodPWM = ROM_SysCtlClockGet()/freq;
+        uint32_t periodPWM = SysCtlClockGet()/freq;
 
         enableTimerPeriph(offset);
         ROM_GPIOPinConfigure(timerToPinConfig(timer));

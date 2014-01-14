@@ -42,13 +42,18 @@ void timerInit()
     //
     //  Run at system clock at 80MHz
     //
-    ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
+#ifdef TARGET_IS_BLIZZARD_RB1
+    SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
                 SYSCTL_OSC_MAIN);
+#else
+    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ|SYSCTL_OSC_MAIN|SYSCTL_USE_PLL|SYSCTL_CFG_VCO_480), 120000000);
+#endif
 
     //
     //  SysTick is used for delay() and delayMicroseconds()
     //
-	ROM_SysTickPeriodSet(0x00FFFFFF);
+
+    ROM_SysTickPeriodSet(0x00FFFFFF);
     ROM_SysTickEnable();
 
     //
@@ -57,7 +62,7 @@ void timerInit()
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER5); //not tied to launchpad pin
     ROM_TimerConfigure(TIMER5_BASE, TIMER_CFG_PERIODIC_UP);
 
-    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
+    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, F_CPU/1000);
 
     ROM_IntEnable(INT_TIMER5A);
     ROM_TimerIntEnable(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
