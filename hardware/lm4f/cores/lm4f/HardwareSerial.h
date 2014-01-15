@@ -7,6 +7,10 @@
   *
   *
   ***********************************************************************
+
+  2013-12-23 Limited size for RX and TX buffers, by spirilis
+ 
+ 
   Derived from:
   HardwareSerial.cpp - Hardware serial library for Wiring
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
@@ -32,7 +36,7 @@
 #include <inttypes.h>
 #include "Stream.h"
 
-#define SERIAL_BUFFER_SIZE     64
+#define SERIAL_BUFFER_SIZE     256
 
 #define UART1_PORTB	0 
 #define UART1_PORTC	1
