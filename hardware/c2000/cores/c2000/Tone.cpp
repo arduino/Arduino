@@ -205,9 +205,11 @@ static void inline stopTimer(uint8_t n)
   {
     case 0:
     	CpuTimer1Regs.TCR.bit.TSS = 1;
+    	CpuTimer1Regs.TCR.bit.TIE = 0;
     	break;
     case 1:
     	CpuTimer2Regs.TCR.bit.TSS = 1;
+    	CpuTimer2Regs.TCR.bit.TIE = 0;
     	break;
   }
   *tone_out[n] &= ~tone_bit[n];
