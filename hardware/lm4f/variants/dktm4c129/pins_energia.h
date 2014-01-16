@@ -1,6 +1,3 @@
-
-
-
 /*
  ************************************************************************
  *	pins_energia.h
@@ -206,7 +203,7 @@ const uint8_t digital_pin_to_timer[] = {
         NOT_ON_TIMER,   /*  16 - RST */
         NOT_ON_TIMER,   /*  17 - NC */
         NOT_ON_TIMER,   /*  18 - PQ7 */
-        T3A,            /*  19 - PS4 */
+        T3A,            /*  19 - PS2 */
         NOT_ON_TIMER,   /*  20 - GND */
         NOT_ON_TIMER,   /*  21 - VBUS */
         NOT_ON_TIMER,   /*  22 - GND */
@@ -353,7 +350,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
         NOT_A_PIN,  /*  20 - GND */
         NOT_A_PIN,  /*  21 - VBUS */
         NOT_A_PIN,  /*  22 - GND */
-        BV(2),      /*  23 - PE2 */
+        BV(3),      /*  23 - PE3 */
         BV(6),      /*  24 - PE6 */
         BV(0),      /*  25 - PK0 */
         BV(1),      /*  26 - PK1 */
@@ -374,7 +371,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
         NOT_A_PIN,  /*  41 - J6_VCC */
         BV(0),      /*  42 - PD_0 */
         BV(0),      /*  43 - PJ_0 BP2_RX */
-        BV(1),      /*  44 - PJ_0 BP2_TX */
+        BV(1),      /*  44 - PJ_1 BP2_TX */
         BV(0),      /*  45 - PT_0 */
         BV(1),      /*  46 - PT_1 */
         BV(2),      /*  47 - PA_2 */
