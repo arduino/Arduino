@@ -63,6 +63,7 @@ public class SketchCode {
   private int scrollPosition;
 
   private boolean modified;
+  private boolean config = false;	// This attribute allows to differentiate Library configuration files (if true) from other files ( if false)
 
   /** name of .java file after preproc */
 //  private String preprocName; 
@@ -126,11 +127,15 @@ public class SketchCode {
   
   
   protected boolean renameTo(File what, String ext) {
-    boolean success = file.renameTo(what);
-    if (success) {
-      file = what;
-      extension = ext;
-      makePrettyName();
+    boolean success = false;
+    // rename is not allowed for Library configuration files
+	if (!config) {
+      success = file.renameTo(what);
+      if (success) {
+        file = what;
+        extension = ext;
+        makePrettyName();
+      }      
     }
     return success;
   }
@@ -186,6 +191,16 @@ public class SketchCode {
   }
 
 
+  public void setConfig(boolean _config) {
+    this.config = _config;
+  }
+
+
+  public boolean isConfig() {
+    return config;
+  }
+  
+  
 //  public void setPreprocName(String preprocName) {
 //    this.preprocName = preprocName;
 //  }

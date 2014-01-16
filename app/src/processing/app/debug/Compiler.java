@@ -633,6 +633,11 @@ public class Compiler implements MessageConsumer {
       throws RunnerException {
     File libFolder = lib.getSrcFolder();
     File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
+    // Manage library configuration files
+    File libConfigFolder = prefs.getFile(("build.path"), "configuration");
+    if (libConfigFolder.exists()) {
+      includeFolders.add(libConfigFolder);
+    }
 
     if (lib.useRecursion()) {
       // libBuildFolder == {build.path}/LibName
@@ -654,6 +659,11 @@ public class Compiler implements MessageConsumer {
       // other libraries should not see this library's utility/ folder
       includeFolders.remove(utilityFolder);
     }
+    // other libraries should not see this library configuration folder
+    if (libConfigFolder.exists()) {
+      includeFolders.remove(libConfigFolder);
+    }
+
   }
 
   private void recursiveCompileFilesInFolder(File srcBuildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
