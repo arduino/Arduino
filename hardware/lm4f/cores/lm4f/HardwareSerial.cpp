@@ -96,7 +96,7 @@ static const unsigned long g_ulUARTPeriph[8] =
 static const unsigned long g_ulUARTConfig[8][2] =
 {
 
-#ifdef TARGET_IS_BLIZZARD_RB11
+#ifdef TARGET_IS_BLIZZARD_RB1
     {GPIO_PA0_U0RX, GPIO_PA1_U0TX}, {GPIO_PC4_U1RX, GPIO_PC5_U1TX},
     {GPIO_PD6_U2RX, GPIO_PD7_U2TX}, {GPIO_PC6_U3RX, GPIO_PC7_U3TX},
     {GPIO_PC4_U4RX, GPIO_PC5_U4TX},	{GPIO_PE4_U5RX, GPIO_PE5_U5TX},
@@ -111,7 +111,7 @@ static const unsigned long g_ulUARTConfig[8][2] =
 
 static const unsigned long g_ulUARTPort[8] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB11
+#ifdef TARGET_IS_BLIZZARD_RB1
 	GPIO_PORTA_BASE, GPIO_PORTC_BASE, GPIO_PORTD_BASE, GPIO_PORTC_BASE,
 	GPIO_PORTC_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE, GPIO_PORTE_BASE
 #else
@@ -122,7 +122,7 @@ static const unsigned long g_ulUARTPort[8] =
 
 static const unsigned long g_ulUARTPins[8] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB11
+#ifdef TARGET_IS_BLIZZARD_RB1
     GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_4 | GPIO_PIN_5,
     GPIO_PIN_6 | GPIO_PIN_7, GPIO_PIN_6 | GPIO_PIN_7,
     GPIO_PIN_4 | GPIO_PIN_5, GPIO_PIN_4 | GPIO_PIN_5,
