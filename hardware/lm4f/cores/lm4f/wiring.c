@@ -39,14 +39,17 @@ static unsigned long milliseconds = 0;
 
 void timerInit()
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     //
     //  Run at system clock at 80MHz
     //
-#ifdef TARGET_IS_BLIZZARD_RB1
     SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
                 SYSCTL_OSC_MAIN);
 #else
-    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ|SYSCTL_OSC_MAIN|SYSCTL_USE_PLL|SYSCTL_CFG_VCO_480), 120000000);
+    //
+    //  Run at system clock at 120MHz
+    //
+    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ|SYSCTL_OSC_MAIN|SYSCTL_USE_PLL|SYSCTL_CFG_VCO_480), F_CPU);
 #endif
 
     //
@@ -75,7 +78,7 @@ void timerInit()
 
 unsigned long micros(void)
 {
-	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / 80);
+	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / (F_CPU/1000000));
 }
 
 unsigned long millis(void)
@@ -83,7 +86,6 @@ unsigned long millis(void)
 	return milliseconds;
 }
 
-/* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(unsigned int us)
 {
 	volatile unsigned long elapsedTime;
@@ -91,7 +93,7 @@ void delayMicroseconds(unsigned int us)
 	do{
 		elapsedTime = startTime-(HWREG(NVIC_ST_CURRENT) & 0x00FFFFFF);
 	}
-	while(elapsedTime <= us*80);
+	while(elapsedTime <= us * (F_CPU/1000000));
 }
 
 void delay(uint32_t milliseconds)
@@ -104,7 +106,7 @@ void delay(uint32_t milliseconds)
 
 void Timer5IntHandler(void)
 {
-    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 
+    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 	milliseconds++;
 }
