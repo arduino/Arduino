@@ -108,7 +108,7 @@ const u8 _hidReportDescriptor[] = {
     0x09, 0x30,                    //     USAGE (X)
     0x09, 0x31,                    //     USAGE (Y)
     0x09, 0x38,                    //     USAGE (Wheel)
-    0x16, 0x00, 0x80,              //     LOGICAL_MINIMUM (-32768)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
     0x26, 0xff, 0x7f,              //     LOGICAL_MAXIMUM (32767)
     0x75, 0x10,                    //     REPORT_SIZE (16)
     0x95, 0x03,                    //     REPORT_COUNT (3)
@@ -322,17 +322,28 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	HID_SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
 }
 
-// all parameters have the range of -32768 to 32767 and must be scaled to screen pixels
+// All parameters have the range of 0 to 32767. The USB Host 
+// will convert them to pixels on the screen.
 // some examples:
-//   x=0,y=0 is the middle of the screen
-//   x=-32768,y=-32768 is the top left corner
-//   x=32767,y=-32768 is the top right corner
+//   x=0,y=0 is top-left corner of the screen
+//   x=32767,y=0 is the top right corner
 //   x=32767,y=32767 is the bottom right corner
-//   x=-32768,y=32767 is the bottom left corner
+//   x=0,y=32767 is the bottom left corner
+//
+//   When converting these coordinates to pixels on screen, Mac OS X's
+//   default HID driver maps the inner 85% of the coordinate space to
+//   the screen's physical dimensions. This means that any value between
+//   0 and 2293 or 30474 and 32767 will move the mouse to the screen 
+//   edge on a Mac
+//
+//   For details, see:
+//   http://lists.apple.com/archives/usb/2011/Jun/msg00032.html
+
+
 void Mouse_::moveAbs(int16_t x, int16_t y, int16_t wheel)
 {
 	u8 m[7];
-	m[0] = _buttons; // TODO: is it a good idea to take over the _buttons from relative report here or should it be left out?
+	m[0] = _buttons; 
 	m[1] = LSB(x);
 	m[2] = MSB(x);
 	m[3] = LSB(y);
