@@ -107,11 +107,10 @@ const u8 _hidReportDescriptor[] = {
     0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
     0x09, 0x30,                    //     USAGE (X)
     0x09, 0x31,                    //     USAGE (Y)
-    0x09, 0x38,                    //     USAGE (Wheel)
     0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
     0x26, 0xff, 0x7f,              //     LOGICAL_MAXIMUM (32767)
     0x75, 0x10,                    //     REPORT_SIZE (16)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
+    0x95, 0x02,                    //     REPORT_COUNT (2)
     0x81, 0x02,                    //     INPUT (Data,Var,Abs)
     0xc0,                          //   END_COLLECTION
     0xc0,                          // END_COLLECTION
@@ -322,9 +321,9 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	HID_SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
 }
 
-// All parameters have the range of 0 to 32767. The USB Host 
-// will convert them to pixels on the screen.
-// some examples:
+// X and Y have the range of 0 to 32767. 
+// The USB Host will convert them to pixels on the screen.
+//
 //   x=0,y=0 is top-left corner of the screen
 //   x=32767,y=0 is the top right corner
 //   x=32767,y=32767 is the bottom right corner
@@ -340,16 +339,14 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 //   http://lists.apple.com/archives/usb/2011/Jun/msg00032.html
 
 
-void Mouse_::moveAbs(int16_t x, int16_t y, int16_t wheel)
+void Mouse_::moveAbs(uint16_t x, uint16_t y)
 {
-	u8 m[7];
+	u8 m[5];
 	m[0] = _buttons; 
 	m[1] = LSB(x);
 	m[2] = MSB(x);
 	m[3] = LSB(y);
 	m[4] = MSB(y);
-	m[5] = LSB(wheel);
-	m[6] = MSB(wheel);
 	HID_SendReport(HID_REPORTID_MOUSE_ABS,m,sizeof(m));
 }
 
