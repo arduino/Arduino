@@ -18,15 +18,15 @@ void setup() {
 
 void loop() {
 
-    Mouse.moveAbs(0,0,0); // Jump to the center of the screen
+    Mouse.moveAbs(16384,16384); // Jump to the center of the screen
     delay(2500);
-    Mouse.moveAbs(-500, -500, 0); // X position, Y position, Scroll Wheel
+    Mouse.moveAbs(0, 0); // X position, Y position
     delay(2500);
-    Mouse.moveAbs(-500, 500, 0); // X position, Y position, Scroll Wheel
+    Mouse.moveAbs(0, 32767); 
     delay(2500);
-    Mouse.moveAbs(500, 500, 0); // X position, Y position, Scroll Wheel
+    Mouse.moveAbs(32767, 32767); 
     delay(2500);
-    Mouse.moveAbs(500, -500, 0); // X position, Y position, Scroll Wheel
+    Mouse.moveAbs(32767,0); 
     delay(2500);
 }
 
