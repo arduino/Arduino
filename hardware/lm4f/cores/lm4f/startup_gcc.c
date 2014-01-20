@@ -64,6 +64,20 @@ extern void GPIOCIntHandler(void);
 extern void GPIODIntHandler(void);
 extern void GPIOEIntHandler(void);
 extern void GPIOFIntHandler(void);
+extern void GPIOGIntHandler(void);
+extern void GPIOHIntHandler(void);
+extern void GPIOJIntHandler(void);
+extern void GPIOKIntHandler(void);
+extern void GPIOLIntHandler(void);
+extern void GPIOMIntHandler(void);
+extern void GPIONIntHandler(void);
+extern void GPIOPIntHandler(void);
+extern void GPIOQIntHandler(void);
+#ifdef TARGET_IS_SNOWFLAKE_RA0
+extern void GPIORIntHandler(void);
+extern void GPIOSIntHandler(void);
+extern void GPIOTIntHandler(void);
+#endif
 
 /*
  * create some overridable default signal handlers
@@ -143,9 +157,9 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
     GPIOFIntHandler,                        // GPIO Port F
-    IntDefaultHandler,                      // GPIO Port G
-    IntDefaultHandler,                      // GPIO Port H
-    UARTIntHandler2,                         // UART2 Rx and Tx
+    GPIOGIntHandler,                        // GPIO Port G
+    GPIOHIntHandler,                        // GPIO Port H
+    UARTIntHandler2,                        // UART2 Rx and Tx
     IntDefaultHandler,                      // SSI1 Rx and Tx
     IntDefaultHandler,                      // Timer 3 subtimer A
     IntDefaultHandler,                      // Timer 3 subtimer B
@@ -166,16 +180,16 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // ADC1 Sequence 3
     IntDefaultHandler,                      // I2S0
     IntDefaultHandler,                      // External Bus Interface 0
-    IntDefaultHandler,                      // GPIO Port J
-    IntDefaultHandler,                      // GPIO Port K
-    IntDefaultHandler,                      // GPIO Port L
+    GPIOJIntHandler,                        // GPIO Port J
+    GPIOKIntHandler,                        // GPIO Port K
+    GPIOLIntHandler,                        // GPIO Port L
     IntDefaultHandler,                      // SSI2 Rx and Tx
     IntDefaultHandler,                      // SSI3 Rx and Tx
-    UARTIntHandler3,                         // UART3 Rx and Tx
-    UARTIntHandler4,                         // UART4 Rx and Tx
-    UARTIntHandler5,                         // UART5 Rx and Tx
-    UARTIntHandler6,                         // UART6 Rx and Tx
-    UARTIntHandler7,                         // UART7 Rx and Tx
+    UARTIntHandler3,                        // UART3 Rx and Tx
+    UARTIntHandler4,                        // UART4 Rx and Tx
+    UARTIntHandler5,                        // UART5 Rx and Tx
+    UARTIntHandler6,                        // UART6 Rx and Tx
+    UARTIntHandler7,                        // UART7 Rx and Tx
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
@@ -223,29 +237,29 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // LPC 0
     IntDefaultHandler,                      // I2C4 Master and Slave
     IntDefaultHandler,                      // I2C5 Master and Slave
-    IntDefaultHandler,                      // GPIO Port M
-    IntDefaultHandler,                      // GPIO Port N
+    GPIOMIntHandler,                        // GPIO Port M
+    GPIONIntHandler,                        // GPIO Port N
     IntDefaultHandler,                      // Quadrature Encoder 2
     IntDefaultHandler,                      // Fan 0
     0,                                      // Reserved
-    IntDefaultHandler,                      // GPIO Port P (Summary or P0)
-    IntDefaultHandler,                      // GPIO Port P1
-    IntDefaultHandler,                      // GPIO Port P2
-    IntDefaultHandler,                      // GPIO Port P3
-    IntDefaultHandler,                      // GPIO Port P4
-    IntDefaultHandler,                      // GPIO Port P5
-    IntDefaultHandler,                      // GPIO Port P6
-    IntDefaultHandler,                      // GPIO Port P7
-    IntDefaultHandler,                      // GPIO Port Q (Summary or Q0)
-    IntDefaultHandler,                      // GPIO Port Q1
-    IntDefaultHandler,                      // GPIO Port Q2
-    IntDefaultHandler,                      // GPIO Port Q3
-    IntDefaultHandler,                      // GPIO Port Q4
-    IntDefaultHandler,                      // GPIO Port Q5
-    IntDefaultHandler,                      // GPIO Port Q6
-    IntDefaultHandler,                      // GPIO Port Q7
-    IntDefaultHandler,                      // GPIO Port R
-    IntDefaultHandler,                      // GPIO Port S
+    GPIOPIntHandler,                        // GPIO Port P (Summary or P0)
+    GPIOPIntHandler,                        // GPIO Port P1
+    GPIOPIntHandler,                        // GPIO Port P2
+    GPIOPIntHandler,                        // GPIO Port P3
+    GPIOPIntHandler,                        // GPIO Port P4
+    GPIOPIntHandler,                        // GPIO Port P5
+    GPIOPIntHandler,                        // GPIO Port P6
+    GPIOPIntHandler,                        // GPIO Port P7
+    GPIOQIntHandler,                        // GPIO Port Q (Summary or Q0)
+    GPIOQIntHandler,                        // GPIO Port Q1
+    GPIOQIntHandler,                        // GPIO Port Q2
+    GPIOQIntHandler,                        // GPIO Port Q3
+    GPIOQIntHandler,                        // GPIO Port Q4
+    GPIOQIntHandler,                        // GPIO Port Q5
+    GPIOQIntHandler,                        // GPIO Port Q6
+    GPIOQIntHandler,                        // GPIO Port Q7
+    GPIORIntHandler,                        // GPIO Port R
+    GPIOSIntHandler,                        // GPIO Port S
     IntDefaultHandler,                      // PWM 1 Generator 0
     IntDefaultHandler,                      // PWM 1 Generator 1
     IntDefaultHandler,                      // PWM 1 Generator 2
@@ -303,8 +317,8 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
     GPIOFIntHandler,                        // GPIO Port F
-    IntDefaultHandler,                      // GPIO Port G
-    IntDefaultHandler,                      // GPIO Port H
+    GPIOGIntHandler,                        // GPIO Port G
+    GPIOHIntHandler,                        // GPIO Port H
     UARTIntHandler2,                        // UART2 Rx and Tx
     IntDefaultHandler,                      // SSI1 Rx and Tx
     IntDefaultHandler,                      // Timer 3 subtimer A
@@ -323,9 +337,9 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // ADC1 Sequence 2
     IntDefaultHandler,                      // ADC1 Sequence 3
     IntDefaultHandler,                      // External Bus Interface 0
-    IntDefaultHandler,                      // GPIO Port J
-    IntDefaultHandler,                      // GPIO Port K
-    IntDefaultHandler,                      // GPIO Port L
+    GPIOJIntHandler,                        // GPIO Port J
+    GPIOKIntHandler,                        // GPIO Port K
+    GPIOLIntHandler,                        // GPIO Port L
     IntDefaultHandler,                      // SSI2 Rx and Tx
     IntDefaultHandler,                      // SSI3 Rx and Tx
     UARTIntHandler3,                        // UART3 Rx and Tx
@@ -344,28 +358,28 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     IntDefaultHandler,                      // I2C4 Master and Slave
     IntDefaultHandler,                      // I2C5 Master and Slave
-    IntDefaultHandler,                      // GPIO Port M
-    IntDefaultHandler,                      // GPIO Port N
+    GPIOMIntHandler,                        // GPIO Port M
+    GPIONIntHandler,                        // GPIO Port N
     0,                                      // Reserved
     IntDefaultHandler,                      // Tamper
-    IntDefaultHandler,                      // GPIO Port P (Summary or P0)
-    IntDefaultHandler,                      // GPIO Port P1
-    IntDefaultHandler,                      // GPIO Port P2
-    IntDefaultHandler,                      // GPIO Port P3
-    IntDefaultHandler,                      // GPIO Port P4
-    IntDefaultHandler,                      // GPIO Port P5
-    IntDefaultHandler,                      // GPIO Port P6
-    IntDefaultHandler,                      // GPIO Port P7
-    IntDefaultHandler,                      // GPIO Port Q (Summary or Q0)
-    IntDefaultHandler,                      // GPIO Port Q1
-    IntDefaultHandler,                      // GPIO Port Q2
-    IntDefaultHandler,                      // GPIO Port Q3
-    IntDefaultHandler,                      // GPIO Port Q4
-    IntDefaultHandler,                      // GPIO Port Q5
-    IntDefaultHandler,                      // GPIO Port Q6
-    IntDefaultHandler,                      // GPIO Port Q7
-    IntDefaultHandler,                      // GPIO Port R
-    IntDefaultHandler,                      // GPIO Port S
+    GPIOPIntHandler,                        // GPIO Port P (Summary or P0)
+    GPIOPIntHandler,                        // GPIO Port P1
+    GPIOPIntHandler,                        // GPIO Port P2
+    GPIOPIntHandler,                        // GPIO Port P3
+    GPIOPIntHandler,                        // GPIO Port P4
+    GPIOPIntHandler,                        // GPIO Port P5
+    GPIOPIntHandler,                        // GPIO Port P6
+    GPIOPIntHandler,                        // GPIO Port P7
+    GPIOQIntHandler,                        // GPIO Port Q (Summary or Q0)
+    GPIOQIntHandler,                        // GPIO Port Q1
+    GPIOQIntHandler,                        // GPIO Port Q2
+    GPIOQIntHandler,                        // GPIO Port Q3
+    GPIOQIntHandler,                        // GPIO Port Q4
+    GPIOQIntHandler,                        // GPIO Port Q5
+    GPIOQIntHandler,                        // GPIO Port Q6
+    GPIOQIntHandler,                        // GPIO Port Q7
+    GPIORIntHandler,                        // GPIO Port R
+    GPIOSIntHandler,                        // GPIO Port S
     IntDefaultHandler,                      // SHA/MD5 0
     IntDefaultHandler,                      // AES 0
     IntDefaultHandler,                      // DES3DES 0
@@ -383,7 +397,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // HIM Consumer IR 0
     IntDefaultHandler,                      // I2C8 Master and Slave
     IntDefaultHandler,                      // I2C9 Master and Slave
-    IntDefaultHandler                       // GPIO Port T
+    GPIOTIntHandler                         // GPIO Port T
 };
 #endif
 //*****************************************************************************
