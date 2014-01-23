@@ -147,6 +147,31 @@ static const uint8_t PUSH3     = 68;
 static const uint8_t PUSH_SEL  = 68;
 // pushbuttons end
 
+// SPI pins
+static const uint8_t PA_3 = 69;
+static const uint8_t PB_6 = 70;
+static const uint8_t PB_7 = 71;
+static const uint8_t PF_0 = 72;
+static const uint8_t PF_2 = 73;
+static const uint8_t PQ_1 = 74;
+static const uint8_t PQ_2 = 75;
+/*
+static const uint8_t GPIO_PA4_SSI0RX    = 55;
+static const uint8_t GPIO_PA5_SSI0TX    = 54;
+static const uint8_t GPIO_PF2_SSI1CLK   = 73;
+static const uint8_t GPIO_PF3_SSI1FSS   = 6;
+static const uint8_t GPIO_PF0_SSI1RX    = 17;
+static const uint8_t GPIO_PF1_SSI1TX    = 30;
+static const uint8_t GPIO_PB4_SSI2CLK   = 9;
+static const uint8_t GPIO_PB5_SSI2FSS   = 2;
+static const uint8_t GPIO_PB6_SSI2RX    = 14;
+static const uint8_t GPIO_PB7_SSI2TX    = 15;
+static const uint8_t GPIO_PD0_SSI3CLK   = 23;
+static const uint8_t GPIO_PD1_SSI3FSS   = 24;
+static const uint8_t GPIO_PD2_SSI3RX    = 32;
+static const uint8_t GPIO_PD3_SSI3TX    = 39;
+*/
+
 
 static const uint8_t A0 =  29; //PE_3
 static const uint8_t A1 =  28; //PE_2
@@ -203,7 +228,7 @@ const uint8_t digital_pin_to_timer[] = {
         NOT_ON_TIMER,   /*  16 - RST */
         NOT_ON_TIMER,   /*  17 - NC */
         NOT_ON_TIMER,   /*  18 - PQ7 */
-        T3A,            /*  19 - PS2 */
+        T3A,            /*  19 - PS4 */
         NOT_ON_TIMER,   /*  20 - GND */
         NOT_ON_TIMER,   /*  21 - VBUS */
         NOT_ON_TIMER,   /*  22 - GND */
@@ -253,6 +278,13 @@ const uint8_t digital_pin_to_timer[] = {
         NOT_ON_TIMER,   /*  66 - PN_3 */
         NOT_ON_TIMER,   /*  67 - PE_5 */
         NOT_ON_TIMER,   /*  68 - PP_1 */
+        NOT_ON_TIMER,   /*  69 - PA_3 */
+        NOT_ON_TIMER,   /*  70 - PB_6 */
+        NOT_ON_TIMER,   /*  71 - PB_7 */
+        NOT_ON_TIMER,   /*  72 - PF_0 */
+        NOT_ON_TIMER,   /*  73 - PF_2 */
+        NOT_ON_TIMER,   /*  74 - PQ_1 */
+        NOT_ON_TIMER,   /*  75 - PQ_2 */
 };
 
 const uint8_t digital_pin_to_port[] = {
@@ -325,6 +357,13 @@ const uint8_t digital_pin_to_port[] = {
         PN,         /*  66 - PN_3 */
         PE,         /*  67 - PE_5 */
         PP,         /*  68 - PP_1 */
+        PA,         /*  69 - PA_3 */
+        PB,         /*  70 - PB_6 */
+        PB,         /*  71 - PB_7 */
+        PF,         /*  72 - PF_0 */
+        PF,         /*  73 - PF_2 */
+        PQ,         /*  74 - PQ_1 */
+        PQ,         /*  75 - PQ_2 */
 };
 const uint8_t digital_pin_to_bit_mask[] = {
         NOT_A_PIN,  /*  dummy */
@@ -350,7 +389,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
         NOT_A_PIN,  /*  20 - GND */
         NOT_A_PIN,  /*  21 - VBUS */
         NOT_A_PIN,  /*  22 - GND */
-        BV(3),      /*  23 - PE3 */
+        BV(2),      /*  23 - PE2 */
         BV(6),      /*  24 - PE6 */
         BV(0),      /*  25 - PK0 */
         BV(1),      /*  26 - PK1 */
@@ -396,6 +435,13 @@ const uint8_t digital_pin_to_bit_mask[] = {
         BV(3),      /*  66 - PN_3 */
         BV(5),      /*  67 - PE_5 */
         BV(1),      /*  68 - PP_1 */
+        BV(2),      /*  69 - PA_3 */
+        BV(6),      /*  70 - PB_6 */
+        BV(7),      /*  71 - PB_7 */
+        BV(0),      /*  72 - PF_0 */
+        BV(2),      /*  73 - PF_2 */
+        BV(1),      /*  74 - PQ_1 */
+        BV(2),      /*  75 - PQ_2 */
 };
 
 const uint32_t timer_to_offset[] = {
@@ -546,6 +592,15 @@ const uint32_t digital_pin_to_analog_in[] = {
         NOT_ON_ADC,     /*  66 - PN_3 */
         NOT_ON_ADC,     /*  67 - PE_5 */
         NOT_ON_ADC,     /*  68 - PP_1 */
+        NOT_ON_ADC,     /*  69 - PA_3 */
+        NOT_ON_ADC,     /*  70 - PB_6 */
+        NOT_ON_ADC,     /*  71 - PB_7 */
+        NOT_ON_ADC,     /*  72 - PF_0 */
+        NOT_ON_ADC,     /*  73 - PF_2 */
+        NOT_ON_ADC,     /*  74 - PQ_1 */
+        NOT_ON_ADC,     /*  75 - PQ_2 */
 };
+
+
 #endif
 #endif 
