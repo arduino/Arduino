@@ -31,3 +31,6 @@ test-bin
 .DS_Store
 hardware/arduino/avr/libraries/Bridge/examples/XivelyClient/passwords.h
 avr-toolchain-*.zip
+platform-arduino-*.zip
+build/shared/libastylej/*
+libastylej-*.zip

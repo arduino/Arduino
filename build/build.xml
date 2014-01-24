@@ -227,6 +227,13 @@
       <param name="file_arch" value="mac32" />
     </antcall>
 
+    <antcall target="unzip-platform">
+      <param name="name" value="avr-1.5.5"/>
+    </antcall>
+    <antcall target="unzip-platform">
+      <param name="name" value="sam-1.5.5"/>
+    </antcall>
+
 <!--
     <exec executable="unzip">
       <arg value="-q" />
@@ -264,9 +271,8 @@
       <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools" includes="**/man"/>
     </delete>
 
-    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="macosx" usetimestamp="true" ignoreerrors="true" />
-    <unzip src="macosx/libastylej-2.03.zip" dest="macosx" overwrite="true"/>
-    <copy file="macosx/libastylej/libastylej.jnilib" todir="macosx/work/Arduino.app/Contents/Resources/Java/lib/" />
+    <antcall target="unzip-libastyle"/>
+    <copy file="shared/libastylej/libastylej.jnilib" todir="macosx/work/Arduino.app/Contents/Resources/Java/lib/" />
     <chmod perm="755" file="macosx/work/Arduino.app/Contents/Resources/Java/lib/libastylej.jnilib" />
   </target>
 
@@ -475,9 +481,15 @@
     <copy todir="linux/work" file="linux/dist/arduino" />
     <chmod perm="755" file="linux/work/arduino" />
 
-    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="linux" usetimestamp="true" ignoreerrors="true" />
-    <unzip src="linux/libastylej-2.03.zip" dest="linux" overwrite="true"/>
-    <copy file="linux/libastylej/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
+    <antcall target="unzip-platform">
+      <param name="name" value="avr-1.5.5"/>
+    </antcall>
+    <antcall target="unzip-platform">
+      <param name="name" value="sam-1.5.5"/>
+    </antcall>
+
+    <antcall target="unzip-libastyle"/>
+    <copy file="shared/libastylej/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
   </target>
 
@@ -517,8 +529,48 @@
     <exec executable="./linux/work/arduino" spawn="false"/>
   </target>
 
+  <target name="unzip-libastyle">
+    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="shared" usetimestamp="true" ignoreerrors="true"/>
+
+    <checksum file="shared/libastylej-2.03.zip" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>
+    <condition property="checksum.matches.fail">
+      <equals arg1="${checksum.matches}" arg2="false"/>
+    </condition>
+    <fail if="checksum.matches.fail">Checksum failed.
+
+      File libastylej-2.03.zip failed checksum.
+      Please remove "shared/libastylej-2.03.zip" and download it again.
+    </fail>
+
+    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/" />
+    <unzip src="shared/libastylej-2.03.zip" dest="shared" overwrite="true"/>
+  </target>
+
+  <target name="unzip-platform">
+    <get src="http://downloads.arduino.cc/platform-arduino-${name}.zip" dest="shared" usetimestamp="true" ignoreerrors="true"/>
+
+    <checksum file="shared/platform-arduino-${name}.zip" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>
+    <condition property="checksum.matches.fail">
+      <equals arg1="${checksum.matches}" arg2="false"/>
+    </condition>
+    <fail if="checksum.matches.fail">Checksum failed.
+
+      File platform-arduino-${name}.zip failed checksum.
+      Please remove "shared/platform-arduino-${name}.zip" and download it again.
+    </fail>
+
+    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/" />
+    <exec executable="unzip">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-d" />
+      <arg value="${staging_folder}/work/${staging_hardware_folder}/" />
+      <arg value="shared/platform-arduino-${name}.zip" />
+    </exec>
+  </target>
+
   <target name="unzip-avr-toolchain">
-    <get src="http://downloads.arduino.cc/avr-toolchain-${file_arch}-gcc-4.3.2.zip" dest="${staging_folder}" usetimestamp="true" ignoreerrors="true" />
+    <get src="http://downloads.arduino.cc/avr-toolchain-${file_arch}-gcc-4.3.2.zip" dest="${staging_folder}" usetimestamp="true" ignoreerrors="true"/>
 
     <checksum file="${staging_folder}/avr-toolchain-${file_arch}-gcc-4.3.2.zip" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>
     <condition property="checksum.matches.fail">
@@ -549,7 +601,7 @@
 
   <!-- Retrieve ARM toolchain -->
   <target name="get-arm-toolchain" depends="check-arm-toolchain" unless="arm_distfile_available">
-    <get src="${dist_url}" dest="${staging_folder}/dist/${dist_file}" verbose="true" ignoreerrors="true" />
+    <get src="${dist_url}" dest="${staging_folder}/dist/${dist_file}" ignoreerrors="true"/>
   </target>
 
   <target name="unzip-arm-toolchain" depends="get-arm-toolchain, check-arm-toolchain"
@@ -683,9 +735,15 @@
       <param name="file_arch" value="win32" />
     </antcall>
 
-    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="windows" usetimestamp="true" ignoreerrors="true" />
-    <unzip src="windows/libastylej-2.03.zip" dest="windows" overwrite="true"/>
-    <copy file="windows/libastylej/AStylej.dll" todir="windows/work/lib" />
+    <antcall target="unzip-platform">
+      <param name="name" value="avr-1.5.5"/>
+    </antcall>
+    <antcall target="unzip-platform">
+      <param name="name" value="sam-1.5.5"/>
+    </antcall>
+
+    <antcall target="unzip-libastyle"/>
+    <copy file="shared/libastylej/AStylej.dll" todir="windows/work/lib" />
 
     <!-- Copy bossac.exe tool -->
     <copy todir="windows/work/hardware/tools">
@@ -737,10 +795,9 @@
 	  dir="windows/work" spawn="true"/>
   </target>
 
-  <target name="windows-dist" depends="windows-build"
-	  description="Create .zip files of windows version">
+  <target name="windows-dist" depends="windows-build" description="Create .zip files of windows version">
 
-    <get src="http://downloads.arduino.cc/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" ignoreerrors="true" />
+    <get src="http://downloads.arduino.cc/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" ignoreerrors="true"/>
 
     <unzip dest="windows/work" src="windows/jre.zip" overwrite="false"/>
 
