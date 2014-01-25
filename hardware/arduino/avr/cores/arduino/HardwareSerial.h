@@ -46,14 +46,9 @@ class HardwareSerial : public Stream
     volatile uint8_t *_ucsrb;
     volatile uint8_t *_ucsrc;
     volatile uint8_t *_udr;
-    uint8_t _rxen;
-    uint8_t _txen;
-    uint8_t _rxcie;
-    uint8_t _udrie;
-    uint8_t _u2x;
-    bool transmitting;
+    // Has any byte been written to the UART since begin()
+    bool _written;
 
-  public:
     volatile uint8_t _rx_buffer_head;
     volatile uint8_t _rx_buffer_tail;
     volatile uint8_t _tx_buffer_head;
@@ -65,11 +60,11 @@ class HardwareSerial : public Stream
     unsigned char _rx_buffer[SERIAL_BUFFER_SIZE];
     unsigned char _tx_buffer[SERIAL_BUFFER_SIZE];
 
+  public:
     HardwareSerial(
       volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
       volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
-      volatile uint8_t *ucsrc, volatile uint8_t *udr,
-      uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x);
+      volatile uint8_t *ucsrc, volatile uint8_t *udr);
     void begin(unsigned long);
     void begin(unsigned long, uint8_t);
     void end();
@@ -84,6 +79,10 @@ class HardwareSerial : public Stream
     inline size_t write(int n) { return write((uint8_t)n); }
     using Print::write; // pull in write(str) and write(buf, size) from Print
     operator bool();
+
+    // Interrupt handlers - Not intended to be called externally
+    void _rx_complete_irq(void);
+    void _tx_udr_empty_irq(void);
 };
 
 // Define config for Serial.begin(baud, config);
@@ -114,18 +113,19 @@ class HardwareSerial : public Stream
 
 #if defined(UBRRH) || defined(UBRR0H)
   extern HardwareSerial Serial;
-#elif defined(USBCON)
-  #include "USBAPI.h"
-//  extern HardwareSerial Serial_;  
+  #define HAVE_HWSERIAL0
 #endif
 #if defined(UBRR1H)
   extern HardwareSerial Serial1;
+  #define HAVE_HWSERIAL1
 #endif
 #if defined(UBRR2H)
   extern HardwareSerial Serial2;
+  #define HAVE_HWSERIAL2
 #endif
 #if defined(UBRR3H)
   extern HardwareSerial Serial3;
+  #define HAVE_HWSERIAL3
 #endif
 
 extern void serialEventRun(void) __attribute__((weak));
