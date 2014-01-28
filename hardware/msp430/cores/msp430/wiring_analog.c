@@ -51,6 +51,12 @@
 #define REF_MASK 0xB1
 #define ADCxMEM0 ADC12MEM0 
 #endif
+#if defined(__MSP430_HAS_ADC12_B__)
+#define REFV_MASK 0x0F00
+#define REF_MASK 0x31;
+#define ADCxMEM0 ADC12MEM0 
+#endif
+
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
 uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
 
@@ -84,7 +90,6 @@ void analogResolution(uint16_t res)
 {
   analog_res = res;
 }
-
 
 //Arduino specifies ~490 Hz for analog out PWM so we follow suit.
 #define PWM_PERIOD analog_period // F_CPU/490
@@ -339,6 +344,32 @@ uint16_t analogRead(uint8_t pin)
     ADC12CTL0 &= ~(ADC12ON);
     REFCTL0 &= ~REFON;
 #endif
+#if defined(__MSP430_HAS_ADC12_B__)
+    ADC12CTL0 &= ~ADC12ENC;                 // disable ADC
+    ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_5;   // ADC12OSC as ADC12CLK (~5MHz) / 5
+    ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;   // Map Temp and BAT
+    while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
+	if (pin == 10) {// if Temp Sensor 
+      REFCTL0 = (INTERNAL1V5 & REF_MASK);   // Set reference to internal 1.5V
+      ADC12MCTL0 = pin | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
+	} else {
+      REFCTL0 = (analog_reference & REF_MASK); // Set reference using masking off the SREF bits. See Energia.h.
+      ADC12MCTL0 = pin | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
+	}
+    ADC12CTL0 = ADC12ON | ADC12SHT0_4;      // turn ADC ON; sample + hold @ 64 × ADC10CLKs
+    ADC12CTL1 |= ADC12SHP;                  // ADCCLK = MODOSC; sampling timer
+    ADC12CTL2 |= ADC12RES1;                 // 12-bit resolution
+    ADC12IFGR0 = 0;                         // Clear Flags
+    ADC12IER0 |= ADC12IE0;                  // Enable interrupts
+    __delay_cycles(128);                    // Delay to allow Ref to settle
+    ADC12CTL0 |= ADC12ENC | ADC12SC;        // enable ADC and start conversion
+    while (ADC12CTL1 & ADC12BUSY) {         // sleep and wait for completion
+        __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
+    }
+    /* POWER: Turn ADC and reference voltage off to conserve power */
+    ADC12CTL0 &= ~(ADC12ON);
+    REFCTL0 &= ~REFON;
+#endif
     return ADCxMEM0;  // return sampled value after returning to active mode in ADC10_ISR
 #else
     // no ADC
@@ -388,6 +419,27 @@ void ADC12_ISR(void)
         case 10: break;                          // ADC12IN
         case 12:
 				 ADC12IFG = 0;                   // Clear Flags
+                 __bic_SR_register_on_exit(CPUOFF);        // return to active mode
+                 break;                          // Clear CPUOFF bit from 0(SR)                         
+        default: break;
+    }
+
+}
+#endif
+
+#if defined(__MSP430_HAS_ADC12_B__)
+__attribute__((interrupt(ADC12_VECTOR)))
+void ADC12_ISR(void)
+{
+    switch(ADC12IV,12) {
+        case  0: break;                          // No interrupt
+        case  2: break;                          // conversion result overflow
+        case  4: break;                          // conversion time overflow
+        case  6: break;                          // ADC12HI
+        case  8: break;                          // ADC12LO
+        case 10: break;                          // ADC12IN
+        case 12:
+				 ADC12IFGR0 = 0;                 // Clear Flags
                  __bic_SR_register_on_exit(CPUOFF);        // return to active mode
                  break;                          // Clear CPUOFF bit from 0(SR)                         
         default: break;
