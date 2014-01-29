@@ -87,7 +87,7 @@ static const uint8_t A15 = 7;  /* 7 - P3.3 */
 
                                           +---\/---+
                                    VCC0  1|        |20  GND
-(PWM)                       (A10)  P4.2  2|        |19  P1.2                 (PWM)
+                            (A10)  P4.2  2|        |19  P1.2                 (PWM)
 (PWM)                              P2.6  3|        |18  P3.0            (A12)(PWM)
 (PWM)                              P2.5  4|        |17  TEST
                             (A11)  P4.3  5|        |16  RST         
@@ -272,158 +272,119 @@ const uint16_t port_to_sel1[] = {
 
 const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER,  /*  0 - pin count starts at 1 */
-	T0A1,          /*  1 - P1.0 */
-	T0A2,          /*  2 - P1.1 */
-	T1A1,          /*  3 - P1.2 */
-	NOT_ON_TIMER,  /*  4 - P3.0 */
-	NOT_ON_TIMER,  /*  5 - P3.1 */
-	NOT_ON_TIMER,  /*  6 - P3.2 */
-	NOT_ON_TIMER,  /*  7 - P3.3 */
-	NOT_ON_TIMER,  /*  8 - P4.7 */
-	T1A2,          /*  9 - P1.3 */
-	T0B1,          /* 10 - P1.4 */
-	T0B2,          /* 11 - P1.5 */
-	NOT_ON_TIMER,  /* 12 - PJ.0 */
-	NOT_ON_TIMER,  /* 13 - PJ.1 */
-	NOT_ON_TIMER,  /* 14 - PJ.2 */
-	NOT_ON_TIMER,  /* 15 - PJ.3 */
-	NOT_ON_TIMER,  /* 16 - P4.0 */
-	NOT_ON_TIMER,  /* 17 - P4.1 */
-	NOT_ON_TIMER,  /* 18 - P4.2 */
-	NOT_ON_TIMER,  /* 19 - P4.3 */
-	T0B0,          /* 20 - P2.5 */
-	T0B1,          /* 21 - P2.6 */
-	NOT_ON_TIMER,  /* 22 - TEST */
-	NOT_ON_TIMER,  /* 23 - RST */
-	T0B6,          /* 24 - P2.0 */
-	T0B0,          /* 25 - P2.1 */
-	T0B2,          /* 26 - P2.2 */
-	T0B3,          /* 27 - P3.4 */
-	T0B4,          /* 28 - P3.5 */
-	T0B5,          /* 29 - P3.6 */
-	T0B6,          /* 30 - P3.7 */
-	T0B3,          /* 31 - P1.6 */
-	T0B4,          /* 32 - P1.7 */
-	T0B5,          /* 33 - P4.4 */
-	NOT_ON_TIMER,  /* 34 - P4.5 */
-	NOT_ON_TIMER,  /* 35 - P4.6 */
-	NOT_ON_TIMER,  /* 36 - GND */
-	NOT_ON_TIMER,  /* 37 - VCC */
-	NOT_ON_TIMER,  /* 38 - P2.7 */
-	T0A0,          /* 39 - P2.3 */
-	T1A0,          /* 40 - P2.4 */
-	NOT_ON_TIMER,  /* 41 - GND */
-	NOT_ON_TIMER,  /* 42 - PJ.6 */
-	NOT_ON_TIMER,  /* 43 - PJ.7 */
-	NOT_ON_TIMER,  /* 44 - GND */
-	NOT_ON_TIMER,  /* 45 - PJ.4 */
-	NOT_ON_TIMER,  /* 46 - PJ.5 */
-	NOT_ON_TIMER,  /* 47 - GND */
-	NOT_ON_TIMER,  /* 48 - VCC */
+	NOT_ON_TIMER,  /*  1 - Vcc */
+	NOT_ON_TIMER,  /*  2 - P4.2 */
+	T0B1,          /*  3 - P2.6 */
+	T0B0,          /*  4 - P2.5 */
+	NOT_ON_TIMER,  /*  5 - P4.3 */
+	T1A0,          /*  6 - P2.4 */
+	T0A2,          /*  7 - P2.2 */
+	T0B3,          /*  8 - P3.4 */
+	T0B4,          /*  9 - P3.5 */
+	T0B5,          /* 10 - P3.6 */
+	T1A2,          /* 11 - P1.3 */
+	T0B1,          /* 12 - P1.4 */
+	T0B2,          /* 13 - P1.5 */
+	T0B4,          /* 14 - P1.7 */
+	T0B3,          /* 15 - P1.6 */
+	NOT_ON_TIMER,  /* 16 - RST */
+	NOT_ON_TIMER,  /* 17 - TEST */
+	NOT_ON_TIMER,  /* 18 - P3.0 */
+	T1A1,          /* 19 - P1.2 */
+	T0B0,          /* 20 - GND */
+	
+	T0B6,          /* 21 - P2.0 */
+	T0B0,          /* 22 - P2.1 */
+	NOT_ON_TIMER,  /* 23 - P4.0 */
+	NOT_ON_TIMER,  /* 24 - P4.1 */
+	
+	NOT_ON_TIMER,  /* 25 - P4.6 */
+	T0A1,          /* 26 - P1.0 */
+	NOT_ON_TIMER,  /* 27 - P4.5 */
+	T0A2,          /* 28 - P1.1 */
+	
+	NOT_ON_TIMER,  /* 29 - PJ.0 */
+	NOT_ON_TIMER,  /* 30 - PJ.1 */
+	NOT_ON_TIMER,  /* 31 - PJ.2 */
+	NOT_ON_TIMER,  /* 32 - PJ.3 */
 };
 
 const uint8_t digital_pin_to_port[] = {
 	NOT_A_PIN,   /*  0 - pin count starts at 1 */
-	P1,          /*  1 - P1.0 */
-	P1,          /*  2 - P1.1 */
-	P1,          /*  3 - P1.2 */
-	P3,          /*  4 - P3.0 */
-	P3,          /*  5 - P3.1 */
-	P3,          /*  6 - P3.2 */
-	P3,          /*  7 - P3.3 */
-	P4,          /*  8 - P4.7 */
-	P1,          /*  9 - P1.3 */
-	P1,          /* 10 - P1.4 */
-	P1,          /* 11 - P1.5 */
-	PJ,          /* 12 - PJ.0 */
-	PJ,          /* 13 - PJ.1 */
-	PJ,          /* 14 - PJ.2 */
-	PJ,          /* 15 - PJ.3 */
-	P4,          /* 16 - P4.0 */
-	P4,          /* 17 - P4.1 */
-	P4,          /* 18 - P4.2 */
-	P4,          /* 19 - P4.3 */
-	P2,          /* 20 - P2.5 */
-	P2,          /* 21 - P2.6 */
-	NOT_A_PIN,   /* 22 - TEST */
-	NOT_A_PIN,   /* 23 - RST */
-	P2,          /* 24 - P2.0 */
-	P2,          /* 25 - P2.1 */
-	P2,          /* 26 - P2.2 */
-	P3,          /* 27 - P3.4 */
-	P3,          /* 28 - P3.5 */
-	P3,          /* 29 - P3.6 */
-	P3,          /* 30 - P3.7 */
-	P1,          /* 31 - P1.6 */
-	P1,          /* 32 - P1.7 */
-	P4,          /* 33 - P4.4 */
-	P4,          /* 34 - P4.5 */
-	P4,          /* 35 - P4.6 */
-	NOT_A_PIN,   /* 36 - GND */
-	NOT_A_PIN,   /* 37 - VCC */
-	P2,          /* 38 - P2.7 */
-	P2,          /* 39 - P2.3 */
-	P2,          /* 40 - P2.4 */
-	NOT_A_PIN,   /* 41 - GND */
-	PJ,          /* 42 - PJ.6 */
-	PJ,          /* 43 - PJ.7 */
-	NOT_A_PIN,   /* 44 - GND */
-	PJ,          /* 45 - PJ.4 */
-	PJ,          /* 46 - PJ.5 */
-	NOT_A_PIN,   /* 47 - GND */
-	NOT_A_PIN,   /* 48 - VCC */
+	NOT_A_PIN,   /*  1 - Vcc */
+	P4,          /*  2 - P4.2 */
+	P2,          /*  3 - P2.6 */
+	P2,          /*  4 - P2.5 */
+	P4,          /*  5 - P4.3 */
+	P2,          /*  6 - P2.4 */
+	P2,          /*  7 - P2.2 */
+	P3,          /*  8 - P3.4 */
+	P3,          /*  9 - P3.5 */
+	P3,          /* 10 - P3.6 */
+	P1,          /* 11 - P1.3 */
+	P1,          /* 12 - P1.4 */
+	P1,          /* 13 - P1.5 */
+	P1,          /* 14 - P1.7 */
+	P1,          /* 15 - P1.6 */
+	NOT_A_PIN,   /* 16 - RST */
+	NOT_A_PIN,   /* 17 - TEST */
+	P3,          /* 18 - P3.0 */
+	P1,          /* 19 - P1.2 */
+	NOT_A_PIN,   /* 20 - GND */
+
+	P2,          /* 21 - P2.0 */
+	P2,          /* 22 - P2.1 */
+	P4,          /* 23 - P4.0 */
+	P4,          /* 24 - P4.1 */
+
+	P4,          /* 25 - P4.6 */
+	P1,          /* 26 - P1.0 */
+	P4,          /* 27 - P4.5 */
+	P1,          /* 28 - P1.1 */
+
+	PJ,          /* 29 - PJ.0 */
+	PJ,          /* 30 - PJ.1 */
+	PJ,          /* 31 - PJ.2 */
+	PJ,          /* 32 - PJ.3 */
 };
 
 const uint8_t digital_pin_to_bit_mask[] = {
 	NOT_A_PIN,   /*  0 - pin count starts at 1 */
-	BV(0),       /*  1 - P1.0 */
-	BV(1),       /*  2 - P1.1 */
-	BV(2),       /*  3 - P1.2 */
-	BV(0),       /*  4 - P3.0 */
-	BV(1),       /*  5 - P3.1 */
-	BV(2),       /*  6 - P3.2 */
-	BV(3),       /*  7 - P3.3 */
-	BV(7),       /*  8 - P4.7 */
-	BV(3),       /*  9 - P1.3 */
-	BV(4),       /* 10 - P1.4 */
-	BV(5),       /* 11 - P1.5 */
-	BV(0),       /* 12 - PJ.0 */
-	BV(1),       /* 13 - PJ.1 */
-	BV(2),       /* 14 - PJ.2 */
-	BV(3),       /* 15 - PJ.3 */
-	BV(0),       /* 16 - P4.0 */
-	BV(1),       /* 17 - P4.1 */
-	BV(2),       /* 18 - P4.2 */
-	BV(3),       /* 19 - P4.3 */
-	BV(5),       /* 20 - P2.5 */
-	BV(6),       /* 21 - P2.6 */
-	NOT_A_PIN,   /* 22 - TEST */
-	NOT_A_PIN,   /* 23 - RST */
-	BV(0),       /* 24 - P2.0 */
-	BV(1),       /* 25 - P2.1 */
-	BV(2),       /* 26 - P2.2 */
-	BV(4),       /* 27 - P3.4 */
-	BV(5),       /* 28 - P3.5 */
-	BV(6),       /* 29 - P3.6 */
-	BV(7),       /* 30 - P3.7 */
-	BV(6),       /* 31 - P1.6 */
-	BV(7),       /* 32 - P1.7 */
-	BV(4),       /* 33 - P4.4 */
-	BV(5),       /* 34 - P4.5 */
-	BV(6),       /* 35 - P4.6 */
-	NOT_A_PIN,   /* 36 - GND */
-	NOT_A_PIN,   /* 37 - VCC */
-	BV(7),       /* 38 - P2.7 */
-	BV(3),       /* 39 - P2.3 */
-	BV(4),       /* 40 - P2.4 */
-	NOT_A_PIN,   /* 41 - GND */
-	BV(6),       /* 42 - PJ.6 */
-	BV(7),       /* 43 - PJ.7 */
-	NOT_A_PIN,   /* 44 - GND */
-	BV(4),       /* 45 - PJ.4 */
-	BV(5),       /* 46 - PJ.5 */
-	NOT_A_PIN,   /* 47 - GND */
-	NOT_A_PIN,   /* 48 - VCC */
+	NOT_A_PIN,   /*  1 - Vcc */
+	BV(2),       /*  2 - P4.2 */
+	BV(6),       /*  3 - P2.6 */
+	BV(5),       /*  4 - P2.5 */
+	BV(3),       /*  5 - P4.3 */
+	BV(4),       /*  6 - P2.4 */
+	BV(2),       /*  7 - P2.2 */
+	BV(4),       /*  8 - P3.4 */
+	BV(5),       /*  9 - P3.5 */
+	BV(6),       /* 10 - P3.6 */
+	BV(3),       /* 11 - P1.3 */
+	BV(4),       /* 12 - P1.4 */
+	BV(5),       /* 13 - P1.5 */
+	BV(7),       /* 14 - P1.7 */
+	BV(6),       /* 15 - P1.6 */
+	NOT_A_PIN,   /* 16 - RST */
+	NOT_A_PIN,   /* 17 - TEST */
+	BV(0),       /* 18 - P3.0 */
+	BV(2),       /* 19 - P1.2 */
+	NOT_A_PIN,   /* 20 - GND */
+
+	BV(0),       /* 21 - P2.0 */
+	BV(1),       /* 22 - P2.1 */
+	BV(0),       /* 23 - P4.0 */
+	BV(1),       /* 24 - P4.1 */
+
+	BV(6),       /* 25 - P4.6 */
+	BV(0),       /* 26 - P1.0 */
+	BV(5),       /* 27 - P4.5 */
+	BV(1),       /* 28 - P1.1 */
+
+	BV(0),       /* 29 - PJ.0 */
+	BV(1),       /* 30 - PJ.1 */
+	BV(2),       /* 31 - PJ.2 */
+	BV(3),       /* 32 - PJ.3 */
 };
 #endif // #ifdef ARDUINO_MAIN
 #endif // #ifndef Pins_Energia_h
