@@ -292,10 +292,6 @@ public class Preferences {
     setColor("run.window.bgcolor", SystemColor.control);
 
     fixPreferences();
-
-    for (Map.Entry<String, String> entry : table.entrySet()) {
-      System.out.println(entry.getKey() + " " + entry.getValue());
-    }
   }
 
   private static void fixPreferences() {
