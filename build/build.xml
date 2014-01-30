@@ -546,7 +546,7 @@
     <unzip src="shared/libastylej-2.03.zip" dest="shared" overwrite="true"/>
   </target>
 
-  <target name="unzip-platform">
+  <target name="unzip-platform" unless="LOCAL_HARDWARE_FOLDER">
     <get src="http://downloads.arduino.cc/platform-arduino-${name}.zip" dest="shared" usetimestamp="true" ignoreerrors="true"/>
 
     <checksum file="shared/platform-arduino-${name}.zip" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>

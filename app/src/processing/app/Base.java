@@ -156,7 +156,7 @@ public class Base {
     }
 
     // help 3rd party installers find the correct hardware path
-    Preferences.set("last.ide." + VERSION_NAME + ".hardwarepath", getHardwarePath());
+    Preferences.set("last.ide." + VERSION_NAME + ".hardwarepath", getHardwareFolder().getAbsolutePath());
     Preferences.set("last.ide." + VERSION_NAME + ".daterun", "" + (new Date()).getTime() / 1000);
 
 //    if (System.getProperty("mrj.version") != null) {
@@ -2040,12 +2040,19 @@ public class Base {
     return toolsFolder.getAbsolutePath();
   }
 
-
   static public File getHardwareFolder() {
     // calculate on the fly because it's needed by Preferences.init() to find
     // the boards.txt and programmers.txt preferences files (which happens
     // before the other folders / paths get cached).
+    String localHardwareFolder = System.getenv("LOCAL_HARDWARE_FOLDER");
+    if (localHardwareFolder != null && new File(localHardwareFolder).exists() && new File(localHardwareFolder).list() != null) {
+      return new File(localHardwareFolder);
+    }
     return getContentFile("hardware");
+  }
+
+  static public File getHardwareToolsFolder() {
+    return new File(getContentFile("hardware"), "tools");
   }
 
   //Get the core libraries
@@ -2053,13 +2060,8 @@ public class Base {
   	return getContentFile(path);
   }
 
-  static public String getHardwarePath() {
-    return getHardwareFolder().getAbsolutePath();
-  }
-
-
   static public String getAvrBasePath() {
-    String path = getHardwarePath() + File.separator + "tools" +
+    String path = getHardwareToolsFolder().getAbsolutePath() +
                   File.separator + "avr" + File.separator + "bin" + File.separator;
     if (Base.isLinux() && !(new File(path)).exists()) {
       return "";  // use distribution provided avr tools if bundled tools missing

@@ -230,8 +230,7 @@ public class Preferences {
     }
 
     // set some runtime constants (not saved on preferences file)
-    File hardwareFolder = Base.getHardwareFolder();
-    table.put("runtime.ide.path", hardwareFolder.getParentFile().getAbsolutePath());
+    table.put("runtime.ide.path", Base.getContentFile(".").getAbsolutePath());
     table.put("runtime.ide.version", "" + Base.REVISION);
     
     // check for platform-specific properties in the defaults
@@ -293,6 +292,10 @@ public class Preferences {
     setColor("run.window.bgcolor", SystemColor.control);
 
     fixPreferences();
+
+    for (Map.Entry<String, String> entry : table.entrySet()) {
+      System.out.println(entry.getKey() + " " + entry.getValue());
+    }
   }
 
   private static void fixPreferences() {
