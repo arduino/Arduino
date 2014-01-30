@@ -559,12 +559,12 @@
       Please remove "shared/platform-arduino-${name}.zip" and download it again.
     </fail>
 
-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/" />
+    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/arduino/" />
     <exec executable="unzip">
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/" />
+      <arg value="${staging_folder}/work/${staging_hardware_folder}/arduino/" />
       <arg value="shared/platform-arduino-${name}.zip" />
     </exec>
   </target>
