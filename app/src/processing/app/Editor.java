@@ -1637,7 +1637,7 @@ public class Editor extends JFrame implements RunnerListener {
    * Switch between tabs, this swaps out the Document object
    * that's currently being manipulated.
    */
-  protected void setCode(SketchCodeDoc codeDoc) {
+  protected void setCode(SketchCodeDocument codeDoc) {
     SyntaxDocument document = (SyntaxDocument) codeDoc.getDocument();
 
     if (document == null) {  // this document not yet inited
@@ -1649,7 +1649,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       // insert the program text into the document object
       try {
-        document.insertString(0, codeDoc.getCode().getProgram(), null);
+        document.insertString(0, codeDoc.getProgram(), null);
       } catch (BadLocationException bl) {
         bl.printStackTrace();
       }
@@ -1659,17 +1659,17 @@ public class Editor extends JFrame implements RunnerListener {
 
       // connect the undo listener to the editor
       document.addUndoableEditListener(new UndoableEditListener() {
-          public void undoableEditHappened(UndoableEditEvent e) {
-            if (compoundEdit != null) {
-              compoundEdit.addEdit(e.getEdit());
+        public void undoableEditHappened(UndoableEditEvent e) {
+          if (compoundEdit != null) {
+            compoundEdit.addEdit(e.getEdit());
 
-            } else if (undo != null) {
-              undo.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
-              undoAction.updateUndoState();
-              redoAction.updateRedoState();
-            }
+          } else if (undo != null) {
+            undo.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
+            undoAction.updateUndoState();
+            redoAction.updateRedoState();
           }
-        });
+        }
+      });
     }
 
     // update the document object that's in use
