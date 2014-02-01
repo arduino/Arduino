@@ -59,6 +59,8 @@ static volatile uint8_t twi_rxBufferIndex;
 
 static volatile uint8_t twi_error;
 
+volatile uint32_t twi_tog_count;
+
 /* 
  * Function twi_init
  * Desc     readys twi pins and sets twi bitrate
@@ -122,7 +124,8 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
   }
 
   // wait until twi is ready, become master receiver
-  while(TWI_READY != twi_state){
+  twi_timeout_guard(1);
+  while((TWI_READY != twi_state) && !twi_timeout_guard(0)){
     continue;
   }
   twi_state = TWI_MRX;
@@ -159,7 +162,8 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTA);
 
   // wait for read operation to complete
-  while(TWI_MRX == twi_state){
+  twi_timeout_guard(1);
+  while((TWI_MRX == twi_state) && !twi_timeout_guard(0)){
     continue;
   }
 
@@ -199,7 +203,8 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
   }
 
   // wait until twi is ready, become master transmitter
-  while(TWI_READY != twi_state){
+  twi_timeout_guard(1);
+  while((TWI_READY != twi_state) && !twi_timeout_guard(0)){
     continue;
   }
   twi_state = TWI_MTX;
@@ -239,7 +244,8 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     TWCR = _BV(TWINT) | _BV(TWEA) | _BV(TWEN) | _BV(TWIE) | _BV(TWSTA);	// enable INTs
 
   // wait for write operation to complete
-  while(wait && (TWI_MTX == twi_state)){
+  twi_timeout_guard(1);
+  while((wait && (TWI_MTX == twi_state)) && !twi_timeout_guard(0)){
     continue;
   }
   
@@ -337,7 +343,8 @@ void twi_stop(void)
 
   // wait for stop condition to be exectued on bus
   // TWINT is not set after a stop condition!
-  while(TWCR & _BV(TWSTO)){
+  twi_timeout_guard(1);
+  while((TWCR & _BV(TWSTO)) && !twi_timeout_guard(0)){
     continue;
   }
 
@@ -523,5 +530,22 @@ ISR(TWI_vect)
       twi_stop();
       break;
   }
+}
+
+uint8_t twi_timeout_guard(uint8_t init)
+{
+  if(init)
+    twi_tog_count = 0;
+  else
+  {
+    twi_tog_count++;
+    if(twi_tog_count > TWI_MAX_ITERS)
+    {
+      twi_init();
+      TWCR = 0;
+      return 1;
+    }
+  }
+  return 0;
 }
 
