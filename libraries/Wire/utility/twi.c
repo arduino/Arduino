@@ -59,7 +59,7 @@ static volatile uint8_t twi_rxBufferIndex;
 
 static volatile uint8_t twi_error;
 
-volatile uint32_t twi_tog_count;
+volatile uint32_t twi_iter_count;
 
 /* 
  * Function twi_init
@@ -535,11 +535,11 @@ ISR(TWI_vect)
 uint8_t twi_timeout_guard(uint8_t init)
 {
   if(init)
-    twi_tog_count = 0;
+    twi_iter_count = 0;
   else
   {
-    twi_tog_count++;
-    if(twi_tog_count > TWI_MAX_ITERS)
+    twi_iter_count++;
+    if(twi_iter_count > TWI_MAX_ITERS)
     {
       twi_init();
       TWCR = 0;
