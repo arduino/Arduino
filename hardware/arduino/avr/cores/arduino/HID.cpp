@@ -201,6 +201,10 @@ const u8 _hidReportDescriptor[] = {
          0x09, 0x01,                    // USAGE (Consumer Control) 
          0xa1, 0x01,                    // COLLECTION (Application) 
          0x85, HID_REPORTID_CONSUMERCONTROL,                    // REPORT_ID (6) 
+         0x15, 0x00,                    // LOGICAL_MINIMUM (0) 
+         0x25, 0x01,                    // LOGICAL_MAXIMUM (1) 
+         0x75, 0x01,                    // REPORT_SIZE (1) 
+         0x95, 0x08,                    // REPORT_COUNT (8) 
          0x09, 0xe2,                    // USAGE (Mute) 0x01 
          0x09, 0xe9,                    // USAGE (Volume Up) 0x02 
          0x09, 0xea,                    // USAGE (Volume Down) 0x03 
@@ -209,10 +213,6 @@ const u8 _hidReportDescriptor[] = {
          0x09, 0xb6,                    // USAGE (Scan Previous Track) 0x06 
          0x09, 0xb5,                    // USAGE (Scan Next Track) 0x07 
          0x09, 0xb8,                    // USAGE (Eject) 0x08
-         0x15, 0x00,                    // LOGICAL_MINIMUM (0) 
-         0x25, 0x01,                    // LOGICAL_MAXIMUM (1) 
-         0x75, 0x01,                    // REPORT_SIZE (1) 
-         0x95, 0x0f,                    // REPORT_COUNT (8) 
          0x81, 0x02,                    //   INPUT (Data,Var,Abs)
          0xc0, 
 
