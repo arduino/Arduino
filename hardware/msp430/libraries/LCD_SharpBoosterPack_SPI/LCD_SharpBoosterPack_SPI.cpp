@@ -36,9 +36,6 @@ static const uint8_t P_CS   = 6;
 static const uint8_t P_VCC  = 2;
 static const uint8_t P_DISP = 5;
 
-#define LCD_VERTICAL_MAX    96
-#define LCD_HORIZONTAL_MAX  96
-
 #define SHARP_SEND_TOGGLE_VCOM_COMMAND      0x01
 #define SHARP_SKIP_TOGGLE_VCOM_COMMAND      0x00
 

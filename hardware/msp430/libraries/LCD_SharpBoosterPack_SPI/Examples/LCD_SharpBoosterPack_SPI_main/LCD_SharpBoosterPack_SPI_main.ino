@@ -54,9 +54,9 @@ void loop() {
     k++;
     myScreen.clearBuffer();
     myScreen.setFont(0);
-    myScreen.text(1+k, 10, "ABCDE");
-    for (uint8_t i=0; i<14; i++) {
-      myScreen.setXY(50,10+i,1);
+    myScreen.text(k, 10, "ABCDE");
+    for (uint8_t i=10; i<LCD_HORIZONTAL_MAX-10; i++) {
+      myScreen.setXY(i,20,1);
     }
     
     for (uint8_t i=0; i<20; i++) {

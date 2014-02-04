@@ -20,6 +20,9 @@
 #include "Terminal12.h"
 #include "SPI.h"
 
+#define LCD_VERTICAL_MAX    96
+#define LCD_HORIZONTAL_MAX  96
+
 class LCD_SharpBoosterPack_SPI {
 public:
 //
