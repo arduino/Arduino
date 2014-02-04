@@ -2,7 +2,7 @@
   ************************************************************************
   *	pins_energia.h
   *
-  *	Pin definition functions for WolvPad
+  *	Pin definition functions for LaunchPad w/ msp430fr5969
   *		Copyright (c) 2012 Robert Wessels. All right reserved.
   *
   *     Contribution: Stefan Sch
