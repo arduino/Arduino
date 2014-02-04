@@ -29,4 +29,14 @@ dktm4c129.ldscript=lm4fcpp_snowflake.ld
 dktm4c129.upload.maximum_ram_size=32768
 
 ##############################################################
+lptm4c1294ncpdt.name=LaunchPad (Tiva C) w/ tm4c129 (120MHz)
+lptm4c1294ncpdt.upload.maximum_size=1048576
+lptm4c1294ncpdt.build.mcu=cortex-m4
+lptm4c1294ncpdt.build.f_cpu=120000000L
+lptm4c1294ncpdt.build.core=lm4f
+lptm4c1294ncpdt.build.variant=launchpad_129
+lptm4c1294ncpdt.ldscript=lm4fcpp_snowflake.ld
+lptm4c1294ncpdt.upload.maximum_ram_size=262144
+
+##############################################################
  
