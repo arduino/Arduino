@@ -292,8 +292,8 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode)
 		cbFuncsT[i] = userFunc;
 		ROM_IntEnable(INT_GPIOT);
 		break;
-	}
 #endif
+	}
 	ROM_IntMasterEnable();
 }
 
@@ -352,6 +352,6 @@ void detachInterrupt(uint8_t interruptNum)
 		cbFuncsS[i] = 0;
 	case GPIO_PORTT_BASE:
 		cbFuncsT[i] = 0;
-	}
 #endif
+	}
 }
