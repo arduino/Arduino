@@ -35,8 +35,13 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/timer.h"
 
-static unsigned long milliseconds = 0;
+static void (*SysTickCbFuncs[8])(uint32_t ui32TimeMS);
 
+#define SYSTICKMS               (1000 / SYSTICKHZ)
+#define SYSTICKHZ               100
+
+static unsigned long milliseconds = 0;
+#define SYSTICK_INT_PRIORITY    0x80
 void timerInit()
 {
 #ifdef TARGET_IS_BLIZZARD_RB1
@@ -56,9 +61,10 @@ void timerInit()
     //  SysTick is used for delay() and delayMicroseconds()
     //
 
-    ROM_SysTickPeriodSet(0x00FFFFFF);
+    ROM_SysTickPeriodSet(F_CPU / SYSTICKHZ);
     ROM_SysTickEnable();
-
+    ROM_IntPrioritySet(FAULT_SYSTICK, SYSTICK_INT_PRIORITY);
+    ROM_SysTickIntEnable();
     //
     //Initialize Timer5 to be used as time-tracker since beginning of time
     //
@@ -109,4 +115,24 @@ void Timer5IntHandler(void)
 
     ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 	milliseconds++;
+}
+
+void registerSysTickCb(void (*userFunc)(uint32_t))
+{
+	uint8_t i;
+	for (i=0; i<8; i++) {
+		if(!SysTickCbFuncs[i]) {
+			SysTickCbFuncs[i] = userFunc;
+			break;
+		}
+	}
+}
+
+void SysTickIntHandler(void)
+{
+	uint8_t i;
+	for (i=0; i<8; i++) {
+		if (SysTickCbFuncs[i])
+			SysTickCbFuncs[i](SYSTICKMS);
+	}
 }
