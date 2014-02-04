@@ -78,7 +78,7 @@ extern void GPIORIntHandler(void);
 extern void GPIOSIntHandler(void);
 extern void GPIOTIntHandler(void);
 #endif
-extern void lwIPEthernetIntHandler(void);
+extern void lwIPEthernetIntHandler(void) __attribute__((weak));
 extern void SysTickIntHandler(void);
 
 /*

@@ -7,13 +7,18 @@
 #include <math.h>
 #include "part.h"
 
-#ifdef __TM4C129XNCZAD__
+#if defined(__TM4C129XNCZAD__)
 #define TARGET_IS_SNOWFLAKE_RA0
 #define PART_TM4C129XNCZAD
-#else
+#elif defined(__TM4C1294NCPDT__)
+#define TARGET_IS_SNOWFLAKE_RA0
+#define PART_TM4C1294NCPDT
+#elif defined(PART_TM4C1233H6PM) || defined(PART_LM4F120H5QR)
 #define TARGET_IS_BLIZZARD_RB1
 #define PART_TM4C1233H6PM
 #define PART_LM4F120H5QR
+#else
+#error "**** No PART defined or unsupported PART ****"
 #endif
 
 #include "binary.h" 
