@@ -39,16 +39,24 @@ static unsigned long milliseconds = 0;
 
 void timerInit()
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     //
     //  Run at system clock at 80MHz
     //
-    ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
+    SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
                 SYSCTL_OSC_MAIN);
+#else
+    //
+    //  Run at system clock at 120MHz
+    //
+    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ|SYSCTL_OSC_MAIN|SYSCTL_USE_PLL|SYSCTL_CFG_VCO_480), F_CPU);
+#endif
 
     //
     //  SysTick is used for delay() and delayMicroseconds()
     //
-	ROM_SysTickPeriodSet(0x00FFFFFF);
+
+    ROM_SysTickPeriodSet(0x00FFFFFF);
     ROM_SysTickEnable();
 
     //
@@ -57,7 +65,7 @@ void timerInit()
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER5); //not tied to launchpad pin
     ROM_TimerConfigure(TIMER5_BASE, TIMER_CFG_PERIODIC_UP);
 
-    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
+    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, F_CPU/1000);
 
     ROM_IntEnable(INT_TIMER5A);
     ROM_TimerIntEnable(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
@@ -70,7 +78,7 @@ void timerInit()
 
 unsigned long micros(void)
 {
-	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / 80);
+	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / (F_CPU/1000000));
 }
 
 unsigned long millis(void)
@@ -78,7 +86,6 @@ unsigned long millis(void)
 	return milliseconds;
 }
 
-/* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(unsigned int us)
 {
 	volatile unsigned long elapsedTime;
@@ -86,7 +93,7 @@ void delayMicroseconds(unsigned int us)
 	do{
 		elapsedTime = startTime-(HWREG(NVIC_ST_CURRENT) & 0x00FFFFFF);
 	}
-	while(elapsedTime <= us*80);
+	while(elapsedTime <= us * (F_CPU/1000000));
 }
 
 void delay(uint32_t milliseconds)
@@ -99,7 +106,7 @@ void delay(uint32_t milliseconds)
 
 void Timer5IntHandler(void)
 {
-    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 
+    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 	milliseconds++;
 }

@@ -95,24 +95,44 @@ static const unsigned long g_ulUARTPeriph[8] =
 //*****************************************************************************
 static const unsigned long g_ulUARTConfig[8][2] =
 {
+
+#ifdef TARGET_IS_BLIZZARD_RB1
     {GPIO_PA0_U0RX, GPIO_PA1_U0TX}, {GPIO_PC4_U1RX, GPIO_PC5_U1TX},
     {GPIO_PD6_U2RX, GPIO_PD7_U2TX}, {GPIO_PC6_U3RX, GPIO_PC7_U3TX},
     {GPIO_PC4_U4RX, GPIO_PC5_U4TX},	{GPIO_PE4_U5RX, GPIO_PE5_U5TX},
 	{GPIO_PD4_U6RX, GPIO_PD5_U6TX},	{GPIO_PE0_U7RX, GPIO_PE1_U7TX}
+#else
+    {GPIO_PA0_U0RX, GPIO_PA1_U0TX}, {GPIO_PQ4_U1RX, GPIO_PQ5_U1TX},
+    {GPIO_PD4_U2RX, GPIO_PD5_U2TX}, {GPIO_PA4_U3RX, GPIO_PA5_U3TX},
+    {GPIO_PK0_U4RX, GPIO_PK1_U4TX},	{GPIO_PH6_U5RX, GPIO_PH7_U5TX},
+	{GPIO_PP0_U6RX, GPIO_PP1_U6TX},	{GPIO_PC4_U7RX, GPIO_PC5_U7TX}
+#endif
 };
 
 static const unsigned long g_ulUARTPort[8] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
 	GPIO_PORTA_BASE, GPIO_PORTC_BASE, GPIO_PORTD_BASE, GPIO_PORTC_BASE,
 	GPIO_PORTC_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE, GPIO_PORTE_BASE
+#else
+	GPIO_PORTA_BASE, GPIO_PORTQ_BASE, GPIO_PORTD_BASE, GPIO_PORTA_BASE,
+	GPIO_PORTK_BASE, GPIO_PORTH_BASE, GPIO_PORTP_BASE, GPIO_PORTC_BASE
+#endif
 };
 
 static const unsigned long g_ulUARTPins[8] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_4 | GPIO_PIN_5,
     GPIO_PIN_6 | GPIO_PIN_7, GPIO_PIN_6 | GPIO_PIN_7,
     GPIO_PIN_4 | GPIO_PIN_5, GPIO_PIN_4 | GPIO_PIN_5,
     GPIO_PIN_4 | GPIO_PIN_5, GPIO_PIN_0 | GPIO_PIN_1
+#else
+    GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_4 | GPIO_PIN_5,
+    GPIO_PIN_4 | GPIO_PIN_5, GPIO_PIN_4 | GPIO_PIN_5,
+    GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_6 | GPIO_PIN_7,
+    GPIO_PIN_0 | GPIO_PIN_1, GPIO_PIN_4 | GPIO_PIN_5
+#endif
 };
 
 // Constructors ////////////////////////////////////////////////////////////////
@@ -212,7 +232,7 @@ HardwareSerial::begin(unsigned long baud)
 
     ROM_GPIOPinTypeUART(g_ulUARTPort[uartModule], g_ulUARTPins[uartModule]);
 
-	ROM_UARTConfigSetExpClk(UART_BASE, ROM_SysCtlClockGet(), baudRate,
+    ROM_UARTConfigSetExpClk(UART_BASE, F_CPU, baudRate,
                             (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
                              UART_CONFIG_WLEN_8));
     //
@@ -220,8 +240,8 @@ HardwareSerial::begin(unsigned long baud)
     // when any character is received.
     //
     ROM_UARTFIFOLevelSet(UART_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
-	flushAll();
-	ROM_UARTIntDisable(UART_BASE, 0xFFFFFFFF);
+    flushAll();
+    ROM_UARTIntDisable(UART_BASE, 0xFFFFFFFF);
     ROM_UARTIntEnable(UART_BASE, UART_INT_RX | UART_INT_RT);
     ROM_IntEnable(g_ulUARTInt[uartModule]);
 

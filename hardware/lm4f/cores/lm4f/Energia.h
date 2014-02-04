@@ -5,9 +5,16 @@
 #include <stdbool.h> 
 #include <string.h> 
 #include <math.h>
+#include "part.h"
+
+#ifdef __TM4C129XNCZAD__
+#define TARGET_IS_SNOWFLAKE_RA0
+#define PART_TM4C129XNCZAD
+#else
 #define TARGET_IS_BLIZZARD_RB1
 #define PART_TM4C1233H6PM
 #define PART_LM4F120H5QR
+#endif
 
 #include "binary.h" 
 #include "inc/hw_types.h"  		
@@ -54,6 +61,18 @@ extern "C"{
 #define PD 4
 #define PE 5
 #define PF 6
+#define PG 7
+#define PH 8
+#define PJ 9
+#define PK 10
+#define PL 11
+#define PM 12
+#define PN 13
+#define PP 14
+#define PQ 15
+#define PR 16
+#define PS 17
+#define PT 18
 
 #define TIMA 0
 #define TIMB 8
