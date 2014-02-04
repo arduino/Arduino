@@ -1,4 +1,4 @@
-#ifndef Energia_h
+#5ifndef Energia_h
 #define Energia_h
 
 #ifdef __cplusplus
@@ -147,15 +147,15 @@ extern const uint32_t* port_to_output[];
  * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1
  * So we can remap  PxSEL and PxSEL2   to   PxSEL0 and PxSEL1
 */ 
-#define portSelRegister(P)     ( (volatile uint8_t *)( port_to_sel[P]) )
-#define portSel2Register(P)    ( (volatile uint8_t *)( port_to_sel2[P]) )
+#define portSelRegister(P)     ( (volatile uint32_t *)( port_to_sel[P]) )
+#define portSel2Register(P)    ( (volatile uint32_t *)( port_to_sel2[P]) )
 
-#define portSel0Register(P)    ( (volatile uint8_t *)( port_to_sel0[P]) )
-#define portSel1Register(P)    ( (volatile uint8_t *)( port_to_sel1[P]) )
-#define portRenRegister(P)     ( (volatile uint8_t *)( port_to_ren[P]) )
+#define portSel0Register(P)    ( (volatile uint32_t *)( port_to_sel0[P]) )
+#define portSel1Register(P)    ( (volatile uint32_t *)( port_to_sel1[P]) )
+#define portRenRegister(P)     ( (volatile uint32_t *)( port_to_ren[P]) )
 #define portOutputRegister(P)  ( (volatile uint32_t *)( port_to_output[P]) )
 #define portPullupRegister(P)  ( (volatile uint32_t *)( port_to_pullup[P]) )
-#define portInputRegister(P)   ( (volatile uint8_t *)( port_to_input[P]) )
+#define portInputRegister(P)   ( (volatile uint32_t *)( port_to_input[P]) )
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
 
 // Implemented in wiring.c
