@@ -36,8 +36,6 @@ public:
     void clear();
     void clearBuffer();
     void setFont(uint8_t font=0);
-    uint8_t fontX();
-    uint8_t fontY();
     void setXY(uint8_t x, uint8_t y, uint8_t ulValue);
     void text(uint8_t x, uint8_t y, String s);
     void flush();

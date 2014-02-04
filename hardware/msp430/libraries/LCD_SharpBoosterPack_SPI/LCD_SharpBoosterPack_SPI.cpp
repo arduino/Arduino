@@ -54,7 +54,8 @@ unsigned char flagSendToggleVCOMCommand = 0;
 static void SendToggleVCOMCommand(void);
 	
 LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI() {
-    LCD_SharpBoosterPack_SPI(P_CS,    // Chip Select
+    LCD_SharpBoosterPack_SPI(
+				 P_CS,    // Chip Select
                  P_VCC,   // Vcc display
                  P_DISP   // DISP
 	);
@@ -155,13 +156,13 @@ void LCD_SharpBoosterPack_SPI::text(uint8_t x, uint8_t y, String s) {
     }
 }
 
+const uint8_t referse_data[] = {0x0, 0x8, 0x4, 0xC, 0x2, 0xA, 0x6, 0xE, 0x1, 0x9, 0x5, 0xD, 0x3, 0xB, 0x7, 0xF};
 uint8_t reverse(uint8_t x)
 {
-  const uint8_t a[] = {0x0, 0x8, 0x4, 0xC, 0x2, 0xA, 0x6, 0xE, 0x1, 0x9, 0x5, 0xD, 0x3, 0xB, 0x7, 0xF};
   uint8_t b = 0;
   
-  b  = a[x & 0xF]<<4;
-  b |= a[(x & 0xF0)>>4];
+  b  = referse_data[x & 0xF]<<4;
+  b |= referse_data[(x & 0xF0)>>4];
   return b;
 }
 
@@ -224,6 +225,8 @@ static void SendToggleVCOMCommand(void)
 	
     flagSendToggleVCOMCommand = SHARP_SEND_TOGGLE_VCOM_COMMAND;
 }
+
+// the part below is MSP430 specific and would need modifications for other platforms
 
 void LCD_SharpBoosterPack_SPI::TA0_enableVCOMToggle()
 {
