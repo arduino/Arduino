@@ -227,7 +227,8 @@ static void SendToggleVCOMCommand(void)
 
 void LCD_SharpBoosterPack_SPI::TA0_enableVCOMToggle()
 {
-	TA0CTL = TASSEL__ACLK | ID__8 | TACLR | MC__UP;
+//	TA0CTL = TASSEL__ACLK | ID__8 | TACLR | MC__UP;
+	TA0CTL = TASSEL_1 | ID_3 | TACLR | MC_1;
     TA0CCTL0 = CCIE;
 	TA0CCR0 = 4096;
 }
