@@ -78,6 +78,8 @@ extern void GPIORIntHandler(void);
 extern void GPIOSIntHandler(void);
 extern void GPIOTIntHandler(void);
 #endif
+extern void lwIPEthernetIntHandler(void);
+extern void SysTickIntHandler(void);
 
 /*
  * create some overridable default signal handlers
@@ -93,7 +95,6 @@ __attribute__((weak)) void UARTIntHandler7(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
 __attribute__((weak)) void Timer5IntHandler(void) {}
-
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
 //*****************************************************************************
@@ -258,8 +259,8 @@ void (* const g_pfnVectors[])(void) =
     GPIOQIntHandler,                        // GPIO Port Q5
     GPIOQIntHandler,                        // GPIO Port Q6
     GPIOQIntHandler,                        // GPIO Port Q7
-    GPIORIntHandler,                        // GPIO Port R
-    GPIOSIntHandler,                        // GPIO Port S
+    IntDefaultHandler,                      // GPIO Port R
+    IntDefaultHandler,                      // GPIO Port S
     IntDefaultHandler,                      // PWM 1 Generator 0
     IntDefaultHandler,                      // PWM 1 Generator 1
     IntDefaultHandler,                      // PWM 1 Generator 2
@@ -285,7 +286,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+    SysTickIntHandler,                      // The SysTick handler
     GPIOAIntHandler,                        // GPIO Port A
     GPIOBIntHandler,                        // GPIO Port B
     GPIOCIntHandler,                        // GPIO Port C
@@ -326,7 +327,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // I2C1 Master and Slave
     IntDefaultHandler,                      // CAN0
     IntDefaultHandler,                      // CAN1
-    IntDefaultHandler,                      // Ethernet
+    lwIPEthernetIntHandler,                 // Ethernet
     IntDefaultHandler,                      // Hibernate
     IntDefaultHandler,                      // USB0
     IntDefaultHandler,                      // PWM Generator 3
