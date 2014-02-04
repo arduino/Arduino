@@ -222,7 +222,7 @@ void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
 void timerInit();
-
+void registerSysTickCb(void (*userFunc)(uint32_t));
 #ifdef __cplusplus
 } // extern "C"
 #endif
