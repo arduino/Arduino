@@ -36,20 +36,21 @@ static const uint8_t P_CS   = 6;
 static const uint8_t P_VCC  = 2;
 static const uint8_t P_DISP = 5;
 
-#define SHARP_SEND_TOGGLE_VCOM_COMMAND      0x01
-#define SHARP_SKIP_TOGGLE_VCOM_COMMAND      0x00
-
 #define SHARP_LCD_TRAILER_BYTE              0x00
-
-#define SHARP_VCOM_TOGGLE_BIT               0x40
 
 #define SHARP_LCD_CMD_CHANGE_VCOM           0x00
 #define SHARP_LCD_CMD_CLEAR_SCREEN          0x20
 #define SHARP_LCD_CMD_WRITE_LINE            0x80
 
 unsigned char DisplayBuffer[LCD_VERTICAL_MAX][LCD_HORIZONTAL_MAX/8];
-unsigned char VCOMbit= 0x40;
+
+unsigned char VCOMbit = 0x40;
+#define SHARP_VCOM_TOGGLE_BIT               0x40
+
 unsigned char flagSendToggleVCOMCommand = 0;
+#define SHARP_SEND_COMMAND_RUNNING          0x01
+#define SHARP_REQUEST_TOGGLE_VCOM           0x02
+
 
 static void SendToggleVCOMCommand(void);
 	
@@ -96,14 +97,17 @@ String LCD_SharpBoosterPack_SPI::WhoAmI() {
 
 void LCD_SharpBoosterPack_SPI::clear() {
 	
-  unsigned char command = SHARP_LCD_CMD_CLEAR_SCREEN;                            //clear screen mode(0X100000b)
-  command = command^VCOMbit;                    //COM inversion bit
+  unsigned char command = SHARP_LCD_CMD_CLEAR_SCREEN;
+  
+  // set flag to indicate command transmit is running
+  flagSendToggleVCOMCommand |= SHARP_SEND_COMMAND_RUNNING;
+  
+  command |= VCOMbit;                    //COM inversion bit
 
   // Set P2.4 High for CS
   digitalWrite(_pinChipSelect, HIGH);
 
   SPI.transfer(command);
-  flagSendToggleVCOMCommand = SHARP_SKIP_TOGGLE_VCOM_COMMAND;
   SPI.transfer(SHARP_LCD_TRAILER_BYTE);
 
   // Wait for last byte to be sent, then drop SCS
@@ -111,6 +115,10 @@ void LCD_SharpBoosterPack_SPI::clear() {
 
   // Set P2.4 High for CS
   digitalWrite(_pinChipSelect, LOW);
+  
+  // clear flag to indicate command transmit is free
+  flagSendToggleVCOMCommand &= ~SHARP_SEND_COMMAND_RUNNING;  
+  SendToggleVCOMCommand(); // send toggle if required
 
   clearBuffer();
   
@@ -175,14 +183,14 @@ void LCD_SharpBoosterPack_SPI::flush (void)
     //image update mode(1X000000b)
     unsigned char command = SHARP_LCD_CMD_WRITE_LINE;
 
-    command |= BIT7;
+    // set flag to indicate command transmit is running
+	flagSendToggleVCOMCommand |= SHARP_SEND_COMMAND_RUNNING;
     //COM inversion bit
-    command = command^VCOMbit;
+    command |= VCOMbit;
     // Set P2.4 High for CS
     digitalWrite(_pinChipSelect, HIGH);
 
     SPI.transfer((char)command);
-    flagSendToggleVCOMCommand = SHARP_SKIP_TOGGLE_VCOM_COMMAND;
     for(xj=0; xj<LCD_VERTICAL_MAX; xj++)
     {
 		SPI.transfer((char)reverse(xj + 1));
@@ -200,16 +208,24 @@ void LCD_SharpBoosterPack_SPI::flush (void)
 
     // Set P2.4 Low for CS
     digitalWrite(_pinChipSelect, LOW);
+    // clear flag to indicate command transmit is free
+    flagSendToggleVCOMCommand &= ~SHARP_SEND_COMMAND_RUNNING;  
+    SendToggleVCOMCommand(); // send toggle if required
+	
 }
 
 static void SendToggleVCOMCommand(void)
 {
-    VCOMbit ^= SHARP_VCOM_TOGGLE_BIT;
+    if(!(flagSendToggleVCOMCommand & SHARP_REQUEST_TOGGLE_VCOM)){ // no request pending ?
+		VCOMbit ^= SHARP_VCOM_TOGGLE_BIT;                 // Toggle VCOM Bit
+	}
 
-    if(SHARP_SEND_TOGGLE_VCOM_COMMAND == flagSendToggleVCOMCommand)
-    {
-        unsigned char command = SHARP_LCD_CMD_CHANGE_VCOM;                            //clear screen mode(0X100000b)
-        command = command^VCOMbit;                    //COM inversion bit
+    if(flagSendToggleVCOMCommand & SHARP_SEND_COMMAND_RUNNING){
+	    // set request flag
+		flagSendToggleVCOMCommand |= SHARP_REQUEST_TOGGLE_VCOM;
+    }else{  // if no communication to LCD -> send toggle sequence now
+        unsigned char command = SHARP_LCD_CMD_CHANGE_VCOM;
+        command |= VCOMbit;                    //COM inversion bit
 
 		// Set P2.4 High for CS
 		digitalWrite(_pinChipSelect, HIGH);
@@ -221,15 +237,16 @@ static void SendToggleVCOMCommand(void)
         __delay_cycles(100);
 		// Set P2.4 High for CS
 		digitalWrite(_pinChipSelect, LOW);
+		// clear request flag
+		flagSendToggleVCOMCommand &= ~SHARP_REQUEST_TOGGLE_VCOM;
     }
-	
-    flagSendToggleVCOMCommand = SHARP_SEND_TOGGLE_VCOM_COMMAND;
 }
 
 // the part below is MSP430 specific and would need modifications for other platforms
-
+#ifdef __MSP430__
 void LCD_SharpBoosterPack_SPI::TA0_enableVCOMToggle()
 {
+    // generate Int. each 4096*8*32768Hz = 1 sec
 //	TA0CTL = TASSEL__ACLK | ID__8 | TACLR | MC__UP;
 	TA0CTL = TASSEL_1 | ID_3 | TACLR | MC_1;
     TA0CCTL0 = CCIE;
@@ -248,3 +265,6 @@ __interrupt void TA0_ISR(void)
 {
     SendToggleVCOMCommand();
 }
+#else
+#error Platform not supported
+#endif
