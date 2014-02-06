@@ -1,12 +1,30 @@
 package processing.app.helpers;
 
 import java.io.IOException;
+import java.io.File;
 
 import processing.app.Base;
 
 public class ProcessUtils {
 
-  public static Process exec(String[] command) throws IOException {
+  public static Process execWithSystemFallback(String[] command, boolean print) throws IOException {
+	File path = new File(command[0]);
+	if (!path.exists()) {
+		String[] newcmd = command.clone();
+		newcmd[0] = path.getName();
+		return exec(newcmd, print);
+	} else {
+		return exec(command, print);
+	}
+  }
+
+  public static Process exec(String[] command, boolean print) throws IOException {
+    if (print) {
+      for (String c : command)
+	System.out.print(c + " ");
+      System.out.println();
+    }
+
     // No problems on linux and mac
     if (!Base.isWindows()) {
       return Runtime.getRuntime().exec(command);
