@@ -126,10 +126,10 @@ extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
 // extern const uint8_t PROGMEM digital_pin_to_bit_PGM[];
 extern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];
 extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
-extern const TC0_t* PROGMEM timer_to_tc0_PGM[];
-extern const TC1_t* PROGMEM timer_to_tc1_PGM[];
+extern const TC0_t* const PROGMEM timer_to_tc0_PGM[];
+extern const TC1_t* const PROGMEM timer_to_tc1_PGM[];
 #if defined(TCC2) || defined(TCD2)
-extern const TC2_t* PROGMEM timer_to_tc2_PGM[];
+extern const TC2_t* const PROGMEM timer_to_tc2_PGM[];
 #endif
 extern const uint16_t PROGMEM timer_to_channel_register_PGM[];
 extern const uint8_t PROGMEM timer_to_channel_PGM[];

@@ -151,7 +151,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	REPEAT8(NOT_ON_TIMER), // PORT F Switches
 };
 
-const TC0_t* PROGMEM timer_to_tc0_PGM[] = {
+const TC0_t* const PROGMEM timer_to_tc0_PGM[] = {
 	NULL,
 
 	&TCC0,
@@ -176,7 +176,7 @@ const TC0_t* PROGMEM timer_to_tc0_PGM[] = {
 	NULL,
 	};
 
-const TC1_t* PROGMEM timer_to_tc1_PGM[] = {
+const TC1_t* const PROGMEM timer_to_tc1_PGM[] = {
 	NULL,
 
 	NULL,
