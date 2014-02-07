@@ -3,7 +3,13 @@
 # --------------------- 
 
 name=Xmegaduino Boards
-compiler.path={runtime.ide.path}/hardware/tools/xmega/bin/
+version=1.5.5
+
+# AVR compile variables
+# --------------------- 
+
+# Default "compiler.path" is correct
+#compiler.path={ide.path}/tools/avr/bin/..
 compiler.c.cmd=avr-gcc
 compiler.c.flags=-c -g -Os -w -ffunction-sections -fdata-sections -MMD
 compiler.c.elf.flags=-Os -Wl,--gc-sections
