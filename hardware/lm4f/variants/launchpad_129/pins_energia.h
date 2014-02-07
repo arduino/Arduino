@@ -47,93 +47,93 @@
 // Pin names based on the silkscreen
 //
 // BOOSTER PACK 1
-// X8
-static const uint8_t PE_4 = 2;
-static const uint8_t PC_4 = 3;
-static const uint8_t PC_5 = 4;
-static const uint8_t PC_6 = 5;
-static const uint8_t PE_5 = 6;
-static const uint8_t PD_3 = 7;
-static const uint8_t PC_7 = 8;
-static const uint8_t PB_2 = 9;
-static const uint8_t PB_3 = 10;
-static const uint8_t PP_2 = 11;
-static const uint8_t PN_3 = 12;
-static const uint8_t PN_2 = 13;
-static const uint8_t PD_0 = 14;
-static const uint8_t PD_1 = 15;
-//                    RST = 16
-static const uint8_t PH_3 = 17;
-static const uint8_t PH_2 = 18;
-static const uint8_t PM_3 = 19;
-//                    GND = 20
+// X8 and X9
+static const uint8_t PE_4 = 2;  // X8-03
+static const uint8_t PC_4 = 3;  // X8-05
+static const uint8_t PC_5 = 4;  // X8-07
+static const uint8_t PC_6 = 5;  // X8-09
+static const uint8_t PE_5 = 6;  // X8-11
+static const uint8_t PD_3 = 7;  // X8-13
+static const uint8_t PC_7 = 8;  // X8-15
+static const uint8_t PB_2 = 9;  // X8-17
+static const uint8_t PB_3 = 10; // X8-19
+static const uint8_t PP_2 = 11; // X9-20
+static const uint8_t PN_3 = 12; // X9-18
+static const uint8_t PN_2 = 13; // X9-16
+static const uint8_t PD_0 = 14; // X9-14
+static const uint8_t PD_1 = 15; // X9-12
+//                    RST = 16  // X9-10
+static const uint8_t PH_3 = 17; // X9-08
+static const uint8_t PH_2 = 18; // X9-06
+static const uint8_t PM_3 = 19; // X9-04
+//                    GND = 20  // X9-02
 
-// X9
-//                     5v = 21
-//                    GND = 22
-static const uint8_t PE_0 = 23;
-static const uint8_t PE_1 = 24;
-static const uint8_t PE_2 = 25;
-static const uint8_t PE_3 = 26;
-static const uint8_t PD_7 = 27;
-static const uint8_t PA_6 = 28;
-static const uint8_t PM_4 = 29;
-static const uint8_t PM_5 = 30;
-static const uint8_t PL_3 = 31;
-static const uint8_t PL_2 = 32;
-static const uint8_t PL_1 = 33;
-static const uint8_t PL_0 = 34;
-static const uint8_t PL_5 = 35;
-static const uint8_t PL_4 = 36;
-static const uint8_t PG_0 = 37;
-static const uint8_t PF_3 = 38;
-static const uint8_t PF_2 = 39;
-static const uint8_t PF_1 = 40;
+// X8 and X9
+//                     5v = 21  // X8-02
+//                    GND = 22  // X8-04
+static const uint8_t PE_0 = 23; // X8-06
+static const uint8_t PE_1 = 24; // X8-08
+static const uint8_t PE_2 = 25; // X8-10
+static const uint8_t PE_3 = 26; // X8-12
+static const uint8_t PD_7 = 27; // X8-14
+static const uint8_t PA_6 = 28; // X8-16
+static const uint8_t PM_4 = 29; // X8-18
+static const uint8_t PM_5 = 30; // X8-20
+static const uint8_t PL_3 = 31; // X9-19
+static const uint8_t PL_2 = 32; // X9-17
+static const uint8_t PL_1 = 33; // X9-15
+static const uint8_t PL_0 = 34; // X9-13
+static const uint8_t PL_5 = 35; // X9-11
+static const uint8_t PL_4 = 36; // X9-09
+static const uint8_t PG_0 = 37; // X9-07
+static const uint8_t PF_3 = 38; // X9-05
+static const uint8_t PF_2 = 39; // X9-03
+static const uint8_t PF_1 = 40; // X9-01
 // BOOSTER PACK 1 end
 
 // BOOSTER PACK 2
-// X6
-//                   3.3v = 41;
-static const uint8_t PD_2 = 42;
-static const uint8_t PP_0 = 43; // BP2_RX
-static const uint8_t PP_1 = 44; // BP2_TX
-static const uint8_t PA_0 = 45;
-static const uint8_t PA_1 = 46;
-static const uint8_t PQ_0 = 47;
-static const uint8_t PP_4 = 48;
-static const uint8_t PN_5 = 49;
-static const uint8_t PN_4 = 50;
-static const uint8_t PM_6 = 51;
-static const uint8_t PQ_1 = 52;
-static const uint8_t PP_3 = 53;
-static const uint8_t PQ_3 = 54;
-static const uint8_t PQ_2 = 55;
-//                  RESET = 56;
-static const uint8_t PA_7 = 57;
-static const uint8_t PP_5 = 58;
-static const uint8_t PM_7 = 59;
-//                    GND = 60;
-// X7
-//                     5v = 61
-//                    GND = 62
-static const uint8_t PB_4 = 63;
-static const uint8_t PB_5 = 64;
-static const uint8_t PK_0 = 65;
-static const uint8_t PK_1 = 66;
-static const uint8_t PK_2 = 67;
-static const uint8_t PK_3 = 68;
-static const uint8_t PA_4 = 69;
-static const uint8_t PA_5 = 70;
-static const uint8_t PK_7 = 71;
-static const uint8_t PK_6 = 72;
-static const uint8_t PH_1 = 73;
-static const uint8_t PH_0 = 74;
-static const uint8_t PM_2 = 75;
-static const uint8_t PM_1 = 76;
-static const uint8_t PM_0 = 77;
-static const uint8_t PK_5 = 78;
-static const uint8_t PK_4 = 79;
-static const uint8_t PG_1 = 80;
+// X6 and X7
+//                   3.3v = 41; // X6-01
+static const uint8_t PD_2 = 42; // X6-03
+static const uint8_t PP_0 = 43; // X6-05
+static const uint8_t PP_1 = 44; // X6-07
+static const uint8_t PA_0 = 45; // X6-09 JP4 4-2
+static const uint8_t PA_1 = 46; // X6-11 JP5 4-2
+static const uint8_t PQ_0 = 47; // X6-13
+static const uint8_t PP_4 = 48; // X6-15 
+static const uint8_t PN_5 = 49; // X6-17
+static const uint8_t PN_4 = 50; // X6-19
+static const uint8_t PM_6 = 51; // X7-20
+static const uint8_t PQ_1 = 52; // X7-18
+static const uint8_t PP_3 = 53; // X7-16
+static const uint8_t PQ_3 = 54; // X7-14
+static const uint8_t PQ_2 = 55; // X7-12
+//                  RESET = 56; // X7-10
+static const uint8_t PA_7 = 57; // X7-08
+static const uint8_t PP_5 = 58; // X7-06
+static const uint8_t PM_7 = 59; // X7-04
+//                    GND = 60; // X7-02
+// X6 and X7
+//                     5v = 61  // X6-02
+//                    GND = 62  // X6-04
+static const uint8_t PB_4 = 63; // X6-06
+static const uint8_t PB_5 = 64; // X6-08
+static const uint8_t PK_0 = 65; // X6-10
+static const uint8_t PK_1 = 66; // X6-12
+static const uint8_t PK_2 = 67; // X6-14
+static const uint8_t PK_3 = 68; // X6-16
+static const uint8_t PA_4 = 69; // X6-18
+static const uint8_t PA_5 = 70; // X6-20
+static const uint8_t PK_7 = 71; // X7-19
+static const uint8_t PK_6 = 72; // X7-17
+static const uint8_t PH_1 = 73; // X7-15
+static const uint8_t PH_0 = 74; // X7-13
+static const uint8_t PM_2 = 75; // X7-11
+static const uint8_t PM_1 = 76; // X7-09
+static const uint8_t PM_0 = 77; // X7-07
+static const uint8_t PK_5 = 78; // X7-05
+static const uint8_t PK_4 = 79; // X7-03
+static const uint8_t PG_1 = 80; // X7-01
 // BOOSTER PACK 2 end
 
 // LEDs
@@ -142,18 +142,24 @@ static const uint8_t PN_0 = 82; // LED2
 static const uint8_t PF_4 = 83; // LED3
 static const uint8_t PF_0 = 84; // LED4
 
-static const uint8_t RED_LED      = 81;
+static const uint8_t RED_LED      = 81;  // TODO: verify colors
 static const uint8_t BLUE_LED     = 82;
 static const uint8_t GREEN_LED    = 83;
 static const uint8_t SPEED_LED    = 84;
+
+static const uint8_t LINK_LED     = 84;
+static const uint8_t ACTIVITY_LED = 83;
 // LEDs end
 
 // pushbuttons
-static const uint8_t PJ_0 = 85;
-static const uint8_t PJ_1 = 86;
+static const uint8_t PJ_0       = 85;
+static const uint8_t PJ_1       = 86;
 
-static const uint8_t PUSH1 = 85;
-static const uint8_t PUSH2 = 86;
+static const uint8_t PUSH1      = 85;
+static const uint8_t PUSH2      = 86;
+
+static const uint8_t USR_SW1    = 85;
+static const uint8_t USR_SW2    = 86;
 // pushbuttons end
 
 static const uint8_t A0 =  23; //PE_3
@@ -176,10 +182,6 @@ static const uint8_t A16 = 25; //PK_0
 static const uint8_t A17 = 26; //PK_1
 static const uint8_t A18 = 27; //PK_2
 static const uint8_t A19 = 28; //PK_3
-static const uint8_t A20 = 24; //PE_6
-static const uint8_t A21 = 79; //PE_7
-static const uint8_t A22 = 80; //PP_7
-static const uint8_t A23 = 52; //PP_6
 
 #ifdef ARDUINO_MAIN
 const uint32_t port_to_base[] = {
@@ -199,9 +201,6 @@ const uint32_t port_to_base[] = {
     (uint32_t) GPIO_PORTN_BASE, // 13
     (uint32_t) GPIO_PORTP_BASE, // 14
     (uint32_t) GPIO_PORTQ_BASE, // 15
-    (uint32_t) GPIO_PORTR_BASE, // 16
-    (uint32_t) GPIO_PORTS_BASE, // 17
-    (uint32_t) GPIO_PORTT_BASE, // 18
 };
 
 const uint8_t digital_pin_to_timer[] = {
@@ -632,3 +631,119 @@ const uint32_t digital_pin_to_analog_in[] = {
 
 #endif
 #endif 
+
+
+/* 
+From spms433.pdf
+Table 26-5. GPIO Pins and Alternate Functions
+
+             Analog or                           Digital Function (GPIOPCTL PMCx Bit Field Encoding)
+ IO    Pin   Special       1       2       3       4       5        6       7        8      11       13       14      15
+             Function
+ PA0   33       -        U0Rx    I2C9SCL T0CCP0    -        -       -    CAN0Rx      -       -       -         -       -
+ PA1   34       -        U0Tx    I2C9SDA T0CCP1    -        -       -    CAN0Tx      -       -       -         -       -
+ PA2   35       -        U4Rx    I2C8SCL T1CCP0    -        -       -       -        -       -       -         -   SSI0Clk
+ PA3   36       -        U4Tx    I2C8SDA T1CCP1    -        -       -       -        -       -       -         -   SSI0Fss
+ PA4   37       -        U3Rx    I2C7SCL T2CCP0    -        -       -       -        -       -       -         -   SSI0XDAT0
+ PA5   38       -        U3Tx    I2C7SDA T2CCP1    -        -       -       -        -       -       -         -   SSI0XDAT1
+ PA6   40       -        U2Rx    I2C6SCL T3CCP0    -    USB0EPEN    -       -        -       -     SSI0XDAT2   -   EPI0S8
+ PA7   41       -        U2Tx    I2C6SDA T3CCP1    -    USB0PFLT    -       -        -    USB0EPEN SSI0XDAT3   -   EPI0S9
+ PB0   95    USB0ID      U1Rx    I2C5SCL T4CCP0    -        -       -    CAN1Rx      -       -       -         -       -
+ PB1   96    USB0VBUS    U1Tx    I2C5SDA T4CCP1    -        -       -    CAN1Tx      -       -       -         -       -
+ PB2   91       -          -     I2C0SCL T5CCP0    -        -       -       -        -       -       -      USB0STP EPI0S27
+ PB3   92       -          -     I2C0SDA T5CCP1    -        -       -       -        -       -       -      USB0CLK EPI0S28
+ PB4   121   AIN10       U0CTS   I2C5SCL   -       -        -       -       -        -       -       -         -    SSI1Fss
+ PB5   120   AIN11       U0RTS   I2C5SDA   -       -        -       -       -        -       -       -         -    SSI1Clk
+ PC0   100      -       TCK/SWCL   -       -       -        -       -       -        -       -       -         -       -
+ PC1   99       -       TMS/SWDIO  -       -       -        -       -       -        -       -       -         -       -
+ PC2   98       -         TDI      -       -       -        -       -       -        -       -       -         -       -
+ PC3   97       -       TDO/SW     -       -       -        -       -       -        -       -       -         -       -
+ PC4   25      C1-       U7Rx      -       -       -        -       -       -        -       -       -         -    EPI0S7
+ PC5   24      C1+       U7Tx      -       -       -        -       -    RTCCLK      -       -       -         -    EPI0S6
+ PC6   23      C0+       U5Rx      -       -       -        -       -       -        -       -       -         -    EPI0S5
+ PC7   22      C0-       U5Tx      -       -       -        -       -       -        -       -       -         -    EPI0S4
+ PD0   1     AIN15         -     I2C7SCL T0CCP0    -      C0o       -       -        -       -       -         -    SSI2XDAT1
+ PD1   2     AIN14         -     I2C7SDA T0CCP1    -      C1o       -       -        -       -       -         -    SSI2XDAT0
+ PD2   3     AIN13         -     I2C8SCL T1CCP0    -      C2o       -       -        -       -       -         -    SSI2Fss
+ PD3   4     AIN12         -     I2C8SDA T1CCP1    -        -       -       -        -       -       -         -    SSI2Clk
+ PD4   125    AIN7       U2Rx      -     T3CCP0    -        -       -       -        -       -       -         -    SSI1XDAT2
+ PD5   126    AIN6       U2Tx      -     T3CCP1    -        -       -       -        -       -       -         -    SSI1XDAT3
+ PD6   127    AIN5       U2RTS     -     T4CCP0    -    USB0EPEN    -       -        -       -       -         -    SSI2XDAT3
+ PD7   128    AIN4       U2CTS     -     T4CCP1    -    USB0PFLT    -       -       NMI      -       -         -    SSI2XDAT2
+ PE0   15     AIN3       U1RTS     -       -       -        -       -       -        -       -       -         -       -
+ PE1   14     AIN2       U1DSR     -       -       -        -       -       -        -       -       -         -       -
+ PE2   13     AIN1       U1DCD     -       -       -        -       -       -        -       -       -         -       -
+ PE3   12     AIN0       U1DTR     -       -       -        -       -       -        -       -       -         -       -
+ PE4   123    AIN9       U1RI      -       -       -        -       -       -        -       -       -         -      SSI1XDAT0
+ PE5   124    AIN8         -       -       -       -        -       -       -        -       -       -         -      SSI1XDAT1
+ PF0   42       -          -       -       -       -    EN0LED0 M0PWM0      -        -       -       -      SSI3XDAT1  TRD2
+ PF1   43       -          -       -       -       -    EN0LED2 M0PWM1      -        -       -       -      SSI3XDAT0  TRD1
+ PF2   44       -          -       -       -       -        -    M0PWM2     -        -       -       -      SSI3Fss    TRD0
+ PF3   45       -          -       -       -       -        -    M0PWM3     -        -       -       -      SSI3Clk    TRCLK
+ PF4   46       -          -       -       -       -    EN0LED1 M0FAULT0    -        -       -       -      SSI3XDAT2  TRD3
+ PG0   49       -          -    I2C1SCL    -       -    EN0PPS M0PWM4       -        -       -       -         -      EPI0S11
+ PG1   50       -          -    I2C1SDA    -       -        -    M0PWM5     -        -       -       -         -      EPI0S10
+ PH0   29       -        U0RTS     -       -       -        -       -       -        -       -       -         -      EPI0S0
+ PH1   30       -        U0CTS     -       -       -        -       -       -        -       -       -         -      EPI0S1
+ PH2   31       -        U0DCD     -       -       -        -       -       -        -       -       -         -      EPI0S2
+ PH3   32       -        U0DSR     -       -       -        -       -       -        -       -       -         -      EPI0S3
+ PJ0   116      -        U3Rx      -       -       -    EN0PPS      -       -        -       -       -         -         -
+ PJ1   117      -        U3Tx      -       -       -        -       -       -        -       -       -         -         -
+ PK0   18    AIN16       U4Rx      -       -       -        -       -       -        -       -       -         -      EPI0S0
+ PK1   19    AIN17       U4Tx      -       -       -        -       -       -        -       -       -         -      EPI0S1
+ PK2   20    AIN18       U4RTS     -       -       -        -       -       -        -       -       -         -      EPI0S2
+ PK3   21    AIN19       U4CTS     -       -       -        -       -       -        -       -       -         -      EPI0S3
+ PK4   63       -          -    I2C3SCL    -       -    EN0LED0 M0PWM6      -        -       -       -         -      EPI0S32
+ PK5   62       -          -    I2C3SDA    -       -    EN0LED2 M0PWM7      -        -       -       -         -      EPI0S31
+ PK6   61       -          -    I2C4SCL    -       -    EN0LED1 M0FAULT1    -        -       -       -         -      EPI0S25
+ PK7   60       -        U0RI   I2C4SDA    -       -    RTCCLK M0FAULT2     -        -       -       -         -      EPI0S24
+ PL0   81       -          -    I2C2SDA    -       -        -    M0FAULT3   -        -       -       -      USB0D0    EPI0S16
+ PL1   82       -          -    I2C2SCL    -       -        -     PhA0      -        -       -       -      USB0D1    EPI0S17
+ PL2   83       -          -       -       -       -      C0o     PhB0      -        -       -       -      USB0D2    EPI0S18
+ PL3   84       -          -       -       -       -      C1o     IDX0      -        -       -       -      USB0D3    EPI0S19
+ PL4   85       -          -       -      T0CCP0    -        -       -      -        -       -       -      USB0D4    EPI0S26
+ PL5   86       -          -       -      T0CCP1    -        -       -      -        -       -       -      USB0D5    EPI0S33
+ PL6   94    USB0DP        -       -      T1CCP0    -        -       -      -        -       -       -         -         -
+ PL7   93    USB0DM        -       -      T1CCP1    -        -       -      -        -       -       -         -         -
+ PM0   78       -          -       -      T2CCP0    -        -       -      -        -       -       -         -      EPI0S15
+ PM1   77       -          -       -      T2CCP1    -        -       -      -        -       -       -         -      EPI0S14
+ PM2   76       -          -       -      T3CCP0    -        -       -      -        -       -       -         -      EPI0S13
+ PM3   75       -          -       -      T3CCP1    -        -       -      -        -       -       -         -      EPI0S12
+ PM4   74    TMPR3       U0CTS     -      T4CCP0    -        -       -      -        -       -       -         -         -
+ PM5   73    TMPR2       U0DCD     -      T4CCP1    -        -       -      -        -       -       -         -         -
+ PM6   72    TMPR1       U0DSR     -      T5CCP0    -        -       -      -        -       -       -         -         -
+ PM7   71    TMPR0       U0RI      -      T5CCP1    -        -       -      -        -       -       -         -         -
+ PN0   107      -        U1RTS     -        -       -        -       -      -        -       -       -         -         -
+ PN1   108       -       U1CTS     -        -       -        -       -      -        -       -       -         -         -
+ PN2   109       -       U1DCD   U2RTS      -       -        -       -      -        -       -       -         -      EPI0S29
+ PN3   110       -       U1DSR   U2CTS      -       -        -       -      -        -       -       -         -      EPI0S30
+ PN4   111       -       U1DTR   U3RTS   I2C2SDA    -        -       -      -        -       -       -         -      EPI0S34
+ PN5   112       -       U1RI    U3CTS   I2C2SCL    -        -       -      -        -       -       -         -      EPI0S35
+ PP0   118      C2+      U6Rx      -        -       -        -       -      -        -       -       -         -      SSI3XDAT2
+ PP1   119      C2-      U6Tx      -        -       -        -       -      -        -       -       -         -      SSI3XDAT3
+ PP2   103       -       U0DTR     -        -       -        -       -      -        -       -       -     USB0NXT    EPI0S29
+ PP3   104       -       U1CTS    U0DCD     -       -        -       -   RTCCLK      -       -       -     USB0DIR    EPI0S30
+ PP4   105       -       U3RTS    U0DSR     -       -        -       -      -        -       -       -     USB0D7       -
+ PP5   106       -       U3CTS   I2C2SCL    -       -        -       -      -        -       -       -     USB0D6       -
+ PQ0     5       -         -       -        -       -        -       -      -        -       -       -     SSI3Clk    EPI0S20
+ PQ1     6       -         -       -        -       -        -       -      -        -       -       -     SSI3Fss    EPI0S21
+ PQ2    11       -         -       -        -       -        -       -      -        -       -       -     SSI3XDAT0  EPI0S22
+ PQ3    27       -         -       -        -       -        -       -      -        -       -       -     SSI3XDAT1  EPI0S23
+ PQ4    102      -       U1Rx      -        -       -        -       -   DIVSCLK     -       -       -        -         -
+
+a. The TMPRn signals are digital signals enabled and configured by the Hibernation module. All other signals listed in this column are analog
+    signals.
+b. The digital signals that are shaded gray are the power-on default values for the corresponding GPIO pin. Encodings 9, 10, and 12 are
+    not used on this device.
+
+*/
+
+/* tools
+    table extraction from user manual
+          pdftotext -f 1813 -l 1815 -layout  spms433.pdf 
+
+    look for duplicate pin declares with
+       grep "static const uint8_t P._" pins_energia.h  | awk '{print $4}' | sort | uniq -d
+*/
+
+
