@@ -17,7 +17,7 @@ compiler.c.cmd=avr-gcc
 compiler.c.flags=-c -g -Os -w -ffunction-sections -fdata-sections -MMD
 compiler.c.elf.flags=-Os -Wl,--gc-sections
 compiler.c.elf.cmd=avr-gcc
-compiler.S.flags=-c -g -assembler-with-cpp
+compiler.S.flags=-c -g -x assembler-with-cpp
 compiler.cpp.cmd=avr-g++
 compiler.cpp.flags=-c -g -Os -w -fno-exceptions -ffunction-sections -fdata-sections -MMD
 compiler.ar.cmd=avr-ar
@@ -67,8 +67,6 @@ recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 
 tools.avrdude.cmd.path={runtime.ide.path}/hardware/tools/avr/bin/avrdude
 tools.avrdude.config.path={runtime.ide.path}/hardware/tools/avr/etc/avrdude.conf
-tools.avrdude.cmd.path.linux={runtime.ide.path}/hardware/tools/avrdude
-tools.avrdude.config.path.linux={runtime.ide.path}/hardware/tools/avrdude.conf
 
 tools.avrdude.upload.params.verbose=-v -v -v -v
 tools.avrdude.upload.params.quiet=-q -q
