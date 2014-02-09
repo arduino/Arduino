@@ -1,7 +1,7 @@
 typedef struct {
   int  aPin;
-  char aLabel[10];
+  char aLabel[50];
   int  bPin;
-  char bLabel[10];
+  char bLabel[50];
 } patch_t;
 

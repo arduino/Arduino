@@ -30,8 +30,10 @@
   Boston, MA  02111-1307  USA
  */
 
+
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
+
 
 #include <part.h>
 
@@ -43,98 +45,103 @@
 #include "inc/hw_memmap.h"
 #include "driverlib/adc.h"
 
-//
-// Pin names based on the silkscreen
+
+// energia pin definition begin, needed by tool digital_pin_to_template.py
+// Pin names based on the 
+// board's silkscreen
 //
 // BOOSTER PACK 1
 // X8 and X9
-static const uint8_t PE_4 = 2;  // X8-03
-static const uint8_t PC_4 = 3;  // X8-05
-static const uint8_t PC_5 = 4;  // X8-07
-static const uint8_t PC_6 = 5;  // X8-09
-static const uint8_t PE_5 = 6;  // X8-11
-static const uint8_t PD_3 = 7;  // X8-13
-static const uint8_t PC_7 = 8;  // X8-15
-static const uint8_t PB_2 = 9;  // X8-17
-static const uint8_t PB_3 = 10; // X8-19
-static const uint8_t PP_2 = 11; // X9-20
-static const uint8_t PN_3 = 12; // X9-18
-static const uint8_t PN_2 = 13; // X9-16
-static const uint8_t PD_0 = 14; // X9-14
-static const uint8_t PD_1 = 15; // X9-12
-//                    RST = 16  // X9-10
-static const uint8_t PH_3 = 17; // X9-08
-static const uint8_t PH_2 = 18; // X9-06
-static const uint8_t PM_3 = 19; // X9-04
-//                    GND = 20  // X9-02
+
+//                   3.3v = 1;  // X8_01
+static const uint8_t PE_4 = 2;  // X8_03
+static const uint8_t PC_4 = 3;  // X8_05
+static const uint8_t PC_5 = 4;  // X8_07
+static const uint8_t PC_6 = 5;  // X8_09
+static const uint8_t PE_5 = 6;  // X8_11
+static const uint8_t PD_3 = 7;  // X8_13
+static const uint8_t PC_7 = 8;  // X8_15
+static const uint8_t PB_2 = 9;  // X8_17
+static const uint8_t PB_3 = 10; // X8_19
+static const uint8_t PP_2 = 11; // X9_20
+static const uint8_t PN_3 = 12; // X9_18
+static const uint8_t PN_2 = 13; // X9_16
+static const uint8_t PD_0 = 14; // X9_14
+static const uint8_t PD_1 = 15; // X9_12
+//                    RST = 16  // X9_10
+static const uint8_t PH_3 = 17; // X9_08
+static const uint8_t PH_2 = 18; // X9_06
+static const uint8_t PM_3 = 19; // X9_04
+//                    GND = 20  // X9_02
 
 // X8 and X9
-//                     5v = 21  // X8-02
-//                    GND = 22  // X8-04
-static const uint8_t PE_0 = 23; // X8-06
-static const uint8_t PE_1 = 24; // X8-08
-static const uint8_t PE_2 = 25; // X8-10
-static const uint8_t PE_3 = 26; // X8-12
-static const uint8_t PD_7 = 27; // X8-14
-static const uint8_t PA_6 = 28; // X8-16
-static const uint8_t PM_4 = 29; // X8-18
-static const uint8_t PM_5 = 30; // X8-20
-static const uint8_t PL_3 = 31; // X9-19
-static const uint8_t PL_2 = 32; // X9-17
-static const uint8_t PL_1 = 33; // X9-15
-static const uint8_t PL_0 = 34; // X9-13
-static const uint8_t PL_5 = 35; // X9-11
-static const uint8_t PL_4 = 36; // X9-09
-static const uint8_t PG_0 = 37; // X9-07
-static const uint8_t PF_3 = 38; // X9-05
-static const uint8_t PF_2 = 39; // X9-03
-static const uint8_t PF_1 = 40; // X9-01
+//                     5v = 21  // X8_02
+//                    GND = 22  // X8_04
+static const uint8_t PE_0 = 23; // X8_06
+static const uint8_t PE_1 = 24; // X8_08
+static const uint8_t PE_2 = 25; // X8_10
+static const uint8_t PE_3 = 26; // X8_12
+static const uint8_t PD_7 = 27; // X8_14
+static const uint8_t PA_6 = 28; // X8_16
+static const uint8_t PM_4 = 29; // X8_18
+static const uint8_t PM_5 = 30; // X8_20
+static const uint8_t PL_3 = 31; // X9_19
+static const uint8_t PL_2 = 32; // X9_17
+static const uint8_t PL_1 = 33; // X9_15
+static const uint8_t PL_0 = 34; // X9_13
+static const uint8_t PL_5 = 35; // X9_11
+static const uint8_t PL_4 = 36; // X9_09
+static const uint8_t PG_0 = 37; // X9_07
+static const uint8_t PF_3 = 38; // X9_05
+static const uint8_t PF_2 = 39; // X9_03
+static const uint8_t PF_1 = 40; // X9_01
 // BOOSTER PACK 1 end
 
 // BOOSTER PACK 2
 // X6 and X7
-//                   3.3v = 41; // X6-01
-static const uint8_t PD_2 = 42; // X6-03
-static const uint8_t PP_0 = 43; // X6-05
-static const uint8_t PP_1 = 44; // X6-07
-static const uint8_t PA_0 = 45; // X6-09 JP4 4-2
-static const uint8_t PA_1 = 46; // X6-11 JP5 4-2
-static const uint8_t PQ_0 = 47; // X6-13
-static const uint8_t PP_4 = 48; // X6-15 
-static const uint8_t PN_5 = 49; // X6-17
-static const uint8_t PN_4 = 50; // X6-19
-static const uint8_t PM_6 = 51; // X7-20
-static const uint8_t PQ_1 = 52; // X7-18
-static const uint8_t PP_3 = 53; // X7-16
-static const uint8_t PQ_3 = 54; // X7-14
-static const uint8_t PQ_2 = 55; // X7-12
-//                  RESET = 56; // X7-10
-static const uint8_t PA_7 = 57; // X7-08
-static const uint8_t PP_5 = 58; // X7-06
-static const uint8_t PM_7 = 59; // X7-04
-//                    GND = 60; // X7-02
+//                   3.3v = 41; // X6_01
+static const uint8_t PD_2 = 42; // X6_03
+static const uint8_t PP_0 = 43; // X6_05
+static const uint8_t PP_1 = 44; // X6_07
+static const uint8_t PD_4 = 45; // X6_09 jumper JP4 uart
+static const uint8_t PD_5 = 46; // X6_11 jumper JP5 uart
+static const uint8_t PQ_0 = 47; // X6_13
+static const uint8_t PP_4 = 48; // X6_15 
+static const uint8_t PN_5 = 49; // X6_17
+static const uint8_t PN_4 = 50; // X6_19
+static const uint8_t PM_6 = 51; // X7_20
+static const uint8_t PQ_1 = 52; // X7_18
+static const uint8_t PP_3 = 53; // X7_16
+static const uint8_t PQ_3 = 54; // X7_14
+static const uint8_t PQ_2 = 55; // X7_12
+//                  RESET = 56; // X7_10
+static const uint8_t PA_7 = 57; // X7_08
+static const uint8_t PP_5 = 58; // X7_06
+static const uint8_t PM_7 = 59; // X7_04
+//                    GND = 60; // X7_02
 // X6 and X7
-//                     5v = 61  // X6-02
-//                    GND = 62  // X6-04
-static const uint8_t PB_4 = 63; // X6-06
-static const uint8_t PB_5 = 64; // X6-08
-static const uint8_t PK_0 = 65; // X6-10
-static const uint8_t PK_1 = 66; // X6-12
-static const uint8_t PK_2 = 67; // X6-14
-static const uint8_t PK_3 = 68; // X6-16
-static const uint8_t PA_4 = 69; // X6-18
-static const uint8_t PA_5 = 70; // X6-20
-static const uint8_t PK_7 = 71; // X7-19
-static const uint8_t PK_6 = 72; // X7-17
-static const uint8_t PH_1 = 73; // X7-15
-static const uint8_t PH_0 = 74; // X7-13
-static const uint8_t PM_2 = 75; // X7-11
-static const uint8_t PM_1 = 76; // X7-09
-static const uint8_t PM_0 = 77; // X7-07
-static const uint8_t PK_5 = 78; // X7-05
-static const uint8_t PK_4 = 79; // X7-03
-static const uint8_t PG_1 = 80; // X7-01
+//                     5v = 61  // X6_02
+//                    GND = 62  // X6_04
+static const uint8_t PB_4 = 63; // X6_06
+static const uint8_t PB_5 = 64; // X6_08
+static const uint8_t PK_0 = 65; // X6_10
+static const uint8_t PK_1 = 66; // X6_12
+static const uint8_t PK_2 = 67; // X6_14
+static const uint8_t PK_3 = 68; // X6_16
+static const uint8_t PA_4 = 69; // X6_18
+static const uint8_t PA_5 = 70; // X6_20
+static const uint8_t PK_7 = 71; // X7_19
+static const uint8_t PK_6 = 72; // X7_17
+static const uint8_t PH_1 = 73; // X7_15
+static const uint8_t PH_0 = 74; // X7_13
+static const uint8_t PM_2 = 75; // X7_11
+static const uint8_t PM_1 = 76; // X7_09
+static const uint8_t PM_0 = 77; // X7_07
+static const uint8_t PK_5 = 78; // X7_05
+static const uint8_t PK_4 = 79; // X7_03
+static const uint8_t PG_1 = 80; // X7_01
 // BOOSTER PACK 2 end
+
 
 // LEDs
 static const uint8_t PN_1 = 81; // LED1
@@ -142,48 +149,279 @@ static const uint8_t PN_0 = 82; // LED2
 static const uint8_t PF_4 = 83; // LED3
 static const uint8_t PF_0 = 84; // LED4
 
-static const uint8_t RED_LED      = 81;  // TODO: verify colors
-static const uint8_t BLUE_LED     = 82;
-static const uint8_t GREEN_LED    = 83;
-static const uint8_t SPEED_LED    = 84;
+// pushbuttons
+static const uint8_t PJ_0 = 85; // USR_SW1
+static const uint8_t PJ_1 = 86; // USR_SW2
 
-static const uint8_t LINK_LED     = 84;
-static const uint8_t ACTIVITY_LED = 83;
+// other
+static const uint8_t PD_6 = 87; // AIN5
+static const uint8_t PA_0 = 88; // JP4
+static const uint8_t PA_1 = 89; // JP5
+
+// energia pin definition end
+
+#define D1_LED         PN_1
+#define D2_LED         PN_0
+#define D3_LED         PF_4
+#define D4_LED         PF_0
+
+#define ACTIVITY_LED   PF_4
+#define LINK_LED       PF_0
 // LEDs end
 
 // pushbuttons
-static const uint8_t PJ_0       = 85;
-static const uint8_t PJ_1       = 86;
+#define PUSH1      PJ_0
+#define PUSH2      PJ_1
 
-static const uint8_t PUSH1      = 85;
-static const uint8_t PUSH2      = 86;
-
-static const uint8_t USR_SW1    = 85;
-static const uint8_t USR_SW2    = 86;
+#define USR_SW1    PJ_0
+#define USR_SW2    PJ_1
 // pushbuttons end
 
-static const uint8_t A0 =  23; //PE_3
-static const uint8_t A1 =   2; //PE_2
-static const uint8_t A2 =  30; //PE_1
-static const uint8_t A3 =  29; //PE_0
-static const uint8_t A4 =  77; //PD_7
-static const uint8_t A5 =  76; //PD_6
-static const uint8_t A6 =  51; //PD_5
-static const uint8_t A7 =  78; //PD_4
-static const uint8_t A8 =  67; //PE_5
-static const uint8_t A9 =  57; //PE_4
-static const uint8_t A10 =  9; //PB_4
-static const uint8_t A11 = 50; //PB_5
-static const uint8_t A12 = 39; //PD_3
-static const uint8_t A13 = 32; //PD_2
-static const uint8_t A14 = 59; //PD_1
-static const uint8_t A15 = 42; //PD_0
-static const uint8_t A16 = 25; //PK_0
-static const uint8_t A17 = 26; //PK_1
-static const uint8_t A18 = 27; //PK_2
-static const uint8_t A19 = 28; //PK_3
+static const uint8_t A0 =  23; // PE_3
+static const uint8_t A1 =   2; // PE_2
+static const uint8_t A2 =  30; // PE_1
+static const uint8_t A3 =  29; // PE_0
+static const uint8_t A4 =  77; // PD_7
+static const uint8_t A5 =  76; // PD_6
+static const uint8_t A6 =  51; // PD_5
+static const uint8_t A7 =  78; // PD_4
+static const uint8_t A8 =  67; // PE_5
+static const uint8_t A9 =  57; // PE_4
+static const uint8_t A10 =  9; // PB_4
+static const uint8_t A11 = 50; // PB_5
+static const uint8_t A12 = 39; // PD_3
+static const uint8_t A13 = 32; // PD_2
+static const uint8_t A14 = 59; // PD_1
+static const uint8_t A15 = 42; // PD_0
+static const uint8_t A16 = 25; // PK_0
+static const uint8_t A17 = 26; // PK_1
+static const uint8_t A18 = 27; // PK_2
+static const uint8_t A19 = 28; // PK_3
+
+/* pins defines by connector
+   Using defines instead of 'static const uint8_t' re-uses correct 
+   energia pin declares. Also checks that all Px_x are declared.
+*/
+
+//      X6_01 3.3v
+//      X6_02 5v
+#define X6_03 PD_2
+//      X6_04 GND
+#define X6_05 PP_0
+#define X6_5  PP_0
+#define X6_06 PB_4
+#define X6_6  PB_4
+#define X6_07 PP_1
+#define X6_7  PP_1
+#define X6_08 PB_5
+#define X6_8  PB_5
+#define X6_09 PA_0
+#define X6_9  PA_0
+#define X6_10 PK_0
+#define X6_11 PA_1
+#define X6_12 PK_1
+#define X6_13 PQ_0
+#define X6_14 PK_2
+#define X6_15 PP_4
+#define X6_16 PK_3
+#define X6_17 PN_5
+#define X6_18 PA_4
+#define X6_19 PN_4
+#define X6_20 PA_5
+
+#define X7_01 PG_1
+//      X7_02 GND
+#define X7_03 PK_4
+#define X7_3  PK_4
+#define X7_04 PM_7
+#define X7_4  PM_7
+#define X7_05 PK_5
+#define X7_5  PK_5
+#define X7_06 PP_5
+#define X7_6  PP_5
+#define X7_07 PM_0
+#define X7_7  PM_0
+#define X7_08 PA_7
+#define X7_8  PA_7
+#define X7_09 PM_1
+#define X7_9  PM_1
+//      X7_10 RESET
+#define X7_11 PM_2
+#define X7_12 PQ_2
+#define X7_13 PH_0
+#define X7_14 PQ_3
+#define X7_15 PH_1
+#define X7_16 PP_3
+#define X7_17 PK_6
+#define X7_18 PQ_1
+#define X7_19 PK_7
+#define X7_20 PM_6
+
+//      X8_01 3.3v
+//      X8_02 5v
+#define X8_03 PE_4
+//      X8_04 GND
+#define X8_05 PC_4
+#define X8_5  PC_4
+#define X8_06 PE_0
+#define X8_6  PE_0
+#define X8_7  PC_5
+#define X8_7  PC_5
+#define X8_08 PE_1
+#define X8_8  PE_1
+#define X8_09 PC_6
+#define X8_9  PC_6
+#define X8_10 PE_2
+#define X8_11 PE_5
+#define X8_12 PE_3
+#define X8_13 PD_3
+#define X8_14 PD_7
+#define X8_15 PC_7
+#define X8_16 PA_6
+#define X8_17 PB_2
+#define X8_18 PM_4
+#define X8_19 PB_3
+#define X8_20 PM_5
+
+#define X9_01 PF_1
+//      X9_02 GND
+#define X9_03 PF_2
+#define X9_3  PF_2
+#define X9_04 PM_3
+#define X9_4  PM_3
+#define X9_05 PF_3
+#define X9_5  PF_3
+#define X9_06 PH_2
+#define X9_6  PH_2
+#define X9_07 PG_0
+#define X9_7  PG_0
+#define X9_08 PH_3
+#define X9_8  PH_3
+#define X9_09 PL_4
+#define X9_9  PL_4
+//      X9_10 RST
+#define X9_11 PL_5
+#define X9_12 PD_1
+#define X9_13 PL_0
+#define X9_14 PD_0
+#define X9_15 PL_1
+#define X9_16 PN_2
+#define X9_17 PL_2
+#define X9_18 PN_3
+#define X9_19 PL_3
+#define X9_20 PP_2
+
+
+//      X11_01 3.3V
+//      X11_02 5.0V
+//      X11_03 GND
+//      X11_04 GND
+#define X11_05 PB_4
+#define X11_5  PB_4
+#define X11_06 PA_2
+#define X11_6  PA_2
+#define X11_07 PB_5
+#define X11_7  PB_5
+#define X11_08 PA_3
+#define X11_8  PA_3
+#define X11_09 PH_0
+#define X11_9  PH_0
+#define X11_10 PA_4
+#define X11_11 PH_1
+#define X11_12 PA_5
+#define X11_13 PH_2
+#define X11_14 PE_0
+#define X11_15 PH_3
+#define X11_16 PE_1
+#define X11_17 PC_7
+#define X11_18 PE_2
+#define X11_19 PC_6
+#define X11_20 PE_3
+#define X11_21 PC_5
+#define X11_22 PE_4
+#define X11_23 PC_4
+#define X11_24 PE_5
+#define X11_25 PA_6
+#define X11_26 PK_0
+#define X11_27 PA_7
+#define X11_28 PK_1
+#define X11_29 PG_1
+#define X11_30 PK_2
+#define X11_31 PG_0
+#define X11_32 PK_3
+#define X11_33 PM_3
+//      X11_34 VREF
+//      X11_35 GND
+//      X11_36 GND
+#define X11_37 PM_2
+#define X11_38 PD_5
+#define X11_39 PM_1
+#define X11_40 PD_4
+#define X11_41 PM_0
+#define X11_42 PD_7
+#define X11_43 PL_0
+#define X11_44 PD_6
+#define X11_45 PL_1
+#define X11_46 PD_3
+#define X11_47 PL_2
+#define X11_48 PD_1
+#define X11_49 PL_3
+#define X11_50 PD_0
+#define X11_51 PQ_0
+#define X11_52 PD_2
+#define X11_53 PQ_1
+#define X11_54 PP_0
+#define X11_55 PQ_2
+#define X11_56 PP_1
+#define X11_57 PQ_3
+#define X11_58 PB_0
+#define X11_59 PK_7
+//      TARGET_VBUS
+#define X11_61 GND
+#define X11_62 GND
+#define X11_63 PK_6
+#define X11_64 PF_4
+#define X11_65 PL_4
+#define X11_66 PF_0
+#define X11_67 PB_2
+#define X11_68 PF_1
+#define X11_69 PB_3
+#define X11_70 PF_2
+#define X11_71 PP_2
+#define X11_72 PF_3
+#define X11_73 PP_3
+#define X11_74 PA_0
+#define X11_75 PK_5
+#define X11_76 PA_1
+#define X11_77 PK_4
+#define X11_78 PP_4
+#define X11_79 PL_5
+#define X11_80 PP_5
+#define X11_81 PN_4
+#define X11_82 PJ_0
+#define X11_83 PN_5
+#define X11_84 PJ_1
+#define X11_85 PN_0
+#define X11_86 PM_7
+#define X11_87 PN_1
+#define X11_88 PM_6
+#define X11_89 PN_2
+#define X11_90 PM_5
+#define X11_91 PN_3
+#define X11_92 PM_4
+#define X11_93 PQ_4
+#define X11_99 PQ_40
+//      X11_94 TARGET_RESET
+//      X11_95 WAKE
+//      X11_96 GND
+//      X11_97 5.0V
+//      X11_98 3.3V
+
+
+// end connector pin defines
 
 #ifdef ARDUINO_MAIN
+
 const uint32_t port_to_base[] = {
     NOT_A_PORT,
     (uint32_t) GPIO_PORTA_BASE, // 1
@@ -203,269 +441,7 @@ const uint32_t port_to_base[] = {
     (uint32_t) GPIO_PORTQ_BASE, // 15
 };
 
-const uint8_t digital_pin_to_timer[] = {
-    NOT_ON_TIMER,   /*  dummy */
-    NOT_ON_TIMER,   /*   1 - 3.3V */
-    T1B0,           /*   2 - PE_2 */
-    T2A0,           /*   3 - PH_6 */
-    T2B,            /*   4 - PH_7 */
-    NOT_ON_TIMER,   /*   5 - PN_7 */
-    NOT_ON_TIMER,   /*   6 - PF_3 */
-    T1A0,           /*   7 - PG_7 */
-    NOT_ON_TIMER,   /*   8 - PJ_2 */
-    NOT_ON_TIMER,   /*   9 - PB_4 */
-    NOT_ON_TIMER,   /*  10 - PJ_7 */
-    NOT_ON_TIMER,   /*  11 - PN_2 */
-    NOT_ON_TIMER,   /*  12 - PN_1 */
-    NOT_ON_TIMER,   /*  13 - PN_0 */
-    T0A0,           /*  14 - PG_4 */
-    T0B0,           /*  15 - PG_5 */
-    NOT_ON_TIMER,   /*  16 - RST */
-    NOT_ON_TIMER,   /*  17 - NC */
-    NOT_ON_TIMER,   /*  18 - PQ_7 */
-    T3A,            /*  19 - PS_2 */
-    NOT_ON_TIMER,   /*  20 - GND */
-    NOT_ON_TIMER,   /*  21 - VBUS */
-    NOT_ON_TIMER,   /*  22 - GND */
-    WT2A,           /*  23 - PE_3 */
-    WT2B,           /*  24 - PE_6 */
-    WT3A,           /*  25 - PK_0 */
-    WT3B,           /*  26 - PK_1 */
-    NOT_ON_TIMER,   /*  27 - PK_2 */
-    NOT_ON_TIMER,   /*  28 - PK_3 */
-    NOT_ON_TIMER,   /*  29 - PE_0 */
-    T0B1,           /*  30 - PE_1 */
-    T2A1,           /*  31 - PM_7 */
-    WT5B,           /*  32 - PD_2 */
-    WT5A,           /*  33 - PQ_3 */
-    WT1B,           /*  34 - PS_1 */
-    WT1A,           /*  35 - PS_0 */
-    WT0B,           /*  36 - PL_4 */
-    WT0A,           /*  37 - PL_5 */
-    T3B,            /*  38 - PS_3 */
-    T1B1,           /*  39 - PD_3 */
-    T1A1,           /*  40 - PM_5 */
-    NOT_ON_TIMER,   /*  41 - J6_VCC */ // CH will clean these up next
-    NOT_ON_TIMER,   /*  42 - PD_0 */
-    NOT_ON_TIMER,   /*  43 - PJ_0 BP2_RX*/
-    NOT_ON_TIMER,   /*  44 - PJ_1 BP2_TX */
-    NOT_ON_TIMER,   /*  45 - PT_0 */
-    NOT_ON_TIMER,   /*  46 - PT_1 */
-    NOT_ON_TIMER,   /*  47 - PA_2 */
-    NOT_ON_TIMER,   /*  48 - PS_6 */
-    NOT_ON_TIMER,   /*  49 - PS_7 */
-    NOT_ON_TIMER,   /*  50 - PB_5 */
-    NOT_ON_TIMER,   /*  51 - PD_5 */
-    NOT_ON_TIMER,   /*  52 - PP_6 */
-    NOT_ON_TIMER,   /*  53 - PH_5 */
-    NOT_ON_TIMER,   /*  54 - PA_5 */
-    NOT_ON_TIMER,   /*  55 - PA_4 */
-    NOT_ON_TIMER,   /*  56 - RESET */
-    NOT_ON_TIMER,   /*  57 - PE_4 */
-    NOT_ON_TIMER,   /*  58 - PJ_3 */
-    NOT_ON_TIMER,   /*  59 - PD_1 */
-    NOT_ON_TIMER,   /*  60 - GND */
-    NOT_ON_TIMER,   /*  61 - PN_5 */
-    NOT_ON_TIMER,   /*  62 - PQ_4 */
-    NOT_ON_TIMER,   /*  63 - PF_1 */
-    NOT_ON_TIMER,   /*  64 - PK_4 */
-    NOT_ON_TIMER,   /*  65 - PK_6 */
-    NOT_ON_TIMER,   /*  66 - PN_3 */
-    NOT_ON_TIMER,   /*  67 - PE_5 */
-    NOT_ON_TIMER,   /*  68 - PP_1 */
-    NOT_ON_TIMER,   /*  69 - PA_3 */
-    NOT_ON_TIMER,   /*  70 - PB_6 */
-    NOT_ON_TIMER,   /*  71 - PB_7 */
-    NOT_ON_TIMER,   /*  72 - PF_0 */
-    NOT_ON_TIMER,   /*  73 - PF_2 */
-    NOT_ON_TIMER,   /*  74 - PQ_1 */
-    NOT_ON_TIMER,   /*  75 - PQ_2 */
-    NOT_ON_TIMER,   /*  76 - PD_6 */
-    NOT_ON_TIMER,   /*  77 - PD_7 */
-    NOT_ON_TIMER,   /*  78 - PD_4 */
-    NOT_ON_TIMER,   /*  79 - PE_7 */
-    NOT_ON_TIMER,   /*  80 - PP_7 */
-};
 
-const uint8_t digital_pin_to_port[] = {
-    NOT_A_PIN,  /*   dummy */
-    NOT_A_PIN,  /*   1 - 3.3V */
-    PE,         /*   2 - PE_4 */
-    PC,         /*   3 - PC_4 */
-    PC,         /*   4 - PC_5 */
-    PC,         /*   5 - PN_6 */
-    PE,         /*   6 - PE_5 */
-    PD,         /*   7 - PG_3 */
-    PC,         /*   8 - PC_7 */
-    PB,         /*   9 - PB_3 */
-    PB,         /*  10 - PB_3 */
-    PP,         /*  11 - PP_2 */
-    PM,         /*  12 - PM_3 */
-    PN,         /*  13 - PN_2 */
-    PD,         /*  14 - PD_0 */
-    PD,         /*  15 - PD_1 */
-    NOT_A_PIN,  /*  16 - RST */
-    PH,         /*  17 - PH_3 */
-    PH,         /*  18 - PH_2 */
-    PM,         /*  19 - PM_3 */
-    NOT_A_PIN,  /*  20 - GND */
-    NOT_A_PIN,  /*  21 - VBUS */
-    NOT_A_PIN,  /*  22 - GND */
-    PE,         /*  23 - PE_0 */
-    PE,         /*  24 - PE_1 */
-    PE,         /*  25 - PE_2 */
-    PE,         /*  26 - PE_3 */
-    PD,         /*  27 - PD_7 */
-    PA,         /*  28 - PA_6 */
-    PM,         /*  29 - PM_4 */
-    PM,         /*  30 - PM_5 */
-    PL,         /*  31 - PL_3 */
-    PL,         /*  32 - PL_2 */
-    PL,         /*  33 - PL_1 */
-    PL,         /*  34 - PL_0 */
-    PL,         /*  35 - PL_5 */
-    PL,         /*  36 - PL_4 */
-    PG,         /*  37 - PG_0 */
-    PF,         /*  38 - PF_3 */
-    PF,         /*  39 - PF_2 */
-    PF,         /*  40 - PM_1 */
-    NOT_A_PIN,  /*  41 - 3.3V */
-    PD,         /*  42 - PD_2 */
-    PP,         /*  43 - PD_0 BP2_RX */
-    PP,         /*  44 - PD_1 BP2_TX */
-    PA,         /*  45 - PA_0 */
-    PA,         /*  46 - PA_1 */
-    PQ,         /*  47 - PQ_0 */
-    PP,         /*  48 - PP_4 */
-    PN,         /*  49 - PN_5 */
-    PN,         /*  50 - PN_5 */
-    PM,         /*  51 - PM_6 */
-    PQ,         /*  52 - PQ_1 */
-    PP,         /*  53 - PP_3 */
-    PQ,         /*  54 - PQ_3 */
-    PQ,         /*  55 - PQ_2 */
-    NOT_A_PIN,  /*  56 - RESET */
-    PA,         /*  57 - PQ_7 */
-    PP,         /*  58 - PP_5 */
-    PM,         /*  59 - PM_7 */
-    NOT_A_PIN,  /*  60 - GND */
-    NOT_A_PIN,  /*  61 - 5v */
-    NOT_A_PIN,  /*  62 - GND */
-    PB,         /*  63 - PB_4 */
-    PB,         /*  64 - PB_5 */
-    PK,         /*  65 - PK_0 */
-    PK,         /*  66 - PK_1 */
-    PK,         /*  67 - PK_2 */
-    PK,         /*  68 - PK_3 */
-    PA,         /*  69 - PA_4 */
-    PA,         /*  70 - PA_5 */
-    PK,         /*  71 - PK_7 */
-    PK,         /*  72 - PK_6 */
-    PH,         /*  73 - PH_1 */
-    PH,         /*  74 - PH_0 */
-    PM,         /*  75 - PM_2 */
-    PM,         /*  76 - PM_1 */
-    PM,         /*  77 - PM_0 */
-    PK,         /*  78 - PK_5 */
-    PK,         /*  79 - PK_4 */
-    PG,         /*  80 - PG_1 */
-    PN,         /*  81 - PN_1 */
-    PN,         /*  82 - PN_0 */
-    PF,         /*  83 - PF_4 */
-    PF,         /*  84 - PF_0 */
-    PJ,         /*  85 - PJ_0 */
-    PJ,         /*  86 - PJ_1 */
-};
-
-const uint8_t digital_pin_to_bit_mask[] = {
-    NOT_A_PIN,  /*   dummy */
-    NOT_A_PIN,  /*   1 - 3.3V */
-    BV(4),      /*   2 - PE_4 */
-    BV(4),      /*   3 - PC_4 */
-    BV(5),      /*   4 - PC_5 */
-    BV(6),      /*   5 - PN_6 */
-    BV(5),      /*   6 - PP_5 */
-    BV(3),      /*   7 - PG_3 */
-    BV(7),      /*   8 - PC_7 */
-    BV(3),      /*   9 - PB_3 */
-    BV(3),      /*  10 - PB_3 */
-    BV(2),      /*  11 - PP_2 */
-    BV(3),      /*  12 - PM_3 */
-    BV(2),      /*  13 - PN_2 */
-    BV(0),      /*  14 - PD_0 */
-    BV(1),      /*  15 - PD_1 */
-    NOT_A_PIN,  /*  16 - RST */
-    BV(3),      /*  17 - PH_3 */
-    BV(2),      /*  18 - PH_2 */
-    BV(3),      /*  19 - PM_3 */
-    NOT_A_PIN,  /*  20 - GND */
-    NOT_A_PIN,  /*  21 - VBUS */
-    NOT_A_PIN,  /*  22 - GND */
-    BV(0),      /*  23 - PE_0 */
-    BV(1),      /*  24 - PE_1 */
-    BV(2),      /*  25 - PE_2 */
-    BV(3),      /*  26 - PD_3 */
-    BV(7),      /*  27 - PA_7 */
-    BV(6),      /*  28 - PM_6 */
-    BV(4),      /*  29 - PM_4 */
-    BV(5),      /*  30 - PM_5 */
-    BV(3),      /*  31 - PL_3 */
-    BV(2),      /*  32 - PL_2 */
-    BV(1),      /*  33 - PL_1 */
-    BV(0),      /*  34 - PL_0 */
-    BV(5),      /*  35 - PL_5 */
-    BV(4),      /*  36 - PL_4 */
-    BV(0),      /*  37 - PG_0 */
-    BV(3),      /*  38 - PF_3 */
-    BV(2),      /*  39 - PF_2 */
-    BV(1),      /*  40 - PM_1 */
-    NOT_A_PIN,  /*  41 - 3.3v */
-    BV(2),      /*  42 - PD_2 */
-    BV(0),      /*  43 - PJ_0 BP2_RX */
-    BV(1),      /*  44 - PJ_1 BP2_TX */
-    BV(0),      /*  45 - PT_0 */
-    BV(1),      /*  46 - PT_1 */
-    BV(0),      /*  47 - PA_0 */
-    BV(4),      /*  48 - PS_4 */
-    BV(4),      /*  49 - PS_4 */
-    BV(5),      /*  50 - PB_5 */
-    BV(6),      /*  51 - PD_6 */
-    BV(1),      /*  52 - PP_1 */
-    BV(3),      /*  53 - PH_3 */
-    BV(3),      /*  54 - PA_3 */
-    BV(2),      /*  55 - PA_2 */
-    NOT_A_PIN,   /*  56 - RESET */
-    BV(7),      /*  57 - PA_4 */
-    BV(5),      /*  58 - PP_3 */
-    BV(7),      /*  59 - PM_1 */
-    NOT_A_PIN,  /*  60 - GND */
-    NOT_A_PIN,  /*  61 - 5v */
-    NOT_A_PIN,  /*  62 - GND */
-    BV(4),      /*  63 - PB_1 */
-    BV(5),      /*  64 - PB_4 */
-    BV(0),      /*  65 - PK_6 */
-    BV(1),      /*  66 - PK_3 */
-    BV(2),      /*  67 - PK_5 */
-    BV(3),      /*  68 - PK_1 */
-    BV(4),      /*  69 - PA_3 */
-    BV(5),      /*  70 - PA_6 */
-    BV(7),      /*  71 - PK_7 */
-    BV(6),      /*  72 - PK_0 */
-    BV(1),      /*  73 - PH_2 */
-    BV(0),      /*  74 - PH_1 */
-    BV(2),      /*  75 - PM_2 */
-    BV(1),      /*  76 - PM_6 */
-    BV(0),      /*  77 - PM_7 */
-    BV(5),      /*  78 - PL_4 */
-    BV(4),      /*  79 - PK_7 */
-    BV(1),      /*  80 - PG_7 */
-    BV(1),      /*  81 - PN_1 */
-    BV(0),      /*  82 - PN_0 */
-    BV(4),      /*  83 - PF_4 */
-    BV(0),      /*  84 - PF_0 */
-    BV(0),      /*  85 - PJ_0 */
-    BV(1),      /*  86 - PJ_1 */
-};
 
 const uint32_t timer_to_offset[] = {
     TIMER0,
@@ -545,96 +521,393 @@ const uint32_t timer_to_pin_config[] = {
 	GPIO_PD7_WT5CCP1,
 */
 };
-const uint32_t digital_pin_to_analog_in[] = {
-    NOT_ON_ADC,     /*   dummy   */
-    NOT_ON_ADC,     /*   1 - 3.3V*/
-    ADC_CTL_CH1,    /*   2 - PE_2 */
-    NOT_ON_ADC,     /*   3 - PH_6 */
-    NOT_ON_ADC,     /*   4 - PH_7 */
-    NOT_ON_ADC,     /*   5 - PN_7 */
-    NOT_ON_ADC,     /*   6 - PF_3 */
-    NOT_ON_ADC,     /*   7 - PG_7 */
-    NOT_ON_ADC,     /*   8 - PJ_2 */
-    ADC_CTL_CH10,   /*   9 - PB_4 */
-    NOT_ON_ADC,     /*  10 - PJ_7 */
-    NOT_ON_ADC,     /*  11 - PN_2 */
-    NOT_ON_ADC,     /*  12 - PN_1 */
-    NOT_ON_ADC,     /*  13 - PN_0 */
-    NOT_ON_ADC,     /*  14 - PG_4 */
-    NOT_ON_ADC,     /*  15 - PG_5 */
-    NOT_ON_ADC,     /*  16 - RST */
-    NOT_ON_ADC,     /*  17 - PF0 */
-    NOT_ON_ADC,     /*  18 - PQ_7 */
-    NOT_ON_ADC,     /*  19 - PS_2 */
-    NOT_ON_ADC,     /*  20 - GND */
-    NOT_ON_ADC,     /*  21 - VBUS */
-    NOT_ON_ADC,     /*  22 - GND */
-    ADC_CTL_CH0,    /*  23 - PE_3 */
-    ADC_CTL_CH20,   /*  24 - PE_6 */
-    ADC_CTL_CH16,   /*  25 - PK_0 */
-    ADC_CTL_CH17,   /*  26 - PK_1 */
-    ADC_CTL_CH18,   /*  27 - PK_2 */
-    ADC_CTL_CH19,   /*  28 - PK_3 */
-    ADC_CTL_CH3,    /*  29 - PE_0 */
-    ADC_CTL_CH2,    /*  30 - PE_1 */
-    NOT_ON_ADC,     /*  31 - PM_7 */
-    ADC_CTL_CH13,   /*  32 - PD_2 */
-    NOT_ON_ADC,     /*  33 - PQ_3 */
-    NOT_ON_ADC,     /*  34 - PS_1 */
-    NOT_ON_ADC,     /*  35 - PS_0 */
-    NOT_ON_ADC,     /*  36 - PL_4 */
-    NOT_ON_ADC,     /*  37 - PL_5 */
-    NOT_ON_ADC,     /*  38 - PS_3 */
-    ADC_CTL_CH12,   /*  39 - PD_3 */
-    NOT_ON_ADC,     /*  40 - PM_5 */
-    NOT_ON_ADC,     /*  41 - J6_VCC */
-    ADC_CTL_CH15,   /*  42 - PD_0 */
-    NOT_ON_ADC,     /*  43 - PJ_0 BP2_RX */
-    NOT_ON_ADC,     /*  44 - PJ_1 BP2_TX */
-    NOT_ON_ADC,     /*  45 - PT_0 */
-    NOT_ON_ADC,     /*  46 - PT_1 */
-    NOT_ON_ADC,     /*  47 - PA_2 */
-    NOT_ON_ADC,     /*  48 - PS_6 */
-    NOT_ON_ADC,     /*  49 - PS_7 */
-    ADC_CTL_CH11,   /*  50 - PB_5 */
-    ADC_CTL_CH6,    /*  51 - PD_5 */
-    ADC_CTL_CH23,   /*  52 - PP_6 */
-    NOT_ON_ADC,     /*  53 - PH_5 */
-    NOT_ON_ADC,     /*  54 - PA_5 */
-    NOT_ON_ADC,     /*  55 - PA_4 */
-    NOT_ON_ADC,     /*  56 - RESET */
-    ADC_CTL_CH9,    /*  57 - PE_4 */
-    NOT_ON_ADC,     /*  58 - PJ_3 */
-    ADC_CTL_CH14,   /*  59 - PD_1 */
-    NOT_ON_ADC,     /*  60 - GND */
-    NOT_ON_ADC,     /*  61 - PN_5 */
-    NOT_ON_ADC,     /*  62 - PQ_4 */
-    NOT_ON_ADC,     /*  63 - PF_1 */
-    NOT_ON_ADC,     /*  64 - PK_4 */
-    NOT_ON_ADC,     /*  65 - PK_6 */
-    NOT_ON_ADC,     /*  66 - PN_3 */
-    ADC_CTL_CH8,    /*  67 - PE_5 */
-    NOT_ON_ADC,     /*  68 - PP_1 */
-    NOT_ON_ADC,     /*  69 - PA_3 */
-    NOT_ON_ADC,     /*  70 - PB_6 */
-    NOT_ON_ADC,     /*  71 - PB_7 */
-    NOT_ON_ADC,     /*  72 - PF_0 */
-    NOT_ON_ADC,     /*  73 - PF_2 */
-    NOT_ON_ADC,     /*  74 - PQ_1 */
-    NOT_ON_ADC,     /*  75 - PQ_2 */
-    ADC_CTL_CH5,    /*  76 - PD_6 */
-    ADC_CTL_CH4,    /*  77 - PD_7 */
-    ADC_CTL_CH7,    /*  78 - PD_4 */
-    ADC_CTL_CH21,   /*  79 - PE_7 */
-    ADC_CTL_CH22,   /*  80 - PP_7 */
+
+const uint8_t digital_pin_to_timer[]      = {
+    NOT_ON_TIMER,   // dummy 
+    NOT_ON_TIMER,   // 01 - 3.3v       X8_01   // TODO: CH will fix these
+    NOT_ON_TIMER,   // 02 - PE_4       X8_03
+    NOT_ON_TIMER,   // 03 - PC_4       X8_05
+    NOT_ON_TIMER,   // 04 - PC_5       X8_07
+    NOT_ON_TIMER,   // 05 - PC_6       X8_09
+    NOT_ON_TIMER,   // 06 - PE_5       X8_11
+    NOT_ON_TIMER,   // 07 - PD_3       X8_13
+    NOT_ON_TIMER,   // 08 - PC_7       X8_15
+    NOT_ON_TIMER,   // 09 - PB_2       X8_17
+    NOT_ON_TIMER,   // 10 - PB_3       X8_19
+    NOT_ON_TIMER,   // 11 - PP_2       X9_20
+    NOT_ON_TIMER,   // 12 - PN_3       X9_18
+    NOT_ON_TIMER,   // 13 - PN_2       X9_16
+    NOT_ON_TIMER,   // 14 - PD_0       X9_14
+    NOT_ON_TIMER,   // 15 - PD_1       X9_12
+    NOT_ON_TIMER,   // 16 - RST        X9_10
+    NOT_ON_TIMER,   // 17 - PH_3       X9_08
+    NOT_ON_TIMER,   // 18 - PH_2       X9_06
+    NOT_ON_TIMER,   // 19 - PM_3       X9_04
+    NOT_ON_TIMER,   // 20 - GND        X9_02
+    NOT_ON_TIMER,   // 21 - 5v         X8_02
+    NOT_ON_TIMER,   // 22 - GND        X8_04
+    NOT_ON_TIMER,   // 23 - PE_0       X8_06
+    NOT_ON_TIMER,   // 24 - PE_1       X8_08
+    NOT_ON_TIMER,   // 25 - PE_2       X8_10
+    NOT_ON_TIMER,   // 26 - PE_3       X8_12
+    NOT_ON_TIMER,   // 27 - PD_7       X8_14
+    NOT_ON_TIMER,   // 28 - PA_6       X8_16
+    NOT_ON_TIMER,   // 29 - PM_4       X8_18
+    NOT_ON_TIMER,   // 30 - PM_5       X8_20
+    NOT_ON_TIMER,   // 31 - PL_3       X9_19
+    NOT_ON_TIMER,   // 32 - PL_2       X9_17
+    NOT_ON_TIMER,   // 33 - PL_1       X9_15
+    NOT_ON_TIMER,   // 34 - PL_0       X9_13
+    NOT_ON_TIMER,   // 35 - PL_5       X9_11
+    NOT_ON_TIMER,   // 36 - PL_4       X9_09
+    NOT_ON_TIMER,   // 37 - PG_0       X9_07
+    NOT_ON_TIMER,   // 38 - PF_3       X9_05
+    NOT_ON_TIMER,   // 39 - PF_2       X9_03
+    NOT_ON_TIMER,   // 40 - PF_1       X9_01
+    NOT_ON_TIMER,   // 41 - 3.3v       X6_01
+    NOT_ON_TIMER,   // 42 - PD_2       X6_03
+    NOT_ON_TIMER,   // 43 - PP_0       X6_05
+    NOT_ON_TIMER,   // 44 - PP_1       X6_07
+    NOT_ON_TIMER,   // 45 - PD_4       X6_09
+    NOT_ON_TIMER,   // 46 - PD_5       X6_11
+    NOT_ON_TIMER,   // 47 - PQ_0       X6_13
+    NOT_ON_TIMER,   // 48 - PP_4       X6_15
+    NOT_ON_TIMER,   // 49 - PN_5       X6_17
+    NOT_ON_TIMER,   // 50 - PN_4       X6_19
+    NOT_ON_TIMER,   // 51 - PM_6       X7_20
+    NOT_ON_TIMER,   // 52 - PQ_1       X7_18
+    NOT_ON_TIMER,   // 53 - PP_3       X7_16
+    NOT_ON_TIMER,   // 54 - PQ_3       X7_14
+    NOT_ON_TIMER,   // 55 - PQ_2       X7_12
+    NOT_ON_TIMER,   // 56 - RESET      X7_10
+    NOT_ON_TIMER,   // 57 - PA_7       X7_08
+    NOT_ON_TIMER,   // 58 - PP_5       X7_06
+    NOT_ON_TIMER,   // 59 - PM_7       X7_04
+    NOT_ON_TIMER,   // 60 - GND        X7_02
+    NOT_ON_TIMER,   // 61 - 5v         X6_02
+    NOT_ON_TIMER,   // 62 - GND        X6_04
+    NOT_ON_TIMER,   // 63 - PB_4       X6_06
+    NOT_ON_TIMER,   // 64 - PB_5       X6_08
+    NOT_ON_TIMER,   // 65 - PK_0       X6_10
+    NOT_ON_TIMER,   // 66 - PK_1       X6_12
+    NOT_ON_TIMER,   // 67 - PK_2       X6_14
+    NOT_ON_TIMER,   // 68 - PK_3       X6_16
+    NOT_ON_TIMER,   // 69 - PA_4       X6_18
+    NOT_ON_TIMER,   // 70 - PA_5       X6_20
+    NOT_ON_TIMER,   // 71 - PK_7       X7_19
+    NOT_ON_TIMER,   // 72 - PK_6       X7_17
+    NOT_ON_TIMER,   // 73 - PH_1       X7_15
+    NOT_ON_TIMER,   // 74 - PH_0       X7_13
+    NOT_ON_TIMER,   // 75 - PM_2       X7_11
+    NOT_ON_TIMER,   // 76 - PM_1       X7_09
+    NOT_ON_TIMER,   // 77 - PM_0       X7_07
+    NOT_ON_TIMER,   // 78 - PK_5       X7_05
+    NOT_ON_TIMER,   // 79 - PK_4       X7_03
+    NOT_ON_TIMER,   // 80 - PG_1       X7_01
+    NOT_ON_TIMER,   // 81 - PN_1       LED1
+    NOT_ON_TIMER,   // 82 - PN_0       LED2
+    NOT_ON_TIMER,   // 83 - PF_4       LED3
+    NOT_ON_TIMER,   // 84 - PF_0       LED4
+    NOT_ON_TIMER,   // 85 - PJ_0       USR_SW1
+    NOT_ON_TIMER,   // 86 - PJ_1       USR_SW2
+    NOT_ON_TIMER,   // 87 - PD_6       AIN5
+    NOT_ON_TIMER,   // 88 - PA_0       JP4
+    NOT_ON_TIMER,   // 89 - PA_1       JP5
 };
+
+
+const uint8_t digital_pin_to_port[]       = {
+    NOT_A_PIN,      // dummy 
+    NOT_A_PIN,      // 01 - 3.3v       X8_01
+    PE,             // 02 - PE_4       X8_03
+    PC,             // 03 - PC_4       X8_05
+    PC,             // 04 - PC_5       X8_07
+    PC,             // 05 - PC_6       X8_09
+    PE,             // 06 - PE_5       X8_11
+    PD,             // 07 - PD_3       X8_13
+    PC,             // 08 - PC_7       X8_15
+    PB,             // 09 - PB_2       X8_17
+    PB,             // 10 - PB_3       X8_19
+    PP,             // 11 - PP_2       X9_20
+    PN,             // 12 - PN_3       X9_18
+    PN,             // 13 - PN_2       X9_16
+    PD,             // 14 - PD_0       X9_14
+    PD,             // 15 - PD_1       X9_12
+    NOT_A_PIN,      // 16 - RST        X9_10
+    PH,             // 17 - PH_3       X9_08
+    PH,             // 18 - PH_2       X9_06
+    PM,             // 19 - PM_3       X9_04
+    NOT_A_PIN,      // 20 - GND        X9_02
+    NOT_A_PIN,      // 21 - 5v         X8_02
+    NOT_A_PIN,      // 22 - GND        X8_04
+    PE,             // 23 - PE_0       X8_06
+    PE,             // 24 - PE_1       X8_08
+    PE,             // 25 - PE_2       X8_10
+    PE,             // 26 - PE_3       X8_12
+    PD,             // 27 - PD_7       X8_14
+    PA,             // 28 - PA_6       X8_16
+    PM,             // 29 - PM_4       X8_18
+    PM,             // 30 - PM_5       X8_20
+    PL,             // 31 - PL_3       X9_19
+    PL,             // 32 - PL_2       X9_17
+    PL,             // 33 - PL_1       X9_15
+    PL,             // 34 - PL_0       X9_13
+    PL,             // 35 - PL_5       X9_11
+    PL,             // 36 - PL_4       X9_09
+    PG,             // 37 - PG_0       X9_07
+    PF,             // 38 - PF_3       X9_05
+    PF,             // 39 - PF_2       X9_03
+    PF,             // 40 - PF_1       X9_01
+    NOT_A_PIN,      // 41 - 3.3v       X6_01
+    PD,             // 42 - PD_2       X6_03
+    PP,             // 43 - PP_0       X6_05
+    PP,             // 44 - PP_1       X6_07
+    PD,             // 45 - PD_4       X6_09
+    PD,             // 46 - PD_5       X6_11
+    PQ,             // 47 - PQ_0       X6_13
+    PP,             // 48 - PP_4       X6_15
+    PN,             // 49 - PN_5       X6_17
+    PN,             // 50 - PN_4       X6_19
+    PM,             // 51 - PM_6       X7_20
+    PQ,             // 52 - PQ_1       X7_18
+    PP,             // 53 - PP_3       X7_16
+    PQ,             // 54 - PQ_3       X7_14
+    PQ,             // 55 - PQ_2       X7_12
+    NOT_A_PIN,      // 56 - RESET      X7_10
+    PA,             // 57 - PA_7       X7_08
+    PP,             // 58 - PP_5       X7_06
+    PM,             // 59 - PM_7       X7_04
+    NOT_A_PIN,      // 60 - GND        X7_02
+    NOT_A_PIN,      // 61 - 5v         X6_02
+    NOT_A_PIN,      // 62 - GND        X6_04
+    PB,             // 63 - PB_4       X6_06
+    PB,             // 64 - PB_5       X6_08
+    PK,             // 65 - PK_0       X6_10
+    PK,             // 66 - PK_1       X6_12
+    PK,             // 67 - PK_2       X6_14
+    PK,             // 68 - PK_3       X6_16
+    PA,             // 69 - PA_4       X6_18
+    PA,             // 70 - PA_5       X6_20
+    PK,             // 71 - PK_7       X7_19
+    PK,             // 72 - PK_6       X7_17
+    PH,             // 73 - PH_1       X7_15
+    PH,             // 74 - PH_0       X7_13
+    PM,             // 75 - PM_2       X7_11
+    PM,             // 76 - PM_1       X7_09
+    PM,             // 77 - PM_0       X7_07
+    PK,             // 78 - PK_5       X7_05
+    PK,             // 79 - PK_4       X7_03
+    PG,             // 80 - PG_1       X7_01
+    PN,             // 81 - PN_1       LED1
+    PN,             // 82 - PN_0       LED2
+    PF,             // 83 - PF_4       LED3
+    PF,             // 84 - PF_0       LED4
+    PJ,             // 85 - PJ_0       USR_SW1
+    PJ,             // 86 - PJ_1       USR_SW2
+    PD,             // 87 - PD_6       AIN5
+    PA,             // 88 - PA_0       JP4
+    PA,             // 89 - PA_1       JP5
+};
+
+
+const uint8_t digital_pin_to_bit_mask[]   = {
+    NOT_A_PIN,      // dummy 
+    NOT_A_PIN,      // 01 - 3.3v       X8_01
+    BV(4),          // 02 - PE_4       X8_03
+    BV(4),          // 03 - PC_4       X8_05
+    BV(5),          // 04 - PC_5       X8_07
+    BV(6),          // 05 - PC_6       X8_09
+    BV(5),          // 06 - PE_5       X8_11
+    BV(3),          // 07 - PD_3       X8_13
+    BV(7),          // 08 - PC_7       X8_15
+    BV(2),          // 09 - PB_2       X8_17
+    BV(3),          // 10 - PB_3       X8_19
+    BV(2),          // 11 - PP_2       X9_20
+    BV(3),          // 12 - PN_3       X9_18
+    BV(2),          // 13 - PN_2       X9_16
+    BV(0),          // 14 - PD_0       X9_14
+    BV(1),          // 15 - PD_1       X9_12
+    NOT_A_PIN,      // 16 - RST        X9_10
+    BV(3),          // 17 - PH_3       X9_08
+    BV(2),          // 18 - PH_2       X9_06
+    BV(3),          // 19 - PM_3       X9_04
+    NOT_A_PIN,      // 20 - GND        X9_02
+    NOT_A_PIN,      // 21 - 5v         X8_02
+    NOT_A_PIN,      // 22 - GND        X8_04
+    BV(0),          // 23 - PE_0       X8_06
+    BV(1),          // 24 - PE_1       X8_08
+    BV(2),          // 25 - PE_2       X8_10
+    BV(3),          // 26 - PE_3       X8_12
+    BV(7),          // 27 - PD_7       X8_14
+    BV(6),          // 28 - PA_6       X8_16
+    BV(4),          // 29 - PM_4       X8_18
+    BV(5),          // 30 - PM_5       X8_20
+    BV(3),          // 31 - PL_3       X9_19
+    BV(2),          // 32 - PL_2       X9_17
+    BV(1),          // 33 - PL_1       X9_15
+    BV(0),          // 34 - PL_0       X9_13
+    BV(5),          // 35 - PL_5       X9_11
+    BV(4),          // 36 - PL_4       X9_09
+    BV(0),          // 37 - PG_0       X9_07
+    BV(3),          // 38 - PF_3       X9_05
+    BV(2),          // 39 - PF_2       X9_03
+    BV(1),          // 40 - PF_1       X9_01
+    NOT_A_PIN,      // 41 - 3.3v       X6_01
+    BV(2),          // 42 - PD_2       X6_03
+    BV(0),          // 43 - PP_0       X6_05
+    BV(1),          // 44 - PP_1       X6_07
+    BV(4),          // 45 - PD_4       X6_09
+    BV(5),          // 46 - PD_5       X6_11
+    BV(0),          // 47 - PQ_0       X6_13
+    BV(4),          // 48 - PP_4       X6_15
+    BV(5),          // 49 - PN_5       X6_17
+    BV(4),          // 50 - PN_4       X6_19
+    BV(6),          // 51 - PM_6       X7_20
+    BV(1),          // 52 - PQ_1       X7_18
+    BV(3),          // 53 - PP_3       X7_16
+    BV(3),          // 54 - PQ_3       X7_14
+    BV(2),          // 55 - PQ_2       X7_12
+    NOT_A_PIN,      // 56 - RESET      X7_10
+    BV(7),          // 57 - PA_7       X7_08
+    BV(5),          // 58 - PP_5       X7_06
+    BV(7),          // 59 - PM_7       X7_04
+    NOT_A_PIN,      // 60 - GND        X7_02
+    NOT_A_PIN,      // 61 - 5v         X6_02
+    NOT_A_PIN,      // 62 - GND        X6_04
+    BV(4),          // 63 - PB_4       X6_06
+    BV(5),          // 64 - PB_5       X6_08
+    BV(0),          // 65 - PK_0       X6_10
+    BV(1),          // 66 - PK_1       X6_12
+    BV(2),          // 67 - PK_2       X6_14
+    BV(3),          // 68 - PK_3       X6_16
+    BV(4),          // 69 - PA_4       X6_18
+    BV(5),          // 70 - PA_5       X6_20
+    BV(7),          // 71 - PK_7       X7_19
+    BV(6),          // 72 - PK_6       X7_17
+    BV(1),          // 73 - PH_1       X7_15
+    BV(0),          // 74 - PH_0       X7_13
+    BV(2),          // 75 - PM_2       X7_11
+    BV(1),          // 76 - PM_1       X7_09
+    BV(0),          // 77 - PM_0       X7_07
+    BV(5),          // 78 - PK_5       X7_05
+    BV(4),          // 79 - PK_4       X7_03
+    BV(1),          // 80 - PG_1       X7_01
+    BV(1),          // 81 - PN_1       LED1
+    BV(0),          // 82 - PN_0       LED2
+    BV(4),          // 83 - PF_4       LED3
+    BV(0),          // 84 - PF_0       LED4
+    BV(0),          // 85 - PJ_0       USR_SW1
+    BV(1),          // 86 - PJ_1       USR_SW2
+    BV(6),          // 87 - PD_6       AIN5
+    BV(0),          // 88 - PA_0       JP4
+    BV(1),          // 89 - PA_1       JP5
+};
+
+const uint32_t digital_pin_to_analog_in[] = {
+    NOT_A_PIN,      // dummy 
+    NOT_ON_ADC,     // 01 - 3.3v       X8_01
+    ADC_CTL_CH9,    // 02 - PE_4       X8_03
+    NOT_ON_ADC,     // 03 - PC_4       X8_05
+    NOT_ON_ADC,     // 04 - PC_5       X8_07
+    NOT_ON_ADC,     // 05 - PC_6       X8_09
+    ADC_CTL_CH8,    // 06 - PE_5       X8_11
+    ADC_CTL_CH12,   // 07 - PD_3       X8_13
+    NOT_ON_ADC,     // 08 - PC_7       X8_15
+    NOT_ON_ADC,     // 09 - PB_2       X8_17
+    NOT_ON_ADC,     // 10 - PB_3       X8_19
+    NOT_ON_ADC,     // 11 - PP_2       X9_20
+    NOT_ON_ADC,     // 12 - PN_3       X9_18
+    NOT_ON_ADC,     // 13 - PN_2       X9_16
+    ADC_CTL_CH15,   // 14 - PD_0       X9_14
+    ADC_CTL_CH14,   // 15 - PD_1       X9_12
+    NOT_ON_ADC,     // 16 - RST        X9_10
+    NOT_ON_ADC,     // 17 - PH_3       X9_08
+    NOT_ON_ADC,     // 18 - PH_2       X9_06
+    NOT_ON_ADC,     // 19 - PM_3       X9_04
+    NOT_ON_ADC,     // 20 - GND        X9_02
+    NOT_ON_ADC,     // 21 - 5v         X8_02
+    NOT_ON_ADC,     // 22 - GND        X8_04
+    ADC_CTL_CH3,    // 23 - PE_0       X8_06
+    ADC_CTL_CH2,    // 24 - PE_1       X8_08
+    ADC_CTL_CH1,    // 25 - PE_2       X8_10
+    ADC_CTL_CH0,    // 26 - PE_3       X8_12
+    ADC_CTL_CH4,    // 27 - PD_7       X8_14
+    NOT_ON_ADC,     // 28 - PA_6       X8_16
+    NOT_ON_ADC,     // 29 - PM_4       X8_18
+    NOT_ON_ADC,     // 30 - PM_5       X8_20
+    NOT_ON_ADC,     // 31 - PL_3       X9_19
+    NOT_ON_ADC,     // 32 - PL_2       X9_17
+    NOT_ON_ADC,     // 33 - PL_1       X9_15
+    NOT_ON_ADC,     // 34 - PL_0       X9_13
+    NOT_ON_ADC,     // 35 - PL_5       X9_11
+    NOT_ON_ADC,     // 36 - PL_4       X9_09
+    NOT_ON_ADC,     // 37 - PG_0       X9_07
+    NOT_ON_ADC,     // 38 - PF_3       X9_05
+    NOT_ON_ADC,     // 39 - PF_2       X9_03
+    NOT_ON_ADC,     // 40 - PF_1       X9_01
+    NOT_ON_ADC,     // 41 - 3.3v       X6_01
+    ADC_CTL_CH13,   // 42 - PD_2       X6_03
+    NOT_ON_ADC,     // 43 - PP_0       X6_05
+    NOT_ON_ADC,     // 44 - PP_1       X6_07
+    ADC_CTL_CH7,    // 45 - PD_4       X6_09
+    ADC_CTL_CH6,    // 46 - PD_5       X6_11
+    NOT_ON_ADC,     // 47 - PQ_0       X6_13
+    NOT_ON_ADC,     // 48 - PP_4       X6_15
+    NOT_ON_ADC,     // 49 - PN_5       X6_17
+    NOT_ON_ADC,     // 50 - PN_4       X6_19
+    NOT_ON_ADC,     // 51 - PM_6       X7_20
+    NOT_ON_ADC,     // 52 - PQ_1       X7_18
+    NOT_ON_ADC,     // 53 - PP_3       X7_16
+    NOT_ON_ADC,     // 54 - PQ_3       X7_14
+    NOT_ON_ADC,     // 55 - PQ_2       X7_12
+    NOT_ON_ADC,     // 56 - RESET      X7_10
+    NOT_ON_ADC,     // 57 - PA_7       X7_08
+    NOT_ON_ADC,     // 58 - PP_5       X7_06
+    NOT_ON_ADC,     // 59 - PM_7       X7_04
+    NOT_ON_ADC,     // 60 - GND        X7_02
+    NOT_ON_ADC,     // 61 - 5v         X6_02
+    NOT_ON_ADC,     // 62 - GND        X6_04
+    ADC_CTL_CH10,   // 63 - PB_4       X6_06
+    ADC_CTL_CH11,   // 64 - PB_5       X6_08
+    ADC_CTL_CH16,   // 65 - PK_0       X6_10
+    ADC_CTL_CH17,   // 66 - PK_1       X6_12
+    ADC_CTL_CH18,   // 67 - PK_2       X6_14
+    ADC_CTL_CH19,   // 68 - PK_3       X6_16
+    NOT_ON_ADC,     // 69 - PA_4       X6_18
+    NOT_ON_ADC,     // 70 - PA_5       X6_20
+    NOT_ON_ADC,     // 71 - PK_7       X7_19
+    NOT_ON_ADC,     // 72 - PK_6       X7_17
+    NOT_ON_ADC,     // 73 - PH_1       X7_15
+    NOT_ON_ADC,     // 74 - PH_0       X7_13
+    NOT_ON_ADC,     // 75 - PM_2       X7_11
+    NOT_ON_ADC,     // 76 - PM_1       X7_09
+    NOT_ON_ADC,     // 77 - PM_0       X7_07
+    NOT_ON_ADC,     // 78 - PK_5       X7_05
+    NOT_ON_ADC,     // 79 - PK_4       X7_03
+    NOT_ON_ADC,     // 80 - PG_1       X7_01
+    NOT_ON_ADC,     // 81 - PN_1       LED1
+    NOT_ON_ADC,     // 82 - PN_0       LED2
+    NOT_ON_ADC,     // 83 - PF_4       LED3
+    NOT_ON_ADC,     // 84 - PF_0       LED4
+    NOT_ON_ADC,     // 85 - PJ_0       USR_SW1
+    NOT_ON_ADC,     // 86 - PJ_1       USR_SW2
+    ADC_CTL_CH5,    // 87 - PD_6       AIN5
+    NOT_ON_ADC,     // 88 - PA_0       JP4
+    NOT_ON_ADC,     // 89 - PA_1       JP5
+};
+
+
+
+
+
+
 
 #endif
 #endif 
 
 
 /* 
-From spms433.pdf
+From spms433.pdf, see 'tools' at EOF for extraction command
 Table 26-5. GPIO Pins and Alternate Functions
 
              Analog or                           Digital Function (GPIOPCTL PMCx Bit Field Encoding)
@@ -666,16 +939,16 @@ Table 26-5. GPIO Pins and Alternate Functions
  PD1   2     AIN14         -     I2C7SDA T0CCP1    -      C1o       -       -        -       -       -         -    SSI2XDAT0
  PD2   3     AIN13         -     I2C8SCL T1CCP0    -      C2o       -       -        -       -       -         -    SSI2Fss
  PD3   4     AIN12         -     I2C8SDA T1CCP1    -        -       -       -        -       -       -         -    SSI2Clk
- PD4   125    AIN7       U2Rx      -     T3CCP0    -        -       -       -        -       -       -         -    SSI1XDAT2
- PD5   126    AIN6       U2Tx      -     T3CCP1    -        -       -       -        -       -       -         -    SSI1XDAT3
- PD6   127    AIN5       U2RTS     -     T4CCP0    -    USB0EPEN    -       -        -       -       -         -    SSI2XDAT3
- PD7   128    AIN4       U2CTS     -     T4CCP1    -    USB0PFLT    -       -       NMI      -       -         -    SSI2XDAT2
- PE0   15     AIN3       U1RTS     -       -       -        -       -       -        -       -       -         -       -
- PE1   14     AIN2       U1DSR     -       -       -        -       -       -        -       -       -         -       -
- PE2   13     AIN1       U1DCD     -       -       -        -       -       -        -       -       -         -       -
- PE3   12     AIN0       U1DTR     -       -       -        -       -       -        -       -       -         -       -
- PE4   123    AIN9       U1RI      -       -       -        -       -       -        -       -       -         -      SSI1XDAT0
- PE5   124    AIN8         -       -       -       -        -       -       -        -       -       -         -      SSI1XDAT1
+ PD4   125   AIN07       U2Rx      -     T3CCP0    -        -       -       -        -       -       -         -    SSI1XDAT2
+ PD5   126   AIN06       U2Tx      -     T3CCP1    -        -       -       -        -       -       -         -    SSI1XDAT3
+ PD6   127   AIN05       U2RTS     -     T4CCP0    -    USB0EPEN    -       -        -       -       -         -    SSI2XDAT3
+ PD7   128   AIN04       U2CTS     -     T4CCP1    -    USB0PFLT    -       -       NMI      -       -         -    SSI2XDAT2
+ PE0   15    AIN03       U1RTS     -       -       -        -       -       -        -       -       -         -       -
+ PE1   14    AIN02       U1DSR     -       -       -        -       -       -        -       -       -         -       -
+ PE2   13    AIN01       U1DCD     -       -       -        -       -       -        -       -       -         -       -
+ PE3   12    AIN00       U1DTR     -       -       -        -       -       -        -       -       -         -       -
+ PE4   123   AIN09       U1RI      -       -       -        -       -       -        -       -       -         -      SSI1XDAT0
+ PE5   124   AIN08         -       -       -       -        -       -       -        -       -       -         -      SSI1XDAT1
  PF0   42       -          -       -       -       -    EN0LED0 M0PWM0      -        -       -       -      SSI3XDAT1  TRD2
  PF1   43       -          -       -       -       -    EN0LED2 M0PWM1      -        -       -       -      SSI3XDAT0  TRD1
  PF2   44       -          -       -       -       -        -    M0PWM2     -        -       -       -      SSI3Fss    TRD0
@@ -731,19 +1004,21 @@ Table 26-5. GPIO Pins and Alternate Functions
  PQ3    27       -         -       -        -       -        -       -      -        -       -       -     SSI3XDAT1  EPI0S23
  PQ4    102      -       U1Rx      -        -       -        -       -   DIVSCLK     -       -       -        -         -
 
-a. The TMPRn signals are digital signals enabled and configured by the Hibernation module. All other signals listed in this column are analog
-    signals.
-b. The digital signals that are shaded gray are the power-on default values for the corresponding GPIO pin. Encodings 9, 10, and 12 are
-    not used on this device.
-
+a. The TMPRn signals are digital signals enabled and configured by the Hibernation module. All other signals listed 
+    in this column are analog signals.
+b. The digital signals that are shaded gray are the power-on default values for the corresponding GPIO pin. 
+    Encodings 9, 10, and 12 are not used on this device.
 */
 
 /* tools
-    table extraction from user manual
+    table extraction from data sheet
           pdftotext -f 1813 -l 1815 -layout  spms433.pdf 
 
     look for duplicate pin declares with
        grep "static const uint8_t P._" pins_energia.h  | awk '{print $4}' | sort | uniq -d
-*/
 
+    this prints out the tables
+        cp pins_energia.h a, edit a leaving only the energia pins
+        cat a | sed "s/;/ /" | awk '{ printf("    TODO,           // %02d - %-6s %-8s \n",$6,$4,$8)}' | sort -n
+*/
 
