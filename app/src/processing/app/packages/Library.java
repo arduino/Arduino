@@ -22,6 +22,7 @@ public class Library {
   private String category;
   private String license;
   private List<String> architectures;
+  protected LibraryList resolvedDependencies;
   private File folder;
   private File srcFolder;
   private boolean useRecursion;
@@ -207,6 +208,10 @@ public class Library {
 
   public String getAuthor() {
     return author;
+  }
+
+  public LibraryList getResolvedDependencies() {
+    return resolvedDependencies;
   }
 
   public String getParagraph() {

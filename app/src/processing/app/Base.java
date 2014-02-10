@@ -44,10 +44,11 @@ import processing.app.debug.TargetPlatformException;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.filefilters.OnlyDirs;
-import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
+import processing.app.packages.HeuristicResolver;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibraryResolver;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.ZipDeflater;
 import processing.core.*;
@@ -105,7 +106,7 @@ public class Base {
   static private LibraryList libraries;
 
   // maps #included files to their library folder
-  static Map<String, Library> importToLibraryTable;
+  static private LibraryResolver libraryResolver;
 
   // classpath for all known libraries for p5
   // (both those in the p5/libs folder and those with lib subfolders
@@ -1341,20 +1342,9 @@ public class Base {
       showWarning(_("Error"), _("Error loading libraries"), e);
     }
 
-    // Populate importToLibraryTable
-    importToLibraryTable = new HashMap<String, Library>();
-    for (Library lib : libraries) {
-      try {
-        String headers[] = headerListFromIncludePath(lib.getSrcFolder());
-        for (String header : headers) {
-          importToLibraryTable.put(header, lib);
-        }
-      } catch (IOException e) {
-        showWarning(_("Error"), I18n
-            .format("Unable to list header files in {0}", lib.getSrcFolder()), e);
-      }
-    }
-
+    // Create library resolver
+    libraryResolver = new HeuristicResolver(libraries);
+    
     // Update editors status bar
     for (Editor editor : editors)
       editor.onBoardOrPortChange();
@@ -1753,19 +1743,6 @@ public class Base {
 
       // XXX: DAM: should recurse here so that library folders can be nested
     }
-  }
-
-  /**
-   * Given a folder, return a list of the header files in that folder (but not
-   * the header files in its sub-folders, as those should be included from
-   * within the header files at the top-level).
-   */
-  static public String[] headerListFromIncludePath(File path) throws IOException {
-    String[] list = path.list(new OnlyFilesWithExtension(".h"));
-    if (list == null) {
-      throw new IOException();
-    }
-    return list;
   }
 
   protected void loadHardware(File folder) {
@@ -3000,5 +2977,9 @@ public class Base {
 
   public static DiscoveryManager getDiscoveryManager() {
     return discoveryManager;
+  }
+  
+  public static LibraryResolver getLibraryResolver() {
+    return libraryResolver;
   }
 }
