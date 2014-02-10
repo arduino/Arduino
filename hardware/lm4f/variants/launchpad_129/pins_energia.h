@@ -177,26 +177,26 @@ static const uint8_t PA_1 = 89; // JP5
 #define USR_SW2    PJ_1
 // pushbuttons end
 
-static const uint8_t A0 =  23; // PE_3
-static const uint8_t A1 =   2; // PE_2
-static const uint8_t A2 =  30; // PE_1
-static const uint8_t A3 =  29; // PE_0
-static const uint8_t A4 =  77; // PD_7
-static const uint8_t A5 =  76; // PD_6
-static const uint8_t A6 =  51; // PD_5
-static const uint8_t A7 =  78; // PD_4
-static const uint8_t A8 =  67; // PE_5
-static const uint8_t A9 =  57; // PE_4
-static const uint8_t A10 =  9; // PB_4
-static const uint8_t A11 = 50; // PB_5
-static const uint8_t A12 = 39; // PD_3
-static const uint8_t A13 = 32; // PD_2
-static const uint8_t A14 = 59; // PD_1
-static const uint8_t A15 = 42; // PD_0
-static const uint8_t A16 = 25; // PK_0
-static const uint8_t A17 = 26; // PK_1
-static const uint8_t A18 = 27; // PK_2
-static const uint8_t A19 = 28; // PK_3
+#define A0  PE_3   /* X8_12 */
+#define A1  PE_2   /* X8_10 */
+#define A2  PE_1   /* X8_08 */
+#define A3  PE_0   /* X8_06 */
+#define A4  PD_7   /* X8_14 */
+#define A5  PD_6   /* AIN5 */
+#define A6  PD_5   /* X6_11 */
+#define A7  PD_4   /* X6_09 */
+#define A8  PE_5   /* X8_11 */
+#define A9  PE_4   /* X8_03 */
+#define A10 PB_4   /* X6_06 */
+#define A11 PB_5   /* X6_08 */
+#define A12 PD_3   /* X8_13 */
+#define A13 PD_2   /* X6_03 */
+#define A14 PD_1   /* X9_12 */
+#define A15 PD_0   /* X9_14 */
+#define A16 PK_0   /* X6_10 */
+#define A17 PK_1   /* X6_12 */
+#define A18 PK_2   /* X6_14 */
+#define A19 PK_3   /* X6_16 */
 
 /* pins defines by connector
    Using defines instead of 'static const uint8_t' re-uses correct 
