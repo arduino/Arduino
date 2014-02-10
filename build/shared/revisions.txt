@@ -2,10 +2,41 @@
 ARDUINO 1.5.6 BETA
 
 [ide]
+* Implemented 1.5 library specification Rev.2
+  (https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification)
+* Replaced RXTX library with JSSC (Alexey Sokolov)
+  http://code.google.com/p/java-simple-serial-connector/
 * Improved command-line parsing (Matthijs Kooijman)
 
 [libraries]
 * TFT: warning messages in PImage class and strings inside examples now stored in flash to save RAM. 
+* Ethernet: added operator == for EthernetClient class (Norbert Truchsess)
+
+[core]
+* avr: Pile of HardwareSerial improvements (Matthijs Kooijman)
+  - Remove duplicate code from HardwareSerial::begin() methods
+  - Simplify HardwareSerial::begin() (Rob Tillaart)
+  - Use constants for register bit positions in HardwareSerial
+  - Fix HardwareSerial::flush() when interrupts are kept disabled for a while
+  - Fix lockup when writing to HardwareSerial with interrupts disabled
+  - Disable the UDRE interrupt sooner in HardwareSerial (Nathan Blackwell)
+  - Put each HardwareSerial instance in its own .cpp file in order to save memory
+    for unused UARTS
+  - In HardwareSerial::write, bypass the queue when it's empty in order to
+    improve throughput when using high baudrates (KurtE)
+* sam: Fixed wrap-around bug in delay() (Mark Tillotson)
+* sam: Fixed regression in analogRead() (fails to read multiple channels) (Mark Tillotson)
+* sam: Optimized delayMicroseconds() (Rob Tillaart) #1121
+* Optimized Print::print(String&) method, now uses internal string buffer to perform block write
+* Improved portability of String class (maniacbug) #695
+* Make some operators in IPAddress const (Matthijs Kooijman)
+
+ARDUINO 1.5.5-r2 BETA 2014.01.10
+
+* Signed drivers for Windows 8.1
+* Fixed Windows drivers signature (that prevented installation on
+  some Windows 8.x OS). Now the signature is timestamped and should
+  not expire.
 
 ARDUINO 1.5.5 BETA 2013.11.28
 
@@ -191,6 +222,13 @@ ARDUINO 1.5 BETA - 2012.10.22
   or incomplete.
 * For more info refer to this press release:
   http://arduino.cc/blog/2012/10/22/arduino-1-5-support-for-the-due-and-other-processors-easier-library-installation-simplified-board-menu-etc/
+
+ARDUINO 1.0.5-r2 - 2014.01.08
+
+* Signed drivers for Windows 8.1
+* Fixed Windows drivers signature (that prevented installation on
+  some Windows 8.x OS). Now the signature is timestamped and should
+  not expire.
 
 ARDUINO 1.0.5 - 2013.05.15
 

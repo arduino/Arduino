@@ -53,7 +53,7 @@ public class HeuristicResolver implements LibraryResolver {
   private LibraryList libraries;
   private Map<String, Library> importToLibrary;
 
-  public HeuristicResolver(LibraryList _libraries, String arch) {
+  public HeuristicResolver(LibraryList _libraries) {
     libraries = _libraries;
     importToLibrary = new HashMap<String, Library>();
 
@@ -67,7 +67,7 @@ public class HeuristicResolver implements LibraryResolver {
 
     // Resolve all libraries dependencies
     for (Library library : libraries)
-      library.resolvedDependencies = findLibraryDependencies(library, arch);
+      library.resolvedDependencies = findLibraryDependencies(library);
   }
 
   /**
@@ -77,15 +77,13 @@ public class HeuristicResolver implements LibraryResolver {
    * @param arch
    * @return A LibraryList containing the dependencies
    */
-  private LibraryList findLibraryDependencies(Library library, String arch) {
+  private LibraryList findLibraryDependencies(Library library) {
     List<File> headers = new ArrayList<File>();
-    boolean recursive = !library.isPre15Lib();
-    for (File folder : library.getSrcFolders(arch)) {
-      List<File> files = FileUtils
-          .listAllFilesWithExtension(folder, recursive, ".h", ".c", ".cpp");
-      headers.addAll(files);
-    }
-
+    boolean recursive = library.useRecursion();
+    File folder = library.getSrcFolder();
+    List<File> files = FileUtils.listAllFilesWithExtension(folder, recursive,
+                                                           ".h", ".c", ".cpp");
+    headers.addAll(files);
     LibraryList result = new LibraryList();
     for (File header : headers)
       result.addOrReplaceAll(findHeaderDependencies(header, headers, library));
