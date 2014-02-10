@@ -113,7 +113,7 @@ public:
 	void end(void);
 	void click(uint8_t b = MOUSE_LEFT);
 	void move(signed char x, signed char y, signed char wheel = 0);	
-	void moveAbs(uint16_t x, uint16_t y);
+	void moveAbsolute(uint16_t x, uint16_t y);
 	void press(uint8_t b = MOUSE_LEFT);		// press LEFT by default
 	void release(uint8_t b = MOUSE_LEFT);	// release LEFT by default
 	bool isPressed(uint8_t b = MOUSE_LEFT);	// check LEFT by default

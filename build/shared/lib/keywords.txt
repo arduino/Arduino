@@ -220,7 +220,7 @@ releaseAll	KEYWORD2
 accept	KEYWORD2
 click	KEYWORD2
 move	KEYWORD2
-moveAbs	KEYWORD2
+moveAbsolute	KEYWORD2
 write	KEYWORD2
 isPressed	KEYWORD2
 systemControl	KEYWORD2

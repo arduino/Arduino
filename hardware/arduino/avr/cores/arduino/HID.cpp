@@ -340,7 +340,7 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 //   http://lists.apple.com/archives/usb/2011/Jun/msg00032.html
 
 
-void Mouse_::moveAbs(uint16_t x, uint16_t y)
+void Mouse_::moveAbsolute(uint16_t x, uint16_t y)
 {
 	u8 m[5];
 	m[0] = _buttons; 
