@@ -49,7 +49,16 @@
 */
 
 static const unsigned long g_ulSSIBase[] = {
+#ifdef TARGET_IS_BLIZZARD_RB1
+    SSI0_BASE, SSI1_BASE, SSI2_BASE, SSI3_BASE
+#else
+#ifdef __TM4C129XNCZAD__
     SSI0_BASE, SSI1_BASE, SSI2_BASE, SSI3_BASE, SSI2_BASE, SSI3_BASE
+#endif
+#ifdef __TM4C1294NCPDT__
+    SSI0_BASE, SSI1_BASE, SSI2_BASE, SSI3_BASE, SSI3_BASE
+#endif
+#endif
 };
 
 //*****************************************************************************

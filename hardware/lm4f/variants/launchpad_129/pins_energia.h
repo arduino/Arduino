@@ -157,6 +157,8 @@ static const uint8_t PJ_1 = 86; // USR_SW2
 static const uint8_t PD_6 = 87; // AIN5
 static const uint8_t PA_0 = 88; // JP4
 static const uint8_t PA_1 = 89; // JP5
+static const uint8_t PA_2 = 90; // X11_06
+static const uint8_t PA_3 = 91; // X11_08
 
 // energia pin definition end
 
@@ -613,6 +615,8 @@ const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // 87 - PD_6       AIN5
     NOT_ON_TIMER,   // 88 - PA_0       JP4
     NOT_ON_TIMER,   // 89 - PA_1       JP5
+    NOT_ON_TIMER,   // 90 - PA_2       X11_06
+    NOT_ON_TIMER,   // 91 - PA_3       X11_08
 };
 
 
@@ -707,6 +711,8 @@ const uint8_t digital_pin_to_port[]       = {
     PD,             // 87 - PD_6       AIN5
     PA,             // 88 - PA_0       JP4
     PA,             // 89 - PA_1       JP5
+    PA,             // 90 - PA_2       X11_06
+    PA,             // 91 - PA_3       X11_08
 };
 
 
@@ -801,6 +807,8 @@ const uint8_t digital_pin_to_bit_mask[]   = {
     BV(6),          // 87 - PD_6       AIN5
     BV(0),          // 88 - PA_0       JP4
     BV(1),          // 89 - PA_1       JP5
+    BV(2),          // 90 - PA_2       X11_06
+    BV(3),          // 91 - PA_3       X11_08
 };
 
 const uint32_t digital_pin_to_analog_in[] = {
@@ -894,6 +902,8 @@ const uint32_t digital_pin_to_analog_in[] = {
     ADC_CTL_CH5,    // 87 - PD_6       AIN5
     NOT_ON_ADC,     // 88 - PA_0       JP4
     NOT_ON_ADC,     // 89 - PA_1       JP5
+    NOT_ON_ADC,     // 90 - PA_2       X11_06
+    NOT_ON_ADC,     // 91 - PA_3       X11_08
 };
 
 
