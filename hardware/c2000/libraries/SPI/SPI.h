@@ -17,9 +17,9 @@
 #include <Energia.h>
 #include <inttypes.h>
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USI__)
-#include "utility/spi_430.h"
-#endif
+
+#include "utility/c2000_spi.h"
+
 
 #define SPI_MODE0 0
 #define SPI_MODE1 1

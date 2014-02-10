@@ -1,4 +1,4 @@
-#5ifndef Energia_h
+#ifndef Energia_h
 #define Energia_h
 
 #ifdef __cplusplus
@@ -32,6 +32,7 @@ extern "C"{
 #define INPUT 0x0
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
+#define HARDWARE 0x4
 #define PORT_SELECTION0 0x10
 #define PORT_SELECTION1 0x20
 

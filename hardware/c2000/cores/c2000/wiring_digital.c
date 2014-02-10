@@ -36,37 +36,69 @@
 void pinMode(uint8_t pin, uint8_t mode)
 {
 
-	volatile uint32_t *dir;
-	volatile uint8_t *sel;
-	volatile uint32_t *pud;
-	uint8_t port = digitalPinToPort(pin);
-	dir = portDirRegister(port);
-	sel = portSelRegister(port);
-	pud = portPullupRegister(port);
+    if(pin & 0x8000)
+    {
 
-	if (port == NOT_A_PORT) return;
+        //Analog Pins
+        pin &= 0x7FFF;
 
-	if(pin > 31){
-		pin -= 32;
-	}
+        if(mode == HARDWARE)
+        {
+            //Turn on normal analog functionality
+            GpioCtrlRegs.AIOMUX1.all |= 3 << (pin * 2);
+        }
+        else
+        {
+            //Turn on AIO functionality
+            GpioCtrlRegs.AIOMUX1.all &= ~( 3 << (pin * 2));
 
-	EALLOW;
-	//Turn off peripheral function
-	if(port == PORT_A_2){
-		*sel &= ~((uint32_t)0x03 << ((pin-16) * 2));
-	}else{
-		*sel &= ~((uint32_t)0x03 << (pin * 2));
-	}
-	*dir &= ~((uint32_t)1 << pin);
-	*dir |= ((uint32_t)(mode & 0x01) << pin);
+            if(mode == INPUT)
+            {
+                GpioCtrlRegs.AIODIR.all &= ~(1 << pin);
+            }
+            else if(mode == OUTPUT)
+            {
+                GpioCtrlRegs.AIODIR.all |= (1 << pin);
+            }
 
-	if(mode == INPUT_PULLUP){
-		*pud &= ~((uint32_t)1 << pin);
-	}else{
-		*pud |= ((uint32_t)1 << pin);
-	}
+        }
 
-	EDIS;
+    }
+    else
+    {
+        //Digital Pins
+	    volatile uint32_t *dir;
+	    volatile uint8_t *sel;
+	    volatile uint32_t *pud;
+	    uint8_t port = digitalPinToPort(pin);
+	    dir = portDirRegister(port);
+	    sel = portSelRegister(port);
+    	pud = portPullupRegister(port);
+
+	    if (port == NOT_A_PORT) return;
+
+    	if(pin > 31){
+    		pin -= 32;
+    	}
+
+    	EALLOW;
+    	//Turn off peripheral function
+    	if(port == PORT_A_2){
+    		*sel &= ~((uint32_t)0x03 << ((pin-16) * 2));
+    	}else{
+    		*sel &= ~((uint32_t)0x03 << (pin * 2));
+    	}
+    	*dir &= ~((uint32_t)1 << pin);
+    	*dir |= ((uint32_t)(mode & 0x01) << pin);
+
+    	if(mode == INPUT_PULLUP){
+    		*pud &= ~((uint32_t)1 << pin);
+    	}else{
+    		*pud |= ((uint32_t)1 << pin);
+    	}
+
+    	EDIS;
+    }
 
 }
 
@@ -101,8 +133,28 @@ int digitalRead(uint8_t pin)
 
 	if (port == NOT_A_PORT) return LOW;
 
-	if (*portInputRegister(port) & bit) return HIGH;
-	return LOW;
+    if(pin & 0x8000)
+    {
+        //Analog Pins
+        pin &= 0x7FFF;
+
+        if(GpioDataRegs.AIODAT.all & (1 << pin))
+            return HIGH;
+        else
+            return LOW;
+
+    }
+    else
+    {
+        //Digital Pins
+
+	    if (*portInputRegister(port) & bit) 
+            return HIGH;
+        else
+	        return LOW;
+
+    }
+    return LOW;
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)
@@ -114,11 +166,23 @@ void digitalWrite(uint8_t pin, uint8_t val)
 	if (port == NOT_A_PORT) return;
 
 
-	out = portOutputRegister(port);
+    if(pin & 0x8000)
+    {
+        //Analog Pins
+        pin &= 0x7FFF;
 
-	if (val == LOW) {
-		*out &= ~bit;
-	} else {
-		*out |= bit;
-	}
+        GpioDataRegs.AIODAT.all = (GpioDataRegs.AIODAT.all & ~(1 << pin)) | (val << pin);
+
+    }
+    else
+    {
+        //Digital Pins
+	    out = portOutputRegister(port);
+
+    	if (val == LOW) {
+    		*out &= ~bit;
+    	} else {
+	    	*out |= bit;
+    	}
+    }
 }
