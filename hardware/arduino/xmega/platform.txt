@@ -57,10 +57,8 @@ recipe.size.regex=Total\s+([0-9]+).*
 # AVR Uploader/Programmers tools
 # -------------------
 
-tools.avrdude.cmd.path={runtime.ide.path}/hardware/tools/xmega/bin/avrdude
-tools.avrdude.config.path={runtime.ide.path}/hardware/tools/xmega/etc/avrdude.conf
-tools.avrdude.cmd.path.linux={runtime.ide.path}/hardware/tools/avrdude
-tools.avrdude.config.path.linux={runtime.ide.path}/hardware/tools/avrdude.conf
+tools.avrdude.cmd.path={runtime.ide.path}/hardware/tools/avr/bin/avrdude
+tools.avrdude.config.path={runtime.ide.path}/hardware/tools/avr/etc/avrdude.conf
 
 tools.avrdude.upload.params.verbose=-v -v -v -v
 tools.avrdude.upload.params.quiet=-q -q
