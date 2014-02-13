@@ -82,6 +82,63 @@ extern "C"{
 #define TIMA 0
 #define TIMB 8
 
+
+#ifdef __TM4C1294NCPDT__
+// from Table 13-2. General-Purpose Timers Signals (128TQFP)
+#define T0CCP0_0 0
+#define T0CCP0_1 1
+#define T0CCP0_2 2
+
+#define T0CCP1_0 3
+#define T0CCP1_1 4
+#define T0CCP1_2 5
+
+#define T1CCP0_0 6
+#define T1CCP0_1 7
+#define T1CCP0_2 8
+
+#define T1CCP1_0 9
+#define T1CCP1_1 10
+#define T1CCP1_2 11
+
+#define T2CCP0_0 12
+#define T2CCP0_1 13
+
+#define T2CCP1_0 14
+#define T2CCP1_1 15
+
+#define T3CCP0_0 16
+#define T3CCP0_1 17
+#define T3CCP0_2 18
+
+#define T3CCP1_0 19
+#define T3CCP1_1 20
+#define T3CCP1_2 21
+
+#define T4CCP0_0 22
+#define T4CCP0_1 23
+#define T4CCP0_2 24
+
+#define T4CCP1_0 25
+#define T4CCP1_1 26
+#define T4CCP1_2 27
+
+#define T5CCP0_0 28
+#define T5CCP0_1 29
+
+#define T5CCP1_0 30
+#define T5CCP1_1 31
+
+#define TIMER0 0
+#define TIMER1 1
+#define TIMER2 2
+#define TIMER3 3
+#define TIMER4 4
+#define TIMER5 5
+#define WTIMER0 6 // this is needed PWMWrite, see TimerPrescaleSet
+
+
+#else
 #define T0A0 0
 #define T0A1 1
 #define T0B0 2
@@ -115,6 +172,7 @@ extern "C"{
 #define WTIMER2 6
 #define WTIMER3 7
 #define WTIMER5 9
+#endif
 
 typedef uint8_t boolean;
 typedef uint8_t byte;

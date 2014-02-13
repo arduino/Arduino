@@ -159,6 +159,10 @@ static const uint8_t PA_0 = 88; // JP4
 static const uint8_t PA_1 = 89; // JP5
 static const uint8_t PA_2 = 90; // X11_06
 static const uint8_t PA_3 = 91; // X11_08
+static const uint8_t PL_6 = 92; // unrouted
+static const uint8_t PL_7 = 93; // unrouted
+static const uint8_t PB_0 = 94; // X11_58
+static const uint8_t PB_1 = 95; // unrouted
 
 // energia pin definition end
 
@@ -446,105 +450,130 @@ const uint32_t port_to_base[] = {
 
 
 const uint32_t timer_to_offset[] = {
-    TIMER0,
-    TIMER0,
-    TIMER0,
-    TIMER0,
-    TIMER1,
-    TIMER1,
-    TIMER1,
-    TIMER1,
-    TIMER2,
-    TIMER2,
-    TIMER2,
-    TIMER3,
-    TIMER3,
-    WTIMER0,
-    WTIMER0,
-    WTIMER1,
-    WTIMER1,
-    WTIMER2,
-    WTIMER2,
-    WTIMER3,
-    WTIMER3,
-    WTIMER5,
-    WTIMER5,
+    TIMER0, // 0
+    TIMER0, // 1
+    TIMER0, // 2
+    TIMER0, // 3
+    TIMER0, // 4
+    TIMER0, // 5
+    TIMER1, // 6
+    TIMER1, // 7
+    TIMER1, // 8
+    TIMER1, // 9
+    TIMER1, // 10
+    TIMER1, // 11
+    TIMER2, // 12
+    TIMER2, // 13
+    TIMER2, // 14
+    TIMER2, // 15
+    TIMER3, // 16
+    TIMER3, // 17
+    TIMER3, // 18
+    TIMER3, // 19
+    TIMER3, // 20
+    TIMER3, // 21
+    TIMER4, // 22
+    TIMER4, // 23
+    TIMER4, // 24
+    TIMER4, // 25
+    TIMER4, // 26
+    TIMER4, // 27
+    TIMER5, // 28
+    TIMER5, // 29
+    TIMER5, // 30
+    TIMER5  // 31
 };
 
 const uint8_t timer_to_ab[] = {
-    TIMA,
-    TIMA,
-    TIMB,
-    TIMB,
-    TIMA,
-    TIMA,
-    TIMB,
-    TIMB,
-    TIMA,
-    TIMA,
-    TIMB,
-    TIMA,
-    TIMB,
-    TIMA,
-    TIMB,
-    TIMA,
-    TIMB,
-    TIMA,
-    TIMB,
-    TIMA,
-    TIMB,
-    TIMA,
-    TIMB,
+    TIMA, // 0
+    TIMA, // 1
+    TIMA, // 2
+    TIMB, // 3
+    TIMB, // 4
+    TIMB, // 5
+    TIMA, // 6
+    TIMA, // 7
+    TIMA, // 8
+    TIMB, // 9
+    TIMB, // 10
+    TIMB, // 11
+    TIMA, // 12
+    TIMA, // 13
+    TIMB, // 14
+    TIMB, // 15
+    TIMA, // 16
+    TIMA, // 17
+    TIMA, // 18
+    TIMB, // 19
+    TIMB, // 20
+    TIMB, // 21
+    TIMA, // 22
+    TIMA, // 23
+    TIMA, // 24
+    TIMB, // 25
+    TIMB, // 26
+    TIMB, // 27
+    TIMA, // 28
+    TIMA, // 29
+    TIMB, // 30
+    TIMB  // 31
 };
 const uint32_t timer_to_pin_config[] = {
-/*
-	GPIO_PB6_T0CCP0,
-	GPIO_PF0_T0CCP0,
-	GPIO_PB7_T0CCP1,
-	GPIO_PF1_T0CCP1,
-	GPIO_PB4_T1CCP0,
-	GPIO_PF2_T1CCP0,
-	GPIO_PB5_T1CCP1,
-	GPIO_PF3_T1CCP1,
-	GPIO_PB0_T2CCP0,
-	GPIO_PF4_T2CCP0,
-	GPIO_PB1_T2CCP1,
-	GPIO_PB2_T3CCP0,
-	GPIO_PB3_T3CCP1,
-	GPIO_PC4_WT0CCP0,
-	GPIO_PC5_WT0CCP1,
-	GPIO_PC6_WT1CCP0,
-	GPIO_PC7_WT1CCP1,
-	GPIO_PD0_WT2CCP0,
-	GPIO_PD1_WT2CCP1,
-	GPIO_PD2_WT3CCP0,
-	GPIO_PD3_WT3CCP1,
-	GPIO_PD6_WT5CCP0,
-	GPIO_PD7_WT5CCP1,
-*/
+    GPIO_PD0_T0CCP0, //  0
+    GPIO_PA0_T0CCP0, //  1
+    GPIO_PL4_T0CCP0, //  2
+    GPIO_PD1_T0CCP1, //  3
+    GPIO_PA1_T0CCP1, //  4
+    GPIO_PL5_T0CCP1, //  5
+    GPIO_PD2_T1CCP0, //  6
+    GPIO_PA2_T1CCP0, //  7
+    GPIO_PL6_T1CCP0, //  8
+    GPIO_PD3_T1CCP1, //  9
+    GPIO_PA3_T1CCP1, //  10
+    GPIO_PL7_T1CCP1, //  11
+    GPIO_PA4_T2CCP0, //  12
+    GPIO_PM0_T2CCP0, //  13
+    GPIO_PA5_T2CCP1, //  14
+    GPIO_PM1_T2CCP1, //  15
+    GPIO_PA6_T3CCP0, //  16
+    GPIO_PM2_T3CCP0, //  17
+    GPIO_PD4_T3CCP0, //  18
+    GPIO_PA7_T3CCP1, //  19
+    GPIO_PM3_T3CCP1, //  20
+    GPIO_PD5_T3CCP1, //  21
+    GPIO_PM4_T4CCP0, //  22
+    GPIO_PB0_T4CCP0, //  23
+    GPIO_PD6_T4CCP0, //  24
+    GPIO_PM5_T4CCP1, //  25
+    GPIO_PB1_T4CCP1, //  26
+    GPIO_PD7_T4CCP1, //  27
+    GPIO_PM6_T5CCP0, //  28
+    GPIO_PB2_T5CCP0, //  29
+    GPIO_PM7_T5CCP1, //  30
+    GPIO_PB3_T5CCP1, //  31
 };
 
 const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // dummy 
-    NOT_ON_TIMER,   // 01 - 3.3v       X8_01   // TODO: CH will fix these
+    NOT_ON_TIMER,   // 01 - 3.3v       X8_01   
     NOT_ON_TIMER,   // 02 - PE_4       X8_03
     NOT_ON_TIMER,   // 03 - PC_4       X8_05
     NOT_ON_TIMER,   // 04 - PC_5       X8_07
     NOT_ON_TIMER,   // 05 - PC_6       X8_09
     NOT_ON_TIMER,   // 06 - PE_5       X8_11
-    NOT_ON_TIMER,   // 07 - PD_3       X8_13
+    T1CCP1_0,       // 07 - PD_3       X8_13
     NOT_ON_TIMER,   // 08 - PC_7       X8_15
-    NOT_ON_TIMER,   // 09 - PB_2       X8_17
-    NOT_ON_TIMER,   // 10 - PB_3       X8_19
+    T5CCP0_1,       // 09 - PB_2       X8_17
+    T5CCP1_1,       // 10 - PB_3       X8_19
     NOT_ON_TIMER,   // 11 - PP_2       X9_20
     NOT_ON_TIMER,   // 12 - PN_3       X9_18
     NOT_ON_TIMER,   // 13 - PN_2       X9_16
-    NOT_ON_TIMER,   // 14 - PD_0       X9_14
-    NOT_ON_TIMER,   // 15 - PD_1       X9_12
+    T0CCP0_1    ,   // 14 - PD_0       X9_14
+    T0CCP1_0,       // 15 - PD_1       X9_12
     NOT_ON_TIMER,   // 16 - RST        X9_10
     NOT_ON_TIMER,   // 17 - PH_3       X9_08
     NOT_ON_TIMER,   // 18 - PH_2       X9_06
-    NOT_ON_TIMER,   // 19 - PM_3       X9_04
+    T3CCP1_1,       // 19 - PM_3       X9_04
     NOT_ON_TIMER,   // 20 - GND        X9_02
     NOT_ON_TIMER,   // 21 - 5v         X8_02
     NOT_ON_TIMER,   // 22 - GND        X8_04
@@ -552,39 +581,39 @@ const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // 24 - PE_1       X8_08
     NOT_ON_TIMER,   // 25 - PE_2       X8_10
     NOT_ON_TIMER,   // 26 - PE_3       X8_12
-    NOT_ON_TIMER,   // 27 - PD_7       X8_14
-    NOT_ON_TIMER,   // 28 - PA_6       X8_16
-    NOT_ON_TIMER,   // 29 - PM_4       X8_18
-    NOT_ON_TIMER,   // 30 - PM_5       X8_20
+    T4CCP1_2,       // 27 - PD_7       X8_14
+    T3CCP0_0,       // 28 - PA_6       X8_16
+    T4CCP0_0,       // 29 - PM_4       X8_18
+    T3CCP1_0,       // 30 - PM_5       X8_20
     NOT_ON_TIMER,   // 31 - PL_3       X9_19
     NOT_ON_TIMER,   // 32 - PL_2       X9_17
     NOT_ON_TIMER,   // 33 - PL_1       X9_15
     NOT_ON_TIMER,   // 34 - PL_0       X9_13
-    NOT_ON_TIMER,   // 35 - PL_5       X9_11
-    NOT_ON_TIMER,   // 36 - PL_4       X9_09
+    T0CCP1_2,       // 35 - PL_5       X9_11
+    T0CCP0_2,       // 36 - PL_4       X9_09
     NOT_ON_TIMER,   // 37 - PG_0       X9_07
     NOT_ON_TIMER,   // 38 - PF_3       X9_05
     NOT_ON_TIMER,   // 39 - PF_2       X9_03
     NOT_ON_TIMER,   // 40 - PF_1       X9_01
     NOT_ON_TIMER,   // 41 - 3.3v       X6_01
-    NOT_ON_TIMER,   // 42 - PD_2       X6_03
+    T1CCP0_0,       // 42 - PD_2       X6_03
     NOT_ON_TIMER,   // 43 - PP_0       X6_05
     NOT_ON_TIMER,   // 44 - PP_1       X6_07
-    NOT_ON_TIMER,   // 45 - PD_4       X6_09
-    NOT_ON_TIMER,   // 46 - PD_5       X6_11
+    T3CCP0_2,       // 45 - PD_4       X6_09
+    T3CCP1_2,       // 46 - PD_5       X6_11
     NOT_ON_TIMER,   // 47 - PQ_0       X6_13
     NOT_ON_TIMER,   // 48 - PP_4       X6_15
     NOT_ON_TIMER,   // 49 - PN_5       X6_17
     NOT_ON_TIMER,   // 50 - PN_4       X6_19
-    NOT_ON_TIMER,   // 51 - PM_6       X7_20
+    T5CCP0_0,       // 51 - PM_6       X7_20
     NOT_ON_TIMER,   // 52 - PQ_1       X7_18
     NOT_ON_TIMER,   // 53 - PP_3       X7_16
     NOT_ON_TIMER,   // 54 - PQ_3       X7_14
     NOT_ON_TIMER,   // 55 - PQ_2       X7_12
     NOT_ON_TIMER,   // 56 - RESET      X7_10
-    NOT_ON_TIMER,   // 57 - PA_7       X7_08
+    T2CCP1_0,       // 57 - PA_7       X7_08
     NOT_ON_TIMER,   // 58 - PP_5       X7_06
-    NOT_ON_TIMER,   // 59 - PM_7       X7_04
+    T5CCP1_0,       // 59 - PM_7       X7_04
     NOT_ON_TIMER,   // 60 - GND        X7_02
     NOT_ON_TIMER,   // 61 - 5v         X6_02
     NOT_ON_TIMER,   // 62 - GND        X6_04
@@ -594,15 +623,15 @@ const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // 66 - PK_1       X6_12
     NOT_ON_TIMER,   // 67 - PK_2       X6_14
     NOT_ON_TIMER,   // 68 - PK_3       X6_16
-    NOT_ON_TIMER,   // 69 - PA_4       X6_18
-    NOT_ON_TIMER,   // 70 - PA_5       X6_20
+    T2CCP0_0,       // 69 - PA_4       X6_18
+    T2CCP1_0,       // 70 - PA_5       X6_20
     NOT_ON_TIMER,   // 71 - PK_7       X7_19
     NOT_ON_TIMER,   // 72 - PK_6       X7_17
     NOT_ON_TIMER,   // 73 - PH_1       X7_15
     NOT_ON_TIMER,   // 74 - PH_0       X7_13
-    NOT_ON_TIMER,   // 75 - PM_2       X7_11
-    NOT_ON_TIMER,   // 76 - PM_1       X7_09
-    NOT_ON_TIMER,   // 77 - PM_0       X7_07
+    T3CCP0_1,       // 75 - PM_2       X7_11
+    T2CCP1_1,       // 76 - PM_1       X7_09
+    T2CCP0_1,       // 77 - PM_0       X7_07
     NOT_ON_TIMER,   // 78 - PK_5       X7_05
     NOT_ON_TIMER,   // 79 - PK_4       X7_03
     NOT_ON_TIMER,   // 80 - PG_1       X7_01
@@ -612,11 +641,15 @@ const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // 84 - PF_0       LED4
     NOT_ON_TIMER,   // 85 - PJ_0       USR_SW1
     NOT_ON_TIMER,   // 86 - PJ_1       USR_SW2
-    NOT_ON_TIMER,   // 87 - PD_6       AIN5
-    NOT_ON_TIMER,   // 88 - PA_0       JP4
-    NOT_ON_TIMER,   // 89 - PA_1       JP5
-    NOT_ON_TIMER,   // 90 - PA_2       X11_06
-    NOT_ON_TIMER,   // 91 - PA_3       X11_08
+    T4CCP0_2,       // 87 - PD_6       AIN5
+    T0CCP0_1,       // 88 - PA_0       JP4
+    T0CCP1_1,       // 89 - PA_1       JP5
+    T1CCP0_1,       // 90 - PA_2       X11_06
+    T1CCP1_1,       // 91 - PA_3       X11_08
+    T1CCP0_2,       // 92 - PL_6       unrouted
+    T1CCP1_2,       // 93 - PL_7       unrouted
+    T4CCP0_1,       // 94 - PB_0       X11_58
+    T4CCP1_1,       // 95 - PB_1       unrouted
 };
 
 
@@ -713,6 +746,10 @@ const uint8_t digital_pin_to_port[]       = {
     PA,             // 89 - PA_1       JP5
     PA,             // 90 - PA_2       X11_06
     PA,             // 91 - PA_3       X11_08
+    PL,             // 92 - PL_6       unrouted
+    PL,             // 93 - PL_7       unrouted
+    PB,             // 94 - PB_0       X11_58
+    PB,             // 95 - PB_1       unrouted
 };
 
 
@@ -809,6 +846,10 @@ const uint8_t digital_pin_to_bit_mask[]   = {
     BV(1),          // 89 - PA_1       JP5
     BV(2),          // 90 - PA_2       X11_06
     BV(3),          // 91 - PA_3       X11_08
+    BV(6),          // 92 - PL_6       unrouted
+    BV(7),          // 93 - PL_7       unrouted
+    BV(0),          // 94 - PB_0       X11_58
+    BV(1),          // 95 - PB_1       unrouted
 };
 
 const uint32_t digital_pin_to_analog_in[] = {
@@ -904,6 +945,10 @@ const uint32_t digital_pin_to_analog_in[] = {
     NOT_ON_ADC,     // 89 - PA_1       JP5
     NOT_ON_ADC,     // 90 - PA_2       X11_06
     NOT_ON_ADC,     // 91 - PA_3       X11_08
+    NOT_ON_ADC,     // 92 - PL_6       unrouted
+    NOT_ON_ADC,     // 93 - PL_7       unrouted
+    NOT_ON_ADC,     // 94 - PB_0       X11_58
+    NOT_ON_ADC,     // 95 - PB_1       unrouted
 };
 
 
