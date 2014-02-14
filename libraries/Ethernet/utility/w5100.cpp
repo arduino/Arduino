@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <avr/interrupt.h>
+#include <util/atomic.h>
 
 #include "w5100.h"
 
@@ -129,12 +130,15 @@ void W5100Class::read_data(SOCKET s, volatile uint8_t *src, volatile uint8_t *ds
 
 uint8_t W5100Class::write(uint16_t _addr, uint8_t _data)
 {
-  setSS();  
-  SPI.transfer(0xF0);
-  SPI.transfer(_addr >> 8);
-  SPI.transfer(_addr & 0xFF);
-  SPI.transfer(_data);
-  resetSS();
+
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    setSS();  
+    SPI.transfer(0xF0);
+    SPI.transfer(_addr >> 8);
+    SPI.transfer(_addr & 0xFF);
+    SPI.transfer(_data);
+    resetSS();
+  }
   return 1;
 }
 
@@ -142,25 +146,30 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
 {
   for (uint16_t i=0; i<_len; i++)
   {
-    setSS();    
-    SPI.transfer(0xF0);
-    SPI.transfer(_addr >> 8);
-    SPI.transfer(_addr & 0xFF);
-    _addr++;
-    SPI.transfer(_buf[i]);
-    resetSS();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      setSS();    
+      SPI.transfer(0xF0);
+      SPI.transfer(_addr >> 8);
+      SPI.transfer(_addr & 0xFF);
+      _addr++;
+      SPI.transfer(_buf[i]);
+      resetSS();
+    }
   }
   return _len;
 }
 
 uint8_t W5100Class::read(uint16_t _addr)
 {
-  setSS();  
-  SPI.transfer(0x0F);
-  SPI.transfer(_addr >> 8);
-  SPI.transfer(_addr & 0xFF);
-  uint8_t _data = SPI.transfer(0);
-  resetSS();
+  uint8_t _data;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    setSS();  
+    SPI.transfer(0x0F);
+    SPI.transfer(_addr >> 8);
+    SPI.transfer(_addr & 0xFF);
+    _data = SPI.transfer(0);
+    resetSS();
+  }
   return _data;
 }
 
@@ -168,13 +177,15 @@ uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
 {
   for (uint16_t i=0; i<_len; i++)
   {
-    setSS();
-    SPI.transfer(0x0F);
-    SPI.transfer(_addr >> 8);
-    SPI.transfer(_addr & 0xFF);
-    _addr++;
-    _buf[i] = SPI.transfer(0);
-    resetSS();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      setSS();
+      SPI.transfer(0x0F);
+      SPI.transfer(_addr >> 8);
+      SPI.transfer(_addr & 0xFF);
+      _addr++;
+      _buf[i] = SPI.transfer(0);
+      resetSS();
+    }
   }
   return _len;
 }
