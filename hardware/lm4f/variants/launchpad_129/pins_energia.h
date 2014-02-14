@@ -568,7 +568,7 @@ const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // 11 - PP_2       X9_20
     NOT_ON_TIMER,   // 12 - PN_3       X9_18
     NOT_ON_TIMER,   // 13 - PN_2       X9_16
-    T0CCP0_1    ,   // 14 - PD_0       X9_14
+    T0CCP0_1,       // 14 - PD_0       X9_14
     T0CCP1_0,       // 15 - PD_1       X9_12
     NOT_ON_TIMER,   // 16 - RST        X9_10
     NOT_ON_TIMER,   // 17 - PH_3       X9_08
@@ -1075,5 +1075,8 @@ b. The digital signals that are shaded gray are the power-on default values for 
     this prints out the tables
         cp pins_energia.h a, edit a leaving only the energia pins
         cat a | sed "s/;/ /" | awk '{ printf("    TODO,           // %02d - %-6s %-8s \n",$6,$4,$8)}' | sort -n
+
+    this looks for PWM outputs on X11
+        grep CCP.*, pins_energia.h  | awk '{print $5}' | xargs -i grep X11_.[0-9].*{} pins_energia.h  | sort -k 3
 */
 
