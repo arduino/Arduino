@@ -19,6 +19,7 @@
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
   Modified 14 August 2012 by Alarus
+  Modified 3 December 2013 by Matthijs Kooijman
 */
 
 #include <stdlib.h>
@@ -170,7 +171,7 @@ int HardwareSerial::read(void)
     return -1;
   } else {
     unsigned char c = _rx_buffer[_rx_buffer_tail];
-    _rx_buffer_tail = (unsigned int)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+    _rx_buffer_tail = (uint8_t)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
     return c;
   }
 }
@@ -206,7 +207,7 @@ size_t HardwareSerial::write(uint8_t c)
     sbi(*_ucsra, TXC0);
     return 1;
   }
-  int i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+  uint8_t i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
 	
   // If the output buffer is full, there's nothing for it other than to 
   // wait for the interrupt handler to empty it a bit
