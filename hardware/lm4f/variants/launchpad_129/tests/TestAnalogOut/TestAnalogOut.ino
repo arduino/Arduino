@@ -6,73 +6,149 @@
 // Pressing USR_SW1 changes to the next pin. The console shows which pin on X11
 // is currently being PWM'ed. Connect an LED from GND to X11 pin printed.
 
+
+#include "wiring_private.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "inc/hw_timer.h"
+#include "inc/hw_ints.h"
+#include "driverlib/adc.h"
+#include "driverlib/gpio.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/rom.h"
+#include "driverlib/timer.h"
+
 #define LED D1_LED
 int pwmvalue;
 int pinindex;
 
+#define DEBUG 1
+
 analogoutpin_t analogoutpins[] = {
-    {"PD_1","X11_48",PD_1}, 
-    {"PD_3","X11_46",PD_3}, 
-    {"PL_4","X11_65",PL_4},
-    {"PL_5","X11_79",PL_5},
-    {"PM_6","X11_88",PM_6},
-    {"PM_7","X11_86",PM_7},
-    {"PB_2","X11_67",PB_2},
-    {"PB_3","X11_69",PB_3},
-    {"PA_0","X11_74",PA_0},
-    {"PA_2","X11_06",PA_2},
-    {"PA_3","X11_08",PA_3},
+// T0CCP0 
+    {"PD_0","X11_50",PD_0}, // no led
+    {"PA_0","X11_74",PA_0}, // works
+    {"PL_4","X11_65",PL_4}, // works, also drives X11_74
 
-//  trouble makers - hangs
-    {"PD_4","X11_40",PD_4},
-    {"PA_7","X11_27",PA_7},
-    {"PA_6","X11_25",PA_6},
-    {"PA_5","X11_12",PA_5},
-    {"PA_4","X11_10",PA_4},
-    {"PD_7","X11_42",PD_7},
-    {"PD_6","X11_44",PD_6},
-    {"PD_5","X11_38",PD_5},
-    {"PB_0","X11_58",PB_0},
-    {"PM_5","X11_90",PM_5},
-    {"PM_4","X11_92",PM_4},
-    {"PM_3","X11_33",PM_3},
-    {"PM_2","X11_37",PM_2},
-    {"PM_1","X11_39",PM_1},
-    {"PM_0","X11_41",PM_0},
+// T0CCP1 
+    {"PD_1","X11_48",PD_1},  // works
+    // skipping {"PA_1","X11_76",PA_1}, // PA_1 screws up serial port
+    {"PL_5","X11_79",PL_5},  // works, also drives X11_48
 
-//  trouble makers - don't work
-    {"PD_0","X11_50",PD_0},
-    {"PD_2","X11_52",PD_2}, 
+// T1CCP0 
+    {"PD_2","X11_52",PD_2}, // works
+    {"PA_2","X11_06",PA_2}, // works, also drives X11_52
+    // skipping PL_6, not routed
 
+// T1CCP1
+    {"PD_3","X11_46",PD_3}, // works
+    {"PA_3","X11_08",PA_3}, // works, also drives X11_46
+    // skipping PL_7, not routed
 
-//  {"PA_1","X11_76",PA_1}, // PA_1 screws up serial port
+// T2CCP0 
+    {"PA_4","X11_10",PA_4}, // hangs
+    {"PM_0","X11_41",PM_0}, // hangs
+
+// T2CCP1 
+    {"PA_5","X11_12",PA_5}, // hangs
+    {"PM_1","X11_39",PM_1}, // hangs
+
+// T3CCP0 
+    {"PA_6","X11_25",PA_6}, // hangs
+    {"PM_2","X11_37",PM_2}, // hangs
+    {"PD_4","X11_40",PD_4}, // hangs
+
+// T3CCP1 
+    {"PA_7","X11_27",PA_7}, // hangs
+    {"PM_3","X11_33",PM_3}, // hangs
+    {"PD_5","X11_38",PD_5}, // hangs
+
+// T4CCP0 
+    {"PM_4","X11_92",PM_4}, // hangs
+    {"PB_0","X11_58",PB_0}, // hangs
+    {"PD_6","X11_44",PD_6}, // hangs
+
+// T4CCP1 
+    {"PM_5","X11_90",PM_5}, // hangs
+    // skipping PB_1, not routed
+    {"PD_7","X11_42",PD_7}, // hangs
+
+// T5CCP0 
+    {"PM_6","X11_88",PM_6}, // works
+    {"PB_2","X11_67",PB_2}, // works, also drives X11_88
+
+// T5CCP1 
+    {"PM_7","X11_86",PM_7}, // works
+    {"PB_3","X11_69",PB_3}, // works, also drives X11_86
+
+    {"","",0} // don't change this
 };
 
 void pinChange() {
     pinindex++;
-    Serial.print("    ");
+    if (analogoutpins[pinindex].portpin == 0) { 
+        Serial.println("\n\nstarting over\n\n");
+        pinindex = 0;
+    }
+
+    Serial.print("  ");
     Serial.print(pinindex);
-//    Serial.print(" ");
-//    Serial.print(analogoutpins[pinindex].portpin);
     Serial.print(" ");
     Serial.print(analogoutpins[pinindex].portLabel);
     Serial.print(" ");
     Serial.println(analogoutpins[pinindex].x11Label);
     pinMode(analogoutpins[pinindex].portpin, OUTPUT);
-    if (pinindex > 27) { // sizeof(analogoutpins) didn't seem to work here
-        pinindex = 0;
-    }
+
+#ifdef DEBUG
+    Serial.print("portlbl   ");
+    Serial.println(analogoutpins[pinindex].portLabel);
+    uint8_t pin = analogoutpins[pinindex].portpin;
+    Serial.print("engpin  D ");
+    Serial.println(pin);
+
+    uint8_t bit = digitalPinToBitMask(pin); // get pin bit
+    Serial.print("bit     H ");
+    Serial.println(bit,HEX);
+    uint8_t port = digitalPinToPort(pin);   // get pin port
+    Serial.print("port    H ");
+    Serial.println(port,HEX);
+    uint8_t timer = digitalPinToTimer(pin);
+    Serial.print("tmrIx   D ");
+    Serial.println(timer);
+    uint32_t portBase = (uint32_t) portBASERegister(port);
+    Serial.print("portbaseH ");
+    Serial.println(portBase,HEX);
+    uint32_t offset = timerToOffset(timer);
+    Serial.print("offset  H ");
+    Serial.println(offset,HEX);
+    uint32_t timerBase = getTimerBase123(offset);
+    Serial.print("timerbase ");
+    Serial.println(timerBase,HEX);
+    uint32_t timerAB = TIMER_A << timerToAB(timer);
+    Serial.print("timerab H ");
+    Serial.println(timerAB,HEX);
+    Serial.println("\n");
+#endif
+
+}
+
+uint32_t getTimerBase123(uint32_t offset) {
+    return (TIMER0_BASE + (offset << 12));
 }
 
 void setup() {
     Serial.begin(9600);
-    Serial.println("\nTestAnalogOut begin");
+    Serial.println("\nTestAnalogOut begin\n");
     pwmvalue = 0;
     pinindex = -1;
 
     pinMode(LED, OUTPUT);
+    pinMode(D2_LED, OUTPUT);
     pinMode(USR_SW1, INPUT_PULLUP);
+
     pinChange();
+
 }
 
 void loop() {
@@ -93,5 +169,6 @@ void loop() {
     if (digitalRead(USR_SW1) == false) {
         while(!digitalRead(USR_SW1)) {} // wait for button release
         pinChange();
+
     }
 }
