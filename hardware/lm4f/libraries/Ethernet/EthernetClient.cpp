@@ -26,36 +26,40 @@ EthernetClient::EthernetClient(struct client *c) {
 
 err_t EthernetClient::do_poll(void *arg, struct tcp_pcb *cpcb)
 {
+	EthernetClient *client = static_cast<EthernetClient*>(arg);
+	if(client->_connected) {
+		if(cpcb->keep_cnt_sent++ > 4) {
+			cpcb->keep_cnt_sent = 0;
+			/* Stop polling */
+			tcp_poll(cpcb, NULL, 0);
+			tcp_abort(cpcb);
+			return ERR_OK;
+		}
+		/* Send tcp keep alive probe */
+		tcp_keepalive(cpcb);
+		return ERR_OK;
+	}
 
 	/* We only end up here if the connection failed to close
 	 * in an earlier call to tcp_close */
 	err_t err = tcp_close(cpcb);
 
 	if (err != ERR_OK) {
-		/* error closing, try again later in polli (every 2 sec) */
+		/* error closing, try again later in poll (every 2 sec) */
 		tcp_poll(cpcb, do_poll, 4);
 		return err;
 	}
 
-	EthernetClient *client = static_cast<EthernetClient*>(arg);
-
-	tcp_arg(cpcb, NULL);
-	tcp_recv(cpcb, NULL);
-	tcp_err(cpcb, NULL);
-	tcp_poll(cpcb, NULL, 0);
-	tcp_sent(cpcb, NULL);
-
-	client->_connected = false;
 	return err;
-
 }
 
 void EthernetClient::do_err(void * arg, err_t err)
 {
-	//Serial.print("do_err called: ");
-	//Serial.println(err);
-
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
+	if(client->_connected) {
+		client->_connected = false;
+		return;
+	}
 	/*
 	 * Set connected to true to finish connecting.
 	 * ::connect wil take care of figuring out if we are truly connected
@@ -66,7 +70,6 @@ void EthernetClient::do_err(void * arg, err_t err)
 
 err_t EthernetClient::do_connected(void * arg, struct tcp_pcb * tpcb, err_t err)
 {
-	//Serial.println("do_connected called");
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
 	client->_connected = true;
 	return err;
@@ -80,9 +83,9 @@ err_t EthernetClient::do_close(void *arg, struct tcp_pcb *cpcb)
 	 */
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
 
-	tcp_recved(cpcb, client->_p->tot_len);
-	pbuf_free(client->_p);
-	client->_p = NULL;
+//	tcp_recved(cpcb, client->_p->tot_len);
+//	pbuf_free(client->_p);
+//	client->_p = NULL;
 
 	err_t err = tcp_close(cpcb);
 
@@ -92,13 +95,6 @@ err_t EthernetClient::do_close(void *arg, struct tcp_pcb *cpcb)
 		return err;
 	}
 
-	tcp_arg(cpcb, NULL);
-	tcp_recv(cpcb, NULL);
-	tcp_err(cpcb, NULL);
-	tcp_poll(cpcb, NULL, 0);
-	tcp_sent(cpcb, NULL);
-
-	client->_connected = false;
 	return err;
 }
 
@@ -109,10 +105,10 @@ err_t EthernetClient::do_recv(void *arg, struct tcp_pcb *cpcb, struct pbuf *p, e
 	 * to get access to variables and functions
 	 */
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
-	//Serial.println("do_recv called");
 
 	if(p == 0) {
-		return do_close(arg, cpcb);
+		client->_connected = false;
+		return ERR_OK;
 	}
 
 	if(client->cs->p != 0)
@@ -154,10 +150,20 @@ int EthernetClient::connect(IPAddress ip, uint16_t port)
 	dest.addr = ip;
 
 	cpcb = tcp_new();
+
+	if(cpcb == NULL) {
+		return false;
+	}
+
 	tcp_arg(cpcb, this);
 	tcp_recv(cpcb, do_recv);
 	tcp_err(cpcb, do_err);
-	tcp_connect(cpcb, &dest, port, do_connected);
+
+	uint8_t val = tcp_connect(cpcb, &dest, port, do_connected);
+
+	if(val != ERR_OK) {
+		return false;
+	}
 
 	while(!_connected) {
 		delay(10);
@@ -167,6 +173,8 @@ int EthernetClient::connect(IPAddress ip, uint16_t port)
 		_connected = false;
 	}
 
+	/* Poll to determine if the peer is still alive */
+	tcp_poll(cpcb, do_poll, 10);
 	return _connected;
 }
 
@@ -177,12 +185,14 @@ size_t EthernetClient::write(uint8_t b) {
 
 size_t EthernetClient::write(const uint8_t *buf, size_t size) {
 	err_t err = tcp_write(cpcb, buf, size, TCP_WRITE_FLAG_COPY);
+	tcp_output(cpcb);
 	if (err == ERR_MEM) {
 		/* TODO: Need to send smaller chunks if fails */
 	}
 }
 
 int EthernetClient::available() {
+
 	if(!cs->p) return 0;
 
 	return cs->p->tot_len - *_read;
@@ -226,13 +236,35 @@ int EthernetClient::read() {
 
 int EthernetClient::read(uint8_t *buf, size_t size)
 {
+	uint16_t avail = available();
+	uint16_t i;
+	int8_t b;
 
+	if(!avail)
+		return -1;
+
+	/* TODO: Replace lazy method with optimized on */
+	for(i = 0; i < size; i++) {
+		b = read();
+		if(b == -1)
+			break;
+		buf[i] = b;
+	}
+
+	return i;
 }
 
 int EthernetClient::peek()
 {
-  uint8_t b;
-  return b;
+	uint8_t b;
+
+	if (!available())
+		return -1;
+
+	uint8_t *buf = (uint8_t *)cs->p->payload;
+	b = buf[*_read];
+
+	return b;
 }
 
 void EthernetClient::flush()
@@ -245,14 +277,31 @@ void EthernetClient::flush()
 
 void EthernetClient::stop()
 {
-	if(cpcb)
-		tcp_close(cpcb);
 	_connected = false;
+
+	/* Stop frees any resources including any unread buffers */
+	if(cpcb) {
+		tcp_err(cpcb, NULL);
+		tcp_recved(cpcb, _p->tot_len);
+		tcp_close(cpcb);
+	}
+
+	if(_p) {
+		pbuf_free(_p);
+		_p = NULL;
+	}
+
+	err_t err = tcp_close(cpcb);
+
+	if (err != ERR_OK) {
+		/* Error closing, try again later in poll (every 2 sec) */
+		tcp_poll(cpcb, do_poll, 4);
+	}
 }
 
 uint8_t EthernetClient::connected()
 {
-	return _connected;
+	return (available() || _connected);
 }
 
 uint8_t EthernetClient::status()
