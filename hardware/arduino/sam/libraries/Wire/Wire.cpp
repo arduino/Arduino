@@ -125,8 +125,10 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 		if (readed + 1 == quantity)
 			TWI_SendSTOPCondition( twi);
 
-		TWI_WaitByteReceived(twi, RECV_TIMEOUT);
-		rxBuffer[readed++] = TWI_ReadByte(twi);
+		if (TWI_WaitByteReceived(twi, RECV_TIMEOUT))
+			rxBuffer[readed++] = TWI_ReadByte(twi);
+		else
+			break;
 	} while (readed < quantity);
 	TWI_WaitTransferComplete(twi, RECV_TIMEOUT);
 
