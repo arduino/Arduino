@@ -25,6 +25,7 @@ int pinindex;
 
 #define DEBUG 1
 
+// from Table 13-2. General-Purpose Timers Signals (128TQFP)
 analogoutpin_t analogoutpins[] = {
 // T0CCP0 
     {"PD_0","X11_50",PD_0}, // no led
