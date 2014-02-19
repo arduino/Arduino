@@ -41,6 +41,7 @@
 #include "driverlib/rom.h"
 #include "driverlib/timer.h"
 
+
 #define PWM_MODE 0x20A
 
 #ifdef __TM4C1294NCPDT__
@@ -60,7 +61,7 @@ uint8_t getTimerInterrupt(uint8_t timer) {
     }
 }
 void enableTimerPeriph(uint32_t offset) {
-    ROM_SysCtlPeripheralEnable((SYSCTL_PERIPH_TIMER0 - 1) + (1 << offset));
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0 + offset);
 }
 
 #else

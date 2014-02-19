@@ -584,7 +584,7 @@ const uint8_t digital_pin_to_timer[]      = {
     T4CCP1_2,       // 27 - PD_7       X8_14
     T3CCP0_0,       // 28 - PA_6       X8_16
     T4CCP0_0,       // 29 - PM_4       X8_18
-    T3CCP1_0,       // 30 - PM_5       X8_20
+    T4CCP1_0,       // 30 - PM_5       X8_20
     NOT_ON_TIMER,   // 31 - PL_3       X9_19
     NOT_ON_TIMER,   // 32 - PL_2       X9_17
     NOT_ON_TIMER,   // 33 - PL_1       X9_15
@@ -611,7 +611,7 @@ const uint8_t digital_pin_to_timer[]      = {
     NOT_ON_TIMER,   // 54 - PQ_3       X7_14
     NOT_ON_TIMER,   // 55 - PQ_2       X7_12
     NOT_ON_TIMER,   // 56 - RESET      X7_10
-    T2CCP1_0,       // 57 - PA_7       X7_08
+    T3CCP1_0,       // 57 - PA_7       X7_08
     NOT_ON_TIMER,   // 58 - PP_5       X7_06
     T5CCP1_0,       // 59 - PM_7       X7_04
     NOT_ON_TIMER,   // 60 - GND        X7_02

@@ -28,59 +28,59 @@ int pinindex;
 analogoutpin_t analogoutpins[] = {
 // T0CCP0 
     {"PD_0","X11_50",PD_0}, // no led
-    {"PA_0","X11_74",PA_0}, // works
-    {"PL_4","X11_65",PL_4}, // works, also drives X11_74
+    {"PA_0","X11_74",PA_0}, // verified
+    {"PL_4","X11_65",PL_4}, // verified, also drives X11_74
 
 // T0CCP1 
-    {"PD_1","X11_48",PD_1},  // works
+    {"PD_1","X11_48",PD_1},  // verified
     // skipping {"PA_1","X11_76",PA_1}, // PA_1 screws up serial port
-    {"PL_5","X11_79",PL_5},  // works, also drives X11_48
+    {"PL_5","X11_79",PL_5},  // verified, also drives X11_48
 
 // T1CCP0 
-    {"PD_2","X11_52",PD_2}, // works
-    {"PA_2","X11_06",PA_2}, // works, also drives X11_52
+    {"PD_2","X11_52",PD_2}, // verified
+    {"PA_2","X11_06",PA_2}, // verified, also drives X11_52
     // skipping PL_6, not routed
 
 // T1CCP1
-    {"PD_3","X11_46",PD_3}, // works
-    {"PA_3","X11_08",PA_3}, // works, also drives X11_46
+    {"PD_3","X11_46",PD_3}, // verified
+    {"PA_3","X11_08",PA_3}, // verified, also drives X11_46
     // skipping PL_7, not routed
 
 // T2CCP0 
-    {"PA_4","X11_10",PA_4}, // hangs
-    {"PM_0","X11_41",PM_0}, // hangs
+    {"PA_4","X11_10",PA_4}, // verified
+    {"PM_0","X11_41",PM_0}, // verified, also drives X11_10
 
 // T2CCP1 
-    {"PA_5","X11_12",PA_5}, // hangs
-    {"PM_1","X11_39",PM_1}, // hangs
+    {"PA_5","X11_12",PA_5}, // verified
+    {"PM_1","X11_39",PM_1}, // verified, also drives X11_12
 
 // T3CCP0 
-    {"PA_6","X11_25",PA_6}, // hangs
-    {"PM_2","X11_37",PM_2}, // hangs
-    {"PD_4","X11_40",PD_4}, // hangs
+    {"PA_6","X11_25",PA_6}, // verified
+    {"PM_2","X11_37",PM_2}, // verified, also drives X11_25
+    {"PD_4","X11_40",PD_4}, // verified, also drives X11_37
 
 // T3CCP1 
-    {"PA_7","X11_27",PA_7}, // hangs
-    {"PM_3","X11_33",PM_3}, // hangs
-    {"PD_5","X11_38",PD_5}, // hangs
+    {"PA_7","X11_27",PA_7}, // verified
+    {"PM_3","X11_33",PM_3}, // verified
+    {"PD_5","X11_38",PD_5}, // verified, also drives X11_33
 
 // T4CCP0 
-    {"PM_4","X11_92",PM_4}, // hangs
-    {"PB_0","X11_58",PB_0}, // hangs
-    {"PD_6","X11_44",PD_6}, // hangs
+    {"PM_4","X11_92",PM_4}, // verified
+    {"PB_0","X11_58",PB_0}, // verified
+    {"PD_6","X11_44",PD_6}, // verified, also drives X11_58
 
 // T4CCP1 
-    {"PM_5","X11_90",PM_5}, // hangs
+    {"PM_5","X11_90",PM_5}, // verified
     // skipping PB_1, not routed
-    {"PD_7","X11_42",PD_7}, // hangs
+    {"PD_7","X11_42",PD_7}, // verified
 
 // T5CCP0 
-    {"PM_6","X11_88",PM_6}, // works
-    {"PB_2","X11_67",PB_2}, // works, also drives X11_88
+    {"PM_6","X11_88",PM_6}, // verified
+    {"PB_2","X11_67",PB_2}, // verified, also drives X11_88
 
 // T5CCP1 
-    {"PM_7","X11_86",PM_7}, // works
-    {"PB_3","X11_69",PB_3}, // works, also drives X11_86
+    {"PM_7","X11_86",PM_7}, // verified
+    {"PB_3","X11_69",PB_3}, // verified, also drives X11_86
 
     {"","",0} // don't change this
 };
