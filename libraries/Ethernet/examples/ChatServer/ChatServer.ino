@@ -7,27 +7,28 @@
  Using an Arduino Wiznet Ethernet shield. 
  
  Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
  * Analog inputs attached to pins A0 through A5 (optional)
  
  created 18 Dec 2009
  by David A. Mellis
- modified 12 March 2012
+ modified 9 Apr 2012
  by Tom Igoe
+
+ modified 2/19/2014
+ by Craig Hollabaugh
+   removed SPI and leonardo references
  
  */
 
-#include <SPI.h>
 #include <Ethernet.h>
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network.
 // gateway and subnet are optional:
-byte mac[] = { 
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192,168,1, 177);
-IPAddress gateway(192,168,1, 1);
-IPAddress subnet(255, 255, 0, 0);
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+IPAddress ip(192,168,1,177);
+IPAddress gateway(192,168,1,1);
+IPAddress subnet(255,255,255,0);
 
 
 // telnet defaults to port 23
@@ -39,8 +40,8 @@ void setup() {
   Ethernet.begin(mac, ip, gateway, subnet);
   // start listening for clients
   server.begin();
-  // open the serial port
   Serial.begin(9600);
+
   Serial.print("Chat server address:");
   Serial.println(Ethernet.localIP());
 }
@@ -69,6 +70,4 @@ void loop() {
     }
   }
 }
-
-
 
