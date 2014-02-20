@@ -4,30 +4,27 @@
  A simple server that distributes any incoming messages to all
  connected clients.  To use telnet to  your device's IP address and type.
  You can see the client's input in the serial monitor as well.
- Using an Arduino Wiznet Ethernet shield. 
  
  THis version attempts to get an IP address using DHCP
- 
- Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
  
  created 21 May 2011
  by Tom Igoe
  Based on ChatServer example by David A. Mellis
+
+ modified 9 Feb 2014
+ by Craig Hollabaugh
  
  */
 
-#include <SPI.h>
 #include <Ethernet.h>
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network.
 // gateway and subnet are optional:
-byte mac[] = { 
-  0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
-IPAddress ip(192,168,1, 177);
-IPAddress gateway(192,168,1, 1);
-IPAddress subnet(255, 255, 0, 0);
+byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+IPAddress ip(192,168,1,177);
+IPAddress gateway(192,168,1,1);
+IPAddress subnet(255,255,255,0);
 
 // telnet defaults to port 23
 EthernetServer server(23);
@@ -36,6 +33,7 @@ boolean gotAMessage = false; // whether or not you got a message from the client
 void setup() {
    // open the serial port
   Serial.begin(9600);
+  Serial.println("\n\nDhcpChatServer setup");
   // start the Ethernet connection:
   Serial.println("Trying to get an IP address using DHCP");
   if (Ethernet.begin(mac) == 0) {
@@ -69,12 +67,12 @@ void loop() {
       gotAMessage = true;
     }
 
-    // read the bytes incoming from the client:
-    char thisChar = client.read();
-    // echo the bytes back to the client:
-    server.write(thisChar);
-    // echo the bytes to the server as well:
-    Serial.print(thisChar);
+    if (client.available() > 0) {
+      // read the bytes incoming from the client:
+      char thisChar = client.read();
+      // echo the char to the console 
+      Serial.print(thisChar);
+    }
   }
 }
 
