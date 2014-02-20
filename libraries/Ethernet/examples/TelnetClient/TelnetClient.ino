@@ -1,61 +1,73 @@
 /*
   Telnet client
  
- This sketch connects to a a telnet server (http://www.google.com)
- using an Arduino Wiznet Ethernet shield.  You'll need a telnet server 
- to test this with.
- Processing's ChatServer example (part of the network library) works well, 
- running on port 10002. It can be found as part of the examples
- in the Processing application, available at 
- http://processing.org/
- 
- Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
- 
+ This sketch connects to a telnet server.  You'll need a telnet server 
+ to test. netcat also works using 'nc -l 23'
+
  created 14 Sep 2010
  by Tom Igoe
+
+ modified 9 Feb 2014
+ by Craig Hollabaugh
+  removed SPI
+  added connection info prints
+  added re-connect after timeout or disconnect
  
  */
 
-#include <SPI.h>
 #include <Ethernet.h>
 
 // Enter a MAC address and IP address for your controller below.
 // The IP address will be dependent on your local network:
-byte mac[] = {  
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192,168,1,177);
 
 // Enter the IP address of the server you're connecting to:
-IPAddress server(1,1,1,1); 
+IPAddress server(192,168,1,149); 
+#define TELNETPORT 23
 
 // Initialize the Ethernet client library
 // with the IP address and port of the server 
 // that you want to connect to (port 23 is default for telnet;
-// if you're using Processing's ChatServer, use  port 10002):
 EthernetClient client;
+
+void connect() {
+  Serial.print("connecting to ");
+  server.printTo(Serial);
+  Serial.print(":");
+  Serial.print(TELNETPORT);
+  Serial.println();
+  while(1) {
+    // if you get a connection, report back via serial:
+    if (client.connect(server, TELNETPORT)) {
+      Serial.println("connected");
+      break;
+    } else {
+      // if you didn't get a connection to the server:
+      Serial.println("connection failed, retry in 5 seconds");
+    }
+    delay(5000);
+  } 
+}
 
 void setup() {
   // start the Ethernet connection:
   Ethernet.begin(mac, ip);
   // start the serial library:
   Serial.begin(9600);
+
+  Serial.println("\n\nTelnet client setup");
+  Serial.print("my address    ");
+  ip.printTo(Serial);
+  Serial.println();
+
   // give the Ethernet shield a second to initialize:
   delay(1000);
-  Serial.println("connecting...");
 
-  // if you get a connection, report back via serial:
-  if (client.connect(server, 10002)) {
-    Serial.println("connected");
-  } 
-  else {
-    // if you didn't get a connection to the server:
-    Serial.println("connection failed");
-  }
+  connect();
 }
 
-void loop()
-{
+void loop() {
   // if there are incoming bytes available 
   // from the server, read them and print them:
   if (client.available()) {
@@ -75,13 +87,7 @@ void loop()
   // if the server's disconnected, stop the client:
   if (!client.connected()) {
     Serial.println();
-    Serial.println("disconnecting.");
-    client.stop();
-    // do nothing:
-    while(true);
+    Serial.println("disconnected");
+    connect();
   }
 }
-
-
-
-

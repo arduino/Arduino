@@ -4,7 +4,6 @@
  A simple server that distributes any incoming messages to all
  connected clients.  To use telnet to  your device's IP address and type.
  You can see the client's input in the serial monitor as well.
- Using an Arduino Wiznet Ethernet shield. 
  
  Circuit:
  * Analog inputs attached to pins A0 through A5 (optional)
