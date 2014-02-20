@@ -174,7 +174,7 @@ uint16_t analogRead(uint8_t pin) {
     uint8_t port = digitalPinToPort(pin);
     uint16_t value[1];
     uint32_t channel = digitalPinToADCIn(pin);
-    if (pin == NOT_ON_ADC) { //invalid ADC pin
+    if (channel == NOT_ON_ADC) { //invalid ADC pin
         return 0;
     }
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
