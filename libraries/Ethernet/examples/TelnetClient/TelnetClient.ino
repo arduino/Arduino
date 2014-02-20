@@ -61,7 +61,7 @@ void setup() {
   ip.printTo(Serial);
   Serial.println();
 
-  // give the Ethernet shield a second to initialize:
+  // give the Ethernet controller a second to initialize
   delay(1000);
 
   connect();
