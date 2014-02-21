@@ -1,25 +1,23 @@
 /*
   DNS and DHCP-based Web client
  
- This sketch connects to a website (http://www.google.com)
- using an Arduino Wiznet Ethernet shield. 
- 
- Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
+ This sketch connects to www.google.com
  
  created 18 Dec 2009
  by David A. Mellis
  modified 12 April 2011
  by Tom Igoe, based on work by Adrian McEwen
- 
- */
 
-#include <SPI.h>
+ modified 20 Feb 2014
+ by Craig Hollabaugh
+
+ 
+*/
+
 #include <Ethernet.h>
 
 // Enter a MAC address for your controller below.
-// Newer Ethernet shields have a MAC address printed on a sticker on the shield
-byte mac[] = {  0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
+byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
 char serverName[] = "www.google.com";
 
 // Initialize the Ethernet client library
@@ -30,15 +28,25 @@ EthernetClient client;
 void setup() {
   // start the serial library:
   Serial.begin(9600);
+  Serial.println("\n\nDnsWebClient setup");
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
     // no point in carrying on, so do nothing forevermore:
     while(true);
   }
-  // give the Ethernet shield a second to initialize:
-  delay(1000);
-  Serial.println("connecting...");
+  // print your local IP address:
+  Serial.print("My IP address: ");
+  for (byte thisByte = 0; thisByte < 4; thisByte++) {
+    // print the value of each byte of the IP address:
+    Serial.print(Ethernet.localIP()[thisByte], DEC);
+    Serial.print(".");
+  }
+  Serial.println();
+
+  Serial.print("connecting to http://");
+  Serial.println(serverName);
+
 
   // if you get a connection, report back via serial:
   
