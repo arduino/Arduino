@@ -261,6 +261,17 @@ void analogWrite(uint8_t pin, int val)
 uint16_t analogRead(uint8_t pin)
 {
 // make sure we have an ADC
+	uint8_t channel;
+	
+	// Check if pin is valid
+	if (pin==NOT_ON_ADC)
+		return 0;
+	// Check if pin is a special analog pin (A10 = temp sensor, A11 = Vcc/2, etc.)
+	if (pin >=128)
+		channel = pin - 128;
+	else
+		channel = digitalPinToADCIn(pin);
+	
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
     //  0000 A0
     //  0001 A1
@@ -284,8 +295,8 @@ uint16_t analogRead(uint8_t pin)
     ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_4;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     ADC10CTL0 = analog_reference |          // set analog reference
             ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
-    ADC10CTL1 |= (pin << 12);               // select channel
-    ADC10AE0 = (1 << pin);                  // Disable input/output buffer on pin
+    ADC10CTL1 |= (channel << 12);               // select channel
+    ADC10AE0 = (1 << channel);                  // Disable input/output buffer on pin
     __delay_cycles(128);                    // Delay to allow Ref to settle
     ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
     while (ADC10CTL1 & ADC10BUSY) {         // sleep and wait for completion
@@ -299,7 +310,7 @@ uint16_t analogRead(uint8_t pin)
     ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_4;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
     REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
-    ADC10MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
+    ADC10MCTL0 = channel | (analog_reference & REFV_MASK); // set channel and reference 
     ADC10CTL0 = ADC10ON | ADC10SHT_4;       // turn ADC ON; sample + hold @ 64 × ADC10CLKs
     ADC10CTL1 |= ADC10SHP;                  // ADCCLK = MODOSC; sampling timer
     ADC10CTL2 |= ADC10RES;                  // 10-bit resolution
@@ -320,10 +331,10 @@ uint16_t analogRead(uint8_t pin)
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
     if (pin == TEMPSENSOR) {// if Temp Sensor 
         REFCTL0 = (INTERNAL1V5 & REF_MASK);                  // Set reference to internal 1.5V
-        ADC12MCTL0 = pin | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
+        ADC12MCTL0 = channel | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
     } else {
         REFCTL0 = (analog_reference & REF_MASK);                  // Set reference using masking off the SREF bits. See Energia.h.
-        ADC12MCTL0 = pin | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
+        ADC12MCTL0 = channel | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
     }
     ADC12CTL0 = ADC12ON | ADC12SHT0_4;      // turn ADC ON; sample + hold @ 64 × ADC10CLKs
     ADC12CTL1 |= ADC12SHP;                  // ADCCLK = MODOSC; sampling timer

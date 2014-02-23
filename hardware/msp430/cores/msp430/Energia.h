@@ -15,6 +15,7 @@ extern "C"{
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
 #define NOT_ON_TIMER 0
+#define NOT_ON_ADC 0xFF
 
 #define HIGH 0x1
 #define LOW  0x0
@@ -185,10 +186,12 @@ extern const uint16_t port_to_sel2[];
 extern const uint16_t port_to_input[];
 extern const uint16_t port_to_output[];
 extern const uint16_t port_to_pmap[];
+extern const uint32_t digital_pin_to_analog_in[];
 
 #define digitalPinToPort(P)    ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
+#define digitalPinToADCIn(P)      ( digital_pin_to_analog_in[P] )
 #define portDirRegister(P)     ( (volatile uint8_t *)( port_to_dir[P]) )
 /*
  * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1
