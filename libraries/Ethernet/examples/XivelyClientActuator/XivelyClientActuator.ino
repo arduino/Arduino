@@ -79,9 +79,7 @@ void setup() {
 }
 
 void loop() {
-  // if there's incoming data from the net connection.
-  // send it out the serial port.  This is for debugging
-  // purposes only:
+  // if there's incoming data from the net connection, process it
   if (client.available()) {
     responseProcess();
   }
@@ -143,10 +141,10 @@ sensor1,2014-02-21T06:58:34.565599Z,373
   while( token != NULL ) {
     if (strstr(token,channel) != 0) { // is token on the csv line with channel desired?
       Serial.println(token);
-      // token is online, need to skip 2 commas
-      field = strtok(token,",");
-      field = strtok(NULL,",");
-      field = strtok(NULL,",");  // field is pointing at channel value as ascii
+      // token is now pointing at correct line, need to skip 2 commas
+      field = strtok(token,","); // field pointing at channel
+      field = strtok(NULL,",");  // field pointing at timestamp
+      field = strtok(NULL,",");  // field pointing at channel value as ascii
       if (field[0] == '0') {
         digitalWrite(D1_LED,LOW);
       } else {
@@ -163,7 +161,7 @@ void sendRequest() {
   // if there's a successful connection:
   if (client.connect(server, 80)) {
     Serial.println("requesting from api.xively.com");
-    // send the HTTP PUT request:
+    // send the HTTP GET request:
     client.print("GET /v2/feeds/");
     client.print(FEEDID);
     client.println(".csv HTTP/1.1");
