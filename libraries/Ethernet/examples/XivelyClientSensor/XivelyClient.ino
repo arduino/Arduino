@@ -49,7 +49,7 @@ const unsigned long postingInterval = 10*1000; //delay between updates to xively
 void setup() {
   // start serial port:
   Serial.begin(9600);
-  Serial.println("XivelyClient setup");
+  Serial.println("XivelyClientSensor setup");
  // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
