@@ -37,11 +37,10 @@ void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dn
 			subnet = CLASS_C_SUBNET;
 	}
 
-	/* Initialze the lwIP library, using DHCP. */
-	//lwIPInit(F_CPU, pui8MACArray, htonl(local_ip), subnet, htonl(gateway),IPADDR_USE_DHCP);
 	lwIPInit(F_CPU, pui8MACArray, htonl(local_ip), htonl(subnet), htonl(gateway), !local_ip ? IPADDR_USE_DHCP:IPADDR_USE_STATIC);
 
 	lwIPDNSAddrSet((uint32_t)dns_server);
+
 	/* Wait for DHCP address */
 	if(!local_ip) lwIPDHCPWaitLeaseValid();
 

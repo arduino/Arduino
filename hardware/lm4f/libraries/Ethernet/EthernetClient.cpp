@@ -27,6 +27,7 @@ EthernetClient::EthernetClient(struct client *c) {
 err_t EthernetClient::do_poll(void *arg, struct tcp_pcb *cpcb)
 {
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
+
 	if(client->_connected) {
 		if(cpcb->keep_cnt_sent++ > 4) {
 			cpcb->keep_cnt_sent = 0;
@@ -56,10 +57,12 @@ err_t EthernetClient::do_poll(void *arg, struct tcp_pcb *cpcb)
 void EthernetClient::do_err(void * arg, err_t err)
 {
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
+
 	if(client->_connected) {
 		client->_connected = false;
 		return;
 	}
+
 	/*
 	 * Set connected to true to finish connecting.
 	 * ::connect wil take care of figuring out if we are truly connected
@@ -71,7 +74,9 @@ void EthernetClient::do_err(void * arg, err_t err)
 err_t EthernetClient::do_connected(void * arg, struct tcp_pcb * tpcb, err_t err)
 {
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
+
 	client->_connected = true;
+
 	return err;
 }
 
@@ -83,6 +88,7 @@ err_t EthernetClient::do_close(void *arg, struct tcp_pcb *cpcb)
 	 */
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
 
+	/* needed? */
 //	tcp_recved(cpcb, client->_p->tot_len);
 //	pbuf_free(client->_p);
 //	client->_p = NULL;
@@ -101,7 +107,7 @@ err_t EthernetClient::do_close(void *arg, struct tcp_pcb *cpcb)
 err_t EthernetClient::do_recv(void *arg, struct tcp_pcb *cpcb, struct pbuf *p, err_t err)
 {
 	/*
-	 * Get the server object from the argument
+	 * Get the client object from the argument
 	 * to get access to variables and functions
 	 */
 	EthernetClient *client = static_cast<EthernetClient*>(arg);
@@ -306,6 +312,11 @@ uint8_t EthernetClient::connected()
 
 uint8_t EthernetClient::status()
 {
+	if(cpcb == NULL) {
+		return CLOSED;
+	}
+
+	return cpcb->state;
 }
 
 EthernetClient::operator bool()
