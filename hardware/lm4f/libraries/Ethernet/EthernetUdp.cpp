@@ -15,36 +15,24 @@ void EthernetUDP::do_recv(void *arg, struct udp_pcb *upcb, struct pbuf *p, struc
 	/* No more space in the receive queue */
 	if(udp->count >= UDP_RX_MAX_PACKETS) {
 		pbuf_free(p);
-		Serial.println("queue is full");
+		return;
 	}
 
+	/* Increase the number of packets in the queue
+	 * that are waiting for processing */
 	udp->count++;
+	/* Add pacekt to the rear of the queue */
 	udp->packets[udp->rear].p = p;
+	/* Record the IP address and port the pacekt was received from */
 	udp->packets[udp->rear].remoteIP = IPAddress(addr->addr);
 	udp->packets[udp->rear].remotePort = port;
 
-//	Serial.print("IP: ");
-//	Serial.println(udp->packets[udp->rear].remoteIP);
-//	Serial.print("port: ");
-//	Serial.println(udp->packets[udp->rear].remotePort);
-
+	/* Advance the rear of the queue */
 	udp->rear++;
 
+	/* Wrap around the end of the array was reached */
 	if(udp->rear == UDP_RX_MAX_PACKETS)
 		udp->rear = 0;
-
-//	Serial.print("rear: ");
-//	Serial.println(udp->rear);
-//	Serial.print("front: ");
-//	Serial.println(udp->front);
-
-//	Serial.print("count: ");
-//	Serial.println(udp->count);
-
-//	Serial.print("recv: ");
-//	Serial.println(p->len);
-//	Serial.print("tot_len: ");
-//	Serial.println(p->tot_len);
 }
 
 uint8_t EthernetUDP::begin(uint16_t port)
@@ -99,7 +87,7 @@ int EthernetUDP::beginPacket(IPAddress ip, uint16_t port)
 	_sendToIP = ip;
 	_sendToPort = port;
 
-	_sendTop = pbuf_alloc(PBUF_TRANSPORT, 1024, PBUF_POOL);
+	_sendTop = pbuf_alloc(PBUF_TRANSPORT, UDP_TX_PACKET_MAX_SIZE, PBUF_POOL);
 
 	_write = 0;
 }
@@ -109,29 +97,52 @@ int EthernetUDP::endPacket()
 	ip_addr_t dest;
 	dest.addr = _sendToIP;
 
+	/* Shrink the pbuf to the actual size that was written to it */
+	pbuf_realloc(_sendTop, _write);
+
+	/* Send the buffer to the remote host */
 	udp_sendto(_pcb, _sendTop, &dest, _sendToPort);
+
+	/* udp_sendto is blocking and the pbuf is
+	 * no longer needed so free it */
+	pbuf_free(_sendTop);
 }
 
 size_t EthernetUDP::write(uint8_t byte)
 {
+	return write(&byte, 1);
 }
 
 size_t EthernetUDP::write(const uint8_t *buffer, size_t size)
 {
-	if(size > 1024)
-		size = 1024;
+	uint16_t avail = _sendTop->tot_len - _write;
 
-	memcpy(_sendTop->payload + _read, buffer, size);
+	/* If there is no more space available
+	 * then return immediately */
+	if(avail == 0)
+		return 0;
+
+	/* If size to send is larger than is available,
+	 * then only send up to the space available */
+	if(size > avail)
+		size = avail;
+
+	/* Copy buffer into the pbuf */
+	pbuf_take(_sendTop, buffer, size);
+
+	_write += size;
+
+	return size;
 }
 
 int EthernetUDP::parsePacket()
 {
+	_read = 0;
 
 	/* Discard the current packet */
 	if(_p) {
 		pbuf_free(_p);
 		_p = NULL;
-		_read = 0;
 		_remotePort = 0;
 		_remoteIP = IPAddress(IPADDR_NONE);
 	}
@@ -147,6 +158,7 @@ int EthernetUDP::parsePacket()
 	_remotePort = packets[front].remotePort;
 
 	count--;
+
 	/* Advance the front of the queue */
 	front++;
 

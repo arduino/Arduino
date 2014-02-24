@@ -1,5 +1,6 @@
-#define UDP_TX_PACKET_MAX_SIZE 24
 #define UDP_RX_MAX_PACKETS 32
+#define UDP_TX_PACKET_MAX_SIZE 2048
+
 #include "Energia.h"
 #include <Udp.h>
 
