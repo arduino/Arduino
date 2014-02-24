@@ -1,4 +1,16 @@
-//#include "pitches.h"
+/* 
+ Educational BoosterPack MK II - Konami/Contra Cheat Code
+http://boosterpackdepot.info/wiki/index.php?title=Educational_BoosterPack_MK_II
+ 
+ Use Joystick & Push buttons to enter the 'secret' Konami/Contra Cheat Code
+ Blue LED lights up when correct code is entered.
+ Use Serial Monitor window to debug/follow statemachine
+ 
+ Feb 2014 - Initial version created for Edu BP MK II
+            
+ by Dung Dang
+ 
+ */
 
 //Joystick
 const int JOY_X = 2;
