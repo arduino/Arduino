@@ -11,47 +11,46 @@
  by Michael Margolis
  modified 17 Sep 2010
  by Tom Igoe
+
+ modified 23 Feb 2014
+ by Craig Hollabaugh
  
  This code is in the public domain.
 
  */
 
-#include <SPI.h>         
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
 // Enter a MAC address for your controller below.
 // Newer Ethernet shields have a MAC address printed on a sticker on the shield
-byte mac[] = {  
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 
 unsigned int localPort = 8888;      // local port to listen for UDP packets
 
-IPAddress timeServer(192, 43, 244, 18); // time.nist.gov NTP server
+IPAddress timeServer(66,228,59,187); // pool.ntp.org NTP server
 
 const int NTP_PACKET_SIZE= 48; // NTP time stamp is in the first 48 bytes of the message
 
-byte packetBuffer[ NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing packets 
+byte packetBuffer[NTP_PACKET_SIZE]; //buffer to hold incoming and outgoing packets 
 
 // A UDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 
-void setup() 
-{
+void setup() {
   Serial.begin(9600);
+  Serial.println("UdpNtpClient setup");
 
   // start Ethernet and UDP
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
     // no point in carrying on, so do nothing forevermore:
-    for(;;)
-      ;
+    for(;;) ;
   }
   Udp.begin(localPort);
 }
 
-void loop()
-{
+void loop() {
   sendNTPpacket(timeServer); // send an NTP packet to a time server
 
     // wait to see if a reply is available
@@ -80,7 +79,6 @@ void loop()
     // print Unix time:
     Serial.println(epoch);                               
 
-
     // print the hour, minute and second:
     Serial.print("The UTC time is ");       // UTC is the time at Greenwich Meridian (GMT)
     Serial.print((epoch  % 86400L) / 3600); // print the hour (86400 equals secs per day)
@@ -97,13 +95,18 @@ void loop()
     }
     Serial.println(epoch %60); // print the second
   }
-  // wait ten seconds before asking for the time again
-  delay(10000); 
+  // wait 30 seconds before asking for the time again
+  Serial.println("waiting 30 seconds");
+  delay(30000); 
 }
 
 // send an NTP request to the time server at the given address 
 unsigned long sendNTPpacket(IPAddress& address)
 {
+  Serial.print("\nsendNTPpacket to ");
+  address.printTo(Serial);
+  Serial.println();
+
   // set all bytes in the buffer to 0
   memset(packetBuffer, 0, NTP_PACKET_SIZE); 
   // Initialize values needed to form NTP request
@@ -124,13 +127,3 @@ unsigned long sendNTPpacket(IPAddress& address)
   Udp.write(packetBuffer,NTP_PACKET_SIZE);
   Udp.endPacket(); 
 }
-
-
-
-
-
-
-
-
-
-
