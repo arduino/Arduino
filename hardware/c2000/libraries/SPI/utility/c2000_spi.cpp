@@ -34,7 +34,7 @@ typedef unsigned char _Bool;
 void spi_initialize(void)
 {
     EALLOW;
-
+    SysCtrlRegs.PCLKCR0.bit.SPIAENCLK = 1;      // SPI-A
     GpioCtrlRegs.GPAMUX2.bit.GPIO16 = 1;
     GpioCtrlRegs.GPAMUX2.bit.GPIO17 = 1;
     GpioCtrlRegs.GPAMUX2.bit.GPIO18 = 1;
@@ -42,8 +42,8 @@ void spi_initialize(void)
    	SpiaRegs.SPICCR.all =0x0007;	             // Reset on, rising edge, 16-bit char bits
 	SpiaRegs.SPICTL.all =0x0006;    		     // Enable master mode, normal phase,
                                                  // enable talk, and SPI int disabled.
-	SpiaRegs.SPIBRR =0x007F;
-    SpiaRegs.SPICCR.all =0x0097;		         // Relinquish SPI from Reset
+	SpiaRegs.SPIBRR =0x00E;
+    SpiaRegs.SPICCR.all =0x0087;		         // Relinquish SPI from Reset
     SpiaRegs.SPIPRI.bit.FREE = 1;                // Set so breakpoints don't disturb xmission
 }
 
@@ -61,11 +61,11 @@ uint8_t spi_send(const uint8_t data)
    while(SpiaRegs.SPISTS.bit.BUFFULL_FLAG == 1)
    {
    }
-   SpiaRegs.SPITXBUF=data;
+   SpiaRegs.SPITXBUF = data << 8;
    while(SpiaRegs.SPISTS.bit.INT_FLAG != 1)
    {
    }
-   return(SpiaRegs.SPIRXBUF);
+   return(SpiaRegs.SPIRXBUF & 0xFF);
 
 }
 
@@ -111,7 +111,7 @@ void spi_set_bitorder(const uint8_t order)
 void spi_set_datamode(const uint8_t mode)
 {
     //USICTL0 |= USISWRST;        // put USI in reset mode while we make changes
-	
+	EALLOW;
     SpiaRegs.SPICCR.bit.SPISWRESET = 0;
     switch(mode) {
     case 0:                   /* SPI_MODE0 */
@@ -151,6 +151,7 @@ void spi_set_datamode(const uint8_t mode)
     }
     //USICTL0 &= ~USISWRST;       // release for operation
 	SpiaRegs.SPICCR.bit.SPISWRESET = 1;
+    EDIS;
 
 
 }

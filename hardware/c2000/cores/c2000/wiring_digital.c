@@ -39,29 +39,31 @@ void pinMode(uint8_t pin, uint8_t mode)
     if(pin & 0x8000)
     {
 
+    	EALLOW;
         //Analog Pins
         pin &= 0x7FFF;
 
         if(mode == HARDWARE)
         {
             //Turn on normal analog functionality
-            GpioCtrlRegs.AIOMUX1.all |= 3 << (pin * 2);
+            GpioCtrlRegs.AIOMUX1.all |= 3UL << (pin * 2);
         }
         else
         {
             //Turn on AIO functionality
-            GpioCtrlRegs.AIOMUX1.all &= ~( 3 << (pin * 2));
+            GpioCtrlRegs.AIOMUX1.all &= ~( 3UL << (pin * 2));
 
             if(mode == INPUT)
             {
-                GpioCtrlRegs.AIODIR.all &= ~(1 << pin);
+                GpioCtrlRegs.AIODIR.all &= ~(1UL << pin);
             }
             else if(mode == OUTPUT)
             {
-                GpioCtrlRegs.AIODIR.all |= (1 << pin);
+                GpioCtrlRegs.AIODIR.all |= (1UL << pin);
             }
 
         }
+        EDIS;
 
     }
     else
@@ -131,14 +133,13 @@ int digitalRead(uint8_t pin)
 	uint32_t bit = digitalPinToBitMask(pin);
 	uint32_t port = digitalPinToPort(pin);
 
-	if (port == NOT_A_PORT) return LOW;
 
     if(pin & 0x8000)
     {
         //Analog Pins
         pin &= 0x7FFF;
 
-        if(GpioDataRegs.AIODAT.all & (1 << pin))
+        if(GpioDataRegs.AIODAT.all & (1UL << pin))
             return HIGH;
         else
             return LOW;
@@ -146,6 +147,9 @@ int digitalRead(uint8_t pin)
     }
     else
     {
+
+    	if (port == NOT_A_PORT) return LOW;
+
         //Digital Pins
 
 	    if (*portInputRegister(port) & bit) 
@@ -163,7 +167,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
 	uint32_t port = digitalPinToPort(pin);
 	volatile uint32_t *out;
 
-	if (port == NOT_A_PORT) return;
+
 
 
     if(pin & 0x8000)
@@ -171,11 +175,13 @@ void digitalWrite(uint8_t pin, uint8_t val)
         //Analog Pins
         pin &= 0x7FFF;
 
-        GpioDataRegs.AIODAT.all = (GpioDataRegs.AIODAT.all & ~(1 << pin)) | (val << pin);
+        GpioDataRegs.AIODAT.all = (GpioDataRegs.AIODAT.all & ~(1UL << pin)) | ((uint32_t)val << pin);
 
     }
     else
     {
+    	if (port == NOT_A_PORT) return;
+
         //Digital Pins
 	    out = portOutputRegister(port);
 
