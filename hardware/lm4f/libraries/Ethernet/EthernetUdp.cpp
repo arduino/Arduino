@@ -40,6 +40,10 @@ uint8_t EthernetUDP::begin(uint16_t port)
 	_port = port;
 	_pcb = udp_new();
 	err_t err = udp_bind(_pcb, IP_ADDR_ANY, port);
+
+	if(err == ERR_USE)
+		return 0;
+
 	udp_recv(_pcb, do_recv, this);
 	return 1;
 }
@@ -90,6 +94,11 @@ int EthernetUDP::beginPacket(IPAddress ip, uint16_t port)
 	_sendTop = pbuf_alloc(PBUF_TRANSPORT, UDP_TX_PACKET_MAX_SIZE, PBUF_POOL);
 
 	_write = 0;
+
+	if(_sendTop == NULL)
+		return false;
+
+	return true;
 }
 
 int EthernetUDP::endPacket()
@@ -101,11 +110,16 @@ int EthernetUDP::endPacket()
 	pbuf_realloc(_sendTop, _write);
 
 	/* Send the buffer to the remote host */
-	udp_sendto(_pcb, _sendTop, &dest, _sendToPort);
+	err_t err = udp_sendto(_pcb, _sendTop, &dest, _sendToPort);
 
 	/* udp_sendto is blocking and the pbuf is
 	 * no longer needed so free it */
 	pbuf_free(_sendTop);
+
+	if(err != ERR_OK)
+		return false;
+
+	return true;
 }
 
 size_t EthernetUDP::write(uint8_t byte)
