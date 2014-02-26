@@ -8,6 +8,7 @@ uint8_t EthernetServer::num_clients = 0;
 EthernetServer::EthernetServer(uint16_t port)
 {
 	_port = port;
+	lastConnect = 0;
 }
 
 err_t EthernetServer::do_poll(void *arg, struct tcp_pcb *cpcb)
@@ -104,6 +105,17 @@ err_t EthernetServer::do_accept(void *arg, struct tcp_pcb *cpcb, err_t err)
 	 */
 	EthernetServer *server = static_cast<EthernetServer*>(arg);
 
+	unsigned long now;
+
+	now = millis();
+
+	/* Slow down the rate at which connecitons are comming in
+	 * if connections are coming in faster than 50 milli seconds */
+	if(now - server->lastConnect < 50) {
+		delay(30);
+	}
+
+	server->lastConnect = millis();
 	/*
 	 * Maximum number of clients reached.
 	 * Drop the connection.

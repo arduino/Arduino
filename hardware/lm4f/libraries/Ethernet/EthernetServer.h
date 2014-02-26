@@ -22,6 +22,7 @@ class EthernetClient;
 
 class EthernetServer : public Server {
 private:
+	unsigned long lastConnect;
 	uint16_t _port;
 	struct tcp_pcb *spcb;
 	static uint8_t num_clients;
