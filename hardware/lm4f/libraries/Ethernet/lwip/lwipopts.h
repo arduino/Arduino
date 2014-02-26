@@ -393,6 +393,7 @@ extern void UARTprintf(const char *pcString, ...);
 #define LWIP_DEBUG
 #endif
 
+#define LWIP_NOASSERT                     1
 //#define LWIP_DBG_MIN_LEVEL              LWIP_DBG_LEVEL_OFF
 #define LWIP_DBG_MIN_LEVEL              LWIP_DBG_LEVEL_OFF
 //#define LWIP_DBG_MIN_LEVEL              LWIP_DBG_LEVEL_WARNING
