@@ -24,14 +24,17 @@
 
 package processing.app;
 
-import jssc.*;
-import processing.app.debug.MessageConsumer;
+import static processing.app.I18n._;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n._;
+import jssc.SerialPort;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
+import processing.app.debug.MessageConsumer;
 
 
 public class Serial implements SerialPortEventListener {
@@ -172,7 +175,7 @@ public class Serial implements SerialPortEventListener {
   public synchronized void serialEvent(SerialPortEvent serialEvent) {
     if (serialEvent.isRXCHAR()) {
       try {
-        byte[] buf = port.readBytes();
+        byte[] buf = port.readBytes(serialEvent.getEventValue());
         if (buf.length > 0) {
           if (bufferLast == buffer.length) {
             byte temp[] = new byte[bufferLast << 1];
