@@ -72,6 +72,7 @@ void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip)
 int EthernetClass::begin(uint8_t *mac_address)
 {
 	begin(mac_address, IPAddress(0,0,0,0), IPAddress(0,0,0,0), IPAddress(0,0,0,0), IPAddress(0,0,0,0));
+	return lwIPDHCPWaitLeaseValid();
 }
 
 IPAddress EthernetClass::localIP()
@@ -92,6 +93,18 @@ IPAddress EthernetClass::subnetMask()
 IPAddress EthernetClass::dnsServerIP()
 {
 	return lwIPDNSAddrGet();
+}
+
+void EthernetClass::enableLinkLed()
+{
+	ROM_GPIOPinConfigure(LINK_LED);
+	GPIOPinTypeEthernetLED(LINK_LED_BASE, LINK_LED_PIN);
+}
+
+void EthernetClass::enableActivityLed()
+{
+	ROM_GPIOPinConfigure(ACTIVITY_LED);
+	GPIOPinTypeEthernetLED(ACTIVITY_LED_BASE, ACTIVITY_LED_PIN);
 }
 
 EthernetClass Ethernet;

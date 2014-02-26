@@ -21,6 +21,9 @@ const IPAddress CLASS_C_SUBNET(255, 0, 0, 0);
 class EthernetClass {
 private:
 public:
+	void enableLinkLed();
+	void enableActivityLed();
+
 	/* Start ethernet in DHCP mode with user MAC */
 	int begin(uint8_t *mac_address);
 	void begin(uint8_t *mac_address, IPAddress local_ip);
@@ -39,6 +42,7 @@ public:
 	IPAddress subnetMask();
 	IPAddress gatewayIP();
 	IPAddress dnsServerIP();
+
 	friend class EthernetClient;
 	friend class EthernetServer;
 };

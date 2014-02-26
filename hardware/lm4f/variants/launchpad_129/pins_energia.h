@@ -149,6 +149,7 @@ static const uint8_t PN_0 = 82; // LED2
 static const uint8_t PF_4 = 83; // LED3
 static const uint8_t PF_0 = 84; // LED4
 
+
 // pushbuttons
 static const uint8_t PJ_0 = 85; // USR_SW1
 static const uint8_t PJ_1 = 86; // USR_SW2
@@ -171,8 +172,13 @@ static const uint8_t PB_1 = 95; // unrouted
 #define D3_LED         PF_4
 #define D4_LED         PF_0
 
-#define ACTIVITY_LED   PF_4
-#define LINK_LED       PF_0
+#define ACTIVITY_LED      GPIO_PF4_EN0LED1
+#define ACTIVITY_LED_BASE GPIO_PORTF_BASE
+#define ACTIVITY_LED_PIN  GPIO_PIN_4
+#define LINK_LED          GPIO_PF0_EN0LED0
+#define LINK_LED_BASE     GPIO_PORTF_BASE
+#define LINK_LED_PIN      GPIO_PIN_0
+
 // LEDs end
 
 // pushbuttons

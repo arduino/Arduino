@@ -133,6 +133,12 @@ static const uint8_t LINK_LED     = 64;
 static const uint8_t ACTIVITY_LED = 65;
 // LEDs end
 
+#define ACTIVITY_LED      GPIO_PK6_EN0LED1
+#define ACTIVITY_LED_BASE GPIO_PORTK_BASE
+#define ACTIVITY_LED_PIN  GPIO_PIN_6
+#define LINK_LED          GPIO_PK4_EN0LED0
+#define LINK_LED_BASE     GPIO_PORTK_BASE
+#define LINK_LED_PIN      GPIO_PIN_4
 
 // pushbuttons
 static const uint8_t PN_3 = 66; // up
