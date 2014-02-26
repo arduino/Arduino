@@ -16,6 +16,7 @@ struct client {
 	struct tcp_pcb *cpcb;
 	uint16_t read;
 	volatile bool connected;
+	bool mode;
 };
 
 class EthernetClient;

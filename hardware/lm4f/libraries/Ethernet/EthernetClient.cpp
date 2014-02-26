@@ -8,7 +8,7 @@ EthernetClient::EthernetClient(){
 	_connected = false;
 	cs = &client_state;
 	_read = &cs->read;
-
+	cs->mode = true;
 }
 
 EthernetClient::EthernetClient(struct client *c) {
@@ -22,6 +22,7 @@ EthernetClient::EthernetClient(struct client *c) {
 	_p = c->p;
 	cpcb = c->cpcb;
 	cs = c;
+	cs->mode = false;
 }
 
 err_t EthernetClient::do_poll(void *arg, struct tcp_pcb *cpcb)
@@ -178,10 +179,12 @@ size_t EthernetClient::write(uint8_t b) {
 
 size_t EthernetClient::write(const uint8_t *buf, size_t size) {
 	err_t err = tcp_write(cpcb, buf, size, TCP_WRITE_FLAG_COPY);
-	tcp_output(cpcb);
+
 	if (err == ERR_MEM) {
 		/* TODO: Need to send smaller chunks if fails */
 	}
+
+	if(cs->mode) tcp_output(cpcb);
 }
 
 int EthernetClient::available() {
@@ -271,18 +274,21 @@ void EthernetClient::flush()
 void EthernetClient::stop()
 {
 
+	_connected = false;
 	/* Stop frees any resources including any unread buffers */
-	if(_p) {
-		pbuf_free(_p);
-		_p = NULL;
+	err_t err;
+
+	if(cpcb) {
+		tcp_err(cpcb, NULL);
+
+		if(_p) {
+			tcp_recved(cpcb, _p->tot_len);
+			pbuf_free(_p);
+			_p = NULL;
+		}
+
+		err = tcp_close(cpcb);
 	}
-
-	if(!cpcb)
-		return;
-
-	tcp_err(cpcb, NULL);
-	tcp_recv(cpcb, NULL);
-	err_t err = tcp_close(cpcb);
 
 	if (err != ERR_OK) {
 		/* Error closing, try again later in poll (every 2 sec) */
