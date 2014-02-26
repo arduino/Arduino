@@ -80,30 +80,6 @@ err_t EthernetClient::do_connected(void * arg, struct tcp_pcb * tpcb, err_t err)
 	return err;
 }
 
-err_t EthernetClient::do_close(void *arg, struct tcp_pcb *cpcb)
-{
-	/*
-	 * Get the client object from the argument
-	 * to get access to variables and functions
-	 */
-	EthernetClient *client = static_cast<EthernetClient*>(arg);
-
-	/* needed? */
-//	tcp_recved(cpcb, client->_p->tot_len);
-//	pbuf_free(client->_p);
-//	client->_p = NULL;
-
-	err_t err = tcp_close(cpcb);
-
-	if (err != ERR_OK) {
-		/* Error closing, try again later in poll (every 2 sec) */
-		tcp_poll(cpcb, do_poll, 4);
-		return err;
-	}
-
-	return err;
-}
-
 err_t EthernetClient::do_recv(void *arg, struct tcp_pcb *cpcb, struct pbuf *p, err_t err)
 {
 	/*
@@ -171,8 +147,19 @@ int EthernetClient::connect(IPAddress ip, uint16_t port)
 		return false;
 	}
 
+
+	/* Wait for the connection.
+	 * Abort if the connection does not succeed within 10 sec */
+	unsigned long then = millis();
+
 	while(!_connected) {
+		unsigned long now = millis();
 		delay(10);
+		if(now - then > CONNECTION_TIMEOUT) {
+			tcp_close(cpcb);
+			cpcb = NULL;
+			return false;
+		}
 	}
 
 	if(cpcb->state != ESTABLISHED) {
@@ -283,25 +270,25 @@ void EthernetClient::flush()
 
 void EthernetClient::stop()
 {
-	_connected = false;
 
 	/* Stop frees any resources including any unread buffers */
-	if(cpcb) {
-		tcp_err(cpcb, NULL);
-		tcp_recved(cpcb, _p->tot_len);
-		tcp_close(cpcb);
-	}
-
 	if(_p) {
 		pbuf_free(_p);
 		_p = NULL;
 	}
 
+	if(!cpcb)
+		return;
+
+	tcp_err(cpcb, NULL);
+	tcp_recv(cpcb, NULL);
 	err_t err = tcp_close(cpcb);
 
 	if (err != ERR_OK) {
 		/* Error closing, try again later in poll (every 2 sec) */
 		tcp_poll(cpcb, do_poll, 4);
+	} else {
+		cpcb = NULL;
 	}
 }
 
@@ -325,5 +312,4 @@ EthernetClient::operator bool()
 	if(cpcb->state != ESTABLISHED) return false;
 
 	return true;
-	
 }

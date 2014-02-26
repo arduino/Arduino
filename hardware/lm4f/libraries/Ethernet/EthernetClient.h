@@ -7,6 +7,9 @@
 #include "EthernetServer.h"
 #include <lwip/dns.h>
 
+/* Set connection timeout to 10 sec */
+#define CONNECTION_TIMEOUT 1000 * 10
+
 class EthernetClient : public Client {
 public:
 	EthernetClient();
@@ -28,7 +31,6 @@ public:
 	virtual operator bool();
 	static err_t do_connected(void *arg, struct tcp_pcb *pcb, err_t err);
 	static err_t do_recv(void *arg, struct tcp_pcb *cpcb, struct pbuf *p, err_t err);
-	static err_t do_close(void *arg, struct tcp_pcb *cpcb);
 	static err_t do_poll(void *arg, struct tcp_pcb *cpcb);
 	static void do_err(void * arg, err_t err);
 	static void do_dns(const char *name, struct ip_addr *ipaddr, void *arg);
