@@ -50,11 +50,10 @@ Version Modified By Date     Comments
 #include "Energia.h"
 
 // local funcions
-static void initToneTimers();
-static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration);
-static void stopTimer(uint8_t n);
-interrupt void cpu_timer1_isr(void);
-interrupt void cpu_timer2_isr(void);
+static void initTimers();
+static void setTimer(unsigned int frequency, void (*userFunc)(void));
+ void stopTimer(uint8_t n);
+interrupt void cpu_timer0_isr(void);
 
 // timer clock frequency set to clock/8, at F_CPU = 1MHZ this gives an output freq range of ~[1Hz ..65Khz] and at 16Mhz this is ~[16Hz .. 1MHz]
 #define F_TIMER (F_CPU/60L)
@@ -69,15 +68,12 @@ interrupt void cpu_timer2_isr(void);
 //  = 0 - stopped
 //  < 0 - infinitely (until stop() method called, or new play() called)
 
-static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
-static uint8_t tone_pins[AVAILABLE_TONE_PINS] = { SETARRAY(255) };
-static uint8_t tone_bit[AVAILABLE_TONE_PINS] = { SETARRAY(255)  };
-volatile static uint32_t *tone_out[AVAILABLE_TONE_PINS] = { SETARRAY(0) };
+static uint8_t timer_state = 0; // 0==not initialized, 1==timer running
 //static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { SETARRAY(-1)  };
 //Above line changed to prevent build warnings
-static uint16_t tone_interval[AVAILABLE_TONE_PINS] = { (uint16_t)-1, (uint16_t)-1  };
-static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
+static uint16_t timer_interval = 0; 
 
+static volatile voidFuncPtr intFuncP0;
 
 /**
 *** tone() -- Output a tone (50% Dutycycle PWM signal) on a pin
@@ -85,134 +81,76 @@ static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
 ***  frequency: [Hertz] 
 **   duration: [milliseconds], if duration <=0, then we output tone continously, otherwise tone is stopped after this time (output = 0)
 **/
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
+void timer( unsigned int frequency, void (*userFunc)(void))
 {
-  uint8_t port = digitalPinToPort(_pin);
-  if (port == NOT_A_PORT) return;
 
-  // find if we are using it at the moment, if so: update it
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
-  {
-    if (tone_pins[i] == _pin) 
-    {
-      setTimer(i, frequency, duration);
-      return; // we are done, timer reprogrammed
-    }
-  }
 
-  // new tone pin, find empty timer and set it
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
-  {
-    if (tone_pins[i] == 255)      
-    {
-      tone_pins[i] = _pin;
-      tone_bit[i] = digitalPinToBitMask(_pin);
-      tone_out[i] = portOutputRegister(port);
-      if ( tone_state == 0 ) 
-        initToneTimers();
-      pinMode(_pin, OUTPUT);
-      setTimer(i, frequency, duration);
+      if ( timer_state == 0 ) 
+        initTimers();
+      setTimer(frequency, userFunc);
       return; // we are done, timer set
-    }
-  }
-  // if we exit here, no unused timer was found, nothing is done
+
 }
 
 
-/**
-*** noTone() - Stop outputting the tone on a pin
-**/
-void noTone(uint8_t _pin)
-{
-  if ( _pin == 255 ) return; // Should not happen!
-  for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
-  {
-    if (tone_pins[i] == _pin) 
-    {
-      tone_pins[i] = 255;
-      stopTimer(i);
-    }
-  }
-}
+
 
 
 // Initialize the timers - Set mode and Enable IRQ
-static void inline initToneTimers()
+static void inline initTimers()
 {
    EALLOW;  // This is needed to write to EALLOW protected registers
-   PieVectTable.TINT1 = &cpu_timer1_isr;
-   PieVectTable.TINT2 = &cpu_timer2_isr;
-   IER |= M_INT13;
-   IER |= M_INT14;
+   PieVectTable.TINT0 = &cpu_timer0_isr;
+   PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
+   IER |= M_INT1;
    EDIS;    // This is needed to disable write to EALLOW protected registers
 
 
-	CpuTimer1Regs.TPR.all  = 0;
-	CpuTimer1Regs.TPRH.all = 0;
-	CpuTimer1Regs.TCR.bit.TSS = 1;
-	CpuTimer1Regs.TCR.bit.TIE = 0;
+	CpuTimer0Regs.TPR.all  = 0;
+	CpuTimer0Regs.TPRH.all = 0;
+	CpuTimer0Regs.TCR.bit.TSS = 1;
+	CpuTimer0Regs.TCR.bit.TIE = 0;
 	//divide by 60 to get 1MHz timer
-	CpuTimer1Regs.TPR.bit.TDDR = 59;
-	CpuTimer2Regs.TPR.all  = 0;
-	CpuTimer2Regs.TPRH.all = 0;
-	CpuTimer2Regs.TCR.bit.TSS = 1;
-	CpuTimer2Regs.TCR.bit.TIE = 0;
-	CpuTimer2Regs.TPR.bit.TDDR = 59;
+	CpuTimer0Regs.TPR.bit.TDDR = 59;
 
-  tone_state = 1;  // init is done
+
+  timer_state = 1;  // init is done
 }
 
 
 // Set the timer interval and duration
 // frequency in [Hz] and duration in [msec]
 // we initialize the timer match value only if the tone was not running already, to prevent glitches when re-programming a running tone
-static void setTimer(uint8_t n, unsigned int frequency, unsigned long duration)
+static void setTimer(unsigned int frequency, void (*userFunc)(void))
 {
   if ( frequency <= 0 ) 
   {
-    tone_interval[n] = 0;
-    tone_periods[n] = 0;
     return;
   }
-  tone_interval[n] = F_TIMER / (2L*frequency);
-  if ( duration > 0 )
-    tone_periods[n] = (duration * (F_TIMER/2)) / (1000L * tone_interval[n]);
-  else
-    tone_periods[n] = -1;
-  switch( n ) // enable IRQ and set next match time in various timer compare registers (if we where not enabled already)
+
+  timer_interval = F_TIMER / (2L*frequency);
+  
+
+  intFuncP0 = userFunc;
+
+  if ( CpuTimer0Regs.TCR.bit.TIE == 0 )
   {
-    case 0:
-      if ( CpuTimer1Regs.TCR.bit.TIE == 0 ){
-    	  CpuTimer1Regs.PRD.all =  tone_interval[0];
-      }
-  	  CpuTimer1Regs.TCR.bit.TIE = 1;
-  	  CpuTimer1Regs.TCR.bit.TSS = 0;
-      break;
-    case 1:
-        if ( CpuTimer2Regs.TCR.bit.TIE == 0 ){
-      	    CpuTimer2Regs.PRD.all =  tone_interval[1];
-        }
-    	CpuTimer2Regs.TCR.bit.TIE = 1;
-    	CpuTimer2Regs.TCR.bit.TSS = 0;
-      break;
-    }
+   	  CpuTimer0Regs.PRD.all =  timer_interval;
+  }
+  CpuTimer0Regs.TCR.bit.TIE = 1;
+  CpuTimer0Regs.TCR.bit.TSS = 0;
+  EINT;
+
 } 
 
 /* stopTimer() - Disable timer IRQ */
-static void inline stopTimer(uint8_t n)
+void inline stopTimer(void)
 {
-  switch( n )
-  {
-    case 0:
-    	CpuTimer1Regs.TCR.bit.TSS = 1;
-    	CpuTimer1Regs.TCR.bit.TIE = 0;
-    	break;
-    case 1:
-    	CpuTimer2Regs.TCR.bit.TSS = 1;
-    	CpuTimer2Regs.TCR.bit.TIE = 0;
-    	break;
-  }
-  *tone_out[n] &= ~tone_bit[n];
+
+    CpuTimer0Regs.TCR.bit.TSS = 1;
+    CpuTimer0Regs.TCR.bit.TIE = 0;
+    
+
 }
 
 
@@ -225,12 +163,10 @@ static void inline stopTimer(uint8_t n)
 }while(0)
 
 
-interrupt void cpu_timer1_isr(void)
+interrupt void cpu_timer0_isr(void)
 {
-	isrTimer(0, CpuTimer1Regs.PRD.all);
+    intFuncP0();
+    PieCtrlRegs.PIEACK.bit.ACK1  = 1;
 }
 
-interrupt void cpu_timer2_isr(void)
-{
-	isrTimer(1, CpuTimer2Regs.PRD.all);
-}
+

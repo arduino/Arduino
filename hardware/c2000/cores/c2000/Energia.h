@@ -190,6 +190,9 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 100000
 void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
 void noTone(uint8_t _pin);
 
+void timer( unsigned int frequency, void (*userFunc)(void));
+void inline stopTimer(void);
+
 // WMath prototypes
 long random(long);
 long random(long, long);
