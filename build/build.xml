@@ -182,7 +182,7 @@
   <available property="exists.dep.arm" file="macosx/dist/${arm.tools.local}"/>
   <property name="dep.arm.default.ok" value="true"/>
 
-  <target name="check.deps"
+  <target name="check.deps.macosx"
     if="dep.arm.default.ok"
     unless="exists.dep.arm">
     <property name="arm.tools.remote" value="http://energia.nu/files/arm_tools_mac.tar.bz2"/>
@@ -191,7 +191,7 @@
     <get src="${arm.tools.remote}" dest="macosx/dist/${arm.tools.local}"/>
   </target>
 
-  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps, subprojects-build" description="Build Mac OS X version">
+  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps.macosx, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
     
     <!-- assemble the pde -->
@@ -536,8 +536,29 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
+  <property name="arm.tools.windows.local" value="arm_tools_windows.zip"/>
+  <property name="msp430.tools.windows.local" value="msp430_tools_windows.zip"/>
+
+  <condition property="exists.tools.windows">
+  <and>
+  <available property="exists.dep.arm.windows" file="windows/${arm.tools.windows.local}"/>
+  <available property="exists.dep.msp430.windows" file="windows/${msp430.tools.windows.local}"/>
+  </and>
+  </condition>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps.windows"
+    if="dep.arm.default.ok"
+    unless="exists.tools.windows">
+    <property name="arm.tools.windows.remote" value="http://energia.nu/files/arm_tools_windows.zip"/>
+	<property name="msp430.tools.windows.remote" value="http://energia.nu/files/msp430_tools_windows.zip"/>
+    <!-- Get tools tools -->
+	<get src="${arm.tools.windows.remote}" dest="windows/${arm.tools.windows.local}"/>
+	<get src="${msp430.tools.windows.remote}" dest="windows/${msp430.tools.windows.local}"/>
+  </target>
+  
   <target name="windows-build" 
-	  depends="revision-check, windows-checkos, subprojects-build" 
+	  depends="revision-check, windows-checkos, check.deps.windows, subprojects-build" 
 	  description="Build windows version">
     <mkdir dir="windows/work" />
     
@@ -560,23 +581,10 @@
       <fileset dir="windows/dist" includes="drivers/**" />
     </copy>
     
-    <!-- Unzip AVR tools -->
-    <!--
-    <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
-    -->
-    <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
-
-    <unzip dest="windows/work/hardware" src="windows/lm4f_tools.zip" overwrite="false"/>
-    <copy tofile="windows/work/hardware/tools/lm4f/bin/lm4flash.exe"
-          file="windows/dist/tools/lm4flash.exe"
-          overwrite="true"
-        />
-    <chmod perm="755" file="windows/work/hardware/tools/lm4f/bin/lm4flash.exe" />
-    <!--
-    <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
-      <fileset file="windows/eeprom.h" />
-    </copy>
-    -->
+    <!-- Unzip tools -->
+    <unzip dest="windows/work/hardware/tools" src="windows/msp430_tools_windows.zip" overwrite="false"/>
+    <unzip dest="windows/work/hardware/tools" src="windows/arm_tools_windows.zip" overwrite="false"/>
+ 
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
     </antcall>
