@@ -61,9 +61,9 @@ import static processing.app.I18n._;
  * files and images, etc) that comes from that.
  */
 public class Base {
-  public static final int REVISION = 155;
+  public static final int REVISION = 156;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0155";
+  static String VERSION_NAME = "0156";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
@@ -320,7 +320,8 @@ public class Base {
 
     boolean doUpload = false;
     boolean doVerify = false;
-    boolean doVerbose = false;
+    boolean doVerboseBuild = false;
+    boolean doVerboseUpload = false;;
     String selectBoard = null;
     String selectPort = null;
     String currentDirectory = System.getProperty("user.dir");
@@ -337,7 +338,16 @@ public class Base {
         continue;
       }
       if (args[i].equals("--verbose") || args[i].equals("-v")) {
-        doVerbose = true;
+        doVerboseBuild = true;
+        doVerboseUpload = true;
+        continue;
+      }
+      if (args[i].equals("--verbose-build")) {
+        doVerboseBuild = true;
+        continue;
+      }
+      if (args[i].equals("--verbose-upload")) {
+        doVerboseUpload = true;
         continue;
       }
       if (args[i].equals("--board")) {
@@ -414,8 +424,8 @@ public class Base {
 
     if (doUpload || doVerify) {
       // Set verbosity for command line build
-      Preferences.set("build.verbose", "" + doVerbose);
-      Preferences.set("upload.verbose", "" + doVerbose);
+      Preferences.set("build.verbose", "" + doVerboseBuild);
+      Preferences.set("upload.verbose", "" + doVerboseUpload);
 
       Editor editor = editors.get(0);
 
@@ -1337,6 +1347,14 @@ public class Base {
       try {
         String headers[] = headerListFromIncludePath(lib.getSrcFolder());
         for (String header : headers) {
+          Library old = importToLibraryTable.get(header);
+          if (old != null) {
+            // If a library was already found with this header, keep
+            // it if the library's name matches the header name.
+            String name = header.substring(0, header.length() - 2);
+            if (old.getFolder().getPath().endsWith(name))
+              continue;
+          }
           importToLibraryTable.put(header, lib);
         }
       } catch (IOException e) {

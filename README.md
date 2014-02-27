@@ -1,103 +1,44 @@
-XmegaDuino
-===========
+Arduino
+========
 
-Port of the Arduino IDE, core, libraries and bootloader to support the Atmel XMEGA family of chips.
+* Arduino is an open-source physical computing platform based on a simple i/o
+board and a development environment that implements the Processing/Wiring
+language. Arduino can be used to develop stand-alone interactive objects or
+can be connected to software on your computer (e.g. Flash, Processing, MaxMSP).
+The boards can be assembled by hand or purchased preassembled; the open-source
+IDE can be downloaded for free.
 
-Currently supported boards:
+* For more information, see the website at: http://www.arduino.cc/
+or the forums at: http://arduino.cc/forum/
 
-* AVR xplain board
-* Akafuino X board
-* Sparkfun xmega100 breakout board
+* To report a *bug* in the software or to request *a simple enhancement* go to:
+http://github.com/arduino/Arduino/issues
 
-The following boards should work with a little tweaking:
+* More complex requests and technical discussion should go on the Arduino Developers
+mailing list:
+https://groups.google.com/a/arduino.cc/forum/#!forum/developers
 
-* Magnetovore
-* Megavore
-* Boston Android
-
-This project has replaced the xmegaduino project on Google Code (http://code.google.com/p/xmegaduino/)
-and has been active since September 2011. It supersedes the earlier xplainduino.
+* If you're interested in modifying or extending the Arduino software, we strongly 
+suggest discussing your ideas on the Developers mailing list *before* starting
+to work on them. That way you can coordinate with the Arduino Team and others,
+giving your work a higher chance of being integrated into the official release
+https://groups.google.com/a/arduino.cc/forum/#!forum/developers
 
 Installation
-============
+------------
+Detailed instructions are in reference/Guide_Windows.html and
+reference/Guide_MacOSX.html.  For Linux, see the Arduino playground:
+http://www.arduino.cc/playground/Learning/Linux
 
-Download from [here](https://github.com/akafugu/Xmegaduino/downloads).
+Credits
+--------
+Arduino is an open source project, supported by many.
 
-* Windows
-* OS X
-* Linux
+The Arduino team is composed of Massimo Banzi, David Cuartielles, Tom Igoe,
+Gianluca Martino, Daniela Antonietti, and David A. Mellis.
 
-Requirements
-============
+Arduino uses the [GNU avr-gcc toolchain](http://gcc.gnu.org/wiki/avr-gcc), [avrdude](http://www.nongnu.org/avrdude/), [avr-libc](http://www.nongnu.org/avr-libc/), and code from
+[Processing](http://www.processing.org) and [Wiring](http://wiring.org.co).
 
-* AVR xplain board
-
-The LUFA project provides a replacement USB firmware that can act as a PDI programmer.
-You can also use a PDI programmer such as the AVR Dragon.
-
-* [Sparkfun xmega100](http://www.sparkfun.com/products/9546)
-
-Requires a PDI programmer, such as the AVR Dragon in order to upload sketches and burn bootloaders.
-
-* [Akafuino X](http://www.akafugu.jp/posts/products/akafuino/)
-
-Comes with a bootloader pre-installed and can be used directly from the Xmegaduino IDE.
-
-Status
-======
-
-The Xmegaduino project is beta quality, and not all the features of the Arduino IDE are supported yet.
-
-Working features:
-
-* digitalRead and digitalWrite
-* millis and delay
-* micros and delayMicroseconds
-* Serial on USB (USARTC0), Serial1 on pins D2/D3 (USARTD0) and Serial2 on D6/D7 (USARTD1).
-* analogRead
-* analogWrite
-* attachInterrupt, detachInterrupt, interrupts, noInterrupts
-* Upload using bootloader over usb port, D2/3, or D6/7.
-* Burning bootloader from arduino IDE
-* DAC (using xmDAC library)
-* Wire
-* shiftOut, shiftIn, pulseIn (not tested)
-* tone
-* SPI library
-* EEPROM library
-
-Todo:
-
-* analogReference
-* Ethernet library
-* Servo library
-* Stepper library
-
-Changelog
-=========
-
-Beta4b (based on Arduino 1.0.1-rc2) (2012-04-19):
-
-* Updated only for Mac OS X, removed dynamic dependencies on avr-gcc.
-
-Beta4 (based on Arduino 1.0.1-rc2):
-
-* New avr-gcc 4.5.1, avr-libc 1.7.1 for all platforms (Windows, Mac OS X, Linux 32/64)
-* Linux now comes with bundled avr-gcc and avr-libc
-* Use correct SPI port on Akafuino X (pin 10-13)
-* Upload sketch to XPlain using PDI
-* Translated to 23 different languages (Thanks to Arduino)
-
-Beta3 (based on Arduino 1.0):
-
-Big thanks goes out to Brendan Powers and Russell for their contributions 
-
-* xmDAC now works again
-* EEPROM library fixed
-* All baud rates are now dynamically calculated
-* SPI library ported
-* shiftIn function implemented
-* tone implemented using timer TCC1
-* LEVEL interrupt mode
-* Replicated Arduino's pullup behavior when writing to an input pin
+Icon and about image designed by ToDo: http://www.todo.to.it/
 
