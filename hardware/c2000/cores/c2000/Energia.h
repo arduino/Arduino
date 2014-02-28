@@ -1,4 +1,4 @@
-#5ifndef Energia_h
+#ifndef Energia_h
 #define Energia_h
 
 #ifdef __cplusplus
@@ -32,6 +32,7 @@ extern "C"{
 #define INPUT 0x0
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
+#define HARDWARE 0x4
 #define PORT_SELECTION0 0x10
 #define PORT_SELECTION1 0x20
 
@@ -188,6 +189,9 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 100000
 
 void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
 void noTone(uint8_t _pin);
+
+void timer( unsigned int frequency, void (*userFunc)(void));
+void inline stopTimer(void);
 
 // WMath prototypes
 long random(long);

@@ -377,20 +377,27 @@ uint16_t analogRead(uint8_t pin)
 	if(SysCtrlRegs.PCLKCR0.bit.ADCENCLK == 0){
 		analogInit();
 	}
+
+    if(pin & 0x8000)
+    {
+        pin &= 0x7FFF;
 	
-	EALLOW;
-	//Setup SOC1 to sample selected pin
-	AdcRegs.ADCSOC1CTL.bit.CHSEL = pin;
-	//Force SOC 0 and 1
-	AdcRegs.ADCSOCFRC1.all = 3;
-	EDIS;
+    	EALLOW;
+    	//Setup SOC1 to sample selected pin
+    	AdcRegs.ADCSOC1CTL.bit.CHSEL = pin;
+    	//Force SOC 0 and 1
+    	AdcRegs.ADCSOCFRC1.all = 3;
+    	EDIS;
 
-	while(AdcRegs.ADCINTFLG.bit.ADCINT1 != 1){
-		//wait until conversion is done
-	}
-	AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+	    while(AdcRegs.ADCINTFLG.bit.ADCINT1 != 1){
+	    	//wait until conversion is done
+    	}
+    	AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-	return (AdcResult.ADCRESULT1);
+	    return (AdcResult.ADCRESULT1);
+    }else{
+        return 0;
+    }
 
 
 }

@@ -40,41 +40,44 @@ static const uint8_t SCK  = 7;  /* P1.5 */
 static const uint8_t MOSI = 15; /* P1.7 */
 static const uint8_t MISO = 14; /* P1.6 */
 
-static const uint8_t A0 = 0;    //A0
-static const uint8_t A1 = 1;	//A1
-static const uint8_t A2 = 2;	//A2
-static const uint8_t A3 = 3;	//A3
-static const uint8_t A4 = 4;	//A4
-static const uint8_t A5 = 5;	//A6
-static const uint8_t A6 = 6;	//A7
-static const uint8_t A7 = 7;	//B1
-static const uint8_t A8 = 8;	//B2
-static const uint8_t A9 = 9;	//B3
-static const uint8_t A10 = 10;	//B4
-static const uint8_t A11 = 11;	//B6
-static const uint8_t A12 = 12;	//B7
+static const uint8_t AA0 = 0x8000;  //A0
+static const uint8_t AA1 = 0x8001;	//A1
+static const uint8_t AA2 = 0x8002;	//A2
+static const uint8_t AA3 = 0x8003;	//A3
+static const uint8_t AA4 = 0x8004;	//A4
+static const uint8_t AA5 = 0x8005;	//A5
+static const uint8_t AA6 = 0x8006;	//A6
+static const uint8_t AA7 = 0x8007;	//A7
+static const uint8_t AB0 = 0x8008;  //B0
+static const uint8_t AB1 = 0x8009;  //B1
+static const uint8_t AB2 = 0x800A;  //B2
+static const uint8_t AB3 = 0x800B;  //B3
+static const uint8_t AB4 = 0x800C;  //B4
+static const uint8_t AB5 = 0x800D;  //B5
+static const uint8_t AB6 = 0x800E;  //B6
+static const uint8_t AB7 = 0x800F;  //B7
 
 
 // Pin names based on GPIO numbers
 //
-static const uint8_t P0 = 0;
-static const uint8_t P1 = 1;
-static const uint8_t P2 = 2;
-static const uint8_t P3 = 3;
-static const uint8_t P4 = 4;
-static const uint8_t P5 = 5;
-static const uint8_t P6 = 6;
-static const uint8_t P7 = 7;
-static const uint8_t P12 = 12;
-static const uint8_t P16 = 16;
-static const uint8_t P17 = 17;
-static const uint8_t P18 = 18;
-static const uint8_t P19 = 19;
-static const uint8_t P28 = 28;
-static const uint8_t P29 = 29;
-static const uint8_t P32 = 32;
-static const uint8_t P33 = 33;
-static const uint8_t P34 = 34;
+static const uint8_t P0 = 0x0000;
+static const uint8_t P1 = 0x0001;
+static const uint8_t P2 = 0x0002;
+static const uint8_t P3 = 0x0003;
+static const uint8_t P4 = 0x0004;
+static const uint8_t P5 = 0x0005;
+static const uint8_t P6 = 0x0006;
+static const uint8_t P7 = 0x0007;
+static const uint8_t P12 = 0x00012;
+static const uint8_t P16 = 0x00016;
+static const uint8_t P17 = 0x00017;
+static const uint8_t P18 = 0x00018;
+static const uint8_t P19 = 0x00019;
+static const uint8_t P28 = 0x00028;
+static const uint8_t P29 = 0x00029;
+static const uint8_t P32 = 0x00032;
+static const uint8_t P33 = 0x00033;
+static const uint8_t P34 = 0x00034;
 
 
 static const uint8_t RED_LED = 2;
