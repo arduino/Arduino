@@ -367,61 +367,79 @@
       	<exclude name="**/avr*" />
       </fileset>
     </copy>
-
-    <!--chmod perm="755" file="linux/work/hardware/tools/avrdude" /-->
   </target>
 
-  <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
-    <!-- Unzip AVR tools
-    <exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../avr_tools_linux32.tar.bz2"/>
-    </exec>
-    -->
-  	<!-- Unzip msp430 tools -->
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../msp430_tools_linux32.tar.bz2"/>
-    </exec>
-  	<!-- Unzip lm4f tools -->
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../lm4f_tools_linux32.tar.bz2"/>
-    </exec>
-    <copy tofile="linux/work/hardware/tools/lm4f/bin/lm4flash"
-          file="linux/dist/tools/lm4flash"
-          overwrite="true"
-        />
-    <chmod perm="755" file="linux/work/hardware/tools/lm4f/bin/lm4flash" />
+  <!-- Linux 32 build -->
+  <property name="arm.tools.linux.local" value="arm_tools_linux32.tar.bz2"/>
+  <property name="msp430.tools.linux.local" value="msp430_tools_linux32.tar.bz2"/>
+
+  <condition property="exists.tools.linux">
+  <and>
+  <available property="exists.dep.arm.linux" file="linux/${arm.tools.linux.local}"/>
+  <available property="exists.dep.msp430.linux" file="linux/${msp430.tools.linux.local}"/>
+  </and>
+  </condition>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps.linux"
+    if="dep.arm.default.ok"
+    unless="exists.tools.linux">
+    <property name="arm.tools.linux.remote" value="http://energia.nu/files/arm_tools_linux32.tar.bz2"/>
+	<property name="msp430.tools.linux.remote" value="http://energia.nu/files/msp430_tools_linux32.tar.bz2"/>
+    <!-- Get tools -->
+	<get src="${arm.tools.linux.remote}" dest="linux/${arm.tools.linux.local}"/>
+	<get src="${msp430.tools.linux.remote}" dest="linux/${msp430.tools.linux.local}"/>
   </target>
 
-  <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
-    <!-- <copy tofile="linux/work/hardware/tools/avrdude" file="linux/dist/tools/avrdude64" overwrite="true" /> -->
+  <target name="linux32-build" depends="linux-build, check.deps.linux" description="Build linux (32-bit) version">
+<echo>${user.dir}</echo>
+    <!-- Unzip msp430 tools -->
+    <exec executable="tar" dir="linux/work/hardware/tools">
+      <arg value="-xjf"/>
+      <arg value="${user.dir}/linux/msp430_tools_linux32.tar.bz2"/>
+    </exec>
+    <!-- Unzip lm4f tools -->
+    <exec executable="tar" dir="linux/work/hardware/tools">
+      <arg value="-xjf"/>
+      <arg value="${user.dir}/linux/arm_tools_linux32.tar.bz2"/>
+    </exec>
+  </target>
+
+  <!-- Linux 64 build -->
+  <property name="arm.tools.linux64.local" value="arm_tools_linux64.tar.bz2"/>
+  <property name="msp430.tools.linux64.local" value="msp430_tools_linux64.tar.bz2"/>
+
+  <condition property="exists.tools.linux64">
+  <and>
+  <available property="exists.dep.arm.linux64" file="linux/${arm.tools.linux64.local}"/>
+  <available property="exists.dep.msp430.linux64" file="linux/${msp430.tools.linux64.local}"/>
+  </and>
+  </condition>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps.linux64"
+    if="dep.arm.default.ok"
+    unless="exists.tools.linux64">
+    <property name="arm.tools.linux64.remote" value="http://energia.nu/files/arm_tools_linux64.tar.bz2"/>
+	<property name="msp430.tools.linux64.remote" value="http://energia.nu/files/msp430_tools_linux64.tar.bz2"/>
+    <!-- Get tools -->
+	<get src="${arm.tools.linux64.remote}" dest="linux/${arm.tools.linux64.local}"/>
+	<get src="${msp430.tools.linux64.remote}" dest="linux/${msp430.tools.linux64.local}"/>
+  </target>
+
+
+  <target name="linux64-build" depends="linux-build, check.deps.linux64" description="Build linux (64-bit) version">
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../msp430_tools_linux64.tar.bz2"/>
-    </exec>
-  	<!-- Unzip lm4f tools -->
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../lm4f_tools_linux64.tar.bz2"/>
-    </exec>
-<!--
-    <copy tofile="linux/work/hardware/tools/lm4f/bin/lm4flash"
-          file="linux/dist/tools/lm4flash"
-          overwrite="true"
-        />
-    <chmod perm="755" file="linux/work/hardware/tools/lm4f/bin/lm4flash" />
--->
-    <!-- <chmod perm="755" file="linux/work/hardware/tools/avrdude" /> -->
-
-    <!-- Unzip AVR tools
     <exec executable="tar" dir="linux/work/hardware">
       <arg value="-xjf"/>
-      <arg value="../../avr_tools_linux64.tar.bz2"/>
+      <arg value="${user.dir}/msp430_tools_linux64.tar.bz2"/>
     </exec>
-    -->
+
+    <!-- Unzip lm4f tools -->
+    <exec executable="tar" dir="linux/work/hardware">
+      <arg value="-xjf"/>
+      <arg value="${user.dir}/arm_tools_linux64.tar.bz2"/>
+    </exec>
   </target> 
   
   <target name="linux32-run" depends="linux32-build" 
