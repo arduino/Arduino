@@ -49,16 +49,28 @@
 #define UCAxBR1       UCA0BR1
 #define UCAxMCTL      UCA0MCTL
 #define UCAxMCTLW     UCA0MCTLW
+#define UCAxMCTLW_L   UCA0MCTLW_L
+#define UCAxMCTLW_H   UCA0MCTLW_H
 #define UCAxSTAT      UCA0STAT
+#if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
+#define UCAxRXBUF     UCA0RXBUF_L
+#define UCAxTXBUF     UCA0TXBUF_L
+#else
 #define UCAxRXBUF     UCA0RXBUF
 #define UCAxTXBUF     UCA0TXBUF
+#endif
 #define UCAxABCTL     UCA0ABCTL
 #define UCAxIRCTL     UCA0IRCTL
 #define UCAxIRTCTL    UCA0IRTCTL
 #define UCAxIRRCTL    UCA0IRRCTL
 #define UCAxICTL      UCA0ICTL
+#if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
+#define UCAxIE        UCA0IE_L
+#define UCAxIFG       UCA0IFG_L
+#else
 #define UCAxIE        UCA0IE
 #define UCAxIFG       UCA0IFG
+#endif
 #define UCAxIV        UCA0IV
 
 #define SERIAL_BUFFER_SIZE 16
@@ -146,7 +158,10 @@ void HardwareSerial::begin(unsigned long baud)
 	}
 	*(&(UCAxBR0) + uartOffset) = divider;
 	*(&(UCAxBR1) + uartOffset) = divider>>8;
-	*(&(UCAxMCTLW) + uartOffset)= (oversampling ? UCOS16:0) | mod;
+
+	uint16_t reg = (oversampling ? UCOS16:0) | mod;
+	*(&(UCAxMCTLW_L) + uartOffset) = reg;
+	*(&(UCAxMCTLW_H) + uartOffset)= reg>>8;
 #else
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)

@@ -15,7 +15,11 @@ void usci_isr_install(){}
 #define USCI_UART_UCTXIFG USCI_UCTXIFG
 #endif
 
-#define USCI_A1_OFFSET (__MSP430_BASEADDRESS_USCI_A1__ - __MSP430_BASEADDRESS_USCI_A0__)
+#if defined(__MSP430_HAS_EUSCI_A0__) && defined(__MSP430_HAS_EUSCI_A1__)
+#define XUSCI_A1_OFFSET (__MSP430_BASEADDRESS_EUSCI_A1__ - __MSP430_BASEADDRESS_EUSCI_A0__)
+#else
+#define XUSCI_A1_OFFSET (__MSP430_BASEADDRESS_USCI_A1__ - __MSP430_BASEADDRESS_USCI_A0__)
+#endif
 
 extern CHardwareSerial *Serial;
 #ifdef SERIAL1_AVAILABLE
@@ -32,14 +36,14 @@ void USCIA0_ISR(void)
 	}
 }
 
-#ifdef __MSP430_HAS_USCI_A1__ 
+#if defined( __MSP430_HAS_USCI_A1__ ) || defined(__MSP430_HAS_EUSCI_A1__)
 __attribute__((interrupt(USCI_A1_VECTOR)))
 void USCIA1_ISR(void)
 {
   switch ( UCA1IV ) 
   {
-    case USCI_UART_UCRXIFG: uart_rx_isr(0x40); break;
-    case USCI_UART_UCTXIFG: uart_tx_isr(0x40); break;
+    case USCI_UART_UCRXIFG: uart_rx_isr(XUSCI_A1_OFFSET); break;
+    case USCI_UART_UCTXIFG: uart_tx_isr(XUSCI_A1_OFFSET); break;
   }  
 }
 #endif
