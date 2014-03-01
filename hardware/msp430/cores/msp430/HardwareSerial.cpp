@@ -37,7 +37,7 @@
 #include "wiring_private.h"
 #include "usci_isr_handler.h"
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 
 #include "HardwareSerial.h"
 
@@ -136,7 +136,7 @@ void HardwareSerial::begin(unsigned long baud)
 	*(&(UCAxCTL1) + uartOffset) = UCSSEL_2;                                // SMCLK
 	*(&(UCAxCTL0) + uartOffset) = 0;
 	*(&(UCAxABCTL) + uartOffset) = 0;
-#if defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
 		divider >>=4;
@@ -160,7 +160,7 @@ void HardwareSerial::begin(unsigned long baud)
 	*(&(UCAxMCTL) + uartOffset) = (unsigned char)(oversampling ? UCOS16:0) | mod;
 #endif	
 	*(&(UCAxCTL1) + uartOffset) &= ~UCSWRST;
-#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 	*(&(UCAxIE) + uartOffset) |= UCRXIE;
 #else
 	*(&(UC0IE) + uartOffset) |= UCA0RXIE;
@@ -218,7 +218,7 @@ size_t HardwareSerial::write(uint8_t c)
 	_tx_buffer->buffer[_tx_buffer->head] = c;
 	_tx_buffer->head = i;
 
-#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 	*(&(UCAxIE) + uartOffset) |= UCTXIE;
 #else
 	*(&(UC0IE) + uartOffset) |= UCA0TXIE;
@@ -253,7 +253,7 @@ void uart_tx_isr(uint8_t offset)
 #endif
 	if (tx_buffer_ptr->head == tx_buffer_ptr->tail) {
 		// Buffer empty, so disable interrupts
-#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
+#if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 		*(&(UCAxIE) + offset) &= ~UCTXIE;
 		*(&(UCAxIFG) + offset) |= UCTXIFG;    // Set Flag again
 #else

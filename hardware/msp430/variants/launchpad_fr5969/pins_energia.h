@@ -54,9 +54,15 @@ static const uint8_t TWISCL  = 32;  /* P1.7 */
 #if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 static const uint8_t DEBUG_UARTRXD = 22;  /* Receive  Data (RXD) at P2.1 */
 static const uint8_t DEBUG_UARTTXD = 21;  /* Transmit Data (TXD) at P2.0 */
+static const uint8_t AUX_UARTRXD = 3;  /* Receive  Data (RXD) at P4.5 */
+static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION1 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
+#define AUX_UARTRXD_SET_MODE (PORT_SELECTION1 | INPUT)
+#define AUX_UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
 #define DEBUG_UART_MODULE_OFFSET 0x00
+#define AUX_UART_MODULE_OFFSET 0x20
+#define SERIAL1_AVAILABLE 1
 #endif
 
 
@@ -88,9 +94,9 @@ static const uint8_t A15 = 7;  /* 7 - P3.3 */
                                           +---\/---+
                                    VCC0  1|        |20  GND
                             (A10)  P4.2  2|        |19  P1.2            (A2) (PWM)
-(PWM)                              P2.6  3|        |18  P3.0            (A12)(PWM)
-(PWM)  (UCA1RXD -> Serial1)        P2.5  4|        |17  TEST
-       (UCA1TXD -> Serial1) (A11)  P4.3  5|        |16  RST
+(PWM) (UCA1RXD -> Serial1)         P2.6  3|        |18  P3.0            (A12)(PWM)
+(PWM) (UCA1TXD -> Serial1)         P2.5  4|        |17  TEST
+                            (A11)  P4.3  5|        |16  RST
 (PWM)                              P2.4  6|        |15  P1.6 (SDA) (MOSI)    (PWM)
 (PWM)                              P2.2  7|        |14  P1.7 (SCL) (MISO)    (PWM)
 (PWM)                              P3.4  8|        |13  P1.5            (A5) (PWM)
