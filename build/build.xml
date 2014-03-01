@@ -430,15 +430,15 @@
 
   <target name="linux64-build" depends="linux-build, check.deps.linux64" description="Build linux (64-bit) version">
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
-    <exec executable="tar" dir="linux/work/hardware">
+    <exec executable="tar" dir="linux/work/hardware/tools">
       <arg value="-xjf"/>
-      <arg value="${user.dir}/msp430_tools_linux64.tar.bz2"/>
+      <arg value="${user.dir}/linux/msp430_tools_linux64.tar.bz2"/>
     </exec>
 
     <!-- Unzip lm4f tools -->
-    <exec executable="tar" dir="linux/work/hardware">
+    <exec executable="tar" dir="linux/work/hardware/tools">
       <arg value="-xjf"/>
-      <arg value="${user.dir}/arm_tools_linux64.tar.bz2"/>
+      <arg value="${user.dir}/linux/arm_tools_linux64.tar.bz2"/>
     </exec>
   </target> 
   
