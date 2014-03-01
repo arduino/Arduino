@@ -111,7 +111,8 @@ void serialEventRun(void)
 
 void HardwareSerial::begin(unsigned long baud)
 {
-	unsigned int mod, divider;
+	unsigned int mod;
+	unsigned long divider;
 	unsigned char oversampling;
 	
 	/* Calling this dummy function prevents the linker
