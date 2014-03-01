@@ -17,7 +17,7 @@
 // See Screen_HX8353E.h and ReadMe.txt for references
 //
 // Library header
-#include "screen_HX8353E.h"
+#include "Screen_HX8353E.h"
 ///
 #define HX8353E_WIDTH  128
 #define HX8353E_HEIGHT 128

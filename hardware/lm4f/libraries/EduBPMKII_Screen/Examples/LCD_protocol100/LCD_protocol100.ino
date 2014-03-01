@@ -50,7 +50,7 @@
 Screen_ILI9225B myScreen;
 
 #elif defined(HX8353E)
-#include "screen_HX8353E.h"
+#include "Screen_HX8353E.h"
 Screen_HX8353E myScreen;
 
 #elif defined(W32)
