@@ -7,8 +7,7 @@
 #define USING_MSP430F5529_LAUNCHPAD
 //#define USING_TIVA_C_LAUNCHPAD
 
-//-----For now, analog pin definitions are different
-//----between MSP430 & Tiva LaunchPads
+
 
 
 // Core library for code-sense
