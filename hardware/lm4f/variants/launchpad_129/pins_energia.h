@@ -168,7 +168,9 @@ static const uint8_t PB_1 = 95; // unrouted
 // energia pin definition end
 
 #define D1_LED         PN_1
+#define RED_LED        PN_1
 #define D2_LED         PN_0
+#define GREEN_LED      PN_0
 #define D3_LED         PF_4
 #define D4_LED         PF_0
 
