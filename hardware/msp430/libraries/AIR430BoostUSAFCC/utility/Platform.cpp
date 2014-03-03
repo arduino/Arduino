@@ -45,6 +45,8 @@ void A110x2500SpiInit()
    */
    #if (F_CPU == 1000000)
    SPI.setClockDivider(SPI_CLOCK_DIV1); //1 MHz SPI Clock  
+   #elif (F_CPU == 8000000)
+   SPI.setClockDivider(SPI_CLOCK_DIV1); //8 MHz SPI Clock
    #elif (F_CPU == 16000000)
    SPI.setClockDivider(SPI_CLOCK_DIV2); //8 MHz SPI Clock
    #elif (F_CPU == 24000000 || F_CPU == 25000000)   
