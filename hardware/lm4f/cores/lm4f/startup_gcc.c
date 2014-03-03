@@ -79,7 +79,6 @@ __attribute__((weak)) void UARTIntHandler7(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
 __attribute__((weak)) void Timer5IntHandler(void) {}
-__attribute__((weak)) void ServoIntHandler(void) {}
 
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
@@ -135,9 +134,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Timer 0 subtimer B
     IntDefaultHandler,                      // Timer 1 subtimer A
     IntDefaultHandler,                      // Timer 1 subtimer B
-
-//--Changed from IntDefaultHandler for Servo Support
-    ServoIntHandler,                        // Timer 2 subtimer A
+    IntDefaultHandler,                      // Timer 2 subtimer A
     IntDefaultHandler,                      // Timer 2 subtimer B
     IntDefaultHandler,                      // Analog Comparator 0
     IntDefaultHandler,                      // Analog Comparator 1
@@ -462,7 +459,9 @@ extern int _getpid ( void )
     return -1 ;
 }
 
+/*
 extern void _exit (void)
 {
 
 }
+*/
