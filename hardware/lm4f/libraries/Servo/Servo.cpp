@@ -60,6 +60,7 @@ static void initServo(void) {
 	// Enable processor interrupts.
 	ROM_IntMasterEnable();
 
+	TimerIntRegister(SERVO_TIMER, SERVO_TIMER_A, ServoIntHandler);
 	// Configure the TIMER
 	ROM_TimerConfigure(SERVO_TIMER, SERVO_TIME_CFG);
 
