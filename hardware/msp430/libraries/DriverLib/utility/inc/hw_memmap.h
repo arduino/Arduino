@@ -45,7 +45,7 @@
 // Include device specific header file
 //
 //*****************************************************************************
-#include <msp430.h>
+#include "msp430fr5969_modified.h"
 
 #if defined(__IAR_SYSTEMS_ICC__)
 #include "../deprecated/IAR/msp430fr5xx_6xxgeneric.h"
