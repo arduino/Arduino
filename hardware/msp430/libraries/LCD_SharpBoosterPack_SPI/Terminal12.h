@@ -2,7 +2,7 @@
 //  Terminal12.h
 //  Font library
 //  ----------------------------------
-//  Developed with embedXcode
+//  Developed with embedXcode http://embedXcode.weebly.com
 //
 //  Project LCD BoosterPack
 //  Created by Rei VILO on 26/05/12
