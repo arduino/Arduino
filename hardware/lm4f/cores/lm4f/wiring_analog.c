@@ -125,7 +125,12 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
 
         if (port == NOT_A_PORT) return; 	// pin on timer?
 
+#ifdef __TM4C1294NCPDT__
+        uint32_t periodPWM = F_CPU/freq;
+#else
         uint32_t periodPWM = SysCtlClockGet()/freq;
+#endif
+
 
         enableTimerPeriph(offset);
         ROM_GPIOPinConfigure(timerToPinConfig(timer));
