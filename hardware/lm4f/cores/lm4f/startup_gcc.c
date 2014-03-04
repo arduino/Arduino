@@ -350,7 +350,7 @@ void (* const g_pfnVectors[])(void) =
     UARTIntHandler7,                        // UART7 Rx and Tx
     IntDefaultHandler,                      // I2C2 Master and Slave
     IntDefaultHandler,                      // I2C3 Master and Slave
-    IntDefaultHandler,                      // Timer 4 subtimer A
+    ToneIntHandler,                         // Timer 4 subtimer A
     IntDefaultHandler,                      // Timer 4 subtimer B
     Timer5IntHandler,                       // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
