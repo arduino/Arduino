@@ -1,15 +1,17 @@
 //
-// Sharp BoosterPackLCD SPI
-// Example for library for Sharp BoosterPack LCD with hardware SPI
+//  Sharp BoosterPackLCD SPI
+//  Example for library for Sharp BoosterPack LCD with hardware SPI
 //
 //
-// author:  Stefan Schauer
-// date:    Jan 29, 2014
-// version:	1.00
+//  Author :  Stefan Schauer
+//  Date   :  Jan 29, 2014
+//  Version:  1.00
+//  File   :  LCD_SharpBoosterPack_SPI_main.c
 //
-// file:    LCD_SharpBoosterPack_SPI_main.cpp
-//
-// see	ReadMe.txt for references
+//  Based on the LCD5110 Library
+//  Created by Rei VILO on 28/05/12
+//  Copyright (c) 2012 http://embeddedcomputing.weebly.com
+//  Licence CC = BY SA NC
 //
 
 #include <msp430.h>
@@ -56,10 +58,10 @@ static void SendToggleVCOMCommand(void);
 	
 LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI() {
     LCD_SharpBoosterPack_SPI(
-				 P_CS,    // Chip Select
+                 P_CS,    // Chip Select
                  P_VCC,   // Vcc display
                  P_DISP   // DISP
-	);
+    );
 }
 
 
@@ -85,8 +87,8 @@ void LCD_SharpBoosterPack_SPI::begin() {
     digitalWrite(_pinVCC, HIGH);
     digitalWrite(_pinDISP, HIGH);
     
-	TA0_enableVCOMToggle();
-	
+    TA0_enableVCOMToggle();
+    
     clear();
     _font = 0;
 }
@@ -96,7 +98,7 @@ String LCD_SharpBoosterPack_SPI::WhoAmI() {
 }
 
 void LCD_SharpBoosterPack_SPI::clear() {
-	
+  
   unsigned char command = SHARP_LCD_CMD_CLEAR_SCREEN;
   
   // set flag to indicate command transmit is running
@@ -144,22 +146,22 @@ void LCD_SharpBoosterPack_SPI::text(uint8_t x, uint8_t y, String s) {
     if (_font==0) {
         for (j=0; j<s.length(); j++) {
             for (i=0; i<5; i++){ 
-				for (k=7; k>=0; k--) setXY(x+offset, y+k, Terminal6x8[s.charAt(j)-' '][i]&(1<<k));
-				offset += 1;
-			}
-			offset += 1;  // spacing
+                for (k=7; k>=0; k--) setXY(x+offset, y+k, Terminal6x8[s.charAt(j)-' '][i]&(1<<k));
+                offset += 1;
+            }
+            offset += 1;  // spacing
         }
     }
     else if (_font==1) {
         for (j=0; j<s.length(); j++) {
             for (i=0; i<11; i++){
-				for (k=7; k>=0; k--){ 
-					setXY(x+offset, y+k,   Terminal11x16[s.charAt(j)-' '][2*i]&(1<<k));
-					setXY(x+offset, y+k+8, Terminal11x16[s.charAt(j)-' '][2*i+1]&(1<<k));
-				}
-				offset += 1;
-			}
-			offset += 1;  // spacing
+                for (k=7; k>=0; k--){ 
+                    setXY(x+offset, y+k,   Terminal11x16[s.charAt(j)-' '][2*i]&(1<<k));
+                    setXY(x+offset, y+k+8, Terminal11x16[s.charAt(j)-' '][2*i+1]&(1<<k));
+                }
+                offset += 1;
+            }
+            offset += 1;  // spacing
         }
     }
 }
@@ -177,14 +179,14 @@ uint8_t reverse(uint8_t x)
 
 void LCD_SharpBoosterPack_SPI::flush (void)
 {
-	unsigned char *pucData = &DisplayBuffer[0][0];
+    unsigned char *pucData = &DisplayBuffer[0][0];
     long xi =0;
     long xj = 0;
     //image update mode(1X000000b)
     unsigned char command = SHARP_LCD_CMD_WRITE_LINE;
 
     // set flag to indicate command transmit is running
-	flagSendToggleVCOMCommand |= SHARP_SEND_COMMAND_RUNNING;
+    flagSendToggleVCOMCommand |= SHARP_SEND_COMMAND_RUNNING;
     //COM inversion bit
     command |= VCOMbit;
     // Set P2.4 High for CS
@@ -193,11 +195,11 @@ void LCD_SharpBoosterPack_SPI::flush (void)
     SPI.transfer((char)command);
     for(xj=0; xj<LCD_VERTICAL_MAX; xj++)
     {
-		SPI.transfer((char)reverse(xj + 1));
+        SPI.transfer((char)reverse(xj + 1));
 
         for(xi=0; xi<(LCD_HORIZONTAL_MAX>>3); xi++)
         {
-			SPI.transfer((char)*(pucData++));
+            SPI.transfer((char)*(pucData++));
         }
         SPI.transfer(SHARP_LCD_TRAILER_BYTE);
     }
@@ -211,34 +213,33 @@ void LCD_SharpBoosterPack_SPI::flush (void)
     // clear flag to indicate command transmit is free
     flagSendToggleVCOMCommand &= ~SHARP_SEND_COMMAND_RUNNING;  
     SendToggleVCOMCommand(); // send toggle if required
-	
 }
 
 static void SendToggleVCOMCommand(void)
 {
     if(!(flagSendToggleVCOMCommand & SHARP_REQUEST_TOGGLE_VCOM)){ // no request pending ?
-		VCOMbit ^= SHARP_VCOM_TOGGLE_BIT;                 // Toggle VCOM Bit
-	}
+        VCOMbit ^= SHARP_VCOM_TOGGLE_BIT;                 // Toggle VCOM Bit
+    }
 
     if(flagSendToggleVCOMCommand & SHARP_SEND_COMMAND_RUNNING){
-	    // set request flag
-		flagSendToggleVCOMCommand |= SHARP_REQUEST_TOGGLE_VCOM;
+        // set request flag
+        flagSendToggleVCOMCommand |= SHARP_REQUEST_TOGGLE_VCOM;
     }else{  // if no communication to LCD -> send toggle sequence now
         unsigned char command = SHARP_LCD_CMD_CHANGE_VCOM;
         command |= VCOMbit;                    //COM inversion bit
 
-		// Set P2.4 High for CS
-		digitalWrite(_pinChipSelect, HIGH);
+        // Set P2.4 High for CS
+        digitalWrite(_pinChipSelect, HIGH);
 
         SPI.transfer((char)command);
         SPI.transfer((char)SHARP_LCD_TRAILER_BYTE);
 
         // Wait for last byte to be sent, then drop SCS
         __delay_cycles(100);
-		// Set P2.4 High for CS
-		digitalWrite(_pinChipSelect, LOW);
-		// clear request flag
-		flagSendToggleVCOMCommand &= ~SHARP_REQUEST_TOGGLE_VCOM;
+        // Set P2.4 High for CS
+        digitalWrite(_pinChipSelect, LOW);
+        // clear request flag
+        flagSendToggleVCOMCommand &= ~SHARP_REQUEST_TOGGLE_VCOM;
     }
 }
 
@@ -247,16 +248,16 @@ static void SendToggleVCOMCommand(void)
 void LCD_SharpBoosterPack_SPI::TA0_enableVCOMToggle()
 {
     // generate Int. each 4096*8*32768Hz = 1 sec
-//	TA0CTL = TASSEL__ACLK | ID__8 | TACLR | MC__UP;
-	TA0CTL = TASSEL_1 | ID_3 | TACLR | MC_1;
+//  TA0CTL = TASSEL__ACLK | ID__8 | TACLR | MC__UP;
+    TA0CTL = TASSEL_1 | ID_3 | TACLR | MC_1;
     TA0CCTL0 = CCIE;
-	TA0CCR0 = 4096;
+    TA0CCR0 = 4096;
 }
 
 
 void LCD_SharpBoosterPack_SPI::TA0_turnOff()
 {
-	TA0CTL = 0;
+    TA0CTL = 0;
     TA0CCTL0 = 0;
 }
 

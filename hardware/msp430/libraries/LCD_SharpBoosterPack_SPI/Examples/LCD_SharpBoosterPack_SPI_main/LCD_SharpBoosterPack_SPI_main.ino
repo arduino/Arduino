@@ -1,15 +1,17 @@
 //
-// Sharp BoosterPackLCD SPI
-// Example for library for Sharp BoosterPack LCD with hardware SPI
+//  Sharp BoosterPackLCD SPI
+//  Example for library for Sharp BoosterPack LCD with hardware SPI
 //
 //
-// author:  Stefan Schauer
-// date:    Jan 29, 2014
-// version:	1.00
+//  Author :  Stefan Schauer
+//  Date   :  Jan 29, 2014
+//  Version:  1.00
+//  File   :  LCD_SharpBoosterPack_SPI_main.ino
 //
-// file:    LCD_SharpBoosterPack_SPI_main.ino
-//
-// see	ReadMe.txt for references
+//  Based on the LCD5110 Library
+//  Created by Rei VILO on 28/05/12
+//  Copyright (c) 2012 http://embeddedcomputing.weebly.com
+//  Licence CC = BY SA NC
 //
 
 #include "Energia.h"
