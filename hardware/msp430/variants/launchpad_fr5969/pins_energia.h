@@ -67,22 +67,22 @@ static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
 
 
 /* Analog pins */
-static const uint8_t A0  = 1;  /* 1 - P1.0 */
-static const uint8_t A1  = 2;  /* 2 - P1.1 */
-static const uint8_t A2  = 3;  /* 2 - P1.3 */
-static const uint8_t A3  = 9;  /* 9 - P1.3 */
-static const uint8_t A4  = 10; /* 10 - P1.4 */
-static const uint8_t A5  = 11; /* 11 - P1.5 */
-static const uint8_t A6  = 39; /* 39 - P2.3 */
-static const uint8_t A7  = 40; /* 40 - P2.4 */
-static const uint8_t A8  = 16; /* 16 - P4.0 */
-static const uint8_t A9  = 17; /* 17 - P4.1 */
-static const uint8_t A10 = 18; /* 18 - P4.2 */
-static const uint8_t A11 = 19; /* 19 - P4.3 */
-static const uint8_t A12 = 4;  /* 4 - P3.0 */
-static const uint8_t A13 = 5;  /* 5 - P3.1 */
-static const uint8_t A14 = 6;  /* 6 - P3.2 */
-static const uint8_t A15 = 7;  /* 7 - P3.3 */
+static const uint8_t A0  = 0;
+static const uint8_t A1  = 1;
+static const uint8_t A2  = 2;
+static const uint8_t A3  = 3;
+static const uint8_t A4  = 4;
+static const uint8_t A5  = 5;
+static const uint8_t A6  = 6;
+static const uint8_t A7  = 7;
+static const uint8_t A8  = 8;
+static const uint8_t A9  = 9;
+static const uint8_t A10 = 10;
+static const uint8_t A11 = 11;
+static const uint8_t A12 = 12;
+static const uint8_t A13 = 13;
+static const uint8_t A14 = 14;
+static const uint8_t A15 = 15;
 
 
 /* Layout of the 2 - 10 pin headers.
