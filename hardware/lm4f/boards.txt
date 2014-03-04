@@ -19,14 +19,14 @@ lptm4c1230c3pm.ldscript=lm4fcpp_blizzard.ld
 lptm4c1230c3pm.upload.maximum_ram_size=32768
 
 ##############################################################
-dktm4c129.name=DK-TM4C129X w/ tm4c129 (120MHz)
-dktm4c129.upload.maximum_size=262144
-dktm4c129.build.mcu=cortex-m4
-dktm4c129.build.f_cpu=120000000L
-dktm4c129.build.core=lm4f
-dktm4c129.build.variant=dktm4c129
-dktm4c129.ldscript=lm4fcpp_snowflake.ld
-dktm4c129.upload.maximum_ram_size=32768
+#dktm4c129.name=DK-TM4C129X w/ tm4c129 (120MHz)
+#dktm4c129.upload.maximum_size=262144
+#dktm4c129.build.mcu=cortex-m4
+#dktm4c129.build.f_cpu=120000000L
+#dktm4c129.build.core=lm4f
+#dktm4c129.build.variant=dktm4c129
+#dktm4c129.ldscript=lm4fcpp_snowflake.ld
+#dktm4c129.upload.maximum_ram_size=32768
 
 ##############################################################
 lptm4c1294ncpdt.name=LaunchPad (Tiva C) w/ tm4c129 (120MHz)
