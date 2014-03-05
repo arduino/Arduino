@@ -123,11 +123,14 @@ SysCtrlRegs.PCLKCR0.bit.I2CAENCLK = 1;
     EDIS;
 
 
-I2caRegs.I2CMDR.bit.IRS = 0;                     // Reset I2C module 
-I2caRegs.I2CPSC.all = (SYSCLKOUT / MODCLK )- 1;  // Setting the prescalar value
-I2caRegs.I2CCLKL = CLKL;                         // CLOCK LOW
-I2caRegs.I2CCLKH = CLKH;                         // CLOCK HIGH
-I2caRegs.I2CMDR.bit.IRS = 1;                     // Set I2C module
+  I2caRegs.I2CMDR.bit.IRS = 0;                     // Reset I2C module 
+  I2caRegs.I2CPSC.all = (SYSCLKOUT / MODCLK )- 1;  // Setting the prescalar value
+  I2caRegs.I2CCLKL = CLKL;                         // CLOCK LOW
+  I2caRegs.I2CCLKH = CLKH;                         // CLOCK HIGH
+  I2caRegs.I2CMDR.bit.IRS = 1;                     // Set I2C module  
+
+   I2caRegs.I2CFFTX.all = 0x6000;   // Enable FIFO mode and TXFIFO
+   I2caRegs.I2CFFRX.all = 0x2040;   // Enable RXFIFO, clear RXFFINT,
 
 }
 
@@ -183,7 +186,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 	twi_slarw = 0;                        // bit to indicate read
 	twi_slarw |= address << 1;
 	twi_state = TWI_SND_START;            // send start condition
-	I2caRegs.I2CMDR.all = 0x0620;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
+	I2caRegs.I2CMDR.all = 0x2620;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
 
 	// should the control word be 0X0620 or 0x2620 ??
 
@@ -279,56 +282,34 @@ while(I2caRegs.I2CSTR.bit.BB == 1); // Wait until the I2C bus is not busy
 I2caRegs.I2CSAR = address;          // Slave address
 I2caRegs.I2CCNT = length;           // count of number of bytes to be written to slave
 
-// is the address copied from I2CSAR TO I2CDXR AND THEN TO I2CXTR ?? or should we directly copy the address to I2CDXR ??
+for(i = 0; i < length; ++i){
+    if(I2caRegs.I2CFFTX.bit.TXFFST < 4)
+    {
+	    I2caRegs.I2CDXR = twi_masterBuffer[i];
+    }else{
+        break;
+    }
+}
+//twi_slarw = 1;                        // bit to indicate write
+//twi_slarw |= address << 1;
+//twi_state = TWI_SND_START;            // send start condition
+I2caRegs.I2CMDR.all = sendStop ? 0x6E20 : 0x6620;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
 
-twi_slarw = 1;                        // bit to indicate write
-twi_slarw |= address << 1;
-twi_state = TWI_SND_START;            // send start condition
-I2caRegs.I2CMDR.all = 0x0E20;         // issue a START command (no stop) [ configure as Master transmitter to transmit slave address]
+for(; i < length;){
+    if(I2caRegs.I2CFFTX.bit.TXFFST < 4)
+    {
+	    I2caRegs.I2CDXR = twi_masterBuffer[i];
+        i++;
+    }else{
+        break;
+    }
+}
 
 // should the control word be 0X0620 or 0x2620 ?? 
 
 while(I2caRegs.I2CSTR.bit.XRDY == 0); // Wait until the transmit register is ready
 
-I2caRegs.I2CDXR = twi_slarw; // Put the control byte [ address + r/w bit] into transmit register
 
-while(I2caRegs.I2CSTR.bit.ARDY) 
-  { // wait for the transmission to finish
-    if(I2caRegs.I2CSTR.bit.NACK == 1) 
-     { // if we get a NACK from slave during this transmission
-       I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
-       twi_error= TWI_ERROR_ADDR_NACK;
-       //return twi_error;
-       break;
-     }
-  }
-
-if(twi_error==TWI_ERROR_ADDR_NACK )
-    return twi_error;
-
- 
-//return twi_error;
- 
-//} while(I2caRegs.I2CSTR.bit.NACK == 1);
-
-//********************* Configuring the master in master-transmitter mode *************************************************
-
-I2caRegs.I2CMDR.bit.FDF = 1; // support free data format
-
-while ( i < length)
-{
-while(I2caRegs.I2CSTR.bit.XRDY != 1);
-I2caRegs.I2CDXR= twi_masterBuffer[i];
-while(I2caRegs.I2CSTR.bit.ARDY==0);
-   // wait for the transmission to finish
-    if(I2caRegs.I2CSTR.bit.NACK == 1) 
-     { // if we get a NACK from slave during this transmission
-       I2caRegs.I2CMDR.bit.STP = 1; // issue a STOP
-       twi_error= TWI_ERROR_DATA_NACK;
-       break;
-     }
-  i++;
-}
 
 // automaticall STOP condition issued when i=length because STP= 1
 

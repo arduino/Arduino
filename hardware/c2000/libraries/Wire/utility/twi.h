@@ -32,7 +32,7 @@
 #ifdef __cplusplus
 typedef unsigned char _Bool;
 #endif
-#include <F2802x_device.h>
+#include "F2802x_device.h"
 #include <inttypes.h>
 
 #ifndef TWI_FREQ
