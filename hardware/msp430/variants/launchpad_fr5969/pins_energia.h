@@ -67,24 +67,6 @@ static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
 
 
 /* Analog pins */
-static const uint8_t A0  = 0;
-static const uint8_t A1  = 1;
-static const uint8_t A2  = 2;
-static const uint8_t A3  = 3;
-static const uint8_t A4  = 4;
-static const uint8_t A5  = 5;
-static const uint8_t A6  = 6;
-static const uint8_t A7  = 7;
-static const uint8_t A8  = 8;
-static const uint8_t A9  = 9;
-static const uint8_t A10 = 10;
-static const uint8_t A11 = 11;
-static const uint8_t A12 = 12;
-static const uint8_t A13 = 13;
-static const uint8_t A14 = 14;
-static const uint8_t A15 = 15;
-
-//-------------------------------------------
 
 static const uint8_t A0  = 128 + 0; // Not available on BoosterPack header
 static const uint8_t A1  = 128 + 1; // Not available on BoosterPack header
