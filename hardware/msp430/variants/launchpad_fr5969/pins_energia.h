@@ -67,23 +67,25 @@ static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
 
 
 /* Analog pins */
-static const uint8_t A0  = 0;
-static const uint8_t A1  = 1;
-static const uint8_t A2  = 2;
-static const uint8_t A3  = 3;
-static const uint8_t A4  = 4;
-static const uint8_t A5  = 5;
-static const uint8_t A6  = 6;
-static const uint8_t A7  = 7;
-static const uint8_t A8  = 8;
-static const uint8_t A9  = 9;
-static const uint8_t A10 = 10;
-static const uint8_t A11 = 11;
-static const uint8_t A12 = 12;
-static const uint8_t A13 = 13;
-static const uint8_t A14 = 14;
-static const uint8_t A15 = 15;
 
+static const uint8_t A0  = 128 + 0; // Not available on BoosterPack header
+static const uint8_t A1  = 128 + 1; // Not available on BoosterPack header
+static const uint8_t A2  = 19;
+static const uint8_t A3  = 11;
+static const uint8_t A4  = 12;
+static const uint8_t A5  = 13;
+static const uint8_t A6  = 128 + 6; // Not available on BoosterPack header
+static const uint8_t A7  = 128 + 7; // Not available on BoosterPack header
+static const uint8_t A8  = 23; // Available, but not on the 20-pin BP header
+static const uint8_t A9  = 24; // Available, but not on the 20-pin BP header
+static const uint8_t A10 = 2; 	
+static const uint8_t A11  = 5;
+static const uint8_t A12  = 18; 
+static const uint8_t A13  = 128 + 13;  // Not available on BoosterPack header
+static const uint8_t A14  = 128 + 14; // Not available on BoosterPack header
+static const uint8_t A15  = 128 + 15; // Not available on BoosterPack header
+
+//-------------------------------------------
 
 /* Layout of the 2 - 10 pin headers.
 
@@ -391,6 +393,62 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(1),       /* 30 - PJ.1 */
 	BV(2),       /* 31 - PJ.2 */
 	BV(3),       /* 32 - PJ.3 */
+};
+
+
+                                         ----+
+                                                   |21  DebugUART TX  (P2.0) (PWM)
+                     J13 eZ-FET Connector          |22  DebugUART RX  (P2.1) (PWM)
+                                                   |23  DebugUART CTS (P4.0) (A8)
+                                                   |24  DebugUART RTS (P4.1) (A9)
+                                               ----+
+                                               ----+
+                                                   |25  LED1       (P4.6)
+                     Extra LED's and Switches      |26  LED2       (P1.0)
+                                                   |27  PUSH1      (P4.5)
+                                                   |28  PUSH2      (P1.1)
+                                               ----+
+                                               ----+
+                                                   |29  TDO        (PJ.0)
+                     JTAG Connector J3             |30  TDI        (PJ.1)
+                                                   |31  TMS        (PJ.2)
+                                                   |32  TCK        (PJ.3)
+										  
+const uint32_t digital_pin_to_analog_in[] = {
+        NOT_ON_ADC,     /*  dummy   */
+        NOT_ON_ADC,     /*  1 - 3.3V*/
+        10,				/*  2 - A10 */
+        NOT_ON_ADC,     /*  3 - P2.6 */
+        NOT_ON_ADC, 	/*  4 - P2.5 */
+        11,      		/*  5 - A11 */
+        NOT_ON_ADC,   	/*  6 - P2.4 */
+        NOT_ON_ADC,   	/*  7 - P2.2 */
+        NOT_ON_ADC, 	/*  8 - P3.4 */
+        NOT_ON_ADC, 	/*  9 - P3.5 */
+        NOT_ON_ADC, 	/*  10 - P3.6 */
+        3, 				/*  11 - A3 */
+        4, 				/*  12 - A4 */
+        5, 				/*  13 - A5 */
+        NOT_ON_ADC,     /*  14 - P1.7 */
+        NOT_ON_ADC,     /*  15 - P1.6 */
+        NOT_ON_ADC, 	/*  16 - RST */
+        NOT_ON_ADC,     /*  17 - TEST */
+        12,		 		/*  18 - A12 */
+        2,     			/*  19 - A2 */
+        NOT_ON_ADC, 	/*  20 - GND */
+        NOT_ON_ADC, 	/*  21 - P2.0 */
+		NOT_ON_ADC, 	/*  22 - P2.1 */
+        8,    			/*  23 - A8 */
+        9,    			/*  24 - A9 */
+        NOT_ON_ADC,    	/*  25 - P4.6 */
+        NOT_ON_ADC,    	/*  26 - P1.0 */
+        NOT_ON_ADC,    	/*  27 - P4.5 */
+        NOT_ON_ADC, 	/*  28 - P1.1 */
+        NOT_ON_ADC, 	/*  29 - PJ.0 */
+        NOT_ON_ADC,     /*  30 - PJ.1 */
+        NOT_ON_ADC, 	/*  31 - PJ.2 */
+        NOT_ON_ADC,     /*  32 - PJ.3 */
+        
 };
 #endif // #ifdef ARDUINO_MAIN
 #endif // #ifndef Pins_Energia_h
