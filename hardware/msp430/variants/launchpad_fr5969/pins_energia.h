@@ -395,25 +395,6 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(3),       /* 32 - PJ.3 */
 };
 
-
-                                         ----+
-                                                   |21  DebugUART TX  (P2.0) (PWM)
-                     J13 eZ-FET Connector          |22  DebugUART RX  (P2.1) (PWM)
-                                                   |23  DebugUART CTS (P4.0) (A8)
-                                                   |24  DebugUART RTS (P4.1) (A9)
-                                               ----+
-                                               ----+
-                                                   |25  LED1       (P4.6)
-                     Extra LED's and Switches      |26  LED2       (P1.0)
-                                                   |27  PUSH1      (P4.5)
-                                                   |28  PUSH2      (P1.1)
-                                               ----+
-                                               ----+
-                                                   |29  TDO        (PJ.0)
-                     JTAG Connector J3             |30  TDI        (PJ.1)
-                                                   |31  TMS        (PJ.2)
-                                                   |32  TCK        (PJ.3)
-										  
 const uint32_t digital_pin_to_analog_in[] = {
         NOT_ON_ADC,     /*  dummy   */
         NOT_ON_ADC,     /*  1 - 3.3V*/

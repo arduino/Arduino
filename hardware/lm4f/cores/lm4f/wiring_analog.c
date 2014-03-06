@@ -93,7 +93,7 @@ void enableTimerPeriph(uint32_t offset) {
         ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER0 + offset - 4);
     }
     else {
-        ROM_SysCtlPeripheralEnable((SYSCTL_PERIPH_TIMER0 - 1) + (1 << offset));
+        ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0 + offset);
     }
 }
 
