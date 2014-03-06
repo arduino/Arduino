@@ -25,8 +25,8 @@
 // constants won't change. They're used here to 
 // set pin numbers:
 const int joystickSel = 5;     // the number of the joystick select pin
-const int joystickX = A5;       // the number of the joystick X-axis analog
-const int joystickY =  A3;     // the number of the joystick Y-axis analog
+const int joystickX = 2;       // the number of the joystick X-axis analog
+const int joystickY =  26;     // the number of the joystick Y-axis analog
 
 
 // variables will change:

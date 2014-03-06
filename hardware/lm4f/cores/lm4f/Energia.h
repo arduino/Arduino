@@ -5,6 +5,7 @@
 #include <stdbool.h> 
 #include <string.h> 
 #include <math.h>
+#include "itoa.h"
 #include "part.h"
 
 #if defined(__TM4C129XNCZAD__)
