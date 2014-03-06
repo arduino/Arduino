@@ -37,7 +37,10 @@ static void calculatePeriodRemainder(void)
 
 static void initServo(void) {
 
+	/* Work around for clock not yet up in the constructor */
+#ifdef TARGET_IS_BLIZZARD_RB1
 	ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+#endif
 
 	// Initialize global variables
 	ticksPerMicrosecond = 0;
@@ -65,7 +68,7 @@ static void initServo(void) {
 	ROM_TimerConfigure(SERVO_TIMER, SERVO_TIME_CFG);
 
 	// Calculate the number of timer counts/microsecond
-	ticksPerMicrosecond = ROM_SysCtlClockGet() / 1000000;
+	ticksPerMicrosecond = F_CPU / 1000000;
 
 	// Initially load the timer with 20ms interval time
 	ROM_TimerLoadSet(SERVO_TIMER, SERVO_TIMER_A, ticksPerMicrosecond * REFRESH_INTERVAL);

@@ -96,7 +96,7 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
         ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER4);
         ROM_IntMasterEnable();
         ROM_TimerConfigure(TIMER4_BASE, TIMER_CFG_PERIODIC);
-        ROM_TimerLoadSet(TIMER4_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
+        ROM_TimerLoadSet(TIMER4_BASE, TIMER_A, F_CPU/1000);
         ROM_IntEnable(INT_TIMER4A);
         ROM_TimerIntEnable(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
         ROM_TimerEnable(TIMER4_BASE, TIMER_A);

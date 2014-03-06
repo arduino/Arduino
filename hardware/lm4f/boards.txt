@@ -5,7 +5,7 @@ lplm4f120h5qr.build.mcu=cortex-m4
 lplm4f120h5qr.build.f_cpu=80000000L
 lplm4f120h5qr.build.core=lm4f
 lplm4f120h5qr.build.variant=stellarpad
-lplm4f120h5qr.ldscript=lm4fcpp.ld
+lplm4f120h5qr.ldscript=lm4fcpp_blizzard.ld
 lplm4f120h5qr.upload.maximum_ram_size=32768
 
 ##############################################################
@@ -15,8 +15,28 @@ lptm4c1230c3pm.build.mcu=cortex-m4
 lptm4c1230c3pm.build.f_cpu=80000000L
 lptm4c1230c3pm.build.core=lm4f
 lptm4c1230c3pm.build.variant=stellarpad
-lptm4c1230c3pm.ldscript=lm4fcpp.ld
+lptm4c1230c3pm.ldscript=lm4fcpp_blizzard.ld
 lptm4c1230c3pm.upload.maximum_ram_size=32768
+
+##############################################################
+#dktm4c129.name=DK-TM4C129X w/ tm4c129 (120MHz)
+#dktm4c129.upload.maximum_size=262144
+#dktm4c129.build.mcu=cortex-m4
+#dktm4c129.build.f_cpu=120000000L
+#dktm4c129.build.core=lm4f
+#dktm4c129.build.variant=dktm4c129
+#dktm4c129.ldscript=lm4fcpp_snowflake.ld
+#dktm4c129.upload.maximum_ram_size=32768
+
+##############################################################
+lptm4c1294ncpdt.name=LaunchPad (Tiva C) w/ tm4c129 (120MHz)
+lptm4c1294ncpdt.upload.maximum_size=1048576
+lptm4c1294ncpdt.build.mcu=cortex-m4
+lptm4c1294ncpdt.build.f_cpu=120000000L
+lptm4c1294ncpdt.build.core=lm4f
+lptm4c1294ncpdt.build.variant=launchpad_129
+lptm4c1294ncpdt.ldscript=lm4fcpp_snowflake.ld
+lptm4c1294ncpdt.upload.maximum_ram_size=262144
 
 ##############################################################
  

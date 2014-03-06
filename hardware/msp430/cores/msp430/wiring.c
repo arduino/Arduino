@@ -136,7 +136,7 @@ void initClocks(void)
 //    CSCTL0 = 0;                    // Disable Access to CS Registers
 #endif // __MSP430_HAS_CS__
 
-#if defined(__MSP430_HAS_CS__) && defined(__MSP430_HAS_FRAM__)
+#if (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__)) && defined(__MSP430_HAS_FRAM__)
     CSCTL0 = CSKEY;                // Enable Access to CS Registers
   
     CSCTL2 &= ~SELM_7;             // Clear selected Main CLK Source

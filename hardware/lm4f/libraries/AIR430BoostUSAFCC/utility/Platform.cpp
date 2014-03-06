@@ -30,12 +30,12 @@ void A110x2500SpiInit()
 {
   // Setup CSn line.
   pinMode (RF_SPI_CSN, OUTPUT);
-  
-  #if defined( __LM4F120H5QR__ )
+
+#if defined(PART_TM4C1233H6PM) || defined (PART_LM4F120H5QR) || defined (PART_TM4C129XNCZAD) || defined (PART_TM4C1294NCPDT)
   // Select the correct SPI port to interface with AIR Booster Pack.
   SPI.setModule(2);
-  #endif
-  
+#endif
+
   /**
    *  Setup the SPI peripheral and SCLK, MISO, and MOSI lines. This is assumed
    *  to be taken care of by the Energia SPI driver.
@@ -51,6 +51,8 @@ void A110x2500SpiInit()
    SPI.setClockDivider(SPI_CLOCK_DIV4); //6 MHz SPI Clock
    #elif (F_CPU == 80000000)
    SPI.setClockDivider(SPI_CLOCK_DIV16); //5 MHz SPI Clock
+   #elif (F_CPU == 120000000)
+   SPI.setClockDivider(SPI_CLOCK_DIV16); //7.5 MHz SPI Clock
    #else
    #error "Radio SPI clock unable to be set < 10MHz"      
    #endif

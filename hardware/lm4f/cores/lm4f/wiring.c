@@ -35,29 +35,43 @@
 #include "driverlib/sysctl.h"
 #include "driverlib/timer.h"
 
-static unsigned long milliseconds = 0;
+static void (*SysTickCbFuncs[8])(uint32_t ui32TimeMS);
 
+#define SYSTICKMS               (1000 / SYSTICKHZ)
+#define SYSTICKHZ               100
+
+static unsigned long milliseconds = 0;
+#define SYSTICK_INT_PRIORITY    0x80
 void timerInit()
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     //
     //  Run at system clock at 80MHz
     //
-    ROM_SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
+    SysCtlClockSet(SYSCTL_SYSDIV_2_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|
                 SYSCTL_OSC_MAIN);
+#else
+    //
+    //  Run at system clock at 120MHz
+    //
+    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ|SYSCTL_OSC_MAIN|SYSCTL_USE_PLL|SYSCTL_CFG_VCO_480), F_CPU);
+#endif
 
     //
     //  SysTick is used for delay() and delayMicroseconds()
     //
-	ROM_SysTickPeriodSet(0x00FFFFFF);
-    ROM_SysTickEnable();
 
+    ROM_SysTickPeriodSet(F_CPU / SYSTICKHZ);
+    ROM_SysTickEnable();
+    ROM_IntPrioritySet(FAULT_SYSTICK, SYSTICK_INT_PRIORITY);
+    ROM_SysTickIntEnable();
     //
     //Initialize Timer5 to be used as time-tracker since beginning of time
     //
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER5); //not tied to launchpad pin
     ROM_TimerConfigure(TIMER5_BASE, TIMER_CFG_PERIODIC_UP);
 
-    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, ROM_SysCtlClockGet()/1000);
+    ROM_TimerLoadSet(TIMER5_BASE, TIMER_A, F_CPU/1000);
 
     ROM_IntEnable(INT_TIMER5A);
     ROM_TimerIntEnable(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
@@ -70,7 +84,7 @@ void timerInit()
 
 unsigned long micros(void)
 {
-	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / 80);
+	return (milliseconds * 1000) + (HWREG(TIMER5_BASE + TIMER_O_TAV) / (F_CPU/1000000));
 }
 
 unsigned long millis(void)
@@ -78,7 +92,6 @@ unsigned long millis(void)
 	return milliseconds;
 }
 
-/* Delay for the given number of microseconds.  Assumes a 1, 8 or 16 MHz clock. */
 void delayMicroseconds(unsigned int us)
 {
 	volatile unsigned long elapsedTime;
@@ -86,7 +99,7 @@ void delayMicroseconds(unsigned int us)
 	do{
 		elapsedTime = startTime-(HWREG(NVIC_ST_CURRENT) & 0x00FFFFFF);
 	}
-	while(elapsedTime <= us*80);
+	while(elapsedTime <= us * (F_CPU/1000000));
 }
 
 void delay(uint32_t milliseconds)
@@ -99,7 +112,27 @@ void delay(uint32_t milliseconds)
 
 void Timer5IntHandler(void)
 {
-    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 
+    ROM_TimerIntClear(TIMER5_BASE, TIMER_TIMA_TIMEOUT);
 	milliseconds++;
+}
+
+void registerSysTickCb(void (*userFunc)(uint32_t))
+{
+	uint8_t i;
+	for (i=0; i<8; i++) {
+		if(!SysTickCbFuncs[i]) {
+			SysTickCbFuncs[i] = userFunc;
+			break;
+		}
+	}
+}
+
+void SysTickIntHandler(void)
+{
+	uint8_t i;
+	for (i=0; i<8; i++) {
+		if (SysTickCbFuncs[i])
+			SysTickCbFuncs[i](SYSTICKMS);
+	}
 }
