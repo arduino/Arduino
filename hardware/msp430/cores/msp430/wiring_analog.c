@@ -366,12 +366,12 @@ uint16_t analogRead(uint8_t pin)
     ADC12IFGR0 = 0;                         // Clear Flags
     ADC12IER0 |= ADC12IE0;                  // Enable interrupts
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
-	if (pin == TEMPSENSOR) {// if Temp Sensor 
+	if (channel == TEMPSENSOR) {// if Temp Sensor 
       REFCTL0 = (INTERNAL1V2 & REF_MASK);   // Set reference to internal 1.2V
-      ADC12MCTL0 = pin | (INTERNAL1V2 & REFV_MASK); // set channel and reference 
+      ADC12MCTL0 = channel | (INTERNAL1V2 & REFV_MASK); // set channel and reference 
 	} else {
       REFCTL0 = (analog_reference & REF_MASK); // Set reference using masking off the SREF bits. See Energia.h.
-      ADC12MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
+      ADC12MCTL0 = channel | (analog_reference & REFV_MASK); // set channel and reference 
 	}
     if (REFCTL0 & REFON)
 	  while(!(REFCTL0 & REFGENRDY));        // wait till ref generator ready
