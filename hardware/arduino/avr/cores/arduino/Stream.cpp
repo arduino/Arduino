@@ -37,7 +37,6 @@ int Stream::timedPeek()
 {
   int c;
   unsigned long start = millis();
-
   do {
     c = peek();
   } while(c < 0 && millis() - start < _timeout);
