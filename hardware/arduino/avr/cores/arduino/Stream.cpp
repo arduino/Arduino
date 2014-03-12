@@ -29,7 +29,7 @@
 // private method to read stream with timeout
 int Stream::timedRead()
 {
-	peek() < 0 ? -1 : read();
+	timedPeek() < 0 ? -1 : read();
 }
 
 // private method to peek stream with timeout
