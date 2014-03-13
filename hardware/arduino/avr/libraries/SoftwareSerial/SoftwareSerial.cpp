@@ -275,11 +275,13 @@ void SoftwareSerial::recv()
 #endif
 }
 
-void SoftwareSerial::tx_pin_write(uint8_t pin_state)
+void SoftwareSerial::tx_pin_low()
 {
-  if (pin_state == LOW)
-    *_transmitPortRegister &= ~_transmitBitMask;
-  else
+     *_transmitPortRegister &= ~_transmitBitMask;
+}
+
+void SoftwareSerial::tx_pin_high()
+{
     *_transmitPortRegister |= _transmitBitMask;
 }
 
@@ -445,47 +447,33 @@ int SoftwareSerial::available()
 
 size_t SoftwareSerial::write(uint8_t b)
 {
-  if (_tx_delay == 0) {
+  if (_tx_delay == 0) { //is this check really necessary ?
     setWriteError();
     return 0;
   }
 
+  typedef void(SoftwareSerial::*mem_func)();
+  mem_func tx_high_ = _inverse_logic ? &SoftwareSerial::tx_pin_low : &SoftwareSerial::tx_pin_high;
+  mem_func tx_low_ = _inverse_logic ? &SoftwareSerial::tx_pin_high : &SoftwareSerial::tx_pin_low;
+
+  #define tx_low() (this->*tx_low_)() //just to make it more readable
+  #define tx_high() (this->*tx_high_)() //just to make it more readable
+
   uint8_t oldSREG = SREG;
   cli();  // turn off interrupts for a clean txmit
 
+
   // Write the start bit
-  tx_pin_write(_inverse_logic ? HIGH : LOW);
+  tx_low();
   tunedDelay(_tx_delay + XMIT_START_ADJUSTMENT);
 
-  // Write each of the 8 bits
-  if (_inverse_logic)
-  {
-    for (byte mask = 0x01; mask; mask <<= 1)
-    {
-      if (b & mask) // choose bit
-        tx_pin_write(LOW); // send 1
-      else
-        tx_pin_write(HIGH); // send 0
-    
-      tunedDelay(_tx_delay);
-    }
-
-    tx_pin_write(LOW); // restore pin to natural state
+  for (byte mask = 0x01; mask; mask <<= 1) {
+     (b & mask) ? tx_high() : tx_low();
+     tunedDelay(_tx_delay);
   }
-  else
-  {
-    for (byte mask = 0x01; mask; mask <<= 1)
-    {
-      if (b & mask) // choose bit
-        tx_pin_write(HIGH); // send 1
-      else
-        tx_pin_write(LOW); // send 0
-    
-      tunedDelay(_tx_delay);
-    }
 
-    tx_pin_write(HIGH); // restore pin to natural state
-  }
+  tx_high(); // restore pin to natural state
+
 
   SREG = oldSREG; // turn interrupts back on
   tunedDelay(_tx_delay);
