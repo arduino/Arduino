@@ -281,10 +281,7 @@ unsigned char String::concat(const char *cstr)
 
 unsigned char String::concat(char c)
 {
-	char buf[2];
-	buf[0] = c;
-	buf[1] = 0;
-	return concat(buf, 1);
+	return concat(&c, 1);
 }
 
 unsigned char String::concat(unsigned char num)
