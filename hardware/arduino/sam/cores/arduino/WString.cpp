@@ -291,49 +291,49 @@ unsigned char String::concat(unsigned char num)
 {
 	char buf[1 + 3 * sizeof(unsigned char)];
 	itoa(num, buf, 10);
-	return concat(buf, strlen(buf));
+	return concat(buf);
 }
 
 unsigned char String::concat(int num)
 {
 	char buf[2 + 3 * sizeof(int)];
 	itoa(num, buf, 10);
-	return concat(buf, strlen(buf));
+	return concat(buf);
 }
 
 unsigned char String::concat(unsigned int num)
 {
 	char buf[1 + 3 * sizeof(unsigned int)];
 	utoa(num, buf, 10);
-	return concat(buf, strlen(buf));
+	return concat(buf);
 }
 
 unsigned char String::concat(long num)
 {
 	char buf[2 + 3 * sizeof(long)];
 	ltoa(num, buf, 10);
-	return concat(buf, strlen(buf));
+	return concat(buf);
 }
 
 unsigned char String::concat(unsigned long num)
 {
 	char buf[1 + 3 * sizeof(unsigned long)];
 	ultoa(num, buf, 10);
-	return concat(buf, strlen(buf));
+	return concat(buf);
 }
 
 unsigned char String::concat(float num)
 {
 	char buf[20];
 	char* string = dtostrf(num, 4, 2, buf);
-	return concat(string, strlen(string));
+	return concat(string);
 }
 
 unsigned char String::concat(double num)
 {
 	char buf[20];
 	char* string = dtostrf(num, 4, 2, buf);
-	return concat(string, strlen(string));
+	return concat(string);
 }
 
 unsigned char String::concat(const __FlashStringHelper * str)
@@ -362,7 +362,7 @@ StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs)
 StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr)
 {
 	StringSumHelper &a = const_cast<StringSumHelper&>(lhs);
-	if (!cstr || !a.concat(cstr, strlen(cstr))) a.invalidate();
+	if (!cstr || !a.concat(cstr)) a.invalidate();
 	return a;
 }
 
