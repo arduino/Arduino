@@ -58,6 +58,8 @@ extern "C"{
 #define EXTERNAL_NUM_INTERRUPTS 3
 #elif defined(__AVR_ATmega32U4__)
 #define EXTERNAL_NUM_INTERRUPTS 5
+#elif defined(__AVR_ATmega169P__)
+#define EXTERNAL_NUM_INTERRUPTS 1
 #else
 #define EXTERNAL_NUM_INTERRUPTS 2
 #endif

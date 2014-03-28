@@ -130,6 +130,8 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
     #elif defined(MCUCR) && defined(ISC10) && defined(GIMSK) && defined(GIMSK)
       MCUCR = (MCUCR & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
       GIMSK |= (1 << INT1);
+    #elif EXTERNAL_NUM_INTERRUPTS <= 1
+      /* unreachable due to initial "if(interruptNum < EXTERNAL_NUM_INTERRUPTS)" */
     #else
       #warning attachInterrupt may need some more work for this cpu (case 1)
     #endif
@@ -219,6 +221,8 @@ void detachInterrupt(uint8_t interruptNum) {
       GICR &= ~(1 << INT1); // atmega32
     #elif defined(GIMSK) && defined(INT1)
       GIMSK &= ~(1 << INT1);
+    #elif EXTERNAL_NUM_INTERRUPTS <= 1
+      /* unreachable due to initial "if(interruptNum < EXTERNAL_NUM_INTERRUPTS)" */
     #else
       #warning detachInterrupt may need some more work for this cpu (case 1)
     #endif
@@ -311,10 +315,12 @@ ISR(INT0_vect) {
     intFunc[EXTERNAL_INT_0]();
 }
 
+#if EXTERNAL_NUM_INTERRUPTS > 1
 ISR(INT1_vect) {
   if(intFunc[EXTERNAL_INT_1])
     intFunc[EXTERNAL_INT_1]();
 }
+#endif
 
 #if defined(EICRA) && defined(ISC20)
 ISR(INT2_vect) {

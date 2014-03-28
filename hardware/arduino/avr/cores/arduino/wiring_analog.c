@@ -52,6 +52,8 @@ int analogRead(uint8_t pin)
 	if (pin >= 18) pin -= 18; // allow for channel or pin numbers
 #elif defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
 	if (pin >= 24) pin -= 24; // allow for channel or pin numbers
+#elif defined(__AVR_ATmega169P__)
+	if (pin >= 45) pin -= 45; // allow for channel or pin numbers
 #else
 	if (pin >= 14) pin -= 14; // allow for channel or pin numbers
 #endif
