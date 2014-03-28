@@ -58,7 +58,7 @@
 #endif
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
-uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
+uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 void analogReference(uint16_t mode)
 {
@@ -79,16 +79,29 @@ void analogReference(uint16_t mode)
 // fmin = F_CPU / 2^16
 void analogFrequency(uint32_t freq)
 {
-  if ( freq <= F_CPU/(4*65334L) ) { analog_div = ID_3; freq *=8; }  
-  else if ( freq <= F_CPU/(2*65334L) ) { analog_div = ID_2; freq *=4; }
-  else if ( freq <= F_CPU/(4*65334L) ) { analog_div = ID_1; freq *=2; }
-  analog_period = F_CPU/freq;
+	if ( freq <= F_CPU/(8*65334L) ) {
+		return;  // Out of luck, sorry pal.
+	}
+
+	if ( freq <= F_CPU/(4*65334L) ) {
+		analog_div = ID_3;
+		freq *= 8;
+	} else if ( freq <= F_CPU/(2*65334L) ) {
+		analog_div = ID_2;
+		freq *= 4;
+	} else if ( freq <= F_CPU/(1*65334L) ) {
+		analog_div = ID_1;
+		freq *= 2;
+	} else {
+		analog_div = ID_0;
+	}
+	analog_period = F_CPU/freq;
 }
 
 // Set the resulution (nr of counts for 100%), default = 255, large values may not work at all frequencies
 void analogResolution(uint16_t res)
 {
-  analog_res = res;
+	analog_res = res;
 }
 
 
@@ -390,7 +403,7 @@ uint16_t analogRead(uint8_t pin)
 #endif
 }
 
-#if defined(__MSP430_HAS_ADC10)
+#if defined(__MSP430_HAS_ADC10__)
 __attribute__((interrupt(ADC10_VECTOR)))
 void ADC10_ISR(void)
 {
