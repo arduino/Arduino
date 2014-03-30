@@ -42,10 +42,10 @@
 
 uint8_t EEPROMClass::read(int address)
 {
-	unsigned long byteAddr = address - (address % BYTES_PER_WORD);
+	uint32_t byteAddr = address - (address % BYTES_PER_WORD);
 	//int block = address / (BYTES_PER_WORD * WORDS_PER_BLOCK);
 	//int word = (address / BYTES_PER_WORD) % WORDS_PER_BLOCK;
-	unsigned long wordVal = 0;
+	uint32_t wordVal = 0;
 
 	ROM_EEPROMRead(&wordVal, byteAddr, 4);
 	wordVal = wordVal >> (8*(address % BYTES_PER_WORD));
@@ -55,9 +55,9 @@ uint8_t EEPROMClass::read(int address)
 
 void EEPROMClass::write(int address, uint8_t value)
 {
-	unsigned long byteAddr = address - (address % BYTES_PER_WORD);
+	uint32_t byteAddr = address - (address % BYTES_PER_WORD);
 
-	unsigned long wordVal = 0;
+	uint32_t wordVal = 0;
 	ROM_EEPROMRead(&wordVal, byteAddr, 4);
 	wordVal &= ~(0xFF << (8*(address % BYTES_PER_WORD)));
 	wordVal += value << (8*(address % BYTES_PER_WORD));
