@@ -241,7 +241,7 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
 
   // command to go idle in SPI mode
   while ((status_ = cardCommand(CMD0, 0)) != R1_IDLE_STATE) {
-    if (((uint16_t)millis() - t0) > SD_INIT_TIMEOUT) {
+    if ((uint16_t)((uint16_t)millis() - t0) > SD_INIT_TIMEOUT) {
       error(SD_CARD_ERROR_CMD0);
       goto fail;
     }
@@ -263,7 +263,7 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
 
   while ((status_ = cardAcmd(ACMD41, arg)) != R1_READY_STATE) {
     // check for timeout
-    if (((uint16_t)millis() - t0) > SD_INIT_TIMEOUT) {
+    if ((uint16_t)((uint16_t)millis() - t0) > SD_INIT_TIMEOUT) {
       error(SD_CARD_ERROR_ACMD41);
       goto fail;
     }
@@ -474,7 +474,7 @@ uint8_t Sd2Card::waitNotBusy(uint16_t timeoutMillis) {
   do {
     if (spiRec() == 0XFF) return true;
   }
-  while (((uint16_t)millis() - t0) < timeoutMillis);
+  while ((uint16_t)((uint16_t)millis() - t0) < timeoutMillis);
   return false;
 }
 //------------------------------------------------------------------------------
@@ -482,7 +482,7 @@ uint8_t Sd2Card::waitNotBusy(uint16_t timeoutMillis) {
 uint8_t Sd2Card::waitStartBlock(void) {
   uint16_t t0 = millis();
   while ((status_ = spiRec()) == 0XFF) {
-    if (((uint16_t)millis() - t0) > SD_READ_TIMEOUT) {
+    if ((uint16_t)((uint16_t)millis() - t0) > SD_READ_TIMEOUT) {
       error(SD_CARD_ERROR_READ_TIMEOUT);
       goto fail;
     }
