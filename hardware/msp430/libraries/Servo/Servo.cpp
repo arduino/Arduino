@@ -50,7 +50,7 @@ static volatile unsigned int totalWait = 0; // Total amount waited so far in the
 #endif /* TIMER0_A0_VECTOR */
 
 // Timer A0 interrupt service routine
-static void
+static void inline
 Timer_A(void)
 {
   static unsigned long wait;
