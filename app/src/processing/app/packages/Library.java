@@ -37,6 +37,16 @@ public class Library {
       "Uncategorized" });
 
   /**
+   * Check a folder to see if it contains a proper (non-legacy) library.
+   */
+  public static boolean isProperLibrary(File libFolder) throws IOException {
+    // A library is considered "new" if it contains a file called
+    // "library.properties"
+    File check = new File(libFolder, "library.properties");
+    return check.exists() && check.isFile();
+  }
+
+  /**
    * Scans inside a folder and create a Library object out of it. Automatically
    * detects legacy libraries. Automatically fills metadata from
    * library.properties file if found.
@@ -45,10 +55,7 @@ public class Library {
    * @return
    */
   static public Library create(File libFolder) throws IOException {
-    // A library is considered "new" if it contains a file called
-    // "library.properties"
-    File check = new File(libFolder, "library.properties");
-    if (!check.exists() || !check.isFile())
+    if (!isProperLibrary(libFolder))
       return createLegacyLibrary(libFolder);
     else
       return createLibrary(libFolder);
