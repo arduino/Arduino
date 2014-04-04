@@ -1312,7 +1312,7 @@ public class Base {
       if (libraries != null && !libraries.isEmpty()) {
         if (found)
           menu.addSeparator();
-        for (Library lib : libraries)
+        for (Library lib : getLibraries())
           addSketchesSubmenu(menu, lib, false);
       }
     } catch (IOException e) {
@@ -1320,73 +1320,91 @@ public class Base {
     }
   }
 
-  public LibraryList scanLibraries(List<File> folders) throws IOException {
-    LibraryList res = new LibraryList();
-    for (File folder : folders)
-      res.addOrReplaceAll(scanLibraries(folder));
-    return res;
-  }
-
-  public LibraryList scanLibraries(File folder) throws IOException {
-    LibraryList res = new LibraryList();
-
-    String list[] = folder.list(new OnlyDirs());
-    // if a bad folder or something like that, this might come back null
-    if (list == null)
-      return res;
-
-    for (String libName : list) {
-      File subfolder = new File(folder, libName);
-
-      try {
-        Library lib = Library.create(subfolder);
-        // (also replace previously found libs with the same name)
-        if (lib != null)
-          res.addOrReplace(lib);
-      } catch (IOException e) {
-        System.out.println(I18n.format(_("Invalid library found in {0}: {1}"),
-                                       subfolder, e.getMessage()));
-      }
-    }
-    return res;
-  }
-
-  public void onBoardOrPortChange() {
-    TargetPlatform targetPlatform = getTargetPlatform();
-    if (targetPlatform == null)
-      return;
-
+  public void updateLibraries() throws IOException {
     // Calculate paths for libraries and examples
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
 
-    File platformFolder = targetPlatform.getFolder();
+    libraries = new LibraryList(null);
     librariesFolders = new ArrayList<File>();
-    librariesFolders.add(getContentFile("libraries"));
-    String core = getBoardPreferences().get("build.core");
-    if (core.contains(":")) {
-      String referencedCore = core.split(":")[0];
-      TargetPlatform referencedPlatform = Base.getTargetPlatform(referencedCore, targetPlatform.getId());
-      if (referencedPlatform != null) {
-        File referencedPlatformFolder = referencedPlatform.getFolder();
-        librariesFolders.add(new File(referencedPlatformFolder, "libraries"));
+
+    File ideLibs = getContentFile("libraries");
+    libraries.addSub(scanLibraries(ideLibs, _("Libraries for all boards"), true));
+    librariesFolders.add(ideLibs);
+
+    TargetPlatform targetPlatform = getTargetPlatform();
+    if (targetPlatform != null) {
+      File platformFolder = targetPlatform.getFolder();
+      File platformLibs = new File(platformFolder, "libraries");
+      librariesFolders.add(platformLibs);
+      libraries.addSub(scanLibraries(platformLibs, I18n.format(_("Libraries for {0}"), targetPlatform.getName()), true));
+
+      String core = getBoardPreferences().get("build.core");
+      TargetPlatform referencedPlatform = null;
+      if (core.contains(":")) {
+        String referencedCore = core.split(":")[0];
+        referencedPlatform = Base.getTargetPlatform(referencedCore, targetPlatform.getId());
+        if (referencedPlatform != null) {
+          File referencedPlatformFolder = referencedPlatform.getFolder();
+          File referencedLibs = new File(referencedPlatformFolder, "libraries");
+          librariesFolders.add(referencedLibs);
+          libraries.addSub(scanLibraries(referencedLibs, I18n.format(_("Libraries for {0}"), referencedPlatform.getName()), true));
+        }
       }
     }
-    librariesFolders.add(new File(platformFolder, "libraries"));
-    librariesFolders.add(getSketchbookLibrariesFolder());
 
-    // Scan for libraries in each library folder.
-    // Libraries located in the latest folders on the list can override
-    // other libraries with the same name.
+    File sketchbookLibs = getSketchbookLibrariesFolder();
+    librariesFolders.add(sketchbookLibs);
+    libraries.addSub(scanLibraries(sketchbookLibs, _("Libraries from your sketchbook"), true));
+  }
+
+  public LibraryList scanLibraries(File folder, String name, boolean allow_legacy) throws IOException {
+    LibraryList res = new LibraryList(name != null ? name : folder.getName());
+
+    File[] subfolders = folder.listFiles(new OnlyDirs());
+    if (subfolders != null) {
+      for (File subfolder : subfolders)
+        scanLibraryFolder(res, subfolder, allow_legacy);
+    }
+
+    res.sort();
+
+    return res;
+  }
+
+  public void scanLibraryFolder(LibraryList list, File folder, boolean allow_legacy) throws IOException {
+    if (Library.isLibrary(folder)) {
+      // This looks like a library, add it
+      try {
+        Library lib = Library.create(folder);
+        // (also replace previously found libs with the same name)
+        if (lib != null)
+          list.addOrReplace(lib);
+      } catch (IOException e) {
+        System.out.println(I18n.format(_("Invalid library found in {0}: {1}"),
+                                       folder, e.getMessage()));
+      }
+    } else {
+      // This didn't look like a library, see if we can find libraries
+      // in the subdirectories
+      LibraryList sub = scanLibraries(folder, null, false);
+
+      if (!sub.isEmpty())
+        list.addSub(sub);
+    }
+  }
+
+  public void onBoardOrPortChange() {
+    // Scan for libraries
     try {
-      libraries = scanLibraries(librariesFolders);
+      updateLibraries();
     } catch (IOException e) {
       showWarning(_("Error"), _("Error loading libraries"), e);
     }
 
     // Populate importToLibraryTable
     importToLibraryTable = new HashMap<String, Library>();
-    for (Library lib : libraries) {
+    for (Library lib : getLibraries()) {
       try {
         String headers[] = headerListFromIncludePath(lib.getSrcFolder());
         for (String header : headers) {
@@ -1785,11 +1803,7 @@ public class Base {
   }
 
   protected void addLibraries(JMenu menu, LibraryList libs) throws IOException {
-
-    LibraryList list = new LibraryList(libs);
-    list.sort();
-
-    for (Library lib : list) {
+    for (Library lib : libs.getAll()) {
       @SuppressWarnings("serial")
       AbstractAction action = new AbstractAction(lib.getName()) {
         public void actionPerformed(ActionEvent event) {
@@ -2084,8 +2098,8 @@ public class Base {
   }
 
 
-  static public LibraryList getLibraries() {
-    return libraries;
+  static public List<Library> getLibraries() {
+    return libraries.getAll();
   }
 
 

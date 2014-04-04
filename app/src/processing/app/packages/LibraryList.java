@@ -2,24 +2,28 @@ package processing.app.packages;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
 
 import processing.app.helpers.FileUtils;
 
 @SuppressWarnings("serial")
-public class LibraryList extends ArrayList<Library> {
+public class LibraryList {
+  protected ArrayList<LibraryList> subs;
+  protected ArrayList<Library> libs;
+  protected String name;
 
-  public LibraryList(LibraryList libs) {
-    super(libs);
-  }
-
-  public LibraryList() {
+  public LibraryList(String name) {
     super();
+    this.name = name;
+    this.subs = new ArrayList<LibraryList>();
+    this.libs = new ArrayList<Library>();
   }
 
   public Library getByName(String name) {
-    for (Library l : this)
+    for (Library l : libs)
       if (l.getName().equals(name))
         return l;
     return null;
@@ -28,8 +32,8 @@ public class LibraryList extends ArrayList<Library> {
   public void addOrReplace(Library lib) {
     Library l = getByName(lib.getName());
     if (l != null)
-      remove(l);
-    add(lib);
+      libs.remove(l);
+    libs.add(lib);
   }
 
   public void addOrReplaceAll(Collection<? extends Library> c) {
@@ -37,34 +41,62 @@ public class LibraryList extends ArrayList<Library> {
       addOrReplace(l);
   }
 
+  public void addSub(LibraryList sub) {
+    subs.add(sub);
+  }
+
+  public List<LibraryList> getSubs() {
+    return subs;
+  }
+
+  public List<Library> getLibs() {
+    return libs;
+  }
+
+  public List<Library> getAll() {
+    ArrayList<Library> list = new ArrayList<Library>();
+
+    for (LibraryList sub : subs)
+      list.addAll(sub.getAll());
+
+    list.addAll(libs);
+
+    return list;
+  }
+
   public void sort() {
-    Collections.sort(this, Library.CASE_INSENSITIVE_ORDER);
+    Collections.sort(libs, Library.CASE_INSENSITIVE_ORDER);
+    Collections.sort(subs, LibraryList.CASE_INSENSITIVE_ORDER);
   }
 
   public Library search(String name, String arch) {
-    for (Library lib : this) {
+    for (Library lib : libs) {
       if (!lib.getName().equals(name))
         continue;
       if (!lib.supportsArchitecture(arch))
         continue;
       return lib;
     }
+    for (LibraryList sub : subs) {
+      Library lib = sub.search(name, arch);
+      if (lib != null)
+        return lib;
+    }
     return null;
   }
 
-  public LibraryList filterByArchitecture(String reqArch) {
-    LibraryList res = new LibraryList();
-    for (Library lib : this)
-      if (lib.supportsArchitecture(reqArch))
-        res.add(lib);
-    return res;
+  public static final Comparator<LibraryList> CASE_INSENSITIVE_ORDER = new Comparator<LibraryList>() {
+    @Override
+    public int compare(LibraryList o1, LibraryList o2) {
+      return o1.getName().compareToIgnoreCase(o2.getName());
+    }
+  };
+
+  public String getName() {
+    return name;
   }
 
-  public LibraryList filterLibrariesInSubfolder(File subFolder) {
-    LibraryList res = new LibraryList();
-    for (Library lib : this)
-      if (FileUtils.isSubDirectory(subFolder, lib.getFolder()))
-        res.add(lib);
-    return res;
+  public boolean isEmpty() {
+    return libs.isEmpty() && subs.isEmpty();
   }
 }
