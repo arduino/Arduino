@@ -180,6 +180,8 @@ void analogResolution(uint16_t);
 
 
 void delay(uint32_t milliseconds);
+void sleep(uint32_t milliseconds);
+void sleepSeconds(uint32_t seconds);
 
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);
@@ -192,6 +194,7 @@ extern const uint16_t port_to_sel1[];
 extern const uint16_t port_to_sel2[];
 extern const uint16_t port_to_input[];
 extern const uint16_t port_to_output[];
+extern const uint16_t port_to_ren[];
 extern const uint16_t port_to_pmap[];
 extern const uint32_t digital_pin_to_analog_in[];
 
