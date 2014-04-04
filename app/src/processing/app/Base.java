@@ -1312,11 +1312,28 @@ public class Base {
       if (libraries != null && !libraries.isEmpty()) {
         if (found)
           menu.addSeparator();
-        for (Library lib : getLibraries())
-          addSketchesSubmenu(menu, lib, false);
+        addLibraryExamples(menu, libraries);
       }
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  protected void addLibraryExamples(JMenu menu, LibraryList libs) throws IOException {
+    // Add any subdirectories first
+    for (LibraryList sub : libs.getSubs()) {
+      if (sub.isEmpty())
+        continue;
+
+      JMenu submenu = new JMenu(sub.getName());
+      addLibraryExamples(submenu, sub);
+      menu.add(submenu);
+      MenuScroller.setScrollerFor(submenu);
+    }
+
+    // Then add the libraries directly in this folder
+    for (Library lib : libs.getLibs()) {
+      addSketchesSubmenu(menu, lib, false);
     }
   }
 
@@ -1803,7 +1820,18 @@ public class Base {
   }
 
   protected void addLibraries(JMenu menu, LibraryList libs) throws IOException {
-    for (Library lib : libs.getAll()) {
+    // Add any subdirectories first
+    for (LibraryList sub : libs.getSubs()) {
+      if (sub.isEmpty())
+        continue;
+
+      JMenu submenu = new JMenu(sub.getName());
+      addLibraries(submenu, sub);
+      menu.add(submenu);
+      MenuScroller.setScrollerFor(submenu);
+    }
+    // Then add the libraries directly in this folder
+    for (Library lib : libs.getLibs()) {
       @SuppressWarnings("serial")
       AbstractAction action = new AbstractAction(lib.getName()) {
         public void actionPerformed(ActionEvent event) {
@@ -1821,8 +1849,6 @@ public class Base {
       JMenuItem item = new JMenuItem(action);
       item.putClientProperty("library", lib);
       menu.add(item);
-
-      // XXX: DAM: should recurse here so that library folders can be nested
     }
   }
 
