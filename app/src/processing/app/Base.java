@@ -1891,7 +1891,7 @@ public class Base {
       try {
         packages.put(target, new TargetPackage(target, subfolder));
       } catch (TargetPlatformException e) {
-        System.out.println("WARNING: Error loading hardware folder " + target);
+        System.out.println("WARNING: Error loading hardware folder " + target + " from " + subfolder);
         System.out.println("  " + e.getMessage());
       }
     }
