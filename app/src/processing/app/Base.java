@@ -1277,20 +1277,6 @@ public class Base {
     }
   }
 
-  public LibraryList getIDELibs() {
-    if (libraries == null)
-      return new LibraryList();
-    LibraryList res = new LibraryList(libraries);
-    res.removeAll(getUserLibs());
-    return res;
-  }
-
-  public LibraryList getUserLibs() {
-    if (libraries == null)
-      return new LibraryList();
-    return libraries.filterLibrariesInSubfolder(getSketchbookFolder());
-  }
-
   public void rebuildImportMenu(JMenu importMenu) {
     importMenu.removeAll();
 
@@ -1304,28 +1290,11 @@ public class Base {
       }
     });
     importMenu.add(addLibraryMenuItem);
-    importMenu.addSeparator();
     
-    // Split between user supplied libraries and IDE libraries
-    TargetPlatform targetPlatform = getTargetPlatform();
-    
-    if (targetPlatform != null) {
-      LibraryList ideLibs = getIDELibs();
-      LibraryList userLibs = getUserLibs();
+    if (libraries != null) {
+      importMenu.addSeparator();
       try {
-        // Find the current target. Get the platform, and then select the
-        // correct name and core path.
-        JMenuItem platformItem = new JMenuItem(_(targetPlatform.getName()));
-        platformItem.setEnabled(false);
-        importMenu.add(platformItem);
-        if (ideLibs.size() > 0) {
-          importMenu.addSeparator();
-          addLibraries(importMenu, ideLibs);
-        }
-        if (userLibs.size() > 0) {
-          importMenu.addSeparator();
-          addLibraries(importMenu, userLibs);
-        }
+        addLibraries(importMenu, libraries);
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -1338,19 +1307,12 @@ public class Base {
 
       // Add examples from distribution "example" folder
       boolean found = addSketches(menu, examplesFolder, false);
-      if (found) menu.addSeparator();
 
       // Add examples from libraries
-      LibraryList ideLibs = getIDELibs();
-      ideLibs.sort();
-      for (Library lib : ideLibs)
-        addSketchesSubmenu(menu, lib, false);
-
-      LibraryList userLibs = getUserLibs();
-      if (userLibs.size()>0) {
-        menu.addSeparator();
-        userLibs.sort();
-        for (Library lib : userLibs)
+      if (libraries != null && !libraries.isEmpty()) {
+        if (found)
+          menu.addSeparator();
+        for (Library lib : libraries)
           addSketchesSubmenu(menu, lib, false);
       }
     } catch (IOException e) {
