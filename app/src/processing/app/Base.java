@@ -1412,7 +1412,7 @@ public class Base {
       String referencedCore = core.split(":")[0];
       TargetPlatform referencedPlatform = Base.getTargetPlatform(referencedCore, targetPlatform.getId());
       if (referencedPlatform != null) {
-      File referencedPlatformFolder = referencedPlatform.getFolder();
+        File referencedPlatformFolder = referencedPlatform.getFolder();
         librariesFolders.add(new File(referencedPlatformFolder, "libraries"));
       }
     }
