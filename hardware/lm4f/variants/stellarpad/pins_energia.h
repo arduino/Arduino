@@ -102,6 +102,7 @@ static const uint8_t BLUE_LED = 40;
 
 static const uint8_t PUSH1 = 31;
 static const uint8_t PUSH2 = 17;
+static const uint8_t TEMPSENSOR = 0;
 
 #ifdef ARDUINO_MAIN
 const uint32_t port_to_base[] = {
@@ -320,7 +321,7 @@ const uint32_t timer_to_pin_config[] = {
         GPIO_PD7_WT5CCP1,
 };
 const uint32_t digital_pin_to_analog_in[] = {
-        NOT_ON_ADC,     /*  dummy   */
+        ADC_CTL_TS,     /*  0 - TempSensor   */
         NOT_ON_ADC,     /*  1 - 3.3V*/
         ADC_CTL_CH11,	/*  2 - PB5 */
         NOT_ON_ADC,     /*  3 - PB0 */
