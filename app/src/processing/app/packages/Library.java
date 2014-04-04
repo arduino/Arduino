@@ -9,6 +9,7 @@ import java.util.List;
 
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 
 public class Library {
 
@@ -44,6 +45,26 @@ public class Library {
     // "library.properties"
     File check = new File(libFolder, "library.properties");
     return check.exists() && check.isFile();
+  }
+
+  /**
+   * Check a folder to see if it is a proper library, or looks like a
+   * legacy library (we can never tell for sure, though).
+   */
+  public static boolean isLibrary(File libFolder) throws IOException {
+    if (isProperLibrary(libFolder))
+      return true;
+
+    // If it has a utility folder, then it's probably a legacy library
+    File utilFolder = new File(libFolder, "utility");
+    if (utilFolder.exists() && utilFolder.isDirectory())
+      return true;
+
+    // If it his some .h files, it's probably a legacy library
+    if (libFolder.list(new OnlyFilesWithExtension(".h")).length > 0)
+      return true;
+
+    return false;
   }
 
   /**
