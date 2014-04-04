@@ -257,10 +257,18 @@ void init()
 #endif
 
 	// set timer 2 prescale factor to 64
+	// Note that the order here is key, because some processors do have a
+	// TCCR2A and a TCCR2B register. The current assumption is, that if
+	// there is a TCCR2B register, the CS22 bit is found there. If not,
+	// it's likely to be in TCCR2A.
+	// Cleanest solution would be to check for processors (i.e. __AVR_...)
+	// instead of checking for available registers.
 #if defined(TCCR2) && defined(CS22)
 	sbi(TCCR2, CS22);
 #elif defined(TCCR2B) && defined(CS22)
-	sbi(TCCR2B, CS22);
+	sbi(TCCR2B, CS22); //e.g. ATmega48PA/88PA/168PA/328P
+#elif defined(TCCR2A) && defined(CS22)
+	sbi(TCCR2A, CS22); //e.g. ATmega169P
 #else
 	#warning Timer 2 not finished (may not be present on this CPU)
 #endif
