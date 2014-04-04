@@ -10,6 +10,10 @@ import java.util.List;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
+import processing.app.Sketch;
+
+import static processing.app.I18n._;
+import processing.app.I18n;
 
 public class Library {
 
@@ -76,6 +80,14 @@ public class Library {
    * @return
    */
   static public Library create(File libFolder) throws IOException {
+    if (!Sketch.isSanitaryName(libFolder.getName())) {
+      String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
+          + "Library names must contain only basic letters and numbers.\n"
+          + "(ASCII only and no spaces, and it cannot start with a number)"),
+                                libFolder.getName());
+      throw new IOException(mess);
+    }
+
     if (!isProperLibrary(libFolder))
       return createLegacyLibrary(libFolder);
     else

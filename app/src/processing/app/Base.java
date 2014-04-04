@@ -1381,14 +1381,6 @@ public class Base {
 
     for (String libName : list) {
       File subfolder = new File(folder, libName);
-      if (!Sketch.isSanitaryName(libName)) {
-        String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
-            + "Library names must contain only basic letters and numbers.\n"
-            + "(ASCII only and no spaces, and it cannot start with a number)"),
-                                  libName);
-        Base.showMessage(_("Ignoring bad library name"), mess);
-        continue;
-      }
 
       try {
         Library lib = Library.create(subfolder);
