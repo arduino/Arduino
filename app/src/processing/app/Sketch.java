@@ -33,7 +33,6 @@ import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.FileUtils;
 import processing.app.packages.Library;
-import processing.app.packages.LibraryList;
 import processing.app.preproc.*;
 import processing.core.*;
 import static processing.app.I18n._;
@@ -94,7 +93,7 @@ public class Sketch {
   /**
    * List of library folders.
    */
-  private LibraryList importedLibraries;
+  private ArrayList<Library> importedLibraries;
 
   /**
    * File inside the build directory that contains the build options
@@ -1386,7 +1385,7 @@ public class Sketch {
 
     // grab the imports from the code just preproc'd
 
-    importedLibraries = new LibraryList();
+    importedLibraries = new ArrayList<Library>();
     for (String item : preprocessor.getExtraImports()) {
       Library lib = Base.importToLibraryTable.get(item);
       if (lib != null && !importedLibraries.contains(lib)) {
@@ -1419,7 +1418,7 @@ public class Sketch {
   }
 
 
-  public LibraryList getImportedLibraries() {
+  public List<Library> getImportedLibraries() {
     return importedLibraries;
   }
 
