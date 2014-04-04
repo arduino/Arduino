@@ -1315,15 +1315,9 @@ public class Base {
       try {
         // Find the current target. Get the platform, and then select the
         // correct name and core path.
-        PreferencesMap prefs = targetPlatform.getPreferences();
-        if (prefs != null) {
-          String platformName = prefs.get("name");
-          if (platformName != null) {
-            JMenuItem platformItem = new JMenuItem(_(platformName));
-            platformItem.setEnabled(false);
-            importMenu.add(platformItem);
-          }
-        }
+        JMenuItem platformItem = new JMenuItem(_(targetPlatform.getName()));
+        platformItem.setEnabled(false);
+        importMenu.add(platformItem);
         if (ideLibs.size() > 0) {
           importMenu.addSeparator();
           addLibraries(importMenu, ideLibs);
@@ -1485,9 +1479,8 @@ public class Base {
         first = false;
 
         // Add a title for each platform
-        String platformLabel = targetPlatform.getPreferences().get("name"); 
-        if (platformLabel != null && !targetPlatform.getBoards().isEmpty()) {
-          JMenuItem menuLabel = new JMenuItem(_(platformLabel));
+        if (!targetPlatform.getBoards().isEmpty()) {
+          JMenuItem menuLabel = new JMenuItem(_(targetPlatform.getName()));
           menuLabel.setEnabled(false);
           boardsMenu.add(menuLabel);
         }

@@ -141,6 +141,13 @@ public class TargetPlatform {
     return id;
   }
 
+  public String getName() {
+    String name = preferences.get("name");
+    if (name == null)
+      return containerPackage.getId() + ":" + id;
+    return name;
+  }
+
   public File getFolder() {
     return folder;
   }
