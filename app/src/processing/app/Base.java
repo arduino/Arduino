@@ -28,12 +28,12 @@ import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import processing.app.debug.Compiler;
 import processing.app.debug.Target;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.filefilters.OnlyDirs;
+import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
 import processing.app.tools.ZipDeflater;
 import processing.core.*;
 import static processing.app.I18n._;
@@ -120,7 +120,7 @@ public class Base {
       File versionFile = getContentFile("lib/version.txt");
       if (versionFile.exists()) {
         String version = PApplet.loadStrings(versionFile)[0];
-        if (!version.equals(VERSION_NAME)) {
+        if (!version.equals(VERSION_NAME) && !version.equals("${version}")) {
           VERSION_NAME = version;
           RELEASE = true;
         }
@@ -128,6 +128,10 @@ public class Base {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    // help 3rd party installers find the correct hardware path
+    Preferences.set("last.ide." + VERSION_NAME + ".hardwarepath", getHardwarePath());
+    Preferences.set("last.ide." + VERSION_NAME + ".daterun", "" + (new Date()).getTime() / 1000);
 
 //    if (System.getProperty("mrj.version") != null) {
 //      //String jv = System.getProperty("java.version");
@@ -1207,62 +1211,51 @@ public class Base {
     boolean ifound = false;
 
     for (String potentialName : list) {
-      File subfolder = new File(folder, potentialName);
-//      File libraryFolder = new File(subfolder, "library");
-//      File libraryJar = new File(libraryFolder, potentialName + ".jar");
-//      // If a .jar file of the same prefix as the folder exists
-//      // inside the 'library' subfolder of the sketch
-//      if (libraryJar.exists()) {
-        String sanityCheck = Sketch.sanitizeName(potentialName);
-        if (!sanityCheck.equals(potentialName)) {
-          String mess = I18n.format(
-            _("The library \"{0}\" cannot be used.\n" +
-              "Library names must contain only basic letters and numbers.\n" +
-              "(ASCII only and no spaces, and it cannot start with a number)"),
-	    potentialName
-	  );
-          Base.showMessage(_("Ignoring bad library name"), mess);
-          continue;
-        }
-
-        String libraryName = potentialName;
-//        // get the path for all .jar files in this code folder
-//        String libraryClassPath =
-//          Compiler.contentsToClassPath(libraryFolder);
-//        // grab all jars and classes from this folder,
-//        // and append them to the library classpath
-//        librariesClassPath +=
-//          File.pathSeparatorChar + libraryClassPath;
-//        // need to associate each import with a library folder
-//        String packages[] =
-//          Compiler.packageListFromClassPath(libraryClassPath);
-        libraries.add(subfolder);
-      try {
-        String packages[] =
-          Compiler.headerListFromIncludePath(subfolder.getAbsolutePath());
-        for (String pkg : packages) {
-          importToLibraryTable.put(pkg, subfolder);
-        }
-      } catch (IOException e) {
-        showWarning(_("Error"), I18n.format("Unable to list header files in {0}", subfolder), e);
+      File libFolder = new File(folder, potentialName);
+      String sanityCheck = Sketch.sanitizeName(potentialName);
+      if (!sanityCheck.equals(potentialName)) {
+        String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
+            + "Library names must contain only basic letters and numbers.\n"
+            + "(ASCII only and no spaces, and it cannot start with a number)"),
+            potentialName);
+        Base.showMessage(_("Ignoring bad library name"), mess);
+        continue;
       }
 
-        JMenuItem item = new JMenuItem(libraryName);
-        item.addActionListener(listener);
-        item.setActionCommand(subfolder.getAbsolutePath());
-        menu.add(item);
-        ifound = true;
+      String libraryName = potentialName;
+      libraries.add(libFolder);
+      String libFolderPath = libFolder.getAbsolutePath();
+      try {
+        String headers[] = Compiler.headerListFromIncludePath(libFolderPath);
+        for (String header : headers) {
+          // Extract file name (without extension ".h")
+          String name = header.substring(0, header.length() - 2);
 
-// XXX: DAM: should recurse here so that library folders can be nested
-//      } else {  // not a library, but is still a folder, so recurse
-//        JMenu submenu = new JMenu(libraryName);
-//        // needs to be separate var, otherwise would set ifound to false
-//        boolean found = addLibraries(submenu, subfolder);
-//        if (found) {
-//          menu.add(submenu);
-//          ifound = true;
-//        }
-//      }
+          // If the header name equals to the current library folder use it
+          if (libFolderPath.endsWith(name)) {
+            importToLibraryTable.put(header, libFolder);
+            continue;
+          }
+
+          // If a library was already found with this header, keep it if
+          // the library's directory name matches the header name.
+          File old = importToLibraryTable.get(header);
+          if (old != null) {
+            if (old.getPath().endsWith(name))
+              continue;
+          }
+          importToLibraryTable.put(header, libFolder);
+        }
+      } catch (IOException e) {
+        showWarning(_("Error"), I18n.format(
+            "Unable to list header files in {0}", libFolder), e);
+      }
+
+      JMenuItem item = new JMenuItem(libraryName);
+      item.addActionListener(listener);
+      item.setActionCommand(libFolderPath);
+      menu.add(item);
+      ifound = true;
     }
     return ifound;
   }

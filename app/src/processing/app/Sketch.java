@@ -33,16 +33,11 @@ import processing.core.*;
 import static processing.app.I18n._;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.zip.*;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 
 /**
@@ -2024,7 +2019,7 @@ public class Sketch {
       String msg =
         _("The sketch name had to be modified. Sketch names can only consist\n" +
           "of ASCII characters and numbers (but cannot start with a number).\n" +
-          "They should also be less less than 64 characters long.");
+          "They should also be less than 64 characters long.");
       System.out.println(msg);
     }
     return newName;
@@ -2063,9 +2058,10 @@ public class Sketch {
     for (int i = 0; i < c.length; i++) {
       if (((c[i] >= '0') && (c[i] <= '9')) ||
           ((c[i] >= 'a') && (c[i] <= 'z')) ||
-          ((c[i] >= 'A') && (c[i] <= 'Z'))) {
+          ((c[i] >= 'A') && (c[i] <= 'Z')) ||
+          ((i > 0) && (c[i] == '-')) ||
+          ((i > 0) && (c[i] == '.'))) {
         buffer.append(c[i]);
-
       } else {
         buffer.append('_');
       }
