@@ -49,6 +49,10 @@ Version Modified By Date     Comments
 #define TIMSK1 TIMSK
 #endif
 
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
+
 // timerx_toggle_count:
 //  > 0 - duration specified
 //  = 0 - stopped
@@ -187,6 +191,17 @@ static int8_t toneBegin(uint8_t _pin)
         break;
       #endif
 
+      #if defined(TCCR2A) && !defined(TCCR2B)
+      case 2:
+        // 8 bit timer
+        TCCR2A = 0;
+        bitWrite(TCCR2A, WGM21, 1);
+        bitWrite(TCCR2A, CS20, 1);
+        timer2_pin_port = portOutputRegister(digitalPinToPort(_pin));
+        timer2_pin_mask = digitalPinToBitMask(_pin);
+        break;
+      #endif
+
       #if defined(TCCR3A) && defined(TCCR3B) &&  defined(TIMSK3)
       case 3:
         // 16 bit timer
@@ -303,6 +318,10 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 #if defined(TCCR2B)
       {
         TCCR2B = prescalarbits;
+      }
+#elif defined(TCCR2A)
+      {
+        TCCR2A = (TCCR2A & 0b11111000) | prescalarbits;
       }
 #else
       {
@@ -448,6 +467,8 @@ void disableTimer(uint8_t _timer)
       #endif
       #if defined(TCCR2B) && defined(CS22)
         TCCR2B = (TCCR2B & 0b11111000) | (1 << CS22);
+      #elif defined(TCCR2A) && defined(CS22)
+        sbi(TCCR2A, CS22); //e.g. ATmega169P
       #endif
       #if defined(OCR2A)
         OCR2A = 0;
