@@ -27,6 +27,7 @@ build/macosx/libastylej*
 build/linux/work/
 build/linux/dist/*.tar.gz
 build/linux/*.tgz
+build/linux/*.zip
 build/linux/libastylej*
 test-bin
 *.iml
@@ -34,4 +35,3 @@ test-bin
 .DS_Store
 hardware/arduino/avr/libraries/Bridge/examples/XivelyClient/passwords.h
 avr-toolchain-*.zip
-
