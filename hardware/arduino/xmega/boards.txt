@@ -1,48 +1,19 @@
-#############################################################
 
-sfe_jtag.name=SparkFun Xmega100 using jtag
-sfe_jtag.verbose=true
-
-sfe_jtag.build.mcu=atxmega128a1
-sfe_jtag.build.f_cpu=32000000L
-sfe_jtag.build.core=xmega
-sfe_jtag.build.variant=sfe
-
-sfe_jtag.upload.tool=avrdude
-sfe_jtag.upload.using=dragonjtag
-sfe_jtag.upload.maximum_size=131072
-
-# FUSE BITS
-# fuse0: JTAGUSERID
-# fuse1: WDWP=0xF WDP=0xF
-# fuse2: Boot Loader Reset
-# fuse4: JTAGEN
-# fuse5: BODLVL=2.1V
-sfe_jtag.bootloader.tool=avrdude
-sfe_jtag.bootloader.fuse0=0xFF
-sfe_jtag.bootloader.fuse1=0xFF
-#sfe_jtag.bootloader.fuse2=0xBF
-sfe_jtag.bootloader.fuse2=0xFF
-sfe_jtag.bootloader.fuse4=0xFE
-sfe_jtag.bootloader.fuse5=0xFD
-sfe_jtag.bootloader.unlock_bits=0x3F
-sfe_jtag.bootloader.lock_bits=0x3F
-sfe_jtag.bootloader.path=sfe_xmega100
-sfe_jtag.bootloader.file=ATmegaBOOT_sfe.bin
+menu.programmer=Upload programmer
+menu.cpu=Processor
 
 #############################################################
 
-sfe_pdi.name=SparkFun Xmega100 using pdi
-sfe_pdi.verbose=true
+sfe.name=SparkFun Xmega100
+sfe.verbose=true
 
-sfe_pdi.build.mcu=atxmega128a1
-sfe_pdi.build.f_cpu=32000000L
-sfe_pdi.build.core=xmega
-sfe_pdi.build.variant=sfe
+sfe.build.mcu=atxmega128a1
+sfe.build.f_cpu=32000000L
+sfe.build.core=xmega
+sfe.build.variant=sfe
 
-sfe_pdi.upload.tool=avrdude
-sfe_pdi.upload.using=avrisppdi
-sfe_pdi.upload.maximum_size=131072
+sfe.upload.tool=avrdude
+sfe.upload.maximum_size=131072
 
 # FUSE BITS
 # fuse0: JTAGUSERID
@@ -50,67 +21,38 @@ sfe_pdi.upload.maximum_size=131072
 # fuse2: Boot Loader Reset
 # fuse4: JTAGEN
 # fuse5: BODLVL=2.1V
-sfe_pdi.bootloader.tool=avrdude
-sfe_pdi.bootloader.fuse0=0xFF
-sfe_pdi.bootloader.fuse1=0xFF
-sfe_pdi.bootloader.fuse2=0xBF
-sfe_pdi.bootloader.fuse4=0xFE
-sfe_pdi.bootloader.fuse5=0xFD
-sfe_pdi.bootloader.unlock_bits=0x3F
-sfe_pdi.bootloader.lock_bits=0x3F
-sfe_pdi.bootloader.path=sfe_xmega100
-sfe_pdi.bootloader.file=ATmegaBOOT_sfe.bin
+sfe.bootloader.tool=avrdude
+sfe.bootloader.fuse0=0xFF
+sfe.bootloader.fuse1=0xFF
+#sfe.bootloader.fuse2=0xBF
+sfe.bootloader.fuse2=0xFF
+sfe.bootloader.fuse4=0xFE
+sfe.bootloader.fuse5=0xFD
+sfe.bootloader.unlock_bits=0x3F
+sfe.bootloader.lock_bits=0x3F
+sfe.bootloader.file=sfe_xmega100/ATmegaBOOT_sfe.bin
+
+## SparkFun w/ JTAG
+## -------------------------
+sfe.menu.programmer.jtag=JTAG
+sfe.menu.programmer.jtag.upload.using=dragonjtag
+
+## SparkFun w/ PDI
+## -------------------------
+sfe.menu.programmer.pdi=PDI
+sfe.menu.programmer.pdi.upload.using=avrisppdi
 
 #############################################################
 
-xplain_jtag.name=XPlain using jtag
+xplain.name=XPlain
 
-xplain_jtag.build.mcu=atxmega128a1
-xplain_jtag.build.f_cpu=32000000L
-xplain_jtag.build.core=xmega
-xplain_jtag.build.variant=xplain
+xplain.build.mcu=atxmega128a1
+xplain.build.f_cpu=32000000L
+xplain.build.core=xmega
+xplain.build.variant=xplain
 
-xplain_jtag.upload.tool=avrdude
-xplain_jtag.upload.using=dragonjtag
-xplain_jtag.upload.maximum_size=131072
-
-# FUSE BITS
-# fuse0: JTAGUSERID
-# fuse1: WDWP=0xF WDP=0xF
-# fuse2: Boot Loader Reset
-# fuse4: JTAGEN
-# fuse5: BODLVL=2.1V
-xplain_jtag.bootloader.tool=avrdude
-xplain_jtag.bootloader.fuse0=0xFF
-xplain_jtag.bootloader.fuse1=0xFF
-xplain_jtag.bootloader.fuse2=0xBF
-xplain_jtag.bootloader.fuse4=0xFE
-xplain_jtag.bootloader.fuse5=0xFD
-xplain_jtag.bootloader.unlock_bits=0x3F
-xplain_jtag.bootloader.lock_bits=0x3F
-xplain_jtag.bootloader.path=xplain
-xplain_jtag.bootloader.file=ATmegaBOOT_xplain.bin
-
-##############################################################
-
-xplain_lufa.name=XPlain using lufa
-
-xplain_lufa.build.mcu=atxmega128a1
-xplain_lufa.build.f_cpu=32000000L
-xplain_lufa.build.core=xmega
-xplain_lufa.build.variant=xplain
-
-xplain_lufa.upload.tool=avrdude
-xplain_lufa.upload.using=avrispmkii
-xplain_lufa.upload.protocol=arduino
-xplain_lufa.upload.maximum_size=131072
-xplain_lufa.upload.speed=9600
-
-xplain_lufa.bootloader.tool=avrdude
-xplain_lufa.bootloader.path=xplain
-xplain_lufa.bootloader.file=ATmegaBOOT_xplain.bin
-xplain_lufa.bootloader.unlock_bits=0x3F
-xplain_lufa.bootloader.lock_bits=0x3F
+xplain.upload.tool=avrdude
+xplain.upload.maximum_size=131072
 
 # FUSE BITS
 # fuse0: JTAGUSERID
@@ -118,104 +60,44 @@ xplain_lufa.bootloader.lock_bits=0x3F
 # fuse2: Boot Loader Reset
 # fuse4: JTAGEN
 # fuse5: BODLVL=2.1V
-xplain_lufa.bootloader.fuse0=0xFF
-xplain_lufa.bootloader.fuse1=0xFF
-xplain_lufa.bootloader.fuse2=0xBF
-xplain_lufa.bootloader.fuse4=0xFE
-xplain_lufa.bootloader.fuse5=0xFD
+xplain.bootloader.tool=avrdude
+xplain.bootloader.fuse0=0xFF
+xplain.bootloader.fuse1=0xFF
+xplain.bootloader.fuse2=0xBF
+xplain.bootloader.fuse4=0xFE
+xplain.bootloader.fuse5=0xFD
+xplain.bootloader.unlock_bits=0x3F
+xplain.bootloader.lock_bits=0x3F
+xplain.bootloader.file=xplain/ATmegaBOOT_xplain.bin
 
-##############################################################
+## XPlain w/ JTAG
+## -------------------------
+xplain.menu.programmer.jtag=JTAG
+xplain.menu.programmer.jtag.upload.using=dragonjtag
 
-xplain_usb.name=XPlain using usb
+## XPlain w/ Lufa
+## -------------------------
+xplain.menu.programmer.lufa=Lufa
+xplain.menu.programmer.lufa.upload.using=avrispmkii
+xplain.menu.programmer.lufa.upload.protocol=arduino
+xplain.menu.programmer.lufa.upload.speed=9600
 
-xplain_usb.build.mcu=atxmega128a1
-xplain_usb.build.f_cpu=32000000L
-xplain_usb.build.core=xmega
-xplain_usb.build.variant=xplain
+## XPlain w/ Usb
+## -------------------------
+xplain.menu.programmer.usb=Usb
+xplain.menu.programmer.usb.upload.protocol=arduino
+xplain.menu.programmer.usb.upload.speed=9600
 
-xplain_usb.upload.tool=avrdude
-xplain_usb.upload.protocol=arduino
-xplain_usb.upload.maximum_size=131072
-xplain_usb.upload.speed=9600
+## XPlain w/ Serial
+## -------------------------
+xplain.menu.programmer.serial=Serial
+xplain.menu.programmer.serial.upload.protocol=arduino
+xplain.menu.programmer.serial.upload.speed=57600
 
-xplain_usb.bootloader.tool=avrdude
-xplain_usb.bootloader.path=xplain
-xplain_usb.bootloader.file=ATmegaBOOT_xplain.bin
-xplain_usb.bootloader.unlock_bits=0x3F
-xplain_usb.bootloader.lock_bits=0x3F
-
-# FUSE BITS
-# fuse0: JTAGUSERID
-# fuse1: WDWP=0xF WDP=0xF
-# fuse2: Boot Loader Reset
-# fuse4: JTAGEN
-# fuse5: BODLVL=2.1V
-xplain_usb.bootloader.fuse0=0xFF
-xplain_usb.bootloader.fuse1=0xFF
-xplain_usb.bootloader.fuse2=0xBF
-xplain_usb.bootloader.fuse4=0xFE
-xplain_usb.bootloader.fuse5=0xFD
-
-##############################################################
-
-xplain_serial.name=XPlain using serial
-
-xplain_serial.build.mcu=atxmega128a1
-xplain_serial.build.f_cpu=32000000L
-xplain_serial.build.core=xmega
-xplain_serial.build.variant=xplain
-
-xplain_serial.upload.tool=avrdude
-xplain_serial.upload.protocol=arduino
-xplain_serial.upload.maximum_size=131072
-xplain_serial.upload.speed=57600
-
-xplain_serial.bootloader.tool=avrdude
-xplain_serial.bootloader.path=xplain
-xplain_serial.bootloader.file=ATmegaBOOT_xplain.bin
-xplain_serial.bootloader.unlock_bits=0x3F
-xplain_serial.bootloader.lock_bits=0x3F
-
-# FUSE BITS
-# fuse0: JTAGUSERID
-# fuse1: WDWP=0xF WDP=0xF
-# fuse2: Boot Loader Reset
-# fuse4: JTAGEN
-# fuse5: BODLVL=2.1V
-xplain_serial.bootloader.fuse0=0xFF
-xplain_serial.bootloader.fuse1=0xFF
-xplain_serial.bootloader.fuse2=0xBF
-xplain_serial.bootloader.fuse4=0xFE
-xplain_serial.bootloader.fuse5=0xFD
-
-##############################################################
-
-xplain_pdi.name=XPlain using pdi
-
-xplain_pdi.build.mcu=atxmega128a1
-xplain_pdi.build.f_cpu=32000000L
-xplain_pdi.build.core=xmega
-xplain_pdi.build.variant=xplain
-
-xplain_pdi.upload.tool=avrdude
-xplain_pdi.upload.using=avrisppdi
-xplain_pdi.upload.maximum_size=131072
-
-xplain_pdi.bootloader.tool=avrdude
-xplain_pdi.bootloader.path=xplain
-xplain_pdi.bootloader.file=ATmegaBOOT_xplain.bin
-
-# FUSE BITS
-# fuse0: JTAGUSERID
-# fuse1: WDWP=0xF WDP=0xF
-# fuse2: Boot Loader Reset
-# fuse4: JTAGEN
-# fuse5: BODLVL=2.1V
-xplain_pdi.bootloader.fuse0=0xFF
-xplain_pdi.bootloader.fuse1=0xFF
-xplain_pdi.bootloader.fuse2=0xBF
-xplain_pdi.bootloader.fuse4=0xFE
-xplain_pdi.bootloader.fuse5=0xFD
+## XPlain w/ Pdi
+## -------------------------
+xplain.menu.programmer.pdi=PDI
+xplain.menu.programmer.pdi.using=avrisppdi
 
 ##############################################################
 
@@ -232,8 +114,7 @@ akafuino.upload.maximum_size=32768
 akafuino.upload.speed=115200
 
 akafuino.bootloader.tool=avrdude
-akafuino.bootloader.path=akafuino
-akafuino.bootloader.file=akafuino-boot.hex
+akafuino.bootloader.file=akafuino/akafuino-boot.hex
 #akafuino.bootloader.unlock_bits=0x3F
 #akafuino.bootloader.lock_bits=0x3F
 
