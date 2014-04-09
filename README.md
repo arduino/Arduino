@@ -21,11 +21,12 @@ and has been active since September 2011. It supersedes the earlier xplainduino.
 Installation
 ============
 
-Download from [here](https://github.com/akafugu/Xmegaduino/downloads).
+Download from [here](https://github.com/akafugu/Xmegaduino/releases/).
 
 * Windows
 * OS X
-* Linux
+* Linux 32-bit
+* Linux 64-bit
 
 Requirements
 ============
@@ -78,7 +79,7 @@ Changelog
 
 Beta5 (based on Arduino 1.5.2-rc2):
 
-* New avr-gcc 4.8.2, avrdude 6.1
+* New avr-gcc 4.8.1, avrdude 6.1
 * Many many updates
 
 Beta4 (based on Arduino 1.0.1-rc2):
