@@ -76,6 +76,11 @@ Todo:
 Changelog
 =========
 
+Beta5 (based on Arduino 1.5.2-rc2):
+
+* New avr-gcc 4.8.2, avrdude 6.1
+* Many many updates
+
 Beta4 (based on Arduino 1.0.1-rc2):
 
 * New avr-gcc 4.5.1, avr-libc 1.7.1 for all platforms (Windows, Mac OS X, Linux 32/64)
