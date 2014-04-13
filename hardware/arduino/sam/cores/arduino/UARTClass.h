@@ -25,6 +25,13 @@
 // Includes Atmel CMSIS
 #include <chip.h>
 
+// Define config for Serial.begin(baud, config);
+#define SERIAL_8N1 UART_MR_PAR_NO
+#define SERIAL_8E1 UART_MR_PAR_EVEN
+#define SERIAL_8O1 UART_MR_PAR_ODD
+#define SERIAL_8M1 UART_MR_PAR_MARK
+#define SERIAL_8S1 UART_MR_PAR_SPACE
+
 class UARTClass : public HardwareSerial
 {
   protected:
@@ -38,7 +45,8 @@ class UARTClass : public HardwareSerial
   public:
     UARTClass( Uart* pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer ) ;
 
-    void begin( const uint32_t dwBaudRate ) ;
+	void begin( const uint32_t dwBaudRate );
+	void begin( const uint32_t dwBaudRate, const uint32_t config );
     void end( void ) ;
     int available( void ) ;
     int peek( void ) ;

@@ -50,9 +50,8 @@ void USARTClass::begin( const uint32_t dwBaudRate, const uint32_t config )
   // Reset and disable receiver and transmitter
   _pUsart->US_CR = US_CR_RSTRX | US_CR_RSTTX | US_CR_RXDIS | US_CR_TXDIS ;
 
-  // Configure mode
-  _pUsart->US_MR = config;
-
+  // Configure mode - AND user config with mask to prevent bad configuration
+  _pUsart->US_MR = US_MR_USART_MODE_NORMAL | US_MR_USCLKS_MCK | US_MR_CHMODE_NORMAL | (config & 0x00023EC0);
 
   // Configure baudrate, asynchronous no oversampling
   _pUsart->US_BRGR = (SystemCoreClock / dwBaudRate) / 16 ;
