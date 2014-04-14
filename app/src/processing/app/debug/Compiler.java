@@ -198,7 +198,7 @@ public class Compiler implements MessageConsumer {
       "rcs",
       runtimeLibraryName
     }));
-    } else if(arch == "lm4f") {
+    } else if(arch == "lm4f" || arch == "cc3200") {
       baseCommandAR = new ArrayList(Arrays.asList(new String[] { 
         basePath + "arm-none-eabi-ar",
         "rcs",
@@ -247,7 +247,7 @@ public class Compiler implements MessageConsumer {
         "-o",
         buildPath + File.separator + primaryClassName + ".elf"
       }));
-    }else if (arch == "lm4f") { 
+    }else if (arch == "lm4f" || arch == "cc3200") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
         "-Os",
@@ -321,7 +321,7 @@ public class Compiler implements MessageConsumer {
     }
 
     baseCommandLinker.add(runtimeLibraryName);
-    if(arch == "lm4f"){
+    if(arch == "lm4f" || arch == "cc3200"){
       baseCommandLinker.add("-L" + buildPath);
       baseCommandLinker.add("-lm");
       baseCommandLinker.add("-lc");
@@ -343,7 +343,7 @@ public class Compiler implements MessageConsumer {
       "-O",
       "-R",
     }));
-    } else if (arch == "lm4f") {
+    } else if (arch == "lm4f" || arch == "cc3200") {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-objcopy",
         "-O",
@@ -363,7 +363,7 @@ public class Compiler implements MessageConsumer {
 
     }
     List commandObjcopy;
-    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000")) {
+    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200")) {
       //nothing 
     } else {
         // 5. extract EEPROM data (from EEMEM directive) to .eep file.
@@ -383,7 +383,7 @@ public class Compiler implements MessageConsumer {
     // 6. build the .hex or .bin file
     sketch.setCompilingProgress(80);
     commandObjcopy = new ArrayList(baseCommandObjcopy);
-    if (arch == "lm4f"){
+    if (arch == "lm4f" || arch == "cc3200"){
 	  	commandObjcopy.add(2, "binary");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
@@ -706,7 +706,7 @@ public class Compiler implements MessageConsumer {
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
         }));
-    } else if (arch == "lm4f") {
+    } else if (arch == "lm4f" || arch == "cc3200") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
           "-c",
@@ -795,7 +795,7 @@ public class Compiler implements MessageConsumer {
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
-      }else if (arch == "lm4f") {
+      }else if (arch == "lm4f" || arch == "cc3200") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
         "-c",
@@ -894,7 +894,7 @@ public class Compiler implements MessageConsumer {
         "-DENERGIA=" + Base.EREVISION,
       }));
     } 
-    else if (arch == "lm4f") {
+    else if (arch == "lm4f" || arch == "cc3200") {
         baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-g++",
           "-c",

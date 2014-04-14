@@ -69,6 +69,7 @@ public class Base {
     archMap.put("msp430", "msp430");
     archMap.put("lm4f", "lm4f");
     archMap.put("c2000", "c2000");
+    archMap.put("cc3200", "cc3200");
   }
   static Platform platform;
 
@@ -256,6 +257,8 @@ public class Base {
     	targetLibDir = "hardware/lm4f/";
     else if (Preferences.get("target").equals("c2000")) 
     	targetLibDir = "hardware/c2000/";
+    else if (Preferences.get("target").equals("cc3200")) 
+    	targetLibDir = "hardware/cc3200/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 
@@ -1096,8 +1099,10 @@ public class Base {
             		  targetLibDir = "hardware/msp430/";
             	  else if(n.equals("lm4f"))
             		  targetLibDir = "hardware/lm4f/";
-				  else if(n.equals("c2000")) 
+		  else if(n.equals("c2000")) 
             		  targetLibDir = "hardware/c2000/";
+		  else if(n.equals("cc3200")) 
+            		  targetLibDir = "hardware/cc3200/";
             	  librariesFolder = getContentFile(targetLibDir + "libraries");
             	  onArchChanged();
               }
@@ -1731,7 +1736,7 @@ public class Base {
         String hwPath = getMSP430BasePath();
         return hwPath;
       }
-      else if (getArch() == "lm4f") {
+      else if (getArch() == "lm4f" || getArch() == "cc3200") {
     	  String hwPath = getLM4FBasePath();
     	  return hwPath;
       }
@@ -1744,13 +1749,19 @@ public class Base {
           + getArch() + File.separator + "bin" + File.separator;
       }
     } else if (Base.isWindows()) {
+    	String arch = getArch();
+    	if (arch == "cc3200")
+    		arch = "lm4f";
       String ret = getHardwarePath() + File.separator + "tools"
-          + File.separator + getArch() + File.separator + "bin"
+          + File.separator + arch + File.separator + "bin"
           + File.separator;
       return ret;
     } else {
-      return getHardwarePath() + File.separator + "tools" + File.separator
-          + getArch() + File.separator + "bin" + File.separator;
+    	String arch = getArch();
+    	if (arch == "cc3200")
+    		arch = "lm4f";
+    	return getHardwarePath() + File.separator + "tools" + File.separator
+          + arch + File.separator + "bin" + File.separator;
     }
   }
   
