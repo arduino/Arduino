@@ -52,6 +52,7 @@ static void NmiSR(void);
 static void FaultISR(void);
 static void IntDefaultHandler(void);
 static void BusFaultHandler(void);
+extern void SysTickIntHandler(void);
 
 //*****************************************************************************
 //
@@ -65,12 +66,6 @@ extern int main(void);
  */
 __attribute__((weak)) void UARTIntHandler(void) {}
 __attribute__((weak)) void UARTIntHandler1(void) {}
-__attribute__((weak)) void UARTIntHandler2(void) {}
-__attribute__((weak)) void UARTIntHandler3(void) {}
-__attribute__((weak)) void UARTIntHandler4(void) {}
-__attribute__((weak)) void UARTIntHandler5(void) {}
-__attribute__((weak)) void UARTIntHandler6(void) {}
-__attribute__((weak)) void UARTIntHandler7(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
 __attribute__((weak)) void Timer5IntHandler(void) {}
@@ -85,6 +80,8 @@ extern unsigned _estack;
 // ensure that it ends up at physical address 0x0000.0000.
 //
 //*****************************************************************************
+
+static uint32_t pui32Stack[1024];
 
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) =
@@ -104,14 +101,14 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+    SysTickIntHandler,                      // The SysTick handler
     IntDefaultHandler,                      // GPIO Port A
     IntDefaultHandler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C
     IntDefaultHandler,                      // GPIO Port D
     IntDefaultHandler,                      // GPIO Port E
-    IntDefaultHandler,                      // UART0 Rx and Tx
-    IntDefaultHandler,                      // UART1 Rx and Tx
+    UARTIntHandler,                         // UART0 Rx and Tx
+    UARTIntHandler1,                        // UART1 Rx and Tx
     IntDefaultHandler,                      // SSI0 Rx and Tx
     IntDefaultHandler,                      // I2C0 Master and Slave
     IntDefaultHandler,                      // PWM Fault
@@ -173,6 +170,10 @@ extern unsigned long _data;
 extern unsigned long _edata;
 extern unsigned long _bss;
 extern unsigned long _ebss;
+static char *heap_end = 0;
+extern unsigned long _heap;
+extern unsigned long _eheap;
+
 extern void (*__preinit_array_start[])(void);
 extern void (*__preinit_array_end[])(void);
 extern void (*__init_array_start[])(void);

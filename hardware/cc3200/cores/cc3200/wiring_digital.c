@@ -1,8 +1,8 @@
 /*
  ************************************************************************
- *	wiring_digital.cp
+ *	wiring_digital.cpp
  *
- *	Arduino core files for cc3200
+ *	Energia core files for cc3200
  *		Copyright (c) 2014 Robert Wessels. All right reserved.
  *
  *
@@ -31,64 +31,60 @@
 
 #define ARDUINO_MAIN
 #include "wiring_private.h"
-#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
 #include "driverlib/gpio.h"
+#include "driverlib/pinmap.h"
 #define GPIO_LOCK_KEY_DD        0x4C4F434B 
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
-    uint32_t portBase = (uint32_t) portBASERegister(port);
-    volatile uint32_t *lock = portLOCKRegister(port);
-    volatile uint32_t *cr = portCRRegister(port);
-    
-    if (port == NOT_A_PORT) return;
-    
-    if (mode == INPUT) {
-        ROM_GPIOPinTypeGPIOInput(portBase, bit);
-    } else if (mode == INPUT_PULLUP) {
-        *lock = GPIO_LOCK_KEY_DD;
-        *cr |= bit;
-        *lock = 0;
-        ROM_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
-        ROM_GPIOPadConfigSet(portBase, bit,
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-        *cr &= ~bit;
-    } else if (mode == INPUT_PULLDOWN) {
-        *lock = GPIO_LOCK_KEY_DD;
-        *cr |= bit;
-        *lock = 0;
-        ROM_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
-        ROM_GPIOPadConfigSet(portBase, bit,
-                     GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPD);
-        *cr &= ~bit;
-    } else {//mode == OUTPUT
-        ROM_GPIOPinTypeGPIOOutput(portBase, bit);
-    }
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
 
+	if (port == NOT_A_PORT) return;
+
+	uint32_t portBase = (uint32_t) portBASERegister(port);
+	uint16_t pinNum = digitalPinToPinNum(pin);
+
+	MAP_PinTypeGPIO(pinNum, PIN_MODE_0, false);
+
+	if (mode == INPUT) {
+		MAP_GPIOPinTypeGPIOInput(portBase, bit);
+	} else if (mode == INPUT_PULLUP) {
+		MAP_GPIOPinTypeGPIOInput(portBase, bit);
+		MAP_PinConfigSet(pin, PIN_STRENGTH_2MA, PIN_TYPE_STD_PU);
+	} else if (mode == INPUT_PULLDOWN) {
+		MAP_GPIOPinTypeGPIOInput(portBase, bit);
+		MAP_PinConfigSet(pin, PIN_STRENGTH_2MA, PIN_TYPE_STD_PD);
+	} else {//mode == OUTPUT
+		MAP_GPIOPinTypeGPIOOutput(portBase, bit);
+	}
 }
 
 int digitalRead(uint8_t pin)
 {
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t port = digitalPinToPort(pin);
-    uint32_t portBase = (uint32_t) portBASERegister(port);
-    if (port == NOT_A_PORT) return LOW;
-    if(ROM_GPIOPinRead(portBase, bit)){
-    	return HIGH;
-    }
-    return LOW;
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
+	uint32_t portBase = (uint32_t) portBASERegister(port);
+
+	if (port == NOT_A_PORT) return LOW;
+
+	if(MAP_GPIOPinRead(portBase, bit)){
+		return HIGH;
+	}
+
+	return LOW;
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)
 {
-    uint8_t bit = digitalPinToBitMask(pin);
-    uint8_t mask = val ? bit : 0;
-    uint8_t port = digitalPinToPort(pin);
-    uint32_t portBase = (uint32_t) portBASERegister(port);
-    
-    if (port == NOT_A_PORT) return;
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t mask = val ? bit : 0;
+	uint8_t port = digitalPinToPort(pin);
 
-    ROM_GPIOPinWrite(portBase, bit, mask);
+	if (port == NOT_A_PORT) return;
+
+	uint32_t portBase = (uint32_t) portBASERegister(port);
+
+	MAP_GPIOPinWrite(portBase, bit, mask);
 }

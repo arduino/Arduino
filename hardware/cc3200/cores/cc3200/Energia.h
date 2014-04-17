@@ -43,119 +43,11 @@ extern "C"{
 #define DEG_TO_RAD 0.017453292519943295769236907684886
 #define RAD_TO_DEG 57.295779513082320876798154814105
 
-#define PA 1
-#define PB 2
-#define PC 3
-#define PD 4
-#define PE 5
-#define PF 6
-#define PG 7
-#define PH 8
-#define PJ 9
-#define PK 10
-#define PL 11
-#define PM 12
-#define PN 13
-#define PP 14
-#define PQ 15
-#define PR 16
-#define PS 17
-#define PT 18
-
-#define TIMA 0
-#define TIMB 8
-
-
-#ifdef __TM4C1294NCPDT__
-// from Table 13-2. General-Purpose Timers Signals (128TQFP)
-#define T0CCP0_0 0
-#define T0CCP0_1 1
-#define T0CCP0_2 2
-
-#define T0CCP1_0 3
-#define T0CCP1_1 4
-#define T0CCP1_2 5
-
-#define T1CCP0_0 6
-#define T1CCP0_1 7
-#define T1CCP0_2 8
-
-#define T1CCP1_0 9
-#define T1CCP1_1 10
-#define T1CCP1_2 11
-
-#define T2CCP0_0 12
-#define T2CCP0_1 13
-
-#define T2CCP1_0 14
-#define T2CCP1_1 15
-
-#define T3CCP0_0 16
-#define T3CCP0_1 17
-#define T3CCP0_2 18
-
-#define T3CCP1_0 19
-#define T3CCP1_1 20
-#define T3CCP1_2 21
-
-#define T4CCP0_0 22
-#define T4CCP0_1 23
-#define T4CCP0_2 24
-
-#define T4CCP1_0 25
-#define T4CCP1_1 26
-#define T4CCP1_2 27
-
-#define T5CCP0_0 28
-#define T5CCP0_1 29
-
-#define T5CCP1_0 30
-#define T5CCP1_1 31
-
-#define TIMER0 0
-#define TIMER1 1
-#define TIMER2 2
-#define TIMER3 3
-#define TIMER4 4
-#define TIMER5 5
-#define WTIMER0 6 // this is needed PWMWrite, see TimerPrescaleSet
-
-
-#else
-#define T0A0 0
-#define T0A1 1
-#define T0B0 2
-#define T0B1 3
-#define T1A0 4
-#define T1A1 5
-#define T1B0 6
-#define T1B1 7
-#define T2A0 8
-#define T2A1 9
-#define T2B 10
-#define T3A 11
-#define T3B 12
-#define WT0A 13
-#define WT0B 14
-#define WT1A 15
-#define WT1B 16
-#define WT2A 17
-#define WT2B 18
-#define WT3A 19
-#define WT3B 20
-#define WT5A 21
-#define WT5B 22
-
-#define TIMER0 0
-#define TIMER1 1
-#define TIMER2 2
-#define TIMER3 3
-#define WTIMER0 4
-#define WTIMER1 5
-#define WTIMER2 6
-#define WTIMER3 7
-#define WTIMER5 9
-#endif
+#define S0 1
+#define S1 2
+#define S2 3
+#define S3 4
+#define S4 5
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
@@ -220,6 +112,7 @@ extern const uint32_t port_to_base[];
 extern const uint32_t digital_pin_to_analog_in[];
 
 #define digitalPinToPort(P)       ( digital_pin_to_port[P] )
+#define digitalPinToPinNum(P)     ( digital_pin_to_pin_num[P] )
 #define digitalPinToBitMask(P)    ( digital_pin_to_bit_mask[P] )
 #define digitalPinToTimer(P)      ( digital_pin_to_timer[P] )
 #define timerToAB(P)              ( timer_to_ab[P] )
@@ -267,7 +160,7 @@ extern const uint32_t digital_pin_to_analog_in[];
 void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
-void timerInit();
+void initSysTick();
 void registerSysTickCb(void (*userFunc)(uint32_t));
 #ifdef __cplusplus
 } // extern "C"
@@ -276,7 +169,7 @@ void registerSysTickCb(void (*userFunc)(uint32_t));
 #ifdef __cplusplus
 #include "WCharacter.h"
 #include "WString.h"
-//#include "HardwareSerial.h"
+#include "HardwareSerial.h"
 
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);

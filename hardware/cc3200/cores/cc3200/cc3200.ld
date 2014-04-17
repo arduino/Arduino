@@ -1,21 +1,18 @@
 /**
  *
- * lm4fcpp.ld - Linker configuration file for Energia c++ programs.
+ * cc3200.ld - Linker configuration file for Energia c++ programs.
  *
  */ 
 
-MEMORY 
+MEMORY
 {
-    flash (rx) : ORIGIN = 0x01000000, LENGTH = 0x00010000
     ram  (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00030000
 }
 
-/* STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : 0x800 ; */
-
-REGION_ALIAS("REGION_TEXT", flash);
 REGION_ALIAS("REGION_RAM", ram);
+HEAP_SIZE = 0x00010000;
 
-SECTIONS 
+SECTIONS
 {
     .text :
     {
@@ -52,7 +49,7 @@ SECTIONS
 
         . = ALIGN(4);
         _etext = .;
-    } > REGION_TEXT
+    } > REGION_RAM
 
     .data : AT(ADDR(.text) + SIZEOF(.text))
     {
