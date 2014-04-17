@@ -115,6 +115,22 @@ CPUprimask(void)
 // on entry.
 //
 //*****************************************************************************
+unsigned long
+CPUcpsie(void)
+{
+    //
+    // Read PRIMASK and enable interrupts.
+    //
+    __asm("    mrs     r0, PRIMASK\n"
+          "    cpsie   i\n");
+
+    //
+    // "Warning[Pe940]: missing return statement at end of non-void function"
+    // is suppressed here to avoid putting a "bx lr" in the inline assembly
+    // above and a superfluous return statement here.
+    //
+}
+
 #if defined(ewarm)
 unsigned long
 CPUcpsie(void)

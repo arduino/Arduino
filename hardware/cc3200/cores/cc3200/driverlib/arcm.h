@@ -134,5 +134,9 @@ extern void ArcmDslpEnter(void);
 extern void ArcmSlpEnter(void);
 extern unsigned long ArcmPeripheralClkGet(ArcmPeripherals_t ePeripheral);
 
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif // __ARCM_API_H__
