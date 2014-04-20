@@ -186,6 +186,7 @@ static const uint8_t PB_1 = 95; // unrouted
 // pushbuttons
 #define PUSH1      PJ_0
 #define PUSH2      PJ_1
+#define TEMPSENSOR 0
 
 #define USR_SW1    PJ_0
 #define USR_SW2    PJ_1
@@ -861,7 +862,7 @@ const uint8_t digital_pin_to_bit_mask[]   = {
 };
 
 const uint32_t digital_pin_to_analog_in[] = {
-    NOT_ON_ADC,     // dummy 
+    ADC_CTL_TS,     // 00 - Temperature Sensor 
     NOT_ON_ADC,     // 01 - 3.3v       X8_01
     ADC_CTL_CH9,    // 02 - PE_4       X8_03
     NOT_ON_ADC,     // 03 - PC_4       X8_05
