@@ -23,6 +23,7 @@
 
 package processing.app;
 
+import processing.app.helpers.FileUtils;
 import processing.app.syntax.SyntaxStyle;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -33,6 +34,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
+import processing.app.helpers.PreferencesMap;
 import static processing.app.I18n._;
 
 
@@ -71,75 +73,94 @@ public class Preferences {
 
   static final String PREFS_FILE = "preferences.txt";
 
-  String[] languages = {
-                        _("System Default"),
-                        "العربية" + " (" + _("Arabic") + ")",
-                        "Aragonés" + " (" + _("Aragonese") + ")",
-                        "Català" + " (" + _("Catalan") + ")",
-                        "简体中文" + " (" + _("Chinese Simplified") + ")",
-                        "繁體中文" + " (" + _("Chinese Traditional") + ")",
-                        "Dansk" + " (" + _("Danish") + ")",
-                        "Nederlands" + " (" + _("Dutch") + ")",
-                        "English" + " (" + _("English") + ")",
-                        "Eesti" + " (" + _("Estonian") + ")",
-                        "Pilipino" + " (" + _("Filipino") + ")",
-                        "Français" + " (" + _("French") + ")",
-                        "Galego" + " (" + _("Galician") + ")",
-                        "Deutsch" + " (" + _("German") + ")",
-                        "ελληνικά" + " (" + _("Greek") + ")",
-                        "Magyar" + " (" + _("Hindi") + ")",
-                        "Magyar" + " (" + _("Hungarian") + ")",
-                        "Bahasa Indonesia" + " (" + _("Indonesian") + ")",
-                        "Italiano" + " (" + _("Italian") + ")",
-                        "日本語" + " (" + _("Japanese") + ")",
-                                                                "한국어" + " (" + _("Korean") + ")",
-                        "Latviešu" + " (" + _("Latvian") + ")",
-                        "Lietuvių Kalba" + " (" + _("Lithuaninan") + ")",
-                                                 "मराठी" + " (" + _("Marathi") + ")",                        
-                        "Norsk" + " (" + _("Norwegian") + ")",
-                        "فارسی" + " (" + _("Persian") + ")",
-                        "Język Polski" + " (" + _("Polish") + ")",
-                        "Português" + " (" + _("Portuguese") + " - Brazil)",
-                        "Português" + " (" + _("Portuguese") + " - Portugal)",
-                        "Română" + " (" + _("Romanian") + ")",
-                        "Русский" + " (" + _("Russian") + ")",
-                        "Español" + " (" + _("Spanish") + ")",
-                        "தமிழ்" + " (" + _("Tamil") + ")"};
-  String[] languagesISO = {
-                        "",
-                        "ar",
-                        "an",
-                        "ca",
-                        "zh_cn",
-                        "zh_tw",
-                        "da",
-                        "nl",
-                        "en",
-                        "et",
-                        "tl",
-                        "fr",
-                        "gl",
-                        "de",
-                        "el",
-                        "hi",
-                        "hu",
-                        "id",
-                        "it",
-                        "ja",
-                        "ko",
-                        "lv",
-                        "lt",
-                        "mr",
-                        "no_nb",
-                        "fa",
-                        "pl",
-                        "pt_br",
-                        "pt_pt",
-                        "ro",
-                        "ru",
-                        "es",
-                        "ta"};
-  
+  class Language {
+    Language(String _name, String _originalName, String _isoCode) {
+      name = _name;
+      originalName = _originalName;
+      isoCode = _isoCode;
+    }
+
+    public String toString() {
+      if (originalName.length() == 0)
+        return name;
+      return originalName + " (" + name + ")";
+    };
+
+    String name;
+    String originalName;
+    String isoCode;
+  }
+
+  Language languages[] = {
+      new Language(_("System Default"), "", ""),
+      new Language(_("Albanian"), "shqip", "sq"),
+      new Language(_("Arabic"), "العربية", "ar"),
+      new Language(_("Aragonese"), "Aragonés", "an"),
+      new Language(_("Belarusian"), "Беларуская мова", "be"),
+      new Language(_("Bulgarian"), "български", "bg"),
+      new Language(_("Catalan"), "Català", "ca"),
+      new Language(_("Chinese Simplified"), "简体中文", "zh_CN"),
+      new Language(_("Chinese Traditional"), "繁體中文", "zh_TW"),
+      new Language(_("Croatian"), "Hrvatski", "hr_HR"),
+      new Language(_("Czech"), "český", "cs_CZ"),
+      new Language(_("Danish"), "Dansk", "da_DK"),
+      new Language(_("Dutch"), "Nederlands", "nl"),
+      new Language(_("English"), "English", "en"),
+      new Language(_("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
+      new Language(_("Estonian"), "Eesti", "et"),
+      new Language(_("Estonian (Estonia)"), "Eesti keel", "et_EE"),
+      new Language(_("Filipino"), "Pilipino", "fil"),
+      new Language(_("Finnish"), "Suomi", "fi"),
+      new Language(_("French"), "Français", "fr"),
+      new Language(_("Canadian French"), "Canadienne-français", "fr_CA"),
+      new Language(_("Galician"), "Galego", "gl"),
+      new Language(_("Georgian"), "საქართველოს", "ka_GE"),
+      new Language(_("German"), "Deutsch", "de_DE"),
+      new Language(_("Greek"), "ελληνικά", "el_GR"),
+      new Language(_("Hebrew"), "עברית", "he"),
+      new Language(_("Hindi"), "हिंदी", "hi"),
+      new Language(_("Hungarian"), "Magyar", "hu"),
+      new Language(_("Indonesian"), "Bahasa Indonesia", "id"),
+      new Language(_("Italian"), "Italiano", "it_IT"),
+      new Language(_("Japanese"), "日本語", "ja_JP"),
+      new Language(_("Korean"), "한국어", "ko_KR"),
+      new Language(_("Latvian"), "Latviešu", "lv_LV"),
+      new Language(_("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
+      new Language(_("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
+      new Language(_("Persian"), "فارسی", "fa"),
+      new Language(_("Polish"), "Język Polski", "pl"),
+      new Language(_("Portuguese (Brazil)"), "Português (Brazil)", "pt_BR"),
+      new Language(_("Portuguese (Portugal)"), "Português (Portugal)", "pt_PT"),
+      new Language(_("Romanian"), "Română", "ro"),
+      new Language(_("Russian"), "Русский", "ru"),
+      new Language(_("Slovenian"), "Slovenščina", "sl_SI"),
+      new Language(_("Spanish"), "Español", "es"),
+      new Language(_("Swedish"), "Svenska", "sv"),
+      new Language(_("Tamil"), "தமிழ்", "ta"),
+      new Language(_("Turkish"), "Türk", "tr"),
+      new Language(_("Ukrainian"), "Український", "uk"), 
+      new Language(_("Vietnamese"), "Tiếng Việt", "vi"), 
+      };
+
+  // Incomplete languages 
+  Language missingLanguages[] = {
+      new Language(_("Armenian"), "Հայերեն", "hy"),
+      new Language(_("Asturian"), "Asturianu", "ast"),
+      new Language(_("Basque"), "Euskara", "eu"),
+      new Language(_("Bosnian"), "Bosanski", "bs"),
+      new Language(_("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
+      new Language(_("Chinese (China)"), "", "zh_CN"),
+      new Language(_("Chinese (Hong Kong)"), "", "zh_HK"),
+      new Language(_("Chinese (Taiwan)"), "", "zh_TW"),
+      new Language(_("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
+      new Language(_("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
+      new Language(_("Nepali"), "नेपाली", "ne"),
+      new Language(_("N'Ko"), "ߒߞߏ", "nqo"),
+      new Language(_("Marathi"), "मराठी", "mr"),
+      new Language(_("Portugese"), "Português", "pt"),
+      new Language(_("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
+      };
+
   /**
    * Standardized width for buttons. Mac OS X 10.3 wants 70 as its default,
    * Windows XP needs 66, and my Ubuntu machine needs 80+, so 80 seems proper.
@@ -196,12 +217,12 @@ public class Preferences {
 
   // data model
 
-  static Hashtable defaults;
-  static Hashtable table = new Hashtable();;
+  static Hashtable<String, String> defaults;
+  static Hashtable<String, String> table = new Hashtable<String, String>();
   static File preferencesFile;
 
 
-  static protected void init(String commandLinePrefs) {
+  static protected void init(String args[]) {
 
     // start by loading the defaults, in case something
     // important was deleted from the user prefs
@@ -212,12 +233,16 @@ public class Preferences {
                              "You'll need to reinstall Arduino."), e);
     }
 
+    // set some runtime constants (not saved on preferences file)
+    File hardwareFolder = Base.getHardwareFolder();
+    table.put("runtime.ide.path", hardwareFolder.getParentFile().getAbsolutePath());
+    table.put("runtime.ide.version", "" + Base.REVISION);
+    
     // check for platform-specific properties in the defaults
     String platformExt = "." + Base.platform.getName();
     int platformExtLength = platformExt.length();
-    Enumeration e = table.keys();
-    while (e.hasMoreElements()) {
-      String key = (String) e.nextElement();
+    Set<String> keySet = new HashSet<String>(table.keySet());
+    for (String key : keySet) {
       if (key.endsWith(platformExt)) {
         // this is a key specific to a particular platform
         String actualKey = key.substring(0, key.length() - platformExtLength);
@@ -227,51 +252,58 @@ public class Preferences {
     }
 
     // clone the hash table
-    defaults = (Hashtable) table.clone();
+    defaults = new Hashtable<String, String>(table);
 
-    // Load a prefs file if specified on the command line
-    if (commandLinePrefs != null) {
-      try {
-        load(new FileInputStream(commandLinePrefs));
+    // next load user preferences file
+    preferencesFile = Base.getSettingsFile(PREFS_FILE);
 
-      } catch (Exception poe) {
-        Base.showError(_("Error"),
-                       I18n.format(
-			 _("Could not read preferences from {0}"),
-			 commandLinePrefs
-		       ), poe);
+    // load a preferences file if specified on the command line
+    if (args != null) {
+      for (int i = 0; i < args.length - 1; i++) {
+        if (args[i].equals("--preferences-file"))
+          preferencesFile = new File(args[i + 1]);
       }
-    } else if (!Base.isCommandLine()) {
-      // next load user preferences file
-      preferencesFile = Base.getSettingsFile(PREFS_FILE);
-      if (!preferencesFile.exists()) {
-        // create a new preferences file if none exists
-        // saves the defaults out to the file
-        save();
+    }
 
-      } else {
-        // load the previous preferences file
-
-        try {
-          load(new FileInputStream(preferencesFile));
-
-        } catch (Exception ex) {
-          Base.showError(_("Error reading preferences"),
-			 I18n.format(
-			   _("Error reading the preferences file. " +
-			     "Please delete (or move)\n" +
-			     "{0} and restart Arduino."),
-			   preferencesFile.getAbsolutePath()
-			 ), ex);
-        }
+    if (!preferencesFile.exists()) {
+      // create a new preferences file if none exists
+      // saves the defaults out to the file
+      save();
+    } else {
+      // load the previous preferences file
+      try {
+        load(new FileInputStream(preferencesFile));
+      } catch (Exception ex) {
+        Base.showError(_("Error reading preferences"),
+                       I18n.format(_("Error reading the preferences file. "
+                                       + "Please delete (or move)\n"
+                                       + "{0} and restart Arduino."),
+                                   preferencesFile.getAbsolutePath()), ex);
       }
     }
 
     // load the I18n module for internationalization
-    I18n.init(Preferences.get("editor.languages.current"));
+    try {
+      I18n.init(Preferences.get("editor.languages.current"));
+    } catch (MissingResourceException e) {
+      I18n.init("en");
+      Preferences.set("editor.languages.current", "en");
+    }
+
+    // set some other runtime constants (not saved on preferences file)
+    table.put("runtime.os", PConstants.platformNames[PApplet.platform]);
 
     // other things that have to be set explicitly for the defaults
     setColor("run.window.bgcolor", SystemColor.control);
+
+    fixPreferences();
+  }
+
+  private static void fixPreferences() {
+    String baud = get("serial.debug_rate");
+    if ("14400".equals(baud) || "28800".equals(baud) || "38400".equals(baud)) {
+      set("serial.debug_rate", "9600");
+    }
   }
 
 
@@ -315,9 +347,16 @@ public class Preferences {
         public void actionPerformed(ActionEvent e) {
           File dflt = new File(sketchbookLocationField.getText());
           File file =
-            Base.selectFolder(_("Select new sketchbook location"), dflt, dialog);
+                  Base.selectFolder(_("Select new sketchbook location"), dflt, dialog);
           if (file != null) {
-            sketchbookLocationField.setText(file.getAbsolutePath());
+            String path = file.getAbsolutePath();
+            if (Base.getPortableFolder() != null) {
+              path = FileUtils.relativePath(Base.getPortableFolder().toString(), path);
+              if (path == null) {
+                path = Base.getPortableSketchbookFolder();
+              }
+            }
+            sketchbookLocationField.setText(path);
           }
         }
       });
@@ -341,7 +380,11 @@ public class Preferences {
     label = new JLabel(_("Editor language: "));
     box.add(label);
     comboLanguage = new JComboBox(languages);
-    comboLanguage.setSelectedIndex((Arrays.asList(languagesISO)).indexOf(Preferences.get("editor.languages.current")));
+    String currentLanguage = Preferences.get("editor.languages.current");
+    for (Language language : languages) {
+      if (language.isoCode.equals(currentLanguage))
+        comboLanguage.setSelectedItem(language);
+    }
     box.add(comboLanguage);
     label = new JLabel(_("  (requires restart of Arduino)"));
     box.add(label);
@@ -439,6 +482,10 @@ public class Preferences {
       autoAssociateBox.setBounds(left, top, d.width + 10, d.height);
       right = Math.max(right, left + d.width);
       top += d.height + GUI_BETWEEN;
+
+      // If using portable mode, it's bad manner to change PC setting.
+      if (Base.getPortableFolder() != null)
+        autoAssociateBox.setEnabled(false);
     }
 
     // More preferences are in the ...
@@ -457,7 +504,7 @@ public class Preferences {
         public void mousePressed(MouseEvent e) {
           Base.openFolder(Base.getSettingsFolder());
         }
-        
+
         public void mouseEntered(MouseEvent e) {
           clickable.setForeground(new Color(0, 0, 140));
         }
@@ -592,6 +639,12 @@ public class Preferences {
     // if the sketchbook path has changed, rebuild the menus
     String oldPath = get("sketchbook.path");
     String newPath = sketchbookLocationField.getText();
+    if (newPath.isEmpty()) {
+      if (Base.getPortableFolder() == null)
+        newPath = editor.base.getDefaultSketchbookFolder().toString();
+      else
+        newPath = Base.getPortableSketchbookFolder();
+    }
     if (!newPath.equals(oldPath)) {
       editor.base.rebuildSketchbookMenus();
       set("sketchbook.path", newPath);
@@ -631,9 +684,8 @@ public class Preferences {
     setBoolean("editor.update_extension", updateExtensionBox.isSelected());
 
     // adds the selected language to the preferences file
-    Object newItem = comboLanguage.getSelectedItem();
-    int pos = (Arrays.asList(languages)).indexOf(newItem.toString());  // position in the languages array
-    set("editor.languages.current",(Arrays.asList(languagesISO)).get(pos));        
+    Language newLanguage = (Language) comboLanguage.getSelectedItem();
+    set("editor.languages.current", newLanguage.isoCode);
 
     editor.applyPreferences();
   }
@@ -681,7 +733,7 @@ public class Preferences {
     load(input, table);
   }
   
-  static public void load(InputStream input, Map table) throws IOException {
+  static public void load(InputStream input, Map<String, String> table) throws IOException {
     String[] lines = loadStrings(input);  // Reads as UTF-8
     for (String line : lines) {
       if ((line.length() == 0) ||
@@ -746,10 +798,13 @@ public class Preferences {
     // Fix for 0163 to properly use Unicode when writing preferences.txt
     PrintWriter writer = PApplet.createWriter(preferencesFile);
 
-    String[] keys = (String[])table.keySet().toArray(new String[0]);
+    String[] keys = table.keySet().toArray(new String[0]);
     Arrays.sort(keys);
-    for (String key: keys)
-      writer.println(key + "=" + ((String) table.get(key)));
+    for (String key: keys) {
+      if (key.startsWith("runtime."))
+        continue;
+      writer.println(key + "=" + table.get(key));
+    }
 
     writer.flush();
     writer.close();
@@ -768,22 +823,27 @@ public class Preferences {
   //static public String get(String attribute) {
   //return get(attribute, null);
   //}
-  
-  static public String get(String attribute /*, String defaultValue */) {
-    return (String) table.get(attribute);
-    /*
-    //String value = (properties != null) ?
-    //properties.getProperty(attribute) : applet.getParameter(attribute);
-    String value = properties.getProperty(attribute);
 
-    return (value == null) ?
-      defaultValue : value;
-    */
+  static public String get(String attribute) {
+    return table.get(attribute);
   }
 
+  static public String get(String attribute, String defaultValue) {
+    String value = get(attribute);
+
+    return (value == null) ? defaultValue : value;
+  }
+
+  public static boolean has(String key) {
+    return table.containsKey(key);
+  }
+
+  public static void remove(String key) {
+    table.remove(key);
+  }
 
   static public String getDefault(String attribute) {
-    return (String) defaults.get(attribute);
+    return defaults.get(attribute);
   }
 
 
@@ -922,4 +982,11 @@ public class Preferences {
 
     return new SyntaxStyle(color, italic, bold, underlined);
   }
+  
+  // get a copy of the Preferences
+  static public PreferencesMap getMap() 
+  {
+    return new PreferencesMap(table);
+  }
+
 }

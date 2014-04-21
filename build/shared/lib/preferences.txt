@@ -93,7 +93,7 @@ editor.font=Monospaced,plain,12
 editor.font.macosx = Monaco,plain,10
 
 # anti-aliased text, turned off by default
-editor.antialias=false
+editor.antialias=true
 
 # color to be used for background when 'external editor' enabled
 editor.external=false
@@ -245,8 +245,12 @@ run.present.exclusive = false
 run.present.exclusive.macosx = true
 
 # ARDUINO PREFERENCES
+target_package = arduino
+target_platform = avr
 board = uno
-target = arduino
+software=ARDUINO
+# Warn when data segment uses greater than this percentage
+build.warn_data_percentage = 75
 
 programmer = arduino:avrispmkii
 

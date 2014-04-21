@@ -23,19 +23,29 @@
 
 package processing.app.debug;
 
+import static processing.app.I18n._;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import processing.app.Base;
+import processing.app.I18n;
 import processing.app.Preferences;
 import processing.app.Sketch;
 import processing.app.SketchCode;
-import processing.core.*;
-import processing.app.I18n;
+import processing.app.helpers.FileUtils;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.ProcessUtils;
+import processing.app.helpers.StringReplacer;
 import processing.app.helpers.filefilters.OnlyDirs;
-import static processing.app.I18n._;
-
-import java.io.*;
-import java.util.*;
-import java.util.zip.*;
-
+import processing.app.packages.Library;
+import processing.core.PApplet;
 
 public class Compiler implements MessageConsumer {
   static final String BUGS_URL =
@@ -43,311 +53,236 @@ public class Compiler implements MessageConsumer {
   static final String SUPER_BADNESS =
     I18n.format(_("Compiler error, please submit this code to {0}"), BUGS_URL);
 
-  Sketch sketch;
-  String buildPath;
-  String primaryClassName;
-  boolean verbose;
-  boolean sketchIsCompiled;
+  private Sketch sketch;
 
-  RunnerException exception;
+  private List<File> objectFiles;
 
-  public Compiler() { }
+  private PreferencesMap prefs;
+  private boolean verbose;
+  private boolean sketchIsCompiled;
+  private String targetArch;
+  
+  private RunnerException exception;
 
   /**
-   * Compile with avr-gcc.
+   * Create a new Compiler
+   * @param _sketch Sketch object to be compiled.
+   * @param _buildPath Where the temporary files live and will be built from.
+   * @param _primaryClassName the name of the combined sketch file w/ extension
+   */
+  public Compiler(Sketch _sketch, String _buildPath, String _primaryClassName)
+      throws RunnerException {
+    sketch = _sketch;
+    prefs = createBuildPreferences(_buildPath, _primaryClassName);
+  }
+
+  /**
+   * Compile sketch.
    *
-   * @param sketch Sketch object to be compiled.
-   * @param buildPath Where the temporary files live and will be built from.
-   * @param primaryClassName the name of the combined sketch file w/ extension
    * @return true if successful.
    * @throws RunnerException Only if there's a problem. Only then.
    */
-  public boolean compile(Sketch sketch,
-                         String buildPath,
-                         String primaryClassName,
-                         boolean verbose) throws RunnerException {
-    this.sketch = sketch;
-    this.buildPath = buildPath;
-    this.primaryClassName = primaryClassName;
-    this.verbose = verbose;
-    this.sketchIsCompiled = false;
+  public boolean compile(boolean _verbose) throws RunnerException {
+    verbose = _verbose || Preferences.getBoolean("build.verbose");
+    sketchIsCompiled = false;
+    objectFiles = new ArrayList<File>();
 
-    // the pms object isn't used for anything but storage
-    MessageStream pms = new MessageStream(this);
-
-    String avrBasePath = Base.getAvrBasePath();
-    Map<String, String> boardPreferences = Base.getBoardPreferences();
-    String core = boardPreferences.get("build.core");
-    if (core == null) {
-    	RunnerException re = new RunnerException(_("No board selected; please choose a board from the Tools > Board menu."));
-      re.hideStackTrace();
-      throw re;
+    // 0. include paths for core + all libraries
+    sketch.setCompilingProgress(20);
+    List<File> includeFolders = new ArrayList<File>();
+    includeFolders.add(prefs.getFile("build.core.path"));
+    if (prefs.getFile("build.variant.path") != null)
+      includeFolders.add(prefs.getFile("build.variant.path"));
+    for (Library lib : sketch.getImportedLibraries()) {
+      if (verbose)
+        System.out.println(I18n
+            .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
+                    lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
+      includeFolders.add(lib.getSrcFolder());
     }
-    String corePath;
-    
-    if (core.indexOf(':') == -1) {
-      Target t = Base.getTarget();
-      File coreFolder = new File(new File(t.getFolder(), "cores"), core);
-      corePath = coreFolder.getAbsolutePath();
-    } else {
-      Target t = Base.targetsTable.get(core.substring(0, core.indexOf(':')));
-      File coreFolder = new File(t.getFolder(), "cores");
-      coreFolder = new File(coreFolder, core.substring(core.indexOf(':') + 1));
-      corePath = coreFolder.getAbsolutePath();
-    }
+    if (verbose)
+      System.out.println();
 
-    String variant = boardPreferences.get("build.variant");
-    String variantPath = null;
-    
-    if (variant != null) {
-      if (variant.indexOf(':') == -1) {
-	Target t = Base.getTarget();
-	File variantFolder = new File(new File(t.getFolder(), "variants"), variant);
-	variantPath = variantFolder.getAbsolutePath();
-      } else {
-	Target t = Base.targetsTable.get(variant.substring(0, variant.indexOf(':')));
-	File variantFolder = new File(t.getFolder(), "variants");
-	variantFolder = new File(variantFolder, variant.substring(variant.indexOf(':') + 1));
-	variantPath = variantFolder.getAbsolutePath();
+    List<String> archs = new ArrayList<String>();
+    archs.add(Base.getTargetPlatform().getId());
+    if (prefs.containsKey("architecture.override_check")) {
+      String[] overrides = prefs.get("architecture.override_check").split(",");
+      archs.addAll(Arrays.asList(overrides));
+    }
+    for (Library lib : sketch.getImportedLibraries()) {
+      if (!lib.supportsArchitecture(archs)) {
+        System.err.println(I18n
+            .format(_("WARNING: library {0} claims to run on {1} "
+                + "architecture(s) and may be incompatible with your"
+                + " current board which runs on {2} architecture(s)."), lib
+                .getName(), lib.getArchitectures(), archs));
+        System.err.println();
       }
     }
+    
+    // 1. compile the sketch (already in the buildPath)
+    sketch.setCompilingProgress(30);
+    compileSketch(includeFolders);
+    sketchIsCompiled = true;
 
-    List<File> objectFiles = new ArrayList<File>();
+    // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
+    // Doesn't really use configPreferences
+    sketch.setCompilingProgress(40);
+    compileLibraries(includeFolders);
 
-   // 0. include paths for core + all libraries
-
-   sketch.setCompilingProgress(20);
-   List includePaths = new ArrayList();
-   includePaths.add(corePath);
-   if (variantPath != null) includePaths.add(variantPath);
-   for (File libFolder : sketch.getImportedLibraries()) {
-     // Forward compatibility with 1.5 library format
-     File propertiesFile = new File(libFolder, "library.properties");
-     File srcFolder = new File(libFolder, "src");
-     if (propertiesFile.isFile() && srcFolder.isDirectory())
-       includePaths.add(srcFolder.getPath());
-     else
-       includePaths.add(libFolder.getPath());
-   }
-
-   // 1. compile the sketch (already in the buildPath)
-
-   sketch.setCompilingProgress(30);
-   objectFiles.addAll(
-     compileFiles(avrBasePath, buildPath, includePaths,
-               findFilesInPath(buildPath, "S", false),
-               findFilesInPath(buildPath, "c", false),
-               findFilesInPath(buildPath, "cpp", false),
-               boardPreferences));
-   sketchIsCompiled = true;
-
-   // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
-
-   sketch.setCompilingProgress(40);
-   for (File libraryFolder : sketch.getImportedLibraries()) {
-     File outputFolder = new File(buildPath, libraryFolder.getName());
-     createFolder(outputFolder);
-     
-     // Forward compatibility with 1.5 library format
-     File propertiesFile = new File(libraryFolder, "library.properties");
-     File srcFolder = new File(libraryFolder, "src");
-     if (propertiesFile.exists() && srcFolder.isDirectory()) {
-       // Is an 1.5 library with "src" folder layout
-       includePaths.add(srcFolder.getAbsolutePath());
-
-       // Recursively compile "src" folder
-        objectFiles.addAll(recursiveCompile(avrBasePath, srcFolder,
-            outputFolder, includePaths, boardPreferences));
-       
-       includePaths.remove(includePaths.size() - 1);
-       continue;
-     }
-     
-     // Otherwise fallback to 1.0 library layout...
-     
-     File utilityFolder = new File(libraryFolder, "utility");
-     // this library can use includes in its utility/ folder
-     includePaths.add(utilityFolder.getAbsolutePath());
-     objectFiles.addAll(
-       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
-               findFilesInFolder(libraryFolder, "S", false),
-               findFilesInFolder(libraryFolder, "c", false),
-               findFilesInFolder(libraryFolder, "cpp", false),
-               boardPreferences));
-     outputFolder = new File(outputFolder, "utility");
-     createFolder(outputFolder);
-     objectFiles.addAll(
-       compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
-               findFilesInFolder(utilityFolder, "S", false),
-               findFilesInFolder(utilityFolder, "c", false),
-               findFilesInFolder(utilityFolder, "cpp", false),
-               boardPreferences));
-     // other libraries should not see this library's utility/ folder
-     includePaths.remove(includePaths.size() - 1);
-   }
-
-   // 3. compile the core, outputting .o files to <buildPath> and then
-   // collecting them into the core.a library file.
-
-   sketch.setCompilingProgress(50);
-  includePaths.clear();
-  includePaths.add(corePath);  // include path for core only
-  if (variantPath != null) includePaths.add(variantPath);
-  List<File> coreObjectFiles =
-    compileFiles(avrBasePath, buildPath, includePaths,
-              findFilesInPath(corePath, "S", true),
-              findFilesInPath(corePath, "c", true),
-              findFilesInPath(corePath, "cpp", true),
-              boardPreferences);
-
-   String runtimeLibraryName = buildPath + File.separator + "core.a";
-   List baseCommandAR = new ArrayList(Arrays.asList(new String[] {
-     avrBasePath + "avr-ar",
-     "rcs",
-     runtimeLibraryName
-   }));
-   for(File file : coreObjectFiles) {
-     List commandAR = new ArrayList(baseCommandAR);
-     commandAR.add(file.getAbsolutePath());
-     execAsynchronously(commandAR);
-   }
+    // 3. compile the core, outputting .o files to <buildPath> and then
+    // collecting them into the core.a library file.
+    sketch.setCompilingProgress(50);
+    compileCore();
 
     // 4. link it all together into the .elf file
-    // For atmega2560, need --relax linker option to link larger
-    // programs correctly.
-    String optRelax = "";
-    String atmega2560 = new String ("atmega2560");
-    if ( atmega2560.equals(boardPreferences.get("build.mcu")) ) {
-        optRelax = new String(",--relax");
-    }
-   sketch.setCompilingProgress(60);
-    List baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-gcc",
-      "-Os",
-      "-Wl,--gc-sections"+optRelax,
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-o",
-      buildPath + File.separator + primaryClassName + ".elf"
-    }));
-
-    for (File file : objectFiles) {
-      baseCommandLinker.add(file.getAbsolutePath());
-    }
-
-    baseCommandLinker.add(runtimeLibraryName);
-    baseCommandLinker.add("-L" + buildPath);
-    baseCommandLinker.add("-lm");
-
-    execAsynchronously(baseCommandLinker);
-
-    List baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-objcopy",
-      "-O",
-      "-R",
-    }));
-    
-    List commandObjcopy;
+    sketch.setCompilingProgress(60);
+    compileLink();
 
     // 5. extract EEPROM data (from EEMEM directive) to .eep file.
     sketch.setCompilingProgress(70);
-    commandObjcopy = new ArrayList(baseCommandObjcopy);
-    commandObjcopy.add(2, "ihex");
-    commandObjcopy.set(3, "-j");
-    commandObjcopy.add(".eeprom");
-    commandObjcopy.add("--set-section-flags=.eeprom=alloc,load");
-    commandObjcopy.add("--no-change-warnings");
-    commandObjcopy.add("--change-section-lma");
-    commandObjcopy.add(".eeprom=0");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".eep");
-    execAsynchronously(commandObjcopy);
-    
+    compileEep();
+
     // 6. build the .hex file
     sketch.setCompilingProgress(80);
-    commandObjcopy = new ArrayList(baseCommandObjcopy);
-    commandObjcopy.add(2, "ihex");
-    commandObjcopy.add(".eeprom"); // remove eeprom data
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".hex");
-    execAsynchronously(commandObjcopy);
-    
+    compileHex();
+
     sketch.setCompilingProgress(90);
-   
     return true;
   }
 
-  private List<File> recursiveCompile(String avrBasePath, File srcFolder,
-      File outputFolder, List<File> includePaths,
-      Map<String, String> boardPreferences) throws RunnerException {
-    List<File> objectFiles = new ArrayList<File>();
-    objectFiles.addAll(compileFiles(avrBasePath, outputFolder.getAbsolutePath(), includePaths,
-        findFilesInFolder(srcFolder, "S", false),
-        findFilesInFolder(srcFolder, "c", false),
-        findFilesInFolder(srcFolder, "cpp", false),
-        boardPreferences));
-
-    // Recursively compile sub-folders
-    for (File srcSubfolder : srcFolder.listFiles(new OnlyDirs())) {
-      File outputSubfolder = new File(outputFolder, srcSubfolder.getName());
-      createFolder(outputSubfolder);
-      objectFiles.addAll(recursiveCompile(avrBasePath, srcSubfolder,
-          outputSubfolder, includePaths, boardPreferences));
+  private PreferencesMap createBuildPreferences(String _buildPath,
+                                                String _primaryClassName)
+      throws RunnerException {
+    
+    if (Base.getBoardPreferences() == null) {
+      RunnerException re = new RunnerException(
+          _("No board selected; please choose a board from the Tools > Board menu."));
+      re.hideStackTrace();
+      throw re;
     }
 
-    return objectFiles;
+    // Check if the board needs a platform from another package 
+    TargetPlatform targetPlatform = Base.getTargetPlatform();
+    TargetPlatform corePlatform = null;
+    PreferencesMap boardPreferences = Base.getBoardPreferences();
+    String core = boardPreferences.get("build.core");
+    if (core.contains(":")) {
+      String[] split = core.split(":");
+      core = split[1];
+      corePlatform = Base.getTargetPlatform(split[0], targetPlatform.getId());
+      if (corePlatform == null) {
+        RunnerException re = new RunnerException(I18n
+            .format(_("Selected board depends on '{0}' core (not installed)."),
+                    split[0]));
+        re.hideStackTrace();
+        throw re;
+      }
+    }
+    
+    // Merge all the global preference configuration in order of priority
+    PreferencesMap p = new PreferencesMap();
+    p.putAll(Preferences.getMap());
+    if (corePlatform != null)
+      p.putAll(corePlatform.getPreferences());
+    p.putAll(targetPlatform.getPreferences());
+    p.putAll(Base.getBoardPreferences());
+    for (String k : p.keySet()) {
+      if (p.get(k) == null)
+        p.put(k, "");
+    }
+
+    p.put("build.path", _buildPath);
+    p.put("build.project_name", _primaryClassName);
+    targetArch = targetPlatform.getId();
+    p.put("build.arch", targetArch.toUpperCase());
+    
+    // Platform.txt should define its own compiler.path. For
+    // compatibility with earlier 1.5 versions, we define a (ugly,
+    // avr-specific) default for it, but this should be removed at some
+    // point.
+    if (!p.containsKey("compiler.path")) {
+      System.err.println(_("Third-party platform.txt does not define compiler.path. Please report this to the third-party hardware maintainer."));
+      p.put("compiler.path", Base.getAvrBasePath());
+    }
+
+    // Core folder
+    TargetPlatform tp = corePlatform;
+    if (tp == null)
+      tp = targetPlatform;
+    File coreFolder = new File(tp.getFolder(), "cores");
+    coreFolder = new File(coreFolder, core);
+    p.put("build.core", core);
+    p.put("build.core.path", coreFolder.getAbsolutePath());
+    
+    // System Folder
+    File systemFolder = tp.getFolder();
+    systemFolder = new File(systemFolder, "system");
+    p.put("build.system.path", systemFolder.getAbsolutePath());
+    
+    // Variant Folder
+    String variant = p.get("build.variant");
+    if (variant != null) {
+      TargetPlatform t;
+      if (!variant.contains(":")) {
+        t = targetPlatform;
+      } else {
+        String[] split = variant.split(":", 2);
+        t = Base.getTargetPlatform(split[0], targetPlatform.getId());
+        variant = split[1];
+      }
+      File variantFolder = new File(t.getFolder(), "variants");
+      variantFolder = new File(variantFolder, variant);
+      p.put("build.variant.path", variantFolder.getAbsolutePath());
+    } else {
+      p.put("build.variant.path", "");
+    }
+    
+    return p;
   }
 
-  private List<File> compileFiles(String avrBasePath,
-                                  String buildPath, List<File> includePaths,
-                                  List<File> sSources, 
-                                  List<File> cSources, List<File> cppSources,
-                                  Map<String, String> boardPreferences)
-    throws RunnerException {
-
+  private List<File> compileFiles(File outputPath, File sourcePath,
+                                  boolean recurse, List<File> includeFolders)
+      throws RunnerException {
+    List<File> sSources = findFilesInFolder(sourcePath, "S", recurse);
+    List<File> cSources = findFilesInFolder(sourcePath, "c", recurse);
+    List<File> cppSources = findFilesInFolder(sourcePath, "cpp", recurse);
     List<File> objectPaths = new ArrayList<File>();
-    
+
     for (File file : sSources) {
-      String objectPath = buildPath + File.separator + file.getName() + ".o";
-      objectPaths.add(new File(objectPath));
-      execAsynchronously(getCommandCompilerS(avrBasePath, includePaths,
-                                             file.getAbsolutePath(),
-                                             objectPath,
-                                             boardPreferences));
+      File objectFile = new File(outputPath, file.getName() + ".o");
+      objectPaths.add(objectFile);
+      String[] cmd = getCommandCompilerS(includeFolders, file, objectFile);
+      execAsynchronously(cmd);
     }
  		
     for (File file : cSources) {
-        String objectPath = buildPath + File.separator + file.getName() + ".o";
-        String dependPath = buildPath + File.separator + file.getName() + ".d";
-        File objectFile = new File(objectPath);
-        File dependFile = new File(dependPath);
-        objectPaths.add(objectFile);
-        if (is_already_compiled(file, objectFile, dependFile, boardPreferences)) continue;
-        execAsynchronously(getCommandCompilerC(avrBasePath, includePaths,
-                                               file.getAbsolutePath(),
-                                               objectPath,
-                                               boardPreferences));
+      File objectFile = new File(outputPath, file.getName() + ".o");
+      File dependFile = new File(outputPath, file.getName() + ".d");
+      objectPaths.add(objectFile);
+      if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
+        continue;
+      String[] cmd = getCommandCompilerC(includeFolders, file, objectFile);
+      execAsynchronously(cmd);
     }
 
     for (File file : cppSources) {
-        String objectPath = buildPath + File.separator + file.getName() + ".o";
-        String dependPath = buildPath + File.separator + file.getName() + ".d";
-        File objectFile = new File(objectPath);
-        File dependFile = new File(dependPath);
-        objectPaths.add(objectFile);
-        if (is_already_compiled(file, objectFile, dependFile, boardPreferences)) continue;
-        execAsynchronously(getCommandCompilerCPP(avrBasePath, includePaths,
-                                                 file.getAbsolutePath(),
-                                                 objectPath,
-                                                 boardPreferences));
+      File objectFile = new File(outputPath, file.getName() + ".o");
+      File dependFile = new File(outputPath, file.getName() + ".d");
+      objectPaths.add(objectFile);
+      if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
+        continue;
+      String[] cmd = getCommandCompilerCPP(includeFolders, file, objectFile);
+      execAsynchronously(cmd);
     }
     
     return objectPaths;
   }
 
-  private boolean is_already_compiled(File src, File obj, File dep, Map<String, String> prefs) {
+  private boolean isAlreadyCompiled(File src, File obj, File dep, Map<String, String> prefs) {
     boolean ret=true;
     try {
-      //System.out.println("\n  is_already_compiled: begin checks: " + obj.getPath());
+      //System.out.println("\n  isAlreadyCompiled: begin checks: " + obj.getPath());
       if (!obj.exists()) return false;  // object file (.o) does not exist
       if (!dep.exists()) return false;  // dep file (.d) does not exist
       long src_modified = src.lastModified();
@@ -370,8 +305,8 @@ public class Compiler implements MessageConsumer {
             String objpath = obj.getCanonicalPath();
             File linefile = new File(line);
             String linepath = linefile.getCanonicalPath();
-            //System.out.println("  is_already_compiled: obj =  " + objpath);
-            //System.out.println("  is_already_compiled: line = " + linepath);
+            //System.out.println("  isAlreadyCompiled: obj =  " + objpath);
+            //System.out.println("  isAlreadyCompiled: line = " + linepath);
             if (objpath.compareTo(linepath) == 0) {
               need_obj_parse = false;
               continue;
@@ -394,15 +329,15 @@ public class Compiler implements MessageConsumer {
             ret = false;  // prerequisite modified since object was compiled
             break;
           }
-          //System.out.println("  is_already_compiled:  prerequisite ok");
+          //System.out.println("  isAlreadyCompiled:  prerequisite ok");
         }
       }
       reader.close();
     } catch (Exception e) {
       return false;  // any error reading dep file = recompile it
     }
-    if (ret && (verbose || Preferences.getBoolean("build.verbose"))) {
-      System.out.println("  Using previously compiled: " + obj.getPath());
+    if (ret && verbose) {
+      System.out.println(I18n.format(_("Using previously compiled file: {0}"), obj.getPath()));
     }
     return ret;
   }
@@ -413,15 +348,23 @@ public class Compiler implements MessageConsumer {
   /**
    * Either succeeds or throws a RunnerException fit for public consumption.
    */
-  private void execAsynchronously(List commandList) throws RunnerException {
-    String[] command = new String[commandList.size()];
-    commandList.toArray(command);
+  private void execAsynchronously(String[] command) throws RunnerException {
+
+    // eliminate any empty array entries
+    List<String> stringList = new ArrayList<String>();
+    for (String string : command) {
+      string = string.trim();
+      if (string.length() != 0)
+        stringList.add(string);
+    }
+    command = stringList.toArray(new String[stringList.size()]);
+    if (command.length == 0)
+      return;
     int result = 0;
-    
-    if (verbose || Preferences.getBoolean("build.verbose")) {
-      for(int j = 0; j < command.length; j++) {
-        System.out.print(command[j] + " ");
-      }
+
+    if (verbose) {
+      for (String c : command)
+        System.out.print(c + " ");
       System.out.println();
     }
 
@@ -429,9 +372,8 @@ public class Compiler implements MessageConsumer {
     secondErrorFound = false;
 
     Process process;
-    
     try {
-      process = Runtime.getRuntime().exec(command);
+      process = ProcessUtils.exec(command);
     } catch (IOException e) {
       RunnerException re = new RunnerException(e.getMessage());
       re.hideStackTrace();
@@ -460,12 +402,13 @@ public class Compiler implements MessageConsumer {
     // to digest it, and the fact that they have five stomaches.
     //
     //System.out.println("throwing up " + exception);
-    if (exception != null) { throw exception; }
+    if (exception != null)
+      throw exception;
 
     if (result > 1) {
       // a failure in the tool (e.g. unable to locate a sub-executable)
-      System.err.println(
-	  I18n.format(_("{0} returned {1}"), command[0], result));
+      System.err
+          .println(I18n.format(_("{0} returned {1}"), command[0], result));
     }
 
     if (result != 0) {
@@ -474,7 +417,6 @@ public class Compiler implements MessageConsumer {
       throw re;
     }
   }
-
 
   /**
    * Part of the MessageConsumer interface, this is called
@@ -489,6 +431,7 @@ public class Compiler implements MessageConsumer {
     // can't use replaceAll() because the path may have characters in it which
     // have meaning in a regular expression.
     if (!verbose) {
+      String buildPath = prefs.get("build.path");
       while ((i = s.indexOf(buildPath + File.separator)) != -1) {
         s = s.substring(0, i) + s.substring(i + (buildPath + File.separator).length());
       }
@@ -581,173 +524,282 @@ public class Compiler implements MessageConsumer {
       }      
     }
     
-		if (s.contains("undefined reference to `SPIClass::begin()'")
-				&& s.contains("libraries/Robot_Control")) {
-			String error = _("Please import the SPI library from the Sketch > Import Library menu.");
-			exception = new RunnerException(error);
-		}
-    
-		if (s.contains("undefined reference to `Wire'")
-				&& s.contains("libraries/Robot_Control")) {
-			String error = _("Please import the Wire library from the Sketch > Import Library menu.");
-			exception = new RunnerException(error);
-		}
+    if (s.contains("undefined reference to `SPIClass::begin()'") &&
+        s.contains("libraries/Robot_Control")) {
+      String error = _("Please import the SPI library from the Sketch > Import Library menu.");
+      exception = new RunnerException(error);
+    }
+
+    if (s.contains("undefined reference to `Wire'") &&
+        s.contains("libraries/Robot_Control")) {
+      String error = _("Please import the Wire library from the Sketch > Import Library menu.");
+      exception = new RunnerException(error);
+    }
 		
     System.err.print(s);
   }
 
-  /////////////////////////////////////////////////////////////////////////////
+  private String[] getCommandCompilerS(List<File> includeFolders,
+                                       File sourceFile, File objectFile)
+      throws RunnerException {
+    String includes = prepareIncludes(includeFolders);
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("includes", includes);
+    dict.put("source_file", sourceFile.getAbsolutePath());
+    dict.put("object_file", objectFile.getAbsolutePath());
 
-  static private List getCommandCompilerS(String avrBasePath, List includePaths,
-    String sourceName, String objectName, Map<String, String> boardPreferences) {
-    List baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-gcc",
-      "-c", // compile, don't link
-      "-g", // include debugging info (so errors include line numbers)
-      "-x","assembler-with-cpp",
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),      
-      "-DARDUINO=" + Base.REVISION,
-      "-DUSB_VID=" + boardPreferences.get("build.vid"),
-      "-DUSB_PID=" + boardPreferences.get("build.pid"),
-    }));
-
-    for (int i = 0; i < includePaths.size(); i++) {
-      baseCommandCompiler.add("-I" + (String) includePaths.get(i));
+    try {
+      String cmd = prefs.get("recipe.S.o.pattern");
+      return StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
     }
-
-    baseCommandCompiler.add(sourceName);
-    baseCommandCompiler.add("-o"+ objectName);
-
-    return baseCommandCompiler;
   }
 
-  
-  static private List getCommandCompilerC(String avrBasePath, List includePaths,
-    String sourceName, String objectName, Map<String, String> boardPreferences) {
+  private String[] getCommandCompilerC(List<File> includeFolders,
+                                       File sourceFile, File objectFile)
+      throws RunnerException {
+    String includes = prepareIncludes(includeFolders);
 
-    List baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-gcc",
-      "-c", // compile, don't link
-      "-g", // include debugging info (so errors include line numbers)
-      "-Os", // optimize for size
-      Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
-      "-ffunction-sections", // place each function in its own section
-      "-fdata-sections",
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-      "-MMD", // output dependancy info
-      "-DUSB_VID=" + boardPreferences.get("build.vid"),
-      "-DUSB_PID=" + boardPreferences.get("build.pid"),
-      "-DARDUINO=" + Base.REVISION, 
-    }));
-		
-    for (int i = 0; i < includePaths.size(); i++) {
-      baseCommandCompiler.add("-I" + (String) includePaths.get(i));
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("includes", includes);
+    dict.put("source_file", sourceFile.getAbsolutePath());
+    dict.put("object_file", objectFile.getAbsolutePath());
+
+    String cmd = prefs.get("recipe.c.o.pattern");
+    try {
+      return StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
     }
-
-    baseCommandCompiler.add(sourceName);
-    baseCommandCompiler.add("-o");
-    baseCommandCompiler.add(objectName);
-
-    return baseCommandCompiler;
-  }
-	
-	
-  static private List getCommandCompilerCPP(String avrBasePath,
-    List includePaths, String sourceName, String objectName,
-    Map<String, String> boardPreferences) {
-    
-    List baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
-      avrBasePath + "avr-g++",
-      "-c", // compile, don't link
-      "-g", // include debugging info (so errors include line numbers)
-      "-Os", // optimize for size
-      Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
-      "-fno-exceptions",
-      "-ffunction-sections", // place each function in its own section
-      "-fdata-sections",
-      "-mmcu=" + boardPreferences.get("build.mcu"),
-      "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-      "-MMD", // output dependancy info
-      "-DUSB_VID=" + boardPreferences.get("build.vid"),
-      "-DUSB_PID=" + boardPreferences.get("build.pid"),      
-      "-DARDUINO=" + Base.REVISION,
-    }));
-
-    for (int i = 0; i < includePaths.size(); i++) {
-      baseCommandCompilerCPP.add("-I" + (String) includePaths.get(i));
-    }
-
-    baseCommandCompilerCPP.add(sourceName);
-    baseCommandCompilerCPP.add("-o");
-    baseCommandCompilerCPP.add(objectName);
-
-    return baseCommandCompilerCPP;
   }
 
+  private String[] getCommandCompilerCPP(List<File> includeFolders,
+                                         File sourceFile, File objectFile)
+      throws RunnerException {
+    String includes = prepareIncludes(includeFolders);
 
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("includes", includes);
+    dict.put("source_file", sourceFile.getAbsolutePath());
+    dict.put("object_file", objectFile.getAbsolutePath());
+
+    String cmd = prefs.get("recipe.cpp.o.pattern");
+    try {
+      return StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+  }
 
   /////////////////////////////////////////////////////////////////////////////
 
-  static private void createFolder(File folder) throws RunnerException {
-    if (folder.isDirectory()) return;
+  private void createFolder(File folder) throws RunnerException {
+    if (folder.isDirectory())
+      return;
     if (!folder.mkdir())
       throw new RunnerException("Couldn't create: " + folder);
   }
 
-  /**
-   * Given a folder, return a list of the header files in that folder (but
-   * not the header files in its sub-folders, as those should be included from
-   * within the header files at the top-level).
-   */
-  static public String[] headerListFromIncludePath(String path) throws IOException {
-    FilenameFilter onlyHFiles = new FilenameFilter() {
-      public boolean accept(File dir, String name) {
-        return name.endsWith(".h");
-      }
-    };
-    File libFolder = new File(path);
+  static public List<File> findFilesInFolder(File folder, String extension,
+                                             boolean recurse) {
+    List<File> files = new ArrayList<File>();
 
-    // Forward compatibility with 1.5 library format
-    File propertiesFile = new File(libFolder, "library.properties");
-    File srcFolder = new File(libFolder, "src");
-    String[] list;
-    if (propertiesFile.isFile() && srcFolder.isDirectory()) {
-      // Is an 1.5 library with "src" folder
-      list = srcFolder.list(onlyHFiles);
-    } else {
-      // Fallback to 1.0 library layout
-      list = libFolder.list(onlyHFiles);
+    if (FileUtils.isSCCSOrHiddenFile(folder)) {
+      return files;
     }
-    if (list == null) {
-      throw new IOException();
+
+    File[] listFiles = folder.listFiles();
+    if (listFiles == null) {
+      return files;
     }
-    return list;
-  }
-  
-  static public ArrayList<File> findFilesInPath(String path, String extension,
-                                                boolean recurse) {
-    return findFilesInFolder(new File(path), extension, recurse);
-  }
-  
-  static public ArrayList<File> findFilesInFolder(File folder, String extension,
-                                                  boolean recurse) {
-    ArrayList<File> files = new ArrayList<File>();
-    
-    if (folder.listFiles() == null) return files;
-    
-    for (File file : folder.listFiles()) {
-      if (file.getName().startsWith(".")) continue; // skip hidden files
-      
+
+    for (File file : listFiles) {
+      if (FileUtils.isSCCSOrHiddenFile(file)) {
+        continue; // skip hidden files
+      }
+
       if (file.getName().endsWith("." + extension))
         files.add(file);
-        
+
       if (recurse && file.isDirectory()) {
         files.addAll(findFilesInFolder(file, extension, true));
       }
     }
-    
+
     return files;
+  }
+  
+  // 1. compile the sketch (already in the buildPath)
+  void compileSketch(List<File> includeFolders) throws RunnerException {
+    File buildPath = prefs.getFile("build.path");
+    objectFiles.addAll(compileFiles(buildPath, buildPath, false, includeFolders));
+  }
+
+  // 2. compile the libraries, outputting .o files to:
+  // <buildPath>/<library>/
+  void compileLibraries(List<File> includeFolders) throws RunnerException {
+    for (Library lib : sketch.getImportedLibraries()) {
+      compileLibrary(lib, includeFolders);
+    }
+  }
+
+  private void compileLibrary(Library lib, List<File> includeFolders)
+      throws RunnerException {
+    File libFolder = lib.getSrcFolder();
+    File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
+
+    if (lib.useRecursion()) {
+      // libBuildFolder == {build.path}/LibName
+      // libFolder      == {lib.path}/src
+      recursiveCompileFilesInFolder(libBuildFolder, libFolder, includeFolders);
+
+    } else {
+      // libFolder          == {lib.path}/
+      // utilityFolder      == {lib.path}/utility
+      // libBuildFolder     == {build.path}/LibName
+      // utilityBuildFolder == {build.path}/LibName/utility
+      File utilityFolder = new File(libFolder, "utility");
+      File utilityBuildFolder = new File(libBuildFolder, "utility");
+
+      includeFolders.add(utilityFolder);
+      compileFilesInFolder(libBuildFolder, libFolder, includeFolders);
+      compileFilesInFolder(utilityBuildFolder, utilityFolder, includeFolders);
+
+      // other libraries should not see this library's utility/ folder
+      includeFolders.remove(utilityFolder);
+    }
+  }
+
+  private void recursiveCompileFilesInFolder(File srcBuildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
+    compileFilesInFolder(srcBuildFolder, srcFolder, includeFolders);
+    for (File subFolder : srcFolder.listFiles(new OnlyDirs())) {
+      File subBuildFolder = new File(srcBuildFolder, subFolder.getName());
+      recursiveCompileFilesInFolder(subBuildFolder, subFolder, includeFolders);
+    }
+  }
+
+  private void compileFilesInFolder(File buildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
+    createFolder(buildFolder);
+    List<File> objects = compileFiles(buildFolder, srcFolder, false, includeFolders);
+    objectFiles.addAll(objects);
+  }
+
+  // 3. compile the core, outputting .o files to <buildPath> and then
+  // collecting them into the core.a library file.
+  void compileCore()
+      throws RunnerException {
+
+    File coreFolder = prefs.getFile("build.core.path");
+    File variantFolder = prefs.getFile("build.variant.path");
+    File buildFolder = prefs.getFile("build.path");
+
+    List<File> includeFolders = new ArrayList<File>();
+    includeFolders.add(coreFolder); // include core path only
+    if (variantFolder != null)
+      includeFolders.add(variantFolder);
+
+    List<File> objectFiles = compileFiles(buildFolder, coreFolder, true,
+                                          includeFolders);
+    if (variantFolder != null)
+      objectFiles.addAll(compileFiles(buildFolder, variantFolder, true,
+                                      includeFolders));
+
+    for (File file : objectFiles) {
+
+      PreferencesMap dict = new PreferencesMap(prefs);
+      dict.put("ide_version", "" + Base.REVISION);
+      dict.put("archive_file", "core.a");
+      dict.put("object_file", file.getAbsolutePath());
+
+      String[] cmdArray;
+      try {
+        String cmd = prefs.get("recipe.ar.pattern");
+        cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+      } catch (Exception e) {
+        throw new RunnerException(e);
+      }
+      execAsynchronously(cmdArray);
+    }
+  }
+			
+  // 4. link it all together into the .elf file
+  void compileLink()
+      throws RunnerException {
+
+    // TODO: Make the --relax thing in configuration files.
+
+    // For atmega2560, need --relax linker option to link larger
+    // programs correctly.
+    String optRelax = "";
+    if (prefs.get("build.mcu").equals("atmega2560"))
+      optRelax = ",--relax";
+
+    String objectFileList = "";
+    for (File file : objectFiles)
+      objectFileList += " \"" + file.getAbsolutePath() + '"';
+    objectFileList = objectFileList.substring(1);
+
+    PreferencesMap dict = new PreferencesMap(prefs);
+    String flags = dict.get("compiler.c.elf.flags") + optRelax;
+    dict.put("compiler.c.elf.flags", flags);
+    dict.put("archive_file", "core.a");
+    dict.put("object_files", objectFileList);
+    dict.put("ide_version", "" + Base.REVISION);
+
+    String[] cmdArray;
+    try {
+      String cmd = prefs.get("recipe.c.combine.pattern");
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+    execAsynchronously(cmdArray);
+  }
+
+  // 5. extract EEPROM data (from EEMEM directive) to .eep file.
+  void compileEep() throws RunnerException {
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + Base.REVISION);
+
+    String[] cmdArray;
+    try {
+      String cmd = prefs.get("recipe.objcopy.eep.pattern");
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+    execAsynchronously(cmdArray);
+  }
+	
+  // 6. build the .hex file
+  void compileHex() throws RunnerException {
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + Base.REVISION);
+
+    String[] cmdArray;
+    try {
+      String cmd = prefs.get("recipe.objcopy.hex.pattern");
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+    execAsynchronously(cmdArray);
+  }
+
+  private static String prepareIncludes(List<File> includeFolders) {
+    String res = "";
+    for (File p : includeFolders)
+      res += " \"-I" + p.getAbsolutePath() + '"';
+
+    // Remove first space
+    return res.substring(1);
+  }
+  
+  public PreferencesMap getBuildPreferences() {
+    return prefs;
   }
 }

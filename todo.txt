@@ -1,5 +1,3 @@
-0105 arduino
-
 Fix Linux make.sh, etc. scripts
 Test on Linux.
 

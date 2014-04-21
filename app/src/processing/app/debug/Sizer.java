@@ -5,6 +5,7 @@
   Part of the Arduino project - http://www.arduino.cc/
 
   Copyright (c) 2006 David A. Mellis
+  Copyright (c) 2011 Cristian Maglie <c.maglie@bug.st>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -19,48 +20,57 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  
-  $Id$
 */
 
 package processing.app.debug;
 
-import processing.app.Base;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import java.io.*;
-import java.util.*;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.ProcessUtils;
+import processing.app.helpers.StringReplacer;
 
 public class Sizer implements MessageConsumer {
-  private String buildPath, sketchName;
-  private String firstLine;
-  private long size;
+  private long textSize;
+  private long dataSize;
+  private long eepromSize;
   private RunnerException exception;
-
-  public Sizer(String buildPath, String sketchName) {
-    this.buildPath = buildPath;
-    this.sketchName = sketchName;
+  private PreferencesMap prefs;
+  private String firstLine;
+  private Pattern textPattern;
+  private Pattern dataPattern;
+  private Pattern eepromPattern;
+  
+  public Sizer(PreferencesMap _prefs) {
+    prefs = _prefs;
+    textPattern = Pattern.compile(prefs.get("recipe.size.regex"));
+    dataPattern = null;
+    String pref = prefs.get("recipe.size.regex.data");
+    if (pref != null)
+      dataPattern = Pattern.compile(pref);
+    eepromPattern = null;
+    pref = prefs.get("recipe.size.regex.eeprom");
+    if (pref != null)
+      eepromPattern = Pattern.compile(pref);
   }
   
-  public long computeSize() throws RunnerException {
-    String avrBasePath = Base.getAvrBasePath();
-    String commandSize[] = new String[] {
-      avrBasePath + "avr-size",
-      " "
-    };
-    
-    commandSize[1] = buildPath + File.separator + sketchName + ".hex";
+  public long[] computeSize() throws RunnerException {
 
     int r = 0;
     try {
+      String pattern = prefs.get("recipe.size.pattern");
+      String cmd[] = StringReplacer.formatAndSplit(pattern, prefs, true);
+
       exception = null;
-      size = -1;
-      firstLine = null;
-      Process process = Runtime.getRuntime().exec(commandSize);
+      textSize = -1;
+      dataSize = -1;
+      eepromSize = -1;
+      Process process = ProcessUtils.exec(cmd);
       MessageSiphon in = new MessageSiphon(process.getInputStream(), this);
       MessageSiphon err = new MessageSiphon(process.getErrorStream(), this);
 
       boolean running = true;
-
       while(running) {
         try {
           in.join();
@@ -80,26 +90,35 @@ public class Sizer implements MessageConsumer {
     if (exception != null)
       throw exception;
       
-    if (size == -1)
+    if (textSize == -1)
       throw new RunnerException(firstLine);
       
-    return size;
+    return new long[] { textSize, dataSize, eepromSize };
   }
   
   public void message(String s) {
     if (firstLine == null)
       firstLine = s;
-    else {
-      StringTokenizer st = new StringTokenizer(s, " ");
-      try {
-        st.nextToken();
-        st.nextToken();
-        st.nextToken();
-        size = (new Integer(st.nextToken().trim())).longValue();
-      } catch (NoSuchElementException e) {
-        exception = new RunnerException(e.toString());
-      } catch (NumberFormatException e) {
-        exception = new RunnerException(e.toString());
+    Matcher textMatcher = textPattern.matcher(s.trim());
+    if (textMatcher.matches()) {
+      if (textSize < 0)
+        textSize = 0;
+      textSize += Long.parseLong(textMatcher.group(1));
+    }
+    if(dataPattern != null) {
+      Matcher dataMatcher = dataPattern.matcher(s.trim());
+      if (dataMatcher.matches()) {
+        if (dataSize < 0)
+          dataSize = 0;
+        dataSize += Long.parseLong(dataMatcher.group(1));
+      }
+    }
+    if(eepromPattern != null) {
+      Matcher eepromMatcher = eepromPattern.matcher(s.trim());
+      if (eepromMatcher.matches()) {
+        if (eepromSize < 0)
+          eepromSize = 0;
+        eepromSize += Long.parseLong(eepromMatcher.group(1));
       }
     }
   }
