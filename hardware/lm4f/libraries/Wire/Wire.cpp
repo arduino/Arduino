@@ -610,7 +610,6 @@ void TwoWire::onRequest( void (*function)(void) )
 }
 
 void TwoWire::I2CIntHandler(void) {
-    digitalWrite(GREEN_LED, HIGH);
 	//clear data interrupt
 	HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_DATAIC;
 	uint8_t startDetected = 0;
