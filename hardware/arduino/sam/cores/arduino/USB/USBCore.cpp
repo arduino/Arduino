@@ -69,10 +69,13 @@ const uint16_t STRING_LANGUAGE[2] = {
 const uint8_t STRING_PRODUCT[] = USB_PRODUCT;
 
 #if USB_VID == 0x2341
-#define USB_MANUFACTURER "Arduino LLC"
+#  if defined(USB_MANUFACTURER)
+#    undef USB_MANUFACTURER
+#  endif
+#  define USB_MANUFACTURER "Arduino LLC"
 #elif !defined(USB_MANUFACTURER)
 // Fall through to unknown if no manufacturer name was provided in a macro
-#define USB_MANUFACTURER "Unknown"
+#  define USB_MANUFACTURER "Unknown"
 #endif
 
 const uint8_t STRING_MANUFACTURER[12] = USB_MANUFACTURER;
@@ -139,7 +142,7 @@ uint32_t USBD_Available(uint32_t ep)
 //	Return number of bytes read
 uint32_t USBD_Recv(uint32_t ep, void* d, uint32_t len)
 {
-	if (!_usbConfiguration || len < 0)
+	if (!_usbConfiguration)
 		return -1;
 
 	LockEP lock(ep);
