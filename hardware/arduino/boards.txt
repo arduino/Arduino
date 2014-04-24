@@ -1,6 +1,6 @@
 # See: http://code.google.com/p/arduino/wiki/Platforms
 
-##############################################################
+#############################################################
 
 buildall.name=Build all boards/Upload as Mega 2560
 buildall.upload.protocol=arduino
