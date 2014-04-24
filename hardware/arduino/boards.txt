@@ -2,6 +2,25 @@
 
 ##############################################################
 
+buildall.name=Build all boards/Upload as Mega 2560
+buildall.upload.protocol=arduino
+buildall.upload.protocol=wiring
+buildall.upload.maximum_size=258048
+buildall.upload.speed=115200
+buildall.bootloader.low_fuses=0xFF
+buildall.bootloader.high_fuses=0xD8
+buildall.bootloader.extended_fuses=0xFD
+buildall.bootloader.path=stk500v2
+buildall.bootloader.file=stk500boot_v2_mega2560.hex
+buildall.bootloader.unlock_bits=0x3F
+buildall.bootloader.lock_bits=0x0F
+buildall.build.mcu=atmega2560
+buildall.build.f_cpu=16000000L
+buildall.build.core=arduino
+buildall.build.variant=mega
+
+##############################################################
+
 uno.name=Arduino Uno
 uno.upload.protocol=arduino
 uno.upload.maximum_size=32256
