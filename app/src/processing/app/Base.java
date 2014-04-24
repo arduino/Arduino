@@ -1292,7 +1292,6 @@ public class Base {
     importMenu.add(addLibraryMenuItem);
     
     if (libraries != null) {
-      importMenu.addSeparator();
       try {
         addLibraries(importMenu, libraries);
       } catch (IOException e) {
@@ -1307,12 +1306,28 @@ public class Base {
 
       // Add examples from distribution "example" folder
       boolean found = addSketches(menu, examplesFolder, false);
+      if (found) {
+        // Prepend a label
+        JMenuItem label = new JMenuItem(_("Core examples"));
+        label.setEnabled(false);
+        menu.add(label, 0);
+      }
 
       // Add examples from libraries
       if (libraries != null && !libraries.isEmpty()) {
-        if (found)
-          menu.addSeparator();
-        addLibraryExamples(menu, libraries);
+        for (LibraryList sub : libraries.getSubs()) {
+          if (found)
+            menu.addSeparator();
+
+          // Prepend a label
+          JMenuItem label = new JMenuItem(sub.getName());
+          label.setEnabled(false);
+          menu.add(label);
+
+          addLibraryExamples(menu, sub);
+
+          found = true;
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -1820,13 +1835,26 @@ public class Base {
   }
 
   protected void addLibraries(JMenu menu, LibraryList libs) throws IOException {
+    for (LibraryList sub : libs.getSubs()) {
+      menu.addSeparator();
+
+      // Prepend a label
+      JMenuItem label = new JMenuItem(sub.getName());
+      label.setEnabled(false);
+      menu.add(label);
+
+      addLibrariesRecursive(menu, sub);
+    }
+  }
+
+  protected void addLibrariesRecursive(JMenu menu, LibraryList libs) throws IOException {
     // Add any subdirectories first
     for (LibraryList sub : libs.getSubs()) {
       if (sub.isEmpty())
         continue;
 
       JMenu submenu = new JMenu(sub.getName());
-      addLibraries(submenu, sub);
+      addLibrariesRecursive(submenu, sub);
       menu.add(submenu);
       MenuScroller.setScrollerFor(submenu);
     }
