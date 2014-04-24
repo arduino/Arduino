@@ -81,12 +81,14 @@ public class Compiler implements MessageConsumer {
 	  }
 	  
 	  Base.getTarget().getBoards();
+	  boolean compileOk = true;
 	  for (Entry<String, Map<String, String>> board : Base.getTarget().getBoards().entrySet()) {
-		  if (compileForBoard(sketch, buildPath, primaryClassName, verbose, board.getValue()))
-			  return false;
+		  if (!compileForBoard(sketch, buildPath, primaryClassName, verbose, board.getValue())) {
+			  compileOk = false;
+		  }
 	  }
 	  
-	  return true;
+	  return compileOk;
   }
   
   private boolean compileForBoard(Sketch sketch,
