@@ -1,18 +1,24 @@
 ///
-/// @fileScreen_HX8353E.h
-/// @briefLibrary header
-/// @detailsHX8353E screen library
+/// @file       Screen_HX8353E.h
+/// @brief      Library header
+/// @details    HX8353E screen library
+/// @n          Support for new LaunchPads
+/// * MSP430F5529
+/// * LM4F120H5QR TM4C123GH6PM
+/// * TM4C1294NCPDT TM4C1294XNCZAD
+/// Apr 25, 2014
+///
 /// @n
-/// @n @bProject new_screen_HX8353
-/// @n @aDeveloped with [embedXcode](http://embedXcode.weebly.com)
+/// @n @b       Project new_screen_HX8353
+/// @n @a       Developed with [embedXcode](http://embedXcode.weebly.com)
 ///
-/// @authorRei VILO
-/// @authorembedXcode.weebly.com
-/// @dateDec 06, 2013
-/// @version100
+/// @author     Rei VILO
+/// @author     embedXcode.weebly.com
+/// @date       Apr 25, 2014
+/// @version    102
 ///
-/// @copyright© Rei VILO, 2013
-/// @copyrightAll rights reserved
+/// @copyright  © Rei VILO, 2013
+/// @copyright  All rights reserved
 ///
 /// @n  Dual license:
 /// *   For hobbyists and for personal usage: Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)

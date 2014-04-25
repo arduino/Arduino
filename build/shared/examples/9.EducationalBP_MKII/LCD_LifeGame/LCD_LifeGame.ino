@@ -52,69 +52,19 @@
 
 
 // Include application, user and local libraries
-#include "SPI.h"
-
-// test: PicasoSPE PicasoSGC
-// ok: HX8353E W32 HI32 HY28A K35 ST7735 ILI9225B HY28A_SRAM
-// nok:
+#include <SPI.h>
 
 // Screen selection
-#define HX8353E // HX8353E K35 HI32 W32 ILI9225B HY28A HY28A_SRAM ST7735 PicasoSPE PicasoSGC
+#define HX8353E
 
-#if defined(ILI9225B)
-#include "Screen_ILI9225B.h"
-Screen_ILI9225B myScreen;
-
-#elif defined(HX8353E)
-#include "Screen_HX8353E.h"
+#include <LCD_screen.h>
+#include <LCD_screen_font.h>
+#include <LCD_utilities.h>
+#include <Screen_HX8353E.h>
+#include <Terminal12e.h>
+#include <Terminal6e.h>
+#include <Terminal8e.h>
 Screen_HX8353E myScreen;
-
-#elif defined(W32)
-#include "Screen_W32.h"
-Screen_W32 myScreen;
-
-#elif defined(K35)
-#include "Screen_K35.h"
-Screen_K35 myScreen;
-
-#elif defined(HY28A)
-#include "Screen_HY28A.h"
-Screen_HY28A myScreen;
-
-#elif defined(HY28A_SRAM)
-#include "Screen_HY28A_SRAM.h"
-Screen_HY28A_SRAM myScreen;
-
-#elif defined(HI32)
-#include "Screen_HI32.h"
-Screen_HI32 myScreen;
-
-#elif defined(ST7735)
-#include "Screen_ST7735.h"
-Screen_ST7735 myScreen(ST7735R_RED_TAB);
-
-#elif defined(PicasoSPE)
-#include "Screen_PicasoSPE.h"
-
-#if defined(__LM4F120H5QR__)
-//#include "SoftwareSerial.h"
-//SoftwareSerial mySerial(PB_0, PB_1);
-#define mySerial Serial1
-
-Screen_PicasoSPE myScreen(PA_2, &mySerial);
-#else
-#define mySerial Serial1
-Screen_PicasoSPE myScreen(4, &mySerial);
-#endif
-
-#elif defined(PicasoSGC)
-#include "screen_PicasoSGC.h"
-#define mySerial Serial1
-Screen_PicasoSGC myScreen(20, &mySerial);
-
-#else
-#error Unknown screen
-#endif
 
 
 // Beware of RAM limitations
@@ -123,9 +73,12 @@ Screen_PicasoSGC myScreen(20, &mySerial);
 #if defined(__MSP430F5529__)
 #define ROWS 32 // max 80
 #define COLS 32 // max 60
-#elif defined(__LM4F120H5QR__)
+#elif defined(__LM4F120H5QR__) || defined(__TM4C123GH6PM__) 
 #define ROWS 64 // max 80
 #define COLS 64 // max 60
+#elif defined(__TM4C1294NCPDT__) || defined(__TM4C1294XNCZAD__)
+#define ROWS 128 // max 128
+#define COLS 128 // max 128
 #else
 #error Board not supported
 #endif
