@@ -75,8 +75,8 @@ public class Compiler implements MessageConsumer {
           String primaryClassName,
           boolean verbose) throws RunnerException {
 	  Map<String, String> boardPreferences = Base.getBoardPreferences();
-
-	  if (!Base.getTarget().getName().equals("buildall")) {
+	  
+	  if (!Preferences.get("board").equals("buildall")) {
 		  return compileForBoard(sketch, buildPath, primaryClassName, verbose, boardPreferences);
 	  }
 	  
