@@ -88,10 +88,10 @@ void loop() {
           printIndex();
         }
         // Check to see if the client request was "GET /H" or "GET /L":
-        if (currentLine.endsWith("GET /RED_LED_H")) {digitalWrite(D1_LED, HIGH);printConfig();}         
-        if (currentLine.endsWith("GET /RED_LED_L")) {digitalWrite(D1_LED, LOW);printConfig();}     
-        if (currentLine.endsWith("GET /GREEN_LED_H")) {digitalWrite(D2_LED, HIGH);printConfig();}       
-        if (currentLine.endsWith("GET /GREEN_LED_L")) {digitalWrite(D2_LED, LOW);printConfig();}
+        if (currentLine.endsWith("GET /LED1_H")) {digitalWrite(D1_LED, HIGH);printConfig();}         
+        if (currentLine.endsWith("GET /LED1_L")) {digitalWrite(D1_LED, LOW);printConfig();}     
+        if (currentLine.endsWith("GET /LED2_H")) {digitalWrite(D2_LED, HIGH);printConfig();}       
+        if (currentLine.endsWith("GET /LED2_L")) {digitalWrite(D2_LED, LOW);printConfig();}
       }
     }
     // close the connection:
@@ -109,13 +109,13 @@ void printIndex()
   
   client.println("Content-type:text/html");
   client.println();
-  client.println("<html><head><title>CC3000 Energia Webpage</title></head><body align=center>");
-  client.println("<h1 align=center><font color=\"red\">Welcome To CC3000 Web Server</font></h1>");
+  client.println("<html><head><title>Energia Ethernet Web Server</title></head><body align=center>");
+  client.println("<h1 align=center><font color=\"red\">Welcome To Ethernet Web Server</font></h1>");
   client.println("</br><font size=\"4px\"><table border=\"0\" align=center width=1200px height=590px>");
   client.println("<tr><td align=center width=375></td><td width=450px align=left valign=\"top\">");
   
   
-  client.println("<p>Using CC3000 WLAN connectivity, Web Server provides ");
+  client.println("<p>The Ethernet Web Server provides the");
   client.println("capability to remotely read and write GPIOs ");
   client.println("on/off.</p></br></br>");
   client.println("<p><a href=\"/config.html\">Click here</a> ");
@@ -133,15 +133,15 @@ void printConfig()
   client.println("HTTP/1.1 200 OK");
   client.println("Content-type:text/html");
   client.println();
-  client.println("<html><head><title>CC3000 Energia Webpage</title></head><body align=center>");
-  client.println("<h1 align=center><font color=\"red\">Welcome To CC3000 Web Server</font></h1>");
+  client.println("<html><head><title>Energia Ethernet Web Server</title></head><body align=center>");
+  client.println("<h1 align=center><font color=\"red\">Welcome to the Ethernet Web Server</font></h1>");
   
   // the content of the HTTP response follows the header:
   // Added: nicer buttons
-  client.print("<font color='green'>GREEN_LED</font> <button onclick=\"location.href='/GREEN_LED_H'\">HIGH</button>");
-  client.println(" <button onclick=\"location.href='/GREEN_LED_L'\">LOW</button><br>");
-  client.print("<font color='red'>RED_LED</font> <button onclick=\"location.href='/RED_LED_H'\">HIGH</button>");
-  client.println(" <button onclick=\"location.href='/RED_LED_L'\">LOW</button><br><br>");
+  client.print("LED 1<button onclick=\"location.href='/LED1_H'\">HIGH</button>");
+  client.println(" <button onclick=\"location.href='/LED1_L'\">LOW</button><br>");
+  client.print("LED 2 <button onclick=\"location.href='/LED2_H'\">HIGH</button>");
+  client.println(" <button onclick=\"location.href='/LED2_L'\">LOW</button><br><br>");
 
   client.println("PUSH1 ");
   if(digitalRead(PUSH1))client.print("is HIGH<br>");

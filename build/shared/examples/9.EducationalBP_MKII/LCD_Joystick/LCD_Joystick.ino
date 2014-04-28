@@ -48,8 +48,15 @@
 
 
 // Include application, user and local libraries
-#include "SPI.h"
-#include "Screen_HX8353E.h"
+#include <SPI.h>
+
+#include <LCD_screen.h>
+#include <LCD_screen_font.h>
+#include <LCD_utilities.h>
+#include <Screen_HX8353E.h>
+#include <Terminal12e.h>
+#include <Terminal6e.h>
+#include <Terminal8e.h>
 Screen_HX8353E myScreen;
 
 

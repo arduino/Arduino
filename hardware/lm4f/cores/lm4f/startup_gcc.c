@@ -417,6 +417,7 @@ extern void (*__preinit_array_start[])(void);
 extern void (*__preinit_array_end[])(void);
 extern void (*__init_array_start[])(void);
 extern void (*__init_array_end[])(void);
+extern void _init(void);
 
 
 //*****************************************************************************
@@ -470,6 +471,8 @@ void ResetISR(void) {
     cnt = __preinit_array_end - __preinit_array_start;
     for (i = 0; i < cnt; i++)
         __preinit_array_start[i]();
+
+    _init();
 
     cnt = __init_array_end - __init_array_start;
     for (i = 0; i < cnt; i++)
