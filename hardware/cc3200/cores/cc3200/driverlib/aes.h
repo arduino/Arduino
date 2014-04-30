@@ -125,9 +125,9 @@ extern "C"
 #define AES_INT_DATA_IN         0x00000002
 #define AES_INT_DATA_OUT        0x00000004
 #define AES_INT_DMA_CONTEXT_IN  0x00010000
-#define AES_INT_DMA_CONTEXT_OUT 0x00080000
-#define AES_INT_DMA_DATA_IN     0x00020000
-#define AES_INT_DMA_DATA_OUT    0x00040000
+#define AES_INT_DMA_CONTEXT_OUT 0x00020000
+#define AES_INT_DMA_DATA_IN     0x00040000
+#define AES_INT_DMA_DATA_OUT    0x00080000
 
 //*****************************************************************************
 //

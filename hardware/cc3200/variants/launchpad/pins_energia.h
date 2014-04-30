@@ -51,11 +51,10 @@ static const uint8_t PUSH2 = 11;
 #ifdef ARDUINO_MAIN
 const uint32_t port_to_base[] = {
 	NOT_A_PORT,
-	(uint32_t) GPIOS0_BASE,
-	(uint32_t) GPIOS1_BASE,
-	(uint32_t) GPIOS2_BASE,
-	(uint32_t) GPIOS3_BASE,
-	(uint32_t) GPIOS4_BASE
+	(uint32_t) GPIOA0_BASE,
+	(uint32_t) GPIOA1_BASE,
+	(uint32_t) GPIOA2_BASE,
+	(uint32_t) GPIOA3_BASE,
 };
 
 const uint16_t digital_pin_to_pin_num[] = {

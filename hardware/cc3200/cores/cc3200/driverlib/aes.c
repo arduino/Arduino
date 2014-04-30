@@ -889,18 +889,13 @@ AESIntStatus(uint32_t ui32Base, bool bMasked)
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_AES_MIS);
         ui32IrqEnable = HWREG(ui32Base + AES_O_IRQENABLE);
         return((HWREG(ui32Base + AES_O_IRQSTATUS) &
-                ui32IrqEnable) |
-               (((ui32Temp & 0x00000001) << 16) |
-                ((ui32Temp & 0x00000002) << 18) |
-                ((ui32Temp & 0x0000000c) << 15)));
+                ui32IrqEnable) | ((ui32Temp & 0x0000000F) << 16));
     }
     else
     {
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_AES_RIS);
         return(HWREG(ui32Base + AES_O_IRQSTATUS) |
-               (((ui32Temp & 0x00000001) << 16) |
-                ((ui32Temp & 0x00000002) << 18) |
-                ((ui32Temp & 0x0000000c) << 15)));
+               ((ui32Temp & 0x0000000F) << 16));
     }
 }
 
@@ -949,9 +944,7 @@ AESIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Set the flags.
     //
-    HWREG(DTHE_BASE + DTHE_O_AES_IM) |= (((ui32IntFlags & 0x00010000) >> 16) |
-                                       ((ui32IntFlags & 0x00060000) >> 15) |
-                                       ((ui32IntFlags & 0x00080000) >> 18));
+    HWREG(DTHE_BASE + DTHE_O_AES_IM) &= ~((ui32IntFlags & 0x000F0000) >> 16);
     HWREG(ui32Base + AES_O_IRQENABLE) |= ui32IntFlags & 0x0000ffff;
 }
 
@@ -1000,9 +993,7 @@ AESIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Clear the flags.
     //
-    HWREG(DTHE_BASE + DTHE_O_AES_IM) &= ~(((ui32IntFlags & 0x00010000) >> 16) |
-                                        ((ui32IntFlags & 0x00060000) >> 15) |
-                                        ((ui32IntFlags & 0x00080000) >> 18));
+    HWREG(DTHE_BASE + DTHE_O_AES_IM) |= ((ui32IntFlags & 0x000F0000) >> 16);
     HWREG(ui32Base + AES_O_IRQENABLE) &= ~(ui32IntFlags & 0x0000ffff);
 }
 
@@ -1040,41 +1031,8 @@ AESIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
            (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
            (ui32IntFlags == AES_INT_DMA_DATA_OUT));
 
-    HWREG(DTHE_BASE + DTHE_O_AES_IC) = (((ui32IntFlags & 0x00010000) >> 16) |
-                                      ((ui32IntFlags & 0x00060000) >> 15) |
-                                      ((ui32IntFlags & 0x00080000) >> 18));
+    HWREG(DTHE_BASE + DTHE_O_AES_IC) = ((ui32IntFlags >> 16) & 0x0000000F);
 }
-//##### INTERNAL BEGIN #####
-#if 0
-//*****************************************************************************
-//
-//! \internal
-//! Returns the interrupt number for a given AES base address.
-//!
-//! \param ulBase is the base address of the AES module.
-//!
-//! This function returns the interrupt number for the AES module with the base
-//! address passed in the \e ulBase parameter.
-//!
-//! \return Returns the AES interrupt number.
-//
-//*****************************************************************************
-static uint32_t
-AESIntNumberGet(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT(CLASS_IS_SNOWFLAKE);
-
-    //
-    // Snowflake is the only class with an AES module.
-    //
-    return(INT_AES0_SNOWFLAKE);
-}
-#endif
-//##### INTERNAL END #####
 
 //*****************************************************************************
 //

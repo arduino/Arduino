@@ -151,14 +151,8 @@
                                 0x000000B8  
 
 #define APPS_RCM_O_CRYPTO_SOFT_RESET \
-                                0x000000BC  
-
-#define APPS_RCM_O_EPI_CLK_GATING \
-                                0x000000C0  
-
-#define APPS_RCM_O_EPI_SOFT_RESET \
-                                0x000000C4  
-
+                                0x000000BC
+                                  
 #define APPS_RCM_O_MCSPI_S0_CLK_GATING \
                                 0x000000C8  
 
@@ -1237,51 +1231,7 @@
 #define APPS_RCM_CRYPTO_SOFT_RESET_CRYPTO_SOFT_RESET \
                                 0x00000001  // 1 - Assert the soft reset for 
                                             // Crypto ; 0 - De-assert the soft 
-                                            // reset for Crypto 
-
-//******************************************************************************
-//
-// The following are defines for the bit fields in the 
-// APPS_RCM_O_EPI_CLK_GATING register.
-//
-//******************************************************************************
-#define APPS_RCM_EPI_CLK_GATING_EPI_DSLP_CLK_ENABLE \
-                                0x00010000  // 0 - Disable the EPI clock during 
-                                            // deep-sleep 
-
-#define APPS_RCM_EPI_CLK_GATING_NU1_M \
-                                0x0000FE00  
-
-#define APPS_RCM_EPI_CLK_GATING_NU1_S 9 
-#define APPS_RCM_EPI_CLK_GATING_EPI_SLP_CLK_ENABLE \
-                                0x00000100  // 1 - Enable the EPI clock during 
-                                            // sleep ; 0 - Disable the EPI clock 
-                                            // during sleep 
-
-#define APPS_RCM_EPI_CLK_GATING_NU2_M \
-                                0x000000FE  
-
-#define APPS_RCM_EPI_CLK_GATING_NU2_S 1 
-#define APPS_RCM_EPI_CLK_GATING_EPI_RUN_CLK_ENABLE \
-                                0x00000001  // 1 - Enable the EPI clock during 
-                                            // run ; 0 - Disable the EPI clock 
-                                            // during run 
-
-//******************************************************************************
-//
-// The following are defines for the bit fields in the 
-// APPS_RCM_O_EPI_SOFT_RESET register.
-//
-//******************************************************************************
-#define APPS_RCM_EPI_SOFT_RESET_EPI_ENABLED_STATUS \
-                                0x00000002  // 1 - EPI Clocks/Resets are 
-                                            // enabled ; 0 - EPI Clocks/Resets 
-                                            // are disabled 
-
-#define APPS_RCM_EPI_SOFT_RESET_EPI_SOFT_RESET \
-                                0x00000001  // 1 - Assert the soft reset for 
-                                            // EPI ; 0 - De-assert the soft 
-                                            // reset for EPI 
+                                            // reset for Crypto
 
 //******************************************************************************
 //

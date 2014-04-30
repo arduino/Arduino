@@ -286,16 +286,8 @@ WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
     // Register the interrupt handler and
     // Enable the watchdog timer interrupt.
     //
-
-#ifndef NWPDRV
-    IntRegister(INT_WDTA0, pfnHandler);
-    IntEnable(INT_WDTA0);
-#else
-    IntRegister(INT_WDTN0, pfnHandler);
-    IntEnable(INT_WDTN0);
-#endif
-
-
+    IntRegister(INT_WDT, pfnHandler);
+    IntEnable(INT_WDT);
 }
 
 //*****************************************************************************
@@ -328,17 +320,13 @@ WatchdogIntUnregister(unsigned long ulBase)
     ASSERT((ulBase == WDT_BASE));
 
     //
-    // Disable the interrupt and
+    // Disable the interrupt
+    IntDisable(INT_WDT);
+    
+    //
     // Unregister the interrupt handler.
     //
-
-#ifndef NWPDRV
-    IntDisable(INT_WDTA0);
-    IntUnregister(INT_WDTA0);
-#else
-    IntDisable(INT_WDTN0);
-    IntUnregister(INT_WDTN0);
-#endif
+    IntUnregister(INT_WDT);
 }
 
 //*****************************************************************************

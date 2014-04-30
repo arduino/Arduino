@@ -23,7 +23,7 @@
 // on entry.
 //
 //*****************************************************************************
-#if defined(ewarm)
+#if defined(ewarm) || defined(__GNUC__)
 unsigned long
 CPUcpsid(void)
 {
@@ -70,7 +70,7 @@ CPUcpsid(void)
 // interrupts are enabled or disabled).
 //
 //*****************************************************************************
-#if defined(ewarm)
+#if defined(ewarm) || defined(__GNUC__)
 unsigned long
 CPUprimask(void)
 {
@@ -115,23 +115,7 @@ CPUprimask(void)
 // on entry.
 //
 //*****************************************************************************
-unsigned long
-CPUcpsie(void)
-{
-    //
-    // Read PRIMASK and enable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsie   i\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-}
-
-#if defined(ewarm)
+#if defined(ewarm) || defined(__GNUC__)
 unsigned long
 CPUcpsie(void)
 {
@@ -177,7 +161,7 @@ CPUcpsie(void)
 // Wrapper function for the WFI instruction.
 //
 //*****************************************************************************
-#if defined(ewarm)
+#if defined(ewarm) || defined(__GNUC__)
 void
 CPUwfi(void)
 {
@@ -203,7 +187,7 @@ CPUwfi(void)
 // Wrapper function for writing the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(ewarm)
+#if defined(ewarm) || defined(__GNUC__)
 void
 CPUbasepriSet(unsigned long ulNewBasepri)
 {
@@ -229,7 +213,7 @@ CPUbasepriSet(unsigned long ulNewBasepri)
 // Wrapper function for reading the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(ewarm)
+#if defined(ewarm) || defined(__GNUC__)
 unsigned long
 CPUbasepriGet(void)
 {

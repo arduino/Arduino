@@ -471,14 +471,14 @@ DESIntStatus(uint32_t ui32Base, bool bMasked)
     {
         ui32IntStatus = HWREG(ui32Base + DES_O_IRQSTATUS);
         ui32IntStatus &= HWREG(ui32Base + DES_O_IRQENABLE);
-        ui32IntStatus |= (HWREG(DTHE_BASE + DTHE_O_DES_MIS) << 16);
+        ui32IntStatus |= ((HWREG(DTHE_BASE + DTHE_O_DES_MIS) & 0x7) << 16);
         
         return(ui32IntStatus);
     }
     else
     {
         ui32IntStatus = HWREG(ui32Base + DES_O_IRQSTATUS);
-        ui32IntStatus |= (HWREG(DTHE_BASE + DTHE_O_DES_MIS) << 16);
+        ui32IntStatus |= ((HWREG(DTHE_BASE + DTHE_O_DES_MIS) & 0xD) << 16);
         return(ui32IntStatus);
     }
 }
@@ -520,7 +520,7 @@ DESIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Enable the interrupts from the flags.
     //
-    HWREG(DTHE_BASE + DTHE_O_DES_IM) |= (ui32IntFlags & 0x00070000) >> 16;
+    HWREG(DTHE_BASE + DTHE_O_DES_IM)  &= ~((ui32IntFlags & 0x00070000) >> 16);
     HWREG(ui32Base + DES_O_IRQENABLE) |= ui32IntFlags & 0x0000ffff;
 }
 
@@ -562,7 +562,7 @@ DESIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Clear the interrupts from the flags.
     //
-    HWREG(DTHE_BASE + DTHE_O_AES_IM) &= ~((ui32IntFlags & 0x00070000) >> 16);
+    HWREG(DTHE_BASE + DTHE_O_AES_IM)  |= ((ui32IntFlags & 0x00070000) >> 16);
     HWREG(ui32Base + DES_O_IRQENABLE) &= ~(ui32IntFlags & 0x0000ffff);
 }
 
@@ -598,49 +598,8 @@ DESIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
            (ui32IntFlags & DES_INT_DMA_DATA_IN) ||
            (ui32IntFlags & DES_INT_DMA_DATA_OUT));
 
-    HWREG(DTHE_BASE + DTHE_O_DES_IC) = (ui32IntFlags & 0x00070000) >> 16;
+    HWREG(DTHE_BASE + DTHE_O_DES_IC) = ((ui32IntFlags & 0x00070000) >> 16);
 }
-//##### INTERNAL BEGIN #####
-#if 0
-//*****************************************************************************
-//
-//! \internal
-//! Returns the interrupt number for a given DES base address.
-//!
-//! \param ulBase is the base address of the DES module.
-//!
-//! This function returns the interrupt number for the DES module with the base
-//! address passed in the \e ulBase parameter.
-//!
-//! \return Returns the DES interrupt number or 0 if the interrupt does not
-//! exist.
-//
-//*****************************************************************************
-static uint32_t
-DESIntNumberGet(uint32_t ui32Base)
-{
-    uint32_t ui32Int;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DES_BASE);
-
-    //
-    // Snowflake is the only class with a DES module.
-    //
-    if(CLASS_IS_SNOWFLAKE)
-    {
-        ui32Int = INT_DES;
-    }
-    else
-    {
-        ui32Int = 0;
-    }
-    return(ui32Int);
-}
-#endif
-//##### INTERNAL END #####
 
 //*****************************************************************************
 //

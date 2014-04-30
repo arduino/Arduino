@@ -39,15 +39,7 @@
 //! \return None.
 //
 //*****************************************************************************
-void
-UtilsDelay(unsigned long ulCount)
-{
-    __asm("    subs    r0, #1\n"
-          "    bne.n   UtilsDelay\n"
-          "    bx      lr");
-}
-
-#if defined(ewarm) || defined(DOXYGEN)
+#if defined(ewarm) || defined(DOXYGEN) || defined(__GNUC__)
 void
 UtilsDelay(unsigned long ulCount)
 {

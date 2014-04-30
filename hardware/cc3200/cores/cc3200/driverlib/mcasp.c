@@ -1184,12 +1184,12 @@ void McASPIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
   //
   //Register McASP Interrupt Handler
   //
-  IntRegister(INT_MCASPA0, pfnHandler);
+  IntRegister(INT_MCASP, pfnHandler);
 
   //
   //Enable McASP Interrupt
   //
-  IntEnable(INT_MCASPA0);
+  IntEnable(INT_MCASP);
 }
 
 
@@ -1212,12 +1212,12 @@ void McASPIntUnregister(unsigned long ulBase)
   //
   //Disable McASP Interrupt
   //
-  IntDisable(INT_MCASPA0);
+  IntDisable(INT_MCASP);
 
   //
   //Unregister McASP Interrupt Handler
   //
-  IntUnregister(INT_MCASPA0);
+  IntUnregister(INT_MCASP);
 }
 
 //*****************************************************************************

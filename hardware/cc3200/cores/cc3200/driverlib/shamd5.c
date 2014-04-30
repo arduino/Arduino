@@ -129,18 +129,14 @@ SHAMD5IntStatus(uint32_t ui32Base, bool bMasked)
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_SHA_MIS);
         ui32IrqEnable = HWREG(ui32Base + SHAMD5_O_IRQENABLE);
         return((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) &
-                ui32IrqEnable) |
-               ((ui32Temp & 0x00000001) << 19) |
-               ((ui32Temp & 0x00000002) << 16) |
-               ((ui32Temp & 0x00000004) << 14));
+                ui32IrqEnable) | (ui32Temp & 0x00000007) << 16);
     }
     else
     {
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_SHA_RIS);
         return(HWREG(ui32Base + SHAMD5_O_IRQSTATUS) |
-               ((ui32Temp & 0x00000001) << 19) |
-               ((ui32Temp & 0x00000002) << 16) |
-               ((ui32Temp & 0x00000004) << 14));
+               (ui32Temp & 0x00000007) << 16);
+               
     }
 }
 
@@ -179,9 +175,7 @@ SHAMD5IntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Enable the interrupt sources.
     //
-    HWREG(DTHE_BASE + DTHE_O_SHA_IM) |= (((ui32IntFlags & 0x00010000) >> 14) |
-                                       ((ui32IntFlags & 0x00020000) >> 16) |
-                                       ((ui32IntFlags & 0x00040000) >> 19));
+    HWREG(DTHE_BASE + DTHE_O_SHA_IM) &= ~((ui32IntFlags & 0x00070000) >> 16);
     HWREG(ui32Base + SHAMD5_O_IRQENABLE) |= ui32IntFlags & 0x0000ffff;
 
     //
@@ -224,9 +218,7 @@ SHAMD5IntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Clear the corresponding flags disabling the interrupt sources.
     //
-    HWREG(DTHE_BASE + DTHE_O_SHA_IM) &= ~(((ui32IntFlags & 0x00010000) >> 14) |
-                                        ((ui32IntFlags & 0x00020000) >> 16) |
-                                        ((ui32IntFlags & 0x00040000) >> 19));
+    HWREG(DTHE_BASE + DTHE_O_SHA_IM) |= ((ui32IntFlags & 0x00070000) >> 16);
     HWREG(ui32Base + SHAMD5_O_IRQENABLE) &= ~(ui32IntFlags & 0x0000ffff);
 
     //
@@ -272,52 +264,8 @@ SHAMD5IntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Clear the corresponding flags disabling the interrupt sources.
     //
-    HWREG(DTHE_BASE + DTHE_O_SHA_IC) = (((ui32IntFlags & 0x00010000) >> 14) |
-                                      ((ui32IntFlags & 0x00020000) >> 16) |
-                                      ((ui32IntFlags & 0x00040000) >> 19));
+    HWREG(DTHE_BASE + DTHE_O_SHA_IC) = ((ui32IntFlags & 0x00070000) >> 16);
 }
-
-//##### INTERNAL BEGIN #####
-#if 0
-//*****************************************************************************
-//
-//! Returns the interrupt number of SHA/MD5 module.
-//!
-//! \param ui32Base is the base address of the SHA/MD5 module.
-//!
-//! This function returns the interrupt number for the SHA/MD5 module with the
-//! base address passed in the \e ui32Base parameter.
-//!
-//! \return Returns a SHA/MD5 interrupt number or 0 if the interrupt does not
-//! exist.
-//
-//*****************************************************************************
-static uint32_t
-SHAMD5IntNumberGet(uint32_t ui32Base)
-{
-    uint32_t ui32Int;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == SHAMD5_BASE);
-
-    //
-    // Find the valid interrupt number for the SHA/MD5 module.
-    //
-    if(CLASS_IS_SNOWFLAKE)
-    {
-        ui32Int = INT_SHA;
-    }
-    else
-    {
-        ui32Int = 0;
-    }
-
-    return(ui32Int);
-}
-#endif
-//##### INTERNAL END #####
 
 //*****************************************************************************
 //

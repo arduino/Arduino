@@ -2328,9 +2328,7 @@
 // GPRCM_O_MEM_SHARED_PERIPH_PRESENT register.
 //
 //******************************************************************************
-#define GPRCM_MEM_SHARED_PERIPH_PRESENT_SHARED_EPI_PP \
-                                0x00000080  
-
+                                  
 #define GPRCM_MEM_SHARED_PERIPH_PRESENT_SHARED_MCSPI_PP \
                                 0x00000040  
 
@@ -2648,8 +2646,8 @@
                                             // NWP_SSDIO_PP [9:9] 
                                             // NWP_MCSPI_N1_PP [8:8] 2. Shared 
                                             // Peripheral Present bits [7:0] 
-                                            // SHARED EPI PP [7:7] SHARED SPI PP 
-                                            // [6:6] SHARED I2C PP [5:5] SHARED 
+                                            // SHARED SPI PP [6:6] 
+                                            // SHARED I2C PP [5:5] SHARED 
                                             // GPIO-A PP [4:4] SHARED GPIO-B PP 
                                             // [3:3] SHARED GPIO-C PP [2:2] 
                                             // SHARED GPIO-D PP [1:1] SHARED 

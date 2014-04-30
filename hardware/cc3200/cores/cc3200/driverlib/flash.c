@@ -32,6 +32,7 @@
 #include "inc/hw_stack_die_ctrl.h"
 #include "debug.h"
 #include "flash.h"
+#include "utils.h"
 #include "interrupt.h"
 
 #define HAVE_WRITE_BUFFER       1
@@ -104,44 +105,42 @@ static const unsigned long g_pulFMPRERegs[] =
 void
 FlashDisable()
 {
-  volatile unsigned long ulDelay;
 
   //
   // Wait for Flash Busy to get cleared
   //
-  while((HWREG(OCP_GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) 
+  while((HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) 
           & GPRCM_TOP_DIE_ENABLE_FLASH_BUSY))
   {
       
   }
-
+  
   //
-  // Disable flash
+  // Assert reset
   //
-  HWREG(OCP_GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) = 0x0;
-
+  HWREG(HIB1P2_BASE + HIB1P2_O_PORPOL_SPARE) = 0xFFFF0000;
+  
   //
-  // Delay loop 
+  // 50 usec Delay Loop
   //
-  for( ulDelay = 0; ulDelay < 10000; ulDelay++)
-  {
-      
-  }
-
+  UtilsDelay((50*80)/3);
+  
+  // 
+  // Disable TDFlash
   //
-  //Flash pre-discharge
+  HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) = 0x0;
+  
   //
-  HWREG(0x4402f844) |= (1<<4);
-
+  // 50 usec Delay Loop
   //
-  // Delay loop
+  UtilsDelay((50*80)/3);
+  
+  HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
+  
   //
-  for( ulDelay = 0; ulDelay < 0xFFFF; ulDelay++)
-  {
-      
-  }
-
-  HWREG(0x4402f844) &= ~(1<<4);
+  // 50 usec Delay Loop
+  //
+  UtilsDelay((50*80)/3);
 }
 
 

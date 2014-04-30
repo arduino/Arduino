@@ -95,7 +95,7 @@ extern unsigned long CameraIntStatus(unsigned long ulBase);
 extern void CameraIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 extern void CameraCaptureStop(unsigned long ulBase, tBoolean bImmediate);
 extern void CameraCaptureStart(unsigned long ulBase);
-extern void CamBufferRead(unsigned long ulBase,unsigned long *pBuffer, 
+extern void CameraBufferRead(unsigned long ulBase,unsigned long *pBuffer, 
                           unsigned char ucSize);
   
 //*****************************************************************************

@@ -281,7 +281,7 @@ tDMAControlTable;
 //
 #define UDMA_CH4_TIMERA2_A      0x00000004
 #define UDMA_CH4_DES_DIN        0x00010004
-#define UDMA_CH4_MCASP_A0_RX    0x00020004
+#define UDMA_CH4_MCASP_RX       0x00020004
 #define UDMA_CH4_SW             0x00030004
 
 //
@@ -289,30 +289,30 @@ tDMAControlTable;
 //
 #define UDMA_CH5_TIMERA2_B      0x00000005
 #define UDMA_CH5_DES_DOUT       0x00010005
-#define UDMA_CH5_MCASP_A0_TX    0x00020005
+#define UDMA_CH5_MCASP_TX       0x00020005
 #define UDMA_CH5_SW             0x00030005
 
 //
 // Channel 6
 //
 #define UDMA_CH6_TIMERA3_A      0x00000006
-#define UDMA_CH6_MCSPI_A1_RX    0x00010006
-#define UDMA_CH6_GPIOS2         0x00020006
+#define UDMA_CH6_GSPI_RX        0x00010006
+#define UDMA_CH6_GPIOA2         0x00020006
 #define UDMA_CH6_SW             0x00030006
 
 //
 // Channel 7
 //
 #define UDMA_CH7_TIMERA3_B      0x00000007
-#define UDMA_CH7_MCSPI_A1_TX    0x00010007
-#define UDMA_CH7_GPIOS3         0x00020007
+#define UDMA_CH7_GSPI_TX    0x00010007
+#define UDMA_CH7_GPIOA3         0x00020007
 #define UDMA_CH7_SW             0x00030007
 
 
 //
 // Channel 8
 //
-#define UDMA_CH8_UART_A0_RX     0x00000008
+#define UDMA_CH8_UARTA0_RX      0x00000008
 #define UDMA_CH8_TIMERA0_A      0x00010008
 #define UDMA_CH8_TIMERA2_A      0x00020008
 #define UDMA_CH8_SW             0x00030008
@@ -321,7 +321,7 @@ tDMAControlTable;
 //
 // Channel 9
 //
-#define UDMA_CH9_UART_A0_TX     0x00000009
+#define UDMA_CH9_UARTA0_TX      0x00000009
 #define UDMA_CH9_TIMERA0_B      0x00010009
 #define UDMA_CH9_TIMERA2_B      0x00020009
 #define UDMA_CH9_SW             0x00030009
@@ -330,7 +330,7 @@ tDMAControlTable;
 //
 // Channel 10
 //
-#define UDMA_CH10_UART_A1_RX    0x0000000A
+#define UDMA_CH10_UARTA1_RX     0x0000000A
 #define UDMA_CH10_TIMERA1_A     0x0001000A
 #define UDMA_CH10_TIMERA3_A     0x0002000A
 #define UDMA_CH10_SW            0x0003000A
@@ -338,7 +338,7 @@ tDMAControlTable;
 //
 // Channel 11
 //
-#define UDMA_CH11_UART_A1_TX    0x0000000B
+#define UDMA_CH11_UARTA1_TX     0x0000000B
 #define UDMA_CH11_TIMERA1_B     0x0001000B
 #define UDMA_CH11_TIMERA3_B     0x0002000B
 #define UDMA_CH11_SW            0x0003000B
@@ -347,39 +347,37 @@ tDMAControlTable;
 //
 // Channel 12
 //
-#define UDMA_CH12_MCSPI_A2_RX   0x0000000C
+#define UDMA_CH12_LSPI_RX       0x0000000C
 #define UDMA_CH12_SW            0x0003000C
 
 
 //
 // Channel 13
 //
-#define UDMA_CH13_MCSPI_A2_TX			0x0000000D
-#define UDMA_CH13_SW				0x0003000D
+#define UDMA_CH13_LSPI_TX       0x0000000D
+#define UDMA_CH13_SW		0x0003000D
 
 
 //
 // Channel 14
 //
-#define UDMA_CH14_ADC_0_0       0x0000000E
-#define UDMA_CH14_EPI_S0_RX     0x0001000E
-#define UDMA_CH14_SDIO_A0_RX    0x0002000E
+#define UDMA_CH14_ADC_CH0       0x0000000E
+#define UDMA_CH14_SDHOST_RX     0x0002000E
 #define UDMA_CH14_SW            0x0003000E
 
 
 //
 // Channel 15
 //
-#define UDMA_CH15_ADC_0_1       0x0000000F
-#define UDMA_CH15_EPI_S0_TX     0x0001000F
-#define UDMA_CH15_SDIO_A0_TX    0x0002000F
+#define UDMA_CH15_ADC_CH1       0x0000000F
+#define UDMA_CH15_SDHOST_TX     0x0002000F
 #define UDMA_CH15_SW            0x0003000F
 
 
 //
 // Channel 16
 //
-#define UDMA_CH16_ADC_0_2       0x00000010
+#define UDMA_CH16_ADC_CH2       0x00000010
 #define UDMA_CH16_TIMERA2_A     0x00010010
 #define UDMA_CH16_SW            0x00030010
 
@@ -387,32 +385,32 @@ tDMAControlTable;
 //
 // Channel 17
 //
-#define UDMA_CH17_ADC_0_3       0x00000011
+#define UDMA_CH17_ADC_CH3       0x00000011
 #define UDMA_CH17_TIMERA2_B     0x00010011
 #define UDMA_CH17_SW            0x00030011
 
 //
 // Channel 18
 //
-#define UDMA_CH18_GPIOS0        0x00000012
+#define UDMA_CH18_GPIOA0        0x00000012
 #define UDMA_CH18_AES_CIN       0x00010012
-#define UDMA_CH18_MCASP_A0_RX   0x00020012
+#define UDMA_CH18_MCASP_RX      0x00020012
 #define UDMA_CH18_SW            0x00030012
 
 
 //
 // Channel 19
 //
-#define UDMA_CH19_GPOI_B        0x00000013
+#define UDMA_CH19_GPOIA1        0x00000013
 #define UDMA_CH19_AES_COUT      0x00010013
-#define UDMA_CH19_MCASP_A0_TX   0x00020013
+#define UDMA_CH19_MCASP_TX      0x00020013
 #define UDMA_CH19_SW            0x00030013
 
 
 //
 // Channel 20
 //
-#define UDMA_CH20_GPIOS2        0x00000014
+#define UDMA_CH20_GPIOA2        0x00000014
 #define UDMA_CH20_AES_DIN       0x00010014
 #define UDMA_CH20_SW            0x00030014
 
@@ -420,7 +418,7 @@ tDMAControlTable;
 //
 // Channel 21
 //
-#define UDMA_CH21_GPIOS3        0x00000015
+#define UDMA_CH21_GPIOA3        0x00000015
 #define UDMA_CH21_AES_DOUT      0x00010015
 #define UDMA_CH21_SW            0x00030015
 
@@ -428,15 +426,15 @@ tDMAControlTable;
 //
 // Channel 22
 //
-#define UDMA_CH22_CAM_A0        0x00000016
-#define UDMA_CH22_GPIOS4        0x00010016
+#define UDMA_CH22_CAMERA        0x00000016
+#define UDMA_CH22_GPIOA4        0x00010016
 #define UDMA_CH22_SW            0x00030016
 
 
 //
 // Channel 23
 //
-#define UDMA_CH23_SDIO_A0_RX    0x00000017
+#define UDMA_CH23_SDHOST_RX     0x00000017
 #define UDMA_CH23_TIMERA3_A     0x00010017
 #define UDMA_CH23_TIMERA2_A     0x00020017
 #define UDMA_CH23_SW            0x00030017
@@ -445,7 +443,7 @@ tDMAControlTable;
 //
 // Channel 24
 //
-#define UDMA_CH24_SDIO_A0_TX    0x00000018
+#define UDMA_CH24_SDHOST_TX     0x00000018
 #define UDMA_CH24_TIMERA3_B     0x00010018
 #define UDMA_CH24_TIMERA2_B     0x00020018
 #define UDMA_CH24_SW            0x00030018
@@ -454,55 +452,55 @@ tDMAControlTable;
 //
 // Channel 25
 //
-#define UDMA_CH25_MCSPI_S0_RX   0x00000019
-#define UDMA_CH25_I2C_S0_RX     0x00010019
+#define UDMA_CH25_SSPI_RX       0x00000019
+#define UDMA_CH25_I2CA0_RX      0x00010019
 #define UDMA_CH25_SW            0x00030019
 
 
 //
 // Channel 26
 //
-#define UDMA_CH26_MCSPI_S0_TX   0x0000001A
-#define UDMA_CH26_I2C_S0_TX     0x0001001A
+#define UDMA_CH26_SSPI_TX       0x0000001A
+#define UDMA_CH26_I2CA0_TX      0x0001001A
 #define UDMA_CH26_SW            0x0003001A
 
 
 //
 // Channel 27
 //
-#define UDMA_CH27_GPIOS0        0x0001001B
+#define UDMA_CH27_GPIOA0        0x0001001B
 #define UDMA_CH27_SW            0x0003001B
 
 
 //
 // Channel 28
 //
-#define UDMA_CH28_GPIOS1        0x0001001C
+#define UDMA_CH28_GPIOA1        0x0001001C
 #define UDMA_CH28_SW            0x0003001C
 
 
 //
 // Channel 29
 //
-#define UDMA_CH29_GPIOS4        0x0000001D
+#define UDMA_CH29_GPIOA4        0x0000001D
 #define UDMA_CH29_SW            0x0003001D
 
 
 //
 // Channel 30
 //
-#define UDMA_CH30_MCSPI_A1_RX   0x0000001E
-#define UDMA_CH30_SDIO_A0_RX    0x0001001E
-#define UDMA_CH30_I2C_S0_RX     0x0002001E
+#define UDMA_CH30_GSPI_RX       0x0000001E
+#define UDMA_CH30_SDHOST_RX     0x0001001E
+#define UDMA_CH30_I2CA0_RX      0x0002001E
 #define UDMA_CH30_SW            0x0003001E
 
 
 //
 // Channel 31
 //
-#define UDMA_CH31_MCSPI_A1_TX   0x0000001F
-#define UDMA_CH31_SDIO_A0_TX    0x0001001F
-#define UDMA_CH31_I2C_S0_RX     0x0002001F
+#define UDMA_CH31_GSPI_TX       0x0000001F
+#define UDMA_CH31_SDHOST_TX     0x0001001F
+#define UDMA_CH31_I2CA0_RX      0x0002001F
 #define UDMA_CH31_SW            0x0003001F
 
 //*****************************************************************************

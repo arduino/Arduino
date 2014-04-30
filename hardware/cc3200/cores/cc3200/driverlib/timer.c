@@ -31,14 +31,6 @@
 
 
 //*****************************************************************************
-// Redefining timer bases
-//*****************************************************************************
-#define TIMERA0_BASE  GPTA0_BASE
-#define TIMERA1_BASE  GPTA1_BASE
-#define TIMERA2_BASE  GPTA2_BASE
-#define TIMERA3_BASE  GPTA3_BASE
-
-//*****************************************************************************
 //
 //! \internal
 //! Checks a timer base address.
@@ -129,11 +121,8 @@ TimerDisable(unsigned long ulBase, unsigned long ulTimer)
 //!
 //! This function configures the operating mode of the timer(s).  The timer
 //! module is disabled before being configured, and is left in the disabled
-//! state.  There are two types of timers; a 16/32-bit variety and a 32/64-bit
-//! variety.  The 16/32-bit variety is comprised of two 16-bit timers that can
+//! state. The 16/32-bit timer is comprised of two 16-bit timers that can
 //! operate independently or be concatenated to form a 32-bit timer.
-//! Similarly, the 32/64-bit variety is comprised of two 32-bit timers that can
-//! operate independently or be concatenated to form a 64-bit timer.
 //!
 //! The configuration is specified in \e ulConfig as one of the following
 //! values:
@@ -428,8 +417,7 @@ TimerControlWaitOnTrigger(unsigned long ulBase, unsigned long ulTimer,
 //! \param ulTimer specifies the timer(s) to adjust; must be one of \b TIMER_A,
 //! \b TIMER_B, or \b TIMER_BOTH.
 //! \param ulValue is the timer prescale value which must be between 0 and 255
-//! (inclusive) for 16/32-bit timers and between 0 and 65535 (inclusive) for
-//! 32/64-bit timers.
+//! (inclusive) for 16/32-bit timers.
 //!
 //! This function sets the value of the input clock prescaler.  The prescaler
 //! is only operational when in half-width mode and is used to extend the range
@@ -438,7 +426,6 @@ TimerControlWaitOnTrigger(unsigned long ulBase, unsigned long ulTimer,
 //! \return None.
 //
 //*****************************************************************************
-
 void
 TimerPrescaleSet(unsigned long ulBase, unsigned long ulTimer,
                  unsigned long ulValue)
@@ -510,8 +497,7 @@ TimerPrescaleGet(unsigned long ulBase, unsigned long ulTimer)
 //! \param ulTimer specifies the timer(s) to adjust; must be one of \b TIMER_A,
 //! \b TIMER_B, or \b TIMER_BOTH.
 //! \param ulValue is the timer prescale match value which must be between 0
-//! and 255 (inclusive) for 16/32-bit timers and between 0 and 65535
-//! (inclusive) for 32/64-bit timers.
+//! and 255 (inclusive) for 16/32-bit timers.
 //!
 //! This function sets the value of the input clock prescaler match value.
 //! When in a half-width mode that uses the counter match and the prescaler,
@@ -524,7 +510,6 @@ TimerPrescaleGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-
 void
 TimerPrescaleMatchSet(unsigned long ulBase, unsigned long ulTimer,
                       unsigned long ulValue)
@@ -573,7 +558,6 @@ TimerPrescaleMatchSet(unsigned long ulBase, unsigned long ulTimer,
 //! \return The value of the timer prescale match.
 //
 //*****************************************************************************
-
 unsigned long
 TimerPrescaleMatchGet(unsigned long ulBase, unsigned long ulTimer)
 {
@@ -598,23 +582,6 @@ TimerPrescaleMatchGet(unsigned long ulBase, unsigned long ulTimer)
 //! \param ulBase is the base address of the timer module.
 //! \param ulTimer specifies the timer(s) to adjust; must be one of \b TIMER_A,
 //! \b TIMER_B, or \b TIMER_BOTH.  Only \b TIMER_A should be used when the
-//! timer is configured for 32-bit operation.
-//! \param ulValue is the load value.
-//!
-//! This function sets the timer load value; if the timer is running then the
-//! value will be immediately loaded into the timer.
-//!
-//! \return None.
-//
-//*****************************************************************************
-
-//*****************************************************************************
-//
-//! Sets the timer load value.
-//!
-//! \param ulBase is the base address of the timer module.
-//! \param ulTimer specifies the timer(s) to adjust; must be one of \b TIMER_A,
-//! \b TIMER_B, or \b TIMER_BOTH.  Only \b TIMER_A should be used when the
 //! timer is configured for full-width operation.
 //! \param ulValue is the load value.
 //!
@@ -622,13 +589,11 @@ TimerPrescaleMatchGet(unsigned long ulBase, unsigned long ulTimer)
 //! value is immediately loaded into the timer.
 //!
 //! \note This function can be used for both full- and half-width modes of
-//! 16/32-bit timers, and for half-width modes of 32/64-bit timers.  Use
-//! TimerLoadSet64() for full-width modes of 32/64-bit timers.
+//! 16/32-bit timers.
 //!
 //! \return None.
 //
 //*****************************************************************************
-
 void
 TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
              unsigned long ulValue)
@@ -664,22 +629,6 @@ TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
 //! \param ulBase is the base address of the timer module.
 //! \param ulTimer specifies the timer; must be one of \b TIMER_A or
 //! \b TIMER_B.  Only \b TIMER_A should be used when the timer is configured
-//! for 32-bit operation.
-//!
-//! This function gets the currently programmed interval load value for the
-//! specified timer.
-//!
-//! \return Returns the load value for the timer.
-//
-//*****************************************************************************
-
-//*****************************************************************************
-//
-//! Gets the timer load value.
-//!
-//! \param ulBase is the base address of the timer module.
-//! \param ulTimer specifies the timer; must be one of \b TIMER_A or
-//! \b TIMER_B.  Only \b TIMER_A should be used when the timer is configured
 //! for full-width operation.
 //!
 //! This function gets the currently programmed interval load value for the
@@ -691,7 +640,6 @@ TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
 //! \return Returns the load value for the timer.
 //
 //*****************************************************************************
-
 unsigned long
 TimerLoadGet(unsigned long ulBase, unsigned long ulTimer)
 {
@@ -722,7 +670,6 @@ TimerLoadGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return Returns the current value of the timer.
 //
 //*****************************************************************************
-
 unsigned long
 TimerValueGet(unsigned long ulBase, unsigned long ulTimer)
 {
@@ -738,6 +685,7 @@ TimerValueGet(unsigned long ulBase, unsigned long ulTimer)
     return((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAR) :
            HWREG(ulBase + TIMER_O_TBR));
 }
+
 //*****************************************************************************
 //
 //! Sets the timer match value.
@@ -753,7 +701,8 @@ TimerValueGet(unsigned long ulBase, unsigned long ulTimer)
 //! determine the duty cycle of the output signal.
 //!
 //! \return None.
-
+//
+//*****************************************************************************
 void
 TimerMatchSet(unsigned long ulBase, unsigned long ulTimer,
               unsigned long ulValue)

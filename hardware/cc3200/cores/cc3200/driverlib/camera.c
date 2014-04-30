@@ -295,12 +295,12 @@ void CameraIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_CAMA0, pfnHandler);
+    IntRegister(INT_CAMERA, pfnHandler);
 
     //
     // Enable the Camera interrupt.
     //
-    IntEnable(INT_CAMA0);
+    IntEnable(INT_CAMERA);
 }
 
 
@@ -321,12 +321,12 @@ void CameraIntUnregister(unsigned long ulBase)
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_CAMA0);
+    IntDisable(INT_CAMERA);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_CAMA0);
+    IntUnregister(INT_CAMERA);
 }
 
 
@@ -474,7 +474,7 @@ void CameraCaptureStart(unsigned long ulBase)
   //
   // Set the mode
   //
-  HWREG(ulBase + CAMERA_O_CC_CTRL) &= 0xF;
+  HWREG(ulBase + CAMERA_O_CC_CTRL) &= ~0xF;
   
   //
   // Enable image capture
@@ -531,7 +531,7 @@ void CameraCaptureStop(unsigned long ulBase, tBoolean bImmediate)
 //! \return None.
 //
 //******************************************************************************
-void CamBufferRead(unsigned long ulBase, unsigned long *pBuffer,
+void CameraBufferRead(unsigned long ulBase, unsigned long *pBuffer,
                    unsigned char ucSize)
 {
   unsigned char *pCamBuff;

@@ -2,15 +2,11 @@
  ************************************************************************
  *	HardwareSerial.cpp
  *
- *	Arduino core files for MSP430
- *		Copyright (c) 2012 Robert Wessels. All right reserved.
+ *	Energia core files for CC3200
+ *		Copyright (c) 20124 Robert Wessels. All right reserved.
  *
  *
  ***********************************************************************
-
- 2013-12-23 Limited size for RX and TX buffers, by spirilis
-
- 
   Derived from:
   HardwareSerial.cpp - Hardware serial library for Wiring
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
@@ -47,7 +43,7 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
-#include "driverlib/arcm.h"
+#include "driverlib/prcm.h"
 #include "driverlib/uart.h"
 #include "driverlib/systick.h"
 #include "HardwareSerial.h"
@@ -80,10 +76,11 @@ static const unsigned long g_ulUARTInt[2] =
 // The list of UART peripherals.
 //
 //*****************************************************************************
-static const ArcmPeripherals_t  g_ulUARTPeriph[2] =
+static const unsigned long g_ulUARTPeriph[2] =
 {
-	ARCM_UARTA0, ARCM_UARTA1
+	PRCM_UARTA0, PRCM_UARTA1
 };
+
 //*****************************************************************************
 //
 // The list of UART GPIO configurations.
@@ -151,11 +148,10 @@ HardwareSerial::primeTransmit(unsigned long ulBase)
 		/* Disable the UART interrupt. If we don't do this there is a race
 		 * condition which can cause the read index to be corrupted. */
 		MAP_IntDisable(g_ulUARTInt[uartModule]);
-		//
-		// Yes - take some characters out of the transmit buffer and feed
-		// them to the UART transmit FIFO.
-		//
-		while(!TX_BUFFER_EMPTY) {
+
+		/* Yes - take some characters out of the transmit buffer and feed
+		 * them to the UART transmit FIFO. */
+		while(!TX_BUFFER_EMPTY){
 			while(MAP_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY){
 				MAP_UARTCharPutNonBlocking(ulBase, txBuffer[txReadIndex]);
 
@@ -174,36 +170,35 @@ void HardwareSerial::begin(unsigned long baud)
 {
 	baudRate = baud;
 
+	/* Set the UART to interrupt whenever the TX FIFO is almost empty or
+	 * when any character is received. */
+	//MAP_UARTFIFOLevelSet(UART_BASE, UART_FIFO_TX7_8, UART_FIFO_RX7_8);
+
 	/* Initialize the UART. */
 	UARTClockSourceSet(UART_BASE, UART_CLOCK_SYSTEM);
-	MAP_ArcmPeripheralEnable(g_ulUARTPeriph[uartModule]);
+	MAP_PRCMPeripheralReset(g_ulUARTPeriph[uartModule]);
+
+	MAP_PRCMPeripheralClkEnable(g_ulUARTPeriph[uartModule], PRCM_RUN_MODE_CLK);
 
 	MAP_PinTypeUART(g_ulUARTConfig[uartModule][0], PIN_MODE_3);
 	MAP_PinTypeUART(g_ulUARTConfig[uartModule][1], PIN_MODE_3);
 
-	MAP_UARTConfigSetExpClk(UART_BASE, MAP_ArcmPeripheralClkGet(g_ulUARTPeriph[uartModule]), baudRate,
-                            (UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
-                             UART_CONFIG_WLEN_8));
-
-	/* Set the UART to interrupt whenever the TX FIFO is almost empty or
-	 * when any character is received. */
-	MAP_UARTFIFOLevelSet(UART_BASE, UART_FIFO_TX1_8, UART_FIFO_RX1_8);
+	MAP_UARTConfigSetExpClk(UART_BASE, 80000000, baudRate,
+				(UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
+				UART_CONFIG_WLEN_8));
 
 	flushAll();
-	MAP_UARTIntEnable(UART_BASE, UART_INT_RX | UART_INT_TX);
 	MAP_IntEnable(g_ulUARTInt[uartModule]);
 
 	/* Enable the UART operation. */
 	MAP_UARTEnable(UART_BASE);
 
-	/* The UART sends garbage if the SysTick is enabled before the UART.
-	 * Reenabling the SysTick interrupt seems to work around the issue. */
-	//SysTickIntEnable();
+	MAP_UARTIntEnable(UART_BASE, UART_INT_RT | UART_INT_TX);
 }
 
 void HardwareSerial::setModule(unsigned long module)
 {
-	MAP_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_TX);
+	MAP_UARTIntDisable(UART_BASE, UART_INT_RT | UART_INT_TX);
 	MAP_UARTIntUnregister(UART_BASE);
 	uartModule = module;
 	begin(baudRate);
@@ -221,31 +216,29 @@ void HardwareSerial::end()
 		MAP_IntMasterEnable();
 	}
 
-	MAP_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_TX);
+	MAP_UARTIntDisable(UART_BASE, UART_INT_RT | UART_INT_TX);
 	MAP_UARTIntUnregister(UART_BASE);
 }
 
 int HardwareSerial::available(void)
 {
-	return((rxWriteIndex >= rxReadIndex) ?
-		(rxWriteIndex - rxReadIndex) : rxBufferSize - (rxReadIndex - rxWriteIndex));
+	return (rxWriteIndex >= rxReadIndex) ?
+		(rxWriteIndex - rxReadIndex) : rxBufferSize - (rxReadIndex - rxWriteIndex);
 }
 
 int HardwareSerial::peek(void)
 {
 	unsigned char cChar = 0;
 
-	/* Wait for a character to be received. */
-	while(RX_BUFFER_EMPTY) {
-		/* Block waiting for a character to be received (if the buffer is
-		 * currently empty). */
+	if(RX_BUFFER_EMPTY) {
+		return -1;
 	}
 
 	/* Read a character from the buffer. */
 	cChar = rxBuffer[rxReadIndex];
 
 	/* Return the character to the caller. */
-	return(cChar);
+	return cChar;
 }
 
 int HardwareSerial::read(void)
@@ -253,7 +246,7 @@ int HardwareSerial::read(void)
 	unsigned char cChar = peek();
 
 	rxReadIndex = ((rxReadIndex) + 1) % rxBufferSize;
-	return(cChar);
+	return cChar;
 }
 
 void HardwareSerial::flush()
@@ -283,10 +276,11 @@ size_t HardwareSerial::write(uint8_t c)
 	}
 
 	/* Return the number of characters written. */
-	return(numTransmit);
+	return numTransmit;
 }
 
-void HardwareSerial::UARTIntHandler(void){
+void HardwareSerial::UARTIntHandler(void)
+{
 	unsigned long ulInts;
 	long lChar;
 
@@ -305,7 +299,7 @@ void HardwareSerial::UARTIntHandler(void){
 		}
 	}
 
-	if(ulInts & (UART_INT_RX | UART_INT_TX)) {
+	if(ulInts & (UART_INT_RT | UART_INT_TX)) {
 		while(MAP_UARTCharsAvail(UART_BASE)) {
 			/* Read a character */
 			lChar = MAP_UARTCharGetNonBlocking(UART_BASE);

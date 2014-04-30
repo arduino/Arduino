@@ -27,9 +27,6 @@
 #define COMMON_REG_O_SPI_Properties_Register \
                                 0x00000004  
 
-#define COMMON_REG_O_EPI_Properties_Register \
-                                0x00000008  
-
 #define COMMON_REG_O_APPS_sh_resource_Interrupt_enable \
                                 0x0000000C  
 
@@ -234,31 +231,7 @@
                                             // holding the semaphore. 
 
 #define COMMON_REG_SPI_Properties_Register_SPI_Properties_Register_S 0 
-//******************************************************************************
-//
-// The following are defines for the bit fields in the 
-// COMMON_REG_O_EPI_Properties_Register register.
-//
-//******************************************************************************
-#define COMMON_REG_EPI_Properties_Register_EPI_Properties_Register_M \
-                                0x00000003  // • Each semaphore register is of 
-                                            // 2 bit. • When this register is 
-                                            // set to 2’b01 – Apps have access 
-                                            // and when set to 2’b10 – NW have 
-                                            // access. • Ideally both the master 
-                                            // can modify any of this 2 bit, but 
-                                            // assumption apps will write only 
-                                            // 2’b01 or 2’b00 to this register 
-                                            // and nw will write only 2’b10 or 
-                                            // 2’b00. • Implementation is when 
-                                            // any of the bit of this register 
-                                            // is set, only next write 
-                                            // allowedvis 2’b00 – Again 
-                                            // assumption is one master will not 
-                                            // write 2’b00 if other is already 
-                                            // holding the semaphore. 
 
-#define COMMON_REG_EPI_Properties_Register_EPI_Properties_Register_S 0 
 //******************************************************************************
 //
 // The following are defines for the bit fields in the 
@@ -269,8 +242,7 @@
                                 0x0000000F  // Interrupt enable APPS bit 0 -> 
                                             // when '1' enable I2C interrupt bit 
                                             // 1 -> when '1' enable SPI 
-                                            // interrupt bit 2 -> when '1' 
-                                            // enable EPI interrupt bit 3 -> 
+                                            // interrupt bit 3 -> 
                                             // when '1' enable GPIO interrupt 
 
 #define COMMON_REG_APPS_sh_resource_Interrupt_enable_APPS_sh_resource_Interrupt_enable_S 0 
@@ -284,8 +256,7 @@
                                 0x0000000F  // Interrupt enable APPS bit 0 -> 
                                             // when '1' enable I2C interrupt bit 
                                             // 1 -> when '1' enable SPI 
-                                            // interrupt bit 2 -> when '1' 
-                                            // enable EPI interrupt bit 3 -> 
+                                            // interrupt bit 3 -> 
                                             // when '1' enable GPIO interrupt 
 
 #define COMMON_REG_APPS_sh_resource_Interrupt_status_APPS_sh_resource_Interrupt_status_S 0 
@@ -299,8 +270,7 @@
                                 0x0000000F  // Interrupt enable NWP bit 0 -> 
                                             // when '1' enable I2C interrupt bit 
                                             // 1 -> when '1' enable SPI 
-                                            // interrupt bit 2 -> when '1' 
-                                            // enable EPI interrupt bit 3 -> 
+                                            // interrupt bit 3 -> 
                                             // when '1' enable GPIO interrupt 
 
 #define COMMON_REG_NWP_sh_resource_Interrupt_enable_NWP_sh_resource_Interrupt_enable_S 0 
@@ -314,8 +284,7 @@
                                 0x0000000F  // Interrupt enable NWP bit 0 -> 
                                             // when '1' enable I2C interrupt bit 
                                             // 1 -> when '1' enable SPI 
-                                            // interrupt bit 2 -> when '1' 
-                                            // enable EPI interrupt bit 3 -> 
+                                            // interrupt bit 3 -> 
                                             // when '1' enable GPIO interrupt 
 
 #define COMMON_REG_NWP_sh_resource_Interrupt_status_NWP_sh_resource_Interrupt_status_S 0 
@@ -762,8 +731,7 @@
                                 0xFFFFFFFF  // SEMAPHORE STATUS 9:8 :semaphore 
                                             // status of flash_control 7:6 
                                             // :semaphore status of 
-                                            // gpio_properties 5:4 :semaphore 
-                                            // status of epi_propertie 3:2 
+                                            // gpio_properties 5:4
                                             // :semaphore status of 
                                             // spi_propertie 1:0 :semaphore 
                                             // status of i2c_propertie 
@@ -1076,8 +1044,6 @@
                                             // i2c_properties_reg[1:0] 3:2 : 
                                             // prvious owner of 
                                             // spi_properties_reg[1:0] 5:4 : 
-                                            // prvious owner of 
-                                            // epi_properties_reg[1:0] 7:6 : 
                                             // prvious owner of 
                                             // gpio_properties_reg[1:0] 9:8 : 
                                             // prvious owner of 

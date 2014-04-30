@@ -29,7 +29,6 @@
 #include "adc.h"
 
 
-
 //*****************************************************************************
 //
 //! Enables the ADC
@@ -46,10 +45,7 @@ void ADCEnable(unsigned long ulBase)
   //
   // Set the global enable bit in the control register.
   //  
-  HWREG(ulBase + ADC_O_ADC_SPARE1) = 
-                ((HWREG(ulBase + ADC_O_ADC_SPARE1) & ~0x03FFFF00) | 0x0355AA00);
-  
-  HWREG(ulBase + ADC_O_ADC_CTRL) = 0x2D ;
+  HWREG(ulBase + ADC_O_ADC_CTRL) |= 0x1;
 }
 
 //*****************************************************************************
@@ -77,7 +73,8 @@ void ADCDisable(unsigned long ulBase)
 //!
 //! \param ulBase is the base address of the ADC
 //!
-//! This function enables specified ADC channel.
+//! This function enables specified ADC channel and configures the 
+//! pin as analog pin.
 //!
 //! \return None.
 //
@@ -113,60 +110,6 @@ void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel)
           (ulChannel == ADC_CH_2)? 0x08 : 0x10;
   
   HWREG(ulBase + ADC_O_ADC_SPARE1) &= ~ulCh;
-}
-
-//*****************************************************************************
-//
-//! Enables external reference for ADC
-//!
-//! \param ulBase is the base address of the ADC
-//!
-//! This function enables external reference for ADC. If enabled, channel 7 
-//! is used as external reference.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void ADCExtRefEnable(unsigned long ulBase)
-{
-  HWREG(ulBase + ADC_O_ADC_SPARE1) |= 0x1;
-}
-
-//*****************************************************************************
-//
-//! Disables external reference for ADC
-//!
-//! \param ulBase is the base address of the ADC
-//!
-//! This function disables external reference for ADC. If enabled, channel 7 
-//! is used as external reference.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void ADCExtRefDisable(unsigned long ulBase)
-{
-  HWREG(ulBase + ADC_O_ADC_SPARE1) &= ~0x1;
-}
-
-//*****************************************************************************
-//
-//! Resets the ADC
-//!
-//! \param ulBase is the base address of the ADC
-//!
-//! This function resets the ADC internal logic
-//!
-//! \return None.
-//
-//*****************************************************************************
-void ADCReset(unsigned long ulBase)
-{
-  //
-  // Assert Soft Reset to reset the
-  // ADC internal logic
-  //
-  HWREG(ulBase + ADC_O_ADC_CTRL) |= 0x2 ;
 }
 
 //*****************************************************************************
@@ -788,28 +731,6 @@ unsigned long ADCFIFORead(unsigned long ulBase, unsigned long ulChannel)
   return(HWREG(ulBase + ulOffset));
 }
 
-//*****************************************************************************
-//
-//! Sets the sampling frequency for ADC
-//!
-//! \param ulBase is the base address of the ADC
-//!
-//! This function sets the sampling frequency for ADC.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void ADCSamplingClkSet(unsigned long ulBase, 
-                       unsigned long OnTime, unsigned long OffTime)
-{
-  unsigned long ulReg;
-  
-  ulReg = HWREG(0x4402D10C) & ~0x7FE;
-  
-  ulReg = ((OnTime << 1) | (OffTime << 6));
-  
-  HWREG(0x4402D10C) = ulReg;
-}
 
 //*****************************************************************************
 //

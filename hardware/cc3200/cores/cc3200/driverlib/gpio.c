@@ -48,11 +48,10 @@
 static tBoolean
 GPIOBaseValid(unsigned long ulPort)
 {
-    return((ulPort == GPIOS0_BASE) ||
-           (ulPort == GPIOS1_BASE) ||
-           (ulPort == GPIOS2_BASE) ||
-           (ulPort == GPIOS3_BASE) ||
-           (ulPort == GPIOS4_BASE));
+    return((ulPort == GPIOA0_BASE) ||
+           (ulPort == GPIOA1_BASE) ||
+           (ulPort == GPIOA2_BASE) ||
+           (ulPort == GPIOA3_BASE));
 }
 #endif
 
@@ -78,36 +77,29 @@ GPIOGetIntNumber(unsigned long ulPort)
     //
     switch(ulPort)
     {
-        case GPIOS0_BASE:
+        case GPIOA0_BASE:
         {
-            ulInt = INT_GPIOS0;
+            ulInt = INT_GPIOA0;
             break;
         }
 
-        case GPIOS1_BASE:
+        case GPIOA1_BASE:
         {
-            ulInt = INT_GPIOS1;
+            ulInt = INT_GPIOA1;
             break;
         }
 
-        case GPIOS2_BASE:
+        case GPIOA2_BASE:
         {
-            ulInt = INT_GPIOS2;
+            ulInt = INT_GPIOA2;
             break;
         }
 
-        case GPIOS3_BASE:
+        case GPIOA3_BASE:
         {
-            ulInt = INT_GPIOS3;
+            ulInt = INT_GPIOA3;
             break;
         }
-
-        case GPIOS4_BASE:
-        {
-            ulInt = INT_GPIOS4;
-            break;
-        }
-
 
         default:
         {
@@ -693,25 +685,21 @@ GPIODMATriggerEnable(unsigned long ulPort)
     //
     // Set the pin as a DMA trigger.
     //    
-    if(ulPort == GPIOS0_BASE)
+    if(ulPort == GPIOA0_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1; 
     }
-    else if(ulPort == GPIOS1_BASE)
+    else if(ulPort == GPIOA1_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2; 
     }
-    else if(ulPort == GPIOS2_BASE)
+    else if(ulPort == GPIOA2_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4; 
     }
-    else if(ulPort == GPIOS3_BASE)
+    else if(ulPort == GPIOA3_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8; 
-    }
-    else if(ulPort == GPIOS4_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x10; 
     }
 }
 
@@ -739,25 +727,21 @@ GPIODMATriggerDisable(unsigned long ulPort)
     //
     // Set the pin as a DMA trigger.
     //
-    if(ulPort == GPIOS0_BASE)
+    if(ulPort == GPIOA0_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1; 
     }
-    else if(ulPort == GPIOS1_BASE)
+    else if(ulPort == GPIOA1_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2; 
     }
-    else if(ulPort == GPIOS2_BASE)
+    else if(ulPort == GPIOA2_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4; 
     }
-    else if(ulPort == GPIOS3_BASE)
+    else if(ulPort == GPIOA3_BASE)
     {
       HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8; 
-    }
-    else if(ulPort == GPIOS4_BASE)
-    {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x10; 
     }
 }
 

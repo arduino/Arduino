@@ -69,7 +69,6 @@ extern "C"
 //*****************************************************************************
 extern void ADCEnable(unsigned long ulBase);
 extern void ADCDisable(unsigned long ulBase);
-extern void ADCReset(unsigned long ulBase);
 extern void ADCChannelEnable(unsigned long ulBase,unsigned long ulChannel);
 extern void ADCChannelDisable(unsigned long ulBase,unsigned long ulChannel);
 extern void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel, 
@@ -97,10 +96,6 @@ extern unsigned char ADCFIFOLvlGet(unsigned long ulBase,
                                    unsigned long ulChannel);
 extern unsigned long ADCFIFORead(unsigned long ulBase,
                                    unsigned long ulChannel);
-extern void ADCExtRefEnable(unsigned long ulBase);
-extern void ADCExtRefDisable(unsigned long ulBase);
-extern void ADCSamplingClkSet(unsigned long ulBase, 
-                       unsigned long OnTime, unsigned long OffTime);
 
 //*****************************************************************************
 //

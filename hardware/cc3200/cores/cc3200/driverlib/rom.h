@@ -30,26 +30,24 @@
 #define ROM_UARTTABLE           ((unsigned long *)(ROM_APITABLE[1]))
 #define ROM_TIMERTABLE          ((unsigned long *)(ROM_APITABLE[2]))
 #define ROM_WATCHDOGTABLE       ((unsigned long *)(ROM_APITABLE[3]))
-#define ROM_ARCMTABLE           ((unsigned long *)(ROM_APITABLE[4]))
-#define ROM_INTERRUPTTABLE      ((unsigned long *)(ROM_APITABLE[5]))
-#define ROM_UDMATABLE           ((unsigned long *)(ROM_APITABLE[6]))
-#define ROM_GPRCMTABLE          ((unsigned long *)(ROM_APITABLE[7]))
-#define ROM_I2CTABLE            ((unsigned long *)(ROM_APITABLE[8]))
-#define ROM_MCSPITABLE          ((unsigned long *)(ROM_APITABLE[9]))
-#define ROM_CAMERATABLE         ((unsigned long *)(ROM_APITABLE[10]))
-#define ROM_FLASHTABLE          ((unsigned long *)(ROM_APITABLE[11]))
-#define ROM_EPITABLE            ((unsigned long *)(ROM_APITABLE[12]))
-#define ROM_PINTABLE            ((unsigned long *)(ROM_APITABLE[13]))
-#define ROM_SYSTICKTABLE        ((unsigned long *)(ROM_APITABLE[14]))
-#define ROM_UTILSTABLE          ((unsigned long *)(ROM_APITABLE[15]))
-#define ROM_MCASPTABLE          ((unsigned long *)(ROM_APITABLE[16]))
-#define ROM_SEMAPHORETABLE      ((unsigned long *)(ROM_APITABLE[17]))
-#define ROM_GPIOTABLE           ((unsigned long *)(ROM_APITABLE[18]))
-#define ROM_HIBTABLE            ((unsigned long *)(ROM_APITABLE[19]))
-#define ROM_AESTABLE            ((unsigned long *)(ROM_APITABLE[20]))
-#define ROM_DESTABLE            ((unsigned long *)(ROM_APITABLE[21]))
-#define ROM_SHAMD5TABLE         ((unsigned long *)(ROM_APITABLE[22]))
-#define ROM_CRCTABLE            ((unsigned long *)(ROM_APITABLE[23]))
+#define ROM_INTERRUPTTABLE      ((unsigned long *)(ROM_APITABLE[4]))
+#define ROM_UDMATABLE           ((unsigned long *)(ROM_APITABLE[5]))
+#define ROM_PRCMTABLE           ((unsigned long *)(ROM_APITABLE[6]))
+#define ROM_I2CTABLE            ((unsigned long *)(ROM_APITABLE[7]))
+#define ROM_SPITABLE            ((unsigned long *)(ROM_APITABLE[8]))
+#define ROM_CAMERATABLE         ((unsigned long *)(ROM_APITABLE[9]))
+#define ROM_FLASHTABLE          ((unsigned long *)(ROM_APITABLE[10]))
+#define ROM_PINTABLE            ((unsigned long *)(ROM_APITABLE[11]))
+#define ROM_SYSTICKTABLE        ((unsigned long *)(ROM_APITABLE[12]))
+#define ROM_UTILSTABLE          ((unsigned long *)(ROM_APITABLE[13]))
+#define ROM_MCASPTABLE          ((unsigned long *)(ROM_APITABLE[14]))
+#define ROM_HWSPINLOCKTABLE     ((unsigned long *)(ROM_APITABLE[15]))
+#define ROM_GPIOTABLE           ((unsigned long *)(ROM_APITABLE[16]))
+#define ROM_AESTABLE            ((unsigned long *)(ROM_APITABLE[17]))
+#define ROM_DESTABLE            ((unsigned long *)(ROM_APITABLE[18]))
+#define ROM_SHAMD5TABLE         ((unsigned long *)(ROM_APITABLE[19]))
+#define ROM_CRCTABLE            ((unsigned long *)(ROM_APITABLE[20]))
+#define ROM_SDHOSTTABLE         ((unsigned long *)(ROM_APITABLE[21]))
 
 //*****************************************************************************
 //
@@ -637,579 +635,381 @@
 
 //*****************************************************************************
 //
-// Macros for calling ROM functions in the Watchdog API.
-//
-//*****************************************************************************
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralReset                                               \
-        ((void (*)(ArcmPeripherals_t ePeripheral))ROM_ARCMTABLE[0])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralEnable                                              \
-        ((void (*)(ArcmPeripherals_t ulPeripheral))ROM_ARCMTABLE[1])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralDisable                                             \
-        ((void (*)(ArcmPeripherals_t ulPeripheral))ROM_ARCMTABLE[2])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralSlpEnable                                           \
-        ((void (*)(ArcmPeripherals_t ePeripheral ))ROM_ARCMTABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralSlpDisable                                          \
-        ((void (*)(ArcmPeripherals_t ePeripheral ))ROM_ARCMTABLE[4])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralDSlpEnable                                          \
-        ((void (*)(ArcmPeripherals_t ePeripheral ))ROM_ARCMTABLE[5])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralDSlpDisable                                         \
-        ((void (*)(ArcmPeripherals_t ePeripheral ))ROM_ARCMTABLE[6])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralClkConfig                                           \
-        ((void (*)(ArcmPeripherals_t ePeripheral,                             \
-                   unsigned long ulOnTime,                                    \
-                  unsigned long ulOffTime))ROM_ARCMTABLE[7])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralReady                                               \
-        ((tBoolean (*)(ArcmPeripherals_t ePeripheral))ROM_ARCMTABLE[8])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmSlpWakeupSrcSet                                               \
-        ((void (*)(unsigned long ulWakeupSrc))ROM_ARCMTABLE[9])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmSlpWakeupTimerConfig                                          \
-        ((void (*)(unsigned long ulTimeInClocks))ROM_ARCMTABLE[10])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmDSlpWakeupSrcSet                                              \
-        ((void (*)(unsigned long ulWakeupSrc))ROM_ARCMTABLE[11])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmDSlpWakeupTimerConfig                                         \
-        ((void (*)(unsigned long ulTimeInClocks))ROM_ARCMTABLE[12])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmRqstNwpWakeup                                                 \
-        ((void (*)(void))ROM_ARCMTABLE[13])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmWakeupStatusGet                                               \
-        ((unsigned long (*)(void))ROM_ARCMTABLE[14])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmMcAspFracDivReset                                             \
-        ((void (*)(void))ROM_ARCMTABLE[15])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmMcAspFracDivSet                                               \
-        ((void (*)(float Divider))ROM_ARCMTABLE[16])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmMcSPIClkSrcSet                                                \
-        ((void (*)(ArcmPeripherals_t ePeripheral,                             \
-                   unsigned long ulSrcClk))ROM_ARCMTABLE[17])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmMcSPIClkSrcGet                                                \
-        ((long (*)(ArcmPeripherals_t ePeripheral))ROM_ARCMTABLE[18])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmLpdsEnter                                                     \
-        ((void (*)(void))ROM_ARCMTABLE[19])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmDslpEnter                                                     \
-        ((void (*)(void))ROM_ARCMTABLE[20])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmSlpEnter                                                      \
-        ((void (*)(void))ROM_ARCMTABLE[21])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmPeripheralClkGet                                              \
-        ((unsigned long (*)(ArcmPeripherals_t ePeripheral))ROM_ARCMTABLE[22])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_ArcmMcAspFracDivGet                                               \
-        ((float (*)(void))ROM_ARCMTABLE[23])
-#endif
-
-//*****************************************************************************
-//
-// Macros for calling ROM functions in the GPRCM API.
-//
-//*****************************************************************************
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmAppsSSRst                                                    \
-        ((void (*)(void))ROM_GPRCMTABLE[0])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmAppsRst                                                      \
-        ((void (*)(void))ROM_GPRCMTABLE[1])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmNwpRst                                                       \
-        ((void (*)(void))ROM_GPRCMTABLE[2])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmMcuGlobalRst                                                 \
-        ((void (*)(void))ROM_GPRCMTABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmSramDslpRetEnable                                            \
-        ((void (*)(unsigned long ulBitMap))ROM_GPRCMTABLE[4])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmSramDslpRetDisable                                           \
-        ((void (*)(unsigned long ulBitMap))ROM_GPRCMTABLE[5])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmSramLpdsRetEnable                                            \
-        ((void (*)(unsigned long ulBitMap))ROM_GPRCMTABLE[6])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmSramLpdsRetDisable                                           \
-        ((void (*)(unsigned long ulBitMap))ROM_GPRCMTABLE[7])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmAppsRstCauseGet                                              \
-        ((unsigned long (*)(void))ROM_GPRCMTABLE[8])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmLPDSWkupSrcGet                                               \
-        ((unsigned long (*)(void))ROM_GPRCMTABLE[9])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmLPDSWkupSrcSet                                               \
-        ((void (*)(unsigned long ulWkupSrc))ROM_GPRCMTABLE[10])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_GprcmLPDSWkupTimeSet                                              \
-        ((void (*)(unsigned long ulTimeInClocks))ROM_GPRCMTABLE[11])
-#endif
-
-//*****************************************************************************
-//
 // Macros for calling ROM functions in the I2C API.
 //
 //*****************************************************************************
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CIntRegister                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   void(fnHandler)(void)))ROM_I2CTABLE[0])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   void(pfnHandler)(void)))ROM_I2CTABLE[0])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CIntUnregister                                                  \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[1])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[1])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CTxFIFOConfigSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[2])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CTxFIFOFlush                                                    \
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[3])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CRxFIFOConfigSet                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[4])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CRxFIFOFlush                                                    \
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[5])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CFIFOStatus                                                     \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[6])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CFIFODataPut                                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Data))ROM_I2CTABLE[7])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CFIFODataPutNonBlocking                                         \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint8_t ui8Data))ROM_I2CTABLE[8])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CFIFODataGet                                                    \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[9])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CFIFODataGetNonBlocking                                         \
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       uint8_t *pui8Data))ROM_I2CTABLE[10])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CMasterBurstLengthSet                                           \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Length))ROM_I2CTABLE[11])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CMasterBurstCountGet                                            \
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[12])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CMasterGlitchFilterConfigSet                                    \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[13])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CSlaveFIFOEnable                                                \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Config))ROM_I2CTABLE[14])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_I2CSlaveFIFODisable                                               \
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[15])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterBusBusy                                                  \
-        ((tBoolean (*)(unsigned long ulBase))ROM_I2CTABLE[2])
+        ((bool (*)(uint32_t ui32Base))ROM_I2CTABLE[16])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterBusy                                                     \
-        ((tBoolean (*)(unsigned long ulBase))ROM_I2CTABLE[3])
+        ((bool (*)(uint32_t ui32Base))ROM_I2CTABLE[17])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterControl                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulCmd))ROM_I2CTABLE[4])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Cmd))ROM_I2CTABLE[18])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterDataGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[5])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[19])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterDataPut                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucData))ROM_I2CTABLE[6])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Data))ROM_I2CTABLE[20])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterDisable                                                  \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[7])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[21])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterEnable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[8])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[22])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterErr                                                      \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[9])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CMasterInitExpClk                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulI2CClk,                                    \
-                   tBoolean bFast))ROM_I2CTABLE[10])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[23])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntClear                                                 \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[11])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[24])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntDisable                                               \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[12])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[25])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntEnable                                                \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[13])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[26])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntStatus                                                \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       tBoolean bMasked))ROM_I2CTABLE[14])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   bool bMasked))ROM_I2CTABLE[27])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntEnableEx                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[15])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[28])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntDisableEx                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[16])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[29])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntStatusEx                                              \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_I2CTABLE[17])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CMasterInitExpClkEx                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulI2CClk,                                    \
-                   tBoolean bConfHiSpd,                                       \
-                  unsigned long ulMode))ROM_I2CTABLE[18])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_I2CTABLE[30])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterIntClearEx                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[19])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[31])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterTimeoutSet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulValue))ROM_I2CTABLE[20])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32Value))ROM_I2CTABLE[32])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveACKOverride                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bEnable))ROM_I2CTABLE[21])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bEnable))ROM_I2CTABLE[33])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveACKValueSet                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bACK))ROM_I2CTABLE[22])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   bool bACK))ROM_I2CTABLE[34])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterLineStateGet                                             \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[23])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[35])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CMasterSlaveAddrSet                                             \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucSlaveAddr,                                 \
-                   tBoolean bReceive))ROM_I2CTABLE[24])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8SlaveAddr,                                      \
+                   bool bReceive))ROM_I2CTABLE[36])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveDataGet                                                   \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[25])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[37])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveDataPut                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucData))ROM_I2CTABLE[26])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8Data))ROM_I2CTABLE[38])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveDisable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[27])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[39])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveEnable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[28])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[40])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveInit                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucSlaveAddr))ROM_I2CTABLE[29])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8SlaveAddr))ROM_I2CTABLE[41])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveAddressSet                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAddrNum,                                   \
-                   unsigned char ucSlaveAddr))ROM_I2CTABLE[30])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint8_t ui8AddrNum,                                        \
+                   uint8_t ui8SlaveAddr))ROM_I2CTABLE[42])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntClear                                                  \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[31])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[43])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntDisable                                                \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[32])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[44])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntEnable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[33])
+        ((void (*)(uint32_t ui32Base))ROM_I2CTABLE[45])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntClearEx                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[34])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[46])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntDisableEx                                              \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[35])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[47])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntEnableEx                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_I2CTABLE[36])
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32IntFlags))ROM_I2CTABLE[48])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntStatus                                                 \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       tBoolean bMasked))ROM_I2CTABLE[37])
+        ((bool (*)(uint32_t ui32Base,                                         \
+                   bool bMasked))ROM_I2CTABLE[49])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveIntStatusEx                                               \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_I2CTABLE[38])
+        ((uint32_t (*)(uint32_t ui32Base,                                     \
+                       bool bMasked))ROM_I2CTABLE[50])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_I2CSlaveStatus                                                    \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[39])
+        ((uint32_t (*)(uint32_t ui32Base))ROM_I2CTABLE[51])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_I2CLoopBackEnable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[40])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CLoopBackDisable                                                \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[41])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CFIFOCtrlSet                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTxTrigLvl,                                 \
-                   unsigned long ulTxFlag,                                    \
-                   unsigned ulRxTrigLvl,                                      \
-                   unsigned long ulRxFlag))ROM_I2CTABLE[42])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CFIFOWrite                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                  unsigned char ucData))ROM_I2CTABLE[43])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CFIFORead                                                       \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[44])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CMultiMasterEnable                                              \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[45])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CFIFOStatusGet                                                  \
-        ((unsigned long (*)(unsigned long ulBase))ROM_I2CTABLE[46])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_I2CMultiMasterDisable                                             \
-        ((void (*)(unsigned long ulBase))ROM_I2CTABLE[47])
+#define ROM_I2CMasterInitExpClk                                               \
+        ((void (*)(uint32_t ui32Base,                                         \
+                   uint32_t ui32I2CClk,                                       \
+                   bool bFast))ROM_I2CTABLE[52])
 #endif
 
 //*****************************************************************************
 //
-// Macros for calling ROM functions in the MCSPI API.
+// Macros for calling ROM functions in the SPI API.
 //
 //*****************************************************************************
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPIReset                                                        \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[0])
+#define ROM_SPIEnable                                                         \
+        ((void (*)(unsigned long ulBase))ROM_SPITABLE[0])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPIConfig                                                       \
+#define ROM_SPIDisable                                                        \
+        ((void (*)(unsigned long ulBase))ROM_SPITABLE[1])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIReset                                                          \
+        ((void (*)(unsigned long ulBase))ROM_SPITABLE[2])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIConfigSetExpClk                                                \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucMSMode,                                    \
-                   unsigned long ulMcSPIClk,                                  \
-                   unsigned long ulBaud,                                      \
-                   unsigned char ucWordLen,                                   \
-                   unsigned char ucCSPolarity,                                \
-                   unsigned char ucClkPhase,                                  \
-                   unsigned char ucClkPolarity))ROM_MCSPITABLE[1])
+                  unsigned long ulSPIClk,                                     \
+                   unsigned long ulBitRate,                                   \
+                   unsigned long ulMode,                                      \
+                   unsigned long ulSubMode,                                   \
+                   unsigned long ulConfig))ROM_SPITABLE[3])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPIMSModeGet                                                    \
-        ((unsigned char (*)(unsigned long ulBase))ROM_MCSPITABLE[2])
+#define ROM_SPIDataGetNonBlocking                                             \
+        ((long (*)(unsigned long ulBase,                                      \
+                   unsigned long * pulData))ROM_SPITABLE[4])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPIWordLenGet                                                   \
-        ((unsigned long (*)(unsigned long ulBase))ROM_MCSPITABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPISPITRModeSet                                                 \
+#define ROM_SPIDataGet                                                        \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulSPIMode))ROM_MCSPITABLE[4])
+                   unsigned long *pulData))ROM_SPITABLE[5])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPISPITRModeGet                                                 \
-        ((unsigned char (*)(unsigned long ulBase))ROM_MCSPITABLE[5])
+#define ROM_SPIDataPutNonBlocking                                             \
+        ((long (*)(unsigned long ulBase,                                      \
+                   unsigned long ulData))ROM_SPITABLE[6])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDataLineConfigSet                                            \
+#define ROM_SPIDataPut                                                        \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucDataLineConf))ROM_MCSPITABLE[6])
+                   unsigned long ulData))ROM_SPITABLE[7])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDataLineConfigGet                                            \
-        ((unsigned long (*)(unsigned long ulBase))ROM_MCSPITABLE[7])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIChannelEnable                                                \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[8])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIChannelDisable                                               \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[9])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDataNonBlockingGet                                           \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       unsigned long * pulData))ROM_MCSPITABLE[10])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDataGet                                                      \
-        ((unsigned long (*)(unsigned long ulBase))ROM_MCSPITABLE[11])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDataNonBlockingPut                                           \
-        ((tBoolean (*)(unsigned long ulBase,                                  \
-                       unsigned long ulData))ROM_MCSPITABLE[12])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDataPut                                                      \
+#define ROM_SPIFIFOEnable                                                     \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulData))ROM_MCSPITABLE[13])
+                   unsigned long ulFlags))ROM_SPITABLE[8])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_McSPICSEnable                                                     \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[14])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPICSDisable                                                    \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[15])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPITransfer                                                     \
+#define ROM_SPIFIFODisable                                                    \
         ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulFlags))ROM_SPITABLE[9])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIFIFOLevelSet                                                   \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulTxLevel,                                   \
+                   unsigned long ulRxLevel))ROM_SPITABLE[10])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIFIFOLevelGet                                                   \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long *pulTxLevel,                                 \
+                   unsigned long *pulRxLevel))ROM_SPITABLE[11])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIWordCountSet                                                   \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulWordCount))ROM_SPITABLE[12])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIIntRegister                                                    \
+        ((void (*)(unsigned long ulBase,                                      \
+                   void(*pfnHandler)(void)))ROM_SPITABLE[13])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIIntUnregister                                                  \
+        ((void (*)(unsigned long ulBase))ROM_SPITABLE[14])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIIntEnable                                                      \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulIntFlags))ROM_SPITABLE[15])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIIntDisable                                                     \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulIntFlags))ROM_SPITABLE[16])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIIntStatus                                                      \
+        ((unsigned long (*)(unsigned long ulBase,                             \
+                            tBoolean bMasked))ROM_SPITABLE[17])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIIntClear                                                       \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulIntFlags))ROM_SPITABLE[18])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIDmaEnable                                                      \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulFlags))ROM_SPITABLE[19])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPIDmaDisable                                                     \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulFlags))ROM_SPITABLE[20])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPICSEnable                                                       \
+        ((void (*)(unsigned long ulBase))ROM_SPITABLE[21])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPICSDisable                                                      \
+        ((void (*)(unsigned long ulBase))ROM_SPITABLE[22])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SPITransfer                                                       \
+        ((long (*)(unsigned long ulBase,                                      \
                    unsigned char *ucDout,                                     \
                    unsigned char *ucDin,                                      \
                    unsigned long ulSize,                                      \
-                   unsigned long ulFlags))ROM_MCSPITABLE[16])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIFIFOEnable                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_MCSPITABLE[17])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIFIFODisable                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_MCSPITABLE[18])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIConfigureAFL                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAFLData))ROM_MCSPITABLE[19])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIConfigureAEL                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucAELData))ROM_MCSPITABLE[20])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIConfigureWCNT                                                \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned short ucWCNT))ROM_MCSPITABLE[21])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDmaEnable                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulFlags))ROM_MCSPITABLE[22])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIDmaDisable                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned ulFlags))ROM_MCSPITABLE[23])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIIntRegister                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   void(*pfnHandler)(void)))ROM_MCSPITABLE[24])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIIntUnregister                                                \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[25])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIIntEnable                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_MCSPITABLE[26])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIIntDisable                                                   \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_MCSPITABLE[27])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIIntStatus                                                    \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_MCSPITABLE[28])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIIntClear                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_MCSPITABLE[29])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIInitDelaySet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char ucInitDelay))ROM_MCSPITABLE[30])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIInitDelayGet                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_MCSPITABLE[31])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIStartBitEnable                                               \
-        ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bSBPolHigh))ROM_MCSPITABLE[32])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPIStartBitDisable                                              \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[33])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPITurboModeEnable                                              \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[34])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPITurboModeDisable                                             \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[35])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPI3PinModeEnable                                               \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[36])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_McSPI3PinModeDisable                                              \
-        ((void (*)(unsigned long ulBase))ROM_MCSPITABLE[37])
+                   unsigned long ulFlags))ROM_SPITABLE[23])
 #endif
 
 //*****************************************************************************
@@ -1222,82 +1022,78 @@
         ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[0])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_CameraReset                                                       \
-        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[1])
-#endif
-#if defined(TARGET_IS_CC3101)
 #define ROM_CameraParamsConfig                                                \
         ((void (*)(unsigned long ulBase,                                      \
                    unsigned long ulHSPol,                                     \
                    unsigned long ulVSPol,                                     \
-                   unsigned long ulFlags))ROM_CAMERATABLE[2])
+                   unsigned long ulFlags))ROM_CAMERATABLE[1])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraXClkConfig                                                  \
         ((void (*)(unsigned long ulBase,                                      \
                    unsigned long ulCamClkIn,                                  \
-                   unsigned long ulXClk))ROM_CAMERATABLE[3])
+                   unsigned long ulXClk))ROM_CAMERATABLE[2])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraXClkSet                                                     \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned char bXClkFlags))ROM_CAMERATABLE[4])
+                   unsigned char bXClkFlags))ROM_CAMERATABLE[3])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraDMAEnable                                                   \
-        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[5])
+        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[4])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraDMADisable                                                  \
-        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[6])
+        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[5])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraThresholdSet                                                \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulThreshold))ROM_CAMERATABLE[7])
+                   unsigned long ulThreshold))ROM_CAMERATABLE[6])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraIntRegister                                                 \
         ((void (*)(unsigned long ulBase,                                      \
-                   void (*pfnHandler)(void)))ROM_CAMERATABLE[8])
+                   void (*pfnHandler)(void)))ROM_CAMERATABLE[7])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraIntUnregister                                               \
-        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[9])
+        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[8])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraIntEnable                                                   \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_CAMERATABLE[10])
+                   unsigned long ulIntFlags))ROM_CAMERATABLE[9])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraIntDisable                                                  \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_CAMERATABLE[11])
+                   unsigned long ulIntFlags))ROM_CAMERATABLE[10])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraIntStatus                                                   \
-        ((unsigned long (*)(unsigned long ulBase))ROM_CAMERATABLE[12])
+        ((unsigned long (*)(unsigned long ulBase))ROM_CAMERATABLE[11])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraIntClear                                                    \
         ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_CAMERATABLE[13])
+                   unsigned long ulIntFlags))ROM_CAMERATABLE[12])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraCaptureStop                                                 \
         ((void (*)(unsigned long ulBase,                                      \
-                   tBoolean bImmediate))ROM_CAMERATABLE[14])
+                   tBoolean bImmediate))ROM_CAMERATABLE[13])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_CameraCaptureStart                                                \
-        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[15])
+        ((void (*)(unsigned long ulBase))ROM_CAMERATABLE[14])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_CamBufferRead                                                     \
+#define ROM_CameraBufferRead                                                  \
         ((void (*)(unsigned long ulBase,                                      \
                   unsigned long *pBuffer,                                     \
-                   unsigned char ucSize))ROM_CAMERATABLE[16])
+                   unsigned char ucSize))ROM_CAMERATABLE[15])
 #endif
 
 //*****************************************************************************
@@ -1368,202 +1164,84 @@
 
 //*****************************************************************************
 //
-// Macros for calling ROM functions in the EPI API.
-//
-//*****************************************************************************
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIModeSet                                                        \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulMode))ROM_EPITABLE[0])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIDividerSet                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulDivider))ROM_EPITABLE[1])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIConfigSDRAMSet                                                 \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig,                                    \
-                   unsigned long ulRefresh))ROM_EPITABLE[2])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIAddressMapSet                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulMap))ROM_EPITABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadConfigure                                       \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulDataSize,                                  \
-                   unsigned long ulAddress))ROM_EPITABLE[4])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadStart                                           \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel,                                   \
-                   unsigned long ulCount))ROM_EPITABLE[5])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadStop                                            \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulChannel))ROM_EPITABLE[6])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadCount                                           \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulChannel))ROM_EPITABLE[7])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadAvail                                           \
-        ((unsigned long (*)(unsigned long ulBase))ROM_EPITABLE[8])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadGet32                                           \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulCount,                            \
-                            unsigned long *pulBuf))ROM_EPITABLE[9])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadGet16                                           \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulCount,                            \
-                            unsigned short *pusBuf))ROM_EPITABLE[10])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPINonBlockingReadGet8                                            \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            unsigned long ulCount,                            \
-                            unsigned char *pucBuf))ROM_EPITABLE[11])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIFIFOConfig                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulConfig))ROM_EPITABLE[12])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIWriteFIFOCountGet                                              \
-        ((unsigned long (*)(unsigned long ulBase))ROM_EPITABLE[13])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntEnable                                                      \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_EPITABLE[14])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntDisable                                                     \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulIntFlags))ROM_EPITABLE[15])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntStatus                                                      \
-        ((unsigned long (*)(unsigned long ulBase,                             \
-                            tBoolean bMasked))ROM_EPITABLE[16])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntErrorStatus                                                 \
-        ((unsigned long (*)(unsigned long ulBase))ROM_EPITABLE[17])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntErrorClear                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulErrFlags))ROM_EPITABLE[18])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntRegister                                                    \
-        ((void (*)(unsigned long ulBase,                                      \
-                   void (*pfnHandler)(void)))ROM_EPITABLE[19])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_EPIIntUnregister                                                  \
-        ((void (*)(unsigned long ulBase))ROM_EPITABLE[20])
-#endif
-
-//*****************************************************************************
-//
-// Macros for calling ROM functions in the PinMAP API.
+// Macros for calling ROM functions in the Pin API.
 //
 //*****************************************************************************
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinModeSet                                                        \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[0])
+                   unsigned long ulPinMode))ROM_PINTABLE[0])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PinDirModeSet                                                     \
+        ((void (*)(unsigned long ulPin,                                       \
+                   unsigned long ulPinIO))ROM_PINTABLE[1])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PinDirModeGet                                                     \
+        ((unsigned long (*)(unsigned long ulPin))ROM_PINTABLE[2])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinModeGet                                                        \
-        ((unsigned long (*)(unsigned long ulPin))ROM_PINTABLE[1])
+        ((unsigned long (*)(unsigned long ulPin))ROM_PINTABLE[3])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinConfigGet                                                      \
         ((void (*)(unsigned long ulPin,                                       \
                   unsigned long  *pulPinStrength,                             \
-                   unsigned long *pulPinType))ROM_PINTABLE[2])
+                   unsigned long *pulPinType))ROM_PINTABLE[4])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinConfigSet                                                      \
         ((void (*)(unsigned long ulPin,                                       \
                   unsigned long  ulPinStrength,                               \
-                   unsigned long ulPinType))ROM_PINTABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_PinTypeSet                                                        \
-        ((void (*)(unsigned long ulPin,                                       \
-                   unsigned long ulPinType))ROM_PINTABLE[4])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_PinTypeGet                                                        \
-        ((unsigned long (*)(unsigned long ulPin))ROM_PINTABLE[5])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_PinStrengthSet                                                    \
-        ((void (*)(unsigned long ulPin,                                       \
-                   unsigned ulPinStrength))ROM_PINTABLE[6])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_PinStrengthGet                                                    \
-        ((unsigned long (*)(unsigned long ulPin))ROM_PINTABLE[7])
+                   unsigned long ulPinType))ROM_PINTABLE[5])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinTypeUART                                                       \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[8])
+                  unsigned long ulPinMode))ROM_PINTABLE[6])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinTypeI2C                                                        \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[9])
+                  unsigned long ulPinMode))ROM_PINTABLE[7])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_PinTypeMcSPI                                                      \
+#define ROM_PinTypeSPI                                                        \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[10])
+                  unsigned long ulPinMode))ROM_PINTABLE[8])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinTypeMcASP                                                      \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[11])
+                  unsigned long ulPinMode))ROM_PINTABLE[9])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinTypeTimer                                                      \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[12])
+                  unsigned long ulPinMode))ROM_PINTABLE[10])
 #endif
 #if defined(TARGET_IS_CC3101)
-#define ROM_PinTypeCAM                                                        \
+#define ROM_PinTypeCamera                                                     \
         ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[13])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_PinTypeEPI                                                        \
-        ((void (*)(unsigned long ulPin,                                       \
-                  unsigned long ulPinMode))ROM_PINTABLE[14])
+                  unsigned long ulPinMode))ROM_PINTABLE[11])
 #endif
 #if defined(TARGET_IS_CC3101)
 #define ROM_PinTypeGPIO                                                       \
         ((void (*)(unsigned long ulPin,                                       \
                   unsigned long ulPinMode,                                    \
-                  tBoolean bOpenDrain))ROM_PINTABLE[15])
+                   tBoolean bOpenDrain))ROM_PINTABLE[12])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PinTypeADC                                                        \
+        ((void (*)(unsigned long ulPin,                                       \
+                  unsigned long ulPinMode))ROM_PINTABLE[13])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PinTypeSDHost                                                     \
+        ((void (*)(unsigned long ulPin,                                       \
+                  unsigned long ulPinMode))ROM_PINTABLE[14])
 #endif
 
 //*****************************************************************************
@@ -1616,33 +1294,6 @@
 #if defined(TARGET_IS_CC3101)
 #define ROM_UtilsDelay                                                        \
         ((void (*)(unsigned long ulCount))ROM_UTILSTABLE[0])
-#endif
-
-//*****************************************************************************
-//
-// Macros for calling ROM functions in the SEMAPHORE API.
-//
-//*****************************************************************************
-#if defined(TARGET_IS_CC3101)
-#define ROM_HwSemaphoreLock                                                   \
-        ((unsigned long (*)(unsigned long ulSemId,                            \
-                            unsigned long ulTimeout))ROM_SEMAPHORETABLE[0])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HwSemaphoreUnlock                                                 \
-        ((void (*)(unsigned long ulSemId))ROM_SEMAPHORETABLE[1])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HwSemaphoreCurrentOwnerGet                                        \
-        ((unsigned long (*)(unsigned long ulSemId))ROM_SEMAPHORETABLE[2])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HwSemaphorePrevOwnerGet                                           \
-        ((unsigned long (*)(unsigned long ulSemId))ROM_SEMAPHORETABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HwSemaphoreFlashGet                                               \
-        ((void (*)(void))ROM_SEMAPHORETABLE[4])
 #endif
 
 //*****************************************************************************
@@ -1920,75 +1571,6 @@
 #if defined(TARGET_IS_CC3101)
 #define ROM_McASPRxFIFODisable                                                \
         ((void (*)(unsigned long ulBase))ROM_MCASPTABLE[51])
-#endif
-
-//*****************************************************************************
-//
-// Macros for calling ROM functions in the HIB API.
-//
-//*****************************************************************************
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBXtalClkEnable                                                  \
-        ((void (*)(unsigned long ulTrim))ROM_HIBTABLE[0])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBXtalClkDfltEnable                                              \
-        ((void (*)(void))ROM_HIBTABLE[1])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBEnter                                                          \
-        ((void (*)(void))ROM_HIBTABLE[2])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRTCEnable                                                      \
-        ((void (*)(void))ROM_HIBTABLE[3])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRTCRead                                                        \
-        ((unsigned long long (*)(void))ROM_HIBTABLE[4])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRTCWakeEnable                                                  \
-        ((void (*)(unsigned long long ulWakeupVal))ROM_HIBTABLE[5])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRTCWakeDisable                                                 \
-        ((void (*)(void))ROM_HIBTABLE[6])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBEnableIRQ                                                      \
-        ((void (*)(unsigned long long ulWakeupVal))ROM_HIBTABLE[7])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBDisableIRQ                                                     \
-        ((void (*)(void))ROM_HIBTABLE[8])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBGPIOWakeEnable                                                 \
-        ((void (*)(unsigned char ucGPIONum,                                   \
-                   unsigned char ucGPIOCOnf))ROM_HIBTABLE[9])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRetRegWrite                                                    \
-        ((long (*)(unsigned char ucRegIndex,                                  \
-                   unsigned long ulRegValue))ROM_HIBTABLE[10])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRetRegRead                                                     \
-        ((long (*)(unsigned char ucRegIndex,                                  \
-                   unsigned long *ulRegVal))ROM_HIBTABLE[11])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBWakeupCauseGet                                                 \
-        ((unsigned long (*)(void))ROM_HIBTABLE[12])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBLPDSWkupGPIOSet                                                \
-        ((void (*)(unsigned long ucGPIOSel))ROM_HIBTABLE[13])
-#endif
-#if defined(TARGET_IS_CC3101)
-#define ROM_HIBRTCReset                                                       \
-        ((void (*)(void))ROM_HIBTABLE[14])
 #endif
 
 //*****************************************************************************
@@ -2429,6 +2011,280 @@
 #define ROM_CRCSeedSet                                                        \
         ((void (*)(uint32_t ui32Base,                                         \
                    uint32_t ui32Seed))ROM_CRCTABLE[4])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the SDHOST API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostCmdReset                                                    \
+        ((void (*)(unsigned long ulBase))ROM_SDHOSTTABLE[0])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostInit                                                        \
+        ((void (*)(unsigned long ulBase))ROM_SDHOSTTABLE[1])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostCmdSend                                                     \
+        ((long (*)(unsigned long ulBase,                                      \
+                  unsigned long ulCmd,                                        \
+                   unsigned ulArg))ROM_SDHOSTTABLE[2])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostIntRegister                                                 \
+        ((void (*)(unsigned long ulBase,                                      \
+                   void (*pfnHandler)(void)))ROM_SDHOSTTABLE[3])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostIntUnregister                                               \
+        ((void (*)(unsigned long ulBase))ROM_SDHOSTTABLE[4])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostIntEnable                                                   \
+        ((void (*)(unsigned long ulBase,                                      \
+                  unsigned long ulIntFlags))ROM_SDHOSTTABLE[5])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostIntDisable                                                  \
+        ((void (*)(unsigned long ulBase,                                      \
+                  unsigned long ulIntFlags))ROM_SDHOSTTABLE[6])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostIntStatus                                                   \
+        ((unsigned long (*)(unsigned long ulBase))ROM_SDHOSTTABLE[7])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostIntClear                                                    \
+        ((void (*)(unsigned long ulBase,                                      \
+                  unsigned long ulIntFlags))ROM_SDHOSTTABLE[8])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostRespStatus                                                  \
+        ((unsigned long (*)(unsigned long ulBase))ROM_SDHOSTTABLE[9])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostRespGet                                                     \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulRespnse[4]))ROM_SDHOSTTABLE[10])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostBlockSizeSet                                                \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned short ulBlkSize))ROM_SDHOSTTABLE[11])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostBlockCountSet                                               \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned short ulBlkCount))ROM_SDHOSTTABLE[12])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostDataNonBlockingWrite                                        \
+        ((tBoolean (*)(unsigned long ulBase,                                  \
+                       unsigned long ulData))ROM_SDHOSTTABLE[13])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostDataNonBlockingRead                                         \
+        ((tBoolean (*)(unsigned long ulBase,                                  \
+                       unsigned long *pulData))ROM_SDHOSTTABLE[14])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostDataWrite                                                   \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulData))ROM_SDHOSTTABLE[15])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostDataRead                                                    \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long *ulData))ROM_SDHOSTTABLE[16])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_SDHostSetExpClk                                                   \
+        ((void (*)(unsigned long ulBase,                                      \
+                   unsigned long ulSDHostClk,                                 \
+                   unsigned long ulCardClk))ROM_SDHOSTTABLE[17])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the PRCM API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMSOCReset                                                      \
+        ((void (*)(void))ROM_PRCMTABLE[0])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMMCUReset                                                      \
+        ((void (*)(tBoolean bIncludeSubsystem))ROM_PRCMTABLE[1])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMSysResetCauseGet                                              \
+        ((unsigned long (*)(void))ROM_PRCMTABLE[2])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMPeripheralClkEnable                                           \
+        ((void (*)(unsigned long ulPeripheral,                                \
+                   unsigned long ulClkFlags))ROM_PRCMTABLE[3])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMPeripheralClkDisable                                          \
+        ((void (*)(unsigned long ulPeripheral,                                \
+                   unsigned long ulClkFlags))ROM_PRCMTABLE[4])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMPeripheralReset                                               \
+        ((void (*)(unsigned long ulPeripheral))ROM_PRCMTABLE[5])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMPeripheralStatusGet                                           \
+        ((tBoolean (*)(unsigned long ulPeripheral))ROM_PRCMTABLE[6])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMNWPEnable                                                     \
+        ((void (*)(void))ROM_PRCMTABLE[7])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMNWPDisable                                                    \
+        ((void (*)(void))ROM_PRCMTABLE[8])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMMcASPClockInputSet                                            \
+        ((void (*)(unsigned long ulMcASPClkIn))ROM_PRCMTABLE[9])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMPeripheralClockGet                                            \
+        ((unsigned long (*)(unsigned long ulPeripheral))ROM_PRCMTABLE[10])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMSleepEnter                                                    \
+        ((void (*)(void))ROM_PRCMTABLE[11])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMDeepSleepEnter                                                \
+        ((void (*)(void))ROM_PRCMTABLE[12])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMSRAMRetentionEnable                                           \
+        ((void (*)(unsigned long ulSramColSel,                                \
+                   unsigned long ulFlags))ROM_PRCMTABLE[13])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMSRAMRetentionDisable                                          \
+        ((void (*)(unsigned long ulSramColSel,                                \
+                   unsigned long ulFlags))ROM_PRCMTABLE[14])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMLPDSEnter                                                     \
+        ((void (*)(void))ROM_PRCMTABLE[15])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMLPDSIntervalSet                                               \
+        ((tBoolean (*)(unsigned long ulTicks))ROM_PRCMTABLE[16])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMLPDSWakeupSourceEnable                                        \
+        ((void (*)(unsigned long ulLpdsWakeupSrc))ROM_PRCMTABLE[17])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMLPDSWakeupCauseGet                                            \
+        ((unsigned long (*)(void))ROM_PRCMTABLE[18])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMLPDSWakeUpGPIOSelect                                          \
+        ((void (*)(unsigned long ulGPIOPin,                                   \
+                   unsigned long ulType))ROM_PRCMTABLE[19])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMLPDSWakeupSourceDisable                                       \
+        ((void (*)(unsigned long ulLpdsWakeupSrc))ROM_PRCMTABLE[20])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMHibernateEnter                                                \
+        ((void (*)(void))ROM_PRCMTABLE[21])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMHibernateWakeupSourceEnable                                   \
+        ((void (*)(unsigned long ulHIBWakupSrc))ROM_PRCMTABLE[22])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMHibernateWakeupCauseGet                                       \
+        ((unsigned long (*)(void))ROM_PRCMTABLE[23])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMHibernateWakeUpGPIOSelect                                     \
+        ((void (*)(unsigned long ulMultiGPIOBitMap,                           \
+                   unsigned long ulType))ROM_PRCMTABLE[24])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMHibernateWakeupSourceDisable                                  \
+        ((void (*)(unsigned long ulHIBWakupSrc))ROM_PRCMTABLE[25])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMHibernateIntervalSet                                          \
+        ((tBoolean (*)(unsigned long long ullTicks))ROM_PRCMTABLE[26])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMRTCGet                                                        \
+        ((unsigned long long (*)(void))ROM_PRCMTABLE[27])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMRTCMatchSet                                                   \
+        ((void (*)(unsigned long long ullTicks))ROM_PRCMTABLE[28])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMOCRRegisterWrite                                              \
+        ((void (*)(unsigned char ucIndex,                                     \
+                   unsigned long ulRegValue))ROM_PRCMTABLE[29])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMOCRRegisterRead                                               \
+        ((unsigned long (*)(unsigned char ucIndex))ROM_PRCMTABLE[30])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMIntRegister                                                   \
+        ((void (*)(void (*pfnHandler)(void)))ROM_PRCMTABLE[31])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMIntUnregister                                                 \
+        ((void (*)(void))ROM_PRCMTABLE[32])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMIntEnable                                                     \
+        ((void (*)(unsigned long ulIntFlags))ROM_PRCMTABLE[33])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMIntDisable                                                    \
+        ((void (*)(unsigned long ulIntFlags))ROM_PRCMTABLE[34])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_PRCMIntStatus                                                     \
+        ((unsigned long (*)(void))ROM_PRCMTABLE[35])
+#endif
+
+//*****************************************************************************
+//
+// Macros for calling ROM functions in the PRCM API.
+//
+//*****************************************************************************
+#if defined(TARGET_IS_CC3101)
+#define ROM_HwSpinLockAcquire                                                 \
+        ((void (*)(uint32_t ui32LockID))ROM_HWSPINLOCKTABLE[0])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_HwSpinLockTryAcquire                                              \
+        ((int32_t (*)(uint32_t ui32LockID,                                    \
+                      uint32_t ui32Retry))ROM_HWSPINLOCKTABLE[1])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_HwSpinLockRelease                                                 \
+        ((void (*)(uint32_t ui32LockID))ROM_HWSPINLOCKTABLE[2])
+#endif
+#if defined(TARGET_IS_CC3101)
+#define ROM_HwSpinLockTest                                                    \
+        ((uint32_t (*)(uint32_t ui32LockID,                                   \
+                       bool bCurrentStatus))ROM_HWSPINLOCKTABLE[3])
 #endif
 
 #endif // __ROM_H__

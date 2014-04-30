@@ -19,13 +19,6 @@
 //
 //*****************************************************************************
 
-//##### INTERNAL BEGIN #####
-//
-// This is an auto-generated file.  Do not edit by hand.
-// Created by version 6779 of DriverLib.
-//
-//##### INTERNAL END #####
-
 #ifndef __HW_NVIC_H__
 #define __HW_NVIC_H__
 

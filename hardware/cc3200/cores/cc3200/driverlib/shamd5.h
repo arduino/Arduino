@@ -50,17 +50,13 @@ extern "C"
 // SHAMD5BlockOnIntStatus() functions.
 //
 //*****************************************************************************
-#define SHAMD5_INT_CONTEXT_READY \
-                                0x00000008
-#define SHAMD5_INT_PARTHASH_READY \
-                                0x00000004
-#define SHAMD5_INT_INPUT_READY  0x00000002
-#define SHAMD5_INT_OUTPUT_READY 0x00000001
-#define SHAMD5_INT_DMA_CONTEXT_IN \
-                                0x00080000 // 1
-#define SHAMD5_INT_DMA_DATA_IN  0x00020000 // 2
-#define SHAMD5_INT_DMA_CONTEXT_OUT \
-                                0x00010000 // 4
+#define SHAMD5_INT_CONTEXT_READY   0x00000008
+#define SHAMD5_INT_PARTHASH_READY  0x00000004
+#define SHAMD5_INT_INPUT_READY     0x00000002
+#define SHAMD5_INT_OUTPUT_READY    0x00000001
+#define SHAMD5_INT_DMA_CONTEXT_IN  0x00010000
+#define SHAMD5_INT_DMA_DATA_IN     0x00020000
+#define SHAMD5_INT_DMA_CONTEXT_OUT 0x00040000
 
 //*****************************************************************************
 //
