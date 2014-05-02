@@ -75,3 +75,20 @@ stk500.protocol=stk500
 stk500.program.protocol=stk500
 stk500.program.tool=avrdude
 stk500.program.extra_params=-P{serial.port}
+
+jtag3isp.name=Atmel JTAGICE3 (ISP mode)
+jtag3isp.communication=usb
+jtag3isp.protocol=jtag3isp
+jtag3isp.program.protocol=jtag3isp
+jtag3isp.program.tool=avrdude
+jtag3isp.program.extra_params=
+
+jtag3.name=Atmel JTAGICE3 (JTAG mode)
+jtag3.communication=usb
+jtag3.protocol=jtag3
+jtag3.program.protocol=jtag3
+jtag3.program.tool=avrdude
+# Set a bitclock of 0.1us (the fastest supported value). This should
+# work regardless of the crystal used, since JTAG doesn't use the MCU
+# clock but dictates its own clock.
+jtag3.program.extra_params=-B0.1
