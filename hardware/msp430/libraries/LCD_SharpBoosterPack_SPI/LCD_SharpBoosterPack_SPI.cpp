@@ -16,7 +16,7 @@
 
 #include <msp430.h>
 #include "LCD_SharpBoosterPack_SPI.h"
-#include "spi.h"
+#include "SPI.h"
 
 uint8_t _pinReset;
 uint8_t _pinSerialData;
