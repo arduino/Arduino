@@ -184,7 +184,7 @@ static const uint8_t GREEN_LED = 26;
 
 static const uint8_t PUSH1 = 27;
 static const uint8_t PUSH2 = 28;
-static const uint8_t TEMPSENSOR = A10; // depends on chip
+static const uint8_t TEMPSENSOR = 128 + 10; // depends on chip
 
 #ifdef ARDUINO_MAIN
 
