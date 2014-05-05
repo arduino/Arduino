@@ -4,24 +4,51 @@ ARDUINO 1.5.7 BETA
 * Updated arm-gcc-none-eabi to 4.8.3 and simplified build.xml
 * arm-gcc-none-eabi doesn't require ia32-libs anymore on 64 bits linux systems
 
-ARDUINO 1.5.6 BETA
+ARDUINO 1.5.6-r2 BETA 2014.02.21
+
+[ide]
+* JSSC: Fixed NPE when RXCHAR event with no bytes (José Pereda)
+
+ARDUINO 1.5.6 BETA 2014.02.20
 
 [ide]
 * Implemented 1.5 library specification Rev.2
   (https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification)
+* Replaced RXTX library with JSSC (Alexey Sokolov)
+  http://code.google.com/p/java-simple-serial-connector/
+* If two libraries provides the same .h file prioritize the library with tha same folder name
 * Improved command-line parsing (Matthijs Kooijman)
+* Windows: added arduino_debug.exe to help debugging errors when launch4j fails to start IDE
 
 [libraries]
 * TFT: warning messages in PImage class and strings inside examples now stored in flash to save RAM. 
 * Ethernet: added operator == for EthernetClient class (Norbert Truchsess)
+* Robot_Control: removed embedded copies of Wire and SPI to allow their use in sketch.
+  Old sketches using Robot_Control now must include Wire.h and SPI.h.
+* Robot_Control: fixed issues about motor turning algorithm
+* Bridge: optimized FileIO.doBuffer() (bobh66)
 
 [core]
+* avr: Pile of HardwareSerial improvements (Matthijs Kooijman)
+  - Remove duplicate code from HardwareSerial::begin() methods
+  - Simplify HardwareSerial::begin() (Rob Tillaart)
+  - Use constants for register bit positions in HardwareSerial
+  - Fix HardwareSerial::flush() when interrupts are kept disabled for a while
+  - Fix lockup when writing to HardwareSerial with interrupts disabled
+  - Disable the UDRE interrupt sooner in HardwareSerial (Nathan Blackwell)
+  - Put each HardwareSerial instance in its own .cpp file in order to save memory
+    for unused UARTS
+  - In HardwareSerial::write, bypass the queue when it's empty in order to
+    improve throughput when using high baudrates (KurtE)
 * sam: Fixed wrap-around bug in delay() (Mark Tillotson)
 * sam: Fixed regression in analogRead() (fails to read multiple channels) (Mark Tillotson)
+* sam: Fixed loops in Reset.cpp (Matthijs Kooijman)
 * sam: Optimized delayMicroseconds() (Rob Tillaart) #1121
+* sam: added itoa() and related functions
 * Optimized Print::print(String&) method, now uses internal string buffer to perform block write
 * Improved portability of String class (maniacbug) #695
 * Make some operators in IPAddress const (Matthijs Kooijman)
+* Fix for compiling assembler files with newer gcc
 
 ARDUINO 1.5.5-r2 BETA 2014.01.10
 

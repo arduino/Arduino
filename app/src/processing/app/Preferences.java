@@ -93,6 +93,7 @@ public class Preferences {
 
   Language languages[] = {
       new Language(_("System Default"), "", ""),
+      new Language(_("Albanian"), "shqip", "sq"),
       new Language(_("Arabic"), "العربية", "ar"),
       new Language(_("Aragonese"), "Aragonés", "an"),
       new Language(_("Belarusian"), "Беларуская мова", "be"),
@@ -145,6 +146,7 @@ public class Preferences {
   Language missingLanguages[] = {
       new Language(_("Armenian"), "Հայերեն", "hy"),
       new Language(_("Asturian"), "Asturianu", "ast"),
+      new Language(_("Basque"), "Euskara", "eu"),
       new Language(_("Bosnian"), "Bosanski", "bs"),
       new Language(_("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
       new Language(_("Chinese (China)"), "", "zh_CN"),
@@ -153,8 +155,10 @@ public class Preferences {
       new Language(_("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
       new Language(_("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
       new Language(_("Nepali"), "नेपाली", "ne"),
+      new Language(_("N'Ko"), "ߒߞߏ", "nqo"),
       new Language(_("Marathi"), "मराठी", "mr"),
       new Language(_("Portugese"), "Português", "pt"),
+      new Language(_("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
       };
 
   /**
@@ -218,7 +222,7 @@ public class Preferences {
   static File preferencesFile;
 
 
-  static protected void init(String commandLinePrefs) {
+  static protected void init(String args[]) {
 
     // start by loading the defaults, in case something
     // important was deleted from the user prefs
@@ -250,41 +254,31 @@ public class Preferences {
     // clone the hash table
     defaults = new Hashtable<String, String>(table);
 
-    // Load a prefs file if specified on the command line
-    if (commandLinePrefs != null) {
-      try {
-        load(new FileInputStream(commandLinePrefs));
+    // next load user preferences file
+    preferencesFile = Base.getSettingsFile(PREFS_FILE);
 
-      } catch (Exception poe) {
-        Base.showError(_("Error"),
-                       I18n.format(
-			 _("Could not read preferences from {0}"),
-			 commandLinePrefs
-		       ), poe);
+    // load a preferences file if specified on the command line
+    if (args != null) {
+      for (int i = 0; i < args.length - 1; i++) {
+        if (args[i].equals("--preferences-file"))
+          preferencesFile = new File(args[i + 1]);
       }
-    } else if (!Base.isCommandLine()) {
-      // next load user preferences file
-      preferencesFile = Base.getSettingsFile(PREFS_FILE);
-      if (!preferencesFile.exists()) {
-        // create a new preferences file if none exists
-        // saves the defaults out to the file
-        save();
+    }
 
-      } else {
-        // load the previous preferences file
-
-        try {
-          load(new FileInputStream(preferencesFile));
-
-        } catch (Exception ex) {
-          Base.showError(_("Error reading preferences"),
-			 I18n.format(
-			   _("Error reading the preferences file. " +
-			     "Please delete (or move)\n" +
-			     "{0} and restart Arduino."),
-			   preferencesFile.getAbsolutePath()
-			 ), ex);
-        }
+    if (!preferencesFile.exists()) {
+      // create a new preferences file if none exists
+      // saves the defaults out to the file
+      save();
+    } else {
+      // load the previous preferences file
+      try {
+        load(new FileInputStream(preferencesFile));
+      } catch (Exception ex) {
+        Base.showError(_("Error reading preferences"),
+                       I18n.format(_("Error reading the preferences file. "
+                                       + "Please delete (or move)\n"
+                                       + "{0} and restart Arduino."),
+                                   preferencesFile.getAbsolutePath()), ex);
       }
     }
 

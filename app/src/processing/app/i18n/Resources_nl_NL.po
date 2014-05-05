@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2013-11-20 10:43+0000\n"
+"PO-Revision-Date: 2014-02-19 14:46+0000\n"
 "Last-Translator: cmaglie <c.maglie@arduino.cc>\n"
 "Language-Team: Dutch (Netherlands) (http://www.transifex.com/projects/p/arduino-ide-15/language/nl_NL/)\n"
 "MIME-Version: 1.0\n"
@@ -23,11 +23,11 @@ msgstr ""
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Toetsenbord' enkel ondersteund op de Arduino Leonardo"
+msgstr "'Toetsenbord' wordt enkel ondersteund door de Arduino Leonardo"
 
 #: debug/Compiler.java:450
 msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Muis' enkel ondersteund op de Arduino Leonardo"
+msgstr "'Muis' wordt enkel ondersteund door de Arduino Leonardo"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -42,7 +42,7 @@ msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
 "sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr ""
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Weet je zeker dat je wilt afsluiten?</b><p>Door de laatste geopende sketch te sluiten sluit je Arduino af."
 
 #: Editor.java:2053
 msgid ""
@@ -65,7 +65,7 @@ msgstr ""
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr "Een bibliotheek met de naam {0} bestaat al"
+msgstr "Er bestaat al een bibliotheek met de naam {0}"
 
 #: UpdateCheck.java:103
 msgid ""
@@ -102,7 +102,7 @@ msgstr ""
 msgid ""
 "An unknown error occurred while trying to load\n"
 "platform-specific code for your machine."
-msgstr ""
+msgstr "Een onbekende fout is opgetreden tijdens het laden van platform-specifieke code voor jouw apparaat."
 
 #: Preferences.java:85
 msgid "Arabic"
@@ -142,7 +142,7 @@ msgstr ""
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your settings."
-msgstr ""
+msgstr "Arduino kan niet werken omdat er geen map voor je instellingen kon worden aangemaakt."
 
 #: Base.java:1889
 msgid ""
@@ -155,7 +155,7 @@ msgid ""
 "Arduino requires a full JDK (not just a JRE)\n"
 "to run. Please install JDK 1.5 or later.\n"
 "More information can be found in the reference."
-msgstr ""
+msgstr "Arduino heeft een volledige JDK (niet slechts een JRE) nodig om te werken. Installeer JDK 1.5 of een recentere versie.\nMeer informatie kan worden gevonden in de referentie."
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
@@ -318,11 +318,11 @@ msgstr ""
 
 #: Preferences.java:88
 msgid "Chinese Simplified"
-msgstr ""
+msgstr "Chinees Vereenvoudigd"
 
 #: Preferences.java:89
 msgid "Chinese Traditional"
-msgstr ""
+msgstr "Chinees Traditioneel"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -339,7 +339,7 @@ msgstr ""
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
-msgstr "Compileren van sketch..."
+msgstr "Sketch aan het compileren..."
 
 #: EditorConsole.java:152
 msgid "Console Error"
@@ -391,7 +391,7 @@ msgstr ""
 #: Base.java:2533 Base.java:2556
 #, java-format
 msgid "Could not delete {0}"
-msgstr ""
+msgstr "Kon {0} niet verwijderen"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -413,14 +413,14 @@ msgstr ""
 msgid ""
 "Could not open the URL\n"
 "{0}"
-msgstr ""
+msgstr "Kon de URL niet openen\n{0}"
 
 #: Base.java:1958
 #, java-format
 msgid ""
 "Could not open the folder\n"
 "{0}"
-msgstr ""
+msgstr "Kon de map niet openen\n{0}"
 
 #: Sketch.java:1769
 msgid ""
@@ -452,7 +452,7 @@ msgstr ""
 #: Base.java:2482
 #, java-format
 msgid "Could not remove old version of {0}"
-msgstr ""
+msgstr "Kon de oude versie van {0} niet verwijderen"
 
 #: Sketch.java:483 Sketch.java:528
 #, java-format
@@ -474,7 +474,7 @@ msgstr ""
 #: Base.java:2492
 #, java-format
 msgid "Could not replace {0}"
-msgstr ""
+msgstr "Kon {0} niet vervangen"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -601,11 +601,11 @@ msgstr ""
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
-msgstr "Fout bij compileren"
+msgstr "Fout bij compileren."
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
-msgstr ""
+msgstr "Probleem bij het verkrijgen van de Arduino data-map."
 
 #: Serial.java:593
 #, java-format
@@ -626,11 +626,11 @@ msgstr ""
 #: Serial.java:181
 #, java-format
 msgid "Error opening serial port ''{0}''."
-msgstr "Fout bij het openen van seriële poort {0}"
+msgstr "Fout bij het openen van seriële poort \"{0}\""
 
 #: Preferences.java:277
 msgid "Error reading preferences"
-msgstr "Fout bij het lezen van intstellingen"
+msgstr "Fout bij het lezen van de voorkeuren"
 
 #: Preferences.java:279
 #, java-format
@@ -680,7 +680,7 @@ msgstr ""
 
 #: Editor.java:516
 msgid "Examples"
-msgstr "Voorbeeld"
+msgstr "Voorbeelden"
 
 #: Editor.java:2482
 msgid "Export canceled, changes must first be saved."
@@ -688,7 +688,7 @@ msgstr ""
 
 #: Base.java:2100
 msgid "FAQ.html"
-msgstr ""
+msgstr "FAQ.html"
 
 #: Editor.java:491
 msgid "File"
@@ -696,11 +696,11 @@ msgstr "Bestand"
 
 #: Preferences.java:94
 msgid "Filipino"
-msgstr ""
+msgstr "Filipijns"
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
-msgstr ""
+msgstr "Zoek"
 
 #: Editor.java:1249
 msgid "Find Next"
@@ -735,7 +735,7 @@ msgstr ""
 msgid ""
 "For information on installing libraries, see: "
 "http://arduino.cc/en/Guide/Libraries\n"
-msgstr ""
+msgstr "Voor informatie over het installeren van bibliotheken, zie: http://arduino.cc/en/Guide/Libraries\n"
 
 #: debug/BasicUploader.java:80
 msgid "Forcing reset using 1200bps open/close on port "
@@ -751,7 +751,7 @@ msgstr ""
 
 #: Preferences.java:96
 msgid "Galician"
-msgstr ""
+msgstr "Gallisch"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -783,19 +783,19 @@ msgstr "Grieks"
 
 #: Base.java:2085
 msgid "Guide_Environment.html"
-msgstr ""
+msgstr "Guide_Environment.html"
 
 #: Base.java:2071
 msgid "Guide_MacOSX.html"
-msgstr ""
+msgstr "Guide_MacOSX.html"
 
 #: Base.java:2095
 msgid "Guide_Troubleshooting.html"
-msgstr ""
+msgstr "Guide_Troubleshooting.html"
 
 #: Base.java:2073
 msgid "Guide_Windows.html"
-msgstr ""
+msgstr "Guide_Windows.html"
 
 #: ../../../processing/app/Preferences.java:95
 msgid "Hebrew"
@@ -829,11 +829,11 @@ msgstr ""
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
-msgstr ""
+msgstr "Foute bibliotheeknaam negeren"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr ""
+msgstr "Sketch met foutieve naam negeren"
 
 #: Editor.java:636
 msgid "Import Library..."
@@ -856,7 +856,7 @@ msgstr ""
 
 #: Preferences.java:101
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonesisch"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -869,7 +869,7 @@ msgstr "Italiaans"
 
 #: Preferences.java:103
 msgid "Japanese"
-msgstr ""
+msgstr "Japans"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -877,15 +877,15 @@ msgstr "Koreaans"
 
 #: Preferences.java:105
 msgid "Latvian"
-msgstr ""
+msgstr "Lets"
 
 #: Base.java:2699
 msgid "Library added to your libraries. Check \"Import library\" menu"
-msgstr ""
+msgstr "Bibliotheek is aan je bibliotheken toegevoegd. Zie het \"Bibliotheken importeren\" menu"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
-msgstr ""
+msgstr "Litouws"
 
 #: ../../../processing/app/Sketch.java:1660
 msgid "Low memory available, stability problems may occur"
@@ -899,7 +899,7 @@ msgstr ""
 msgid "Message"
 msgstr "Bericht"
 
-#: Sketch.java:1712
+#: ../../../processing/app/preproc/PdePreprocessor.java:412
 msgid "Missing the */ from the end of a /* comment */"
 msgstr ""
 
@@ -945,7 +945,7 @@ msgstr ""
 
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
-msgstr "Neen"
+msgstr "Nee"
 
 #: debug/Compiler.java:126
 msgid "No board selected; please choose a board from the Tools > Board menu."
@@ -969,7 +969,7 @@ msgstr ""
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
-msgstr ""
+msgstr "Nee serieus, hoogste tijd voor wat frisse lucht voor jou."
 
 #: Editor.java:1872
 #, java-format
@@ -987,7 +987,7 @@ msgstr ""
 
 #: Base.java:191
 msgid "Non-fatal error while setting the Look & Feel."
-msgstr ""
+msgstr "Niet-fatale error tijdens het instellen van het Uiterlijk."
 
 #: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
 msgid "Nope"
@@ -1026,7 +1026,7 @@ msgstr "Open een Arduino sketch..."
 
 #: EditorToolbar.java:46
 msgid "Open in Another Window"
-msgstr ""
+msgstr "Open in een nieuw venster"
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
@@ -1046,7 +1046,7 @@ msgstr "Plakken"
 
 #: Preferences.java:109
 msgid "Persian"
-msgstr ""
+msgstr "Perzisch"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1054,7 +1054,7 @@ msgstr ""
 
 #: Base.java:239
 msgid "Please install JDK 1.5 or later"
-msgstr ""
+msgstr "Installeer JDK 1.5 of een recentere versie"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1078,11 +1078,11 @@ msgstr ""
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
-msgstr "Instellingen"
+msgstr "Voorkeuren"
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
-msgstr ""
+msgstr "Vorige"
 
 #: EditorHeader.java:326
 msgid "Previous Tab"
@@ -1102,15 +1102,15 @@ msgstr ""
 
 #: Base.java:1957
 msgid "Problem Opening Folder"
-msgstr ""
+msgstr "Probleem bij het openen van de map"
 
 #: Base.java:1933
 msgid "Problem Opening URL"
-msgstr "Probleem met het openen van URL"
+msgstr "Probleem bij het openen van de URL"
 
 #: Base.java:227
 msgid "Problem Setting the Platform"
-msgstr ""
+msgstr "Probleem bij het instellen van het Platform"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
@@ -1122,7 +1122,7 @@ msgstr ""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
-msgstr ""
+msgstr "Probleem bij het verkrijgen van de data-map"
 
 #: Sketch.java:1467
 #, java-format
@@ -1171,15 +1171,15 @@ msgstr ""
 
 #: FindReplace.java:121 FindReplace.java:130 Sketch.java:1046
 msgid "Replace"
-msgstr ""
+msgstr "Vervang"
 
 #: FindReplace.java:122 FindReplace.java:129
 msgid "Replace & Find"
-msgstr ""
+msgstr "Vervang en zoek"
 
 #: FindReplace.java:120 FindReplace.java:131
 msgid "Replace All"
-msgstr ""
+msgstr "Vervang alle"
 
 #: Sketch.java:1043
 #, java-format
@@ -1230,7 +1230,7 @@ msgstr ""
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
-msgstr ""
+msgstr "Kies (of maak een nieuwe) map voor sketches..."
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
@@ -1238,7 +1238,7 @@ msgstr ""
 
 #: Base.java:2636
 msgid "Select a zip file or a folder containing the library you'd like to add"
-msgstr ""
+msgstr "Selecteer het zipbestand of de map met de bibliotheek die je toe wil voegen"
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
@@ -1347,11 +1347,11 @@ msgstr ""
 
 #: Base.java:258
 msgid "Sketchbook folder disappeared"
-msgstr "Sketchbook map is verdwenen"
+msgstr "Sketchbook-map is verdwenen"
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
-msgstr "Sketchbook locatie:"
+msgstr "Sketchbooklocatie:"
 
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
@@ -1401,7 +1401,7 @@ msgstr ""
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
-msgstr "Het \"BYTE\" keyword wordt niet langer ondersteund"
+msgstr "Het \"BYTE\" keyword wordt niet langer ondersteund."
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1417,7 +1417,7 @@ msgstr ""
 
 #: Base.java:192
 msgid "The error message follows, however Arduino should run fine."
-msgstr ""
+msgstr "De foutmelding komt nog, maar Arduino zou het gewoon moeten blijven doen."
 
 #: Editor.java:2147
 #, java-format
@@ -1433,7 +1433,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
-msgstr ""
+msgstr "De bibliotheek \"{0}\" kan niet gebruikt worden.\nBibliotheeknamen mogen enkel letters en cijfers bevatten.\n(Enkel ASCII en geen spaties, en hij mag niet met een cijfer beginnen)"
 
 #: Sketch.java:374
 msgid ""
@@ -1451,7 +1451,7 @@ msgid ""
 "The selected sketch no longer exists.\n"
 "You may need to restart Arduino to update\n"
 "the sketchbook menu."
-msgstr ""
+msgstr "De geselecteerde sketch bestaat niet meer.\nMisschien moet je Arduino herstarten om het sketchbookmenu te updaten."
 
 #: Base.java:1430
 #, java-format
@@ -1461,7 +1461,7 @@ msgid ""
 "(ASCII-only with no spaces, and it cannot start with a number).\n"
 "To get rid of this message, remove the sketch from\n"
 "{1}"
-msgstr ""
+msgstr "De bibliotheek \"{0}\" kan niet gebruikt worden.\nBibliotheeknamen mogen enkel letters en cijfers bevatten.\n(Enkel ASCII en geen spaties, en hij mag niet met een cijfer beginnen).\nOm dit bericht niet weer te krijgen moet je de sketch uit {1} verwijderen"
 
 #: Sketch.java:1755
 msgid ""
@@ -1484,7 +1484,7 @@ msgid ""
 "location, and create a new sketchbook folder if\n"
 "necessary. Arduino will then stop talking about\n"
 "himself in the third person."
-msgstr ""
+msgstr "De sketchbookmap bestaat niet meer.\nArduino zal overschakelen naar de standaardlocatie en zal zo nodig een nieuwe sketchbookmap aanmaken. Daarna zal Arduino ophouden met over zichzelf te praten in de derde persoon."
 
 #: Sketch.java:1075
 msgid ""
@@ -1568,7 +1568,7 @@ msgstr ""
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
-msgstr ""
+msgstr "Upload"
 
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
@@ -1588,7 +1588,7 @@ msgstr ""
 
 #: Sketch.java:1622
 msgid "Uploading..."
-msgstr "Uploaden..."
+msgstr "Aan het uploaden..."
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1610,7 +1610,7 @@ msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
-msgstr ""
+msgstr "Verifiëer"
 
 #: Editor.java:609
 msgid "Verify / Compile"
@@ -1682,7 +1682,7 @@ msgstr ""
 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
-msgstr "Je vergat je sketchbook"
+msgstr "Je bent je sketchbook vergeten"
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -1693,15 +1693,15 @@ msgstr ""
 msgid ""
 "You've reached the limit for auto naming of new sketches\n"
 "for the day. How about going for a walk instead?"
-msgstr ""
+msgstr "Je hebt het limiet bereikt van het automatisch naamgeven van sketches voor vandaag. Waarom ga je anders niet een wandelingetje maken?"
 
 #: Base.java:2638
 msgid "ZIP files or folders"
-msgstr ""
+msgstr "Zipbestanden of mappen"
 
 #: Base.java:2661
 msgid "Zip doesn't contain a library"
-msgstr ""
+msgstr "Zip bevat geen bibliotheek"
 
 #: Sketch.java:364
 #, java-format
@@ -1810,7 +1810,7 @@ msgstr ""
 
 #: Base.java:2075
 msgid "http://www.arduino.cc/playground/Learning/Linux"
-msgstr ""
+msgstr "http://www.arduino.cc/playground/Learning/Linux"
 
 #: Preferences.java:625
 #, java-format
@@ -1827,7 +1827,7 @@ msgstr ""
 
 #: Base.java:2090
 msgid "platforms.html"
-msgstr ""
+msgstr "platforms.html"
 
 #: Serial.java:451
 #, java-format
