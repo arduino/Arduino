@@ -237,6 +237,23 @@ Serial_::operator bool() {
 	return result;
 }
 
+
+unsigned long Serial_::baudrate(void)
+{
+	return 	_usbLineInfo.dwDTERate;
+}
+
+bool Serial_::dtr(void)
+{
+	return (_usbLineInfo.lineState & 0x01) == 0x01;
+}
+
+bool Serial_::rts(void)
+{
+	return (_usbLineInfo.lineState & 0x02) == 0x02;
+}
+
+
 Serial_ Serial;
 
 #endif
