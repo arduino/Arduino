@@ -157,7 +157,7 @@ int USBSerial::available()
 size_t USBSerial::write(uint8_t b)
 {
 
-  if (cdcSendDataInBackground((BYTE*)&b,1,CDC0_INTFNUM,0)){  	//send char to the Host
+  if (cdcSendDataWaitTilDone((BYTE*)&b,1,CDC0_INTFNUM,0)){  	//send char to the Host
     return 0;   // could not write
   }
   return 1;
@@ -167,7 +167,7 @@ size_t USBSerial::write(uint8_t b)
 size_t USBSerial::write(const uint8_t *buffer, size_t size)
 {
 
-  if (cdcSendDataInBackground((BYTE*)buffer,size,CDC0_INTFNUM,0)){  	//send char to the Host
+  if (cdcSendDataWaitTilDone((BYTE*)buffer,size,CDC0_INTFNUM,0)){  	//send char to the Host
     return 0;   // could not write
   }
   return 1;
