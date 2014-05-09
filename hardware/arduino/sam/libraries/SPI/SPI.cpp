@@ -25,7 +25,7 @@ void SPIClass::begin() {
 	setClockDivider(BOARD_SPI_DEFAULT_SS, 21);
 	setDataMode(BOARD_SPI_DEFAULT_SS, SPI_MODE0);
 	setBitOrder(BOARD_SPI_DEFAULT_SS, MSBFIRST);
-	setTransferWidth(BOARD_SPI_DEFAULT_SS, SPI_WDITH_8);
+	setTransferWidth(BOARD_SPI_DEFAULT_SS, SPI_WIDTH_8);
 }
 
 void SPIClass::begin(uint8_t _pin) {
