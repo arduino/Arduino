@@ -49,6 +49,11 @@ int analogRead(uint8_t pin)
 		pin -= A0;
 	#endif
 
+	#if defined(NUM_ANALOG_INPUTS)
+	if (pin >= NUM_ANALOG_INPUTS)
+		return 0;
+	#endif
+
 #if defined(analogPinToChannel)
 	pin = analogPinToChannel(pin);
 #endif
