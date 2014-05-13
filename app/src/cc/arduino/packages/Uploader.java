@@ -71,7 +71,7 @@ public abstract class Uploader implements MessageConsumer {
     this.notFoundError = false;
   }
 
-  public abstract boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception;
+  public abstract boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, List<String> warningsAccumulator) throws Exception;
 
   public abstract boolean burnBootloader() throws Exception;
 

@@ -70,8 +70,8 @@ public class SSHUploader extends Uploader {
   }
 
   @Override
-  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws RunnerException {
-    if (usingProgrammer) {
+  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, List<String> warningsAccumulator) throws RunnerException {
+    if (!Preferences.get("programmer").equals("internal")) {
       throw new RunnerException(_("Network upload using programmer not supported"));
     }
 

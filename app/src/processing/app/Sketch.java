@@ -1593,15 +1593,15 @@ public class Sketch {
     return null;
   }
 
-  protected boolean exportApplet(boolean usingProgrammer) throws Exception {
-    return exportApplet(tempBuildFolder.getAbsolutePath(), usingProgrammer);
+  protected boolean exportApplet() throws Exception {
+    return exportApplet(tempBuildFolder.getAbsolutePath());
   }
 
 
   /**
    * Handle export to applet.
    */
-  public boolean exportApplet(String appletPath, boolean usingProgrammer)
+  public boolean exportApplet(String appletPath)
     throws Exception {
 
     prepare();
@@ -1622,7 +1622,7 @@ public class Sketch {
 //    }
 
     editor.status.progressNotice(_("Uploading..."));
-    boolean success = upload(appletPath, foundName, usingProgrammer);
+    boolean success = upload(appletPath, foundName);
     editor.status.progressUpdate(100);
     return success;
   }
@@ -1685,7 +1685,7 @@ public class Sketch {
       System.err.println(_("Low memory available, stability problems may occur."));
   }
 
-  protected boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
+  protected boolean upload(String buildPath, String suggestedClassName) throws Exception {
 
     TargetPlatform target = Base.getTargetPlatform();
     String board = Preferences.get("board");
@@ -1716,7 +1716,7 @@ public class Sketch {
 
       List<String> warningsAccumulator = new LinkedList<String>();
       try {
-        success = uploader.uploadUsingPreferences(getFolder(), buildPath, suggestedClassName, usingProgrammer, warningsAccumulator);
+        success = uploader.uploadUsingPreferences(getFolder(), buildPath, suggestedClassName, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
           Preferences.remove(uploader.getAuthorizationKey());

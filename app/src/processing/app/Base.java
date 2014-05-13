@@ -1588,28 +1588,32 @@ public class Base {
     rebuildExamplesMenu(Editor.examplesMenu);
   }
 
+  private void addProgrammerMenuOption(JMenu menu, ButtonGroup group, String id, String name) {
+    @SuppressWarnings("serial")
+    AbstractAction action = new AbstractAction(name) {
+      public void actionPerformed(ActionEvent actionevent) {
+        Preferences.set("programmer", "" + getValue("id"));
+      }
+    };
+    action.putValue("id", id);
+    JMenuItem item = new JRadioButtonMenuItem(action);
+    if (Preferences.get("programmer").equals(id))
+      item.setSelected(true);
+    group.add(item);
+    menu.add(item);
+  }
 
   public void rebuildProgrammerMenu(JMenu menu) {
     menu.removeAll();
     ButtonGroup group = new ButtonGroup();
+    addProgrammerMenuOption(menu, group, "internal", _("Internal (bootloader)"));
+    menu.addSeparator();
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
         for (String programmer : targetPlatform.getProgrammers().keySet()) {
           String id = targetPackage.getId() + ":" + programmer;
-
-          @SuppressWarnings("serial")
-          AbstractAction action = new AbstractAction(targetPlatform
-              .getProgrammer(programmer).get("name")) {
-            public void actionPerformed(ActionEvent actionevent) {
-              Preferences.set("programmer", "" + getValue("id"));
-            }
-          };
-          action.putValue("id", id);
-          JMenuItem item = new JRadioButtonMenuItem(action);
-          if (Preferences.get("programmer").equals(id))
-            item.setSelected(true);
-          group.add(item);
-          menu.add(item);
+          String name = targetPlatform.getProgrammer(programmer).get("name");
+          addProgrammerMenuOption(menu, group, id, name);
         }
       }
     }
