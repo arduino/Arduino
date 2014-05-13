@@ -154,6 +154,20 @@ Below, a few of them are documented but a lot more are available.
 	new temporary build folder is created on every run and deleted
 	again when the application is closed.
 
+*programmer*::
+	The programmer to use for programming the board.
+
+{empty}::
+	The value should be in the form "__package__:__id__", where
+	__package__ is identifier of the vendor (the first level folders
+	inside the 'hardware' directory). __id__ is looked up in the
+	programmers.txt file(s) for that vendor.
+
+{empty}::
+	The special value "internal" can be used to select the default
+	upload method for the board (defined by boards.txt), which
+	usually means through a serial port and bootloader.
+
 EXIT STATUS
 -----------
 *0*:: Success
