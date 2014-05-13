@@ -1,5 +1,5 @@
 /*
-  pins_arduino.h - Pin definition functions for Arduino Robot Control Board
+  pins_arduino.h - Pin definition functions for Arduino Robot Motor Board
   Part of Arduino - http://www.arduino.cc/
 
   Copyright (c) 2913 D. Cuartielles, X. Yang (Arduino Verkstad)
