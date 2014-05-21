@@ -485,9 +485,10 @@ void sleepSeconds(uint32_t seconds)
 
 	WDTCTL = WDT_ADLY_250;
 
-	while(millis() - start <= seconds * 1000)
+	while(sleeping && (millis() - start <= seconds * 1000)) {
 		/* Wait for WDT interrupt in LMP0 */
 		__bis_status_register(LPM3_bits+GIE);
+	}
 
 	sleeping = false;
 
@@ -518,9 +519,10 @@ void sleep(uint32_t milliseconds)
 	sleeping = true;
 	uint32_t start = millis();
 
-	while(millis() - start < milliseconds)
+	while(sleeping && (millis() - start < milliseconds)) {
 		/* Wait for WDT interrupt in LMP0 */
 		__bis_status_register(LPM3_bits+GIE);
+	}
 
 	sleeping = false;
 
