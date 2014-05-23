@@ -88,7 +88,7 @@ static const unsigned long g_ulUARTPeriph[2] =
 //*****************************************************************************
 static const unsigned long g_ulUARTConfig[2][2] =
 {
-	{PIN_57, PIN_55}, {PIN_2, PIN_1}
+	{PIN_57, PIN_55}, {PIN_02, PIN_01}
 };
 
 void (*g_UARTIntHandlers[2])(void) =
@@ -175,7 +175,7 @@ void HardwareSerial::begin(unsigned long baud)
 	//MAP_UARTFIFOLevelSet(UART_BASE, UART_FIFO_TX7_8, UART_FIFO_RX7_8);
 
 	/* Initialize the UART. */
-	UARTClockSourceSet(UART_BASE, UART_CLOCK_SYSTEM);
+//	UARTClockSourceSet(UART_BASE, UART_CLOCK_SYSTEM);
 	MAP_PRCMPeripheralReset(g_ulUARTPeriph[uartModule]);
 
 	MAP_PRCMPeripheralClkEnable(g_ulUARTPeriph[uartModule], PRCM_RUN_MODE_CLK);

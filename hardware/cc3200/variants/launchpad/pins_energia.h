@@ -40,7 +40,7 @@
 #include <stdint.h>
 #include "inc/hw_memmap.h"
 #include "driverlib/adc.h"
-#include "driverlib/pinmap.h"
+#include "driverlib/pin.h"
 
 static const uint8_t RED_LED = 29;
 static const uint8_t GREEN_LED = 10;
@@ -61,23 +61,23 @@ const uint16_t digital_pin_to_pin_num[] = {
 	NOT_A_PIN,	/*  dummy */
 	NOT_A_PIN,	/*  1  - 3.3V */
 	PIN_58,		/*  2  - GPIO_03 */
-	PIN_4,		/*  3  - GPIO_13 */
-	PIN_3,		/*  4  - GPIO_12 */
+	PIN_04,		/*  3  - GPIO_13 */
+	PIN_03,		/*  4  - GPIO_12 */
 	PIN_61,		/*  5  - GPIO_06 */
 	PIN_59,		/*  6  - GPIO_04 */
-	PIN_5,		/*  7  - GPIO_14 */
+	PIN_05,		/*  7  - GPIO_14 */
 	PIN_62,		/*  8  - GPIO_07 */
-	PIN_1,		/*  9  - GPIO_10 */
-	PIN_2,		/*  10 - GPIO_11 */
+	PIN_01,		/*  9  - GPIO_10 */
+	PIN_02,		/*  10 - GPIO_11 */
 	PIN_15,		/*  11 - GPIO_22 */
 	PIN_55,		/*  12 - GPIO_01 */
 	PIN_21,		/*  13 - GPIO_25 */
-	PIN_6,		/*  14 - GPIO_15 */
-	PIN_7,		/*  15 - GPIO_16 */
+	PIN_06,		/*  14 - GPIO_15 */
+	PIN_07,		/*  15 - GPIO_16 */
 	NOT_A_PIN,	/*  16 - RESET */
-	NOT_A_PIN,	/*  17 - GPIO_31 / TEST */
-	PIN_8,		/*  18 - GPIO_17 */
-	PIN_19,		/*  19 - GPIO_28 */
+	PIN_45,		/*  17 - GPIO_31 */
+	PIN_08,		/*  18 - GPIO_17 */
+	PIN_18,		/*  19 - GPIO_28 */
 	NOT_A_PIN,	/*  20 - GND */
 	NOT_A_PIN,	/*  21 - 5V */
 	NOT_A_PIN,	/*  22 - GND */
@@ -93,12 +93,12 @@ const uint16_t digital_pin_to_pin_num[] = {
 	PIN_16,		/*  32 - GPIO_23 */
 	PIN_60,		/*  33 - GPIO_05 */
 	PIN_62,		/*  34 - GPIO_07 */
-	PIN_19,		/*  35 - GPIO_28 */
+	PIN_18,		/*  35 - GPIO_28 */
 	PIN_21,		/*  36 - GPIO_25 */
 	PIN_64,		/*  37 - GPIO_09 */
 	PIN_17,		/*  38 - GPIO_24 */
-	PIN_1,		/*  39 - GPIO_10 */
-	PIN_2		/*  40 - GPIO_11 */
+	PIN_01,		/*  39 - GPIO_10 */
+	PIN_02		/*  40 - GPIO_11 */
 };
 
 const uint8_t digital_pin_to_port[] = {
@@ -188,5 +188,50 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(2),		/*  39 - GPIO_10 */
 	BV(3)		/*  40 - GPIO_11 */
 };
+
+const uint8_t digital_pin_to_timer[] = {
+	NOT_ON_TIMER,	/*  dummy */
+	NOT_ON_TIMER,	/*  1  - 3.3V */
+	NOT_ON_TIMER,	/*  2  - GPIO_03 */
+	NOT_ON_TIMER,	/*  3  - GPIO_13 */
+	NOT_ON_TIMER,	/*  4  - GPIO_12 */
+	NOT_ON_TIMER,	/*  5  - GPIO_06 */
+	NOT_ON_TIMER,	/*  6  - GPIO_04 */
+	NOT_ON_TIMER,	/*  7  - GPIO_14 */
+	NOT_ON_TIMER,	/*  8  - GPIO_07 */
+	TIMERA3A,	/*  9  - GPIO_10 */
+	TIMERA3B,	/*  10 - GPIO_11 */
+	NOT_ON_TIMER,	/*  11 - GPIO_22 */
+	NOT_ON_TIMER,	/*  12 - GPIO_01 */
+	TIMERA1A,	/*  13 - GPIO_25 */
+	NOT_ON_TIMER,	/*  14 - GPIO_15 */
+	NOT_ON_TIMER,	/*  15 - GPIO_16 */
+	NOT_ON_TIMER,	/*  16 - RESET */
+	NOT_ON_TIMER,	/*  17 - GPIO_31 */
+	NOT_ON_TIMER,	/*  18 - GPIO_17 */
+	NOT_ON_TIMER,	/*  19 - GPIO_28 */
+	NOT_ON_TIMER,	/*  20 - GND */
+	NOT_ON_TIMER,	/*  21 - 5V */
+	NOT_ON_TIMER,	/*  22 - GND */
+	NOT_ON_TIMER,	/*  23 - GPIO_02 */
+	NOT_ON_TIMER,	/*  24 - GPIO_05 */
+	NOT_ON_TIMER,	/*  25 - GPIO_03 */
+	NOT_ON_TIMER,	/*  26 - GPIO_04 */
+	NOT_ON_TIMER,	/*  27 - GPIO_08 */
+	NOT_ON_TIMER,	/*  28 - GPIO_30 */
+	TIMERA2B,	/*  29 - GPIO_09 */
+	NOT_ON_TIMER,	/*  30 - GPIO_00 */
+	TIMERA0A,	/*  31 - GPIO_24 */
+	NOT_ON_TIMER,	/*  32 - GPIO_23 */
+	NOT_ON_TIMER,	/*  33 - GPIO_05 */
+	NOT_ON_TIMER,	/*  34 - GPIO_07 */
+	NOT_ON_TIMER,	/*  35 - GPIO_28 */
+	TIMERA1A,	/*  36 - GPIO_25 */
+	TIMERA2B,	/*  37 - GPIO_09 */
+	TIMERA0A,	/*  38 - GPIO_24 */
+	TIMERA3A,	/*  39 - GPIO_10 */
+	TIMERA3B	/*  40 - GPIO_11 */
+};
+
 #endif
 #endif

@@ -33,7 +33,7 @@
 #include "wiring_private.h"
 #include "driverlib/rom_map.h"
 #include "driverlib/gpio.h"
-#include "driverlib/pinmap.h"
+#include "driverlib/pin.h"
 #define GPIO_LOCK_KEY_DD        0x4C4F434B 
 
 void pinMode(uint8_t pin, uint8_t mode)
@@ -49,15 +49,15 @@ void pinMode(uint8_t pin, uint8_t mode)
 	MAP_PinTypeGPIO(pinNum, PIN_MODE_0, false);
 
 	if (mode == INPUT) {
-		MAP_GPIOPinTypeGPIOInput(portBase, bit);
+		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
 	} else if (mode == INPUT_PULLUP) {
-		MAP_GPIOPinTypeGPIOInput(portBase, bit);
+		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
 		MAP_PinConfigSet(pin, PIN_STRENGTH_2MA, PIN_TYPE_STD_PU);
 	} else if (mode == INPUT_PULLDOWN) {
-		MAP_GPIOPinTypeGPIOInput(portBase, bit);
+		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
 		MAP_PinConfigSet(pin, PIN_STRENGTH_2MA, PIN_TYPE_STD_PD);
 	} else {//mode == OUTPUT
-		MAP_GPIOPinTypeGPIOOutput(portBase, bit);
+		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_OUT);
 	}
 }
 

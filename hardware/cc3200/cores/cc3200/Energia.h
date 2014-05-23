@@ -17,7 +17,7 @@ extern "C"{
 
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
-#define NOT_ON_TIMER 0
+#define NOT_ON_TIMER 128
 #define NOT_ON_ADC 0x10
 
 #define CHANGE 4
@@ -48,6 +48,15 @@ extern "C"{
 #define S2 3
 #define S3 4
 #define S4 5
+
+#define TIMERA0A 0
+#define TIMERA0B 1
+#define TIMERA1A 2
+#define TIMERA1B 3
+#define TIMERA2A 4
+#define TIMERA2B 5
+#define TIMERA3A 6
+#define TIMERA3B 7
 
 typedef uint8_t boolean;
 typedef uint8_t byte;
@@ -110,6 +119,7 @@ extern const uint8_t timer_to_ab[];
 extern const uint32_t timer_to_pin_config[];
 extern const uint32_t port_to_base[];
 extern const uint32_t digital_pin_to_analog_in[];
+extern const uint16_t digital_pin_to_pin_num[];
 
 #define digitalPinToPort(P)       ( digital_pin_to_port[P] )
 #define digitalPinToPinNum(P)     ( digital_pin_to_pin_num[P] )
