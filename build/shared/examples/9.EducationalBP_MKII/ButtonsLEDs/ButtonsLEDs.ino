@@ -12,9 +12,6 @@ http://boosterpackdepot.info/wiki/index.php?title=Educational_BoosterPack_MK_II
  * pushbutton attached to pin 2 from +5V
  * 10K resistor attached to pin 2 from ground
  
- * Note: on most Arduinos there is already an LED on the board
- attached to pin 13.
- 
  
  created 2005
  by DojoDave <http://www.0j0.org>
@@ -24,6 +21,7 @@ http://boosterpackdepot.info/wiki/index.php?title=Educational_BoosterPack_MK_II
  by Robert Wessels
  modified Dec 03 2013 - for Educational BoosterPack MK II
  by Dung Dang
+ modified May 23 2014 - corrected pin for buttonOne
  
  This example code is in the public domain.
  
@@ -32,7 +30,7 @@ http://boosterpackdepot.info/wiki/index.php?title=Educational_BoosterPack_MK_II
 
 // constants won't change. They're used here to 
 // set pin numbers:
-const int buttonOne = 34;     // the number of the pushbutton pin
+const int buttonOne = 33;     // the number of the pushbutton pin
 const int buttonTwo = 32;     // the number of the pushbutton pin
 const int ledGreen =  38;      // the number of the LED pin
 const int ledBlue =  37;      // the number of the LED pin
