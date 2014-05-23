@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// des.h - Defines and Macros for the DES module.
+//  des.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Defines and Macros for the DES module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -86,12 +109,16 @@ extern "C"
 //
 //*****************************************************************************
 extern void DESConfigSet(uint32_t ui32Base, uint32_t ui32Config);
-extern void DESDataRead(uint32_t ui32Base, uint32_t *pui32Dest);
-extern bool DESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest);
-extern bool DESDataProcess(uint32_t ui32Base, uint32_t *pui32Src,
-                           uint32_t *pui32Dest, uint32_t ui32Length);
-extern void DESDataWrite(uint32_t ui32Base, uint32_t *pui32Src);
-extern bool DESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src);
+extern void DESDataRead(uint32_t ui32Base, uint8_t *pui8Dest,
+                        uint8_t ui8Length);
+extern bool DESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest,
+                                   uint8_t ui8Length);
+extern bool DESDataProcess(uint32_t ui32Base, uint8_t *pui8Src,
+                           uint8_t *pui8Dest, uint32_t ui32Length);
+extern void DESDataWrite(uint32_t ui32Base, uint8_t *pui8Src,
+                         uint8_t ui8Length);
+extern bool DESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src,
+                                    uint8_t ui8Length);
 extern void DESDMADisable(uint32_t ui32Base, uint32_t ui32Flags);
 extern void DESDMAEnable(uint32_t ui32Base, uint32_t ui32Flags);
 extern void DESIntClear(uint32_t ui32Base, uint32_t ui32IntFlags);
@@ -100,9 +127,9 @@ extern void DESIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags);
 extern void DESIntRegister(uint32_t ui32Base, void(*pfnHandler)(void));
 extern uint32_t DESIntStatus(uint32_t ui32Base, bool bMasked);
 extern void DESIntUnregister(uint32_t ui32Base);
-extern bool DESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata);
-extern void DESKeySet(uint32_t ui32Base, uint32_t *pui32Key);
-extern void DESLengthSet(uint32_t ui32Base, uint32_t ui32Length);
+extern bool DESIVSet(uint32_t ui32Base, uint8_t *pui8IVdata);
+extern void DESKeySet(uint32_t ui32Base, uint8_t *pui8Key);
+extern void DESDataLengthSet(uint32_t ui32Base, uint32_t ui32Length);
 
 //*****************************************************************************
 //

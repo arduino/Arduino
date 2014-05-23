@@ -7,14 +7,14 @@
     <toolchain>
       <name>ARM</name>
     </toolchain>
-    <debug>0</debug>
+    <debug>1</debug>
     <settings>
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
-        <debug>0</debug>
+        <debug>1</debug>
         <option>
           <name>ExePath</name>
           <state>exe</state>
@@ -39,20 +39,20 @@
         <option>
           <name>Input variant</name>
           <version>3</version>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>Input description</name>
-          <state>Full formatting.</state>
+          <state>Automatic choice of formatter.</state>
         </option>
         <option>
           <name>Output variant</name>
           <version>2</version>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>Output description</name>
-          <state>Full formatting.</state>
+          <state>Automatic choice of formatter.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -83,11 +83,11 @@
         </option>
         <option>
           <name>OGProductVersion</name>
-          <state>5.11.0.50579</state>
+          <state>7.10.1.6733</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.2.4581</state>
+          <state>7.10.1.6733</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -99,11 +99,11 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>LM3S101	TexasInstruments LM3S101</state>
+          <state>Default	None</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GEndianModeBE</name>
@@ -153,23 +153,22 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>30</version>
         <wantNonLocal>1</wantNonLocal>
-        <debug>0</debug>
-        <option>
-          <name>CCOptimizationNoSizeConstraints</name>
-          <state>0</state>
-        </option>
+        <debug>1</debug>
         <option>
           <name>CCDefines</name>
           <state>ewarm</state>
-          <state>DRIVERLIB_APPS</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -209,7 +208,7 @@
         </option>
         <option>
           <name>CCDiagSuppress</name>
-          <state>Pa050</state>
+          <state></state>
         </option>
         <option>
           <name>CCDiagRemark</name>
@@ -230,7 +229,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>0000000</state>
+          <state>00000000</state>
         </option>
         <option>
           <name>CCDebugInfo</name>
@@ -262,7 +261,7 @@
         </option>
         <option>
           <name>CCRequirePrototypes</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCMultibyteSupport</name>
@@ -298,9 +297,10 @@
         </option>
         <option>
           <name>CCIncludePath2</name>
-          <state>$PROJ_DIR$\..</state>
+          <state>$PROJ_DIR$</state>
+          <state>$PROJ_DIR$\..\</state>
           <state>$PROJ_DIR$\..\..\</state>
-          <state>$PROJ_DIR$\..\..\inc1</state>
+          <state>$PROJ_DIR$\..\..\..\inc\</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -320,16 +320,16 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
           <version>0</version>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -383,7 +383,7 @@
         </option>
         <option>
           <name>IccCppInlineSemantics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IccCmsis</name>
@@ -393,15 +393,28 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCOptimizationNoSizeConstraints</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptStrategySlave</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
-        <debug>0</debug>
+        <debug>1</debug>
         <option>
           <name>AObjPrefix</name>
           <state>1</state>
@@ -449,7 +462,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state>ewarm</state>
+          <state></state>
         </option>
         <option>
           <name>AList</name>
@@ -555,6 +568,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -563,7 +580,7 @@
       <data>
         <version>1</version>
         <wantNonLocal>1</wantNonLocal>
-        <debug>0</debug>
+        <debug>1</debug>
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
@@ -575,7 +592,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>driverlib-cm3.srec</state>
+          <state></state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -612,9 +629,9 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
-        <debug>0</debug>
+        <debug>1</debug>
         <option>
           <name>IlinkLibIOConfig</name>
           <state>1</state>
@@ -629,7 +646,7 @@
         </option>
         <option>
           <name>IlinkOutputFile</name>
-          <state>driverlib-cm3.out</state>
+          <state>driverlib.out</state>
         </option>
         <option>
           <name>IlinkDebugInfoEnable</name>
@@ -892,6 +909,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -900,18 +921,18 @@
       <data>
         <version>0</version>
         <wantNonLocal>1</wantNonLocal>
-        <debug>0</debug>
+        <debug>1</debug>
         <option>
           <name>IarchiveInputs</name>
           <state></state>
         </option>
         <option>
           <name>IarchiveOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IarchiveOutput</name>
-          <state>D:\project\cc31xx\GitRepo\source-0p3-praveen\driverlib\ewarm\exe\driverlib.a</state>
+          <state>$PROJ_DIR$\exe\driverlib.a</state>
         </option>
       </data>
     </settings>
@@ -921,81 +942,75 @@
       <data/>
     </settings>
   </configuration>
-  <group>
-    <name>Source</name>
-    <file>
-      <name>$PROJ_DIR$\..\adc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\aes.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\arcm.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\camera.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\cpu.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\crc.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\des.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\flash.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\gpio.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\gprcm.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\hib.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\hwsemaphore.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\i2c.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\interrupt.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\mcasp.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\mcspi.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\pinmap.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\shamd5.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\systick.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\timer.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\uart.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\udma.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\utils.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\wdt.c</name>
-    </file>
-  </group>
+  <file>
+    <name>$PROJ_DIR$\..\adc.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\aes.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\camera.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\cpu.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\crc.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\des.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\flash.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\gpio.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\hwspinlock.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\i2c.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\i2s.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\interrupt.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\pin.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\prcm.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\sdhost.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\shamd5.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\spi.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\systick.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\timer.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\uart.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\udma.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\utils.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\wdt.c</name>
+  </file>
 </project>
 
 

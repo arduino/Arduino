@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// udma.h - Prototypes and macros for the uDMA controller.
+//  udma.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Prototypes and macros for the uDMA controller.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -281,7 +304,7 @@ tDMAControlTable;
 //
 #define UDMA_CH4_TIMERA2_A      0x00000004
 #define UDMA_CH4_DES_DIN        0x00010004
-#define UDMA_CH4_MCASP_RX       0x00020004
+#define UDMA_CH4_I2S_RX         0x00020004
 #define UDMA_CH4_SW             0x00030004
 
 //
@@ -289,7 +312,7 @@ tDMAControlTable;
 //
 #define UDMA_CH5_TIMERA2_B      0x00000005
 #define UDMA_CH5_DES_DOUT       0x00010005
-#define UDMA_CH5_MCASP_TX       0x00020005
+#define UDMA_CH5_I2S_TX         0x00020005
 #define UDMA_CH5_SW             0x00030005
 
 //
@@ -394,7 +417,7 @@ tDMAControlTable;
 //
 #define UDMA_CH18_GPIOA0        0x00000012
 #define UDMA_CH18_AES_CIN       0x00010012
-#define UDMA_CH18_MCASP_RX      0x00020012
+#define UDMA_CH18_I2S_RX      0x00020012
 #define UDMA_CH18_SW            0x00030012
 
 
@@ -403,7 +426,7 @@ tDMAControlTable;
 //
 #define UDMA_CH19_GPOIA1        0x00000013
 #define UDMA_CH19_AES_COUT      0x00010013
-#define UDMA_CH19_MCASP_TX      0x00020013
+#define UDMA_CH19_I2S_TX      0x00020013
 #define UDMA_CH19_SW            0x00030013
 
 

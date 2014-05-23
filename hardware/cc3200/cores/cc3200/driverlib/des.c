@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// des.c - Driver for the DES data transformation.
+//  des.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the DES data transformation.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -91,18 +114,18 @@ DESConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //! Sets the key used for DES operations.
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32Key is a pointer to an array that holds the key
+//! \param pui8Key is a pointer to an array that holds the key
 //!
 //! This function sets the key used for DES operations.
 //!
-//! \e pui32Key should be 64 bits long (2 words) if single DES is being used or
+//! \e pui8Key should be 64 bits long (2 words) if single DES is being used or
 //! 192 bits (6 words) if triple DES is being used.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-DESKeySet(uint32_t ui32Base, uint32_t *pui32Key)
+DESKeySet(uint32_t ui32Base, uint8_t *pui8Key)
 {
     //
     // Check the arguments.
@@ -112,19 +135,19 @@ DESKeySet(uint32_t ui32Base, uint32_t *pui32Key)
     //
     // Write the first part of the key.
     //
-    HWREG(ui32Base + DES_O_KEY1_L) = pui32Key[0];
-    HWREG(ui32Base + DES_O_KEY1_H) = pui32Key[1];
+    HWREG(ui32Base + DES_O_KEY1_L) =  * ((uint32_t *)(pui8Key + 0));
+    HWREG(ui32Base + DES_O_KEY1_H) = * ((uint32_t *)(pui8Key + 4));
 
     //
-    // If we are performing tripe DES, then write the key registers for
+    // If we are performing triple DES, then write the key registers for
     // the second and third rounds.
     //
     if(HWREG(ui32Base + DES_O_CTRL) & DES_CFG_TRIPLE)
     {
-        HWREG(ui32Base + DES_O_KEY2_L) = pui32Key[2];
-        HWREG(ui32Base + DES_O_KEY2_H) = pui32Key[3];
-        HWREG(ui32Base + DES_O_KEY3_L) = pui32Key[4];
-        HWREG(ui32Base + DES_O_KEY3_H) = pui32Key[5];
+        HWREG(ui32Base + DES_O_KEY2_L) = * ((uint32_t *)(pui8Key + 8));
+        HWREG(ui32Base + DES_O_KEY2_H) = * ((uint32_t *)(pui8Key + 12));
+        HWREG(ui32Base + DES_O_KEY3_L) = * ((uint32_t *)(pui8Key + 16));
+        HWREG(ui32Base + DES_O_KEY3_H) = * ((uint32_t *)(pui8Key + 20));
     }
 }
 
@@ -133,7 +156,7 @@ DESKeySet(uint32_t ui32Base, uint32_t *pui32Key)
 //! Sets the initialization vector in the DES module.
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32IVdata is a pointer to an array of 64 bits (2 words) of data to
+//! \param pui8IVdata is a pointer to an array of 64 bits (2 words) of data to
 //! be written into the initialization vectors registers.
 //!
 //! This function sets the initialization vector in the DES module.  It returns
@@ -145,7 +168,7 @@ DESKeySet(uint32_t ui32Base, uint32_t *pui32Key)
 //
 //*****************************************************************************
 bool
-DESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
+DESIVSet(uint32_t ui32Base, uint8_t *pui8IVdata)
 {
     //
     // Check the arguments.
@@ -164,8 +187,8 @@ DESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
     //
     // Write the initialization vector registers.
     //
-    HWREG(ui32Base + DES_O_IV_L) = pui32IVdata[0];
-    HWREG(ui32Base + DES_O_IV_H) = pui32IVdata[1];
+    HWREG(ui32Base + DES_O_IV_L) =  *((uint32_t *) (pui8IVdata + 0));
+    HWREG(ui32Base + DES_O_IV_H) = *((uint32_t *) (pui8IVdata + 4));
 
     //
     // Return true to indicate the write was successful.
@@ -190,7 +213,7 @@ DESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
 //
 //*****************************************************************************
 void
-DESLengthSet(uint32_t ui32Base, uint32_t ui32Length)
+DESDataLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 {
     //
     // Check the arguments.
@@ -208,7 +231,8 @@ DESLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 //! Reads plaintext/ciphertext from data registers without blocking
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32Dest is a pointer to an array of 2 words.
+//! \param pui8Dest is a pointer to an array of 2 words.
+//! \param ui8Length the length can be from 1 to 8
 //!
 //! This function returns true if the data was ready when the function was
 //! called. If the data was not ready, false is returned.
@@ -217,12 +241,20 @@ DESLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 //
 //*****************************************************************************
 bool
-DESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest)
+DESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 {
-    //
+	volatile uint32_t pui32Dest[2];
+	uint8_t ui8BytCnt;
+	uint8_t *pui8DestTemp;
+
+	//
     // Check the arguments.
     //
     ASSERT(ui32Base == DES_BASE);
+    if((ui8Length == 0)||(ui8Length>8))
+    {
+       	return(false);
+    }
 
     //
     // Check to see if the data is ready to be read.
@@ -239,6 +271,15 @@ DESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest)
     pui32Dest[1] = HWREG(DES_BASE + DES_O_DATA_H);
 
     //
+    //Copy the data to a block memory
+    //
+    pui8DestTemp = (uint8_t *)pui32Dest;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+    {
+ 		*(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
+    }
+
+    //
     // Return true to indicate a successful write.
     //
     return(true);
@@ -249,23 +290,31 @@ DESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest)
 //! Reads plaintext/ciphertext from data registers with blocking.
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32Dest is a pointer to an array of bytes.
+//! \param pui8Dest is a pointer to an array of bytes.
+//! \param ui8Length the length can be from 1 to 8
 //!
 //! This function waits until the DES module is finished and encrypted or
-//! decrypted data is ready.  The output data is then stored in the pui32Dest
+//! decrypted data is ready.  The output data is then stored in the pui8Dest
 //! array.
 //!
 //! \return None
 //
 //*****************************************************************************
 void
-DESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
+DESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 {
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DES_BASE);
+	volatile uint32_t pui32Dest[2];
+	uint8_t ui8BytCnt;
+	uint8_t *pui8DestTemp;
 
+	//
+	// Check the arguments.
+	//
+	ASSERT(ui32Base == DES_BASE);
+	if((ui8Length == 0)||(ui8Length>8))
+	{
+		return;
+	}
     //
     // Wait for data output to be ready.
     //
@@ -278,6 +327,15 @@ DESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
     //
     pui32Dest[0] = HWREG(DES_BASE + DES_O_DATA_L);
     pui32Dest[1] = HWREG(DES_BASE + DES_O_DATA_H);
+
+    //
+    //Copy the data to a block memory
+    //
+    pui8DestTemp = (uint8_t *)pui32Dest;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+    {
+    	*(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
+    }
 }
 
 //*****************************************************************************
@@ -285,7 +343,8 @@ DESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
 //! Writes plaintext/ciphertext to data registers without blocking
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32Src is a pointer to an array of 2 words.
+//! \param pui8Src is a pointer to an array of 2 words.
+//! \param ui8Length the length can be from 1 to 8
 //!
 //! This function returns false if the DES module is not ready to accept
 //! data.  It returns true if the data was written successfully.
@@ -294,12 +353,22 @@ DESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
 //
 //*****************************************************************************
 bool
-DESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
+DESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 {
+
+    volatile uint32_t pui32Src[2]={0,0};
+    uint8_t ui8BytCnt;
+    uint8_t *pui8SrcTemp;
+
     //
     // Check the arguments.
     //
     ASSERT(ui32Base == DES_BASE);
+
+    if((ui8Length == 0)||(ui8Length>8))
+    {
+            return(false);
+    }
 
     //
     // Check if the DES module is ready to encrypt or decrypt data.  If it
@@ -308,6 +377,15 @@ DESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
     if(!(DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))))
     {
         return(false);
+    }
+
+    //
+    // Copy the data to a block memory
+    //
+    pui8SrcTemp = (uint8_t *)pui32Src;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+    {
+            *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
     }
 
     //
@@ -327,27 +405,46 @@ DESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
 //! Writes plaintext/ciphertext to data registers without blocking
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32Src is a pointer to an array of bytes.
+//! \param pui8Src is a pointer to an array of bytes.
+//! \param ui8Length the length can be from 1 to 8
 //!
 //! This function waits until the DES module is ready before writing the
-//! data contained in the pui32Src array.
+//! data contained in the pui8Src array.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-DESDataWrite(uint32_t ui32Base, uint32_t *pui32Src)
+DESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 {
+    volatile uint32_t pui32Src[2]={0,0};
+    uint8_t ui8BytCnt;
+    uint8_t *pui8SrcTemp;
+
     //
     // Check the arguments.
     //
     ASSERT(ui32Base == DES_BASE);
+
+    if((ui8Length == 0)||(ui8Length>8))
+    {
+            return;
+    }
 
     //
     // Wait for the input ready bit to go high.
     //
     while(((HWREG(ui32Base + DES_O_CTRL) & DES_CTRL_INPUT_READY)) == 0)
     {
+    }
+
+    //
+    //Copy the data to a block memory
+    //
+    pui8SrcTemp = (uint8_t *)pui32Src;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+    {
+            *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
     }
 
     //
@@ -362,16 +459,16 @@ DESDataWrite(uint32_t ui32Base, uint32_t *pui32Src)
 //! Processes blocks of data through the DES module.
 //!
 //! \param ui32Base is the base address of the DES module.
-//! \param pui32Src is a pointer to an array of words that contains the
+//! \param pui8Src is a pointer to an array of words that contains the
 //! source data for processing.
-//! \param pui32Dest is a pointer to an array of words consisting of the
+//! \param pui8Dest is a pointer to an array of words consisting of the
 //! processed data.
 //! \param ui32Length is the length of the cryptographic data in bytes.
 //! It must be a multiple of eight.
 //!
-//! This function takes the data contained in the pui32Src array and processes
+//! This function takes the data contained in the pui8Src array and processes
 //! it using the DES engine.  The resulting data is stored in the
-//! pui32Dest array.  The function blocks until all of the data has been
+//! pui8Dest array.  The function blocks until all of the data has been
 //! processed. If processing is successful, the function returns true.
 //!
 //! \note This functions assumes that the DES module has been configured,
@@ -381,10 +478,10 @@ DESDataWrite(uint32_t ui32Base, uint32_t *pui32Src)
 //
 //*****************************************************************************
 bool
-DESDataProcess(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
+DESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
                uint32_t ui32Length)
 {
-    uint32_t ui32Count;
+    uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
 
     //
     // Check the arguments.
@@ -398,35 +495,70 @@ DESDataProcess(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
     //
     HWREG(ui32Base + DES_O_LENGTH) = ui32Length;
 
+
     //
     // Now loop until the blocks are written.
     //
-    for(ui32Count = 0; ui32Count < (ui32Length / 4); ui32Count += 2)
+    ui32BlkCount = ui32Length/8;
+    for(ui32Count = 0; ui32Count <ui32BlkCount; ui32Count ++)
     {
-        //
-        // Check if the input ready is fine
-        //
-        while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
-        {
-        }
+      //
+      // Check if the input ready is fine
+      //
+      while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+      {
+      }
 
-        //
-        // Write the block data.
-        //
-        DESDataWriteNonBlocking(ui32Base, pui32Src + ui32Count);
+      //
+      // Write the data registers.
+      //
+      DESDataWriteNonBlocking(ui32Base, pui8Src + ui32Count*8 ,8);
 
-        //
-        // Wait for the output ready
-        //
-        while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
-        {
-        }
+      //
+      // Wait for the output ready
+      //
+      while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+      {
+      }
 
-        //
-        // Read the processed data block.
-        //
-        DESDataReadNonBlocking(ui32Base, pui32Dest + ui32Count);
+      //
+      // Read the data registers.
+      //
+      DESDataReadNonBlocking(ui32Base, pui8Dest + ui32Count*8 ,8);
     }
+
+    //
+    //Now handle the residue bytes
+    //
+    ui32ByteCount = ui32Length%8;
+    if(ui32ByteCount)
+    {
+      //
+      // Check if the input ready is fine
+      //
+      while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+      {
+      }
+      //
+      // Write the data registers.
+      //
+      DESDataWriteNonBlocking(ui32Base, pui8Src + (ui32Count*ui32BlkCount) ,
+                              ui32ByteCount);
+      //
+      // Wait for the output ready
+      //
+      while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+      {
+      }
+
+      //
+      // Read the data registers.
+      //
+      DESDataReadNonBlocking(ui32Base, pui8Dest + (ui32Count*ui32BlkCount) ,
+                             ui32ByteCount);
+    }
+
+
 
     //
     // Return true to indicate the process was successful.
@@ -472,7 +604,7 @@ DESIntStatus(uint32_t ui32Base, bool bMasked)
         ui32IntStatus = HWREG(ui32Base + DES_O_IRQSTATUS);
         ui32IntStatus &= HWREG(ui32Base + DES_O_IRQENABLE);
         ui32IntStatus |= ((HWREG(DTHE_BASE + DTHE_O_DES_MIS) & 0x7) << 16);
-        
+
         return(ui32IntStatus);
     }
     else

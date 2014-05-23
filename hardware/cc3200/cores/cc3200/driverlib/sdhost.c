@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// sdhost.c - Driver for the SD Host (SDHost) Interface
+//  sdhost.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the SD Host (SDHost) Interface
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -41,60 +64,60 @@
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 SDHostInit(unsigned long ulBase)
 {
   //
   // Assert module reset
   //
   HWREG(ulBase + MMCHS_O_SYSCONFIG) = 0x2;
-  
+
   //
   // Wait for soft reset to complete
   //
   while( !(HWREG(ulBase + MMCHS_O_SYSCONFIG) & 0x1) )
   {
-    
+
   }
-  
+
   //
   // Assert internal reset
   //
   HWREG(ulBase + MMCHS_O_SYSCTL) |= (1 << 24);
-  
+
   //
   // Wait for Reset to complete
   //
   while( (HWREG(ulBase + MMCHS_O_SYSCTL) & (0x1 << 24)) )
   {
-    
+
   }
-  
+
   //
   // Set capability register, 1.8 and 3.0 V
   //
   HWREG(ulBase + MMCHS_O_CAPA) = (0x7 <<24);
-  
+
   //
   // Select bus voltage, 3.0 V
   //
   HWREG(ulBase + MMCHS_O_HCTL) |= 0x7 << 9;
-  
+
   //
   // Power up the bus
   //
   HWREG(ulBase + MMCHS_O_HCTL) |= 1 << 8;
-  
+
   //
   // Wait for power on
   //
   while( !(HWREG(ulBase + MMCHS_O_HCTL) & (1<<8)) )
   {
-     
+
   }
-  
+
   HWREG(ulBase + MMCHS_O_CON) |= 1 << 21;
-  
+
   //
   // Un-mask all events
   //
@@ -104,22 +127,22 @@ SDHostInit(unsigned long ulBase)
 
 //*****************************************************************************
 //
-//! Resets SDHost command line 
+//! Resets SDHost command line
 //!
 //! \param ulBase is the base address of SDHost module.
 //!
-//! This function resets SDHost command line 
+//! This function assers a soft reset for the command line
 //!
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 SDHostCmdReset(unsigned long ulBase)
 {
   HWREG(ulBase + MMCHS_O_SYSCTL) |= 1 << 25;
   while( (HWREG(ulBase + MMCHS_O_SYSCTL) & (1 << 25)) )
   {
-        
+
   }
 }
 
@@ -133,27 +156,29 @@ SDHostCmdReset(unsigned long ulBase)
 //!
 //! This function send command to the attached card over the SDHost interface.
 //!
-//! The \e ulCmd parameter can be one of \b MMC_CMD_0 to \b MMC_CMD_63. It can
-//! be logically ORed with one or more of the following:
-//! - \b MMC_AUTO_CMD12 for auto generation on CMD12 at end of block transfer
-//! - \b MMC_MULTI_BLK for multi-block transfer
-//! - \b MMC_WR_CMD if command is followed by write data
-//! - \b MMC_RD_CMD if command is followed by read data
-//! - \b MMC_DMA_EN if DMA transfer SDHost need to generate DMA request.
+//! The \e ulCmd parameter can be one of \b SDHOST_CMD_0 to \b SDHOST_CMD_63.
+//! It can be logically ORed with one or more of the following:
+//! - \b SDHOST_MULTI_BLK for multi-block transfer
+//! - \b SDHOST_WR_CMD          if command is followed by write data
+//! - \b SDHOST_RD_CMD          if command is followed by read data
+//! - \b SDHOST_DMA_EN          if SDHost need to generate DMA request.
+//! - \b SDHOST_RESP_LEN_136    if 136 bit response is expected
+//! - \b SDHOST_RESP_LEN_48     if 48 bit response is expected
+//! - \b SDHOST_RESP_LEN_48B    if 48 bit response with busy bit is expected
 //!
-//! The parameter \e ulArg is the argument for the \e ulCmd.
-//! 
-//! \return None.
+//! The parameter \e ulArg is the argument for the command
+//!
+//! \return Returns 0 on success, -1 otherwise.
 //
 //*****************************************************************************
 long
 SDHostCmdSend(unsigned long ulBase, unsigned long ulCmd, unsigned ulArg)
-{  
+{
   //
   // Set Data Timeout
   //
   HWREG(ulBase + MMCHS_O_SYSCTL) |= 0x000E0000;
-  
+
   //
   // Check for cmd inhabit
   //
@@ -161,17 +186,17 @@ SDHostCmdSend(unsigned long ulBase, unsigned long ulCmd, unsigned ulArg)
   {
     return -1;
   }
-  
+
   //
   // Set the argument
   //
   HWREG(ulBase + MMCHS_O_ARG) = ulArg;
-  
+
   //
   // Send the command
   //
   HWREG(ulBase + MMCHS_O_CMD) = ulCmd;
-  
+
   return 0;
 }
 
@@ -182,7 +207,7 @@ SDHostCmdSend(unsigned long ulBase, unsigned long ulCmd, unsigned ulArg)
 //! \param ulBase is the base address of SDHost module.
 //! \param ulData is data word to be transfered.
 //!
-//! This function writes a single data word into the SDHost write buffer. The 
+//! This function writes a single data word into the SDHost write buffer. The
 //! function returns \b true if there was a space available in the buffer else
 //! returns \b false.
 //!
@@ -202,7 +227,7 @@ SDHostDataNonBlockingWrite(unsigned long ulBase, unsigned long ulData)
     // Write the data into the buffer
     //
     HWREG(ulBase + MMCHS_O_DATA) = ulData;
-    
+
     //
     // Success.
     //
@@ -219,13 +244,13 @@ SDHostDataNonBlockingWrite(unsigned long ulBase, unsigned long ulData)
 
 //*****************************************************************************
 //
-//! waits to write a data word into the SDHost write buffer.
+//! Waits to write a data word into the SDHost write buffer.
 //!
 //! \param ulBase is the base address of SDHost module.
 //! \param ulData is data word to be transfered.
 //!
-//! This function writes \e ulData into the SDHost write buffer. If there is no 
-//! space in the write buffer this function waits until there is a space 
+//! This function writes \e ulData into the SDHost write buffer. If there is no
+//! space in the write buffer this function waits until there is a space
 //! available before returning.
 //!
 //! \return None.
@@ -239,7 +264,7 @@ SDHostDataWrite(unsigned long ulBase, unsigned long ulData)
   //
   while( !(HWREG(ulBase + MMCHS_O_STAT) & (1<<4)) )
   {
-      
+
   }
 
   //
@@ -251,13 +276,13 @@ SDHostDataWrite(unsigned long ulBase, unsigned long ulData)
 
 //*****************************************************************************
 //
-//! Reads single data word from the SDHost read buffer
+//! Waits for a data word from the SDHost read buffer
 //!
 //! \param ulBase is the base address of SDHost module.
-//! \param ulData is data word to be read
+//! \param pulData is pointer to read data variable.
 //!
-//! This function reads a single data word from the SDHost read buffer. If there 
-//! is no data available in the buffer the function will wait until a data 
+//! This function reads a single data word from the SDHost read buffer. If there
+//! is no data available in the buffer the function will wait until a data
 //! word is received before returning.
 //!
 //! \return None.
@@ -271,7 +296,7 @@ SDHostDataRead(unsigned long ulBase, unsigned long *pulData)
   //
   while( !(HWREG(ulBase + MMCHS_O_STAT) & (1<<5)) )
   {
-      
+
   }
 
   //
@@ -282,12 +307,12 @@ SDHostDataRead(unsigned long ulBase, unsigned long *pulData)
 
 //*****************************************************************************
 //
-//! Waits for a data word from the SDHost.
+//! Reads single data word from the SDHost read buffer
 //!
 //! \param ulBase is the base address of SDHost module.
-//! \param ulData is data word to be transfered.
+//! \param pulData is pointer to read data variable.
 //!
-//! This function reads a data word from the SDHost read buffer. The 
+//! This function reads a data word from the SDHost read buffer. The
 //! function returns \b true if there was data available in to buffer else
 //! returns \b false.
 //!
@@ -307,7 +332,7 @@ SDHostDataNonBlockingRead(unsigned long ulBase, unsigned long *pulData)
     // Read the data word.
     //
     *pulData = HWREG(ulBase + MMCHS_O_DATA);
-    
+
     //
     // Success
     //
@@ -333,7 +358,7 @@ SDHostDataNonBlockingRead(unsigned long ulBase, unsigned long *pulData)
 //!
 //! This function does the actual registering of the interrupt handler.  This
 //! function enables the global interrupt in the interrupt controller; specific
-//! SDHost interrupts must be enabled via SDHostIntEnable(). It is the 
+//! SDHost interrupts must be enabled via SDHostIntEnable(). It is the
 //! interrupt handler's responsibility to clear the interrupt source.
 //!
 //! \sa IntRegister() for important information about registering interrupt
@@ -380,7 +405,7 @@ SDHostIntUnregister(unsigned long ulBase)
   // Disable the SDHost interrupt.
   //
   IntDisable(INT_MMCHS);
-  
+
   //
   // Unregister the interrupt handler.
   //
@@ -399,23 +424,24 @@ SDHostIntUnregister(unsigned long ulBase)
 //! disabled sources have no effect on the processor.
 //!
 //! The \e ulIntFlags parameter is the logical OR of any of the following:
-//! - \b MMC_INT_CC for command complete interrupt
-//! - \b MMC_INT_TC for transfer complete interrupt
-//! - \b MMC_INT_BGE for black gap event interrupt
-//! - \b MMC_INT_BWR for buffer write ready interrupt
-//! - \b MMC_INT_BRR for buffer read ready interrupt
-//! - \b MMC_INT_CIRQ for card interrupt interrupt
-//! - \b MMC_INT_OBI for out-of-band interrupt interrupt
-//! - \b MMC_INT_CTO for command timeout interrupt
-//! - \b MMC_INT_CCRC for command CRC error interrupt
-//! - \b MMC_INT_CEB for command end bit error interrupt
-//! - \b MMC_INT_CIE for command index error interrupt
-//! - \b MMC_INT_DTO for data timeout interrupt
-//! - \b MMC_INT_DCRC for data crc error interrupt
-//! - \b MMC_INT_DEB for data end bit error interrupt
-//! - \b MMC_INT_ACE for Auto CMD12 error interrupt
-//! - \b MMC_INT_CERR for card error interrupt
-//! - \b MMC_INT_BADA for bad data space access interrupt
+//! - \b SDHOST_INT_CC    Command Complete interrupt
+//! - \b SDHOST_INT_TC    Transfer Complete interrupt
+//! - \b SDHOST_INT_BWR   Buffer Write Ready interrupt
+//! - \b SDHOST_INT_BRR   Buffer Read Ready interrupt
+//! - \b SDHOST_INT_ERRI  Error interrupt
+//! - \b SDHOST_INT_CTO   Command Timeout error interrupt
+//! - \b SDHOST_INT_CEB   Command End Bit error interrupt
+//! - \b SDHOST_INT_DTO   Data Timeout error interrupt
+//! - \b SDHOST_INT_DCRC  Data CRC error interrupt
+//! - \b SDHOST_INT_DEB   Data End Bit error
+//! - \b SDHOST_INT_CERR  Cart Status Error interrupt
+//! - \b SDHOST_INT_BADA  Bad Data error interrupt
+//! - \b SDHOST_INT_DMARD Read DMA done interrupt
+//! - \b SDHOST_INT_DMAWR Write DMA done interrupt
+//!
+//!     Note that SDHOST_INT_ERRI can only be used with \sa SDHostIntStatus()
+//! and is internally logical OR of all error status bits. Setting this bit
+//! alone as \e ulIntFlags doesn't generates any interrupt.
 //!
 //! \return None.
 //
@@ -426,9 +452,9 @@ SDHostIntEnable(unsigned long ulBase,unsigned long ulIntFlags)
   //
   // Enable DMA done interrupts
   //
-  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) = 
+  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) =
                                                           (ulIntFlags >> 30);
-  
+
   //
   // Enable the individual interrupt sources
   //
@@ -458,7 +484,7 @@ SDHostIntDisable(unsigned long ulBase,unsigned long ulIntFlags)
   //
   // Disable DMA done interrupts
   //
-  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) = 
+  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) =
                                                           (ulIntFlags >> 30);
   //
   // Disable the individual interrupt sources
@@ -472,7 +498,7 @@ SDHostIntDisable(unsigned long ulBase,unsigned long ulIntFlags)
 //!
 //! \param ulBase is the base address of SDHost module.
 //!
-//! This function returns the interrupt status for the specified SDHost. 
+//! This function returns the interrupt status for the specified SDHost.
 //!
 //! \return Returns the current interrupt status, enumerated as a bit field of
 //! values described in SDHostIntEnable().
@@ -482,18 +508,18 @@ unsigned long
 SDHostIntStatus(unsigned long ulBase)
 {
   unsigned long ulIntStatus;
-  
+
   //
   // Get DMA done interrupt status
   //
   ulIntStatus = HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET);
   ulIntStatus = (ulIntStatus << 30);
-  
+
   //
   // Return the status of individual interrupt sources
   //
   ulIntStatus |= (HWREG(ulBase + MMCHS_O_STAT) & 0x3FFFFFFF);
- 
+
   return(ulIntStatus);
 }
 
@@ -520,7 +546,7 @@ SDHostIntClear(unsigned long ulBase,unsigned long ulIntFlags)
   //
   // Clear DMA done interrupts
   //
-  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) = 
+  HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) =
                                                           (ulIntFlags >> 30);
   //
   // Clear the individual interrupt sources
@@ -530,21 +556,48 @@ SDHostIntClear(unsigned long ulBase,unsigned long ulIntFlags)
 
 //*****************************************************************************
 //
-//! Gets the card status error.
+//! Sets the card status error mask.
+//!
+//! \param ulBase is the base address of SDHost module
+//! \param ulErrMask is the bit mask of card status errors to be enabled
+//!
+//! This function sets the card status error mask for response type R1, R1b,
+//! R5, R5b and R6 response. The parameter \ulErrMask is the bit mask of card
+//! status errors to be enabled, if the corresponding bits in the 'card status'
+//! field of a respose are set then the host controller indicates a card error
+//! interrupt status. Only bits referenced as type E (error) in status field in
+//! the response can set a card status error.
+//!
+//! \return None
+//
+//*****************************************************************************
+void
+SDHostCardErrorMaskSet(unsigned long ulBase, unsigned long ulErrMask)
+{
+  //
+  // Set the card status error mask
+  //
+  HWREG(ulBase + MMCHS_O_CSRE) = ulErrMask;
+}
+
+
+//*****************************************************************************
+//
+//! Gets the card status error mask.
 //!
 //! \param ulBase is the base address of SDHost module
 //!
-//! This function gets the card status errors of response type R1, R1b for 
-//! all cards and of R5, R5b and R6 response for cards types SD or SDIO
+//! This function gets the card status error mask for response type R1, R1b,
+//! R5, R5b and R6 response.
 //!
 //! \return Returns the current card status error.
 //
 //*****************************************************************************
 unsigned long
-SDHostRespStatus(unsigned long ulBase)
+SDHostCardErrorMaskGet(unsigned long ulBase)
 {
   //
-  // Return the card status response error 
+  // Return the card status error mask
   //
   return(HWREG(ulBase + MMCHS_O_CSRE));
 }
@@ -557,7 +610,7 @@ SDHostRespStatus(unsigned long ulBase)
 //! \param ulSDHostClk is the rate of clock supplied to SDHost module
 //! \param ulCardClk is the required SD interface clock
 //!
-//! This function configures the SDHost interface to supply the specified clock 
+//! This function configures the SDHost interface to supply the specified clock
 //! to the connected card.
 //!
 //! \return None.
@@ -568,33 +621,33 @@ SDHostSetExpClk(unsigned long ulBase, unsigned long ulSDHostClk,
              unsigned long ulCardClk)
 {
   unsigned long ulDiv;
-  
+
   //
   // Disable card clock
   //
   HWREG(ulBase + MMCHS_O_SYSCTL) &= ~0x4;
-  
+
   //
   // Enable internal clock
   //
   HWREG(ulBase + MMCHS_O_SYSCTL) |= 0x1;
-  
+
   ulDiv = ((ulSDHostClk/ulCardClk) & 0x3FF);
-  
+
   //
   // Set clock divider,
   //
-  HWREG(ulBase + MMCHS_O_SYSCTL) = ((HWREG(ulBase + MMCHS_O_SYSCTL) & 
+  HWREG(ulBase + MMCHS_O_SYSCTL) = ((HWREG(ulBase + MMCHS_O_SYSCTL) &
                                      ~0x0000FFC0)| (ulDiv) << 6);
-  
+
   //
   // Wait for clock to stablize
   //
   while( !(HWREG(ulBase + MMCHS_O_SYSCTL) & 0x2) )
   {
-    
+
   }
-  
+
   //
   // Enable card clock
   //
@@ -608,7 +661,7 @@ SDHostSetExpClk(unsigned long ulBase, unsigned long ulSDHostClk,
 //! \param ulBase is the base address of SDHost module
 //! \param ulRespnse is 128-bit response.
 //!
-//! This function gets the response from the SD card for the last command 
+//! This function gets the response from the SD card for the last command
 //! send.
 //!
 //! \return None.
@@ -617,7 +670,7 @@ SDHostSetExpClk(unsigned long ulBase, unsigned long ulSDHostClk,
 void
 SDHostRespGet(unsigned long ulBase, unsigned long ulRespnse[4])
 {
- 
+
   //
   // Read the responses.
   //
@@ -625,7 +678,7 @@ SDHostRespGet(unsigned long ulBase, unsigned long ulRespnse[4])
   ulRespnse[1] = HWREG(ulBase + MMCHS_O_RSP32);
   ulRespnse[2] = HWREG(ulBase + MMCHS_O_RSP54);
   ulRespnse[3] = HWREG(ulBase + MMCHS_O_RSP76);
-  
+
 }
 
 //*****************************************************************************
@@ -637,7 +690,7 @@ SDHostRespGet(unsigned long ulBase, unsigned long ulRespnse[4])
 //!
 //! This function sets the block size the data transfer.
 //!
-//! The parameter \e ulBlkSize is size of each data block in bytes. 
+//! The parameter \e ulBlkSize is size of each data block in bytes.
 //! This should be in range 0 - 2^10.
 //!
 //! \return None.
@@ -645,7 +698,7 @@ SDHostRespGet(unsigned long ulBase, unsigned long ulRespnse[4])
 //*****************************************************************************
 void
 SDHostBlockSizeSet(unsigned long ulBase, unsigned short ulBlkSize)
-{ 
+{
   //
   // Set the block size
   //
@@ -660,7 +713,7 @@ SDHostBlockSizeSet(unsigned long ulBase, unsigned short ulBlkSize)
 //! \param ulBase is the base address of SDHost module
 //! \param ulBlkCount is the number of blocks
 //!
-//! This function sets block count for the data transfer. This needs to be set 
+//! This function sets block count for the data transfer. This needs to be set
 //! for each block transfer. \sa SDHostBlockSizeSet()
 //!
 //! \return None.
@@ -670,16 +723,16 @@ void
 SDHostBlockCountSet(unsigned long ulBase, unsigned short ulBlkCount)
 {
   unsigned long ulRegVal;
-  
+
   //
   // Read the current value
   //
   ulRegVal = HWREG(ulBase + MMCHS_O_BLK);
-  
+
   //
   // Set the number of blocks
   //
-  HWREG(ulBase + MMCHS_O_BLK) |= ((ulRegVal & 0x0000FFFF)| 
+  HWREG(ulBase + MMCHS_O_BLK) |= ((ulRegVal & 0x0000FFFF)|
                                   (ulBlkCount << 16));
 }
 

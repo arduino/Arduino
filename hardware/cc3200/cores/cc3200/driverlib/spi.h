@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// spi.h - Defines and Macros for the SPI.
+//  spi.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+// Defines and Macros for the SPI.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -33,7 +56,7 @@ extern "C"
 //*****************************************************************************
 #define SPI_MODE_MASTER    0x00000000
 #define SPI_MODE_SLAVE     0x00000004
-  
+
 //*****************************************************************************
 // Values that can be passed to SPIConfigSetExpClk() as ulSubMode parameter
 //*****************************************************************************
@@ -60,18 +83,18 @@ extern "C"
 
 //*****************************************************************************
 // Values that can be passed to SPIFIFOEnable() and SPIFIFODisable()
-//*****************************************************************************  
+//*****************************************************************************
 #define SPI_TX_FIFO        0x08000000
 #define SPI_RX_FIFO        0x10000000
 
 //*****************************************************************************
 // Values that can be passed to SPIDMAEnable() and SPIDMADisable()
-//*****************************************************************************    
+//*****************************************************************************
 #define SPI_RX_DMA         0x00008000
 #define SPI_TX_DMA         0x00004000
 
 //*****************************************************************************
-// Values that can be passed to SPIIntEnable(), SPIIntDiasble(), 
+// Values that can be passed to SPIIntEnable(), SPIIntDiasble(),
 // SPIIntClear() or returned from SPIStatus()
 //*****************************************************************************
 #define SPI_INT_DMATX         0x20000000
@@ -82,33 +105,33 @@ extern "C"
 #define SPI_INT_RX_FULL       0x00000004
 #define SPI_INT_TX_UDRFLOW    0x00000002
 #define SPI_INT_TX_EMPTY      0x00000001
- 
+
 //*****************************************************************************
 // Values that can be passed to SPITransfer()
 //*****************************************************************************
 #define SPI_CS_ENABLE  0x00000001
 #define SPI_CS_DISABLE 0x00000002
-  
+
 //*****************************************************************************
 //
 // API Function prototypes
 //
-//***************************************************************************** 
+//*****************************************************************************
 extern void SPIEnable(unsigned long ulBase);
 extern void SPIDisable(unsigned long ulBase);
 extern void SPIReset(unsigned long ulBase);
-extern void SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk, 
-            unsigned long ulBitRate, unsigned long ulMode, 
+extern void SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
+            unsigned long ulBitRate, unsigned long ulMode,
             unsigned long ulSubMode, unsigned long ulConfig);
-extern long SPIDataGetNonBlocking(unsigned long ulBase, 
+extern long SPIDataGetNonBlocking(unsigned long ulBase,
                                         unsigned long * pulData);
 extern void SPIDataGet(unsigned long ulBase, unsigned long *pulData);
-extern long SPIDataPutNonBlocking(unsigned long ulBase, 
+extern long SPIDataPutNonBlocking(unsigned long ulBase,
                                         unsigned long ulData);
 extern void SPIDataPut(unsigned long ulBase, unsigned long ulData);
 extern void SPIFIFOEnable(unsigned long ulBase, unsigned long ulFlags);
 extern void SPIFIFODisable(unsigned long ulBase, unsigned long ulFlags);
-extern void SPIFIFOLevelSet(unsigned long ulBase, unsigned long ulTxLevel, 
+extern void SPIFIFOLevelSet(unsigned long ulBase, unsigned long ulTxLevel,
                    unsigned long ulRxLevel);
 extern void SPIFIFOLevelGet(unsigned long ulBase, unsigned long *pulTxLevel,
                  unsigned long *pulRxLevel);
@@ -127,7 +150,7 @@ extern long SPITransfer(unsigned long ulBase, unsigned char *ucDout,
                    unsigned char *ucDin, unsigned long ulSize,
                    unsigned long ulFlags);
 
-  
+
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

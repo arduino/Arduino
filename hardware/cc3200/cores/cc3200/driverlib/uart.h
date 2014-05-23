@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// uart.h - Defines and Macros for the UART.
+//  uart.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Defines and Macros for the UART.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -44,10 +67,8 @@ extern "C"
 #define UART_INT_RT             0x040       // Receive Timeout Interrupt Mask
 #define UART_INT_TX             0x020       // Transmit Interrupt Mask
 #define UART_INT_RX             0x010       // Receive Interrupt Mask
-#define UART_INT_DSR            0x008       // DSR Modem Interrupt Mask
-#define UART_INT_DCD            0x004       // DCD Modem Interrupt Mask
 #define UART_INT_CTS            0x002       // CTS Modem Interrupt Mask
-#define UART_INT_RI             0x001       // RI Modem Interrupt Mask
+
 
 //*****************************************************************************
 //
@@ -118,21 +139,17 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to UARTHandshakeOutputsSet() or returned from
-// UARTHandshakeOutputGet().
+// Values that can be passed to UARTModemControlSet()and UARTModemControlClear()
+// or returned from UARTModemControlGet().
 //
 //*****************************************************************************
 #define UART_OUTPUT_RTS         0x00000800
-#define UART_OUTPUT_DTR         0x00000400
 
 //*****************************************************************************
 //
-// Values that can be returned from UARTHandshakeInputsGet().
+// Values that can be returned from UARTModemStatusGet().
 //
 //*****************************************************************************
-#define UART_INPUT_RI           0x00000100
-#define UART_INPUT_DCD          0x00000004
-#define UART_INPUT_DSR          0x00000002
 #define UART_INPUT_CTS          0x00000001
 
 //*****************************************************************************
@@ -157,16 +174,6 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to UARTClockSourceSet() or returned from
-// UARTClockSourceGet().
-//
-//*****************************************************************************
-#define UART_CLOCK_SYSTEM       0x00000000
-#define UART_CLOCK_PIOSC        0x00000001
-
-
-//*****************************************************************************
-//
 // API Function prototypes
 //
 //*****************************************************************************
@@ -185,8 +192,6 @@ extern void UARTEnable(unsigned long ulBase);
 extern void UARTDisable(unsigned long ulBase);
 extern void UARTFIFOEnable(unsigned long ulBase);
 extern void UARTFIFODisable(unsigned long ulBase);
-extern void UARTEnableSIR(unsigned long ulBase, tBoolean bLowPower);
-extern void UARTDisableSIR(unsigned long ulBase);
 extern tBoolean UARTCharsAvail(unsigned long ulBase);
 extern tBoolean UARTSpaceAvail(unsigned long ulBase);
 extern long UARTCharGetNonBlocking(unsigned long ulBase);
@@ -216,26 +221,6 @@ extern void UARTFlowControlSet(unsigned long ulBase, unsigned long ulMode);
 extern unsigned long UARTFlowControlGet(unsigned long ulBase);
 extern void UARTTxIntModeSet(unsigned long ulBase, unsigned long ulMode);
 extern unsigned long UARTTxIntModeGet(unsigned long ulBase);
-extern void UARTClockSourceSet(unsigned long ulBase, unsigned long ulSource);
-extern unsigned long UARTClockSourceGet(unsigned long ulBase);
-
-//*****************************************************************************
-//
-// Several UART APIs have been renamed, with the original function name being
-// deprecated.  These defines provide backward compatibility.
-//
-//*****************************************************************************
-/*#ifndef DEPRECATED
-#include "driverlib/sysctl.h"
-#define UARTConfigSet(a, b, c)                         \
-        UARTConfigSetExpClk(a, SysCtlClockGet(), b, c)
-#define UARTConfigGet(a, b, c)                         \
-        UARTConfigGetExpClk(a, SysCtlClockGet(), b, c)
-#define UARTCharNonBlockingGet(a) \
-        UARTCharGetNonBlocking(a)
-#define UARTCharNonBlockingPut(a, b) \
-        UARTCharPutNonBlocking(a, b)
-#endif*/
 
 //*****************************************************************************
 //

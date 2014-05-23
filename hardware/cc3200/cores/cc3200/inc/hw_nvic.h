@@ -1,15 +1,35 @@
 //*****************************************************************************
 //
-//  Copyright (C) 2013 Texas Instruments Incorporated
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
 //
-//  All rights reserved. Property of Texas Instruments Incorporated.
-//  Restricted rights to use, duplicate or disclose this code are
-//  granted through contract.
 //
-//  The program may not be used without the written permission of
-//  Texas Instruments Incorporated or against the terms and conditions
-//  stipulated in the agreement under which this program has been supplied,
-//  and under no circumstances can it be used with non-TI connectivity device.
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -108,6 +128,24 @@
 #define NVIC_PRI30              0xE000E478  // Interrupt 120-123 Priority
 #define NVIC_PRI31              0xE000E47C  // Interrupt 124-127 Priority
 #define NVIC_PRI32              0xE000E480  // Interrupt 128-131 Priority
+#define NVIC_PRI33              0xE000E484  // Interrupt 132-135 Priority
+#define NVIC_PRI34              0xE000E488  // Interrupt 136-139 Priority
+#define NVIC_PRI35              0xE000E48C  // Interrupt 140-143 Priority
+#define NVIC_PRI36              0xE000E490  // Interrupt 144-147 Priority
+#define NVIC_PRI37              0xE000E494  // Interrupt 148-151 Priority
+#define NVIC_PRI38              0xE000E498  // Interrupt 152-155 Priority
+#define NVIC_PRI39              0xE000E49C  // Interrupt 156-159 Priority
+#define NVIC_PRI40              0xE000E4A0  // Interrupt 160-163 Priority
+#define NVIC_PRI41              0xE000E4A4  // Interrupt 164-167 Priority
+#define NVIC_PRI42              0xE000E4A8  // Interrupt 168-171 Priority
+#define NVIC_PRI43              0xE000E4AC  // Interrupt 172-175 Priority
+#define NVIC_PRI44              0xE000E4B0  // Interrupt 176-179 Priority
+#define NVIC_PRI45              0xE000E4B4  // Interrupt 180-183 Priority
+#define NVIC_PRI46              0xE000E4B8  // Interrupt 184-187 Priority
+#define NVIC_PRI47              0xE000E4BC  // Interrupt 188-191 Priority
+#define NVIC_PRI48              0xE000E4C0  // Interrupt 192-195 Priority
+
+
 
 #define NVIC_CPUID              0xE000ED00  // CPU ID Base
 #define NVIC_INT_CTRL           0xE000ED04  // Interrupt Control and State

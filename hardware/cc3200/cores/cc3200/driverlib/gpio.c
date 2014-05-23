@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// gpio.c - API for GPIO ports
+//  gpio.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the GPIO module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -423,7 +446,7 @@ GPIOIntStatus(unsigned long ulPort, tBoolean bMasked)
 //! Clears the interrupt for the specified pin(s).
 //!
 //! \param ulPort is the base address of the GPIO port.
-//! \param ucPins is the bit-packed representation of the pin(s).
+//! \param ulIntFlags is a bit mask of the interrupt sources to be cleared.
 //!
 //! Clears the interrupt for the specified pin(s).
 //!
@@ -599,67 +622,6 @@ GPIOPinWrite(unsigned long ulPort, unsigned char ucPins, unsigned char ucVal)
     //
     HWREG(ulPort + (GPIO_O_GPIO_DATA + (ucPins << 2))) = ucVal;
 }
-//*****************************************************************************
-//
-//! Configures pin(s) for use as GPIO inputs.
-//!
-//! \param ulPort is the base address of the GPIO port.
-//! \param ucPins is the bit-packed representation of the pin(s).
-//!
-//! The GPIO pins must be properly configured in order to function correctly as
-//! GPIO inputs;
-//!
-//! The pin(s) are specified using a bit-packed byte, where each bit that is
-//! set identifies the pin to be accessed, and where bit 0 of the byte
-//! represents GPIO port pin 0, bit 1 represents GPIO port pin 1, and so on.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-GPIOPinTypeGPIOInput(unsigned long ulPort, unsigned char ucPins)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(GPIOBaseValid(ulPort));
-
-    //
-    // Make the pin(s) be inputs.
-    //
-    GPIODirModeSet(ulPort, ucPins, GPIO_DIR_MODE_IN);
-}
-
-//*****************************************************************************
-//
-//! Configures pin(s) for use as GPIO outputs.
-//!
-//! \param ulPort is the base address of the GPIO port.
-//! \param ucPins is the bit-packed representation of the pin(s).
-//!
-//! The GPIO pins must be properly configured in order to function correctly as
-//! GPIO outputs;
-//!
-//! The pin(s) are specified using a bit-packed byte, where each bit that is
-//! set identifies the pin to be accessed, and where bit 0 of the byte
-//! represents GPIO port pin 0, bit 1 represents GPIO port pin 1, and so on.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-GPIOPinTypeGPIOOutput(unsigned long ulPort, unsigned char ucPins)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(GPIOBaseValid(ulPort));
-
-    //
-    // Make the pin(s) be outputs.
-    //
-    GPIODirModeSet(ulPort, ucPins, GPIO_DIR_MODE_OUT);
-}
 
 //*****************************************************************************
 //
@@ -684,22 +646,22 @@ GPIODMATriggerEnable(unsigned long ulPort)
 
     //
     // Set the pin as a DMA trigger.
-    //    
+    //
     if(ulPort == GPIOA0_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1;
     }
     else if(ulPort == GPIOA1_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2;
     }
     else if(ulPort == GPIOA2_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4;
     }
     else if(ulPort == GPIOA3_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8;
     }
 }
 
@@ -729,19 +691,19 @@ GPIODMATriggerDisable(unsigned long ulPort)
     //
     if(ulPort == GPIOA0_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1;
     }
     else if(ulPort == GPIOA1_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2;
     }
     else if(ulPort == GPIOA2_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4;
     }
     else if(ulPort == GPIOA3_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8; 
+      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8;
     }
 }
 

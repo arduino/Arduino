@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// sdhost.h - Defines and Macros for the SDHost.
+//  sdhost.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Defines and Macros for the SDHost.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -40,29 +63,23 @@ extern "C"
 
 
 //*****************************************************************************
-// Values that can be passed to SDHostIntEnable(), SDHostIntDisable(), 
+// Values that can be passed to SDHostIntEnable(), SDHostIntDisable(),
 // SDHostIntClear() ,and returned from SDHostIntStatus().
 //*****************************************************************************
 #define SDHOST_INT_CC    0x00000001
 #define SDHOST_INT_TC    0x00000002
-#define SDHOST_INT_BGE   0x00000004
 #define SDHOST_INT_BWR   0x00000010
 #define SDHOST_INT_BRR   0x00000020
-#define SDHOST_INT_CIRQ  0x00000100
-#define SDHOST_INT_OBI   0x00000200
 #define SDHOST_INT_ERRI  0x00008000
 #define SDHOST_INT_CTO   0x00010000
-#define SDHOST_INT_CCRC  0x00020000
 #define SDHOST_INT_CEB   0x00040000
-#define SDHOST_INT_CIE   0x00080000
 #define SDHOST_INT_DTO   0x00100000
 #define SDHOST_INT_DCRC  0x00200000
 #define SDHOST_INT_DEB   0x00300000
-#define SDHOST_INT_ACE   0x01000000
 #define SDHOST_INT_CERR  0x10000000
 #define SDHOST_INT_BADA  0x20000000
-#define SDHOST_INT_RD    0x40000000
-#define SDHOST_INT_WR    0x80000000
+#define SDHOST_INT_DMARD 0x40000000
+#define SDHOST_INT_DMAWR 0x80000000
 
 //*****************************************************************************
 // Values that can be passed to SDHostCmdSend().
@@ -159,16 +176,18 @@ extern void SDHostIntEnable(unsigned long ulBase,unsigned long ulIntFlags);
 extern void SDHostIntDisable(unsigned long ulBase,unsigned long ulIntFlags);
 extern unsigned long SDHostIntStatus(unsigned long ulBase);
 extern void SDHostIntClear(unsigned long ulBase,unsigned long ulIntFlags);
-extern unsigned long SDHostRespStatus(unsigned long ulBase);
+extern void SDHostCardErrorMaskSet(unsigned long ulBase,
+                                   unsigned long ulErrMask);
+extern unsigned long SDHostCardErrorMaskGet(unsigned long ulBase);
 extern void SDHostSetExpClk(unsigned long ulBase, unsigned long ulSDHostClk,
               unsigned long ulCardClk);
 extern void SDHostRespGet(unsigned long ulBase, unsigned long ulRespnse[4]);
 extern void SDHostBlockSizeSet(unsigned long ulBase, unsigned short ulBlkSize);
-extern void SDHostBlockCountSet(unsigned long ulBase, 
+extern void SDHostBlockCountSet(unsigned long ulBase,
                                 unsigned short ulBlkCount);
-extern tBoolean SDHostDataNonBlockingWrite(unsigned long ulBase, 
+extern tBoolean SDHostDataNonBlockingWrite(unsigned long ulBase,
                                         unsigned long ulData);
-extern tBoolean SDHostDataNonBlockingRead(unsigned long ulBase, 
+extern tBoolean SDHostDataNonBlockingRead(unsigned long ulBase,
                                    unsigned long *pulData);
 extern void SDHostDataWrite(unsigned long ulBase, unsigned long ulData);
 extern void SDHostDataRead(unsigned long ulBase, unsigned long *ulData);

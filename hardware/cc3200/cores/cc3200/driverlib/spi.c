@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// spi.c - Driver for the SPI.
+//  spi.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the SPI.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -73,7 +96,7 @@ static const unsigned long g_ulSPIDmaMaskMap[][2]=
 //
 //*****************************************************************************
 static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
-                   unsigned char *ucDin, unsigned long ulCount, 
+                   unsigned char *ucDin, unsigned long ulCount,
                    unsigned long ulFlags)
 {
   unsigned long ulReadReg;
@@ -83,13 +106,13 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
   unsigned long ulInIncr;
   unsigned long ulTxDummy;
   unsigned long ulRxDummy;
-  
+
   //
   // Initialize the variables
   //
   ulOutIncr = 1;
   ulInIncr  = 1;
-  
+
   //
   // Check if output buffer pointer is 0
   //
@@ -99,7 +122,7 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
     ulTxDummy = 0xFFFFFFFF;
     ucDout = (unsigned char *)&ulTxDummy;
   }
-  
+
   //
   // Check if input buffer pointer is 0
   //
@@ -108,14 +131,14 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
     ulInIncr = 0;
     ucDin = (unsigned char *)&ulRxDummy;
   }
-  
+
   //
   // Load the register addresses.
   //
   ulReadReg  = (ulBase + MCSPI_O_RX0);
   ulWriteReg = (ulBase + MCSPI_O_TX0);
   ulStatReg  = (ulBase + MCSPI_O_CH0STAT);
-  
+
   //
   // Enable CS based on Flag
   //
@@ -123,7 +146,7 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
   {
     HWREG( ulBase + MCSPI_O_CH0CONF) |= MCSPI_CH0CONF_FORCE;
   }
-      
+
   while(ulCount)
   {
     //
@@ -137,7 +160,7 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
     // Write the data
     //
     HWREG(ulWriteReg) = *ucDout;
-    
+
     //
     // Wait for data in input register/FIFO.
     //
@@ -155,13 +178,13 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
     //
     ucDout = ucDout + ulOutIncr;
     ucDin  = ucDin  + ulInIncr;
-    
+
     //
     // Decrement the count.
     //
     ulCount--;
   }
-  
+
   //
   // Disable CS based on Flag
   //
@@ -169,7 +192,7 @@ static long SPITransfer8(unsigned long ulBase, unsigned char *ucDout,
   {
     HWREG( ulBase + MCSPI_O_CH0CONF) &= ~MCSPI_CH0CONF_FORCE;
   }
-  
+
   return 0;
 }
 
@@ -203,13 +226,13 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
   unsigned long ulInIncr;
   unsigned long ulTxDummy;
   unsigned long ulRxDummy;
-  
+
   //
   // Initialize the variables.
   //
   ulOutIncr = 1;
   ulInIncr  = 1;
-  
+
   //
   // Check if count is multiple of half-word
   //
@@ -217,12 +240,12 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
   {
     return -1;
   }
-  
+
   //
   // Compute number of half words.
   //
   ulCount = ulCount/2;
-  
+
   //
   // Check if output buffer pointer is 0
   //
@@ -232,7 +255,7 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
     ulTxDummy = 0xFFFFFFFF;
     usDout = (unsigned short *)&ulTxDummy;
   }
-  
+
   //
   // Check if input buffer pointer is 0
   //
@@ -241,14 +264,14 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
     ulInIncr = 0;
     usDin = (unsigned short *)&ulRxDummy;
   }
-  
+
   //
   // Load the register addresses.
   //
   ulReadReg  = (ulBase + MCSPI_O_RX0);
   ulWriteReg = (ulBase + MCSPI_O_TX0);
   ulStatReg  = (ulBase + MCSPI_O_CH0STAT);
-      
+
   //
   // Enable CS based on Flag
   //
@@ -256,7 +279,7 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
   {
     HWREG( ulBase + MCSPI_O_CH0CONF) |= MCSPI_CH0CONF_FORCE;
   }
-  
+
   while(ulCount)
   {
     //
@@ -270,7 +293,7 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
     // Write the data
     //
     HWREG(ulWriteReg) = *usDout;
-    
+
     //
     // Wait for data in input register/FIFO.
     //
@@ -288,13 +311,13 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
     //
     usDout = usDout + ulOutIncr;
     usDin  = usDin  + ulInIncr;
-    
+
     //
     // Decrement the count.
     //
     ulCount--;
   }
-  
+
   //
   // Disable CS based on Flag
   //
@@ -302,7 +325,7 @@ static long SPITransfer16(unsigned long ulBase, unsigned short *usDout,
   {
     HWREG( ulBase + MCSPI_O_CH0CONF) &= ~MCSPI_CH0CONF_FORCE;
   }
-  
+
   return 0;
 }
 
@@ -335,13 +358,13 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
   unsigned long ulInIncr;
   unsigned long ulTxDummy;
   unsigned long ulRxDummy;
-  
+
   //
   // Initialize the variables.
   //
   ulOutIncr = 1;
   ulInIncr  = 1;
-  
+
   //
   // Check if count is multiple of word
   //
@@ -349,12 +372,12 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
   {
     return -1;
   }
-  
+
   //
   // Compute the number of words to be transferd
   //
   ulCount = ulCount/4;
-  
+
   //
   // Check if output buffer pointer is 0
   //
@@ -364,7 +387,7 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
     ulTxDummy = 0xFFFFFFFF;
     ulDout = &ulTxDummy;
   }
-  
+
   //
   // Check if input buffer pointer is 0
   //
@@ -373,15 +396,15 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
     ulInIncr = 0;
     ulDin = &ulRxDummy;
   }
-  
-   
+
+
   //
   // Load the register addresses.
   //
   ulReadReg  = (ulBase + MCSPI_O_RX0);
   ulWriteReg = (ulBase + MCSPI_O_TX0);
   ulStatReg  = (ulBase + MCSPI_O_CH0STAT);
-  
+
   //
   // Enable CS based on Flag
   //
@@ -389,7 +412,7 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
   {
     HWREG( ulBase + MCSPI_O_CH0CONF) |= MCSPI_CH0CONF_FORCE;
   }
-  
+
   while(ulCount)
   {
     //
@@ -403,7 +426,7 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
     // Write the data
     //
     HWREG(ulWriteReg) = *ulDout;
-    
+
     //
     // Wait for data in input register/FIFO.
     //
@@ -421,13 +444,13 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
     //
     ulDout = ulDout + ulOutIncr;
     ulDin  = ulDin  + ulInIncr;
-    
+
     //
     // Decrement the count.
     //
     ulCount--;
   }
-  
+
   //
   // Disable CS based on Flag
   //
@@ -435,7 +458,7 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
   {
     HWREG( ulBase + MCSPI_O_CH0CONF) &= ~MCSPI_CH0CONF_FORCE;
   }
-  
+
   return 0;
 }
 
@@ -573,10 +596,10 @@ SPIDisable(unsigned long ulBase)
 //! \param ulBase is the base address of the SPI module
 //! \param ulFlags selectes the DMA signal for transmit and/or receive.
 //!
-//! This function enables transmit and/or receive DMA request based on the 
+//! This function enables transmit and/or receive DMA request based on the
 //! \e ulFlags parameter.
 //!
-//! The parameter \e ulFlags is the logical OR of one or more of 
+//! The parameter \e ulFlags is the logical OR of one or more of
 //! the following :
 //! - \b MCSPI_RX_DMA
 //! - \b MCSPI_TX_DMA
@@ -600,10 +623,10 @@ SPIDmaEnable(unsigned long ulBase, unsigned long ulFlags)
 //! \param ulBase is the base address of the SPI module
 //! \param ulFlags selectes the DMA signal for transmit and/or receive.
 //!
-//! This function disables transmit and/or receive DMA request based on the 
+//! This function disables transmit and/or receive DMA request based on the
 //! \e ulFlags parameter.
 //!
-//! The parameter \e ulFlags is the logical OR of one or more of 
+//! The parameter \e ulFlags is the logical OR of one or more of
 //! the following :
 //! - \b MCSPI_RX_DMA
 //! - \b MCSPI_TX_DMA
@@ -653,14 +676,11 @@ SPIReset(unsigned long ulBase)
 //! Sets the configuration of a SPI module
 //!
 //! \param ulBase is the base address of the SPI module
-//! \param ulMode is the mode of operation.
 //! \param ulSPIClk is the rate of clock supplied to the SPI module.
 //! \param ulBitRate is the desired bit rate.(master mode)
-//! \param ulInitDelay is the delay for first SPI word transmited(master mode)
-//! \param ulWordLength is the word length of an SPI transaction.
-//! \param ulCSPolarity is the chip select polarity (4-wire master mode).
+//! \param ulMode is the mode of operation.
 //! \param ulSubMode is one of the valid sub-modes.
-//! \param ulFlags is bit-map of valid flags.
+//! \param ulConfig is logical OR of configuration paramaters.
 //!
 //! This function configures SPI port for operation in specified sub-mode and
 //! required bit rated as specified by \e ulMode and \e ulBitRate parameters
@@ -674,13 +694,13 @@ SPIReset(unsigned long ulBase)
 //! The SPI module supports 4 sub modes based on SPI clock polarity and phase.
 //!
 //! <pre>
-//! Polarity Phase  Sub-Mode 
-//!   0       0        0 
+//! Polarity Phase  Sub-Mode
+//!   0       0        0
 //!   0       1        1
 //!   1       0        2
 //!   1       1        3
 //! </pre>
-//!     
+//!
 //! Required sub mode can be select by setting \e ulSubMode parameter to one
 //! of the following
 //! - \b SPI_SUB_MODE_0
@@ -688,9 +708,9 @@ SPIReset(unsigned long ulBase)
 //! - \b SPI_SUB_MODE_2
 //! - \b SPI_SUB_MODE_3
 //!
-//! The parameter \e ulFlags is logical OR of five values: the word length,
-//! active level for chip select, software or hardware controled chip select, 
-//! 3 or 4 pin mode and turbo mode. 
+//! The parameter \e ulConfig is logical OR of five values: the word length,
+//! active level for chip select, software or hardware controled chip select,
+//! 3 or 4 pin mode and turbo mode.
 //! mode.
 //!
 //! SPI support 8, 16 and 32 bit word lengths defined by:-
@@ -719,8 +739,8 @@ SPIReset(unsigned long ulBase)
 //
 //*****************************************************************************
 void
-SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk, 
-            unsigned long ulBitRate, unsigned long ulMode, 
+SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
+            unsigned long ulBitRate, unsigned long ulMode,
             unsigned long ulSubMode, unsigned long ulConfig)
 {
 
@@ -729,55 +749,55 @@ SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
 
   //
   // Read MODULCTRL register
-  //  
+  //
   ulRegData = HWREG(ulBase + MCSPI_O_MODULCTRL);
-    
+
   //
   // Set Master mode with h/w chip select
   //
-  ulRegData &= ~(MCSPI_MODULCTRL_MS | 
+  ulRegData &= ~(MCSPI_MODULCTRL_MS |
                  MCSPI_MODULCTRL_SINGLE);
-  
+
   //
   // Enable software control Chip Select, Init delay
   // and 3-pin mode
   //
   ulRegData |= (((ulConfig >> 24) | ulMode) & 0xFF);
-  
+
   //
   // If slave, Chip Select has to H/W controlled
-  // 
+  //
   if(ulMode == SPI_MODE_MASTER)
   {
     ulRegData &= 0x1;
   }
-  
+
   //
   // Write the configuration
   //
   HWREG(ulBase + MCSPI_O_MODULCTRL) = ulRegData;
-    
+
   //
   // Set IS, DPE0, DPE1 based on master or slave mode
   //
   if(ulMode == SPI_MODE_MASTER)
   {
-    ulRegData = 0x1 << 16; 
+    ulRegData = 0x1 << 16;
   }
   else
   {
     ulRegData = 0x6 << 16;
   }
-  
+
   //
-  // Mask the configurations and set clock divider granularity 
+  // Mask the configurations and set clock divider granularity
   // to 1 cycle
   //
-  ulRegData = (ulRegData & ~(MCSPI_CH0CONF_WL_M | 
+  ulRegData = (ulRegData & ~(MCSPI_CH0CONF_WL_M |
                              MCSPI_CH0CONF_EPOL |
-                             MCSPI_CH0CONF_POL  | 
+                             MCSPI_CH0CONF_POL  |
                              MCSPI_CH0CONF_PHA  |
-                             MCSPI_CH0CONF_TURBO ) | 
+                             MCSPI_CH0CONF_TURBO ) |
                MCSPI_CH0CONF_CLKG);
 
   //
@@ -786,13 +806,13 @@ SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
   ulDivider = ((ulSPIClk/ulBitRate) - 1);
 
   //
-  // The least significant four bits of the divider is used fo configure 
-  // CLKD in MCSPI_CHCONF next eight least significant bits are used to 
+  // The least significant four bits of the divider is used fo configure
+  // CLKD in MCSPI_CHCONF next eight least significant bits are used to
   // configure the EXTCLK in MCSPI_CHCTRL
   //
   ulRegData |= ((ulDivider & 0x0000000F) << 2);
   HWREG(ulBase + MCSPI_O_CH0CTRL) = ((ulDivider & 0x00000FF0) << 4);
-  
+
   //
   // Set the protocol, CS polarity, word length
   // and turbo mode
@@ -804,7 +824,7 @@ SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
   // Write back the CONF register
   //
   HWREG(ulBase + MCSPI_O_CH0CONF) = ulRegData;
-  
+
 }
 
 //*****************************************************************************
@@ -866,7 +886,7 @@ SPIDataGet(unsigned long ulBase, unsigned long *pulData)
   while(!(HWREG(ulBase + MCSPI_O_CH0STAT) & MCSPI_CH0STAT_RXS))
   {
   }
-  
+
   //
   // Read the value
   //
@@ -890,12 +910,12 @@ long
 SPIDataPutNonBlocking(unsigned long ulBase, unsigned long ulData)
 {
     unsigned long ulRegVal;
-    
+
     //
     // Read status register
     //
     ulRegVal = HWREG(ulBase + MCSPI_O_CH0STAT);
-    
+
     //
     // Write value into Tx register/FIFO
     // if space is available
@@ -905,7 +925,7 @@ SPIDataPutNonBlocking(unsigned long ulBase, unsigned long ulData)
       HWREG(ulBase + MCSPI_O_TX0) = ulData;
       return(1);
     }
-    
+
     return(0);
 }
 
@@ -931,7 +951,7 @@ SPIDataPut(unsigned long ulBase, unsigned long ulData)
   while(!(HWREG(ulBase + MCSPI_O_CH0STAT)&MCSPI_CH0STAT_TXS))
   {
   }
-  
+
   //
   // Write the data
   //
@@ -945,7 +965,7 @@ SPIDataPut(unsigned long ulBase, unsigned long ulData)
 //! \param ulBase is the base address of the SPI module
 //! \param ulFlags selects the FIFO(s) to be enabled
 //!
-//! This function enables the transmit and/or receive FIFOs as specified by 
+//! This function enables the transmit and/or receive FIFOs as specified by
 //! \e ulFlags.
 //! The parameter \e ulFlags shoulde be logical OR of one or more of the
 //! following:
@@ -955,7 +975,7 @@ SPIDataPut(unsigned long ulBase, unsigned long ulData)
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 SPIFIFOEnable(unsigned long ulBase, unsigned long ulFlags)
 {
   //
@@ -981,7 +1001,7 @@ SPIFIFOEnable(unsigned long ulBase, unsigned long ulFlags)
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 SPIFIFODisable(unsigned long ulBase, unsigned long ulFlags)
 {
   //
@@ -1004,21 +1024,21 @@ SPIFIFODisable(unsigned long ulBase, unsigned long ulFlags)
 //! \return None.
 //
 //*****************************************************************************
-void SPIFIFOLevelSet(unsigned long ulBase, unsigned long ulTxLevel, 
+void SPIFIFOLevelSet(unsigned long ulBase, unsigned long ulTxLevel,
                    unsigned long ulRxLevel)
 {
   unsigned long ulRegVal;
-  
+
   //
   // Read the current configuration
   //
   ulRegVal = HWREG(ulBase + MCSPI_O_XFERLEVEL);
-  
+
   //
-  // Mask and set new FIFO thresholds. 
+  // Mask and set new FIFO thresholds.
   //
   ulRegVal = ((ulRegVal & 0xFFFF0000) | (((ulRxLevel-1) << 8) | (ulTxLevel-1)));
-  
+
   //
   // Set the transmit and receive FIFO thresholds.
   //
@@ -1045,16 +1065,16 @@ SPIFIFOLevelGet(unsigned long ulBase, unsigned long *pulTxLevel,
                  unsigned long *pulRxLevel)
 {
   unsigned long ulRegVal;
-  
+
   //
   // Read the current configuration
   //
   ulRegVal = HWREG(ulBase + MCSPI_O_XFERLEVEL);
-  
+
   *pulTxLevel = (ulRegVal & 0xFF);
-  
+
   *pulRxLevel = ((ulRegVal >> 8) & 0xFF);
-  
+
 }
 
 //*****************************************************************************
@@ -1064,7 +1084,7 @@ SPIFIFOLevelGet(unsigned long ulBase, unsigned long *pulTxLevel,
 //! \param ulBase is the base address of the SPI module
 //! \param ulWordCount is number of SPI words to be transmitted.
 //!
-//! This function sets the word count, which is the number of SPI word to 
+//! This function sets the word count, which is the number of SPI word to
 //! be transferred on channel when using the FIFO buffer.
 //!
 //! \return None.
@@ -1074,12 +1094,12 @@ void
 SPIWordCountSet(unsigned long ulBase, unsigned long ulWordCount)
 {
   unsigned long ulRegVal;
-  
+
   //
   // Read the current configuration
   //
   ulRegVal = HWREG(ulBase + MCSPI_O_XFERLEVEL);
-  
+
   //
   // Mask and set the word count
   //
@@ -1148,12 +1168,12 @@ void
 SPIIntUnregister(unsigned long ulBase)
 {
     unsigned long ulInt;
-    
+
     //
     // Determine the interrupt number based on the SPI module
     //
     ulInt = SPIIntNumberGet(ulBase);
-    
+
     //
     // Disable the interrupt.
     //
@@ -1193,7 +1213,7 @@ void
 SPIIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
 {
   unsigned long ulDmaMsk;
- 
+
   //
   // Enable DMA  Tx Interrupt
   //
@@ -1211,10 +1231,10 @@ SPIIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
       ulDmaMsk = (SPIDmaMaskGet(ulBase) >> 1);
       HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) = ulDmaMsk;
   }
-  
+
   //
   // Enable the specific Interrupts
-  //   
+  //
   HWREG(ulBase + MCSPI_O_IRQENABLE) |= (ulIntFlags & 0x0003000F);
 }
 
@@ -1258,10 +1278,10 @@ SPIIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
       ulDmaMsk = (SPIDmaMaskGet(ulBase) >> 1);
       HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) = ulDmaMsk;
   }
-  
+
   //
   // Disable the specific Interrupts
-  //   
+  //
   HWREG(ulBase + MCSPI_O_IRQENABLE) &= ~(ulIntFlags & 0x0003000F);
 }
 
@@ -1273,8 +1293,8 @@ SPIIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 //! \param bMasked is \b false if the raw interrupt status is required and
 //! \b true if the masked interrupt status is required.
 //!
-//! This function returns the interrupt status for the specified SPI. 
-//! The status of interrupts that are allowed to reflect to the processor can 
+//! This function returns the interrupt status for the specified SPI.
+//! The status of interrupts that are allowed to reflect to the processor can
 //! be returned.
 //!
 //! \return Returns the current interrupt status, enumerated as a bit field of
@@ -1292,17 +1312,17 @@ SPIIntStatus(unsigned long ulBase, tBoolean bMasked)
   // Get SPI interrupt status
   //
   ulIntFlag = HWREG(ulBase + MCSPI_O_IRQSTATUS) & 0x0003000F;
-  
+
   if(bMasked)
   {
      ulIntFlag &= HWREG(ulBase + MCSPI_O_IRQENABLE);
   }
-  
+
   //
   // Get the interrupt bit
   //
   ulDmaMsk = SPIDmaMaskGet(ulBase);
-  
+
   //
   // Get the DMA interrupt status
   //
@@ -1314,7 +1334,7 @@ SPIIntStatus(unsigned long ulBase, tBoolean bMasked)
   {
     ulIntStat = HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_STS_RAW);
   }
-  
+
   //
   // Get SPI Tx DMA done status
   //
@@ -1322,7 +1342,7 @@ SPIIntStatus(unsigned long ulBase, tBoolean bMasked)
   {
      ulIntFlag |= SPI_INT_DMATX;
   }
-  
+
   //
   // Get SPI Rx DMA done status
   //
@@ -1330,7 +1350,7 @@ SPIIntStatus(unsigned long ulBase, tBoolean bMasked)
   {
      ulIntFlag |= SPI_INT_DMARX;
   }
- 
+
   //
   // Return status
   //
@@ -1376,7 +1396,7 @@ SPIIntClear(unsigned long ulBase, unsigned long ulIntFlags)
       ulDmaMsk = (SPIDmaMaskGet(ulBase) >> 1);
       HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) = ulDmaMsk;
   }
-  
+
   //
   // Clear Interrupts
   //
@@ -1389,7 +1409,7 @@ SPIIntClear(unsigned long ulBase, unsigned long ulIntFlags)
 //!
 //! \param ulBase is the base address of the SPI module.
 //!
-//! This function enables the Chip select in software controlled mode. The 
+//! This function enables the Chip select in software controlled mode. The
 //! active state of CS will depend on the configuration done via
 //! \sa SPIConfigExpClkSet().
 //!
@@ -1410,8 +1430,8 @@ void SPICSEnable(unsigned long ulBase)
 //!
 //! \param ulBase is the base address of the SPI module.
 //!
-//! This function disables the Chip select in software controlled mode. The 
-//! active state of CS will depend on the configuration done via 
+//! This function disables the Chip select in software controlled mode. The
+//! active state of CS will depend on the configuration done via
 //! sa SPIConfigSetExpClk().
 //!
 //! \return None.
@@ -1436,16 +1456,16 @@ void SPICSDisable(unsigned long ulBase)
 //! \param ulFlags controlls chip select toggling.
 //!
 //! This function transfers \e ulCount bytes of data over SPI channel. Since
-//! the API sends a SPI word at a time \e ulCount should be a multiple of 
+//! the API sends a SPI word at a time \e ulCount should be a multiple of
 //! word length set using SPIConfigSetExpClk().
 //!
-//! If the \e ucDout parameter is set to 0, the function will send 0xFF over 
+//! If the \e ucDout parameter is set to 0, the function will send 0xFF over
 //! the SPI MOSI line.
 //!
 //! If the \e ucDin parameter is set to 0, the function will ignore data on SPI
 //! MISO line.
 //!
-//! The parameter \e ulFlags should be one of the following
+//! The parameter \e ulFlags is logical OR of one or more of the following
 //!
 //! - \b MCSPI_CS_ENABLE if CS needs to be enabled at start of transfer.
 //! - \b MCSPI_CS_DISABLE if CS need to be disabled at the end of transfer.
@@ -1461,12 +1481,12 @@ long SPITransfer(unsigned long ulBase, unsigned char *ucDout,
 {
   unsigned long ulWordLength;
   long lRet;
-  
+
   //
   // Get the word length
   //
   ulWordLength = (HWREG(ulBase + MCSPI_O_CH0CONF) & MCSPI_CH0CONF_WL_M);
-  
+
   //
   // Check for word length.
   //
@@ -1475,7 +1495,7 @@ long SPITransfer(unsigned long ulBase, unsigned char *ucDout,
   {
     return -1;
   }
-  
+
   if( ulWordLength == SPI_WL_8 )
   {
     //
@@ -1483,9 +1503,9 @@ long SPITransfer(unsigned long ulBase, unsigned char *ucDout,
     //
     lRet = SPITransfer8(ulBase,ucDout,ucDin,ulCount,ulFlags);
   }
-  else if( ulWordLength == SPI_WL_16 ) 
+  else if( ulWordLength == SPI_WL_16 )
   {
-    
+
     //
     // Do half-word transfer
     //
@@ -1500,7 +1520,7 @@ long SPITransfer(unsigned long ulBase, unsigned char *ucDout,
     lRet = SPITransfer32(ulBase,(unsigned long *)ucDout,
                   (unsigned long *)ucDin,ulCount,ulFlags);
   }
-  
+
   //
   // return
   //

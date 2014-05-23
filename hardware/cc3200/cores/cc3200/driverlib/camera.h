@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// camera.h - Prototypes and macros for the camera controller module.
+//  camera.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Prototypes and macros for the camera controller module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -30,32 +53,32 @@ extern "C"
 
 //*****************************************************************************
 // Macro defining Camera buffer address
-//*****************************************************************************  
+//*****************************************************************************
 #define CAM_BUFFER_ADDR 0x44018100
-  
-  
+
+
 //*****************************************************************************
 // Value that can be passed to CameraXClkSet().
 //*****************************************************************************
 #define CAM_XCLK_STABLE_LO          0x00
 #define CAM_XCLK_STABLE_HI          0x01
 #define CAM_XCLK_DIV_BYPASS         0x02
-  
-  
+
+
 //*****************************************************************************
-// Value that can be passed to CameraIntEnable(), CameraIntDisable, 
+// Value that can be passed to CameraIntEnable(), CameraIntDisable,
 // CameraIntClear() or returned from CameraIntStatus().
 //*****************************************************************************
 #define CAM_INT_DMA           0x80000000
 #define CAM_INT_FE            0x00010000
-#define CAM_INT_FSC_ERR       0x00000200 
+#define CAM_INT_FSC_ERR       0x00000200
 #define CAM_INT_FIFO_NOEMPTY  0x00000010
 #define CAM_INT_FIFO_FULL     0x00000008
 #define CAM_INT_FIFO_THR      0x00000004
 #define CAM_INT_FIFO_OF       0x00000002
 #define CAN_INT_FIFO_UR       0x00000001
-  
-  
+
+
 //*****************************************************************************
 // Value that can be passed to CameraXClkConfig().
 //*****************************************************************************
@@ -71,13 +94,13 @@ extern "C"
 #define CAM_BT_CORRECT_EN   0x00001000
 #define CAM_NOBT_SYNCHRO    0x00002000
 #define CAM_IF_SYNCHRO      0x00080000
-  
+
 
 //*****************************************************************************
 //
 // API Function prototypes
 //
-//***************************************************************************** 
+//*****************************************************************************
 extern void CameraReset(unsigned long ulBase);
 extern void CameraParamsConfig(unsigned long ulBase, unsigned long ulHSPol,
                                unsigned long ulVSPol, unsigned long ulFlags);
@@ -95,9 +118,9 @@ extern unsigned long CameraIntStatus(unsigned long ulBase);
 extern void CameraIntClear(unsigned long ulBase, unsigned long ulIntFlags);
 extern void CameraCaptureStop(unsigned long ulBase, tBoolean bImmediate);
 extern void CameraCaptureStart(unsigned long ulBase);
-extern void CameraBufferRead(unsigned long ulBase,unsigned long *pBuffer, 
+extern void CameraBufferRead(unsigned long ulBase,unsigned long *pBuffer,
                           unsigned char ucSize);
-  
+
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.

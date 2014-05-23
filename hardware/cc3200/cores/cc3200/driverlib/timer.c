@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// timer.c - Driver for the timer module.
+//  timer.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the timer module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -182,6 +205,10 @@ TimerConfigure(unsigned long ulBase, unsigned long ulConfig)
              ((ulConfig & 0x0000ff00) == TIMER_CFG_B_CAP_TIME) ||
              ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PWM))));
 
+    //
+    // Enable CCP to IO path
+    //
+    HWREG(0x440260B0) = 0xFF;
 
     //
     // Disable the timers.
@@ -233,42 +260,6 @@ TimerControlLevel(unsigned long ulBase, unsigned long ulTimer,
     //
     ulTimer &= TIMER_CTL_TAPWML | TIMER_CTL_TBPWML;
     HWREG(ulBase + TIMER_O_CTL) = (bInvert ?
-                                   (HWREG(ulBase + TIMER_O_CTL) | ulTimer) :
-                                   (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
-}
-
-//*****************************************************************************
-//
-//! Enables or disables the trigger output.
-//!
-//! \param ulBase is the base address of the timer module.
-//! \param ulTimer specifies the timer to adjust; must be one of \b TIMER_A,
-//! \b TIMER_B, or \b TIMER_BOTH.
-//! \param bEnable specifies the desired trigger state.
-//!
-//! This function controls the trigger output for the specified timer.  If the
-//! \e bEnable parameter is \b true, then the timer's output trigger is
-//! enabled; otherwise it is disabled.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-TimerControlTrigger(unsigned long ulBase, unsigned long ulTimer,
-                    tBoolean bEnable)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
-
-    //
-    // Set the trigger output as requested.
-    //
-    ulTimer &= TIMER_CTL_TAOTE | TIMER_CTL_TBOTE;
-    HWREG(ulBase + TIMER_O_CTL) = (bEnable ?
                                    (HWREG(ulBase + TIMER_O_CTL) | ulTimer) :
                                    (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
 }
@@ -346,68 +337,6 @@ TimerControlStall(unsigned long ulBase, unsigned long ulTimer,
                                    (HWREG(ulBase + TIMER_O_CTL) | ulTimer) :
                                    (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
 }
-
-//*****************************************************************************
-//
-//! Controls the wait on trigger handling.
-//!
-//! \param ulBase is the base address of the timer module.
-//! \param ulTimer specifies the timer(s) to be adjusted; must be one of
-//! \b TIMER_A, \b TIMER_B, or \b TIMER_BOTH.
-//! \param bWait specifies if the timer should wait for a trigger input.
-//!
-//! This function controls whether or not a timer waits for a trigger input to
-//! start counting.  When enabled, the previous timer in the trigger chain must
-//! count to its timeout in order for this timer to start counting.  Refer to
-//! the part's data sheet for a description of the trigger chain.
-//!
-//! \note This functionality is not available on all parts.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-TimerControlWaitOnTrigger(unsigned long ulBase, unsigned long ulTimer,
-                          tBoolean bWait)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
-
-    //
-    // Set the wait on trigger mode for timer A.
-    //
-    if((ulTimer & TIMER_A) != 0)
-    {
-        if(bWait)
-        {
-            HWREG(ulBase + TIMER_O_TAMR) |= TIMER_TAMR_TAWOT;
-        }
-        else
-        {
-            HWREG(ulBase + TIMER_O_TAMR) &= ~(TIMER_TAMR_TAWOT);
-        }
-    }
-
-    //
-    // Set the wait on trigger mode for timer B.
-    //
-    if((ulTimer & TIMER_B) != 0)
-    {
-        if(bWait)
-        {
-            HWREG(ulBase + TIMER_O_TBMR) |= TIMER_TBMR_TBWOT;
-        }
-        else
-        {
-            HWREG(ulBase + TIMER_O_TBMR) &= ~(TIMER_TBMR_TBWOT);
-        }
-    }
-}
-
 
 //*****************************************************************************
 //
@@ -795,14 +724,9 @@ TimerIntRegister(unsigned long ulBase, unsigned long ulTimer,
     ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
            (ulTimer == TIMER_BOTH));
 
-#ifndef NWPDRV
     ulBase = ((ulBase == TIMERA0_BASE) ? INT_TIMERA0A :
               ((ulBase == TIMERA1_BASE) ? INT_TIMERA1A :
                ((ulBase == TIMERA2_BASE) ? INT_TIMERA2A : INT_TIMERA3A)));
-#else
-    ulBase = ((ulBase == TIMERN0_BASE) ? INT_TIMERN0A :INT_TIMERN1A );
-
-#endif
 
     //
     // Register an interrupt handler for timer A if requested.
@@ -869,14 +793,11 @@ TimerIntUnregister(unsigned long ulBase, unsigned long ulTimer)
     // Get the interrupt number for this timer module.
     //
 
-#ifndef NWPDRV
     ulBase = ((ulBase == TIMERA0_BASE) ? INT_TIMERA0A :
               ((ulBase == TIMERA1_BASE) ? INT_TIMERA1A :
                ((ulBase == TIMERA2_BASE) ? INT_TIMERA2A : INT_TIMERA3A)));
-#else
-    ulBase = ((ulBase == TIMERN0_BASE) ? INT_TIMERN0A :INT_TIMERN1A );
 
-#endif
+
 
     //
     // Unregister the interrupt handler for timer A if requested.

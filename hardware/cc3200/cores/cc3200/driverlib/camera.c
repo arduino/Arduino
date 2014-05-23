@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// camera.c - Driver for the camera controller module
+//  camera.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the camera controller module
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -33,9 +56,11 @@
 //
 //! Resets the Camera core
 //!
+//! \param ulBase is the base address of the camera module.
+//!
 //! This function resets the camera core
 //!
-//! \retrun None.
+//! \return None.
 //
 //******************************************************************************
 void CameraReset(unsigned long ulBase)
@@ -48,18 +73,19 @@ void CameraReset(unsigned long ulBase)
   //
   // Wait for reset completion
   //
-  while(!(HWREG(ulBase + CAMERA_O_CC_SYSSTATUS)& 
+  while(!(HWREG(ulBase + CAMERA_O_CC_SYSSTATUS)&
           CAMERA_CC_SYSSTATUS_RESET_DONE2))
   {
-    
+
   }
-    
+
 }
 
 //******************************************************************************
 //
 //! Configures camera parameters
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param ulHSPol sets the HSync polarity
 //! \param ulVSPol sets the VSync polarity
 //! \param ulFlags are configuration flags
@@ -67,18 +93,15 @@ void CameraReset(unsigned long ulBase)
 //! This function sets different camera parameters.
 //!
 //! The parameter \e ulHSPol should be on the follwoing:
-//!
 //! - \b CAM_HS_POL_HI
 //! - \b CAM_HS_POL_LO
 //!
 //! The parameter \e ulVSPol should be on the follwoing:
-//!
 //! - \b CAM_VS_POL_HI
 //! - \b CAM_VS_POL_LO
 //!
 //! The parameter \e ulFlags can be logical OR of one or more of the follwoing
 //! or 0:
-//!
 //! - \b CAM_PCLK_RISE_EDGE
 //! - \b CAM_PCLK_FALL_EDGE
 //! - \b CAM_ORDERCAM_SWAP
@@ -89,7 +112,7 @@ void CameraReset(unsigned long ulBase)
 //! \return None.
 //
 //******************************************************************************
-void CameraParamsConfig(unsigned long ulBase, unsigned long ulHSPol, 
+void CameraParamsConfig(unsigned long ulBase, unsigned long ulHSPol,
                         unsigned long ulVSPol, unsigned long ulFlags)
 {
   unsigned long ulReg;
@@ -108,7 +131,7 @@ void CameraParamsConfig(unsigned long ulBase, unsigned long ulHSPol,
                    CAMERA_CC_CTRL_NOBT_VS_POL |
                    CAMERA_CC_CTRL_BT_CORRECT  |
                    CAMERA_CC_CTRL_PAR_ORDERCAM |
-                   CAMERA_CC_CTRL_PAR_CLK_POL )) | ulFlags); 
+                   CAMERA_CC_CTRL_PAR_CLK_POL )) | ulFlags);
 
   //
   // Write the configuration
@@ -121,13 +144,14 @@ void CameraParamsConfig(unsigned long ulBase, unsigned long ulHSPol,
 //
 //! Set the internal clock divider
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param ulCamClkIn is input to camera module
 //! \param ulXClk defines the output required
 //!
 //! This function sets the internal clock divider based on \e ulCamClkIn to
 //! generate XCLK as specified be \e ulXClk. Maximum suppoter division is 30
 //!
-//! \return None. 
+//! \return None.
 //
 //******************************************************************************
 void CameraXClkConfig(unsigned long ulBase, unsigned long ulCamClkIn,
@@ -145,7 +169,7 @@ void CameraXClkConfig(unsigned long ulBase, unsigned long ulCamClkIn,
   // Mask XCLK divider value
   //
   ulReg &= ~(CAMERA_CC_CTRL_XCLK_XCLK_DIV_M);
-                            
+
   //
   // Compute the divider
   //
@@ -171,6 +195,7 @@ void CameraXClkConfig(unsigned long ulBase, unsigned long ulCamClkIn,
 //
 //! Sets the internal divide in specified mode
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param bXClkFlags decides the divide mode
 //!
 //! This function sets the internal divide in specified mode.
@@ -187,11 +212,11 @@ void CameraXClkConfig(unsigned long ulBase, unsigned long ulCamClkIn,
 void CameraXClkSet(unsigned long ulBase, unsigned char bXClkFlags)
 {
   unsigned long ulReg;
-  
+
   //
   // Read and Mask XTAL Divider config.
   //
-  ulReg = (HWREG(ulBase + CAMERA_O_CC_CTRL_XCLK) & 
+  ulReg = (HWREG(ulBase + CAMERA_O_CC_CTRL_XCLK) &
     ~(CAMERA_CC_CTRL_XCLK_XCLK_DIV_M));
 
   //
@@ -199,10 +224,10 @@ void CameraXClkSet(unsigned long ulBase, unsigned char bXClkFlags)
   //
   switch(bXClkFlags)
   {
-    
+
   case CAM_XCLK_STABLE_HI : ulReg |= 0x00000001;
                             break;
-                            
+
   case CAM_XCLK_DIV_BYPASS: ulReg |= 0x0000000F;
                             break;
   }
@@ -218,7 +243,9 @@ void CameraXClkSet(unsigned long ulBase, unsigned char bXClkFlags)
 //
 //! Enable camera DMA
 //!
-//! This function enables transfer request to DMA from camera. DMA specific 
+//! \param ulBase is the base address of the camera module.
+//!
+//! This function enables transfer request to DMA from camera. DMA specific
 //! configuration has to be done seperately.
 //!
 //! \return None.
@@ -236,6 +263,8 @@ void CameraDMAEnable(unsigned long ulBase)
 //******************************************************************************
 //
 //! Disable camera DMA
+//!
+//! \param ulBase is the base address of the camera module.
 //!
 //! This function masks transfer request to DMA from camera.
 //!
@@ -256,6 +285,7 @@ void CameraDMADisable(unsigned long ulBase)
 //
 //! Sets the FIFO threshold for DMA transfer request
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param ulThreshold specifies the FIFO threshold
 //!
 //! This function sets the FIFO threshold for DMA transfer request.
@@ -281,10 +311,11 @@ void CameraThresholdSet(unsigned long ulBase, unsigned long ulThreshold)
 //
 //! Register camera interrupt handler
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param pfnHandler hold pointer to interrupt handler
 //!
-//! This function registers and enables global camera interrupt from the 
-//! interrupt controller. Individual camera interrupts source 
+//! This function registers and enables global camera interrupt from the
+//! interrupt controller. Individual camera interrupts source
 //! should be enabled using \sa CameraIntEnable().
 //!
 //! \return None.
@@ -308,9 +339,9 @@ void CameraIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
 //
 //! Un-Register camera interrupt handler
 //!
-//! \param pfnHandler hold pointer to interrupt handler
+//! \param ulBase is the base address of the camera module.
 //!
-//! This function unregisters and disables global camera interrupt from the 
+//! This function unregisters and disables global camera interrupt from the
 //! interrupt controller.
 //!
 //! \return None.
@@ -333,6 +364,7 @@ void CameraIntUnregister(unsigned long ulBase)
 //******************************************************************************
 //! Enables individual camera interrupt sources.
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param ulIntFlags is the bit mask of the interrupt sources to be enabled.
 //!
 //! This function enables individual camera interrupt sources.
@@ -361,7 +393,7 @@ void CameraIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
   {
     HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) = ((1<<8));
   }
-  
+
   //
   // Enable specific camera interrupts
   //
@@ -372,6 +404,7 @@ void CameraIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
 //******************************************************************************
 //! Disables individual camera interrupt sources.
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param ulIntFlags is the bit mask of the interrupt sources to be disabled.
 //!
 //! This function disables individual camera interrupt sources.
@@ -391,7 +424,7 @@ void CameraIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
   {
     HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) = ((1<<8));
   }
-  
+
   //
   // Disable specific camera interrupts
   //
@@ -402,21 +435,23 @@ void CameraIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 //
 //! Returns the current interrupt status,
 //!
+//! \param ulBase is the base address of the camera module.
+//! \param ulBase is the base address of the camera module.
+//!
 //! This functions returns the current interrupt status for the camera.
 //!
 //! \return Returns the current interrupt status, enumerated as a bit field of
 //! values described in CameraIntEnable().
 //******************************************************************************
-
 unsigned long CameraIntStatus(unsigned long ulBase)
 {
   unsigned ulIntFlag;
-  
+
   //
   // Read camera interrupt
   //
   ulIntFlag = HWREG(ulBase + CAMERA_O_CC_IRQSTATUS);
-  
+
   //
   //
   // Read camera DMA doner interrupt
@@ -425,10 +460,10 @@ unsigned long CameraIntStatus(unsigned long ulBase)
   {
     ulIntFlag |= CAM_INT_DMA;
   }
-  
+
   //
   // Return status
-  // 
+  //
   return(ulIntFlag);
 }
 
@@ -436,6 +471,7 @@ unsigned long CameraIntStatus(unsigned long ulBase)
 //******************************************************************************
 //! Clears individual camera interrupt sources.
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param ulIntFlags is the bit mask of the interrupt sources to be Clears.
 //!
 //! This function Clears individual camera interrupt sources.
@@ -455,6 +491,10 @@ void CameraIntClear(unsigned long ulBase, unsigned long ulIntFlags)
   {
     HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) = ((1<<8));
   }
+
+  //
+  // Clear the interrupts
+  //
   HWREG(ulBase + CAMERA_O_CC_IRQSTATUS) = ulIntFlags;
 }
 
@@ -462,8 +502,10 @@ void CameraIntClear(unsigned long ulBase, unsigned long ulIntFlags)
 //
 //! Starts image capture
 //!
+//! \param ulBase is the base address of the camera module.
+//!
 //! This function starts the image capture over the configured camera interface
-//! This function should be called after configuring the camera module 
+//! This function should be called after configuring the camera module
 //! completele
 //!
 //! \return None.
@@ -475,7 +517,7 @@ void CameraCaptureStart(unsigned long ulBase)
   // Set the mode
   //
   HWREG(ulBase + CAMERA_O_CC_CTRL) &= ~0xF;
-  
+
   //
   // Enable image capture
   //
@@ -486,6 +528,7 @@ void CameraCaptureStart(unsigned long ulBase)
 //
 //! Stops image capture
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param bImmediate is \b true to stop capture imeediately else \b flase.
 //!
 //! This function stops the image capture over the camera interface.
@@ -513,7 +556,7 @@ void CameraCaptureStop(unsigned long ulBase, tBoolean bImmediate)
   }
 
   //
-  // Request camera to stop capture 
+  // Request camera to stop capture
   //
   HWREG(ulBase + CAMERA_O_CC_CTRL) &= ~CAMERA_CC_CTRL_CC_EN;
 }
@@ -523,6 +566,7 @@ void CameraCaptureStop(unsigned long ulBase, tBoolean bImmediate)
 //
 //! Reads the camera buffer (FIFO)
 //!
+//! \param ulBase is the base address of the camera module.
 //! \param pBuffer is the pointer to the read buffer
 //! \param ucSize specifies the size to data to be read
 //!

@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// hwspinlock.c - Driver for the Apps-NWP spinlock
+//  hwspinlock.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the Apps-NWP spinlock
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -43,7 +66,7 @@ static const uint32_t HwSpinLock_RegLst[]=
 //!
 //! \param ui32LockID is one of the valid spin lock.
 //!
-//! This function acquires specified spin lock and will not retun util the 
+//! This function acquires specified spin lock and will not retun util the
 //! specified lock is acquired.
 //!
 //! The parameter \e ui32LockID should \b HWSPINLOCK_MCSPIS0.
@@ -69,7 +92,7 @@ void HwSpinLockAcquire(uint32_t ui32LockID)
   // ownership bits to 'b01
   //
   ui32SemVal = (0xFFFFFFFF ^ (0x2 << ui32BitPos));
-  
+
   //
   // Retry untill we succeed
   //
@@ -90,7 +113,7 @@ void HwSpinLockAcquire(uint32_t ui32LockID)
 //!
 //! This function tries acquire specified spin lock in \e ui32Retry retries.
 //!
-//! The parameter \e ui32Retry can be any value between 0 and 2^32. 
+//! The parameter \e ui32Retry can be any value between 0 and 2^32.
 //!
 //! return Returns 0 on success, -1 otherwise.
 //
@@ -121,7 +144,7 @@ int32_t HwSpinLockTryAcquire(uint32_t ui32LockID, uint32_t ui32Retry)
   {
     ui32Retry = 1;
   }
-    
+
   //
   // Retry the number of times specified
   //
@@ -183,9 +206,9 @@ void HwSpinLockRelease(uint32_t ui32LockID)
 //! Get the current or previous ownership status.
 //!
 //! \param ui32LockID is one of the valid spin lock.
-//! \param bCurrentStatus is \b true for current status, \b flase otherwise 
+//! \param bCurrentStatus is \b true for current status, \b flase otherwise
 //!
-//! This function gets the current or previous ownership status of the 
+//! This function gets the current or previous ownership status of the
 //! specified spin lock based on \e bCurrentStatus parameter.
 //!
 //! \return Returns \b HWSPINLOCK_OWNER_APPS, \b HWSPINLOCK_OWNER_NWP or

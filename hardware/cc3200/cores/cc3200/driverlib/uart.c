@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// uart.c - Driver for the UART.
+//  uart.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the UART.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -35,19 +58,12 @@
 // A mapping of UART base address to interupt number.
 //
 //*****************************************************************************
-#ifndef NWPDRV
 static const unsigned long g_ppulUARTIntMap[][2] =
 {
     { UARTA0_BASE, INT_UARTA0 },
     { UARTA1_BASE, INT_UARTA1 },
 };
-#else
-static const unsigned long g_ppulUARTIntMap[][2] =
-{
-    { UARTN0_BASE, INT_UARTN0 },
-    { UARTN1_BASE, INT_UARTN1 },
-};
-#endif
+
 //*****************************************************************************
 //
 //! \internal
@@ -291,9 +307,6 @@ UARTFIFOLevelGet(unsigned long ulBase, unsigned long *pulTxLevel,
 //! explicitly hard coded if it is constant and known (to save the
 //! code/execution overhead of a call to SysCtlClockGet()).
 //!
-//! This function replaces the original UARTConfigSet() API and performs the
-//! same actions.  A macro is provided in <tt>uart.h</tt> to map the original
-//! API to this API.
 //!
 //! \return None.
 //
@@ -388,9 +401,6 @@ UARTConfigSetExpClk(unsigned long ulBase, unsigned long ulUARTClk,
 //! explicitly hard coded if it is constant and known (to save the
 //! code/execution overhead of a call to SysCtlClockGet()).
 //!
-//! This function replaces the original UARTConfigGet() API and performs the
-//! same actions.  A macro is provided in <tt>uart.h</tt> to map the original
-//! API to this API.
 //!
 //! \return None.
 //
@@ -556,85 +566,17 @@ UARTFIFODisable(unsigned long ulBase)
 
 //*****************************************************************************
 //
-//! Enables SIR (IrDA) mode on the specified UART.
-//!
-//! \param ulBase is the base address of the UART port.
-//! \param bLowPower indicates if SIR Low Power Mode is to be used.
-//!
-//! This function enables the SIREN control bit for IrDA mode on the UART.  If
-//! the \e bLowPower flag is set, then SIRLP bit will also be set.
-//!
-//! \note The availability of SIR (IrDA) operation varies with the 
-//! part and UART in use.  Please consult the datasheet for the part you are
-//! using to determine whether this support is available.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-UARTEnableSIR(unsigned long ulBase, tBoolean bLowPower)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(UARTBaseValid(ulBase));
-
-    //
-    // Enable SIR and SIRLP (if appropriate).
-    //
-    if(bLowPower)
-    {
-        HWREG(ulBase + UART_O_CTL) |= (UART_CTL_SIREN | UART_CTL_SIRLP);
-    }
-    else
-    {
-        HWREG(ulBase + UART_O_CTL) |= (UART_CTL_SIREN);
-    }
-}
-
-//*****************************************************************************
-//
-//! Disables SIR (IrDA) mode on the specified UART.
-//!
-//! \param ulBase is the base address of the UART port.
-//!
-//! This function clears the SIREN (IrDA) and SIRLP (Low Power) bits.
-//!
-//! \note The availability of SIR (IrDA) operation varies with the 
-//! part and UART in use.  Please consult the datasheet for the part you are
-//! using to determine whether this support is available.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-UARTDisableSIR(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(UARTBaseValid(ulBase));
-
-    //
-    // Disable SIR and SIRLP (if appropriate).
-    //
-    HWREG(ulBase + UART_O_CTL) &= ~(UART_CTL_SIREN | UART_CTL_SIRLP);
-}
-
-//*****************************************************************************
-//
 //! Sets the states of the DTR and/or RTS modem control signals.
 //!
 //! \param ulBase is the base address of the UART port.
 //! \param ulControl is a bit-mapped flag indicating which modem control bits
 //! should be set.
 //!
-//! This function sets the states of the DTR or RTS modem handshake outputs
+//! This function sets the states of the RTS modem handshake outputs
 //! from the UART.
 //!
 //! The \e ulControl parameter is the logical OR of any of the following:
 //!
-//! - \b UART_OUTPUT_DTR - The Modem Control DTR signal
 //! - \b UART_OUTPUT_RTS - The Modem Control RTS signal
 //!
 //! \note The availability of hardware modem handshake signals varies with the
@@ -660,24 +602,23 @@ UARTModemControlSet(unsigned long ulBase, unsigned long ulControl)
     // Set the appropriate modem control output bits.
     //
     ulTemp = HWREG(ulBase + UART_O_CTL);
-    ulTemp |= (ulControl & (UART_OUTPUT_RTS | UART_OUTPUT_DTR));
+    ulTemp |= (ulControl & (UART_OUTPUT_RTS));
     HWREG(ulBase + UART_O_CTL) = ulTemp;
 }
 
 //*****************************************************************************
 //
-//! Clears the states of the DTR and/or RTS modem control signals.
+//! Clears the states of the RTS modem control signals.
 //!
 //! \param ulBase is the base address of the UART port.
 //! \param ulControl is a bit-mapped flag indicating which modem control bits
 //! should be set.
 //!
-//! This function clears the states of the DTR or RTS modem handshake outputs
+//! This function clears the states of the RTS modem handshake outputs
 //! from the UART.
 //!
 //! The \e ulControl parameter is the logical OR of any of the following:
 //!
-//! - \b UART_OUTPUT_DTR - The Modem Control DTR signal
 //! - \b UART_OUTPUT_RTS - The Modem Control RTS signal
 //!
 //! \note The availability of hardware modem handshake signals varies with the
@@ -702,27 +643,24 @@ UARTModemControlClear(unsigned long ulBase, unsigned long ulControl)
     // Set the appropriate modem control output bits.
     //
     ulTemp = HWREG(ulBase + UART_O_CTL);
-    ulTemp &= ~(ulControl & (UART_OUTPUT_RTS | UART_OUTPUT_DTR));
+    ulTemp &= ~(ulControl & (UART_OUTPUT_RTS));
     HWREG(ulBase + UART_O_CTL) = ulTemp;
 }
 
 //*****************************************************************************
 //
-//! Gets the states of the DTR and RTS modem control signals.
+//! Gets the states of the RTS modem control signals.
 //!
 //! \param ulBase is the base address of the UART port.
 //!
-//! This function returns the current states of each of the two UART modem
-//! control signals, DTR and RTS.
+//! This function returns the current states of each of the UART modem
+//! control signal, RTS.
 //!
 //! \note The availability of hardware modem handshake signals varies with the
 //!  part and UART in use.  Please consult the datasheet for the part
 //! you are using to determine whether this support is available.
 //!
-//! \return Returns the states of the handshake output signals.  This will be a
-//! logical logical OR combination of values \b UART_OUTPUT_RTS and
-//! \b UART_OUTPUT_DTR where the presence of each flag indicates that the
-//! associated signal is asserted.
+//! \return Returns the states of the handshake output signal.
 //
 //*****************************************************************************
 unsigned long
@@ -733,26 +671,23 @@ UARTModemControlGet(unsigned long ulBase)
     //
     ASSERT(ulBase == UARTA1_BASE);
 
-    return(HWREG(ulBase + UART_O_CTL) & (UART_OUTPUT_RTS | UART_OUTPUT_DTR));
+    return(HWREG(ulBase + UART_O_CTL) & (UART_OUTPUT_RTS));
 }
 
 //*****************************************************************************
 //
-//! Gets the states of the RI, DCD, DSR and CTS modem status signals.
+//! Gets the states of the CTS modem status signal.
 //!
 //! \param ulBase is the base address of the UART port.
 //!
-//! This function returns the current states of each of the four UART modem
-//! status signals, RI, DCD, DSR and CTS.
+//! This function returns the current states of the UART modem status signal,
+//! CTS.
 //!
 //! \note The availability of hardware modem handshake signals varies with the
 //!  part and UART in use.  Please consult the datasheet for the part
 //! you are using to determine whether this support is available.
 //!
-//! \return Returns the states of the handshake output signals.  This value
-//! will be a logical logical OR combination of values \b UART_INPUT_RI,
-//! \b UART_INPUT_DCD, \b UART_INPUT_CTS and \b UART_INPUT_DSR where the
-//! presence of each flag indicates that the associated signal is asserted.
+//! \return Returns the states of the handshake output signal
 //
 //*****************************************************************************
 unsigned long
@@ -764,8 +699,7 @@ UARTModemStatusGet(unsigned long ulBase)
 
     ASSERT(ulBase == UARTA1_BASE);
 
-    return(HWREG(ulBase + UART_O_FR) & (UART_INPUT_RI | UART_INPUT_DCD |
-           UART_INPUT_CTS | UART_INPUT_DSR));
+    return(HWREG(ulBase + UART_O_FR) & (UART_INPUT_CTS));
 }
 
 //*****************************************************************************
@@ -786,7 +720,7 @@ UARTModemStatusGet(unsigned long ulBase)
 //! hardware flow control is required, \b UART_FLOWCONTROL_NONE should be
 //! passed.
 //!
-//! \note The availability of hardware flow control varies with the 
+//! \note The availability of hardware flow control varies with the
 //! part and UART in use.  Please consult the datasheet for the part you are
 //! using to determine whether this support is available.
 //!
@@ -819,7 +753,7 @@ UARTFlowControlSet(unsigned long ulBase, unsigned long ulMode)
 //!
 //! This function returns the current hardware flow control mode.
 //!
-//! \note The availability of hardware flow control varies with the 
+//! \note The availability of hardware flow control varies with the
 //! part and UART in use.  Please consult the datasheet for the part you are
 //! using to determine whether this support is available.
 //!
@@ -985,9 +919,6 @@ UARTSpaceAvail(unsigned long ulBase)
 //! This function gets a character from the receive FIFO for the specified
 //! port.
 //!
-//! This function replaces the original UARTCharNonBlockingGet() API and
-//! performs the same actions.  A macro is provided in <tt>uart.h</tt> to map
-//! the original API to this API.
 //!
 //! \return Returns the character read from the specified port, cast as a
 //! \e long.  A \b -1 is returned if there are no characters present in the
@@ -1068,10 +999,6 @@ UARTCharGet(unsigned long ulBase)
 //! specified port.  This function does not block, so if there is no space
 //! available, then a \b false is returned, and the application must retry the
 //! function later.
-//!
-//! This function replaces the original UARTCharNonBlockingPut() API and
-//! performs the same actions.  A macro is provided in <tt>uart.h</tt> to map
-//! the original API to this API.
 //!
 //! \return Returns \b true if the character was successfully placed in the
 //! transmit FIFO or \b false if there was no space available in the transmit
@@ -1325,10 +1252,7 @@ UARTIntUnregister(unsigned long ulBase)
 //! - \b UART_INT_RT - Receive Timeout interrupt
 //! - \b UART_INT_TX - Transmit interrupt
 //! - \b UART_INT_RX - Receive interrupt
-//! - \b UART_INT_DSR - DSR interrupt
-//! - \b UART_INT_DCD - DCD interrupt
 //! - \b UART_INT_CTS - CTS interrupt
-//! - \b UART_INT_RI - RI interrupt
 //!
 //! \return None.
 //
@@ -1582,74 +1506,6 @@ UARTRxErrorClear(unsigned long ulBase)
     // currently set.
     //
     HWREG(ulBase + UART_O_ECR) = 0;
-}
-
-//*****************************************************************************
-//
-//! Sets the baud clock source for the specified UART.
-//!
-//! \param ulBase is the base address of the UART port.
-//! \param ulSource is the baud clock source for the UART.
-//!
-//! This function allows the baud clock source for the UART to be selected.
-//! The possible clock source are the system clock (\b UART_CLOCK_SYSTEM) or
-//! the precision internal oscillator (\b UART_CLOCK_PIOSC).
-//!
-//! Changing the baud clock source will change the baud rate generated by the
-//! UART.  Therefore, the baud rate should be reconfigured after any change to
-//! the baud clock source.
-//!
-//! \note The ability to specify the UART baud clock source varies with the
-//!  part and UART in use.  Please consult the datasheet for the part
-//! you are using to determine whether this support is available.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-UARTClockSourceSet(unsigned long ulBase, unsigned long ulSource)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(UARTBaseValid(ulBase));
-    ASSERT((ulSource == UART_CLOCK_SYSTEM) || (ulSource == UART_CLOCK_PIOSC));
-
-    //
-    // Set the UART clock source.
-    //
-    HWREG(ulBase + UART_O_CC) = ulSource;
-}
-
-//*****************************************************************************
-//
-//! Gets the baud clock source for the specified UART.
-//!
-//! \param ulBase is the base address of the UART port.
-//!
-//! This function returns the baud clock source for the specified UART.  The
-//! possible baud clock source are the system clock (\b UART_CLOCK_SYSTEM) or
-//! the precision internal oscillator (\b UART_CLOCK_PIOSC).
-//!
-//! \note The ability to specify the UART baud clock source varies with the
-//!  part and UART in use.  Please consult the datasheet for the part
-//! you are using to determine whether this support is available.
-//!
-//! \return None.
-//
-//*****************************************************************************
-unsigned long
-UARTClockSourceGet(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(UARTBaseValid(ulBase));
-
-    //
-    // Return the UART clock source.
-    //
-    return(HWREG(ulBase + UART_O_CC));
 }
 
 //*****************************************************************************

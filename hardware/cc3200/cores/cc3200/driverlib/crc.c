@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// crc.c - Driver for the CRC module.
+//  crc.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the CRC module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -28,75 +51,6 @@
 #include "inc/hw_types.h"
 #include "driverlib/crc.h"
 #include "driverlib/debug.h"
-
-#if 0
-//*****************************************************************************
-//
-//! Triggers a request to enable or disable the clock of a sub-module in the
-//! EC module.
-//!
-//! \param ui32Base is the base address of the EC module.
-//! \param ui32ECIP specifies the IP within the EC module to access.
-//! \param bGate is \b true to request to gate the clock, or \b false to
-//! request to stop gating the clock.
-//!
-//! This function triggers a request to enable or disable the clock to a
-//! sub-module in the EC module.
-//!
-//! \note By default the clock is enabled if the sub-module is present.
-//!
-//! \return None
-//
-//*****************************************************************************
-void
-ECClockEnable(uint32_t ui32Base, uint32_t ui32ECIP,
-                bool bEnable)
-{
-    uint32_t ui32ClkReqMask, ui32ClkReqValue;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DTHE_BASE);
-    ASSERT((ui32ECIP == EC_SHA0) ||
-           (ui32ECIP == EC_AES0) ||
-           (ui32ECIP == EC_DES0));
-
-    //
-    // Get the current value of the clock gating request register.
-    //
-    ui32ClkReqValue = HWREG(ui32Base + DTHE_O_CGREQ);
-
-    //
-    // Calculate the register bit value based on the argument.
-    //
-    ui32ClkReqMask = 0x00000001 << ((ui32ECIP >> 4) - 1);
-
-    //
-    // Set or clear the bit depending on bEnable.
-    //
-    if(bEnable)
-    {
-        //
-        // Request to stop the clock
-        //
-        ui32ClkReqValue = ui32ClkReqValue & (~ui32ClkReqMask);
-
-    }
-    else
-    {
-        //
-        // Request to gate the clock
-        //
-        ui32ClkReqValue = ui32ClkReqValue | ui32ClkReqMask;
-    }
-
-    //
-    // Write the new register value.
-    //
-    HWREG(ui32Base + DTHE_O_CGREQ) = ui32ClkReqValue;
-}
-#endif
 
 //*****************************************************************************
 //
@@ -236,8 +190,6 @@ CRCDataWrite(uint32_t ui32Base, uint32_t ui32Data)
 //! Reads the result of a CRC operation in the EC module.
 //!
 //! \param ui32Base is the base address of the EC module.
-//! \param bPPResult is \b true to read the post-processed result, or \b false
-//! to read the unmodified result.
 //!
 //! This function reads either the unmodified CRC result or the post
 //! processed CRC result from the EC module.  The post-processing options
@@ -248,7 +200,7 @@ CRCDataWrite(uint32_t ui32Base, uint32_t ui32Data)
 //
 //*****************************************************************************
 uint32_t
-CRCResultRead(uint32_t ui32Base, bool bPPResult)
+CRCResultRead(uint32_t ui32Base)
 {
     //
     // Check the arguments.
@@ -256,17 +208,10 @@ CRCResultRead(uint32_t ui32Base, bool bPPResult)
     ASSERT(ui32Base == DTHE_BASE);
 
     //
-    // Depending on the value of bPPResult, read the appropriate register and
     // return value.
     //
-    if(bPPResult)
-    {
-        return(HWREG(DTHE_BASE + DTHE_O_CRC_RSLT_PP));
-    }
-    else
-    {
-        return(HWREG(DTHE_BASE + DTHE_O_CRC_SEED));
-    }
+    return(HWREG(DTHE_BASE + DTHE_O_CRC_RSLT_PP));
+
 }
 
 //*****************************************************************************
@@ -274,13 +219,13 @@ CRCResultRead(uint32_t ui32Base, bool bPPResult)
 //! Process data to generate a CRC with the EC module.
 //!
 //! \param ui32Base is the base address of the EC module.
-//! \param pui32DataIn is a pointer to an array of data that is processed.
+//! \param puiDataIn is a pointer to an array of data that is processed.
 //! \param ui32DataLength is the number of data items that are processed
 //! to produce the CRC.
-//! \param bPPResult is \b true to read the post-processed result, or \b false
-//! to read the unmodified result.
+//! \param ui32Config the config parameter to determine the CRC mode
 //!
 //! This function processes an array of data to produce a CRC result.
+//! This function takes the CRC mode as the parameter.
 //!
 //! The data in the array pointed to be \e pui32DataIn is either an array
 //! of bytes or an array or words depending on the selection of the input
@@ -296,10 +241,11 @@ CRCResultRead(uint32_t ui32Base, bool bPPResult)
 //
 //*****************************************************************************
 uint32_t
-CRCDataProcess(uint32_t ui32Base, uint32_t *pui32DataIn,
-               uint32_t ui32DataLength, bool bPPResult)
+CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
+               uint32_t ui32DataLength, uint32_t ui32Config)
 {
     uint8_t *pui8DataIn;
+    uint32_t *pui32DataIn;
 
     //
     // Check the arguments.
@@ -309,13 +255,13 @@ CRCDataProcess(uint32_t ui32Base, uint32_t *pui32DataIn,
     //
     // See if the CRC is operating in 8-bit or 32-bit mode.
     //
-    if(HWREG(ui32Base + DTHE_O_CRC_CTRL) & DTHE_CRC_CTRL_SIZE)
+    if(ui32Config & DTHE_CRC_CTRL_SIZE)
     {
         //
         // The CRC is operating in 8-bit mode, so create an 8-bit pointer to
         // the data.
         //
-        pui8DataIn = (uint8_t *)pui32DataIn;
+        pui8DataIn = (uint8_t *)puiDataIn;
 
         //
         // Loop through the input data.
@@ -333,6 +279,7 @@ CRCDataProcess(uint32_t ui32Base, uint32_t *pui32DataIn,
         //
         // The CRC is operating in 32-bit mode, so loop through the input data.
         //
+    	pui32DataIn = (uint32_t *)puiDataIn;
         while(ui32DataLength--)
         {
             //
@@ -345,8 +292,10 @@ CRCDataProcess(uint32_t ui32Base, uint32_t *pui32DataIn,
     //
     // Return the result.
     //
-    return(CRCResultRead(ui32Base, bPPResult));
+    return(CRCResultRead(ui32Base));
 }
+
+
 
 //*****************************************************************************
 //

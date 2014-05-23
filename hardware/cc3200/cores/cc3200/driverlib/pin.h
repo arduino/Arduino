@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// pin.h - Defines and Macros for the pin mux module
+//  pin.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Defines and Macros for the pin mux module
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -27,7 +50,7 @@
 extern "C"
 {
 #endif
- 
+
 //*****************************************************************************
 // Macros Defining Pins
 //*****************************************************************************
@@ -75,7 +98,7 @@ extern "C"
 //*****************************************************************************
 // Macros that can be used with PinConfigSet(), PinTypeGet(), PinStrengthGet()
 //*****************************************************************************
- 
+
 #define PIN_MODE_0	 0x00000000
 #define PIN_MODE_1	 0x00000001
 #define PIN_MODE_2	 0x00000002
@@ -103,10 +126,10 @@ extern "C"
 
 //*****************************************************************************
 // Macros that can be used with PinConfigSet()
-//*****************************************************************************  
+//*****************************************************************************
 #define PIN_STRENGTH_2MA  0x00000020
 #define PIN_STRENGTH_4MA  0x00000040
-#define PIN_STRENGTH_8MA  0x00000080
+#define PIN_STRENGTH_6MA  0x00000060
 
 #define PIN_TYPE_STD      0x00000000
 #define PIN_TYPE_STD_PU   0x00000100
@@ -116,26 +139,25 @@ extern "C"
 #define PIN_TYPE_OD_PU    0x00000110
 #define PIN_TYPE_OD_PD    0x00000210
 #define PIN_TYPE_ANALOG   0x10000000
-  
-  
+
+
 //*****************************************************************************
 //
 // API Function prototypes
 //
 //*****************************************************************************
-
 extern void PinModeSet(unsigned long ulPin, unsigned long ulPinMode);
 extern void PinDirModeSet(unsigned long ulPin, unsigned long ulPinIO);
 extern unsigned long PinDirModeGet(unsigned long ulPin);
-extern unsigned long PinModeGet(unsigned long ulPin); 
+extern unsigned long PinModeGet(unsigned long ulPin);
 extern void PinConfigGet(unsigned long ulPin,unsigned long  *pulPinStrength,
 	       					unsigned long *pulPinType);
-extern void PinConfigSet(unsigned long ulPin,unsigned long  ulPinStrength, 
+extern void PinConfigSet(unsigned long ulPin,unsigned long  ulPinStrength,
 						unsigned long ulPinType);
 extern void PinTypeUART(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeI2C(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeSPI(unsigned long ulPin,unsigned long ulPinMode);
-extern void PinTypeMcASP(unsigned long ulPin,unsigned long ulPinMode);
+extern void PinTypeI2S(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeTimer(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeCamera(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeGPIO(unsigned long ulPin,unsigned long ulPinMode,

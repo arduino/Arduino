@@ -1,22 +1,45 @@
 //*****************************************************************************
 //
-// shamd5.c - Driver for the SHA/MD5 module.
+//  shamd5.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the SHA/MD5 module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
 //*****************************************************************************
 //
-//! \addtogroup SHA_Secure_Hash_Algorithm_ap
+//! \addtogroup SHA_Secure_Hash_Algorithm_api
 //! @{
 //
 //*****************************************************************************
@@ -136,7 +159,7 @@ SHAMD5IntStatus(uint32_t ui32Base, bool bMasked)
         ui32Temp = HWREG(DTHE_BASE + DTHE_O_SHA_RIS);
         return(HWREG(ui32Base + SHAMD5_O_IRQSTATUS) |
                (ui32Temp & 0x00000007) << 16);
-               
+
     }
 }
 
@@ -362,7 +385,7 @@ SHAMD5IntUnregister(uint32_t ui32Base)
 //
 //*****************************************************************************
 void
-SHAMD5HashLengthSet(uint32_t ui32Base, uint32_t ui32Length)
+SHAMD5DataLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 {
     //
     // Check the arguments.
@@ -425,20 +448,19 @@ SHAMD5ConfigSet(uint32_t ui32Base, uint32_t ui32Mode)
 //! Perform a non-blocking write of 16 words of data to the SHA/MD5 module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32Src is the pointer to the 16-word array of data that will be
+//! \param pui8Src is the pointer to the 16-word array of data that will be
 //! written.
 //!
-//! This function writes 16 words of data into the data register regardless
-//! of whether or not the module is ready to accept the data.
+//! This function writes 16 words of data into the data register.
 //!
 //! \return This function returns true if the write completed successfully.
 //! It returns false if the module was not ready.
 //
 //*****************************************************************************
 bool
-SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
+SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src)
 {
-    uint32_t ui32Counter;
+    uint32_t ui8Counter;
 
     //
     // Check the arguments.
@@ -456,9 +478,9 @@ SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
     //
     // Write the 16 words of data.
     //
-    for(ui32Counter = 0; ui32Counter < 64; ui32Counter += 4)
+    for(ui8Counter = 0; ui8Counter < 64; ui8Counter += 4)
     {
-        HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui32Counter) = *pui32Src++;
+        HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui8Counter) = *((uint32_t *)(pui8Src + ui8Counter));
     }
 
     //
@@ -469,10 +491,10 @@ SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
 
 //*****************************************************************************
 //
-//! Perform a blocking write of 16 words of data to the SHA/MD5 module.
+//! Perform a blocking write of 64 bytes of data to the SHA/MD5 module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32Src is the pointer to the 16-word array of data that will be
+//! \param pui8Src is the pointer to the 64-byte array of data that will be
 //! written.
 //!
 //! This function does not return until the module is ready to accept data and
@@ -482,9 +504,9 @@ SHAMD5DataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
 //
 //*****************************************************************************
 void
-SHAMD5DataWrite(uint32_t ui32Base, uint32_t *pui32Src)
+SHAMD5DataWrite(uint32_t ui32Base, uint8_t *pui8Src)
 {
-    uint32_t ui32Counter;
+    uint8_t ui8Counter;
 
     //
     // Check the arguments.
@@ -499,30 +521,40 @@ SHAMD5DataWrite(uint32_t ui32Base, uint32_t *pui32Src)
     }
 
     //
-    // Write the 16 words of data.
+    // Write the 64 bytes of data.
     //
-    for(ui32Counter = 0; ui32Counter < 64; ui32Counter += 4)
+    for(ui8Counter = 0; ui8Counter < 64; ui8Counter += 4)
     {
-        HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui32Counter) = *pui32Src++;
+        HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui8Counter) =
+                                        *((uint32_t *) (pui8Src + ui8Counter));
     }
 }
+
 
 //*****************************************************************************
 //
 //! Reads the result of a hashing operation.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32Dest is the pointer to the 16-word array of data that will be
+//! \param pui8Dest is the pointer to the byte array of data that will be
 //! written.
 //!
 //! This function does not return until the module is ready to accept data and
 //! the data has been written.
+//! -----------------------------------------
+//! | Algorithm | Number of Words in Result |
+//! -----------------------------------------
+//! | MD5       | 16 Bytes (128 bits)        |
+//! | SHA-1     | 20 Bytes (160 bits)        |
+//! | SHA-224   | 28 Bytes (224 bits)        |
+//! | SHA-256   | 32 Bytes (256 bits)        |
+//! -----------------------------------------
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-SHAMD5ResultRead(uint32_t ui32Base, uint32_t *pui32Dest)
+SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest)
 {
     uint32_t ui32Idx, ui32Count;
 
@@ -618,7 +650,8 @@ SHAMD5ResultRead(uint32_t ui32Base, uint32_t *pui32Dest)
     //
     for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx += 4)
     {
-        *pui32Dest++ = HWREG(ui32Base + SHAMD5_O_IDIGEST_A + ui32Idx);
+    	*((uint32_t *)(pui8Dest+ui32Idx)) =
+                                HWREG(ui32Base + SHAMD5_O_IDIGEST_A + ui32Idx);
     }
 }
 
@@ -627,13 +660,12 @@ SHAMD5ResultRead(uint32_t ui32Base, uint32_t *pui32Dest)
 //! Writes multiple words of data into the SHA/MD5 data registers.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32DataSrc is a pointer to an array of data to be written.
+//! \param pui8DataSrc is a pointer to an array of data to be written.
 //! \param ui32DataLength is the length of the data to be written in bytes.
 //!
 //! This function writes a variable number of words into the SHA/MD5 data
 //! registers.  The function waits for each block of data to be processed
-//! before another is written. The \e ui32DataLength parameter must be a
-//! multiple of 4 to fall on a word boundry.
+//! before another is written.
 //!
 //! \note This function is used by SHAMD5HashCompute(), SHAMD5HMACWithKPP(),
 //! and SHAMD5HMACNoKPP() to process data.
@@ -642,10 +674,12 @@ SHAMD5ResultRead(uint32_t ui32Base, uint32_t *pui32Dest)
 //
 //*****************************************************************************
 static void
-SHAMD5DataWriteMultiple(uint32_t ui32Base, uint32_t *pui32DataSrc,
+SHAMD5DataWriteMultiple(uint32_t ui32Base, uint8_t *pui8DataSrc,
                         uint32_t ui32DataLength)
 {
-    uint32_t ui32Idx, ui32Count;
+    uint32_t ui32Idx, ui32Count, ui32TempData=0, ui32Lastword;
+    uint8_t * ui8TempData;
+
 
     //
     // Check the arguments.
@@ -667,12 +701,11 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint32_t *pui32DataSrc,
         //
         // Write the block of data.
         //
-        SHAMD5DataWrite(ui32Base, pui32DataSrc);
-
+        SHAMD5DataWrite(ui32Base,pui8DataSrc);
         //
         // Increment the pointer to next block of data.
         //
-        pui32DataSrc += 16;
+        pui8DataSrc += 64;
     }
 
     //
@@ -697,13 +730,35 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint32_t *pui32DataSrc,
         //
         // Loop through the remaining words.
         //
-        for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx += 4)
+        ui32Count = ui32Count / 4;
+        for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx ++)
         {
             //
             // Write the word into the data register.
             //
-            HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui32Idx) = *pui32DataSrc++;
+            HWREG(ui32Base + SHAMD5_O_DATA0_IN + (ui32Idx * 4)) =* ( (uint32_t *) pui8DataSrc);
+            pui8DataSrc +=4;
         }
+        //
+        // Loop through the remaining bytes
+        //
+        ui32Count = ui32DataLength % 4;
+        ui8TempData = (uint8_t *) &ui32TempData;
+        if(ui32Count)
+        {
+        	ui32Lastword = 0;
+        	if(ui32Idx)
+        	{
+        		ui32Lastword = (ui32Idx-1) *4;
+        	}
+        	for(ui32Idx=0 ; ui32Idx<ui32Count ; ui32Idx++)
+        	{
+        		*(ui8TempData+ui32Idx) = *(pui8DataSrc+ui32Idx);
+        	}
+        	HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui32Lastword) = ui32TempData;
+        }
+
+
     }
 }
 
@@ -712,11 +767,11 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint32_t *pui32DataSrc,
 //! Compute a hash using the SHA/MD5 module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32DataSrc is a pointer to an array of data that contains the
+//! \param pui8DataSrc is a pointer to an array of data that contains the
 //! data that will be hashed.
 //! \param ui32DataLength specifies the length of the data to be hashed in
 //! bytes.
-//! \param pui32HashResult is a pointer to an array that holds the result
+//! \param pui8HashResult is a pointer to an array that holds the result
 //! of the hashing operation.
 //!
 //! This function computes the hash of an array of data using the SHA/MD5
@@ -737,9 +792,9 @@ SHAMD5DataWriteMultiple(uint32_t ui32Base, uint32_t *pui32DataSrc,
 //! \return None
 //
 //*****************************************************************************
-void
-SHAMD5DataProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
-                  uint32_t ui32DataLength, uint32_t *pui32HashResult)
+bool
+SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
+                  uint32_t ui32DataLength, uint8_t *pui8HashResult)
 {
     //
     // Check the arguments.
@@ -758,12 +813,12 @@ SHAMD5DataProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
     //
     // Write the length.
     //
-    SHAMD5HashLengthSet(ui32Base, ui32DataLength);
+    SHAMD5DataLengthSet(ui32Base, ui32DataLength);
 
     //
     // Write the data.
     //
-    SHAMD5DataWriteMultiple(ui32Base, pui32DataSrc, ui32DataLength);
+    SHAMD5DataWriteMultiple(ui32Base, pui8DataSrc, ui32DataLength);
 
     //
     // Wait for the output to be ready.
@@ -776,7 +831,12 @@ SHAMD5DataProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
     //
     // Read the result.
     //
-    SHAMD5ResultRead(ui32Base, pui32HashResult);
+    SHAMD5ResultRead(ui32Base, pui8HashResult);
+
+    //
+    // Return true to indicate successful completion of the function.
+    //
+    return(true);
 }
 
 //*****************************************************************************
@@ -784,11 +844,11 @@ SHAMD5DataProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
 //! Compute a HMAC with key pre-processing using the SHA/MD5 module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32DataSrc is a pointer to an array of data that contains the
+//! \param pui8DataSrc is a pointer to an array of data that contains the
 //! data that is to be hashed.
 //! \param ui32DataLength specifies the length of the data to be hashed in
 //! bytes.
-//! \param pui32HashResult is a pointer to an array that holds the result
+//! \param pui8HashResult is a pointer to an array that holds the result
 //! of the hashing operation.
 //!
 //! This function computes a HMAC with the given data using the SHA/MD5
@@ -810,9 +870,9 @@ SHAMD5DataProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
 //! \return None
 //
 //*****************************************************************************
-void
-SHAMD5HMACProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
-                  uint32_t ui32DataLength, uint32_t *pui32HashResult)
+bool
+SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
+                  uint32_t ui32DataLength, uint8_t *pui8HashResult)
 {
     //
     // Check the arguments.
@@ -830,12 +890,12 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
     //
     // Write the length.
     //
-    SHAMD5HashLengthSet(ui32Base, ui32DataLength);
+    SHAMD5DataLengthSet(ui32Base, ui32DataLength);
 
     //
     // Write the data in the registers.
     //
-    SHAMD5DataWriteMultiple(ui32Base, pui32DataSrc, ui32DataLength);
+    SHAMD5DataWriteMultiple(ui32Base,pui8DataSrc, ui32DataLength);
 
     //
     // Wait for the output to be ready.
@@ -848,7 +908,13 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
     //
     // Read the result.
     //
-    SHAMD5ResultRead(ui32Base, pui32HashResult);
+    SHAMD5ResultRead(ui32Base, pui8HashResult);
+
+    //
+    // Return true to indicate successful completion of the function.
+    //
+    return(true);
+
 }
 
 //*****************************************************************************
@@ -856,25 +922,25 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint32_t *pui32DataSrc,
 //! Process an HMAC key using the SHA/MD5 module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32Key is a pointer to an array that contains the key to be
+//! \param pui8Key is a pointer to an array that contains the key to be
 //! processed.
-//! \param pui32PPKey is the pointer to the array that contains the
+//! \param pui8PPKey is the pointer to the array that contains the
 //! pre-processed key.
 //!
 //! This function processes an HMAC key using the SHA/MD5.  The resultant
 //! pre-processed key can then be used with later HMAC operations to speed
 //! processing time.
 //!
-//! The \e pui32Key array must be 16 words (512 bits) long. If the key is
+//! The \e pui8Key array must be 512 bits long. If the key is
 //! less than 512 bits, it must be padded with zeros.  The
-//! \e pui32PPKey array must each be 16 words (512 bits) long.
+//! \e pui8PPKey array must each be 512 bits long.
 //!
 //! \return None
 //
 //*****************************************************************************
 void
-SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint32_t *pui32Key,
-                        uint32_t *pui32PPKey)
+SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
+                        uint8_t *pui8PPKey)
 {
     uint32_t ui32Index;
 
@@ -896,7 +962,8 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint32_t *pui32Key,
     //
     for(ui32Index = 0; ui32Index < 64; ui32Index += 4)
     {
-        HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index) = *pui32Key++;
+        HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index) =
+                                          *((uint32_t *)(pui8Key + ui32Index));
     }
 
     //
@@ -922,7 +989,8 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint32_t *pui32Key,
     //
     for(ui32Index = 0; ui32Index < 64; ui32Index += 4)
     {
-        *pui32PPKey++ = HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index);
+    	*((uint32_t *)(pui8PPKey+ui32Index)) =
+                              HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index);
     }
 }
 
@@ -931,10 +999,10 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint32_t *pui32Key,
 //! Writes an HMAC key to the digest registers in the SHA/MD5 module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32Src is the pointer to the 16-word array of the HMAC key.
+//! \param pui8Src is the pointer to the 16-word array of the HMAC key.
 //!
 //! This function is used to write HMAC key to the digest registers for
-//! key preprocessing.  The size of pui32Src must be 512 bytes.  If the key is
+//! key preprocessing.  The size of pui8Src must be 512 bytes.  If the key is
 //! less than 512 bytes, then it must be padded with zeros.
 //!
 //! \note It is recommended to use the SHAMD5GetIntStatus function to check
@@ -944,7 +1012,7 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint32_t *pui32Key,
 //
 //*****************************************************************************
 void
-SHAMD5HMACKeySet(uint32_t ui32Base, uint32_t *pui32Src)
+SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t *pui8Src)
 {
     uint32_t ui32Idx;
 
@@ -958,7 +1026,8 @@ SHAMD5HMACKeySet(uint32_t ui32Base, uint32_t *pui32Src)
     //
     for(ui32Idx = 0; ui32Idx < 64; ui32Idx += 4)
     {
-        HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) = *pui32Src++;
+        HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) =
+                                           * ((uint32_t *)(pui8Src + ui32Idx));
     }
 
     //
@@ -975,10 +1044,10 @@ SHAMD5HMACKeySet(uint32_t ui32Base, uint32_t *pui32Src)
 //! module.
 //!
 //! \param ui32Base is the base address of the SHA/MD5 module.
-//! \param pui32Src is the pointer to the 16-word array of the HMAC key.
+//! \param pui8Src is the pointer to the 16-word array of the HMAC key.
 //!
 //! This function is used to write HMAC key to the digest registers for
-//! key preprocessing.  The size of pui32Src must be 512 bytes.  If the key is
+//! key preprocessing.  The size of pui8Src must be 512 bytes.  If the key is
 //! less than 512 bytes, then it must be padded with zeros.
 //!
 //! \note It is recommended to use the SHAMD5GetIntStatus function to check
@@ -988,7 +1057,7 @@ SHAMD5HMACKeySet(uint32_t ui32Base, uint32_t *pui32Src)
 //
 //*****************************************************************************
 void
-SHAMD5HMACPPKeySet(uint32_t ui32Base, uint32_t *pui32Src)
+SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t *pui8Src)
 {
     uint32_t ui32Idx;
 
@@ -1002,7 +1071,8 @@ SHAMD5HMACPPKeySet(uint32_t ui32Base, uint32_t *pui32Src)
     //
     for(ui32Idx = 0; ui32Idx < 64; ui32Idx += 4)
     {
-        HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) = *pui32Src++;
+        HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) =
+                                           *((uint32_t *) (pui8Src + ui32Idx));
     }
 
     //

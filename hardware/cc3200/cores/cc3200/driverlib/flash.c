@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// flash.c - Driver for programming the on-chip flash.
+//  flash.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for programming the on-chip flash.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -63,8 +86,8 @@ static const unsigned long g_pulFMPPERegs[] =
     FLASH_FMPPE13,
     FLASH_FMPPE14,
     FLASH_FMPPE15
-    
-    
+
+
 };
 
 //*****************************************************************************
@@ -109,34 +132,34 @@ FlashDisable()
   //
   // Wait for Flash Busy to get cleared
   //
-  while((HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) 
+  while((HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE)
           & GPRCM_TOP_DIE_ENABLE_FLASH_BUSY))
   {
-      
+
   }
-  
+
   //
   // Assert reset
   //
   HWREG(HIB1P2_BASE + HIB1P2_O_PORPOL_SPARE) = 0xFFFF0000;
-  
+
   //
   // 50 usec Delay Loop
   //
   UtilsDelay((50*80)/3);
-  
-  // 
+
+  //
   // Disable TDFlash
   //
   HWREG(GPRCM_BASE + GPRCM_O_TOP_DIE_ENABLE) = 0x0;
-  
+
   //
   // 50 usec Delay Loop
   //
   UtilsDelay((50*80)/3);
-  
+
   HWREG(HIB1P2_BASE + HIB1P2_O_BGAP_DUTY_CYCLING_EXIT_CFG) = 0x1;
-  
+
   //
   // 50 usec Delay Loop
   //
@@ -171,14 +194,14 @@ FlashErase(unsigned long ulAddress)
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC)
       = (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
                            FLASH_CTRL_FCMISC_ERMISC);
 
     // Erase the block.
     //
     HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMA) = ulAddress;
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC)
                                 = FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_ERASE;
 
     //
@@ -187,7 +210,7 @@ FlashErase(unsigned long ulAddress)
     while(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_ERASE)
     {
     }
-    
+
     //
     // Return an error if an access violation or erase error occurred.
     //
@@ -235,7 +258,7 @@ FlashEraseNonBlocking(unsigned long ulAddress)
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) = 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
       (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
                            FLASH_CTRL_FCMISC_ERMISC);
 
@@ -262,22 +285,22 @@ FlashMassErase()
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) = 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
       (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
                            FLASH_CTRL_FCMISC_ERMISC);
-    
+
     //
     // Command the flash controller for mass erase.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) = 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) =
       FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_MERASE1;
-    
+
     //
     // Wait until mass erase completes.
     //
     while(HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) & FLASH_CTRL_FMC_MERASE1)
     {
-        
+
     }
 
     //
@@ -312,14 +335,14 @@ FlashMassEraseNonBlocking()
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) = 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) =
       (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
                            FLASH_CTRL_FCMISC_ERMISC);
-    
+
     //
     // Command the flash controller for mass erase.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) = 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC) =
       FLASH_CTRL_FMC_WRKEY | FLASH_CTRL_FMC_MERASE1;
 
 }
@@ -361,7 +384,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC)
       = (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
                            FLASH_CTRL_FCMISC_INVDMISC | FLASH_CTRL_FCMISC_PROGMISC);
 
@@ -385,14 +408,14 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             // Loop over the words in this 32-word block.
             //
-            while(((ulAddress & 0x7C) || 
+            while(((ulAddress & 0x7C) ||
                    (HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBVAL) == 0)) &&
                   (ulCount != 0))
             {
                 //
                 // Write this word into the write buffer.
                 //
-                HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBN 
+                HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FWBN
                       + (ulAddress & 0x7C)) = *pulData++;
                 ulAddress += 4;
                 ulCount -= 4;
@@ -401,7 +424,7 @@ FlashProgram(unsigned long *pulData, unsigned long ulAddress,
             //
             // Program the contents of the write buffer into flash.
             //
-            HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC2) 
+            HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FMC2)
               = FLASH_CTRL_FMC2_WRKEY | FLASH_CTRL_FMC2_WRBUF;
 
             //
@@ -506,7 +529,7 @@ FlashProgramNonBlocking(unsigned long *pulData, unsigned long ulAddress,
     //
     // Clear the flash access and error interrupts.
     //
-    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC) 
+    HWREG(FLASH_CONTROL_BASE + FLASH_CTRL_O_FCMISC)
       = (FLASH_CTRL_FCMISC_AMISC | FLASH_CTRL_FCMISC_VOLTMISC |
                            FLASH_CTRL_FCMISC_INVDMISC | FLASH_CTRL_FCMISC_PROGMISC);
 

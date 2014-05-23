@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// adc.h - Defines and Macros for the ADC.
+//  adc.h
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Defines and Macros for the ADC.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -39,7 +62,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to ADCIntEnable(), ADCIntDisable() 
+// Values that can be passed to ADCIntEnable(), ADCIntDisable()
 // and ADCIntClear() as ulIntFlags, and returned from ADCIntStatus()
 //
 //*****************************************************************************
@@ -71,28 +94,24 @@ extern void ADCEnable(unsigned long ulBase);
 extern void ADCDisable(unsigned long ulBase);
 extern void ADCChannelEnable(unsigned long ulBase,unsigned long ulChannel);
 extern void ADCChannelDisable(unsigned long ulBase,unsigned long ulChannel);
-extern void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel, 
+extern void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
                     void (*pfnHandler)(void));
 extern void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel);
-extern void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel, 
+extern void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
                   unsigned long ulIntFlags);
-extern void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel, 
+extern void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
                   unsigned long ulIntFlags);
 extern unsigned long ADCIntStatus(unsigned long ulBase,unsigned long ulChannel);
-extern void ADCIntClear(unsigned long ulBase, unsigned long ulChannel, 
+extern void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
                   unsigned long ulIntFlags);
 extern void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel);
 extern void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel);
-extern void ADCChannelGainSet(unsigned long ulBase, unsigned long ulChannel,
-                       unsigned char ucGain);
-extern unsigned char ADCChannleGainGet(unsigned long ulBase,
-                                       unsigned long ulChannel);
 extern void ADCTimerConfig(unsigned long ulBase, unsigned long ulValue);
 extern void ADCTimerEnable(unsigned long ulBase);
 extern void ADCTimerDisable(unsigned long ulBase);
 extern void ADCTimerReset(unsigned long ulBase);
 extern unsigned long ADCTimerValueGet(unsigned long ulBase);
-extern unsigned char ADCFIFOLvlGet(unsigned long ulBase, 
+extern unsigned char ADCFIFOLvlGet(unsigned long ulBase,
                                    unsigned long ulChannel);
 extern unsigned long ADCFIFORead(unsigned long ulBase,
                                    unsigned long ulChannel);

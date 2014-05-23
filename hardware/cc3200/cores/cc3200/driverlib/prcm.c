@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// prcm.c - Driver for the Power, Reset and Clock Module (PRCM)
+//  prcm.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the Power, Reset and Clock Module (PRCM)
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-//  Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -42,6 +65,75 @@
 #define PRCM_ENABLE_STATUS        0x00000002
 #define SYS_CLK                   80000000
 #define XTAL_CLK                  40000000
+
+
+//*****************************************************************************
+//    CC3200 does not have a true RTC capability. However, API(s) in this file
+//    provide an effective mechanism to support RTC feature in the device.
+//
+//    The implementation to support RTC has been kept very simple. A set of
+//    HIB Memory Registers in conjunction with Slow Clock Counter are used
+//    to render RTC information to users. Core principle of design involves
+//    two steps (a) establish an association between user provided wall-clock
+//    and slow clock counter. (b) store reference value of this associattion
+//    in HIB Registers. This reference value and SCC value are then combined
+//    to create real-world calendar time.
+//
+//    Across HIB cycles, value stored in HIB Registers is retained and slow
+//    clock counter continues to tick, thereby, this arragement is relevant
+//    and valid as long as device has a (tickle) battery power.
+//
+//    Further, provision also has been made to set an alarm. When it RTC value
+//    matches that of set for alarm, an interrupt is generated.
+//
+//    HIB MEM REG0 and REG1 are reserved for TI.
+//
+//    If RTC feature is not used, then HIB REG2 & REG3 are available to user.
+//
+//    Lower half of REG0 is used for TI HW ECO.
+//*****************************************************************************
+#define RTC_U64MSEC_MK(u32Secs, u16Msec) (((unsigned long long)u32Secs << 10)|\
+                                          (u16Msec & 0x3FF))
+
+#define RTC_SECS_IN_U64MSEC(u64Msec)     ((unsigned long)(u64Msec  >>   10))
+#define RTC_MSEC_IN_U64MSEC(u64Msec)     ((unsigned short)(u64Msec & 0x3FF))
+
+#define RTC_SECS_U32_REG_ADDR            (HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG3)
+#define RTC_MSEC_U16_REG_ADDR            (HIB3P3_BASE + HIB3P3_O_MEM_HIB_REG2+2)
+
+#define RTC_U32SECS_REG                 (HWREG(RTC_SECS_U32_REG_ADDR))
+#define RTC_U16MSEC_REG                 (*(unsigned short*)RTC_MSEC_U16_REG_ADDR)
+
+//*****************************************************************************
+// Register Access and Updates
+//
+// Tick of SCC has a resolution of 32768Hz. Therefore, scaling SCC value by 32
+// yields ~1 msec resolution. All operations of SCC in RTC context use ms unit.
+//*****************************************************************************
+#define SCC_U64MSEC_GET()                (PRCMSlowClkCtrGet() >> 5)
+#define SCC_U64MSEC_MATCH_SET(u64Msec)   (PRCMSlowClkCtrMatchSet(u64Msec << 5))
+#define SCC_U64MSEC_MATCH_GET()          (PRCMSlowClkCtrMatchGet() >> 5)
+
+//*****************************************************************************
+//
+// Bit:  31 is used to indicate use of RTC. If set as '1', RTC feature is used.
+// Bits: 30 to 26 are reserved, available to software for use
+// Bits: 25 to 16 are used to save millisecond part of RTC reference.
+// Bits: 15 to 0 are being used for HW Changes / ECO
+//
+//*****************************************************************************
+#define IS_RTC_USED()                    ((RTC_U16MSEC_REG  & (1 << 15))? 1 : 0)
+#define RTC_USE_SET()                    (RTC_U16MSEC_REG |= (1 << 15))
+
+#define RTC_U16MSEC_REG_RD()             (RTC_U16MSEC_REG & 0x3FF)
+#define RTC_U16MSEC_REG_WR(u16Msec)                                           \
+                             (RTC_U16MSEC_REG = ((RTC_U16MSEC_REG & ~0x3FF) | \
+                                                                    u16Msec))
+
+#define RTC_U32SECS_REG_RD()             (RTC_U32SECS_REG)
+#define RTC_U32SECS_REG_WR(u32Secs)      (RTC_U32SECS_REG = u32Secs)
+
+#define SELECT_SCC_U42BITS(u64Msec)      (u64Msec & 0x3ffffffffff)
 
 //*****************************************************************************
 // Global Peripheral clock and rest Registers
@@ -170,8 +262,8 @@ unsigned long PRCMSysResetCauseGet()
 //! \param ulPeripheral is one of the valid peripherals
 //! \param ulClkFlags are bitmask of clock(s) to be enabled.
 //!
-//! This function enables the clock for the specified peripheral. Peripherals 
-//! are by default clock gated (disabled) and generates a bus fault if 
+//! This function enables the clock for the specified peripheral. Peripherals
+//! are by default clock gated (disabled) and generates a bus fault if
 //! accessed.
 //!
 //! The parameter \e ulClkFlags can be logical OR of the following:
@@ -182,14 +274,14 @@ unsigned long PRCMSysResetCauseGet()
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 {
   //
   // Enable the specified peripheral clocks
   //
   HWREG(ARCM_BASE + PRCM_PeriphRegsList[ulPeripheral].ulClkReg) |= ulClkFlags;
-  
+
   //
   // Set the default clock for camera
   //
@@ -203,11 +295,11 @@ PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 //
 //! Disables clock(s) to peripheral.
 //!
-//! \param Peripheral is one of the valid peripherals
+//! \param ulPeripheral is one of the valid peripherals
 //! \param ulClkFlags are bitmask of clock(s) to be enabled.
 //!
-//! This function disable the clock for the specified peripheral. Peripherals 
-//! are by default clock gated (disabled) and generated a bus fault if 
+//! This function disable the clock for the specified peripheral. Peripherals
+//! are by default clock gated (disabled) and generated a bus fault if
 //! accessed.
 //!
 //! The parameter \e ulClkFlags can be logical OR bit fields as defined in
@@ -216,7 +308,7 @@ PRCMPeripheralClkEnable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 PRCMPeripheralClkDisable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 {
   //
@@ -230,15 +322,11 @@ PRCMPeripheralClkDisable(unsigned long ulPeripheral, unsigned long ulClkFlags)
 //! Gets the input clock for the specified peripheral.
 //!
 //! \param ulPeripheral is one of the valid peripherals.
-//! \param ulHiPulseDiv divides the High pulse.
-//! \param ulLoPulseDiv divides the Low pulse.
 //!
 //! This function gets the input clock for the specified peripheral.
 //!
-//! The parameter \e ulPeripheral has the same definition as that in 
+//! The parameter \e ulPeripheral has the same definition as that in
 //! PRCMPeripheralClkEnable();
-//!
-//! \note Not all peripherals support configuring input clock.
 //!
 //! \return Returns input clock frequency for specified peripheral.
 //
@@ -249,11 +337,11 @@ PRCMPeripheralClockGet(unsigned long ulPeripheral)
   unsigned long ulClockFreq;
   unsigned long ulHiPulseDiv;
   unsigned long ulLoPulseDiv;
-  
+
   //
   // Get the clock based on specified peripheral.
   //
-  if(((ulPeripheral == PRCM_SSPI) | (ulPeripheral == PRCM_LSPI) 
+  if(((ulPeripheral == PRCM_SSPI) | (ulPeripheral == PRCM_LSPI)
             | (ulPeripheral == PRCM_GSPI)))
   {
     return XTAL_CLK;
@@ -261,7 +349,7 @@ PRCMPeripheralClockGet(unsigned long ulPeripheral)
   else if(ulPeripheral == PRCM_CAMERA)
   {
     ulHiPulseDiv = ((HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN) >> 8) & 0x07);
-    ulLoPulseDiv = (HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN)& 0xFF);    
+    ulLoPulseDiv = (HWREG(ARCM_BASE + APPS_RCM_O_CAMERA_CLK_GEN)& 0xFF);
   }
   else if(ulPeripheral == PRCM_SDHOST)
   {
@@ -272,12 +360,12 @@ PRCMPeripheralClockGet(unsigned long ulPeripheral)
   {
     return SYS_CLK;
   }
-  
+
   //
   // Compute the clock freq. from the divider value
   //
   ulClockFreq = (240000000/((ulHiPulseDiv + 1) + (ulLoPulseDiv + 1)));
-  
+
   //
   // Return the clock rate.
   //
@@ -289,7 +377,6 @@ PRCMPeripheralClockGet(unsigned long ulPeripheral)
 //! Performs a software reset of a peripheral.
 //!
 //! \param ulPeripheral is one of the valid peripheral.
-//! \param bAssert is \b true to assert the reset, \b false otherwise.
 //!
 //! This assert or deassert reset to the specified peripheral based of the
 //! \e bAssert parameter.
@@ -297,11 +384,13 @@ PRCMPeripheralClockGet(unsigned long ulPeripheral)
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 PRCMPeripheralReset(unsigned long ulPeripheral)
 {
   volatile unsigned long ulDelay;
 
+  if( ulPeripheral != PRCM_DTHE)
+  {
     //
     // Assert the reset
     //
@@ -313,12 +402,13 @@ PRCMPeripheralReset(unsigned long ulPeripheral)
     for(ulDelay = 0; ulDelay < 16; ulDelay++)
     {
     }
-    
+
     //
     // Deassert the reset
     //
     HWREG(ARCM_BASE+PRCM_PeriphRegsList[ulPeripheral].ulRstReg)
                                                           &= ~PRCM_SOFT_RESET;
+  }
 }
 
 //*****************************************************************************
@@ -364,53 +454,12 @@ PRCMPeripheralStatusGet(unsigned long ulPeripheral)
 
 //*****************************************************************************
 //
-//! Enable NWP subsystem.
+//! Configure I2S fracactional divider
 //!
-//! This function enables NWP subsystem.
+//! \param ulI2CClkFreq is the required input clock for McAPS module
 //!
-//! \return None.
-//
-//*****************************************************************************
-void PRCMNWPEnable()
-{
-  //
-  // De-assert and enable NWP subsystem reset
-  //
-  HWREG(GPRCM_BASE+ GPRCM_O_APPS_SOFT_RESET) &= ~0x4;
-  
-  //
-  // Request for NWP wakeup. This is required for first time wakeup and
-  // repeated writes are ignored.  
-  //
-  HWREG(ARCM_BASE + APPS_RCM_O_APPS_TO_NWP_WAKE_REQUEST)
-    = APPS_RCM_APPS_TO_NWP_WAKE_REQUEST_APPS_TO_NWP_WAKEUP_REQUEST;
-}
-
-//*****************************************************************************
-//
-//! Disable NWP subsystem.
-//!
-//! This function disables NWP subsystem.
-//!
-//! \return None.
-//
-//*****************************************************************************
-void PRCMNWPDisable()
-{
-  //
-  // Assert NWP subsystem reset
-  //
-  HWREG(GPRCM_BASE+ GPRCM_O_APPS_SOFT_RESET) |= 0x4;
-}
-
-//*****************************************************************************
-//
-//! Configure McASP fracactional divider
-//!
-//! \param ulMcASPClkIn is the required input clock for McAPS module
-//!
-//! This function configures McASP fracactional divider. By default this
-//! divider is set to output 24 Mhz clock to McASP module.
+//! This function configures I2S fractional divider. By default this
+//! divider is set to output 24 Mhz clock to I2S module.
 //!
 //! The minimum frequency that can be obtained by configuring this divider is
 //!
@@ -420,19 +469,48 @@ void PRCMNWPDisable()
 //
 //*****************************************************************************
 void
-PRCMMcASPClockInputSet(unsigned long ulMcASPClkIn)
+PRCMI2SClockFreqSet(unsigned long ulI2CClkFreq)
 {
-  unsigned long long ullDiv;
-  unsigned char  ucInteger;
+ unsigned long long ullDiv;
+  unsigned short usInteger;
   unsigned short usFrac;
 
-  ullDiv = (((unsigned long long)240000000 * 65536)/ulMcASPClkIn);
+  ullDiv = (((unsigned long long)240000000 * 65536)/ulI2CClkFreq);
 
-  ucInteger = (ullDiv/65536);
+  usInteger = (ullDiv/65536);
   usFrac    = (ullDiv%65536);
 
   HWREG(ARCM_BASE + APPS_RCM_O_MCASP_FRAC_CLK_CONFIG0) =
-    ((ucInteger & 0x3FF) << 16 | usFrac);
+    ((usInteger & 0x3FF) << 16 | usFrac);
+}
+
+//*****************************************************************************
+//
+//! Sets the LPDS exit PC and SP restore vlaues.
+//!
+//! \param ulStackPtr is the SP restore value.
+//! \param ulProgCntr is the PC restore value
+//!
+//! This function sets the LPDS exit PC and SP restore vlaues. Setting
+//! \e ulProgCntr to a non-zero value, forces bootloader to jump to that
+//! address with Stack Pointer initialized to \e ulStackPtr on LPDS exit,
+//! otherwise the application's vector table entries are used.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void
+PRCMLPDSRestoreInfoSet(unsigned long ulStackPtr, unsigned long ulProgCntr)
+{
+  //
+  // Set The SP Value
+  //
+  HWREG(0x4402E18C) = ulStackPtr;
+
+  //
+  // Set The PC Value
+  //
+  HWREG(0x4402E190) = ulProgCntr;
 }
 
 //*****************************************************************************
@@ -441,6 +519,7 @@ PRCMMcASPClockInputSet(unsigned long ulMcASPClkIn)
 //!
 //! This function puts the system into Low Power Deel Sleep (LPDS) power mode.
 //! A call to this function never returns and the execution starts from Reset.
+//! \sa PRCMLPDSRestoreInfoSet().
 //!
 //! \return None.
 //
@@ -462,12 +541,15 @@ PRCMLPDSEnter()
     //
     FlashDisable();
   }
-  
+
+#ifndef KEEP_TESTPD_ALIVE
+
   //
   // Disable TestPD
   //
   HWREG(0x4402E168) |= (1<<9);
-  
+#endif
+
   //
   // Set bandgap duty cycle to 1
   //
@@ -494,9 +576,9 @@ PRCMLPDSEnter()
 //!
 //! This function enable the individual LPDS wakeup source(s) and following
 //! three wakeup sources (\e ulLpdsWakeupSrc ) are supported by the device.
-//! -\b PRCM_LPDS_WKUP_HOST_IRQ
-//! -\b PRCM_LPDS_WKUP_GPIO
-//! -\b PRCM_LPDS_WKUP_TIMER
+//! -\b PRCM_LPDS_HOST_IRQ
+//! -\b PRCM_LPDS_GPIO
+//! -\b PRCM_LPDS_TIMER
 //!
 //! \return None.
 //
@@ -504,7 +586,22 @@ PRCMLPDSEnter()
 void
 PRCMLPDSWakeupSourceEnable(unsigned long ulLpdsWakeupSrc)
 {
-  HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_CFG) = ulLpdsWakeupSrc;
+  unsigned long ulRegVal;
+
+  //
+  // Read the current wakup sources
+  //
+  ulRegVal = HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_CFG);
+
+  //
+  // Enable individual wakeup source
+  //
+  ulRegVal = ((ulRegVal | ulLpdsWakeupSrc) & 0x91);
+
+  //
+  // Set the configuration in the register
+  //
+  HWREG(GPRCM_BASE+ GPRCM_O_APPS_LPDS_WAKEUP_CFG) = ulRegVal;
 }
 
 //*****************************************************************************
@@ -515,9 +612,9 @@ PRCMLPDSWakeupSourceEnable(unsigned long ulLpdsWakeupSrc)
 //!
 //! This function enable the individual LPDS wakeup source(s) and following
 //! three wake up sources (\e ulLpdsWakeupSrc ) are supported by the device.
-//! -\b PRCM_LPDS_WKUP_HOST_IRQ
-//! -\b PRCM_LPDS_WKUP_GPIO
-//! -\b PRCM_LPDS_WKUP_TIMER
+//! -\b PRCM_LPDS_HOST_IRQ
+//! -\b PRCM_LPDS_GPIO
+//! -\b PRCM_LPDS_TIMER
 //!
 //! \return None.
 //
@@ -533,11 +630,9 @@ PRCMLPDSWakeupSourceDisable(unsigned long ulLpdsWakeupSrc)
 //
 //! Get LPDS wakeup cause
 //!
-//! \param ulLpdsWakeupSrc is logical OR of wakeup sources.
-//!
 //! This function gets LPDS wakeup caouse
 //!
-//! \return Returns values enumerated as described in 
+//! \return Returns values enumerated as described in
 //! PRCMLPDSWakeupSourceEnable().
 //
 //*****************************************************************************
@@ -553,14 +648,14 @@ PRCMLPDSWakeupCauseGet()
 //!
 //! \param ulTicks is number of 32.768 KHz clocks
 //!
-//! This function sets internal LPDS wakeup timer running at 32.768 KHz. The 
-//! timer is only configured if the parameter \e ulTicks is in valid range i.e. 
+//! This function sets internal LPDS wakeup timer running at 32.768 KHz. The
+//! timer is only configured if the parameter \e ulTicks is in valid range i.e.
 //! from 21 to 2^32.
 //!
 //! \return Returns \b true on success, \b false otherwise.
 //
 //*****************************************************************************
-tBoolean 
+void
 PRCMLPDSIntervalSet(unsigned long ulTicks)
 {
   //
@@ -569,13 +664,11 @@ PRCMLPDSIntervalSet(unsigned long ulTicks)
   //
   if( ulTicks < 21)
   {
-      return(false);
+      ulTicks = 21;
   }
 
   HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKETIME_WAKE_CFG) = ulTicks;
   HWREG(GPRCM_BASE + GPRCM_O_APPS_LPDS_WAKETIME_OPP_CFG) = ulTicks-20;
-
-  return(true);
 }
 
 //*****************************************************************************
@@ -585,9 +678,9 @@ PRCMLPDSIntervalSet(unsigned long ulTicks)
 //! \param ulGPIOPin is one of the valid GPIO fro LPDS wakeup.
 //! \param ulType is the wakeup trigger type.
 //!
-//! This function setects the wakeup GPIO for LPDS wakeup and can be 
+//! This function setects the wakeup GPIO for LPDS wakeup and can be
 //! used to select one out of 7 pre-defined GPIO(s).
-//! 
+//!
 //! The parameter \e ulLpdsGPIOSel should be one of the following:-
 //! -\b PRCM_LPDS_GPIO2
 //! -\b PRCM_LPDS_GPIO4
@@ -597,7 +690,7 @@ PRCMLPDSIntervalSet(unsigned long ulTicks)
 //! -\b PRCM_LPDS_GPIO24
 //! -\b PRCM_LPDS_GPIO26
 //!
-//! The parameter \e ulType sets the trigger type and can be one of the 
+//! The parameter \e ulType sets the trigger type and can be one of the
 //! following:
 //! - \b PRCM_LPDS_LOW_LEVEL
 //! - \b PRCM_LPDS_HIGH_LEVEL
@@ -614,7 +707,7 @@ PRCMLPDSWakeUpGPIOSelect(unsigned long ulGPIOPin, unsigned long ulType)
   // Set the wakeup GPIO
   //
   HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_LPDS_GPIO_SEL) = ulGPIOPin;
-  
+
   //
   // Set the trigger type.
   //
@@ -627,7 +720,7 @@ PRCMLPDSWakeUpGPIOSelect(unsigned long ulGPIOPin, unsigned long ulType)
 //!
 //! This function puts the system into sleep power mode. System exits the power
 //! state on any one of the available interrupt. On exit from sleep mode the
-//! function returns to the calling function with all the processor core 
+//! function returns to the calling function with all the processor core
 //! registers retained.
 //!
 //! \return None.
@@ -646,9 +739,9 @@ PRCMSleepEnter()
 //
 //! Puts the system into Deep Sleep power mode.
 //!
-//! This function puts the system into Deep Sleep power mode. System exits the 
+//! This function puts the system into Deep Sleep power mode. System exits the
 //! power state on any one of the available interrupt. On exit from deep
-//! sleep the function returns to the calling function with all the processor 
+//! sleep the function returns to the calling function with all the processor
 //! core registers retained.
 //!
 //! \return None.
@@ -697,7 +790,7 @@ PRCMDeepSleepEnter()
 //! -\b PRCM_SRAM_COL_3
 //! -\b PRCM_SRAM_COL_4
 //!
-//! The parameter \e ulModeFlags selects the power modes and sholud be logical 
+//! The parameter \e ulModeFlags selects the power modes and sholud be logical
 //! OR of one or more of the following
 //! -\b PRCM_SRAM_DSLP_RET
 //! -\b PRCM_SRAM_LPDS_RET
@@ -705,7 +798,7 @@ PRCMDeepSleepEnter()
 //! \return None.
 //
 //****************************************************************************
-void 
+void
 PRCMSRAMRetentionEnable(unsigned long ulSramColSel, unsigned long ulModeFlags)
 {
   if(ulModeFlags & PRCM_SRAM_DSLP_RET)
@@ -780,13 +873,19 @@ PRCMSRAMRetentionDisable(unsigned long ulSramColSel, unsigned long ulFlags)
 //! This function enables individual HIB wakeup source(s). The paramter
 //! \e ulHIBWakupSrc is the bit mask of HIB wakeup sources and should be
 //! logical OR of one or more of the follwoing :-
-//! -\b PRCM_HIB_RTC
-//! -\b PRCM_HIB_GPIO
+//! -\b PRCM_HIB_SLOW_CLK_CTR
+//! -\b PRCM_HIB_GPIO2
+//! -\b PRCM_HIB_GPIO4
+//! -\b PRCM_HIB_GPIO13
+//! -\b PRCM_HIB_GPIO17
+//! -\b PRCM_HIB_GPIO11
+//! -\b PRCM_HIB_GPIO24
+//! -\b PRCM_HIB_GPIO26
 //!
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 PRCMHibernateWakeupSourceEnable(unsigned long ulHIBWakupSrc)
 {
   //
@@ -847,7 +946,7 @@ PRCMHibernateWakeupCauseGet()
 //! \return Returns \b true on success, \b false otherwise.
 //
 //*****************************************************************************
-tBoolean 
+void
 PRCMHibernateIntervalSet(unsigned long long ullTicks)
 {
   unsigned long long ullRTCVal;
@@ -863,12 +962,12 @@ PRCMHibernateIntervalSet(unsigned long long ullTicks)
   ullRTCVal  = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_TIMER_MSW);
   ullRTCVal  = ullRTCVal << 32;
   ullRTCVal |= HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_TIMER_LSW);
-  
+
   //
   // Add the interval
   //
   ullRTCVal = ullRTCVal + ullTicks;
-  
+
   //
   // Set RTC match value
   //
@@ -876,8 +975,6 @@ PRCMHibernateIntervalSet(unsigned long long ullTicks)
                                            = (unsigned long)(ullRTCVal);
   HWREG(HIB3P3_BASE+HIB3P3_O_MEM_HIB_RTC_WAKE_MSW_CONF)
                                            = (unsigned long)(ullRTCVal>>32);
-  
-  return(true);
 }
 
 
@@ -885,23 +982,23 @@ PRCMHibernateIntervalSet(unsigned long long ullTicks)
 //
 //! Selects the GPIO(s) for hibernate wakeup
 //!
-//! \param ulGPIOBitMap is the bit-map of valid hibernate wakeup GPIO. 
+//! \param ulGPIOBitMap is the bit-map of valid hibernate wakeup GPIO.
 //! \param ulType is the wakeup trigger type.
 //!
-//! This function setects the wakeup GPIO for hibernate and can be 
+//! This function setects the wakeup GPIO for hibernate and can be
 //! used to select any combination of 7 pre-defined GPIO(s).
 //!
 //! This function enables individual HIB wakeup source(s). The paramter
 //! \e ulGPIOBitMap should be one of the follwoing :-
-//! -\b PRCM_HIB_WAKEUP_GPIO2
-//! -\b PRCM_HIB_WAKEUP_GPIO4
-//! -\b PRCM_HIB_WAKEUP_GPIO13
-//! -\b PRCM_HIB_WAKEUP_GPIO17
-//! -\b PRCM_HIB_WAKEUP_GPIO11
-//! -\b PRCM_HIB_WAKEUP_GPIO24
-//! -\b PRCM_HIB_WAKEUP_GPIO26
+//! -\b PRCM_HIB_GPIO2
+//! -\b PRCM_HIB_GPIO4
+//! -\b PRCM_HIB_GPIO13
+//! -\b PRCM_HIB_GPIO17
+//! -\b PRCM_HIB_GPIO11
+//! -\b PRCM_HIB_GPIO24
+//! -\b PRCM_HIB_GPIO26
 //!
-//! The parameter \e ulType sets the trigger type and can be one of the 
+//! The parameter \e ulType sets the trigger type and can be one of the
 //! following:
 //! - \b PRCM_HIB_LOW_LEVEL
 //! - \b PRCM_HIB_HIGH_LEVEL
@@ -915,12 +1012,12 @@ void
 PRCMHibernateWakeUpGPIOSelect(unsigned long ulGPIOBitMap, unsigned long ulType)
 {
   unsigned char ucLoop;
-  
+
   //
-  // Set the source bit mask.
+  // Shift the bits to extract the GPIO selection
   //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_GPIO_WAKE_EN) = (ulGPIOBitMap&0xFF);
-  
+  ulGPIOBitMap >>= 16;
+
   //
   // Set the configuration for each GPIO
   //
@@ -928,7 +1025,7 @@ PRCMHibernateWakeUpGPIOSelect(unsigned long ulGPIOBitMap, unsigned long ulType)
   {
     if(ulGPIOBitMap & (1<<ucLoop))
     {
-      HWREG(HIB3P3_BASE+HIB3P3_O_MEM_GPIO_WAKE_CONF) = ulType << (ucLoop*2);
+      HWREG(HIB3P3_BASE+HIB3P3_O_MEM_GPIO_WAKE_CONF) |= (ulType << (ucLoop*2));
     }
   }
 }
@@ -944,28 +1041,9 @@ PRCMHibernateWakeUpGPIOSelect(unsigned long ulGPIOBitMap, unsigned long ulType)
 //! \return None.
 //
 //*****************************************************************************
-void 
+void
 PRCMHibernateEnter()
 {
-  //
-  // Enable 32KHz internal RC oscillator
-  //
-  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_INT_OSC_CONF) = 0x00000101;
-  
-  //
-  // Delay for a little bit.
-  //
-  UtilsDelay(8000);
-  
-  //
-  // Enable 16MHz clock
-  //
-  HWREG(HIB1P2_BASE+HIB1P2_O_CM_OSC_16M_CONFIG) = 0x00010008;
-  
-  //
-  // Delay for a little bit.
-  //
-  UtilsDelay(8000);
 
   //
   // Request hibernate.
@@ -980,7 +1058,7 @@ PRCMHibernateEnter()
 
 //*****************************************************************************
 //
-//! Gets the current value of the internal RTC
+//! Gets the current value of the internal slow clock counter
 //!
 //! This function latches and reads the internal RTC running at 32.768 Khz
 //!
@@ -988,7 +1066,7 @@ PRCMHibernateEnter()
 //
 //*****************************************************************************
 unsigned long long
-PRCMRTCGet()
+PRCMSlowClkCtrGet()
 {
   unsigned long long ullRTCVal;
 
@@ -1010,26 +1088,54 @@ PRCMRTCGet()
 
 //*****************************************************************************
 //
-//! Sets RTC match value to interrupt the processor.
+//! Sets slow clock counter match value to interrupt the processor.
 //!
 //! \param ullValue is the match value.
 //!
-//! This function sets the match value for RTC. This is use to interrupt the 
-//! processor when RTC counts to the specified value.  
+//! This function sets the match value for  slow clock counter. This is use
+//! to interrupt the processor when RTC counts to the specified value.
 //!
 //! \return None.
 //
 //*****************************************************************************
-void PRCMRTCMatchSet(unsigned long long ullValue)
-{  
+void PRCMSlowClkCtrMatchSet(unsigned long long ullValue)
+{
   //
   // Set RTC match value
   //
   HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF)
                                            = (unsigned long)(ullValue);
-  HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF)
+  HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_MSW_CONF)
                                            = (unsigned long)(ullValue>>32);
 }
+
+//*****************************************************************************
+//
+//! Gets slow clock counter match value.
+//!
+//! This function gets the match value for  slow clock counter. This is use
+//! to interrupt the processor when RTC counts to the specified value.
+//!
+//! \return None.
+//
+//*****************************************************************************
+unsigned long long PRCMSlowClkCtrMatchGet()
+{
+  unsigned long long ullValue;
+
+  //
+  // Get RTC match value
+  //
+  ullValue = HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_MSW_CONF);
+  ullValue = ullValue<<32;
+  ullValue |= HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_LSW_CONF);
+
+  //
+  // Return the value
+  //
+  return ullValue;
+}
+
 
 //*****************************************************************************
 //
@@ -1098,9 +1204,6 @@ void PRCMIntRegister(void (*pfnHandler)(void))
 //
 //! Unregisters an interrupt handler for the PRCM.
 //!
-//! \param pfnHandler is a pointer to the function to be called when the
-//! interrupt is activated.
-//!
 //! This function does the actual unregistering of the interrupt handler.  It
 //! clears the handler to be called when a PRCM interrupt occurs.  This
 //! function also masks off the interrupt in the interrupt controller so that
@@ -1124,21 +1227,6 @@ void PRCMIntUnregister()
 
 //*****************************************************************************
 //
-//! Gets the current interrupt status.
-//!
-//! This function returns the PRCM interrupt status of interrupts that are
-//! allowed to reflect to the processor. The interrupts are cleared on read.
-//!
-//! \return Returns the current interrupt status.
-//
-//*****************************************************************************
-unsigned long PRCMIntStatus()
-{
-    return HWREG(ARCM_BASE + APPS_RCM_O_APPS_RCM_INTERRUPT_STATUS);
-}
-
-//*****************************************************************************
-//
 //! Enables individual PRCM interrupt sources.
 //!
 //! \param ulIntFlags is the bit mask of the interrupt sources to be enabled.
@@ -1148,15 +1236,16 @@ unsigned long PRCMIntStatus()
 //! disabled sources have no effect on the processor.
 //!
 //! The \e ulIntFlags parameter is the logical OR of any of the following:
-//! -\b PRCM_INT_RTC
+//! -\b PRCM_INT_SLOW_CLK_CTR
 //!
 //
 //*****************************************************************************
 void PRCMIntEnable(unsigned long ulIntFlags)
 {
-  if(ulIntFlags & PRCM_INT_RTC )
+  if(ulIntFlags & PRCM_INT_SLOW_CLK_CTR )
   {
-    HWREG(ARCM_BASE + 0x124) |= 0x1;
+    HWREG(ARCM_BASE + APPS_RCM_O_APPS_RCM_INTERRUPT_ENABLE) |= 0x4;
+    HWREG(HIB3P3_BASE + HIB3P3_O_MEM_HIB_RTC_IRQ_ENABLE) |= 0x1;
   }
 }
 
@@ -1178,10 +1267,374 @@ void PRCMIntEnable(unsigned long ulIntFlags)
 //*****************************************************************************
 void PRCMIntDisable(unsigned long ulIntFlags)
 {
-  if(ulIntFlags & PRCM_INT_RTC )
+  if(ulIntFlags & PRCM_INT_SLOW_CLK_CTR )
   {
-    HWREG(ARCM_BASE + 0x124) &= ~0x1;
+    HWREG(ARCM_BASE + 0x124) &= ~0x4;
+    HWREG(0x4402F854) &= ~0x1;
   }
+}
+
+//*****************************************************************************
+//
+//! Gets the current interrupt status.
+//!
+//! This function returns the PRCM interrupt status of interrupts that are
+//! allowed to reflect to the processor. The interrupts are cleared on read.
+//!
+//! \return Returns the current interrupt status.
+//
+//*****************************************************************************
+unsigned long PRCMIntStatus()
+{
+    return HWREG(ARCM_BASE + APPS_RCM_O_APPS_RCM_INTERRUPT_STATUS);
+}
+
+//*****************************************************************************
+//
+//! Mark the function of RTC as being used
+//!
+//! This function marks in HW that feature to maintain calendar time in device
+//! is being used.
+//!
+//! Specifically, this feature reserves user's HIB Register-1 accessed through
+//! PRCMOCRRegisterWrite(1) for internal work / purpose, therefore, the stated
+//! register is not available to user. Also, users must not excercise the Slow
+//! Clock Counter API(s), if RTC has been set for use.
+//!
+//! The RTC feature, if set or marked, can be only reset either through reboot
+//! or power cycle.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void PRCMRTCInUseSet()
+{
+        RTC_USE_SET();
+        return;
+}
+
+//*****************************************************************************
+//
+//! Ascertain whether function of RTC is being used
+//!
+//! This function indicates whether function of RTC is being used on the device
+//! or not.
+//!
+//! This routine should be utilized by the application software, when returning
+//! from low-power, to confirm that RTC has been put to use and may not need to
+//! set the value of the RTC.
+//!
+//! The RTC feature, if set or marked, can be only reset either through reboot
+//! or power cycle.
+//!
+//! \return None.
+//
+//*****************************************************************************
+tBoolean PRCMRTCInUseGet()
+{
+        return IS_RTC_USED()? true : false;
+}
+
+//*****************************************************************************
+//
+//! Set the calendar time in the device.
+//!
+//! \param ulSecs refers to the seconds part of the  calendar time
+//! \param usMsec refers to the fractional (ms) part of the second
+//!
+//! This function sets the specified calendar time in the device. The calendar
+//! time is outlined in terms of seconds and milliseconds. However, the device
+//! makes no assumption about the origin or reference of the calendar time.
+//!
+//! The device uses the indicated calendar value to update and maintain the
+//! wall-clock time across active and low power states.
+//!
+//! The function PRCMRTCInUseSet() must be invoked prior to use of this feature.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void PRCMRTCSet(unsigned long ulSecs, unsigned short usMsec)
+{
+        unsigned long long ullMsec = 0;
+
+        if(IS_RTC_USED()) {
+                ullMsec = RTC_U64MSEC_MK(ulSecs, usMsec) - SCC_U64MSEC_GET();
+
+                 RTC_U32SECS_REG_WR(RTC_SECS_IN_U64MSEC(ullMsec));
+                 RTC_U16MSEC_REG_WR(RTC_MSEC_IN_U64MSEC(ullMsec));
+        }
+
+        return;
+}
+
+//*****************************************************************************
+//
+//! Get the instantaneous calendar time from the device.
+//!
+//! \param ulSecs refers to the seconds part of the  calendar time
+//! \param usMsec refers to the fractional (ms) part of the second
+//!
+//! This function fetches the instantaneous value of the ticking calendar time
+//! from the device. The calendar time is outlined in terms of seconds and
+//! milliseconds.
+//!
+//! The device provides the calendar value that has been maintained across
+//! active and low power states.
+//!
+//! The function PRCMRTCSet() must have been invoked once to set a reference.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void PRCMRTCGet(unsigned long *ulSecs, unsigned short *usMsec)
+{
+        unsigned long long ullMsec = 0;
+
+        if(IS_RTC_USED()) {
+                ullMsec  = RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
+                                          RTC_U16MSEC_REG_RD());
+                ullMsec += SCC_U64MSEC_GET();
+        }
+
+        *ulSecs = RTC_SECS_IN_U64MSEC(ullMsec);
+        *usMsec = RTC_MSEC_IN_U64MSEC(ullMsec);
+
+        return;
+}
+
+//*****************************************************************************
+//
+//! Set a calendar time alarm.
+//!
+//! \param ulSecs refers to the seconds part of the  calendar time
+//! \param usMsec refers to the fractional (ms) part of the second
+//!
+//! This function sets an wall-clock alarm in the device to be reported for  a
+//! futuristic calendar time. The calendar time is outlined in terms of seconds
+//! and milliseconds.
+//!
+//! The device provides uses the calendar value that has been maintained across
+//! active and low power states to report attainment of alarm time.
+//!
+//! The function PRCMRTCSet() must have been invoked once to set a reference.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void PRCMRTCMatchSet(unsigned long ulSecs, unsigned short usMsec)
+{
+        unsigned long long ullMsec = 0;
+
+        if(IS_RTC_USED()) {
+                ullMsec  = RTC_U64MSEC_MK(ulSecs, usMsec);
+                ullMsec -= RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
+                                          RTC_U16MSEC_REG_RD());
+                SCC_U64MSEC_MATCH_SET(SELECT_SCC_U42BITS(ullMsec));
+        }
+
+        return;
+}
+
+//*****************************************************************************
+//
+//! Get a previously set calendar time alarm.
+//!
+//! \param ulSecs refers to the seconds part of the  calendar time
+//! \param usMsec refers to the fractional (ms) part of the second
+//!
+//! This function fetches from the device a wall-clock alarm that would  have
+//! been previously set in the device. The calendar time is outlined in terms
+//! of seconds and milliseconds.
+//!
+//! If no alarm was set in the past, then this function would fetch a random
+//! information.
+//!
+//! The function PRCMRTCMatchSet() must have been invoked once to set an alarm.
+//!
+//! \return None.
+//
+//*****************************************************************************
+void PRCMRTCMatchGet(unsigned long *ulSecs, unsigned short *usMsec)
+{
+        unsigned long long ullMsec = 0;
+
+        if(IS_RTC_USED()) {
+                ullMsec  = SCC_U64MSEC_MATCH_GET();
+                ullMsec += RTC_U64MSEC_MK(RTC_U32SECS_REG_RD(),
+                                          RTC_U16MSEC_REG_RD());
+        }
+
+        *ulSecs = RTC_SECS_IN_U64MSEC(ullMsec);
+        *usMsec = RTC_MSEC_IN_U64MSEC(ullMsec);
+
+        return;
+}
+
+//*****************************************************************************
+//
+//! MCU Initialization Routine
+//!
+//! This function sets mandatory configurations for the MCU
+//!
+//! \return None
+//
+//*****************************************************************************
+void PRCMCC3200MCUInit()
+{
+
+#ifdef CC3200_ES_1_2_1
+
+    unsigned long ulRegVal;
+
+    //
+    // DIG DCDC NFET SEL and COT mode disable
+    //
+    HWREG(0x4402F010) = 0x30031820;
+    HWREG(0x4402F00C) = 0x04000000;
+
+    UtilsDelay(32000);
+
+    //
+    // ANA DCDC clock config
+    //
+    HWREG(0x4402F11C) = 0x099;
+    HWREG(0x4402F11C) = 0x0AA;
+    HWREG(0x4402F11C) = 0x1AA;
+
+    //
+    // PA DCDC clock config
+    //
+    HWREG(0x4402F124) = 0x099;
+    HWREG(0x4402F124) = 0x0AA;
+    HWREG(0x4402F124) = 0x1AA;
+
+    //
+    // TD Flash timing configurations in case of MCU WDT reset
+    //
+    if((HWREG(0x4402D00C) & 0xFF) == 0x00000005)
+    {
+        HWREG(0x400F707C) |= 0x01840082;
+        HWREG(0x400F70C4)= 0x1;
+        HWREG(0x400F70C4)= 0x0;
+    }
+
+    //
+    // Take I2C semaphore
+    //
+    ulRegVal = HWREG(0x400F7000);
+    ulRegVal = (ulRegVal & ~0x3) | 0x1;
+    HWREG(0x400F7000) = ulRegVal;
+
+    //
+    // Take GPIO semaphore
+    //
+    ulRegVal = HWREG(0x400F703C);
+    ulRegVal = (ulRegVal & ~0x3FF) | 0x155;
+    HWREG(0x400F703C) = ulRegVal;
+
+   //
+  // Enable 32KHz internal RC oscillator
+  //
+  HWREG(HIB3P3_BASE+HIB3P3_O_MEM_INT_OSC_CONF) = 0x00000101;
+
+  //
+  // Delay for a little bit.
+  //
+  UtilsDelay(8000);
+
+  //
+  // Enable 16MHz clock
+  //
+  HWREG(HIB1P2_BASE+HIB1P2_O_CM_OSC_16M_CONFIG) = 0x00010008;
+
+  //
+  // Delay for a little bit.
+  //
+  UtilsDelay(8000);
+
+
+
+#else
+
+    //
+    // DIG DCDC LPDS ECO Enable
+    //
+    HWREG(0x4402F064) |= 0x800000;
+
+    //
+    // Enable hibernate ECO for PG 1.32 devices only. With this ECO enabled,
+    // any hibernate wakeup source will be kept maked until the device enters
+    // hibernate completely (analog + digital)
+    //
+    HWREG(HIB3P3_BASE  + HIB3P3_O_MEM_HIB_REG0) |= (1<<4);
+
+    //
+    // Handling the clock switching (for 1.32 only)
+    //
+    HWREG(0x4402E16C) |= 0x3C;
+
+
+#endif
+
+    //
+    // Enable uDMA
+    //
+    PRCMPeripheralClkEnable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+
+    //
+    // Reset uDMA
+    //
+    PRCMPeripheralReset(PRCM_UDMA);
+
+    //
+    // Disable uDMA
+    //
+    PRCMPeripheralClkDisable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+
+    //
+    // Enable RTC
+    //
+    if(PRCMSysResetCauseGet()== PRCM_POWER_ON)
+    {
+        HWREG(0x4402F804) = 0x1;
+    }
+
+    //
+    // JTAG override for I2C in SWD mode
+    //
+    if(((HWREG(0x4402F0C8) & 0xFF) == 0x2))
+    {
+        HWREG(0x4402E110) = ((HWREG(0x4402E110) & ~0xC0F) | 0x2);
+        HWREG(0x4402E114) = ((HWREG(0x4402E110) & ~0xC0F) | 0x2);
+        HWREG(0x4402E184) |= 0x2;
+    }
+
+    //
+    // Change UART pins(55,57) mode to PIN_MODE_0 if they are in PIN_MODE_1
+    //
+    if( (HWREG(0x4402E0A4) & 0xF) == 0x1)
+    {
+        HWREG(0x4402E0A4) = ((HWREG(0x4402E0A4) & ~0xF));
+    }
+
+    if( (HWREG(0x4402E0A8) & 0xF) == 0x1)
+    {
+        HWREG(0x4402E0A8) = ((HWREG(0x4402E0A8) & ~0xF));
+    }
+
+    //
+    // DIG DCDC VOUT trim settings based on PROCESS INDICATOR
+    //
+    if(((HWREG(0x4402DC78) >> 22) & 0xF) == 0xE)
+    {
+        HWREG(0x4402F0B0) = ((HWREG(0x4402F0B0) & ~(0x00FC0000))|(0x32 << 18));
+    }
+    else
+    {
+        HWREG(0x4402F0B0) = ((HWREG(0x4402F0B0) & ~(0x00FC0000))|(0x29 << 18));
+    }
+
 }
 
 //*****************************************************************************

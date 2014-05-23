@@ -1,22 +1,45 @@
 //*****************************************************************************
 //
-// aes.c - Driver for the AES module.
+//  aes.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the AES module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
 //*****************************************************************************
 //
-//! \addtogroup AES_Advanced_Encryption_Standard_ap
+//! \addtogroup AES_Advanced_Encryption_Standard_api
 //! @{
 //
 //*****************************************************************************
@@ -32,6 +55,8 @@
 #include "aes.h"
 #include "debug.h"
 #include "interrupt.h"
+
+#define AES_BLOCK_SIZE_IN_BYTES 16
 
 //*****************************************************************************
 //
@@ -184,7 +209,7 @@ AESConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //! decryption.
 //!
 //! \param ui32Base is the base address for the AES module.
-//! \param pui32Key is an array of 32-bit words, containing the key to be
+//! \param pui8Key is an array of bytes, containing the key to be
 //! configured.  The least significant word in the 0th index.
 //! \param ui32Keysize is the size of the key, which must be one of the
 //! following values:  \b AES_CFG_KEY_SIZE_128, \b AES_CFG_KEY_SIZE_192, or
@@ -197,7 +222,7 @@ AESConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //
 //*****************************************************************************
 void
-AESKey1Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
+AESKey1Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize)
 {
     //
     // Check the arguments.
@@ -210,18 +235,18 @@ AESKey1Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
     //
     // With all key sizes, the first 4 words are written.
     //
-    HWREG(ui32Base + AES_O_KEY1_0) = pui32Key[0];
-    HWREG(ui32Base + AES_O_KEY1_1) = pui32Key[1];
-    HWREG(ui32Base + AES_O_KEY1_2) = pui32Key[2];
-    HWREG(ui32Base + AES_O_KEY1_3) = pui32Key[3];
+    HWREG(ui32Base + AES_O_KEY1_0) = * ((uint32_t *)(pui8Key + 0));
+    HWREG(ui32Base + AES_O_KEY1_1) = * ((uint32_t *)(pui8Key + 4));
+    HWREG(ui32Base + AES_O_KEY1_2) = * ((uint32_t *)(pui8Key + 8));
+    HWREG(ui32Base + AES_O_KEY1_3) = * ((uint32_t *)(pui8Key + 12));
 
     //
     // The key is 192 or 256 bits.  Write the next 2 words.
     //
     if(ui32Keysize != AES_CFG_KEY_SIZE_128BIT)
     {
-        HWREG(ui32Base + AES_O_KEY1_4) = pui32Key[4];
-        HWREG(ui32Base + AES_O_KEY1_5) = pui32Key[5];
+        HWREG(ui32Base + AES_O_KEY1_4) = * ((uint32_t *)(pui8Key + 16));
+        HWREG(ui32Base + AES_O_KEY1_5) = * ((uint32_t *)(pui8Key + 20));
     }
 
     //
@@ -229,8 +254,8 @@ AESKey1Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
     //
     if(ui32Keysize == AES_CFG_KEY_SIZE_256BIT)
     {
-        HWREG(ui32Base + AES_O_KEY1_6) = pui32Key[6];
-        HWREG(ui32Base + AES_O_KEY1_7) = pui32Key[7];
+        HWREG(ui32Base + AES_O_KEY1_6) = * ((uint32_t *)(pui8Key + 24));
+        HWREG(ui32Base + AES_O_KEY1_7) = * ((uint32_t *)(pui8Key + 28));
     }
 }
 
@@ -240,7 +265,7 @@ AESKey1Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
 //! decryption.
 //!
 //! \param ui32Base is the base address for the AES module.
-//! \param pui32Key is an array of 32-bit words, containing the key to be
+//! \param pui8Key is an array of bytes, containing the key to be
 //! configured.  The least significant word in the 0th index.
 //! \param ui32Keysize is the size of the key, which must be one of the
 //! following values:  \b AES_CFG_KEY_SIZE_128, \b AES_CFG_KEY_SIZE_192, or
@@ -253,7 +278,7 @@ AESKey1Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
 //
 //*****************************************************************************
 void
-AESKey2Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
+AESKey2Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize)
 {
     //
     // Check the arguments.
@@ -266,18 +291,18 @@ AESKey2Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
     //
     // With all key sizes, the first 4 words are written.
     //
-    HWREG(ui32Base + AES_O_KEY2_0) = pui32Key[0];
-    HWREG(ui32Base + AES_O_KEY2_1) = pui32Key[1];
-    HWREG(ui32Base + AES_O_KEY2_2) = pui32Key[2];
-    HWREG(ui32Base + AES_O_KEY2_3) = pui32Key[3];
+    HWREG(ui32Base + AES_O_KEY2_0) = * ((uint32_t *)(pui8Key + 0));
+    HWREG(ui32Base + AES_O_KEY2_1) = * ((uint32_t *)(pui8Key + 4));
+    HWREG(ui32Base + AES_O_KEY2_2) = * ((uint32_t *)(pui8Key + 8));
+    HWREG(ui32Base + AES_O_KEY2_3) = * ((uint32_t *)(pui8Key + 12));
 
     //
     // The key is 192 or 256 bits.  Write the next 2 words.
     //
     if(ui32Keysize != AES_CFG_KEY_SIZE_128BIT)
     {
-        HWREG(ui32Base + AES_O_KEY2_4) = pui32Key[4];
-        HWREG(ui32Base + AES_O_KEY2_5) = pui32Key[5];
+        HWREG(ui32Base + AES_O_KEY2_4) = * ((uint32_t *)(pui8Key + 16));
+        HWREG(ui32Base + AES_O_KEY2_5) = * ((uint32_t *)(pui8Key + 20));
     }
 
     //
@@ -285,8 +310,8 @@ AESKey2Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
     //
     if(ui32Keysize == AES_CFG_KEY_SIZE_256BIT)
     {
-        HWREG(ui32Base + AES_O_KEY2_6) = pui32Key[6];
-        HWREG(ui32Base + AES_O_KEY2_7) = pui32Key[7];
+        HWREG(ui32Base + AES_O_KEY2_6) = * ((uint32_t *)(pui8Key + 24));
+        HWREG(ui32Base + AES_O_KEY2_7) = * ((uint32_t *)(pui8Key + 28));
     }
 }
 
@@ -296,7 +321,7 @@ AESKey2Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
 //! decryption.
 //!
 //! \param ui32Base is the base address for the AES module.
-//! \param pui32Key is a pointer to an array of 4 words (128 bits), containing
+//! \param pui8Key is a pointer to an array bytes, containing
 //! the key to be configured. The least significant word is in the 0th index.
 //!
 //! This function writes the key 2 configuration registers with key 3 data
@@ -306,7 +331,7 @@ AESKey2Set(uint32_t ui32Base, uint32_t *pui32Key, uint32_t ui32Keysize)
 //
 //*****************************************************************************
 void
-AESKey3Set(uint32_t ui32Base, uint32_t *pui32Key)
+AESKey3Set(uint32_t ui32Base, uint8_t *pui8Key)
 {
     //
     // Check the arguments.
@@ -316,10 +341,10 @@ AESKey3Set(uint32_t ui32Base, uint32_t *pui32Key)
     //
     // Write the key into the upper 4 key registers
     //
-    HWREG(ui32Base + AES_O_KEY2_4) = pui32Key[0];
-    HWREG(ui32Base + AES_O_KEY2_5) = pui32Key[1];
-    HWREG(ui32Base + AES_O_KEY2_6) = pui32Key[2];
-    HWREG(ui32Base + AES_O_KEY2_7) = pui32Key[3];
+    HWREG(ui32Base + AES_O_KEY2_4) = * ((uint32_t *)(pui8Key + 0));
+    HWREG(ui32Base + AES_O_KEY2_5) = * ((uint32_t *)(pui8Key + 4));
+    HWREG(ui32Base + AES_O_KEY2_6) = * ((uint32_t *)(pui8Key + 8));
+    HWREG(ui32Base + AES_O_KEY2_7) = * ((uint32_t *)(pui8Key + 12));
 }
 
 //*****************************************************************************
@@ -327,7 +352,7 @@ AESKey3Set(uint32_t ui32Base, uint32_t *pui32Key)
 //! Writes the Initial Vector (IV) register, needed in some of the AES Modes.
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32IVdata is an array of 4 words (128 bits), containing the IV
+//! \param pui8IVdata is an array of 16 bytes (128 bits), containing the IV
 //! value to be configured. The least significant word is in the 0th index.
 //!
 //! This functions writes the initial vector registers in the AES module.
@@ -336,7 +361,7 @@ AESKey3Set(uint32_t ui32Base, uint32_t *pui32Key)
 //
 //*****************************************************************************
 void
-AESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
+AESIVSet(uint32_t ui32Base, uint8_t *pui8IVdata)
 {
     //
     // Check the arguments.
@@ -346,10 +371,10 @@ AESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
     //
     // Write the initial vector registers.
     //
-    HWREG(ui32Base + AES_O_IV_IN_0) = pui32IVdata[0];
-    HWREG(ui32Base + AES_O_IV_IN_1) = pui32IVdata[1];
-    HWREG(ui32Base + AES_O_IV_IN_2) = pui32IVdata[2];
-    HWREG(ui32Base + AES_O_IV_IN_3) = pui32IVdata[3];
+    HWREG(ui32Base + AES_O_IV_IN_0) = *((uint32_t *)(pui8IVdata+0));
+    HWREG(ui32Base + AES_O_IV_IN_1) = *((uint32_t *)(pui8IVdata+4));
+    HWREG(ui32Base + AES_O_IV_IN_2) = *((uint32_t *)(pui8IVdata+8));
+    HWREG(ui32Base + AES_O_IV_IN_3) = *((uint32_t *)(pui8IVdata+12));
 }
 
 //*****************************************************************************
@@ -357,7 +382,7 @@ AESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
 //! Saves the tag registers to a user-defined location.
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32TagData is pointer to the location that stores the tag data.
+//! \param pui8TagData is pointer to the location that stores the tag data.
 //!
 //! This function stores the tag data for use authenticated encryption and
 //! decryption operations.
@@ -366,7 +391,7 @@ AESIVSet(uint32_t ui32Base, uint32_t *pui32IVdata)
 //
 //*****************************************************************************
 void
-AESTagRead(uint32_t ui32Base, uint32_t *pui32TagData)
+AESTagRead(uint32_t ui32Base, uint8_t *pui8TagData)
 {
     //
     // Check the arguments.
@@ -376,10 +401,10 @@ AESTagRead(uint32_t ui32Base, uint32_t *pui32TagData)
     //
     // Read the tag data.
     //
-    pui32TagData[0] = HWREG((ui32Base + AES_O_TAG_OUT_0));
-    pui32TagData[1] = HWREG((ui32Base + AES_O_TAG_OUT_1));
-    pui32TagData[2] = HWREG((ui32Base + AES_O_TAG_OUT_2));
-    pui32TagData[3] = HWREG((ui32Base + AES_O_TAG_OUT_3));
+    *((uint32_t *)(pui8TagData+0)) = HWREG((ui32Base + AES_O_TAG_OUT_0));
+    *((uint32_t *)(pui8TagData+4)) = HWREG((ui32Base + AES_O_TAG_OUT_1));
+    *((uint32_t *)(pui8TagData+8)) = HWREG((ui32Base + AES_O_TAG_OUT_2));
+    *((uint32_t *)(pui8TagData+12)) = HWREG((ui32Base + AES_O_TAG_OUT_3));
 }
 
 //*****************************************************************************
@@ -406,7 +431,7 @@ AESTagRead(uint32_t ui32Base, uint32_t *pui32TagData)
 //
 //*****************************************************************************
 void
-AESLengthSet(uint32_t ui32Base, uint64_t ui64Length)
+AESDataLengthSet(uint32_t ui32Base, uint64_t ui64Length)
 {
     //
     // Check the arguments.
@@ -422,7 +447,7 @@ AESLengthSet(uint32_t ui32Base, uint64_t ui64Length)
 
 //*****************************************************************************
 //
-//! Sets the authentication data length in the AES module.
+//! Sets the optional additional authentication data (AAD) length.
 //!
 //! \param ui32Base is the base address of the AES module.
 //! \param ui32Length is the length in bytes.
@@ -443,7 +468,7 @@ AESLengthSet(uint32_t ui32Base, uint64_t ui64Length)
 //
 //*****************************************************************************
 void
-AESAuthLengthSet(uint32_t ui32Base, uint32_t ui32Length)
+AESAuthDataLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 {
     //
     // Check the arguments.
@@ -459,9 +484,11 @@ AESAuthLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 //*****************************************************************************
 //
 //! Reads plaintext/ciphertext from data registers without blocking.
+//! This api writes data in blocks
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32Dest is a pointer to an array of words of data.
+//! \param pui8Dest is a pointer to an array of words of data.
+//! \param ui8Length the length can be from 1 to 16
 //!
 //! This function reads a block of either plaintext or ciphertext out of the
 //! AES module.  If the output data is not ready, the function returns
@@ -472,12 +499,19 @@ AESAuthLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 //
 //*****************************************************************************
 bool
-AESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest)
+AESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 {
+	volatile uint32_t pui32Dest[4];
+	uint8_t ui8BytCnt;
+	uint8_t *pui8DestTemp;
     //
     // Check the arguments.
     //
     ASSERT(ui32Base == AES_BASE);
+    if((ui8Length == 0)||(ui8Length>16))
+    {
+       	return(false);
+    }
 
     //
     // Check if the output is ready before reading the data.  If it not ready,
@@ -497,17 +531,29 @@ AESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest)
     pui32Dest[3] = HWREG(ui32Base + AES_O_DATA_IN_0);
 
     //
+    //Copy the data to a block memory
+    //
+    pui8DestTemp = (uint8_t *)pui32Dest;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+    {
+     	*(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
+    }
+    //
     // Read successful, return true.
     //
     return(true);
 }
 
+
 //*****************************************************************************
 //
 //! Reads plaintext/ciphertext from data registers with blocking.
+//! This api writes data in blocks
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32Dest is a pointer to an array of words.
+//! \param pui8Dest is a pointer to an array of words.
+//! \param ui8Length is the length of data in bytes to be read.
+//!        ui8Length can be from 1 to 16
 //!
 //! This function reads a block of either plaintext or ciphertext out of the
 //! AES module.  If the output is not ready, the function waits until it
@@ -516,13 +562,23 @@ AESDataReadNonBlocking(uint32_t ui32Base, uint32_t *pui32Dest)
 //! \return None.
 //
 //*****************************************************************************
+
 void
-AESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
+AESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 {
+	volatile uint32_t pui32Dest[4];
+	uint8_t ui8BytCnt;
+	uint8_t *pui8DestTemp;
+
     //
     // Check the arguments.
     //
     ASSERT(ui32Base == AES_BASE);
+    if((ui8Length == 0)||(ui8Length>16))
+   	{
+       	return;
+    }
+
 
     //
     // Wait for the output to be ready before reading the data.
@@ -538,6 +594,16 @@ AESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
     pui32Dest[1] = HWREG(ui32Base + AES_O_DATA_IN_2);
     pui32Dest[2] = HWREG(ui32Base + AES_O_DATA_IN_1);
     pui32Dest[3] = HWREG(ui32Base + AES_O_DATA_IN_0);
+    //
+    //Copy the data to a block memory
+    //
+    pui8DestTemp = (uint8_t *)pui32Dest;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+   	{
+    	*(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
+   	}
+
+    return;
 }
 
 //*****************************************************************************
@@ -545,23 +611,31 @@ AESDataRead(uint32_t ui32Base, uint32_t *pui32Dest)
 //! Writes plaintext/ciphertext to data registers without blocking.
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32Src is a pointer to an array of words of data.
+//! \param pui8Src is a pointer to an array of words of data.
+//! \param ui8Length the length can be from 1 to 16
 //!
 //! This function writes a block of either plaintext or ciphertext into the
 //! AES module.  If the input is not ready, the function returns false
-//! If the write completed successfully, the function returns true. A
-//! block is 16 bytes or 4 words.
+//! If the write completed successfully, the function returns true.
 //!
 //! \return True or false.
 //
 //*****************************************************************************
 bool
-AESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
+AESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 {
-    //
+	volatile uint32_t pui32Src[4]={0,0,0,0};
+	uint8_t ui8BytCnt;
+	uint8_t *pui8SrcTemp;
+
+	//
     // Check the arguments.
     //
     ASSERT(ui32Base == AES_BASE);
+    if((ui8Length == 0)||(ui8Length>16))
+   	{
+      	return(false);
+    }
 
     //
     // Check if the input is ready.  If not, then return false.
@@ -571,6 +645,15 @@ AESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
         return(false);
     }
 
+
+    //
+    //Copy the data to a block memory
+    //
+    pui8SrcTemp = (uint8_t *)pui32Src;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+	{
+		*(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
+	}
     //
     // Write a block of data into the data registers.
     //
@@ -585,34 +668,52 @@ AESDataWriteNonBlocking(uint32_t ui32Base, uint32_t *pui32Src)
     return(true);
 }
 
+
 //*****************************************************************************
 //
 //! Writes plaintext/ciphertext to data registers with blocking.
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32Src is a pointer to an array of bytes.
+//! \param pui8Src is a pointer to an array of bytes.
+//! \param ui8Length the length can be from 1 to 16
 //!
 //! This function writes a block of either plaintext or ciphertext into the
 //! AES module.  If the input is not ready, the function waits until it is
-//! ready before performing the write.  A block is 16 bytes or 4 words.
+//! ready before performing the write.
 //!
 //! \return None.
 //
 //*****************************************************************************
+
 void
-AESDataWrite(uint32_t ui32Base, uint32_t *pui32Src)
+AESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 {
+	volatile uint32_t pui32Src[4]={0,0,0,0};
+	uint8_t ui8BytCnt;
+	uint8_t *pui8SrcTemp;
     //
     // Check the arguments.
     //
     ASSERT(ui32Base == AES_BASE);
-
+    if((ui8Length == 0)||(ui8Length>16))
+	{
+    	return;
+	}
     //
     // Wait for input ready.
     //
     while((AES_CTRL_INPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0)
     {
     }
+
+    //
+    //Copy the data to a block memory
+    //
+    pui8SrcTemp = (uint8_t *)pui32Src;
+    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
+   	{
+   		*(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
+   	}
 
     //
     // Write a block of data into the data registers.
@@ -623,15 +724,15 @@ AESDataWrite(uint32_t ui32Base, uint32_t *pui32Src)
     HWREG(ui32Base + AES_O_DATA_IN_0) = pui32Src[3];
 }
 
+
 //*****************************************************************************
 //
 //! Used to process(transform) blocks of data, either encrypt or decrypt it.
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32Src is a pointer to the memory location where the input data
-//! is stored. The data must be padded to the 16-byte boundary.
-//! \param pui32Dest is a pointer to the memory location output is written.
-//! The space for written data must be rounded up to the 16-byte boundary.
+//! \param pui8Src is a pointer to the memory location where the input data
+//! is stored.
+//! \param pui8Dest is a pointer to the memory location output is written.
 //! \param ui32Length is the length of the cryptographic data in bytes.
 //!
 //! This function iterates the encryption or decryption mechanism number over
@@ -648,10 +749,10 @@ AESDataWrite(uint32_t ui32Base, uint32_t *pui32Src)
 //
 //*****************************************************************************
 bool
-AESDataProcess(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
+AESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
                uint32_t ui32Length)
 {
-    uint32_t ui32Count;
+    uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
 
     //
     // Check the arguments.
@@ -662,39 +763,59 @@ AESDataProcess(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
     // Write the length register first, which triggers the engine to start
     // using this context.
     //
-    AESLengthSet(AES_BASE, (uint64_t) ui32Length);
+    AESDataLengthSet(AES_BASE, (uint64_t) ui32Length);
 
     //
     // Now loop until the blocks are written.
     //
-    for(ui32Count = 0; ui32Count < ui32Length; ui32Count += 16)
+    ui32BlkCount = ui32Length/16;
+    for(ui32Count = 0; ui32Count < ui32BlkCount; ui32Count += 1)
     {
         //
         // Write the data registers.
         //
-        AESDataWrite(ui32Base, pui32Src + (ui32Count / 4));
+        AESDataWrite(ui32Base, pui8Src + (ui32Count*16) ,16);
 
         //
         // Read the data registers.
         //
-        AESDataRead(ui32Base, pui32Dest + (ui32Count / 4));
+        AESDataRead(ui32Base, pui8Dest + (ui32Count*16) ,16);
+
     }
+
+    //
+    //Now handle the residue bytes
+    //
+    ui32ByteCount = ui32Length%16;
+    if(ui32ByteCount)
+    {
+    	//
+    	// Write the data registers.
+    	//
+    	AESDataWrite(ui32Base, pui8Src + (ui32Count*ui32BlkCount) ,ui32ByteCount);
+
+    	//
+    	// Read the data registers.
+    	//
+        AESDataRead(ui32Base, pui8Dest + (ui32Count*ui32BlkCount) ,ui32ByteCount);
+    }
+
+
 
     //
     // Return true to indicate successful completion of the function.
     //
     return(true);
 }
-
 //*****************************************************************************
 //
-//! Used to authenticate blocks of data by generating a hash tag.
+//! Used to generate message authentication code (MAC) using CBC-MAC and F9 mode.
 //!
 //! \param ui32Base is the base address of the AES module.
-//! \param pui32Src is a pointer to the memory location where the input data
-//! is stored. The data must be padded to the 16-byte boundary.
+//! \param pui8Src is a pointer to the memory location where the input data
+//! is stored.
 //! \param ui32Length  is the length of the cryptographic data in bytes.
-//! \param pui32Tag is a pointer to a 4-word array where the hash tag is
+//! \param pui8Tag is a pointer to a 4-word array where the hash tag is
 //! written.
 //!
 //! This function processes data to produce a hash tag that can be used tor
@@ -707,12 +828,11 @@ AESDataProcess(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
 //
 //*****************************************************************************
 bool
-AESDataAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t ui32Length,
-            uint32_t *pui32Tag)
+AESDataMAC(uint32_t ui32Base, uint8_t *pui8Src, uint32_t ui32Length,
+            uint8_t *pui8Tag)
 {
-    uint32_t ui32Count;
-
-    //
+    uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
+	//
     // Check the arguments.
     //
     ASSERT(ui32Base == AES_BASE);
@@ -721,17 +841,34 @@ AESDataAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t ui32Length,
     // Write the length register first, which triggers the engine to start
     // using this context.
     //
-    AESLengthSet(AES_BASE, (uint64_t) ui32Length);
+    AESDataLengthSet(AES_BASE, (uint64_t) ui32Length);
+
+    //
+    // Write the data registers.
+    //
 
     //
     // Now loop until the blocks are written.
     //
-    for(ui32Count = 0; ui32Count < ui32Length; ui32Count += 16)
+    ui32BlkCount = ui32Length/16;
+    for(ui32Count = 0; ui32Count < ui32BlkCount; ui32Count += 1)
     {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui32Src + (ui32Count / 4));
+	   //
+	   // Write the data registers.
+	   //
+	   AESDataWrite(ui32Base, pui8Src + ui32Count*16 ,16);
+    }
+
+    //
+    //Now handle the residue bytes
+    //
+    ui32ByteCount = ui32Length%16;
+    if(ui32ByteCount)
+    {
+	   //
+	   // Write the data registers.
+	   //
+	   AESDataWrite(ui32Base, pui8Src + (ui32Count*ui32BlkCount) ,ui32ByteCount);
     }
 
     //
@@ -744,7 +881,7 @@ AESDataAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t ui32Length,
     //
     // Read the hash tag value.
     //
-    AESTagRead(AES_BASE, pui32Tag);
+    AESTagRead(AES_BASE, pui8Tag);
 
     //
     // Return true to indicate successful completion of the function.
@@ -754,21 +891,21 @@ AESDataAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t ui32Length,
 
 //*****************************************************************************
 //
-//! Processes and authenticates blocks of data, either encrypt it or decrypts
-//! it.
+//! Used for Authenticated encryption (AE) of the data. Processes and authenticates blocks of data,
+//! either encrypt the data or decrypt the data.
 //!
 //! \param ui32Base  is the base address of the AES module.
-//! \param pui32Src is a pointer to the memory location where the input data
+//! \param pui8Src is a pointer to the memory location where the input data
 //! is stored. The data must be padded to the 16-byte boundary.
-//! \param pui32Dest is a pointer to the memory location output is written.
+//! \param pui8Dest is a pointer to the memory location output is written.
 //! The space for written data must be rounded up to the 16-byte boundary.
 //! \param ui32Length is the length of the cryptographic data in bytes.
-//! \param pui32AuthSrc is a pointer to the memory location where the
+//! \param pui8AuthSrc is a pointer to the memory location where the
 //! additional authentication data is stored.  The data must be padded to the
 //! 16-byte boundary.
 //! \param ui32AuthLength is the length of the additional authentication
 //! data in bytes.
-//! \param pui32Tag is a pointer to a 4-word array where the hash tag is
+//! \param pui8Tag is a pointer to a 4-word array where the hash tag is
 //! written.
 //!
 //! This function encrypts or decrypts blocks of data in addition to
@@ -781,9 +918,9 @@ AESDataAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t ui32Length,
 //
 //*****************************************************************************
 bool
-AESDataProcessAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
-                   uint32_t ui32Length, uint32_t *pui32AuthSrc,
-                   uint32_t ui32AuthLength, uint32_t *pui32Tag)
+AESDataProcessAE(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
+                   uint32_t ui32Length, uint8_t *pui8AuthSrc,
+                   uint32_t ui32AuthLength, uint8_t *pui8Tag)
 {
     uint32_t ui32Count;
 
@@ -795,12 +932,12 @@ AESDataProcessAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
     //
     // Set the data length.
     //
-    AESLengthSet(AES_BASE, (uint64_t) ui32Length);
+    AESDataLengthSet(AES_BASE, (uint64_t) ui32Length);
 
     //
     // Set the additional authentication data length.
     //
-    AESAuthLengthSet(AES_BASE, ui32AuthLength);
+    AESAuthDataLengthSet(AES_BASE, ui32AuthLength);
 
     //
     // Now loop until the authentication data blocks are written.
@@ -810,7 +947,7 @@ AESDataProcessAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
         //
         // Write the data registers.
         //
-        AESDataWrite(ui32Base, pui32AuthSrc + (ui32Count / 4));
+        AESDataWrite(ui32Base, pui8AuthSrc + (ui32Count),16);
     }
 
     //
@@ -821,13 +958,13 @@ AESDataProcessAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
         //
         // Write the data registers.
         //
-        AESDataWrite(ui32Base, pui32Src + (ui32Count / 4));
+        AESDataWrite(ui32Base, pui8Src + (ui32Count),16);
 
         //
         //
         // Read the data registers.
         //
-        AESDataRead(ui32Base, pui32Dest + (ui32Count / 4));
+        AESDataRead(ui32Base, pui8Dest + (ui32Count),16);
     }
 
     //
@@ -840,7 +977,7 @@ AESDataProcessAuth(uint32_t ui32Base, uint32_t *pui32Src, uint32_t *pui32Dest,
     //
     // Read the hash tag value.
     //
-    AESTagRead(AES_BASE, pui32Tag);
+    AESTagRead(AES_BASE, pui8Tag);
 
     //
     // Return true to indicate successful completion of the function.

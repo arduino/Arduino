@@ -1,16 +1,39 @@
 //*****************************************************************************
 //
-// adc.c - Driver for the ADC module.
+//  adc.c
 //
-// Copyright (C) 2013 Texas Instruments Incorporated
+//  Driver for the ADC module.
 //
-// All rights reserved. Property of Texas Instruments Incorporated.
-// Restricted rights to use, duplicate or disclose this code are
-// granted through contract.
-// The program may not be used without the written permission of
-// Texas Instruments Incorporated or against the terms and conditions
-// stipulated in the agreement under which this program has been supplied,
-// and under no circumstances can it be used with non-TI connectivity device.
+//  Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -44,7 +67,7 @@ void ADCEnable(unsigned long ulBase)
 {
   //
   // Set the global enable bit in the control register.
-  //  
+  //
   HWREG(ulBase + ADC_O_ADC_CTRL) |= 0x1;
 }
 
@@ -63,7 +86,7 @@ void ADCDisable(unsigned long ulBase)
 {
   //
   // Clear the global enable bit in the control register.
-  // 
+  //
   HWREG(ulBase + ADC_O_ADC_CTRL) &= ~0x1 ;
 }
 
@@ -72,8 +95,9 @@ void ADCDisable(unsigned long ulBase)
 //! Enables specified ADC channel
 //!
 //! \param ulBase is the base address of the ADC
+//! \param ulChannel is one of the valid ADC channels
 //!
-//! This function enables specified ADC channel and configures the 
+//! This function enables specified ADC channel and configures the
 //! pin as analog pin.
 //!
 //! \return None.
@@ -82,11 +106,11 @@ void ADCDisable(unsigned long ulBase)
 void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulCh;
-  
+
   ulCh =  (ulChannel == ADC_CH_0)? 0x02 :
           (ulChannel == ADC_CH_1)? 0x04 :
           (ulChannel == ADC_CH_2)? 0x08 : 0x10;
-  
+
   HWREG(ulBase + ADC_O_ADC_SPARE1) |= ulCh;
 }
 
@@ -95,6 +119,7 @@ void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel)
 //! Disables specified ADC channel
 //!
 //! \param ulBase is the base address of the ADC
+//! \param ulChannel is one of the valid ADC channelsber
 //!
 //! This function disables specified ADC channel.
 //!
@@ -104,26 +129,26 @@ void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel)
 void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulCh;
-  
+
   ulCh =  (ulChannel == ADC_CH_0)? 0x02 :
           (ulChannel == ADC_CH_1)? 0x04 :
           (ulChannel == ADC_CH_2)? 0x08 : 0x10;
-  
+
   HWREG(ulBase + ADC_O_ADC_SPARE1) &= ~ulCh;
 }
 
 //*****************************************************************************
 //
-//! Enables and registers ADC interrupt handler for specified channel 
+//! Enables and registers ADC interrupt handler for specified channel
 //!
 //! \param ulBase is the base address of the ADC
 //! \param ulChannel is one of the valid ADC channels
 //! \param pfnHandler is a pointer to the function to be called when the
 //! ADC channel interrupt occurs.
 //!
-//! This function enables and registers ADC interrupt handler for specified 
+//! This function enables and registers ADC interrupt handler for specified
 //! channel. Individual interrupt for each channel should be enabled using
-//! \sa ADCIntEnable(). It is the interrupt handler's responsibility to clear 
+//! \sa ADCIntEnable(). It is the interrupt handler's responsibility to clear
 //! the interrupt source.
 //!
 //! The parameter \e ulChannel should be one of the following
@@ -136,23 +161,23 @@ void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel)
 //! \return None.
 //
 //*****************************************************************************
-void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel, 
+void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
                     void (*pfnHandler)(void))
 {
   unsigned long ulIntNo;
-  
+
   //
-  // Get the interrupt number associted with the specified channel 
+  // Get the interrupt number associted with the specified channel
   //
   ulIntNo = (ulChannel == ADC_CH_0)? INT_ADCCH0 :
             (ulChannel == ADC_CH_1)? INT_ADCCH1 :
             (ulChannel == ADC_CH_2)? INT_ADCCH2 : INT_ADCCH3;
-  
+
   //
   // Register the interrupt handler
   //
   IntRegister(ulIntNo,pfnHandler);
-  
+
   //
   // Enable ADC interrupt
   //
@@ -162,13 +187,13 @@ void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
 
 //*****************************************************************************
 //
-//! Disables and unregisters ADC interrupt handler for specified channel 
+//! Disables and unregisters ADC interrupt handler for specified channel
 //!
 //! \param ulBase is the base address of the ADC
 //! \param ulChannel is one of the valid ADC channels
 //!
-//! This function disables and unregisters ADC interrupt handler for specified 
-//! channel. This function also masks off the interrupt in the interrupt 
+//! This function disables and unregisters ADC interrupt handler for specified
+//! channel. This function also masks off the interrupt in the interrupt
 //! controller so that the interrupt handler no longer is called.
 //!
 //! The parameter \e ulChannel should be one of the following
@@ -184,19 +209,19 @@ void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
 void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulIntNo;
-  
+
   //
-  // Get the interrupt number associted with the specified channel 
+  // Get the interrupt number associted with the specified channel
   //
   ulIntNo = (ulChannel == ADC_CH_0)? INT_ADCCH0 :
             (ulChannel == ADC_CH_1)? INT_ADCCH1 :
             (ulChannel == ADC_CH_2)? INT_ADCCH2 : INT_ADCCH3;
-  
+
   //
   // Disable ADC interrupt
   //
   IntDisable(ulIntNo);
-  
+
   //
   // Unregister the interrupt handler
   //
@@ -205,7 +230,7 @@ void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel)
 
 //*****************************************************************************
 //
-//! Enables individual interrupt sources for specified channel 
+//! Enables individual interrupt sources for specified channel
 //!
 //!
 //! \param ulBase is the base address of the ADC
@@ -233,12 +258,12 @@ void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel)
 //! \return None.
 //
 //*****************************************************************************
-void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel, 
+void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
                   unsigned long ulIntFlags)
 {
   unsigned long ulOffset;
   unsigned long ulDmaMsk;
- 
+
   //
   // Enable DMA Done interrupt
   //
@@ -247,16 +272,16 @@ void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
      ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
                 (ulChannel == ADC_CH_1)?0x00002000:
                 (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
-                
+
      HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) = ulDmaMsk;
   }
-  
+
   ulIntFlags = ulIntFlags &  0x0F;
   //
   // Get the interrupt enable register offset for specified channel
   //
   ulOffset = ADC_O_adc_ch0_irq_en + ulChannel;
-  
+
   //
   // Unmask the specified interrupts
   //
@@ -266,7 +291,7 @@ void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
 
 //*****************************************************************************
 //
-//! Disables individual interrupt sources for specified channel 
+//! Disables individual interrupt sources for specified channel
 //!
 //!
 //! \param ulBase is the base address of the ADC.
@@ -283,12 +308,12 @@ void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
 //! \return None.
 //
 //*****************************************************************************
-void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel, 
+void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
                   unsigned long ulIntFlags)
 {
   unsigned long ulOffset;
   unsigned long ulDmaMsk;
-  
+
   //
   // Disable DMA Done interrupt
   //
@@ -297,15 +322,15 @@ void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
      ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
                 (ulChannel == ADC_CH_1)?0x00002000:
                 (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
-                
+
      HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) = ulDmaMsk;
   }
-  
+
   //
   // Get the interrupt enable register offset for specified channel
   //
   ulOffset = ADC_O_adc_ch0_irq_en + ulChannel;
-  
+
   //
   // Unmask the specified interrupts
   //
@@ -324,7 +349,7 @@ void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
 //!
 //! The parameter \e ulChannel should be as explained in \sa ADCIntEnable().
 //!
-//! \return Return the ADC channel interrupt status,  enumerated as a bit 
+//! \return Return the ADC channel interrupt status,  enumerated as a bit
 //! field of values described in ADCIntEnable()
 //
 //*****************************************************************************
@@ -333,28 +358,28 @@ unsigned long ADCIntStatus(unsigned long ulBase, unsigned long ulChannel)
   unsigned long ulOffset;
   unsigned long ulDmaMsk;
   unsigned long ulIntStatus;
-  
+
   //
   // Get DMA Done interrupt status
   //
   ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
             (ulChannel == ADC_CH_1)?0x00002000:
             (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
-            
-  ulIntStatus = HWREG(APPS_CONFIG_BASE + 
+
+  ulIntStatus = HWREG(APPS_CONFIG_BASE +
                      APPS_CONFIG_O_DMA_DONE_INT_STS_MASKED)& ulDmaMsk;
 
-  
+
   //
   // Get the interrupt enable register offset for specified channel
   //
   ulOffset = ADC_O_adc_ch0_irq_status + ulChannel;
-  
+
   //
   // Read ADC interrupt status
   //
   ulIntStatus |= HWREG(ulBase + ulOffset) & 0xf;
-  
+
   //
   // Return the current interrupt status
   //
@@ -368,8 +393,9 @@ unsigned long ADCIntStatus(unsigned long ulBase, unsigned long ulChannel)
 //!
 //! \param ulBase is the base address of the ADC
 //! \param ulChannel is one of the valid ADC channels
+//! \param ulIntFlags is the bit mask of the interrupt sources to be cleared.
 //!
-//! This function clears individual interrupt source for the specified 
+//! This function clears individual interrupt source for the specified
 //! ADC channel.
 //!
 //! The parameter \e ulChannel should be as explained in \sa ADCIntEnable().
@@ -377,12 +403,12 @@ unsigned long ADCIntStatus(unsigned long ulBase, unsigned long ulChannel)
 //! \return None.
 //
 //*****************************************************************************
-void ADCIntClear(unsigned long ulBase, unsigned long ulChannel, 
+void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
                   unsigned long ulIntFlags)
 {
-  unsigned long ulOffset; 
+  unsigned long ulOffset;
   unsigned long ulDmaMsk;
-  
+
   //
   // Clear DMA Done interrupt
   //
@@ -391,19 +417,19 @@ void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
      ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
                 (ulChannel == ADC_CH_1)?0x00002000:
                 (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
-                
+
      HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) = ulDmaMsk;
   }
-  
+
   //
   // Get the interrupt enable register offset for specified channel
   //
   ulOffset = ADC_O_adc_ch0_irq_status + ulChannel;
-  
+
   //
   // Clear the specified interrupts
   //
-  HWREG(ulBase + ulOffset) &= ~ulIntFlags;
+  HWREG(ulBase + ulOffset) = (ulIntFlags & ~(ADC_DMA_DONE));
 }
 
 //*****************************************************************************
@@ -428,17 +454,17 @@ void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
 void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulBitMask;
-  
+
   //
   // Get the bit mask for enabling DMA for specified channel
   //
   ulBitMask = (ulChannel == ADC_CH_0)?0x01:
               (ulChannel == ADC_CH_1)?0x04:
               (ulChannel == ADC_CH_2)?0x10:0x40;
-              
+
   //
   // Enable DMA request for the specified channel
-  //             
+  //
   HWREG(ulBase + ADC_O_adc_dma_mode_en) |= ulBitMask;
 }
 
@@ -464,93 +490,19 @@ void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel)
 void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulBitMask;
-  
+
   //
   // Get the bit mask for disabling DMA for specified channel
   //
   ulBitMask = (ulChannel == ADC_CH_0)?0x01:
               (ulChannel == ADC_CH_1)?0x04:
               (ulChannel == ADC_CH_2)?0x10:0x40;
-              
+
   //
   // Disable DMA request for the specified channel
-  //             
+  //
   HWREG(ulBase + ADC_O_adc_dma_mode_en) &= ~ulBitMask;
 }
-
-//*****************************************************************************
-//
-//! Sets the channel gain for specified ADC channel
-//!
-//! \param ulBase is the base address of the ADC
-//! \param ulChannel is one of the valid ADC channels.
-//! \param ucGain specifes the required gain.
-//!
-//! This function sets the channel gain for specified ADC channel
-//!
-//! The parameter \e ulChannel should be one of the following
-//!
-//! - \b ADC_CH_0 for channel 0
-//! - \b ADC_CH_1 for channel 1
-//! - \b ADC_CH_2 for channel 2
-//! - \b ADC_CH_3 for channel 3
-//!
-//! The parameter \e ucGain should be one of the following
-//!
-//! - \b ADC_GAIN_1X
-//! - \b ADC_GAIN_2X
-//! - \b ADC_GAIN_3X
-//! - \b ADC_GAIN_4X
-//!
-//! \return None.
-//
-//*****************************************************************************
-void ADCChannelGainSet(unsigned long ulBase, unsigned long ulChannel,
-                       unsigned char ucGain)
-{
-  unsigned long ulOffset;
-  
-  //
-  // Get the gain config register offset for specified channel
-  //
-  ulOffset = ADC_O_adc_ch0_gain + ulChannel;
-  
-  //
-  // Set the channel gain
-  //
-  HWREG(ulBase + ulOffset) = ((HWREG(ulBase + ulOffset) & ~0x3) | ucGain);
-}
-
-//*****************************************************************************
-//
-//! Gets the current channel gain for specified ADC channel
-//!
-//! \param ulBase is the base address of the ADC
-//! \param ulChannel is one of the valid ADC channels.
-//!
-//! This function sets the channel gain for specified ADC channel
-//!
-//! The parameter \e ulChannel should as explained in ADCChannelGainSet()
-//!
-//! \returns Returns the current channel gain for the specified channel, 
-//! eumerated as values described in ADCChannelGainSet()
-//
-//*****************************************************************************
-unsigned char ADCChannleGainGet(unsigned long ulBase, unsigned long ulChannel)
-{
-  unsigned long ulOffset;
-  
-  //
-  // Get the gain config register offset for specified channel
-  //
-  ulOffset = ADC_O_adc_ch0_gain + ulChannel;
-  
-  //
-  // Return the channel gain
-  //
-  return(HWREG(ulBase + ulOffset) & 0x3);
-}
-
 
 //*****************************************************************************
 //
@@ -559,9 +511,9 @@ unsigned char ADCChannleGainGet(unsigned long ulBase, unsigned long ulChannel)
 //! \param ulBase is the base address of the ADC
 //! \param ulValue is wrap arround value of the timer
 //!
-//! This function Configures the ADC internal timer. The ADC timer is a 17 bit 
-//! used to timestamp the ADC data samples internally. 
-//! User can read the timestamp along with the sample from the FIFO register(s). 
+//! This function Configures the ADC internal timer. The ADC timer is a 17 bit
+//! used to timestamp the ADC data samples internally.
+//! User can read the timestamp along with the sample from the FIFO register(s).
 //! Each sample in the FIFO contains 14 bit actual data and 18 bit timestamp
 //!
 //! The parameter \e ulValue can take any value between 0 - 2^17
@@ -572,17 +524,17 @@ unsigned char ADCChannleGainGet(unsigned long ulBase, unsigned long ulChannel)
 void ADCTimerConfig(unsigned long ulBase, unsigned long ulValue)
 {
   unsigned long ulReg;
-  
+
   //
   // Read the currrent config
   //
   ulReg =  HWREG(ulBase + ADC_O_adc_timer_configuration);
-  
+
   //
   // Mask and set timer count field
   //
-  ulReg = ((ulReg & ~0x1FFFF) | (ulValue & 0x1FFFF));  
-  
+  ulReg = ((ulReg & ~0x1FFFF) | (ulValue & 0x1FFFF));
+
   //
   // Set the timer count value
   //
@@ -684,12 +636,12 @@ unsigned long ADCTimerValueGet(unsigned long ulBase)
 unsigned char ADCFIFOLvlGet(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulOffset;
-  
+
   //
   // Get the fifo level register offset for specified channel
   //
   ulOffset = ADC_O_adc_ch0_fifo_lvl + ulChannel;
-  
+
   //
   // Return FIFO level
   //
@@ -719,12 +671,12 @@ unsigned char ADCFIFOLvlGet(unsigned long ulBase, unsigned long ulChannel)
 unsigned long ADCFIFORead(unsigned long ulBase, unsigned long ulChannel)
 {
   unsigned long ulOffset;
-  
+
   //
   // Get the fifo register offset for specified channel
   //
   ulOffset = ADC_O_channel0FIFODATA + ulChannel;
-  
+
   //
   // Return FIFO level
   //
