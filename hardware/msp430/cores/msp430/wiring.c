@@ -485,16 +485,20 @@ void sleepSeconds(uint32_t seconds)
 		SFRACT_INC = 0;
 	}
 
+	// Activate WDT in ACLK Interval mode
 	WDTCTL = WDT_ADLY_250;
 
 	while(stay_asleep && (millis() - start <= seconds * 1000)) {
-		/* Wait for WDT interrupt in LMP0 */
+		/* Wait for WDT interrupt in LPM3
+		 * A user's ISR may abort this sleep using wakeup().
+		 */
 		__bis_status_register(LPM3_bits+GIE);
 	}
 
 	sleeping = false;
 	stay_asleep = false;
 
+	// Re-activate WDT in SMCLK Interval mode
 	enableWatchDogIntervalMode();
 }
 
@@ -517,6 +521,7 @@ void sleep(uint32_t milliseconds)
 		SFRACT_INC = 950;
 	}
 
+	// Activate WDT in ACLK Interval mode
 	WDTCTL = WDT_ADLY_1_9;
 
 	sleeping = true;
@@ -524,13 +529,16 @@ void sleep(uint32_t milliseconds)
 	uint32_t start = millis();
 
 	while(stay_asleep && (millis() - start < milliseconds)) {
-		/* Wait for WDT interrupt in LMP0 */
+		/* Wait for WDT interrupt in LPM3.
+		 * A user's ISR may abort this sleep using wakeup().
+		 */
 		__bis_status_register(LPM3_bits+GIE);
 	}
 
 	sleeping = false;
 	stay_asleep = false;
 
+	// Re-activate WDT in SMCLK Interval mode
 	enableWatchDogIntervalMode();
 }
 
@@ -543,11 +551,13 @@ void suspend(void)
 	stay_asleep = true;
 
 	while (stay_asleep) {
+		/* Halt all clocks; millis and micros will quit advancing, only
+		 * a user ISR may wake it up using wakeup().
+		 */
 		__bis_status_register(LPM4_bits+GIE);
 	}
 
 	sleeping = false;
-	stay_asleep = false;
 
 	// Re-activate WDT in SMCLK Interval mode
 	enableWatchDogIntervalMode();
