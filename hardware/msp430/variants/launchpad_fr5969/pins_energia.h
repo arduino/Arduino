@@ -78,7 +78,7 @@ static const uint8_t A6  = 128 + 6; // Not available on BoosterPack header
 static const uint8_t A7  = 128 + 7; // Not available on BoosterPack header
 static const uint8_t A8  = 23; // Available, but not on the 20-pin BP header
 static const uint8_t A9  = 24; // Available, but not on the 20-pin BP header
-static const uint8_t A10 = 2; 	
+static const uint8_t A10 = 128 + 10;
 static const uint8_t A11  = 5;
 static const uint8_t A12  = 18; 
 static const uint8_t A13  = 128 + 13;  // Not available on BoosterPack header
@@ -184,7 +184,7 @@ static const uint8_t GREEN_LED = 26;
 
 static const uint8_t PUSH1 = 27;
 static const uint8_t PUSH2 = 28;
-static const uint8_t TEMPSENSOR = 30; // depends on chip
+static const uint8_t TEMPSENSOR = 128 + 10; // depends on chip
 
 #ifdef ARDUINO_MAIN
 

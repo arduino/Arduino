@@ -348,9 +348,10 @@ int HardwareSerial::peek(void)
     //
     // Wait for a character to be received.
     //
-    while(RX_BUFFER_EMPTY)
+    if(RX_BUFFER_EMPTY)
     {
-        //
+    	return -1;
+    	//
         // Block waiting for a character to be received (if the buffer is
         // currently empty).
         //
@@ -368,9 +369,16 @@ int HardwareSerial::peek(void)
 
 int HardwareSerial::read(void)
 {
-	unsigned char cChar = peek();
-    rxReadIndex = ((rxReadIndex) + 1) % rxBufferSize;
-	return(cChar);
+    if(RX_BUFFER_EMPTY) {
+    	return -1;
+    }
+
+    //
+    // Read a character from the buffer.
+    //
+    unsigned char cChar = rxBuffer[rxReadIndex];
+	rxReadIndex = ((rxReadIndex) + 1) % rxBufferSize;
+	return cChar;
 }
 
 void HardwareSerial::flush()

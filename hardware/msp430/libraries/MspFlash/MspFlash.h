@@ -51,6 +51,8 @@
   
 */
 
+#include <Energia.h>
+
 #ifndef MSP_FLASH_h
 #define MSP_FLASH_h
 

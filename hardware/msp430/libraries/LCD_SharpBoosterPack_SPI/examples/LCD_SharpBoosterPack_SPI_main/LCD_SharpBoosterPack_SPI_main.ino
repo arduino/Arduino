@@ -61,16 +61,16 @@ void loop() {
       myScreen.setXY(i,20,1);
     }
     
-    for (uint8_t i=0; i<20; i++) {
+    for (uint8_t i=0; i<=20; i++) {
       myScreen.setXY(50+i,30,1);
     }
-    for (uint8_t i=0; i<20; i++) {
+    for (uint8_t i=0; i<=20; i++) {
       myScreen.setXY(50,30+i,1);
     }
-    for (uint8_t i=0; i<20; i++) {
+    for (uint8_t i=0; i<=20; i++) {
       myScreen.setXY(50+i,50,1);
     }
-    for (uint8_t i=0; i<20; i++) {
+    for (uint8_t i=0; i<=20; i++) {
       myScreen.setXY(70,30+i,1);
     }
     

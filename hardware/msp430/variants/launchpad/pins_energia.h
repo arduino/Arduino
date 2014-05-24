@@ -69,6 +69,9 @@ static const uint8_t DEBUG_UARTTXD = 3;  /* Transmit Data (TXD) at P1.1 */
 #define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
+#define SPISCK_SET_MODE (PORT_SELECTION0)
+#define SPIMOSI_SET_MODE (PORT_SELECTION0)
+#define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
 
 #define DEBUG_UART_MODULE 0x0
@@ -119,7 +122,7 @@ static const uint8_t P2_6 = 19;
 static const uint8_t RED_LED = 2;
 static const uint8_t GREEN_LED = 14;
 static const uint8_t PUSH2 = 5;
-static const uint8_t TEMPSENSOR = 10; // depends on chip
+static const uint8_t TEMPSENSOR = 128 + 10; // depends on chip
 
 
 #ifdef ARDUINO_MAIN
