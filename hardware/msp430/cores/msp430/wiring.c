@@ -57,6 +57,7 @@ volatile unsigned long wdt_overflow_count = 0;
 volatile unsigned long wdt_millis = 0;
 volatile unsigned int wdt_fract = 0;
 volatile uint8_t sleeping = false;
+volatile boolean stay_asleep = false;
 volatile uint16_t vlo_freq = 0;
 
 void initClocks(void);
@@ -474,6 +475,7 @@ void sleepSeconds(uint32_t seconds)
 {
 	uint32_t start = millis();
 	sleeping = true;
+	stay_asleep = true;
 
 	if(vlo_freq) {
 		SMILLIS_INC = 8192 / (vlo_freq/1000);
@@ -485,12 +487,13 @@ void sleepSeconds(uint32_t seconds)
 
 	WDTCTL = WDT_ADLY_250;
 
-	while(sleeping && (millis() - start <= seconds * 1000)) {
+	while(stay_asleep && (millis() - start <= seconds * 1000)) {
 		/* Wait for WDT interrupt in LMP0 */
 		__bis_status_register(LPM3_bits+GIE);
 	}
 
 	sleeping = false;
+	stay_asleep = false;
 
 	enableWatchDogIntervalMode();
 }
@@ -517,15 +520,36 @@ void sleep(uint32_t milliseconds)
 	WDTCTL = WDT_ADLY_1_9;
 
 	sleeping = true;
+	stay_asleep = true;
 	uint32_t start = millis();
 
-	while(sleeping && (millis() - start < milliseconds)) {
+	while(stay_asleep && (millis() - start < milliseconds)) {
 		/* Wait for WDT interrupt in LMP0 */
 		__bis_status_register(LPM3_bits+GIE);
 	}
 
 	sleeping = false;
+	stay_asleep = false;
 
+	enableWatchDogIntervalMode();
+}
+
+void suspend(void)
+{
+	// Stop WDT for now
+	WDTCTL = WDTPW | WDTHOLD;
+
+	sleeping = true;
+	stay_asleep = true;
+
+	while (stay_asleep) {
+		__bis_status_register(LPM4_bits+GIE);
+	}
+
+	sleeping = false;
+	stay_asleep = false;
+
+	// Re-activate WDT in SMCLK Interval mode
 	enableWatchDogIntervalMode();
 }
 
