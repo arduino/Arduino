@@ -104,10 +104,44 @@ void delayMicroseconds(unsigned int us)
 
 void delay(uint32_t milliseconds)
 {
-		unsigned long i;
-		for(i=0; i<milliseconds; i++){
+	unsigned long i;
+	for(i=0; i<milliseconds; i++){
+		delayMicroseconds(1000);
+	}
+}
+
+volatile boolean stay_asleep = false;
+
+void sleep(uint32_t milliseconds)
+{
+	unsigned long i;
+
+	stay_asleep = true;
+	for(i=0; i<milliseconds && stay_asleep; i++) {
+		delayMicroseconds(1000);
+	}
+	stay_asleep = false;
+}
+
+void sleepSeconds(uint32_t seconds)
+{
+	unsigned long i, j;
+
+	stay_asleep = true;
+	for(i=0; i<seconds && stay_asleep; i++) {
+		for(j=0; j<1000 && stay_asleep; j++) {
 			delayMicroseconds(1000);
 		}
+	}
+	stay_asleep = false;
+}
+
+void suspend(void)
+{
+	stay_asleep = true;
+
+	while(stay_asleep)
+		;
 }
 
 void Timer5IntHandler(void)
