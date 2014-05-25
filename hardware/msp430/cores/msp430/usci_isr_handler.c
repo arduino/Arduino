@@ -39,7 +39,7 @@ void USCIA0_ISR(void)
 		case USCI_UART_UCTXIFG: uart_tx_isr(0); break;
 	}
 
-	if (still_sleeping != stay_asleep)
+	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 
@@ -55,7 +55,7 @@ void USCIA1_ISR(void)
 		case USCI_UART_UCTXIFG: uart_tx_isr(XUSCI_A1_OFFSET); break;
 	}  
 
-	if (still_sleeping != stay_asleep)
+	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif
@@ -74,7 +74,7 @@ void USCIB0_ISR(void)
 	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UCB0IFG & (UCTXIFG | UCRXIFG)) != 0)
 		i2c_txrx_isr();
 
-	if (still_sleeping != stay_asleep)
+	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #else
@@ -90,7 +90,7 @@ void USCIB1_ISR(void)
 	if ((UCB1CTL0 & UCMODE_3) == UCMODE_3 && (UCB1IFG & (UCTXIFG | UCRXIFG)) != 0)
 		i2c_txrx_isr();
 
-	if (still_sleeping != stay_asleep)
+	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif
@@ -122,7 +122,7 @@ void USCIAB0TX_ISR(void)
 	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UC0IFG & (UCB0TXIFG | UCB0RXIFG)) != 0)
 		i2c_txrx_isr();
 
-	if (still_sleeping != stay_asleep)
+	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 
@@ -139,7 +139,7 @@ void USCIAB0RX_ISR(void)
 	if ((UCB0STAT & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
 		i2c_state_isr(); 
 
-	if (still_sleeping != stay_asleep)
+	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif // __MSP430_HAS_USCI__
