@@ -1,13 +1,4 @@
 /*
-  ************************************************************************
-  *	Wire.cpp
-  *
-  *	Arduino core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
-  *
-  *
-  ***********************************************************************
-  Derived from:
   TwoWire.cpp - TWI/I2C library for Wiring & Arduino
   Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
 

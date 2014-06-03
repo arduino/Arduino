@@ -68,22 +68,16 @@ static const uint8_t P4 = 0x0004;
 static const uint8_t P5 = 0x0005;
 static const uint8_t P6 = 0x0006;
 static const uint8_t P7 = 0x0007;
-static const uint8_t P12 = 0x00012;
-static const uint8_t P16 = 0x00016;
-static const uint8_t P17 = 0x00017;
-static const uint8_t P18 = 0x00018;
-static const uint8_t P19 = 0x00019;
-static const uint8_t P28 = 0x00028;
-static const uint8_t P29 = 0x00029;
-static const uint8_t P32 = 0x00032;
-static const uint8_t P33 = 0x00033;
-static const uint8_t P34 = 0x00034;
-
-
-static const uint8_t RED_LED = 2;
-static const uint8_t GREEN_LED = 14;
-static const uint8_t PUSH2 = 5;
-static const uint8_t TEMPSENSOR = 10; // depends on chip
+static const uint8_t P12 = 0x0000C;
+static const uint8_t P16 = 0x00010;
+static const uint8_t P17 = 0x00011;
+static const uint8_t P18 = 0x00012;
+static const uint8_t P19 = 0x00013;
+static const uint8_t P28 = 0x0001C;
+static const uint8_t P29 = 0x0001D;
+static const uint8_t P32 = 0x00020;
+static const uint8_t P33 = 0x00021;
+static const uint8_t P34 = 0x00022;
 
 
 #ifdef ARDUINO_MAIN
