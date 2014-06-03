@@ -12,7 +12,7 @@
 //
 //
 // Copyright © Rei VILO, 2013
-// Licence All rights reserved
+// License All rights reserved
 //
 // See LCD_screen.h and ReadMe.txt for references
 //

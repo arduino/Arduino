@@ -56,16 +56,21 @@ static const uint8_t DEBUG_UARTTXD = 2;  /* Transmit Data (TXD) at P2.0 */
 #endif
 
 /* Analog pins */
-static const uint8_t A0  = 5;  /* 22 - P1.5 */
-static const uint8_t A1  = 4;  /* 21 - P1.4 */
-static const uint8_t A2  = 3;  /* 20 - P1.3 */
-static const uint8_t A3  = 15; /* 19 - P3.3 */
-static const uint8_t A4  = 14; /* 18 - P3.2 */
-static const uint8_t A5  = 13; /* 17 - P3.1 */
-static const uint8_t A6  = 12; /* 16 - P3.0 */
-static const uint8_t A7  = 2;  /* 15 - P1.2 */
-static const uint8_t A8  = 1;  /* 14 - P1.1 */
-static const uint8_t A9  = 0;  /* 13 - P1.0 */
+/* Note: the Ax assignment is according to energia.nu/Guide_MSP430FraunchPad.html 
+   pin map, not the MSP430FR5739 device Analog channels (also named Ax) */
+
+static const uint8_t A0  = 22;  /* 22 - P1.5 */
+static const uint8_t A1  = 21;  /* 21 - P1.4 */
+static const uint8_t A2  = 20;  /* 20 - P1.3 */
+static const uint8_t A3  = 19; /* 19 - P3.3 */
+static const uint8_t A4  = 18; /* 18 - P3.2 */
+static const uint8_t A5  = 17; /* 17 - P3.1 */
+static const uint8_t A6  = 16; /* 16 - P3.0 */
+static const uint8_t A7  = 15;  /* 15 - P1.2 */
+static const uint8_t A8  = 14;  /* 14 - P1.1 */
+static const uint8_t A9  = 13;  /* 13 - P1.0 */
+static const uint8_t A10 = 128 + 10; //Special this is device's internal temp sensor */
+static const uint8_t A11 = 128 + 11; //Special this is Vcc/2 */
 
 /* 3-axes accelerometer pins */
 static const uint8_t ACC_X  = 12; /* (A6) 16 - P3.0 */
@@ -145,7 +150,7 @@ static const uint8_t GREEN_LED = 28;
 
 static const uint8_t PUSH1 = 23;
 static const uint8_t PUSH2 = 29;
-static const uint8_t TEMPSENSOR = 10;
+static const uint8_t TEMPSENSOR = 128 + 10;
 
 #ifdef ARDUINO_MAIN
 
@@ -341,6 +346,34 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(1),       /* 29 - P4.1 - PUSH2 */
 	BV(7),       /* 30 - P2.7 - ACC_ENABLE / NTC_ENABLE */
 
+};
+
+const uint32_t digital_pin_to_analog_in[] = {
+        NOT_ON_ADC,     /*  dummy   */
+        NOT_ON_ADC,     /*  1 - 3.3V*/
+        NOT_ON_ADC,		/*  2 - P2.0 */
+        NOT_ON_ADC,		/*  3 - P2.5 */
+        NOT_ON_ADC,		/*  4 - P2.6 */
+        NOT_ON_ADC, 	/*  5 - P2.1 */
+        NOT_ON_ADC,		/*  6 - P2.2 */
+        NOT_ON_ADC,		/*  7 - P3.4 */
+        NOT_ON_ADC, 	/*  8 - P3.5 */
+        NOT_ON_ADC, 	/*  9 - P3.6 */
+        NOT_ON_ADC, 	/*  10 - P3.7 */
+        NOT_ON_ADC, 	/*  11 - P1.6 */
+        NOT_ON_ADC, 	/*  12 - P1.7 */
+        0,     			/*  13 - A9 (device analog channel 0) */
+        1,     			/*  14 - A8 (device analog channel 1) */
+        2, 				/*  15 - A7 (device analog channel 2) */
+        12,     		/*  16 - A6 (device analog channel 12) */
+        13, 			/*  17 - A5 (device analog channel 13) */
+        14, 			/*  18 - A4 (device analog channel 14) */
+        15, 			/*  19 - A3 (device analog channel 15) */
+        3, 				/*  20 - A2 (device analog channel 3) */
+        4,  			/*  21 - A1 (device analog channel 4) */
+        5,  			/*  22 - A0 (device analog channel 5) */	
+		NOT_ON_ADC,		/*  23 - P4.0 */
+		NOT_ON_ADC		/*  24 - NC */
 };
 #endif
 #endif

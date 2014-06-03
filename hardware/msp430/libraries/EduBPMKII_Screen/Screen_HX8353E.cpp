@@ -10,9 +10,15 @@
 // Created by Rei VILO, mars 07, 2013 09:21
 // embedXcode.weebly.com
 //
+// Apr 25, 2014
+// Support for new LaunchPads with
+// . MSP430F5529
+// . LM4F120H5QR TM4C123GH6PM
+// . TM4C1294NCPDT TM4C1294XNCZAD
 //
-// Copyright © Rei VILO, 2013
-// Licence CC = BY NC SA
+//
+// Copyright © Rei VILO, 2013-2014
+// License CC = BY NC SA
 //
 // See Screen_HX8353E.h and ReadMe.txt for references
 //
@@ -59,7 +65,7 @@
 #define HX8353E_GETHID   0xd0
 #define HX8353E_SETGAMMA 0xE0
 Screen_HX8353E::Screen_HX8353E() {
-#if defined(__LM4F120H5QR__) || defined(__MSP430F5529__)
+#if defined(__LM4F120H5QR__) || defined(__MSP430F5529__) || defined(__TM4C123GH6PM__) || defined(__TM4C1294NCPDT__) || defined(__TM4C1294XNCZAD__)
     _pinReset          = 17;
     _pinDataCommand    = 31;
     _pinChipSelect     = 13;

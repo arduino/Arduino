@@ -41,10 +41,31 @@
 #include "driverlib/rom.h"
 #include "driverlib/timer.h"
 
+
 #define PWM_MODE 0x20A
 
+#ifdef __TM4C1294NCPDT__
 uint32_t getTimerBase(uint32_t offset) {
+    return (TIMER0_BASE + (offset << 12));
+}
 
+uint8_t getTimerInterrupt(uint8_t timer) {
+    if(timer < T3CCP0_0) {
+        return(INT_TIMER0A + timer);
+    }
+    else if(timer > T2CCP1_1 || timer < T4CCP0_0) {
+        return (INT_TIMER3A + timer - 11);
+    }
+    else {
+        return(INT_TIMER4A + timer - 22);
+    }
+}
+void enableTimerPeriph(uint32_t offset) {
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0 + offset);
+}
+
+#else
+uint32_t getTimerBase(uint32_t offset) {
     if(offset > WTIMER1) {
         return (WTIMER2_BASE + ((offset - 6) << 12));
     }
@@ -54,11 +75,9 @@ uint32_t getTimerBase(uint32_t offset) {
     else {
     	return WTIMER0_BASE + ((offset-4) << 12);
     }
-
 }
 
 uint8_t getTimerInterrupt(uint8_t timer) {
-
     if(timer < T3A) {
         return(INT_TIMER0A + timer);
     }
@@ -68,28 +87,25 @@ uint8_t getTimerInterrupt(uint8_t timer) {
     else {
         return(INT_TIMER4A + timer - 13);
     }
-
 }
 void enableTimerPeriph(uint32_t offset) {
-
     if(offset > TIMER3) {
         ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_WTIMER0 + offset - 4);
     }
     else {
-        ROM_SysCtlPeripheralEnable((SYSCTL_PERIPH_TIMER0 - 1) + (1 << offset));
+        ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0 + offset);
     }
-
 }
+
+#endif
+
 //
 //empty function due to single reference
 //
-void analogReference(uint16_t mode)
-{
+void analogReference(uint16_t mode) {
 }
 
-void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq)
-{
-
+void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq) {
     if (duty == 0) {
     	pinMode(pin, OUTPUT);
         digitalWrite(pin, LOW);
@@ -99,7 +115,6 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
     	digitalWrite(pin, HIGH);
     }
     else {
-
         uint8_t bit = digitalPinToBitMask(pin); // get pin bit
         uint8_t port = digitalPinToPort(pin);   // get pin port
         uint8_t timer = digitalPinToTimer(pin);
@@ -110,7 +125,12 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
 
         if (port == NOT_A_PORT) return; 	// pin on timer?
 
-        uint32_t periodPWM = ROM_SysCtlClockGet()/freq;
+#ifdef __TM4C1294NCPDT__
+        uint32_t periodPWM = F_CPU/freq;
+#else
+        uint32_t periodPWM = SysCtlClockGet()/freq;
+#endif
+
 
         enableTimerPeriph(offset);
         ROM_GPIOPinConfigure(timerToPinConfig(timer));
@@ -145,11 +165,9 @@ void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq
                 (((analog_res-duty)*periodPWM/analog_res) & 0xFFFF0000) >> 16);
         }
         ROM_TimerEnable(timerBase, timerAB);
-
     }
 }
-void analogWrite(uint8_t pin, int val)
-{
+void analogWrite(uint8_t pin, int val) {
     //
     //  duty cycle(%) = val / 255;
     //  Frequency of 490Hz specified by Arduino API
@@ -157,13 +175,11 @@ void analogWrite(uint8_t pin, int val)
     PWMWrite(pin, 255, val, 490);
 }
 
-uint16_t analogRead(uint8_t pin)
-{
-
+uint16_t analogRead(uint8_t pin) {
     uint8_t port = digitalPinToPort(pin);
     uint16_t value[1];
     uint32_t channel = digitalPinToADCIn(pin);
-    if (pin == NOT_ON_ADC) { //invalid ADC pin
+    if (channel == NOT_ON_ADC) { //invalid ADC pin
         return 0;
     }
     ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
@@ -174,8 +190,7 @@ uint16_t analogRead(uint8_t pin)
 
     ROM_ADCIntClear(ADC0_BASE, 3);
     ROM_ADCProcessorTrigger(ADC0_BASE, 3);
-    while(!ROM_ADCIntStatus(ADC0_BASE, 3, false))
-    {
+    while(!ROM_ADCIntStatus(ADC0_BASE, 3, false)) {
     }
 	ROM_ADCIntClear(ADC0_BASE, 3);
     ROM_ADCSequenceDataGet(ADC0_BASE, 3, (unsigned long*) value);

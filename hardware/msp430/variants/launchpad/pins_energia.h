@@ -69,19 +69,22 @@ static const uint8_t DEBUG_UARTTXD = 3;  /* Transmit Data (TXD) at P1.1 */
 #define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
+#define SPISCK_SET_MODE (PORT_SELECTION0)
+#define SPIMOSI_SET_MODE (PORT_SELECTION0)
+#define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
 
 #define DEBUG_UART_MODULE 0x0
 
-static const uint8_t A0  = 0;
-static const uint8_t A1  = 1;
-static const uint8_t A2  = 2;
-static const uint8_t A3  = 3;
-static const uint8_t A4  = 4;
-static const uint8_t A5  = 5;
-static const uint8_t A6  = 6;
-static const uint8_t A7  = 7;
-static const uint8_t A10 = 10; // special. This is the internal temp sensor
+static const uint8_t A0  = 2;
+static const uint8_t A1  = 3;
+static const uint8_t A2  = 4;
+static const uint8_t A3  = 5;
+static const uint8_t A4  = 6;
+static const uint8_t A5  = 7;
+static const uint8_t A6  = 14;
+static const uint8_t A7  = 15;
+static const uint8_t A10 = 128 + 10; // special. This is the internal temp sensor
 
 //                      +-\/-+
 //               VCC   1|    |20  GND
@@ -119,7 +122,7 @@ static const uint8_t P2_6 = 19;
 static const uint8_t RED_LED = 2;
 static const uint8_t GREEN_LED = 14;
 static const uint8_t PUSH2 = 5;
-static const uint8_t TEMPSENSOR = 10; // depends on chip
+static const uint8_t TEMPSENSOR = 128 + 10; // depends on chip
 
 
 #ifdef ARDUINO_MAIN
@@ -273,5 +276,29 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(6),     /* 19, XIN */
 	NOT_A_PIN, /* 20, GND */
 };
+const uint32_t digital_pin_to_analog_in[] = {
+        NOT_ON_ADC,     /*  dummy   */
+        NOT_ON_ADC,     /*  1 - 3.3V*/
+        0,				/*  2 - A0 */
+        1,     			/*  3 - A1 */
+        2, 				/*  4 - A2 */
+        3, 				/*  5 - A3 */
+        4, 				/*  6 - A4 */
+        5,   			/*  7 - A5 */
+        NOT_ON_ADC, 	/*  8 - P2.0 */
+        NOT_ON_ADC, 	/*  9 - P2.1 */
+        NOT_ON_ADC, 	/*  10 - P2.2 */
+        NOT_ON_ADC, 	/*  11 - P2.3 */
+        NOT_ON_ADC, 	/*  12 - P2.4 */
+        NOT_ON_ADC, 	/*  13 - P2.5 */
+        6,     			/*  14 - A6 */
+        7,     			/*  15 - A7 */
+        NOT_ON_ADC, 	/*  16 - RST */
+        NOT_ON_ADC,     /*  17 - PF0 */
+        NOT_ON_ADC, 	/*  18 - PE0 */
+        NOT_ON_ADC,     /*  19 - PB2 */
+        NOT_ON_ADC  	/*  20 - GND */
+};
+
 #endif
 #endif

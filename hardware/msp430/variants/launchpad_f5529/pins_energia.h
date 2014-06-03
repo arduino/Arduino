@@ -66,20 +66,20 @@ static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
 #define USE_USCI_A1
 #endif
 
-static const uint8_t A0  = 0;
-static const uint8_t A1  = 1;
-static const uint8_t A2  = 2;
-static const uint8_t A3  = 3;
-static const uint8_t A4  = 4;
-static const uint8_t A5  = 5;
+static const uint8_t A0  = 23;
+static const uint8_t A1  = 24;
+static const uint8_t A2  = 25;
+static const uint8_t A3  = 26;
+static const uint8_t A4  = 27;
+static const uint8_t A5  = 2;
 static const uint8_t A6  = 6;
-static const uint8_t A7  = 7;
-static const uint8_t A10 = 10; // special. This is the internal temp sensor
-static const uint8_t A11  = 11;
-static const uint8_t A12  = 12;
-static const uint8_t A13  = 13;
-static const uint8_t A14  = 14;
-static const uint8_t A15  = 15;
+static const uint8_t A7  = 128 + 7; // Not available on BoosterPack header
+static const uint8_t A10 = 128 + 10; // special. This is the internal temp sensor
+static const uint8_t A11  = 128 + 11; // special. This is Vcc/2
+static const uint8_t A12  = 28; 
+static const uint8_t A13  = 128 + 13; 
+static const uint8_t A14  = 128 + 14; // Not available on BoosterPack header
+static const uint8_t A15  = 128 + 15; // Not available on BoosterPack header
 
 /*
  F5529 LaunchPad pin mapping
@@ -165,7 +165,7 @@ static const uint8_t PUSH1 = 41;
 static const uint8_t PUSH2 = 42;
 static const uint8_t RED_LED = 43;
 static const uint8_t GREEN_LED = 44;
-static const uint8_t TEMPSENSOR = 10;
+static const uint8_t TEMPSENSOR = 128 + 10;
 
 #ifdef ARDUINO_MAIN
 
@@ -447,6 +447,50 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(7),     /* 44 */
 	BV(5),     /* 45 */
 	BV(4),     /* 46 */
+};
+
+const uint32_t digital_pin_to_analog_in[] = {
+        NOT_ON_ADC,     /*  dummy   */
+        NOT_ON_ADC,     /*  1 - 3.3V*/
+        5,				/*  2 - A5 */
+        NOT_ON_ADC,     /*  3 - P3.4 */
+        NOT_ON_ADC, 	/*  4 - P3.3 */
+        NOT_ON_ADC, 	/*  5 - P1.6 */
+        6, 				/*  6 - A6 */
+        NOT_ON_ADC,   	/*  7 - P3.2 */
+        NOT_ON_ADC, 	/*  8 - P2.7 */
+        NOT_ON_ADC, 	/*  9 - P4.2 */
+        NOT_ON_ADC, 	/*  10 - P4.1 */
+        NOT_ON_ADC, 	/*  11 - P8.1 */
+        NOT_ON_ADC, 	/*  12 - P2.3 */
+        NOT_ON_ADC, 	/*  13 - P2.6 */
+        NOT_ON_ADC,     /*  14 - P3.1 */
+        NOT_ON_ADC,     /*  15 - P3.0 */
+        NOT_ON_ADC, 	/*  16 - RST */
+        NOT_ON_ADC,     /*  17 - P7.4 */
+        NOT_ON_ADC, 	/*  18 - P2.2 */
+        NOT_ON_ADC,     /*  19 - P2.0 */
+        NOT_ON_ADC, 	/*  20 - GND */
+        NOT_ON_ADC, 	/*  21 - 5V */
+		NOT_ON_ADC, 	/*  22 - GND */
+        0,    			/*  23 - A0 */
+        1,    			/*  24 - A1 */
+        2,    			/*  25 - A2 */
+        3,    			/*  26 - A3 */
+        4,    			/*  27 - A4 */
+        12, 			/*  28 - A12 */
+        NOT_ON_ADC, 	/*  29 - P3.6 */
+        NOT_ON_ADC,     /*  30 - P3.5 */
+        NOT_ON_ADC, 	/*  31 - P8.2 */
+        NOT_ON_ADC,     /*  32 - P3.7 */
+        NOT_ON_ADC,     /*  33 - P4.0 */
+        NOT_ON_ADC,     /*  34 - P4.3 */
+        NOT_ON_ADC,     /*  35 - P1.2 */
+        NOT_ON_ADC,     /*  36 - P1.3 */
+        NOT_ON_ADC,     /*  37 - P1.4 */
+        NOT_ON_ADC,  	/*  38 - P1.5 */
+        NOT_ON_ADC,		/*  39 - P2.4 */
+        NOT_ON_ADC      /*  40 - P2.5 */
 };
 #endif // #ifdef ARDUINO_MAIN
 #endif // #ifndef Pins_Energia_h

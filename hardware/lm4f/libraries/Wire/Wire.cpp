@@ -63,13 +63,35 @@
 
 static const unsigned long g_uli2cMasterBase[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     I2C0_BASE, I2C1_BASE, 
 	I2C2_BASE, I2C3_BASE
+#else
+#ifdef __TM4C129XNCZAD__
+    I2C0_BASE, I2C1_BASE, 
+	I2C2_BASE, I2C3_BASE
+#endif
+#ifdef __TM4C1294NCPDT__
+    I2C0_BASE, I2C2_BASE, 
+	I2C8_BASE, I2C7_BASE
+#endif
+#endif
 };
 static const unsigned long g_uli2cSlaveBase[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     I2C0_BASE, I2C1_BASE, 
 	I2C2_BASE, I2C3_BASE
+#else
+#ifdef __TM4C129XNCZAD__
+    I2C0_BASE, I2C1_BASE, 
+	I2C2_BASE, I2C3_BASE
+#endif
+#ifdef __TM4C1294NCPDT__
+    I2C0_BASE, I2C2_BASE, 
+	I2C8_BASE, I2C7_BASE
+#endif
+#endif
 };
 
 //*****************************************************************************
@@ -79,7 +101,17 @@ static const unsigned long g_uli2cSlaveBase[4] =
 //*****************************************************************************
 static const unsigned long g_uli2cInt[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     INT_I2C0, INT_I2C1, INT_I2C2, INT_I2C3
+#else
+#ifdef __TM4C129XNCZAD__
+    INT_I2C0, INT_I2C1, INT_I2C2, INT_I2C3
+#endif
+#ifdef __TM4C1294NCPDT__
+    INT_I2C0, INT_I2C2, INT_I2C8, INT_I2C7
+#endif
+#endif
+
 };
 
 //*****************************************************************************
@@ -89,8 +121,19 @@ static const unsigned long g_uli2cInt[4] =
 //*****************************************************************************
 static const unsigned long g_uli2cPeriph[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     SYSCTL_PERIPH_I2C0, SYSCTL_PERIPH_I2C1, 
     SYSCTL_PERIPH_I2C2, SYSCTL_PERIPH_I2C3
+#else
+#ifdef __TM4C129XNCZAD__
+    SYSCTL_PERIPH_I2C0, SYSCTL_PERIPH_I2C1, 
+    SYSCTL_PERIPH_I2C2, SYSCTL_PERIPH_I2C3
+#endif
+#ifdef __TM4C1294NCPDT__
+    SYSCTL_PERIPH_I2C0, SYSCTL_PERIPH_I2C2, 
+    SYSCTL_PERIPH_I2C8, SYSCTL_PERIPH_I2C7
+#endif
+#endif
 };
 
 //*****************************************************************************
@@ -100,10 +143,25 @@ static const unsigned long g_uli2cPeriph[4] =
 //*****************************************************************************
 static const unsigned long g_uli2cConfig[4][2] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     {GPIO_PB2_I2C0SCL, GPIO_PB3_I2C0SDA},
     {GPIO_PA6_I2C1SCL, GPIO_PA7_I2C1SDA},
     {GPIO_PE4_I2C2SCL, GPIO_PE5_I2C2SDA},
     {GPIO_PD0_I2C3SCL, GPIO_PD1_I2C3SDA}
+#else
+#ifdef __TM4C129XNCZAD__
+    {GPIO_PB2_I2C0SCL, GPIO_PB3_I2C0SDA},
+    {GPIO_PG0_I2C1SCL, GPIO_PG1_I2C1SDA},
+    {GPIO_PL1_I2C2SCL, GPIO_PL0_I2C2SDA},
+    {GPIO_PG4_I2C3SCL, GPIO_PG5_I2C3SDA}
+#endif
+#ifdef __TM4C1294NCPDT__
+    {GPIO_PB2_I2C0SCL, GPIO_PB3_I2C0SDA},
+    {GPIO_PN5_I2C2SCL, GPIO_PN4_I2C2SDA},
+    {GPIO_PA2_I2C8SCL, GPIO_PA3_I2C8SDA},
+    {GPIO_PD0_I2C7SCL, GPIO_PD1_I2C7SDA}
+#endif
+#endif
 };
 
 //*****************************************************************************
@@ -113,7 +171,16 @@ static const unsigned long g_uli2cConfig[4][2] =
 //*****************************************************************************
 static const unsigned long g_uli2cBase[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     GPIO_PORTB_BASE, GPIO_PORTA_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE
+#else
+#ifdef __TM4C129XNCZAD__
+    GPIO_PORTB_BASE, GPIO_PORTG_BASE, GPIO_PORTL_BASE, GPIO_PORTG_BASE
+#endif
+#ifdef __TM4C1294NCPDT__
+    GPIO_PORTB_BASE, GPIO_PORTN_BASE, GPIO_PORTA_BASE, GPIO_PORTD_BASE
+#endif
+#endif
 };
 
 //*****************************************************************************
@@ -123,11 +190,29 @@ static const unsigned long g_uli2cBase[4] =
 //*****************************************************************************
 static const unsigned long g_uli2cSDAPins[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     GPIO_PIN_3, GPIO_PIN_7, GPIO_PIN_5, GPIO_PIN_1
+#else
+#ifdef __TM4C129XNCZAD__
+    GPIO_PIN_3, GPIO_PIN_1, GPIO_PIN_0, GPIO_PIN_5
+#endif
+#ifdef __TM4C1294NCPDT__
+    GPIO_PIN_3, GPIO_PIN_4, GPIO_PIN_3, GPIO_PIN_1
+#endif
+#endif
 };
 static const unsigned long g_uli2cSCLPins[4] =
 {
+#ifdef TARGET_IS_BLIZZARD_RB1
     GPIO_PIN_2, GPIO_PIN_6, GPIO_PIN_4, GPIO_PIN_0
+#else
+#ifdef __TM4C129XNCZAD__
+    GPIO_PIN_2, GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_4
+#endif
+#ifdef __TM4C1294NCPDT__
+    GPIO_PIN_2, GPIO_PIN_5, GPIO_PIN_2, GPIO_PIN_0
+#endif
+#endif
 };
 
 #define MASTER_BASE g_uli2cMasterBase[i2cModule]
@@ -182,6 +267,7 @@ uint8_t TwoWire::getRxData(unsigned long cmd) {
         ROM_I2CMasterControl(MASTER_BASE, I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP);
 	}
 	else {
+		delay(1);
 		rxBuffer[rxWriteIndex] = ROM_I2CMasterDataGet(MASTER_BASE);
 		rxWriteIndex = (rxWriteIndex + 1) % BUFFER_LENGTH;
 	}
@@ -190,7 +276,7 @@ uint8_t TwoWire::getRxData(unsigned long cmd) {
 }
 
 uint8_t TwoWire::sendTxData(unsigned long cmd, uint8_t data) {
-
+    delay(1);
     ROM_I2CMasterDataPut(MASTER_BASE, data);
 
     HWREG(MASTER_BASE + I2C_O_MCS) = cmd;
@@ -219,7 +305,7 @@ void TwoWire::forceStop(void) {
     //bring the bus back to it's erroneous state
     ROM_SysCtlPeripheralReset(g_uli2cPeriph[i2cModule]);
     while(!ROM_SysCtlPeripheralReady(g_uli2cPeriph[i2cModule]));
-    ROM_I2CMasterInitExpClk(MASTER_BASE, ROM_SysCtlClockGet(), false);
+    ROM_I2CMasterInitExpClk(MASTER_BASE, F_CPU, false);
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
@@ -239,7 +325,7 @@ void TwoWire::begin(void)
   ROM_GPIOPinConfigure(g_uli2cConfig[i2cModule][1]);
   ROM_GPIOPinTypeI2C(g_uli2cBase[i2cModule], g_uli2cSDAPins[i2cModule]);
   ROM_GPIOPinTypeI2CSCL(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]);
-  ROM_I2CMasterInitExpClk(MASTER_BASE, ROM_SysCtlClockGet(), false);//max bus speed=400kHz for gyroscope
+  ROM_I2CMasterInitExpClk(MASTER_BASE, F_CPU, false);//max bus speed=400kHz for gyroscope
 
   //force a stop condition
   if(!ROM_GPIOPinRead(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule]))
@@ -253,7 +339,7 @@ void TwoWire::begin(void)
   	  unsigned long mask = 0;
   	  do{
   		  for(unsigned long i = 0; i < 10 ; i++) {
-  			  ROM_SysCtlDelay(SysCtlClockGet()/100000/3);//100Hz=desired frequency, delay iteration=3 cycles
+  			  ROM_SysCtlDelay(F_CPU/100000/3);//100Hz=desired frequency, delay iteration=3 cycles
   			  mask = (i%2) ? g_uli2cSCLPins[i2cModule] : 0;
   			  ROM_GPIOPinWrite(g_uli2cBase[i2cModule], g_uli2cSCLPins[i2cModule], mask);
   		  }
@@ -384,20 +470,20 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
   uint8_t error = I2C_MASTER_ERR_NONE;
 
   if(TX_BUFFER_EMPTY) return 0;
-
   //Wait for any previous transaction to complete
   while(ROM_I2CMasterBusBusy(MASTER_BASE));
+  while(ROM_I2CMasterBusy(MASTER_BASE));
 
   //Select which slave we are requesting data from
   //false indicates we are writing to the slave
   ROM_I2CMasterSlaveAddrSet(MASTER_BASE, txAddress, false);
 
+  while(ROM_I2CMasterBusy(MASTER_BASE));
   unsigned long cmd = RUN_BIT | START_BIT;
 
   error = sendTxData(cmd,txBuffer[txReadIndex]);
   txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
   if(error) return error;
-
   while(!TX_BUFFER_EMPTY) {
 	  error = sendTxData(RUN_BIT,txBuffer[txReadIndex]);
   	  txReadIndex = (txReadIndex + 1) % BUFFER_LENGTH;
@@ -405,6 +491,7 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
   }
 
   if(sendStop) {
+	  while(ROM_I2CMasterBusy(MASTER_BASE));
 	  HWREG(MASTER_BASE + I2C_O_MCS) = STOP_BIT;
 	  while(ROM_I2CMasterBusy(MASTER_BASE));
 	  currentState = IDLE;
@@ -523,7 +610,6 @@ void TwoWire::onRequest( void (*function)(void) )
 }
 
 void TwoWire::I2CIntHandler(void) {
-
 	//clear data interrupt
 	HWREG(SLAVE_BASE + I2C_O_SICR) = I2C_SICR_DATAIC;
 	uint8_t startDetected = 0;

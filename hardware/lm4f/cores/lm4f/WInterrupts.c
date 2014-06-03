@@ -48,92 +48,129 @@ static void (*cbFuncsC[8])(void);
 static void (*cbFuncsD[8])(void);
 static void (*cbFuncsE[8])(void);
 static void (*cbFuncsF[8])(void);
+static void (*cbFuncsG[8])(void);
+static void (*cbFuncsH[8])(void);
+static void (*cbFuncsJ[8])(void);
+static void (*cbFuncsK[8])(void);
+static void (*cbFuncsL[8])(void);
+static void (*cbFuncsM[8])(void);
+static void (*cbFuncsN[8])(void);
+static void (*cbFuncsP[8])(void);
+static void (*cbFuncsQ[8])(void);
+#ifdef TARGET_IS_SNOWFLAKE_RA0
+static void (*cbFuncsR[8])(void);
+static void (*cbFuncsS[8])(void);
+static void (*cbFuncsT[8])(void);
+#endif
 
-void GPIOAIntHandler(void) {
+void GPIOXIntHandler(uint32_t base, void (**funcs)(void))
+{
 	uint32_t i;
-	uint32_t isr = GPIOIntStatus(GPIO_PORTA_BASE, true);
+	uint32_t isr = GPIOIntStatus(base, true);
 
-	GPIOIntClear(GPIO_PORTA_BASE, isr);
+	GPIOIntClear(base, isr);
 
 	for (i=0; i<8; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
 			continue;
-		if (cbFuncsA[i])
-			cbFuncsA[i]();
+		if (funcs[i])
+			funcs[i]();
 	}
 }
 
-void GPIOBIntHandler(void) {
-	uint32_t i;
-	uint32_t isr = GPIOIntStatus(GPIO_PORTB_BASE, true);
-
-	GPIOIntClear(GPIO_PORTB_BASE, isr);
-
-	for (i=0; i<8; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (cbFuncsB[i])
-			cbFuncsB[i]();
-	}
+void GPIOAIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTA_BASE, cbFuncsA);
 }
 
-void GPIOCIntHandler(void) {
-	uint32_t i;
-	uint32_t isr = GPIOIntStatus(GPIO_PORTC_BASE, true);
-
-	GPIOIntClear(GPIO_PORTC_BASE, isr);
-
-	for (i=0; i<8; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (cbFuncsC[i])
-			cbFuncsC[i]();
-	}
+void GPIOBIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTB_BASE, cbFuncsB);
 }
 
-void GPIODIntHandler(void) {
-	uint32_t i;
-	uint32_t isr = GPIOIntStatus(GPIO_PORTD_BASE, true);
-
-	GPIOIntClear(GPIO_PORTD_BASE, isr);
-
-	for (i=0; i<8; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (cbFuncsD[i])
-			cbFuncsD[i]();
-	}
+void GPIOCIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTC_BASE, cbFuncsC);
 }
 
-void GPIOEIntHandler(void) {
-	uint32_t i;
-	uint32_t isr = GPIOIntStatus(GPIO_PORTE_BASE, true);
-
-	GPIOIntClear(GPIO_PORTE_BASE, isr);
-
-	for (i=0; i<8; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (cbFuncsE[i])
-			cbFuncsE[i]();
-	}
+void GPIODIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTD_BASE, cbFuncsD);
 }
 
-void GPIOFIntHandler(void) {
-	uint32_t i;
-	uint32_t isr = GPIOIntStatus(GPIO_PORTF_BASE, true);
-
-	GPIOIntClear(GPIO_PORTF_BASE, isr);
-
-	for (i=0; i<8; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (cbFuncsF[i])
-			cbFuncsF[i]();
-	}
+void GPIOEIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTE_BASE, cbFuncsE);
 }
 
-void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
+void GPIOFIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTF_BASE, cbFuncsF);
+}
+
+void GPIOGIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTG_BASE, cbFuncsG);
+}
+
+void GPIOHIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTH_BASE, cbFuncsH);
+}
+
+void GPIOJIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTJ_BASE, cbFuncsJ);
+}
+
+void GPIOKIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTK_BASE, cbFuncsK);
+}
+
+void GPIOLIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTL_BASE, cbFuncsL);
+}
+
+void GPIOMIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTM_BASE, cbFuncsM);
+}
+void GPIONIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTN_BASE, cbFuncsN);
+}
+
+void GPIOPIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTP_BASE, cbFuncsP);
+}
+
+void GPIOQIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTQ_BASE, cbFuncsQ);
+}
+
+#ifdef TARGET_IS_SNOWFLAKE_RA0
+void GPIORIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTR_BASE, cbFuncsR);
+}
+
+void GPIOSIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTS_BASE, cbFuncsS);
+}
+
+void GPIOTIntHandler(void)
+{
+	GPIOXIntHandler(GPIO_PORTT_BASE, cbFuncsT);
+}
+#endif
+
+void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode)
+{
 	uint32_t lm4fMode, i;
 
 	uint8_t bit = digitalPinToBitMask(interruptNum);
@@ -192,13 +229,76 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 		cbFuncsF[i] = userFunc;
 		ROM_IntEnable(INT_GPIOF);
 		break;
+	case GPIO_PORTG_BASE:
+		cbFuncsG[i] = userFunc;
+		ROM_IntEnable(INT_GPIOG);
+		break;
+	case GPIO_PORTH_BASE:
+		cbFuncsH[i] = userFunc;
+		ROM_IntEnable(INT_GPIOH);
+		break;
+	case GPIO_PORTJ_BASE:
+		cbFuncsJ[i] = userFunc;
+		ROM_IntEnable(INT_GPIOJ);
+		break;
+	case GPIO_PORTK_BASE:
+		cbFuncsK[i] = userFunc;
+		ROM_IntEnable(INT_GPIOK);
+		break;
+	case GPIO_PORTL_BASE:
+		cbFuncsL[i] = userFunc;
+		ROM_IntEnable(INT_GPIOL);
+		break;
+	case GPIO_PORTM_BASE:
+		cbFuncsM[i] = userFunc;
+		ROM_IntEnable(INT_GPIOM);
+		break;
+	case GPIO_PORTN_BASE:
+		cbFuncsN[i] = userFunc;
+		ROM_IntEnable(INT_GPION);
+		break;
+	case GPIO_PORTP_BASE:
+		cbFuncsP[i] = userFunc;
+		ROM_IntEnable(INT_GPIOP0);
+		ROM_IntEnable(INT_GPIOP1);
+		ROM_IntEnable(INT_GPIOP2);
+		ROM_IntEnable(INT_GPIOP3);
+		ROM_IntEnable(INT_GPIOP4);
+		ROM_IntEnable(INT_GPIOP5);
+		ROM_IntEnable(INT_GPIOP6);
+		ROM_IntEnable(INT_GPIOP7);
+		break;
+	case GPIO_PORTQ_BASE:
+		cbFuncsQ[i] = userFunc;
+		ROM_IntEnable(INT_GPIOQ0);
+		ROM_IntEnable(INT_GPIOQ1);
+		ROM_IntEnable(INT_GPIOQ2);
+		ROM_IntEnable(INT_GPIOQ3);
+		ROM_IntEnable(INT_GPIOQ4);
+		ROM_IntEnable(INT_GPIOQ5);
+		ROM_IntEnable(INT_GPIOQ6);
+		ROM_IntEnable(INT_GPIOQ7);
+		break;
+#ifdef TARGET_IS_SNOWFLAKE_RA0
+	case GPIO_PORTR_BASE:
+		cbFuncsR[i] = userFunc;
+		ROM_IntEnable(INT_GPIOR);
+		break;
+	case GPIO_PORTS_BASE:
+		cbFuncsS[i] = userFunc;
+		ROM_IntEnable(INT_GPIOS);
+		break;
+	case GPIO_PORTT_BASE:
+		cbFuncsT[i] = userFunc;
+		ROM_IntEnable(INT_GPIOT);
+		break;
+#endif
 	}
-	
 	ROM_IntMasterEnable();
-
 }
 
-void detachInterrupt(uint8_t interruptNum) {
+void detachInterrupt(uint8_t interruptNum)
+{
 	uint32_t i;
 
 	uint8_t bit = digitalPinToBitMask(interruptNum);
@@ -227,5 +327,31 @@ void detachInterrupt(uint8_t interruptNum) {
 		cbFuncsE[i] = 0;
 	case GPIO_PORTF_BASE:
 		cbFuncsF[i] = 0;
+	case GPIO_PORTG_BASE:
+		cbFuncsG[i] = 0;
+	case GPIO_PORTH_BASE:
+		cbFuncsH[i] = 0;
+	case GPIO_PORTJ_BASE:
+		cbFuncsJ[i] = 0;
+	case GPIO_PORTK_BASE:
+		cbFuncsK[i] = 0;
+	case GPIO_PORTL_BASE:
+		cbFuncsL[i] = 0;
+	case GPIO_PORTM_BASE:
+		cbFuncsM[i] = 0;
+	case GPIO_PORTN_BASE:
+		cbFuncsN[i] = 0;
+	case GPIO_PORTP_BASE:
+		cbFuncsP[i] = 0;
+	case GPIO_PORTQ_BASE:
+		cbFuncsQ[i] = 0;
+#ifdef TARGET_IS_SNOWFLAKE_RA0
+	case GPIO_PORTR_BASE:
+		cbFuncsR[i] = 0;
+	case GPIO_PORTS_BASE:
+		cbFuncsS[i] = 0;
+	case GPIO_PORTT_BASE:
+		cbFuncsT[i] = 0;
+#endif
 	}
 }

@@ -51,8 +51,14 @@
 #define REF_MASK 0xB1
 #define ADCxMEM0 ADC12MEM0 
 #endif
+#if defined(__MSP430_HAS_ADC12_B__)
+#define REFV_MASK 0x0F00
+#define REF_MASK 0x31
+#define ADCxMEM0 ADC12MEM0 
+#endif
+
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
-uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = 0, analog_res=255; // devide clock with 0, 2, 4, 8
+uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_0, analog_res=255; // devide clock with 0, 2, 4, 8
 
 void analogReference(uint16_t mode)
 {
@@ -73,16 +79,29 @@ void analogReference(uint16_t mode)
 // fmin = F_CPU / 2^16
 void analogFrequency(uint32_t freq)
 {
-  if ( freq <= F_CPU/(4*65334L) ) { analog_div = ID_3; freq *=8; }  
-  else if ( freq <= F_CPU/(2*65334L) ) { analog_div = ID_2; freq *=4; }
-  else if ( freq <= F_CPU/(4*65334L) ) { analog_div = ID_1; freq *=2; }
-  analog_period = F_CPU/freq;
+	if ( freq <= F_CPU/(8*65334L) ) {
+		return;  // Out of luck, sorry pal.
+	}
+
+	if ( freq <= F_CPU/(4*65334L) ) {
+		analog_div = ID_3;
+		freq *= 8;
+	} else if ( freq <= F_CPU/(2*65334L) ) {
+		analog_div = ID_2;
+		freq *= 4;
+	} else if ( freq <= F_CPU/(1*65334L) ) {
+		analog_div = ID_1;
+		freq *= 2;
+	} else {
+		analog_div = ID_0;
+	}
+	analog_period = F_CPU/freq;
 }
 
 // Set the resulution (nr of counts for 100%), default = 255, large values may not work at all frequencies
 void analogResolution(uint16_t res)
 {
-  analog_res = res;
+	analog_res = res;
 }
 
 
@@ -261,6 +280,17 @@ void analogWrite(uint8_t pin, int val)
 uint16_t analogRead(uint8_t pin)
 {
 // make sure we have an ADC
+	uint8_t channel;
+	
+	// Check if pin is valid
+	if (pin==NOT_ON_ADC)
+		return 0;
+	// Check if pin is a special analog pin (A10 = temp sensor, A11 = Vcc/2, etc.)
+	if (pin >=128)
+		channel = pin - 128;
+	else
+		channel = digitalPinToADCIn(pin);
+	
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
     //  0000 A0
     //  0001 A1
@@ -284,8 +314,8 @@ uint16_t analogRead(uint8_t pin)
     ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_4;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     ADC10CTL0 = analog_reference |          // set analog reference
             ADC10ON | ADC10SHT_3 | ADC10IE; // turn ADC ON; sample + hold @ 64 × ADC10CLKs; Enable interrupts
-    ADC10CTL1 |= (pin << 12);               // select channel
-    ADC10AE0 = (1 << pin);                  // Disable input/output buffer on pin
+    ADC10CTL1 |= (channel << 12);               // select channel
+    ADC10AE0 = (1 << channel);                  // Disable input/output buffer on pin
     __delay_cycles(128);                    // Delay to allow Ref to settle
     ADC10CTL0 |= ADC10ENC | ADC10SC;        // enable ADC and start conversion
     while (ADC10CTL1 & ADC10BUSY) {         // sleep and wait for completion
@@ -299,7 +329,7 @@ uint16_t analogRead(uint8_t pin)
     ADC10CTL1 = ADC10SSEL_0 | ADC10DIV_4;   // ADC10OSC as ADC10CLK (~5MHz) / 5
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
     REFCTL0 |= analog_reference & REF_MASK; // Set reference using masking off the SREF bits. See Energia.h.
-    ADC10MCTL0 = pin | (analog_reference & REFV_MASK); // set channel and reference 
+    ADC10MCTL0 = channel | (analog_reference & REFV_MASK); // set channel and reference 
     ADC10CTL0 = ADC10ON | ADC10SHT_4;       // turn ADC ON; sample + hold @ 64 × ADC10CLKs
     ADC10CTL1 |= ADC10SHP;                  // ADCCLK = MODOSC; sampling timer
     ADC10CTL2 |= ADC10RES;                  // 10-bit resolution
@@ -320,10 +350,10 @@ uint16_t analogRead(uint8_t pin)
     while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
     if (pin == TEMPSENSOR) {// if Temp Sensor 
         REFCTL0 = (INTERNAL1V5 & REF_MASK);                  // Set reference to internal 1.5V
-        ADC12MCTL0 = pin | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
+        ADC12MCTL0 = channel | ((INTERNAL1V5 >> 4) & REFV_MASK); // set channel and reference 
     } else {
         REFCTL0 = (analog_reference & REF_MASK);                  // Set reference using masking off the SREF bits. See Energia.h.
-        ADC12MCTL0 = pin | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
+        ADC12MCTL0 = channel | ((analog_reference >> 4) & REFV_MASK); // set channel and reference 
     }
     ADC12CTL0 = ADC12ON | ADC12SHT0_4;      // turn ADC ON; sample + hold @ 64 × ADC10CLKs
     ADC12CTL1 |= ADC12SHP;                  // ADCCLK = MODOSC; sampling timer
@@ -339,6 +369,33 @@ uint16_t analogRead(uint8_t pin)
     ADC12CTL0 &= ~(ADC12ON);
     REFCTL0 &= ~REFON;
 #endif
+#if defined(__MSP430_HAS_ADC12_B__)
+    ADC12CTL0 &= ~ADC12ENC;                 // disable ADC
+    ADC12CTL0 = ADC12ON | ADC12SHT0_4;      // turn ADC ON; sample + hold @ 64 × ADC12CLKs
+    ADC12CTL1 = ADC12SSEL_0 | ADC12DIV_4;   // ADC12OSC as ADC12CLK (~5MHz) / 5
+    ADC12CTL3 = ADC12TCMAP | ADC12BATMAP;   // Map Temp and BAT
+    ADC12CTL1 |= ADC12SHP;                  // ADCCLK = MODOSC; sampling timer
+    ADC12CTL2 |= ADC12RES_2;                // 12-bit resolution
+    ADC12IFGR0 = 0;                         // Clear Flags
+    ADC12IER0 |= ADC12IE0;                  // Enable interrupts
+    while(REFCTL0 & REFGENBUSY);            // If ref generator busy, WAIT
+	if (channel == TEMPSENSOR) {// if Temp Sensor 
+      REFCTL0 = (INTERNAL1V2 & REF_MASK);   // Set reference to internal 1.2V
+      ADC12MCTL0 = channel | (INTERNAL1V2 & REFV_MASK); // set channel and reference 
+	} else {
+      REFCTL0 = (analog_reference & REF_MASK); // Set reference using masking off the SREF bits. See Energia.h.
+      ADC12MCTL0 = channel | (analog_reference & REFV_MASK); // set channel and reference 
+	}
+    if (REFCTL0 & REFON)
+	  while(!(REFCTL0 & REFGENRDY));        // wait till ref generator ready
+    ADC12CTL0 |= ADC12ENC | ADC12SC;        // enable ADC and start conversion
+    while (ADC12CTL1 & ADC12BUSY) {         // sleep and wait for completion
+        __bis_SR_register(CPUOFF + GIE);    // LPM0 with interrupts enabled
+    }
+    /* POWER: Turn ADC and reference voltage off to conserve power */
+    ADC12CTL0 &= ~(ADC12ON);
+    REFCTL0 &= ~(REFON);
+#endif
     return ADCxMEM0;  // return sampled value after returning to active mode in ADC10_ISR
 #else
     // no ADC
@@ -346,7 +403,7 @@ uint16_t analogRead(uint8_t pin)
 #endif
 }
 
-#if defined(__MSP430_HAS_ADC10)
+#if defined(__MSP430_HAS_ADC10__)
 __attribute__((interrupt(ADC10_VECTOR)))
 void ADC10_ISR(void)
 {
@@ -388,6 +445,27 @@ void ADC12_ISR(void)
         case 10: break;                          // ADC12IN
         case 12:
 				 ADC12IFG = 0;                   // Clear Flags
+                 __bic_SR_register_on_exit(CPUOFF);        // return to active mode
+                 break;                          // Clear CPUOFF bit from 0(SR)                         
+        default: break;
+    }
+
+}
+#endif
+
+#if defined(__MSP430_HAS_ADC12_B__)
+__attribute__((interrupt(ADC12_VECTOR)))
+void ADC12_ISR(void)
+{
+    switch(ADC12IV,12) {
+        case  0: break;                          // No interrupt
+        case  2: break;                          // conversion result overflow
+        case  4: break;                          // conversion time overflow
+        case  6: break;                          // ADC12HI
+        case  8: break;                          // ADC12LO
+        case 10: break;                          // ADC12IN
+        case 12:
+				 ADC12IFGR0 = 0;                 // Clear Flags
                  __bic_SR_register_on_exit(CPUOFF);        // return to active mode
                  break;                          // Clear CPUOFF bit from 0(SR)                         
         default: break;

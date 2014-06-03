@@ -12,7 +12,7 @@
 //
 //
 // Copyright © Rei VILO, 2013
-// Licence CC = BY NC SA
+// License CC = BY NC SA
 //
 // See LCD_utilities.h and ReadMe.txt for references
 //

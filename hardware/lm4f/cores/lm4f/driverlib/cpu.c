@@ -47,7 +47,7 @@
 // on entry.
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 uint32_t __attribute__((naked))
 CPUcpsid(void)
 {
@@ -129,7 +129,7 @@ CPUcpsid(void)
 // interrupts are enabled or disabled).
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 uint32_t __attribute__((naked))
 CPUprimask(void)
 {
@@ -207,7 +207,7 @@ CPUprimask(void)
 // on entry.
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 uint32_t __attribute__((naked))
 CPUcpsie(void)
 {
@@ -288,7 +288,7 @@ CPUcpsie(void)
 // Wrapper function for the WFI instruction.
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 void __attribute__((naked))
 CPUwfi(void)
 {
@@ -336,7 +336,7 @@ CPUwfi(void)
 // Wrapper function for writing the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 void __attribute__((naked))
 CPUbasepriSet(uint32_t ui32NewBasepri)
 {
@@ -384,7 +384,7 @@ CPUbasepriSet(uint32_t ui32NewBasepri)
 // Wrapper function for reading the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(codered) || defined(__GNUC__) || defined(sourcerygxx)
 uint32_t __attribute__((naked))
 CPUbasepriGet(void)
 {

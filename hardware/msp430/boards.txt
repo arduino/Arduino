@@ -70,3 +70,14 @@ lpmsp430f5529_25.build.variant=launchpad_f5529
 lpmsp430f5529_25.upload.maximum_ram_size=1024
 
 ##############################################################
+lpmsp430fr5969.name=LaunchPad w/ msp430fr5969
+lpmsp430fr5969.upload.protocol=tilib
+lpmsp430fr5969.upload.maximum_size=65536
+lpmsp430fr5969.build.mcu=msp430fr5969
+#lpmsp430fr5969.build.f_cpu=16000000L
+lpmsp430fr5969.build.f_cpu=8000000L
+lpmsp430fr5969.build.core=msp430
+lpmsp430fr5969.build.variant=launchpad_fr5969
+lpmsp430fr5969.upload.maximum_ram_size=1024
+
+##############################################################

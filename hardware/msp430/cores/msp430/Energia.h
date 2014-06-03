@@ -15,6 +15,7 @@ extern "C"{
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
 #define NOT_ON_TIMER 0
+#define NOT_ON_ADC 0xFF
 
 #define HIGH 0x1
 #define LOW  0x0
@@ -45,15 +46,15 @@ extern "C"{
 
 #if defined(__MSP430_HAS_ADC10__)
 #define DEFAULT SREF_0
-#define INTERNAL1V5 SREF_1 | REFON
-#define INTERNAL2V5 SREF_1 | REFON | REF2_5V
+#define INTERNAL1V5 (SREF_1 | REFON)
+#define INTERNAL2V5 (SREF_1 | REFON | REF2_5V)
 #define EXTERNAL SREF_2
 #endif
 
 #if defined(__MSP430_HAS_ADC10_B__)
 #define DEFAULT ADC10SREF_0
-#define INTERNAL1V5 ADC10SREF_1 | REFON | REFVSEL_0
-#define INTERNAL2V5 ADC10SREF_1 | REFON | REFVSEL_2
+#define INTERNAL1V5 (ADC10SREF_1 | REFON | REFVSEL_0)
+#define INTERNAL2V5 (ADC10SREF_1 | REFON | REFVSEL_2)
 #define EXTERNAL ADC10SREF_2
 #endif
 
@@ -63,6 +64,13 @@ extern "C"{
 #define INTERNAL2V0 ((ADC12SREF_1 << 4) | REFON | REFMSTR | REFVSEL_1)
 #define INTERNAL2V5 ((ADC12SREF_1 << 4) | REFON | REFMSTR | REFVSEL_2)
 #define EXTERNAL (ADC12SREF_2 << 4)
+#endif
+#if defined(__MSP430_HAS_ADC12_B__)
+#define DEFAULT ADC12VRSEL_0
+#define INTERNAL1V2 (ADC12VRSEL_1 | REFON | REFVSEL_0)
+#define INTERNAL2V0 (ADC12VRSEL_1 | REFON | REFVSEL_1)
+#define INTERNAL2V5 (ADC12VRSEL_1 | REFON | REFVSEL_2)
+#define EXTERNAL ADC12VRSEL_2
 #endif
 
 enum{
@@ -172,6 +180,8 @@ void analogResolution(uint16_t);
 
 
 void delay(uint32_t milliseconds);
+void sleep(uint32_t milliseconds);
+void sleepSeconds(uint32_t seconds);
 
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);
@@ -184,11 +194,14 @@ extern const uint16_t port_to_sel1[];
 extern const uint16_t port_to_sel2[];
 extern const uint16_t port_to_input[];
 extern const uint16_t port_to_output[];
+extern const uint16_t port_to_ren[];
 extern const uint16_t port_to_pmap[];
+extern const uint32_t digital_pin_to_analog_in[];
 
 #define digitalPinToPort(P)    ( digital_pin_to_port[P] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask[P] )
 #define digitalPinToTimer(P)   ( digital_pin_to_timer[P] )
+#define digitalPinToADCIn(P)      ( digital_pin_to_analog_in[P] )
 #define portDirRegister(P)     ( (volatile uint8_t *)( port_to_dir[P]) )
 /*
  * We either of the compination   PxSEL and PxSEL2   or   PxSEL0 and PxSEL1

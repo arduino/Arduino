@@ -160,6 +160,8 @@ attachInterrupt	KEYWORD2	AttachInterrupt
 detachInterrupt	KEYWORD2	DetachInterrupt
 delay	KEYWORD2	Delay
 delayMicroseconds	KEYWORD2	DelayMicroseconds
+sleep	KEYWORD2	Sleep
+sleepSeconds	KEYWORD2	SleepSeconds
 digitalWrite	KEYWORD2	DigitalWrite
 digitalRead	KEYWORD2	DigitalRead
 interrupts	KEYWORD2

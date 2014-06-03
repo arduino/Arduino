@@ -64,6 +64,22 @@ extern void GPIOCIntHandler(void);
 extern void GPIODIntHandler(void);
 extern void GPIOEIntHandler(void);
 extern void GPIOFIntHandler(void);
+extern void GPIOGIntHandler(void);
+extern void GPIOHIntHandler(void);
+extern void GPIOJIntHandler(void);
+extern void GPIOKIntHandler(void);
+extern void GPIOLIntHandler(void);
+extern void GPIOMIntHandler(void);
+extern void GPIONIntHandler(void);
+extern void GPIOPIntHandler(void);
+extern void GPIOQIntHandler(void);
+#ifdef TARGET_IS_SNOWFLAKE_RA0
+extern void GPIORIntHandler(void);
+extern void GPIOSIntHandler(void);
+extern void GPIOTIntHandler(void);
+#endif
+extern void lwIPEthernetIntHandler(void) __attribute__((weak));
+extern void SysTickIntHandler(void);
 
 /*
  * create some overridable default signal handlers
@@ -79,7 +95,6 @@ __attribute__((weak)) void UARTIntHandler7(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
 __attribute__((weak)) void Timer5IntHandler(void) {}
-
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
 //*****************************************************************************
@@ -92,6 +107,7 @@ extern unsigned _estack;
 //
 //*****************************************************************************
 
+#ifdef TARGET_IS_BLIZZARD_RB1
 __attribute__ ((section(".isr_vector")))
 void (* const g_pfnVectors[])(void) =
 {
@@ -110,7 +126,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+    SysTickIntHandler,                      // The SysTick handler
     GPIOAIntHandler,                        // GPIO Port A
     GPIOBIntHandler,                        // GPIO Port B
     GPIOCIntHandler,                        // GPIO Port C
@@ -142,9 +158,9 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
     GPIOFIntHandler,                        // GPIO Port F
-    IntDefaultHandler,                      // GPIO Port G
-    IntDefaultHandler,                      // GPIO Port H
-    UARTIntHandler2,                         // UART2 Rx and Tx
+    GPIOGIntHandler,                        // GPIO Port G
+    GPIOHIntHandler,                        // GPIO Port H
+    UARTIntHandler2,                        // UART2 Rx and Tx
     IntDefaultHandler,                      // SSI1 Rx and Tx
     IntDefaultHandler,                      // Timer 3 subtimer A
     IntDefaultHandler,                      // Timer 3 subtimer B
@@ -165,16 +181,16 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // ADC1 Sequence 3
     IntDefaultHandler,                      // I2S0
     IntDefaultHandler,                      // External Bus Interface 0
-    IntDefaultHandler,                      // GPIO Port J
-    IntDefaultHandler,                      // GPIO Port K
-    IntDefaultHandler,                      // GPIO Port L
+    GPIOJIntHandler,                        // GPIO Port J
+    GPIOKIntHandler,                        // GPIO Port K
+    GPIOLIntHandler,                        // GPIO Port L
     IntDefaultHandler,                      // SSI2 Rx and Tx
     IntDefaultHandler,                      // SSI3 Rx and Tx
-    UARTIntHandler3,                         // UART3 Rx and Tx
-    UARTIntHandler4,                         // UART4 Rx and Tx
-    UARTIntHandler5,                         // UART5 Rx and Tx
-    UARTIntHandler6,                         // UART6 Rx and Tx
-    UARTIntHandler7,                         // UART7 Rx and Tx
+    UARTIntHandler3,                        // UART3 Rx and Tx
+    UARTIntHandler4,                        // UART4 Rx and Tx
+    UARTIntHandler5,                        // UART5 Rx and Tx
+    UARTIntHandler6,                        // UART6 Rx and Tx
+    UARTIntHandler7,                        // UART7 Rx and Tx
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
@@ -222,27 +238,27 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // LPC 0
     IntDefaultHandler,                      // I2C4 Master and Slave
     IntDefaultHandler,                      // I2C5 Master and Slave
-    IntDefaultHandler,                      // GPIO Port M
-    IntDefaultHandler,                      // GPIO Port N
+    GPIOMIntHandler,                        // GPIO Port M
+    GPIONIntHandler,                        // GPIO Port N
     IntDefaultHandler,                      // Quadrature Encoder 2
     IntDefaultHandler,                      // Fan 0
     0,                                      // Reserved
-    IntDefaultHandler,                      // GPIO Port P (Summary or P0)
-    IntDefaultHandler,                      // GPIO Port P1
-    IntDefaultHandler,                      // GPIO Port P2
-    IntDefaultHandler,                      // GPIO Port P3
-    IntDefaultHandler,                      // GPIO Port P4
-    IntDefaultHandler,                      // GPIO Port P5
-    IntDefaultHandler,                      // GPIO Port P6
-    IntDefaultHandler,                      // GPIO Port P7
-    IntDefaultHandler,                      // GPIO Port Q (Summary or Q0)
-    IntDefaultHandler,                      // GPIO Port Q1
-    IntDefaultHandler,                      // GPIO Port Q2
-    IntDefaultHandler,                      // GPIO Port Q3
-    IntDefaultHandler,                      // GPIO Port Q4
-    IntDefaultHandler,                      // GPIO Port Q5
-    IntDefaultHandler,                      // GPIO Port Q6
-    IntDefaultHandler,                      // GPIO Port Q7
+    GPIOPIntHandler,                        // GPIO Port P (Summary or P0)
+    GPIOPIntHandler,                        // GPIO Port P1
+    GPIOPIntHandler,                        // GPIO Port P2
+    GPIOPIntHandler,                        // GPIO Port P3
+    GPIOPIntHandler,                        // GPIO Port P4
+    GPIOPIntHandler,                        // GPIO Port P5
+    GPIOPIntHandler,                        // GPIO Port P6
+    GPIOPIntHandler,                        // GPIO Port P7
+    GPIOQIntHandler,                        // GPIO Port Q (Summary or Q0)
+    GPIOQIntHandler,                        // GPIO Port Q1
+    GPIOQIntHandler,                        // GPIO Port Q2
+    GPIOQIntHandler,                        // GPIO Port Q3
+    GPIOQIntHandler,                        // GPIO Port Q4
+    GPIOQIntHandler,                        // GPIO Port Q5
+    GPIOQIntHandler,                        // GPIO Port Q6
+    GPIOQIntHandler,                        // GPIO Port Q7
     IntDefaultHandler,                      // GPIO Port R
     IntDefaultHandler,                      // GPIO Port S
     IntDefaultHandler,                      // PWM 1 Generator 0
@@ -251,7 +267,140 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // PWM 1 Generator 3
     IntDefaultHandler                       // PWM 1 Fault
 };
-
+#else
+__attribute__ ((section(".isr_vector")))
+void (* const g_pfnVectors[])(void) =
+{
+    (void *)&_estack,                       // The initial stack pointer
+    ResetISR,                               // The reset handler
+    NmiSR,                                  // The NMI handler
+    FaultISR,                               // The hard fault handler
+    IntDefaultHandler,                      // The MPU fault handler
+    IntDefaultHandler,                      // The bus fault handler
+    IntDefaultHandler,                      // The usage fault handler
+    0,                                      // Reserved
+    0,                                      // Reserved
+    0,                                      // Reserved
+    0,                                      // Reserved
+    IntDefaultHandler,                      // SVCall handler
+    IntDefaultHandler,                      // Debug monitor handler
+    0,                                      // Reserved
+    IntDefaultHandler,                      // The PendSV handler
+    SysTickIntHandler,                      // The SysTick handler
+    GPIOAIntHandler,                        // GPIO Port A
+    GPIOBIntHandler,                        // GPIO Port B
+    GPIOCIntHandler,                        // GPIO Port C
+    GPIODIntHandler,                        // GPIO Port D
+    GPIOEIntHandler,                        // GPIO Port E
+    UARTIntHandler,                         // UART0 Rx and Tx
+    UARTIntHandler1,                        // UART1 Rx and Tx
+    IntDefaultHandler,                      // SSI0 Rx and Tx
+    IntDefaultHandler,                      // I2C0 Master and Slave
+    IntDefaultHandler,                      // PWM Fault
+    IntDefaultHandler,                      // PWM Generator 0
+    IntDefaultHandler,                      // PWM Generator 1
+    IntDefaultHandler,                      // PWM Generator 2
+    IntDefaultHandler,                      // Quadrature Encoder 0
+    IntDefaultHandler,                      // ADC Sequence 0
+    IntDefaultHandler,                      // ADC Sequence 1
+    IntDefaultHandler,                      // ADC Sequence 2
+    IntDefaultHandler,                      // ADC Sequence 3
+    IntDefaultHandler,                      // Watchdog timer
+    IntDefaultHandler,                      // Timer 0 subtimer A
+    IntDefaultHandler,                      // Timer 0 subtimer B
+    IntDefaultHandler,                      // Timer 1 subtimer A
+    IntDefaultHandler,                      // Timer 1 subtimer B
+    IntDefaultHandler,                      // Timer 2 subtimer A
+    IntDefaultHandler,                      // Timer 2 subtimer B
+    IntDefaultHandler,                      // Analog Comparator 0
+    IntDefaultHandler,                      // Analog Comparator 1
+    IntDefaultHandler,                      // Analog Comparator 2
+    IntDefaultHandler,                      // System Control (PLL, OSC, BO)
+    IntDefaultHandler,                      // FLASH Control
+    GPIOFIntHandler,                        // GPIO Port F
+    GPIOGIntHandler,                        // GPIO Port G
+    GPIOHIntHandler,                        // GPIO Port H
+    UARTIntHandler2,                        // UART2 Rx and Tx
+    IntDefaultHandler,                      // SSI1 Rx and Tx
+    IntDefaultHandler,                      // Timer 3 subtimer A
+    IntDefaultHandler,                      // Timer 3 subtimer B
+    IntDefaultHandler,                      // I2C1 Master and Slave
+    IntDefaultHandler,                      // CAN0
+    IntDefaultHandler,                      // CAN1
+    lwIPEthernetIntHandler,                 // Ethernet
+    IntDefaultHandler,                      // Hibernate
+    IntDefaultHandler,                      // USB0
+    IntDefaultHandler,                      // PWM Generator 3
+    IntDefaultHandler,                      // uDMA Software Transfer
+    IntDefaultHandler,                      // uDMA Error
+    IntDefaultHandler,                      // ADC1 Sequence 0
+    IntDefaultHandler,                      // ADC1 Sequence 1
+    IntDefaultHandler,                      // ADC1 Sequence 2
+    IntDefaultHandler,                      // ADC1 Sequence 3
+    IntDefaultHandler,                      // External Bus Interface 0
+    GPIOJIntHandler,                        // GPIO Port J
+    GPIOKIntHandler,                        // GPIO Port K
+    GPIOLIntHandler,                        // GPIO Port L
+    IntDefaultHandler,                      // SSI2 Rx and Tx
+    IntDefaultHandler,                      // SSI3 Rx and Tx
+    UARTIntHandler3,                        // UART3 Rx and Tx
+    UARTIntHandler4,                        // UART4 Rx and Tx
+    UARTIntHandler5,                        // UART5 Rx and Tx
+    UARTIntHandler6,                        // UART6 Rx and Tx
+    UARTIntHandler7,                        // UART7 Rx and Tx
+    IntDefaultHandler,                      // I2C2 Master and Slave
+    IntDefaultHandler,                      // I2C3 Master and Slave
+    ToneIntHandler,                         // Timer 4 subtimer A
+    IntDefaultHandler,                      // Timer 4 subtimer B
+    Timer5IntHandler,                       // Timer 5 subtimer A
+    IntDefaultHandler,                      // Timer 5 subtimer B
+    IntDefaultHandler,                      // FPU
+    0,                                      // Reserved
+    0,                                      // Reserved
+    IntDefaultHandler,                      // I2C4 Master and Slave
+    IntDefaultHandler,                      // I2C5 Master and Slave
+    GPIOMIntHandler,                        // GPIO Port M
+    GPIONIntHandler,                        // GPIO Port N
+    0,                                      // Reserved
+    IntDefaultHandler,                      // Tamper
+    GPIOPIntHandler,                        // GPIO Port P (Summary or P0)
+    GPIOPIntHandler,                        // GPIO Port P1
+    GPIOPIntHandler,                        // GPIO Port P2
+    GPIOPIntHandler,                        // GPIO Port P3
+    GPIOPIntHandler,                        // GPIO Port P4
+    GPIOPIntHandler,                        // GPIO Port P5
+    GPIOPIntHandler,                        // GPIO Port P6
+    GPIOPIntHandler,                        // GPIO Port P7
+    GPIOQIntHandler,                        // GPIO Port Q (Summary or Q0)
+    GPIOQIntHandler,                        // GPIO Port Q1
+    GPIOQIntHandler,                        // GPIO Port Q2
+    GPIOQIntHandler,                        // GPIO Port Q3
+    GPIOQIntHandler,                        // GPIO Port Q4
+    GPIOQIntHandler,                        // GPIO Port Q5
+    GPIOQIntHandler,                        // GPIO Port Q6
+    GPIOQIntHandler,                        // GPIO Port Q7
+    GPIORIntHandler,                        // GPIO Port R
+    GPIOSIntHandler,                        // GPIO Port S
+    IntDefaultHandler,                      // SHA/MD5 0
+    IntDefaultHandler,                      // AES 0
+    IntDefaultHandler,                      // DES3DES 0
+    IntDefaultHandler,                      // LCD Controller 0
+    IntDefaultHandler,                      // Timer 6 subtimer A
+    IntDefaultHandler,                      // Timer 6 subtimer B
+    IntDefaultHandler,                      // Timer 7 subtimer A
+    IntDefaultHandler,                      // Timer 7 subtimer B
+    IntDefaultHandler,                      // I2C6 Master and Slave
+    IntDefaultHandler,                      // I2C7 Master and Slave
+    IntDefaultHandler,                      // HIM Scan Matrix Keyboard 0
+    IntDefaultHandler,                      // One Wire 0
+    IntDefaultHandler,                      // HIM PS/2 0
+    IntDefaultHandler,                      // HIM LED Sequencer 0
+    IntDefaultHandler,                      // HIM Consumer IR 0
+    IntDefaultHandler,                      // I2C8 Master and Slave
+    IntDefaultHandler,                      // I2C9 Master and Slave
+    GPIOTIntHandler                         // GPIO Port T
+};
+#endif
 //*****************************************************************************
 //
 // The following are constructs created by the linker, indicating where the
@@ -268,6 +417,7 @@ extern void (*__preinit_array_start[])(void);
 extern void (*__preinit_array_end[])(void);
 extern void (*__init_array_start[])(void);
 extern void (*__init_array_end[])(void);
+extern void _init(void);
 
 
 //*****************************************************************************
@@ -321,6 +471,8 @@ void ResetISR(void) {
     cnt = __preinit_array_end - __preinit_array_start;
     for (i = 0; i < cnt; i++)
         __preinit_array_start[i]();
+
+    _init();
 
     cnt = __init_array_end - __init_array_start;
     for (i = 0; i < cnt; i++)

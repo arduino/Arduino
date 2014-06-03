@@ -178,20 +178,29 @@
     <fail message="wrong platform (${os.name})" />
   </target>
 
-  <property name="arm.tools.local" value="arm_tools_mac.tar.bz2"/>
-  <available property="exists.dep.arm" file="macosx/dist/${arm.tools.local}"/>
+
+  <property name="arm.tools.mac.local" value="arm_tools_mac.zip"/>
+  <property name="msp430.tools.mac.local" value="msp430_tools_mac.zip"/>
+
+  <condition property="exists.tools.mac">
+  <and>
+  <available property="exists.dep.arm.mac" file="macosx/${arm.tools.mac.local}"/>
+  <available property="exists.dep.msp430.mac" file="macosx/${msp430.tools.mac.local}"/>
+  </and>
+  </condition>
   <property name="dep.arm.default.ok" value="true"/>
 
-  <target name="check.deps"
+  <target name="check.deps.mac"
     if="dep.arm.default.ok"
-    unless="exists.dep.arm">
-    <property name="arm.tools.remote" value="http://energia.nu/files/arm_tools_mac.tar.bz2"/>
-
-    <!-- Get arm tools -->
-    <get src="${arm.tools.remote}" dest="macosx/dist/${arm.tools.local}"/>
+    unless="exists.tools.mac">
+    <property name="arm.tools.mac.remote" value="http://energia.nu/files/arm_tools_mac.zip"/>
+	<property name="msp430.tools.mac.remote" value="http://energia.nu/files/msp430_tools_mac.zip"/>
+    <!-- Get tools tools -->
+	<get src="${arm.tools.mac.remote}" dest="macosx/${arm.tools.mac.local}"/>
+	<get src="${msp430.tools.mac.remote}" dest="macosx/${msp430.tools.mac.local}"/>
   </target>
 
-  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps, subprojects-build" description="Build Mac OS X version">
+  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps.mac, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
     
     <!-- assemble the pde -->
@@ -215,42 +224,24 @@
       <fileset file="shared/revisions.txt" />
     </copy>
 
-    <!-- Unzip AVR tools -->
-    <!-- <unzip dest="macosx/work/Energia.app/Contents/Resources/Java/hardware" src="macosx/dist/tools-universal.zip" overwrite="false"/> -->
-    <!--
+   <!-- Unzip msp430 tools -->
     <exec executable="unzip">
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
-      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
-      <arg value="macosx/dist/tools-universal.zip" />
-    </exec>
-    -->
-    <!-- Unzip msp430 tools -->
-    <exec executable="unzip">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-d" />
-      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware" />
-      <arg value="macosx/dist/tools-msp430.zip" />
+      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools" />
+      <arg value="macosx/msp430_tools_mac.zip" />
     </exec>
 
     <!-- Unzip arm tools -->
-    <exec executable="tar" dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools">
-      <arg value="-xjf"/>
-      <arg value="${user.dir}/macosx/dist/arm_tools_mac.tar.bz2"/>
+    <exec executable="unzip">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-d" />
+      <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools" />
+      <arg value="macosx/arm_tools_mac.zip" />
     </exec>
 
-    <copy tofile="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/bin/lm4flash"
-          file="macosx/dist/tools/lm4flash"
-          overwrite="true"
-        />
-    <chmod perm="755" file="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/bin/lm4flash" />
-    <!--
-    <copy todir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/include/avr">    
-      <fileset file="macosx/dist/eeprom.h" />
-    </copy>
-    -->
     <antcall target="assemble">
       <param name="target.path" value="macosx/work/Energia.app/Contents/Resources/Java" />
     </antcall>
@@ -263,16 +254,7 @@
   <target name="macosx-dist" if="macosx" depends="macosx-build" description="Create a downloadable .zip for the Mac OS X version">
     <!-- The ant copy command does not preserve permissions. -->
     <chmod file="macosx/work/Energia.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
-<!--
-    <chmod perm="+x">
-      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
-      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
-      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />
-      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />
-      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
-      <fileset dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
-    </chmod>
--->
+
     <replace file="macosx/work/Energia.app/Contents/Info.plist"
              token="VERSION" value="${version}" />
     <replace file="macosx/work/Energia.app/Contents/Info.plist"
@@ -307,16 +289,7 @@
 
     <!-- The ant copy command does not preserve permissions. -->
     <chmod file="macosx/working_dir/Energia.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
-<!--
-    <chmod perm="+x">
-      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />
-      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />
-      <fileset dir="macosx/working_dir/Energia.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />
-    </chmod>
--->
+
     <!-- Pause briefly for the OS to catch up with the DMG changes. 
 	 This prevents "hdiutil: couldn't eject "disk3" - Resource busy"
 	 errors when ejecting the disk in the next step.
@@ -394,61 +367,79 @@
       	<exclude name="**/avr*" />
       </fileset>
     </copy>
-
-    <!--chmod perm="755" file="linux/work/hardware/tools/avrdude" /-->
   </target>
 
-  <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
-    <!-- Unzip AVR tools
-    <exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../avr_tools_linux32.tar.bz2"/>
-    </exec>
-    -->
-  	<!-- Unzip msp430 tools -->
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../msp430_tools_linux32.tar.bz2"/>
-    </exec>
-  	<!-- Unzip lm4f tools -->
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../lm4f_tools_linux32.tar.bz2"/>
-    </exec>
-    <copy tofile="linux/work/hardware/tools/lm4f/bin/lm4flash"
-          file="linux/dist/tools/lm4flash"
-          overwrite="true"
-        />
-    <chmod perm="755" file="linux/work/hardware/tools/lm4f/bin/lm4flash" />
+  <!-- Linux 32 build -->
+  <property name="arm.tools.linux.local" value="arm_tools_linux32.tar.bz2"/>
+  <property name="msp430.tools.linux.local" value="msp430_tools_linux32.tar.bz2"/>
+
+  <condition property="exists.tools.linux">
+  <and>
+  <available property="exists.dep.arm.linux" file="linux/${arm.tools.linux.local}"/>
+  <available property="exists.dep.msp430.linux" file="linux/${msp430.tools.linux.local}"/>
+  </and>
+  </condition>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps.linux"
+    if="dep.arm.default.ok"
+    unless="exists.tools.linux">
+    <property name="arm.tools.linux.remote" value="http://energia.nu/files/arm_tools_linux32.tar.bz2"/>
+	<property name="msp430.tools.linux.remote" value="http://energia.nu/files/msp430_tools_linux32.tar.bz2"/>
+    <!-- Get tools -->
+	<get src="${arm.tools.linux.remote}" dest="linux/${arm.tools.linux.local}"/>
+	<get src="${msp430.tools.linux.remote}" dest="linux/${msp430.tools.linux.local}"/>
   </target>
 
-  <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
-    <!-- <copy tofile="linux/work/hardware/tools/avrdude" file="linux/dist/tools/avrdude64" overwrite="true" /> -->
+  <target name="linux32-build" depends="linux-build, check.deps.linux" description="Build linux (32-bit) version">
+<echo>${user.dir}</echo>
+    <!-- Unzip msp430 tools -->
+    <exec executable="tar" dir="linux/work/hardware/tools">
+      <arg value="-xjf"/>
+      <arg value="${user.dir}/linux/msp430_tools_linux32.tar.bz2"/>
+    </exec>
+    <!-- Unzip lm4f tools -->
+    <exec executable="tar" dir="linux/work/hardware/tools">
+      <arg value="-xjf"/>
+      <arg value="${user.dir}/linux/arm_tools_linux32.tar.bz2"/>
+    </exec>
+  </target>
+
+  <!-- Linux 64 build -->
+  <property name="arm.tools.linux64.local" value="arm_tools_linux64.tar.bz2"/>
+  <property name="msp430.tools.linux64.local" value="msp430_tools_linux64.tar.bz2"/>
+
+  <condition property="exists.tools.linux64">
+  <and>
+  <available property="exists.dep.arm.linux64" file="linux/${arm.tools.linux64.local}"/>
+  <available property="exists.dep.msp430.linux64" file="linux/${msp430.tools.linux64.local}"/>
+  </and>
+  </condition>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps.linux64"
+    if="dep.arm.default.ok"
+    unless="exists.tools.linux64">
+    <property name="arm.tools.linux64.remote" value="http://energia.nu/files/arm_tools_linux64.tar.bz2"/>
+	<property name="msp430.tools.linux64.remote" value="http://energia.nu/files/msp430_tools_linux64.tar.bz2"/>
+    <!-- Get tools -->
+	<get src="${arm.tools.linux64.remote}" dest="linux/${arm.tools.linux64.local}"/>
+	<get src="${msp430.tools.linux64.remote}" dest="linux/${msp430.tools.linux64.local}"/>
+  </target>
+
+
+  <target name="linux64-build" depends="linux-build, check.deps.linux64" description="Build linux (64-bit) version">
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
-  	<exec executable="tar" dir="linux/work/hardware">
+    <exec executable="tar" dir="linux/work/hardware/tools">
       <arg value="-xjf"/>
-      <arg value="../../msp430_tools_linux64.tar.bz2"/>
+      <arg value="${user.dir}/linux/msp430_tools_linux64.tar.bz2"/>
     </exec>
-  	<!-- Unzip lm4f tools -->
-  	<exec executable="tar" dir="linux/work/hardware">
-      <arg value="-xjf"/>
-      <arg value="../../lm4f_tools_linux64.tar.bz2"/>
-    </exec>
-<!--
-    <copy tofile="linux/work/hardware/tools/lm4f/bin/lm4flash"
-          file="linux/dist/tools/lm4flash"
-          overwrite="true"
-        />
-    <chmod perm="755" file="linux/work/hardware/tools/lm4f/bin/lm4flash" />
--->
-    <!-- <chmod perm="755" file="linux/work/hardware/tools/avrdude" /> -->
 
-    <!-- Unzip AVR tools
-    <exec executable="tar" dir="linux/work/hardware">
+    <!-- Unzip lm4f tools -->
+    <exec executable="tar" dir="linux/work/hardware/tools">
       <arg value="-xjf"/>
-      <arg value="../../avr_tools_linux64.tar.bz2"/>
+      <arg value="${user.dir}/linux/arm_tools_linux64.tar.bz2"/>
     </exec>
-    -->
   </target> 
   
   <target name="linux32-run" depends="linux32-build" 
@@ -536,8 +527,29 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
+  <property name="arm.tools.windows.local" value="arm_tools_windows.zip"/>
+  <property name="msp430.tools.windows.local" value="msp430_tools_windows.zip"/>
+
+  <condition property="exists.tools.windows">
+  <and>
+  <available property="exists.dep.arm.windows" file="windows/${arm.tools.windows.local}"/>
+  <available property="exists.dep.msp430.windows" file="windows/${msp430.tools.windows.local}"/>
+  </and>
+  </condition>
+  <property name="dep.arm.default.ok" value="true"/>
+
+  <target name="check.deps.windows"
+    if="dep.arm.default.ok"
+    unless="exists.tools.windows">
+    <property name="arm.tools.windows.remote" value="http://energia.nu/files/arm_tools_windows.zip"/>
+	<property name="msp430.tools.windows.remote" value="http://energia.nu/files/msp430_tools_windows.zip"/>
+    <!-- Get tools tools -->
+	<get src="${arm.tools.windows.remote}" dest="windows/${arm.tools.windows.local}"/>
+	<get src="${msp430.tools.windows.remote}" dest="windows/${msp430.tools.windows.local}"/>
+  </target>
+  
   <target name="windows-build" 
-	  depends="revision-check, windows-checkos, subprojects-build" 
+	  depends="revision-check, windows-checkos, check.deps.windows, subprojects-build" 
 	  description="Build windows version">
     <mkdir dir="windows/work" />
     
@@ -560,23 +572,10 @@
       <fileset dir="windows/dist" includes="drivers/**" />
     </copy>
     
-    <!-- Unzip AVR tools -->
-    <!--
-    <unzip dest="windows/work/hardware" src="windows/avr_tools.zip" overwrite="false"/>
-    -->
-    <unzip dest="windows/work/hardware" src="windows/msp430_tools.zip" overwrite="false"/>
-
-    <unzip dest="windows/work/hardware" src="windows/lm4f_tools.zip" overwrite="false"/>
-    <copy tofile="windows/work/hardware/tools/lm4f/bin/lm4flash.exe"
-          file="windows/dist/tools/lm4flash.exe"
-          overwrite="true"
-        />
-    <chmod perm="755" file="windows/work/hardware/tools/lm4f/bin/lm4flash.exe" />
-    <!--
-    <copy todir="windows/work/hardware/tools/avr/avr/include/avr">
-      <fileset file="windows/eeprom.h" />
-    </copy>
-    -->
+    <!-- Unzip tools -->
+    <unzip dest="windows/work/hardware/tools" src="windows/msp430_tools_windows.zip" overwrite="false"/>
+    <unzip dest="windows/work/hardware/tools" src="windows/arm_tools_windows.zip" overwrite="false"/>
+ 
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
     </antcall>
