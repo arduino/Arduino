@@ -40,7 +40,7 @@ typedef unsigned char _Bool;
 #endif
 
 #ifndef TWI_BUFFER_LENGTH
-#define TWI_BUFFER_LENGTH 16
+  #define TWI_BUFFER_LENGTH 32
 #endif
 
 
@@ -50,35 +50,70 @@ typedef unsigned char _Bool;
 #define TWI_SRX   3
 #define TWI_STX   4
 
+// Error Messages
+#define I2C_ERROR               0xFFFF
+#define I2C_ARB_LOST_ERROR      0x0001
+#define I2C_NACK_ERROR          0x0002
+#define I2C_BUS_BUSY_ERROR      0x1000
+#define I2C_STP_NOT_READY_ERROR 0x5555
+#define I2C_NO_FLAGS            0xAAAA
+#define I2C_SUCCESS             0x0000
 
-#define TWI_SND_START 0
-#define TWI_PREP_SLA_ADDR_ACK 1
-#define TWI_MT_PROC_ADDR_ACK 2
-#define TWI_MT_PREP_DATA_ACK 3
-#define TWI_MT_PROC_DATA_ACK 4
-#define TWI_MR_PREP_DATA_RECV 5
-#define TWI_MR_PROC_DATA_RECV 6
-#define TWI_MR_PREP_STOP 7
+// Clear Status Flags
+#define I2C_CLR_AL_BIT          0x0001
+#define I2C_CLR_NACK_BIT        0x0002
+#define I2C_CLR_ARDY_BIT        0x0004
+#define I2C_CLR_RRDY_BIT        0x0008
+#define I2C_CLR_SCD_BIT         0x0020
 
-#define TWI_SL_START 8
-#define TWI_SL_PROC_ADDR 9
-#define TWI_SL_SEND_BYTE 10
-#define TWI_SL_PREP_DATA_ACK 11
-#define TWI_SL_PROC_DATA_ACK 12
-#define TWI_SL_RECV_BYTE 13
-#define TWI_SL_PROC_BYTE 14
-#define TWI_SL_RESET 15
-#define TWI_EXIT 16
-#define TWI_IDLE 17
+// Interrupt Source Messages
+#define I2C_NO_ISRC             0x0000
+#define I2C_ARB_ISRC            0x0001
+#define I2C_NACK_ISRC           0x0002
+#define I2C_ARDY_ISRC           0x0003
+#define I2C_RX_ISRC             0x0004
+#define I2C_TX_ISRC             0x0005
+#define I2C_SCD_ISRC            0x0006
+#define I2C_AAS_ISRC            0x0007
 
+// I2CMSG structure defines
+#define I2C_NO_STOP  0
+#define I2C_YES_STOP 1
+#define I2C_RECEIVE  0
+#define I2C_TRANSMIT 1
+#define I2C_MAX_BUFFER_SIZE 4
 
-#define TWI_ERRROR_NO_ERROR 0
-#define TWI_ERROR_BUF_TO_LONG 1
-#define TWI_ERROR_ADDR_NACK 2
-#define TWI_ERROR_DATA_NACK 3
-#define TWI_ERROR_OTHER 4
+// I2C Slave State defines
+#define I2C_NOTSLAVE      0
+#define I2C_ADDR_AS_SLAVE 1
+#define I2C_ST_MSG_READY  2
 
+// I2C Slave Receiver messages defines
+#define I2C_SND_MSG1 1
+#define I2C_SND_MSG2 2
 
+// I2C State defines
+#define I2C_IDLE               0
+#define I2C_SLAVE_RECEIVER     1
+#define I2C_SLAVE_TRANSMITTER  2
+#define I2C_MASTER_RECEIVER    3
+#define I2C_MASTER_TRANSMITTER 4
+
+// I2C  Message Commands for I2CMSG struct
+#define I2C_MSGSTAT_INACTIVE          0x0000
+#define I2C_MSGSTAT_SEND_WITHSTOP     0x0010
+#define I2C_MSGSTAT_WRITE_BUSY        0x0011
+#define I2C_MSGSTAT_SEND_NOSTOP       0x0020
+#define I2C_MSGSTAT_SEND_NOSTOP_BUSY  0x0021
+#define I2C_MSGSTAT_RESTART           0x0022
+#define I2C_MSGSTAT_READ_BUSY         0x0023
+
+// Generic defines
+#define I2C_TRUE  1
+#define I2C_FALSE 0
+#define I2C_YES   1
+#define I2C_NO    0
+#define I2C_DUMMY_BYTE 0
 
 void twi_init(void);
 void twi_setAddress(uint8_t);
