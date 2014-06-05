@@ -58,7 +58,7 @@
 #endif
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
-uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_0, analog_res=255; // devide clock with 0, 2, 4, 8
+uint16_t analog_reference = DEFAULT;
 
 void analogReference(uint16_t mode)
 {
@@ -69,6 +69,7 @@ void analogReference(uint16_t mode)
 }
 #endif
 
+uint16_t analog_period = F_CPU/490, analog_div = ID_0, analog_res = 255;
 
 //TODO: Can be a lot more efficiant.
 //      - lower clock rated / input devider to conserve Energia.
@@ -104,21 +105,85 @@ void analogResolution(uint16_t res)
 	analog_res = res;
 }
 
+/* Timer_A delayed-CCR-update ISRs. */
+
+#if defined(__MSP430_HAS_TA2__) || defined(__MSP430_HAS_T0A2__)
+volatile uint16_t timera0_ccr_dblbuf[1];
+__attribute__((interrupt(TIMER0_A0_VECTOR)))
+void TA0_CCR_updater()
+{
+	TA0CCR1 = timera0_ccr_dblbuf[0];
+	TA0CCTL0 &= ~CCIE;
+}
+#endif
+
+#if defined(__MSP430_HAS_TA3__) || defined(__MSP430_HAS_T0A3__)
+volatile uint16_t timera0_ccr_dblbuf[2];
+__attribute__((interrupt(TIMER0_A0_VECTOR)))
+void TA0_CCR_updater()
+{
+	TA0CCR1 = timera0_ccr_dblbuf[0];
+	TA0CCR2 = timera0_ccr_dblbuf[1];
+	TA0CCTL0 &= ~CCIE;
+}
+#endif
+
+#if defined(__MSP430_HAS_TA5__) || defined(__MSP430_HAS_T0A5__) 
+volatile uint16_t timera0_ccr_dblbuf[4];
+__attribute__((interrupt(TIMER0_A0_VECTOR)))
+void TA0_CCR_updater()
+{
+	TA0CCR1 = timera0_ccr_dblbuf[0];
+	TA0CCR2 = timera0_ccr_dblbuf[1];
+	TA0CCR3 = timera0_ccr_dblbuf[2];
+	TA0CCR4 = timera0_ccr_dblbuf[3];
+	TA0CCTL0 &= ~CCIE;
+}
+#endif
+
+#if defined(__MSP430_HAS_T1A3__) 
+volatile uint16_t timera1_ccr_dblbuf[2];
+__attribute__((interrupt(TIMER1_A0_VECTOR)))
+void TA1_CCR_updater()
+{
+	TA1CCR1 = timera1_ccr_dblbuf[0];
+	TA1CCR2 = timera1_ccr_dblbuf[1];
+	TA1CCTL0 &= ~CCIE;
+}
+#endif
+
+#if defined(__MSP430_HAS_T2A3__)  
+volatile uint16_t timera2_ccr_dblbuf[2];
+__attribute__((interrupt(TIMER2_A0_VECTOR)))
+void TA2_CCR_updater()
+{
+	TA2CCR1 = timera2_ccr_dblbuf[0];
+	TA2CCR2 = timera2_ccr_dblbuf[1];
+	TA2CCTL0 &= ~CCIE;
+}
+#endif
+
+/* MSP430's with Port Mappers (F5xxx series, etc) need the correct Port Mapping ID for their timers. */
+#if defined(__MSP430_HAS_PORT_MAPPING__)
+extern const uint8_t pmap_timer_ids[];
+#endif
+
 
 //Arduino specifies ~490 Hz for analog out PWM so we follow suit.
 #define PWM_PERIOD analog_period // F_CPU/490
 #define PWM_DUTY(x) ( (unsigned long)x*PWM_PERIOD / (unsigned long)analog_res )
+
 void analogWrite(uint8_t pin, int val)
 {
-        pinMode(pin, OUTPUT); // pin as output
-
  	if (val == 0)
 	{
+		pinMode(pin, OUTPUT);
 		digitalWrite(pin, LOW); // set pin to LOW when duty cycle is 0
                                         // digitalWrite will take care of invalid pins
 	}
 	else if (val == analog_res)
 	{
+		pinMode(pin, OUTPUT);
 		digitalWrite(pin, HIGH); // set pin HIGH when duty cycle is 255
                                          // digitalWrite will take care of invalid pins
 	}
@@ -130,144 +195,303 @@ void analogWrite(uint8_t pin, int val)
 	        volatile uint8_t *sel;
                 
                 if (port == NOT_A_PORT) return; // pin on timer?
-               
-	        sel = portSelRegister(port); // get the port function select register address
-		*sel |= bit;                 // set bit in pin function select register  
 
-                switch(digitalPinToTimer(pin)) {                // which timer and CCR?
+	        sel = portSelRegister(port); // get the port function select register address
+		uint16_t is_already_pwm = false;  // uint16_t is fine since this gets optimized away using a register anyhow
+
+#if (defined(P1SEL2_) || defined(P1SEL2))
+#define is_using_two_pxsel
+		volatile uint8_t *selx = portSel2Register(port);
+#endif
+#if (defined(P1SEL1_) || defined(P1SEL1))
+#define is_using_two_pxsel
+		volatile uint8_t *selx = portSel1Register(port);
+#endif
+
+#ifdef is_using_two_pxsel
+#define SET_PXSEL(bit) *sel |= bit; *selx &= ~bit
+#else
+#define SET_PXSEL(bit) *sel |= bit
+#endif
+
+		uint8_t timerID = digitalPinToTimer(pin);
+		#if defined(__MSP430_HAS_PORT_MAPPING__)
+		uint16_t pmapID = (uint16_t)pmap_timer_ids[timerID] << 8;
+		#else
+		#define pmapID 0
+		#endif
+
+		#ifdef is_using_two_pxsel
+		if ( (*sel & bit) && !(*selx & bit) ) {
+		#else
+		if (*sel & bit) {
+		#endif
+			is_already_pwm = true;
+		} else {
+			pinMode_int(pin, OUTPUT | pmapID);  // Get PxDIR set
+		}
+
+		uint16_t ccrval = PWM_DUTY(val);  // get the 32-bit math done early
+
+		switch(timerID) {                // which timer and CCR?
  			//case: T0A0                            // CCR0 used as period register
 			case T0A1:                              // TimerA0 / CCR1
-                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-                                TA0CCTL1 = OUTMOD_7;            // reset/set
-                                TA0CCR1 = PWM_DUTY(val);       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1 + analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA0CCR0 = PWM_PERIOD;           // PWM Period
+					TA0CCTL1 = OUTMOD_7;            // reset/set
+					TA0CCR1 = ccrval;       // PWM duty cycle
+					timera0_ccr_dblbuf[0] = ccrval;
+					SET_PXSEL(bit);
+					TA0CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera0_ccr_dblbuf[0] = ccrval;
+					TA0CCTL0 &= ~CCIFG;
+					TA0CCTL0 |= CCIE;
+				}
                                 break;
 #if defined(__MSP430_HAS_TA3__) || defined(__MSP430_HAS_T0A3__) || defined(__MSP430_HAS_T0A5__) || defined(__MSP430_HAS_TA5__) 
  			case T0A2:                              // TimerA0 / CCR2
-                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-                                TA0CCTL2 = OUTMOD_7;            // reset/set
-                                TA0CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA0CCR0 = PWM_PERIOD;           // PWM Period
+					TA0CCTL2 = OUTMOD_7;            // reset/set
+					TA0CCR2 = ccrval;       // PWM duty cycle
+					timera0_ccr_dblbuf[1] = ccrval;
+					SET_PXSEL(bit);
+					TA0CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera0_ccr_dblbuf[1] = ccrval;
+					TA0CCTL0 &= ~CCIFG;
+					TA0CCTL0 |= CCIE;
+				}
                                 break;
 #endif
 #if defined(__MSP430_HAS_TA5__) || defined(__MSP430_HAS_T0A5__) 
  			case T0A3:                              // TimerA0 / CCR3
-                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-                                TA0CCTL3 = OUTMOD_7;            // reset/set
-                                TA0CCR3 = PWM_DUTY(val);       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA0CCR0 = PWM_PERIOD;           // PWM Period
+					TA0CCTL3 = OUTMOD_7;            // reset/set
+					TA0CCR3 = ccrval;       // PWM duty cycle
+					timera0_ccr_dblbuf[2] = ccrval;
+					SET_PXSEL(bit);
+					TA0CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera0_ccr_dblbuf[2] = ccrval;
+					TA0CCTL0 &= ~CCIFG;
+					TA0CCTL0 |= CCIE;
+				}
                                 break;
  			case T0A4:                              // TimerA0 / CCR4
-                                TA0CCR0 = PWM_PERIOD;           // PWM Period
-                                TA0CCTL4 = OUTMOD_7;            // reset/set
-                                TA0CCR4 = PWM_DUTY(val);       // PWM duty cycle
-                                TA0CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA0CCR0 = PWM_PERIOD;           // PWM Period
+					TA0CCTL4 = OUTMOD_7;            // reset/set
+					TA0CCR4 = ccrval;       // PWM duty cycle
+					timera0_ccr_dblbuf[3] = ccrval;
+					SET_PXSEL(bit);
+					TA0CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera0_ccr_dblbuf[3] = ccrval;
+					TA0CCTL0 &= ~CCIFG;
+					TA0CCTL0 |= CCIE;
+				}
                                 break;
 #endif
 #if defined(__MSP430_HAS_T1A3__) 
  			//case: T1A0                            // CCR0 used as period register
 			case T1A1:                              // TimerA1 / CCR1
-                                TA1CCR0 = PWM_PERIOD;           // PWM Period
-                                TA1CCTL1 = OUTMOD_7;            // reset/set
-                                TA1CCR1 = PWM_DUTY(val);       // PWM duty cycle
-                                TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA1CCR0 = PWM_PERIOD;           // PWM Period
+					TA1CCTL1 = OUTMOD_7;            // reset/set
+					TA1CCR1 = ccrval;       // PWM duty cycle
+					timera1_ccr_dblbuf[0] = ccrval;
+					SET_PXSEL(bit);
+					TA1CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera1_ccr_dblbuf[0] = ccrval;
+					TA1CCTL0 &= ~CCIFG;
+					TA1CCTL0 |= CCIE;
+				}
                                 break;
  			case T1A2:                              // TimerA1 / CCR2
-                                TA1CCR0 = PWM_PERIOD;           // PWM Period
-                                TA1CCTL2 = OUTMOD_7;            // reset/set
-                                TA1CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TA1CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA1CCR0 = PWM_PERIOD;           // PWM Period
+					TA1CCTL2 = OUTMOD_7;            // reset/set
+					TA1CCR2 = ccrval;       // PWM duty cycle
+					timera1_ccr_dblbuf[1] = ccrval;
+					SET_PXSEL(bit);
+					TA1CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera1_ccr_dblbuf[1] = ccrval;
+					TA1CCTL0 &= ~CCIFG;
+					TA1CCTL0 |= CCIE;
+				}
                                 break;
 #endif
 #if defined(__MSP430_HAS_T2A3__)  
  			//case: T2A0                            // CCR0 used as period register
 			case T2A1:                              // TimerA2 / CCR1
-                                TA2CCR0 = PWM_PERIOD;           // PWM Period
-                                TA2CCTL1 = OUTMOD_7;            // reset/set
-                                TA2CCR1 = PWM_DUTY(val);       // PWM duty cycle
-                                TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA2CCR0 = PWM_PERIOD;           // PWM Period
+					TA2CCTL1 = OUTMOD_7;            // reset/set
+					TA2CCR1 = ccrval;       // PWM duty cycle
+					timera2_ccr_dblbuf[0] = ccrval;
+					SET_PXSEL(bit);
+					TA2CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera2_ccr_dblbuf[0] = ccrval;
+					TA2CCTL0 &= ~CCIFG;
+					TA2CCTL0 |= CCIE;
+				}
                                 break;
  			case T2A2:                              // TimerA2 / CCR2
-                                TA2CCR0 = PWM_PERIOD;           // PWM Period
-                                TA2CCTL2 = OUTMOD_7;            // reset/set
-                                TA2CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TA2CTL = TASSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TA2CCR0 = PWM_PERIOD;           // PWM Period
+					TA2CCTL2 = OUTMOD_7;            // reset/set
+					TA2CCR2 = ccrval;       // PWM duty cycle
+					timera2_ccr_dblbuf[1] = ccrval;
+					SET_PXSEL(bit);
+					TA2CTL = TASSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					timera2_ccr_dblbuf[1] = ccrval;
+					TA2CCTL0 &= ~CCIFG;
+					TA2CCTL0 |= CCIE;
+				}
                                 break;
 #endif
-#if defined(__MSP430_HAS_T0B3__) || defined(__MSP430_HAS_T0B7__) 
+#if defined(__MSP430_HAS_TB3__) || defined(__MSP430_HAS_T0B3__) || defined(__MSP430_HAS_TB7__) || defined(__MSP430_HAS_T0B7__) 
  			//case: T0B0                            // CCR0 used as period register
  			case T0B1:                              // TimerB0 / CCR1
-                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-                                TB0CCTL1 = OUTMOD_7;            // reset/set
-                                TB0CCR1 = PWM_DUTY(val);       // PWM duty cycle
-                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB0CCR0 = PWM_PERIOD;           // PWM Period
+					TB0CCTL1 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB0CCR1 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB0CCTL1 |= CLLD_2; // Future CCR updates will be double-buffered
+					TB0CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB0CCR1 = ccrval;       // PWM duty cycle
+				}
                                 break;
  			case T0B2:                              // TimerB0 / CCR1
-                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-                                TB0CCTL2 = OUTMOD_7;            // reset/set
-                                TB0CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB0CCR0 = PWM_PERIOD;           // PWM Period
+					TB0CCTL2 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB0CCR2 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB0CCTL2 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB0CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB0CCR2 = ccrval;       // PWM duty cycle
+				}
                                 break;
 #endif
-#if defined(__MSP430_HAS_T0B7__) 
+#if defined(__MSP430_HAS_TB7__) || defined(__MSP430_HAS_T0B7__) 
  			case T0B3:                              // TimerB0 / CCR3
-                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-                                TB0CCTL3 = OUTMOD_7;            // reset/set
-                                TB0CCR3 = PWM_DUTY(val);       // PWM duty cycle
-                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB0CCR0 = PWM_PERIOD;           // PWM Period
+					TB0CCTL3 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB0CCR3 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB0CCTL3 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB0CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB0CCR3 = ccrval;       // PWM duty cycle
+				}
                                 break;
  			case T0B4:                              // TimerB0 / CCR4
-                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-                                TB0CCTL4 = OUTMOD_7;            // reset/set
-                                TB0CCR4 = PWM_DUTY(val);       // PWM duty cycle
-                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB0CCR0 = PWM_PERIOD;           // PWM Period
+					TB0CCTL4 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB0CCR4 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB0CCTL4 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB0CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB0CCR4 = ccrval;       // PWM duty cycle
+				}
                                 break;
  			case T0B5:                              // TimerB0 / CCR5
-                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-                                TB0CCTL5 = OUTMOD_7;            // reset/set
-                                TB0CCR5 = PWM_DUTY(val);       // PWM duty cycle
-                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB0CCR0 = PWM_PERIOD;           // PWM Period
+					TB0CCTL5 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB0CCR5 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB0CCTL5 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB0CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB0CCR5 = ccrval;       // PWM duty cycle
+				}
                                 break;
  			case T0B6:                              // TimerB0 / CCR6
-                                TB0CCR0 = PWM_PERIOD;           // PWM Period
-                                TB0CCTL6 = OUTMOD_7;            // reset/set
-                                TB0CCR6 = PWM_DUTY(val);       // PWM duty cycle
-                                TB0CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB0CCR0 = PWM_PERIOD;           // PWM Period
+					TB0CCTL6 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB0CCR6 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB0CCTL6 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB0CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB0CCR6 = ccrval;       // PWM duty cycle
+				}
                                 break;
 #endif
 #if defined(__MSP430_HAS_T1B3__) 
  			//case: T1B0                            // CCR0 used as period register
  			case T1B1:                              // TimerB0 / CCR1
-                                TB1CCR0 = PWM_PERIOD;           // PWM Period
-                                TB1CCTL1 = OUTMOD_7;            // reset/set
-                                TB1CCR1 = PWM_DUTY(val);       // PWM duty cycle
-                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB1CCR0 = PWM_PERIOD;           // PWM Period
+					TB1CCTL1 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB1CCR1 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB1CCTL1 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB1CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB1CCR1 = ccrval;       // PWM duty cycle
+				}
                                 break;
  			case T1B2:                              // TimerB0 / CCR1
-                                TB1CCR0 = PWM_PERIOD;           // PWM Period
-                                TB1CCTL2 = OUTMOD_7;            // reset/set
-                                TB1CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TB1CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB1CCR0 = PWM_PERIOD;           // PWM Period
+					TB1CCTL2 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB1CCR2 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB1CCTL2 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB1CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB1CCR2 = ccrval;       // PWM duty cycle
+				}
                                 break;
 #endif
 #if defined(__MSP430_HAS_T2B3__) 
  			//case: T1B0                            // CCR0 used as period register
  			case T2B1:                              // TimerB0 / CCR1
-                                TB2CCR0 = PWM_PERIOD;           // PWM Period
-                                TB2CCTL1 = OUTMOD_7;            // reset/set
-                                TB2CCR1 = PWM_DUTY(val);       // PWM duty cycle
-                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB2CCR0 = PWM_PERIOD;           // PWM Period
+					TB2CCTL1 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB2CCR1 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB2CCTL1 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB2CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB2CCR1 = ccrval;       // PWM duty cycle
+				}
                                 break;
  			case T2B2:                              // TimerB0 / CCR1
-                                TB2CCR0 = PWM_PERIOD;           // PWM Period
-                                TB2CCTL2 = OUTMOD_7;            // reset/set
-                                TB2CCR2 = PWM_DUTY(val);       // PWM duty cycle
-                                TB2CTL = TBSSEL_2 + MC_1+ analog_div;       // SMCLK, up mode
+				if (!is_already_pwm) {
+					TB2CCR0 = PWM_PERIOD;           // PWM Period
+					TB2CCTL2 = OUTMOD_7 | CLLD_0;   // reset/set, CCR updates immediately on initial setting
+					TB2CCR2 = ccrval;       // PWM duty cycle
+					SET_PXSEL(bit);
+					TB2CCTL2 |= CLLD_1; // Future CCR updates will be double-buffered
+					TB2CTL = TBSSEL_2 | MC_1 | analog_div;       // SMCLK, up mode
+				} else {
+					TB2CCR2 = ccrval;       // PWM duty cycle
+				}
                                 break;
 #endif
  
                         case NOT_ON_TIMER:                      // not on a timer output pin
 			default:                                // or TxA0 pin
+				pinMode(pin, OUTPUT);
 				if (val <= (analog_res >> 1)) {
 					digitalWrite(pin, LOW); // 
 				} else {
@@ -276,6 +500,7 @@ void analogWrite(uint8_t pin, int val)
                 }
         }
 }
+
 
 uint16_t analogRead(uint8_t pin)
 {

@@ -165,7 +165,7 @@ static const uint8_t PUSH1 = 41;
 static const uint8_t PUSH2 = 42;
 static const uint8_t RED_LED = 43;
 static const uint8_t GREEN_LED = 44;
-static const uint8_t TEMPSENSOR = 128 + 10;
+static const uint8_t TEMPSENSOR = 10;
 
 #ifdef ARDUINO_MAIN
 
@@ -492,5 +492,37 @@ const uint32_t digital_pin_to_analog_in[] = {
         NOT_ON_ADC,		/*  39 - P2.4 */
         NOT_ON_ADC      /*  40 - P2.5 */
 };
+
+/* MSP430's with Port Mappers (F5xxx series, etc) need the correct Port Mapping ID for their timers. */
+const uint8_t pmap_timer_ids[] = {
+   0,	// T0A0
+   0,	// T0A1
+   0,	// T0A2
+   0,	// T0A3
+   0,	// T0A4
+   0,	// T1A0
+   0,	// T1A1
+   0,	// T1A2
+   0,	// T1A3
+   0,	// T1A4
+   0,	// T1A5
+   0,	// T2A0
+   0,	// T2A1
+   0,	// T2A2
+   4,	// T0B0
+   5,	// T0B1
+   6,	// T0B2
+   7,	// T0B3
+   8,	// T0B4
+   9,	// T0B5
+   10,	// T0B6
+   0,	// T1B0
+   0,	// T1B1
+   0,	// T1B2
+   0,	// T2B0
+   0,	// T2B1
+   0,	// T2B2
+};
+
 #endif // #ifdef ARDUINO_MAIN
 #endif // #ifndef Pins_Energia_h
