@@ -20,9 +20,11 @@
 #ifndef WiFi_h
 #define WiFi_h
 
+#include <Energia.h>
 #include "IPAddress.h"
-#include "WiFiClient.h"
-#include "WiFiServer.h"
+
+//!!GET THE CORRECT VALUE!!JUST A PLACEHOLDER
+#define MAX_SOCK_NUM 4
 
 class WiFiClass
 {
