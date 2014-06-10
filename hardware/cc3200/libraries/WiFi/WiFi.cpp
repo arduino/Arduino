@@ -96,3 +96,89 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
 {
     
 }
+
+void WifiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
+{
+    
+}
+
+void WiFiClass::setDNS(IPAddress dns_server1)
+{
+
+}
+
+void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
+{
+    
+}
+
+int WiFiClass::disconnect(void)
+{
+    
+}
+
+uint8_t* WiFiClass::macAddress(uint8_t* mac)
+{
+    
+}
+
+IPAddress WiFiClass::subnetMask()
+{
+    
+}
+
+char* WiFiClass::gatewayIP()
+{
+    
+}
+
+char* WiFiClass::SSID()
+{
+    
+}
+
+uint8_t* WiFiClass::BSSID(uint8_t* bssid)
+{
+    
+}
+
+int32_t WiFiClass::RSSI()
+{
+    
+}
+
+uint8_t WiFiClass::encyptionType()
+{
+    
+}
+
+int8_t WiFiClass::scanNetworks()
+{
+    
+}
+
+char* WiFiClass::SSID(uint8_t networkItem)
+{
+    
+}
+
+uint8_t encryptionType(uint8_t networkItem)
+{
+    
+}
+
+int32_t RSSI(uint8_t networkItem)
+{
+    
+}
+
+uint8_t WiFiClass::status()
+{
+    
+}
+
+int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
+{
+    
+}
+
