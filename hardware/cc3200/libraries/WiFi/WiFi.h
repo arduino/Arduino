@@ -45,7 +45,7 @@ public:
     /*
      * Get firmware version
      */
-    static char* firmwareVersion();
+    char* firmwareVersion();
     
     
     /* Start Wifi connection for OPEN networks
@@ -62,7 +62,7 @@ public:
      * param key_idx: The key index to set. Valid values are 0-3.
      * param key: Key input buffer.
      */
-    int begin(char* ssid, uint8_t key_idx, const char* key);
+    int begin(char* ssid, uint8_t key_idx, char* key);
     
     /* Start Wifi connection with passphrase
      * the most secure supported mode will be automatically selected
@@ -71,7 +71,7 @@ public:
      * param passphrase: Passphrase. Valid characters in a passphrase
      *        must be between ASCII 32-126 (decimal).
      */
-    int begin(char* ssid, const char *passphrase);
+    int begin(char* ssid, char *passphrase);
     
     /* Change Ip configuration settings disabling the dhcp client
      *

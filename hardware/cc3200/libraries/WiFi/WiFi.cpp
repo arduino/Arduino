@@ -1,6 +1,6 @@
 /*
  WiFi.cpp - Adaptation of Arduino WiFi library for Energia and CC3200 launchpad
- Modified: Noah Luskey
+ Author: Noah Luskey
  
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 
 #include <Energia.h>
 #include "WiFi.h"
+#include "wl_definitions.h"
 
 
 extern "C" {
@@ -37,7 +38,7 @@ WiFiClass::WiFiClass()
 void WiFiClass::init()
 {
     //
-    //start the SimpleLink device
+    //start the SimpleLink driver (no callback)
     //
     sl_Start(NULL, NULL, NULL);
     
@@ -52,7 +53,7 @@ uint8_t WiFiClass::getSocket()
     
 }
 
-static char* WiFiClass::firmwareVersion()
+char* WiFiClass::firmwareVersion()
 {
     
 }
@@ -63,26 +64,89 @@ int WiFiClass::begin(char* ssid)
     //Get name length and set security type to open
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t* pSecParams = SL_SEC_TYPE_OPEN;
+    SlSecParams_t* pSecParams;
+    pSecParams->Type = SL_SEC_TYPE_OPEN;
     
     //
     //Connect to the access point (non enterprise, so 5th argument is NULL);
+    //also mac address parameter set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, pMacAddr, pSecParams, NULL);
-    return iRet;
-}
-
-int WiFiClass::begin(char* ssid, uint8_t key_idx, const char* key)
-{
+    int iRet = sl_WlanConnect(ssid, NameLen, NULL, pSecParams, NULL);
+    
+    //
+    //return appropriate status as described by arduino wifi library
+    //simplelink returns 0 on success, arduino returns 0 on failure.
+    //
+    if (iRet == 0) {
+        return WL_CONNECTED;
+    } else {
+        return WL_IDLE_STATUS;
+    }
     
 }
 
-int WiFiClass::begin(char* ssid, const char *passphrase)
+
+//!!Ignore key index!!??
+int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
 {
+    //
+    //get name length and set security type to WEP
+    //add key and keylength to security parameters
+    //
+    int NameLen = strlen(ssid);
+    SlSecParams_t* pSecParams;
+    pSecParams->Type = SL_SEC_TYPE_WEP;
+    pSecParams->Key = key;
+    pSecParams->KeyLen = strlen(key);
+    
+    //
+    //Connect to the access point (non enterprise, so 5th argument is NULL);
+    //also mac address parameter set as null (3rd argument)
+    //
+    int iRet = sl_WlanConnect(ssid, NameLen, NULL, pSecParams, NULL);
+    
+    //
+    //return appropriate status as described by arduino wifi library
+    //simplelink returns 0 on success, arduino returns 0 on failure.
+    //
+    if (iRet == 0) {
+        return WL_CONNECTED;
+    } else {
+        return WL_IDLE_STATUS;
+    }
     
 }
 
-void WiFiClass::WiFiconfig(IPAddress local_ip)
+int WiFiClass::begin(char* ssid, char *passphrase)
+{
+    //
+    //get name length and set security type to WPA
+    //add passphrase and keylength to security parameters
+    //
+    int NameLen = strlen(ssid);
+    SlSecParams_t* pSecParams;
+    pSecParams->Type = SL_SEC_TYPE_WPA;
+    pSecParams->Key = passphrase;
+    pSecParams->KeyLen = strlen(passphrase);
+    
+    //
+    //connect to the access point (non enterprise, so 5th argument is NULL)
+    //also mac address parameters set as null (3rd argument)
+    //
+    int iRet = sl_WlanConnect(ssid, NameLen, NULL, pSecParams, NULL);
+    
+    //
+    //return appropriate status as described by arduino wifi library
+    //simplelink returns 0 on success, arduino returns 0 on failure.
+    //
+    if (iRet == 0) {
+        return WL_CONNECTED;
+    } else {
+        return WL_IDLE_STATUS;
+    }
+}
+
+void WiFiClass::config(IPAddress local_ip)
 {
     
 }
@@ -97,7 +161,7 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     
 }
 
-void WifiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
+void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
 {
     
 }
@@ -127,7 +191,7 @@ IPAddress WiFiClass::subnetMask()
     
 }
 
-char* WiFiClass::gatewayIP()
+IPAddress WiFiClass::gatewayIP()
 {
     
 }
@@ -147,7 +211,7 @@ int32_t WiFiClass::RSSI()
     
 }
 
-uint8_t WiFiClass::encyptionType()
+uint8_t WiFiClass::encryptionType()
 {
     
 }
@@ -162,12 +226,12 @@ char* WiFiClass::SSID(uint8_t networkItem)
     
 }
 
-uint8_t encryptionType(uint8_t networkItem)
+uint8_t WiFiClass::encryptionType(uint8_t networkItem)
 {
     
 }
 
-int32_t RSSI(uint8_t networkItem)
+int32_t WiFiClass::RSSI(uint8_t networkItem)
 {
     
 }
@@ -181,4 +245,6 @@ int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
 {
     
 }
+
+WiFiClass WiFi;
 
