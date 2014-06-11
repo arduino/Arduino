@@ -1,4 +1,12 @@
 /*
+ TO DO:
+    1) figure out key index for WEP connection, can it be ignored?
+    2) use wlan even callback to determine if wifi has connected
+    3) make sure the ip address octet order is correct in config method
+ */
+
+
+/*
  WiFi.cpp - Adaptation of Arduino WiFi library for Energia and CC3200 launchpad
  Author: Noah Luskey
  
@@ -26,6 +34,7 @@ extern "C" {
     #include "SimpleLink.h"
     #include <string.h>
     #include "wlan.h"
+    #include "netcfg.h"
 }
 
 
@@ -86,7 +95,7 @@ int WiFiClass::begin(char* ssid)
 }
 
 
-//!!Ignore key index!!??
+//!!Ignore key index!!//
 int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
 {
     //
@@ -148,32 +157,105 @@ int WiFiClass::begin(char* ssid, char *passphrase)
 
 void WiFiClass::config(IPAddress local_ip)
 {
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
+    //
+    //Assign new ip address to current config
+    //and use netcfgset to set the new configuration in memory
+    //
+    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
 }
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
 {
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
+    
+    //
+    //Assign new ip address and new dns server to current config
+    //and use netcfgset to set the new configuration in memory
+    //
+    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
+    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server[0], dns_server[1], dns_server[2], dns_server[3]);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway)
 {
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
+    
+    //
+    //Assign new ip address and new dns server to current config
+    //and use netcfgset to set the new configuration in memory
+    //
+    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
+    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server[0], dns_server[1], dns_server[2], dns_server[3]);
+    config.ipV4Gateway = (uint32_t)SL_IPV4_VAL(gateway[0], gateway[1], gateway[2], gateway[3]);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
 {
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
+    
+    //
+    //Assign new ip address and new dns server to current config
+    //and use netcfgset to set the new configuration in memory
+    //
+    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
+    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server[0], dns_server[1], dns_server[2], dns_server[3]);
+    config.ipV4Gateway = (uint32_t)SL_IPV4_VAL(gateway[0], gateway[1], gateway[2], gateway[3]);
+    config.ipV4Mask = (uint32_t)SL_IPV4_VAL(subnet[0], subnet[1], subnet[2], subnet[3]);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
 
 void WiFiClass::setDNS(IPAddress dns_server1)
 {
-
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
+    
+    //
+    //Assign new ip address and new dns server to current config
+    //and use netcfgset to set the new configuration in memory
+    //
+    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server1[0], dns_server1[1], dns_server1[2], dns_server1[3]);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
 }
 
+//!!Not supported. Only set the dns server using the first address!!//
 void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 {
-    
+    //
+    //because only 1 dns server is supported, use the previous set dns function
+    //
+    WiFiClass::setDNS(dns_server1);
 }
 
 int WiFiClass::disconnect(void)
