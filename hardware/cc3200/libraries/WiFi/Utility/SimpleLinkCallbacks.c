@@ -20,6 +20,7 @@
 
 
 #include "simplelink.h"
+#include "WiFi.h"
 
 
 

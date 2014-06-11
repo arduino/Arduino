@@ -52,7 +52,7 @@ void WiFiClass::init()
     sl_Start(NULL, NULL, NULL);
     
     //
-    //Stop smartconfig (if for some reason it's running
+    //Stop smartconfig (if for some reason it's already running)
     //
     sl_WlanSmartConfigStop();
 }
