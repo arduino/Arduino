@@ -5,6 +5,8 @@
 #include "driverlib/interrupt.h"
 #include "driverlib/systick.h"
 #include <driverlib/utils.h>
+#include "inc/hw_hib1p2.h"
+#include "inc/hw_hib3p3.h"
 
 extern void (* const g_pfnVectors[])(void);
 extern void setup1();
@@ -13,6 +15,7 @@ extern void foo();
 
 void MCUInit(void)
 {
+
     unsigned long ulRegVal;
 
     //
@@ -66,6 +69,21 @@ void MCUInit(void)
         HWREG(0x4402E184) |= 0x1;
     }
 
+    //
+    // Enable uDMA
+    //
+    PRCMPeripheralClkEnable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+
+    //
+    // Reset uDMA
+    //
+    PRCMPeripheralReset(PRCM_UDMA);
+
+    //
+    // Disable uDMA
+    //
+    PRCMPeripheralClkDisable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+
 }
 
 int main(void)
@@ -77,12 +95,12 @@ int main(void)
 	MAP_PRCMPeripheralClkEnable(PRCM_GPIOA2, PRCM_RUN_MODE_CLK);
 	MAP_PRCMPeripheralClkEnable(PRCM_GPIOA3, PRCM_RUN_MODE_CLK);
 
+	MAP_IntMasterEnable();
 	MCUInit();
 	MAP_SysTickIntEnable();
 	MAP_SysTickPeriodSet(F_CPU / 1000);
 	MAP_SysTickEnable();
 
-	MAP_IntMasterEnable();
 
 	setup();
 
