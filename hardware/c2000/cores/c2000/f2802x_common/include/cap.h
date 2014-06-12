@@ -13,8 +13,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -447,6 +447,18 @@ inline void CAP_setApwmPeriod(CAP_Handle capHandle, const uint32_t period)
     
     return;
 } // end of CAP_setApwmPeriod() function
+
+//! \brief     Sets the APWM shadow period
+//! \param[in] capHandle  The capture (CAP) object handle
+//! \param[in] shadow period  The APWM shadow period
+inline void CAP_setApwmShadowPeriod(CAP_Handle capHandle, const uint32_t shadwoPeriod)
+{
+    CAP_Obj *cap = (CAP_Obj *)capHandle;
+
+    cap->CAP3 = shadwoPeriod;
+
+    return;
+} // end of CAP_setApwmShadowPeriod() function
 
 //! \brief     Sets the APWM compare value
 //! \param[in] capHandle  The capture (CAP) object handle

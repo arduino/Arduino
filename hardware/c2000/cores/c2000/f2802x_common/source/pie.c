@@ -10,8 +10,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -383,14 +383,14 @@ void PIE_setDefaultIntVectorTable(PIE_Handle pieHandle)
 void PIE_setDebugIntVectorTable(PIE_Handle pieHandle)
 {
     PIE_Obj *pie = (PIE_Obj *)pieHandle;
-    intVec_t *dest = (intVec_t *)&(pie->INT1);
+    intVec_t *dest = (intVec_t *)&(pie->Reset);
     intVec_t *src = (intVec_t *)PIE_tableDebugInit;
     uint16_t regCnt;
     
     ENABLE_PROTECTED_REGISTER_WRITE_MODE;
 
     // initialize the table to PIE_illegalIsr() address
-    for(regCnt=0;regCnt<120;regCnt++)
+    for(regCnt=0;regCnt<125;regCnt++)
     {
       *dest++ = *src++;
     }

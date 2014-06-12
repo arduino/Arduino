@@ -5,7 +5,7 @@
 //
 //! \file   f2802x_common/include/i2c.h
 //!
-//! \brief  Contains public interface to various functions related to the
+//! \brief  Contains public interface to various functions related to the 
 //!         inter-integrated circuit (I2C) object
 //
 //  Group:          C2000
@@ -13,8 +13,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 //*****************************************************************************
@@ -39,99 +39,6 @@ extern "C"
 // Defines for the API.
 //*****************************************************************************
 
-// Error Messages
-#define I2C_ERROR               0xFFFF
-#define I2C_ARB_LOST_ERROR      0x0001
-#define I2C_NACK_ERROR          0x0002
-#define I2C_BUS_BUSY_ERROR      0x1000
-#define I2C_STP_NOT_READY_ERROR 0x5555
-#define I2C_NO_FLAGS            0xAAAA
-#define I2C_SUCCESS             0x0000
-
-// Clear Status Flags
-#define I2C_CLR_AL_BIT          0x0001
-#define I2C_CLR_NACK_BIT        0x0002
-#define I2C_CLR_ARDY_BIT        0x0004
-#define I2C_CLR_RRDY_BIT        0x0008
-#define I2C_CLR_SCD_BIT         0x0020
-
-// Interrupt Source Messages
-#define I2C_NO_ISRC             0x0000
-#define I2C_ARB_ISRC            0x0001
-#define I2C_NACK_ISRC           0x0002
-#define I2C_ARDY_ISRC           0x0003
-#define I2C_RX_ISRC             0x0004
-#define I2C_TX_ISRC             0x0005
-#define I2C_SCD_ISRC            0x0006
-#define I2C_AAS_ISRC            0x0007
-
-// I2CMSG structure defines
-#define I2C_NO_STOP  0
-#define I2C_YES_STOP 1
-#define I2C_RECEIVE  0
-#define I2C_TRANSMIT 1
-//#define I2C_MAX_BUFFER_SIZE 16
-
-// I2C Slave State defines
-#define I2C_NOTSLAVE      0
-#define I2C_ADDR_AS_SLAVE 1
-#define I2C_ST_MSG_READY  2
-
-// I2C Slave Receiver messages defines
-#define I2C_SND_MSG1 1
-#define I2C_SND_MSG2 2
-
-// I2C State defines
-#define I2C_IDLE               0
-#define I2C_SLAVE_RECEIVER     1
-#define I2C_SLAVE_TRANSMITTER  2
-#define I2C_MASTER_RECEIVER    3
-#define I2C_MASTER_TRANSMITTER 4
-
-// I2C  Message Commands for I2CMSG struct
-#define I2C_MSGSTAT_INACTIVE          0x0000
-#define I2C_MSGSTAT_SEND_WITHSTOP     0x0010
-#define I2C_MSGSTAT_WRITE_BUSY        0x0011
-#define I2C_MSGSTAT_SEND_NOSTOP       0x0020
-#define I2C_MSGSTAT_SEND_NOSTOP_BUSY  0x0021
-#define I2C_MSGSTAT_RESTART           0x0022
-#define I2C_MSGSTAT_READ_BUSY         0x0023
-
-// Generic defines
-#define I2C_TRUE  1
-#define I2C_FALSE 0
-#define I2C_YES   1
-#define I2C_NO    0
-#define I2C_DUMMY_BYTE 0
-
-
-//--------------------------------------------
-// Structures
-//--------------------------------------------
-
-// I2C Message Structure
-typedef struct _I2CMSG_
-{
-    uint16_t MsgStatus;             // Word stating what state msg is in:
-                                  //   I2C_MSGCMD_INACTIVE = do not send msg
-                                  //   I2C_MSGCMD_BUSY = msg start has been sent,
-                                  //                     awaiting stop
-                                  //   I2C_MSGCMD_SEND_WITHSTOP = command to send
-                                  //       master trans msg complete with a stop bit
-                                  //   I2C_MSGCMD_SEND_NOSTOP = command to send
-                                  //       master trans msg without the stop bit
-                                  //   I2C_MSGCMD_RESTART = command to send a restart
-                                  //       as a master receiver with a stop bit
-    uint16_t SlaveAddress;          // I2C address of slave msg is intended for
-    uint16_t NumOfBytes;            // Num of valid bytes in (or to be put in MsgBuffer)
-    uint16_t MemoryHighAddr;        // EEPROM address of data associated with msg (high byte)
-    uint16_t MemoryLowAddr;         // EEPROM address of data associated with msg (low byte)
-    uint16_t MsgBuffer[I2C_MAX_BUFFER_SIZE];    // Array holding msg data - max that
-                                              // MAX_BUFFER_SIZE can be is 16 due to
-                                              // the FIFO's
-} I2CMSG;
-
-
 //! \brief Defines the base address of the Inter-Integrated Circuit (I2C) A registers
 //!
 #define I2CA_BASE_ADDR              (0x00007900)
@@ -139,7 +46,7 @@ typedef struct _I2CMSG_
 
 //! \brief Defines the location of the NACKMOD bit in the I2CMDR register
 //!
-#define I2C_I2CMDR_NAKMOD_BIT       (1u << 15)
+#define I2C_I2CMDR_NAKMOD_BIT       (1 << 15)
 
 //! \brief Defines the location of the FREE bit in the I2CMDR register
 //!
@@ -355,15 +262,33 @@ typedef enum
 
 //! \brief Enumeration to define the I2C network mode control
 //!
-typedef enum 
+typedef enum
 {
     I2C_Mode_Slave = (0 << 10),      //!< Denotes slave mode
     I2C_Mode_Master = (1 << 10)      //!< Denotes master mode
 } I2C_Mode_e;
 
+//! \brief Enumeration to define the I2C network mode control
+//!
+typedef enum
+{
+    I2C_Control_Stop           = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_STP_BIT, //!< Assert Stop Condition
+    I2C_Control_Single_TX      = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_TRX_BIT 
+                             | I2C_I2CMDR_STT_BIT | I2C_I2CMDR_STP_BIT, //!< Single TX Transaction
+    I2C_Control_Single_RX      = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_STT_BIT 
+                             | I2C_I2CMDR_STP_BIT,                      //!< Single RX Transaction
+    I2C_Control_Burst_TX_Start = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_STT_BIT 
+                             | I2C_I2CMDR_TRX_BIT,                      //!< Start Burst TX Transaction
+    I2C_Control_Burst_TX_Stop  = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_STP_BIT 
+                             | I2C_I2CMDR_TRX_BIT,                      //!< End Burst TX Transaction
+    I2C_Control_Burst_RX_Start = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_STT_BIT, //!< Start Burst RX Transaction
+    I2C_Control_Burst_RX_Stop  = I2C_I2CMDR_MST_BIT | I2C_I2CMDR_STP_BIT  //!< End Burst RX Transaction
+} I2C_Control_e;
+            
+
 //! \brief Enumeration to define the I2C Interrupt Enables
 //!
-typedef enum 
+typedef enum
 {
     I2C_IntEn_Arb_Lost = (1 << 0),       //!< Arbitration Lost
     I2C_IntEn_NACK = (1 << 1),           //!< No-Acknowledge Detected
@@ -376,41 +301,41 @@ typedef enum
 
 //! \brief Enumeration to define the I2C Interrupt Sources
 //!
-typedef enum 
+typedef enum
 {
     I2C_IntSrc_None = (0 << 0),           //!< No Interrupt
-    I2C_IntSrc_Arb_Lost = (1 << 0),       //!< AL      - Arbitration Lost
-    I2C_IntSrc_NACK = (2 << 0),           //!< NACK    - No-Acknowledge Detected
-    I2C_IntSrc_Reg_Rdy = (3 << 0),        //!< ARDY    - Register Ready for Access
-    I2C_IntSrc_Rx_Rdy = (4 << 0),         //!< RRDY    - Recieve Data Ready
-    I2C_IntSrc_Tx_Rdy = (5 << 0),         //!< XRDY    - Transmit Data Ready
-    I2C_IntSrc_Stop = (6 << 0),           //!< SCD     - Stop Condition Detected
-    I2C_IntSrc_Slave_Addr = (7 << 0)      //!< AAS     - Addressed as Slave
+    I2C_IntSrc_Arb_Lost = (1 << 0),       //!< Arbitration Lost
+    I2C_IntSrc_NACK = (2 << 0),           //!< No-Acknowledge Detected
+    I2C_IntSrc_Reg_Rdy = (3 << 0),        //!< Register Ready for Access
+    I2C_IntSrc_Rx_Rdy = (4 << 0),         //!< Recieve Data Ready
+    I2C_IntSrc_Tx_Rdy = (5 << 0),         //!< Transmit Data Ready
+    I2C_IntSrc_Stop = (6 << 0),           //!< Stop Condition Detected
+    I2C_IntSrc_Slave_Addr = (7 << 0)      //!< Addressed as Slave
 } I2C_IntSource_e;
 
 //! \brief Enumeration to define the I2C Status
 //!
-typedef enum 
+typedef enum
 {
     I2C_Status_None = (0 << 0),           //!< No Interrupt
-    I2C_Status_Arb_Lost = (1 << 0),       //!< AL      - Arbitration Lost
-    I2C_Status_NACK = (1 << 1),           //!< NACK    - No-Acknowledge Detected
-    I2C_Status_Reg_Rdy = (1 << 2),        //!< ARDY    - Register Ready for Access
-    I2C_Status_Rx_Rdy = (1 << 3),         //!< RRDY    - Receive Data Ready
-    I2C_Status_Tx_Rdy = (1 << 4),         //!< XRDY    - Transmit Data Ready
-    I2C_Status_Stop = (1 << 5),           //!< SCD     - Stop Condition Detected
-    I2C_Status_AD0 = (1 << 8),            //!< AD0     - Address 0 Detected
-    I2C_Status_Slave_Addr = (1 << 9),     //!< AAS     - Addressed as Slave
-    I2C_Status_Tx_Empty = (1 << 10),      //!< XSMT    - Transmit Empty
-    I2C_Status_Rx_Full = (1 << 11),       //!< RSFULL  - Receive Shift Register Full
-    I2C_Status_Busy = (1 << 12),          //!< BB      - Bus Busy
-    I2C_Status_NACK_Sent = (1 << 13),     //!< NACKSNT - No Acknowlege Sent
-    I2C_Status_Slave_Dir = (1 << 14)      //!< SDIR    - Slave Direction
+    I2C_Status_Arb_Lost = (1 << 0),       //!< Arbitration Lost
+    I2C_Status_NACK = (1 << 1),           //!< No-Acknowledge Detected
+    I2C_Status_Reg_Rdy = (1 << 2),        //!< Register Ready for Access
+    I2C_Status_Rx_Rdy = (1 << 3),         //!< Recieve Data Ready
+    I2C_Status_Tx_Rdy = (1 << 4),         //!< Transmit Data Ready
+    I2C_Status_Stop = (1 << 5),           //!< Stop Condition Detected
+    I2C_Status_AD0 = (1 << 8),            //!< Address 0 Detected
+    I2C_Status_Slave_Addr = (1 << 9),      //!< Addressed as Slave
+    I2C_Status_Tx_Empty = (1 << 10),      //!< Transmit Empty
+    I2C_Status_Rx_Full = (1 << 11),       //!< Recieve Full
+    I2C_Status_Busy = (1 << 12),          //!< Bus Busy
+    I2C_Status_NACK_Sent = (1 << 13),     //!< No Acknowlege Sent
+    I2C_Status_Slave_Dir = (1 << 14)      //!< Slave Direction
 } I2C_Status_e;
 
 //! \brief Enumeration to define the I2C FIFO level
 //!
-typedef enum 
+typedef enum
 {
     I2C_FifoLevel_Empty = (0 << 0),      //!< Denotes the fifo is empty
     I2C_FifoLevel_1_Word = (1 << 0),     //!< Denotes the fifo contains 1 word
@@ -422,7 +347,7 @@ typedef enum
 
 //! \brief Enumeration to define the I2C FIFO status
 //!
-typedef enum 
+typedef enum
 {
     I2C_FifoStatus_Empty = (0 << 8),      //!< Denotes the fifo is empty
     I2C_FifoStatus_1_Word = (1 << 8),     //!< Denotes the fifo contains 1 word
@@ -432,7 +357,7 @@ typedef enum
 }  I2C_FifoStatus_e;
 
 
-typedef struct _I2C_Obj_ 
+typedef struct _I2C_Obj_
 {
     volatile uint16_t      I2COAR;        //!< I2C Own Address Register
     volatile uint16_t      I2CIER;        //!< I2C Interrupt Enable Register
@@ -447,15 +372,6 @@ typedef struct _I2C_Obj_
     volatile uint16_t      I2CISRC;       //!< I2C Interrupt Source Register
     volatile uint16_t      I2CEMDR;       //!< I2C Extended Mode Register
     volatile uint16_t      I2CPSC;        //!< I2C Pre-Scalar Register
-    volatile uint32_t      I2CD1;         //!< Dummy registers to cover gap to FF regs
-    volatile uint32_t      I2CD2;
-    volatile uint32_t      I2CD3;
-    volatile uint32_t      I2CD4;
-    volatile uint32_t      I2CD5;
-    volatile uint32_t      I2CD6;
-    volatile uint32_t      I2CD7;
-    volatile uint32_t      I2CD8;
-    volatile uint32_t      I2CD9;
     volatile uint16_t      I2CFFTX;       //!< I2C FIFO Transmit Register
     volatile uint16_t      I2CFFRX;       //!< I2C FIFO Recieve Register
 } I2C_Obj;
@@ -465,78 +381,120 @@ typedef struct _I2C_Obj_
 //!
 typedef struct I2C_Obj  *I2C_Handle;
 
+
+//! \brief     Sets up the clocking for the I2C peripheral
+//! \param[in] i2cHandle  The I2C object handle
+//! \param[in] preScalar  The clock pre-scalar
+//! \param[in] bitTimeLow   Clock low time divider
+//! \param[in] bitTimeHigh  Clock high time divider
 void I2C_setupClock(I2C_Handle i2cHandle, const uint16_t preScalar,
-                    const  uint16_t bitTimeLow, const uint16_t bitTimeHigh);
-I2C_Handle I2C_init(void *pMemory, const size_t num_bytes);
-void I2C_setMode(I2C_Handle i2cHandle, unsigned int bitMask);
-void I2C_disable(I2C_Handle i2cHandle);
-void I2C_enable(I2C_Handle i2cHandle);
-void I2C_setMaster(I2C_Handle i2cHandle);
-void I2C_setSlave(I2C_Handle i2cHandle);
-void I2C_setTransmit(I2C_Handle i2cHandle);
-void I2C_setReceive(I2C_Handle i2cHandle);
-void I2C_setStop(I2C_Handle i2cHandle);
-void I2C_clearStop(I2C_Handle i2cHandle);
-void I2C_setStart(I2C_Handle i2cHandle);
-void I2C_clearStart(I2C_Handle i2cHandle);
-void I2C_enableInt(I2C_Handle i2cHandle, const I2C_IntEnable_e interrupts);
-void I2C_enableFifo(I2C_Handle i2cHandle);
-void I2C_clearTxFifoInt(I2C_Handle i2cHandle);
-void I2C_clearRxFifoInt(I2C_Handle i2cHandle);
-void I2C_disableFifo(I2C_Handle i2cHandle);
-void I2C_resetTxFifo(I2C_Handle i2cHandle);
-void I2C_resetRxFifo(I2C_Handle i2cHandle);
-void I2C_disableInt(I2C_Handle i2cHandle, const I2C_IntEnable_e interrupts);
-I2C_IntSource_e I2C_getIntSource(I2C_Handle i2cHandle);
-uint16_t I2C_getStatus(I2C_Handle i2cHandle);
-void I2C_clearArbLost(I2C_Handle i2cHandle);
-void I2C_clearNACK(I2C_Handle i2cHandle);
-void I2C_clearAccessReady(I2C_Handle i2cHandle);
-void I2C_clearReceiveDataReady(I2C_Handle i2cHandle);
-void I2C_clearStopCondDetected(I2C_Handle i2cHandle);
-void I2C_setSlaveAddress(I2C_Handle i2cHandle, const uint16_t slaveAddress);
-void I2C_setMasterSlaveAddr(I2C_Handle i2cHandle, const uint16_t slaveAddress);
-bool_t I2C_isMasterBusy(I2C_Handle i2cHandle);
-void I2C_putData(I2C_Handle i2cHandle, uint16_t data);
-uint16_t I2C_getData(I2C_Handle i2cHandle);
-void I2C_setRxFifoIntLevel(I2C_Handle i2cHandle, const I2C_FifoLevel_e fifoLevel);
-void I2C_setTxFifoIntLevel(I2C_Handle i2cHandle, const I2C_FifoLevel_e fifoLevel);
-void I2C_disableTxFifoInt(I2C_Handle i2cHandle);
-void I2C_disableRxFifoInt(I2C_Handle i2cHandle);
-void I2C_enableTxFifoInt(I2C_Handle i2cHandle);
-void I2C_enableRxFifoInt(I2C_Handle i2cHandle);
-void I2C_setCharLength(I2C_Handle i2cHandle, const I2C_BitCount_e charLength);
-void I2C_setNackmod(I2C_Handle i2cHandle);
-void I2C_clearNackmod(I2C_Handle i2cHandle);
-void I2C_setDebugFree(I2C_Handle i2cHandle);
-void I2C_clearDebugFree(I2C_Handle i2cHandle);
-void I2C_set7BitAddress(I2C_Handle i2cHandle);
-void I2C_set10BitAddress(I2C_Handle i2cHandle);
-void I2C_setFreeRun(I2C_Handle i2cHandle);
-void I2C_setRptMode(I2C_Handle i2cHandle);
-void I2C_clearRptMode(I2C_Handle i2cHandle);
-void I2C_setDigitalLoopback(I2C_Handle i2cHandle);
-void I2C_clearDigitalLoopback(I2C_Handle i2cHandle);
-void I2C_setExtendedStart(I2C_Handle i2cHandle);
-void I2C_setNormalStart(I2C_Handle i2cHandle);
-void I2C_setFreeDataFormat(I2C_Handle i2cHandle);
-void I2C_clearFreeDataFormat(I2C_Handle i2cHandle);
-void I2C_setBitCount(I2C_Handle i2cHandle, int bcount);
-void I2C_setDataCount(I2C_Handle i2cHandle, int dcount);
-I2C_FifoStatus_e I2C_getTxFifoStatus(I2C_Handle i2cHandle);
-I2C_FifoStatus_e I2C_getRxFifoStatus(I2C_Handle i2cHandle);
-int I2C_getRxFifoInt(I2C_Handle i2cHandle);
-int I2C_getBusBusy(I2C_Handle i2cHandle);
-int I2C_getRxReady(I2C_Handle i2cHandle);
-int I2C_getStopCondition(I2C_Handle i2cHandle);
-int I2C_getStopCondDetected(I2C_Handle i2cHandle);
-void I2C_clearModuleReset(I2C_Handle i2cHandle);
-void I2C_setModuleReset(I2C_Handle i2cHandle);
+        const  uint16_t bitTimeLow, const uint16_t bitTimeHigh);
+
+////*****************************************************************************
+//// Interrupt defines.
+////*****************************************************************************
+//#define I2C_INT_MASTER                             0x00000001
+//#define I2C_INT_SLAVE                              0x00000002
+//
+////*****************************************************************************
+//// I2C Master commands.
+////*****************************************************************************
+//#define I2C_MASTER_CMD_SINGLE_SEND                 0x00000007
+//#define I2C_MASTER_CMD_SINGLE_RECEIVE              0x00000007
+//#define I2C_MASTER_CMD_BURST_SEND_START            0x00000003
+//#define I2C_MASTER_CMD_BURST_SEND_CONT             0x00000001
+//#define I2C_MASTER_CMD_BURST_SEND_FINISH           0x00000005
+//#define I2C_MASTER_CMD_BURST_SEND_ERROR_STOP       0x00000004
+//#define I2C_MASTER_CMD_BURST_RECEIVE_START         0x0000000b
+//#define I2C_MASTER_CMD_BURST_RECEIVE_CONT          0x00000009
+//#define I2C_MASTER_CMD_BURST_RECEIVE_FINISH        0x00000005
+//#define I2C_MASTER_CMD_BURST_RECEIVE_ERROR_STOP    0x00000004
+//
+////*****************************************************************************
+//// I2C Master error status.
+////*****************************************************************************
+//#define I2C_MASTER_ERR_NONE                        0
+//#define I2C_MASTER_ERR_ADDR_ACK                    0x00000004
+//#define I2C_MASTER_ERR_DATA_ACK                    0x00000008
+//#define I2C_MASTER_ERR_ARB_LOST                    0x00000010
+//
+////*****************************************************************************
+//// I2C Slave action requests
+////*****************************************************************************
+//#define I2C_SLAVE_ACT_NONE                         0
+//#define I2C_SLAVE_ACT_RREQ                         0x00000001   // Master has
+//                                                                // sent data
+//#define I2C_SLAVE_ACT_TREQ                         0x00000002   // Master has
+//                                                                // requested
+//                                                                // data
+//#define I2C_SLAVE_ACT_RREQ_FBR                     0x00000005   // Master has
+//                                                                // sent first
+//                                                                // byte
+//
+////*****************************************************************************
+//// Miscellaneous I2C driver definitions.
+////*****************************************************************************
+//#define I2C_MASTER_MAX_RETRIES                     1000         // Number of
+//                                                                // retries
+//
+//
+////*****************************************************************************
+//// I2C Slave interrupts.
+////*****************************************************************************
+//#define I2C_SLAVE_INT_STOP                         0x00000004   // Stop
+//                                                                // Condition
+//                                                                // Interrupt.
+//#define I2C_SLAVE_INT_START                        0x00000002   // Start
+//                                                                // Condition
+//                                                                // Interrupt.
+//#define I2C_SLAVE_INT_DATA                         0x00000001   // Data
+//                                                                // Interrupt.
+
+
+//*****************************************************************************
+// Prototypes for the APIs.
+//*****************************************************************************
+//extern void I2CIntRegister(unsigned long ulBase, void(fnHandler) (void));
+//extern void I2CIntUnregister(unsigned long ulBase);
+//extern tBoolean I2CMasterBusBusy(unsigned long ulBase);
+//extern tBoolean I2CMasterBusy(unsigned long ulBase);
+//extern void I2CMasterControl(unsigned long ulBase, unsigned long ulCmd);
+//extern unsigned long I2CMasterDataGet(unsigned long ulBase);
+//extern void I2CMasterDataPut(unsigned long ulBase, unsigned char ucData);
+//extern void I2CMasterDisable(unsigned long ulBase);
+//extern void I2CMasterEnable(unsigned long ulBase);
+//extern unsigned long I2CMasterErr(unsigned long ulBase);
+//extern void I2CMasterInitExpClk(unsigned long ulBase, unsigned long ulI2CClk,
+//                                tBoolean bFast);
+//extern void I2CMasterIntClear(unsigned long ulBase);
+//extern void I2CMasterIntDisable(unsigned long ulBase);
+//extern void I2CMasterIntEnable(unsigned long ulBase);
+//extern tBoolean I2CMasterIntStatus(unsigned long ulBase, tBoolean bMasked);
+//extern void I2CMasterSlaveAddrSet(unsigned long ulBase,
+//                                  unsigned char ucSlaveAddr,
+//                                  tBoolean      bReceive);
+//extern unsigned long I2CSlaveDataGet(unsigned long ulBase);
+//extern void I2CSlaveDataPut(unsigned long ulBase, unsigned char ucData);
+//extern void I2CSlaveDisable(unsigned long ulBase);
+//extern void I2CSlaveEnable(unsigned long ulBase);
+//extern void I2CSlaveInit(unsigned long ulBase, unsigned char ucSlaveAddr);
+//extern void I2CSlaveIntClear(unsigned long ulBase);
+//extern void I2CSlaveIntDisable(unsigned long ulBase);
+//extern void I2CSlaveIntEnable(unsigned long ulBase);
+//extern void I2CSlaveIntClearEx(unsigned long ulBase, unsigned long ulIntFlags);
+//extern void I2CSlaveIntDisableEx(unsigned long ulBase,
+//                                 unsigned long ulIntFlags);
+//extern void I2CSlaveIntEnableEx(unsigned long ulBase, unsigned long ulIntFlags);
+//extern tBoolean I2CSlaveIntStatus(unsigned long ulBase, tBoolean bMasked);
+//extern unsigned long I2CSlaveIntStatusEx(unsigned long ulBase,
+//                                         tBoolean      bMasked);
+//extern unsigned long I2CSlaveStatus(unsigned long ulBase);
 
 //*****************************************************************************
 // Mark the end of the C bindings section for C++ compilers.
 //*****************************************************************************
 #ifdef __cplusplus
+}
 #endif
 
 #endif // __I2C_H__

@@ -150,7 +150,7 @@ void HardwareSerial::begin(unsigned long baud)
 	  	PieCtrlRegs.PIECTRL.bit.ENPIE = 1;   // Enable the PIE block
 	  	PieCtrlRegs.PIEIER9.bit.INTx1=1;     // PIE Group 9, INT1
 	  	PieCtrlRegs.PIEIER9.bit.INTx2=1;     // PIE Group 9, INT2
-	  	IER = 0x100;	// Enable CPU INT
+	  	IER |= 0x100;	// Enable CPU INT
 	  	EINT;
 
 }

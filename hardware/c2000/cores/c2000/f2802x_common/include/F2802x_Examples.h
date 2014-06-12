@@ -7,8 +7,8 @@
 // TITLE:  DSP2802x Device Definitions.
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
 #ifndef DSP2802x_EXAMPLES_H
@@ -125,10 +125,10 @@ extern "C" {
 // Include Example Header Files:
 //
 
-#include "f2802x_common/include/F2802x_GlobalPrototypes.h"         // Prototypes for global functions within the
+#include "f2802x_common/include/f2802x_globalprototypes.h"         // Prototypes for global functions within the
                                               // .c files.
-#include "f2802x_common/include/F2802x_EPwm_defines.h"             // Macros used for PWM examples.
-#include "f2802x_common/include/F2802x_I2c_defines.h"              // Macros used for I2C examples.
+#include "f2802x_common/include/f2802x_epwm_defines.h"             // Macros used for PWM examples.
+#include "f2802x_common/include/f2802x_i2c_defines.h"              // Macros used for I2C examples.
 
 #define PARTNO_28027PT  0xCF
 #define PARTNO_28027DA  0xCE
@@ -147,7 +147,7 @@ extern "C" {
 
 // Include files not used with DSP/BIOS
 #ifndef DSP28_BIOS
-#include "f2802x_common/include/F2802x_DefaultISR.h"
+#include "f2802x_common/include/f2802x_defaultisr.h"
 #endif
 
 // DO NOT MODIFY THIS LINE.
