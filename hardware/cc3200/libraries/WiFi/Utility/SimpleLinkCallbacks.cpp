@@ -39,12 +39,26 @@ extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)
 extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
 {
     switch (pSlWlanEvent->Event) {
+        
+        //
+        //Wlan has connected to a station so get the ssid name and bssid
+        //and store them as static class variables in WiFiClass
+        //
         case SL_WLAN_STA_CONNECTED_EVENT:
             WiFiClass::WiFi_status = WL_CONNECTED;
+            WiFiClass::ssidPointer = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name;
+            WiFiClass::ssidLength = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len;
+            WiFiClass::bssidPointer = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid;
             break;
             
+        //
+        //Wlan has disconnected, so make the SSID null and the bssid null
+        //
         case SL_WLAN_STA_DISCONNECTED_EVENT:
             WiFiClass::WiFi_status = WL_DISCONNECTED;
+            WiFiClass::ssidPointer = NULL;
+            WiFiClass::ssidLength = 0;
+            WiFiClass::bssidPointer = NULL;
             break;
             
         default:

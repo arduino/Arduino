@@ -44,6 +44,14 @@ extern "C" {
 //
 wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 
+//
+//initialize the connected , bssid, SSID to blank and length 0
+//
+unsigned char* WiFiClass::ssidPointer = NULL;
+uint8_t WiFiClass::ssidLength = 0;
+unsigned char* WiFiClass::bssidPointer = NULL;
+
+
 WiFiClass::WiFiClass()
 {
     //simplelink driver initialization
@@ -324,39 +332,36 @@ IPAddress WiFiClass::gatewayIP()
     return ipRet;
 }
 
-//!! I'm pretty sure this is wrong !!//
-//so there's a way to use sl_WlanProfileGet to get profiles//
-//but i don't know how to figure out what profile is currently used//
 char* WiFiClass::SSID()
 {
-    char ssid[32];
-    unsigned short len = 32;
-    unsigned short  config_opt = WLAN_AP_OPT_SSID;
-    sl_WlanGet(SL_WLAN_CFG_AP_ID, &config_opt , &len, (unsigned char*)ssid);
+    //
+    //maximum ssid length is 32, however it will be shorter than this
+    //because the simplelink api handles the name oddly this sets
+    //the Nth character to '\0' to make sure the string handles correctly
+    //
+    
+    unsigned char* ssid = WifiClass::ssidPointer;
+    ssid[WiFiClass::ssidLength] = '\0';
     
     return ssid;
 }
 
-//!! I'm pretty sure this is wrong !!//
-//so there's a way to use sl_WlanProfileGet to get profiles//
-//but i don't know how to figure out what profile is currently used//
 uint8_t* WiFiClass::BSSID(uint8_t* bssid)
 {
+    //
+    //because the bssid 6 char array is maintained by the callback
+    //passing in a 6 char array is unecessary and only kept for
+    //compatability with the arduino library
+    //
+    return WiFiClass::bssidPointer;
     
 }
 
-
-//!! I'm pretty sure this is wrong !!//
-//so there's a way to use sl_WlanProfileGet to get profiles//
-//but i don't know how to figure out what profile is currently used//
 int32_t WiFiClass::RSSI()
 {
     
 }
 
-//!! I'm pretty sure this is wrong !!//
-//so there's a way to use sl_WlanProfileGet to get profiles//
-//but i don't know how to figure out what profile is currently used//
 uint8_t WiFiClass::encryptionType()
 {
     

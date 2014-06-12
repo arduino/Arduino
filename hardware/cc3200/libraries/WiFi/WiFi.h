@@ -37,6 +37,14 @@ public:
     static uint16_t _server_port[MAX_SOCK_NUM];
     static wl_status_t WiFi_status;
     
+    //
+    //Because simplelink doesn't provide an easy way to get the ssid or bssid
+    //these class variables are maintained by the WlanEventHandler callback
+    //
+    static unsigned char *ssidPointer;
+    static uint8_t ssidLength;
+    static unsigned char *bssidPointer;
+    
     WiFiClass();
     
     /*
