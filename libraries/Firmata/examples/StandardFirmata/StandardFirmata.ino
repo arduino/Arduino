@@ -626,7 +626,9 @@ void loop()
       if (IS_PIN_ANALOG(pin) && pinConfig[pin] == ANALOG) {
         analogPin = PIN_TO_ANALOG(pin);
         if (analogInputsToReport & (1 << analogPin)) {
-          Firmata.sendAnalog(analogPin, analogRead(analogPin));
+	  // Modified analogRead(analogPin) => analogRead(pin)
+	  // In Energia, analogRead() reads physical pin not A0,A1,etc.
+          Firmata.sendAnalog(analogPin, analogRead(pin));
         }
       }
     }
