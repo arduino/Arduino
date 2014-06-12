@@ -19,10 +19,11 @@
  */
 
 
-#include "simplelink.h"
+extern "C" {
+    #include "simplelink.h"
+}
+
 #include "WiFi.h"
-
-
 
 #if (defined(sl_GeneralEvtHdlr))
 extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)
@@ -30,9 +31,25 @@ extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)
 }
 #endif
 
+//
+// WLAN Event Handler: Modifies static variable in WiFi
+// to indicate if a connection to an AP is made or not
+//
 #if (defined(sl_WlanEvtHdlr))
 extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
 {
+    switch (pSlWlanEvent->Event) {
+        case SL_WLAN_STA_CONNECTED_EVENT:
+            WiFiClass::WiFi_status = WL_CONNECTED;
+            break;
+            
+        case SL_WLAN_STA_DISCONNECTED_EVENT:
+            WiFiClass::WiFi_status = WL_DISCONNECTED;
+            break;
+            
+        default:
+            break;
+    }
 }
 #endif
 

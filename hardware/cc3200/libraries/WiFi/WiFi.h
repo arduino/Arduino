@@ -22,6 +22,7 @@
 
 #include <Energia.h>
 #include "IPAddress.h"
+#include "Utility/wl_definitions.h"
 
 //!!GET THE CORRECT VALUE!!JUST A PLACEHOLDER!!//
 #define MAX_SOCK_NUM 4
@@ -34,7 +35,7 @@ private:
 public:
     static int16_t 	_state[MAX_SOCK_NUM];
     static uint16_t _server_port[MAX_SOCK_NUM];
-    static bool _server_port
+    static wl_status_t WiFi_status;
     
     WiFiClass();
     

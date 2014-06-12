@@ -1,8 +1,10 @@
 /*
  TO DO:
     1) figure out key index for WEP connection, can it be ignored?
-    2) use wlan even callback to determine if wifi has connected
-    3) make sure the ip address octet order is correct in config method
+ X  2) use wlan even callback to determine if wifi has connected
+ X  3) make sure the ip address octet order is correct in config method
+    4) figure out how to get the SSID of the currently connected station
+    4!) how do you figure out what the index of the currently connected profile is?
  */
 
 
@@ -27,7 +29,7 @@
 
 #include <Energia.h>
 #include "WiFi.h"
-#include "wl_definitions.h"
+#include "Utility/wl_definitions.h"
 
 
 extern "C" {
@@ -37,6 +39,10 @@ extern "C" {
     #include "netcfg.h"
 }
 
+//
+//initialize WiFi_status to the disconnected flag
+//
+wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 
 WiFiClass::WiFiClass()
 {
@@ -52,9 +58,11 @@ void WiFiClass::init()
     sl_Start(NULL, NULL, NULL);
     
     //
-    //Stop smartconfig (if for some reason it's already running)
+    //disconnect from any old connection
     //
-    sl_WlanSmartConfigStop();
+    sl_WlanDisconnect();
+    
+    
 }
 
 uint8_t WiFiClass::getSocket()
@@ -84,12 +92,13 @@ int WiFiClass::begin(char* ssid)
     
     //
     //return appropriate status as described by arduino wifi library
-    //simplelink returns 0 on success, arduino returns 0 on failure.
+    //the WiFiClass:WiFi_status is handled by the WlanEvenHandler
+    //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WL_CONNECTED;
+        return WiFiClass::WiFi_status;
     } else {
-        return WL_IDLE_STATUS;
+        return WL_CONNECT_FAILED;
     }
     
 }
@@ -116,12 +125,13 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     
     //
     //return appropriate status as described by arduino wifi library
-    //simplelink returns 0 on success, arduino returns 0 on failure.
+    //the WiFiClass:WiFi_status is handled by the WlanEvenHandler
+    //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WL_CONNECTED;
+        return WiFiClass::WiFi_status;
     } else {
-        return WL_IDLE_STATUS;
+        return WL_CONNECT_FAILED;
     }
     
 }
@@ -146,12 +156,13 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     
     //
     //return appropriate status as described by arduino wifi library
-    //simplelink returns 0 on success, arduino returns 0 on failure.
+    //the WiFiClass:WiFi_status is handled by the WlanEvenHandler
+    //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WL_CONNECTED;
+        return WiFiClass::WiFi_status;
     } else {
-        return WL_IDLE_STATUS;
+        return WL_CONNECT_FAILED;
     }
 }
 
@@ -260,39 +271,92 @@ void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 
 int WiFiClass::disconnect(void)
 {
+    //
+    //disconnect from the wlan and return the current wlan_status
+    //
+    int iRet = sl_WlanDisconnect();
+    return WiFiClass::WiFi_status;
+    
     
 }
 
 uint8_t* WiFiClass::macAddress(uint8_t* mac)
 {
-    
+    //
+    //Get the mac address and return the pointer to the array
+    //
+    uint8_t macLength = 6;
+    sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macLength, (unsigned char *)mac);
 }
 
 IPAddress WiFiClass::subnetMask()
 {
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
+    
+    //
+    //change the uint32_t IP to the IPAddress class and return
+    //
+    IPAddress ipRet;
+    ipRet = config.ipV4Mask;
+    return ipRet;
     
 }
 
 IPAddress WiFiClass::gatewayIP()
 {
+    //
+    //get current configuration
+    //
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
+    //
+    //change the uint32_t IP to the IPAddress class and return
+    //
+    IPAddress ipRet;
+    ipRet = config.ipV4Gateway;
+    return ipRet;
 }
 
+//!! I'm pretty sure this is wrong !!//
+//so there's a way to use sl_WlanProfileGet to get profiles//
+//but i don't know how to figure out what profile is currently used//
 char* WiFiClass::SSID()
 {
+    char ssid[32];
+    unsigned short len = 32;
+    unsigned short  config_opt = WLAN_AP_OPT_SSID;
+    sl_WlanGet(SL_WLAN_CFG_AP_ID, &config_opt , &len, (unsigned char*)ssid);
     
+    return ssid;
 }
 
+//!! I'm pretty sure this is wrong !!//
+//so there's a way to use sl_WlanProfileGet to get profiles//
+//but i don't know how to figure out what profile is currently used//
 uint8_t* WiFiClass::BSSID(uint8_t* bssid)
 {
     
 }
 
+
+//!! I'm pretty sure this is wrong !!//
+//so there's a way to use sl_WlanProfileGet to get profiles//
+//but i don't know how to figure out what profile is currently used//
 int32_t WiFiClass::RSSI()
 {
     
 }
 
+//!! I'm pretty sure this is wrong !!//
+//so there's a way to use sl_WlanProfileGet to get profiles//
+//but i don't know how to figure out what profile is currently used//
 uint8_t WiFiClass::encryptionType()
 {
     
@@ -300,7 +364,12 @@ uint8_t WiFiClass::encryptionType()
 
 int8_t WiFiClass::scanNetworks()
 {
-    
+    //
+    //set the scan interval policy, which activates an immediate scan
+    //the scan interval (in case of no connection) is set to 5 minutes
+    //
+    uint8_t seconds = 300;
+    sl_WlanPolicySet(SL_POLICY_SCAN, 1, (unsigned char *)&seconds, sizeof(seconds));
 }
 
 char* WiFiClass::SSID(uint8_t networkItem)
@@ -329,4 +398,6 @@ int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
 }
 
 WiFiClass WiFi;
+
+
 
