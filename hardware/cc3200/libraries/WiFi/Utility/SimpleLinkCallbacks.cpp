@@ -1,6 +1,6 @@
 /*
  SimpleLinkCallbacks.c
- Author: Noah Luskey
+ Author: Noah Luskey | LuskeyNoah@gmail.com
  Use: Place code for callbacks in this file if desired.
  
  This library is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 extern "C" {
     #include "simplelink.h"
+    #include <string.h>
 }
 
 #include "WiFi.h"
@@ -41,24 +42,38 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
     switch (pSlWlanEvent->Event) {
         
         //
-        //Wlan has connected to a station so get the ssid name and bssid
-        //and store them as static class variables in WiFiClass
+        //Wlan has connected to a station
+        //brackets necessary to avoid crosses initialization error
         //
-        case SL_WLAN_STA_CONNECTED_EVENT:
+        case SL_WLAN_STA_CONNECTED_EVENT: {
             WiFiClass::WiFi_status = WL_CONNECTED;
-            WiFiClass::ssidPointer = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name;
-            WiFiClass::ssidLength = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len;
-            WiFiClass::bssidPointer = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid;
+            //
+            //copy ssid name to WiFiClass and manually add null terminator
+            //
+            char* pSSID = (char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_name;
+            uint8_t ssidLength = pSlWlanEvent->EventData.STAandP2PModeWlanConnected.ssid_len;
+            if (ssidLength > MAX_SSID_LEN) {
+                return;
+            }
+            memcpy(WiFiClass::connected_ssid, pSSID, ssidLength);
+            WiFiClass::connected_ssid[ssidLength] = '\0';
+            
+            //
+            //copy bssid to WiFiClass (no null terminator. Length always = 6)
+            //
+            char* pBSSID = (char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid;
+            memcpy(WiFiClass::connected_bssid, pBSSID, BSSID_LEN);
             break;
+        }
             
         //
-        //Wlan has disconnected, so make the SSID null and the bssid null
+        //Wlan has disconnected, so completely zero out the ssid and bssid
         //
         case SL_WLAN_STA_DISCONNECTED_EVENT:
             WiFiClass::WiFi_status = WL_DISCONNECTED;
-            WiFiClass::ssidPointer = NULL;
-            WiFiClass::ssidLength = 0;
-            WiFiClass::bssidPointer = NULL;
+            memset(WiFiClass::connected_ssid, 0, MAX_SSID_LEN);
+            memset(WiFiClass::connected_bssid, 0, BSSID_LEN);
+            
             break;
             
         default:

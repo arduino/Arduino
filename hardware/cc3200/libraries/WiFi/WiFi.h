@@ -1,6 +1,6 @@
 /*
  WiFi.h - Adaptation of Arduino WiFi library for Energia and CC3200 launchpad
- Modified: Noah Luskey
+ Modified: Noah Luskey | LuskeyNoah@gmail.com
  
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -24,8 +24,12 @@
 #include "IPAddress.h"
 #include "Utility/wl_definitions.h"
 
-//!!GET THE CORRECT VALUE!!JUST A PLACEHOLDER!!//
-#define MAX_SOCK_NUM 4
+//
+//Max socket number is 10 (8 public and 2 private)
+//
+#define MAX_SOCK_NUM 10
+#define MAX_SSID_LEN 32
+#define BSSID_LEN 6
 
 class WiFiClass
 {
@@ -41,9 +45,8 @@ public:
     //Because simplelink doesn't provide an easy way to get the ssid or bssid
     //these class variables are maintained by the WlanEventHandler callback
     //
-    static unsigned char *ssidPointer;
-    static uint8_t ssidLength;
-    static unsigned char *bssidPointer;
+    static char connected_ssid[MAX_SSID_LEN];
+    static unsigned char connected_bssid[BSSID_LEN];
     
     WiFiClass();
     
@@ -240,7 +243,7 @@ public:
      * result: 1 if aIPAddrString was successfully converted to an IP address,
      *          else error code
      */
-    int hostByName(const char* aHostname, IPAddress& aResult);
+    int hostByName(char* aHostname, IPAddress& aResult);
     
     friend class WiFiClient;
     friend class WiFiServer;

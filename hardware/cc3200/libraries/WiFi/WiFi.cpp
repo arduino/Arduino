@@ -3,14 +3,15 @@
     1) figure out key index for WEP connection, can it be ignored?
  X  2) use wlan even callback to determine if wifi has connected
  X  3) make sure the ip address octet order is correct in config method
-    4) figure out how to get the SSID of the currently connected station
-    4!) how do you figure out what the index of the currently connected profile is?
+ X  4) figure out how to get the SSID of the currently connected station
+ X  5) how do you figure out what the index of the currently connected profile is?
+    6) What's the appropriate socket type to use?
  */
 
 
 /*
  WiFi.cpp - Adaptation of Arduino WiFi library for Energia and CC3200 launchpad
- Author: Noah Luskey
+ Author: Noah Luskey | LuskeyNoah@gmail.com
  
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -37,6 +38,8 @@ extern "C" {
     #include <string.h>
     #include "wlan.h"
     #include "netcfg.h"
+    #include "netapp.h"
+    #include "socket.h"
 }
 
 //
@@ -45,11 +48,10 @@ extern "C" {
 wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 
 //
-//initialize the connected , bssid, SSID to blank and length 0
+//initialize the ssid and bssid to blank and 0s respectively
 //
-unsigned char* WiFiClass::ssidPointer = NULL;
-uint8_t WiFiClass::ssidLength = 0;
-unsigned char* WiFiClass::bssidPointer = NULL;
+char WiFiClass::connected_ssid[32] = "";
+unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
 
 
 WiFiClass::WiFiClass()
@@ -75,12 +77,20 @@ void WiFiClass::init()
 
 uint8_t WiFiClass::getSocket()
 {
-    
+    //
+    //create a sequential packet socket, choose default protocol, and return ID
+    //!!is a sequential packet socket an appropriate choice!!//
+    //
+    SockID = sl_Socket(SL_AF_INET, SOCK_SEQPACKET, 0);
+    return SockID;
 }
 
 char* WiFiClass::firmwareVersion()
 {
-    
+    //
+    //underlying simplelink api is version 0.5 as of June 12th
+    //
+    return "SimpleLink SDK 0.5";
 }
 
 int WiFiClass::begin(char* ssid)
@@ -187,7 +197,7 @@ void WiFiClass::config(IPAddress local_ip)
     //Assign new ip address to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
+    config.ipV4 = (uint32_t)local_ip;
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
 }
 
@@ -204,8 +214,8 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
     //Assign new ip address and new dns server to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
-    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server[0], dns_server[1], dns_server[2], dns_server[3]);
+    config.ipV4 = (uint32_t)local_ip;
+    config.ipV4DnsServer = (uint32_t)dns_server;
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
@@ -223,9 +233,9 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     //Assign new ip address and new dns server to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
-    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server[0], dns_server[1], dns_server[2], dns_server[3]);
-    config.ipV4Gateway = (uint32_t)SL_IPV4_VAL(gateway[0], gateway[1], gateway[2], gateway[3]);
+    config.ipV4 = (uint32_t)local_ip;
+    config.ipV4DnsServer = (uint32_t)dns_server;
+    config.ipV4Gateway = (uint32_t)gateway;
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
@@ -243,10 +253,10 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     //Assign new ip address and new dns server to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)SL_IPV4_VAL(local_ip[0], local_ip[1], local_ip[2], local_ip[3]);
-    config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server[0], dns_server[1], dns_server[2], dns_server[3]);
-    config.ipV4Gateway = (uint32_t)SL_IPV4_VAL(gateway[0], gateway[1], gateway[2], gateway[3]);
-    config.ipV4Mask = (uint32_t)SL_IPV4_VAL(subnet[0], subnet[1], subnet[2], subnet[3]);
+    config.ipV4 = (uint32_t)local_ip;
+    config.ipV4DnsServer = (uint32_t)dns_server;
+    config.ipV4Gateway = (uint32_t)gateway;
+    config.ipV4Mask = (uint32_t)subnet;
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
@@ -340,10 +350,7 @@ char* WiFiClass::SSID()
     //the Nth character to '\0' to make sure the string handles correctly
     //
     
-    unsigned char* ssid = WifiClass::ssidPointer;
-    ssid[WiFiClass::ssidLength] = '\0';
-    
-    return ssid;
+    return (char*)WiFiClass::connected_ssid;
 }
 
 uint8_t* WiFiClass::BSSID(uint8_t* bssid)
@@ -351,20 +358,22 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid)
     //
     //because the bssid 6 char array is maintained by the callback
     //passing in a 6 char array is unecessary and only kept for
-    //compatability with the arduino library
+    //compatability with the Arduino WiFi library
     //
-    return WiFiClass::bssidPointer;
+    return WiFiClass::connected_bssid;
     
 }
 
+//!! How to get the current connection??!!//
 int32_t WiFiClass::RSSI()
 {
-    
+    return 0;
 }
 
+//!! How to get the current connection??!!//
 uint8_t WiFiClass::encryptionType()
 {
-    
+    return 0;
 }
 
 int8_t WiFiClass::scanNetworks()
@@ -375,30 +384,97 @@ int8_t WiFiClass::scanNetworks()
     //
     uint8_t seconds = 300;
     sl_WlanPolicySet(SL_POLICY_SCAN, 1, (unsigned char *)&seconds, sizeof(seconds));
+    
+    //
+    //get the number of valid entries. Unfortunately this has to be done
+    //in a convoluted fashion where the entries are allocated memory.
+    //sl_WlanGetNetworkList returns the number of valid networks found (up to 20)
+    //
+    Sl_WlanNetworkEntry_t networks[20];
+    return sl_WlanGetNetworkList(0, 20, networks);
+    
 }
 
 char* WiFiClass::SSID(uint8_t networkItem)
 {
+    //
+    //get the network list and return the ssid of the requested index
+    //!!This won't work, right? Because the networks array is allocated for the
+    //!!life of this function and becomes garbage once the function returns
+    //
+    Sl_WlanNetworkEntry_t networks[20];
+    int networkCount = sl_WlanGetNetworkList(0, 20, networks);
+    if (networkItem >= networkCount) {
+        return NULL;
+    }
+    return (char*)networks[networkItem].ssid;
     
 }
 
 uint8_t WiFiClass::encryptionType(uint8_t networkItem)
 {
+    //
+    //get the network list and pull out the security type of the requested item
+    //
+    Sl_WlanNetworkEntry_t networks[20];
+    int networkCount = sl_WlanGetNetworkList(0, 20, networks);
+    if (networkItem >= networkCount) {
+        return 0;
+    }
+    uint8_t security = networks[networkItem].sec_type;
     
+    //
+    //the security type returned by simplelink has to be matched
+    //to the security type that would be returned by arduino
+    //TKIP (WPA) = 2, WEP = 5, NONE = 7, AUTO = 8
+    //
+    if (security == SL_SEC_TYPE_WPA) {
+        return 2;
+    } else if (security == SL_SEC_TYPE_WEP) {
+        return 5;
+    } else if (security == SL_SEC_TYPE_OPEN) {
+        return 7;
+    } else {
+        return 8;
+    }
 }
 
 int32_t WiFiClass::RSSI(uint8_t networkItem)
 {
-    
+    //
+    //get the network list and pull out the security type of the requested item
+    //
+    Sl_WlanNetworkEntry_t networks[20];
+    int networkCount = sl_WlanGetNetworkList(0, 20, networks);
+    if (networkItem >= networkCount) {
+        return 0;
+    }
+    return (int32_t)networks[networkItem].rssi;
 }
+
 
 uint8_t WiFiClass::status()
 {
-    
+    //
+    //This class variable is maintained by the slWlanEvenHandler
+    //
+    return WiFiClass::WiFi_status;
 }
 
-int WiFiClass::hostByName(const char* aHostname, IPAddress& aResult)
+int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
 {
+    //
+    //Use the netapp api to resolve an IP for the requested hostname
+    //
+    unsigned long DestinationIP;
+    int iRet = sl_NetAppDnsGetHostByName(aHostname, strlen(aHostname), &DestinationIP, SL_AF_INET);
+    aResult = DestinationIP;
+    
+    if (iRet > 0) {
+        return 1;
+    } else {
+        return iRet;
+    }
     
 }
 
