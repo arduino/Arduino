@@ -8,6 +8,11 @@
 #include "inc/hw_hib1p2.h"
 #include "inc/hw_hib3p3.h"
 
+extern "C"{
+    #include "SimpleLink/simplelink.h"
+    #include "SimpleLink/nonos.h"
+}
+
 extern void (* const g_pfnVectors[])(void);
 extern void setup1();
 
@@ -107,5 +112,6 @@ int main(void)
 	for (;;) {
 		loop();
 		if (serialEventRun) serialEventRun();
+        _SlNonOsMainLoopTask();
 	}
 }

@@ -34,7 +34,7 @@
 class WiFiClass
 {
 private:
-    static void init();
+    static bool init();
     
 public:
     static int16_t 	_state[MAX_SOCK_NUM];

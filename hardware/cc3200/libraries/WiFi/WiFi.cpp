@@ -6,6 +6,7 @@
  X  4) figure out how to get the SSID of the currently connected station
  X  5) how do you figure out what the index of the currently connected profile is?
     6) What's the appropriate socket type to use?
+    7) Write net app event handler to wait for assigned ip (see tcp socket example)
  */
 
 
@@ -40,6 +41,7 @@ extern "C" {
     #include "netcfg.h"
     #include "netapp.h"
     #include "socket.h"
+    #include "udma_if.h"
 }
 
 //
@@ -56,23 +58,41 @@ unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
 
 WiFiClass::WiFiClass()
 {
-    //simplelink driver initialization
-    init();
+    //
+    //Initialize any instance variables (of which there are none)
+    //
 }
 
-void WiFiClass::init()
+bool WiFiClass::init()
 {
+    //
+    //Initialize the UDMA
+    //
+    UDMAInit();
+    
     //
     //start the SimpleLink driver (no callback)
     //
-    sl_Start(NULL, NULL, NULL);
+    int iRet = sl_Start(NULL, NULL, NULL);
+    
+    //
+    //check if sl_start failed
+    //
+    if (iRet==ROLE_STA_ERR || iRet==ROLE_AP_ERR || iRet==ROLE_P2P_ERR) {
+        return false;
+    }
     
     //
     //disconnect from any old connection
     //
     sl_WlanDisconnect();
     
-    
+    //
+    //reset the Wlan Policy
+    //
+    sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0,0,0,0,0), NULL, 0);
+
+    return true;
 }
 
 uint8_t WiFiClass::getSocket()
@@ -96,6 +116,14 @@ char* WiFiClass::firmwareVersion()
 int WiFiClass::begin(char* ssid)
 {
     //
+    //initialize the simplelink driver and make sure it was a success
+    //
+    bool init_success = WiFiClass::init();
+    if (!init_success) {
+        return WL_CONNECT_FAILED;
+    }
+    
+    //
     //Get name length and set security type to open
     //
     int NameLen = strlen(ssid);
@@ -114,7 +142,7 @@ int WiFiClass::begin(char* ssid)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WiFiClass::WiFi_status;
+        return WiFi_status;
     } else {
         return WL_CONNECT_FAILED;
     }
@@ -125,6 +153,14 @@ int WiFiClass::begin(char* ssid)
 //!!Ignore key index!!//
 int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
 {
+    //
+    //initialize the simplelink driver and make sure it was a success
+    //
+    bool init_success = WiFiClass::init();
+    if (!init_success) {
+        return WL_CONNECT_FAILED;
+    }
+    
     //
     //get name length and set security type to WEP
     //add key and keylength to security parameters
@@ -147,7 +183,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WiFiClass::WiFi_status;
+        return WiFi_status;
     } else {
         return WL_CONNECT_FAILED;
     }
@@ -156,6 +192,14 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
 
 int WiFiClass::begin(char* ssid, char *passphrase)
 {
+    //
+    //initialize the simplelink driver and make sure it was a success
+    //
+    bool init_success = WiFiClass::init();
+    if (!init_success) {
+        return WL_CONNECT_FAILED;
+    }
+    
     //
     //get name length and set security type to WPA
     //add passphrase and keylength to security parameters
@@ -178,7 +222,7 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WiFiClass::WiFi_status;
+        return WiFi_status;
     } else {
         return WL_CONNECT_FAILED;
     }
@@ -293,7 +337,7 @@ int WiFiClass::disconnect(void)
     //disconnect from the wlan and return the current wlan_status
     //
     int iRet = sl_WlanDisconnect();
-    return WiFiClass::WiFi_status;
+    return WiFi_status;
     
     
 }
@@ -305,6 +349,7 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
     //
     uint8_t macLength = 6;
     sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macLength, (unsigned char *)mac);
+    return mac;
 }
 
 IPAddress WiFiClass::subnetMask()
@@ -458,7 +503,7 @@ uint8_t WiFiClass::status()
     //
     //This class variable is maintained by the slWlanEvenHandler
     //
-    return WiFiClass::WiFi_status;
+    return WiFi_status;
 }
 
 int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
