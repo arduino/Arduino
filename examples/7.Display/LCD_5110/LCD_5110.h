@@ -61,5 +61,13 @@ private:
     void setXY(uint8_t x, uint8_t y);
     void write(uint8_t dataCommand, uint8_t c);
     uint8_t _font;
+
+    uint8_t _pinReset;
+    uint8_t _pinSerialData;
+    uint8_t _pinBacklight;
+    uint8_t _pinChipSelect;
+    uint8_t _pinDataCommand;
+    uint8_t _pinSerialClock;
+    uint8_t _pinPushButton;
 };
 #endif

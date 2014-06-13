@@ -15,15 +15,6 @@
 const uint8_t  _commandLCD = 0x00;
 const uint8_t  _dataLCD    = 0x01;
 
-uint8_t _pinReset;
-uint8_t _pinSerialData;
-uint8_t _pinBacklight;
-uint8_t _pinChipSelect;
-uint8_t _pinDataCommand;
-uint8_t _pinSerialClock;
-uint8_t _pinPushButton;
-
-
 #if defined(__MSP430G2553__) // LaunchPad MSP430G2553 specific
 LCD_5110_SPI::LCD_5110_SPI() {
     LCD_5110_SPI(P2_2,    // Chip Select
