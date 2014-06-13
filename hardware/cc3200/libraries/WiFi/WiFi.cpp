@@ -78,10 +78,10 @@ void WiFiClass::init()
 uint8_t WiFiClass::getSocket()
 {
     //
-    //create a sequential packet socket, choose default protocol, and return ID
-    //!!is a sequential packet socket an appropriate choice!!//
+    //create a raw socket, choose default protocol, and return ID
+    //!!is a raw socket an appropriate choice!!//
     //
-    SockID = sl_Socket(SL_AF_INET, SOCK_SEQPACKET, 0);
+    uint8_t SockID = sl_Socket(SL_AF_INET, SL_SOCK_RAW, 0);
     return SockID;
 }
 
