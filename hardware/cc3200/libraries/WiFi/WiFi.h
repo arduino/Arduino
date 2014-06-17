@@ -24,10 +24,12 @@
 #include "IPAddress.h"
 #include "Utility/wl_definitions.h"
 
+
+
 //
-//Max socket number is 10 (8 public and 2 private)
+//Max socket number is 8
 //
-#define MAX_SOCK_NUM 10
+#define MAX_SOCK_NUM 8
 #define MAX_SSID_LEN 32
 #define BSSID_LEN 6
 

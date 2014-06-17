@@ -55,12 +55,20 @@ wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 char WiFiClass::connected_ssid[32] = "";
 unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
 
+int16_t WiFiClass::_state[MAX_SOCK_NUM];
+uint16_t WiFiClass::_server_port[MAX_SOCK_NUM];
+
 
 WiFiClass::WiFiClass()
 {
     //
-    //Initialize any instance variables (of which there are none)
+    //Initialize the WiFi socket state arrays
     //
+    int i;
+    for (i = 0; i < MAX_SOCK_NUM; i++) {
+        _state[i] = NA_STATE;
+        _server_port[i] = 0;
+    }
 }
 
 bool WiFiClass::init()
@@ -98,11 +106,16 @@ bool WiFiClass::init()
 uint8_t WiFiClass::getSocket()
 {
     //
-    //create a raw socket, choose default protocol, and return ID
-    //!!is a raw socket an appropriate choice!!//
+    //return the first socket handle that is available
     //
-    uint8_t SockID = sl_Socket(SL_AF_INET, SL_SOCK_RAW, 0);
-    return SockID;
+    for (uint8_t i = 0; i < MAX_SOCK_NUM; ++i)
+    {
+        if (WiFiClass::_server_port[i] == 0)
+        {
+            return i;
+        }
+    }
+    return NO_SOCKET_AVAIL;
 }
 
 char* WiFiClass::firmwareVersion()

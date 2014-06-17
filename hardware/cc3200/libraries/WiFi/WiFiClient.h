@@ -21,7 +21,7 @@
 #define wificlient_h
 #include "Arduino.h"	
 #include "Print.h"
-#include "Client.h"
+#include "utility/Client.h"
 #include "IPAddress.h"
 
 class WiFiClient : public Client {
