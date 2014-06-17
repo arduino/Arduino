@@ -38,6 +38,11 @@ private:
     uint8_t tx_buf[UDP_TX_PACKET_MAX_SIZE];
     unsigned int rx_currentIndex;   //for the read command, a pointer to the last read byte
     unsigned int rx_fillLevel;  //the number of bytes of new data in the buffer
+    uint32_t _remoteIP; //maintained by parse method
+    uint16_t _remotePort; //maintained by parse method
+    unsigned int tx_fillLevel;
+    uint32_t _sendIP; // used by all the write/send methods
+    uint16_t _sendPort; //used by all the write/send methods
     
 public:
     WiFiUDP();  // Constructor

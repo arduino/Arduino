@@ -34,8 +34,13 @@ WiFiUDP::WiFiUDP() : _sock(NO_SOCKET_AVAIL)
     //
     //fill the buffers with zeroes
     //
-    memset(rx_buf, 0, sizeof(rx_buf));
-    memset(tx_buf, 0, sizeof(tx_buf));
+    memset(rx_buf, 0, UDP_RX_PACKET_MAX_SIZE);
+    memset(tx_buf, 0, UDP_TX_PACKET_MAX_SIZE);
+    rx_currentIndex = 0;
+    rx_fillLevel = 0;
+    tx_fillLevel = 0;
+    _remotePort = 0;
+    _remoteIP = 0;
     
 }
 
@@ -79,8 +84,7 @@ uint8_t WiFiUDP::begin(uint16_t port)
     _port = port;
     _sock = sock;
     WiFiClass::_server_port[sock] = port;
-    
-    
+    return 1;
 }
 
 
@@ -100,6 +104,10 @@ int WiFiUDP::available()
 
 void WiFiUDP::stop()
 {
+    //
+    //close the socket and reset any important variables
+    //
+    flush();
     sl_Close(_socketHandle);
     WiFiClass::_server_port[_sock] = 0;
     _sock = NO_SOCKET_AVAIL;
@@ -107,22 +115,100 @@ void WiFiUDP::stop()
 
 int WiFiUDP::beginPacket(const char *host, uint16_t port)
 {
+    //
+    //look up host's IP address
+    //
+    IPAddress ip;
+    int success = WiFi.hostByName((char*)host, ip);
+    
+    //
+    //if host successfully resolved to IP, begin packet to that IP
+    //
+    if (success) {
+        return beginPacket(ip, port);
+    } else {
+        return 0;
+    }
 }
 
 int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
 {
+    //
+    //make sure a port has been created
+    //!! this doesn't create a port if one doesn't exist. Is that ok?
+    //
+    if (_sock == NO_SOCKET_AVAIL) {
+        return 0;
+    }
+    
+    //
+    //store the address information for when endPacket is called
+    //
+    _sendIP = ip;
+    _sendPort = port;
+    
+    //
+    //reset all tx buffer indicators
+    //
+    memset(tx_buf, 0, UDP_TX_PACKET_MAX_SIZE);
+    rx_currentIndex = 0;
+    tx_fillLevel = 0;
+    
+    return 1;
+    
 }
 
 int WiFiUDP::endPacket()
 {
+    //
+    //fill in the address structure
+    //
+    SlSockAddrIn_t sendAddress;
+    sendAddress.sin_family = SL_AF_INET;
+    sendAddress.sin_port = sl_Htons(_sendPort);
+    sendAddress.sin_addr.s_addr = sl_Htonl(_sendIP);
+    
+    //
+    //use the simplelink library to send the tx buffer
+    //
+    int iRet = sl_SendTo(_socketHandle, tx_buf, tx_fillLevel, NULL, (SlSockAddr_t*)&sendAddress, sizeof(SlSockAddrIn_t));
+    if (iRet < 0) {
+        return 0;
+    }
+    
+    //
+    //reset all tx buffer indicators
+    //
+    memset(tx_buf, 0, UDP_TX_PACKET_MAX_SIZE);
+    tx_fillLevel = 0;
+    return 1;
 }
 
 size_t WiFiUDP::write(uint8_t byte)
 {
+    //
+    //write a single byte into the buffer using overloaded method
+    //
+    return write(&byte, 1);
 }
 
 size_t WiFiUDP::write(const uint8_t *buffer, size_t size)
 {
+    //
+    //it's possible that size is more than can fit in the tx_buffer
+    //so check it and make it smaller if necessary
+    //
+    if (tx_fillLevel + size > UDP_TX_PACKET_MAX_SIZE) {
+        size = UDP_TX_PACKET_MAX_SIZE - tx_fillLevel;
+    }
+    
+    
+    //
+    //copy the appropriate number of bytes into the buffer
+    //
+    memcpy(&tx_buf[tx_fillLevel], buffer, size);
+    tx_fillLevel += size;
+    return size;
 }
 
 //
@@ -141,11 +227,11 @@ int WiFiUDP::parsePacket()
     
     //
     //the sl_select command blocks until something interesting happens or
-    //it times out (current timeout set for 2 seconds)
+    //it times out (current timeout set for 10 ms, the minimum)
     //
     SlTimeval_t timeout;
-    timeout.tv_sec = 2;
-    timeout.tv_usec = 0;
+    timeout.tv_sec = 0;
+    timeout.tv_usec = 10000;
     
     SlFdSet_t readSocketHandles, errorSocketHandles;
     SL_FD_ZERO(&readSocketHandles);
@@ -166,6 +252,14 @@ int WiFiUDP::parsePacket()
     int AddrSize = sizeof(address);
     int bytes = sl_RecvFrom(_socketHandle, rx_buf, UDP_RX_PACKET_MAX_SIZE, NULL, (SlSockAddr_t*)&address, (SlSocklen_t*)&AddrSize);
 
+    //
+    //store the sender's address (sl_HtonX reorders bits to processor order)
+    //!! Although this follows some examples (upd_socket), it goes agains the
+    //!! API documentation. The API maintains that the 5th arg to RecvFrom is not in/out
+    //
+    _remoteIP = sl_Htonl(address.sin_addr.s_addr);
+    _remotePort = sl_Htons(address.sin_port);
+    
     //
     //If an error occured, return 0, otherwise return the byte length of the packet
     //and reset the buffer index counter and fill level variables
@@ -212,6 +306,9 @@ int WiFiUDP::read(unsigned char* buffer, size_t len)
 
 int WiFiUDP::peek()
 {
+    //
+    //return the next byte without incrementing the index counter
+    //
     return rx_buf[rx_currentIndex];
 }
 
@@ -227,9 +324,17 @@ void WiFiUDP::flush()
 
 IPAddress  WiFiUDP::remoteIP()
 {
+    //
+    //this value is maintained by ParsePacket method
+    //
+    return _remoteIP;
 }
 
 uint16_t  WiFiUDP::remotePort()
 {
+    //
+    //this value is maintained by ParsePacket method
+    //
+    return _remotePort;
 }
 
