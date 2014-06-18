@@ -5,8 +5,9 @@
  X  3) make sure the ip address octet order is correct in config method
  X  4) figure out how to get the SSID of the currently connected station
  X  5) how do you figure out what the index of the currently connected profile is?
-    6) What's the appropriate socket type to use?
+ X  6) What's the appropriate socket type to use?
     7) Write net app event handler to wait for assigned ip (see tcp socket example)
+    8) add local IP, subnet mask, and gateway ip methods as described in IPAddress class
  */
 
 
@@ -29,6 +30,8 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#define DEBUG
+
 #include <Energia.h>
 #include "WiFi.h"
 #include "Utility/wl_definitions.h"
@@ -47,7 +50,8 @@ extern "C" {
 //
 //initialize WiFi_status to the disconnected flag
 //
-wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
+volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
+bool WiFiClass::_initialized = false;
 
 //
 //initialize the ssid and bssid to blank and 0s respectively
@@ -55,8 +59,13 @@ wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 char WiFiClass::connected_ssid[32] = "";
 unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
 
-int16_t WiFiClass::_state[MAX_SOCK_NUM];
-uint16_t WiFiClass::_server_port[MAX_SOCK_NUM];
+//
+//a better way of keeping track of servers, clients, ports, and handles
+//these provide a central hub for WiFiClient, WiFiServer, WiFiUDP to keep track
+//
+int16_t WiFiClass::_handleArray[MAX_SOCK_NUM];
+int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
+int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 
 
 WiFiClass::WiFiClass()
@@ -66,51 +75,60 @@ WiFiClass::WiFiClass()
     //
     int i;
     for (i = 0; i < MAX_SOCK_NUM; i++) {
-        _state[i] = NA_STATE;
-        _server_port[i] = 0;
+        _handleArray[i] = _portArray[i] = _typeArray[i] = -1;
     }
 }
+
 
 bool WiFiClass::init()
 {
     //
-    //Initialize the UDMA
+    //only initialize once
     //
-    UDMAInit();
-    
-    //
-    //start the SimpleLink driver (no callback)
-    //
-    int iRet = sl_Start(NULL, NULL, NULL);
-    
-    //
-    //check if sl_start failed
-    //
-    if (iRet==ROLE_STA_ERR || iRet==ROLE_AP_ERR || iRet==ROLE_P2P_ERR) {
-        return false;
+    if (!_initialized) {
+        //
+        //Initialize the UDMA
+        //
+        UDMAInit();
+        //
+        //start the SimpleLink driver (no callback)
+        //
+        int iRet = sl_Start(NULL, NULL, NULL);
+        
+        //
+        //check if sl_start failed
+        //
+        if (iRet==ROLE_STA_ERR || iRet==ROLE_AP_ERR || iRet==ROLE_P2P_ERR) {
+            return false;
+        }
+        
+        //
+        //set the mode to station if it's not already in station mode
+        //
+        if (iRet != ROLE_STA) {
+            sl_WlanSetMode(ROLE_STA);
+            sl_Stop(30);
+            sl_Start(NULL, NULL, NULL);
+        }
+        
+        //
+        //disconnect from anything if for some reason it's connected
+        //
+        sl_WlanDisconnect();
+        
+        _initialized = true;
     }
-    
-    //
-    //disconnect from any old connection
-    //
-    sl_WlanDisconnect();
-    
-    //
-    //reset the Wlan Policy
-    //
-    sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(0,0,0,0,0), NULL, 0);
-
     return true;
 }
 
 uint8_t WiFiClass::getSocket()
 {
     //
-    //return the first socket handle that is available
+    //return the first socket that is available
     //
     for (uint8_t i = 0; i < MAX_SOCK_NUM; ++i)
     {
-        if (WiFiClass::_server_port[i] == 0)
+        if (_handleArray[i] == -1)
         {
             return i;
         }
@@ -131,7 +149,7 @@ int WiFiClass::begin(char* ssid)
     //
     //initialize the simplelink driver and make sure it was a success
     //
-    bool init_success = WiFiClass::init();
+    bool init_success = init();
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
@@ -140,14 +158,14 @@ int WiFiClass::begin(char* ssid)
     //Get name length and set security type to open
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t* pSecParams;
-    pSecParams->Type = SL_SEC_TYPE_OPEN;
+    SlSecParams_t SecParams;
+    SecParams.Type = SL_SEC_TYPE_OPEN;
     
     //
     //Connect to the access point (non enterprise, so 5th argument is NULL);
     //also mac address parameter set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, NULL, pSecParams, NULL);
+    int iRet = sl_WlanConnect(ssid, NameLen, NULL, &SecParams, NULL);
     
     //
     //return appropriate status as described by arduino wifi library
@@ -179,16 +197,16 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     //add key and keylength to security parameters
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t* pSecParams;
-    pSecParams->Type = SL_SEC_TYPE_WEP;
-    pSecParams->Key = key;
-    pSecParams->KeyLen = strlen(key);
+    SlSecParams_t SecParams;
+    SecParams.Type = SL_SEC_TYPE_WEP;
+    SecParams.Key = key;
+    SecParams.KeyLen = strlen(key);
     
     //
     //Connect to the access point (non enterprise, so 5th argument is NULL);
     //also mac address parameter set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, NULL, pSecParams, NULL);
+    int iRet = sl_WlanConnect(ssid, NameLen, NULL, &SecParams, NULL);
     
     //
     //return appropriate status as described by arduino wifi library
@@ -218,17 +236,17 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     //add passphrase and keylength to security parameters
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t* pSecParams;
-    pSecParams->Type = SL_SEC_TYPE_WPA;
-    pSecParams->Key = passphrase;
-    pSecParams->KeyLen = strlen(passphrase);
+    SlSecParams_t SecParams;
+    SecParams.Type = SL_SEC_TYPE_WPA;
+    SecParams.Key = passphrase;
+    SecParams.KeyLen = strlen(passphrase);
     
     //
     //connect to the access point (non enterprise, so 5th argument is NULL)
     //also mac address parameters set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, NULL, pSecParams, NULL);
-    
+    int iRet = sl_WlanConnect(ssid, NameLen, NULL, &SecParams, NULL);
+
     //
     //return appropriate status as described by arduino wifi library
     //the WiFiClass:WiFi_status is handled by the WlanEvenHandler
@@ -243,6 +261,9 @@ int WiFiClass::begin(char* ssid, char *passphrase)
 
 void WiFiClass::config(IPAddress local_ip)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -260,6 +281,9 @@ void WiFiClass::config(IPAddress local_ip)
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -279,6 +303,9 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -299,6 +326,9 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -320,6 +350,9 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
 
 void WiFiClass::setDNS(IPAddress dns_server1)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -338,6 +371,9 @@ void WiFiClass::setDNS(IPAddress dns_server1)
 //!!Not supported. Only set the dns server using the first address!!//
 void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //because only 1 dns server is supported, use the previous set dns function
     //
@@ -346,6 +382,9 @@ void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 
 int WiFiClass::disconnect(void)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //disconnect from the wlan and return the current wlan_status
     //
@@ -357,6 +396,9 @@ int WiFiClass::disconnect(void)
 
 uint8_t* WiFiClass::macAddress(uint8_t* mac)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //Get the mac address and return the pointer to the array
     //
@@ -367,6 +409,9 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
 
 IPAddress WiFiClass::subnetMask()
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -385,6 +430,9 @@ IPAddress WiFiClass::subnetMask()
 
 IPAddress WiFiClass::gatewayIP()
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get current configuration
     //
@@ -402,6 +450,9 @@ IPAddress WiFiClass::gatewayIP()
 
 char* WiFiClass::SSID()
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //maximum ssid length is 32, however it will be shorter than this
     //because the simplelink api handles the name oddly this sets
@@ -413,6 +464,9 @@ char* WiFiClass::SSID()
 
 uint8_t* WiFiClass::BSSID(uint8_t* bssid)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //because the bssid 6 char array is maintained by the callback
     //passing in a 6 char array is unecessary and only kept for
@@ -436,6 +490,9 @@ uint8_t WiFiClass::encryptionType()
 
 int8_t WiFiClass::scanNetworks()
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //set the scan interval policy, which activates an immediate scan
     //the scan interval (in case of no connection) is set to 5 minutes
@@ -455,6 +512,9 @@ int8_t WiFiClass::scanNetworks()
 
 char* WiFiClass::SSID(uint8_t networkItem)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get the network list and return the ssid of the requested index
     //!!This won't work, right? Because the networks array is allocated for the
@@ -471,6 +531,9 @@ char* WiFiClass::SSID(uint8_t networkItem)
 
 uint8_t WiFiClass::encryptionType(uint8_t networkItem)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get the network list and pull out the security type of the requested item
     //
@@ -499,6 +562,9 @@ uint8_t WiFiClass::encryptionType(uint8_t networkItem)
 
 int32_t WiFiClass::RSSI(uint8_t networkItem)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //get the network list and pull out the security type of the requested item
     //
@@ -513,6 +579,10 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
 
 uint8_t WiFiClass::status()
 {
+    _SlNonOsMainLoopTask();
+    if (!_initialized) {
+        init();
+    }
     //
     //This class variable is maintained by the slWlanEvenHandler
     //
@@ -521,6 +591,9 @@ uint8_t WiFiClass::status()
 
 int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
 {
+    if (!_initialized) {
+        init();
+    }
     //
     //Use the netapp api to resolve an IP for the requested hostname
     //

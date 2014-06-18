@@ -1,6 +1,7 @@
 /*
   wl_definitions.h - Library for Arduino Wifi shield.
   Copyright (c) 2011-2014 Arduino.  All right reserved.
+  Modified: Noah Luskey | LuskeyNoah@gmail.com
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -46,6 +47,11 @@
 #define WL_MAX_ATTEMPT_CONNECTION	10
 //no socket available
 #define NO_SOCKET_AVAIL     255
+
+//defines for keeping track of ports in arrays
+#define TYPE_TCP_CLIENT (1)
+#define TYPE_TCP_SERVER (2)
+#define TYPE_UDP_PORT (3)
 
 typedef enum {
 		WL_NO_SHIELD = 255,

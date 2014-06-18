@@ -39,9 +39,11 @@ private:
     static bool init();
     
 public:
-    static int16_t 	_state[MAX_SOCK_NUM];
-    static uint16_t _server_port[MAX_SOCK_NUM];
-    static wl_status_t WiFi_status;
+    static int16_t _handleArray[MAX_SOCK_NUM];
+    static int16_t _portArray[MAX_SOCK_NUM];
+    static int16_t _typeArray[MAX_SOCK_NUM];
+    volatile static wl_status_t WiFi_status;
+    static bool _initialized;
     
     //
     //Because simplelink doesn't provide an easy way to get the ssid or bssid

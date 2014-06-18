@@ -25,6 +25,7 @@ extern "C" {
 }
 
 #include "WiFi.h"
+#include <Energia.h>
 
 #if (defined(sl_GeneralEvtHdlr))
 extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)
@@ -45,7 +46,7 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
         //Wlan has connected to a station
         //brackets necessary to avoid crosses initialization error
         //
-        case SL_WLAN_STA_CONNECTED_EVENT: {
+        case SL_WLAN_CONNECT_EVENT: {
             WiFiClass::WiFi_status = WL_CONNECTED;
             //
             //copy ssid name to WiFiClass and manually add null terminator
@@ -69,7 +70,7 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
         //
         //Wlan has disconnected, so completely zero out the ssid and bssid
         //
-        case SL_WLAN_STA_DISCONNECTED_EVENT:
+        case SL_WLAN_DISCONNECT_EVENT:
             WiFiClass::WiFi_status = WL_DISCONNECTED;
             memset(WiFiClass::connected_ssid, 0, MAX_SSID_LEN);
             memset(WiFiClass::connected_bssid, 0, BSSID_LEN);

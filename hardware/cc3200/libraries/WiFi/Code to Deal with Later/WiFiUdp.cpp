@@ -20,6 +20,7 @@
 extern "C" {
     #include "utility/SimpleLink.h"
     #include "utility/socket.h"
+    #include "utility/wl_definitions.h"
 }
 
 #include <string.h>
@@ -29,7 +30,7 @@ extern "C" {
 #include "WiFiClient.h"
 #include "WiFiServer.h"
 
-WiFiUDP::WiFiUDP() : _sock(NO_SOCKET_AVAIL)
+WiFiUDP::WiFiUDP() : _socketIndex(NO_SOCKET_AVAIL)
 {
     //
     //fill the buffers with zeroes
@@ -41,7 +42,6 @@ WiFiUDP::WiFiUDP() : _sock(NO_SOCKET_AVAIL)
     tx_fillLevel = 0;
     _remotePort = 0;
     _remoteIP = 0;
-    
 }
 
 uint8_t WiFiUDP::begin(uint16_t port)
@@ -50,8 +50,8 @@ uint8_t WiFiUDP::begin(uint16_t port)
     //
     //get a socket from the WiFiClass (convoluted method from the arduino library)
     //
-    int sock = WiFiClass::getSocket();
-    if (sock == NO_SOCKET_AVAIL) {
+    int socketIndex = WiFiClass::getSocket();
+    if (socketIndex == NO_SOCKET_AVAIL) {
         return 0;
     }
     
@@ -80,10 +80,10 @@ uint8_t WiFiUDP::begin(uint16_t port)
     //
     //now that simplelink api calls are done, set the object's variables
     //
-    _socketHandle = socketHandle;
-    _port = port;
-    _sock = sock;
-    WiFiClass::_server_port[sock] = port;
+    _socketIndex = socketIndex;
+    WiFiClass::_handleArray[socketIndex] = socketHandle;
+    WiFiClass::_portArray[socketIndex] = port;
+    WiFiClass::_typeArray[socketIndex] = TYPE_UDP_PORT;
     return 1;
 }
 
@@ -109,8 +109,10 @@ void WiFiUDP::stop()
     //
     flush();
     sl_Close(_socketHandle);
-    WiFiClass::_server_port[_sock] = 0;
-    _sock = NO_SOCKET_AVAIL;
+    WiFiClass::_handleArray[socketIndex] = -1;
+    WiFiClass::_portArray[socketIndex] = -1;
+    WiFiClass::_typeArray[socketIndex] = -1;
+    _socketHandle = NO_SOCKET_AVAIL;
 }
 
 int WiFiUDP::beginPacket(const char *host, uint16_t port)
@@ -171,6 +173,7 @@ int WiFiUDP::endPacket()
     //
     //use the simplelink library to send the tx buffer
     //
+    
     int iRet = sl_SendTo(_socketHandle, tx_buf, tx_fillLevel, NULL, (SlSockAddr_t*)&sendAddress, sizeof(SlSockAddrIn_t));
     if (iRet < 0) {
         return 0;

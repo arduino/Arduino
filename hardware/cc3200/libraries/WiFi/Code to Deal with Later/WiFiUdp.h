@@ -31,9 +31,7 @@
 
 class WiFiUDP : public UDP {
 private:
-    uint8_t _sock;  // socket # in WiFiClass
-    uint16_t _port; // local port to listen on
-    int8_t _socketHandle; // socket handle returned by simplelink
+    uint8_t _socketIndex;  // socket # in WiFiClass
     uint8_t rx_buf[UDP_RX_PACKET_MAX_SIZE];
     uint8_t tx_buf[UDP_TX_PACKET_MAX_SIZE];
     unsigned int rx_currentIndex;   //for the read command, a pointer to the last read byte
