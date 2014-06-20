@@ -3,6 +3,11 @@ ARDUINO 1.5.7
 [core]
 * [fix] Bridge HttpClient had wrong implementation of running() function
 
+ARDUINO 1.5.7 BETA
+
+* Updated arm-gcc-none-eabi to 4.8.3-2014q1 and simplified build.xml
+* arm-gcc-none-eabi doesn't require ia32-libs anymore on 64 bits linux systems
+
 ARDUINO 1.5.6-r2 BETA 2014.02.21
 
 [ide]
