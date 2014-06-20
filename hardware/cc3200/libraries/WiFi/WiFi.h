@@ -23,7 +23,7 @@
 #include <Energia.h>
 #include "IPAddress.h"
 #include "Utility/wl_definitions.h"
-
+#include "Utility/Simplelink.h"
 
 
 //
@@ -44,6 +44,8 @@ public:
     static int16_t _typeArray[MAX_SOCK_NUM];
     volatile static wl_status_t WiFi_status;
     static bool _initialized;
+    static Sl_WlanNetworkEntry_t found_networks[20];
+    static int network_count;
     
     //
     //Because simplelink doesn't provide an easy way to get the ssid or bssid

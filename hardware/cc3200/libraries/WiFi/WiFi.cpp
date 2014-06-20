@@ -53,11 +53,16 @@ extern "C" {
 volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 bool WiFiClass::_initialized = false;
 
+Sl_WlanNetworkEntry_t WiFiClass::found_networks[20];
+int WiFiClass::network_count = 0;
+
+
 //
 //initialize the ssid and bssid to blank and 0s respectively
 //
 char WiFiClass::connected_ssid[32] = "";
 unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
+
 
 //
 //a better way of keeping track of servers, clients, ports, and handles
@@ -77,47 +82,49 @@ WiFiClass::WiFiClass()
     for (i = 0; i < MAX_SOCK_NUM; i++) {
         _handleArray[i] = _portArray[i] = _typeArray[i] = -1;
     }
+    memset(found_networks, 0, sizeof(found_networks));
 }
-
 
 bool WiFiClass::init()
 {
     //
     //only initialize once
     //
-    if (!_initialized) {
-        //
-        //Initialize the UDMA
-        //
-        UDMAInit();
-        //
-        //start the SimpleLink driver (no callback)
-        //
-        int iRet = sl_Start(NULL, NULL, NULL);
-        
-        //
-        //check if sl_start failed
-        //
-        if (iRet==ROLE_STA_ERR || iRet==ROLE_AP_ERR || iRet==ROLE_P2P_ERR) {
-            return false;
-        }
-        
-        //
-        //set the mode to station if it's not already in station mode
-        //
-        if (iRet != ROLE_STA) {
-            sl_WlanSetMode(ROLE_STA);
-            sl_Stop(30);
-            sl_Start(NULL, NULL, NULL);
-        }
-        
-        //
-        //disconnect from anything if for some reason it's connected
-        //
-        sl_WlanDisconnect();
-        
-        _initialized = true;
+    if (_initialized) {
+        return true;
     }
+    //
+    //Initialize the UDMA
+    //
+    UDMAInit();
+    //
+    //start the SimpleLink driver (no callback)
+    //
+    int iRet = sl_Start(NULL, NULL, NULL);
+    
+    //
+    //check if sl_start failed
+    //
+    if (iRet==ROLE_STA_ERR || iRet==ROLE_AP_ERR || iRet==ROLE_P2P_ERR) {
+        return false;
+    }
+    
+    //
+    //set the mode to station if it's not already in station mode
+    //
+    if (iRet != ROLE_STA) {
+        sl_WlanSetMode(ROLE_STA);
+        sl_Stop(30);
+        sl_Start(NULL, NULL, NULL);
+    }
+    
+    //
+    //disconnect from anything if for some reason it's connected
+    //
+    sl_WlanDisconnect();
+    
+    _initialized = true;
+    
     return true;
 }
 
@@ -493,20 +500,96 @@ int8_t WiFiClass::scanNetworks()
     if (!_initialized) {
         init();
     }
-    //
-    //set the scan interval policy, which activates an immediate scan
-    //the scan interval (in case of no connection) is set to 5 minutes
-    //
-    uint8_t seconds = 300;
-    sl_WlanPolicySet(SL_POLICY_SCAN, 1, (unsigned char *)&seconds, sizeof(seconds));
+//    
+//    //
+//    //some important variables to be used
+//    //
+//    uint8_t policy;
+//    int iRet;
+//    union {
+//        uint8_t policy[4];
+//        uint16_t policyLength;
+//    }policyVal;
+//    
+//    //
+//    //disconnect from the network to be able to scan and clear connection policy
+//    //
+//    sl_WlanDisconnect();
+//    policy = SL_CONNECTION_POLICY(0,0,0,0,0);
+//    iRet = sl_WlanPolicySet(SL_POLICY_CONNECTION, policy, NULL, 0);
+//    if (iRet != 0) {
+//        return 0;
+//    }
+//    
+//    //
+//    //set the policy to scan and for 10 seconds. This starts the scan
+//    //I know this doesn't make much sense... see scan_policy example in SDK
+//    //
+//    policy = SL_SCAN_POLICY(1);
+//    unsigned long seconds = 30;
+//    iRet = sl_WlanPolicySet(SL_POLICY_SCAN, policy, (unsigned char *)&seconds, sizeof(seconds));
+//    if (iRet != 0) {
+//        return 0;
+//    }
+//    
+//    //
+//    //wait for 10 seconds to scan to finish, then get the length
+//    //
+//    delay(10000);
+//    memset(found_networks, 0, sizeof(found_networks));
+//    network_count = sl_WlanGetNetworkList(0, 20, found_networks);
+//    
+//    //
+//    //the scan is done, so disable further scanning
+//    //
+//    policy = SL_SCAN_POLICY(0);
+//    sl_WlanPolicySet(SL_POLICY_SCAN , policy, NULL, 0);
+//    
+//    return network_count;
+
+    int WLAN_SCAN_COUNT = 20;
+    int iRet;
+    
+    unsigned char ucpolicyOpt;
+    union
+    {
+        unsigned char ucPolicy[4];
+        unsigned int uiPolicyLen;
+    }policyVal;
     
     //
-    //get the number of valid entries. Unfortunately this has to be done
-    //in a convoluted fashion where the entries are allocated memory.
-    //sl_WlanGetNetworkList returns the number of valid networks found (up to 20)
+    // make sure the connection policy is not set (so no scan is run in the background)
     //
-    Sl_WlanNetworkEntry_t networks[20];
-    return sl_WlanGetNetworkList(0, 20, networks);
+    ucpolicyOpt = SL_CONNECTION_POLICY(0, 0, 0, 0,0);
+    iRet = sl_WlanPolicySet(SL_POLICY_CONNECTION , ucpolicyOpt, NULL, 0);
+    if(iRet != 0)
+    {
+        return 0;
+    }
+
+    //
+    // set the scan policy for ten seconds. This starts the scan.
+    //
+    policyVal.uiPolicyLen = 10;
+    iRet = sl_WlanPolicySet(SL_POLICY_SCAN , SL_SCAN_POLICY(1), (UINT8*)(policyVal.ucPolicy), sizeof(policyVal));
+    if(iRet != 0)
+    {
+        return 0;
+    }
+    delay(300);
+    
+    //
+    // get scan results - all 20 entries in one transaction
+    //
+    network_count = sl_WlanGetNetworkList(0, (unsigned char)WLAN_SCAN_COUNT, &found_networks[0]);
+    
+    //
+    // disable scan
+    //
+    ucpolicyOpt = SL_SCAN_POLICY(0);
+    sl_WlanPolicySet(SL_POLICY_SCAN , ucpolicyOpt, NULL, 0);
+    
+    return network_count;
     
 }
 
@@ -517,15 +600,11 @@ char* WiFiClass::SSID(uint8_t networkItem)
     }
     //
     //get the network list and return the ssid of the requested index
-    //!!This won't work, right? Because the networks array is allocated for the
-    //!!life of this function and becomes garbage once the function returns
     //
-    Sl_WlanNetworkEntry_t networks[20];
-    int networkCount = sl_WlanGetNetworkList(0, 20, networks);
-    if (networkItem >= networkCount) {
+    if (networkItem >= network_count) {
         return NULL;
     }
-    return (char*)networks[networkItem].ssid;
+    return (char*)found_networks[networkItem].ssid;
     
 }
 
@@ -537,12 +616,10 @@ uint8_t WiFiClass::encryptionType(uint8_t networkItem)
     //
     //get the network list and pull out the security type of the requested item
     //
-    Sl_WlanNetworkEntry_t networks[20];
-    int networkCount = sl_WlanGetNetworkList(0, 20, networks);
-    if (networkItem >= networkCount) {
+    if (networkItem >= network_count) {
         return 0;
     }
-    uint8_t security = networks[networkItem].sec_type;
+    uint8_t security = found_networks[networkItem].sec_type;
     
     //
     //the security type returned by simplelink has to be matched
@@ -568,12 +645,10 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
     //
     //get the network list and pull out the security type of the requested item
     //
-    Sl_WlanNetworkEntry_t networks[20];
-    int networkCount = sl_WlanGetNetworkList(0, 20, networks);
-    if (networkItem >= networkCount) {
+    if (networkItem >= network_count) {
         return 0;
     }
-    return (int32_t)networks[networkItem].rssi;
+    return (int32_t)found_networks[networkItem].rssi;
 }
 
 
