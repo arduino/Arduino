@@ -53,8 +53,7 @@ extern "C" {
 volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 bool WiFiClass::_initialized = false;
 
-Sl_WlanNetworkEntry_t WiFiClass::found_networks[20];
-int WiFiClass::network_count = 0;
+volatile int WiFiClass::network_count = 0;
 
 
 //
@@ -72,7 +71,13 @@ int16_t WiFiClass::_handleArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 
+//
+//Because the library returns strings quite often, this buffer
+//is used to hold the output.
+//
+char WiFiClass::string_output_buffer[MAX_SSID_LEN];
 
+//--tested, working--//
 WiFiClass::WiFiClass()
 {
     //
@@ -82,9 +87,9 @@ WiFiClass::WiFiClass()
     for (i = 0; i < MAX_SOCK_NUM; i++) {
         _handleArray[i] = _portArray[i] = _typeArray[i] = -1;
     }
-    memset(found_networks, 0, sizeof(found_networks));
 }
 
+//--tested, working--//
 bool WiFiClass::init()
 {
     //
@@ -148,7 +153,8 @@ char* WiFiClass::firmwareVersion()
     //
     //underlying simplelink api is version 0.5 as of June 12th
     //
-    return "SimpleLink SDK 0.5";
+    strcpy(string_output_buffer, "SimpleLink SDK 0.5");
+    return string_output_buffer;
 }
 
 int WiFiClass::begin(char* ssid)
@@ -228,6 +234,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     
 }
 
+//--tested, working--//
 int WiFiClass::begin(char* ssid, char *passphrase)
 {
     //
@@ -355,6 +362,7 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     
 }
 
+
 void WiFiClass::setDNS(IPAddress dns_server1)
 {
     if (!_initialized) {
@@ -374,6 +382,7 @@ void WiFiClass::setDNS(IPAddress dns_server1)
     config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server1[0], dns_server1[1], dns_server1[2], dns_server1[3]);
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
 }
+
 
 //!!Not supported. Only set the dns server using the first address!!//
 void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
@@ -455,6 +464,7 @@ IPAddress WiFiClass::gatewayIP()
     return ipRet;
 }
 
+//--tested, working--//
 char* WiFiClass::SSID()
 {
     if (!_initialized) {
@@ -495,59 +505,14 @@ uint8_t WiFiClass::encryptionType()
     return 0;
 }
 
+//--tested, working--//
 int8_t WiFiClass::scanNetworks()
 {
     if (!_initialized) {
         init();
     }
-//    
-//    //
-//    //some important variables to be used
-//    //
-//    uint8_t policy;
-//    int iRet;
-//    union {
-//        uint8_t policy[4];
-//        uint16_t policyLength;
-//    }policyVal;
-//    
-//    //
-//    //disconnect from the network to be able to scan and clear connection policy
-//    //
-//    sl_WlanDisconnect();
-//    policy = SL_CONNECTION_POLICY(0,0,0,0,0);
-//    iRet = sl_WlanPolicySet(SL_POLICY_CONNECTION, policy, NULL, 0);
-//    if (iRet != 0) {
-//        return 0;
-//    }
-//    
-//    //
-//    //set the policy to scan and for 10 seconds. This starts the scan
-//    //I know this doesn't make much sense... see scan_policy example in SDK
-//    //
-//    policy = SL_SCAN_POLICY(1);
-//    unsigned long seconds = 30;
-//    iRet = sl_WlanPolicySet(SL_POLICY_SCAN, policy, (unsigned char *)&seconds, sizeof(seconds));
-//    if (iRet != 0) {
-//        return 0;
-//    }
-//    
-//    //
-//    //wait for 10 seconds to scan to finish, then get the length
-//    //
-//    delay(10000);
-//    memset(found_networks, 0, sizeof(found_networks));
-//    network_count = sl_WlanGetNetworkList(0, 20, found_networks);
-//    
-//    //
-//    //the scan is done, so disable further scanning
-//    //
-//    policy = SL_SCAN_POLICY(0);
-//    sl_WlanPolicySet(SL_POLICY_SCAN , policy, NULL, 0);
-//    
-//    return network_count;
 
-    int WLAN_SCAN_COUNT = 20;
+    const int WLAN_SCAN_COUNT = 20;
     int iRet;
     
     unsigned char ucpolicyOpt;
@@ -580,8 +545,10 @@ int8_t WiFiClass::scanNetworks()
     
     //
     // get scan results - all 20 entries in one transaction
+    // this array isn't actually used, but you have to do this to get the count
     //
-    network_count = sl_WlanGetNetworkList(0, (unsigned char)WLAN_SCAN_COUNT, &found_networks[0]);
+    Sl_WlanNetworkEntry_t found_networks[WLAN_SCAN_COUNT];
+    network_count = sl_WlanGetNetworkList(0, (unsigned char)WLAN_SCAN_COUNT, found_networks);
     
     //
     // disable scan
@@ -593,6 +560,7 @@ int8_t WiFiClass::scanNetworks()
     
 }
 
+//--tested, working--//
 char* WiFiClass::SSID(uint8_t networkItem)
 {
     if (!_initialized) {
@@ -604,10 +572,20 @@ char* WiFiClass::SSID(uint8_t networkItem)
     if (networkItem >= network_count) {
         return NULL;
     }
-    return (char*)found_networks[networkItem].ssid;
+    
+    //
+    //fetch all 20 items. For some reason, fetching a signle item doesn't work
+    //
+    Sl_WlanNetworkEntry_t netInfo[network_count];
+    memset(&netInfo, 0, sizeof(netInfo));
+    sl_WlanGetNetworkList(0, network_count, (Sl_WlanNetworkEntry_t*)&netInfo);
+
+    strcpy(string_output_buffer, (const char*)netInfo[networkItem].ssid);
+    return  string_output_buffer;
     
 }
 
+//--tested, working--//
 uint8_t WiFiClass::encryptionType(uint8_t networkItem)
 {
     if (!_initialized) {
@@ -619,7 +597,15 @@ uint8_t WiFiClass::encryptionType(uint8_t networkItem)
     if (networkItem >= network_count) {
         return 0;
     }
-    uint8_t security = found_networks[networkItem].sec_type;
+
+    //
+    //fetch all 20 items. For some reason, fetching a signle item doesn't work
+    //
+    Sl_WlanNetworkEntry_t netInfo[network_count];
+    memset(&netInfo, 0, sizeof(netInfo));
+    sl_WlanGetNetworkList(0, network_count, (Sl_WlanNetworkEntry_t*)&netInfo);
+    
+    uint8_t security = netInfo[networkItem].sec_type;
     
     //
     //the security type returned by simplelink has to be matched
@@ -637,6 +623,7 @@ uint8_t WiFiClass::encryptionType(uint8_t networkItem)
     }
 }
 
+//--tested, working--//
 int32_t WiFiClass::RSSI(uint8_t networkItem)
 {
     if (!_initialized) {
@@ -648,10 +635,18 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
     if (networkItem >= network_count) {
         return 0;
     }
-    return (int32_t)found_networks[networkItem].rssi;
+    
+    //
+    //fetch all 20 items. For some reason, fetching a signle item doesn't work
+    //
+    Sl_WlanNetworkEntry_t netInfo[network_count];
+    memset(&netInfo, 0, sizeof(netInfo));
+    sl_WlanGetNetworkList(0, network_count, (Sl_WlanNetworkEntry_t*)&netInfo);
+    
+    return (int32_t)netInfo[networkItem].rssi;
 }
 
-
+//--tested, working--//
 uint8_t WiFiClass::status()
 {
     _SlNonOsMainLoopTask();
