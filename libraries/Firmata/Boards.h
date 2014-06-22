@@ -336,27 +336,27 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define TOTAL_ANALOG_PINS       13
 #define TOTAL_PINS              48 // should be multiple of 8 for NodeJS Firmata
 #define VERSION_BLINK_PIN       44
-#define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) <= 44 && (p)!=1 && (p)!=21 && (p)!=22 && (p)!=20 && (p)!=16 )
+#define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) <= 44 && (p)!=16 && (p)!=20 && (p)!=21 && (p)!=22 )
 #define IS_PIN_ANALOG(p)        ((p) == 2 || (p) == 6 || \
 								 (p)==23 || (p)==24 || (p)==25 || (p)==26 || (p)==27 || (p)==28 )
-#define IS_PIN_PWM(p)           ( ((p)>=35 && (p)<=40) || (p)==19 )
-#define IS_PIN_SERVO(p)         IS_PIN_DIGITAL(p)
+#define IS_PIN_PWM(p)           ( (p)==12 || (p)==19 || ((p)>=35 && (p)<=40) )
+#define IS_PIN_SERVO(p)         IS_PIN_PWM(p)
 #define IS_PIN_I2C(p)           ((p) == 14 || (p) == 15)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p)>=23 && (p)<=27)?((p)-23):(((p)==2)?(5):((p)==28?(12):((p)==6?6:10) ))
-#define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
+#define PIN_TO_PWM(p)           (p)
 #define PIN_TO_SERVO(p)         (p)
-#define TOTAL_PORTS				10
+//#define TOTAL_PORTS				10
 
 #elif defined(__MSP430FR5969__)
 //#error "__MSP430FR5969__"		//used to check preprocessing
 #define TOTAL_ANALOG_PINS       13
 #define TOTAL_PINS              32 // should be multiple of 8 for NodeJS Firmata
 #define VERSION_BLINK_PIN       26
-#define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) < 20 && (p)!=16 && (p)!=17)
+#define IS_PIN_DIGITAL(p)       ( ((p)>=2 && (p) < 20 && (p)!=16 && (p)!=17) || (p)==25 || (p)==26 )
 #define IS_PIN_ANALOG(p)        ((p) == 2 || (p) == 5 || (p)==11 || (p)==12 || (p)==13 || (p)==18 || (p)==19)
 #define IS_PIN_PWM(p)           ((p)>=3 && (p) < 20 && (p)!=16 && (p)!=17 && (p)!=5)
-#define IS_PIN_SERVO(p)         IS_PIN_DIGITAL(p)
+#define IS_PIN_SERVO(p)         IS_PIN_PWM(p)
 #define IS_PIN_I2C(p)           ((p) == 14 || (p) == 15)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p)==2?10:\
