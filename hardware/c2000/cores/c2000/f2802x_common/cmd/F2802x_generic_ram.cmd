@@ -15,8 +15,8 @@
 //          another memory map file which has more memory defined.
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release:  $
+// $Release Date:  $
 //###########################################################################
 */
 
@@ -83,7 +83,7 @@ PAGE 0 :
 
    BEGIN      : origin = 0x000000, length = 0x000002
    RAMM0      : origin = 0x000050, length = 0x0003B0
-   RAML0      : origin = 0x008000, length = 0x000400
+   RAML0     : origin = 0x008000, length = 0x000800
    RESET      : origin = 0x3FFFC0, length = 0x000002
 
    IQTABLES   : origin = 0x3FE000, length = 0x000B50     /* IQ Math Tables in Boot ROM */
@@ -107,11 +107,11 @@ SECTIONS
       The codestart section (found in DSP28_CodeStartBranch.asm)
       re-directs execution to the start of user code.  */
    codestart        : >  BEGIN,              PAGE = 0
-   ramfuncs         : >> RAMM0 | RAML0,      PAGE = 0
+   ramfuncs         : >> RAMM0 | RAML0      PAGE = 0
    .text            : >> RAMM0 | RAML0,      PAGE = 0
-   .cinit           : >  RAMM0 | RAML0,      PAGE = 0
-   .pinit           : >  RAMM0 | RAML0,      PAGE = 0
-   .switch          : >> RAMM0 | RAML0,      PAGE = 0
+   .cinit           : > RAMM0,     PAGE = 0
+   .pinit           : >> RAMM0 | RAML0,     PAGE = 0
+   .switch          : > RAMM0,     PAGE = 0
    .reset           : >  RESET,              PAGE = 0, TYPE = DSECT /* not used, */
 
    .stack           : > RAMM1,     PAGE = 1
@@ -119,7 +119,7 @@ SECTIONS
    .econst          : > RAMM1,     PAGE = 1
    .esysmem         : > RAMM1,     PAGE = 1
 
-   IQmath           : > RAMM0 | RAML0,      PAGE = 0
+   IQmath           : > RAML0,     PAGE = 0
    IQmathTables     : > IQTABLES,  PAGE = 0, TYPE = NOLOAD
 
   /* Uncomment the section below if calling the IQNexp() or IQexp()

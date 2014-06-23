@@ -1,14 +1,13 @@
-// TI File $Revision: /main/4 $
-// Checkin $Date: October 16, 2009   15:43:43 $
+
 //###########################################################################
 //
-// FILE:    DSP2802x_GlobalVariableDefs.c
+// FILE:    F2802x_GlobalVariableDefs.c
 //
-// TITLE:   DSP2802x Global Variables and Data Section Pragmas.
+// TITLE:   F2802x Global Variables and Data Section Pragmas.
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
 #include "F2802x_Device.h"     // DSP2802x Headerfile Include File
@@ -199,7 +198,7 @@ volatile struct PIE_CTRL_REGS PieCtrlRegs;
 #else
 #pragma DATA_SECTION(PieVectTable,"PieVectTableFile");
 #endif
-struct PIE_VECT_TABLE PieVectTable;
+volatile struct PIE_VECT_TABLE PieVectTable;
 
 //----------------------------------------
 #ifdef __cplusplus
@@ -256,7 +255,7 @@ volatile struct XINTRUPT_REGS XIntruptRegs;
 #else
 #pragma DATA_SECTION(EmuKey,"EmuKeyVar");
 #endif
-Uint16 EmuKey;
+uint16_t EmuKey;
 
 //----------------------------------------
 #ifdef __cplusplus
@@ -264,7 +263,7 @@ Uint16 EmuKey;
 #else
 #pragma DATA_SECTION(EmuBMode,"EmuBModeVar");
 #endif
-Uint16 EmuBMode;
+uint16_t EmuBMode;
 
 //----------------------------------------
 #ifdef __cplusplus
@@ -272,7 +271,7 @@ Uint16 EmuBMode;
 #else
 #pragma DATA_SECTION(Flash_CPUScaleFactor, "FlashScalingVar");
 #endif
-Uint32 Flash_CPUScaleFactor;
+uint32_t Flash_CPUScaleFactor;
 
 //----------------------------------------
 #ifdef __cplusplus

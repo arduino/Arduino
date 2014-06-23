@@ -13,8 +13,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -356,63 +356,42 @@ typedef enum
 typedef enum
 {
     ADC_SocSampleWindow_7_cycles=6,         //!< Denotes an SOC sample window of 7 cycles
-    ADC_SocSampleWindow_8_cycles,           //!< Denotes an SOC sample window of 8 cycles
-    ADC_SocSampleWindow_9_cycles,           //!< Denotes an SOC sample window of 9 cycles
-    ADC_SocSampleWindow_10_cycles,          //!< Denotes an SOC sample window of 10 cycles
-    ADC_SocSampleWindow_11_cycles,          //!< Denotes an SOC sample window of 11 cycles
-    ADC_SocSampleWindow_12_cycles,          //!< Denotes an SOC sample window of 12 cycles
-    ADC_SocSampleWindow_13_cycles,          //!< Denotes an SOC sample window of 13 cycles
-    ADC_SocSampleWindow_14_cycles,          //!< Denotes an SOC sample window of 14 cycles
-    ADC_SocSampleWindow_15_cycles,          //!< Denotes an SOC sample window of 15 cycles
-    ADC_SocSampleWindow_16_cycles,          //!< Denotes an SOC sample window of 16 cycles
-    ADC_SocSampleWindow_17_cycles,          //!< Denotes an SOC sample window of 17 cycles
-    ADC_SocSampleWindow_18_cycles,          //!< Denotes an SOC sample window of 18 cycles
-    ADC_SocSampleWindow_19_cycles,          //!< Denotes an SOC sample window of 19 cycles
-    ADC_SocSampleWindow_20_cycles,          //!< Denotes an SOC sample window of 20 cycles
-    ADC_SocSampleWindow_21_cycles,          //!< Denotes an SOC sample window of 21 cycles
-    ADC_SocSampleWindow_22_cycles,          //!< Denotes an SOC sample window of 22 cycles
-    ADC_SocSampleWindow_23_cycles,          //!< Denotes an SOC sample window of 23 cycles
-    ADC_SocSampleWindow_24_cycles,          //!< Denotes an SOC sample window of 24 cycles
-    ADC_SocSampleWindow_25_cycles,          //!< Denotes an SOC sample window of 25 cycles
-    ADC_SocSampleWindow_26_cycles,          //!< Denotes an SOC sample window of 26 cycles
-    ADC_SocSampleWindow_27_cycles,          //!< Denotes an SOC sample window of 27 cycles
-    ADC_SocSampleWindow_28_cycles,          //!< Denotes an SOC sample window of 28 cycles
-    ADC_SocSampleWindow_29_cycles,          //!< Denotes an SOC sample window of 29 cycles
-    ADC_SocSampleWindow_30_cycles,          //!< Denotes an SOC sample window of 30 cycles
-    ADC_SocSampleWindow_31_cycles,          //!< Denotes an SOC sample window of 31 cycles
-    ADC_SocSampleWindow_32_cycles,          //!< Denotes an SOC sample window of 32 cycles
-    ADC_SocSampleWindow_33_cycles,          //!< Denotes an SOC sample window of 33 cycles
-    ADC_SocSampleWindow_34_cycles,          //!< Denotes an SOC sample window of 34 cycles
-    ADC_SocSampleWindow_35_cycles,          //!< Denotes an SOC sample window of 35 cycles
-    ADC_SocSampleWindow_36_cycles,          //!< Denotes an SOC sample window of 36 cycles
-    ADC_SocSampleWindow_37_cycles,          //!< Denotes an SOC sample window of 37 cycles
-    ADC_SocSampleWindow_38_cycles,          //!< Denotes an SOC sample window of 38 cycles
-    ADC_SocSampleWindow_39_cycles,          //!< Denotes an SOC sample window of 39 cycles
-    ADC_SocSampleWindow_40_cycles,          //!< Denotes an SOC sample window of 40 cycles
-    ADC_SocSampleWindow_41_cycles,          //!< Denotes an SOC sample window of 41 cycles
-    ADC_SocSampleWindow_42_cycles,          //!< Denotes an SOC sample window of 42 cycles
-    ADC_SocSampleWindow_43_cycles,          //!< Denotes an SOC sample window of 43 cycles
-    ADC_SocSampleWindow_44_cycles,          //!< Denotes an SOC sample window of 44 cycles
-    ADC_SocSampleWindow_45_cycles,          //!< Denotes an SOC sample window of 45 cycles
-    ADC_SocSampleWindow_46_cycles,          //!< Denotes an SOC sample window of 46 cycles
-    ADC_SocSampleWindow_47_cycles,          //!< Denotes an SOC sample window of 47 cycles
-    ADC_SocSampleWindow_48_cycles,          //!< Denotes an SOC sample window of 48 cycles
-    ADC_SocSampleWindow_49_cycles,          //!< Denotes an SOC sample window of 49 cycles
-    ADC_SocSampleWindow_50_cycles,          //!< Denotes an SOC sample window of 50 cycles
-    ADC_SocSampleWindow_51_cycles,          //!< Denotes an SOC sample window of 51 cycles
-    ADC_SocSampleWindow_52_cycles,          //!< Denotes an SOC sample window of 52 cycles
-    ADC_SocSampleWindow_53_cycles,          //!< Denotes an SOC sample window of 53 cycles
-    ADC_SocSampleWindow_54_cycles,          //!< Denotes an SOC sample window of 54 cycles
-    ADC_SocSampleWindow_55_cycles,          //!< Denotes an SOC sample window of 55 cycles
-    ADC_SocSampleWindow_56_cycles,          //!< Denotes an SOC sample window of 56 cycles
-    ADC_SocSampleWindow_57_cycles,          //!< Denotes an SOC sample window of 57 cycles
-    ADC_SocSampleWindow_58_cycles,          //!< Denotes an SOC sample window of 58 cycles
-    ADC_SocSampleWindow_59_cycles,          //!< Denotes an SOC sample window of 59 cycles
-    ADC_SocSampleWindow_60_cycles,          //!< Denotes an SOC sample window of 60 cycles
-    ADC_SocSampleWindow_61_cycles,          //!< Denotes an SOC sample window of 61 cycles
-    ADC_SocSampleWindow_62_cycles,          //!< Denotes an SOC sample window of 62 cycles
-    ADC_SocSampleWindow_63_cycles,          //!< Denotes an SOC sample window of 63 cycles
-    ADC_SocSampleWindow_64_cycles           //!< Denotes an SOC sample window of 64 cycles
+    ADC_SocSampleWindow_8_cycles=7,           //!< Denotes an SOC sample window of 8 cycles
+    ADC_SocSampleWindow_9_cycles=8,           //!< Denotes an SOC sample window of 9 cycles
+    ADC_SocSampleWindow_10_cycles=9,          //!< Denotes an SOC sample window of 10 cycles
+    ADC_SocSampleWindow_11_cycles=10,          //!< Denotes an SOC sample window of 11 cycles
+    ADC_SocSampleWindow_12_cycles=11,          //!< Denotes an SOC sample window of 12 cycles
+    ADC_SocSampleWindow_13_cycles=12,          //!< Denotes an SOC sample window of 13 cycles
+    ADC_SocSampleWindow_14_cycles=13,          //!< Denotes an SOC sample window of 14 cycles
+    ADC_SocSampleWindow_15_cycles=14,          //!< Denotes an SOC sample window of 15 cycles
+    ADC_SocSampleWindow_16_cycles=15,          //!< Denotes an SOC sample window of 16 cycles
+    ADC_SocSampleWindow_23_cycles=22,          //!< Denotes an SOC sample window of 23 cycles
+    ADC_SocSampleWindow_24_cycles=23,          //!< Denotes an SOC sample window of 24 cycles
+    ADC_SocSampleWindow_25_cycles=24,          //!< Denotes an SOC sample window of 25 cycles
+    ADC_SocSampleWindow_26_cycles=25,          //!< Denotes an SOC sample window of 26 cycles
+    ADC_SocSampleWindow_27_cycles=26,          //!< Denotes an SOC sample window of 27 cycles
+    ADC_SocSampleWindow_28_cycles=27,          //!< Denotes an SOC sample window of 28 cycles
+    ADC_SocSampleWindow_29_cycles=28,          //!< Denotes an SOC sample window of 29 cycles
+    ADC_SocSampleWindow_35_cycles=34,          //!< Denotes an SOC sample window of 35 cycles
+    ADC_SocSampleWindow_36_cycles=35,          //!< Denotes an SOC sample window of 36 cycles
+    ADC_SocSampleWindow_37_cycles=36,          //!< Denotes an SOC sample window of 37 cycles
+    ADC_SocSampleWindow_38_cycles=37,          //!< Denotes an SOC sample window of 38 cycles
+    ADC_SocSampleWindow_39_cycles=38,          //!< Denotes an SOC sample window of 39 cycles
+    ADC_SocSampleWindow_40_cycles=39,          //!< Denotes an SOC sample window of 40 cycles
+    ADC_SocSampleWindow_41_cycles=40,          //!< Denotes an SOC sample window of 41 cycles
+    ADC_SocSampleWindow_42_cycles=41,          //!< Denotes an SOC sample window of 42 cycles
+    ADC_SocSampleWindow_48_cycles=47,          //!< Denotes an SOC sample window of 48 cycles
+    ADC_SocSampleWindow_49_cycles=48,          //!< Denotes an SOC sample window of 49 cycles
+    ADC_SocSampleWindow_50_cycles=49,          //!< Denotes an SOC sample window of 50 cycles
+    ADC_SocSampleWindow_51_cycles=50,          //!< Denotes an SOC sample window of 51 cycles
+    ADC_SocSampleWindow_52_cycles=51,          //!< Denotes an SOC sample window of 52 cycles
+    ADC_SocSampleWindow_53_cycles=52,          //!< Denotes an SOC sample window of 53 cycles
+    ADC_SocSampleWindow_54_cycles=53,          //!< Denotes an SOC sample window of 54 cycles
+    ADC_SocSampleWindow_55_cycles=54,          //!< Denotes an SOC sample window of 55 cycles   
+    ADC_SocSampleWindow_61_cycles=60,          //!< Denotes an SOC sample window of 61 cycles
+    ADC_SocSampleWindow_62_cycles=61,          //!< Denotes an SOC sample window of 62 cycles
+    ADC_SocSampleWindow_63_cycles=62,          //!< Denotes an SOC sample window of 63 cycles
+    ADC_SocSampleWindow_64_cycles=63           //!< Denotes an SOC sample window of 64 cycles
 } ADC_SocSampleWindow_e;
 
 

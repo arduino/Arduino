@@ -2,17 +2,17 @@
 // Checkin $Date: September 19, 2008   14:25:33 $
 //###########################################################################
 //
-// FILE:   DSP2802x_Comp.h
+// FILE:   F2802x_Comp.h
 //
-// TITLE:  DSP2802x Device Comparator Register Definitions
+// TITLE:  F2802x Device Comparator Register Definitions
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
-#ifndef DSP2802x_COMP_H
-#define DSP2802x_COMP_H
+#ifndef F2802x_COMP_H
+#define F2802x_COMP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,37 +23,37 @@ extern "C" {
 //
 
 struct COMPCTL_BITS {            // bit       description
-    Uint16   COMPDACEN:1;        // 0         Comparator/DAC  Enable
-    Uint16   COMPSOURCE:1;       // 1         Source select for comparator inverting input
-    Uint16   CMPINV:1;           // 2         Invert select for Comparator
-    Uint16   QUALSEL:5;          // 7:03      Qualification Period for synchronized output of the comparator
-    Uint16   SYNCSEL:1;          // 8         Synchronization select for output of the comparator
-    Uint16   rsvd1:7;            // 15:09     reserved
+    uint16_t   COMPDACEN:1;        // 0         Comparator/DAC  Enable
+    uint16_t   COMPSOURCE:1;       // 1         Source select for comparator inverting input
+    uint16_t   CMPINV:1;           // 2         Invert select for Comparator
+    uint16_t   QUALSEL:5;          // 7:03      Qualification Period for synchronized output of the comparator
+    uint16_t   SYNCSEL:1;          // 8         Synchronization select for output of the comparator
+    uint16_t   rsvd1:7;            // 15:09     reserved
 };
 
 union COMPCTL_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct COMPCTL_BITS            bit;
 };
 
 struct COMPSTS_BITS {            // bit       description
-    Uint16   COMPSTS:1;          // 0         Logical latched value of the comparator
-    Uint16   rsvd1:15;           // 15:01     reserved
+    uint16_t   COMPSTS:1;          // 0         Logical latched value of the comparator
+    uint16_t   rsvd1:15;           // 15:01     reserved
 };
 
 union COMPSTS_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct COMPSTS_BITS            bit;
 };
 
 
 struct DACVAL_BITS {             // bit       description
-    Uint16   DACVAL:10;          // 9:00      DAC Value bit
-    Uint16   rsvd1:6;            // 15:10     reserved
+    uint16_t   DACVAL:10;          // 9:00      DAC Value bit
+    uint16_t   rsvd1:6;            // 15:10     reserved
 };
 
 union DACVAL_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct DACVAL_BITS             bit;
 };
 
@@ -63,11 +63,11 @@ union DACVAL_REG  {
 
 struct COMP_REGS {
     union  COMPCTL_REG         COMPCTL;
-    Uint16                     rsvd1;
+    uint16_t                     rsvd1;
     union  COMPSTS_REG         COMPSTS;
-    Uint16                     rsvd2[3];
+    uint16_t                     rsvd2[3];
     union  DACVAL_REG          DACVAL;
-    Uint16                     rsvd4[10];
+    uint16_t                     rsvd4[10];
 };
 
 //===========================================================================
@@ -81,7 +81,7 @@ extern volatile struct COMP_REGS Comp2Regs;
 }
 #endif /* extern "C" */
 
-#endif  // end of DSP2802x_COMP_H definition
+#endif  // end of F2802x_COMP_H definition
 
 //===========================================================================
 // End of file

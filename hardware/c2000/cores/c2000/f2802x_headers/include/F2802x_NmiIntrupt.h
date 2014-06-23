@@ -1,18 +1,16 @@
-// TI File $Revision: /main/1 $
-// Checkin $Date: August 14, 2008   16:55:50 $
 //###########################################################################
 //
-// FILE:   DSP2802x_NmiIntrupt.h
+// FILE:   F2802x_NmiIntrupt.h
 //
-// TITLE:  DSP2802x Device NMI Interrupt Register Definitions
+// TITLE:  F2802x Device NMI Interrupt Register Definitions
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
-#ifndef DSP2802x_NMIINTRUPT_H
-#define DSP2802x_NMIINTRUPT_H
+#ifndef F2802x_NMIINTRUPT_H
+#define F2802x_NMIINTRUPT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,46 +21,46 @@ extern "C" {
 //
 
 struct NMICFG_BITS {             // bits      description
-    Uint16   rsvd1:1;            // 0         reserved
-    Uint16   CLOCKFAIL:1;        // 1         Fail Interrupt Enable Bits
-    Uint16   rsvd2:14;           // 15:02     reserved
+    uint16_t   rsvd1:1;            // 0         reserved
+    uint16_t   CLOCKFAIL:1;        // 1         Fail Interrupt Enable Bits
+    uint16_t   rsvd2:14;           // 15:02     reserved
 };
 
 union NMICFG_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct NMICFG_BITS             bit;
 };
 
 struct NMIFLG_BITS {             // bits      description
-    Uint16   NMIINT:1;           // 0         NMI Interrupt Flag
-    Uint16   CLOCKFAIL:1;        // 1         Clock Fail Interrupt Flags
-    Uint16   rsvd1:14;           // 15:02     reserved
+    uint16_t   NMIINT:1;           // 0         NMI Interrupt Flag
+    uint16_t   CLOCKFAIL:1;        // 1         Clock Fail Interrupt Flags
+    uint16_t   rsvd1:14;           // 15:02     reserved
 };
 
 union NMIFLG_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct NMIFLG_BITS             bit;
 };
 
 struct NMIFLGCLR_BITS {          // bits      description
-    Uint16   NMIINT:1;           // 0         NMIINT Flag Clear Bit
-    Uint16   CLOCKFAIL:1;        // 1         CLOCKFAIL Flag Clear Bit
-    Uint16   rsvd1:14;           // 15:02     reserved
+    uint16_t   NMIINT:1;           // 0         NMIINT Flag Clear Bit
+    uint16_t   CLOCKFAIL:1;        // 1         CLOCKFAIL Flag Clear Bit
+    uint16_t   rsvd1:14;           // 15:02     reserved
 };
 
 union NMIFLGCLR_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct NMIFLGCLR_BITS          bit;
 };
 
 struct NMIFLGFRC_BITS {          // bits      description
-    Uint16   rsvd1:1;            // 0         reserved
-    Uint16   CLOCKFAIL:1;        // 1         CLOCKFAIL Flag Force Bit
-    Uint16   rsvd2:14;           // 15:02     reserved
+    uint16_t   rsvd1:1;            // 0         reserved
+    uint16_t   CLOCKFAIL:1;        // 1         CLOCKFAIL Flag Force Bit
+    uint16_t   rsvd2:14;           // 15:02     reserved
 };
 
 union NMIFLGFRC_REG  {
-    Uint16                         all;
+    uint16_t                         all;
     struct NMIFLGFRC_BITS          bit;
 };
 
@@ -75,9 +73,9 @@ struct NMIINTRUPT_REGS {
     union  NMIFLG_REG          NMIFLG;
     union  NMIFLGCLR_REG       NMIFLGCLR;
     union  NMIFLGFRC_REG       NMIFLGFRC;
-    Uint16                     NMIWDCNT;
-    Uint16                     NMIWDPRD;
-    Uint16                     rsvd1[10];
+    uint16_t                     NMIWDCNT;
+    uint16_t                     NMIWDPRD;
+    uint16_t                     rsvd1[10];
 };
 
 //===========================================================================
@@ -90,7 +88,7 @@ extern volatile struct NMIINTRUPT_REGS NmiIntruptRegs;
 }
 #endif /* extern "C" */
 
-#endif  // end of DSP2802x_NMIINTRUPT_H definition
+#endif  // end of F2802x_NMIINTRUPT_H definition
 
 //===========================================================================
 // End of file

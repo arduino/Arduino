@@ -9,8 +9,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -293,8 +293,19 @@ void FLASH_setup(FLASH_Handle flashHandle)
     //Minimum waitstates required for the flash operating
     //at a given CPU rate must be characterized by TI.
     //Refer to the datasheet for the latest information.
+	#if (CPU_FRQ_60MHZ)
+	//Set the Paged Waitstate for the Flash
+	FLASH_setNumPagedReadWaitStates(flashHandle, FLASH_NumPagedWaitStates_2);
+	//   FlashRegs.FBANKWAIT.bit.PAGEWAIT = 2;
 
-    #if (CPU_FRQ_50MHZ)
+	//Set the Random Waitstate for the Flash
+	FLASH_setNumRandomReadWaitStates(flashHandle, FLASH_NumRandomWaitStates_2);
+	//   FlashRegs.FBANKWAIT.bit.RANDWAIT = 2;
+
+	//Set the Waitstate for the OTP
+	FLASH_setOtpWaitStates(flashHandle, FLASH_NumOtpWaitStates_2);
+	//   FlashRegs.FOTPWAIT.bit.OTPWAIT = 2;
+    #elif (CPU_FRQ_50MHZ)
     //Set the Paged Waitstate for the Flash
     FLASH_setNumPagedReadWaitStates(flashHandle, FLASH_NumPagedWaitStates_2);
 //   FlashRegs.FBANKWAIT.bit.PAGEWAIT = 2;
@@ -331,7 +342,7 @@ void FLASH_setup(FLASH_Handle flashHandle)
     //Force a pipeline flush to ensure that the write to
     //the last register configured occurs before returning.
 
-    asm(" RPT #7 || NOP");
+    __asm(" RPT #7 || NOP");
     
 }
 

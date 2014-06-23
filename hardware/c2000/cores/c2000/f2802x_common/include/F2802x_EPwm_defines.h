@@ -5,8 +5,8 @@
 // TITLE:  #defines used in EPwm examples
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
 #ifndef DSP2802x_EPWM_DEFINES_H

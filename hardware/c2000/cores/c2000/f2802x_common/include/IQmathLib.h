@@ -45,8 +45,8 @@
 //      |             |       |    of MAX_IQ_NEG to LONG_MIN and MAX_IQ_POS
 //      |             |       |    to LONG_MAX
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 //
 // User needs to configure "MATH_TYPE" and "GLOBAL_Q" values:

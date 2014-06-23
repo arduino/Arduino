@@ -16,14 +16,6 @@ const uint8_t  _commandLCD    = 0x00;
 const uint8_t  _dataLCD       = 0x01;
 const uint8_t  _dataRepeatLCD = 0x02;
 
-uint8_t _pinReset;
-uint8_t _pinSerialData;
-uint8_t _pinBacklight;
-uint8_t _pinChipSelect;
-uint8_t _pinDataCommand;
-uint8_t _pinSerialClock;
-uint8_t _pinPushButton;
-
 // Core library - MCU-based
 #if defined(ENERGIA)
 #include "Energia.h"
