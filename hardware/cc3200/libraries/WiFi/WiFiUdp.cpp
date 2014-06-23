@@ -27,8 +27,6 @@ extern "C" {
 
 #include "WiFi.h"
 #include "WiFiUdp.h"
-#include "WiFiClient.h"
-#include "WiFiServer.h"
 
 WiFiUDP::WiFiUDP() : _socketIndex(NO_SOCKET_AVAIL)
 {
@@ -42,6 +40,7 @@ WiFiUDP::WiFiUDP() : _socketIndex(NO_SOCKET_AVAIL)
     tx_fillLevel = 0;
     _remotePort = 0;
     _remoteIP = 0;
+    _socketIndex = NO_SOCKET_AVAIL;
 }
 
 uint8_t WiFiUDP::begin(uint16_t port)
@@ -105,14 +104,21 @@ int WiFiUDP::available()
 void WiFiUDP::stop()
 {
     //
+    //only do the rest of this function if a socket actually exists
+    //
+    if (_socketIndex == NO_SOCKET_AVAIL) {
+        return;
+    }
+    
+    //
     //close the socket and reset any important variables
     //
     flush();
-    sl_Close(_socketHandle);
-    WiFiClass::_handleArray[socketIndex] = -1;
-    WiFiClass::_portArray[socketIndex] = -1;
-    WiFiClass::_typeArray[socketIndex] = -1;
-    _socketHandle = NO_SOCKET_AVAIL;
+    sl_Close(WiFiClass::_handleArray[_socketIndex]);
+    WiFiClass::_handleArray[_socketIndex] = -1;
+    WiFiClass::_portArray[_socketIndex] = -1;
+    WiFiClass::_typeArray[_socketIndex] = -1;
+    _socketIndex = NO_SOCKET_AVAIL;
 }
 
 int WiFiUDP::beginPacket(const char *host, uint16_t port)
@@ -139,7 +145,7 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
     //make sure a port has been created
     //!! this doesn't create a port if one doesn't exist. Is that ok?
     //
-    if (_sock == NO_SOCKET_AVAIL) {
+    if (_socketIndex == NO_SOCKET_AVAIL) {
         return 0;
     }
     
@@ -162,10 +168,21 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
 
 int WiFiUDP::endPacket()
 {
+    int i;
+    int j;
+    int k;
+    //
+    //only do the rest of this function if a socket actually exists
+    //
+    if (_socketIndex == NO_SOCKET_AVAIL) {
+        return 0;
+    }
+
     //
     //fill in the address structure
     //
     SlSockAddrIn_t sendAddress;
+    memset(&sendAddress, 0, sizeof(SlSockAddrIn_t));
     sendAddress.sin_family = SL_AF_INET;
     sendAddress.sin_port = sl_Htons(_sendPort);
     sendAddress.sin_addr.s_addr = sl_Htonl(_sendIP);
@@ -173,8 +190,8 @@ int WiFiUDP::endPacket()
     //
     //use the simplelink library to send the tx buffer
     //
-    
-    int iRet = sl_SendTo(_socketHandle, tx_buf, tx_fillLevel, NULL, (SlSockAddr_t*)&sendAddress, sizeof(SlSockAddrIn_t));
+    int socketHandle = WiFiClass::_handleArray[_socketIndex];
+    int iRet = sl_SendTo(socketHandle, tx_buf, tx_fillLevel, NULL, (SlSockAddr_t*)&sendAddress, sizeof(SlSockAddrIn_t));
     if (iRet < 0) {
         return 0;
     }
@@ -205,7 +222,6 @@ size_t WiFiUDP::write(const uint8_t *buffer, size_t size)
         size = UDP_TX_PACKET_MAX_SIZE - tx_fillLevel;
     }
     
-    
     //
     //copy the appropriate number of bytes into the buffer
     //
@@ -224,7 +240,7 @@ int WiFiUDP::parsePacket()
     //
     //make sure we actually have a socket
     //
-    if (_socketHandle == NO_SOCKET_AVAIL) {
+    if (_socketIndex == NO_SOCKET_AVAIL) {
         return 0;
     }
     
@@ -236,13 +252,15 @@ int WiFiUDP::parsePacket()
     timeout.tv_sec = 0;
     timeout.tv_usec = 10000;
     
+    int socketHandle = WiFiClass::_handleArray[_socketIndex];
+    
     SlFdSet_t readSocketHandles, errorSocketHandles;
     SL_FD_ZERO(&readSocketHandles);
     SL_FD_ZERO(&errorSocketHandles);
-    SL_FD_SET(_socketHandle, &readSocketHandles);
-    SL_FD_SET(_socketHandle, &errorSocketHandles);
+    SL_FD_SET(socketHandle, &readSocketHandles);
+    SL_FD_SET(socketHandle, &errorSocketHandles);
     
-    int iRet = sl_Select(_socketHandle+1, &readSocketHandles, NULL, &errorSocketHandles, &timeout);
+    int iRet = sl_Select(socketHandle+1, &readSocketHandles, NULL, &errorSocketHandles, &timeout);
     if (iRet <= 0) {
         return 0;
     }
@@ -253,7 +271,7 @@ int WiFiUDP::parsePacket()
     //
     SlSockAddrIn_t  address;
     int AddrSize = sizeof(address);
-    int bytes = sl_RecvFrom(_socketHandle, rx_buf, UDP_RX_PACKET_MAX_SIZE, NULL, (SlSockAddr_t*)&address, (SlSocklen_t*)&AddrSize);
+    int bytes = sl_RecvFrom(socketHandle, rx_buf, UDP_RX_PACKET_MAX_SIZE, NULL, (SlSockAddr_t*)&address, (SlSocklen_t*)&AddrSize);
 
     //
     //store the sender's address (sl_HtonX reorders bits to processor order)
@@ -298,7 +316,7 @@ int WiFiUDP::read(unsigned char* buffer, size_t len)
     //copy the requested number of bytes up to the length of the packet
     //
     int bytesCopied = 0;
-    while ((bytesCopied <= len) && (rx_currentIndex < rx_fillLevel)) {
+    while ( (bytesCopied <= len) && (rx_currentIndex < rx_fillLevel) ) {
         buffer[bytesCopied] = rx_buf[rx_currentIndex];
         bytesCopied++;
         rx_currentIndex++;

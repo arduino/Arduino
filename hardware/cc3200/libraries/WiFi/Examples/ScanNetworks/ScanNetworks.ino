@@ -4,10 +4,10 @@
  scans for available Wifi networks using the Wifi shield.
  Every ten seconds, it scans again. It doesn't actually
  connect to any network, so no encryption scheme is specified.
-
+ 
  Circuit:
  * WiFi shield attached
-
+ 
  created 13 July 2010
  by dlf (Metodo2 srl)
  modified 21 Junn 2012
@@ -22,16 +22,7 @@ void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  Serial.println(WiFi.firmwareVersion());
 
   // Print WiFi MAC address:
   printMacAddress();
@@ -98,23 +89,24 @@ void listNetworks() {
 void printEncryptionType(int thisType) {
   // read the encryption type and print out the name:
   switch (thisType) {
-    case ENC_TYPE_WEP:
-      Serial.println("WEP");
-      break;
-    case ENC_TYPE_TKIP:
-      Serial.println("WPA");
-      break;
-    case ENC_TYPE_CCMP:
-      Serial.println("WPA2");
-      break;
-    case ENC_TYPE_NONE:
-      Serial.println("None");
-      break;
-    case ENC_TYPE_AUTO:
-      Serial.println("Auto");
-      break;
+  case ENC_TYPE_WEP:
+    Serial.println("WEP");
+    break;
+  case ENC_TYPE_TKIP:
+    Serial.println("WPA");
+    break;
+  case ENC_TYPE_CCMP:
+    Serial.println("WPA2");
+    break;
+  case ENC_TYPE_NONE:
+    Serial.println("None");
+    break;
+  case ENC_TYPE_AUTO:
+    Serial.println("Auto");
+    break;
   }
 }
+
 
 
 

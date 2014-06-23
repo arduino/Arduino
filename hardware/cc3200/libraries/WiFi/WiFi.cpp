@@ -119,7 +119,7 @@ bool WiFiClass::init()
     //
     if (iRet != ROLE_STA) {
         sl_WlanSetMode(ROLE_STA);
-        sl_Stop(30);
+        sl_Stop(0);
         sl_Start(NULL, NULL, NULL);
     }
     
@@ -384,7 +384,7 @@ void WiFiClass::setDNS(IPAddress dns_server1)
 }
 
 
-//!!Not supported. Only set the dns server using the first address!!//
+//--Not supported? Only set the dns server using the first address--//
 void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
 {
     if (!_initialized) {
@@ -471,11 +471,8 @@ char* WiFiClass::SSID()
         init();
     }
     //
-    //maximum ssid length is 32, however it will be shorter than this
-    //because the simplelink api handles the name oddly this sets
-    //the Nth character to '\0' to make sure the string handles correctly
+    //connected_ssid maintained by wlan event handler (SimpleLinkCallbacks.cpp)
     //
-    
     return (char*)WiFiClass::connected_ssid;
 }
 
@@ -492,6 +489,7 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid)
     return WiFiClass::connected_bssid;
     
 }
+
 
 //!! How to get the current connection??!!//
 int32_t WiFiClass::RSSI()
@@ -525,7 +523,7 @@ int8_t WiFiClass::scanNetworks()
     //
     // make sure the connection policy is not set (so no scan is run in the background)
     //
-    ucpolicyOpt = SL_CONNECTION_POLICY(0, 0, 0, 0,0);
+    ucpolicyOpt = SL_CONNECTION_POLICY(0, 0, 0, 0, 0);
     iRet = sl_WlanPolicySet(SL_POLICY_CONNECTION , ucpolicyOpt, NULL, 0);
     if(iRet != 0)
     {
@@ -618,6 +616,10 @@ uint8_t WiFiClass::encryptionType(uint8_t networkItem)
         return 5;
     } else if (security == SL_SEC_TYPE_OPEN) {
         return 7;
+    } else if (security == SL_SEC_TYPE_WPS_PBC){
+        return 2;
+    } else if (security == SL_SEC_TYPE_WPS_PIN){
+        return 2;
     } else {
         return 8;
     }
@@ -637,7 +639,7 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
     }
     
     //
-    //fetch all 20 items. For some reason, fetching a signle item doesn't work
+    //fetch all 20 items. For some reason, fetching a single item doesn't work
     //
     Sl_WlanNetworkEntry_t netInfo[network_count];
     memset(&netInfo, 0, sizeof(netInfo));
@@ -649,16 +651,17 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
 //--tested, working--//
 uint8_t WiFiClass::status()
 {
-    _SlNonOsMainLoopTask();
     if (!_initialized) {
         init();
     }
     //
     //This class variable is maintained by the slWlanEvenHandler
     //
+    _SlNonOsMainLoopTask();
     return WiFi_status;
 }
 
+//!!--current not working--!!//
 int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
 {
     if (!_initialized) {

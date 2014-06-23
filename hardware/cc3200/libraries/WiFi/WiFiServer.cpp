@@ -33,6 +33,7 @@ extern "C" {
 WiFiServer::WiFiServer(uint16_t port) : _socketIndex(NO_SOCKET_AVAIL)
 {
     _port = port;
+    _socketIndex = NO_SOCKET_AVAIL;
 }
 
 void WiFiServer::begin()
@@ -91,8 +92,10 @@ void WiFiServer::begin()
     //
     //Simplelink api calls are done, so set the object's variables
     //
-    _socketHandle = socketHandle;
-    WiFiClass::_server_port[sock] = _port;
+    _socketIndex = socketIndex;
+    WiFiClass::_handleArray[socketIndex] = socketHandle;
+    WiFiClass::_portArray[socketIndex] = _port;
+    WiFiClass::_typeArray[socketIndex] = TYPE_TCP_SERVER;
 }
 
 WiFiClient WiFiServer::available(byte* status)
@@ -114,9 +117,16 @@ WiFiClient WiFiServer::available(byte* status)
     //
     //get the client handle, if there's a queued client. If no client, return 0
     //
-    int clientHandle = sl_Accept(_socketHandle, (SlSockAddr_t*)&clientAddress, &clientAddressSize);
+    int socketHandle = WiFiClass::_handleArray[_socketIndex];
+    int clientHandle = sl_Accept(socketHandle, (SlSockAddr_t*)&clientAddress, &clientAddressSize);
+    
+    //
+    //if there is no new client (or an error), return a "fake" client that evaluates
+    //to false if placed in a boolean comparison (arduino compatability)
+    //
     if (clientHandle < 0) {
-        return NULL;
+        WiFiClient client(255);
+        return client;
     }
     
     //
