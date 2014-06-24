@@ -661,7 +661,7 @@ uint8_t WiFiClass::status()
     return WiFi_status;
 }
 
-//!!--current not working--!!//
+//--tested, working--//
 int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
 {
     if (!_initialized) {
@@ -672,7 +672,7 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     //
     unsigned long DestinationIP;
     int iRet = sl_NetAppDnsGetHostByName(aHostname, strlen(aHostname), &DestinationIP, SL_AF_INET);
-    aResult = DestinationIP;
+    aResult = sl_Htonl(DestinationIP);
     
     if (iRet > 0) {
         return 1;
