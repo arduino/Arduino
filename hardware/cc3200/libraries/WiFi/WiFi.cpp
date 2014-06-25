@@ -171,7 +171,7 @@ int WiFiClass::begin(char* ssid)
     //Get name length and set security type to open
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t SecParams;
+    SlSecParams_t SecParams = {0};
     SecParams.Type = SL_SEC_TYPE_OPEN;
     
     //
@@ -210,7 +210,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     //add key and keylength to security parameters
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t SecParams;
+    SlSecParams_t SecParams = {0};
     SecParams.Type = SL_SEC_TYPE_WEP;
     SecParams.Key = key;
     SecParams.KeyLen = strlen(key);
@@ -250,7 +250,7 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     //add passphrase and keylength to security parameters
     //
     int NameLen = strlen(ssid);
-    SlSecParams_t SecParams;
+    SlSecParams_t SecParams = {0};
     SecParams.Type = SL_SEC_TYPE_WPA;
     SecParams.Key = passphrase;
     SecParams.KeyLen = strlen(passphrase);

@@ -28,7 +28,8 @@ extern "C" {
 #include "WiFi.h"
 #include "WiFiUdp.h"
 
-WiFiUDP::WiFiUDP() : _socketIndex(NO_SOCKET_AVAIL)
+//--tested, working--//
+WiFiUDP::WiFiUDP()
 {
     //
     //fill the buffers with zeroes
@@ -43,6 +44,7 @@ WiFiUDP::WiFiUDP() : _socketIndex(NO_SOCKET_AVAIL)
     _socketIndex = NO_SOCKET_AVAIL;
 }
 
+//--tested, working--//
 uint8_t WiFiUDP::begin(uint16_t port)
 {
     
@@ -86,7 +88,7 @@ uint8_t WiFiUDP::begin(uint16_t port)
     return 1;
 }
 
-
+//--tested, working--//
 int WiFiUDP::available()
 {
     //
@@ -121,6 +123,7 @@ void WiFiUDP::stop()
     _socketIndex = NO_SOCKET_AVAIL;
 }
 
+//--tested, working--//
 int WiFiUDP::beginPacket(const char *host, uint16_t port)
 {
     //
@@ -139,6 +142,8 @@ int WiFiUDP::beginPacket(const char *host, uint16_t port)
     }
 }
 
+//--tested, working--//
+//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
 {
     //
@@ -166,11 +171,10 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
     
 }
 
+//--tested, working--//
+//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 int WiFiUDP::endPacket()
 {
-    int i;
-    int j;
-    int k;
     //
     //only do the rest of this function if a socket actually exists
     //
@@ -185,7 +189,7 @@ int WiFiUDP::endPacket()
     memset(&sendAddress, 0, sizeof(SlSockAddrIn_t));
     sendAddress.sin_family = SL_AF_INET;
     sendAddress.sin_port = sl_Htons(_sendPort);
-    sendAddress.sin_addr.s_addr = sl_Htonl(_sendIP);
+    sendAddress.sin_addr.s_addr = _sendIP;
     
     //
     //use the simplelink library to send the tx buffer
@@ -204,6 +208,18 @@ int WiFiUDP::endPacket()
     return 1;
 }
 
+//--tested, working--//
+//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
+size_t WiFiUDP::write(char *buffer) {
+    //
+    //this function assumes a well formatted string (char array) has been passed in
+    //
+    return write((uint8_t*)buffer, strlen(buffer));
+    
+}
+
+//--tested, working--//
+//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 size_t WiFiUDP::write(uint8_t byte)
 {
     //
@@ -212,7 +228,9 @@ size_t WiFiUDP::write(uint8_t byte)
     return write(&byte, 1);
 }
 
-size_t WiFiUDP::write(const uint8_t *buffer, size_t size)
+//--tested, working--//
+//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
+size_t WiFiUDP::write(uint8_t *buffer, size_t size)
 {
     //
     //it's possible that size is more than can fit in the tx_buffer
@@ -231,6 +249,7 @@ size_t WiFiUDP::write(const uint8_t *buffer, size_t size)
 }
 
 //
+//--tested, working--//
 //bit of a misnomer. This waits to receive a packet and then stores it in a buffer
 //it is important that this is called before any of the read or available commands
 //are called. This does the actual work. Read, peek, etc. are just organizational.
@@ -295,6 +314,7 @@ int WiFiUDP::parsePacket()
     }
 }
 
+//--tested, working--//
 int WiFiUDP::read()
 {
     //
@@ -325,6 +345,7 @@ int WiFiUDP::read(unsigned char* buffer, size_t len)
     return bytesCopied;
 }
 
+//--tested, working--//
 int WiFiUDP::peek()
 {
     //
@@ -333,6 +354,7 @@ int WiFiUDP::peek()
     return rx_buf[rx_currentIndex];
 }
 
+//--tested, working--//
 void WiFiUDP::flush()
 {
     //

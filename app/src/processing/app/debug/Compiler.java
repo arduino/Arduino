@@ -899,7 +899,7 @@ public class Compiler implements MessageConsumer {
           basePath + "arm-none-eabi-g++",
           "-c",
           "-g", // include debugging info (so errors include line numbers)
-          "-O0", // optimize for size //changed from -Os
+          "-O0", //changed from -Os
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-rtti",
           "-fno-exceptions",

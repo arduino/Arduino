@@ -61,7 +61,9 @@ public:
     // Write a single byte into the packet
     size_t write(uint8_t);
     // Write size bytes from buffer into the packet
-    size_t write(const uint8_t *buffer, size_t size);
+    size_t write(uint8_t *buffer, size_t size);
+    // write a string into the packet
+    size_t write(char *buffer);
     
     // Start processing the next available incoming packet
     // Returns the size of the packet in bytes, or 0 if no packets are available
