@@ -288,7 +288,7 @@ int WiFiUDP::parsePacket()
     //Since we've reached this point, the sl_select command has indicated
     //that either we're going to get an error, or an immediate read
     //
-    SlSockAddrIn_t  address;
+    SlSockAddrIn_t  address = {0};
     int AddrSize = sizeof(address);
     int bytes = sl_RecvFrom(socketHandle, rx_buf, UDP_RX_PACKET_MAX_SIZE, NULL, (SlSockAddr_t*)&address, (SlSocklen_t*)&AddrSize);
 
@@ -297,7 +297,7 @@ int WiFiUDP::parsePacket()
     //!! Although this follows some examples (upd_socket), it goes agains the
     //!! API documentation. The API maintains that the 5th arg to RecvFrom is not in/out
     //
-    _remoteIP = sl_Htonl(address.sin_addr.s_addr);
+    _remoteIP = address.sin_addr.s_addr;
     _remotePort = sl_Htons(address.sin_port);
     
     //
@@ -370,7 +370,9 @@ IPAddress  WiFiUDP::remoteIP()
     //
     //this value is maintained by ParsePacket method
     //
-    return _remoteIP;
+    IPAddress retIP;
+    retIP = _remoteIP;
+    return retIP;
 }
 
 uint16_t  WiFiUDP::remotePort()
@@ -378,6 +380,7 @@ uint16_t  WiFiUDP::remotePort()
     //
     //this value is maintained by ParsePacket method
     //
-    return _remotePort;
+    uint16_t retPort = _remotePort;
+    return retPort;
 }
 
