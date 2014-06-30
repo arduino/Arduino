@@ -21,7 +21,7 @@
 #define Arduino_h
 
 #include <stdlib.h>
-#include <stdbool.h>
+//#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -30,6 +30,14 @@
 #include <avr/interrupt.h>
 
 #include "binary.h"
+
+#ifdef __cplusplus
+    typedef bool boolean;
+#else
+    typedef uint8_t boolean;
+    #define false 0
+    #define true !false
+#endif
 
 #ifdef __cplusplus
 extern "C"{
@@ -114,7 +122,7 @@ typedef unsigned int word;
 
 #define bit(b) (1UL << (b))
 
-typedef uint8_t boolean;
+//typedef uint8_t boolean;
 typedef uint8_t byte;
 
 void init(void);
