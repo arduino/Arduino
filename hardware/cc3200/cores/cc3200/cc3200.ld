@@ -6,7 +6,7 @@
 
 MEMORY
 {
-    ram  (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00030000
+    ram  (rwx) : ORIGIN = 0x20004000, LENGTH = 0x00030000
 }
 
 REGION_ALIAS("REGION_RAM", ram);
@@ -16,7 +16,7 @@ SECTIONS
 {
     .text :
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         _text = .;
         KEEP(*(.isr_vector))
         *(.text .text* .gnu.linkonce.t.*)
@@ -53,7 +53,7 @@ SECTIONS
 
     .data : AT(ADDR(.text) + SIZEOF(.text))
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         _data = .;
         *(vtable)
         *(.data .data* .gnu.linkonce.d.*)

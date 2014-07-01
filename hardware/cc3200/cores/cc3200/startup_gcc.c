@@ -81,12 +81,13 @@ extern unsigned _estack;
 //
 //*****************************************************************************
 
-static uint32_t pui32Stack[1024];
+static uint32_t pui32Stack[8192];
 
 __attribute__ ((section(".isr_vector")))
-void (* const g_pfnVectors[])(void) =
+void (* const g_pfnVectors[256])(void) =
 {
-   (void *)&_estack,                        // The initial stack pointer, 0x20008000 32K
+    (void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
+                                            // The initial stack pointer, 0x20008000 32K
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
