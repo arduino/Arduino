@@ -82,7 +82,7 @@ public:
   virtual size_t write(uint8_t);
   void command(uint8_t);
   
-  using Print::write;
+  //using Print::write;
 private:
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);
