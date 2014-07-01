@@ -30,10 +30,10 @@ extern "C" {
 #include "WiFiClient.h"
 #include "WiFiServer.h"
 
-WiFiServer::WiFiServer(uint16_t port) : _socketIndex(NO_SOCKET_AVAIL)
+WiFiServer::WiFiServer(uint16_t port)
 {
-    _port = port;
     _socketIndex = NO_SOCKET_AVAIL;
+    _port = port;
 }
 
 void WiFiServer::begin()
@@ -73,8 +73,8 @@ void WiFiServer::begin()
     //Make the socket start listening for incoming tcp connections
     //(backlog of length 1)
     //
-    int success = sl_Listen(socketHandle, 1);
-    if (!success) {
+    iRet = sl_Listen(socketHandle, 1);
+    if (iRet < 0) {
         sl_Close(socketHandle);
         return;
     }
@@ -83,8 +83,8 @@ void WiFiServer::begin()
     //set socket operation to be non blocking
     //
     long NonBlocking = true;
-    success = sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &NonBlocking, sizeof(NonBlocking));
-    if (!success) {
+    iRet = sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &NonBlocking, sizeof(NonBlocking));
+    if (iRet < 0) {
         sl_Close(socketHandle);
         return;
     }
@@ -103,15 +103,15 @@ WiFiClient WiFiServer::available(byte* status)
     //
     //Get a socket number from the wificlass
     //
-    int sock = WiFiClass::getSocket();
-    if (sock == NO_SOCKET_AVAIL) {
-        return NULL;
+    int clientSocketIndex = WiFiClass::getSocket();
+    if (clientSocketIndex == NO_SOCKET_AVAIL) {
+        return WiFiClient(255);
     }
     
     //
     //create the client address structure to be filled in by sl_accept
     //
-    SlSockAddrIn_t clientAddress;
+    SlSockAddrIn_t clientAddress = {0};
     unsigned int clientAddressSize = sizeof(clientAddress);
     
     //
@@ -121,25 +121,28 @@ WiFiClient WiFiServer::available(byte* status)
     int clientHandle = sl_Accept(socketHandle, (SlSockAddr_t*)&clientAddress, &clientAddressSize);
     
     //
-    //if there is no new client (or an error), return a "fake" client that evaluates
-    //to false if placed in a boolean comparison (arduino compatability)
+    //if there is no new client (or an error), return a "fake" client that
+    //evaluates to false if placed in a boolean comparison (arduino compatability)
     //
-    if (clientHandle < 0) {
-        WiFiClient client(255);
-        return client;
+    if (clientHandle == SL_EAGAIN) {
+        return WiFiClient(255);
     }
     
     //
-    //create a client from the successful client connection handle and return
+    //We've successfully created a socket, so store everything in the wificlass
+    //arrays used to keep track of the connected sockets, port #s, and types
     //
-    WiFiClient client(clientHandle);
+    WiFiClient client(clientSocketIndex);
+    WiFiClass::_handleArray[clientSocketIndex] = clientHandle;
+    WiFiClass::_typeArray[clientSocketIndex] = TYPE_TCP_CONNECTED_CLIENT;
+    WiFiClass::_portArray[clientSocketIndex] = sl_Htons(clientAddress.sin_port);
     return client;
 }
 
 uint8_t WiFiServer::status()
 {
     //
-    //functionality not described in arduino online api
+    //!! functionality not described in arduino online api
     //
     return 0;
 }
@@ -147,8 +150,33 @@ uint8_t WiFiServer::status()
 
 size_t WiFiServer::write(uint8_t b)
 {
+    //
+    //send the single byte
+    //
+    return write(&b, 1);
+    
 }
 
+//!! With this implementation, only 1 server can run on each cc3200 !!//
 size_t WiFiServer::write(const uint8_t *buffer, size_t size)
 {
+    //
+    //iterate through the sockets and write the data to any connected clients
+    //the arduino API dictates to write the data to ALL clients
+    //
+    int i;
+    int sentBytes = 0;
+    for (i = 0; i < MAX_SOCK_NUM; i++) {
+        if (WiFiClass::_typeArray[i] == TYPE_TCP_CONNECTED_CLIENT) {
+            //
+            //Write the data to the connected client and return if error
+            //
+            int handle = WiFiClass::_handleArray[i];
+            sentBytes = sl_Send(handle, buffer, size, NULL);
+            if (sentBytes < 0) {
+                return 0;
+            }
+        }
+    }
+    return sentBytes;
 }

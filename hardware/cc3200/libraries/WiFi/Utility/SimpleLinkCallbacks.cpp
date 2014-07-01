@@ -86,6 +86,20 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
 #if (defined(sl_NetAppEvtHdlr))
 extern void sl_NetAppEvtHdlr(SlNetAppEvent_t *pSlSockEvent)
 {
+    switch (pSlSockEvent->Event) {
+        //
+        //IP address acquired. Copy the uint32 to the WiFiClass static variable
+        //do the following for both IPV4 and IPV6
+        //
+        case SL_NETAPP_IPV4_ACQUIRED:
+        case SL_NETAPP_IPV6_ACQUIRED:
+        {
+            WiFiClass::local_IP = pSlSockEvent->EventData.ipAcquiredV4.ip;
+            break;
+        }
+        default:
+            break;
+    }
 }
 #endif
 

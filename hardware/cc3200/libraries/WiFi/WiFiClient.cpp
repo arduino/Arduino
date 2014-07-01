@@ -26,12 +26,13 @@ extern "C" {
 #include "WiFiServer.h"
 
 
-uint16_t WiFiClient::_srcport = 1024;
-
-WiFiClient::WiFiClient() : _sock(MAX_SOCK_NUM) {
+WiFiClient::WiFiClient() : _socketIndex(NO_SOCKET_AVAIL) {
+    _socketIndex = NO_SOCKET_AVAIL;
+    
 }
 
-WiFiClient::WiFiClient(uint8_t sock) : _sock(sock) {
+WiFiClient::WiFiClient(uint8_t socketIndex){
+    _socketIndex = socketIndex;
 }
 
 int WiFiClient::connect(const char* host, uint16_t port)

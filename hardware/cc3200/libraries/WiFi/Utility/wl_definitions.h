@@ -49,7 +49,10 @@
 #define NO_SOCKET_AVAIL     255
 
 //defines for keeping track of ports in arrays
-#define TYPE_TCP_CLIENT (1)
+//the arduino api uses client in a really weird way... client objects
+//are used to write to servers and to write to clients (as a server)
+#define TYPE_TCP_CONNECTED_CLIENT (0) //socket acting as server to this client
+#define TYPE_TCP_CLIENT (1)           //socket acting as a client
 #define TYPE_TCP_SERVER (2)
 #define TYPE_UDP_PORT (3)
 

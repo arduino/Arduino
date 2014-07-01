@@ -42,10 +42,14 @@ public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];
     static int16_t _typeArray[MAX_SOCK_NUM];
-    volatile static wl_status_t WiFi_status;
     static bool _initialized;
     volatile static int network_count;
     
+    //
+    //variables maintined by the simplelink callbacks
+    //
+    volatile static uint32_t local_IP;
+    volatile static wl_status_t WiFi_status;
     
     //
     //Because simplelink doesn't provide an easy way to get the ssid or bssid
@@ -55,10 +59,11 @@ public:
     static unsigned char connected_bssid[BSSID_LEN];
     
     //
-    //Because the library returns strings quite often, this buffer
-    //is used to hold the output.
+    //These "buffers" are used to "return" strings and IpAddress objects
+    //Of course, the value must be used before it is overwritted
     //
     static char string_output_buffer[MAX_SSID_LEN];
+    static IPAddress ipaddress_output_buffer;
     
     WiFiClass();
     

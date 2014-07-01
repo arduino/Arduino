@@ -45,9 +45,7 @@ public:
     friend class WiFiServer;
     
 private:
-    static uint16_t _srcport;
-    uint8_t _sock;   //not used
-    uint16_t  _socket;
+    int _socketIndex;
     
     uint8_t getFirstSocket();
 };

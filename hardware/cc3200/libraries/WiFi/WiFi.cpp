@@ -51,6 +51,7 @@ extern "C" {
 //initialize WiFi_status to the disconnected flag
 //
 volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
+volatile uint32_t WiFiClass::local_IP = 0;
 bool WiFiClass::_initialized = false;
 
 volatile int WiFiClass::network_count = 0;
@@ -72,10 +73,11 @@ int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 
 //
-//Because the library returns strings quite often, this buffer
-//is used to hold the output.
+//These "buffers" are used to "return" strings and IpAddress objects
+//Of course, the value must be used before it is overwritted
 //
 char WiFiClass::string_output_buffer[MAX_SSID_LEN];
+IPAddress WiFiClass::ipaddress_output_buffer;
 
 //--tested, working--//
 WiFiClass::WiFiClass()
@@ -423,6 +425,20 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
     return mac;
 }
 
+//--tested, working--//
+IPAddress WiFiClass::localIP()
+{
+    //
+    //the local IP is maintained with callbacks, so _SlNonOsMainLoopTask()
+    //is critical. The IP is "written" into the buffer to avoid memory errors
+    //
+    _SlNonOsMainLoopTask();
+    IPAddress retIP(0,0,0,0);
+    retIP = sl_Htonl(local_IP);
+    return retIP;
+}
+
+//--tested, working--//
 IPAddress WiFiClass::subnetMask()
 {
     if (!_initialized) {
@@ -438,9 +454,9 @@ IPAddress WiFiClass::subnetMask()
     //
     //change the uint32_t IP to the IPAddress class and return
     //
-    IPAddress ipRet;
-    ipRet = config.ipV4Mask;
-    return ipRet;
+    IPAddress retIP(0,0,0,0);
+    retIP = sl_Htonl(config.ipV4Mask);
+    return retIP;
     
 }
 
@@ -459,9 +475,9 @@ IPAddress WiFiClass::gatewayIP()
     //
     //change the uint32_t IP to the IPAddress class and return
     //
-    IPAddress ipRet;
-    ipRet = config.ipV4Gateway;
-    return ipRet;
+    IPAddress retIP(0,0,0,0);
+    retIP = sl_Htonl(config.ipV4Gateway);
+    return retIP;
 }
 
 //--tested, working--//
