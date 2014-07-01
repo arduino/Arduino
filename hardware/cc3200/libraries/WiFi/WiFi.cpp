@@ -135,6 +135,7 @@ bool WiFiClass::init()
     return true;
 }
 
+//--tested, working--//
 uint8_t WiFiClass::getSocket()
 {
     //
@@ -150,6 +151,7 @@ uint8_t WiFiClass::getSocket()
     return NO_SOCKET_AVAIL;
 }
 
+//--tested, working--//
 char* WiFiClass::firmwareVersion()
 {
     //
@@ -159,6 +161,7 @@ char* WiFiClass::firmwareVersion()
     return string_output_buffer;
 }
 
+//--tested, working--//
 int WiFiClass::begin(char* ssid)
 {
     //
@@ -460,6 +463,7 @@ IPAddress WiFiClass::subnetMask()
     
 }
 
+//--tested, working--//
 IPAddress WiFiClass::gatewayIP()
 {
     if (!_initialized) {
@@ -492,6 +496,7 @@ char* WiFiClass::SSID()
     return (char*)WiFiClass::connected_ssid;
 }
 
+//--tested, working--//
 uint8_t* WiFiClass::BSSID(uint8_t* bssid)
 {
     if (!_initialized) {

@@ -63,7 +63,12 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
             //copy bssid to WiFiClass (no null terminator. Length always = 6)
             //
             char* pBSSID = (char*)pSlWlanEvent->EventData.STAandP2PModeWlanConnected.bssid;
-            memcpy(WiFiClass::connected_bssid, pBSSID, BSSID_LEN);
+            WiFiClass::connected_bssid[5] = pBSSID[0];
+            WiFiClass::connected_bssid[4] = pBSSID[1];
+            WiFiClass::connected_bssid[3] = pBSSID[2];
+            WiFiClass::connected_bssid[2] = pBSSID[3];
+            WiFiClass::connected_bssid[1] = pBSSID[4];
+            WiFiClass::connected_bssid[0] = pBSSID[5];
             break;
         }
             

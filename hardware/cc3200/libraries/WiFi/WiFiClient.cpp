@@ -293,7 +293,7 @@ WiFiClient::operator bool()
     //
     //a "fake" client instance with index==255 should evaluate to false
     //
-    return _socketIndex==255 ? false : true;
+    return _socketIndex != 255;
 }
 
 

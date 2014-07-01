@@ -50,7 +50,7 @@ void WiFiServer::begin()
     //
     //get a socket handle from the simplelink api and make sure it's valid
     //
-    int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, IPPROTO_TCP);
+    int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_IPPROTO_TCP);
     if (socketHandle < 0) {
         return;
     }

@@ -59,7 +59,7 @@ uint8_t WiFiUDP::begin(uint16_t port)
     //
     //get a socket handle from the simplelink api and make sure it's valid
     //
-    int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_DGRAM, IPPROTO_UDP);
+    int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_DGRAM, SL_IPPROTO_UDP);
     if (socketHandle < 0) {
         return 0;
     }

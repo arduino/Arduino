@@ -344,25 +344,25 @@ extern "C" {
 #define FD_ZERO                             SL_FD_ZERO 
 #define fd_set                              SlFdSet_t    
 
-//#define socket						        sl_Socket
-//#define close						        sl_Close
-//#define accept						        sl_Accept
-//#define bind						        sl_Bind
-//#define listen						        sl_Listen
-//#define connect						        sl_Connect
-//#define select						        sl_Select
-//#define setsockopt					        sl_SetSockOpt
-//#define getsockopt					        sl_GetSockOpt
-//#define recv						        sl_Recv
-//#define recvfrom					        sl_RecvFrom
-//#define write						        sl_Write
-//#define send						        sl_Send
-//#define sendto						        sl_SendTo
-//#define gethostbyname				        sl_NetAppDnsGetHostByName
-//#define htonl                               sl_Htonl
-//#define ntohl                               sl_Ntohl
-//#define htons                               sl_Htons
-//#define ntohs                               sl_Ntohs
+#define socket						        sl_Socket
+#define close						        sl_Close
+#define accept						        sl_Accept
+#define bind						        sl_Bind
+#define listen						        sl_Listen
+#define connect						        sl_Connect
+#define select						        sl_Select
+#define setsockopt					        sl_SetSockOpt
+#define getsockopt					        sl_GetSockOpt
+#define recv						        sl_Recv
+#define recvfrom					        sl_RecvFrom
+#define write						        sl_Write
+#define send						        sl_Send
+#define sendto						        sl_SendTo
+#define gethostbyname				        sl_NetAppDnsGetHostByName
+#define htonl                               sl_Htonl
+#define ntohl                               sl_Ntohl
+#define htons                               sl_Htons
+#define ntohs                               sl_Ntohs
 #endif
 
 
