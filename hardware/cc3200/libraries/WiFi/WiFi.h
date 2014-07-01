@@ -42,6 +42,7 @@ public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];
     static int16_t _typeArray[MAX_SOCK_NUM];
+    
     static bool _initialized;
     volatile static int network_count;
     
