@@ -1,3 +1,8 @@
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
+
 /*
   WiFi Web Server LED Blink
 
@@ -20,41 +25,37 @@
  created 25 Nov 2012
  by Tom Igoe
  */
-#include <SPI.h>
-#include <WiFi.h>
 
-char ssid[] = "yourNetwork";      //  your network SSID (name)
-char pass[] = "secretPassword";   // your network password
-int keyIndex = 0;                 // your network key Index number (needed only for WEP)
+
+
+
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
 void setup() {
-  Serial.begin(9600);      // initialize serial communication
-  pinMode(9, OUTPUT);      // set the LED pin mode
+  Serial.begin(115200);      // initialize serial communication
+  pinMode(RED_LED, OUTPUT);      // set the LED pin mode
 
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    while (true);       // don't continue
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  char ssid[] = "your network";      //  your network SSID (name)
+  char pass[] = "your password";   // your network password
 
   // attempt to connect to Wifi network:
+  Serial.print("Attempting to connect to Network named: ");
+  Serial.println(ssid);                   // print the network name (SSID);
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  status = WiFi.begin(ssid, pass);
   while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to Network named: ");
-    Serial.println(ssid);                   // print the network name (SSID);
-
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
-    // wait 10 seconds for connection:
-    delay(10000);
+    status = WiFi.status();
+    Serial.print(".");
+    // wait .1 seconds for connection:
+    delay(100);
   }
+  delay(3000);
+  
+  Serial.println("Starting webserver on port 80");
   server.begin();                           // start the web server on port 80
+  Serial.println("Webserver started!");
   printWifiStatus();                        // you're connected now, so print out the status
 }
 

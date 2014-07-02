@@ -423,8 +423,20 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
     //
     //Get the mac address and return the pointer to the array
     //
+    uint8_t macTemp[6];
     uint8_t macLength = 6;
-    sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macLength, (unsigned char *)mac);
+    sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macLength, (unsigned char *)macTemp);
+    
+    //
+    //All the arduino examples return the mac address reverse from simplelink
+    //
+    mac[0] = macTemp[5];
+    mac[1] = macTemp[4];
+    mac[2] = macTemp[3];
+    mac[3] = macTemp[2];
+    mac[4] = macTemp[1];
+    mac[5] = macTemp[0];
+    
     return mac;
 }
 
@@ -593,7 +605,7 @@ char* WiFiClass::SSID(uint8_t networkItem)
     }
     
     //
-    //fetch all 20 items. For some reason, fetching a signle item doesn't work
+    //fetch all 20 items. For some reason, fetching a single item doesn't work
     //
     Sl_WlanNetworkEntry_t netInfo[network_count];
     memset(&netInfo, 0, sizeof(netInfo));

@@ -147,6 +147,36 @@ size_t WiFiClient::write(uint8_t *buf, size_t size)
     }
 }
 
+size_t WiFiClient::print(char* buffer)
+{
+    //
+    //just write the string measured using strlen
+    //
+    return write((uint8_t*)buffer, strlen(buffer));
+}
+
+size_t WiFiClient::println(char* buffer)
+{
+    //
+    //create a new buffer with two extra bytes to hold the new line character
+    //and the null terminator
+    //
+    int newBuffSize = strlen(buffer+2);
+    char buffer2[newBuffSize];
+    buffer2[newBuffSize - 2] = '\n';
+    buffer2[newBuffSize - 1] = '\0';
+    
+    return write((uint8_t*)buffer2, newBuffSize);
+}
+
+size_t WiFiClient::println(void)
+{
+    //
+    //just write a newline character
+    //
+    write('\n');
+}
+
 int WiFiClient::available()
 {
     //
@@ -295,5 +325,7 @@ WiFiClient::operator bool()
     //
     return _socketIndex != 255;
 }
+
+
 
 

@@ -11,6 +11,9 @@
  by Michael Margolis
  modified 9 Apr 2012
  by Tom Igoe
+ 
+ Modified 1 July 2014
+ by Noah Luskey
 
  This code is in the public domain.
 
@@ -27,7 +30,7 @@ int keyIndex = 0;            // your network key Index number (needed only for W
 
 unsigned int localPort = 2390;      // local port to listen for UDP packets
 
-IPAddress timeServer(129, 6, 15, 28); // time.nist.gov NTP server
+IPAddress timeServer(206,246,122,250); // time.nist.gov NTP server
 
 const int NTP_PACKET_SIZE = 48; // NTP time stamp is in the first 48 bytes of the message
 
@@ -39,34 +42,23 @@ WiFiUDP Udp;
 void setup()
 {
   // Open serial communications and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
-
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  Serial.begin(115200);
 
   // attempt to connect to Wifi network:
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(ssid);
+  status = WiFi.begin(ssid, pass);
   while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
+    Serial.print(".");
+    status = WiFi.status();
+    // wait .5 seconds for connection:
+    delay(500);
   }
 
   Serial.println("Connected to wifi");
+  IPAddress empty(0,0,0,0);
+  while(WiFi.localIP() == empty);
   printWifiStatus();
 
   Serial.println("\nStarting connection to server...");
@@ -78,7 +70,6 @@ void loop()
   sendNTPpacket(timeServer); // send an NTP packet to a time server
   // wait to see if a reply is available
   delay(1000);
-  Serial.println( Udp.parsePacket() );
   if ( Udp.parsePacket() ) {
     Serial.println("packet received");
     // We've received a packet, read the data from it
@@ -122,7 +113,7 @@ void loop()
     Serial.println(epoch % 60); // print the second
   }
   // wait ten seconds before asking for the time again
-  delay(10000);
+  delay(5000);
 }
 
 // send an NTP request to the time server at the given address

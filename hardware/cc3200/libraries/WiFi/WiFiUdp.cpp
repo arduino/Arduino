@@ -103,6 +103,7 @@ int WiFiUDP::available()
     }
 }
 
+//--tested, working--//
 void WiFiUDP::stop()
 {
     //
@@ -143,7 +144,6 @@ int WiFiUDP::beginPacket(const char *host, uint16_t port)
 }
 
 //--tested, working--//
-//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
 {
     //
@@ -172,7 +172,6 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
 }
 
 //--tested, working--//
-//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 int WiFiUDP::endPacket()
 {
     //
@@ -209,7 +208,6 @@ int WiFiUDP::endPacket()
 }
 
 //--tested, working--//
-//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 size_t WiFiUDP::write(char *buffer) {
     //
     //this function assumes a well formatted string (char array) has been passed in
@@ -219,7 +217,6 @@ size_t WiFiUDP::write(char *buffer) {
 }
 
 //--tested, working--//
-//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 size_t WiFiUDP::write(uint8_t byte)
 {
     //
@@ -229,7 +226,6 @@ size_t WiFiUDP::write(uint8_t byte)
 }
 
 //--tested, working--//
-//!!sending packets causes problems occasionally. Odd null pointer bugs!!//
 size_t WiFiUDP::write(uint8_t *buffer, size_t size)
 {
     //
@@ -330,6 +326,7 @@ int WiFiUDP::read()
     return rx_buf[rx_currentIndex++];
 }
 
+//--tested, working--//
 int WiFiUDP::read(unsigned char* buffer, size_t len)
 {
     //
@@ -365,6 +362,7 @@ void WiFiUDP::flush()
     rx_fillLevel = 0;
 }
 
+//--tested, working--//
 IPAddress  WiFiUDP::remoteIP()
 {
     //
@@ -375,6 +373,7 @@ IPAddress  WiFiUDP::remoteIP()
     return retIP;
 }
 
+//--tested, working--//
 uint16_t  WiFiUDP::remotePort()
 {
     //

@@ -21,45 +21,36 @@
  by dlf (Metodo2 srl)
  modified 31 May 2012
  by Tom Igoe
+ modified 2 July 2014
+ by Noah Luskey
  */
-#include <SPI.h>
+ 
 #include <WiFi.h>
 
 char ssid[] = "yourNetwork";                     // your network SSID (name)
-char key[] = "D0D0DEADF00DABBADEAFBEADED";       // your network key
+char key[] = "0123456789ABCDEF";                 // your network key
 int keyIndex = 0;                                // your network key Index number
 int status = WL_IDLE_STATUS;                     // the Wifi radio's status
 
 void setup() {
   //Initialize serial and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
-
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  Serial.begin(115200);
 
   // attempt to connect to Wifi network:
+  Serial.print("Attempting to connect to WEP network, SSID: ");
+  Serial.println(ssid);
+  status = WiFi.begin(ssid, keyIndex, key);
   while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to WEP network, SSID: ");
-    Serial.println(ssid);
-    status = WiFi.begin(ssid, keyIndex, key);
-
-    // wait 10 seconds for connection:
-    delay(10000);
+    status = WiFi.status();
+    // wait .1 seconds for connection:
+    delay(100);
   }
 
   // once you are connected :
   Serial.print("You're connected to the network");
+  IPAddress empty(0,0,0,0);
+  while (WiFi.localIP() == empty);
+  //now you have an ip address
   printCurrentNet();
   printWifiData();
 }

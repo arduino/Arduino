@@ -11,6 +11,8 @@
  by dlf (Metodo2 srl)
  modified 31 May 2012
  by Tom Igoe
+ modified 2 July 2014
+ by Noah Luskey
  */
 #include <SPI.h>
 #include <WiFi.h>
@@ -21,35 +23,22 @@ int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 void setup() {
   //Initialize serial and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
-
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  Serial.begin(115200);
 
   // attempt to connect to Wifi network:
+  Serial.print("Attempting to connect to WPA SSID: ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, pass);
   while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to WPA SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network:
-    status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
+    status = WiFi.status();
+    // wait .1 seconds for connection:
+    delay(100);
   }
 
   // you're connected now, so print out the data:
   Serial.print("You're connected to the network");
+  IPAddress empty(0,0,0,0);
+  while (WiFi.localIP() == empty);
   printCurrentNet();
   printWifiData();
 
