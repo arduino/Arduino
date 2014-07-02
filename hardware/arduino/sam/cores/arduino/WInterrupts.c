@@ -119,7 +119,26 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 	pio->PIO_IER = mask;
 }
 
+void enableInterrupt(uint32_t pin)
+{
+	Pio *pio = g_APinDescription[pin].pPort;
+	uint32_t mask = g_APinDescription[pin].ulPin;
+
+	// Enable interrupt
+	pio->PIO_IER = mask;
+}
+
 void detachInterrupt(uint32_t pin)
+{
+	// Retrieve pin information
+	Pio *pio = g_APinDescription[pin].pPort;
+	uint32_t mask = g_APinDescription[pin].ulPin;
+
+	// Disable interrupt
+	pio->PIO_IDR = mask;
+}
+
+void disableInterrupt(uint32_t pin)
 {
 	// Retrieve pin information
 	Pio *pio = g_APinDescription[pin].pPort;
