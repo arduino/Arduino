@@ -51,70 +51,89 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 	// even present on the 32U4 this is the only way to distinguish between them.
     case 0:
       EICRA = (EICRA & ~((1<<ISC00) | (1<<ISC01))) | (mode << ISC00);
+      EIFR |= (1 << INTF0);
       break;
     case 1:
       EICRA = (EICRA & ~((1<<ISC10) | (1<<ISC11))) | (mode << ISC10);
+      EIFR |= (1 << INTF1);
       break;
     case 2:
       EICRA = (EICRA & ~((1<<ISC20) | (1<<ISC21))) | (mode << ISC20);
+      EIFR |= (1 << INTF2);
       break;
     case 3:
       EICRA = (EICRA & ~((1<<ISC30) | (1<<ISC31))) | (mode << ISC30);
+      EIFR |= (1 << INTF3);
       break;
     case 4:
       EICRB = (EICRB & ~((1<<ISC60) | (1<<ISC61))) | (mode << ISC60);
+      EIFR |= (1 << INTF6);
       break;
 #elif defined(EICRA) && defined(EICRB)
     case 2:
       EICRA = (EICRA & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
+      EIFR |= (1 << INTF0);
       break;
     case 3:
       EICRA = (EICRA & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
+      EIFR |= (1 << INTF1);
       break;
     case 4:
       EICRA = (EICRA & ~((1 << ISC20) | (1 << ISC21))) | (mode << ISC20);
+      EIFR |= (1 << INTF2);
       break;
     case 5:
       EICRA = (EICRA & ~((1 << ISC30) | (1 << ISC31))) | (mode << ISC30);
+      EIFR |= (1 << INTF4);
       break;
     case 0:
       EICRB = (EICRB & ~((1 << ISC40) | (1 << ISC41))) | (mode << ISC40);
+      EIFR |= (1 << INTF4);
       break;
     case 1:
       EICRB = (EICRB & ~((1 << ISC50) | (1 << ISC51))) | (mode << ISC50);
+      EIFR |= (1 << INTF5);
       break;
     case 6:
       EICRB = (EICRB & ~((1 << ISC60) | (1 << ISC61))) | (mode << ISC60);
+      EIFR |= (1 << INTF6);
       break;
     case 7:
       EICRB = (EICRB & ~((1 << ISC70) | (1 << ISC71))) | (mode << ISC70);
+      EIFR |= (1 << INTF7);
       break;
 #else
     case 0:
-    #if defined(EICRA) && defined(ISC00)
+    #if defined(EICRA) && defined(ISC00) && defined(EIFR)
       EICRA = (EICRA & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
-    #elif defined(MCUCR) && defined(ISC00)
+      EIFR |= (1 << INTF0);
+    #elif defined(MCUCR) && defined(ISC00) && defined(GIFR)
       MCUCR = (MCUCR & ~((1 << ISC00) | (1 << ISC01))) | (mode << ISC00);
+      GIFR |= (1 << INTF0);
     #else
       #error attachInterrupt not finished for this CPU (case 0)
     #endif
       break;
 
     case 1:
-    #if defined(EICRA) && defined(ISC10) && defined(ISC11)
+    #if defined(EICRA) && defined(ISC10) && defined(ISC11) && defined(EIFR)
       EICRA = (EICRA & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
-    #elif defined(MCUCR) && defined(ISC10) && defined(ISC11)
+      EIFR |= (1 << INTF1);
+    #elif defined(MCUCR) && defined(ISC10) && defined(ISC11) && defined(GIFR)
       MCUCR = (MCUCR & ~((1 << ISC10) | (1 << ISC11))) | (mode << ISC10);
+      GIFR |= (1 << INTF1);
     #else
       #warning attachInterrupt may need some more work for this cpu (case 1)
     #endif
       break;
 
     case 2:
-    #if defined(EICRA) && defined(ISC20) && defined(ISC21)
+    #if defined(EICRA) && defined(ISC20) && defined(ISC21) && defined(EIFR)
       EICRA = (EICRA & ~((1 << ISC20) | (1 << ISC21))) | (mode << ISC20);
-    #elif defined(MCUCR) && defined(ISC20) && defined(ISC21)
+      EIFR |= (1 << INTF2);
+    #elif defined(MCUCR) && defined(ISC20) && defined(ISC21) && defined(GIFR)
       MCUCR = (MCUCR & ~((1 << ISC20) | (1 << ISC21))) | (mode << ISC20);
+      GIFR |= (1 << INTF2);
     #endif
       break;
 #endif

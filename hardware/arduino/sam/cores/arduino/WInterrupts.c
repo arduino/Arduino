@@ -78,16 +78,6 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 	for (t = mask; t>1; t>>=1, pos++)
 		;
 
-	// Set callback function
-	if (pio == PIOA)
-		callbacksPioA[pos] = callback;
-	if (pio == PIOB)
-		callbacksPioB[pos] = callback;
-	if (pio == PIOC)
-		callbacksPioC[pos] = callback;
-	if (pio == PIOD)
-		callbacksPioD[pos] = callback;
-
 	// Configure the interrupt mode
 	if (mode == CHANGE) {
 		// Disable additional interrupt mode (detects both rising and falling edges)
@@ -113,6 +103,44 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
 			pio->PIO_ESR = mask;    // "Edge" Select Register
 			pio->PIO_REHLSR = mask; // "Rising Edge / High Level" Select Register
 		}
+	}
+
+	// Set callback function and call handler to clear existing
+	// flags. On the SAM core, the only way to clear pending
+	// interrupt flags is to read the Interrupt Status Register.
+	// However, this always clears _all_ flags at once. To not lose
+	// any interrupts, we call the handler here which reads the
+	// status register and calls handlers for any pending
+	// interrupts (the interrupt we are attaching here isn't enabled
+	// yet and should be skipped). This does mean that if
+	// attachInterrupt is called with interrupts globally disabled,
+	// interrupt handlers are called nonetheless. This seems to be
+	// the lesser of three evils:
+	//  - Not clearing the status register can cause a bogus
+	//    interrupt shortly after calling attachInterrupt (this
+	//    happened in earlier Arduino versions).
+	//  - Reading the status register but not running interrupts can
+	//    cause interrupts to be missed when attachInterrupts is
+	//    called with interrupts disabled (and depending on timing
+	//    probably also with them enabled).
+	//  - Running the handlers (as now) causes interrupt handlers to
+	//    run while calling attachInterrupt with interrupts
+	//    disabled.
+	if (pio == PIOA) {
+		callbacksPioA[pos] = callback;
+		PIOA_Handler();
+	}
+	if (pio == PIOB) {
+		callbacksPioB[pos] = callback;
+		PIOD_Handler();
+	}
+	if (pio == PIOC) {
+		callbacksPioC[pos] = callback;
+		PIOD_Handler();
+	}
+	if (pio == PIOD) {
+		callbacksPioD[pos] = callback;
+		PIOD_Handler();
 	}
 
 	enableInterrupt(pin);
