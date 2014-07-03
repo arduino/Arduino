@@ -54,7 +54,7 @@ class GSM3ShieldV1BaseProvider
 		@param str			PROGMEN
 		@param auxLocate	Buffer where to locate strings
 	*/
-	void prepareAuxLocate(PROGMEM prog_char str[], char auxLocate[]);
+	void prepareAuxLocate(PROGMEM const prog_char str[], char auxLocate[]);
 
 	/** Manages modem response
 		@param from 		Initial byte of buffer

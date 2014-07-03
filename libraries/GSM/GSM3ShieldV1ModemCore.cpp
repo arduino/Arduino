@@ -82,6 +82,13 @@ void GSM3ShieldV1ModemCore::genericCommand_rq(PROGMEM prog_char str[], bool addC
 }
 
 //Generic command (const string).
+void GSM3ShieldV1ModemCore::genericCommand_rq(const char* str, bool addCR)
+{
+	theBuffer().flush();
+	writePGM(str, addCR);
+}
+
+//Generic command (const string).
 void GSM3ShieldV1ModemCore::genericCommand_rqc(const char* str, bool addCR)
 {
 	theBuffer().flush();
@@ -157,7 +164,7 @@ void GSM3ShieldV1ModemCore::openCommand(GSM3ShieldV1BaseProvider* provider, GSM3
 
 };
 
-size_t GSM3ShieldV1ModemCore::writePGM(PROGMEM prog_char str[], bool CR)
+size_t GSM3ShieldV1ModemCore::writePGM(PROGMEM const prog_char str[], bool CR)
 {
 	int i=0;
 	char c;

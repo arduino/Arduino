@@ -167,7 +167,7 @@ class GSM3ShieldV1ModemCore : public GSM3SoftSerialMgr, public Print
 			@param CR			Carriadge return adding automatically
 			@return size
 		 */
-		virtual size_t writePGM(PROGMEM prog_char str[], bool CR=true);
+		virtual size_t writePGM(PROGMEM const prog_char str[], bool CR=true);
 		
 		/** Establish debug mode
 			@param db			Boolean that indicates debug on or off
