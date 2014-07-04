@@ -707,7 +707,7 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     int iRet = sl_NetAppDnsGetHostByName(aHostname, strlen(aHostname), &DestinationIP, SL_AF_INET);
     aResult = sl_Htonl(DestinationIP);
     
-    if (iRet > 0) {
+    if (iRet >= 0) {
         return 1;
     } else {
         return iRet;

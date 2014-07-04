@@ -1,3 +1,8 @@
+//TO DO:
+// 1) Add a way to check if the connection has been dropped by the server
+// X) Make this an extension of the print class in print.cpp
+//
+
 /*
  WiFiClient.cpp - Adaptation of Arduino WiFi library for Energia and CC3200 launchpad
  Author: Noah Luskey | LuskeyNoah@gmail.com
@@ -84,8 +89,8 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
     SlSockAddrIn_t server = {0};
     server.sin_family = SL_AF_INET;
     server.sin_port = sl_Htons(port);
-    server.sin_addr.s_addr = sl_Htonl(ip);
-    int iRet = sl_Connect(socketHandle, (SlSockAddr_t*)&server, sizeof(server));
+    server.sin_addr.s_addr = ip;
+    int iRet = sl_Connect(socketHandle, (SlSockAddr_t*)&server, sizeof(SlSockAddrIn_t));
     if (iRet < 0) {
         sl_Close(socketHandle);
         return false;
@@ -147,36 +152,6 @@ size_t WiFiClient::write(uint8_t *buf, size_t size)
     }
 }
 
-size_t WiFiClient::print(char* buffer)
-{
-    //
-    //just write the string measured using strlen
-    //
-    return write((uint8_t*)buffer, strlen(buffer));
-}
-
-size_t WiFiClient::println(char* buffer)
-{
-    //
-    //create a new buffer with two extra bytes to hold the new line character
-    //and the null terminator
-    //
-    int newBuffSize = strlen(buffer+2);
-    char buffer2[newBuffSize];
-    buffer2[newBuffSize - 2] = '\n';
-    buffer2[newBuffSize - 1] = '\0';
-    
-    return write((uint8_t*)buffer2, newBuffSize);
-}
-
-size_t WiFiClient::println(void)
-{
-    //
-    //just write a newline character
-    //
-    write('\n');
-}
-
 int WiFiClient::available()
 {
     //
@@ -204,9 +179,10 @@ int WiFiClient::available()
         
         //
         //receive successful. Reset rx index pointer and set buffer fill level indicator
+        //(if SL_EAGAIN was received, the actual number of bytes received was zero, not -11)
         //
         rx_currentIndex = 0;
-        rx_fillLevel = iRet;
+        rx_fillLevel = iRet != SL_EAGAIN ? iRet : 0;
         bytesLeft = rx_currentIndex - rx_fillLevel;
     }
     
@@ -239,7 +215,7 @@ int WiFiClient::read(uint8_t* buf, size_t size)
     //
     int i;
     for (i = 0; i < size; i++) {
-        buf[i++] = read();
+        buf[i] = read();
     }
     return i;
 }

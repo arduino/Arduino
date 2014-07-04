@@ -21,6 +21,7 @@
 #define wifiudp_h
 
 #include "WiFi.h"
+#include "Print.h"
 
 //!!definitions from CC3000 library. Make sure these are right !!//
 #define MAX_SENDTO_SIZE 95
@@ -29,7 +30,7 @@
 #define UDP_RX_PACKET_MAX_SIZE 255
 #define NO_SOCKET_AVAIL 255
 
-class WiFiUDP {
+class WiFiUDP : public Print {
 private:
     uint8_t _socketIndex;  // socket # in WiFiClass
     uint8_t rx_buf[UDP_RX_PACKET_MAX_SIZE];

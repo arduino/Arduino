@@ -27,7 +27,7 @@ extern "C" {
 
 class WiFiClient;
 
-class WiFiServer{
+class WiFiServer : public Print{
 private:
     uint16_t _port;
     int _socketIndex;

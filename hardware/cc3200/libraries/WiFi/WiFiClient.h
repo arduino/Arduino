@@ -21,10 +21,14 @@
 #define wificlient_h
 #include "Arduino.h"
 #include "IPAddress.h"
+#include "Print.h"
 
 #define TCP_RX_BUFF_MAX_SIZE 255
 
-class WiFiClient {
+//
+//WiFiClient inherits print and println methods from Print class
+//
+class WiFiClient : public Print {
     
 public:
     WiFiClient();
@@ -35,9 +39,6 @@ public:
     virtual int connect(char *host, uint16_t port);
     virtual size_t write(uint8_t);
     virtual size_t write(uint8_t *buf, size_t size);
-    virtual size_t print(char* buffer);
-    virtual size_t println(char* buffer);
-    virtual size_t println(void);
     virtual int available();
     virtual uint8_t read();
     virtual int read(uint8_t* buf, size_t size);
