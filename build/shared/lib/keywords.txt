@@ -149,6 +149,8 @@ analogRead	KEYWORD2	AnalogRead
 analogWrite	KEYWORD2	AnalogWrite
 attachInterrupt	KEYWORD2	AttachInterrupt
 detachInterrupt	KEYWORD2	DetachInterrupt
+attachInterruptToPin	KEYWORD2	AttachInterruptToPin
+detachInterruptFromPin	KEYWORD2	DetachInterruptFromPin
 delay	KEYWORD2	Delay
 delayMicroseconds	KEYWORD2	DelayMicroseconds
 digitalWrite	KEYWORD2	DigitalWrite

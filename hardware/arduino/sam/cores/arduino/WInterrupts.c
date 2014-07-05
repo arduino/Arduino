@@ -129,6 +129,24 @@ void detachInterrupt(uint32_t pin)
 	pio->PIO_IDR = mask;
 }
 
+boolean attachInterruptToPin(uint8_t pin, void (*userFunc)(void), int mode)
+{
+  int irq = digitalPinToInterrupt(pin);
+  if (irq == NOT_AN_INTERRUPT)
+    return false;
+  attachInterrupt(irq, userFunc, mode);
+  return true;
+}
+
+boolean detachInterruptFromPin(uint8_t pin)
+{
+  int irq = digitalPinToInterrupt(pin);
+  if (irq == NOT_AN_INTERRUPT)
+    return false;
+  detachInterrupt(irq);
+  return true;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
