@@ -77,12 +77,12 @@ public class Compiler implements MessageConsumer {
 	  Map<String, String> boardPreferences = Base.getBoardPreferences();
 	  
 	  if (!Preferences.get("board").equals("buildall")) {
-		  return compileForBoard(sketch, buildPath, primaryClassName, verbose, boardPreferences);
+		  return compileForBoard(sketch, buildPath, primaryClassName, verbose, primaryClassName, boardPreferences);
 	  }
 	  
 	  boolean compileOk = true;
 	  for (Entry<String, Map<String, String>> board : Base.getTarget().getBoards().entrySet()) {
-		  if (!compileForBoard(sketch, buildPath, primaryClassName, verbose, board.getValue())) {
+		  if (!compileForBoard(sketch, buildPath, primaryClassName, verbose, board.getKey(), board.getValue())) {
 			  compileOk = false;
 		  }
 	  }
@@ -94,6 +94,7 @@ public class Compiler implements MessageConsumer {
                          String buildPath,
                          String primaryClassName,
                          boolean verbose, 
+                         String nameOfHex,
                          Map<String, String> boardPreferences) throws RunnerException {
     this.sketch = sketch;
     this.buildPath = buildPath;
@@ -297,7 +298,8 @@ public class Compiler implements MessageConsumer {
     commandObjcopy.add(2, "ihex");
     commandObjcopy.add(".eeprom"); // remove eeprom data
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".hex");
+   commandObjcopy.add(buildPath + File.separator + nameOfHex + ".hex");
+    
     execAsynchronously(commandObjcopy);
     
     sketch.setCompilingProgress(90);
