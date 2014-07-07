@@ -21,7 +21,7 @@
 #define wifiudp_h
 
 #include "WiFi.h"
-#include "Print.h"
+#include "Stream.h"
 
 //!!definitions from CC3000 library. Make sure these are right !!//
 #define MAX_SENDTO_SIZE 95
@@ -30,7 +30,11 @@
 #define UDP_RX_PACKET_MAX_SIZE 255
 #define NO_SOCKET_AVAIL 255
 
-class WiFiUDP : public Print {
+//
+//Inhereting from stream (which inherits from print)
+//provides all the cool parse read methods and print format methods
+//
+class WiFiUDP : public Stream {
 private:
     uint8_t _socketIndex;  // socket # in WiFiClass
     uint8_t rx_buf[UDP_RX_PACKET_MAX_SIZE];
@@ -62,7 +66,7 @@ public:
     // Write a single byte into the packet
     size_t write(uint8_t);
     // Write size bytes from buffer into the packet
-    size_t write(uint8_t *buffer, size_t size);
+    size_t write(const uint8_t *buffer, size_t size);
     // write a string into the packet
     size_t write(char *buffer);
     

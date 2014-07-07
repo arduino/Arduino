@@ -24,6 +24,7 @@ extern "C" {
     #include "utility/socket.h"
     #include "utility/wl_definitions.h"
     #include "utility/socket.h"
+    #include "utility/netapp.h"
 }
 
 #include "WiFi.h"
@@ -36,8 +37,16 @@ WiFiServer::WiFiServer(uint16_t port)
     _port = port;
 }
 
+//--tested, working--//
 void WiFiServer::begin()
 {
+    //
+    //Stop the port 80 internal http server if running a server on port 80
+    //
+    if (_port == 80) {
+        sl_NetAppStop(SL_NET_APP_HTTP_SERVER_ID);
+    }
+    
     //
     //get a socket from the WiFiClass (convoluted method from the arduino library)
     //
@@ -45,7 +54,6 @@ void WiFiServer::begin()
     if (socketIndex == NO_SOCKET_AVAIL) {
         return;
     }
-    
     
     //
     //get a socket handle from the simplelink api and make sure it's valid
@@ -63,7 +71,7 @@ void WiFiServer::begin()
     portAddress.sin_family = SL_AF_INET;
     portAddress.sin_port = sl_Htons(_port);
     portAddress.sin_addr.s_addr = 0;
-    int iRet = sl_Bind(socketHandle, (SlSockAddr_t*)&portAddress, sizeof(portAddress));
+    int iRet = sl_Bind(socketHandle, (SlSockAddr_t*)&portAddress, sizeof(SlSockAddrIn_t));
     if (iRet < 0) {
         sl_Close(socketHandle);
         return;
@@ -71,9 +79,9 @@ void WiFiServer::begin()
     
     //
     //Make the socket start listening for incoming tcp connections
-    //(backlog of length 1)
+    //(backlog of length 0)
     //
-    iRet = sl_Listen(socketHandle, 1);
+    iRet = sl_Listen(socketHandle, 0);
     if (iRet < 0) {
         sl_Close(socketHandle);
         return;
@@ -98,6 +106,7 @@ void WiFiServer::begin()
     WiFiClass::_typeArray[socketIndex] = TYPE_TCP_SERVER;
 }
 
+//--tested, working--//
 WiFiClient WiFiServer::available(byte* status)
 {
     //
@@ -124,7 +133,7 @@ WiFiClient WiFiServer::available(byte* status)
     //if there is no new client (or an error), return a "fake" client that
     //evaluates to false if placed in a boolean comparison (arduino compatability)
     //
-    if (clientHandle == SL_EAGAIN) {
+    if ((clientHandle == SL_EAGAIN) || (clientHandle < 0)) {
         return WiFiClient(255);
     }
     

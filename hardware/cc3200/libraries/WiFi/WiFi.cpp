@@ -6,8 +6,8 @@
  X  4) figure out how to get the SSID of the currently connected station
  X  5) how do you figure out what the index of the currently connected profile is?
  X  6) What's the appropriate socket type to use?
-    7) Write net app event handler to wait for assigned ip (see tcp socket example)
-    8) add local IP, subnet mask, and gateway ip methods as described in IPAddress class
+ X  7) Write net app event handler to wait for assigned ip (see tcp socket example)
+ X  8) add local IP, subnet mask, and gateway ip methods as described in IPAddress class
  */
 
 

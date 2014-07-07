@@ -79,7 +79,7 @@ public:
     char* firmwareVersion();
     
     
-    /* Start Wifi connection for OPEN networks
+    /* Start Wifi connection for OPEN network
      *
      * param ssid: Pointer to the SSID string.
      */

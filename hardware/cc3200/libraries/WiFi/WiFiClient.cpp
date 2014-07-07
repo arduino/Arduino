@@ -1,11 +1,21 @@
-//TO DO:
-// 1) Add a way to check if the connection has been dropped by the server
-// X) Make this an extension of the print class in print.cpp
-//
+/* TO DO:
+ *   1) Add a way to check if the connection has been dropped by the server
+ * X 2) Make this an extension of the print class in print.cpp
+ *   3) Figure out what status is supposed to do
+ *   4) Prevent the wrong methods from being called based on server or client side
+ *
+ */
 
 /*
  WiFiClient.cpp - Adaptation of Arduino WiFi library for Energia and CC3200 launchpad
  Author: Noah Luskey | LuskeyNoah@gmail.com
+ 
+ WiFiClient objects suffer from a bit of an existential crisis, where really
+ the same class serves two separate purposes. Client instances can exist server
+ side (as a wrapper for a port to send messages to), or client side, as the 
+ object attempting to make a connection. Only certain calls should be made in 
+ each instance, and effort has been made to prevent the user from being able
+ to mess things up with the wrong function calls.
  
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -31,7 +41,8 @@ extern "C" {
 #include "WiFiClient.h"
 #include "WiFiServer.h"
 
-
+//--tested, working--//
+//--client side--//
 WiFiClient::WiFiClient()
 {
     //
@@ -43,6 +54,8 @@ WiFiClient::WiFiClient()
     
 }
 
+//--tested, working--//
+//--server side--//
 WiFiClient::WiFiClient(uint8_t socketIndex)
 {
     //
@@ -53,7 +66,32 @@ WiFiClient::WiFiClient(uint8_t socketIndex)
     _socketIndex = socketIndex;
 }
 
+WiFiClient::~WiFiClient()
+{
+    //
+    //don't do anything if the socket was never set up
+    //
+    if (_socketIndex == NO_SOCKET_AVAIL) {
+        return;
+    }
+    
+    //
+    //close the socket
+    //
+    int socketHandle = WiFiClass::_handleArray[_socketIndex];
+    sl_Close(socketHandle);
+    
+    //
+    //clear the tracking stuff from the WiFiClass arrays
+    //
+    WiFiClass::_handleArray[_socketIndex] = -1;
+    WiFiClass::_portArray[_socketIndex] = -1;
+    WiFiClass::_typeArray[_socketIndex] = -1;
+    
+}
 
+//--tested, working--//
+//--client side--//
 int WiFiClient::connect(char* host, uint16_t port)
 {
     //
@@ -66,11 +104,20 @@ int WiFiClient::connect(char* host, uint16_t port)
     }
     
     return connect(hostIP, port);
-    
 }
 
+//--tested, working--//
+//--client side--//
 int WiFiClient::connect(IPAddress ip, uint16_t port)
 {
+    //
+    //this function should only be called once and only on the client side
+    //
+    if (_socketIndex != NO_SOCKET_AVAIL) {
+        return false;
+    }
+    
+    
     //
     //get a socket index and attempt to create a socket
     //
@@ -117,6 +164,8 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
     return true;
 }
 
+//--tested, working--//
+//--client and server side--//
 size_t WiFiClient::write(uint8_t b)
 {
     //
@@ -132,7 +181,9 @@ size_t WiFiClient::write(uint8_t b)
     return write(&b, 1);
 }
 
-size_t WiFiClient::write(uint8_t *buf, size_t size)
+//--tested, working--//
+//--client and server side--//
+size_t WiFiClient::write(const uint8_t *buffer, size_t size)
 {
     //
     //don't do anything if not properly set up
@@ -144,14 +195,21 @@ size_t WiFiClient::write(uint8_t *buf, size_t size)
     //
     //write the bufer to the socket
     //
-    int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buf, size, NULL);
-    if (iRet < 0) {
+    int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
+    if ((iRet < 0) || (iRet != size)) {
+        //
+        //if an error occured or the socket has died, call stop()
+        //to make the object aware that it's dead
+        //
+        stop();
         return 0;
     } else {
         return iRet;
     }
 }
 
+//--tested, working--//
+//--client and server side--//
 int WiFiClient::available()
 {
     //
@@ -169,10 +227,11 @@ int WiFiClient::available()
     if (bytesLeft <= 0) {
         //
         //Receive any pending information into the buffer
-        //clear the rx_buffer if an error occured (SL_EAGAIN just means no new info)
+        //if the connection has died, call stop() to make the object aware it's dead
         //
         int iRet = sl_Recv(WiFiClass::_handleArray[_socketIndex], rx_buffer, TCP_RX_BUFF_MAX_SIZE, NULL);
         if ((iRet < 0)  &&  (iRet != SL_EAGAIN)) {
+            stop();
             memset(rx_buffer, 0, TCP_RX_BUFF_MAX_SIZE);
             return 0;
         }
@@ -195,7 +254,8 @@ int WiFiClient::available()
     return bytesLeft;
 }
 
-uint8_t WiFiClient::read()
+//--tested, working--//
+int WiFiClient::read()
 {
     //
     //return a single byte from the rx buffer (or zero if past the end)
@@ -207,6 +267,7 @@ uint8_t WiFiClient::read()
     }
 }
 
+//--tested, working--//
 int WiFiClient::read(uint8_t* buf, size_t size)
 {
     //
@@ -220,7 +281,8 @@ int WiFiClient::read(uint8_t* buf, size_t size)
     return i;
 }
 
-uint8_t WiFiClient::peek()
+//--tested, working--//
+int WiFiClient::peek()
 {
     //
     //return the next byte in the buffer or zero if we're past the end of the data
@@ -232,6 +294,7 @@ uint8_t WiFiClient::peek()
     }
 }
 
+//--tested, working--//
 void WiFiClient::flush()
 {
     //
@@ -242,6 +305,7 @@ void WiFiClient::flush()
     rx_currentIndex = 0;
 }
 
+//--tested, working--//
 void WiFiClient::stop()
 {
     //
@@ -270,13 +334,14 @@ void WiFiClient::stop()
     
 }
 
+//!! works, sort of, dependent on status(), which needs work !!//
 bool WiFiClient::connected()
 {
     //
     //as described by the arduino api, this will return true even if the client has
     //disconnected as long as there is data left in the buffer
     //
-    if (_socketIndex != NO_SOCKET_AVAIL) {
+    if ( status() ) {
         return true;
     } else if (rx_currentIndex < rx_fillLevel) {
         return true;
@@ -286,14 +351,17 @@ bool WiFiClient::connected()
     
 }
 
+//!! works, sort of, needs to actually test connection !!//
 uint8_t WiFiClient::status()
 {
     //
-    //!! not described in arduino online api
+    //This basically just checks if stop() has been called
+    //!! is there a way to test the tcp connection without a write?
     //
-    return 0;
+    return _socketIndex != NO_SOCKET_AVAIL ? true : false;
 }
 
+//--tested, working--//
 WiFiClient::operator bool()
 {
     //

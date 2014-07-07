@@ -226,7 +226,7 @@ size_t WiFiUDP::write(uint8_t byte)
 }
 
 //--tested, working--//
-size_t WiFiUDP::write(uint8_t *buffer, size_t size)
+size_t WiFiUDP::write(const uint8_t *buffer, size_t size)
 {
     //
     //it's possible that size is more than can fit in the tx_buffer

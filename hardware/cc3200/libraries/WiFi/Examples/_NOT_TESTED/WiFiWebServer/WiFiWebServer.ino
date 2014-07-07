@@ -20,10 +20,12 @@
 
 #include <SPI.h>
 #include <WiFi.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
 
 
-char ssid[] = "yourNetwork";      // your network SSID (name)
-char pass[] = "secretPassword";   // your network password
+char ssid[] = "Apple Network";      // your network SSID (name)
+char pass[] = "z74caxuairp7ort10";   // your network password
 int keyIndex = 0;                 // your network key Index number (needed only for WEP)
 
 int status = WL_IDLE_STATUS;
@@ -31,36 +33,26 @@ int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
 void setup() {
-  //Initialize serial and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
-
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  Serial.begin(115200);      // initialize serial communication
+  pinMode(RED_LED, OUTPUT);      // set the LED pin mode
 
   // attempt to connect to Wifi network:
+  Serial.print("Attempting to connect to Network named: ");
+  Serial.println(ssid);                   // print the network name (SSID);
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  status = WiFi.begin(ssid, pass);
   while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
+    status = WiFi.status();
+    Serial.print(".");
+    // wait .1 seconds for connection:
+    delay(100);
   }
-  server.begin();
-  // you're connected now, so print out the status:
-  printWifiStatus();
+  delay(3000);
+  
+  Serial.println("Starting webserver on port 80");
+  server.begin();                           // start the web server on port 80
+  Serial.println("Webserver started!");
+  printWifiStatus();                        // you're connected now, so print out the status
 }
 
 
@@ -89,7 +81,7 @@ void loop() {
           client.println("<html>");
           // output the value of each analog input pin
           for (int analogChannel = 0; analogChannel < 6; analogChannel++) {
-            int sensorReading = analogRead(analogChannel);
+            int sensorReading = analogChannel; //analogRead(analogChannel);
             client.print("analog input ");
             client.print(analogChannel);
             client.print(" is ");
