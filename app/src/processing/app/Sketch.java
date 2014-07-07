@@ -1308,7 +1308,7 @@ public class Sketch {
     StringBuffer bigCode = new StringBuffer();
     int bigCount = 0;
     for (SketchCode sc : code) {
-      if (sc.isExtension("ino") || sc.isExtension("pde")) {
+      if (sc.isExtension(Base.SKETCH_EXTENSIONS)) {
         sc.setPreprocOffset(bigCount);
         // These #line directives help the compiler report errors with
         // correct the filename and line number (issue 281 & 907)
@@ -1368,7 +1368,7 @@ public class Sketch {
     // 3. then loop over the code[] and save each .java file
 
     for (SketchCode sc : code) {
-      if (sc.isExtension("c") || sc.isExtension("cpp") || sc.isExtension("h")) {
+      if (sc.isExtension(Base.SOURCE_EXTENSIONS) || sc.isExtension(Base.HEADER_EXTENSIONS)) {
         // no pre-processing services necessary for java files
         // just write the the contents of 'program' to a .java file
         // into the build directory. uses byte stream and reader/writer
@@ -1382,7 +1382,7 @@ public class Sketch {
         }
 //        sc.setPreprocName(filename);
 
-      } else if (sc.isExtension("ino") || sc.isExtension("pde")) {
+      } else if (sc.isExtension(Base.SKETCH_EXTENSIONS)) {
         // The compiler and runner will need this to have a proper offset
         sc.addPreprocOffset(headerOffset);
       }
@@ -1818,20 +1818,22 @@ public class Sketch {
    * Returns the default extension for this editor setup.
    */
   public String getDefaultExtension() {
-    return "ino";
+    return Base.SKETCH_EXTENSIONS[0];
   }
 
-  static private List<String> hiddenExtensions = Arrays.asList("ino", "pde");
-
   public List<String> getHiddenExtensions() {
-    return hiddenExtensions;
+    return Arrays.asList(Base.SKETCH_EXTENSIONS);
   }
 
   /**
    * Returns a String[] array of proper extensions.
    */
   public List<String> getExtensions() {
-    return Arrays.asList("ino", "pde", "c", "cpp", "h");
+    List<String> res = new ArrayList<String>();
+    res.addAll(Arrays.asList(Base.SKETCH_EXTENSIONS));
+    res.addAll(Arrays.asList(Base.SOURCE_EXTENSIONS));
+    res.addAll(Arrays.asList(Base.HEADER_EXTENSIONS));
+    return res;
   }
 
 

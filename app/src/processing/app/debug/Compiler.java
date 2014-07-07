@@ -240,7 +240,7 @@ public class Compiler implements MessageConsumer {
   private List<File> compileFiles(File outputPath, File sourcePath,
                                   boolean recurse, List<File> includeFolders)
       throws RunnerException {
-    List<File> sourceFiles = FileUtils.listFiles(sourcePath, recurse, "s", "c", "cpp");
+    List<File> sourceFiles = FileUtils.listFiles(sourcePath, recurse, Base.SOURCE_EXTENSIONS);
     return compileFiles(outputPath, sourcePath, sourceFiles, includeFolders);
 
   }

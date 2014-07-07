@@ -67,6 +67,11 @@ public class Base {
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
+  // These should remain lowercase, they are matched against lowercased strings
+  public static final String[] SOURCE_EXTENSIONS = {"s", "c", "cpp"};
+  public static final String[] HEADER_EXTENSIONS = {"h"};
+  public static final String[] SKETCH_EXTENSIONS = {"ino", "pde"};
+
   static Map<Integer, String> platformNames = new HashMap<Integer, String>();
   static {
     platformNames.put(PConstants.WINDOWS, "windows");
