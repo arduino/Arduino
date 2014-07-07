@@ -250,13 +250,15 @@ public class Compiler implements MessageConsumer {
       throws RunnerException {
     List<File> objectPaths = new ArrayList<File>();
     for (File file : sourceFiles) {
-      File objectFile = new File(outputPath, file.getName() + ".o");
-      File dependFile = new File(outputPath, file.getName() + ".d");
+      String relative = FileUtils.relativeSubPath(sourcePath, file);
+      File objectFile = new File(outputPath, relative + ".o");
+      File dependFile = new File(outputPath, relative + ".d");
       objectPaths.add(objectFile);
 
       if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
         continue;
 
+      createFolder(objectFile.getParentFile());
       String[] cmd;
       if (FileUtils.hasExtension(file, "s")) {
         cmd = getCommandCompilerS(includeFolders, file, objectFile);
@@ -599,7 +601,7 @@ public class Compiler implements MessageConsumer {
   private void createFolder(File folder) throws RunnerException {
     if (folder.isDirectory())
       return;
-    if (!folder.mkdir())
+    if (!folder.mkdirs())
       throw new RunnerException("Couldn't create: " + folder);
   }
 
@@ -625,7 +627,7 @@ public class Compiler implements MessageConsumer {
     if (lib.useRecursion()) {
       // libBuildFolder == {build.path}/LibName
       // libFolder      == {lib.path}/src
-      recursiveCompileFilesInFolder(libBuildFolder, libFolder, includeFolders);
+      objectFiles.addAll(compileFiles(libBuildFolder, libFolder, true, includeFolders));
 
     } else {
       // libFolder          == {lib.path}/
@@ -636,27 +638,13 @@ public class Compiler implements MessageConsumer {
       File utilityBuildFolder = new File(libBuildFolder, "utility");
 
       includeFolders.add(utilityFolder);
-      compileFilesInFolder(libBuildFolder, libFolder, includeFolders);
+      objectFiles.addAll(compileFiles(libBuildFolder, libFolder, false, includeFolders));
       if (utilityFolder.isDirectory())
-        compileFilesInFolder(utilityBuildFolder, utilityFolder, includeFolders);
+        objectFiles.addAll(compileFiles(utilityBuildFolder, utilityFolder, false, includeFolders));
 
       // other libraries should not see this library's utility/ folder
       includeFolders.remove(utilityFolder);
     }
-  }
-
-  private void recursiveCompileFilesInFolder(File srcBuildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
-    compileFilesInFolder(srcBuildFolder, srcFolder, includeFolders);
-    for (File subFolder : srcFolder.listFiles(new OnlyDirs())) {
-      File subBuildFolder = new File(srcBuildFolder, subFolder.getName());
-      recursiveCompileFilesInFolder(subBuildFolder, subFolder, includeFolders);
-    }
-  }
-
-  private void compileFilesInFolder(File buildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
-    createFolder(buildFolder);
-    List<File> objects = compileFiles(buildFolder, srcFolder, false, includeFolders);
-    objectFiles.addAll(objects);
   }
 
   // 3. compile the core, outputting .o files to <buildPath> and then
