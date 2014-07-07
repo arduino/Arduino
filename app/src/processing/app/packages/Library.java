@@ -9,6 +9,7 @@ import java.util.List;
 
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
+import processing.app.Base;
 
 public class Library {
 
@@ -247,6 +248,10 @@ public class Library {
     return (layout == LibraryLayout.RECURSIVE);
   }
 
+  /**
+   * Returns the folder that contains the source files (and possibly
+   * other files as well).
+   */
   public File getSrcFolder() {
     switch (layout) {
       case FLAT:
@@ -256,6 +261,70 @@ public class Library {
       default:
         return null; // Keep compiler happy :-(
     }
+  }
+
+  /**
+   * Include paths within this library to use when compiling libraries
+   * and sketches depending on this library.
+   */
+  public List<File> getPublicIncludeFolders() {
+    List<File> res = new ArrayList<File>();
+    res.add(getSrcFolder());
+    return res;
+  }
+
+  /**
+   * Include paths within this library to use when compiling this
+   * library itself (in addition to the public include folders)..
+   */
+  public List<File> getPrivateIncludeFolders() {
+    List<File> res = new ArrayList<File>();
+    switch (layout) {
+      case FLAT:
+        res.add(new File(folder, "utility"));
+        break;
+      case RECURSIVE:
+        break;
+    }
+    return res;
+  }
+
+  /**
+   * Returns the header files that can be included by other libraries
+   * and the sketch. The paths returned are relative to one of the
+   * folders returned by getPublicIncludeFolders - e.g. they are what
+   * would be inside an #include directory in the code.
+   */
+  public List<String> getPublicHeaders() {
+    List <String> res = new ArrayList<String>();
+    for (File folder : getPublicIncludeFolders()) {
+      List<File> headers = FileUtils.listFiles(folder, false, Base.HEADER_EXTENSIONS);
+      for (File header : headers) {
+        res.add(FileUtils.relativeSubPath(folder, header));
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Returns the complete list of source files for this library. All
+   * source files are guaranteed to be inside the directory returned by
+   * getSrcFolder().
+   */
+  public List<File> getSourceFiles() {
+    List<File> res = new ArrayList<File>();
+    switch (layout) {
+      case FLAT:
+        res.addAll(FileUtils.listFiles(folder, false, Base.SOURCE_EXTENSIONS));
+        File utilityFolder = new File(folder, "utility");
+        if (utilityFolder.isDirectory())
+          res.addAll(FileUtils.listFiles(utilityFolder, false, Base.SOURCE_EXTENSIONS));
+        break;
+      case RECURSIVE:
+        res.addAll(FileUtils.listFiles(getSrcFolder(), true, Base.SOURCE_EXTENSIONS));
+        break;
+    }
+    return res;
   }
 
   public boolean isLegacy() {

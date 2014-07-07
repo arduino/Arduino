@@ -1349,22 +1349,17 @@ public class Base {
     // Populate importToLibraryTable
     importToLibraryTable = new HashMap<String, Library>();
     for (Library lib : libraries) {
-      try {
-        String headers[] = headerListFromIncludePath(lib.getSrcFolder());
-        for (String header : headers) {
-          Library old = importToLibraryTable.get(header);
-          if (old != null) {
-            // If a library was already found with this header, keep
-            // it if the library's name matches the header name.
-            String name = header.substring(0, header.length() - 2);
-            if (old.getFolder().getPath().endsWith(name))
-              continue;
-          }
-          importToLibraryTable.put(header, lib);
+      List<String> headers = lib.getPublicHeaders();
+      for (String header : headers) {
+        Library old = importToLibraryTable.get(header);
+        if (old != null) {
+          // If a library was already found with this header, keep
+          // it if the library's name matches the header name.
+          String name = header.substring(0, header.length() - 2);
+          if (old.getFolder().getPath().endsWith(name))
+            continue;
         }
-      } catch (IOException e) {
-        showWarning(_("Error"), I18n
-            .format("Unable to list header files in {0}", lib.getSrcFolder()), e);
+        importToLibraryTable.put(header, lib);
       }
     }
 
@@ -1766,19 +1761,6 @@ public class Base {
 
       // XXX: DAM: should recurse here so that library folders can be nested
     }
-  }
-
-  /**
-   * Given a folder, return a list of the header files in that folder (but not
-   * the header files in its sub-folders, as those should be included from
-   * within the header files at the top-level).
-   */
-  static public String[] headerListFromIncludePath(File path) throws IOException {
-    String[] list = path.list(new OnlyFilesWithExtension(".h"));
-    if (list == null) {
-      throw new IOException();
-    }
-    return list;
   }
 
   protected void loadHardware(File folder) {

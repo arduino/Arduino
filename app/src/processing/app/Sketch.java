@@ -1073,19 +1073,13 @@ public class Sketch {
   }
 
 
-  public void importLibrary(Library lib) throws IOException {
-    importLibrary(lib.getSrcFolder());
-  }
-
   /**
    * Add import statements to the current tab for all of packages inside
-   * the specified jar file.
+   * the specified library.
    */
-  public void importLibrary(File jarPath) throws IOException {
+  public void importLibrary(Library lib) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
-    String list[] = Base.headerListFromIncludePath(jarPath);
 
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
@@ -1097,9 +1091,9 @@ public class Sketch {
     // statement is already in there, but if the user has the import
     // commented out, then this will be a problem.
     StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < list.length; i++) {
+    for (String include : lib.getPublicHeaders()) {
       buffer.append("#include <");
-      buffer.append(list[i]);
+      buffer.append(include);
       buffer.append(">\n");
     }
     buffer.append('\n');

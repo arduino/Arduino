@@ -94,7 +94,7 @@ public class Compiler implements MessageConsumer {
         System.out.println(I18n
             .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
                     lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
-      includeFolders.add(lib.getSrcFolder());
+      includeFolders.addAll(lib.getPublicIncludeFolders());
     }
     if (verbose)
       System.out.println();
@@ -623,28 +623,9 @@ public class Compiler implements MessageConsumer {
       throws RunnerException {
     File libFolder = lib.getSrcFolder();
     File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
-
-    if (lib.useRecursion()) {
-      // libBuildFolder == {build.path}/LibName
-      // libFolder      == {lib.path}/src
-      objectFiles.addAll(compileFiles(libBuildFolder, libFolder, true, includeFolders));
-
-    } else {
-      // libFolder          == {lib.path}/
-      // utilityFolder      == {lib.path}/utility
-      // libBuildFolder     == {build.path}/LibName
-      // utilityBuildFolder == {build.path}/LibName/utility
-      File utilityFolder = new File(libFolder, "utility");
-      File utilityBuildFolder = new File(libBuildFolder, "utility");
-
-      includeFolders.add(utilityFolder);
-      objectFiles.addAll(compileFiles(libBuildFolder, libFolder, false, includeFolders));
-      if (utilityFolder.isDirectory())
-        objectFiles.addAll(compileFiles(utilityBuildFolder, utilityFolder, false, includeFolders));
-
-      // other libraries should not see this library's utility/ folder
-      includeFolders.remove(utilityFolder);
-    }
+    List<File> libIncludeFolders = new ArrayList<File>(includeFolders);
+    libIncludeFolders.addAll(lib.getPrivateIncludeFolders());
+    objectFiles.addAll(compileFiles(libBuildFolder, libFolder, lib.getSourceFiles(), libIncludeFolders));
   }
 
   // 3. compile the core, outputting .o files to <buildPath> and then
