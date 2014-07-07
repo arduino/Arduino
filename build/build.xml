@@ -298,7 +298,9 @@
     <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="macosx" usetimestamp="true" skipexisting="true"/>
     <unzip src="macosx/libastylej-2.03.zip" dest="macosx" overwrite="true"/>
     <copy file="macosx/libastylej/libastylej.jnilib" todir="macosx/work/Arduino.app/Contents/Java/lib/" />
+    <copy file="macosx/libastylej/libastylej.jnilib" tofile="macosx/work/Arduino.app/Contents/Java/lib/libastylej.dylib" />
     <chmod perm="755" file="macosx/work/Arduino.app/Contents/Java/lib/libastylej.jnilib" />
+    <chmod perm="755" file="macosx/work/Arduino.app/Contents/Java/lib/libastylej.dylib" />
   </target>
 
   <target name="macosx-run" depends="macosx-build" description="Run Mac OS X version">
