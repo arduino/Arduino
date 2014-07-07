@@ -240,35 +240,35 @@ public class Compiler implements MessageConsumer {
   private List<File> compileFiles(File outputPath, File sourcePath,
                                   boolean recurse, List<File> includeFolders)
       throws RunnerException {
-    List<File> sSources = findFilesInFolder(sourcePath, "S", recurse);
-    List<File> cSources = findFilesInFolder(sourcePath, "c", recurse);
-    List<File> cppSources = findFilesInFolder(sourcePath, "cpp", recurse);
+    List<File> sourceFiles = FileUtils.listFiles(sourcePath, recurse, "s", "c", "cpp");
+    return compileFiles(outputPath, sourcePath, sourceFiles, includeFolders);
+
+  }
+
+  private List<File> compileFiles(File outputPath, File sourcePath,
+                                  List<File> sourceFiles, List<File> includeFolders)
+      throws RunnerException {
     List<File> objectPaths = new ArrayList<File>();
-
-    for (File file : sSources) {
-      File objectFile = new File(outputPath, file.getName() + ".o");
-      objectPaths.add(objectFile);
-      String[] cmd = getCommandCompilerS(includeFolders, file, objectFile);
-      execAsynchronously(cmd);
-    }
- 		
-    for (File file : cSources) {
+    for (File file : sourceFiles) {
       File objectFile = new File(outputPath, file.getName() + ".o");
       File dependFile = new File(outputPath, file.getName() + ".d");
       objectPaths.add(objectFile);
-      if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
-        continue;
-      String[] cmd = getCommandCompilerC(includeFolders, file, objectFile);
-      execAsynchronously(cmd);
-    }
 
-    for (File file : cppSources) {
-      File objectFile = new File(outputPath, file.getName() + ".o");
-      File dependFile = new File(outputPath, file.getName() + ".d");
-      objectPaths.add(objectFile);
       if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
         continue;
-      String[] cmd = getCommandCompilerCPP(includeFolders, file, objectFile);
+
+      String[] cmd;
+      if (FileUtils.hasExtension(file, "s")) {
+        cmd = getCommandCompilerS(includeFolders, file, objectFile);
+      } else if (FileUtils.hasExtension(file, "c")) {
+        cmd = getCommandCompilerC(includeFolders, file, objectFile);
+      } else if (FileUtils.hasExtension(file, "cpp")) {
+        cmd = getCommandCompilerCPP(includeFolders, file, objectFile);
+      } else {
+        // This should not be possible...
+        throw new RunnerException("Unknown source file extension: " + file.getName());
+      }
+
       execAsynchronously(cmd);
     }
     
@@ -603,35 +603,6 @@ public class Compiler implements MessageConsumer {
       throw new RunnerException("Couldn't create: " + folder);
   }
 
-  static public List<File> findFilesInFolder(File folder, String extension,
-                                             boolean recurse) {
-    List<File> files = new ArrayList<File>();
-
-    if (FileUtils.isSCCSOrHiddenFile(folder)) {
-      return files;
-    }
-
-    File[] listFiles = folder.listFiles();
-    if (listFiles == null) {
-      return files;
-    }
-
-    for (File file : listFiles) {
-      if (FileUtils.isSCCSOrHiddenFile(file)) {
-        continue; // skip hidden files
-      }
-
-      if (file.getName().endsWith("." + extension))
-        files.add(file);
-
-      if (recurse && file.isDirectory()) {
-        files.addAll(findFilesInFolder(file, extension, true));
-      }
-    }
-
-    return files;
-  }
-  
   // 1. compile the sketch (already in the buildPath)
   void compileSketch(List<File> includeFolders) throws RunnerException {
     File buildPath = prefs.getFile("build.path");
@@ -666,7 +637,8 @@ public class Compiler implements MessageConsumer {
 
       includeFolders.add(utilityFolder);
       compileFilesInFolder(libBuildFolder, libFolder, includeFolders);
-      compileFilesInFolder(utilityBuildFolder, utilityFolder, includeFolders);
+      if (utilityFolder.isDirectory())
+        compileFilesInFolder(utilityBuildFolder, utilityFolder, includeFolders);
 
       // other libraries should not see this library's utility/ folder
       includeFolders.remove(utilityFolder);
