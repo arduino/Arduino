@@ -161,50 +161,20 @@ public class Sketch {
     codeFolder = new File(folder, "code");
     dataFolder = new File(folder, "data");
 
-    // get list of files in the sketch folder
-    String list[] = folder.list();
-
-    // reset these because load() may be called after an
-    // external editor event. (fix for 0099)
-    codeCount = 0;
-
-    code = new SketchCode[list.length];
-
-    List<String> extensions = getExtensions();
-
-    for (String filename : list) {
-      // Ignoring the dot prefix files is especially important to avoid files
-      // with the ._ prefix on Mac OS X. (You'll see this with Mac files on
-      // non-HFS drives, i.e. a thumb drive formatted FAT32.)
-      if (filename.startsWith(".")) continue;
-
-      // Don't let some wacko name a directory blah.pde or bling.java.
-      if (new File(folder, filename).isDirectory()) continue;
-
-      // figure out the name without any extension
-      String base = filename;
-      // now strip off the .pde and .java extensions
-      for (String extension : extensions) {
-        if (base.toLowerCase().endsWith("." + extension)) {
-          base = base.substring(0, base.length() - (extension.length() + 1));
-
-          // Don't allow people to use files with invalid names, since on load,
-          // it would be otherwise possible to sneak in nasty filenames. [0116]
-          if (Sketch.isSanitaryName(base)) {
-            code[codeCount++] =
-              new SketchCode(new File(folder, filename));
-          } else {
-            editor.console.message(I18n.format("File name {0} is invalid: ignored", filename), true, false);
-          }
-        }
+    List<SketchCode> tmpcode = new ArrayList<SketchCode>();
+    for (File file : FileUtils.listFiles(folder, false, getExtensions())) {
+      if (Sketch.isSanitaryName(file.getName())) {
+        tmpcode.add(new SketchCode(file));
+      } else {
+        editor.console.message(I18n.format("File name {0} is invalid: ignored", file.getName()), true, false);
       }
     }
 
-    if (codeCount == 0)
+    if (tmpcode.isEmpty())
       throw new IOException(_("No valid code files found"));
 
-    // Remove any code that wasn't proper
-    code = (SketchCode[]) PApplet.subset(code, 0, codeCount);
+    codeCount = tmpcode.size();
+    code = tmpcode.toArray(new SketchCode[codeCount]);
 
     // move the main class to the first tab
     // start at 1, if it's at zero, don't bother
