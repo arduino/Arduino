@@ -25,6 +25,8 @@
 package processing.app;
 
 import java.io.*;
+import java.util.List;
+import java.util.Arrays;
 
 import javax.swing.text.Document;
 
@@ -156,8 +158,12 @@ public class SketchCode {
   }
   
   
-  public boolean isExtension(String what) {
-    return extension.equals(what);
+  public boolean isExtension(String... extensions) {
+    return isExtension(Arrays.asList(extensions));
+  }
+
+  public boolean isExtension(List<String> extensions) {
+    return extensions.contains(extension);
   }
   
   
