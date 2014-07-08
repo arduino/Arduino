@@ -58,10 +58,6 @@ public class PdePreprocessor {
   // off the . and anything after it to produce a package name consistently.
   List<String> programImports;
 
-  // imports just from the code folder, treated differently
-  // than the others, since the imports are auto-generated.
-  List<String> codeFolderImports;
-
   String program;
 
 
@@ -103,13 +99,6 @@ public class PdePreprocessor {
     if (pieces != null)
       for (int i = 0; i < pieces.length; i++)
         programImports.add(pieces[i][1]);  // the package name
-
-    codeFolderImports = new ArrayList<String>();
-//    if (codeFolderPackages != null) {
-//      for (String item : codeFolderPackages) {
-//        codeFolderImports.add(item + ".*");
-//      }
-//    }
 
     prototypes = prototypes(program);
 
