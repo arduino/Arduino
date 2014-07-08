@@ -45,6 +45,7 @@ import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringReplacer;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.packages.Library;
+import processing.app.packages.LibraryList;
 import processing.core.PApplet;
 
 public class Compiler implements MessageConsumer {
@@ -89,7 +90,8 @@ public class Compiler implements MessageConsumer {
     includeFolders.add(prefs.getFile("build.core.path"));
     if (prefs.getFile("build.variant.path") != null)
       includeFolders.add(prefs.getFile("build.variant.path"));
-    for (Library lib : sketch.getImportedLibraries()) {
+    LibraryList libs = Base.getLibraryResolver().findDirectDependencies(sketch);
+    for (Library lib : libs) {
       if (verbose)
         System.out.println(I18n
             .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
@@ -105,7 +107,7 @@ public class Compiler implements MessageConsumer {
       String[] overrides = prefs.get("architecture.override_check").split(",");
       archs.addAll(Arrays.asList(overrides));
     }
-    for (Library lib : sketch.getImportedLibraries()) {
+    for (Library lib : libs) {
       if (!lib.supportsArchitecture(archs)) {
         System.err.println(I18n
             .format(_("WARNING: library {0} claims to run on {1} "
@@ -124,7 +126,8 @@ public class Compiler implements MessageConsumer {
     // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
     // Doesn't really use configPreferences
     sketch.setCompilingProgress(40);
-    compileLibraries(includeFolders);
+    for (Library lib : libs)
+      compileLibrary(lib, includeFolders);
 
     // 3. compile the core, outputting .o files to <buildPath> and then
     // collecting them into the core.a library file.
@@ -613,12 +616,6 @@ public class Compiler implements MessageConsumer {
 
   // 2. compile the libraries, outputting .o files to:
   // <buildPath>/<library>/
-  void compileLibraries(List<File> includeFolders) throws RunnerException {
-    for (Library lib : sketch.getImportedLibraries()) {
-      compileLibrary(lib, includeFolders);
-    }
-  }
-
   private void compileLibrary(Library lib, List<File> includeFolders)
       throws RunnerException {
     File libFolder = lib.getSrcFolder();

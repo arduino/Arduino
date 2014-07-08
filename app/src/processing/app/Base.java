@@ -44,10 +44,11 @@ import processing.app.debug.TargetPlatformException;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.filefilters.OnlyDirs;
-import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
+import processing.app.packages.HeuristicResolver;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibraryResolver;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.ZipDeflater;
 import processing.core.*;
@@ -110,7 +111,7 @@ public class Base {
   static private LibraryList libraries;
 
   // maps #included files to their library folder
-  static Map<String, Library> importToLibraryTable;
+  static private LibraryResolver libraryResolver;
 
   // classpath for all known libraries for p5
   // (both those in the p5/libs folder and those with lib subfolders
@@ -1346,22 +1347,8 @@ public class Base {
       showWarning(_("Error"), _("Error loading libraries"), e);
     }
 
-    // Populate importToLibraryTable
-    importToLibraryTable = new HashMap<String, Library>();
-    for (Library lib : libraries) {
-      List<String> headers = lib.getPublicHeaders();
-      for (String header : headers) {
-        Library old = importToLibraryTable.get(header);
-        if (old != null) {
-          // If a library was already found with this header, keep
-          // it if the library's name matches the header name.
-          String name = header.substring(0, header.length() - 2);
-          if (old.getFolder().getPath().endsWith(name))
-            continue;
-        }
-        importToLibraryTable.put(header, lib);
-      }
-    }
+    // Create library resolver
+    libraryResolver = new HeuristicResolver(libraries);
 
     // Update editors status bar
     for (Editor editor : editors)
@@ -2995,5 +2982,9 @@ public class Base {
 
   public static DiscoveryManager getDiscoveryManager() {
     return discoveryManager;
+  }
+
+  public static LibraryResolver getLibraryResolver() {
+    return libraryResolver;
   }
 }

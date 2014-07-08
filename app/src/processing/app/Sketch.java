@@ -34,13 +34,13 @@ import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.FileUtils;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibraryResolver;
 import processing.app.preproc.*;
 import processing.core.*;
 import static processing.app.I18n._;
 
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -90,11 +90,6 @@ public class Sketch {
   private String appletClassName;
   /** Class path determined during build. */
   private String classPath;
-
-  /**
-   * List of library folders.
-   */
-  private LibraryList importedLibraries;
 
   /**
    * File inside the build directory that contains the build options
@@ -1348,18 +1343,8 @@ public class Sketch {
       ex.printStackTrace();
       throw new RunnerException(ex.toString());
     }
-
-    // grab the imports from the code just preproc'd
-
-    importedLibraries = new LibraryList();
-    for (String item : preprocessor.getExtraImports()) {
-      Library lib = Base.importToLibraryTable.get(item);
-      if (lib != null && !importedLibraries.contains(lib)) {
-        importedLibraries.add(lib);
-      }
-    }
-
-    // 3. then loop over the code[] and save each .java file
+    
+    // 2. then loop over the code[] and save each .java file
 
     for (SketchCode sc : code) {
       if (sc.isExtension(Base.SOURCE_EXTENSIONS) || sc.isExtension(Base.HEADER_EXTENSIONS)) {
@@ -1382,12 +1367,6 @@ public class Sketch {
       }
     }
   }
-
-
-  public LibraryList getImportedLibraries() {
-    return importedLibraries;
-  }
-
 
   /**
    * Map an error from a set of processed .java files back to its location
