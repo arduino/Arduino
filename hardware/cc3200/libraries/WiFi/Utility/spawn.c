@@ -34,8 +34,8 @@
  *
 */
 
-#include "datatypes.h"
-#include "simplelink.h"
+#include "SimpleLink/datatypes.h"
+#include "SimpleLink/simplelink.h"
 
 #if (defined (SL_PLATFORM_MULTI_THREADED)) && (!defined (SL_PLATFORM_EXTERNAL_SPAWN))
 

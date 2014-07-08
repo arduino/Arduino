@@ -38,13 +38,13 @@
 
 
 extern "C" {
-    #include "SimpleLink.h"
+    #include "SimpleLink/SimpleLink.h"
     #include <string.h>
-    #include "wlan.h"
-    #include "netcfg.h"
-    #include "netapp.h"
-    #include "socket.h"
-    #include "udma_if.h"
+    #include "SimpleLink/wlan.h"
+    #include "SimpleLink/netcfg.h"
+    #include "SimpleLink/netapp.h"
+    #include "SimpleLink/socket.h"
+    #include "Utility/udma_if.h"
 }
 
 //
@@ -191,7 +191,7 @@ int WiFiClass::begin(char* ssid)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WiFi_status;
+        return status();
     } else {
         return WL_CONNECT_FAILED;
     }
@@ -232,7 +232,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WiFi_status;
+        return status();
     } else {
         return WL_CONNECT_FAILED;
     }
@@ -272,7 +272,7 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        return WiFi_status;
+        return status();
     } else {
         return WL_CONNECT_FAILED;
     }

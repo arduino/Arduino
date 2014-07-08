@@ -24,6 +24,7 @@ extern "C" {
     #include "utility/wl_definitions.h"
 }
 #include "Print.h"
+#include "Server.h"
 
 class WiFiClient;
 
@@ -31,7 +32,7 @@ class WiFiClient;
 //
 //Inhereting from Print provides all the cool print format methods
 //
-class WiFiServer : public Print {
+class WiFiServer : public Server {
 private:
     uint16_t _port;
     int _socketIndex;

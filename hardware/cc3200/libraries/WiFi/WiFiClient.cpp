@@ -34,7 +34,7 @@
 
 extern "C" {
   #include "utility/wl_definitions.h"
-  #include "utility/Socket.h"
+  #include "SimpleLink/Socket.h"
 }
 
 #include "WiFi.h"
@@ -66,39 +66,39 @@ WiFiClient::WiFiClient(uint8_t socketIndex)
     _socketIndex = socketIndex;
 }
 
-WiFiClient::~WiFiClient()
-{
-    //
-    //don't do anything if the socket was never set up
-    //
-    if (_socketIndex == NO_SOCKET_AVAIL) {
-        return;
-    }
-    
-    //
-    //close the socket
-    //
-    int socketHandle = WiFiClass::_handleArray[_socketIndex];
-    sl_Close(socketHandle);
-    
-    //
-    //clear the tracking stuff from the WiFiClass arrays
-    //
-    WiFiClass::_handleArray[_socketIndex] = -1;
-    WiFiClass::_portArray[_socketIndex] = -1;
-    WiFiClass::_typeArray[_socketIndex] = -1;
-    
-}
+//WiFiClient::~WiFiClient()
+//{
+//    //
+//    //don't do anything if the socket was never set up
+//    //
+//    if (_socketIndex == NO_SOCKET_AVAIL) {
+//        return;
+//    }
+//    
+//    //
+//    //close the socket
+//    //
+//    int socketHandle = WiFiClass::_handleArray[_socketIndex];
+//    sl_Close(socketHandle);
+//    
+//    //
+//    //clear the tracking stuff from the WiFiClass arrays
+//    //
+//    WiFiClass::_handleArray[_socketIndex] = -1;
+//    WiFiClass::_portArray[_socketIndex] = -1;
+//    WiFiClass::_typeArray[_socketIndex] = -1;
+//    
+//}
 
 //--tested, working--//
 //--client side--//
-int WiFiClient::connect(char* host, uint16_t port)
+int WiFiClient::connect(const char* host, uint16_t port)
 {
     //
     //get the host ip address
     //
     IPAddress hostIP(0,0,0,0);
-    int success = WiFi.hostByName(host, hostIP);
+    int success = WiFi.hostByName((char*)host, hostIP);
     if (!success) {
         return false;
     }
@@ -335,7 +335,7 @@ void WiFiClient::stop()
 }
 
 //!! works, sort of, dependent on status(), which needs work !!//
-bool WiFiClient::connected()
+uint8_t WiFiClient::connected()
 {
     //
     //as described by the arduino api, this will return true even if the client has

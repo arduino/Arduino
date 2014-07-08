@@ -22,6 +22,7 @@
 #include "Arduino.h"
 #include "IPAddress.h"
 #include "Stream.h"
+#include "Client.h"
 
 
 #define TCP_RX_BUFF_MAX_SIZE 255
@@ -30,16 +31,16 @@
 //Inhereting from stream (which inherits from print)
 //provides all the cool parse read methods and print format methods
 //
-class WiFiClient : public Stream {
+class WiFiClient : public Client {
     
 public:
     WiFiClient();
     WiFiClient(uint8_t sock);
-    ~WiFiClient();
+    //~WiFiClient();
     
     uint8_t status();
     virtual int connect(IPAddress ip, uint16_t port);
-    virtual int connect(char *host, uint16_t port);
+    virtual int connect(const char *host, uint16_t port);
     virtual size_t write(uint8_t);
     virtual size_t write(const uint8_t *buffer, size_t size);
     virtual int available();
@@ -48,7 +49,7 @@ public:
     virtual int peek();
     virtual void flush();
     virtual void stop();
-    virtual bool connected();
+    virtual uint8_t connected();
     virtual operator bool();
     
     friend class WiFiServer;

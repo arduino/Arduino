@@ -23,7 +23,7 @@
 #include <Energia.h>
 #include "IPAddress.h"
 #include "Utility/wl_definitions.h"
-#include "Utility/Simplelink.h"
+#include "SimpleLink/Simplelink.h"
 
 
 //
