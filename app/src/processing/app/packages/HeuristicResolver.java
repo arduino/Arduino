@@ -82,6 +82,46 @@ public class HeuristicResolver implements LibraryResolver {
     return result;
   }
 
+  @Override
+  public LibraryList findRecursiveDependencies(Sketch sketch) {
+    LibraryList result = findDirectDependencies(sketch);
+    findRecursiveDependencies(result);
+    return result;
+  }
+
+  @Override
+  public LibraryList findDirectDependencies(Library library) {
+    List<File> files = library.getSourceFiles(true);
+    List<String> headers = library.getPublicHeaders();
+    LibraryList result = new LibraryList();
+    for (File file : files)
+      result.addOrReplaceAll(findSourceDependencies(file, headers, library));
+    return result;
+  }
+
+  @Override
+  public LibraryList findRecursiveDependencies(Library library) {
+    LibraryList result = findDirectDependencies(library);
+    findRecursiveDependencies(result);
+    return result;
+  }
+
+  // Helper function - recursively finds the dependencies of the given
+  // list of libraries and adds them to the given list.
+  private void findRecursiveDependencies(LibraryList libs) {
+    LinkedList<Library> todo = new LinkedList<Library>(libs);
+    while (!todo.isEmpty()) {
+      Library next = todo.pop();
+      LibraryList indirects = findDirectDependencies(next);
+      for (Library indirect : indirects) {
+        if (!libs.contains(indirect)) {
+          libs.add(indirect);
+          todo.add(indirect);
+        }
+      }
+    }
+  }
+
   /**
    * Inspect headerFile and search for dependencies
    *

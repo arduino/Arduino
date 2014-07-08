@@ -90,7 +90,7 @@ public class Compiler implements MessageConsumer {
     includeFolders.add(prefs.getFile("build.core.path"));
     if (prefs.getFile("build.variant.path") != null)
       includeFolders.add(prefs.getFile("build.variant.path"));
-    LibraryList libs = Base.getLibraryResolver().findDirectDependencies(sketch);
+    LibraryList libs = Base.getLibraryResolver().findRecursiveDependencies(sketch);
     for (Library lib : libs) {
       if (verbose)
         System.out.println(I18n
@@ -622,7 +622,7 @@ public class Compiler implements MessageConsumer {
     File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
     List<File> libIncludeFolders = new ArrayList<File>(includeFolders);
     libIncludeFolders.addAll(lib.getPrivateIncludeFolders());
-    objectFiles.addAll(compileFiles(libBuildFolder, libFolder, lib.getSourceFiles(), libIncludeFolders));
+    objectFiles.addAll(compileFiles(libBuildFolder, libFolder, lib.getSourceFiles(false), libIncludeFolders));
   }
 
   // 3. compile the core, outputting .o files to <buildPath> and then

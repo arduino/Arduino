@@ -307,21 +307,26 @@ public class Library {
   }
 
   /**
-   * Returns the complete list of source files for this library. All
-   * source files are guaranteed to be inside the directory returned by
-   * getSrcFolder().
+   * Returns the complete list of source (and optionally header) files
+   * for this library. All source files are guaranteed to be inside the
+   * directory returned by getSrcFolder().
    */
-  public List<File> getSourceFiles() {
+  public List<File> getSourceFiles(boolean includeHeaders) {
     List<File> res = new ArrayList<File>();
+    List<String> exts = new ArrayList<String>(Arrays.asList(Base.SOURCE_EXTENSIONS));
+    if (includeHeaders)
+      exts.addAll(Arrays.asList(Base.HEADER_EXTENSIONS));
+    String extsArray[] = exts.toArray(new String[exts.size()]);
+
     switch (layout) {
       case FLAT:
-        res.addAll(FileUtils.listFiles(folder, false, Base.SOURCE_EXTENSIONS));
+        res.addAll(FileUtils.listFiles(folder, false, extsArray));
         File utilityFolder = new File(folder, "utility");
         if (utilityFolder.isDirectory())
-          res.addAll(FileUtils.listFiles(utilityFolder, false, Base.SOURCE_EXTENSIONS));
+          res.addAll(FileUtils.listFiles(utilityFolder, false, extsArray));
         break;
       case RECURSIVE:
-        res.addAll(FileUtils.listFiles(getSrcFolder(), true, Base.SOURCE_EXTENSIONS));
+        res.addAll(FileUtils.listFiles(getSrcFolder(), true, extsArray));
         break;
     }
     return res;

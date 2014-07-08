@@ -42,6 +42,30 @@ public interface LibraryResolver {
   public abstract LibraryList findDirectDependencies(Sketch sketch);
 
   /**
+   * Resolve recursive dependencies for a sketch
+   *
+   * @param sketch
+   * @return A LibraryList containing the dependencies
+   */
+  public abstract LibraryList findRecursiveDependencies(Sketch sketch);
+
+  /**
+   * Resolve direct dependencies for a library
+   *
+   * @param library
+   * @return A LibraryList containing the dependencies
+   */
+  public abstract LibraryList findDirectDependencies(Library sketch);
+
+  /**
+   * Resolve recursive dependencies for a library
+   *
+   * @param library
+   * @return A LibraryList containing the dependencies
+   */
+  public abstract LibraryList findRecursiveDependencies(Library library);
+
+  /**
    * Returns the Library referenced by the include file name
    *
    * @param header
