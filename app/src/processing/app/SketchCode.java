@@ -31,6 +31,7 @@ import java.util.Arrays;
 import javax.swing.text.Document;
 
 import static processing.app.I18n._;
+import processing.app.helpers.FileUtils;
 
 
 /**
@@ -42,9 +43,6 @@ public class SketchCode {
 
   /** File object for where this code is located */
   private File file;
-
-  /** Extension for this file (no dots, and in lowercase). */ 
-  private String extension;
 
   /** Text of the program text for this tab */
   private String program;
@@ -72,9 +70,8 @@ public class SketchCode {
   private int preprocOffset;  
 
 
-  public SketchCode(File file, String extension) {
+  public SketchCode(File file) {
     this.file = file;
-    this.extension = extension;
 
     makePrettyName();
 
@@ -127,11 +124,10 @@ public class SketchCode {
   }
   
   
-  protected boolean renameTo(File what, String ext) {
+  protected boolean renameTo(File what) {
     boolean success = file.renameTo(what);
     if (success) {
       file = what;
-      extension = ext;
       makePrettyName();
     }
     return success;
@@ -153,17 +149,12 @@ public class SketchCode {
   }
   
   
-  public String getExtension() {
-    return extension;
-  }
-  
-  
   public boolean isExtension(String... extensions) {
     return isExtension(Arrays.asList(extensions));
   }
 
   public boolean isExtension(List<String> extensions) {
-    return extensions.contains(extension);
+    return FileUtils.hasExtension(file, extensions);
   }
   
   
