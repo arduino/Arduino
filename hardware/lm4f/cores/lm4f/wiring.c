@@ -102,22 +102,23 @@ void delayMicroseconds(unsigned int us)
 	while(elapsedTime <= us * (F_CPU/1000000));
 }
 
-void delay(uint32_t milliseconds)
+void delay(uint32_t ms)
 {
 	unsigned long i;
-	for(i=0; i<milliseconds; i++){
+	for(i=0; i<ms; i++){
 		delayMicroseconds(1000);
 	}
 }
 
 volatile boolean stay_asleep = false;
 
-void sleep(uint32_t milliseconds)
+/* TODO: Replace sleep, sleepSeconds and suspend with actual RTC+Hibernate module implementation */
+void sleep(uint32_t ms)
 {
 	unsigned long i;
 
 	stay_asleep = true;
-	for(i=0; i<milliseconds && stay_asleep; i++) {
+	for(i=0; i<ms && stay_asleep; i++) {
 		delayMicroseconds(1000);
 	}
 	stay_asleep = false;
