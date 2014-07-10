@@ -22,7 +22,7 @@ import java.io.OutputStream;
 import static processing.app.I18n._;
 
 @SuppressWarnings("serial")
-public class NetworkMonitor extends AbstractMonitor implements MessageConsumer {
+public class NetworkMonitor extends AbstractTextMonitor implements MessageConsumer {
 
   private static final int MAX_CONNECTION_ATTEMPTS = 5;
 
