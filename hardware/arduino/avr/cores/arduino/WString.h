@@ -89,6 +89,8 @@ public:
 	#ifdef __GXX_EXPERIMENTAL_CXX0X__
 	String & operator = (String &&rval);
 	String & operator = (StringSumHelper &&rval);
+	auto begin() -> const char* { return c_str(); }
+	auto end() -> const char* { return c_str() + length(); }	
 	#endif
 
 	// concatenate (works w/ built-in types)
