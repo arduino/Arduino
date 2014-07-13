@@ -62,6 +62,8 @@ public:
 	#ifdef __GXX_EXPERIMENTAL_CXX0X__
 	String(String &&rval);
 	String(StringSumHelper &&rval);
+	auto begin() -> const char* { return c_str(); }
+	auto end() -> const char* { return c_str() + length(); }	
 	#endif
 	explicit String(char c);
 	explicit String(unsigned char, unsigned char base=10);
