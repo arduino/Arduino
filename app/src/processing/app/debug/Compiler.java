@@ -197,8 +197,14 @@ public class Compiler implements MessageConsumer {
     targetArch = targetPlatform.getId();
     p.put("build.arch", targetArch.toUpperCase());
     
-    if (!p.containsKey("compiler.path"))
+    // Platform.txt should define its own compiler.path. For
+    // compatibility with earlier 1.5 versions, we define a (ugly,
+    // avr-specific) default for it, but this should be removed at some
+    // point.
+    if (!p.containsKey("compiler.path")) {
+      System.err.println(_("Third-party platform.txt does not define compiler.path. Please report this to the third-party hardware maintainer."));
       p.put("compiler.path", Base.getAvrBasePath());
+    }
 
     // Core folder
     TargetPlatform tp = corePlatform;
@@ -291,6 +297,9 @@ public class Compiler implements MessageConsumer {
           line = line.substring(0, line.length() - 1);
         }
         line = line.trim();
+        // Strip backslash escape sequences. This replaces \\ with \ and
+        // removes all other backslashes
+        line = line.replaceAll("\\\\(.)", "$1");
         if (line.length() == 0) continue; // ignore blank lines
         if (need_obj_parse) {
           // line is supposed to be the object file - make sure it really is!
@@ -518,6 +527,18 @@ public class Compiler implements MessageConsumer {
       }      
     }
     
+    if (s.contains("undefined reference to `SPIClass::begin()'") &&
+        s.contains("libraries/Robot_Control")) {
+      String error = _("Please import the SPI library from the Sketch > Import Library menu.");
+      exception = new RunnerException(error);
+    }
+
+    if (s.contains("undefined reference to `Wire'") &&
+        s.contains("libraries/Robot_Control")) {
+      String error = _("Please import the Wire library from the Sketch > Import Library menu.");
+      exception = new RunnerException(error);
+    }
+		
     System.err.print(s);
   }
 
@@ -672,6 +693,8 @@ public class Compiler implements MessageConsumer {
 
   // 3. compile the core, outputting .o files to <buildPath> and then
   // collecting them into the core.a library file.
+  // Also compiles the variant (if it supplies actual source files),
+  // which are included in the link directly (not through core.a)
   void compileCore()
       throws RunnerException {
 
@@ -684,13 +707,9 @@ public class Compiler implements MessageConsumer {
     if (variantFolder != null)
       includeFolders.add(variantFolder);
 
-    List<File> objectFiles = compileFiles(buildFolder, coreFolder, true,
-                                          includeFolders);
-    if (variantFolder != null)
-      objectFiles.addAll(compileFiles(buildFolder, variantFolder, true,
-                                      includeFolders));
-
-    for (File file : objectFiles) {
+    List<File> coreObjectFiles = compileFiles(buildFolder, coreFolder, true,
+                                              includeFolders);
+    for (File file : coreObjectFiles) {
 
       PreferencesMap dict = new PreferencesMap(prefs);
       dict.put("ide_version", "" + Base.REVISION);
@@ -706,6 +725,10 @@ public class Compiler implements MessageConsumer {
       }
       execAsynchronously(cmdArray);
     }
+
+    if (variantFolder != null)
+      objectFiles.addAll(compileFiles(buildFolder, variantFolder, true,
+                                      includeFolders));
   }
 			
   // 4. link it all together into the .elf file

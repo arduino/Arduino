@@ -1,16 +1,90 @@
+ARDUINO 1.5.7 BETA - 2014.07.07
 
-ARDUINO 1.5.6 BETA
+[core]
+* Upgraded AVR toolchain: gcc 4.8.1, avr-libc 1.8.0
+* Upgraded ARM toolchain: gcc 4.8.3-2014q1
+* Upgraded avrdude to version 6.0.1
+* ARM gcc doesn't require ia32-libs anymore on 64 bits linux systems
+* avr: fixed typo in SerialEvent3 handling (Matthijs Kooijman)
+* avr: HardwareSerial support for different size of TX and RX buffer sizes (Jan Baeyens)
+* avr: HardwareSerial support for buffer sizes bigger than 256 bytes (Jan Baeyens)
+* sam: Added configuration (parity, data bits, stop bits) to Serial1/2/3 of Arduino Due (bluesign2k)
+* Removed a lot of compiler warnings from Arduino core
+* avr: Fix EXTERNAL_NUM_INTERRUPTS for atmega128rfa1 and atmega256rfr2 (Matthijs Kooijman)
+* sam: Fix to Wire::endTransmisson() return value (bluesign2k)
+* sam: Fix to Wire usage of TWI status register (bluesign2k)
+* avr: Fixed PROGMEM statements to be compatible with newer avr gcc (Scott Howard)
+
+[ide]
+* Moved to appbundler for building releases for MacOSX. (Haavar Valeur)
+  This should remove dependency from Java 1.6 on recent MacOSX.
+* Added support for '-' and '.' in filenames (Georg von Zengen)
+* (re)Added 'arduino_debug.exe' in Windows build for debugging purposes
+* Magic baudrate is no longer removed (it was a workaround for RXTX)
+  (for more info see github issues: #1203 and #995)
+* Allow overriding platform.txt using platform.local.txt (Matthijs Kooijman)
+* Explicitly define compiler.path in avr/platform.txt (Matthijs Kooijman)
+* Make the low available memory message a warning (Matt Robinson)
+* Proceed with upload even if port can't be found (David Mellis)
+* Added support for ArduinoISP
+* Windows: added board detection on serial port menu
+
+[libraries]
+* Updated SpaceBrew library
+* Fixed HttpClient::running() function
+* Fixed HttpClient::ready() function (Manuel Rabade)
+* Added HttpClient::noCheckSSL() method
+* Improved speed of YunSerialTerminal
+* Fixed CRC of shutdown command on YunSerialTerminal example
+* Updates/Fix to various examples
+* Added Wire.setClock(..) method (Kristian Sloth Lauszus)
+
+The following changes are included also in the (not yet released) Arduino IDE 1.0.6:
+
+[core]
+* avr: Improved USB-CDC write speed (Justin Rajewski)
+* avr: Improved USB-CDC read code (Paul Brook)
+* avr: Fixed race condition in USB-CDC transmit (Paul Brook)
+* Fixed wrong NULL pointer handling in Stream class (Amulya Kumar Sahoo)
+* Added initVariant() hook to allow 3rd party variant-specific initialization
+
+[ide]
+* Fix toolchain command line to compile assembler files (Jimmy Hedman)
+* If two libraries have the same header file use the lib with the same folder name (Paul Stoffregen)
+
+[libraries]
+* Robot_Control: removed duplicated SPI and Wire (Xun Yang)
+* Robot_Control: fixed issue on motors being opposite (Xun Yang)
+* Robot_Control: updated turning algorithm (Xun Yang)
+* Esplora: added reading form Tinkerkit inputs
+* SoftwareSerial: Fix idle level when initializing with inverted logic (Jens-Christian Skibakk)
+
+[firmware]
+* Wifishield: fixed paths on firmware upgrade scripts
+
+ARDUINO 1.5.6-r2 BETA - 2014.02.21
+
+[ide]
+* JSSC: Fixed NPE when RXCHAR event with no bytes (José Pereda)
+
+ARDUINO 1.5.6 BETA - 2014.02.20
 
 [ide]
 * Implemented 1.5 library specification Rev.2
   (https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification)
 * Replaced RXTX library with JSSC (Alexey Sokolov)
   http://code.google.com/p/java-simple-serial-connector/
+* If two libraries provides the same .h file prioritize the library with tha same folder name
 * Improved command-line parsing (Matthijs Kooijman)
+* Windows: added arduino_debug.exe to help debugging errors when launch4j fails to start IDE
 
 [libraries]
 * TFT: warning messages in PImage class and strings inside examples now stored in flash to save RAM. 
 * Ethernet: added operator == for EthernetClient class (Norbert Truchsess)
+* Robot_Control: removed embedded copies of Wire and SPI to allow their use in sketch.
+  Old sketches using Robot_Control now must include Wire.h and SPI.h.
+* Robot_Control: fixed issues about motor turning algorithm
+* Bridge: optimized FileIO.doBuffer() (bobh66)
 
 [core]
 * avr: Pile of HardwareSerial improvements (Matthijs Kooijman)
@@ -26,19 +100,22 @@ ARDUINO 1.5.6 BETA
     improve throughput when using high baudrates (KurtE)
 * sam: Fixed wrap-around bug in delay() (Mark Tillotson)
 * sam: Fixed regression in analogRead() (fails to read multiple channels) (Mark Tillotson)
+* sam: Fixed loops in Reset.cpp (Matthijs Kooijman)
 * sam: Optimized delayMicroseconds() (Rob Tillaart) #1121
+* sam: added itoa() and related functions
 * Optimized Print::print(String&) method, now uses internal string buffer to perform block write
 * Improved portability of String class (maniacbug) #695
 * Make some operators in IPAddress const (Matthijs Kooijman)
+* Fix for compiling assembler files with newer gcc
 
-ARDUINO 1.5.5-r2 BETA 2014.01.10
+ARDUINO 1.5.5-r2 BETA - 2014.01.10
 
 * Signed drivers for Windows 8.1
 * Fixed Windows drivers signature (that prevented installation on
   some Windows 8.x OS). Now the signature is timestamped and should
   not expire.
 
-ARDUINO 1.5.5 BETA 2013.11.28
+ARDUINO 1.5.5 BETA - 2013.11.28
 
 NOTICE:
 The 1.5 library format is under heavy review on the Arduino Developers mailing list.
@@ -48,7 +125,7 @@ We suggest to delay the adoption of the new format until a stable 1.5.x is relea
 * Added missing keywords: YunServer, YunClient, pow
 * Improved folder ignore: now hidden, starting with a dot, and SCCS folders are ignored
 * Improved auto format: now handled by Artistic Style http://astyle.sourceforge.net/
-* Improved SSH uploader (Arduino Yun): uses file ~/.ssh/config if available. 
+* Improved SSH uploader (Arduino Yún): uses file ~/.ssh/config if available.
   Allows public key only authentication and ssh servers listening on ports other than 22.
 * Font anti-aliasing now ON by default (users will have to either delete or manually edit their preferences.txt file)
 * Added warning message when opening sketches with additional files with illegal names
@@ -91,23 +168,23 @@ We suggest to delay the adoption of the new format until a stable 1.5.x is relea
 * avr: added variant file for Arduino Ethernet
 * Added SERIAL_* metadata in variants files (Paul Stoffregen)
 
-ARDUINO 1.5.4 BETA 2013.09.10
+ARDUINO 1.5.4 BETA - 2013.09.10
 
 [ide]
 * Revert to English locale if the system default is not available
-* Added support for Arduino Yun
+* Added support for Arduino Yún
 * Autodetect of boards connected to each serial port
-* Network upload and discovery for Arduino Yun
+* Network upload and discovery for Arduino Yún
 
 [libraries]
 * sam: fixed wrong SPI initialization (noblepepper)
 * updated all instances of Adafruit_GFX to the latest version
-* added libraries for Arduino Yun
+* added libraries for Arduino Yún
 
 [core]
 * avr: fixed bug introduced with recent optimizations in HardwareSerial (atmega8 cpu) (darryl)
 
-ARDUINO 1.5.3 BETA 2013.08.30
+ARDUINO 1.5.3 BETA - 2013.08.30
 
 [ide]
 * Removed useless baud rates from serial monitor
@@ -222,6 +299,33 @@ ARDUINO 1.5 BETA - 2012.10.22
   or incomplete.
 * For more info refer to this press release:
   http://arduino.cc/blog/2012/10/22/arduino-1-5-support-for-the-due-and-other-processors-easier-library-installation-simplified-board-menu-etc/
+
+ARDUINO 1.0.6 - not yet released
+
+[core]
+* avr: Improved USB-CDC write speed (Justin Rajewski)
+* avr: Improved USB-CDC read code (Paul Brook)
+* avr: Fixed race condition in USB-CDC transmit (Paul Brook)
+* Fixed wrong NULL pointer handling in Stream class (Amulya Kumar Sahoo)
+* Backported String class from IDE 1.5.x (Matt Jenkins)
+* Backported Print class from IDE 1.5.x
+* Backported digitalPinToInterrupt macro from IDE 1.5.x
+* Added initVariant() hook to allow 3rd party variant-specific initialization
+
+[ide]
+* Added compatibility for IDE 1.5.x libraries layout
+* Fix toolchain command line to compile assembler files (Jimmy Hedman)
+* If two libraries have the same header file use the lib with the same folder name (Paul Stoffregen)
+
+[libraries]
+* Robot_Control: removed duplicated SPI and Wire (Xun Yang)
+* Robot_Control: fixed issue on motors being opposite (Xun Yang)
+* Robot_Control: updated turning algorithm (Xun Yang)
+* Esplora: added reading form Tinkerkit inputs
+* SoftwareSerial: Fix idle level when initializing with inverted logic (Jens-Christian Skibakk)
+
+[firmware]
+* Wifishield: fixed paths on firmware upgrade scripts
 
 ARDUINO 1.0.5-r2 - 2014.01.08
 

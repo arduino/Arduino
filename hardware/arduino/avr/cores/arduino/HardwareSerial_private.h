@@ -1,3 +1,26 @@
+/*
+  HardwareSerial_private.h - Hardware serial library for Wiring
+  Copyright (c) 2006 Nicholas Zambetti.  All right reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+  Modified 23 November 2006 by David A. Mellis
+  Modified 28 September 2010 by Mark Sproul
+  Modified 14 August 2012 by Alarus
+*/
+
 #include "wiring_private.h"
 
 // this next line disables the entire HardwareSerial.cpp, 
@@ -11,6 +34,11 @@
 // slower.
 #if !defined(TXC0)
 #if defined(TXC)
+// Some chips like ATmega8 don't have UPE, only PE. The other bits are
+// named as expected.
+#if !defined(UPE) && defined(PE)
+#define UPE PE
+#endif
 // On ATmega8, the uart and its bits are not numbered, so there is no TXC0 etc.
 #define TXC0 TXC
 #define RXEN0 RXEN
@@ -76,7 +104,7 @@ void HardwareSerial::_rx_complete_irq(void)
     // No Parity error, read byte and store it in the buffer if there is
     // room
     unsigned char c = *_udr;
-    int i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+    rx_buffer_index_t i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_RX_BUFFER_SIZE;
 
     // if we should be storing the received character into the location
     // just before the tail (meaning that the head would advance to the

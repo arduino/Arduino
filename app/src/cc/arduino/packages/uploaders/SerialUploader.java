@@ -22,8 +22,6 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-  
-  $Id$
 */
 
 package cc.arduino.packages.uploaders;
@@ -123,12 +121,12 @@ public class SerialUploader extends Uploader {
       String pattern = prefs.getOrExcept("upload.pattern");
       String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
       uploadResult = executeUploadCommand(cmd);
+    } catch (RunnerException e) {
+      throw e;
     } catch (Exception e) {
       throw new RunnerException(e);
     }
 
-    // Remove the magic baud rate (1200bps) to avoid
-    // future unwanted board resets
     try {
       if (uploadResult && doTouch) {
         String uploadPort = Preferences.get("serial.port");
@@ -138,24 +136,12 @@ public class SerialUploader extends Uploader {
           // sketch port never comes back). Doing this saves users from accidentally
           // opening Serial Monitor on the soon-to-be-orphaned bootloader port.
           Thread.sleep(1000);
-          long timeout = System.currentTimeMillis() + 2000;
-          while (timeout > System.currentTimeMillis()) {
+          long started = System.currentTimeMillis();
+          while (System.currentTimeMillis() - started < 2000) {
             List<String> portList = Serial.list();
-            if (portList.contains(uploadPort)) {
-              try {
-                Serial.touchPort(uploadPort, 9600);
-                break;
-              } catch (SerialException e) {
-                // Port already in use
-              }
-            }
+            if (portList.contains(uploadPort))
+              break;
             Thread.sleep(250);
-          }
-        } else {
-          try {
-            Serial.touchPort(uploadPort, 9600);
-          } catch (SerialException e) {
-            throw new RunnerException(e);
           }
         }
       }
@@ -244,6 +230,8 @@ public class SerialUploader extends Uploader {
       String pattern = prefs.getOrExcept("program.pattern");
       String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
       return executeUploadCommand(cmd);
+    } catch (RunnerException e) {
+      throw e;
     } catch (Exception e) {
       throw new RunnerException(e);
     }
@@ -303,6 +291,8 @@ public class SerialUploader extends Uploader {
       pattern = prefs.getOrExcept("bootloader.pattern");
       cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
       return executeUploadCommand(cmd);
+    } catch (RunnerException e) {
+      throw e;
     } catch (Exception e) {
       throw new RunnerException(e);
     }

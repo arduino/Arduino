@@ -75,7 +75,7 @@ void Stream::setTimeout(unsigned long timeout)  // sets the maximum number of mi
  // find returns true if the target string is found
 bool  Stream::find(char *target)
 {
-  return findUntil(target, NULL);
+  return findUntil(target, "");
 }
 
 // reads data from the stream until the target string of given length is found
@@ -176,7 +176,7 @@ float Stream::parseFloat(char skipChar){
   boolean isNegative = false;
   boolean isFraction = false;
   long value = 0;
-  char c;
+  int c;
   float fraction = 1.0;
 
   c = peekNextDigit();

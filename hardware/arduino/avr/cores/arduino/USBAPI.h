@@ -35,17 +35,20 @@ struct ring_buffer;
 
 class Serial_ : public Stream
 {
+private:
+	int peek_buffer;
 public:
+	Serial_() { peek_buffer = -1; };
 	void begin(unsigned long);
 	void begin(unsigned long, uint8_t);
 	void end(void);
 
 	virtual int available(void);
-	virtual void accept(void);
 	virtual int peek(void);
 	virtual int read(void);
 	virtual void flush(void);
 	virtual size_t write(uint8_t);
+	virtual size_t write(const uint8_t*, size_t);
 	using Print::write; // pull in write(str) and write(buf, size) from Print
 	operator bool();
 

@@ -19,6 +19,7 @@
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
   Modified 14 August 2012 by Alarus
+  Modified 3 December 2013 by Matthijs Kooijman
 */
 
 #include <stdlib.h>
@@ -71,7 +72,7 @@ void serialEventRun(void)
   if (Serial2_available && serialEvent2 && Serial2_available()) serialEvent2();
 #endif
 #if defined(HAVE_HWSERIAL3)
-  if (Serial3_available && serialEvent2 && Serial3_available()) serialEvent3();
+  if (Serial3_available && serialEvent3 && Serial3_available()) serialEvent3();
 #endif
 }
 
@@ -82,7 +83,7 @@ void HardwareSerial::_tx_udr_empty_irq(void)
   // If interrupts are enabled, there must be more data in the output
   // buffer. Send the next byte
   unsigned char c = _tx_buffer[_tx_buffer_tail];
-  _tx_buffer_tail = (_tx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+  _tx_buffer_tail = (_tx_buffer_tail + 1) % SERIAL_TX_BUFFER_SIZE;
 
   *_udr = c;
 
@@ -116,7 +117,7 @@ void HardwareSerial::begin(unsigned long baud, byte config)
     baud_setting = (F_CPU / 8 / baud - 1) / 2;
   }
 
-  // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
+  // assign the baud_setting, a.k.a. ubrr (USART Baud Rate Register)
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
 
@@ -151,7 +152,7 @@ void HardwareSerial::end()
 
 int HardwareSerial::available(void)
 {
-  return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_BUFFER_SIZE;
+  return (int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_RX_BUFFER_SIZE;
 }
 
 int HardwareSerial::peek(void)
@@ -170,7 +171,7 @@ int HardwareSerial::read(void)
     return -1;
   } else {
     unsigned char c = _rx_buffer[_rx_buffer_tail];
-    _rx_buffer_tail = (unsigned int)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+    _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
     return c;
   }
 }
@@ -206,7 +207,7 @@ size_t HardwareSerial::write(uint8_t c)
     sbi(*_ucsra, TXC0);
     return 1;
   }
-  int i = (_tx_buffer_head + 1) % SERIAL_BUFFER_SIZE;
+  tx_buffer_index_t i = (_tx_buffer_head + 1) % SERIAL_TX_BUFFER_SIZE;
 	
   // If the output buffer is full, there's nothing for it other than to 
   // wait for the interrupt handler to empty it a bit

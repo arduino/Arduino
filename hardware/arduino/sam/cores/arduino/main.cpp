@@ -1,5 +1,6 @@
 /*
-  Copyright (c) 2011 Arduino.  All right reserved.
+  main.cpp - Main loop for Arduino sketches
+  Copyright (c) 2005-2013 Arduino Team.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -8,8 +9,8 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU Lesser General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
@@ -30,12 +31,19 @@ extern void SysTick_Handler( void )
 }
 */
 
+// Weak empty variant initialization function.
+// May be redefined by variant files.
+void initVariant() __attribute__((weak));
+void initVariant() { }
+
 /*
  * \brief Main entry point of Arduino application
  */
 int main( void )
 {
 	init();
+
+	initVariant();
 
 	delay(1);
 

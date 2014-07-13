@@ -1682,7 +1682,7 @@ public class Sketch {
 
     int warnDataPercentage = Integer.parseInt(prefs.get("build.warn_data_percentage"));
     if (maxDataSize > 0 && dataSize > maxDataSize*warnDataPercentage/100)
-	  System.out.println(_("Low memory available, stability problems may occur"));
+      System.err.println(_("Low memory available, stability problems may occur."));
   }
 
   protected boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
@@ -1691,11 +1691,6 @@ public class Sketch {
     String board = Preferences.get("board");
 
     BoardPort boardPort = Base.getDiscoveryManager().find(Preferences.get("serial.port"));
-
-    if (boardPort == null) {
-      editor.statusError(I18n.format("Board at {0} is not available", Preferences.get("serial.port")));
-      return false;
-    }
 
     Uploader uploader = new UploaderAndMonitorFactory().newUploader(target.getBoards().get(board), boardPort);
 
@@ -2027,7 +2022,7 @@ public class Sketch {
       String msg =
         _("The sketch name had to be modified. Sketch names can only consist\n" +
           "of ASCII characters and numbers (but cannot start with a number).\n" +
-          "They should also be less less than 64 characters long.");
+          "They should also be less than 64 characters long.");
       System.out.println(msg);
     }
     return newName;
@@ -2066,9 +2061,10 @@ public class Sketch {
     for (int i = 0; i < c.length; i++) {
       if (((c[i] >= '0') && (c[i] <= '9')) ||
           ((c[i] >= 'a') && (c[i] <= 'z')) ||
-          ((c[i] >= 'A') && (c[i] <= 'Z'))) {
+          ((c[i] >= 'A') && (c[i] <= 'Z')) ||
+          ((i > 0) && (c[i] == '-')) ||
+          ((i > 0) && (c[i] == '.'))) {
         buffer.append(c[i]);
-
       } else {
         buffer.append('_');
       }

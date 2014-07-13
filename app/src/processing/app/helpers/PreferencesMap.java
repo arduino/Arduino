@@ -18,8 +18,6 @@
  You should have received a copy of the GNU General Public License
  along with this program; if not, write to the Free Software Foundation,
  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
- $Id$
  */
 package processing.app.helpers;
 
@@ -79,6 +77,19 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
     load(new FileInputStream(file));
   }
 
+  protected String processPlatformSuffix(String key, String suffix, boolean isCurrentPlatform) {
+    if (key == null)
+      return null;
+    // Key does not end with the given suffix? Process as normal
+    if (!key.endsWith(suffix))
+      return key;
+    // Not the current platform? Ignore this key
+    if (!isCurrentPlatform)
+      return null;
+    // Strip the suffix from the key
+    return key.substring(0, key.length() - suffix.length());
+  }
+
   /**
    * Parse a property list stream and put key/value pairs into the Map
    * 
@@ -93,28 +104,15 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
 
       int equals = line.indexOf('=');
       if (equals != -1) {
-        String key = line.substring(0, equals);
-        String value = line.substring(equals + 1);
-        put(key.trim(), value.trim());
-      }
-    }
+        String key = line.substring(0, equals).trim();
+        String value = line.substring(equals + 1).trim();
 
-    // This is needed to avoid ConcurrentAccessExceptions
-    Set<String> keys = new LinkedHashSet<String>(keySet());
+        key = processPlatformSuffix(key, ".linux", Base.isLinux());
+        key = processPlatformSuffix(key, ".windows", Base.isWindows());
+        key = processPlatformSuffix(key, ".macosx", Base.isMacOS());
 
-    // Override keys that have OS specific versions
-    for (String key : keys) {
-      boolean replace = false;
-      if (Base.isLinux() && key.endsWith(".linux"))
-        replace = true;
-      if (Base.isWindows() && key.endsWith(".windows"))
-        replace = true;
-      if (Base.isMacOS() && key.endsWith(".macos"))
-        replace = true;
-      if (replace) {
-        int dot = key.lastIndexOf('.');
-        String overridenKey = key.substring(0, dot);
-        put(overridenKey, get(key));
+        if (key != null)
+          put(key, value);
       }
     }
   }
