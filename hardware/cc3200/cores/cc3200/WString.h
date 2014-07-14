@@ -50,6 +50,8 @@ class String
 	void StringIfHelper() const {}
 
 public:
+    //addition for temboo compatability with energia
+    const char* c_str() const {return buffer;}
 	// constructors
 	// creates a copy of the initial value.
 	// if the initial value is null or invalid, or if memory allocation
