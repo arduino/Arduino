@@ -1,37 +1,38 @@
 //*****************************************************************************
+// startup_gcc.c
 //
-// startup_gcc.c - Startup code for use with GNU tools.
+// Startup code for use with GCC.
 //
-// Copyright (c) 2009-2012 Texas Instruments Incorporated.  All rights reserved.
-// Software License Agreement
+// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
 // 
-//   Redistribution and use in source and binary forms, with or without
-//   modification, are permitted provided that the following conditions
-//   are met:
 // 
-//   Redistributions of source code must retain the above copyright
-//   notice, this list of conditions and the following disclaimer.
-// 
-//   Redistributions in binary form must reproduce the above copyright
-//   notice, this list of conditions and the following disclaimer in the
-//   documentation and/or other materials provided with the  
-//   distribution.
-// 
-//   Neither the name of Texas Instruments Incorporated nor the names of
-//   its contributors may be used to endorse or promote products derived
-//   from this software without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//    Redistributions of source code must retain the above copyright 
+//    notice, this list of conditions and the following disclaimer.
+//
+//    Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the 
+//    documentation and/or other materials provided with the   
+//    distribution.
+//
+//    Neither the name of Texas Instruments Incorporated nor the names of
+//    its contributors may be used to endorse or promote products derived
+//    from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
 
@@ -42,6 +43,32 @@
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
+//*****************************************************************************
+//
+// Heap block pointers defined by linker script
+//
+//*****************************************************************************
+static char *heap_end = 0;
+extern unsigned long _heap;
+extern unsigned long _eheap;
+
+
+//*****************************************************************************
+//
+// To be honest, I'm not really sure. The linker stopped compaining though...
+//
+//*****************************************************************************
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    void *__dso_handle = NULL;
+#ifdef __cplusplus
+}
+#endif
+
 //*****************************************************************************
 //
 // Forward declaration of the default fault handlers.
@@ -54,6 +81,17 @@ static void IntDefaultHandler(void);
 static void BusFaultHandler(void);
 extern void SysTickIntHandler(void);
 
+////*****************************************************************************
+////
+//// External declaration for the reset handler that is to be called when the
+//// processor is started
+////
+////*****************************************************************************
+//extern void _c_int00(void);
+//extern void vPortSVCHandler(void);
+//extern void xPortPendSVHandler(void);
+//extern void xPortSysTickHandler(void);
+
 //*****************************************************************************
 //
 // The entry point for the application.
@@ -61,18 +99,24 @@ extern void SysTickIntHandler(void);
 //*****************************************************************************
 extern int main(void);
 
-/*
- * create some overridable default signal handlers
- */
+
+//*****************************************************************************
+//
+// Create some overridable default signal handlers
+//
+//*****************************************************************************
 __attribute__((weak)) void UARTIntHandler(void) {}
 __attribute__((weak)) void UARTIntHandler1(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
 __attribute__((weak)) void Timer5IntHandler(void) {}
+
 //*****************************************************************************
-// System stack start determined by ldscript, normally highest ram address
+//
+// Reserve space for the system stack.
+//
 //*****************************************************************************
-extern unsigned _estack;
+static uint32_t pui32Stack[8192];
 
 //*****************************************************************************
 //
@@ -80,14 +124,11 @@ extern unsigned _estack;
 // ensure that it ends up at physical address 0x0000.0000.
 //
 //*****************************************************************************
-
-static uint32_t pui32Stack[8192];
-
-__attribute__ ((section(".isr_vector")))
+__attribute__ ((section(".intvecs")))
 void (* const g_pfnVectors[256])(void) =
 {
     (void (*)(void))((uint32_t)pui32Stack + sizeof(pui32Stack)),
-                                            // The initial stack pointer, 0x20008000 32K
+                                            // The initial stack pointer
     ResetISR,                               // The reset handler
     NmiSR,                                  // The NMI handler
     FaultISR,                               // The hard fault handler
@@ -107,58 +148,68 @@ void (* const g_pfnVectors[256])(void) =
     IntDefaultHandler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C
     IntDefaultHandler,                      // GPIO Port D
-    IntDefaultHandler,                      // GPIO Port E
+    0,                                      // Reserved
     UARTIntHandler,                         // UART0 Rx and Tx
     UARTIntHandler1,                        // UART1 Rx and Tx
-    IntDefaultHandler,                      // SSI0 Rx and Tx
+    0,                                      // Reserved
     IntDefaultHandler,                      // I2C0 Master and Slave
-    IntDefaultHandler,                      // PWM Fault
-    IntDefaultHandler,                      // PWM Generator 0
-    IntDefaultHandler,                      // PWM Generator 1
-    IntDefaultHandler,                      // PWM Generator 2
-    IntDefaultHandler,                      // Quadrature Encoder 0
-    IntDefaultHandler,                      // ADC Sequence 0
-    IntDefaultHandler,                      // ADC Sequence 1
-    IntDefaultHandler,                      // ADC Sequence 2
-    IntDefaultHandler,                      // ADC Sequence 3
-    IntDefaultHandler,                      // Watchdog timer
-    IntDefaultHandler,                      // Timer 0 subtimer A
+    0,0,0,0,0,                              // Reserved
+    IntDefaultHandler,                      // ADC Channel 0
+    IntDefaultHandler,                      // ADC Channel 1
+    IntDefaultHandler,                      // ADC Channel 2
+    IntDefaultHandler,                      // ADC Channel 3
+    IntDefaultHandler,                      // Watchdog Timer
+    IntDefaultHandler,                      // Timer 0 subtimer A                      
     IntDefaultHandler,                      // Timer 0 subtimer B
     IntDefaultHandler,                      // Timer 1 subtimer A
     IntDefaultHandler,                      // Timer 1 subtimer B
     IntDefaultHandler,                      // Timer 2 subtimer A
-    IntDefaultHandler,                      // Timer 2 subtimer B
-    IntDefaultHandler,                      // Analog Comparator 0
-    IntDefaultHandler,                      // Analog Comparator 1
-    IntDefaultHandler,                      // Analog Comparator 2
-    IntDefaultHandler,                      // System Control (PLL, OSC, BO)
-    IntDefaultHandler,                      // FLASH Control
-    IntDefaultHandler,                      // GPIO Port F
-    IntDefaultHandler,                      // GPIO Port G
-    IntDefaultHandler,                      // GPIO Port H
-    IntDefaultHandler,                      // UART2 Rx and Tx
-    IntDefaultHandler,                      // SSI1 Rx and Tx
+    IntDefaultHandler,                      // Timer 2 subtimer B 
+    0,0,0,0,                                // Reserved
+    IntDefaultHandler,                      // Flash
+    0,0,0,0,0,                              // Reserved
     IntDefaultHandler,                      // Timer 3 subtimer A
     IntDefaultHandler,                      // Timer 3 subtimer B
-    IntDefaultHandler,                      // I2C1 Master and Slave
-    IntDefaultHandler,                      // Quadrature Encoder 1
-    IntDefaultHandler,                      // CAN0
-    IntDefaultHandler,                      // CAN1
-    IntDefaultHandler,                      // CAN2
-    IntDefaultHandler,                      // Ethernet
-    IntDefaultHandler,                      // Hibernate
-    IntDefaultHandler,                      // USB0
-    IntDefaultHandler,                      // PWM Generator 3
+    0,0,0,0,0,0,0,0,0,                      // Reserved
     IntDefaultHandler,                      // uDMA Software Transfer
     IntDefaultHandler,                      // uDMA Error
-    IntDefaultHandler,                      // ADC1 Sequence 0
-    IntDefaultHandler,                      // ADC1 Sequence 1
-    IntDefaultHandler,                      // ADC1 Sequence 2
-    IntDefaultHandler,                      // ADC1 Sequence 3
-    IntDefaultHandler,                      // I2S0
-    IntDefaultHandler,                      // External Bus Interface 0
-    IntDefaultHandler                       // GPIO Port J
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    IntDefaultHandler,                      // SHA
+    0,0,                                    // Reserved
+    IntDefaultHandler,                      // AES
+    0,                                      // Reserved
+    IntDefaultHandler,                      // DES
+    0,0,0,0,0,                              // Reserved
+    IntDefaultHandler,                      // SDHost
+    0,                                      // Reserved
+    IntDefaultHandler,                      // I2S
+    0,                                      // Reserved
+    IntDefaultHandler,                      // Camera
+    0,0,0,0,0,0,0,                          // Reserved
+    IntDefaultHandler,                      // NWP to APPS Interrupt
+    IntDefaultHandler,                      // Power, Reset and Clock module
+    0,0,                                    // Reserved
+    IntDefaultHandler,                      // Shared SPI
+    IntDefaultHandler,                      // Generic SPI
+    IntDefaultHandler,                      // Link SPI
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0,0,0,0,0,0,0,0,0,                    // Reserved
+    0,0                                     // Reserved
 };
+
 //*****************************************************************************
 //
 // The following are constructs created by the linker, indicating where the
@@ -166,20 +217,17 @@ void (* const g_pfnVectors[256])(void) =
 // for the "data" segment resides immediately following the "text" segment.
 //
 //*****************************************************************************
-extern unsigned long _etext;
-extern unsigned long _data;
-extern unsigned long _edata;
-extern unsigned long _bss;
-extern unsigned long _ebss;
-static char *heap_end = 0;
-extern unsigned long _heap;
-extern unsigned long _eheap;
+extern uint32_t _etext;
+extern uint32_t _data;
+extern uint32_t _edata;
+extern uint32_t _bss;
+extern uint32_t _ebss;
+extern uint32_t __init_data;
 
 extern void (*__preinit_array_start[])(void);
 extern void (*__preinit_array_end[])(void);
 extern void (*__init_array_start[])(void);
 extern void (*__init_array_end[])(void);
-
 
 //*****************************************************************************
 //
@@ -191,46 +239,47 @@ extern void (*__init_array_end[])(void);
 // application.
 //
 //*****************************************************************************
-void ResetISR(void) {
-    unsigned long *pulSrc, *pulDest;
-    unsigned i, cnt;
+void
+ResetISR(void)
+{
+    uint32_t *pui32Src, *pui32Dest;
 
     //
-    // Copy the data segment initializers from flash to SRAM.
+    // Copy the data segment initializers
     //
-    pulSrc = &_etext;
-    for (pulDest = &_data; pulDest < &_edata;) {
-        *pulDest++ = *pulSrc++;
+    pui32Src = &__init_data;
+    for(pui32Dest = &_data; pui32Dest < &_edata; )
+    {
+        *pui32Dest++ = *pui32Src++;
     }
 
     //
     // Zero fill the bss segment.
     //
-    __asm(  "    ldr     r0, =_bss\n"
-            "    ldr     r1, =_ebss\n"
-            "    mov     r2, #0\n"
-            "    .thumb_func\n"
-            "1:\n"
-            "    cmp     r0, r1\n"
-            "    it      lt\n"
-            "    strlt   r2, [r0], #4\n"
-            "    blt     1b"
-    );
-    (void)_bss; (void)_ebss; // get rid of unused warnings
-
+    __asm("    ldr     r0, =_bss\n"
+          "    ldr     r1, =_ebss\n"
+          "    mov     r2, #0\n"
+          "    .thumb_func\n"
+          "zero_loop:\n"
+          "        cmp     r0, r1\n"
+          "        it      lt\n"
+          "        strlt   r2, [r0], #4\n"
+          "        blt     zero_loop");
+    
     //
     // call any global c++ ctors
     //
+    unsigned i, cnt;
     cnt = __preinit_array_end - __preinit_array_start;
     for (i = 0; i < cnt; i++)
         __preinit_array_start[i]();
-
+    
     cnt = __init_array_end - __init_array_start;
     for (i = 0; i < cnt; i++)
         __init_array_start[i]();
-
+    
     //
-    // call 'C' entry point, Energia never returns from main
+    // Call the application's entry point.
     //
     main();
 }
@@ -242,12 +291,14 @@ void ResetISR(void) {
 // by a debugger.
 //
 //*****************************************************************************
-static void NmiSR(void) {
+static void
+NmiSR(void)
+{
     //
     // Enter an infinite loop.
     //
-    while (1) {
-        ; // trap NMI
+    while(1)
+    {
     }
 }
 
@@ -258,23 +309,8 @@ static void NmiSR(void) {
 // for examination by a debugger.
 //
 //*****************************************************************************
-static void FaultISR(void) {
-    //
-    // Enter an infinite loop.
-    //
-    while (1) {
-        ; // trap FAULT
-    }
-}
-
-//*****************************************************************************
-//
-// This is the code that gets called when the processor receives an unexpected
-// interrupt.  This simply enters an infinite loop, preserving the system state
-// for examination by a debugger.
-//
-//*****************************************************************************
-static void BusFaultHandler(void)
+static void
+FaultISR(void)
 {
     //
     // Enter an infinite loop.
@@ -291,97 +327,76 @@ static void BusFaultHandler(void)
 // for examination by a debugger.
 //
 //*****************************************************************************
-static void IntDefaultHandler(void) {
+
+static void
+BusFaultHandler(void)
+{
     //
     // Go into an infinite loop.
     //
-    while (1) {
-        ; // trap any handler not defined
+    while(1)
+    {
     }
 }
 
-/* syscall stuff */
-void *__dso_handle = 0;
-
-/**
- * _sbrk - newlib memory allocation routine
- */
-typedef char *caddr_t;
-
-caddr_t _sbrk (int incr)
+//*****************************************************************************
+//
+// This is the code that gets called when the processor receives an unexpected
+// interrupt.  This simply enters an infinite loop, preserving the system state
+// for examination by a debugger.
+//
+//*****************************************************************************
+static void
+IntDefaultHandler(void)
 {
-    double current_sp;
-    extern char end asm ("end"); /* Defined by linker */
-    static char * heap_end;
-    char * prev_heap_end;
+    //
+    // Go into an infinite loop.
+    //
+    while(1)
+    {
+    }
+}
 
-    if (heap_end == NULL) {
-        heap_end = &end; /* first ram address after bss and data */
+//*****************************************************************************
+//
+// This function is used by dynamic memory allocation API(s) in newlib 
+// library
+//
+//*****************************************************************************
+void * _sbrk(unsigned int incr)
+{
+
+    char *prev_heap_end;
+
+    //
+    // Check if this function is calld for the
+    // first time and the heap end pointer
+    //
+    if (heap_end == 0)
+    {
+        heap_end = (char *)&_heap; 
     }
 
+    //
+    // Check if we have enough heap memory available
+    //
     prev_heap_end = heap_end;
-
-    // simplistic approach to prevent the heap from corrupting the stack
-    // TBD: review for alternatives
-    if ( heap_end + incr < (caddr_t)&current_sp ) {
-        heap_end += incr;
-        return (caddr_t) prev_heap_end;
+    if (heap_end + incr > (char *)&_eheap)
+    {
+	//
+	// Return error
+	//
+        return 0;
     }
-    else {
-        return NULL;
-    }
-}
 
-extern int link( char *cOld, char *cNew )
-{
-    return -1 ;
-}
-
-extern int _close( int file )
-{
-    return -1 ;
-}
-
-extern int _fstat( int file, struct stat *st )
-{
-    st->st_mode = S_IFCHR ;
-
-    return 0 ;
-}
-
-extern int _isatty( int file )
-{
-    return 1 ;
-}
-
-extern int _lseek( int file, int ptr, int dir )
-{
-    return 0 ;
-}
-
-extern int _read(int file, char *ptr, int len)
-{
-    return 0 ;
-}
-
-extern int _write( int file, char *ptr, int len )
-{
-    return len;
-}
-
-extern void _kill( int pid, int sig )
-{
-    return ;
-}
-
-extern int _getpid ( void )
-{
-    return -1 ;
-}
-
-/*
-extern void _exit (void)
-{
+    //
+    // Set the new heap end pointer
+    //
+    heap_end += incr;
+    
+    //
+    // Return the pointer to the newly allocated memory
+    //
+    return prev_heap_end;
 
 }
-*/

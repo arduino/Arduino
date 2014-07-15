@@ -120,6 +120,9 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
     
     //
     //get a socket index and attempt to create a socket
+    //note that the socket is intentionally left as BLOCKING. This allows an
+    //abusive user to send as many requests as they want as fast as they can try
+    //and it won't overload simplelink.
     //
     int socketIndex = WiFiClass::getSocket();
     if (socketIndex == NO_SOCKET_AVAIL) {
@@ -142,17 +145,7 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
         sl_Close(socketHandle);
         return false;
     }
-    
-    //
-    //set socket operation to be non blocking
-    //
-    long NonBlocking = true;
-    iRet = sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &NonBlocking, sizeof(NonBlocking));
-    if (iRet < 0) {
-        sl_Close(socketHandle);
-        return false;
-    }
-    
+
     //
     //we've successfully created a socket and connected, so store the
     //information in the arrays provided by WiFiClass

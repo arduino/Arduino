@@ -1,28 +1,36 @@
-/**
- *
- * cc3200.ld - Linker configuration file for Energia c++ programs.
- *
- */ 
+/******************************************************************************
+*
+*   copyright (c) 2013 texas instruments incorporated
+*
+*   All rights reserved. Property of Texas Instruments Incorporated.
+*   Restricted rights to use, duplicate or disclose this code are
+*   granted through contract.
+*
+*   The program may not be used without the written permission of
+*   Texas Instruments Incorporated or against the terms and conditions
+*   stipulated in the agreement under which this program has been supplied,
+*   and under no circumstances can it be used with non-TI connectivity device.
+*
+******************************************************************************/
+
+HEAP_SIZE = 0x00010000;
 
 MEMORY
 {
-    ram  (rwx) : ORIGIN = 0x20004000, LENGTH = 0x00030000
+    SRAM (rwx) : ORIGIN = 0x20004000, LENGTH = 0x00030000
 }
-
-REGION_ALIAS("REGION_RAM", ram);
-HEAP_SIZE = 0x00010000;
 
 SECTIONS
 {
     .text :
     {
-        . = ALIGN(8);
         _text = .;
-        KEEP(*(.isr_vector))
-        *(.text .text* .gnu.linkonce.t.*)
-        *(.glue_7t) *(.glue_7)
-        *(.rodata .rodata* .gnu.linkonce.r.*)
+        KEEP(*(.intvecs))
+        *(.text*)
+        *(.rodata*)
         *(.ARM.extab* .gnu.linkonce.armextab.*)
+        
+        /* ---ENERGIA C++ Linking Specific-- */
 
         . = ALIGN(4);
         KEEP(*(.init))
@@ -47,54 +55,46 @@ SECTIONS
         KEEP (*(SORT(.fini_array.*)))
         __fini_array_end = .;
 
-        . = ALIGN(4);
+        /* ---end ENERGIA C++ Linking Specific-- */
+
+        . = ALIGN(8);
         _etext = .;
-    } > REGION_RAM
-
-    .data : AT(ADDR(.text) + SIZEOF(.text))
-    {
-        . = ALIGN(8);
-        _data = .;
-        *(vtable)
-        *(.data .data* .gnu.linkonce.d.*)
-        _edata = .;
-    } > REGION_RAM
-
-    .bss (NOLOAD):
-    {
-        . = ALIGN(4);
-        _bss = .; 
-        *(.bss .bss*) 
-        *(COMMON)
-        . = ALIGN(4); 
-        _ebss = .; 
-        . = ALIGN(8);
-    } > REGION_RAM 
-
-/*
-    .stack (NOLOAD):
-    {
-        . = ALIGN(8);
-        _stack = .;
-        . = . + STACK_SIZE;
-        . = ALIGN(8);
-        _estack = .;
-    } > REGION_RAM
-*/
+    } > SRAM
 
     PROVIDE_HIDDEN (__exidx_start = .);
-    .ARM.exidx :
-    {
-      *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } > REGION_RAM
-    PROVIDE_HIDDEN (__exidx_end = .);
+    .ARM : {
+    __exidx_start = .;
+      *(.ARM.exidx*)
+      __exidx_end = .;
+    } > SRAM
 
-    . = ALIGN(4);
-    _end = . ;
+    __init_data = .;
+
+    .data : AT(__init_data)
+    {
+        _data = .;
+        *(.data*)
+	. = ALIGN (8);
+        _edata = .;
+    } > SRAM
+
+    .bss :
+    {
+        _bss = .;
+        *(.bss*)
+        *(COMMON)
+        _ebss = .;
+    } > SRAM
+
+    .heap :
+    {
+	_heap = .;
+	. = . + HEAP_SIZE;
+	. = ALIGN(8);
+	_eheap = .;
+
+    }
 }
 
-/* end of allocated ram is start of heap, heap grows up towards stack*/
 PROVIDE(end = _end);
 
-/* top of stack starts at end of ram, stack grows down towards heap */
-PROVIDE (_estack = ORIGIN(ram) + LENGTH(ram));
