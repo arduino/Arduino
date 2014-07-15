@@ -89,8 +89,6 @@ public:
        #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 	String & operator = (String &&rval);
 	String & operator = (StringSumHelper &&rval);
-	auto begin() -> const char* { return c_str(); }
-	auto end() -> const char* { return c_str() + length(); }	
 	#endif
 
 	// concatenate (works w/ built-in types)
@@ -163,6 +161,8 @@ public:
 	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
 		{getBytes((unsigned char *)buf, bufsize, index);}
 	const char * c_str() const { return buffer; }
+	const char* begin() { return c_str(); }
+	const char* end() { return c_str() + length(); }	
 
 	// search
 	int indexOf( char ch ) const;
