@@ -28,8 +28,6 @@
 // are using another library which uses timer2, you have options
 // to switch IRremote to use a different timer.
 
-//#define __AVR_ATtinyX5__
-
 // Arduino Mega
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
   //#define IR_USE_TIMER1   // tx = pin 11
