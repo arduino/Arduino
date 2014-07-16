@@ -2,6 +2,7 @@
 #include "IRremoteTools.h"
 #include <Arduino.h>
 
+#ifdef AVR_ROBOT_CONTROL || AVR_ROBOT_MOTOR
 int RECV_PIN = TKD2; // the pin the IR receiver is connected to
 IRrecv irrecv(RECV_PIN); // an instance of the IR receiver object
 decode_results results; // container for received IR codes
@@ -21,3 +22,4 @@ void resumeIRremote(){
 unsigned long getIRresult(){
 	return results.value;
 }
+#endif
