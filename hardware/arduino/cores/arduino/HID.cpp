@@ -1,20 +1,20 @@
 
 
 /* Copyright (c) 2011, Peter Barrett  
-**  
-** Permission to use, copy, modify, and/or distribute this software for  
-** any purpose with or without fee is hereby granted, provided that the  
-** above copyright notice and this permission notice appear in all copies.  
-** 
-** THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL  
-** WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED  
-** WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR  
-** BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES  
-** OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,  
-** WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,  
-** ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS  
-** SOFTWARE.  
-*/
+ **  
+ ** Permission to use, copy, modify, and/or distribute this software for  
+ ** any purpose with or without fee is hereby granted, provided that the  
+ ** above copyright notice and this permission notice appear in all copies.  
+ ** 
+ ** THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL  
+ ** WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED  
+ ** WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR  
+ ** BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES  
+ ** OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,  
+ ** WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,  
+ ** ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS  
+ ** SOFTWARE.  
+ */
 
 #include "Platform.h"
 #include "USBAPI.h"
@@ -75,14 +75,14 @@ const u8 _hidReportDescriptor[] = {
     0x81, 0x06,                    //     INPUT (Data,Var,Rel)
     0xc0,                          //   END_COLLECTION
     0xc0,                          // END_COLLECTION
-
+	
 	//	Keyboard
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 47
     0x09, 0x06,                    // USAGE (Keyboard)
     0xa1, 0x01,                    // COLLECTION (Application)
     0x85, 0x02,                    //   REPORT_ID (2)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-   
+	
 	0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
     0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
@@ -105,22 +105,22 @@ const u8 _hidReportDescriptor[] = {
     0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
     0xc0,                          // END_COLLECTION
-
+	
 #if RAWHID_ENABLED
 	//	RAW HID
 	0x06, LSB(RAWHID_USAGE_PAGE), MSB(RAWHID_USAGE_PAGE),	// 30
 	0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
-
+	
 	0xA1, 0x01,				// Collection 0x01
     0x85, 0x03,             // REPORT_ID (3)
 	0x75, 0x08,				// report size = 8 bits
 	0x15, 0x00,				// logical minimum = 0
 	0x26, 0xFF, 0x00,		// logical maximum = 255
-
+	
 	0x95, 64,				// report count TX
 	0x09, 0x01,				// usage
 	0x81, 0x02,				// Input (array)
-
+	
 	0x95, 64,				// report count RX
 	0x09, 0x02,				// usage
 	0x91, 0x02,				// Output (array)
@@ -187,7 +187,7 @@ bool WEAK HID_Setup(Setup& setup)
 			_hid_protocol = setup.wValueL;
 			return true;
 		}
-
+		
 		if (HID_SET_IDLE == r)
 		{
 			_hid_idle = setup.wValueL;
@@ -316,7 +316,7 @@ const uint8_t _asciimap[128] =
 	0x00,             // GS 
 	0x00,             // RS 
 	0x00,             // US 
-
+	
 	0x2c,		   //  ' '
 	0x1e|SHIFT,	   // !
 	0x34|SHIFT,	   // "
@@ -417,94 +417,173 @@ const uint8_t _asciimap[128] =
 
 uint8_t USBPutChar(uint8_t c);
 
-// press() adds the specified key (printing, non-printing, or modifier)
+// pressKeycode() adds the specified key (printing, non-printing, or modifier)
 // to the persistent key report and sends the report.  Because of the way 
 // USB HID works, the host acts like the key remains pressed until we 
-// call release(), releaseAll(), or otherwise clear the report and resend.
-size_t Keyboard_::press(uint8_t k) 
+// call releaseKeycode(), releaseAll(), or otherwise clear the report and resend.
+// When send is set to FALSE (= 0x00) no sendReport() is executed. This comes in
+// handy when combining key presses (e.g. SHIFT+A).
+size_t Keyboard_::pressKeycode(uint8_t k, uint8_t send) 
 {
-	uint8_t i;
-	if (k >= 136) {			// it's a non-printing key (not a modifier)
-		k = k - 136;
-	} else if (k >= 128) {	// it's a modifier key
-		_keyReport.modifiers |= (1<<(k-128));
-		k = 0;
-	} else {				// it's a printing key
-		k = pgm_read_byte(_asciimap + k);
-		if (!k) {
-			setWriteError();
-			return 0;
+	uint8_t index = 0x00;
+	uint8_t done = 0x00;
+	
+	if ((k >= KEYCODE_LEFT_CTRL) && (k <= KEYCODE_RIGHT_GUI)) {
+		// it's a modifier key
+		_keyReport.modifiers |= (0x01 << (k - KEYCODE_LEFT_CTRL));
+	} else {
+		// it's some other key:
+		// Add k to the key report only if it's not already present
+		// and if there is an empty slot.
+		for (index = 0x00; index < KEYREPORT_KEYCOUNT; index++) {
+			if (_keyReport.keys[index] != k) { // is k already in list?
+				if (0x00 == _keyReport.keys[index]) { // have we found an empty slot?
+					_keyReport.keys[index] = k;
+					done = 0x01;
+					break;
+				}
+			} else {
+				done = 0x01;
+				break;
+			}
+			
 		}
-		if (k & 0x80) {						// it's a capital letter or other character reached with shift
-			_keyReport.modifiers |= 0x02;	// the left shift modifier
-			k &= 0x7F;
+		
+		// use separate variable to check if slot was found
+		// for style reasons - we do not know how the compiler
+		// handles the for() index when it leaves the loop
+		if (0x00 == done) {
+			setWriteError();
+			return 0x00;
 		}
 	}
 	
-	// Add k to the key report only if it's not already present
-	// and if there is an empty slot.
-	if (_keyReport.keys[0] != k && _keyReport.keys[1] != k && 
-		_keyReport.keys[2] != k && _keyReport.keys[3] != k &&
-		_keyReport.keys[4] != k && _keyReport.keys[5] != k) {
-		
-		for (i=0; i<6; i++) {
-			if (_keyReport.keys[i] == 0x00) {
-				_keyReport.keys[i] = k;
-				break;
-			}
-		}
-		if (i == 6) {
-			setWriteError();
-			return 0;
-		}	
+	if (0x00 != send) {
+		sendReport(&_keyReport);
 	}
-	sendReport(&_keyReport);
-	return 1;
+	return 0x01;
 }
 
-// release() takes the specified key out of the persistent key report and
+// press() transforms the given key to the actual keycode and calls
+// pressKeycode() to actually press this key.
+size_t Keyboard_::press(uint8_t k) 
+{
+	if (k >= KEY_RIGHT_GUI + 0x01) {
+		// it's a non-printing key (not a modifier)
+		k = k - (KEY_RIGHT_GUI + 0x01);
+	} else {
+		if (k >= KEY_LEFT_CTRL) {
+			// it's a modifier key
+			k = k - KEY_LEFT_CTRL + KEYCODE_LEFT_CTRL;
+		} else {
+			k = pgm_read_byte(_asciimap + k);
+			if (0x00 != k) {
+				if (0x00 != (k & SHIFT)) {
+					// it's a capital letter or other character reached with shift
+					// the left shift modifier
+					pressKeycode(KEYCODE_LEFT_SHIFT, 0x00);
+					k = k ^ SHIFT;
+				}
+			} else {
+				return 0x00;
+			}
+		}
+	}
+	
+	pressKeycode(k, 0x01);
+	return 0x1;
+}
+
+// releaseKeycode() takes the specified key out of the persistent key report and
 // sends the report.  This tells the OS the key is no longer pressed and that
 // it shouldn't be repeated any more.
+// When send is set to FALSE (= 0x00) no sendReport() is executed. This comes in
+// handy when combining key releases (e.g. SHIFT+A).
+size_t Keyboard_::releaseKeycode(uint8_t k, uint8_t send) 
+{
+	uint8_t indexA;
+	uint8_t indexB;
+	uint8_t count;
+	
+	if ((k >= KEYCODE_LEFT_CTRL) && (k <= KEYCODE_RIGHT_GUI)) {
+		// it's a modifier key
+		_keyReport.modifiers = _keyReport.modifiers & (~(0x01 << (k - KEYCODE_LEFT_CTRL)));
+	} else {
+		// it's some other key:
+		// Test the key report to see if k is present.  Clear it if it exists.
+		// Check all positions in case the key is present more than once (which it shouldn't be)
+		for (indexA = 0x00; indexA < KEYREPORT_KEYCOUNT; indexA++) {
+			if (_keyReport.keys[indexA] == k) {
+				_keyReport.keys[indexA] = 0x00;
+			}
+		}
+		
+		// finally rearrange the keys list so that the free (= 0x00) are at the
+		// end of the keys list - some implementations stop for keys at the
+		// first occurence of an 0x00 in the keys list
+		// so (0x00)(0x01)(0x00)(0x03)(0x02)(0x00) becomes (0x01)(0x03)(0x02)(0x00)(0x00)(0x00)
+		count = 0x00; // holds the number of zeros we've found
+		indexA = 0x00;
+		while ((indexA + count) < KEYREPORT_KEYCOUNT) {
+			if (0x00 == _keyReport.keys[indexA]) {
+				count++; // one more zero
+				for (indexB = indexA; indexB < KEYREPORT_KEYCOUNT-count; indexB++) {
+					_keyReport.keys[indexB] = _keyReport.keys[indexB+0x01];
+				}
+				_keyReport.keys[KEYREPORT_KEYCOUNT-count] = 0x00;
+			} else {
+				indexA++; // one more non-zero
+			}
+		}
+	}		
+	
+	if (0x00 != send) {
+		sendReport(&_keyReport);
+	}
+	return 0x01;
+}
+
+// release() transforms the given key to the actual keycode and calls
+// releaseKeycode() to actually release this key.
 size_t Keyboard_::release(uint8_t k) 
 {
 	uint8_t i;
-	if (k >= 136) {			// it's a non-printing key (not a modifier)
-		k = k - 136;
-	} else if (k >= 128) {	// it's a modifier key
-		_keyReport.modifiers &= ~(1<<(k-128));
-		k = 0;
-	} else {				// it's a printing key
-		k = pgm_read_byte(_asciimap + k);
-		if (!k) {
-			return 0;
-		}
-		if (k & 0x80) {							// it's a capital letter or other character reached with shift
-			_keyReport.modifiers &= ~(0x02);	// the left shift modifier
-			k &= 0x7F;
+	
+	if (k >= KEY_RIGHT_GUI + 0x01) {
+		// it's a non-printing key (not a modifier)
+		k = k - (KEY_RIGHT_GUI + 0x01);
+	} else {
+		if (k >= KEY_LEFT_CTRL) {
+			// it's a modifier key
+			k = k - KEY_LEFT_CTRL + KEYCODE_LEFT_CTRL;
+		} else {
+			k = pgm_read_byte(_asciimap + k);
+			if (0x00 != k) {
+				if (0x00 != (k & SHIFT)) {
+					// it's a capital letter or other character reached with shift
+					// the left shift modifier
+					releaseKeycode(KEYCODE_LEFT_SHIFT, 0x00);
+					k = k ^ SHIFT;
+				}
+			} else {
+				return 0x00;
+			}
 		}
 	}
 	
-	// Test the key report to see if k is present.  Clear it if it exists.
-	// Check all positions in case the key is present more than once (which it shouldn't be)
-	for (i=0; i<6; i++) {
-		if (0 != k && _keyReport.keys[i] == k) {
-			_keyReport.keys[i] = 0x00;
-		}
-	}
-
-	sendReport(&_keyReport);
-	return 1;
+	releaseKeycode(k, 0x01);
+	return 0x01;
 }
 
 void Keyboard_::releaseAll(void)
 {
-	_keyReport.keys[0] = 0;
-	_keyReport.keys[1] = 0;	
-	_keyReport.keys[2] = 0;
-	_keyReport.keys[3] = 0;	
-	_keyReport.keys[4] = 0;
-	_keyReport.keys[5] = 0;	
-	_keyReport.modifiers = 0;
+	_keyReport.keys[0x00] = 0x00;
+	_keyReport.keys[0x01] = 0x00;	
+	_keyReport.keys[0x02] = 0x00;
+	_keyReport.keys[0x03] = 0x00;	
+	_keyReport.keys[0x04] = 0x00;
+	_keyReport.keys[0x05] = 0x00;	
+	_keyReport.modifiers = 0x00;
 	sendReport(&_keyReport);
 }
 
