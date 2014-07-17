@@ -234,12 +234,12 @@ int WiFiClient::available()
         //(if SL_EAGAIN was received, the actual number of bytes received was zero, not -11)
         //
         rx_currentIndex = 0;
-        rx_fillLevel = iRet != SL_EAGAIN ? iRet : 0;
-        bytesLeft = rx_currentIndex - rx_fillLevel;
+        rx_fillLevel = (iRet != SL_EAGAIN) ? iRet : 0;
+        bytesLeft = rx_fillLevel - rx_currentIndex;
     }
     
     //
-    //limit bytes left to >= 0 (although it *shouldn't* ever become negative)
+    //limit bytes left to >= 0
     //
     if (bytesLeft < 0) {
         bytesLeft = 0;
@@ -251,9 +251,10 @@ int WiFiClient::available()
 int WiFiClient::read()
 {
     //
-    //return a single byte from the rx buffer (or zero if past the end)
+    //available says how many bytes are left to read. It will receive more
+    //if there are no more bytes left in the buffer. Returns 0 if nothing more
     //
-    if (rx_currentIndex < rx_fillLevel) {
+    if ( available() ) {
         return rx_buffer[rx_currentIndex++];
     } else {
         return 0;
@@ -281,7 +282,7 @@ int WiFiClient::peek()
     //return the next byte in the buffer or zero if we're past the end of the data
     //
     if (rx_currentIndex < rx_fillLevel) {
-        return rx_buffer[rx_currentIndex+1];
+        return rx_buffer[rx_currentIndex];
     } else {
         return 0;
     }

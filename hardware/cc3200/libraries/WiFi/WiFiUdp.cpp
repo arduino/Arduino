@@ -164,7 +164,6 @@ int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
     //reset all tx buffer indicators
     //
     memset(tx_buf, 0, UDP_TX_PACKET_MAX_SIZE);
-    rx_currentIndex = 0;
     tx_fillLevel = 0;
     
     return 1;
@@ -290,7 +289,7 @@ int WiFiUDP::parsePacket()
 
     //
     //store the sender's address (sl_HtonX reorders bits to processor order)
-    //!! Although this follows some examples (upd_socket), it goes agains the
+    //!! Although this follows some examples (upd_socket), it goes against the
     //!! API documentation. The API maintains that the 5th arg to RecvFrom is not in/out
     //
     _remoteIP = address.sin_addr.s_addr;
@@ -330,16 +329,14 @@ int WiFiUDP::read()
 int WiFiUDP::read(unsigned char* buffer, size_t len)
 {
     //
-    //copy the requested number of bytes up to the length of the packet
+    //read the requested number of bytes into the buffer
+    //this won't read past the end of the data since read() handles that
     //
-    int bytesCopied = 0;
-    while ( (bytesCopied <= len) && (rx_currentIndex < rx_fillLevel) ) {
-        buffer[bytesCopied] = rx_buf[rx_currentIndex];
-        bytesCopied++;
-        rx_currentIndex++;
+    int i;
+    for (i = 0; i < len; i++) {
+        buffer[i] = read();
     }
-    
-    return bytesCopied;
+    return i;
 }
 
 //--tested, working--//
@@ -363,7 +360,7 @@ void WiFiUDP::flush()
 }
 
 //--tested, working--//
-IPAddress  WiFiUDP::remoteIP()
+IPAddress WiFiUDP::remoteIP()
 {
     //
     //this value is maintained by ParsePacket method
@@ -374,7 +371,7 @@ IPAddress  WiFiUDP::remoteIP()
 }
 
 //--tested, working--//
-uint16_t  WiFiUDP::remotePort()
+uint16_t WiFiUDP::remotePort()
 {
     //
     //this value is maintained by ParsePacket method
