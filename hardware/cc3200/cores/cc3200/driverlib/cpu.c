@@ -45,7 +45,7 @@
 // on entry.
 //
 //*****************************************************************************
-#if defined(__GNUC__)
+
 unsigned long __attribute__((naked))
 CPUcpsid(void)
 {
@@ -56,6 +56,8 @@ CPUcpsid(void)
     //
     __asm("    mrs     r0, PRIMASK\n"
           "    cpsid   i\n"
+          "    dsb      \n"
+          "    isb      \n"
           "    bx      lr\n"
           : "=r" (ulRet));
 
@@ -67,47 +69,6 @@ CPUcpsid(void)
     //
     return(ulRet);
 }
-#endif
-#if defined(ewarm)
-unsigned long
-CPUcpsid(void)
-{
-    //
-    // Read PRIMASK and disable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsid   i\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-#pragma diag_suppress=Pe940
-}
-#pragma diag_default=Pe940
-#endif
-#if defined(ccs)
-unsigned long
-CPUcpsid(void)
-{
-    //
-    // Read PRIMASK and disable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsid   i\n"
-          "    bx      lr\n");
-
-    //
-    // The following keeps the compiler happy, because it wants to see a
-    // return value from this function.  It will generate code to return
-    // a zero.  However, the real return is the "bx lr" above, so the
-    // return(0) is never executed and the function returns with the value
-    // you expect in R0.
-    //
-    return(0);
-}
-#endif
 
 //*****************************************************************************
 //
@@ -115,7 +76,6 @@ CPUcpsid(void)
 // interrupts are enabled or disabled).
 //
 //*****************************************************************************
-#if defined(__GNUC__)
 unsigned long __attribute__((naked))
 CPUprimask(void)
 {
@@ -136,45 +96,6 @@ CPUprimask(void)
     //
     return(ulRet);
 }
-#endif
-#if defined(ewarm)
-unsigned long
-CPUprimask(void)
-{
-    //
-    // Read PRIMASK and disable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-#pragma diag_suppress=Pe940
-}
-#pragma diag_default=Pe940
-#endif
-#if defined(ccs)
-unsigned long
-CPUprimask(void)
-{
-    //
-    // Read PRIMASK and disable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    bx      lr\n");
-
-    //
-    // The following keeps the compiler happy, because it wants to see a
-    // return value from this function.  It will generate code to return
-    // a zero.  However, the real return is the "bx lr" above, so the
-    // return(0) is never executed and the function returns with the value
-    // you expect in R0.
-    //
-    return(0);
-}
-#endif
 
 //*****************************************************************************
 //
@@ -182,7 +103,7 @@ CPUprimask(void)
 // on entry.
 //
 //*****************************************************************************
-#if defined(__GNUC__)
+
 unsigned long __attribute__((naked))
 CPUcpsie(void)
 {
@@ -193,6 +114,8 @@ CPUcpsie(void)
     //
     __asm("    mrs     r0, PRIMASK\n"
           "    cpsie   i\n"
+          "    dsb      \n"
+          "    isb      \n"
           "    bx      lr\n"
           : "=r" (ulRet));
 
@@ -204,91 +127,29 @@ CPUcpsie(void)
     //
     return(ulRet);
 }
-#endif
-#if defined(ewarm)
-unsigned long
-CPUcpsie(void)
-{
-    //
-    // Read PRIMASK and enable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsie   i\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-#pragma diag_suppress=Pe940
-}
-#pragma diag_default=Pe940
-#endif
-#if defined(ccs)
-unsigned long
-CPUcpsie(void)
-{
-    //
-    // Read PRIMASK and enable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsie   i\n"
-          "    bx      lr\n");
-
-    //
-    // The following keeps the compiler happy, because it wants to see a
-    // return value from this function.  It will generate code to return
-    // a zero.  However, the real return is the "bx lr" above, so the
-    // return(0) is never executed and the function returns with the value
-    // you expect in R0.
-    //
-    return(0);
-}
-#endif
 
 //*****************************************************************************
 //
 // Wrapper function for the WFI instruction.
 //
 //*****************************************************************************
-#if defined(__GNUC__)
 void __attribute__((naked))
 CPUwfi(void)
 {
     //
     // Wait for the next interrupt.
     //
-    __asm("    wfi\n"
+    __asm("    dsb      \n"
+          "    isb      \n"
+          "    wfi      \n"
           "    bx      lr\n");
 }
-#endif
-#if defined(ewarm)
-void
-CPUwfi(void)
-{
-    //
-    // Wait for the next interrupt.
-    //
-    __asm("    wfi\n");
-}
-#endif
-#if defined(ccs)
-void
-CPUwfi(void)
-{
-    //
-    // Wait for the next interrupt.
-    //
-    __asm("    wfi\n");
-}
-#endif
 
 //*****************************************************************************
 //
 // Wrapper function for writing the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(__GNUC__)
 void __attribute__((naked))
 CPUbasepriSet(unsigned long ulNewBasepri)
 {
@@ -297,36 +158,16 @@ CPUbasepriSet(unsigned long ulNewBasepri)
     // Set the BASEPRI register
     //
     __asm("    msr     BASEPRI, r0\n"
+          "    dsb      \n"
+          "    isb      \n"
           "    bx      lr\n");
 }
-#endif
-#if defined(ewarm)
-void
-CPUbasepriSet(unsigned long ulNewBasepri)
-{
-    //
-    // Set the BASEPRI register
-    //
-    __asm("    msr     BASEPRI, r0\n");
-}
-#endif
-#if defined(ccs)
-void
-CPUbasepriSet(unsigned long ulNewBasepri)
-{
-    //
-    // Set the BASEPRI register
-    //
-    __asm("    msr     BASEPRI, r0\n");
-}
-#endif
 
 //*****************************************************************************
 //
 // Wrapper function for reading the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(__GNUC__)
 unsigned long __attribute__((naked))
 CPUbasepriGet(void)
 {
@@ -347,42 +188,3 @@ CPUbasepriGet(void)
     //
     return(ulRet);
 }
-#endif
-#if defined(ewarm)
-unsigned long
-CPUbasepriGet(void)
-{
-    //
-    // Read BASEPRI
-    //
-    __asm("    mrs     r0, BASEPRI\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-#pragma diag_suppress=Pe940
-}
-#pragma diag_default=Pe940
-#endif
-#if defined(ccs)
-unsigned long
-CPUbasepriGet(void)
-{
-    //
-    // Read BASEPRI
-    //
-    __asm("    mrs     r0, BASEPRI\n"
-          "    bx      lr\n");
-
-    //
-    // The following keeps the compiler happy, because it wants to see a
-    // return value from this function.  It will generate code to return
-    // a zero.  However, the real return is the "bx lr" above, so the
-    // return(0) is never executed and the function returns with the value
-    // you expect in R0.
-    //
-    return(0);
-}
-#endif

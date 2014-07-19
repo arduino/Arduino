@@ -1601,14 +1601,18 @@ void PRCMCC3200MCUInit()
     }
 
     //
-    // JTAG override for I2C in SWD mode
+    // SWD mode
     //
     if(((HWREG(0x4402F0C8) & 0xFF) == 0x2))
     {
         HWREG(0x4402E110) = ((HWREG(0x4402E110) & ~0xC0F) | 0x2);
         HWREG(0x4402E114) = ((HWREG(0x4402E110) & ~0xC0F) | 0x2);
-        HWREG(0x4402E184) |= 0x2;
     }
+
+    //
+    // Override JTAG mux
+    //
+    HWREG(0x4402E184) |= 0x2;
 
     //
     // Change UART pins(55,57) mode to PIN_MODE_0 if they are in PIN_MODE_1

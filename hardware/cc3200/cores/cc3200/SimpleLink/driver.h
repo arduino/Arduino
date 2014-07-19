@@ -156,7 +156,7 @@ typedef struct
     _SlFlowContCB_t                  FlowContCB;
 
     UINT8                            TxSeqNum;
-    UINT8                            RxIrqCnt;
+    volatile UINT8                   RxIrqCnt;
     UINT8                            RxDoneCnt;
     UINT8                            SocketNonBlocking;
 	UINT8                            SocketTXFailure;

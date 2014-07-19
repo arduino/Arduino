@@ -221,7 +221,7 @@ SDHostDataNonBlockingWrite(unsigned long ulBase, unsigned long ulData)
   //
   // See if there is a space in the write buffer
   //
-  if( (HWREG(ulBase + MMCHS_O_STAT) & (1<<4)) )
+  if( (HWREG(ulBase + MMCHS_O_PSTATE) & (1<<10)) )
   {
     //
     // Write the data into the buffer
@@ -262,7 +262,7 @@ SDHostDataWrite(unsigned long ulBase, unsigned long ulData)
   //
   // Wait until space is available
   //
-  while( !(HWREG(ulBase + MMCHS_O_STAT) & (1<<4)) )
+  while( !(HWREG(ulBase + MMCHS_O_PSTATE) & (1<<10)) )
   {
 
   }
@@ -294,7 +294,7 @@ SDHostDataRead(unsigned long ulBase, unsigned long *pulData)
   //
   // Wait until data is available
   //
-  while( !(HWREG(ulBase + MMCHS_O_STAT) & (1<<5)) )
+  while( !(HWREG(ulBase + MMCHS_O_PSTATE) & (1<<11)) )
   {
 
   }
@@ -326,7 +326,7 @@ SDHostDataNonBlockingRead(unsigned long ulBase, unsigned long *pulData)
   //
   // See if there is any data in the read buffer.
   //
-  if( (HWREG(ulBase + MMCHS_O_STAT) & (1<<5)) )
+  if( (HWREG(ulBase + MMCHS_O_PSTATE) & (1<11)) )
   {
     //
     // Read the data word.

@@ -125,8 +125,7 @@
 #define ADC_O_adc_ch7_fifo_lvl  0x000000B0  // Channel 7 interrupt status
                                             // register
 
-#define ADC_O_ADC_SPARE0        0x000000B4
-#define ADC_O_ADC_SPARE1        0x000000B8
+#define ADC_O_ADC_CH_ENABLE     0x000000B8
 
 //******************************************************************************
 //

@@ -975,49 +975,88 @@ TimerIntClear(unsigned long ulBase, unsigned long ulIntFlags)
 
 //*****************************************************************************
 //
-//! Synchronizes the counters in a set of timers.
+//! Enables the events that can trigger a DMA request.
 //!
-//! \param ulBase is the base address of the timer module.  This must be the
-//! base address of Timer0 (in other words, \b TIMER0_BASE).
-//! \param ulTimers is the set of timers to synchronize.
+//! \param ui32Base is the base address of the timer module.
+//! \param ui32DMAEvent is a bit mask of the events that can trigger DMA.
 //!
-//! This function will synchronize the counters in a specified set of timers.
-//! When a timer is running in half-width mode, each half can be included or
-//! excluded in the synchronization event.  When a timer is running in
-//! full-width mode, only the A timer can be synchronized (specifying the B
-//! timer has no effect).
+//! This function enables the timer events that can trigger the start of a DMA
+//! sequence.  The DMA trigger events are specified in the \e ui32DMAEvent
+//! parameter by passing in the logical OR of the following values:
 //!
-//! The \e ulTimers parameter is the logical OR of any of the following
-//! defines:
-//!
-//! - \b TIMER_0A_SYNC
-//! - \b TIMER_0B_SYNC
-//! - \b TIMER_1A_SYNC
-//! - \b TIMER_1B_SYNC
-//! - \b TIMER_2A_SYNC
-//! - \b TIMER_2B_SYNC
-//! - \b TIMER_3A_SYNC
-//! - \b TIMER_3B_SYNC
-//!
-//! \note This functionality is not available on all parts.
+//! - \b TIMER_DMA_MODEMATCH_B - The mode match DMA trigger for timer B is
+//!   enabled.
+//! - \b TIMER_DMA_CAPEVENT_B - The capture event DMA trigger for timer B is
+//!   enabled.
+//! - \b TIMER_DMA_CAPMATCH_B - The capture match DMA trigger for timer B is
+//!   enabled.
+//! - \b TIMER_DMA_TIMEOUT_B - The timeout DMA trigger for timer B is enabled.
+//! - \b TIMER_DMA_MODEMATCH_A - The mode match DMA trigger for timer A is
+//!   enabled.
+//! - \b TIMER_DMA_CAPEVENT_A - The capture event DMA trigger for timer A is
+//!   enabled.
+//! - \b TIMER_DMA_CAPMATCH_A - The capture match DMA trigger for timer A is
+//!   enabled.
+//! - \b TIMER_DMA_TIMEOUT_A - The timeout DMA trigger for timer A is enabled.
 //!
 //! \return None.
 //
 //*****************************************************************************
 void
-TimerSynchronize(unsigned long ulBase, unsigned long ulTimers)
+TimerDMAEventSet(unsigned long ulBase, unsigned long ulDMAEvent)
 {
     //
     // Check the arguments.
     //
-    ASSERT(ulBase == TIMERA0_BASE);
+    ASSERT(TimerBaseValid(ulBase));
 
     //
-    // Synchronize the specified timers.
+    // Set the DMA triggers.
     //
-    HWREG(ulBase + TIMER_O_SYNC) = ulTimers;
+    HWREG(ulBase + TIMER_O_DMAEV) = ulDMAEvent;
 }
 
+//*****************************************************************************
+//
+//! Returns the events that can trigger a DMA request.
+//!
+//! \param ui32Base is the base address of the timer module.
+//!
+//! This function returns the timer events that can trigger the start of a DMA
+//! sequence.  The DMA trigger events are the logical OR of the following
+//! values:
+//!
+//! - \b TIMER_DMA_MODEMATCH_B - Enables the mode match DMA trigger for timer
+//!   B.
+//! - \b TIMER_DMA_CAPEVENT_B - Enables the capture event DMA trigger for
+//!   timer B.
+//! - \b TIMER_DMA_CAPMATCH_B - Enables the capture match DMA trigger for
+//!   timer B.
+//! - \b TIMER_DMA_TIMEOUT_B - Enables the timeout DMA trigger for timer B.
+//! - \b TIMER_DMA_MODEMATCH_A - Enables the mode match DMA trigger for timer
+//!   A.
+//! - \b TIMER_DMA_CAPEVENT_A - Enables the capture event DMA trigger for
+//!   timer A.
+//! - \b TIMER_DMA_CAPMATCH_A - Enables the capture match DMA trigger for
+//!   timer A.
+//! - \b TIMER_DMA_TIMEOUT_A - Enables the timeout DMA trigger for timer A.
+//!
+//! \return The timer events that trigger the uDMA.
+//
+//*****************************************************************************
+unsigned long
+TimerDMAEventGet(unsigned long ulBase)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT(TimerBaseValid(ulBase));
+
+    //
+    // Return the current DMA triggers.
+    //
+    return(HWREG(ulBase + TIMER_O_DMAEV));
+}
 //*****************************************************************************
 //
 // Close the Doxygen group.

@@ -71,7 +71,6 @@ extern "C"
 //*****************************************************************************
 #define CAM_INT_DMA           0x80000000
 #define CAM_INT_FE            0x00010000
-#define CAM_INT_FSC_ERR       0x00000200
 #define CAM_INT_FIFO_NOEMPTY  0x00000010
 #define CAM_INT_FIFO_FULL     0x00000008
 #define CAM_INT_FIFO_THR      0x00000004
@@ -91,7 +90,6 @@ extern "C"
 #define CAM_PCLK_FALL_EDGE  0000000400
 
 #define CAM_ORDERCAM_SWAP   0x00000800
-#define CAM_BT_CORRECT_EN   0x00001000
 #define CAM_NOBT_SYNCHRO    0x00002000
 #define CAM_IF_SYNCHRO      0x00080000
 

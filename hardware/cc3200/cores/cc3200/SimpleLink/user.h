@@ -326,6 +326,18 @@ extern "C" {
  */
 
 /*!
+    \brief		Preamble to the enabling the Network Processor.
+                        Placeholder to implement any pre-process operations
+                        before enabling networking operations.
+
+    \sa			sl_DeviceEnable
+
+    \note       belongs to \ref ported_sec
+
+*/
+#define sl_DeviceEnablePreamble()		NwpPowerOnPreamble()
+
+/*!
     \brief		Enable the Network Processor
 
     \sa			sl_DeviceDisable
@@ -1001,9 +1013,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-/*
-#define sl_SockEvtHdlr
-*/
+#define sl_SockEvtHdlr         SimpleLinkSockEventHandler
 
 
 /*!

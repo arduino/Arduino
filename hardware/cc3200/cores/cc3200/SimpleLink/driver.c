@@ -517,6 +517,7 @@ _SlReturnVal_t _SlDrvMsgRead(void)
 #endif
             MALLOC_OK_CHECK(g_pCB->FunctionParams.AsyncExt.pAsyncBuf);
 
+            sl_Memset((g_pCB->FunctionParams.AsyncExt.pAsyncBuf), 0, SL_ASYNC_MAX_MSG_LEN);
             sl_Memcpy(g_pCB->FunctionParams.AsyncExt.pAsyncBuf, uBuf.TempBuf, _SL_RESP_HDR_SIZE);
 
             /*  This is an Async message. Read the rest of it. */

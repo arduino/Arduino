@@ -262,11 +262,6 @@
         ((void (*)(unsigned long ulBase,                                      \
                    unsigned long ulIntFlags))ROM_TIMERTABLE[20])
 #endif
-#if defined(TARGET_IS_CC3200)
-#define ROM_TimerSynchronize                                                  \
-        ((void (*)(unsigned long ulBase,                                      \
-                   unsigned long ulTimers))ROM_TIMERTABLE[21])
-#endif
 
 //*****************************************************************************
 //

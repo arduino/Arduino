@@ -86,6 +86,7 @@ int sl_Start(const void* pIfHdl, char* pDevName, const P_INIT_CALLBACK pInitCall
 {
     int pObjIdx = MAX_CONCURRENT_ACTIONS;
     InitComplete_t  AsyncRsp;
+    sl_DeviceEnablePreamble();
   
     /* callback init */
     _SlDrvDriverCBInit();
@@ -115,13 +116,14 @@ int sl_Start(const void* pIfHdl, char* pDevName, const P_INIT_CALLBACK pInitCall
 
         sl_IfRegIntHdlr((SL_P_EVENT_HANDLER)_SlDrvRxIrqHandler, NULL);
 
-        sl_DeviceEnable();
 
         if (NULL != pInitCallBack)
         {
             g_pCB->pInitCallback = pInitCallBack;
         }
-        else
+
+        sl_DeviceEnable();
+        if (NULL == pInitCallBack)
         {
 			OSI_RET_OK_CHECK(sl_SyncObjWait(&g_pCB->ObjPool[pObjIdx].SyncObj, SL_OS_WAIT_FOREVER));
 	        /*release Pool Object*/

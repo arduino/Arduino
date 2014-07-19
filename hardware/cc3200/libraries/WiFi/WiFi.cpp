@@ -44,7 +44,7 @@ extern "C" {
     #include "SimpleLink/netcfg.h"
     #include "SimpleLink/netapp.h"
     #include "SimpleLink/socket.h"
-    #include "Utility/udma_if.h"
+    #include "udma_if.h"
 }
 
 //

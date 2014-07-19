@@ -601,8 +601,8 @@ SPIDisable(unsigned long ulBase)
 //!
 //! The parameter \e ulFlags is the logical OR of one or more of
 //! the following :
-//! - \b MCSPI_RX_DMA
-//! - \b MCSPI_TX_DMA
+//! - \b SPI_RX_DMA
+//! - \b SPI_TX_DMA
 //!
 //! \return None.
 //
@@ -628,8 +628,8 @@ SPIDmaEnable(unsigned long ulBase, unsigned long ulFlags)
 //!
 //! The parameter \e ulFlags is the logical OR of one or more of
 //! the following :
-//! - \b MCSPI_RX_DMA
-//! - \b MCSPI_TX_DMA
+//! - \b SPI_RX_DMA
+//! - \b SPI_TX_DMA
 //!
 //! \return None.
 //
@@ -969,8 +969,8 @@ SPIDataPut(unsigned long ulBase, unsigned long ulData)
 //! \e ulFlags.
 //! The parameter \e ulFlags shoulde be logical OR of one or more of the
 //! following:
-//! - \b MCSPI_TX_FIFO
-//! - \b MCSPI_RX_FIFO
+//! - \b SPI_TX_FIFO
+//! - \b SPI_RX_FIFO
 //!
 //! \return None.
 //
@@ -995,8 +995,8 @@ SPIFIFOEnable(unsigned long ulBase, unsigned long ulFlags)
 //! \e ulFlags.
 //! The parameter \e ulFlags shoulde be logical OR of one or more of the
 //! following:
-//! - \b MCSPI_TX_FIFO
-//! - \b MCSPI_RX_FIFO
+//! - \b SPI_TX_FIFO
+//! - \b SPI_RX_FIFO
 //!
 //! \return None.
 //
@@ -1200,11 +1200,11 @@ SPIIntUnregister(unsigned long ulBase)
 //!
 //! - \b SPI_INT_DMATX
 //! - \b SPI_INT_DMARX
-//! - \b MCSPI_INT_EOW
-//! - \b MCSPI_INT_RX_OVRFLOW
-//! - \b MCSPI_INT_RX_FULL
-//! - \b MCSPI_INT_TX_UDRFLOW
-//! - \b MCSPI_INT_TX_EMPTY
+//! - \b SPI_INT_EOW
+//! - \b SPI_INT_RX_OVRFLOW
+//! - \b SPI_INT_RX_FULL
+//! - \b SPI_INT_TX_UDRFLOW
+//! - \b SPI_INT_TX_EMPTY
 //!
 //! \return None.
 //
@@ -1467,8 +1467,8 @@ void SPICSDisable(unsigned long ulBase)
 //!
 //! The parameter \e ulFlags is logical OR of one or more of the following
 //!
-//! - \b MCSPI_CS_ENABLE if CS needs to be enabled at start of transfer.
-//! - \b MCSPI_CS_DISABLE if CS need to be disabled at the end of transfer.
+//! - \b SPI_CS_ENABLE if CS needs to be enabled at start of transfer.
+//! - \b SPI_CS_DISABLE if CS need to be disabled at the end of transfer.
 //!
 //! This function will not return until data has been transmitted
 //!

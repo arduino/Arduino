@@ -302,7 +302,7 @@ IntUnregister(unsigned long ulInterrupt)
 //! This function specifies the split between preemptable priority levels and
 //! subpriority levels in the interrupt priority specification.  The range of
 //! the grouping values are dependent upon the hardware implementation; on
-//! the Stellaris family, three bits are available for hardware interrupt
+//! the CC3200 , three bits are available for hardware interrupt
 //! prioritization and therefore priority grouping values of three through
 //! seven have the same effect.
 //!
@@ -377,12 +377,22 @@ IntPriorityGroupingGet(void)
 //! interrupt priority.
 //!
 //! The hardware priority mechanism will only look at the upper N bits of the
-//! priority level (where N is 3 for the Stellaris family), so any
-//! prioritization must be performed in those bits.  The remaining bits can be
-//! used to sub-prioritize the interrupt sources, and may be used by the
-//! hardware priority mechanism on a future part.  This arrangement allows
-//! priorities to migrate to different NVIC implementations without changing
-//! the gross prioritization of the interrupts.
+//! priority level (where N is 3), so any prioritization must be performed in
+//! those bits.  The remaining bits can be used to sub-prioritize the interrupt
+//! sources, and may be used by the hardware priority mechanism on a future
+//! part.  This arrangement allows priorities to migrate to different NVIC
+//! implementations without changing the gross prioritization of the
+//! interrupts.
+//!
+//! The parameter \e ucPriority can be any one of the following
+//! -\b INT_PRIORITY_LVL_0
+//! -\b INT_PRIORITY_LVL_1
+//! -\b INT_PRIORITY_LVL_2
+//! -\b INT_PRIORITY_LVL_3
+//! -\b INT_PRIORITY_LVL_4
+//! -\b INT_PRIORITY_LVL_5
+//! -\b INT_PRIORITY_LVL_6
+//! -\b INT_PRIORITY_LVL_7
 //!
 //! \return None.
 //
@@ -464,6 +474,8 @@ IntEnable(unsigned long ulInterrupt)
         // Enable the MemManage interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_MEM;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_BUS)
     {
@@ -471,6 +483,8 @@ IntEnable(unsigned long ulInterrupt)
         // Enable the bus fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_BUS;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_USAGE)
     {
@@ -478,6 +492,8 @@ IntEnable(unsigned long ulInterrupt)
         // Enable the usage fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_USAGE;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_SYSTICK)
     {
@@ -485,8 +501,9 @@ IntEnable(unsigned long ulInterrupt)
         // Enable the System Tick interrupt.
         //
         HWREG(NVIC_ST_CTRL) |= NVIC_ST_CTRL_INTEN;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
-#ifndef REMOVE_NEW_PERIPH
     else if(ulInterrupt >= 16)
     {
         //
@@ -494,21 +511,8 @@ IntEnable(unsigned long ulInterrupt)
         //
         HWREG(g_pulEnRegs[(ulInterrupt - 16) / 32]) =
             1 << ((ulInterrupt - 16) & 31);
-    }
-#endif
-    else if((ulInterrupt >= 16) && (ulInterrupt <= 47))
-    {
-        //
-        // Enable the general interrupt.
-        //
-        HWREG(NVIC_EN0) = 1 << (ulInterrupt - 16);
-    }
-    else if(ulInterrupt >= 48)
-    {
-        //
-        // Enable the general interrupt.
-        //
-        HWREG(NVIC_EN1) = 1 << (ulInterrupt - 48);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
 }
 
@@ -542,6 +546,8 @@ IntDisable(unsigned long ulInterrupt)
         // Disable the MemManage interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_MEM);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_BUS)
     {
@@ -549,6 +555,8 @@ IntDisable(unsigned long ulInterrupt)
         // Disable the bus fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_BUS);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_USAGE)
     {
@@ -556,6 +564,8 @@ IntDisable(unsigned long ulInterrupt)
         // Disable the usage fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_USAGE);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_SYSTICK)
     {
@@ -563,8 +573,9 @@ IntDisable(unsigned long ulInterrupt)
         // Disable the System Tick interrupt.
         //
         HWREG(NVIC_ST_CTRL) &= ~(NVIC_ST_CTRL_INTEN);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
-#ifndef REMOVE_NEW_PERIPH
     else if(ulInterrupt >= 16)
     {
         //
@@ -572,22 +583,10 @@ IntDisable(unsigned long ulInterrupt)
         //
         HWREG(g_pulDisRegs[(ulInterrupt - 16) / 32]) =
             1 << ((ulInterrupt - 16) & 31);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
-#endif
-    else if((ulInterrupt >= 16) && (ulInterrupt <= 47))
-    {
-        //
-        // Disable the general interrupt.
-        //
-        HWREG(NVIC_DIS0) = 1 << (ulInterrupt - 16);
-    }
-    else if(ulInterrupt >= 48)
-    {
-        //
-        // Disable the general interrupt.
-        //
-        HWREG(NVIC_DIS1) = 1 << (ulInterrupt - 48);
-    }
+
 }
 
 //*****************************************************************************
@@ -624,6 +623,8 @@ IntPendSet(unsigned long ulInterrupt)
         // Pend the NMI interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_NMI_SET;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_PENDSV)
     {
@@ -631,6 +632,8 @@ IntPendSet(unsigned long ulInterrupt)
         // Pend the PendSV interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PEND_SV;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt == FAULT_SYSTICK)
     {
@@ -638,6 +641,8 @@ IntPendSet(unsigned long ulInterrupt)
         // Pend the SysTick interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PENDSTSET;
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
     else if(ulInterrupt >= 16)
     {
@@ -646,6 +651,8 @@ IntPendSet(unsigned long ulInterrupt)
         //
         HWREG(g_pulPendRegs[(ulInterrupt - 16) / 32]) =
             1 << ((ulInterrupt - 16) & 31);
+        __asm(" dsb     ");
+        __asm(" isb     ");
     }
 
 }
@@ -716,7 +723,7 @@ IntPendClear(unsigned long ulInterrupt)
 //! and interrupts with a numerical priority of 4 and greater will be blocked.
 //!
 //! The hardware priority mechanism will only look at the upper N bits of the
-//! priority level (where N is 3 for the Stellaris family), so any
+//! priority level (where N is 3), so any
 //! prioritization must be performed in those bits.
 //!
 //! \return None.
@@ -742,7 +749,7 @@ IntPriorityMaskSet(unsigned long ulPriorityMask)
 //! and interrupts with a numerical priority of 4 and greater will be blocked.
 //!
 //! The hardware priority mechanism will only look at the upper N bits of the
-//! priority level (where N is 3 for the Stellaris family), so any
+//! priority level (where N is 3), so any
 //! prioritization must be performed in those bits.
 //!
 //! \return Returns the value of the interrupt priority level mask.

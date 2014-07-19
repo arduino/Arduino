@@ -265,8 +265,6 @@ I2CSlaveInit(uint32_t ui32Base, uint8_t ui8SlaveAddr)
 //! dictates which slave address is configured.  For example, a value of 0
 //! configures the primary address and a value of 1 configures the secondary.
 //!
-//! \note Not all Tiva devices support a secondary address.  Please
-//! consult the device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -560,9 +558,6 @@ I2CMasterIntEnable(uint32_t ui32Base)
 //! - \b I2C_MASTER_INT_TIMEOUT - Clock Timeout interrupt
 //! - \b I2C_MASTER_INT_DATA - Data interrupt
 //!
-//! \note Not all Tiva devices support all of the listed interrupt
-//! sources.  Please consult the device data sheet to determine if these
-//! features are supported.
 //!
 //! \return None.
 //
@@ -629,9 +624,6 @@ I2CSlaveIntEnable(uint32_t ui32Base)
 //! - \b I2C_SLAVE_INT_START - Start condition detected interrupt
 //! - \b I2C_SLAVE_INT_DATA - Data interrupt
 //!
-//! \note Not all Tiva devices support the all of the listed interrupts.
-//! Please consult the device data sheet to determine if these features are
-//! supported.
 //!
 //! \return None.
 //
@@ -952,7 +944,7 @@ I2CMasterIntClear(uint32_t ui32Base)
     HWREG(ui32Base + I2C_O_MICR) = I2C_MICR_IC;
 
     //
-    // Workaround for I2C master interrupt clear errata for rev B Tiva
+    // Workaround for I2C master interrupt clear errata for some
     // devices.  For later devices, this write is ignored and therefore
     // harmless (other than the slight performance hit).
     //
@@ -1117,8 +1109,6 @@ I2CMasterSlaveAddrSet(uint32_t ui32Base, uint8_t ui8SlaveAddr,
 //! This function returns the state of the I2C bus by providing the real time
 //! values of the SDA and SCL pins.
 //!
-//! \note Not all Tiva devices support this function.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return Returns the state of the bus with SDA in bit position 1 and SCL in
 //! bit position 0.
@@ -1241,9 +1231,6 @@ I2CMasterBusBusy(uint32_t ui32Base)
 //! - \b I2C_MASTER_CMD_FIFO_BURST_RECEIVE_FINISH
 //! - \b I2C_MASTER_CMD_FIFO_BURST_RECEIVE_ERROR_STOP
 //!
-//! \note Not all Tiva devices have an I2C FIFO and support the FIFO
-//! commands.  Please consult the device data sheet to determine if this
-//! feature is supported.
 //!
 //! \return None.
 //
@@ -1400,8 +1387,6 @@ I2CMasterDataGet(uint32_t ui32Base)
 //! upper 8-bits being programmable.  For example, to program a timeout of 20ms
 //! with a 100kHz SCL frequency, \e ui32Value would be 0x7d.
 //!
-//! \note Not all Tiva devices support this function.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -1430,8 +1415,6 @@ I2CMasterTimeoutSet(uint32_t ui32Base, uint32_t ui32Value)
 //! This function enables or disables ACK override, allowing the user
 //! application to drive the value on SDA during the ACK cycle.
 //!
-//! \note Not all Tiva devices support this function.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -1509,7 +1492,7 @@ I2CSlaveACKValueSet(uint32_t ui32Base, bool bACK)
 //! - \b I2C_SLAVE_ACT_QCMD
 //! - \b I2C_SLAVE_ACT_QCMD_DATA
 //!
-//! \note Not all Tiva devices support the second I2C slave's own address
+//! \note Not all devices support the second I2C slave's own address
 //! or the quick command function.  Please consult the device data sheet to
 //! determine if these features are supported.
 //!
@@ -1613,8 +1596,6 @@ I2CSlaveDataGet(uint32_t ui32Base)
 //! \b I2C_FIFO_CFG_TX_TRIG_5, \b I2C_FIFO_CFG_TX_TRIG_6,
 //! \b I2C_FIFO_CFG_TX_TRIG_7, \b I2C_FIFO_CFG_TX_TRIG_8
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -1646,8 +1627,6 @@ I2CTxFIFOConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //!
 //! This function flushes the I2C transmit FIFO.
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -1687,8 +1666,6 @@ I2CTxFIFOFlush(uint32_t ui32Base)
 //! \b I2C_FIFO_CFG_RX_TRIG_5, \b I2C_FIFO_CFG_RX_TRIG_6,
 //! \b I2C_FIFO_CFG_RX_TRIG_7, \b I2C_FIFO_CFG_RX_TRIG_8
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -1720,9 +1697,6 @@ I2CRxFIFOConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //!
 //! This function flushes the I2C receive FIFO.
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
-//!
 //! \return None.
 //
 //*****************************************************************************
@@ -1749,9 +1723,6 @@ I2CRxFIFOFlush(uint32_t ui32Base)
 //! This function retrieves the status for both the transmit (TX) and receive
 //! (RX) FIFOs.  The trigger level for the transmit FIFO is set using
 //! I2CTxFIFOConfigSet() and for the receive FIFO using I2CTxFIFOConfigSet().
-//!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return Returns the FIFO status, enumerated as a bit field containing
 //! \b I2C_FIFO_RX_BELOW_TRIG_LEVEL, \b I2C_FIFO_RX_FULL, \b I2C_FIFO_RX_EMPTY,
@@ -1783,9 +1754,6 @@ I2CFIFOStatus(uint32_t ui32Base)
 //! This function adds a byte of data to the I2C transmit FIFO.  If there is
 //! no space available in the FIFO,  this function waits for space to become
 //! available before returning.
-//!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -1820,9 +1788,6 @@ I2CFIFODataPut(uint32_t ui32Base, uint8_t ui8Data)
 //!
 //! This function adds a byte of data to the I2C transmit FIFO.  If there is
 //! no space available in the FIFO, this function returns a zero.
-//!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return The number of elements added to the I2C transmit FIFO.
 //
@@ -1859,9 +1824,6 @@ I2CFIFODataPutNonBlocking(uint32_t ui32Base, uint8_t ui8Data)
 //! the location specified by the \e pui8Data parameter.  If there is no data
 //! available, this function waits until data is received before returning.
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
-//!
 //! \return The data byte.
 //
 //*****************************************************************************
@@ -1896,9 +1858,6 @@ I2CFIFODataGet(uint32_t ui32Base)
 //! This function reads a byte of data from I2C receive FIFO and places it in
 //! the location specified by the \e pui8Data parameter.  If there is no data
 //! available, this functions returns 0.
-//!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return The number of elements read from the I2C receive FIFO.
 //
@@ -1939,9 +1898,6 @@ I2CFIFODataGetNonBlocking(uint32_t ui32Base, uint8_t *pui8Data)
 //! operation must configure the burst length prior to writing the BURST bit
 //! in the I2CMCS using I2CMasterControl().
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
-//!
 //! \return None.
 //
 //*****************************************************************************
@@ -1969,9 +1925,6 @@ I2CMasterBurstLengthSet(uint32_t ui32Base, uint8_t ui8Length)
 //! is used by the FIFO mechanism.  Software can use this value to determine
 //! how many bytes remain in a transfer, or where in the transfer the burst
 //! operation was if an error has occurred.
-//!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //
@@ -2014,9 +1967,6 @@ I2CMasterBurstCountGet(uint32_t ui32Base)
 //! - \b I2C_MASTER_GLITCH_FILTER_16
 //! - \b I2C_MASTER_GLITCH_FILTER_32
 //!
-//! \note Not all Tiva devices support this function.  Please consult the
-//! device data sheet to determine if this feature is supported.
-//!
 //! \return None.
 //
 //*****************************************************************************
@@ -2054,9 +2004,6 @@ I2CMasterGlitchFilterConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //! Therefore, application software should call I2CSlaveEnable() followed by
 //! I2CSlaveFIFOEnable() with the desired FIFO configuration.
 //!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
-//!
 //! \return None.
 //
 //*****************************************************************************
@@ -2082,9 +2029,6 @@ I2CSlaveFIFOEnable(uint32_t ui32Base, uint32_t ui32Config)
 //!
 //! This function disables the FIFOs for the I2C Slave.  After calling this
 //! this function, the FIFOs are disabled, but the Slave remains active.
-//!
-//! \note Not all Tiva devices have an I2C FIFO.  Please consult the
-//! device data sheet to determine if this feature is supported.
 //!
 //! \return None.
 //

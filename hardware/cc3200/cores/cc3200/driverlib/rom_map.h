@@ -311,12 +311,19 @@
 #define MAP_TimerIntClear \
         TimerIntClear
 #endif
-#ifdef ROM_TimerSynchronize
-#define MAP_TimerSynchronize \
-        ROM_TimerSynchronize
+#ifdef ROM_TimerDMAEventSet
+#define MAP_TimerDMAEventSet \
+        ROM_TimerDMAEventSet
 #else
-#define MAP_TimerSynchronize \
-        TimerSynchronize
+#define MAP_TimerDMAEventSet \
+        TimerDMAEventSet
+#endif
+#ifdef ROM_TimerDMAEventGet
+#define MAP_TimerDMAEventGet \
+        ROM_TimerDMAEventGet
+#else
+#define MAP_TimerDMAEventGet \
+        TimerDMAEventGet
 #endif
 
 //*****************************************************************************

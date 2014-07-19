@@ -17,15 +17,15 @@
         <debug>1</debug>
         <option>
           <name>ExePath</name>
-          <state>exe</state>
+          <state>Release\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>obj</state>
+          <state>Release\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>list</state>
+          <state>Release\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -65,7 +65,7 @@
         </option>
         <option>
           <name>OGCoreOrChip</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelect</name>
@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>7.10.1.6733</state>
+          <state>7.20.1.7306</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -99,7 +99,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>Default	None</state>
+          <state>CC3200	TexasInstruments CC3200</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -163,7 +163,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>30</version>
+        <version>31</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -261,7 +261,7 @@
         </option>
         <option>
           <name>CCRequirePrototypes</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCMultibyteSupport</name>
@@ -405,6 +405,10 @@
           <name>CCOptStrategySlave</name>
           <version>0</version>
           <state>0</state>
+        </option>
+        <option>
+          <name>CCGuardCalls</name>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -928,11 +932,11 @@
         </option>
         <option>
           <name>IarchiveOverride</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IarchiveOutput</name>
-          <state>$PROJ_DIR$\exe\driverlib.a</state>
+          <state>D:\CC32xx\SDK_0.5.2\driverlib\ewarm\Release\Exe\driverlib.a</state>
         </option>
       </data>
     </settings>

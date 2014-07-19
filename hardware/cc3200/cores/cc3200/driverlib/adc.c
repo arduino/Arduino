@@ -111,7 +111,7 @@ void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel)
           (ulChannel == ADC_CH_1)? 0x04 :
           (ulChannel == ADC_CH_2)? 0x08 : 0x10;
 
-  HWREG(ulBase + ADC_O_ADC_SPARE1) |= ulCh;
+  HWREG(ulBase + ADC_O_ADC_CH_ENABLE) |= ulCh;
 }
 
 //*****************************************************************************
@@ -134,7 +134,7 @@ void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel)
           (ulChannel == ADC_CH_1)? 0x04 :
           (ulChannel == ADC_CH_2)? 0x08 : 0x10;
 
-  HWREG(ulBase + ADC_O_ADC_SPARE1) &= ~ulCh;
+  HWREG(ulBase + ADC_O_ADC_CH_ENABLE) &= ~ulCh;
 }
 
 //*****************************************************************************

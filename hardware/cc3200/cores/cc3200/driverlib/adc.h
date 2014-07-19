@@ -75,18 +75,6 @@ extern "C"
 
 //*****************************************************************************
 //
-// Values that can be passed to ADCChannelGainSet() as ucGain parameter, and
-// returned from ADCChannelGainGet()
-//
-//*****************************************************************************
-#define ADC_GAIN_1X  0x00
-#define ADC_GAIN_2X  0x01
-#define ADC_GAIN_3X  0x02
-#define ADC_GAIN_4X  0x03
-
-
-//*****************************************************************************
-//
 // API Function prototypes
 //
 //*****************************************************************************

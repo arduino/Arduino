@@ -56,7 +56,6 @@
 #include "driverlib/udma.h"
 #include "driverlib/utils.h"
 
-
 P_EVENT_HANDLER g_pHostIntHdl  = NULL;
 
 #define REG_INT_MASK_SET 0x400F7088
@@ -68,18 +67,15 @@ P_EVENT_HANDLER g_pHostIntHdl  = NULL;
 #define OCP_SHARED_MAC_RESET_REG        0x4402E168
 #define ARCM_SHSPI_RESET_REG            0x440250CC
 
-#define SPI_IF_BIT_RATE                 20000000
+#define SPI_IF_BIT_RATE                 13000000
 
 volatile Fd_t g_SpiFd =0;
 
 
-unsigned char g_ucDout[100];
-unsigned char g_ucDin[100];
+unsigned long g_ucDinDout[20];
 
 #define MAX_NUM_CH	            64	//32*2 entries
-#define CTL_TBL_SIZE	            64	//32*2 entries
 
-#define UDMA_CH5_BITID          (1<<5)
 
 
 #if defined(SL_PLATFORM_MULTI_THREADED)
@@ -250,7 +246,7 @@ void SetupDMAReceive(unsigned char *ucBuff,int len)
                   	  	  len/4,
                   	  	  UDMA_SIZE_32,
                   	  	  UDMA_ARB_1,
-                  	  	  &g_ucDout[0],
+                  	  	  &g_ucDinDout[5],
                   	  	  UDMA_SRC_INC_NONE,
                   	  	  (void *)(LSPI_BASE+MCSPI_O_TX0),
                   	  	  UDMA_DST_INC_NONE);
@@ -290,7 +286,7 @@ void SetupDMASend(unsigned char *ucBuff,int len)
                   	  	  UDMA_ARB_1,
                   	  	  (void *)(LSPI_BASE+MCSPI_O_RX0),
                   	  	  UDMA_SRC_INC_NONE,
-                  	  	  &g_ucDin[0],
+                  	  	  &g_ucDinDout[15],
                   	  	  UDMA_DST_INC_NONE);
 
  SPIWordCountSet(LSPI_BASE,len/4);
@@ -333,7 +329,7 @@ Fd_t spi_Open(char *ifName, unsigned long flags)
     ulBase = LSPI_BASE;
 
     //Enable MCSPIA2
-    PRCMPeripheralClkEnable(PRCM_LSPI,PRCM_RUN_MODE_CLK);
+    PRCMPeripheralClkEnable(PRCM_LSPI,PRCM_RUN_MODE_CLK|PRCM_SLP_MODE_CLK);
 
     //Disable Chip Select
     SPICSDisable(ulBase);
@@ -368,7 +364,7 @@ g_ucDMAEnabled = 0;
 #endif
 if(g_ucDMAEnabled)
 {
-    memset(g_ucDout,0xFF,100);
+    memset(g_ucDinDout,0xFF,sizeof(g_ucDinDout));
     //g_ucDout[0]=0xFF;
     //Simplelink_UDMAInit();
     // Set DMA channel
@@ -383,7 +379,7 @@ if(g_ucDMAEnabled)
 
     SPIFIFOLevelSet(ulBase,1,1);
 #if defined(SL_PLATFORM_MULTI_THREADED)
-    osi_InterruptRegister(INT_LSPI, (P_OSI_INTR_ENTRY)DmaSpiSwIntHandler,(1 << 5));
+    osi_InterruptRegister(INT_LSPI, (P_OSI_INTR_ENTRY)DmaSpiSwIntHandler,INT_PRIORITY_LVL_1);
     SPIIntEnable(ulBase,SPI_INT_EOW);
 
 
@@ -391,7 +387,7 @@ if(g_ucDMAEnabled)
 #else
 
     IntRegister(INT_LSPI,(void(*)(void))DmaSpiSwIntHandler);
-    IntPrioritySet(INT_LSPI, (1<<5));
+    IntPrioritySet(INT_LSPI, INT_PRIORITY_LVL_1);
     IntEnable(INT_LSPI);
 
     SPIIntEnable(ulBase,SPI_INT_EOW);
@@ -427,7 +423,13 @@ int spi_Close(Fd_t fd)
 if(g_ucDMAEnabled)
 {
     //Simplelink_UDMADeInit();
-    SPIIntUnregister(ulBase);
+    #ifdef SL_PLATFORM_MULTI_THREADED
+      osi_InterruptDeRegister(INT_LSPI);
+      osi_MsgQDelete(&DMAMsgQ);
+    #else
+      SPIIntUnregister(ulBase);
+      g_cDummy = 0;
+    #endif
     SPIFIFODisable(ulBase,SPI_RX_FIFO);
     SPIFIFODisable(ulBase,SPI_TX_FIFO);
     SPIDmaDisable(ulBase,SPI_RX_DMA);
@@ -444,7 +446,7 @@ if(g_ucDMAEnabled)
     SPIReset(ulBase);
 
     // Enable SPI Peripheral
-    PRCMPeripheralClkDisable(PRCM_LSPI,PRCM_RUN_MODE_CLK);
+    PRCMPeripheralClkDisable(PRCM_LSPI,PRCM_RUN_MODE_CLK|PRCM_SLP_MODE_CLK);
 
     return 0;
 }
@@ -588,9 +590,13 @@ int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue)    
     if(InterruptHdl == NULL)
     {
         //De-register Interprocessor communication interrupt between App and NWP
+        #ifdef SL_PLATFORM_MULTI_THREADED
+          osi_InterruptDeRegister(INT_NWPIC);
+        #else
         IntDisable(INT_NWPIC);
         IntUnregister(INT_NWPIC);
         IntPendClear(INT_NWPIC);
+        #endif
         g_pHostIntHdl = NULL;
     }
     else
@@ -601,9 +607,12 @@ int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue)    
           HWREG(0x4402E168) |= 0x2000;
 #endif
           #ifdef SL_PLATFORM_MULTI_THREADED
-             osi_InterruptRegister(INT_NWPIC, (P_OSI_INTR_ENTRY)HostIntHanlder,(1 << 5));
+          	 IntPendClear(INT_NWPIC);
+             osi_InterruptRegister(INT_NWPIC, (P_OSI_INTR_ENTRY)HostIntHanlder,INT_PRIORITY_LVL_1);
           #else
               IntRegister(INT_NWPIC, HostIntHanlder);
+              IntPrioritySet(INT_NWPIC, INT_PRIORITY_LVL_1);
+              IntPendClear(INT_NWPIC);
               IntEnable(INT_NWPIC);
           #endif
     }
@@ -640,17 +649,53 @@ void NwpUnMaskInterrupt()
 }
 
 
+void NwpPowerOnPreamble(void)
+{
+#ifndef CC3200_ES_1_2_1
+#define MAX_RETRY_COUNT         1000
+    unsigned int sl_stop_ind, apps_int_sts_raw, nwp_lpds_wake_cfg;
+    unsigned int retry_count;
+    /* Perform the sl_stop equivalent to ensure network services 
+       are turned off if active */
+    HWREG(0x400F70B8) = 1;   /* APPs to NWP interrupt */
+    UtilsDelay(800000/5);
+
+    retry_count = 0;
+    nwp_lpds_wake_cfg = HWREG(0x4402D404);
+    sl_stop_ind = HWREG(0x4402E16C);
+    
+    if((nwp_lpds_wake_cfg != 0x20) && /* Check for NWP POR condition */
+            !(sl_stop_ind & 0x2))     /* Check if sl_stop was executed */
+    {
+        /* Loop until APPs->NWP interrupt is cleared or timeout */
+        while(retry_count < MAX_RETRY_COUNT)
+        {
+            apps_int_sts_raw = HWREG(0x400F70C0);
+            if(apps_int_sts_raw & 0x1)
+            {
+                UtilsDelay(800000/5);
+                retry_count++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    HWREG(0x400F70B0) = 1;   /* Clear APPs to NWP interrupt */
+    UtilsDelay(800000/5);
+
+    /* Stop the networking services */
+    NwpPowerOff();
+#endif
+}
+
 void NwpPowerOn(void)
 {
-
-    PinModeSet(PIN_11,PIN_MODE_1);
-    PinModeSet(PIN_12,PIN_MODE_1);
-    PinModeSet(PIN_13,PIN_MODE_1);
-    PinModeSet(PIN_14,PIN_MODE_1);
-
+#ifdef CC3200_ES_1_2_1
     //SPI CLK GATING
     HWREG(0x440250C8) = 0;
-#if CC3200_ES_1_2_1
+
     //WLAN PD ON
     HWREG(OCP_SHARED_MAC_RESET_REG) &= ~(0xC00);
 
@@ -661,14 +706,14 @@ void NwpPowerOn(void)
     HWREG(0x4402E16C) &= 0xFFFFFFFD;
 #endif
     //UnMask Host Interrupt
-    NwpUnMaskInterrupt();
 
     //NWP Wakeup
     //PRCMNWPEnable();
     //NWP Wakeup
     HWREG(0x44025118) = 1;
 
-
+    UtilsDelay(8000000);
+    NwpUnMaskInterrupt();
 }
 
 void NwpPowerOff(void)
@@ -681,7 +726,7 @@ void NwpPowerOff(void)
 
     //Switch to PFM Mode
     HWREG(0x4402F024) &= 0xF7FFFFFF;
-#if CC3200_ES_1_2_1
+#ifdef CC3200_ES_1_2_1
     //Reset NWP
     HWREG(APPS_SOFT_RESET_REG) |= 4;
     //WLAN PD OFF
@@ -690,7 +735,8 @@ void NwpPowerOff(void)
     //sl_stop eco for PG1.32 devices
     HWREG(0x4402E16C) |= 0x2;
 
-    UtilsDelay(4000);
+    //UtilsDelay(4000);
+    UtilsDelay(800000);
 #endif
 }
 

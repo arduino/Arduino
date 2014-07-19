@@ -36,6 +36,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/aes.c</locationURI>
 		</link>
 		<link>
+			<name>camera.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/camera.c</locationURI>
+		</link>
+		<link>
 			<name>cpu.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/cpu.c</locationURI>

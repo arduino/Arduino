@@ -186,6 +186,7 @@ void NwpMaskInterrupt();
 */
 void NwpUnMaskInterrupt();
 
+void NwpPowerOnPreamble(void);
 
 void NwpPowerOff(void);
 

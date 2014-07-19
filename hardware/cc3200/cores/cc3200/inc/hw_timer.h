@@ -77,14 +77,14 @@
 #define TIMER_O_TBR             0x0000004C  // GPTM Timer B
 #define TIMER_O_TAV             0x00000050  // GPTM Timer A Value
 #define TIMER_O_TBV             0x00000054  // GPTM Timer B Value
-//##### GARNET BEGIN #####
 #define TIMER_O_RTCPD           0x00000058  // GPTM RTC Predivide
 #define TIMER_O_TAPS            0x0000005C  // GPTM Timer A Prescale Snapshot
 #define TIMER_O_TBPS            0x00000060  // GPTM Timer B Prescale Snapshot
 #define TIMER_O_TAPV            0x00000064  // GPTM Timer A Prescale Value
 #define TIMER_O_TBPV            0x00000068  // GPTM Timer B Prescale Value
+#define TIMER_O_DMAEV           0x0000006C  // GPTM DMA Event
 #define TIMER_O_PP              0x00000FC0  // GPTM Peripheral Properties
-//##### GARNET END #####
+
 
 //*****************************************************************************
 //
