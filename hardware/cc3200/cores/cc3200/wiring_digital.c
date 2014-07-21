@@ -52,10 +52,10 @@ void pinMode(uint8_t pin, uint8_t mode)
 		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
 	} else if (mode == INPUT_PULLUP) {
 		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
-		MAP_PinConfigSet(pin, PIN_STRENGTH_2MA, PIN_TYPE_STD_PU);
+		MAP_PinConfigSet(pinNum, PIN_STRENGTH_2MA, PIN_TYPE_STD_PU);
 	} else if (mode == INPUT_PULLDOWN) {
 		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_IN);
-		MAP_PinConfigSet(pin, PIN_STRENGTH_2MA, PIN_TYPE_STD_PD);
+		MAP_PinConfigSet(pinNum, PIN_STRENGTH_2MA, PIN_TYPE_STD_PD);
 	} else {//mode == OUTPUT
 		MAP_GPIODirModeSet(portBase, bit, GPIO_DIR_MODE_OUT);
 	}
