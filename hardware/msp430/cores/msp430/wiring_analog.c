@@ -282,15 +282,16 @@ uint16_t analogRead(uint8_t pin)
 // make sure we have an ADC
 	uint8_t channel;
 	
-	// Check if pin is valid
-	if (pin==NOT_ON_ADC)
-		return 0;
 	// Check if pin is a special analog pin (A10 = temp sensor, A11 = Vcc/2, etc.)
 	if (pin >=128)
 		channel = pin - 128;
 	else
 		channel = digitalPinToADCIn(pin);
 	
+	// Check if pin is valid
+	if (pin==NOT_ON_ADC)
+		return 0;
+
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
     //  0000 A0
     //  0001 A1
