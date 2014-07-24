@@ -23,7 +23,9 @@
 package processing.app;
 
 import cc.arduino.packages.UploaderAndMonitorFactory;
+
 import com.jcraft.jsch.JSchException;
+
 import processing.app.debug.*;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.PreferencesMapException;
@@ -1891,6 +1893,11 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void handleRun(final boolean verbose) {
     internalCloseRunner();
+    if (Preferences.getBoolean("save.verifyUpload")){
+      if (sketch.isModified()){
+        handleSave(true);
+      }
+    }
     running = true;
     toolbar.activate(EditorToolbar.RUN);
     status.progress(_("Compiling sketch..."));
@@ -2375,7 +2382,11 @@ public class Editor extends JFrame implements RunnerListener {
    * hitting export twice, quickly, and horking things up.
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
-    //if (!handleExportCheckModified()) return;
+    if (Preferences.getBoolean("save.verifyUpload")){
+      if (sketch.isModified()){
+        handleSave(true);
+      }
+    }
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
     status.progress(_("Uploading to I/O Board..."));
