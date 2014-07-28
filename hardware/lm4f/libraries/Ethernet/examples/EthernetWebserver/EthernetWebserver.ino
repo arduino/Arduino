@@ -25,8 +25,6 @@ void printHelp();
 EthernetServer server(80);
 int statusConfig = 0;
 
-boolean newConnection = true;     // flag for new connections
-unsigned long connectionActiveTimer;  // will hold the connection start time
 
 void setup() {
   Serial.begin(115200);    
@@ -59,6 +57,8 @@ void loop() {
     Serial.print("new client on port ");           // print a message out the serial port
     Serial.println(client.port());
     String currentLine = "";                // make a String to hold incoming data from the client
+    boolean newConnection = true;     // flag for new connections
+    unsigned long connectionActiveTimer;  // will hold the connection start time
 
     while (client.connected()) {       // loop while the client's connected
       if (newConnection){                 // it's a new connection, so
