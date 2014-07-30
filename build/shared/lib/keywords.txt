@@ -25,6 +25,16 @@ INTERNAL2V56	LITERAL1	AnalogReference
 
 # KEYWORD1 specifies datatypes and C/C++ keywords
 
+auto	KEYWORD1	Auto
+constexpr	KEYWORD1	Constexpr
+decltype	KEYWORD1	Decltype
+nullptr	KEYWORD1	Nullptr
+char16_t	KEYWORD1
+char32_t	KEYWORD1
+static_assert	KEYWORD1
+operator	KEYWORD1
+enum	KEYWORD1
+delete	KEYWORD1
 boolean	KEYWORD1	BooleanVariables
 break	KEYWORD1	Break
 byte	KEYWORD1	Byte
