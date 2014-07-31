@@ -20,7 +20,7 @@
 
 
 extern "C" {
-    #include "SimpleLink/simplelink.h"
+    #include "simplelink.h"
     #include <string.h>
 }
 

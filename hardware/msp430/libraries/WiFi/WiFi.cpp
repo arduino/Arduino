@@ -101,6 +101,13 @@ bool WiFiClass::init()
     }
     
     //
+    //initialization of cs, nhib, and pin_irq based on launchpad configuration
+    //
+    uint8_t WiFiClass::pin_cs = 18;
+    uint8_t WiFiClass::pin_irq = 19;
+    uint8_t WiFiClass::pin_nhib = 5;
+    
+    //
     //start the SimpleLink driver (no callback)
     //
     int iRet = sl_Start(NULL, NULL, NULL);

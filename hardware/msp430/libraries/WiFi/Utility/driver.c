@@ -39,6 +39,7 @@
 #include "protocol.h"
 #include "driver.h"
 #include "flowcont.h"
+#include "SimpleLinkForEnergia.h"
 
 
 #define          _SL_PENDING_RX_MSG(pDriverCB)   ((pDriverCB)->RxIrqCnt != (pDriverCB)->RxDoneCnt)

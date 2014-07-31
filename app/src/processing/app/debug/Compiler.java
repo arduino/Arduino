@@ -718,6 +718,7 @@ public class Compiler implements MessageConsumer {
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
+          "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
         }));
     } else if (arch == "c2000") {
     	
@@ -810,6 +811,7 @@ public class Compiler implements MessageConsumer {
         "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
+        "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
       }));
       } else if (arch == "c2000") {
       	
@@ -911,6 +913,7 @@ public class Compiler implements MessageConsumer {
           "-MMD", // output dependancy info
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
+          "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
         }));
     }else if (arch == "c2000") {
     	

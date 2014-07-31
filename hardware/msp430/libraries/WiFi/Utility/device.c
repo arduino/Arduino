@@ -44,6 +44,7 @@
 #include "protocol.h"
 #include "flowcont.h"
 #include "driver.h"
+#include "SimpleLinkForEnergia.h"
 
 
 /*****************************************************************************

@@ -43,6 +43,13 @@ public:
     static int16_t _portArray[MAX_SOCK_NUM];
     static int16_t _typeArray[MAX_SOCK_NUM];
     
+    //
+    //pin numbers for the cc3100. Hardcoded by the preprocessor using #ifdefs
+    //
+    static uint8_t pin_cs;
+    static uint8_t pin_nhib;
+    static uint8_t pin_irq;
+    
     static bool _initialized;
     volatile static int network_count;
     
