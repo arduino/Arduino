@@ -1,18 +1,16 @@
-// TI File $Revision: /main/2 $
-// Checkin $Date: November 7, 2008   16:01:35 $
 //###########################################################################
 //
-// FILE:   DSP2802x_PieVect.h
+// FILE:   F2802x_PieVect.h
 //
-// TITLE:  DSP2802x Devices PIE Vector Table Definitions.
+// TITLE:  F2802x Devices PIE Vector Table Definitions.
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
-#ifndef DSP2802x_PIE_VECT_H
-#define DSP2802x_PIE_VECT_H
+#ifndef F2802x_PIE_VECT_H
+#define F2802x_PIE_VECT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -191,13 +189,13 @@ struct PIE_VECT_TABLE {
 //---------------------------------------------------------------------------
 // PIE Interrupt Vector Table External References & Function Declarations:
 //
-extern struct PIE_VECT_TABLE PieVectTable;
+extern volatile struct PIE_VECT_TABLE PieVectTable;
 
 #ifdef __cplusplus
 }
 #endif /* extern "C" */
 
-#endif    // end of DSP2802x_PIE_VECT_H definition
+#endif    // end of F2802x_PIE_VECT_H definition
 
 //===========================================================================
 // End of file.

@@ -11,12 +11,12 @@
 //         Example initialization of system resources.
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
 #include "F2802x_Device.h"     // Headerfile Include File
-#include "f2802x_common/include/F2802x_Examples.h"   // Examples Include File
+#include "f2802x_common/include/f2802x_examples.h"   // Examples Include File
 
 // Functions that will be run from RAM need to be assigned to
 // a different section.  This section will then be mapped to a load and
@@ -357,6 +357,7 @@ void IntOsc1Sel (void) {
     EDIS;
 }
 
+
 //---------------------------------------------------------------------------
 // Example: IntOsc2Sel:
 //---------------------------------------------------------------------------
@@ -373,7 +374,8 @@ void IntOsc2Sel (void) {
     SysCtrlRegs.CLKCTL.bit.XCLKINOFF = 1;      // Turn off XCLKIN
     SysCtrlRegs.CLKCTL.bit.XTALOSCOFF = 1;     // Turn off XTALOSC
     SysCtrlRegs.CLKCTL.bit.OSCCLKSRCSEL = 1;   // Switch to Internal Oscillator 2/External Oscillator branch
-    SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 1;     // Turn off INTOSC1
+    SysCtrlRegs.CLKCTL.bit.WDCLKSRCSEL = 0;   //Switch Watchdog Clk Src to internal clock 1
+    SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 0;     // Turn on INTOSC1
     EDIS;
 }
 
@@ -390,9 +392,9 @@ void XtalOscSel (void)  {
      SysCtrlRegs.CLKCTL.bit.XCLKINOFF = 1;      // Turn off XCLKIN
      SysCtrlRegs.CLKCTL.bit.OSCCLKSRC2SEL = 0;  // Switch to external clock
      SysCtrlRegs.CLKCTL.bit.OSCCLKSRCSEL = 1;   // Switch from INTOSC1 to INTOSC2/ext clk
-     SysCtrlRegs.CLKCTL.bit.WDCLKSRCSEL = 1;    // Switch Watchdog Clk Src to external clock
+     SysCtrlRegs.CLKCTL.bit.WDCLKSRCSEL = 0;   //Switch Watchdog Clk Src to internal clock 1
      SysCtrlRegs.CLKCTL.bit.INTOSC2OFF = 1;     // Turn off INTOSC2
-     SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 1;     // Turn off INTOSC1
+     SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 0;     // Turn on INTOSC1
      EDIS;
 
 }
@@ -411,9 +413,9 @@ void ExtOscSel (void)  {
      SysCtrlRegs.CLKCTL.bit.XCLKINOFF = 0;     // Turn on XCLKIN
      SysCtrlRegs.CLKCTL.bit.OSCCLKSRC2SEL = 0; // Switch to external clock
      SysCtrlRegs.CLKCTL.bit.OSCCLKSRCSEL = 1;  // Switch from INTOSC1 to INTOSC2/ext clk
-     SysCtrlRegs.CLKCTL.bit.WDCLKSRCSEL = 1;   // Switch Watchdog Clk Src to external clock
+     SysCtrlRegs.CLKCTL.bit.WDCLKSRCSEL = 0;   // Switch Watchdog Clk Src to internal clock 1
      SysCtrlRegs.CLKCTL.bit.INTOSC2OFF = 1;    // Turn off INTOSC2
-     SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 1;    // Turn off INTOSC1
+     SysCtrlRegs.CLKCTL.bit.INTOSC1OFF = 0;    // Turn on INTOSC1
      EDIS;
 }
 

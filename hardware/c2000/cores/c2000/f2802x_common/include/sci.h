@@ -13,8 +13,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -93,7 +93,6 @@ extern "C" {
 //! \brief Defines the location of the SW RESET bits in the SCICTL1 register
 //!
 #define SCI_SCICTL1_RESET_BITS           (1 << 5)
-
 //! \brief Defines the location of the RX ERR INT ENA bits in the SCICTL1 register
 //!
 #define SCI_SCICTL1_RX_ERR_INT_ENA_BITS  (1 << 6)

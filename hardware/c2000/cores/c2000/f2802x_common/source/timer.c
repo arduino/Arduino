@@ -9,8 +9,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -99,7 +99,7 @@ void TIMER_reload(TIMER_Handle timerHandle)
 
 
     // clear the bits
-    timer->TCR &= (~(uint32_t)TIMER_TCR_TRB_BITS);
+    timer->TCR |= TIMER_TCR_TRB_BITS;
 
     return;
 } // end of TIMER_reload() function
@@ -156,7 +156,7 @@ void TIMER_setPreScaler(TIMER_Handle timerHandle,
 
     // set the bits
     timer->TPR |= 
-    ((uint32_t)(preScaler & 0xFF00) << 16) | ((uint32_t)(preScaler & 0x00FF) << 8);
+    ((uint32_t)(preScaler & 0xFF00) << 8) | ((uint32_t)(preScaler & 0x00FF) << 0);
 
     return;
 } // end of TIMER_setPreScaler() function

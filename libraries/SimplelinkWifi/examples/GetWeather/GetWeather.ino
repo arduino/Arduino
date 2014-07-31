@@ -73,7 +73,12 @@ void setup() {
   Serial.println("Connect success!");
   Serial.println("Waiting for DHCP address");
   // Wait for DHCP address
-  delay(5000);
+  while(WiFi.localIP() == INADDR_NONE) {
+    Serial.print(".");
+    delay(300);
+  }
+  
+  Serial.println("\n");
   // Print WiFi status and DHCP address
   // To print the status and DHCP info again, type "i" in the Serial monitor and press send.
   printWifiData();
@@ -86,13 +91,14 @@ void setup() {
 void loop()
 {
   if (client.connected()) {
-    if (client.available()) {
+    while (client.available()) {
       // read incoming bytes:
       char inChar = client.read();
       // add incoming byte to end of line:
       currentLine += inChar; 
       // if you get a newline, clear the line:
       //Serial.println("trying to parse...");
+
       if (inChar == '\n') {
         //Serial.print("clientReadLine = ");
         //Serial.println(currentLine);
@@ -212,7 +218,7 @@ void loop()
       if ( currentLine.endsWith("</current>")) {
           // close the connection to the server:
           client.stop(); 
-          Serial.println("Disconnected from client.\n");
+          Serial.println("Disconnected from Server.\n");
       }
       
     }   
@@ -234,10 +240,13 @@ void connectToServer() {
     Serial.println("GET /data/2.5/weather?q="+location+"&mode=xml&units=imperial");
 
     // make HTTP GET request to Facebook:
-    client.println("GET /data/2.5/weather?q="+location+"&mode=xml&units=imperial\n"); 
+    client.println("GET /data/2.5/weather?q="+location+"&mode=xml&units=imperial HTTP/1.1"); 
 
     // declare correct server
     client.print("HOST: api.openweathermap.org\n");
+    client.println("User-Agent: launchpad-wifi");
+    client.println("Connection: close");
+
     client.println();
     Serial.println("Weather information for "+location);
   }

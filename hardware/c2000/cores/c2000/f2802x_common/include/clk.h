@@ -13,8 +13,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -291,8 +291,8 @@ typedef enum
 //!
 typedef enum
 {
-    CLK_Osc2Src_Internal=(0 << 1),  //!< Denotes an internal oscillator 2 source
-    CLK_Osc2Src_External=(1 << 1)   //!< Denotes an external oscillator 2 source
+    CLK_Osc2Src_Internal=(1 << 1),  //!< Denotes an internal oscillator 2 source
+    CLK_Osc2Src_External=(0 << 1)   //!< Denotes an external oscillator 2 source
 } CLK_Osc2Src_e;
 
 

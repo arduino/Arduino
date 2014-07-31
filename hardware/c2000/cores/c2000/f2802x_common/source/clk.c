@@ -9,8 +9,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -646,7 +646,7 @@ void CLK_setLowSpdPreScaler(CLK_Handle clkHandle,
     ENABLE_PROTECTED_REGISTER_WRITE_MODE;
 
     // set the bits
-    clk->LOSPCP |= preScaler;
+    clk->LOSPCP = preScaler;
 
     DISABLE_PROTECTED_REGISTER_WRITE_MODE;
 
