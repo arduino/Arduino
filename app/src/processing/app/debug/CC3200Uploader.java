@@ -24,9 +24,9 @@ public class CC3200Uploader extends Uploader{
 		Collection params = new ArrayList();
 
 		String uploadPort = Preferences.get("serial.port");
-		params.add(uploadPort);
-		
+
 		if (Base.isMacOS() || Base.isLinux()) {
+			params.add(uploadPort);
 			if ( Base.isLinux()) {
 				params.add(buildPath + File.separator + className + ".bin");
 			}
@@ -34,6 +34,7 @@ public class CC3200Uploader extends Uploader{
 				params.add(buildPath + File.separator + className + ".bin");
 			}
 		} else {
+			params.add(uploadPort.substring(3));
 			params.add(buildPath + File.separator + className + ".bin");
 		}
 		return serial(params);
