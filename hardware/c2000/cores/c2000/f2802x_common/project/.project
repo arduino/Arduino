@@ -82,104 +82,109 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>F2802x_DefaultIsr.c</name>
-			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/F2802x_DefaultIsr.c</locationURI>
-		</link>
-		<link>
 			<name>F2802x_GlobalVariableDefs.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_headers/source/F2802x_GlobalVariableDefs.c</locationURI>
-		</link>
-		<link>
-			<name>F2802x_asmfuncs.asm</name>
-			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/F2802x_asmfuncs.asm</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_headers/source/F2802x_GlobalVariableDefs.c</locationURI>
 		</link>
 		<link>
 			<name>adc.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/adc.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/adc.c</locationURI>
 		</link>
 		<link>
 			<name>cap.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/cap.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/cap.c</locationURI>
 		</link>
 		<link>
 			<name>clk.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/clk.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/clk.c</locationURI>
 		</link>
 		<link>
 			<name>comp.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/comp.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/comp.c</locationURI>
 		</link>
 		<link>
 			<name>cpu.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/cpu.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/cpu.c</locationURI>
+		</link>
+		<link>
+			<name>f2802x_asmfuncs.asm</name>
+			<type>1</type>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/f2802x_asmfuncs.asm</locationURI>
+		</link>
+		<link>
+			<name>f2802x_codestartbranch.asm</name>
+			<type>1</type>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/f2802x_codestartbranch.asm</locationURI>
+		</link>
+		<link>
+			<name>f2802x_defaultisr.c</name>
+			<type>1</type>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/f2802x_defaultisr.c</locationURI>
 		</link>
 		<link>
 			<name>flash.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/flash.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/flash.c</locationURI>
 		</link>
 		<link>
 			<name>gpio.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/gpio.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/gpio.c</locationURI>
 		</link>
 		<link>
 			<name>osc.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/osc.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/osc.c</locationURI>
 		</link>
 		<link>
 			<name>pie.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/pie.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/pie.c</locationURI>
 		</link>
 		<link>
 			<name>pll.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/pll.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/pll.c</locationURI>
 		</link>
 		<link>
 			<name>pwm.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/pwm.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/pwm.c</locationURI>
 		</link>
 		<link>
 			<name>pwr.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/pwr.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/pwr.c</locationURI>
 		</link>
 		<link>
 			<name>sci.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/sci.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/sci.c</locationURI>
 		</link>
 		<link>
 			<name>sci_io.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/sci_io.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/sci_io.c</locationURI>
 		</link>
 		<link>
 			<name>spi.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/spi.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/spi.c</locationURI>
 		</link>
 		<link>
 			<name>timer.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/timer.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/timer.c</locationURI>
 		</link>
 		<link>
 			<name>wdog.c</name>
 			<type>1</type>
-			<locationURI>INSTALLROOT_F2802x_V210/f2802x_common/source/wdog.c</locationURI>
+			<locationURI>INSTALLROOT_F2802X_V220/f2802x_common/source/wdog.c</locationURI>
 		</link>
 		<link>
 			<name>Debug/driverlib.lib</name>
@@ -194,7 +199,7 @@
 	</linkedResources>
 	<variableList>
 		<variable>
-			<name>INSTALLROOT_F2802x_V210</name>
+			<name>INSTALLROOT_F2802X_V220</name>
 			<value>$%7BPARENT-2-PROJECT_LOC%7D</value>
 		</variable>
 	</variableList>

@@ -75,6 +75,13 @@ public:
     
     WiFiClass();
     
+    //
+    //change the CS, IRQ, and nHIB lines
+    //
+    void setCSpin(int pin);
+    void setIRQpin(int pin);
+    void setHIBpin(int pin);
+    
     /*
      * Get the first socket available
      */

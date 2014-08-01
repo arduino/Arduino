@@ -10,8 +10,8 @@
 //
 //  (C) Copyright 2012, Texas Instruments, Inc.
 //#############################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: PACKAGE NAME $
+// $Release Date: PACKAGE RELEASE DATE $
 //#############################################################################
 
 // **************************************************************************
@@ -667,7 +667,7 @@ void SCI_setRxFifoIntLevel(SCI_Handle sciHandle, const SCI_FifoLevel_e fifoLevel
 
 
     // clear the value
-    sci->SCIFFTX &= (~SCI_SCIFFRX_IL_BITS);
+    sci->SCIFFRX &= (~SCI_SCIFFRX_IL_BITS);
 
     // set the bits
     sci->SCIFFRX |= fifoLevel;

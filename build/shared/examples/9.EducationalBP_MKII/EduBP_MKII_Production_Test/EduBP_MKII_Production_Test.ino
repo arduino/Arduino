@@ -2,7 +2,7 @@
 #include "pitches.h"
 #include <Wire.h>
 #include <tmp006.h>
-#include "OPT3001.h"
+//#include "OPT3001.h"
 #define USE_USCI_B1 
 #define USING_MSP430F5529_LAUNCHPAD
 //#define USING_TIVA_C_LAUNCHPAD
@@ -280,7 +280,7 @@ float tempReading = 0;
 #define NOTE_C4_1 260
 
 // OPT3001
-opt3001 opt3001;
+//opt3001 opt3001;
 tmp006 tmp006;
 unsigned long readings = 0;
 
@@ -310,7 +310,7 @@ void setup()
   Serial.println("Welcome to the Educational BoosterPack MKII Production Test:");
 
   tmp006.begin(EIGHT_SAMPLES);  // Takes 8 averaged samples for measurement
-  opt3001.begin(); 
+//  opt3001.begin(); 
 }
 
 char *ftoa(char *a, float f, int precision)

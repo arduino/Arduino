@@ -7,8 +7,8 @@
 // TITLE:  Global prototypes for DSP2802x Examples
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release: 2802x C/C++ Header Files and Peripheral Examples V1.29 $
+// $Release Date: January 11, 2011 $
 //###########################################################################
 
 #ifndef DSP2802x_GLOBALPROTOTYPES_H
@@ -83,9 +83,9 @@ extern void InitFlash(void);
 // DSP28 examples will use these to relocate code from one LOAD location
 // in Flash to a different RUN location in internal RAM
 
-extern Uint16 RamfuncsLoadStart;
-extern Uint16 RamfuncsLoadSize;
-extern Uint16 RamfuncsRunStart;
+extern uint16_t RamfuncsLoadStart;
+extern uint16_t RamfuncsLoadSize;
+extern uint16_t RamfuncsRunStart;
 
 #ifdef __cplusplus
 }

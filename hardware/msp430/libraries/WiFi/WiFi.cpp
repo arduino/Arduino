@@ -30,7 +30,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#define DEBUG
+//#define DEBUG
 
 #include <Energia.h>
 #include "WiFi.h"
@@ -72,6 +72,13 @@ int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 
 //
+//initialization of cs, nhib, and pin_irq based on launchpad configuration
+//
+uint8_t WiFiClass::pin_cs = 18;
+uint8_t WiFiClass::pin_irq = 19;
+uint8_t WiFiClass::pin_nhib = 5;
+
+//
 //These "buffers" are used to "return" strings and IpAddress objects
 //Of course, the value must be used before it is overwritted
 //
@@ -90,6 +97,22 @@ WiFiClass::WiFiClass()
     }
 }
 
+//
+//methods to change the pin for CS, IRQ, and nHIB (used by SimpleLinkForEnergia.cpp)
+//the naming of the methods is done to match the names on the boosterpack
+//
+void WiFiClass::setCSpin(int pin) {
+    pin_cs = pin;
+}
+
+void WiFiClass::setIRQpin(int pin) {
+    pin_irq = pin;
+}
+
+void WiFiClass::setHIBpin(int pin) {
+    pin_nhib = pin;
+}
+
 //--tested, working--//
 bool WiFiClass::init()
 {
@@ -99,13 +122,10 @@ bool WiFiClass::init()
     if (_initialized) {
         return true;
     }
-    
     //
-    //initialization of cs, nhib, and pin_irq based on launchpad configuration
+    //calling sl_start when already started is disastrous...
     //
-    uint8_t WiFiClass::pin_cs = 18;
-    uint8_t WiFiClass::pin_irq = 19;
-    uint8_t WiFiClass::pin_nhib = 5;
+    sl_Stop(0);
     
     //
     //start the SimpleLink driver (no callback)

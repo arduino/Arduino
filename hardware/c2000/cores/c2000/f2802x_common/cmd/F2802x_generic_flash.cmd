@@ -6,8 +6,8 @@
 // TITLE:    Generic Linker Command File for f2802x devices
 //
 //###########################################################################
-// $TI Release: f2802x Support Library v210 $
-// $Release Date: Mon Sep 17 09:13:31 CDT 2012 $
+// $TI Release:  $
+// $Release Date:  $
 //###########################################################################
 */
 

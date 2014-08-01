@@ -256,10 +256,16 @@ public class Compiler implements MessageConsumer {
         "-T", corePath + File.separator + boardPreferences.get("ldscript"),
         "-Wl,--entry=ResetISR",
         "-mthumb", "-mcpu=cortex-m4",
-//        "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
-        "-o",
-        buildPath + File.separator + primaryClassName + ".elf",
-      }));
+        }));
+
+	if(arch == "lm4f") {
+		baseCommandLinker.add("-mfloat-abi=hard");
+		baseCommandLinker.add("-mfpu=fpv4-sp-d16");
+		baseCommandLinker.add("-fsingle-precision-constant");
+	}
+
+        baseCommandLinker.add("-o");
+        baseCommandLinker.add(buildPath + File.separator + primaryClassName + ".elf");
     } else if (arch == "c2000") { 
         List objects = new ArrayList(baseCommandAR);
         
@@ -713,13 +719,31 @@ public class Compiler implements MessageConsumer {
           "-g",
           "-assembler-with-cpp",
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
+<<<<<<< HEAD
+<<<<<<< HEAD
           "-mthumb", "-mcpu=cortex-m4",
 //          "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
           "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
+=======
+          "-mthumb", "-mcpu=cortex-m4"
+>>>>>>> FETCH_HEAD
+=======
+          "-mthumb", "-mcpu=cortex-m4"
+>>>>>>> FETCH_HEAD
         }));
+
+	if(arch == "lm4f") {
+		baseCommandCompiler.add("-mfloat-abi=hard");
+		baseCommandCompiler.add("-mfpu=fpv4-sp-d16");
+		baseCommandCompiler.add("-fsingle-precision-constant");
+	}
+
+        baseCommandCompiler.add("-DF_CPU=" + boardPreferences.get("build.f_cpu"));
+        baseCommandCompiler.add("-DARDUINO=" + Base.REVISION);
+        baseCommandCompiler.add("-DENERGIA=" + Base.EREVISION);
     } else if (arch == "c2000") {
     	
         String[] filePrefix = new String[2];
@@ -806,13 +830,30 @@ public class Compiler implements MessageConsumer {
         "-ffunction-sections",
         "-fdata-sections",
         "-mthumb", "-mcpu=cortex-m4",
+<<<<<<< HEAD
+<<<<<<< HEAD
 //        "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
         "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
         "-MMD", // output dependancy info
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
         "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
+=======
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
       }));
+
+	if(arch == "lm4f") {
+		baseCommandCompiler.add("-mfloat-abi=hard");
+		baseCommandCompiler.add("-mfpu=fpv4-sp-d16");
+		baseCommandCompiler.add("-fsingle-precision-constant");
+	}
+
+        baseCommandCompiler.add("-DF_CPU=" + boardPreferences.get("build.f_cpu"));
+        baseCommandCompiler.add("-MMD"); // output dependancy info
+        baseCommandCompiler.add("-DARDUINO=" + Base.REVISION);
+        baseCommandCompiler.add("-DENERGIA=" + Base.EREVISION);
       } else if (arch == "c2000") {
       	
           String[] filePrefix = new String[2];
@@ -908,13 +949,30 @@ public class Compiler implements MessageConsumer {
           "-ffunction-sections", // place each function in its own section
           "-fdata-sections",
           "-mthumb", "-mcpu=cortex-m4",
+<<<<<<< HEAD
+<<<<<<< HEAD
 //          "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-MMD", // output dependancy info
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
           "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
+=======
+>>>>>>> FETCH_HEAD
+=======
+>>>>>>> FETCH_HEAD
         }));
+
+	if(arch == "lm4f") {
+		baseCommandCompilerCPP.add("-mfloat-abi=hard");
+		baseCommandCompilerCPP.add("-mfpu=fpv4-sp-d16");
+		baseCommandCompilerCPP.add("-fsingle-precision-constant");
+	}
+
+        baseCommandCompilerCPP.add("-DF_CPU=" + boardPreferences.get("build.f_cpu"));
+        baseCommandCompilerCPP.add("-MMD"); // output dependancy info
+        baseCommandCompilerCPP.add("-DARDUINO=" + Base.REVISION);
+        baseCommandCompilerCPP.add("-DENERGIA=" + Base.EREVISION);
     }else if (arch == "c2000") {
     	
       String[] filePrefix = new String[2];
