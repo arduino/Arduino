@@ -261,14 +261,7 @@ long sl_DevGet(unsigned char DeviceGetId, unsigned char *pOption,unsigned char *
 /******************  FS CLASS  ****************/
   
 
-#ifdef SL_IF_TYPE_UART
-typedef struct  
-{
-      unsigned long BaudRate;
-      unsigned char  FlowControlEnable;
-      unsigned char  CommPort;
-} SlUartIfParams_t;
-#endif
+
 
 typedef struct
 {
@@ -536,28 +529,6 @@ int sl_EventMaskGet(unsigned char EventClass, unsigned long *pMask);
 void sl_Task();
 #endif
 
-
-/*!
-    \brief Setting the internal uart mode 
-
-    \param[in]      pUartParams          Pointer to the uart configuration parameter set: 
-                                         baudrate     - up to 711 Kbps
-                                         flow control - enable/disbale 
-                                         comm port    - the comm port number
-    
-    \return         On success zero is returned, otherwise - Failed.   
-    
-    \sa             sl_Stop
-
-    \note           belongs to \ref basic_api
-
-    \warning        This function must consider the host uart capability
-*/
-#ifdef SL_IF_TYPE_UART
-#if _SL_INCLUDE_FUNC(sl_UartSetMode)
-int sl_UartSetMode(const SlUartIfParams_t* pUartParams);
-#endif
-#endif
 
 /*!
 

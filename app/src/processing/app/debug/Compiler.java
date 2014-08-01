@@ -719,24 +719,7 @@ public class Compiler implements MessageConsumer {
           "-g",
           "-assembler-with-cpp",
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-          "-mthumb", "-mcpu=cortex-m4",
-//          "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
-          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-DARDUINO=" + Base.REVISION,
-          "-DENERGIA=" + Base.EREVISION,
-          "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
-=======
           "-mthumb", "-mcpu=cortex-m4"
->>>>>>> FETCH_HEAD
-=======
-          "-mthumb", "-mcpu=cortex-m4"
->>>>>>> FETCH_HEAD
-=======
-          "-mthumb", "-mcpu=cortex-m4"
->>>>>>> FETCH_HEAD
         }));
 
 	if(arch == "lm4f") {
@@ -834,21 +817,6 @@ public class Compiler implements MessageConsumer {
         "-ffunction-sections",
         "-fdata-sections",
         "-mthumb", "-mcpu=cortex-m4",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-//        "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
-        "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-        "-MMD", // output dependancy info
-        "-DARDUINO=" + Base.REVISION,
-        "-DENERGIA=" + Base.EREVISION,
-        "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
       }));
 
 	if(arch == "lm4f") {
@@ -956,21 +924,6 @@ public class Compiler implements MessageConsumer {
           "-ffunction-sections", // place each function in its own section
           "-fdata-sections",
           "-mthumb", "-mcpu=cortex-m4",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-//          "-mfloat-abi=hard","-mfpu=fpv4-sp-d16","-fsingle-precision-constant",
-          "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
-          "-MMD", // output dependancy info
-          "-DARDUINO=" + Base.REVISION,
-          "-DENERGIA=" + Base.EREVISION,
-          "-Dgcc", //!!newest simplelink expect gcc to be defined when compiled with gcc
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
         }));
 
 	if(arch == "lm4f") {

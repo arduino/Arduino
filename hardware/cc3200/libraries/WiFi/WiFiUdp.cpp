@@ -18,8 +18,8 @@
  */
 
 extern "C" {
-    #include "utility/SimpleLink.h"
-    #include "utility/socket.h"
+    #include "SimpleLink/SimpleLink.h"
+    #include "SimpleLink/socket.h"
     #include "utility/wl_definitions.h"
 }
 

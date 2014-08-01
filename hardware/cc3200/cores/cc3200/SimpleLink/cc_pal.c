@@ -37,24 +37,24 @@
 //*****************************************************************************
 
 
-#include <datatypes.h>
-#include <simplelink.h>
-#include <cc_pal.h>
-#include <inc/hw_ints.h>
-#include <inc/hw_udma.h>
-#include <inc/hw_types.h>
-//#include <pin.h>
-#include <inc/hw_memmap.h>
-#include <inc/hw_mcspi.h>
-#include <inc/hw_common_reg.h>
-#include <driverlib/rom.h>
-#include <driverlib/rom_map.h>
-#include <driverlib/spi.h>
-#include <driverlib/prcm.h>
-//#include "rom.h"
-#include <driverlib/interrupt.h>
-#include <driverlib/udma.h>
-#include <driverlib/utils.h>
+#include "datatypes.h"
+#include "simplelink.h"
+#include "cc_pal.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_udma.h"
+#include "inc/hw_types.h"
+#include "driverlib/pin.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_mcspi.h"
+#include "inc/hw_common_reg.h"
+#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
+#include "driverlib/spi.h"
+#include "driverlib/prcm.h"
+#include "inc/hw_ints.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/udma.h"
+#include "driverlib/utils.h"
 
 P_EVENT_HANDLER g_pHostIntHdl  = NULL;
 

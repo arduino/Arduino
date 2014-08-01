@@ -41,8 +41,6 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
-    
-typedef void (*SL_P_EVENT_HANDLER)(void* pValue);
 
 
 /*!
@@ -71,8 +69,6 @@ typedef void (*SL_P_EVENT_HANDLER)(void* pValue);
 //already included with SimpleLinkForEnergia file
 #else
 #include "uart.h" //!!uart won't function! not abstracted to Energia layer
-                  //!!basically, as long as SL_IF_TYPE_UART isn't defined,
-                  //!!everything should be OK.
 #endif
 
 

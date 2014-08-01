@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?ccsproject version="1.0"?>
+<projectOptions>
+	<deviceVariant value="com.ti.ccstudio.deviceModel.TMS470.GenericCortexM4Device"/>
+	<deviceFamily value="TMS470"/>
+	<deviceEndianness value="little"/>
+	<codegenToolVersion value="5.0.3"/>
+	<isElfFormat value="true"/>
+	<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate,"/>
+	<isTargetManual value="false"/>
+</projectOptions>

@@ -468,12 +468,7 @@ typedef struct{
 	UINT8	PasswordLen;
 }_WlanConnectCommon_t;
 
-#define SSID_STRING(pCmd)       (((char *)((_WlanConnectCommon_t *)(pCmd) + 1)) - 1)
-//!!SSID_STRING command was placing the ssid one byte past where it was supposed to.
-//!!This made the device receive the wrong SSID name.
-//!!this command was originally:
-            //#define SSID_STRING(pCmd) (char *)((_WlanConnectCommon_t *)(pCmd) + 1)
-
+#define SSID_STRING(pCmd)       (char *)((_WlanConnectCommon_t *)(pCmd) + 1)
 #define PASSWORD_STRING(pCmd)   (SSID_STRING(pCmd) + ((_WlanConnectCommon_t *)(pCmd))->SsidLen)
 
 typedef struct{
