@@ -1,6 +1,8 @@
 #ifndef Energia_h 
 #define Energia_h 
 
+#define __CC3200R1M1RGC__
+
 #include <stdint.h>
 #include <stdbool.h> 
 #include <string.h> 
