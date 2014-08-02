@@ -5,6 +5,7 @@
 #include <stdbool.h> 
 #include <string.h> 
 #include <math.h>
+#include <itoa.h>
 
 #include "inc/hw_types.h"  		
 #include "inc/hw_nvic.h" 
