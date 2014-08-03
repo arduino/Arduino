@@ -38,12 +38,12 @@
 
 
 extern "C" {
-    #include "SimpleLink/SimpleLink.h"
+    #include "Utility/SimpleLink.h"
     #include <string.h>
-    #include "SimpleLink/wlan.h"
-    #include "SimpleLink/netcfg.h"
-    #include "SimpleLink/netapp.h"
-    #include "SimpleLink/socket.h"
+    #include "Utility/wlan.h"
+    #include "Utility/netcfg.h"
+    #include "Utility/netapp.h"
+    #include "Utility/socket.h"
     #include "udma_if.h"
 }
 

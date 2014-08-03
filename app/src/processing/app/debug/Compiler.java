@@ -813,6 +813,7 @@ public class Compiler implements MessageConsumer {
         "-c",
         "-g",
         "-O0", //changed from -Os
+        "-Dgcc", //simplelink 0.5.2 expects gcc to be defined
         Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections",
         "-fdata-sections",
@@ -918,6 +919,7 @@ public class Compiler implements MessageConsumer {
           "-c",
           "-g", // include debugging info (so errors include line numbers)
           "-O0", //changed from -Os
+          "-Dgcc", //simplelink 0.5.2 expects gcc to be defined
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-rtti",
           "-fno-exceptions",
