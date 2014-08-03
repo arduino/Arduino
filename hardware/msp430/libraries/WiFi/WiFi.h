@@ -60,6 +60,17 @@ public:
     static unsigned char connected_bssid[BSSID_LEN];
     
     //
+    //pin numbers for the cc3100 device (based on launchpad)
+    //and methods to change them (function names based on silkscreen for consistency)
+    //
+    static uint8_t pin_nhib;
+    static uint8_t pin_cs;
+    static uint8_t pin_irq;
+    void setPinHIB(uint8_t pin);
+    void setPinIRQ(uint8_t pin);
+    void setPinCS(uint8_t pin);
+    
+    //
     //These "buffers" are used to "return" strings and IpAddress objects
     //Of course, the value must be used before it is overwritted
     //

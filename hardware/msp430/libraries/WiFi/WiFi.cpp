@@ -72,6 +72,13 @@ int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 
 //
+//initializing pins for cc3100 for launchpad+boosterpack arrangement
+//
+uint8_t WiFiClass::pin_nhib = 5;
+uint8_t WiFiClass::pin_cs = 18;
+uint8_t WiFiClass::pin_irq = 19;
+
+//
 //These "buffers" are used to "return" strings and IpAddress objects
 //Of course, the value must be used before it is overwritted
 //
@@ -129,6 +136,21 @@ bool WiFiClass::init()
     _initialized = true;
     
     return true;
+}
+
+void WiFiClass::setPinHIB(uint8_t pin)
+{
+    pin_nhib = pin;
+}
+
+void WiFiClass::setPinCS(uint8_t pin)
+{
+    pin_cs = pin;
+}
+
+void WiFiClass::setPinIRQ(uint8_t pin)
+{
+    pin_irq = pin;
 }
 
 //--tested, working--//

@@ -38,6 +38,9 @@
 #ifndef __USER_H__
 #define __USER_H__
 
+typedef void (*SL_P_EVENT_HANDLER)(void* pValue);
+
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
