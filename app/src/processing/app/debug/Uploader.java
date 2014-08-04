@@ -127,8 +127,9 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
       Process process;
 
       if (Base.isMacOS()) {
-        String envp[] = { "DYLD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/mspdebug" };
         ProcessBuilder builder = new ProcessBuilder(commandArray);
+        Map<String, String> env = builder.environment();
+        env.put("DYLD_LIBRARY_PATH", Base.getHardwarePath() + "/tools/msp430/mspdebug");
         builder.directory(new File(Base.getLM4FBasePath()));
         process = builder.start();
 
@@ -211,8 +212,9 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
 		      Process process;
 
 		      if (Base.isMacOS()) {
-		        String envp[] = { "DYLD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/mspdebug" };
 		        ProcessBuilder builder = new ProcessBuilder(commands);
+		        Map<String, String> env = builder.environment();
+		        env.put("DYLD_LIBRARY_PATH", Base.getHardwarePath() + "/tools/msp430/mspdebug");
 		        builder.directory(new File(Base.getLM4FBasePath()));
 		        process = builder.start();
 		        
