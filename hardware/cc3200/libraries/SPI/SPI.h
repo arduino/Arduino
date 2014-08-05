@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <Energia.h>
+#include "driverlib/spi.h"
 
 #define SPI_CLOCK_DIV2 2
 #define SPI_CLOCK_DIV4 4
