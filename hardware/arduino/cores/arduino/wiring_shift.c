@@ -26,29 +26,31 @@
 
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
 	uint8_t value = 0;
-	uint8_t i;
+	uint8_t i = 0;
+	uint8_t bitIndex = 0;
 
-	for (i = 0; i < 8; ++i) {
+	for (; i < 8; ++i) {
+		// Determine bit index mathematically instead of branching
+		bitIndex = (((bitOrder == LSBFIRST) * i) + ((bitOrder != LSBFIRST) * (7 - i)));
+		
 		digitalWrite(clockPin, HIGH);
-		if (bitOrder == LSBFIRST)
-			value |= digitalRead(dataPin) << i;
-		else
-			value |= digitalRead(dataPin) << (7 - i);
+		value |= digitalRead(dataPin) << bitIndex;
 		digitalWrite(clockPin, LOW);
 	}
+	
 	return value;
 }
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
 {
-	uint8_t i;
+	uint8_t i = 0;
+	uint8_t bitMask = 0;
 
-	for (i = 0; i < 8; i++)  {
-		if (bitOrder == LSBFIRST)
-			digitalWrite(dataPin, !!(val & (1 << i)));
-		else	
-			digitalWrite(dataPin, !!(val & (1 << (7 - i))));
-			
+	for (; i < 8; ++i)  {
+		// Determine bit mask mathematically instead of branching
+		bitMask = (1 << (((bitOrder == LSBFIRST) * i) + ((bitOrder != LSBFIRST) * (7 - i))));
+		
+		digitalWrite(dataPin, !!(val & bitMask));
 		digitalWrite(clockPin, HIGH);
 		digitalWrite(clockPin, LOW);		
 	}
