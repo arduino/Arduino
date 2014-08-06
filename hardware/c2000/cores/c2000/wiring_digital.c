@@ -70,7 +70,7 @@ void pinMode(uint8_t pin, uint8_t mode)
     {
         //Digital Pins
 	    volatile uint32_t *dir;
-	    volatile uint8_t *sel;
+	    volatile uint32_t *sel;
 	    volatile uint32_t *pud;
 	    uint8_t port = digitalPinToPort(pin);
 	    dir = portDirRegister(port);
@@ -158,7 +158,7 @@ int digitalRead(uint8_t pin)
 	        return LOW;
 
     }
-    return LOW;
+   
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)

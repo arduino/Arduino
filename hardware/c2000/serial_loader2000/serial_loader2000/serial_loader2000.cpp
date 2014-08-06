@@ -1,13 +1,96 @@
 // serial_loader2000.cpp : Defines the entry point for the console application.
 //
 
+#ifndef __linux__
 #include "stdafx.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
 #include <windows.h>
 #include <dos.h>
+#endif
+
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+//// Linux exclusive
+#ifdef __linux__
+
+#include <string.h>
+#include <errno.h>
+#include <termios.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int _kbhit(void)
+{
+  struct termios oldt, newt;
+  int ch;
+  int oldf;
+
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~(ICANON | ECHO);
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+  ch = getchar();
+
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+  if(ch != EOF)
+  {
+    ungetc(ch, stdin);
+    return 1;
+  }
+
+  return 0;
+}
+
+#define TRUE true
+#define FALSE false
+
+typedef unsigned long DWORD;
+typedef unsigned short WORD;
+
+#define _tfopen     fopen
+#define wchar_t char
+#define fscanf_s fscanf
+#define _tmain main
+//////////////////
+
+#define _tcslen     strlen
+#define _tcscpy     strcpy
+#define _tcscpy_s   strcpy_s
+#define _tcsncpy    strncpy
+#define _tcsncpy_s  strncpy_s
+#define _tcscat     strcat
+#define _tcscat_s   strcat_s
+#define _tcsupr     strupr
+#define _tcsupr_s   strupr_s
+#define _tcslwr     strlwr
+#define _tcslwr_s   strlwr_s
+
+#define _stprintf_s sprintf_s
+#define _stprintf   sprintf
+#define _tprintf    printf
+
+#define _vstprintf_s    vsprintf_s
+#define _vstprintf      vsprintf
+
+#define _tscanf     scanf
+
+#define TCHAR char
+
+#define _T(x) x
+
+////////////////////
+
+#endif
+
+
+
 
 //*****************************************************************************
 //
@@ -35,12 +118,16 @@ wchar_t *g_pszAppFile = NULL;
 wchar_t *g_pszKernelFile = NULL;
 wchar_t *g_pszComPort = NULL;
 wchar_t *g_pszBaudRate;
+
 int g_iDeviceIndex = 0;
 
 //COM Port stuff
+#ifdef __linux__
+int fd;
+#else
 HANDLE file;
 DCB port;
-
+#endif
 //*****************************************************************************
 //
 // Exit the application, optionally pausing for a key press first.
@@ -147,8 +234,11 @@ ParseCommandLine(int argc, wchar_t *argv[])
 	bShowHelp = false;
 
 	// Set the default baud rate
+    #ifdef __linux__
+    g_pszBaudRate = (char *)"9600";
+    #else
 	g_pszBaudRate = L"9600";
-
+    #endif
 	//
 	// Walk through each of the parameters in the list, skipping the first one
 	// which is the executable name itself.
@@ -218,7 +308,7 @@ ParseCommandLine(int argc, wchar_t *argv[])
 			break;
 
 		case '?':
-		case 'h':
+		case 'h': 
 			bShowHelp = TRUE;
 			break;
 
@@ -293,22 +383,24 @@ DownloadImage(void)
 {
 	FILE *Kfh;
 	FILE *Afh;
-	unsigned char *pcKFileBuf;
-	unsigned char *pcKNextChar;
-	unsigned char *pcAFileBuf;
-	unsigned char *pcANextChar;
-	unsigned char sendData[8];
+	
+
 	unsigned int rcvData = 0;
 	unsigned int rcvDataH = 0;
-	unsigned int txCount = 0;
-	size_t iLen;
-	size_t iRead;
-	bool bTIFormat;
-	DWORD dwWritten;
-	DWORD dwRead;
+	int txCount = 0;
+
 	uint16_t checksum;
 	unsigned int fileStatus;
-	unsigned char readLine[80];
+	DWORD dwRead;
+    #ifdef __linux__
+    unsigned char buf[8];
+	int readf;
+	unsigned int sendData[8];
+	#else
+	errno_t error;
+	DWORD dwWritten;
+	unsigned char sendData[8];
+	#endif
 
 	QUIETPRINT(_T("Downloading %s to device...\n"), g_pszAppFile);
 
@@ -317,138 +409,143 @@ DownloadImage(void)
 	//
 	// Does the input file exist?
 	//
-	Kfh = _tfopen(g_pszKernelFile, _T("rb"));
+	// Opens the Flash Kernel File
+    #ifdef  __linux__
+	Kfh = fopen(g_pszKernelFile, _T("rb"));
+	#else
+	error = _wfopen_s(&Kfh, g_pszKernelFile, _T("rb"));
+    #endif
 	if (!Kfh)
 	{
 		QUIETPRINT(_T("Unable to open Kernel file %s. Does it exist?\n"), g_pszAppFile);
 		return(10);
 	}
-	//
-	// How big is the file?
-	//
-	//fseek(Kfh, 0, SEEK_END);
-	//iLen = ftell(Kfh);
-	//fseek(Kfh, 0, SEEK_SET);
 
-	//
-	// Allocate a buffer large enough for the file.
-	//
-	//pcKFileBuf = (unsigned char *)malloc(iLen);
-	//if (!pcKFileBuf)
-	//{
-	//	QUIETPRINT(_T("Error allocating %d bytes of memory!\n"), iLen);
-	//	fclose(Kfh);
-	//	return(11);
-	//}
-
-	//
-	// Read the file into our buffer and check that it was correctly read.
-	//
-	//iRead = fread(pcKFileBuf, 1, iLen, Kfh);
-	//fclose(Kfh);
-
-	//if (iRead != iLen)
-	//{
-	//	QUIETPRINT(_T("Error reading input file!\n"));
-	//	free(pcKFileBuf);
-	//	return(12);
-	//}
-	//pcKNextChar = pcKFileBuf + 3;
-
-
-
-
-	Afh = _tfopen(g_pszAppFile, L"rb");
+    //Opens the application file 
+    #ifdef __linux__
+    Afh = fopen(g_pszAppFile, _T("rb"));
+    #else
+	error = _wfopen_s(&Afh, g_pszAppFile, L"rb");
+	#endif
 	if (!Afh)
 	{
 		QUIETPRINT(_T("Unable to open Application file %s. Does it exist?\n"), g_pszAppFile);
 		return(10);
 	}
-	//
-	// How big is the file?
-	//
-	//fseek(Afh, 0, SEEK_END);
-	//iLen = ftell(Afh);
-	//fseek(Afh, 0, SEEK_SET);
-
-	//
-	// Allocate a buffer large enough for the file.
-	//
-	//pcAFileBuf = (unsigned char *)malloc(iLen);
-	//if (!pcAFileBuf)
-	//{
-	//	QUIETPRINT(_T("Error allocating %d bytes of memory!\n"), iLen);
-	//	fclose(Afh);
-	//	return(11);
-	//}
-
-	//
-	//Read the file into our buffer and check that it was correctly read.
-	//
-	//iRead = fread(pcAFileBuf, 1, iLen, Afh);
-	//fclose(Afh);
-
-	//if (iRead != iLen)
-	//{
-	//	QUIETPRINT(_T("Error reading input file!\n"));
-	//	free(pcAFileBuf);
-	//	return(12);
-	//}
-	//pcANextChar = pcAFileBuf;
-
 
 	//Both Kernel, Application, and COM port are open
 	//Time to blow an go!
 
 	//Do AutoBaud
-	dwRead = 0;
+ 	dwRead = 0;
 	sendData[0] = 'A';
+	#ifdef __linux__
+	write(fd, &sendData[0], 1);
+    while (dwRead == 0)
+    {
+
+    	readf = read(fd,&buf,1);
+        if(readf == -1)
+        {
+        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+        }
+        dwRead = readf;
+        rcvData = buf[0];
+    	if(readf == 0)
+    	{
+    	write(fd, &sendData[0], 1);
+    	}
+    }
+	#else
 	WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
 	while (dwRead == 0)
 	{
 		ReadFile(file, &rcvData, 1, &dwRead, NULL);
 	}
+    #endif
 
 	if (sendData[0] != rcvData)
 		return(12);
 
+
 	VERBOSEPRINT(_T("\nKernel AutoBaud Successful"));
 	//Find the start of the kernel data
+	#ifndef __linux__
 	getc(Kfh);
 	getc(Kfh);
+	#endif
 	getc(Kfh);
 
 	fileStatus = fscanf_s(Kfh, "%x", &sendData[0]);
-
+    int i = 0;
 	while (fileStatus == 1)
 	{
-		//Send next char
-		WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
-		//dwRead = 0;
-		//while (dwRead == 0)
-		//{
-			//ReadFile(file, &rcvData, 1, &dwRead, NULL);
-		//}
-		////Ensure data matches
-		//if (sendData[0] != rcvData)
-		//	return(12);
-		//Read next char
-		fileStatus = fscanf_s(Kfh, "%x ", &sendData[0]);
+		i++;
 
+		//Send next char
+
+	 	#ifdef __linux__
+		write(fd,&sendData[0],1);
+		//usleep(10000);
+		#else
+		WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
+		#endif
+
+		//Read next char
+
+		fileStatus = fscanf_s(Kfh, "%x", &sendData[0]);
 	}
 
 	VERBOSEPRINT(_T("\nKernel Loaded"));
+	#ifdef __linux__
+	sleep(5);
+	#else
 	Sleep(5000);
+	#endif
 	VERBOSEPRINT(_T("\nDone Waiting for kernel boot...attempting autobaud"));
-	PurgeComm(file, PURGE_RXCLEAR);
+	#ifdef __linux__
+		if(tcflush(fd,TCIOFLUSH)== 0)
+		{
+			//printf("Input and Output successfully flushed");
+		}
+		else
+		{
+			perror("tcflush error");
+		}
+	#else
+	    PurgeComm(file, PURGE_RXCLEAR);
+    #endif
+
+
 	//Do AutoBaud
 	sendData[0] = 'A';
-	WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
+	#ifdef __linux__
+	write(fd,&sendData[0],1);
+	buf[0] = 0;
+    dwRead = 0;
+   // int counter = 0 ;
+    while (dwRead == 0)
+    {
+    	//counter++;
+     	readf = read(fd,&buf,1);
+        if(readf == -1)
+        {
+        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+        }
+        dwRead = readf;
+        rcvData = buf[0];
+    }
+
+    #else
+	    WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
+
 	dwRead = 0;
 	while (dwRead == 0)
 	{
 		ReadFile(file, &rcvData, 1, &dwRead, NULL);
 	}
+    #endif
+
 
 	if (sendData[0] != rcvData)
 		return(12);
@@ -457,8 +554,10 @@ DownloadImage(void)
 	//Find the start of the application data
 	txCount = 0;
 	checksum = 0;
+	#ifndef __linux__
 	getc(Afh);
 	getc(Afh);
+	#endif
 	getc(Afh);
 
 
@@ -469,19 +568,43 @@ DownloadImage(void)
 		fscanf_s(Afh, "%x", &sendData[0]);
 		checksum += sendData[0];
 		//Send next char
-		WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
-
+		#ifdef __linux__
+		   write(fd,&sendData[0],1);
+		#else
+		   WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
+        #endif
 	}
 	dwRead = 0;
 	while (dwRead == 0)
 	{
+		#ifdef __linux__
+    	readf = read(fd,&buf,1);
+        if(readf == -1)
+        {
+        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+        }
+        dwRead = readf;
+        rcvData = buf[0];
+		#else
 		ReadFile(file, &rcvData, 1, &dwRead, NULL);
+	    #endif
 	}	
 	dwRead = 0;
 	while (dwRead == 0)
 	{
+	    #ifdef __linux__
+    	readf = read(fd,&buf,1);
+        if(readf == -1)
+        {
+        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+        }
+        dwRead = readf;
+        rcvDataH = buf[0];
+		#else
 		ReadFile(file, &rcvDataH, 1, &dwRead, NULL);
+	    #endif
 	}
+
 	//Ensure checksum matches
 	if (checksum != (rcvData | (rcvDataH << 8)))
 		return(12);
@@ -492,7 +615,7 @@ DownloadImage(void)
 	int byteData;
 	txCount = 0;
 	checksum = 0;
-	int j;
+
 	int totalCount = 0;
 	wordData = 0x0000;
 	byteData = 0x0000;
@@ -501,13 +624,14 @@ DownloadImage(void)
 	//Load the flash kernel
 	while (1){
 
-		if (totalCount == 0x101)
-			j = 0;
-
 		fileStatus = fscanf_s(Afh, "%x ", &sendData[0]);
 		if (fileStatus == 0)
 			break;
+		#ifdef __linux__
+        write(fd,&sendData[0],1);
+		#else
 		WriteFile(file, &sendData[0], 1, &dwWritten, NULL);
+		#endif
 		checksum += sendData[0];
 
 		// Get a dest addr
@@ -529,7 +653,7 @@ DownloadImage(void)
 		if (wordData == 0x00 && txCount > 1)
 		{
 
-			//for (j = 0; j<10000000; j++);
+
 
 			wordData = 0x0000;
 			byteData = 0x0000;
@@ -542,12 +666,32 @@ DownloadImage(void)
 			dwRead = 0;
 			while (dwRead == 0)
 			{
+			    #ifdef __linux__
+		    	readf = read(fd,&buf,1);
+		        if(readf == -1)
+		        {
+		        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+		        }
+		        dwRead = readf;
+		        rcvData = buf[0];
+		        #else
 				ReadFile(file, &rcvData, 1, &dwRead, NULL);
+				#endif
 			}
 			dwRead = 0;
 			while (dwRead == 0)
 			{
+				#ifdef __linux__
+		    	readf = read(fd,&buf,1);
+		        if(readf == -1)
+		        {
+		        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+		        }
+		        dwRead = readf;
+		        rcvDataH = buf[0];
+				#else
 				ReadFile(file, &rcvDataH, 1, &dwRead, NULL);
+			    #endif
 			}
 			//Ensure checksum matches
 			if (checksum != (rcvData | (rcvDataH << 8)))
@@ -561,12 +705,32 @@ DownloadImage(void)
 			dwRead = 0;
 			while (dwRead == 0)
 			{
+				#ifdef __linux__
+		    	readf = read(fd,&buf,1);
+		        if(readf == -1)
+		        {
+		        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+		        }
+		        dwRead = readf;
+		        rcvData = buf[0];
+				#else
 				ReadFile(file, &rcvData, 1, &dwRead, NULL);
+			    #endif
 			}
 			dwRead = 0;
 			while (dwRead == 0)
 			{
+				#ifdef __linux__
+		    	readf = read(fd,&buf,1);
+		        if(readf == -1)
+		        {
+		        	QUIETPRINT(_T("Error %s\n"), strerror(errno));
+		        }
+		        dwRead = readf;
+		        rcvDataH = buf[0];
+				#else				
 				ReadFile(file, &rcvDataH, 1, &dwRead, NULL);
+				#endif
 			}
 			//Ensure checksum matches
 			if (checksum != (rcvData | (rcvDataH << 8)))
@@ -579,29 +743,24 @@ DownloadImage(void)
 			txCount = 0x00;
 		}
 	}
-
 	VERBOSEPRINT(_T("\nApplication Load Successful"));
 
+	//not sure if should add?
+    return 0;
 }
-
 
 //*****************************************************************************
 //
 // The main entry point of the DFU programmer example application.
 //
 //*****************************************************************************
+
 int
 _tmain(int argc, TCHAR* argv[])
 {
-	int iRetCode = 0;
-	int iExitCode = 0;
-	int iDevIndex;
-	bool bCompleted;
-	bool bDeviceFound;
-	TCHAR baudString[32];
-	TCHAR comString[32];
-	DWORD error;
 
+	
+	int iExitCode = 0;
 
 	//
 	// Parse the command line parameters, print the welcome banner and
@@ -611,8 +770,48 @@ _tmain(int argc, TCHAR* argv[])
 
 	//Try opening the COM Port
 	// open the comm port.
+
+
+	///For Linux
+    #ifdef __linux__
+    // Get Baud Rate 
+	int speed = atoi(g_pszBaudRate); 
+    // Open Port for linux - comes in the form of  dev/ttyUSB#
+	const char * portname = g_pszComPort;
+    fd = open(portname, O_RDWR | O_NOCTTY );
+    if(fd == -1)
+    {
+    	printf("error %d opening %s: %s", errno, portname, strerror (errno));
+        ExitApp(1);
+    }
+     
+    // Creates structure for configurations
+    struct termios newtio;
+
+	bzero(&newtio, sizeof(newtio));
+	newtio.c_cflag = CS8 | CLOCAL | CREAD;
+    newtio.c_iflag = IGNPAR;
+	newtio.c_oflag = 0;
+    cfsetospeed(&newtio, speed);  //set baudrate
+    cfsetispeed(&newtio, speed);
+	/* set input mode (non-canonical, no echo,...) */
+	newtio.c_lflag = 0;
+
+	newtio.c_cc[VTIME]    = 5;   /* inter-character timer unused */
+	newtio.c_cc[VMIN]     = 0;   /* blocking read until 5 chars received */
+
+	tcflush(fd, TCIOFLUSH);   // flushes the input
+	tcsetattr(fd,TCSANOW,&newtio); // sets the configurations
+
+    //For Windows
+    #else
+
+	int iRetCode = 0;
+	TCHAR baudString[32];
+	TCHAR comString[32];
+
 	//Append stupid windows crap to COM port name
-	_stprintf(comString, _T("\\\\.\\%s"), g_pszComPort);
+	_stprintf_s(comString, _T("\\\\.\\%s"), g_pszComPort);
 	file = CreateFile((LPCWSTR)comString,
 		GENERIC_READ | GENERIC_WRITE,
 		0,
@@ -626,9 +825,11 @@ _tmain(int argc, TCHAR* argv[])
 		QUIETPRINT(_T("Unable to open COM port %s...does someone else have it open?\n"), g_pszComPort);
 		ExitApp(1);
 	}
+    
+    //Append baudrate to config string
+	_stprintf_s(baudString, _T("%s,n,8,1"), g_pszBaudRate);
 
-	//Append baudrate to config string
-	_stprintf(baudString, _T("%s,n,8,1"), g_pszBaudRate);
+
 
 	// get the current DCB, and adjust a few bits to our liking.
 	memset(&port, 0, sizeof(port));
@@ -666,12 +867,17 @@ _tmain(int argc, TCHAR* argv[])
 		QUIETPRINT(_T("Problem setting port configuration \n"));
 		ExitApp(iExitCode);
 	}
+    #endif
 
-	iRetCode = DownloadImage();
+	DownloadImage();
 	
-	
-
+	#ifdef __linux__
+    close(fd);
+	#endif
 	ExitApp(iExitCode);
+
+
+	
 }
 
 

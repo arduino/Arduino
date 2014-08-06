@@ -15,8 +15,17 @@
 #ifndef DSP28x_PROJECT_H
 #define DSP28x_PROJECT_H
 
-#include "F2802x_Device.h"     // DSP2802x Headerfile Include File
-#include "f2802x_common/include/F2802x_Examples.h"   // DSP2802x Examples Include File
+#ifdef TMS320F28027
+#include <F2802x_Device.h>
+#include "f2802x_common/include/F2802x_Examples.h"
+#elif defined(TMS320F28069)
+#include <F2806x_Device.h>
+#include "F2806x_common/include/F2806x_Examples.h"
+#endif
+
+
+//#include "F2802x_Device.h"     // DSP2802x Headerfile Include File
+//#include "f2802x_common/include/F2802x_Examples.h"   // DSP2802x Examples Include File
 
 #endif  // end of DSP28x_PROJECT_H definition
 
