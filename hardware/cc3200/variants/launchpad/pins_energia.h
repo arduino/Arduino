@@ -165,7 +165,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	NOT_A_PIN,	/*  16 - RESET */
 	BV(7),		/*  17 - GPIO_31 */
 	BV(1),		/*  18 - GPIO_17 */
-	BV(84),		/*  19 - GPIO_28 */
+	BV(4),		/*  19 - GPIO_28 */
 	NOT_A_PIN,	/*  20 - GND */
 	NOT_A_PIN,	/*  21 - 5V */
 	NOT_A_PIN,	/*  22 - GND */
