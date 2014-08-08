@@ -68,19 +68,21 @@ void SPIClass::begin() {
 
 	/* Configure pins as SPI */
 	MAP_PinTypeSPI(g_ulSSIPins[SSIModule][0], g_ulSSIPinModes[SSIModule][0]);
-	MAP_PinTypeSPI(g_ulSSIPins[SSIModule][1], g_ulSSIPinModes[SSIModule][1]);
+	/* Leave the CS pin under software control */
+//	MAP_PinTypeSPI(g_ulSSIPins[SSIModule][1], g_ulSSIPinModes[SSIModule][1]);
 	MAP_PinTypeSPI(g_ulSSIPins[SSIModule][2], g_ulSSIPinModes[SSIModule][2]);
 	MAP_PinTypeSPI(g_ulSSIPins[SSIModule][3], g_ulSSIPinModes[SSIModule][3]);
 
 	MAP_PRCMPeripheralReset(PRCM_GSPI);
 	MAP_SPIReset(SSIBASE);
 
+	/* 4 MHz clock, MODE 0, 3 PIN with CS under S/W control */
 	MAP_SPIConfigSetExpClk(SSIBASE,MAP_PRCMPeripheralClockGet(PRCM_GSPI),
-				100000, SPI_MODE_MASTER, SPI_SUB_MODE_0,
+				4000000, SPI_MODE_MASTER, SPI_MODE0,
 				(SPI_SW_CTRL_CS |
-				SPI_4PIN_MODE |
+				SPI_3PIN_MODE |
 				SPI_TURBO_OFF |
-				SPI_CS_ACTIVEHIGH |
+				SPI_CS_ACTIVELOW |
 				SPI_WL_8));
 
 	MAP_SPIEnable(SSIBASE);
@@ -93,20 +95,35 @@ void SPIClass::end()
 
 void SPIClass::setBitOrder(uint8_t ssPin, uint8_t bitOrder)
 {
+	/* CC3200 does not support changing the bit order
+	 * Bit order is MSB first */
 }
 
 void SPIClass::setBitOrder(uint8_t bitOrder)
 {
+	/* CC3200 does not support changing the bit order
+	 * Bit order is MSB first */
 }
 
 void SPIClass::setDataMode(uint8_t mode)
 {
-	HWREG(SSIBASE + MCSPI_O_MODULCTRL) &= ~SPI_MODE_MASK;
-	HWREG(SSIBASE + MCSPI_O_MODULCTRL) |= mode;
+	HWREG(SSIBASE + MCSPI_O_CH0CONF) &= ~SPI_MODE_MASK;
+	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= mode;
 }
 
 void SPIClass::setClockDivider(uint8_t divider)
 {
+	/* The least significant four bits of the divider is used fo configure
+	 * CLKD in MCSPI_CHCONF next eight least significant bits are used to
+	 * configure the EXTCLK in MCSPI_CHCTRL.
+	 * Note that the peripheral clock is set to 40 MHz vs System Clock @ 80 MHz */
+
+	HWREG(SSIBASE + MCSPI_O_CH0CONF) &= ~SPI_CLKD_MASK;
+	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= ((divider & 0x0000000F) << 2);
+
+	HWREG(SSIBASE + MCSPI_O_CH0CTRL) &= ~SPI_EXTCLK_MASK;
+	HWREG(SSIBASE + MCSPI_O_CH0CTRL) |= ((divider & 0x00000FF0) << 4);
+	SPIEnable(SSIBASE);
 }
 
 uint8_t SPIClass::transfer(uint8_t data)
@@ -120,7 +137,7 @@ uint8_t SPIClass::transfer(uint8_t data)
 
 /* Only one module available in the CC3200
  * But we leave it in here in case there will
- * be variants with more modules */
+ * be variants with more modules in the future */
 void SPIClass::setModule(uint8_t module) {
 	SSIModule = module;
 	begin();
