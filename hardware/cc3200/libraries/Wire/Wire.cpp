@@ -129,7 +129,9 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 		else
 			I2CTransact(I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
 	}
-		rxBuffer[rxWriteIndex] = MAP_I2CMasterDataGet(I2C_BASE);
+
+	rxBuffer[rxWriteIndex] = MAP_I2CMasterDataGet(I2C_BASE);
+	rxWriteIndex = (rxWriteIndex + 1) % BUFFER_LENGTH;
 
 	uint8_t bytesWritten = (rxWriteIndex >= oldWriteIndex) ?
 		BUFFER_LENGTH - (rxWriteIndex - oldWriteIndex) 
