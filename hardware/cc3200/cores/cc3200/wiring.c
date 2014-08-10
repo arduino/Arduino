@@ -84,14 +84,10 @@ void registerSysTickCb(void (*userFunc)(uint32_t))
 	}
 }
 
-uint8_t state = 0;
-
 void SysTickIntHandler(void)
 {
 	milliseconds++;
 
-	state = !state;
-//	digitalWrite(RED_LED, state);
 	uint8_t i;
 	for (i=0; i<8; i++) {
 		if (SysTickCbFuncs[i])
