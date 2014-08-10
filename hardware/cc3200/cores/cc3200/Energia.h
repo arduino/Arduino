@@ -12,7 +12,8 @@
 #include "inc/hw_types.h"  		
 #include "inc/hw_nvic.h" 
 #include "driverlib/gpio.h" 
-#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
+#include "driverlib/interrupt.h"
 
 #ifdef __cplusplus
 extern "C"{ 
@@ -80,8 +81,8 @@ typedef uint8_t byte;
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-#define interrupts() ROM_IntMasterEnable()
-#define noInterrupts() ROM_IntMasterDisable()
+#define interrupts() MAP_IntMasterEnable()
+#define noInterrupts() MAP_IntMasterDisable()
 
 //#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesPerMicrosecond() ( 80000000L / 1000000L )
