@@ -114,14 +114,6 @@ uint16_t analogRead(uint8_t pin)
 
 	uint16_t pinNum = digitalPinToPinNum(pin);
 
-#if 0
-	/* Enable ADC clocks.###IMPORTANT###Need to be removed for PG 1.32 */
-	HWREG(GPRCM_BASE + GPRCM_O_ADC_CLK_CONFIG) = 0x00000043;
-	HWREG(ADC_BASE + ADC_O_ADC_CTRL) = 0x00000004;
-	HWREG(ADC_BASE + ADC_O_ADC_SPARE0) = 0x00000100;
-	HWREG(ADC_BASE + ADC_O_ADC_SPARE1) = 0x0355AA00;
-#endif
-
 	switch(pinNum) {
 		case PIN_57: {channel = ADC_CH_0;}break;
 		case PIN_58: {channel = ADC_CH_1;}break;
