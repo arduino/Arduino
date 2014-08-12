@@ -28,183 +28,88 @@
 #include <driverlib/timer.h>
 #include <inc/hw_memmap.h>
 #include <inc/hw_gprcm.h>
+#include "inc/hw_timer.h"
 
-
-// tone_duration:
-//  > 0 - duration specified
-//  = 0 - stopped
-//  < 0 - infinitely (until stop() method called, or new play() called)
-
-static uint8_t tone_state = 0; // 0==not initialized, 1==timer running
+static uint8_t tone_state = 0;
 static uint8_t current_pin = 0;
 static long g_duration = 0;
 static uint8_t tone_timer = 0;
 
-void
-ToneIntHandler(void)
+void ToneIntHandler(void)
 {
-/*
-    ROM_TimerIntClear(TIMER4_BASE, TIMER_A);
+	MAP_TimerIntClear(TIMERA0_BASE, TIMER_B);
 
-    //End of tone duration
-    if(--g_duration <= 0) {
-        	noTone(current_pin);
-    		ROM_TimerIntDisable(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
-    		ROM_TimerIntClear(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
-    		ROM_TimerDisable(TIMER4_BASE, TIMER_A);
-    }
-*/
+	if(--g_duration <= 0) {
+		MAP_TimerIntDisable(TIMERA0_BASE, TIMER_TIMB_TIMEOUT);
+		MAP_TimerDisable(TIMERA0_BASE, TIMER_B);
+		noTone(current_pin);
+	}
 }
 
-/**
- *** tone() -- Output a tone (50% Dutycycle PWM signal) on a pin
- ***  pin: This pin is selected as output
- ***  frequency: [Hz]
- **   duration: [milliseconds], if duration <=0, then we output tone continuously,
- **   otherwise tone is stopped after this time (output = 0)
- **/
-
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
+void tone(uint8_t pin, unsigned int frequency, unsigned long duration)
 {
-/*
-    uint8_t port = digitalPinToPort(_pin);
-    if (port == NOT_A_PORT) return;
-    if (tone_state == 0 || _pin == current_pin) {
+	/* Use TIMERA0B since it is not on any pin */
 
-    	//Setup PWM
-    	current_pin = _pin;
-        tone_timer = digitalPinToTimer(_pin);
-        tone_state = 1;
-        g_duration = duration;
-//        PWMWrite(_pin, 256, 128, frequency);
+	tone_timer = digitalPinToTimer(pin);
 
-        //Setup interrupts for duration, interrupting at 1kHz
-        ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER4);
-        ROM_IntMasterEnable();
-        ROM_TimerConfigure(TIMER4_BASE, TIMER_CFG_PERIODIC);
-        ROM_TimerLoadSet(TIMER4_BASE, TIMER_A, F_CPU/1000);
-        ROM_IntEnable(INT_TIMER4A);
-        ROM_TimerIntEnable(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
-        ROM_TimerEnable(TIMER4_BASE, TIMER_A);
-    }
-*/
+	if(tone_timer == NOT_ON_TIMER)
+		return;
+
+	if(tone_state != 0 && pin != current_pin)
+		return;
+
+	g_duration = duration;
+	current_pin = pin;
+	tone_state = 2;
+
+	MAP_PRCMPeripheralClkEnable(PRCM_TIMERA0, PRCM_RUN_MODE_CLK);
+	MAP_PRCMPeripheralReset(PRCM_TIMERA0);
+	MAP_TimerConfigure(TIMERA0_BASE, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_B_PERIODIC);
+	MAP_TimerIntRegister(TIMERA0_BASE, TIMER_B, ToneIntHandler);
+	MAP_TimerIntEnable(TIMERA0_BASE, TIMER_TIMB_TIMEOUT);
+	MAP_TimerPrescaleSet(TIMERA0_BASE, TIMER_B, 7);
+	MAP_TimerLoadSet(TIMERA0_BASE, TIMER_B, (F_CPU / 8) / 1000);
+	MAP_TimerEnable(TIMERA0_BASE, TIMER_B);
+
+	PWMWrite(pin, 256, 128, frequency);
 }
 
-#define TIMER_INTERVAL_RELOAD   40035//255*157
-#define DUTYCYCLE_GRANULARITY   157
-void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq)
+void tone(uint8_t pin, unsigned int frequency)
 {
-	uint8_t prescaler = (F_CPU / freq) / 0xFFFF;
-	uint32_t granularity = ceil(((F_CPU >> prescaler) / freq) / analog_res);
-	uint32_t reload = analog_res * granularity;
+	tone_timer = digitalPinToTimer(pin);
 
-	Serial.println(prescaler);
-	Serial.print("pre:");
-	Serial.println(prescaler);
-	Serial.print("gran:");
-	Serial.println(granularity);
-	Serial.print("reload:");
-	Serial.println(reload);
-	Serial.print("match:");
-	Serial.println(duty * granularity);
-	Serial.println("===============");
-
-	if (duty == 0) {
-		pinMode(pin, OUTPUT);
-		digitalWrite(pin, LOW);
+	if(tone_timer == NOT_ON_TIMER)
 		return;
-	}
 
-	if (duty >= 255) {
-		pinMode(pin, OUTPUT);
-		digitalWrite(pin, HIGH);
-		return;
+	if(tone_state == 0 || pin == current_pin) {
+		PWMWrite(pin, 255, 128, frequency);
+		tone_state = 1;
+		current_pin = pin;
 	}
+}
 
+void noTone(uint8_t pin)
+{
 	uint8_t timer = digitalPinToTimer(pin);
-
-	if(timer == NOT_ON_TIMER)
+	if(timer != tone_timer || timer == NOT_ON_TIMER)
 		return;
 
-	MAP_PRCMPeripheralClkEnable(PRCM_TIMERA0 + (timer/2), PRCM_RUN_MODE_CLK);
-
-	uint16_t pnum = digitalPinToPinNum(pin);
-
-	switch(timer) {
-	/* PWM0/1 */
-	case TIMERA0A:
-	case TIMERA0B:
-		MAP_PinTypeTimer(pnum, PIN_MODE_5);
-		break;
- 	/* PWM2/3 */
-	case TIMERA1A:
-	case TIMERA1B:
-		MAP_PinTypeTimer(pnum, PIN_MODE_9);
-		break;
-	/* PWM4/5 */
-	case TIMERA2A:
-	case TIMERA2B:
-		MAP_PinTypeTimer(pnum, PIN_MODE_3);
-		break;
-	/* PWM6/7 */
-	case TIMERA3A:
-	case TIMERA3B:
-		MAP_PinTypeTimer(pnum, PIN_MODE_3);
-		break;
+	/* For whatever reason disabling a not enabled
+	 * interrupt lands us in the FalutIsr.
+	 * Work around is to check if the timer is running */
+	if(tone_state == 2) {
+		MAP_TimerIntDisable(TIMERA0_BASE, TIMER_TIMB_TIMEOUT);
+		MAP_TimerDisable(TIMERA0_BASE, TIMER_B);
 	}
 
 	uint32_t base = TIMERA0_BASE + ((timer/2) << 12);
-
-	/* FIXME: If B is already opperational and configure A, B get's messed up. */
-	MAP_TimerConfigure(base, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PWM | TIMER_CFG_B_PWM);
-
 	uint16_t timerab = timer % 2 ? TIMER_B : TIMER_A;
-	MAP_TimerPrescaleSet(base, timerab, prescaler);
+	MAP_TimerDisable(base, timerab);
 
-	MAP_TimerControlLevel(base, timerab, 1);
+	tone_state = 0;
+	current_pin = 0;
+	g_duration = 0;
 
-	MAP_TimerLoadSet(base, timerab, reload);
-
-	MAP_TimerMatchSet(base, timerab, (duty * granularity));
-
-	MAP_TimerEnable(base, timerab);
+	pinMode(pin, OUTPUT);
+	digitalWrite(pin, LOW);
 }
-
-void tone(uint8_t _pin, unsigned int frequency)
-{
-/*
-    uint8_t port = digitalPinToPort(_pin);
-
-    if (port == NOT_A_PORT) return;
-
-    if(tone_state == 0 || _pin == current_pin) {
-        tone_timer = digitalPinToTimer(_pin);
-        PWMWrite(_pin, 256, 128, frequency);
-        tone_state = 1;
-    }
-*/
-}
-
-/*
- * noTone() - Stop outputting the tone on a pin
- */
-void noTone(uint8_t _pin)
-{
-/*
-	uint8_t timer = digitalPinToTimer(_pin);
-
-    if(timer == tone_timer) {
-		uint32_t timerBase = getTimerBase(timerToOffset(timer));
-		uint32_t timerAB = TIMER_A << timerToAB(timer);
-		ROM_TimerIntDisable(timerBase, TIMER_TIMA_TIMEOUT << timerToAB(tone_timer));
-		ROM_TimerIntClear(timerBase, TIMER_TIMA_TIMEOUT << timerToAB(tone_timer));
-		ROM_TimerDisable(timerBase, timerAB);
-		tone_state = 0;
-		g_duration = 0;
-		pinMode(_pin, OUTPUT);
-		digitalWrite(_pin, LOW);
-    }
-*/
-}
-
-

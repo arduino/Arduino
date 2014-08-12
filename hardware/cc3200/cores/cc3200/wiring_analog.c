@@ -42,21 +42,19 @@
 #define TIMER_INTERVAL_RELOAD   40035//255*157
 #define DUTYCYCLE_GRANULARITY   157
 
-void analogWrite(uint8_t pin, int val) {
-	/* duty cycle(%) = val / 255;
-	 * Frequency of 490Hz specified by Arduino API */
+void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, uint32_t freq)
+{
+	analog_res = analog_res * 1000;
+	freq;
 
-	if (val == 0) {
-		pinMode(pin, OUTPUT);
-		digitalWrite(pin, LOW);
-		return;
-	}
+	uint32_t load = (F_CPU / freq) * 1000;
+	uint32_t match = load / (analog_res / duty);
 
-	if (val >= 255) {
-		pinMode(pin, OUTPUT);
-		digitalWrite(pin, HIGH);
-		return;
-	}
+	match = match;
+	load = load / 1000;
+
+	uint16_t prescaler = load >> 16;
+	uint16_t prescaler_match = match >> 16;
 
 	uint8_t timer = digitalPinToTimer(pin);
 
@@ -73,7 +71,7 @@ void analogWrite(uint8_t pin, int val) {
 	case TIMERA0B:
 		MAP_PinTypeTimer(pnum, PIN_MODE_5);
 		break;
- 	/* PWM2/3 */
+	/* PWM2/3 */
 	case TIMERA1A:
 	case TIMERA1B:
 		MAP_PinTypeTimer(pnum, PIN_MODE_9);
@@ -96,17 +94,40 @@ void analogWrite(uint8_t pin, int val) {
 	MAP_TimerConfigure(base, TIMER_CFG_SPLIT_PAIR | TIMER_CFG_A_PWM | TIMER_CFG_B_PWM);
 
 	uint16_t timerab = timer % 2 ? TIMER_B : TIMER_A;
-	MAP_TimerPrescaleSet(base, timerab, 0);
+	MAP_TimerPrescaleSet(base, timerab, prescaler);
+	MAP_TimerPrescaleMatchSet(base, timerab, prescaler_match);
 
 	MAP_TimerControlLevel(base, timerab, 1);
 
-	MAP_TimerLoadSet(base, timerab, TIMER_INTERVAL_RELOAD);
+	MAP_TimerLoadSet(base, timerab, load);
 
-	MAP_TimerMatchSet(base, timerab, (val * DUTYCYCLE_GRANULARITY));
+	MAP_TimerMatchSet(base, timerab, match);
 
 	MAP_TimerEnable(base, timerab);
 }
 
+void analogWrite(uint8_t pin, int val) {
+	/* duty cycle(%) = val / 255;
+	 * Frequency of 490Hz specified by Arduino API */
+	uint8_t timer = digitalPinToTimer(pin);
+
+	if(timer == NOT_ON_TIMER)
+		return;
+
+	if (val == 0) {
+		pinMode(pin, OUTPUT);
+		digitalWrite(pin, LOW);
+		return;
+	}
+
+	if (val >= 255) {
+		pinMode(pin, OUTPUT);
+		digitalWrite(pin, HIGH);
+		return;
+	}
+
+	PWMWrite(pin, 255, val, 490);
+}
 
 uint16_t analogRead(uint8_t pin)
 {
