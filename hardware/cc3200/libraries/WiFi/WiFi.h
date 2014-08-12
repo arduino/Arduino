@@ -24,7 +24,8 @@
 #include "IPAddress.h"
 #include "Utility/wl_definitions.h"
 #include "Utility/Simplelink.h"
-
+#include "WiFiClient.h"
+#include "WiFiServer.h"
 
 //
 //Max socket number is 8
