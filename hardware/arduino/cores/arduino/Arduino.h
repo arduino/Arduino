@@ -113,7 +113,7 @@ typedef uint8_t boolean;
 typedef uint8_t byte;
 
 void init(void);
-void initVariant(void);
+void initVariant(void) __attribute__((weak));
 
 int atexit(void (*func)()) __attribute__((weak));
 
