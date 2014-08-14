@@ -76,8 +76,10 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
-            client.print("Click <a href=\"/H\">here</a> turn the RED LED on<br>");
-            client.print("Click <a href=\"/L\">here</a> turn the RED LED off<br>");
+            client.println("<html><head><title>Energia CC3200 WiFi Web Server</title></head><body align=center>");
+            client.println("<h1 align=center><font color=\"red\">Welcome to the CC3200 WiFi Web Server</font></h1>");
+            client.print("RED LED <button onclick=\"location.href='/H'\">HIGH</button>");
+            client.println(" <button onclick=\"location.href='/L'\">LOW</button><br>");
 
             // The HTTP response ends with another blank line:
             client.println();
