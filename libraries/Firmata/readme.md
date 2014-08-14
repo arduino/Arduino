@@ -1,11 +1,11 @@
 ## Description
 
-This is a fork of [Firmata](http://firmata.org/wiki/Main_Page) for LaunchPads. Origianlly Firmata is a communication protocol written for Arduino that allows PC sending commands to the target device. Since LaunchPads now has [Energia](http://energia.nu/download/) support, all the great things Firmata offers can be used on LaunchPads.
+This is a fork of [Firmata](http://firmata.org/wiki/Main_Page) for LaunchPads. Originally Firmata is a communication protocol written for Arduino that allows PC sending commands to the target device. Since LaunchPads now has [Energia](http://energia.nu/download/) support, all the great things Firmata offers can be used on LaunchPads.
 
-**How to setup Firmata on LaunchPad (Windows)**
+**How to set up Firmata on LaunchPad (Windows)**
 * Install [Energia](http://energia.nu/download/)
-* Download the [Firmata folder] (https://github.com/shengzhao91/Energia/tree/master/libraries/Firmata) from my GitHub fork of Firmata. 
-* Put the Firmata folder under "energia-0101E0012\hardware\msp430\libraries"
+* Download the [latest Firmata folder] (https://github.com/energia/Energia/tree/master/libraries/Firmata) 
+* Put the Firmata folder under "Energia\libraries\Energia\libraries\Firmata"
 * Run Energia.exe. Go to File->Examples->Firmata->StandardFirmata.
 * Then, go to Tools->Board->(your device, ex: F5529)
 * Click the right arrow to upload to your device
