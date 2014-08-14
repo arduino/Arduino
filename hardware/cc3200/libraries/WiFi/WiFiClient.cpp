@@ -234,15 +234,15 @@ int WiFiClient::available()
         SlTimeval_t timeout;
         memset(&timeout, 0, sizeof(SlTimeval_t));
         timeout.tv_sec = 0;
-        timeout.tv_usec = 500000;
+        timeout.tv_usec = 500;
         SlFdSet_t readsds, errorsds;
         SL_FD_ZERO(&readsds);
         SL_FD_ZERO(&errorsds);
         SL_FD_SET(WiFiClass::_handleArray[_socketIndex], &readsds);
         SL_FD_SET(WiFiClass::_handleArray[_socketIndex], &errorsds);
 
-        sl_Select(WiFiClass::_handleArray[_socketIndex] + 1, &readsds, NULL, &errorsds, &timeout);
-        if(!SL_FD_ISSET(WiFiClass::_handleArray[_socketIndex], &readsds)) return 0;
+//        sl_Select(WiFiClass::_handleArray[_socketIndex] + 1, &readsds, NULL, &errorsds, &timeout);
+//        if(!SL_FD_ISSET(WiFiClass::_handleArray[_socketIndex], &readsds)) return 0;
 
         //
         //Receive any pending information into the buffer
