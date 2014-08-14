@@ -331,32 +331,31 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 #define PIN_TO_SERVO(p)         ((p) - 2)
 
+// MSP430F5529
 #elif defined(__MSP430F5529__)
-//#error "__MSP430F5529__"		//used to check preprocessing
 #define TOTAL_ANALOG_PINS       13
-#define TOTAL_PINS              48 // should be multiple of 8 for NodeJS Firmata
+#define TOTAL_PINS              45
 #define VERSION_BLINK_PIN       44
-#define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) <= 44 && (p)!=1 && (p)!=21 && (p)!=22 && (p)!=20 && (p)!=16 )
+#define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) <= 44 && (p)!=16 && (p)!=20 && (p)!=21 && (p)!=22 )
 #define IS_PIN_ANALOG(p)        ((p) == 2 || (p) == 6 || \
 								 (p)==23 || (p)==24 || (p)==25 || (p)==26 || (p)==27 || (p)==28 )
-#define IS_PIN_PWM(p)           ( ((p)>=35 && (p)<=40) || (p)==19 )
-#define IS_PIN_SERVO(p)         IS_PIN_DIGITAL(p)
+#define IS_PIN_PWM(p)           ( (p)==12 || (p)==19 || ((p)>=35 && (p)<=40) )
+#define IS_PIN_SERVO(p)         IS_PIN_PWM(p)
 #define IS_PIN_I2C(p)           ((p) == 14 || (p) == 15)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p)>=23 && (p)<=27)?((p)-23):(((p)==2)?(5):((p)==28?(12):((p)==6?6:10) ))
-#define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
+#define PIN_TO_PWM(p)           (p)
 #define PIN_TO_SERVO(p)         (p)
-#define TOTAL_PORTS				10
 
+// MSP430FR5969 FRAM
 #elif defined(__MSP430FR5969__)
-//#error "__MSP430FR5969__"		//used to check preprocessing
 #define TOTAL_ANALOG_PINS       13
-#define TOTAL_PINS              32 // should be multiple of 8 for NodeJS Firmata
+#define TOTAL_PINS              29
 #define VERSION_BLINK_PIN       26
-#define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) < 20 && (p)!=16 && (p)!=17)
+#define IS_PIN_DIGITAL(p)       ( ((p)>=2 && (p) < 20 && (p)!=16 && (p)!=17) || (p)==25 || (p)==26 )
 #define IS_PIN_ANALOG(p)        ((p) == 2 || (p) == 5 || (p)==11 || (p)==12 || (p)==13 || (p)==18 || (p)==19)
 #define IS_PIN_PWM(p)           ((p)>=3 && (p) < 20 && (p)!=16 && (p)!=17 && (p)!=5)
-#define IS_PIN_SERVO(p)         IS_PIN_DIGITAL(p)
+#define IS_PIN_SERVO(p)         IS_PIN_PWM(p)
 #define IS_PIN_I2C(p)           ((p) == 14 || (p) == 15)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p)==2?10:\
@@ -367,47 +366,44 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 								 (p)==18?12:2)
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 #define PIN_TO_SERVO(p)         (p)
-//#define TOTAL_PORTS				10
 
-// Baudrate only up to 9600, currently does NOT support Firmata
+// MSP430FR5739
 #elif defined(__MSP430FR5739__)
-//#error "__MSP430FR5739__"		//used to check preprocessing
+// Baudrate only up to 9600, currently does NOT support Firmata
 #define TOTAL_ANALOG_PINS       8
 #define TOTAL_PINS              28 // 38 digital + 8 analog, but should be multiple of 8 for NodeJS Firmata
 #define VERSION_BLINK_PIN       26
 #define IS_PIN_DIGITAL(p)       ((p)>=2 && (p) < 24 && (p)!=24)
 #define IS_PIN_ANALOG(p)        ((p)>=13 && (p)<=22)
 #define IS_PIN_PWM(p)           ((p)>=5 && (p)<= 15) || ((p)>=20 && (p)<=22)
-#define IS_PIN_SERVO(p)         IS_PIN_DIGITAL(p)
+#define IS_PIN_SERVO(p)         IS_PIN_PWM(p)
 #define IS_PIN_I2C(p)           ((p) == 11 || (p) == 12)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        (22-(p))
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 #define PIN_TO_SERVO(p)         (p)
-//#define TOTAL_PORTS				4
 
-// Baudrate only up to 9600, currently does NOT support Firmata
+// MSP430G2553 Value Line
 #elif defined(__MSP430G2553__)
-//#error "__MSP430G2553__"		//used to check preprocessing
+// Baudrate only up to 9600, currently does NOT support Firmata
 #define TOTAL_ANALOG_PINS       8
-#define TOTAL_PINS              20 // 20 digital + 8 analog, but should be multiple of 8 for NodeJS Firmata
+#define TOTAL_PINS              20 
 #define VERSION_BLINK_PIN       2
 #define IS_PIN_DIGITAL(p)       ((p) >= 3 && (p) < TOTAL_PINS && (p)!=16)
 #define IS_PIN_ANALOG(p)        ((p) >= 3 && (p) < 8)
 #define IS_PIN_PWM(p)           digitalPinHasPWM(p)
-#define IS_PIN_SERVO(p)         IS_PIN_DIGITAL(p)
+#define IS_PIN_SERVO(p)         IS_PIN_PWM(p)
 #define IS_PIN_I2C(p)           ((p) == 14 || (p) == 15)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p))
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 #define PIN_TO_SERVO(p)         (p)
-#define TOTAL_PORTS				2
+//#define TOTAL_PORTS				2
 
 // Tiva C TM4C123G - EK-TM4C123GXL
 #elif defined(__TM4C123GH6PM__)
-//#error "__TM4C123GH6PM__"		//used to check preprocessing
 #define TOTAL_ANALOG_PINS       13
-#define TOTAL_PINS              40 //should be multiple of 8 for NodeJS Firmata
+#define TOTAL_PINS              41
 #define VERSION_BLINK_PIN       40
 #define IS_PIN_DIGITAL(p)       ((p)>=2 && (p)<=TOTAL_PINS && (p)!=16 && (p)!=20 && (p)!=21 && (p)!=22)
 #define IS_PIN_ANALOG(p)        ((p)>=23 && (p)<=29) || (p==2) || (p==5) || (p==6) || (p==7) || (p==18)
@@ -415,7 +411,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 								 (p)==14 || (p)==15 || (p)==17 || (p)==19 || \
 								 ((p)>=23 && (p)<=26) || (p)==30 || \
 								 ((p)>=31 && (p)<=40)
-#define IS_PIN_SERVO(p)         (IS_PIN_DIGITAL(p) && (p) >= 0 && (p) < MAX_SERVOS)
+#define IS_PIN_SERVO(p)         (IS_PIN_PWM(p) && (p) >= 0 && (p) < MAX_SERVOS)
 #define IS_PIN_I2C(p)           ((p) == 19 || (p) == 38)
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p)>=23 && (p)<=26)?(30-(p)):\
@@ -426,13 +422,11 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 								 ((p)==6)?(8):(10)
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
 #define PIN_TO_SERVO(p)         (p)
-//#define TOTAL_PORTS				10
 
 // Tiva C TM4C1294 - EK-TM4C1294XL
 #elif defined(__TM4C1294NCPDT__)
-//#error "__TM4C1294NCPDT__"	//used to check preprocessing
 #define TOTAL_ANALOG_PINS       20
-#define TOTAL_PINS              80 // should be multiple of 8 for NodeJS Firmata
+#define TOTAL_PINS              85
 #define VERSION_BLINK_PIN       81 // LED1
 #define IS_PIN_DIGITAL(p)       ((p)>=2 && (p)<=TOTAL_PINS && (p)!=16 && (p)!=20 && (p)!=21 && (p)!=22)
 #define IS_PIN_ANALOG(p)        ((p)==2 || (p)==6 || (p)==7 || (p)==14 || (p)==15 || ((p)>=23 && (p)<=27) || \
@@ -441,7 +435,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 								 ((p)>=27 && (p)<=30) || (p)==35 || (p)==36 || \
 								 (p)==42 || (p)==45 || (p)==46 || (p)==51 || (p)==57 || (p)==59 || \
 								 (p)==69 || (p)==70 || (p)==75 || (p)==76 || (p)==77 )
-#define IS_PIN_SERVO(p)         (IS_PIN_DIGITAL(p) && (p) >= 0 && (p) < MAX_SERVOS)
+#define IS_PIN_SERVO(p)         (IS_PIN_PWM(p) && (p) >= 0 && (p) < MAX_SERVOS)
 #define IS_PIN_I2C(p)           ((p)== 9 || (p)==10 || (p)==34 || (p)==35 || (p)==37 || \
 								 (p)==49 || (p)==50 || (p)==80 )
 #define PIN_TO_DIGITAL(p)       (p)
