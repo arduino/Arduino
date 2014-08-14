@@ -250,7 +250,7 @@ public class Compiler implements MessageConsumer {
     }else if (arch == "lm4f" || arch == "cc3200") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
-        "-O0", //changed from -Os
+        "-O0",
         "-nostartfiles","-nostdlib",
         "-Wl,--gc-sections",
         "-T", corePath + File.separator + boardPreferences.get("ldscript"),
@@ -717,6 +717,7 @@ public class Compiler implements MessageConsumer {
           basePath + "arm-none-eabi-gcc",
           "-c",
           "-g",
+          "-gdwarf-2",
           "-assembler-with-cpp",
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-mthumb", "-mcpu=cortex-m4"
@@ -812,8 +813,8 @@ public class Compiler implements MessageConsumer {
         basePath + "arm-none-eabi-gcc",
         "-c",
         "-g",
+        "-gdwarf-2",
         "-O0", //changed from -Os
-        "-Dgcc", //simplelink 0.5.2 expects gcc to be defined
         Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections",
         "-fdata-sections",
@@ -918,8 +919,8 @@ public class Compiler implements MessageConsumer {
           basePath + "arm-none-eabi-g++",
           "-c",
           "-g", // include debugging info (so errors include line numbers)
+          "-gdwarf-2",
           "-O0", //changed from -Os
-          "-Dgcc", //simplelink 0.5.2 expects gcc to be defined
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-rtti",
           "-fno-exceptions",
