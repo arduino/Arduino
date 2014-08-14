@@ -36,7 +36,7 @@ class WiFiClient : public Client {
 public:
     WiFiClient();
     WiFiClient(uint8_t sock);
-    //~WiFiClient();
+    ~WiFiClient();
     
     uint8_t status();
     virtual int connect(IPAddress ip, uint16_t port);

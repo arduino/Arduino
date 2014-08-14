@@ -36,6 +36,7 @@ class WiFiServer : public Server {
 private:
     uint16_t _port;
     int _socketIndex;
+    int8_t _lastServicedClient;
 public:
     WiFiServer(uint16_t);
     WiFiClient available(uint8_t* status = NULL);

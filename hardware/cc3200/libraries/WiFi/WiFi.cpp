@@ -71,7 +71,7 @@ unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
 int16_t WiFiClass::_handleArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
-
+WiFiClient WiFiClass::clients[MAX_SOCK_NUM];
 //
 //These "buffers" are used to "return" strings and IpAddress objects
 //Of course, the value must be used before it is overwritted

@@ -38,7 +38,7 @@ class WiFiClass
 {
 private:
     static bool init();
-    
+    static WiFiClient clients[MAX_SOCK_NUM];    
 public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];

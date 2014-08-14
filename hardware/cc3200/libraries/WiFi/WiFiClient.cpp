@@ -66,29 +66,23 @@ WiFiClient::WiFiClient(uint8_t socketIndex)
     _socketIndex = socketIndex;
 }
 
-//WiFiClient::~WiFiClient()
-//{
-//    //
-//    //don't do anything if the socket was never set up
-//    //
-//    if (_socketIndex == NO_SOCKET_AVAIL) {
-//        return;
-//    }
-//    
-//    //
-//    //close the socket
-//    //
-//    int socketHandle = WiFiClass::_handleArray[_socketIndex];
-//    sl_Close(socketHandle);
-//    
-//    //
-//    //clear the tracking stuff from the WiFiClass arrays
-//    //
-//    WiFiClass::_handleArray[_socketIndex] = -1;
-//    WiFiClass::_portArray[_socketIndex] = -1;
-//    WiFiClass::_typeArray[_socketIndex] = -1;
-//    
-//}
+
+WiFiClient::~WiFiClient()
+{
+    //
+    //don't do anything if the socket was never set up
+    //
+    if (_socketIndex == NO_SOCKET_AVAIL) {
+        return;
+    }
+
+    //
+    //Abuse the deconstructor to copy the state of a client going
+    //out of scope in the loop. This is an ugly hack but there is no
+    //other way to keep track of state of a client.
+    //
+    memcpy(&WiFiClass::clients[_socketIndex], this, sizeof(WiFiClient));
+}
 
 //--tested, working--//
 //--client side--//
@@ -128,23 +122,31 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
     if (socketIndex == NO_SOCKET_AVAIL) {
         return false;
     }
+
+
     int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_IPPROTO_TCP);
     if (socketHandle < 0) {
         return false;
     }
-    
+
     //
     //connect the socket to the requested IP address and port. Check for success
     //
+
     SlSockAddrIn_t server = {0};
     server.sin_family = SL_AF_INET;
     server.sin_port = sl_Htons(port);
     server.sin_addr.s_addr = ip;
     int iRet = sl_Connect(socketHandle, (SlSockAddr_t*)&server, sizeof(SlSockAddrIn_t));
+
     if (iRet < 0) {
         sl_Close(socketHandle);
         return false;
     }
+
+    int enableOption = 1;
+    sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
+    sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_KEEPALIVE, &enableOption, sizeof(enableOption));
 
     //
     //we've successfully created a socket and connected, so store the
@@ -184,11 +186,22 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size)
     if (_socketIndex == NO_SOCKET_AVAIL) {
         return 0;
     }
-    
+
+    //
+    // Do blocking writes. A lot of libraries and Sketches do not check for
+    // the return value of write. This somewhat works around this.
+    //
+    int enableOption = 0;
+    sl_SetSockOpt(WiFiClass::_handleArray[_socketIndex], SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
+
     //
     //write the bufer to the socket
     //
     int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
+
+    enableOption = 1;
+    sl_SetSockOpt(WiFiClass::_handleArray[_socketIndex], SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
+
     if ((iRet < 0) || (iRet != size)) {
         //
         //if an error occured or the socket has died, call stop()
@@ -218,12 +231,25 @@ int WiFiClient::available()
     //
     int bytesLeft = rx_fillLevel - rx_currentIndex;
     if (bytesLeft <= 0) {
+        SlTimeval_t timeout;
+        memset(&timeout, 0, sizeof(SlTimeval_t));
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 500000;
+        SlFdSet_t readsds, errorsds;
+        SL_FD_ZERO(&readsds);
+        SL_FD_ZERO(&errorsds);
+        SL_FD_SET(WiFiClass::_handleArray[_socketIndex], &readsds);
+        SL_FD_SET(WiFiClass::_handleArray[_socketIndex], &errorsds);
+
+        sl_Select(WiFiClass::_handleArray[_socketIndex] + 1, &readsds, NULL, &errorsds, &timeout);
+        if(!SL_FD_ISSET(WiFiClass::_handleArray[_socketIndex], &readsds)) return 0;
+
         //
         //Receive any pending information into the buffer
         //if the connection has died, call stop() to make the object aware it's dead
         //
         int iRet = sl_Recv(WiFiClass::_handleArray[_socketIndex], rx_buffer, TCP_RX_BUFF_MAX_SIZE, NULL);
-        if ((iRet < 0)  &&  (iRet != SL_EAGAIN)) {
+        if ((iRet <= 0)  &&  (iRet != SL_EAGAIN)) {
             stop();
             memset(rx_buffer, 0, TCP_RX_BUFF_MAX_SIZE);
             return 0;
@@ -236,6 +262,8 @@ int WiFiClient::available()
         rx_currentIndex = 0;
         rx_fillLevel = (iRet != SL_EAGAIN) ? iRet : 0;
         bytesLeft = rx_fillLevel - rx_currentIndex;
+
+        
     }
     
     //
@@ -348,11 +376,10 @@ uint8_t WiFiClient::connected()
 //!! works, sort of, needs to actually test connection !!//
 uint8_t WiFiClient::status()
 {
-    //
-    //This basically just checks if stop() has been called
-    //!! is there a way to test the tcp connection without a write?
-    //
-    return _socketIndex != NO_SOCKET_AVAIL ? true : false;
+    available();
+    if(_socketIndex == NO_SOCKET_AVAIL) return false;
+
+    return true;
 }
 
 //--tested, working--//

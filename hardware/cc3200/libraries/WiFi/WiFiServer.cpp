@@ -34,6 +34,7 @@ WiFiServer::WiFiServer(uint16_t port)
 {
     _socketIndex = NO_SOCKET_AVAIL;
     _port = port;
+    _lastServicedClient = 0;
 }
 
 //--tested, working--//
@@ -61,7 +62,6 @@ void WiFiServer::begin()
     if (socketHandle < 0) {
         return;
     }
-    
     //
     //bind the socket to the requested port and check for success
     //if failure, gracefully close the socket and return failure
@@ -70,6 +70,11 @@ void WiFiServer::begin()
     portAddress.sin_family = SL_AF_INET;
     portAddress.sin_port = sl_Htons(_port);
     portAddress.sin_addr.s_addr = 0;
+    int enableOption = 1;
+
+    sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
+    sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_KEEPALIVE, &enableOption, sizeof(enableOption));
+
     int iRet = sl_Bind(socketHandle, (SlSockAddr_t*)&portAddress, sizeof(SlSockAddrIn_t));
     if (iRet < 0) {
         sl_Close(socketHandle);
@@ -129,22 +134,40 @@ WiFiClient WiFiServer::available(byte* status)
     int clientHandle = sl_Accept(socketHandle, (SlSockAddr_t*)&clientAddress, &clientAddressSize);
     
     //
-    //if there is no new client (or an error), return a "fake" client that
-    //evaluates to false if placed in a boolean comparison (arduino compatability)
-    //
-    if ((clientHandle == SL_EAGAIN) || (clientHandle < 0)) {
-        return WiFiClient(255);
-    }
-    
-    //
     //We've successfully created a socket, so store everything in the wificlass
     //arrays used to keep track of the connected sockets, port #s, and types
     //
-    WiFiClient client(clientSocketIndex);
-    WiFiClass::_handleArray[clientSocketIndex] = clientHandle;
-    WiFiClass::_typeArray[clientSocketIndex] = TYPE_TCP_CONNECTED_CLIENT;
-    WiFiClass::_portArray[clientSocketIndex] = sl_Htons(clientAddress.sin_port);
-    return client;
+    if (clientHandle > 0) {
+        WiFiClass::_handleArray[clientSocketIndex] = clientHandle;
+        WiFiClass::_typeArray[clientSocketIndex] = TYPE_TCP_CONNECTED_CLIENT;
+        WiFiClass::_portArray[clientSocketIndex] = sl_Htons(clientAddress.sin_port);
+        WiFiClass::clients[clientSocketIndex] = WiFiClient(clientSocketIndex);
+    }
+
+    //
+    //Now loop through the connected clients
+    //
+
+    uint8_t oneclient = 0;
+    for(uint8_t i = 0; i < MAX_SOCK_NUM; i++) {
+        if(WiFiClass::_handleArray[i] != -1 && WiFiClass::_typeArray[i] == TYPE_TCP_CONNECTED_CLIENT) {
+
+            if( i == _lastServicedClient) {
+                oneclient = 1;
+                continue;
+            }
+
+            _lastServicedClient = i;
+            return WiFiClass::clients[i];
+        }
+    }
+
+    if(oneclient) {
+        return WiFiClass::clients[_lastServicedClient];
+    }
+
+    _lastServicedClient = -1;
+    return WiFiClient(255);
 }
 
 uint8_t WiFiServer::status()
