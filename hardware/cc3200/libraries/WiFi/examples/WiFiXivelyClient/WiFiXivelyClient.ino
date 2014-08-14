@@ -29,7 +29,7 @@
 
 #define APIKEY         "YOUR API KEY GOES HERE" // replace your xively api key here
 #define FEEDID         00000                    // replace your feed ID
-#define USERAGENT      "My Arduino Project"     // user agent is the project name
+#define USERAGENT      "CC3200 LaunchPad"     // user agent is the project name
 
 char ssid[] = "yourNetwork";      //  your network SSID (name)
 char pass[] = "secretPassword";   // your network password
@@ -49,31 +49,19 @@ const unsigned long postingInterval = 10*1000; //delay between updates to xively
 
 void setup() {
   //Initialize serial and wait for port to open:
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
-  }
-
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
-  }
-
-  String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
-    Serial.println("Please upgrade the firmware");
+  Serial.begin(115200);
 
   // attempt to connect to Wifi network:
-  while ( status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(ssid, pass);
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(ssid);
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  status = WiFi.begin(ssid, pass);
 
-    // wait 10 seconds for connection:
-    delay(10000);
+  while ( status != WL_CONNECTED) {
+    status = WiFi.status();
+    // Print dots while trying to connect
+    Serial.print(".");
+    delay(100);
   }
   // you're connected now, so print out the status:
   printWifiStatus();
@@ -82,7 +70,7 @@ void setup() {
 
 void loop() {
   // read the analog sensor:
-  int sensorReading = analogRead(A0);
+  int sensorReading = analogRead(2);
 
   // if there's incoming data from the net connection.
   // send it out the serial port.  This is for debugging

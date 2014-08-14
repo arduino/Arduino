@@ -1,11 +1,12 @@
 /*
 
  This example connects to an unencrypted Wifi network.
- Then it prints the  MAC address of the Wifi shield,
+ Then it prints the MAC address of the Wifi BoosterPack / LaunchPad,
  the IP address obtained, and other network details.
 
  Circuit:
- * WiFi shield attached
+ * CC3200 WiFi LaunchPad or CC3100 WiFi BoosterPack
+   with TM4C or MSP430 LaunchPad
 
  created 13 July 2010
  by dlf (Metodo2 srl)
@@ -31,6 +32,7 @@ void setup() {
   WiFi.begin(ssid, pass);
   while ( status != WL_CONNECTED) {
     status = WiFi.status();
+    Serial.print(".");
     // wait .1 seconds for connection:
     delay(100);
   }
@@ -51,7 +53,7 @@ void loop() {
 }
 
 void printWifiData() {
-  // print your WiFi shield's IP address:
+  // print your WiFi IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);

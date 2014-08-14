@@ -49,7 +49,7 @@ void loop()
     memset(nameBuf, 0, 16);
     int i = 0;
     Serial.readBytes(nameBuf, bytes);
-    
+ 
     //
     //get the ip address and print it to the serial terminal
     //

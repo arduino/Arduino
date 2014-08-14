@@ -7,7 +7,6 @@
   Repeating Wifi Web Client
 
  This sketch connects to a a web server and makes a request
- using an Arduino Wifi shield.
 
  Circuit:
  * WiFi shield attached to pins SPI pins and pin 7
@@ -20,11 +19,12 @@
  modified 6 July 2014
  by Noah Luskey
 
- http://arduino.cc/en/Tutorial/WifiWebClientRepeating
  This code is in the public domain.
+
+ Circuit:
+ * CC3200 WiFi LaunchPad or CC3100 WiFi BoosterPack
+   with TM4C or MSP430 LaunchPad
  */
-
-
 
 char ssid[] = "your network";      //  your network SSID (name)
 char pass[] = "your password";   // your network password
@@ -36,8 +36,8 @@ int status = WL_IDLE_STATUS;
 WiFiClient client;
 
 // server address:
-char server[] = "www.arduino.cc";
-//IPAddress server(64,131,82,241);
+char server[] = "energia.nu";
+//IPAddress server(50,62,217,1);
 
 unsigned long lastConnectionTime = 0;            // last time you connected to the server, in milliseconds
 const unsigned long postingInterval = 10L * 1000L; // delay between updates, in milliseconds
@@ -46,18 +46,42 @@ void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
-  // attempt to connect to Wifi network:
-  Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
+  // print the network name (SSID);
+  Serial.print("Attempting to connect to Network named: ");
+  Serial.print(ssid);
+
+  uint16_t now = millis();
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
   status = WiFi.begin(ssid, pass);
   while ( status != WL_CONNECTED) {
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.status();
     Serial.print(".");
+    // Print dots while attempting to connect
+    delay(100);
+    // Print a new line every second
+    if(millis() - now > 1000) {
+      Serial.println();
+      now = millis();
+    }
   }
-  // you're connected now, so print out the status:
-  IPAddress empty(0,0,0,0);
-  while (WiFi.localIP() == empty);
+
+  Serial.println("\nConnected to wifi");
+
+  // wait for an assigned IP address
+  Serial.println("Waiting for IP address.");
+  while (WiFi.localIP() == INADDR_NONE) {
+    Serial.print(".");
+    // Print dots while while waiting for IP address
+    delay(100);
+    // Print a new line every second
+    if(millis() - now > 1000) {
+      Serial.println();
+      now = millis();
+    }
+  }
+
+  // We are connected and have an IP address.
+  // Print the WiFi status.
   printWifiStatus();
 }
 
@@ -89,8 +113,8 @@ void httpRequest() {
     Serial.println("connecting...");
     // send the HTTP PUT request:
     client.println("GET /latest.txt HTTP/1.1");
-    client.println("Host: www.arduino.cc");
-    client.println("User-Agent: ArduinoWiFi/1.1");
+    client.println("Host: www.energia.nu");
+    client.println("User-Agent: Energia/1.1");
     client.println("Connection: close");
     client.println();
 
@@ -109,7 +133,7 @@ void printWifiStatus() {
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
 
-  // print your WiFi shield's IP address:
+  // print your WiFi IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);

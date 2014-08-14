@@ -1,27 +1,31 @@
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <WiFiServer.h>
-
 /*
   WiFi Web Server LED Blink
 
  A simple web server that lets you blink an LED via the web.
- This sketch will print the IP address of your WiFi Shield (once connected)
+ This sketch will print the IP address of your WiFi (once connected)
  to the Serial monitor. From there, you can open that address in a web browser
  to turn on and off the LED on pin 9.
 
- If the IP address of your shield is yourAddress:
+ If the IP address of your WiFi is yourAddress:
  http://yourAddress/H turns the LED on
  http://yourAddress/L turns it off
 
  This example is written for a network using WPA encryption. For
  WEP or WPA, change the Wifi.begin() call accordingly.
 
+ Circuit:
+ * CC3200 WiFi LaunchPad or CC3100 WiFi BoosterPack
+   with TM4C or MSP430 LaunchPad
+
  created 25 Nov 2012
  by Tom Igoe
  modified 6 July 2014
  by Noah Luskey
  */
+#include <WiFi.h>
+
+char ssid[] = "your network";      //  your network SSID (name)
+char pass[] = "your password";   // your network password
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
@@ -29,9 +33,6 @@ WiFiServer server(80);
 void setup() {
   Serial.begin(115200);      // initialize serial communication
   pinMode(RED_LED, OUTPUT);      // set the LED pin mode
-
-  char ssid[] = "your network";      //  your network SSID (name)
-  char pass[] = "your password";   // your network password
 
   // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");
@@ -45,13 +46,12 @@ void setup() {
     delay(100);
   }
   delay(3000);
-  
+
   Serial.println("Starting webserver on port 80");
   server.begin();                           // start the web server on port 80
   Serial.println("Webserver started!");
   printWifiStatus();                        // you're connected now, so print out the status
 }
-
 
 void loop() {
   int i = 0;
@@ -132,7 +132,7 @@ void printWifiStatus() {
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
 
-  // print your WiFi shield's IP address:
+  // print your WiFi IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
