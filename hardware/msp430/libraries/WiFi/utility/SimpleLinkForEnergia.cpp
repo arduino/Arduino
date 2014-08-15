@@ -62,7 +62,7 @@ int spi_Open(char* pIfName , unsigned long flags)
     //set the spi port up using Energia functions
     //
     SPI.setBitOrder(MSBFIRST);
-	SPI.setDataMode(SPI_MODE0);
+    SPI.setDataMode(SPI_MODE0);
     SPI.begin();
     
     //
@@ -128,6 +128,7 @@ int spi_Write(int Fd , char* pBuff , int Len)
 
 int registerInterruptHandler(void* InterruptHdl , void* pValue)
 {
+    delay(100);
     DEBUG_TRACE("INTERRUPT REGISTER");
     
     //
@@ -151,6 +152,7 @@ int registerInterruptHandler(void* InterruptHdl , void* pValue)
         attachInterrupt(WiFiClass::pin_irq, (void (*)())InterruptHdl, RISING);
     }
     
+    delay(100);
     return 0;
 }
 
