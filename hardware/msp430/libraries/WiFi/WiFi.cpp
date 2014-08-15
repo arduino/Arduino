@@ -77,7 +77,7 @@ int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 uint8_t WiFiClass::pin_nhib = 5;
 uint8_t WiFiClass::pin_cs = 18;
 uint8_t WiFiClass::pin_irq = 19;
-
+WiFiClient WiFiClass::clients[MAX_SOCK_NUM];
 //
 //These "buffers" are used to "return" strings and IpAddress objects
 //Of course, the value must be used before it is overwritted
@@ -175,7 +175,7 @@ char* WiFiClass::firmwareVersion()
     //
     //underlying simplelink api is version 0.5 as of June 12th
     //
-    strcpy(string_output_buffer, "SimpleLink SDK 0.5");
+    strcpy(string_output_buffer, "SimpleLink SDK 0.52");
     return string_output_buffer;
 }
 

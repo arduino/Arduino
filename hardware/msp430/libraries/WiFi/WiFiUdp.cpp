@@ -18,9 +18,9 @@
  */
 
 extern "C" {
-    #include "Utility/SimpleLink.h"
-    #include "Utility/socket.h"
-    #include "Utility/wl_definitions.h"
+    #include "utility/SimpleLink.h"
+    #include "utility/socket.h"
+    #include "utility/wl_definitions.h"
 }
 
 #include <string.h>
