@@ -162,10 +162,12 @@ static const unsigned long g_ulSSIPins[] = {
 
 SPIClass::SPIClass(void) {
 	SSIModule = NOT_ACTIVE;
+	SSIBitOrder = MSBFIRST;
 }
 
 SPIClass::SPIClass(uint8_t module) {
 	SSIModule = module;
+	SSIBitOrder = MSBFIRST;
 }
   
 void SPIClass::begin() {
@@ -227,9 +229,11 @@ void SPIClass::end() {
 }
 
 void SPIClass::setBitOrder(uint8_t ssPin, uint8_t bitOrder) {
+	SSIBitOrder = bitOrder;
 }
 
 void SPIClass::setBitOrder(uint8_t bitOrder) {
+	SSIBitOrder = bitOrder;
 }
 
 void SPIClass::setDataMode(uint8_t mode) {
@@ -243,15 +247,24 @@ void SPIClass::setClockDivider(uint8_t divider){
 }
 
 uint8_t SPIClass::transfer(uint8_t data) {
-	unsigned long rxData;
+	unsigned long rxtxData;
 
-	ROM_SSIDataPut(SSIBASE, data);
+	rxtxData = data;
+	if(SSIBitOrder == LSBFIRST) {
+		asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of 32 bits 
+		asm("rev %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of bytes to get original bits into lowest byte 
+	}
+	ROM_SSIDataPut(SSIBASE, (uint8_t) rxtxData);
 
 	while(ROM_SSIBusy(SSIBASE));
 
-	ROM_SSIDataGet(SSIBASE, &rxData);
+	ROM_SSIDataGet(SSIBASE, &rxtxData);
+	if(SSIBitOrder == LSBFIRST) {
+		asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of 32 bits 
+		asm("rev %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of bytes to get original bits into lowest byte 
+	}
 
-	return (uint8_t) rxData;
+	return (uint8_t) rxtxData;
 }
 
 void SPIClass::setModule(uint8_t module) {

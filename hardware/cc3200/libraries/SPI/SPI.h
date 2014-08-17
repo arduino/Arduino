@@ -33,10 +33,14 @@
 #define SPI_EXTCLK_MASK 0xFF0 << 4
 #define BOOST_PACK_SPI 0
 
+#define MSBFIRST 1
+#define LSBFIRST 0
+
 class SPIClass
 {
 	private:
 		uint8_t SSIModule;
+		uint8_t SSIBitOrder;
 
 	public:
 		SPIClass(void);
