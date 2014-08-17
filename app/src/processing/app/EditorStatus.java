@@ -76,6 +76,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   //Thread promptThread;
   int response;
 
+  boolean initialized = false;
 
   public EditorStatus(Editor editor) {
     this.editor = editor;
@@ -112,7 +113,8 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   public void notice(String message) {
     mode = NOTICE;
     this.message = message;
-    copyErrorButton.setVisible(false);
+    if (copyErrorButton != null)
+      copyErrorButton.setVisible(false);
     //update();
     repaint();
   }
@@ -125,7 +127,8 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   public void error(String message) {
     mode = ERR;
     this.message = message;
-    copyErrorButton.setVisible(true);
+    if (copyErrorButton != null)
+      copyErrorButton.setVisible(true);
     repaint();
   }
 
@@ -247,7 +250,10 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
 
   public void paintComponent(Graphics screen) {
     //if (screen == null) return;
-    if (okButton == null) setup();
+    if (!initialized) {
+      setup();
+      initialized = true;
+    }
 
     //System.out.println("status.paintComponent");
 
@@ -448,25 +454,21 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
       add(progressBar);
       progressBar.setVisible(false);
       
-      copyErrorButton = new JButton(
-         "<html>" + _("Copy error") + "<br>" + _("to clipboard") + "</html>");
-      Font font = copyErrorButton.getFont();
-      font = new Font(font.getName(), font.getStyle(), (int) (font.getSize()*0.7));
-      copyErrorButton.setFont(font);
-      copyErrorButton.setHorizontalAlignment(JLabel.CENTER);
+      copyErrorButton = new JButton(_("Copy error messages"));
       add(copyErrorButton);
       copyErrorButton.setVisible(false);
       copyErrorButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          String message="";
+          String message = "";
+          message += _("Arduino: ") + Base.VERSION_NAME + " (" + System.getProperty("os.name") + "), ";
+          message += _("Board: ") + "\"" + Base.getBoardPreferences().get("name") + "\"\n\n";
+          message += editor.console.consoleTextPane.getText().trim();
           if ((Preferences.getBoolean("build.verbose")) == false) {
-            message = "  " + _("This report would have more information with") + "\n";
+            message += "\n\n";
+            message += "  " + _("This report would have more information with") + "\n";
             message += "  \"" + _("Show verbose output during compilation") + "\"\n";
             message += "  " + _("enabled in File > Preferences.") + "\n";
           }
-          message += _("Arduino: ") + Base.VERSION_NAME + " (" + System.getProperty("os.name") + "), ";
-          message += _("Board: ") + "\"" + Base.getBoardPreferences().get("name") + "\"\n";
-          message += editor.console.consoleTextPane.getText().trim();
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
           StringSelection data = new StringSelection(message);
           clipboard.setContents(data, null);
@@ -539,5 +541,9 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
         unedit();
       }
     }
+  }
+  
+  public boolean isInitialized() {
+    return initialized;
   }
 }
