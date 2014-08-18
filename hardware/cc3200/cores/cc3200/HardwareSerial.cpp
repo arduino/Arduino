@@ -73,6 +73,16 @@ static const unsigned long g_ulUARTInt[2] =
 
 //*****************************************************************************
 //
+// The list of UART pin modes.
+//
+//*****************************************************************************
+static const unsigned long g_ulUARTPinmode[2] =
+{
+	PIN_MODE_3, PIN_MODE_7
+};
+
+//*****************************************************************************
+//
 // The list of UART peripherals.
 //
 //*****************************************************************************
@@ -145,22 +155,22 @@ HardwareSerial::primeTransmit(unsigned long ulBase)
 {
 	/* Do we have any data to transmit? */
 	if(!TX_BUFFER_EMPTY) {
-		/* Disable the UART interrupt. If we don't do this there is a race
-		 * condition which can cause the read index to be corrupted. */
-		MAP_IntDisable(g_ulUARTInt[uartModule]);
-
 		/* Yes - take some characters out of the transmit buffer and feed
 		 * them to the UART transmit FIFO. */
 		while(!TX_BUFFER_EMPTY){
-			while(MAP_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY){
-				MAP_UARTCharPutNonBlocking(ulBase, txBuffer[txReadIndex]);
+			if (MAP_UARTSpaceAvail(ulBase)) {
+				/* Disable TX IRQ while stuffing the FIFO to avoid a race condition
+				/* on the txReadIndex variable
+				 */
+				MAP_UARTIntDisable(UART_BASE, UART_INT_TX);
+				while(MAP_UARTSpaceAvail(ulBase) && !TX_BUFFER_EMPTY){
+					MAP_UARTCharPutNonBlocking(ulBase, txBuffer[txReadIndex]);
 
-				txReadIndex = (txReadIndex + 1) % txBufferSize;
+					txReadIndex = (txReadIndex + 1) % txBufferSize;
+				}
+				MAP_UARTIntEnable(UART_BASE, UART_INT_TX);
 			}
 		}
-
-		/* Reenable the UART interrupt */
-		MAP_IntEnable(g_ulUARTInt[uartModule]);
 	}
 }
 
@@ -180,8 +190,8 @@ void HardwareSerial::begin(unsigned long baud)
 
 	MAP_PRCMPeripheralClkEnable(g_ulUARTPeriph[uartModule], PRCM_RUN_MODE_CLK);
 
-	MAP_PinTypeUART(g_ulUARTConfig[uartModule][0], PIN_MODE_3);
-	MAP_PinTypeUART(g_ulUARTConfig[uartModule][1], PIN_MODE_3);
+	MAP_PinTypeUART(g_ulUARTConfig[uartModule][0], g_ulUARTPinmode[uartModule]);
+	MAP_PinTypeUART(g_ulUARTConfig[uartModule][1], g_ulUARTPinmode[uartModule]);
 
 	MAP_UARTConfigSetExpClk(UART_BASE, 80000000, baudRate,
 				(UART_CONFIG_PAR_NONE | UART_CONFIG_STOP_ONE |
@@ -193,12 +203,12 @@ void HardwareSerial::begin(unsigned long baud)
 	/* Enable the UART operation. */
 	MAP_UARTEnable(UART_BASE);
 
-	MAP_UARTIntEnable(UART_BASE, UART_INT_RT | UART_INT_TX);
+	MAP_UARTIntEnable(UART_BASE, UART_INT_RX | UART_INT_RT | UART_INT_TX);
 }
 
 void HardwareSerial::setModule(unsigned long module)
 {
-	MAP_UARTIntDisable(UART_BASE, UART_INT_RT | UART_INT_TX);
+	MAP_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_RT | UART_INT_TX);
 	MAP_UARTIntUnregister(UART_BASE);
 	uartModule = module;
 	begin(baudRate);
@@ -216,7 +226,7 @@ void HardwareSerial::end()
 		MAP_IntMasterEnable();
 	}
 
-	MAP_UARTIntDisable(UART_BASE, UART_INT_RT | UART_INT_TX);
+	MAP_UARTIntDisable(UART_BASE, UART_INT_RX | UART_INT_RT | UART_INT_TX);
 	MAP_UARTIntUnregister(UART_BASE);
 }
 
@@ -243,15 +253,22 @@ int HardwareSerial::peek(void)
 
 int HardwareSerial::read(void)
 {
-	unsigned char cChar = peek();
+	int iChar = peek();
+	if (iChar < 0)
+		return iChar;
 
 	rxReadIndex = ((rxReadIndex) + 1) % rxBufferSize;
-	return cChar;
+	return iChar;
 }
 
 void HardwareSerial::flush()
 {
 	while(!TX_BUFFER_EMPTY);
+}
+
+HardwareSerial::operator bool()
+{
+	return true;  // Arduino compatibility
 }
 
 size_t HardwareSerial::write(uint8_t c)
@@ -272,7 +289,7 @@ size_t HardwareSerial::write(uint8_t c)
 	 * up to transmit it. */
 	if(!TX_BUFFER_EMPTY) {
 		primeTransmit(UART_BASE);
-		MAP_UARTIntEnable(UART_BASE, UART_INT_TX);
+		//MAP_UARTIntEnable(UART_BASE, UART_INT_TX);  // redundant - primeTransmit sets this now
 	}
 
 	/* Return the number of characters written. */
@@ -299,7 +316,8 @@ void HardwareSerial::UARTIntHandler(void)
 		}
 	}
 
-	if(ulInts & (UART_INT_RT | UART_INT_TX)) {
+	/* Handle RX data */
+	if(ulInts & (UART_INT_RT | UART_INT_RX)) {
 		while(MAP_UARTCharsAvail(UART_BASE)) {
 			/* Read a character */
 			lChar = MAP_UARTCharGetNonBlocking(UART_BASE);
@@ -311,13 +329,7 @@ void HardwareSerial::UARTIntHandler(void)
 
 			rxBuffer[rxWriteIndex] = (unsigned char)(lChar & 0xFF);
 			rxWriteIndex = ((rxWriteIndex) + 1) % rxBufferSize;
-
-			/* If we wrote anything to the transmit buffer, make sure it actually
-			 * gets transmitted. */
 		}
-
-		primeTransmit(UART_BASE);
-		MAP_UARTIntEnable(UART_BASE, UART_INT_TX);
 	}
 }
 
