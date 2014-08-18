@@ -266,6 +266,11 @@ void HardwareSerial::flush()
 	while(!TX_BUFFER_EMPTY);
 }
 
+HardwareSerial::operator bool()
+{
+	return true;  // Arduino compatibility
+}
+
 size_t HardwareSerial::write(uint8_t c)
 {
 	unsigned int numTransmit = 0;
