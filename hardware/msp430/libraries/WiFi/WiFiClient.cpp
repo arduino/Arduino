@@ -195,7 +195,7 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size)
     sl_SetSockOpt(WiFiClass::_handleArray[_socketIndex], SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
 
     //
-    //write the bufer to the socket
+    //write the buffer to the socket
     //
     int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
 
@@ -285,7 +285,7 @@ int WiFiClient::read()
     if ( available() ) {
         return rx_buffer[rx_currentIndex++];
     } else {
-        return 0;
+        return -1;
     }
 }
 
@@ -293,14 +293,20 @@ int WiFiClient::read()
 int WiFiClient::read(uint8_t* buf, size_t size)
 {
     //
-    //read the requested number of bytes into the buffer
-    //this won't read past the end of the data since read() handles that
-    //
-    int i;
-    for (i = 0; i < size; i++) {
-        buf[i] = read();
+    // read up to the requested number of bytes into the buffer
+    // uses direct buffer copies to speed things up
+    if (!available()) {
+        return 0;
     }
-    return i;
+
+    int len = rx_fillLevel - rx_currentIndex;
+    if (len > size) {
+        len = size;
+    }
+    memcpy(buf, &rx_buffer[rx_currentIndex], len);
+    rx_currentIndex += len;
+
+    return len;
 }
 
 //--tested, working--//
@@ -312,7 +318,7 @@ int WiFiClient::peek()
     if (rx_currentIndex < rx_fillLevel) {
         return rx_buffer[rx_currentIndex];
     } else {
-        return 0;
+        return -1;
     }
 }
 
