@@ -33,10 +33,9 @@
 //     -felide-constructors
 //     -std=c++0x
 
-//class __FlashStringHelper;
-//#define F(string_literal) (reinterpret_cast<__FlashStringHelper *>(PSTR(string_literal)))
+class __FlashStringHelper;
+//#define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
 #define F(string_literal) (string_literal)
-
 // An inherited class for holding the result of a concatenation.  These
 // result objects are assumed to be writable by subsequent concatenations.
 class StringSumHelper;
@@ -51,6 +50,8 @@ class String
 	void StringIfHelper() const {}
 
 public:
+    //addition for temboo compatability with energia
+    const char* c_str() const {return buffer;}
 	// constructors
 	// creates a copy of the initial value.
 	// if the initial value is null or invalid, or if memory allocation
@@ -157,7 +158,7 @@ public:
 	int lastIndexOf( char ch, unsigned int fromIndex ) const;
 	int lastIndexOf( const String &str ) const;
 	int lastIndexOf( const String &str, unsigned int fromIndex ) const;
-	String substring( unsigned int beginIndex ) const;
+	String substring( unsigned int beginIndex ) const { return substring(beginIndex, len); };
 	String substring( unsigned int beginIndex, unsigned int endIndex ) const;
 
 	// modification
