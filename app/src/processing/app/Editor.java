@@ -152,7 +152,6 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable presentHandler;
   Runnable stopHandler;
   Runnable exportHandler;
-  Runnable exportAppHandler;
 
 
   public Editor(Base ibase, String path, int[] location) throws Exception {
@@ -558,15 +557,7 @@ public class Editor extends JFrame implements RunnerListener {
     item = newJMenuItem(_("Upload"), 'U');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          handleExport(false);
-        }
-      });
-    fileMenu.add(item);
-
-    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
+          handleExport();
         }
       });
     fileMenu.add(item);
@@ -1411,12 +1402,11 @@ public class Editor extends JFrame implements RunnerListener {
 
   public void setHandlers(Runnable runHandler, Runnable presentHandler,
                           Runnable stopHandler,
-                          Runnable exportHandler, Runnable exportAppHandler) {
+                          Runnable exportHandler) {
     this.runHandler = runHandler;
     this.presentHandler = presentHandler;
     this.stopHandler = stopHandler;
     this.exportHandler = exportHandler;
-    this.exportAppHandler = exportAppHandler;
   }
 
 
@@ -1425,7 +1415,6 @@ public class Editor extends JFrame implements RunnerListener {
     presentHandler = new DefaultPresentHandler();
     stopHandler = new DefaultStopHandler();
     exportHandler = new DefaultExportHandler();
-    exportAppHandler = new DefaultExportAppHandler();
   }
 
 
@@ -2374,13 +2363,13 @@ public class Editor extends JFrame implements RunnerListener {
    * Made synchronized to (hopefully) avoid problems of people
    * hitting export twice, quickly, and horking things up.
    */
-  synchronized public void handleExport(final boolean usingProgrammer) {
+  synchronized public void handleExport() {
     //if (!handleExportCheckModified()) return;
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
     status.progress(_("Uploading to I/O Board..."));
 
-    new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
+    new Thread(exportHandler).start();
   }
 
   // DAM: in Arduino, this is upload
@@ -2395,49 +2384,7 @@ public class Editor extends JFrame implements RunnerListener {
 
         uploading = true;
 
-        boolean success = sketch.exportApplet(false);
-        if (success) {
-          statusNotice(_("Done uploading."));
-        } else {
-          // error message will already be visible
-        }
-      } catch (SerialNotFoundException e) {
-        populatePortMenu();
-        if (serialMenu.getItemCount() == 0) statusError(e);
-        else if (serialPrompt()) run();
-        else statusNotice(_("Upload canceled."));
-      } catch (PreferencesMapException e) {
-        statusError(I18n.format(
-                    _("Error while uploading: missing '{0}' configuration parameter"),
-                    e.getMessage()));
-      } catch (RunnerException e) {
-        //statusError("Error during upload.");
-        //e.printStackTrace();
-        status.unprogress();
-        statusError(e);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      status.unprogress();
-      uploading = false;
-      //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
-    }
-  }
-
-  // DAM: in Arduino, this is upload (with verbose output)
-  class DefaultExportAppHandler implements Runnable {
-    public void run() {
-
-      try {
-        if (serialMonitor != null) {
-          serialMonitor.close();
-          serialMonitor.setVisible(false);
-        }
-
-        uploading = true;
-
-        boolean success = sketch.exportApplet(true);
+        boolean success = sketch.exportApplet();
         if (success) {
           statusNotice(_("Done uploading."));
         } else {

@@ -45,11 +45,23 @@ import cc.arduino.packages.Uploader;
 
 public class SerialUploader extends Uploader {
 
-  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception {
+  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, List<String> warningsAccumulator) throws Exception {
+    if (Preferences.get("programmer").equals("internal"))
+      return uploadUsingBootloader(buildPath, className);
+    else
+      return uploadUsingProgrammer(buildPath, className);
+  }
+
+  public boolean uploadUsingBootloader(String buildPath, String className) throws Exception {
     // FIXME: Preferences should be reorganized
     TargetPlatform targetPlatform = Base.getTargetPlatform();
     PreferencesMap prefs = Preferences.getMap();
     prefs.putAll(Base.getBoardPreferences());
+
+    // if no protocol is specified for this board, assume it lacks a bootloader
+    if (prefs.get("upload.protocol") == null)
+      throw new RunnerException(_("Upload using bootloader not supported for this board"));
+
     String tool = prefs.getOrExcept("upload.tool");
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
@@ -57,12 +69,6 @@ public class SerialUploader extends Uploader {
       tool = split[1];
     }
     prefs.putAll(targetPlatform.getTool(tool));
-
-    // if no protocol is specified for this board, assume it lacks a 
-    // bootloader and upload using the selected programmer.
-    if (usingProgrammer || prefs.get("upload.protocol") == null) {
-      return uploadUsingProgrammer(buildPath, className);
-    }
 
     // need to do a little dance for Leonardo and derivatives:
     // open then close the port at the magic baudrate (usually 1200 bps) first

@@ -252,7 +252,7 @@ software=ARDUINO
 # Warn when data segment uses greater than this percentage
 build.warn_data_percentage = 75
 
-programmer = arduino:avrispmkii
+programmer = internal
 
 upload.using = bootloader
 upload.verify = true
