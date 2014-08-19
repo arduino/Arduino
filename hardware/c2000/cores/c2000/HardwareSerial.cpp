@@ -173,6 +173,11 @@ int HardwareSerial::available(void)
 	return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % SERIAL_BUFFER_SIZE;
 }
 
+HardwareSerial::operator bool()
+{
+	return true;
+}
+
 int HardwareSerial::peek(void)
 {
 	if (_rx_buffer->head == _rx_buffer->tail) {
