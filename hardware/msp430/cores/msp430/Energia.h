@@ -189,6 +189,9 @@ void analogResolution(uint16_t);
 void delay(uint32_t milliseconds);
 void sleep(uint32_t milliseconds);
 void sleepSeconds(uint32_t seconds);
+void suspend(void);
+extern volatile boolean stay_asleep;
+#define wakeup() { stay_asleep = false; }
 
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);

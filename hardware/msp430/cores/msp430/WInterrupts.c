@@ -127,6 +127,8 @@ __attribute__((interrupt(PORT1_VECTOR)))
 void Port_1(void)
 {
 	uint8_t i;
+	boolean still_sleeping = stay_asleep;
+
 	for(i = 0; i < 8; i++) {
 		if((P1IFG & BV(i)) && intFuncP1[i]) {
 			intFuncP1[i]();
@@ -139,6 +141,10 @@ void Port_1(void)
 			}
 		}
 	}
+
+	if (stay_asleep != still_sleeping) {
+		__bic_SR_register_on_exit(LPM4_bits);
+	}
 }
 
 #if defined(__MSP430_HAS_PORT2_R__)
@@ -146,6 +152,8 @@ __attribute__((interrupt(PORT2_VECTOR)))
 void Port_2(void)
 {
 	uint8_t i;
+	boolean still_sleeping = stay_asleep;
+
 	for(i = 0; i < 8; i++) {
 		if((P2IFG & BV(i)) && intFuncP2[i]) {
 			intFuncP2[i]();
@@ -157,6 +165,10 @@ void Port_2(void)
 				P2IFG &= ~BV(i);
 			}
 		}
+	}
+
+	if (stay_asleep != still_sleeping) {
+		__bic_SR_register_on_exit(LPM4_bits);
 	}
 }
 #endif
