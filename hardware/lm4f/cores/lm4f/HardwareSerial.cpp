@@ -2,7 +2,7 @@
  ************************************************************************
  *	HardwareSerial.cpp
  *
- *	Arduino core files for MSP430
+ *	Arduino core files for ARM Cortex-M4F: Tiva-C and Stellaris
  *		Copyright (c) 2012 Robert Wessels. All right reserved.
  *
  *
@@ -314,6 +314,11 @@ HardwareSerial::setPins(unsigned long pins)
 		ROM_GPIOPinConfigure(g_ulUARTConfig[1][1]);
 		ROM_GPIOPinTypeUART(g_ulUARTPort[1], g_ulUARTPins[1]);
 	}
+}
+
+HardwareSerial::operator bool()
+{
+	return true;
 }
 
 void HardwareSerial::end()

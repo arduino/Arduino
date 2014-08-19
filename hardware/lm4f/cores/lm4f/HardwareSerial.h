@@ -1,8 +1,8 @@
 /*
   ************************************************************************
-  *	TimerSerial.h
+  *	HardwareSerial.h
   *
-  *	Arduino core files for MSP430
+  *	Arduino core files for ARM Cortex-M4F: Tiva-C and Stellaris
   *		Copyright (c) 2012 Robert Wessels. All right reserved.
   *
   *
@@ -45,20 +45,20 @@ class HardwareSerial : public Stream
 {
 
 	private:
-        unsigned char *txBuffer;
-        unsigned long txBufferSize;
-        unsigned long txWriteIndex;
-        unsigned long txReadIndex;
-        unsigned char *rxBuffer;
-        unsigned long rxBufferSize;
-        unsigned long rxWriteIndex;
-        unsigned long rxReadIndex;
-        unsigned long uartModule;
-        unsigned long baudRate;
-        void flushAll(void);
-        void primeTransmit(unsigned long ulBase);
+		unsigned char *txBuffer;
+		unsigned long txBufferSize;
+		unsigned long txWriteIndex;
+		unsigned long txReadIndex;
+		unsigned char *rxBuffer;
+		unsigned long rxBufferSize;
+		unsigned long rxWriteIndex;
+		unsigned long rxReadIndex;
+		unsigned long uartModule;
+		unsigned long baudRate;
+		void flushAll(void);
+		void primeTransmit(unsigned long ulBase);
 
-    public:
+	public:
 		HardwareSerial(void);
 		HardwareSerial(unsigned long);
 		void begin(unsigned long);
@@ -70,8 +70,9 @@ class HardwareSerial : public Stream
 		virtual int peek(void);
 		virtual int read(void);
 		virtual void flush(void);
-        void UARTIntHandler(void);
-        virtual size_t write(uint8_t c);
+		void UARTIntHandler(void);
+		virtual size_t write(uint8_t c);
+		operator bool();
 		using Print::write; // pull in write(str) and write(buf, size) from Print
         
 };
