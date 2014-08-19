@@ -178,13 +178,31 @@ size_t EthernetClient::write(uint8_t b) {
 
 
 size_t EthernetClient::write(const uint8_t *buf, size_t size) {
-	err_t err = tcp_write(cpcb, buf, size, TCP_WRITE_FLAG_COPY);
+	uint32_t i = 0, inc = 0;
+	boolean stuffed_buffer = false;
 
-	if (err == ERR_MEM) {
-		/* TODO: Need to send smaller chunks if fails */
+	// Attempt to write in 1024-byte increments.
+	while (i < size) {
+		inc = (size-i) < 1024 ? size-i : 1024;
+		err_t err = tcp_write(cpcb, buf+i, inc, TCP_WRITE_FLAG_COPY);
+		if (err != ERR_MEM) {
+			// Keep enqueueing the lwIP buffer until it's full...
+			i += inc;
+			stuffed_buffer = false;
+		} else {
+			if (!stuffed_buffer) {
+				// Buffer full; force output
+				if (cs->mode) tcp_output(cpcb);
+				stuffed_buffer = true;
+			} else {
+				delay(1);  // else wait a little bit for lwIP to flush its buffers
+			}
+		}
 	}
-
-	if(cs->mode) tcp_output(cpcb);
+	// flush any remaining queue contents
+	if (!stuffed_buffer) {
+		if (cs->mode) tcp_output(cpcb);
+	}
 }
 
 int EthernetClient::available() {
@@ -234,7 +252,7 @@ int EthernetClient::read(uint8_t *buf, size_t size)
 {
 	uint16_t avail = available();
 	uint16_t i;
-	int8_t b;
+	int b;
 
 	if(!avail)
 		return -1;
