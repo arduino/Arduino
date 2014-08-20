@@ -37,7 +37,7 @@
 #ifndef RX_FILTERS_PREPROCESSOR_CLI_IF_H_
 #define RX_FILTERS_PREPROCESSOR_CLI_IF_H_
 
-#include "simplelink.h"
+#include "SimpleLink.h"
 
 #ifdef	__cplusplus
 extern "C" {

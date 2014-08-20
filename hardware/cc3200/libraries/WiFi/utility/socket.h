@@ -35,7 +35,7 @@
 */
  
 
-#include "simplelink.h"
+#include "SimpleLink.h"
 
 #ifndef __SL_SOCKET_H__
 #define __SL_SOCKET_H__

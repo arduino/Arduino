@@ -34,7 +34,7 @@
 
 extern "C" {
   #include "utility/wl_definitions.h"
-  #include "Utility/Socket.h"
+  #include "utility/socket.h"
 }
 
 #include "WiFi.h"

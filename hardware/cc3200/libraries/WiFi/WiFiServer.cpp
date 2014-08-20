@@ -20,10 +20,10 @@
 #include <string.h>
 
 extern "C" {
-    #include "Utility/simplelink.h"
-    #include "Utility/socket.h"
-    #include "Utility/wl_definitions.h"
-    #include "Utility/netapp.h"
+    #include "utility/SimpleLink.h"
+    #include "utility/socket.h"
+    #include "utility/wl_definitions.h"
+    #include "utility/netapp.h"
 }
 
 #include "WiFi.h"
