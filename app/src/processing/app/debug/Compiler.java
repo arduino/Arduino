@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import processing.app.Base;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
 import processing.app.SketchCode;
@@ -49,7 +49,7 @@ import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
 import processing.app.preproc.PdePreprocessor;
-import processing.app.legacy.PApplet;;
+import processing.app.legacy.PApplet;
 
 public class Compiler implements MessageConsumer {
 
@@ -563,7 +563,7 @@ public class Compiler implements MessageConsumer {
       throws RunnerException {
     String includes = prepareIncludes(includeFolders);
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
     dict.put("includes", includes);
     dict.put("source_file", sourceFile.getAbsolutePath());
     dict.put("object_file", objectFile.getAbsolutePath());
@@ -582,7 +582,7 @@ public class Compiler implements MessageConsumer {
     String includes = prepareIncludes(includeFolders);
 
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
     dict.put("includes", includes);
     dict.put("source_file", sourceFile.getAbsolutePath());
     dict.put("object_file", objectFile.getAbsolutePath());
@@ -601,7 +601,7 @@ public class Compiler implements MessageConsumer {
     String includes = prepareIncludes(includeFolders);
 
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
     dict.put("includes", includes);
     dict.put("source_file", sourceFile.getAbsolutePath());
     dict.put("object_file", objectFile.getAbsolutePath());
@@ -728,7 +728,7 @@ public class Compiler implements MessageConsumer {
     for (File file : coreObjectFiles) {
 
       PreferencesMap dict = new PreferencesMap(prefs);
-      dict.put("ide_version", "" + Base.REVISION);
+      dict.put("ide_version", "" + BaseNoGui.REVISION);
       dict.put("archive_file", "core.a");
       dict.put("object_file", file.getAbsolutePath());
 
@@ -769,7 +769,7 @@ public class Compiler implements MessageConsumer {
     dict.put("compiler.c.elf.flags", flags);
     dict.put("archive_file", "core.a");
     dict.put("object_files", objectFileList);
-    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
 
     String[] cmdArray;
     try {
@@ -784,7 +784,7 @@ public class Compiler implements MessageConsumer {
   // 5. extract EEPROM data (from EEMEM directive) to .eep file.
   void compileEep() throws RunnerException {
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
 
     String[] cmdArray;
     try {
@@ -799,7 +799,7 @@ public class Compiler implements MessageConsumer {
   // 6. build the .hex file
   void compileHex() throws RunnerException {
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + Base.REVISION);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
 
     String[] cmdArray;
     try {
