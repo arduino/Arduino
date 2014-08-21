@@ -80,6 +80,10 @@ void loop() {
             client.println("<h1 align=center><font color=\"red\">Welcome to the CC3200 WiFi Web Server</font></h1>");
             client.print("RED LED <button onclick=\"location.href='/H'\">HIGH</button>");
             client.println(" <button onclick=\"location.href='/L'\">LOW</button><br>");
+            client.print("<p>LED=");
+            client.print(digitalRead(RED_LED)==1?"On":"Off");
+            client.print("<p>");
+
 
             // The HTTP response ends with another blank line:
             client.println();
