@@ -31,7 +31,7 @@ public class NetworkMonitor extends AbstractMonitor {
 //  private MessageSiphon errorConsumer;
   private int connectionAttempts;
 
-  public NetworkMonitor(BoardPort port, Base base) {
+  public NetworkMonitor(BoardPort port) {
     super(port.getLabel());
     this.port = port;
     this.ipAddress = port.getAddress();
