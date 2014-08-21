@@ -100,32 +100,32 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 		P2IE |= bit;
 		break;
 	#endif
-#if defined(PORT3_VECTOR)
+    #if defined(PORT3_VECTOR)
 case P3:
-	if(mode != CHANGE) {
-		P3IES = mode ? P3IES | bit : P3IES & ~bit;
-	} else {
-		intChangeVectP3 |= bit;
-		P3IES = (P3IN & bit) ? (P3IES | bit) : (P3IES & ~bit);
-	}
-	P3IFG &= ~bit;
-	intFuncP3[bit_pos(bit)] = userFunc;
-	P3IE |= bit;
-	break;
-#endif
-#if defined(PORT4_VECTOR)
+		if(mode != CHANGE) {
+			P3IES = mode ? P3IES | bit : P3IES & ~bit;
+		} else {
+			intChangeVectP3 |= bit;
+			P3IES = (P3IN & bit) ? (P3IES | bit) : (P3IES & ~bit);
+		}
+		P3IFG &= ~bit;
+		intFuncP3[bit_pos(bit)] = userFunc;
+		P3IE |= bit;
+		break;
+    #endif
+    #if defined(PORT4_VECTOR)
 case P4:
-	if(mode != CHANGE) {
-		P4IES = mode ? P4IES | bit : P4IES & ~bit;
-	} else {
-		intChangeVectP4 |= bit;
-		P4IES = (P4IN & bit) ? (P4IES | bit) : (P4IES & ~bit);
-	}
-	P4IFG &= ~bit;
-	intFuncP4[bit_pos(bit)] = userFunc;
-	P4IE |= bit;
-	break;
-#endif
+		if(mode != CHANGE) {
+			P4IES = mode ? P4IES | bit : P4IES & ~bit;
+		} else {
+			intChangeVectP4 |= bit;
+			P4IES = (P4IN & bit) ? (P4IES | bit) : (P4IES & ~bit);
+		}
+		P4IFG &= ~bit;
+		intFuncP4[bit_pos(bit)] = userFunc;
+		P4IE |= bit;
+		break;
+    #endif
 	default:
 		break;
 	}
@@ -145,27 +145,27 @@ void detachInterrupt(uint8_t interruptNum) {
 		intFuncP1[bit_pos(bit)] = 0;
 		intChangeVectP1 &= ~(bit);
 		break;
-#if defined(PORT2_VECTOR)
+    #if defined(PORT2_VECTOR)
 	case P2:
 		P2IE &= ~bit;
 		intFuncP2[bit_pos(bit)] = 0;
 		intChangeVectP2 &= ~(bit);
 		break;
-#endif
-#if defined(PORT3_VECTOR)
-case P3:
-	P3IE &= ~bit;
-	intFuncP3[bit_pos(bit)] = 0;
-	intChangeVectP3 &= ~(bit);
-	break;
-#endif
-#if defined(PORT4_VECTOR)
-case P4:
-	P4IE &= ~bit;
-	intFuncP4[bit_pos(bit)] = 0;
-	intChangeVectP4 &= ~(bit);
-	break;
-#endif
+	#endif
+	#if defined(PORT3_VECTOR)
+	case P3:
+		P3IE &= ~bit;
+		intFuncP3[bit_pos(bit)] = 0;
+		intChangeVectP3 &= ~(bit);
+		break;
+	#endif
+	#if defined(PORT4_VECTOR)
+	case P4:
+		P4IE &= ~bit;
+		intFuncP4[bit_pos(bit)] = 0;
+		intChangeVectP4 &= ~(bit);
+		break;
+	#endif
 	default:
 		break;
 	}
@@ -175,6 +175,8 @@ __attribute__((interrupt(PORT1_VECTOR)))
 void Port_1(void)
 {
 	uint8_t i;
+	boolean still_sleeping = stay_asleep;
+
 	for(i = 0; i < 8; i++) {
 		if((P1IFG & BV(i)) && intFuncP1[i]) {
 			intFuncP1[i]();
@@ -187,6 +189,10 @@ void Port_1(void)
 			}
 		}
 	}
+
+	if (stay_asleep != still_sleeping) {
+		__bic_SR_register_on_exit(LPM4_bits);
+	}
 }
 
 #if defined(PORT2_VECTOR)
@@ -194,6 +200,8 @@ __attribute__((interrupt(PORT2_VECTOR)))
 void Port_2(void)
 {
 	uint8_t i;
+	boolean still_sleeping = stay_asleep;
+
 	for(i = 0; i < 8; i++) {
 		if((P2IFG & BV(i)) && intFuncP2[i]) {
 			intFuncP2[i]();
@@ -206,6 +214,9 @@ void Port_2(void)
 			}
 		}
 	}
+	if (stay_asleep != still_sleeping) {
+		__bic_SR_register_on_exit(LPM4_bits);
+	}
 }
 #endif
 
@@ -214,6 +225,8 @@ __attribute__((interrupt(PORT3_VECTOR)))
 void Port_3(void)
 {
 	uint8_t i;
+	boolean still_sleeping = stay_asleep;
+
 	for(i = 0; i < 8; i++) {
 		if((P3IFG & BV(i)) && intFuncP3[i]) {
 			intFuncP3[i]();
@@ -226,6 +239,9 @@ void Port_3(void)
 			}
 		}
 	}
+	if (stay_asleep != still_sleeping) {
+		__bic_SR_register_on_exit(LPM4_bits);
+	}
 }
 #endif
 
@@ -234,6 +250,8 @@ __attribute__((interrupt(PORT4_VECTOR)))
 void Port_4(void)
 {
 	uint8_t i;
+	boolean still_sleeping = stay_asleep;
+
 	for(i = 0; i < 8; i++) {
 		if((P4IFG & BV(i)) && intFuncP4[i]) {
 			intFuncP4[i]();
@@ -245,6 +263,9 @@ void Port_4(void)
 				P4IFG &= ~BV(i);
 			}
 		}
+	}
+	if (stay_asleep != still_sleeping) {
+		__bic_SR_register_on_exit(LPM4_bits);
 	}
 }
 #endif
