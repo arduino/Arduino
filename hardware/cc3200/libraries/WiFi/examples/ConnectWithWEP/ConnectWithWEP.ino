@@ -26,33 +26,46 @@
  by Noah Luskey
  */
  
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
+#include <SPI.h>
+#endif
 #include <WiFi.h>
 
-char ssid[] = "yourNetwork";                     // your network SSID (name)
-char key[] = "0123456789ABCDEF";                 // your network key
-int keyIndex = 0;                                // your network key Index number
-int status = WL_IDLE_STATUS;                     // the Wifi radio's status
+// your network name also called SSID
+char ssid[] = "energia";
+// your network password (key)
+char key[] = "0123456789ABCDEF";
+// your network key Index number
+int keyIndex = 1;
 
 void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
   // attempt to connect to Wifi network:
-  Serial.print("Attempting to connect to WEP network, SSID: ");
-  Serial.println(ssid);
-  status = WiFi.begin(ssid, keyIndex, key);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
+  Serial.print("Attempting to connect to Network named: ");
+  // print the network name (SSID);
+  Serial.println(ssid); 
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  WiFi.begin(ssid, keyIndex, key);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
     Serial.print(".");
-    // wait .1 seconds for connection:
-    delay(100);
+    delay(300);
+  }
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
   }
 
-  // once you are connected :
-  Serial.print("You're connected to the network");
-  IPAddress empty(0,0,0,0);
-  while (WiFi.localIP() == empty);
-  //now you have an ip address
+  Serial.println("\nIP Address obtained");
+
   printCurrentNet();
   printWifiData();
 }

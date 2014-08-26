@@ -1,8 +1,3 @@
-#include <WiFi.h>
-#include <WiFiClient.h>
-#include <WiFiServer.h>
-#include <WiFiUdp.h>
-
 /*
   Repeating Wifi Web Client
 
@@ -26,11 +21,16 @@
    with TM4C or MSP430 LaunchPad
  */
 
-char ssid[] = "your network";      //  your network SSID (name)
-char pass[] = "your password";   // your network password
-int keyIndex = 0;            // your network key Index number (needed only for WEP)
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
+#include <SPI.h>
+#endif
+#include <WiFi.h>
 
-int status = WL_IDLE_STATUS;
+// your network name also called SSID
+char ssid[] = "energia";
+// your network password
+char password[] = "launchpad";
 
 // Initialize the Wifi client library
 WiFiClient client;
@@ -46,40 +46,28 @@ void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
-  // print the network name (SSID);
+  // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");
-  Serial.print(ssid);
-
-  uint16_t now = millis();
+  // print the network name (SSID);
+  Serial.println(ssid); 
   // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-  status = WiFi.begin(ssid, pass);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
+  WiFi.begin(ssid, password);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
     Serial.print(".");
-    // Print dots while attempting to connect
-    delay(100);
-    // Print a new line every second
-    if(millis() - now > 1000) {
-      Serial.println();
-      now = millis();
-    }
+    delay(300);
   }
-
-  Serial.println("\nConnected to wifi");
-
-  // wait for an assigned IP address
-  Serial.println("Waiting for IP address.");
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
   while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
     Serial.print(".");
-    // Print dots while while waiting for IP address
-    delay(100);
-    // Print a new line every second
-    if(millis() - now > 1000) {
-      Serial.println();
-      now = millis();
-    }
+    delay(300);
   }
 
+  Serial.println("\nIP Address obtained");
   // We are connected and have an IP address.
   // Print the WiFi status.
   printWifiStatus();
@@ -112,7 +100,7 @@ void httpRequest() {
   if (client.connect(server, 80)) {
     Serial.println("connecting...");
     // send the HTTP PUT request:
-    client.println("GET /latest.txt HTTP/1.1");
+    client.println("GET /hello.html HTTP/1.1");
     client.println("Host: www.energia.nu");
     client.println("User-Agent: Energia/1.1");
     client.println("Connection: close");

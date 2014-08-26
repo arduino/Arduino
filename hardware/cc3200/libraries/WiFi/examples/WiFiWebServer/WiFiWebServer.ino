@@ -24,11 +24,12 @@
 #include <WiFiServer.h>
 
 
-char ssid[] = "Apple Network";      // your network SSID (name)
-char pass[] = "z74caxuairp7ort10";   // your network password
-int keyIndex = 0;                 // your network key Index number (needed only for WEP)
-
-int status = WL_IDLE_STATUS;
+// your network name also called SSID
+char ssid[] = "networkname";
+// your network password
+char password[] = "password";
+// your network key Index number (needed only for WEP)
+int keyIndex = 0;
 
 WiFiServer server(80);
 
@@ -38,21 +39,32 @@ void setup() {
 
   // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");
-  Serial.println(ssid);                   // print the network name (SSID);
+  // print the network name (SSID);
+  Serial.println(ssid); 
   // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-  status = WiFi.begin(ssid, pass);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
+  WiFi.begin(ssid, password);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
     Serial.print(".");
-    // wait .1 seconds for connection:
-    delay(100);
+    delay(300);
   }
-  delay(3000);
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
+  }
+
+  // you're connected now, so print out the status  
+  printWifiStatus();
   
   Serial.println("Starting webserver on port 80");
   server.begin();                           // start the web server on port 80
   Serial.println("Webserver started!");
-  printWifiStatus();                        // you're connected now, so print out the status
+
 }
 
 
@@ -113,7 +125,7 @@ void loop() {
 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
+  Serial.print("Network Name: ");
   Serial.println(WiFi.SSID());
 
   // print your WiFi shield's IP address:

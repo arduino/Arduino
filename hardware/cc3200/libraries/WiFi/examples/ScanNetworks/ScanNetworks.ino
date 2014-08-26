@@ -15,6 +15,8 @@
  */
 
 
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
 #include <SPI.h>
 #include <WiFi.h>
 

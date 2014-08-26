@@ -22,12 +22,19 @@
  modified 6 July 2014
  by Noah Luskey
  */
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
+#include <SPI.h>
+#endif
 #include <WiFi.h>
 
-char ssid[] = "your network";      //  your network SSID (name)
-char pass[] = "your password";   // your network password
+// your network name also called SSID
+char ssid[] = "energia";
+// your network password
+char password[] = "supersecret";
+// your network key Index number (needed only for WEP)
+int keyIndex = 0;
 
-int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
 void setup() {
@@ -36,21 +43,33 @@ void setup() {
 
   // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");
-  Serial.println(ssid);                   // print the network name (SSID);
+  // print the network name (SSID);
+  Serial.println(ssid); 
   // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-  status = WiFi.begin(ssid, pass);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
+  WiFi.begin(ssid, password);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
     Serial.print(".");
-    // wait .1 seconds for connection:
-    delay(100);
+    delay(300);
   }
-  delay(3000);
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
+  }
+
+  Serial.println("\nIP Address obtained");
+  
+  // you're connected now, so print out the status  
+  printWifiStatus();
 
   Serial.println("Starting webserver on port 80");
   server.begin();                           // start the web server on port 80
   Serial.println("Webserver started!");
-  printWifiStatus();                        // you're connected now, so print out the status
 }
 
 void loop() {
@@ -80,10 +99,6 @@ void loop() {
             client.println("<h1 align=center><font color=\"red\">Welcome to the CC3200 WiFi Web Server</font></h1>");
             client.print("RED LED <button onclick=\"location.href='/H'\">HIGH</button>");
             client.println(" <button onclick=\"location.href='/L'\">LOW</button><br>");
-            client.print("<p>LED=");
-            client.print(digitalRead(RED_LED)==1?"On":"Off");
-            client.print("<p>");
-
 
             // The HTTP response ends with another blank line:
             client.println();

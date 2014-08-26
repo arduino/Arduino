@@ -9,46 +9,59 @@
  created 3 July 2014
  by Noah Luskey
  */
+ 
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
+#include <SPI.h>
+#endif
 #include <WiFi.h>
 #include <WiFiClient.h>
 
-char ssid[] = "your network";     //  your network SSID (name)
-char pass[] = "your password";  // your network password
-uint16_t port = 9999;     // port number of the server
-IPAddress server(10, 0, 1, 6);   // IP Address of the server
-WiFiClient client;
+// your network name also called SSID
+char ssid[] = "energia";
+// your network password
+char password[] = "supersecret";
+// your network key Index number (needed only for WEP)
+int keyIndex = 0;
 
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
+uint16_t port = 9999;     // port number of the server
+IPAddress server(146, 252, 242, 250);   // IP Address of the server
+WiFiClient client;
 
 void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
   // attempt to connect to Wifi network:
-  Serial.print("Attempting to connect to WPA SSID: ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, pass);
-  int tries = 0;
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
-    // wait .1 seconds for connection:
-    delay(100);
+  Serial.print("Attempting to connect to Network named: ");
+  // print the network name (SSID);
+  Serial.println(ssid); 
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  WiFi.begin(ssid, password);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
     Serial.print(".");
-    if (tries++ > 100) {
-      Serial.println("Couldn't connect to your wifi network");
-      Serial.println("check your ssid and password.");
-      while(1);
-    }
+    delay(300);
+  }
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
   }
 
-  // you're connected now, so print out the data:
-  Serial.println("\nYou're connected to the network");
-  IPAddress empty(0,0,0,0);
-  while (WiFi.localIP() == empty); //wait for IP assignment
+  Serial.println("\nIP Address obtained");
+  
+  // you're connected now, so print out the status  
+  printWifiStatus();
   
   // attempt to connect to the server
   Serial.println("Attempting to connect to server");
-  tries = 0;
+
+  uint8_t tries = 0;
   while (client.connect(server, port) == false) {
     Serial.print(".");
     if (tries++ > 100) {
@@ -82,3 +95,19 @@ void loop() {
   
 }
 
+void printWifiStatus() {
+  // print the SSID of the network you're attached to:
+  Serial.print("Network Name: ");
+  Serial.println(WiFi.SSID());
+
+  // print your WiFi shield's IP address:
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+
+  // print the received signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("signal strength (RSSI):");
+  Serial.print(rssi);
+  Serial.println(" dBm");
+}
