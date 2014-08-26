@@ -142,7 +142,9 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
         process = builder.start();
 
       } else {
-        process = Runtime.getRuntime().exec(commandArray);
+        ProcessBuilder builder = new ProcessBuilder(commandArray);
+        builder.directory(new File(Base.getLM4FBasePath()));
+        process = builder.start();
       }
 
       new MessageSiphon(process.getInputStream(), this);
