@@ -567,7 +567,7 @@ public class Preferences {
     String newPath = sketchbookLocationField.getText();
     if (newPath.isEmpty()) {
       if (Base.getPortableFolder() == null)
-        newPath = editor.base.getDefaultSketchbookFolder().toString();
+        newPath = editor.base.getDefaultSketchbookFolderOrPromptForIt().toString();
       else
         newPath = Base.getPortableSketchbookFolder();
     }
