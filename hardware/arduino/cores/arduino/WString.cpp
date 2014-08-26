@@ -453,6 +453,19 @@ unsigned char String::equals(const char *cstr) const
 	return strcmp(buffer, cstr) == 0;
 }
 
+unsigned char String::equals(const __FlashStringHelper *fstr) const
+{
+	const char PROGMEM *p = (const char PROGMEM *)fstr;
+	
+	for (int i = 0; i < len; i++)
+	{
+		if (pgm_read_byte(p) == 0) return 0;
+		if (buffer[i] != (char)pgm_read_byte(p++)) return 0;
+	}
+	
+	return 1;
+}
+
 unsigned char String::operator<(const String &rhs) const
 {
 	return compareTo(rhs) < 0;

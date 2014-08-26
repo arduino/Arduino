@@ -139,10 +139,13 @@ public:
 	int compareTo(const String &s) const;
 	unsigned char equals(const String &s) const;
 	unsigned char equals(const char *cstr) const;
+	unsigned char equals(const __FlashStringHelper *fstr) const;
 	unsigned char operator == (const String &rhs) const {return equals(rhs);}
 	unsigned char operator == (const char *cstr) const {return equals(cstr);}
+	unsigned char operator == (const __FlashStringHelper *fstr) const {return equals(fstr);}
 	unsigned char operator != (const String &rhs) const {return !equals(rhs);}
 	unsigned char operator != (const char *cstr) const {return !equals(cstr);}
+	unsigned char operator != (const __FlashStringHelper *fstr) const {return !equals(fstr);}
 	unsigned char operator <  (const String &rhs) const;
 	unsigned char operator >  (const String &rhs) const;
 	unsigned char operator <= (const String &rhs) const;
