@@ -1,5 +1,5 @@
 /*
- * simplelink.h - CC31xx/CC32xx Host Driver Implementation
+ * SimpleLink.h - CC31xx/CC32xx Host Driver Implementation
  *
  * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
  * 

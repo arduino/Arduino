@@ -34,16 +34,16 @@
 
 #include <Energia.h>
 #include "WiFi.h"
-#include "Utility/wl_definitions.h"
+#include "utility/wl_definitions.h"
 
 
 extern "C" {
-    #include "Utility/SimpleLink.h"
+    #include "utility/SimpleLink.h"
     #include <string.h>
-    #include "Utility/wlan.h"
-    #include "Utility/netcfg.h"
-    #include "Utility/netapp.h"
-    #include "Utility/socket.h"
+    #include "utility/wlan.h"
+    #include "utility/netcfg.h"
+    #include "utility/netapp.h"
+    #include "utility/socket.h"
 }
 
 //

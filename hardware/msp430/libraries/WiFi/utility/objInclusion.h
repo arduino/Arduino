@@ -34,7 +34,7 @@
  *
 */
 
-#include "simplelink.h"
+#include "SimpleLink.h"
 
 #ifndef OBJINCLUSION_H_
 #define OBJINCLUSION_H_

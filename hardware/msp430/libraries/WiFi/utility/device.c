@@ -40,7 +40,7 @@
 
  *****************************************************************************/
 #include "datatypes.h"
-#include "simplelink.h"
+#include "SimpleLink.h"
 #include "protocol.h"
 #include "flowcont.h"
 #include "driver.h"
