@@ -287,11 +287,10 @@ uint16_t analogRead(uint8_t pin)
 		channel = pin - 128;
 	else
 		channel = digitalPinToADCIn(pin);
-	
+
 	// Check if pin is valid
 	if (pin==NOT_ON_ADC)
 		return 0;
-
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
     //  0000 A0
     //  0001 A1

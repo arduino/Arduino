@@ -1,0 +1,9 @@
+##############################################################
+lpcc3200.name=LaunchPad w/ cc3200 (80MHz)
+lpcc3200.upload.maximum_size=262144
+lpcc3200.build.mcu=cortex-m4
+lpcc3200.build.f_cpu=80000000L
+lpcc3200.build.core=cc3200
+lpcc3200.build.variant=launchpad
+lpcc3200.ldscript=cc3200.ld
+#lpcc3200.upload.maximum_ram_size=32768

@@ -6,4 +6,6 @@ core/core.jar
 build/macosx/arduino.xcworkspace/contents.xcworkspacedata
 build/macosx/arduino.xcworkspace/xcuserdata/mellis.xcuserdatad/UserInterfaceState.xcuserstate
 app/run.cmd
+build/macosx/msp430_tools_mac.zip
+build/macosx/arm_tools_mac.zip
 **/tags

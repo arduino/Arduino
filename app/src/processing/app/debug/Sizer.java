@@ -53,7 +53,7 @@ public class Sizer implements MessageConsumer {
         " "
       };
     } 
-    else if (arch == "lm4f") {
+    else if (arch == "lm4f" || arch == "cc3200") {
       String basePath = Base.getLM4FBasePath();
       commandSize = new String[] {
         basePath + "arm-none-eabi-size",
@@ -73,7 +73,7 @@ public class Sizer implements MessageConsumer {
         " "
       };
     }
-    if(arch == "lm4f") {
+    if(arch == "lm4f" || arch == "cc3200") {
       commandSize[1] = buildPath + File.separator + sketchName + ".elf";    	
     }else {
     	commandSize[1] = buildPath + File.separator + sketchName + ".hex";
@@ -123,7 +123,7 @@ public class Sizer implements MessageConsumer {
       String arch = Base.getArch();
       StringTokenizer st = new StringTokenizer(s, " ");
       try {
-        if(arch == "lm4f") {
+        if(arch == "lm4f" || arch == "cc3200") {
         	size = (new Integer(st.nextToken().trim())).longValue();
         	size += (new Integer(st.nextToken().trim())).longValue();
         } else {
