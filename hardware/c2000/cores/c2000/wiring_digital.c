@@ -158,7 +158,7 @@ int digitalRead(uint8_t pin)
 	        return LOW;
 
     }
-   
+    return LOW;
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)
