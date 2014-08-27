@@ -463,6 +463,8 @@ unsigned char String::equals(const __FlashStringHelper *fstr) const
 		if (buffer[i] != (char)pgm_read_byte(p++)) return 0;
 	}
 	
+	if (pgm_read_byte(p) != 0) return 0;
+	
 	return 1;
 }
 
