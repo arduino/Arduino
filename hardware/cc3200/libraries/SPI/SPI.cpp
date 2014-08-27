@@ -81,7 +81,7 @@ void SPIClass::begin() {
 	/* 4 MHz clock, MODE 0, 3 PIN with CS under S/W control */
 	MAP_SPIConfigSetExpClk(SSIBASE,MAP_PRCMPeripheralClockGet(PRCM_GSPI),
 				4000000, SPI_MODE_MASTER, SPI_MODE0,
-				(SPI_SW_CTRL_CS |
+				(SPI_HW_CTRL_CS |
 				SPI_3PIN_MODE |
 				SPI_TURBO_OFF |
 				SPI_CS_ACTIVELOW |
@@ -118,11 +118,13 @@ void SPIClass::setClockDivider(uint8_t divider)
 	 * configure the EXTCLK in MCSPI_CHCTRL.
 	 * Note that the peripheral clock is set to 40 MHz vs System Clock @ 80 MHz */
 
+	uint16_t _divider = ((MAP_PRCMPeripheralClockGet(PRCM_GSPI) / (MAX_BITRATE / divider))  - 1);
+
 	HWREG(SSIBASE + MCSPI_O_CH0CONF) &= ~SPI_CLKD_MASK;
-	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= ((divider & 0x0000000F) << 2);
+	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= ((_divider & 0x0000000F) << 2);
 
 	HWREG(SSIBASE + MCSPI_O_CH0CTRL) &= ~SPI_EXTCLK_MASK;
-	HWREG(SSIBASE + MCSPI_O_CH0CTRL) |= ((divider & 0x00000FF0) << 4);
+	HWREG(SSIBASE + MCSPI_O_CH0CTRL) |= ((_divider & 0x00000FF0) << 4);
 	SPIEnable(SSIBASE);
 }
 
@@ -138,7 +140,7 @@ uint8_t SPIClass::transfer(uint8_t data)
 		data = (uint8_t) rxtxData;
 	}
 
-	MAP_SPITransfer(SSIBASE, &data, &rxData, 1, SPI_CS_ENABLE|SPI_CS_DISABLE);
+	MAP_SPITransfer(SSIBASE, &data, &rxData, 1, 0);
 
 	if(SSIBitOrder == LSBFIRST) {
 		rxtxData = rxData;
