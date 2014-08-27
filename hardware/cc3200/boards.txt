@@ -6,4 +6,4 @@ lpcc3200.build.f_cpu=80000000L
 lpcc3200.build.core=cc3200
 lpcc3200.build.variant=launchpad
 lpcc3200.ldscript=cc3200.ld
-lpcc3200.upload.maximum_ram_size=32768
+#lpcc3200.upload.maximum_ram_size=32768

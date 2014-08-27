@@ -135,11 +135,16 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
 
         //process = Runtime.getRuntime().exec(commandArray, envp);
       } else if(Base.isLinux()) {
-        String envp[] = { "LD_LIBRARY_PATH=" + Base.getHardwarePath() + "/tools/msp430/bin" };
-        process = Runtime.getRuntime().exec(commandArray, envp);
+        ProcessBuilder builder = new ProcessBuilder(commandArray);
+        Map<String, String> env = builder.environment();
+        env.put("LD_LIBRARY_PATH", Base.getHardwarePath() + "/tools/msp430/bin");
+        builder.directory(new File(Base.getLM4FBasePath()));
+        process = builder.start();
 
       } else {
-        process = Runtime.getRuntime().exec(commandArray);
+        ProcessBuilder builder = new ProcessBuilder(commandArray);
+        builder.directory(new File(Base.getLM4FBasePath()));
+        process = builder.start();
       }
 
       new MessageSiphon(process.getInputStream(), this);

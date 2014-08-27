@@ -22,11 +22,11 @@
 
 #include <Energia.h>
 #include "IPAddress.h"
-#include "Utility/wl_definitions.h"
-#include "Utility/Simplelink.h"
+#include "utility/wl_definitions.h"
+#include "utility/SimpleLink.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"
-
+#include "WiFiUdp.h"
 //
 //Max socket number is 8
 //

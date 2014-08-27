@@ -1,7 +1,7 @@
 /*
 
  This example connects to a WEP-encrypted Wifi network.
- Then it prints the  MAC address of the Wifi shield,
+ Then it prints the MAC address of the Wifi BoosterPack / LaunchPad,
  the IP address obtained, and other network details.
 
  If you use 40-bit WEP, you need a key that is 10 characters long,
@@ -15,7 +15,8 @@
  all in the 0-9, A-F range.
 
  Circuit:
- * WiFi shield attached
+ * CC3200 WiFi LaunchPad or CC3100 WiFi BoosterPack
+   with TM4C or MSP430 LaunchPad
 
  created 13 July 2010
  by dlf (Metodo2 srl)
@@ -25,32 +26,46 @@
  by Noah Luskey
  */
  
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
+#include <SPI.h>
+#endif
 #include <WiFi.h>
 
-char ssid[] = "yourNetwork";                     // your network SSID (name)
-char key[] = "0123456789ABCDEF";                 // your network key
-int keyIndex = 0;                                // your network key Index number
-int status = WL_IDLE_STATUS;                     // the Wifi radio's status
+// your network name also called SSID
+char ssid[] = "energia";
+// your network password (key)
+char key[] = "0123456789ABCDEF";
+// your network key Index number
+int keyIndex = 1;
 
 void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
   // attempt to connect to Wifi network:
-  Serial.print("Attempting to connect to WEP network, SSID: ");
-  Serial.println(ssid);
-  status = WiFi.begin(ssid, keyIndex, key);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
-    // wait .1 seconds for connection:
-    delay(100);
+  Serial.print("Attempting to connect to Network named: ");
+  // print the network name (SSID);
+  Serial.println(ssid); 
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  WiFi.begin(ssid, keyIndex, key);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
+    Serial.print(".");
+    delay(300);
+  }
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
   }
 
-  // once you are connected :
-  Serial.print("You're connected to the network");
-  IPAddress empty(0,0,0,0);
-  while (WiFi.localIP() == empty);
-  //now you have an ip address
+  Serial.println("\nIP Address obtained");
+
   printCurrentNet();
   printWifiData();
 }
@@ -62,7 +77,7 @@ void loop() {
 }
 
 void printWifiData() {
-  // print your WiFi shield's IP address:
+  // print your WiFi IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);

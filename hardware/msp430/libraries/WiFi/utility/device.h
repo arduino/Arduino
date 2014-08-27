@@ -37,7 +37,7 @@
 #ifndef __DEVICE_H__
 #define	__DEVICE_H__
 
-#include "simplelink.h"
+#include "SimpleLink.h"
 
 #ifdef	__cplusplus
 extern "C" {

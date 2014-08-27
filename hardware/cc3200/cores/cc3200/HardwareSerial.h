@@ -68,6 +68,7 @@ class HardwareSerial : public Stream
 		virtual void flush(void);
 		void UARTIntHandler(void);
 		virtual size_t write(uint8_t c);
+		operator bool();
 		using Print::write; // pull in write(str) and write(buf, size) from Print
 };
 

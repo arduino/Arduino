@@ -1,12 +1,12 @@
 /*
-
- This example  prints the Wifi shield's MAC address, and
- scans for available Wifi networks using the Wifi shield.
+ This example prints the Wifi MAC address, and
+ scans for available Wifi networks.
  Every ten seconds, it scans again. It doesn't actually
  connect to any network, so no encryption scheme is specified.
  
  Circuit:
- * WiFi shield attached
+ * CC3200 WiFi LaunchPad or CC3100 WiFi BoosterPack
+   with TM4C or MSP430 LaunchPad
  
  created 13 July 2010
  by dlf (Metodo2 srl)
@@ -15,6 +15,8 @@
  */
 
 
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
 #include <SPI.h>
 #include <WiFi.h>
 
@@ -40,7 +42,7 @@ void loop() {
 }
 
 void printMacAddress() {
-  // the MAC address of your Wifi shield
+  // the MAC address of your Wifi
   byte mac[6];
 
   // print your MAC address:

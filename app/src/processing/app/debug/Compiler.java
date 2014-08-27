@@ -705,33 +705,43 @@ public class Compiler implements MessageConsumer {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "msp430-gcc",
           "-c", // compile, don't link
-          "-g", // include debugging info (so errors include line numbers)
+//          "-g", // include debugging info (so errors include line numbers)
           "-assembler-with-cpp",
           "-mmcu=" + boardPreferences.get("build.mcu"),
           "-DF_CPU=" + boardPreferences.get("build.f_cpu"),
           "-DARDUINO=" + Base.REVISION,
           "-DENERGIA=" + Base.EREVISION,
         }));
+        
+        if(Preferences.getBoolean("build.debug"))
+        	baseCommandCompiler.add("-g");
+
     } else if (arch == "lm4f" || arch == "cc3200") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
           "-c",
-          "-g",
-          "-gdwarf-2",
+//          "-g",
+//          "-gdwarf-2",
           "-assembler-with-cpp",
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-mthumb", "-mcpu=cortex-m4"
         }));
 
-	if(arch == "lm4f") {
-		baseCommandCompiler.add("-mfloat-abi=hard");
-		baseCommandCompiler.add("-mfpu=fpv4-sp-d16");
-		baseCommandCompiler.add("-fsingle-precision-constant");
-	}
+		if(arch == "lm4f") {
+			baseCommandCompiler.add("-mfloat-abi=hard");
+			baseCommandCompiler.add("-mfpu=fpv4-sp-d16");
+			baseCommandCompiler.add("-fsingle-precision-constant");
+		}
 
         baseCommandCompiler.add("-DF_CPU=" + boardPreferences.get("build.f_cpu"));
         baseCommandCompiler.add("-DARDUINO=" + Base.REVISION);
         baseCommandCompiler.add("-DENERGIA=" + Base.EREVISION);
+
+        if(Preferences.getBoolean("build.debug")) {
+        	baseCommandCompiler.add("-g");
+        	baseCommandCompiler.add("-gdwarf-2");
+        }
+
     } else if (arch == "c2000") {
     	
         String[] filePrefix = new String[2];
@@ -797,7 +807,7 @@ public class Compiler implements MessageConsumer {
       baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "msp430-gcc",
         "-c", // compile, don't link
-        "-g", // include debugging info (so errors include line numbers)
+//        "-g", // include debugging info (so errors include line numbers)
         "-Os", // optimize for size
         Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections", // place each function in its own section
@@ -808,12 +818,16 @@ public class Compiler implements MessageConsumer {
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
+
+      if(Preferences.getBoolean("build.debug"))
+      	baseCommandCompiler.add("-g");
+
       }else if (arch == "lm4f" || arch == "cc3200") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
         "-c",
-        "-g",
-        "-gdwarf-2",
+//        "-g",
+//        "-gdwarf-2",
         "-O0", //changed from -Os
         Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections",
@@ -831,6 +845,12 @@ public class Compiler implements MessageConsumer {
         baseCommandCompiler.add("-MMD"); // output dependancy info
         baseCommandCompiler.add("-DARDUINO=" + Base.REVISION);
         baseCommandCompiler.add("-DENERGIA=" + Base.EREVISION);
+
+        if(Preferences.getBoolean("build.debug")) {
+        	baseCommandCompiler.add("-g");
+        	baseCommandCompiler.add("-gdwarf-2");
+        }
+
       } else if (arch == "c2000") {
       	
           String[] filePrefix = new String[2];
@@ -902,7 +922,7 @@ public class Compiler implements MessageConsumer {
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
         basePath + "msp430-g++",
         "-c", // compile, don't link
-        "-g", // include debugging info (so errors include line numbers)
+//        "-g", // include debugging info (so errors include line numbers)
         "-Os", // optimize for size
         Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections", // place each function in its own section
@@ -913,13 +933,16 @@ public class Compiler implements MessageConsumer {
         "-DARDUINO=" + Base.REVISION,
         "-DENERGIA=" + Base.EREVISION,
       }));
+      
+      if(Preferences.getBoolean("build.debug"))
+      	baseCommandCompilerCPP.add("-g");
     } 
     else if (arch == "lm4f" || arch == "cc3200") {
         baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-g++",
           "-c",
-          "-g", // include debugging info (so errors include line numbers)
-          "-gdwarf-2",
+//          "-g", // include debugging info (so errors include line numbers)
+//          "-gdwarf-2",
           "-O0", //changed from -Os
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-rtti",
@@ -939,6 +962,12 @@ public class Compiler implements MessageConsumer {
         baseCommandCompilerCPP.add("-MMD"); // output dependancy info
         baseCommandCompilerCPP.add("-DARDUINO=" + Base.REVISION);
         baseCommandCompilerCPP.add("-DENERGIA=" + Base.EREVISION);
+
+        if(Preferences.getBoolean("build.debug")) {
+        	baseCommandCompilerCPP.add("-g");
+        	baseCommandCompilerCPP.add("-gdwarf-2");
+        }
+
     }else if (arch == "c2000") {
     	
       String[] filePrefix = new String[2];

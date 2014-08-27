@@ -51,10 +51,12 @@ static const unsigned long g_ulSSIPinModes[][4] = {
 
 SPIClass::SPIClass(void) {
 	SSIModule = NOT_ACTIVE;
+	SSIBitOrder = MSBFIRST;
 }
 
 SPIClass::SPIClass(uint8_t module) {
 	SSIModule = module;
+	SSIBitOrder = MSBFIRST;
 }
   
 void SPIClass::begin() {
@@ -95,14 +97,12 @@ void SPIClass::end()
 
 void SPIClass::setBitOrder(uint8_t ssPin, uint8_t bitOrder)
 {
-	/* CC3200 does not support changing the bit order
-	 * Bit order is MSB first */
+	SSIBitOrder = bitOrder;
 }
 
 void SPIClass::setBitOrder(uint8_t bitOrder)
 {
-	/* CC3200 does not support changing the bit order
-	 * Bit order is MSB first */
+	SSIBitOrder = bitOrder;
 }
 
 void SPIClass::setDataMode(uint8_t mode)
@@ -128,9 +128,24 @@ void SPIClass::setClockDivider(uint8_t divider)
 
 uint8_t SPIClass::transfer(uint8_t data)
 {
+	uint32_t rxtxData;
 	uint8_t rxData;
 
+	if(SSIBitOrder == LSBFIRST) {
+		rxtxData = data;
+		asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of 32 bits 
+		asm("rev %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of bytes to get original bits into lowest byte 
+		data = (uint8_t) rxtxData;
+	}
+
 	MAP_SPITransfer(SSIBASE, &data, &rxData, 1, SPI_CS_ENABLE|SPI_CS_DISABLE);
+
+	if(SSIBitOrder == LSBFIRST) {
+		rxtxData = rxData;
+		asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of 32 bits 
+		asm("rev %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of bytes to get original bits into lowest byte 
+		rxData = (uint8_t) rxtxData;
+	}
 
 	return (uint8_t) rxData;
 }

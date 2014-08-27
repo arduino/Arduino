@@ -34,7 +34,7 @@
  *
 */
     
-#include "simplelink.h"
+#include "SimpleLink.h"
 
 #ifndef __NETCFG_H__
 #define	__NETCFG_H__

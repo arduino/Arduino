@@ -124,6 +124,7 @@ public class Preferences {
   JCheckBox checkUpdatesBox;
   JTextField fontSizeField;
   JCheckBox updateExtensionBox;
+  JCheckBox debugEnableBox;
   JCheckBox autoAssociateBox;
 
   JComboBox comboFont;
@@ -370,6 +371,15 @@ public class Preferences {
     right = Math.max(right, left + d.width);
     top += d.height + GUI_BETWEEN;    
 
+    // [ ] Include debug information in the output ELF file
+
+    debugEnableBox = new JCheckBox(_("Include debug information in the output ELF file"));
+    pain.add(debugEnableBox);
+    d = debugEnableBox.getPreferredSize();
+    debugEnableBox.setBounds(left, top, d.width + 10, d.height);
+    right = Math.max(right, left + d.width);
+    top += d.height + GUI_BETWEEN;    
+
     // [ ] Automatically associate .pde files with Processing
 
     if (Base.isWindows()) {
@@ -522,6 +532,7 @@ public class Preferences {
   protected void applyFrame() {
     // put each of the settings into the table
     setBoolean("build.verbose", verboseCompilationBox.isSelected());
+    setBoolean("build.debug", debugEnableBox.isSelected());
     setBoolean("upload.verbose", verboseUploadBox.isSelected());
     setBoolean("upload.verify", verifyUploadBox.isSelected());
     
@@ -581,6 +592,7 @@ public class Preferences {
 
     // set all settings entry boxes to their actual status
     verboseCompilationBox.setSelected(getBoolean("build.verbose"));
+    debugEnableBox.setSelected(getBoolean("build.debug"));
     verboseUploadBox.setSelected(getBoolean("upload.verbose"));
     verifyUploadBox.setSelected(getBoolean("upload.verify"));
 
