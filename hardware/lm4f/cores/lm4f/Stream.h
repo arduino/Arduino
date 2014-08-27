@@ -37,7 +37,7 @@ readBytesBetween( pre_string, terminator, buffer, length)
 
 class Stream : public Print
 {
-  private:
+  protected:
     unsigned long _timeout;      // number of milliseconds to wait for the next char before aborting timed read
     unsigned long _startMillis;  // used for timeout measurement
     int timedRead();    // private method to read stream with timeout
@@ -45,7 +45,6 @@ class Stream : public Print
     int peekNextDigit(); // returns the next numeric digit in the stream or -1 if timeout
 
   public:
- 
     virtual int available() = 0;
     virtual int read() = 0;
     virtual int peek() = 0;
@@ -83,6 +82,9 @@ class Stream : public Print
   // returns the number of characters placed in the buffer (0 means no valid data found)
 
   // Arduino String functions to be added here
+  String readString();
+  String readStringUntil(char terminator);
+
   protected:
   long parseInt(char skipChar); // as above but the given skipChar is ignored
   // as above but the given skipChar is ignored

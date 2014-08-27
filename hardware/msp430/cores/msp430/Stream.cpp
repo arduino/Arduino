@@ -20,7 +20,7 @@
  parsing functions based on TextFinder library by Michael Margolis
  */
 
-#include "Energia.h"
+#include "Arduino.h"
 #include "Stream.h"
 
 #define PARSE_TIMEOUT 1000  // default number of milli-seconds to wait
@@ -75,7 +75,7 @@ void Stream::setTimeout(unsigned long timeout)  // sets the maximum number of mi
  // find returns true if the target string is found
 bool  Stream::find(char *target)
 {
-  return findUntil(target, NULL);
+  return findUntil(target, "");
 }
 
 // reads data from the stream until the target string of given length is found
@@ -242,5 +242,29 @@ size_t Stream::readBytesUntil(char terminator, char *buffer, size_t length)
     index++;
   }
   return index; // return number of characters, not including null terminator
+}
+
+String Stream::readString()
+{
+  String ret;
+  int c = timedRead();
+  while (c >= 0)
+  {
+    ret += (char)c;
+    c = timedRead();
+  }
+  return ret;
+}
+
+String Stream::readStringUntil(char terminator)
+{
+  String ret;
+  int c = timedRead();
+  while (c >= 0 && c != terminator)
+  {
+    ret += (char)c;
+    c = timedRead();
+  }
+  return ret;
 }
 
