@@ -83,7 +83,11 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
+#ifdef TMS320F28069
+#define CPU_FREQ     90E6        // Set to 90 MHz for F28069
+#else
 #define CPU_FREQ     60E6        // Default = 60 MHz. Change to 50E6 for 50 MHz devices
+#endif
 #define LSPCLK_FREQ CPU_FREQ/4
 
 void HardwareSerial::begin(unsigned long baud)

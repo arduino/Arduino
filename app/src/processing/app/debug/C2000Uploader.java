@@ -295,7 +295,8 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
 
-		if (Base.isMacOS() || Base.isLinux()) {
+		//if (Base.isMacOS() || Base.isLinux()) {
+		if (Base.isMacOS()) {
 			System.out.println("Firmware programming not currently supported in Linux and MacOS");
 			Component frame = null;
 			JOptionPane.showMessageDialog(frame,
@@ -311,7 +312,20 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 
 //		boolean ret = mspdebug(params);
 		//Find our flash kernel
-	    File flashKernel = new File(new File(new File(target.getFolder(), "flash_kernel"),"Debug"), "flash_kernel.txt");
+		String name = boardPreferences.get("build.mcu");
+		File flashKernel;
+		if(name.equals("TMS320F28027"))
+		{
+			flashKernel = new File(new File(new File(target.getFolder(), "F28027_flash_kernel"),"Debug"), "flash_kernel.txt");
+		}
+		else if(name.equals("TMS320F28069"))
+		{
+			flashKernel = new File(new File(new File(target.getFolder(), "F28069_flash_kernel"),"Debug"), "2806_flash_kernel.txt");
+		}
+		else
+		{
+			flashKernel = new File(new File(new File(target.getFolder(), "F28027_flash_kernel"),"Debug"), "flash_kernel.txt");
+		}
 	    String flashKernelPath = flashKernel.getAbsolutePath();
 	    File appImage = new File(buildPath + File.separator + className + ".txt");
 	    String applicationPath = appImage.getAbsolutePath();
@@ -343,8 +357,13 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
             cmd[1] = "/C" ;
             cmd[2] = String.format("%s -f %s -k %s -b %s -p %s",loaderPath, applicationPath, flashKernelPath, serialRate, port);
         }
-	    
-
+        else if( osName.equals("Linux"))
+        {
+           	loaderPath = loaderPath.substring(0,loaderPath.length()-4);
+        	cmd[0] = "bash" ;
+            cmd[1] = "-c" ;
+            cmd[2] = String.format("%s -f %s -k %s -b %s -p %s",loaderPath, applicationPath, flashKernelPath, serialRate, port);
+        }
 		return executeUploadCommand(cmd);
 	}
 	

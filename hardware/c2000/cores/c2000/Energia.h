@@ -4,8 +4,14 @@
 #ifdef __cplusplus
 typedef unsigned char _Bool;
 #endif
-#include <F2802x_device.h>
+
+#ifdef TMS320F28027
+#include <F2802x_Device.h>
 #include "f2802x_common/include/F2802x_DefaultISR.h"
+#elif defined(TMS320F28069)
+#include <F2806x_Device.h>
+#include "F2806x_common/include/F2806x_DefaultISR.h"
+#endif
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
@@ -55,7 +61,15 @@ enum{
   PWM3A,
   PWM3B,
   PWM4A,
-  PWM4B
+  PWM4B,
+  PWM5A,
+  PWM5B,
+  PWM6A,
+  PWM6B,
+  PWM7A,
+  PWM7B,
+  PWM8A,
+  PWM8B
   };
 
 enum{
@@ -63,6 +77,7 @@ enum{
 	PORT_A_1,
 	PORT_A_2,
 	PORT_B_1,
+  PORT_B_2
 };
 
 // The following pointer to a function call calibrates the ADC and internal oscillators
@@ -70,8 +85,11 @@ enum{
 
 // DO NOT MODIFY THIS LINE.
 //#define DELAY_US(A)  DSP28x_usDelay((unsigned long)((((long double) A * 1000.0L) / (long double)(1000000000L/F_CPU)) - 9.0L) / 5.0L)
+#ifdef TMS320F28027
 #define DELAY_US(A)  DSP28x_usDelay((uint32_t)((((long double) A * 1000.0L) / (long double)16.667L) - 9.0L) / 5.0L)
-
+#elif defined(TMS320F28069)
+#define DELAY_US(A)  DSP28x_usDelay((uint32_t)((((long double) A * 1000.0L) / (long double)11.111L) - 9.0L) / 5.0L)
+#endif
 
 // These are defined by the linker (see F2808.cmd)
 extern void* RamfuncsLoadStart;

@@ -1677,7 +1677,7 @@ public class Base {
 	    String path = getHardwarePath() + File.separator + "tools" +
 	                  File.separator + "c2000" + File.separator + "bin" + File.separator;
 	    
-	    if (Base.isLinux() || !(new File(path)).exists()) {
+	    if(!(new File(path)).exists()){
 	      return "";  // use msp430-gcc and mspdebug in PATH instead of platform version
 	    }
 	    return path;
