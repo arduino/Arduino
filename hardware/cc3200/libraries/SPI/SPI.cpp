@@ -50,7 +50,7 @@ static const unsigned long g_ulSSIPinModes[][4] = {
 };
 
 SPIClass::SPIClass(void) {
-	SSIModule = NOT_ACTIVE;
+	SSIModule = BOOST_PACK_SPI;
 	SSIBitOrder = MSBFIRST;
 }
 
@@ -107,6 +107,7 @@ void SPIClass::setBitOrder(uint8_t bitOrder)
 
 void SPIClass::setDataMode(uint8_t mode)
 {
+	MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
 	HWREG(SSIBASE + MCSPI_O_CH0CONF) &= ~SPI_MODE_MASK;
 	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= mode;
 }
@@ -117,6 +118,7 @@ void SPIClass::setClockDivider(uint8_t divider)
 	 * CLKD in MCSPI_CHCONF next eight least significant bits are used to
 	 * configure the EXTCLK in MCSPI_CHCTRL.
 	 * Note that the peripheral clock is set to 40 MHz vs System Clock @ 80 MHz */
+	MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
 
 	uint16_t _divider = ((MAP_PRCMPeripheralClockGet(PRCM_GSPI) / (MAX_BITRATE / divider))  - 1);
 
@@ -160,4 +162,4 @@ void SPIClass::setModule(uint8_t module) {
 	begin();
 }
 
-SPIClass SPI;
+SPIClass SPI(0);
