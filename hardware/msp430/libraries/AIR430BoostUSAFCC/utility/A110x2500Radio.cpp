@@ -143,7 +143,7 @@ void A110x2500Radio::transmit(uint8_t address,
   if (!busy())
   {
     // Bring the radio out of a low power state.
-    wakeup();
+    _wakeup();
     
     // Set the transmit buffer.
     Radio._dataStream.length = 0;
@@ -165,7 +165,7 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
   if (!busy())
   {
     // Bring the radio out of a low power state.
-    wakeup();
+    _wakeup();
     
     // Set the receive buffer.
     Radio._dataStream.length = 0;
@@ -210,7 +210,7 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
  *  Private interface
  */
 
-void A110x2500Radio::wakeup()
+void A110x2500Radio::_wakeup()
 {
   struct sA110LR09PhyInfo *phyInfo = &gPhyInfo;
   
