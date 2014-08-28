@@ -48,7 +48,7 @@ void TwoWire::begin(void)
 	MAP_PinTypeI2C(PIN_01, PIN_MODE_1);
 	MAP_PinTypeI2C(PIN_02, PIN_MODE_1);
 	MAP_PRCMPeripheralReset(PRCM_I2CA0);
-	MAP_I2CMasterInitExpClk(I2C_BASE, F_CPU, false);
+	MAP_I2CMasterInitExpClk(I2C_BASE, F_CPU, true);
 }
 
 void TwoWire::beginTransmission(uint8_t address)
