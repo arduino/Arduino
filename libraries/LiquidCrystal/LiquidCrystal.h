@@ -78,7 +78,8 @@ public:
   void noAutoscroll();
 
   void createChar(uint8_t, uint8_t[]);
-  void setCursor(uint8_t, uint8_t); 
+  void setCursor(uint8_t, uint8_t);
+  void setRowOffsets(int[]); 
   virtual size_t write(uint8_t);
   void command(uint8_t);
   
@@ -101,6 +102,8 @@ private:
   uint8_t _initialized;
 
   uint8_t _numlines,_currline;
+  
+  int *_row_offsets; // array of memory offsets for the start of each row
 };
 
 #endif
