@@ -174,10 +174,14 @@ void HardwareSerial::flush()
 
 size_t HardwareSerial::write(uint8_t c)
 {
-  while ( !(_usart->STATUS & USART_DREIF_bm) );
-  _usart->DATA = c;
-  
-  return 1;
+	_usart->DATA = c; 					//start TX
+	
+	if ( !(_usart->STATUS & USART_DREIF_bm) )
+		while(!(_usart->STATUS & USART_TXCIF_bm)); 	//wait for TX to complete
+		
+	_usart->STATUS|=USART_TXCIF_bm;				//clear TX interrupt flag		
+	
+	return 1;
 }
 
 void HardwareSerial::setIREnabled(bool enable)
