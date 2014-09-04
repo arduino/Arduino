@@ -32,7 +32,7 @@
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
 // location to which to write the next incoming character and rx_buffer_tail
 // is the index of the location from which to read.
-#define RX_BUFFER_SIZE 128
+#define RX_BUFFER_SIZE 180
 
 struct ring_buffer
 {
@@ -174,13 +174,13 @@ void HardwareSerial::flush()
 
 size_t HardwareSerial::write(uint8_t c)
 {
-	_usart->DATA = c; 					//start TX
-	
+	_usart->DATA = c;
 	if ( !(_usart->STATUS & USART_DREIF_bm) )
-		while(!(_usart->STATUS & USART_TXCIF_bm)); 	//wait for TX to complete
-		
-	_usart->STATUS|=USART_TXCIF_bm;				//clear TX interrupt flag		
+		while(!(_usart->STATUS & USART_TXCIF_bm));
+	_usart->STATUS|=USART_TXCIF_bm;
 	
+	
+  
 	return 1;
 }
 
@@ -238,6 +238,7 @@ HardwareSerial name (&name##rx_buffer, &USART##usart_port##port_nr, &PORT##usart
   void serialEvent4() {}
   #define serialEvent4_implemented
 #endif
+/*
 #if defined(USARTE1_RXC_vect)
   void serialEvent5() __attribute__((weak));
   void serialEvent5() {}
@@ -252,7 +253,7 @@ HardwareSerial name (&name##rx_buffer, &USART##usart_port##port_nr, &PORT##usart
   void serialEvent7() __attribute__((weak));
   void serialEvent7() {}
   #define serialEvent7_implemented
-#endif
+#endif*/
 
 
 void serialEventRun(void)
@@ -272,6 +273,7 @@ void serialEventRun(void)
 #ifdef serialEvent4_implemented
   if (Serial4.available()) serialEvent4();
 #endif
+/*
 #ifdef serialEvent5_implemented
   if (Serial5.available()) serialEvent5();
 #endif
@@ -280,5 +282,5 @@ void serialEventRun(void)
 #endif
 #ifdef serialEvent7_implemented
   if (Serial7.available()) serialEvent7();
-#endif
+#endif*/
 }
