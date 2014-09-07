@@ -165,10 +165,10 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
     SPI.transfer(_buf[i]);
     resetSS();
 #else
-	SPI.transfer(SPI_CS, 0xF0, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _buf[i]);
+    SPI.transfer(SPI_CS, 0xF0, SPI_CONTINUE);
+    SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(SPI_CS, _buf[i]);
     _addr++;
 #endif
   }
@@ -206,9 +206,9 @@ uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
     _buf[i] = SPI.transfer(0);
     resetSS();
 #else
-	SPI.transfer(SPI_CS, 0x0F, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(SPI_CS, 0x0F, SPI_CONTINUE);
+    SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
     _buf[i] = SPI.transfer(SPI_CS, 0);
     _addr++;
 #endif
