@@ -326,22 +326,24 @@ private:
 private:
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
   #define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
-  #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-    inline static void initSS()    { DDRB  |=  _BV(4); };
-    inline static void setSS()     { PORTB &= ~_BV(4); };
-    inline static void resetSS()   { PORTB |=  _BV(4); };
-  #elif defined(__AVR_ATmega32U4__)
-    inline static void initSS()    { DDRB  |=  _BV(6); };
-    inline static void setSS()     { PORTB &= ~_BV(6); };
-    inline static void resetSS()   { PORTB |=  _BV(6); };
-  #elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
-    inline static void initSS()    { DDRB  |=  _BV(0); };
-    inline static void setSS()     { PORTB &= ~_BV(0); };
-    inline static void resetSS()   { PORTB |=  _BV(0); };
-  #else
-    inline static void initSS()    { DDRB  |=  _BV(2); };
-    inline static void setSS()     { PORTB &= ~_BV(2); };
-    inline static void resetSS()   { PORTB |=  _BV(2); };
+  #if defined(ARDUINO_ARCH_AVR)
+    #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+      inline static void initSS()    { DDRB  |=  _BV(4); };
+      inline static void setSS()     { PORTB &= ~_BV(4); };
+      inline static void resetSS()   { PORTB |=  _BV(4); };
+    #elif defined(__AVR_ATmega32U4__)
+      inline static void initSS()    { DDRB  |=  _BV(6); };
+      inline static void setSS()     { PORTB &= ~_BV(6); };
+      inline static void resetSS()   { PORTB |=  _BV(6); };
+    #elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
+      inline static void initSS()    { DDRB  |=  _BV(0); };
+      inline static void setSS()     { PORTB &= ~_BV(0); };
+      inline static void resetSS()   { PORTB |=  _BV(0); };
+    #else
+      inline static void initSS()    { DDRB  |=  _BV(2); };
+      inline static void setSS()     { PORTB &= ~_BV(2); };
+      inline static void resetSS()   { PORTB |=  _BV(2); };
+    #endif
   #endif
 #else
   #define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
