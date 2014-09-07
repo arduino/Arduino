@@ -12,13 +12,7 @@
 
 #include <SPI.h>
 
-#define SPI_CS 10
-
-#if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-#define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
-#else
-#define SPI_ETHERNET_SETTINGS SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
-#endif
+#define ETHERNET_SHIELD_SPI_CS 10
 
 #define MAX_SOCK_NUM 4
 
@@ -331,6 +325,7 @@ private:
 
 private:
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
+  #define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
   #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
     inline static void initSS()    { DDRB  |=  _BV(4); };
     inline static void setSS()     { PORTB &= ~_BV(4); };
@@ -348,7 +343,10 @@ private:
     inline static void setSS()     { PORTB &= ~_BV(2); };
     inline static void resetSS()   { PORTB |=  _BV(2); };
   #endif
-#endif // !SPI_HAS_EXTENDED_CS_PIN_HANDLING
+#else
+  #define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
+  // initSS(), setSS(), resetSS() not needed with EXTENDED_CS_PIN_HANDLING
+#endif
 };
 
 extern W5100Class W5100;
