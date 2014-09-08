@@ -34,11 +34,6 @@
 // slower.
 #if !defined(TXC0)
 #if defined(TXC)
-// Some chips like ATmega8 don't have UPE, only PE. The other bits are
-// named as expected.
-#if !defined(UPE) && defined(PE)
-#define UPE PE
-#endif
 // On ATmega8, the uart and its bits are not numbered, so there is no TXC0 etc.
 #define TXC0 TXC
 #define RXEN0 RXEN
@@ -48,6 +43,9 @@
 #define U2X0 U2X
 #define UPE0 UPE
 #define UDRE0 UDRE
+#define UCSZ02 UCSZ2
+#define TXB80 TXB8
+#define RXB80 RXB8
 #elif defined(TXC1)
 // Some devices have uart1 but no uart0
 #define TXC0 TXC1
@@ -58,6 +56,9 @@
 #define U2X0 U2X1
 #define UPE0 UPE1
 #define UDRE0 UDRE1
+#define UCSZ02 UCSZ12
+#define TXB80 TXB81
+#define RXB80 RXB81
 #else
 #error No UART found in HardwareSerial.cpp
 #endif
@@ -68,17 +69,17 @@
 // changed for future hardware.
 #if defined(TXC1) && (TXC1 != TXC0 || RXEN1 != RXEN0 || RXCIE1 != RXCIE0 || \
 		      UDRIE1 != UDRIE0 || U2X1 != U2X0 || UPE1 != UPE0 || \
-		      UDRE1 != UDRE0)
+		      UDRE1 != UDRE0 || UCSZ12 != UCSZ02 || TXB81 != TXB80 || RXB81 != RXB80)
 #error "Not all bit positions for UART1 are the same as for UART0"
 #endif
 #if defined(TXC2) && (TXC2 != TXC0 || RXEN2 != RXEN0 || RXCIE2 != RXCIE0 || \
 		      UDRIE2 != UDRIE0 || U2X2 != U2X0 || UPE2 != UPE0 || \
-		      UDRE2 != UDRE0)
+		      UDRE2 != UDRE0 || UCSZ22 != UCSZ02 || TXB82 != TXB80 || RXB82 != RXB80)
 #error "Not all bit positions for UART2 are the same as for UART0"
 #endif
 #if defined(TXC3) && (TXC3 != TXC0 || RXEN3 != RXEN0 || RXCIE3 != RXCIE0 || \
 		      UDRIE3 != UDRIE0 || U3X3 != U3X0 || UPE3 != UPE0 || \
-		      UDRE3 != UDRE0)
+		      UDRE3 != UDRE0 || UCSZ32 != UCSZ02 || TXB83 != TXB80 || TXB83 != TXB80)
 #error "Not all bit positions for UART3 are the same as for UART0"
 #endif
 
@@ -103,15 +104,34 @@ void HardwareSerial::_rx_complete_irq(void)
   if (bit_is_clear(*_ucsra, UPE0)) {
     // No Parity error, read byte and store it in the buffer if there is
     // room
-    unsigned char c = *_udr;
-    rx_buffer_index_t i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_RX_BUFFER_SIZE;
+    rx_buffer_index_t i;
+    unsigned char mb;
+    unsigned char c;
+
+    if(bit_is_set(*_ucsrb, UCSZ02)) {
+      // If Uart is configured for 9 bit mode
+      i = (unsigned int)(_rx_buffer_head + 2) % SERIAL_RX_BUFFER_SIZE;
+      mb = (*_ucsrb >> RXB80) & 0x01; 
+      c = *_udr;
+    } else {
+      // UART is configured for 5 to 8 bit modes
+      i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_RX_BUFFER_SIZE;
+      c = *_udr;
+    } 
 
     // if we should be storing the received character into the location
     // just before the tail (meaning that the head would advance to the
     // current location of the tail), we're about to overflow the buffer
     // and so we don't write the character or advance the head.
     if (i != _rx_buffer_tail) {
-      _rx_buffer[_rx_buffer_head] = c;
+      if(bit_is_set(*_ucsrb, UCSZ02)) {
+        // If Uart is configured for 9 bit mode
+        _rx_buffer[_rx_buffer_head] = mb;
+        _rx_buffer[_rx_buffer_head + 1] = c;
+      } else {
+        // UART is configured for 5 to 8 bit modes
+        _rx_buffer[_rx_buffer_head] = c;
+      }
       _rx_buffer_head = i;
     }
   } else {
