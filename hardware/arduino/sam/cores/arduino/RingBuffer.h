@@ -30,13 +30,13 @@
 class RingBuffer
 {
   public:
-    uint8_t _aucBuffer[SERIAL_BUFFER_SIZE] ;
+    uint16_t _aucBuffer[SERIAL_BUFFER_SIZE] ;
     int _iHead ;
     int _iTail ;
 
   public:
     RingBuffer( void ) ;
-    void store_char( uint8_t c ) ;
+    void store_char( uint16_t c ) ;
 } ;
 
 #endif /* _RING_BUFFER_ */

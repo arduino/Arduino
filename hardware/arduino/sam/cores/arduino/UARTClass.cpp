@@ -36,6 +36,11 @@ UARTClass::UARTClass( Uart* pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* p
 
 void UARTClass::begin( const uint32_t dwBaudRate )
 {
+    begin( dwBaudRate, SERIAL_8N1 );
+}
+
+void UARTClass::begin( const uint32_t dwBaudRate, const uint32_t config )
+{
   // Configure PMC
   pmc_enable_periph_clk( _dwId ) ;
 
@@ -46,7 +51,7 @@ void UARTClass::begin( const uint32_t dwBaudRate )
   _pUart->UART_CR = UART_CR_RSTRX | UART_CR_RSTTX | UART_CR_RXDIS | UART_CR_TXDIS ;
 
   // Configure mode
-  _pUart->UART_MR = UART_MR_PAR_NO | UART_MR_CHMODE_NORMAL ;
+  _pUart->UART_MR = config;
 
   // Configure baudrate (asynchronous, no oversampling)
   _pUart->UART_BRGR = (SystemCoreClock / dwBaudRate) >> 4 ;

@@ -101,7 +101,7 @@ int USARTClass::read( void )
   if ( _rx_buffer->_iHead == _rx_buffer->_iTail )
     return -1 ;
 
-  uint8_t uc = _rx_buffer->_aucBuffer[_rx_buffer->_iTail] ;
+  uint16_t uc = _rx_buffer->_aucBuffer[_rx_buffer->_iTail] ;
   _rx_buffer->_iTail = (unsigned int)(_rx_buffer->_iTail + 1) % SERIAL_BUFFER_SIZE ;
   return uc ;
 }
@@ -113,14 +113,14 @@ void USARTClass::flush( void )
 	;
 }
 
-size_t USARTClass::write( const uint8_t uc_data )
+size_t USARTClass::write( const uint16_t uc_data )
 {
   // Check if the transmitter is ready
   while ((_pUsart->US_CSR & US_CSR_TXRDY) != US_CSR_TXRDY)
     ;
 
   // Send character
-  _pUsart->US_THR = uc_data ;
+  _pUsart->US_THR = uc_data & 0x1FF;
   return 1;
 }
 

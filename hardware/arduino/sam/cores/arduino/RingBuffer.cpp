@@ -26,7 +26,7 @@ RingBuffer::RingBuffer( void )
     _iTail=0 ;
 }
 
-void RingBuffer::store_char( uint8_t c )
+void RingBuffer::store_char( uint16_t c )
 {
   int i = (uint32_t)(_iHead + 1) % SERIAL_BUFFER_SIZE ;
 

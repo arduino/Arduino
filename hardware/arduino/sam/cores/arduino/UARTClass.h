@@ -25,6 +25,7 @@
 // Includes Atmel CMSIS
 #include <chip.h>
 
+
 class UARTClass : public HardwareSerial
 {
   protected:
@@ -39,6 +40,7 @@ class UARTClass : public HardwareSerial
     UARTClass( Uart* pUart, IRQn_Type dwIrq, uint32_t dwId, RingBuffer* pRx_buffer ) ;
 
     void begin( const uint32_t dwBaudRate ) ;
+    void begin( const uint32_t dwBaudRate , const uint32_t config ) ;
     void end( void ) ;
     int available( void ) ;
     int peek( void ) ;
