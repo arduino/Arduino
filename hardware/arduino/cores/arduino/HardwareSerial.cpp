@@ -19,6 +19,7 @@
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
   Modified 14 August 2012 by Alarus
+  Modified 12 April 2014 by Bouni
 */
 
 #include <stdlib.h>
@@ -121,14 +122,26 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   {
   #if defined(UDR0)
     if (bit_is_clear(UCSR0A, UPE0)) {
-      unsigned char c = UDR0;
+      unsigned char c;
+      // if 9 bit mode, read the ninth bit
+      if(bit_is_set(UCSR0B, UCSZ02)) {
+        c = (UCSR0B >> TXB80) & 0x01;
+        store_char(c, &rx_buffer);
+      }
+      c = UDR0;
       store_char(c, &rx_buffer);
     } else {
       unsigned char c = UDR0;
     };
   #elif defined(UDR)
     if (bit_is_clear(UCSRA, PE)) {
-      unsigned char c = UDR;
+      unsigned char c;
+      // if 9 bit mode, read the ninth bit
+      if(bit_is_set(UCSRB, UCSZ2)) {
+        c = (UCSRB >> TXB8) & 0x01;
+        store_char(c, &rx_buffer);
+      }
+      c = UDR;
       store_char(c, &rx_buffer);
     } else {
       unsigned char c = UDR;
@@ -147,7 +160,13 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   ISR(USART1_RX_vect)
   {
     if (bit_is_clear(UCSR1A, UPE1)) {
-      unsigned char c = UDR1;
+      unsigned char c;
+      // if 9 bit mode, read the ninth bit
+      if(bit_is_set(UCSR1B, UCSZ12)) {
+        c = (UCSR1B >> TXB81) & 0x01;
+        store_char(c, &rx_buffer1);
+      }
+      c = UDR1; 
       store_char(c, &rx_buffer1);
     } else {
       unsigned char c = UDR1;
@@ -162,7 +181,13 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   ISR(USART2_RX_vect)
   {
     if (bit_is_clear(UCSR2A, UPE2)) {
-      unsigned char c = UDR2;
+      unsigned char c;
+      // if 9 bit mode, read the ninth bit
+      if(bit_is_set(UCSR2B, UCSZ22)) {
+        c = (UCSR2B >> TXB82) & 0x01;
+        store_char(c, &rx_buffer2);
+      }
+      c = UDR2;
       store_char(c, &rx_buffer2);
     } else {
       unsigned char c = UDR2;
@@ -177,7 +202,13 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   ISR(USART3_RX_vect)
   {
     if (bit_is_clear(UCSR3A, UPE3)) {
-      unsigned char c = UDR3;
+      unsigned char c;
+      // if 9 bit mode, read the ninth bit
+      if(bit_is_set(UCSR3B, UCSZ32)) {
+        c = (UCSR3B >> TXB83) & 0x01;
+        store_char(c, &rx_buffer3);
+      }
+      c = UDR3;
       store_char(c, &rx_buffer3);
     } else {
       unsigned char c = UDR3;
@@ -228,13 +259,40 @@ ISR(USART_UDRE_vect)
   }
   else {
     // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer.buffer[tx_buffer.tail];
+    unsigned char c;
+  #if defined(UCSR0B)
+    if(bit_is_set(UCSR0B, UCSZ02)) {
+      // if 9 bit mode, read a byte containing the 9th bit from the buffer
+      // and write it to the TXB8 in UCSRB
+      c = tx_buffer.buffer[tx_buffer.tail];
+      tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
+      if(c & 0x01) {
+        sbi(UCSR0B, TXB80);
+      } else {
+        cbi(UCSR0B, TXB80);
+      }
+    }
+  #else
+    if(bit_is_set(UCSRB, UCSZ2)) {
+      // if 9 bit mode, read a byte containing the 9th bit from the buffer
+      // and write it to the TXB8 in UCSRB
+      c = tx_buffer.buffer[tx_buffer.tail];
+      tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
+      if(c & 0x01) {
+        sbi(UCSRB, TXB8);
+      } else {
+        cbi(UCSRB, TXB8);
+      }
+    }
+  #endif
+    // read a byte from the buffer and write it to UDR
+    c = tx_buffer.buffer[tx_buffer.tail];
     tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
 	
   #if defined(UDR0)
     UDR0 = c;
   #elif defined(UDR)
-    UDR = c;
+    //UDR = c;
   #else
     #error UDR not defined
   #endif
@@ -252,7 +310,20 @@ ISR(USART1_UDRE_vect)
   }
   else {
     // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer1.buffer[tx_buffer1.tail];
+    unsigned char c; 
+    if(bit_is_set(UCSR1B, UCSZ12)) {
+      // if 9 bit mode, read a byte containing the 9th bit from the buffer
+      // and write it to the TXB8 in UCSRB
+      c = tx_buffer1.buffer[tx_buffer1.tail];
+      tx_buffer1.tail = (tx_buffer1.tail + 1) % SERIAL_BUFFER_SIZE;
+      if(c & 0x01) {
+        sbi(UCSR1B, TXB81);
+      } else {
+        cbi(UCSR1B, TXB81);
+      }
+    }
+    // read a byte from the buffer and write it to UDR
+    c = tx_buffer1.buffer[tx_buffer1.tail];
     tx_buffer1.tail = (tx_buffer1.tail + 1) % SERIAL_BUFFER_SIZE;
 	
     UDR1 = c;
@@ -269,7 +340,20 @@ ISR(USART2_UDRE_vect)
   }
   else {
     // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer2.buffer[tx_buffer2.tail];
+    unsigned char c; 
+    if(bit_is_set(UCSR2B, UCSZ22)) {
+      // if 9 bit mode, read a byte containing the 9th bit from the buffer
+      // and write it to the TXB8 in UCSRB
+      c = tx_buffer2.buffer[tx_buffer2.tail];
+      tx_buffer2.tail = (tx_buffer2.tail + 1) % SERIAL_BUFFER_SIZE;
+      if(c & 0x01) {
+        sbi(UCSR2B, TXB82);
+      } else {
+        cbi(UCSR2B, TXB82);
+      }
+    }
+    // read a byte from the buffer and write it to UDR
+    c = tx_buffer2.buffer[tx_buffer2.tail];
     tx_buffer2.tail = (tx_buffer2.tail + 1) % SERIAL_BUFFER_SIZE;
 	
     UDR2 = c;
@@ -286,7 +370,20 @@ ISR(USART3_UDRE_vect)
   }
   else {
     // There is more data in the output buffer. Send the next byte
-    unsigned char c = tx_buffer3.buffer[tx_buffer3.tail];
+    unsigned char c; 
+    if(bit_is_set(UCSR2B, UCSZ22)) {
+      // if 9 bit mode, read a byte containing the 9th bit from the buffer
+      // and write it to the TXB8 in UCSRB
+      c = tx_buffer3.buffer[tx_buffer3.tail];
+      tx_buffer3.tail = (tx_buffer3.tail + 1) % SERIAL_BUFFER_SIZE;
+      if(c & 0x01) {
+        sbi(UCSR3B, TXB83);
+      } else {
+        cbi(UCSR3B, TXB83);
+      }
+    }
+    // read a byte from the buffer and write it to UDR
+    c = tx_buffer3.buffer[tx_buffer3.tail];
     tx_buffer3.tail = (tx_buffer3.tail + 1) % SERIAL_BUFFER_SIZE;
 	
     UDR3 = c;
@@ -301,7 +398,7 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
   volatile uint8_t *ubrrh, volatile uint8_t *ubrrl,
   volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
   volatile uint8_t *ucsrc, volatile uint8_t *udr,
-  uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x)
+  uint8_t ucsz2, uint8_t rxen, uint8_t txen, uint8_t rxcie, uint8_t udrie, uint8_t u2x)
 {
   _rx_buffer = rx_buffer;
   _tx_buffer = tx_buffer;
@@ -311,6 +408,7 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer,
   _ucsrb = ucsrb;
   _ucsrc = ucsrc;
   _udr = udr;
+  _ucsz2 = ucsz2;
   _rxen = rxen;
   _txen = txen;
   _rxcie = rxcie;
@@ -362,10 +460,9 @@ try_again:
   cbi(*_ucsrb, _udrie);
 }
 
-void HardwareSerial::begin(unsigned long baud, byte config)
+void HardwareSerial::begin(unsigned long baud, unsigned int config)
 {
   uint16_t baud_setting;
-  uint8_t current_config;
   bool use_u2x = true;
 
 #if F_CPU == 16000000UL
@@ -401,7 +498,12 @@ try_again:
 #if defined(__AVR_ATmega8__)
   config |= 0x80; // select UCSRC register (shared with UBRRH)
 #endif
-  *_ucsrc = config;
+  // if 9 bit mode, set config bit
+  if(config & 0x100) {
+    sbi(*_ucsrb, _ucsz2);
+  }
+  // set the lower 8 bits of the config
+  *_ucsrc = (config & 0x0FF);
   
   sbi(*_ucsrb, _rxen);
   sbi(*_ucsrb, _txen);
@@ -426,7 +528,14 @@ void HardwareSerial::end()
 
 int HardwareSerial::available(void)
 {
-  return (int)(SERIAL_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % SERIAL_BUFFER_SIZE;
+  unsigned int a = (SERIAL_BUFFER_SIZE + _rx_buffer->head - _rx_buffer->tail) % SERIAL_BUFFER_SIZE;
+  if(bit_is_set(*_ucsrb, _ucsz2)) {
+    // return half the buffer size if 9 bit mode because half the bytes contain the 9th bit 
+    return a/2;
+  } else {
+    // return the buffer size  
+    return a;
+  }
 }
 
 int HardwareSerial::peek(void)
@@ -434,7 +543,13 @@ int HardwareSerial::peek(void)
   if (_rx_buffer->head == _rx_buffer->tail) {
     return -1;
   } else {
-    return _rx_buffer->buffer[_rx_buffer->tail];
+    if(bit_is_set(*_ucsrb, _ucsz2)) {
+      // return 2 bytes from buffer merged into an int (9 bit mode)
+      return (_rx_buffer->buffer[_rx_buffer->tail] << 8) | _rx_buffer->buffer[(_rx_buffer->tail + 1) % SERIAL_BUFFER_SIZE];
+    } else {
+      // return a byte from the buffer
+      return _rx_buffer->buffer[_rx_buffer->tail];
+    }
   }
 }
 
@@ -444,9 +559,15 @@ int HardwareSerial::read(void)
   if (_rx_buffer->head == _rx_buffer->tail) {
     return -1;
   } else {
-    unsigned char c = _rx_buffer->buffer[_rx_buffer->tail];
-    _rx_buffer->tail = (unsigned int)(_rx_buffer->tail + 1) % SERIAL_BUFFER_SIZE;
-    return c;
+    if(bit_is_set(*_ucsrb, _ucsz2)) {
+      unsigned int c = (_rx_buffer->buffer[_rx_buffer->tail] << 8) | _rx_buffer->buffer[(_rx_buffer->tail + 1) % SERIAL_BUFFER_SIZE ];
+      _rx_buffer->tail = (unsigned int)(_rx_buffer->tail + 2) % SERIAL_BUFFER_SIZE;
+      return c;
+    } else {
+      unsigned char c = _rx_buffer->buffer[_rx_buffer->tail];
+      _rx_buffer->tail = (unsigned int)(_rx_buffer->tail + 1) % SERIAL_BUFFER_SIZE;
+      return c;
+    }
   }
 }
 
@@ -457,18 +578,31 @@ void HardwareSerial::flush()
   transmitting = false;
 }
 
-size_t HardwareSerial::write(uint8_t c)
+size_t HardwareSerial::write(unsigned int c)
 {
-  int i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  int i;
+  // calculate next head position
+  if(bit_is_set(*_ucsrb, _ucsz2)) {
+    // 9 bit mode
+    i = (_tx_buffer->head + 2) % SERIAL_BUFFER_SIZE;
+  } else {
+    // 5 - 8 bit mode
+    i = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  }
 	
   // If the output buffer is full, there's nothing for it other than to 
   // wait for the interrupt handler to empty it a bit
   // ???: return 0 here instead?
   while (i == _tx_buffer->tail)
     ;
-	
-  _tx_buffer->buffer[_tx_buffer->head] = c;
-  _tx_buffer->head = i;
+  // write 9th bit to the buffer
+  if(bit_is_set(*_ucsrb, _ucsz2)) {
+    _tx_buffer->buffer[_tx_buffer->head] = (c >> 8) & 0x01;
+    _tx_buffer->head = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
+  }  
+  // write lower 8 bits to the buffer
+  _tx_buffer->buffer[_tx_buffer->head] = (uint8_t)c;
+  _tx_buffer->head = (_tx_buffer->head + 1) % SERIAL_BUFFER_SIZE;
 	
   sbi(*_ucsrb, _udrie);
   // clear the TXC bit -- "can be cleared by writing a one to its bit location"
@@ -485,9 +619,9 @@ HardwareSerial::operator bool() {
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
 #if defined(UBRRH) && defined(UBRRL)
-  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UCSRC, &UDR, RXEN, TXEN, RXCIE, UDRIE, U2X);
+  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UCSRC, &UDR, UCSZ2, RXEN, TXEN, RXCIE, UDRIE, U2X);
 #elif defined(UBRR0H) && defined(UBRR0L)
-  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UCSR0C, &UDR0, RXEN0, TXEN0, RXCIE0, UDRIE0, U2X0);
+  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UCSR0C, &UDR0, UCSZ02, RXEN0, TXEN0, RXCIE0, UDRIE0, U2X0);
 #elif defined(USBCON)
   // do nothing - Serial object and buffers are initialized in CDC code
 #else
@@ -495,13 +629,13 @@ HardwareSerial::operator bool() {
 #endif
 
 #if defined(UBRR1H)
-  HardwareSerial Serial1(&rx_buffer1, &tx_buffer1, &UBRR1H, &UBRR1L, &UCSR1A, &UCSR1B, &UCSR1C, &UDR1, RXEN1, TXEN1, RXCIE1, UDRIE1, U2X1);
+  HardwareSerial Serial1(&rx_buffer1, &tx_buffer1, &UBRR1H, &UBRR1L, &UCSR1A, &UCSR1B, &UCSR1C, &UDR1, UCSZ12, RXEN1, TXEN1, RXCIE1, UDRIE1, U2X1);
 #endif
 #if defined(UBRR2H)
-  HardwareSerial Serial2(&rx_buffer2, &tx_buffer2, &UBRR2H, &UBRR2L, &UCSR2A, &UCSR2B, &UCSR2C, &UDR2, RXEN2, TXEN2, RXCIE2, UDRIE2, U2X2);
+  HardwareSerial Serial2(&rx_buffer2, &tx_buffer2, &UBRR2H, &UBRR2L, &UCSR2A, &UCSR2B, &UCSR2C, &UDR2, UCSZ22, RXEN2, TXEN2, RXCIE2, UDRIE2, U2X2);
 #endif
 #if defined(UBRR3H)
-  HardwareSerial Serial3(&rx_buffer3, &tx_buffer3, &UBRR3H, &UBRR3L, &UCSR3A, &UCSR3B, &UCSR3C, &UDR3, RXEN3, TXEN3, RXCIE3, UDRIE3, U2X3);
+  HardwareSerial Serial3(&rx_buffer3, &tx_buffer3, &UBRR3H, &UBRR3L, &UCSR3A, &UCSR3B, &UCSR3C, &UDR3, UCSZ32, RXEN3, TXEN3, RXCIE3, UDRIE3, U2X3);
 #endif
 
 #endif // whole file
