@@ -344,6 +344,16 @@ private:
       inline static void setSS()     { PORTB &= ~_BV(2); };
       inline static void resetSS()   { PORTB |=  _BV(2); };
     #endif
+  #else
+    inline static void initSS() {
+      *portModeRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |= digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
+    }
+    inline static void setSS()   {
+      *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) &= ~digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
+    }
+    inline static void resetSS() {
+      *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |= digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
+    }
   #endif
 #else
   #define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
