@@ -85,15 +85,15 @@ void HardwareSerial::_tx_udr_empty_irq(void)
   
   if(bit_is_set(*_ucsrb, UCSZ02)) {
     // If Uart is configured for 9 bit mode
-      unsigned char mb = _tx_buffer[_tx_buffer_tail];
-      unsigned char c = _tx_buffer[_tx_buffer_tail + 1];
-      _tx_buffer_tail = (_tx_buffer_tail + 2) % SERIAL_TX_BUFFER_SIZE;
-      if(mb & 0x01) {
-        sbi(*_ucsrb, TXB80);
-      } else {
-        cbi(*_ucsrb, TXB80);
-      }
-      *_udr = c;
+    unsigned char mb = _tx_buffer[_tx_buffer_tail];
+    unsigned char c = _tx_buffer[_tx_buffer_tail + 1];
+    _tx_buffer_tail = (_tx_buffer_tail + 2) % SERIAL_TX_BUFFER_SIZE;
+    if(mb & 0x01) {
+      sbi(*_ucsrb, TXB80);
+    } else {
+      cbi(*_ucsrb, TXB80);
+    }
+    *_udr = c;
   } else {
     // UART is configured for 5 to 8 bit modes 
     unsigned char c = _tx_buffer[_tx_buffer_tail];
@@ -132,7 +132,7 @@ void HardwareSerial::begin(unsigned long baud, uint16_t config)
     baud_setting = (F_CPU / 8 / baud - 1) / 2;
   }
 
-  // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
+  // assign the baud_setting, a.k.a. ubrr (USART Baud Rate Register)
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
 
@@ -214,6 +214,21 @@ int HardwareSerial::read(void)
       return c;
     }
   }
+}
+
+int HardwareSerial::availableForWrite(void)
+{
+#if (SERIAL_TX_BUFFER_SIZE>256)
+  uint8_t oldSREG = SREG;
+  cli();
+#endif
+  tx_buffer_index_t head = _tx_buffer_head;
+  tx_buffer_index_t tail = _tx_buffer_tail;
+#if (SERIAL_TX_BUFFER_SIZE>256)
+  SREG = oldSREG;
+#endif
+  if (head >= tail) return SERIAL_TX_BUFFER_SIZE - 1 - head + tail;
+  return tail - head - 1;
 }
 
 void HardwareSerial::flush()
