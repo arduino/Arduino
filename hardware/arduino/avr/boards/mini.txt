@@ -1,0 +1,46 @@
+
+
+mini.name=Arduino Mini
+
+mini.upload.tool=avrdude
+mini.upload.protocol=arduino
+
+mini.bootloader.tool=avrdude
+mini.bootloader.low_fuses=0xff
+mini.bootloader.unlock_bits=0x3F
+mini.bootloader.lock_bits=0x0F
+
+mini.build.f_cpu=16000000L
+mini.build.board=AVR_MINI
+mini.build.core=arduino
+mini.build.variant=eightanaloginputs
+
+## Arduino Mini w/ ATmega328
+## -------------------------
+mini.menu.cpu.atmega328=ATmega328
+
+mini.menu.cpu.atmega328.upload.maximum_size=28672
+mini.menu.cpu.atmega328.upload.maximum_data_size=2048
+mini.menu.cpu.atmega328.upload.speed=115200
+
+mini.menu.cpu.atmega328.bootloader.high_fuses=0xd8
+mini.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+mini.menu.cpu.atmega328.bootloader.file=optiboot/optiboot_atmega328-Mini.hex
+
+mini.menu.cpu.atmega328.build.mcu=atmega328p
+
+## Arduino Mini w/ ATmega168
+## -------------------------
+mini.menu.cpu.atmega168=ATmega168
+
+mini.menu.cpu.atmega168.upload.maximum_size=14336
+mini.menu.cpu.atmega168.upload.maximum_data_size=1024
+mini.menu.cpu.atmega168.upload.speed=19200
+
+mini.menu.cpu.atmega168.bootloader.high_fuses=0xdd
+mini.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+mini.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_ng.hex
+
+mini.menu.cpu.atmega168.build.mcu=atmega168
+
+##############################################################

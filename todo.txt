@@ -1,5 +1,4 @@
-Fix Linux make.sh, etc. scripts
-Test on Linux.
+0158 arduino
 
 AVR
 
@@ -10,7 +9,6 @@ Ethernet library:
  - add method for receiving notification of new client connections to a server
  - add method for receiving notification of data written to a client
  - add method for receiving notification of client disconnections
-Incorporate mikalhart's new SoftwareSerial library.
 Consider making abs() not a macro.  See: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1234908504
 Improve shiftOut() performance: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1216659239/0
 Add String library.
@@ -28,7 +26,6 @@ Add weak attribute to signal handlers: http://www.arduino.cc/cgi-bin/yabb2/YaBB.
 Floating point support in the map() function.
 Fix delayMicroseconds(0).
 Add sleep function(s).
-Add SPI library.
 Add OneWire library.
 Add pulseOut(), etc. functions from Wiring.
 Switch to ServoTimer2 library?  http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1222201226/0#5
@@ -47,11 +44,8 @@ Disable checking for updates.
 Test the upload.using parameter to upload with a programmer.
 Add keyboard shortcut for opening the serial monitor.
 Escape characters with copy as html.
-Support libraries in the SKETCH/code folder?
 Test bootloader burning w/ an AVRISP.
 Enable verbose output if shift (or alt?) is held down when pressing run or upload.
-Add support for third-party boards in the user's sketchbook folder.
-Add support for third-party cores in the user's sketchbook folder.
 Re-enable (and fix) the Commander.
 Move selection of Linux look and feel from Base.java to arduino.sh script.
 Check RAM usage of sketches: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1224729260/0#0
@@ -66,10 +60,6 @@ Comprehensive board management:
  - Enabled and disabled boards.
  - Dialog for enabling, disabling, adding, deleting, and possibly editing boards.
  - Board descriptions (e.g. explaining differences between boards).
-Allow for libraries in <SKETCHBOOK>/libraries.
-Allow for boards in <SKETCHBOOK>/boards.
-Divide boards.txt into multiple text files.
-Allow for core in <SKETCHBOOK>/cores.
 Clean up Library and LibraryManager.
 Compile libraries dynamically (with compilation of sketch and core files).
 Library builds should respect build.verbose.
@@ -115,7 +105,6 @@ Editor.java
 DEVELOPMENT
 
 Revise the icon.
-Don't recompile the Processing core if the work/ directory exists.
 RXTX version patched to not hang with bluetooth serial ports: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1237179908
 Add licenses for included open source libraries: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1234595391
 Make run.bat not open a command line window: http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1223883872
@@ -123,14 +112,12 @@ Update version of the FTDI drivers (Windows).
 Remove AVR ISP and giveio drivers (Windows).
 Include the executable installer for the FTDI drivers (Windows).
 Revise fetch.sh to look for version specific pages (names suffixed with, e.g., "-0007")
-Move to ant for build process.
 
 DOCUMENTATION / SITE CONFIGURATION
 
 Multi-language plugin.
 Work on opening up website to public editing.
 Create form for submitting workshops.
-Create form for submitting projects.
 
 DOCUMENTATION / META
 
@@ -169,9 +156,7 @@ Add a Brightness example where an analog input controls the analog output.
 Graph example should use an intermediate variable.
 Button example says pin 7 but uses pin 2.
 Split Loop example in two (one that does loops, another that does arrays).
-Add LiquidCrystal library examples.
 Add Ethernet library examples.
-Add Wire library examples.
 Add examples using specific hardware (simple analog sensors, optocouplers, etc.)
 Examples should demonstrate use of functions.
 Add I2C EEPROM example using Wire library.

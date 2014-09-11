@@ -25,7 +25,9 @@ import static processing.app.I18n._;
 import static processing.app.I18n.format;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -65,18 +67,36 @@ public class TargetPlatform {
     id = _name;
     folder = _folder;
     containerPackage = parent;
+    
+    FilenameFilter txtFilter = new FilenameFilter() {
+      
+      @Override
+      public boolean accept(File dir, String name) {
+        if(name.lastIndexOf('.')>0)
+        {
+           int lastIndex = name.lastIndexOf('.');
+           String str = name.substring(lastIndex);
+           if(str.equals(".txt"))
+              return true;
+        }
+        return false;
+      }
+    };
 
     // If there is no boards.txt, this is not a valid 1.5 hardware folder
-    File boardsFile = new File(folder, "boards.txt");
-    if (!boardsFile.exists() || !boardsFile.canRead())
+    File boardsFolder = new File(folder, "boards");
+    File[] boardsFiles = boardsFolder.listFiles(txtFilter);
+    if (!boardsFolder.exists() || !(boardsFiles.length > 0))
       throw new TargetPlatformException(
-          format(_("Could not find boards.txt in {0}. Is it pre-1.5?"),
+          format(_("Could not find boards in {0}. Is it pre-1.5?"),
                  folder.getAbsolutePath()));
 
     // Load boards
     try {
-      Map<String, PreferencesMap> boardsPreferences = new PreferencesMap(
-          boardsFile).firstLevelMap();
+      Map<String, PreferencesMap> boardsPreferences = new HashMap<String, PreferencesMap>();
+      for (int bfi = 0; bfi < boardsFiles.length; bfi++) {
+        boardsPreferences.putAll(new PreferencesMap(boardsFiles[bfi]).firstLevelMap());
+      }
 
       // Create custom menus for this platform
       PreferencesMap menus = boardsPreferences.get("menu");
@@ -97,7 +117,7 @@ public class TargetPlatform {
       }
     } catch (IOException e) {
       throw new TargetPlatformException(format(_("Error loading {0}"),
-                                               boardsFile.getAbsolutePath()), e);
+                                               boardsFolder.getAbsolutePath()), e);
     }
 
     File platformsFile = new File(folder, "platform.txt");

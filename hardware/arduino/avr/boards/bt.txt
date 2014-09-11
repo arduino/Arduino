@@ -1,0 +1,44 @@
+
+
+bt.name=Arduino BT
+
+bt.upload.tool=avrdude
+bt.upload.protocol=arduino
+bt.upload.speed=19200
+bt.upload.disable_flushing=true
+
+bt.bootloader.tool=avrdude
+bt.bootloader.low_fuses=0xff
+bt.bootloader.unlock_bits=0x3F
+bt.bootloader.lock_bits=0x0F
+
+bt.build.f_cpu=16000000L
+bt.build.board=AVR_BT
+bt.build.core=arduino
+bt.build.variant=eightanaloginputs
+
+## Arduino BT w/ ATmega328
+## -----------------------
+bt.menu.cpu.atmega328=ATmega328
+bt.menu.cpu.atmega328.upload.maximum_size=28672
+bt.menu.cpu.atmega328.upload.maximum_data_size=2048
+
+bt.menu.cpu.atmega328.bootloader.high_fuses=0xd8
+bt.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+bt.menu.cpu.atmega328.bootloader.file=bt/ATmegaBOOT_168_atmega328_bt.hex
+
+bt.menu.cpu.atmega328.build.mcu=atmega328p
+
+## Arduino BT w/ ATmega168
+## -----------------------
+bt.menu.cpu.atmega168=ATmega168
+bt.menu.cpu.atmega168.upload.maximum_size=14336
+bt.menu.cpu.atmega168.upload.maximum_data_size=1024
+
+bt.menu.cpu.atmega168.bootloader.high_fuses=0xdd
+bt.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+bt.menu.cpu.atmega168.bootloader.file=bt/ATmegaBOOT_168.hex
+
+bt.menu.cpu.atmega168.build.mcu=atmega168
+
+##############################################################

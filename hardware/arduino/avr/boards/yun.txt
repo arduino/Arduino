@@ -1,0 +1,37 @@
+
+
+yun.name=Arduino Yún
+yun.upload.via_ssh=true
+
+yun.vid.0=0x2341
+yun.pid.0=0x0041
+yun.vid.1=0x2341
+yun.pid.1=0x8041
+yun.upload.tool=avrdude
+yun.upload.protocol=avr109
+yun.upload.maximum_size=28672
+yun.upload.maximum_data_size=2560
+yun.upload.speed=57600
+yun.upload.disable_flushing=true
+yun.upload.use_1200bps_touch=true
+yun.upload.wait_for_upload_port=true
+
+yun.bootloader.tool=avrdude
+yun.bootloader.low_fuses=0xff
+yun.bootloader.high_fuses=0xd8
+yun.bootloader.extended_fuses=0xfb
+yun.bootloader.file=caterina/Caterina-Yun.hex
+yun.bootloader.unlock_bits=0x3F
+yun.bootloader.lock_bits=0x2F
+
+yun.build.mcu=atmega32u4
+yun.build.f_cpu=16000000L
+yun.build.vid=0x2341
+yun.build.pid=0x8041
+yun.build.usb_product="Arduino Yun"
+yun.build.board=AVR_YUN
+yun.build.core=arduino
+yun.build.variant=yun
+yun.build.extra_flags={build.usb_flags}
+
+##############################################################
