@@ -1,0 +1,25 @@
+
+
+fio.name=Arduino Fio
+
+fio.upload.tool=avrdude
+fio.upload.protocol=arduino
+fio.upload.maximum_size=30720
+fio.upload.maximum_data_size=2048
+fio.upload.speed=57600
+
+fio.bootloader.tool=avrdude
+fio.bootloader.low_fuses=0xFF
+fio.bootloader.high_fuses=0xDA
+fio.bootloader.extended_fuses=0x05
+fio.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
+fio.bootloader.unlock_bits=0x3F
+fio.bootloader.lock_bits=0x0F
+
+fio.build.mcu=atmega328p
+fio.build.f_cpu=8000000L
+fio.build.board=AVR_FIO
+fio.build.core=arduino
+fio.build.variant=eightanaloginputs
+
+##############################################################

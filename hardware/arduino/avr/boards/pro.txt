@@ -1,0 +1,80 @@
+
+
+pro.name=Arduino Pro or Pro Mini
+
+pro.upload.tool=avrdude
+pro.upload.protocol=arduino
+
+pro.bootloader.tool=avrdude
+pro.bootloader.unlock_bits=0x3F
+pro.bootloader.lock_bits=0x0F
+
+pro.build.board=AVR_PRO
+pro.build.core=arduino
+pro.build.variant=eightanaloginputs
+
+## Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328
+## -------------------------------------------------
+pro.menu.cpu.16MHzatmega328=ATmega328 (5V, 16 MHz)
+
+pro.menu.cpu.16MHzatmega328.upload.maximum_size=30720
+pro.menu.cpu.16MHzatmega328.upload.maximum_data_size=2048
+pro.menu.cpu.16MHzatmega328.upload.speed=57600
+
+pro.menu.cpu.16MHzatmega328.bootloader.low_fuses=0xFF
+pro.menu.cpu.16MHzatmega328.bootloader.high_fuses=0xDA
+pro.menu.cpu.16MHzatmega328.bootloader.extended_fuses=0x05
+pro.menu.cpu.16MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
+
+pro.menu.cpu.16MHzatmega328.build.mcu=atmega328p
+pro.menu.cpu.16MHzatmega328.build.f_cpu=16000000L
+
+## Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328
+## --------------------------------------------------
+pro.menu.cpu.8MHzatmega328=ATmega328 (3.3V, 8 MHz)
+
+pro.menu.cpu.8MHzatmega328.upload.maximum_size=30720
+pro.menu.cpu.8MHzatmega328.upload.maximum_data_size=2048
+pro.menu.cpu.8MHzatmega328.upload.speed=57600
+
+pro.menu.cpu.8MHzatmega328.bootloader.low_fuses=0xFF
+pro.menu.cpu.8MHzatmega328.bootloader.high_fuses=0xDA
+pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0x05
+pro.menu.cpu.8MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
+
+pro.menu.cpu.8MHzatmega328.build.mcu=atmega328p
+pro.menu.cpu.8MHzatmega328.build.f_cpu=8000000L
+
+## Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega168
+## -------------------------------------------------
+pro.menu.cpu.16MHzatmega168=ATmega168 (5V, 16 MHz)
+
+pro.menu.cpu.16MHzatmega168.upload.maximum_size=14336
+pro.menu.cpu.16MHzatmega168.upload.maximum_data_size=1024
+pro.menu.cpu.16MHzatmega168.upload.speed=19200
+
+pro.menu.cpu.16MHzatmega168.bootloader.low_fuses=0xff
+pro.menu.cpu.16MHzatmega168.bootloader.high_fuses=0xdd
+pro.menu.cpu.16MHzatmega168.bootloader.extended_fuses=0x00
+pro.menu.cpu.16MHzatmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
+
+pro.menu.cpu.16MHzatmega168.build.mcu=atmega168
+pro.menu.cpu.16MHzatmega168.build.f_cpu=16000000L
+
+## Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega168
+## --------------------------------------------------
+pro.menu.cpu.8MHzatmega168=ATmega168 (3.3V, 8 MHz)
+
+pro.menu.cpu.8MHzatmega168.upload.maximum_size=14336
+pro.menu.cpu.8MHzatmega168.upload.maximum_data_size=1024
+pro.menu.cpu.8MHzatmega168.upload.speed=19200
+
+pro.menu.cpu.8MHzatmega168.bootloader.low_fuses=0xc6
+pro.menu.cpu.8MHzatmega168.bootloader.high_fuses=0xdd
+pro.menu.cpu.8MHzatmega168.bootloader.extended_fuses=0x00
+pro.menu.cpu.8MHzatmega168.bootloader.file=atmega/ATmegaBOOT_168_pro_8MHz.hex
+
+pro.menu.cpu.8MHzatmega168.build.mcu=atmega168
+pro.menu.cpu.8MHzatmega168.build.f_cpu=8000000L
+
+##############################################################

@@ -1,0 +1,46 @@
+
+
+atmegang.name=Arduino NG or older
+
+atmegang.upload.tool=avrdude
+atmegang.upload.protocol=arduino
+atmegang.upload.speed=19200
+
+atmegang.bootloader.tool=avrdude
+atmegang.bootloader.unlock_bits=0x3F
+atmegang.bootloader.lock_bits=0x0F
+
+atmegang.build.mcu=atmegang
+atmegang.build.f_cpu=16000000L
+atmegang.build.board=AVR_NG
+atmegang.build.core=arduino
+atmegang.build.variant=standard
+
+## Arduino NG or older w/ ATmega168
+## --------------------------------
+atmegang.menu.cpu.atmega168=ATmega168
+
+atmegang.menu.cpu.atmega168.upload.maximum_size=14336
+atmegang.menu.cpu.atmega168.upload.maximum_data_size=1024
+
+atmegang.menu.cpu.atmega168.bootloader.low_fuses=0xff
+atmegang.menu.cpu.atmega168.bootloader.high_fuses=0xdd
+atmegang.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+atmegang.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_ng.hex
+
+atmegang.menu.cpu.atmega168.build.mcu=atmega168
+
+## Arduino NG or older w/ ATmega8
+## ------------------------------
+atmegang.menu.cpu.atmega8=ATmega8
+
+atmegang.menu.cpu.atmega8.upload.maximum_size=7168
+atmegang.menu.cpu.atmega8.upload.maximum_data_size=1024
+
+atmegang.menu.cpu.atmega8.bootloader.low_fuses=0xdf
+atmegang.menu.cpu.atmega8.bootloader.high_fuses=0xca
+atmegang.menu.cpu.atmega8.bootloader.file=atmega8/ATmegaBOOT-prod-firmware-2009-11-07.hex
+
+atmegang.menu.cpu.atmega8.build.mcu=atmega8
+
+##############################################################

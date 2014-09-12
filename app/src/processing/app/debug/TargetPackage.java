@@ -78,4 +78,18 @@ public class TargetPackage {
   public String getId() {
     return id;
   }
+  
+  public void mergePackage (TargetPackage newPackage) {
+    for (TargetPlatform tPlat : newPackage.platforms()) {
+      if (get(tPlat.getId()) == null) {
+        platforms.put(tPlat.getId(), tPlat);
+      } else {
+        get(tPlat.getId()).getBoards().putAll(tPlat.getBoards());
+        get(tPlat.getId()).getProgrammers().putAll(tPlat.getProgrammers());
+        get(tPlat.getId()).getCustomMenus().putAll(tPlat.getCustomMenus());
+        get(tPlat.getId()).getPreferences().putAll(tPlat.getPreferences());
+      }
+    }
+    return;
+  }
 }

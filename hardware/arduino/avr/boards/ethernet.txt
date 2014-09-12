@@ -1,0 +1,25 @@
+
+
+ethernet.name=Arduino Ethernet
+
+ethernet.upload.tool=avrdude
+ethernet.upload.protocol=arduino
+ethernet.upload.maximum_size=32256
+ethernet.upload.maximum_data_size=2048
+ethernet.upload.speed=115200
+
+ethernet.bootloader.tool=avrdude
+ethernet.bootloader.low_fuses=0xff
+ethernet.bootloader.high_fuses=0xde
+ethernet.bootloader.extended_fuses=0x05
+ethernet.bootloader.file=optiboot/optiboot_atmega328.hex
+ethernet.bootloader.unlock_bits=0x3F
+ethernet.bootloader.lock_bits=0x0F
+
+ethernet.build.variant=ethernet
+ethernet.build.mcu=atmega328p
+ethernet.build.f_cpu=16000000L
+ethernet.build.board=AVR_ETHERNET
+ethernet.build.core=arduino
+
+##############################################################

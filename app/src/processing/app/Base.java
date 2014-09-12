@@ -1897,7 +1897,12 @@ public class Base {
       File subfolder = new File(folder, target);
       
       try {
-        packages.put(target, new TargetPackage(target, subfolder));
+        TargetPackage tPackage = new TargetPackage(target, subfolder);  
+        if (packages.get(target) != null) {
+          tPackage.mergePackage(packages.get(target));
+        }
+        packages.put(target, tPackage);
+        
       } catch (TargetPlatformException e) {
         System.out.println("WARNING: Error loading hardware folder " + target);
         System.out.println("  " + e.getMessage());

@@ -1,0 +1,31 @@
+
+
+robotMotor.name=Arduino Robot Motor
+robotMotor.upload.tool=avrdude
+robotMotor.upload.protocol=avr109
+robotMotor.upload.maximum_size=28672
+robotMotor.upload.maximum_data_size=2560
+robotMotor.upload.speed=57600
+robotMotor.upload.disable_flushing=true
+robotMotor.upload.use_1200bps_touch=true
+robotMotor.upload.wait_for_upload_port=true
+
+robotMotor.bootloader.tool=avrdude
+robotMotor.bootloader.low_fuses=0xff
+robotMotor.bootloader.high_fuses=0xd8
+robotMotor.bootloader.extended_fuses=0xcb
+robotMotor.bootloader.file=caterina-Arduino_Robot/Caterina-Robot-Motor.hex
+robotMotor.bootloader.unlock_bits=0x3F
+robotMotor.bootloader.lock_bits=0x2F
+
+robotMotor.build.mcu=atmega32u4
+robotMotor.build.f_cpu=16000000L
+robotMotor.build.vid=0x2341
+robotMotor.build.pid=0x8039
+robotMotor.build.usb_product="Robot Motor"
+robotMotor.build.board=AVR_ROBOT_MOTOR
+robotMotor.build.core=arduino
+robotMotor.build.variant=robot_motor
+robotMotor.build.extra_flags={build.usb_flags}
+
+##############################################################
