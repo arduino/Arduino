@@ -9,8 +9,6 @@
 #include "EthernetClient.h"
 #include "EthernetServer.h"
 
-const IPAddress INADDR_NONE(0,0,0,0);
-
 #define CLASS_A 0x0
 #define CLASS_B 0x2
 #define CLASS_C 0x6
