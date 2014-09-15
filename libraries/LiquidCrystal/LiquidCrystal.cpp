@@ -255,11 +255,8 @@ void LiquidCrystal::createChar(uint8_t location, uint8_t charmap[]) {
 // Get the current cursor position and put the information in the passed values
 void LiquidCrystal::getCursorPos(int &col, int &row) {
     uint8_t value = readBusyFlagAndAddress();
+    value &= 0x7f; //get rid of the busy flag if it is set
 
-    if(value >= 128)
-    { //get rid of the busy flag if it is set
-        value-=128;
-    }
     row=0;
     if(_numlines > 1)
     {
@@ -274,41 +271,32 @@ void LiquidCrystal::getCursorPos(int &col, int &row) {
 }
 
 // Retrieves a number of characters starting from the specified position
-char* LiquidCrystal::getChars(uint8_t col, uint8_t row, uint8_t chars)
+// and puts them into the buffer, the buffer is NOT null terminated.
+// Returns 0 if it could not read or returns the length if it was successful.
+// Much faster with more characters than calling getCharAt for each character.
+uint8_t LiquidCrystal::getChars(uint8_t col, uint8_t row, char* buffer, uint8_t length)
 {
-    //much faster with more characters than calling getCharAt for each character
+
     if (_rw_pin == 255)
-    {//if there is no rw pin just return NULL
-        return NULL;
+    {//if there is no rw pin just return 0
+      return 0;
     }
 
-    char *v= new char[chars]; //allocate space
+    //save the last position to return to it when the function is finished
+    int prev_col, prev_row;
+    getCursorPos(prev_col, prev_row);
 
     setCursor(col, row);
 
-    digitalWrite(_rs_pin, HIGH);
-    digitalWrite(_rw_pin, HIGH);
-    delayMicroseconds(1); // tAS time
+     for(int i=0; i<length; i++) // no need to increment position...
+        {
+            buffer[i]= receive(HIGH);
+        }
 
-    if (_displayfunction & LCD_8BITMODE)
-    {
-        for(int i=0; i<chars; i++) // no need to increment position...
-        {
-            v[i]= read8bits();
-        }
-    }
-    else
-    {
-        char c;
-        for(int i=0; i<chars; i++)
-        {
-            c = read4bits();
-            c = c << 4;
-            c |= read4bits();
-            v[i]= c;
-        }
-    }
-    return v;
+    //return to the initial position of the cursor
+    setCursor(prev_col, prev_row);
+
+    return length;
 }
 
 // Retrieves a character from the specified position
@@ -327,7 +315,7 @@ char LiquidCrystal::getCharAt(uint8_t col, uint8_t row, uint8_t ret)
     }
 
     int x,y;
-    if(ret)  //if it needs to return, save the current pos
+    if(ret)  //if it needs to return, save the current position
     {
         getCursorPos(x,y);
     }
@@ -335,21 +323,7 @@ char LiquidCrystal::getCharAt(uint8_t col, uint8_t row, uint8_t ret)
     setCursor(col, row); //set the position to the one from which to read
 
     char value = 0 ;
-
-    digitalWrite(_rs_pin, HIGH);
-    digitalWrite(_rw_pin, HIGH);
-    delayMicroseconds(1); // tAS time
-
-    if (_displayfunction & LCD_8BITMODE)
-    {
-        value = read8bits();
-    }
-    else
-    {
-        value = read4bits();
-        value = value << 4;
-        value |= read4bits();
-    }
+    value = receive(HIGH);
 
     if(ret) //return to the old position
     {
@@ -398,7 +372,6 @@ void LiquidCrystal::deleteLast()
     command(cmd);
 }
 
-
 /*********** mid level commands, for sending data/cmds */
 
 inline void LiquidCrystal::command(uint8_t value) {
@@ -419,21 +392,7 @@ uint8_t LiquidCrystal::readBusyFlagAndAddress()
     }
 
     uint8_t value = 0 ;
-
-    digitalWrite(_rs_pin, LOW);
-    digitalWrite(_rw_pin, HIGH);
-    delayMicroseconds(1); // tAS time
-
-    if (_displayfunction & LCD_8BITMODE) //is it 4/8 bit mode?
-    {
-        value = read8bits();
-    }
-    else
-    {
-        value = read4bits();
-        value = value << 4;
-        value |= read4bits();
-    }
+    value = receive(LOW);
 
     return value;
 }
@@ -457,6 +416,30 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
   }
 }
 
+// reads busy flag and address if rs_pin_mode is LOW or reads characters if rs_pin_mode is HIGH,
+// it is analogous to the send function
+uint8_t LiquidCrystal::receive(int rs_pin_mode){
+    digitalWrite(_rs_pin, rs_pin_mode);
+    digitalWrite(_rw_pin, HIGH); //it is up to the higher function to check if there is a rw pin,
+    // this is done to avoid using a code for error returning
+
+    delayMicroseconds(1); // tAS time
+
+    uint8_t value;
+    if (_displayfunction & LCD_8BITMODE) //is it 4/8 bit mode?
+    {
+        value = read8bits();
+    }
+    else
+    {
+        value = read4bits();
+        value = value << 4;
+        value |= read4bits();
+    }
+
+    return value;
+}
+
 void LiquidCrystal::pulseEnable(void) {
   digitalWrite(_enable_pin, LOW);
   delayMicroseconds(1);
@@ -470,9 +453,10 @@ void LiquidCrystal::write4bits(uint8_t value) {
   for (int i = 0; i < 4; i++) {
     pinMode(_data_pins[i], OUTPUT);
     digitalWrite(_data_pins[i], (value >> i) & 0x01);
-    pulseEnable();
   }
 
+  pulseEnable();
+}
 
 void LiquidCrystal::write8bits(uint8_t value) {
   for (int i = 0; i < 8; i++) {
@@ -481,7 +465,6 @@ void LiquidCrystal::write8bits(uint8_t value) {
   }
 
   pulseEnable();
-
 }
 
 // Reads data from the LCD in 4Bit Mode
@@ -530,3 +513,4 @@ uint8_t LiquidCrystal::read8bits()
     delayMicroseconds(1); //tDHR time
     return value;
 }
+

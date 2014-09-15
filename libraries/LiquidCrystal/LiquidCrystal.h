@@ -79,20 +79,20 @@ public:
 
   void createChar(uint8_t, uint8_t[]);
   void setCursor(uint8_t, uint8_t);
+  virtual size_t write(uint8_t);
+  void command(uint8_t);
   void getCursorPos(int &col, int &row);
   char getCharAt(uint8_t col, uint8_t row);
   char getCharAt(uint8_t col, uint8_t row, uint8_t ret);
-  char* getChars(uint8_t col, uint8_t row, uint8_t chars);
+  uint8_t getChars(uint8_t col, uint8_t row, char* buffer, uint8_t length);
   void deleteLast();
   void deleteAt(uint8_t col, uint8_t row);
-  virtual size_t write(uint8_t);
-  void command(uint8_t);
 
   using Print::write;
 private:
-
   uint8_t readBusyFlagAndAddress();
   void send(uint8_t, uint8_t);
+  uint8_t receive(int rs_pin_mode);
   void write4bits(uint8_t);
   void write8bits(uint8_t);
   uint8_t read4bits();
