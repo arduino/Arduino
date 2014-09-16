@@ -316,7 +316,7 @@ public class Compiler implements MessageConsumer {
     }else if (arch == "lm4f" || arch == "cc3200") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
-        "-O0",
+        "-Os",
         "-nostartfiles","-nostdlib",
         "-Wl,--gc-sections",
         "-T", corePath + File.separator + boardPreferences.get("ldscript"),
@@ -1075,7 +1075,7 @@ public class Compiler implements MessageConsumer {
         "-c",
 //        "-g",
 //        "-gdwarf-2",
-        "-O0", //changed from -Os
+        "-Os",
         Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
         "-ffunction-sections",
         "-fdata-sections",
@@ -1192,7 +1192,7 @@ public class Compiler implements MessageConsumer {
           "-c",
 //          "-g", // include debugging info (so errors include line numbers)
 //          "-gdwarf-2",
-          "-O0", //changed from -Os
+          "-Os",
           Preferences.getBoolean("build.verbose") ? "-Wall" : "-w", // show warnings if verbose
           "-fno-rtti",
           "-fno-exceptions",
