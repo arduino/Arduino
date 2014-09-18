@@ -51,7 +51,8 @@ WiFiClient::WiFiClient()
     rx_currentIndex = 0;
     rx_fillLevel = 0;
     _socketIndex = NO_SOCKET_AVAIL;
-    
+    hasRootCA = false;
+    sslVerifyStrict = false;
 }
 
 //--tested, working--//
@@ -157,6 +158,102 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
     WiFiClass::_typeArray[socketIndex] = TYPE_TCP_CLIENT;
     WiFiClass::_portArray[socketIndex] = port;
     return true;
+}
+
+int WiFiClient::sslConnect(const char* host, uint16_t port)
+{
+    //
+    //get the host ip address
+    //
+    IPAddress hostIP(0,0,0,0);
+    int success = WiFi.hostByName((char*)host, hostIP);
+    if (!success) {
+        return false;
+    }
+    
+    return sslConnect(hostIP, port);
+}
+
+int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
+{
+    //
+    //this function should only be called once and only on the client side
+    //
+    if (_socketIndex != NO_SOCKET_AVAIL) {
+        return false;
+    }
+    
+    
+    //
+    //get a socket index and attempt to create a socket
+    //note that the socket is intentionally left as BLOCKING. This allows an
+    //abusive user to send as many requests as they want as fast as they can try
+    //and it won't overload simplelink.
+    //
+    int socketIndex = WiFiClass::getSocket();
+    if (socketIndex == NO_SOCKET_AVAIL) {
+        return false;
+    }
+
+
+    int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_SEC_SOCKET);
+    if (socketHandle < 0) {
+        return false;
+    }
+
+    // Utilize rootCA file for verifying server certificate if it's been supplied with .sslRootCA() previously
+    if (hasRootCA) {
+        sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_SECURE_FILES_CA_FILE_NAME, "/cert/rootCA.der", strlen("/cert/rootCA.der"));
+    }
+    sslIsVerified = true;
+
+    //
+    //connect the socket to the requested IP address and port. Check for success
+    //
+
+    SlSockAddrIn_t server = {0};
+    server.sin_family = SL_AF_INET;
+    server.sin_port = sl_Htons(port);
+    server.sin_addr.s_addr = ip;
+    int iRet = sl_Connect(socketHandle, (SlSockAddr_t*)&server, sizeof(SlSockAddrIn_t));
+
+    if (iRet < 0 && iRet != SL_ESECSNOVERIFY) {
+        sl_Close(socketHandle);
+        return false;
+    }
+
+    // If the remote-end server cert could not be verified, and we demand strict verification, ABORT.
+    if (sslVerifyStrict && iRet == SL_ESECSNOVERIFY) {
+        sl_Close(socketHandle);
+        return false;
+    }
+
+    if (iRet == SL_ESECSNOVERIFY)
+        sslIsVerified = false;
+
+    int enableOption = 1;
+    sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
+    sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_KEEPALIVE, &enableOption, sizeof(enableOption));
+
+    //
+    //we've successfully created a socket and connected, so store the
+    //information in the arrays provided by WiFiClass
+    //
+    _socketIndex = socketIndex;
+    WiFiClass::_handleArray[socketIndex] = socketHandle;
+    WiFiClass::_typeArray[socketIndex] = TYPE_TCP_CLIENT;
+    WiFiClass::_portArray[socketIndex] = port;
+    return true;
+}
+
+void WiFiClient::sslStrict(boolean yesno)
+{
+    sslVerifyStrict = yesno;
+}
+
+int WiFiClient::sslRootCA(const uint8_t *rootCAfilecontents, const size_t filelen)
+{
+    return false;  // Not implemented; tried once before and it was BUGGY; couldn't seem to write to the FS!
 }
 
 //--tested, working--//
