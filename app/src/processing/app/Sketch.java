@@ -711,6 +711,7 @@ public class Sketch {
 
     // save the other tabs to their new location
     for (SketchCode code : data.getCodes()) {
+      if (code.equals(data.getCode(0))) continue;
       File newFile = new File(newFolder, code.getFileName());
       code.saveAs(newFile);
     }
