@@ -22,9 +22,6 @@ uint8_t W5x00Class::sockets = 4;
 #define TX_BUF 0x1100
 #define RX_BUF (TX_BUF + TX_RX_MAX_BUF_SIZE)
 
-#define TXBUF_BASE 0x4000
-#define RXBUF_BASE 0x6000
-
 void W5x00Class::init(void)
 {
   delay(300);
@@ -90,19 +87,37 @@ void W5x00Class::init(void)
     writeRMSR(0x55);
     SPI.endTransaction();
 
-    for (int i=0; i<sockets; i++) {
+    const uint16_t TXBUF_BASE = 0x4000;
+    const uint16_t RXBUF_BASE = 0x6000;
+    for (uint8_t i=0; i<sockets; i++) {
       SBASE[i] = TXBUF_BASE + SSIZE * i;
       RBASE[i] = RXBUF_BASE + RSIZE * i;
     }
   } else if (chipset == 2) {
-    // XXX: TODO
-  } else {
-    sockets = 8;
+    sockets = 4;
+    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
     for (uint8_t i=0; i<sockets; i++) {
       writeSnRXBUF_SIZE(i, 2);
       writeSnTXBUF_SIZE(i, 2);
     }
+    SPI.endTransaction();
+
+    const uint16_t TXBUF_BASE = 0x8000;
+    const uint16_t RXBUF_BASE = 0xC000;
+    for (uint8_t i=0; i<sockets; i++) {
+      SBASE[i] = TXBUF_BASE + SSIZE * i;
+      RBASE[i] = RXBUF_BASE + RSIZE * i;
+    }
+  } else {
+    sockets = 8;
+    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+    writeMR(1<<RST);
+    for (uint8_t i=0; i<sockets; i++) {
+      writeSnRXBUF_SIZE(i, 2);
+      writeSnTXBUF_SIZE(i, 2);
+    }
+    SPI.endTransaction();
   }
 }
 
@@ -130,7 +145,6 @@ uint16_t W5x00Class::getRXReceivedSize(SOCKET s)
   return val;
 }
 
-
 void W5x00Class::send_data_processing(SOCKET s, const uint8_t *data, uint16_t len)
 {
   // This is same as having no offset in a call to send_data_processing_offset
@@ -142,7 +156,7 @@ void W5x00Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, con
   uint16_t ptr = readSnTX_WR(s);
   ptr += data_offset;
 
-  if (chipset == 1) {
+  if (chipset != 5) {
     uint16_t offset = ptr & SMASK;
     uint16_t dstAddr = offset + SBASE[s];
     if (offset + len > SSIZE)
@@ -154,8 +168,6 @@ void W5x00Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, con
     } else {
       write(dstAddr, 0x00, data, len);
     }
-  } else if (chipset == 2) {
-    // XXX: TODO
   } else {
     write(ptr, (s<<5) + 0x14, data, len);
   }
@@ -163,7 +175,6 @@ void W5x00Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, con
   ptr += len;
   writeSnTX_WR(s, ptr);
 }
-
 
 void W5x00Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uint8_t peek)
 {
@@ -178,7 +189,7 @@ void W5x00Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uin
 
 void W5x00Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *dst, uint16_t len)
 {
-  if (chipset == 1) {
+  if (chipset != 5) {
     uint16_t src_mask = src & RMASK;
     uint16_t src_ptr = RBASE[s] + src_mask;
     if ((src_mask + len) > RSIZE) {
@@ -189,8 +200,6 @@ void W5x00Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *ds
     } else {
       read(src_ptr, 0x00, (uint8_t *) dst, len);
     }
-  } else if (chipset == 2) {
-    // XXX: Missing 5200
   } else {
     read((uint16_t)src , (s<<5) + 0x18, (uint8_t *)dst, len);
   }
@@ -207,7 +216,11 @@ uint8_t W5x00Class::write(uint16_t _addr, uint8_t _cb, uint8_t _data)
     SPI.transfer(_addr & 0xFF);
     SPI.transfer(_data);
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    SPI.transfer(_addr >> 8);
+    SPI.transfer(_addr & 0xFF);
+    SPI.transfer(0x80);
+    SPI.transfer(0x01);
+    SPI.transfer(_data);
   } else {
     SPI.transfer(_addr >> 8);
     SPI.transfer(_addr & 0xFF);
@@ -222,7 +235,11 @@ uint8_t W5x00Class::write(uint16_t _addr, uint8_t _cb, uint8_t _data)
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _data);
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x80, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x01, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _data);
   } else {
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
@@ -248,20 +265,31 @@ uint16_t W5x00Class::write(uint16_t _addr, uint8_t _cb, const uint8_t *_buf, uin
       resetSS();
     }
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    if (_len == 0)
+      return 0;
+    setSS();
+    SPI.transfer(_addr >> 8);
+    SPI.transfer(_addr & 0xFF);
+    SPI.transfer(0x80 | ((_len & 0x7F00) >> 8));
+    SPI.transfer(_len & 0xFF);
+    for (uint16_t i=0; i<_len; i++) {
+      SPI.transfer(_buf[i]);
+    }
+    resetSS();
   } else {
     setSS();
     SPI.transfer(_addr >> 8);
     SPI.transfer(_addr & 0xFF);
     SPI.transfer(_cb);
-    for (uint16_t i=0; i<_len; i++){
+    for (uint16_t i=0; i<_len; i++) {
       SPI.transfer(_buf[i]);
     }
     resetSS();
   }
 #else
+  uint16_t i;
   if (chipset == 1) {
-    for (uint16_t i=0; i<_len; i++)
+    for (i=0; i<_len; i++)
     {
       SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0xF0, SPI_CONTINUE);
       SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
@@ -270,13 +298,21 @@ uint16_t W5x00Class::write(uint16_t _addr, uint8_t _cb, const uint8_t *_buf, uin
       _addr++;
     }
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    if (_len == 0)
+      return 0;
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x80 | ((_len & 0x7F00) >> 8), SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _len & 0xFF, SPI_CONTINUE);
+    for (i=0; i<_len-1; i++) {
+      SPI.transfer(ETHERNET_SHIELD_SPI_CS, _buf[i], SPI_CONTINUE);
+    }
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _buf[i]);
   } else {
-    uint16_t i;
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _cb, SPI_CONTINUE);
-    for (i=0; i<_len-1; i++){
+    for (i=0; i<_len-1; i++) {
       SPI.transfer(ETHERNET_SHIELD_SPI_CS, _buf[i], SPI_CONTINUE);
     }
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _buf[i]);
@@ -296,7 +332,11 @@ uint8_t W5x00Class::read(uint16_t _addr, uint8_t _cb)
     SPI.transfer(_addr & 0xFF);
     res = SPI.transfer(0);
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    SPI.transfer(_addr >> 8);
+    SPI.transfer(_addr & 0xFF);
+    SPI.transfer(0x00);
+    SPI.transfer(0x01);
+    res = SPI.transfer(0);
   } else {
     SPI.transfer(_addr >> 8);
     SPI.transfer(_addr & 0xFF);
@@ -311,7 +351,11 @@ uint8_t W5x00Class::read(uint16_t _addr, uint8_t _cb)
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
     res = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x00, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x01, SPI_CONTINUE);
+    res = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
   } else {
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
@@ -337,7 +381,15 @@ uint16_t W5x00Class::read(uint16_t _addr, uint8_t _cb, uint8_t *_buf, uint16_t _
       resetSS();
     }
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    setSS();
+    SPI.transfer(_addr >> 8);
+    SPI.transfer(_addr & 0xFF);
+    SPI.transfer((_len & 0x7F00) >> 8);
+    SPI.transfer(_len & 0xFF);
+    for (uint16_t i=0; i<_len; i++){
+      _buf[i] = SPI.transfer(0);
+    }
+    resetSS();
   } else {
     setSS();
     SPI.transfer(_addr >> 8);
@@ -349,8 +401,9 @@ uint16_t W5x00Class::read(uint16_t _addr, uint8_t _cb, uint8_t *_buf, uint16_t _
     resetSS();
   }
 #else
+  uint16_t i;
   if (chipset == 1) {
-    for (uint16_t i=0; i<_len; i++)
+    for (i=0; i<_len; i++)
     {
       SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
       SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
@@ -359,9 +412,15 @@ uint16_t W5x00Class::read(uint16_t _addr, uint8_t _cb, uint8_t *_buf, uint16_t _
       _addr++;
     }
   } else if (chipset == 2) {
-    // XXX: Missing 5200
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, (_len & 0x7F00) >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _len & 0xFF, SPI_CONTINUE);
+    for (i=0; i<_len-1; i++){
+      _buf[i] = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0, SPI_CONTINUE);
+    }
+    _buf[_len-1] = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
   } else {
-    uint16_t i;
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
     SPI.transfer(ETHERNET_SHIELD_SPI_CS, _cb, SPI_CONTINUE);

@@ -226,27 +226,27 @@ private:
   }
 
 public:
-  __GP_REGISTER8 (MR,            0x0000);    // Mode
-  __GP_REGISTER_N(GAR,           0x0001, 4); // Gateway IP address
-  __GP_REGISTER_N(SUBR,          0x0005, 4); // Subnet mask address
-  __GP_REGISTER_N(SHAR,          0x0009, 6); // Source MAC address
-  __GP_REGISTER_N(SIPR,          0x000F, 4); // Source IP address
-  __GP_REGISTER8 (IR,            0x0015);    // Interrupt
-  __GP_REGISTER8 (IMR,           0x0016);    // Interrupt Mask
-  __GP_REGISTER16(RTR_W5100,     0x0017);    // Timeout address
-  __GP_REGISTER16(RTR_W5500,     0x0019);    // Timeout address
-  __GP_REGISTER8 (RCR_W5100,     0x0019);    // Retry count
-  __GP_REGISTER8 (RCR_W5500,     0x001B);    // Retry count
-  __GP_REGISTER8 (RMSR,          0x001A);    // Receive memory size
-  __GP_REGISTER8 (TMSR,          0x001B);    // Transmit memory size
-  __GP_REGISTER8 (PATR,          0x001C);    // Authentication type address in PPPoE mode
-  __GP_REGISTER8 (PTIMER,        0x0028);    // PPP LCP Request Timer
-  __GP_REGISTER8 (PMAGIC,        0x0029);    // PPP LCP Magic Number
-  __GP_REGISTER_N(UIPR_W5100,    0x002A, 4); // Unreachable IP address in UDP mode
-  __GP_REGISTER_N(UIPR_W5500,    0x0028, 4); // Unreachable IP address in UDP mode
-  __GP_REGISTER16(UPORT_W5100,   0x002E);    // Unreachable Port address in UDP mode
-  __GP_REGISTER16(UPORT_W5500,   0x002C);    // Unreachable Port address in UDP mode
-  __GP_REGISTER8 (PHYCFGR_W5500, 0x002E);    // PHY Configuration register, default value: 0b 1011 1xxx
+  __GP_REGISTER8 (MR,                0x0000);    // Mode
+  __GP_REGISTER_N(GAR,               0x0001, 4); // Gateway IP address
+  __GP_REGISTER_N(SUBR,              0x0005, 4); // Subnet mask address
+  __GP_REGISTER_N(SHAR,              0x0009, 6); // Source MAC address
+  __GP_REGISTER_N(SIPR,              0x000F, 4); // Source IP address
+  __GP_REGISTER8 (IR,                0x0015);    // Interrupt
+  __GP_REGISTER8 (IMR,               0x0016);    // Interrupt Mask
+  __GP_REGISTER16(RTR_W5100_W5200,   0x0017);    // Timeout address
+  __GP_REGISTER16(RTR_W5500,         0x0019);    // Timeout address
+  __GP_REGISTER8 (RCR_W5100_W5200,   0x0019);    // Retry count
+  __GP_REGISTER8 (RCR_W5500,         0x001B);    // Retry count
+  __GP_REGISTER8 (RMSR,              0x001A);    // Receive memory size
+  __GP_REGISTER8 (TMSR,              0x001B);    // Transmit memory size
+  __GP_REGISTER8 (PATR,              0x001C);    // Authentication type address in PPPoE mode
+  __GP_REGISTER8 (PTIMER,            0x0028);    // PPP LCP Request Timer
+  __GP_REGISTER8 (PMAGIC,            0x0029);    // PPP LCP Magic Number
+  __GP_REGISTER_N(UIPR_W5100_W5200,  0x002A, 4); // Unreachable IP address in UDP mode
+  __GP_REGISTER_N(UIPR_W5500,        0x0028, 4); // Unreachable IP address in UDP mode
+  __GP_REGISTER16(UPORT_W5100_W5200, 0x002E);    // Unreachable Port address in UDP mode
+  __GP_REGISTER16(UPORT_W5500,       0x002C);    // Unreachable Port address in UDP mode
+  __GP_REGISTER8 (PHYCFGR_W5500,     0x002E);    // PHY Configuration register, default value: 0b 1011 1xxx
 
 #undef __GP_REGISTER8
 #undef __GP_REGISTER16
@@ -375,38 +375,30 @@ private:
 extern W5x00Class W5100;
 
 uint8_t W5x00Class::readSn(SOCKET _s, uint16_t _addr) {
-  if (chipset == 1)
+  if (chipset != 5)
     return read(CH_BASE + _s * CH_SIZE + _addr, 0x00);
-  if (chipset == 2)
-    return 0; // XXX: TODO
-  if (chipset == 5)
+  else
     return read(_addr, (_s<<5) + 0x08);
 }
 
 uint8_t W5x00Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t _data) {
-  if (chipset == 1)
+  if (chipset != 5)
     return write(CH_BASE + _s * CH_SIZE + _addr, 0x00, _data);
-  if (chipset == 2)
-    return 0; // XXX: TODO
-  if (chipset == 5)
+  else
     return write(_addr, (_s<<5) + 0x0C, _data);
 }
 
 uint16_t W5x00Class::readSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  if (chipset == 1)
+  if (chipset != 5)
     return read(CH_BASE + _s * CH_SIZE + _addr, 0x00, _buf, _len);
-  if (chipset == 2)
-    return 0; // XXX: TODO
-  if (chipset == 5)
+  else
     return read(_addr, (_s<<5) + 0x08, _buf, _len);
 }
 
 uint16_t W5x00Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  if (chipset == 1)
+  if (chipset != 5)
     return write(CH_BASE + _s * CH_SIZE + _addr, 0x00, _buf, _len);
-  if (chipset == 2)
-    return 0; // XXX: TODO
-  if (chipset == 5)
+  else
     return write(_addr, (_s<<5) + 0x0C, _buf, _len);
 }
 
@@ -443,23 +435,17 @@ void W5x00Class::setIPAddress(uint8_t *_addr) {
 }
 
 void W5x00Class::setRetransmissionTime(uint16_t _timeout) {
-  if (chipset == 1) {
-    writeRTR_W5100(_timeout);
-  } else if (chipset == 2) {
-    // XXX: TODO
-  } else {
+  if (chipset != 5)
+    writeRTR_W5100_W5200(_timeout);
+  else
     writeRTR_W5500(_timeout);
-  }
 }
 
 void W5x00Class::setRetransmissionCount(uint8_t _retry) {
-  if (chipset == 1) {
-    writeRCR_W5100(_retry);
-  } else if (chipset == 2) {
-    // XXX: TODO
-  } else {
+  if (chipset != 5)
+    writeRCR_W5100_W5200(_retry);
+  else
     writeRCR_W5500(_retry);
-  }
 }
 
 #endif
