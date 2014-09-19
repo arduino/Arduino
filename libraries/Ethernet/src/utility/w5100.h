@@ -190,6 +190,8 @@ public:
   uint16_t getTXFreeSize(SOCKET s);
   uint16_t getRXReceivedSize(SOCKET s);
   
+private:
+  static uint8_t chipset;
 
   // W5100 Registers
   // ---------------
