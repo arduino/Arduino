@@ -44,7 +44,10 @@ public:
     virtual int sslConnect(IPAddress ip, uint16_t port);
     virtual int sslConnect(const char *host, uint16_t port);
     virtual int sslRootCA(const uint8_t *rootCAfilecontents, const size_t);
+    virtual int useRootCA(void);
     virtual void sslStrict(boolean);
+    virtual int32_t sslGetReasonID(void);
+    virtual const char *sslGetReason(void);
     virtual size_t write(uint8_t);
     virtual size_t write(const uint8_t *buffer, size_t size);
     virtual int available();
@@ -67,6 +70,7 @@ private:
     int rx_currentIndex;
     boolean sslVerifyStrict;
     boolean hasRootCA;
+    int32_t sslLastError;
 };
 
 #endif

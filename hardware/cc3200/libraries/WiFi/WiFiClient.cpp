@@ -174,6 +174,8 @@ int WiFiClient::sslConnect(const char* host, uint16_t port)
     return sslConnect(hostIP, port);
 }
 
+#define ROOTCA_PEM_FILE "/cert/rootCA.pem"
+
 int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
 {
     //
@@ -203,7 +205,7 @@ int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
 
     // Utilize rootCA file for verifying server certificate if it's been supplied with .sslRootCA() previously
     if (hasRootCA) {
-        sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_SECURE_FILES_CA_FILE_NAME, "/cert/rootCA.der", strlen("/cert/rootCA.der"));
+        sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_SECURE_FILES_CA_FILE_NAME, ROOTCA_PEM_FILE, strlen(ROOTCA_PEM_FILE));
     }
     sslIsVerified = true;
 
@@ -216,20 +218,25 @@ int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
     server.sin_port = sl_Htons(port);
     server.sin_addr.s_addr = ip;
     int iRet = sl_Connect(socketHandle, (SlSockAddr_t*)&server, sizeof(SlSockAddrIn_t));
+    Serial.print("iRet = "); Serial.println(iRet);
 
-    if (iRet < 0 && iRet != SL_ESECSNOVERIFY) {
+    if ( iRet < 0 && (iRet != SL_ESECSNOVERIFY && iRet != SL_ESECDATEERROR) ) {
+        sslLastError = iRet;
         sl_Close(socketHandle);
         return false;
     }
 
     // If the remote-end server cert could not be verified, and we demand strict verification, ABORT.
-    if (sslVerifyStrict && iRet == SL_ESECSNOVERIFY) {
+    if ( sslVerifyStrict && (iRet == SL_ESECSNOVERIFY || iRet == SL_ESECDATEERROR) ) {
+        sslLastError = iRet;
         sl_Close(socketHandle);
         return false;
     }
 
-    if (iRet == SL_ESECSNOVERIFY)
+    if (iRet == SL_ESECSNOVERIFY || iRet == SL_ESECDATEERROR) {
+        sslLastError = iRet;
         sslIsVerified = false;
+    }
 
     int enableOption = 1;
     sl_SetSockOpt(socketHandle, SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
@@ -246,6 +253,26 @@ int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
     return true;
 }
 
+int32_t WiFiClient::sslGetReasonID(void)
+{
+    return sslLastError;
+}
+
+const char * WiFiClient::sslGetReason(void)
+{
+    switch (sslLastError) {
+        case SL_ESECSNOVERIFY:
+            return "SL_ESECSNOVERIFY - SSL verification not enabled";
+        case SL_ESECDATEERROR:
+            return "SL_ESECDATEERROR - Connected, but RootCA date error";
+        case SL_ESEC_ASN_SIG_CONFIRM_E:
+            return "SL_ESEC_ASN_SIG_CONFIRM_E - RootCA could not verify site cert";
+        case SL_ESECBADCAFILE:
+            return "SL_ESECBADCAFILE - Bad RootCA file (needs DER binary format, not PEM)";
+    }
+    return "UNKNOWN";
+}
+
 void WiFiClient::sslStrict(boolean yesno)
 {
     sslVerifyStrict = yesno;
@@ -253,7 +280,44 @@ void WiFiClient::sslStrict(boolean yesno)
 
 int WiFiClient::sslRootCA(const uint8_t *rootCAfilecontents, const size_t filelen)
 {
-    return false;  // Not implemented; tried once before and it was BUGGY; couldn't seem to write to the FS!
+    int32_t i, fh;
+    uint32_t tok;
+    size_t maxsize;
+
+    sl_FsDel((uint8_t*)ROOTCA_PEM_FILE, 0);
+
+    if (rootCAfilecontents == NULL || filelen == 0) {
+        return true;
+    }
+
+    maxsize = (filelen / 512) * 512 + (filelen % 512);
+    i = sl_FsOpen((uint8_t*)ROOTCA_PEM_FILE, FS_MODE_OPEN_CREATE(maxsize, _FS_FILE_OPEN_FLAG_COMMIT | _FS_FILE_OPEN_FLAG_NO_SIGNATURE_TEST), &tok, &fh);
+    if (i != SL_FS_OK) {
+        return false;
+    }
+
+    i = sl_FsWrite(fh, 0, (uint8_t *)rootCAfilecontents, filelen);
+    sl_FsClose(fh, NULL, NULL, 0);
+
+    if (i != filelen)
+        return false;
+
+    hasRootCA = true;
+    return true;
+}
+
+// Checks if an existing copy of /cert/rootCA.pem is on the Serial Flash; if so, use it!
+int WiFiClient::useRootCA(void)
+{
+    int32_t i;
+    SlFsFileInfo_t fi;
+
+    i = sl_FsGetInfo((uint8_t*)ROOTCA_PEM_FILE, 0, &fi);
+    if (i != SL_FS_OK)
+        return false;
+
+    hasRootCA = true;
+    return true;
 }
 
 //--tested, working--//
