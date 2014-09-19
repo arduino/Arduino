@@ -289,6 +289,7 @@ int WiFiClient::sslRootCA(const uint8_t *rootCAfilecontents, const size_t filele
     sl_FsDel((uint8_t*)ROOTCA_PEM_FILE, 0);
 
     if (rootCAfilecontents == NULL || filelen == 0) {
+	hasRootCA = false;
         return true;
     }
 
