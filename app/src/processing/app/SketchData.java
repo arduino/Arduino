@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class SketchData {
@@ -31,13 +29,6 @@ public class SketchData {
   private String name;
 
   private List<SketchCode> codes = new ArrayList<SketchCode>();
-
-  private static final Comparator<SketchCode> CODE_DOCS_COMPARATOR = new Comparator<SketchCode>() {
-    @Override
-    public int compare(SketchCode x, SketchCode y) {
-      return x.getFileName().compareTo(y.getFileName());
-    }
-  };
 
   SketchData(File file) {
     primaryFile = file;
@@ -211,7 +202,22 @@ public class SketchData {
   }
 
   protected void sortCode() {
-    Collections.sort(codes, CODE_DOCS_COMPARATOR);
+    // cheap-ass sort of the rest of the files
+    // it's a dumb, slow sort, but there shouldn't be more than ~5 files
+    int codeCount = codes.size();
+    for (int i = 1; i < codeCount; i++) {
+      int who = i;
+      for (int j = i + 1; j < codeCount; j++) {
+        if (codes.get(j).getFileName().compareTo(codes.get(who).getFileName()) < 0) {
+          who = j;  // this guy is earlier in the alphabet
+        }
+      }
+      if (who != i) {  // swap with someone if changes made
+        SketchCode temp = codes.get(who);
+        codes.set(who, codes.get(i));
+        codes.set(i, temp);
+      }
+    }
   }
 
   public SketchCode getCode(int i) {
