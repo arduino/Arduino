@@ -261,6 +261,8 @@ int32_t WiFiClient::sslGetReasonID(void)
 const char * WiFiClient::sslGetReason(void)
 {
     switch (sslLastError) {
+        case SL_SOC_OK:
+            return "OK";
         case SL_ESECSNOVERIFY:
             return "SL_ESECSNOVERIFY - SSL verification not enabled";
         case SL_ESECDATEERROR:
