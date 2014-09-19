@@ -137,7 +137,7 @@ public:
    * the data from Receive buffer. Here also take care of the condition while it exceed
    * the Rx memory uper-bound of socket.
    */
-  void read_data(SOCKET s, volatile uint16_t src, volatile uint8_t * dst, uint16_t len);
+  void read_data(SOCKET s, uint16_t src, uint8_t *dst, uint16_t len);
   
   /**
    * @brief	 This function is being called by send() and sendto() function also. 
@@ -146,6 +146,7 @@ public:
    * register. User should read upper byte first and lower byte later to get proper value.
    */
   void send_data_processing(SOCKET s, const uint8_t *data, uint16_t len);
+
   /**
    * @brief A copy of send_data_processing that uses the provided ptr for the
    *        write offset.  Only needed for the "streaming" UDP API, where
@@ -156,7 +157,6 @@ public:
    *        in from TX_WR
    * @return New value for ptr, to be used in the next call
    */
-// FIXME Update documentation
   void send_data_processing_offset(SOCKET s, uint16_t data_offset, const uint8_t *data, uint16_t len);
 
   /**

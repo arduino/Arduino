@@ -184,21 +184,21 @@ void W5x00Class::recv_data_processing(SOCKET s, uint8_t *data, uint16_t len, uin
   }
 }
 
-void W5x00Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *dst, uint16_t len)
+void W5x00Class::read_data(SOCKET s, uint16_t src, uint8_t *dst, uint16_t len)
 {
   if (chipset != 5) {
     uint16_t src_mask = src & RMASK;
     uint16_t src_ptr = RBASE[s] + src_mask;
     if ((src_mask + len) > RSIZE) {
       uint16_t size = RSIZE - src_mask;
-      read(src_ptr, 0x00, (uint8_t *)dst, size);
+      read(src_ptr, 0x00, dst, size);
       dst += size;
-      read(RBASE[s], 0x00, (uint8_t *) dst, len - size);
+      read(RBASE[s], 0x00, dst, len - size);
     } else {
-      read(src_ptr, 0x00, (uint8_t *) dst, len);
+      read(src_ptr, 0x00, dst, len);
     }
   } else {
-    read((uint16_t)src , (s<<5) + 0x18, (uint8_t *)dst, len);
+    read(src, (s<<5) + 0x18, dst, len);
   }
 }
 
