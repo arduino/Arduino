@@ -125,6 +125,13 @@ public:
   static const uint8_t RAW  = 255;
 };
 
+class W5x00Chipset {
+public:
+  static const uint8_t W5100 = 0;
+  static const uint8_t W5200 = 1;
+  static const uint8_t W5500 = 2;
+};
+
 class W5x00Class {
 
 public:
@@ -377,28 +384,28 @@ private:
 extern W5x00Class W5100;
 
 uint8_t W5x00Class::readSn(SOCKET _s, uint16_t _addr) {
-  if (chipset != 5)
+  if (chipset != W5x00Chipset::W5500)
     return read(CH_BASE + _s * CH_SIZE + _addr, 0x00);
   else
     return read(_addr, (_s<<5) + 0x08);
 }
 
 uint8_t W5x00Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t _data) {
-  if (chipset != 5)
+  if (chipset != W5x00Chipset::W5500)
     return write(CH_BASE + _s * CH_SIZE + _addr, 0x00, _data);
   else
     return write(_addr, (_s<<5) + 0x0C, _data);
 }
 
 uint16_t W5x00Class::readSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  if (chipset != 5)
+  if (chipset != W5x00Chipset::W5500)
     return read(CH_BASE + _s * CH_SIZE + _addr, 0x00, _buf, _len);
   else
     return read(_addr, (_s<<5) + 0x08, _buf, _len);
 }
 
 uint16_t W5x00Class::writeSn(SOCKET _s, uint16_t _addr, uint8_t *_buf, uint16_t _len) {
-  if (chipset != 5)
+  if (chipset != W5x00Chipset::W5500)
     return write(CH_BASE + _s * CH_SIZE + _addr, 0x00, _buf, _len);
   else
     return write(_addr, (_s<<5) + 0x0C, _buf, _len);
@@ -437,14 +444,14 @@ void W5x00Class::setIPAddress(uint8_t *_addr) {
 }
 
 void W5x00Class::setRetransmissionTime(uint16_t _timeout) {
-  if (chipset != 5)
+  if (chipset != W5x00Chipset::W5500)
     writeRTR_W5100_W5200(_timeout);
   else
     writeRTR_W5500(_timeout);
 }
 
 void W5x00Class::setRetransmissionCount(uint8_t _retry) {
-  if (chipset != 5)
+  if (chipset != W5x00Chipset::W5500)
     writeRCR_W5100_W5200(_retry);
   else
     writeRCR_W5500(_retry);
