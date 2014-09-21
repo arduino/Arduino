@@ -342,38 +342,14 @@ private:
   // Set clock to 4Mhz (W5100 should support up to about 14Mhz)
   // TODO: set SPI clock to maximum allowed for any chipset
   #define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
-  #if defined(ARDUINO_ARCH_AVR)
-    #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-      inline static void initSS()    { DDRB  |=  _BV(4); };
-      inline static void setSS()     { PORTB &= ~_BV(4); };
-      inline static void resetSS()   { PORTB |=  _BV(4); };
-    #elif defined(__AVR_ATmega32U4__)
-      inline static void initSS()    { DDRB  |=  _BV(6); };
-      inline static void setSS()     { PORTB &= ~_BV(6); };
-      inline static void resetSS()   { PORTB |=  _BV(6); };
-    #elif defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB162__)
-      inline static void initSS()    { DDRB  |=  _BV(0); };
-      inline static void setSS()     { PORTB &= ~_BV(0); };
-      inline static void resetSS()   { PORTB |=  _BV(0); };
-    #else
-      inline static void initSS()    { DDRB  |=  _BV(2); };
-      inline static void setSS()     { PORTB &= ~_BV(2); };
-      inline static void resetSS()   { PORTB |=  _BV(2); };
-    #endif
-  #elif defined(__ARDUINO_ARC__)
-	inline static void initSS() { pinMode(10, OUTPUT); };
-	inline static void setSS() { digitalWrite(10, LOW); };
-	inline static void resetSS() { digitalWrite(10, HIGH); };
+  #if defined(__ARDUINO_ARC__)
+    inline static void initSS()  { pinMode(10, OUTPUT);    }
+    inline static void setSS()   { digitalWrite(10, LOW);  }
+    inline static void resetSS() { digitalWrite(10, HIGH); }
   #else
-    inline static void initSS() {
-      *portModeRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |= digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
-    }
-    inline static void setSS()   {
-      *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) &= ~digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
-    }
-    inline static void resetSS() {
-      *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |= digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
-    }
+    inline static void initSS()  { pinMode(ETHERNET_SHIELD_SPI_CS, OUTPUT); }
+    inline static void setSS()   { *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) &= ~digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS); }
+    inline static void resetSS() { *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS); }
   #endif
 #else
   #define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
