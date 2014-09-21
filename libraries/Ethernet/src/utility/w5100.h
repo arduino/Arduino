@@ -338,10 +338,9 @@ private:
   uint16_t RBASE[4]; // Rx buffer base address
 
 private:
+  // W5100 supports up to 14Mhz
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-  // Set clock to 4Mhz (W5100 should support up to about 14Mhz)
-  // TODO: set SPI clock to maximum allowed for any chipset
-  #define SPI_ETHERNET_SETTINGS SPISettings(4000000, MSBFIRST, SPI_MODE0)
+  #define SPI_ETHERNET_SETTINGS SPISettings(14000000, MSBFIRST, SPI_MODE0)
   #if defined(__ARDUINO_ARC__)
     inline static void initSS()  { pinMode(10, OUTPUT);    }
     inline static void setSS()   { digitalWrite(10, LOW);  }
@@ -352,7 +351,7 @@ private:
     inline static void resetSS() { *portOutputRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |=  digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS); }
   #endif
 #else
-  #define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(4000000, MSBFIRST, SPI_MODE0)
+  #define SPI_ETHERNET_SETTINGS ETHERNET_SHIELD_SPI_CS,SPISettings(14000000, MSBFIRST, SPI_MODE0)
   // initSS(), setSS(), resetSS() not needed with EXTENDED_CS_PIN_HANDLING
 #endif
 };
