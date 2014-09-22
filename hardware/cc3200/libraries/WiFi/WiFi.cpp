@@ -715,6 +715,43 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     
 }
 
+int WiFiClass::startSmartConfig()
+{
+    unsigned char policyVal;
+    if (!_initialized) {
+        init();
+    }
+
+    if(sl_WlanPolicySet(SL_POLICY_CONNECTION,
+        SL_CONNECTION_POLICY(1,0,0,0,1),
+        &policyVal,
+        1 /*PolicyValLen*/) < 0) return -1;
+
+    if(sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES) < 0)
+        return -1;
+
+    sl_WlanSmartConfigStart(0,  //groupIdBitmask
+        SMART_CONFIG_CIPHER_NONE, //cipher
+        0,                        //publicKeyLen
+        0,                        //group1KeyLen
+        0,                        //group2KeyLen
+        NULL,                     //publicKey
+        NULL,                     //group1Key
+        NULL);                    //group2Key
+
+    /* Block until connected */
+
+    uint8_t iCount;
+    while(WiFi.status() != WL_CONNECTED) {
+        _SlNonOsMainLoopTask();
+    }
+
+    if(sl_WlanPolicySet(SL_POLICY_CONNECTION,
+        SL_CONNECTION_POLICY(1,0,0,0,0),
+        &policyVal,
+        1 /*PolicyValLen*/) < 0) return -1;
+}
+
 WiFiClass WiFi;
 
 

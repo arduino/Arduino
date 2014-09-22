@@ -33,6 +33,7 @@
 #define MAX_SOCK_NUM 8
 #define MAX_SSID_LEN 32
 #define BSSID_LEN 6
+#define WLAN_DEL_ALL_PROFILES 0xff
 
 class WiFiClass
 {
@@ -264,6 +265,12 @@ public:
      */
     int hostByName(char* aHostname, IPAddress& aResult);
     
+    /*
+     * Start Smartconfig.
+     * return: 1 if SmartConfig was successfully configured, otherwise -1.
+     */
+    int startSmartConfig();
+
     friend class WiFiClient;
     friend class WiFiServer;
 };
