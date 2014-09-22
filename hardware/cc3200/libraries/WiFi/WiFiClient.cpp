@@ -53,6 +53,7 @@ WiFiClient::WiFiClient()
     _socketIndex = NO_SOCKET_AVAIL;
     hasRootCA = false;
     sslVerifyStrict = false;
+    sslLastError = 0;
 }
 
 //--tested, working--//
@@ -253,6 +254,7 @@ int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
     return true;
 }
 
+/*  SSL root CA verification is a work in progress
 int32_t WiFiClient::sslGetReasonID(void)
 {
     return sslLastError;
@@ -322,6 +324,7 @@ int WiFiClient::useRootCA(void)
     hasRootCA = true;
     return true;
 }
+ */
 
 //--tested, working--//
 //--client and server side--//
