@@ -1504,8 +1504,8 @@ public class Sketch {
    * @return null if compilation failed, main class name if not
    * @throws RunnerException
    */
-  public String build(boolean verbose) throws RunnerException {
-    return build(tempBuildFolder.getAbsolutePath(), verbose);
+  public String build(boolean verbose, boolean save) throws RunnerException {
+    return build(tempBuildFolder.getAbsolutePath(), verbose, save);
   }
 
   /**
@@ -1558,7 +1558,7 @@ public class Sketch {
    *
    * @return null if compilation failed, main class name if not
    */
-  public String build(String buildPath, boolean verbose) throws RunnerException {
+  public String build(String buildPath, boolean verbose, boolean save) throws RunnerException {
     String primaryClassName = name + ".cpp";
     Compiler compiler = new Compiler(this, buildPath, primaryClassName);
     File buildPrefsFile = new File(buildPath, BUILD_PREFS_FILE);
@@ -1585,7 +1585,7 @@ public class Sketch {
 
     // compile the program. errors will happen as a RunnerException
     // that will bubble up to whomever called build().
-    if (compiler.compile(verbose)) {
+    if (compiler.compile(verbose, save)) {
       size(compiler.getBuildPreferences());
       return primaryClassName;
     }
@@ -1607,7 +1607,7 @@ public class Sketch {
 
     // build the sketch
     editor.status.progressNotice(_("Compiling sketch..."));
-    String foundName = build(appletPath, false);
+    String foundName = build(appletPath, false, false);
     // (already reported) error during export, exit this function
     if (foundName == null) return false;
 

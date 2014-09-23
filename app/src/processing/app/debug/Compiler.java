@@ -55,6 +55,7 @@ public class Compiler implements MessageConsumer {
 
   private PreferencesMap prefs;
   private boolean verbose;
+  private boolean saveHex;
   private boolean sketchIsCompiled;
   private String targetArch;
   
@@ -78,8 +79,9 @@ public class Compiler implements MessageConsumer {
    * @return true if successful.
    * @throws RunnerException Only if there's a problem. Only then.
    */
-  public boolean compile(boolean _verbose) throws RunnerException {
+  public boolean compile(boolean _verbose, boolean _save) throws RunnerException {
     verbose = _verbose || Preferences.getBoolean("build.verbose");
+    saveHex = _save;
     sketchIsCompiled = false;
     objectFiles = new ArrayList<File>();
 
@@ -142,6 +144,10 @@ public class Compiler implements MessageConsumer {
     // 6. build the .hex file
     sketch.setCompilingProgress(80);
     compileHex();
+    
+    // 7. Save the .hex file
+    sketch.setCompilingProgress(85);
+    saveHex();
 
     sketch.setCompilingProgress(90);
     return true;
@@ -784,6 +790,24 @@ public class Compiler implements MessageConsumer {
     String[] cmdArray;
     try {
       String cmd = prefs.get("recipe.objcopy.hex.pattern");
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+    execAsynchronously(cmdArray);
+  }
+  
+  // 7. Save the .hex file
+  void saveHex() throws RunnerException {
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + Base.REVISION);
+
+    String[] cmdArray;
+    try {
+      String hexPattern = prefs.get("recipe.hex.pattern");
+      String hexPath = prefs.get("build.path") + "/" + hexPattern;
+      String savePath = sketch.getFolder().getAbsolutePath() + "/" + hexPattern;
+      String cmd = "cp -f " + hexPath + " " + savePath;
       cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
     } catch (Exception e) {
       throw new RunnerException(e);
