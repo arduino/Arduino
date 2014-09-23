@@ -1427,8 +1427,8 @@ public class Editor extends JFrame implements RunnerListener {
   public void resetHandlers() {
     runHandler = new DefaultRunHandler();
     presentHandler = new DefaultPresentHandler();
-    runAndSaveHandler = new DefaultRunHandler();
-    presentAndSaveHandler = new DefaultPresentHandler();
+    runAndSaveHandler = new DefaultRunAndSaveHandler();
+    presentAndSaveHandler = new DefaultPresentAndSaveHandler();
     stopHandler = new DefaultStopHandler();
     exportHandler = new DefaultExportHandler();
     exportAppHandler = new DefaultExportAppHandler();

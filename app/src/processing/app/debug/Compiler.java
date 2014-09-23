@@ -146,8 +146,10 @@ public class Compiler implements MessageConsumer {
     compileHex();
     
     // 7. Save the .hex file
-    sketch.setCompilingProgress(85);
-    saveHex();
+    if (saveHex) {
+      sketch.setCompilingProgress(85);
+      saveHex();
+    }
 
     sketch.setCompilingProgress(90);
     return true;
