@@ -53,16 +53,15 @@ extern "C" {
 volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 volatile uint32_t WiFiClass::local_IP = 0;
 bool WiFiClass::_initialized = false;
-
+int8_t WiFiClass::role = ROLE_STA;
 volatile int WiFiClass::network_count = 0;
-
+char WiFiClass::fwVersion[] = {0};
 
 //
 //initialize the ssid and bssid to blank and 0s respectively
 //
 char WiFiClass::connected_ssid[32] = "";
 unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
-
 
 //
 //a better way of keeping track of servers, clients, ports, and handles
@@ -151,14 +150,34 @@ uint8_t WiFiClass::getSocket()
     return NO_SOCKET_AVAIL;
 }
 
+
+char* WiFiClass::driverVersion()
+{
+	return SL_DRIVER_VERSION;
+}
+
 //--tested, working--//
 char* WiFiClass::firmwareVersion()
 {
-    //
-    //underlying simplelink api is version 0.5 as of June 12th
-    //
-    strcpy(string_output_buffer, "SimpleLink SDK 0.5");
-    return string_output_buffer;
+    unsigned char ucConfigOpt = 0;
+    unsigned char ucConfigLen = 0;
+
+    long lRetVal = -1;
+
+    SlVersionFull ver = {0};
+    ucConfigOpt = SL_DEVICE_GENERAL_VERSION;
+    ucConfigLen = sizeof(ver);
+    lRetVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, 
+                                &ucConfigLen, (unsigned char *)(&ver));
+    
+    sprintf(fwVersion, "%ld.%ld.%ld.%ld.31.%ld.%ld.%ld.%ld.%d.%d.%d.%d",
+    ver.NwpVersion[0],ver.NwpVersion[1],ver.NwpVersion[2],ver.NwpVersion[3],
+    ver.ChipFwAndPhyVersion.FwVersion[0],ver.ChipFwAndPhyVersion.FwVersion[1],
+    ver.ChipFwAndPhyVersion.FwVersion[2],ver.ChipFwAndPhyVersion.FwVersion[3],
+    ver.ChipFwAndPhyVersion.PhyVersion[0],ver.ChipFwAndPhyVersion.PhyVersion[1],
+    ver.ChipFwAndPhyVersion.PhyVersion[2],ver.ChipFwAndPhyVersion.PhyVersion[3]);
+
+   return fwVersion;
 }
 
 //--tested, working--//
@@ -277,6 +296,53 @@ int WiFiClass::begin(char* ssid, char *passphrase)
         return WL_CONNECT_FAILED;
     }
 }
+
+int WiFiClass::beginNetwork(char *ssid)
+{
+    long   retVal = -1;
+
+    if (!_initialized) {
+        init();
+    }
+
+    retVal = sl_WlanSetMode(ROLE_AP);
+
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SSID, strlen(ssid),
+                            (unsigned char *)ssid);
+
+    /* Restart Network processor */
+    retVal = sl_Stop(30);
+
+    role = ROLE_AP;
+    return sl_Start(NULL,NULL,NULL);
+}
+
+int WiFiClass::beginNetwork(char *ssid, char *passphrase)
+{
+    long   retVal = -1;
+
+    if (!_initialized) {
+        init();
+    }
+
+    retVal = sl_WlanSetMode(ROLE_AP);
+
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SSID, strlen(ssid),
+                            (unsigned char *)ssid);
+
+    unsigned char  val = SL_SEC_TYPE_WPA;
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SECURITY_TYPE, 1, (unsigned char *)&val);
+
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_PASSWORD, strlen(passphrase),
+                            (unsigned char *)passphrase);
+
+    /* Restart Network processor */
+    retVal = sl_Stop(30);
+
+    role = ROLE_AP;
+    return sl_Start(NULL,NULL,NULL);
+}
+
 
 void WiFiClass::config(IPAddress local_ip)
 {
@@ -502,10 +568,21 @@ char* WiFiClass::SSID()
     if (!_initialized) {
         init();
     }
+
     //
     //connected_ssid maintained by wlan event handler (SimpleLinkCallbacks.cpp)
+    //when in station mode. For AP mode use sl_WlanGet to obtain the SSID.
     //
-    return (char*)WiFiClass::connected_ssid;
+    if(role == ROLE_STA)
+        return (char*)WiFiClass::connected_ssid;
+
+    char ssid[32];
+    unsigned short len = 32;
+    unsigned short  config_opt = WLAN_AP_OPT_SSID;
+    sl_WlanGet(SL_WLAN_CFG_AP_ID, &config_opt , &len, (unsigned char*)ssid);
+
+    strcpy(string_output_buffer, ssid);
+    return string_output_buffer;
 }
 
 //--tested, working--//

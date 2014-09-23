@@ -34,12 +34,15 @@
 #define MAX_SSID_LEN 32
 #define BSSID_LEN 6
 #define WLAN_DEL_ALL_PROFILES 0xff
+#define WL_FW_VER_LENGTH 64
 
 class WiFiClass
 {
 private:
     static bool init();
-    static WiFiClient clients[MAX_SOCK_NUM];    
+    static WiFiClient clients[MAX_SOCK_NUM];
+    static int8_t role;
+    static char fwVersion[WL_FW_VER_LENGTH];
 public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];
@@ -76,15 +79,30 @@ public:
     static uint8_t getSocket();
     
     /*
-     * Get firmware version
+     * Get firmware and driver version
      */
     char* firmwareVersion();
+    char* driverVersion();
     
-    
+    /* Start WiFi in AP mode with OPEN network
+     *
+     * param ssid: Pointer to the SSID string.
+     */
+    int beginNetwork(char *ssid);
+
+    /* Start WiFi in AP mode with WPA network
+     *
+     * param ssid: Pointer to the SSID string.
+     * param passphrase: Passphrase. Valid characters in a passphrase
+     *        must be between ASCII 32-126 (decimal).
+     */
+    int beginNetwork(char *ssid, char *passphrase);
+
     /* Start Wifi connection for OPEN network
      *
      * param ssid: Pointer to the SSID string.
      */
+
     int begin(char* ssid);
     
     /* Start Wifi connection with WEP encryption.
