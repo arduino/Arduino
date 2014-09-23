@@ -129,7 +129,7 @@ bool WiFiClass::init()
     //
     sl_WlanDisconnect();
     
-    lRetVal = sl_NetAppMDNSUnRegisterService(0, 0);
+    sl_NetAppMDNSUnRegisterService(0, 0);
 
     _initialized = true;
     
