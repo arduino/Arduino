@@ -195,6 +195,8 @@ public:
   uint16_t getTXFreeSize(SOCKET s);
   uint16_t getRXReceivedSize(SOCKET s);
   
+  inline uint8_t getMaxSockets() { return sockets; }
+
 private:
   static uint8_t chipset;
   static uint8_t sockets;
