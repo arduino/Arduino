@@ -39,7 +39,6 @@
 class WiFiClass
 {
 private:
-    static bool init();
     static WiFiClient clients[MAX_SOCK_NUM];
     static int8_t role;
     static char fwVersion[WL_FW_VER_LENGTH];
@@ -49,6 +48,7 @@ public:
     static int16_t _typeArray[MAX_SOCK_NUM];
     
     static bool _initialized;
+    static bool init();
     volatile static int network_count;
     
     //
