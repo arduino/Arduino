@@ -219,7 +219,6 @@ int WiFiClient::sslConnect(IPAddress ip, uint16_t port)
     server.sin_port = sl_Htons(port);
     server.sin_addr.s_addr = ip;
     int iRet = sl_Connect(socketHandle, (SlSockAddr_t*)&server, sizeof(SlSockAddrIn_t));
-    Serial.print("iRet = "); Serial.println(iRet);
 
     if ( iRet < 0 && (iRet != SL_ESECSNOVERIFY && iRet != SL_ESECDATEERROR) ) {
         sslLastError = iRet;
