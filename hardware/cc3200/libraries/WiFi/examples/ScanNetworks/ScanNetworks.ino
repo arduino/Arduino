@@ -25,6 +25,7 @@ void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
+  WiFi.init();
   Serial.println(WiFi.firmwareVersion());
 
   // Print WiFi MAC address:
