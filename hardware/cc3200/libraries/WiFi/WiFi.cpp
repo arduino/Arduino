@@ -766,6 +766,9 @@ uint8_t WiFiClass::status()
     if (!_initialized) {
         init();
     }
+
+    if(role == ROLE_AP)
+        return WL_AP_MODE;
     //
     //This class variable is maintained by the slWlanEvenHandler
     //
