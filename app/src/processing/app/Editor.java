@@ -557,21 +557,6 @@ public class Editor extends JFrame implements RunnerListener {
       });
     fileMenu.add(saveAsMenuItem);
 
-    item = newJMenuItem(_("Upload"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(false);
-        }
-      });
-    fileMenu.add(item);
-
-    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
-        }
-      });
-    fileMenu.add(item);
 
     fileMenu.addSeparator();
 
@@ -620,7 +605,7 @@ public class Editor extends JFrame implements RunnerListener {
   protected JMenu buildSketchMenu() {
     JMenuItem item;
     sketchMenu = new JMenu(_("Sketch"));
-
+    
     item = newJMenuItem(_("Verify / Compile"), 'R');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -636,7 +621,23 @@ public class Editor extends JFrame implements RunnerListener {
         }
       });
     sketchMenu.add(item);
-    
+
+    item = newJMenuItem(_("Upload"), 'U');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleExport(false);
+        }
+      });
+    sketchMenu.add(item);
+
+    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleExport(true);
+        }
+      });
+    sketchMenu.add(item);
+
 //    item = new JMenuItem("Stop");
 //    item.addActionListener(new ActionListener() {
 //        public void actionPerformed(ActionEvent e) {
