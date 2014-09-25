@@ -834,6 +834,29 @@ int WiFiClass::startSmartConfig()
         1 /*PolicyValLen*/) < 0) return -1;
 }
 
+/* This function takes uint16_t arguments for compactness on MSP430 w/ CC3100, but actual SlDateTime_t members are uint32_t.
+ */
+boolean WiFiClass::setDateTime(uint16_t month, uint16_t day, uint16_t year, uint16_t hour, uint16_t minute, uint16_t second)
+{
+    if (day < 1 || day > 31 || month < 1 || month > 12 || hour > 23 || minute > 59 || second > 59)
+        return false;
+
+    SlDateTime_t dt;
+    dt.sl_tm_day = (uint32_t)day;
+    dt.sl_tm_mon = (uint32_t)month;
+    dt.sl_tm_year = (uint32_t)year;
+    dt.sl_tm_hour = (uint32_t)hour;
+    dt.sl_tm_min = (uint32_t)minute;
+    dt.sl_tm_sec = (uint32_t)second;
+
+    int32_t i = sl_DevSet(SL_DEVICE_GENERAL_CONFIGURATION, SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME,
+                          sizeof(SlDateTime_t), (uint8_t *)&dt);
+    if (i != 0)
+        return false;
+    return true;
+}
+
+
 WiFiClass WiFi;
 
 

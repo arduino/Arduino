@@ -23,6 +23,7 @@ void setup()
 {
   // put your setup code here, to run once:
   Serial.begin(115200);
+
   Serial.println("**Simplelink IP by name demo**");
   // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");

@@ -47,7 +47,7 @@ void setup() {
   Serial.print("Attempting to connect to Network named: ");
   // print the network name (SSID);
   Serial.println(ssid); 
-  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  // Connect to WEP network. Change this line if using open or WPA/WPA2 network:
   WiFi.begin(ssid, keyIndex, key);
   while ( WiFi.status() != WL_CONNECTED) {
     // print dots while we wait to connect

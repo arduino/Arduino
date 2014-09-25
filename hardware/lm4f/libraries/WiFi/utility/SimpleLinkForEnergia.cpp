@@ -61,9 +61,9 @@ int spi_Open(char* pIfName , unsigned long flags)
     //
     //set the spi port up using Energia functions
     //
+    SPI.begin();
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
-    SPI.begin();
     
     //
     //return a success

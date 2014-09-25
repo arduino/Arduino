@@ -26,18 +26,22 @@
 #include "utility/SimpleLink.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"
-
+#include "WiFiUdp.h"
 //
 //Max socket number is 8
 //
 #define MAX_SOCK_NUM 8
 #define MAX_SSID_LEN 32
 #define BSSID_LEN 6
+#define WLAN_DEL_ALL_PROFILES 0xff
+#define WL_FW_VER_LENGTH 64
 
 class WiFiClass
 {
 private:
-    static WiFiClient clients[MAX_SOCK_NUM];    
+    static WiFiClient clients[MAX_SOCK_NUM];
+    static int8_t role;
+    static char fwVersion[WL_FW_VER_LENGTH];
 public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];
@@ -70,7 +74,7 @@ public:
     void setPinHIB(uint8_t pin);
     void setPinIRQ(uint8_t pin);
     void setPinCS(uint8_t pin);
-    
+
     //
     //These "buffers" are used to "return" strings and IpAddress objects
     //Of course, the value must be used before it is overwritted
@@ -86,15 +90,30 @@ public:
     static uint8_t getSocket();
     
     /*
-     * Get firmware version
+     * Get firmware and driver version
      */
     char* firmwareVersion();
+    char* driverVersion();
     
-    
+    /* Start WiFi in AP mode with OPEN network
+     *
+     * param ssid: Pointer to the SSID string.
+     */
+    int beginNetwork(char *ssid);
+
+    /* Start WiFi in AP mode with WPA network
+     *
+     * param ssid: Pointer to the SSID string.
+     * param passphrase: Passphrase. Valid characters in a passphrase
+     *        must be between ASCII 32-126 (decimal).
+     */
+    int beginNetwork(char *ssid, char *passphrase);
+
     /* Start Wifi connection for OPEN network
      *
      * param ssid: Pointer to the SSID string.
      */
+
     int begin(char* ssid);
     
     /* Start Wifi connection with WEP encryption.
@@ -275,6 +294,20 @@ public:
      */
     int hostByName(char* aHostname, IPAddress& aResult);
     
+    /*
+     * Start Smartconfig.
+     * return: 1 if SmartConfig was successfully configured, otherwise -1.
+     */
+    int startSmartConfig();
+
+    /*
+     * Set WiFi network processor Date/Time
+     * Params: month (1-12), day (1-31), year, hour (0-23), minute (0-59), second (0-59)
+     * return: true if successful, false if invalid parameters were supplied (or sl_DevSet() returned an error)
+     */
+    boolean setDateTime(uint16_t month, uint16_t day, uint16_t year, uint16_t hour, uint16_t minute, uint16_t second);
+
+
     friend class WiFiClient;
     friend class WiFiServer;
 };

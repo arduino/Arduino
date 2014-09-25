@@ -289,6 +289,14 @@ public:
      */
     int startSmartConfig();
 
+    /*
+     * Set WiFi network processor Date/Time
+     * Params: month (1-12), day (1-31), year, hour (0-23), minute (0-59), second (0-59)
+     * return: true if successful, false if invalid parameters were supplied (or sl_DevSet() returned an error)
+     */
+    boolean setDateTime(uint16_t month, uint16_t day, uint16_t year, uint16_t hour, uint16_t minute, uint16_t second);
+
+
     friend class WiFiClient;
     friend class WiFiServer;
 };

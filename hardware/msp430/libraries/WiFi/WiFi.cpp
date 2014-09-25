@@ -52,16 +52,15 @@ extern "C" {
 volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 volatile uint32_t WiFiClass::local_IP = 0;
 bool WiFiClass::_initialized = false;
-
+int8_t WiFiClass::role = ROLE_STA;
 volatile int WiFiClass::network_count = 0;
-
+char WiFiClass::fwVersion[] = {0};
 
 //
 //initialize the ssid and bssid to blank and 0s respectively
 //
 char WiFiClass::connected_ssid[32] = "";
 unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
-
 
 //
 //a better way of keeping track of servers, clients, ports, and handles
@@ -106,7 +105,6 @@ bool WiFiClass::init()
     if (_initialized) {
         return true;
     }
-    
     //
     //start the SimpleLink driver (no callback)
     //
@@ -133,6 +131,8 @@ bool WiFiClass::init()
     //
     sl_WlanDisconnect();
     
+    sl_NetAppMDNSUnRegisterService(0, 0);
+
     _initialized = true;
     
     return true;
@@ -169,14 +169,34 @@ uint8_t WiFiClass::getSocket()
     return NO_SOCKET_AVAIL;
 }
 
+
+char* WiFiClass::driverVersion()
+{
+	return SL_DRIVER_VERSION;
+}
+
 //--tested, working--//
 char* WiFiClass::firmwareVersion()
 {
-    //
-    //underlying simplelink api is version 0.5 as of June 12th
-    //
-    strcpy(string_output_buffer, "SimpleLink SDK 0.52");
-    return string_output_buffer;
+    unsigned char ucConfigOpt = 0;
+    unsigned char ucConfigLen = 0;
+
+    long lRetVal = -1;
+
+    SlVersionFull ver = {0};
+    ucConfigOpt = SL_DEVICE_GENERAL_VERSION;
+    ucConfigLen = sizeof(ver);
+    lRetVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, 
+                                &ucConfigLen, (unsigned char *)(&ver));
+    
+    sprintf(fwVersion, "%ld.%ld.%ld.%ld.31.%ld.%ld.%ld.%ld.%d.%d.%d.%d",
+    ver.NwpVersion[0],ver.NwpVersion[1],ver.NwpVersion[2],ver.NwpVersion[3],
+    ver.ChipFwAndPhyVersion.FwVersion[0],ver.ChipFwAndPhyVersion.FwVersion[1],
+    ver.ChipFwAndPhyVersion.FwVersion[2],ver.ChipFwAndPhyVersion.FwVersion[3],
+    ver.ChipFwAndPhyVersion.PhyVersion[0],ver.ChipFwAndPhyVersion.PhyVersion[1],
+    ver.ChipFwAndPhyVersion.PhyVersion[2],ver.ChipFwAndPhyVersion.PhyVersion[3]);
+
+   return fwVersion;
 }
 
 //--tested, working--//
@@ -295,6 +315,53 @@ int WiFiClass::begin(char* ssid, char *passphrase)
         return WL_CONNECT_FAILED;
     }
 }
+
+int WiFiClass::beginNetwork(char *ssid)
+{
+    long   retVal = -1;
+
+    if (!_initialized) {
+        init();
+    }
+
+    retVal = sl_WlanSetMode(ROLE_AP);
+
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SSID, strlen(ssid),
+                            (unsigned char *)ssid);
+
+    /* Restart Network processor */
+    retVal = sl_Stop(30);
+
+    role = ROLE_AP;
+    return sl_Start(NULL,NULL,NULL);
+}
+
+int WiFiClass::beginNetwork(char *ssid, char *passphrase)
+{
+    long   retVal = -1;
+
+    if (!_initialized) {
+        init();
+    }
+
+    retVal = sl_WlanSetMode(ROLE_AP);
+
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SSID, strlen(ssid),
+                            (unsigned char *)ssid);
+
+    unsigned char  val = SL_SEC_TYPE_WPA;
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_SECURITY_TYPE, 1, (unsigned char *)&val);
+
+    retVal = sl_WlanSet(SL_WLAN_CFG_AP_ID, WLAN_AP_OPT_PASSWORD, strlen(passphrase),
+                            (unsigned char *)passphrase);
+
+    /* Restart Network processor */
+    retVal = sl_Stop(30);
+
+    role = ROLE_AP;
+    return sl_Start(NULL,NULL,NULL);
+}
+
 
 void WiFiClass::config(IPAddress local_ip)
 {
@@ -520,10 +587,21 @@ char* WiFiClass::SSID()
     if (!_initialized) {
         init();
     }
+
     //
     //connected_ssid maintained by wlan event handler (SimpleLinkCallbacks.cpp)
+    //when in station mode. For AP mode use sl_WlanGet to obtain the SSID.
     //
-    return (char*)WiFiClass::connected_ssid;
+    if(role == ROLE_STA)
+        return (char*)WiFiClass::connected_ssid;
+
+    char ssid[32];
+    unsigned short len = 32;
+    unsigned short  config_opt = WLAN_AP_OPT_SSID;
+    sl_WlanGet(SL_WLAN_CFG_AP_ID, &config_opt , &len, (unsigned char*)ssid);
+
+    strcpy(string_output_buffer, ssid);
+    return string_output_buffer;
 }
 
 //--tested, working--//
@@ -705,6 +783,9 @@ uint8_t WiFiClass::status()
     if (!_initialized) {
         init();
     }
+
+    if(role == ROLE_AP)
+        return WL_AP_MODE;
     //
     //This class variable is maintained by the slWlanEvenHandler
     //
@@ -732,6 +813,66 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     }
     
 }
+
+int WiFiClass::startSmartConfig()
+{
+    unsigned char policyVal;
+    if (!_initialized) {
+        init();
+    }
+
+    if(sl_WlanPolicySet(SL_POLICY_CONNECTION,
+        SL_CONNECTION_POLICY(1,0,0,0,1),
+        &policyVal,
+        1 /*PolicyValLen*/) < 0) return -1;
+
+    if(sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES) < 0)
+        return -1;
+
+    sl_WlanSmartConfigStart(0,  //groupIdBitmask
+        SMART_CONFIG_CIPHER_NONE, //cipher
+        0,                        //publicKeyLen
+        0,                        //group1KeyLen
+        0,                        //group2KeyLen
+        NULL,                     //publicKey
+        NULL,                     //group1Key
+        NULL);                    //group2Key
+
+    /* Block until connected */
+
+    uint8_t iCount;
+    while(WiFi.status() != WL_CONNECTED) {
+        _SlNonOsMainLoopTask();
+    }
+
+    if(sl_WlanPolicySet(SL_POLICY_CONNECTION,
+        SL_CONNECTION_POLICY(1,0,0,0,0),
+        &policyVal,
+        1 /*PolicyValLen*/) < 0) return -1;
+}
+
+/* This function takes uint16_t arguments for compactness on MSP430 w/ CC3100, but actual SlDateTime_t members are uint32_t.
+ */
+boolean WiFiClass::setDateTime(uint16_t month, uint16_t day, uint16_t year, uint16_t hour, uint16_t minute, uint16_t second)
+{
+    if (day < 1 || day > 31 || month < 1 || month > 12 || hour > 23 || minute > 59 || second > 59)
+        return false;
+
+    SlDateTime_t dt;
+    dt.sl_tm_day = (uint32_t)day;
+    dt.sl_tm_mon = (uint32_t)month;
+    dt.sl_tm_year = (uint32_t)year;
+    dt.sl_tm_hour = (uint32_t)hour;
+    dt.sl_tm_min = (uint32_t)minute;
+    dt.sl_tm_sec = (uint32_t)second;
+
+    int32_t i = sl_DevSet(SL_DEVICE_GENERAL_CONFIGURATION, SL_DEVICE_GENERAL_CONFIGURATION_DATE_TIME,
+                          sizeof(SlDateTime_t), (uint8_t *)&dt);
+    if (i != 0)
+        return false;
+    return true;
+}
+
 
 WiFiClass WiFi;
 
