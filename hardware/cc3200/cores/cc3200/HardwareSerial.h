@@ -41,11 +41,11 @@
 class HardwareSerial : public Stream
 {
 	private:
-		unsigned char txBuffer[256];
+		unsigned char txBuffer[SERIAL_BUFFER_SIZE];
 		unsigned long txBufferSize;
 		unsigned long txWriteIndex;
 		unsigned long txReadIndex;
-		unsigned char rxBuffer[256];
+		unsigned char rxBuffer[SERIAL_BUFFER_SIZE];
 		unsigned long rxBufferSize;
 		unsigned long rxWriteIndex;
 		unsigned long rxReadIndex;
