@@ -359,11 +359,9 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size)
     int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
 
     // Flow control signal; perform a paced-retry.
-    if (iRet == SL_EAGAIN) {
-        do {
-            delay(10);
-            iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
-        } while (iRet == SL_EAGAIN);
+    while (iRet == SL_EAGAIN) {
+        delay(10);
+        iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
     }
 
     if ((iRet < 0) || (iRet != size)) {
