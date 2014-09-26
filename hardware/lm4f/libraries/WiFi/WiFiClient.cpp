@@ -354,19 +354,15 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size)
     }
 
     //
-    // Do blocking writes. A lot of libraries and Sketches do not check for
-    // the return value of write. This somewhat works around this.
-    //
-    int enableOption = 0;
-    sl_SetSockOpt(WiFiClass::_handleArray[_socketIndex], SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
-
-    //
     //write the buffer to the socket
     //
     int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
 
-    enableOption = 1;
-    sl_SetSockOpt(WiFiClass::_handleArray[_socketIndex], SL_SOL_SOCKET, SL_SO_NONBLOCKING, &enableOption, sizeof(enableOption));
+    // Flow control signal; perform a paced-retry.
+    while (iRet == SL_EAGAIN) {
+        delay(10);
+        iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
+    }
 
     if ((iRet < 0) || (iRet != size)) {
         //
