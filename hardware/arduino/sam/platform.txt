@@ -72,7 +72,8 @@ recipe.objcopy.eep.pattern=
 recipe.objcopy.hex.pattern="{compiler.path}{compiler.elf2hex.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
 
 ## Save hex
-recipe.hex.pattern={build.project_name}.bin
+recipe.hex.pattern=cp -f "{build.path}/{build.project_name}.bin"
+recipe.hex.pattern.windows=copy /y "{build.path}/{build.project_name}.bin"
 
 ## Compute size
 recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
