@@ -1068,9 +1068,8 @@ public class Compiler implements MessageConsumer {
     String[] cmdArray;
     try {
       String hexPattern = prefs.get("recipe.hex.pattern");
-      String hexPath = prefs.get("build.path") + "/" + hexPattern;
       String savePath = sketch.getFolder().getAbsolutePath() + "/" + hexPattern;
-      String cmd = "cp -f " + hexPath + " " + savePath;
+      String cmd = hexPattern + " " + savePath;
       cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
     } catch (Exception e) {
       throw new RunnerException(e);
