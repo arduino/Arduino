@@ -319,6 +319,7 @@ int WiFiClass::beginNetwork(char *ssid)
     _connectedDeviceCount = 0;
     _latestConnect = 0;
     for (i = 0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        _connectedDevices[i].in_use = false;
         memset((uint8_t *)_connectedDevices[i].ipAddress, 0, 4);
         memset((uint8_t *)_connectedDevices[i].mac, 0, 6);
     }
@@ -348,6 +349,7 @@ int WiFiClass::beginNetwork(char *ssid, char *passphrase)
     _connectedDeviceCount = 0;
     _latestConnect = 0;
     for (i = 0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        _connectedDevices[i].in_use = false;
         memset((uint8_t *)_connectedDevices[i].ipAddress, 0, 4);
         memset((uint8_t *)_connectedDevices[i].mac, 0, 6);
     }
