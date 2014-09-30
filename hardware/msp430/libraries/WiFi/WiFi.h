@@ -129,6 +129,8 @@ public:
      */
     IPAddress getLatestDevice(void) { return IPAddress((const uint8_t *)_connectedDevices[_latestConnect].ipAddress); };
     unsigned int getTotalDevices(void) { return _connectedDeviceCount; };
+    IPAddress deviceIpAddress(unsigned int idx);
+    const char * deviceMacAddress(unsigned int idx);  // temporary implementation until we produce a "MACAddress" class
 
 
     /* Start Wifi connection for OPEN network
