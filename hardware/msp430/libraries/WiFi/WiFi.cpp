@@ -968,10 +968,9 @@ IPAddress WiFiClass::deviceIpAddress(unsigned int idx)
     return IPAddress(0UL);
 }
 
-static char _macAddressStringPrinter[20];
 static const char _hexdigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-const char * WiFiClass::deviceMacAddress(unsigned int idx)
+char * WiFiClass::deviceMacAddress(unsigned int idx, char *sbuf)
 {
     int i = 0, j = 0, k = 0;
 
@@ -982,14 +981,14 @@ const char * WiFiClass::deviceMacAddress(unsigned int idx)
                 k = 0;
                 // repurposing 'j' as our counter
                 for (j=0; j < 5; j++) {
-                    _macAddressStringPrinter[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
-                    _macAddressStringPrinter[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
-                    _macAddressStringPrinter[k++] = ':';
+                    sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
+                    sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
+                    sbuf[k++] = ':';
                 }
-                _macAddressStringPrinter[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
-                _macAddressStringPrinter[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
-                _macAddressStringPrinter[k++] = '\0';
-                return (const char *)_macAddressStringPrinter;
+                sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
+                sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
+                sbuf[k++] = '\0';
+                return sbuf;
             }
             j++;
         }
@@ -997,7 +996,8 @@ const char * WiFiClass::deviceMacAddress(unsigned int idx)
     } while (i < MAX_AP_DEVICE_REGISTRY);
 
     // Not found!
-    return "";
+    sbuf[0] = '\0';
+    return sbuf;
 }
 
 
