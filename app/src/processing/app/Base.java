@@ -61,9 +61,9 @@ import static processing.app.I18n._;
  * files and images, etc) that comes from that.
  */
 public class Base {
-  public static final int REVISION = 157;
+  public static final int REVISION = 158;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0157";
+  static String VERSION_NAME = "0158";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
@@ -117,6 +117,10 @@ public class Base {
   // Location for untitled items
   static File untitledFolder;
 
+  // Current directory to use for relative paths specified on the
+  // commandline
+  static String currentDirectory = System.getProperty("user.dir");
+
   // p5 icon for the window
 //  static Image icon;
 
@@ -139,8 +143,28 @@ public class Base {
     if (!portableFolder.exists())
       portableFolder = null;
 
+    String preferencesFile = null;
+
+    // Do a first pass over the commandline arguments, the rest of them
+    // will be processed by the Base constructor. Note that this loop
+    // does not look at the last element of args, to prevent crashing
+    // when no parameter was specified to an option. Later, Base() will
+    // then show an error for these.
+    for (int i = 0; i < args.length - 1; i++) {
+      if (args[i].equals("--preferences-file")) {
+        ++i;
+        preferencesFile = args[i];
+        continue;
+      }
+      if (args[i].equals("--curdir")) {
+        i++;
+        currentDirectory = args[i];
+        continue;
+      }
+    }
+
     // run static initialization that grabs all the prefs
-    Preferences.init(args);
+    Preferences.init(absoluteFile(preferencesFile));
 
     try {
       File versionFile = getContentFile("lib/version.txt");
@@ -267,6 +291,21 @@ public class Base {
     }
   }
 
+  // Returns a File object for the given pathname. If the pathname
+  // is not absolute, it is interpreted relative to the current
+  // directory when starting the IDE (which is not the same as the
+  // current working directory!).
+  static public File absoluteFile(String path) {
+    if (path == null) return null;
+
+    File file = new File(path);
+    if (!file.isAbsolute()) {
+      file = new File(currentDirectory, path);
+    }
+    return file;
+  }
+
+  protected static enum ACTION { GUI, NOOP, VERIFY, UPLOAD, GET_PREF };
 
   public Base(String[] args) throws Exception {
     platform.init(this);
@@ -283,7 +322,7 @@ public class Base {
       if (portableFolder != null)
         sketchbookFolder = new File(portableFolder, sketchbookPath);
       else
-        sketchbookFolder = new File(sketchbookPath);
+        sketchbookFolder = Base.absoluteFile(sketchbookPath);
       if (!sketchbookFolder.exists()) {
         Base.showWarning(_("Sketchbook folder disappeared"),
                 _("The sketchbook folder no longer exists.\n" +
@@ -318,57 +357,79 @@ public class Base {
     // Setup board-dependent variables.
     onBoardOrPortChange();
 
-    boolean doUpload = false;
-    boolean doVerify = false;
+    ACTION action = ACTION.GUI;
     boolean doVerboseBuild = false;
-    boolean doVerboseUpload = false;;
-    String selectBoard = null;
-    String selectPort = null;
-    String currentDirectory = System.getProperty("user.dir");
+    boolean doVerboseUpload = false;
+    boolean forceSavePrefs = false;
+    String getPref = null;
     List<String> filenames = new LinkedList<String>();
+
+    // Map of possible actions and corresponding options
+    final Map<String, ACTION> actions = new HashMap<String, ACTION>();
+    actions.put("--verify", ACTION.VERIFY);
+    actions.put("--upload", ACTION.UPLOAD);
+    actions.put("--get-pref", ACTION.GET_PREF);
 
     // Check if any files were passed in on the command line
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("--upload")) {
-        doUpload = true;
-        continue;
-      }
-      if (args[i].equals("--verify")) {
-        doVerify = true;
+      ACTION a = actions.get(args[i]);
+      if (a != null) {
+        if (action != ACTION.GUI && action != ACTION.NOOP) {
+          String[] valid = actions.keySet().toArray(new String[0]);
+          String mess = I18n.format(_("Can only pass one of: {0}"), PApplet.join(valid, ", "));
+          showError(null, mess, 3);
+        }
+        if (a == ACTION.GET_PREF) {
+          i++;
+          if (i >= args.length)
+            showError(null, _("Argument required for --get-pref"), 3);
+          getPref = args[i];
+        }
+        action = a;
         continue;
       }
       if (args[i].equals("--verbose") || args[i].equals("-v")) {
         doVerboseBuild = true;
         doVerboseUpload = true;
+        if (action == ACTION.GUI)
+          action = ACTION.NOOP;
         continue;
       }
       if (args[i].equals("--verbose-build")) {
         doVerboseBuild = true;
+        if (action == ACTION.GUI)
+          action = ACTION.NOOP;
         continue;
       }
       if (args[i].equals("--verbose-upload")) {
         doVerboseUpload = true;
+        if (action == ACTION.GUI)
+          action = ACTION.NOOP;
         continue;
       }
       if (args[i].equals("--board")) {
         i++;
         if (i >= args.length)
           showError(null, _("Argument required for --board"), 3);
-        selectBoard = args[i];
+        processBoardArgument(args[i]);
+        if (action == ACTION.GUI)
+          action = ACTION.NOOP;
         continue;
       }
       if (args[i].equals("--port")) {
         i++;
         if (i >= args.length)
           showError(null, _("Argument required for --port"), 3);
-        selectPort = args[i];
+        Base.selectSerialPort(args[i]);
+        if (action == ACTION.GUI)
+          action = ACTION.NOOP;
         continue;
       }
       if (args[i].equals("--curdir")) {
         i++;
         if (i >= args.length)
           showError(null, _("Argument required for --curdir"), 3);
-        currentDirectory = args[i];
+        // Argument should be already processed by Base.main(...)
         continue;
       }
       if (args[i].equals("--pref")) {
@@ -376,13 +437,19 @@ public class Base {
         if (i >= args.length)
           showError(null, _("Argument required for --pref"), 3);
         processPrefArgument(args[i]);
+        if (action == ACTION.GUI)
+          action = ACTION.NOOP;
+        continue;
+      }
+      if (args[i].equals("--save-prefs")) {
+        forceSavePrefs = true;
         continue;
       }
       if (args[i].equals("--preferences-file")) {
         i++;
         if (i >= args.length)
           showError(null, _("Argument required for --preferences-file"), 3);
-        // Argument should be already processed by Preferences.init(...) 
+        // Argument should be already processed by Base.main(...)
         continue;
       }
       if (args[i].startsWith("--"))
@@ -391,77 +458,105 @@ public class Base {
       filenames.add(args[i]);
     }
 
-    if ((doUpload || doVerify) && filenames.size() != 1)
+    if ((action == ACTION.UPLOAD || action == ACTION.VERIFY) && filenames.size() != 1)
       showError(null, _("Must specify exactly one sketch file"), 3);
 
+    if ((action == ACTION.NOOP || action == ACTION.GET_PREF) && filenames.size() != 0)
+      showError(null, _("Cannot specify any sketch files"), 3);
+
+    if ((action != ACTION.UPLOAD && action != ACTION.VERIFY) && (doVerboseBuild || doVerboseUpload))
+      showError(null, _("--verbose, --verbose-upload and --verbose-build can only be used together with --verify or --upload"), 3);
+
     for (String path: filenames) {
+      // Correctly resolve relative paths
+      File file = absoluteFile(path);
+
       // Fix a problem with systems that use a non-ASCII languages. Paths are
       // being passed in with 8.3 syntax, which makes the sketch loader code
       // unhappy, since the sketch folder naming doesn't match up correctly.
       // http://dev.processing.org/bugs/show_bug.cgi?id=1089
       if (isWindows()) {
         try {
-          File file = new File(path);
-          path = file.getCanonicalPath();
+          file = file.getCanonicalFile();
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
 
-      if (!new File(path).isAbsolute()) {
-        path = new File(currentDirectory, path).getAbsolutePath();
-      }
-
-      if (handleOpen(path, nextEditorLocation(), !(doUpload || doVerify)) == null) {
+      boolean showEditor = (action == ACTION.GUI);
+      if (!forceSavePrefs)
+        Preferences.setDoSave(showEditor);
+      if (handleOpen(file, nextEditorLocation(), showEditor) == null) {
         String mess = I18n.format(_("Failed to open sketch: \"{0}\""), path);
         // Open failure is fatal in upload/verify mode
-        if (doUpload || doVerify)
+        if (action == ACTION.VERIFY || action == ACTION.UPLOAD)
           showError(null, mess, 2);
         else
           showWarning(null, mess, null);
       }
     }
 
-    if (doUpload || doVerify) {
-      // Set verbosity for command line build
-      Preferences.set("build.verbose", "" + doVerboseBuild);
-      Preferences.set("upload.verbose", "" + doVerboseUpload);
+    // Save the preferences. For GUI mode, this happens in the quit
+    // handler, but for other modes we should also make sure to save
+    // them.
+    Preferences.save();
 
-      Editor editor = editors.get(0);
+    switch (action) {
+      case VERIFY:
+      case UPLOAD:
+        // Set verbosity for command line build
+        Preferences.set("build.verbose", "" + doVerboseBuild);
+        Preferences.set("upload.verbose", "" + doVerboseUpload);
 
-      // Do board selection if requested
-      processBoardArgument(selectBoard);
-    
-      if (doUpload) {
-        // Build and upload
-        if (selectPort != null)
-          editor.selectSerialPort(selectPort);
-        editor.exportHandler.run();
-      } else {
-        // Build only
-        editor.runHandler.run();
-      }
+        // Make sure these verbosity preferences are only for the
+        // current session
+        Preferences.setDoSave(false);
 
-      // Error during build or upload
-      int res = editor.status.mode;
-      if (res == EditorStatus.ERR)
-        System.exit(1);
+        Editor editor = editors.get(0);
 
-      // No errors exit gracefully
-      System.exit(0);
-    }
+        if (action == ACTION.UPLOAD) {
+          // Build and upload
+          editor.exportHandler.run();
+        } else {
+          // Build only
+          editor.runHandler.run();
+        }
 
-    // Check if there were previously opened sketches to be restored
-    restoreSketches();
+        // Error during build or upload
+        int res = editor.status.mode;
+        if (res == EditorStatus.ERR)
+          System.exit(1);
 
-    // Create a new empty window (will be replaced with any files to be opened)
-    if (editors.isEmpty()) {
-      handleNew();
-    }
+        // No errors exit gracefully
+        System.exit(0);
+        break;
+      case GUI:
+        // Check if there were previously opened sketches to be restored
+        restoreSketches();
 
-    // Check for updates
-    if (Preferences.getBoolean("update.check")) {
-      new UpdateCheck(this);
+        // Create a new empty window (will be replaced with any files to be opened)
+        if (editors.isEmpty()) {
+          handleNew();
+        }
+
+        // Check for updates
+        if (Preferences.getBoolean("update.check")) {
+          new UpdateCheck(this);
+        }
+        break;
+      case NOOP:
+        // Do nothing (intended for only changing preferences)
+        System.exit(0);
+        break;
+      case GET_PREF:
+        String value = Preferences.get(getPref, null);
+        if (value != null) {
+          System.out.println(value);
+          System.exit(0);
+        } else {
+          System.exit(4);
+        }
+        break;
     }
   }
 
@@ -583,7 +678,7 @@ public class Base {
         location = nextEditorLocation();
       }
       // If file did not exist, null will be returned for the Editor
-      if (handleOpen(path, location, true) != null) {
+      if (handleOpen(new File(path), location, true) != null) {
         opened++;
       }
     }
@@ -741,7 +836,7 @@ public class Base {
    * @param shift whether shift is pressed, which will invert prompt setting
    * @param noPrompt disable prompt, no matter the setting
    */
-  protected String createNewUntitled() throws IOException {
+  protected File createNewUntitled() throws IOException {
     File newbieDir = null;
     String newbieName = null;
 
@@ -788,7 +883,7 @@ public class Base {
       throw new IOException();
     }
     FileUtils.copyFile(new File(getContentFile("examples"), "01.Basics" + File.separator + "BareMinimum" + File.separator + "BareMinimum.ino"), newbieFile);
-    return newbieFile.getAbsolutePath();
+    return newbieFile;
   }
 
 
@@ -798,9 +893,9 @@ public class Base {
    */
   public void handleNew() throws Exception {
     try {
-      String path = createNewUntitled();
-      if (path != null) {
-        Editor editor = handleOpen(path);
+      File file = createNewUntitled();
+      if (file != null) {
+        Editor editor = handleOpen(file);
         editor.untitled = true;
       }
 
@@ -829,9 +924,9 @@ public class Base {
 
   protected void handleNewReplaceImpl() {
     try {
-      String path = createNewUntitled();
-      if (path != null) {
-        activeEditor.handleOpenInternal(path);
+      File file = createNewUntitled();
+      if (file != null) {
+        activeEditor.handleOpenInternal(file);
         activeEditor.untitled = true;
       }
 //      return true;
@@ -847,14 +942,14 @@ public class Base {
    * Open a sketch, replacing the sketch in the current window.
    * @param path Location of the primary pde file for the sketch.
    */
-  public void handleOpenReplace(String path) {
+  public void handleOpenReplace(File file) {
     if (!activeEditor.checkModified()) {
       return;  // sketch was modified, and user canceled
     }
     // Close the running window, avoid window boogers with multiple sketches
     activeEditor.internalCloseRunner();
 
-    boolean loaded = activeEditor.handleOpenInternal(path);
+    boolean loaded = activeEditor.handleOpenInternal(file);
     if (!loaded) {
       // replace the document without checking if that's ok
       handleNewReplaceImpl();
@@ -885,30 +980,30 @@ public class Base {
     File inputFile = fd.getSelectedFile();
 
     Preferences.set("last.folder", inputFile.getAbsolutePath());
-    handleOpen(inputFile.getAbsolutePath());
+    handleOpen(inputFile);
   }
 
 
   /**
    * Open a sketch in a new window.
-   * @param path Path to the pde file for the sketch in question
+   * @param file File to open
    * @return the Editor object, so that properties (like 'untitled')
    *         can be set by the caller
    * @throws Exception 
    */
-  public Editor handleOpen(String path) throws Exception {
-    return handleOpen(path, nextEditorLocation(), true);
+  public Editor handleOpen(File file) throws Exception {
+    return handleOpen(file, nextEditorLocation(), true);
   }
 
 
-  protected Editor handleOpen(String path, int[] location, boolean showEditor) throws Exception {
+  protected Editor handleOpen(File file, int[] location, boolean showEditor) throws Exception {
 //    System.err.println("entering handleOpen " + path);
 
-    File file = new File(path);
     if (!file.exists()) return null;
 
 //    System.err.println("  editors: " + editors);
     // Cycle through open windows to make sure that it's not already open.
+    String path = file.getAbsolutePath();
     for (Editor editor : editors) {
       if (editor.getSketch().getMainFilePath().equals(path)) {
         editor.toFront();
@@ -932,7 +1027,7 @@ public class Base {
 //    }
 
 //    System.err.println("  creating new editor");
-    Editor editor = new Editor(this, path, location);
+    Editor editor = new Editor(this, file, location);
 //    Editor editor = null;
 //    try {
 //      editor = new Editor(this, path, location);
@@ -1444,6 +1539,11 @@ public class Base {
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
         selectBoard((TargetBoard)getValue("b"));
+        filterVisibilityOfSubsequentBoardMenus((TargetBoard)getValue("b"), 1);
+
+        onBoardOrPortChange();
+        rebuildImportMenu(Editor.importMenu);
+        rebuildExamplesMenu(Editor.examplesMenu);
       }
     };
     action.putValue("b", board);
@@ -1580,14 +1680,15 @@ public class Base {
     File platformFolder = targetPlatform.getFolder();
     Preferences.set("runtime.platform.path", platformFolder.getAbsolutePath());
     Preferences.set("runtime.hardware.path", platformFolder.getParentFile().getAbsolutePath());
-    
-    filterVisibilityOfSubsequentBoardMenus(targetBoard, 1);
-
-    onBoardOrPortChange();
-    rebuildImportMenu(Editor.importMenu);
-    rebuildExamplesMenu(Editor.examplesMenu);
   }
 
+  public static void selectSerialPort(String port) {
+    Preferences.set("serial.port", port);
+    if (port.startsWith("/dev/"))
+      Preferences.set("serial.port.file", port.substring(5));
+    else
+      Preferences.set("serial.port.file", port);
+  }
 
   public void rebuildProgrammerMenu(JMenu menu) {
     menu.removeAll();
@@ -1669,16 +1770,17 @@ public class Base {
     ActionListener listener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         String path = e.getActionCommand();
-        if (new File(path).exists()) {
+        File file = new File(path);
+        if (file.exists()) {
           boolean replace = replaceExisting;
           if ((e.getModifiers() & ActionEvent.SHIFT_MASK) != 0) {
             replace = !replace;
           }
           if (replace) {
-            handleOpenReplace(path);
+            handleOpenReplace(file);
           } else {
             try {
-              handleOpen(path);
+              handleOpen(file);
             } catch (Exception e1) {
               e1.printStackTrace();
             }
@@ -1959,7 +2061,7 @@ public class Base {
 
     String preferencesPath = Preferences.get("settings.path");
     if (preferencesPath != null) {
-      settingsFolder = new File(preferencesPath);
+      settingsFolder = absoluteFile(preferencesPath);
 
     } else {
       try {
@@ -1998,8 +2100,9 @@ public class Base {
     if (buildFolder == null) {
       String buildPath = Preferences.get("build.path");
       if (buildPath != null) {
-        buildFolder = new File(buildPath);
-
+        buildFolder = Base.absoluteFile(buildPath);
+        if (!buildFolder.exists())
+          buildFolder.mkdirs();
       } else {
         //File folder = new File(getTempFolder(), "build");
         //if (!folder.exists()) folder.mkdirs();
@@ -2160,7 +2263,7 @@ public class Base {
   static public File getSketchbookFolder() {
     if (portableFolder != null)
       return new File(portableFolder, Preferences.get("sketchbook.path"));
-    return new File(Preferences.get("sketchbook.path"));
+    return absoluteFile(Preferences.get("sketchbook.path"));
   }
 
 

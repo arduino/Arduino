@@ -26,18 +26,22 @@
 
 package cc.arduino.packages.uploaders;
 
-import cc.arduino.packages.Uploader;
-import processing.app.*;
-import processing.app.debug.RunnerException;
-import processing.app.debug.TargetPlatform;
-import processing.app.helpers.PreferencesMap;
-import processing.app.helpers.StringReplacer;
+import static processing.app.I18n._;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static processing.app.I18n._;
+import processing.app.Base;
+import processing.app.I18n;
+import processing.app.Preferences;
+import processing.app.Serial;
+import processing.app.SerialException;
+import processing.app.debug.RunnerException;
+import processing.app.debug.TargetPlatform;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.StringReplacer;
+import cc.arduino.packages.Uploader;
 
 public class SerialUploader extends Uploader {
 
@@ -82,15 +86,13 @@ public class SerialUploader extends Uploader {
             System.out.println(_("Forcing reset using 1200bps open/close on port ") + uploadPort);
           Serial.touchPort(uploadPort, 1200);
         }
+        Thread.sleep(400);
         if (waitForUploadPort) {
           // Scanning for available ports seems to open the port or
           // otherwise assert DTR, which would cancel the WDT reset if
           // it happened within 250 ms. So we wait until the reset should
           // have already occured before we start scanning.
-          Thread.sleep(300);
           uploadPort = waitForUploadPort(uploadPort, before);
-        } else {
-          Thread.sleep(400);
         }
       } catch (SerialException e) {
         throw new RunnerException(e);
@@ -209,7 +211,11 @@ public class SerialUploader extends Uploader {
 
     PreferencesMap prefs = Preferences.getMap();
     prefs.putAll(Base.getBoardPreferences());
-    prefs.putAll(targetPlatform.getProgrammer(programmer));
+    PreferencesMap programmerPrefs = targetPlatform.getProgrammer(programmer);
+    if (programmerPrefs == null)
+      throw new RunnerException(
+          _("Please select a programmer from Tools->Programmer menu"));
+    prefs.putAll(programmerPrefs);
     prefs.putAll(targetPlatform.getTool(prefs.getOrExcept("program.tool")));
 
     prefs.put("build.path", buildPath);
@@ -251,6 +257,9 @@ public class SerialUploader extends Uploader {
     } else {
       programmerPrefs = targetPlatform.getProgrammer(programmer);
     }
+    if (programmerPrefs == null)
+      throw new RunnerException(
+          _("Please select a programmer from Tools->Programmer menu"));
 
     // Build configuration for the current programmer
     PreferencesMap prefs = Preferences.getMap();

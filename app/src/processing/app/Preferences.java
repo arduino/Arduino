@@ -220,9 +220,14 @@ public class Preferences {
   static Hashtable<String, String> defaults;
   static Hashtable<String, String> table = new Hashtable<String, String>();
   static File preferencesFile;
+  static boolean doSave = true;
 
 
-  static protected void init(String args[]) {
+  static protected void init(File file) {
+    if (file != null)
+      preferencesFile = file;
+    else
+      preferencesFile = Base.getSettingsFile(Preferences.PREFS_FILE);
 
     // start by loading the defaults, in case something
     // important was deleted from the user prefs
@@ -254,22 +259,7 @@ public class Preferences {
     // clone the hash table
     defaults = new Hashtable<String, String>(table);
 
-    // next load user preferences file
-    preferencesFile = Base.getSettingsFile(PREFS_FILE);
-
-    // load a preferences file if specified on the command line
-    if (args != null) {
-      for (int i = 0; i < args.length - 1; i++) {
-        if (args[i].equals("--preferences-file"))
-          preferencesFile = new File(args[i + 1]);
-      }
-    }
-
-    if (!preferencesFile.exists()) {
-      // create a new preferences file if none exists
-      // saves the defaults out to the file
-      save();
-    } else {
+    if (preferencesFile.exists()) {
       // load the previous preferences file
       try {
         load(new FileInputStream(preferencesFile));
@@ -502,7 +492,7 @@ public class Preferences {
     final JLabel clickable = label;
     label.addMouseListener(new MouseAdapter() {
         public void mousePressed(MouseEvent e) {
-          Base.openFolder(Base.getSettingsFolder());
+          Base.openFolder(preferencesFile.getParentFile());
         }
 
         public void mouseEntered(MouseEvent e) {
@@ -789,6 +779,7 @@ public class Preferences {
 
 
   static protected void save() {
+    if (!doSave) return;
 //    try {
     // on startup, don't worry about it
     // this is trying to update the prefs for who is open
@@ -989,4 +980,10 @@ public class Preferences {
     return new PreferencesMap(table);
   }
 
+  // Decide wether changed preferences will be saved. When value is
+  // false, Preferences.save becomes a no-op.
+  static public void setDoSave(boolean value)
+  {
+    doSave = value;
+  }
 }

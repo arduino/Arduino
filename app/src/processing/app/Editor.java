@@ -155,7 +155,7 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportAppHandler;
 
 
-  public Editor(Base ibase, String path, int[] location) throws Exception {
+  public Editor(Base ibase, File file, int[] location) throws Exception {
     super("Arduino");
     this.base = ibase;
 
@@ -310,7 +310,7 @@ public class Editor extends JFrame implements RunnerListener {
 //    System.out.println("t4");
 
     // Open the document that was passed in
-    boolean loaded = handleOpenInternal(path);
+    boolean loaded = handleOpenInternal(file);
     if (!loaded) sketch = null;
 
 //    System.out.println("t5");
@@ -965,11 +965,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
     if (selection != null) selection.setState(true);
     //System.out.println(item.getLabel());
-    Preferences.set("serial.port", name);
-    if (name.startsWith("/dev/"))
-      Preferences.set("serial.port.file", name.substring(5));
-    else
-      Preferences.set("serial.port.file", name);
+    Base.selectSerialPort(name);
     if (serialMonitor != null) {
       try {
         serialMonitor.close();
@@ -1236,6 +1232,7 @@ public class Editor extends JFrame implements RunnerListener {
           if (find == null) {
             find = new FindReplace(Editor.this);
           }
+          if (getSelectedText()!= null) find.setFindText( getSelectedText() );
           //new FindReplace(Editor.this).show();
           find.setVisible(true);
           //find.setVisible(true);
@@ -2096,10 +2093,10 @@ public class Editor extends JFrame implements RunnerListener {
    * Open a sketch from a particular path, but don't check to save changes.
    * Used by Sketch.saveAs() to re-open a sketch after the "Save As"
    */
-  protected void handleOpenUnchecked(String path, int codeIndex,
+  protected void handleOpenUnchecked(File file, int codeIndex,
                                      int selStart, int selStop, int scrollPos) {
     internalCloseRunner();
-    handleOpenInternal(path);
+    handleOpenInternal(file);
     // Replacing a document that may be untitled. If this is an actual
     // untitled document, then editor.untitled will be set by Base.
     untitled = false;
@@ -2114,27 +2111,26 @@ public class Editor extends JFrame implements RunnerListener {
    * Second stage of open, occurs after having checked to see if the
    * modifications (if any) to the previous sketch need to be saved.
    */
-  protected boolean handleOpenInternal(String path) {
+  protected boolean handleOpenInternal(File file) {
     // check to make sure that this .pde file is
     // in a folder of the same name
-    File file = new File(path);
     String fileName = file.getName();
     File parent = file.getParentFile();
     String parentName = parent.getName();
     String pdeName = parentName + ".pde";
     File altPdeFile = new File(parent, pdeName);
     String inoName = parentName + ".ino";
-    File altInoFile = new File(parent, pdeName);
+    File altInoFile = new File(parent, inoName);
 
     if (pdeName.equals(fileName) || inoName.equals(fileName)) {
       // no beef with this guy
 
     } else if (altPdeFile.exists()) {
       // user selected a .java from the same sketch, but open the .pde instead
-      path = altPdeFile.getAbsolutePath();
+      file = altPdeFile;
     } else if (altInoFile.exists()) {
-      path = altInoFile.getAbsolutePath();
-    } else if (!path.endsWith(".ino") && !path.endsWith(".pde")) {
+      file = altInoFile;
+    } else if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
       Base.showWarning(_("Bad file selected"),
                        _("Processing can only open its own sketches\n" +
                          "and other files ending in .ino or .pde"), null);
@@ -2183,19 +2179,18 @@ public class Editor extends JFrame implements RunnerListener {
         }
         // copy the sketch inside
         File properPdeFile = new File(properFolder, file.getName());
-        File origPdeFile = new File(path);
         try {
-          Base.copyFile(origPdeFile, properPdeFile);
+          Base.copyFile(file, properPdeFile);
         } catch (IOException e) {
           Base.showWarning(_("Error"), _("Could not copy to a proper location."), e);
           return false;
         }
 
         // remove the original file, so user doesn't get confused
-        origPdeFile.delete();
+        file.delete();
 
         // update with the new path
-        path = properPdeFile.getAbsolutePath();
+        file = properPdeFile;
 
       } else if (result == JOptionPane.NO_OPTION) {
         return false;
@@ -2203,7 +2198,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     try {
-      sketch = new Sketch(this, path);
+      sketch = new Sketch(this, file);
     } catch (IOException e) {
       Base.showWarning(_("Error"), _("Could not create the sketch."), e);
       return false;
@@ -2643,6 +2638,7 @@ public class Editor extends JFrame implements RunnerListener {
    * Show an error int the status bar.
    */
   public void statusError(String what) {
+    System.err.println(what);
     status.error(what);
     //new Exception("deactivating RUN").printStackTrace();
     toolbar.deactivate(EditorToolbar.RUN);

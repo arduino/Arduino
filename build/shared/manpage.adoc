@@ -36,7 +36,7 @@ compiling and uploading sketches (programs) for Arduino
 Normally, running the arduino command starts the IDE, optionally loading
 any .ino files specified on the commandline.
 
-Alternatively, if *--verify* or *--upload* is given, no graphical
+Alternatively, if any of the following command line options is given, no graphical
 interface will be shown and instead a one-off verify (compile) or upload
 will be done. A single .ino file should be given. If the sketch contains
 multiple .ino files, any one can be specified on the commandline, but
@@ -87,19 +87,31 @@ OPTIONS
 	preferences is used (e.g., the last port selected in the IDE).
 
 *--verbose-build*::
-    Enable verbose mode during build. If this option is not given,
-    verbose mode during build is disabled regardless of the current
-    preferences.
+	Enable verbose mode during build. If this option is not given,
+	verbose mode during build is *disabled* regardless of the current
+	preferences.
+
+{empty}::
+	This option is only valid together with *--verify* or
+	*--upload*.
 
 *--verbose-upload*::
-    Enable verbose mode during upload. If this option is not given,
-    verbose mode during upload is disabled regardless of the current
-    preferences.
+	Enable verbose mode during upload. If this option is not given,
+	verbose mode during upload is *disabled* regardless of the current
+	preferences.
+
+{empty}::
+	This option is only valid together with *--verify* or
+	*--upload*.
 
 *-v, --verbose*::
 	Enable verbose mode during build and upload.
-    This option has the same effect of using both *--verbose-build*
-    and *--verbose-upload*.
+	This option has the same effect of using both *--verbose-build*
+	and *--verbose-upload*.
+
+{empty}::
+	This option is only valid together with *--verify* or
+	*--upload*.
 
 *--preferences-file* __filename__::
 	Read and store preferences from the specified __filename__ instead
@@ -109,20 +121,25 @@ OPTIONS
 	Sets the preference __name__ to the given __value__.
 
 {empty}::
-	Currently the preferences set are saved to 'preferences.txt', but
-	this might change in the future (making them only active during
-	the current invocation).
-
-{empty}::
 	Note that the preferences you set with this option are not
 	validated: Invalid names will be set but never used, invalid
 	values might lead to an error later on.
+
+*--save-prefs*::
+	Save any (changed) preferences to *preferences.txt*. In particular
+	*--board*, *--port*, *--pref*, *--verbose*, *--verbose-build* and
+	*--verbose-upload* may alter the current preferences.
 
 *--upload*::
 	Build and upload the sketch.
 
 *--verify*::
 	Build the sketch.
+
+*--get-pref __preference__*::
+	Prints the value of the given preference to the standard output
+	stream. When the value does not exist, nothing is printed and
+	the exit status is set (see EXIT STATUS below).
 
 PREFERENCES
 -----------
@@ -160,6 +177,7 @@ EXIT STATUS
 *1*:: Build failed or upload failed
 *2*:: Sketch not found
 *3*:: Invalid (argument for) commandline option
+*4*:: Preference passed to *--get-pref* does not exist
 
 FILES
 -----
@@ -210,6 +228,50 @@ Compile a sketch, put the build results in the 'build' directory an
 re-use any previous build results in that directory.
 
      arduino --pref build.path=/path/to/sketch/build --verify /path/to/sketch/sketch.ino
+
+Change the selected board and build path and do nothing else.
+
+     arduino --pref build.path=/path/to/sketch/build --board arduino:avr:uno --save-prefs
+
+HISTORY
+-------
+1.5.2::
+	Added initial commandline support. This introduced *--verify*,
+	*--upload*, *--board*, *--port*, *--verbose* and *-v*.
+
+1.5.5::
+	Added support for board-specific parameters to *--board*.
+
+{empty}::
+	Sketch filenames are now interpreted relative to the current
+	directory instead of the location of the arduino command itself.
+
+1.5.6::
+	Introduced *--pref*, *--preferences-file*, *--verbose-build* and
+	*--verbose-upload*.
+
+{empty}::
+	Preferences set through --pref are remembered, preferences set
+	through *--board*, *--port* or the *--verbose* options are not.
+
+{empty}::
+	When running with *--verify* or *--upload*, the full GUI is no
+	longer shown. Error messages still use a graphical popup and on
+	Windows, the splash screen is still shown.
+
+1.5.8::
+	Introduced *--save-prefs*.
+
+{empty}::
+	*--pref* options are now not saved to the preferences file, just
+	like *--board* and *--port*, unless *--save-prefs* is specified.
+
+{empty}::
+	A path passed to *--preferences-file*, or set in the
+	*build.path*, *preferences.path* or *settings.path* is now
+	interpreted relative to the current directory instead of the
+	location of the arduino command itself.
+
 
 RESOURCES
 ---------

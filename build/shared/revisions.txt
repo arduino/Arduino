@@ -1,3 +1,32 @@
+ARDUINO 1.5.8 BETA - 2014.10.01
+
+[ide]
+* Find/Replace over multiple tabs (Erwin Ried, Fulvio Ieva)
+* Fix wrong "Replace" behavior with empty "Find" field (Fulvio Ieva)
+* A lot of command-line improvements (Matthijs Kooijman)
+* Cursor is not moved when invoking autoformat
+
+[libraries]
+* SPI: added transaction API (Paul Stoffregen)
+  https://github.com/arduino/Arduino/pull/2223
+  https://groups.google.com/a/arduino.cc/forum/#!msg/developers/TuZLfjeZjDI/6deNjw3Y9m4J
+* FileIO bridge: fixed wrong return value in File::size() for size >32768
+* Updated Temboo to latest version
+* Updates/Fix to various examples
+
+[core]
+* sam: "new" and "delete" do not bring in 50Kb of stdclib anymore
+* Correct implementation of gcc specific internal functions (__cxa_guard_*) (Alexey Guseynov)
+* Fix for upload problems on Leonardo (and derivative boards based on mega32u4)
+* Small improvements on String class (Matthijs Kooijman)
+* Fixed size of available flash for mega2560 boards (Leonardo Milani, Arnav Gupta)
+* sam: removed useless empty digitalPinToTimer(..) macro stub (Bill Perry)
+
+The following changes are included also in the Arduino IDE 1.0.6:
+
+[core]
+* avr: Added replacement stub for cstdlib atexit() funciton (Christopher Andrews)
+
 ARDUINO 1.5.7 BETA - 2014.07.07
 
 [core]
@@ -39,7 +68,7 @@ ARDUINO 1.5.7 BETA - 2014.07.07
 * Updates/Fix to various examples
 * Added Wire.setClock(..) method (Kristian Sloth Lauszus)
 
-The following changes are included also in the (not yet released) Arduino IDE 1.0.6:
+The following changes are included also in the Arduino IDE 1.0.6:
 
 [core]
 * avr: Improved USB-CDC write speed (Justin Rajewski)
@@ -196,7 +225,7 @@ ARDUINO 1.5.3 BETA - 2013.08.30
 * Scrollable menus can now be scrolled with the mouse wheel
 
 [arduino core]
-* sam: Fixed delayMicrosecond() when interrupts are disabled
+* sam: Fixed delayMicrosecond() when interrupts are disabled (Paul Stoffregen)
 * sam: Upgraded libsam, and added missing modules (CAN, ETH, etc.) (Thibaut Viard)
 * sam: Added compatibility for avr/pgmspace.h (Paul Stoffregen)
 * sam: Added serialEvent*() support
@@ -300,17 +329,19 @@ ARDUINO 1.5 BETA - 2012.10.22
 * For more info refer to this press release:
   http://arduino.cc/blog/2012/10/22/arduino-1-5-support-for-the-due-and-other-processors-easier-library-installation-simplified-board-menu-etc/
 
-ARDUINO 1.0.6 - not yet released
+ARDUINO 1.0.6 - 2014.09.16
 
 [core]
 * avr: Improved USB-CDC write speed (Justin Rajewski)
 * avr: Improved USB-CDC read code (Paul Brook)
 * avr: Fixed race condition in USB-CDC transmit (Paul Brook)
+* avr: Added replacement stub for cstdlib atexit() funciton (Christopher Andrews)
 * Fixed wrong NULL pointer handling in Stream class (Amulya Kumar Sahoo)
 * Backported String class from IDE 1.5.x (Matt Jenkins)
 * Backported Print class from IDE 1.5.x
 * Backported digitalPinToInterrupt macro from IDE 1.5.x
 * Added initVariant() hook to allow 3rd party variant-specific initialization
+* Added replacement stub for cstdlib atexit() function (Christopher Andrews)
 
 [ide]
 * Added compatibility for IDE 1.5.x libraries layout
@@ -323,6 +354,7 @@ ARDUINO 1.0.6 - not yet released
 * Robot_Control: updated turning algorithm (Xun Yang)
 * Esplora: added reading form Tinkerkit inputs
 * SoftwareSerial: Fix idle level when initializing with inverted logic (Jens-Christian Skibakk)
+* fixed a bunch of examples
 
 [firmware]
 * Wifishield: fixed paths on firmware upgrade scripts
