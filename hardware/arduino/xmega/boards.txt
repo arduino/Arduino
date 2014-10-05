@@ -126,6 +126,7 @@ akafuino.upload.tool=avrdude
 akafuino.upload.protocol=avr109
 akafuino.upload.maximum_size=32768
 akafuino.upload.speed=115200
+akafuino.upload.use_1200bps_touch=true
 
 akafuino.bootloader.tool=avrdude
 akafuino.bootloader.file=akafuino/akafuino-boot.hex
