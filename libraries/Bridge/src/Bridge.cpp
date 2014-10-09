@@ -84,6 +84,30 @@ void BridgeClass::begin() {
   }
 }
 
+bool BridgeClass::isOk() {
+  // check if bridge connections is OK
+  uint8_t cmd[] = {'X','X'};
+
+  uint8_t rxbuff[2]; // length 2 is needed because transfer will truncate to rxlen
+  rxbuff[0] = 0; // clear buffer
+  rxbuff[1] = 0;
+
+  // try 2 times
+  uint8_t _max_retries = max_retries;
+  max_retries = 2;
+
+  dropAll();
+  int rxbytes = transfer(cmd, 2, rxbuff, 2);
+
+  max_retries = _max_retries;
+
+  // expected response is of length 1 and contains 2
+  if (rxbytes == 1 && rxbuff[0] == 2)
+      return true;
+  else
+      return false;
+}
+
 void BridgeClass::put(const char *key, const char *value) {
   // TODO: do it in a more efficient way
   String cmd = "D";

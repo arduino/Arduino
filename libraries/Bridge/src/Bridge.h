@@ -26,6 +26,8 @@ class BridgeClass {
   public:
     BridgeClass(Stream &_stream);
     void begin();
+    bool isOk();
+    bool started;
 
     // Methods to handle key/value datastore
     void put(const char *key, const char *value);
@@ -84,7 +86,6 @@ class BridgeClass {
   private:
     static const char CTRL_C = 3;
     Stream &stream;
-    bool started;
     uint8_t max_retries;
 };
 
