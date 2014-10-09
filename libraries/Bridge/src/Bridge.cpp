@@ -191,6 +191,8 @@ uint16_t BridgeClass::transfer(const uint8_t *buff1, uint16_t len1,
 
     // Recv data
     for (uint16_t i = 0; i < l; i++) {
+      if (i >= rxlen)
+          break;
       int c = timedRead(5);
       if (c < 0)
         continue;
