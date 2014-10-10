@@ -120,6 +120,8 @@ public:
     unsigned int getTotalDevices(void) { return _connectedDeviceCount; };
     IPAddress deviceIpAddress(unsigned int idx);
     char * deviceMacAddress(unsigned int idx, char *sbuf);  // temporary implementation until we produce a "MACAddress" class; sbuf must be >=18 bytes
+    IPAddress deviceIpByMacAddress(const uint8_t *mac);  // 6-byte binary format
+    char * deviceMacByIpAddress(IPAddress ip, char *sbuf);  // Return sbuf with user-readable MAC address format; sbuf must be >=18 bytes
 
 
     /* Start Wifi connection for OPEN network
