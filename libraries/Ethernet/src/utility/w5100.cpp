@@ -76,12 +76,11 @@ void W5x00Class::init(void)
   SPI.endTransaction();
 
   // W5x00 reset
+  // The default size for the RX and TX buffers is 2 kB
   if (chipset == W5x00Chipset::W5100) {
     sockets = 4;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
-    writeTMSR(0x55);
-    writeRMSR(0x55);
     SPI.endTransaction();
 
     const uint16_t TXBUF_BASE = 0x4000;
@@ -94,10 +93,6 @@ void W5x00Class::init(void)
     sockets = 8;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
-    for (uint8_t i=0; i<sockets; i++) {
-      writeSnRXBUF_SIZE(i, 2);
-      writeSnTXBUF_SIZE(i, 2);
-    }
     SPI.endTransaction();
 
     const uint16_t TXBUF_BASE = 0x8000;
@@ -110,10 +105,6 @@ void W5x00Class::init(void)
     sockets = 8;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
-    for (uint8_t i=0; i<sockets; i++) {
-      writeSnRXBUF_SIZE(i, 2);
-      writeSnTXBUF_SIZE(i, 2);
-    }
     SPI.endTransaction();
   }
 }
