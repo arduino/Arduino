@@ -91,7 +91,7 @@ void W5x00Class::init(void)
       RBASE[i] = RXBUF_BASE + RSIZE * i;
     }
   } else if (chipset == W5x00Chipset::W5200) {
-    sockets = 4;
+    sockets = 8;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
     for (uint8_t i=0; i<sockets; i++) {

@@ -336,8 +336,8 @@ public:
   static const uint16_t SSIZE = 2048; // Max Tx buffer size
 private:
   static const uint16_t RSIZE = 2048; // Max Rx buffer size
-  uint16_t SBASE[4]; // Tx buffer base address
-  uint16_t RBASE[4]; // Rx buffer base address
+  uint16_t SBASE[8]; // Tx buffer base address
+  uint16_t RBASE[8]; // Rx buffer base address
 
 private:
   // W5100 supports up to 14Mhz
