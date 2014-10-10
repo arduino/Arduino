@@ -88,9 +88,7 @@ bool BridgeClass::isOk() {
   // check if bridge connections is OK
   uint8_t cmd[] = {'X','X'};
 
-  uint8_t rxbuff[2]; // length 2 is needed because transfer will truncate to rxlen
-  rxbuff[0] = 0; // clear buffer
-  rxbuff[1] = 0;
+  uint8_t rxbuff[] = {0,0}; // length 2 is needed because transfer will truncate to rxlen
 
   // try 2 times
   uint8_t _max_retries = max_retries;
