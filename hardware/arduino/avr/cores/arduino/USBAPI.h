@@ -179,6 +179,8 @@ public:
 	virtual size_t write(uint8_t k);
 	virtual size_t press(uint8_t k);
 	virtual size_t release(uint8_t k);
+	virtual size_t press_sc(uint8_t k);
+	virtual size_t release_sc(uint8_t k);
 	virtual void releaseAll(void);
 };
 extern Keyboard_ Keyboard;
