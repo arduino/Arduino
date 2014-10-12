@@ -9,6 +9,8 @@
 #include <math.h>
 #include <itoa.h>
 
+#include "binary.h"
+
 #include "inc/hw_types.h"  		
 #include "inc/hw_nvic.h" 
 #include "driverlib/gpio.h" 
