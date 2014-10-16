@@ -61,6 +61,9 @@ char WiFiClass::fwVersion[] = {0};
 //
 volatile unsigned int WiFiClass::_connectedDeviceCount = 0;
 volatile unsigned int WiFiClass::_latestConnect = 0;
+#ifdef __MSP430_HAS_FRAM__
+__attribute__((section(".text")))
+#endif
 volatile wlanAttachedDevice_t WiFiClass::_connectedDevices[MAX_AP_DEVICE_REGISTRY];
 
 //
@@ -83,6 +86,9 @@ int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
 uint8_t WiFiClass::pin_nhib = 5;
 uint8_t WiFiClass::pin_cs = 18;
 uint8_t WiFiClass::pin_irq = 19;
+#ifdef __MSP430_HAS_FRAM__
+__attribute__((section(".text")))
+#endif
 WiFiClient WiFiClass::clients[MAX_SOCK_NUM];
 //
 //These "buffers" are used to "return" strings and IpAddress objects
