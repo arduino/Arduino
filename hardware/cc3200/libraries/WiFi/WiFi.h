@@ -22,6 +22,7 @@
 
 #include <Energia.h>
 #include "IPAddress.h"
+#include "MACAddress.h"
 #include "utility/wl_definitions.h"
 #include "utility/SimpleLink.h"
 #include "WiFiClient.h"
@@ -119,9 +120,9 @@ public:
     IPAddress getLatestDevice(void) { return IPAddress((const uint8_t *)_connectedDevices[_latestConnect].ipAddress); };
     unsigned int getTotalDevices(void) { return _connectedDeviceCount; };
     IPAddress deviceIpAddress(unsigned int idx);
-    char * deviceMacAddress(unsigned int idx, char *sbuf);  // temporary implementation until we produce a "MACAddress" class; sbuf must be >=18 bytes
-    IPAddress deviceIpByMacAddress(const uint8_t *mac);  // 6-byte binary format
-    char * deviceMacByIpAddress(IPAddress ip, char *sbuf);  // Return sbuf with user-readable MAC address format; sbuf must be >=18 bytes
+    MACAddress deviceMacAddress(unsigned int idx);
+    IPAddress deviceIpByMacAddress(MACAddress mac);
+    MACAddress deviceMacByIpAddress(IPAddress ip);
 
 
     /* Start Wifi connection for OPEN network

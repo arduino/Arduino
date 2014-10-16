@@ -968,9 +968,7 @@ IPAddress WiFiClass::deviceIpAddress(unsigned int idx)
     return IPAddress(0UL);
 }
 
-static const char _hexdigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-
-char * WiFiClass::deviceMacAddress(unsigned int idx, char *sbuf)
+MACAddress WiFiClass::deviceMacAddress(unsigned int idx)
 {
     int i = 0, j = 0, k = 0;
 
@@ -978,17 +976,7 @@ char * WiFiClass::deviceMacAddress(unsigned int idx, char *sbuf)
     do {
         if (_connectedDevices[i].in_use) {
             if (j == idx) {
-                k = 0;
-                // repurposing 'j' as our counter
-                for (j=0; j < 5; j++) {
-                    sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
-                    sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
-                    sbuf[k++] = ':';
-                }
-                sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
-                sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
-                sbuf[k++] = '\0';
-                return sbuf;
+                return MACAddress((const uint8_t *)_connectedDevices[i].mac);
             }
             j++;
         }
@@ -996,30 +984,29 @@ char * WiFiClass::deviceMacAddress(unsigned int idx, char *sbuf)
     } while (i < MAX_AP_DEVICE_REGISTRY);
 
     // Not found!
-    sbuf[0] = '\0';
-    return sbuf;
+    return MACADDR_NONE;
 }
 
 /* Find an IP address based on a recorded MAC address (6-byte binary format) */
-IPAddress WiFiClass::deviceIpByMacAddress(const uint8_t *mac)
+IPAddress WiFiClass::deviceIpByMacAddress(MACAddress mac)
 {
     int i = 0;
 
     // Search by MAC
     for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
         if (_connectedDevices[i].in_use) {
-            if (!memcmp((const uint8_t *)_connectedDevices[i].mac, mac, 6)) {
+            if ( mac == (const uint8_t *)_connectedDevices[i].mac ) {
                 return IPAddress((uint8_t *)_connectedDevices[i].ipAddress);
             }
         }
     }
 
     // Not found!
-    return IPAddress(0UL);
+    return INADDR_NONE;
 }
 
 /* Return a MAC address based on a recorded IP address */
-char * WiFiClass::deviceMacByIpAddress(IPAddress ip, char *sbuf)
+MACAddress WiFiClass::deviceMacByIpAddress(IPAddress ip)
 {
     int i = 0, j = 0, k = 0;
 
@@ -1027,22 +1014,13 @@ char * WiFiClass::deviceMacByIpAddress(IPAddress ip, char *sbuf)
     for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
         if (_connectedDevices[i].in_use) {
             if ( ip == (const uint8_t *)_connectedDevices[i].ipAddress ) {
-                for (j=0; j < 5; j++) {
-                    sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
-                    sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
-                    sbuf[k++] = ':';
-                }
-                sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) >> 4 ];
-                sbuf[k++] = _hexdigits[ (_connectedDevices[i].mac[j]) & 0x0F ];
-                sbuf[k++] = '\0';
-                return sbuf;
+                return MACAddress((const uint8_t *)_connectedDevices[i].mac);
             }
         }
     }
 
     // Not found!
-    sbuf[0] = '\0';
-    return sbuf;
+    return MACADDR_NONE;
 }
 
 
