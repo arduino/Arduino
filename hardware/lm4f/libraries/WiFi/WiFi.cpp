@@ -965,7 +965,7 @@ IPAddress WiFiClass::deviceIpAddress(unsigned int idx)
     } while (i < MAX_AP_DEVICE_REGISTRY);
 
     // Not found!
-    return IPAddress(0UL);
+    return INADDR_NONE;
 }
 
 MACAddress WiFiClass::deviceMacAddress(unsigned int idx)
