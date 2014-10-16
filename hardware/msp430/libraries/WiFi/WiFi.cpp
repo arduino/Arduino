@@ -57,6 +57,13 @@ volatile int WiFiClass::network_count = 0;
 char WiFiClass::fwVersion[] = {0};
 
 //
+// initialize AP mode static client registry variables
+//
+volatile unsigned int WiFiClass::_connectedDeviceCount = 0;
+volatile unsigned int WiFiClass::_latestConnect = 0;
+volatile wlanAttachedDevice_t WiFiClass::_connectedDevices[MAX_AP_DEVICE_REGISTRY];
+
+//
 //initialize the ssid and bssid to blank and 0s respectively
 //
 char WiFiClass::connected_ssid[32] = "";
@@ -319,9 +326,19 @@ int WiFiClass::begin(char* ssid, char *passphrase)
 int WiFiClass::beginNetwork(char *ssid)
 {
     long   retVal = -1;
+    int i;
 
     if (!_initialized) {
         init();
+    }
+
+    // Initialize the AP-mode Connected Device array
+    _connectedDeviceCount = 0;
+    _latestConnect = 0;
+    for (i = 0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        _connectedDevices[i].in_use = false;
+        memset((uint8_t *)_connectedDevices[i].ipAddress, 0, 4);
+        memset((uint8_t *)_connectedDevices[i].mac, 0, 6);
     }
 
     retVal = sl_WlanSetMode(ROLE_AP);
@@ -339,9 +356,19 @@ int WiFiClass::beginNetwork(char *ssid)
 int WiFiClass::beginNetwork(char *ssid, char *passphrase)
 {
     long   retVal = -1;
+    int i;
 
     if (!_initialized) {
         init();
+    }
+
+    // Initialize the AP-mode Connected Device array
+    _connectedDeviceCount = 0;
+    _latestConnect = 0;
+    for (i = 0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        _connectedDevices[i].in_use = false;
+        memset((uint8_t *)_connectedDevices[i].ipAddress, 0, 4);
+        memset((uint8_t *)_connectedDevices[i].mac, 0, 6);
     }
 
     retVal = sl_WlanSetMode(ROLE_AP);
@@ -871,6 +898,129 @@ boolean WiFiClass::setDateTime(uint16_t month, uint16_t day, uint16_t year, uint
     if (i != 0)
         return false;
     return true;
+}
+
+/* Register a new client who has attached to us in AP mode! */
+void WiFiClass::_registerNewDeviceIP(unsigned char *ip, unsigned char *mac)
+{
+    int i;
+
+    // Have we seen this client attach yet?
+    for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        if (_connectedDevices[i].in_use && !memcmp((const uint8_t *)(_connectedDevices[i].mac), mac, 6)) {
+            // We have; update the IP and exit.
+            memcpy((uint8_t *)(_connectedDevices[i].ipAddress), ip, 4);
+            _latestConnect = i;
+            return;
+        }
+    }
+    // If not, add this client as a new entry.
+    for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        if (!_connectedDevices[i].in_use) {
+            _connectedDevices[i].in_use = true;
+            memcpy((uint8_t *)(_connectedDevices[i].ipAddress), ip, 4);
+            memcpy((uint8_t *)(_connectedDevices[i].mac), mac, 6);
+            /* Note: We don't update _latestConnect b/c the only time we reach this code block
+             * is when the client attaches but has not yet obtained an IP address; thus there's
+             * nothing we can do with that client (connect, etc) anyway.
+             */
+            return;
+        }
+    }
+    // No slots left for new clients; exit without registering them.
+    return;
+}
+
+/* Deregister a client by MAC address. */
+void WiFiClass::_unregisterDevice(unsigned char *mac)
+{
+    int i;
+
+    // Find the client
+    for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        if (_connectedDevices[i].in_use && !memcmp((const uint8_t *)(_connectedDevices[i].mac), mac, 6)) {
+            // We have; set in_use to false.
+            _connectedDevices[i].in_use = false;
+            return;
+        }
+    }
+    // Didn't find them?  Too bad, nothing to see here...
+    return;
+}
+
+/* Print a specified IP/MAC from the connected device list. */
+IPAddress WiFiClass::deviceIpAddress(unsigned int idx)
+{
+    int i = 0, j = 0;
+
+    // Find the client
+    do {
+        if (_connectedDevices[i].in_use) {
+            if (j == idx) {
+                return IPAddress((uint8_t *)_connectedDevices[i].ipAddress);
+            }
+            j++;
+        }
+        i++;
+    } while (i < MAX_AP_DEVICE_REGISTRY);
+
+    // Not found!
+    return INADDR_NONE;
+}
+
+MACAddress WiFiClass::deviceMacAddress(unsigned int idx)
+{
+    int i = 0, j = 0, k = 0;
+
+    // Find the client
+    do {
+        if (_connectedDevices[i].in_use) {
+            if (j == idx) {
+                return MACAddress((const uint8_t *)_connectedDevices[i].mac);
+            }
+            j++;
+        }
+        i++;
+    } while (i < MAX_AP_DEVICE_REGISTRY);
+
+    // Not found!
+    return MACADDR_NONE;
+}
+
+/* Find an IP address based on a recorded MAC address (6-byte binary format) */
+IPAddress WiFiClass::deviceIpByMacAddress(MACAddress mac)
+{
+    int i = 0;
+
+    // Search by MAC
+    for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        if (_connectedDevices[i].in_use) {
+            if ( mac == (const uint8_t *)_connectedDevices[i].mac ) {
+                return IPAddress((uint8_t *)_connectedDevices[i].ipAddress);
+            }
+        }
+    }
+
+    // Not found!
+    return INADDR_NONE;
+}
+
+/* Return a MAC address based on a recorded IP address */
+MACAddress WiFiClass::deviceMacByIpAddress(IPAddress ip)
+{
+    int i = 0, j = 0, k = 0;
+
+    // Search by IP
+    for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
+        if (_connectedDevices[i].in_use) {
+            if ( ip == (const uint8_t *)_connectedDevices[i].ipAddress ) {
+                return MACAddress((const uint8_t *)_connectedDevices[i].mac);
+            }
+        }
+    }
+
+    // Not found!
+    return MACADDR_NONE;
 }
 
 
