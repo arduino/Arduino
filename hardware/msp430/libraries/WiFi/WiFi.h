@@ -22,6 +22,7 @@
 
 #include <Energia.h>
 #include "IPAddress.h"
+#include "MACAddress.h"
 #include "utility/wl_definitions.h"
 #include "utility/SimpleLink.h"
 #include "WiFiClient.h"
@@ -35,6 +36,14 @@
 #define BSSID_LEN 6
 #define WLAN_DEL_ALL_PROFILES 0xff
 #define WL_FW_VER_LENGTH 64
+#define MAX_AP_DEVICE_REGISTRY 4
+
+typedef struct {
+    boolean in_use;
+    uint8_t ipAddress[4];
+    uint8_t mac[6];
+} wlanAttachedDevice_t;
+
 
 class WiFiClass
 {
@@ -108,6 +117,24 @@ public:
      *        must be between ASCII 32-126 (decimal).
      */
     int beginNetwork(char *ssid, char *passphrase);
+
+    /* AP mode connected device tracking
+     */
+    volatile static unsigned int _connectedDeviceCount;
+    volatile static wlanAttachedDevice_t _connectedDevices[MAX_AP_DEVICE_REGISTRY];
+    volatile static unsigned int _latestConnect;
+    static void _registerNewDeviceIP(uint8_t *ip, uint8_t *mac);
+    static void _unregisterDevice(uint8_t *mac);
+
+    /* Query AP-mode station registration database
+     */
+    IPAddress getLatestDevice(void) { return IPAddress((const uint8_t *)_connectedDevices[_latestConnect].ipAddress); };
+    unsigned int getTotalDevices(void) { return _connectedDeviceCount; };
+    IPAddress deviceIpAddress(unsigned int idx);
+    MACAddress deviceMacAddress(unsigned int idx);
+    IPAddress deviceIpByMacAddress(MACAddress mac);
+    MACAddress deviceMacByIpAddress(IPAddress ip);
+
 
     /* Start Wifi connection for OPEN network
      *
