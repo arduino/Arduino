@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2010 by Cristian Maglie <c.maglie@bug.st>
  * Copyright (c) 2014 by Paul Stoffregen <paul@pjrc.com> (Transaction API)
+ * Copyright (c) 2014 by Andrew J. Kroll <xxxajk@gmail.com> (atomicity fixes)
  * SPI Master library for arduino.
  *
  * This file is free software; you can redistribute it and/or modify
@@ -22,7 +23,7 @@
 //   - SPISetting(clock, bitOrder, dataMode)
 #define SPI_HAS_TRANSACTION 1
 
-// SPI_HAS_EXTENDED_CS_PIN_HANDLING means SPI has automatic 
+// SPI_HAS_EXTENDED_CS_PIN_HANDLING means SPI has automatic
 // CS pin handling and provides the following methods:
 //   - begin(pin)
 //   - end(pin)
@@ -33,6 +34,13 @@
 //   - beginTransaction(pin, SPISettings settings) (if transactions are available)
 #define SPI_HAS_EXTENDED_CS_PIN_HANDLING 1
 
+// SPI_ATOMIC_VERSION means that SPI has atomicity fixes and what version.
+// This way when there is a bug fix you can check this define to alert users
+// of your code if it uses better version of this library.
+// This also implies everything that SPI_HAS_TRANSACTION and SPI_HAS_EXTENDED_CS_PIN_HANDLING
+// as documented above is available too.
+#define SPI_ATOMIC_VERSION 1
+
 #define SPI_MODE0 0x02
 #define SPI_MODE1 0x00
 #define SPI_MODE2 0x03
@@ -42,6 +50,20 @@ enum SPITransferMode {
 	SPI_CONTINUE,
 	SPI_LAST
 };
+
+#ifndef interruptsStatus
+#define interruptsStatus() __interruptsStatus()
+static inline unsigned char __interruptsStatus(void) __attribute__((always_inline, unused));
+static inline unsigned char __interruptsStatus(void) {
+	unsigned int primask, faultmask;
+	asm volatile ("mrs %0, primask" : "=r" (primask));
+	if (primask) return 0;
+	asm volatile ("mrs %0, faultmask" : "=r" (faultmask));
+	if (faultmask) return 0;
+	return 1;
+}
+#endif
+
 
 class SPISettings {
 public:
