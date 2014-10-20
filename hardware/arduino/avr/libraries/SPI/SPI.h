@@ -193,16 +193,20 @@ public:
     in.val = data;
     if (!(SPCR & _BV(DORD))) {
       SPDR = in.msb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.msb = SPDR;
       SPDR = in.lsb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.lsb = SPDR;
     } else {
       SPDR = in.lsb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.lsb = SPDR;
       SPDR = in.msb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.msb = SPDR;
     }
