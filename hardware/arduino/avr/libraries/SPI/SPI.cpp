@@ -103,11 +103,9 @@ void SPIClass::end() {
 
 void SPIClass::usingInterrupt(uint8_t interruptNumber)
 {
-  uint8_t mask;
-
-  if (modeFlags.interruptMode > 1) return;
-
-  noInterrupts();
+  uint8_t mask = 0;
+  uint8_t sreg = SREG;
+  noInterrupts(); // Protect from a scheduler and prevent transactionBegin
   switch (interruptNumber) {
   #ifdef SPI_INT0_MASK
   case 0: mask = SPI_INT0_MASK; break;
@@ -135,11 +133,11 @@ void SPIClass::usingInterrupt(uint8_t interruptNumber)
   #endif
   default:
     modeFlags.interruptMode = 2;
-    interrupts();
-    return;
+    break;
   }
-  modeFlags.interruptMode = 1;
   interruptMask |= mask;
-  interrupts();
+  if (!modeFlags.interruptMode)
+    modeFlags.interruptMode = 1;
+  SREG = sreg;
 }
 
