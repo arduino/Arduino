@@ -2,6 +2,7 @@
  * Copyright (c) 2010 by Cristian Maglie <c.maglie@bug.st>
  * Copyright (c) 2014 by Paul Stoffregen <paul@pjrc.com> (Transaction API)
  * Copyright (c) 2014 by Matthijs Kooijman <matthijs@stdin.nl> (SPISettings AVR)
+ * Copyright (c) 2014 by Andrew J. Kroll <xxxajk@gmail.com> (atomicity fixes)
  * SPI Master library for arduino.
  *
  * This file is free software; you can redistribute it and/or modify
@@ -20,32 +21,47 @@ uint8_t SPIClass::interruptSave = 0;
 
 void SPIClass::begin()
 {
-  // Set SS to high so a connected chip will be "deselected" by default
-  digitalWrite(SS, HIGH);
+  uint8_t sreg = SREG;
+  noInterrupts(); // Protect from a scheduler and prevent transactionBegin
+  if (!modeFlags.initialized) {
+    modeFlags.initialized = true;
+    // Set SS to high so a connected chip will be "deselected" by default
+    digitalWrite(SS, HIGH);
 
-  // When the SS pin is set as OUTPUT, it can be used as
-  // a general purpose output port (it doesn't influence
-  // SPI operations).
-  pinMode(SS, OUTPUT);
+    // When the SS pin is set as OUTPUT, it can be used as
+    // a general purpose output port (it doesn't influence
+    // SPI operations).
+    pinMode(SS, OUTPUT);
 
-  // Warning: if the SS pin ever becomes a LOW INPUT then SPI
-  // automatically switches to Slave, so the data direction of
-  // the SS pin MUST be kept as OUTPUT.
-  SPCR |= _BV(MSTR);
-  SPCR |= _BV(SPE);
+    // Warning: if the SS pin ever becomes a LOW INPUT then SPI
+    // automatically switches to Slave, so the data direction of
+    // the SS pin MUST be kept as OUTPUT.
+    SPCR |= _BV(MSTR);
+    SPCR |= _BV(SPE);
 
-  // Set direction register for SCK and MOSI pin.
-  // MISO pin automatically overrides to INPUT.
-  // By doing this AFTER enabling SPI, we avoid accidentally
-  // clocking in a single bit since the lines go directly
-  // from "input" to SPI control.  
-  // http://code.google.com/p/arduino/issues/detail?id=888
-  pinMode(SCK, OUTPUT);
-  pinMode(MOSI, OUTPUT);
+    // Set direction register for SCK and MOSI pin.
+    // MISO pin automatically overrides to INPUT.
+    // By doing this AFTER enabling SPI, we avoid accidentally
+    // clocking in a single bit since the lines go directly
+    // from "input" to SPI control.
+    // http://code.google.com/p/arduino/issues/detail?id=888
+    pinMode(SCK, OUTPUT);
+    pinMode(MOSI, OUTPUT);
+  }
+  SREG = sreg;
 }
 
 void SPIClass::end() {
-  SPCR &= ~_BV(SPE);
+  uint8_t sreg = SREG;
+  noInterrupts(); // Protect from a scheduler and prevent transactionBegin
+  if (!modeFlags.interruptMode && modeFlags.initialized) {
+    SPCR &= ~_BV(SPE);
+    modeFlags.initialized = false;
+    #ifdef SPI_TRANSACTION_MISMATCH_LED
+    modeFlags.inTransaction = false;
+    #endif
+  }
+  SREG = sreg;
 }
 
 // mapping of interrupt numbers to bits within SPI_AVR_EIMSK

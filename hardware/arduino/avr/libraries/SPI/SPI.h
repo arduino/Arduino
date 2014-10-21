@@ -2,6 +2,7 @@
  * Copyright (c) 2010 by Cristian Maglie <c.maglie@bug.st>
  * Copyright (c) 2014 by Paul Stoffregen <paul@pjrc.com> (Transaction API)
  * Copyright (c) 2014 by Matthijs Kooijman <matthijs@stdin.nl> (SPISettings AVR)
+ * Copyright (c) 2014 by Andrew J. Kroll <xxxajk@gmail.com> (atomicity fixes)
  * SPI Master library for arduino.
  *
  * This file is free software; you can redistribute it and/or modify
@@ -52,7 +53,7 @@
 // Flags for the state of SPI, used as needed.
 // Normally inTransaction is not used.
 typedef struct SPIflags {
-  bool padding : 1;
+  bool initialized : 1; // tells us that begin() was called
   bool inTransaction : 1;
   uint8_t interruptMode : 6; // 0=none, 1=mask, 2=global (more can be added)
 } __attribute__((packed)) SPIflags_t;
