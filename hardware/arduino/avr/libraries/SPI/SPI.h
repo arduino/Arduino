@@ -49,6 +49,14 @@
 #define SPI_CLOCK_MASK 0x03  // SPR1 = bit 1, SPR0 = bit 0 on SPCR
 #define SPI_2XCLOCK_MASK 0x01  // SPI2X = bit 0 on SPSR
 
+// Flags for the state of SPI, used as needed.
+// Normally inTransaction is not used.
+typedef struct SPIflags {
+  bool padding : 1;
+  bool inTransaction : 1;
+  uint8_t interruptMode : 6; // 0=none, 1=mask, 2=global (more can be added)
+} __attribute__((packed)) SPIflags_t;
+
 // define SPI_AVR_EIMSK for AVR boards with external interrupt pins
 #if defined(EIMSK)
   #define SPI_AVR_EIMSK  EIMSK
@@ -158,9 +166,9 @@ public:
   // this function is used to gain exclusive access to the SPI bus
   // and configure the correct settings.
   inline static void beginTransaction(SPISettings settings) {
-    if (interruptMode > 0) {
+    if (modeFlags.interruptMode > 0) {
       #ifdef SPI_AVR_EIMSK
-      if (interruptMode == 1) {
+      if (modeFlags.interruptMode == 1) {
         interruptSave = SPI_AVR_EIMSK;
         SPI_AVR_EIMSK &= ~interruptMask;
       } else
@@ -171,11 +179,11 @@ public:
       }
     }
     #ifdef SPI_TRANSACTION_MISMATCH_LED
-    if (inTransactionFlag) {
+    if (modeFlags.inTransaction) {
       pinMode(SPI_TRANSACTION_MISMATCH_LED, OUTPUT);
       digitalWrite(SPI_TRANSACTION_MISMATCH_LED, HIGH);
     }
-    inTransactionFlag = 1;
+    modeFlags.inTransaction = true;
     #endif
     SPCR = settings.spcr;
     SPSR = settings.spsr;
@@ -230,15 +238,15 @@ public:
   // signal, this function allows others to access the SPI bus
   inline static void endTransaction(void) {
     #ifdef SPI_TRANSACTION_MISMATCH_LED
-    if (!inTransactionFlag) {
+    if (!modeFlags.inTransaction) {
       pinMode(SPI_TRANSACTION_MISMATCH_LED, OUTPUT);
       digitalWrite(SPI_TRANSACTION_MISMATCH_LED, HIGH);
     }
-    inTransactionFlag = 0;
+    modeFlags.inTransaction = false;
     #endif
-    if (interruptMode > 0) {
+    if (modeFlags.interruptMode > 0) {
       #ifdef SPI_AVR_EIMSK
-      if (interruptMode == 1) {
+      if (modeFlags.interruptMode == 1) {
         SPI_AVR_EIMSK = interruptSave;
       } else
       #endif
@@ -275,12 +283,9 @@ public:
   inline static void detachInterrupt() { SPCR &= ~_BV(SPIE); }
 
 private:
-  static uint8_t interruptMode; // 0=none, 1=mask, 2=global
+  static SPIflags_t modeFlags; // Flags for the state and mode of SPI
   static uint8_t interruptMask; // which interrupts to mask
   static uint8_t interruptSave; // temp storage, to restore state
-  #ifdef SPI_TRANSACTION_MISMATCH_LED
-  static uint8_t inTransactionFlag;
-  #endif
 };
 
 extern SPIClass SPI;

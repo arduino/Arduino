@@ -13,13 +13,9 @@
 #include "pins_arduino.h"
 
 SPIClass SPI;
-
-uint8_t SPIClass::interruptMode = 0;
+SPIflags_t SPIClass::modeFlags = {false, false, 0};
 uint8_t SPIClass::interruptMask = 0;
 uint8_t SPIClass::interruptSave = 0;
-#ifdef SPI_TRANSACTION_MISMATCH_LED
-uint8_t SPIClass::inTransactionFlag = 0;
-#endif
 
 void SPIClass::begin()
 {
@@ -92,7 +88,7 @@ void SPIClass::usingInterrupt(uint8_t interruptNumber)
 {
   uint8_t mask;
 
-  if (interruptMode > 1) return;
+  if (modeFlags.interruptMode > 1) return;
 
   noInterrupts();
   switch (interruptNumber) {
@@ -121,11 +117,11 @@ void SPIClass::usingInterrupt(uint8_t interruptNumber)
   case 7: mask = SPI_INT7_MASK; break;
   #endif
   default:
-    interruptMode = 2;
+    modeFlags.interruptMode = 2;
     interrupts();
     return;
   }
-  interruptMode = 1;
+  modeFlags.interruptMode = 1;
   interruptMask |= mask;
   interrupts();
 }
