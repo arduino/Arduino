@@ -20,6 +20,9 @@
 // usingInterrupt(), and SPISetting(clock, bitOrder, dataMode)
 #define SPI_HAS_TRANSACTION 1
 
+// SPI_HAS_NOTUSINGINTERRUPT means that SPI has notUsingInterrup() method
+#define SPI_HAS_NOTUSINGINTERRUPT 1
+
 // SPI_ATOMIC_VERSION means that SPI has atomicity fixes and what version.
 // This way when there is a bug fix you can check this define to alert users
 // of your code if it uses better version of this library.
@@ -169,6 +172,8 @@ public:
   // with attachInterrupt.  If SPI is used from a different interrupt
   // (eg, a timer), interruptNumber should be 255.
   static void usingInterrupt(uint8_t interruptNumber);
+  // And this does the opposite.
+  static void notUsingInterrupt(uint8_t interruptNumber);
 
   // Before using SPI.transfer() or asserting chip select pins,
   // this function is used to gain exclusive access to the SPI bus
