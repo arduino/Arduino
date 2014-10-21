@@ -2,6 +2,9 @@
 #include <Arduino.h>
 #include <IPAddress.h>
 
+
+const IPAddress INADDR_NONE(0,0,0,0);
+
 IPAddress::IPAddress()
 {
     memset(_address, 0, sizeof(_address));
