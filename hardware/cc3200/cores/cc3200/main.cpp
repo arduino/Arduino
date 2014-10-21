@@ -10,7 +10,11 @@
 
 extern void (* const g_pfnVectors[])(void);
 
-int main(void)
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void _init(void)
 {
 	IntVTableBaseSet((unsigned long)&g_pfnVectors[0]);
 
@@ -24,7 +28,14 @@ int main(void)
 	MAP_SysTickIntEnable();
 	MAP_SysTickPeriodSet(F_CPU / 1000);
 	MAP_SysTickEnable();
+}
 
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+int main(void)
+{
 	setup();
 
 	for (;;) {

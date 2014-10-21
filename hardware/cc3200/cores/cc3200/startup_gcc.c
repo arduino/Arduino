@@ -97,6 +97,7 @@ extern void SysTickIntHandler(void);
 // The entry point for the application.
 //
 //*****************************************************************************
+extern void _init(void);
 extern int main(void);
 
 
@@ -266,6 +267,12 @@ ResetISR(void)
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
     
+
+    //
+    // Call Energia hardware init routine (timers, peripheral module clocks)
+    //
+    _init();
+
     //
     // call any global c++ ctors
     //
