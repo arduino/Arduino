@@ -12,7 +12,6 @@
  */
 
 #include "SPI.h"
-#include "pins_arduino.h"
 
 SPIClass SPI;
 SPIflags_t SPIClass::modeFlags = {false, false, 0};
