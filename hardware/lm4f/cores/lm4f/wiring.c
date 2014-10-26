@@ -94,12 +94,28 @@ unsigned long millis(void)
 
 void delayMicroseconds(unsigned int us)
 {
-	volatile unsigned long elapsedTime;
 	unsigned long startTime = HWREG(NVIC_ST_CURRENT);
-	do{
-		elapsedTime = startTime-(HWREG(NVIC_ST_CURRENT) & 0x00FFFFFF);
+
+	// Systick timer rolls over every 1000000/SYSTICKHZ microseconds 
+	if (us > (1000000UL / SYSTICKHZ - 1)) {
+		delay(us / 1000);  // delay milliseconds
+		startTime = HWREG(NVIC_ST_CURRENT);
+		us = us % 1000;     // handle remainder of delay
+	};
+
+	// 24 bit timer - mask off undefined bits
+	startTime &= NVIC_ST_CURRENT_M;
+
+	unsigned long ticks = (unsigned long)us * (F_CPU/1000000UL);
+	volatile unsigned long elapsedTime;
+
+	if (ticks > startTime) {
+		ticks = (ticks + (NVIC_ST_CURRENT_M - (unsigned long)F_CPU / SYSTICKHZ)) & NVIC_ST_CURRENT_M;
 	}
-	while(elapsedTime <= us * (F_CPU/1000000));
+
+	do {
+		elapsedTime = (startTime-(HWREG(NVIC_ST_CURRENT) & NVIC_ST_CURRENT_M )) & NVIC_ST_CURRENT_M;
+	} while(elapsedTime <= ticks);
 }
 
 void delay(uint32_t ms)
