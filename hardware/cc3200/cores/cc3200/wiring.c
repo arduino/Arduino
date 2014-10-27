@@ -86,6 +86,42 @@ void delay(uint32_t millis)
 	}
 }
 
+
+volatile boolean stay_asleep = false;
+
+/* TODO: Replace sleep, sleepSeconds and suspend with actual RTC+Hibernate module implementation */
+void sleep(uint32_t ms)
+{
+	unsigned long i;
+
+	stay_asleep = true;
+	for(i=0; i<ms*2 && stay_asleep; i++) {
+		delayMicroseconds(500);
+	}
+	stay_asleep = false;
+}
+
+void sleepSeconds(uint32_t seconds)
+{
+	unsigned long i, j;
+
+	stay_asleep = true;
+	for(i=0; i<seconds && stay_asleep; i++) {
+		for(j=0; j<2000 && stay_asleep; j++) {
+			delayMicroseconds(500);
+		}
+	}
+	stay_asleep = false;
+}
+
+void suspend(void)
+{
+	stay_asleep = true;
+
+	while(stay_asleep)
+		;
+}
+
 void registerSysTickCb(void (*userFunc)(uint32_t))
 {
 	uint8_t i;
