@@ -134,7 +134,7 @@ extern "C" {
 #endif
 
 void PIOA_Handler(void) {
-	uint32_t isr = PIOA->PIO_ISR;
+	uint32_t isr = PIOA->PIO_ISR & PIOA->PIO_IMR;
 	uint32_t i;
 	for (i=0; i<32; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -145,7 +145,7 @@ void PIOA_Handler(void) {
 }
 
 void PIOB_Handler(void) {
-	uint32_t isr = PIOB->PIO_ISR;
+	uint32_t isr = PIOB->PIO_ISR & PIOB->PIO_IMR;
 	uint32_t i;
 	for (i=0; i<32; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -156,7 +156,7 @@ void PIOB_Handler(void) {
 }
 
 void PIOC_Handler(void) {
-	uint32_t isr = PIOC->PIO_ISR;
+	uint32_t isr = PIOC->PIO_ISR & PIOC->PIO_IMR;
 	uint32_t i;
 	for (i=0; i<32; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
@@ -167,7 +167,7 @@ void PIOC_Handler(void) {
 }
 
 void PIOD_Handler(void) {
-	uint32_t isr = PIOD->PIO_ISR;
+	uint32_t isr = PIOD->PIO_ISR & PIOD->PIO_IMR;
 	uint32_t i;
 	for (i=0; i<32; i++, isr>>=1) {
 		if ((isr & 0x1) == 0)
