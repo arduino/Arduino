@@ -39,7 +39,7 @@
 static void (*SysTickCbFuncs[8])(uint32_t ui32TimeMS);
 
 #define SYSTICKMS               (1000 / SYSTICKHZ)
-#define SYSTICKHZ               100
+#define SYSTICKHZ               1000
 
 static unsigned long milliseconds = 0;
 #define SYSTICK_INT_PRIORITY    0x80
@@ -47,7 +47,7 @@ static unsigned long milliseconds = 0;
 
 unsigned long micros(void)
 {
-	return (milliseconds * 1000) + (SysTickValueGet() / (F_CPU/1000000));
+	return (milliseconds * 1000) + ( ((F_CPU / SYSTICKHZ) - MAP_SysTickValueGet()) / (F_CPU/1000000));
 }
 
 unsigned long millis(void)
@@ -57,19 +57,32 @@ unsigned long millis(void)
 
 void delayMicroseconds(unsigned int us)
 {
-	volatile unsigned long elapsedTime;
-	unsigned long startTime = SysTickValueGet();
+	// Systick timer rolls over every 1000000/SYSTICKHZ microseconds 
+	if (us > (1000000UL / SYSTICKHZ - 1)) {
+		delay(us / 1000);  // delay milliseconds
+		us = us % 1000;     // handle remainder of delay
+	};
 
-	do{
-		elapsedTime = startTime - SysTickValueGet();
-	} while(elapsedTime <= us * (F_CPU/1000000));
+	// 24 bit timer - mask off undefined bits
+	unsigned long startTime = HWREG(NVIC_ST_CURRENT) & NVIC_ST_CURRENT_M;
+
+	unsigned long ticks = (unsigned long)us * (F_CPU/1000000UL);
+	volatile unsigned long elapsedTime;
+
+	if (ticks > startTime) {
+		ticks = (ticks + (NVIC_ST_CURRENT_M - (unsigned long)F_CPU / SYSTICKHZ)) & NVIC_ST_CURRENT_M;
+	}
+
+	do {
+		elapsedTime = (startTime-(HWREG(NVIC_ST_CURRENT) & NVIC_ST_CURRENT_M )) & NVIC_ST_CURRENT_M;
+	} while(elapsedTime <= ticks);
 }
 
 void delay(uint32_t millis)
 {
 	unsigned long i;
-	for(i=0; i<millis; i++){
-		delayMicroseconds(1000);
+	for(i=0; i<millis*2; i++){
+		delayMicroseconds(500);
 	}
 }
 
