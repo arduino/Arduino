@@ -120,16 +120,9 @@ public class Compiler implements MessageConsumer {
     	Target t = Base.getTarget();
      	File rtsIncFolder;
      	File rtsLibFolder;
-    	if(Base.isLinux())
-    	{
-     	    rtsIncFolder = new File(new File(new File(t.getFolder(), "..//tools"), "c2000"), "include");
-     	    rtsLibFolder = new File(new File(new File(t.getFolder(), "..//tools"), "c2000"), "lib");
-    	}
-    	else
-    	{
-         	rtsIncFolder = new File(new File(new File(t.getFolder(), "..\\tools"), "c2000"), "include");
-         	rtsLibFolder = new File(new File(new File(t.getFolder(), "..\\tools"), "c2000"), "lib");
-    	}
+
+     	rtsIncFolder = new File(new File(new File(t.getFolder(), "..//tools"), "c2000"), "include");
+     	rtsLibFolder = new File(new File(new File(t.getFolder(), "..//tools"), "c2000"), "lib");
     	rtsIncPath = rtsIncFolder.getAbsolutePath();
     	rtsLibPath = rtsLibFolder.getAbsolutePath();
     }
@@ -405,16 +398,10 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker.add("-l" + boardPreferences.get("build.rts"));
         if( boardPreferences.get("build.mcu").equals("TMS320F28027"))
         {
-        	if(Base.isLinux())
-        	{
-        		baseCommandLinker.add(corePath + "/f2802x_common/cmd/F28027.cmd");
-            	baseCommandLinker.add(corePath + "/f2802x_headers/cmd/F2802x_Headers_nonBIOS.cmd");
-        	}
-        	else
-        	{
-        		baseCommandLinker.add(corePath + "\\f2802x_common\\cmd\\F28027.cmd");
-        		baseCommandLinker.add(corePath + "\\f2802x_headers\\cmd\\F2802x_Headers_nonBIOS.cmd");
-        	}
+
+        	baseCommandLinker.add(corePath + "//f2802x_common//cmd//F28027.cmd");
+            baseCommandLinker.add(corePath + "//f2802x_headers//cmd//F2802x_Headers_nonBIOS.cmd");
+
         }
         else if( boardPreferences.get("build.mcu").equals("TMS320F28069"))
         {
@@ -772,7 +759,7 @@ public class Compiler implements MessageConsumer {
     try {
         if(arch == "c2000")
         {
-        	if(Base.isLinux())
+        	if(Base.isLinux() || Base.isMacOS())
         	{
         	    String command_line = "";
         	    for(String str:command)
