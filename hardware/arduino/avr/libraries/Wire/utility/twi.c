@@ -17,15 +17,17 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
+  Modified 2014 by Nicola Corna (nicola@corna.info)
+    Moved pullups enable from twi.c to Wire.cpp
 */
 
 #include <math.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <compat/twi.h>
-#include "Arduino.h" // for digitalWrite
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -35,7 +37,6 @@
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #endif
 
-#include "pins_arduino.h"
 #include "twi.h"
 
 static volatile uint8_t twi_state;
@@ -71,10 +72,6 @@ void twi_init(void)
   twi_state = TWI_READY;
   twi_sendStop = true;		// default value
   twi_inRepStart = false;
-  
-  // activate internal pullups for twi.
-  digitalWrite(SDA, 1);
-  digitalWrite(SCL, 1);
 
   // initialize twi prescaler and bit rate
   cbi(TWSR, TWPS0);

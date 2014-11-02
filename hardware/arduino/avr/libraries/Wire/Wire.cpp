@@ -17,6 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
+  Modified 2014 by Nicola Corna (nicola@corna.info)
+    Moved pullups enable from twi.c to Wire.cpp
 */
 
 extern "C" {
@@ -27,6 +29,8 @@ extern "C" {
 }
 
 #include "Wire.h"
+#include "Arduino.h" // for digitalWrite
+#include "pins_arduino.h"
 
 // Initialize Class Variables //////////////////////////////////////////////////
 
@@ -59,6 +63,10 @@ void TwoWire::begin(void)
   txBufferIndex = 0;
   txBufferLength = 0;
 
+  // activate internal pullups for twi.
+  digitalWrite(SDA, 1);
+  digitalWrite(SCL, 1);
+  
   twi_init();
 }
 
