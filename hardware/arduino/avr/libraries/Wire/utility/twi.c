@@ -19,6 +19,7 @@
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
   Modified 2014 by Nicola Corna (nicola@corna.info)
     Moved pullups enable from twi.c to Wire.cpp
+    Updated deprecated include <compat/twi.c>
 */
 
 #include <math.h>
@@ -27,7 +28,7 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <compat/twi.h>
+#include <util/twi.h>
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
