@@ -17,6 +17,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
+  Modified 2014 by Nicola Corna (nicola@corna.info)
+    Added multi address slave
 */
 
 #ifndef TwoWire_h
@@ -49,6 +51,14 @@ class TwoWire : public Stream
     void begin();
     void begin(uint8_t);
     void begin(int);
+#ifdef TWAMR
+    void begin(uint8_t, uint8_t);
+    void begin(int, int);
+#else
+    void begin(uint8_t, uint8_t) __attribute__((warning("I2C address masking is unsupported on this microcontroller. Mask 0x00 will be used.")));
+    void begin(int, int) __attribute__((warning("I2C address masking is unsupported on this microcontroller. Mask 0x00 will be used.")));
+#endif
+    uint8_t slaveAddress();
     void setClock(uint32_t);
     void beginTransmission(uint8_t);
     void beginTransmission(int);

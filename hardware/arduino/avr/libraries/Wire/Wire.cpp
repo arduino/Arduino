@@ -19,6 +19,7 @@
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
   Modified 2014 by Nicola Corna (nicola@corna.info)
     Moved pullups enable from twi.c to Wire.cpp
+    Added multi address slave
 */
 
 extern "C" {
@@ -81,6 +82,32 @@ void TwoWire::begin(uint8_t address)
 void TwoWire::begin(int address)
 {
   begin((uint8_t)address);
+}
+
+void TwoWire::begin(uint8_t address, uint8_t mask)
+{
+#ifdef TWAMR
+  twi_setAddressAndMask(address, mask);
+#else
+  twi_setAddress(address);      //Just to show the function warning only once
+#endif
+  twi_attachSlaveTxEvent(onRequestService);
+  twi_attachSlaveRxEvent(onReceiveService);
+  begin();
+}
+
+void TwoWire::begin(int address, int mask)
+{
+#ifdef TWAMR
+  begin((uint8_t)address, (uint8_t)mask);
+#else
+  begin((uint8_t)address);            //Just to show the function warning only once
+#endif
+}
+
+uint8_t TwoWire::slaveAddress()
+{
+  return twi_slaveAddress();
 }
 
 void TwoWire::setClock(uint32_t frequency)
