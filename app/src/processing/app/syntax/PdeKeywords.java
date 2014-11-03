@@ -37,7 +37,7 @@ public class PdeKeywords extends CTokenMarker {
   static KeywordMap keywordColoring;
 
   // lookup table that maps keywords to their html reference pages
-  static Hashtable keywordToReference;
+  static Hashtable<String,String> keywordToReference;
 
 
   public PdeKeywords() {
@@ -58,7 +58,7 @@ public class PdeKeywords extends CTokenMarker {
     if (keywordColoring == null) {
       try {
         keywordColoring = new KeywordMap(false);
-        keywordToReference = new Hashtable();
+        keywordToReference = new Hashtable<String,String>();
         getKeywords(Base.getLibStream("keywords.txt"));
         for (Library lib : Base.getLibraries()) {
           File keywords = new File(lib.getFolder(), "keywords.txt");

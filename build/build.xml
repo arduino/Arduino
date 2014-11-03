@@ -4,6 +4,8 @@
   <!--echo message="os.arch = ${os.arch}" /-->
   <!--echo message="os.version = ${os.version}" /-->
 
+  <property file="build.properties" />
+	
   <!-- Sets properties for macosx/windows/linux depending on current system -->
   <condition property="platform" value="macosx"><os family="mac" /></condition>
   <condition property="platform" value="windows"><os family="windows" /></condition>

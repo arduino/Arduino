@@ -591,7 +591,7 @@ public class PGraphics2D extends PGraphics {
     int vc = vertexCount;  // vc will be decremented while working
     int count = 2*vc;  // complex polygon detection
 
-    for (int m = 0, v = vc - 1; vc > 2; ) {
+    for (int v = vc - 1; vc > 2; ) {
       boolean snip = true;
 
       // if we start over again, is a complex polygon
@@ -652,7 +652,6 @@ public class PGraphics2D extends PGraphics {
         tpolygon.renderTriangle(vertices[vertexOrder[u]],
                                 vertices[vertexOrder[v]],
                                 vertices[vertexOrder[w]]);
-        m++;
 
         // remove v from remaining polygon
         for (int s = v, t = v + 1; t < vc; s++, t++) {

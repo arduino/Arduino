@@ -207,7 +207,7 @@ public class Preferences {
   JTextField fontSizeField;
   JCheckBox updateExtensionBox;
   JCheckBox autoAssociateBox;
-  JComboBox comboLanguage;
+  JComboBox<Language> comboLanguage;
 
 
   // the calling editor, so updates can be applied
@@ -369,7 +369,7 @@ public class Preferences {
     Container box = Box.createHorizontalBox();
     label = new JLabel(_("Editor language: "));
     box.add(label);
-    comboLanguage = new JComboBox(languages);
+    comboLanguage = new JComboBox<Language>(languages);
     String currentLanguage = Preferences.get("editor.languages.current");
     for (Language language : languages) {
       if (language.isoCode.equals(currentLanguage))
@@ -980,7 +980,7 @@ public class Preferences {
     return new PreferencesMap(table);
   }
 
-  // Decide wether changed preferences will be saved. When value is
+  // Decide whether changed preferences will be saved. When value is
   // false, Preferences.save becomes a no-op.
   static public void setDoSave(boolean value)
   {

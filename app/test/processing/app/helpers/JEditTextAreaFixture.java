@@ -1,19 +1,22 @@
 package processing.app.helpers;
 
+import java.awt.Component;
+
 import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.ComponentFixture;
+
 import processing.app.syntax.JEditTextArea;
 
-public class JEditTextAreaFixture extends ComponentFixture {
+public class JEditTextAreaFixture extends ComponentFixture<Component> {
 
   private final JEditTextAreaComponentDriver driver;
 
-  public JEditTextAreaFixture(Robot robot, Class type) {
+  public JEditTextAreaFixture(Robot robot, Class<? extends Component> type) {
     super(robot, type);
     this.driver = new JEditTextAreaComponentDriver(robot);
   }
 
-  public JEditTextAreaFixture(Robot robot, String name, Class type) {
+  public JEditTextAreaFixture(Robot robot, String name, Class<? extends Component> type) {
     super(robot, name, type);
     this.driver = new JEditTextAreaComponentDriver(robot);
   }

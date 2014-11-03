@@ -22,8 +22,8 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
   protected JTextField textField;
   protected JButton sendButton;
   protected JCheckBox autoscrollBox;
-  protected JComboBox lineEndings;
-  protected JComboBox serialRates;
+  protected JComboBox<String> lineEndings;
+  protected JComboBox<String> serialRates;
 
   public AbstractMonitor(String title) {
     super(title);
@@ -96,7 +96,7 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
     minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
     noLineEndingAlert.setMinimumSize(minimumSize);
 
-    lineEndings = new JComboBox(new String[]{_("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR")});
+    lineEndings = new JComboBox<String>(new String[]{_("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR")});
     lineEndings.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         Preferences.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
@@ -113,7 +113,7 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
             "19200", "57600", "115200"
     };
 
-    serialRates = new JComboBox();
+    serialRates = new JComboBox<String>();
     for (String rate : serialRateStrings) {
       serialRates.addItem(rate + " " + _("baud"));
     }

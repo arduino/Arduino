@@ -17,8 +17,14 @@ import java.util.zip.*;
  */
 public class WebServer implements HttpConstants {
 
+  private static enum LoggingMETHODS {
+    NONE, SysOUT, LogSTREAM
+  };
+
+  static LoggingMETHODS LoggingMETHOD = LoggingMETHODS.NONE;
+
     /* Where worker threads stand idle */
-    static Vector threads = new Vector();
+  static Vector<WebServerWorker> threads = new Vector<WebServerWorker>();
 
     /* the web server's virtual root */
     //static File root;
@@ -29,7 +35,7 @@ public class WebServer implements HttpConstants {
     /* max # worker threads */
     static int workers = 5;
 
-//    static PrintStream log = System.out; 
+    static PrintStream log = System.out; 
 
 
     /*
@@ -95,22 +101,29 @@ public class WebServer implements HttpConstants {
 //    }
 
     /* print to the log file */
-    protected static void log(String s) {
-      if (false) {
-        System.out.println(s);
+protected static void log(String s) {
+    switch (LoggingMETHOD) {
+    case SysOUT:
+      System.out.println(s);
+      break;
+    case LogSTREAM:
+      synchronized (log) {
+        log.println(s);
+        log.flush();
       }
-//        synchronized (log) {
-//            log.println(s);
-//            log.flush();
-//        }
+      break;
+    case NONE:
+    default:
+      // do nothing
     }
+  }
 
     
     //public static void main(String[] a) throws Exception {
     static public int launch(String zipPath) throws IOException {
       final ZipFile zip = new ZipFile(zipPath);
-      final HashMap<String, ZipEntry> entries = new HashMap();
-      Enumeration en = zip.entries();
+    final HashMap<String, ZipEntry> entries = new HashMap<String, ZipEntry>();
+    Enumeration<? extends ZipEntry> en = zip.entries();
       while (en.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) en.nextElement();
         entries.put(entry.getName(), entry);
@@ -134,8 +147,9 @@ public class WebServer implements HttpConstants {
         //SwingUtilities.invokeLater(new Runnable() {
         Runnable r = new Runnable() {
           public void run() {
+            ServerSocket ss = null;            
             try {
-              ServerSocket ss = new ServerSocket(port);
+              ss = new ServerSocket(port);
               while (true) {
                 Socket s = ss.accept();
                 WebServerWorker w = null;
@@ -153,8 +167,16 @@ public class WebServer implements HttpConstants {
               }
             } catch (IOException e) {
               e.printStackTrace();
+        } finally {
+          if (ss != null) {
+              try {
+                  ss.close();
+              } catch (Exception e) {
+                  e.printStackTrace();
             }
           }
+        }
+      }
         };
         new Thread(r).start();
 //        });
@@ -176,7 +198,7 @@ class WebServerWorker /*extends WebServer*/ implements HttpConstants, Runnable {
     /* Socket to client we're handling */
     private Socket s;
 
-    WebServerWorker(ZipFile zip, HashMap entries) {
+  WebServerWorker(ZipFile zip, HashMap<String,ZipEntry> entries) {
       this.entries = entries;
       this.zip = zip;
       
@@ -214,7 +236,7 @@ class WebServerWorker /*extends WebServer*/ implements HttpConstants, Runnable {
              * than numHandler connections.
              */
             s = null;
-            Vector pool = WebServer.threads;
+      Vector<WebServerWorker> pool = WebServer.threads;
             synchronized (pool) {
                 if (pool.size() >= WebServer.workers) {
                     /* too many threads, exit this one */
@@ -468,7 +490,7 @@ outerloop:
     }
 
     /* mapping of file extensions to content-types */
-    static java.util.Hashtable map = new java.util.Hashtable();
+  static java.util.Hashtable<String,String> map = new java.util.Hashtable<String,String>();
 
     static {
         fillMap();
