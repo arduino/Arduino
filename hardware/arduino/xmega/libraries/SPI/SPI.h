@@ -6,6 +6,21 @@
  * it under the terms of either the GNU General Public License version 2
  * or the GNU Lesser General Public License version 2.1, both as
  * published by the Free Software Foundation.
+ *
+ *
+ *
+ * Nov 2014: by Pat Deegan (http://flyingcarsandstuff.com/), to
+ * enable support for multiple SPI ports.  The "SPI" global, and various
+ * defines (SPCR, SPSR) are unaffected, but the SPIClass itself may be 
+ * used to instantiate other instances to interact through SPI with other
+ * ports.  For example, on the Xmega128a3u, you could use:
+ * 
+ * SPI_DEFINE(SPI2, SPID, 11, 12, 13, 6); // instance name, port, SI, SO, SCK, SS
+ *
+ * Which would create an SPIClass object named SPI2... then,
+ * SPI2.begin();
+ * SPI2.transfer(0xFF); 
+ * ... etc. 
  */
 
 #ifndef _SPI_H_INCLUDED
@@ -69,21 +84,88 @@
 #define SPI_2XCLOCK_MASK 0x01  // SPI2X = bit 0 on SPSR
 #endif
 
+
+
+#if defined(__AVR_XMEGA__)
+  #define SPI_INTERNAL_PCTRL	((spi_settings.port)->CTRL)
+  #define SPI_INTERNAL_PSTATUS	((spi_settings.port)->STATUS)
+  #define SPI_INTERNAL_PDATA	((spi_settings.port)->DATA)
+  #define SPI_INTERNAL_INTCTRL  ((spi_settings.port)->INTCTRL)
+  #define SPI_DEFINE(name, port, SI, SO, CL, CS) SPIClass name(SPISettings(&(port), SI, SO, CL, CS))
+
+#else
+  #define SPI_INTERNAL_PCTRL	SPCR
+  #define SPI_INTERNAL_PSTATUS	SPSR
+  #define SPI_INTERNAL_PDATA	SPDR
+
+  #define SPI_DEFINE(name, SI, SO, CL, CS) SPIClass name(SPISettings(SI, SO, CL, CS))
+#endif
+
+typedef struct SPISettingsStruct {
+
+#if defined(__AVR_XMEGA__)
+	SPI_t * port;
+#endif
+	uint8_t mosi;
+	uint8_t miso;
+	uint8_t clk;
+	uint8_t ss;
+
+
+
+	SPISettingsStruct() :
+#if defined(__AVR_XMEGA__)
+		port(&(SPI_PORT)),
+#endif
+		mosi(MOSI),
+		miso(MISO),
+		clk(SCK),
+		ss(SS)
+	{
+	}
+
+	SPISettingsStruct(
+#if defined(__AVR_XMEGA__)
+		SPI_t * port, 
+#endif
+		uint8_t slave_input, uint8_t slave_output, uint8_t clock, uint8_t select) :
+#if defined(__AVR_XMEGA__)
+		port(port),
+#endif
+		mosi(slave_input),
+		miso(slave_output),
+		clk(clock),
+		ss(select)
+	{
+	}
+} SPISettings;
+
+
+
+
 class SPIClass {
 public:
-  inline static byte transfer(byte _data);
+  inline byte transfer(byte _data);
 
   // SPI Configuration methods
 
-  inline static void attachInterrupt();
-  inline static void detachInterrupt(); // Default
+  inline void attachInterrupt();
+  inline void detachInterrupt(); // Default
 
-  static void begin(); // Default
-  static void end();
+  void begin(); // Default
+  void end();
 
-  static void setBitOrder(uint8_t);
-  static void setDataMode(uint8_t);
-  static void setClockDivider(uint8_t);
+  void setBitOrder(uint8_t);
+  void setDataMode(uint8_t);
+  void setClockDivider(uint8_t);
+
+
+  SPIClass();
+  SPIClass(const SPISettings & init);
+private:
+  SPISettings spi_settings;
+
+
 };
 
 extern SPIClass SPI;
@@ -97,16 +179,16 @@ byte SPIClass::transfer(byte _data) {
 
 void SPIClass::attachInterrupt() {
 #if defined(__AVR_XMEGA__)
-  SPI_PORT.INTCTRL  |= PORT_INT1LVL_LO_gc;
+  SPI_INTERNAL_INTCTRL  |= PORT_INT1LVL_LO_gc;
 #endif
-  SPCR |= _BV(SPI_INT_EN);
+  SPI_INTERNAL_PCTRL |= _BV(SPI_INT_EN);
 }
 
 void SPIClass::detachInterrupt() {
 #if defined(__AVR_XMEGA__)
-  SPI_PORT.INTCTRL  &= ~PORT_INT1LVL_gm;
+  SPI_INTERNAL_INTCTRL  &= ~PORT_INT1LVL_gm;
 #endif
-  SPCR &= ~_BV(SPI_INT_EN);
+  SPI_INTERNAL_PCTRL &= ~_BV(SPI_INT_EN);
 }
 
 #endif

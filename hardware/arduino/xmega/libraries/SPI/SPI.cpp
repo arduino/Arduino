@@ -13,21 +13,35 @@
 
 SPIClass SPI;
 
+/* 
+ * Constructor and other mods by Pat Deegan (http://flyingcarsandstuff.com/),
+ * November 2014, to allow for multiple SPI ports and remove hard-coded values
+ * for MISO/MOSI/SCK etc.  
+ * See SPI.h for details and usage.
+ */
+SPIClass::SPIClass() : spi_settings()
+{
+}
+
+SPIClass::SPIClass(const SPISettings & init) : spi_settings(init)
+{
+}
+
 void SPIClass::begin() {
 
   // Set SS to high so a connected chip will be "deselected" by default
-  digitalWrite(SS, HIGH);
+  digitalWrite(spi_settings.ss, HIGH);
 
   // When the SS pin is set as OUTPUT, it can be used as
   // a general purpose output port (it doesn't influence
   // SPI operations).
-  pinMode(SS, OUTPUT);
+  pinMode(spi_settings.ss, OUTPUT);
 
   // Warning: if the SS pin ever becomes a LOW INPUT then SPI
   // automatically switches to Slave, so the data direction of
   // the SS pin MUST be kept as OUTPUT.
-  SPCR |= _BV(MSTR);
-  SPCR |= _BV(SPE);
+  SPI_INTERNAL_PCTRL |= _BV(MSTR);
+  SPI_INTERNAL_PCTRL |= _BV(SPE);
 
   // Set direction register for SCK and MOSI pin.
   // MISO pin automatically overrides to INPUT.
@@ -35,36 +49,36 @@ void SPIClass::begin() {
   // clocking in a single bit since the lines go directly
   // from "input" to SPI control.  
   // http://code.google.com/p/arduino/issues/detail?id=888
-  pinMode(SCK, OUTPUT);
-  pinMode(MOSI, OUTPUT);
+  pinMode(spi_settings.clk, OUTPUT);
+  pinMode(spi_settings.mosi, OUTPUT);
 }
 
 
 void SPIClass::end() {
-  SPCR &= ~_BV(SPE);
+  SPI_INTERNAL_PCTRL &= ~_BV(SPE);
 }
 
 void SPIClass::setBitOrder(uint8_t bitOrder)
 {
   if(bitOrder == LSBFIRST) {
-    SPCR |= _BV(DORD);
+    SPI_INTERNAL_PCTRL |= _BV(DORD);
   } else {
-    SPCR &= ~(_BV(DORD));
+    SPI_INTERNAL_PCTRL &= ~(_BV(DORD));
   }
 }
 
 void SPIClass::setDataMode(uint8_t mode)
 {
-  SPCR = (SPCR & ~SPI_MODE_MASK) | mode;
+  SPI_INTERNAL_PCTRL = (SPI_INTERNAL_PCTRL & ~SPI_MODE_MASK) | mode;
 }
 
 void SPIClass::setClockDivider(uint8_t rate)
 {
 #if defined(__AVR_XMEGA__)
-  SPCR = (SPCR & ~(SPI_CLOCK_MASK | SPI_2XCLOCK_MASK)) | (rate & (SPI_CLOCK_MASK | SPI_2XCLOCK_MASK));
+  SPI_INTERNAL_PCTRL = (SPI_INTERNAL_PCTRL & ~(SPI_CLOCK_MASK | SPI_2XCLOCK_MASK)) | (rate & (SPI_CLOCK_MASK | SPI_2XCLOCK_MASK));
 #else
-  SPCR = (SPCR & ~SPI_CLOCK_MASK) | (rate & SPI_CLOCK_MASK);
-  SPSR = (SPSR & ~SPI_2XCLOCK_MASK) | ((rate >> 2) & SPI_2XCLOCK_MASK);
+  SPI_INTERNAL_PCTRL = (SPI_INTERNAL_PCTRL & ~SPI_CLOCK_MASK) | (rate & SPI_CLOCK_MASK);
+  SPI_INTERNAL_PSTATUS = (SPI_INTERNAL_PSTATUS & ~SPI_2XCLOCK_MASK) | ((rate >> 2) & SPI_2XCLOCK_MASK);
 #endif
 }
 
