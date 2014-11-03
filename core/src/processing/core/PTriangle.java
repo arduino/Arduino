@@ -1004,9 +1004,9 @@ public class PTriangle implements PConstants
                     0,           0,           0, 1);
       // A 3x3 inversion would be more efficient here, 
       // given that the fourth r/c are unity
-      myMatrix.invert();
+      boolean isOk = myMatrix.invert();
       // if the matrix inversion had trouble, let the caller know
-      if (myMatrix == null) return false;
+      if (!isOk) return false;
 
       float m00, m01, m02, m10, m11, m12, m20, m21, m22;
       m00 = myMatrix.m00*camX[o0]+myMatrix.m01*camX[o1]+myMatrix.m02*camX[o2];

@@ -55,7 +55,7 @@ import cc.arduino.packages.uploaders.SerialUploader;
  * Main editor panel for the Processing Development Environment.
  */
 @SuppressWarnings("serial")
-public class Editor extends JFrame implements RunnerListener {
+public class Editor extends JFrame implements RunnerListener, ToolButtonMetrics {
 
   Base base;
 
@@ -86,10 +86,12 @@ public class Editor extends JFrame implements RunnerListener {
 
   // file, sketch, and tools menus for re-inserting items
   JMenu fileMenu;
+  JMenu findMenu;
+  JMenu sourceMenu;
   JMenu sketchMenu;
+  JMenu libraryMenu;
   JMenu toolsMenu;
-
-  int numTools = 0;
+  JMenu hardwareMenu;
 
   EditorToolbar toolbar;
   // these menus are shared so that they needn't be rebuilt for all windows
@@ -183,13 +185,13 @@ public class Editor extends JFrame implements RunnerListener {
           // re-add the sub-menus that are shared by all windows
           fileMenu.insert(sketchbookMenu, 2);
           fileMenu.insert(examplesMenu, 3);
-          sketchMenu.insert(importMenu, 4);
+        libraryMenu.insert(importMenu, 1);
           int offset = 0;
           for (JMenu menu : boardsMenus) {
-            toolsMenu.insert(menu, numTools + offset);
+          hardwareMenu.insert(menu, offset);
             offset++;
           }
-          toolsMenu.insert(serialMenu, numTools + offset);
+        hardwareMenu.insert(serialMenu, offset);
         }
 
         // added for 1.0.5
@@ -198,11 +200,11 @@ public class Editor extends JFrame implements RunnerListener {
 //          System.err.println("deactivate");  // not coming through
           fileMenu.remove(sketchbookMenu);
           fileMenu.remove(examplesMenu);
-          sketchMenu.remove(importMenu);
+        libraryMenu.remove(importMenu);
           for (JMenu menu : boardsMenus) {
-            toolsMenu.remove(menu);
+          hardwareMenu.remove(menu);
           }
-          toolsMenu.remove(serialMenu);
+        hardwareMenu.remove(serialMenu);
         }
       });
 
@@ -330,7 +332,6 @@ public class Editor extends JFrame implements RunnerListener {
       return true;
     }
 
-    @SuppressWarnings("unchecked")
     public boolean importData(JComponent src, Transferable transferable) {
       int successful = 0;
 
@@ -339,8 +340,9 @@ public class Editor extends JFrame implements RunnerListener {
           new DataFlavor("text/uri-list;class=java.lang.String");
 
         if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          java.util.List list = (java.util.List)
-            transferable.getTransferData(DataFlavor.javaFileListFlavor);
+          @SuppressWarnings("unchecked")
+          java.util.List<File> list = (java.util.List<File>) transferable
+              .getTransferData(DataFlavor.javaFileListFlavor);
           for (int i = 0; i < list.size(); i++) {
             File file = (File) list.get(i);
             if (sketch.addFile(file)) {
@@ -480,270 +482,191 @@ public class Editor extends JFrame implements RunnerListener {
 
   protected void buildMenuBar() throws Exception {
     JMenuBar menubar = new JMenuBar();
+
     menubar.add(buildFileMenu());
     menubar.add(buildEditMenu());
+    menubar.add(buildFindMenu());
+
+    menubar.add(MenuBarSeparator());
+    menubar.add(buildSourceMenu());
     menubar.add(buildSketchMenu());
+    menubar.add(buildLibraryMenu());
+
+    menubar.add(MenuBarSeparator());
     menubar.add(buildToolsMenu());
+    menubar.add(buildHardwareMenu());
+
+    menubar.add(MenuBarSeparator());
     menubar.add(buildHelpMenu());
+
     setJMenuBar(menubar);
   }
 
 
+private static JMenu MenuBarSeparator() {
+    JMenu menu = new JMenu("\u2022");
+    
+    menu.setFocusable(false);
+    menu.setRequestFocusEnabled(false);
+    menu.setRolloverEnabled(false);
+    
+    return menu;
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
   protected JMenu buildFileMenu() {
-    JMenuItem item;
-    fileMenu = new JMenu(_("File"));
 
-    item = newJMenuItem(_("New"), 'N');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          try {
-            base.handleNew();
-          } catch (Exception e1) {
-            e1.printStackTrace();
-          }
-        }
-      });
-    fileMenu.add(item);
+    JMenu menu = fileMenu = new JMenu(_("File"));
 
-    item = Editor.newJMenuItem(_("Open..."), 'O');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          try {
-            base.handleOpenPrompt();
-          } catch (Exception e1) {
-            e1.printStackTrace();
-          }
-        }
-      });
-    fileMenu.add(item);
+    addNewFileMenuItem(menu);
+    
+    menu.addSeparator();
+    addOpenFileMenuItem(menu);
+    addOpenFromSketchbookMenuItem(menu);
+    addOpenFromExamplesMenuItem(menu);
+    
+    menu.addSeparator();
+    addSaveMenuItem(menu);
+    addSaveAsMenuItem(menu);
+    
+    menu.addSeparator();
+    addCloseMenuItem(menu);
+    
+    menu.addSeparator();
+    addPageSetupMenuItem(menu);
+    addPrintMenuItem(menu);
+    
+    addPrefsAndQuitMenuItems(menu); //prepends separator if needed
 
-    if (sketchbookMenu == null) {
-      sketchbookMenu = new JMenu(_("Sketchbook"));
-      MenuScroller.setScrollerFor(sketchbookMenu);
-      base.rebuildSketchbookMenu(sketchbookMenu);
-    }
-    fileMenu.add(sketchbookMenu);
-
-    if (examplesMenu == null) {
-      examplesMenu = new JMenu(_("Examples"));
-      MenuScroller.setScrollerFor(examplesMenu);
-      base.rebuildExamplesMenu(examplesMenu);
-    }
-    fileMenu.add(examplesMenu);
-
-    item = Editor.newJMenuItem(_("Close"), 'W');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleClose(Editor.this);
-        }
-      });
-    fileMenu.add(item);
-
-    saveMenuItem = newJMenuItem(_("Save"), 'S');
-    saveMenuItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSave(false);
-        }
-      });
-    fileMenu.add(saveMenuItem);
-
-    saveAsMenuItem = newJMenuItemShift(_("Save As..."), 'S');
-    saveAsMenuItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSaveAs();
-        }
-      });
-    fileMenu.add(saveAsMenuItem);
-
-    item = newJMenuItem(_("Upload"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(false);
-        }
-      });
-    fileMenu.add(item);
-
-    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
-        }
-      });
-    fileMenu.add(item);
-
-    fileMenu.addSeparator();
-
-    item = newJMenuItemShift(_("Page Setup"), 'P');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePageSetup();
-        }
-      });
-    fileMenu.add(item);
-
-    item = newJMenuItem(_("Print"), 'P');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePrint();
-        }
-      });
-    fileMenu.add(item);
-
-    // macosx already has its own preferences and quit menu
-    if (!Base.isMacOS()) {
-      fileMenu.addSeparator();
-
-      item = newJMenuItem(_("Preferences"), ',');
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handlePrefs();
-          }
-        });
-      fileMenu.add(item);
-
-      fileMenu.addSeparator();
-
-      item = newJMenuItem(_("Quit"), 'Q');
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handleQuit();
-          }
-        });
-      fileMenu.add(item);
-    }
-    return fileMenu;
+    return menu;
   }
 
+  protected JMenu buildEditMenu() {
+    JMenu menu = new JMenu(_("Edit"));
+    menu.setName("menuEdit");
 
-  protected JMenu buildSketchMenu() {
-    JMenuItem item;
-    sketchMenu = new JMenu(_("Sketch"));
-
-    item = newJMenuItem(_("Verify / Compile"), 'R');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleRun(false);
-        }
-      });
-    sketchMenu.add(item);
-
-//    item = newJMenuItemShift("Verify / Compile (verbose)", 'R');
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleRun(true);
-//        }
-//      });
-//    sketchMenu.add(item);
-
-//    item = new JMenuItem("Stop");
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleStop();
-//        }
-//      });
-//    sketchMenu.add(item);
-
-    sketchMenu.addSeparator();
-
-    if (importMenu == null) {
-      importMenu = new JMenu(_("Import Library..."));
-      MenuScroller.setScrollerFor(importMenu);
-      base.rebuildImportMenu(importMenu);
-    }
-    sketchMenu.add(importMenu);
-
-    item = newJMenuItem(_("Show Sketch Folder"), 'K');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.openFolder(sketch.getFolder());
-        }
-      });
-    sketchMenu.add(item);
-    item.setEnabled(Base.openFolderAvailable());
-
-    item = new JMenuItem(_("Add File..."));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          sketch.handleAddFile();
-        }
-      });
-    sketchMenu.add(item);
-
-    return sketchMenu;
-  }
-
-
-  protected JMenu buildToolsMenu() throws Exception {
-    toolsMenu = new JMenu(_("Tools"));
-    JMenu menu = toolsMenu;
-    JMenuItem item;
-
-    addInternalTools(menu);
-
-    item = newJMenuItemShift(_("Serial Monitor"), 'M');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSerial();
-        }
-      });
-    menu.add(item);
-
-    addTools(menu, Base.getToolsFolder());
-    File sketchbookTools = new File(Base.getSketchbookFolder(), "tools");
-    addTools(menu, sketchbookTools);
+    addUndoMenuItem(menu);
+    addRedoMenuItem(menu);
 
     menu.addSeparator();
 
-    numTools = menu.getItemCount();
-
-    // XXX: DAM: these should probably be implemented using the Tools plugin
-    // API, if possible (i.e. if it supports custom actions, etc.)
-
-    if (boardsMenus == null) {
-      boardsMenus = new LinkedList<JMenu>();
-
-      JMenu boardsMenu = new JMenu(_("Board"));
-      MenuScroller.setScrollerFor(boardsMenu);
-      Editor.boardsMenus.add(boardsMenu);
-      toolsMenu.add(boardsMenu);
-
-      base.rebuildBoardsMenu(toolsMenu, this);
-      //Debug: rebuild imports
-      importMenu.removeAll();
-      base.rebuildImportMenu(importMenu);
-    }
-
-    if (serialMenu == null)
-      serialMenu = new JMenu(_("Port"));
-    populatePortMenu();
-    menu.add(serialMenu);
+    addSelectAllMenuItem(menu);
+    addCutToClipboardMenuItem(menu);
+    addCopyToClipboardMenuItem(menu);
+    addPasteMenuItem(menu);
+    
     menu.addSeparator();
 
-    JMenu programmerMenu = new JMenu(_("Programmer"));
-    base.rebuildProgrammerMenu(programmerMenu);
-    menu.add(programmerMenu);
+    addCopyForForumMenuItem(menu);
+    addCopyAsHtmlMenuItem(menu);
 
-    item = new JMenuItem(_("Burn Bootloader"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handleBurnBootloader();
-      }
-    });
-    menu.add(item);
+    return menu;
+  }
 
-    menu.addMenuListener(new MenuListener() {
-      public void menuCanceled(MenuEvent e) {}
-      public void menuDeselected(MenuEvent e) {}
-      public void menuSelected(MenuEvent e) {
-        //System.out.println("Tools menu selected.");
-        populatePortMenu();
-      }
-    });
+   protected JMenu buildFindMenu() {
+    JMenu menu = new JMenu(_("Find"));
+    
+    addFindMenuItem(menu);
+    addFindNextMenuItem(menu);
+    addFindPreviousMenuItem(menu);
+    addFindUseSelectionMenuItem(menu);
+    
+    return menu;
+  }
+
+ protected JMenu buildSketchMenu() {
+    JMenu menu = sketchMenu = new JMenu(_("Sketch"));
+
+    addVerifyCompileMenuItem(menu);
+    // addVerifyCompileVerboseMenuItem(menu);
+    // addStopRequestMenuItem(menu);
+    addUploadMenuItem(menu);
+    addUploadUsingProgrMenuItem(menu);
+
+    menu.addSeparator();
+    addAddFileToSketchMenuItem(menu);
+    addOpenSketchFolderMenuItem(menu);
+
+    menu.addSeparator();
+    addSerialMonitorMenuItem(menu);
+    addSketchTools(menu);
 
     return menu;
   }
 
 
+  protected JMenu buildSourceMenu() {
+    JMenu menu = new JMenu(_("Source"));
+
+    addCommentToggleMenuItem(menu);
+    addIncreaseIndentMenuItem(menu);
+    addDecreaseIndentMenuItem(menu);
+
+    addSourceTools(menu);
+    
+    return menu;
+  }
+  
+  protected JMenu buildLibraryMenu() {
+    JMenu menu = libraryMenu = new JMenu(_("Library"));
+
+    addUseLibraryMenuItem(menu);
+    base.addAddUpdateLibraryMenuItem(menu); 
+
+    return menu;
+  }
+  
+  protected JMenu buildToolsMenu() throws Exception {
+    JMenu menu = toolsMenu = new JMenu(_("Tools"));
+
+    addInternalTools(menu);
+    addTools(menu, Base.getToolsFolder());
+    addTools(menu, getSketchbookToolsFolder());
+    
+    return menu;
+  }
+
+  protected JMenu buildHardwareMenu() throws Exception {
+    JMenu menu = hardwareMenu = new JMenu(_("Hardware"));
+    
+    addSetBoardMenuItem(menu);
+    addSetPortMenuItem(menu);
+    addSetProgrammerMenuItem(menu);
+    addBurnLoaderMenuItem(menu);
+    
+    addListenerForPortPopulation(menu);
+
+    return menu;
+  }
+  
+  protected JMenu buildHelpMenu() {
+    // To deal with a Mac OS X 10.5 bug, add an extra space after the name
+    // so that the OS doesn't try to insert its slow help menu.
+    JMenu menu = new JMenu(_("Help"));
+
+    // addWebServerTestMenuItem(menu);
+    // addBrowserTestMenuItem(menu);
+
+    addGettingStartedMenuItem(menu);
+    addTroubleshootingMenuIterm(menu);
+    addFreqAskedQuestionsMenuItem(menu);
+
+    menu.addSeparator();
+    addArduinoIDEMenuItem(menu);
+    addLanguageReferenceMenuItem(menu);
+    addFindInReferenceMenuItem(menu);
+
+    menu.addSeparator();
+    addVisitArduinoMenuItem(menu);
+
+    addAboutMenuItem(menu); // ...adds its own separator if needed
+
+    return menu;
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
   protected void addTools(JMenu menu, File sourceFolder) {
     if (sourceFolder == null)
       return;
@@ -839,9 +762,10 @@ public class Editor extends JFrame implements RunnerListener {
       }
     }
     ArrayList<String> toolList = new ArrayList<String>(toolItems.keySet());
-    if (toolList.size() == 0) return;
+    if (toolList.size() == 0)
+      return;
 
-    menu.addSeparator();
+    if (menu.getMenuComponentCount() > 0)  menu.addSeparator();
     Collections.sort(toolList);
     for (String title : toolList) {
       menu.add((JMenuItem) toolItems.get(title));
@@ -852,9 +776,10 @@ public class Editor extends JFrame implements RunnerListener {
   protected String findClassInZipFile(String base, File file) {
     // Class file to search for
     String classFileName = "/" + base + ".class";
+    ZipFile zipFile = null;
 
     try {
-      ZipFile zipFile = new ZipFile(file);
+      zipFile = new ZipFile(file);
       Enumeration<?> entries = zipFile.entries();
       while (entries.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -873,11 +798,20 @@ public class Editor extends JFrame implements RunnerListener {
       }
     } catch (IOException e) {
       //System.err.println("Ignoring " + filename + " (" + e.getMessage() + ")");
+
       e.printStackTrace();
+    } finally {
+      if (zipFile != null) {
+        try {
+          zipFile.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
     }
+
     return null;
   }
-
 
   protected JMenuItem createToolMenuItem(String className) {
     try {
@@ -901,34 +835,46 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
-
   protected JMenu addInternalTools(JMenu menu) {
-    JMenuItem item;
+    // menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
+    // menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
+    // 
+    // // These are temporary entries while Android mode is being worked out.
+    // // The mode will not be in the tools menu, and won't involve a cmd-key
+    // if (!Base.RELEASE) {
+    //   JMenuItem item;
+    //   item = createToolMenuItem("processing.app.tools.android.AndroidTool");
+    //   item.setAccelerator(KeyStroke.getKeyStroke('D', modifiers));
+    //   menu.add(item);
+    //   menu.add(createToolMenuItem("processing.app.tools.android.Reset"));
+    // }
+    
+    return menu;
+  }
 
+  protected JMenu addSketchTools(JMenu menu) {
+
+    menu.addSeparator();
+    menu.add(createToolMenuItem("processing.app.tools.Archiver"));
+
+    return menu;
+  }
+
+  protected JMenu addSourceTools(JMenu menu) {
+    menu.addSeparator();
+    
+    JMenuItem item;
     item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
     item.setName("menuToolsAutoFormat");
     int modifiers = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
     item.setAccelerator(KeyStroke.getKeyStroke('T', modifiers));
     menu.add(item);
 
-    //menu.add(createToolMenuItem("processing.app.tools.CreateFont"));
-    //menu.add(createToolMenuItem("processing.app.tools.ColorSelector"));
-    menu.add(createToolMenuItem("processing.app.tools.Archiver"));
     menu.add(createToolMenuItem("processing.app.tools.FixEncoding"));
-
-//    // These are temporary entries while Android mode is being worked out.
-//    // The mode will not be in the tools menu, and won't involve a cmd-key
-//    if (!Base.RELEASE) {
-//      item = createToolMenuItem("processing.app.tools.android.AndroidTool");
-//    item.setAccelerator(KeyStroke.getKeyStroke('D', modifiers));
-//    menu.add(item);
-//      menu.add(createToolMenuItem("processing.app.tools.android.Reset"));
-//    }
 
     return menu;
   }
-
-
+  
   class SerialMenuListener implements ActionListener {
 
     private final String serialPort;
@@ -965,7 +911,11 @@ public class Editor extends JFrame implements RunnerListener {
     }
     if (selection != null) selection.setState(true);
     //System.out.println(item.getLabel());
-    Base.selectSerialPort(name);
+    Preferences.set("serial.port", name);
+    if (name.startsWith("/dev/"))
+      Preferences.set("serial.port.file", name.substring(5));
+    else
+      Preferences.set("serial.port.file", name);
     if (serialMonitor != null) {
       try {
         serialMonitor.close();
@@ -999,281 +949,641 @@ public class Editor extends JFrame implements RunnerListener {
     serialMenu.setEnabled(serialMenu.getMenuComponentCount() > 0);
   }
 
-
-  protected JMenu buildHelpMenu() {
-    // To deal with a Mac OS X 10.5 bug, add an extra space after the name
-    // so that the OS doesn't try to insert its slow help menu.
-    JMenu menu = new JMenu(_("Help"));
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  private void addNewFileMenuItem(JMenu menu) {
     JMenuItem item;
-
-    /*
-    // testing internal web server to serve up docs from a zip file
-    item = new JMenuItem("Web Server Test");
+    item = newJMenuItem(_("New"), 'N');
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //WebServer ws = new WebServer();
-          SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-              try {
-                int port = WebServer.launch("/Users/fry/coconut/processing/build/shared/reference.zip");
-                Base.openURL("http://127.0.0.1:" + port + "/reference/setup_.html");
-
-              } catch (IOException e1) {
-                e1.printStackTrace();
-              }
-            }
-          });
+      public void actionPerformed(ActionEvent e) {
+        try {
+          base.handleNew();
+        } catch (Exception e1) {
+          e1.printStackTrace();
         }
-      });
+      }
+    });
     menu.add(item);
-    */
+  }
 
-    /*
-    item = new JMenuItem("Browser Test");
+  private void addOpenFileMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = Editor.newJMenuItem(_("Open..."), 'O');
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //Base.openURL("http://processing.org/learning/gettingstarted/");
-          //JFrame browserFrame = new JFrame("Browser");
-          BrowserStartup bs = new BrowserStartup("jar:file:/Users/fry/coconut/processing/build/shared/reference.zip!/reference/setup_.html");
-          bs.initUI();
-          bs.launch();
+      public void actionPerformed(ActionEvent e) {
+        try {
+          base.handleOpenPrompt();
+        } catch (Exception e1) {
+          e1.printStackTrace();
         }
-      });
+      }
+    });
     menu.add(item);
-    */
+  }
 
+  private void addOpenFromSketchbookMenuItem(JMenu menu) {
+    if (sketchbookMenu == null) {
+      sketchbookMenu = new JMenu(_("Sketchbook"));
+      MenuScroller.setScrollerFor(sketchbookMenu);
+      base.rebuildSketchbookMenu(sketchbookMenu);
+    }
+    menu.add(sketchbookMenu);
+  }
+
+  private void addOpenFromExamplesMenuItem(JMenu menu) {
+    if (examplesMenu == null) {
+      examplesMenu = new JMenu(_("Examples"));
+      MenuScroller.setScrollerFor(examplesMenu);
+      base.rebuildExamplesMenu(examplesMenu);
+    }
+    menu.add(examplesMenu);
+  }
+
+  private void addCloseMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = Editor.newJMenuItem(_("Close"), 'W');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        base.handleClose(Editor.this);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addSaveMenuItem(JMenu menu) {
+    saveMenuItem = newJMenuItem(_("Save"), 'S');
+    saveMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleSave(false);
+      }
+    });
+    menu.add(saveMenuItem);
+  }
+
+  private void addSaveAsMenuItem(JMenu menu) {
+    saveAsMenuItem = newJMenuItemShift(_("Save As..."), 'S');
+    saveAsMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleSaveAs();
+      }
+    });
+    menu.add(saveAsMenuItem);
+  }
+
+  private void addUploadMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Upload"), 'U');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleExport(false);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addUploadUsingProgrMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleExport(true);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addPageSetupMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemShift(_("Page Setup"), 'P');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handlePageSetup();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addPrintMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Print"), 'P');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handlePrint();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addPrefsAndQuitMenuItems(JMenu menu) {
+    // macosx already has its own preferences and quit menu
+    if (!Base.isMacOS()) {
+
+      menu.addSeparator();
+      addPreferencesMenuItem(menu);
+
+      menu.addSeparator();
+      addQuitMenuItem(menu);
+    }
+  }
+
+  private void addPreferencesMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Preferences"), ',');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        base.handlePrefs();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addQuitMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Quit"), 'Q');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        base.handleQuit();
+      }
+    });
+    menu.add(item);
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  private void addUndoMenuItem(JMenu menu) {
+    undoItem = newJMenuItem(_("Undo"), 'Z');
+    undoItem.setName("menuEditUndo");
+    undoItem.addActionListener(undoAction = new UndoAction());
+    menu.add(undoItem);
+  }
+
+  private void addRedoMenuItem(JMenu menu) {
+    if (!Base.isMacOS()) {
+      redoItem = newJMenuItem(_("Redo"), 'Y');
+    } else {
+      redoItem = newJMenuItemShift(_("Redo"), 'Z');
+    }
+    redoItem.setName("menuEditRedo");
+    redoItem.addActionListener(redoAction = new RedoAction());
+    menu.add(redoItem);
+  }
+
+  private void addCutToClipboardMenuItem(JMenu menu) {
+    JMenuItem item;
+    // TODO "cut" should really only be enabled
+    // if some text is currently selected
+    item = newJMenuItem(_("Cut"), 'X');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleCut();
+      }
+    });
+    menu.add(item);
+  }
+
+  // TODO "copy" should really only be enabled
+  // if some text is currently selected
+  private void addCopyToClipboardMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Copy"), 'C');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textarea.copy();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addCopyForForumMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemShift(_("Copy for Forum"), 'C');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // SwingUtilities.invokeLater(new Runnable() {
+        // public void run() {
+        new DiscourseFormat(Editor.this, false).show();
+        // }
+        // });
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addCopyAsHtmlMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemAlt(_("Copy as HTML"), 'C');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        // SwingUtilities.invokeLater(new Runnable() {
+        // public void run() {
+        new DiscourseFormat(Editor.this, true).show();
+        // }
+        // });
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addPasteMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Paste"), 'V');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textarea.paste();
+        sketch.setModified(true);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addSelectAllMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Select All"), 'A');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textarea.selectAll();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addCommentToggleMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Comment/Uncomment"), '/');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleCommentUncomment();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addIncreaseIndentMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Increase Indent"), ']');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleIndentOutdent(true);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addDecreaseIndentMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Decrease Indent"), '[');
+    item.setName("menuDecreaseIndent");
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleIndentOutdent(false);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addFindMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Find..."), 'F');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (find == null) {
+          find = new FindReplace(Editor.this);
+        }
+        // new FindReplace(Editor.this).show();
+        find.setVisible(true);
+        // find.setVisible(true);
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addFindNextMenuItem(JMenu menu) {
+    JMenuItem item;
+    // TODO find next should only be enabled after a
+    // search has actually taken place
+    item = newJMenuItem(_("Find Next"), 'G');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (find != null) {
+          find.findNext();
+        }
+      }
+    });
+    menu.add(item);
+  }
+
+  // TODO find previous should only be enabled after a
+  // search has actually taken place
+  private void addFindPreviousMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemShift(_("Find Previous"), 'G');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (find != null) {
+          find.findPrevious();
+        }
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addFindUseSelectionMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Use Selection For Find"), 'E');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (find == null) {
+          find = new FindReplace(Editor.this);
+        }
+        find.setFindText(getSelectedText());
+      }
+    });
+    menu.add(item);
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  private void addVerifyCompileMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Verify / Compile"), 'R');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleRun(false);
+      }
+    });
+    menu.add(item);
+  }
+
+  @SuppressWarnings("unused")
+  private void addVerifyCompileVerboseMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemShift("Verify / Compile (verbose)", 'R');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleRun(true);
+      }
+    });
+    menu.add(item);
+  }
+
+  @SuppressWarnings("unused")
+  private void addStopRequestMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = new JMenuItem("Stop");
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleStop();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addUseLibraryMenuItem(JMenu menu) {
+    if (importMenu == null) {
+      importMenu = new JMenu(_("Import Library..."));
+      //MenuScroller.setScrollerFor(importMenu); //[acd] ACTIVE NOW? uncomment?
+      //base.rebuildImportMenu(importMenu);
+    }
+    importMenu.addSeparator();
+    menu.add(importMenu);
+  }
+
+  private void addOpenSketchFolderMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItem(_("Show Sketch Folder"), 'K');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Base.openFolder(sketch.getFolder());
+      }
+    });
+    menu.add(item);
+    item.setEnabled(Base.openFolderAvailable());
+  }
+
+  private void addAddFileToSketchMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = new JMenuItem(_("Add File..."));
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        sketch.handleAddFile();
+      }
+    });
+    menu.add(item);
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  private File getSketchbookToolsFolder() {
+    File sketchbookTools = new File(Base.getSketchbookFolder(), "tools");
+    return sketchbookTools;
+  }
+
+  private void addSerialMonitorMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = newJMenuItemShift(_("Serial Monitor"), 'M');
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleSerial();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addSetBoardMenuItem(JMenu menu) throws Exception {
+    // XXX: DAM: these should probably be implemented using the Tools plugin
+    // API, if possible (i.e. if it supports custom actions, etc.)
+    
+    if (boardsMenus == null) {
+      boardsMenus = new LinkedList<JMenu>();
+
+      JMenu boardsMenu = new JMenu(_("Board"));
+      MenuScroller.setScrollerFor(boardsMenu);
+      Editor.boardsMenus.add(boardsMenu);
+      menu.add(boardsMenu);
+
+      base.rebuildBoardsMenu(menu, this);
+      // Debug: rebuild imports
+      importMenu.removeAll();
+      base.rebuildImportMenu(importMenu);
+    }
+  }
+
+  private void addSetPortMenuItem(JMenu menu) {
+    if (serialMenu == null)
+      serialMenu = new JMenu(_("Port"));
+    populatePortMenu();
+    menu.add(serialMenu);
+  }
+
+  private void addSetProgrammerMenuItem(JMenu menu) {
+    JMenu programmerMenu = new JMenu(_("Programmer"));
+    base.rebuildProgrammerMenu(programmerMenu);
+    menu.add(programmerMenu);
+  }
+
+  private void addBurnLoaderMenuItem(JMenu menu) {
+    JMenuItem item;
+    item = new JMenuItem(_("Burn Bootloader"));
+    item.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleBurnBootloader();
+      }
+    });
+    menu.add(item);
+  }
+
+  private void addListenerForPortPopulation(JMenu menu) {
+    menu.addMenuListener(new MenuListener() {
+      public void menuCanceled(MenuEvent e) {
+      }
+
+      public void menuDeselected(MenuEvent e) {
+      }
+
+      public void menuSelected(MenuEvent e) {
+        // System.out.println("Tools menu selected.");
+        populatePortMenu();
+      }
+    });
+  }
+
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  @SuppressWarnings("unused")
+  private void addWebServerTestMenuItem(JMenu menu) {
+    // JMenuItem item;
+    // // testing internal web server to serve up docs from a zip file
+    // item = new JMenuItem("Web Server Test");
+    // item.addActionListener(new ActionListener() {
+    // public void actionPerformed(ActionEvent e) {
+    // //WebServer ws = new WebServer();
+    // SwingUtilities.invokeLater(new Runnable() {
+    // public void run() {
+    // try {
+    // int port =
+    // WebServer.launch("/Users/fry/coconut/processing/build/shared/reference.zip");
+    // Base.openURL("http://127.0.0.1:" + port + "/reference/setup_.html");
+    //
+    // } catch (IOException e1) {
+    // e1.printStackTrace();
+    // }
+    // }
+    // });
+    // }
+    // });
+    // menu.add(item);
+  }
+
+  @SuppressWarnings("unused")
+  private void addBrowserTestMenuItem(JMenu menu) {
+    // JMenuItem item;
+    // item = new JMenuItem("Browser Test");
+    // item.addActionListener(new ActionListener() {
+    // public void actionPerformed(ActionEvent e) {
+    // //Base.openURL("http://processing.org/learning/gettingstarted/");
+    // //JFrame browserFrame = new JFrame("Browser");
+    // BrowserStartup bs = new
+    // BrowserStartup("jar:file:/Users/fry/coconut/processing/build/shared/reference.zip!/reference/setup_.html");
+    // bs.initUI();
+    // bs.launch();
+    // }
+    // });
+    // menu.add(item);
+  }
+
+  private void addGettingStartedMenuItem(JMenu menu) {
+    JMenuItem item;
     item = new JMenuItem(_("Getting Started"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showGettingStarted();
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Base.showGettingStarted();
+      }
+    });
     menu.add(item);
+  }
 
+  private void addArduinoIDEMenuItem(JMenu menu) {
+    JMenuItem item;
     item = new JMenuItem(_("Environment"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showEnvironment();
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Base.showEnvironment();
+      }
+    });
     menu.add(item);
+  }
 
+  private void addTroubleshootingMenuIterm(JMenu menu) {
+    JMenuItem item;
     item = new JMenuItem(_("Troubleshooting"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showTroubleshooting();
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Base.showTroubleshooting();
+      }
+    });
     menu.add(item);
+  }
 
+  private void addLanguageReferenceMenuItem(JMenu menu) {
+    JMenuItem item;
     item = new JMenuItem(_("Reference"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showReference();
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Base.showReference();
+      }
+    });
     menu.add(item);
+  }
 
+  private void addFindInReferenceMenuItem(JMenu menu) {
+    JMenuItem item;
     item = newJMenuItemShift(_("Find in Reference"), 'F');
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          if (textarea.isSelectionActive()) {
-//            handleFindReference();
-//          }
-        	handleFindReference();
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        // if (textarea.isSelectionActive()) {
+        // handleFindReference();
+        // }
+        handleFindReference();
+      }
+    });
     menu.add(item);
+  }
 
+  private void addFreqAskedQuestionsMenuItem(JMenu menu) {
+    JMenuItem item;
     item = new JMenuItem(_("Frequently Asked Questions"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showFAQ();
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Base.showFAQ();
+      }
+    });
     menu.add(item);
+  }
 
+  private void addVisitArduinoMenuItem(JMenu menu) {
+    JMenuItem item;
     item = new JMenuItem(_("Visit Arduino.cc"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.openURL(_("http://arduino.cc/"));
-        }
-      });
+      public void actionPerformed(ActionEvent e) {
+        Base.openURL(_("http://arduino.cc/"));
+      }
+    });
     menu.add(item);
+  }
 
+  private void addAboutMenuItem(JMenu menu) {
+    JMenuItem item;
     // macosx already has its own about menu
     if (!Base.isMacOS()) {
       menu.addSeparator();
       item = new JMenuItem(_("About Arduino"));
       item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handleAbout();
-          }
-        });
+        public void actionPerformed(ActionEvent e) {
+          base.handleAbout();
+        }
+      });
       menu.add(item);
     }
-
-    return menu;
-  }
-
-
-  protected JMenu buildEditMenu() {
-    JMenu menu = new JMenu(_("Edit"));
-    menu.setName("menuEdit");
-    JMenuItem item;
-
-    undoItem = newJMenuItem(_("Undo"), 'Z');
-    undoItem.setName("menuEditUndo");
-    undoItem.addActionListener(undoAction = new UndoAction());
-    menu.add(undoItem);
-
-    if (!Base.isMacOS()) {
-        redoItem = newJMenuItem(_("Redo"), 'Y');
-    } else {
-        redoItem = newJMenuItemShift(_("Redo"), 'Z');
-    }
-    redoItem.setName("menuEditRedo");
-    redoItem.addActionListener(redoAction = new RedoAction());
-    menu.add(redoItem);
-
-    menu.addSeparator();
-
-    // TODO "cut" and "copy" should really only be enabled
-    // if some text is currently selected
-    item = newJMenuItem(_("Cut"), 'X');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleCut();
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItem(_("Copy"), 'C');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          textarea.copy();
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItemShift(_("Copy for Forum"), 'C');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
-          new DiscourseFormat(Editor.this, false).show();
-//              }
-//            });
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItemAlt(_("Copy as HTML"), 'C');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
-          new DiscourseFormat(Editor.this, true).show();
-//              }
-//            });
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItem(_("Paste"), 'V');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          textarea.paste();
-          sketch.setModified(true);
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItem(_("Select All"), 'A');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          textarea.selectAll();
-        }
-      });
-    menu.add(item);
-
-    menu.addSeparator();
-
-    item = newJMenuItem(_("Comment/Uncomment"), '/');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleCommentUncomment();
-        }
-    });
-    menu.add(item);
-
-    item = newJMenuItem(_("Increase Indent"), ']');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleIndentOutdent(true);
-        }
-    });
-    menu.add(item);
-
-    item = newJMenuItem(_("Decrease Indent"), '[');
-    item.setName("menuDecreaseIndent");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleIndentOutdent(false);
-        }
-    });
-    menu.add(item);
-
-    menu.addSeparator();
-
-    item = newJMenuItem(_("Find..."), 'F');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find == null) {
-            find = new FindReplace(Editor.this);
-          }
-          if (getSelectedText()!= null) find.setFindText( getSelectedText() );
-          //new FindReplace(Editor.this).show();
-          find.setVisible(true);
-          //find.setVisible(true);
-        }
-      });
-    menu.add(item);
-
-    // TODO find next should only be enabled after a
-    // search has actually taken place
-    item = newJMenuItem(_("Find Next"), 'G');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find != null) {
-            find.findNext();
-          }
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItemShift(_("Find Previous"), 'G');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find != null) {
-            find.findPrevious();
-          }
-        }
-      });
-    menu.add(item);
-
-    item = newJMenuItem(_("Use Selection For Find"), 'E');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find == null) {
-            find = new FindReplace(Editor.this);
-          }
-          find.setFindText( getSelectedText() );
-        }
-      });
-    menu.add(item);
-
-    return menu;
   }
 
 
@@ -1416,7 +1726,7 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  public void resetHandlers() {
+  public void  resetHandlers () {
     runHandler = new DefaultRunHandler();
     presentHandler = new DefaultPresentHandler();
     stopHandler = new DefaultStopHandler();
@@ -1424,9 +1734,7 @@ public class Editor extends JFrame implements RunnerListener {
     exportAppHandler = new DefaultExportAppHandler();
   }
 
-
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
 
   /**
    * Gets the current sketch object.
@@ -1447,7 +1755,6 @@ public class Editor extends JFrame implements RunnerListener {
     return textarea;
   }
 
-
   /**
    * Get the contents of the current buffer. Used by the Sketch class.
    */
@@ -1455,14 +1762,12 @@ public class Editor extends JFrame implements RunnerListener {
     return textarea.getText();
   }
 
-
   /**
    * Get a range of text from the current buffer.
    */
   public String getText(int start, int stop) {
     return textarea.getText(start, stop - start);
   }
-
 
   /**
    * Replace the entire contents of the front-most tab.
@@ -1473,7 +1778,6 @@ public class Editor extends JFrame implements RunnerListener {
     stopCompoundEdit();
   }
 
-
   public void insertText(String what) {
     startCompoundEdit();
     int caret = getCaretOffset();
@@ -1481,7 +1785,6 @@ public class Editor extends JFrame implements RunnerListener {
     textarea.setSelectedText(what);
     stopCompoundEdit();
   }
-
 
   /**
    * Called to update the text but not switch to a different set of code
@@ -1519,7 +1822,6 @@ public class Editor extends JFrame implements RunnerListener {
     textarea.select(start, stop);
   }
 
-
   /**
    * Get the position (character offset) of the caret. With text selected,
    * this will be the last character actually selected, no matter the direction
@@ -1530,14 +1832,12 @@ public class Editor extends JFrame implements RunnerListener {
     return textarea.getCaretPosition();
   }
 
-
   /**
    * True if some text is currently selected.
    */
   public boolean isSelectionActive() {
     return textarea.isSelectionActive();
   }
-
 
   /**
    * Get the beginning point of the current selection.
@@ -1546,7 +1846,6 @@ public class Editor extends JFrame implements RunnerListener {
     return textarea.getSelectionStart();
   }
 
-
   /**
    * Get the end point of the current selection.
    */
@@ -1554,14 +1853,12 @@ public class Editor extends JFrame implements RunnerListener {
     return textarea.getSelectionStop();
   }
 
-
   /**
    * Get text for a specified line.
    */
   public String getLineText(int line) {
     return textarea.getLineText(line);
   }
-
 
   /**
    * Replace the text on a specified line.
@@ -1573,14 +1870,12 @@ public class Editor extends JFrame implements RunnerListener {
     stopCompoundEdit();
   }
 
-
   /**
    * Get character offset for the start of a given line of text.
    */
   public int getLineStartOffset(int line) {
     return textarea.getLineStartOffset(line);
   }
-
 
   /**
    * Get character offset for end of a given line of text.
@@ -1589,14 +1884,12 @@ public class Editor extends JFrame implements RunnerListener {
     return textarea.getLineStopOffset(line);
   }
 
-
   /**
    * Get the number of lines in the currently displayed buffer.
    */
   public int getLineCount() {
     return textarea.getLineCount();
   }
-
 
   /**
    * Use before a manipulating text to group editing operations together as a
@@ -1605,7 +1898,6 @@ public class Editor extends JFrame implements RunnerListener {
   public void startCompoundEdit() {
     compoundEdit = new CompoundEdit();
   }
-
 
   /**
    * Use with startCompoundEdit() to group edit operations in a single undo.
@@ -1618,14 +1910,11 @@ public class Editor extends JFrame implements RunnerListener {
     compoundEdit = null;
   }
 
-
   public int getScrollPosition() {
     return textarea.getScrollPosition();
   }
 
-
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
 
   /**
    * Switch between tabs, this swaps out the Document object
@@ -1861,9 +2150,9 @@ public class Editor extends JFrame implements RunnerListener {
 
 		} catch (BadLocationException bl) {
 			bl.printStackTrace();
-		} finally {
-			return text;
-		}
+        }
+
+		return text;
 	}
 
 	protected void handleFindReference() {
@@ -1888,7 +2177,7 @@ public class Editor extends JFrame implements RunnerListener {
   public void handleRun(final boolean verbose) {
     internalCloseRunner();
     running = true;
-    toolbar.activate(EditorToolbar.RUN);
+    toolbar.activate(ButtonID.RUN);
     status.progress(_("Compiling sketch..."));
 
     // do this to advance/clear the terminal window / dos prompt / etc
@@ -1917,7 +2206,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
 
       status.unprogress();
-      toolbar.deactivate(EditorToolbar.RUN);
+      toolbar.deactivate(ButtonID.RUN);
     }
   }
 
@@ -1934,7 +2223,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
 
       status.unprogress();
-      toolbar.deactivate(EditorToolbar.RUN);
+      toolbar.deactivate(ButtonID.RUN);
     }
   }
 
@@ -1974,7 +2263,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     internalCloseRunner();
 
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivate(ButtonID.RUN);
 //    toolbar.deactivate(EditorToolbar.STOP);
 
     // focus the PDE again after quitting presentation mode [toxi 030903]
@@ -1990,7 +2279,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void internalRunnerClosed() {
     running = false;
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivate(ButtonID.RUN);
   }
 
 
@@ -2263,7 +2552,7 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   protected boolean handleSave2() {
-    toolbar.activate(EditorToolbar.SAVE);
+    toolbar.activate(ButtonID.SAVE);
     statusNotice(_("Saving..."));
     boolean saved = false;
     try {
@@ -2289,7 +2578,7 @@ public class Editor extends JFrame implements RunnerListener {
       // this is used when another operation calls a save
     }
     //toolbar.clear();
-    toolbar.deactivate(EditorToolbar.SAVE);
+    toolbar.deactivate(ButtonID.SAVE);
     return saved;
   }
 
@@ -2298,7 +2587,7 @@ public class Editor extends JFrame implements RunnerListener {
     //stopRunner();  // formerly from 0135
     handleStop();
 
-    toolbar.activate(EditorToolbar.SAVE);
+    toolbar.activate(ButtonID.SAVE);
 
     //SwingUtilities.invokeLater(new Runnable() {
     //public void run() {
@@ -2320,7 +2609,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     } finally {
       // make sure the toolbar button deactivates
-      toolbar.deactivate(EditorToolbar.SAVE);
+      toolbar.deactivate(ButtonID.SAVE);
     }
 
     return true;
@@ -2370,7 +2659,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
     //if (!handleExportCheckModified()) return;
-    toolbar.activate(EditorToolbar.EXPORT);
+    toolbar.activate(ButtonID.EXPORT);
     console.clear();
     status.progress(_("Uploading to I/O Board..."));
 
@@ -2415,7 +2704,7 @@ public class Editor extends JFrame implements RunnerListener {
       status.unprogress();
       uploading = false;
       //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
+      toolbar.deactivate(ButtonID.EXPORT);
     }
   }
 
@@ -2457,7 +2746,7 @@ public class Editor extends JFrame implements RunnerListener {
       status.unprogress();
       uploading = false;
       //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
+      toolbar.deactivate(ButtonID.EXPORT);
     }
   }
 
@@ -2641,7 +2930,7 @@ public class Editor extends JFrame implements RunnerListener {
     System.err.println(what);
     status.error(what);
     //new Exception("deactivating RUN").printStackTrace();
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivate(ButtonID.RUN);
   }
 
 

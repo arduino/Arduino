@@ -155,6 +155,7 @@ public class NetworkMonitor extends AbstractMonitor {
   public void close() throws Exception {
     if (channel != null) {
       inputConsumer.stop();
+      errorConsumer.stop();
       channel.disconnect();
       textArea.setText("");
     }

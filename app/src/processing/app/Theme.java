@@ -68,8 +68,11 @@ public class Theme {
     // other things that have to be set explicitly for the defaults
     setColor("run.window.bgcolor", SystemColor.control);
 
-    // clone the hash table
-    defaults = (HashMap<String, String>) table.clone();
+    // clone the hash table - deeply
+    defaults = new HashMap<String,String>();
+    for (Map.Entry<String,String> couplet: table.entrySet()) {
+      defaults.put(new String(couplet.getKey()), new String(couplet.getValue()));
+    }
   }
 
 

@@ -45,7 +45,7 @@ public class CreateFont extends JFrame implements Tool {
 
   Dimension windowSize;
 
-  JList fontSelector;
+  JList<String> fontSelector;
   JTextField sizeSelector;
   JButton charsetButton;
   JCheckBox smoothBox;
@@ -123,7 +123,7 @@ public class CreateFont extends JFrame implements Tool {
     list = new String[index];
     System.arraycopy(flist, 0, list, 0, index);
 
-    fontSelector = new JList(list);
+    fontSelector = new JList<String>(list);
     fontSelector.addListSelectionListener(new ListSelectionListener() {
         public void valueChanged(ListSelectionEvent e) {
           if (e.getValueIsAdjusting() == false) {
@@ -445,14 +445,14 @@ class CharacterSelector extends JFrame {
   JRadioButton allCharsButton;
   JRadioButton unicodeCharsButton;
   JScrollPane unicodeBlockScroller;
-  JList charsetList;
+  JList<JCheckBox> charsetList;
 
 
   public CharacterSelector() {
     super("Character Selector");
 
     charsetList = new CheckBoxList();
-    DefaultListModel model = new DefaultListModel();
+    DefaultListModel<JCheckBox> model = new DefaultListModel<JCheckBox>();
     charsetList.setModel(model);
     for (String item : blockNames) {
       model.addElement(new JCheckBox(item));
@@ -574,7 +574,7 @@ class CharacterSelector extends JFrame {
         charset[i] = (char) i;
       }
     } else {
-      DefaultListModel model = (DefaultListModel) charsetList.getModel();
+      DefaultListModel<JCheckBox> model = (DefaultListModel<JCheckBox>) charsetList.getModel();
       int index = 0;
       for (int i = 0; i < BLOCKS.length; i++) {
         if (((JCheckBox) model.get(i)).isSelected()) {
@@ -770,7 +770,7 @@ class CharacterSelector extends JFrame {
 // collection, but it seems to have been picked up so many places with others
 // placing their copyright on it, that I haven't been able to determine the
 // original author. [fry 20100216]
-class CheckBoxList extends JList {
+class CheckBoxList extends JList<JCheckBox> {
   protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
 
   public CheckBoxList() {
@@ -794,8 +794,8 @@ class CheckBoxList extends JList {
   }
 
 
-  protected class CellRenderer implements ListCellRenderer {
-    public Component getListCellRendererComponent(JList list, Object value, 
+  protected class CellRenderer implements ListCellRenderer<JCheckBox> {
+    public Component getListCellRendererComponent(JList<? extends JCheckBox> list, JCheckBox value, 
                                                   int index, boolean isSelected, 
                                                   boolean cellHasFocus) {
       JCheckBox checkbox = (JCheckBox) value;

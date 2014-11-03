@@ -324,7 +324,12 @@ public class EditorConsole extends JScrollPane {
           echo.flush();
         } catch (IOException e) {
           e.printStackTrace();
-          echo = null;
+        } finally {
+          try {
+            echo.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       }
     }
@@ -347,7 +352,12 @@ public class EditorConsole extends JScrollPane {
           echo.flush();
         } catch (IOException e) {
           e.printStackTrace();
-          echo = null;
+        } finally {
+          try {
+            echo.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       }
     }
@@ -368,7 +378,12 @@ public class EditorConsole extends JScrollPane {
           echo.flush();
         } catch (IOException e) {
           e.printStackTrace();
-          echo = null;
+        } finally {
+          try {
+            echo.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       }
     }

@@ -43,6 +43,7 @@ import java.util.Vector;
  */
 public class StdXMLParser {
 
+   private static final boolean IsDtdCHECKED = false;
    /**
     * The builder which creates the logical structure of the XML data.
     */
@@ -422,7 +423,7 @@ public class StdXMLParser {
       // TODO DTD checking is currently disabled, because it breaks 
       //      applications that don't have access to a net connection 
       //      (since it insists on going and checking out the DTD).
-      if (false) {
+      if (IsDtdCHECKED) {
     	  if (systemID != null) {
     		  Reader r = this.reader.openStream(publicID.toString(), systemID);
     		  this.reader.startNewStream(r);

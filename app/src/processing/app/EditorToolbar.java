@@ -22,393 +22,399 @@
 */
 
 package processing.app;
-import static processing.app.I18n._;
 
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 
+import processing.app.ToolButton.Range;
+
 
 /**
  * run/stop/etc buttons for the ide
  */
-public class EditorToolbar extends JComponent implements MouseInputListener, KeyListener {
-
+public class EditorToolbar extends JComponent implements MouseInputListener,
+    KeyListener, ToolButtonMetrics {
   /** Rollover titles for each button. */
-  static final String title[] = {
-    _("Verify"), _("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
-  };
+  private static final long serialVersionUID = 1L;
 
-  /** Titles for each button when the shift key is pressed. */ 
-  static final String titleShift[] = {
-    _("Verify"), _("Upload Using Programmer"), _("New Editor Window"), _("Open in Another Window"), _("Save"), _("Serial Monitor")
-  };
+  public static Color bgcolor;
+  static Color statusColor;
+  static Font statusFont;
 
-  static final int BUTTON_COUNT  = title.length;
-  /** Width of each toolbar button. */
-  static final int BUTTON_WIDTH  = 27;
-  /** Height of each toolbar button. */
-  static final int BUTTON_HEIGHT = 32;
-  /** The amount of space between groups of buttons on the toolbar. */
-  static final int BUTTON_GAP    = 5;
-  /** Size of the button image being chopped up. */
-  static final int BUTTON_IMAGE_SIZE = 33;
+  static {
+    bgcolor = Theme.getColor("buttons.bgcolor");
+    statusFont = Theme.getFont("buttons.status.font");
+    statusColor = Theme.getColor("buttons.status.color");
+  }
 
-
-  static final int RUN      = 0;
-  static final int EXPORT   = 1;
-
-  static final int NEW      = 2;
-  static final int OPEN     = 3;
-  static final int SAVE     = 4;
-
-  static final int SERIAL   = 5;
-
-  static final int INACTIVE = 0;
-  static final int ROLLOVER = 1;
-  static final int ACTIVE   = 2;
-
+  // .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
+  
+  List<ToolButton> allButtons = null;
+  ToolButton currentRolloverBtn;
+  Map<ButtonID, ToolButton> buttonsById = null;
+  
   Editor editor;
 
-  Image offscreen;
+  Image offscreen = null;
   int width, height;
-
-  Color bgcolor;
-
-  static Image[][] buttonImages;
-  int currentRollover;
 
   JPopupMenu popup;
   JMenu menu;
-
-  int buttonCount;
-  int[] state = new int[BUTTON_COUNT];
-  Image[] stateImage;
-  int which[]; // mapping indices to implementation
-
-  int x1[], x2[];
-  int y1, y2;
-
-  Font statusFont;
-  Color statusColor;
-
   boolean shiftPressed;
+
+  private ToolButton btnOpen; // used often
+
+  // .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. .. ..
 
   public EditorToolbar(Editor editor, JMenu menu) {
     this.editor = editor;
     this.menu = menu;
+    currentRolloverBtn = null;
 
-    buttonCount = 0;
-    which = new int[BUTTON_COUNT];
-
-    //which[buttonCount++] = NOTHING;
-    which[buttonCount++] = RUN;
-    which[buttonCount++] = EXPORT;
-    which[buttonCount++] = NEW;
-    which[buttonCount++] = OPEN;
-    which[buttonCount++] = SAVE;
-    which[buttonCount++] = SERIAL;
-
-    currentRollover = -1;
-
-    bgcolor = Theme.getColor("buttons.bgcolor");
-    statusFont = Theme.getFont("buttons.status.font");
-    statusColor = Theme.getColor("buttons.status.color");
+    allButtons = new ArrayList<ToolButton>();
 
     addMouseListener(this);
     addMouseMotionListener(this);
   }
 
-  protected void loadButtons() {
-    Image allButtons = Base.getThemeImage("buttons.gif", this);
-    buttonImages = new Image[BUTTON_COUNT][3];
+  @Override
+  public void paintComponent(Graphics screen) {
 
-      for (int i = 0; i < BUTTON_COUNT; i++) {
-      for (int state = 0; state < 3; state++) {
-        Image image = createImage(BUTTON_WIDTH, BUTTON_HEIGHT);
-        Graphics g = image.getGraphics();
-        g.drawImage(allButtons, 
-                    -(i*BUTTON_IMAGE_SIZE) - 3, 
-                    (-2 + state)*BUTTON_IMAGE_SIZE, null);
-        buttonImages[i][state] = image;
-      }
+    createToolButtons();
+    adjustHorizontalPositions();
+
+    Graphics g = offscreen.getGraphics();
+    renderButtons(g);
+    renderHelpText(g, shiftPressed);
+    updateScreenWithRenderedBuffer(screen);
+    FillOnDisabledToolbar(screen); // TODO: [acd] Could this be done before any rendering?
+  }
+
+  private void createToolButtons() {
+
+    if (buttonsById == null) {
+      // once per instance of EditorToolbar
+      buttonsById = new HashMap<ButtonID, ToolButton>();
+
+      addToolButton(new ToolButton(ButtonID.NEW));
+      addToolButton(new ToolButton(ButtonID.OPEN));
+      addToolButton(new ToolButton(ButtonID.SAVE));
+      addToolButton(new ToolButton(ButtonID.RUN, ButtonGAP));
+      addToolButton(new ToolButton(ButtonID.EXPORT));
+      addToolButton(new ToolButton(ButtonID.SERIAL, RightJUSTIFIED));
+
+      btnOpen = buttonsById.get(ButtonID.OPEN);
+
+      // ...the Graphics context exists now, so...
+      ToolButtonImage.loadButtons(this);
     }
   }
 
-  @Override
-  public void paintComponent(Graphics screen) {
-    // this data is shared by all EditorToolbar instances
-    if (buttonImages == null) {
-      loadButtons();
-    }
+  private ToolButton indexToolButton(ToolButton button) {
+    buttonsById.put(button.getId(), button);
+    return button;
+  }
 
-    // this happens once per instance of EditorToolbar
-    if (stateImage == null) {
-      state = new int[buttonCount];
-      stateImage = new Image[buttonCount];
-      for (int i = 0; i < buttonCount; i++) {
-        setState(i, INACTIVE, false);
-      }
-      y1 = 0;
-      y2 = BUTTON_HEIGHT;
-      x1 = new int[buttonCount];
-      x2 = new int[buttonCount];
-    }
+  private void addToolButton(ToolButton button) {
+    button.setToolbarPosition(allButtons.size());
+    allButtons.add(indexToolButton(button));
+  }
 
+  private void adjustHorizontalPositions() {
     Dimension size = getSize();
-    if ((offscreen == null) ||
-        (size.width != width) || (size.height != height)) {
+    if ((offscreen == null) || (size.width != width) || (size.height != height)) {
       offscreen = createImage(size.width, size.height);
       width = size.width;
       height = size.height;
 
-      int offsetX = 3;
-      for (int i = 0; i < buttonCount; i++) {
-        x1[i] = offsetX;
-        if (i == 2 || i == 6) x1[i] += BUTTON_GAP;
-        x2[i] = x1[i] + BUTTON_WIDTH;
-        offsetX = x2[i];
-      }
-      
-      // Serial button must be on the right
-      x1[SERIAL] = width - BUTTON_WIDTH - 14;
-      x2[SERIAL] = width - 14;
+      setHorizontalPositions();
     }
-    Graphics g = offscreen.getGraphics();
-    g.setColor(bgcolor); //getBackground());
+  }
+
+  public void setHorizontalPositions() {
+    int offsetX = 3;
+    int rightOffsetX = width - 14;
+
+    Range x = new Range();
+
+    for (ToolButton button : allButtons) {
+      if (button.isRightJustified()) {
+        x.start = (rightOffsetX -= ButtonWIDTH);
+        x.end = x.start + ButtonWIDTH;
+      } else {
+        x.start = offsetX + button.getGap();
+        x.end = x.start + ButtonWIDTH;
+        offsetX = x.end;
+      }
+
+      button.setXRange(x);
+    }
+
+    offsetX += ButtonGAP;
+    rightOffsetX -= ButtonGAP;
+
+    for (ToolButton button : allButtons) {
+      button.setHelpTextPosition(button.isRightJustified() ? rightOffsetX
+          : offsetX);
+    }
+  }
+
+  private void renderButtons(Graphics g) {
+    g.setColor(bgcolor);
     g.fillRect(0, 0, width, height);
 
-    for (int i = 0; i < buttonCount; i++) {
-      g.drawImage(stateImage[i], x1[i], y1, null);
+    for (ToolButton button : allButtons) {
+      button.renderOn(g);
     }
+  }
 
-    g.setColor(statusColor);
-    g.setFont(statusFont);
+  private void renderHelpText(Graphics g, boolean shiftPressed) {
+    if (currentRolloverBtn != null)
+      currentRolloverBtn.renderHelpTextOn(g, shiftPressed, statusFont, statusColor);
+  }
 
-    /*
-    // if i ever find the guy who wrote the java2d api, i will hurt him.
-     * 
-     * whereas I love the Java2D API. --jdf. lol.
-     * 
-    Graphics2D g2 = (Graphics2D) g;
-    FontRenderContext frc = g2.getFontRenderContext();
-    float statusW = (float) statusFont.getStringBounds(status, frc).getWidth();
-    float statusX = (getSize().width - statusW) / 2;
-    g2.drawString(status, statusX, statusY);
-    */
-    if (currentRollover != -1) {
-      int statusY = (BUTTON_HEIGHT + g.getFontMetrics().getAscent()) / 2;
-      String status = shiftPressed ? titleShift[currentRollover] : title[currentRollover];
-      if (currentRollover != SERIAL)
-        g.drawString(status, (buttonCount-1) * BUTTON_WIDTH + 3 * BUTTON_GAP, statusY);
-      else {
-        int statusX = x1[SERIAL] - BUTTON_GAP;
-        statusX -= g.getFontMetrics().stringWidth(status);
-        g.drawString(status, statusX, statusY);
-      }
-    }
-
+  private void updateScreenWithRenderedBuffer(Graphics screen) {
     screen.drawImage(offscreen, 0, 0, null);
-    
+  }
+
+  private void FillOnDisabledToolbar(Graphics screen) {
     if (!isEnabled()) {
-      screen.setColor(new Color(0,0,0,100));
+      screen.setColor(new Color(0, 0, 0, 100));
       screen.fillRect(0, 0, getWidth(), getHeight());
-  }
+    }
   }
 
+  // ////////////////////////////////////////////////////
 
+  @Override
   public void mouseMoved(MouseEvent e) {
     if (!isEnabled())
       return;
-    
-    // mouse events before paint();
-    if (state == null) return;
 
-    if (state[OPEN] != INACTIVE) {
-      // avoid flicker, since there will probably be an update event
-      setState(OPEN, INACTIVE, false);
+    // mouse events before paint();
+    if (!ToolButtonImage.isLoaded())
+      return;
+
+    if (btnOpen.getState() != State.INACTIVE) {
+      setState(btnOpen.getToolbarPosition(), State.INACTIVE, false);
     }
+
     handleMouse(e);
   }
 
-
-  public void mouseDragged(MouseEvent e) { }
-
+  @Override
+  public void mouseDragged(MouseEvent e) {
+  }
 
   public void handleMouse(MouseEvent e) {
-    int x = e.getX();
-    int y = e.getY();
 
-    if (currentRollover != -1) {
-      if ((x > x1[currentRollover]) && (y > y1) &&
-          (x < x2[currentRollover]) && (y < y2)) {
+    Point clickPosition = new Point(e.getX(), e.getY());
+
+    if (currentRolloverBtn != null) { // then a tool might have been active
+      if (currentRolloverBtn.contains(clickPosition)) {
         return;
-
       } else {
-        setState(currentRollover, INACTIVE, true);
-        currentRollover = -1;
+        setState(currentRolloverBtn.getToolbarPosition(), State.INACTIVE, true);
+        currentRolloverBtn = null;
       }
     }
-    int sel = findSelection(x, y);
-    if (sel == -1) return;
 
-    if (state[sel] != ACTIVE) {
-      setState(sel, ROLLOVER, true);
-      currentRollover = sel;
+    ToolButton newButton;
+    if ((newButton = getClickedButton(clickPosition)) == null)
+      return;
+
+    if (newButton.getState() != State.ACTIVE) {
+      setState(newButton.getToolbarPosition(), State.ROLLOVER, true);
+      currentRolloverBtn = newButton;
     }
   }
 
+  private ToolButton getClickedButton(final Point position) {
 
-  private int findSelection(int x, int y) {
+    ToolButton foundButton = null;
+
     // if app loads slowly and cursor is near the buttons
     // when it comes up, the app may not have time to load
-    if ((x1 == null) || (x2 == null)) return -1;
+    if (ToolButtonImage.isLoaded()) {
 
-    for (int i = 0; i < buttonCount; i++) {
-      if ((y > y1) && (x > x1[i]) &&
-          (y < y2) && (x < x2[i])) {
-        //System.out.println("sel is " + i);
-        return i;
+      for (ToolButton button : allButtons) {
+        if (button.contains(position)) {
+          foundButton = button;
+          break;
+        }
       }
     }
-    return -1;
+
+    return foundButton;
   }
 
-
-  private void setState(int slot, int newState, boolean updateAfter) {
-    state[slot] = newState;
-    stateImage[slot] = buttonImages[which[slot]][newState];
+  private void setState(int index, State newState, boolean updateAfter) {
+    ToolButton button = allButtons.get(index);
+    button.setState(newState);
     if (updateAfter) {
       repaint();
     }
   }
 
+  private void setState(ButtonID id, State newState, boolean updateAfter) {
+    setState(buttonsById.get(id).getToolbarPosition(), newState, updateAfter);
+  }
 
+  @Override
   public void mouseEntered(MouseEvent e) {
     handleMouse(e);
   }
 
-
+  @Override
   public void mouseExited(MouseEvent e) {
     // if the popup menu for is visible, don't register this,
     // because the popup being set visible will fire a mouseExited() event
-    if ((popup != null) && popup.isVisible()) return;
+    if ((popup != null) && popup.isVisible())
+      return;
 
-    if (state[OPEN] != INACTIVE) {
-      setState(OPEN, INACTIVE, true);
+    if (btnOpen.getState() != State.INACTIVE) {
+      setState(btnOpen.getToolbarPosition(), State.INACTIVE, true);
     }
+
     handleMouse(e);
   }
 
   int wasDown = -1;
 
-
+  @Override
   public void mousePressed(MouseEvent e) {
     
     // jdf
     if (!isEnabled())
       return;
-    
-    final int x = e.getX();
-    final int y = e.getY();
 
-    int sel = findSelection(x, y);
-    ///if (sel == -1) return false;
-    if (sel == -1) return;
-    currentRollover = -1;
+    final Point clickPosition = new Point(e.getX(), e.getY());
 
-    switch (sel) {
+    ToolButton clickedButton;
+
+    if ((clickedButton = getClickedButton(clickPosition)) == null)
+      return;
+
+    currentRolloverBtn = null;
+
+    switch (clickedButton.getId()) {
     case RUN:
-      editor.handleRun(false);
+      doClickRun();
       break;
-
-//    case STOP:
-//      editor.handleStop();
-//      break;
-//
     case OPEN:
-      popup = menu.getPopupMenu();
-      popup.show(EditorToolbar.this, x, y);
+      doClickOpen(clickPosition);
       break;
-
     case NEW:
-      if (shiftPressed) {
-        try {
-          editor.base.handleNew();
-        } catch (Exception e1) {
-          e1.printStackTrace();
-        }
-      } else {
-        editor.base.handleNewReplace();
-      }
+      doClickNew();
       break;
-
     case SAVE:
-      editor.handleSave(false);
+      doClickSAVE();
       break;
-
     case EXPORT:
-      editor.handleExport(e.isShiftDown());
+      doClickExport();
       break;
-
     case SERIAL:
-      editor.handleSerial();
+      doClickSerial();
+      break;
+      // case STOP:
+      // editor.handleStop();
+      // break;
+    default:
       break;
     }
   }
 
+  private void doClickRun() {
+    editor.handleRun(false);
+  }
 
-  public void mouseClicked(MouseEvent e) { }
+  private void doClickOpen(final Point clickPosition) {
+    popup = menu.getPopupMenu();
+    popup.show(EditorToolbar.this, clickPosition.x, clickPosition.y);
+  }
 
+  private void doClickNew() {
+    if (shiftPressed) {
+      try {
+        editor.base.handleNew();
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    } else {
+      editor.base.handleNewReplace();
+    }
+  }
 
-  public void mouseReleased(MouseEvent e) { }
+  private void doClickSAVE() {
+    editor.handleSave(false);
+  }
 
+  private void doClickExport() {
+    editor.handleExport(shiftPressed);
+  }
+
+  private void doClickSerial() {
+    editor.handleSerial();
+  }
+
+  @Override
+  public void mouseClicked(MouseEvent e) {
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent e) {
+  }
 
   /**
    * Set a particular button to be active.
    */
-  public void activate(int what) {
-    if (buttonImages != null) {
-    setState(what, ACTIVE, true);
+  public void activate(ButtonID what) {
+    if (ToolButtonImage.isLoaded()) {
+      setState(what, State.ACTIVE, true);
+    }
   }
-  }
-
 
   /**
    * Set a particular button to be active.
    */
-  public void deactivate(int what) {
-    if (buttonImages != null) {
-    setState(what, INACTIVE, true);
-  }
+  public void deactivate(ButtonID what) {
+    if (ToolButtonImage.isLoaded()) {
+      setState(what, State.INACTIVE, true);
+    }
   }
 
-
+  @Override
   public Dimension getPreferredSize() {
     return getMinimumSize();
   }
 
-
+  @Override
   public Dimension getMinimumSize() {
-    return new Dimension((BUTTON_COUNT + 1)*BUTTON_WIDTH, BUTTON_HEIGHT);
+    return new Dimension((allButtons.size() + 1) * ButtonWIDTH, ButtonHEIGHT);
   }
 
-
+  @Override
   public Dimension getMaximumSize() {
-    return new Dimension(3000, BUTTON_HEIGHT);
+    return new Dimension(3000, ButtonHEIGHT);
   }
 
-
+  
+  @Override
   public void keyPressed(KeyEvent e) {
     if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
       shiftPressed = true;
       repaint();
-}
+    }
   }
 
-
+  @Override
   public void keyReleased(KeyEvent e) {
     if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
       shiftPressed = false;
@@ -416,6 +422,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     }
   }
 
+  @Override
+  public void keyTyped(KeyEvent e) {
+  }
 
-  public void keyTyped(KeyEvent e) { }
+  // /////////////////////////////////////////////////////
+  // /////////////////////////////////////////////////////
+
 }

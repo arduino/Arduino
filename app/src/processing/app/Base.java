@@ -1337,6 +1337,21 @@ public class Base {
       }
     }
   }
+  
+  protected void addAddUpdateLibraryMenuItem(JMenu menu) {
+    JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
+    
+    addLibraryMenuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Base.this.handleAddLibrary();
+        Base.this.onBoardOrPortChange();
+        Base.this.rebuildImportMenu(Editor.importMenu);
+        Base.this.rebuildExamplesMenu(Editor.examplesMenu);
+      }
+    });
+    
+    menu.add(addLibraryMenuItem);
+  }
 
   public void rebuildExamplesMenu(JMenu menu) {
     try {

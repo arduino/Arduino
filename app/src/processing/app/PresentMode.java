@@ -45,7 +45,7 @@ public class PresentMode {
    * Menu object for preferences window
    */
   //JMenu preferencesMenu;
-  static JComboBox selector;
+  static JComboBox<String> selector;
 
   /**
    * Index of the currently selected display to be used for present mode.
@@ -69,7 +69,7 @@ public class PresentMode {
       names.add(name);
     }
 
-    selector = new JComboBox(names);
+    selector = new JComboBox<String>(names);
     selector.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           int index = selector.getSelectedIndex();
@@ -80,7 +80,7 @@ public class PresentMode {
   }
 
 
-  static public JComboBox getSelector() {
+  static public JComboBox<String> getSelector() {
     int deviceIndex = Preferences.getInteger("run.present.display") - 1;
     selector.setSelectedIndex(deviceIndex);
     return selector;

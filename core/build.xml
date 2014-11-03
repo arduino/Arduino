@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Processing Core" default="build">
+<project name="processing-core" default="build">
 
   <target name="clean" description="Clean out the build directories">
     <delete dir="bin" />
