@@ -87,13 +87,14 @@ static int16_t tone_periods[AVAILABLE_TONE_PINS] = { SETARRAY(0)  };
 **/
 void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 {
-  uint8_t port = digitalPinToPort(_pin);
+  uint16_t gpio_number = pin_mapping[_pin];
+  uint8_t port = digitalPinToPort(gpio_number);
   if (port == NOT_A_PORT) return;
 
   // find if we are using it at the moment, if so: update it
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
   {
-    if (tone_pins[i] == _pin) 
+    if (tone_pins[i] == gpio_number) 
     {
       setTimer(i, frequency, duration);
       return; // we are done, timer reprogrammed
@@ -105,12 +106,12 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
   {
     if (tone_pins[i] == 255)      
     {
-      tone_pins[i] = _pin;
-      tone_bit[i] = digitalPinToBitMask(_pin);
+      tone_pins[i] = gpio_number;
+      tone_bit[i] = digitalPinToBitMask(gpio_number);
       tone_out[i] = portOutputRegister(port);
       if ( tone_state == 0 ) 
         initToneTimers();
-      pinMode(_pin, OUTPUT);
+      pinMode(gpio_number, OUTPUT);
       setTimer(i, frequency, duration);
       return; // we are done, timer set
     }
@@ -124,10 +125,11 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 **/
 void noTone(uint8_t _pin)
 {
-  if ( _pin == 255 ) return; // Should not happen!
+  uint16_t gpio_number = pin_mapping[_pin];
+  if ( gpio_number == 255 ) return; // Should not happen!
   for (int i = 0; i < AVAILABLE_TONE_PINS; i++)
   {
-    if (tone_pins[i] == _pin) 
+    if (tone_pins[i] == gpio_number) 
     {
       tone_pins[i] = 255;
       stopTimer(i);
