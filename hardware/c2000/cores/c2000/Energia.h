@@ -150,9 +150,10 @@ void analogResolution(uint16_t);
 
 void delay(uint32_t milliseconds);
 
-void attachInterrupt(uint8_t pin, uint8_t interruptNum, void (*userFunc)(void), int mode);
-void detachInterrupt(uint8_t interruptNum);
+void attachInterrupt(uint8_t, void (*)(void), int);
+void detachInterrupt(uint8_t);
 
+extern const uint16_t pin_mapping[];
 extern const uint32_t digital_pin_to_timer[];
 extern const uint32_t digital_pin_to_port[];
 extern const uint32_t digital_pin_to_bit_mask[];

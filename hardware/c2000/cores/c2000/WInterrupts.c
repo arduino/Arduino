@@ -51,11 +51,14 @@
 : (A) == 1u << 7 ? 7 \
 : 0)
 
+#define AVAILABLE_EXT_INTS 3
+
 
 static volatile voidFuncPtr intFuncP1;
 static volatile voidFuncPtr intFuncP2;
 static volatile voidFuncPtr intFuncP3;
 
+static uint8_t extInts[AVAILABLE_EXT_INTS] = {255, 255, 255};
 
 
 interrupt void Port_1(void)
@@ -79,52 +82,72 @@ interrupt void Port_3(void)
 
 
 
-void attachInterrupt(uint8_t pin, uint8_t interruptNum, void (*userFunc)(void), int mode) {
- 	uint32_t bit = digitalPinToPort(pin);
-        	
+void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode) {
+    uint16_t gpio_number = pin_mapping[pin];
+ 	uint32_t bit = digitalPinToPort(gpio_number);
+    int i;    	
         
         if (bit == NOT_A_PIN) return;
         
         DINT;
         EALLOW;
-        switch(interruptNum) {
-                case 1:
-                	PieVectTable.XINT1 = Port_1;
-                	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
-                	IER |= M_INT1;
-                	GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = pin;
-                	XIntruptRegs.XINT1CR.bit.POLARITY = mode;
-					intFuncP1 = userFunc;
-                	XIntruptRegs.XINT1CR.bit.ENABLE = 1;
-					break;
-                case 2:
-                	PieVectTable.XINT2 = Port_2;
-                	PieCtrlRegs.PIEIER1.bit.INTx5 = 1;
-                	IER |= M_INT1;
-                	GpioIntRegs.GPIOXINT2SEL.bit.GPIOSEL = pin;
-                	XIntruptRegs.XINT2CR.bit.POLARITY = mode;
-					intFuncP2 = userFunc;
-                	XIntruptRegs.XINT2CR.bit.ENABLE = 1;
-					break;
-                case 3:
-                	PieVectTable.XINT3 = Port_3;
-                	PieCtrlRegs.PIEIER12.bit.INTx1 = 1;
-                	IER |= M_INT12;
-                	GpioIntRegs.GPIOXINT3SEL.bit.GPIOSEL = pin;
-                	XIntruptRegs.XINT3CR.bit.POLARITY = mode;
-					intFuncP3 = userFunc;
-                	XIntruptRegs.XINT3CR.bit.ENABLE = 1;
-					break;
-                default:
+
+        for(i = 0; i < AVAILABLE_EXT_INTS; i++)
+        {
+            if(extInts[i] == 255)
+            {
+                extInts[i] = gpio_number;
+                i++;
+                switch(i) {
+                    case 1:
+                    	PieVectTable.XINT1 = Port_1;
+                    	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
+                    	IER |= M_INT1;
+                    	GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = gpio_number;
+                    	XIntruptRegs.XINT1CR.bit.POLARITY = mode;
+				    	intFuncP1 = userFunc;
+                    	XIntruptRegs.XINT1CR.bit.ENABLE = 1;
+				    	break;
+                    case 2:
+                    	PieVectTable.XINT2 = Port_2;
+                    	PieCtrlRegs.PIEIER1.bit.INTx5 = 1;
+                    	IER |= M_INT1;
+                    	GpioIntRegs.GPIOXINT2SEL.bit.GPIOSEL = gpio_number;
+                    	XIntruptRegs.XINT2CR.bit.POLARITY = mode;
+				    	intFuncP2 = userFunc;
+                    	XIntruptRegs.XINT2CR.bit.ENABLE = 1;
+				    	break;
+                    case 3:
+                    	PieVectTable.XINT3 = Port_3;
+                    	PieCtrlRegs.PIEIER12.bit.INTx1 = 1;
+                    	IER |= M_INT12;
+                    	GpioIntRegs.GPIOXINT3SEL.bit.GPIOSEL = gpio_number;
+                    	XIntruptRegs.XINT3CR.bit.POLARITY = mode;
+				    	intFuncP3 = userFunc;
+                    	XIntruptRegs.XINT3CR.bit.ENABLE = 1;
+				    	break;
+                    default:
                         break;
+                }
+            }
+
+
         }
+
        EDIS;
-        EINT;
+       EINT;
 }
 
-void detachInterrupt(uint8_t interruptNum) {
-        
-        switch(interruptNum) {
+void detachInterrupt(uint8_t pin) {
+     uint16_t gpio_number = pin_mapping[pin];
+    int i;    
+    for(i = 0; i < AVAILABLE_EXT_INTS; i++)
+    {
+        if(extInts[i] == gpio_number)
+        {
+            extInts[i] = 255;
+            i++;
+            switch(i) {
                 case 1:
                 	XIntruptRegs.XINT1CR.bit.ENABLE = 0;
 					intFuncP1 = rsvd_ISR;
@@ -139,5 +162,10 @@ void detachInterrupt(uint8_t interruptNum) {
 					break;
                 default:
                         break;
+            }
+
         }
+
+    }
+
 }

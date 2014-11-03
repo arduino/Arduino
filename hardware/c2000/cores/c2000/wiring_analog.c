@@ -415,6 +415,7 @@ void analogInit(void)
 #define PWM_DUTY(x) ( (unsigned long)x*PWM_PERIOD / (unsigned long)analog_res )
 void analogWrite(uint8_t pin, int val)
 {
+    
     pinMode(pin, OUTPUT); // pin as output
 
     if (val == 0)
@@ -429,14 +430,14 @@ void analogWrite(uint8_t pin, int val)
     }
     else
     {
-
-        uint8_t port = digitalPinToPort(pin);   // get pin port
+        uint16_t gpio_number = pin_mapping[pin]; 
+        uint8_t port = digitalPinToPort(gpio_number);   // get pin port
                 
         if (port == NOT_A_PORT) 
             return; // pin on timer?
 
 		EALLOW;
-        switch(digitalPinToTimer(pin)) {                // which pwm?
+        switch(digitalPinToTimer(gpio_number)) {                // which pwm?
 
 			case PWM1A:                              // EPwm1A
                             GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 1;  //Enable PWM output on this pin
@@ -542,13 +543,15 @@ uint16_t analogRead(uint8_t pin)
 		analogInit();
 	}
 
-    if(pin & 0x8000)
+    uint16_t gpio_number = pin_mapping[pin]; 
+
+    if(gpio_number & 0x8000)
     {
-        pin &= 0x7FFF;
+        gpio_number &= 0x7FFF;
 	
     	EALLOW;
     	//Setup SOC1 to sample selected pin
-    	AdcRegs.ADCSOC1CTL.bit.CHSEL = pin;
+    	AdcRegs.ADCSOC1CTL.bit.CHSEL = gpio_number;
     	//Force SOC 0 and 1
     	AdcRegs.ADCSOCFRC1.all = 3;
     	EDIS;

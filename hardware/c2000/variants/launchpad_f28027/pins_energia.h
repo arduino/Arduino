@@ -35,50 +35,117 @@
 #define BV(x) ((uint32_t) 1 << (x))
 #endif
 
-static const uint8_t SS   = 8;  /* P2.0 */
-static const uint8_t SCK  = 7;  /* P1.5 */
-static const uint8_t MOSI = 15; /* P1.7 */
-static const uint8_t MISO = 14; /* P1.6 */
+static const uint8_t SCK  = 7;  
+static const uint8_t MOSI = 15; 
+static const uint8_t MISO = 14;
 
-static const uint8_t AA0 = 0x8000;  //A0
-static const uint8_t AA1 = 0x8001;	//A1
-static const uint8_t AA2 = 0x8002;	//A2
-static const uint8_t AA3 = 0x8003;	//A3
-static const uint8_t AA4 = 0x8004;	//A4
-static const uint8_t AA5 = 0x8005;	//A5
-static const uint8_t AA6 = 0x8006;	//A6
-static const uint8_t AA7 = 0x8007;	//A7
-static const uint8_t AB0 = 0x8008;  //B0
-static const uint8_t AB1 = 0x8009;  //B1
-static const uint8_t AB2 = 0x800A;  //B2
-static const uint8_t AB3 = 0x800B;  //B3
-static const uint8_t AB4 = 0x800C;  //B4
-static const uint8_t AB5 = 0x800D;  //B5
-static const uint8_t AB6 = 0x800E;  //B6
-static const uint8_t AB7 = 0x800F;  //B7
+static const uint8_t SDA = 34;
+static const uint8_t SCL = 33;
+
+static const uint8_t RX = 3;
+static const uint8_t TX = 4;
+
+static const uint8_t BLUE_LED = 40;
+static const uint8_t RED_LED = 39;
+static const uint8_t GREEN_LED = 38;
+
+static const uint8_t LED0 = 40;
+static const uint8_t LED1 = 39;
+static const uint8_t LED2 = 38;
+static const uint8_t LED3 = 37;
+
+static const uint8_t PUSH1 = 18;
 
 
-// Pin names based on GPIO numbers
+// Pin names based on pin numbers
+
+static const uint8_t AA0 = 26;  //A0
+static const uint8_t AA1 = 25;	//A1
+static const uint8_t AA2 = 8;	//A2
+static const uint8_t AA3 = 24;	//A3
+static const uint8_t AA4 = 6;	//A4
+static const uint8_t AA5 = 0;	//A5 //NOT A PIN
+static const uint8_t AA6 = 2;	//A6
+static const uint8_t AA7 = 23;	//A7
+static const uint8_t AB0 = 0;  //B0 //NOT A PIN
+static const uint8_t AB1 = 27;  //B1
+static const uint8_t AB2 = 9;  //B2
+static const uint8_t AB3 = 28;  //B3
+static const uint8_t AB4 = 10;  //B4
+static const uint8_t AB5 = 0;  //B5 //NOT A PIN
+static const uint8_t AB6 = 11;  //B6
+static const uint8_t AB7 = 29;  //B7
+
+
+// Pin names based on pin numbers
 //
-static const uint8_t P0 = 0x0000;
-static const uint8_t P1 = 0x0001;
-static const uint8_t P2 = 0x0002;
-static const uint8_t P3 = 0x0003;
-static const uint8_t P4 = 0x0004;
-static const uint8_t P5 = 0x0005;
-static const uint8_t P6 = 0x0006;
-static const uint8_t P7 = 0x0007;
-static const uint8_t P12 = 0x0000C;
-static const uint8_t P16 = 0x00010;
-static const uint8_t P17 = 0x00011;
-static const uint8_t P18 = 0x00012;
-static const uint8_t P19 = 0x00013;
-static const uint8_t P28 = 0x0001C;
-static const uint8_t P29 = 0x0001D;
-static const uint8_t P32 = 0x00020;
-static const uint8_t P33 = 0x00021;
-static const uint8_t P34 = 0x00022;
+static const uint8_t P0 = 40;
+static const uint8_t P1 = 39;
+static const uint8_t P2 = 38;
+static const uint8_t P3 = 37;
+static const uint8_t P4 = 36;
+static const uint8_t P5 = 35;
+static const uint8_t P6 = 13;
+static const uint8_t P7 = 12;
+static const uint8_t P12 = 18;
+static const uint8_t P16 = 15;
+static const uint8_t P17 = 14;
+static const uint8_t P18 = 7;
+static const uint8_t P19 = 19;
+static const uint8_t P28 = 3;
+static const uint8_t P29 = 4;
+static const uint8_t P32 = 34;
+static const uint8_t P33 = 33;
+static const uint8_t P34 = 5;
 
+
+//Array used to map physical pin numbers to GPIO/AIO numbers
+
+static const uint16_t  pin_mapping[] = {
+NOT_A_PIN, //0
+NOT_A_PIN, //1
+0x8006, //2
+28, //3
+29, //4
+34, //5
+0x8004, //6
+18, //7
+0x8002, //8
+0x800a, //9
+0x800c, //10
+0x800e, //11
+7, //12
+6, //13
+17, //14
+16, //15
+NOT_A_PIN, //16
+NOT_A_PIN, //17
+12, //18
+19, //19
+NOT_A_PIN, //20
+NOT_A_PIN, //21
+NOT_A_PIN, //22
+0x8007, //23
+0x8003, //24
+0x8001, //25
+0x8000, //26
+0x8008, //27
+0x800b, //28
+0x800f, //29
+NOT_A_PIN, //30
+NOT_A_PIN, //31
+NOT_A_PIN, //32
+33, //33
+32, //34
+5, //35
+4, //36
+3, //37
+2, //38
+1, //39
+0, //40
+
+
+};
 
 #ifdef ARDUINO_MAIN
 
