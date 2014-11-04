@@ -203,6 +203,8 @@ size_t EthernetClient::write(const uint8_t *buf, size_t size) {
 	if (!stuffed_buffer) {
 		if (cs->mode) tcp_output(cpcb);
 	}
+
+	return i;
 }
 
 int EthernetClient::available() {
