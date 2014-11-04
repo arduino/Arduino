@@ -61,6 +61,7 @@ void spi_initialize(void)
 	UCB0CTL1 = UCSWRST | UCSSEL_2;      // Put USCI in reset mode, source USCI clock from SMCLK
 	UCB0CTL0 = SPI_MODE_0 | UCMSB | UCSYNC | UCMST;  // Use SPI MODE 0 - CPOL=0 CPHA=0
 
+ 	/* Set pins to SPI mode. */
 	pinMode_int(SCK, SPISCK_SET_MODE);
 	pinMode_int(MOSI, SPIMOSI_SET_MODE);
 	pinMode_int(MISO, SPIMISO_SET_MODE);
