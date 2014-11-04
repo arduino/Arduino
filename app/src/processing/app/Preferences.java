@@ -125,6 +125,7 @@ public class Preferences {
   JTextField fontSizeField;
   JCheckBox updateExtensionBox;
   JCheckBox debugEnableBox;
+  JCheckBox drvlibFromSrcEnableBox;
   JCheckBox autoAssociateBox;
 
   JComboBox comboFont;
@@ -380,6 +381,14 @@ public class Preferences {
     right = Math.max(right, left + d.width);
     top += d.height + GUI_BETWEEN;    
 
+    drvlibFromSrcEnableBox = new JCheckBox(_("Compile DriverLib from source"));
+    pain.add(drvlibFromSrcEnableBox);
+    d = drvlibFromSrcEnableBox.getPreferredSize();
+    drvlibFromSrcEnableBox.setBounds(left, top, d.width + 10, d.height);
+    right = Math.max(right, left + d.width);
+    top += d.height + GUI_BETWEEN;    
+
+
     // [ ] Automatically associate .pde files with Processing
 
     if (Base.isWindows()) {
@@ -533,6 +542,7 @@ public class Preferences {
     // put each of the settings into the table
     setBoolean("build.verbose", verboseCompilationBox.isSelected());
     setBoolean("build.debug", debugEnableBox.isSelected());
+    setBoolean("build.drvlib", drvlibFromSrcEnableBox.isSelected());
     setBoolean("upload.verbose", verboseUploadBox.isSelected());
     setBoolean("upload.verify", verifyUploadBox.isSelected());
     
@@ -593,6 +603,7 @@ public class Preferences {
     // set all settings entry boxes to their actual status
     verboseCompilationBox.setSelected(getBoolean("build.verbose"));
     debugEnableBox.setSelected(getBoolean("build.debug"));
+    drvlibFromSrcEnableBox.setSelected(getBoolean("build.drvlib"));
     verboseUploadBox.setSelected(getBoolean("upload.verbose"));
     verifyUploadBox.setSelected(getBoolean("upload.verify"));
 

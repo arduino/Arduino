@@ -38,7 +38,7 @@ import java.util.zip.*;
 
 public class Compiler implements MessageConsumer {
   static final String BUGS_URL =
-    _("http://code.google.com/p/arduino/issues/list");
+    _("https://github.com/energia/Energia/issues");
   static final String SUPER_BADNESS =
     I18n.format(_("Compiler error, please submit this code to {0}"), BUGS_URL);
 
@@ -389,6 +389,10 @@ public class Compiler implements MessageConsumer {
     baseCommandLinker.add(runtimeLibraryName);
     if(arch == "lm4f" || arch == "cc3200"){
       baseCommandLinker.add("-L" + buildPath);
+      if(!Preferences.getBoolean("build.drvlib")) {
+    	  String driverlib = corePath + File.separator + "driverlib" + File.separator + "libdriverlib.a";
+    		  baseCommandLinker.add(driverlib);
+      }
       baseCommandLinker.add("-lm");
       baseCommandLinker.add("-lc");
       baseCommandLinker.add("-lgcc");
@@ -1303,12 +1307,17 @@ public class Compiler implements MessageConsumer {
     if (folder.listFiles() == null) return files;
     
     for (File file : folder.listFiles()) {
+    
       if (file.getName().startsWith(".")) continue; // skip hidden files
       
       if (file.getName().endsWith("." + extension))
         files.add(file);
         
       if (recurse && file.isDirectory()) {
+        if(!Preferences.getBoolean("build.drvlib") && file.getName().contentEquals("driverlib")) {
+        	continue;
+        }
+
         files.addAll(findFilesInFolder(file, extension, true));
       }
     }
