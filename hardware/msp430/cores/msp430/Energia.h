@@ -12,7 +12,9 @@
 extern "C"{
 #endif
 
-#define PSTR
+#ifndef PSTR
+typedef char * PSTR;
+#endif
 #define PROGMEM
 #define pgm_read_byte(x) (*x)
 #define pgm_read_dword(x) (*x)
