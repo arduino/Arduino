@@ -15,6 +15,7 @@
 #include <msp430.h>
 #include <stdint.h>
 #include "spi_430.h"
+#include <Energia.h>
 
 #ifdef __MSP430_HAS_EUSCI_B0__
 
@@ -50,11 +51,11 @@ void spi_initialize(void)
 	/* SPI in master MODE 0 - CPOL=0 SPHA=0. */
 	UCB0CTLW0 |= SPI_MODE_0 | UCMSB | UCSYNC | UCMST;
 
-	/* P1.6 as SIMO and P1.7 as SOMI. */
-	P1SEL1 |= BIT6 | BIT7;
+	/* Set pins to SPI mode. */
+	pinMode_int(SCK, SPISCK_SET_MODE);
+	pinMode_int(MOSI, SPIMOSI_SET_MODE);
+	pinMode_int(MISO, SPIMISO_SET_MODE);
 
-	/* P2.2 as SCK. */
-	P2SEL1 |= BIT2;
 
 	/* Set initial speed to 4MHz. */
 	UCB0BR0 = SPI_CLOCK_DIV4 & 0xFF;
