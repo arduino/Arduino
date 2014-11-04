@@ -58,28 +58,13 @@ void A110x2500SpiInit()
    #endif
 
   SPI.setDataMode(SPI_MODE0);
-
-  /**
-   *  Note: The MSP430 Launchpad's green LED is on the same pin as the MISO SPI
-   *  signal. To allow for use of the green LED, on the MSP430 Launchpad, each
-   *  SPI transfer (read/write) will call SPI.begin() and SPI.end() 
-   *  respectively. This allows the application to use the green LED when the
-   *  pin is not being used for SPI operations. No need to call SPI.begin()
-   *  during initialization.
-   *
-   *  Note: It is assumed that if the SPI bus is to be shared, it is always
-   *  fixed to a value specified in this initialization routine. THE RADIO
-   *  REQUIRES A SPI CLOCK SPEED < 10MHZ.
-   */
+  SPI.begin();
 }  
 
 void A110x2500SpiRead(unsigned char address,
                       unsigned char *buffer,
                       unsigned char count)
 {
-  // Change MISO pin to SPI.
-  SPI.begin();
-  
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
   while (digitalRead(RF_SPI_MISO));
@@ -97,18 +82,12 @@ void A110x2500SpiRead(unsigned char address,
   // peripheral is done being busy before returning to the caller.
 
   digitalWrite(RF_SPI_CSN,HIGH);
-  
-  // Change MISO pin to general purpose output (LED use if available).
-  SPI.end();
 }
 
 void A110x2500SpiWrite(unsigned char address,
                        const unsigned char *buffer,
                        unsigned char count)
 {
-  // Change MISO pin to SPI.
-  SPI.begin();
-  
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
   while (digitalRead(RF_SPI_MISO));
@@ -126,9 +105,6 @@ void A110x2500SpiWrite(unsigned char address,
   // peripheral is done being busy before returning to the caller.
 
   digitalWrite(RF_SPI_CSN,HIGH);
-  
-  // Change MISO pin to general purpose output (LED use if available).
-  SPI.end();
 }
 
 void A110x2500Gdo0Init()
