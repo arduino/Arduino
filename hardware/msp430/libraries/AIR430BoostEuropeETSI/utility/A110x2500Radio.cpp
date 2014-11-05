@@ -174,14 +174,25 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
     CC1101FlushRxFifo(&gPhyInfo.cc1101);
     CC1101ReceiverOn(&gPhyInfo.cc1101);
     
-    // Listen for at most the timeout period or until a message is received.
-    while (timeout-- > 0)
+    // Listen for a period of time.
+    if (timeout == 0)
     {
-      delay(1);
-      if (gDataReceived)
+      // Listen forever until a message is received.
+      while (!gDataReceived);
+      gDataReceived = false;
+      return Radio._dataStream.length;
+    }
+    else
+    {
+      // Listen for at most the timeout period or until a message is received.
+      while (timeout-- > 0)
       {
-        gDataReceived = false;
-        return Radio._dataStream.length;
+        delay(1);
+        if (gDataReceived)
+        {
+          gDataReceived = false;
+          return Radio._dataStream.length;
+        }
       }
     }
   }

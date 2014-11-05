@@ -178,11 +178,9 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
     if (timeout == 0)
     {
       // Listen forever until a message is received.
-      if (gDataReceived)
-      {
-        gDataReceived = false;
-        return Radio._dataStream.length;
-      }
+      while (!gDataReceived);
+      gDataReceived = false;
+      return Radio._dataStream.length;
     }
     else
     {
