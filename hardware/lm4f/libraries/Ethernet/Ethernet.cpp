@@ -40,10 +40,6 @@ void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dn
 	lwIPInit(F_CPU, pui8MACArray, htonl(local_ip), htonl(subnet), htonl(gateway), !local_ip ? IPADDR_USE_DHCP:IPADDR_USE_STATIC);
 
 	lwIPDNSAddrSet((uint32_t)dns_server);
-
-	/* Wait for DHCP address */
-	if(!local_ip) lwIPDHCPWaitLeaseValid();
-
 }
 
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server)

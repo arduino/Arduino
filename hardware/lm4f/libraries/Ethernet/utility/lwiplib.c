@@ -1267,8 +1267,13 @@ lwIPNetworkConfigChange(uint32_t ui32IPAddr, uint32_t ui32NetMask,
 
 bool lwIPDHCPWaitLeaseValid()
 {
+	unsigned long _timeout = 60000;
+	unsigned long startTime = millis();
+
 	while(g_sNetIF.dhcp->state != DHCP_BOUND) {
 		delay(10);
+		if(((millis() - startTime) > _timeout))
+			return false;
 	};
 
 	return true;
