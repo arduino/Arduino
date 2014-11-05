@@ -67,8 +67,10 @@ void A110x2500SpiRead(unsigned char address,
 {
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
+  pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
-  
+  MAP_PinTypeSPI(PIN_06, PIN_MODE_7);
+ 
   // Write the address/command byte.
   SPI.transfer(address);
   
@@ -90,7 +92,9 @@ void A110x2500SpiWrite(unsigned char address,
 {
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
+  pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
+  MAP_PinTypeSPI(PIN_06, PIN_MODE_7);
   
   // Write the address/command byte.
   SPI.transfer(address);

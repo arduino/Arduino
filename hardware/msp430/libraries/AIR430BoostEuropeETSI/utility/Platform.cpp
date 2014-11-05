@@ -68,6 +68,7 @@ void A110x2500SpiRead(unsigned char address,
 {
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
+  pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
   pinMode_int(RF_SPI_MISO, SPIMISO_SET_MODE);  
   
@@ -92,6 +93,7 @@ void A110x2500SpiWrite(unsigned char address,
 {
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
+  pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
   pinMode_int(RF_SPI_MISO, SPIMISO_SET_MODE);  
   

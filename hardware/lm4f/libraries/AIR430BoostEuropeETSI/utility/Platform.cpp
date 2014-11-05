@@ -59,6 +59,7 @@ void A110x2500SpiInit()
 
   SPI.setDataMode(SPI_MODE0);
   SPI.begin();
+}
 
 void A110x2500SpiRead(unsigned char address,
                       unsigned char *buffer,

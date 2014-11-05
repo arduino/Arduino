@@ -55,8 +55,8 @@ const struct sCC1101Gdo *gGdo[3] = { &gGdo0, NULL, NULL };
 
 static struct sA110LR09PhyInfo gPhyInfo;
 
-static boolean gDataTransmitting = false;
-static boolean gDataReceived = false;
+static volatile boolean gDataTransmitting = false;
+static volatile boolean gDataReceived = false;
 A110x2500Radio Radio;
 
 // ----------------------------------------------------------------------------

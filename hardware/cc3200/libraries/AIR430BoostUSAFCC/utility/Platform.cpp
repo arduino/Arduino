@@ -50,7 +50,7 @@ void A110x2500SpiInit()
    #elif (F_CPU == 24000000)   
    SPI.setClockDivider(SPI_CLOCK_DIV4); //6 MHz SPI Clock
    #elif (F_CPU == 80000000)
-   SPI.setClockDivider(SPI_CLOCK_DIV32); //5 MHz SPI Clock
+   SPI.setClockDivider(SPI_CLOCK_DIV16); //5 MHz SPI Clock
    #elif (F_CPU == 120000000)
    SPI.setClockDivider(SPI_CLOCK_DIV16); //7.5 MHz SPI Clock
    #else
@@ -65,12 +65,11 @@ void A110x2500SpiRead(unsigned char address,
                       unsigned char *buffer,
                       unsigned char count)
 {
-
-  SPI.begin();
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
+  pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
-  
+  MAP_PinTypeSPI(PIN_06, PIN_MODE_7);
   // Write the address/command byte.
   SPI.transfer(address);
   
@@ -90,10 +89,11 @@ void A110x2500SpiWrite(unsigned char address,
                        const unsigned char *buffer,
                        unsigned char count)
 {
-  SPI.begin();
   digitalWrite(RF_SPI_CSN,LOW);
   // Look for CHIP_RDYn from radio.
+  pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
+  MAP_PinTypeSPI(PIN_06, PIN_MODE_7);
   
   // Write the address/command byte.
   SPI.transfer(address);
