@@ -28,7 +28,6 @@ SPIClass::SPIClass(const SPISettings & init) : spi_settings(init)
 }
 
 void SPIClass::begin() {
-
   // Set SS to high so a connected chip will be "deselected" by default
   digitalWrite(spi_settings.ss, HIGH);
 
