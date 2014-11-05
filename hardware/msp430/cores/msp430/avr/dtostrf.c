@@ -16,14 +16,24 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
 
-#include <stdio.h>
+  Modified by Robert Wessels for msp430 on Energia.
+  * mspgcc does not support the %f format in sprintf.
+  * This is a crude workaround.
+*/
+#include <stdint.h>
+#include <math.h>
 
 char *dtostrf (double val, signed char width, unsigned char prec, char *sout) {
   char fmt[20];
-  sprintf(fmt, "%%%d.%df", width, prec);
-  sprintf(sout, fmt, val);
+  
+  int whole = val;
+  float mantissa = val - whole;
+
+  int32_t frac = mantissa * powf(10, prec);
+  if(frac < 0) frac = -frac;
+
+  sprintf(sout, "%d.%d", integer, frac);
   return sout;
 }
 
