@@ -71,6 +71,12 @@ int EthernetClass::begin(uint8_t *mac_address)
 	return lwIPDHCPWaitLeaseValid();
 }
 
+int EthernetClass::maintain()
+{
+	/* Always return 0 which for Arduino is DHCP_CHECK_NONE */
+	return 0;
+}
+
 IPAddress EthernetClass::localIP()
 {
 	return lwIPLocalIPAddrGet();

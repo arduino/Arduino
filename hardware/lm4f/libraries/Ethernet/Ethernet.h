@@ -36,11 +36,16 @@ public:
 	void begin(IPAddress local_ip, IPAddress dns_server, IPAddress gateway);
 	void begin(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet);
 
+	/* For Arduino compatibility */
+	int maintain();
+
+	/* IP Address related functions */
 	IPAddress localIP();
 	IPAddress subnetMask();
 	IPAddress gatewayIP();
 	IPAddress dnsServerIP();
 
+	/* Who is your friend? */
 	friend class EthernetClient;
 	friend class EthernetServer;
 };
