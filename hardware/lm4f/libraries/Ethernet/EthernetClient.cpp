@@ -19,7 +19,6 @@ EthernetClient::EthernetClient(struct client *c) {
 
 	_connected = true;
 	_read = &c->read;
-	_p = c->p;
 	cpcb = c->cpcb;
 	cs = c;
 	cs->mode = false;
@@ -286,8 +285,8 @@ int EthernetClient::peek()
 void EthernetClient::flush()
 {
 	if(available()) {
-		*_read = _p->tot_len;
-		tcp_recved(cpcb, _p->tot_len);
+		*_read = cs->p->tot_len;
+		tcp_recved(cpcb, cs->p->tot_len);
 	}
 }
 
@@ -301,10 +300,10 @@ void EthernetClient::stop()
 	if(cpcb) {
 		tcp_err(cpcb, NULL);
 
-		if(_p) {
-			tcp_recved(cpcb, _p->tot_len);
-			pbuf_free(_p);
-			_p = NULL;
+		if(cs->p) {
+			tcp_recved(cpcb, cs->p->tot_len);
+			pbuf_free(cs->p);
+			cs->p = NULL;
 		}
 
 		err = tcp_close(cpcb);

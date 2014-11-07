@@ -38,7 +38,6 @@ public:
 	using Print::write;
 
 private:
-	struct pbuf *_p;
 	struct tcp_pcb *cpcb;
 	struct client client_state;
 	uint16_t *_read;
