@@ -533,8 +533,8 @@ uint8_t WiFiClient::connected()
     //
     if ( status() ) {
         return true;
-    } else if (rx_currentIndex < rx_fillLevel) {
-        return true;
+//    } else if (rx_currentIndex < rx_fillLevel) {
+//        return true;
     } else {
         return false;
     }

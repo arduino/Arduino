@@ -52,6 +52,7 @@ extern "C" {
 volatile wl_status_t WiFiClass::WiFi_status = WL_DISCONNECTED;
 volatile uint32_t WiFiClass::local_IP = 0;
 bool WiFiClass::_initialized = false;
+bool WiFiClass::_connecting = false;
 int8_t WiFiClass::role = ROLE_STA;
 volatile int WiFiClass::network_count = 0;
 char WiFiClass::fwVersion[] = {0};
@@ -210,6 +211,16 @@ char* WiFiClass::firmwareVersion()
 int WiFiClass::begin(char* ssid)
 {
     //
+    // If we already called begin and are already connecting
+    // then return the status. This prevents sl_WlanConnect() 
+    // from being called repeatedly.
+    //
+    if(_connecting) {
+        delay(500);
+        return status();
+    }
+ 
+    //
     //initialize the simplelink driver and make sure it was a success
     //
     bool init_success = init();
@@ -217,6 +228,8 @@ int WiFiClass::begin(char* ssid)
         return WL_CONNECT_FAILED;
     }
     
+    sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
+
     //
     //Get name length and set security type to open
     //
@@ -236,6 +249,8 @@ int WiFiClass::begin(char* ssid)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
+        sl_WlanProfileAdd(ssid, NameLen, 0, &SecParams, 0, 6, 0);
+        _connecting = true;
         return status();
     } else {
         return WL_CONNECT_FAILED;
@@ -248,6 +263,16 @@ int WiFiClass::begin(char* ssid)
 int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
 {
     //
+    // If we already called begin and are already connecting
+    // then return the status. This prevents sl_WlanConnect() 
+    // from being called repeatedly.
+    //
+    if(_connecting) {
+        delay(500);
+        return status();
+    }
+ 
+    //
     //initialize the simplelink driver and make sure it was a success
     //
     bool init_success = WiFiClass::init();
@@ -255,6 +280,8 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
         return WL_CONNECT_FAILED;
     }
     
+    sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
+
     //
     //get name length and set security type to WEP
     //add key and keylength to security parameters
@@ -277,6 +304,8 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
+        sl_WlanProfileAdd(ssid, NameLen, 0, &SecParams, 0, 6, 0);
+        _connecting = true;
         return status();
     } else {
         return WL_CONNECT_FAILED;
@@ -288,13 +317,24 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
 int WiFiClass::begin(char* ssid, char *passphrase)
 {
     //
+    // If we already called begin and are already connecting
+    // then return the status. This prevents sl_WlanConnect() 
+    // from being called repeatedly.
+    //
+    if(_connecting) {
+        delay(500);
+        return status();
+    }
+    //
     //initialize the simplelink driver and make sure it was a success
     //
     bool init_success = WiFiClass::init();
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
-    
+
+    sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
+
     //
     //get name length and set security type to WPA
     //add passphrase and keylength to security parameters
@@ -317,6 +357,8 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
+        sl_WlanProfileAdd(ssid, NameLen, 0, &SecParams, 0, 6, 0);
+        _connecting = true;
         return status();
     } else {
         return WL_CONNECT_FAILED;
@@ -1022,6 +1064,7 @@ MACAddress WiFiClass::deviceMacByIpAddress(IPAddress ip)
     // Not found!
     return MACADDR_NONE;
 }
+
 
 
 WiFiClass WiFi;

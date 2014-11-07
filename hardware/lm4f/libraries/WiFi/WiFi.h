@@ -57,6 +57,7 @@ public:
     static int16_t _typeArray[MAX_SOCK_NUM];
     
     static bool _initialized;
+    static bool _connecting;
     static bool init();
     volatile static int network_count;
     
