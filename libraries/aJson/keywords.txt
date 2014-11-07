@@ -1,0 +1,67 @@
+#######################################
+# Syntax Coloring Map For aJson
+# Use TAB to seperate identifiers
+#         and KEYWORD specifiers!
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+aJson	KEYWORD1
+aJsonObject	KEYWORD1
+aJsonStream	KEYWORD1
+aJsonClientStream	KEYWORD1
+aJsonStringStream	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+parse	KEYWORD2
+print	KEYWORD2
+deleteItem	KEYWORD2
+getArraySize	KEYWORD2
+getArraySize	KEYWORD2
+getObjectItem	KEYWORD2
+createNull	KEYWORD2
+createTrue	KEYWORD2
+createFalse	KEYWORD2
+createBool	KEYWORD2
+createNumber	KEYWORD2
+createString	KEYWORD2
+createArray	KEYWORD2
+createObject	KEYWORD2
+createIntArray	KEYWORD2
+createFloatArray	KEYWORD2
+createDoubleArray	KEYWORD2
+createStringArray	KEYWORD2
+addItemToArray		KEYWORD2
+addItemToObject		KEYWORD2
+addItemReferenceToArray	KEYWORD2
+addItemReferenceToObject	KEYWORD2
+detachItemFromArray		KEYWORD2
+deleteItemFromArray		KEYWORD2
+detachItemFromObject		KEYWORD2
+deleteItemFromObject		KEYWORD2
+replaceItemInArray		KEYWORD2
+replaceItemInObject		KEYWORD2
+addNullToObject			KEYWORD2
+addTrueToObject			KEYWORD2
+addFalseToObject		KEYWORD2
+addNumberToObject		KEYWORD2
+addStringToObject		KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+aJson_False	LITERAL1
+aJson_True	LITERAL1
+aJson_NULL	LITERAL1
+aJson_Number	LITERAL1
+aJson_String	LITERAL1
+aJson_Array	LITERAL1
+aJson_Object	LITERAL1
+aJson_IsReference	LITERAL1

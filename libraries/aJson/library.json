@@ -1,0 +1,10 @@
+{
+  "name": "Arduino-aJson",
+  "keywords": "json, rest, http, web",
+  "description": "An Arduino library to enable JSON processing with Arduino",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/interactive-matter/aJson.git"
+  }
+}
