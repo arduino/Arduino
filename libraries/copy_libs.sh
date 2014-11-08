@@ -5,7 +5,7 @@ ARCHES="msp430 lm4f cc3200"
 OSTYPE=`uname`
 
 if [[ "$OSTYPE" == "Linux" ]]; then
-	echo "linux"
+	OS_PATH="linux/work/hardware"
 elif [[ "$OSTYPE" == "Darwin" ]]; then
 	OS_PATH="macosx/work/Energia.app/Contents/Resources/Java/hardware"
 	echo $OS_PATH
