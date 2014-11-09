@@ -9,6 +9,7 @@ EthernetClient::EthernetClient(){
 	cs = &client_state;
 	_read = &cs->read;
 	cs->mode = true;
+	cpcb = NULL;
 }
 
 EthernetClient::EthernetClient(struct client *c) {
@@ -292,6 +293,8 @@ void EthernetClient::flush()
 
 void EthernetClient::stop()
 {
+	if(cpcb == NULL)
+		return;
 
 	_connected = false;
 	/* Stop frees any resources including any unread buffers */
