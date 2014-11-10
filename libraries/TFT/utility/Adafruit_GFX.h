@@ -60,7 +60,7 @@
 #  warning "The SD library was not found. loadImage() and image() won't be supported."
 #endif
 
-#define swap(a, b) { int16_t t = a; a = b; b = t; }
+inline void swap(int16_t &a, int16_t &b) { int16_t t = a; a = b; b = t; }
 
 /* TODO
 enum RectMode {
