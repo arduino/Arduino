@@ -119,7 +119,7 @@ public:
     /* Query AP-mode station registration database
      */
     IPAddress getLatestDevice(void) { return IPAddress((const uint8_t *)_connectedDevices[_latestConnect].ipAddress); };
-    unsigned int getTotalDevices(void) { return _connectedDeviceCount; };
+    unsigned int getTotalDevices(void) { _SlNonOsMainLoopTask(); return _connectedDeviceCount; };
     IPAddress deviceIpAddress(unsigned int idx);
     MACAddress deviceMacAddress(unsigned int idx);
     IPAddress deviceIpByMacAddress(MACAddress mac);
