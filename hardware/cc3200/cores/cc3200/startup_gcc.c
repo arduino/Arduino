@@ -110,7 +110,6 @@ __attribute__((weak)) void UARTIntHandler(void) {}
 __attribute__((weak)) void UARTIntHandler1(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
-__attribute__((weak)) void Timer5IntHandler(void) {}
 
 //*****************************************************************************
 //
