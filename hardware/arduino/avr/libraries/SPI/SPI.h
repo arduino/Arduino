@@ -2,6 +2,7 @@
  * Copyright (c) 2010 by Cristian Maglie <c.maglie@bug.st>
  * Copyright (c) 2014 by Paul Stoffregen <paul@pjrc.com> (Transaction API)
  * Copyright (c) 2014 by Matthijs Kooijman <matthijs@stdin.nl> (SPISettings AVR)
+ * Copyright (c) 2014 by Andrew J. Kroll <xxxajk@gmail.com> (atomicity fixes)
  * SPI Master library for arduino.
  *
  * This file is free software; you can redistribute it and/or modify
@@ -19,9 +20,19 @@
 // usingInterrupt(), and SPISetting(clock, bitOrder, dataMode)
 #define SPI_HAS_TRANSACTION 1
 
+// SPI_HAS_NOTUSINGINTERRUPT means that SPI has notUsingInterrup() method
+#define SPI_HAS_NOTUSINGINTERRUPT 1
+
+// SPI_ATOMIC_VERSION means that SPI has atomicity fixes and what version.
+// This way when there is a bug fix you can check this define to alert users
+// of your code if it uses better version of this library.
+// This also implies everything that SPI_HAS_TRANSACTION as documented above is
+// available too.
+#define SPI_ATOMIC_VERSION 1
+
 // Uncomment this line to add detection of mismatched begin/end transactions.
 // A mismatch occurs if other libraries fail to use SPI.endTransaction() for
-// each SPI.beginTransaction().  Connect a LED to this pin.  The LED will turn
+// each SPI.beginTransaction().  Connect an LED to this pin.  The LED will turn
 // on if any mismatch is ever detected.
 //#define SPI_TRANSACTION_MISMATCH_LED 5
 
@@ -48,6 +59,14 @@
 #define SPI_MODE_MASK 0x0C  // CPOL = bit 3, CPHA = bit 2 on SPCR
 #define SPI_CLOCK_MASK 0x03  // SPR1 = bit 1, SPR0 = bit 0 on SPCR
 #define SPI_2XCLOCK_MASK 0x01  // SPI2X = bit 0 on SPSR
+
+// Flags for the state of SPI, used as needed.
+// Normally inTransaction is not used.
+typedef struct SPIflags {
+  bool initialized : 1; // tells us that begin() was called
+  bool inTransaction : 1;
+  uint8_t interruptMode : 6; // 0=none, 1=mask, 2=global (more can be added)
+} __attribute__((packed)) SPIflags_t;
 
 // define SPI_AVR_EIMSK for AVR boards with external interrupt pins
 #if defined(EIMSK)
@@ -147,36 +166,46 @@ public:
   // Initialize the SPI library
   static void begin();
 
-  // If SPI is to used from within an interrupt, this function registers
+  // If SPI is used from within an interrupt, this function registers
   // that interrupt with the SPI library, so beginTransaction() can
   // prevent conflicts.  The input interruptNumber is the number used
   // with attachInterrupt.  If SPI is used from a different interrupt
   // (eg, a timer), interruptNumber should be 255.
   static void usingInterrupt(uint8_t interruptNumber);
+  // And this does the opposite.
+  static void notUsingInterrupt(uint8_t interruptNumber);
 
   // Before using SPI.transfer() or asserting chip select pins,
   // this function is used to gain exclusive access to the SPI bus
   // and configure the correct settings.
   inline static void beginTransaction(SPISettings settings) {
-    if (interruptMode > 0) {
-      #ifdef SPI_AVR_EIMSK
-      if (interruptMode == 1) {
-        interruptSave = SPI_AVR_EIMSK;
-        SPI_AVR_EIMSK &= ~interruptMask;
-      } else
-      #endif
-      {
-        interruptSave = SREG;
-        cli();
-      }
-    }
+    uint8_t sreg = SREG;
+    noInterrupts();
     #ifdef SPI_TRANSACTION_MISMATCH_LED
-    if (inTransactionFlag) {
+    if (modeFlags.inTransaction) {
       pinMode(SPI_TRANSACTION_MISMATCH_LED, OUTPUT);
       digitalWrite(SPI_TRANSACTION_MISMATCH_LED, HIGH);
     }
-    inTransactionFlag = 1;
+    modeFlags.inTransaction = true;
     #endif
+
+    #ifndef SPI_AVR_EIMSK
+    if (modeFlags.interruptMode) {
+      interruptSave = sreg;
+    }
+    #else
+    if (modeFlags.interruptMode == 2) {
+      interruptSave = sreg;
+    } else if (modeFlags.interruptMode == 1) {
+      interruptSave = SPI_AVR_EIMSK;
+      SPI_AVR_EIMSK &= ~interruptMask;
+      SREG = sreg;
+    }
+    #endif
+    else {
+      SREG = sreg;
+    }
+
     SPCR = settings.spcr;
     SPSR = settings.spsr;
   }
@@ -193,16 +222,20 @@ public:
     in.val = data;
     if (!(SPCR & _BV(DORD))) {
       SPDR = in.msb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.msb = SPDR;
       SPDR = in.lsb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.lsb = SPDR;
     } else {
       SPDR = in.lsb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.lsb = SPDR;
       SPDR = in.msb;
+      asm volatile("nop");
       while (!(SPSR & _BV(SPIF))) ;
       out.msb = SPDR;
     }
@@ -225,23 +258,31 @@ public:
   // After performing a group of transfers and releasing the chip select
   // signal, this function allows others to access the SPI bus
   inline static void endTransaction(void) {
+    uint8_t sreg = SREG;
+    noInterrupts();
     #ifdef SPI_TRANSACTION_MISMATCH_LED
-    if (!inTransactionFlag) {
+    if (!modeFlags.inTransaction) {
       pinMode(SPI_TRANSACTION_MISMATCH_LED, OUTPUT);
       digitalWrite(SPI_TRANSACTION_MISMATCH_LED, HIGH);
     }
-    inTransactionFlag = 0;
+    modeFlags.inTransaction = false;
     #endif
-    if (interruptMode > 0) {
-      #ifdef SPI_AVR_EIMSK
-      if (interruptMode == 1) {
-        SPI_AVR_EIMSK = interruptSave;
-      } else
-      #endif
-      {
-        SREG = interruptSave;
-      }
+    #ifndef SPI_AVR_EIMSK
+    if (modeFlags.interruptMode) {
+      SREG = interruptSave;
+    } else {
+      SREG = sreg;
     }
+    #else
+    if (modeFlags.interruptMode == 2) {
+      SREG = interruptSave;
+    } else {
+      if (modeFlags.interruptMode == 1) {
+        SPI_AVR_EIMSK = interruptSave;
+      }
+      SREG = sreg;
+    }
+    #endif
   }
 
   // Disable the SPI bus
@@ -271,12 +312,9 @@ public:
   inline static void detachInterrupt() { SPCR &= ~_BV(SPIE); }
 
 private:
-  static uint8_t interruptMode; // 0=none, 1=mask, 2=global
+  static SPIflags_t modeFlags; // Flags for the state and mode of SPI
   static uint8_t interruptMask; // which interrupts to mask
   static uint8_t interruptSave; // temp storage, to restore state
-  #ifdef SPI_TRANSACTION_MISMATCH_LED
-  static uint8_t inTransactionFlag;
-  #endif
 };
 
 extern SPIClass SPI;
