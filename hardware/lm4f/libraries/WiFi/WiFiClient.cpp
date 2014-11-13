@@ -412,7 +412,13 @@ int WiFiClient::available()
         //
         int iRet = sl_Recv(WiFiClass::_handleArray[_socketIndex], rx_buffer, TCP_RX_BUFF_MAX_SIZE, NULL);
         if ((iRet <= 0)  &&  (iRet != SL_EAGAIN)) {
-            stop();
+            int iRet = sl_Close(WiFiClass::_handleArray[_socketIndex]);
+
+            WiFiClass::_portArray[_socketIndex] = -1;
+            WiFiClass::_handleArray[_socketIndex] = -1;
+            WiFiClass::_typeArray[_socketIndex] = -1;
+            _socketIndex = NO_SOCKET_AVAIL;
+
             memset(rx_buffer, 0, TCP_RX_BUFF_MAX_SIZE);
             return 0;
         }
