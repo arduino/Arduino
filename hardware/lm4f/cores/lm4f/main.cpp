@@ -54,6 +54,16 @@ void _init(void)
 	HWREG(GPIO_PORTF_BASE + GPIO_O_CR) |= 0x1;
 	HWREG(GPIO_PORTD_BASE + GPIO_O_LOCK) = 0x4C4F434B;
 	HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= 0x80;
+
+	// Deep Sleep mode init
+	#ifdef TARGET_IS_BLIZZARD_RB1
+	ROM_SysCtlDeepSleepClockSet(SYSCTL_DSLP_OSC_INT30 | SYSCTL_DSLP_PIOSC_PD);
+	SysCtlDeepSleepPowerSet(0x21);  // FLASHPM = LOW_POWER_MODE, SRAMPM = STANDBY_MODE
+	// Note: Couldn't find the define constants for DeepSleepPowerSet in the driverlib.
+	#else
+	ROM_SysCtlDeepSleepClockConfigSet(1, SYSCTL_DSLP_OSC_INT30 | SYSCTL_DSLP_PIOSC_PD);
+	SysCtlDeepSleepPowerSet(0x121);  // TSPD, FLASHPM = LOW_POWER_MODE, SRAMPM = STANDBY_MODE
+	#endif
 } /* void _init(void) */
 
 } /* extern "C" */
