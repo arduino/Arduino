@@ -70,8 +70,8 @@ void CogLCD::begin(uint8_t cols, uint8_t lines, uint8_t dotsize)
 	send(LCD_COMMAND, 0x30);
 	send(LCD_COMMAND, 0x30);
 
-	/* Function Set: 8bit/2lines/Instruction Table Select */
-	send(LCD_COMMAND, 0x39);
+	/* Function Set: Instruction Table Select */
+	send(LCD_COMMAND, 0x21);
 	/* Internal Oscillator Frequency */
 	send(LCD_COMMAND, 0x14);
 	/* Power Control */
@@ -82,12 +82,17 @@ void CogLCD::begin(uint8_t cols, uint8_t lines, uint8_t dotsize)
 	send(LCD_COMMAND, 0x70);
 	/* Auto-ident */
 	send(LCD_COMMAND, 0x0c);
+	/* Function Set: 8bit/2lines */
+	send(LCD_COMMAND, 0x38);
+
 	/* Left to Right */
-	send(LCD_COMMAND, 0x06);
+	leftToRight();
 	/* Clear */
-	send(LCD_COMMAND, 0x01);
+	clear();
 	/* Display on */
 	display();
+	/* Line 1 column 0 */
+	home();
 }
 
 void CogLCD::send(uint8_t mode, uint8_t data)
@@ -105,14 +110,14 @@ inline size_t CogLCD::write(uint8_t value) {
 
 void CogLCD::clear()
 {
-  send(LCD_COMMAND, LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
-  delayMicroseconds(2000);  // this command takes a long time!
+	send(LCD_COMMAND, LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
+	delayMicroseconds(2000);  // this command takes a long time!
 }
 
 void CogLCD::home()
 {
-  send(LCD_COMMAND, LCD_RETURNHOME);  // set cursor position to zero
-  delayMicroseconds(2000);  // this command takes a long time!
+	send(LCD_COMMAND, LCD_RETURNHOME);  // set cursor position to zero
+	delayMicroseconds(2000);  // this command takes a long time!
 }
 
 // Turn the display on/off (quickly)
@@ -184,7 +189,7 @@ void CogLCD::createChar(uint8_t location, uint8_t charmap[]) {
 	location &= 0x7; // we only have 8 locations 0-7
 	send(LCD_COMMAND, LCD_SETCGRAMADDR | (location << 3));
 	for (int i=0; i<8; i++) {
-	write(charmap[i]);
+		write(charmap[i]);
 	}
 }
 
@@ -192,7 +197,7 @@ void CogLCD::setCursor(uint8_t col, uint8_t row)
 {
 	int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };
 	if ( row >= _numlines ) {
-	row = _numlines-1;    // we count rows starting w/0
+		row = _numlines-1;    // we count rows starting w/0
 	}
 
 	send(LCD_COMMAND, LCD_SETDDRAMADDR | (col + row_offsets[row]));

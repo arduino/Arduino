@@ -8,7 +8,7 @@
  compatible with the  Hitachi HD44780 driver. There are many of 
  them out there, and you can usually tell them by the 16-pin interface.
  
- This sketch prints "I <heart> Arduino!" and a little dancing man
+ This sketch prints "I <heart> Energia!" and a little dancing man
  to the LCD.
  
   The circuit:
@@ -117,11 +117,12 @@ void setup() {
   lcd.createChar(3, armsDown);  
   // create a new character
   lcd.createChar(4, armsUp);  
+  lcd.home();
 
   // Print a message to the lcd.
   lcd.print("I "); 
   lcd.write(byte(0)); // when calling lcd.write() '0' must be cast as a byte
-  lcd.print(" Arduino! ");
+  lcd.print(" Energia! ");
   lcd.write(1);
 
 }
