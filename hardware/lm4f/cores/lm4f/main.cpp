@@ -56,15 +56,21 @@ void _init(void)
 	HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= 0x80;
 
 	// Deep Sleep mode init
-	// DSLP mode clock = PIOSC / 16 = 1MHz
+	// DSLP clock = PIOSC / 16 = 1MHz
+	// Note: Couldn't find the define constants for SysCtlDeepSleepPowerSet in the driverlib.
+	//
 	#ifdef TARGET_IS_BLIZZARD_RB1
 	ROM_SysCtlDeepSleepClockSet(SYSCTL_DSLP_DIV_16 | SYSCTL_DSLP_OSC_INT);
 	SysCtlDeepSleepPowerSet(0x21);  // FLASHPM = LOW_POWER_MODE, SRAMPM = STANDBY_MODE
-	// Note: Couldn't find the define constants for DeepSleepPowerSet in the driverlib.
-	#else
+	SysCtlLDODeepSleepSet(SYSCTL_LDO_1_00V);  // Going lower tends to be very flaky and cause continual resets
+						  // particularly when measuring MCU current.
+	#endif
+	//
+	#ifdef TARGET_IS_SNOWFLAKE_RA0
 	ROM_SysCtlDeepSleepClockConfigSet(16, SYSCTL_DSLP_OSC_INT);
 	SysCtlDeepSleepPowerSet(0x121);  // TSPD, FLASHPM = LOW_POWER_MODE, SRAMPM = STANDBY_MODE
 	#endif
+	//
 } /* void _init(void) */
 
 } /* extern "C" */

@@ -38,16 +38,16 @@
 
 static void (*SysTickCbFuncs[8])(uint32_t ui32TimeMS);
 
-#define SYSTICKMS               (1000 / SYSTICKHZ)
-#define SYSTICKHZ               1000
-#define DEEPSLEEP_CPU		(16000000 / 16)    // PIOSC / 16
+#define SYSTICKHZ               1000UL
+#define SYSTICKMS               (1000UL / SYSTICKHZ)
+#define DEEPSLEEP_CPU		(16000000UL / 16UL)    // PIOSC / 16
 
-static void SysTickMode_DeepSleep(void);
-static void SysTickMode_DeepSleepCoarse(void);
-static void SysTickMode_Run(void);
+static inline void SysTickMode_DeepSleep(void);
+static inline void SysTickMode_DeepSleepCoarse(void);
+static inline void SysTickMode_Run(void);
 static void CPUwfi_safe(void);
 
-static unsigned long milliseconds = 0;
+static volatile unsigned long milliseconds = 0;
 #define SYSTICK_INT_PRIORITY    0x80
 void timerInit()
 {
@@ -73,6 +73,9 @@ void timerInit()
     MAP_IntPrioritySet(FAULT_SYSTICK, SYSTICK_INT_PRIORITY);
     MAP_SysTickIntEnable();
     MAP_IntMasterEnable();
+
+    // PIOSC is used during Deep Sleep mode for wakeup
+    MAP_SysCtlPIOSCCalibrate(SYSCTL_PIOSC_CAL_FACT);  // Factory-supplied calibration used
 }
 
 unsigned long micros(void)
@@ -138,9 +141,9 @@ void sleep(uint32_t ms)
 		// Handle low-power SysTick triggers without using the default SysTickIntHandler
 		if (HWREG(NVIC_INT_CTRL) & NVIC_INT_CTRL_PENDSTSET) {
 			milliseconds += 50;
-			MAP_IntPendClear(FAULT_SYSTICK);
+			HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PENDSTCLR;
 		} else {
-			milliseconds += ((DEEPSLEEP_CPU / (1000/50)) - MAP_SysTickValueGet()) / (DEEPSLEEP_CPU / 1000);
+			milliseconds += ((DEEPSLEEP_CPU / (1000/50)) - HWREG(NVIC_ST_CURRENT)) / (DEEPSLEEP_CPU / 1000);
 		}
 
 		// Restore SysTick to normal parameters in preparation for full-speed ISR execution
@@ -172,9 +175,9 @@ void sleepSeconds(uint32_t seconds)
 		// Handle low-power SysTick triggers without using the default SysTickIntHandler
 		if (HWREG(NVIC_INT_CTRL) & NVIC_INT_CTRL_PENDSTSET) {
 			milliseconds += 1000;
-			MAP_IntPendClear(FAULT_SYSTICK);
+			HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PENDSTCLR;
 		} else {
-			milliseconds += (DEEPSLEEP_CPU - MAP_SysTickValueGet()) / (DEEPSLEEP_CPU / 1000);
+			milliseconds += (DEEPSLEEP_CPU - HWREG(NVIC_ST_CURRENT)) / (DEEPSLEEP_CPU / 1000);
 		}
 
 		// Restore SysTick to normal parameters in preparation for full-speed ISR execution
@@ -227,21 +230,24 @@ void SysTickIntHandler(void)
 	}
 }
 
-static void SysTickMode_DeepSleep(void)
+__attribute__((always_inline))
+static inline void SysTickMode_DeepSleep(void)
 {
-	MAP_SysTickPeriodSet(DEEPSLEEP_CPU / (1000/50));  // 50ms
+	HWREG(NVIC_ST_RELOAD) = DEEPSLEEP_CPU / (1000/50) - 1;
 	HWREG(NVIC_ST_CURRENT) = 0;  // Clear SysTick
 }
 
-static void SysTickMode_DeepSleepCoarse(void)
+__attribute__((always_inline))
+static inline void SysTickMode_DeepSleepCoarse(void)
 {
-	MAP_SysTickPeriodSet(DEEPSLEEP_CPU);  // 1sec
+	HWREG(NVIC_ST_RELOAD) = DEEPSLEEP_CPU - 1;
 	HWREG(NVIC_ST_CURRENT) = 0;  // Clear SysTick
 }
 
-static void SysTickMode_Run(void)
+__attribute__((always_inline))
+static inline void SysTickMode_Run(void)
 {
-	MAP_SysTickPeriodSet(F_CPU / SYSTICKHZ);
+	HWREG(NVIC_ST_RELOAD) = F_CPU / SYSTICKHZ - 1;
 	HWREG(NVIC_ST_CURRENT) = 0;
 }
 
@@ -259,6 +265,7 @@ static void SysTickMode_Run(void)
  * appeared to be missing or did not execute in the code shortly after CPUwfi() when using the driverlib
  * version.  This version appears to fix the issue.
  */
+__attribute__((noinline))
 static void CPUwfi_safe(void)
 {
 	asm volatile ("wfi              \n"\
