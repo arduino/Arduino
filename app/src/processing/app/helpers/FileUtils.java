@@ -161,6 +161,21 @@ public class FileUtils {
     return relative + target.substring(origin.length() + 1);
   }
 
+  // Return target, relative to target. Differences with relativePath
+  // above:
+  //  - Paths are not canonicalized and must be absolute
+  //  - Target must be below origin.
+  public static String relativeSubPath(String origin, String target) {
+    // Sanity check
+    if (!target.startsWith(origin + File.separator))
+      return null;
+    return target.substring(origin.length() + 1);
+  }
+
+  public static String relativeSubPath(File origin, File target) {
+    return relativeSubPath(origin.getAbsolutePath(), target.getAbsolutePath());
+  }
+
   public static String getLinuxPathFrom(File file) {
     return BACKSLASH.matcher(file.getAbsolutePath()).replaceAll("/");
   }

@@ -34,13 +34,13 @@ import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.FileUtils;
 import processing.app.packages.Library;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibraryResolver;
 import processing.app.preproc.*;
 import processing.core.*;
 import static processing.app.I18n._;
 
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
 import javax.swing.*;
 
@@ -90,11 +90,6 @@ public class Sketch {
   private String appletClassName;
   /** Class path determined during build. */
   private String classPath;
-
-  /**
-   * List of library folders.
-   */
-  private LibraryList importedLibraries;
 
   /**
    * File inside the build directory that contains the build options
@@ -161,50 +156,20 @@ public class Sketch {
     codeFolder = new File(folder, "code");
     dataFolder = new File(folder, "data");
 
-    // get list of files in the sketch folder
-    String list[] = folder.list();
-
-    // reset these because load() may be called after an
-    // external editor event. (fix for 0099)
-    codeCount = 0;
-
-    code = new SketchCode[list.length];
-
-    String[] extensions = getExtensions();
-
-    for (String filename : list) {
-      // Ignoring the dot prefix files is especially important to avoid files
-      // with the ._ prefix on Mac OS X. (You'll see this with Mac files on
-      // non-HFS drives, i.e. a thumb drive formatted FAT32.)
-      if (filename.startsWith(".")) continue;
-
-      // Don't let some wacko name a directory blah.pde or bling.java.
-      if (new File(folder, filename).isDirectory()) continue;
-
-      // figure out the name without any extension
-      String base = filename;
-      // now strip off the .pde and .java extensions
-      for (String extension : extensions) {
-        if (base.toLowerCase().endsWith("." + extension)) {
-          base = base.substring(0, base.length() - (extension.length() + 1));
-
-          // Don't allow people to use files with invalid names, since on load,
-          // it would be otherwise possible to sneak in nasty filenames. [0116]
-          if (Sketch.isSanitaryName(base)) {
-            code[codeCount++] =
-              new SketchCode(new File(folder, filename), extension);
-          } else {
-            editor.console.message(I18n.format("File name {0} is invalid: ignored", filename), true, false);
-          }
-        }
+    List<SketchCode> tmpcode = new ArrayList<SketchCode>();
+    for (File file : FileUtils.listFiles(folder, false, getExtensions())) {
+      if (Sketch.isSanitaryName(file.getName())) {
+        tmpcode.add(new SketchCode(file));
+      } else {
+        editor.console.message(I18n.format("File name {0} is invalid: ignored", file.getName()), true, false);
       }
     }
 
-    if (codeCount == 0)
+    if (tmpcode.isEmpty())
       throw new IOException(_("No valid code files found"));
 
-    // Remove any code that wasn't proper
-    code = (SketchCode[]) PApplet.subset(code, 0, codeCount);
+    codeCount = tmpcode.size();
+    code = tmpcode.toArray(new SketchCode[codeCount]);
 
     // move the main class to the first tab
     // start at 1, if it's at zero, don't bother
@@ -425,7 +390,7 @@ public class Sketch {
     if (renamingCode && currentIndex == 0) {
       for (int i = 1; i < codeCount; i++) {
         if (sanitaryName.equalsIgnoreCase(code[i].getPrettyName()) &&
-          code[i].getExtension().equalsIgnoreCase("cpp")) {
+          code[i].isExtension("cpp")) {
           Base.showMessage(_("Nope"),
                            I18n.format(
 			     _("You can't rename the sketch to \"{0}\"\n" +
@@ -487,7 +452,7 @@ public class Sketch {
           }
         }
 
-        if (!current.renameTo(newFile, newExtension)) {
+        if (!current.renameTo(newFile)) {
           Base.showWarning(_("Error"),
                            I18n.format(
 			     _("Could not rename \"{0}\" to \"{1}\""),
@@ -531,7 +496,7 @@ public class Sketch {
         editor.base.rebuildSketchbookMenus();
 
       } else {  // else if something besides code[0]
-        if (!current.renameTo(newFile, newExtension)) {
+        if (!current.renameTo(newFile)) {
           Base.showWarning(_("Error"),
                            I18n.format(
 			     _("Could not rename \"{0}\" to \"{1}\""),
@@ -557,7 +522,7 @@ public class Sketch {
 			 ), e);
         return;
       }
-      SketchCode newCode = new SketchCode(newFile, newExtension);
+      SketchCode newCode = new SketchCode(newFile);
       //System.out.println("new code is named " + newCode.getPrettyName() + " " + newCode.getFile());
       insertCode(newCode);
     }
@@ -788,7 +753,7 @@ public class Sketch {
 
       String pdeName = pdeFile.getPath();
       pdeName = pdeName.substring(0, pdeName.length() - 4) + ".ino";
-      return c.renameTo(new File(pdeName), "ino");
+      return c.renameTo(new File(pdeName));
     }
     return false;
   }
@@ -835,7 +800,7 @@ public class Sketch {
     // resaved (with the same name) to another location/folder.
     for (int i = 1; i < codeCount; i++) {
       if (newName.equalsIgnoreCase(code[i].getPrettyName()) &&
-        code[i].getExtension().equalsIgnoreCase("cpp")) {
+        code[i].isExtension("cpp")) {
         Base.showMessage(_("Nope"),
 			 I18n.format(
                            _("You can't save the sketch as \"{0}\"\n" +
@@ -1075,7 +1040,7 @@ public class Sketch {
     }
 
     if (codeExtension != null) {
-      SketchCode newCode = new SketchCode(destFile, codeExtension);
+      SketchCode newCode = new SketchCode(destFile);
 
       if (replacement) {
         replaceCode(newCode);
@@ -1102,19 +1067,13 @@ public class Sketch {
   }
 
 
-  public void importLibrary(Library lib) throws IOException {
-    importLibrary(lib.getSrcFolder());
-  }
-
   /**
    * Add import statements to the current tab for all of packages inside
-   * the specified jar file.
+   * the specified library.
    */
-  public void importLibrary(File jarPath) throws IOException {
+  public void importLibrary(Library lib) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
-    String list[] = Base.headerListFromIncludePath(jarPath);
 
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
@@ -1126,9 +1085,9 @@ public class Sketch {
     // statement is already in there, but if the user has the import
     // commented out, then this will be a problem.
     StringBuffer buffer = new StringBuffer();
-    for (int i = 0; i < list.length; i++) {
+    for (String include : lib.getPublicHeaders()) {
       buffer.append("#include <");
-      buffer.append(list[i]);
+      buffer.append(include);
       buffer.append(">\n");
     }
     buffer.append('\n');
@@ -1337,7 +1296,7 @@ public class Sketch {
     StringBuffer bigCode = new StringBuffer();
     int bigCount = 0;
     for (SketchCode sc : code) {
-      if (sc.isExtension("ino") || sc.isExtension("pde")) {
+      if (sc.isExtension(Base.SKETCH_EXTENSIONS)) {
         sc.setPreprocOffset(bigCount);
         // These #line directives help the compiler report errors with
         // correct the filename and line number (issue 281 & 907)
@@ -1383,21 +1342,11 @@ public class Sketch {
       ex.printStackTrace();
       throw new RunnerException(ex.toString());
     }
-
-    // grab the imports from the code just preproc'd
-
-    importedLibraries = new LibraryList();
-    for (String item : preprocessor.getExtraImports()) {
-      Library lib = Base.importToLibraryTable.get(item);
-      if (lib != null && !importedLibraries.contains(lib)) {
-        importedLibraries.add(lib);
-      }
-    }
-
-    // 3. then loop over the code[] and save each .java file
+    
+    // 2. then loop over the code[] and save each .java file
 
     for (SketchCode sc : code) {
-      if (sc.isExtension("c") || sc.isExtension("cpp") || sc.isExtension("h")) {
+      if (sc.isExtension(Base.SOURCE_EXTENSIONS) || sc.isExtension(Base.HEADER_EXTENSIONS)) {
         // no pre-processing services necessary for java files
         // just write the the contents of 'program' to a .java file
         // into the build directory. uses byte stream and reader/writer
@@ -1411,18 +1360,12 @@ public class Sketch {
         }
 //        sc.setPreprocName(filename);
 
-      } else if (sc.isExtension("ino") || sc.isExtension("pde")) {
+      } else if (sc.isExtension(Base.SKETCH_EXTENSIONS)) {
         // The compiler and runner will need this to have a proper offset
         sc.addPreprocOffset(headerOffset);
       }
     }
   }
-
-
-  public LibraryList getImportedLibraries() {
-    return importedLibraries;
-  }
-
 
   /**
    * Map an error from a set of processed .java files back to its location
@@ -1818,21 +1761,11 @@ public class Sketch {
   // Breaking out extension types in order to clean up the code, and make it
   // easier for other environments (like Arduino) to incorporate changes.
 
-
-  /**
-   * True if the specified extension should be hidden when shown on a tab.
-   * For Processing, this is true for .pde files. (Broken out for subclasses.)
-   */
-  public boolean hideExtension(String what) {
-    return getHiddenExtensions().contains(what);
-  }
-
-
   /**
    * True if the specified code has the default file extension.
    */
   public boolean hasDefaultExtension(SketchCode code) {
-    return code.getExtension().equals(getDefaultExtension());
+    return code.isExtension(getDefaultExtension());
   }
 
 
@@ -1849,11 +1782,7 @@ public class Sketch {
    * extensions.
    */
   public boolean validExtension(String what) {
-    String[] ext = getExtensions();
-    for (int i = 0; i < ext.length; i++) {
-      if (ext[i].equals(what)) return true;
-    }
-    return false;
+    return getExtensions().contains(what);
   }
 
 
@@ -1861,20 +1790,22 @@ public class Sketch {
    * Returns the default extension for this editor setup.
    */
   public String getDefaultExtension() {
-    return "ino";
+    return Base.SKETCH_EXTENSIONS[0];
   }
 
-  static private List<String> hiddenExtensions = Arrays.asList("ino", "pde");
-
   public List<String> getHiddenExtensions() {
-    return hiddenExtensions;
+    return Arrays.asList(Base.SKETCH_EXTENSIONS);
   }
 
   /**
    * Returns a String[] array of proper extensions.
    */
-  public String[] getExtensions() {
-    return new String[] { "ino", "pde", "c", "cpp", "h" };
+  public List<String> getExtensions() {
+    List<String> res = new ArrayList<String>();
+    res.addAll(Arrays.asList(Base.SKETCH_EXTENSIONS));
+    res.addAll(Arrays.asList(Base.SOURCE_EXTENSIONS));
+    res.addAll(Arrays.asList(Base.HEADER_EXTENSIONS));
+    return res;
   }
 
 

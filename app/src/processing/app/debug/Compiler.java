@@ -45,6 +45,7 @@ import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringReplacer;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.packages.Library;
+import processing.app.packages.LibraryList;
 import processing.core.PApplet;
 
 public class Compiler implements MessageConsumer {
@@ -89,12 +90,13 @@ public class Compiler implements MessageConsumer {
     includeFolders.add(prefs.getFile("build.core.path"));
     if (prefs.getFile("build.variant.path") != null)
       includeFolders.add(prefs.getFile("build.variant.path"));
-    for (Library lib : sketch.getImportedLibraries()) {
+    LibraryList libs = Base.getLibraryResolver().findRecursiveDependencies(sketch);
+    for (Library lib : libs) {
       if (verbose)
         System.out.println(I18n
             .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
                     lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
-      includeFolders.add(lib.getSrcFolder());
+      includeFolders.addAll(lib.getPublicIncludeFolders());
     }
     if (verbose)
       System.out.println();
@@ -105,7 +107,7 @@ public class Compiler implements MessageConsumer {
       String[] overrides = prefs.get("architecture.override_check").split(",");
       archs.addAll(Arrays.asList(overrides));
     }
-    for (Library lib : sketch.getImportedLibraries()) {
+    for (Library lib : libs) {
       if (!lib.supportsArchitecture(archs)) {
         System.err.println(I18n
             .format(_("WARNING: library {0} claims to run on {1} "
@@ -124,7 +126,8 @@ public class Compiler implements MessageConsumer {
     // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
     // Doesn't really use configPreferences
     sketch.setCompilingProgress(40);
-    compileLibraries(includeFolders);
+    for (Library lib : libs)
+      compileLibrary(lib, includeFolders);
 
     // 3. compile the core, outputting .o files to <buildPath> and then
     // collecting them into the core.a library file.
@@ -240,35 +243,37 @@ public class Compiler implements MessageConsumer {
   private List<File> compileFiles(File outputPath, File sourcePath,
                                   boolean recurse, List<File> includeFolders)
       throws RunnerException {
-    List<File> sSources = findFilesInFolder(sourcePath, "S", recurse);
-    List<File> cSources = findFilesInFolder(sourcePath, "c", recurse);
-    List<File> cppSources = findFilesInFolder(sourcePath, "cpp", recurse);
+    List<File> sourceFiles = FileUtils.listFiles(sourcePath, recurse, Base.SOURCE_EXTENSIONS);
+    return compileFiles(outputPath, sourcePath, sourceFiles, includeFolders);
+
+  }
+
+  private List<File> compileFiles(File outputPath, File sourcePath,
+                                  List<File> sourceFiles, List<File> includeFolders)
+      throws RunnerException {
     List<File> objectPaths = new ArrayList<File>();
+    for (File file : sourceFiles) {
+      String relative = FileUtils.relativeSubPath(sourcePath, file);
+      File objectFile = new File(outputPath, relative + ".o");
+      File dependFile = new File(outputPath, relative + ".d");
+      objectPaths.add(objectFile);
 
-    for (File file : sSources) {
-      File objectFile = new File(outputPath, file.getName() + ".o");
-      objectPaths.add(objectFile);
-      String[] cmd = getCommandCompilerS(includeFolders, file, objectFile);
-      execAsynchronously(cmd);
-    }
- 		
-    for (File file : cSources) {
-      File objectFile = new File(outputPath, file.getName() + ".o");
-      File dependFile = new File(outputPath, file.getName() + ".d");
-      objectPaths.add(objectFile);
       if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
         continue;
-      String[] cmd = getCommandCompilerC(includeFolders, file, objectFile);
-      execAsynchronously(cmd);
-    }
 
-    for (File file : cppSources) {
-      File objectFile = new File(outputPath, file.getName() + ".o");
-      File dependFile = new File(outputPath, file.getName() + ".d");
-      objectPaths.add(objectFile);
-      if (isAlreadyCompiled(file, objectFile, dependFile, prefs))
-        continue;
-      String[] cmd = getCommandCompilerCPP(includeFolders, file, objectFile);
+      createFolder(objectFile.getParentFile());
+      String[] cmd;
+      if (FileUtils.hasExtension(file, "s")) {
+        cmd = getCommandCompilerS(includeFolders, file, objectFile);
+      } else if (FileUtils.hasExtension(file, "c")) {
+        cmd = getCommandCompilerC(includeFolders, file, objectFile);
+      } else if (FileUtils.hasExtension(file, "cpp")) {
+        cmd = getCommandCompilerCPP(includeFolders, file, objectFile);
+      } else {
+        // This should not be possible...
+        throw new RunnerException("Unknown source file extension: " + file.getName());
+      }
+
       execAsynchronously(cmd);
     }
     
@@ -614,39 +619,10 @@ public class Compiler implements MessageConsumer {
   private void createFolder(File folder) throws RunnerException {
     if (folder.isDirectory())
       return;
-    if (!folder.mkdir())
+    if (!folder.mkdirs())
       throw new RunnerException("Couldn't create: " + folder);
   }
 
-  static public List<File> findFilesInFolder(File folder, String extension,
-                                             boolean recurse) {
-    List<File> files = new ArrayList<File>();
-
-    if (FileUtils.isSCCSOrHiddenFile(folder)) {
-      return files;
-    }
-
-    File[] listFiles = folder.listFiles();
-    if (listFiles == null) {
-      return files;
-    }
-
-    for (File file : listFiles) {
-      if (FileUtils.isSCCSOrHiddenFile(file)) {
-        continue; // skip hidden files
-      }
-
-      if (file.getName().endsWith("." + extension))
-        files.add(file);
-
-      if (recurse && file.isDirectory()) {
-        files.addAll(findFilesInFolder(file, extension, true));
-      }
-    }
-
-    return files;
-  }
-  
   // 1. compile the sketch (already in the buildPath)
   void compileSketch(List<File> includeFolders) throws RunnerException {
     File buildPath = prefs.getFile("build.path");
@@ -655,51 +631,13 @@ public class Compiler implements MessageConsumer {
 
   // 2. compile the libraries, outputting .o files to:
   // <buildPath>/<library>/
-  void compileLibraries(List<File> includeFolders) throws RunnerException {
-    for (Library lib : sketch.getImportedLibraries()) {
-      compileLibrary(lib, includeFolders);
-    }
-  }
-
   private void compileLibrary(Library lib, List<File> includeFolders)
       throws RunnerException {
     File libFolder = lib.getSrcFolder();
     File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
-
-    if (lib.useRecursion()) {
-      // libBuildFolder == {build.path}/LibName
-      // libFolder      == {lib.path}/src
-      recursiveCompileFilesInFolder(libBuildFolder, libFolder, includeFolders);
-
-    } else {
-      // libFolder          == {lib.path}/
-      // utilityFolder      == {lib.path}/utility
-      // libBuildFolder     == {build.path}/LibName
-      // utilityBuildFolder == {build.path}/LibName/utility
-      File utilityFolder = new File(libFolder, "utility");
-      File utilityBuildFolder = new File(libBuildFolder, "utility");
-
-      includeFolders.add(utilityFolder);
-      compileFilesInFolder(libBuildFolder, libFolder, includeFolders);
-      compileFilesInFolder(utilityBuildFolder, utilityFolder, includeFolders);
-
-      // other libraries should not see this library's utility/ folder
-      includeFolders.remove(utilityFolder);
-    }
-  }
-
-  private void recursiveCompileFilesInFolder(File srcBuildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
-    compileFilesInFolder(srcBuildFolder, srcFolder, includeFolders);
-    for (File subFolder : srcFolder.listFiles(new OnlyDirs())) {
-      File subBuildFolder = new File(srcBuildFolder, subFolder.getName());
-      recursiveCompileFilesInFolder(subBuildFolder, subFolder, includeFolders);
-    }
-  }
-
-  private void compileFilesInFolder(File buildFolder, File srcFolder, List<File> includeFolders) throws RunnerException {
-    createFolder(buildFolder);
-    List<File> objects = compileFiles(buildFolder, srcFolder, false, includeFolders);
-    objectFiles.addAll(objects);
+    List<File> libIncludeFolders = new ArrayList<File>(includeFolders);
+    libIncludeFolders.addAll(lib.getPrivateIncludeFolders());
+    objectFiles.addAll(compileFiles(libBuildFolder, libFolder, lib.getSourceFiles(false), libIncludeFolders));
   }
 
   // 3. compile the core, outputting .o files to <buildPath> and then
