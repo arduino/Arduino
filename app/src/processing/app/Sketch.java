@@ -73,7 +73,10 @@ public class Sketch {
 
   /** code folder location for this sketch (may not exist yet) */
   private File codeFolder;
-
+  
+  /** configuration folder location for this sketch (may not exist yet) */
+  private File configFolder;
+    
   private SketchCode current;
   private int currentIndex;
   /**
@@ -160,15 +163,24 @@ public class Sketch {
   protected void load() throws IOException {
     codeFolder = new File(folder, "code");
     dataFolder = new File(folder, "data");
+    configFolder = new File(folder, "configuration");
 
     // get list of files in the sketch folder
     String list[] = folder.list();
+    // get list of files in the library configuration folder
+    String list1[] = configFolder.list();
 
     // reset these because load() may be called after an
     // external editor event. (fix for 0099)
     codeCount = 0;
-
-    code = new SketchCode[list.length];
+    
+    // Add files from library configuration folder if exists
+    if (configFolder.exists()) {
+      code = new SketchCode[list.length+list1.length];
+    }
+    else {
+      code = new SketchCode[list.length];    
+    }
 
     String[] extensions = getExtensions();
 
@@ -203,6 +215,38 @@ public class Sketch {
     if (codeCount == 0)
       throw new IOException(_("No valid code files found"));
 
+    //Check library configuration folder to create tabs for library configuration files
+    if (configFolder.exists()) {
+      for (String filename : list1) {
+        // Ignoring the dot prefix files is especially important to avoid files
+        // with the ._ prefix on Mac OS X. (You'll see this with Mac files on
+        // non-HFS drives, i.e. a thumb drive formatted FAT32.)
+        if (filename.startsWith(".")) continue;
+  
+        // Don't let some wacko name a directory blah.pde or bling.java.
+        if (new File(configFolder, filename).isDirectory()) continue;
+  
+        // figure out the name without any extension
+        String base = filename;
+        // now strip off the .pde and .java extensions
+        for (String extension : extensions) {
+          if (base.toLowerCase().endsWith("." + extension)) {
+            base = base.substring(0, base.length() - (extension.length() + 1));
+  
+            // Don't allow people to use files with invalid names, since on load,
+            // it would be otherwise possible to sneak in nasty filenames. [0116]
+            if (Sketch.isSanitaryName(base)) {
+              code[codeCount++] = new SketchCode(new File(configFolder, filename), extension);
+              // Don't forget to declare it as configuration file
+              code[codeCount-1].setConfig(true);
+            } else {
+              editor.console.message(I18n.format("File name {0} is invalid: ignored", filename), true, false);
+            }
+          }
+        }
+      }
+    }
+    
     // Remove any code that wasn't proper
     code = (SketchCode[]) PApplet.subset(code, 0, codeCount);
 
@@ -877,7 +921,14 @@ public class Sketch {
 
     // now make a fresh copy of the folder
     newFolder.mkdirs();
-
+    
+    // If exists, make a copy of the configuration folder
+    File newConfigFolder= new File(newFolder, "configuration");
+    if (configFolder.exists()) {
+      Base.copyDir(configFolder, newConfigFolder);
+    }
+    
+    
     // grab the contents of the current tab before saving
     // first get the contents of the editor text area
     if (current.isModified()) {
@@ -886,10 +937,17 @@ public class Sketch {
 
     // save the other tabs to their new location
     for (int i = 1; i < codeCount; i++) {
-      File newFile = new File(newFolder, code[i].getFileName());
+      // Library configuration file is not saved in the sketch folder but in the configuration folder
+      File newFile;
+      if (code[i].isConfig() && configFolder.exists()) {
+        newFile = new File(newConfigFolder, code[i].getFileName());
+      }
+      else {
+        newFile = new File(newFolder, code[i].getFileName());
+      }
       code[i].saveAs(newFile);
     }
-
+    
     // re-copy the data folder (this may take a while.. add progress bar?)
     if (dataFolder.exists()) {
       File newDataFolder = new File(newFolder, "data");
@@ -1116,12 +1174,28 @@ public class Sketch {
 
     String list[] = Base.headerListFromIncludePath(jarPath);
 
+    // If exists, make a copy of the library configuration file in the sketch folder
+    File LibConfigFolder = new File(jarPath, "configuration");
+    if (LibConfigFolder.exists()) {        
+      System.out.println("Library configuration files found" );
+      File NewLibConfigFolder = (new File(folder,"configuration"));
+      Base.copyDir(LibConfigFolder, NewLibConfigFolder);
+      // Update editor tabs
+      load();
+      // Need to switch between tabs to refresh the current content 
+      if (code[1].fileExists()) {
+        setCurrentCode(1);
+      }
+      setCurrentCode(0);
+    }
+
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
     //if (current.flavor == PDE) {
     if (hasDefaultExtension(current)) {
       setCurrentCode(0);
     }
+    
     // could also scan the text in the file to see if each import
     // statement is already in there, but if the user has the import
     // commented out, then this will be a problem.
@@ -1135,6 +1209,7 @@ public class Sketch {
     buffer.append(editor.getText());
     editor.setText(buffer.toString());
     editor.setSelection(0, 0);  // scroll to start
+    
     setModified(true);
   }
 
@@ -1404,7 +1479,20 @@ public class Sketch {
         // shtuff so that unicode bunk is properly handled
         String filename = sc.getFileName(); //code[i].name + ".java";
         try {
-          Base.saveFile(sc.getProgram(), new File(buildPath, filename));
+          // Is it a Library configuration file ?
+          if (sc.isConfig()) {
+            File TempLibConfigFolder = new File(buildPath, "configuration");
+            // Create the Library Configuration folder if it doesn't exist
+            if(!TempLibConfigFolder.exists()){
+              TempLibConfigFolder.mkdir();
+            }
+            // Copy file in configuration folder
+            Base.saveFile(sc.getProgram(), new File(TempLibConfigFolder.getAbsolutePath(), filename));            
+          }
+          else {
+            // Copy file in build folder
+            Base.saveFile(sc.getProgram(), new File(buildPath, filename));            
+          }
         } catch (IOException e) {
           e.printStackTrace();
           throw new RunnerException(I18n.format(_("Problem moving {0} to the build folder"), filename));
@@ -1954,6 +2042,25 @@ public class Sketch {
       codeFolder.mkdirs();
     }
     return codeFolder;
+  }
+
+  /**
+   * Returns the location of the sketch's configuration folder. (It may not exist yet.)
+   */
+  public File getConfigFolder() {
+    return configFolder;
+  }
+
+
+  /**
+   * Create the config folder if it does not exist already. As a convenience,
+   * it also returns the config folder, since it's likely about to be used.
+   */
+  public File prepareConfigFolder() {
+    if (!configFolder.exists()) {
+      configFolder.mkdirs();
+    }
+    return configFolder;
   }
 
 

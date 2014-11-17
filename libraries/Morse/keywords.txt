@@ -1,0 +1,67 @@
+#######################################
+# Syntax Coloring Map For Morse
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Morse	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+dot	KEYWORD2
+dash	KEYWORD2
+endchar	KEYWORD2
+endword	KEYWORD2
+_A	KEYWORD2
+_B	KEYWORD2
+_C	KEYWORD2
+_D	KEYWORD2
+_E	KEYWORD2
+_F	KEYWORD2
+_G	KEYWORD2
+_H	KEYWORD2
+_I	KEYWORD2
+_J	KEYWORD2
+_K	KEYWORD2
+_L	KEYWORD2
+_M	KEYWORD2
+_N	KEYWORD2
+_O	KEYWORD2
+_P	KEYWORD2
+_Q	KEYWORD2
+_R	KEYWORD2
+_S	KEYWORD2
+_T	KEYWORD2
+_U	KEYWORD2
+_V	KEYWORD2
+_W	KEYWORD2
+_X	KEYWORD2
+_Y	KEYWORD2
+_Z	KEYWORD2
+_0	KEYWORD2
+_1	KEYWORD2
+_2	KEYWORD2
+_3	KEYWORD2
+_4	KEYWORD2
+_5	KEYWORD2
+_6	KEYWORD2
+_7	KEYWORD2
+_8	KEYWORD2
+_9	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+LIB_MORSE_UNIT	LITERAL1
+LIB_MORSE_DOT_DURATION	LITERAL1
+LIB_MORSE_DASH_DURATION	LITERAL1
+LIB_MORSE_INTR_CHAR_GAP	LITERAL1
+LIB_MORSE_SHORT_GAP	LITERAL1
+LIB_MORSE_MEDIUM_GAP	LITERAL1
+LIB_MORSE_ALPHABET_AVAILABLE	LITERAL1
+
+
