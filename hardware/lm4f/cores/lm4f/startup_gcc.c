@@ -94,7 +94,6 @@ __attribute__((weak)) void UARTIntHandler6(void) {}
 __attribute__((weak)) void UARTIntHandler7(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
-__attribute__((weak)) void Timer5IntHandler(void) {}
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
 //*****************************************************************************
@@ -219,7 +218,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    Timer5IntHandler,                       // Timer 5 subtimer A
+    IntDefaultHandler,                      // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // Wide Timer 0 subtimer A
     IntDefaultHandler,                      // Wide Timer 0 subtimer B
@@ -352,7 +351,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // I2C3 Master and Slave
     ToneIntHandler,                         // Timer 4 subtimer A
     IntDefaultHandler,                      // Timer 4 subtimer B
-    Timer5IntHandler,                       // Timer 5 subtimer A
+    IntDefaultHandler,                      // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // FPU
     0,                                      // Reserved

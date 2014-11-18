@@ -29,8 +29,8 @@
 #define SPI_MODE3 SPI_SUB_MODE_3
 
 #define SPI_MODE_MASK SPI_SUB_MODE_3
-#define SPI_CLKD_MASK 0xF << 2
-#define SPI_EXTCLK_MASK 0xFF0 << 4
+#define SPI_CLKD_MASK (0xF << 2)
+#define SPI_EXTCLK_MASK (0xFF0 << 4)
 #define BOOST_PACK_SPI 0
 
 #define MSBFIRST 1
