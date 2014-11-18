@@ -140,10 +140,10 @@ void sleep(uint32_t ms)
 
 		// Handle low-power SysTick triggers without using the default SysTickIntHandler
 		if (HWREG(NVIC_INT_CTRL) & NVIC_INT_CTRL_PENDSTSET) {
-			milliseconds += 50;
+			milliseconds += 100;
 			HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PENDSTCLR;
 		} else {
-			milliseconds += ((DEEPSLEEP_CPU / (1000/50)) - HWREG(NVIC_ST_CURRENT)) / (DEEPSLEEP_CPU / 1000);
+			milliseconds += ((DEEPSLEEP_CPU / (1000/100)) - HWREG(NVIC_ST_CURRENT)) / (DEEPSLEEP_CPU / 1000);
 		}
 
 		// Restore SysTick to normal parameters in preparation for full-speed ISR execution
@@ -233,7 +233,7 @@ void SysTickIntHandler(void)
 __attribute__((always_inline))
 static inline void SysTickMode_DeepSleep(void)
 {
-	HWREG(NVIC_ST_RELOAD) = DEEPSLEEP_CPU / (1000/50) - 1;
+	HWREG(NVIC_ST_RELOAD) = DEEPSLEEP_CPU / (1000/100) - 1;
 	HWREG(NVIC_ST_CURRENT) = 0;  // Clear SysTick
 }
 
