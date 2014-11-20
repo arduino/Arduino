@@ -37,6 +37,8 @@
 #define TEMBOO_ERROR_APPKEY_NAME_MISSING  (205)
 #define TEMBOO_ERROR_APPKEY_MISSING       (207)
 #define TEMBOO_ERROR_HTTP_ERROR           (223)
+#define TEMBOO_ERROR_STREAM_TIMEOUT       (225)
+#define TEMBOO_CHOREO_DEFAULT_TIMEOUT_SECS     (901) //15 minutes and 1 second
 
 class TembooChoreo : public Stream {
     public:
@@ -100,10 +102,12 @@ class TembooChoreo : public Stream {
        
         // run the choreo using the current input info
         int run();
+        //run the choreo with a time out in case we lose connection
+        int run(uint16_t timeoutSecs);
 
         // run the choreo on the Temboo server at the given IP address and port
         // (used only when instructed by Temboo customer support.)
-        int run(IPAddress addr, uint16_t port);
+        int run(IPAddress addr, uint16_t port, uint16_t timeout);
 
         void close();
 

@@ -27,6 +27,8 @@
 #include "utility/TembooSession.h"
 
 static const char HTTP_CODE[] PROGMEM = "HTTP_CODE\x0A\x1F";
+static char HTTP_EOL[]  = "\r\n";
+static char HTTP_EOH[] = "\r\n\r\n";
 
 TembooChoreo::TembooChoreo(Client& client) : m_client(client) {
     m_accountName = NULL;
@@ -168,11 +170,19 @@ void TembooChoreo::addOutputFilter(const String& outputName, const String& filte
 
 
 int TembooChoreo::run() {
-    return run(INADDR_NONE, 80);
+    return run(TEMBOO_CHOREO_DEFAULT_TIMEOUT_SECS);
+}
+
+int TembooChoreo::run(uint16_t timeoutSecs) {
+#ifdef __CC3200R1M1RGC__
+    return run(INADDR_NONE, 443, timeoutSecs);
+#else
+    return run(INADDR_NONE, 80, timeoutSecs);
+#endif
 }
 
 
-int TembooChoreo::run(IPAddress addr, uint16_t port) {
+int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
 
     m_nextChar = NULL;
 
@@ -196,13 +206,22 @@ int TembooChoreo::run(IPAddress addr, uint16_t port) {
     TembooSession session(m_client, addr, port);
     uint16_t httpCode = 0;
     
+    
     for (int i = 0; i < 2; i++) {
+        unsigned long timeoutBeginSecs = session.getTime();
         if (0 != session.executeChoreo(m_accountName, m_appKeyName, m_appKeyValue, m_path, m_inputs, m_outputs, m_preset)) {
             httpCode = 0;
             break;
         }
 
         while(!m_client.available()) {
+            
+            if((session.getTime() - timeoutBeginSecs) >= timeoutSecs) {
+                TEMBOO_TRACELN("Receive time out");
+                m_client.stop();
+                return TEMBOO_ERROR_STREAM_TIMEOUT;
+                
+            }
             if (!m_client.connected()) {
                 TEMBOO_TRACELN("Disconnected");
                 return TEMBOO_ERROR_HTTP_ERROR;
@@ -210,11 +229,14 @@ int TembooChoreo::run(IPAddress addr, uint16_t port) {
             delay(10);
         }
 
-        if (!m_client.find("HTTP/1.1 ")) {
+        if (!m_client.findUntil("HTTP/1.", HTTP_EOL)) {
             TEMBOO_TRACELN("No HTTP");
             return TEMBOO_ERROR_HTTP_ERROR;
         }
+        //Don't care if the next byte is a '1' or a '0'
+        m_client.read();
 
+        //Read the HTTP status code
         httpCode = (uint16_t)m_client.parseInt();
 
         // We expect HTTP response codes to be <= 599, but 
@@ -227,7 +249,7 @@ int TembooChoreo::run(IPAddress addr, uint16_t port) {
         // if we get an auth error AND there was an x-temboo-time header,
         // update the session timeOffset
         if ((httpCode == 401) && (i == 0)) {
-            if (m_client.find("x-temboo-time:")) {
+            if (m_client.findUntil("x-temboo-time:", HTTP_EOH)) {
                 TembooSession::setTime((unsigned long)m_client.parseInt());
                 while(m_client.available()) {
                     m_client.read();
@@ -248,7 +270,7 @@ int TembooChoreo::run(IPAddress addr, uint16_t port) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }
 
-    if (!m_client.find("\x0D\x0A\x0D\x0A")) {
+    if (!m_client.find(HTTP_EOH)) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }
 
