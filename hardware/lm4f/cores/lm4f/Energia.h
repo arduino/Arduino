@@ -7,6 +7,9 @@
 #include <math.h>
 #include "itoa.h"
 #include "part.h"
+#include <avr/dtostrf.h>
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 
 #if defined(__TM4C129XNCZAD__)
 #define TARGET_IS_SNOWFLAKE_RA0
@@ -32,13 +35,6 @@
 #ifdef __cplusplus
 extern "C"{ 
 #endif 
-
-#define PSTR
-#define PROGMEM
-#define pgm_read_byte(x) (*x)
-#define pgm_read_dword(x) (*x)
-#define strcat_P strcat
-#define strlen_P strlen
 
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0

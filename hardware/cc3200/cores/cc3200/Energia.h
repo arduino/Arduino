@@ -8,6 +8,9 @@
 #include <string.h> 
 #include <math.h>
 #include <itoa.h>
+#include <avr/dtostrf.h>
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 
 #include "binary.h"
 
@@ -20,15 +23,7 @@
 #ifdef __cplusplus
 extern "C"{ 
 #endif 
-    
-//addition to deal with PROGMEM references in arduino
-#define PSTR
-#define PROGMEM
-#define pgm_read_byte(x) (*x)
-#define pgm_read_dword(x) (*x)
-#define strcat_P strcat
-#define strlen_P strlen
-
+ 
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
 #define NOT_ON_TIMER 128
