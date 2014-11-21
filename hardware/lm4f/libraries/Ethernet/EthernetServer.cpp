@@ -2,17 +2,15 @@
 #include "EthernetClient.h"
 #include "EthernetServer.h"
 
+/* SYNC_FETCH_AND_NULL: atomic{ tmp=*x; *x=NULL; return tmp; } */
+#define SYNC_FETCH_AND_NULL(x)   (__sync_fetch_and_and(x, NULL))
 
-uint8_t EthernetServer::num_clients = 0;
-
-EthernetServer::EthernetServer(uint16_t port)
-{
+EthernetServer::EthernetServer(uint16_t port) {
 	_port = port;
 	lastConnect = 0;
 }
 
-err_t EthernetServer::do_poll(void *arg, struct tcp_pcb *cpcb)
-{
+err_t EthernetServer::do_poll(void *arg, struct tcp_pcb *cpcb) {
 	/* We only end up here if the connection failed to close
 	 * in an earlier call to tcp_close */
 	err_t err = tcp_close(cpcb);
@@ -25,10 +23,7 @@ err_t EthernetServer::do_poll(void *arg, struct tcp_pcb *cpcb)
 	return err;
 }
 
-err_t EthernetServer::do_close(void *arg, struct tcp_pcb *cpcb)
-{
-	num_clients--;
-
+void EthernetServer::do_close(void *arg, struct tcp_pcb *cpcb) {
 	/*
 	 * Get the server object from the argument
 	 * to get access to variables and functions
@@ -42,100 +37,97 @@ err_t EthernetServer::do_close(void *arg, struct tcp_pcb *cpcb)
 	tcp_sent(cpcb, NULL);
 
 	uint8_t i;
-	for(i = 0; i < server->num_clients; i++) {
-		if(server->clients[i].port == cpcb->remote_port) break;
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (server->clients[i].port == cpcb->remote_port)
+			break;
+	}
+	if (i >= MAX_CLIENTS) {
+		/* connection already closed */
+		return;
 	}
 
-	server->clients[i].port = 0;
+	/* --- close the connection --- */
 
-	tcp_recved(cpcb, server->clients[i].p->tot_len);
-	pbuf_free(server->clients[i].p);
+	struct client * cs = &server->clients[i];
 
-	err_t err = tcp_close(cpcb);
+	cs->read = 0;
+	cs->port = 0;
 
-	if (err != ERR_OK) {
-		/* Error closing, try again later in polli (every 2 sec) */
-		tcp_poll(cpcb, do_poll, 4);
-		return err;
+	if (cs->p) {
+		if (cs->cpcb)
+			tcp_recved(cpcb, cs->p->tot_len);
+		pbuf_free((pbuf*)cs->p);
+		cs->p = NULL;
+	}
+	if (cs->cpcb) {
+		err_t err = tcp_close(cpcb);
+		if (err != ERR_OK) {
+			/* Error closing, try again later in polli (every 2 sec) */
+			tcp_poll(cpcb, do_poll, 4);
+		}
+		cs->cpcb = NULL;
 	}
 
-	server->clients[i].p = 0;
-	server->clients[i].cpcb = NULL;
-	server->clients[i].read = 0;
-
-	return err;
+	return;
 }
 
-err_t EthernetServer::did_sent(void *arg, struct tcp_pcb *pcb, u16_t len)
-{
+err_t EthernetServer::did_sent(void *arg, struct tcp_pcb *pcb, u16_t len) {
 	return ERR_OK;
 }
 
-err_t EthernetServer::do_recv(void *arg, struct tcp_pcb *cpcb, struct pbuf *p, err_t err)
-{
+err_t EthernetServer::do_recv(void *arg, struct tcp_pcb *cpcb, struct pbuf *p,
+		err_t err) {
+
 	/*
 	 * Get the server object from the argument
 	 * to get access to variables and functions
 	 */
 	EthernetServer *server = static_cast<EthernetServer*>(arg);
 
-	if(p == 0) {
-		return do_close(arg, cpcb);
+	/* p==0 for end-of-connection (TCP_FIN packet) */
+	if (p == 0) {
+		do_close(arg, cpcb);
+		return ERR_OK;
 	}
 
 	/* find the connection */
 	uint8_t i;
-	for(i = 0; i < server->num_clients; i++) {
-		if(server->clients[i].port == cpcb->remote_port) break;
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (server->clients[i].port == cpcb->remote_port)
+			break;
+	}
+	if (i >= MAX_CLIENTS) {
+		/* connection already closed - reject the data */
+		return ERR_MEM;
 	}
 
-	if(server->clients[i].p != 0)
-		pbuf_cat(server->clients[i].p, p);
+	if (server->clients[i].p != 0)
+		pbuf_cat((pbuf*)server->clients[i].p, p);
 	else
 		server->clients[i].p = p;
 
 	return ERR_OK;
 }
 
-err_t EthernetServer::do_accept(void *arg, struct tcp_pcb *cpcb, err_t err)
-{
+err_t EthernetServer::do_accept(void *arg, struct tcp_pcb *cpcb, err_t err) {
 	/*
 	 * Get the server object from the argument
 	 * to get access to variables and functions
 	 */
+
 	EthernetServer *server = static_cast<EthernetServer*>(arg);
 
-	unsigned long now;
-
-	now = millis();
-
-	/* Slow down the rate at which connecitons are comming in
-	 * if connections are coming in faster than 50 milli seconds */
-	if(now - server->lastConnect < 50) {
-		delay(30);
+	/* Find free client */
+	uint8_t i;
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (server->clients[i].port == 0)
+			break;
 	}
-
-	server->lastConnect = millis();
-	/*
-	 * Maximum number of clients reached.
-	 * Drop the connection.
-	 */
-	if(server->num_clients == MAX_CLIENTS) {
+	if (i >= MAX_CLIENTS) {
 		return ERR_MEM;
 	}
 
-	/*
-	 * Find active client
-	 * TODO: Do not always settle on the first starving the others.
-	 */
-	uint8_t i;
-	for(i = 0; i < server->num_clients; i++) {
-		if(server->clients[i].port == 0) break;
-	}
-
-	server->num_clients++;
-
-	memset (&server->clients[i], 0, sizeof(struct client));
+	memset(&server->clients[i], 0, sizeof(struct client));
 
 	server->clients[i].port = cpcb->remote_port;
 	server->clients[i].cpcb = cpcb;
@@ -153,8 +145,7 @@ err_t EthernetServer::do_accept(void *arg, struct tcp_pcb *cpcb, err_t err)
 	return ERR_OK;
 }
 
-void EthernetServer::begin()
-{
+void EthernetServer::begin() {
 	spcb = tcp_new();
 	tcp_bind(spcb, IP_ADDR_ANY, _port);
 	spcb = tcp_listen(spcb);
@@ -162,42 +153,44 @@ void EthernetServer::begin()
 	tcp_accept(spcb, do_accept);
 }
 
-EthernetClient EthernetServer::available()
-{
-	/* No clients connected */
-	if(num_clients == 0)
-		return EthernetClient(NULL);
-
-	/* Find active client */
+EthernetClient EthernetServer::available() {
+	static uint8_t lastClient = 0; /* serve the clients in a round-robin fashion */
 	uint8_t i;
-	for(i = 0 ; i < num_clients; i++) {
-		if(clients[i].port != 0) break;
+	/* Find active client */
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (++lastClient >= MAX_CLIENTS)
+			lastClient = 0;
+		if (clients[lastClient].port != 0) {
+			/* cpcb may change to NULL during interrupt servicing, so avoid the NULL pointer access */
+			struct tcp_pcb * cpcb = (tcp_pcb*)clients[lastClient].cpcb;
+			if (cpcb && cpcb->state == ESTABLISHED)
+				return EthernetClient(&clients[lastClient]);
+		}
 	}
-
-	/* Connection established? */
-	if(clients[i].cpcb->state != ESTABLISHED)
-		return EthernetClient(NULL);
-
-	EthernetClient client(&clients[i]);
-	return client;
+	/* No client connection active */
+	return EthernetClient(NULL);
 }
 
-size_t EthernetServer::write(uint8_t b)
-{
+size_t EthernetServer::write(uint8_t b) {
 	return write(&b, 1);
 }
 
-size_t EthernetServer::write(const uint8_t *buffer, size_t size)
-{
+size_t EthernetServer::write(const uint8_t *buffer, size_t size) {
 	uint8_t i;
 	size_t n = 0;
 	EthernetClient client;
 
 	/* Find connected clients */
-	for(i = 0 ; i < num_clients; i++) {
-		if(clients[i].port != 0 && clients[i].cpcb->state == ESTABLISHED)
-			client = EthernetClient(&clients[i]);
-			n += client.write(buffer, size);
+	for (i = 0; i < MAX_CLIENTS; i++) {
+		if (clients[i].port != 0 && clients[i].cpcb
+				&& clients[i].cpcb->state == ESTABLISHED) {
+			/* cpcb may change to NULL during interrupt servicing, so avoid the NULL pointer access */
+			struct tcp_pcb * cpcb = (tcp_pcb*)clients[i].cpcb;
+			if (cpcb && cpcb->state == ESTABLISHED) {
+				client = EthernetClient(&clients[i]);
+				n += client.write(buffer, size);
+			}
+		}
 	}
 
 	return n;
