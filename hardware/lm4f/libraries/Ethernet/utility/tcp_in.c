@@ -166,8 +166,12 @@ tcp_input(struct pbuf *p, struct netif *inp)
      for an active connection. */
   prev = NULL;
 
-  
+  struct tcp_pcb * first = NULL;
   for(pcb = tcp_active_pcbs; pcb != NULL; pcb = pcb->next) {
+  	if(pcb == first) {
+	  pcb == NULL;
+	  break;
+	}
     LWIP_ASSERT("tcp_input: active pcb->state != CLOSED", pcb->state != CLOSED);
     LWIP_ASSERT("tcp_input: active pcb->state != TIME-WAIT", pcb->state != TIME_WAIT);
     LWIP_ASSERT("tcp_input: active pcb->state != LISTEN", pcb->state != LISTEN);
@@ -189,12 +193,19 @@ tcp_input(struct pbuf *p, struct netif *inp)
       break;
     }
     prev = pcb;
+    first = tcp_active_pcbs;
   }
 
   if (pcb == NULL) {
     /* If it did not go to an active connection, we check the connections
        in the TIME-WAIT state. */
+	first = NULL;
     for(pcb = tcp_tw_pcbs; pcb != NULL; pcb = pcb->next) {
+    	if(pcb == first)
+		{
+		  pcb == NULL;
+		  break;
+		}
       LWIP_ASSERT("tcp_input: TIME-WAIT pcb->state == TIME-WAIT", pcb->state == TIME_WAIT);
       if (pcb->remote_port == tcphdr->src &&
          pcb->local_port == tcphdr->dest &&
@@ -208,12 +219,19 @@ tcp_input(struct pbuf *p, struct netif *inp)
         pbuf_free(p);
         return;
       }
+      first = tcp_tw_pcbs;
     }
 
     /* Finally, if we still did not get a match, we check all PCBs that
        are LISTENing for incoming connections. */
     prev = NULL;
+    struct tcp_pcb_listen * lfirst = NULL;
     for(lpcb = tcp_listen_pcbs.listen_pcbs; lpcb != NULL; lpcb = lpcb->next) {
+    	if(lpcb == lfirst)
+		{
+		  lpcb == NULL;
+		  break;
+		}
       if (lpcb->local_port == tcphdr->dest) {
 #if SO_REUSE
         if (ip_addr_cmp(&(lpcb->local_ip), &current_iphdr_dest)) {
@@ -233,6 +251,7 @@ tcp_input(struct pbuf *p, struct netif *inp)
 #endif /* SO_REUSE */
       }
       prev = (struct tcp_pcb *)lpcb;
+      lfirst = tcp_listen_pcbs.listen_pcbs;
     }
 #if SO_REUSE
     /* first try specific local IP */

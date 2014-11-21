@@ -851,12 +851,11 @@ tivaif_receive(struct netif *psNetif)
                       LINK_STATS_INC(link.drop);
                       DRIVER_STATS_INC(RXPacketCBErrCount);
                   }
-
-                  /* We're finished with this packet so make sure we don't try
-                   * to link the next buffer to it.
-                   */
-                  pBuf = NULL;
               }
+			  /* We're finished with this packet so make sure we don't try
+			   * to link the next buffer to it.
+			   */
+			  pBuf = NULL;
           }
       }
 
@@ -901,6 +900,12 @@ tivaif_receive(struct netif *psNetif)
       {
           pDescList->ui32Read = 0;
       }
+  }
+  if(pBuf != NULL)  {
+	  /* discard buffer of partial multi-frame packet */
+	  /* TODO: so the next packet must be discarded because of the missing head frames */
+	  pbuf_free(pBuf);
+	  pBuf = NULL;
   }
 }
 
