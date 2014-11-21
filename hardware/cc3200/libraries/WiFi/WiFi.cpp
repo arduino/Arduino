@@ -133,6 +133,11 @@ bool WiFiClass::init()
     }
     
     //
+    //Delete all profiles$
+    //
+    sl_WlanProfileDel(0xff);
+
+    //
     //disconnect from anything if for some reason it's connected
     //
     sl_WlanDisconnect();
