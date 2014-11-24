@@ -1,4 +1,44 @@
 
+ARDUINO 1.0.7
+
+[libraries]
+* Backported GSM from IDE 1.5.x
+* EthernetClien: use IANA recommended ephemeral port range, 49152-65535 (Jack Christensen, cifer-lee)
+
+[core]
+* Fixed missing NOT_AN_INTERRUPT constant in digitalPinToInterrupt() macro
+* Fixed regression in HardwareSerial::available() introduced with https://github.com/arduino/Arduino/pull/2057
+
+ARDUINO 1.0.6 - 2014.09.16
+
+[core]
+* avr: Improved USB-CDC write speed (Justin Rajewski)
+* avr: Improved USB-CDC read code (Paul Brook)
+* avr: Fixed race condition in USB-CDC transmit (Paul Brook)
+* avr: Added replacement stub for cstdlib atexit() funciton (Christopher Andrews)
+* Fixed wrong NULL pointer handling in Stream class (Amulya Kumar Sahoo)
+* Backported String class from IDE 1.5.x (Matt Jenkins)
+* Backported Print class from IDE 1.5.x
+* Backported digitalPinToInterrupt macro from IDE 1.5.x
+* Added initVariant() hook to allow 3rd party variant-specific initialization
+* Added replacement stub for cstdlib atexit() function (Christopher Andrews)
+
+[ide]
+* Added compatibility for IDE 1.5.x libraries layout
+* Fix toolchain command line to compile assembler files (Jimmy Hedman)
+* If two libraries have the same header file use the lib with the same folder name (Paul Stoffregen)
+
+[libraries]
+* Robot_Control: removed duplicated SPI and Wire (Xun Yang)
+* Robot_Control: fixed issue on motors being opposite (Xun Yang)
+* Robot_Control: updated turning algorithm (Xun Yang)
+* Esplora: added reading form Tinkerkit inputs
+* SoftwareSerial: Fix idle level when initializing with inverted logic (Jens-Christian Skibakk)
+* fixed a bunch of examples
+
+[firmware]
+* Wifishield: fixed paths on firmware upgrade scripts
+
 ARDUINO 1.0.5-r2 - 2014.01.08
 
 * Signed drivers for Windows 8.1

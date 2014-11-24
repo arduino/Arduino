@@ -113,6 +113,9 @@ typedef uint8_t boolean;
 typedef uint8_t byte;
 
 void init(void);
+void initVariant(void);
+
+int atexit(void (*func)()) __attribute__((weak));
 
 void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
@@ -167,6 +170,8 @@ extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
 
 #define NOT_A_PIN 0
 #define NOT_A_PORT 0
+
+#define NOT_AN_INTERRUPT -1
 
 #ifdef ARDUINO_MAIN
 #define PA 1
