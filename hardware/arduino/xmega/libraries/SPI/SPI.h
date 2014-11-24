@@ -21,8 +21,8 @@
  *   use of the standard SPIC without needing to change anything in the 3rd party code,
  *   start by defining settings for, say, SPID:
  * 
- *     // Create an SPISettings object (need not be global/persistent):
- *     SPISettings myPortD(&SPID, SS1, MOSI1, MISO1, SCK1); // port*, cs, mosi, miso, sck
+ *     // Create an SPIPortSettings object (need not be global/persistent):
+ *     SPIPortSettings myPortD(&SPID, SS1, MOSI1, MISO1, SCK1); // port*, cs, mosi, miso, sck
  *
  *     // tell the SPI global to switch its settings:
  *     SPI.setConfiguration(myPortD);
@@ -148,7 +148,7 @@
 #define SPI_EXTERNAL_DECL(name)		extern SPIClass name;
 
 
-typedef struct SPISettingsStruct {
+typedef struct SPIPortSettingsStruct {
 
 #if defined(__AVR_XMEGA__)
 	SPI_t * port;
@@ -160,7 +160,7 @@ typedef struct SPISettingsStruct {
 
 
 
-	SPISettingsStruct() :
+	SPIPortSettingsStruct() :
 #if defined(__AVR_XMEGA__)
 		port(&(SPI_PORT)),
 #endif
@@ -171,7 +171,7 @@ typedef struct SPISettingsStruct {
 	{
 	}
 
-	SPISettingsStruct(
+	SPIPortSettingsStruct(
 #if defined(__AVR_XMEGA__)
 		SPI_t * port, 
 #endif
@@ -185,7 +185,7 @@ typedef struct SPISettingsStruct {
 		clk(clock)
 	{
 	}
-} SPISettings;
+} SPIPortSettings;
 
 
 
@@ -208,11 +208,11 @@ public:
 
 
   SPIClass();
-  SPIClass(const SPISettings & init);
-  inline const SPISettings * configuration() { return  &spi_settings;}
-  inline void setConfiguration(const SPISettings & settings) { spi_settings = settings;}
+  SPIClass(const SPIPortSettings & init);
+  inline const SPIPortSettings * configuration() { return  &spi_settings;}
+  inline void setConfiguration(const SPIPortSettings & settings) { spi_settings = settings;}
 private:
-  SPISettings spi_settings;
+  SPIPortSettings spi_settings;
 
 
 };
