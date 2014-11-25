@@ -8,14 +8,14 @@ uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
 uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = { 
   0, 0, 0, 0 };
 
-int EthernetClass::begin(uint8_t *mac_address)
+int EthernetClass::begin(uint8_t *mac_address, uint8_t csPin)
 {
   static DhcpClass s_dhcp;
   _dhcp = &s_dhcp;
 
 
   // Initialise the basic info
-  W5100.init();
+  W5100.init(csPin);
   W5100.setMACAddress(mac_address);
   W5100.setIPAddress(IPAddress(0,0,0,0).raw_address());
 
@@ -34,33 +34,33 @@ int EthernetClass::begin(uint8_t *mac_address)
   return ret;
 }
 
-void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip)
+void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, uint8_t csPin)
 {
   // Assume the DNS server will be the machine on the same network as the local IP
   // but with last octet being '1'
   IPAddress dns_server = local_ip;
   dns_server[3] = 1;
-  begin(mac_address, local_ip, dns_server);
+  begin(mac_address, local_ip, dns_server, csPin);
 }
 
-void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server)
+void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, uint8_t csPin)
 {
   // Assume the gateway will be the machine on the same network as the local IP
   // but with last octet being '1'
   IPAddress gateway = local_ip;
   gateway[3] = 1;
-  begin(mac_address, local_ip, dns_server, gateway);
+  begin(mac_address, local_ip, dns_server, gateway, csPin);
 }
 
-void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway)
+void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, uint8_t csPin)
 {
   IPAddress subnet(255, 255, 255, 0);
-  begin(mac_address, local_ip, dns_server, gateway, subnet);
+  begin(mac_address, local_ip, dns_server, gateway, subnet, csPin);
 }
 
-void EthernetClass::begin(uint8_t *mac, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
+void EthernetClass::begin(uint8_t *mac, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet, uint8_t csPin)
 {
-  W5100.init();
+  W5100.init(csPin);
   W5100.setMACAddress(mac);
   W5100.setIPAddress(local_ip._address);
   W5100.setGatewayIp(gateway._address);
@@ -117,6 +117,11 @@ IPAddress EthernetClass::gatewayIP()
 IPAddress EthernetClass::dnsServerIP()
 {
   return _dnsServerAddress;
+}
+
+void EthernetClass::macAddress(byte *mac)
+{
+  W5100.getMACAddress(mac);
 }
 
 EthernetClass Ethernet;
