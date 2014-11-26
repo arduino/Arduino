@@ -1,24 +1,24 @@
 /*
-###############################################################################
-#
-# Temboo TI library
-#
-# Copyright 2014, Temboo Inc.
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-# http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing,
-# software distributed under the License is distributed on an
-# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-# either express or implied. See the License for the specific
-# language governing permissions and limitations under the License.
-#
-###############################################################################
-*/
+ ###############################################################################
+ #
+ # Temboo TI library
+ #
+ # Copyright 2014, Temboo Inc.
+ #
+ # Licensed under the Apache License, Version 2.0 (the "License");
+ # you may not use this file except in compliance with the License.
+ # You may obtain a copy of the License at
+ #
+ # http://www.apache.org/licenses/LICENSE-2.0
+ #
+ # Unless required by applicable law or agreed to in writing,
+ # software distributed under the License is distributed on an
+ # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ # either express or implied. See the License for the specific
+ # language governing permissions and limitations under the License.
+ #
+ ###############################################################################
+ */
 
 #include <string.h>
 #include <Client.h>
@@ -182,26 +182,26 @@ int TembooChoreo::run(uint16_t timeoutSecs, bool useSSL) {
 }
 
 int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs, bool useSSL) {
-
+    
     m_nextChar = NULL;
-
+    
     if (m_accountName == NULL || *m_accountName == '\0') {
         return TEMBOO_ERROR_ACCOUNT_MISSING;
     }
-
+    
     if (m_path == NULL || *m_path == '\0') {
         return TEMBOO_ERROR_CHOREO_MISSING;
     }
-
+    
     if (m_appKeyName == NULL || *m_appKeyName == '\0') {
         return TEMBOO_ERROR_APPKEY_NAME_MISSING;
     }
-
+    
     if (m_appKeyValue == NULL || *m_appKeyValue == '\0') {
         return TEMBOO_ERROR_APPKEY_MISSING;
     }
-
-
+    
+    
     TembooSession session(m_client, addr, port);
     uint16_t httpCode = 0;
     
@@ -214,10 +214,6 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs, bool 
             break;
         }
         
-        if (status == SSL_NOT_SUPPORTED) {
-            return TEMBOO_ERROR_SSL_NOT_SUPPORTED;
-        }
-
         while(!m_client.available()) {
             
             if((session.getTime() - timeoutBeginSecs) >= timeoutSecs) {
@@ -232,24 +228,24 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs, bool 
             }
             delay(10);
         }
-
+        
         if (!m_client.findUntil("HTTP/1.", HTTP_EOL)) {
             TEMBOO_TRACELN("No HTTP");
             return TEMBOO_ERROR_HTTP_ERROR;
         }
         //Don't care if the next byte is a '1' or a '0'
         m_client.read();
-
+        
         //Read the HTTP status code
         httpCode = (uint16_t)m_client.parseInt();
-
-        // We expect HTTP response codes to be <= 599, but 
+        
+        // We expect HTTP response codes to be <= 599, but
         // we need to be prepared for anything.
         if (httpCode >= 600) {
             TEMBOO_TRACELN("Invalid HTTP");
             httpCode = 0;
         }
-
+        
         // if we get an auth error AND there was an x-temboo-time header,
         // update the session timeOffset
         if ((httpCode == 401) && (i == 0)) {
@@ -264,20 +260,24 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs, bool 
             break;
         }
     }
-
+    
     uint16toa(httpCode, m_httpCodeStr);
     strcat_P(m_httpCodeStr, PSTR("\x0A\x1E"));
     m_nextState = START;
     m_nextChar = HTTP_CODE;
     
+    if (status == SSL_NOT_SUPPORTED) {
+        return TEMBOO_ERROR_SSL_NOT_SUPPORTED;
+    }
+    
     if (httpCode < 200 || httpCode >= 300) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }
-
+    
     if (!m_client.find(HTTP_EOH)) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }
-
+    
     return TEMBOO_ERROR_OK;
 }
 
@@ -291,7 +291,7 @@ int TembooChoreo::available() {
     if (m_nextChar != NULL) {
         return m_client.available() + 1;
     }
-
+    
     // Otherwise, return however many characters the client has.
     return m_client.available();
 }
@@ -303,14 +303,14 @@ int TembooChoreo::peek() {
     if (m_nextChar != NULL) {
         return (int)*m_nextChar;
     }
-
+    
     // Otherwise, return whatever is in the client buffer.
     return m_client.peek();
 }
 
 
 int TembooChoreo::read() {
-
+    
     int c = 0;
     switch(m_nextState) {
         case START:
@@ -318,7 +318,7 @@ int TembooChoreo::read() {
             c = (int)pgm_read_byte(m_nextChar++);
             m_nextState = HTTP_CODE_TAG;
             break;
-
+            
         case HTTP_CODE_TAG:
             c = (int)pgm_read_byte(m_nextChar++);
             if (pgm_read_byte(m_nextChar) == '\0') {
@@ -326,7 +326,7 @@ int TembooChoreo::read() {
                 m_nextChar = m_httpCodeStr;
             }
             break;
-
+            
         case HTTP_CODE_VALUE:
             c = (int)(*m_nextChar++);
             if (*m_nextChar == '\0') {
@@ -334,7 +334,7 @@ int TembooChoreo::read() {
                 m_nextChar = NULL;
             }
             break;
-
+            
         default:
             c = m_client.read();
     }
