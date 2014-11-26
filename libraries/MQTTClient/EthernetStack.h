@@ -17,7 +17,6 @@
 #if !defined(ETHERNETSTACK_H)
 #define ETHERNETSTACK_H
 
-#include <SPI.h>
 #include <Ethernet.h>
 
 
