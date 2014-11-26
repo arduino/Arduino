@@ -195,6 +195,20 @@ char* WiFiClass::firmwareVersion()
    return fwVersion;
 }
 
+void WiFiClass::setIpDefaults()
+{
+    //
+    // If ip addess configuration was not set using config(),
+    // set IP to DHCP.
+    // Only check for IP address since without the IP address
+    // being set, static IP configuration is useless?
+    //
+    if(local_IP == 0) {
+        unsigned char val = 1;
+        sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE,1,1,&val);
+    }
+}
+
 //--tested, working--//
 int WiFiClass::begin(char* ssid)
 {
@@ -207,7 +221,7 @@ int WiFiClass::begin(char* ssid)
         delay(500);
         return status();
     }
- 
+
     //
     //initialize the simplelink driver and make sure it was a success
     //
@@ -215,7 +229,12 @@ int WiFiClass::begin(char* ssid)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
-    
+
+    //
+    // Set IP address configuration to DHCP if needed
+    //
+    setIpDefaults();
+
     sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
 
     //
@@ -268,6 +287,11 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
         return WL_CONNECT_FAILED;
     }
     
+    //
+    // Set IP address configuration to DHCP if needed
+    //
+    setIpDefaults();
+
     sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
 
     //
@@ -313,14 +337,20 @@ int WiFiClass::begin(char* ssid, char *passphrase)
         delay(500);
         return status();
     }
+
     //
-    //initialize the simplelink driver and make sure it was a success
+    // Set IP address configuration to DHCP if needed
     //
     bool init_success = WiFiClass::init();
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
 
+    setIpDefaults();
+
+    //
+    //initialize the simplelink driver and make sure it was a success
+    //
     sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
 
     //
@@ -425,6 +455,13 @@ void WiFiClass::config(IPAddress local_ip)
     if (!_initialized) {
         init();
     }
+
+    //
+    // Set the local_IP indicating that the network
+    // is configured for static IP.
+    //
+    local_IP = local_ip;
+
     //
     //get current configuration
     //
@@ -436,7 +473,7 @@ void WiFiClass::config(IPAddress local_ip)
     //Assign new ip address to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)local_ip;
+    config.ipV4 = sl_Ntohl((uint32_t)local_ip);
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
 }
 
@@ -445,6 +482,13 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
     if (!_initialized) {
         init();
     }
+
+    //
+    // Set the local_IP indicating that the network
+    // is configured for static IP.
+    //
+    local_IP = local_ip;
+
     //
     //get current configuration
     //
@@ -456,8 +500,8 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
     //Assign new ip address and new dns server to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)local_ip;
-    config.ipV4DnsServer = (uint32_t)dns_server;
+    config.ipV4 = sl_Ntohl((uint32_t)local_ip);
+    config.ipV4DnsServer = sl_Ntohl((uint32_t)dns_server);
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
@@ -467,6 +511,13 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     if (!_initialized) {
         init();
     }
+
+    //
+    // Set the local_IP indicating that the network
+    // is configured for static IP.
+    //
+    local_IP = local_ip;
+
     //
     //get current configuration
     //
@@ -478,9 +529,9 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     //Assign new ip address and new dns server to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)local_ip;
-    config.ipV4DnsServer = (uint32_t)dns_server;
-    config.ipV4Gateway = (uint32_t)gateway;
+    config.ipV4 = sl_Ntohl((uint32_t)local_ip);
+    config.ipV4DnsServer = sl_Ntohl((uint32_t)dns_server);
+    config.ipV4Gateway = sl_Ntohl((uint32_t)gateway);
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
@@ -490,6 +541,13 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     if (!_initialized) {
         init();
     }
+
+    //
+    // Set the local_IP indicating that the network
+    // is configured for static IP.
+    //
+    local_IP = local_ip;
+
     //
     //get current configuration
     //
@@ -501,10 +559,10 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     //Assign new ip address and new dns server to current config
     //and use netcfgset to set the new configuration in memory
     //
-    config.ipV4 = (uint32_t)local_ip;
-    config.ipV4DnsServer = (uint32_t)dns_server;
-    config.ipV4Gateway = (uint32_t)gateway;
-    config.ipV4Mask = (uint32_t)subnet;
+    config.ipV4 = sl_Ntohl((uint32_t)local_ip);
+    config.ipV4DnsServer = sl_Ntohl((uint32_t)dns_server);
+    config.ipV4Gateway = sl_Ntohl((uint32_t)gateway);
+    config.ipV4Mask = sl_Ntohl((uint32_t)subnet);
     sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
@@ -568,7 +626,7 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
     uint8_t macTemp[6];
     uint8_t macLength = 6;
     sl_NetCfgGet(SL_MAC_ADDRESS_GET, NULL, &macLength, (unsigned char *)macTemp);
-    
+
     //
     //All the arduino examples return the mac address reverse from simplelink
     //
@@ -590,8 +648,16 @@ IPAddress WiFiClass::localIP()
     //is critical. The IP is "written" into the buffer to avoid memory errors
     //
     _SlNonOsMainLoopTask();
+
+    _NetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
+
+    //
+    //change the uint32_t IP to the IPAddress class and return
+    //
     IPAddress retIP(0,0,0,0);
-    retIP = sl_Htonl(local_IP);
+    retIP = sl_Htonl(config.ipV4);
     return retIP;
 }
 

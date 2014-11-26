@@ -335,6 +335,12 @@ public:
      */
     boolean setDateTime(uint16_t month, uint16_t day, uint16_t year, uint16_t hour, uint16_t minute, uint16_t second);
 
+    /*
+     * Set the ip configuration to DHCP if config(...) was not called before WiFi.begin().
+     * This will take care of setting DHCP as default network configuration
+     * if the prvious Sketch set the network to static.
+     */
+    void setIpDefaults();
 
     friend class WiFiClient;
     friend class WiFiServer;
