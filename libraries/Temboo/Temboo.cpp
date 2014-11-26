@@ -170,19 +170,18 @@ void TembooChoreo::addOutputFilter(const String& outputName, const String& filte
 
 
 int TembooChoreo::run() {
-    return run(TEMBOO_CHOREO_DEFAULT_TIMEOUT_SECS);
+    return run(INADDR_NONE, NON_SSL_PORT, TEMBOO_CHOREO_DEFAULT_TIMEOUT_SECS, NO_SSL);
 }
 
-int TembooChoreo::run(uint16_t timeoutSecs) {
-#ifdef __CC3200R1M1RGC__
-    return run(INADDR_NONE, 443, timeoutSecs);
-#else
-    return run(INADDR_NONE, 80, timeoutSecs);
-#endif
+int TembooChoreo::run(uint16_t timeoutSecs, bool useSSL) {
+    if(useSSL) {
+        return  run(INADDR_NONE, SSL_PORT, timeoutSecs, useSSL);
+    } else {
+        return  run(INADDR_NONE, NON_SSL_PORT, timeoutSecs, useSSL);
+    }
 }
 
-
-int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
+int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs, bool useSSL) {
 
     m_nextChar = NULL;
 
@@ -206,12 +205,17 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
     TembooSession session(m_client, addr, port);
     uint16_t httpCode = 0;
     
-    
+    int16_t status = 1;
     for (int i = 0; i < 2; i++) {
         unsigned long timeoutBeginSecs = session.getTime();
-        if (0 != session.executeChoreo(m_accountName, m_appKeyName, m_appKeyValue, m_path, m_inputs, m_outputs, m_preset)) {
+        status = session.executeChoreo(m_accountName, m_appKeyName, m_appKeyValue, m_path, m_inputs, m_outputs, m_preset, useSSL);
+        if (0 != status) {
             httpCode = 0;
             break;
+        }
+        
+        if (status == SSL_NOT_SUPPORTED) {
+            return TEMBOO_ERROR_SSL_NOT_SUPPORTED;
         }
 
         while(!m_client.available()) {
@@ -265,7 +269,7 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
     strcat_P(m_httpCodeStr, PSTR("\x0A\x1E"));
     m_nextState = START;
     m_nextChar = HTTP_CODE;
-
+    
     if (httpCode < 200 || httpCode >= 300) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }

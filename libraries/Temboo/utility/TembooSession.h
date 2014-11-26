@@ -40,6 +40,7 @@
 #define TEMBOO_SEND_QUEUE_SIZE (32)
 #endif
 
+
 class ChoreoInputSet;
 class ChoreoOutputSet;
 class ChoreoPreset;
@@ -75,7 +76,8 @@ class TembooSession {
                 const char* path, 
                 const ChoreoInputSet& inputSet, 
                 const ChoreoOutputSet& outputSet, 
-                const ChoreoPreset& preset);
+                const ChoreoPreset& preset,
+                bool useSSL);
 
         // setTime sets the current time in Unix timestamp format.  Needed for execution request authentication.
         //         NOTE: This method is usually called by TembooChoreo.run() with the current time returned by 

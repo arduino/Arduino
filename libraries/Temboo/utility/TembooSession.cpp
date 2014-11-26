@@ -71,7 +71,8 @@ int TembooSession::executeChoreo(
         const char* path, 
         const ChoreoInputSet& inputSet, 
         const ChoreoOutputSet& outputSet, 
-        const ChoreoPreset& preset) {
+        const ChoreoPreset& preset,
+        bool useSSL) {
 
     DataFormatter fmt(&inputSet, &outputSet, &preset);
     char auth[HMAC_HEX_SIZE_BYTES + 1];
@@ -103,11 +104,21 @@ int TembooSession::executeChoreo(
         strcpy(host, accountName);
         strcat_P(host, TEMBOO_DOMAIN);
         TEMBOO_TRACELN(host);
-#ifdef __CC3200R1M1RGC__
-        connected = m_client.sslConnect(host, m_port);
-#else
-        connected = m_client.connect(host, m_port);
-#endif
+        
+        //if ssConnect returns -1, SSL is not supported
+        
+        if (useSSL){
+            connected = m_client.sslConnect(host, m_port);
+            if (connected == -1) {
+                TEMBOO_TRACELN("SSL not supported");
+                return connected;
+            }
+        }
+        else {
+            connected = m_client.connect(host, m_port);
+        }
+        
+
     } else {
 
         // If an IP address was explicitly specified (presumably for testing purposes),
@@ -125,14 +136,20 @@ int TembooSession::executeChoreo(
         uint16toa(m_port, &host[strlen(host)]);
         
         TEMBOO_TRACELN(host);
-#ifdef __CC3200R1M1RGC__
-        connected = m_client.sslConnect(m_addr, m_port);
-#else
-        connected = m_client.connect(m_addr, m_port);
-#endif
+        //if ssConnect returns -1, SSL is not supported
+        if (useSSL){
+            connected = m_client.sslConnect(m_addr, m_port);
+            if (connected == -1) {
+                TEMBOO_TRACELN("SSL not supported");
+                return connected;
+            }
+        }
+        else {
+            connected = m_client.connect(m_addr, m_port);
+        }
     }
 
-    if (connected) {
+    if (connected > 0) {
 
         TEMBOO_TRACELN("OK. req:");
         qsendProgmem(POST);

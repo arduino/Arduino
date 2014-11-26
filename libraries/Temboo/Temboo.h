@@ -31,6 +31,7 @@
 #include "utility/ChoreoOutputSet.h"
 #include "utility/ChoreoPreset.h"
 
+#define SSL_NOT_SUPPORTED                 (-1)
 #define TEMBOO_ERROR_OK                   (0)
 #define TEMBOO_ERROR_ACCOUNT_MISSING      (201)
 #define TEMBOO_ERROR_CHOREO_MISSING       (203)
@@ -38,7 +39,15 @@
 #define TEMBOO_ERROR_APPKEY_MISSING       (207)
 #define TEMBOO_ERROR_HTTP_ERROR           (223)
 #define TEMBOO_ERROR_STREAM_TIMEOUT       (225)
+#define TEMBOO_ERROR_SSL_NOT_SUPPORTED    (227)
 #define TEMBOO_CHOREO_DEFAULT_TIMEOUT_SECS     (901) //15 minutes and 1 second
+#define NO_SSL                            (0)
+#define USE_SSL                           (1)
+#define NON_SSL_PORT                      (80)
+#define SSL_PORT                          (443)
+
+
+
 
 class TembooChoreo : public Stream {
     public:
@@ -103,11 +112,11 @@ class TembooChoreo : public Stream {
         // run the choreo using the current input info
         int run();
         //run the choreo with a time out in case we lose connection
-        int run(uint16_t timeoutSecs);
+        int run(uint16_t timeoutSecs, bool useSSL);
 
         // run the choreo on the Temboo server at the given IP address and port
         // (used only when instructed by Temboo customer support.)
-        int run(IPAddress addr, uint16_t port, uint16_t timeout);
+        int run(IPAddress addr, uint16_t port, uint16_t timeout, bool useSSL);
 
         void close();
 
