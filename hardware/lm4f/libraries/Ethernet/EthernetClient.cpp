@@ -254,17 +254,16 @@ int EthernetClient::readLocked() {
 		return -1;
 	}
 
-	if (!cs->cpcb) {
-		INT_UNPROTECT(oldLevel);
-		return -1;
-	}
-
 	uint8_t *buf = (uint8_t *) cs->p->payload;
 	uint8_t b = buf[cs->read];
 	cs->read++;
 
-	tcp_recved((tcp_pcb*)cs->cpcb, cs->read);
+	/* Indicate data was received only if still connected */
+	if (cs->cpcb) {
+		tcp_recved((tcp_pcb*)cs->cpcb, cs->read);
+	}
 
+	/* Read any data still in the buffer regardless of connection state */
 	if ((cs->read == cs->p->len) && cs->p->next) {
 		cs->read = 0;
 		struct pbuf * q = (pbuf*)cs->p;
