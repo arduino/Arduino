@@ -38,14 +38,25 @@ public:
         return iface.connect(hostname, port);
     }
 
-    int read(char* buffer, int len, int timeout)
+    int read(unsigned char* buffer, int len, int timeout)
     {
-        iface.setTimeout(timeout);
-        while(!iface.available());
-        return iface.readBytes(buffer, len);
+        int interval = 10;  // all times are in milliseconds
+		int total = 0, rc = -1;
+
+		if (timeout < 30)
+			interval = 2;
+		while (iface.available() < len && total < timeout)
+		{
+			delay(interval);
+			total += interval;
+		}
+		if (iface.available() >= len)
+			rc = iface.readBytes((char*)buffer, len);
+		return rc;
     }
+
     
-    int write(char* buffer, int len, int timeout)
+    int write(unsigned char* buffer, int len, int timeout)
     {
         iface.setTimeout(timeout);  
         return iface.write((uint8_t*)buffer, len);
