@@ -85,7 +85,9 @@ public class MSP430Uploader extends Uploader{
 		if(exception == null) return ret;
 		if (ret == false && (exception.message.indexOf("update needed") != -1)) {
 			JOptionPane.showMessageDialog(editor, 
-					"Oops, the firmware of your Launchpad programmer needs an update.\n"
+					"WARNING: MSP-EXP430FR5969 versions lower than V2.0 are no longer supported. "
+					+ "You can still use Energia 13 with versions lower than V2.0\n\n"
+					+ "The firmware of your Launchpad programmer needs an update.\n"
 					+ " You will need to update before you can upload your Sketch.\n"
 					+ " To update, select \"Update programmer\" from the \"Tools\" menu\n"
 					+ "", "Firmware update needed", JOptionPane.ERROR_MESSAGE);
