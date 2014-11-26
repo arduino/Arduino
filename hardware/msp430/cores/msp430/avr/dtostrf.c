@@ -33,7 +33,8 @@ char *dtostrf (double val, signed char width, unsigned char prec, char *sout) {
   int32_t frac = mantissa * powf(10, prec);
   if(frac < 0) frac = -frac;
 
-  sprintf(sout, "%d.%d", whole, frac);
+  sprintf(fmt, "%%%dd.%%%dd", width, prec);
+  sprintf(sout, fmt, whole, frac);
   return sout;
 }
 
