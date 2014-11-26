@@ -1,4 +1,3 @@
-#include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetStack.h>
 #include <Countdown.h>
@@ -7,42 +6,59 @@
 #define MQTT_MAX_PACKET_SIZE 100
 #define SIZE 100
 
-int ledPin = 9;
-
-// Update these with values suitable for your network.
-byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x03 };
+int ledPin = RED_LED;
+// your network name also called SSID
+char ssid[] = "energia1";
+// your network password
+char password[] = "launchpad";
 
 int mqttPort = 1883;
 
 char topic[] = "iot-2/evt/status/fmt/json";
 char subTopic[] = "iot-2/cmd/+/fmt/json";
 
-char organization[] = "w8wx0";
+// When adding a device on internetofthings.ibmcloud.com the following
+// information will be generated:
+// org=abcxyz
+// type=LaunchPad
+// id=myLaunchPad2
+// auth-method=token
+// auth-token=ZrBCpuUG912v@aJ*MJ
+
+char organization[] = "b7olvk";
 char typeId[] = "LaunchPad";
+char deviceId[] = "myLaunchPad";
 
-char deviceId[] = "00aabbccde03";
-
+// Authentication method. Should be use-toke-auth
+// When using authenticated mode
 char authMethod[] = "use-token-auth";
-
-char authToken[] = "W7TXtNbehlf7Bq5BEm";
-
-char registeredMQTTDNS[] = "w8wx0.messaging.internetofthings.ibmcloud.com";
-
-char clientId[] = "d:w8wx0:LaunchPad:00aabbccde03";
+// The auth-token from the information above
+char authToken[] = "eQw5BEyZP6HCW2unZM";
+// This string will be created in setup
+char clientId[48];
+// This string will be created in setup
 char registeredUrl[SIZE];
 
+// The function to call when a message arrives
 void callback(char* topic, byte* payload, unsigned int length);
 
 EthernetStack ipstack;  
 MQTT::Client<EthernetStack, Countdown, MQTT_MAX_PACKET_SIZE> client(ipstack);
 void messageArrived(MQTT::MessageData& md);
 
-
 void setup() {
-  Serial.begin(9600);
-  Ethernet.begin(mac);
+  Serial.begin(115200);
+  
+  Serial.println("Starting Ethernet");
+  Ethernet.enableLinkLed();
+  Ethernet.enableActivityLed();
+  Ethernet.begin(0);
 
-  //build the mqtt url and the client id
+  Serial.println("\nIP Address obtained");
+  // We are connected and have an IP address.
+  Serial.println(Ethernet.localIP());
+
+  // Create the mqtt url and the client id
   sprintf(clientId, "d:%s:%s:%s", organization, typeId, deviceId);
   sprintf(registeredUrl,"%s.messaging.internetofthings.ibmcloud.com",organization);
   delay(1000);
@@ -51,13 +67,14 @@ void setup() {
 void loop() {
   int rc = -1;
   if (!client.isConnected()) {
-    Serial.print("Connecting to Registered mode with clientid : ");
-    Serial.print(clientId);
-    Serial.print("\ton topic : ");
-    Serial.println(registeredUrl);
+    Serial.print("Connecting to: ");
+    Serial.print(registeredUrl);
+    Serial.print(" with client id: ");
+    Serial.println(clientId);
     while (rc != 0) {
       rc = ipstack.connect(registeredUrl, mqttPort);
     }
+    
     MQTTPacket_connectData options = MQTTPacket_connectData_initializer;
     options.MQTTVersion = 3;
     options.clientID.cstring = clientId;
@@ -69,26 +86,26 @@ void loop() {
       ;
     Serial.println("Connected\n");
     
-    //unsubscribe the topic, if it had subscribed it before.
- 
+    Serial.print("Subscribing to topic: ");
+    Serial.println(subTopic);
+    // Unsubscribe the topic, if it had subscribed it before.
     client.unsubscribe(subTopic);
-    //Try to subscribe for commands
+    // Try to subscribe for commands
     if ((rc = client.subscribe(subTopic, MQTT::QOS0, messageArrived)) != 0) {
             Serial.print("Subscribe failed with return code : ");
             Serial.println(rc);
     } else {
-          Serial.println("Subscribed\n");
+          Serial.println("Subscribe success\n");
     }
-    Serial.println("Subscription tried......");
-    
   }
 
-  char json[56] = "{\"d\":{\"myName\":\"TI LaunchPad\",\"temperature\":";
+  char json[56] = "{\"d\":{\"myName\":\"TILaunchPad\",\"temperature\":";
   dtostrf(getTemp(),1,2, &json[43]);
 
   json[48] = '}';
   json[49] = '}';
   json[50] = '\0';
+  Serial.print("Publishing: ");
   Serial.println(json);
   MQTT::Message message;
   message.qos = MQTT::QOS0; 
@@ -100,8 +117,10 @@ void loop() {
     Serial.print("Message publish failed with return code : ");
     Serial.println(rc);
   }
-
-  client.yield(1000);
+  
+  // Wait for one second before publishing again
+  // This will also service any incomming messages
+  client.yield(5000);
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -162,6 +181,6 @@ void messageArrived(MQTT::MessageData& md) {
     }
 }
 
-double getTemp(void) {
-  return 20.0;
+double getTemp() {
+  return (float)(147.5 - ((75 * 3.3 * (long)analogRead(TEMPSENSOR)) / 4096));
 }

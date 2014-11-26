@@ -1,4 +1,3 @@
-#include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetStack.h>
 #include <Countdown.h>
@@ -19,9 +18,12 @@ EthernetStack ipstack;
 MQTT::Client<EthernetStack, Countdown, MQTT_MAX_PACKET_SIZE> client(ipstack);
 
 void setup() {
-  Serial.begin(9600);
-  Ethernet.begin(mac);
-  delay(2000);
+  Serial.begin(115200);
+
+  Serial.println("Starting Ethernet");
+  Ethernet.enableLinkLed();
+  Ethernet.enableActivityLed();
+  Ethernet.begin(0);
 }
 
 void loop() {
@@ -40,7 +42,7 @@ void loop() {
     Serial.println("Connected\n");
   }
 
-  char json[56] = "{\"d\":{\"myName\":\"TI LaunchPad\",\"temperature\":";
+  char json[56] = "{\"d\":{\"myName\":\"TILaunchPad\",\"temperature\":";
   dtostrf(getTemp(),1,2, &json[43]);
   json[48] = '}';
   json[49] = '}';
@@ -60,5 +62,5 @@ void loop() {
 }
 
 double getTemp(void) {
-  return 21.0
+  return (float)(147.5 - ((75 * 3.3 * (long)analogRead(TEMPSENSOR)) / 4096));
 }

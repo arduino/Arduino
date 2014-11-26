@@ -80,8 +80,17 @@ void connect()
 
 void setup()
 {
-  Serial.begin(9600);
-  Ethernet.begin(mac);
+  Serial.begin(115200);
+
+  Serial.println("Starting Ethernet");
+  Ethernet.enableLinkLed();
+  Ethernet.enableActivityLed();
+  Ethernet.begin(0);
+
+  Serial.println("\nIP Address obtained");
+  // We are connected and have an IP address.
+  Serial.println(Ethernet.localIP());
+  
   Serial.println("MQTT Hello example");
   connect();
 }
