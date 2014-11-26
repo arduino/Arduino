@@ -8,11 +8,12 @@ uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
 uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = { 
   0, 0, 0, 0 };
 
-int EthernetClass::begin(uint8_t *mac_address)
+int EthernetClass::begin(uint8_t *mac_address, DhcpOptionParser* optionParser, DhcpOptionProvider* optionProvider)
 {
   static DhcpClass s_dhcp;
   _dhcp = &s_dhcp;
-
+  _dhcp->setOptionParser(optionParser);
+  _dhcp->setOptionProvider(optionProvider);
 
   // Initialise the basic info
   W5100.init();
@@ -32,6 +33,10 @@ int EthernetClass::begin(uint8_t *mac_address)
   }
 
   return ret;
+}
+
+int EthernetClass::begin(uint8_t *mac_address) {
+  return begin(mac_address, NULL, NULL);
 }
 
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip)
