@@ -19,6 +19,8 @@
 */
 
 #include "USBAPI.h"
+#include "USBDesc.h"
+#include "HIDTables.h"
 
 #if defined(USBCON)
 #ifdef HID_ENABLED
@@ -538,9 +540,9 @@ uint8_t USBPutChar(uint8_t c);
  	uint8_t index = 0;
  	uint8_t done = 0;
  	
- 	if ((k >= KEYCODE_LEFT_CTRL) && (k <= KEYCODE_RIGHT_GUI)) {
+ 	if ((k >= HID_KEYBOARD_LEFT_CONTROL) && (k <= HID_KEYBOARD_RIGHT_GUI)) {
  		// it's a modifier key
- 		_keyReport.modifiers |= (0x01 << (k - KEYCODE_LEFT_CTRL));
+ 		_keyReport.modifiers |= (0x01 << (k - HID_KEYBOARD_LEFT_CONTROL));
  	} else {
  		// it's some other key:
  		// Add k to the key report only if it's not already present
@@ -585,14 +587,14 @@ uint8_t USBPutChar(uint8_t c);
  	} else {
  		if (k >= KEY_LEFT_CTRL) {
  			// it's a modifier key
- 			k = k - KEY_LEFT_CTRL + KEYCODE_LEFT_CTRL;
+ 			k = k - KEY_LEFT_CTRL + HID_KEYBOARD_LEFT_CONTROL;
  		} else {
  			k = pgm_read_byte(_asciimap + k);
  			if (k) {
  				if (k & SHIFT) {
  					// it's a capital letter or other character reached with shift
  					// the left shift modifier
- 					pressKeycode(KEYCODE_LEFT_SHIFT, 0);
+ 					pressKeycode(HID_KEYBOARD_LEFT_SHIFT, 0);
  					k = k ^ SHIFT;
  				}
  			} else {
@@ -680,9 +682,9 @@ size_t Keyboard_::releaseKeycode(uint8_t k, uint8_t send)
 	uint8_t indexB;
 	uint8_t count;
 	
-	if ((k >= KEYCODE_LEFT_CTRL) && (k <= KEYCODE_RIGHT_GUI)) {
+	if ((k >= HID_KEYBOARD_LEFT_CONTROL) && (k <= HID_KEYBOARD_RIGHT_GUI)) {
 		// it's a modifier key
-		_keyReport.modifiers = _keyReport.modifiers & (~(0x01 << (k - KEYCODE_LEFT_CTRL)));
+		_keyReport.modifiers = _keyReport.modifiers & (~(0x01 << (k - HID_KEYBOARD_LEFT_CONTROL)));
 	} else {
 		// it's some other key:
 		// Test the key report to see if k is present.  Clear it if it exists.
@@ -732,14 +734,14 @@ size_t Keyboard_::release(uint8_t k)
 	} else {
 		if (k >= KEY_LEFT_CTRL) {
 			// it's a modifier key
-			k = k - KEY_LEFT_CTRL + KEYCODE_LEFT_CTRL;
+			k = k - KEY_LEFT_CTRL + HID_KEYBOARD_LEFT_CONTROL;
 		} else {
 			k = pgm_read_byte(_asciimap + k);
 			if (k) {
 				if ((k & SHIFT)) {
 					// it's a capital letter or other character reached with shift
 					// the left shift modifier
-					releaseKeycode(KEYCODE_LEFT_SHIFT, 0);
+					releaseKeycode(HID_KEYBOARD_LEFT_SHIFT, 0);
 					k = k ^ SHIFT;
 				}
 			} else {
