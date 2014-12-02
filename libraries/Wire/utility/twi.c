@@ -103,7 +103,7 @@ void twi_setAddress(uint8_t address)
 }
 
 uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop){
-  return twi_readFrom(address, data, length, sendStop, 0); /* for retrocompatibility */
+  return twi_readFrom_timeout(address, data, length, sendStop, 0); /* for retrocompatibility */
 }
 /* 
  * Function twi_readFrom
@@ -116,7 +116,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
  *          timeout_us: number of microseconds to wait for answr, 0 = no timeout
  * Output   number of bytes read
  */
-uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop, uint32_t timeout_us)
+uint8_t twi_readFrom_timeout(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop, uint32_t timeout_us)
 {
   uint8_t i;
 
@@ -191,7 +191,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 }
 
 uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop, uint32_t timeout_us){
-  return twi_writeTo(address, data, length, wait, sendStop, 0);  /* for retrocompatibility */
+  return twi_writeTo_timeout(address, data, length, wait, sendStop, 0);  /* for retrocompatibility */
 }
 /* 
  * Function twi_writeTo
@@ -210,7 +210,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
  *          4 .. other twi error (lost bus arbitration, bus error, ..)
  *          5 .. timeout
  */
-uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop, uint32_t timeout_us)
+uint8_t twi_writeTo_timeout(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop, uint32_t timeout_us)
 {
   uint8_t i;
 
@@ -361,7 +361,7 @@ void twi_reply(uint8_t ack)
 }
 
 void twi_stop(void){
-  twi_stop(0);
+  twi_stop_timeout(0);
 }
 /* 
  * Function twi_stop
@@ -369,7 +369,7 @@ void twi_stop(void){
  * Input    timeout_us: number of microseconds to wait for answr, 0 = no timeout
  * Output   none
  */
-void twi_stop(uint32_t timeout_us)
+void twi_stop_timeout(uint32_t timeout_us)
 {
   // send stop condition
   TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTO);
