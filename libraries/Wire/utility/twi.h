@@ -37,6 +37,7 @@
   #define TWI_MTX   2
   #define TWI_SRX   3
   #define TWI_STX   4
+  #define TWI_ERROR 5
   
   void twi_init(void);
   void twi_setAddress(uint8_t);
