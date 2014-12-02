@@ -128,7 +128,7 @@ uint8_t twi_readFrom_timeout(uint8_t address, uint8_t* data, uint8_t length, uin
   // wait until twi is ready, become master receiver, or timeout
   uint32_t start_us = micros();
   while(TWI_READY != twi_state){
-    if (timeout){
+    if (timeout_us){
       if (micros() - start_us > timeout_us){
       	twi_state = TWI_ERROR;
         return 0;
@@ -169,9 +169,9 @@ uint8_t twi_readFrom_timeout(uint8_t address, uint8_t* data, uint8_t length, uin
     TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTA);
 
   // wait for read operation to complete, or timeout
-  uint32_t start_us = micros();
+  start_us = micros();
   while(TWI_MRX != twi_state){
-    if (timeout){
+    if (timeout_us){
       if (micros() - start_us > timeout_us){
       	twi_state = TWI_ERROR;
         return 0;
@@ -222,7 +222,7 @@ uint8_t twi_writeTo_timeout(uint8_t address, uint8_t* data, uint8_t length, uint
   // wait until twi is ready, become master transmitter, or timeout
   uint32_t start_us = micros();
   while(TWI_READY != twi_state){
-    if (timeout){
+    if (timeout_us){
       if (micros() - start_us > timeout_us){
       	twi_state = TWI_ERROR;
         return 5;
@@ -268,9 +268,9 @@ uint8_t twi_writeTo_timeout(uint8_t address, uint8_t* data, uint8_t length, uint
     TWCR = _BV(TWINT) | _BV(TWEA) | _BV(TWEN) | _BV(TWIE) | _BV(TWSTA);	// enable INTs
 
   // wait for write operation to complete, or timeout
-  uint32_t start_us = micros();
+  start_us = micros();
   while( wait && (TWI_MTX != twi_state) ){
-    if (timeout){
+    if (timeout_us){
       if (micros() - start_us > timeout_us){
       	twi_state = TWI_ERROR;
         return 5;
@@ -377,7 +377,7 @@ void twi_stop_timeout(uint32_t timeout_us)
   // wait for stop condition to be exectued on bus, or timeout
   // TWINT is not set after a stop condition!
   while( TWCR & _BV(TWSTO) ){
-    if (timeout){
+    if (timeout_us){
       if (micros() - start_us > timeout_us){
       	twi_state = TWI_ERROR;
         return;
