@@ -190,7 +190,7 @@ uint8_t twi_readFrom_timeout(uint8_t address, uint8_t* data, uint8_t length, uin
   return length;
 }
 
-uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop, uint32_t timeout_us){
+uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop){
   return twi_writeTo_timeout(address, data, length, wait, sendStop, 0);  /* for retrocompatibility */
 }
 /* 
@@ -376,6 +376,7 @@ void twi_stop_timeout(uint32_t timeout_us)
 
   // wait for stop condition to be exectued on bus, or timeout
   // TWINT is not set after a stop condition!
+  uint32_t start_us = micros();
   while( TWCR & _BV(TWSTO) ){
     if (timeout_us){
       if (micros() - start_us > timeout_us){
