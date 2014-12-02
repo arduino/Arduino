@@ -16,7 +16,6 @@
 ** SOFTWARE.  
 */
 
-#include "Platform.h"
 #include "USBAPI.h"
 #include <avr/wdt.h>
 
@@ -80,98 +79,81 @@ bool WEAK CDC_Setup(Setup& setup)
 		if (CDC_SET_LINE_CODING == r)
 		{
 			USB_RecvControl((void*)&_usbLineInfo,7);
-			return true;
 		}
 
 		if (CDC_SET_CONTROL_LINE_STATE == r)
 		{
 			_usbLineInfo.lineState = setup.wValueL;
+		}
 
+		if (CDC_SET_LINE_CODING == r || CDC_SET_CONTROL_LINE_STATE == r)
+		{
 			// auto-reset into the bootloader is triggered when the port, already 
 			// open at 1200 bps, is closed.  this is the signal to start the watchdog
 			// with a relatively long period so it can finish housekeeping tasks
 			// like servicing endpoints before the sketch ends
-			if (1200 == _usbLineInfo.dwDTERate) {
-				// We check DTR state to determine if host port is open (bit 0 of lineState).
-				if ((_usbLineInfo.lineState & 0x01) == 0) {
-					*(uint16_t *)0x0800 = 0x7777;
-					wdt_enable(WDTO_120MS);
-				} else {
-					// Most OSs do some intermediate steps when configuring ports and DTR can
-					// twiggle more than once before stabilizing.
-					// To avoid spurious resets we set the watchdog to 250ms and eventually
-					// cancel if DTR goes back high.
-	
-					wdt_disable();
-					wdt_reset();
-					*(uint16_t *)0x0800 = 0x0;
-				}
+
+			// We check DTR state to determine if host port is open (bit 0 of lineState).
+			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
+			{
+				*(uint16_t *)0x0800 = 0x7777;
+				wdt_enable(WDTO_120MS);
 			}
-			return true;
+			else
+			{
+				// Most OSs do some intermediate steps when configuring ports and DTR can
+				// twiggle more than once before stabilizing.
+				// To avoid spurious resets we set the watchdog to 250ms and eventually
+				// cancel if DTR goes back high.
+
+				wdt_disable();
+				wdt_reset();
+				*(uint16_t *)0x0800 = 0x0;
+			}
 		}
+		return true;
 	}
 	return false;
 }
 
 
-int _serialPeek = -1;
 void Serial_::begin(unsigned long /* baud_count */)
 {
+	peek_buffer = -1;
 }
 
 void Serial_::begin(unsigned long /* baud_count */, byte /* config */)
 {
+	peek_buffer = -1;
 }
 
 void Serial_::end(void)
 {
 }
 
-void Serial_::accept(void) 
-{
-	int i = (unsigned int)(_rx_buffer_head+1) % SERIAL_BUFFER_SIZE;
-	
-	// if we should be storing the received character into the location
-	// just before the tail (meaning that the head would advance to the
-	// current location of the tail), we're about to overflow the buffer
-	// and so we don't write the character or advance the head.
-
-	// while we have room to store a byte
-	while (i != _rx_buffer_tail) {
-		int c = USB_Recv(CDC_RX);
-		if (c == -1)
-			break;	// no more data
-		_rx_buffer[_rx_buffer_head] = c;
-		_rx_buffer_head = i;
-
-		i = (unsigned int)(_rx_buffer_head+1) % SERIAL_BUFFER_SIZE;
-	}
-}
-
 int Serial_::available(void)
 {
-	return (unsigned int)(SERIAL_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_BUFFER_SIZE;
+	if (peek_buffer >= 0) {
+		return 1 + USB_Available(CDC_RX);
+	}
+	return USB_Available(CDC_RX);
 }
 
 int Serial_::peek(void)
 {
-	if (_rx_buffer_head == _rx_buffer_tail) {
-		return -1;
-	} else {
-		return _rx_buffer[_rx_buffer_tail];
-	}
+	if (peek_buffer < 0)
+		peek_buffer = USB_Recv(CDC_RX);
+	return peek_buffer;
 }
 
 int Serial_::read(void)
 {
-	// if the head isn't ahead of the tail, we don't have any characters
-	if (_rx_buffer_head == _rx_buffer_tail) {
-		return -1;
-	} else {
-		unsigned char c = _rx_buffer[_rx_buffer_tail];
-		_rx_buffer_tail = (unsigned int)(_rx_buffer_tail + 1) % SERIAL_BUFFER_SIZE;
+	if (peek_buffer >= 0) {
+		int c = peek_buffer;
+		peek_buffer = -1;
 		return c;
-	}	
+	}
+	return USB_Recv(CDC_RX);
 }
 
 void Serial_::flush(void)
@@ -180,6 +162,11 @@ void Serial_::flush(void)
 }
 
 size_t Serial_::write(uint8_t c)
+{
+	return write(&c, 1);
+}
+
+size_t Serial_::write(const uint8_t *buffer, size_t size)
 {
 	/* only try to send bytes if the high-level CDC connection itself 
 	 is open (not just the pipe) - the OS should set lineState when the port
@@ -191,7 +178,7 @@ size_t Serial_::write(uint8_t c)
 	// open connection isn't broken cleanly (cable is yanked out, host dies
 	// or locks up, or host virtual serial port hangs)
 	if (_usbLineInfo.lineState > 0)	{
-		int r = USB_Send(CDC_TX,&c,1);
+		int r = USB_Send(CDC_TX,buffer,size);
 		if (r > 0) {
 			return r;
 		} else {

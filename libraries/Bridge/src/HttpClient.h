@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2013 Arduino LLC. All right reserved.
+  Copyright (c) 2013-2014 Arduino LLC. All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -23,14 +23,29 @@
 
 class HttpClient : public Process {
   public:
+    HttpClient();
 
     unsigned int get(String &url);
     unsigned int get(const char * url);
     void getAsynchronously(String &url);
     void getAsynchronously(const char * url);
+    unsigned int post(String &url, String &data);
+    unsigned int post(const char * url, const char * data);
+    void postAsynchronously(String &url, String &data);
+    void postAsynchronously(const char * url, const char * data);
+    void setHeader(String &header);
+    void setHeader(const char * header);
     boolean ready();
     unsigned int getResult();
+    void noCheckSSL();
+    void checkSSL();
 
+  private:
+    boolean insecure;
+
+  private:
+    void addHeader();
+    String header;
 };
 
 #endif /* HTTPCLIENT_H_ */

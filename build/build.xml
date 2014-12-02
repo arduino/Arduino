@@ -27,9 +27,6 @@
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
 
-  <condition property="launch4j-download-unpack-target-name" value="launch4j-windows"><os family="windows" /></condition>
-  <property name="launch4j-download-unpack-target-name" value="launch4j-linux"/>
-
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
   </condition>
@@ -42,7 +39,7 @@
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
-    <include name="core/core.jar" />
+    <include name="arduino-core/arduino-core.jar" />
     <include name="app/pde.jar" />
     <include name="app/lib/commons-codec-1.7.jar" />
     <include name="app/lib/commons-exec-1.1.jar" />
@@ -87,12 +84,12 @@
   <!-- - - - - - - - - - - - - - - - - - -->
 
   <target name="subprojects-clean">
-    <subant buildpath="../core" target="clean"/>
+    <subant buildpath="../arduino-core" target="clean"/>
     <subant buildpath="../app" target="clean"/>
   </target>
 
   <target name="subprojects-build">
-    <subant buildpath="../core" target="build"/>
+    <subant buildpath="../arduino-core" target="build"/>
     <subant buildpath="../app" target="build"/>
   </target>
 
@@ -155,7 +152,7 @@
         <tokenfilter>
           <linetokenizer includeDelims="false" />
           <!-- grab the thing from the first line that's 4 digits -->
-          <containsregex pattern="ARDUINO (.*) " />
+          <containsregex pattern="ARDUINO ([^ ]*)" />
           <replaceregex pattern="ARDUINO ([^ ]*).*" replace="\1" />
         </tokenfilter>
         <tokenfilter>
@@ -166,17 +163,17 @@
     <echo message="Latest revision detected in shared/revision.txt is: ${revision}" />
 
     <!-- figure out the revision number in base.java -->
-    <loadfile srcfile="../app/src/processing/app/Base.java"
+    <loadfile srcfile="../arduino-core/src/processing/app/BaseNoGui.java"
 	      property="revision.base">
       <filterchain>
         <tokenfilter>
           <linetokenizer />
           <containsregex pattern="String VERSION_NAME = "/>
-          <replaceregex pattern="[^0-9]*" flags="g" replace=""/>
+          <replaceregex pattern=".*&quot;(.*)&quot;.*" flags="g" replace="\1"/>
         </tokenfilter>
       </filterchain>
     </loadfile>
-    <echo message="Revision in Base.java is: ${revision.base}" />
+    <echo message="                     Revision in BaseNoGui.java is: ${revision.base}" />
   </target>
 
   <!-- - - - - - - - -->
@@ -212,11 +209,6 @@
       <fileset dir="macosx/template.app" includes="**"/>
     </copy>
 
-<!--    <rename src="macosx/work/template.app"
-	    dest="macosx/work/Arduino.app" />
-    <move file="macosx/work/template.app"
-	  tofile="macosx/work/Arduino.app" />-->
-
     <chmod file="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="755" />
 
     <copy todir="macosx/work/Arduino.app/Contents/Resources/Java" flatten="true">
@@ -229,8 +221,11 @@
     </copy>
 
     <!-- Unzip AVR tools -->
-    <antcall target="unzip-avr-toolchain">
-      <param name="file_arch" value="mac32" />
+    <antcall target="unzip">
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-mac32-gcc-4.8.1.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-mac32-gcc-4.8.1.zip" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
 
 <!--
@@ -238,7 +233,7 @@
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
-      <arg value="macosx/work/Arduino.app/Contents/Resources/Java/hardware" />
+      <arg value="macosx/work/${staging_hardware_folder}" />
       <arg value="macosx/dist/tools-universal.zip" />
     </exec>
 
@@ -247,41 +242,50 @@
     </copy>
 -->
 
-    <copy todir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/">
+    <copy todir="macosx/work/${staging_hardware_folder}/tools/">
       <fileset file="macosx/dist/bossac" />
     </copy>
 
-    <chmod file="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/bossac" perm="+x" />
+    <chmod file="macosx/work/${staging_hardware_folder}/tools/bossac" perm="+x" />
 
     <antcall target="assemble">
       <param name="target.path" value="macosx/work/Arduino.app/Contents/Resources/Java" />
     </antcall>
 
-    <antcall target="unzip-arm-toolchain">
-      <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-macos.tar.gz" />
-      <param name="dist_url" value="http://arduino.googlecode.com/files/gcc-arm-none-eabi-4.4.1-2010q1-188-macos.tar.gz" />
-      <param name="dist_check_file" value="g++_arm_none_eabi" />
+    <antcall target="untar">
+      <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz" />
+      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
 
     <delete includeEmptyDirs="true" quiet="true">
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools" includes="**/3.4.6/**/*"/>
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools" includes="**/3.4.6"/>
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools" includes="**/man/**/*"/>
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools" includes="**/man"/>
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools" includes="**/3.4.6/**/*"/>
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools" includes="**/3.4.6"/>
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools" includes="**/man/**/*"/>
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools" includes="**/man"/>
     </delete>
 
-    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="macosx" usetimestamp="true" skipexisting="true" verbose="true" />
-    <unzip src="macosx/libastylej-2.03.zip" dest="macosx" overwrite="true"/>
+    <antcall target="unzip">
+      <param name="archive_file" value="./libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
+      <param name="final_folder" value="${staging_folder}/libastylej" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
     <copy file="macosx/libastylej/libastylej.jnilib" todir="macosx/work/Arduino.app/Contents/Resources/Java/lib/" />
     <chmod perm="755" file="macosx/work/Arduino.app/Contents/Resources/Java/lib/libastylej.jnilib" />
   </target>
 
   <target name="macosx-run" depends="macosx-build" description="Run Mac OS X version">
-    <exec executable="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" spawn="true"/>
+    <exec executable="open" dir="macosx/work">
+      <arg value="Arduino.app"/>
+    </exec>
   </target>
 
   <target name="macosx-debug" depends="macosx-build" description="Run Mac OS X version">
-    <exec executable="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" spawn="false"/>
+    <exec executable="open" dir="macosx/work" spawn="false">
+      <arg value="Arduino.app"/>
+    </exec>
   </target>
 
   <!-- - - - - - - - - - - - - - - - -->
@@ -343,9 +347,9 @@
     <!-- The ant copy command does not preserve permissions. -->
     <chmod file="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="+x" />
     <chmod perm="+x">
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />
-      <fileset dir="macosx/work/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.8.1/" includes="*" />
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools/avr/bin" includes="**/*" />
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools/avr/avr/bin" includes="**/*" />
+      <fileset dir="macosx/work/${staging_hardware_folder}/tools/avr/libexec/gcc/avr/4.8.1/" includes="*" />
     </chmod>
 
     <replace file="macosx/work/Arduino.app/Contents/Info.plist"
@@ -481,37 +485,49 @@
     <copy todir="linux/work" file="linux/dist/arduino" />
     <chmod perm="755" file="linux/work/arduino" />
 
-    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="linux" usetimestamp="true" skipexisting="true" verbose="true" />
-    <unzip src="linux/libastylej-2.03.zip" dest="linux" overwrite="true"/>
+    <antcall target="unzip">
+      <param name="archive_file" value="./libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
+      <param name="final_folder" value="${staging_folder}/libastylej" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
     <copy file="linux/libastylej/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
   </target>
 
   <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
     <!-- Unzip ARM tools -->
-    <antcall target="unzip-arm-toolchain">
-      <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
-      <param name="dist_url" value="http://arduino.googlecode.com/files/gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
-      <param name="dist_check_file" value="g++_arm_none_eabi" />
+    <antcall target="untar">
+      <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-linux32.tar.gz" />
+      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-linux32.tar.gz" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
 
     <!-- Unzip AVR tools -->
-    <antcall target="unzip-avr-toolchain">
-      <param name="file_arch" value="linux32" />
+    <antcall target="unzip">
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux32-gcc-4.8.1.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux32-gcc-4.8.1.zip" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
   </target>
 
   <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
     <!-- Unzip ARM tools -->
-    <antcall target="unzip-tool">
-      <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
-      <param name="dist_url" value="http://arduino.googlecode.com/files/gcc-arm-none-eabi-4.4.1-2010q1-188-linux32.tar.gz" />
-      <param name="dist_check_file" value="g++_arm_none_eabi" />
+    <antcall target="untar">
+      <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz" />
+      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
 
     <!-- Unzip AVR tools -->
-    <antcall target="unzip-avr-toolchain">
-      <param name="file_arch" value="linux64" />
+    <antcall target="unzip">
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux64-gcc-4.8.1.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux64-gcc-4.8.1.zip" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
   </target>
 
@@ -523,98 +539,52 @@
     <exec executable="./linux/work/arduino" spawn="false"/>
   </target>
 
-  <target name="unzip-avr-toolchain">
-    <get src="http://downloads.arduino.cc/avr-toolchain-${file_arch}-gcc-4.8.1.zip" dest="${staging_folder}" usetimestamp="true" ignoreerrors="true" verbose="true" />
-
-    <checksum file="${staging_folder}/avr-toolchain-${file_arch}-gcc-4.8.1.zip" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>
-    <condition property="checksum.matches.fail">
-      <equals arg1="${checksum.matches}" arg2="false"/>
-    </condition>
-    <fail if="checksum.matches.fail">Checksum failed.
-
-      File avr-toolchain-${file_arch}-gcc-4.8.1.zip failed checksum.
-      Please remove "${staging_folder}/avr-toolchain-${file_arch}-gcc-4.8.1.zip" and download it again.
-    </fail>
-
-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
-    <exec executable="unzip">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-d" />
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
-      <arg value="${staging_folder}/avr-toolchain-${file_arch}-gcc-4.8.1.zip" />
-    </exec>
-  </target>
-
-
 
   <!-- Set '${dist_file}_available' property if toolchain dist_file is downloaded              -->
   <!-- Set '${dist_file}_installed' property if toolchain is installed in working directory    -->
   <!--                              hardware/tools/${dist_check_file} is checked for existence -->
-  <target name="check-tool">
-    <available file="${staging_folder}/dist/${dist_file}" property="${dist_file}_available" />
-    <available file="${staging_folder}/work/hardware/tools/${dist_check_file}" property="${dist_file}_installed" />
+  <target name="untar-unzip-check">
+    <available file="${archive_file}" property="${archive_file}_available" />
+    <available file="${final_folder}" property="${archive_file}_installed" />
   </target>
 
   <!-- Retrieve tool -->
-  <target name="get-tool" depends="check-tool" unless="${dist_file}_available">
-    <get src="${dist_url}" dest="${staging_folder}/dist/${dist_file}" verbose="true" ignoreerrors="true" />
+  <target name="untar-unzip-download" depends="untar-unzip-check" unless="${archive_file}_available">
+    <get src="${archive_url}" dest="${archive_file}" verbose="true" ignoreerrors="true" />
+  </target>
+
+  <target name="untar-unzip-checksum" depends="untar-unzip-download">
+    <echo>Testing checksum of "${archive_file}"</echo>
+    <checksum file="${archive_file}" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>
+    <condition property="checksum.matches.fail">
+      <equals arg1="${checksum.matches}" arg2="false"/>
+    </condition>
+    <fail if="checksum.matches.fail">Checksum failed.
+
+      File ${archive_file} failed checksum.
+      Please remove "${archive_file}" to download it again.
+    </fail>
   </target>
 
   <!-- Ensure that the tool is downloaded and test checksums, if everything's ok unzip it on the tools folder  -->
-  <target name="unzip-tool" depends="get-tool, check-tool" unless="${dist_file}_installed">
-    <echo>Testing checksum of "${staging_folder}/dist/${dist_file}"</echo>
-    <checksum file="${staging_folder}/dist/${dist_file}" algorithm="sha" fileext=".sha" verifyproperty="checksum.matches"/>
-    <condition property="checksum.matches.fail">
-      <equals arg1="${checksum.matches}" arg2="false"/>
-    </condition>
-    <fail if="checksum.matches.fail">Checksum failed.
-
-      File ${dist_file} failed checksum.
-      Please remove "${staging_folder}/dist/${dist_file}" to download it again.
-    </fail>
-
-    <!-- Unzip tool to the destination folder -->
-    <echo>Unzipping into folder ${staging_folder}/dist/${dist_file}</echo>
+  <target name="untar" depends="untar-unzip-checksum" unless="${archive_file}_installed">
+    <echo>Unzipping into folder ${dest_folder}</echo>
     <exec executable="tar">
-      <arg value="xfz"/>
-      <arg value="${staging_folder}/dist/${dist_file}"/>
-      <arg value="--directory=${staging_folder}/work/${staging_hardware_folder}/tools/"/>
+      <arg value="xf"/>
+      <arg value="${archive_file}"/>
+      <arg value="--directory=${dest_folder}"/>
     </exec>
   </target>
 
-
-
-  <!-- Set 'arm_disfile_available' property if ARM toolchain dist_file is downloaded             -->
-  <!-- Set 'arm_toolchain_installed' property if ARM toolchain is installed in working directory -->
-  <target name="check-arm-toolchain">
-    <available file="${staging_folder}/dist/${dist_file}" property="arm_distfile_available" />
-    <available file="${staging_folder}/work/hardware/tools/${dist_check_file}" property="arm_toolchain_installed" />
-  </target>
-
-  <!-- Retrieve ARM toolchain -->
-  <target name="get-arm-toolchain" depends="check-arm-toolchain" unless="arm_distfile_available">
-    <get src="${dist_url}" dest="${staging_folder}/dist/${dist_file}" verbose="true" ignoreerrors="true" />
-  </target>
-
-  <target name="unzip-arm-toolchain" depends="get-arm-toolchain, check-arm-toolchain"
-      unless="arm_toolchain_installed">
-    <checksum file="${staging_folder}/dist/${dist_file}" algorithm="sha"
-      fileext=".sha" verifyproperty="checksum.matches"/>
-    <condition property="checksum.matches.fail">
-      <equals arg1="${checksum.matches}" arg2="false"/>
-    </condition>
-    <fail if="checksum.matches.fail">Checksum failed.
-
-      File ${dist_file} failed checksum.
-      Please remove "${staging_folder}/dist/${dist_file}" to download it again.
-    </fail>
-
-    <!-- Unzip toolchain to the destination folder -->
-    <exec executable="tar">
-      <arg value="xfz"/>
-      <arg value="${staging_folder}/dist/${dist_file}"/>
-      <arg value="--directory=${staging_folder}/work/${staging_hardware_folder}/tools/"/>
+  <target name="unzip" depends="untar-unzip-checksum" unless="${archive_file}_installed">
+    <echo>Unzipping into folder ${dest_folder}</echo>
+    <mkdir dir="${dest_folder}" />
+    <exec executable="unzip">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-d" />
+      <arg value="${dest_folder}" />
+      <arg value="${archive_file}" />
     </exec>
   </target>
 
@@ -705,7 +675,7 @@
     <get src="http://switch.dl.sourceforge.net/project/launch4j/launch4j-3/3.0.2/launch4j-3.0.2-linux.tgz" dest="windows" usetimestamp="true" skipexisting="true" verbose="true" />
 
     <exec executable="tar" dir="windows/launcher">
-      <arg value="-xzf"/>
+      <arg value="-xf"/>
       <arg value="../launch4j-3.0.2-linux.tgz"/>
     </exec>
   </target>
@@ -738,12 +708,19 @@
     </copy>
 
     <!-- Unzip AVR tools -->
-    <antcall target="unzip-avr-toolchain">
-      <param name="file_arch" value="win32" />
+    <antcall target="unzip">
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-win32-gcc-4.8.1.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-win32-gcc-4.8.1.zip" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
 
-    <get src="http://downloads.arduino.cc/libastylej-2.03.zip" dest="windows" usetimestamp="true" skipexisting="true" verbose="true" />
-    <unzip src="windows/libastylej-2.03.zip" dest="windows" overwrite="true"/>
+    <antcall target="unzip">
+      <param name="archive_file" value="./libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
+      <param name="final_folder" value="${staging_folder}/libastylej" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
     <copy file="windows/libastylej/AStylej.dll" todir="windows/work/lib" />
 
     <!-- Copy bossac.exe tool -->
@@ -782,10 +759,11 @@
     </chmod>
 
     <!-- Unzip ARM toolchain -->
-    <antcall target="unzip-arm-toolchain">
-      <param name="dist_file" value="gcc-arm-none-eabi-4.4.1-2010q1-188-win32.tar.gz" />
-      <param name="dist_url" value="http://arduino.googlecode.com/files/gcc-arm-none-eabi-4.4.1-2010q1-188-win32.tar.gz" />
-      <param name="dist_check_file" value="g++_arm_none_eabi" />
+    <antcall target="untar">
+      <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz" />
+      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz" />
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
 
     <delete includeEmptyDirs="true" quiet="true">

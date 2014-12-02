@@ -3,6 +3,7 @@ package processing.app;
 import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiQuery;
+import org.junit.After;
 import org.junit.Before;
 import processing.app.helpers.ArduinoFrameFixture;
 
@@ -20,7 +21,7 @@ public abstract class AbstractGUITest {
     Preferences.init(null);
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     Theme.init();
-    Base.platform.setLookAndFeel();
+    Base.getPlatform().setLookAndFeel();
     Base.untitledFolder = Base.createTempFolder("untitled");
     Base.untitledFolder.deleteOnExit();
 
@@ -30,6 +31,11 @@ public abstract class AbstractGUITest {
         return new ArduinoFrameFixture(new Base(new String[0]).editors.get(0));
       }
     });
+  }
+
+  @After
+  public void stopTheIDE() {
+    window.cleanUp();
   }
 
 }

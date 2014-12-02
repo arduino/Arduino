@@ -22,14 +22,17 @@
 
 package processing.app;
 
-import cc.arduino.packages.UploaderAndMonitorFactory;
+import cc.arduino.packages.MonitorFactory;
+
 import com.jcraft.jsch.JSchException;
+
 import processing.app.debug.*;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
+import processing.app.legacy.PApplet;
 import processing.app.syntax.*;
 import processing.app.tools.*;
-import processing.core.*;
 import static processing.app.I18n._;
 
 import java.awt.*;
@@ -155,7 +158,7 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportAppHandler;
 
 
-  public Editor(Base ibase, String path, int[] location) throws Exception {
+  public Editor(Base ibase, File file, int[] location) throws Exception {
     super("Arduino");
     this.base = ibase;
 
@@ -310,7 +313,7 @@ public class Editor extends JFrame implements RunnerListener {
 //    System.out.println("t4");
 
     // Open the document that was passed in
-    boolean loaded = handleOpenInternal(path);
+    boolean loaded = handleOpenInternal(file);
     if (!loaded) sketch = null;
 
 //    System.out.println("t5");
@@ -339,10 +342,9 @@ public class Editor extends JFrame implements RunnerListener {
           new DataFlavor("text/uri-list;class=java.lang.String");
 
         if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-          java.util.List list = (java.util.List)
+          List<File> list = (List<File>)
             transferable.getTransferData(DataFlavor.javaFileListFlavor);
-          for (int i = 0; i < list.size(); i++) {
-            File file = (File) list.get(i);
+          for (File file : list) {
             if (sketch.addFile(file)) {
               successful++;
             }
@@ -590,7 +592,7 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.add(item);
 
     // macosx already has its own preferences and quit menu
-    if (!Base.isMacOS()) {
+    if (!OSUtils.isMacOS()) {
       fileMenu.addSeparator();
 
       item = newJMenuItem(_("Preferences"), ',');
@@ -853,8 +855,9 @@ public class Editor extends JFrame implements RunnerListener {
     // Class file to search for
     String classFileName = "/" + base + ".class";
 
+    ZipFile zipFile = null;
     try {
-      ZipFile zipFile = new ZipFile(file);
+      zipFile = new ZipFile(file);
       Enumeration<?> entries = zipFile.entries();
       while (entries.hasMoreElements()) {
         ZipEntry entry = (ZipEntry) entries.nextElement();
@@ -874,6 +877,12 @@ public class Editor extends JFrame implements RunnerListener {
     } catch (IOException e) {
       //System.err.println("Ignoring " + filename + " (" + e.getMessage() + ")");
       e.printStackTrace();
+    } finally {
+      if (zipFile != null)
+        try {
+          zipFile.close();
+        } catch (IOException e) {
+        }
     }
     return null;
   }
@@ -965,11 +974,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
     if (selection != null) selection.setState(true);
     //System.out.println(item.getLabel());
-    Preferences.set("serial.port", name);
-    if (name.startsWith("/dev/"))
-      Preferences.set("serial.port.file", name.substring(5));
-    else
-      Preferences.set("serial.port.file", name);
+    Base.selectSerialPort(name);
     if (serialMonitor != null) {
       try {
         serialMonitor.close();
@@ -1106,7 +1111,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     // macosx already has its own about menu
-    if (!Base.isMacOS()) {
+    if (!OSUtils.isMacOS()) {
       menu.addSeparator();
       item = new JMenuItem(_("About Arduino"));
       item.addActionListener(new ActionListener() {
@@ -1131,7 +1136,7 @@ public class Editor extends JFrame implements RunnerListener {
     undoItem.addActionListener(undoAction = new UndoAction());
     menu.add(undoItem);
 
-    if (!Base.isMacOS()) {
+    if (!OSUtils.isMacOS()) {
         redoItem = newJMenuItem(_("Redo"), 'Y');
     } else {
         redoItem = newJMenuItemShift(_("Redo"), 'Z');
@@ -1236,6 +1241,7 @@ public class Editor extends JFrame implements RunnerListener {
           if (find == null) {
             find = new FindReplace(Editor.this);
           }
+          if (getSelectedText()!= null) find.setFindText( getSelectedText() );
           //new FindReplace(Editor.this).show();
           find.setVisible(true);
           //find.setVisible(true);
@@ -1634,19 +1640,19 @@ public class Editor extends JFrame implements RunnerListener {
    * Switch between tabs, this swaps out the Document object
    * that's currently being manipulated.
    */
-  protected void setCode(SketchCode code) {
-    SyntaxDocument document = (SyntaxDocument) code.getDocument();
+  protected void setCode(SketchCodeDocument codeDoc) {
+    SyntaxDocument document = (SyntaxDocument) codeDoc.getDocument();
 
     if (document == null) {  // this document not yet inited
       document = new SyntaxDocument();
-      code.setDocument(document);
-
+      codeDoc.setDocument(document);
+      
       // turn on syntax highlighting
       document.setTokenMarker(new PdeKeywords());
 
       // insert the program text into the document object
       try {
-        document.insertString(0, code.getProgram(), null);
+        document.insertString(0, codeDoc.getCode().getProgram(), null);
       } catch (BadLocationException bl) {
         bl.printStackTrace();
       }
@@ -1656,27 +1662,27 @@ public class Editor extends JFrame implements RunnerListener {
 
       // connect the undo listener to the editor
       document.addUndoableEditListener(new UndoableEditListener() {
-          public void undoableEditHappened(UndoableEditEvent e) {
-            if (compoundEdit != null) {
-              compoundEdit.addEdit(e.getEdit());
+        public void undoableEditHappened(UndoableEditEvent e) {
+          if (compoundEdit != null) {
+            compoundEdit.addEdit(e.getEdit());
 
-            } else if (undo != null) {
-              undo.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
-              undoAction.updateUndoState();
-              redoAction.updateRedoState();
-            }
+          } else if (undo != null) {
+            undo.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
+            undoAction.updateUndoState();
+            redoAction.updateRedoState();
           }
-        });
+        }
+      });
     }
 
     // update the document object that's in use
     textarea.setDocument(document,
-                         code.getSelectionStart(), code.getSelectionStop(),
-                         code.getScrollPosition());
+                         codeDoc.getSelectionStart(), codeDoc.getSelectionStop(),
+                         codeDoc.getScrollPosition());
 
     textarea.requestFocus();  // get the caret blinking
 
-    this.undo = code.getUndo();
+    this.undo = codeDoc.getUndo();
     undoAction.updateUndoState();
     redoAction.updateRedoState();
   }
@@ -1864,9 +1870,8 @@ public class Editor extends JFrame implements RunnerListener {
 
 		} catch (BadLocationException bl) {
 			bl.printStackTrace();
-		} finally {
-			return text;
-		}
+		} 
+		return text;
 	}
 
 	protected void handleFindReference() {
@@ -1890,6 +1895,11 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void handleRun(final boolean verbose) {
     internalCloseRunner();
+    if (Preferences.getBoolean("editor.save_on_verify")) {
+      if (sketch.isModified() && !sketch.isReadOnly()) {
+        handleSave(true);
+      }
+    }
     running = true;
     toolbar.activate(EditorToolbar.RUN);
     status.progress(_("Compiling sketch..."));
@@ -2022,7 +2032,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     String prompt = I18n.format(_("Save changes to \"{0}\"?  "), sketch.getName());
 
-    if (!Base.isMacOS()) {
+    if (!OSUtils.isMacOS()) {
       int result =
         JOptionPane.showConfirmDialog(this, prompt, _("Close"),
                                       JOptionPane.YES_NO_CANCEL_OPTION,
@@ -2096,10 +2106,10 @@ public class Editor extends JFrame implements RunnerListener {
    * Open a sketch from a particular path, but don't check to save changes.
    * Used by Sketch.saveAs() to re-open a sketch after the "Save As"
    */
-  protected void handleOpenUnchecked(String path, int codeIndex,
+  protected void handleOpenUnchecked(File file, int codeIndex,
                                      int selStart, int selStop, int scrollPos) {
     internalCloseRunner();
-    handleOpenInternal(path);
+    handleOpenInternal(file);
     // Replacing a document that may be untitled. If this is an actual
     // untitled document, then editor.untitled will be set by Base.
     untitled = false;
@@ -2114,109 +2124,92 @@ public class Editor extends JFrame implements RunnerListener {
    * Second stage of open, occurs after having checked to see if the
    * modifications (if any) to the previous sketch need to be saved.
    */
-  protected boolean handleOpenInternal(String path) {
+  protected boolean handleOpenInternal(File sketchFile) {
     // check to make sure that this .pde file is
     // in a folder of the same name
-    File file = new File(path);
-    String fileName = file.getName();
-    File parent = file.getParentFile();
-    String parentName = parent.getName();
-    String pdeName = parentName + ".pde";
-    File altPdeFile = new File(parent, pdeName);
-    String inoName = parentName + ".ino";
-    File altInoFile = new File(parent, pdeName);
+    String fileName = sketchFile.getName();
 
-    if (pdeName.equals(fileName) || inoName.equals(fileName)) {
-      // no beef with this guy
+    File file = SketchData.checkSketchFile(sketchFile);
 
-    } else if (altPdeFile.exists()) {
-      // user selected a .java from the same sketch, but open the .pde instead
-      path = altPdeFile.getAbsolutePath();
-    } else if (altInoFile.exists()) {
-      path = altInoFile.getAbsolutePath();
-    } else if (!path.endsWith(".ino") && !path.endsWith(".pde")) {
-      Base.showWarning(_("Bad file selected"),
-                       _("Processing can only open its own sketches\n" +
-                         "and other files ending in .ino or .pde"), null);
-      return false;
+    if (file == null)
+    {
+      if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
 
-    } else {
-      String properParent =
-        fileName.substring(0, fileName.length() - 4);
-
-      Object[] options = { _("OK"), _("Cancel") };
-      String prompt = I18n.format(
-	_("The file \"{0}\" needs to be inside\n" +
-	  "a sketch folder named \"{1}\".\n" +
-	  "Create this folder, move the file, and continue?"),
-	fileName,
-	properParent
-      );
-
-      int result = JOptionPane.showOptionDialog(this,
-                                                prompt,
-                                                _("Moving"),
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null,
-                                                options,
-                                                options[0]);
-
-      if (result == JOptionPane.YES_OPTION) {
-        // create properly named folder
-        File properFolder = new File(file.getParent(), properParent);
-        if (properFolder.exists()) {
-          Base.showWarning(_("Error"),
-                           I18n.format(
-                             _("A folder named \"{0}\" already exists. " +
-                               "Can't open sketch."),
-                             properParent
-                           ),
-			   null);
-          return false;
-        }
-        if (!properFolder.mkdirs()) {
-          //throw new IOException("Couldn't create sketch folder");
-          Base.showWarning(_("Error"),
-                           _("Could not create the sketch folder."), null);
-          return false;
-        }
-        // copy the sketch inside
-        File properPdeFile = new File(properFolder, file.getName());
-        File origPdeFile = new File(path);
-        try {
-          Base.copyFile(origPdeFile, properPdeFile);
-        } catch (IOException e) {
-          Base.showWarning(_("Error"), _("Could not copy to a proper location."), e);
-          return false;
-        }
-
-        // remove the original file, so user doesn't get confused
-        origPdeFile.delete();
-
-        // update with the new path
-        path = properPdeFile.getAbsolutePath();
-
-      } else if (result == JOptionPane.NO_OPTION) {
+        Base.showWarning(_("Bad file selected"),
+                         _("Arduino can only open its own sketches\n" +
+                           "and other files ending in .ino or .pde"), null);
         return false;
+
+      } else {
+        String properParent =
+          fileName.substring(0, fileName.length() - 4);
+
+        Object[] options = { _("OK"), _("Cancel") };
+        String prompt = I18n.format(_("The file \"{0}\" needs to be inside\n" +
+	                                "a sketch folder named \"{1}\".\n" +
+	                                "Create this folder, move the file, and continue?"),
+	                              fileName,
+	                              properParent);
+
+        int result = JOptionPane.showOptionDialog(this,
+                                                  prompt,
+                                                  _("Moving"),
+                                                  JOptionPane.YES_NO_OPTION,
+                                                  JOptionPane.QUESTION_MESSAGE,
+                                                  null,
+                                                  options,
+                                                  options[0]);
+
+        if (result == JOptionPane.YES_OPTION) {
+          // create properly named folder
+          File properFolder = new File(sketchFile.getParent(), properParent);
+          if (properFolder.exists()) {
+            Base.showWarning(_("Error"),
+                             I18n.format(
+                               _("A folder named \"{0}\" already exists. " +
+                                 "Can't open sketch."),
+                               properParent
+                             ),
+			   null);
+            return false;
+          }
+          if (!properFolder.mkdirs()) {
+            //throw new IOException("Couldn't create sketch folder");
+            Base.showWarning(_("Error"),
+                             _("Could not create the sketch folder."), null);
+            return false;
+          }
+          // copy the sketch inside
+          File properPdeFile = new File(properFolder, sketchFile.getName());
+          try {
+            Base.copyFile(file, properPdeFile);
+          } catch (IOException e) {
+            Base.showWarning(_("Error"), _("Could not copy to a proper location."), e);
+            return false;
+          }
+
+          // remove the original file, so user doesn't get confused
+          sketchFile.delete();
+
+          // update with the new path
+          file = properPdeFile;
+
+        } else if (result == JOptionPane.NO_OPTION) {
+          return false;
+        }
       }
     }
 
     try {
-      sketch = new Sketch(this, path);
+      sketch = new Sketch(this, file);
     } catch (IOException e) {
       Base.showWarning(_("Error"), _("Could not create the sketch."), e);
       return false;
     }
     header.rebuild();
     // Set the title of the window to "sketch_070752a - Processing 0126"
-    setTitle(
-      I18n.format(
-	_("{0} | Arduino {1}"),
-	sketch.getName(),
-	Base.VERSION_NAME
-      )
-    );
+    setTitle(I18n.format(_("{0} | Arduino {1}"), sketch.getName(),
+                         BaseNoGui.VERSION_NAME));
     // Disable untitled setting from previous document, if any
     untitled = false;
 
@@ -2374,7 +2367,11 @@ public class Editor extends JFrame implements RunnerListener {
    * hitting export twice, quickly, and horking things up.
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
-    //if (!handleExportCheckModified()) return;
+    if (Preferences.getBoolean("editor.save_on_verify")) {
+      if (sketch.isModified() && !sketch.isReadOnly()) {
+        handleSave(true);
+      }
+    }
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
     status.progress(_("Uploading to I/O Board..."));
@@ -2520,7 +2517,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
-    serialMonitor = new UploaderAndMonitorFactory().newMonitor(port, base);
+    serialMonitor = new MonitorFactory().newMonitor(port);
     serialMonitor.setIconImage(getIconImage());
 
     boolean success = false;
@@ -2576,7 +2573,8 @@ public class Editor extends JFrame implements RunnerListener {
           statusError(I18n.format(
                       _("Error while burning bootloader: missing '{0}' configuration parameter"),
                       e.getMessage()));
-          //statusError(e);
+        } catch (RunnerException e) {
+          statusError(e.getMessage());
         } catch (Exception e) {
           statusError(_("Error while burning bootloader."));
           e.printStackTrace();
@@ -2643,6 +2641,7 @@ public class Editor extends JFrame implements RunnerListener {
    * Show an error int the status bar.
    */
   public void statusError(String what) {
+    System.err.println(what);
     status.error(what);
     //new Exception("deactivating RUN").printStackTrace();
     toolbar.deactivate(EditorToolbar.RUN);

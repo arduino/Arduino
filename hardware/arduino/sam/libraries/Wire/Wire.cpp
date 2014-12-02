@@ -29,9 +29,13 @@ static inline bool TWI_FailedAcknowledge(Twi *pTwi) {
 }
 
 static inline bool TWI_WaitTransferComplete(Twi *_twi, uint32_t _timeout) {
-	while (!TWI_TransferComplete(_twi)) {
-		if (TWI_FailedAcknowledge(_twi))
+	uint32_t _status_reg = 0;
+	while ((_status_reg & TWI_SR_TXCOMP) != TWI_SR_TXCOMP) {
+		_status_reg = TWI_GetStatus(_twi);
+
+		if (_status_reg & TWI_SR_NACK)
 			return false;
+
 		if (--_timeout == 0)
 			return false;
 	}
@@ -39,22 +43,32 @@ static inline bool TWI_WaitTransferComplete(Twi *_twi, uint32_t _timeout) {
 }
 
 static inline bool TWI_WaitByteSent(Twi *_twi, uint32_t _timeout) {
-	while (!TWI_ByteSent(_twi)) {
-		if (TWI_FailedAcknowledge(_twi))
+	uint32_t _status_reg = 0;
+	while ((_status_reg & TWI_SR_TXRDY) != TWI_SR_TXRDY) {
+		_status_reg = TWI_GetStatus(_twi);
+
+		if (_status_reg & TWI_SR_NACK)
 			return false;
+
 		if (--_timeout == 0)
 			return false;
 	}
+
 	return true;
 }
 
 static inline bool TWI_WaitByteReceived(Twi *_twi, uint32_t _timeout) {
-	while (!TWI_ByteReceived(_twi)) {
-		if (TWI_FailedAcknowledge(_twi))
+	uint32_t _status_reg = 0;
+	while ((_status_reg & TWI_SR_RXRDY) != TWI_SR_RXRDY) {
+		_status_reg = TWI_GetStatus(_twi);
+
+		if (_status_reg & TWI_SR_NACK)
 			return false;
+
 		if (--_timeout == 0)
 			return false;
 	}
+
 	return true;
 }
 
@@ -81,8 +95,7 @@ static inline bool TWI_STATUS_NACK(uint32_t status) {
 TwoWire::TwoWire(Twi *_twi, void(*_beginCb)(void)) :
 	twi(_twi), rxBufferIndex(0), rxBufferLength(0), txAddress(0),
 			txBufferLength(0), srvBufferIndex(0), srvBufferLength(0), status(
-					UNINITIALIZED), onBeginCallback(_beginCb) {
-	// Empty
+					UNINITIALIZED), onBeginCallback(_beginCb), twiClock(TWI_CLOCK) {
 }
 
 void TwoWire::begin(void) {
@@ -92,7 +105,7 @@ void TwoWire::begin(void) {
 	// Disable PDC channel
 	twi->TWI_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
 
-	TWI_ConfigureMaster(twi, TWI_CLOCK, VARIANT_MCK);
+	TWI_ConfigureMaster(twi, twiClock, VARIANT_MCK);
 	status = MASTER_IDLE;
 }
 
@@ -111,6 +124,11 @@ void TwoWire::begin(uint8_t address) {
 
 void TwoWire::begin(int address) {
 	begin((uint8_t) address);
+}
+
+void TwoWire::setClock(uint32_t frequency) {
+	twiClock = frequency;
+	TWI_SetClock(twi, twiClock, VARIANT_MCK);
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop) {
@@ -175,22 +193,30 @@ void TwoWire::beginTransmission(int address) {
 //	devices will behave oddly if they do not see a STOP.
 //
 uint8_t TwoWire::endTransmission(uint8_t sendStop) {
+	uint8_t error = 0;
 	// transmit buffer (blocking)
 	TWI_StartWrite(twi, txAddress, 0, 0, txBuffer[0]);
-	TWI_WaitByteSent(twi, XMIT_TIMEOUT);
-	int sent = 1;
-	while (sent < txBufferLength) {
-		TWI_WriteByte(twi, txBuffer[sent++]);
-		TWI_WaitByteSent(twi, XMIT_TIMEOUT);
+	if (!TWI_WaitByteSent(twi, XMIT_TIMEOUT))
+		error = 2;	// error, got NACK on address transmit
+	
+	if (error == 0) {
+		uint16_t sent = 1;
+		while (sent < txBufferLength) {
+			TWI_WriteByte(twi, txBuffer[sent++]);
+			if (!TWI_WaitByteSent(twi, XMIT_TIMEOUT))
+				error = 3;	// error, got NACK during data transmmit
+		}
 	}
-	TWI_Stop( twi);
-	TWI_WaitTransferComplete(twi, XMIT_TIMEOUT);
+	
+	if (error == 0) {
+		TWI_Stop(twi);
+		if (!TWI_WaitTransferComplete(twi, XMIT_TIMEOUT))
+			error = 4;	// error, finishing up
+	}
 
-	// empty buffer
-	txBufferLength = 0;
-
+	txBufferLength = 0;		// empty buffer
 	status = MASTER_IDLE;
-	return sent;
+	return error;
 }
 
 //	This provides backwards compatibility with the original

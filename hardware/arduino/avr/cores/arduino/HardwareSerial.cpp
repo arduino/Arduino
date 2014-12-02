@@ -117,7 +117,7 @@ void HardwareSerial::begin(unsigned long baud, byte config)
     baud_setting = (F_CPU / 8 / baud - 1) / 2;
   }
 
-  // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
+  // assign the baud_setting, a.k.a. ubrr (USART Baud Rate Register)
   *_ubrrh = baud_setting >> 8;
   *_ubrrl = baud_setting;
 
@@ -152,7 +152,7 @@ void HardwareSerial::end()
 
 int HardwareSerial::available(void)
 {
-  return (unsigned int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail) % SERIAL_RX_BUFFER_SIZE;
+  return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail)) % SERIAL_RX_BUFFER_SIZE;
 }
 
 int HardwareSerial::peek(void)
@@ -174,6 +174,21 @@ int HardwareSerial::read(void)
     _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
     return c;
   }
+}
+
+int HardwareSerial::availableForWrite(void)
+{
+#if (SERIAL_TX_BUFFER_SIZE>256)
+  uint8_t oldSREG = SREG;
+  cli();
+#endif
+  tx_buffer_index_t head = _tx_buffer_head;
+  tx_buffer_index_t tail = _tx_buffer_tail;
+#if (SERIAL_TX_BUFFER_SIZE>256)
+  SREG = oldSREG;
+#endif
+  if (head >= tail) return SERIAL_TX_BUFFER_SIZE - 1 - head + tail;
+  return tail - head - 1;
 }
 
 void HardwareSerial::flush()
