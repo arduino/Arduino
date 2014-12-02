@@ -23,7 +23,7 @@ SPIClass::SPIClass() : spi_settings()
 {
 }
 
-SPIClass::SPIClass(const SPISettings & init) : spi_settings(init)
+SPIClass::SPIClass(const SPIPortSettings & init) : spi_settings(init)
 {
 }
 
