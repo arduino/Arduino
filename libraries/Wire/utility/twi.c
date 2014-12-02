@@ -25,7 +25,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <compat/twi.h>
-#include "Arduino.h" // for digitalWrite
+#include "Arduino.h" // for digitalWrite and micros
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -102,6 +102,9 @@ void twi_setAddress(uint8_t address)
   TWAR = address << 1;
 }
 
+uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop){
+  return twi_readFrom(address, data, length, sendStop, 0); /* for retrocompatibility */
+}
 /* 
  * Function twi_readFrom
  * Desc     attempts to become twi bus master and read a
@@ -110,9 +113,10 @@ void twi_setAddress(uint8_t address)
  *          data: pointer to byte array
  *          length: number of bytes to read into array
  *          sendStop: Boolean indicating whether to send a stop at the end
+ *          timeout_us: number of microseconds to wait for answr, 0 = no timeout
  * Output   number of bytes read
  */
-uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop)
+uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop, uint32_t timeout_us)
 {
   uint8_t i;
 
@@ -121,9 +125,15 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     return 0;
   }
 
-  // wait until twi is ready, become master receiver
+  // wait until twi is ready, become master receiver, or timeout
+  uint32_t start_us = micros();
   while(TWI_READY != twi_state){
-    continue;
+    if (timeout){
+      if (micros() - start_us > timeout_us){
+      	twi_state = TWI_ERROR;
+        return 0;
+      }
+    }
   }
   twi_state = TWI_MRX;
   twi_sendStop = sendStop;
@@ -158,9 +168,15 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     // send start condition
     TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTA);
 
-  // wait for read operation to complete
-  while(TWI_MRX == twi_state){
-    continue;
+  // wait for read operation to complete, or timeout
+  uint32_t start_us = micros();
+  while(TWI_MRX != twi_state){
+    if (timeout){
+      if (micros() - start_us > timeout_us){
+      	twi_state = TWI_ERROR;
+        return 0;
+      }
+    }
   }
 
   if (twi_masterBufferIndex < length)
@@ -174,6 +190,9 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
   return length;
 }
 
+uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop, uint32_t timeout_us){
+  return twi_writeTo(address, data, length, wait, sendStop, 0);  /* for retrocompatibility */
+}
 /* 
  * Function twi_writeTo
  * Desc     attempts to become twi bus master and write a
@@ -183,13 +202,15 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
  *          length: number of bytes in array
  *          wait: boolean indicating to wait for write or not
  *          sendStop: boolean indicating whether or not to send a stop at the end
+ *          timeout_us: number of microseconds to wait for answr, 0 = no timeout
  * Output   0 .. success
  *          1 .. length to long for buffer
  *          2 .. address send, NACK received
  *          3 .. data send, NACK received
  *          4 .. other twi error (lost bus arbitration, bus error, ..)
+ *          5 .. timeout
  */
-uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop)
+uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop, uint32_t timeout_us)
 {
   uint8_t i;
 
@@ -198,10 +219,18 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     return 1;
   }
 
-  // wait until twi is ready, become master transmitter
+  // wait until twi is ready, become master transmitter, or timeout
+  uint32_t start_us = micros();
   while(TWI_READY != twi_state){
+    if (timeout){
+      if (micros() - start_us > timeout_us){
+      	twi_state = TWI_ERROR;
+        return 5;
+      }
+    }
     continue;
   }
+  
   twi_state = TWI_MTX;
   twi_sendStop = sendStop;
   // reset error state (0xFF.. no error occured)
@@ -238,8 +267,15 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     // send start condition
     TWCR = _BV(TWINT) | _BV(TWEA) | _BV(TWEN) | _BV(TWIE) | _BV(TWSTA);	// enable INTs
 
-  // wait for write operation to complete
-  while(wait && (TWI_MTX == twi_state)){
+  // wait for write operation to complete, or timeout
+  uint32_t start_us = micros();
+  while( wait && (TWI_MTX != twi_state) ){
+    if (timeout){
+      if (micros() - start_us > timeout_us){
+      	twi_state = TWI_ERROR;
+        return 5;
+      }
+    }
     continue;
   }
   
@@ -324,21 +360,29 @@ void twi_reply(uint8_t ack)
   }
 }
 
+void twi_stop(void){
+  twi_stop(0);
+}
 /* 
  * Function twi_stop
  * Desc     relinquishes bus master status
- * Input    none
+ * Input    timeout_us: number of microseconds to wait for answr, 0 = no timeout
  * Output   none
  */
-void twi_stop(void)
+void twi_stop(uint32_t timeout_us)
 {
   // send stop condition
   TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA) | _BV(TWINT) | _BV(TWSTO);
 
-  // wait for stop condition to be exectued on bus
+  // wait for stop condition to be exectued on bus, or timeout
   // TWINT is not set after a stop condition!
-  while(TWCR & _BV(TWSTO)){
-    continue;
+  while( TWCR & _BV(TWSTO) ){
+    if (timeout){
+      if (micros() - start_us > timeout_us){
+      	twi_state = TWI_ERROR;
+        return;
+      }
+    }
   }
 
   // update twi state
