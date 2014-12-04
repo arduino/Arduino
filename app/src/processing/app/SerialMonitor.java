@@ -40,10 +40,11 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
   private JComboBox lineEndings;
   private JComboBox serialRates;
   private int serialRate;
+  private boolean serialMonitorEnabled;
+  
 
   public SerialMonitor(String port) {
     super(port);
-  
     this.port = port;
   
     addWindowListener(new WindowAdapter() {
@@ -171,6 +172,8 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
         }
       }
     }
+    
+    serialMonitorEnabled = true;
   }
   
   protected void setPlacement(int[] location) {
@@ -227,5 +230,51 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
         	textArea.setCaretPosition(textArea.getDocument().getLength());
         }
       }});
+  }
+  
+  public void enableWindow(boolean enable)
+  {
+	  textArea.setEnabled(enable);
+	  scrollPane.setEnabled(enable);
+	  textField.setEnabled(enable);
+	  sendButton.setEnabled(enable);
+	  autoscrollBox.setEnabled(enable);
+	  lineEndings.setEnabled(enable);
+	  serialRates.setEnabled(enable);
+	  
+	  serialMonitorEnabled = enable;
+  }
+  
+  // Make the serial monitor window operational
+  public void openSerialMonitor() throws SerialException
+  {
+	  // If the serial monitor is not currently disabled, open
+	  // the serial port
+	  if (serialMonitorEnabled)
+		  openSerialPort();
+	  
+	  // Make the window visible
+	  setVisible(true);
+  }
+
+  // Puts the window in suspend state, closing the serial port
+  // to allow other entity (the programmer) to use it
+  public void suspend()
+  {
+	  if (serial != null) 
+		  // Serial is opened. Record this fact and close it
+		  closeSerialPort();
+	  
+	  enableWindow(false);	  
+  }
+  
+  public void resume() throws SerialException
+  {
+	  // Enable the window
+	  enableWindow(true);		  
+
+	  // If the window is visible, try to open the serial port
+	  if (isVisible())
+			openSerialPort();
   }
 }
