@@ -266,11 +266,13 @@ public class Serial implements SerialPortEventListener {
               System.arraycopy(buffer, 0, temp, 0, bufferLast);
               buffer = temp;
             }
-            //buffer[bufferLast++] = (byte) input.read();
+            char c = (char) input.read();
             if(monitor == true)
-              System.out.print((char) input.read());
+              System.out.print(c);
             if (this.consumer != null)
-              this.consumer.message("" + (char) input.read());
+              this.consumer.message("" + c);
+            else
+              buffer[bufferLast++] = (byte) c;
             
             /*
             System.err.println(input.available() + " " + 
@@ -292,6 +294,24 @@ public class Serial implements SerialPortEventListener {
     //System.err.println("out of event " + serialEvent.getEventType());
   }
 
+  public String waitForData(long time) throws SerialException {
+      for (int i = 0; i < time/10; ++i ) {
+        try {
+          Thread.sleep(10);
+        } catch (InterruptedException e) {}
+
+        String str = new String("");
+        while (available() > 0) {
+          str = str + readString();
+          if (available() == 0)
+            return str;
+          try {
+            Thread.sleep(1); // give a bit of time for the next character. XXXXX (should be a function of bps)
+          } catch (InterruptedException e) {}
+        }
+      }
+      return null;
+  }
 
   /**
    * Returns the number of bytes that have been read from serial
@@ -514,6 +534,13 @@ public class Serial implements SerialPortEventListener {
 
   public void write(byte bytes[]) {
     try {
+      if (monitor) {
+        String s = "serial write(" + bytes.length + "):";
+        for (int i = 0; i < bytes.length; ++i ) {
+          s = s + " 0x"+Integer.toHexString(bytes[i]);
+        }
+        System.out.println(s);
+      }
       output.write(bytes);
       output.flush();   // hmm, not sure if a good idea
 
@@ -537,7 +564,11 @@ public class Serial implements SerialPortEventListener {
    * (i.e. UTF8 or two-byte Unicode data), and send it as a byte array.
    */
   public void write(String what) {
-    write(what.getBytes());
+    byte bytes[] = new byte[what.length()];
+    for (int i = 0; i < what.length(); ++i) {
+      bytes[i] = what.charAt(i) < 128 ? (byte)what.charAt(i): (byte)(what.charAt(i) - 256);
+    }
+    write(bytes);
   }
 
   public void setDTR(boolean state) {

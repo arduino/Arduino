@@ -930,7 +930,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     JCheckBoxMenuItem selection = null;
-    for (int i = 0; i < serialMenu.getItemCount(); i++) {
+    for (int i = 2; i < serialMenu.getItemCount(); i++) {
       JCheckBoxMenuItem item = ((JCheckBoxMenuItem)serialMenu.getItem(i));
       if (item == null) {
         System.out.println(_("name is null"));
@@ -942,6 +942,8 @@ public class Editor extends JFrame implements RunnerListener {
     if (selection != null) selection.setState(true);
     //System.out.println(item.getLabel());
     Preferences.set("serial.port", name);
+    ZigBee.close();
+    XBeePanel.onPortChange();
     serialMonitor.closeSerialPort();
     serialMonitor.setVisible(false);
     serialMonitor = new SerialMonitor(Preferences.get("serial.port"));
@@ -958,6 +960,15 @@ public class Editor extends JFrame implements RunnerListener {
 	
     serialMenu.removeAll();
     boolean empty = true;
+    rbMenuItem = new JMenuItem("XBee");
+    rbMenuItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          Editor.serialMonitor.closeSerialPort();
+          new XBeePanel();
+        }
+      } );
+    serialMenu.add(rbMenuItem);
+    serialMenu.addSeparator();
 
     try
     {
@@ -2320,10 +2331,10 @@ public class Editor extends JFrame implements RunnerListener {
   
   
   public boolean serialPrompt() {
-    int count = serialMenu.getItemCount();
+    int count = serialMenu.getItemCount()-2;
     Object[] names = new Object[count];
     for (int i = 0; i < count; i++) {
-      names[i] = ((JCheckBoxMenuItem)serialMenu.getItem(i)).getText();
+      names[i] = ((JCheckBoxMenuItem)serialMenu.getItem(i+2)).getText();
     }
 
     String result = (String)
@@ -2374,6 +2385,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
 
       try {
+        ZigBee.close();
         serialMonitor.closeSerialPort();
         serialMonitor.setVisible(false);
             
@@ -2410,6 +2422,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
 
       try {
+        ZigBee.close();
         serialMonitor.closeSerialPort();
         serialMonitor.setVisible(false);
             
@@ -2480,6 +2493,7 @@ public class Editor extends JFrame implements RunnerListener {
     if (uploading) return;
     
     try {
+      ZigBee.close();
       serialMonitor.openSerialPort();
       serialMonitor.setVisible(true);
     } catch (SerialException e) {

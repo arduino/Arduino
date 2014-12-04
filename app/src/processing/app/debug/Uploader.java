@@ -31,6 +31,7 @@ import processing.app.Preferences;
 import processing.app.Serial;
 import processing.app.SerialException;
 import processing.app.SerialNotFoundException;
+import processing.app.XBeePanel;
 import processing.app.I18n;
 import static processing.app.I18n._;
 
@@ -75,6 +76,7 @@ public abstract class Uploader implements MessageConsumer  {
     // Cleanup the serial buffer
     try {
       Serial serialPort = new Serial();
+      serialPort.addListener(null);
       byte[] readBuffer;
       while(serialPort.available() > 0) {
         readBuffer = serialPort.readBytes();
@@ -83,17 +85,50 @@ public abstract class Uploader implements MessageConsumer  {
         } catch (InterruptedException e) {}
       }
 
-      serialPort.setDTR(false);
-      serialPort.setRTS(false);
+      serialPort.dispose(); // make sure there is only one copy of the serial port running around.
+      serialPort = null;
 
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {}
+      if (Preferences.getBoolean("XBee.port."+Preferences.get("serial.port")) && XBeePanel.isXBee()) {
+        try {
+          ZigBee zb = ZigBee.getConnected();
+          String dp = Preferences.get(zb.getPrefPrefix() + ".DTR");
+          if (dp == null || dp.length() != 2) {
+            throw new RunnerException("Improperly Configured XBee: Unknwon DTR pin.");
+          }
+          // Pull the DTR low. XXXXX Fixme: magic numbers 4 and 5 should be encoded somewhere.
+          zb.executeCommand(dp, new Byte((byte)5), 100);
+          zb.apply();
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {}
+          zb.executeCommand(dp, new Byte((byte)4), 100);
+          zb.apply();
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {}
+          // and back high again.
+          zb.executeCommand(dp, new Byte((byte)5), 100);
+          zb.apply();
+          ZigBee.close();
+        } catch (ZigBeeException e) {
+          ZigBee.close();
+          throw new RunnerException(e.getMessage());
+        }
+      } else {
+        serialPort = new Serial();
+        serialPort.addListener(null);
+        serialPort.setDTR(false);
+        serialPort.setRTS(false);
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {}
 
-      serialPort.setDTR(true);
-      serialPort.setRTS(true);
+        serialPort.setDTR(true);
+        serialPort.setRTS(true);
+        serialPort.dispose();
+        serialPort = null;
+      }
       
-      serialPort.dispose();
     } catch (SerialNotFoundException e) {
       throw e;
     } catch(Exception e) {
