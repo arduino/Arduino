@@ -84,13 +84,20 @@ public class MSP430Uploader extends Uploader{
 		int retry = 0;
 		if(exception == null) return ret;
 		if (ret == false && (exception.message.indexOf("update needed") != -1)) {
-			JOptionPane.showMessageDialog(editor, 
-					"WARNING: MSP-EXP430FR5969 versions lower than V2.0 are no longer supported. "
-					+ "You can still use Energia 13 with versions lower than V2.0\n\n"
-					+ "The firmware of your Launchpad programmer needs an update.\n"
-					+ " You will need to update before you can upload your Sketch.\n"
-					+ " To update, select \"Update programmer\" from the \"Tools\" menu\n"
-					+ "", "Firmware update needed", JOptionPane.ERROR_MESSAGE);
+			String message = "<html>";
+			String mcu = boardPreferences.get("build.mcu");
+			if(mcu.matches("msp430fr5969")) {
+				message += "WARNING: If you are using the <b>MSP-EXP430FR5969</b> then<br>"
+							+ "<b>versions lower than v2.0 are no longer supported</b>.<br>"
+							+ "You can still use Energia 13 with versions lower than V2.0<br><br>";
+			}
+			
+			message += "The firmware of your Launchpad programmer needs an update.<br>"
+					+ "You will need to update before you can upload your Sketch.<br>"
+					+ "To update, select <b>\"Update programmer\"</b> from the <b>\"Tools\"</b> menu.<br>"
+					+ "</html";
+
+			JOptionPane.showMessageDialog(editor, message, "Firmware update needed", JOptionPane.WARNING_MESSAGE);
 		}
 
 		return ret;
