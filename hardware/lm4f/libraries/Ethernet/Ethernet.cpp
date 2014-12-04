@@ -9,7 +9,6 @@
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
 {
 	uint32_t ui32User0, ui32User1;
-	uint8_t pui8MACArray[8];
 
 	registerSysTickCb(lwIPTimer);
 	ROM_FlashUserGet(&ui32User0, &ui32User1);
@@ -95,6 +94,14 @@ IPAddress EthernetClass::subnetMask()
 IPAddress EthernetClass::dnsServerIP()
 {
 	return lwIPDNSAddrGet();
+}
+
+uint8_t* EthernetClass::macAddress(uint8_t* mac)
+{
+	/* If the size of the array is not large enough 
+	 * to fit the mac then simply return mac unmodified */
+
+	memcpy(mac, pui8MACArray, 6);
 }
 
 void EthernetClass::enableLinkLed()
