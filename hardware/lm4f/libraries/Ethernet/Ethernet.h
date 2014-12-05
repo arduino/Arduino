@@ -5,6 +5,7 @@
 #include <lwip/err.h>
 #include <netif/tivaif.h>
 #include <arch/lwiplib.h>
+#include <MACAddress.h>
 #include "IPAddress.h"
 #include "EthernetClient.h"
 #include "EthernetServer.h"
