@@ -4,14 +4,41 @@
 #include <Countdown.h>
 #include <MQTTClient.h>
 
-#define MQTT_MAX_PACKET_SIZE 100
-#define SIZE 100
-
-int ledPin = RED_LED;
 // your network name also called SSID
-char ssid[] = "energia1";
+char ssid[] = "energia";
 // your network password
 char password[] = "launchpad";
+
+// IBM IoT Foundation Cloud Settings
+// When adding a device on internetofthings.ibmcloud.com the following
+// information will be generated:
+// org=<org>
+// type=iotsample-ti-energia
+// id=<mac>
+// auth-method=token
+// auth-token=<password>
+
+#define MQTT_MAX_PACKET_SIZE 100
+#define IBMSERVERURLLEN  64
+#define IBMIOTFSERVERSUFFIX "messaging.internetofthings.ibmcloud.com"
+
+char organization[] = "<replacewithorg>";
+char typeId[] = "iotsample-ti-energia";
+char pubtopic[] = "iot-2/evt/status/fmt/json";
+char subTopic[] = "iot-2/cmd/+/fmt/json";
+char deviceId[] = "000000000000";
+char clientId[64];
+
+char mqttAddr[IBMSERVERURLLEN];
+int mqttPort = 1883;
+
+// Authentication method. Should be use-toke-auth
+// When using authenticated mode
+char authMethod[] = "use-token-auth";
+// The auth-token from the information above
+char authToken[] = "<replacewithauthtoken>";
+
+MACAddress mac;
 
 // getTemp() function for cc3200
 #ifdef TARGET_IS_CC3101
@@ -19,42 +46,19 @@ char password[] = "launchpad";
 #include "Adafruit_TMP006.h"
 Adafruit_TMP006 tmp006(0x41);
 #endif
+  
+WifiIPStack ipstack;  
+MQTT::Client<WifiIPStack, Countdown, MQTT_MAX_PACKET_SIZE> client(ipstack);
 
-int mqttPort = 1883;
-
-char topic[] = "iot-2/evt/status/fmt/json";
-char subTopic[] = "iot-2/cmd/+/fmt/json";
-
-// When adding a device on internetofthings.ibmcloud.com the following
-// information will be generated:
-// org=b7olvk
-// type=LaunchPad
-// id=myLaunchPad2
-// auth-method=token
-// auth-token=ZrHFpuUG9mjv@)J*MJ
-
-char organization[] = "b7olvk";
-char typeId[] = "LaunchPad";
-char deviceId[] = "myLaunchPad";
-
-// Authentication method. Should be use-toke-auth
-// When using authenticated mode
-char authMethod[] = "use-token-auth";
-// The auth-token from the information above
-char authToken[] = "eQw5BEyZP6HCW2unZM";
-// This string will be created in setup
-char clientId[48];
-// This string will be created in setup
-char registeredUrl[SIZE];
+int ledPin = RED_LED;
 
 // The function to call when a message arrives
 void callback(char* topic, byte* payload, unsigned int length);
-
-WifiIPStack ipstack;  
-MQTT::Client<WifiIPStack, Countdown, MQTT_MAX_PACKET_SIZE> client(ipstack);
 void messageArrived(MQTT::MessageData& md);
 
 void setup() {
+  uint8_t macOctets[6];
+  
   Serial.begin(115200);
   // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");
@@ -77,9 +81,21 @@ void setup() {
     delay(300);
   }
 
-  Serial.println("\nIP Address obtained");
   // We are connected and have an IP address.
+  Serial.print("\nIP Address obtained: ");
   Serial.println(WiFi.localIP());
+
+  mac = WiFi.macAddress(macOctets);
+  Serial.print("MAC Address: ");
+  Serial.println(mac);
+  
+  // Use MAC Address as deviceId
+  sprintf(deviceId, "%02x%02x%02x%02x%02x%02x", macOctets[0], macOctets[1], macOctets[2], macOctets[3], macOctets[4], macOctets[5]);
+  Serial.print("deviceId: ");
+  Serial.println(deviceId);
+
+  sprintf(clientId, "d:%s:%s:%s", organization, typeId, deviceId);
+  sprintf(mqttAddr, "%s.%s", organization, IBMIOTFSERVERSUFFIX);
 
   #ifdef __CC3200R1M1RGC__
   if (!tmp006.begin()) {
@@ -87,51 +103,52 @@ void setup() {
     while (1);
   }
   #endif
-  
-  // Create the mqtt url and the client id
-  sprintf(clientId, "d:%s:%s:%s", organization, typeId, deviceId);
-  sprintf(registeredUrl,"%s.messaging.internetofthings.ibmcloud.com",organization);
-  delay(1000);
 }
 
 void loop() {
+
   int rc = -1;
   if (!client.isConnected()) {
-    Serial.print("Connecting to: ");
-    Serial.print(registeredUrl);
-    Serial.print(" with client id: ");
+    Serial.print("Connecting to ");
+    Serial.print(mqttAddr);
+    Serial.print(":");
+    Serial.println(mqttPort);
+    Serial.print("With client id: ");
     Serial.println(clientId);
-    while (rc != 0) {
-      rc = ipstack.connect(registeredUrl, mqttPort);
-    }
     
-    MQTTPacket_connectData options = MQTTPacket_connectData_initializer;
-    options.MQTTVersion = 3;
-    options.clientID.cstring = clientId;
-    options.username.cstring = authMethod;
-    options.password.cstring = authToken;
-    options.keepAliveInterval = 10;
+    while (rc != 0) {
+      rc = ipstack.connect(mqttAddr, mqttPort);
+    }
+
+    MQTTPacket_connectData connectData = MQTTPacket_connectData_initializer;
+    connectData.MQTTVersion = 3;
+    connectData.clientID.cstring = clientId;
+    connectData.username.cstring = authMethod;
+    connectData.password.cstring = authToken;
+    connectData.keepAliveInterval = 10;
+    
     rc = -1;
-    while ((rc = client.connect(options)) != 0)
+    while ((rc = client.connect(connectData)) != 0)
       ;
     Serial.println("Connected\n");
     
     Serial.print("Subscribing to topic: ");
     Serial.println(subTopic);
+    
     // Unsubscribe the topic, if it had subscribed it before.
     client.unsubscribe(subTopic);
     // Try to subscribe for commands
     if ((rc = client.subscribe(subTopic, MQTT::QOS0, messageArrived)) != 0) {
-            Serial.print("Subscribe failed with return code : ");
-            Serial.println(rc);
+      Serial.print("Subscribe failed with return code : ");
+      Serial.println(rc);
     } else {
-          Serial.println("Subscribe success\n");
+      Serial.println("Subscribe success\n");
     }
   }
 
   char json[56] = "{\"d\":{\"myName\":\"TILaunchPad\",\"temperature\":";
-  dtostrf(getTemp(),1,2, &json[43]);
 
+  dtostrf(getTemp(),1,2, &json[43]);
   json[48] = '}';
   json[49] = '}';
   json[50] = '\0';
@@ -142,15 +159,15 @@ void loop() {
   message.retained = false;
   message.payload = json; 
   message.payloadlen = strlen(json);
-  rc = client.publish(topic, message);
+  rc = client.publish(pubtopic, message);
   if (rc != 0) {
     Serial.print("Message publish failed with return code : ");
     Serial.println(rc);
   }
   
   // Wait for one second before publishing again
-  // This will also service any incomming messages
-  client.yield(5000);
+  // This will also service any incoming messages
+  client.yield(1000);
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
