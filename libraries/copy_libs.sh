@@ -9,7 +9,7 @@ if [[ "$OSTYPE" == "Linux" ]]; then
 elif [[ "$OSTYPE" == "Darwin" ]]; then
 	OS_PATH="macosx/work/Energia.app/Contents/Resources/Java/hardware"
 	echo $OS_PATH
-elif [[ "$OSTYPE" == "MINGW32_NT-6.2" ]]; then
+elif [[ $OSTYPE=="MINGW32*" ]]; then
 	OS_PATH="windows/work/hardware"
 fi
 
