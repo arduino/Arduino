@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LIBRARIES="aJson PubNub Temboo MQTTClient PubSubClient"
+LIBRARIES="CogLCD aJson PubNub Temboo MQTTClient PubSubClient"
 ARCHES="msp430 lm4f cc3200"
 OSTYPE=`uname`
 
