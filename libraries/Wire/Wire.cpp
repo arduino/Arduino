@@ -51,7 +51,7 @@ TwoWire::TwoWire()
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void TwoWire::begin(void)
+void TwoWire::begin_timeout(uint32_t default_timeout)
 {
   rxBufferIndex = 0;
   rxBufferLength = 0;
@@ -59,15 +59,23 @@ void TwoWire::begin(void)
   txBufferIndex = 0;
   txBufferLength = 0;
 
-  twi_init();
+  twi_init_timeout(default_timeout);
+}
+
+void TwoWire::begin_timeout(uint8_t address, uint32_t default_timeout){
+  twi_setAddress(address);
+  twi_attachSlaveTxEvent(onRequestService);
+  twi_attachSlaveRxEvent(onReceiveService);
+  begin_timeout(default_timeout);
+}
+
+void TwoWire::begin(void){
+  begin_timeout(0);
 }
 
 void TwoWire::begin(uint8_t address)
 {
-  twi_setAddress(address);
-  twi_attachSlaveTxEvent(onRequestService);
-  twi_attachSlaveRxEvent(onReceiveService);
-  begin();
+  begin_timeout(address, 0);
 }
 
 void TwoWire::begin(int address)
@@ -75,19 +83,23 @@ void TwoWire::begin(int address)
   begin((uint8_t)address);
 }
 
-uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
+uint8_t TwoWire::requestFrom_timeout(uint8_t address, uint8_t quantity, uint8_t sendStop, uint32_t timeout_us)
 {
   // clamp to buffer length
   if(quantity > BUFFER_LENGTH){
     quantity = BUFFER_LENGTH;
   }
   // perform blocking read into buffer
-  uint8_t read = twi_readFrom(address, rxBuffer, quantity, sendStop);
+  uint8_t read = twi_readFrom_timeout(address, rxBuffer, quantity, sendStop, timeout_us);
   // set rx buffer iterator vars
   rxBufferIndex = 0;
   rxBufferLength = read;
 
   return read;
+}
+
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop){
+	return requestFrom_timeout(address, quantity, sendStop, 0);
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
@@ -134,16 +146,21 @@ void TwoWire::beginTransmission(int address)
 //	no call to endTransmission(true) is made. Some I2C
 //	devices will behave oddly if they do not see a STOP.
 //
-uint8_t TwoWire::endTransmission(uint8_t sendStop)
+
+uint8_t TwoWire::endTransmission_timeout(uint8_t sendStop, uint32_t timeout_us)
 {
   // transmit buffer (blocking)
-  int8_t ret = twi_writeTo(txAddress, txBuffer, txBufferLength, 1, sendStop);
+  int8_t ret = twi_writeTo_timeout(txAddress, txBuffer, txBufferLength, 1, sendStop, timeout_us);
   // reset tx buffer iterator vars
   txBufferIndex = 0;
   txBufferLength = 0;
   // indicate that we are done transmitting
   transmitting = 0;
   return ret;
+}
+
+uint8_t TwoWire::endTransmission(uint8_t sendStop){
+	return endTransmission_timeout(sendStop, 0);
 }
 
 //	This provides backwards compatibility with the original

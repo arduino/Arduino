@@ -6,6 +6,7 @@
 // Refer to the "Wire Slave Sender" example for use with this
 
 // Created 29 March 2006
+// Edited 7 december 2014 by Mauro Mombelli
 
 // This example code is in the public domain.
 

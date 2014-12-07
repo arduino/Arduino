@@ -59,14 +59,19 @@ static volatile uint8_t twi_rxBufferIndex;
 
 static volatile uint8_t twi_error;
 
+static volatile uint32_t twi_default_timeout;
+
 /* 
  * Function twi_init
  * Desc     readys twi pins and sets twi bitrate
  * Input    none
  * Output   none
  */
-void twi_init(void)
+
+void twi_init_timeout(uint32_t default_timeout)
 {
+  twi_default_timeout = default_timeout;
+
   // initialize state
   twi_state = TWI_READY;
   twi_sendStop = true;		// default value
@@ -81,14 +86,15 @@ void twi_init(void)
   cbi(TWSR, TWPS1);
   TWBR = ((F_CPU / TWI_FREQ) - 16) / 2;
 
-  /* twi bit rate formula from atmega128 manual pg 204
-  SCL Frequency = CPU Clock Frequency / (16 + (2 * TWBR))
-  note: TWBR should be 10 or higher for master mode
-  It is 72 for a 16mhz Wiring board with 100kHz TWI */
+  // twi bit rate formula from atmega128 manual pg 204
+  //SCL Frequency = CPU Clock Frequency / (16 + (2 * TWBR))
+  //note: TWBR should be 10 or higher for master mode
+  //It is 72 for a 16mhz Wiring board with 100kHz TWI
 
   // enable twi module, acks, and twi interrupt
   TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA);
 }
+
 
 /* 
  * Function twi_slaveInit
@@ -101,10 +107,11 @@ void twi_setAddress(uint8_t address)
   // set twi slave address (skip over TWGCE bit)
   TWAR = address << 1;
 }
-
+/*
 uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sendStop){
-  return twi_readFrom_timeout(address, data, length, sendStop, 0); /* for retrocompatibility */
+  return twi_readFrom_timeout(address, data, length, sendStop, 0);
 }
+*/
 /* 
  * Function twi_readFrom
  * Desc     attempts to become twi bus master and read a
@@ -188,11 +195,14 @@ uint8_t twi_readFrom_timeout(uint8_t address, uint8_t* data, uint8_t length, uin
   }
 	
   return length;
+
 }
 
+/*
 uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait, uint8_t sendStop){
-  return twi_writeTo_timeout(address, data, length, wait, sendStop, 0);  /* for retrocompatibility */
+  return twi_writeTo_timeout(address, data, length, wait, sendStop, 0);
 }
+*/
 /* 
  * Function twi_writeTo
  * Desc     attempts to become twi bus master and write a
@@ -360,9 +370,11 @@ void twi_reply(uint8_t ack)
   }
 }
 
+/*
 void twi_stop(void){
   twi_stop_timeout(0);
 }
+*/
 /* 
  * Function twi_stop
  * Desc     relinquishes bus master status
@@ -426,7 +438,7 @@ ISR(TWI_vect)
         twi_reply(1);
       }else{
 	if (twi_sendStop)
-          twi_stop();
+          twi_stop_timeout(twi_default_timeout);
 	else {
 	  twi_inRepStart = true;	// we're gonna send the START
 	  // don't enable the interrupt. We'll generate the start, but we 
@@ -439,11 +451,11 @@ ISR(TWI_vect)
       break;
     case TW_MT_SLA_NACK:  // address sent, nack received
       twi_error = TW_MT_SLA_NACK;
-      twi_stop();
+      twi_stop_timeout(twi_default_timeout);
       break;
     case TW_MT_DATA_NACK: // data sent, nack received
       twi_error = TW_MT_DATA_NACK;
-      twi_stop();
+      twi_stop_timeout(twi_default_timeout);
       break;
     case TW_MT_ARB_LOST: // lost bus arbitration
       twi_error = TW_MT_ARB_LOST;
@@ -466,7 +478,7 @@ ISR(TWI_vect)
       // put final byte into buffer
       twi_masterBuffer[twi_masterBufferIndex++] = TWDR;
 	if (twi_sendStop)
-          twi_stop();
+          twi_stop_timeout(twi_default_timeout);
 	else {
 	  twi_inRepStart = true;	// we're gonna send the START
 	  // don't enable the interrupt. We'll generate the start, but we 
@@ -477,7 +489,7 @@ ISR(TWI_vect)
 	}    
 	break;
     case TW_MR_SLA_NACK: // address sent, nack received
-      twi_stop();
+      twi_stop_timeout(twi_default_timeout);
       break;
     // TW_MR_ARB_LOST handled by TW_MT_ARB_LOST case
 
@@ -510,7 +522,7 @@ ISR(TWI_vect)
         twi_rxBuffer[twi_rxBufferIndex] = '\0';
       }
       // sends ack and stops interface for clock stretching
-      twi_stop();
+      twi_stop_timeout(twi_default_timeout);
       // callback to user defined callback
       twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
       // since we submit rx buffer to "wire" library, we can reset it
@@ -565,7 +577,7 @@ ISR(TWI_vect)
       break;
     case TW_BUS_ERROR: // bus error, illegal stop/start
       twi_error = TW_BUS_ERROR;
-      twi_stop();
+      twi_stop_timeout(twi_default_timeout);
       break;
   }
 }

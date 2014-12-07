@@ -49,12 +49,16 @@ class TwoWire : public Stream
     void begin();
     void begin(uint8_t);
     void begin(int);
+	void begin_timeout(uint32_t);
+	void begin_timeout(uint8_t, uint32_t);
     void beginTransmission(uint8_t);
     void beginTransmission(int);
     uint8_t endTransmission(void);
     uint8_t endTransmission(uint8_t);
+	uint8_t endTransmission_timeout(uint8_t, uint32_t);
     uint8_t requestFrom(uint8_t, uint8_t);
     uint8_t requestFrom(uint8_t, uint8_t, uint8_t);
+	uint8_t requestFrom_timeout(uint8_t, uint8_t, uint8_t, uint32_t);
     uint8_t requestFrom(int, int);
     uint8_t requestFrom(int, int, int);
     virtual size_t write(uint8_t);
