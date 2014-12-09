@@ -42,6 +42,7 @@ connected	KEYWORD2
 
 # FileIO Class
 File	KEYWORD2
+BridgeFile	KEYWORD2
 seek	KEYWORD2
 position	KEYWORD2
 size	KEYWORD2
