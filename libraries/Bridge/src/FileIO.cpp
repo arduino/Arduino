@@ -18,7 +18,7 @@
 
 #include <FileIO.h>
 
-
+namespace BridgeLib {
 
 File::File(BridgeClass &b) : mode(255), bridge(b) {
   // Empty
@@ -279,3 +279,5 @@ boolean FileSystemClass::rmdir(const char *filepath) {
 }
 
 FileSystemClass FileSystem;
+
+}

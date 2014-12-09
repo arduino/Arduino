@@ -8,6 +8,7 @@
 
 SD	KEYWORD1	SD
 File	KEYWORD1	SD
+SDFile	KEYWORD1	SD
 
 #######################################
 # Methods and Functions (KEYWORD2)
