@@ -36,12 +36,12 @@
  */
 
 #include <Bridge.h>
-#include <YunServer.h>
-#include <YunClient.h>
+#include <BridgeServer.h>
+#include <BridgeClient.h>
 
 // Listen on default port 5555, the webserver on the Yún
 // will forward there all the HTTP requests for us.
-YunServer server;
+BridgeServer server;
 String startString;
 long hits = 0;
 
@@ -76,7 +76,7 @@ void setup() {
 
 void loop() {
   // Get clients coming from server
-  YunClient client = server.accept();
+  BridgeClient client = server.accept();
 
   // There is a new client?
   if (client) {

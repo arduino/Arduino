@@ -23,12 +23,12 @@
  */
 
 #include <Bridge.h>
-#include <YunServer.h>
-#include <YunClient.h>
+#include <BridgeServer.h>
+#include <BridgeClient.h>
 
 // Listen to the default port 5555, the Yún webserver
 // will forward there all the HTTP requests you send
-YunServer server;
+BridgeServer server;
 
 void setup() {
   // Bridge startup
@@ -45,7 +45,7 @@ void setup() {
 
 void loop() {
   // Get clients coming from server
-  YunClient client = server.accept();
+  BridgeClient client = server.accept();
 
   // There is a new client?
   if (client) {
@@ -59,7 +59,7 @@ void loop() {
   delay(50); // Poll every 50ms
 }
 
-void process(YunClient client) {
+void process(BridgeClient client) {
   // read the command
   String command = client.readStringUntil('/');
 
@@ -79,7 +79,7 @@ void process(YunClient client) {
   }
 }
 
-void digitalCommand(YunClient client) {
+void digitalCommand(BridgeClient client) {
   int pin, value;
 
   // Read pin number
@@ -107,7 +107,7 @@ void digitalCommand(YunClient client) {
   Bridge.put(key, String(value));
 }
 
-void analogCommand(YunClient client) {
+void analogCommand(BridgeClient client) {
   int pin, value;
 
   // Read pin number
@@ -148,7 +148,7 @@ void analogCommand(YunClient client) {
   }
 }
 
-void modeCommand(YunClient client) {
+void modeCommand(BridgeClient client) {
   int pin;
 
   // Read pin number

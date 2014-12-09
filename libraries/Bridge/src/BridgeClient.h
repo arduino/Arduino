@@ -16,18 +16,18 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#ifndef _YUN_CLIENT_H_
-#define _YUN_CLIENT_H_
+#ifndef _BRIDGE_CLIENT_H_
+#define _BRIDGE_CLIENT_H_
 
 #include <Bridge.h>
 #include <Client.h>
 
-class YunClient : public Client {
+class BridgeClient : public Client {
   public:
     // Constructor with a user provided BridgeClass instance
-    YunClient(int _h, BridgeClass &_b = Bridge);
-    YunClient(BridgeClass &_b = Bridge);
-    ~YunClient();
+    BridgeClient(int _h, BridgeClass &_b = Bridge);
+    BridgeClient(BridgeClass &_b = Bridge);
+    ~BridgeClient();
 
     // Stream methods
     // (read message)
@@ -45,7 +45,7 @@ class YunClient : public Client {
       return opened;
     }
 
-    YunClient& operator=(const YunClient &_x);
+    BridgeClient& operator=(const BridgeClient &_x);
 
     virtual void stop();
     virtual uint8_t connected();
@@ -67,4 +67,4 @@ class YunClient : public Client {
 
 };
 
-#endif // _YUN_CLIENT_H_
+#endif // _BRIDGE_CLIENT_H_

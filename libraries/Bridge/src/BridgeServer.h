@@ -16,21 +16,21 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#ifndef _YUN_SERVER_H_
-#define _YUN_SERVER_H_
+#ifndef _BRIDGE_SERVER_H_
+#define _BRIDGE_SERVER_H_
 
 #include <Bridge.h>
 #include <Server.h>
 
-class YunClient;
+class BridgeClient;
 
-class YunServer : public Server {
+class BridgeServer : public Server {
   public:
     // Constructor with a user provided BridgeClass instance
-    YunServer(uint16_t port = 5555, BridgeClass &_b = Bridge);
+    BridgeServer(uint16_t port = 5555, BridgeClass &_b = Bridge);
 
     void begin();
-    YunClient accept();
+    BridgeClient accept();
 
     virtual size_t write(uint8_t c);
 
@@ -48,4 +48,4 @@ class YunServer : public Server {
     BridgeClass &bridge;
 };
 
-#endif // _YUN_SERVER_H_
+#endif // _BRIDGE_SERVER_H_
