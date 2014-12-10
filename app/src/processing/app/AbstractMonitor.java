@@ -25,6 +25,8 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
   protected JCheckBox autoscrollBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
+  private boolean monitorEnabled;
+  private boolean closed;
 
   public AbstractMonitor(String title) {
     super(title);
@@ -32,6 +34,7 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent event) {
         try {
+	  closed = true;
           close();
         } catch (Exception e) {
           // ignore
@@ -149,6 +152,53 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
         }
       }
     }
+
+    monitorEnabled = true;
+    closed = false;
+  }
+
+  public void enableWindow(boolean enable)
+  {
+    textArea.setEnabled(enable);
+    scrollPane.setEnabled(enable);
+    textField.setEnabled(enable);
+    sendButton.setEnabled(enable);
+    autoscrollBox.setEnabled(enable);
+    lineEndings.setEnabled(enable);
+    serialRates.setEnabled(enable);
+  
+    monitorEnabled = enable;
+  }
+  
+  // Puts the window in suspend state, closing the serial port
+  // to allow other entity (the programmer) to use it
+  public void suspend()
+  {
+   enableWindow(false);
+
+   try {
+        close();
+      }
+   catch(Exception e) {
+       //throw new SerialException("Failed closing the port");
+   }  
+
+  }
+  
+  public void resume() throws SerialException
+  {
+    // Enable the window
+    enableWindow(true);		  
+
+    // If the window is visible, try to open the serial port
+    if (isVisible())
+      try {
+        open();
+      }
+      catch(Exception e) {
+	  throw new SerialException("Failed opening the port");
+      }
+
   }
 
   public void onSerialRateChange(ActionListener listener) {
@@ -194,6 +244,10 @@ public abstract class AbstractMonitor extends JFrame implements MessageConsumer 
 
   public String getAuthorizationKey() {
     return null;
+  }
+
+  public boolean isClosed() {
+      return closed;
   }
 
   public abstract void open() throws Exception;

@@ -2385,8 +2385,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       try {
         if (serialMonitor != null) {
-          serialMonitor.close();
-          serialMonitor.setVisible(false);
+          serialMonitor.suspend();
         }
 
         uploading = true;
@@ -2418,7 +2417,17 @@ public class Editor extends JFrame implements RunnerListener {
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
-    }
+
+      // Return the serial monitor window to its initial state
+      try {
+        if (serialMonitor != null)
+    	  serialMonitor.resume();
+      }
+      catch (SerialException e) {
+          statusError(e);
+      }
+
+   }
   }
 
   // DAM: in Arduino, this is upload (with verbose output)
@@ -2427,8 +2436,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       try {
         if (serialMonitor != null) {
-          serialMonitor.close();
-          serialMonitor.setVisible(false);
+          serialMonitor.suspend();
         }
 
         uploading = true;
@@ -2460,6 +2468,16 @@ public class Editor extends JFrame implements RunnerListener {
       uploading = false;
       //toolbar.clear();
       toolbar.deactivate(EditorToolbar.EXPORT);
+
+      if (serialMonitor != null) {
+        try {
+          if (serialMonitor != null)
+    	    serialMonitor.resume();
+        }
+        catch (SerialException e) {
+            statusError(e);
+        }
+      }
     }
   }
 
@@ -2499,14 +2517,23 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   public void handleSerial() {
-    if (uploading) return;
-
     if (serialMonitor != null) {
-      try {
-        serialMonitor.close();
-        serialMonitor.setVisible(false);
-      } catch (Exception e) {
-        // noop
+      // The serial monitor already exists
+
+      if (serialMonitor.isClosed()) {
+        // If it's closed, clear the refrence to the existing
+        // monitor and create a new one
+        serialMonitor = null;
+      }
+      else {
+        // If it's not closed, give it the focus
+        try {
+          serialMonitor.toFront();
+          serialMonitor.requestFocus();
+          return;
+        } catch (Exception e) {
+          // noop
+        }
       }
     }
 
@@ -2519,6 +2546,11 @@ public class Editor extends JFrame implements RunnerListener {
 
     serialMonitor = new MonitorFactory().newMonitor(port);
     serialMonitor.setIconImage(getIconImage());
+
+    // If currently uploading, disable the monitor (it will be later
+    // enabled when done uploading)
+    if (uploading)
+      serialMonitor.suspend();
 
     boolean success = false;
     do {
