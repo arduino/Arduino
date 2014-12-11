@@ -1,3 +1,39 @@
+
+ARDUINO 1.6.0rc1
+
+* IDE internals have been refactored and sorted out. (Claudio Indellicati)
+  https://github.com/arduino/Arduino/pull/2328
+  The builder and the GUI now have clearly separated source code making it easier
+  for IDE developers to maintain and propose patch.
+  From a user point of view nothing changes and the IDE should behave exactly as before.
+
+[ide]
+* Autosave on sketch Upload/Verify (Fulvio Ieva)
+* Sketch build process: fixed full rebuild on windows even if not needed
+* Sketch build process: core.a rebuild only if needed (Matthijs Kooijman)
+* Updated AStyle formatter to v2.04: http://astyle.sourceforge.net/notes.html
+* Improved avrdude verbose upload (Matthijs Kooijman)
+* (Mac OSX) Add Exported UTI for ino files, allows quick look to view the
+  content of the file and external editors to syntax highlight as C++ (Matt Lloyd)
+* Updated libastyle to 2.05
+
+[core]
+* sam: added -MMD flag to let gcc produce dependency files (full rebuild on Arduino Due is now triggered only if needed)
+
+[libraries]
+* LiquidCrystal: added setRowOffsets function to support different LCD hardware configurations (Mark Sproul)
+* LiquidCrystal: various improvements and optimizations (Matthijs Kooijman)
+* Fixed PROGMEM error in Robot_Control/examples/explore/R06_Wheel_Calibration
+* SD: Fixed SPI transaction mismatch (Paul Stoffregen)
+
+The following changes are included also in the Arduino IDE 1.0.7:
+
+[libraries]
+* EthernetClien: use IANA recommended ephemeral port range, 49152-65535 (Jack Christensen, cifer-lee)
+
+[core]
+* Fixed regression in HardwareSerial::available() introduced with https://github.com/arduino/Arduino/pull/2057
+
 ARDUINO 1.5.8 BETA - 2014.10.01
 
 [ide]
@@ -328,6 +364,20 @@ ARDUINO 1.5 BETA - 2012.10.22
   or incomplete.
 * For more info refer to this press release:
   http://arduino.cc/blog/2012/10/22/arduino-1-5-support-for-the-due-and-other-processors-easier-library-installation-simplified-board-menu-etc/
+
+ARDUINO 1.0.7
+
+[libraries]
+* Backported SPI Transaction API from IDE 1.5.x (Paul Stoffregen)
+* Backported GSM from IDE 1.5.x: fix build regression
+* Backported Ethernet from IDE 1.5.x
+* Backported SD from IDE 1.5.x
+* Backported SPI from IDE 1.5.x
+* EthernetClient: use IANA recommended ephemeral port range, 49152-65535 (Jack Christensen, cifer-lee)
+
+[core]
+* Fixed missing NOT_AN_INTERRUPT constant in digitalPinToInterrupt() macro
+* Fixed performance regression in HardwareSerial::available() introduced with https://github.com/arduino/Arduino/pull/2057
 
 ARDUINO 1.0.6 - 2014.09.16
 

@@ -1,8 +1,8 @@
 app/bin/
 app/pde.jar
 build/macosx/work/
-core/bin/
-core/core.jar
+arduino-core/bin/
+arduino-core/arduino-core.jar
 hardware/arduino/bootloaders/caterina_LUFA/Descriptors.o
 hardware/arduino/bootloaders/caterina_LUFA/Descriptors.lst
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.sym
@@ -13,6 +13,7 @@ hardware/arduino/bootloaders/caterina_LUFA/Caterina.lss
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.elf
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.eep
 hardware/arduino/bootloaders/caterina_LUFA/.dep/
+build/libastylej-*.zip
 build/windows/work/
 build/windows/jre.zip
 build/windows/libastylej*
@@ -35,6 +36,7 @@ test-bin
 *.iml
 .idea
 .DS_Store
+.directory
 build/windows/launch4j-*
 build/windows/launcher/launch4j
 build/windows/WinAVR-*.zip
