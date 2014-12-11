@@ -204,9 +204,9 @@
   <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
 
-    <get src="http://downloads.arduino.cc/appbundler-1.0-arduino.jar" dest="macosx" usetimestamp="true" skipexisting="true" />
+    <get src="http://downloads.arduino.cc/appbundler-1.0b-arduino.jar" dest="macosx" usetimestamp="true" skipexisting="true" />
 
-    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="macosx/appbundler-1.0-arduino.jar" />
+    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="macosx/appbundler-1.0b-arduino.jar" />
 
     <bundleapp outputdirectory="macosx/work"
       name="Arduino"
