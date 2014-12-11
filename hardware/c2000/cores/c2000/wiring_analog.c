@@ -33,7 +33,7 @@
 #include "pins_energia.h"
 
 #ifdef TMS320F28027
-#include "f2802x_common/include/f2802x_epwm_defines.h"
+#include "f2802x_common/include/F2802x_EPwm_defines.h"
 #elif defined(TMS320F28069)
 #include "F2806x_common/include/F2806x_EPwm_defines.h"
 #endif

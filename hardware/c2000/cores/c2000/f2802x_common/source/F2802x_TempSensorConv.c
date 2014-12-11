@@ -28,7 +28,7 @@
 //###########################################################################
 
 #include "F2802x_Device.h"     // Headerfile Include File
-#include "f2802x_common/include/f2802x_examples.h"   // Examples Include File
+#include "f2802x_common/include/F2802x_Examples.h"   // Examples Include File
 
 // Useful definitions
   #define FP_SCALE 32768       //Scale factor for Q15 fixed point numbers (2^15)
