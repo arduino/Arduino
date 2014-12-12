@@ -190,6 +190,7 @@ HardwareSerial::flushAll(void)
     while(!TX_BUFFER_EMPTY)
     {
     }
+    while (ROM_UARTBusy(UART_BASE)) ;
     txReadIndex = 0;
     txWriteIndex = 0;
 
@@ -389,6 +390,7 @@ int HardwareSerial::read(void)
 void HardwareSerial::flush()
 {
     while(!TX_BUFFER_EMPTY);
+    while (ROM_UARTBusy(UART_BASE)) ;
 }
 
 size_t HardwareSerial::write(uint8_t c)
