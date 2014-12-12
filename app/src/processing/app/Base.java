@@ -25,6 +25,7 @@ package processing.app;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.*;
 import javax.swing.*;
@@ -70,6 +71,7 @@ public class Base {
     archMap.put("lm4f", "lm4f");
     archMap.put("c2000", "c2000");
     archMap.put("cc3200", "cc3200");
+    archMap.put("secret", "secret");
   }
   static Platform platform;
 
@@ -1644,6 +1646,32 @@ public class Base {
     return getHardwareFolder().getAbsolutePath();
   }
   
+
+  static public String readFile(String fileName) throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(fileName));
+    try {
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            sb.append("\n");
+            line = br.readLine();
+        }
+ 
+        return sb.toString();
+    } finally {
+        br.close();
+    }
+  }
+  
+  static public String getArchCorePath() {
+    String arch = getArch();
+    String path = getHardwarePath() + File.separator + arch + File.separator +
+                  "cores" + File.separator + arch + File.separator;
+    return path;
+  }
+
   
   static public String getAvrBasePath() {
     String path = getHardwarePath() + File.separator + "tools" +
@@ -1758,7 +1786,7 @@ public class Base {
       return ret;
     } else {
     	String arch = getArch();
-    	if (arch == "cc3200")
+    	if (arch == "cc3200" || arch == "secret")
     		arch = "lm4f";
     	return getHardwarePath() + File.separator + "tools" + File.separator
           + arch + File.separator + "bin" + File.separator;

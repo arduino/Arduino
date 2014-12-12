@@ -113,6 +113,35 @@ public class Compiler implements MessageConsumer {
       }
     }
 
+    if (arch == "secret") {
+    	String commonBasePath = Base.getHardwarePath() + File.separator + 
+    			"secret" + File.separator + "cores" + File.separator + "secret" + File.separator;
+        try {
+        	File makeVariables = new File(buildPath+File.separator+"Variables.mk");
+        	FileWriter fw = new FileWriter(makeVariables);
+        	fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "secret" + File.separator + "gnu" + File.separator + "closure\n");
+        	fw.write("SDKROOT ?= /Users/robertinant/cc3200/CC3200SDK_1.0.0.patch\n");
+        	fw.write("CCROOT  ?= /opt/lm4f/\n");
+        	fw.write("MAINSKETCH  ?= " + primaryClassName);
+        	fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        List baseMake = new ArrayList(Arrays.asList(new String[] {
+        	      //avrBasePath + "avr-gcc",
+        	      "make",
+        	      "--no-print-directory",
+        	      "-C",
+        	      buildPath + File.separator, // + primaryClassName + ".elf"
+        	      "-f",
+        	      commonBasePath + File.separator + "Makefile"
+        	    }));
+        		String enviromentVariables[] = { };
+        	    execAsynchronously(baseMake, enviromentVariables, new File(commonBasePath));
+        	    return true;
+    }
+
     String rtsIncPath = null;
     String rtsLibPath = null;
     
@@ -246,7 +275,7 @@ public class Compiler implements MessageConsumer {
       "rcs",
       runtimeLibraryName
     }));
-    } else if(arch == "lm4f" || arch == "cc3200") {
+    } else if(arch == "lm4f" || arch == "cc3200" || arch == "secret") {
       baseCommandAR = new ArrayList(Arrays.asList(new String[] { 
         basePath + "arm-none-eabi-ar",
         "rcs",
@@ -306,7 +335,7 @@ public class Compiler implements MessageConsumer {
         "-o",
         buildPath + File.separator + primaryClassName + ".elf"
       }));
-    }else if (arch == "lm4f" || arch == "cc3200") { 
+    }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
         "-Os",
@@ -387,7 +416,7 @@ public class Compiler implements MessageConsumer {
     }
 
     baseCommandLinker.add(runtimeLibraryName);
-    if(arch == "lm4f" || arch == "cc3200"){
+    if(arch == "lm4f" || arch == "cc3200" || arch == "secret"){
       baseCommandLinker.add("-L" + buildPath);
       if(!Preferences.getBoolean("build.drvlib")) {
     	  String driverlib = corePath + File.separator + "driverlib" + File.separator + "libdriverlib.a";
@@ -452,7 +481,7 @@ public class Compiler implements MessageConsumer {
       "-O",
       "-R",
     }));
-    } else if (arch == "lm4f" || arch == "cc3200") {
+    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-objcopy",
         "-O",
@@ -472,7 +501,7 @@ public class Compiler implements MessageConsumer {
 
     }
     List commandObjcopy;
-    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200")) {
+    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200") || (arch == "secret")) {
       //nothing 
     } else {
         // 5. extract EEPROM data (from EEMEM directive) to .eep file.
@@ -492,7 +521,7 @@ public class Compiler implements MessageConsumer {
     // 6. build the .hex or .bin file
     sketch.setCompilingProgress(80);
     commandObjcopy = new ArrayList(baseCommandObjcopy);
-    if (arch == "lm4f" || arch == "cc3200"){
+    if (arch == "lm4f" || arch == "cc3200" || arch == "secret"){
 	  	commandObjcopy.add(2, "binary");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
@@ -676,6 +705,72 @@ public class Compiler implements MessageConsumer {
   /**
    * Either succeeds or throws a RunnerException fit for public consumption.
    */
+  /**
+   * Either succeeds or throws a RunnerException fit for public consumption.
+   */
+  private void execAsynchronously(List commandList, String[] envp, File dir) throws RunnerException {
+    String[] command = new String[commandList.size()];
+    commandList.toArray(command);
+    int result = 0;
+
+    if (verbose || Preferences.getBoolean("build.verbose")) {
+      for(int j = 0; j < command.length; j++) {
+        System.out.print(command[j] + " ");
+      }
+      System.out.println();
+    }
+
+    firstErrorFound = false;  // haven't found any errors yet
+    secondErrorFound = false;
+
+    Process process;
+
+    try {
+      process = Runtime.getRuntime().exec(command, envp, dir);
+    } catch (IOException e) {
+      RunnerException re = new RunnerException(e.getMessage());
+      re.hideStackTrace();
+      throw re;
+    }
+
+    MessageSiphon in = new MessageSiphon(process.getInputStream(), this);
+    MessageSiphon err = new MessageSiphon(process.getErrorStream(), this);
+
+    // wait for the process to finish.  if interrupted
+    // before waitFor returns, continue waiting
+    boolean compiling = true;
+    while (compiling) {
+      try {
+        if (in.thread != null)
+          in.thread.join();
+        if (err.thread != null)
+          err.thread.join();
+        result = process.waitFor();
+        //System.out.println("result is " + result);
+        compiling = false;
+      } catch (InterruptedException ignored) { }
+    }
+
+    // an error was queued up by message(), barf this back to compile(),
+    // which will barf it back to Editor. if you're having trouble
+    // discerning the imagery, consider how cows regurgitate their food
+    // to digest it, and the fact that they have five stomaches.
+    //
+    //System.out.println("throwing up " + exception);
+    if (exception != null) { throw exception; }
+
+    if (result > 1) {
+      // a failure in the tool (e.g. unable to locate a sub-executable)
+      System.err.println(command[0] + " returned " + result);
+    }
+
+    if (result != 0) {
+      RunnerException re = new RunnerException("Error compiling.");
+      re.hideStackTrace();
+      throw re;
+    }
+  }
+  
   private void execAsynchronously(List commandList) throws RunnerException {
     String arch = Base.getArch();
     String[] command = new String[commandList.size()];
@@ -952,7 +1047,7 @@ public class Compiler implements MessageConsumer {
         if(Preferences.getBoolean("build.debug"))
         	baseCommandCompiler.add("-g");
 
-    } else if (arch == "lm4f" || arch == "cc3200") {
+    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
           "-c",
@@ -1060,7 +1155,7 @@ public class Compiler implements MessageConsumer {
       if(Preferences.getBoolean("build.debug"))
       	baseCommandCompiler.add("-g");
 
-      }else if (arch == "lm4f" || arch == "cc3200") {
+      }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
         "-c",
@@ -1177,7 +1272,7 @@ public class Compiler implements MessageConsumer {
       if(Preferences.getBoolean("build.debug"))
       	baseCommandCompilerCPP.add("-g");
     } 
-    else if (arch == "lm4f" || arch == "cc3200") {
+    else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
         baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-g++",
           "-c",

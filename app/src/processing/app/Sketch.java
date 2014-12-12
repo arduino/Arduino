@@ -1680,7 +1680,7 @@ public class Sketch {
         uploader = new LM4FUploader();
     } else if(Base.getArch() == "c2000"){
     	uploader = new C2000Uploader();
-    } else if(Base.getArch() == "cc3200"){
+    } else if(Base.getArch() == "cc3200" || Base.getArch() == "secret"){
     	uploader = new CC3200Uploader();
     }else {
     	uploader = new AvrdudeUploader();
