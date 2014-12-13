@@ -9,4 +9,5 @@
 	<classpathentry kind="lib" path="app/lib/jna.jar"/>
 	<classpathentry kind="lib" path="app/lib/RXTXcomm.jar"/>
 	<classpathentry kind="output" path="app/bin"/>
+	<!---!-->
 </classpath>
