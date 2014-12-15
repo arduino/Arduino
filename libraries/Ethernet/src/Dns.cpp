@@ -60,7 +60,7 @@ int DNSClient::inet_aton(const char* aIPAddrString, IPAddress& aResult)
     // See if we've been given a valid IP address
     const char* p =aIPAddrString;
     while (*p &&
-           ( (*p == '.') || (*p >= '0') || (*p <= '9') ))
+           ( (*p == '.') || ((*p >= '0') && (*p <= '9')) ))
     {
         p++;
     }
@@ -97,10 +97,10 @@ int DNSClient::inet_aton(const char* aIPAddrString, IPAddress& aResult)
         }
         // We've reached the end of address, but there'll still be the last
         // segment to deal with
-        if ((segmentValue > 255) || (segment > 3))
+        if ((segmentValue > 255) || (segment != 3))
         {
             // You can't have IP address segments that don't fit in a byte,
-            // or more than four segments
+            // or other than four segments
             return 0;
         }
         else
