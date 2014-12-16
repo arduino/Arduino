@@ -126,7 +126,8 @@ public class PdePreprocessor {
 //      }
 //    }
 
-    writemain(program);
+    if(Base.getArch() == "secret")
+    	writemain(program);
     
     prototypes = prototypes(program);
     
@@ -356,7 +357,7 @@ public class PdePreprocessor {
 		try {
 			content = new Scanner(new File(Base.getHardwarePath() + File.separator + "secret" + 
 				File.separator + "cores" + File.separator + "secret" + File.separator + "main.template")).useDelimiter("\\Z").next();
-		    System.out.println(content);
+		    //System.out.println(content);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -401,8 +402,8 @@ public class PdePreprocessor {
 	    	funcArray += "\t{" + setupMatches.get(functionIndex) + ", " + loopMatches.get(functionIndex) + "}";
 	    	if(functionIndex < loopMatches.size() -1)
 	    		funcArray += ",\n";
-	    	System.out.print(setupMatches.get(functionIndex) + "\n");
-	    	System.out.print(loopMatches.get(functionIndex) + "\n");
+	    	//System.out.print(setupMatches.get(functionIndex) + "\n");
+	    	//System.out.print(loopMatches.get(functionIndex) + "\n");
 	    }
 
 	    String numSketches = "\n#define NUM_SKETCHES " + loopMatches.size() + "\n";

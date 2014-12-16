@@ -2303,7 +2303,20 @@ public class Base {
     return null;
   }
   */
+  static public File getAppFile() {
+	    String path = System.getProperty("user.dir");
 
+	    // Get a path to somewhere inside the .app folder
+	    if (Base.isMacOS()) {
+	      String javaroot = System.getProperty("javaroot");
+	      if (javaroot != null) {
+	        path = javaroot;
+	      }
+	    }
+	    return new File(path);
+	    //return new File(working, name);
+	  }
+  
   static public File getContentFile(String name) {
     String path = System.getProperty("user.dir");
 

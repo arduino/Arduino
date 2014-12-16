@@ -1592,7 +1592,8 @@ public class Sketch {
     // that will bubble up to whomever called build().
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
-      size(buildPath, primaryClassName);
+      if(Base.getArch() != "secret")
+    	size(buildPath, primaryClassName);
       return primaryClassName;
     }
     return null;
