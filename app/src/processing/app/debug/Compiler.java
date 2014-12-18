@@ -148,8 +148,7 @@ public class Compiler implements MessageConsumer {
 		}
         List baseMake = new ArrayList(Arrays.asList(new String[] {
         	      //avrBasePath + "avr-gcc",
-        	      "make",
-        	      "--no-print-directory",
+                     (Base.isLinux() ? "make" : Base.getCommonBasePath() + "make"), "--no-print-directory",
         	      "-C",
         	      buildPath + File.separator, // + primaryClassName + ".elf"
         	      "-f",

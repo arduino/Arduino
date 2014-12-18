@@ -1793,7 +1793,11 @@ public class Base {
     }
   }
   
-  
+   static public String getCommonBasePath() {
+       return getToolsPath() +
+           File.separator + "common" + File.separator + "bin" + File.separator;
+   }
+
   static public Target getTarget() {
     return Base.targetsTable.get(Preferences.get("target"));
   }

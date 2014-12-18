@@ -31,6 +31,36 @@
     <include name="app/lib/ant-launcher.jar" />
   </fileset>
 
+  <target name="check-closure">
+    <condition property="closure.exists">
+      <available file="${platform}/closure.zip"/>
+    </condition>
+  </target>
+
+  <target name="download-closure" depends="check-closure" unless="closure.exists">
+    <echo message="Downloading closure"/>
+    <get src="http://energia.nu/files/closure.zip" dest="${platform}/closure.zip"/>
+  </target>
+
+  <target name="unzip-closure" depends="download-closure">
+    <unzip dest="${platform}/work/hardware" src="${platform}/closure.zip" overwrite="false"/>
+  </target>
+
+    <target name="check-common-tools">
+      <condition property="common-tools.exists">
+	      <available file="${platform}/tools-common.tar.bz2"/>
+      </condition>
+    </target>
+
+    <target name="download-common-tools" depends="check-common-tools" unless="common-tools.exists">
+      <echo message="Downloading common tools"/>
+      <get src="http://energia.nu/files/tools-common-${platform}.tar.bz2" dest="${platform}/tools-common.tar.bz2"/>
+    </target>
+
+    <target name="unzip-common-tools" depends="download-common-tools">
+	    <untar src="${platform}/tools-common.tar.bz2" dest="${platform}/work" compression="bzip2" overwrite="false"/>
+    </target>
+
   <target name="build" description="Build Energia.">
     <antcall target="${platform}-build" />
   </target>
@@ -98,6 +128,11 @@
       </fileset>
     </copy>
     
+    <!-- download and unzip TI-RTOS closure -->
+    <antcall target="unzip-closure"/>
+    <!-- download and unzip common tools -->
+    <antcall target="unzip-common-tools"/>
+
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
       <fileset dir="shared/examples">
@@ -571,11 +606,13 @@
     <copy todir="windows/work">
       <fileset dir="windows/dist" includes="drivers/**" />
     </copy>
-    
+
+
+
     <!-- Unzip tools -->
     <unzip dest="windows/work/hardware/tools" src="windows/msp430_tools_windows.zip" overwrite="false"/>
     <unzip dest="windows/work/hardware/tools" src="windows/arm_tools_windows.zip" overwrite="false"/>
- 
+
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
     </antcall>
