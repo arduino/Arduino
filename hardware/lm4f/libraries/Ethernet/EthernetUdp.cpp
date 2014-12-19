@@ -219,7 +219,7 @@ int EthernetUDP::read(unsigned char* buffer, size_t len)
 {
 	uint16_t avail = available();
 	uint16_t i;
-	int8_t b;
+	int b;
 
 	if(!avail)
 		return -1;

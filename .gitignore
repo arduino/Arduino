@@ -8,4 +8,6 @@ build/macosx/arduino.xcworkspace/xcuserdata/mellis.xcuserdatad/UserInterfaceStat
 app/run.cmd
 build/macosx/msp430_tools_mac.zip
 build/macosx/arm_tools_mac.zip
+build/macosx/lm4f/
+build/macosx/energia*.zip
 **/tags

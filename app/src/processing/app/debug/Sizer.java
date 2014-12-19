@@ -123,7 +123,7 @@ public class Sizer implements MessageConsumer {
       String arch = Base.getArch();
       StringTokenizer st = new StringTokenizer(s, " ");
       try {
-        if(arch == "lm4f") {
+        if(arch == "lm4f" || arch == "cc3200") {
         	size = (new Integer(st.nextToken().trim())).longValue();
         	size += (new Integer(st.nextToken().trim())).longValue();
         } else {

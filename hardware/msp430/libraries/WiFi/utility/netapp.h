@@ -34,7 +34,7 @@
  *
 */
 
-#include "simplelink.h"
+#include "SimpleLink.h"
 
 #ifndef __NETAPP_H__
 #define    __NETAPP_H__

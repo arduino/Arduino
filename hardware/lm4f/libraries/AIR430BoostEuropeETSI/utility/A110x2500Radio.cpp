@@ -55,8 +55,8 @@ const struct sCC1101Gdo *gGdo[3] = { &gGdo0, NULL, NULL };
 
 static struct sA110LR09PhyInfo gPhyInfo;
 
-static boolean gDataTransmitting = false;
-static boolean gDataReceived = false;
+static volatile boolean gDataTransmitting = false;
+static volatile boolean gDataReceived = false;
 A110x2500Radio Radio;
 
 // ----------------------------------------------------------------------------
@@ -85,9 +85,6 @@ void A110x2500Radio::end()
   while (busy());
 
   detachInterrupt(RF_GDO0);
-  #if defined( __LM4F120H5QR__ )
-  SPI.end();
-  #endif
   pinMode (RF_SPI_CSN, INPUT);
 }
 
@@ -143,7 +140,7 @@ void A110x2500Radio::transmit(uint8_t address,
   if (!busy())
   {
     // Bring the radio out of a low power state.
-    wakeup();
+    _wakeup();
     
     // Set the transmit buffer.
     Radio._dataStream.length = 0;
@@ -165,7 +162,7 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
   if (!busy())
   {
     // Bring the radio out of a low power state.
-    wakeup();
+    _wakeup();
     
     // Set the receive buffer.
     Radio._dataStream.length = 0;
@@ -177,14 +174,25 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
     CC1101FlushRxFifo(&gPhyInfo.cc1101);
     CC1101ReceiverOn(&gPhyInfo.cc1101);
     
-    // Listen for at most the timeout period or until a message is received.
-    while (timeout-- > 0)
+    // Listen for a period of time.
+    if (timeout == 0)
     {
-      delay(1);
-      if (gDataReceived)
+      // Listen forever until a message is received.
+      while (!gDataReceived);
+      gDataReceived = false;
+      return Radio._dataStream.length;
+    }
+    else
+    {
+      // Listen for at most the timeout period or until a message is received.
+      while (timeout-- > 0)
       {
-        gDataReceived = false;
-        return Radio._dataStream.length;
+        delay(1);
+        if (gDataReceived)
+        {
+          gDataReceived = false;
+          return Radio._dataStream.length;
+        }
       }
     }
   }
@@ -197,7 +205,7 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
  *  Private interface
  */
 
-void A110x2500Radio::wakeup()
+void A110x2500Radio::_wakeup()
 {
   struct sA110LR09PhyInfo *phyInfo = &gPhyInfo;
   

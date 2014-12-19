@@ -877,8 +877,8 @@ tcp_slowtmr_start:
         }
       }
     }
-    /* Check if this PCB has stayed too long in FIN-WAIT-2 */
-    if (pcb->state == FIN_WAIT_2) {
+    /* Check if this PCB has stayed too long in FIN-WAIT-2 and FIN_WAIT_1 */
+    if (pcb->state == FIN_WAIT_2 || pcb->state == FIN_WAIT_1) {
       /* If this PCB is in FIN_WAIT_2 because of SHUT_WR don't let it time out. */
       if (pcb->flags & TF_RXCLOSED) {
         /* PCB was fully closed (either through close() or SHUT_RDWR):
@@ -886,7 +886,7 @@ tcp_slowtmr_start:
         if ((u32_t)(tcp_ticks - pcb->tmr) >
             TCP_FIN_WAIT_TIMEOUT / TCP_SLOW_INTERVAL) {
           ++pcb_remove;
-          LWIP_DEBUGF(TCP_DEBUG, ("tcp_slowtmr: removing pcb stuck in FIN-WAIT-2\n"));
+          LWIP_DEBUGF(TCP_DEBUG, ("tcp_slowtmr: removing pcb stuck in FIN-WAIT\n"));
         }
       }
     }
@@ -1046,15 +1046,25 @@ void
 tcp_fasttmr(void)
 {
   struct tcp_pcb *pcb;
+  struct tcp_pcb *first;
+  struct tcp_pcb *last;
 
   ++tcp_timer_ctr;
 
 tcp_fasttmr_start:
   pcb = tcp_active_pcbs;
 
+  first = NULL;
+
   while(pcb != NULL) {
+	if(pcb == first)
+	{
+		/* detected loop in the linked list */
+		if(last) last->next = NULL; /* break the loop */
+		pcb = NULL;
+		break;
+	}
     if (pcb->last_timer != tcp_timer_ctr) {
-      struct tcp_pcb *next;
       pcb->last_timer = tcp_timer_ctr;
       /* send delayed ACKs */
       if (pcb->flags & TF_ACK_DELAY) {
@@ -1063,8 +1073,6 @@ tcp_fasttmr_start:
         tcp_output(pcb);
         pcb->flags &= ~(TF_ACK_DELAY | TF_ACK_NOW);
       }
-
-      next = pcb->next;
 
       /* If there is data which was previously "refused" by upper layer */
       if (pcb->refused_data != NULL) {
@@ -1075,8 +1083,11 @@ tcp_fasttmr_start:
           goto tcp_fasttmr_start;
         }
       }
-      pcb = next;
+
     }
+    first = tcp_active_pcbs;
+    last = pcb;
+    pcb = pcb->next;
   }
 }
 

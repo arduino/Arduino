@@ -14,14 +14,16 @@
 
  */
 
-
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
 #include <SPI.h>
+#endif
 #include <WiFi.h>
-#include <WiFiUdp.h>
 
-int status = WL_IDLE_STATUS;
-char ssid[] = "your network";    // your network SSID (name)
-char pass[] = "your password";    // your network password (use for WPA, or use as key for WEP)
+// your network name also called SSID
+char ssid[] = "energia";
+// your network password
+char password[] = "supersecret";
 
 unsigned int localPort = 2390;      // local port to listen on
 
@@ -34,29 +36,31 @@ void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
-  // check for the presence of the shield:
-  if (WiFi.status() == WL_NO_SHIELD) {
-    Serial.println("WiFi shield not present");
-    // don't continue:
-    while (true);
+  // attempt to connect to Wifi network:
+  Serial.print("Attempting to connect to Network named: ");
+  // print the network name (SSID);
+  Serial.println(ssid); 
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  WiFi.begin(ssid, password);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
+    Serial.print(".");
+    delay(300);
+  }
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
   }
 
-  // attempt to connect to Wifi network:
-  Serial.print("Attempting to connect to SSID: ");
-  Serial.println(ssid);
-  status = WiFi.begin(ssid, pass);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
-    delay(100);
-    Serial.print(".");
-  }
-  Serial.println("\nConnected to wifi");
-  IPAddress empty(0,0,0,0);
-  while (WiFi.localIP() == empty);  //wait for an assigned IP address
+  Serial.println("\nIP Address obtained");
   printWifiStatus();
 
-  Serial.println("\nStarting connection to server...");
-  // if you get a connection, report back via serial:
+  Serial.println("\nWaiting for a connection from a client...");
   Udp.begin(localPort);
 }
 
@@ -93,7 +97,7 @@ void printWifiStatus() {
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
 
-  // print your WiFi shield's IP address:
+  // print your WiFi IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);

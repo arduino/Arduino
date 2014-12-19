@@ -70,4 +70,7 @@ public:
     friend class DNSClient;
 };
 
+extern const IPAddress INADDR_NONE;
+
+
 #endif

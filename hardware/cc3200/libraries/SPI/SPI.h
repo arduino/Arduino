@@ -15,13 +15,13 @@
 #include <Energia.h>
 #include <driverlib/spi.h>
 
+#define MAX_BITRATE 16000000
+#define SPI_CLOCK_DIV1 1
 #define SPI_CLOCK_DIV2 2
 #define SPI_CLOCK_DIV4 4
 #define SPI_CLOCK_DIV8 8
 #define SPI_CLOCK_DIV16 16
 #define SPI_CLOCK_DIV32 32
-#define SPI_CLOCK_DIV64 64
-#define SPI_CLOCK_DIV128 128
 
 #define SPI_MODE0 SPI_SUB_MODE_0
 #define SPI_MODE1 SPI_SUB_MODE_1
@@ -29,14 +29,18 @@
 #define SPI_MODE3 SPI_SUB_MODE_3
 
 #define SPI_MODE_MASK SPI_SUB_MODE_3
-#define SPI_CLKD_MASK 0xF << 2
-#define SPI_EXTCLK_MASK 0xFF0 << 4
+#define SPI_CLKD_MASK (0xF << 2)
+#define SPI_EXTCLK_MASK (0xFF0 << 4)
 #define BOOST_PACK_SPI 0
+
+#define MSBFIRST 1
+#define LSBFIRST 0
 
 class SPIClass
 {
 	private:
 		uint8_t SSIModule;
+		uint8_t SSIBitOrder;
 
 	public:
 		SPIClass(void);

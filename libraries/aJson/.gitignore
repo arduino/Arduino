@@ -1,0 +1,10 @@
+.cproject
+.project
+.settings/
+Debug/
+Release/
+/Debug
+/Release
+
+#some Mac stuff
+.DS_Store

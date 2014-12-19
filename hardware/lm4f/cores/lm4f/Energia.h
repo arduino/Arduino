@@ -7,6 +7,9 @@
 #include <math.h>
 #include "itoa.h"
 #include "part.h"
+#include <avr/dtostrf.h>
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 
 #if defined(__TM4C129XNCZAD__)
 #define TARGET_IS_SNOWFLAKE_RA0
@@ -224,6 +227,11 @@ void analogFrequency(uint32_t);
 void analogResolution(uint16_t);
 
 void delay(uint32_t milliseconds);
+void sleep(uint32_t milliseconds);
+void sleepSeconds(uint32_t seconds);
+void suspend(void);
+extern volatile boolean stay_asleep;
+#define wakeup() { stay_asleep = false; }
 
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);

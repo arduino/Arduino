@@ -12,12 +12,12 @@
  channel (0 - 255).  
  
  The circuit:
-  * All A pins  of AD5206 connected to +5V
+  * All A pins  of AD5206 connected to +3v
   * All B pins of AD5206 connected to ground
   * An LED and a 220-ohm resisor in series connected from each W pin to ground
-  * CS - to digital pin 8  (SS pin) P2.0
-  * SDI - to digital pin 14/15 (MOSI pin USI/USCI) P1.6/P1.7
-  * CLK - to digital pin 7 (SCK pin) P1.5
+  * CS - to digital pin 8
+  * SDI - to digital pin 14/15
+  * CLK - to digital pin 7
  
  created 10 Aug 2010 
  by Tom Igoe
@@ -34,7 +34,7 @@
 #include <SPI.h>
 
 // set pin 8 as the slave select for the digital pot:
-const int slaveSelectPin = PB_5;
+const int slaveSelectPin = 8;
 
 void setup() {
   // set the slaveSelectPin as an output:

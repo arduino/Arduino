@@ -11,11 +11,14 @@
  * through available()
  */
 struct client {
-	uint16_t port;
-	struct pbuf *p;
-	struct tcp_pcb *cpcb;
-	uint16_t read;
+	/* Connection port. (may change to 0 at any time during interrupt servicing) */
+	volatile uint16_t port;
+	/* Received data buffer. (may change to NULL at any time during interrupt servicing) */
+	volatile struct pbuf *p;
+	/* tcp control block. (may change to NULL at any time during interrupt servicing) */
+	volatile struct tcp_pcb *cpcb;
 	volatile bool connected;
+	uint16_t read;
 	bool mode;
 };
 
@@ -26,10 +29,9 @@ private:
 	unsigned long lastConnect;
 	uint16_t _port;
 	struct tcp_pcb *spcb;
-	static uint8_t num_clients;
 	struct client clients[MAX_CLIENTS];
 	static err_t do_poll(void *arg, struct tcp_pcb *cpcb);
-	static err_t do_close(void *arg, struct tcp_pcb *cpcb);
+	static void  do_close(void *arg, struct tcp_pcb *cpcb);
 public:
 	EthernetServer(uint16_t);
 	EthernetClient available();

@@ -42,7 +42,7 @@
  *****************************************************************************/
 
 #include "datatypes.h"
-#include "simplelink.h"
+#include "SimpleLink.h"
 #include "protocol.h"
 #include "driver.h"
 

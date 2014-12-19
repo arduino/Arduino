@@ -326,17 +326,23 @@ int WiFiUDP::read()
 }
 
 //--tested, working--//
-int WiFiUDP::read(unsigned char* buffer, size_t len)
+int WiFiUDP::read(unsigned char* buffer, size_t size)
 {
     //
     //read the requested number of bytes into the buffer
-    //this won't read past the end of the data since read() handles that
+    //uses direct buffer copy for efficiency
     //
-    int i;
-    for (i = 0; i < len; i++) {
-        buffer[i] = read();
+    if (rx_currentIndex >= rx_fillLevel) {
+        return 0;
     }
-    return i;
+    int len = rx_fillLevel - rx_currentIndex;
+    if (len > size) {
+        len = size;
+    }
+    memcpy(buffer, &rx_buf[rx_currentIndex], len);
+    rx_currentIndex += len;
+
+    return len;
 }
 
 //--tested, working--//
@@ -345,6 +351,9 @@ int WiFiUDP::peek()
     //
     //return the next byte without incrementing the index counter
     //
+    if (rx_currentIndex >= rx_fillLevel) {
+        return -1;
+    }
     return rx_buf[rx_currentIndex];
 }
 

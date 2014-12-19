@@ -198,7 +198,7 @@ private:
   /**
    *  wakeup - put the radio into an active state.
    */
-  static void wakeup(void);
+  static void _wakeup(void);
   
   /**
    *  sleep - put the radio into a low power state.

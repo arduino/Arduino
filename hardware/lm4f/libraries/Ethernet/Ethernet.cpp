@@ -9,7 +9,6 @@
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
 {
 	uint32_t ui32User0, ui32User1;
-	uint8_t pui8MACArray[8];
 
 	registerSysTickCb(lwIPTimer);
 	ROM_FlashUserGet(&ui32User0, &ui32User1);
@@ -40,10 +39,6 @@ void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dn
 	lwIPInit(F_CPU, pui8MACArray, htonl(local_ip), htonl(subnet), htonl(gateway), !local_ip ? IPADDR_USE_DHCP:IPADDR_USE_STATIC);
 
 	lwIPDNSAddrSet((uint32_t)dns_server);
-
-	/* Wait for DHCP address */
-	if(!local_ip) lwIPDHCPWaitLeaseValid();
-
 }
 
 void EthernetClass::begin(uint8_t *mac_address, IPAddress local_ip, IPAddress dns_server)
@@ -75,6 +70,12 @@ int EthernetClass::begin(uint8_t *mac_address)
 	return lwIPDHCPWaitLeaseValid();
 }
 
+int EthernetClass::maintain()
+{
+	/* Always return 0 which for Arduino is DHCP_CHECK_NONE */
+	return 0;
+}
+
 IPAddress EthernetClass::localIP()
 {
 	return lwIPLocalIPAddrGet();
@@ -93,6 +94,14 @@ IPAddress EthernetClass::subnetMask()
 IPAddress EthernetClass::dnsServerIP()
 {
 	return lwIPDNSAddrGet();
+}
+
+uint8_t* EthernetClass::macAddress(uint8_t* mac)
+{
+	/* If the size of the array is not large enough 
+	 * to fit the mac then simply return mac unmodified */
+
+	memcpy(mac, pui8MACArray, 6);
 }
 
 void EthernetClass::enableLinkLed()

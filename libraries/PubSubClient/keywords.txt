@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map For Ultrasound
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PubSubClient	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+connect 	KEYWORD2
+disconnect 	KEYWORD2
+publish 	KEYWORD2
+subscribe 	KEYWORD2
+loop 	KEYWORD2
+connected 	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

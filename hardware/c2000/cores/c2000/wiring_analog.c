@@ -32,7 +32,12 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 
-#include "F2802x_common/include/F2802x_EPwm_defines.h"
+#ifdef TMS320F28027
+#include "f2802x_common/include/f2802x_epwm_defines.h"
+#elif defined(TMS320F28069)
+#include "F2806x_common/include/F2806x_EPwm_defines.h"
+#endif
+
 
 
 //(60Mhz / 2)/ 490Hz = 61224 = TBPRD
@@ -83,8 +88,15 @@ void InitEPwm()
    SysCtrlRegs.PCLKCR1.bit.EPWM2ENCLK =1;
    SysCtrlRegs.PCLKCR1.bit.EPWM3ENCLK =1;
    SysCtrlRegs.PCLKCR1.bit.EPWM4ENCLK =1;
+   #ifdef TMS320F28069
+   SysCtrlRegs.PCLKCR1.bit.EPWM5ENCLK =1;
+   SysCtrlRegs.PCLKCR1.bit.EPWM6ENCLK =1;
+   SysCtrlRegs.PCLKCR1.bit.EPWM7ENCLK =1;
+   SysCtrlRegs.PCLKCR1.bit.EPWM8ENCLK =1;
+   #endif
    SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 0;
-
+   
+   
    // Setup TBCLK
    EPwm1Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
    EPwm1Regs.TBPRD = EPWM1_TIMER_TBPRD;       // Set timer period
@@ -183,11 +195,121 @@ void InitEPwm()
    EPwm4Regs.CMPB = 0;           // Set Compare B value
 
    // Set Actions
-   EPwm4Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM3A on event B, up count
-   EPwm4Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM3A on event B, up count
+   EPwm4Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM4A on event B, up count
+   EPwm4Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM4A on event B, up count
 
-   EPwm4Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM3B on Zero
-   EPwm4Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM3B on Zero
+   EPwm4Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM4B on Zero
+   EPwm4Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM4B on Zero
+
+   #ifdef TMS320F28069
+   // Setup TBCLK
+   EPwm5Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm5Regs.TBPRD = EPWM3_TIMER_TBPRD;       // Set timer period
+   EPwm5Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm5Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm5Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm5Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm5Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm5Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm5Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm5Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm5Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+  // Set Compare values
+   EPwm5Regs.CMPA.all = 0; // Set compare A value
+   EPwm5Regs.CMPB = 0;           // Set Compare B value
+
+   // Set Actions
+   EPwm5Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM5A on event B, up count
+   EPwm5Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM5A on event B, up count
+
+   EPwm5Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM5B on Zero
+   EPwm5Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM5B on Zero
+
+
+   // Setup TBCLK
+   EPwm6Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm6Regs.TBPRD = EPWM3_TIMER_TBPRD;       // Set timer period
+   EPwm6Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm6Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm6Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm6Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm6Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm6Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm6Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm6Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm6Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+  // Set Compare values
+   EPwm6Regs.CMPA.all = 0; // Set compare A value
+   EPwm6Regs.CMPB = 0;           // Set Compare B value
+
+   // Set Actions
+   EPwm6Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM6A on event B, up count
+   EPwm6Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM6A on event B, up count
+
+   EPwm6Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM6B on Zero
+   EPwm6Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM6B on Zero
+
+   // Setup TBCLK
+   EPwm7Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm7Regs.TBPRD = EPWM3_TIMER_TBPRD;       // Set timer period
+   EPwm7Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm7Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm7Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm7Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm7Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm7Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm7Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm7Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm7Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+  // Set Compare values
+   EPwm7Regs.CMPA.all = 0; // Set compare A value
+   EPwm7Regs.CMPB = 0;           // Set Compare B value
+
+   // Set Actions
+   EPwm7Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM7A on event B, up count
+   EPwm7Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM7A on event B, up count
+
+   EPwm7Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM7B on Zero
+   EPwm7Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM7B on Zero
+
+   // Setup TBCLK
+   EPwm8Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP; // Count up
+   EPwm8Regs.TBPRD = EPWM3_TIMER_TBPRD;       // Set timer period
+   EPwm8Regs.TBCTL.bit.PHSEN = TB_DISABLE;    // Disable phase loading
+   EPwm8Regs.TBPHS.half.TBPHS = 0x0000;       // Phase is 0
+   EPwm8Regs.TBCTR = 0x0000;                  // Clear counter
+   EPwm8Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;   // Clock ratio to SYSCLKOUT
+   EPwm8Regs.TBCTL.bit.CLKDIV = TB_DIV2;
+
+   // Setup shadow register load on ZERO
+   EPwm8Regs.CMPCTL.bit.SHDWAMODE = CC_SHADOW;
+   EPwm8Regs.CMPCTL.bit.SHDWBMODE = CC_SHADOW;
+   EPwm8Regs.CMPCTL.bit.LOADAMODE = CC_CTR_ZERO;
+   EPwm8Regs.CMPCTL.bit.LOADBMODE = CC_CTR_ZERO;
+
+  // Set Compare values
+   EPwm8Regs.CMPA.all = 0; // Set compare A value
+   EPwm8Regs.CMPB = 0;           // Set Compare B value
+
+   // Set Actions
+   EPwm8Regs.AQCTLA.bit.ZRO = AQ_SET;         // Set PWM8A on event B, up count
+   EPwm8Regs.AQCTLA.bit.CAU = AQ_CLEAR;       // Clear PWM8A on event B, up count
+
+   EPwm8Regs.AQCTLB.bit.ZRO = AQ_TOGGLE;      // Toggle EPWM8B on Zero
+   EPwm8Regs.AQCTLB.bit.CBU = AQ_CLEAR;      // Toggle EPWM8B on Zero
+
+   #endif
+
+
 
    SysCtrlRegs.PCLKCR0.bit.TBCLKSYNC = 1;
    EDIS;
@@ -293,6 +415,7 @@ void analogInit(void)
 #define PWM_DUTY(x) ( (unsigned long)x*PWM_PERIOD / (unsigned long)analog_res )
 void analogWrite(uint8_t pin, int val)
 {
+    
     pinMode(pin, OUTPUT); // pin as output
 
     if (val == 0)
@@ -307,14 +430,14 @@ void analogWrite(uint8_t pin, int val)
     }
     else
     {
-
-        uint8_t port = digitalPinToPort(pin);   // get pin port
+        uint16_t gpio_number = pin_mapping[pin]; 
+        uint8_t port = digitalPinToPort(gpio_number);   // get pin port
                 
         if (port == NOT_A_PORT) 
             return; // pin on timer?
 
 		EALLOW;
-        switch(digitalPinToTimer(pin)) {                // which pwm?
+        switch(digitalPinToTimer(gpio_number)) {                // which pwm?
 
 			case PWM1A:                              // EPwm1A
                             GpioCtrlRegs.GPAMUX1.bit.GPIO0 = 1;  //Enable PWM output on this pin
@@ -356,6 +479,48 @@ void analogWrite(uint8_t pin, int val)
                 			EPwm4Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
                 			break;
 
+      #ifdef TMS320F28069               
+
+      case PWM5A:                              // EPwm5A
+                            GpioCtrlRegs.GPAMUX1.bit.GPIO8 = 1;  //Enable PWM output on this pin
+                            EPwm5Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+      case PWM5B:                              // EPwm5B
+                      GpioCtrlRegs.GPAMUX1.bit.GPIO9 = 1;  //Enable PWM output on this pin
+                      EPwm5Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                      break;
+
+      case PWM6A:                              // EPwm6A
+                            GpioCtrlRegs.GPAMUX1.bit.GPIO10 = 1;  //Enable PWM output on this pin
+                            EPwm6Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+      case PWM6B:                              // EPwm6B
+                      GpioCtrlRegs.GPAMUX1.bit.GPIO11 = 1;  //Enable PWM output on this pin
+                      EPwm6Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                      break;
+
+      case PWM7A:                              // EPwm7A
+                            GpioCtrlRegs.GPBMUX1.bit.GPIO40 = 1;  //Enable PWM output on this pin
+                            EPwm7Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+      case PWM7B:                              // EPwm7B
+                      GpioCtrlRegs.GPBMUX1.bit.GPIO41 = 1;  //Enable PWM output on this pin
+                      EPwm7Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                      break;
+
+      case PWM8A:                              // EPwm8A
+                            GpioCtrlRegs.GPBMUX1.bit.GPIO42 = 1;  //Enable PWM output on this pin
+                            EPwm8Regs.CMPA.half.CMPA = PWM_DUTY(val);  // PWM duty cycle
+                            break;
+
+      case PWM8B:                              // EPwm8B
+                      GpioCtrlRegs.GPBMUX1.bit.GPIO43 = 1;  //Enable PWM output on this pin
+                      EPwm8Regs.CMPB = PWM_DUTY(val);  // PWM duty cycle
+                      break;
+      #endif 
 
 
  
@@ -378,13 +543,15 @@ uint16_t analogRead(uint8_t pin)
 		analogInit();
 	}
 
-    if(pin & 0x8000)
+    uint16_t gpio_number = pin_mapping[pin]; 
+
+    if(gpio_number & 0x8000)
     {
-        pin &= 0x7FFF;
+        gpio_number &= 0x7FFF;
 	
     	EALLOW;
     	//Setup SOC1 to sample selected pin
-    	AdcRegs.ADCSOC1CTL.bit.CHSEL = pin;
+    	AdcRegs.ADCSOC1CTL.bit.CHSEL = gpio_number;
     	//Force SOC 0 and 1
     	AdcRegs.ADCSOCFRC1.all = 3;
     	EDIS;

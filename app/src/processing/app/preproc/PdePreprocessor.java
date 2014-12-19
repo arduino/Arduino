@@ -126,6 +126,9 @@ public class PdePreprocessor {
 //      }
 //    }
 
+    if(Base.getArch() == "secret")
+    	writemain(program);
+    
     prototypes = prototypes(program);
     
     // store # of prototypes so that line number reporting can be adjusted
@@ -346,4 +349,95 @@ public class PdePreprocessor {
     
     return functionMatches;
   }
+  
+  public void writemain(String in) {
+	    in = collapseBraces(strip(in));
+	    
+	    String content = "";
+		try {
+			content = new Scanner(new File(Base.getHardwarePath() + File.separator + "secret" + 
+				File.separator + "cores" + File.separator + "secret" + File.separator + "main.template")).useDelimiter("\\Z").next();
+		    //System.out.println(content);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		StringBuilder mainFile = new StringBuilder(content);
+		
+		int insertionPoint = content.indexOf("769d20fcd7a0eedaf64270f591438b01");
+		insertionPoint = content.indexOf("\n", insertionPoint) + 1;
+
+	    Pattern functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ll]oop(?=\\s*\\()");
+
+	    // Find all functions and generate prototypes for them
+	    ArrayList<String> loopMatches = new ArrayList<String>();
+	    ArrayList<String> setupMatches = new ArrayList<String>();
+	    	    
+	    Matcher functionMatcher = functionPattern.matcher(in);
+	    while (functionMatcher.find()) {
+	      loopMatches.add(functionMatcher.group(0));
+	    }
+
+	    
+	    functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ss]etup(?=\\s*\\()");
+
+	    // Find all functions and generate prototypes for them
+	    functionMatcher = functionPattern.matcher(in);
+	    while (functionMatcher.find())
+	      setupMatches.add(functionMatcher.group(0));
+
+	    if(setupMatches.size() != loopMatches.size()) {
+	    	System.out.print("The number of loop functions does not match the number of setup functions\n" +
+	    			"Missing a loop or a setup in your Sketches?");
+	    	return;
+	    }
+
+	    String protos = "";
+	    String funcArray = "";
+	    
+	    for (int functionIndex = 0; functionIndex < loopMatches.size(); functionIndex++) {
+	    	protos += "extern void " + setupMatches.get(functionIndex) + "();\n";
+	    	protos += "extern void " + loopMatches.get(functionIndex) + "();\n";
+	    	funcArray += "\t{" + setupMatches.get(functionIndex) + ", " + loopMatches.get(functionIndex) + "}";
+	    	if(functionIndex < loopMatches.size() -1)
+	    		funcArray += ",\n";
+	    	//System.out.print(setupMatches.get(functionIndex) + "\n");
+	    	//System.out.print(loopMatches.get(functionIndex) + "\n");
+	    }
+
+	    String numSketches = "\n#define NUM_SKETCHES " + loopMatches.size() + "\n";
+	    String prolog = "void (*func_ptr[NUM_SKETCHES][2])(void) = {\n";
+	    String epilog = "\n};";
+	    mainFile.insert(insertionPoint, protos);
+	    insertionPoint += protos.length();
+	    mainFile.insert(insertionPoint, numSketches);
+	    insertionPoint += numSketches.length();
+	    mainFile.insert(insertionPoint, prolog);
+	    insertionPoint += prolog.length();	    
+	    mainFile.insert(insertionPoint, funcArray);
+	    insertionPoint += funcArray.length();
+	    mainFile.insert(insertionPoint, epilog);
+	    
+	    try {
+			PrintWriter out = new PrintWriter(Base.getBuildFolder() + File.separator + "main.cpp");
+			out.print(mainFile.toString());
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	    // Remove generated prototypes that exactly match ones found in the source file
+//	    for (int functionIndex=functionMatches.size() - 1; functionIndex >= 0; functionIndex--) {
+//	      for (int prototypeIndex=0; prototypeIndex < prototypeMatches.size(); prototypeIndex++) {
+//	        if ((functionMatches.get(functionIndex)).equals(prototypeMatches.get(prototypeIndex))) {
+//	          functionMatches.remove(functionIndex);
+//	          break;
+//	        }
+//	      }
+//	    }
+	    
+	    //return functionMatches;
+	  }
 }

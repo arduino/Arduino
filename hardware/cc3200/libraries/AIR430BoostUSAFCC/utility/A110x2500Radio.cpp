@@ -55,8 +55,8 @@ const struct sCC1101Gdo *gGdo[3] = { &gGdo0, NULL, NULL };
 
 static struct sA110LR09PhyInfo gPhyInfo;
 
-static boolean gDataTransmitting = false;
-static boolean gDataReceived = false;
+static volatile boolean gDataTransmitting = false;
+static volatile boolean gDataReceived = false;
 A110x2500Radio Radio;
 
 // ----------------------------------------------------------------------------
@@ -85,9 +85,6 @@ void A110x2500Radio::end()
   while (busy());
 
   detachInterrupt(RF_GDO0);
-  #if defined( __LM4F120H5QR__ )
-  SPI.end();
-  #endif
   pinMode (RF_SPI_CSN, INPUT);
 }
 
@@ -181,11 +178,9 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
     if (timeout == 0)
     {
       // Listen forever until a message is received.
-      if (gDataReceived)
-      {
-        gDataReceived = false;
-        return Radio._dataStream.length;
-      }
+      while (!gDataReceived);
+      gDataReceived = false;
+      return Radio._dataStream.length;
     }
     else
     {

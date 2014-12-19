@@ -31,7 +31,7 @@
 
 #include "wiring_private.h"
 #include "pins_energia.h"
-#include "driverlib/rom.h"
+#include "driverlib/rom_map.h"
 
 /* Measures the length (in microseconds) of a pulse on the pin; state is HIGH
  * or LOW, the type of pulse to measure.  Works on pulses from 2-3 microseconds
@@ -53,19 +53,19 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
     unsigned long maxloops = microsecondsToClockCycles(timeout) / 11;
 
     // wait for any previous pulse to end
-    while (ROM_GPIOPinRead(portBase, bit) == stateMask)
+    while (MAP_GPIOPinRead(portBase, bit) == stateMask)
         if (numloops++ == maxloops)
             return 0;
 
     // wait for the pulse to start
-    while (ROM_GPIOPinRead(portBase, bit) != stateMask)
+    while (MAP_GPIOPinRead(portBase, bit) != stateMask)
         if (numloops++ == maxloops)
             return 0;
 
     // wait for the pulse to stop
     unsigned long start = micros();
 
-    while (ROM_GPIOPinRead(portBase, bit) == stateMask) {
+    while (MAP_GPIOPinRead(portBase, bit) == stateMask) {
         if (numloops++ == maxloops)
             return 0;
     }

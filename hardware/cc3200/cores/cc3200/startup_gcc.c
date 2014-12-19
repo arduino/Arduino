@@ -97,6 +97,7 @@ extern void SysTickIntHandler(void);
 // The entry point for the application.
 //
 //*****************************************************************************
+extern void _init(void);
 extern int main(void);
 
 
@@ -109,7 +110,6 @@ __attribute__((weak)) void UARTIntHandler(void) {}
 __attribute__((weak)) void UARTIntHandler1(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
-__attribute__((weak)) void Timer5IntHandler(void) {}
 
 //*****************************************************************************
 //
@@ -266,6 +266,12 @@ ResetISR(void)
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
     
+
+    //
+    // Call Energia hardware init routine (timers, peripheral module clocks)
+    //
+    _init();
+
     //
     // call any global c++ ctors
     //
@@ -400,3 +406,67 @@ void * _sbrk(unsigned int incr)
     return prev_heap_end;
 
 }
+
+__attribute__((weak))
+extern int link( char *cOld, char *cNew )
+{
+    return -1 ;
+}
+
+__attribute__((weak))
+extern int _close( int file )
+{
+    return -1 ;
+}
+
+__attribute__((weak))
+extern int _fstat( int file, struct stat *st )
+{
+    st->st_mode = S_IFCHR ;
+
+    return 0 ;
+}
+
+__attribute__((weak))
+extern int _isatty( int file )
+{
+    return 1 ;
+}
+
+__attribute__((weak))
+extern int _lseek( int file, int ptr, int dir )
+{
+    return 0 ;
+}
+
+__attribute__((weak))
+extern int _read(int file, char *ptr, int len)
+{
+    return 0 ;
+}
+
+__attribute__((weak))
+extern int _write( int file, char *ptr, int len )
+{
+    return len;
+}
+
+__attribute__((weak))
+extern void _kill( int pid, int sig )
+{
+    return ;
+}
+
+__attribute__((weak))
+extern int _getpid ( void )
+{
+    return -1 ;
+}
+
+/*
+__attribute__((weak))
+extern void _exit (void)
+{
+
+}
+*/

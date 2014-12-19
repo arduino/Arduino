@@ -1592,7 +1592,8 @@ public class Sketch {
     // that will bubble up to whomever called build().
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
-      size(buildPath, primaryClassName);
+      if(Base.getArch() != "secret")
+    	size(buildPath, primaryClassName);
       return primaryClassName;
     }
     return null;
@@ -1680,7 +1681,7 @@ public class Sketch {
         uploader = new LM4FUploader();
     } else if(Base.getArch() == "c2000"){
     	uploader = new C2000Uploader();
-    } else if(Base.getArch() == "cc3200"){
+    } else if(Base.getArch() == "cc3200" || Base.getArch() == "secret"){
     	uploader = new CC3200Uploader();
     }else {
     	uploader = new AvrdudeUploader();
@@ -2089,7 +2090,7 @@ public class Sketch {
    * systems, i.e. uploading from a Windows machine to a Linux server,
    * or reading a FAT32 partition in OS X and using a thumb drive.
    * <p/>
-   * This helper function replaces everything but A-Z, a-z, and 0-9 with
+   * This helper function replaces everything but A-Z, a-z, 0-9 and hyphen with
    * underscores. Also disallows starting the sketch name with a digit.
    */
   static public String sanitizeName(String origName) {
@@ -2103,7 +2104,8 @@ public class Sketch {
     for (int i = 0; i < c.length; i++) {
       if (((c[i] >= '0') && (c[i] <= '9')) ||
           ((c[i] >= 'a') && (c[i] <= 'z')) ||
-          ((c[i] >= 'A') && (c[i] <= 'Z'))) {
+          ((c[i] >= 'A') && (c[i] <= 'Z')) ||
+          c[i] == '-') {
         buffer.append(c[i]);
 
       } else {

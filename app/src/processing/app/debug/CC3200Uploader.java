@@ -37,7 +37,7 @@ public class CC3200Uploader extends Uploader{
 			params.add(uploadPort.substring(3));
 			params.add(buildPath + File.separator + className + ".bin");
 		}
-		return serial(params);
+		return cc3200prog(params);
 	}
 
 	public boolean burnBootloader() throws RunnerException {
@@ -45,17 +45,17 @@ public class CC3200Uploader extends Uploader{
 		return false;
 	}
 
-	public boolean serial(Collection params) throws RunnerException {
+	public boolean cc3200prog(Collection params) throws RunnerException {
 		List commandDownloader = new ArrayList();
 
 		if ( Base.isLinux()) {
-			commandDownloader.add(Base.getLM4FBasePath() + "serial");
+			commandDownloader.add(Base.getLM4FBasePath() + "cc3200prog");
 		} 
 		else if (Base.isMacOS()) {
-			commandDownloader.add(Base.getLM4FBasePath() + "serial");
+			commandDownloader.add(Base.getLM4FBasePath() + "cc3200prog");
 		}
 		else {
-			commandDownloader.add(Base.getLM4FBasePath() + "serial");
+			commandDownloader.add(Base.getLM4FBasePath() + "cc3200prog");
 		}
 		commandDownloader.addAll(params);
 		

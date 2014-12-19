@@ -35,31 +35,32 @@
 
 void pinMode(uint8_t pin, uint8_t mode)
 {
+    uint16_t gpio_number = pin_mapping[pin];
 
-    if(pin & 0x8000)
+    if(gpio_number & 0x8000)
     {
 
     	EALLOW;
         //Analog Pins
-        pin &= 0x7FFF;
+        gpio_number &= 0x7FFF;
 
         if(mode == HARDWARE)
         {
             //Turn on normal analog functionality
-            GpioCtrlRegs.AIOMUX1.all |= 3UL << (pin * 2);
+            GpioCtrlRegs.AIOMUX1.all |= 3UL << (gpio_number * 2);
         }
         else
         {
             //Turn on AIO functionality
-            GpioCtrlRegs.AIOMUX1.all &= ~( 3UL << (pin * 2));
+            GpioCtrlRegs.AIOMUX1.all &= ~( 3UL << (gpio_number * 2));
 
             if(mode == INPUT)
             {
-                GpioCtrlRegs.AIODIR.all &= ~(1UL << pin);
+                GpioCtrlRegs.AIODIR.all &= ~(1UL << gpio_number);
             }
             else if(mode == OUTPUT)
             {
-                GpioCtrlRegs.AIODIR.all |= (1UL << pin);
+                GpioCtrlRegs.AIODIR.all |= (1UL << gpio_number);
             }
 
         }
@@ -70,33 +71,33 @@ void pinMode(uint8_t pin, uint8_t mode)
     {
         //Digital Pins
 	    volatile uint32_t *dir;
-	    volatile uint8_t *sel;
+	    volatile uint32_t *sel;
 	    volatile uint32_t *pud;
-	    uint8_t port = digitalPinToPort(pin);
+	    uint8_t port = digitalPinToPort(gpio_number);
 	    dir = portDirRegister(port);
 	    sel = portSelRegister(port);
     	pud = portPullupRegister(port);
 
 	    if (port == NOT_A_PORT) return;
 
-    	if(pin > 31){
-    		pin -= 32;
+    	if(gpio_number > 31){
+    		gpio_number -= 32;
     	}
 
     	EALLOW;
     	//Turn off peripheral function
     	if(port == PORT_A_2){
-    		*sel &= ~((uint32_t)0x03 << ((pin-16) * 2));
+    		*sel &= ~((uint32_t)0x03 << ((gpio_number-16) * 2));
     	}else{
-    		*sel &= ~((uint32_t)0x03 << (pin * 2));
+    		*sel &= ~((uint32_t)0x03 << (gpio_number * 2));
     	}
-    	*dir &= ~((uint32_t)1 << pin);
-    	*dir |= ((uint32_t)(mode & 0x01) << pin);
+    	*dir &= ~((uint32_t)1 << gpio_number);
+    	*dir |= ((uint32_t)(mode & 0x01) << gpio_number);
 
     	if(mode == INPUT_PULLUP){
-    		*pud &= ~((uint32_t)1 << pin);
+    		*pud &= ~((uint32_t)1 << gpio_number);
     	}else{
-    		*pud |= ((uint32_t)1 << pin);
+    		*pud |= ((uint32_t)1 << gpio_number);
     	}
 
     	EDIS;
@@ -106,8 +107,9 @@ void pinMode(uint8_t pin, uint8_t mode)
 
 void pinMode_int(uint8_t pin, uint8_t mode)
 {
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
+    uint16_t gpio_number = pin_mapping[pin];
+	uint8_t bit = digitalPinToBitMask(gpio_number);
+	uint8_t port = digitalPinToPort(gpio_number);
 
 	volatile uint32_t *dir;
 	volatile uint32_t *out;
@@ -130,16 +132,17 @@ void pinMode_int(uint8_t pin, uint8_t mode)
 
 int digitalRead(uint8_t pin)
 {
-	uint32_t bit = digitalPinToBitMask(pin);
-	uint32_t port = digitalPinToPort(pin);
+    uint16_t gpio_number = pin_mapping[pin];
+	uint32_t bit = digitalPinToBitMask(gpio_number);
+	uint32_t port = digitalPinToPort(gpio_number);
 
 
-    if(pin & 0x8000)
+    if(gpio_number & 0x8000)
     {
         //Analog Pins
-        pin &= 0x7FFF;
+        gpio_number &= 0x7FFF;
 
-        if(GpioDataRegs.AIODAT.all & (1UL << pin))
+        if(GpioDataRegs.AIODAT.all & (1UL << gpio_number))
             return HIGH;
         else
             return LOW;
@@ -158,24 +161,24 @@ int digitalRead(uint8_t pin)
 	        return LOW;
 
     }
-    return LOW;
 }
 
 void digitalWrite(uint8_t pin, uint8_t val)
 {
-	uint32_t bit = digitalPinToBitMask(pin);
-	uint32_t port = digitalPinToPort(pin);
+    uint16_t gpio_number = pin_mapping[pin];
+	uint32_t bit = digitalPinToBitMask(gpio_number);
+	uint32_t port = digitalPinToPort(gpio_number);
 	volatile uint32_t *out;
 
 
 
 
-    if(pin & 0x8000)
+    if(gpio_number & 0x8000)
     {
         //Analog Pins
-        pin &= 0x7FFF;
+        gpio_number &= 0x7FFF;
 
-        GpioDataRegs.AIODAT.all = (GpioDataRegs.AIODAT.all & ~(1UL << pin)) | ((uint32_t)val << pin);
+        GpioDataRegs.AIODAT.all = (GpioDataRegs.AIODAT.all & ~(1UL << gpio_number)) | ((uint32_t)val << gpio_number);
 
     }
     else

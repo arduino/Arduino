@@ -94,7 +94,6 @@ __attribute__((weak)) void UARTIntHandler6(void) {}
 __attribute__((weak)) void UARTIntHandler7(void) {}
 __attribute__((weak)) void ToneIntHandler(void) {}
 __attribute__((weak)) void I2CIntHandler(void) {}
-__attribute__((weak)) void Timer5IntHandler(void) {}
 //*****************************************************************************
 // System stack start determined by ldscript, normally highest ram address
 //*****************************************************************************
@@ -219,7 +218,7 @@ void (* const g_pfnVectors[])(void) =
     0,                                      // Reserved
     0,                                      // Reserved
     0,                                      // Reserved
-    Timer5IntHandler,                       // Timer 5 subtimer A
+    IntDefaultHandler,                      // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // Wide Timer 0 subtimer A
     IntDefaultHandler,                      // Wide Timer 0 subtimer B
@@ -352,7 +351,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // I2C3 Master and Slave
     ToneIntHandler,                         // Timer 4 subtimer A
     IntDefaultHandler,                      // Timer 4 subtimer B
-    Timer5IntHandler,                       // Timer 5 subtimer A
+    IntDefaultHandler,                      // Timer 5 subtimer A
     IntDefaultHandler,                      // Timer 5 subtimer B
     IntDefaultHandler,                      // FPU
     0,                                      // Reserved
@@ -564,16 +563,19 @@ caddr_t _sbrk (int incr)
     }
 }
 
+__attribute__((weak))
 extern int link( char *cOld, char *cNew )
 {
     return -1 ;
 }
 
+__attribute__((weak))
 extern int _close( int file )
 {
     return -1 ;
 }
 
+__attribute__((weak))
 extern int _fstat( int file, struct stat *st )
 {
     st->st_mode = S_IFCHR ;
@@ -581,37 +583,44 @@ extern int _fstat( int file, struct stat *st )
     return 0 ;
 }
 
+__attribute__((weak))
 extern int _isatty( int file )
 {
     return 1 ;
 }
 
+__attribute__((weak))
 extern int _lseek( int file, int ptr, int dir )
 {
     return 0 ;
 }
 
+__attribute__((weak))
 extern int _read(int file, char *ptr, int len)
 {
     return 0 ;
 }
 
+__attribute__((weak))
 extern int _write( int file, char *ptr, int len )
 {
     return len;
 }
 
+__attribute__((weak))
 extern void _kill( int pid, int sig )
 {
     return ;
 }
 
+__attribute__((weak))
 extern int _getpid ( void )
 {
     return -1 ;
 }
 
 /*
+__attribute__((weak))
 extern void _exit (void)
 {
 

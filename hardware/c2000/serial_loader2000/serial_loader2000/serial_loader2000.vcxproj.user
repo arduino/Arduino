@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>-w</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-w -v -f C:\Users\a0224999\AppData\Local\Temp\build5527480959768743034.tmp\test_gpio.cpp.txt -k  C:\repos\energia_internal\energia_internal\hardware\c2000\F28069_flash_kernel\Debug\2806_flash_kernel.txt -p COM24</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

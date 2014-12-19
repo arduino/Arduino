@@ -543,7 +543,7 @@ void CC1101WriteRegisters(struct sCC1101PhyInfo *phyInfo,
 enum eCC1101Chip CC1101GetChip(struct sCC1101PhyInfo *phyInfo)
 {
   volatile unsigned char partNum = CC1101GetChipPartnum(phyInfo);
-  volatile unsigned char version = CC1101GetChipVersion(phyInfo);  
+  volatile unsigned char version = CC1101GetChipVersion(phyInfo) & 0xf;
   
   
   if (partNum == CC1101_CHIPPARTNUM && version == CC1101_CHIPVERSION)

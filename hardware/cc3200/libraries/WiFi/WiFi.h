@@ -22,29 +22,43 @@
 
 #include <Energia.h>
 #include "IPAddress.h"
-#include "Utility/wl_definitions.h"
-#include "Utility/Simplelink.h"
+#include "MACAddress.h"
+#include "utility/wl_definitions.h"
+#include "utility/SimpleLink.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"
-
+#include "WiFiUdp.h"
 //
 //Max socket number is 8
 //
 #define MAX_SOCK_NUM 8
 #define MAX_SSID_LEN 32
 #define BSSID_LEN 6
+#define WLAN_DEL_ALL_PROFILES 0xff
+#define WL_FW_VER_LENGTH 64
+#define MAX_AP_DEVICE_REGISTRY 4
+
+typedef struct {
+    boolean in_use;
+    uint8_t ipAddress[4];
+    uint8_t mac[6];
+} wlanAttachedDevice_t;
+
 
 class WiFiClass
 {
 private:
-    static bool init();
-    static WiFiClient clients[MAX_SOCK_NUM];    
+    static WiFiClient clients[MAX_SOCK_NUM];
+    static int8_t role;
+    static char fwVersion[WL_FW_VER_LENGTH];
 public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];
     static int16_t _typeArray[MAX_SOCK_NUM];
     
     static bool _initialized;
+    static bool _connecting;
+    static bool init();
     volatile static int network_count;
     
     //
@@ -75,15 +89,48 @@ public:
     static uint8_t getSocket();
     
     /*
-     * Get firmware version
+     * Get firmware and driver version
      */
     char* firmwareVersion();
+    char* driverVersion();
     
-    
+    /* Start WiFi in AP mode with OPEN network
+     *
+     * param ssid: Pointer to the SSID string.
+     */
+    int beginNetwork(char *ssid);
+
+    /* Start WiFi in AP mode with WPA network
+     *
+     * param ssid: Pointer to the SSID string.
+     * param passphrase: Passphrase. Valid characters in a passphrase
+     *        must be between ASCII 32-126 (decimal).
+     */
+    int beginNetwork(char *ssid, char *passphrase);
+
+    /* AP mode connected device tracking
+     */
+    volatile static unsigned int _connectedDeviceCount;
+    volatile static wlanAttachedDevice_t _connectedDevices[MAX_AP_DEVICE_REGISTRY];
+    volatile static unsigned int _latestConnect;
+    static void _registerNewDeviceIP(uint8_t *ip, uint8_t *mac);
+    static void _unregisterDevice(uint8_t *mac);
+
+    /* Query AP-mode station registration database
+     */
+    IPAddress getLatestDevice(void) { return IPAddress((const uint8_t *)_connectedDevices[_latestConnect].ipAddress); };
+    unsigned int getTotalDevices(void) { _SlNonOsMainLoopTask(); return _connectedDeviceCount; };
+    IPAddress deviceIpAddress(unsigned int idx);
+    MACAddress deviceMacAddress(unsigned int idx);
+    IPAddress deviceIpByMacAddress(MACAddress mac);
+    MACAddress deviceMacByIpAddress(IPAddress ip);
+
+
     /* Start Wifi connection for OPEN network
      *
      * param ssid: Pointer to the SSID string.
      */
+
     int begin(char* ssid);
     
     /* Start Wifi connection with WEP encryption.
@@ -264,6 +311,26 @@ public:
      */
     int hostByName(char* aHostname, IPAddress& aResult);
     
+    /*
+     * Start Smartconfig.
+     * return: 1 if SmartConfig was successfully configured, otherwise -1.
+     */
+    int startSmartConfig();
+
+    /*
+     * Set WiFi network processor Date/Time
+     * Params: month (1-12), day (1-31), year, hour (0-23), minute (0-59), second (0-59)
+     * return: true if successful, false if invalid parameters were supplied (or sl_DevSet() returned an error)
+     */
+    boolean setDateTime(uint16_t month, uint16_t day, uint16_t year, uint16_t hour, uint16_t minute, uint16_t second);
+
+    /*
+     * Set the ip configuration to DHCP if config(...) was not called before WiFi.begin().
+     * This will take care of setting DHCP as default network configuration
+     * if the prvious Sketch set the network to static.
+     */
+    void setIpDefaults();
+
     friend class WiFiClient;
     friend class WiFiServer;
 };

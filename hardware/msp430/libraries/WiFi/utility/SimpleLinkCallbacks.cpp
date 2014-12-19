@@ -20,7 +20,7 @@
 
 
 extern "C" {
-    #include "simplelink.h"
+    #include "SimpleLink.h"
     #include <string.h>
 }
 
@@ -40,6 +40,8 @@ extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)
 #if (defined(sl_WlanEvtHdlr))
 extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
 {
+    unsigned char tmp[4] = {0,0,0,0};
+
     switch (pSlWlanEvent->Event) {
         
         //
@@ -81,6 +83,20 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
             memset(WiFiClass::connected_bssid, 0, BSSID_LEN);
             
             break;
+
+        /* Track station connects & disconnects in AP mode */
+        case SL_WLAN_STA_CONNECTED_EVENT:
+            /* Register the MAC w/o an IP; later on, when an IP is leased to this user, the _latestConnect index will update
+             * to point to this one (inside sl_NetAppEvtHdlr's run of _registerNewDeviceIP() below).
+             */
+            WiFiClass::_registerNewDeviceIP(tmp, pSlWlanEvent->EventData.APModeStaConnected.mac);
+            break;
+
+        case SL_WLAN_STA_DISCONNECTED_EVENT:
+            WiFiClass::_unregisterDevice(pSlWlanEvent->EventData.APModestaDisconnected.mac);
+            WiFiClass::_connectedDeviceCount--;
+            break;
+
             
         default:
             break;
@@ -102,6 +118,19 @@ extern void sl_NetAppEvtHdlr(SlNetAppEvent_t *pSlSockEvent)
             WiFiClass::local_IP = pSlSockEvent->EventData.ipAcquiredV4.ip;
             break;
         }
+
+        /* Track station IP leases in AP mode */
+        case SL_NETAPP_IP_LEASED:
+            unsigned char ipAddrAry[4];
+
+            ipAddrAry[0] = (pSlSockEvent->EventData.ipLeased.ip_address >> 24);
+            ipAddrAry[1] = (pSlSockEvent->EventData.ipLeased.ip_address >> 16) & 0xFF;
+            ipAddrAry[2] = (pSlSockEvent->EventData.ipLeased.ip_address >> 8) & 0xFF;
+            ipAddrAry[3] = pSlSockEvent->EventData.ipLeased.ip_address & 0xFF;
+            WiFiClass::_registerNewDeviceIP(ipAddrAry, pSlSockEvent->EventData.ipLeased.mac);
+            WiFiClass::_connectedDeviceCount++;
+            break;
+
         default:
             break;
     }

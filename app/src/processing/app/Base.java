@@ -25,6 +25,7 @@ package processing.app;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.*;
 import javax.swing.*;
@@ -43,9 +44,9 @@ import static processing.app.I18n._;
  */
 public class Base {
   public static final int REVISION = 101;
-  public static final int EREVISION = 13;
+  public static final int EREVISION = 14;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0101E0013 beta 1";
+  static String VERSION_NAME = "0101E0014";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
@@ -70,6 +71,7 @@ public class Base {
     archMap.put("lm4f", "lm4f");
     archMap.put("c2000", "c2000");
     archMap.put("cc3200", "cc3200");
+    archMap.put("secret", "secret");
   }
   static Platform platform;
 
@@ -1644,6 +1646,32 @@ public class Base {
     return getHardwareFolder().getAbsolutePath();
   }
   
+
+  static public String readFile(String fileName) throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(fileName));
+    try {
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+
+        while (line != null) {
+            sb.append(line);
+            sb.append("\n");
+            line = br.readLine();
+        }
+ 
+        return sb.toString();
+    } finally {
+        br.close();
+    }
+  }
+  
+  static public String getArchCorePath() {
+    String arch = getArch();
+    String path = getHardwarePath() + File.separator + arch + File.separator +
+                  "cores" + File.separator + arch + File.separator;
+    return path;
+  }
+
   
   static public String getAvrBasePath() {
     String path = getHardwarePath() + File.separator + "tools" +
@@ -1677,7 +1705,7 @@ public class Base {
 	    String path = getHardwarePath() + File.separator + "tools" +
 	                  File.separator + "c2000" + File.separator + "bin" + File.separator;
 	    
-	    if (Base.isLinux() || !(new File(path)).exists()) {
+	    if(!(new File(path)).exists()){
 	      return "";  // use msp430-gcc and mspdebug in PATH instead of platform version
 	    }
 	    return path;
@@ -1758,14 +1786,18 @@ public class Base {
       return ret;
     } else {
     	String arch = getArch();
-    	if (arch == "cc3200")
+    	if (arch == "cc3200" || arch == "secret")
     		arch = "lm4f";
     	return getHardwarePath() + File.separator + "tools" + File.separator
           + arch + File.separator + "bin" + File.separator;
     }
   }
   
-  
+   static public String getCommonBasePath() {
+       return getToolsPath() +
+           File.separator + "common" + File.separator + "bin" + File.separator;
+   }
+
   static public Target getTarget() {
     return Base.targetsTable.get(Preferences.get("target"));
   }
@@ -2275,7 +2307,20 @@ public class Base {
     return null;
   }
   */
+  static public File getAppFile() {
+	    String path = System.getProperty("user.dir");
 
+	    // Get a path to somewhere inside the .app folder
+	    if (Base.isMacOS()) {
+	      String javaroot = System.getProperty("javaroot");
+	      if (javaroot != null) {
+	        path = javaroot;
+	      }
+	    }
+	    return new File(path);
+	    //return new File(working, name);
+	  }
+  
   static public File getContentFile(String name) {
     String path = System.getProperty("user.dir");
 

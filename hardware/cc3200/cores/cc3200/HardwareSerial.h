@@ -41,11 +41,11 @@
 class HardwareSerial : public Stream
 {
 	private:
-		unsigned char txBuffer[256];
+		unsigned char txBuffer[SERIAL_BUFFER_SIZE];
 		unsigned long txBufferSize;
 		unsigned long txWriteIndex;
 		unsigned long txReadIndex;
-		unsigned char rxBuffer[256];
+		unsigned char rxBuffer[SERIAL_BUFFER_SIZE];
 		unsigned long rxBufferSize;
 		unsigned long rxWriteIndex;
 		unsigned long rxReadIndex;
@@ -68,6 +68,7 @@ class HardwareSerial : public Stream
 		virtual void flush(void);
 		void UARTIntHandler(void);
 		virtual size_t write(uint8_t c);
+		operator bool();
 		using Print::write; // pull in write(str) and write(buf, size) from Print
 };
 

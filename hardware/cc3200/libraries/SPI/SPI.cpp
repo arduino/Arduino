@@ -50,11 +50,13 @@ static const unsigned long g_ulSSIPinModes[][4] = {
 };
 
 SPIClass::SPIClass(void) {
-	SSIModule = NOT_ACTIVE;
+	SSIModule = BOOST_PACK_SPI;
+	SSIBitOrder = MSBFIRST;
 }
 
 SPIClass::SPIClass(uint8_t module) {
 	SSIModule = module;
+	SSIBitOrder = MSBFIRST;
 }
   
 void SPIClass::begin() {
@@ -79,7 +81,7 @@ void SPIClass::begin() {
 	/* 4 MHz clock, MODE 0, 3 PIN with CS under S/W control */
 	MAP_SPIConfigSetExpClk(SSIBASE,MAP_PRCMPeripheralClockGet(PRCM_GSPI),
 				4000000, SPI_MODE_MASTER, SPI_MODE0,
-				(SPI_SW_CTRL_CS |
+				(SPI_HW_CTRL_CS |
 				SPI_3PIN_MODE |
 				SPI_TURBO_OFF |
 				SPI_CS_ACTIVELOW |
@@ -95,18 +97,17 @@ void SPIClass::end()
 
 void SPIClass::setBitOrder(uint8_t ssPin, uint8_t bitOrder)
 {
-	/* CC3200 does not support changing the bit order
-	 * Bit order is MSB first */
+	SSIBitOrder = bitOrder;
 }
 
 void SPIClass::setBitOrder(uint8_t bitOrder)
 {
-	/* CC3200 does not support changing the bit order
-	 * Bit order is MSB first */
+	SSIBitOrder = bitOrder;
 }
 
 void SPIClass::setDataMode(uint8_t mode)
 {
+	MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
 	HWREG(SSIBASE + MCSPI_O_CH0CONF) &= ~SPI_MODE_MASK;
 	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= mode;
 }
@@ -117,20 +118,38 @@ void SPIClass::setClockDivider(uint8_t divider)
 	 * CLKD in MCSPI_CHCONF next eight least significant bits are used to
 	 * configure the EXTCLK in MCSPI_CHCTRL.
 	 * Note that the peripheral clock is set to 40 MHz vs System Clock @ 80 MHz */
+	MAP_PRCMPeripheralClkEnable(PRCM_GSPI, PRCM_RUN_MODE_CLK);
+
+	uint16_t _divider = ((MAP_PRCMPeripheralClockGet(PRCM_GSPI) / (MAX_BITRATE / divider))  - 1);
 
 	HWREG(SSIBASE + MCSPI_O_CH0CONF) &= ~SPI_CLKD_MASK;
-	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= ((divider & 0x0000000F) << 2);
+	HWREG(SSIBASE + MCSPI_O_CH0CONF) |= ((_divider & 0x0000000F) << 2);
 
 	HWREG(SSIBASE + MCSPI_O_CH0CTRL) &= ~SPI_EXTCLK_MASK;
-	HWREG(SSIBASE + MCSPI_O_CH0CTRL) |= ((divider & 0x00000FF0) << 4);
+	HWREG(SSIBASE + MCSPI_O_CH0CTRL) |= ((_divider & 0x00000FF0) << 4);
 	SPIEnable(SSIBASE);
 }
 
 uint8_t SPIClass::transfer(uint8_t data)
 {
+	uint32_t rxtxData;
 	uint8_t rxData;
 
-	MAP_SPITransfer(SSIBASE, &data, &rxData, 1, SPI_CS_ENABLE|SPI_CS_DISABLE);
+	if(SSIBitOrder == LSBFIRST) {
+		rxtxData = data;
+		asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of 32 bits 
+		asm("rev %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of bytes to get original bits into lowest byte 
+		data = (uint8_t) rxtxData;
+	}
+
+	MAP_SPITransfer(SSIBASE, &data, &rxData, 1, 0);
+
+	if(SSIBitOrder == LSBFIRST) {
+		rxtxData = rxData;
+		asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of 32 bits 
+		asm("rev %0, %1" : "=r" (rxtxData) : "r" (rxtxData));	// reverse order of bytes to get original bits into lowest byte 
+		rxData = (uint8_t) rxtxData;
+	}
 
 	return (uint8_t) rxData;
 }
@@ -143,4 +162,4 @@ void SPIClass::setModule(uint8_t module) {
 	begin();
 }
 
-SPIClass SPI;
+SPIClass SPI(0);

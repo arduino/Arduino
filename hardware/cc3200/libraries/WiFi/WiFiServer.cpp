@@ -20,10 +20,10 @@
 #include <string.h>
 
 extern "C" {
-    #include "Utility/simplelink.h"
-    #include "Utility/socket.h"
-    #include "Utility/wl_definitions.h"
-    #include "Utility/netapp.h"
+    #include "utility/SimpleLink.h"
+    #include "utility/socket.h"
+    #include "utility/wl_definitions.h"
+    #include "utility/netapp.h"
 }
 
 #include "WiFi.h"
@@ -200,13 +200,11 @@ size_t WiFiServer::write(const uint8_t *buffer, size_t size)
     for (i = 0; i < MAX_SOCK_NUM; i++) {
         if (WiFiClass::_typeArray[i] == TYPE_TCP_CONNECTED_CLIENT) {
             //
-            //Write the data to the connected client and return if error
+            //Write the data to the connected client and increment
+            //the number of bytes send
             //
             int handle = WiFiClass::_handleArray[i];
-            sentBytes = sl_Send(handle, buffer, size, NULL);
-            if (sentBytes < 0) {
-                return 0;
-            }
+            sentBytes += sl_Send(handle, buffer, size, NULL);
         }
     }
     return sentBytes;

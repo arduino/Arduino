@@ -1,11 +1,12 @@
 /*
 
  This example connects to an unencrypted Wifi network.
- Then it prints the  MAC address of the Wifi shield,
+ Then it prints the MAC address of the Wifi BoosterPack / LaunchPad,
  the IP address obtained, and other network details.
 
  Circuit:
- * WiFi shield attached
+ * CC3200 WiFi LaunchPad or CC3100 WiFi BoosterPack
+   with TM4C or MSP430 LaunchPad
 
  created 13 July 2010
  by dlf (Metodo2 srl)
@@ -14,32 +15,45 @@
  modified 2 July 2014
  by Noah Luskey
  */
- 
-#include <SPI.h>
-#include <WiFi.h>
 
-char ssid[] = "yourNetwork";     // the name of your network
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
+#ifndef __CC3200R1M1RGC__
+// Do not include SPI for CC3200 LaunchPad
+#include <SPI.h>
+#endif
+#include <WiFi.h>
+#include <WiFiClient.h>
+
+// your network name also called SSID
+char ssid[] = "energia";
 
 void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(115200);
 
   // attempt to connect to Wifi network:
-  Serial.print("Attempting to connect to open SSID: ");
-  Serial.println(ssid);
-  status = WiFi.begin(ssid);
-  while ( status != WL_CONNECTED) {
-    status = WiFi.status();
+  Serial.print("Attempting to connect to Network named: ");
+  // print the network name (SSID);
+  Serial.println(ssid); 
+  // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+  WiFi.begin(ssid);
+  while ( WiFi.status() != WL_CONNECTED) {
+    // print dots while we wait to connect
     Serial.print(".");
-    // wait .1 seconds for connection:
-    delay(100);
+    delay(300);
+  }
+  
+  Serial.println("\nYou're connected to the network");
+  Serial.println("Waiting for an ip address");
+  
+  while (WiFi.localIP() == INADDR_NONE) {
+    // print dots while we wait for an ip addresss
+    Serial.print(".");
+    delay(300);
   }
 
-  // you're connected now, so print out the data:
-  Serial.print("\nYou're connected to the network");
-  IPAddress empty(0,0,0,0);
-  while (WiFi.localIP() == empty);
+  Serial.println("\nIP Address obtained");
+  
+  // you're connected now, so print out the status  
   printCurrentNet();
   printWifiData();
 }
@@ -51,7 +65,7 @@ void loop() {
 }
 
 void printWifiData() {
-  // print your WiFi shield's IP address:
+  // print your WiFi IP address:
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);

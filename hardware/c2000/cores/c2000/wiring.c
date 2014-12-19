@@ -103,8 +103,17 @@ void initFlash(void)
    //Minimum waitstates required for the flash operating
    //at a given CPU rate must be characterized by TI.
    //Refer to the datasheet for the latest information.
+#if F_CPU >= 90000000L
+  //Set the Paged Waitstate for the Flash
+  FlashRegs.FBANKWAIT.bit.PAGEWAIT = 3;
 
-#if F_CPU >= 60000000L
+  //Set the Random Waitstate for the Flash
+  FlashRegs.FBANKWAIT.bit.RANDWAIT = 3;
+
+  //Set the Waitstate for the OTP
+  FlashRegs.FOTPWAIT.bit.OTPWAIT = 5;
+
+#elif F_CPU >= 60000000L
 	//Set the Paged Waitstate for the Flash
 	FlashRegs.FBANKWAIT.bit.PAGEWAIT = 2;
 
@@ -254,8 +263,10 @@ void initClocks(void)
 	EALLOW;
 	// Before setting PLLCR turn off missing clock detect logic
 	SysCtrlRegs.PLLSTS.bit.MCLKOFF = 1;
-#if F_CPU >= 60000000L
-	SysCtrlRegs.PLLCR.bit.DIV = 0x0C;
+#if F_CPU >= 90000000L
+  SysCtrlRegs.PLLCR.bit.DIV = 0x12;
+#elif F_CPU >= 60000000L
+  SysCtrlRegs.PLLCR.bit.DIV = 0x0C;
 #elif F_CPU >= 50000000L
 	SysCtrlRegs.PLLCR.bit.DIV = 0x0A;
 #elif F_CPU >= 40000000L
