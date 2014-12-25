@@ -34,7 +34,7 @@
 extern "C"{
 #endif
 
-void yield(void);
+#include "hooks.c"
 
 #define HIGH 0x1
 #define LOW  0x0
