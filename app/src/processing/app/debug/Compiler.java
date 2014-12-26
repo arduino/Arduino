@@ -74,7 +74,6 @@ public class Compiler implements MessageConsumer {
     // the pms object isn't used for anything but storage
     MessageStream pms = new MessageStream(this);
 
-
     String basePath = Base.getBasePath();
     Map<String, String> boardPreferences = Base.getBoardPreferences();
     String core = boardPreferences.get("build.core");
@@ -117,13 +116,13 @@ public class Compiler implements MessageConsumer {
     	String commonBasePath = Base.getHardwarePath() + File.separator + 
     			"secret" + File.separator + "cores" + File.separator + "secret" + File.separator;
         try {
-        	File makeVariables = new File(buildPath+File.separator+"Variables.mk");
-        	FileWriter fw = new FileWriter(makeVariables);
-        	fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "secret" + File.separator + "gnu" + File.separator + "closure\n");
-        	fw.write("SDKROOT ?= " + Base.getHardwarePath() + File.separator + "secret" + "/CC3200SDK_1.0.0.patch\n");
-        	fw.write("CCROOT  ?= " + Base.getHardwarePath() + File.separator + "tools" + File.separator + "lm4f\n");
-        	fw.write("MAINSKETCH  ?= " + primaryClassName + "\n");
-        	fw.write("BOARD=" + boardPreferences.get("build.hardware") +"\n");
+            File makeVariables = new File(buildPath+File.separator+"Variables.mk");
+            FileWriter fw = new FileWriter(makeVariables);
+            fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "secret" + File.separator + "gnu" + File.separator + "closure\n");
+            fw.write("SDKROOT ?= " + Base.getHardwarePath() + File.separator + "secret" + "/CC3200SDK_1.0.0.patch\n");
+            fw.write("CCROOT  ?= " + Base.getHardwarePath() + File.separator + "tools" + File.separator + "lm4f\n");
+            fw.write("MAINSKETCH  ?= " + primaryClassName + "\n");
+            fw.write("BOARD=" + boardPreferences.get("build.hardware") +"\n");
             fw.write("PLATFORM=" + Preferences.get("target") + "\n");
 
             // Add all Sketch tabs that match the extension list to EXTRA_SOURCES
@@ -131,8 +130,8 @@ public class Compiler implements MessageConsumer {
             String extraSources = "";
 
             for (SketchCode sc : sketch.getCode()) {
-            	if(allowedExtensions.contains(sc.getExtension()))
-            		extraSources += " " + sc.getFileName();
+            	if (allowedExtensions.contains(sc.getExtension()))
+                    extraSources += " " + sc.getFileName();
             }
             
             fw.write("EXTRA_SOURCES="+extraSources+"\n");
@@ -141,22 +140,23 @@ public class Compiler implements MessageConsumer {
             fw.write("USER_LIB_PATH="+Base.getSketchbookLibrariesPath()+"\n");
             fw.write("SERIAL_PORT=" + Preferences.get("serial.port") + "\n");
             
-        	fw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            fw.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         List baseMake = new ArrayList(Arrays.asList(new String[] {
-        	      //avrBasePath + "avr-gcc",
-                     (Base.isLinux() ? "make" : Base.getCommonBasePath() + "make"), "--no-print-directory",
-        	      "-C",
-        	      buildPath + File.separator, // + primaryClassName + ".elf"
-        	      "-f",
-        	      commonBasePath + File.separator + "Makefile"
-        	    }));
-        		String enviromentVariables[] = { };
-        	    execAsynchronously(baseMake, enviromentVariables, new File(commonBasePath));
-        	    return true;
+                    //avrBasePath + "avr-gcc",
+                    (Base.isLinux() ? "make" : Base.getCommonBasePath() + "make"), "--no-print-directory",
+                        "-C",
+                        buildPath + File.separator, // + primaryClassName + ".elf"
+                        "-f",
+                        commonBasePath + File.separator + "Makefile"
+                        }));
+
+        /* pass null environment array to use current process' environment */
+        execAsynchronously(baseMake, null, new File(commonBasePath));
+        return true;
     }
 
     String rtsIncPath = null;
