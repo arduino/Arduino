@@ -35,7 +35,6 @@ import java.io.*;
 import java.util.*;
 import java.util.zip.*;
 
-
 public class Compiler implements MessageConsumer {
   static final String BUGS_URL =
     _("https://github.com/energia/Energia/issues");
