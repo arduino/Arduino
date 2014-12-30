@@ -5,6 +5,10 @@
 #include <inttypes.h>
 #include "Arduino.h"
 
+// define WS0010 if you are to use WINSTAR OLED
+#undef WS0010
+//#define WS0010
+
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
@@ -19,10 +23,24 @@
 // 4. Entry mode set: 
 //    I/D = 1; Increment by 1 
 //    S = 0; No shift 
+// #ifdef WS0010
+// 5. Cursor/Display shift/Mode / Pwr
+//    G/C = 0: Character mode
+//    Pwr = 1: Internal DCDC power on
+// #endif
 //
 // Note, however, that resetting the Arduino doesn't reset the LCD, so we
 // can't assume that its in that state when a sketch starts (and the
 // LiquidCrystal constructor is called).
+
+#ifndef WS0010
+#define LCD_FONT 0x00
+#else
+//#define LCD_FONT 0x00 // Japanese font
+//#define LCD_FONT 0x01 // European I font
+#define LCD_FONT 0x02 // Russian font
+//#define LCD_FONT 0x03 // European II font
+#endif
 
 LiquidCrystal::LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
 			     uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
@@ -66,23 +84,28 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
   _data_pins[5] = d5;
   _data_pins[6] = d6;
   _data_pins[7] = d7; 
-
-  pinMode(_rs_pin, OUTPUT);
-  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
-  if (_rw_pin != 255) { 
-    pinMode(_rw_pin, OUTPUT);
-  }
-  pinMode(_enable_pin, OUTPUT);
+  
   
   if (fourbitmode)
-    _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+    _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS | LCD_FONT;
   else 
-    _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
-  
-  begin(16, 1);  
+    _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS | LCD_FONT;
+
 }
 
 void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
+  // Deferred initialization from init()
+  // as Edison (or standard C++) fail to call these within the constructor
+  digitalWrite(_rs_pin, LOW);
+  pinMode(_rs_pin, OUTPUT);
+  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
+  if (_rw_pin != 255) {
+    digitalWrite(_rw_pin, LOW);
+    pinMode(_rw_pin, OUTPUT);
+  }
+  digitalWrite(_enable_pin, LOW);
+  pinMode(_enable_pin, OUTPUT);
+
   if (lines > 1) {
     _displayfunction |= LCD_2LINE;
   }
@@ -97,77 +120,111 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
   // before sending commands. Arduino can turn on way before 4.5V so we'll wait 50
-  delayMicroseconds(50000); 
-  // Now we pull both RS and R/W low to begin commands
-  digitalWrite(_rs_pin, LOW);
-  digitalWrite(_enable_pin, LOW);
-  if (_rw_pin != 255) { 
-    digitalWrite(_rw_pin, LOW);
-  }
-  
+  // Edit: WS0010 needs > 500ms besides HD44780 needs > 40ms @3V, >15ms @5V
+  // we'd better wait 500
+  delay(500);
+
   //put the LCD into 4 bit or 8 bit mode
   if (! (_displayfunction & LCD_8BITMODE)) {
+#ifndef WS0010
     // this is according to the hitachi HD44780 datasheet
     // figure 24, pg 46
 
     // we start in 8bit mode, try to set 4 bit mode
     write4bits(0x03);
-    delayMicroseconds(4500); // wait min 4.1ms
+    delayMicroseconds(4100); // wait min 4.1ms
 
     // second try
     write4bits(0x03);
-    delayMicroseconds(4500); // wait min 4.1ms
+    delayMicroseconds(100); // wait min 100us
     
     // third go!
     write4bits(0x03); 
-    delayMicroseconds(150);
-
-    // finally, set to 4-bit interface
+    delayMicroseconds(37); // wait min 37us
+#else
+    // the above initialize sequence doesn't work for WS0010.
+    // because LCD_FUNCTIONSET command [0:0:1:DL:N:F:FT1:FT0] has extra FT1 and FT0
+    // bits that HD44780 doesn't care. the lower 4-bits are floating during 
+    // the initialization and WS0010 doesn't like to be reset the font ROM so frequently.
+    // but don't worry WS0010 has special sequence consists of five 0's for soft-resetting!
+    // cf.
+    //    http://blog.digit-parts.com/pdf/wsoled_app.pdf
+    //    http://www.winstar.com.tw/UserFiles/downloads/13370715900854524584.pdf (p.43)
+    for (int i = 0; i < 5; i++) {
+      write4bits(0);
+    }
+#endif
+    // the interface is confirmed to be 8-bit
+    // switch 8-bit to 4-bit
     write4bits(0x02); 
+    delayMicroseconds(37); // wait min 37us
+
+    // finally, set # lines, font size, etc.
+    write4bits((LCD_FUNCTIONSET | _displayfunction)>>4);  
+    write4bits(LCD_FUNCTIONSET | _displayfunction);  
   } else {
     // this is according to the hitachi HD44780 datasheet
     // page 45 figure 23
 
     // Send function set command sequence
-    command(LCD_FUNCTIONSET | _displayfunction);
-    delayMicroseconds(4500);  // wait more than 4.1ms
+    write8bits(LCD_FUNCTIONSET | _displayfunction);
+    delayMicroseconds(4100); // wait min 4.1ms
 
     // second try
-    command(LCD_FUNCTIONSET | _displayfunction);
-    delayMicroseconds(150);
+    write8bits(LCD_FUNCTIONSET | _displayfunction);
+    delayMicroseconds(100); // wait min 100us
 
     // third go
-    command(LCD_FUNCTIONSET | _displayfunction);
-  }
+    write8bits(LCD_FUNCTIONSET | _displayfunction);
+    delayMicroseconds(37); // wait min 37us
 
-  // finally, set # lines, font size, etc.
-  command(LCD_FUNCTIONSET | _displayfunction);  
+    // finally, set # lines, font size, etc.
+    write8bits(LCD_FUNCTIONSET | _displayfunction);  
+  }
+  if (_rw_pin == 255)
+    delayMicroseconds(37); // wait min 37us
 
   // turn the display on with no cursor or blinking default
   _displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;  
+  // Initialize to default text direction (for romance languages)
+  _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+
+#ifdef WS0010
+  // display off
+  noDisplay();
+  // character mode and internal power on
+  command(LCD_CURSORSHIFT | 0x07); // [G/C:PWR:1:1] = [0:1:1:1]
+  // clear display
+  clear();
+  // return home
+  home();
+  // entry mode set
+  command(LCD_ENTRYMODESET | _displaymode);
+  // display on
+  display();
+#else
   display();
 
   // clear it off
   clear();
 
-  // Initialize to default text direction (for romance languages)
-  _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
-  // set the entry mode
   command(LCD_ENTRYMODESET | _displaymode);
-
+#endif
 }
 
 /********** high level commands, for the user! */
 void LiquidCrystal::clear()
 {
   command(LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
-  delayMicroseconds(2000);  // this command takes a long time!
+  if (_rw_pin == 255)
+    delayMicroseconds(6200);  // for WS0010 min 6.2ms @ fosc=250kHz
 }
 
 void LiquidCrystal::home()
 {
   command(LCD_RETURNHOME);  // set cursor position to zero
-  delayMicroseconds(2000);  // this command takes a long time!
+  if (_rw_pin == 255)
+    delayMicroseconds(1520);  // min 1.52ms @ fosc=270kHz
 }
 
 void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
@@ -267,28 +324,50 @@ inline size_t LiquidCrystal::write(uint8_t value) {
 
 // write either command or data, with automatic 4/8-bit selection
 void LiquidCrystal::send(uint8_t value, uint8_t mode) {
-  digitalWrite(_rs_pin, mode);
-
+  unsigned char bitnum = (_displayfunction & LCD_8BITMODE) ? 8 : 4;
   // if there is a RW pin indicated, set it low to Write
-  if (_rw_pin != 255) { 
+  if (_rw_pin != 255) {
+    unsigned char busy;
+    for (int i = 0; i < bitnum; i++)
+      pinMode(_data_pins[i], INPUT);
+    digitalWrite(_rs_pin, LOW);
+    digitalWrite(_rw_pin, HIGH);
+    do {
+#ifndef __ARDUINO_X86__
+      delayMicroseconds(1);
+#endif
+      digitalWrite(_enable_pin, HIGH);
+#ifndef __ARDUINO_X86__
+      delayMicroseconds(1);
+#endif
+      busy = digitalRead(_data_pins[bitnum-1]);
+      digitalWrite(_enable_pin, LOW);
+      if (bitnum == 4) {
+        pulseEnable();
+      }
+    } while (busy);
     digitalWrite(_rw_pin, LOW);
   }
-  
-  if (_displayfunction & LCD_8BITMODE) {
-    write8bits(value); 
+  digitalWrite(_rs_pin, mode);
+  if (bitnum == 8) {
+    write8bits(value);
   } else {
     write4bits(value>>4);
     write4bits(value);
   }
+  if (_rw_pin == 255)
+    delayMicroseconds(37);   // commands need > 37us to settle
 }
 
 void LiquidCrystal::pulseEnable(void) {
-  digitalWrite(_enable_pin, LOW);
+#ifndef __ARDUINO_X86__
   delayMicroseconds(1);    
+#endif  
   digitalWrite(_enable_pin, HIGH);
+#ifndef __ARDUINO_X86__  
   delayMicroseconds(1);    // enable pulse must be >450ns
+#endif  
   digitalWrite(_enable_pin, LOW);
-  delayMicroseconds(100);   // commands need > 37us to settle
 }
 
 void LiquidCrystal::write4bits(uint8_t value) {
