@@ -502,8 +502,8 @@
       <fileset dir="windows/launcher"
 	       includes="about.bmp, application.ico, config.xml, config_debug.xml"/>
     </copy>
-    <launch4j configFile="windows/work/config.xml" />
-    <launch4j configFile="windows/work/config_debug.xml" />
+    <launch4j configFile="windows/work/config.xml" productVersion="${version}.0" txtProductVersion="${version}" />
+    <launch4j configFile="windows/work/config_debug.xml" productVersion="${version}.0" txtProductVersion="${version}" />
     <delete dir="windows/work"
 	    includes="about.bmp, application.ico, config.xml, config_debug.xml" />
 
