@@ -340,6 +340,13 @@ boolean SDClass::begin(uint8_t csPin) {
     Return true if initialization succeeds, false otherwise.
 
    */
+
+  /* before trying to initialize the card, close the root if open */
+  /* this fixes a bug when we turn off the SD card to save power  */
+  if (root.isOpen())
+    if (!root.close())
+      return false;
+
   return card.init(SPI_HALF_SPEED, csPin) &&
          volume.init(card) &&
          root.openRoot(volume);
