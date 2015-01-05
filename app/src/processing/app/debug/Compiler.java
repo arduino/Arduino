@@ -409,29 +409,18 @@ public class Compiler implements MessageConsumer {
         }
         else if( boardPreferences.get("build.mcu").equals("TMS320F28069"))
         {
-        	if(Base.isLinux())
-        	{
-        		baseCommandLinker.add(corePath + "/F2806x_common/cmd/F28069.cmd");
-	        	baseCommandLinker.add(corePath + "/F2806x_headers/cmd/F2806x_Headers_nonBIOS.cmd");
-        	}
-        	else
-        	{
-	        	baseCommandLinker.add(corePath + "\\F2806x_common\\cmd\\F28069.cmd");
-	        	baseCommandLinker.add(corePath + "\\F2806x_headers\\cmd\\F2806x_Headers_nonBIOS.cmd");
-        	}
+        	
+        	
+	       	baseCommandLinker.add(corePath + "//F2806x_common//cmd//F28069.cmd");
+	        baseCommandLinker.add(corePath + "//F2806x_headers//cmd//F2806x_Headers_nonBIOS.cmd");
+        	
         }
         else
         {
-        	if(Base.isLinux())
-        	{
-        		baseCommandLinker.add(corePath + "/f2802x_common/cmd/F28027.cmd");
-            	baseCommandLinker.add(corePath + "/f2802x_headers/cmd/F2802x_Headers_nonBIOS.cmd");
-        	}
-        	else
-        	{
-        baseCommandLinker.add(corePath + "\\f2802x_common\\cmd\\F28027.cmd");
-        baseCommandLinker.add(corePath + "\\f2802x_headers\\cmd\\F2802x_Headers_nonBIOS.cmd");
-        	}    
+        	
+            baseCommandLinker.add(corePath + "//f2802x_common//cmd//F28027.cmd");
+            baseCommandLinker.add(corePath + "//f2802x_headers//cmd//F2802x_Headers_nonBIOS.cmd");
+        	
         }
     }else {
       baseCommandLinker.add("-L" + buildPath);
