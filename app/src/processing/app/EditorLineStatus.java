@@ -22,6 +22,7 @@
 
 package processing.app;
 
+import processing.app.helpers.OSUtils;
 import processing.app.syntax.*;
 
 import java.awt.*;
@@ -61,7 +62,7 @@ public class EditorLineStatus extends JComponent {
     foreground = Theme.getColor("linestatus.color");
     high = Theme.getInteger("linestatus.height");
 
-    if (Base.isMacOS()) {
+    if (OSUtils.isMacOS()) {
       resize = Base.getThemeImage("resize.gif", this);
     }
     //linestatus.bgcolor = #000000
@@ -96,7 +97,10 @@ public class EditorLineStatus extends JComponent {
   public void paintComponent(Graphics g) {
     if (name=="" && serialport=="") {
       Map<String, String> boardPreferences =  Base.getBoardPreferences();
-      setBoardName(boardPreferences.get("name"));
+      if (boardPreferences!=null)
+        setBoardName(boardPreferences.get("name"));
+      else
+        setBoardName("-");
       setSerialPort(Preferences.get("serial.port"));
     }
     g.setColor(background);
@@ -115,7 +119,7 @@ public class EditorLineStatus extends JComponent {
     
     g.drawString(tmp, size.width - (int) bounds.getWidth() -20 , baseline);
 
-    if (Base.isMacOS()) {
+    if (OSUtils.isMacOS()) {
       g.drawImage(resize, size.width - 20, 0, this);
     }
   }
