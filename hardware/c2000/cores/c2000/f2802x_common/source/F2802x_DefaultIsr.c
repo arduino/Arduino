@@ -22,7 +22,7 @@
 //###########################################################################
 
 #include "F2802x_Device.h"     // Headerfile Include File
-#include "f2802x_common/include/f2802x_examples.h"   // Examples Include File
+#include "f2802x_common/include/F2802x_Examples.h"   // Examples Include File
 
 // Connected to INT13 of CPU (use MINT13 mask):
 interrupt void INT13_ISR(void)     // INT13 or CPU-Timer1
