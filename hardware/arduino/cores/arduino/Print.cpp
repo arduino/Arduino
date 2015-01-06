@@ -17,7 +17,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  
  Modified 23 November 2006 by David A. Mellis
- Modified 21 December 2914 by Michael Jonker. Enhanced with fieldControl parameter, most print methods defined through templates definitions in Print.h
+ Modified 21 December 2014 by Michael Jonker. Enhanced with fieldControl parameter, most print methods defined through templates definitions in Print.h
  */
 
 #include "Print.h"
@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-//#include "Arduino.h"
 
 // Public Methods //////////////////////////////////////////////////////////////
 
@@ -81,13 +80,15 @@ size_t Print::printNumber(unsigned long n, unsigned char base, unsigned char fie
 
   // field size handling
   int8_t fillLen = (fieldControl & m_fieldSizeMask) +1 - (&buf[sizeof(buf) - 1] - str);
-  if(sign != '\0' and (fieldControl&m_forceSign)==0 ) fillLen--;  // reduce the fill length if we add an unforced sign symbol
+
+  // reduce the fill length if we add an unforced sign symbol
+  if(sign != '\0' and (fieldControl & m_forceSign)==0 ) fillLen--;
+
+  // if there is a sign symbol, and we fill blanks, set the sign now and forget about it
+  if(!(fieldControl & m_fillZeroes) and sign != '\0' ) { *--str = sign; sign ='\0'; }
 
   // defines the filling character
   char fill = (fieldControl & m_fillZeroes) ? '0' : ' ';
-
-  // if there is a sign symbol, and we fill blanks, set the sign now and forget about it
-  if(sign != '\0' and !(fieldControl & m_fillZeroes) ) { *--str = sign; sign ='\0'; }
 
   while (fillLen-- > 0) *--str = fill;
 
@@ -98,7 +99,7 @@ size_t Print::printNumber(unsigned long n, unsigned char base, unsigned char fie
 }
 
 
-size_t Print::printFloat(double number, uint8_t digits, uint8_t fieldControl) 
+size_t Print::printFloat(double number, unsigned char digits, unsigned char fieldControl) 
 { 
   size_t n = 0;
   bool isNegative = number<0; // To handle negative numbers

@@ -68,7 +68,7 @@ Serial.print("answer=");   Serial.println(41.987654321, 5, myFieldControl);   //
 #define BIN Print::Radix_BIN
 
 // deprecated: use PRINT::fieldControl etc.
-#define PFCTRL(_size, _fillZeroes, _forceSign) Print::fieldControl(_size, _fillZeroes, _forceSign)
+#define PFCTL(_size, _fillZeroes, _forceSign) Print::fieldControl(_size, _fillZeroes, _forceSign)
 
 class Print
 {
@@ -106,7 +106,7 @@ class Print
       if (str == NULL) return 0;
       return write((const uint8_t *)str, strlen(str));
     }
-    size_t write(const uint8_t *buffer, size_t size);
+    virtual size_t write(const uint8_t *buffer, size_t size);
     inline  size_t write(const char    *buffer, size_t size) {
       return write((const uint8_t *)buffer, size);
     }
