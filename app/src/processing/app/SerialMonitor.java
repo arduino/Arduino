@@ -18,21 +18,21 @@
 
 package processing.app;
 
-import processing.app.debug.MessageConsumer;
+import processing.app.debug.TextAreaFIFO;
 import processing.core.*;
 import static processing.app.I18n._;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 
-public class SerialMonitor extends JFrame implements MessageConsumer {
+public class SerialMonitor extends JFrame implements ActionListener {
   private Serial serial;
   private String port;
-  private JTextArea textArea;
+  private TextAreaFIFO textArea;
   private JScrollPane scrollPane;
   private JTextField textField;
   private JButton sendButton;
@@ -40,6 +40,8 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
   private JComboBox lineEndings;
   private JComboBox serialRates;
   private int serialRate;
+  private javax.swing.Timer updateTimer;
+  private StringBuffer updateBuffer;
 
   public SerialMonitor(String port) {
     super(port);
@@ -67,7 +69,9 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
     Font editorFont = Preferences.getFont("editor.font");
     Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
 
-    textArea = new JTextArea(16, 40);
+    textArea = new TextAreaFIFO(8000000);
+    textArea.setRows(16);
+    textArea.setColumns(40);
     textArea.setEditable(false);    
     textArea.setFont(font);
     
@@ -171,6 +175,9 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
         }
       }
     }
+
+    updateBuffer = new StringBuffer(1048576);
+    updateTimer = new javax.swing.Timer(33, this);  // redraw serial monitor at 30 Hz
   }
   
   protected void setPlacement(int[] location) {
@@ -203,9 +210,13 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
   
   public void openSerialPort() throws SerialException {
     if (serial != null) return;
-  
-    serial = new Serial(port, serialRate);
-    serial.addListener(this);
+    serial = new Serial(port, serialRate) {
+      @Override
+      protected void message(char buff[], int n) {
+        addToUpdateBuffer(buff, n);
+      }
+    };
+    updateTimer.start();
   }
   
   public void closeSerialPort() {
@@ -219,13 +230,27 @@ public class SerialMonitor extends JFrame implements MessageConsumer {
     }
   }
   
-  public void message(final String s) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        textArea.append(s);
-        if (autoscrollBox.isSelected()) {
-        	textArea.setCaretPosition(textArea.getDocument().getLength());
-        }
-      }});
+  private synchronized void addToUpdateBuffer(char buff[], int n) {
+    updateBuffer.append(buff, 0, n);
   }
+
+  private synchronized String consumeUpdateBuffer() {
+    String s = updateBuffer.toString();
+    updateBuffer.setLength(0);
+    return s;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    final String s = consumeUpdateBuffer();
+    if (s.length() > 0) {
+      //System.out.println("gui append " + s.length());
+      if (autoscrollBox.isSelected()) {
+        textArea.appendTrim(s);
+        textArea.setCaretPosition(textArea.getDocument().getLength());
+      } else {
+        textArea.appendNoTrim(s);
+      }
+    }
+  }
+
 }
