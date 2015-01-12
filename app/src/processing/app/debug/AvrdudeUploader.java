@@ -166,7 +166,9 @@ public class AvrdudeUploader extends Uploader  {
         + uploadPort);
     commandDownloader.add(
       "-b" + Integer.parseInt(boardPreferences.get("upload.speed")));
-    commandDownloader.add("-D"); // don't erase
+    if (!boardPreferences.containsKey("upload.dont_erase")
+        || boardPreferences.get("upload.dont_erase").toLowerCase().equals("true"))
+	commandDownloader.add("-D"); // don't erase
     if (!Preferences.getBoolean("upload.verify")) commandDownloader.add("-V"); // disable verify
     commandDownloader.add("-Uflash:w:" + buildPath + File.separator + className + ".hex:i");
 
