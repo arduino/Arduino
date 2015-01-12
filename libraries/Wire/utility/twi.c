@@ -475,8 +475,14 @@ ISR(TWI_vect)
       break;
     case TW_SR_DATA_NACK:       // data received, returned nack
     case TW_SR_GCALL_DATA_NACK: // data received generally, returned nack
-      // nack back at master
-      twi_reply(0);
+      // We replied a nack, this happens when the buffer overflows.
+      // After this interrupt we don't get a TW_SR_STOP interrupt, so
+      // clean up now
+
+      // Discard the data, it is incomplete
+      twi_rxBufferIndex = 0;
+      // ack future responses and leave slave receiver state
+      twi_releaseBus();    
       break;
     
     // Slave Transmitter
