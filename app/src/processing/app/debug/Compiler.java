@@ -619,6 +619,7 @@ public class Compiler implements MessageConsumer {
       "-DARDUINO=" + Base.REVISION,
       "-DUSB_VID=" + boardPreferences.get("build.vid"),
       "-DUSB_PID=" + boardPreferences.get("build.pid"),
+      "-D__PROG_TYPES_COMPAT__",
     }));
 
     for (int i = 0; i < includePaths.size(); i++) {
@@ -649,6 +650,7 @@ public class Compiler implements MessageConsumer {
       "-DUSB_VID=" + boardPreferences.get("build.vid"),
       "-DUSB_PID=" + boardPreferences.get("build.pid"),
       "-DARDUINO=" + Base.REVISION, 
+      "-D__PROG_TYPES_COMPAT__",
     }));
 		
     for (int i = 0; i < includePaths.size(); i++) {
@@ -682,6 +684,7 @@ public class Compiler implements MessageConsumer {
       "-DUSB_VID=" + boardPreferences.get("build.vid"),
       "-DUSB_PID=" + boardPreferences.get("build.pid"),      
       "-DARDUINO=" + Base.REVISION,
+      "-D__PROG_TYPES_COMPAT__",
     }));
 
     for (int i = 0; i < includePaths.size(); i++) {
