@@ -112,6 +112,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 #else
   void serialEvent() __attribute__((weak));
   void serialEvent() {}
+  void serialEventImmediate() __attribute__((weak));
   #define serialEvent_implemented
 #if defined(USART_RX_vect)
   ISR(USART_RX_vect)
@@ -138,6 +139,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
   #else
     #error UDR not defined
   #endif
+    if (serialEventImmediate) serialEventImmediate();
   }
 #endif
 #endif
