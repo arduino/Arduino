@@ -61,6 +61,14 @@ int WEAK CDC_GetInterface(u8* interfaceNum)
 	return USB_SendControl(TRANSFER_PGM,&_cdcInterface,sizeof(_cdcInterface));
 }
 
+void WEAK lineCodingEvent(long baud, byte databits, byte parity, byte charFormat)
+{
+}
+
+void WEAK lineStateEvent(byte linestate)
+{
+}
+
 bool WEAK CDC_Setup(Setup& setup)
 {
 	u8 r = setup.bRequest;
@@ -80,12 +88,18 @@ bool WEAK CDC_Setup(Setup& setup)
 		if (CDC_SET_LINE_CODING == r)
 		{
 			USB_RecvControl((void*)&_usbLineInfo,7);
+			lineCodingEvent(_usbLineInfo.dwDTERate,
+			                _usbLineInfo.bDataBits,
+			                _usbLineInfo.bParityType,
+			                _usbLineInfo.bCharFormat);
 			return true;
 		}
 
 		if (CDC_SET_CONTROL_LINE_STATE == r)
 		{
 			_usbLineInfo.lineState = setup.wValueL;
+
+			lineStateEvent(_usbLineInfo.lineState);
 
 			// auto-reset into the bootloader is triggered when the port, already 
 			// open at 1200 bps, is closed.  this is the signal to start the watchdog
