@@ -72,6 +72,19 @@ void Stream::setTimeout(unsigned long timeout)  // sets the maximum number of mi
   _timeout = timeout;
 }
 
+// find returns true if the target character is found
+bool Stream::find(char target)
+{
+    int c = 0;
+    do {
+        c = timedRead();
+        if ((char)c == target)
+            return true;
+    } while (c >= 0);
+    // if c is -1, it means a timeout occured
+    return false;
+}
+
  // find returns true if the target string is found
 bool  Stream::find(char *target)
 {

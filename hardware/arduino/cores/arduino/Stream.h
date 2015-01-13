@@ -40,8 +40,6 @@ class Stream : public Print
   protected:
     unsigned long _timeout;      // number of milliseconds to wait for the next char before aborting timed read
     unsigned long _startMillis;  // used for timeout measurement
-    int timedRead();    // private method to read stream with timeout
-    int timedPeek();    // private method to peek stream with timeout
     int peekNextDigit(); // returns the next numeric digit in the stream or -1 if timeout
 
   public:
@@ -55,6 +53,9 @@ class Stream : public Print
 // parsing methods
 
   void setTimeout(unsigned long timeout);  // sets maximum milliseconds to wait for stream data, default is 1 second
+
+  bool find(char target);   // reads data from the stream until the target character is found
+  // returns true if target character is found, false if timed out (see setTimeout)
 
   bool find(char *target);   // reads data from the stream until the target string is found
   // returns true if target string is found, false if timed out (see setTimeout)
@@ -86,6 +87,8 @@ class Stream : public Print
   String readStringUntil(char terminator);
 
   protected:
+  int timedRead();    // private method to read stream with timeout
+  int timedPeek();    // private method to peek stream with timeout
   long parseInt(char skipChar); // as above but the given skipChar is ignored
   // as above but the given skipChar is ignored
   // this allows format characters (typically commas) in values to be ignored
