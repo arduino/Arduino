@@ -395,20 +395,24 @@ public class PdePreprocessor {
 
 	    String protos = "";
 	    String funcArray = "";
+	    String taskNameArray = "";
 	    
 	    for (int functionIndex = 0; functionIndex < loopMatches.size(); functionIndex++) {
 	    	protos += "extern void " + setupMatches.get(functionIndex) + "();\n";
 	    	protos += "extern void " + loopMatches.get(functionIndex) + "();\n";
 	    	funcArray += "\t{" + setupMatches.get(functionIndex) + ", " + loopMatches.get(functionIndex) + "}";
-	    	if(functionIndex < loopMatches.size() -1)
+	    	taskNameArray += "\t\"" + loopMatches.get(functionIndex) + "\"";
+	    	if(functionIndex < loopMatches.size() -1) {
 	    		funcArray += ",\n";
+	    		taskNameArray += ",\n";
+		}
 	    	//System.out.print(setupMatches.get(functionIndex) + "\n");
 	    	//System.out.print(loopMatches.get(functionIndex) + "\n");
 	    }
 
 	    String numSketches = "\n#define NUM_SKETCHES " + loopMatches.size() + "\n";
 	    String prolog = "void (*func_ptr[NUM_SKETCHES][2])(void) = {\n";
-	    String epilog = "\n};";
+	    String epilog = "\n};\n";
 	    mainFile.insert(insertionPoint, protos);
 	    insertionPoint += protos.length();
 	    mainFile.insert(insertionPoint, numSketches);
@@ -417,6 +421,14 @@ public class PdePreprocessor {
 	    insertionPoint += prolog.length();	    
 	    mainFile.insert(insertionPoint, funcArray);
 	    insertionPoint += funcArray.length();
+	    mainFile.insert(insertionPoint, epilog);
+	    insertionPoint += epilog.length();
+
+	    prolog = "const char *taskNames[] = {\n";
+	    mainFile.insert(insertionPoint, prolog);
+	    insertionPoint += prolog.length();	    
+	    mainFile.insert(insertionPoint, taskNameArray);
+	    insertionPoint += taskNameArray.length();
 	    mainFile.insert(insertionPoint, epilog);
 	    
 	    try {
