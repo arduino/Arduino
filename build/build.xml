@@ -20,6 +20,15 @@
   <condition property="platform" 
 	     value="linux64"><os family="unix" arch="amd64" /></condition>
 
+  <condition property="build-dir" value="macosx">
+             <os family="mac" /></condition>
+  <condition property="build-dir" value="linux">
+             <os family="unix" /></condition>
+  <condition property="build-dir" value="windows">
+             <os family="windows" /></condition>
+
+  <condition property="dep.common.default.ok" value="true"><os family="mac"/></condition>
+  <condition property="dep.common.default.ok" value="true"><os family="windows"/></condition>
   <!-- Libraries required for running energia -->
   <fileset dir=".." id="runtime.jars">
     <include name="core/core.jar" />
@@ -33,32 +42,37 @@
 
   <target name="check-closure">
     <condition property="closure.exists">
-      <available file="${platform}/closure.zip"/>
+      <available file="${build-dir}/closure.zip"/>
     </condition>
   </target>
 
+  <condition property="closure-dest" value="macosx/work/Energia.app/Contents/Resources/Java/hardware">
+             <os family="mac" /></condition>
+  <condition property="closure-dest" value="linux/work/hardware">
+             <os family="unix" /></condition>
+  <condition property="closure-dest" value="windows/work/hardware">
+             <os family="windows" /></condition>
+
   <target name="download-closure" depends="check-closure" unless="closure.exists">
     <echo message="Downloading closure"/>
-    <get src="http://energia.nu/files/closure.zip" dest="${platform}/closure.zip"/>
+    <get src="http://energia.nu/files/closure.zip" dest="${build-dir}/closure.zip"/>
   </target>
 
   <target name="unzip-closure" depends="download-closure">
-    <unzip dest="${platform}/work/hardware" src="${platform}/closure.zip" overwrite="false"/>
+    <unzip dest="${closure-dest}" src="${build-dir}/closure.zip" overwrite="false"/>
   </target>
+
+  <condition property="common-tools-dest" value="macosx/work/Energia.app/Contents/Resources/Java">
+             <os family="mac" /></condition>
+  <condition property="common-tools-dest" value="windows/work">
+             <os family="windows" /></condition>
+  <condition property="common-tools-dest" value="linux/work">
+             <os family="unix" /></condition>
 
     <target name="check-common-tools">
       <condition property="common-tools.exists">
-	      <available file="${platform}/tools-common.tar.bz2"/>
+	      <available file="${build-dir}/tools-common.tar.bz2"/>
       </condition>
-    </target>
-
-    <target name="download-common-tools" depends="check-common-tools" unless="common-tools.exists">
-      <echo message="Downloading common tools"/>
-      <get src="http://energia.nu/files/tools-common-${platform}.tar.bz2" dest="${platform}/tools-common.tar.bz2"/>
-    </target>
-
-    <target name="unzip-common-tools" depends="download-common-tools">
-	    <untar src="${platform}/tools-common.tar.bz2" dest="${platform}/work" compression="bzip2" overwrite="false"/>
     </target>
 
   <target name="build" description="Build Energia.">
@@ -130,8 +144,6 @@
     
     <!-- download and unzip TI-RTOS closure -->
     <antcall target="unzip-closure"/>
-    <!-- download and unzip common tools -->
-    <antcall target="unzip-common-tools"/>
 
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
@@ -225,6 +237,17 @@
   </condition>
   <property name="dep.arm.default.ok" value="true"/>
 
+    <target name="download-common-tools-mac" depends="check-common-tools" unless="common-tools.exists">
+      <echo message="Downloading common tools"/>
+      <get src="http://energia.nu/files/tools-common-${platform}.tar.bz2" dest="${build-dir}/tools-common.tar.bz2"/>
+    </target>
+
+    <target name="unzip-common-tools-mac" if="dep.common.default.ok" depends="download-common-tools-mac">
+	    <untar src="${build-dir}/tools-common.tar.bz2" dest="${common-tools-dest}" compression="bzip2" overwrite="false"/>
+            <chmod file="macosx/work/Energia.app/Contents/Resources/Java/tools/common/bin/make" perm="755" />
+    </target>
+
+
   <target name="check.deps.mac"
     if="dep.arm.default.ok"
     unless="exists.tools.mac">
@@ -235,7 +258,7 @@
 	<get src="${msp430.tools.mac.remote}" dest="macosx/${msp430.tools.mac.local}"/>
   </target>
 
-  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps.mac, subprojects-build" description="Build Mac OS X version">
+  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, check.deps.mac, unzip-common-tools-mac, subprojects-build" description="Build Mac OS X version">
     <mkdir dir="macosx/work" />
     
     <!-- assemble the pde -->
@@ -259,6 +282,7 @@
       <fileset file="shared/revisions.txt" />
     </copy>
 
+   <mkdir dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools"/>
    <!-- Unzip msp430 tools -->
     <exec executable="unzip">
       <arg value="-q" />
@@ -573,6 +597,16 @@
   </condition>
   <property name="dep.arm.default.ok" value="true"/>
 
+    <target name="download-common-tools-win" depends="check-common-tools" unless="common-tools.exists">
+      <echo message="Downloading common tools"/>
+      <get src="http://energia.nu/files/tools-common-${platform}.tar.bz2" dest="${build-dir}/tools-common.tar.bz2"/>
+    </target>
+
+    <target name="unzip-common-tools-win" if="dep.common.default.ok" depends="download-common-tools-win">
+	    <untar src="${build-dir}/tools-common.tar.bz2" dest="${common-tools-dest}" compression="bzip2" overwrite="false"/>
+    </target>
+
+
   <target name="check.deps.windows"
     if="dep.arm.default.ok"
     unless="exists.tools.windows">
@@ -584,7 +618,7 @@
   </target>
   
   <target name="windows-build" 
-	  depends="revision-check, windows-checkos, check.deps.windows, subprojects-build" 
+	  depends="revision-check, windows-checkos, check.deps.windows, unzip-common-tools-win, subprojects-build" 
 	  description="Build windows version">
     <mkdir dir="windows/work" />
     
