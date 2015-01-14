@@ -70,6 +70,7 @@ public class Compiler implements MessageConsumer {
   private SketchData sketch;
   private PreferencesMap prefs;
   private boolean verbose;
+  private boolean saveHex;
 
   private List<File> objectFiles;
 
@@ -86,7 +87,7 @@ public class Compiler implements MessageConsumer {
 
   private ProgressListener progressListener;
 
-  static public String build(SketchData data, String buildPath, File tempBuildFolder, ProgressListener progListener, boolean verbose) throws RunnerException {
+  static public String build(SketchData data, String buildPath, File tempBuildFolder, ProgressListener progListener, boolean verbose, boolean save) throws RunnerException {
     if (SketchData.checkSketchFile(data.getPrimaryFile()) == null)
       BaseNoGui.showError(_("Bad file selected"),
                           _("Bad sketch primary file or bad sketck directory structure"), null);
@@ -115,7 +116,7 @@ public class Compiler implements MessageConsumer {
     
     // compile the program. errors will happen as a RunnerException
     // that will bubble up to whomever called build().
-    if (compiler.compile(verbose)) {
+    if (compiler.compile(verbose, save)) {
       compiler.size(compiler.getBuildPreferences());
       return primaryClassName;
     }
@@ -343,10 +344,11 @@ public class Compiler implements MessageConsumer {
    * @return true if successful.
    * @throws RunnerException Only if there's a problem. Only then.
    */
-  public boolean compile(boolean _verbose) throws RunnerException {
+  public boolean compile(boolean _verbose, boolean _save) throws RunnerException {
     preprocess(prefs.get("build.path"));
     
     verbose = _verbose || PreferencesData.getBoolean("build.verbose");
+    saveHex = _save;
     sketchIsCompiled = false;
     objectFiles = new ArrayList<File>();
 
@@ -409,6 +411,12 @@ public class Compiler implements MessageConsumer {
     // 6. build the .hex file
     progressListener.progress(80);
     compileHex();
+    
+    // 7. Save the .hex file
+    if (saveHex) {
+      progressListener.progress(85);
+      saveHex();
+    }
 
     progressListener.progress(90);
     return true;
@@ -1095,6 +1103,23 @@ public class Compiler implements MessageConsumer {
     String[] cmdArray;
     try {
       String cmd = prefs.get("recipe.objcopy.hex.pattern");
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+    execAsynchronously(cmdArray);
+  }
+  
+  // 7. Save the .hex file
+  void saveHex() throws RunnerException {
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
+
+    String[] cmdArray;
+    try {
+      String hexPattern = prefs.get("recipe.hex.pattern");
+      String savePath = sketch.getFolder().getAbsolutePath() + "/" + hexPattern;
+      String cmd = hexPattern + " " + savePath;
       cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
     } catch (Exception e) {
       throw new RunnerException(e);
