@@ -222,8 +222,8 @@
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-mac32-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-mac32-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-mac32-3.4.4.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-mac32-3.4.4.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
@@ -506,8 +506,8 @@
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux32-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux32-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux32-3.4.4.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux32-3.4.4.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
@@ -524,8 +524,8 @@
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux64-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux64-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux64-3.4.4.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux64-3.4.4.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
@@ -708,8 +708,8 @@
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-win32-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-win32-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-win32-3.4.4.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-win32-3.4.4.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
