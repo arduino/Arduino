@@ -23,18 +23,26 @@
 
 package processing.app.debug;
 
+import static processing.app.I18n._;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import processing.app.Base;
+import processing.app.I18n;
 import processing.app.Preferences;
 import processing.app.Sketch;
 import processing.app.SketchCode;
-import processing.core.*;
-import processing.app.I18n;
 import processing.app.helpers.filefilters.OnlyDirs;
-import static processing.app.I18n._;
-
-import java.io.*;
-import java.util.*;
-import java.util.zip.*;
+import processing.core.PApplet;
 
 
 public class Compiler implements MessageConsumer {
@@ -63,20 +71,42 @@ public class Compiler implements MessageConsumer {
    * @throws RunnerException Only if there's a problem. Only then.
    */
   public boolean compile(Sketch sketch,
+          String buildPath,
+          String primaryClassName,
+          boolean verbose) throws RunnerException {
+	  Map<String, String> boardPreferences = Base.getBoardPreferences();
+	  
+	  if (!Preferences.get("board").equals("buildall")) {
+		  return compileForBoard(sketch, buildPath, primaryClassName, verbose, primaryClassName, boardPreferences);
+	  }
+	  
+	  boolean compileOk = true;
+	  for (Entry<String, Map<String, String>> board : Base.getTarget().getBoards().entrySet()) {
+		  if (!compileForBoard(sketch, buildPath, primaryClassName, verbose, board.getKey(), board.getValue())) {
+			  compileOk = false;
+		  }
+	  }
+	  
+	  return compileOk;
+  }
+  
+  private boolean compileForBoard(Sketch sketch,
                          String buildPath,
                          String primaryClassName,
-                         boolean verbose) throws RunnerException {
+                         boolean verbose, 
+                         String nameOfHex,
+                         Map<String, String> boardPreferences) throws RunnerException {
     this.sketch = sketch;
     this.buildPath = buildPath;
     this.primaryClassName = primaryClassName;
     this.verbose = verbose;
     this.sketchIsCompiled = false;
-
+    
     // the pms object isn't used for anything but storage
     MessageStream pms = new MessageStream(this);
 
     String avrBasePath = Base.getAvrBasePath();
-    Map<String, String> boardPreferences = Base.getBoardPreferences();
+   
     String core = boardPreferences.get("build.core");
     if (core == null) {
     	RunnerException re = new RunnerException(_("No board selected; please choose a board from the Tools > Board menu."));
@@ -277,7 +307,8 @@ public class Compiler implements MessageConsumer {
     commandObjcopy.add(2, "ihex");
     commandObjcopy.add(".eeprom"); // remove eeprom data
     commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
-    commandObjcopy.add(buildPath + File.separator + primaryClassName + ".hex");
+   commandObjcopy.add(buildPath + File.separator + nameOfHex + ".hex");
+    
     execAsynchronously(commandObjcopy);
     
     sketch.setCompilingProgress(90);
