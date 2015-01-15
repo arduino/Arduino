@@ -50,6 +50,15 @@ int Stream::timedPeek()
   return -1;     // -1 indicates timeout
 }
 
+// virtual copy constructor to allow child classes to use Stream as reference
+Stream& Stream::operator=(Stream const& src)
+{
+  // copy the timeout time
+  _timeout		= src._timeout;
+  // return a reference to this object
+  return *this;
+}
+
 // returns peek of the next digit in the stream or -1 if timeout
 // discards non-numeric characters
 int Stream::peekNextDigit()
