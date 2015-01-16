@@ -222,8 +222,8 @@
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-mac32-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-mac32-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-mac32-3.4.5.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/avr-toolchain-mac32-3.4.5.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
@@ -254,7 +254,7 @@
 
     <antcall target="untar">
       <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz" />
-      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/gcc-arm-none-eabi-4.8.3-2014q1-mac.tar.gz" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
@@ -268,7 +268,7 @@
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -487,7 +487,7 @@
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -499,15 +499,15 @@
     <!-- Unzip ARM tools -->
     <antcall target="untar">
       <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-linux32.tar.gz" />
-      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-linux32.tar.gz" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/gcc-arm-none-eabi-4.8.3-2014q1-linux32.tar.gz" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux32-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux32-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux32-3.4.5.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/avr-toolchain-linux32-3.4.5.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
@@ -517,15 +517,15 @@
     <!-- Unzip ARM tools -->
     <antcall target="untar">
       <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz" />
-      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/gcc-arm-none-eabi-4.8.3-2014q1-linux64.tar.gz" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux64-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-linux64-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-linux64-3.4.5.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/avr-toolchain-linux64-3.4.5.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
@@ -708,15 +708,15 @@
 
     <!-- Unzip AVR tools -->
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/avr-toolchain-win32-gcc-4.8.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/avr-toolchain-win32-gcc-4.8.1.zip" />
+      <param name="archive_file" value="${staging_folder}/avr-toolchain-win32-3.4.5.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/avr-toolchain-win32-3.4.5.zip" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/avr" />
     </antcall>
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -762,7 +762,7 @@
     <!-- Unzip ARM toolchain -->
     <antcall target="untar">
       <param name="archive_file" value="${staging_folder}/dist/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz" />
-      <param name="archive_url" value="http://downloads.arduino.cc/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/gcc-arm-none-eabi-4.8.3-2014q1-windows.tar.gz" />
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/gcc-arm-none-eabi-4.8.3-2014q1" />
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tools/" />
     </antcall>
@@ -781,7 +781,7 @@
   <target name="windows-dist" depends="windows-build"
 	  description="Create .zip files of windows version">
 
-    <get src="http://downloads.arduino.cc/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" skipexisting="true" />
+    <get src="http://arduino.cc/download.php?f=/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" skipexisting="true" />
 
     <unzip dest="windows/work" src="windows/jre.zip" overwrite="false"/>
 
