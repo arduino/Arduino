@@ -119,12 +119,17 @@ void initVariant(void);
 
 int atexit(void (*func)()) __attribute__((weak));
 
+#include "toggle.cpp"
+
+inline void toggle (bool&, bool change = true);
+
 void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
 int analogRead(uint8_t);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t, int);
+
 
 unsigned long millis(void);
 unsigned long micros(void);
