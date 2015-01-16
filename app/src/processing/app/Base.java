@@ -950,15 +950,19 @@ public class Base {
   }
 
 
-  public void rebuildImportMenu(JMenu importMenu, final Editor editor) {
+  // NOTE(remoun): This method is called whenever the Sketch > Import Library
+  // menu is expanded, so make sure not to break that completely.
+  // Showing an error dialog and skipping invalid entries is fine.
+  public void rebuildImportMenu(final Editor editor) {
+    JMenu importMenu = Editor.importMenu;
     importMenu.removeAll();
-    
+
     JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Base.this.handleAddLibrary(editor);
         Base.this.onBoardOrPortChange();
-        Base.this.rebuildImportMenu(Editor.importMenu, editor);
+        Base.this.rebuildImportMenu(editor);
         Base.this.rebuildExamplesMenu(Editor.examplesMenu);
       }
     });
@@ -1015,8 +1019,7 @@ public class Base {
     }  
   }
 
-  
-  public void rebuildBoardsMenu(JMenu menu, final Editor editor) {
+  public void rebuildBoardsMenu(JMenu menu) {
     //System.out.println("rebuilding boards menu");
     menu.removeAll();      
     ButtonGroup group = new ButtonGroup();
