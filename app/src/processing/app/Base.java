@@ -988,6 +988,8 @@ public class Base {
   }
 
   public void rebuildImportMenu(JMenu importMenu) {
+    if (importMenu == null)
+      return;
     importMenu.removeAll();
 
     JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
@@ -1035,6 +1037,8 @@ public class Base {
   }
 
   public void rebuildExamplesMenu(JMenu menu) {
+    if (menu == null)
+      return;
     try {
       menu.removeAll();
 
@@ -1077,6 +1081,10 @@ public class Base {
   }
 
   public void rebuildBoardsMenu(JMenu toolsMenu, Editor editor) throws Exception {
+    // If there are no platforms installed skip menu creation
+    if (BaseNoGui.packages.size() == 0)
+      return;
+
     JMenu boardsMenu = getBoardCustomMenu();
 
     boolean first = true;
@@ -1696,11 +1704,6 @@ public class Base {
 
   static public PreferencesMap getBoardPreferences() {
     return BaseNoGui.getBoardPreferences();
-  }
-
-  public static TargetBoard getTargetBoard() {
-    String boardId = Preferences.get("board");
-    return getTargetPlatform().getBoard(boardId);
   }
 
   static public File getPortableFolder() {

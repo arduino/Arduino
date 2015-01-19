@@ -1,4 +1,24 @@
 
+ARDUINO 1.6.0 - 2015.01.19
+
+[ide]
+* Reenabled speed of 38400 on serial monitor
+* Improved Find/Replace dialog layout (Eberhard Fahle)
+
+[core]
+* Arduino "boolean" type is now mapped to "bool" instead of "uint8_t" (Christopher Andrews)
+* sam: HardwareSerial now has buffered transmission (Collin Kidder)
+* sam: HardwareSerial fixed modes (parity, data bits, stop bits) (bluesign2k)
+* avr: Fixed regression in pulseIn() function accuracy
+
+[libraries]
+* GSM: minor changes and bug fix (https://github.com/arduino/Arduino/pull/2546)
+
+The following changes are included also in the Arduino IDE 1.0.7:
+
+[ide]
+* Mitigated Serial Monitor resource exhaustion when the connected device sends a lot of data (Paul Stoffregen)
+
 ARDUINO 1.6.0rc1
 
 * IDE internals have been refactored and sorted out. (Claudio Indellicati)
@@ -378,6 +398,9 @@ ARDUINO 1.0.7
 [core]
 * Fixed missing NOT_AN_INTERRUPT constant in digitalPinToInterrupt() macro
 * Fixed performance regression in HardwareSerial::available() introduced with https://github.com/arduino/Arduino/pull/2057
+
+[ide]
+* Mitigated Serial Monitor resource exhaustion when the connected device sends a lot of data (Paul Stoffregen)
 
 ARDUINO 1.0.6 - 2014.09.16
 

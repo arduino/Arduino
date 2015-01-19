@@ -152,6 +152,8 @@ public class BaseNoGui {
 
   static public PreferencesMap getBoardPreferences() {
     TargetBoard board = getTargetBoard();
+    if (board == null)
+      return null;
     
     PreferencesMap prefs = new PreferencesMap(board.getPreferences());
     for (String menuId : board.getMenuIds()) {
@@ -343,8 +345,11 @@ public class BaseNoGui {
   }
 
   public static TargetBoard getTargetBoard() {
+    TargetPlatform targetPlatform = getTargetPlatform();
+    if (targetPlatform == null)
+      return null;
     String boardId = PreferencesData.get("board");
-    return getTargetPlatform().getBoard(boardId);
+    return targetPlatform.getBoard(boardId);
   }
 
   /**
@@ -482,9 +487,9 @@ public class BaseNoGui {
         List<String> warningsAccumulator = new LinkedList<String>();
         boolean success = false;
         try {
-          // costruttore di Editor carica lo sketch usando handleOpenInternal() che fa
-          // la new di Sketch che chiama load() nel suo costruttore
-          // In questo punto questo si traduce in:
+          // Editor constructor loads the sketch with handleOpenInternal() that
+          // creates a new Sketch that, in trun, calls load() inside its constructor
+          // This translates here as:
           //   SketchData data = new SketchData(file);
           //   File tempBuildFolder = getBuildFolder();
           //   data.load();
@@ -493,9 +498,9 @@ public class BaseNoGui {
           data.load();
 
           // Sketch.exportApplet()
-          //  - chiama Sketch.prepare() che chiama Sketch.ensureExistence()
-          //  - chiama Sketch.build(verbose=false) che chiama Sketch.ensureExistence(), imposta il progressListener e chiama Compiler.build()
-          //  - chiama Sketch.upload() (cfr. dopo...)
+          //  - calls Sketch.prepare() that calls Sketch.ensureExistence()
+          //  - calls Sketch.build(verbose=false) that calls Sketch.ensureExistence(), set progressListener and calls Compiler.build()
+          //  - calls Sketch.upload() (see later...)
           if (!data.getFolder().exists()) showError(_("No sketch"), _("Can't find the sketch in the specified path"), null);
           String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild());
           if (suggestedClassName == null) showError(_("Error while verifying"), _("An error occurred while verifying the sketch"), null);
@@ -503,7 +508,7 @@ public class BaseNoGui {
 
           //  - chiama Sketch.upload() ... to be continued ...        
           Uploader uploader = Compiler.getUploaderByPreferences(parser.isNoUploadPort());
-          if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError(_("..."), _("..."), null);
+          if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
           try {
             success = Compiler.upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
             showMessage(_("Done uploading"), _("Done uploading"));
@@ -526,9 +531,9 @@ public class BaseNoGui {
         for (String path : parser.getFilenames())
         {
           try {
-            // costruttore di Editor carica lo sketch usando handleOpenInternal() che fa
-            // la new di Sketch che chiama load() nel suo costruttore
-            // In questo punto questo si traduce in:
+            // Editor constructor loads sketch with handleOpenInternal() that
+            // creates a new Sketch that calls load() in its constructor
+            // This translates here as:
             //   SketchData data = new SketchData(file);
             //   File tempBuildFolder = getBuildFolder();
             //   data.load();
@@ -536,9 +541,9 @@ public class BaseNoGui {
             File tempBuildFolder = getBuildFolder();
             data.load();
 
-            // metodo Sketch.prepare() chiama Sketch.ensureExistence()
-            // Sketch.build(verbose) chiama Sketch.ensureExistence() e poi imposta il progressListener e, finalmente, chiama Compiler.build()
-            // In questo punto questo si traduce in:
+            // Sketch.prepare() calls Sketch.ensureExistence()
+            // Sketch.build(verbose) calls Sketch.ensureExistence() and set progressListener and, finally, calls Compiler.build()
+            // This translates here as:
             //    if (!data.getFolder().exists()) showError(...);
             //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
             if (!data.getFolder().exists()) showError(_("No sketch"), _("Can't find the sketch in the specified path"), null);
@@ -669,28 +674,27 @@ public class BaseNoGui {
   }
 
   static public void onBoardOrPortChange() {
-    TargetPlatform targetPlatform = getTargetPlatform();
-    if (targetPlatform == null)
-      return;
-
-    // Calculate paths for libraries and examples
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
-
-    File platformFolder = targetPlatform.getFolder();
     librariesFolders = new ArrayList<File>();
     librariesFolders.add(getContentFile("libraries"));
-    String core = getBoardPreferences().get("build.core");
-    if (core.contains(":")) {
-      String referencedCore = core.split(":")[0];
-      TargetPlatform referencedPlatform = getTargetPlatform(referencedCore, targetPlatform.getId());
-      if (referencedPlatform != null) {
-      File referencedPlatformFolder = referencedPlatform.getFolder();
-        librariesFolders.add(new File(referencedPlatformFolder, "libraries"));
+
+    // Add library folder for the current selected platform
+    TargetPlatform targetPlatform = getTargetPlatform();
+    if (targetPlatform != null) {
+      String core = getBoardPreferences().get("build.core");
+      if (core.contains(":")) {
+        String referencedCore = core.split(":")[0];
+        TargetPlatform referencedPlatform = getTargetPlatform(referencedCore, targetPlatform.getId());
+        if (referencedPlatform != null) {
+          File referencedPlatformFolder = referencedPlatform.getFolder();
+          librariesFolders.add(new File(referencedPlatformFolder, "libraries"));
+        }
       }
+      File platformFolder = targetPlatform.getFolder();
+      librariesFolders.add(new File(platformFolder, "libraries"));
+      librariesFolders.add(getSketchbookLibrariesFolder());
     }
-    librariesFolders.add(new File(platformFolder, "libraries"));
-    librariesFolders.add(getSketchbookLibrariesFolder());
 
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
