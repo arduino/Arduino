@@ -1,7 +1,11 @@
 #include <CapacitiveSensorDue.h>
-  
-                 
-  
+/*
+#include <WiFi.h>
+*/
+#include <Arduino.h>
+void setup();
+void loop();
+#line 5
 CapacitiveSensorDue cs_13_8 = CapacitiveSensorDue(13,8);
 void setup()
 {

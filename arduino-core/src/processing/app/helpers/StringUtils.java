@@ -20,10 +20,21 @@ public class StringUtils {
    * @param input   The string to be checked
    * @param pattern The pattern to match
    * @return <b>true</b> if the <b>input</b> matches the <b>pattern</b>,
-   *         <b>false</b> otherwise.
+   * <b>false</b> otherwise.
    */
   public static boolean wildcardMatch(String input, String pattern) {
     String regex = pattern.replace("?", ".?").replace("*", ".*?");
     return input.matches(regex);
+  }
+
+  public static String join(List<String> input, String sep) {
+    StringBuilder sb = new StringBuilder();
+    for (String s : input) {
+      sb.append(s).append(sep);
+    }
+    if (sb.length() > 0) {
+      sb.delete(sb.length() - sep.length(), sb.length());
+    }
+    return sb.toString();
   }
 }

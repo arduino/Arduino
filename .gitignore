@@ -14,6 +14,8 @@ hardware/arduino/bootloaders/caterina_LUFA/Caterina.elf
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.eep
 hardware/arduino/bootloaders/caterina_LUFA/.dep/
 build/libastylej-*.zip
+build/ctags-*.zip
+build/coan-*.zip
 build/windows/work/
 build/windows/*.zip
 build/windows/*.tgz
@@ -24,6 +26,8 @@ build/windows/dist/*.tar.bz2
 build/windows/launch4j-*
 build/windows/launcher/launch4j
 build/windows/WinAVR-*.zip
+build/windows/ctags*
+build/windows/coan*
 build/macosx/arduino-*.zip
 build/macosx/dist/*.tar.gz
 build/macosx/dist/*.tar.bz2
@@ -31,13 +35,17 @@ build/macosx/libastylej*
 build/macosx/appbundler*.jar
 build/macosx/appbundler*.zip
 build/macosx/appbundler
+build/macosx/ctags*
+build/macosx/coan*
 build/linux/work/
 build/linux/dist/*.tar.gz
 build/linux/dist/*.tar.bz2
-build/linux/*.tgz
+build/linux/*.tar.xz
 build/linux/*.zip
 build/linux/libastylej*
 build/shared/reference*.zip
+build/linux/ctags*
+build/linux/coan*
 test-bin
 *.iml
 .idea
