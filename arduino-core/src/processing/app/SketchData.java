@@ -222,6 +222,15 @@ public class SketchData {
     return codes.get(i);
   }
 
+  public SketchCode getPrimaryCode() {
+    for (SketchCode code : codes) {
+      if (code.getFile().equals(primaryFile)) {
+        return code;
+      }
+    }
+    throw new IllegalStateException("No primary file for this sketch!");
+  }
+
   protected void removeCode(SketchCode which) {
     for (SketchCode code : codes) {
       if (code == which) {
