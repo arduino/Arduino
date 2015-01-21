@@ -46,11 +46,11 @@
     </condition>
   </target>
 
-  <condition property="closure-dest" value="macosx/work/Energia.app/Contents/Resources/Java/hardware">
+  <condition property="closure-dest" value="macosx/work/Energia.app/Contents/Resources/Java/hardware/secret/gnu">
              <os family="mac" /></condition>
-  <condition property="closure-dest" value="linux/work/hardware">
+  <condition property="closure-dest" value="linux/work/hardware/secret/gnu">
              <os family="unix" /></condition>
-  <condition property="closure-dest" value="windows/work/hardware">
+  <condition property="closure-dest" value="windows/work/hardware/secret/gnu">
              <os family="windows" /></condition>
 
   <target name="download-closure" depends="check-closure" unless="closure.exists">
