@@ -148,7 +148,7 @@ all: $(MAINSKETCH).bin
 
 $(MAINSKETCH).elf: $(OBJ)
 	@echo armlink $(OBJ)
-	$(LINK) $(OBJ) -Wl,-T"$(CLOSURE)/linker.cmd" $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$*.map -o $@
+	$(LINK) $(OBJ) -Wl,-T"$(CLOSURE)/linker.cmd" $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
 
 %.obj: %.cpp
 	@echo armcl $*.cpp
