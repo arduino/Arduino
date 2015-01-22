@@ -106,6 +106,7 @@ const uint16_t digital_pin_to_pin_num[] = {
 	PIN_02		/*  40 - GPIO_11 */
 };
 
+/* from SWRU367A Table 5-14. GPIO Mapping */ 
 const uint8_t digital_pin_to_port[] = {
 	NOT_A_PIN,	/*  dummy */
 	NOT_A_PIN,	/*  1  - 3.3V */
@@ -150,6 +151,7 @@ const uint8_t digital_pin_to_port[] = {
 	S1		/*  40 - GPIO_11 */
 };
 
+/* from SWRU367A Table 5-14. GPIO Mapping */ 
 const uint8_t digital_pin_to_bit_mask[] = {
 	NOT_A_PIN,	/*  dummy */
 	NOT_A_PIN,	/*  1  - 3.3V */
@@ -178,7 +180,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(5),		/*  24 - GPIO_05 */
 	BV(3),		/*  25 - GPIO_03 */
 	BV(4),		/*  26 - GPIO_04 */
-	BV(8),		/*  27 - GPIO_08 */
+	BV(0),		/*  27 - GPIO_08 */
 	BV(6),		/*  28 - GPIO_30 */
 	BV(1),		/*  29 - GPIO_09 */
 	BV(0),		/*  30 - GPIO_00 */
@@ -188,7 +190,7 @@ const uint8_t digital_pin_to_bit_mask[] = {
 	BV(7),		/*  34 - GPIO_07 */
 	BV(4),		/*  35 - GPIO_28 */
 	BV(1),		/*  36 - GPIO_25 */
-	BV(9),		/*  37 - GPIO_09 */
+	BV(1),		/*  37 - GPIO_09 */
 	BV(0),		/*  38 - GPIO_24 */
 	BV(2),		/*  39 - GPIO_10 */
 	BV(3)		/*  40 - GPIO_11 */
