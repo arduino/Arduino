@@ -56,7 +56,7 @@ public class Sketch extends BaseSketch {
    */
   public Sketch(Editor _editor, File file) throws IOException {
     editor = _editor;
-    data = new SketchData(file);
+    data = new SketchData(this, file);
 
     // lib/build must exist when the application is started
     // it is added to the CLASSPATH by default, but if it doesn't
@@ -97,7 +97,7 @@ public class Sketch extends BaseSketch {
    */
   protected void load() throws IOException {
     data.load();
-
+    
     for (SketchCode code : data.getCodes()) {
       if (code.getMetadata() == null)
         code.setMetadata(new SketchCodeDocument(code));
@@ -397,7 +397,7 @@ public class Sketch extends BaseSketch {
         return;
       }
       ensureExistence();
-      data.addCode((new SketchCodeDocument(newFile)).getCode());
+      data.addCode((new SketchCodeDocument(this, newFile)).getCode());
     }
 
     // sort the entries
@@ -483,7 +483,9 @@ public class Sketch extends BaseSketch {
   public void setModified(boolean state) {
     //System.out.println("setting modified to " + state);
     //new Exception().printStackTrace();
-    current.getCode().setModified(state);
+//    if(current.getCode().isModified() != state){
+//      current.getCode().setModified(state);
+//    }
     calcModified();
   }
 
@@ -858,7 +860,7 @@ public class Sketch extends BaseSketch {
     }
 
     if (codeExtension != null) {
-      SketchCode newCode = (new SketchCodeDocument(destFile)).getCode();
+      SketchCode newCode = (new SketchCodeDocument(this, destFile)).getCode();
 
       if (replacement) {
         data.replaceCode(newCode);
@@ -893,7 +895,7 @@ public class Sketch extends BaseSketch {
   public void importLibrary(File jarPath) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
+    
     String list[] = Base.headerListFromIncludePath(jarPath);
 
     // import statements into the main sketch file (code[0])
@@ -1189,6 +1191,11 @@ public class Sketch extends BaseSketch {
 
   public boolean isUntitled() {
     return editor.untitled;
+  }
+
+  @Override
+  public boolean isExternalMode() {
+    return Editor.isExternalMode();
   }
 
 

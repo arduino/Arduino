@@ -28,11 +28,17 @@ import static processing.app.I18n._;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import processing.app.debug.RunnerException;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.packages.Library;
+import processing.app.packages.LibraryList;
+import processing.app.packages.SketchListener;
+import br.com.criativasoft.cpluslibparser.LibraryCache;
+import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
 
 
 /**
@@ -40,6 +46,7 @@ import processing.app.packages.Library;
  */
 public abstract class BaseSketch {
   
+  public static final String SKETCH_LIB_PREFIX = "private:sketch:"; // for autocomplete metadata
 
   /** true if any of the files have been modified. */
   protected boolean modified;
@@ -51,6 +58,8 @@ public abstract class BaseSketch {
   /** Class name for the PApplet, as determined by the preprocessor. */
   protected String appletClassName;
 
+  private Set<SketchListener> listeners = new LinkedHashSet<SketchListener>();
+   
 
   /**
    * Build the list of files.
@@ -182,11 +191,11 @@ public abstract class BaseSketch {
    */
   public abstract boolean addFile(File sourceFile);
 
-
   public void importLibrary(Library lib) throws IOException {
     importLibrary(lib.getSrcFolder());
+    data.addLibrary(lib);
   }
-
+  
   /**
    * Add import statements to the current tab for all of packages inside
    * the specified jar file.
@@ -545,7 +554,8 @@ public abstract class BaseSketch {
 
 
   public abstract boolean isUntitled();
-
+  
+  public abstract boolean isExternalMode();
 
   public String getAppletClassName2() {
     return appletClassName;
@@ -555,6 +565,32 @@ public abstract class BaseSketch {
   // .................................................................
 
 
+  public boolean addListener(SketchListener listener){
+    return listeners.add(listener);
+  }
+
+  public boolean removeListener(SketchListener listener){
+    return listeners.add(listener);
+  }
+  
+  public void notifyListeners(SketchListener.Event event, BaseSketch sketch, SketchCode code){
+    
+    for (SketchListener listener : listeners) {
+      
+      if(event == SketchListener.Event.LOAD){
+        listener.onSketchLoad(sketch);
+      }
+      if(event == SketchListener.Event.INSERTED){
+        listener.onSketchInserted(sketch, code);
+      }
+      if(event == SketchListener.Event.SAVED){
+        listener.onSketchSaved(sketch, code);
+      }
+      
+    }
+    
+  }
+  
   /**
    * Convert to sanitized name and alert the user
    * if changes were made.
@@ -572,5 +608,24 @@ public abstract class BaseSketch {
     return newName;
   }
 
+  public SketchData getData() {
+    return data;
+  }
+
+  public void setSketchMetadata( TLibrary sketchMetadata ) {
+    data.setSketchMetadata(sketchMetadata);
+  }
+
+  public TLibrary getSketchMetadata() {
+    return data.getSketchMetadata();
+  }
+
+  public LibraryCache getLibraryCacheContext() {
+    return data.getLibraryCacheContext();
+  }
+
+  public LibraryList getImportedLibraries() {
+    return data.getImportedLibraries();
+  }
 
 }

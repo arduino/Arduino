@@ -49,12 +49,16 @@ public class SketchCode {
   private int preprocOffset;  
 
   private Object metadata;
+  
+  private BaseSketch sketch;
 
-  public SketchCode(File file) {
+  public SketchCode(BaseSketch sketch, File file) {
+    this.sketch = sketch;
     init(file, null);
   }
 
-  public SketchCode(File file, Object metadata) {
+  public SketchCode(BaseSketch sketch, File file, Object metadata) {
+    this.sketch = sketch;
     init(file, metadata);
   }
 
@@ -164,6 +168,7 @@ public class SketchCode {
   
   public void setModified(boolean modified) {
     this.modified = modified;
+    sketch.setModified(modified);
   }
 
 
@@ -243,4 +248,9 @@ public class SketchCode {
   public void setMetadata(Object metadata) {
     this.metadata = metadata;
   }
+  
+  public BaseSketch getSketch() {
+    return sketch;
+  }
+
 }
