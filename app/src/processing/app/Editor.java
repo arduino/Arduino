@@ -157,6 +157,8 @@ public class Editor extends JFrame implements RunnerListener {
 
   Runnable runHandler;
   Runnable presentHandler;
+  Runnable runAndSaveHandler;
+  Runnable presentAndSaveHandler;
   Runnable stopHandler;
   Runnable exportHandler;
   Runnable exportAppHandler;
@@ -561,22 +563,6 @@ public class Editor extends JFrame implements RunnerListener {
       });
     fileMenu.add(saveAsMenuItem);
 
-    item = newJMenuItem(_("Upload"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(false);
-        }
-      });
-    fileMenu.add(item);
-
-    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
-        }
-      });
-    fileMenu.add(item);
-
     fileMenu.addSeparator();
 
     item = newJMenuItemShift(_("Page Setup"), 'P');
@@ -624,6 +610,7 @@ public class Editor extends JFrame implements RunnerListener {
   protected JMenu buildSketchMenu() {
     JMenuItem item;
     sketchMenu = new JMenu(_("Sketch"));
+    
 
     item = newJMenuItem(_("Verify / Compile"), 'R');
     item.addActionListener(new ActionListener() {
@@ -632,14 +619,31 @@ public class Editor extends JFrame implements RunnerListener {
         }
       });
     sketchMenu.add(item);
+    
+    item = newJMenuItem(_("Upload"), 'U');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleExport(false);
+        }
+      });
+    sketchMenu.add(item);
 
-//    item = newJMenuItemShift("Verify / Compile (verbose)", 'R');
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleRun(true);
-//        }
-//      });
-//    sketchMenu.add(item);
+    item = newJMenuItemShift(_("Upload Using Programmer"), 'U');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleExport(true);
+        }
+      });
+    sketchMenu.add(item);
+
+
+    item = newJMenuItemAlt("Export compiled Binary", 'S');
+    item.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleRunAndSave(true);
+        }
+      });
+    sketchMenu.add(item);
 
 //    item = new JMenuItem("Stop");
 //    item.addActionListener(new ActionListener() {
@@ -1447,11 +1451,17 @@ public class Editor extends JFrame implements RunnerListener {
   // abstract from the editor in this fashion.
 
 
-  public void setHandlers(Runnable runHandler, Runnable presentHandler,
+  public void setHandlers(Runnable runHandler,
+		                  Runnable presentHandler,
+		                  Runnable runAndSaveHandler,
+		                  Runnable presentAndSaveHandler,
                           Runnable stopHandler,
-                          Runnable exportHandler, Runnable exportAppHandler) {
+                          Runnable exportHandler,
+                          Runnable exportAppHandler) {
     this.runHandler = runHandler;
     this.presentHandler = presentHandler;
+    this.runAndSaveHandler = runAndSaveHandler;
+    this.presentAndSaveHandler = presentAndSaveHandler;
     this.stopHandler = stopHandler;
     this.exportHandler = exportHandler;
     this.exportAppHandler = exportAppHandler;
@@ -1461,6 +1471,8 @@ public class Editor extends JFrame implements RunnerListener {
   public void resetHandlers() {
     runHandler = new BuildHandler();
     presentHandler = new BuildHandler(true);
+    runAndSaveHandler = new BuildAndSaveHandler();
+    presentAndSaveHandler = new BuildAndSaveHandler(true);
     stopHandler = new DefaultStopHandler();
     exportHandler = new DefaultExportHandler();
     exportAppHandler = new DefaultExportAppHandler();
@@ -1949,6 +1961,29 @@ public class Editor extends JFrame implements RunnerListener {
     // placed on the event thread and causes a hang--bad idea all around.
     new Thread(verbose ? presentHandler : runHandler).start();
   }
+  
+  /**
+   * Implements Sketch &rarr; Run and Save.
+   * @param verbose Set true to run with verbose output.
+   */
+  public void handleRunAndSave(final boolean verbose) {
+    internalCloseRunner();
+    running = true;
+    toolbar.activate(EditorToolbar.RUN);
+    status.progress(_("Compiling sketch..."));
+
+    // do this to advance/clear the terminal window / dos prompt / etc
+    for (int i = 0; i < 10; i++) System.out.println();
+
+    // clear the console on each run, unless the user doesn't want to
+    if (Preferences.getBoolean("console.auto_clear")) {
+      console.clear();
+    }
+
+    // Cannot use invokeLater() here, otherwise it gets
+    // placed on the event thread and causes a hang--bad idea all around.
+    new Thread(verbose ? presentAndSaveHandler : runAndSaveHandler).start();
+  }
 
   class BuildHandler implements Runnable {
 
@@ -1966,7 +2001,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
       try {
         sketch.prepare();
-        sketch.build(verbose);
+        sketch.build(verbose, false);
         statusNotice(_("Done compiling."));
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
@@ -1981,6 +2016,38 @@ public class Editor extends JFrame implements RunnerListener {
       toolbar.deactivate(EditorToolbar.RUN);
     }
   }
+  
+  class BuildAndSaveHandler implements Runnable {
+
+	    private final boolean verbose;
+
+	    public BuildAndSaveHandler() {
+	      this(false);
+	    }
+
+	    public BuildAndSaveHandler(boolean verbose) {
+	      this.verbose = verbose;
+	    }
+
+	    @Override
+	    public void run() {
+	      try {
+	        sketch.prepare();
+	        sketch.build(verbose, true);
+	        statusNotice(_("Done compiling."));
+	      } catch (PreferencesMapException e) {
+	        statusError(I18n.format(
+	                _("Error while compiling: missing '{0}' configuration parameter"),
+	                e.getMessage()));
+	      } catch (Exception e) {
+	        status.unprogress();
+	        statusError(e);
+	      }
+
+	      status.unprogress();
+	      toolbar.deactivate(EditorToolbar.RUN);
+	    }
+	  }
 
   class DefaultStopHandler implements Runnable {
     public void run() {
