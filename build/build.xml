@@ -40,6 +40,7 @@
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
     <include name="arduino-core/arduino-core.jar" />
+    <include name="arduino-autocomplete/arduino-autocomplete.jar" />
     <include name="app/pde.jar" />
     <include name="app/lib/commons-codec-1.7.jar" />
     <include name="app/lib/commons-exec-1.1.jar" />
@@ -52,6 +53,10 @@
     <include name="app/lib/jssc-2.8.0.jar" />
     <include name="app/lib/ant.jar" />
     <include name="app/lib/ant-launcher.jar" />
+    <include name="app/lib/rsyntaxt-autocomplete-2.5.4.jar" />
+    <include name="app/lib/rsyntaxtextarea-2.5.4_mod.jar" />
+    <include name="app/lib/cplus-libparser-0.0.1.jar" />
+    <include name="app/lib/jsoup-htmlparser-1.8.1.jar" />
   </fileset>
 
   <target name="build" description="Build Arduino.">
@@ -85,11 +90,13 @@
 
   <target name="subprojects-clean">
     <subant buildpath="../arduino-core" target="clean"/>
+    <subant buildpath="../arduino-autocomplete" target="clean"/>
     <subant buildpath="../app" target="clean"/>
   </target>
 
   <target name="subprojects-build">
     <subant buildpath="../arduino-core" target="build"/>
+    <subant buildpath="../arduino-autocomplete" target="build"/>
     <subant buildpath="../app" target="build"/>
   </target>
 
@@ -471,7 +478,10 @@
     </antcall>
 
     <copy todir="linux/work" file="linux/dist/arduino" />
+    <copy todir="linux/work" file="linux/dist/arduino.desktop" />
+    <copy todir="linux/work" file="linux/dist/install.sh" />
     <chmod perm="755" file="linux/work/arduino" />
+    <chmod perm="755" file="linux/work/arduino.sh" />
 
     <mkdir dir="linux/work/hardware/tools" />
     <copy file="linux/dist/tools/adk2install" todir="linux/work/hardware/tools" />

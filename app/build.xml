@@ -7,6 +7,7 @@
     </fileset>
     <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>
     <pathelement path="../arduino-core/arduino-core.jar"/>
+    <pathelement path="../arduino-autocomplete/arduino-autocomplete.jar"/>
   </path>
 
   <path id="class.path.test">
