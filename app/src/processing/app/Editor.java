@@ -22,43 +22,79 @@
 
 package processing.app;
 
-import cc.arduino.packages.MonitorFactory;
+import static processing.app.I18n._;
 
-import com.jcraft.jsch.JSchException;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
-import processing.app.debug.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.CompoundEdit;
+import javax.swing.undo.UndoManager;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rtextarea.Gutter;
+import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.RUndoManager;
+
+import processing.app.debug.RunnerException;
+import processing.app.debug.RunnerListener;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.legacy.PApplet;
-import processing.app.syntax.*;
-import processing.app.tools.*;
-import static processing.app.I18n._;
-
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.event.*;
-import java.awt.print.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.List;
-import java.util.zip.*;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.undo.*;
-
+import processing.app.syntax.PdeKeywords;
+import processing.app.syntax.SketchTextArea;
+import processing.app.syntax.SyntaxErrorMarker;
+import processing.app.syntax.TokenErrorMarker;
+import processing.app.tools.DiscourseFormat;
+import processing.app.tools.MenuScroller;
+import processing.app.tools.Tool;
+import br.com.criativasoft.cpluslibparser.LibraryIndex;
+import br.com.criativasoft.cpluslibparser.metadata.TElementLocation;
+import br.com.criativasoft.cpluslibparser.metadata.TError;
+import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
 import cc.arduino.packages.BoardPort;
+import cc.arduino.packages.MonitorFactory;
 import cc.arduino.packages.Uploader;
+import cc.arduino.packages.autocomplete.CompletionType;
+import cc.arduino.packages.autocomplete.CompletionsRenderer;
+import cc.arduino.packages.autocomplete.SketchCompletionProvider;
 import cc.arduino.packages.uploaders.SerialUploader;
+
+import com.jcraft.jsch.JSchException;
 
 /**
  * Main editor panel for the Processing Development Environment.
  */
 @SuppressWarnings("serial")
-public class Editor extends JFrame implements RunnerListener {
+public class Editor extends JFrame implements RunnerListener, HyperlinkListener {
 
   Base base;
 
@@ -123,11 +159,12 @@ public class Editor extends JFrame implements RunnerListener {
   Sketch sketch;
 
   EditorLineStatus lineStatus;
+  SyntaxErrorMarker errorMarker;
 
   //JEditorPane editorPane;
 
-  JEditTextArea textarea;
-  EditorListener listener;
+  SketchTextArea textarea;
+  RTextScrollPane scrollPane; 
 
   // runtime information and window placement
   Point sketchWindowLocation;
@@ -145,9 +182,6 @@ public class Editor extends JFrame implements RunnerListener {
   JMenuItem undoItem, redoItem;
   protected UndoAction undoAction;
   protected RedoAction redoAction;
-  LastUndoableEditAwareUndoManager undo;
-  // used internally, and only briefly
-  CompoundEdit compoundEdit;
 
   FindReplace find;
 
@@ -183,6 +217,11 @@ public class Editor extends JFrame implements RunnerListener {
         public void windowActivated(WindowEvent e) {
 //          System.err.println("activate");  // not coming through
           base.handleActivated(Editor.this);
+          
+          if(sketch != null){
+            LibraryIndex.setContextCache(sketch.getLibraryCacheContext());
+          }
+          
           // re-add the sub-menus that are shared by all windows
           fileMenu.insert(sketchbookMenu, 2);
           fileMenu.insert(examplesMenu, 3);
@@ -234,10 +273,8 @@ public class Editor extends JFrame implements RunnerListener {
     header = new EditorHeader(this);
     upper.add(header);
 
-    textarea = new JEditTextArea(new PdeTextAreaDefaults());
+    textarea = createTextArea();
     textarea.setName("editor");
-    textarea.setRightClickPopup(new TextAreaPopup());
-    textarea.setHorizontalOffset(6);
 
     // assemble console panel, consisting of status area and the console itself
     consolePanel = new JPanel();
@@ -255,9 +292,19 @@ public class Editor extends JFrame implements RunnerListener {
     lineStatus = new EditorLineStatus(textarea);
     consolePanel.add(lineStatus, BorderLayout.SOUTH);
 
-    upper.add(textarea);
-    splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                               upper, consolePanel);
+    //scrollPane = new RTextScrollPane(textarea);
+    
+    scrollPane = new RTextScrollPane(textarea, true);
+    scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
+    scrollPane.setIconRowHeaderEnabled(true);
+    
+    Gutter gutter = scrollPane.getGutter();
+    gutter.setBookmarkingEnabled(false);
+    //gutter.setBookmarkIcon(CompletionsRenderer.getIcon(CompletionType.TEMPLATE));
+    gutter.setIconRowHeaderInheritsGutterBackground(true);
+    
+    upper.add(scrollPane);
+    splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
 
     splitPane.setOneTouchExpandable(true);
     // repaint child panes while resizing
@@ -283,7 +330,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     // hopefully these are no longer needed w/ swing
     // (har har har.. that was wishful thinking)
-    listener = new EditorListener(this, textarea);
+    // listener = new EditorListener(this, textarea);
     pain.add(box);
 
     // get shift down/up events so we can show the alt version of toolbar buttons
@@ -442,32 +489,32 @@ public class Editor extends JFrame implements RunnerListener {
     saveMenuItem.setEnabled(!external);
     saveAsMenuItem.setEnabled(!external);
     
-    textarea.setDisplayLineNumbers(Preferences.getBoolean("editor.linenumbers"));
+    textarea.setMarginLineEnabled(Preferences.getBoolean("editor.linenumbers"));
 
-    TextAreaPainter painter = textarea.getPainter();
     if (external) {
       // disable line highlight and turn off the caret when disabling
       Color color = Theme.getColor("editor.external.bgcolor");
-      painter.setBackground(color);
-      painter.setLineHighlightEnabled(false);
-      textarea.setCaretVisible(false);
+      textarea.setBackground(color);
+      textarea.setHighlightCurrentLine(false);
+      textarea.setEditable(false);
 
     } else {
-      Color color = Theme.getColor("editor.bgcolor");
-      painter.setBackground(color);
+      //Color color = Theme.getColor("editor.bgcolor");
+      // textarea.setBackground(color); // NOTE use themes...
+      // FIXME: Ao voltar o normal está com probleas... !!!
       boolean highlight = Preferences.getBoolean("editor.linehighlight");
-      painter.setLineHighlightEnabled(highlight);
-      textarea.setCaretVisible(true);
+      textarea.setHighlightCurrentLine(highlight);
+      textarea.setEditable(true);
     }
 
     // apply changes to the font size for the editor
     //TextAreaPainter painter = textarea.getPainter();
-    painter.setFont(Preferences.getFont("editor.font"));
+    textarea.setFont(Preferences.getFont("editor.font"));
     //Font font = painter.getFont();
     //textarea.getPainter().setFont(new Font("Courier", Font.PLAIN, 36));
 
     // in case tab expansion stuff has changed
-    listener.applyPreferences();
+    // listener.applyPreferences();
 
     // in case moved to a new location
     // For 0125, changing to async version (to be implemented later)
@@ -887,7 +934,44 @@ public class Editor extends JFrame implements RunnerListener {
     return null;
   }
 
+  
+  protected SketchTextArea createTextArea(){
+      SketchTextArea textArea = new SketchTextArea();
+      textArea.addHyperlinkListener(this);
+      textArea.requestFocusInWindow();
+      textArea.addParser(new TokenErrorMarker(textArea));
+      textArea.setMarkOccurrences(true);
+      textArea.setCodeFoldingEnabled(Preferences.getBoolean("editor.codefolding")); 
+      textArea.setAntiAliasingEnabled(Preferences.getBoolean("editor.antialias"));
+//      textArea.setClearWhitespaceLinesEnabled(false);
+      textArea.setTabsEmulated(Preferences.getBoolean("editor.tabs.expand"));
+      textArea.setTabSize(Preferences.getInteger("editor.tabs.size"));
+      textArea.addKeyListener(new EditorListener(this));
+      
+      ToolTipManager.sharedInstance().registerComponent(textArea);
+      
+      configurePopupMenu(textArea);
+      return textArea;
+  }
 
+  /**
+   * Called when a hyperlink is clicked in the text area.
+   *
+   * @param e The event.
+   */
+  public void hyperlinkUpdate(HyperlinkEvent e) {
+    if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
+      URL url = e.getURL();
+      if (url==null) {
+        UIManager.getLookAndFeel().provideErrorFeedback(null);
+      }
+      else {
+        JOptionPane.showMessageDialog(this,
+                  "URL clicked:\n" + url.toString());
+      }
+    }
+  }
+  
   protected JMenuItem createToolMenuItem(String className) {
     try {
       Class<?> toolClass = Class.forName(className);
@@ -1271,17 +1355,6 @@ public class Editor extends JFrame implements RunnerListener {
       });
     menu.add(item);
 
-    item = newJMenuItem(_("Use Selection For Find"), 'E');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find == null) {
-            find = new FindReplace(Editor.this);
-          }
-          find.setFindText( getSelectedText() );
-        }
-      });
-    menu.add(item);
-
     return menu;
   }
 
@@ -1331,39 +1404,27 @@ public class Editor extends JFrame implements RunnerListener {
 
     public void actionPerformed(ActionEvent e) {
       try {
-        undo.undo();
+        textarea.undoLastAction();
       } catch (CannotUndoException ex) {
         //System.out.println("Unable to undo: " + ex);
         //ex.printStackTrace();
       }
-      if (undo.getLastUndoableEdit() != null && undo.getLastUndoableEdit() instanceof CaretAwareUndoableEdit) {
-        CaretAwareUndoableEdit undoableEdit = (CaretAwareUndoableEdit) undo.getLastUndoableEdit();
-        int nextCaretPosition = undoableEdit.getCaretPosition() - 1;
-        if (nextCaretPosition >= 0 && textarea.getDocumentLength() > nextCaretPosition) {
-          textarea.setCaretPosition(nextCaretPosition);
-        }
-      }
-      updateUndoState();
-      redoAction.updateRedoState();
     }
 
     protected void updateUndoState() {
+      
+      UndoManager undo = textarea.getUndoManager();
+
       if (undo.canUndo()) {
         this.setEnabled(true);
         undoItem.setEnabled(true);
         undoItem.setText(undo.getUndoPresentationName());
         putValue(Action.NAME, undo.getUndoPresentationName());
-        if (sketch != null) {
-          sketch.setModified(true);  // 0107
-        }
       } else {
         this.setEnabled(false);
         undoItem.setEnabled(false);
         undoItem.setText(_("Undo"));
         putValue(Action.NAME, "Undo");
-        if (sketch != null) {
-          sketch.setModified(false);  // 0107
-        }
       }
     }
   }
@@ -1377,20 +1438,16 @@ public class Editor extends JFrame implements RunnerListener {
 
     public void actionPerformed(ActionEvent e) {
       try {
-        undo.redo();
+        textarea.redoLastAction();
       } catch (CannotRedoException ex) {
         //System.out.println("Unable to redo: " + ex);
         //ex.printStackTrace();
       }
-      if (undo.getLastUndoableEdit() != null && undo.getLastUndoableEdit() instanceof CaretAwareUndoableEdit) {
-        CaretAwareUndoableEdit undoableEdit = (CaretAwareUndoableEdit) undo.getLastUndoableEdit();
-        textarea.setCaretPosition(undoableEdit.getCaretPosition());
-      }
-      updateRedoState();
-      undoAction.updateUndoState();
     }
 
     protected void updateRedoState() {
+      UndoManager undo = textarea.getUndoManager();
+      
       if (undo.canRedo()) {
         redoItem.setEnabled(true);
         redoItem.setText(undo.getRedoPresentationName());
@@ -1446,13 +1503,13 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   /**
-   * Get the JEditTextArea object for use (not recommended). This should only
+   * Get the PdeTextArea object for use (not recommended). This should only
    * be used in obscure cases that really need to hack the internals of the
    * JEditTextArea. Most tools should only interface via the get/set functions
    * found in this class. This will maintain compatibility with future releases,
-   * which will not use JEditTextArea.
+   * which will not use PdeTextArea.
    */
-  public JEditTextArea getTextArea() {
+  public SketchTextArea getTextArea() {
     return textarea;
   }
 
@@ -1469,7 +1526,11 @@ public class Editor extends JFrame implements RunnerListener {
    * Get a range of text from the current buffer.
    */
   public String getText(int start, int stop) {
-    return textarea.getText(start, stop - start);
+    try {
+      return textarea.getText(start, stop - start);
+    } catch (BadLocationException e) {
+      return null;
+    }
   }
 
 
@@ -1477,19 +1538,9 @@ public class Editor extends JFrame implements RunnerListener {
    * Replace the entire contents of the front-most tab.
    */
   public void setText(String what) {
-    startCompoundEdit();
     textarea.setText(what);
-    stopCompoundEdit();
   }
 
-
-  public void insertText(String what) {
-    startCompoundEdit();
-    int caret = getCaretOffset();
-    setSelection(caret, caret);
-    textarea.setSelectedText(what);
-    stopCompoundEdit();
-  }
 
 
   /**
@@ -1516,15 +1567,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   public void setSelectedText(String what) {
-    textarea.setSelectedText(what);
+    textarea.replaceSelection(what);
   }
 
-
   public void setSelection(int start, int stop) {
-    // make sure that a tool isn't asking for a bad location
-    start = PApplet.constrain(start, 0, textarea.getDocumentLength());
-    stop = PApplet.constrain(stop, 0, textarea.getDocumentLength());
-
     textarea.select(start, stop);
   }
 
@@ -1560,7 +1606,7 @@ public class Editor extends JFrame implements RunnerListener {
    * Get the end point of the current selection.
    */
   public int getSelectionStop() {
-    return textarea.getSelectionStop();
+    return textarea.getSelectionEnd();
   }
 
 
@@ -1568,26 +1614,24 @@ public class Editor extends JFrame implements RunnerListener {
    * Get text for a specified line.
    */
   public String getLineText(int line) {
-    return textarea.getLineText(line);
+    try {
+      return textarea.getText(textarea.getLineStartOffset(line), textarea.getLineEndOffset(line));
+    } catch (BadLocationException e) {
+      return "";
+    }
   }
 
-
-  /**
-   * Replace the text on a specified line.
-   */
-  public void setLineText(int line, String what) {
-    startCompoundEdit();
-    textarea.select(getLineStartOffset(line), getLineStopOffset(line));
-    textarea.setSelectedText(what);
-    stopCompoundEdit();
-  }
 
 
   /**
    * Get character offset for the start of a given line of text.
    */
   public int getLineStartOffset(int line) {
-    return textarea.getLineStartOffset(line);
+    try {
+      return textarea.getLineStartOffset(line);
+    } catch (BadLocationException e) {
+      return -1;
+    }
   }
 
 
@@ -1595,7 +1639,11 @@ public class Editor extends JFrame implements RunnerListener {
    * Get character offset for end of a given line of text.
    */
   public int getLineStopOffset(int line) {
-    return textarea.getLineStopOffset(line);
+    try {
+      return textarea.getLineEndOffset(line);
+    } catch (BadLocationException e) {
+      return -1;
+    }
   }
 
 
@@ -1607,29 +1655,8 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  /**
-   * Use before a manipulating text to group editing operations together as a
-   * single undo. Use stopCompoundEdit() once finished.
-   */
-  public void startCompoundEdit() {
-    compoundEdit = new CompoundEdit();
-  }
-
-
-  /**
-   * Use with startCompoundEdit() to group edit operations in a single undo.
-   */
-  public void stopCompoundEdit() {
-    compoundEdit.end();
-    undo.addEdit(compoundEdit);
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
-    compoundEdit = null;
-  }
-
-
   public int getScrollPosition() {
-    return textarea.getScrollPosition();
+    return scrollPane.getVerticalScrollBar().getValue();
   }
 
 
@@ -1640,15 +1667,12 @@ public class Editor extends JFrame implements RunnerListener {
    * Switch between tabs, this swaps out the Document object
    * that's currently being manipulated.
    */
-  protected void setCode(SketchCodeDocument codeDoc) {
-    SyntaxDocument document = (SyntaxDocument) codeDoc.getDocument();
+  protected void setCode(final SketchCodeDocument codeDoc) {
+    RSyntaxDocument document = (RSyntaxDocument) codeDoc.getDocument();
 
     if (document == null) {  // this document not yet inited
-      document = new SyntaxDocument();
-      codeDoc.setDocument(document);
-      
-      // turn on syntax highlighting
-      document.setTokenMarker(new PdeKeywords());
+      document = new RSyntaxDocument(RSyntaxDocument.SYNTAX_STYLE_CPLUSPLUS);
+      document.putProperty(PlainDocument.tabSizeAttribute, Preferences.getInteger("editor.tabs.size")); 
 
       // insert the program text into the document object
       try {
@@ -1656,35 +1680,40 @@ public class Editor extends JFrame implements RunnerListener {
       } catch (BadLocationException bl) {
         bl.printStackTrace();
       }
-
       // set up this guy's own undo manager
 //      code.undo = new UndoManager();
-
-      // connect the undo listener to the editor
-      document.addUndoableEditListener(new UndoableEditListener() {
-        public void undoableEditHappened(UndoableEditEvent e) {
-          if (compoundEdit != null) {
-            compoundEdit.addEdit(e.getEdit());
-
-          } else if (undo != null) {
-            undo.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
-            undoAction.updateUndoState();
-            redoAction.updateRedoState();
-          }
-        }
-      });
+      
+      codeDoc.setDocument(document);
     }
 
-    // update the document object that's in use
-    textarea.setDocument(document,
-                         codeDoc.getSelectionStart(), codeDoc.getSelectionStop(),
-                         codeDoc.getScrollPosition());
-
+    if(codeDoc.getUndo() == null){
+      codeDoc.setUndo(new LastUndoableEditAwareUndoManager(textarea, this));
+      document.addUndoableEditListener(codeDoc.getUndo());
+    }
+    
+    // Update the document object that's in use
+    textarea.switchDocument(document, codeDoc.getUndo());
+    
+    // HACK multiple tabs: for update Listeners of Gutter, forcin call: Gutter.setTextArea(RTextArea)
+    // Drawback: When using multiple tabs, the code folding and some markers will not work 100%
+    // BUG: https://github.com/bobbylight/RSyntaxTextArea/issues/84
+    scrollPane.setViewportView(textarea);
+    
+    textarea.select(codeDoc.getSelectionStart(), codeDoc.getSelectionStop());
     textarea.requestFocus();  // get the caret blinking
-
-    this.undo = codeDoc.getUndo();
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
+     
+    final int position = codeDoc.getScrollPosition();
+    
+    // invokeLater: Expect the document to be rendered correctly to set the new position
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+          scrollPane.getVerticalScrollBar().setValue(position);
+          undoAction.updateUndoState();
+          redoAction.updateRedoState();
+      }
+    });
+  
   }
 
 
@@ -1696,7 +1725,6 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void handleCut() {
     textarea.cut();
-    sketch.setModified(true);
   }
 
 
@@ -1723,7 +1751,6 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void handlePaste() {
     textarea.paste();
-    sketch.setModified(true);
   }
 
 
@@ -1733,106 +1760,71 @@ public class Editor extends JFrame implements RunnerListener {
   public void handleSelectAll() {
     textarea.selectAll();
   }
+  
+  /**
+   * Begins an "atomic" edit.  This method is called when TextArea
+   * KNOWS that some edits should be compound automatically, such as the playing back of a macro.
+   *
+   * @see #endInternalAtomicEdit()
+   */
+  public void beginInternalAtomicEdit(){
+    textarea.getUndoManager().beginInternalAtomicEdit();
+  }
+  
+  /**
+   * Ends an "atomic" edit.
+   *
+   * @see #beginInternalAtomicEdit()
+   */
+  public void endInternalAtomicEdit(){
+    textarea.getUndoManager().endInternalAtomicEdit();
+  }
 
 
   protected void handleCommentUncomment() {
-    startCompoundEdit();
-
-    int startLine = textarea.getSelectionStartLine();
-    int stopLine = textarea.getSelectionStopLine();
-
-    int lastLineStart = textarea.getLineStartOffset(stopLine);
-    int selectionStop = textarea.getSelectionStop();
-    // If the selection ends at the beginning of the last line,
-    // then don't (un)comment that line.
-    if (selectionStop == lastLineStart) {
-      // Though if there's no selection, don't do that
-      if (textarea.isSelectionActive()) {
-        stopLine--;
-      }
-    }
-
-    // If the text is empty, ignore the user.
-    // Also ensure that all lines are commented (not just the first)
-    // when determining whether to comment or uncomment.
-    int length = textarea.getDocumentLength();
-    boolean commented = true;
-    for (int i = startLine; commented && (i <= stopLine); i++) {
-      int pos = textarea.getLineStartOffset(i);
-      if (pos + 2 > length) {
-        commented = false;
-      } else {
-        // Check the first two characters to see if it's already a comment.
-        String begin = textarea.getText(pos, 2);
-        //System.out.println("begin is '" + begin + "'");
-        commented = begin.equals("//");
-      }
-    }
-
-    for (int line = startLine; line <= stopLine; line++) {
-      int location = textarea.getLineStartOffset(line);
-      if (commented) {
-        // remove a comment
-        textarea.select(location, location+2);
-        if (textarea.getSelectedText().equals("//")) {
-          textarea.setSelectedText("");
-        }
-      } else {
-        // add a comment
-        textarea.select(location, location);
-        textarea.setSelectedText("//");
-      }
-    }
-    // Subtract one from the end, otherwise selects past the current line.
-    // (Which causes subsequent calls to keep expanding the selection)
-    textarea.select(textarea.getLineStartOffset(startLine),
-                    textarea.getLineStopOffset(stopLine) - 1);
-    stopCompoundEdit();
+   
+      Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaToggleCommentAction);
+      action.actionPerformed(null);
+      
   }
 
 
   protected void handleIndentOutdent(boolean indent) {
-    int tabSize = Preferences.getInteger("editor.tabs.size");
-    String tabString = Editor.EMPTY.substring(0, tabSize);
-
-    startCompoundEdit();
-
-    int startLine = textarea.getSelectionStartLine();
-    int stopLine = textarea.getSelectionStopLine();
-
-    // If the selection ends at the beginning of the last line,
-    // then don't (un)comment that line.
-    int lastLineStart = textarea.getLineStartOffset(stopLine);
-    int selectionStop = textarea.getSelectionStop();
-    if (selectionStop == lastLineStart) {
-      // Though if there's no selection, don't do that
-      if (textarea.isSelectionActive()) {
-        stopLine--;
+    
+    if(indent){
+      
+      int caretPosition = textarea.getCaretPosition();
+      boolean noSelec = !textarea.isSelectionActive();
+      
+      // if no selection, focus on first char.
+      if(noSelec){
+        try {
+          int line = textarea.getCaretLineNumber();
+          int startOffset = textarea.getLineStartOffset(line);
+          textarea.setCaretPosition(startOffset);
+        } catch (BadLocationException e) {}
       }
+      
+      // Insert Tab or Spaces..
+      Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.insertTabAction);
+      action.actionPerformed(null);
+      
+      if(noSelec){ 
+          textarea.setCaretPosition(caretPosition);
+      }      
+      
+    }else{
+      Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaDecreaseIndentAction);
+      action.actionPerformed(null);   
     }
-
-    for (int line = startLine; line <= stopLine; line++) {
-      int location = textarea.getLineStartOffset(line);
-
-      if (indent) {
-        textarea.select(location, location);
-        textarea.setSelectedText(tabString);
-
-      } else {  // outdent
-        textarea.select(location, location + tabSize);
-        // Don't eat code if it's not indented
-        if (textarea.getSelectedText().equals(tabString)) {
-          textarea.setSelectedText("");
-        }
-      }
-    }
-    // Subtract one from the end, otherwise selects past the current line.
-    // (Which causes subsequent calls to keep expanding the selection)
-    textarea.select(textarea.getLineStartOffset(startLine),
-                    textarea.getLineStopOffset(stopLine) - 1);
-    stopCompoundEdit();
+    
   }
-
+  
+  /** Checks the preferences you are in external editing mode */
+  public static boolean isExternalMode(){
+      return Preferences.getBoolean("editor.external");
+  }
+  
 	protected String getCurrentKeyword() {
 		String text = "";
 		if (textarea.getSelectedText() != null)
@@ -1932,13 +1924,15 @@ public class Editor extends JFrame implements RunnerListener {
     @Override
     public void run() {
       try {
+        textarea.removeAllLineHighlights();
+        errorMarker.removeAll();
         sketch.prepare();
         sketch.build(verbose);
         statusNotice(_("Done compiling."));
-      } catch (PreferencesMapException e) {
-        statusError(I18n.format(
-                _("Error while compiling: missing '{0}' configuration parameter"),
-                e.getMessage()));
+//      } catch (PreferencesMapException e) {
+//        statusError(I18n.format(
+//                _("Error while compiling: missing '{0}' configuration parameter"),
+//                e.getMessage()));
       } catch (Exception e) {
         status.unprogress();
         statusError(e);
@@ -2111,7 +2105,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     sketch.setCurrentCode(codeIndex);
     textarea.select(selStart, selStop);
-    textarea.setScrollPosition(scrollPos);
+    scrollPane.getVerticalScrollBar().setValue(scrollPos);
   }
 
 
@@ -2197,6 +2191,18 @@ public class Editor extends JFrame implements RunnerListener {
 
     try {
       sketch = new Sketch(this, file);
+      
+      LibraryIndex.setContextCache(sketch.getLibraryCacheContext());
+      
+      // This needs to be after the ' LibraryIndex.setContextCache' for listeners work properly (on SketchCompletionProvider)
+      textarea.setupAutoComplete(new SketchCompletionProvider(sketch));
+
+      // This needs to be after the ' LibraryIndex.setContextCache' for listeners work properly
+      if(errorMarker == null){
+        errorMarker = new SyntaxErrorMarker(textarea);
+        textarea.addParser(errorMarker);
+      }
+      
     } catch (IOException e) {
       Base.showWarning(_("Error"), _("Could not create the sketch."), e);
       return false;
@@ -2236,6 +2242,7 @@ public class Editor extends JFrame implements RunnerListener {
   public boolean handleSave(boolean immediately) {
     //stopRunner();
     handleStop();  // 0136
+    textarea.removeAllLineHighlights();
 
     if (untitled) {
       return handleSaveAs();
@@ -2606,9 +2613,9 @@ public class Editor extends JFrame implements RunnerListener {
     }
     if (pageFormat != null) {
       //System.out.println("setting page format " + pageFormat);
-      printerJob.setPrintable(textarea.getPainter(), pageFormat);
+      printerJob.setPrintable(textarea, pageFormat);
     } else {
-      printerJob.setPrintable(textarea.getPainter());
+      printerJob.setPrintable(textarea);
     }
     // set the name of the job to the code name
     printerJob.setJobName(sketch.getCurrentCode().getPrettyName());
@@ -2660,12 +2667,13 @@ public class Editor extends JFrame implements RunnerListener {
       }
       if (re.hasCodeLine()) {
         int line = re.getCodeLine();
+        
         // subtract one from the end so that the \n ain't included
         if (line >= textarea.getLineCount()) {
           // The error is at the end of this current chunk of code,
           // so the last line needs to be selected.
           line = textarea.getLineCount() - 1;
-          if (textarea.getLineText(line).length() == 0) {
+          if (getLineText(line).length() == 0) {
             // The last line may be zero length, meaning nothing to select.
             // If so, back up one more line.
             line--;
@@ -2674,8 +2682,30 @@ public class Editor extends JFrame implements RunnerListener {
         if (line < 0 || line >= textarea.getLineCount()) {
           System.err.println(I18n.format(_("Bad error line: {0}"), line));
         } else {
-          textarea.select(textarea.getLineStartOffset(line),
-                          textarea.getLineStopOffset(line) - 1);
+          try {
+            
+            // textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+            
+            TLibrary metadata = sketch.getSketchMetadata();
+            int startOffset = textarea.getLineStartOffset(line);
+            int endOffset = textarea.getLineEndOffset(line);
+            
+            TError error = new TError(re.getMessage(), TError.COMPILER_ERROR);
+            error.setLocation(new TElementLocation(startOffset, endOffset - startOffset));
+            errorMarker.addError(error);
+            textarea.forceReparsing(errorMarker);
+            
+            if(metadata != null){
+              metadata.getErrors().add(error);
+            }
+            
+            textarea.setCaretPosition(textarea.getLineStartOffset(line));
+            
+            // textarea.add
+            
+          } catch (BadLocationException e1) {
+            e1.printStackTrace();
+          }
         }
       }
     }
@@ -2723,149 +2753,78 @@ public class Editor extends JFrame implements RunnerListener {
     lineStatus.repaint();
   }
 
-
-  /**
-   * Returns the edit popup menu.
-   */
-  class TextAreaPopup extends JPopupMenu {
-    //private String currentDir = System.getProperty("user.dir");
-    private String referenceFile = null;
-
-    private JMenuItem cutItem;
-    private JMenuItem copyItem;
-    private JMenuItem discourseItem;
-    private JMenuItem referenceItem;
-    private JMenuItem openURLItem;
-    private JSeparator openURLItemSeparator;
-
-    private String clickedURL;
-
-    public TextAreaPopup() {
-      openURLItem = new JMenuItem(_("Open URL"));
-      openURLItem.addActionListener(new ActionListener() {
+  
+  protected void configurePopupMenu(final SketchTextArea textarea){
+    
+    JPopupMenu menu = textarea.getPopupMenu();
+    
+    menu.addSeparator();
+    
+    
+    JMenuItem item = createToolMenuItem("cc.arduino.packages.formatter.AStyle");
+    item.setName("menuToolsAutoFormat");
+    
+    menu.add(item);
+    
+    item = new JMenuItem(_("Copy for Forum"));
+    item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          Base.openURL(clickedURL);
+          handleDiscourseCopy();
         }
       });
-      add(openURLItem);
+    menu.add(item);
 
-      openURLItemSeparator = new JSeparator();
-      add(openURLItemSeparator);
-
-      cutItem = new JMenuItem(_("Cut"));
-      cutItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleCut();
-          }
-      });
-      add(cutItem);
-
-      copyItem = new JMenuItem(_("Copy"));
-      copyItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleCopy();
-          }
-        });
-      add(copyItem);
-
-      discourseItem = new JMenuItem(_("Copy for Forum"));
-      discourseItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleDiscourseCopy();
-          }
-        });
-      add(discourseItem);
-
-      discourseItem = new JMenuItem(_("Copy as HTML"));
-      discourseItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleHTMLCopy();
-          }
-        });
-      add(discourseItem);
-
-      JMenuItem item = new JMenuItem(_("Paste"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handlePaste();
-          }
-        });
-      add(item);
-
-      item = new JMenuItem(_("Select All"));
-      item.addActionListener(new ActionListener() {
+    item = new JMenuItem(_("Copy as HTML"));
+    item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          handleSelectAll();
+          handleHTMLCopy();
         }
       });
-      add(item);
-
-      addSeparator();
-
-      item = new JMenuItem(_("Comment/Uncomment"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleCommentUncomment();
-          }
+    menu.add(item);
+    
+    final JMenuItem referenceItem = new JMenuItem(_("Find in Reference"));
+    referenceItem.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          handleFindReference();
+        }
       });
-      add(item);
-
-      item = new JMenuItem(_("Increase Indent"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleIndentOutdent(true);
-          }
-      });
-      add(item);
-
-      item = new JMenuItem(_("Decrease Indent"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleIndentOutdent(false);
-          }
-      });
-      add(item);
-
-      addSeparator();
-
-      referenceItem = new JMenuItem(_("Find in Reference"));
-      referenceItem.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            handleFindReference();
-          }
-        });
-      add(referenceItem);
-    }
-
-    // if no text is selected, disable copy and cut menu items
-    public void show(Component component, int x, int y) {
-      int lineNo = textarea.getLineOfOffset(textarea.xyToOffset(x, y));
-      int offset = textarea.xToOffset(lineNo, x);
-      String line = textarea.getLineText(lineNo);
-      clickedURL = textarea.checkClickedURL(line, offset);
-      if (clickedURL != null) {
-        openURLItem.setVisible(true);
-        openURLItemSeparator.setVisible(true);
-      } else {
-        openURLItem.setVisible(false);
-        openURLItemSeparator.setVisible(false);
+    menu.add(referenceItem);  
+    
+    final JMenuItem openURLItem = new JMenuItem(_("Open URL"));
+    openURLItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("e.getActionCommand() -> " + e.getActionCommand());
+        Base.openURL(e.getActionCommand());
       }
-
-      if (textarea.isSelectionActive()) {
-        cutItem.setEnabled(true);
-        copyItem.setEnabled(true);
-        discourseItem.setEnabled(true);
-
-      } else {
-        cutItem.setEnabled(false);
-        copyItem.setEnabled(false);
-        discourseItem.setEnabled(false);
+    });
+    menu.add(openURLItem);   
+    
+    
+    menu.addPopupMenuListener(new PopupMenuListener() {
+      
+      @Override
+      public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        String referenceFile = PdeKeywords.getReference(getCurrentKeyword());
+        referenceItem.setEnabled(referenceFile != null);
+        
+        int offset = textarea.getCaretPosition();
+        Token token = RSyntaxUtilities.getTokenAtOffset(textarea, offset);
+        if(token != null && token.isHyperlink()){
+          openURLItem.setEnabled(true);
+          openURLItem.setActionCommand(token.getLexeme());
+        }else{
+          openURLItem.setEnabled(false);
+        }
+        
       }
-
-      referenceFile = PdeKeywords.getReference(getCurrentKeyword());
-      referenceItem.setEnabled(referenceFile != null);
-
-      super.show(component, x, y);
-    }
+      
+      @Override
+      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+      
+      @Override
+      public void popupMenuCanceled(PopupMenuEvent e) { }
+    });
+    
   }
+ 
 }
