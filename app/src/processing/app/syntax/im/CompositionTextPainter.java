@@ -1,14 +1,9 @@
 package processing.app.syntax.im;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.font.TextLayout;
 
-import processing.app.syntax.JEditTextArea;
-import processing.app.syntax.TextAreaPainter;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  * Paint texts from input method. Text via input method are transmitted by 
@@ -24,13 +19,13 @@ import processing.app.syntax.TextAreaPainter;
 public class CompositionTextPainter {
   private TextLayout composedTextLayout;
   private int composedBeginCaretPosition = 0;
-  private JEditTextArea textArea;
+  private RSyntaxTextArea textArea;
 
   /**
    * Constructor for painter.
    * @param textarea textarea used by PDE.
    */
-  public CompositionTextPainter(JEditTextArea textArea) {
+  public CompositionTextPainter(RSyntaxTextArea textArea) {
     this.textArea = textArea;
     composedTextLayout = null;
   }
@@ -101,9 +96,9 @@ public class CompositionTextPainter {
    * @param y y-coordinate where to fill.
    */
   private void refillComposedArea(Color fillColor, int x, int y) {
-    Graphics gfx = textArea.getPainter().getGraphics();
+    Graphics gfx = textArea.getGraphics();
     gfx.setColor(fillColor);
-    FontMetrics fm = textArea.getPainter().getFontMetrics();
+    FontMetrics fm = textArea.getGraphics().getFontMetrics();
     int newY = y - (fm.getHeight() - CompositionTextManager.COMPOSING_UNDERBAR_HEIGHT);
     int paintHeight = fm.getHeight();
     int paintWidth = (int) composedTextLayout.getBounds().getWidth();
@@ -112,10 +107,9 @@ public class CompositionTextPainter {
 
   private Point getCaretLocation() {
     Point loc = new Point();
-    TextAreaPainter painter = textArea.getPainter();
-    FontMetrics fm = painter.getFontMetrics();
+    FontMetrics fm = textArea.getGraphics().getFontMetrics();
     int offsetY = fm.getHeight() - CompositionTextManager.COMPOSING_UNDERBAR_HEIGHT;
-    int lineIndex = textArea.getCaretLine();
+    int lineIndex = textArea.getCaretLineNumber();
     loc.y = lineIndex * fm.getHeight() + offsetY;
     int offsetX = composedBeginCaretPosition - textArea.getLineStartOffset(lineIndex);
     loc.x = textArea.offsetToX(lineIndex, offsetX);

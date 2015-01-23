@@ -1,10 +1,6 @@
 package processing.app.syntax.im;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
@@ -13,8 +9,7 @@ import java.text.AttributedString;
 
 import javax.swing.text.BadLocationException;
 
-import processing.app.syntax.JEditTextArea;
-import processing.app.syntax.TextAreaPainter;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  * This class Manage texts from input method 
@@ -30,7 +25,7 @@ import processing.app.syntax.TextAreaPainter;
  */
 
 public class CompositionTextManager {
-  private JEditTextArea textArea;
+  private RSyntaxTextArea textArea;
   private String prevComposeString;
   private int prevCommittedCount;
   private boolean isInputProcess;
@@ -41,7 +36,7 @@ public class CompositionTextManager {
    * Create text manager class with a textarea.
    * @param textArea texarea component for PDE.
    */
-  public CompositionTextManager(JEditTextArea textArea) {
+  public CompositionTextManager(RSyntaxTextArea textArea) {
     this.textArea = textArea;
     prevComposeString = "";
     isInputProcess = false;
@@ -90,7 +85,7 @@ public class CompositionTextManager {
    */
   public void processCompositionText(AttributedCharacterIterator text, int committed_count) {
     int layoutCaretPosition = initialCaretPosition + committed_count;
-    CompositionTextPainter compositionPainter = textArea.getPainter().getCompositionTextpainter();
+    CompositionTextPainter compositionPainter = textArea.getGraphics().getCompositionTextpainter();
     compositionPainter.setComposedTextLayout(getTextLayout(text, committed_count), layoutCaretPosition);
     int textLength = text.getEndIndex() - text.getBeginIndex() - committed_count;
     StringBuffer unCommitedStringBuf = new StringBuffer(textLength);
@@ -154,8 +149,8 @@ public class CompositionTextManager {
 
   private TextLayout getTextLayout(AttributedCharacterIterator text, int committed_count) {
     AttributedString composed = new AttributedString(text, committed_count, text.getEndIndex());
-    Font font = textArea.getPainter().getFont();
-    FontRenderContext context = ((Graphics2D) (textArea.getPainter().getGraphics())).getFontRenderContext();
+    Font font = textArea.getFont();
+    FontRenderContext context = ((Graphics2D) (textArea.getGraphics())).getFontRenderContext();
     composed.addAttribute(TextAttribute.FONT, font);
     TextLayout layout = new TextLayout(composed.getIterator(), context);
     return layout;
@@ -163,10 +158,9 @@ public class CompositionTextManager {
 
   private Point getCaretLocation() {
     Point loc = new Point();
-    TextAreaPainter painter = textArea.getPainter();
-    FontMetrics fm = painter.getFontMetrics();
+    FontMetrics fm = textArea.getGraphics().getFontMetrics();
     int offsetY = fm.getHeight() - COMPOSING_UNDERBAR_HEIGHT;
-    int lineIndex = textArea.getCaretLine();
+    int lineIndex = textArea.getCaretLineNumber();
     loc.y = lineIndex * fm.getHeight() + offsetY;
     int offsetX = textArea.getCaretPosition()
         - textArea.getLineStartOffset(lineIndex);
@@ -180,15 +174,18 @@ public class CompositionTextManager {
   }
 
   private Rectangle getCaretRectangle(int x, int y) {
-    TextAreaPainter painter = textArea.getPainter();
-    Point origin = painter.getLocationOnScreen();
-    int height = painter.getFontMetrics().getHeight();
+    Point origin = textArea.getLocationOnScreen();
+    int height = textArea.getGraphics().getFontMetrics().getHeight();
     return new Rectangle(origin.x + x, origin.y + y, 0, height);
   }
 
   public AttributedCharacterIterator getCommittedText(int beginIndex, int endIndex) {
     int length = endIndex - beginIndex;
-    String textAreaString = textArea.getText(beginIndex, length);
+    String textAreaString = null;
+    try {
+      textAreaString = textArea.getText(beginIndex, length);
+    } catch (BadLocationException e) {
+    }
     return new AttributedString(textAreaString).getIterator();
   }
 

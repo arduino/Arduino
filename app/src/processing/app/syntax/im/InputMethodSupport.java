@@ -7,7 +7,7 @@ import java.awt.font.TextHitInfo;
 import java.awt.im.InputMethodRequests;
 import java.text.AttributedCharacterIterator;
 
-import processing.app.syntax.JEditTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 /**
  * Support in-line Japanese input for PDE. (Maybe Chinese, Korean and more)
@@ -26,7 +26,7 @@ public class InputMethodSupport implements InputMethodRequests,
   private int committed_count = 0;
   private CompositionTextManager textManager;
 
-  public InputMethodSupport(JEditTextArea textArea) {
+  public InputMethodSupport(RSyntaxTextArea textArea) {
     textManager = new CompositionTextManager(textArea);
     textArea.enableInputMethods(true);
     textArea.addInputMethodListener(this);
