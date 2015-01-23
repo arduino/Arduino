@@ -43,7 +43,6 @@ import java.util.TreeSet;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
-
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
@@ -711,8 +710,13 @@ public class Compiler implements MessageConsumer {
   
     // look for error line, which contains file name, line number,
     // and at least the first line of the error message
-    String errorFormat = "([\\w\\d_]+.\\w+):(\\d+):\\s*error:\\s*(.*)\\s*";
-    String[] pieces = PApplet.match(s, errorFormat);
+    String[] pieces = null;
+    
+    if(OSUtils.isLinux()){
+      pieces = PApplet.match(s, "([\\w\\d_]+.\\w+):(\\d+):\\d+:\\s*error:\\s*(.*)\\s*");
+    }else{
+      pieces = PApplet.match(s, "([\\w\\d_]+.\\w+):(\\d+):\\s*error:\\s*(.*)\\s*");
+    }
 
 //    if (pieces != null && exception == null) {
 //      exception = sketch.placeException(pieces[3], pieces[1], PApplet.parseInt(pieces[2]) - 1);
