@@ -1,5 +1,6 @@
 package processing.app.preproc;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -81,6 +82,24 @@ public class CTagsParserTest {
     List<String> prototypes = new CTagsParser().parse(ctagsOutput);
 
     assertEquals(0, prototypes.size());
+  }
+
+  // result of ctags -u --language-force=c++ -f - --c++-kinds=svpf --fields=KSTtzn /tmp/sketch8930345717354294915.cpp
+  @Test
+  @Ignore
+  public void shouldDealWithStructs() {
+    String ctagsOutput = "A_NEW_TYPE\t/tmp/sketch8930345717354294915.cpp\t/^struct A_NEW_TYPE {$/;\"\tkind:struct\tline:3\n" +
+            "foo\t/tmp/sketch8930345717354294915.cpp\t/^} foo;$/;\"\tkind:variable\tline:7\ttyperef:struct:A_NEW_TYPE\n" +
+            "setup\t/tmp/sketch8930345717354294915.cpp\t/^void setup() {$/;\"\tkind:function\tline:9\tsignature:()\treturntype:void\n" +
+            "loop\t/tmp/sketch8930345717354294915.cpp\t/^void loop() {$/;\"\tkind:function\tline:13\tsignature:()\treturntype:void\n" +
+            "dostuff\t/tmp/sketch8930345717354294915.cpp\t/^void dostuff (A_NEW_TYPE * bar)$/;\"\tkind:function\tline:17\tsignature:(A_NEW_TYPE * bar)\treturntype:void\n";
+
+    List<String> prototypes = new CTagsParser().parse(ctagsOutput);
+
+    assertEquals(3, prototypes.size());
+    assertEquals("void setup();", prototypes.get(0));
+    assertEquals("void loop();", prototypes.get(1));
+    assertEquals("void dostuff (A_NEW_TYPE * bar);", prototypes.get(2));
   }
 
 }
