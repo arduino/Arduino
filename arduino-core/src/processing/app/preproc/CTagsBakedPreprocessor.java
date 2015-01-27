@@ -12,10 +12,13 @@ import processing.app.tools.CollectStdOutStdErrExecutor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class CTagsBakedPreprocessor extends AbstractPreprocessor implements PreprocessorChainRing {
+public class CTagsBakedPreprocessor implements PreprocessorChainRing {
 
   private final PreferencesMap prefs;
   private final boolean verbose;
@@ -38,7 +41,6 @@ public class CTagsBakedPreprocessor extends AbstractPreprocessor implements Prep
     preprocess(context, dict);
   }
 
-  @Override
   public void preprocess(Map<String, Object> context, PreferencesMap prefs) throws Exception {
     String input = (String) context.get("source");
     File file = FileUtils.saveToTempFile(input, "sketch", ".cpp");
@@ -62,15 +64,15 @@ public class CTagsBakedPreprocessor extends AbstractPreprocessor implements Prep
     List<String> prototypes = new CTagsParser().parse(ctagsOutput);
     context.put("prototypes", prototypes);
 
-    AbstractPreprocessor.FirstStatementPosition firstStatementPosition = firstStatement(input);
+    Map<String, Integer> firstStatementPosition = firstStatement(input);
 
     StringBuilder prototypesSection = new StringBuilder();
     prototypesSection.append("#include <Arduino.h>\n");
     prototypesSection.append(StringUtils.join(prototypes, "\n")).append("\n");
-    prototypesSection.append("#line ").append(firstStatementPosition.line).append("\n");
+    prototypesSection.append("#line ").append(firstStatementPosition.get("line")).append("\n");
 
     StringBuilder output = new StringBuilder(input);
-    output.insert(firstStatementPosition.charPosition, prototypesSection.toString());
+    output.insert(firstStatementPosition.get("charPosition"), prototypesSection.toString());
 
     context.put("source", output.toString());
 
@@ -78,5 +80,39 @@ public class CTagsBakedPreprocessor extends AbstractPreprocessor implements Prep
       file.delete();
     }
   }
+
+  protected Map<String, Integer> firstStatement(String input) {
+    // whitespace
+    String p = "\\s+";
+
+    // multi-line and single-line comment
+    //p += "|" + "(//\\s*?$)|(/\\*\\s*?\\*/)";
+    p += "|(/\\*[^*]*(?:\\*(?!/)[^*]*)*\\*/)|(//.*?$)";
+
+    // pre-processor directive
+    p += "|(#(?:\\\\\\n|.)*)";
+
+    // pre-processor directive
+    p += "|typedef.*";
+
+    Pattern pattern = Pattern.compile(p, Pattern.MULTILINE);
+
+    Matcher matcher = pattern.matcher(input);
+    int charPosition = 0;
+    while (matcher.find()) {
+      if (matcher.start() != charPosition)
+        break;
+      charPosition = matcher.end();
+    }
+
+    Map<String, Integer> firstStatementPosition = new HashMap<String, Integer>();
+    firstStatementPosition.put("charPosition", charPosition);
+
+    String[] lines = input.substring(0, charPosition).split("\n", -1);
+    firstStatementPosition.put("line", lines.length);
+
+    return firstStatementPosition;
+  }
+
 
 }
