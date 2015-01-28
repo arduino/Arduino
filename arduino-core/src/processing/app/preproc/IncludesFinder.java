@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class IncludesFinder implements PreprocessorChainRing {
 
-  private static final Pattern ALLOWED_ARG = Pattern.compile("^source$|\\-E$|\\-m$|\\-P$|\\-D.*");
+  private static final Pattern ALLOWED_ARG = Pattern.compile("^source$|\\-E$|\\-m$|\\-P$|\\-kb$|\\-D.*");
   private static final String INCLUDE_REGEXP = "^\\s*#include\\s*[<\"](\\S+)[\">]";
 
   private final PreferencesMap prefs;

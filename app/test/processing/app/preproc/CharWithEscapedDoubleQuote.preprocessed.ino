@@ -13,27 +13,6 @@
 
 // Declarations for GPRS shield
 #include <Arduino.h>
-void setPowerStateTo( int newState );
-int getPowerState();
-void powerUpOrDown();
-void clearBufferArray();
-void makeMissedCall( char num[] );
-void sendTextMessage( char number[], char messg[] );
-void analise(byte incoming[], int length);
-byte decToBcd( byte b );
-boolean getBit( byte addr, int pos );
-void setBit( byte addr, int pos, boolean newBit );
-byte getByte( byte addr );
-boolean getBytes( byte addr, int amount );
-void setByte( byte addr, byte newByte );
-void setBytes( byte addr, byte newBytes[], int amount );
-void getTime();
-void setTime( byte newTime[ 7 ] );
-void getRTCTemperature();
-void gprsListen();
-void printTime();
-void setup();
-void loop();
 #line 15
 SoftwareSerial GPRS( 7, 8 ); // A softwareSerial line is defined for the GPRS Shield
 byte buffer[ 64 ]; // Buffer is used to transfer data from the GPRS line to the serial line
@@ -59,6 +38,28 @@ Code Exclusively for GPRS shield:
 //  Default set of instructions for GPRS Shield power control
 //
 
+void setPowerStateTo( int newState );
+int getPowerState();
+void powerUpOrDown();
+void clearBufferArray();
+void makeMissedCall( char num[] );
+void sendTextMessage( char number[], char messg[] );
+void analise(byte incoming[], int length);
+byte decToBcd( byte b );
+boolean getBit( byte addr, int pos );
+void setBit( byte addr, int pos, boolean newBit );
+byte getByte( byte addr );
+boolean getBytes( byte addr, int amount );
+void setByte( byte addr, byte newByte );
+void setBytes( byte addr, byte newBytes[], int amount );
+void getTime();
+void setTime( byte newTime[ 7 ] );
+void getRTCTemperature();
+void gprsListen();
+void printTime();
+void setup();
+void loop();
+#line 39
 void setPowerStateTo( int newState )
 {
   if( newState != 1 && newState != 0 ) { // tests for an invalid state. In this case no change is made to powerstate
