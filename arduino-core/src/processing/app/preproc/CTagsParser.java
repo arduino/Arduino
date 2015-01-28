@@ -2,12 +2,16 @@ package processing.app.preproc;
 
 import java.util.*;
 
-public class CTagsParser {
+public class CTagsParser implements PreprocessorChainRing {
 
+  private static final List<String> FIELDS = Arrays.asList("kind", "line", "typeref", "signature", "returntype");
   private static final List<String> KNOWN_TAG_KINDS = Arrays.asList("prototype", "function");
 
-  public List<String> parse(String ctagsOutput) {
-    String[] rows = ctagsOutput.split("\n");
+  @Override
+  public void preprocess(Map<String, Object> context) throws Exception {
+    List<String> rows = Arrays.asList(context.get("ctagsOutput").toString().split("\n"));
+
+    rows = removeEmptyRows(rows);
 
     List<Map<String, String>> tags = new LinkedList<Map<String, String>>();
 
@@ -16,35 +20,40 @@ public class CTagsParser {
       String[] columns = row.split("\t");
       tag.put("functionName", columns[0]);
 
-      tag.put("kind", columns[columns.length - 3]);
-      tag.put("signature", columns[columns.length - 2]);
-      tag.put("returntype", columns[columns.length - 1]);
-      /*
-      if (columns[columns.length - 2].startsWith("signature")) {
-        tag.put("kind", columns[columns.length - 3]);
-        tag.put("signature", columns[columns.length - 2]);
-        tag.put("returntype", columns[columns.length - 1]);
-      } else {
-        tag.put("kind", columns[columns.length - 2]);
-        tag.put("signature", "signature:()");
-        tag.put("returntype", columns[columns.length - 1]);
+      for (int i = 1; i < columns.length; i++) {
+        if (columns[i].contains(":") && FIELDS.contains(columns[i].substring(0, columns[i].indexOf(":")))) {
+          tag.put(columns[i].substring(0, columns[i].indexOf(":")), columns[i].substring(columns[i].indexOf(":") + 1).trim());
+        }
       }
-      */
-      tag.put("code", row.substring(row.indexOf("/^") + 2, row.indexOf("/;")).trim());
+      if (row.contains("/^") && row.contains("/;")) {
+        tag.put("code", row.substring(row.indexOf("/^") + 2, row.indexOf("/;")).trim());
+      }
       tags.add(tag);
     }
 
     filterOutUnknownTags(tags);
-    cleanReturnType(tags);
-    cleanSignature(tags);
     removeDefinedProtypes(tags);
     addPrototypes(tags);
+
+    if (!tags.isEmpty()) {
+      context.put("firstFunctionAtLine", Integer.valueOf(tags.get(0).get("line")));
+    }
 
     List<String> prototypes = new LinkedList<String>();
     for (Map<String, String> tag : tags) {
       prototypes.add(tag.get("prototype"));
     }
-    return prototypes;
+    context.put("prototypes", prototypes);
+  }
+
+  private List<String> removeEmptyRows(List<String> rows) {
+    List<String> goodRows = new LinkedList<String>();
+    for (String row : rows) {
+      if (!row.isEmpty()) {
+        goodRows.add(row);
+      }
+    }
+    return goodRows;
   }
 
   private void filterOutUnknownTags(List<Map<String, String>> tags) {
@@ -91,23 +100,6 @@ public class CTagsParser {
       }
     }
     return new HashMap<String, String>();
-  }
-
-  private void cleanSignature(List<Map<String, String>> tags) {
-    for (Map<String, String> tag : tags) {
-      tag.put("signature", tag.get("signature").replaceAll("signature:", ""));
-    }
-  }
-
-  private void cleanReturnType(List<Map<String, String>> tags) {
-    for (Map<String, String> tag : tags) {
-      String returntype = tag.get("returntype");
-      returntype = returntype.replaceAll("returntype:", "");
-      String[] types = returntype.split(" ");
-      returntype = types[types.length - 1];
-
-      tag.put("returntype", returntype);
-    }
   }
 
 }

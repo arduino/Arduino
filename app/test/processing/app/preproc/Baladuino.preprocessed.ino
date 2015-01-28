@@ -21,26 +21,37 @@
 #include <Wire.h> // Official Arduino Wire library
 #include <usbhub.h> // Some dongles can have a hub inside
 
+
 #include <adk.h>
+
 
 // These are all open source libraries written by Kristian Lauszus, TKJ Electronics
 // The USB libraries are located at the following link: https://github.com/felis/USB_Host_Shield_2.0
 #include <Kalman.h> // Kalman filter library - see: http://blog.tkjelectronics.dk/2012/09/a-practical-approach-to-kalman-filter-and-how-to-implement-it/
 
+
 #include <XBOXRECV.h>
+
+
 #include <SPP.h>
+
+
 #include <PS3BT.h>
+
+
 #include <Wii.h>
+
 
 // Create the Kalman library instance
 #include <Arduino.h>
-void setup();
-void loop();
-#line 36
+#line 46
 Kalman kalman; // See https://github.com/TKJElectronics/KalmanFilter for source code
+
 
 #define ENABLE_USB
 USB Usb; // This will take care of all USB communication
+
+
 
 // Implementation for the Android Open Accessory Protocol. Simply connect your phone to get redirected to the Play Store
 ADK adk(&Usb, "TKJ Electronics", // Manufacturer Name
@@ -50,14 +61,24 @@ ADK adk(&Usb, "TKJ Electronics", // Manufacturer Name
               "https://play.google.com/store/apps/details?id=com.tkjelectronics.balanduino", // URL - web page to visit if no installed apps support the accessory
               "1234"); // Serial Number - this is not used
 
+
+
 XBOXRECV Xbox(&Usb); // You have to connect a Xbox wireless receiver to the Arduino to control it with a wireless Xbox controller
+
+
 
 USBHub Hub(&Usb); // Some dongles have a hub inside
 BTD Btd(&Usb); // This is the main Bluetooth library, it will take care of all the USB and HCI communication with the Bluetooth dongle
 
+
+
 SPP SerialBT(&Btd, "Balanduino", "0000"); // The SPP (Serial Port Protocol) emulates a virtual Serial port, which is supported by most computers and mobile phones
 
+
+
 PS3BT PS3(&Btd); // The PS3 library supports all three official controllers: the Dualshock 3, Navigation and Move controller
+
+
 
 WII Wii(&Btd); // The Wii library can communicate with Wiimotes and the Nunchuck and Motion Plus extension and finally the Wii U Pro Controller
 //WII Wii(&Btd,PAIR); // You will have to pair with your Wiimote first by creating the instance like this and the press 1+2 on the Wiimote
@@ -65,6 +86,10 @@ WII Wii(&Btd); // The Wii library can communicate with Wiimotes and the Nunchuck
 // Or you can simply send "CW;" to the robot to start the pairing sequence
 // This can also be done using the Android or Processing application
 
+
+void setup();
+void loop();
+#line 88
 void setup() {
   /* Initialize UART */
   Serial.begin(115200);
@@ -110,17 +135,25 @@ void setup() {
   /* Setup buzzer pin */
   pinMode(buzzer, OUTPUT);
 
+
   if (Usb.Init() == -1) { // Check if USB Host is working
     Serial.print(F("OSC did not start"));
     digitalWrite(buzzer, HIGH);
     while (1); // Halt
   }
 
+
   /* Attach onInit function */
   // This is used to set the LEDs according to the voltage level and vibrate the controller to indicate the new connection
+
   PS3.attachOnInit(onInit);
+
+
   Wii.attachOnInit(onInit);
+
+
   Xbox.attachOnInit(onInit);
+
 
   /* Setup IMU */
   Wire.begin();
@@ -174,8 +207,10 @@ void setup() {
 }
 
 void loop() {
+
   if (Wii.wiimoteConnected) // We have to read much more often from the Wiimote to decrease latency
     Usb.Task();
+
 
   /* Calculate pitch */
   while (i2cRead(0x3D, i2cBuffer, 8));
@@ -204,8 +239,10 @@ void loop() {
   kalmanTimer = timer;
   //Serial.print(accAngle);Serial.print('\t');Serial.print(gyroAngle);Serial.print('\t');Serial.println(pitch);
 
+
   if (Wii.wiimoteConnected) // We have to read much more often from the Wiimote to decrease latency
     Usb.Task();
+
 
   /* Drive motors */
   timer = micros();
@@ -245,9 +282,16 @@ void loop() {
   }
 
   /* Read the Bluetooth dongle and send PID and IMU values */
+
   readUsb();
+
+
   checkSerialData();
+
+
   printValues();
+
+
 
   if (Btd.isReady()) {
     timer = millis();
@@ -260,5 +304,6 @@ void loop() {
     ledState = !ledState;
     digitalWrite(LED_BUILTIN, ledState); // This will turn it off
   }
+
 }
 

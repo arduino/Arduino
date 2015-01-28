@@ -28,11 +28,15 @@ public class StringUtils {
   }
 
   public static String join(List<String> input, String sep) {
+    return join(input, sep, true);
+  }
+
+  public static String join(List<String> input, String sep, boolean removeLastSeparator) {
     StringBuilder sb = new StringBuilder();
     for (String s : input) {
       sb.append(s).append(sep);
     }
-    if (sb.length() > 0) {
+    if (sb.length() > 0 && removeLastSeparator) {
       sb.delete(sb.length() - sep.length(), sb.length());
     }
     return sb.toString();

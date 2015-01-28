@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#line 1
 void setup();
 void loop();
 #line 1

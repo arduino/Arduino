@@ -136,6 +136,24 @@ public class CTagsBakedPreprocessorTest extends AbstractWithPreferencesTest {
     assertEquals(expectedOutput, preprocessedCode);
   }
 
+  @Test
+  public void shouldPreprocessSketchWithStruct() throws Exception {
+    Map<String, Object> context = preprocessTestSketch("SketchWithStruct.ino");
+
+    String preprocessedCode = (String) context.get("source");
+    List<String> prototypes = (List<String>) context.get("prototypes");
+
+    assertEquals(3, prototypes.size());
+    assertEquals("void setup();", prototypes.get(0));
+    assertEquals("void loop();", prototypes.get(1));
+    assertEquals("void dostuff(A_NEW_TYPE * bar);", prototypes.get(2));
+
+    File expectedPreprocessedSketch = new File(CTagsBakedPreprocessorTest.class.getResource("SketchWithStruct.preprocessed.ino").getFile());
+    String expectedOutput = FileUtils.readFileToString(expectedPreprocessedSketch);
+
+    assertEquals(expectedOutput, preprocessedCode);
+  }
+
   private Map<String, Object> preprocessTestSketch(String sketchName) throws Exception {
     File sketch = new File(CTagsBakedPreprocessorTest.class.getResource(sketchName).getFile());
 

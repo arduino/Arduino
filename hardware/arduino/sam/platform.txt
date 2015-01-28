@@ -87,10 +87,10 @@ tools.bossac.upload.pattern="{path}/{cmd}" {upload.verbose} --port={serial.port.
 # ctags
 # ------------------------------
 tools.ctags.cmd.path={runtime.ide.path}/hardware/tools/ctags
-tools.ctags.pattern="{cmd.path}" -u --language-force=c++ -f - --c++-kinds=pf --fields=KST "{source_file}"
+tools.ctags.pattern="{cmd.path}" -u --language-force=c++ -f - --c++-kinds=svpf --fields=KSTtzn "{source_file}"
 
 # coan
 # ------------------------------
 tools.coan.cmd.path={runtime.ide.path}/hardware/tools/coan
-tools.coan.pattern="{cmd.path}" source -m -E -P {compiler.c.flags} -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {compiler.libsam.c.flags} "{source_file}"
+tools.coan.pattern="{cmd.path}" source -m -E -P -kb {compiler.c.flags} -mcpu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {compiler.libsam.c.flags} "{source_file}"
 

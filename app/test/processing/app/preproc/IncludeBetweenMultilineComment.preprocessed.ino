@@ -3,10 +3,11 @@
 #include <WiFi.h>
 */
 #include <Arduino.h>
-void setup();
-void loop();
 #line 5
 CapacitiveSensorDue cs_13_8 = CapacitiveSensorDue(13,8);
+void setup();
+void loop();
+#line 6
 void setup()
 {
 	Serial.begin(9600);

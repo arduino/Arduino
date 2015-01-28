@@ -2,19 +2,25 @@
 #define DISABLED 0
 
 
+
+
+
+
 #include "empty_1.h"
+
 
 #include "empty_2.h"
 
+#include <Arduino.h>
+#line 14
 typedef MyType int;
 
-#include <Arduino.h>
 void setup();
 void loop();
 void debug();
 void disabledIsDefined();
 int useMyType(MyType type);
-#line 11
+#line 16
 void setup() {
   // put your setup code here, to run once:
 
@@ -26,13 +32,26 @@ void loop() {
 }
 
 
+
+
+
+
+
+
 void debug() {
 
 }
 
 
+
+
+
+
+
+
 void disabledIsDefined() {
 }
+
 
 int useMyType(MyType type) {
 

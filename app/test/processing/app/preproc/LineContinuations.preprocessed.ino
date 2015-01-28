@@ -1,6 +1,4 @@
 #include <Arduino.h>
-void setup();
-void loop();
 #line 1
 const char *foo = "\
 hello \
@@ -8,6 +6,9 @@ world\n";
 
 //" delete this comment line and the IDE parser will crash
 
+void setup();
+void loop();
+#line 7
 void setup()
 {
 }
