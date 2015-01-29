@@ -20,6 +20,7 @@ public class SketchCodeMerger implements PreprocessorChainRing {
       }
     }
 
+    context.put("lineOffset", 1);
     context.put("source", source.toString());
   }
 

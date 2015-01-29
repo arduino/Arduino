@@ -70,9 +70,14 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
   private int composeIncludeSection(Map<String, Object> context) {
     int firstStatementAtLine = firstStatementAtLine((String) context.get("source"));
 
+    int line = firstStatementAtLine;
+    if (line > 1) {
+      line -= (Integer) context.get("lineOffset");
+    }
+
     StringBuilder section = new StringBuilder();
     section.append("#include <Arduino.h>\n");
-    section.append("#line ").append(firstStatementAtLine).append("\n");
+    section.append("#line ").append(line).append("\n");
 
     context.put("includeSection", section);
 
@@ -80,9 +85,15 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
   }
 
   private int composePrototypeSection(Map<String, Object> context) {
-    int line = 1;
+    int firstFunctionAtLine = 1;
     if (context.containsKey("firstFunctionAtLine")) {
-      line = (Integer) context.get("firstFunctionAtLine");
+      firstFunctionAtLine = (Integer) context.get("firstFunctionAtLine");
+    }
+
+    int line = firstFunctionAtLine;
+
+    if (line > 1) {
+      line -= (Integer) context.get("lineOffset");
     }
 
     StringBuilder section = new StringBuilder();
@@ -93,7 +104,7 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
 
     context.put("prototypesSection", section);
 
-    return line;
+    return firstFunctionAtLine;
   }
 
   private void parseCTagsOutput(Map<String, Object> context, String ctagsOutput) throws Exception {
