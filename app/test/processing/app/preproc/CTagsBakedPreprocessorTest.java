@@ -161,6 +161,7 @@ public class CTagsBakedPreprocessorTest extends AbstractWithPreferencesTest {
 
     Map<String, Object> context = new HashMap<String, Object>();
     context.put("source", input);
+    context.put("lineOffset", 0);
 
     new IncludesFinder(prefs, true).preprocess(context);
 
