@@ -338,6 +338,8 @@ public class Compiler implements MessageConsumer {
       System.out.println();
 
     List<PreprocessorChainRing> chainRings = new LinkedList<PreprocessorChainRing>();
+    chainRings.add(new SketchCodeMerger());
+    chainRings.add(new HeaderCppFilesCopier(prefs.get("build.path")));
     chainRings.add(new IncludesFinder(prefs, verbose));
     chainRings.add(new IncludesToIncludeFolders(prefs, verbose));
     //chainRings.add(new DumpContext());
@@ -348,8 +350,7 @@ public class Compiler implements MessageConsumer {
     chainRings.add(new SetProgressListener(progressListener, 30));
 
     Map<String, Object> context = new HashMap<String, Object>();
-    context.put("source", sketch.getPrimaryCode().getProgram());
-    context.put("sketchName", sketch.getName());
+    context.put("sketch", sketch);
 
     for (PreprocessorChainRing ring : chainRings) {
       try {
