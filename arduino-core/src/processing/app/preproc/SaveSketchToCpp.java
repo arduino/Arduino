@@ -1,5 +1,8 @@
 package processing.app.preproc;
 
+import processing.app.SketchCode;
+import processing.app.SketchData;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -16,10 +19,10 @@ public class SaveSketchToCpp implements PreprocessorChainRing {
 
   @Override
   public void preprocess(Map<String, Object> context) throws Exception {
-    String sketchName = (String) context.get("sketchName");
+    SketchData sketch = (SketchData) context.get("sketch");
     String source = (String) context.get("source");
 
-    File sketchFile = new File(buildPath, sketchName + ".cpp");
+    File sketchFile = new File(buildPath, sketch.getName() + ".cpp");
     Writer writer = null;
     try {
       writer = new OutputStreamWriter(new FileOutputStream(sketchFile));
