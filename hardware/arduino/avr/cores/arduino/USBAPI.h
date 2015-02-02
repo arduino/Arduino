@@ -59,10 +59,12 @@ extern USBDevice_ USBDevice;
 
 struct ring_buffer;
 
+#ifndef SERIAL_BUFFER_SIZE
 #if (RAMEND < 1000)
 #define SERIAL_BUFFER_SIZE 16
 #else
 #define SERIAL_BUFFER_SIZE 64
+#endif
 #endif
 
 class Serial_ : public Stream
