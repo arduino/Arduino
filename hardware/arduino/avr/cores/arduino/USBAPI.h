@@ -66,6 +66,9 @@ struct ring_buffer;
 #define SERIAL_BUFFER_SIZE 64
 #endif
 #endif
+#if (SERIAL_BUFFER_SIZE>256)
+#error Please lower the CDC Buffer size
+#endif
 
 class Serial_ : public Stream
 {
