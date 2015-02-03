@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LIBRARIES="CogLCD aJson PubNub Temboo MQTTClient PubSubClient"
-ARCHES="msp430 lm4f cc3200"
+ARCHES="msp430 lm4f cc3200 secret"
 OSTYPE=`uname`
 
 if [[ "$OSTYPE" == "Linux" ]]; then
