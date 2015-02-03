@@ -112,12 +112,12 @@ public class Compiler implements MessageConsumer {
     }
 
     if (arch == "secret") {
-    	String commonBasePath = Base.getHardwarePath() + File.separator + 
-    			"secret" + File.separator + "cores" + File.separator + "secret" + File.separator;
+    	String commonBasePath = Base.getHardwarePath() + File.separator + "common";
         try {
             File makeVariables = new File(buildPath+File.separator+"Variables.mk");
             FileWriter fw = new FileWriter(makeVariables);
-            fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "secret" + File.separator + "gnu" + File.separator + "closure\n");
+            fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "common\n");
+            //fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "secret" + File.separator + "gnu" + File.separator + "closure\n");
             fw.write("SDKROOT ?= " + Base.getHardwarePath() + File.separator + "secret" + "/CC3200SDK_1.0.0.patch\n");
             fw.write("CCROOT  ?= " + Base.getHardwarePath() + File.separator + "tools" + File.separator + "lm4f\n");
             fw.write("MAINSKETCH  ?= " + primaryClassName + "\n");
