@@ -143,7 +143,7 @@
     </copy>
     
     <!-- download and unzip TI-RTOS closure -->
-    <antcall target="unzip-closure"/>
+    <!--<antcall target="unzip-closure"/>-->
 
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
