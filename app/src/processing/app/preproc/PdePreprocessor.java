@@ -368,7 +368,8 @@ public class PdePreprocessor {
 		int insertionPoint = content.indexOf("769d20fcd7a0eedaf64270f591438b01");
 		insertionPoint = content.indexOf("\n", insertionPoint) + 1;
 
-	    Pattern functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ll]oop(?=\\s*\\()");
+	    //Pattern functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ll]oop(?=\\s*\\()");
+	    Pattern functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[lL]oop\\w*)\\s*\\(\\s*(void)?\\s*\\)");
 
 	    // Find all functions and generate prototypes for them
 	    ArrayList<String> loopMatches = new ArrayList<String>();
@@ -376,16 +377,18 @@ public class PdePreprocessor {
 	    	    
 	    Matcher functionMatcher = functionPattern.matcher(in);
 	    while (functionMatcher.find()) {
-	      loopMatches.add(functionMatcher.group(0));
+	      loopMatches.add(functionMatcher.group(1));
 	    }
 
 	    
-	    functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ss]etup(?=\\s*\\()");
+	    //functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ss]etup(?=\\s*\\()");
+	    functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[sS]etup\\w*)\\s*\\(\\s*(void)?\\s*\\)");
 
 	    // Find all functions and generate prototypes for them
 	    functionMatcher = functionPattern.matcher(in);
+	    
 	    while (functionMatcher.find())
-	      setupMatches.add(functionMatcher.group(0));
+	      setupMatches.add(functionMatcher.group(1));
 
 	    if(setupMatches.size() != loopMatches.size()) {
 	    	System.out.print("The number of loop functions does not match the number of setup functions\n" +
