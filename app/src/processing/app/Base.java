@@ -261,6 +261,8 @@ public class Base {
     	targetLibDir = "hardware/c2000/";
     else if (Preferences.get("target").equals("cc3200")) 
     	targetLibDir = "hardware/cc3200/";
+    else if (Preferences.get("target").equals("secret")) 
+    	targetLibDir = "hardware/secret/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 
