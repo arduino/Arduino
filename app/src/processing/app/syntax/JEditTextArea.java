@@ -55,7 +55,6 @@ import processing.app.syntax.im.InputMethodSupport;
  *     + "}");</pre>
  *
  * @author Slava Pestov
- * @version $Id: JEditTextArea.java 6123 2010-02-16 21:43:44Z fry $
  */
 public class JEditTextArea extends JComponent
 {
@@ -87,6 +86,7 @@ public class JEditTextArea extends JComponent
 
     // Initialize some misc. stuff
     painter = new TextAreaPainter(this,defaults);
+    editorLineNumbers = new TextAreaLineNumbers(this,defaults);
     documentHandler = new DocumentHandler();
     eventListenerList = new EventListenerList();
     caretEvent = new MutableCaretEvent();
@@ -96,6 +96,7 @@ public class JEditTextArea extends JComponent
 
     // Initialize the GUI
     setLayout(new ScrollLayout());
+    add(LEFT, editorLineNumbers);
     add(CENTER, painter);
     add(RIGHT, vertical = new JScrollBar(JScrollBar.VERTICAL));
     add(BOTTOM, horizontal = new JScrollBar(JScrollBar.HORIZONTAL));
@@ -315,6 +316,14 @@ public class JEditTextArea extends JComponent
       horizontal.setUnitIncrement(charWidth);
       horizontal.setBlockIncrement(width / 2);
     }
+    updateLineNumbers();
+  }
+
+  private void updateLineNumbers() {
+    if (editorLineNumbers != null) {
+      editorLineNumbers.updateLineNumbers(getFirstLine() + 1, Math.min(getFirstLine() + getVisibleLines() + 1, getLineCount()));
+      editorLineNumbers.updateWidthForNumDigits(String.valueOf(getLineCount()).length());
+    }
   }
 
   /**
@@ -335,7 +344,7 @@ public class JEditTextArea extends JComponent
     if (firstLine != vertical.getValue()) {
       updateScrollBars();
     }
-    painter.repaint();
+    repaintEditor();
   }
 
   /**
@@ -377,7 +386,7 @@ public class JEditTextArea extends JComponent
     this.horizontalOffset = horizontalOffset;
     if(horizontalOffset != horizontal.getValue())
       updateScrollBars();
-    painter.repaint();
+    repaintEditor();
   }
 
   /**
@@ -407,12 +416,17 @@ public class JEditTextArea extends JComponent
     if(changed)
       {
         updateScrollBars();
-        painter.repaint();
+        repaintEditor();
       }
 
     return changed;
   }
 
+  private void repaintEditor() {
+    painter.repaint();
+    updateLineNumbers();
+  }
+  
   /**
    * Ensures that the caret is visible by scrolling the text area if
    * necessary.
@@ -732,7 +746,7 @@ public class JEditTextArea extends JComponent
 
     select(0, 0);
     updateScrollBars();
-    painter.repaint();
+    repaintEditor();
   }
 
 
@@ -753,7 +767,7 @@ public class JEditTextArea extends JComponent
     select(start, stop);
     updateScrollBars();
     setScrollPosition(scroll);
-    painter.repaint();
+    repaintEditor();
   }
 
 
@@ -790,7 +804,11 @@ public class JEditTextArea extends JComponent
    */
   public final int getLineCount()
   {
-    return document.getDefaultRootElement().getElementCount();
+    if (document != null) {
+      return document.getDefaultRootElement().getElementCount();
+    } else {
+      return 0;
+    }
   }
 
   /**
@@ -1151,7 +1169,11 @@ public class JEditTextArea extends JComponent
         newBias = true;
       }
 
-    if(newStart < 0 || newEnd > getDocumentLength())
+    if (newEnd > getDocumentLength()) {
+      newEnd = getDocumentLength();
+    }
+
+    if(newStart < 0)
       {
         throw new IllegalArgumentException("Bounds out of"
                                            + " range: " + newStart + "," +
@@ -1747,6 +1769,7 @@ public class JEditTextArea extends JComponent
   }
 
   // protected members
+  protected static String LEFT = "left";
   protected static String CENTER = "center";
   protected static String RIGHT = "right";
   protected static String BOTTOM = "bottom";
@@ -1755,6 +1778,7 @@ public class JEditTextArea extends JComponent
   protected static Timer caretTimer;
 
   protected TextAreaPainter painter;
+  protected TextAreaLineNumbers editorLineNumbers;
 
   //protected EditPopupMenu popup;
   protected JPopupMenu popup;
@@ -1881,7 +1905,9 @@ public class JEditTextArea extends JComponent
 
     public void addLayoutComponent(String name, Component comp)
     {
-      if(name.equals(CENTER))
+      if(name.equals(LEFT))
+        left = comp;
+      else if(name.equals(CENTER))
         center = comp;
       else if(name.equals(RIGHT))
         right = comp;
@@ -1893,6 +1919,8 @@ public class JEditTextArea extends JComponent
 
     public void removeLayoutComponent(Component comp)
     {
+      if(left == comp)
+        left = null;
       if(center == comp)
         center = null;
       if(right == comp)
@@ -1913,6 +1941,8 @@ public class JEditTextArea extends JComponent
       Dimension centerPref = center.getPreferredSize();
       dim.width += centerPref.width;
       dim.height += centerPref.height;
+      Dimension leftPref = left.getPreferredSize();
+      dim.width += leftPref.width;
       Dimension rightPref = right.getPreferredSize();
       dim.width += rightPref.width;
       Dimension bottomPref = bottom.getPreferredSize();
@@ -1931,6 +1961,8 @@ public class JEditTextArea extends JComponent
       Dimension centerPref = center.getMinimumSize();
       dim.width += centerPref.width;
       dim.height += centerPref.height;
+      Dimension leftPref = left.getMinimumSize();
+      dim.width += leftPref.width;
       Dimension rightPref = right.getMinimumSize();
       dim.width += rightPref.width;
       Dimension bottomPref = bottom.getMinimumSize();
@@ -1950,11 +1982,19 @@ public class JEditTextArea extends JComponent
       int ibottom = insets.bottom;
       int iright = insets.right;
 
+      int leftWidth = left.getSize().width;
       int rightWidth = right.getPreferredSize().width;
       int bottomHeight = bottom.getPreferredSize().height;
-      int centerWidth = size.width - rightWidth - ileft - iright;
+      int centerWidth = size.width - leftWidth - rightWidth - ileft - iright;
       int centerHeight = size.height - bottomHeight - itop - ibottom;
 
+      left.setBounds(ileft,
+                      itop,
+                      leftWidth,
+                      centerHeight);
+      
+      ileft += leftWidth;
+      
       center.setBounds(ileft, // + LEFT_EXTRA,
                        itop,
                        centerWidth, // - LEFT_EXTRA,
@@ -1984,6 +2024,7 @@ public class JEditTextArea extends JComponent
     }
 
     // private members
+    private Component left;
     private Component center;
     private Component right;
     private Component bottom;
@@ -1994,9 +2035,14 @@ public class JEditTextArea extends JComponent
   {
     public void actionPerformed(ActionEvent evt)
     {
-      if(focusedComponent != null
-         && focusedComponent.hasFocus())
-        focusedComponent.blinkCaret();
+      SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+          if(focusedComponent != null
+                  && focusedComponent.hasFocus())
+            focusedComponent.blinkCaret();
+        }
+      });
     }
   }
 
@@ -2394,5 +2440,9 @@ public class JEditTextArea extends JComponent
     caretTimer = new Timer(500,new CaretBlinker());
     caretTimer.setInitialDelay(500);
     caretTimer.start();
+  }
+
+  public void setDisplayLineNumbers(boolean displayLineNumbers) {
+    editorLineNumbers.setDisplayLineNumbers(displayLineNumbers);
   }
 }
