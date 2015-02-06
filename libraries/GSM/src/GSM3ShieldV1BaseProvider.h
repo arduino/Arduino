@@ -36,10 +36,11 @@ https://github.com/BlueVia/Official-Arduino
 
 #include <GSM3SoftSerial.h>
 
-enum GSM3_commandType_e { XON, NONE, MODEMCONFIG, ALIVETEST, BEGINSMS, ENDSMS, AVAILABLESMS, FLUSHSMS,
+enum GSM3_commandType_e { XON, GSM_NONE, MODEMCONFIG, ALIVETEST, BEGINSMS, ENDSMS, AVAILABLESMS, FLUSHSMS,
 	VOICECALL, ANSWERCALL, HANGCALL, RETRIEVECALLINGNUMBER, 
 	ATTACHGPRS, DETACHGPRS, CONNECTTCPCLIENT, DISCONNECTTCP, BEGINWRITESOCKET, ENDWRITESOCKET, 
-	AVAILABLESOCKET, FLUSHSOCKET, CONNECTSERVER, GETIP, GETCONNECTSTATUS, GETLOCATION, GETICCID}; 
+	AVAILABLESOCKET, FLUSHSOCKET, CONNECTSERVER, GETIP, GETCONNECTSTATUS, GETLOCATION, GETICCID, UPDATELOCATION,
+	GETPOWERDATA, GETIMEI}; 
 
 class GSM3ShieldV1BaseProvider
 {
@@ -60,7 +61,7 @@ class GSM3ShieldV1BaseProvider
 		@param from 		Initial byte of buffer
 		@param to 			Final byte of buffer
 	*/
-	virtual void manageResponse(byte from, byte to);
+	virtual void manageResponse(byte from, byte to){};
 	
 	/** Recognize URC
 		@param from		

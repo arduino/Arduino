@@ -36,13 +36,32 @@ https://github.com/BlueVia/Official-Arduino
 
 #include <Arduino.h>
 
+struct Cell
+{
+	char mcc[6];
+	char mnc[6];
+	char lac[6];
+	char cellId[8];
+	char dbm[6];
+};
+
 class GSM3MobileCellManagement
 {
 	public:
 		
-		virtual inline int getLocation() {return 0;};
+		virtual inline uint8_t updateLocation(bool) {return 0;};
 		
-		virtual inline int getICCID() {return 0;};
+		virtual inline int8_t getICCID() {return 0;};
+		
+		virtual inline int8_t getIMEI() {return 0;};
+		
+		virtual inline int8_t getPowerData() {return 0;};
+		
+		virtual inline Cell* getCells(){return NULL;};
+		
+		virtual inline bool getNeighboursActivated(){return 0;};
+		
+		virtual inline uint8_t getNumberCells(){return 0;};
 		
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error

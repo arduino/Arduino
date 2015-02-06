@@ -22,9 +22,9 @@ void GSM3ShieldV1MultiClientProvider::manageResponse(byte from, byte to)
 //					flagReadingSocket = 0;
 					fullBufferSocket = (theGSM3ShieldV1ModemCore.theBuffer().availableBytes()<3);
 				}
-			else theGSM3ShieldV1ModemCore.setOngoingCommand(NONE);
+			else theGSM3ShieldV1ModemCore.setOngoingCommand(GSM_NONE);
 			break;
-		case NONE:
+		case GSM_NONE:
 			theGSM3ShieldV1ModemCore.gss.cb.deleteToTheEnd(from);
 			break;
 		case CONNECTTCPCLIENT:

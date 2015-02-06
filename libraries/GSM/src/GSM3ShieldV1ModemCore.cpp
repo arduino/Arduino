@@ -12,9 +12,8 @@ GSM3ShieldV1ModemCore::GSM3ShieldV1ModemCore() : gss()
 	_dataInBufferTo=0;
 	commandError=1;
 	commandCounter=0;
-	ongoingCommand=NONE;
+	ongoingCommand=GSM_NONE;
 	takeMilliseconds();
-	
 	for(int i=0;i<UMPROVIDERS;i++)
 		UMProvider[i]=0;
 }
@@ -69,7 +68,7 @@ void GSM3ShieldV1ModemCore::closeCommand(int code)
 		theGSM3ShieldV1ModemCore.setStatus(ERROR);
 
 	setCommandError(code);
-	ongoingCommand=NONE;
+	ongoingCommand=GSM_NONE;
 	activeProvider=0;
 	commandCounter=1;
 }
@@ -107,6 +106,11 @@ void GSM3ShieldV1ModemCore::manageMsg(byte from, byte to)
 
 void GSM3ShieldV1ModemCore::manageReceivedData()
 {
+	// Para Galileo
+#ifdef __ARDUINO_X86__
+	gss.checkModemInput();
+#endif
+
 	if(_debug)
 	{
 /*		Serial.print(theBuffer().getHead());
@@ -184,11 +188,17 @@ size_t GSM3ShieldV1ModemCore::write(uint8_t c)
 
 unsigned long GSM3ShieldV1ModemCore::takeMilliseconds()
 {
+#ifndef __ARDUINO_X86__
 	unsigned long now=millis();
 	unsigned long delta;
 	delta=now-milliseconds;
 	milliseconds=now;
 	return delta;
+#else
+	return 0;
+#endif
+
+
 }
 
 void GSM3ShieldV1ModemCore::delayInsideInterrupt(unsigned long milliseconds)

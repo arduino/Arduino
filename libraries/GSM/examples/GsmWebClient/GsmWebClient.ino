@@ -23,7 +23,7 @@
 #define PINNUMBER ""
 
 // APN data
-#define GPRS_APN       "GPRS_APN" // replace your GPRS APN
+#define GPRS_APN       "gprs_apn" // replace your GPRS APN
 #define GPRS_LOGIN     "login"    // replace with your GPRS login
 #define GPRS_PASSWORD  "password" // replace with your GPRS password
 

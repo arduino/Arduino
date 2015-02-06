@@ -41,52 +41,128 @@ https://github.com/BlueVia/Official-Arduino
 class GSM3ShieldV1CellManagement : public GSM3MobileCellManagement, public GSM3ShieldV1BaseProvider
 {		
 	public:
-	
-		/** Constructor
+		
+		/** 
+			Constructor
 		*/
 		GSM3ShieldV1CellManagement();
 
-		/** Manages modem response
+		/** 
+			Manages modem response
+			
 			@param from 		Initial byte of buffer
 			@param to 			Final byte of buffer
 		 */
 		void manageResponse(byte from, byte to);
 		
-		/** getLocation
-		 @return current cell location
+		/**
+			Update cells attribute with the last information.
+		 
+			@param set if includes 1 to 6 neighbours or only current cell
+			@return number of cells included in cells attribute
 		*/		
-		int getLocation(char *country, char *network, char *area, char *cell);
+		uint8_t updateLocation(bool neighbours = false);
 		
-		/** getICCID
-		*/
-		int getICCID(char *iccid);
+		/**
+			Return the cells array pointer
+			
+			@return the pointer to cells struct
+		 */
+		Cell* getCells(){return cells;};
 		
-		/** Get last command status
+		/**
+			Return the cells array pointer
+			
+			@return the pointer to cells struct
+		 */
+		uint8_t getNumberCells(){return cellsLength;};
+		
+		/**
+			Return if neighbours mode is active
+			
+			@return true if neighbours mode was activated, false if was not
+		 */
+		bool getNeighboursActivated(){return neighboursActivated;};
+		
+		/**
+			getICCID
+		 */
+		int8_t getICCID(char *iccid);
+		
+		/**
+			getIMEI
+		 */
+		int8_t getIMEI(char *imei);
+		
+		/**
+			getPowerData
+		 */
+		int8_t getPowerData(char *info);
+		
+		/** 
+			Get last command status
+			
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		 */
 		int ready(){return GSM3ShieldV1BaseProvider::ready();};
 
 	private:	
 	
-		char *countryCode;
-		char *networkCode;
-		char *locationArea;
-		char *cellId;
+		// Location variables
+		uint8_t cellsLength;
+		Cell cells[7];
+		bool neighboursActivated;
 		
+		// Pointer to save ICCID
 		char *bufferICCID;
-	
-		/** Continue to getLocation function
-		 */
-		void getLocationContinue();
 		
-		/** Continue to getICCID function
+		// Pointer to save IMEI
+		char *bufferIMEI;
+		
+		// Pointer to save power data
+		char *powerData;
+	
+		/**
+			Continue to updateLocation function
+			
+			@param set if includes 1 to 6 neighbours or only current cell
+		 */
+		void updateLocationContinue();
+		
+		/**
+			Continue to getICCID function
 		 */
 		void getICCIDContinue();
 		
+		/**
+			Continue to getIMEI function
+		 */
+		void getIMEIContinue();
+		
+		/**
+			Continue to getPowerData function
+		 */
+		void getPowerDataContinue();
+		
+		/**
+			Parsers for AT commands
+		 */
 		bool parseQENG_available(bool& rsp);
-		
 		bool parseQCCID_available(bool& rsp);
+		bool parseGSN_available(bool& rsp);
+		bool parseCBC_available(bool& rsp);
 		
+		/**
+			Special parser for neighbours cells
+		 */
+		bool extractNeighbours(bool &rsp);
+		
+		/**
+			Special reader from buffer for neighbours response
+			
+			@return each character of buffer
+		 */
+		int readCompleteResponse();
 };
 
 #endif

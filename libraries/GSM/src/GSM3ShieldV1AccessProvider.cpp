@@ -57,7 +57,11 @@ GSM3_NetworkStatus_t GSM3ShieldV1AccessProvider::begin(char* pin, bool restart, 
 	{
 		// if we shorten this delay, the command fails
 		while(ready()==0) 
-			delay(1000); 
+		#ifdef __ARDUINO_X86__
+			delay(100);  // This could run with delay 1000, but as we use no interrupts it is slower
+		#else
+			delay(1000); // delay 100 makes the program fail, an answer from the modem is lost. Mistery.
+		#endif
 	}
 	return getStatus();
 }

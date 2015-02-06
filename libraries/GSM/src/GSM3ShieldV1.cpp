@@ -59,7 +59,7 @@ void GSM3ShieldV1::manageResponse(byte from, byte to)
 {
 	switch(theGSM3ShieldV1ModemCore.getOngoingCommand())
 	{
-		case NONE:
+		case GSM_NONE:
 			theGSM3ShieldV1ModemCore.gss.cb.deleteToTheEnd(from);
 			break;
 
