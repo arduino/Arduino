@@ -22,6 +22,10 @@
 /// * 		Fonts generated with MikroElektronika GLCD Font Creator 1.2.0.0
 /// @n		http://www.mikroe.com
 ///
+// 2015-02-07 Rei Vilo
+// Pins numbers instead of pins names
+
+
 // Core library - IDE-based
 #if defined(WIRING) // Wiring specific
 #include "Wiring.h"

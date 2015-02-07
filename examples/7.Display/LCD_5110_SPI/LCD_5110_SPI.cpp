@@ -15,25 +15,36 @@
 const uint8_t  _commandLCD = 0x00;
 const uint8_t  _dataLCD    = 0x01;
 
-#if defined(__MSP430G2553__) // LaunchPad MSP430G2553 specific
-LCD_5110_SPI::LCD_5110_SPI() {
-    LCD_5110_SPI(P2_2,    // Chip Select
-                 P2_3,    // Data/Command
-                 P1_0,    // Reset
-                 P2_1,    // Backlight
+// 2015-02-07 Rei Vilo
+// Pins numbers instead of pins names
+
+LCD_5110_SPI::LCD_5110_SPI() { // pins names in MSP430G2553
+    LCD_5110_SPI(10, // P2_2 Chip Select
+                 11, // P2_3 Data/Command
+                 2,  // P1_0 Reset
+                 9,  // P2_1 Backlight
                  PUSH2);   // Push Button 2
 }
-#elif defined(__LM4F120H5QR__) // StellarPad LM4F specific
-LCD_5110_SPI::LCD_5110_SPI() {
-    LCD_5110_SPI(PA_7,    // Chip Select
-                 PA_2,    // Data/Command
-                 PB_5,    // Reset
-                 PA_6,    // Backlight
-                 PUSH2);   // Push Button 2
-}
-#else
-#error Platform not supported
-#endif
+
+//#if defined(__MSP430G2553__) // LaunchPad MSP430G2553 specific
+//LCD_5110_SPI::LCD_5110_SPI() {
+//    LCD_5110_SPI(P2_2,    // Chip Select
+//                 P2_3,    // Data/Command
+//                 P1_0,    // Reset
+//                 P2_1,    // Backlight
+//                 PUSH2);   // Push Button 2
+//}
+//#elif defined(__LM4F120H5QR__) // StellarPad LM4F specific
+//LCD_5110_SPI::LCD_5110_SPI() {
+//    LCD_5110_SPI(PA_7,    // Chip Select
+//                 PA_2,    // Data/Command
+//                 PB_5,    // Reset
+//                 PA_6,    // Backlight
+//                 PUSH2);   // Push Button 2
+//}
+//#else
+//#error Platform not supported
+//#endif
 
 
 LCD_5110_SPI::LCD_5110_SPI(uint8_t pinChipSelect, uint8_t pinDataCommand, uint8_t pinReset, uint8_t pinBacklight, uint8_t pinPushButton) {
