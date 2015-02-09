@@ -25,6 +25,7 @@ package processing.app;
 
 import processing.app.debug.AvrdudeUploader;
 import processing.app.debug.MSP430Uploader;
+import processing.app.debug.DSLiteUploader;
 import processing.app.debug.LM4FUploader;
 import processing.app.debug.C2000Uploader;
 import processing.app.debug.CC3200Uploader;
@@ -1592,7 +1593,8 @@ public class Sketch {
     // that will bubble up to whomever called build().
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
-      if(Base.getArch() != "secret")
+      String arch = Base.getArch();
+      if(arch != "secret" && arch != "msp432")
     	size(buildPath, primaryClassName);
       return primaryClassName;
     }
@@ -1679,6 +1681,8 @@ public class Sketch {
     	uploader = new MSP430Uploader(editor);
     }else if (Base.getArch() == "lm4f"){
         uploader = new LM4FUploader();
+    }else if (Base.getArch() == "msp432"){
+        uploader = new DSLiteUploader();
     } else if(Base.getArch() == "c2000"){
     	uploader = new C2000Uploader();
     } else if(Base.getArch() == "cc3200" || Base.getArch() == "secret"){

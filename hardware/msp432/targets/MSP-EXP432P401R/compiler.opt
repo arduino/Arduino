@@ -1,0 +1,1 @@
+-mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mabi=aapcs -g         -Dxdc_target_types__="gnu/targets/arm/std.h" -Dxdc_target_name__=M4F -Dxdc_cfg__xheader__="\"configPkg/package/cfg/energia_pm4fg.h\""

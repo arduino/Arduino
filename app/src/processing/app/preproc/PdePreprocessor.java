@@ -126,7 +126,7 @@ public class PdePreprocessor {
 //      }
 //    }
 
-    if(Base.getArch() == "secret")
+    if(Base.getArch() == "secret" || Base.getArch() == "msp432")
     	writemain(program);
     
     prototypes = prototypes(program);
@@ -355,8 +355,8 @@ public class PdePreprocessor {
 	    
 	    String content = "";
 		try {
-			content = new Scanner(new File(Base.getHardwarePath() + File.separator + "secret" + 
-				File.separator + "cores" + File.separator + "secret" + File.separator + "main.template")).useDelimiter("\\Z").next();
+			content = new Scanner(new File(Base.getHardwarePath() + File.separator + Base.getArch() + 
+				File.separator + "cores" + File.separator + Base.getArch() + File.separator + "main.template")).useDelimiter("\\Z").next();
 		    //System.out.println(content);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

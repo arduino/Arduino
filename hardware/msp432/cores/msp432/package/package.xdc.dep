@@ -1,0 +1,53 @@
+clean::
+	$(RM) package/ti.msp432.runtime.wiring.sch
+	$(RM) package/.vers_g180
+	$(RM) package/.vers_r170
+	$(RM) package/.vers_b160
+	$(RM) package/.xdc-A54
+	$(RM) package/ti_msp432_runtime_wiring.java
+	$(RM) package/ti_msp432_runtime_wiring.class
+	$(RM) package/package_ti.msp432.runtime.wiring.c
+	$(RM) package/package.defs.h
+	$(RM) package/ti.msp432.runtime.wiring.ccs
+
+.interfaces: package/ti.msp432.runtime.wiring.sch package/.vers_g180 package/.vers_r170 package/.vers_b160 package/.xdc-A54 package/ti_msp432_runtime_wiring.java package/package_ti.msp432.runtime.wiring.c package/package.defs.h package/ti.msp432.runtime.wiring.ccs 
+package/package.xdc.inc: package/.vers_g180
+package/.vers_g180:
+package/package.xdc.inc: package/.vers_r170
+package/.vers_r170:
+package/package.xdc.inc: package/.vers_b160
+package/.vers_b160:
+
+.interfaces: 
+
+# schema include file dependencies
+package.xs:
+package/package.xdc.inc: package.xs
+
+# schema update dependencies
+package/package.xdc.inc: xdc/IPackage.xdc
+xdc/IPackage.xdc:
+vpath xdc/IPackage.xdc $(XPKGVPATH)
+
+ifneq (clean,$(MAKECMDGOALS))
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/tar.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/tar.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/intern/xsr/java/package.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/intern/xsr/java/package.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/global/java/package.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/global/java/package.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/spec/java/package.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/spec/java/package.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/ecj.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/ecj.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/antlr.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/antlr.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/js.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/shelf/java/js.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/intern/gen/java/package.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/intern/gen/java/package.jar
+/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/intern/cmd/java/package.jar:
+package/package.xdc.inc: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/intern/cmd/java/package.jar
+endif
+# goals for files generated during schema generation but unspecified by schema's pattern rule
+

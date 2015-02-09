@@ -72,6 +72,7 @@ public class Base {
     archMap.put("c2000", "c2000");
     archMap.put("cc3200", "cc3200");
     archMap.put("secret", "secret");
+    archMap.put("msp432", "msp432");
   }
   static Platform platform;
 
@@ -263,6 +264,8 @@ public class Base {
     	targetLibDir = "hardware/cc3200/";
     else if (Preferences.get("target").equals("secret")) 
     	targetLibDir = "hardware/secret/";
+    else if (Preferences.get("target").equals("msp432")) 
+    	targetLibDir = "hardware/msp432/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 

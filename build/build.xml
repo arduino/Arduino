@@ -245,6 +245,7 @@
     <target name="unzip-common-tools-mac" if="dep.common.default.ok" depends="download-common-tools-mac">
 	    <untar src="${build-dir}/tools-common.tar.bz2" dest="${common-tools-dest}" compression="bzip2" overwrite="false"/>
             <chmod file="macosx/work/Energia.app/Contents/Resources/Java/tools/common/bin/make" perm="755" />
+            <chmod file="macosx/work/Energia.app/Contents/Resources/Java/tools/common/DSLite/DebugServer/bin/DSLite" perm="755" />
     </target>
 
 

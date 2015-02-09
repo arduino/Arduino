@@ -33,6 +33,10 @@ $(info SDKROOT $(SDKROOT))
 $(info CLOSURE $(CLOSURE))
 $(info MAINSKETCH $(MAINSKETCH))
 
+ifeq ($(BUILD_DRVLIB),false)
+	DRV_LIB := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib/libdriverlib.a
+endif
+
 # Use the preprocessor to find the dependencies. What we are really after is what libraries the Sketch depends on
 define deps
 $(foreach SRC, $1, $(shell $(CC) $(MCU_FLAG) $(CCOPTS) -MM $(CPPFLAGS) $(SDK_INCS) $(CFG_INCS) $(SRC)))
@@ -101,7 +105,7 @@ CPPFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
 
-CPPFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DENERGIA=14
+CPPFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DENERGIA=14 $(MCU_FLAG) $(VFP)
 
 # define TI-RTOS and Energia wiring headers based on CLOSURE above
 CFG_INCS = -I "$(CLOSURE)" -I "$(CLOSURE)"
@@ -110,7 +114,7 @@ CFG_INCS = -I "$(CLOSURE)" -I "$(CLOSURE)"
 #    --cmd-file=...  - use the options defined in the specified file
 #    -g              - compile for debug
 #
-CCOPTS  = -Os @"$(CLOSURE)/compiler.opt" -g -D cc3200=1 -D CCWARE=1
+CCOPTS  = -Os @"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/compiler.opt"
 CC      = $(CCROOT)/bin/arm-none-eabi-gcc -c
 LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
@@ -157,7 +161,7 @@ all: $(MAINSKETCH).bin
 
 $(MAINSKETCH).elf: $(OBJ)
 	@echo armlink $(OBJ)
-	$(LINK) $(OBJ) -Wl,-T"$(CLOSURE)/linker.cmd" $(LD_FLAGS) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
+	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
 
 %.obj: %.cpp
 	@echo armcl $*.cpp

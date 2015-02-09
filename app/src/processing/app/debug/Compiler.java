@@ -111,18 +111,19 @@ public class Compiler implements MessageConsumer {
       }
     }
 
-    if (arch == "secret") {
+    if (arch == "secret" || arch == "msp432") {
     	String commonBasePath = Base.getHardwarePath() + File.separator + "common";
         try {
             File makeVariables = new File(buildPath+File.separator+"Variables.mk");
             FileWriter fw = new FileWriter(makeVariables);
             fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "common\n");
             //fw.write("CLOSURE ?= " + Base.getHardwarePath() + File.separator + "secret" + File.separator + "gnu" + File.separator + "closure\n");
-            fw.write("SDKROOT ?= " + Base.getHardwarePath() + File.separator + "secret" + "/CC3200SDK_1.0.0.patch\n");
+            fw.write("SDKROOT ?= " + Base.getHardwarePath() + File.separator + arch + "/CC3200SDK_1.0.0.patch\n");
             fw.write("CCROOT  ?= " + Base.getHardwarePath() + File.separator + "tools" + File.separator + "lm4f\n");
             fw.write("MAINSKETCH  ?= " + primaryClassName + "\n");
-            fw.write("BOARD=" + boardPreferences.get("build.hardware") +"\n");
-            fw.write("PLATFORM=" + Preferences.get("target") + "\n");
+            fw.write("BOARD ?=" + boardPreferences.get("build.hardware") +"\n");
+            fw.write("PLATFORM ?=" + Preferences.get("target") + "\n");
+            fw.write("BUILD_DRVLIB ?= " + Preferences.getBoolean("build.drvlib") + "\n");
 
             // Add all Sketch tabs that match the extension list to EXTRA_SOURCES
             List<String> allowedExtensions = Arrays.asList("c", "cpp", "S");
@@ -291,7 +292,7 @@ public class Compiler implements MessageConsumer {
       "rcs",
       runtimeLibraryName
     }));
-    } else if(arch == "lm4f" || arch == "cc3200" || arch == "secret") {
+    } else if(arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
       baseCommandAR = new ArrayList(Arrays.asList(new String[] { 
         basePath + "arm-none-eabi-ar",
         "rcs",
@@ -351,7 +352,7 @@ public class Compiler implements MessageConsumer {
         "-o",
         buildPath + File.separator + primaryClassName + ".elf"
       }));
-    }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") { 
+    }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
         "-Os",
@@ -432,7 +433,7 @@ public class Compiler implements MessageConsumer {
     }
 
     baseCommandLinker.add(runtimeLibraryName);
-    if(arch == "lm4f" || arch == "cc3200" || arch == "secret"){
+    if(arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432"){
       baseCommandLinker.add("-L" + buildPath);
       if(!Preferences.getBoolean("build.drvlib")) {
     	  String driverlib = corePath + File.separator + "driverlib" + File.separator + "libdriverlib.a";
@@ -497,7 +498,7 @@ public class Compiler implements MessageConsumer {
       "-O",
       "-R",
     }));
-    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
+    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-objcopy",
         "-O",
@@ -517,7 +518,7 @@ public class Compiler implements MessageConsumer {
 
     }
     List commandObjcopy;
-    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200") || (arch == "secret")) {
+    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200") || (arch == "secret") || (arch == "msp432")) {
       //nothing 
     } else {
         // 5. extract EEPROM data (from EEMEM directive) to .eep file.
@@ -537,7 +538,7 @@ public class Compiler implements MessageConsumer {
     // 6. build the .hex or .bin file
     sketch.setCompilingProgress(80);
     commandObjcopy = new ArrayList(baseCommandObjcopy);
-    if (arch == "lm4f" || arch == "cc3200" || arch == "secret"){
+    if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432"){
 	  	commandObjcopy.add(2, "binary");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
@@ -1063,7 +1064,7 @@ public class Compiler implements MessageConsumer {
         if(Preferences.getBoolean("build.debug"))
         	baseCommandCompiler.add("-g");
 
-    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
+    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
           "-c",
@@ -1171,7 +1172,7 @@ public class Compiler implements MessageConsumer {
       if(Preferences.getBoolean("build.debug"))
       	baseCommandCompiler.add("-g");
 
-      }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
+      }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
         "-c",
@@ -1288,7 +1289,7 @@ public class Compiler implements MessageConsumer {
       if(Preferences.getBoolean("build.debug"))
       	baseCommandCompilerCPP.add("-g");
     } 
-    else if (arch == "lm4f" || arch == "cc3200" || arch == "secret") {
+    else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
         baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-g++",
           "-c",

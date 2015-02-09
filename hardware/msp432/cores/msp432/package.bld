@@ -1,0 +1,48 @@
+/*
+ *  ======== package.bld ========
+ */
+var Platform = xdc.module("ti.platforms.emt432.Platform");
+var DLIBROOT = Platform.findDriverLib();
+print("  using DriverLib: " + DLIBROOT);
+
+Pkg.attrs.profile = "release";
+Pkg.attrs.exportAll = true;
+
+var TARGET = "ti.targets.arm.elf.M4F";
+
+var CCOPTS = "--gcc --diag_warning=225";
+
+var DEFS = "-D__MSP432P401R__=1";
+
+var INCS = '-I"' + DLIBROOT + '" '
+       + '-I"' + DLIBROOT + '/inc" '
+       + '-I"' + DLIBROOT + '/inc/CMSIS" '
+       + '-I"' + DLIBROOT + '/driverlib/MSP432P4xx"';
+
+var SRCS = getSources(".");
+
+for (var i = 0; i < Build.targets.length; i++) {
+    var targ = Build.targets[i];
+    if (targ.$name == TARGET) {
+        Pkg.addLibrary("lib/" + Pkg.name, targ, {
+            incs: INCS,
+            defs: DEFS,
+            copts: CCOPTS,
+            suffix: ".lib"
+        }).addObjects(SRCS);
+        break;
+    }
+}
+
+function getSources(dir)
+{
+    var result = [];
+    var list = java.io.File(dir).list();
+    for (var i = 0; i < list.length; i++) {
+        var file = String(list[i]);
+        if (file.match(/\.c$|\.cpp$/) && file[0] != '.') {
+            result.push(file);
+        }
+    }
+    return (result);
+}
