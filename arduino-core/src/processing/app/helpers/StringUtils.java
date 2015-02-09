@@ -26,4 +26,30 @@ public class StringUtils {
     String regex = pattern.replace("?", ".?").replace("*", ".*?");
     return input.matches(regex);
   }
+  
+  public static String findLastWord(String input){
+    
+    int pos = -1;
+    for (int i = 0; i < input.length(); i++) {
+      if(Character.isUpperCase(input.charAt(i))){
+        pos = i;
+      }
+    }
+    
+    if(pos > -1){
+      return input.substring(pos);
+    }else{
+      return null;
+    }
+    
+  }
+  
+  /**
+   * Cake the first character of a String lower case
+   */
+  public static String uncapitalize(String input){
+    String firstLetter = input.substring(0,1).toLowerCase();
+    String restLetters = input.substring(1);
+    return firstLetter + restLetters;
+  }
 }

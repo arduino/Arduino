@@ -2,9 +2,16 @@ package processing.app;
 
 import java.io.File;
 
+import javax.swing.Action;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
+import javax.swing.undo.UndoManager;
 
-public class SketchCodeDocument{
+import org.fife.ui.rtextarea.RTextArea;
+
+public class SketchCodeDocument implements SketchDocumentProvider, DocumentListener{
 
   private SketchCode code;
   private Document document;
@@ -12,7 +19,7 @@ public class SketchCodeDocument{
   // Undo Manager for this tab, each tab keeps track of their own Editor.undo
   // will be set to this object when this code is the tab that's currently the
   // front.
-  private LastUndoableEditAwareUndoManager undo = new LastUndoableEditAwareUndoManager();
+  private UndoManager undo;
 
   // saved positions from last time this tab was used
   private int selectionStart;
@@ -24,15 +31,15 @@ public class SketchCodeDocument{
     this.code.setMetadata(this);
   }
 
-  public SketchCodeDocument(File file) {
-    this.code = new SketchCode(file, this);
+  public SketchCodeDocument(BaseSketch sketch, File file) {
+    this.code = new SketchCode(sketch, file, this);
   }
 
-  public LastUndoableEditAwareUndoManager getUndo() {
+  public UndoManager getUndo() {
     return undo;
   }
 
-  public void setUndo(LastUndoableEditAwareUndoManager undo) {
+  public void setUndo(UndoManager undo) {
     this.undo = undo;
   }
 
@@ -74,6 +81,51 @@ public class SketchCodeDocument{
 
   public void setDocument(Document document) {
     this.document = document;
+    document.addDocumentListener(this);
+  }
+  
+  /**
+   * Check for changes in text.
+   * This use UndoManager actions to track if has modifications. 
+   */
+  private void checkModifiedState(){
+    if(undo != null){
+      
+      SwingUtilities.invokeLater(new Runnable() {
+        
+        @Override
+        public void run() {
+          // HACK: get menu state from RSyntaxTextArea
+          Action a = RTextArea.getAction(RTextArea.UNDO_ACTION);
+          if(a.isEnabled()){
+            code.setModified(true);
+          }else{
+            // TODO: need re-check libraries changes ??
+            code.setModified(false);
+          }
+        }
+      });
+    }else{
+      code.setModified(true);
+    }
   }
 
+  @Override
+  public void insertUpdate(DocumentEvent e) {
+    checkModifiedState();
+  }
+
+
+  @Override
+  public void removeUpdate(DocumentEvent e) {
+    checkModifiedState();
+  }
+
+
+  @Override
+  public void changedUpdate(DocumentEvent e) {
+     // Callback for when styles in the current document change.
+     // This method is never called.
+  }
+  
 }

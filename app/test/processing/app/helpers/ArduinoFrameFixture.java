@@ -1,10 +1,10 @@
 package processing.app.helpers;
 
+import java.awt.Frame;
+
 import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.FrameFixture;
-import processing.app.syntax.JEditTextArea;
-
-import java.awt.*;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 public class ArduinoFrameFixture extends FrameFixture {
 
@@ -24,7 +24,7 @@ public class ArduinoFrameFixture extends FrameFixture {
     super(name);
   }
 
-  public JEditTextAreaFixture jEditTextArea(String name) {
-    return new JEditTextAreaFixture(robot, (JEditTextArea) this.robot.finder().find(new JEditTextAreaComponentMatcher(name)));
+  public RSyntaxTextAreaFixture RSyntaxTextArea(String name) {
+    return new RSyntaxTextAreaFixture(robot, (RSyntaxTextArea) this.robot.finder().find(new RSyntaxTextAreaComponentMatcher(name)));
   }
 }

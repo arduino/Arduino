@@ -4,11 +4,13 @@ import static processing.app.I18n._;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+
+import processing.app.packages.Library;
+import processing.app.packages.LibraryList;
+import processing.app.preproc.PdePreprocessor;
+import br.com.criativasoft.cpluslibparser.LibraryCache;
+import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
 
 public class SketchData {
 
@@ -29,8 +31,22 @@ public class SketchData {
    * extension)
    */
   private String name;
+  
+  private BaseSketch sketch;
 
   private List<SketchCode> codes = new ArrayList<SketchCode>();
+  
+  /**
+   * List of library folders.
+   */
+  private LibraryList importedLibraries = new LibraryList();
+  
+  /** Sketch source metadata(classes, variables, functions), this is set in {@link SketchCompletionProvider#onLoadLibrary(TLibrary)} */
+  private TLibrary sketchMetadata;
+
+  /** Sketch and 'Libraries currently used' Metadata Cache - This is used by autocomplete */
+  private LibraryCache libraryCacheContext;
+  
 
   private static final Comparator<SketchCode> CODE_DOCS_COMPARATOR = new Comparator<SketchCode>() {
     @Override
@@ -38,7 +54,12 @@ public class SketchData {
       return x.getFileName().compareTo(y.getFileName());
     }
   };
-
+  
+  SketchData(BaseSketch sketch , File file) {
+    this(file);
+    this.sketch = sketch;
+  }
+    
   SketchData(File file) {
     primaryFile = file;
 
@@ -47,10 +68,15 @@ public class SketchData {
     String mainFilename = primaryFile.getName();
     int suffixLength = getDefaultExtension().length() + 1;
     name = mainFilename.substring(0, mainFilename.length() - suffixLength);
+    
+    libraryCacheContext = new LibraryCache();
+    libraryCacheContext.setName(name);
 
     folder = new File(file.getParent());
     //System.out.println("sketch dir is " + folder);
   }
+
+
 
   static public File checkSketchFile(File file) {
     // check to make sure that this .pde file is
@@ -123,7 +149,7 @@ public class SketchData {
           // Don't allow people to use files with invalid names, since on load,
           // it would be otherwise possible to sneak in nasty filenames. [0116]
           if (BaseNoGui.isSanitaryName(base)) {
-            addCode(new SketchCode(new File(folder, filename)));
+            addCode(new SketchCode(sketch, new File(folder, filename)));
           } else {
             System.err.println(I18n.format("File name {0} is invalid: ignored", filename));
           }
@@ -141,6 +167,19 @@ public class SketchData {
       if (code.getFile().equals(primaryFile)) {
         moveCodeToFront(code);
         break;
+      }
+    }
+    
+    // Find used libraries
+    for (SketchCode code : getCodes()) {
+      List<String> includes = PdePreprocessor.findIncludes(code.getProgram());
+      if(includes != null){
+        for (String include : includes) {
+          Library lib = BaseNoGui.importToLibraryTable.get(include);
+          if (lib != null && !importedLibraries.contains(lib)) {
+            importedLibraries.add(lib);
+          }
+        }
       }
     }
 
@@ -262,5 +301,27 @@ public class SketchData {
 
   public File getCodeFolder() {
     return codeFolder;
+  }
+  
+    public void setSketchMetadata(TLibrary sketchMetadata) {
+    this.sketchMetadata = sketchMetadata;
+  }
+  
+  public TLibrary getSketchMetadata() {
+    return sketchMetadata;
+  }
+  
+  public LibraryCache getLibraryCacheContext() {
+    return libraryCacheContext;
+  }
+  
+  public LibraryList getImportedLibraries() {
+    return importedLibraries;
+  }
+  
+  public void addLibrary(Library lib) {
+    if(lib != null){
+      importedLibraries.add(lib);
+    }
   }
 }

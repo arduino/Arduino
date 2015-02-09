@@ -24,58 +24,59 @@
 
 package processing.app.syntax;
 
-import processing.app.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+
+import processing.app.Base;
 import processing.app.legacy.PApplet;
 import processing.app.packages.Library;
 
-import java.io.*;
-import java.util.*;
 
 
-public class PdeKeywords extends CTokenMarker {
+public class PdeKeywords  {
 
-  // lookup table for the TokenMarker subclass, handles coloring
-  static KeywordMap keywordColoring;
-
-  // lookup table that maps keywords to their html reference pages
-  static Hashtable keywordToReference;
-
-
-  public PdeKeywords() {
-    super(false, getKeywords());
-  }
-
-
-  /**
-   * Handles loading of keywords file.
-   * <P>
-   * Uses getKeywords()  method because that's part of the
-   * TokenMarker classes.
-   * <P>
-   * It is recommended that a # sign be used for comments
-   * inside keywords.txt.
-   */
-  static public KeywordMap getKeywords() {
-    if (keywordColoring == null) {
-      try {
-        keywordColoring = new KeywordMap(false);
-        keywordToReference = new Hashtable();
-        getKeywords(Base.getLibStream("keywords.txt"));
-        for (Library lib : Base.getLibraries()) {
-          File keywords = new File(lib.getFolder(), "keywords.txt");
-          if (keywords.exists()) getKeywords(new FileInputStream(keywords));
-        }
-      } catch (Exception e) {
-        Base.showError("Problem loading keywords",
-                          "Could not load keywords.txt,\n" +
-                          "please re-install Arduino.", e);
-        System.exit(1);
-      }
-    }
-    return keywordColoring;
+  // Value is org.fife.ui.rsyntaxtextarea.TokenTypes
+  private static HashMap<String, Integer> keywords = new HashMap<String, Integer>();
+  
+  private static HashMap<String, String> keywordToReference = new HashMap<String, String>();
+  
+  
+  public static HashMap<String, Integer> reload(){
+    keywords.clear();
+    keywordToReference.clear();
+    return get();
   }
   
-  static private void getKeywords(InputStream input) throws Exception {
+  public static HashMap<String, Integer> get(){
+    
+    if(keywords.isEmpty()){
+       try {
+          load(Base.getLibStream("keywords.txt"));
+          if(Base.getLibraries() != null){
+            for (Library lib : Base.getLibraries()) {
+              File keywords = new File(lib.getFolder(), "keywords.txt");
+              if (keywords.exists()) load(new FileInputStream(keywords));
+            }
+          }
+        } catch (Exception e) {
+          Base.showError("Problem loading keywords",
+                            "Could not load keywords.txt,\n" +
+                            "please re-install Arduino.", e);
+          System.exit(1);
+        }
+    }
+    
+    return keywords;
+  }
+  
+  
+  static private void load(InputStream input) throws Exception {
     InputStreamReader isr = new InputStreamReader(input);
     BufferedReader reader = new BufferedReader(isr);
 
@@ -109,7 +110,35 @@ public class PdeKeywords extends CTokenMarker {
             ((isKey ? Token.KEYWORD1 : Token.LITERAL1) + num);
           //System.out.println("got " + (isKey ? "keyword" : "literal") +
           //                 (num+1) + " for " + keyword);
-          keywordColoring.add(keyword, id);
+          
+          int tokenType = TokenTypes.IDENTIFIER;
+          
+//          if("setup".equals(keyword) || "loop".equals(keyword) || "void".equals(keyword)  || "true".equals(keyword) ){
+//            System.out.println(keyword + " -> " + coloring);
+//          }
+          
+          switch (id) {
+          case Token.KEYWORD1: // Datatypes
+            tokenType = TokenTypes.VARIABLE;
+            break;
+          case Token.KEYWORD2: // Methods and Functions
+            tokenType = TokenTypes.FUNCTION;
+            break;
+          case Token.KEYWORD3: // Class
+            tokenType = TokenTypes.DATA_TYPE;
+            break;
+          case Token.LITERAL1: // Constants
+            tokenType = TokenTypes.PREPROCESSOR;
+            break;
+          default:
+            break;
+          }
+          
+          if("setup".equals(keyword) || "loop".equals(keyword)){
+            tokenType = TokenTypes.RESERVED_WORD;
+          }
+          
+          keywords.put(keyword, tokenType);
         }
         if (pieces.length >= 3) {
           String htmlFilename = pieces[2].trim();
@@ -121,9 +150,9 @@ public class PdeKeywords extends CTokenMarker {
     }
     reader.close();
   }
-
-
-  static public String getReference(String keyword) {
-    return (String) keywordToReference.get(keyword);
+  
+  public static String getReference(String keyword){
+    if(keywordToReference == null) return null;
+    return keywordToReference.get(keyword);
   }
 }
