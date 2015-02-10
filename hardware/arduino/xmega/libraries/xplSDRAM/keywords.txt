@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For xplSDRAM
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+xplSDRAM	KEYWORD1
+SDRAM	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+read		KEYWORD2
+readFar		KEYWORD2
+write		KEYWORD2
+writeFar	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

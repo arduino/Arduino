@@ -17,7 +17,7 @@
  * along with the Arduino SdFat Library.  If not, see
  * <http://www.gnu.org/licenses/>.
  */
-#if defined(__arm__) // Arduino Due Board follows
+#if defined(__arm__) || defined(__AVR_XMEGA__) // Arduino Due Board follows
 
 #ifndef Sd2PinMap_h
 #define Sd2PinMap_h

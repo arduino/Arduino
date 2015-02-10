@@ -646,6 +646,7 @@
     <exec executable="./linux/work/arduino" spawn="false"/>
   </target>
 
+
   <!-- Set '${dist_file}_available' property if toolchain dist_file is downloaded              -->
   <!-- Set '${dist_file}_installed' property if toolchain is installed in working directory    -->
   <!--                              hardware/tools/${dist_check_file} is checked for existence -->
@@ -888,7 +889,7 @@
   <target name="windows-dist" depends="windows-build"
 	  description="Create .zip files of windows version">
 
-    <get src="http://downloads.arduino.cc/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" skipexisting="true" />
+    <get src="http://downloads.arduino.cc/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" skipexisting="true" verbose="true" />
 
     <unzip dest="windows/work" src="windows/jre.zip" overwrite="false"/>
 
