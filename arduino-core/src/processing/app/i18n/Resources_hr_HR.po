@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2014-02-19 14:46+0000\n"
-"Last-Translator: cmaglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2015-01-14 17:10+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/projects/p/arduino-ide-15/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,6 +33,12 @@ msgstr "'Mouse' podrška dostupna samo na Arduino Leonardo-u"
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
 msgstr "(uređivanje je moguće dok Arduino nije pokrenut)"
+
+#: ../../../processing/app/Base.java:468
+msgid ""
+"--verbose, --verbose-upload and --verbose-build can only be used together "
+"with --verify or --upload"
+msgstr ""
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -92,12 +98,30 @@ msgstr "Dodaj datoteku..."
 msgid "Add Library..."
 msgstr "Dodavanje biblioteke..."
 
+#: ../../../processing/app/Preferences.java:96
+msgid "Albanian"
+msgstr "Albanian"
+
 #: tools/FixEncoding.java:77
 msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "POjavila se greska prilikom pokušaja popravka enkodinga.\nNemojte pokusati snimiti ovu skicu, jer će \nprepisati orginal. Iskoristite Otvori kako bi ste ponovno otvorili skicu.\n"
+
+#: ../../../processing/app/BaseNoGui.java:528
+msgid "An error occurred while uploading the sketch"
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:506
+#: ../../../processing/app/BaseNoGui.java:551
+#: ../../../processing/app/BaseNoGui.java:554
+msgid "An error occurred while verifying the sketch"
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:521
+msgid "An error occurred while verifying/uploading the sketch"
+msgstr ""
 
 #: Base.java:228
 msgid ""
@@ -139,6 +163,12 @@ msgstr "Arduino ARM (32-bitna) Pločica"
 msgid "Arduino AVR Boards"
 msgstr "Arduino AVR Pločica"
 
+#: Editor.java:2137
+msgid ""
+"Arduino can only open its own sketches\n"
+"and other files ending in .ino or .pde"
+msgstr ""
+
 #: Base.java:1682
 msgid ""
 "Arduino cannot run because it could not\n"
@@ -171,12 +201,40 @@ msgstr "Želiš li sigurno obrisati \"{0}\"?"
 msgid "Are you sure you want to delete this sketch?"
 msgstr "Želiš li sigurno obrisati skicu?"
 
+#: ../../../processing/app/Base.java:356
+msgid "Argument required for --board"
+msgstr "Potreban argument za --board"
+
+#: ../../../processing/app/Base.java:370
+msgid "Argument required for --curdir"
+msgstr "Potreban argument za --curdir"
+
+#: ../../../processing/app/Base.java:385
+msgid "Argument required for --get-pref"
+msgstr ""
+
+#: ../../../processing/app/Base.java:363
+msgid "Argument required for --port"
+msgstr "Potreban argument za --port"
+
+#: ../../../processing/app/Base.java:377
+msgid "Argument required for --pref"
+msgstr "Potreban argument za --pref"
+
+#: ../../../processing/app/Base.java:384
+msgid "Argument required for --preferences-file"
+msgstr "Potreban argument za --preferences-file"
+
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr ""
+msgstr "Armenian"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
+msgstr "Asturian"
+
+#: ../../../processing/app/debug/Compiler.java:145
+msgid "Authorization required"
 msgstr ""
 
 #: tools/AutoFormat.java:91
@@ -220,9 +278,17 @@ msgstr "Greška u liniji: {0}"
 msgid "Bad file selected"
 msgstr "Pogrešno odabrana datoteka"
 
+#: ../../../processing/app/debug/Compiler.java:89
+msgid "Bad sketch primary file or bad sketch directory structure"
+msgstr ""
+
+#: ../../../processing/app/Preferences.java:149
+msgid "Basque"
+msgstr "Basque"
+
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "Belarusian"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -234,15 +300,15 @@ msgstr "Pločica"
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "Ploča {0}:{1}:{2} ne definira ''build.board'' postavke. Auto-podešavanje na: {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr ""
+msgstr "Ploča: "
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnian"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
@@ -256,13 +322,17 @@ msgstr "Pregledaj"
 msgid "Build folder disappeared or could not be written"
 msgstr "Mapa za kompajliranje je nestala ili se u nju nemože zapisivati"
 
+#: ../../../processing/app/Sketch.java:1530
+msgid "Build options changed, rebuilding all"
+msgstr "Opcije konstrukcije izmjenjene, rekonstrukcija svega"
+
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "Burmese (Myanmar)"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
@@ -272,9 +342,15 @@ msgstr "Zapiši Bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Zapisivanje bootloadera na I/O pločicu (ovo će potrajati nekoliko minuta)..."
 
-#: ../../../processing/app/Base.java:368
-msgid "Can't open source sketch!"
-msgstr "Nemogu otvoriti skicu!"
+#: ../../../processing/app/Base.java:379
+#, java-format
+msgid "Can only pass one of: {0}"
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:504
+#: ../../../processing/app/BaseNoGui.java:549
+msgid "Can't find the sketch in the specified path"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -288,6 +364,10 @@ msgstr "Prekini"
 #: Sketch.java:455
 msgid "Cannot Rename"
 msgstr "Nemogu preimenovati"
+
+#: ../../../processing/app/Base.java:465
+msgid "Cannot specify any sketch files"
+msgstr ""
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -303,19 +383,19 @@ msgstr "Provjeri promjene pri pokretanju"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Chinese (China)"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (Hong Kong)"
-msgstr ""
+msgstr "Chinese (Hong Kong)"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Chinese (Taiwan)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr ""
+msgstr "Chinese (Taiwan) (Big5)"
 
 #: Preferences.java:88
 msgid "Chinese Simplified"
@@ -333,14 +413,9 @@ msgstr "Zatvori"
 msgid "Comment/Uncomment"
 msgstr "Komentiraj/odkomentiraj"
 
-#: debug/Compiler.java:49 debug/Uploader.java:45
-#, java-format
-msgid "Compiler error, please submit this code to {0}"
-msgstr "Greška kompajlera, molimo prijavite taj kod na {0}"
-
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
-msgstr "Kompajliranje skice..."
+msgstr "Prevođenje skice..."
 
 #: EditorConsole.java:152
 msgid "Console Error"
@@ -356,7 +431,7 @@ msgstr "Kopiraj kao HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr ""
+msgstr "Kopiranje poruke o grešci"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -397,17 +472,17 @@ msgstr "Nemogu obrisati {0}"
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
 msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
-msgstr ""
+msgstr "Nije moguče naći boards.txt u {0}. Da li je verzija prije -1.5?"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
 #, java-format
 msgid "Could not find tool {0}"
-msgstr ""
+msgstr "Nije moguće naći alat {0}"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
 #, java-format
 msgid "Could not find tool {0} from package {1}"
-msgstr ""
+msgstr "Nije moguće naći alat {0} iz paketa {1}"
 
 #: Base.java:1934
 #, java-format
@@ -437,7 +512,7 @@ msgstr "Nemogu ponovno pohraniti skicu."
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "Nemože se pročitati definicija boja.\nPotrebno je ponovna instalacija Arduino-a."
+msgstr ""
 
 #: Preferences.java:219
 msgid ""
@@ -445,10 +520,9 @@ msgid ""
 "You'll need to reinstall Arduino."
 msgstr "Nemogu pročitati osnovne postavke.\nPotrebno je ponovno instalirati Arduino."
 
-#: Preferences.java:258
-#, java-format
-msgid "Could not read preferences from {0}"
-msgstr "Nemogu pročitati preporučene vrijednost iz {0}"
+#: ../../../processing/app/Sketch.java:1525
+msgid "Could not read prevous build preferences file, rebuilding all"
+msgstr "Ne mogu se pročitati datoteka prethodnih postavki konstrukcije, rekonstrukcija svega"
 
 #: Base.java:2482
 #, java-format
@@ -476,6 +550,10 @@ msgstr "Nemogu preimenovati skicu.(2)"
 #, java-format
 msgid "Could not replace {0}"
 msgstr "Nemogu zamjeniti {0}"
+
+#: ../../../processing/app/Sketch.java:1579
+msgid "Could not write build preferences file"
+msgstr "Ne može se upisivati u datoteku postavki konstrukcije"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -532,7 +610,7 @@ msgstr "Odbaci sve promjene i ponovno učitaj skicu ?"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr ""
+msgstr "Prikaži brojeve linija"
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -546,6 +624,11 @@ msgstr "Pohranjivanje završilo."
 msgid "Done burning bootloader."
 msgstr "Završilo zapisivanje bootloadera."
 
+#: ../../../processing/app/BaseNoGui.java:507
+#: ../../../processing/app/BaseNoGui.java:552
+msgid "Done compiling"
+msgstr ""
+
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
 msgstr "Kompajliranje zavrseno."
@@ -553,6 +636,10 @@ msgstr "Kompajliranje zavrseno."
 #: Editor.java:2564
 msgid "Done printing."
 msgstr "Tiskanje završeno."
+
+#: ../../../processing/app/BaseNoGui.java:514
+msgid "Done uploading"
+msgstr ""
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -564,7 +651,7 @@ msgstr "Dutch"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "Dutch (Netherlands)"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -584,7 +671,7 @@ msgstr "English"
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "English (United Kingdom)"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -615,14 +702,14 @@ msgstr "Greška na Serial.{0}()"
 
 #: ../../../processing/app/Base.java:1232
 msgid "Error loading libraries"
-msgstr ""
+msgstr "Greška očitavanja ˙biblioteka"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
 #, java-format
 msgid "Error loading {0}"
-msgstr ""
+msgstr "Greška očitavanja ˙{0}"
 
 #: Serial.java:181
 #, java-format
@@ -642,7 +729,7 @@ msgstr "Greška pri čitanju datoteke s preporučenim vrijednostima. Obriši (il
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "Greška pokretanja metode pronalaženja: "
 
 #: Serial.java:125
 #, java-format
@@ -655,6 +742,10 @@ msgstr "Greska pri zapisu bootloadera."
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
+msgstr "Greška kod programiranja bootloader-a: nedostaje '{0}' konfiguracijski parametar"
+
+#: ../../../../../app/src/processing/app/Editor.java:1940
+msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
 #: SketchCode.java:83
@@ -666,9 +757,23 @@ msgstr "Greška pri učitavanju koda {0}"
 msgid "Error while printing."
 msgstr "Greška pri tiskanju."
 
+#: ../../../processing/app/BaseNoGui.java:528
+msgid "Error while uploading"
+msgstr ""
+
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
+msgstr "Greška prilikom prebacivanja: nedostaje '{0}' konfiguracijski parametar"
+
+#: ../../../processing/app/BaseNoGui.java:506
+#: ../../../processing/app/BaseNoGui.java:551
+#: ../../../processing/app/BaseNoGui.java:554
+msgid "Error while verifying"
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:521
+msgid "Error while verifying/uploading"
 msgstr ""
 
 #: Preferences.java:93
@@ -677,7 +782,7 @@ msgstr "Estonian"
 
 #: ../../../processing/app/Preferences.java:146
 msgid "Estonian (Estonia)"
-msgstr ""
+msgstr "Estonian (Estonia)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -690,6 +795,11 @@ msgstr "Prekinuto exportiranje, potrebno je prvo pohraniti promjene."
 #: Base.java:2100
 msgid "FAQ.html"
 msgstr "FAQ.html"
+
+#: ../../../processing/app/Base.java:416
+#, java-format
+msgid "Failed to open sketch: \"{0}\""
+msgstr "Greška otvaranja skice: \"{0}\""
 
 #: Editor.java:491
 msgid "File"
@@ -725,7 +835,7 @@ msgstr "Pronađi:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
-msgstr ""
+msgstr "Finnish"
 
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
@@ -738,9 +848,10 @@ msgid ""
 "http://arduino.cc/en/Guide/Libraries\n"
 msgstr "Informacije o instalaciji dodatnih biblioteka su na: http://arduino.cc/en/Guide/Libraries\n"
 
-#: debug/BasicUploader.java:80
-msgid "Forcing reset using 1200bps open/close on port "
-msgstr "Pokušaj ponovnog pokretanja korištenjem 1200bps"
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
+#, java-format
+msgid "Forcing reset using 1200bps open/close on port {0}"
+msgstr ""
 
 #: Preferences.java:95
 msgid "French"
@@ -771,12 +882,12 @@ msgstr "Krenimo od poćetka"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr ""
+msgstr "Globalne promjenjljive koriste {0} bajtova ({2}%%) RAM-a, ostalo je {3} bajtova za lokalne promjenjljive. Maximim je {1} bajtova."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr ""
+msgstr "Globalne promjenjljive koriste {0} bajtova RAM-a"
 
 #: Preferences.java:98
 msgid "Greek"
@@ -849,7 +960,7 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr ""
+msgstr "In Arduino 1.0, osnovna ektenzija je izmjenjena\niz .pde u .ino. Nove skice (uključujuči tek kreirane\nsa \"Pohrani kao\") će korisiti novu ekstenziju. \nEkstenzije postojećih skica će biti ažururane kod pohranjivanja,\nali i to možete zabraniti u dijalogu postavki,\n\nPohraniti skicu i ažurirati ekstenziju?"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -862,7 +973,7 @@ msgstr "Indonesian"
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr ""
+msgstr "Neispravna biblioteka u  {0}: {1}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -888,8 +999,8 @@ msgstr "Biblioteka dodana na popis biblioteka. Provjeri \"Uključi biblioteku\" 
 msgid "Lithuaninan"
 msgstr "Lithuaninan"
 
-#: ../../../processing/app/Sketch.java:1660
-msgid "Low memory available, stability problems may occur"
+#: ../../../processing/app/Sketch.java:1684
+msgid "Low memory available, stability problems may occur."
 msgstr ""
 
 #: Preferences.java:107
@@ -902,6 +1013,10 @@ msgstr "Poruka"
 
 #: ../../../processing/app/preproc/PdePreprocessor.java:412
 msgid "Missing the */ from the end of a /* comment */"
+msgstr "Nedostaje */ na kraju bloka /* komentar */"
+
+#: ../../../processing/app/BaseNoGui.java:455
+msgid "Mode not supported"
 msgstr ""
 
 #: Preferences.java:449
@@ -912,17 +1027,29 @@ msgstr "Više preporučenih vrijednosti moguće je promjeniti direktno uređivan
 msgid "Moving"
 msgstr "Pomakni"
 
+#: ../../../processing/app/BaseNoGui.java:484
+msgid "Multiple files not supported"
+msgstr ""
+
+#: ../../../processing/app/Base.java:395
+msgid "Must specify exactly one sketch file"
+msgstr "Mora se navesti samo jedna datoteka skica"
+
+#: ../../../processing/app/Preferences.java:158
+msgid "N'Ko"
+msgstr "N'Ko"
+
 #: Sketch.java:282
 msgid "Name for new file:"
 msgstr "Naziv nove datoteke:"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
-msgstr ""
+msgstr "Nepali"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr ""
+msgstr "Mrežno prebacivanje uporabom programatora nije moguće"
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
@@ -948,6 +1075,10 @@ msgstr "Slijedeća kartica"
 msgid "No"
 msgstr "Ne"
 
+#: ../../../processing/app/debug/Compiler.java:146
+msgid "No athorization data found"
+msgstr ""
+
 #: debug/Compiler.java:126
 msgid "No board selected; please choose a board from the Tools > Board menu."
 msgstr "Nije odabrana niti jedna pločica; odaberite plčicu iz Alati> Pločica izbornika."
@@ -955,6 +1086,10 @@ msgstr "Nije odabrana niti jedna pločica; odaberite plčicu iz Alati> Pločica 
 #: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
 msgid "No changes necessary for Auto Format."
 msgstr "Nema promjena nakon auto formatiranja."
+
+#: ../../../processing/app/BaseNoGui.java:665
+msgid "No command line parameters found"
+msgstr ""
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -968,6 +1103,10 @@ msgstr "Ne postoji aplikacija za pokretanje"
 msgid "No line ending"
 msgstr "Bez znaka za završetak linije"
 
+#: ../../../processing/app/BaseNoGui.java:665
+msgid "No parameters"
+msgstr ""
+
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
 msgstr "Stvarno ? Vrijeme je za malo svježeg zraka."
@@ -977,14 +1116,27 @@ msgstr "Stvarno ? Vrijeme je za malo svježeg zraka."
 msgid "No reference available for \"{0}\""
 msgstr "Ne postoji referenca za \"{0}\""
 
+#: ../../../processing/app/BaseNoGui.java:504
+#: ../../../processing/app/BaseNoGui.java:549
+msgid "No sketch"
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:428
+msgid "No sketchbook"
+msgstr ""
+
+#: ../../../processing/app/Sketch.java:204
+msgid "No valid code files found"
+msgstr "Nije pronađena valjana datoteka koda"
+
 #: ../../../processing/app/Base.java:309
 msgid "No valid configured cores found! Exiting..."
-msgstr ""
+msgstr "Nije pronađena valida osnova. Izlazak..."
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
-msgstr ""
+msgstr "Nije pronađena definicija hardwera u mapi {0}."
 
 #: Base.java:191
 msgid "Non-fatal error while setting the Look & Feel."
@@ -1002,7 +1154,7 @@ msgstr "Norwegian Bokmål"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr ""
+msgstr "Nema dovoljno memorije; vidi http://www.arduino.cc/en/Guide/Troubleshooting#size za savjete kako smanjiti program."
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1012,6 +1164,10 @@ msgstr "OK"
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
 msgstr "Jedna datoteka dodana u skicu."
+
+#: ../../../processing/app/BaseNoGui.java:455
+msgid "Only --verify, --upload or --get-pref are supported"
+msgstr ""
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1039,7 +1195,7 @@ msgstr "Postavke stranice"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
-msgstr ""
+msgstr "Lozinka:"
 
 #: Editor.java:1189 Editor.java:2731
 msgid "Paste"
@@ -1049,13 +1205,26 @@ msgstr "Zaljepi"
 msgid "Persian"
 msgstr "Persian"
 
+#: ../../../processing/app/Preferences.java:161
+msgid "Persian (Iran)"
+msgstr "Persian (Iran)"
+
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
 msgstr "Molimo uključite SPI biblioteku s Skica > Uključi biblioteku izbornika."
 
+#: ../../../processing/app/debug/Compiler.java:529
+msgid "Please import the Wire library from the Sketch > Import Library menu."
+msgstr "Molim vas uvezite \"Wire\" bilblioteku iz izbornika \"Skica > Uvoz biblioteke\""
+
 #: Base.java:239
 msgid "Please install JDK 1.5 or later"
 msgstr "Molim instalirajte JDK 1.5 ili veći"
+
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
+#: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
+msgid "Please select a programmer from Tools->Programmer menu"
+msgstr ""
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1063,19 +1232,19 @@ msgstr "Polish"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr ""
+msgstr "Portugese"
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Portuguese (Brazil)"
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr ""
+msgstr "Portuguese (Portugal)"
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
@@ -1115,11 +1284,11 @@ msgstr "Greška pri postavljanju platforme"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr ""
+msgstr "Problem pri pristupu mapi ploče /www/sd"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
 msgid "Problem accessing files in folder "
-msgstr ""
+msgstr "Problem pri pristupu datotekama u mapi"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1139,12 +1308,6 @@ msgstr "Problem prijenosa na pločicu. vidi http://www.arduino.cc/en/Guide/Troub
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
 msgstr "Problem s preimenovanjem"
-
-#: Editor.java:2137
-msgid ""
-"Arduino can only open its own sketches\n"
-"and other files ending in .ino or .pde"
-msgstr "Arduino može pokrenuti samo vlastitu skicu\ni druge datoteke s sufiksom .ino ili .pde"
 
 #: ../../../processing/app/I18n.java:86
 msgid "Processor"
@@ -1225,9 +1388,17 @@ msgstr "Snimiti promjene u \"{0}\"?"
 msgid "Save sketch folder as..."
 msgstr "Snimi skicu u mapu kao ..."
 
+#: ../../../../../app/src/processing/app/Preferences.java:425
+msgid "Save when verifying or uploading"
+msgstr ""
+
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
 msgstr "Pohranjivanje..."
+
+#: ../../../processing/app/FindReplace.java:131
+msgid "Search all Sketch Tabs"
+msgstr ""
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1251,7 +1422,7 @@ msgstr "Odaberi novu lokaciju za bilježnicu s skicama"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr ""
+msgstr "Izabrana ploča zavisi od '{0}' osnove (nije instalirana)"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1260,20 +1431,6 @@ msgstr "Pošalji"
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Serial Monitor"
-
-#: Serial.java:174
-#, java-format
-msgid ""
-"Serial port ''{0}'' already in use. Try quiting any programs that may be "
-"using it."
-msgstr "Serijski port \"{0}\" se već koristi. Pokušajte s zaustavljanjem programa koji ga koriste."
-
-#: Serial.java:121
-#, java-format
-msgid ""
-"Serial port ''{0}'' already in use. Try quitting any programs that may be "
-"using it."
-msgstr "Serijski port \"{0}\" se već koristi. Pokušajte s zaustavljanjem programa koji ga koriste."
 
 #: Serial.java:194
 #, java-format
@@ -1299,7 +1456,7 @@ msgstr "Prikaži mapu s skicama"
 
 #: ../../../processing/app/EditorStatus.java:468
 msgid "Show verbose output during compilation"
-msgstr ""
+msgstr "Prikaži opširne poruke prilikom prevođenja"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1340,7 +1497,7 @@ msgstr "Skica je prevelika: vidi http://www.arduino.cc/en/Guide/Troubleshooting#
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr ""
+msgstr "Skica koristi {0} bytes ({2}%%) od prostora za program. Maximum je  {1} bajtova."
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1354,13 +1511,17 @@ msgstr "Nestala je mapa s biljznicam s skicama"
 msgid "Sketchbook location:"
 msgstr "Lokacija skica:"
 
+#: ../../../processing/app/BaseNoGui.java:428
+msgid "Sketchbook path not defined"
+msgstr ""
+
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
-msgstr ""
+msgstr "Skice (*.ino, *.pde)"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovenian"
 
 #: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
 msgid ""
@@ -1390,7 +1551,7 @@ msgstr "Sunčeve zrake"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr ""
+msgstr "Swedish"
 
 #: Preferences.java:84
 msgid "System Default"
@@ -1403,6 +1564,10 @@ msgstr "Tamil"
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "'BYTE' klučna riječ se višew ne koristi."
+
+#: ../../../processing/app/BaseNoGui.java:484
+msgid "The --upload option supports only one file at a time"
+msgstr ""
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1471,12 +1636,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Mapa s skicama je nestala.\nPokušat ću pohraniti kod skice, \nno sve izvan toga će biti izgubljeno."
 
-#: Sketch.java:2018
+#: ../../../processing/app/Sketch.java:2028
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
 "of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less less than 64 characters long."
-msgstr "Naziv skice se mora promjeniti. Naziv skice može sadržavati\nsamo ASCII znakove i brojeve (no nemože započeti brojem).\nTakođer naziv treba biti manji od 64 znaka."
+"They should also be less than 64 characters long."
+msgstr "Naziv skice se mora izmijeniti.  Nazivi skica mogu samo sadržavati\nASCII karaktere  i brojeve (ali ne mogu  počinjati s brojem).\nTakođe moraju biti kraći od 64 karaktera."
 
 #: Base.java:259
 msgid ""
@@ -1487,6 +1652,12 @@ msgid ""
 "himself in the third person."
 msgstr "Mapa s bilježnicama s skicama više ne postoji.\nArduino će poćet koristiti sistemsku lokaciju kako bi kreirao\nnovu bilježnicu s skicama, ako bude potrebna."
 
+#: ../../../processing/app/debug/Compiler.java:201
+msgid ""
+"Third-party platform.txt does not define compiler.path. Please report this "
+"to the third-party hardware maintainer."
+msgstr ""
+
 #: Sketch.java:1075
 msgid ""
 "This file has already been copied to the\n"
@@ -1496,7 +1667,7 @@ msgstr "Datoteka je vć kopirana na\nmjesto"
 
 #: ../../../processing/app/EditorStatus.java:467
 msgid "This report would have more information with"
-msgstr ""
+msgstr "Ovo izvješće imaće više informacija sa"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -1516,11 +1687,11 @@ msgstr "Turkish"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
-msgstr ""
+msgstr "Unesite lozinku ploče za pristup konzoli"
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr ""
+msgstr "Unesite lozinku ploče da se prebaci nava skica"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
@@ -1529,19 +1700,19 @@ msgstr "Ukrainian"
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr ""
+msgstr "Nije moguča konekcija: dali skica koristi bridge?"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
-msgstr ""
+msgstr "Nima konekcije: ponovni pokušaj"
 
 #: ../../../processing/app/Editor.java:2526
 msgid "Unable to connect: wrong password?"
-msgstr ""
+msgstr "Nije moguča konekcija: pogrešna lozinka?"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr ""
+msgstr "Ne može se otvoriti prozor serijske komunikacije"
 
 #: Sketch.java:1432
 #, java-format
@@ -1581,7 +1752,7 @@ msgstr "Prenošenje prekinuto."
 
 #: ../../../processing/app/Sketch.java:1678
 msgid "Upload cancelled"
-msgstr ""
+msgstr "Prenos prekinut!"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
@@ -1602,12 +1773,12 @@ msgstr "Korištenje vanjskog editora"
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
 msgid "Using library {0} in folder: {1} {2}"
-msgstr ""
+msgstr "Upotreba biblioteke {0} u mapi: {1}{2}"
 
 #: ../../../processing/app/debug/Compiler.java:320
 #, java-format
 msgid "Using previously compiled file: {0}"
-msgstr ""
+msgstr "Upotreba prethodno kompajlirane datoteke: {0}"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
@@ -1623,11 +1794,18 @@ msgstr "Provjera koda nakon prijenosa"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamese"
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
 msgstr "Posjeti Arduino.cc"
+
+#: ../../../processing/app/debug/Compiler.java:115
+#, java-format
+msgid ""
+"WARNING: library {0} claims to run on {1} architecture(s) and may be "
+"incompatible with your current board which runs on {2} architecture(s)."
+msgstr "UPOZORENJE: biblioteka {0} je pisana za izvršavanje na {1} arhitekturi(ama), i može biti nekompatibilna sa tekućom pločom koja je bazirana {2} arhitekturi(ima)."
 
 #: Base.java:2128
 msgid "Warning"
@@ -1688,7 +1866,7 @@ msgstr "Zaboravili ste mapu s skicama"
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr ""
+msgstr "Pritisnuli ste {0}, ali ništa nije poslano. Da li ste izabrali kraj linije?"
 
 #: Base.java:536
 msgid ""
@@ -1713,10 +1891,10 @@ msgstr "\".{0}\" nije valjana ekstenzija."
 #, java-format
 msgid ""
 "\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & "
-"Reload to updatethe sketch to use UTF-8 encoding. If not, you may need "
-"todelete the bad characters to get rid of this warning."
-msgstr "\"{0}\" sadrži nepoznate znakove. Ako je ovaj kod napravljen s starijom verzijom alata, potrebno je upotrijebiti Alati -> Popravi enkoding i ponovno učitaj kako bi se popravila skica i upotrijebio UTF-8 enkoding. Ako to nije slučaj potrebno je ručno popraviti znakove, kako bi se izbjeglo ovo upozorenje."
+"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
+"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
+" bad characters to get rid of this warning."
+msgstr ""
 
 #: debug/Compiler.java:409
 msgid ""
@@ -1779,7 +1957,7 @@ msgstr "kompajliranje"
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
+msgstr "spojeno!"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
@@ -1787,7 +1965,7 @@ msgstr "createNewFile() vratio je false"
 
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
-msgstr ""
+msgstr "omogućeno  u  File > Preferences."
 
 #: Base.java:2090
 msgid "environment"
@@ -1796,10 +1974,6 @@ msgstr "okolina"
 #: Editor.java:1108
 msgid "http://arduino.cc/"
 msgstr "http://arduino.cc/"
-
-#: ../../../processing/app/debug/Compiler.java:49
-msgid "http://github.com/arduino/Arduino/issues"
-msgstr "http://github.com/arduino/Arduino/issues"
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
@@ -1830,17 +2004,6 @@ msgstr "name je null"
 msgid "platforms.html"
 msgstr "platforms.html"
 
-#: Serial.java:451
-#, java-format
-msgid ""
-"readBytesUntil() byte buffer is too small for the {0} bytes up to and "
-"including char {1}"
-msgstr "readBytesUntil() byte buffer je premalen za {0} bytes i uključivanje char {1}"
-
-#: Sketch.java:647
-msgid "removeCode: internal error.. could not find code"
-msgstr "remoceCode: interna greška ... nemogu nači kod"
-
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu je null"
@@ -1850,6 +2013,11 @@ msgstr "serialMenu je null"
 msgid ""
 "the selected serial port {0} does not exist or your board is not connected"
 msgstr "odabrani serijski port {0} ne postoji ili vaša pločica nije priključena"
+
+#: ../../../processing/app/Base.java:389
+#, java-format
+msgid "unknown option: {0}"
+msgstr "nepoznata opcija: {0}"
 
 #: Preferences.java:391
 msgid "upload"
@@ -1874,3 +2042,45 @@ msgstr "{0} | Arduino {1}"
 #, java-format
 msgid "{0}.html"
 msgstr "{0}.html"
+
+#: ../../../processing/app/Base.java:519
+#, java-format
+msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
+msgstr "{0}: Neispravan argument --stavka, treba biti u formi \"stavka=vrijednost\""
+
+#: ../../../processing/app/Base.java:476
+#, java-format
+msgid ""
+"{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
+"\"package:arch:board:options\""
+msgstr "{0}: Neispravan naziv ploče, treba biti u formi  \"package:arch:board\" ili \"package:arch:board:options\""
+
+#: ../../../processing/app/Base.java:509
+#, java-format
+msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
+msgstr "{0}: Neispravna opcija za \"{1}\" opcije za ploču \"{2}\""
+
+#: ../../../processing/app/Base.java:507
+#, java-format
+msgid "{0}: Invalid option for board \"{1}\""
+msgstr "{0}: Neispravna opcija za za ploču \"{1}\""
+
+#: ../../../processing/app/Base.java:502
+#, java-format
+msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr "{0}: Neispravna opcija, treba biti u formi \"naziv=vrijednost\""
+
+#: ../../../processing/app/Base.java:486
+#, java-format
+msgid "{0}: Unknown architecture"
+msgstr "{0}: Nepoznata arhitektura"
+
+#: ../../../processing/app/Base.java:491
+#, java-format
+msgid "{0}: Unknown board"
+msgstr "{0}: Nepoznata ploča"
+
+#: ../../../processing/app/Base.java:481
+#, java-format
+msgid "{0}: Unknown package"
+msgstr "{0}: Nepoznat paket"

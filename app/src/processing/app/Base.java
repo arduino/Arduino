@@ -186,7 +186,6 @@ public class Base {
     try {
       Class.forName("com.sun.jdi.VirtualMachine");
     } catch (ClassNotFoundException cnfe) {
-      showPlatforms();
       showError(_("Please install JDK 1.5 or later"),
                 _("Arduino requires a full JDK (not just a JRE)\n" +
                   "to run. Please install JDK 1.5 or later.\n" +
@@ -988,6 +987,8 @@ public class Base {
   }
 
   public void rebuildImportMenu(JMenu importMenu) {
+    if (importMenu == null)
+      return;
     importMenu.removeAll();
 
     JMenuItem addLibraryMenuItem = new JMenuItem(_("Add Library..."));
@@ -1035,6 +1036,8 @@ public class Base {
   }
 
   public void rebuildExamplesMenu(JMenu menu) {
+    if (menu == null)
+      return;
     try {
       menu.removeAll();
 
@@ -1077,6 +1080,10 @@ public class Base {
   }
 
   public void rebuildBoardsMenu(JMenu toolsMenu, Editor editor) throws Exception {
+    // If there are no platforms installed skip menu creation
+    if (BaseNoGui.packages.size() == 0)
+      return;
+
     JMenu boardsMenu = getBoardCustomMenu();
 
     boolean first = true;
@@ -1698,11 +1705,6 @@ public class Base {
     return BaseNoGui.getBoardPreferences();
   }
 
-  public static TargetBoard getTargetBoard() {
-    String boardId = Preferences.get("board");
-    return getTargetPlatform().getBoard(boardId);
-  }
-
   static public File getPortableFolder() {
     return BaseNoGui.getPortableFolder();
   }
@@ -1898,43 +1900,40 @@ public class Base {
 
 
   static public void showReference(String filename) {
-    File referenceFolder = getContentFile("reference");
+    File referenceFolder = getContentFile("reference/arduino.cc/en");
     File referenceFile = new File(referenceFolder, filename);
+    if (!referenceFile.exists())
+      referenceFile = new File(referenceFolder, filename + ".html");
     openURL(referenceFile.getAbsolutePath());
   }
 
   static public void showGettingStarted() {
     if (OSUtils.isMacOS()) {
-      showReference(_("Guide_MacOSX.html"));
+      showReference("Guide/MacOSX");
     } else if (OSUtils.isWindows()) {
-      showReference(_("Guide_Windows.html"));
+      showReference("Guide/Windows");
     } else {
-      openURL(_("http://www.arduino.cc/playground/Learning/Linux"));
+      openURL("http://www.arduino.cc/playground/Learning/Linux");
     }
   }
 
   static public void showReference() {
-    showReference(_("index.html"));
+    showReference("Reference/HomePage");
   }
 
 
   static public void showEnvironment() {
-    showReference(_("Guide_Environment.html"));
-  }
-
-
-  static public void showPlatforms() {
-    showReference(_("environment") + File.separator + _("platforms.html"));
+    showReference("Guide/Environment");
   }
 
 
   static public void showTroubleshooting() {
-    showReference(_("Guide_Troubleshooting.html"));
+    showReference("Guide/Troubleshooting");
   }
 
 
   static public void showFAQ() {
-    showReference(_("FAQ.html"));
+    showReference("Main/FAQ");
   }
 
 
