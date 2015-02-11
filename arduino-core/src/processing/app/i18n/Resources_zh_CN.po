@@ -1314,7 +1314,7 @@ msgstr "处理器"
 
 #: Editor.java:704
 msgid "Programmer"
-msgstr "程序员"
+msgstr "编程器"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1417,7 +1417,7 @@ msgstr "选择图片或者是其他的文件复制到你的 sketch"
 
 #: Preferences.java:330
 msgid "Select new sketchbook location"
-msgstr "为草稿码目录选取新位置"
+msgstr "为项目目录选取新位置"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
@@ -1443,7 +1443,7 @@ msgstr ""
 msgid ""
 "Serial port {0} not found.\n"
 "Retry the upload with another serial port?"
-msgstr ""
+msgstr "没有找到当前串口，请尝试使用其他串口"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1451,11 +1451,11 @@ msgstr "设置议题"
 
 #: Editor.java:641
 msgid "Show Sketch Folder"
-msgstr "显示 Sketch 文件夹"
+msgstr "打开项目文件夹"
 
 #: ../../../processing/app/EditorStatus.java:468
 msgid "Show verbose output during compilation"
-msgstr ""
+msgstr "在编译时显示详细的信息"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1463,33 +1463,33 @@ msgstr "显示详细输出："
 
 #: Editor.java:607
 msgid "Sketch"
-msgstr "Sketch"
+msgstr "项目"
 
 #: Sketch.java:1754
 msgid "Sketch Disappeared"
-msgstr "Sketch 不存在"
+msgstr "项目不存在"
 
 #: Base.java:1411
 msgid "Sketch Does Not Exist"
-msgstr "草稿码不存在"
+msgstr "项目不存在"
 
 #: Sketch.java:274 Sketch.java:303 Sketch.java:577 Sketch.java:966
 msgid "Sketch is Read-Only"
-msgstr "草稿码为只读状态"
+msgstr "项目为只读状态"
 
 #: Sketch.java:294
 msgid "Sketch is Untitled"
-msgstr "未命名草稿码"
+msgstr "未命名项目"
 
 #: Sketch.java:720
 msgid "Sketch is read-only"
-msgstr "草稿码为只读状态"
+msgstr "项目为只读状态"
 
 #: Sketch.java:1653
 msgid ""
 "Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
 "tips on reducing it."
-msgstr "sketch 太大了；阅读以下页面的提示减小文件大小。\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size "
+msgstr "项目太大了；阅读以下页面的提示减小文件大小。\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size "
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -1500,7 +1500,7 @@ msgstr ""
 
 #: Editor.java:510
 msgid "Sketchbook"
-msgstr "Sketchbook"
+msgstr "项目目录"
 
 #: Base.java:258
 msgid "Sketchbook folder disappeared"
@@ -1508,7 +1508,7 @@ msgstr "代码草稿箱消失"
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
-msgstr "草稿码位置"
+msgstr "项目目录位置"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
