@@ -37,7 +37,7 @@ public class IncludesFinder implements PreprocessorChainRing {
     File file = FileUtils.saveToTempFile(source, "sketch", ".cpp");
 
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.putAll(BaseNoGui.getTargetPlatform().getTool("coan"));
+    dict.putAll(prefs.subTree("tools").subTree("coan"));
     dict.put("source_file", file.getAbsolutePath());
 
     String[] patterns = StringReplacer.formatAndSplit(dict.getOrExcept("pattern"), dict, true);
