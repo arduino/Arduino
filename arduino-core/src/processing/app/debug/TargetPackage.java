@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import processing.app.I18n;
+import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.filefilters.OnlyDirs;
 
 public class TargetPackage {
@@ -37,8 +38,11 @@ public class TargetPackage {
 
   Map<String, TargetPlatform> platforms = new LinkedHashMap<String, TargetPlatform>();
 
-  public TargetPackage(String _id, File _folder) throws TargetPlatformException {
+  public TargetPackage(String _id, File _folder, PreferencesMap hardwarePlatformTxt) throws TargetPlatformException {
     id = _id;
+
+    PreferencesMap packagePlatformTxt = PreferencesMap.safeLoad(new File(_folder, "platform.txt"));
+    packagePlatformTxt = packagePlatformTxt.merge(hardwarePlatformTxt);
 
     File[] folders = _folder.listFiles(new OnlyDirs());
     if (folders == null)
@@ -49,7 +53,7 @@ public class TargetPackage {
         continue;
       String arch = subFolder.getName();
       try {
-        TargetPlatform platform = new TargetPlatform(arch, subFolder, this);
+        TargetPlatform platform = new TargetPlatform(arch, subFolder, this, packagePlatformTxt);
         platforms.put(arch, platform);
       } catch (TargetPlatformException e) {
         System.out.println(e.getMessage());

@@ -101,13 +101,3 @@ tools.avrdude.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verb
 build.usb_manufacturer=
 build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 
-# ctags
-# ------------------------------
-tools.ctags.cmd.path={runtime.ide.path}/hardware/tools/ctags
-tools.ctags.pattern="{cmd.path}" -u --language-force=c++ -f - --c++-kinds=svpf --fields=KSTtzn "{source_file}"
-
-# coan
-# ------------------------------
-tools.coan.cmd.path={runtime.ide.path}/hardware/tools/coan
-tools.coan.pattern="{cmd.path}" source -m -E -P -kb {compiler.c.flags} -mmcu={build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} "{source_file}"
-

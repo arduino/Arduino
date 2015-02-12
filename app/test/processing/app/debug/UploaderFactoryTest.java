@@ -8,6 +8,7 @@ import cc.arduino.packages.uploaders.SerialUploader;
 import org.junit.Before;
 import org.junit.Test;
 import processing.app.AbstractWithPreferencesTest;
+import processing.app.helpers.PreferencesMap;
 
 import java.io.File;
 
@@ -19,7 +20,7 @@ public class UploaderFactoryTest extends AbstractWithPreferencesTest {
 
   @Before
   public void setUp() throws Exception {
-    targetPackage = new TargetPackage("arduino", new File(".", "hardware/arduino/"));
+    targetPackage = new TargetPackage("arduino", new File(".", "hardware/arduino/"), new PreferencesMap());
   }
 
   @Test

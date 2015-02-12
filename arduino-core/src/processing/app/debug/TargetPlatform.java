@@ -52,14 +52,14 @@ public class TargetPlatform {
   /**
    * Contains preferences for platform
    */
-  private PreferencesMap preferences = new PreferencesMap();
+  private PreferencesMap preferences;
 
   /**
    * Contains labels for top level menus
    */
   private PreferencesMap customMenus = new PreferencesMap();
 
-  public TargetPlatform(String _name, File _folder, TargetPackage parent)
+  public TargetPlatform(String _name, File _folder, TargetPackage parent, PreferencesMap packagePlatformTxt)
       throws TargetPlatformException {
 
     id = _name;
@@ -99,6 +99,8 @@ public class TargetPlatform {
       throw new TargetPlatformException(format(_("Error loading {0}"),
                                                boardsFile.getAbsolutePath()), e);
     }
+
+    this.preferences = new PreferencesMap().merge(packagePlatformTxt);
 
     File platformsFile = new File(folder, "platform.txt");
     try {

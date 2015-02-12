@@ -633,6 +633,8 @@ public class BaseNoGui {
   static protected void loadHardware(File folder) {
     if (!folder.isDirectory()) return;
 
+    PreferencesMap hardwarePlatformTxt = PreferencesMap.safeLoad(new File(folder, "platform.txt"));
+
     String list[] = folder.list(new OnlyDirs());
 
     // if a bad folder or something like that, this might come back null
@@ -647,9 +649,9 @@ public class BaseNoGui {
       if (target.equals("tools"))
         continue;
       File subfolder = new File(folder, target);
-      
+
       try {
-        packages.put(target, new TargetPackage(target, subfolder));
+        packages.put(target, new TargetPackage(target, subfolder, hardwarePlatformTxt));
       } catch (TargetPlatformException e) {
         System.out.println("WARNING: Error loading hardware folder " + target);
         System.out.println("  " + e.getMessage());
