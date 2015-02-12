@@ -34,7 +34,7 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
 
     String includes = Utils.prepareIncludes(includeFolders);
     PreferencesMap dict = new PreferencesMap(prefs);
-    dict.putAll(BaseNoGui.getTargetPlatform().getTool("ctags"));
+    dict.putAll(prefs.subTree("tools").subTree("ctags"));
     dict.put("ide_version", "" + BaseNoGui.REVISION);
     dict.put("includes", includes);
 
