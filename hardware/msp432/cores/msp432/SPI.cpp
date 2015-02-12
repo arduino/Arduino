@@ -1,6 +1,10 @@
 /*
- * Copyright (c) 2013 by Louis Peryea
- * SPI Master library for Energia.
+ ***********************************************************************
+ *  SPI.cpp
+ *
+ *  Copyright (c) 2015. All right reserved.
+ *
+ *  SPI Master library for Energia.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of either the GNU General Public License version 2
@@ -11,45 +15,48 @@
 #include "wiring_private.h"
 #include "SPI.h"
 
-#define NOT_ACTIVE 0xA
-
 SPIClass::SPIClass(void)
 {
-    SSIModule = NOT_ACTIVE;
-    begun = false;
+    init(0);
 }
 
-SPIClass::SPIClass(uint8_t module)
+SPIClass::SPIClass(unsigned long module)
 {
-    SSIModule = module;
+    init(module);
+}
+
+/*
+ * Private Methods
+ */
+void SPIClass::init(unsigned long module)
+{
+    spiModule = module;
     begun = false;
 }
 
+/*
+ * Public Methods
+ */
 void SPIClass::begin(uint8_t ssPin)
 {
     SPI_Params params;
 
+    /* return if SPI already started */
     if (begun == TRUE) return;
 
-    if (SSIModule == NOT_ACTIVE) {
-        SSIModule = 0;
-    }
-
+    Board_initSPI();
+    
     SPI_Params_init(&params);
-    spiModule = SPI_open(SSIModule, &params);
+    
+    spi = SPI_open(spiModule, &params);
 
-    if (spiModule == NULL) {
-        System_abort("Error initializing SPI\n");
+    if (spi != NULL) {
+        slaveSelect = ssPin;
+        pinMode(slaveSelect, OUTPUT); //set SS as an output
+
+        GateMutex_construct(&gate, NULL);
+        begun = TRUE;
     }
-    else {
-        System_printf("SPI initialized\n");
-    }
-
-    slaveSelect = ssPin;
-    pinMode(slaveSelect, OUTPUT); //set SS as an output
-
-    GateMutex_construct(&gate, NULL);
-    begun = TRUE;
 }
 
 void SPIClass::begin() {
@@ -58,7 +65,7 @@ void SPIClass::begin() {
 }
 
 void SPIClass::end(uint8_t ssPin) {
-    SPI_close(spiModule);
+    SPI_close(spi);
 }
 
 void SPIClass::end() {
@@ -91,7 +98,7 @@ uint8_t SPIClass::transfer(uint8_t ssPin, uint8_t data, uint8_t transferMode)
     transaction.txBuf = &data;
     transaction.rxBuf = &junk;
     transaction.count = 1;
-    SPI_transfer(spiModule, &transaction);
+    SPI_transfer(spi, &transaction);
     
     if (transferMode == SPI_LAST) {
         digitalWrite(ssPin, HIGH);
@@ -112,7 +119,7 @@ uint8_t SPIClass::transfer(uint8_t data)
 }
 
 void SPIClass::setModule(uint8_t module) {
-    SSIModule = module;
+    spiModule = module;
     begin(slaveSelect);
 }
 

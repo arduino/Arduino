@@ -15,151 +15,147 @@ XDCCFGDIR = package/cfg/
 # in the event that some included BOM script changes.
 #
 ifneq (clean,$(MAKECMDGOALS))
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/utils.js:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/utils.js
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/xdc.tci:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/xdc.tci
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/template.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/template.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/om2.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/om2.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/xmlgen.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/xmlgen.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/xmlgen2.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/xmlgen2.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/Warnings.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/Warnings.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/IPackage.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/IPackage.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/package.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/package.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/global/Clock.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/global/Clock.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/global/Trace.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/services/global/Trace.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/bld.js:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/bld.js
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/BuildEnvironment.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/BuildEnvironment.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/PackageContents.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/PackageContents.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/_gen.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/_gen.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Library.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Library.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Executable.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Executable.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Repository.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Repository.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Configuration.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Configuration.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Script.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Script.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Manifest.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Manifest.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Utils.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/Utils.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITarget.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITarget.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITarget2.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITarget2.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITarget3.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITarget3.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITargetFilter.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/ITargetFilter.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/package.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/bld/package.xs
-/db/ztree/library/trees/emt/emt-a02/src/config.bld:
-package.mak: /db/ztree/library/trees/emt/emt-a02/src/config.bld
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/ITarget.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/ITarget.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/C28_large.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/C28_large.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/C28_float.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/C28_float.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/package.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/package.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/arm/elf/IArm.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/arm/elf/IArm.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/arm/elf/package.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/arm/elf/package.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/ITarget.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/ITarget.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/_utils.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/_utils.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/Linux86.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/Linux86.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/Mingw.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/Mingw.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/package.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/package.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/ITarget.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/ITarget.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/GCArmv6.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/GCArmv6.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/GCArmv7A.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/GCArmv7A.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/IM.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/IM.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/M3.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/M3.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/M4.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/M4.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/M4F.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/M4F.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/A8F.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/A8F.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/A9F.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/A9F.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/A15F.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/A15F.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/package.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/gnu/targets/arm/package.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/iar/targets/arm/ITarget.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/iar/targets/arm/ITarget.xs
-/db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/iar/targets/arm/package.xs:
-package.mak: /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/iar/targets/arm/package.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/utils.js:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/utils.js
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/xdc.tci:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/xdc.tci
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/template.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/template.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/om2.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/om2.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/xmlgen.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/xmlgen.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/xmlgen2.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/xmlgen2.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/Warnings.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/Warnings.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/IPackage.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/IPackage.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/package.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/package.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/services/global/Clock.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/services/global/Clock.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/services/global/Trace.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/services/global/Trace.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/bld.js:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/bld.js
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/BuildEnvironment.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/BuildEnvironment.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/PackageContents.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/PackageContents.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/_gen.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/_gen.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Library.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Library.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Executable.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Executable.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Repository.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Repository.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Configuration.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Configuration.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Script.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Script.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Manifest.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Manifest.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Utils.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/Utils.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITarget.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITarget.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITarget2.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITarget2.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITarget3.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITarget3.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITargetFilter.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/ITargetFilter.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/package.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/bld/package.xs
+/media/sf_VMShared/emt/src/config.bld:
+package.mak: /media/sf_VMShared/emt/src/config.bld
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/ITarget.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/ITarget.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/C28_large.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/C28_large.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/C28_float.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/C28_float.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/package.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/package.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/arm/elf/IArm.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/arm/elf/IArm.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/arm/elf/package.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/arm/elf/package.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/ITarget.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/ITarget.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/_utils.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/_utils.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/Linux86.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/Linux86.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/Mingw.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/Mingw.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/package.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/package.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/ITarget.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/ITarget.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/GCArmv6.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/GCArmv6.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/GCArmv7A.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/GCArmv7A.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/IM.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/IM.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/M3.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/M3.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/M4.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/M4.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/M4F.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/M4F.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/A8F.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/A8F.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/A9F.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/A9F.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/A15F.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/A15F.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/package.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/gnu/targets/arm/package.xs
 package.mak: package.bld
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/ExeContext.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/ExeContext.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/Utils.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/Utils.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/IPlatform.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/IPlatform.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/IPeripheral.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/IPeripheral.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/package.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/platform/package.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/Stellaris.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/Stellaris.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/Tiva.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/Tiva.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/OMAP5430.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/OMAP5430.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/Vayu.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/Vayu.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/DRA7XX.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/DRA7XX.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/TDA3XX.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/TDA3XX.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/CC32xx.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/CC32xx.xs
-/db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/MSP432.xs:
-package.mak: /db/ztree/library/trees/platform/platform-o70/src/ti/catalog/arm/cortexm4/MSP432.xs
-/db/ztree/library/trees/emt/emt-a02/src/ti/platforms/emt432/Platform.xs:
-package.mak: /db/ztree/library/trees/emt/emt-a02/src/ti/platforms/emt432/Platform.xs
-/db/ztree/library/trees/emt/emt-a02/src/ti/platforms/emt432/package.xs:
-package.mak: /db/ztree/library/trees/emt/emt-a02/src/ti/platforms/emt432/package.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/cfg/Program.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/cfg/Program.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/cfg/Main.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/cfg/Main.xs
-/db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/cfg/SourceDir.xs:
-package.mak: /db/rtree/library/trees/xdcprod/xdcprod-t60/product/Linux/xdctools_3_30_05_60/packages/xdc/cfg/SourceDir.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/ExeContext.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/ExeContext.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/Utils.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/Utils.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/IPlatform.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/IPlatform.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/IPeripheral.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/IPeripheral.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/package.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/platform/package.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/Stellaris.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/Stellaris.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/Tiva.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/Tiva.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/OMAP5430.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/OMAP5430.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/Vayu.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/Vayu.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/DRA7XX.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/DRA7XX.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/TDA3XX.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/TDA3XX.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/CC32xx.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/CC32xx.xs
+/media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/MSP432.xs:
+package.mak: /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/catalog/arm/cortexm4/MSP432.xs
+/media/sf_VMShared/emt/src/ti/platforms/emt432/Platform.xs:
+package.mak: /media/sf_VMShared/emt/src/ti/platforms/emt432/Platform.xs
+/media/sf_VMShared/emt/src/ti/platforms/emt432/package.xs:
+package.mak: /media/sf_VMShared/emt/src/ti/platforms/emt432/package.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/cfg/Program.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/cfg/Program.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/cfg/Main.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/cfg/Main.xs
+/media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/cfg/SourceDir.xs:
+package.mak: /media/sf_VMShared/xdctools_3_30_05_60_core/packages/xdc/cfg/SourceDir.xs
 endif
 
-ti.targets.arm.elf.M4F.rootDir ?= /db/toolsrc/library/tools/vendors/ti/arm/5.2.2/Linux
-ti.targets.arm.elf.packageBase ?= /db/vtree/library/trees/avalaprod/avalaprod-p41/exports/bios_6_41_02_41/packages/ti/targets/arm/elf/
+ti.targets.arm.elf.M4F.rootDir ?= /home/robertinant/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.1
+ti.targets.arm.elf.packageBase ?= /media/sf_VMShared/tirtos_msp430_2_12_00_09_eng/products/bios_6_41_03_42_eng/packages/ti/targets/arm/elf/
 .PRECIOUS: $(XDCCFGDIR)/%.oem4f
 .PHONY: all,em4f .dlls,em4f .executables,em4f test,em4f
 all,em4f: .executables,em4f
@@ -204,8 +200,8 @@ package/package.cfg.xdc.inc: .interfaces $(XDCROOT)/packages/xdc/cfg/cfginc.js p
 -include lib/ti.msp432.runtime.wiring.lib.mak
 lib/ti.msp432.runtime.wiring.lib: 
 	$(RM) $@
-	@$(MSG) archiving package/lib/lib/ti.msp432.runtime.wiring/package/package_ti.msp432.runtime.wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/HardwareSerial.oem4f package/lib/lib/ti.msp432.runtime.wiring/Print.oem4f package/lib/lib/ti.msp432.runtime.wiring/SPI.oem4f package/lib/lib/ti.msp432.runtime.wiring/Stream.oem4f package/lib/lib/ti.msp432.runtime.wiring/WInterrupts.oem4f package/lib/lib/ti.msp432.runtime.wiring/WMath.oem4f package/lib/lib/ti.msp432.runtime.wiring/Wire.oem4f package/lib/lib/ti.msp432.runtime.wiring/itoa.oem4f package/lib/lib/ti.msp432.runtime.wiring/new.oem4f package/lib/lib/ti.msp432.runtime.wiring/random.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_analog.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_digital.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_pulse.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_shift.oem4f  into $@ ...
-	$(ti.targets.arm.elf.M4F.rootDir)/bin/armar  rq $@   package/lib/lib/ti.msp432.runtime.wiring/package/package_ti.msp432.runtime.wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/HardwareSerial.oem4f package/lib/lib/ti.msp432.runtime.wiring/Print.oem4f package/lib/lib/ti.msp432.runtime.wiring/SPI.oem4f package/lib/lib/ti.msp432.runtime.wiring/Stream.oem4f package/lib/lib/ti.msp432.runtime.wiring/WInterrupts.oem4f package/lib/lib/ti.msp432.runtime.wiring/WMath.oem4f package/lib/lib/ti.msp432.runtime.wiring/Wire.oem4f package/lib/lib/ti.msp432.runtime.wiring/itoa.oem4f package/lib/lib/ti.msp432.runtime.wiring/new.oem4f package/lib/lib/ti.msp432.runtime.wiring/random.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_analog.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_digital.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_pulse.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_shift.oem4f 
+	@$(MSG) archiving package/lib/lib/ti.msp432.runtime.wiring/package/package_ti.msp432.runtime.wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/GPIO2MSP432.oem4f package/lib/lib/ti.msp432.runtime.wiring/HardwareSerial.oem4f package/lib/lib/ti.msp432.runtime.wiring/itoa.oem4f package/lib/lib/ti.msp432.runtime.wiring/new.oem4f package/lib/lib/ti.msp432.runtime.wiring/Print.oem4f package/lib/lib/ti.msp432.runtime.wiring/random.oem4f package/lib/lib/ti.msp432.runtime.wiring/SPI.oem4f package/lib/lib/ti.msp432.runtime.wiring/Stream.oem4f package/lib/lib/ti.msp432.runtime.wiring/WInterrupts.oem4f package/lib/lib/ti.msp432.runtime.wiring/Wire.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_analog.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_digital.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_pulse.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_shift.oem4f package/lib/lib/ti.msp432.runtime.wiring/WMath.oem4f  into $@ ...
+	$(ti.targets.arm.elf.M4F.rootDir)/bin/armar  rq $@   package/lib/lib/ti.msp432.runtime.wiring/package/package_ti.msp432.runtime.wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/GPIO2MSP432.oem4f package/lib/lib/ti.msp432.runtime.wiring/HardwareSerial.oem4f package/lib/lib/ti.msp432.runtime.wiring/itoa.oem4f package/lib/lib/ti.msp432.runtime.wiring/new.oem4f package/lib/lib/ti.msp432.runtime.wiring/Print.oem4f package/lib/lib/ti.msp432.runtime.wiring/random.oem4f package/lib/lib/ti.msp432.runtime.wiring/SPI.oem4f package/lib/lib/ti.msp432.runtime.wiring/Stream.oem4f package/lib/lib/ti.msp432.runtime.wiring/WInterrupts.oem4f package/lib/lib/ti.msp432.runtime.wiring/Wire.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_analog.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_digital.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_pulse.oem4f package/lib/lib/ti.msp432.runtime.wiring/wiring_shift.oem4f package/lib/lib/ti.msp432.runtime.wiring/WMath.oem4f 
 lib/ti.msp432.runtime.wiring.lib: export C_DIR=
 lib/ti.msp432.runtime.wiring.lib: PATH:=$(ti.targets.arm.elf.M4F.rootDir)/bin/:$(PATH)
 
@@ -219,26 +215,26 @@ test:;
 	$(CP) $< $@
 package_ti.msp432.runtime.wiring.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/package/package_ti.msp432.runtime.wiring.oem4f
 package_ti.msp432.runtime.wiring.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/package/package_ti.msp432.runtime.wiring.sem4f
+GPIO2MSP432.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/GPIO2MSP432.oem4f
+GPIO2MSP432.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/GPIO2MSP432.sem4f
 HardwareSerial.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/HardwareSerial.oem4f
 HardwareSerial.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/HardwareSerial.sem4f
+itoa.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/itoa.oem4f
+itoa.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/itoa.sem4f
+new.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/new.oem4f
+new.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/new.sem4f
 Print.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/Print.oem4f
 Print.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/Print.sem4f
+random.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/random.oem4f
+random.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/random.sem4f
 SPI.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/SPI.oem4f
 SPI.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/SPI.sem4f
 Stream.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/Stream.oem4f
 Stream.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/Stream.sem4f
 WInterrupts.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/WInterrupts.oem4f
 WInterrupts.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/WInterrupts.sem4f
-WMath.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/WMath.oem4f
-WMath.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/WMath.sem4f
 Wire.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/Wire.oem4f
 Wire.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/Wire.sem4f
-itoa.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/itoa.oem4f
-itoa.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/itoa.sem4f
-new.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/new.oem4f
-new.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/new.sem4f
-random.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/random.oem4f
-random.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/random.sem4f
 wiring.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring.oem4f
 wiring.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring.sem4f
 wiring_analog.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring_analog.oem4f
@@ -249,6 +245,8 @@ wiring_pulse.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring_pulse.
 wiring_pulse.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring_pulse.sem4f
 wiring_shift.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring_shift.oem4f
 wiring_shift.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/wiring_shift.sem4f
+WMath.oem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/WMath.oem4f
+WMath.sem4f,copy : package/lib/lib/ti.msp432.runtime.wiring/WMath.sem4f
 
 $(XDCCFGDIR)%.c $(XDCCFGDIR)%.h $(XDCCFGDIR)%.xdl: $(XDCCFGDIR)%.cfg .interfaces $(XDCROOT)/packages/xdc/cfg/Main.xs
 	@$(MSG) "configuring $(_PROG_NAME) from $< ..."
@@ -263,22 +261,6 @@ package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.re
 package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: package/package.xdc.inc
 package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: package/package.cfg.xdc.inc
 package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: lib/ti.msp432.runtime.wiring.lib
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: package/package_ti.msp432.runtime.wiring.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: HardwareSerial.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: Print.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: SPI.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: Stream.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: WInterrupts.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: WMath.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: Wire.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: itoa.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: new.cpp
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: random.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: wiring.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: wiring_analog.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: wiring_digital.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: wiring_pulse.c
-package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: wiring_shift.c
 package/rel/ti_msp432_runtime_wiring/ti/msp432/runtime/wiring/package/package.rel.xml: .force
 	@$(MSG) generating external release references $@ ...
 	$(XS) $(JSENV) -f $(XDCROOT)/packages/xdc/bld/rel.js $(MK_RELOPTS) . $@

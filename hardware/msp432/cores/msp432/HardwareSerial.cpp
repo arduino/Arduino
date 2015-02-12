@@ -3,7 +3,7 @@
  *  HardwareSerial.cpp
  *
  *  Arduino core files for TI-RTOS
- *      Copyright (c) 2013 Louis Peryea. All right reserved.
+ *      Copyright (c) 2015. All right reserved.
  *
  *
  ***********************************************************************
@@ -45,23 +45,26 @@ void uartReadCallback(UART_Handle uart, void *buf, size_t count);
 
 HardwareSerial::HardwareSerial(void)
 {
-    begun = false;
-    rxWriteIndex = 0;
-    rxReadIndex = 0;
-    uartModule = 0;
+    init(0);
 }
 
 HardwareSerial::HardwareSerial(unsigned long module)
 {
-    begun = false;
-    rxWriteIndex = 0;
-    rxReadIndex = 0;
-    uartModule = module;
+    init(module);
 }
 
 /*
  * Private Methods
  */
+ void HardwareSerial::init(unsigned long module)
+{
+    rxWriteIndex = 0;
+    rxReadIndex = 0;
+
+    uartModule = module;
+    begun = false;
+}
+
 void HardwareSerial::flushAll(void)
 {
 }
@@ -92,15 +95,14 @@ void HardwareSerial::begin(unsigned long baud)
 
     uart = UART_open(Board_UART, &uartParams);
 
-    /* start the read process */
-    UART_read(uart, &rxBuffer[rxWriteIndex], 1);
+    if (uart != NULL) {
+        GateMutex_construct(&gate, NULL);
 
-    if (uart == NULL) {
-        //System_abort("Error opening the UART");
+        /* start the read process */
+        UART_read(uart, &rxBuffer[rxWriteIndex], 1);
+
+        begun = TRUE;
     }
-
-    GateMutex_construct(&gate, NULL);
-    begun = TRUE;
 }
 
 void HardwareSerial::setModule(unsigned long module)

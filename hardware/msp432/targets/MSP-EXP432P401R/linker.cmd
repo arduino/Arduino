@@ -9,8 +9,8 @@ INPUT(
     configPkg/package/cfg/energia_pm4fg.om4fg
     src/platform/Board_init.obj
 /*    ti/msp432/runtime/wiring/lib/ti.msp432.runtime.wiring.lib */
-    ti/drivers/lib/drivers_MSP432P401R.aem4f
-    ti/drivers/ports/tirtos/lib/tirtosport.aem4f
+    ti/drivers/lib/drivers_MSP432P401R.am4fg
+    ti/drivers/ports/tirtos/lib/tirtosport.am4fg
     ti/sysbios/fatfs/lib/release/ti.sysbios.fatfs.am4fg
     src/sysbios/sysbios.am4fg
     gnu/targets/arm/rtsv7M/lib/gnu.targets.arm.rtsv7M.am4fg

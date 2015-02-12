@@ -13,22 +13,23 @@
 
 #include <inttypes.h>
 #include <stdio.h>
-#include "Energia.h"
+
+#include <ti/drivers/SPI.h>
 
 class SPIClass
 {
     private:
         bool begun;
         uint8_t slaveSelect;
-        uint8_t SSIModule;
-        SPI_Handle spiModule;
+        uint8_t spiModule;
+        SPI_Handle spi;
         SPI_Transaction transaction;
-
         GateMutex_Struct gate;
+        void init(unsigned long);
 
     public:
         SPIClass(void);
-        SPIClass(uint8_t);
+        SPIClass(unsigned long);
         void begin(); // Default
         void begin(uint8_t);
         void end();

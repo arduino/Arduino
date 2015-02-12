@@ -31,7 +31,9 @@
 
 #include <inttypes.h>
 #include "Stream.h"
-#include "Energia.h"
+
+#include <ti/drivers/I2C.h>
+#include <ti/sysbios/gates/GateMutex.h>
 
 #define BUFFER_LENGTH     64
 
@@ -67,7 +69,7 @@ class TwoWire : public Stream
         void (*user_onReceive)(int);
         void onRequestService(void);
         void onReceiveService(uint8_t*, int);
-        
+        void init(unsigned long);
         void forceStop(void);
 
     public:

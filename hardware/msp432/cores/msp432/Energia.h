@@ -8,17 +8,6 @@
 
 #include "binary.h"
 
-//#include <msp432.h>
-//#include <rom.h>
-//#include <rom_map.h>
-//#include <dma.h>
-//#include <gpio.h>
-//#include <i2c.h>
-//#include <spi.h>
-//#include <timer_a.h>
-//#include <uart.h>
-//#include <wdt_a.h>
-
 #include <xdc/runtime/System.h>
 
 #include <ti/sysbios/BIOS.h>
@@ -27,20 +16,11 @@
 #include <ti/sysbios/gates/GateMutex.h>
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
-#include <ti/drivers/UART.h>
-#include <ti/drivers/I2C.h>
-#include <ti/drivers/SPI.h>
-#include <ti/drivers/GPIO.h>
-#include <ti/drivers/PWM.h>
-
 #include <ti/drivers/bsp/Board.h>
 #include <stdbool.h>
 #ifdef __cplusplus
 extern "C"{ 
 #endif 
-
-extern GPIO_Config GPIO_config[];
-//extern PWM_Config PWM_config[];
 
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
@@ -115,7 +95,6 @@ typedef uint8_t byte;
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
-
 typedef unsigned int word;
 
 #define bit(b) (1UL << (b))
@@ -123,24 +102,6 @@ typedef unsigned int word;
 void init(void);
 void setup(void);
 void loop(void);
-
-void setup1(void);
-void setup2(void);
-void setup3(void);
-void setup4(void);
-void setup5(void);
-void setup6(void);
-void setup7(void);
-void setup8(void);
-
-void loop1(void);
-void loop2(void);
-void loop3(void);
-void loop4(void);
-void loop5(void);
-void loop6(void);
-void loop7(void);
-void loop8(void);
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);

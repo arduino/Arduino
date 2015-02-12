@@ -39,6 +39,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+static const uint8_t RED_LED = 43;
+static const uint8_t GREEN_LED = 44;
+static const uint8_t YELLOW_LED = 44; /* closest to yellow */
+static const uint8_t BLUE_LED = 45;
+static const uint8_t PUSH1 = 41;
+static const uint8_t PUSH2 = 42;
+
+#ifdef ARDUINO_MAIN
 #include <msp432.h>
 #include <rom.h>
 #include <rom_map.h>
@@ -50,70 +58,12 @@
 #include <uart.h>
 #include <wdt_a.h>
 
-static const uint8_t RED_LED = 43;
-static const uint8_t GREEN_LED = 44;
-static const uint8_t YELLOW_LED = 44; /* closest to yellow */
-static const uint8_t BLUE_LED = 45;
-static const uint8_t PUSH1 = 41;
-static const uint8_t PUSH2 = 42;
-
-#ifdef ARDUINO_MAIN
 const uint32_t port_to_base[] = {
 	NOT_A_PORT,
 	(uint32_t) NOT_A_PORT,
 	(uint32_t) NOT_A_PORT,
 	(uint32_t) NOT_A_PORT,
 	(uint32_t) NOT_A_PORT,
-};
-
-const uint8_t digital_pin_to_hwAttrs_index[] = {
-	NOT_A_PIN,	/*  dummy */
-	NOT_A_PIN,	/*  1  - 3.3V */
-	2,      	/*  2  - P6.0_A15 */
-	3,      	/*  3  - P3.2_URXD */
-	4,	        /*  4  - P3.3_UTXD */
-	5,			/*  5  - P4.1_IO_A12 */
-	6,	        /*  6  - P4.3_A10 */
-	7,	        /*  7  - P1.5_SPICLK */
-	8,			/*  8  - P4.6_IO_A7 */
-	9,	        /*  9  - P6.5_I2CSCL */
-	10,	        /*  10 - P6.4_I2CSDA */
-	11,			/*  11 - P3.6_IO */
-	12,			/*  12 - P5.2_IO */
-	13,			/*  13 - P5.0_IO */
-	14,	        /*  14 - P1.7_SPIMISO */
-	15,	        /*  15 - P1.6_SPIMOSI */
-	NOT_A_PIN,	/*  16 - RESET */
-	17,			/*  17 - P5.7_IO */
-	18,			/*  18 - P3.0_IO */
-	19,			/*  19 - P2.5_IO_PWM */
-	NOT_A_PIN,	/*  20 - GND */
-	NOT_A_PIN,	/*  21 - 5V */
-	NOT_A_PIN,	/*  22 - GND */
-	23,	        /*  23 - P6.1_A14 */
-	24,	        /*  24 - P4.0_A13 */
-	25,	        /*  25 - P4.2_A11 */
-	26,	        /*  26 - P4.4_A9 */
-	27,	        /*  27 - P4.5_A8 */
-	28,	        /*  28 - P4.7_A6 */
-	29,	        /*  29 - P5.4_IO */
-	30,	        /*  30 - P5.5_IO */
-	31,		    /*  31 - P3.7_IO */
-	32,			/*  32 - P3.5_IO */
-	33,			/*  33 - P5.1_IO */
-	34,			/*  34 - P2.3_IO */
-	35,			/*  35 - P6.7_IO_CAPT */
-	36,			/*  36 - P6.6_IO_CAPT */
-	37,			/*  37 - P5.6_PWM */
-	38,			/*  38 - P2.4_PWM */
-	39,			/*  39 - P2.6_PWM */
-	40,     	/*  40 - P2.7_PWM */
-	41,			/*  41 - P1.1 SW1 */
-	42,			/*  42 - P1.4 SW2 */
-	43,			/*  43 - P2.0 RED_LED */
-	44,			/*  44 - P2.1 GREEN_LED */
-	45,			/*  45 - P2.2 BLUE_LED */
-	46			/*  46 - P1.0 LED1 */
 };
 
 const uint8_t digital_pin_to_timer[] = {

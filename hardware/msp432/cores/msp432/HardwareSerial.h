@@ -35,6 +35,11 @@
 #include <inttypes.h>
 #include "Stream.h"
 
+#include <ti/drivers/UART.h>
+
+#include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/gates/GateMutex.h>
+
 #define SERIAL_BUFFER_SIZE     1024
 
 class HardwareSerial : public Stream
@@ -45,10 +50,11 @@ class HardwareSerial : public Stream
         unsigned char rxBuffer[SERIAL_BUFFER_SIZE];
         unsigned long rxWriteIndex;
         unsigned long rxReadIndex;
-        unsigned long uartModule;
         unsigned long baudRate;
+        uint8_t uartModule;
         UART_Handle uart;
         Semaphore_Struct rxSemaphore;
+        void init(unsigned long);
         void flushAll(void);
         GateMutex_Struct gate;
 

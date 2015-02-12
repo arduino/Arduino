@@ -48,62 +48,48 @@
 #define STOP_BIT    0x4
 #define ACK_BIT     0x8
 
-#define NOT_ACTIVE  0xA
-
 TwoWire::TwoWire()
 {
-    begun = FALSE;
-
-    i2cModule = NOT_ACTIVE;
-
-    /* Read / Write buffer indexes */
-    rxReadIndex = 0;
-    rxWriteIndex = 0;
-    txReadIndex = 0;
-    txWriteIndex = 0;
-
-    idle = true;
-
-    /* I2C Transfer initial params */
-    i2cTransaction.slaveAddress = 0;
-    i2cTransaction.writeBuf = txBuffer;
-    i2cTransaction.readBuf = rxBuffer;
-    i2cTransaction.readCount = 0;
-    i2cTransaction.writeCount = 0;
+    init(0);
 }
 
 TwoWire::TwoWire(unsigned long module)
 {
-    begun = FALSE;
-
-    i2cModule = module;
-
-    /* Read / Write buffer indexes */
-    rxReadIndex = 0;
-    rxWriteIndex = 0;
-    txReadIndex = 0;
-    txWriteIndex = 0;
-
-    idle = true;
-
-    /* I2C Transfer initial params */
-    i2cTransaction.slaveAddress = 0;
-    i2cTransaction.writeBuf = txBuffer;
-    i2cTransaction.readBuf = rxBuffer;
-    i2cTransaction.readCount = 0;
-    i2cTransaction.writeCount = 0;
+    init(module);
 }
 
 /*
  * Private Methods
  */
+void TwoWire::init(unsigned long module)
+{
+    idle = true;
+
+    /* Read / Write buffer indexes */
+    rxReadIndex = 0;
+    rxWriteIndex = 0;
+    txReadIndex = 0;
+    txWriteIndex = 0;
+
+    /* I2C Transfer initial params */
+    i2cTransaction.slaveAddress = 0;
+    i2cTransaction.writeBuf = txBuffer;
+    i2cTransaction.readBuf = rxBuffer;
+    i2cTransaction.readCount = 0;
+    i2cTransaction.writeCount = 0;
+
+    i2cModule = module;
+    begun = FALSE;
+}
 
 void TwoWire::forceStop(void)
 {
     //this has been removed so i can remove the pin map that used to be at the top of this file
 }
 
-// Public Methods //////////////////////////////////////////////////////////////
+/*
+ * Public Methods
+ */
 
 // Initialize as a master
 void TwoWire::begin(void)
@@ -113,18 +99,18 @@ void TwoWire::begin(void)
     /* return if I2C already started */
     if (begun == TRUE) return;
 
-    if (i2cModule == NOT_ACTIVE) {
-        i2cModule = BOOST_PACK_WIRE;
-    }
-
     Board_initI2C();
+    
     I2C_Params_init(&params);
     params.transferMode = I2C_MODE_BLOCKING;
     params.bitRate = I2C_400kHz;
+    
     i2c = I2C_open(i2cModule, &params);
 
-    GateMutex_construct(&gate, NULL);
-    begun = TRUE;
+    if (i2c != NULL) {
+        GateMutex_construct(&gate, NULL);
+        begun = TRUE;
+    }
 }
 
 //Save slave address for use in I2C_Transaction
