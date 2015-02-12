@@ -22,6 +22,9 @@ public class CTagsBakedPreprocessorTest extends AbstractWithPreferencesTest {
 
   @Before
   public void preparePreferences() {
+    PreferencesData.set("target_package", "arduino");
+    PreferencesData.set("target_platform", "avr");
+
     prefs = new PreferencesMap();
     prefs.putAll(PreferencesData.getMap());
     prefs.putAll(BaseNoGui.getTargetPlatform().getTool("ctags"));
