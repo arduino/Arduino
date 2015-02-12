@@ -336,4 +336,23 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
     return defaultValue;
   }
 
+  public PreferencesMap merge(PreferencesMap map) {
+    PreferencesMap mergedPref = new PreferencesMap(this);
+    mergedPref.putAll(map);
+
+    return mergedPref;
+  }
+
+  public static PreferencesMap safeLoad(File file) {
+    PreferencesMap pref = new PreferencesMap();
+    if (file.exists() && file.canRead()) {
+      try {
+        pref.load(file);
+      } catch (IOException e) {
+        // ignored
+      }
+    }
+    return pref;
+  }
+
 }
