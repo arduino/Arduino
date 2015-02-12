@@ -1,13 +1,8 @@
 /*
- *  Copyright 2014 by Texas Instruments Incorporated.
- *
- */
-
-/*
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 /*
@@ -245,8 +240,3 @@ static inline xdc_Void gnu_targets_arm_rtsv7M_Settings_Module_setMask( xdc_Bits1
 
 #endif /* gnu_targets_arm_rtsv7M_Settings__localnames__done */
 #endif
-/*
- *  @(#) gnu.targets.arm.rtsv7M; 1, 0, 0,115; 10-10-2014 11:50:57; /db/ztree/library/trees/xdctargets/xdctargets-h38x/src/ xlibrary
-
- */
-

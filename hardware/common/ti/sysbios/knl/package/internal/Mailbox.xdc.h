@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 #ifndef ti_sysbios_knl_Mailbox__INTERNAL__

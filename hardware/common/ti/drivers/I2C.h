@@ -113,6 +113,7 @@
  *  - @ref I2CCC26XX.h
  *  - @ref I2CCC3200.h
  *  - @ref I2CEUSCIB.h
+ *  - @ref I2CMSP432.h
  *  - @ref I2CTiva.h
  *  - @ref I2CUSCIB.h
  *
@@ -138,7 +139,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <xdc/std.h>
 
 /*!
  *  @brief      A handle that is returned from a I2C_open() call.

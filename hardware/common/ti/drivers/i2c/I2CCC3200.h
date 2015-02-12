@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,9 +54,7 @@ extern "C" {
 #include <stdbool.h>
 #include <ti/drivers/I2C.h>
 
-#include <ti/sysbios/knl/Semaphore.h>
-#define ti_sysbios_family_arm_m3_Hwi__nolocalnames
-#include <ti/sysbios/family/arm/m3/Hwi.h>
+#include <ti/drivers/ports/SemaphoreP.h>
 
 /* Return codes for I2C_control() */
 #define I2CCC3200_CMD_UNDEFINED     -1
@@ -77,7 +75,8 @@ extern const I2C_FxnTable I2CCC3200_fxnTable;
  *  const I2CCC3200_HWAttrs i2cCC3200HWAttrs[] = {
  *      {
  *          I2CA0_BASE,
- *          INT_I2CA0
+ *          INT_I2CA0,
+ *          PowerCC3200_PERIPH_I2CA0
  *      }
  *  };
  *  @endcode
@@ -87,6 +86,8 @@ typedef struct I2CCC3200_HWAttrs {
     unsigned int baseAddr;
     /*! I2C Peripheral's interrupt vector */
     unsigned int intNum;
+    /*! I2C Peripheral's power manager ID */
+    uint32_t     powerMngrId;
 } I2CCC3200_HWAttrs;
 
 /*!
@@ -95,13 +96,11 @@ typedef struct I2CCC3200_HWAttrs {
  *  The application must not access any member variables of this structure!
  */
 typedef struct I2CCC3200_Object {
-    Semaphore_Struct    mutex;            /* Grants exclusive access to I2C */
-    Semaphore_Struct    transferComplete; /* Notify finished I2C transfer */
+    SemaphoreP_Handle   mutex;            /* Grants exclusive access to I2C */
+    SemaphoreP_Handle   transferComplete; /* Notify finished I2C transfer */
 
     I2C_TransferMode    transferMode;        /* Blocking or Callback mode */
     I2C_CallbackFxn     transferCallbackFxn; /* Callback function pointer */
-
-    ti_sysbios_family_arm_m3_Hwi_Struct hwi;  /* Hwi object handle */
 
     volatile I2C_Mode   mode;           /* Stores the I2C state */
 
@@ -119,9 +118,6 @@ typedef struct I2CCC3200_Object {
 
     bool                isOpen;         /* flag to indicate module is open */
 } I2CCC3200_Object;
-
-/* Do not interfere with the app if they include the family Hwi module */
-#undef ti_sysbios_family_arm_m3_Hwi__nolocalnames
 
 #ifdef __cplusplus
 }

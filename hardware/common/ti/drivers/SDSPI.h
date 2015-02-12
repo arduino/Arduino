@@ -91,6 +91,7 @@
  *  - @ref SDSPIUSCIB.h
  *  - @ref SDSPIEUSCIA.h
  *  - @ref SDSPIEUSCIB.h
+ *  - @ref SDSPIMSP432.h
  *
  *  # Instrumentation #
  *

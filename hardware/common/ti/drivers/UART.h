@@ -1,6 +1,5 @@
-
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -110,6 +109,7 @@
  *  - @ref UARTCC26XX.h
  *  - @ref UARTCC3200.h
  *  - @ref UARTEUSCIA.h
+ *  - @ref UARTMSP432.h
  *  - @ref UARTTiva.h
  *  - @ref UARTUSCIA.h
  *
@@ -134,6 +134,8 @@ extern "C" {
 
 #include <stdint.h>
 #include <stddef.h>
+
+#include <ti/drivers/ports/ListP.h>
 
 #define UART_ERROR  -1
 
@@ -171,7 +173,7 @@ typedef enum UART_Mode {
       *  Non-blocking and will return immediately.  When the transfer by the Hwi
       *  is finished the configured callback function is called.
       */
-    UART_MODE_CALLBACK
+    UART_MODE_CALLBACK,
 } UART_Mode;
 
 /*!
@@ -316,7 +318,7 @@ typedef int     (*UART_ReadPollingFxn)    (UART_Handle handle, void *buffer,
  *  @brief      A function pointer to a driver specific implementation of
  *              UART_ReadCancelFxn().
  */
-typedef void        (*UART_ReadCancelFxn)     (UART_Handle handle);
+typedef void    (*UART_ReadCancelFxn)     (UART_Handle handle);
 
 /*!
  *  @brief      A function pointer to a driver specific implementation of
@@ -338,7 +340,7 @@ typedef int     (*UART_WritePollingFxn)   (UART_Handle handle,
  *  @brief      A function pointer to a driver specific implementation of
  *              UART_WriteCancelFxn().
  */
-typedef void        (*UART_WriteCancelFxn)    (UART_Handle handle);
+typedef void    (*UART_WriteCancelFxn)    (UART_Handle handle);
 
 /*!
  *  @brief      The definition of a UART function table that contains the
@@ -388,7 +390,6 @@ typedef struct UART_Config {
     /*! Pointer to a driver specific hardware attributes structure */
     void          const    *hwAttrs;
 } UART_Config;
-
 
 /*!
  *  @brief  Function to closes a given UART peripheral specified by the UART

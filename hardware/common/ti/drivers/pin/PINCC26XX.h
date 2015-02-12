@@ -209,34 +209,35 @@ __STATIC_INLINE uint_t PINCC26XX_getInputValue(PIN_Id pinId) {
 }
 
 
-/// \brief Fast/efficient version of #PIN_setOutputEnable()
-__STATIC_INLINE PIN_Status PINCC26XX_setOutputEnable(PIN_Handle handle, PIN_Id pinId, bool bOutEn) {
-    if (PIN_CHKEN && (pinId>=PIN_NumPins || PIN_HandleTable[pinId]!=handle)) {
-        // Non-existing pin or pin is not allocated to this client
-        return PIN_NO_ACCESS;
-    }
+/* \brief Fast/efficient version of #PIN_setOutputEnable()
+ * \note  Does not include any checks on handle for efficiency reasons,
+ *        use #PIN_setOutputEnable() for checked version
+ */
+__STATIC_INLINE void PINCC26XX_setOutputEnable(PIN_Id pinId, bool bOutEn) {
     uint32_t key = Hwi_disable();
         HWREG(GPIO_BASE+GPIO_O_DOE31_0) =
             ((HWREG(GPIO_BASE+GPIO_O_DOE31_0) & ~(1<<pinId)) | (bOutEn<<pinId));
     Hwi_restore(key);
-    return PIN_SUCCESS;
 }
 
 
-/// \brief Fast/efficient version of #PIN_setOutputValue()
-__STATIC_INLINE PIN_Status PINCC26XX_setOutputValue(PIN_Handle handle, PIN_Id pinId, uint_t val) {
-    if (PIN_CHKEN && (pinId>=PIN_NumPins || PIN_HandleTable[pinId]!=handle)) {
-        // Non-existing pin or pin is not allocated to this client
-        return PIN_NO_ACCESS;
-    }
+/* \brief Fast/efficient version of #PIN_setOutputValue()
+ * \note  Does not include any checks on handle for efficiency reasons,
+ *        use #PIN_setOutputValue() for checked version
+ */
+__STATIC_INLINE void PINCC26XX_setOutputValue(PIN_Id pinId, uint_t val) {
     HWREGB(GPIO_BASE+GPIO_O_DOUT3_0+pinId) = (val) ? 1 : 0;
-    return PIN_SUCCESS;
 }
 
 
 /// \brief Fast/efficient version of #PIN_getOutputValue()
 __STATIC_INLINE uint_t PINCC26XX_getOutputValue(PIN_Id pinId) {
     return (HWREG(GPIO_BASE+GPIO_O_DOUT31_0)>>pinId)&1;
+}
+
+
+__STATIC_INLINE void PINCC26XX_clrPendInterrupt(PIN_Id pinId) {
+    HWREG(GPIO_NONBUF_BASE+GPIO_O_EVFLAGS31_0) = (1<<pinId);
 }
 
 
@@ -254,29 +255,27 @@ __STATIC_INLINE uint_t PINCC26XX_getPortOutputValue(PIN_Handle handle) {
 }
 
 
-/// \brief Fast/efficient version of #PIN_setPortOutputValue()
-__STATIC_INLINE PIN_Status PINCC26XX_setPortOutputValue(PIN_Handle handle, uint_t bmOutVal) {
-    if (PIN_CHKEN && (handle==NULL || PIN_HandleTable[PIN_ctz(handle->bmPort)]!=handle)) {
-        return PIN_NO_ACCESS;
-    }
+/* \brief Fast/efficient version of #PIN_setPortOutputValue()
+ * \note  Does not include any checks on handle for efficiency reasons,
+ *        use #PIN_setPortOutputValue() for checked version
+ */
+__STATIC_INLINE void PINCC26XX_setPortOutputValue(PIN_Handle handle, uint_t bmOutVal) {
     // Only a single port on CC26xx
     HWREG(GPIO_BASE+GPIO_O_DOUTTGL31_0) =
          (HWREG(GPIO_BASE+GPIO_O_DOUT31_0) ^ bmOutVal) & handle->bmPort;
-    return PIN_SUCCESS;
 }
 
 
-/// \brief Fast/efficient version of #PIN_setPortOutputEnable()
-__STATIC_INLINE PIN_Status PINCC26XX_setPortOutputEnable(PIN_Handle handle, uint_t bmOutEn) {
-    if (PIN_CHKEN && (handle==NULL || PIN_HandleTable[PIN_ctz(handle->bmPort)]!=handle)) {
-        return PIN_NO_ACCESS;
-    }
+/* \brief Fast/efficient version of #PIN_setPortOutputEnable()
+ * \note  Does not include any checks on handle for efficiency reasons,
+ *        use #PIN_setPortOutputEnable() for checked version
+ */
+__STATIC_INLINE void PINCC26XX_setPortOutputEnable(PIN_Handle handle, uint_t bmOutEn) {
     // Only a single port on CC26xx
     uint32_t key = Hwi_disable();
         HWREG(GPIO_BASE+GPIO_O_DOE31_0) =
             (HWREG(GPIO_BASE+GPIO_O_DOE31_0) & (~handle->bmPort)) | (bmOutEn  & handle->bmPort);
     Hwi_restore(key);
-    return PIN_SUCCESS;
 }
 
 
@@ -305,7 +304,7 @@ extern PIN_Config PINCC26XX_getConfig(PIN_Id pinId);
  *       Power_enterShutdown();
  *       \endcode
  */
-extern PIN_Status PINCC26XX_setWakeup(PIN_Config aPinCfg[]);
+extern PIN_Status PINCC26XX_setWakeup(const PIN_Config aPinCfg[]);
 
 
 /** \brief Get device-specific pin mapping to GPIO, HW peripheral or HW signal
@@ -347,63 +346,63 @@ extern PIN_Status PINCC26XX_setMux(PIN_Handle handle, PIN_Id pinId, int32_t nMux
  * CC26XX-specific mux vakues used in conjunction with #PINCC26XX_setMux() to
  * map hardware peripheral ports, GPIO or observation signals to pins.
  */
-#define PINCC26XX_MUX_GPIO           0x00000000  // Default general purpose IO usage
-#define PINCC26XX_MUX_AON_SCS        0x00000001  // AON SPI-S SCS Pin
-#define PINCC26XX_MUX_AON_SCK        0x00000002  // AON SPI-S SCK Pin
-#define PINCC26XX_MUX_AON_SDI        0x00000003  // AON SPI-S SDI Pin
-#define PINCC26XX_MUX_AON_SDO        0x00000004  // AON SPI-S SDO Pin
-#define PINCC26XX_MUX_AON_TDI        0x00000005  // AON JTAG TDI Pin
-#define PINCC26XX_MUX_AON_TDO        0x00000006  // AON JTAG TDO Pin
-#define PINCC26XX_MUX_AON_CLK32K     0x00000007  // AON External 32kHz clock
-#define PINCC26XX_MUX_AUX_IO         0x00000008  // AUX IO Pin
-#define PINCC26XX_MUX_MCU_SSI0_RX    0x00000009  // MCU SSI0 Receive Pin
-#define PINCC26XX_MUX_MCU_SSI0_TX    0x0000000A  // MCU SSI0 Transmit Pin
-#define PINCC26XX_MUX_MCU_SSI0_FSS   0x0000000B  // MCU SSI0 FSS Pin
-#define PINCC26XX_MUX_MCU_SSI0_CLK   0x0000000C  // MCU SSI0 Clock Pin
-#define PINCC26XX_MUX_MCU_I2C_MSSDA  0x0000000D  // MCU I2C Data Pin
-#define PINCC26XX_MUX_MCU_I2C_MSSCL  0x0000000E  // MCU I2C Clock Pin
-#define PINCC26XX_MUX_MCU_UART0_RX   0x0000000F  // MCU UART0 Receive Pin
-#define PINCC26XX_MUX_MCU_UART0_TX   0x00000010  // MCU UART0 Transmit Pin
-#define PINCC26XX_MUX_MCU_UART0_CTS  0x00000011  // MCU UART0 Clear To Send Pin
-#define PINCC26XX_MUX_MCU_UART0_RTS  0x00000012  // MCU UART0 Request To Send Pin
-#define PINCC26XX_MUX_MCU_UART1_RX   0x00000013  // MCU UART1 Receive Pin
-#define PINCC26XX_MUX_MCU_UART1_TX   0x00000014  // MCU UART1 Transmit Pin
-#define PINCC26XX_MUX_MCU_UART1_CTS  0x00000015  // MCU UART1 Clear To Send  Pin
-#define PINCC26XX_MUX_MCU_UART1_RTS  0x00000016  // MCU UART1 Request To Send  Pin
-#define PINCC26XX_MUX_MCU_TIMER0     0x00000017  // MCU GPT Pin 0
-#define PINCC26XX_MUX_MCU_TIMER1     0x00000018  // MCU GPT Pin 1
-#define PINCC26XX_MUX_MCU_TIMER2     0x00000019  // MCU GPT Pin 2
-#define PINCC26XX_MUX_MCU_TIMER3     0x0000001A  // MCU GPT Pin 3
-#define PINCC26XX_MUX_MCU_TIMER4     0x0000001B  // MCU GPT Pin 4
-#define PINCC26XX_MUX_MCU_TIMER5     0x0000001C  // MCU GPT Pin 5
-#define PINCC26XX_MUX_MCU_TIMER6     0x0000001D  // MCU GPT Pin 6
-#define PINCC26XX_MUX_MCU_TIMER7     0x0000001E  // MCU GPT Pin 7
-#define PINCC26XX_MUX_RESERVED0      0x0000001F  // Reserved0
-#define PINCC26XX_MUX_RESERVED1      0x00000020  // Reserved1
-#define PINCC26XX_MUX_MCU_SSI1_RX    0x00000021  // MCU SSI1 Receive Pin
-#define PINCC26XX_MUX_MCU_SSI1_TX    0x00000022  // MCU SSI1 Transmit Pin
-#define PINCC26XX_MUX_MCU_SSI1_FSS   0x00000023  // MCU SSI1 FSS Pin
-#define PINCC26XX_MUX_MCU_SSI1_CLK   0x00000024  // MCU SSI1 Clock Pin
-#define PINCC26XX_MUX_MCU_I2S_AD0    0x00000025  // MCU I2S Data Pin 0
-#define PINCC26XX_MUX_MCU_I2S_AD1    0x00000026  // MCU I2S Data Pin 1
-#define PINCC26XX_MUX_MCU_I2S_WCLK   0x00000027  // MCU I2S Frame/Word Clock
-#define PINCC26XX_MUX_MCU_I2S_BCLK   0x00000028  // MCU I2S Bit Clock
-#define PINCC26XX_MUX_MCU_I2S_MCLK   0x00000029  // MCU I2S Master clock 2
-#define PINCC26XX_MUX_MCU_IOC_OBS0   0x0000002A  // MCU Port 0 for observation
-#define PINCC26XX_MUX_MCU_IOC_OBS1   0x0000002B  // MCU Port 1 for observation
-#define PINCC26XX_MUX_MCU_IOC_OBS2   0x0000002C  // MCU Port 2 for observation
-#define PINCC26XX_MUX_MCU_IOC_OBS3   0x0000002D  // MCU Port 3 for observation
-#define PINCC26XX_MUX_RFC_TRC        0x0000002E  // RF Core Tracer
-#define PINCC26XX_MUX_RFC_GPO0       0x0000002F  // RC Core Data Out Pin 0
-#define PINCC26XX_MUX_RFC_GPO1       0x00000030  // RC Core Data Out Pin 1
-#define PINCC26XX_MUX_RFC_GPO2       0x00000031  // RC Core Data Out Pin 2
-#define PINCC26XX_MUX_RFC_GPO3       0x00000032  // RC Core Data Out Pin 3
-#define PINCC26XX_MUX_RFC_GPI0       0x00000033  // RC Core Data In Pin 0
-#define PINCC26XX_MUX_RFC_GPI1       0x00000034  // RC Core Data In Pin 1
-#define PINCC26XX_MUX_RFC_SMI_DL_OUT 0x00000035  // RF Core SMI Data Link Out
-#define PINCC26XX_MUX_RFC_SMI_DL_IN  0x00000036  // RF Core SMI Data Link in
-#define PINCC26XX_MUX_RFC_SMI_CL_OUT 0x00000037  // RF Core SMI Command Link Out
-#define PINCC26XX_MUX_RFC_SMI_CL_IN  0x00000038  // RF Core SMI Command Link In
+#define PINCC26XX_MUX_GPIO           IOC_PORT_GPIO            // Default general purpose IO usage
+#define PINCC26XX_MUX_AON_SCS        IOC_PORT_AON_SCS         // AON SPI-S SCS Pin
+#define PINCC26XX_MUX_AON_SCK        IOC_PORT_AON_SCK         // AON SPI-S SCK Pin
+#define PINCC26XX_MUX_AON_SDI        IOC_PORT_AON_SDI         // AON SPI-S SDI Pin
+#define PINCC26XX_MUX_AON_SDO        IOC_PORT_AON_SDO         // AON SPI-S SDO Pin
+#define PINCC26XX_MUX_AON_TDI        IOC_PORT_AON_TDI         // AON JTAG TDI Pin
+#define PINCC26XX_MUX_AON_TDO        IOC_PORT_AON_TDO         // AON JTAG TDO Pin
+#define PINCC26XX_MUX_AON_CLK32K     IOC_PORT_AON_CLK32K      // AON External 32kHz clock
+#define PINCC26XX_MUX_AUX_IO         IOC_PORT_AUX_IO          // AUX IO Pin
+#define PINCC26XX_MUX_MCU_SSI0_RX    IOC_PORT_MCU_SSI0_RX     // MCU SSI0 Receive Pin
+#define PINCC26XX_MUX_MCU_SSI0_TX    IOC_PORT_MCU_SSI0_TX     // MCU SSI0 Transmit Pin
+#define PINCC26XX_MUX_MCU_SSI0_FSS   IOC_PORT_MCU_SSI0_FSS    // MCU SSI0 FSS Pin
+#define PINCC26XX_MUX_MCU_SSI0_CLK   IOC_PORT_MCU_SSI0_CLK    // MCU SSI0 Clock Pin
+#define PINCC26XX_MUX_MCU_I2C_MSSDA  IOC_PORT_MCU_I2C_MSSDA   // MCU I2C Data Pin
+#define PINCC26XX_MUX_MCU_I2C_MSSCL  IOC_PORT_MCU_I2C_MSSCL   // MCU I2C Clock Pin
+#define PINCC26XX_MUX_MCU_UART0_RX   IOC_PORT_MCU_UART0_RX    // MCU UART0 Receive Pin
+#define PINCC26XX_MUX_MCU_UART0_TX   IOC_PORT_MCU_UART0_TX    // MCU UART0 Transmit Pin
+#define PINCC26XX_MUX_MCU_UART0_CTS  IOC_PORT_MCU_UART0_CTS   // MCU UART0 Clear To Send Pin
+#define PINCC26XX_MUX_MCU_UART0_RTS  IOC_PORT_MCU_UART0_RTS   // MCU UART0 Request To Send Pin
+#define PINCC26XX_MUX_MCU_UART1_RX   IOC_PORT_MCU_UART1_RX    // MCU UART1 Receive Pin
+#define PINCC26XX_MUX_MCU_UART1_TX   IOC_PORT_MCU_UART1_TX    // MCU UART1 Transmit Pin
+#define PINCC26XX_MUX_MCU_UART1_CTS  IOC_PORT_MCU_UART1_CTS   // MCU UART1 Clear To Send  Pin
+#define PINCC26XX_MUX_MCU_UART1_RTS  IOC_PORT_MCU_UART1_RTS   // MCU UART1 Request To Send  Pin
+#define PINCC26XX_MUX_MCU_TIMER0     IOC_PORT_MCU_TIMER0      // MCU GPT Pin 0
+#define PINCC26XX_MUX_MCU_TIMER1     IOC_PORT_MCU_TIMER1      // MCU GPT Pin 1
+#define PINCC26XX_MUX_MCU_TIMER2     IOC_PORT_MCU_TIMER2      // MCU GPT Pin 2
+#define PINCC26XX_MUX_MCU_TIMER3     IOC_PORT_MCU_TIMER3      // MCU GPT Pin 3
+#define PINCC26XX_MUX_MCU_TIMER4     IOC_PORT_MCU_TIMER4      // MCU GPT Pin 4
+#define PINCC26XX_MUX_MCU_TIMER5     IOC_PORT_MCU_TIMER5      // MCU GPT Pin 5
+#define PINCC26XX_MUX_MCU_TIMER6     IOC_PORT_MCU_TIMER6      // MCU GPT Pin 6
+#define PINCC26XX_MUX_MCU_TIMER7     IOC_PORT_MCU_TIMER7      // MCU GPT Pin 7
+#define PINCC26XX_MUX_RESERVED0      IOC_PORT_RESERVED0       // Reserved0
+#define PINCC26XX_MUX_RESERVED1      IOC_PORT_RESERVED1       // Reserved1
+#define PINCC26XX_MUX_MCU_SSI1_RX    IOC_PORT_MCU_SSI1_RX     // MCU SSI1 Receive Pin
+#define PINCC26XX_MUX_MCU_SSI1_TX    IOC_PORT_MCU_SSI1_TX     // MCU SSI1 Transmit Pin
+#define PINCC26XX_MUX_MCU_SSI1_FSS   IOC_PORT_MCU_SSI1_FSS    // MCU SSI1 FSS Pin
+#define PINCC26XX_MUX_MCU_SSI1_CLK   IOC_PORT_MCU_SSI1_CLK    // MCU SSI1 Clock Pin
+#define PINCC26XX_MUX_MCU_I2S_AD0    IOC_PORT_MCU_I2S_AD0     // MCU I2S Data Pin 0
+#define PINCC26XX_MUX_MCU_I2S_AD1    IOC_PORT_MCU_I2S_AD1     // MCU I2S Data Pin 1
+#define PINCC26XX_MUX_MCU_I2S_WCLK   IOC_PORT_MCU_I2S_WCLK    // MCU I2S Frame/Word Clock
+#define PINCC26XX_MUX_MCU_I2S_BCLK   IOC_PORT_MCU_I2S_BCLK    // MCU I2S Bit Clock
+#define PINCC26XX_MUX_MCU_I2S_MCLK   IOC_PORT_MCU_I2S_MCLK    // MCU I2S Master clock 2
+#define PINCC26XX_MUX_MCU_IOC_OBS0   IOC_PORT_MCU_IOC_OBS0    // MCU Port 0 for observation
+#define PINCC26XX_MUX_MCU_IOC_OBS1   IOC_PORT_MCU_IOC_OBS1    // MCU Port 1 for observation
+#define PINCC26XX_MUX_MCU_IOC_OBS2   IOC_PORT_MCU_IOC_OBS2    // MCU Port 2 for observation
+#define PINCC26XX_MUX_MCU_IOC_OBS3   IOC_PORT_MCU_IOC_OBS3    // MCU Port 3 for observation
+#define PINCC26XX_MUX_RFC_TRC        IOC_PORT_RFC_TRC         // RF Core Tracer
+#define PINCC26XX_MUX_RFC_GPO0       IOC_PORT_RFC_GPO0        // RC Core Data Out Pin 0
+#define PINCC26XX_MUX_RFC_GPO1       IOC_PORT_RFC_GPO1        // RC Core Data Out Pin 1
+#define PINCC26XX_MUX_RFC_GPO2       IOC_PORT_RFC_GPO2        // RC Core Data Out Pin 2
+#define PINCC26XX_MUX_RFC_GPO3       IOC_PORT_RFC_GPO3        // RC Core Data Out Pin 3
+#define PINCC26XX_MUX_RFC_GPI0       IOC_PORT_RFC_GPI0        // RC Core Data In Pin 0
+#define PINCC26XX_MUX_RFC_GPI1       IOC_PORT_RFC_GPI1        // RC Core Data In Pin 1
+#define PINCC26XX_MUX_RFC_SMI_DL_OUT IOC_PORT_RFC_SMI_DL_OUT  // RF Core SMI Data Link Out
+#define PINCC26XX_MUX_RFC_SMI_DL_IN  IOC_PORT_RFC_SMI_DL_IN   // RF Core SMI Data Link in
+#define PINCC26XX_MUX_RFC_SMI_CL_OUT IOC_PORT_RFC_SMI_CL_OUT  // RF Core SMI Command Link Out
+#define PINCC26XX_MUX_RFC_SMI_CL_IN  IOC_PORT_RFC_SMI_CL_IN   // RF Core SMI Command Link In
 /** \} (PINCC26XX_MUX_VALS)
  */
 

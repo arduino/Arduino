@@ -106,7 +106,7 @@ static inline xdc_Fxn xdc_uargToFxn(xdc_UArg a) { return ((xdc_Fxn)(int)a); }
 
 #endif /* gnu_targets_STD_ */
 /*
- *  @(#) gnu.targets; 1, 0, 1,740; 10-10-2014 10:02:13; /db/ztree/library/trees/xdctargets/xdctargets-h38x/src/ xlibrary
+ *  @(#) gnu.targets; 1, 0, 1,754; 1-21-2015 19:57:25; /db/ztree/library/trees/xdctargets/xdctargets-h42x/src/ xlibrary
 
  */
 

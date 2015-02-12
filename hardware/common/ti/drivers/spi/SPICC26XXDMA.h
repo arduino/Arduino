@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,38 +35,44 @@
  *  @brief      SPI driver implementation for a CC26XX SPI controller using
  *              the UDMA controller.
  *
+ * # Driver include #
  *  The SPI header file should be included in an application as follows:
  *  @code
  *  #include <ti/drivers/SPI.h>
  *  #include <ti/drivers/spi/SPICC26XXDMA.h>
+ *  #include <ti/drivers/dma/UDMACC26XX.h>
  *  @endcode
+ * Note that the user also needs to include the UDMACC26XX.h driver since the
+ * SPI uses uDMA in order to improve throughput.
  *
  * # Overview #
- * The general SPI API is normally used in application code, i.e. SPI_open()
- * is used instead of SPICC26XXDMA_open(). The board file will define the device
+ * The general SPI API should be used in application code, i.e. SPI_open()
+ * should be used instead of SPICC26XXDMA_open(). The board file will define the device
  * specific config, and casting in the general API will ensure that the correct
  * device specific functions are called.
  * This is also reflected in the example code in [Use Cases](@ref USE_CASES_SPI).
  *
- * ## General Behavior #
+ * # General Behavior #
  * Before using SPI on CC26XX:
- *   - The SPI driver is initialized by calling SPICC26XXDMA_init(). This should
- *     be done in main before BIOS_start() is called.
+ *   - The SPI driver is initialized by calling SPI_init().
  *   - The SPI HW is configured and flags system dependencies (e.g. IOs,
- *     power, etc.) by calling SPICC26XXDMA_open().
- *   .
+ *     power, etc.) by calling SPI_open().
+ *   - The SPI driver makes use of DMA in order to optimize throughput.
+ *     This is handled directly by the SPI driver, so the application should never
+ *     to make any calls directly to the UDMACC26XX.h driver.
+ *
  * The following is true for slave operation:
- *   - SPI and UDMA modules are enabled by calling SPICC26XXDMA_transfer().
- *   - All received bytes are ignored after SPICC26XXDMA_open() is called, until
- *     the first SPICC26XXDMA_transfer().
- *   - If an RX overrun occur or if SPICC26XXDMA_transferCancel() is called, SPI and UDMA
+ *   - RX overrun IRQ, SPI and UDMA modules are enabled by calling SPI_transfer().
+ *   - All received bytes are ignored after SPI_open() is called, until
+ *     the first SPI_transfer().
+ *   - If an RX overrun occur or if SPI_transferCancel() is called, RX overrun IRQ, SPI and UDMA
  *     modules are disabled, TX and RX FIFOs are flushed and all bytes are ignored.
- *   - After a successful transfer, SPI module remains enabled and UDMA is disabled.
- *     SPICC26XXDMA_transfer() must be called again before RX FIFO goes full in order to
+ *   - After a successful transfer, RX overrun IRQ and SPI module remains enabled and UDMA module is disabled.
+ *     SPI_transfer() must be called again before RX FIFO goes full in order to
  *     avoid overflow. If the TX buffer is underflowed, zeros will be outputted.
- *     It is safe to call another SPICC26XXDMA_transfer() from the transfer callback,
+ *     It is safe to call another SPI_transfer() from the transfer callback,
  *     see [Continous Slave Transfer] (@ref USE_CASE_CST) use case below.
- *   - The SPICC26XXDMA driver supports partial return, that can be used if the
+ *   - The SPI driver supports partial return, that can be used if the
  *     transfer size is unknown. If PARTIAL_RETURN is enabled, the transfer will end when
  *     chip select is deasserted. The ::SPI_Transaction.status and the ::SPI_Transaction.count
  *     will be updated to indicate whether the transfer ended due to a chip select deassertion
@@ -74,47 +80,53 @@
  *     use case below.
  *
  * The following apply for master operation:
- *   - SPI and UDMA modules are enabled by calling SPICC26XXDMA_transfer().
- *   - If the SPICC26XXDMA_transfer() succeeds, SPI module is enabled and UDMA module is disabled.
- *   - If SPICC26XXDMA_transferCancel() is called, SPI and UDMA modules are disabled and
+ *   - SPI and UDMA modules are enabled by calling SPI_transfer().
+ *   - If the SPI_transfer() succeeds, SPI module is enabled and UDMA module is disabled.
+ *   - If SPI_transferCancel() is called, SPI and UDMA modules are disabled and
  *     TX and RX FIFOs are flushed.
  *   .
  * After SPI operation has ended:
- *   - Release system dependencies for SPI by calling SPICC26XXDMA_close().
+ *   - Release system dependencies for SPI by calling SPI_close().
  *
- * ## Error handling #
+ * # Error handling #
  * If an RX overrun occurs during slave operation:
- *   - All bytes received up until an error occurs will be returned, with the
- *     error signaled in the ::SPI_Transaction.status field. SPI and UDMA modules are then disabled,
+ *   - If a transfer is ongoing, all bytes received up until the error occurs will be returned, with the
+ *     error signaled in the ::SPI_Transaction.status field. RX overrun IRQ, SPI and UDMA modules are then disabled,
  *     TX and RX FIFOs are flushed and all bytes will be ignored until a new transfer is issued.
- *   .
+ *   - If a transfer is not ongoing, RX overrun IRQ, SPI and UDMA modules are disabled,
+ *     TX and RX FIFOs are flushed and all bytes will be ignored until a new transfer is issued.
  *
- * ## Power Management #
- *  The SPICC26XXDMA driver is setting a power constraint during transfers to keep
+ *
+ * # Power Management #
+ * The TI-RTOS power management framework will try to put the device into the most
+ * power efficient mode whenever possible. Please see the technical reference
+ * manual for further details on each power mode.                                                   |
+ *
+ *  The SPICC26XXDMA.h driver is setting a power constraint during transfers to keep
  *  the device out of standby. When the transfer has finished, the power
  *  constraint is released.
  *  The following statements are valid:
- *    - After SPICC26XXDMA_open(): the device is still allowed to enter standby.
+ *    - After SPI_open(): the device is still allowed to enter standby.
  *    - In slave mode:
- *        - During SPICC26XXDMA_transfer(): the device cannot enter standby.
+ *        - During SPI_transfer(): the device cannot enter standby, only idle.
  *        - After an RX overflow: device is allowed to enter standby.
- *        - After a successful SPICC26XXDMA_transfer(): the device is allowed
+ *        - After a successful SPI_transfer(): the device is allowed
  *          to enter standby, but SPI module remains enabled.
  *            - _Note_: In slave mode, the device might enter standby while a byte is being
- *               transferred if SPICC26XXDMA_transfer() is not called again after a successful
+ *               transferred if SPI_transfer() is not called again after a successful
  *               transfer. This could result in corrupt data being transferred.
  *        - Application thread should typically either issue another transfer after
- *          SPICC26XXDMA_transfer() completes successfully, or call
- *          SPICC26XXDMA_transferCancel() to disable the SPI module and thus assuring that no data
+ *          SPI_transfer() completes successfully, or call
+ *          SPI_transferCancel() to disable the SPI module and thus assuring that no data
  *          is received while entering standby.
  *        .
  *    - In master mode:
- *        - During SPICC26XXDMA_transfer(): the device cannot enter standby.
- *        - After SPICC26XXDMA_transfer() succeeds: the device can enter standby.
- *        - If SPICC26XXDMA_transferCancel() is called: the device can enter standby.
+ *        - During SPI_transfer(): the device cannot enter standby, only idle.
+ *        - After SPI_transfer() succeeds: the device can enter standby.
+ *        - If SPI_transferCancel() is called: the device can enter standby.
 
- *  ## SPI #
- *  ### Chip Select #
+ *  # SPI details #
+ *  ## Chip Select #
  *  This SPI controller supports a hardware chip select pin. Refer to the
  *  user manual on how this hardware chip select pin behaves in regards
  *  to the SPI frame format.
@@ -138,14 +150,14 @@
  *  </tr>
  *  </table>
  *
- *  #### Multiple slaves when operating in master mode #
+ *  ### Multiple slaves when operating in master mode #
  *  In a scenario where the SPI module is operating in master mode with multiple
  *  SPI slaves, the chip select pin can be reallocated at runtime to select the
  *  appropiate slave device. See [Master Mode With Multiple Slaves](@ref USE_CASE_MMMS) use case below.
  *  This is only relevant when chip select is a hardware chip select. Otherwise the application
  *  can control the chip select pins directly using the PIN driver.
  *
- *  ### Data Frames #
+ *  ## Data Frames #
  *
  *  SPI data frames can be any size from 4-bits to 16-bits. If the dataSize in
  *  ::SPI_Params is greater that 8-bits, then the SPICC26XXDMA driver
@@ -177,21 +189,24 @@
  *  so the uDMA will send some known value.
  *  Each SPI driver instance uses its own scratch buffer.
  *
- * ## Supported Functions ##
- *  | API function             | Description                                       |
- *  |------------------------- |---------------------------------------------------|
- *  | SPICC26XXDMA_init()        | Initialize SPI driver                            |
- *  | SPICC26XXDMA_open()        | Initialize SPI HW and set system dependencies    |
- *  | SPICC26XXDMA_close()       | Disable SPI and UDMA HW and release system dependencies   |
- *  | SPICC26XXDMA_control()     | Configure an already opened SPI handle           |
- *  | SPICC26XXDMA_transfer()        | Start transfer from SPI                              |
- *  | SPICC26XXDMA_transferCancel()  | Cancel ongoing transfer from SPI                     |
+ * # Supported Functions #
+ * | Generic API function  | API function                   | Description                                                 |
+ * |-----------------------|------------------------------- |-------------------------------------------------------------|
+ * | SPI_init()            | SPICC26XXDMA_init()            | Initialize SPI driver                                       |
+ * | SPI_open()            | SPICC26XXDMA_open()            | Initialize SPI HW and set system dependencies               |
+ * | SPI_close()           | SPICC26XXDMA_close()           | Disable SPI and UDMA HW and release system dependencies     |
+ * | SPI_control()         | SPICC26XXDMA_control()         | Configure an already opened SPI handle                      |
+ * | SPI_transfer()        | SPICC26XXDMA_transfer()        | Start transfer from SPI                                     |
+ * | SPI_transferCancel()  | SPICC26XXDMA_transferCancel()  | Cancel ongoing transfer from SPI                            |
+ *
+ *  @note All calls should go through the generic API
  *
  *  ## Unsupported Functionality #
  *  The CC26XX SPI driver does not support:
  *    - SPICC26XXDMA_serviceISR()
  *
  *  Functionality which will be supported in later releases:
+ *    - Wakeup the device on chip select assertion.
  *    - Multiple instances of driver to share single SPI module.
  *
  * ## Use Cases \anchor USE_CASES_SPI ##
@@ -319,7 +334,7 @@
  *  @endcode
  *
  *  ### Master Mode With Multiple Slaves \anchor USE_CASE_MMMS #
- *  This use case will configure a SPI master to send data to one slave and then another in
+ *  This use case will configure a SPI master to send data to one slave and then to another in
  *  BLOCKING_MODE. It is assumed that the board file is configured so that the two chip select
  *  pins have a default setting of a high output and that the ::SPICC26XX_HWAttrs used points
  *  to one of them since the SPI driver will revert to this default setting when switching the
@@ -398,7 +413,9 @@ extern "C" {
 #include <stdint.h>
 #include <ti/drivers/SPI.h>
 #include <ti/drivers/pin/PINCC26XX.h>
+#include <ti/drivers/dma/UDMACC26XX.h>
 #include <ti/sysbios/family/arm/cc26xx/Power.h>
+#include <ti/sysbios/family/arm/cc26xx/PowerCC2650.h>
 
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/knl/Semaphore.h>
@@ -417,25 +434,39 @@ extern "C" {
 #define SPICC26XXDMA_RETURN_PARTIAL_DISABLE   1
 /*! Re-configure chip select pin, used as cmd to SPI_control() */
 #define SPICC26XXDMA_SET_CSN_PIN              2
+/*! Enable/disable CSN wakeup on chip select assertion, used as cmd to SPI_control() */
+#define SPICC26XXDMA_SET_CSN_WAKEUP           3
 
-typedef unsigned long SPIBaseAddrType;
-typedef unsigned long SPIDataType;
 
-/* SPI function table pointer */
+/*!
+ *  \internal
+ *  @brief
+ *  SPI function table pointer
+ */
 extern const SPI_FxnTable SPICC26XXDMA_fxnTable;
 
 /*!
+ *  \internal
  *  @brief
  *  SPICC26XXDMA data frame size is used to determine how to configure the
  *  UDMA data transfers. This field is to be only used internally.
  *
- *  SPICC26XXDMA_8bit:  txBuf and rxBuf are arrays of uint8_t elements
- *  SPICC26XXDMA_16bit: txBuf and rxBuf are arrays of uint16_t elements
+ *  - SPICC26XXDMA_8bit:  txBuf and rxBuf are arrays of uint8_t elements
+ *  - SPICC26XXDMA_16bit: txBuf and rxBuf are arrays of uint16_t elements
  */
 typedef enum SPICC26XXDMA_FrameSize {
     SPICC26XXDMA_8bit  = 0,
     SPICC26XXDMA_16bit = 1
 } SPICC26XXDMA_FrameSize;
+
+/*!
+ *  \internal
+ *  @brief      The definition of a callback function used when wakeup on
+ *              chip select is enabled
+ *
+ *  @param      SPI_Handle          SPI_Handle
+ */
+typedef void        (*SPICC26XXDMA_CallbackFxn) (SPI_Handle handle);
 
 /*!
  *  @brief  SPICC26XXDMA Hardware attributes
@@ -478,17 +509,17 @@ typedef enum SPICC26XXDMA_FrameSize {
  */
 typedef struct SPICC26XX_HWAttrs {
     /*! SPI Peripheral's base address */
-    SPIBaseAddrType  baseAddr;
+    uint32_t         baseAddr;
     /*! SPI CC26XXDMA Peripheral's interrupt vector */
-    int              intNum;
+    uint8_t          intNum;
     /*! SPI Peripheral's power manager ID */
-    unsigned long    powerMngrId;
+    Power_Resource   powerMngrId;
     /*! Default TX value if txBuf == NULL */
-    uint32_t         defaultTxBufValue;
+    uint16_t         defaultTxBufValue;
     /*! uDMA controlTable channel index */
-    unsigned long    rxChannelIndex;
+    uint32_t         rxChannelBitMask;
     /*! uDMA controlTable channel index */
-    unsigned long    txChannelIndex;
+    uint32_t         txChannelBitMask;
     /*!< SPI MOSI pin */
     PIN_Id           mosiPin;
     /*!< SPI MISO pin */
@@ -507,6 +538,7 @@ typedef struct SPICC26XX_HWAttrs {
 typedef struct SPICC26XX_Object {
     /* SPI control variables */
     SPI_TransferMode       transferMode;        /*!< Blocking or Callback mode */
+    unsigned int           transferTimeout;     /*!< Timeout for the transfer when in blocking mode */
     SPI_CallbackFxn        transferCallbackFxn; /*!< Callback function pointer */
     SPI_Mode               mode;                /*!< Master or Slave mode */
     unsigned int           bitRate;             /*!< SPI bit rate in Hz */
@@ -528,122 +560,26 @@ typedef struct SPICC26XX_Object {
     PIN_State              pinState;
     PIN_Handle             pinHandle;
 
-    /* Optional slave mode feature */
-    bool                   returnPartial; /*!< Optional slave mode return partial on CSN deassert */
+    /* UDMA driver handle */
+    UDMACC26XX_Handle      udmaHandle;
 
+    /* Optional slave mode features */
+    bool                   returnPartial;      /*!< Optional slave mode return partial on CSN deassert */
+#ifdef SPICC26XXDMA_WAKEUP_ENABLED
+    SPICC26XXDMA_CallbackFxn wakeupCallbackFxn;/*!< Optional slave mode wake up on CSN assert */
+#endif
     /* Scratch buffer of size uint32_t */
-    uint32_t         scratchBuf;
+    uint16_t               scratchBuf;
 
     /* SPI pre- and post notification functions */
-    void                   *spiPreFxn;    /*!< SPI pre-notification function pointer */
-    void                   *spiPostFxn;   /*!< SPI post-notification function pointer */
-    Power_NotifyObj        spiPreObj;    /*!< SPI pre-notification object */
-    Power_NotifyObj        spiPostObj;   /*!< SPI post-notification object */
+    void                   *spiPreFxn;         /*!< SPI pre-notification function pointer */
+    void                   *spiPostFxn;        /*!< SPI post-notification function pointer */
+    Power_NotifyObj        spiPreObj;          /*!< SPI pre-notification object */
+    Power_NotifyObj        spiPostObj;         /*!< SPI post-notification object */
 
-    bool                   isOpen;       /*!< Has the object been opened */
+    bool                   isOpen;             /*!< Has the object been opened */
 } SPICC26XX_Object, *SPICC26XX_Handle;
 
-/*!
- *  @brief SPI CC26XX initialization
- *
- *  @param handle  A SPI_Handle
- *
- */
-extern void SPICC26XXDMA_init(SPI_Handle handle);
-
-/*!
- *  @brief  Function to initialize the CC26XX SPI peripheral specified by the
- *          particular handle. The parameter specifies which mode the SPI
- *          will operate.
- *
- *  The function will set a dependency on it power domain, i.e. power up the
- *  module and enable the clock. The IOs are allocated. Neither the SPI nor UDMA module
- *  will be enabled.
- *
- *  @pre    SPI controller has been initialized
- *
- *  @param  handle        A SPI_Handle
- *
- *  @param  params        Pointer to a parameter block, if NULL it will use
- *                        default values
- *
- *  @return A SPI_Handle on success or a NULL on an error or if it has been
- *          already opened
- *
- *  @sa     SPICC26XXDMA_close()
- */
-extern SPI_Handle  SPICC26XXDMA_open(SPI_Handle handle, SPI_Params *params);
-
-/*!
- *  @brief  Function to close a given CC26XX SPI peripheral specified by the
- *          SPI handle.
- *
- *  Will disable the SPI, disable all SPI interrupts and release the
- *  dependency on the corresponding power domain.
- *
- *  @pre    SPICC26XXDMA_open() has to be called first.
- *
- *  @param  handle  A SPI_Handle returned from SPI_open()
- *
- *  @sa     SPICC26XXDMA_open
- */
-extern void SPICC26XXDMA_close(SPI_Handle handle);
-
-/*!
- *  @brief  Function for transferring using the SPI interface.
- *
- *  The function will enable the SPI and UDMA modules and disallow
- *  chip from going into standby.
- *
- *  In ::SPI_MODE_BLOCKING, SPI_transfer will block task execution until the transfer
- *  has ended.
- *
- *  In ::SPI_MODE_CALLBACK, SPI_transfer does not block task execution, but calls a
- *  callback function specified by transferCallback when the transfer has ended.
- *
- *  @pre    SPICC26XXDMA_open() has to be called first.
- *
- *  @param  handle A SPI handle returned from SPICC26XXDMA_open()
- *
- *  @param  *transaction Pointer to transaction struct
- *
- *  @return True if transfer is successful and false if not
- *
- *  @sa     SPICC26XXDMA_open(), SPICC26XXDMA_transferCancel()
- */
-extern bool SPICC26XXDMA_transfer(SPI_Handle handle, SPI_Transaction *transaction);
-
-/*!
- *  @brief  Function for setting control parameters of the SPI driver
- *          after it has been opened.
- *
- *  @pre    SPICC26XXDMA_open() has to be called first.
- *
- *  @param  handle A SPI handle returned from SPICC26XXDMA_open()
- *
- *  @param  cmd  The command to execute, supported commands are:
- *              | Command                               | Description             |
- *              |-------------------------------------- |-------------------------|
- *              | ::SPICC26XXDMA_RETURN_PARTIAL_ENABLE    | Enable RETURN_PARTIAL   |
- *              | ::SPICC26XXDMA_RETURN_PARTIAL_DISABLE   | Disable RETURN_PARTIAL  |
- *              | ::SPICC26XXDMA_SET_CSN_PIN              | Re-configure chip select pin |
- *
- *  @param  *arg  Pointer to command arguments, currently not in use, set to NULL.
- *
- *  @return ::SPICC26XXDMA_CMD_SUCCESS if success, or error code if error.
- */
-int SPICC26XXDMA_control(SPI_Handle handle, unsigned int cmd, void *arg);
-
-
-/*!
- *  @brief Function that cancels a SPI transfer. Will disable SPI and UDMA modules
- *         and allow standby.
- *
- *  @pre    SPICC26XXDMA_open() has to be called first.
- *
- *  @param handle         The SPI_Handle for ongoing write.
- */
-extern void SPICC26XXDMA_transferCancel(SPI_Handle handle);
 
 /* Do not interfere with the app if they include the family Hwi module */
 #undef ti_sysbios_family_arm_m3_Hwi__nolocalnames

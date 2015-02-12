@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 #ifndef ti_sysbios_gates__
@@ -99,6 +99,19 @@ typedef struct ti_sysbios_gates_GateMutex_Struct ti_sysbios_gates_GateMutex_Stru
 typedef ti_sysbios_gates_GateMutex_Object* ti_sysbios_gates_GateMutex_Handle;
 typedef struct ti_sysbios_gates_GateMutex_Object__ ti_sysbios_gates_GateMutex_Instance_State;
 typedef ti_sysbios_gates_GateMutex_Object* ti_sysbios_gates_GateMutex_Instance;
+
+/*
+ * ======== module ti.sysbios.gates.GateSpinlock ========
+ */
+
+typedef struct ti_sysbios_gates_GateSpinlock_Fxns__ ti_sysbios_gates_GateSpinlock_Fxns__;
+typedef const ti_sysbios_gates_GateSpinlock_Fxns__* ti_sysbios_gates_GateSpinlock_Module;
+typedef struct ti_sysbios_gates_GateSpinlock_Params ti_sysbios_gates_GateSpinlock_Params;
+typedef struct ti_sysbios_gates_GateSpinlock_Object ti_sysbios_gates_GateSpinlock_Object;
+typedef struct ti_sysbios_gates_GateSpinlock_Struct ti_sysbios_gates_GateSpinlock_Struct;
+typedef ti_sysbios_gates_GateSpinlock_Object* ti_sysbios_gates_GateSpinlock_Handle;
+typedef struct ti_sysbios_gates_GateSpinlock_Object__ ti_sysbios_gates_GateSpinlock_Instance_State;
+typedef ti_sysbios_gates_GateSpinlock_Object* ti_sysbios_gates_GateSpinlock_Instance;
 
 
 #endif /* ti_sysbios_gates__ */ 

@@ -110,7 +110,6 @@ typedef enum SDSPITiva_CardType {
  *  These fields are used by driverlib APIs and therefore must be populated by
  *  driverlib macro definitions. For TivaWare these definitions are found in:
  *      - inc/hw_memmap.h
- *      - inc/hw_ints.h
  *
  *  @struct SDSPITiva_HWAttrs
  *  An example configuration structure could look as the following:
@@ -130,9 +129,6 @@ typedef enum SDSPITiva_CardType {
  *
  *           GPIO_PORTC_BASE, // CPIO Chip select port
  *           GPIO_PIN_7,      // GPIO Chip select pin
- *
- *           GPIO_PORTB_BASE, // GPIO TX port
- *           GPIO_PIN_1,      // GPIO TX pin
  *       },
  *  };
  *  @endcode

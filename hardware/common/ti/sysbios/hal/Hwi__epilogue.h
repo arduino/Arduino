@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -143,7 +143,12 @@ extern void _restore_interrupts(unsigned int key);
 static inline UInt ti_sysbios_hal_Hwi_disable()
 {
     UInt key;
+
+#if defined(__IAR_SYSTEMS_ICC__)
     asm volatile (
+#else /* !__IAR_SYSTEMS_ICC__ */
+    __asm__ __volatile__ (
+#endif
             "mrs %0, basepri\n\t"
             "msr basepri, %1"
             : "=&r" (key)
@@ -158,7 +163,12 @@ static inline UInt ti_sysbios_hal_Hwi_disable()
 static inline UInt ti_sysbios_hal_Hwi_enable()
 {
     UInt key;
+
+#if defined(__IAR_SYSTEMS_ICC__)
     asm volatile (
+#else /* !__IAR_SYSTEMS_ICC__ */
+    __asm__ __volatile__ (
+#endif
             "movw r12, #0\n\t"
             "mrs %0, basepri\n\t"
             "msr basepri, r12"
@@ -173,7 +183,11 @@ static inline UInt ti_sysbios_hal_Hwi_enable()
  */
 static inline Void ti_sysbios_hal_Hwi_restore(UInt key)
 {
+#if defined(__IAR_SYSTEMS_ICC__)
     asm volatile (
+#else /* !__IAR_SYSTEMS_ICC__ */
+    __asm__ __volatile__ (
+#endif
             "msr basepri, %0"
             :: "r" (key)
             );

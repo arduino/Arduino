@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 #ifndef ti_sysbios_family_arm_m3_Hwi__INTERNAL__
@@ -177,6 +177,9 @@
 
 /* dispatch */
 #define Hwi_dispatch ti_sysbios_family_arm_m3_Hwi_dispatch__I
+
+/* cc26xxRomInitNVIC */
+#define Hwi_cc26xxRomInitNVIC ti_sysbios_family_arm_m3_Hwi_cc26xxRomInitNVIC__I
 
 /* dispatchC */
 #define Hwi_dispatchC ti_sysbios_family_arm_m3_Hwi_dispatchC__I

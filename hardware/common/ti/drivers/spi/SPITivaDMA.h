@@ -225,14 +225,15 @@ typedef struct SPITivaDMA_Object {
     Semaphore_Struct      transferComplete;    /* Notify finished SPITivaDMA transfer */
     ti_sysbios_family_arm_m3_Hwi_Struct hwi;   /* Hwi object handle */
 
-    SPI_TransferMode      transferMode;       /* SPITivaDMA transfer mode */
-    SPI_CallbackFxn       transferCallbackFxn;/* Callback fxn in CALLBACK mode */
+    SPI_TransferMode      transferMode;        /* SPITivaDMA transfer mode */
+    SPI_CallbackFxn       transferCallbackFxn; /* Callback fxn in CALLBACK mode */
+    uint32_t              transferTimeout;     /* Transfer timeout in system ticks */
 
-    SPI_Transaction      *transaction;        /* void * to the current transaction*/
+    SPI_Transaction      *transaction;         /* void * to the current transaction*/
 
-    SPITivaDMA_FrameSize  frameSize;   /* Data frame size variable */
+    SPITivaDMA_FrameSize  frameSize;           /* Data frame size variable */
 
-    bool                  isOpen;      /* flag to indicate module is open */
+    bool                  isOpen;              /* flag to indicate module is open */
 } SPITivaDMA_Object, *SPITivaDMA_Handle;
 
 /* Do not interfere with the app if they include the family Hwi module */

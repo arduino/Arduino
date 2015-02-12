@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -109,14 +109,15 @@ extern const PWM_FxnTable PWMTimerCC3200_fxnTable;
  *  A sample structure is shown below:
  *  @code
  *  const PWMTimerCC3200_HWAttrs PWMTimerCC3200HWAttrs[] = {
- *      {TIMERA3_BASE, TIMER_A},
- *      {TIMERA3_BASE, TIMER_B},
+ *      {TIMERA3_BASE, TIMER_A, PowerCC3200_PERIPH_TIMERA3},
+ *      {TIMERA3_BASE, TIMER_B, PowerCC3200_PERIPH_TIMERA3},
  *  };
  *  @endcode
  */
 typedef struct PWMTimerCC3200_HWAttrs {
     uint32_t baseAddr;            /*!< Timer peripheral base address */
     uint16_t timer;               /*!< Half-timers to generate outputs */
+    uint8_t  pwrMngrId;           /*!< PWM timer's power manager ID */
 } PWMTimerCC3200_HWAttrs;
 
 /*!

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A60
+ * @(#) xdc-A54
  */
 
 /*
@@ -286,6 +286,6 @@ static inline xdc_runtime_ILogger_write8_FxnT xdc_runtime_ILogger_write8_fxnP( x
 #endif /* xdc_runtime_ILogger__localnames__done */
 #endif
 /*
- *  @(#) xdc.runtime; 2, 1, 0,507; 1-6-2015 17:59:50; /db/ztree/library/trees/xdc/xdc-A60x/src/packages/
+ *  @(#) xdc.runtime; 2, 1, 0,501; 10-31-2014 13:33:25; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
  */
 

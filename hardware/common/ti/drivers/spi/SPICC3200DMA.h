@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -109,9 +109,7 @@ extern "C" {
 
 #include <ti/drivers/SPI.h>
 
-#include <ti/sysbios/knl/Semaphore.h>
-#define ti_sysbios_family_arm_m3_Hwi__nolocalnames
-#include <ti/sysbios/family/arm/m3/Hwi.h>
+#include <ti/drivers/ports/SemaphoreP.h>
 
 /* Return codes for SPI_control() */
 #define SPICC3200DMA_CMD_UNDEFINED    -1
@@ -154,6 +152,7 @@ typedef enum SPICC3200DMA_FrameSize {
  *      {
  *          GSPI_BASE,
  *          INT_GSPI,
+ *          PowerCC3200_PERIPH_GSPI,
  *          PRCM_GSPI,
  *          SPI_HW_CTRL_CS,
  *          SPI_CS_ACTIVELOW,
@@ -174,6 +173,9 @@ typedef struct SPICC3200DMA_HWAttrs {
 
     /*! SPICC3200DMA Peripheral's interrupt vector */
     uint32_t   intNum;
+
+    /*! SPI Peripheral's power manager ID */
+    uint32_t   powerMngrId;
 
     /*! SPI PRCM peripheral number */
     uint32_t   spiPRCM;
@@ -208,8 +210,7 @@ typedef struct SPICC3200DMA_HWAttrs {
  *  The application must not access any member variables of this structure!
  */
 typedef struct SPICC3200DMA_Object {
-    Semaphore_Struct     transferComplete;
-    ti_sysbios_family_arm_m3_Hwi_Struct hwi;
+    SemaphoreP_Handle    transferComplete;
 
     SPI_TransferMode     transferMode;
     SPI_CallbackFxn      transferCallbackFxn;
@@ -228,9 +229,6 @@ typedef struct SPICC3200DMA_Object {
 
     bool                 isOpen;
 } SPICC3200DMA_Object, *SPICC3200DMA_Handle;
-
-/* Do not interfere with the app if they include the family Hwi module */
-#undef ti_sysbios_family_arm_m3_Hwi__nolocalnames
 
 #ifdef __cplusplus
 }

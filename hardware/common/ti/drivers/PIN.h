@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,30 +34,43 @@
  *  \file       PIN.h
  *  \brief      Generic PIN & GPIO driver
  *
+ *  To use the PIN driver ensure that the correct TI-RTOS driver library for your
+ *  device is linked in and include this header file:
+ *    \code
+ *    #include <ti/drivers/PIN.h>
+ *    \endcode
+ *
+ *  In order to use device-specific functionality or to use the size/speed-
+ *  optimized versions of some of the PIN driver functions that circumvent error
+ *  and resource checking, link in the correct TI-RTOS driver library for your
+ *  device and include the device-specific PIN driver header file (which in turn
+ *  includes PIN.h). As an example for the CC26xx family of devices:
+ *    \code
+ *    #include <ti/drivers/pin/PINCC26xx.h>
+ *    \endcode
+ *
  *  # Overview #
  *  The PIN driver allows clients (applications or other drivers) to allocate
  *  and control the I/O pins on the device. The pins can either be software-
  *  controlled general-purpose I/O (GPIO) or connected to hardware peripherals.
  *  Furthermore, the PIN driver allows clients to configure interrupt
  *  functionality on the pins to receive callbacks (and potentially wake up from
- *  the standby or powerdown power modes) on configurable signal edges.
+ *  the standby or idle power modes) on configurable signal edges.
+ *
+ *  Most other drivers rely on functionality in the PIN driver.
  *
  *  ## Structure ##
  *  In order to provide a generic driver interface, this file (PIN.h) only
- *  defines the API and some common data types and macros of the driver. Device-
- *  specific implementation files (e.g. PINCC26XX.h and PINCC26XX.c) are
- *  required as well. A PIN client (application or driver) can in many cases
- *  only include PIN.h and simply include the device-specific PIN driver object
- *  during link:
- *    \code
- *    #include <ti/drivers/PIN.h>
- *    \endcode
- *  However, for more advanced usage where device-specific pin configuration
- *  is used or device-specific PIN driver API extensions are used must include
- *  the device-specific driver file (which in turn includes PIN.h):
- *    \code
- *    #include <ti/drivers/pin/PINCC26xx.h>
- *    \endcode
+ *  defines the API and some common data types and macros of the driver. A PIN
+ *  client (application or driver) can in most cases only use the generic PIN
+ *  API, however, for more advanced usage where device-specific pin
+ *  configuration is used or device-specific PIN driver API extensions are
+ *  used must use the device-specific PIN driver API.
+ *
+ *  The device-independent API is implemented as function calls with pin
+ *  access control based on the PIN client handle. For time-critical
+ *  applications the device-specific API can be used directly, as these
+ *  API functions are implemented as inlined functions without access control.
  *
  *  ## Functionality ##
  *  The PIN module provides the following functionality:
@@ -91,7 +104,7 @@
  *    - Interrupt configuration: signal edge to interrupt on, interrupt mask,
  *      callback function registration
  *    - Pins that have enabled interrupts will also wake up the device from low-
- *      power modes like standby upon events
+ *      power modes like standby and idle upon events
  *  - Provides data types and enums/defines for use in pin configurations
  *    definitions in board files, drivers and applications
  *
@@ -106,6 +119,8 @@
  *  | API function       | Description                                          |
  *  |--------------------|------------------------------------------------------|
  *  | PIN_open()         | Allocate pins to a set, returns handle               |
+ *  | PIN_add()          | Add pin to pin set for open PIN handle               |
+ *  | PIN_remove()       | Removes pin from pin set foropen PIN handle          |
  *  | PIN_close()        | Deallocate pin set, revert to original GPIO state    |
  *
  *  ## GPIO ##
@@ -114,7 +129,7 @@
  *  hardware peripheral ports. A pin set requested with a PIN_open() call may
  *  contain a mix of pins to be used for GPIO and hardware-mapped pins.
  *
-    When a pin is deallocated using PIN_close() it reverts to the GPIO
+ *  When a pin is deallocated using PIN_close() it reverts to the GPIO
  *  configuration it was given in the initial call to PIN_init().
  *
  *  | API function         | Description                                       |
@@ -166,7 +181,7 @@
  *  pins and the manner in which this needs to be set up is highly
  *  device-specific, functions for configuring this is not part of the generic
  *  PIN driver API but is left to be implemented by device-specific PIN drivers.
- *  See the releavant device-specific PIN driver (e.g. IOCC26XX.h) for details.
+ *  See the releavant device-specific PIN driver (e.g. PINCC26XX.h) for details.
  *
  *  ### Input Mode ###
  *  The input mode of a pin controls:
@@ -196,7 +211,7 @@
  *  | API function         | Description                                       |
  *  |----------------------|---------------------------------------------------|
  *  | PIN_init()           | Initialize IOs to a safe GPIO state               |
- *  | PIN_setOutputEnable()| Control output enable of GPIO pins                |
+ *  | PIN_setOutputEnable()| Control output enable of GPIO pins                      |
  *  | PIN_getConfig()      | Returns pin configuration                         |
  *  | PIN_setConfig()      | Sets parts of or complete pin configuration       |
  *
@@ -213,6 +228,8 @@
  *  | PIN_setConfig()     | Sets parts of or complete pin configuration        |
  *  | PIN_setInterrupt()  | Control interrupt enable and edge for pin          |
  *  | PIN_registerIntCb() | Register callback function for a set of pins       |
+ *  | PIN_setUserArg()    | Sets a user argument associated with the handle    |
+ *  | PIN_getUserArg()    | Gets a user argument associated with the handle    |
  *
  *  ## PIN Data Types ##
  *  The PIN driver defines the following data types:
@@ -291,37 +308,220 @@
  *  |#PIN_IRQ_BOTHEDGES |#PIN_BM_IRQ       | Both    | Pin interrupts on both edges     |
  *  |                   |#PIN_BM_ALL       |         | Mask for *all* options           |
  *
+ *  ## Initialization ##
+ *  The PIN driver must be initialized before any other drivers are initialized.
+ *  In order for IO pins to get a safe value as soon as possible PIN_init()
+ *  should be called as early as possible in the boot sequence. Typically,
+ *  PIN_init() is called at the start of main() before TI-RTOS is started with
+ *  BIOS_start().
+ *
+ *  PIN_init() takes as an argument a #PIN_Config list containing default pin
+ *  configurations. Typically the #PIN_Config list defined in the board files
+ *  is used:
+ *  \code
+ *  PIN_init(BoardGpioInitTable);
+ *  \endcode
+ *  It is possible, however, to use another #PIN_Config list if desired.
+ *
  *  ## Power Management Interaction ##
  *  No specific interaction with power management module, as PIN is independent
  *  of power mode.
  *
  *  ## Functionality Not Supported ##
- *  TODO
+ *  There is no known unsupported functionality.
+ *
+ *  ## Instrumentation ##
+ *  The pin driver does not use any of the instrumentation facilities.
  *
  *  # Usage Examples #
- *  TODO
  *
- *  ## Initialization ##
- *  TODO
+ *  ## Initialization and Pin Allocation ##
+ *  Example that illustrates when and how to call PIN_init(), PIN_open(), PIN_add(), PIN_close()
+ *    \code
+ *    // Default pin configuration. Typically resides in Board.c file.
+ *    // IOs not mentioned here configured to default: input/output/pull disabled
+ *    PIN_Config BoardGpioInitTable[] = {
+ *        // DIO11: LED A (initially off)
+ *        PIN_ID(11) | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MAX,
+ *        // DIO10: LED B (initially off)
+ *        PIN_ID(10)  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MAX,
+ *        // DIO23: BUTTON A (ensure pull-up as button A is also used by other ICs)
+ *        PIN_ID(23) | PIN_INPUT_EN  | PIN_PULLUP | PIN_HYSTERESIS,
+ *        // DIO3: LCD controller reset line (make sure LCD is in reset)
+ *        PIN_ID(3)  | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL,
+ *        // Terminate list
+ *        PIN_TERMINATE
+ *    };
  *
- *  ## Driver's Pin Allocation, Mapping and Configuration ##
- *  TODO
+ *    Task_Struct taskStart;
+ *    uint8_t     taskStartStack[512];
+ *
+ *    // PIN_init() should be called as early as possible in boot
+ *    void main() {
+ *        // Default initialization of IO
+ *        PIN_init(BoardGpioInitTable);
+ *
+ *        // Configure startup task
+ *        Task_Params taskParams;
+ *        Task_Params_init(&taskParams);
+ *        taskParams.stack = taskStartStack;
+ *        taskParams.stackSize = sizeof(taskStartStack);
+ *        Task_construct(&taskStart, taskStartFxn, &taskParams, NULL);
+ *
+ *        // Start kernel (never returns)
+ *        BIOS_start();
+ *    }
+ *
+ *    // Human user interface PIN state/handle
+ *    PIN_State  hStateHui;
+ *    #define HUI_LED_A     PIN_ID(11)
+ *    #define HUI_LED_B     PIN_ID(10)
+ *    #define HUI_LED_C     PIN_ID(9)
+ *    #define HUI_BUTTON_A  PIN_ID(23)
+ *    #define HUI_BUTTON_B  PIN_ID(24)
+ *
+ *    static void taskStartFxn(UArg a0, UArg a1) {
+ *        // Define pins used by Human user interface and initial configuration
+ *        const PIN_Config aPinListHui[] = {
+ *            HUI_LED_A    | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MAX,
+ *            HUI_LED_B    | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MAX,
+ *            HUI_BUTTON_A | PIN_INPUT_EN  | PIN_PULLUP | PIN_HYSTERESIS,
+ *            HUI_BUTTON_B | PIN_INPUT_EN  | PIN_PULLUP | PIN_HYSTERESIS,
+ *            PIN_TERMINATE
+ *        };
+ *
+ *        // Get handle to this collection of pins
+ *        if (!PIN_open(&hStateHui, aPinListHui)) {
+ *            // Handle allocation error
+ *        }
+ *
+ *        // ...
+ *
+ *        // We can also add (and remove) pins to a set at run time
+ *        PIN_Status status = PIN_add(
+ *          &hStateHui,
+ *          HUI_LED_C | PIN_GPIO_OUTPUT_EN | PIN_GPIO_LOW | PIN_PUSHPULL | PIN_DRVSTR_MAX,
+ *        );
+ *        if (status != PIN_SUCCESS) {
+ *            // Handling allocation error is especially important with PIN_add()
+ *        }
+ *
+ *        // ...
+ *        huiDoSomething();
+ *
+ *        // Before ending task, make sure to deallocate pins. They will return
+ *        // to the default configurations provided in PIN_init()
+ *        PIN_close(&hStateHui);
+ *    }
+ *    \endcode
  *
  *  ## Application use of GPIO ##
- *  TODO
+ *  An example of using GPIO that builds on the previous example. Illustrates how
+ *  to read input values, set output values and control output enable
+ *    \code
+ *    void huiDoSomething() {
+ *        // Running lights on LEDs A-B-C (left to right). Button A causes left
+ *        // movement, button B causes right movement, both simultaneously aborts
+ *        // and disables LED output drivers
+ *
+ *        // LED initial state (A off, B off, C on). Only our outputs are affected
+ *        PIN_setPortOutputValue(&hStateHui, (1<<HUI_LED_C));
+ *
+ *        int32_t moveDir = -1;    // <0: left, 0: stop, >0 right
+ *        while (moveDir) {
+ *            // Update LEDs
+ *            if (moveDir<0) {
+ *                // Left movement
+ *                uint32_t t = PIN_getOutputValue(HUI_LED_A);
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_A, PIN_getOutputValue(HUI_LED_B));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_B, PIN_getOutputValue(HUI_LED_C));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_C, t);
+ *            } else {
+ *                // Right movement
+ *                uint32_t t = PIN_getOutputValue(HUI_LED_C);
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_C, PIN_getOutputValue(HUI_LED_B));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_B, PIN_getOutputValue(HUI_LED_A));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_A, t);
+ *            }
+ *
+ *            // Sleep for 333 ms
+ *            Task_sleep(333000/10);
+ *
+ *            // Read input from both buttons simultaneously
+ *            uint32_t buttons = PIN_getPortInputValue(&hStateHui);
+ *            if (buttons&(1<<HUI_BUTTON_A) == 0) {
+ *                moveDir = -1;
+ *            } else if (buttons&(1<<HUI_BUTTON_A) == 0) {
+ *                 moveDir = 1;
+ *            } else if (buttons&((1<<HUI_BUTTON_A)|(1<<HUI_BUTTON_A))) {
+ *                moveDir = 0;
+ *            }
+ *        }
+ *        // Disable output enable for all pins (only our pins affected)
+ *        PIN_setPortOutputEnable(&hStateHui, 0);
+ *    }
+ *    \endcode
  *
  *  ## Pin Interrupt ##
- *  TODO
+ *  An example that handles pin inputs in the GPIO example above using PIN interrupts
+ *  instead:
+ *    \code
+ *    // volatile variable used to communicate between callback and task
+ *    static volatile int32_t moveDir = -1;    // <0: left, 0: stop, >0 right
  *
- *  ## The I/O Driver and Board Files ##
- *  TODO
+ *    // Pin interrupt callback
+ *    void huiPinIntCb(PIN_Handle handle, PIN_Id pinId) {
+ *        // Ignore pinId and read input from both buttons simultaneously
+ *        uint32_t buttons = PIN_getPortInputValue(&hStateHui);
+ *        if (buttons&(1<<HUI_BUTTON_A) == 0) {
+ *            moveDir = -1;
+ *        } else if (buttons&(1<<HUI_BUTTON_A) == 0) {
+ *             moveDir = 1;
+ *        } else if (buttons&((1<<HUI_BUTTON_A)|(1<<HUI_BUTTON_A))) {
+ *            moveDir = 0;
+ *        }
+ *    }
  *
- *  \todo Document which API functions are intended for init/drivers/applications
- *  \todo Board file dependencies
- *  \todo Usage examples
- *  \todo Initialization example
- *  \todo Should wakeup rather be set directly in Power_Shutdown()?
- *  \todo Add PIN_getPortLowIndex() to get lowest bit set in port bitmask?
+ *    void huiDoSomething() {
+ *        // Running lights on LEDs A-B-C (left to right). Button A causes left
+ *        // movement, button B causes right movement, both simultaneously aborts
+ *        // and disables LED output drivers
+ *
+ *        // LED initial state (A off, B off, C on). Only our outputs are affected
+ *        PIN_setPortOutputValue(&hStateHui, (1<<HUI_LED_C));
+ *        moveDir = -1;    // <0: left, 0: stop, >0 right
+ *
+ *        // Setup pin interrupts and register callback
+ *        PIN_registerIntCb(&hStateHui, huiPinIntCb);
+ *        PIN_setInterrupt(&hStateHui, HUI_BUTTON_A | PIN_IRQ_NEGEDGE);
+ *        PIN_setInterrupt(&hStateHui, HUI_BUTTON_B | PIN_IRQ_NEGEDGE);
+ *
+ *        while (moveDir) {
+ *            // Update LEDs
+ *            if (moveDir<0) {
+ *                // Left movement
+ *                uint32_t t = PIN_getOutputValue(HUI_LED_A);
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_A, PIN_getOutputValue(HUI_LED_B));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_B, PIN_getOutputValue(HUI_LED_C));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_C, t);
+ *            } else {
+ *                // Right movement
+ *                uint32_t t = PIN_getOutputValue(HUI_LED_C);
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_C, PIN_getOutputValue(HUI_LED_B));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_B, PIN_getOutputValue(HUI_LED_A));
+ *                PIN_setOutputValue(&hStateHui, HUI_LED_A, t);
+ *            }
+ *
+ *            // Sleep for 333 ms (we will likely go into standby)
+ *            Task_sleep(333000/10);
+ *        }
+ *        // Disable output enable for all pins (only our pins affected)
+ *        PIN_setPortOutputEnable(&hStateHui, 0);
+ *        // Disable pin interrupts
+ *        PIN_setInterrupt(&hStateHui, HUI_BUTTON_A | PIN_IRQ_DIS);
+ *        PIN_setInterrupt(&hStateHui, HUI_BUTTON_B | PIN_IRQ_DIS);
+ *    }
+ *    \endcode
  *
  *******************************************************************************
  */
@@ -338,7 +538,6 @@ extern "C" {
 #include <stddef.h>
 #include <inc/hw_types.h>
 
-// TODO: this is just a temporary work-around
 typedef unsigned int uint_t;
 typedef int int_t;
 
@@ -506,8 +705,8 @@ typedef enum {
  *  Must be called early in the boot sequence to ensure that I/O pins have safe
  *  configurations. This initialization setups pins as GPIO as defined in an
  *  array (possibly user-generated) that typically resides in a board file. All
- *  pins are first configured to be input/output/pull disabled and then
- *  the array aPinCfg is traversed to configure individual pins.
+ *  pins not mentioned in aPinCfg[] are configured to be input/output/pull
+ *  disabled.
  *  \note Function *cannot* be called more than once.
  *
  *  \param aPinCfg[]  Pointer to array of PIN_Config entries, one per pin
@@ -515,7 +714,7 @@ typedef enum {
  *                    #PIN_TERMINATE entry is encountered.
  *  \return #PIN_SUCCESS if successful, else an error code.
  */
-extern PIN_Status PIN_init(PIN_Config aPinCfg[]);
+extern PIN_Status PIN_init(const PIN_Config aPinCfg[]);
 
 
 /** \brief  Allocate one or more pins for a driver or an application
@@ -533,10 +732,10 @@ extern PIN_Status PIN_init(PIN_Config aPinCfg[]);
  *  \return A handle for further PIN driver calls or NULL if an error occurred
  *          (already allocated pin in aPinList or non-existent pin in aPinList)
  */
-extern PIN_Handle PIN_open(PIN_State* pState, PIN_Config aPinList[]);
+extern PIN_Handle PIN_open(PIN_State* pState, const PIN_Config aPinList[]);
 
 
-/** \brief  Add pin to an open PIN handle
+/** \brief  Add pin to pin set for open PIN handle
  *
  *  If the requested pin is unallocated it will be added, else an error code
  *  will be returned.
@@ -547,7 +746,7 @@ extern PIN_Handle PIN_open(PIN_State* pState, PIN_Config aPinList[]);
 extern PIN_Status PIN_add(PIN_Handle handle, PIN_Config pinCfg);
 
 
-/** \brief  Removes pin to an open PIN handle
+/** \brief  Removes pin from pin set foropen PIN handle
  *
  *  If the requested pin is allocated to handle it will be removed from the pin
  *  set, else an error code will be returned.

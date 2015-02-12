@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 /*
@@ -206,6 +206,15 @@ __extern __FAR__ const CT__ti_sysbios_knl_Clock_A_clockDisabled ti_sysbios_knl_C
 typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Clock_A_badThreadType;
 __extern __FAR__ const CT__ti_sysbios_knl_Clock_A_badThreadType ti_sysbios_knl_Clock_A_badThreadType__C;
 
+/* serviceMargin */
+#ifdef ti_sysbios_knl_Clock_serviceMargin__D
+#define ti_sysbios_knl_Clock_serviceMargin (ti_sysbios_knl_Clock_serviceMargin__D)
+#else
+#define ti_sysbios_knl_Clock_serviceMargin (ti_sysbios_knl_Clock_serviceMargin__C)
+typedef xdc_UInt32 CT__ti_sysbios_knl_Clock_serviceMargin;
+__extern __FAR__ const CT__ti_sysbios_knl_Clock_serviceMargin ti_sysbios_knl_Clock_serviceMargin__C;
+#endif
+
 /* tickSource */
 #define ti_sysbios_knl_Clock_tickSource (ti_sysbios_knl_Clock_tickSource__C)
 typedef ti_sysbios_knl_Clock_TickSource CT__ti_sysbios_knl_Clock_tickSource;
@@ -232,15 +241,6 @@ __extern __FAR__ const CT__ti_sysbios_knl_Clock_timerId ti_sysbios_knl_Clock_tim
 #define ti_sysbios_knl_Clock_tickPeriod (ti_sysbios_knl_Clock_tickPeriod__C)
 typedef xdc_UInt32 CT__ti_sysbios_knl_Clock_tickPeriod;
 __extern __FAR__ const CT__ti_sysbios_knl_Clock_tickPeriod ti_sysbios_knl_Clock_tickPeriod__C;
-#endif
-
-/* serviceMargin */
-#ifdef ti_sysbios_knl_Clock_serviceMargin__D
-#define ti_sysbios_knl_Clock_serviceMargin (ti_sysbios_knl_Clock_serviceMargin__D)
-#else
-#define ti_sysbios_knl_Clock_serviceMargin (ti_sysbios_knl_Clock_serviceMargin__C)
-typedef xdc_UInt32 CT__ti_sysbios_knl_Clock_serviceMargin;
-__extern __FAR__ const CT__ti_sysbios_knl_Clock_serviceMargin ti_sysbios_knl_Clock_serviceMargin__C;
 #endif
 
 /* doTickFunc */
@@ -674,11 +674,11 @@ static inline ti_sysbios_knl_Queue_Handle ti_sysbios_knl_Clock_Module_State_cloc
 #define Clock_LM_begin ti_sysbios_knl_Clock_LM_begin
 #define Clock_A_clockDisabled ti_sysbios_knl_Clock_A_clockDisabled
 #define Clock_A_badThreadType ti_sysbios_knl_Clock_A_badThreadType
+#define Clock_serviceMargin ti_sysbios_knl_Clock_serviceMargin
 #define Clock_tickSource ti_sysbios_knl_Clock_tickSource
 #define Clock_tickMode ti_sysbios_knl_Clock_tickMode
 #define Clock_timerId ti_sysbios_knl_Clock_timerId
 #define Clock_tickPeriod ti_sysbios_knl_Clock_tickPeriod
-#define Clock_serviceMargin ti_sysbios_knl_Clock_serviceMargin
 #define Clock_doTickFunc ti_sysbios_knl_Clock_doTickFunc
 #define Clock_Module_State_clockQ ti_sysbios_knl_Clock_Module_State_clockQ
 #define Clock_Params ti_sysbios_knl_Clock_Params

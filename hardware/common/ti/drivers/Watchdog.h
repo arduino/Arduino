@@ -91,6 +91,7 @@
  *  Currently the following Watchdog implementations are supported:
  *  - @ref WatchdogCC3200.h
  *  - @ref WatchdogMSP430.h
+ *  - @ref WatchdogMSP432.h
  *  - @ref WatchdogTiva.h
  *
  *  # Instrumentation #
@@ -114,7 +115,6 @@ extern "C" {
 
 
 #include <stdint.h>
-#include <xdc/std.h>
 
 /*!
 *  @brief      Watchdog Handle
@@ -152,9 +152,9 @@ typedef enum Watchdog_ResetMode {
  *  This is the typedef for the function pointer that will allow a callback
  *  function to be specified in the Watchdog_Params structure. The function
  *  will take a Watchdog_Handle of the Watchdog causing the interrupt (cast as
- *  a UArg as an argument.
+ *  a uintptr_t) as an argument.
  */
-typedef void (*Watchdog_Callback)(UArg);
+typedef void (*Watchdog_Callback)(uintptr_t);
 
 /*!
  *  @brief      Watchdog Parameters

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,7 @@
  *
  *  @brief      UART driver implementation for a CC26XX UART controller
  *
+ * # Driver include #
  *  The UART header file should be included in an application as follows:
  *  @code
  *  #include <ti/drivers/UART.h>
@@ -41,40 +42,39 @@
  *  @endcode
  *
  * # Overview #
- * The general UART API is normally used in application code, i.e. UART_open()
+ * The general UART API should used in application code, i.e. UART_open()
  * is used instead of UARTCC26XX_open(). The board file will define the device
  * specific config, and casting in the general API will ensure that the correct
  * device specific functions are called.
  * This is also reflected in the example code in [Use Cases](@ref USE_CASES).
  *
- * ## General Behavior #
+ * # General Behavior #
  * Before using the UART in CC26XX:
- *   - The UART driver is initialized by calling UARTCC26XX_init(). This should
- *     be done in main before BIOS_start() is called.
+ *   - The UART driver is initialized by calling UART_init().
  *   - The UART HW is configured and flags system dependencies (e.g. IOs,
- *     power, etc.) by calling UARTCC26XX_open().
+ *     power, etc.) by calling UART_open().
  *   - The RX and TX can operate independently of each other.
  *   .
  * The following is true for receive operation:
- *   - RX is enabled by calling UARTCC26XX_read().
- *   - All received bytes are ignored after UARTCC26XX_open() is called, until
- *     the first UARTCC26XX_read().
+ *   - RX is enabled by calling UART_read().
+ *   - All received bytes are ignored after UART_open() is called, until
+ *     the first UART_read().
  *   - If an RX error occur, RX is turned off and all bytes are ignored.
- *   - After a successful read, RX remains on. UARTCC26XX_read() must be called
+ *   - After a successful read, RX remains on. UART_read() must be called
  *     again before FIFO goes full in order to avoid overflow. It is safe to
- *     call another UARTCC26XX_read() from the read callback, See
+ *     call another UART_read() from the read callback, See
  *     [Receive Continously] (@ref USE_CASE_CB) use case below.
- *   - The UARTCC26XX_read() supports partial return, that can be used if the
+ *   - The UART_read() supports partial return, that can be used if the
  *     receive size is unknown. See [Use Cases](@ref USE_CASES) below.
  *   .
  * The following apply for transmit operation:
- *   - TX is enabled by calling UARTCC26XX_write().
- *   - If the UARTCC26XX_write() succeeds, the TX is disabled.
+ *   - TX is enabled by calling UART_write().
+ *   - If the UART_write() succeeds, the TX is disabled.
  *   .
  * After UART operation has ended:
- *   - Release system dependencies for UART by calling UARTCC26XX_close().
+ *   - Release system dependencies for UART by calling UART_close().
  *
- * ## Error handling #
+ * # Error handling #
  * If an error occurs during read operation:
  *   - All bytes received up until an error occurs will be returned, with the
  *     error signaled in the ::UARTCC26XX_Object.status field. The RX is then turned off
@@ -82,57 +82,61 @@
  *     the read is cancelled when the error occurs. If a write was active
  *     while the RX error occurred, it will complete.
  *   - If a RX break error occurs, an extra 0 byte will also be returned by the
- *     UARTCC26XX_read().
+ *     UART_read().
  *   .
  *
- * ## Power Management #
- *  The UARTCC26XX driver is setting a power constraint during operation to keep
- *  the device out of standby. When the operation has finished, the power
- *  constraint is released.
- *  The following statements are valid:
- *    - After UARTCC26XX_open(): the device is still allowed to enter standby.
- *    - During UARTCC26XX_read(): the device cannot enter standby.
- *    - After an RX error: device is allowed to enter standby.
- *    - After a successful UARTCC26XX_read(): the device is allowed
- *      to enter standby, but RX remains on.
- *        - _Note_: Device might enter standby while a byte is being
- *          received if UARTCC26XX_read() is not called again after a successful
- *          read. This could result in corrupt data being received.
- *        - Application thread should typically either issue another read after
- *          UARTCC26XX_read() completes successfully, or call
- *          UARTCC26XX_readCancel() to disable RX and thus assuring that no data
- *          is received while entering standby.
- *        .
- *    - During UARTCC26XX_write(): the device cannot enter standby.
- *    - After UARTCC26XX_write() succeeds: the device can enter standby.
- *    - If UARTCC26XX_writeCancel() is called: the device can enter standby.
+ * # Power Management #
+ * The TI-RTOS power management framework will try to put the device into the most
+ * power efficient mode whenever possible. Please see the technical reference
+ * manual for further details on each power mode.
  *
- * ## Supported Functions ##
- *  | API function             | Description                                       |
- *  |------------------------- |---------------------------------------------------|
- *  | UARTCC26XX_init()        | Initialize UART driver                            |
- *  | UARTCC26XX_open()        | Initialize UART HW and set system dependencies    |
- *  | UARTCC26XX_close()       | Disable UART HW and release system dependencies   |
- *  | UARTCC26XX_control()     | Configure an already opened UART handle           |
- *  | UARTCC26XX_read()        | Start read from UART                              |
- *  | UARTCC26XX_readCancel()  | Cancel ongoing read from UART                     |
- *  | UARTCC26XX_write()       | Start write to UART                               |
- *  | UARTCC26XX_writeCancel() | Cancel ongoing write to UART                      |
+ * The UARTCC26XX driver is setting a power constraint during operation to keep
+ * the device out of standby. When the operation has finished, the power
+ * constraint is released.
+ * The following statements are valid:
+ *   - After UART_open(): the device is still allowed to enter standby.
+ *   - During UART_read(): the device cannot enter standby.
+ *   - After an RX error: device is allowed to enter standby.
+ *   - After a successful UART_read(): the device is allowed
+ *     to enter standby, but RX remains on.
+ *       - _Note_: Device might enter standby while a byte is being
+ *         received if UART_read() is not called again after a successful
+ *         read. This could result in corrupt data being received.
+ *       - Application thread should typically either issue another read after
+ *         UART_read() completes successfully, or call
+ *         UART_readCancel() to disable RX and thus assuring that no data
+ *         is received while entering standby.
+ *       .
+ *   - During UART_write(): the device cannot enter standby.
+ *   - After UART_write() succeeds: the device can enter standby.
+ *   - If UART_writeCancel() is called: the device can enter standby.
  *
- *  ## Not Supported Functionality #
- *  The CC26XX UART driver does not support:
+ * # Supported Functions #
+ * | Generic API function | API function             | Description                                       |
+ * |----------------------|--------------------------|------------------------
+ * | UART_init()          | UARTCC26XX_init()        | Initialize UART driver                            |
+ * | UART_open()          | UARTCC26XX_open()        | Initialize UART HW and set system dependencies    |
+ * | UART_close()         | UARTCC26XX_close()       | Disable UART HW and release system dependencies   |
+ * | UART_control()       | UARTCC26XX_control()     | Configure an already opened UART handle           |
+ * | UART_read()          | UARTCC26XX_read()        | Start read from UART                              |
+ * | UART_readCancel()    | UARTCC26XX_readCancel()  | Cancel ongoing read from UART                     |
+ * | UART_write()         | UARTCC26XX_write()       | Start write to UART                               |
+ * | UART_writeCancel()   | UARTCC26XX_writeCancel() | Cancel ongoing write to UART                      |
+ *
+ *  @note All calls should go through the generic API
+ *
+ *  # Not Supported Functionality #
+ *  The CC26XX UART driver currently does not support:
  *    - ::UART_ECHO_ON
  *    - ::UART_DATA_TEXT
  *    - UART_readPolling()
  *    - UART_writePolling()
- *
- *  Functionality which will be supported in later releases:
  *    - Flow control
  *    - Configurable TX FIFO Threshold (currently set to 1/8 full, i.e. 4 bytes)
  *    - Configurable RX FIFO Threshold (currently set to 4/8 full, i.e. 16 bytes)
  *
- * ## Use Cases \anchor USE_CASES ##
- * ### Basic Receive #
+ * # Use Cases \anchor USE_CASES #
+ * ## Basic Receive #
  *  Receive 100 bytes over UART in ::UART_MODE_BLOCKING.
  *  @code
  *  UART_Handle handle;
@@ -149,7 +153,7 @@
  *  int rxBytes = UART_read(handle, rxBuf, 100);
  *  @endcode
  *
- * ### Receive with Return Partial #
+ * ## Receive with Return Partial #
  *  This use case will read in ::UART_MODE_BLOCKING until the wanted amount of bytes is
  *  received or until a started reception is inactive for a 32-bit period.
  *  This UART_read() call can also be used when unknown amount of bytes shall
@@ -172,7 +176,7 @@
  *  int rxBytes = UART_read(handle, rxBuf, 100));
  *  @endcode
  *
- * ### Basic Transmit #
+ * ## Basic Transmit #
  *  This case will configure the UART to send the data in txBuf in
  *  BLOCKING_MODE.
  *  @code
@@ -190,15 +194,17 @@
  *  UART_write(handle, txBuf, sizeof(txBuf));
  *  @endcode
  *
- * ### Receive Continously in ::UART_MODE_CALLBACK \anchor USE_CASE_CB #
+ * ## Receive Continously in ::UART_MODE_CALLBACK \anchor USE_CASE_CB #
  *  This case will configure the UART to receive continously in
  *  ::UART_MODE_CALLBACK, 16 bytes at the time and transmit them back via UART TX.
+ *  Note that UART_Params.readTimeout is not in use when using ::UART_MODE_CALLBACK mode.
  *  @code
  *  #define MAX_NUM_RX_BYTES    1000   // Maximum RX bytes to receive in one go
+ *  #define MAX_NUM_TX_BYTES    1000   // Maximum TX bytes to send in one go
  *
  *  uint32_t wantedRxBytes;            // Number of bytes received so far
  *  uint8_t rxBuf[MAX_NUM_RX_BYTES];   // Receive buffer
- *  uint8_t txBuf[MAX_NUM_RX_BYTES];   // Transmit buffer
+ *  uint8_t txBuf[MAX_NUM_TX_BYTES];   // Transmit buffer
  *
  *  // Callback function
  *  static void readCallback(UART_Handle handle, void *rxBuf, size_t size)
@@ -260,7 +266,6 @@ extern "C" {
 #include <stdbool.h>
 #include <ti/drivers/UART.h>
 #include <ti/sysbios/family/arm/cc26xx/Power.h>
-
 #include <driverlib/uart.h>
 
 /*
@@ -281,7 +286,7 @@ extern "C" {
 #define UARTCC26XX_RETURN_PARTIAL_ENABLE    0
 /*! Disable RETURN_PARTIAL, used as cmd to UART_control() */
 #define UARTCC26XX_RETURN_PARTIAL_DISABLE   1
-
+/*! Size of the TX and RX FIFOs is 32 items */
 #define UARTCC26XX_FIFO_SIZE 32
 
 /* UART function table pointer */
@@ -339,11 +344,11 @@ typedef enum UART_Status {
  *  Mapping of RX FIFO thresholds from level to number of bytes.
  */
 typedef enum UART_RxFifoThreshold {
-    UART_TH_FIFO_RX1_8 = 4,
-    UART_TH_FIFO_RX2_8 = 8,
-    UART_TH_FIFO_RX4_8 = 16,
-    UART_TH_FIFO_RX6_8 = 24,
-    UART_TH_FIFO_RX7_8 = 32
+    UART_TH_FIFO_RX1_8 = 4,         /*!< RX FIFO threshold of 1/8 = 4 bytes */
+    UART_TH_FIFO_RX2_8 = 8,         /*!< RX FIFO threshold of 2/8 = 8 bytes */
+    UART_TH_FIFO_RX4_8 = 16,        /*!< RX FIFO threshold of 4/8 = 16 bytes */
+    UART_TH_FIFO_RX6_8 = 24,        /*!< RX FIFO threshold of 6/8 = 24 bytes */
+    UART_TH_FIFO_RX7_8 = 28         /*!< RX FIFO threshold of 7/8 = 28 bytes */
 } UART_RxFifoThreshold;
 
 /*!
@@ -380,10 +385,8 @@ typedef struct UARTCC26XX_Object {
     void                  *readBuf;           /*!< Buffer data pointer */
     size_t                readCount;          /*!< Number of Chars read */
     size_t                readSize;           /*!< Chars remaining in buffer */
-    /*! Threshold for generating RX IRQ */
-    UART_RxFifoThreshold  readFifoThreshold;
-    /*! Threshold for generating TX IRQ */
-    uint8_t               writeFifoThreshold;
+    UART_RxFifoThreshold  readFifoThreshold;  /*! Threshold for generating RX IRQ */
+    uint8_t               writeFifoThreshold; /*! Threshold for generating TX IRQ */
 
     /*! UART post-notification function pointer */
     void             *uartPostFxn;
@@ -397,148 +400,7 @@ typedef struct UARTCC26XX_Object {
     Clock_Struct         txFifoEmptyClk;     /*!< UART TX FIFO empty clock */
 } UARTCC26XX_Object, *UARTCC26XX_Handle;
 
-/*!
- *  @brief UART CC26XX initialization
- *
- *  @param handle  A UART_Handle
- *
- */
-extern void         UARTCC26XX_init(UART_Handle handle);
 
-/*!
- *  @brief  Function to initialize the CC26XX UART peripheral specified by the
- *          particular handle. The parameter specifies which mode the UART
- *          will operate.
- *
- *  The function will set a dependency on it power domain, i.e. power up the
- *  module and enable the clock. The IOs are allocated. Neither the RX nor TX
- *  will be enabled, and none of the interrupts are enabled.
- *
- *  @pre    UART controller has been initialized
- *
- *  @param  handle        A UART_Handle
- *
- *  @param  params        Pointer to a parameter block, if NULL it will use
- *                        default values
- *
- *  @return A UART_Handle on success or a NULL on an error or if it has been
- *          already opened
- *
- *  @sa     UARTCC26XX_close()
- */
-extern UART_Handle  UARTCC26XX_open(UART_Handle handle, UART_Params *params);
-
-/*!
- *  @brief  Function to close a given CC26XX UART peripheral specified by the
- *          UART handle.
- *
- *  Will disable the UART, disable all UART interrupts and release the
- *  dependency on the corresponding power domain.
- *
- *  @pre    UARTCC26XX_open() had to be called first.
- *
- *  @param  handle  A UART_Handle returned from UART_open()
- *
- *  @sa     UARTCC26XX_open
- */
-extern void         UARTCC26XX_close(UART_Handle handle);
-
-/*!
- *  @brief  Function for reading from UART interface.
- *
- *  The function will enable the RX, enable all RX interrupts and disallow
- *  chip from going into standby.
- *
- *  @pre    UARTCC26XX_open() has to be called first.
- *
- *  @param  handle A UART handle returned from UARTCC26XX_open()
- *
- *  @param  *buffer  Pointer to read buffer
- *
-*  @param  size  Number of bytes to read. If ::UARTCC26XX_RETURN_PARTIAL_ENABLE
- *                has been set, the read will
- *                return if the reception is inactive for a 32-bit period
- *                (i.e. before all bytes are received).
- *
- *  @return Number of samples read
- *
- *  @sa     UARTCC26XX_open(), UARTCC26XX_readCancel()
- */
-extern int       UARTCC26XX_read(UART_Handle handle, void *buffer, size_t size);
-
-/*!
- *  @brief  Function for setting control parameters of the UART
- *          after it has been opened.
- *
- *  @pre    UARTCC26XX_open() has to be called first.
- *
- *  @param  handle A UART handle returned from UARTCC26XX_open()
- *
- *  @param  cmd  The command to execute, supported commands are:
- *              | Command                               | Description             |
- *              |-------------------------------------- |-------------------------|
- *              | ::UARTCC26XX_RETURN_PARTIAL_ENABLE    | Enable RETURN_PARTIAL   |
- *              | ::UARTCC26XX_RETURN_PARTIAL_DISABLE   | Disable RETURN_PARTIAL  |
- *
- *  @param  *arg  Pointer to command arguments, currently not in use, set to NULL.
- *
-*  @return ::UARTCC26XX_CMD_SUCCESS if success, or error code if error.
- */
-int          UARTCC26XX_control(UART_Handle handle, unsigned int cmd, void *arg);
-
-
-/*!
- *  @brief Function that cancel UART read. Will disable all RX interrupt,
- *         disable
- *         RX and allow standby. Should also be called after a succeeding UART
- *         read if no more bytes are expected and standby is wanted.
- *
- *  @pre    UARTCC26XX_open() has to be called first.
- *
- *  @param handle         The UART_Handle for ongoing write.
- */
-extern void         UARTCC26XX_readCancel(UART_Handle handle);
-
-/*!
- *  @brief  Function that writes data to a UART
- *
- *  This function initiates an operation to write data to CC26XX UART
- *  controller.
- *
- *  In ::UART_MODE_BLOCKING, UART_write will block task execution until all
- *  the data in buffer has been written.
- *
- *  In ::UART_MODE_CALLBACK, UART_write does not block task execution, but calls a
- *  callback function specified by writeCallback when the data has been written.
- *
- *  When the write function is called, TX is enabled, TX interrupt is enabled,
- *  and standby is not allowed.
- *
- *  @pre    UARTCC26XX_open() has to be called first.
- *
- *  @param  handle      A UART_Handle returned from UARTCC26XX_open()
- *
- *  @param  buffer      A pointer to buffer containing data to be written
- *
- *  @param  size        The number of bytes in buffer that should be written
- *                      onto the UART.
- *
- *  @return Returns the number of bytes that have been written to the UART,
- *          UART_ERROR on an error.
- *
- */
-extern int          UARTCC26XX_write(UART_Handle handle, const void *buffer,
-                            size_t size);
-
-/*!
- *  @brief Function that cancel UART write. Will disable TX interrupt, disable
- *         TX and allow standby.
- *
- *  @pre    UARTCC26XX_open() and has to be called first.
- *
- *  @param handle         The UART_Handle for ongoing write.
- */
-extern void         UARTCC26XX_writeCancel(UART_Handle handle);
 
 /* Do not interfere with the app if they include the family Hwi module */
 #undef ti_sysbios_family_arm_m3_Hwi__nolocalnames

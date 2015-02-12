@@ -177,14 +177,7 @@
 extern "C" {
 #endif
 
-#ifdef CC26XXWARE
-#include <driverlib/gpio.h>
-#endif
-
 #include <stdint.h>
-
-/* Extern'd GPIO_IntFxn */
-extern void GPIO_hwiIntFxn(uintptr_t callbacks);
 
 /*!
  *  @brief  GPIO direction indictator
@@ -208,7 +201,6 @@ typedef enum GPIO_IntType {
     GPIO_INT_HIGH       = 4     /*!< Interrupt on high level */
 } GPIO_IntType;
 
-#ifndef CC26XXWARE
 /*!
  *  @brief  GPIO callback structure
  *
@@ -243,74 +235,6 @@ typedef struct GPIO_HWAttrs {
     uint32_t pin;               /*!< GPIO pin(s) */
     GPIO_Direction direction;   /*!< Direction of the pin */
 } GPIO_HWAttrs;
-
-#else
-/*!
- *  @brief  GPIO callback structure
- *
- *  This structure contains pointers to the callback functions that will be
- *  called when an interrupt occurs. Each function pointer in the callbackFxn
- *  array corresponds to a pin in the specified port (pin 0 to index 0 and so
- *  on). A GPIO_Callbacks structure must be present for each port that has one
- *  or more pins that use GPIO interrupts. This structure must exist and be
- *  persistent before it can be passed to the GPIO_setupCallbacks() API.
- */
-typedef struct GPIO_Callbacks {
-    unsigned int intNum;     /*!< GPIO interrupt number */
-    void *hwiStruct;         /*!< Pointer to a family specific Hwi_Struct */
-    /*!< Array of callbacks, one per pin */
-    void (*callbackFxn[NUM_GPIO_PINS])(void);
-} GPIO_Callbacks;
-
-/*!
- *  @brief  GPIO Hardware attributes
- *
- *  This structure characterizes a particular general purpose input/output pin.
- *  A GPIO is identified to be a particular pin on a particular GPIO port.
- *  The GPIO driver associates a GPIO port/pin pair with a input/output
- *  direction.
- *
- *  Using this information, the GPIO driver can perform basic pin read and write
- *  operations.
- */
-typedef struct GPIO_HWAttrs {
-    uint32_t pin;               /*!< GPIO pin(s) */
-    GPIO_Direction direction;   /*!< Direction of the pin */
-    uint32_t event;             /*!< Event source(s) */
-} GPIO_HWAttrs;
-
-/*!
- *  @brief      Powers up the GPIO module.
- */
-extern void GPIO_open();
-
-/*!
- *  @brief      Powers down the GPIO module.
- */
-extern void GPIO_close();
-
-/*!
- *  @brief      Enables GPIO wake up
- *
- *  Enables GPIO wake up for the selected GPIO index. The function uses wake up
- *  event number 1 (AON_EVENT_MCU_WU1).
- *
- *  @param      index       GPIO index
- */
-extern void GPIO_enableWakeUp(unsigned int index);
-
-/*!
- *  @brief      Enables GPIO wake up specifying wake up event to be triggered
- *
- *  Enables GPIO wake up for the selected GPIO index to occur by triggering event
- *  specified by wuEvent. The function supports the 4 different wake up event
- *  registers, so up to 4 different GPIO can be used to wake up.
- *
- *  @param      wuEvent     wake up event to be triggered (0-3)
- *  @param      index       GPIO index
- */
-extern void GPIO_enableWakeUpSetEvent(unsigned int wuEvent, unsigned int index);
-#endif
 
 /*!
  *  @brief  GPIO Global configuration

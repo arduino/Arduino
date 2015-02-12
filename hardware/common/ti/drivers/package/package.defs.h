@@ -2,16 +2,11 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 #ifndef ti_drivers__
 #define ti_drivers__
-
-
-/*
- * ======== module ti.drivers.AES ========
- */
 
 
 /*
@@ -43,6 +38,8 @@ typedef struct ti_drivers_I2C_I2CTiva_HWAttrs ti_drivers_I2C_I2CTiva_HWAttrs;
 typedef struct ti_drivers_I2C_I2CTiva_Object ti_drivers_I2C_I2CTiva_Object;
 typedef struct ti_drivers_I2C_I2CCC3200_HWAttrs ti_drivers_I2C_I2CCC3200_HWAttrs;
 typedef struct ti_drivers_I2C_I2CCC3200_Object ti_drivers_I2C_I2CCC3200_Object;
+typedef struct ti_drivers_I2C_I2CMSP432_HWAttrs ti_drivers_I2C_I2CMSP432_HWAttrs;
+typedef struct ti_drivers_I2C_I2CMSP432_Object ti_drivers_I2C_I2CMSP432_Object;
 typedef struct ti_drivers_I2C_I2CUSCIB_HWAttrs ti_drivers_I2C_I2CUSCIB_HWAttrs;
 typedef struct ti_drivers_I2C_I2CEUSCIB_HWAttrs ti_drivers_I2C_I2CEUSCIB_HWAttrs;
 typedef struct ti_drivers_I2C_I2CUSCIB_Object ti_drivers_I2C_I2CUSCIB_Object;
@@ -61,6 +58,9 @@ typedef struct ti_drivers_PWM_PWMTiva_HWAttrs ti_drivers_PWM_PWMTiva_HWAttrs;
 typedef struct ti_drivers_PWM_PWMTiva_Object ti_drivers_PWM_PWMTiva_Object;
 typedef struct ti_drivers_PWM_PWMTimerTiva_HWAttrs ti_drivers_PWM_PWMTimerTiva_HWAttrs;
 typedef struct ti_drivers_PWM_PWMTimerTiva_Object ti_drivers_PWM_PWMTimerTiva_Object;
+typedef struct ti_drivers_PWM_PWMTimerMSP432_Status ti_drivers_PWM_PWMTimerMSP432_Status;
+typedef struct ti_drivers_PWM_PWMTimerMSP432_HWAttrs ti_drivers_PWM_PWMTimerMSP432_HWAttrs;
+typedef struct ti_drivers_PWM_PWMTimerMSP432_Object ti_drivers_PWM_PWMTimerMSP432_Object;
 
 /*
  * ======== module ti.drivers.SDSPI ========
@@ -79,6 +79,8 @@ typedef struct ti_drivers_SDSPI_SDSPIEUSCIA_Object ti_drivers_SDSPI_SDSPIEUSCIA_
 typedef struct ti_drivers_SDSPI_SDSPIEUSCIB_Object ti_drivers_SDSPI_SDSPIEUSCIB_Object;
 typedef struct ti_drivers_SDSPI_SDSPICC3200_HWAttrs ti_drivers_SDSPI_SDSPICC3200_HWAttrs;
 typedef struct ti_drivers_SDSPI_SDSPICC3200_Object ti_drivers_SDSPI_SDSPICC3200_Object;
+typedef struct ti_drivers_SDSPI_SDSPIMSP432_HWAttrs ti_drivers_SDSPI_SDSPIMSP432_HWAttrs;
+typedef struct ti_drivers_SDSPI_SDSPIMSP432_Object ti_drivers_SDSPI_SDSPIMSP432_Object;
 
 /*
  * ======== module ti.drivers.SPI ========
@@ -98,6 +100,8 @@ typedef struct ti_drivers_SPI_SPIEUSCIADMA_HWAttrs ti_drivers_SPI_SPIEUSCIADMA_H
 typedef struct ti_drivers_SPI_SPIEUSCIADMA_Object ti_drivers_SPI_SPIEUSCIADMA_Object;
 typedef struct ti_drivers_SPI_SPIEUSCIBDMA_HWAttrs ti_drivers_SPI_SPIEUSCIBDMA_HWAttrs;
 typedef struct ti_drivers_SPI_SPIEUSCIBDMA_Object ti_drivers_SPI_SPIEUSCIBDMA_Object;
+typedef struct ti_drivers_SPI_SPIMSP432DMA_HWAttrs ti_drivers_SPI_SPIMSP432DMA_HWAttrs;
+typedef struct ti_drivers_SPI_SPIMSP432DMA_Object ti_drivers_SPI_SPIMSP432DMA_Object;
 
 /*
  * ======== module ti.drivers.UART ========
@@ -105,13 +109,19 @@ typedef struct ti_drivers_SPI_SPIEUSCIBDMA_Object ti_drivers_SPI_SPIEUSCIBDMA_Ob
 
 typedef struct ti_drivers_UART_UART_Config ti_drivers_UART_UART_Config;
 typedef struct ti_drivers_UART_UARTTiva_HWAttrs ti_drivers_UART_UARTTiva_HWAttrs;
+typedef struct ti_drivers_UART_UARTTivaDMA_HWAttrs ti_drivers_UART_UARTTivaDMA_HWAttrs;
 typedef struct ti_drivers_UART_UARTTiva_Object ti_drivers_UART_UARTTiva_Object;
 typedef struct ti_drivers_UART_UARTCC3200_HWAttrs ti_drivers_UART_UARTCC3200_HWAttrs;
+typedef struct ti_drivers_UART_UARTCC3200DMA_HWAttrs ti_drivers_UART_UARTCC3200DMA_HWAttrs;
 typedef struct ti_drivers_UART_UARTCC3200_Object ti_drivers_UART_UARTCC3200_Object;
+typedef struct ti_drivers_UART_UARTTivaDMA_Object ti_drivers_UART_UARTTivaDMA_Object;
+typedef struct ti_drivers_UART_UARTCC3200DMA_Object ti_drivers_UART_UARTCC3200DMA_Object;
 typedef struct ti_drivers_UART_UARTUSCIA_HWAttrs ti_drivers_UART_UARTUSCIA_HWAttrs;
 typedef struct ti_drivers_UART_UARTUSCIA_Object ti_drivers_UART_UARTUSCIA_Object;
 typedef struct ti_drivers_UART_UARTEUSCIA_HWAttrs ti_drivers_UART_UARTEUSCIA_HWAttrs;
 typedef struct ti_drivers_UART_UARTEUSCIA_Object ti_drivers_UART_UARTEUSCIA_Object;
+typedef struct ti_drivers_UART_UARTMSP432_HWAttrs ti_drivers_UART_UARTMSP432_HWAttrs;
+typedef struct ti_drivers_UART_UARTMSP432_Object ti_drivers_UART_UARTMSP432_Object;
 
 /*
  * ======== module ti.drivers.USBMSCHFatFs ========
@@ -131,6 +141,8 @@ typedef struct ti_drivers_Watchdog_WatchdogCC3200_HWAttrs ti_drivers_Watchdog_Wa
 typedef struct ti_drivers_Watchdog_WatchdogCC3200_Object ti_drivers_Watchdog_WatchdogCC3200_Object;
 typedef struct ti_drivers_Watchdog_WatchdogMSP430_HWAttrs ti_drivers_Watchdog_WatchdogMSP430_HWAttrs;
 typedef struct ti_drivers_Watchdog_WatchdogMSP430_Object ti_drivers_Watchdog_WatchdogMSP430_Object;
+typedef struct ti_drivers_Watchdog_WatchdogMSP432_HWAttrs ti_drivers_Watchdog_WatchdogMSP432_HWAttrs;
+typedef struct ti_drivers_Watchdog_WatchdogMSP432_Object ti_drivers_Watchdog_WatchdogMSP432_Object;
 typedef struct ti_drivers_Watchdog_Watchdog_Config ti_drivers_Watchdog_Watchdog_Config;
 
 /*
@@ -138,10 +150,6 @@ typedef struct ti_drivers_Watchdog_Watchdog_Config ti_drivers_Watchdog_Watchdog_
  */
 
 typedef struct ti_drivers_WiFi_WiFi_Config ti_drivers_WiFi_WiFi_Config;
-typedef struct ti_drivers_WiFi_WiFiTivaCC3000_HWAttrs ti_drivers_WiFi_WiFiTivaCC3000_HWAttrs;
-typedef struct ti_drivers_WiFi_WiFiMSP430CC3000_HWAttrs ti_drivers_WiFi_WiFiMSP430CC3000_HWAttrs;
-typedef struct ti_drivers_WiFi_WiFiTivaCC3000_Object ti_drivers_WiFi_WiFiTivaCC3000_Object;
-typedef struct ti_drivers_WiFi_WiFiMSP430CC3000_Object ti_drivers_WiFi_WiFiMSP430CC3000_Object;
 typedef struct ti_drivers_WiFi_WiFiCC3100_HWAttrs ti_drivers_WiFi_WiFiCC3100_HWAttrs;
 typedef struct ti_drivers_WiFi_WiFiCC3100_Object ti_drivers_WiFi_WiFiCC3100_Object;
 

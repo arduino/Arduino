@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,8 +46,8 @@
  *  This means that in addition to a *WiFi_config* array, a *SPI_config* array
  *  with a host device-specific SPI entry must be provided.
  *  See @ref SPI.h, @ref SPIEUSCIADMA.h, @ref SPIEUSCIBDMA.h,
- *  @ref SPIUSCIADMA.h, @ref SPIUSCIBDMA.h, and @ref SPITivaDMA.h for more
- *  details.
+ *  @ref SPIUSCIADMA.h, @ref SPIUSCIBDMA.h, @ref SPIMSP432DMA.h and
+ *  @ref SPITivaDMA.h for more details.
  *
  *  The SPI transport layer used by the CC3100 uses an IRQ line to signal the
  *  host processor to perform an action. The pin, port, and interrupt number

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -103,6 +103,7 @@
  *
  *  Currently the following PWM peripheral implementations are supported:
  *  - @ref PWMTimerCC3200.h
+ *  - @ref PWMTimerMSP432.h
  *  - @ref PWMTiva.h
  *  - @ref PWMTimerTiva.h
  *

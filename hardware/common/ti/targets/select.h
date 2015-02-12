@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014 by Texas Instruments Incorporated.
+ *  Copyright 2015 by Texas Instruments Incorporated.
  *
  */
 
@@ -224,7 +224,7 @@
 #  endif
 #endif
 /*
- *  @(#) ti.targets; 1, 0, 3,737; 10-10-2014 10:02:19; /db/ztree/library/trees/xdctargets/xdctargets-h38x/src/ xlibrary
+ *  @(#) ti.targets; 1, 0, 3,751; 1-21-2015 19:57:37; /db/ztree/library/trees/xdctargets/xdctargets-h42x/src/ xlibrary
 
  */
 

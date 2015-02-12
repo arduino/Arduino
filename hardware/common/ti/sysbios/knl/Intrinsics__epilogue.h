@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,7 +80,12 @@ extern "C" {
 static inline UInt ti_sysbios_knl_Intrinsics_maxbit(UInt bits)
 {
     UInt retVal;
+
+#if defined(__IAR_SYSTEMS_ICC__)
     asm volatile (
+#else
+    __asm__ __volatile__ (
+#endif
             "clz %0, %1\n\t"
             "rsb %0, %0, #31"
             : "=r" (retVal)

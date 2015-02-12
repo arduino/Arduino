@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 /*
@@ -984,6 +984,11 @@ __extern xdc_Void ti_sysbios_family_arm_m3_Hwi_pendSV__I( void );
 #define ti_sysbios_family_arm_m3_Hwi_dispatch ti_sysbios_family_arm_m3_Hwi_dispatch__I
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_dispatch__I, "ti_sysbios_family_arm_m3_Hwi_dispatch")
 __extern xdc_Void ti_sysbios_family_arm_m3_Hwi_dispatch__I( void );
+
+/* cc26xxRomInitNVIC__I */
+#define ti_sysbios_family_arm_m3_Hwi_cc26xxRomInitNVIC ti_sysbios_family_arm_m3_Hwi_cc26xxRomInitNVIC__I
+xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_cc26xxRomInitNVIC__I, "ti_sysbios_family_arm_m3_Hwi_cc26xxRomInitNVIC")
+__extern xdc_Void ti_sysbios_family_arm_m3_Hwi_cc26xxRomInitNVIC__I( void );
 
 /* dispatchC__I */
 #define ti_sysbios_family_arm_m3_Hwi_dispatchC ti_sysbios_family_arm_m3_Hwi_dispatchC__I

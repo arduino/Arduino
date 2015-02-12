@@ -89,12 +89,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <ti/drivers/Watchdog.h>
-/*
- * The following allows this header file to be included in an application file
- * which also includes ti/sysbios/hal/Hwi.h.
- */
-#define ti_sysbios_family_arm_m3_Hwi__nolocalnames
-#include <ti/sysbios/family/arm/m3/Hwi.h>
 
 /* Return codes for WatchdogTiva_control() */
 #define WatchdogCC3200_CMD_UNDEFINED    -1
@@ -118,11 +112,7 @@ typedef struct WatchdogCC3200_HWAttrs {
  */
 typedef struct WatchdogCC3200_Object {
     bool         isOpen;              /* Flag for open/close status */
-    ti_sysbios_family_arm_m3_Hwi_Struct hwi;  /* Embedded Hwi Object */
 } WatchdogCC3200_Object;
-
-/* Do not interfere with the app if they include the family Hwi module */
-#undef ti_sysbios_family_arm_m3_Hwi__nolocalnames
 
 #ifdef __cplusplus
 }

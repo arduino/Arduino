@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,7 @@ extern "C" {
 #include <stdbool.h>
 #include <ti/drivers/UART.h>
 
+#include <ti/drivers/ports/ListP.h>
 #include <ti/sysbios/knl/Semaphore.h>
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/family/arm/m3/Hwi.h>

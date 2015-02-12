@@ -48,6 +48,6 @@
 #define xdc_runtime_Diags_compareLevels(levelA, levelB) \
     ((levelA) > (levelB))
 /*
- *  @(#) xdc.runtime; 2, 1, 0,507; 1-6-2015 17:59:50; /db/ztree/library/trees/xdc/xdc-A60x/src/packages/
+ *  @(#) xdc.runtime; 2, 1, 0,501; 10-31-2014 13:33:25; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
  */
 

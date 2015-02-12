@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,9 +53,8 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <ti/drivers/UART.h>
-#include <ti/sysbios/knl/Semaphore.h>
-#define ti_sysbios_family_arm_m3_Hwi__nolocalnames
-#include <ti/sysbios/family/arm/m3/Hwi.h>
+#include <ti/drivers/ports/ClockP.h>
+#include <ti/drivers/ports/SemaphoreP.h>
 
 /* Return codes for SPI_control() */
 #define UARTCC3200_CMD_UNDEFINED      -1
@@ -76,20 +75,24 @@ extern const UART_FxnTable UARTCC3200_fxnTable;
  *  const UARTCC3200_HWAttrs uartCC3200HWAttrs[] = {
  *      {
  *          UARTA0_BASE,
- *          INT_UARTA0
+ *          INT_UARTA0,
+ *          PowerCC3200_PERIPH_UARTA0
  *      },
  *      {
  *          UARTA1_BASE,
- *          INT_UARTA1
+ *          INT_UARTA1,
+ *          PowerCC3200_PERIPH_UARTA1
  *      },
  *  };
  *  @endcode
  */
 typedef struct UARTCC3200_HWAttrs {
     /*! UART Peripheral's base address */
-    unsigned int baseAddr;
+    unsigned int    baseAddr;
     /*! UART Peripheral's interrupt vector */
-    unsigned int intNum;
+    unsigned int    intNum;
+    /*!< UART Peripheral's power manager ID */
+    unsigned long   powerMngrId;
 } UARTCC3200_HWAttrs;
 
 /*!
@@ -109,6 +112,7 @@ typedef struct UARTCC3200_Object {
     UART_ReturnMode      readReturnMode;   /* Receive return mode */
     UART_DataMode        readDataMode;     /* Type of data being read */
     UART_DataMode        writeDataMode;    /* Type of data being written */
+    uint32_t             baudRate;         /*!< Baud rate for UART */
     UART_Echo            readEcho;         /* Echo received data back */
 
     /* UART write variables */
@@ -122,14 +126,12 @@ typedef struct UARTCC3200_Object {
     size_t               readCount;        /* Number of Chars read */
     size_t               readSize;         /* Chars remaining in buffer */
 
-    /* UART SYS/BIOS objects */
-    ti_sysbios_family_arm_m3_Hwi_Struct hwi; /* Hwi object */
-    Semaphore_Struct     writeSem;         /* UART write semaphore*/
-    Semaphore_Struct     readSem;          /* UART read semaphore */
-} UARTCC3200_Object, *UARTCC3200_Handle;
+    /* Semaphores for blocking mode */
+    SemaphoreP_Handle    writeSem;         /* UART write semaphore */
+    SemaphoreP_Handle    readSem;          /* UART read semaphore */
 
-/* Do not interfere with the app if they include the family Hwi module */
-#undef ti_sysbios_family_arm_m3_Hwi__nolocalnames
+    ClockP_Handle        txFifoEmptyClk;   /*!< UART TX FIFO empty clock */
+} UARTCC3200_Object, *UARTCC3200_Handle;
 
 #ifdef __cplusplus
 }

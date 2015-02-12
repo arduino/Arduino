@@ -41,6 +41,6 @@
 
 #endif
 /*
- *  @(#) xdc.cfg; 1, 0, 2,509; 1-6-2015 17:59:18; /db/ztree/library/trees/xdc/xdc-A60x/src/packages/
+ *  @(#) xdc.cfg; 1, 0, 2,503; 10-31-2014 13:33:09; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
  */
 

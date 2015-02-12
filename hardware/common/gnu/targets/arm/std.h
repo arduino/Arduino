@@ -22,7 +22,7 @@
 #endif /* gnu_targets_arm_STD_ */
 
 /*
- *  @(#) gnu.targets.arm; 1, 0, 0,569; 10-10-2014 10:02:13; /db/ztree/library/trees/xdctargets/xdctargets-h38x/src/ xlibrary
+ *  @(#) gnu.targets.arm; 1, 0, 0,583; 1-21-2015 19:57:25; /db/ztree/library/trees/xdctargets/xdctargets-h42x/src/ xlibrary
 
  */
 

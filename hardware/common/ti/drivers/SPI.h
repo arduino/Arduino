@@ -131,6 +131,7 @@
  *  - @ref SPICC3200DMA.h
  *  - @ref SPIEUSCIADMA.h
  *  - @ref SPIEUSCIBDMA.h
+ *  - @ref SPIMSP432DMA.h
  *  - @ref SPITivaDMA.h
  *  - @ref SPIUSCIADMA.h
  *  - @ref SPIUSCIBDMA.h
@@ -157,7 +158,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <xdc/std.h>
+#include <stddef.h>
 
 /*!
  *  @brief      A handle that is returned from a SPI_open() call.
@@ -184,11 +185,16 @@ typedef enum SPI_Status {
  *  ::SPI_CallbackFxn when the SPI driver is in ::SPI_MODE_CALLBACK.
  */
 typedef struct SPI_Transaction {
+    /* User input (write-only) fields */
     size_t     count;      /*!< Number of frames for this transaction */
     void      *txBuf;      /*!< void * to a buffer with data to be transmitted */
     void      *rxBuf;      /*!< void * to a buffer to receive data */
     void      *arg;        /*!< Argument to be passed to the callback function */
+
+    /* User output (read-only) fields */
     SPI_Status status;     /*!< Status code set by SPI_transfer */
+
+    /* Driver-use only fields */
 } SPI_Transaction;
 
 /*!
@@ -254,6 +260,9 @@ typedef enum SPI_TransferMode {
  */
 typedef struct SPI_Params {
     SPI_TransferMode    transferMode;       /*!< Blocking or Callback mode */
+    uint32_t            transferTimeout;    /*!< Transfer timeout in system
+                                                 ticks (Not supported with all
+                                                 implementations */
     SPI_CallbackFxn     transferCallbackFxn;/*!< Callback function pointer */
     SPI_Mode            mode;               /*!< Master or Slave mode */
     uint32_t            bitRate;            /*!< SPI bit rate in Hz */
@@ -418,6 +427,7 @@ extern SPI_Handle SPI_open(unsigned int index, SPI_Params *params);
  *  Defaults values are:
  *  @code
  *  transferMode        = SPI_MODE_BLOCKING
+ *  transferTimeout     = BIOS_WAIT_FOREVER
  *  transferCallbackFxn = NULL
  *  mode                = SPI_MASTER
  *  bitRate             = 1000000 (Hz)

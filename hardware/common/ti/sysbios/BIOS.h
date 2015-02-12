@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A46
+ * @(#) xdc-A65
  */
 
 /*
@@ -273,6 +273,15 @@ typedef xdc_Bool CT__ti_sysbios_BIOS_heapTrackEnabled;
 __extern __FAR__ const CT__ti_sysbios_BIOS_heapTrackEnabled ti_sysbios_BIOS_heapTrackEnabled__C;
 #endif
 
+/* setupSecureContext */
+#ifdef ti_sysbios_BIOS_setupSecureContext__D
+#define ti_sysbios_BIOS_setupSecureContext (ti_sysbios_BIOS_setupSecureContext__D)
+#else
+#define ti_sysbios_BIOS_setupSecureContext (ti_sysbios_BIOS_setupSecureContext__C)
+typedef xdc_Bool CT__ti_sysbios_BIOS_setupSecureContext;
+__extern __FAR__ const CT__ti_sysbios_BIOS_setupSecureContext ti_sysbios_BIOS_setupSecureContext__C;
+#endif
+
 /* useSK */
 #ifdef ti_sysbios_BIOS_useSK__D
 #define ti_sysbios_BIOS_useSK (ti_sysbios_BIOS_useSK__D)
@@ -497,6 +506,7 @@ extern struct ti_sysbios_BIOS_Module_State__ ti_sysbios_BIOS_Module__state__V;
 #define BIOS_heapSize ti_sysbios_BIOS_heapSize
 #define BIOS_heapSection ti_sysbios_BIOS_heapSection
 #define BIOS_heapTrackEnabled ti_sysbios_BIOS_heapTrackEnabled
+#define BIOS_setupSecureContext ti_sysbios_BIOS_setupSecureContext
 #define BIOS_useSK ti_sysbios_BIOS_useSK
 #define BIOS_installedErrorHook ti_sysbios_BIOS_installedErrorHook
 #define BIOS_start ti_sysbios_BIOS_start

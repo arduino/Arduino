@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,21 +67,6 @@
  *  @endcode
  *
  *  ## Configuration #
- *  The WiFi driver configuration varies depending on the WiFi device to use.
- *
- *  ### SimpleLink CC3000 device #
- *  In order to provide appropriately-sized send and receive buffers, the
- *  maximum expected payload sizes should be supplied in the configuration
- *  file. This can be done through the graphical editor, or if you are
- *  comfortable with editing the script as a text file, with the following
- *  lines of code:
- *  @code
- *  WiFi.txPayloadSize = 1460;
- *  WiFi.rxPayloadSize = 1024;
- *  @endcode
- *  The default is 1460 bytes. This is the MTU size of the SimpleLink Wi-Fi
- *  CC3000 device. This is the largest value that may be entered.
- *
  *  ### SimpleLink CC3100 device #
  *  The SimpleLink Host Driver for CC3100 the device requires a mechanism
  *  to allow functions to execute in a temporary context.  A SpawnTask is
@@ -107,8 +92,6 @@
  *  and it must be located at index 0.
  *
  *  Currently the following WiFi implementations are supported:
- *  - @ref WiFiTivaCC3000.h
- *  - @ref WiFiMSP430CC3000.h
  *  - @ref WiFiCC3100.h
  *
  *  # Instrumentation #

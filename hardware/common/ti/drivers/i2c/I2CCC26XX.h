@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,7 @@
  *
  *  @brief      I2C driver implementation for a CC26XX I2C controller.
  *
+ *  # Driver Include #
  *  The I2C header file should be included in an application as follows:
  *  @code
  *  #include <ti/drivers/I2C.h>
@@ -41,29 +42,34 @@
  *  @endcode
  *
  * # Overview #
- * The general I2C API is normally used in application code, i.e. I2C_open()
+ * The general I2C API is normally used in application code, e.g. I2C_open()
  * is used instead of I2CCC26XX_open(). The board file will define the device
  * specific config, and casting in the general API will ensure that the correct
  * device specific functions are called.
- * This is also reflected in the example code in [Use Cases](@ref USE_CASES).
+ * This is also reflected in the example code in [Use Cases](@ref I2C_USE_CASES).
  *
  * ## General Behavior #
  * Before using the I2C in CC26XX:
- *   - The I2C driver is initialized by calling I2CCC26XX_init(). This should
- *     be done in main before BIOS_start() is called.
+ *   - The I2C driver is initialized by calling I2C_init().
  *   - The I2C HW is configured and flags system dependencies (e.g. IOs,
- *     power, etc.) by calling I2CCC26XX_open().
+ *     power, etc.) by calling I2C_open().
  *   .
  * The following is true for receive operation:
- *   - RX is enabled by calling I2CCC26XX_transfer().
- *   - If the I2CCC26XX_transfer() succeeds, the I2C remains enabled.
+ *   - RX is enabled by calling I2C_transfer().
+ *     The readCount of the ::I2C_Transaction must be set to a non-zero value.
+ *   - If the I2C_transfer() succeeds, the I2C remains enabled.
+ *   - The application must check the return value from I2C_transfer()
+ *     to verify that the transfer succeeded.
  *   .
  * The following apply for transmit operation:
- *   - TX is enabled by calling I2CCC26XX_transfer().
- *   - If the I2CCC26XX_transfer() succeeds, the I2C remains enabled.
+ *   - TX is enabled by calling I2C_transfer().
+ *     The writeCount of the ::I2C_Transaction must be set to a non-zero value.
+ *   - If the I2C_transfer() succeeds, the I2C remains enabled.
+ *   - The application must check the return value from I2C_transfer()
+ *     to verify that the transfer succeeded.
  *   .
  * After I2C operation has ended:
- *   - Release system dependencies for I2C by calling I2CCC26XX_close().
+ *   - Release system dependencies for I2C by calling I2C_close().
  *
  * ## Error handling #
  * If an error occurs during operation:
@@ -72,34 +78,34 @@
  *
  * ## Power Management #
  *  The I2CCC26XX driver is setting a power constraint during operation to keep
- *  the device out of standby. When the operation has finished, the power
+ *  the device out of standby, i.e. device will enter idle mode when no tasks
+ *  are active. When the operation has finished, the power
  *  constraint is released.
  *  The following statements are valid:
- *    - After I2CCC26XX_open() call: I2C is enabled, there is no active I2C
+ *    - After I2C_open() call: I2C is enabled, there is no active I2C
  *      transactions, the device can enter standby.
- *    - After I2CCC26XX_transfer() call: active I2C transactions exist , the device
- *      cannot enter standby (set constraint).
- *    - If I2CCC26XX_transfer() returns successfully or with error: I2C remains enabled,
+ *    - After I2C_transfer() call: active I2C transactions exist , the device
+ *      might enter idle, not standby (set constraint).
+ *    - If I2C_transfer() returns successfully or with error: I2C remains enabled,
  *      but device can enter standby.
- *    - After I2CCC26XX_close() call: I2C is disabled
+ *    - After I2C_close() call: I2C is disabled
  *
  * ## Supported Functions ##
- *  | API function             | Description                                       |
- *  |------------------------- |---------------------------------------------------|
- *  | I2CCC26XX_init()         | Initialize I2C driver                             |
- *  | I2CCC26XX_open()         | Initialize I2C HW and set system dependencies     |
- *  | I2CCC26XX_close()        | Disable I2C HW and release system dependencies    |
- *  | I2CCC26XX_control()      | Configure an already opened I2C handle            |
- *  | I2CCC26XX_transfer()     | Start I2C transfer                                |
+ *  | Generic API Function | API Function             | Description                                       |
+ *  |--------------------- |------------------------- |---------------------------------------------------|
+ *  | I2C_init()           | I2CCC26XX_init()         | Initialize I2C driver                             |
+ *  | I2C_open()           | I2CCC26XX_open()         | Initialize I2C HW and set system dependencies     |
+ *  | I2C_close()          | I2CCC26XX_close()        | Disable I2C HW and release system dependencies    |
+ *  | I2C_transfer()       | I2CCC26XX_transfer()     | Start I2C transfer                                |
  *
- *  ## Not Supported Functionality #
- *  The CC26XX I2C driver does not support:
+ *  @note All calls should go through the generic API.
+ *
+ *  ## Unsupported Functionality #
+ *  The CC26XX I2C driver currently does not support:
  *    - Multi-master mode
- *
- *  Functionality which will be supported in later releases:
  *    - I2C slave mode
  *
- * ## Use Cases \anchor USE_CASES ##
+ * ## Use Cases \anchor I2C_USE_CASES ##
  * ### Basic Receive #
  *  Receive 10 bytes over I2C in ::I2C_MODE_BLOCKING.
  *  @code
@@ -294,14 +300,48 @@ extern "C" {
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 #include <ti/sysbios/knl/Semaphore.h>
 
-/* Return codes for I2C_control() */
-#define I2CCC26XX_CMD_UNDEFINED       -1
+/*! Return code when command is not defined. Currently in use by I2CCC26XX_control().*/
+#define I2CCC26XX_CMD_UNDEFINED  -1
 
+/*! Success Return Code */
+#define I2CCC26XX_SUCCESS         0
+/*! Error Return Code */
+#define I2CCC26XX_ERROR          -1
+
+/*! I2C Base Address type.*/
 typedef unsigned long   I2CBaseAddrType;
+/*! @internal I2C Data type.*/
 typedef unsigned long   I2CDataType;
 
-/* I2C function table pointer */
+/*! @internal @brief I2C function table pointer */
 extern const I2C_FxnTable I2CCC26XX_fxnTable;
+
+
+/*!
+ *  @brief  I2CCC26XX Pin Configuration
+ *
+ *  Pin configuration that holds non-default pins. The default pin configuration
+ *  is typically defined in ::I2CCC26XX_HWAttrs placed in the board file.
+ *  The pin configuration structure is used by setting the custom void
+ *  pointer in the ::I2C_Params to point to this struct. If the custom
+ *  void pointer is NULL, the ::I2CCC26XX_HWAttrs pin mapping will be used.
+ *  @code
+ *  I2C_Handle handle;
+ *  I2C_Params i2cParams;
+ *  I2CCC26XX_I2CPinCfg pinCfg;
+ *
+ *  I2C_Params_init(&i2cParams);     // sets custom to NULL
+ *  pinCfg.pinSDA = Board_I2C0_SDA1;
+ *  pinCfg.pinSCL = Board_I2C0_SCL1;
+ *  i2cParams.custom = &pinCfg;
+ *
+ *  handle = I2C_open(Board_I2C, &i2cParams);
+ *  @endcode
+ */
+typedef struct I2CCC26XX_I2CPinCfg {
+    uint8_t pinSDA;
+    uint8_t pinSCL;
+} I2CCC26XX_I2CPinCfg;
 
 /*!
  *  @brief  I2CCC26XX Hardware attributes
