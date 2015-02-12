@@ -21,6 +21,9 @@ public class IncludesFinderTest extends AbstractWithPreferencesTest {
   public void shouldListIncludes() throws Exception {
     String input = FileUtils.readFileToString(new File(IncludesFinderTest.class.getResource("SketchWithIfDef.ino").getFile()));
 
+    PreferencesData.set("target_package", "arduino");
+    PreferencesData.set("target_platform", "avr");
+
     PreferencesMap prefs = new PreferencesMap();
     prefs.putAll(PreferencesData.getMap());
     prefs.putAll(BaseNoGui.getTargetBoard().getPreferences());
