@@ -2,11 +2,11 @@ package processing.app.preproc;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.Executor;
-import processing.app.BaseNoGui;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.StringReplacer;
 import processing.app.legacy.PApplet;
+import processing.app.tools.ArgumentsWithSpaceAwareCommandLine;
 import processing.app.tools.CollectStdOutStdErrExecutor;
 
 import java.io.ByteArrayOutputStream;
@@ -41,10 +41,11 @@ public class IncludesFinder implements PreprocessorChainRing {
     dict.put("source_file", file.getAbsolutePath());
 
     String[] patterns = StringReplacer.formatAndSplit(dict.getOrExcept("pattern"), dict, true);
-    CommandLine commandLine = new CommandLine(patterns[0]);
+    CommandLine commandLine = new ArgumentsWithSpaceAwareCommandLine(patterns[0]);
     for (int i = 1; i < patterns.length; i++) {
-      if (ALLOWED_ARG.matcher(patterns[i]).matches() || i == patterns.length - 1) {
-        commandLine.addArgument(patterns[i], false);
+      String pattern = patterns[i];
+      if (i == patterns.length - 1 || ALLOWED_ARG.matcher(pattern).matches()) {
+        commandLine.addArgument(pattern, false);
       }
     }
     if (verbose) {
@@ -61,6 +62,7 @@ public class IncludesFinder implements PreprocessorChainRing {
       file.delete();
     }
 
+    stdout.flush();
     source = new String(stdout.toByteArray());
 
     String[][] pieces = PApplet.matchAll(source, INCLUDE_REGEXP);

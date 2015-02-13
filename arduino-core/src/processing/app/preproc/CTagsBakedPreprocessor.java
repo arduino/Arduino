@@ -8,6 +8,7 @@ import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.StringReplacer;
 import processing.app.helpers.StringUtils;
+import processing.app.tools.ArgumentsWithSpaceAwareCommandLine;
 import processing.app.tools.CollectStdOutStdErrExecutor;
 
 import java.io.ByteArrayOutputStream;
@@ -42,22 +43,22 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
   }
 
   public void preprocess(Map<String, Object> context, PreferencesMap prefs) throws Exception {
-    String input = (String) context.get("source");
+    String source = (String) context.get("source");
 
-    File file = FileUtils.saveToTempFile(input, "sketch", ".cpp");
+    File file = FileUtils.saveToTempFile(source, "sketch", ".cpp");
 
     String ctagsOutput = runCTagsAndGetOutput(prefs, file);
 
     parseCTagsOutput(context, ctagsOutput);
 
-    StringBuilder output = new StringBuilder(input);
+    StringBuilder output = new StringBuilder(source);
 
     int lineWhereToInsertInclude = composeIncludeSection(context);
-    int charWhereToInsertInclude = charPositionOfLine(input, lineWhereToInsertInclude);
+    int charWhereToInsertInclude = charPositionOfLine(source, lineWhereToInsertInclude);
     output.insert(charWhereToInsertInclude, context.get("includeSection"));
 
     int lineWhereToInsertPrototypes = composePrototypeSection(context);
-    int charWhereToInsertPrototypes = charPositionOfLine(input, lineWhereToInsertPrototypes) + context.get("includeSection").toString().length();
+    int charWhereToInsertPrototypes = charPositionOfLine(source, lineWhereToInsertPrototypes) + context.get("includeSection").toString().length();
     output.insert(charWhereToInsertPrototypes, context.get("prototypesSection"));
 
     context.put("source", output.toString());
@@ -116,7 +117,7 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
     prefs.put("source_file", file.getAbsolutePath());
 
     String[] patterns = StringReplacer.formatAndSplit(prefs.getOrExcept("pattern"), prefs, true);
-    CommandLine commandLine = new CommandLine(patterns[0]);
+    CommandLine commandLine = new ArgumentsWithSpaceAwareCommandLine(patterns[0]);
     for (int i = 1; i < patterns.length; i++) {
       commandLine.addArgument(patterns[i], false);
     }
@@ -131,6 +132,7 @@ public class CTagsBakedPreprocessor implements PreprocessorChainRing {
     Executor executor = new CollectStdOutStdErrExecutor(stdout, stderr);
     executor.execute(commandLine);
 
+    stdout.flush();
     return new String(stdout.toByteArray());
   }
 
