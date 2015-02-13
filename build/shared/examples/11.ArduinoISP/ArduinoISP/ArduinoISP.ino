@@ -67,7 +67,7 @@
 void pulse(int pin, int times);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(19200);
   SPI.setDataMode(0);
   SPI.setBitOrder(MSBFIRST);
   // Clock Div can be 2,4,8,16,32,64, or 128
@@ -111,17 +111,16 @@ parameter param;
 uint8_t hbval = 128;
 int8_t hbdelta = 8;
 void heartbeat() {
-  if (hbval > 192) {
-    hbdelta = -hbdelta;
-  }
-  if (hbval < 32) {
-    hbdelta = -hbdelta;
-  }
+  static unsigned long last_time = 0;
+  unsigned long now = millis();
+  if ((now - last_time) < 40)
+    return;
+  last_time = now;
+  if (hbval > 192) hbdelta = -hbdelta;
+  if (hbval < 32) hbdelta = -hbdelta;
   hbval += hbdelta;
   analogWrite(LED_HB, hbval);
-  delay(20);
 }
-
 
 void loop(void) {
   // is pmode active?
