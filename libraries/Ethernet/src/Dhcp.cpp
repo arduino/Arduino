@@ -102,7 +102,7 @@ int DhcpClass::request_DHCP_lease(){
                 }
                 if(_dhcpT2 == 0){
                     //T2 should be 87.5% (7/8ths) of _dhcpLeaseTime
-                    _dhcpT2 = _dhcpT1 << 1;
+                    _dhcpT2 = _dhcpLeaseTime*7/8;
                 }
                 _renewInSec = _dhcpT1;
                 _rebindInSec = _dhcpT2;
@@ -201,7 +201,15 @@ void DhcpClass::send_DHCP_MESSAGE(uint8_t messageType, uint16_t secondsElapsed)
     buffer[8] = 0x07;
     buffer[9] = 0x01;
     memcpy(buffer + 10, _dhcpMacAddr, 6);
-
+// SurferTim added    
+   if(messageType == DHCP_REQUEST)
+   {
+     buffer[12] = _dhcpLocalIp[0];
+     buffer[13] = _dhcpLocalIp[1];
+     buffer[14] = _dhcpLocalIp[2];
+     buffer[15] = _dhcpLocalIp[3];
+   }
+// end SurferTim added
     // OPT - host name
     buffer[16] = hostName;
     buffer[17] = strlen(HOST_NAME) + 6; // length of hostname + last 3 bytes of mac address
