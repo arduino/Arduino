@@ -100,7 +100,7 @@ public class TargetPlatform {
                                                boardsFile.getAbsolutePath()), e);
     }
 
-    this.preferences = new PreferencesMap().merge(packagePlatformTxt);
+    this.preferences = new PreferencesMap(packagePlatformTxt);
 
     File platformsFile = new File(folder, "platform.txt");
     try {

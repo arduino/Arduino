@@ -42,7 +42,7 @@ public class TargetPackage {
     id = _id;
 
     PreferencesMap packagePlatformTxt = PreferencesMap.safeLoad(new File(_folder, "platform.txt"));
-    packagePlatformTxt = packagePlatformTxt.merge(hardwarePlatformTxt);
+    packagePlatformTxt = hardwarePlatformTxt.merge(packagePlatformTxt);
 
     File[] folders = _folder.listFiles(new OnlyDirs());
     if (folders == null)
