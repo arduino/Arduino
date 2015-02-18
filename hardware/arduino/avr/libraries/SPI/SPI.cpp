@@ -34,7 +34,7 @@ void SPIClass::begin()
     volatile uint8_t *reg = portModeRegister(port);
 
     // if the SS pin is not already configured as an output
-    // then set it high
+    // then set it high (to enable the internall pull-up resistor)
     if(!(*reg & bit)){
       digitalWrite(SS, HIGH);
     }
@@ -42,7 +42,7 @@ void SPIClass::begin()
     // When the SS pin is set as OUTPUT, it can be used as
     // a general purpose output port (it doesn't influence
     // SPI operations).
-    pinMode(SS, OUTPUT);
+    // pinMode(SS, OUTPUT); //an input with internal pullup enabled suffices too
 
     // Warning: if the SS pin ever becomes a LOW INPUT then SPI
     // automatically switches to Slave, so the data direction of
