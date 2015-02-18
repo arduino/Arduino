@@ -178,6 +178,9 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+#include <stddef.h>
+
 /*!
  *  @brief      A handle that is returned from a PWM_open() call.
  */

@@ -135,9 +135,12 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
-#include <ti/drivers/ports/ListP.h>
-
 #define UART_ERROR  -1
+
+/*!
+ *  @brief    Wait forever define
+ */
+#define UART_WAIT_FOREVER ~(0)
 
 /*!
  *  @brief      A handle that is returned from a UART_open() call.
@@ -173,7 +176,7 @@ typedef enum UART_Mode {
       *  Non-blocking and will return immediately.  When the transfer by the Hwi
       *  is finished the configured callback function is called.
       */
-    UART_MODE_CALLBACK,
+    UART_MODE_CALLBACK
 } UART_Mode;
 
 /*!
@@ -458,8 +461,8 @@ extern UART_Handle UART_open(unsigned int index, UART_Params *params);
  *  Defaults values are:
  *  readMode = UART_MODE_BLOCKING;
  *  writeMode = UART_MODE_BLOCKING;
- *  readTimeout = BIOS_WAIT_FOREVER;
- *  writeTimeout = BIOS_WAIT_FOREVER;
+ *  readTimeout = UART_WAIT_FOREVER;
+ *  writeTimeout = UART_WAIT_FOREVER;
  *  readCallback = NULL;
  *  writeCallback = NULL;
  *  readReturnMode = UART_RETURN_NEWLINE;

@@ -112,6 +112,11 @@ extern "C" {
 #include <stddef.h>
 
 /*!
+ *  @brief    Wait forever define
+ */
+#define Camera_WAIT_FOREVER ~(0)
+
+/*!
  *  @brief      A handle that is returned from a Camera_open() call.
  */
 typedef struct Camera_Config      *Camera_Handle;
@@ -424,7 +429,7 @@ extern Camera_Handle Camera_open(uint32_t index, Camera_Params *params);
  *  interfaceSync     =  Camera_INTERFACE_SYNC_ON;
  *  stopConfig        =  Camera_STOP_CAPTURE_FRAME_END;
  *  startConfig       =  Camera_START_CAPTURE_FRAME_START;
- *  captureTimeout    =  SemaphoreP_WAIT_FOREVER;
+ *  captureTimeout    =  Camera_WAIT_FOREVER;
  *  captureCallback   =  NULL;
  *
  *

@@ -20,6 +20,6 @@ typedef volatile struct ti_catalog_peripherals_hdvicp2_Hdvicp2Regs {
 
 #endif
 /*
- *  @(#) ti.catalog.peripherals.hdvicp2; 1,0,0,236; 2-2-2015 13:50:46; /db/ztree/library/trees/platform/platform-o71x/src/
+ *  @(#) ti.catalog.peripherals.hdvicp2; 1,0,0,2; 2-10-2015 12:13:16; /db/ztree/library/trees/platform/platform-p02/src/
  */
 

@@ -108,7 +108,8 @@ extern I2S_BufDesc  I2SCC3200DMA_emptyBufDesc;
  *          I2S_BASE,
  *          INT_I2S,
  *          UDMA_CH4_I2S_RX,
- *          UDMA_CH5_I2S_TX
+ *          UDMA_CH5_I2S_TX,
+ *          PowerCC3200_PERIPH_I2S
  *      }
  *  };
  *  @endcode
@@ -122,6 +123,8 @@ typedef struct I2SCC3200DMA_HWAttrs {
     unsigned long rxChannelIndex;
     /*! uDMA controlTable transmit channel index */
     unsigned long txChannelIndex;
+    /*!< I2S Peripheral's power manager ID */
+    unsigned long   powerMngrId;
 } I2SCC3200DMA_HWAttrs;
 
 /*!
@@ -182,7 +185,7 @@ typedef struct I2SCC3200DMA_Object {
 
     I2SCC3200DMA_DataSize  dmaSize;            /* Config DMA word size  */
 
-    /* I2S RTOS Porting objects */
+    /* I2S OSAL objects */
     SemaphoreP_Handle      writeSem;              /* I2S write semaphore*/
     SemaphoreP_Handle      readSem;               /* I2S read semaphore */
 

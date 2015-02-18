@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -159,6 +159,11 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+
+/*!
+ *  @brief    Wait forever define
+ */
+#define SPI_WAIT_FOREVER ~(0)
 
 /*!
  *  @brief      A handle that is returned from a SPI_open() call.
@@ -427,7 +432,7 @@ extern SPI_Handle SPI_open(unsigned int index, SPI_Params *params);
  *  Defaults values are:
  *  @code
  *  transferMode        = SPI_MODE_BLOCKING
- *  transferTimeout     = BIOS_WAIT_FOREVER
+ *  transferTimeout     = SPI_WAIT_FOREVER
  *  transferCallbackFxn = NULL
  *  mode                = SPI_MASTER
  *  bitRate             = 1000000 (Hz)

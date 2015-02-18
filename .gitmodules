@@ -1,0 +1,3 @@
+[submodule "emt"]
+	path = emt
+	url = git@gitorious.design.ti.com:emt/emt.git

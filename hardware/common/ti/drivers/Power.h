@@ -32,13 +32,107 @@
 /** ============================================================================
  *  @file       Power.h
  *
- *  @brief      Power interface
+ *  @brief      Power manager interface
  *
  *  The Power header file should be included in an application as follows:
  *  @code
  *  #include <ti/drivers/Power.h>
  *  @endcode
  *
+ *  # Operation #
+ *  The Power manager facilitates the transition of the MPU from active state
+ *  to one of the sleep states and vice versa.  It provides drivers the
+ *  ability to set and release dependencies on hardware resources and keeps
+ *  a reference count on each resource to know when to enable or disable the
+ *  peripheral clock to the resource.  It provides drivers the ability to
+ *  register a callback function upon a specific power event.  In addition,
+ *  drivers and apps can set or release constraints to prevent the MCU from
+ *  transitioning into a particular sleep state.
+ *
+ *  # Calling Context #
+ *
+ *  <table>
+ *    <tr>
+ *      <th> Function </th><th> Hwi </th><th> Swi </th><th> Task </th>
+ *      <th> Main </th>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_getConstraintMask </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_getDependencyCount </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_getPerformanceLevel </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_getTransitionLatency </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_getTransitionState </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_idleFunc </td>
+ *      <td> N </td><td> N </td><td> N </td><td> N </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_init </td>
+ *      <td> N </td><td> N </td><td> N </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_registerNotify </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_releaseConstraint </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_releaseDependency </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_setConstraint </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_setDependency </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_setPerformanceLevel </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_shutdown </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_sleep </td>
+ *      <td> N </td><td> N </td><td> N </td><td> N </td>
+ *    </tr>
+ *    <tr>
+ *      <td> Power_unregisterNotify </td>
+ *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
+ *    </tr>
+ *    <tr>
+ *      <td colspan="5">
+ *        <ul>
+ *          <li><b>Hwi</b>: API is callable from Hwi context. </li>
+ *          <li><b>Swi</b>: API is callable from Swi context. </li>
+ *          <li><b>Task</b>: API is callable from a Task thread. </li>
+ *          <li><b>Main</b>: API is callable from main(). </li>
+ *        </ul>
+ *      </td>
+ *    </tr>
+ *  </table>
+ *
+ *  ============================================================================
  */
 
 #ifndef ti_drivers_Power__include
@@ -51,26 +145,40 @@
 extern "C" {
 #endif
 
-/*! Power latency types */
+/* Power latency types */
+/*! total latency type */
 #define Power_TOTAL                 1
+/*! resume latency type */
 #define Power_RESUME                2
 
-/*! Power notify responses */
+/* Power notify responses */
+/*! notify done value */
 #define Power_NOTIFYDONE            0
+/*! notify error value */
 #define Power_NOTIFYERROR           1
 
-/*! Power status */
+/* Power status */
+/*! ok status */
 #define Power_SOK                   0
+/*! ok status with the state restored */
 #define Power_SOK_STATE_RESTORED    1
+/*! error failed status */
 #define Power_EFAIL                 2
+/*! error invalid pointer status */
 #define Power_EINVALIDPOINTER       3
+/*! error change not allowed status */
 #define Power_ECHANGE_NOT_ALLOWED   4
+/*! error busy status */
 #define Power_EBUSY                 5
 
-/*! Power transition states */
+/* Power transition states */
+/*! active state */
 #define Power_ACTIVE                1
+/*! entering sleep state */
 #define Power_ENTERING_SLEEP        2
+/*! exiting sleep state */
 #define Power_EXITING_SLEEP         3
+/*! entering shutdown state */
 #define Power_ENTERING_SHUTDOWN     4
 
 /*!
@@ -150,7 +258,7 @@ uint32_t Power_getTransitionState(void);
 
 /*!
  *  @brief  Add this function to the system's idle loop. It calls the
- *          configured 'runPolicy' in the user defined 'Power_Config' object.
+ *          configured 'runPolicy' in the user defined Power config object.
  */
 void Power_idleFunc(void);
 

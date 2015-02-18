@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,15 +30,15 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /** ============================================================================
- *  @file       PWMTiva.h
+ * @file       PWMTiva.h
  *
- *  @brief      PWM driver implementation for Tiva PWM perhiperals.
+ * @brief      PWM driver implementation for Tiva PWM perhiperals.
  *
- *  The PWM header file should be included in an application as follows:
- *  @code
- *  #include <ti/drivers/PWM.h>
- *  #include <ti/drivers/pwm/PWMTiva.h>
- *  @endcode
+ * The PWM header file should be included in an application as follows:
+ * @code
+ * #include <ti/drivers/PWM.h>
+ * #include <ti/drivers/pwm/PWMTiva.h>
+ * @endcode
  *
  * ## Operation #
  * This driver implementation uses the Pulse Width Modulator (PWM) peripherals
@@ -89,12 +89,12 @@
  * if (rc < 0) {
  *     // handle error condition
  * }
- *
  * @endcode
  *
  * Finally, if the duty supplied is greater than the period; the output will
  * remain in active state.
- *  ============================================================================
+ *
+ * =============================================================================
  */
 
 #ifndef ti_driver_pwm_PWMTiva__include

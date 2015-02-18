@@ -29,9 +29,38 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*
- *  ======== PowerCC3200.h ========
+/** ============================================================================
+ *  @file       PowerCC3200.h
  *
+ *  @brief      Power manager interface for the CC3200
+ *
+ *  The Power header file should be included in an application as follows:
+ *  @code
+ *  #include <ti/drivers/power/PowerCC3200.h>
+ *  @endcode
+ *
+ *  ## Implementation #
+ *  This module defines the power resources, constraints, events, sleep
+ *  states and transition latency times for CC3200.
+ *
+ *  A default power policy is provided which can transition the MCU from the
+ *  active state to one of three power states (LPDS, DeepSleep, or Sleep).
+ *  The default policy looks at the amount of idle time remaining to determine
+ *  which power state it can transition to.  It first attempts to tranistion
+ *  into LPDS mode.  If it cannot transition into LPDS, it attempts to
+ *  transition into DeepSleep mode. If it cannot transition into DeepSleep,
+ *  then it goes into Sleep mode.
+ *
+ *  The function 'Power_idleFunc' needs to be added as an Idle function.
+ *  For a TI-RTOS application this can be done via the following statements
+ *  in the config (*.cfg) file:
+ *
+ *  @code
+ *  var Idle = xdc.useModule('ti.sysbios.knl.Idle');
+ *  Idle.addFunc('&Power_idleFunc');
+ *  @endcode
+ *
+ *  ============================================================================
  */
 
 #ifndef ti_drivers_power_PowerCC3200__include
@@ -44,15 +73,20 @@
 extern "C" {
 #endif
 
-/*! latency times in microseconds */
-#define PowerCC3200_RESUMETIMEDEEPSLEEP     1000
-#define PowerCC3200_RESUMETIMELPDS          13000
-#define PowerCC3200_TOTALTIMEDEEPSLEEP      2000
-#define PowerCC3200_TOTALTIMELPDS           20000
+/*! latency time for resuming from DeepSleep in microseconds */
+#define PowerCC3200_RESUMETIMEDEEPSLEEP     482
+/*! latency time for resuming from LPDS in microseconds */
+#define PowerCC3200_RESUMETIMELPDS          2375
+/*! total latency time for DeepSleep in microseconds */
+#define PowerCC3200_TOTALTIMEDEEPSLEEP      964
+/*! total latency time for LPDS in microseconds */
+#define PowerCC3200_TOTALTIMELPDS           2681
+/*! total latency time for Shutdown in microseconds */
 #define PowerCC3200_TOTALTIMESHUTDOWN       500000
-#define PowerCC3200_WAKEDELAYDEEPSLEEP      1000
+/*! wakeup delay for DeepSleep in microseconds */
+#define PowerCC3200_WAKEDELAYDEEPSLEEP      482
 
-/*! Power resources */
+/* Power resources */
 #define PowerCC3200_PERIPH_CAMERA           0
 #define PowerCC3200_PERIPH_I2S              1
 #define PowerCC3200_PERIPH_SDHOST           2
@@ -75,32 +109,44 @@ extern "C" {
 #define PowerCC3200_PERIPH_I2CA0            19
 #define PowerCC3200_NUMRESOURCES            20
 
-/*!
- *  @brief  Power constraints on the CC3200 device
+/*
+ *  Power constraints on the CC3200 device
  *
  *  Each constraint must be a power of two and must be sequential
  *  without any gaps.
  */
+/*! constraint to disallow entering DeepSleep */
 #define PowerCC3200_DS_DISALLOW             0x1
+/*! constraint to disallow entering LPDS */
 #define PowerCC3200_LPDS_DISALLOW           0x2
+/*! constraint to disallow shutdown */
 #define PowerCC3200_SD_DISALLOW             0x4
+/*! number of constraints */
 #define PowerCC3200_NUMCONSTRAINTS          3
 
-/*!
- *  @brief  Power events on the CC3200 device
+/*
+ *  Power events on the CC3200 device
  *
  *  Each event must be a power of two and must be sequential
  *  without any gaps.
  */
+/*! entering DeepSleep event */
 #define PowerCC3200_ENTERING_DEEPSLEEP      0x1
+/*! entering LPDS event */
 #define PowerCC3200_ENTERING_LPDS           0x2
+/*! entering Shutdown event */
 #define PowerCC3200_ENTERING_SHUTDOWN       0x4
+/*! awake from DeepSleep event */
 #define PowerCC3200_AWAKE_DEEPSLEEP         0x8
+/*! awake from LPDS event */
 #define PowerCC3200_AWAKE_LPDS              0x10
+/*! number of events */
 #define PowerCC3200_NUMEVENTS               5
 
-/*! Power sleep states */
+/* Power sleep states */
+/*! DeepSleep state */
 #define PowerCC3200_DEEPSLEEP               0x1
+/*! LPDS state */
 #define PowerCC3200_LPDS                    0x2
 
 /*! @brief Power global configuration */
@@ -121,21 +167,53 @@ typedef struct PowerCC3200_Config {
     bool enableGPIOWakeupShutdown;
     /*! Enable Network activity as a wakeup source for LPDS */
     bool enableNetworkWakeupLPDS;
-    /*! The GPIO source for wakeup from LPDS */
+    /*!
+     *  @brief  The GPIO source for wakeup from LPDS
+     *
+     *  Value can be one of the following:
+     *  PRCM_LPDS_GPIO2, PRCM_LPDS_GPIO4, PRCM_LPDS_GPIO11,
+     *  PRCM_LPDS_GPIO13, PRCM_LPDS_GPIO17, PRCM_LPDS_GPIO24,
+     *  PRCM_LPDS_GPIO26
+     */
     uint32_t wakeupGPIOSourceLPDS;
-    /*! The GPIO trigger type for wakeup from LPDS */
+    /*!
+     *  @brief  The GPIO trigger type for wakeup from LPDS
+     *
+     *  Value can be one of the following:
+     *  PRCM_LPDS_LOW_LEVEL, PRCM_LPDS_HIGH_LEVEL,
+     *  PRCM_LPDS_FALL_EDGE, PRCM_LPDS_RISE_EDGE
+     */
     uint32_t wakeupGPIOTypeLPDS;
-    /*! The GPIO sources for wakeup from shutdown */
+    /*!
+     *  @brief  The GPIO sources for wakeup from shutdown
+     *
+     *  Value can be one or more of the following:
+     *  PRCM_HIB_GPIO2, PRCM_HIB_GPIO4, PRCM_HIB_GPIO11,
+     *  PRCM_HIB_GPIO13, PRCM_HIB_GPIO17, PRCM_HIB_GPIO24,
+     *  PRCM_HIB_GPIO26
+     */
     uint32_t wakeupGPIOSourceShutdown;
-    /*! The GPIO trigger type for wakeup from shutdown */
+    /*!
+     *  @brief  The GPIO trigger type for wakeup from shutdown
+     *
+     *  Value can be one of the following:
+     *  PRCM_HIB_LOW_LEVEL, PRCM_HIB_HIGH_LEVEL,
+     *  PRCM_HIB_FALL_EDGE, PRCM_HIB_RISE_EDGE
+     */
     uint32_t wakeupGPIOTypeShutdown;
     /*! time in microseconds before waking up from shutdown */
     uint32_t wakeupShutdownTime;
-    /*! SRAM retention mask for LPDS */
+    /*!
+     *  @brief  SRAM retention mask for LPDS
+     *
+     *  Value can be a mask of the following:
+     *  PRCM_SRAM_COL_1, PRCM_SRAM_COL_2, PRCM_SRAM_COL_3,
+     *  PRCM_SRAM_COL_4
+     */
     uint32_t ramRetentionMaskLPDS;
 } PowerCC3200_Config;
 
-/*! Module_State */
+/*! @brief Internal module state */
 typedef struct PowerCC3200_Module_State {
     ListP_List notifyList;
     uint32_t constraintMask;
@@ -145,7 +223,7 @@ typedef struct PowerCC3200_Module_State {
     uint8_t constraintCounts[PowerCC3200_NUMCONSTRAINTS];
 } PowerCC3200_Module_State;
 
-/*! NVIC registers that need to be save on entering LPDS */
+/*! @brief NVIC registers that need to be save on entering LPDS */
 typedef struct PowerCC3200_NVIC_Registers {
     /*! Vector Table Offset */
     uint32_t vectorTable;
@@ -179,7 +257,7 @@ typedef struct PowerCC3200_NVIC_Registers {
     uint32_t intPriority[49];
 } PowerCC3200_NVIC_Registers;
 
-/*! M4 core registers that need to be save on entering LPDS */
+/*! @brief MPU core registers that need to be save on entering LPDS */
 typedef struct PowerCC3200_M4_Registers {
     uint32_t msp;
     uint32_t psp;
@@ -190,14 +268,14 @@ typedef struct PowerCC3200_M4_Registers {
     uint32_t control;
 } PowerCC3200_M4_Registers;
 
-/*! struct of context registers to save on entering LPDS */
+/*! @brief struct of context registers to save on entering LPDS */
 typedef struct PowerCC3200_SaveRegisters {
     PowerCC3200_M4_Registers m4Regs;
     PowerCC3200_NVIC_Registers nvicRegs;
 } PowerCC3200_SaveRegisters;
 
 /*! default init function for config structure */
-void Power_init(void);
+void PowerCC3200_initPolicy(void);
 
 /*! default power policy for config structure */
 void PowerCC3200_sleepPolicy(void);

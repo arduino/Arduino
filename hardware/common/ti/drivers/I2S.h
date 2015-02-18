@@ -166,6 +166,11 @@ extern "C" {
 #define I2S_ERROR  -1
 
 /*!
+ *  @brief    Wait forever define
+ */
+#define I2S_WAIT_FOREVER ~(0)
+
+/*!
  *  @brief      A handle that is returned from a I2S_open() call.
  */
 typedef struct I2S_Config      *I2S_Handle;
@@ -453,10 +458,10 @@ extern I2S_Handle I2S_open(unsigned int index, I2S_Params *params);
  *  params.numChannels                       = 2;
  *  params.readMode                          = I2S_MODE_ISSUERECLAIM;
  *  params.readCallback                      = NULL;
- *  params.readTimeout                       = SemaphoreP_WAIT_FOREVER;
+ *  params.readTimeout                       = I2S_WAIT_FOREVER;
  *  params.writeMode                         = I2S_MODE_ISSUERECLAIM;
  *  params.writeCallback                     = NULL;
- *  params.writeTimeout                      = SemaphoreP_WAIT_FOREVER;
+ *  params.writeTimeout                      = I2S_WAIT_FOREVER;
  *  params.customParams                      = NULL;
  *
  *  @param  params  Parameter structure to initialize

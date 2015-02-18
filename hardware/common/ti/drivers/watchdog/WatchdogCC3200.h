@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -103,6 +103,7 @@ typedef struct WatchdogCC3200_HWAttrs {
     unsigned int baseAddr;       /*!< Base adddress for Watchdog */
     unsigned int intNum;         /*!< WDT interrupt number */
     uint32_t     reloadValue;    /*!< Reload value for Watchdog */
+    uint32_t     powerMngrId;    /*! WDT Peripheral's power manager ID */
 } WatchdogCC3200_HWAttrs;
 
 /*!

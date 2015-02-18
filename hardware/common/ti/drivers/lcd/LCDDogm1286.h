@@ -76,7 +76,7 @@
  *   - In order to use the DOGM128W-6 LCD display on the SmartRF06 EB,
  *     the application needs to first drive the Board_3V3_EN pin high to enable the 3.3V
  *     domain on the board.
-*   - The LCD display is configured by calling ::LCD_open(). This function will in turn
+ *   - The LCD display is configured by calling ::LCD_open(). This function will in turn
  *     open the SPI driver and allocate the 2 additional control signals (through the PIN driver)
  *      required to operate the LCD.
  *

@@ -17,7 +17,7 @@
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
 #include <ti/drivers/bsp/Board.h>
-#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C"{ 
 #endif 

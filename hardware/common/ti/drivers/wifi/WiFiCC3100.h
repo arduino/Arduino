@@ -173,7 +173,7 @@ typedef enum WiFiCC3100_SPI_State {
  *
  *  A sample structure is shown below:
  *  @code
- *  const WiFiCC3100_HWAttrs wiFiCC3000HWAttrs[] = {
+ *  const WiFiCC3100_HWAttrs wiFiCC3100HWAttrs[] = {
  *      // TivaWare example
  *      {
  *          GPIO_PORTM_BASE,

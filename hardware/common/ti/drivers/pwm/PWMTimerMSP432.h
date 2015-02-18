@@ -30,15 +30,15 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /** ============================================================================
- *  @file       PWMTimerMSP432.h
+ * @file       PWMTimerMSP432.h
  *
- *  @brief      PWM driver implementation
+ * @brief      PWM driver implementation
  *
- *  The PWM header file should be included in an application as follows:
- *  @code
- *  #include <ti/drivers/PWM.h>
- *  #include <ti/drivers/pwm/PWMTimerMSP432.h>
- *  @endcode
+ * The PWM header file should be included in an application as follows:
+ * @code
+ * #include <ti/drivers/PWM.h>
+ * #include <ti/drivers/pwm/PWMTimerMSP432.h>
+ * @endcode
  *
  * ## Operation #
  * This driver configures an MSP432 Timer_A peripheral for PWM. Opening a PWM
@@ -81,12 +81,12 @@
  * if (rc < 0) {
  *   // handle error condition
  * }
- *
  * @endcode
  *
  * Updates to a PWM instance will occur instantaneously.  If the duty supplied
  * is greater than the period, the output will remain in active state.
- *  ============================================================================
+ *
+ * =============================================================================
  */
 
 #ifndef ti_driver_pwm_PWMTimerMSP432__include

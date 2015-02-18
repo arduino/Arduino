@@ -45,12 +45,12 @@ extern "C" {
 #endif
 
 /*! latency times in microseconds */
-#define PowerMSP432_RESUMETIMESLEEP           500
-#define PowerMSP432_TOTALTIMESLEEP            1000
-#define PowerMSP432_RESUMETIMEDEEPSLEEP_0     1000
-#define PowerMSP432_TOTALTIMEDEEPSLEEP_0      2000
-#define PowerMSP432_RESUMETIMEDEEPSLEEP_1     2000
-#define PowerMSP432_TOTALTIMEDEEPSLEEP_1      3000
+#define PowerMSP432_RESUMETIMESLEEP           32
+#define PowerMSP432_TOTALTIMESLEEP            8
+#define PowerMSP432_RESUMETIMEDEEPSLEEP_0     16
+#define PowerMSP432_TOTALTIMEDEEPSLEEP_0      40
+#define PowerMSP432_RESUMETIMEDEEPSLEEP_1     16
+#define PowerMSP432_TOTALTIMEDEEPSLEEP_1      40
 
 /*! Power resources */
 #define PowerMSP432_PERIPH_ADC14              0
@@ -105,6 +105,10 @@ extern "C" {
 #define PowerMSP432_SLEEP                   0x1
 #define PowerMSP432_DEEPSLEEP_0             0x2
 #define PowerMSP432_DEEPSLEEP_1             0x4
+
+/*! Power shutdown states */
+#define PowerMSP432_SHUTDOWN_0              0x0
+#define PowerMSP432_SHUTDOWN_1              0x1
 
 /*! @brief Power global configuration */
 typedef struct PowerMSP432_Config {

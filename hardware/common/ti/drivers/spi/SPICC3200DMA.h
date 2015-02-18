@@ -111,6 +111,9 @@ extern "C" {
 
 #include <ti/drivers/ports/SemaphoreP.h>
 
+#include <ti/drivers/Power.h>
+#include <ti/drivers/power/PowerCC3200.h>
+
 /* Return codes for SPI_control() */
 #define SPICC3200DMA_CMD_UNDEFINED    -1
 
@@ -228,6 +231,12 @@ typedef struct SPICC3200DMA_Object {
     uint32_t             txFifoTrigger;
 
     bool                 isOpen;
+
+    /* Need to save this for wakeup from LPDS */
+    Power_NotifyObj     notifyObj;
+    uint32_t            bitRate;            /*!< SPI bit rate in Hz */
+    uint32_t            dataSize;           /*!< SPI data frame size in bits */
+    SPI_FrameFormat     frameFormat;        /*!< SPI frame format */
 } SPICC3200DMA_Object, *SPICC3200DMA_Handle;
 
 #ifdef __cplusplus

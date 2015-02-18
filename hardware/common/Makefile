@@ -62,10 +62,9 @@ $(eval _LIBDEP = $(call deps, $(_SRCS)))
 $(foreach dep, $(dir $(_LIBDEP)), $(call get_lib_dirs, $(dep)))
 # Filter out any library directories we already know about
 $(eval _LIBDIRS = $(filter-out $(LIBDIRS), $(_LIBDIRS)))
+$(info ------------------------ $(_LIBDIRS))
 # If there are dependencies then find out if they depend on anything otherwise fall through and return
 $(if $(_LIBDIRS), \
-	# Include the utility directory in the search for dependencies
-	$(eval _LIBDIRS += $(addsuffix utility/,$(_LIBDIRS))) \
 	# Store the current dependencies for use later on
 	$(eval LIBDIRS += $(_LIBDIRS)) \
 	# Compute the source files
@@ -90,7 +89,6 @@ $(eval OBJ += $(patsubst $(USER_LIB_PATH)/%.c,build/user_libs/%.o,$(TMP_OBJS)))
 $(eval DEP_LIB_CPP_SRCS = $(wildcard $(patsubst %,%*.cpp,$(LIBDIRS))))
 $(eval TMP_OBJS = $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(DEP_LIB_CPP_SRCS)))
 $(eval OBJ += $(patsubst $(USER_LIB_PATH)/%.cpp,build/user_libs/%.o,$(TMP_OBJS)))
-$(info $(OBJS))
 endef
 
 #CPPFLAGS = $(SDK_INCS) $(CFG_INCS)
@@ -125,6 +123,7 @@ CORE_FROM_SOURCE = yes
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
 
+
 ifeq ($(CORE_FROM_SOURCE), yes)
 CORE_CPP_SRCS = $(wildcard $(ARCH_CORE_PATH)/*.cpp)
 OBJ += $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(CORE_CPP_SRCS))
@@ -145,8 +144,8 @@ OBJ += $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(CORE_COMMON_CPP_SRCS))
 $(eval $(call compute_dependencies, $(MAINSKETCH) $(EXTRA_SOURCES)))
 $(eval $(call compute_srcs))
 
-$(info sources $(SRC))
-$(info objects $(OBJ))
+#$(info sources $(SRC))
+#$(info objects $(OBJ))
 
 #CPPFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 LD_FLAGS += -L$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD) -L$(APPLICATION_PATH)/hardware/common/libs

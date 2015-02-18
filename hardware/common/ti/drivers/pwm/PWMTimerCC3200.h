@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Texas Instruments Incorporated
+ * Copyright (c) 2015-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,16 +30,16 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /** ============================================================================
- *  @file       PWMTimerCC3200.h
+ * @file       PWMTimerCC3200.h
  *
- *  @brief      PWM driver implementation using CC3200 General Purpose
- *              Timer peripherals.
+ * @brief      PWM driver implementation using CC3200 General Purpose
+ *             Timer peripherals.
  *
- *  The PWM header file should be included in an application as follows:
- *  @code
- *  #include <ti/drivers/PWM.h>
- *  #include <ti/drivers/pwm/PWMTimerCC3200.h>
- *  @endcode
+ * The PWM header file should be included in an application as follows:
+ * @code
+ * #include <ti/drivers/PWM.h>
+ * #include <ti/drivers/pwm/PWMTimerCC3200.h>
+ * @endcode
  *
  * ## Operation #
  * This driver configures a CC3200 General Purpose Timer (GPT) in PWM mode.
@@ -70,13 +70,13 @@
  * if (rc < 0) {
  *   // handle error condition
  * }
- *
  * @endcode
  *
  * Updates to a PWM instance will occur instantaneously (i.e. GPT peripherals do
  * not have shadow registers).  Finally, if the duty supplied is greater than
  * the period, the output will remain in active state.
- *  ============================================================================
+ *
+ * =============================================================================
  */
 
 #ifndef ti_driver_pwm_PWMTimerCC3200__include

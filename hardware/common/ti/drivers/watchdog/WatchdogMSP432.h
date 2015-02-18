@@ -109,7 +109,8 @@ typedef struct WatchdogMSP432_HWAttrs {
  *  Not to be accessed by the user.
  */
 typedef struct WatchdogMSP432_Object {
-    bool          isOpen;                    /*!< Flag for open/close status */
+    Watchdog_ResetMode resetMode;
+    bool               isOpen;              /*!< Flag for open/close status */
 } WatchdogMSP432_Object;
 
 #ifdef __cplusplus
