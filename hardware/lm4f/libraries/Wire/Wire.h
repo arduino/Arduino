@@ -43,7 +43,7 @@ class TwoWire : public Stream
 
     public:
 		TwoWire(void);
-        TwoWire(unsigned long);
+		TwoWire(unsigned long);
 		void begin();
 		void begin(uint8_t);
 		void begin(int);
@@ -65,11 +65,11 @@ class TwoWire : public Stream
 		void onRequest( void (*)(void) );
 
 
-	    inline size_t write(unsigned long n) { return write((uint8_t)n); }
-	    inline size_t write(long n) { return write((uint8_t)n); }
-	    inline size_t write(unsigned int n) { return write((uint8_t)n); }
-	    inline size_t write(int n) { return write((uint8_t)n); }
-	    using Print::write;
+		inline size_t write(unsigned long n) { return write((uint8_t)n); }
+		inline size_t write(long n) { return write((uint8_t)n); }
+		inline size_t write(unsigned int n) { return write((uint8_t)n); }
+		inline size_t write(int n) { return write((uint8_t)n); }
+		using Print::write;
 
 		//Stellarpad-specific functions
 		void I2CIntHandler(void);
