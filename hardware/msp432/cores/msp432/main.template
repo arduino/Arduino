@@ -15,7 +15,7 @@
 #include <xdc/runtime/System.h>
 
 /* Board Support Header files (from configuration closure) */
-#include "src/tink2/Board.h"
+#include "src/platform/Board.h"
 #include <Energia.h>
 
 //#if defined(__TI_COMPILER_VERSION__) || defined(__GNUC__)
@@ -49,7 +49,7 @@ Void the_task(UArg _task_setup, UArg _task_loop);
  * where Task_numPriorities is set by
  * TI-RTOS config
  */
-#define SIMPLELINK_PRI 3 
+//#define SIMPLELINK_PRI 3 
 
 /* Wiring-specific GPIO HW interrupt vectors */
 __extern void Wiring_GPIO_hwiIntFxn(UArg callbacks);
