@@ -117,6 +117,12 @@ SECTIONS {
         __bss_end__ = .;
     } > REGION_BSS
 
+    .stack : ALIGN(0x8) {
+        _stack = .;
+        __stack = .;
+        KEEP(*(.stack))
+    } > REGION_STACK
+
     .heap : {
         __heap_start__ = .;
         end = __heap_start__;
@@ -126,11 +132,5 @@ SECTIONS {
         __heap_end__ = .;
         __HeapLimit = __heap_end__;
     } > REGION_HEAP
-
-    .stack : ALIGN(0x8) {
-        _stack = .;
-        __stack = .;
-        KEEP(*(.stack))
-    } > REGION_STACK
 }
 
