@@ -1,3 +1,6 @@
+#ifndef ethernetudp_h
+#define ethernetudp_h
+
 #define UDP_RX_MAX_PACKETS 32
 #define UDP_TX_PACKET_MAX_SIZE 2048
 
@@ -56,3 +59,5 @@ public:
 	virtual IPAddress remoteIP() { return _remoteIP; };
 	virtual uint16_t remotePort() { return _remotePort; };
 };
+
+#endif
