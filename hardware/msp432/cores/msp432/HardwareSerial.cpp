@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/HardwareSerial.cpp
+../../../../emt/src/ti/runtime/wiring/msp432/HardwareSerial.cpp

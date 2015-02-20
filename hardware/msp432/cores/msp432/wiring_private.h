@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/wiring_private.h
+../../../../emt/src/ti/runtime/wiring/msp432/wiring_private.h

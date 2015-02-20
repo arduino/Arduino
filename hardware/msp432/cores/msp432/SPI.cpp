@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/SPI.cpp
+../../../../emt/src/ti/runtime/wiring/msp432/SPI.cpp

@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/wiring_digital.c
+../../../../emt/src/ti/runtime/wiring/msp432/wiring_digital.c

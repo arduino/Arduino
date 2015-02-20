@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/Arduino.h
+../../../../emt/src/ti/runtime/wiring/msp432/Arduino.h

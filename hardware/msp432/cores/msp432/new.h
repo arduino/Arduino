@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/new.h
+../../../../emt/src/ti/runtime/wiring/msp432/new.h

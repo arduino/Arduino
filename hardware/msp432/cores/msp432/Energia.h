@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/Energia.h
+../../../../emt/src/ti/runtime/wiring/msp432/Energia.h

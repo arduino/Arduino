@@ -1,1 +1,1 @@
-../../../../emt/src/ti/msp432/runtime/wiring/random.c
+../../../../emt/src/ti/runtime/wiring/msp432/random.c
