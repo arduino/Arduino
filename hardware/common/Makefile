@@ -161,6 +161,7 @@ all: $(MAINSKETCH).bin
 $(MAINSKETCH).elf: $(OBJ)
 	@echo armlink $(OBJ)
 	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
+	cp -f $(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/configPkg/package/cfg/energia_pm4fg.rov.xs .
 
 %.obj: %.cpp
 	@echo armcl $*.cpp
