@@ -1,4 +1,9 @@
 /*
+ *  Copyright 2015 by Texas Instruments Incorporated.
+ *
+ */
+
+/*
  *  ======== C28.h ========
  *  DO NOT MODIFY: This header is generated from stddef.xdt
  *
@@ -109,3 +114,8 @@
 #define  xdc_target__bitsPerChar 16
 
 #endif  /* end multi-include guard */
+/*
+ *  @(#) ti.targets; 1, 0, 3,0; 2-10-2015 10:54:16; /db/ztree/library/trees/xdctargets/xdctargets-i01/src/ xlibrary
+
+ */
+

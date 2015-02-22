@@ -1,4 +1,9 @@
 /*
+ *  Copyright 2015 by Texas Instruments Incorporated.
+ *
+ */
+
+/*
  *  ======== C64T_big_endian.h ========
  *  DO NOT MODIFY: This header is generated from stddef.xdt
  *
@@ -111,3 +116,8 @@
 #define  xdc_target__bitsPerChar 8
 
 #endif  /* end multi-include guard */
+/*
+ *  @(#) ti.targets; 1, 0, 3,0; 2-10-2015 10:54:17; /db/ztree/library/trees/xdctargets/xdctargets-i01/src/ xlibrary
+
+ */
+

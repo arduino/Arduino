@@ -1,4 +1,9 @@
 /*
+ *  Copyright 2015 by Texas Instruments Incorporated.
+ *
+ */
+
+/*
  *  ======== M4.h ========
  *  DO NOT MODIFY: This header is generated from stddef.xdt
  *
@@ -117,3 +122,8 @@
 #define  xdc_target__bitsPerChar 8
 
 #endif  /* end multi-include guard */
+/*
+ *  @(#) gnu.targets.arm; 1, 0, 0,0; 2-10-2015 10:54:06; /db/ztree/library/trees/xdctargets/xdctargets-i01/src/ xlibrary
+
+ */
+

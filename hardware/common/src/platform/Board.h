@@ -84,6 +84,13 @@ typedef enum Board_I2CName {
  */
 typedef enum Board_PWMName {
     Board_PWM0 = 0,
+    Board_PWM1,
+    Board_PWM2,
+    Board_PWM3,
+    Board_PWM4,
+    Board_PWM5,
+    Board_PWM6,
+    Board_PWM7,
 
     Board_PWMCOUNT
 } Board_PWMName;
