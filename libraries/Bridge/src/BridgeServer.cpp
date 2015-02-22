@@ -16,14 +16,14 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include <YunServer.h>
-#include <YunClient.h>
+#include <BridgeServer.h>
+#include <BridgeClient.h>
 
-YunServer::YunServer(uint16_t _p, BridgeClass &_b) :
+BridgeServer::BridgeServer(uint16_t _p, BridgeClass &_b) :
   bridge(_b), port(_p), listening(false), useLocalhost(false) {
 }
 
-void YunServer::begin() {
+void BridgeServer::begin() {
   uint8_t tmp[] = {
     'N',
     (port >> 8) & 0xFF,
@@ -37,16 +37,16 @@ void YunServer::begin() {
   listening = (res[0] == 1);
 }
 
-YunClient YunServer::accept() {
+BridgeClient BridgeServer::accept() {
   uint8_t cmd[] = {'k'};
   uint8_t res[1];
   unsigned int l = bridge.transfer(cmd, 1, res, 1);
   if (l == 0)
-    return YunClient();
-  return YunClient(res[0]);
+    return BridgeClient();
+  return BridgeClient(res[0]);
 }
 
-size_t YunServer::write(uint8_t c) {
+size_t BridgeServer::write(uint8_t c) {
   uint8_t cmd[] = { 'b', c };
   bridge.transfer(cmd, 2);
   return 1;
