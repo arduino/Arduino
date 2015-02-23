@@ -64,6 +64,7 @@ class TwoWire : public Stream
         I2C_Transaction i2cTransaction;
 
         GateMutex_Struct gate;
+        uint8_t gateEnterCount;
 
         void (*user_onRequest)(void);
         void (*user_onReceive)(int);
