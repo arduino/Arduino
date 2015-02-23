@@ -118,7 +118,7 @@ LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = yes
+CORE_FROM_SOURCE = no
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
@@ -167,7 +167,6 @@ $(MAINSKETCH).elf: $(OBJ)
 	@echo armcl $*.cpp
 	$(CC) $(CCOPTS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
-ifeq ($(CORE_FROM_SOURCE), yes)
 #Core libraries and core sources
 build/%.o: $(APPLICATION_PATH)/%.c
 ifeq ($(OS),Windows_NT)
@@ -195,7 +194,6 @@ else
 endif
 	$(info Compiling $@)
 	$(CC) $(CCOPTS) $(CFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
-endif # CORE_FROM_SOURCE
 
 # User libraries
 build/user_libs/%.o: $(USER_LIB_PATH)/%.c
