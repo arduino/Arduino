@@ -41,8 +41,14 @@ class Stream : public Print
     unsigned long _timeout;      // number of milliseconds to wait for the next char before aborting timed read
     unsigned long _startMillis;  // used for timeout measurement
     int timedRead();    // private method to read stream with timeout
+    int _timedRead();   // timedRead() but assumes clock already started
     int timedPeek();    // private method to peek stream with timeout
+    int _timedPeek();   // timedPeak() but assumes clock already started
     int peekNextDigit(); // returns the next numeric digit in the stream or -1 if timeout
+    int _peekNextDigit(); // peekNextDigit() but assumes clock already started
+    void startClock();  // helper, used for all of the timed read routines
+    bool checkClock();  // helper, consistent check if we've timed out
+
 
   public:
     virtual int available() = 0;
@@ -88,6 +94,7 @@ class Stream : public Print
   // returns the number of characters placed in the buffer (0 means no valid data found)
 
   // Arduino String functions to be added here
+
   String readString();
   String readStringUntil(char terminator);
 
@@ -97,6 +104,20 @@ class Stream : public Print
   // this allows format characters (typically commas) in values to be ignored
 
   float parseFloat(char skipChar);  // as above but the given skipChar is ignored
+
+  public:
+  struct MultiTarget {
+    const char *str;  // string you're searching for
+    size_t len;       // length of string you're searching for
+    size_t index;     // index used by the search routine.
+  };
+
+  // This allows you to search for an arbitrary number of strings.
+  // Returns index of the target that is found first or -1 if timeout occurs.
+  int findMulti(struct MultiTarget *targets, int tCount);
+
+
 };
+
 
 #endif
