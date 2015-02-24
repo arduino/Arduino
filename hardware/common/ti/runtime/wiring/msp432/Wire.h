@@ -44,24 +44,26 @@
 
 #define BOOST_PACK_WIRE 0
 
+typedef struct WireContext {
+    I2C_Transaction i2cTransaction;
+    uint8_t rxBuffer[BUFFER_LENGTH];
+    uint8_t rxReadIndex;
+    uint8_t rxWriteIndex;
+
+    uint8_t txBuffer[BUFFER_LENGTH];
+    uint8_t txReadIndex;
+    uint8_t txWriteIndex;
+
+    bool idle;
+} WireContext;
+
 class TwoWire : public Stream
 {
     private:
         bool begun;
-        uint8_t rxBuffer[BUFFER_LENGTH];
-        uint8_t rxReadIndex;
-        uint8_t rxWriteIndex;
-
-        uint8_t txBuffer[BUFFER_LENGTH];
-        uint8_t txReadIndex;
-        uint8_t txWriteIndex;
 
         uint8_t i2cModule;
-
-        bool idle;
-
         I2C_Handle i2c;
-        I2C_Transaction i2cTransaction;
 
         GateMutex_Struct gate;
         uint8_t gateEnterCount;
@@ -72,6 +74,7 @@ class TwoWire : public Stream
         void onReceiveService(uint8_t*, int);
         void init(unsigned long);
         void forceStop(void);
+        WireContext *getWireContext(void);
 
     public:
         TwoWire(void);

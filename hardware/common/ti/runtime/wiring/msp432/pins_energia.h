@@ -53,7 +53,6 @@ static const uint8_t PUSH2 = 42;
 #include <dma.h>
 #include <gpio.h>
 #include <i2c.h>
-#include <spi.h>
 #include <timer_a.h>
 #include <uart.h>
 #include <wdt_a.h>
