@@ -27,7 +27,8 @@ void setup()
   Serial.print("Deleting /storage/mine.txt- ");
   int retval = SerFlash.del("/storage/mine.txt");
   if (retval == false) {
-    Serial.println("There was an ERROR deleting /storage/mine.txt");
+    Serial.print("There was an ERROR deleting /storage/mine.txt!  Error code: ");
+    Serial.println(SerFlash.lastErrorString());
   } else {
     Serial.println("Successfully deleted.");
   }
@@ -39,6 +40,8 @@ void loop()
   if (SerFlash.open("/storage/mine.txt", FS_MODE_OPEN_READ) == false) {
     // Some sort of error occurred!
     Serial.println("ERROR opening /storage/mine.txt! (Either it didn't exist, or it was successfully deleted!)");
+    Serial.print("Error code: ");
+    Serial.println(SerFlash.lastErrorString());
     Serial.println("Halting.");
     while (1) delay(1000);  // Infinite loop to stop the program
   }
@@ -56,7 +59,8 @@ void loop()
 
       SerFlash.close();
   } else {
-    Serial.println("There was an error reading from the /storage/mine.txt file!");
+    Serial.print("There was an error reading from the /storage/mine.txt file!  Error code: ");
+    Serial.println(SerFlash.lastErrorString());
   }
 
   // Halt program.
