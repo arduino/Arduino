@@ -123,6 +123,13 @@ void heartbeat() {
   analogWrite(LED_HB, hbval);
 }
 
+static bool rst_active_high;
+
+void reset_target(bool reset)
+{
+  digitalWrite(RESET, ((reset && rst_active_high) || (!reset && !rst_active_high)) ? HIGH : LOW);
+}
+
 void loop(void) {
   // is pmode active?
   if (pmode) {
@@ -242,15 +249,24 @@ void set_parameters() {
                     + buff[18] * 0x00000100
                     + buff[19];
 
+  // avr devices have active low reset, at89sx are active high
+  rst_active_high = (param.devicecode >= 0xe0);
 }
 
 void start_pmode() {
   SPI.begin();
-  digitalWrite(RESET, HIGH);
+  // SPI.begin() has configured SS as output,
+  // so SPI master mode is selected.
+  // We have defined RESET as pin 10,
+  // which for many arduino's is not the SS pin.
+  // So we have to configure RESET as output here,
+  // (reset_target() first sets the level correct)
+  reset_target(false);
   pinMode(RESET, OUTPUT);
+
   digitalWrite(SCK, LOW);
   delay(20);
-  digitalWrite(RESET, LOW);
+  reset_target(true);
   delay(50);
   spi_transaction(0xAC, 0x53, 0x00, 0x00);
   pmode = 1;
@@ -258,7 +274,7 @@ void start_pmode() {
 
 void end_pmode() {
   SPI.end();
-  digitalWrite(RESET, HIGH);
+  reset_target(false);
   pinMode(RESET, INPUT);
   pmode = 0;
 }
