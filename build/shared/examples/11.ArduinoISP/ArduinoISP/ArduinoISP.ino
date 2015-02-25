@@ -251,6 +251,7 @@ void start_pmode() {
   digitalWrite(SCK, LOW);
   delay(20);
   digitalWrite(RESET, LOW);
+  delay(50);
   spi_transaction(0xAC, 0x53, 0x00, 0x00);
   pmode = 1;
 }
