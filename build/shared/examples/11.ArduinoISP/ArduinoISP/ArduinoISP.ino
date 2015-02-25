@@ -7,7 +7,7 @@
 // using the following arduino pins:
 //
 // pin name:    not-mega:         mega(1280 and 2560)
-// slave reset: 10:               53
+// slave reset: 10:               10
 // MOSI:        11:               51
 // MISO:        12:               50
 // SCK:         13:               52
@@ -45,7 +45,8 @@
 
 #include "SPI.h"
 #include "pins_arduino.h"
-#define RESET     SS
+// Use pin 10 to reset the target
+#define RESET     10
 
 #define LED_HB    9
 #define LED_ERR   8
