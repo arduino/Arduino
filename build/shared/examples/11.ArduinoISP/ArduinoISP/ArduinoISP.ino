@@ -274,6 +274,10 @@ void start_pmode() {
 
 void end_pmode() {
   SPI.end();
+  // We're about to take the target out of reset
+  // so configure SPI pins as input
+  pinMode(MOSI, INPUT);
+  pinMode(SCK, INPUT);
   reset_target(false);
   pinMode(RESET, INPUT);
   pmode = 0;
