@@ -69,13 +69,16 @@ class Serial_ : public Stream
 {
 private:
 	int peek_buffer;
+	ring_buffer *_cdc_rx_buffer;
 public:
 	Serial_() { peek_buffer = -1; };
 	void begin(unsigned long);
 	void begin(unsigned long, uint8_t);
+	void begin(uint16_t baud_count);
 	void end(void);
 
 	virtual int available(void);
+	virtual void accept(void);
 	virtual int peek(void);
 	virtual int read(void);
 	virtual void flush(void);
@@ -90,7 +93,42 @@ public:
 };
 extern Serial_ Serial;
 
-#define HAVE_CDCSERIAL
+//================================================================================
+//================================================================================
+//	Joystick
+//  Implemented in HID.cpp
+//  The list of parameters here needs to match the implementation in HID.cpp
+
+
+typedef struct JoyState 		// Pretty self explanitory. Simple state to store all the joystick parameters
+{
+	uint8_t		xAxis;
+	uint8_t		yAxis;
+	uint8_t		zAxis;
+
+	uint8_t		xRotAxis;
+	uint8_t		yRotAxis;
+	uint8_t		zRotAxis;
+
+	uint8_t		throttle;
+	uint8_t		rudder;
+
+	uint8_t		hatSw1;
+	uint8_t		hatSw2;
+
+	uint32_t	buttons;		// 32 general buttons
+
+} JoyState_t;
+
+class Joystick_
+{
+public:
+	Joystick_();
+
+	void setState(JoyState_t *joySt);
+
+};
+extern Joystick_ Joystick;
 
 //================================================================================
 //================================================================================
@@ -111,7 +149,7 @@ public:
 	void begin(void);
 	void end(void);
 	void click(uint8_t b = MOUSE_LEFT);
-	void move(signed char x, signed char y, signed char wheel = 0);	
+	void move(signed char x, signed char y, signed char wheel = 0);
 	void press(uint8_t b = MOUSE_LEFT);		// press LEFT by default
 	void release(uint8_t b = MOUSE_LEFT);	// release LEFT by default
 	bool isPressed(uint8_t b = MOUSE_LEFT);	// check LEFT by default
