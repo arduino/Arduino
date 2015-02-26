@@ -40,12 +40,6 @@
 extern "C"{
 #endif
 
-void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, unsigned int freq);
-uint8_t getTimerInterrupt(uint8_t timer);
-uint32_t getTimerBase(uint32_t offset);
-
-typedef void (*voidFuncPtr)(void);
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
