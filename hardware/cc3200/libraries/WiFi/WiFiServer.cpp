@@ -132,7 +132,7 @@ WiFiClient WiFiServer::available(byte* status)
     //
     int socketHandle = WiFiClass::_handleArray[_socketIndex];
     int clientHandle = sl_Accept(socketHandle, (SlSockAddr_t*)&clientAddress, &clientAddressSize);
-    
+
     //
     //We've successfully created a socket, so store everything in the wificlass
     //arrays used to keep track of the connected sockets, port #s, and types
@@ -141,6 +141,7 @@ WiFiClient WiFiServer::available(byte* status)
         WiFiClass::_handleArray[clientSocketIndex] = clientHandle;
         WiFiClass::_typeArray[clientSocketIndex] = TYPE_TCP_CONNECTED_CLIENT;
         WiFiClass::_portArray[clientSocketIndex] = sl_Htons(clientAddress.sin_port);
+        WiFiClass::_serverPortArray[clientSocketIndex] = _port;
         WiFiClass::clients[clientSocketIndex] = WiFiClient(clientSocketIndex);
     }
 
@@ -150,7 +151,7 @@ WiFiClient WiFiServer::available(byte* status)
 
     uint8_t oneclient = 0;
     for(uint8_t i = 0; i < MAX_SOCK_NUM; i++) {
-        if(WiFiClass::_handleArray[i] != -1 && WiFiClass::_typeArray[i] == TYPE_TCP_CONNECTED_CLIENT) {
+        if(WiFiClass::_handleArray[i] != -1 && WiFiClass::_typeArray[i] == TYPE_TCP_CONNECTED_CLIENT && WiFiClass::_serverPortArray[i] == _port) {
 
             if( i == _lastServicedClient) {
                 oneclient = 1;
