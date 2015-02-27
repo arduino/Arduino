@@ -95,7 +95,7 @@ WiFiClass::WiFiClass()
     //
     int i;
     for (i = 0; i < MAX_SOCK_NUM; i++) {
-        _handleArray[i] = _portArray[i] = _typeArray[i] = _serverPortArray[i] -1;
+        _handleArray[i] = _portArray[i] = _typeArray[i] = _serverPortArray[i] = -1;
     }
 }
 
