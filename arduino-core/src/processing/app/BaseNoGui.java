@@ -584,8 +584,7 @@ public class BaseNoGui {
 
   static public void initPackages() {
     packages = new HashMap<String, TargetPackage>();
-    loadHardware(getHardwareFolder());
-    loadHardware(getSketchbookHardwareFolder());
+    loadHardware(getHardwareFolder(), getSketchbookHardwareFolder());
     if (packages.size() == 0) {
       System.out.println(_("No valid configured cores found! Exiting..."));
       System.exit(3);
@@ -630,29 +629,39 @@ public class BaseNoGui {
     return sanitizeName(name).equals(name);
   }
 
-  static protected void loadHardware(File folder) {
-    if (!folder.isDirectory()) return;
+  static protected void loadHardware(File... folders) {
+    PreferencesMap mainHardwarePlatformTxt = null;
+    for (File folder : folders) {
+      if (!folder.isDirectory()) return;
 
-    String list[] = folder.list(new OnlyDirs());
+      // Assuming first folder is NOT the sketchbook one
+      if (mainHardwarePlatformTxt == null) {
+        mainHardwarePlatformTxt = PreferencesMap.safeLoad(new File(folder, "platform.txt"));
+      }
 
-    // if a bad folder or something like that, this might come back null
-    if (list == null) return;
+      PreferencesMap hardwarePlatformTxt = mainHardwarePlatformTxt.merge(PreferencesMap.safeLoad(new File(folder, "platform.txt")));
 
-    // alphabetize list, since it's not always alpha order
-    // replaced hella slow bubble sort with this feller for 0093
-    Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
+      String list[] = folder.list(new OnlyDirs());
 
-    for (String target : list) {
-      // Skip reserved 'tools' folder.
-      if (target.equals("tools"))
-        continue;
-      File subfolder = new File(folder, target);
-      
-      try {
-        packages.put(target, new TargetPackage(target, subfolder));
-      } catch (TargetPlatformException e) {
-        System.out.println("WARNING: Error loading hardware folder " + target);
-        System.out.println("  " + e.getMessage());
+      // if a bad folder or something like that, this might come back null
+      if (list == null) return;
+
+      // alphabetize list, since it's not always alpha order
+      // replaced hella slow bubble sort with this feller for 0093
+      Arrays.sort(list, String.CASE_INSENSITIVE_ORDER);
+
+      for (String target : list) {
+        // Skip reserved 'tools' folder.
+        if (target.equals("tools"))
+          continue;
+        File subfolder = new File(folder, target);
+
+        try {
+          packages.put(target, new TargetPackage(target, subfolder, hardwarePlatformTxt));
+        } catch (TargetPlatformException e) {
+          System.out.println("WARNING: Error loading hardware folder " + target);
+          System.out.println("  " + e.getMessage());
+        }
       }
     }
   }

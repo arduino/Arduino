@@ -34,6 +34,7 @@
     <javac source="1.6"
            target="1.6"
            encoding="UTF-8"
+           debug="true"
            includeAntRuntime="false"
            srcdir="src"
            classpathref="class.path"
