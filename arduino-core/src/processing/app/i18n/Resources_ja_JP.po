@@ -626,7 +626,7 @@ msgstr "未保存の変更を破棄してスケッチを読み込み直します
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr "行番号の"
+msgstr "行番号を表示する"
 
 #: Editor.java:2064
 msgid "Don't Save"
