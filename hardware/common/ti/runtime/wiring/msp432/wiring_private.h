@@ -37,8 +37,11 @@
 #include "Energia.h"
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
+
+extern void stopAnalogWrite(uint8_t pin);
+extern void stopAnalogRead(uint8_t pin);
 
 #ifdef __cplusplus
 } // extern "C"

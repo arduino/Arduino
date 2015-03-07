@@ -100,7 +100,7 @@ uint16_t analogRead(uint8_t);
 void analogWrite(uint8_t, int);
 void analogReference(uint16_t);
 void analogFrequency(uint32_t);
-void analogResolution(uint16_t);
+void analogReadResolution(uint16_t);
 
 void delay(uint32_t milliseconds);
 

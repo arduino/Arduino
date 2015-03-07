@@ -64,7 +64,7 @@ class HardwareSerial : public Stream
         void begin(unsigned long);
         void setModule(unsigned long);
         void setPins(unsigned long);
-        void sieze(void);  /* sieze serial port for this thread */
+        void seize(void);  /* sieze serial port for this thread */
         void release(void);  /* release serial port */
         void end(void);
         virtual int available(void);

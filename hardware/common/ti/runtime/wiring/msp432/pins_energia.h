@@ -2,7 +2,7 @@
  ************************************************************************
  *	pins_energia.h
  *
- *	Energia core files for CC3200
+ *	Energia core files for MSP432
  *		Copyright (c) 2014 Robert Wessels. All right reserved.
  *
  ***********************************************************************
