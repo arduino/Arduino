@@ -26,6 +26,7 @@ import cc.arduino.packages.MonitorFactory;
 
 import com.jcraft.jsch.JSchException;
 
+import jssc.SerialPortException;
 import processing.app.debug.*;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
@@ -1364,6 +1365,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void actionPerformed(ActionEvent e) {
       try {
         undo.undo();
+        sketch.setModified(true);
       } catch (CannotUndoException ex) {
         //System.out.println("Unable to undo: " + ex);
         //ex.printStackTrace();
@@ -1385,17 +1387,11 @@ public class Editor extends JFrame implements RunnerListener {
         undoItem.setEnabled(true);
         undoItem.setText(undo.getUndoPresentationName());
         putValue(Action.NAME, undo.getUndoPresentationName());
-        if (sketch != null) {
-          sketch.setModified(true);  // 0107
-        }
       } else {
         this.setEnabled(false);
         undoItem.setEnabled(false);
         undoItem.setText(_("Undo"));
         putValue(Action.NAME, "Undo");
-        if (sketch != null) {
-          sketch.setModified(false);  // 0107
-        }
       }
     }
   }
@@ -1410,6 +1406,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void actionPerformed(ActionEvent e) {
       try {
         undo.redo();
+        sketch.setModified(true);
       } catch (CannotRedoException ex) {
         //System.out.println("Unable to redo: " + ex);
         //ex.printStackTrace();
@@ -1696,10 +1693,12 @@ public class Editor extends JFrame implements RunnerListener {
       document.addUndoableEditListener(new UndoableEditListener() {
         public void undoableEditHappened(UndoableEditEvent e) {
           if (compoundEdit != null) {
-            compoundEdit.addEdit(e.getEdit());
-
+            compoundEdit.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
           } else if (undo != null) {
             undo.addEdit(new CaretAwareUndoableEdit(e.getEdit(), textarea));
+          }
+          if (compoundEdit != null || undo != null) {
+            sketch.setModified(true);
             undoAction.updateUndoState();
             redoAction.updateRedoState();
           }
@@ -2211,7 +2210,7 @@ public class Editor extends JFrame implements RunnerListener {
           // copy the sketch inside
           File properPdeFile = new File(properFolder, sketchFile.getName());
           try {
-            Base.copyFile(file, properPdeFile);
+            Base.copyFile(sketchFile, properPdeFile);
           } catch (IOException e) {
             Base.showWarning(_("Error"), _("Could not copy to a proper location."), e);
             return false;
@@ -2572,6 +2571,12 @@ public class Editor extends JFrame implements RunnerListener {
         statusError(_("Unable to connect: is the sketch using the bridge?"));
       } catch (JSchException e) {
         statusError(_("Unable to connect: wrong password?"));
+      } catch (SerialException e) {
+        String errorMessage = e.getMessage();
+        if (e.getCause() != null && e.getCause() instanceof SerialPortException) {
+          errorMessage += " (" + ((SerialPortException) e.getCause()).getExceptionType() + ")";
+        }
+        statusError(errorMessage);
       } catch (Exception e) {
         statusError(e);
       } finally {
