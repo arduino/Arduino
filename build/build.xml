@@ -248,8 +248,8 @@
 
   <target name="macosx-java-latest-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea.jar.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/appbundler-1.0ea.jar.zip" />
+      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino.jar.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/appbundler-1.0ea-arduino.jar.zip" />
       <param name="final_folder" value="${staging_folder}/appbundler" />
       <param name="dest_folder" value="${staging_folder}/appbundler" />
     </antcall>
@@ -277,7 +277,6 @@
       <arch name="i386"/>
 
       <classpath refid="runtime.jars"/>
-      <classpath file="./macosx/template.app/Contents/Resources/Java/quaqua.jar"/>
 
       <option value="-Dapple.awt.application.name=Arduino" />
       <option value="-Dapple.laf.useScreenMenuBar=true"/>
@@ -301,7 +300,7 @@
       <option value="-Dfile.encoding=UTF-8"/>
 
       <option value="-Xms128M"/>
-      <option value="-Xmx256M"/>
+      <option value="-Xmx1024M"/>
 
       <bundledocument extensions="ino,c,cpp,h"
                       icon="macosx/template.app/Contents/Resources/pde.icns"
@@ -314,8 +313,6 @@
     <copy todir="${staging_folder}/work/${staging_hardware_folder}/../">
       <fileset dir="shared" includes="lib/**" />
       <fileset file="shared/revisions.txt" />
-      <file file="macosx/template.app/Contents/Resources/Java/quaqua.jar"/>
-      <fileset file="macosx/template.app/Contents/Resources/Java/libquaqua*" />
     </copy>
 
     <antcall target="macosx-build-common"/>
@@ -854,12 +851,12 @@
 
     <copy todir="windows/work">
       <fileset dir="windows/launcher"
-	       includes="about.bmp, application.ico, config.xml, config_debug.xml"/>
+	       includes="about.bmp, application.ico, config.xml, config_debug.xml, arduino.l4j.ini"/>
     </copy>
     <launch4j configFile="windows/work/config.xml" />
     <launch4j configFile="windows/work/config_debug.xml" />
-    <delete dir="windows/work"
-	    includes="about.bmp, application.ico, config.xml, config_debug.xml" />
+    <delete dir="windows/work" includes="about.bmp, application.ico, config.xml, config_debug.xml" />
+    <copy file="windows/work/arduino.l4j.ini" tofile="windows/work/arduino_debug.l4j.ini" />
 
     <!-- cygwin requires html, dll, and exe to have the +x flag -->
     <chmod perm="755">
@@ -888,19 +885,12 @@
   <target name="windows-dist" depends="windows-build"
 	  description="Create .zip files of windows version">
 
-    <get src="http://arduino.cc/download.php?f=/jre_7u40_windows_i586.zip" dest="windows/jre.zip" usetimestamp="true" skipexisting="true" />
-
-    <unzip dest="windows/work" src="windows/jre.zip" overwrite="false"/>
-
-    <!--
-    <zip basedir="windows/work" 
-	 prefix="arduino-${version}"
-	 destfile="windows/arduino-${version}.zip" />
-    <zip basedir="windows/work" 
-	 prefix="arduino-${version}"
-	 destfile="windows/arduino-${version}-expert.zip" 
-	 excludes="java/**" />
-    -->
+    <antcall target="unzip">
+      <param name="archive_file" value="windows/jre-8u31.zip" />
+      <param name="archive_url" value="http://arduino.cc/download.php?f=/jre-8u31.zip" />
+      <param name="final_folder" value="${staging_folder}/work/java" />
+      <param name="dest_folder" value="${staging_folder}/work/" />
+    </antcall>
 
     <zip destfile="windows/arduino-${version}-${platform}.zip" level="9">
       <zipfileset dir="windows/work"
