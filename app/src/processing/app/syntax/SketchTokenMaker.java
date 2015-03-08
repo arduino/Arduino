@@ -6,11 +6,11 @@ import org.fife.ui.rsyntaxtextarea.modes.CPlusPlusTokenMaker;
 
 import processing.app.Base;
 
-public class PdeTokenMaker extends CPlusPlusTokenMaker {
+public class SketchTokenMaker extends CPlusPlusTokenMaker {
    
   static TokenMap extraTokens;
 
-  public PdeTokenMaker() {
+  public SketchTokenMaker() {
       extraTokens = getKeywords();
   }
 

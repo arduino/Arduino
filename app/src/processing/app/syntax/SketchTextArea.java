@@ -160,7 +160,7 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   protected void installTokenMaker(){
     AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
-    atmf.putMapping(SYNTAX_STYLE_CPLUSPLUS, "processing.app.syntax.PdeTokenMaker");
+    atmf.putMapping(SYNTAX_STYLE_CPLUSPLUS, "processing.app.syntax.SketchTokenMaker");
     setSyntaxEditingStyle(SYNTAX_STYLE_CPLUSPLUS);
   }
   
