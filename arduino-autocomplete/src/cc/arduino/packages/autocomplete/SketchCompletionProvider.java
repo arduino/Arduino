@@ -243,25 +243,28 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
   }
   
   protected void loadDefaultAutocompletes(){
-      
-      provider.addCompletion(new IncludeTemplate(provider));
-      provider.addCompletion(new TemplateCompletion(provider, "for", "interate over array", "for (int ${i} = 0; ${i} > ${array}.length; ${i}++) {\n\t${cursor}\n}"));
-      provider.addCompletion(new TemplateCompletion(provider, "while", "while block", "while (${condition}) {\n\t${cursor}\n}"));
-      provider.addCompletion(new TemplateCompletion(provider, "if", "if block", "if (${condition}) {\n\t${cursor}\n}"));
-      provider.addCompletion(new TemplateCompletion(provider, "elseif", "elseif block", "else if (${condition}) {\n\t${cursor}\n}"));
-      provider.addCompletion(new TemplateCompletion(provider, "else", "else block", "else{\n\t${cursor}\n}"));
-      
-      provider.addCompletion(new TemplateCompletion(provider, "println", "Serial.println()", "Serial.println(\"${cursor}\");"));
-      
-      //Add as ENUNM
-      // TODO: only show if in method params
-      String[] names = {"HIGH", "LOW", "OUTPUT", "INPUT", "INPUT_PULLUP", "CHANGE", "FALLING", "RISING", "RISING", "DEC", "HEX", "OCT", "BIN"};
-      for (String name : names) {
-        TAttribute attribute = new TAttribute("int", name);
-        attribute.setEnum(true);
-        provider.addCompletion(new TElementCompletion(provider, attribute));
-      }
-
+    
+    List<Completion> completions = new ArrayList<Completion>();
+    
+    completions.add(new IncludeTemplate(provider));
+    completions.add(new TemplateCompletion(provider, "for", "interate over array", "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n\t${cursor}\n}"));
+    completions.add(new TemplateCompletion(provider, "while", "while block", "while (${condition}) {\n\t${cursor}\n}"));
+    completions.add(new TemplateCompletion(provider, "if", "if block", "if (${condition}) {\n\t${cursor}\n}"));
+    completions.add(new TemplateCompletion(provider, "elseif", "elseif block", "else if (${condition}) {\n\t${cursor}\n}"));
+    completions.add(new TemplateCompletion(provider, "else", "else block", "else{\n\t${cursor}\n}"));
+    
+    completions.add(new TemplateCompletion(provider, "println", "Serial.println()", "Serial.println(\"${cursor}\");"));
+    
+    //Add as ENUNM
+    // TODO: only show if in method params
+    String[] names = {"HIGH", "LOW", "OUTPUT", "INPUT", "INPUT_PULLUP", "CHANGE", "FALLING", "RISING", "RISING", "DEC", "HEX", "OCT", "BIN"};
+    for (String name : names) {
+      TAttribute attribute = new TAttribute("int", name);
+      attribute.setEnum(true);
+      completions.add(new TElementCompletion(provider, attribute));
+    }
+    
+    provider.addCompletions(completions);
   }
   
   
