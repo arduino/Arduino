@@ -47,21 +47,13 @@ import static processing.app.I18n._;
 /**
  * Stores information about files in the current sketch
  */
-public class Sketch {
-  static private File tempBuildFolder;
+public class Sketch extends BaseSketch {
 
+  static private File tempBuildFolder;
+  
   private Editor editor;
 
-  /** true if any of the files have been modified. */
-  private boolean modified;
-
   private SketchCodeDocument current;
-  private int currentIndex;
-
-  private SketchData data;
-  
-  /** Class name for the PApplet, as determined by the preprocessor. */
-  private String appletClassName;
 
   /**
    * path is location of the main .pde file, because this is also
@@ -69,7 +61,7 @@ public class Sketch {
    */
   public Sketch(Editor _editor, File file) throws IOException {
     editor = _editor;
-    data = new SketchData(file);
+    data = new SketchData(this, file);
 
     // lib/build must exist when the application is started
     // it is added to the CLASSPATH by default, but if it doesn't
@@ -110,7 +102,7 @@ public class Sketch {
    */
   protected void load() throws IOException {
     data.load();
-
+    
     for (SketchCode code : data.getCodes()) {
       if (code.getMetadata() == null)
         code.setMetadata(new SketchCodeDocument(code));
@@ -410,7 +402,7 @@ public class Sketch {
         return;
       }
       ensureExistence();
-      data.addCode((new SketchCodeDocument(newFile)).getCode());
+      data.addCode((new SketchCodeDocument(this, newFile)).getCode());
     }
 
     // sort the entries
@@ -490,32 +482,15 @@ public class Sketch {
     }
   }
 
-
-  /**
-   * Move to the previous tab.
-   */
-  public void handlePrevCode() {
-    int prev = currentIndex - 1;
-    if (prev < 0) prev = data.getCodeCount()-1;
-    setCurrentCode(prev);
-  }
-
-
-  /**
-   * Move to the next tab.
-   */
-  public void handleNextCode() {
-    setCurrentCode((currentIndex + 1) % data.getCodeCount());
-  }
-
-
   /**
    * Sets the modified value for the code in the frontmost tab.
    */
   public void setModified(boolean state) {
     //System.out.println("setting modified to " + state);
     //new Exception().printStackTrace();
-    current.getCode().setModified(state);
+//    if(current.getCode().isModified() != state){
+//      current.getCode().setModified(state);
+//    }
     calcModified();
   }
 
@@ -537,10 +512,6 @@ public class Sketch {
     }
   }
 
-
-  public boolean isModified() {
-    return modified;
-  }
 
 
   /**
@@ -609,19 +580,6 @@ public class Sketch {
     data.save();
     calcModified();
     return true;
-  }
-
-
-  protected boolean renameCodeToInoExtension(File pdeFile) {
-    for (SketchCode c : data.getCodes()) {
-      if (!c.getFile().equals(pdeFile))
-        continue;
-
-      String pdeName = pdeFile.getPath();
-      pdeName = pdeName.substring(0, pdeName.length() - 4) + ".ino";
-      return c.renameTo(new File(pdeName));
-    }
-    return false;
   }
 
 
@@ -906,7 +864,7 @@ public class Sketch {
     }
 
     if (codeExtension != null) {
-      SketchCode newCode = (new SketchCodeDocument(destFile)).getCode();
+      SketchCode newCode = (new SketchCodeDocument(this, destFile)).getCode();
 
       if (replacement) {
         data.replaceCode(newCode);
@@ -934,10 +892,6 @@ public class Sketch {
   }
 
 
-  public void importLibrary(Library lib) throws IOException {
-    importLibrary(lib.getSrcFolder());
-  }
-
   /**
    * Add import statements to the current tab for all of packages inside
    * the specified jar file.
@@ -945,7 +899,7 @@ public class Sketch {
   public void importLibrary(File jarPath) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
+    
     String list[] = Base.headerListFromIncludePath(jarPath);
 
     // import statements into the main sketch file (code[0])
@@ -1002,19 +956,6 @@ public class Sketch {
   }
 
 
-  /**
-   * Internal helper function to set the current tab based on a name.
-   * @param findName the file name (not pretty name) to be shown
-   */
-  protected void setCurrentCode(String findName) {
-    for (SketchCode code : data.getCodes()) {
-      if (findName.equals(code.getFileName()) ||
-          findName.equals(code.getPrettyName())) {
-        setCurrentCode(data.indexOfCode(code));
-        return;
-      }
-    }
-  }
 
 
   /**
@@ -1238,205 +1179,8 @@ public class Sketch {
   }
 
 
-  public boolean exportApplicationPrompt() throws IOException, RunnerException {
-    return false;
-  }
-
-
-  /**
-   * Export to application via GUI.
-   */
-  protected boolean exportApplication() throws IOException, RunnerException {
-    return false;
-  }
-
-
-  /**
-   * Export to application without GUI.
-   */
-  public boolean exportApplication(String destPath,
-                                   int exportPlatform) throws IOException, RunnerException {
-    return false;
-  }
-
-
-  /**
-   * Make sure the sketch hasn't been moved or deleted by some
-   * nefarious user. If they did, try to re-create it and save.
-   * Only checks to see if the main folder is still around,
-   * but not its contents.
-   */
-  protected void ensureExistence() {
-    if (data.getFolder().exists()) return;
-
-    Base.showWarning(_("Sketch Disappeared"),
-                     _("The sketch folder has disappeared.\n " +
-                       "Will attempt to re-save in the same location,\n" +
-                       "but anything besides the code will be lost."), null);
-    try {
-      data.getFolder().mkdirs();
-      modified = true;
-
-      for (SketchCode code : data.getCodes()) {
-        code.save();  // this will force a save
-      }
-      calcModified();
-
-    } catch (Exception e) {
-      Base.showWarning(_("Could not re-save sketch"),
-                       _("Could not properly re-save the sketch. " +
-                         "You may be in trouble at this point,\n" +
-                         "and it might be time to copy and paste " +
-                         "your code to another text editor."), e);
-    }
-  }
-
-
-  /**
-   * Returns true if this is a read-only sketch. Used for the
-   * examples directory, or when sketches are loaded from read-only
-   * volumes or folders without appropriate permissions.
-   */
-  public boolean isReadOnly() {
-    String apath = data.getFolder().getAbsolutePath();
-    for (File folder : Base.getLibrariesPath()) {
-      if (apath.startsWith(folder.getAbsolutePath()))
-        return true;
-    }
-    if (apath.startsWith(Base.getExamplesPath()) ||
-        apath.startsWith(Base.getSketchbookLibrariesPath())) {
-      return true;
-    }
-
-    // canWrite() doesn't work on directories
-    // } else if (!folder.canWrite()) {
-
-    // check to see if each modified code file can be written to
-    for (SketchCode code : data.getCodes()) {
-      if (code.isModified() && code.fileReadOnly() && code.fileExists()) {
-        // System.err.println("found a read-only file " + code[i].file);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-  // Breaking out extension types in order to clean up the code, and make it
-  // easier for other environments (like Arduino) to incorporate changes.
-
-  /**
-   * True if the specified code has the default file extension.
-   */
-  public boolean hasDefaultExtension(SketchCode code) {
-    return code.isExtension(getDefaultExtension());
-  }
-
-
-  /**
-   * True if the specified extension is the default file extension.
-   */
-  public boolean isDefaultExtension(String what) {
-    return what.equals(getDefaultExtension());
-  }
-
-
-  /**
-   * Check this extension (no dots, please) against the list of valid
-   * extensions.
-   */
-  public boolean validExtension(String what) {
-    return data.getExtensions().contains(what);
-  }
-
-
-  /**
-   * Returns the default extension for this editor setup.
-   */
-  public String getDefaultExtension() {
-    return data.getDefaultExtension();
-  }
-
-  static private List<String> hiddenExtensions = Arrays.asList("ino", "pde");
-
-  public List<String> getHiddenExtensions() {
-    return hiddenExtensions;
-  }
-
-
-  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
   // Additional accessors added in 0136 because of package work.
   // These will also be helpful for tool developers.
-
-
-  /**
-   * Returns the name of this sketch. (The pretty name of the main tab.)
-   */
-  public String getName() {
-    return data.getName();
-  }
-
-
-  /**
-   * Returns path to the main .pde file for this sketch.
-   */
-  public String getMainFilePath() {
-    return data.getMainFilePath();
-  }
-
-
-  /**
-   * Returns the sketch folder.
-   */
-  public File getFolder() {
-    return data.getFolder();
-  }
-
-
-  /**
-   * Create the data folder if it does not exist already. As a convenience,
-   * it also returns the data folder, since it's likely about to be used.
-   */
-  public File prepareDataFolder() {
-    if (!data.getDataFolder().exists()) {
-      data.getDataFolder().mkdirs();
-    }
-    return data.getDataFolder();
-  }
-
-
-  /**
-   * Create the code folder if it does not exist already. As a convenience,
-   * it also returns the code folder, since it's likely about to be used.
-   */
-  public File prepareCodeFolder() {
-    if (!data.getCodeFolder().exists()) {
-      data.getCodeFolder().mkdirs();
-    }
-    return data.getCodeFolder();
-  }
-
-
-  public SketchCode[] getCodes() {
-    return data.getCodes();
-  }
-
-
-  public int getCodeCount() {
-    return data.getCodeCount();
-  }
-
-
-  public SketchCode getCode(int index) {
-    return data.getCode(index);
-  }
-
-
-  public int getCodeIndex(SketchCode who) {
-    return data.indexOfCode(who);
-  }
 
 
   public SketchCode getCurrentCode() {
@@ -1453,31 +1197,13 @@ public class Sketch {
     return editor.untitled;
   }
 
-
-  public String getAppletClassName2() {
-    return appletClassName;
+  @Override
+  public boolean isExternalMode() {
+    return Editor.isExternalMode();
   }
 
 
   // .................................................................
-
-
-  /**
-   * Convert to sanitized name and alert the user
-   * if changes were made.
-   */
-  static public String checkName(String origName) {
-    String newName = BaseNoGui.sanitizeName(origName);
-
-    if (!newName.equals(origName)) {
-      String msg =
-        _("The sketch name had to be modified. Sketch names can only consist\n" +
-          "of ASCII characters and numbers (but cannot start with a number).\n" +
-          "They should also be less than 64 characters long.");
-      System.out.println(msg);
-    }
-    return newName;
-  }
 
 
 }

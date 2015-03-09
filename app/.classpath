@@ -21,5 +21,10 @@
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/arduino-autocomplete"/>
+	<classpathentry kind="lib" path="lib/cplus-libparser-0.0.1.jar" sourcepath="/cplus-libparser"/>
+	<classpathentry kind="lib" path="lib/jsoup-htmlparser-1.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/rsyntax-autocomplete-2.6.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar" sourcepath="/RSyntaxTextArea"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

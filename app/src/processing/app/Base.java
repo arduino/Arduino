@@ -38,11 +38,15 @@ import processing.app.tools.MenuScroller;
 import processing.app.tools.ZipDeflater;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static processing.app.I18n._;
 
@@ -85,6 +89,7 @@ public class Base {
 
   static public void main(String args[]) throws Exception {
     BaseNoGui.initLogger();
+    initLogger();
     
     BaseNoGui.notifier = new GUIUserNotifier();
 
@@ -160,6 +165,34 @@ public class Base {
     untitledFolder.deleteOnExit();
 
     new Base(args);
+  }
+
+  
+  static public void initLogger() {
+    Handler consoleHandler = new ConsoleLogger();
+    consoleHandler.setLevel(Level.ALL);
+    consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
+    
+    Logger globalLogger = Logger.getGlobal();
+    globalLogger.setLevel(consoleHandler.getLevel());
+    
+    // Remove default
+    Handler[] handlers = globalLogger.getHandlers();
+    for(Handler handler : handlers) {
+        globalLogger.removeHandler(handler);
+    }
+    Logger root = Logger.getLogger("");
+    handlers = root.getHandlers();
+    for(Handler handler : handlers) {
+      root.removeHandler(handler);
+    }
+    
+    globalLogger.addHandler(consoleHandler);
+    
+    Logger.getLogger("cc.arduino.packages.autocomplete").setParent(globalLogger);
+    Logger.getLogger("br.com.criativasoft.cpluslibparser").setParent(globalLogger);
+    Logger.getLogger(Base.class.getPackage().getName()).setParent(globalLogger);
+    
   }
 
 
@@ -1860,6 +1893,14 @@ public class Base {
     // don't use the low-res icon on Mac OS X; the window should
     // already have the right icon from the .app file.
     if (OSUtils.isMacOS()) return;
+    
+    // don't use the low-res icon on Linux
+    if (OSUtils.isLinux()){
+      String current = System.getProperty("user.dir");
+      Image image = Toolkit.getDefaultToolkit().createImage(current + "/lib/arduino.png");
+      frame.setIconImage(image);
+      return;
+    }
 
     Image image = Toolkit.getDefaultToolkit().createImage(PApplet.ICON_IMAGE);
     frame.setIconImage(image);

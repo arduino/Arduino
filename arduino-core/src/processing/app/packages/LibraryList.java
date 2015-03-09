@@ -4,11 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import processing.app.helpers.FileUtils;
 
 @SuppressWarnings("serial")
 public class LibraryList extends ArrayList<Library> {
+  
+  private Set<LibraryListener> listeners = new LinkedHashSet<LibraryListener>();
 
   public LibraryList(LibraryList libs) {
     super(libs);
@@ -67,4 +71,41 @@ public class LibraryList extends ArrayList<Library> {
         res.add(lib);
     return res;
   }
+  
+  @Override
+  public boolean add(Library l) {
+    
+    if(l == null || l.getName() == null || l.getName().length() == 0) return false;
+    
+    boolean add = super.add(l);
+    if(add){ // notify..
+      if(listeners != null) for (LibraryListener listener : listeners) { listener.onInsertLibrary(l);}
+    }
+    
+    return add;
+  }
+  
+  @Override
+  public boolean remove(Object l) {
+    boolean remove = super.remove(l);
+    if(remove){ // notify..
+      if(listeners != null) for (LibraryListener listener : listeners) { listener.onRemoveLibrary((Library)l);}
+    }
+    return remove;
+  }
+  
+  @Override
+  public void clear() {
+    if(listeners != null) for (LibraryListener listener : listeners) { listener.onClearLibraryList();}
+    super.clear();
+  }
+
+  public boolean addListener(LibraryListener e) {
+    return listeners.add(e);
+  }
+  
+  public boolean removeListener(LibraryListener e) {
+    return listeners.remove(e);
+  }
+  
 }
