@@ -46,6 +46,7 @@ static const uint8_t RX = 3;
 static const uint8_t TX = 4;
 
 static const uint8_t BLUE_LED = 82; //GPIO39
+static const uint8_t GREEN_LED = 82; //Redeclare so that examples that use this still work
 static const uint8_t RED_LED = 81; //GPIO34
 
 
