@@ -23,14 +23,21 @@
 
 package processing.app.tools;
 
-import processing.app.*;
-import static processing.app.I18n._;
+import processing.app.Base;
+import processing.app.Editor;
+import processing.app.Sketch;
 
-import java.awt.FileDialog;
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import java.util.zip.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import static processing.app.I18n._;
 
 
 public class Archiver implements Tool {
@@ -105,8 +112,7 @@ public class Archiver implements Tool {
     } while (newbie.exists());
 
     // open up a prompt for where to save this fella
-    FileDialog fd =
-      new FileDialog(editor, _("Archive sketch as:"), FileDialog.SAVE);
+    FileDialog fd = new FileDialog(editor, _("Archive sketch as:"), FileDialog.SAVE);
     fd.setDirectory(parent.getAbsolutePath());
     fd.setFile(newbie.getName());
     fd.setVisible(true);
