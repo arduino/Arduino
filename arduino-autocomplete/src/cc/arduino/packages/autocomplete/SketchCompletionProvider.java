@@ -14,7 +14,6 @@ import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
 import org.fife.ui.autocomplete.TemplateCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.Token;
 
 import processing.app.BaseNoGui;
 import processing.app.BaseSketch;

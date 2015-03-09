@@ -6,7 +6,6 @@ import java.util.List;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProvider;
-import org.fife.ui.autocomplete.ParameterizedCompletion.Parameter;
 
 import processing.app.BaseNoGui;
 import processing.app.packages.Library;
