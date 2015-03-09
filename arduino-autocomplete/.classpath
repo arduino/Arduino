@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/processing/lib/rsyntaxt-autocomplete-2.5.4.jar"/>
-	<classpathentry kind="lib" path="/processing/lib/rsyntaxtextarea-2.5.4_mod.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
 	<classpathentry kind="lib" path="/processing/lib/cplus-libparser-0.0.1.jar" sourcepath="/cplus-libparser"/>
+	<classpathentry kind="lib" path="/processing/lib/rsyntax-autocomplete-2.6.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/processing/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,8 +6,8 @@
       <include name="*.jar"/>
     </fileset>
     <fileset dir="../app/lib">
-      <include name="rsyntaxt-autocomplete-2.5.4.jar" />
-      <include name="rsyntaxtextarea-2.5.4_mod.jar" />
+      <include name="rsyntax-autocomplete-2.6.0-SNAPSHOT.jar" />
+      <include name="rsyntaxtextarea-2.6.0-SNAPSHOT.jar" />
       <include name="cplus-libparser-0.0.1.jar" />
     </fileset>
     <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>

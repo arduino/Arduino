@@ -9,8 +9,6 @@
 	<classpathentry kind="lib" path="lib/jssc-2.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/commons-exec-1.1.jar"/>
-	<classpathentry kind="lib" path="/processing/lib/rsyntaxt-autocomplete-2.5.4.jar"/>
-	<classpathentry kind="lib" path="/processing/lib/rsyntaxtextarea-2.5.4_mod.jar"/>
 	<classpathentry kind="lib" path="/processing/lib/cplus-libparser-0.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
