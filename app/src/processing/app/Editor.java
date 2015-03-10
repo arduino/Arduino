@@ -2387,6 +2387,7 @@ public class Editor extends JFrame implements RunnerListener, HyperlinkListener 
     }
     toolbar.activate(EditorToolbar.EXPORT);
     console.clear();
+    errorMarker.removeAll();
     status.progress(_("Uploading to I/O Board..."));
 
     new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
