@@ -30,9 +30,15 @@ public class EditorListener implements KeyListener {
   static final int CTRL = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
   
 
-  @Override
-  public void keyTyped(KeyEvent e) {
-    // TODO Auto-generated method stub
+  public void keyTyped(KeyEvent event) {
+    char c = event.getKeyChar();
+
+    if ((event.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
+      // The char is not control code when CTRL key pressed? It should be a shortcut.
+      if (!Character.isISOControl(c)) {
+        event.consume();
+      }
+    }
   }
 
   @Override
@@ -44,18 +50,11 @@ public class EditorListener implements KeyListener {
     
     Sketch sketch = editor.getSketch();
 
-    char c = event.getKeyChar();
     int code = event.getKeyCode();
     
     // Navigation..
     if ((event.getModifiers() & CTRL) == CTRL && code == KeyEvent.VK_TAB) {
       sketch.handleNextCode();
-    }
-    
-    if ((event.getModifiers() & CTRL) == CTRL && code == KeyEvent.VK_SLASH) {
-      event.consume();
-      editor.handleCommentUncomment();
-      return;
     }
 
     // Navigation..

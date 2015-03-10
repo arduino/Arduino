@@ -6,6 +6,8 @@ import java.awt.AWTKeyStroke;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashSet;
@@ -30,6 +32,7 @@ import org.fife.ui.rtextarea.RUndoManager;
 
 import processing.app.Base;
 import processing.app.EditorLineStatus;
+import processing.app.EditorListener;
 import processing.app.I18n;
 import processing.app.helpers.DocumentationUtils;
 import processing.app.packages.Library;
@@ -55,11 +58,14 @@ public class SketchTextArea extends RSyntaxTextArea {
    * The component that tracks the current line number.
    */
   protected EditorLineStatus editorLineStatus;
+
+  private EditorListener editorListener;
   
   public SketchTextArea() {
     super();
     installFeatures();
   }
+  
   
   protected void installFeatures(){
     try {
@@ -162,6 +168,27 @@ public class SketchTextArea extends RSyntaxTextArea {
     AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
     atmf.putMapping(SYNTAX_STYLE_CPLUSPLUS, "processing.app.syntax.SketchTokenMaker");
     setSyntaxEditingStyle(SYNTAX_STYLE_CPLUSPLUS);
+  }
+  
+  public void processKeyEvent(KeyEvent evt) {
+  
+    // this had to be added because the menu key events weren't making it up to the frame.
+    
+    switch(evt.getID()) {
+    case KeyEvent.KEY_TYPED:
+      if (editorListener != null) editorListener.keyTyped(evt);
+      break;
+    case KeyEvent.KEY_PRESSED:
+      if (editorListener != null) editorListener.keyPressed(evt);
+      break;
+    case KeyEvent.KEY_RELEASED:
+      // inputHandler.keyReleased(evt);
+      break;
+    }
+    
+    if(!evt.isConsumed()){
+       super.processKeyEvent(evt);
+    }
   }
   
   public void setupAutoComplete(SketchCompletionProvider provider) {
@@ -332,6 +359,11 @@ public class SketchTextArea extends RSyntaxTextArea {
     }
     
     return super.getToolTipTextImpl(e);
+  }
+
+
+  public void setEditorListener(EditorListener editorListener) {
+    this.editorListener = editorListener;
   }
   
 

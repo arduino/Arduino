@@ -925,7 +925,7 @@ public class Editor extends JFrame implements RunnerListener, HyperlinkListener 
 //      textArea.setClearWhitespaceLinesEnabled(false);
       textArea.setTabsEmulated(Preferences.getBoolean("editor.tabs.expand"));
       textArea.setTabSize(Preferences.getInteger("editor.tabs.size"));
-      textArea.addKeyListener(new EditorListener(this));
+      textArea.setEditorListener(new EditorListener(this));
       
       ToolTipManager.sharedInstance().registerComponent(textArea);
       
@@ -1299,7 +1299,7 @@ public class Editor extends JFrame implements RunnerListener, HyperlinkListener 
 
     menu.addSeparator();
 
-    item = newJMenuItem(_("Comment/Uncomment"), 'L');
+    item = newJMenuItem(_("Comment/Uncomment"), '/');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           handleCommentUncomment();
