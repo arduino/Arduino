@@ -1951,7 +1951,12 @@ public class Base {
     File referenceFile = new File(referenceFolder, filename);
     if (!referenceFile.exists())
       referenceFile = new File(referenceFolder, filename + ".html");
-    openURL(referenceFile.getAbsolutePath());
+    
+    if(referenceFile.exists()){
+      openURL(referenceFile.getAbsolutePath());
+    }else{
+      showWarning(_("Problem Opening URL"), I18n.format(_("Could not open the URL\n{0}"), referenceFile), null); 
+    }
   }
 
   static public void showGettingStarted() {
