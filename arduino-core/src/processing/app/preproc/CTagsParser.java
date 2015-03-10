@@ -1,5 +1,7 @@
 package processing.app.preproc;
 
+import processing.app.helpers.StringUtils;
+
 import java.util.*;
 
 public class CTagsParser implements PreprocessorChainRing {
@@ -34,6 +36,7 @@ public class CTagsParser implements PreprocessorChainRing {
     filterOutUnknownTags(tags);
     removeDefinedProtypes(tags);
     addPrototypes(tags);
+    removeDefaultArgsValues(tags);
 
     if (!tags.isEmpty()) {
       context.put("firstFunctionAtLine", Integer.valueOf(tags.get(0).get("line")));
@@ -44,6 +47,26 @@ public class CTagsParser implements PreprocessorChainRing {
       prototypes.add(tag.get("prototype"));
     }
     context.put("prototypes", prototypes);
+  }
+
+  private void removeDefaultArgsValues(List<Map<String, String>> tags) {
+    for (Map<String, String> tag : tags) {
+      String prototype = tag.get("prototype");
+      if (prototype.contains("=")) {
+        int argsStartAt = prototype.indexOf("(") + 1;
+        int argsEndAt = prototype.lastIndexOf(")");
+        String[] args = prototype.substring(argsStartAt, argsEndAt).split(",");
+        for (int i = 0; i < args.length; i++) {
+          if (args[i].contains("=")) {
+            args[i] = args[i].substring(0, args[i].indexOf("="));
+          }
+          args[i] = args[i].trim();
+        }
+        StringBuilder sb = new StringBuilder(prototype);
+        sb.replace(argsStartAt, argsEndAt, StringUtils.join(Arrays.asList(args), ", "));
+        tag.put("prototype", sb.toString());
+      }
+    }
   }
 
   private List<String> removeEmptyRows(List<String> rows) {

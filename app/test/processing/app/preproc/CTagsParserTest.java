@@ -128,4 +128,22 @@ public class CTagsParserTest {
     assertEquals(18, context.get("firstFunctionAtLine"));
   }
 
+
+  @Test
+  public void shouldRemoveDefaultArgsValues() throws Exception {
+    String ctagsOutput = "setup\t/tmp/sketch3020016532877959639.cpp\t/^void setup() {$/;\"\tkind:function\tline:2\tsignature:()\treturntype:void\n" +
+            "loop\t/tmp/sketch3020016532877959639.cpp\t/^void loop() {$/;\"\tkind:function\tline:7\tsignature:()\treturntype:void\n" +
+            "program\t/tmp/sketch3020016532877959639.cpp\t/^byte program (const byte b1, const byte b2 = 0, const byte b3 = 0, const byte b4 = 0)$/;\"\tkind:function\tline:12\tsignature:(const byte b1, const byte b2 = 0, const byte b3 = 0, const byte b4 = 0)\treturntype:byte\n";
+
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put("ctagsOutput", ctagsOutput);
+    new CTagsParser().preprocess(context);
+    List<String> prototypes = (List<String>) context.get("prototypes");
+
+    assertEquals(3, prototypes.size());
+    assertEquals("void setup();", prototypes.get(0));
+    assertEquals("void loop();", prototypes.get(1));
+    assertEquals("byte program(const byte b1, const byte b2, const byte b3, const byte b4);", prototypes.get(2));
+  }
+
 }
