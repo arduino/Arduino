@@ -258,7 +258,7 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
     
     //Add as ENUNM
     // TODO: only show if in method params
-    String[] names = {"HIGH", "LOW", "OUTPUT", "INPUT", "INPUT_PULLUP", "CHANGE", "FALLING", "RISING", "RISING", "DEC", "HEX", "OCT", "BIN"};
+    String[] names = {"HIGH", "LOW", "OUTPUT", "INPUT", "INPUT_PULLUP", "CHANGE", "FALLING", "RISING", "RISING", "DEC", "HEX", "OCT", "BIN", "LED_BUILTIN"};
     for (String name : names) {
       TAttribute attribute = new TAttribute("int", name);
       attribute.setEnum(true);
