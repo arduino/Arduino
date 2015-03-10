@@ -250,6 +250,12 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
     
     completions.add(new TemplateCompletion(provider, "println", "Serial.println()", "Serial.println(\"${cursor}\");"));
     
+    completions.add(new TemplateCompletion(provider, "dw", "digitalWrite", "digitalWrite(${cursor});"));
+    completions.add(new TemplateCompletion(provider, "dr", "digitalRead", "digitalRead(${cursor});"));
+    completions.add(new TemplateCompletion(provider, "aw", "analogWrite", "analogWrite(${cursor});"));
+    completions.add(new TemplateCompletion(provider, "ar", "analogRead", "analogRead(${cursor});"));
+    
+    
     //Add as ENUNM
     // TODO: only show if in method params
     String[] names = {"HIGH", "LOW", "OUTPUT", "INPUT", "INPUT_PULLUP", "CHANGE", "FALLING", "RISING", "RISING", "DEC", "HEX", "OCT", "BIN"};
