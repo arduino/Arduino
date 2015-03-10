@@ -2819,18 +2819,17 @@ public class Editor extends JFrame implements RunnerListener, HyperlinkListener 
 
       @Override
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        String referenceFile = PdeKeywords.getReference(getCurrentKeyword());
-        referenceItem.setEnabled(referenceFile != null);
-
-        int offset = textarea.getCaretPosition();
-        org.fife.ui.rsyntaxtextarea.Token token = RSyntaxUtilities.getTokenAtOffset(textarea, offset);
-        if (token != null && token.isHyperlink()) {
-          openURLItem.setEnabled(true);
-          openURLItem.setActionCommand(token.getLexeme());
-        } else {
-          openURLItem.setEnabled(false);
-        }
-
+            String referenceFile = PdeKeywords.getReference(getCurrentKeyword());
+            referenceItem.setEnabled(referenceFile != null);
+    
+            int offset = textarea.getCaretPosition();
+            org.fife.ui.rsyntaxtextarea.Token token = RSyntaxUtilities.getTokenAtOffset(textarea, offset);
+            if (token != null && token.isHyperlink()) {
+              openURLItem.setEnabled(true);
+              openURLItem.setActionCommand(token.getLexeme());
+            } else {
+              openURLItem.setEnabled(false);
+            }
       }
 
       @Override

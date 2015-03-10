@@ -43,8 +43,6 @@ public class DocumentationUtils {
       
       if(url == null || url.trim().length() == 0) return null;
       
-      System.out.println(url);
-      
       Document doc;
       try {
         doc = Jsoup.parse(new File(url), "UTF-8");

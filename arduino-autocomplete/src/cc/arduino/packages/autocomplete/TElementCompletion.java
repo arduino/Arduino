@@ -1,15 +1,9 @@
 package cc.arduino.packages.autocomplete;
 
 import org.fife.ui.autocomplete.AbstractCompletion;
-import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProvider;
-import org.fife.ui.rsyntaxtextarea.Token;
 
-import br.com.criativasoft.cpluslibparser.metadata.TAttribute;
-import br.com.criativasoft.cpluslibparser.metadata.TClass;
-import br.com.criativasoft.cpluslibparser.metadata.TElement;
-import br.com.criativasoft.cpluslibparser.metadata.TFunction;
-import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
+import br.com.criativasoft.cpluslibparser.metadata.*;
 
 public class TElementCompletion extends AbstractCompletion {
 

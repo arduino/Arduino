@@ -75,49 +75,7 @@ public class SketchTextArea extends RSyntaxTextArea {
       e.printStackTrace();
     }
     
-    LinkGenerator generator = new LinkGenerator() {
-      
-      @Override
-      public LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, final int offs) {
-        
-        // FIXME: This part is still in testing phase
-        
-        final Token token = textArea.modelToToken(offs);
-        
-        if(token != null && (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION) ){
-          
-          LinkGeneratorResult generatorResult = new LinkGeneratorResult() {
-            
-            @Override
-            public int getSourceOffset() {
-              LOG.finest("Linking: " + token);
-              return offs;
-            }
-            
-            @Override
-            public HyperlinkEvent execute() {
-              
-              String keyword = token.getLexeme();
-            
-              String referce = PdeKeywords.getReference(keyword);
-              
-              LOG.fine("Open Reference: " + referce);
-              
-              Base.showReference(I18n.format(_("{0}.html"), referce));
-              
-              return null;
-            }
-          };
-          
-          return generatorResult;
-        }
-        
-        return null;
-      }
-    };
-    
-    
-    setLinkGenerator(generator);
+    setLinkGenerator(new DocLinkGenerator());
     
     fixControlTab();
     installTokenMaker();  
@@ -201,7 +159,8 @@ public class SketchTextArea extends RSyntaxTextArea {
     AutoCompletion ac = new AutoCompletion(provider);
     provider.setAutoCompletion(ac);
     
-    ac.setShowDescWindow(true);
+    ac.setAutoActivationEnabled(true);
+    ac.setShowDescWindow(false);
     ac.setListCellRenderer(new CompletionsRenderer());
     // ac.setParamChoicesRenderer(r);
     ac.setAutoCompleteSingleChoices(true);
@@ -306,65 +265,124 @@ public class SketchTextArea extends RSyntaxTextArea {
     }
   }
   
-  
   @Override
   protected String getToolTipTextImpl(MouseEvent e) {
-    
-    // FIXME: This part is still in testing phase
-    // NOTA(R.R) - Já tem no : org.fife.ui.autocomplete.Completion.getToolTipText() , nãos sei como vai funcionar...
 
-    if (e.isControlDown()) {
+    // FIXME: This part is still in testing phase
+    // NOTA(R.R) - Já tem no :
+    // org.fife.ui.autocomplete.Completion.getToolTipText() , nãos sei como poderia integrar
     
+    boolean enabled = false;
+    
+    // Function responsible for displaying a toolip documentation when CTRL is pressed
+    if (e.isControlDown() && enabled) {
+
       Point p = e.getPoint();
-  
+
       final Token token = viewToToken(p);
+
+      final String reference = PdeKeywords.getReference(token.getLexeme());
       
-      if(token != null && (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION) ){
-        
-        // System.out.println("getLexeme:" + token.getLexeme());
-        
-        // Token paintableToken = getTokenListForLine(token.)
-        // System.out.println("getLastPaintableToken: " + paintableToken.getLexeme());
-        
-        
+      System.out.println("token: "+token.getLexeme() + ", reference: "
+                         + reference
+                         + ", match: "
+                         + (token.getType() == TokenTypes.DATA_TYPE
+                            || token.getType() == TokenTypes.VARIABLE || token
+                             .getType() == TokenTypes.FUNCTION));
+
+      if (token != null && (reference != null || (token.getType() == TokenTypes.DATA_TYPE
+                                               || token.getType() == TokenTypes.VARIABLE 
+                                               || token.getType() == TokenTypes.FUNCTION))) {
+
+
         String text = DocumentationUtils.getDocumentation(token.getLexeme(), null);
-        
-        // Do we want to use "focusable" tips?
-        if (getUseFocusableTips()) {
-          if (text!=null) {
-            if (docTooltip==null) {
+
+        // Use custom tooltip for arduino reference
+        if (reference != null && getUseFocusableTips()) {
+          if (text != null) {
+            if (docTooltip == null) {
               docTooltip = new FocusableTip(this, new HyperlinkListener() {
-                
+
                 @Override
                 public void hyperlinkUpdate(HyperlinkEvent e) {
-                 System.out.println("link clicked !");
-                  
+                  System.out.println("link clicked !");
+
                 }
               });
             }
-            //docTooltip.setImageBase(imageBase);
+            // docTooltip.setImageBase(imageBase);
             docTooltip.toolTipRequested(e, text);
             docTooltip.setMaxSize(new Dimension(500, 300));
           }
           // No tool tip text at new location - hide tip window if one is
           // currently visible
-          else if (docTooltip!=null) {
+          else if (docTooltip != null) {
             docTooltip.possiblyDisposeOfTipWindow();
           }
           return null;
+        // Use simple tooltips for source-code documentation
+        }else{
+            // completionProvider.getal
+
         }
-        
+
+      }else{
+          // find instance name.
+          Token previous = RSyntaxUtilities.getPreviousImportantTokenFromOffs((RSyntaxDocument)getDocument(), token.getOffset());
+          if(previous.is(Token.OPERATOR, ".") || previous.is(Token.OPERATOR, ">") ||  previous.is(Token.OPERATOR, ":")){
+            if(!previous.is(Token.OPERATOR, ".")) previous = RSyntaxUtilities.getPreviousImportantTokenFromOffs((RSyntaxDocument)getDocument(), previous.getOffset());
+            previous = RSyntaxUtilities.getPreviousImportantTokenFromOffs((RSyntaxDocument)getDocument(), previous.getOffset());
+          }
+          System.out.println("last:" + previous.getType() +" -> " + previous); 
       }
-    
+
     }
-    
+
     return super.getToolTipTextImpl(e);
   }
+  
 
 
   public void setEditorListener(EditorListener editorListener) {
     this.editorListener = editorListener;
   }
   
+  private static class DocLinkGenerator implements LinkGenerator{
+    
+     @Override
+      public LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, final int offs) {
+        
+        final Token token = textArea.modelToToken(offs);
+        
+        final String reference = PdeKeywords.getReference(token.getLexeme());
+
+        // LOG.fine("reference: " + reference + ", match: " + (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION));
+        
+        if(token != null && (reference != null || (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION) )){
+          
+          LinkGeneratorResult generatorResult = new LinkGeneratorResult() {
+            
+            @Override
+            public int getSourceOffset() {
+              return offs;
+            }
+            
+            @Override
+            public HyperlinkEvent execute() {
+              
+              LOG.fine("Open Reference: " + reference);
+              
+              Base.showReference("Reference/" + reference);
+              
+              return null;
+            }
+          };
+          
+          return generatorResult;
+        }
+        
+        return null;
+      }
+    };
 
 }

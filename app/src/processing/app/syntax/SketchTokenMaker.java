@@ -85,7 +85,10 @@ public class SketchTokenMaker extends CPlusPlusTokenMaker {
         
         // Others.
         extraTokens.put("DIGITAL", TokenTypes.RESERVED_WORD_2);
-        extraTokens.put("ANALOG", TokenTypes.RESERVED_WORD_2);       
+        extraTokens.put("ANALOG", TokenTypes.RESERVED_WORD_2);    
+        
+        // force load references.
+        PdeKeywords.reload();
       
 /*        
         HashMap<String, Integer> keywords = PdeKeywords.get();
