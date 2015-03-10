@@ -28,6 +28,9 @@ import br.com.criativasoft.cpluslibparser.metadata.TError;
 import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
 import cc.arduino.packages.MonitorFactory;
 
+import cc.arduino.view.*;
+import cc.arduino.view.Event;
+import cc.arduino.view.EventListener;
 import com.jcraft.jsch.JSchException;
 
 import jssc.SerialPortException;
@@ -1002,15 +1005,22 @@ public class Editor extends JFrame implements RunnerListener, HyperlinkListener 
 
   class SerialMenuListener implements ActionListener {
 
+    private final Frame parent;
     private final String serialPort;
+    private final String warning;
 
-    public SerialMenuListener(String serialPort) {
+    public SerialMenuListener(Frame parent, String serialPort, String warning) {
+      this.parent = parent;
       this.serialPort = serialPort;
+      this.warning = warning;
     }
 
     public void actionPerformed(ActionEvent e) {
       selectSerialPort(serialPort);
       base.onBoardOrPortChange();
+      if (warning != null && !Preferences.getBoolean("uncertifiedBoardWarning_dontShowMeAgain")) {
+        SwingUtilities.invokeLater(new ShowUncertifiedBoardWarning(parent));
+      }
     }
 
   }
@@ -1092,7 +1102,7 @@ public class Editor extends JFrame implements RunnerListener, HyperlinkListener 
       String label = port.getLabel();
 
       JCheckBoxMenuItem item = new JCheckBoxMenuItem(label, address.equals(selectedPort));
-      item.addActionListener(new SerialMenuListener(address));
+      item.addActionListener(new SerialMenuListener(this, address, port.getPrefs().get("warning")));
       serialMenu.add(item);
     }
 
