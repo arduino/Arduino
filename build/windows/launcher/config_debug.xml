@@ -26,6 +26,11 @@
     <cp>lib/commons-logging-1.0.4.jar</cp>
     <cp>lib/jmdns-3.4.1.jar</cp>
     <cp>lib/jsch-0.1.50.jar</cp>
+    <cp>lib/rsyntax-autocomplete-2.6.0-SNAPSHOT.jar</cp>
+    <cp>lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar</cp>
+    <cp>lib/jsoup-htmlparser-1.8.1.jar</cp>
+    <cp>lib/cplus-libparser-0.0.1.jar</cp>
+    <cp>lib/arduino-autocomplete.jar</cp>
   </classPath>
   <jre>
     <path>java</path>

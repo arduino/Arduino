@@ -745,7 +745,7 @@
       =======================================================
       Arduino for Linux was built. Grab the archive from
 
-      linux/arduino-${version}-${platform}.tar.xz
+      build/linux/arduino-${version}-${platform}.tar.xz
       =======================================================
     </echo>
   </target>
