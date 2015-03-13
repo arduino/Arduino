@@ -123,23 +123,23 @@ static const uint8_t P54 = 50; //GPIO54
 static const uint8_t P55 = 11; //GPIO55
 static const uint8_t P56 = 51; //GPIO56
 static const uint8_t P57 = 0; //GPIO57 NOT A PIN
-static const uint8_t P58 = 0; //GPIO58 NOT A PIN
+static const uint8_t P58 = 44; //GPIO58 NOT A PIN
 
 // Alternate Names
 
-static const uint8_t RX_A = P28; //J1.3
-static const uint8_t TX_A = P29; //J1.4 
-static const uint8_t SCK_A = P18; //J1.7
-static const uint8_t MOSI_A = P16; //J2.15
-static const uint8_t MISO_A = P17; //J2.14
-static const uint8_t SCL_A = P33; //J1.9
-static const uint8_t SDA_A = P32; //J1.10
+static const uint8_t RX_A = 3; //J1.3
+static const uint8_t TX_A = 4; //J1.4 
+static const uint8_t SCK_A = 7; //J1.7
+static const uint8_t MOSI_A = 15; //J2.15
+static const uint8_t MISO_A = 14; //J2.14
+static const uint8_t SCL_A = 9; //J1.9
+static const uint8_t SDA_A = 10; //J1.10
 
-static const uint8_t RX_B = P15; //J5.3
-static const uint8_t TX_B = P58; //J5.4
-static const uint8_t SCK_B = P14; //J5.7
-static const uint8_t MOSI_B = P24; //J6.15
-static const uint8_t MISO_B = P25; //J6.14
+static const uint8_t RX_B = 43; //J5.3
+static const uint8_t TX_B = 44; //J5.4
+static const uint8_t SCK_B = 47; //J5.7
+static const uint8_t MOSI_B = 55; //J6.15
+static const uint8_t MISO_B = 54; //J6.14
 
 
 //Array used to map physical pin numbers to GPIO/AIO numbers
