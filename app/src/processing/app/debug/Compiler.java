@@ -352,7 +352,6 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker.add("--diag_wrap=off");//compile for unified memory model
         baseCommandLinker.add("-z");//compile for unified memory model
         baseCommandLinker.add("--stack_size=0x300");//compile for unified memory model
-        baseCommandLinker.add("-m\"Energia_C2000_Test.map\"");//compile for unified memory model
         baseCommandLinker.add("--warn_sections");//compile for unified memory model
         for (int i = 0; i < includePaths.size(); i++) {
         	baseCommandLinker.add("-i" + '\"' + (String) includePaths.get(i)+ '\"' );

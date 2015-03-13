@@ -291,20 +291,35 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 	throws RunnerException, SerialException {
 		this.verbose = verbose;
 		Map<String, String> boardPreferences = Base.getBoardPreferences();
-
+		//Find our flash kernel
+		String name = boardPreferences.get("build.mcu");
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
 
 	    String osName = System.getProperty("os.name" );
 
-		System.out.println("Put C2000 LaunchPad switches Up-Down-Down and press the reset button");
+		System.out.println("Put C2000 LaunchPad switches (S1) ON-OFF-OFF (UP-DOWN-DOWN), ensure the back channel serial connection is enabled, and press the reset button.  If the download fails try a baud rate below 38400.");
 		Component frame = null;
-		JOptionPane.showMessageDialog(frame,
-			"Put C2000 LaunchPad serial switch up and the boot switches Up-Down-Down and press the reset button before clicking OK.");
+
+		
+		if(name.equals("TMS320F28027"))
+		{		
+			JOptionPane.showMessageDialog(frame,
+				"Put C2000 LaunchPad serial switch (S4) up and the boot switches (S1) ON-OFF-OFF (UP-DOWN-DOWN) and press the reset button before clicking OK.  If the download fails try a baud rate below 38400.");
+		}
+		else if(name.equals("TMS320F28069"))
+		{		
+			JOptionPane.showMessageDialog(frame,
+				"Ensure a jumper is placed on JP7 and that the jumper is removed from JP6, and that the boot switches (S1) are ON-OFF-OFF (UP-DOWN-DOWN), and press the reset button before clicking OK.  If the download fails try a baud rate below 38400.");
+		}
+		else
+		{		
+			JOptionPane.showMessageDialog(frame,
+				"Put C2000 LaunchPad serial switch up and the boot switches (S1) ON-OFF-OFF (UP-DOWN-DOWN) and press the reset button before clicking OK.  If the download fails try a baud rate below 38400.");
+		}
 		
 
-		//Find our flash kernel
-		String name = boardPreferences.get("build.mcu");
+
 		File flashKernel;
 		if(name.equals("TMS320F28027"))
 		{
