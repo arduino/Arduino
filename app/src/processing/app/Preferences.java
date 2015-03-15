@@ -205,7 +205,7 @@ public class Preferences {
 
   // value for the size bars, buttons, etc
 
-  static final int GRID_SIZE     = 33;
+  static final int GRID_SIZE     = 33 * Theme.getInteger("gui.scalePercent") / 100;
 
 
   // indents and spacing standards. these probably need to be modified

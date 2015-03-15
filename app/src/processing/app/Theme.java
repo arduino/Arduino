@@ -101,6 +101,10 @@ public class Theme {
       set(attr, value);
       font = PreferencesHelper.getFont(table, attr);
     }
+    int scale = getInteger("gui.scalePercent");
+    if (scale != 100) {
+      font = font.deriveFont((float)(font.getSize()) * (float)scale / (float)100.0);
+    }
     return font;
   }
 
