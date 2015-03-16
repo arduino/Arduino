@@ -1,3 +1,6 @@
+# GUI - Scaling, edit this to scale to higher dots-per-inch displays
+gui.scalePercent = 100
+
 # GUI - STATUS
 status.notice.fgcolor = #002325
 status.notice.bgcolor = #17A1A5

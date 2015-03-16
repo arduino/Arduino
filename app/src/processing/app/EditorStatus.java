@@ -56,6 +56,9 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
 
   static final String NO_MESSAGE = "";
 
+  // value for the size bars, buttons, etc
+  static final int GRID_SIZE = 33 * Theme.getInteger("gui.scalePercent") / 100;
+
   Editor editor;
 
   int mode;
@@ -524,11 +527,11 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   }
 
   public Dimension getMinimumSize() {
-    return new Dimension(300, Preferences.GRID_SIZE);
+    return new Dimension(300, GRID_SIZE);
   }
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000, Preferences.GRID_SIZE);
+    return new Dimension(3000, GRID_SIZE);
   }
 
 

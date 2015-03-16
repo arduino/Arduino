@@ -99,8 +99,6 @@ public class Base {
 
     BaseNoGui.initParameters(args);
 
-    System.setProperty("swing.aatext", Preferences.get("editor.antialias", "true"));
-
     BaseNoGui.initVersion();
 
 //    if (System.getProperty("mrj.version") != null) {
@@ -149,6 +147,7 @@ public class Base {
 
     // setup the theme coloring fun
     Theme.init();
+    System.setProperty("swing.aatext", Preferences.get("editor.antialias", "true"));
 
     // Set the look and feel before opening the window
     try {
@@ -1525,9 +1524,11 @@ public class Base {
           g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                               RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-          g.setFont(new Font("SansSerif", Font.PLAIN, 11));
+          int scale = Theme.getInteger("gui.scalePercent");
+          Font f = new Font("SansSerif", Font.PLAIN, 11 * scale / 100);
+          g.setFont(f);
           g.setColor(Color.white);
-          g.drawString(BaseNoGui.VERSION_NAME, 50, 30);
+          g.drawString(BaseNoGui.VERSION_NAME, 50 * scale / 100, 30 * scale / 100);
         }
       };
     window.addMouseListener(new MouseAdapter() {
@@ -2176,6 +2177,9 @@ public class Base {
     Image image = null;
     Toolkit tk = Toolkit.getDefaultToolkit();
 
+    int scale = Theme.getInteger("gui.scalePercent");
+    // TODO: create high-res enlarged copies and load those if
+    //       the scale is more than 125%
     File imageLocation = new File(getContentFile("lib"), name);
     image = tk.getImage(imageLocation.getAbsolutePath());
     MediaTracker tracker = new MediaTracker(who);
@@ -2183,6 +2187,15 @@ public class Base {
     try {
       tracker.waitForAll();
     } catch (InterruptedException e) { }
+    if (scale != 100) {
+      int width = image.getWidth(null) * scale / 100;
+      int height = image.getHeight(null) * scale / 100;
+      image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+      tracker.addImage(image, 1);
+      try {
+        tracker.waitForAll();
+      } catch (InterruptedException e) { }
+    }
     return image;
   }
 
