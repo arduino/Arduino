@@ -84,6 +84,28 @@ void BridgeClass::begin() {
   }
 }
 
+bool BridgeClass::isOk() {
+  // check if bridge connections is OK
+  uint8_t cmd[] = {'X','X'};
+
+  uint8_t rxbuff[] = {0,0}; // length 2 is needed because transfer will truncate to rxlen
+
+  // try 2 times
+  uint8_t _max_retries = max_retries;
+  max_retries = 2;
+
+  dropAll();
+  int rxbytes = transfer(cmd, 2, rxbuff, 2);
+
+  max_retries = _max_retries;
+
+  // expected response is of length 1 and contains 2
+  if (rxbytes == 1 && rxbuff[0] == 2)
+      return true;
+  else
+      return false;
+}
+
 void BridgeClass::put(const char *key, const char *value) {
   // TODO: do it in a more efficient way
   String cmd = "D";
@@ -191,12 +213,13 @@ uint16_t BridgeClass::transfer(const uint8_t *buff1, uint16_t len1,
 
     // Recv data
     for (uint16_t i = 0; i < l; i++) {
+      // Cut received data if rxbuffer is too small
+      if (i >= rxlen)
+          break;
       int c = timedRead(5);
       if (c < 0)
         continue;
-      // Cut received data if rxbuffer is too small
-      if (i < rxlen)
-        rxbuff[i] = c;
+      rxbuff[i] = c;
       crcUpdate(c);
     }
 
