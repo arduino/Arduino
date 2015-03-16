@@ -69,6 +69,9 @@ public class EditorHeader extends JComponent {
 
   static final int PIECE_WIDTH = 4;
 
+  // value for the size bars, buttons, etc
+  static final int GRID_SIZE = 33 * Theme.getInteger("gui.scalePercent") / 100;
+
   static Image[][] pieces;
 
   //
@@ -383,16 +386,16 @@ public class EditorHeader extends JComponent {
 
   public Dimension getMinimumSize() {
     if (OSUtils.isMacOS()) {
-      return new Dimension(300, Preferences.GRID_SIZE);
+      return new Dimension(300, GRID_SIZE);
     }
-    return new Dimension(300, Preferences.GRID_SIZE - 1);
+    return new Dimension(300, GRID_SIZE - 1);
   }
 
 
   public Dimension getMaximumSize() {
     if (OSUtils.isMacOS()) {
-      return new Dimension(3000, Preferences.GRID_SIZE);
+      return new Dimension(3000, GRID_SIZE);
     }
-    return new Dimension(3000, Preferences.GRID_SIZE - 1);
+    return new Dimension(3000, GRID_SIZE - 1);
   }
 }
