@@ -278,14 +278,14 @@ extern "C" {
 #include <ti/sysbios/knl/Semaphore.h>
 
 /*! Return code when UART_control() was successful. */
-#define UARTCC26XX_CMD_SUCCESS              0
+#define UARTCC26XX_CMD_SUCCESS              UART_RESERVATION_BASE + 0
 /*! Return code when a UART command or function is undefined/not-implemented. */
-#define UARTCC26XX_CMD_UNDEFINED            -1
+#define UARTCC26XX_CMD_UNDEFINED           -UART_RESERVATION_BASE - 1
 
 /*! Enable RETURN_PARTIAL, used as cmd to UART_control() */
-#define UARTCC26XX_RETURN_PARTIAL_ENABLE    0
+#define UARTCC26XX_RETURN_PARTIAL_ENABLE    UART_RESERVATION_BASE + 0
 /*! Disable RETURN_PARTIAL, used as cmd to UART_control() */
-#define UARTCC26XX_RETURN_PARTIAL_DISABLE   1
+#define UARTCC26XX_RETURN_PARTIAL_DISABLE   UART_RESERVATION_BASE + 1
 /*! Size of the TX and RX FIFOs is 32 items */
 #define UARTCC26XX_FIFO_SIZE 32
 

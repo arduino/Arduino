@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@
  *
  *  The Watchdog driver simplifies configuring and starting the Watchdog
  *  peripherals. The Watchdog can be set up to produce a reset signal after a
- *  timeout or simply cause a hardware interrupt at a programmable interval.
+ *  timeout, or simply cause a hardware interrupt at a programmable interval.
  *  The driver provides the ability to specify a callback function that is
  *  called when the Watchdog causes an interrupt.
  *
@@ -84,7 +84,8 @@
  *  *Watchdog_config*. *Watchdog_config* is implemented in the application with
  *  each entry being an instance of a Watchdog peripheral. Each entry in
  *  *Watchdog_config* contains a:
- *  - (Watchdog_FxnTable *) to a set of functions that implement a Watchdog peripheral
+ *  - (Watchdog_FxnTable *) to a set of functions that implement a Watchdog
+ *    peripheral
  *  - (void *) data object that is associated with the Watchdog_FxnTable
  *  - (void *) hardware attributes that are associated to the Watchdog_FxnTable
  *
@@ -103,7 +104,7 @@
  *  ---------------- | ----------- |
  *  Diags_USER1      | basic Watchdog operations to be performed |
  *
- *  ============================================================================
+ *  ===========================================================================
  */
 
 #ifndef ti_drivers_Watchdog__include

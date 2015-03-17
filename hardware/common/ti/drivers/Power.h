@@ -40,7 +40,7 @@
  *  @endcode
  *
  *  # Operation #
- *  The Power manager facilitates the transition of the MPU from active state
+ *  The Power manager facilitates the transition of the MCU from active state
  *  to one of the sleep states and vice versa.  It provides drivers the
  *  ability to set and release dependencies on hardware resources and keeps
  *  a reference count on each resource to know when to enable or disable the
@@ -48,89 +48,6 @@
  *  register a callback function upon a specific power event.  In addition,
  *  drivers and apps can set or release constraints to prevent the MCU from
  *  transitioning into a particular sleep state.
- *
- *  # Calling Context #
- *
- *  <table>
- *    <tr>
- *      <th> Function </th><th> Hwi </th><th> Swi </th><th> Task </th>
- *      <th> Main </th>
- *    </tr>
- *    <tr>
- *      <td> Power_getConstraintMask </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_getDependencyCount </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_getPerformanceLevel </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_getTransitionLatency </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_getTransitionState </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_idleFunc </td>
- *      <td> N </td><td> N </td><td> N </td><td> N </td>
- *    </tr>
- *    <tr>
- *      <td> Power_init </td>
- *      <td> N </td><td> N </td><td> N </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_registerNotify </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_releaseConstraint </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_releaseDependency </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_setConstraint </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_setDependency </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_setPerformanceLevel </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_shutdown </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td> Power_sleep </td>
- *      <td> N </td><td> N </td><td> N </td><td> N </td>
- *    </tr>
- *    <tr>
- *      <td> Power_unregisterNotify </td>
- *      <td> Y </td><td> Y </td><td> Y </td><td> Y </td>
- *    </tr>
- *    <tr>
- *      <td colspan="5">
- *        <ul>
- *          <li><b>Hwi</b>: API is callable from Hwi context. </li>
- *          <li><b>Swi</b>: API is callable from Swi context. </li>
- *          <li><b>Task</b>: API is callable from a Task thread. </li>
- *          <li><b>Main</b>: API is callable from main(). </li>
- *        </ul>
- *      </td>
- *    </tr>
- *  </table>
  *
  *  ============================================================================
  */
@@ -146,43 +63,30 @@ extern "C" {
 #endif
 
 /* Power latency types */
-/*! total latency type */
-#define Power_TOTAL                 1
-/*! resume latency type */
-#define Power_RESUME                2
+#define Power_TOTAL                 1   /*!< total latency */
+#define Power_RESUME                2   /*!< resume latency */
 
 /* Power notify responses */
-/*! notify done value */
-#define Power_NOTIFYDONE            0
-/*! notify error value */
-#define Power_NOTIFYERROR           1
+#define Power_NOTIFYDONE            0   /*!< OK, notify completed */
+#define Power_NOTIFYERROR           1   /*!< an error occurred during notify */
 
 /* Power status */
-/*! ok status */
-#define Power_SOK                   0
-/*! ok status with the state restored */
-#define Power_SOK_STATE_RESTORED    1
-/*! error failed status */
-#define Power_EFAIL                 2
-/*! error invalid pointer status */
-#define Power_EINVALIDPOINTER       3
-/*! error change not allowed status */
-#define Power_ECHANGE_NOT_ALLOWED   4
-/*! error busy status */
-#define Power_EBUSY                 5
+#define Power_SOK                   0   /*!< OK, operation succeeded */
+#define Power_EFAIL                 1   /*!< general failure */
+#define Power_EINVALIDPOINTER       2   /*!< invalid pointer */
+#define Power_ECHANGE_NOT_ALLOWED   3   /*!< change is not allowed */
+#define Power_EBUSY                 4   /*!< busy with another transition */
 
 /* Power transition states */
-/*! active state */
-#define Power_ACTIVE                1
-/*! entering sleep state */
-#define Power_ENTERING_SLEEP        2
-/*! exiting sleep state */
-#define Power_EXITING_SLEEP         3
-/*! entering shutdown state */
-#define Power_ENTERING_SHUTDOWN     4
+#define Power_ACTIVE                1   /*!< normal active state */
+#define Power_ENTERING_SLEEP        2   /*!< entering a sleep state */
+#define Power_EXITING_SLEEP         3   /*!< exiting a sleep state */
+#define Power_ENTERING_SHUTDOWN     4   /*!< entering a shutdown state */
+#define Power_CHANGING_PERF_LEVEL   5   /*!< moving to new performance level */
+
 
 /*!
- *  @brief      Power policy init function pointer
+ *  @brief      Power policy initialization function pointer
  */
 typedef void (*Power_PolicyInitFxn)(void);
 
@@ -194,178 +98,215 @@ typedef void (*Power_PolicyFxn)(void);
 /*!
  *  @brief      Power notify function pointer
  */
-typedef int (*Power_NotifyFxn)(uint32_t eventType, uint32_t eventArg,
-                               uint32_t clientArg);
+typedef int (*Power_NotifyFxn)(unsigned int eventType, uintptr_t eventArg,
+                               uintptr_t clientArg);
 
 /*!
  *  @brief      Power notify object structure.
  *
- *  The 'eventTypes' are device specific.  For example on the CC3200
- *  'PowerCC3200_ENTERING_DEEPSLEEP' is an event type.
+ *  This struct specification is for internal use.  Notification clients must
+ *  pre-allocate a notify object when registering for a notification;
+ *  Power_registerNotify() will take care initializing the internal elements
+ *  appropriately.
  */
 typedef struct Power_NotifyObj {
-    ListP_Elem link;
-    uint32_t eventTypes;
-    Power_NotifyFxn notifyFxn;
-    uint32_t clientArg;
+    ListP_Elem link;            /*!< for placing on the notify list */
+    unsigned int eventTypes;        /*!< the event type */
+    Power_NotifyFxn notifyFxn;  /*!< notification function */
+    uintptr_t clientArg;        /*!< argument provided by client */
 } Power_NotifyObj;
 
 /*!
- *  @brief  Function tells which constraints have been registered
- *          with Power module.
- *
- *  @return A bitmask of registered constraints
- *
- *  @sa     Power_getContraint
+ *  @brief  Enable the configured power policy to run when the CPU is idle
  */
-uint32_t Power_getConstraintMask(void);
+void Power_enablePolicy(void);
 
 /*!
- *  @brief  Function gets the count of dependencies that are currently
- *          declared upon a resource.
+ *  @brief  Get the constraints that have been declared with Power
+ *
+ *  @return A bitmask of declared constraints
+ *
+ *  @sa     Power_setContraint
+ */
+unsigned int Power_getConstraintMask(void);
+
+/*!
+ *  @brief  Get the current dependency count for a resource
  *
  *  @param  resourceId  resource id
  *
  *  @return dependency count on resource
  *
- *  @sa     Power_getDependency
+ *  @sa     Power_setDependency
  */
-uint32_t Power_getDependencyCount(uint8_t resourceId);
+unsigned int Power_getDependencyCount(unsigned int resourceId);
 
 /*!
- *  @brief  Get the performance level
+ *  @brief  Get the current performance level
  */
-void Power_getPerformanceLevel(void);
+unsigned int Power_getPerformanceLevel(void);
 
 /*!
- *  @brief  Function gets the transition latency for a sleep state.
- *          The latency is reported in units of microseconds
+ *  @brief  Get the hardware transition latency for a sleep state
  *
- *  @param  sleepState  the power sleep state
+ *  The latency is reported in units of microseconds.
+ *  This function is called by the power policy function.
+ *  The latency for any software-based notifications is not included in
+ *  the returned value.
  *
- *  @param  type        the type {Power_TOTAL, Power_RESUME}
+ *  @param  sleepState  the sleep state
  *
- *  @return the latency value
+ *  @param  type        the latency type {Power_TOTAL, Power_RESUME}
+ *
+ *  @return the latency value in units of microseconds
  */
-uint32_t Power_getTransitionLatency(uint32_t sleepState, uint32_t type);
+uint32_t Power_getTransitionLatency(unsigned int sleepState, unsigned int type);
 
 /*!
- *  @brief  Function gets the current power transition state
+ *  @brief  Get the current transition state for Power
+ *
+ *  This function returns the current transition state for the power manager.
+ *  For example, when no transitions are in progress, a status of Power_ACTIVE
+ *  is returned; when the device is being transitioned into a sleep state,
+ *  the status Power_ENTERING_SLEEP is returned, etc.
  *
  *  @return the current power transition state
  */
-uint32_t Power_getTransitionState(void);
+unsigned int Power_getTransitionState(void);
 
 /*!
- *  @brief  Add this function to the system's idle loop. It calls the
- *          configured 'runPolicy' in the user defined Power config object.
+ *  @brief  Power function to be added to the application idle loop
+ *
+ *  Add this function to the application's idle loop. (The method to do this
+ *  depends upon the operating system being used.)  When invoked, this
+ *  function will call the configured power policy function, once on each
+ *  pass through the idle loop.  The specific policy function to be called
+ *  is configured as the 'policyFxn' in the application-defined Power
+ *  configuration object.
  */
 void Power_idleFunc(void);
 
 /*!
- *  @brief  Policy init function
+ *  @brief  Power initialization function
  *
- *  This function must be called prior to any power API being called.
- *  It calls the configured 'PolicyInitFxn' in the user defined
- *  config object.  The policy init function may create a clock
- *  object.
+ *  This function initializes Power manager internal state.  It must be called
+ *  prior to any other Power API.
  */
 void Power_init(void);
 
 /*!
- *  @brief  Registers a function to be called on a specific power event
+ *  @brief  Register a function to be called upon a specific power event
  *
- *  @param  pNotifyObj              notification object
+ *  @param  pNotifyObj      notification object (preallocated by caller)
  *
- *  @param  eventTypes              event type
+ *  @param  eventTypes      event type
  *
- *  @param  notifyFxn               function to be called
+ *  @param  notifyFxn       client's callback function
  *
- *  @param  clientArg               client argument
+ *  @param  clientArg       client-specified argument to pass with notification
  *
  *  @return status
  *
  *  @sa     Power_unregisterNotify
  */
-uint32_t Power_registerNotify(Power_NotifyObj *pNotifyObj,
-    uint32_t eventTypes, Power_NotifyFxn notifyFxn, uint32_t clientArg);
+unsigned int Power_registerNotify(Power_NotifyObj *pNotifyObj,
+    unsigned int eventTypes, Power_NotifyFxn notifyFxn, uintptr_t clientArg);
 
 /*!
- *  @brief  Releases a previously declared constraint
+ *  @brief  Release a previously declared constraint
  *
- *  @param  constraintId      constraint id specified
+ *  @param  constraintId      constraint id
  *
  *  @sa     Power_setContraint
  */
-void Power_releaseConstraint(uint32_t constraintId);
+void Power_releaseConstraint(unsigned int constraintId);
 
 /*!
- *  @brief  Releases a previously declared dependency
+ *  @brief  Release a previously declared dependency
  *
- *  @param  resourceId      resource id specified
+ *  @param  resourceId      resource id
  *
  *  @sa     Power_setDependency
  */
-void Power_releaseDependency(uint8_t resourceId);
+void Power_releaseDependency(unsigned int resourceId);
 
 /*!
- *  @brief  Declare an operational constraint.
+ *  @brief  Declare an operational constraint
  *
- *  Each call to this function must set only one constrait.
- *  To set multiple constraints, this function can be called multiple times.
+ *  Only one constraint can be specified with each call to this function; to
+ *  declare multiple constraints this function must be called multiple times.
  *
- *  @param  constraintId      constraint id specified
+ *  @param  constraintId      constraint id
  *
  *  @sa     Power_releaseContraint
  */
-void Power_setConstraint(uint32_t constraintId);
+void Power_setConstraint(unsigned int constraintId);
 
 /*!
- *  @brief  Declare a dependency on a resource
+ *  @brief  Declare a dependency upon a resource
  *
- *  @param  resourceId      resource id specified
+ *  @param  resourceId      resource id
  *
  *  @sa     Power_releaseDependency
  */
-void Power_setDependency(uint8_t resourceId);
+void Power_setDependency(unsigned int resourceId);
 
 /*!
- *  @brief  Sets the performance level
+ *  @brief  Set the MCU performance level
+ *
+ *  This function manages a transition to a new MCU performance level.  The
+ *  function will not return until the new performance level is in effect.
+ *  If performance scaling is not supported for the device, or is prohibited
+ *  by an active constraint, or if the specified level is invalid, then a
+ *  status of Power_ECHANGE_NOT_ALLOWED will returned.
+ *
+ *  @param  level      the new performance level
+ *
+ *  @sa     Power_getPerformanceLevel
+ *
+ *  @return status
  */
-void Power_setPerformanceLevel(void);
+unsigned int Power_setPerformanceLevel(unsigned int level);
 
 /*!
- *  @brief  Put the device in a shutdown state.
+ *  @brief  Put the device in a shutdown state
+ *
+ *  This function will transition the device into a shutdown state.  If a
+ *  wakeup trigger is configured, the application will be rebooted (through
+ *  a device reset) when the trigger occurs.  On some devices a timed wakeup
+ *  can be configured; where this is supported, this time can be specified via
+ *  the shutdownTime parameter.
  *
  *  @param  shutdownState  the shutdown state
  *
- *  @param  arg0           argument
+ *  @param  shutdownTime   amount of time (in milliseconds) to keep the
+ *                         the device in the shutdown state
  *
  *  @return status
  */
-uint32_t Power_shutdown(uint32_t shutdownState, uint32_t arg0);
+unsigned int Power_shutdown(unsigned int shutdownState, uint32_t shutdownTime);
 
 /*!
- *  @brief  Called from the policy function to enter sleep mode.
+ *  @brief  Transition the device into a sleep state
  *
- *  This function is called from the power policy function. It must be
- *  called with interrupts disabled and should not be called by the
- *  application or any drivers.
+ *  This function is called from the power policy when it has made a decision
+ *  to put the device in a specific sleep state.  This function returns to the
+ *  caller (the policy function) once the device has awoken from sleep.
+ *  This function must be called with interrupts disabled, and should not be
+ *  called directly by the application, or by any drivers.
+ *  This function does not check declared constraints; the policy function
+ *  must check constraints before calling this function to initiate sleep.
  *
- *  @param  sleepState      cpu is to enter this sleep state
- *
- *  @param  arg0            first argument
- *
- *  @param  arg1            second argument
+ *  @param  sleepState      the sleep state
  *
  *  @return status
  */
-uint32_t Power_sleep(uint32_t sleepState, uint32_t arg0, uint32_t arg1);
+unsigned int Power_sleep(unsigned int sleepState);
 
 /*!
- *  @brief  Unregister a previously registered notification
+ *  @brief  Unregister previously registered notifications
  *
- *  @param  pNotifyObj      notification object
+ *  @param  pNotifyObj    notify object (used when registering for notification)
  */
 void Power_unregisterNotify(Power_NotifyObj *pNotifyObj);
 

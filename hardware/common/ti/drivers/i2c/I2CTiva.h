@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -77,11 +77,13 @@ extern const I2C_FxnTable I2CTiva_fxnTable;
  *  const I2CTiva_HWAttrs i2cTivaHWAttrs[] = {
  *      {
  *          I2C1_BASE,
- *          INT_I2C1
+ *          INT_I2C1,
+ *          ~0               // Interrupt priority
  *      },
  *      {
  *          I2C3_BASE,
- *          INT_I2C3
+ *          INT_I2C3,
+ *          ~0               // Interrupt priority
  *      },
  *  };
  *  @endcode
@@ -91,6 +93,8 @@ typedef struct I2CTiva_HWAttrs {
     unsigned int baseAddr;
     /*! I2C Peripheral's interrupt vector */
     unsigned int intNum;
+    /*! I2C Peripheral's interrupt priority */
+    unsigned int intPriority;
 } I2CTiva_HWAttrs;
 
 /*!

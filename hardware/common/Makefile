@@ -118,7 +118,7 @@ LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = no
+CORE_FROM_SOURCE = yes
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
@@ -161,7 +161,6 @@ all: $(MAINSKETCH).bin
 $(MAINSKETCH).elf: $(OBJ)
 	@echo armlink $(OBJ)
 	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
-	cp -f $(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/configPkg/package/cfg/energia_pm4fg.rov.xs .
 
 %.obj: %.cpp
 	@echo armcl $*.cpp

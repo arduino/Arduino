@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -171,6 +171,7 @@ typedef enum SPITivaDMA_FrameSize {
  *      {   // Used by TivaWare (Tiva devices!!!)
  *          SSI0_BASE,
  *          INT_SSI0,
+ *          ~0,         // Interrupt priority
  *          &scratchBuffer[0],
  *          0,
  *          UDMA_CHANNEL_SSI0RX,
@@ -182,6 +183,7 @@ typedef enum SPITivaDMA_FrameSize {
  *      {   // Used by MWare (Concerto devices!!!)
  *          SSI1_BASE,
  *          INT_SSI1,
+ *          ~0,         // Interrupt priority
  *          &scratchBuffer[1],
  *          0,
  *          UDMA_CHANNEL_SSI1RX,
@@ -198,6 +200,9 @@ typedef struct SPITivaDMA_HWAttrs {
     SPIBaseAddrType   baseAddr;
     /*! SSI TivaDMA Peripheral's interrupt vector */
     unsigned int      intNum;
+
+    /*! SPITivaDMA Peripheral's interrupt priority */
+    uint32_t   intPriority;
 
     /*! Address of a scratch buffer of size uint32_t */
     uint32_t         *scratchBufPtr;

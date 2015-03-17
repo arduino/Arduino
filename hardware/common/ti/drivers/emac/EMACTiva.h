@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,8 +72,9 @@ extern const EMAC_FxnTable EMACTiva_fxnTable;
  *  @brief  EMACTiva Hardware attributes
  */
 typedef struct EMACTiva_HWAttrs {
-    unsigned int intNum;    /*!< Interrupt Vector Id */
-    uint8_t *macAddress;  /*!< Pointer to MAC address */
+    unsigned int intNum;         /*!< Interrupt Vector Id */
+    unsigned int intPriority;    /*!< Interrupt priority */
+    uint8_t *macAddress;         /*!< Pointer to MAC address */
 } EMACTiva_HWAttrs;
 
 /*!

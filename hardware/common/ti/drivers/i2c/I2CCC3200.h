@@ -52,9 +52,11 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <ti/drivers/I2C.h>
 
+#include <ti/drivers/I2C.h>
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
+#include <ti/drivers/Power.h>
 
 /* Return codes for I2C_control() */
 #define I2CCC3200_CMD_UNDEFINED     -1
@@ -76,6 +78,7 @@ extern const I2C_FxnTable I2CCC3200_fxnTable;
  *      {
  *          I2CA0_BASE,
  *          INT_I2CA0,
+ *          2,               // Interrupt priority
  *          PowerCC3200_PERIPH_I2CA0
  *      }
  *  };
@@ -86,6 +89,8 @@ typedef struct I2CCC3200_HWAttrs {
     unsigned int baseAddr;
     /*! I2C Peripheral's interrupt vector */
     unsigned int intNum;
+    /*! I2C Peripheral's interrupt priority */
+    unsigned int intPriority;
     /*! I2C Peripheral's power manager ID */
     uint32_t     powerMngrId;
 } I2CCC3200_HWAttrs;
@@ -98,6 +103,8 @@ typedef struct I2CCC3200_HWAttrs {
 typedef struct I2CCC3200_Object {
     SemaphoreP_Handle   mutex;            /* Grants exclusive access to I2C */
     SemaphoreP_Handle   transferComplete; /* Notify finished I2C transfer */
+
+    HwiP_Handle         hwiHandle;
 
     I2C_TransferMode    transferMode;        /* Blocking or Callback mode */
     I2C_CallbackFxn     transferCallbackFxn; /* Callback function pointer */
@@ -117,6 +124,10 @@ typedef struct I2CCC3200_Object {
     I2C_Transaction    *tailPtr;        /* Tail ptr for queued transactions */
 
     bool                isOpen;         /* flag to indicate module is open */
+
+    /* For wakeup from LPDS */
+    Power_NotifyObj     notifyObj;
+    I2C_BitRate         bitRate;         /* I2C bus bit rate */
 } I2CCC3200_Object;
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -108,6 +108,7 @@ typedef enum USBMSCHFatFsTiva_USBState {
  */
 typedef struct USBMSCHFatFsTiva_HWAttrs {
     unsigned int       intNum;             /*!< USB interrupt vector */
+    unsigned int       intPriority;        /*!< USB interrupt priority */
 } USBMSCHFatFsTiva_HWAttrs;
 
 /*!

@@ -40,6 +40,10 @@
 #include <stdint.h>
 #include <ti/drivers/ports/ListP.h>
 
+/* driverlib header files */
+#include <pcm.h>
+#include <cs.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -75,15 +79,15 @@ extern "C" {
  *  Each constraint must be a power of two and must be sequential
  *  without any gaps.
  */
-#define PowerMSP432_DISALLOW_SLEEP          0x1
-#define PowerMSP432_DISALLOW_DEEPSLEEP_0    0x2
-#define PowerMSP432_DISALLOW_DEEPSLEEP_1    0x4
-#define PowerMSP432_DISALLOW_SHUTDOWN       0x8
-#define PowerMSP432_DISALLOW_PERFLEVEL_0    0x10
-#define PowerMSP432_DISALLOW_PERFLEVEL_1    0x20
-#define PowerMSP432_DISALLOW_PERFLEVEL_2    0x40
-#define PowerMSP432_DISALLOW_PERFLEVEL_3    0x80
-#define PowerMSP432_DISALLOW_PERFLEVEL_4    0x100
+#define PowerMSP432_DISALLOW_SLEEP          0
+#define PowerMSP432_DISALLOW_DEEPSLEEP_0    1
+#define PowerMSP432_DISALLOW_DEEPSLEEP_1    2
+#define PowerMSP432_DISALLOW_SHUTDOWN       3
+#define PowerMSP432_DISALLOW_PERFLEVEL_0    4
+#define PowerMSP432_DISALLOW_PERFLEVEL_1    5
+#define PowerMSP432_DISALLOW_PERFLEVEL_2    6
+#define PowerMSP432_DISALLOW_PERFLEVEL_3    7
+#define PowerMSP432_DISALLOW_PERFLEVEL_4    8
 #define PowerMSP432_NUMCONSTRAINTS          9
 
 /*!
@@ -110,18 +114,61 @@ extern "C" {
 #define PowerMSP432_SHUTDOWN_0              0x0
 #define PowerMSP432_SHUTDOWN_1              0x1
 
+/*! Active states */
+#define AM_DCDC_VCORE0        PCM_AM_DCDC_VCORE0
+#define AM_DCDC_VCORE1        PCM_AM_DCDC_VCORE1
+#define AM_LDO_VCORE0         PCM_AM_LDO_VCORE0
+#define AM_LDO_VCORE1         PCM_AM_LDO_VCORE1
+#define AM_LF_VCORE0          PCM_AM_LPR_VCORE0
+#define AM_LF_VCORE1          PCM_AM_LPR_VCORE1
+
+typedef struct PowerMSP432_PerfLevel {
+    unsigned int activeState;
+    unsigned int VCORE;
+    unsigned int clockSource;
+    unsigned int DCORESEL;
+    unsigned int DIVM;
+    unsigned int DIVHS;
+    unsigned int DIVS;
+    unsigned int flashWaitStates;
+    bool         enableFlashBuffer;
+    unsigned int MCLK;
+    unsigned int HSMCLK;
+    unsigned int SMCLK;
+    unsigned int ACLK;
+} PowerMSP432_PerfLevel;
+
+typedef struct PowerMSP432_Freqs {
+    unsigned int MCLK;
+    unsigned int HSMCLK;
+    unsigned int SMCLK;
+    unsigned int ACLK;
+} PowerMSP432_Freqs;
+
+typedef void (*PowerMSP432_SchedDisableFxn)(void);
+typedef void (*PowerMSP432_SchedRestoreFxn)(void);
+typedef void (*PowerMSP432_UpdateFreqsFxn)(PowerMSP432_Freqs *freqs);
+
 /*! @brief Power global configuration */
 typedef struct PowerMSP432_Config {
     Power_PolicyInitFxn policyInitFxn;    /*! Init function for power policy */
     Power_PolicyFxn policyFxn;            /*! The power policy function */
-    bool runPolicy;  /*! Determines whether to run the power policy function */
+    PowerMSP432_SchedDisableFxn schedDisableFxn; /*! OS scheduler disable fxn */
+    PowerMSP432_SchedRestoreFxn schedRestoreFxn; /*! OS scheduler restore fxn */
+    PowerMSP432_UpdateFreqsFxn freqsFxn;  /*! OS frequency update function */
+    unsigned int initialPerfLevel;        /*! initial performance level */
+    bool enablePolicy; /*! Enables power policy function to run in idle loop */
+    bool enablePerf;   /*! Enables performance level control */
 } PowerMSP432_Config;
 
 /*! Module_State */
 typedef struct PowerMSP432_Module_State {
     ListP_List notifyList;
     uint32_t constraintMask;
-    uint32_t state;
+    unsigned int state;
+    unsigned int currentPerfLevel;
+    bool enablePolicy;
+    bool perfInitialized;
     uint8_t constraintCounts[PowerMSP432_NUMCONSTRAINTS];
 } PowerMSP432_Module_State;
 
@@ -130,6 +177,15 @@ void PowerMSP432_policyInitFxn(void);
 
 /*! default power policy function for config structure */
 void PowerMSP432_policyFxn(void);
+
+/*! default frequency update policy function for config structure */
+void PowerMSP432_updateFreqs(PowerMSP432_Freqs *freqs);
+
+/*! default scheduling disable function for config structure */
+void PowerMSP432_schedulerDisable(void);
+
+/*! default scheduler restore function for config structure */
+void PowerMSP432_schedulerRestore(void);
 
 #define Power_getDependencyCount(resourceId)  0
 #define Power_releaseDependency(resourceId)

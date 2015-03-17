@@ -107,12 +107,10 @@
 extern "C" {
 #endif
 
-#include <ti/drivers/SPI.h>
-
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
-
 #include <ti/drivers/Power.h>
-#include <ti/drivers/power/PowerCC3200.h>
+#include <ti/drivers/SPI.h>
 
 /* Return codes for SPI_control() */
 #define SPICC3200DMA_CMD_UNDEFINED    -1
@@ -155,6 +153,7 @@ typedef enum SPICC3200DMA_FrameSize {
  *      {
  *          GSPI_BASE,
  *          INT_GSPI,
+ *          2,         // Interrupt priority
  *          PowerCC3200_PERIPH_GSPI,
  *          PRCM_GSPI,
  *          SPI_HW_CTRL_CS,
@@ -176,6 +175,9 @@ typedef struct SPICC3200DMA_HWAttrs {
 
     /*! SPICC3200DMA Peripheral's interrupt vector */
     uint32_t   intNum;
+
+    /*! SPICC3200DMA Peripheral's interrupt priority */
+    uint32_t   intPriority;
 
     /*! SPI Peripheral's power manager ID */
     uint32_t   powerMngrId;
@@ -214,6 +216,7 @@ typedef struct SPICC3200DMA_HWAttrs {
  */
 typedef struct SPICC3200DMA_Object {
     SemaphoreP_Handle    transferComplete;
+    HwiP_Handle          hwiHandle;
 
     SPI_TransferMode     transferMode;
     SPI_CallbackFxn      transferCallbackFxn;

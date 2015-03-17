@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -156,17 +156,16 @@ typedef struct I2C_Config      *I2C_Handle;
  *  nextPtr is to be only used by the I2C driver.
  */
 typedef struct I2C_Transaction {
+    void    *writeBuf;    /*!< buffer containing data to be written */
+    size_t  writeCount;   /*!< Number of bytes to be written to the slave */
 
-    uint8_t   *writeBuf;    /*!< void * to a buffer containing data to be written to */
-    size_t     writeCount;  /*!< Number of bytes to be written to the slave */
+    void    *readBuf;     /*!< buffer to which data is to be read into */
+    size_t  readCount;    /*!< Number of bytes to be read from the slave */
 
-    uint8_t   *readBuf;     /*!< void * to a buffer to which data is to be read into */
-    size_t     readCount;   /*!< Number of bytes to be read from the slave */
+    uint8_t slaveAddress; /*!< Address of the I2C slave device */
 
-    uint8_t    slaveAddress;/*!< Address of the I2C slave device */
-
-    void      *arg;         /*!< argument to be passed to the callback function */
-    void      *nextPtr;     /*!< Driver uses this for queuing in I2C_MODE_CALLBACK */
+    void    *arg;         /*!< argument to be passed to the callback function */
+    void    *nextPtr;     /*!< used for queuing in I2C_MODE_CALLBACK mode */
 } I2C_Transaction;
 
 /*!

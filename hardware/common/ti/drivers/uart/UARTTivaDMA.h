@@ -61,7 +61,7 @@ extern "C" {
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
 /* Return codes for UART_control() */
-#define UARTTivaDMA_CMD_UNDEFINED      -1
+#define UARTTivaDMA_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
 
 /* UART function table pointer */
 extern const UART_FxnTable UARTTivaDMA_fxnTable;
@@ -79,11 +79,17 @@ extern const UART_FxnTable UARTTivaDMA_fxnTable;
  *  const UARTTivaDMA_HWAttrs uartTivaHWAttrs[] = {
  *      {
  *          UART1_BASE,
- *          INT_UART1
+ *          INT_UART1,
+ *          ~0,        // Interrupt priority
+ *          UDMA_CH22_UART1RX,
+ *          UDMA_CH23_UART1TX,
  *      },
  *      {
  *          UART3_BASE,
  *          INT_UART3
+ *          ~0,        // Interrupt priority
+ *          UDMA_CH16_UART3RX,
+ *          UDMA_CH17_UART3TX,
  *      },
  *  };
  *  @endcode
@@ -93,6 +99,8 @@ typedef struct UARTTivaDMA_HWAttrs {
     unsigned int baseAddr;
     /*! UART Peripheral's interrupt vector */
     unsigned int intNum;
+    /*! UART Peripheral's interrupt priority */
+    unsigned int intPriority;
     /*! uDMA controlTable receive channel index plus peripheral map */
     uint32_t rxChannelIndex;
     /*! uDMA controlTable transmit channel index plus peripheral map */

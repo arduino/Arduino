@@ -53,14 +53,16 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <ti/drivers/UART.h>
-#include <ti/drivers/ports/ClockP.h>
-#include <ti/drivers/ports/SemaphoreP.h>
 
+#include <ti/drivers/ports/ClockP.h>
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/ListP.h>
+#include <ti/drivers/ports/SemaphoreP.h>
+#include <ti/drivers/Power.h>
+#include <ti/drivers/UART.h>
 
 /* Return codes for UART_control() */
-#define UARTCC3200DMA_CMD_UNDEFINED      -1
+#define UARTCC3200DMA_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
 
 /* UART function table pointer */
 extern const UART_FxnTable UARTCC3200DMA_fxnTable;
@@ -79,6 +81,7 @@ extern const UART_FxnTable UARTCC3200DMA_fxnTable;
  *      {
  *          UARTA0_BASE,
  *          INT_UARTA0,
+ *          2,          // Interrupt priority
  *          UDMA_CH8_UARTA0_RX,
  *          UDMA_CH9_UARTA0_TX,
  *          PowerCC3200_PERIPH_UARTA0
@@ -86,6 +89,7 @@ extern const UART_FxnTable UARTCC3200DMA_fxnTable;
  *      {
  *          UARTA1_BASE,
  *          INT_UARTA1,
+ *          2,          // Interrupt priority
  *          UDMA_CH10_UARTA1_RX,
  *          UDMA_CH11_UARTA1_TX,
  *          PowerCC3200_PERIPH_UARTA1
@@ -98,6 +102,8 @@ typedef struct UARTCC3200DMA_HWAttrs {
     unsigned int baseAddr;
     /*! UART Peripheral's interrupt vector */
     unsigned int intNum;
+    /*! UART Peripheral's interrupt priority */
+    unsigned int intPriority;
     /*! uDMA controlTable receive channel index */
     unsigned long rxChannelIndex;
     /*! uDMA controlTable transmit channel index */
@@ -124,6 +130,9 @@ typedef struct UARTCC3200DMA_Object {
     UART_DataMode        readDataMode;     /* Type of data being read */
     UART_DataMode        writeDataMode;    /* Type of data being written */
     uint32_t             baudRate;         /*!< Baud rate for UART */
+    UART_LEN             dataLength;       /*!< Data length for UART */
+    UART_STOP            stopBits;         /*!< Stop bits for UART */
+    UART_PAR             parityType;       /*!< Parity bit type for UART */
     UART_Echo            readEcho;         /* Echo received data back */
 
     /* UART write variables */
@@ -140,7 +149,11 @@ typedef struct UARTCC3200DMA_Object {
     SemaphoreP_Handle    writeSem;         /* UART write semaphore */
     SemaphoreP_Handle    readSem;          /* UART read semaphore */
 
+    HwiP_Handle    hwiHandle;
+
+    /* For Power management */
     ClockP_Handle        txFifoEmptyClk;   /*!< UART TX FIFO empty clock */
+    Power_NotifyObj      postNotify;       /*!< LPDS wake-up notify object */
 } UARTCC3200DMA_Object, *UARTCC3200DMA_Handle;
 
 #ifdef __cplusplus

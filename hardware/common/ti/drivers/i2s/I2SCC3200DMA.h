@@ -53,6 +53,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <ti/drivers/I2S.h>
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 #include <ti/drivers/ports/ListP.h>
 
@@ -107,6 +108,7 @@ extern I2S_BufDesc  I2SCC3200DMA_emptyBufDesc;
  *      {
  *          I2S_BASE,
  *          INT_I2S,
+ *          2,                 // Interrupt priority
  *          UDMA_CH4_I2S_RX,
  *          UDMA_CH5_I2S_TX,
  *          PowerCC3200_PERIPH_I2S
@@ -119,6 +121,8 @@ typedef struct I2SCC3200DMA_HWAttrs {
     uint32_t baseAddr;
     /*! I2S Peripheral's interrupt vector */
     uint32_t intNum;
+    /*! I2S Peripheral's interrupt priority */
+    uint32_t intPriority;
     /*! uDMA controlTable receive channel index */
     unsigned long rxChannelIndex;
     /*! uDMA controlTable transmit channel index */
@@ -188,6 +192,7 @@ typedef struct I2SCC3200DMA_Object {
     /* I2S OSAL objects */
     SemaphoreP_Handle      writeSem;              /* I2S write semaphore*/
     SemaphoreP_Handle      readSem;               /* I2S read semaphore */
+    HwiP_Handle            hwiHandle;
 
     /* DMA write Ping pong mode */
     bool                   i2sWritePingPongMode;

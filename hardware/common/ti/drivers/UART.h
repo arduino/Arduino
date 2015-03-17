@@ -135,6 +135,68 @@ extern "C" {
 #include <stdint.h>
 #include <stddef.h>
 
+/*!
+ * Common UART_control command and status code reservation offset.
+ * UART driver implementations should offset the return codes and CMD codes
+ * with UART_RESERVATION_BASE.
+ *
+ * Examples:
+ * #define UARTCC26XX_CMD_SUCCESS2  UART_RESERVATION_BASE + 2
+ * #define UARTCC26XX_CMD_SUCCESS1  UART_RESERVATION_BASE + 1
+ * #define UARTCC26XX_CMD_SUCCESS   UART_RESERVATION_BASE + 0
+ * #define UARTCC26XX_CMD_ERROR0   -UART_RESERVATION_BASE - 0
+ * #define UARTCC26XX_CMD_ERROR1   -UART_RESERVATION_BASE - 1
+ * #define UARTCC26XX_CMD_ERROR2   -UART_RESERVATION_BASE - 2
+ *
+ * #define UARTCC26XX_COMMAND0      UART_RESERVATION_BASE + 0
+ * #define UARTCC26XX_COMMAND1      UART_RESERVATION_BASE + 1
+ * etc...
+ */
+#define UART_RESERVATION_BASE       32
+
+/*! Common UART_control return codes */
+#define UART_CMD_SUCCESS            0
+#define UART_CMD_UNDEFINED         -1
+
+/*! Common UART_control CMD codes */
+/*!
+ * \brief   Command used by ::UART_control()
+ *
+ * arg is an int pointer. It contains UART_ERRO if no data is available, else
+ * it contains the next character to be read from ::UART_read()
+ */
+#define UART_PEEK                   0
+
+/*!
+ * \brief   Command used by ::UART_control()
+ *
+ * arg is a bool. It is set to true if data is available in the read buffer for
+ * ::UART_read() to read; else it returns false.
+ */
+#define UART_ISAVAILABLE            1
+
+/*!
+ * \brief   Command used by ::UART_control()
+ *
+ * arg is an int. It is set to the number of characters in the in the read
+ * buffer for ::UART_read() to read.
+ */
+#define UART_GETRXCOUNT             2
+
+/*!
+ * \brief   Command used by ::UART_control()
+ *          It enables the UART to no data is inserted into the read buffer.
+ *          When calling ::UART_open(), the read buffer will be enabled.
+ */
+#define UART_RXENABLE               3
+
+/*!
+ * \brief   Command used by ::UART_control()
+ *          It disables the UART to no data is inserted into the read buffer.
+ *          A call to ::UART_read() will !!NOT!! re-enable the read buffer.
+ */
+#define UART_RXDISABLE              4
+
 #define UART_ERROR  -1
 
 /*!
@@ -414,7 +476,8 @@ extern void UART_close(UART_Handle handle);
  *
  *  @param  handle A UART handle returned from UART_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd    A command value defined by the either the top=level driver
+ *                 or by the specific implementation.
  *
  *  @param  arg    An optional argument that is accompanied with cmd
  *

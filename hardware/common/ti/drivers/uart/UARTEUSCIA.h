@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ extern "C" {
 #include <ti/sysbios/knl/Semaphore.h>
 
 /* Return codes for SPI_control() */
-#define UARTEUSCIA_CMD_UNDEFINED    -1
+#define UARTEUSCIA_CMD_UNDEFINED    -UART_RESERVATION_BASE - 1
 
 /* UARTEUSCIA function table pointer */
 extern const UART_FxnTable UARTEUSCIA_fxnTable;

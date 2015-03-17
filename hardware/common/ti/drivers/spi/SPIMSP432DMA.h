@@ -116,6 +116,7 @@ extern "C" {
 
 #include <stdint.h>
 
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 
 #include <ti/drivers/SPI.h>
@@ -145,6 +146,7 @@ extern const SPI_FxnTable SPIMSP432DMA_fxnTable;
  *          .defaultTxBufValue = 0,
  *
  *          .dmaIntNum = INT_DMA_INT1,
+ *          .intPriority = ~0,
  *          .rxDMAChannelIndex = DMA_CH1_EUSCIB0RX0,
  *          .txDMAChannelIndex = DMA_CH0_EUSCIB0TX0
  *      },
@@ -157,6 +159,7 @@ extern const SPI_FxnTable SPIMSP432DMA_fxnTable;
  *          .defaultTxBufValue = 0,
  *
  *          .dmaIntNum = INT_DMA_INT2,
+ *          .intPriority = ~0,
  *          .rxDMAChannelIndex = DMA_CH5_EUSCIB2RX0,
  *          .txDMAChannelIndex = DMA_CH4_EUSCIB2TX0
  *      }
@@ -172,6 +175,7 @@ typedef struct SPIMSP432DMA_HWAttrs {
     uint8_t  defaultTxBufValue;  /*! Default TX value if txBuf == NULL */
 
     uint8_t  dmaIntNum;          /*!< DMA interrupt number */
+    uint8_t  intPriority;        /*!< DMA interrupt priority */
     uint32_t rxDMAChannelIndex;  /*!< DMA rxDMAChannel for Rx data */
     uint32_t txDMAChannelIndex;  /*!< DMA txDMAChannel for Tx data */
 } SPIMSP432DMA_HWAttrs;
@@ -183,6 +187,7 @@ typedef struct SPIMSP432DMA_HWAttrs {
  */
 typedef struct SPIMSP432DMA_Object {
     SemaphoreP_Handle transferComplete;       /* Notify finished SPI transfer */
+    HwiP_Handle       hwiHandle;
 
     SPI_TransferMode  transferMode;           /* SPI transfer mode */
     SPI_CallbackFxn   transferCallbackFxn;    /* Callback fxn in CALLBACK mode */

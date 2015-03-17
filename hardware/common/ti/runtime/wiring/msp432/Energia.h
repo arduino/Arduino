@@ -1,10 +1,46 @@
-#ifndef Energia_h 
-#define Energia_h 
+/*
+ * Copyright (c) 2015, Texas Instruments Incorporated
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef Energia_h
+#define Energia_h
 
 #include <stdint.h>
-#include <stdbool.h> 
-#include <string.h> 
+#include <stdbool.h>
+#include <string.h>
 #include <math.h>
+
+#include <avr/dtostrf.h>
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 
 #include "binary.h"
 
@@ -19,13 +55,8 @@
 #include <ti/drivers/bsp/Board.h>
 
 #ifdef __cplusplus
-extern "C" { 
-#endif 
-
-#define NOT_A_PORT      0
-#define NOT_A_PIN       0
-#define NOT_ON_TIMER    128
-#define NOT_ON_ADC      0xFF
+extern "C" {
+#endif
 
 /* interrupt edges */
 #define CHANGE          4
@@ -52,24 +83,15 @@ extern "C" {
 #define DEG_TO_RAD 0.017453292519943295769236907684886
 #define RAD_TO_DEG 57.295779513082320876798154814105
 
-#define PIN_FUNC_UNUSED             0
-#define PIN_FUNC_DIGITAL_OUTPUT     1
-#define PIN_FUNC_DIGITAL_INPUT      2
-#define PIN_FUNC_ANALOG_OUTPUT      3
-#define PIN_FUNC_ANALOG_INPUT       4
-
 typedef uint8_t boolean;
 typedef uint8_t byte;
 
-//#define min(a,b) ((a)<(b)?(a):(b))
-//#define max(a,b) ((a)>(b)?(a):(b))
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg) ((deg)*DEG_TO_RAD)
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-//#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesPerMicrosecond() ( 80000000L / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
 #define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
@@ -107,66 +129,10 @@ void delay(uint32_t milliseconds);
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);
 
-extern const uint8_t digital_pin_to_timer[];
-extern const uint8_t digital_pin_to_port[];
-extern const uint8_t digital_pin_to_bit_mask[];
-extern const uint32_t timer_to_offset[];
-extern const uint8_t timer_to_ab[];
-extern const uint32_t timer_to_pin_config[];
-extern const uint32_t port_to_base[];
-extern const uint32_t digital_pin_to_analog_in[];
-extern const uint8_t digital_pin_to_hwAttrs_index[];
-extern uint8_t digital_pin_to_pin_function[];
-
-#define digitalPinToPortBase(P)   ( gpioHWAttrs[digital_pin_to_hwAttrs_index[P]].port )
-#define digitalPinToBitMask(P)    ( gpioHWAttrs[digital_pin_to_hwAttrs_index[P]].pin )
-#define digitalPinToTimer(P)      ( digital_pin_to_timer[P] )
-#define timerToAB(P)              ( timer_to_ab[P] )
-#define timerToOffset(P)          ( timer_to_offset[P] )
-#define timerToPinConfig(P)       ( timer_to_pin_config[P] )
-#define digitalPinToADCIn(P)      ( digital_pin_to_analog_in[P] )
-#define portBASERegister(P)       ((volatile uint32_t *) port_to_base[P])
-#define portDATARegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x3FC ))
-#define portDIRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x400 ))
-#define portIBERegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x408 ))
-#define portIEVRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x40C ))
-#define portIMRegister(P)         ((volatile uint32_t *)( port_to_base[P] + 0x410 ))
-#define portRISRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x414 ))
-#define portMISRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x418 ))
-#define portICRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x41C ))
-#define portAFSELRegister(P)      ((volatile uint32_t *)( port_to_base[P] + 0x420 ))
-#define portDR2RRegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x500 ))
-#define portDR4RRegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x504 ))
-#define portDR8RRegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x508 ))
-#define portODRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x50C ))
-#define portPURRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x510 ))
-#define portPDRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x514 ))
-#define portSLRRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x518 ))
-#define portDENRegister(P)        ((volatile uint32_t *)( port_to_base[P] + 0x51C ))
-#define portLOCKRegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x520 ))
-#define portCRRegister(P)         ((volatile uint32_t *)( port_to_base[P] + 0x524 ))
-#define portAMSELRegister(P)      ((volatile uint32_t *)( port_to_base[P] + 0x528 ))
-#define portPCTLRegister(P)       ((volatile uint32_t *)( port_to_base[P] + 0x52C ))
-#define portADCCTLRegister(P)     ((volatile uint32_t *)( port_to_base[P] + 0x530 ))
-#define portMACTLRegister(P)      ((volatile uint32_t *)( port_to_base[P] + 0x534 ))
-#define portPeriphID4Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFD0 ))
-#define portPeriphID5Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFD4 ))
-#define portPeriphID6Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFD8 ))
-#define portPeriphID7Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFDC ))
-#define portPeriphID0Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFE0 ))
-#define portPeriphID1Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFE4 ))
-#define portPeriphID2Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFE8 ))
-#define portPeriphID3Register(P)  ((volatile uint32_t *)( port_to_base[P] + 0xFEC ))
-#define portCellID0Register(P)    ((volatile uint32_t *)( port_to_base[P] + 0xFF0 ))
-#define portCellID1Register(P)    ((volatile uint32_t *)( port_to_base[P] + 0xFF4 ))
-#define portCellID2Register(P)    ((volatile uint32_t *)( port_to_base[P] + 0xFF8 ))
-#define portCellID3Register(P)    ((volatile uint32_t *)( port_to_base[P] + 0xFFC ))
-
 // Implemented in wiring.c
 void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
-void timerInit();
 
 #ifdef __cplusplus
 } // extern "C"

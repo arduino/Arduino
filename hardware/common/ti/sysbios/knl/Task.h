@@ -167,6 +167,11 @@ typedef ti_sysbios_knl_Task_Handle __T1_ti_sysbios_knl_Task_Module_State__constr
 typedef ti_sysbios_knl_Task_Handle *__ARRAY1_ti_sysbios_knl_Task_Module_State__constructedTasks;
 typedef __ARRAY1_ti_sysbios_knl_Task_Module_State__constructedTasks __TA_ti_sysbios_knl_Task_Module_State__constructedTasks;
 
+/* Module_StateSmp */
+struct ti_sysbios_knl_Task_Module_StateSmp {
+    volatile xdc_UInt8 readyFlag;
+};
+
 
 /*
  * ======== MODULE-WIDE CONFIGS ========
@@ -343,6 +348,16 @@ __extern __FAR__ const CT__ti_sysbios_knl_Task_A_badTimeout ti_sysbios_knl_Task_
 #define ti_sysbios_knl_Task_A_badAffinity (ti_sysbios_knl_Task_A_badAffinity__C)
 typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Task_A_badAffinity;
 __extern __FAR__ const CT__ti_sysbios_knl_Task_A_badAffinity ti_sysbios_knl_Task_A_badAffinity__C;
+
+/* A_setAffinityTaskDisabled */
+#define ti_sysbios_knl_Task_A_setAffinityTaskDisabled (ti_sysbios_knl_Task_A_setAffinityTaskDisabled__C)
+typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Task_A_setAffinityTaskDisabled;
+__extern __FAR__ const CT__ti_sysbios_knl_Task_A_setAffinityTaskDisabled ti_sysbios_knl_Task_A_setAffinityTaskDisabled__C;
+
+/* A_setPriTaskDisabled */
+#define ti_sysbios_knl_Task_A_setPriTaskDisabled (ti_sysbios_knl_Task_A_setPriTaskDisabled__C)
+typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Task_A_setPriTaskDisabled;
+__extern __FAR__ const CT__ti_sysbios_knl_Task_A_setPriTaskDisabled ti_sysbios_knl_Task_A_setPriTaskDisabled__C;
 
 /* A_sleepTaskDisabled */
 #define ti_sysbios_knl_Task_A_sleepTaskDisabled (ti_sysbios_knl_Task_A_sleepTaskDisabled__C)
@@ -966,6 +981,7 @@ static inline ti_sysbios_knl_Queue_Handle ti_sysbios_knl_Task_Module_State_termi
 #define Task_PendElem ti_sysbios_knl_Task_PendElem
 #define Task_Instance_State ti_sysbios_knl_Task_Instance_State
 #define Task_Module_State ti_sysbios_knl_Task_Module_State
+#define Task_Module_StateSmp ti_sysbios_knl_Task_Module_StateSmp
 #define Task_Mode_RUNNING ti_sysbios_knl_Task_Mode_RUNNING
 #define Task_Mode_READY ti_sysbios_knl_Task_Mode_READY
 #define Task_Mode_BLOCKED ti_sysbios_knl_Task_Mode_BLOCKED
@@ -991,6 +1007,8 @@ static inline ti_sysbios_knl_Queue_Handle ti_sysbios_knl_Task_Module_State_termi
 #define Task_A_badPriority ti_sysbios_knl_Task_A_badPriority
 #define Task_A_badTimeout ti_sysbios_knl_Task_A_badTimeout
 #define Task_A_badAffinity ti_sysbios_knl_Task_A_badAffinity
+#define Task_A_setAffinityTaskDisabled ti_sysbios_knl_Task_A_setAffinityTaskDisabled
+#define Task_A_setPriTaskDisabled ti_sysbios_knl_Task_A_setPriTaskDisabled
 #define Task_A_sleepTaskDisabled ti_sysbios_knl_Task_A_sleepTaskDisabled
 #define Task_A_invalidCoreId ti_sysbios_knl_Task_A_invalidCoreId
 #define Task_numPriorities ti_sysbios_knl_Task_numPriorities

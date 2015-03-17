@@ -53,6 +53,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <ti/drivers/Camera.h>
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 
 /* Return codes for SPI_control() */
@@ -78,6 +79,7 @@ extern const Camera_FxnTable CameraCC3200DMA_fxnTable;
  *      {
  *          CAMERA_BASE,
  *          INT_CAMERA,
+ *          2,                   // Interrupt priority
  *          UDMA_CH22_CAMERA,
  *          PowerCC3200_PERIPH_CAMERA
  *      }
@@ -89,6 +91,8 @@ typedef struct CameraCC3200DMA_HWAttrs {
     uint32_t     baseAddr;
     /*! Camera Peripheral's interrupt vector */
     uint32_t    intNum;
+    /*! Camera Peripheral's interrupt priority */
+    uint32_t    intPriority;
     /*! uDMA controlTable channel index */
     unsigned long channelIndex;
     /*!< Camera Peripheral's power manager ID */
@@ -118,6 +122,7 @@ typedef struct CameraCC3200DMA_Object {
 
     /* Camera OS objects */
     SemaphoreP_Handle   captureSem;
+    HwiP_Handle         hwiHandle;
 } CameraCC3200DMA_Object, *CameraCC3200DMA_Handle;
 
 #ifdef __cplusplus

@@ -56,10 +56,13 @@ extern "C" {
 #include <stdint.h>
 
 #include <ti/drivers/UART.h>
+#include <ti/drivers/uart/RingBuf.h>
+#include <ti/drivers/ports/ClockP.h>
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 
 /* Return codes for UART_control() */
-#define UARTMSP432_CMD_UNDEFINED    -1
+#define UARTMSP432_CMD_UNDEFINED    -UART_RESERVATION_BASE - 1
 
 /* UARTMSP432 function table pointer */
 extern const UART_FxnTable UARTMSP432_fxnTable;
@@ -106,15 +109,21 @@ typedef struct UARTMSP432_BaudrateConfig {
  *
  *  A sample structure is shown below:
  *  @code
+ *
+ *  unsigned char uartMSP432RingBuffer[2][32];
+ *
  *  const UARTMSP432_HWAttrs uartMSP432HWAttrs[MSP_EXP432P401RLP_UARTCOUNT] = {
  *      {
  *          .baseAddr = EUSCI_A0_BASE,
  *          .intNum = INT_EUSCIA0,
+ *          .intPriority = ~0,
  *          .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
  *          .bitOrder = EUSCI_A_UART_LSB_FIRST,
  *          .numBaudrateEntries = sizeof(uartMSP432Baudrates) /
  *                                sizeof(UARTMSP432_BaudrateConfig),
- *          .baudrateLUT = uartMSP432Baudrates
+ *          .baudrateLUT = uartMSP432Baudrates,
+ *          .ringBufPtr  = uartMSP432RingBuffer[0],
+ *          .ringBufSize = sizeof(uartMSP432RingBuffer[0])
  *      },
  *      {
  *          .baseAddr = EUSCI_A2_BASE,
@@ -123,9 +132,8 @@ typedef struct UARTMSP432_BaudrateConfig {
  *          .numBaudrateEntries = sizeof(uartMSP432Baudrates) /
  *                                sizeof(UARTMSP432_BaudrateConfig),
  *          .baudrateLUT = uartMSP432Baudrates
- *          .dmaIntNum = INT_DMA_INT2,
- *          .rxDMAChannelIndex = DMA_CH5_EUSCIA2RX,
- *          .txDMAChannelIndex = DMA_CH4_EUSCIA2TX
+ *          .ringBufPtr  = uartMSP432RingBuffer[1],
+ *          .ringBufSize = sizeof(uartMSP432RingBuffer[1])
  *      }
  *  };
  *  @endcode
@@ -135,6 +143,8 @@ typedef struct UARTMSP432_HWAttrs {
     uint32_t baseAddr;
     /*! UART Peripheral's interrupt vector */
     uint8_t  intNum;
+    /*! UART Peripheral's interrupt priority */
+    uint8_t  intPriority;
     /*! UART Clock source */
     uint8_t  clockSource;
     /*!< UART Bit order */
@@ -143,6 +153,10 @@ typedef struct UARTMSP432_HWAttrs {
     uint8_t  numBaudrateEntries;
     /*!< Pointer to a table of possible UARTMSP432_BaudrateConfig entries */
     UARTMSP432_BaudrateConfig const *baudrateLUT;
+    /*! Pointer to a application ring buffer */
+    void        *ringBufPtr;
+    /*! Size of ringBufPtr */
+    size_t       ringBufSize;
 } UARTMSP432_HWAttrs;
 
 /*!
@@ -151,33 +165,54 @@ typedef struct UARTMSP432_HWAttrs {
  *  Not intended to be used by the user.
  */
 typedef struct UARTMSP432_Object {
-    /* UARTMSP432 control variables */
-    UART_Mode            readMode;           /* Mode for all read calls */
-    UART_Mode            writeMode;          /* Mode for all write calls */
-    unsigned int         readTimeout;        /* Timeout for read semaphore */
-    unsigned int         writeTimeout;       /* Timeout for write semaphore */
-    UART_Callback        readCallback;       /* Pointer to read callback */
-    UART_Callback        writeCallback;      /* Pointer to write callback */
-    UART_ReturnMode      readReturnMode;     /* Receive return mode */
-    UART_DataMode        readDataMode;       /* Type of data being read */
-    UART_DataMode        writeDataMode;      /* Type of data being written */
-    UART_Echo            readEcho;           /* Echo received data back */
+    /* UART status variable */
+    struct {
+        bool             opened:1;         /* Has the obj been opened */
+        UART_Mode        readMode:1;       /* Mode for all read calls */
+        UART_Mode        writeMode:1;      /* Mode for all write calls */
+        UART_DataMode    readDataMode:1;   /* Type of data being read */
+        UART_DataMode    writeDataMode:1;  /* Type of data being written */
+        UART_ReturnMode  readReturnMode:1; /* Receive return mode */
+        UART_Echo        readEcho:1;       /* Echo received data back */
+        bool             writeCR:1;        /* Write a return character */
+        bool             bufTimeout:1;
+        bool             callCallback:1;
+    } status;
 
-    /* UARTMSP432 write variables */
-    const void          *writeBuf;           /* Buffer data pointer */
-    size_t               writeCount;         /* Number of Chars sent */
-    size_t               writeSize;          /* Chars remaining in buffer */
-    bool                 writeCR;            /* Write a return character */
+    union {
+        struct {
+            ClockP_Handle     timeoutClk;   /* Clock object to for timeouts */
+            SemaphoreP_Handle readSem;      /* UART read semaphore */
+            SemaphoreP_Handle writeSem;     /* UART write semaphore*/
+            unsigned int      readTimeout;  /* Timeout for read semaphore */
+            unsigned int      writeTimeout; /* Timeout for write semaphore */
+        } blocking;
+        struct {
+            bool             inIsrControl;
+        } callback;
+    };
 
-    /* UARTMSP432 receive variables */
-    void                *readBuf;            /* Buffer data pointer */
-    size_t               readCount;          /* Number of Chars read */
-    size_t               readSize;           /* Chars remaining in buffer */
+    HwiP_Handle          hwiHandle;
 
-    SemaphoreP_Handle    writeSem;           /* UARTMSP432 write semaphore */
-    SemaphoreP_Handle    readSem;            /* UARTMSP432 read semaphore */
+    UART_Callback        readCallback;     /* Pointer to read callback */
+    UART_Callback        writeCallback;    /* Pointer to write callback */
 
-    bool                 isOpen;             /* Status for open */
+    uint32_t             baudRate;         /*!< Baud rate for UART */
+    UART_LEN             dataLength;       /*!< Data length for UART */
+    UART_STOP            stopBits;         /*!< Stop bits for UART */
+    UART_PAR             parityType;       /*!< Parity bit type for UART */
+
+    /* UART read variables */
+    RingBuf_Object       ringBuffer;
+    void                *readBuf;          /* Buffer data pointer */
+    size_t               readSize;         /* Desired number of bytes to read */
+    size_t               readCount;        /* Number of bytes left to read */
+
+    /* UART write variables */
+    const void          *writeBuf;         /* Buffer data pointer */
+    size_t               writeSize;        /* Desired number of bytes to write*/
+    size_t               writeCount;       /* Number of bytes left to write */
+
 } UARTMSP432_Object, *UARTMSP432_Handle;
 
 #ifdef __cplusplus

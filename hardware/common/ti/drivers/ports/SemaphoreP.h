@@ -184,6 +184,16 @@ extern SemaphoreP_Status SemaphoreP_post(SemaphoreP_Handle handle);
  */
 extern SemaphoreP_Status SemaphoreP_postFromISR(SemaphoreP_Handle handle);
 
+/*!
+ *  @brief  Function to post (signal) a semaphore from an ClockP function.
+ *
+ *  @param  handle  A SemaphoreP_Handle returned from ::SemaphoreP_create
+ *
+ *  @return Status of the functions
+ *    - SemaphoreP_OK: Released the semaphore
+ */
+extern SemaphoreP_Status SemaphoreP_postFromClock(SemaphoreP_Handle handle);
+
 #ifdef __cplusplus
 }
 #endif

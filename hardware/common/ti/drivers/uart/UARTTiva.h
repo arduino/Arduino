@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,13 +53,15 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <ti/drivers/UART.h>
+#include <ti/drivers/uart/RingBuf.h>
 
+#include <ti/sysbios/knl/Clock.h>
 #include <ti/sysbios/knl/Semaphore.h>
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
 /* Return codes for SPI_control() */
-#define UARTTiva_CMD_UNDEFINED      -1
+#define UARTTiva_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
 
 /* UART function table pointer */
 extern const UART_FxnTable UARTTiva_fxnTable;
@@ -71,19 +73,30 @@ extern const UART_FxnTable UARTTiva_fxnTable;
  *  driverlib macro definitions. For TivaWare these definitions are found in:
  *      - inc/hw_memmap.h
  *      - inc/hw_ints.h
+ *      - driverlib/uart.h
  *
  *  A sample structure is shown below:
  *  @code
+ *  UARTTiva_Object uartTivaObjects[2];
+ *  unsigned char uartTivaRingBuffer[2][32];
+ *
  *  const UARTTiva_HWAttrs uartTivaHWAttrs[] = {
  *      {
- *          UART1_BASE,
- *          INT_UART1
+ *          .baseAddr = UART0_BASE,
+ *          .intNum = INT_UART0,
+ *          .intPriority = ~0,
+ *          .flowControl = UART_FLOWCONTROL_NONE,
+ *          .ringBufPtr  = uartTivaRingBuffer[0],
+ *          .ringBufSize = sizeof(uartTivaRingBuffer[0])
  *      },
  *      {
- *          UART3_BASE,
- *          INT_UART3
- *      },
- *  };
+ *          .baseAddr = UART1_BASE,
+ *          .intNum = INT_UART1,
+ *          .intPriority = ~0,
+ *          .flowControl = UART_FLOWCONTROL_NONE,
+ *          .ringBufPtr  = uartTivaRingBuffer[1],
+ *          .ringBufSize = sizeof(uartTivaRingBuffer[1])
+ *      }
  *  @endcode
  */
 typedef struct UARTTiva_HWAttrs {
@@ -91,6 +104,14 @@ typedef struct UARTTiva_HWAttrs {
     unsigned int baseAddr;
     /*! UART Peripheral's interrupt vector */
     unsigned int intNum;
+    /*! UART Peripheral's interrupt priority */
+    unsigned int intPriority;
+    /*! Flow control setting provided by driverlib */
+    uint32_t     flowControl;
+    /*! Pointer to a application ring buffer */
+    void        *ringBufPtr;
+    /*! Size of ringBufPtr */
+    size_t       ringBufSize;
 } UARTTiva_HWAttrs;
 
 /*!
@@ -99,34 +120,48 @@ typedef struct UARTTiva_HWAttrs {
  *  The application must not access any member variables of this structure!
  */
 typedef struct UARTTiva_Object {
-    /* UART control variables */
-    bool                 opened;           /* Has the obj been opened */
-    UART_Mode            readMode;         /* Mode for all read calls */
-    UART_Mode            writeMode;        /* Mode for all write calls */
-    unsigned int         readTimeout;      /* Timeout for read semaphore */
-    unsigned int         writeTimeout;     /* Timeout for write semaphore */
+    /* UART status variable */
+    struct {
+        bool             opened:1;         /* Has the obj been opened */
+        UART_Mode        readMode:1;       /* Mode for all read calls */
+        UART_Mode        writeMode:1;      /* Mode for all write calls */
+        UART_DataMode    readDataMode:1;   /* Type of data being read */
+        UART_DataMode    writeDataMode:1;  /* Type of data being written */
+        UART_ReturnMode  readReturnMode:1; /* Receive return mode */
+        UART_Echo        readEcho:1;       /* Echo received data back */
+        bool             writeCR:1;        /* Write a return character */
+        bool             bufTimeout:1;
+        bool             callCallback:1;
+    } status;
+
+    union {
+        struct {
+            Clock_Struct     timeout;      /* Clock object to for timeouts */
+            Semaphore_Struct readSem;      /* UART read semaphore */
+            Semaphore_Struct writeSem;     /* UART write semaphore*/
+            unsigned int     readTimeout;  /* Timeout for read semaphore */
+            unsigned int     writeTimeout; /* Timeout for write semaphore */
+        } blocking;
+        struct {
+            bool             inIsrControl;
+        } callback;
+    };
+
     UART_Callback        readCallback;     /* Pointer to read callback */
     UART_Callback        writeCallback;    /* Pointer to write callback */
-    UART_ReturnMode      readReturnMode;   /* Receive return mode */
-    UART_DataMode        readDataMode;     /* Type of data being read */
-    UART_DataMode        writeDataMode;    /* Type of data being written */
-    UART_Echo            readEcho;         /* Echo received data back */
+
+    /* UART read variables */
+    RingBuf_Object       ringBuffer;
+    void                *readBuf;          /* Buffer data pointer */
+    size_t               readSize;         /* Desired number of bytes to read */
+    size_t               readCount;        /* Number of bytes left to read */
 
     /* UART write variables */
     const void          *writeBuf;         /* Buffer data pointer */
-    size_t               writeCount;       /* Number of Chars sent */
-    size_t               writeSize;        /* Chars remaining in buffer */
-    bool                 writeCR;          /* Write a return character */
+    size_t               writeSize;        /* Desired number of bytes to write*/
+    size_t               writeCount;       /* Number of bytes left to write */
 
-    /* UART receive variables */
-    void                *readBuf;          /* Buffer data pointer */
-    size_t               readCount;        /* Number of Chars read */
-    size_t               readSize;         /* Chars remaining in buffer */
-
-    /* UART SYS/BIOS objects */
     ti_sysbios_family_arm_m3_Hwi_Struct hwi; /* Hwi object */
-    Semaphore_Struct     writeSem;         /* UART write semaphore*/
-    Semaphore_Struct     readSem;          /* UART read semaphore */
 } UARTTiva_Object, *UARTTiva_Handle;
 
 /* Do not interfere with the app if they include the family Hwi module */

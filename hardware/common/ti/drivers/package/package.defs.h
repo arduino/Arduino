@@ -24,7 +24,6 @@ typedef struct ti_drivers_EMAC_EMACSnow_Object ti_drivers_EMAC_EMACSnow_Object;
  * ======== module ti.drivers.GPIO ========
  */
 
-typedef struct ti_drivers_GPIO_GPIO_HWAttrs ti_drivers_GPIO_GPIO_HWAttrs;
 typedef struct ti_drivers_GPIO_GPIO_Config ti_drivers_GPIO_GPIO_Config;
 
 /*

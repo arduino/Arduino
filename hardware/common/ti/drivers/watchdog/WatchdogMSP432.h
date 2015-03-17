@@ -72,6 +72,8 @@ extern "C" {
 
 #include <ti/drivers/Watchdog.h>
 
+#include <ti/drivers/ports/HwiP.h>
+
 /* Return codes for WatchdogTiva_control() */
 #define WatchdogMSP432_CMD_UNDEFINED    -1
 
@@ -90,6 +92,7 @@ extern const Watchdog_FxnTable WatchdogMSP432_fxnTable;
  *      {
  *          .baseAddr = WDT_A_BASE,
  *          .intNum = INT_WDT_A,
+ *          .intPriority = ~0,
  *          .clockSource = WDT_A_CLOCKSOURCE_SMCLK,
  *          .clockDivider = WDT_A_CLOCKDIVIDER_8192K
  *      },
@@ -99,6 +102,7 @@ extern const Watchdog_FxnTable WatchdogMSP432_fxnTable;
 typedef struct WatchdogMSP432_HWAttrs {
     uint32_t baseAddr;     /*!< Base address of Watchdog */
     uint8_t  intNum;       /*!< WDT interrupt number */
+    uint8_t  intPriority;  /*!< WDT interrupt number */
     uint8_t  clockSource;  /*!< Clock source for Watchdog */
     uint8_t  clockDivider; /*!< Clock divider for Watchdog */
 } WatchdogMSP432_HWAttrs;
@@ -110,6 +114,7 @@ typedef struct WatchdogMSP432_HWAttrs {
  */
 typedef struct WatchdogMSP432_Object {
     Watchdog_ResetMode resetMode;
+    HwiP_Handle        hwiHandle;
     bool               isOpen;              /*!< Flag for open/close status */
 } WatchdogMSP432_Object;
 

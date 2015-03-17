@@ -50,6 +50,13 @@ extern "C" {
 #include <stddef.h>
 
 /*!
+ *  @brief    Opaque client reference to an instance of a HwiP
+ *
+ *  A HwiP_Handle returned from the ::HwiP_create represents that instance.
+ */
+typedef  void *HwiP_Handle;
+
+/*!
  *  @brief    Status codes for HwiP APIs
  */
 typedef enum HwiP_Status {
@@ -60,38 +67,54 @@ typedef enum HwiP_Status {
 /*!
  *  @brief  Prototype for the entry function for a hardware interrupt
  */
-typedef void (*HwiP_EntryFxn)(uintptr_t arg);
+typedef void (*HwiP_Fxn)(uintptr_t arg);
+
+/*!
+ *  @brief    Basic HwiP Parameters
+ *
+ *  Structure that contains the parameters passed into ::HwiP_create
+ *  when creating a HwiP instance. The ::HwiP_Params_init function should
+ *  be used to initialize the fields to default values before the application sets
+ *  the fields manually. The HwiP default parameters are noted in
+ *  HwiP_Params_init.
+ */
+typedef struct HwiP_Params {
+    char      *name;      /*!< Name of the clock instance. Memory must
+                               persist for the life of the clock instance.
+                               This can be used for debugging purposes, or
+                               set to NULL if not needed. */
+    uintptr_t  arg;       /*!< Argument passed into the Hwi function. */
+    uint32_t   priority;  /*!< Device specific priority. */
+} HwiP_Params;
 
 /*!
  *  @brief  Function to register an interrupt on CortexM devices
  *
  *  TODO more detail
  *
- *  @param  interruptNum
+ *  @param  interruptNum Interrupt Vector Id
  *
- *  @param  entry entry function of the hardware interrupt
+ *  @param  hwiFxn entry function of the hardware interrupt
  *
- *  @param  arg  argument passed into hte entry function
- *
- *  @param  priority
+ *  @param  params    Pointer to the instance configuration parameters. NULL
+ *                    denotes to use the default parameters. The HwiP default
+ *                    parameters are noted in ::HwiP_Params_init.
  *
  *  @return
  */
-extern HwiP_Status HwiP_registerCortexM(int interruptNum,
-                                        HwiP_EntryFxn entry,
-                                        uintptr_t arg,
-                                        unsigned char priority);
+extern HwiP_Handle HwiP_create(int interruptNum, HwiP_Fxn hwiFxn,
+                               HwiP_Params *params);
 
 /*!
  *  @brief  Function to deregister a interrupt on CortexM devices
  *
  *  TODO more detail
  *
- *  @param  interruptNum
+ *  @param  handle returned from the HwiP_create call
  *
  *  @return
  */
-extern HwiP_Status HwiP_deregisterCortexM(int interruptNum);
+extern HwiP_Status HwiP_delete(HwiP_Handle handle);
 
 /*!
  *  @brief  Function to clear a single interrupt
@@ -100,7 +123,7 @@ extern HwiP_Status HwiP_deregisterCortexM(int interruptNum);
  *
  *  @param  interruptNum
  */
-extern void HwiP_clearCortexM(int interruptNum);
+extern void HwiP_clearInterrupt(int interruptNum);
 
 /*!
  *  @brief  Function to disable a single interrupt
@@ -109,7 +132,7 @@ extern void HwiP_clearCortexM(int interruptNum);
  *
  *  @param  interruptNum
  */
-extern void HwiP_disableCortexM(int interruptNum);
+extern void HwiP_disableInterrupt(int interruptNum);
 
 /*!
  *  @brief  Function to enable a single interrupt
@@ -118,7 +141,7 @@ extern void HwiP_disableCortexM(int interruptNum);
  *
  *  @param  interruptNum
  */
-extern void HwiP_enableCortexM(int interruptNum);
+extern void HwiP_enableInterrupt(int interruptNum);
 
 /*!
  *  @brief  Function to disable interrupts to enter a critical region
@@ -127,7 +150,19 @@ extern void HwiP_enableCortexM(int interruptNum);
  *
  *  @return todo key
  */
-extern unsigned int HwiP_enterCritical(void);
+extern uintptr_t HwiP_disable(void);
+
+/*!
+ *  @brief  Initialize params structure to default values.
+ *
+ *  The default parameters are:
+ *   - name: NULL
+ *   - arg: 0
+ *   - priority: ~0
+ *
+ *  @param params  Pointer to the instance configuration parameters.
+ */
+extern void HwiP_Params_init(HwiP_Params *params);
 
 /*!
  *  @brief  Function to restore interrupts to exit a critical region
@@ -136,7 +171,7 @@ extern unsigned int HwiP_enterCritical(void);
  *
  *  @param  key
  */
-extern void HwiP_exitCritical(unsigned int key);
+extern void HwiP_restore(uintptr_t key);
 
 #ifdef __cplusplus
 }

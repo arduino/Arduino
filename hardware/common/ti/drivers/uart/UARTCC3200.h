@@ -52,12 +52,17 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <ti/drivers/UART.h>
+
 #include <ti/drivers/ports/ClockP.h>
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
+#include <ti/drivers/Power.h>
+#include <ti/drivers/UART.h>
+#include <ti/drivers/uart/RingBuf.h>
+
 
 /* Return codes for SPI_control() */
-#define UARTCC3200_CMD_UNDEFINED      -1
+#define UARTCC3200_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
 
 /* UART function table pointer */
 extern const UART_FxnTable UARTCC3200_fxnTable;
@@ -69,19 +74,31 @@ extern const UART_FxnTable UARTCC3200_fxnTable;
  *  driverlib macro definitions. For CC3200Ware these definitions are found in:
  *      - inc/hw_memmap.h
  *      - inc/hw_ints.h
+ *      - driverlib/uart.h
  *
  *  A sample structure is shown below:
  *  @code
+ *  UARTCC3200_HWAttrs uartTivaObjects[2];
+ *  unsigned char uartCC3200RingBuffer[2][32];
+ *
  *  const UARTCC3200_HWAttrs uartCC3200HWAttrs[] = {
  *      {
- *          UARTA0_BASE,
- *          INT_UARTA0,
- *          PowerCC3200_PERIPH_UARTA0
+ *          .baseAddr = UARTA0_BASE,
+ *          .intNum = INT_UARTA0,
+ *          .intPriority = 2,
+ *          .flowControl = UART_FLOWCONTROL_NONE,
+ *          .ringBufPtr  = uartCC3200RingBuffer[0],
+ *          .ringBufSize = sizeof(uartCC3200RingBuffer[0])
+ *          .powerMngrId = PowerCC3200_PERIPH_UARTA0
  *      },
  *      {
- *          UARTA1_BASE,
- *          INT_UARTA1,
- *          PowerCC3200_PERIPH_UARTA1
+ *          .baseAddr = UARTA1_BASE,
+ *          .intNum = INT_UARTA1,
+ *          .intPriority = 2,
+ *          .flowControl = UART_FLOWCONTROL_NONE,
+ *          .ringBufPtr  = uartCC3200RingBuffer[0],
+ *          .ringBufSize = sizeof(uartCC3200RingBuffer[0])
+ *          .powerMngrId = PowerCC3200_PERIPH_UARTA1
  *      },
  *  };
  *  @endcode
@@ -91,6 +108,14 @@ typedef struct UARTCC3200_HWAttrs {
     unsigned int    baseAddr;
     /*! UART Peripheral's interrupt vector */
     unsigned int    intNum;
+    /*! UART Peripheral's interrupt priority */
+    unsigned int    intPriority;
+    /*! Flow control setting provided by driverlib */
+    uint32_t        flowControl;
+    /*! Pointer to a application ring buffer */
+    void           *ringBufPtr;
+    /*! Size of ringBufPtr */
+    size_t          ringBufSize;
     /*!< UART Peripheral's power manager ID */
     unsigned long   powerMngrId;
 } UARTCC3200_HWAttrs;
@@ -101,36 +126,57 @@ typedef struct UARTCC3200_HWAttrs {
  *  The application must not access any member variables of this structure!
  */
 typedef struct UARTCC3200_Object {
-    /* UART control variables */
-    bool                 opened;           /* Has the obj been opened */
-    UART_Mode            readMode;         /* Mode for all read calls */
-    UART_Mode            writeMode;        /* Mode for all write calls */
-    unsigned int         readTimeout;      /* Timeout for read semaphore */
-    unsigned int         writeTimeout;     /* Timeout for write semaphore */
+    /* UART status variable */
+    struct {
+        bool             opened:1;         /* Has the obj been opened */
+        UART_Mode        readMode:1;       /* Mode for all read calls */
+        UART_Mode        writeMode:1;      /* Mode for all write calls */
+        UART_DataMode    readDataMode:1;   /* Type of data being read */
+        UART_DataMode    writeDataMode:1;  /* Type of data being written */
+        UART_ReturnMode  readReturnMode:1; /* Receive return mode */
+        UART_Echo        readEcho:1;       /* Echo received data back */
+        bool             writeCR:1;        /* Write a return character */
+        bool             bufTimeout:1;
+        bool             callCallback:1;
+    } status;
+
+    union {
+        struct {
+            ClockP_Handle     timeoutClk;  /* Clock object to for timeouts */
+            SemaphoreP_Handle readSem;      /* UART read semaphore */
+            SemaphoreP_Handle writeSem;     /* UART write semaphore*/
+            unsigned int      readTimeout;  /* Timeout for read semaphore */
+            unsigned int      writeTimeout; /* Timeout for write semaphore */
+        } blocking;
+        struct {
+            bool             inIsrControl;
+        } callback;
+    };
+
+    HwiP_Handle          hwiHandle;
+
     UART_Callback        readCallback;     /* Pointer to read callback */
     UART_Callback        writeCallback;    /* Pointer to write callback */
-    UART_ReturnMode      readReturnMode;   /* Receive return mode */
-    UART_DataMode        readDataMode;     /* Type of data being read */
-    UART_DataMode        writeDataMode;    /* Type of data being written */
+
     uint32_t             baudRate;         /*!< Baud rate for UART */
-    UART_Echo            readEcho;         /* Echo received data back */
+    UART_LEN             dataLength;       /*!< Data length for UART */
+    UART_STOP            stopBits;         /*!< Stop bits for UART */
+    UART_PAR             parityType;       /*!< Parity bit type for UART */
+
+    /* UART read variables */
+    RingBuf_Object       ringBuffer;
+    void                *readBuf;          /* Buffer data pointer */
+    size_t               readSize;         /* Desired number of bytes to read */
+    size_t               readCount;        /* Number of bytes left to read */
 
     /* UART write variables */
     const void          *writeBuf;         /* Buffer data pointer */
-    size_t               writeCount;       /* Number of Chars sent */
-    size_t               writeSize;        /* Chars remaining in buffer */
-    bool                 writeCR;          /* Write a return character */
+    size_t               writeSize;        /* Desired number of bytes to write*/
+    size_t               writeCount;       /* Number of bytes left to write */
 
-    /* UART receive variables */
-    void                *readBuf;          /* Buffer data pointer */
-    size_t               readCount;        /* Number of Chars read */
-    size_t               readSize;         /* Chars remaining in buffer */
-
-    /* Semaphores for blocking mode */
-    SemaphoreP_Handle    writeSem;         /* UART write semaphore */
-    SemaphoreP_Handle    readSem;          /* UART read semaphore */
-
-    ClockP_Handle        txFifoEmptyClk;   /*!< UART TX FIFO empty clock */
+    /* For Power management */
+    ClockP_Handle        txFifoEmptyClk;   /* UART TX FIFO empty clock */
+    Power_NotifyObj      postNotify;       /* LPDS wake-up notify object */
 } UARTCC3200_Object, *UARTCC3200_Handle;
 
 #ifdef __cplusplus

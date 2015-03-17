@@ -36,6 +36,7 @@
  *
  *  The Power header file should be included in an application as follows:
  *  @code
+ *  #include <ti/drivers/Power.h>
  *  #include <ti/drivers/power/PowerCC3200.h>
  *  @endcode
  *
@@ -44,18 +45,26 @@
  *  states and transition latency times for CC3200.
  *
  *  A default power policy is provided which can transition the MCU from the
- *  active state to one of three power states (LPDS, DeepSleep, or Sleep).
+ *  active state to one of three sleep states (LPDS, DeepSleep, or Sleep).
  *  The default policy looks at the amount of idle time remaining to determine
- *  which power state it can transition to.  It first attempts to tranistion
- *  into LPDS mode.  If it cannot transition into LPDS, it attempts to
+ *  which sleep state it can transition to.  It first checks for a tranistion
+ *  into LPDS.  If it cannot transition into LPDS (e.g., not enough time, or
+ *  a constraint has been set prohibiting LPDS), it next checks for a
  *  transition into DeepSleep mode. If it cannot transition into DeepSleep,
  *  then it goes into Sleep mode.
  *
- *  The function 'Power_idleFunc' needs to be added as an Idle function.
- *  For a TI-RTOS application this can be done via the following statements
- *  in the config (*.cfg) file:
+ *  The function 'Power_idleFunc' needs to be added to the application's idle
+ *  loop.
+ *
+ *  For a TI-RTOS application, the Clock module must be using the RTC timer.
+ *  This timer can be selected using the following statements in the
+ *  application configuration (*.cfg) file:
  *
  *  @code
+ *  var Clock = xdc.useModule('ti.sysbios.knl.Clock');
+ *  Clock.TimerProxy = xdc.useModule("ti.sysbios.family.arm.cc32xx.Timer");
+ *  Clock.tickMode = Clock.TickMode_DYNAMIC;
+ *
  *  var Idle = xdc.useModule('ti.sysbios.knl.Idle');
  *  Idle.addFunc('&Power_idleFunc');
  *  @endcode
@@ -69,60 +78,62 @@
 #include <stdint.h>
 #include <ti/drivers/ports/ListP.h>
 
+/* driverlib header files */
+#include <inc/hw_types.h>
+#include <driverlib/pin.h>
+#include <driverlib/rom_map.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/* values were gathered from a logic analyzer and rounded up */
 /*! latency time for resuming from DeepSleep in microseconds */
-#define PowerCC3200_RESUMETIMEDEEPSLEEP     482
+#define PowerCC3200_RESUMETIMEDEEPSLEEP     500
+
 /*! latency time for resuming from LPDS in microseconds */
-#define PowerCC3200_RESUMETIMELPDS          2375
+#define PowerCC3200_RESUMETIMELPDS          2500
+
 /*! total latency time for DeepSleep in microseconds */
-#define PowerCC3200_TOTALTIMEDEEPSLEEP      964
+#define PowerCC3200_TOTALTIMEDEEPSLEEP      1000
+
 /*! total latency time for LPDS in microseconds */
-#define PowerCC3200_TOTALTIMELPDS           2681
+#define PowerCC3200_TOTALTIMELPDS           3000
+
 /*! total latency time for Shutdown in microseconds */
 #define PowerCC3200_TOTALTIMESHUTDOWN       500000
-/*! wakeup delay for DeepSleep in microseconds */
-#define PowerCC3200_WAKEDELAYDEEPSLEEP      482
 
 /* Power resources */
-#define PowerCC3200_PERIPH_CAMERA           0
-#define PowerCC3200_PERIPH_I2S              1
-#define PowerCC3200_PERIPH_SDHOST           2
-#define PowerCC3200_PERIPH_GSPI             3
-#define PowerCC3200_PERIPH_LSPI             4
-#define PowerCC3200_PERIPH_UDMA             5
-#define PowerCC3200_PERIPH_GPIOA0           6
-#define PowerCC3200_PERIPH_GPIOA1           7
-#define PowerCC3200_PERIPH_GPIOA2           8
-#define PowerCC3200_PERIPH_GPIOA3           9
-#define PowerCC3200_PERIPH_WDT              10
-#define PowerCC3200_PERIPH_UARTA0           11
-#define PowerCC3200_PERIPH_UARTA1           12
-#define PowerCC3200_PERIPH_TIMERA0          13
-#define PowerCC3200_PERIPH_TIMERA1          14
-#define PowerCC3200_PERIPH_TIMERA2          15
-#define PowerCC3200_PERIPH_TIMERA3          16
-#define PowerCC3200_PERIPH_DTHE             17
-#define PowerCC3200_PERIPH_SSPI             18
-#define PowerCC3200_PERIPH_I2CA0            19
-#define PowerCC3200_NUMRESOURCES            20
+#define PowerCC3200_PERIPH_CAMERA       0
+#define PowerCC3200_PERIPH_I2S          1
+#define PowerCC3200_PERIPH_SDHOST       2
+#define PowerCC3200_PERIPH_GSPI         3
+#define PowerCC3200_PERIPH_LSPI         4
+#define PowerCC3200_PERIPH_UDMA         5
+#define PowerCC3200_PERIPH_GPIOA0       6
+#define PowerCC3200_PERIPH_GPIOA1       7
+#define PowerCC3200_PERIPH_GPIOA2       8
+#define PowerCC3200_PERIPH_GPIOA3       9
+#define PowerCC3200_PERIPH_GPIOA4       10
+#define PowerCC3200_PERIPH_WDT          11
+#define PowerCC3200_PERIPH_UARTA0       12
+#define PowerCC3200_PERIPH_UARTA1       13
+#define PowerCC3200_PERIPH_TIMERA0      14
+#define PowerCC3200_PERIPH_TIMERA1      15
+#define PowerCC3200_PERIPH_TIMERA2      16
+#define PowerCC3200_PERIPH_TIMERA3      17
+#define PowerCC3200_PERIPH_DTHE         18
+#define PowerCC3200_PERIPH_SSPI         19
+#define PowerCC3200_PERIPH_I2CA0        20
+#define PowerCC3200_NUMRESOURCES        21
 
 /*
  *  Power constraints on the CC3200 device
- *
- *  Each constraint must be a power of two and must be sequential
- *  without any gaps.
  */
-/*! constraint to disallow entering DeepSleep */
-#define PowerCC3200_DS_DISALLOW             0x1
-/*! constraint to disallow entering LPDS */
-#define PowerCC3200_LPDS_DISALLOW           0x2
-/*! constraint to disallow shutdown */
-#define PowerCC3200_SD_DISALLOW             0x4
-/*! number of constraints */
-#define PowerCC3200_NUMCONSTRAINTS          3
+#define PowerCC3200_DS_DISALLOW         0   /*!< disallow entering DeepSleep */
+#define PowerCC3200_LPDS_DISALLOW       1   /*!< disallow entering LPDS */
+#define PowerCC3200_SD_DISALLOW         2   /*!< disallow shutdown */
+#define PowerCC3200_NUMCONSTRAINTS      3   /*!< number of constraints */
 
 /*
  *  Power events on the CC3200 device
@@ -130,24 +141,20 @@ extern "C" {
  *  Each event must be a power of two and must be sequential
  *  without any gaps.
  */
-/*! entering DeepSleep event */
-#define PowerCC3200_ENTERING_DEEPSLEEP      0x1
-/*! entering LPDS event */
-#define PowerCC3200_ENTERING_LPDS           0x2
-/*! entering Shutdown event */
-#define PowerCC3200_ENTERING_SHUTDOWN       0x4
-/*! awake from DeepSleep event */
-#define PowerCC3200_AWAKE_DEEPSLEEP         0x8
-/*! awake from LPDS event */
-#define PowerCC3200_AWAKE_LPDS              0x10
-/*! number of events */
-#define PowerCC3200_NUMEVENTS               5
+#define PowerCC3200_ENTERING_DEEPSLEEP  0x1  /*!< entering DeepSleep event */
+#define PowerCC3200_ENTERING_LPDS       0x2  /*!< entering LPDS event */
+#define PowerCC3200_ENTERING_SHUTDOWN   0x4  /*!< entering Shutdown event */
+#define PowerCC3200_AWAKE_DEEPSLEEP     0x8  /*!< awake from DeepSleep event */
+#define PowerCC3200_AWAKE_LPDS          0x10 /*!< awake from LPDS event */
+#define PowerCC3200_NUMEVENTS           5    /*!< number of events */
 
 /* Power sleep states */
-/*! DeepSleep state */
-#define PowerCC3200_DEEPSLEEP               0x1
-/*! LPDS state */
-#define PowerCC3200_LPDS                    0x2
+#define PowerCC3200_DEEPSLEEP           0x1 /*!< DeepSleep state */
+#define PowerCC3200_LPDS                0x2 /*!< LPDS state */
+
+/* Use by NVIC Register structure */
+#define PowerCC3200_numNVICSetEnableRegs    6
+#define PowerCC3200_numNVICIntPriority      49
 
 /*! @brief Power global configuration */
 typedef struct PowerCC3200_Config {
@@ -160,7 +167,7 @@ typedef struct PowerCC3200_Config {
     /*! Hook function called when resuming from LPDS mode */
     void (*resumeLPDSHookFxn)(void);
     /*! Determines whether to run the power policy function */
-    bool runPolicy;
+    bool enablePolicy;
     /*! Enable GPIO as a wakeup source for LPDS */
     bool enableGPIOWakeupLPDS;
     /*! Enable GPIO as a wakeup source for shutdown */
@@ -170,7 +177,11 @@ typedef struct PowerCC3200_Config {
     /*!
      *  @brief  The GPIO source for wakeup from LPDS
      *
-     *  Value can be one of the following:
+     *  Only one of the following GPIOs {2,4,11,13,17,24,26} can
+     *  be the wakeup source for LPDS. The following values are
+     *  taken from the driverlib prcm.h file.
+     *
+     *  Value can be one of the following (defined in driverlib/prcm.h):
      *  PRCM_LPDS_GPIO2, PRCM_LPDS_GPIO4, PRCM_LPDS_GPIO11,
      *  PRCM_LPDS_GPIO13, PRCM_LPDS_GPIO17, PRCM_LPDS_GPIO24,
      *  PRCM_LPDS_GPIO26
@@ -179,7 +190,7 @@ typedef struct PowerCC3200_Config {
     /*!
      *  @brief  The GPIO trigger type for wakeup from LPDS
      *
-     *  Value can be one of the following:
+     *  Value can be one of the following (defined in driverlib/prcm.h):
      *  PRCM_LPDS_LOW_LEVEL, PRCM_LPDS_HIGH_LEVEL,
      *  PRCM_LPDS_FALL_EDGE, PRCM_LPDS_RISE_EDGE
      */
@@ -187,7 +198,11 @@ typedef struct PowerCC3200_Config {
     /*!
      *  @brief  The GPIO sources for wakeup from shutdown
      *
-     *  Value can be one or more of the following:
+     *  Any one of the following GPIOs {2,4,11,13,17,24,26} can
+     *  be a wakeup source for shutdown. The following values are
+     *  taken from the driverlib prcm.h file
+     *
+     *  Value can be one or more of the following (defined in driverlib/prcm.h):
      *  PRCM_HIB_GPIO2, PRCM_HIB_GPIO4, PRCM_HIB_GPIO11,
      *  PRCM_HIB_GPIO13, PRCM_HIB_GPIO17, PRCM_HIB_GPIO24,
      *  PRCM_HIB_GPIO26
@@ -196,17 +211,15 @@ typedef struct PowerCC3200_Config {
     /*!
      *  @brief  The GPIO trigger type for wakeup from shutdown
      *
-     *  Value can be one of the following:
+     *  Value can be one of the following (defined in driverlib/prcm.h):
      *  PRCM_HIB_LOW_LEVEL, PRCM_HIB_HIGH_LEVEL,
      *  PRCM_HIB_FALL_EDGE, PRCM_HIB_RISE_EDGE
      */
     uint32_t wakeupGPIOTypeShutdown;
-    /*! time in microseconds before waking up from shutdown */
-    uint32_t wakeupShutdownTime;
     /*!
      *  @brief  SRAM retention mask for LPDS
      *
-     *  Value can be a mask of the following:
+     *  Value can be a mask of the following (defined in driverlib/prcm.h):
      *  PRCM_SRAM_COL_1, PRCM_SRAM_COL_2, PRCM_SRAM_COL_3,
      *  PRCM_SRAM_COL_4
      */
@@ -214,51 +227,37 @@ typedef struct PowerCC3200_Config {
 } PowerCC3200_Config;
 
 /*! @brief Internal module state */
-typedef struct PowerCC3200_Module_State {
+typedef struct PowerCC3200_ModuleState {
     ListP_List notifyList;
     uint32_t constraintMask;
     uint32_t state;
     uint16_t dbRecords[PowerCC3200_NUMRESOURCES];
+    bool enablePolicy;
     uint8_t refCount[PowerCC3200_NUMRESOURCES];
     uint8_t constraintCounts[PowerCC3200_NUMCONSTRAINTS];
-} PowerCC3200_Module_State;
+} PowerCC3200_ModuleState;
 
-/*! @brief NVIC registers that need to be save on entering LPDS */
-typedef struct PowerCC3200_NVIC_Registers {
-    /*! Vector Table Offset */
+/*! @brief  NVIC registers that need to be save on entering LPDS */
+typedef struct PowerCC3200_NVICRegisters {
     uint32_t vectorTable;
-    /*! Auxiliary control register */
     uint32_t auxCtrl;
-    /*! Interrupt Control and State */
     uint32_t intCtrlState;
-    /*! Application Interrupt Reset control */
     uint32_t appInt;
-    /*! System control */
     uint32_t sysCtrl;
-    /*! Configuration control */
     uint32_t configCtrl;
-    /*! System Handler Priority 1 */
     uint32_t sysPri1;
-    /*! System Handler Priority 2 */
     uint32_t sysPri2;
-    /*! System Handler Priority 3 */
     uint32_t sysPri3;
-    /*! System Handler control and state register */
     uint32_t sysHcrs;
-    /*! SysTick Control Status */
     uint32_t systickCtrl;
-    /*! SysTick Reload */
     uint32_t systickReload;
-    /*! SysTick Calibration */
     uint32_t systickCalib;
-    /*! Interrupt set enablea */
-    uint32_t intSetEn[6];
-    /*! Interrupt prioritya */
-    uint32_t intPriority[49];
-} PowerCC3200_NVIC_Registers;
+    uint32_t intSetEn[PowerCC3200_numNVICSetEnableRegs];
+    uint32_t intPriority[PowerCC3200_numNVICIntPriority];
+} PowerCC3200_NVICRegisters;
 
-/*! @brief MPU core registers that need to be save on entering LPDS */
-typedef struct PowerCC3200_M4_Registers {
+/*! @brief  MCU core registers that need to be save on entering LPDS */
+typedef struct PowerCC3200_MCURegisters {
     uint32_t msp;
     uint32_t psp;
     uint32_t psr;
@@ -266,22 +265,94 @@ typedef struct PowerCC3200_M4_Registers {
     uint32_t faultmask;
     uint32_t basepri;
     uint32_t control;
-} PowerCC3200_M4_Registers;
+} PowerCC3200_MCURegisters;
 
-/*! @brief struct of context registers to save on entering LPDS */
+/*! @brief  struct of context registers to save on entering LPDS */
 typedef struct PowerCC3200_SaveRegisters {
-    PowerCC3200_M4_Registers m4Regs;
-    PowerCC3200_NVIC_Registers nvicRegs;
+    PowerCC3200_MCURegisters m4Regs;
+    PowerCC3200_NVICRegisters nvicRegs;
 } PowerCC3200_SaveRegisters;
 
-/*! default init function for config structure */
+/*! @brief enumeration of states for parked pins */
+typedef enum {
+    PowerCC3200_NO_PULL_HIZ = PIN_TYPE_STD,
+    PowerCC3200_WEAK_PULL_UP_STD = PIN_TYPE_STD_PU,
+    PowerCC3200_WEAK_PULL_DOWN_STD = PIN_TYPE_STD_PD,
+    PowerCC3200_WEAK_PULL_UP_OPENDRAIN = PIN_TYPE_OD_PU,
+    PowerCC3200_WEAK_PULL_DOWN_OPENDRAIN = PIN_TYPE_OD_PD
+} PowerCC3200_ParkState;
+
+/*! @brief enumeration of pins that can be parked */
+typedef enum {
+    PowerCC3200_PIN01 = PIN_01,
+    PowerCC3200_PIN02 = PIN_02,
+    PowerCC3200_PIN03 = PIN_03,
+    PowerCC3200_PIN04 = PIN_04,
+    PowerCC3200_PIN05 = PIN_05,
+    PowerCC3200_PIN06 = PIN_06,
+    PowerCC3200_PIN07 = PIN_07,
+    PowerCC3200_PIN08 = PIN_08,
+    PowerCC3200_PIN11 = PIN_11,
+    PowerCC3200_PIN12 = PIN_12,
+    PowerCC3200_PIN13 = PIN_13,
+    PowerCC3200_PIN14 = PIN_14,
+    PowerCC3200_PIN15 = PIN_15,
+    PowerCC3200_PIN16 = PIN_16,
+    PowerCC3200_PIN17 = PIN_17,
+    PowerCC3200_PIN18 = PIN_18,
+    PowerCC3200_PIN19 = PIN_19,
+    PowerCC3200_PIN20 = PIN_20,
+    PowerCC3200_PIN21 = PIN_21,
+    PowerCC3200_PIN45 = PIN_45,
+    PowerCC3200_PIN50 = PIN_50,
+    PowerCC3200_PIN52 = PIN_52,
+    PowerCC3200_PIN53 = PIN_53,
+    PowerCC3200_PIN55 = PIN_55,
+    PowerCC3200_PIN57 = PIN_57,
+    PowerCC3200_PIN58 = PIN_58,
+    PowerCC3200_PIN59 = PIN_59,
+    PowerCC3200_PIN60 = PIN_60,
+    PowerCC3200_PIN61 = PIN_61,
+    PowerCC3200_PIN62 = PIN_62,
+    PowerCC3200_PIN63 = PIN_63,
+    PowerCC3200_PIN64 = PIN_64
+} PowerCC3200_Pin;
+
+/*! @brief  For wakeup from LPDS or shutdown configuration */
+typedef struct PowerCC3200_Wakeup {
+    bool enableGPIOWakeupLPDS;
+    bool enableGPIOWakeupShutdown;
+    bool enableNetworkWakeupLPDS;
+    uint32_t wakeupGPIOSourceLPDS;
+    uint32_t wakeupGPIOTypeLPDS;
+    uint32_t wakeupGPIOSourceShutdown;
+    uint32_t wakeupGPIOTypeShutdown;
+} PowerCC3200_Wakeup;
+
+/*!
+ *  @brief  Function configures wakeup for LPDS and shutdown
+ *
+ *  This function allows the app to configure the GPIO source and
+ *  type for waking up from LPDS and shutdown and the network host
+ *  as a wakeup source for LPDS.  This overwrites any previous
+ *  wakeup settings.
+ *
+ *  @param  wakeup      Settings applied to wakeup configuration
+ *
+ */
+void PowerCC3200_configureWakeup(PowerCC3200_Wakeup *wakeup);
+
+/*! OS specific default power policy init function */
 void PowerCC3200_initPolicy(void);
 
-/*! default power policy for config structure */
+/*! CC3200 specific pin parking function */
+void PowerCC3200_parkPin(PowerCC3200_Pin pin, PowerCC3200_ParkState parkState);
+
+/*! OS specific default power policy function */
 void PowerCC3200_sleepPolicy(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* ti_drivers_PowerCC3200_PowerCC3200__include */
+#endif /* ti_drivers_power_PowerCC3200__include */

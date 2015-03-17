@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2014-2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -108,6 +108,7 @@ extern const Watchdog_FxnTable WatchdogTiva_fxnTable;
 typedef struct WatchdogTiva_HWAttrs {
     unsigned int baseAddr;       /*!< Base adddress for Watchdog */
     unsigned int intNum;         /*!< WDT interrupt number */
+    unsigned int intPriority;    /*!< WDT interrupt priority */
     uint32_t     reloadValue;    /*!< Reload value for Watchdog */
 } WatchdogTiva_HWAttrs;
 

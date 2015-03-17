@@ -55,6 +55,7 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 
 #include <ti/drivers/I2C.h>
@@ -84,7 +85,8 @@ extern const I2C_FxnTable I2CMSP432_fxnTable;
  */
 typedef struct I2CMSP432_HWAttrs {
     uint32_t baseAddr;       /*! EUSCI_B_I2C Peripheral's base address */
-    uint32_t intNum;         /*! EUSCI_B_I2C Peripheral's base address */
+    uint32_t intNum;         /*! EUSCI_B_I2C Peripheral's interrupt vector */
+    uint32_t intPriority;    /*! EUSCI_B_I2C Peripheral's interrupt priority */
     uint8_t  clockSource;    /*! EUSCI_B_I2C Clock source */
 } I2CMSP432_HWAttrs;
 
@@ -96,6 +98,8 @@ typedef struct I2CMSP432_HWAttrs {
 typedef struct I2CMSP432_Object {
     SemaphoreP_Handle mutex;                /* Grants exclusive access to I2C */
     SemaphoreP_Handle transferComplete;     /* Notify finished I2C transfer */
+
+    HwiP_Handle       hwiHandle;
 
     I2C_TransferMode  transferMode;         /* Blocking or Callback mode */
     I2C_CallbackFxn   transferCallbackFxn;  /* Callback function pointer */

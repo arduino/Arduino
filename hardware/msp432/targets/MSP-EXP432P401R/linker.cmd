@@ -11,6 +11,7 @@ INPUT(
     ti/runtime/wiring/msp432/lib/ti.runtime.wiring.msp432.lib
     ti/drivers/lib/drivers_MSP432P401R.am4fg
     ti/drivers/ports/tirtos/lib/tirtosport.am4fg
+    ti/runtime/heaps/lib/ti.runtime.heaps.am4fg
     ti/sysbios/fatfs/lib/release/ti.sysbios.fatfs.am4fg
     src/sysbios/sysbios.am4fg
     gnu/targets/arm/rtsv7M/lib/gnu.targets.arm.rtsv7M.am4fg
@@ -49,14 +50,19 @@ ti_sysbios_family_arm_m3_Hwi_nvic = 0xe000e000;
 
     __TI_STACK_BASE = __stack;
 }
-
 SECTIONS {
-    /* create an empty section at the end of SRAM */
+    /* create an empty sections at the end of SRAM and FLASH */
     .empty : { *(.empty) } > SRAM
+    .emptyFlash : { *(.emptyFlash) } > FLASH
 
     /* the UNUSED symbols define reusable heap memory */
-    __UNUSED_start__ = ADDR(.empty);
-    __UNUSED_end__   = ORIGIN(SRAM) + LENGTH(SRAM);
+    __UNUSED_SRAM_start__ = ADDR(.empty);
+    __UNUSED_SRAM_end__   = ORIGIN(SRAM) + LENGTH(SRAM);
+    __SRAM_LENGTH__       = LENGTH(SRAM);
+    
+    __UNUSED_FLASH_start__ = ADDR(.emptyFlash);
+    __UNUSED_FLASH_end__   = ORIGIN(FLASH) + LENGTH(FLASH);
+    __FLASH_LENGTH__       = LENGTH(FLASH);
 }
 
 ENTRY(_c_int00)
