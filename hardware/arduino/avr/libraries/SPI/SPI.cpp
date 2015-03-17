@@ -34,7 +34,7 @@ void SPIClass::begin()
     volatile uint8_t *reg = portModeRegister(port);
 
     // if the SS pin is not already configured as an output
-    // then set it high (to enable the internall pull-up resistor)
+    // then set it high (to enable the internal pull-up resistor)
     if(!(*reg & bit)){
       digitalWrite(SS, HIGH);
     }
