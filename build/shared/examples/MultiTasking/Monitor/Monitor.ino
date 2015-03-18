@@ -34,6 +34,7 @@
 
 #define MAX_COMMAND_LEN 48
 #define MAX_COMMAND_NAME_LEN 8
+#define MAX_COMMAND_LINES 5
 
 // Return codes for handlers
 #define RETURN_SUCCESS          (0)
@@ -83,7 +84,6 @@ static char clear[] = "\e[2J";
 /*
  *  ======== command table ========
  */
-
 #define GEN_COMMTABLE_ENTRY(name, desc, detail) {   #name,  consoleHandler_##name,  desc,   detail  }
 
 static const struct {
@@ -121,10 +121,12 @@ static const struct {
 
 void mon_setup(void)
 {
-    Serial.begin(115200);
+    Serial.begin(9600);
     Serial.println("Welcome! This is the Serial debug console.");
 }
 
+#define UP_ARROW 0x0b    /* ctrl K */
+#define DOWN_ARROW 0x0C  /* ctrl L */
 
 void mon_loop()
 {
@@ -133,46 +135,107 @@ void mon_loop()
     Serial.print("> ");
 
     // ------------------------------------- read line
-    char line[MAX_COMMAND_LEN];
-    int index = 0;
+    static char line[MAX_COMMAND_LINES][MAX_COMMAND_LEN];
+
+    static int line_num = 0;
+    int char_index = 0;
+    bool line_end = false;
+    int escape_index = 0;
 
     while (true) {
         char c = Serial.read();
-        line[index++] = c;
 
-        if (index == sizeof(line)) {
-            // The user typed something too long; abort so they don't get surprise commands running
-            Serial.println("\r\nCommand too long.");
-            return;
-        }
-
-        if (c == '\r') {
-            Serial.println("");
-            index--;
-            break;
-        } else if ((c == 0x08) || (c == 0x7f)) { // backspace
-            if (index >= 2) {
-                index -= 2;
+        if (escape_index) {
+            if (++escape_index == 3) {
+                escape_index = 0;
+                switch(c) {
+                    case 'A':
+                        c = UP_ARROW;
+                        break;
+                    case 'B':
+                        c = DOWN_ARROW;
+                        break;
+                    default:
+                        continue;
+                }
             }
-        } else if (c == 3) {
-            Serial.println("^C");
-            return;
+            else {
+                continue;
+            }
         }
 
-        // default for Serial is ECHO_OFF, and there doesn't seem to be a way to change that
-        Serial.print(c);
+        switch (c) {
+            case 0x1b: /* escape */
+                escape_index = 1;
+                continue;
+                
+            case UP_ARROW:
+                if (--line_num < 0) { 
+                    line_num = MAX_COMMAND_LINES - 1;
+                }
+                Serial.print("\r                         \r> ");
+                char_index = strlen(line[line_num]);
+                Serial.print(line[line_num]);
+                continue;
+            case DOWN_ARROW:
+                if (++line_num == MAX_COMMAND_LINES) { 
+                    line_num = 0;
+                }
+                Serial.print("\r                         \r> ");
+                char_index = strlen(line[line_num]);
+                Serial.print(line[line_num]);
+                continue;
+            case '\r':
+                Serial.println("");
+                if (char_index == 0) {
+                    Serial.print("> ");
+                    continue;
+                }
+                else {
+                    line_end = true;
+                    break;
+                }
+            case 0x08:
+            case 0x7f:   /* Backspace */
+                if (char_index >= 1) {
+                    char_index -= 1;
+                    Serial.print("\b \b");
+                }
+                continue;
+            case 3: /* control 'c' */
+                Serial.println("^C");
+                return;
+        }
+
+        if (line_end == false) {        
+            line[line_num][char_index++] = c;
+
+            if (char_index == MAX_COMMAND_LEN) {
+                // The user typed something too long; abort so they don't get surprise commands running
+                Serial.println("\r\nCommand too long.");
+                return;
+            }
+
+            // default for Serial is ECHO_OFF, and there doesn't seem to be a way to change that
+            Serial.print(c);
+        }
+        else {
+            line[line_num][char_index] = 0;
+            break;
+        }
     }
 
-    line[index] = 0;
-
     // ------------------------------------- process line
-    sanitizeLine(line);
+    sanitizeLine(line[line_num]);
 
     char cmdstr[MAX_COMMAND_NAME_LEN+1];
-    memset(cmdstr,0,sizeof(cmdstr));
+    
+    memset(cmdstr, 0, sizeof(cmdstr));
+
     int i;
-    for (i=0; i<MAX_COMMAND_NAME_LEN && line[i] && line[i] != ' '; i++) {
-        cmdstr[i] = line[i];
+
+    for (i = 0; i < MAX_COMMAND_NAME_LEN && line[line_num][i] && line[line_num][i] != ' '; i++) {
+        cmdstr[i] = line[line_num][i];
     }
 
     // ignore empty command
@@ -200,9 +263,13 @@ void mon_loop()
         return;
     }
 
-    int returnVal = _consoleCommandTable[commandIndex].handler(line
+    int returnVal = _consoleCommandTable[commandIndex].handler(line[line_num]
             +strlen(_consoleCommandTable[commandIndex].name));
 
+    if (++line_num == MAX_COMMAND_LINES) {
+        line_num = 0;
+    }
+    
     switch (returnVal) {
         case RETURN_SUCCESS:    break;
         case RETURN_FAIL:       break;
@@ -310,6 +377,7 @@ static void doRepeat(RepeatFunc func, uint32_t arg0, uint32_t arg1, uint32_t arg
         Serial.print(home);
         func(arg0, arg1, arg2, arg3);
     }
+    Serial.read(); /* remove char from input buf */
 }
 
 #if DRW_CMDS == 1
@@ -530,7 +598,7 @@ static int consoleHandler_wm(const char *line)
 
 static int consoleHandler_spi(const char *line)
 {
-	static bool spiBegun = false;
+    static bool spiBegun = false;
 
     if (*line++ != ' ') {
         return RETURN_FAIL_PRINT_USAGE;
@@ -540,8 +608,8 @@ static int consoleHandler_spi(const char *line)
     uint32_t cs = 0;
 
     if (spiBegun == false) {
-    	SPI.begin();
-    	spiBegun = true;
+        SPI.begin();
+        spiBegun = true;
     }
 
     data = strtol(line, &endptr, 10);
@@ -600,12 +668,12 @@ static void printTaskInfo(Task_Handle task)
     Load_getTaskLoad(task, &loadStat);
 
     if (taskStat.priority == 0) {
-        name = "Idle";
+        name = (String)"Idle";
     }
     else {
         name = Task_Handle_name(task);
         if (name[0] == '{') {
-            name = "Unnamed";
+            name = (String)"Unnamed";
         }
     }
 
@@ -667,7 +735,6 @@ static int consoleHandler_stats(const char *line)
     return RETURN_SUCCESS;
 }
 
-
 #endif /* STATS_CMD */
 
 #if PRI_CMD == 1
@@ -695,3 +762,4 @@ static int consoleHandler_pri(const char *line)
 }
 
 #endif /* PRI_CMD */
+
