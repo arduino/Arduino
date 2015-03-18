@@ -12,7 +12,7 @@
 //###########################################################################
 
 #include "F2802x_Device.h"     // Headerfile Include File
-#include "f2802x_common/include/f2802x_examples.h"   // Examples Include File
+#include "f2802x_common/include/F2802x_Examples.h"   // Examples Include File
 
 //---------------------------------------------------------------------------
 // InitSci:

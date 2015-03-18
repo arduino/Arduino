@@ -131,32 +131,35 @@ void analogWrite(uint8_t pin, int val) {
 
 uint16_t analogRead(uint8_t pin)
 {
-	uint16_t channel;
+    uint16_t channel,val;
+    uint16_t pinNum = digitalPinToPinNum(pin);
 
-	uint16_t pinNum = digitalPinToPinNum(pin);
+    switch(pinNum) {
+        case PIN_57: {channel = ADC_CH_0;}break;
+        case PIN_58: {channel = ADC_CH_1;}break;
+        case PIN_59: {channel = ADC_CH_2;}break;
+        case PIN_60: {channel = ADC_CH_3;}break;
+        default: return 0;
+    }
 
-	switch(pinNum) {
-		case PIN_57: {channel = ADC_CH_0;}break;
-		case PIN_58: {channel = ADC_CH_1;}break;
-		case PIN_59: {channel = ADC_CH_2;}break;
-		case PIN_60: {channel = ADC_CH_3;}break;
-		default: return 0;
-	}
+    while(ADCFIFOLvlGet(ADC_BASE, channel)) { // flush the channel's FIFO if not empty
+        ADCFIFORead(ADC_BASE, channel);
+    }
 
-	PinTypeADC(pinNum,0xFF);
-	ADCChannelEnable(ADC_BASE, channel);
-	ADCTimerConfig(ADC_BASE,2^17);
-	ADCTimerEnable(ADC_BASE);
-	ADCEnable(ADC_BASE);
+    PinTypeADC(pinNum,0xFF);
+    ADCChannelEnable(ADC_BASE, channel);
+    ADCTimerConfig(ADC_BASE,2^17);
+    ADCTimerEnable(ADC_BASE);
+    ADCEnable(ADC_BASE);
 
-	while(!ADCFIFOLvlGet(ADC_BASE, channel));
+    while(!ADCFIFOLvlGet(ADC_BASE, channel));
+    val = ADCFIFORead(ADC_BASE, channel) & 0x3FFF;
 
-	uint16_t val = ADCFIFORead(ADC_BASE, channel) & 0x3FFF;
+    ADCDisable(ADC_BASE);
+    ADCChannelDisable(ADC_BASE, channel);
+    ADCTimerDisable(ADC_BASE);
 
-	ADCDisable(ADC_BASE);
-	ADCChannelDisable(ADC_BASE, channel);
-	ADCTimerDisable(ADC_BASE);
-
-	val = val >> 2;
-	return val;
+    val = val >> 2;
+    return val;
 }
+

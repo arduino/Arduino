@@ -78,6 +78,7 @@ unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
 int16_t WiFiClass::_handleArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_portArray[MAX_SOCK_NUM];
 int16_t WiFiClass::_typeArray[MAX_SOCK_NUM];
+int16_t WiFiClass::_serverPortArray[MAX_SOCK_NUM];
 WiFiClient WiFiClass::clients[MAX_SOCK_NUM];
 //
 //These "buffers" are used to "return" strings and IpAddress objects
@@ -94,7 +95,7 @@ WiFiClass::WiFiClass()
     //
     int i;
     for (i = 0; i < MAX_SOCK_NUM; i++) {
-        _handleArray[i] = _portArray[i] = _typeArray[i] = -1;
+        _handleArray[i] = _portArray[i] = _typeArray[i] = _serverPortArray[i] = -1;
     }
 }
 

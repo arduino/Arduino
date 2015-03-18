@@ -1,0 +1,834 @@
+/********************************************************************/
+/* f28plc93.gel                                                     */
+/* Version 4.00.0                                                   */
+/*                                                                  */
+/* This GEL file is to be used with the TMS320F28PLC93 DSP.         */
+/* Changes may be required to support specific hardware designs.    */
+/*                                                                  */
+/* Code Composer Studio supports six reserved GEL functions that    */
+/* automatically get executed if they are defined. They are:        */
+/*                                                                  */
+/* StartUp()              - Executed whenever CCS is invoked        */
+/* OnReset()              - Executed after Debug->Reset CPU         */
+/* OnRestart()            - Executed after Debug->Restart           */
+/* OnPreFileLoaded()      - Executed before File->Load Program      */
+/* OnFileLoaded()         - Executed after File->Load Program       */
+/* OnTargetConnect()      - Executed after Debug->Connect           */
+/*                                                                  */
+/********************************************************************/
+
+StartUp()
+{
+
+}
+
+OnReset(int nErrorCode)
+{
+    if (GEL_IsInRealtimeMode())   /* If in real-time-mode */
+    {
+    }
+    else    /* Put device in C28x mode */
+    {
+         C28x_Mode();
+    }
+    Unlock_CSM();
+    Device_Cal();
+
+    
+//  EMU_BOOT_SARAM();               /* Set EMU Boot Variables - Boot to SARAM */
+//  EMU_BOOT_FLASH();               /* Set EMU Boot Variables - Boot to flash */
+}
+
+OnRestart(int nErrorCode)
+{
+/* CCS will call OnRestart() when you do a Debug->Restart and   */
+/* after you load a new file.  Between running interrupt based  */
+/* programs, this function will clear interrupts and help keep  */
+/* the processor from going off into invalid memory.            */
+     if (GEL_IsInRealtimeMode())   /* If in real-time-mode */
+    {
+    }
+    else    /* Put device in C28x mode */
+    {
+         C28x_Mode();
+    }
+     IER = 0;
+     IFR = 0;
+}
+
+OnPreFileLoaded()
+{
+	GEL_Reset();
+}
+
+OnFileLoaded(int nErrorCode, int bSymbolsOnly)
+{
+ if (!bSymbolsOnly) {
+     Device_Cal();
+ }
+}
+
+OnTargetConnect()
+{
+    if (GEL_IsInRealtimeMode())   /* If in real-time-mode */
+    {
+    }
+    else    /* Put device in C28x mode */
+    {
+         C28x_Mode();
+    }
+    F28PLC93_Memory_Map();        /* Initialize the CCS memory map */
+
+/* Check to see if CCS has been started-up with the DSP already */
+/* running in real-time mode.  The user can add whatever        */
+/* custom initialization stuff they want to each case.          */
+
+    if (GEL_IsInRealtimeMode())     /* Do real-time mode target initialization */
+    {
+
+    }
+    else                            /* Do stop-mode target initialization */
+    {
+        GEL_Reset();                /* Reset DSP */
+    }
+}
+
+/********************************************************************/
+/* These functions are launched by the GEL_Toolbar button plugin    */
+/********************************************************************/
+GEL_Toolbar1()
+{
+ 	Run_Realtime_with_Reset();
+}
+GEL_Toolbar2()
+{
+ 	Run_Realtime_with_Restart();
+}
+GEL_Toolbar3()
+{
+ 	Full_Halt();
+}
+GEL_Toolbar4()
+{
+ 	Full_Halt_with_Reset();
+}
+GEL_Toolbar5()
+{
+    Full_Halt_with_Reset();
+    GEL_Restart();
+}
+
+
+
+/********************************************************************/
+/* These functions are useful to engage/disengage realtime          */
+/* emulation mode during debug.  They save the user from having to  */
+/* manually perform these steps in CCS.                             */
+/********************************************************************/
+menuitem "Realtime Emulation Control";
+
+hotmenu Run_Realtime_with_Reset()
+{
+    GEL_Reset();                /* Reset the DSP */
+    ST1 = ST1 & 0xFFFD;         /* clear DBGM bit in ST1 */
+    GEL_EnableRealtime();       /* Enable Realtime mode */
+    GEL_Run();                  /* Run the DSP */
+}
+hotmenu Run_Realtime_with_Restart()
+{
+    GEL_Restart();              /* Reset the DSP */
+    ST1 = ST1 & 0xFFFD;         /* clear DBGM bit in ST1 */
+    GEL_EnableRealtime();       /* Enable Realtime mode */
+    GEL_Run();                  /* Run the DSP */
+}
+hotmenu Full_Halt()
+{
+    GEL_DisableRealtime();      /* Disable Realtime mode */
+    GEL_Halt();                 /* Halt the DSP */
+}
+hotmenu Full_Halt_with_Reset()
+{
+    GEL_DisableRealtime();      /* Disable Realtime mode */
+    GEL_Halt();                 /* Halt the DSP */
+    GEL_Reset();                /* Reset the DSP */
+}
+
+/*********************************************************************/
+/*                         F28PLC93 Memory Map                       */
+/*                                                                   */
+/*   Note: M0M1MAP and VMAP signals tied high on F28PLC93 core       */
+/*                                                                   */
+/*   0x000000 - 0x0003ff   M0 SARAM                 (Prog and Data)  */
+/*   0x000400 - 0x0007ff   M1 SARAM                 (Prog and Data)  */
+/*   0x000800 - 0x001fff   Peripheral Frame0  (PF0) (Data only)      */
+/*   0x004000 - 0x005fff   Peripheral Frame3A (PF3A)(Data only)      */
+/*   0x006000 - 0x0063ff   Peripheral Frame1A (PF1A)(Data only)      */
+/*   0x006400 - 0x0069ff   Peripheral Frame3B (PF3B)(Data only)      */
+/*   0x006a00 - 0x006fff   Peripheral Frame1B (PF1B)(Data only)      */
+/*   0x007000 - 0x007fff   Peripheral Frame2  (PF2) (Data only)      */
+/*   0x008000 - 0x0087ff   L0 SARAM                 (Prog and Data)  */
+/*   0x008800 - 0x008bff   L1 SARAM                 (Prog and Data)  */
+/*   0x008c00 - 0x008fff   L2 SARAM                 (Prog and Data)  */
+/*   0x009000 - 0x009fff   L3 SARAM                 (Prog and Data)  */
+/*   0x00a000 - 0x00bfff   L4 SARAM                 (Prog and Data)  */
+/*   0x00c000 - 0x00dfff   L5 SARAM                 (Prog and Data)  */
+/*   0x00e000 - 0x00ffff   L6 SARAM                 (Prog and Data)  */
+/*   0x010000 - 0x011fff   L7 SARAM                 (Prog and Data)  */
+/*   0x012000 - 0x013fff   L8 SARAM                 (Prog and Data)  */
+/*   0x040000 - 0x0407ff   USB RAM					(Prog and Data)	 */
+/*   0x3d7800 - 0x3d7bff   OTP                      (Prog and Data)  */
+/*   0x3d7c80 - 0x3d7cbf   Device Cal (TI OTP)      (Prog and Data)  */
+/*   0x3d7cc0 - 0x3d7cff   Boot Get Mode (TI OTP)   (Prog and Data)  */
+/*   0x3d7e80 - 0x3d7e80   PARTID value             (Prog and Data)  */
+/*   0x3d7e82 - 0x3d7eb0   Calibration Data		    (Prog and Data)  */
+/*   0x3d8000 - 0x3f7fff   FLASH                    (Prog and Data)  */
+/*   0x3f8000 - 0x3fffff   BOOT ROM                 (Prog and Data)  */
+/*********************************************************************/
+menuitem "Initialize Memory Map";
+
+hotmenu F28PLC93_Memory_Map()
+{
+    GEL_MapReset();
+    GEL_MapOn();
+
+    /* Program memory maps */
+    GEL_MapAdd(0x0,0,0x400,1,1);                 /* M0 SARAM        */
+    GEL_MapAdd(0x400,0,0x400,1,1);               /* M1 SARAM        */
+    GEL_MapAdd(0xd00,0,0x100,1,1);               /* PIEVECT(DSPBIOS)*/
+    GEL_MapAdd(0x8000,0,0x800,1,1);              /* L0 SARAM        */
+    GEL_MapAdd(0x8800,0,0x400,1,1);              /* L1 SARAM        */
+    GEL_MapAdd(0x8c00,0,0x400,1,1);              /* L2 SARAM        */
+    GEL_MapAdd(0x9000,0,0x1000,1,1);             /* L3 SARAM        */
+    GEL_MapAdd(0xa000,0,0x2000,1,1);             /* L4 SARAM        */
+    GEL_MapAdd(0xc000,0,0x2000,1,1);             /* L5 SARAM        */
+    GEL_MapAdd(0xe000,0,0x2000,1,1);             /* L6 SARAM        */
+    GEL_MapAdd(0x10000,0,0x2000,1,1);            /* L7 SARAM        */
+    GEL_MapAdd(0x12000,0,0x2000,1,1);            /* L8 SARAM        */
+    GEL_MapAdd(0x40000,0,0x800,1,1);			 /* USB RAM			*/    
+    GEL_MapAdd(0x3d7800,0,0x400,1,0);            /* OTP             */
+    GEL_MapAdd(0x3d7c80,0,0x040,1,0);            /* Device Cal      */
+    GEL_MapAdd(0x3d7cc0,0,0x040,1,0);            /* Boot Get Mode   */
+    GEL_MapAdd(0x3d7e80,0,0x001,1,0);            /* PARTID value    */
+    GEL_MapAdd(0x3d7e82,0,0x030,1,0);            /* Calibration Data*/
+    GEL_MapAdd(0x3d8000,0,0x20000,1,0);          /* FLASH           */
+    GEL_MapAdd(0x3f8000,0,0x8000,1,0);           /* BOOT ROM        */
+
+    /* Data memory maps */
+    GEL_MapAdd(0x0,1,0x400,1,1);                 /* M0 SARAM        */
+    GEL_MapAdd(0x400,1,0x400,1,1);               /* M1 SARAM        */
+    GEL_MapAdd(0x800,1,0x1800,1,1);              /* PF0             */
+    GEL_MapAdd(0x4000,1,0x2000,1,1);		     /* PF3-A	        */
+    GEL_MapAdd(0x6000,1,0x0400,1,1);             /* PF1-A           */
+    GEL_MapAdd(0x6400,1,0x0600,1,1);             /* PF3-B           */
+    GEL_MapAdd(0x6a00,1,0x0600,1,1);             /* PF1-B           */
+    GEL_MapAddStr(0x7000,1,0x1000,"R|W|AS2",0);  /* PF2             */
+    GEL_MapAdd(0x8000,1,0x800,1,1);              /* L0 SARAM        */
+    GEL_MapAdd(0x8800,1,0x400,1,1);              /* L1 SARAM        */
+    GEL_MapAdd(0x8c00,1,0x400,1,1);              /* L2 SARAM        */
+    GEL_MapAdd(0x9000,1,0x1000,1,1);             /* L3 SARAM        */
+    GEL_MapAdd(0xa000,1,0x2000,1,1);             /* L4 SARAM        */
+    GEL_MapAdd(0xc000,1,0x2000,1,1);             /* L5 SARAM        */
+    GEL_MapAdd(0xe000,1,0x2000,1,1);             /* L6 SARAM        */
+    GEL_MapAdd(0x10000,1,0x2000,1,1);            /* L7 SARAM        */
+    GEL_MapAdd(0x12000,1,0x2000,1,1);            /* L8 SARAM        */
+    GEL_MapAdd(0x40000,1,0x800,1,1);			 /* USB RAM			*/ 
+    GEL_MapAdd(0x3d7800,1,0x400,1,0);            /* OTP             */
+    GEL_MapAdd(0x3d7c80,1,0x040,1,0);            /* Device Cal      */
+    GEL_MapAdd(0x3d7cc0,1,0x040,1,0);            /* Boot Get Mode   */
+    GEL_MapAdd(0x3d7e80,1,0x001,1,0);            /* PARTID value    */
+    GEL_MapAdd(0x3d7e82,1,0x030,1,0);            /* Calibration Data*/
+    GEL_MapAdd(0x3d8000,1,0x20000,1,0);          /* FLASH           */
+    GEL_MapAdd(0x3f8000,1,0x8000,1,0);           /* BOOT ROM        */
+
+}
+
+/********************************************************************/
+/* The ESTOP0 fill functions are useful for debug.  They fill the   */
+/* RAM with software breakpoints that will trap runaway code.       */
+/********************************************************************/
+hotmenu Fill_F28PLC93_RAM_with_ESTOP0()
+{
+    GEL_MemoryFill(0x000000,1,0x000800,0x7625);      /* Fill M0/M1  */
+    GEL_MemoryFill(0x008000,1,0x000800,0x7625);      /* Fill L0     */
+    GEL_MemoryFill(0x008800,1,0x000800,0x7625);      /* Fill L1/L2  */
+    GEL_MemoryFill(0x009000,1,0x003000,0x7625);      /* Fill L3/L4  */
+    GEL_MemoryFill(0x00C000,1,0x004000,0x7625);	     /* Fill L5/L6  */
+    GEL_MemoryFill(0x010000,1,0x004000,0x7625);	     /* Fill L7/L8  */
+    GEL_MemoryFill(0x040000,1,0x000800,0x7625);		 /* Fill USB RAM */
+}
+
+/********************************************************************/
+menuitem "Watchdog";
+hotmenu Disable_WD()
+{
+    *0x7029 = *0x7029 | 0x0068;                /* Set the WDDIS bit */
+    *0x7025 = 0x0055;                          /* Service the WD    */
+    *0x7025 = 0x00AA;                          /*  once to be safe. */
+    GEL_TextOut("\nWatchdog Timer Disabled");
+}
+
+/********************************************************************/
+menuitem "Code Security Module"
+hotmenu Unlock_CSM()
+{
+    /* Perform dummy reads of the password locations */
+    XAR0 = *0x3F7FF8;
+    XAR0 = *0x3F7FF9;
+    XAR0 = *0x3F7FFA;
+    XAR0 = *0x3F7FFB;
+    XAR0 = *0x3F7FFC;
+    XAR0 = *0x3F7FFD;
+    XAR0 = *0x3F7FFE;
+    XAR0 = *0x3F7FFF;
+
+    /* Write passwords to the KEY registers.  0xFFFF's are dummy passwords.
+       User should replace them with the correct password for their DSP */
+    *0xAE0 = 0xFFFF;
+    *0xAE1 = 0xFFFF;
+    *0xAE2 = 0xFFFF;
+    *0xAE3 = 0xFFFF;
+    *0xAE4 = 0xFFFF;
+    *0xAE5 = 0xFFFF;
+    *0xAE6 = 0xFFFF;
+    *0xAE7 = 0xFFFF;
+}
+
+/********************************************************************/
+menuitem "Addressing Modes";
+
+hotmenu C28x_Mode()
+{
+    ST1 = ST1 & (~0x0100);      /*   AMODE = 0  */
+    ST1 = ST1 | 0x0200;         /* OBJMODE = 1  */
+}
+
+hotmenu C24x_Mode()
+{
+    ST1 = ST1 | 0x0100;         /*   AMODE = 1  */
+    ST1 = ST1 | 0x0200;         /* OBJMODE = 1  */
+}
+
+hotmenu C27x_Mode()
+{
+    ST1 = ST1 & (~0x0100);      /*   AMODE = 0  */
+    ST1 = ST1 & (~0x0200);      /* OBJMODE = 0  */
+}
+
+/********************************************************************/
+/*                            PLL Ratios                            */
+/*                                                                  */
+/* The following table describes the PLL clocking ratios (0..16)    */
+/*                                                                  */
+/*   Ratio        CLKIN          Description                        */
+/*   -----    --------------     ------------                       */
+/*     0      OSCCLK/2           PLL bypassed                       */
+/*     1      (OSCCLK * 2)/2     10 Mhz for 10 Mhz CLKIN            */
+/*     2      (OSCCLK * 4)/2     20 Mhz for 10 Mhz CLKIN            */
+/*     3      (OSCCLK * 6)/2     30 Mhz for 10 Mhz CLKIN            */
+/*     4      (OSCCLK * 8)/2     40 Mhz for 10 Mhz CLKIN            */
+/*     5      (OSCCLK * 10)/2    50 Mhz for 10 Mhz CLKIN            */
+/*     6      (OSCCLK * 12)/2    60 Mhz for 10 Mhz CLKIN	        */
+/*     7      (OSCCLK * 14)/2    70 Mhz for 10 Mhz CLKIN	        */
+/*     8      (OSCCLK * 16)/2    80 Mhz for 10 Mhz CLKIN	        */
+/********************************************************************/
+menuitem "Set PLL Ratio";
+
+hotmenu Bypass()
+{
+    *0x7021 = 0;       /* CLKIN = OSCCLK/1, PLL is bypassed */
+    DIVSEL_div1();     /* DIVSEL = 1/1                      */
+    PLL_Wait();
+}
+
+hotmenu OSCCLK_x1_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 1;      /* CLKIN = (OSCCLK * 1)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x2_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 2;      /* CLKIN = (OSCCLK * 2)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x3_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 3;      /* CLKIN = (OSCCLK * 3)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x4_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 4;      /* CLKIN = (OSCCLK * 4)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x5_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 5;      /* CLKIN = (OSCCLK * 5)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x6_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 6;      /* CLKIN = (OSCCLK * 6)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x7_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 7;      /* CLKIN = (OSCCLK * 7)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x8_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 8;      /* CLKIN = (OSCCLK * 8)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x9_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2           */
+    *0x7021 = 9;      /* CLKIN = (OSCCLK * 9)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x10_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 10;     /* CLKIN = (OSCCLK * 10)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x11_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 11;     /* CLKIN = (OSCCLK * 11)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x12_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 12;     /* CLKIN = (OSCCLK * 12)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x13_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 13;     /* CLKIN = (OSCCLK * 13)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x14_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 14;     /* CLKIN = (OSCCLK * 14)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x15_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 15;     /* CLKIN = (OSCCLK * 15)/2 */
+    PLL_Wait();
+}
+hotmenu OSCCLK_x16_divided_by_2()
+{
+    DIVSEL_div2();    /* DIVSEL = 1/2            */
+    *0x7021 = 16;     /* CLKIN = (OSCCLK * 16)/2 */
+    PLL_Wait();
+}
+
+// hotmenu OSCCLK_x1_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 1;      /* CLKIN = (OSCCLK * 1)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x2_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 2;      /* CLKIN = (OSCCLK * 2)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x3_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 3;      /* CLKIN = (OSCCLK * 3)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x4_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 4;      /* CLKIN = (OSCCLK * 4)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x5_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 5;      /* CLKIN = (OSCCLK * 5)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x6_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 6;      /* CLKIN = (OSCCLK * 6)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x7_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 7;      /* CLKIN = (OSCCLK * 7)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x8_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 8;      /* CLKIN = (OSCCLK * 8)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x9_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1           */
+//     *0x7021 = 9;      /* CLKIN = (OSCCLK * 9)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x10_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 10;     /* CLKIN = (OSCCLK * 10)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x11_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 11;     /* CLKIN = (OSCCLK * 11)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x12_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 12;     /* CLKIN = (OSCCLK * 12)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x13_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 13;     /* CLKIN = (OSCCLK * 13)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x14_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 14;     /* CLKIN = (OSCCLK * 14)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x15_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 15;     /* CLKIN = (OSCCLK * 15)/1 */
+//     PLL_Wait();
+// }
+// hotmenu OSCCLK_x16_divided_by_1()
+// {
+//     DIVSEL_div1();    /* DIVSEL = 1/1            */
+//     *0x7021 = 16;     /* CLKIN = (OSCCLK * 16)/1 */
+//     PLL_Wait();
+// }
+//
+
+/********************************************************************/
+/* For F28PLC93 devices, DIVSEL is 1/4 by default.  Switch it to 1/2  */
+/********************************************************************/
+
+DIVSEL_div2()
+{
+    int temp;
+    int PLLSTS;
+
+    PLLSTS = 0x7011;
+
+    temp  = *PLLSTS;
+    temp &=  0xFE7F;   /* Clear bits 7 & 8 */
+    temp |= 2 << 7;    /* Set bit 8        */
+    *PLLSTS = temp;    /* Switch to 1/2    */
+}
+
+
+
+/********************************************************************/
+/* For F28PLC93 devices, DIVSEL is 1/4 by default.  Switch it to /1   */
+/********************************************************************/
+
+DIVSEL_div1()
+{
+    int temp;
+    int PLLSTS;
+
+    PLLSTS = 0x7011;
+
+    DIVSEL_div2();     /* First switch DIVSEL to 1/2 and wait */
+    wait();
+    temp  = *PLLSTS;
+    temp |= 3 << 7;    /* Set bits 7 & 8   */
+    *PLLSTS = temp;    /* Switch to 1/2    */
+}
+
+wait()
+{
+    int delay = 0;
+    for (delay = 0; delay <= 5; delay ++)
+    {}
+}
+
+/********************************************************************/
+/* For F28PLC93 devices, check the PLLOCKS bit for PLL lock.          */
+/********************************************************************/
+PLL_Wait()
+{
+    int PLLSTS;
+    int delay = 0;
+
+    PLLSTS = 0x7011;
+
+
+    while ( ( (unsigned int)*PLLSTS & 0x0001) != 0x0001)
+    {
+        delay++;
+        GEL_TextOut("Waiting for PLL Lock, PLLSTS = %x\n",,,,,(unsigned int)*PLLSTS);
+    }
+    GEL_TextOut("\nPLL lock complete, PLLSTS = %x\n",,,,,(unsigned int)*PLLSTS);
+}
+
+/********************************************************************/
+/* Clock Source Selection                                           */
+/********************************************************************/
+menuitem "Clock Source Selection"
+hotmenu IntOsc1_Sel()
+{
+ *0x7012 &= ~0x0100;      /* Turn on INTOSC1 */
+ *0x7012 &= ~0x0001;      /* Switch to INTOSC1 */
+}
+hotmenu IntOsc2_Sel()
+{
+        *0x7012 &= ~0x0400;      /* Turn on INTOSC2 */
+ *0x7012 |= 0x0002;       /* Switch OSCCLKSRC2 to INTOSC2 */
+ *0x7012 |= 0x0001;       /* Switch OSCCLKSRC to INTOSC2 / External Clock */
+}
+hotmenu ExtOsc_Sel()
+{
+ *0x7012 &= ~0x4000;      /* Turn on XTALOSC */
+ *0x7012 &= ~0x2000;      /* Turn on XCLKIN */
+ *0x7012 &= ~0x0002;      /* Switch OSCCLKSRC2 to external clock */
+ *0x7012 |= 0x0001;       /* Switch OSCCLKSRC to INTOSC2 / External Clock */
+}
+
+
+/********************************************************************/
+/* Load the Device Calibration values from TI OTP                   */
+/********************************************************************/
+menuitem "Device Calibration"
+hotmenu Device_Cal()
+{
+    /* Perform dummy reads of the password locations */
+
+    XAR0 = *0x3F7FF8;
+    XAR0 = *0x3F7FF9;
+    XAR0 = *0x3F7FFA;
+    XAR0 = *0x3F7FFB;
+    XAR0 = *0x3F7FFC;
+    XAR0 = *0x3F7FFD;
+    XAR0 = *0x3F7FFE;
+    XAR0 = *0x3F7FFF;
+
+    /* If device is unlocked, run device calibration function in TI OTP
+       to copy calibrated values to ADC and internal oscillator registers */
+
+    if(((*0x0AEF) & 0x0001) == 0)
+    {
+
+        XAR0 = *0x701C;
+        *0x701C |= 0x0008;
+        *0x7014 = *0x3d7c83;
+        *0x7016 = *0x3d7c85;
+        *0x7140 = *0x3d7c8d;
+        *0x7141 = *0x3d7c8f;
+        *0x714B = *0x3d7c91;
+        *0x714E = *0x3d7c93;
+        *0x701C = XAR0;
+        XAR0 = 0;
+
+    }
+    else
+    {
+        GEL_TextOut("\nDevice Calibration not complete, check if device is unlocked and recalibrate.");
+    }
+
+}
+
+/********************************************************************/
+/* EMU Boot Mode - Set Boot Mode During Debug                       */
+/********************************************************************/
+menuitem "EMU Boot Mode Select"
+hotmenu EMU_BOOT_SARAM()
+{
+    *0xD00 =  0x55AA;  /* EMU_KEY = 0x 55AA */
+    *0xD01 =  0x000A;  /* Boot to SARAM     */
+}
+hotmenu EMU_BOOT_FLASH()
+{
+    *0xD00 =  0x55AA;  /* EMU_KEY = 0x 55AA */
+    *0xD01 =  0x000B;  /* Boot to FLASH     */
+}
+
+/********************************************************************/
+/* PLL2 Functions						    */
+/********************************************************************/
+menuitem "PLL2 Control";
+
+hotmenu PLL2_ENABLE()
+{
+    *0x7030 |= 0x4;  /* Enable PLL2 */
+}
+
+hotmenu PLL2_DISABLE()
+{
+    *0x7030 &= 0xB;  /* Disable PLL2 */
+}
+
+hotmenu PLL2_CLKSRC_OSC1()
+{
+    *0x7030 &= 0x4;  /* OSC1 Clock Source */
+}
+
+hotmenu PLL2_CLKSRC_X1()
+{
+    *0x7030 &= 0x6;  /* X1 Clock Source */
+}
+
+hotmenu PLL2_CLKSRC_XCLKIN()
+{
+    *0x7030 |= 0x3;  /* XCLKIN Clock Source */
+}
+
+hotmenu PLL2_BYPASS()
+{
+    *0x7032 = 0x0;    /* PLL2 is Bypassed */
+}
+
+hotmenu PLL2_MULT_X1()
+{
+    *0x7032 = 0x1;    /* PLL2 multiplied by 1 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X2()
+{
+    *0x7032 = 0x2;    /* PLL2 multiplied by 2 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X3()
+{
+    *0x7032 = 0x3;    /* PLL2 multiplied by 3 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X4()
+{
+    *0x7032 = 0x4;    /* PLL2 multiplied by 4 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X5()
+{
+    *0x7032 = 0x5;    /* PLL2 multiplied by 5 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X6()
+{
+    *0x7032 = 0x6;    /* PLL2 multiplied by 6 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X7()
+{
+    *0x7032 = 0x7;    /* PLL2 multiplied by 7 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X8()
+{
+    *0x7032 = 0x8;    /* PLL2 multiplied by 8 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X9()
+{
+    *0x7032 = 0x9;    /* PLL2 multiplied by 9 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X10()
+{
+    *0x7032 = 0xA;    /* PLL2 multiplied by 10 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X11()
+{
+    *0x7032 = 0xB;    /* PLL2 multiplied by 11 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X12()
+{
+    *0x7032 = 0xC;    /* PLL2 multiplied by 12 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X13()
+{
+    *0x7032 = 0xD;    /* PLL2 multiplied by 13 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X14()
+{
+    *0x7032 = 0xE;    /* PLL2 multiplied by 14 */
+    PLL2_LOCK();
+}
+
+hotmenu PLL2_MULT_X15()
+{
+    *0x7032 = 0xF;    /* PLL2 multiplied by 15 */
+    PLL2_LOCK();
+}
+
+PLL2_LOCK()
+{
+    int PLL2STS;
+    int delay = 0;
+
+    PLL2STS = 0x7034;
+
+
+    while ( ( (unsigned int)*PLL2STS & 0x0001) != 0x0001)
+    {
+        delay++;
+        GEL_TextOut("Waiting for PLL2 Lock, PLL2STS = %x\n",,,,,(unsigned int)*PLL2STS);
+    }
+    GEL_TextOut("\nPLL2 lock complete, PLL2STS = %x\n",,,,,(unsigned int)*PLL2STS);
+}
+
+hotmenu PLL2_OUTPUT_DIV2_ENABLE()
+{
+    *0x881 &= 0xBFFF; /* PLL2 Output divide by 2 */
+}
+
+
+hotmenu PLL2_OUTPUT_DIV2_DISABLE()
+{
+    *0x881 |= 0x4000; /* PLL2 Output divide by 1 */
+}
+
+/*** End of file ***/

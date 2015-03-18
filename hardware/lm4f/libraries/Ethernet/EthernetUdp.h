@@ -1,3 +1,6 @@
+#ifndef ethernetudp_h
+#define ethernetudp_h
+
 #define UDP_RX_MAX_PACKETS 32
 #define UDP_TX_PACKET_MAX_SIZE 2048
 
@@ -8,6 +11,7 @@ struct packet {
 	struct pbuf *p;
 	IPAddress remoteIP;
 	uint16_t remotePort;
+	IPAddress destIP;
 };
 
 class EthernetUDP : public UDP {
@@ -23,6 +27,7 @@ private:
 	/* IP and port filled in when receiving a packet */
 	IPAddress _remoteIP;
 	uint16_t _remotePort;
+	IPAddress _destIP;
 	/* pbuf, pcb, IP and port used when acting as a client */
 	struct pbuf *_sendTop;
 	struct udp_pcb *_sendToPcb;
@@ -55,4 +60,7 @@ public:
 
 	virtual IPAddress remoteIP() { return _remoteIP; };
 	virtual uint16_t remotePort() { return _remotePort; };
+	virtual IPAddress destIP() { return _destIP; };
 };
+
+#endif

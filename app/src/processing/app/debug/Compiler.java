@@ -398,7 +398,6 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker.add("--diag_wrap=off");//compile for unified memory model
         baseCommandLinker.add("-z");//compile for unified memory model
         baseCommandLinker.add("--stack_size=0x300");//compile for unified memory model
-        baseCommandLinker.add("-m\"Energia_C2000_Test.map\"");//compile for unified memory model
         baseCommandLinker.add("--warn_sections");//compile for unified memory model
         for (int i = 0; i < includePaths.size(); i++) {
         	baseCommandLinker.add("-i" + '\"' + (String) includePaths.get(i)+ '\"' );
@@ -455,29 +454,18 @@ public class Compiler implements MessageConsumer {
         }
         else if( boardPreferences.get("build.mcu").equals("TMS320F28069"))
         {
-        	if(Base.isLinux())
-        	{
-        		baseCommandLinker.add(corePath + "/F2806x_common/cmd/F28069.cmd");
-	        	baseCommandLinker.add(corePath + "/F2806x_headers/cmd/F2806x_Headers_nonBIOS.cmd");
-        	}
-        	else
-        	{
-	        	baseCommandLinker.add(corePath + "\\F2806x_common\\cmd\\F28069.cmd");
-	        	baseCommandLinker.add(corePath + "\\F2806x_headers\\cmd\\F2806x_Headers_nonBIOS.cmd");
-        	}
+        	
+        	
+	       	baseCommandLinker.add(corePath + "//F2806x_common//cmd//F28069.cmd");
+	        baseCommandLinker.add(corePath + "//F2806x_headers//cmd//F2806x_Headers_nonBIOS.cmd");
+        	
         }
         else
         {
-        	if(Base.isLinux())
-        	{
-        		baseCommandLinker.add(corePath + "/f2802x_common/cmd/F28027.cmd");
-            	baseCommandLinker.add(corePath + "/f2802x_headers/cmd/F2802x_Headers_nonBIOS.cmd");
-        	}
-        	else
-        	{
-        baseCommandLinker.add(corePath + "\\f2802x_common\\cmd\\F28027.cmd");
-        baseCommandLinker.add(corePath + "\\f2802x_headers\\cmd\\F2802x_Headers_nonBIOS.cmd");
-        	}    
+        	
+            baseCommandLinker.add(corePath + "//f2802x_common//cmd//F28027.cmd");
+            baseCommandLinker.add(corePath + "//f2802x_headers//cmd//F2802x_Headers_nonBIOS.cmd");
+        	
         }
     }else {
       baseCommandLinker.add("-L" + buildPath);
@@ -1093,7 +1081,7 @@ public class Compiler implements MessageConsumer {
     } else if (arch == "c2000") {
     	
         String[] filePrefix = new String[2];
-        filePrefix = sourceName.split(".s");
+        filePrefix = sourceName.split("(\\.s)|(\\.S)");
       	//TODO: Figure out compiler args...updated needs testing
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {basePath + "cl2000"}));
         baseCommandCompiler.add("-v28");//compile for c28x
@@ -1114,7 +1102,7 @@ public class Compiler implements MessageConsumer {
         baseCommandCompiler.add("--display_error_number");
         baseCommandCompiler.add("--diag_wrap=off");
         baseCommandCompiler.add("--preproc_with_compile");
-        baseCommandCompiler.add("--preproc_dependency=" + '\"' + filePrefix[0]+".pp" + '\"');
+        baseCommandCompiler.add("--preproc_dependency=" + '\"' + filePrefix[0] +".pp" + '\"');
     } else {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
            basePath + "avr-gcc",
@@ -1204,7 +1192,7 @@ public class Compiler implements MessageConsumer {
       } else if (arch == "c2000") {
       	
           String[] filePrefix = new String[2];
-          filePrefix = sourceName.split(".c");
+          filePrefix = sourceName.split("(\\.c)|(\\.C)");
         	//TODO: Figure out compiler args...updated needs testing
           baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {basePath + "cl2000"}));
           baseCommandCompiler.add("-v28");//compile for c28x
@@ -1323,7 +1311,7 @@ public class Compiler implements MessageConsumer {
     }else if (arch == "c2000") {
     	
       String[] filePrefix = new String[2];
-      filePrefix = sourceName.split(".cpp");
+      filePrefix = sourceName.split("(\\.cpp)|(\\.CPP)|(\\.Cpp)");
     	//TODO: Figure out compiler args...updated needs testing
       baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {basePath + "cl2000"}));
       baseCommandCompilerCPP.add("-v28");//compile for c28x

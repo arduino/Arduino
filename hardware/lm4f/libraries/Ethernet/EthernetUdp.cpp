@@ -26,6 +26,7 @@ void EthernetUDP::do_recv(void *arg, struct udp_pcb *upcb, struct pbuf *p, struc
 	/* Record the IP address and port the pacekt was received from */
 	udp->packets[udp->rear].remoteIP = IPAddress(addr->addr);
 	udp->packets[udp->rear].remotePort = port;
+	udp->packets[udp->rear].destIP = IPAddress(ip_current_dest_addr()->addr);
 
 	/* Advance the rear of the queue */
 	udp->rear++;
@@ -159,6 +160,7 @@ int EthernetUDP::parsePacket()
 		_p = NULL;
 		_remotePort = 0;
 		_remoteIP = IPAddress(IPADDR_NONE);
+		_destIP = IPAddress(IPADDR_NONE);
 	}
 
 	/* No more packets in the queue */
@@ -170,6 +172,7 @@ int EthernetUDP::parsePacket()
 	_p = packets[front].p;
 	_remoteIP = packets[front].remoteIP;
 	_remotePort = packets[front].remotePort;
+	_destIP = packets[front].destIP;
 
 	count--;
 
