@@ -1,12 +1,12 @@
 #define LED GREEN_LED
 
-void setupBlueLed() {                
+void setupGreenLed() {                
   // initialize the digital pin as an output.
   pinMode(LED, OUTPUT);     
 }
 
 // the loop routine runs over and over again forever as a task.
-void loopBlueLed() {
+void loopGreenLed() {
   digitalWrite(LED, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(500);               // wait for a second
   digitalWrite(LED, LOW);    // turn the LED off by making the voltage LOW
