@@ -384,6 +384,11 @@ public class Compiler implements MessageConsumer {
                 " required by " + lib.getName());
             }
             addRequiredLibrary = true;
+            // When any library must be added to the importedLibraries list
+            // immediately drop out of this loop, so only a single library
+            // is added.  Each new library can cause different #define
+            // behavior in other code, so building the includeFolders list
+            // must be restarted from scratch with each new library.
             break;
           }
         }
@@ -1009,13 +1014,25 @@ public class Compiler implements MessageConsumer {
     try {
       while (true) {
         String line = in.readLine();
+        // gcc provides dependency analysis in Makefile rule format.  Files
+        // that exist have full pathnames.  Those which don't exist are given
+        // as the appeared in the #include.
+        // For example:
+        //    Sd2Card.o: \
+        //    /home/paul/Arduino/libraries/SD/src/utility/Sd2Card.cpp \
+        //    /home/paul/Arduino/hardware/arduino/avr/cores/arduino/Arduino.h \
+        //    /home/paul/Arduino/hardware/tools/avr/avr/include/stdlib.h \
+        //    SPI.h
         if (line == null) break;
         if (line.endsWith("\\")) line = line.substring(0, line.length() - 1);
         line = line.trim();
-	String[] filenames = line.split("(?<!\\\\) ");
-	for (String filename : filenames) {
+        // Sometimes gcc places more than 1 file per line, delimited by a space.
+        // Spaces in filenames a preceeded with a backslash.  This weird regex
+        // matches to a space, but not when it follows a backslash.
+        String[] filenames = line.split("(?<!\\\\) ");
+        for (String filename : filenames) {
           if (filename.endsWith(":")) continue;
-	  filename = unescapeDepFile(filename);
+          filename = unescapeDepFile(filename);
           File file = new File(filename);
           if (!file.exists()) {
             in.close();
