@@ -366,10 +366,6 @@ public class Compiler implements MessageConsumer {
       if (prefs.getFile("build.variant.path") != null)
         includeFolders.add(prefs.getFile("build.variant.path"));
       for (Library lib : importedLibraries) {
-        if (verbose)
-          System.out.println(I18n
-              .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
-                      lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
         includeFolders.add(lib.getSrcFolder());
       }
       Library required = null;
@@ -380,8 +376,8 @@ public class Compiler implements MessageConsumer {
           required = BaseNoGui.importToLibraryTable.get(header);
           if (required != null && !importedLibraries.contains(required)) {
             if (verbose) {
-              System.out.println("Adding library " + required.getName() +
-                " required by " + lib.getName());
+              System.out.println(I18n.format(_("Adding library {0} required by {1}"),
+                required.getName(), lib.getName()));
             }
             addRequiredLibrary = true;
             // When any library must be added to the importedLibraries list
@@ -396,8 +392,13 @@ public class Compiler implements MessageConsumer {
       if (addRequiredLibrary) importedLibraries.add(required);
     } while (addRequiredLibrary);
 
-    if (verbose)
+    if (verbose) {
+      for (Library lib : importedLibraries) {
+        System.out.println(I18n.format(_("Using library {0} in folder: {1} {2}"),
+           lib.getName(), lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
+      }
       System.out.println();
+    }
 
     List<String> archs = new ArrayList<String>();
     archs.add(BaseNoGui.getTargetPlatform().getId());
