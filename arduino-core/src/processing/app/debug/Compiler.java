@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -358,16 +359,38 @@ public class Compiler implements MessageConsumer {
     // 0. include paths for core + all libraries
     progressListener.progress(20);
     List<File> includeFolders = new ArrayList<File>();
-    includeFolders.add(prefs.getFile("build.core.path"));
-    if (prefs.getFile("build.variant.path") != null)
-      includeFolders.add(prefs.getFile("build.variant.path"));
-    for (Library lib : importedLibraries) {
-      if (verbose)
-        System.out.println(I18n
-            .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
-                    lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
-      includeFolders.add(lib.getSrcFolder());
-    }
+    boolean addRequiredLibrary;
+    do {
+      includeFolders.clear();
+      includeFolders.add(prefs.getFile("build.core.path"));
+      if (prefs.getFile("build.variant.path") != null)
+        includeFolders.add(prefs.getFile("build.variant.path"));
+      for (Library lib : importedLibraries) {
+        if (verbose)
+          System.out.println(I18n
+              .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
+                      lib.getFolder(), lib.isLegacy() ? "(legacy)" : ""));
+        includeFolders.add(lib.getSrcFolder());
+      }
+      Library required = null;
+      addRequiredLibrary = false;
+      for (Library lib : importedLibraries) {
+        String header = dependencyCheckLibrary(lib, includeFolders);
+        if (header != null) {
+          required = BaseNoGui.importToLibraryTable.get(header);
+          if (required != null && !importedLibraries.contains(required)) {
+            if (verbose) {
+              System.out.println("Adding library " + required.getName() +
+                " required by " + lib.getName());
+            }
+            addRequiredLibrary = true;
+            break;
+          }
+        }
+      }
+      if (addRequiredLibrary) importedLibraries.add(required);
+    } while (addRequiredLibrary);
+
     if (verbose)
       System.out.println();
 
@@ -881,6 +904,133 @@ public class Compiler implements MessageConsumer {
     return files;
   }
   
+
+  // 0. dependency check library
+  //      returns the name of any header file not found (on all includeFolders)
+  //      or null if every file the library includes is found
+  private String dependencyCheckLibrary(Library lib, List<File> includeFolders)
+          throws RunnerException, PreferencesMapException {
+    File libFolder = lib.getSrcFolder();
+    String header = null;
+    if (lib.useRecursion()) {
+      header = recursiveDependencyCheckFolder(libFolder, includeFolders);
+    } else {
+      File utilityFolder = new File(libFolder, "utility");
+      includeFolders.add(utilityFolder);
+      header = dependencyCheckFolder(libFolder, includeFolders);
+      if (header == null) {
+        header = dependencyCheckFolder(utilityFolder, includeFolders);
+      }
+      includeFolders.remove(utilityFolder);
+    }
+    return header;
+  }
+
+  private String recursiveDependencyCheckFolder(File srcFolder, List<File> includeFolders)
+          throws RunnerException, PreferencesMapException {
+    String header = dependencyCheckFolder(srcFolder, includeFolders);
+    if (header != null) return header;
+    for (File subFolder : srcFolder.listFiles(new OnlyDirs())) {
+      header = recursiveDependencyCheckFolder(subFolder, includeFolders);
+      if (header != null) return header;
+    }
+    return null;
+  }
+
+  private String dependencyCheckFolder(File sourcePath, List<File> includeFolders)
+          throws RunnerException, PreferencesMapException {
+    for (File file : findFilesInFolder(sourcePath, "S", false)) {
+      String header = execDependencyCommand(includeFolders, file, "recipe.S.o.pattern");
+      if (header != null) return header;
+    }
+    for (File file : findFilesInFolder(sourcePath, "c", false)) {
+      String header = execDependencyCommand(includeFolders, file, "recipe.c.o.pattern");
+      if (header != null) return header;
+    }
+    for (File file : findFilesInFolder(sourcePath, "cpp", false)) {
+      String header = execDependencyCommand(includeFolders, file, "recipe.cpp.o.pattern");
+      if (header != null) return header;
+    }
+    return null;
+  }
+
+  private String execDependencyCommand(List<File> includeFolders, File sourceFile, String recipe)
+          throws PreferencesMapException, RunnerException {
+    // Generate the normal compiler command from its recipe
+    String[] cmd = getCommandCompilerByRecipe(includeFolders,
+      sourceFile, new File("dummy.o"), recipe);
+    // Remove options that interfere with preprocessor-only dependency analysis
+    int count = 0;
+    for (int i=1; i < cmd.length; i++) {
+      if (cmd[i].equals("-c") || cmd[i].equals("-S") || cmd[i].startsWith("-M")) {
+        cmd[i] = null;
+      } else if (cmd[i].equals("-o")) {
+        cmd[i++] = null;
+        if (i < cmd.length) cmd[i] = null;
+      } else {
+        count++;
+      }
+    }
+    // Create a modified compiler command to output the dependency list
+    String[] dep = new String[count + 4];
+    dep[0] = cmd[0];
+    dep[1] = "-E";
+    dep[2] = "-M";
+    dep[3] = "-MG";
+    int j = 1;
+    for (int i=0; i < count; i++) {
+      while (cmd[j] == null) j++;
+      dep[i + 4] = cmd[j++];
+    }
+    // Run the compiler to analyze dependencies
+    // Only the (hopefully fast) preprocessor is run.  The slow
+    // compile and code generation steps are skipped.
+    Process process;
+    try {
+      process = ProcessUtils.exec(dep);
+    } catch (IOException e) {
+      RunnerException re = new RunnerException(e.getMessage());
+      re.hideStackTrace();
+      throw re;
+    }
+     //uncomment this to see the actual compiler commands
+     //for (String c : dep) System.out.print(c + " ");
+     //System.out.println();
+    BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+    try {
+        process.waitFor();
+    } catch (InterruptedException e) {
+      try {
+        in.close();
+      } catch (IOException io) { }
+      return null;
+    }
+    // Read the dependency info and check if the files
+    try {
+      while (true) {
+        String line = in.readLine();
+        if (line == null) break;
+        if (line.endsWith("\\")) line = line.substring(0, line.length() - 1);
+        line = line.trim();
+	String[] filenames = line.split("(?<!\\\\) ");
+	for (String filename : filenames) {
+          if (filename.endsWith(":")) continue;
+	  filename = unescapeDepFile(filename);
+          File file = new File(filename);
+          if (!file.exists()) {
+            in.close();
+            return filename;
+          }
+        }
+
+      }
+      in.close();
+    } catch (IOException e) {
+    }
+    return null;
+  }
+
+
   // 1. compile the sketch (already in the buildPath)
   void compileSketch(List<File> includeFolders) throws RunnerException, PreferencesMapException {
     File buildPath = prefs.getFile("build.path");
