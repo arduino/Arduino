@@ -1110,6 +1110,10 @@ public class Base {
             		  targetLibDir = "hardware/c2000/";
 		  else if(n.equals("cc3200")) 
             		  targetLibDir = "hardware/cc3200/";
+		  else if(n.equals("msp432")) 
+            		  targetLibDir = "hardware/msp432/";
+		  else if(n.equals("secret")) 
+            		  targetLibDir = "hardware/secret/";
             	  librariesFolder = getContentFile(targetLibDir + "libraries");
             	  onArchChanged();
               }
@@ -1769,7 +1773,7 @@ public class Base {
         String hwPath = getMSP430BasePath();
         return hwPath;
       }
-      else if (getArch() == "lm4f" || getArch() == "cc3200") {
+      else if (getArch() == "lm4f" || getArch() == "cc3200" || getArch() == "msp432") {
     	  String hwPath = getLM4FBasePath();
     	  return hwPath;
       }
@@ -1783,7 +1787,7 @@ public class Base {
       }
     } else if (Base.isWindows()) {
     	String arch = getArch();
-    	if (arch == "cc3200")
+    	if (arch == "cc3200" || arch == "msp432" || arch == "secret")
     		arch = "lm4f";
       String ret = getHardwarePath() + File.separator + "tools"
           + File.separator + arch + File.separator + "bin"
@@ -1791,7 +1795,7 @@ public class Base {
       return ret;
     } else {
     	String arch = getArch();
-    	if (arch == "cc3200" || arch == "secret")
+    	if (arch == "cc3200" || arch == "secret" || arch == "msp432")
     		arch = "lm4f";
     	return getHardwarePath() + File.separator + "tools" + File.separator
           + arch + File.separator + "bin" + File.separator;
