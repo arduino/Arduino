@@ -118,7 +118,7 @@ LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = yes
+CORE_FROM_SOURCE = no
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
