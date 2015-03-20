@@ -1,4 +1,4 @@
-#include "Energia.h"
+#include <Energia.h>
 
 #include <xdc/std.h>
 
@@ -28,13 +28,14 @@
 #define WM_CMD 1     /* write to memory cmd */
 #define DRW_CMDS 1   /* digital read/write cmds */
 #define ARW_CMDS 1   /* analog read/write cmds */
-#define SPI_CMD 0    /* SPI transfer cmd */
+#define SPI_CMD 1    /* SPI transfer cmd */
 #define PRI_CMD 1    /* Set Task priority cmd */
 #define STATS_CMD 1  /* CPU and task utilzation stats cmd */
 
 #define MAX_COMMAND_LEN 48
 #define MAX_COMMAND_NAME_LEN 8
 #define MAX_COMMAND_LINES 5
+
 
 // Return codes for handlers
 #define RETURN_SUCCESS          (0)
@@ -663,6 +664,7 @@ static void printTaskInfo(Task_Handle task)
     Load_Stat loadStat;
     String name;
     static char buf[100];
+    uint32_t loadInt, loadFrac;
 
     Task_stat(task, &taskStat);
     Load_getTaskLoad(task, &loadStat);
@@ -677,10 +679,16 @@ static void printTaskInfo(Task_Handle task)
         }
     }
 
+    /* only show 1 decimal place of precision */
+    /* System_snprintf() does not support %2.1f */ 
+    loadInt = 100.0*(float)loadStat.threadTime/(float)loadStat.totalTime;
+    loadFrac = 1000.0*(float)loadStat.threadTime/(float)loadStat.totalTime - 10.0*loadInt;
+  
+    /* use System_snprintf() because it uses 500 fewer bytes of stack than snprintf() */ 
     System_snprintf(buf, sizeof(buf),
-          " task: %s/0x%x, pri: %d, stack usage: %d/%d, mode: %s load: %f",
+          " task: %s/0x%x, pri: %d, stack usage: %d/%d, mode: %s load: %d.%1u",
           name, task, taskStat.priority, taskStat.used, taskStat.stackSize, getModeStr(taskStat.mode),
-          100.0*(float)loadStat.threadTime/(float)loadStat.totalTime);
+          loadInt, loadFrac);
     Serial.println(buf);
 }
 
@@ -689,10 +697,24 @@ static void printUtilization()
     UInt i;
     Memory_Stats memStat;
     Hwi_StackInfo hwiStackStat;
+    Load_Stat loadStat;
     Task_Handle tsk;
-        
+    float idleLoad;
+    uint32_t idleLoadInt, idleLoadFrac;
+
+    /* collect current stats */
+    Load_update();   
+
+    /* use time NOT spent in idle task for Total CPU Load */ 
+    Load_getTaskLoad(Task_getIdleTask(), &loadStat);
+    idleLoad = 100.0 - 100.0*(float)loadStat.threadTime/(float)loadStat.totalTime;
+    idleLoadInt = idleLoad;
+    idleLoadFrac = 10.0*idleLoad - 10.0*idleLoadInt;
+ 
     Serial.write("Total CPU Load: ");
-    Serial.println(Load_getCPULoad());
+    Serial.print(idleLoadInt);
+    Serial.print(".");
+    Serial.println(idleLoadFrac);
     Serial.println("");
     
     /* collect stats on all statically Created tasks */
