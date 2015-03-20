@@ -22,11 +22,13 @@
 #ifdef HID_ENABLED
 
 //#define RAWHID_ENABLED
+#define JOYHID_ENABLED
 
 //	Singletons for mouse and keyboard
 
 Mouse_ Mouse;
 Keyboard_ Keyboard;
+Joystick_ Joystick;
 
 //================================================================================
 //================================================================================
@@ -123,6 +125,84 @@ const u8 _hidReportDescriptor[] = {
 	0x09, 0x02,				// usage
 	0x91, 0x02,				// Output (array)
 	0xC0					// end collection
+#endif
+
+#ifdef JOYHID_ENABLED
+	// *** Here is where the RAW_HID has been converted to a Joystick device
+	// *** Inspired by helmpcb.com/electronics/usb-joystick
+	// *** Check out www.usb.org/developers/hidpage/ for more than you'll ever need to know about USB HID
+	// *** HID descriptor created using the HID descriptor tool from www.usb.org/developers/hidpage/dt2_4.zip (win32)
+
+	// 32 buttons (and a throttle - just in case the game doesn't recognise a joystick with no analog axis)
+
+	0x05, 0x01,			// USAGE_PAGE (Generic Desktop)
+	0x09, 0x04,			// USAGE (Joystick)
+	0xa1, 0x01,			// COLLECTION (Application)
+	0x85, 0x03,			//   REPORT_ID (3)  (This is important when HID_SendReport() is called)
+
+	//Buttons:
+	0x05, 0x09,			//   USAGE_PAGE (Button)
+	0x19, 0x01,			//   USAGE_MINIMUM (Button 1)
+	0x29, 0x20,			//   USAGE_MAXIMUM (Button 32)
+	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
+	0x25, 0x01,			//   LOGICAL_MAXIMUM (1)
+	0x75, 0x01,			//   REPORT_SIZE (1)
+	0x95, 0x20,			//   REPORT_COUNT (32)
+	0x55, 0x00,			//   UNIT_EXPONENT (0)
+	0x65, 0x00,			//   UNIT (None)
+	0x81, 0x02,			//   INPUT (Data,Var,Abs)
+
+	// 8 bit Throttle and Steering
+	0x05, 0x02,			//   USAGE_PAGE (Simulation Controls)
+	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
+	0x26, 0xff, 0x00,	//   LOGICAL_MAXIMUM (255)
+	0xA1, 0x00,			//   COLLECTION (Physical)
+	0x09, 0xBB,			//     USAGE (Throttle)
+	0x09, 0xBA,			//     USAGE (Steering)
+	0x75, 0x08,			//     REPORT_SIZE (8)
+	0x95, 0x02,			//     REPORT_COUNT (2)
+	0x81, 0x02,			//     INPUT (Data,Var,Abs)
+	0xc0,				//   END_COLLECTION
+
+	// Two Hat switches
+	0x05, 0x01,			//   USAGE_PAGE (Generic Desktop)
+	0x09, 0x39,			//   USAGE (Hat switch)
+	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
+	0x25, 0x07,			//   LOGICAL_MAXIMUM (7)
+	0x35, 0x00,			//   PHYSICAL_MINIMUM (0)
+	0x46, 0x3B, 0x01,	//   PHYSICAL_MAXIMUM (315)
+	0x65, 0x14,			//   UNIT (Eng Rot:Angular Pos)
+	0x75, 0x04,			//   REPORT_SIZE (4)
+	0x95, 0x01,			//   REPORT_COUNT (1)
+	0x81, 0x02,			//   INPUT (Data,Var,Abs)
+
+	0x09, 0x39,			//   USAGE (Hat switch)
+	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
+	0x25, 0x07,			//   LOGICAL_MAXIMUM (7)
+	0x35, 0x00,			//   PHYSICAL_MINIMUM (0)
+	0x46, 0x3B, 0x01,	//   PHYSICAL_MAXIMUM (315)
+	0x65, 0x14,			//   UNIT (Eng Rot:Angular Pos)
+	0x75, 0x04,			//   REPORT_SIZE (4)
+	0x95, 0x01,			//   REPORT_COUNT (1)
+	0x81, 0x02,			//   INPUT (Data,Var,Abs)
+
+	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
+	0x26, 0xff, 0x00,	//   LOGICAL_MAXIMUM (255)
+	0x75, 0x08,			//   REPORT_SIZE (8)
+
+	0x09, 0x01,			//   USAGE (Pointer)
+	0xA1, 0x00,			//   COLLECTION (Physical)
+	0x09, 0x30,		    //     USAGE (x)
+	0x09, 0x31,		    //     USAGE (y)
+	0x09, 0x32,		    //     USAGE (z)
+	0x09, 0x33,		    //     USAGE (rx)
+	0x09, 0x34,		    //     USAGE (ry)
+	0x09, 0x35,		    //     USAGE (rz)
+	0x95, 0x06,		    //     REPORT_COUNT (2)
+	0x81, 0x02,		    //     INPUT (Data,Var,Abs)
+	0xc0,				//   END_COLLECTION
+
+	0xc0				// END_COLLECTION
 #endif
 };
 
@@ -511,6 +591,48 @@ size_t Keyboard_::write(uint8_t c)
 	uint8_t p = press(c);  // Keydown
 	release(c);            // Keyup
 	return p;              // just return the result of press() since release() almost always returns 1
+}
+
+//================================================================================
+//================================================================================
+//	Joystick
+//
+
+Joystick_::Joystick_()
+{
+}
+
+#define joystickStateSize 13
+
+void Joystick_::setState(JoystickState *joystickState)
+{
+	uint8_t data[joystickStateSize];
+	uint32_t buttonTmp;
+	buttonTmp = joystickState->buttons;
+
+	data[0] = buttonTmp & 0xFF;		// Break 32 bit button-state out into 4 bytes, to send over USB
+	buttonTmp >>= 8;
+	data[1] = buttonTmp & 0xFF;
+	buttonTmp >>= 8;
+	data[2] = buttonTmp & 0xFF;
+	buttonTmp >>= 8;
+	data[3] = buttonTmp & 0xFF;
+
+	data[4] = joystickState->throttle;		// Throttle
+	data[5] = joystickState->rudder;		// Steering
+
+	data[6] = (joystickState->hatSw2 << 4) | joystickState->hatSw1;		// Pack hat-switch states into a single byte
+
+	data[7] = joystickState->xAxis;		// X axis
+	data[8] = joystickState->yAxis;		// Y axis
+	data[9] = joystickState->zAxis;		// Z axis
+	data[10] = joystickState->xRotAxis;		// rX axis
+	data[11] = joystickState->yRotAxis;		// rY axis
+	data[12] = joystickState->zRotAxis;		// rZ axis
+
+	// HID_SendReport(Report number, array of values in same order as HID descriptor, length)
+	HID_SendReport(3, data, joystickStateSize);
+	// The joystick is specified as using report 3 in the descriptor. That's where the "3" comes from
 }
 
 #endif

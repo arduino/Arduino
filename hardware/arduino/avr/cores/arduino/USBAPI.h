@@ -185,6 +185,38 @@ extern Keyboard_ Keyboard;
 
 //================================================================================
 //================================================================================
+//	Joystick (Gamepad)
+typedef struct
+{
+	uint8_t		xAxis;
+	uint8_t		yAxis;
+	uint8_t		zAxis;
+
+	uint8_t		xRotAxis;
+	uint8_t		yRotAxis;
+	uint8_t		zRotAxis;
+
+	uint8_t		throttle;
+	uint8_t		rudder;
+
+	uint8_t		hatSw1; // 0-7 correspond to 0-315° in 45° steps. 8 means the hat-switch is centered
+	uint8_t		hatSw2; // All other values are invalid
+
+	uint32_t	buttons; // 32 general buttons - each bit corresponds to a separate button
+
+} JoystickState;
+
+class Joystick_
+{
+public:
+	Joystick_();
+
+	void setState(JoystickState *joystickState);
+};
+extern Joystick_ Joystick;
+
+//================================================================================
+//================================================================================
 //	Low level API
 
 typedef struct
