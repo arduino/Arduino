@@ -36,6 +36,11 @@ int joystickXState, joystickYState ;
 void setup() {
 
    
+  // By default MSP432 has analogRead() set to 10 bits. 
+  // This Sketch assumes 12 bits. Uncomment to line below to set analogRead()
+  // to 12 bit resolution for MSP432.
+  //analogReadResolution(12);
+
   // initialize the pushbutton pin as an input:
   pinMode(joystickSel, INPUT_PULLUP);     
   

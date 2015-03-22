@@ -38,6 +38,11 @@ byte drawColor = 0;
 boolean lastCycleState = true;
 
 void setup() {
+    // By default MSP432 has analogRead() set to 10 bits. 
+    // This Sketch assumes 12 bits. Uncomment to line below to set analogRead()
+    // to 12 bit resolution for MSP432.
+    //analogReadResolution(12);
+
     //Start Serial communication
     Serial.begin(9600);
     

@@ -39,9 +39,14 @@ const int redLED= 39; // assign red LED to Pin #9
 const int greenLED= 38;// assign green LED to Pin #10
 const int blueLED= 37; // assign blueLED to Pin #12
 
-void setup() { 
+void setup() {
+    // By default MSP432 has analogRead() set to 10 bits. 
+    // This Sketch assumes 12 bits. Uncomment to line below to set analogRead()
+    // to 12 bit resolution for MSP432.
+    //analogReadResolution(12);
     Serial.begin(9600); // initialize for sending diagnostic info to computer
 }
+
 void loop() { 
     int analogValue;// CHECK X AXIS (red) 
     analogValue = analogRead(xpin); // read X axis 
