@@ -22,7 +22,7 @@ void setup() {
 }
 
 void loop() {
-  String stringOne = "<HTML><HEAD><BODY>"";
+  String stringOne = "<HTML><HEAD><BODY>";
   Serial.println(stringOne);
   // replace() changes all instances of one substring with another:
   // first, make a copy of th original string:
