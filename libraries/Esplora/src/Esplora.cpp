@@ -51,7 +51,7 @@ const byte BUZZER_PIN = 6;
 // Led 13: D13
 
 const byte ACCEL_X_PIN = A5;
-const byte ACCEL_Y_PIN = A11;
+const byte ACCEL_Y_PIN = A7;
 const byte ACCEL_Z_PIN = A6;
 
 const byte LED_PIN     = 13;
