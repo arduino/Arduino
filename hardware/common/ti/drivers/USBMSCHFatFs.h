@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -98,8 +98,8 @@
  *
  *  Diagnostics Mask | Log details |
  *  ---------------- | ----------- |
- *  Diags_USER1      | basic USBMSCHFatFs operations performed |
- *  Diags_USER2      | detailed USBMSCHFatFs operations performed |
+ *  Diags_USER1      | basic operations performed |
+ *  Diags_USER2      | detailed operations performed |
  *
  *  ============================================================================
  */
@@ -122,6 +122,12 @@ typedef struct USBMSCHFatFs_Config *USBMSCHFatFs_Handle;
 
 /*!
  *  @brief      USBMSCHFatFs Parameters
+ *
+ *  USBMSCHFatFs parameters are used to with the USBMSCHFatFs_open() call.
+ *  Default values for these parameters are set using
+ *  USBMSCHFatFs_Params_init().
+ *
+ *  @sa     USBMSCHFatFs_Params_init()
  */
 typedef struct USBMSCHFatFs_Params {
     unsigned int servicePriority;      /*!< USB service Task priority. Default
@@ -193,18 +199,20 @@ typedef struct USBMSCHFatFs_FxnTable {
 } USBMSCHFatFs_FxnTable;
 
 /*!
- *  @brief
+ *  @brief  USBMSCHFatFs Global configuration
  *
  *  The USBMSCHFatFs_Config structure contains a set of pointers used to
  *  characterize the USBMSCHFatFs driver implementation.
  *
  *  This structure needs to be defined before calling USBMSCHFatFs_init() and
  *  it must not be changed thereafter.
+ *
+ *  @sa     USBMSCHFatFs_init()
  */
 typedef struct USBMSCHFatFs_Config {
     /*!
-     * Pointer to a function table of a driver specific implementation of
-     * USBMSCHFatFs functions.
+     * Pointer to a table of driver-specific implementations of USBMSCHFatFs
+     * APIs
      */
     USBMSCHFatFs_FxnTable const *fxnTablePtr;
 
@@ -225,9 +233,9 @@ typedef struct USBMSCHFatFs_Config {
  *
  *  @post   After calling this function, it is safe to remove the USB drive
  *
- *  @param  handle  A USBMSCHFatFs handle returned from USBMSCHFatFs_open
+ *  @param  handle      A USBMSCHFatFs_Handle returned from USBMSCHFatFs_open
  *
- *  @sa     USBMSCHFatFs_open
+ *  @sa     USBMSCHFatFs_open()
  */
 extern void USBMSCHFatFs_close(USBMSCHFatFs_Handle handle);
 
@@ -237,11 +245,13 @@ extern void USBMSCHFatFs_close(USBMSCHFatFs_Handle handle);
  *
  *  @pre    USBMSCHFatFs_open() has to be called first.
  *
- *  @param  handle A USBMSCHFatFs handle returned from USBMSCHFatFs_open()
+ *  @param  handle      A USBMSCHFatFs handle returned from USBMSCHFatFs_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -253,12 +263,12 @@ extern int USBMSCHFatFs_control(USBMSCHFatFs_Handle handle,
                                 void *arg);
 
 /*!
- *  @brief  Function to perform USB initializations
+ *  @brief  Function to initialize the USBMSCHFatFs module.
  *
- *  @pre    The USB controller needs to be powered up and clocked. The
- *          USBMSCHFatFs_config structure must exist and be persistent before
- *          this function can be called. This function must also be called
- *          before any other USBMSCHFatFs_ driver APIs.
+ *  @pre    The USBMSCHFatFs_config structure must exist and be persistent
+ *          before this function can be called. This function must also be
+ *          called before any other USBMSCHFatFs driver APIs. This function call
+ *          does not modify any peripheral registers.
  */
 extern void USBMSCHFatFs_init(void);
 
@@ -266,33 +276,37 @@ extern void USBMSCHFatFs_init(void);
  *  @brief  This function registers the USBMSCHFatFs driver with BIOS' FatFs
  *          module and mounts the FatFs file system.
  *
- *  @pre    USB controller has been initialized
+ *  @pre    USBMSCHFatFs_Params_init() has been called
  *
- *  @param  index         Logical peripheral number indexed into the HWAttrs
- *                        table
+ *  @param  index         Logical peripheral number for the USBMSCHFatFs indexed
+ *                        into the USBMSCHFatFs_config table
  *
  *  @param  drv           Drive number to be associated with the USBMSCHFatFs
  *                        FatFs driver
  *
  *  @param  params        Pointer to an parameter block, if NULL it will use
- *                        default values
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
  *  @return A pointer to a USBMSCHFatFs_Handle on success or a NULL it was
  *          already opened
  *
- *  @sa     USBMSCHFatFs_close
+ *  @sa     USBMSCHFatFs_init()
+ *  @sa     USBMSCHFatFs_close()
  */
-extern USBMSCHFatFs_Handle USBMSCHFatFs_open(unsigned int index, unsigned char drv,
+extern USBMSCHFatFs_Handle USBMSCHFatFs_open(unsigned int index,
+                                             unsigned char drv,
                                              USBMSCHFatFs_Params *params);
 
 /*!
  *  @brief  Function to initialize the USBMSCHFatFs_Params structure to its
  *          defaults
  *
- *  Defaults values are:
- *  servicePriority = Task_numPriorities - 1;
+ *  @param  params      An pointer to USBMSCHFatFs_Params structure for
+ *                      initialization
  *
- *  @param  params  Parameter structure to initialize
+ *  Defaults values are:
+ *      servicePriority = Task_numPriorities - 1;
  */
 extern void USBMSCHFatFs_Params_init(USBMSCHFatFs_Params *params);
 
@@ -301,9 +315,9 @@ extern void USBMSCHFatFs_Params_init(USBMSCHFatFs_Params *params);
  *          After the USBMSCHFatFs driver has been opened this functino is used
  *          to determine when a USB drive is has been enumerated.
  *
- *  @param  handle  A USBMSCHFatFs handle
+ *  @param  handle      A USBMSCHFatFs handle
  *
- *  @param  timeout Timeout period in system ticks for the task to block
+ *  @param  timeout     Timeout period in system ticks for the task to block
  *
  *  @return status:
  *          - true: Successful

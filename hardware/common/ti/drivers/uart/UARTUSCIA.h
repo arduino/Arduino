@@ -59,9 +59,6 @@ extern "C" {
 
 #include <ti/sysbios/knl/Semaphore.h>
 
-/* Return codes for SPI_control() */
-#define UARTUSCIA_CMD_UNDEFINED     -UART_RESERVATION_BASE - 1
-
 /* UARTUSCIA function table pointer */
 extern const UART_FxnTable UARTUSCIA_fxnTable;
 

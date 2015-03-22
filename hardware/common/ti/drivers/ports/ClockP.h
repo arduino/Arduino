@@ -32,22 +32,24 @@
 /** ============================================================================
  *  @file       ClockP.h
  *
- *  @brief      Clock interface for the OSAL
+ *  @brief      Clock interface for the RTOS Porting Interface
  *
  *  The ClockP module can be used to schedule functions that run at intervals
- *  specified in the underlying kernel's system ticks.  ClockP instances can
- *  be one-shot or periodic.  In the one-shot case, the function will be run once
- *  after the specified period has elapsed since calling ClockP_start().  In
- *  periodic mode, the ClockP instance's function will be run periodically
- *  after calling ClockP_start().
+ *  specified in the underlying kernel's system ticks.  ClockP instances are
+ *  one-shot.  The one-shot function will be run once
+ *  after the specified period has elapsed since calling ClockP_start().
  *
  *  The ClockP module can also be used to obtain the period of the kernel's
  *  system tick in microseconds.  This is useful for determining the number of
  *  ticks needed for setting a Clock object's period.
  *
- *  When using the TI-RTOS kernel, ClockP functions are run at software interrupt
- *  level. With FreeRTOS, the ClockP functions are run by a timer service task
- *  with priority configured by the application.
+ *  When using the TI-RTOS kernel, ClockP functions are run at software
+ *  interrupt level. With FreeRTOS, the ClockP functions are run by a timer
+ *  service task with priority configured by the application.
+ *
+ *  A common use case is to post a semaphore in the clock function. There is a
+ *  specific API for this: Semaphore_postFromClock(). This must be used in a
+ *  clock function (instead of Semaphore_post or Semaphore_postFromISR).
  *
  *  ============================================================================
  */
@@ -151,6 +153,16 @@ extern void ClockP_getCpuFreq(ClockP_FreqHz *freq);
 extern uint32_t ClockP_getSystemTickPeriod();
 
 /*!
+ *  @brief  Get the current tick value
+ *
+ *  The value returned will wrap back to zero after it reaches the max
+ *  value that can be stored in 32 bits.
+ *
+ *  @return Time in system clock ticks
+ */
+extern uint32_t ClockP_getSystemTicks();
+
+/*!
  *  @brief  Initialize params structure to default values.
  *
  *  The default parameters are:
@@ -208,6 +220,8 @@ extern ClockP_Status ClockP_stop(ClockP_Handle handle);
  *    - ClockP_FAILURE: The API failed.
  */
 extern ClockP_Status ClockP_stopFromISR(ClockP_Handle handle);
+
+extern ClockP_Status ClockP_timestamp(ClockP_Handle handle);
 
 #ifdef __cplusplus
 }

@@ -160,7 +160,10 @@ typedef void (*Watchdog_Callback)(uintptr_t);
 /*!
  *  @brief      Watchdog Parameters
  *
- *  @see        Watchdog_Params_init
+ *  Watchdog parameters are used to with the Watchdog_open() call. Default
+ *  values for these parameters are set using Watchdog_Params_init().
+ *
+ *  @sa         Watchdog_Params_init()
  */
 typedef struct Watchdog_Params {
     Watchdog_Callback   callbackFxn;    /*!< Pointer to callback. Not supported
@@ -228,11 +231,26 @@ typedef struct Watchdog_FxnTable {
 
 /*!
  *  @brief      Watchdog Global configuration
+ *
+ *  The Watchdog_Config structure contains a set of pointers used to
+ *  characterize the Watchdog driver implementation.
+ *
+ *  This structure needs to be defined before calling Watchdog_init() and
+ *  it must not be changed thereafter.
+ *
+ *  @sa     Watchdog_init()
  */
 typedef struct Watchdog_Config {
-    Watchdog_FxnTable const *fxnTablePtr; /*!< Pointer to Watchdog function table */
-    void                    *object;      /*!< Pointer to Watchdog object */
-    void              const *hwAttrs;     /*!< Pointer to hardware attribute */
+    /*!
+     * Pointer to a table of driver-specific implementations of Watchdog APIs
+     */
+    Watchdog_FxnTable const *fxnTablePtr;
+
+    /*! Pointer to a driver specific data object */
+    void                    *object;
+
+    /*! Pointer to a driver specific hardware attributes structure */
+    void              const *hwAttrs;
 } Watchdog_Config;
 
 /*!
@@ -241,17 +259,20 @@ typedef struct Watchdog_Config {
  *  Clears the Watchdog to to prevent a reset signal from being generated if the
  *  module is in Watchdog_RESET_ON reset mode.
  *
- *  @param      handle      Watchdog Handle
+ *  @param  handle      Watchdog Handle
  */
 extern void Watchdog_clear(Watchdog_Handle handle);
 
 /*!
- *  @brief      Stop the Watchdog running
+ *  @brief  Function to close a Watchdog peripheral specified by the Watchdog
+ *          handle.It stops (holds) the Watchdog counting on applicable
+ *          platforms.
  *
- *  Stops (holds) the Watchdog counting. This function not applicable for all
- *  platforms.
+ *  @pre    Watchdog_open() has to be called first.
  *
- *  @param      handle      Watchdog Handle
+ *  @param  handle      A Watchdog_Handle returned from Watchdog_open
+ *
+ *  @sa     Watchdog_open()
  */
 extern void Watchdog_close(Watchdog_Handle handle);
 
@@ -261,11 +282,13 @@ extern void Watchdog_close(Watchdog_Handle handle);
  *
  *  @pre    Watchdog_open() has to be called first.
  *
- *  @param  handle A Watchdog handle returned from Watchdog_open()
+ *  @param  handle      A Watchdog handle returned from Watchdog_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -292,24 +315,31 @@ extern void Watchdog_init(void);
  *  Opens a Watchdog object with the index and parameters specified, and
  *  returns a Watchdog_Handle.
  *
- *  @param      index         Logical peripheral number indexed in array of
- *                            Watchdog_config.
- *  @param      params        Pointer to a parameter struct. If it is NULL,
- *                            default values will be used.
+ *  @param  index         Logical peripheral number for the Watchdog indexed
+ *                        into the Watchdog_config table
  *
- *  @return     A Watchdog_Handle if successful, NULL if it is not.
+ *  @param  params        Pointer to an parameter block, if NULL it will use
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
+ *
+ *  @return A Watchdog_Handle on success or a NULL on an error or if it has been
+ *          opened already.
+ *
+ *  @sa     Watchdog_init()
+ *  @sa     Watchdog_close()
  */
 extern Watchdog_Handle Watchdog_open(unsigned int index, Watchdog_Params *params);
 
 /*!
- *  @brief      Initializes Watchdog parameters
+ *  @brief  Function to initialize the Watchdog_Params structure to its defaults
+ *
+ *  @param  params      An pointer to Watchdog_Params structure for
+ *                      initialization
  *
  *  Default parameters:
- *  - callbackFxn       = NULL
- *  - resetMode         = Watchdog_RESET_ON
- *  - debugStallMode    = Watchdog_DEBUG_STALL_ON
- *
- *  @param      params      Pointer to a parameter struct
+ *      callbackFxn = NULL
+ *      resetMode = Watchdog_RESET_ON
+ *      debugStallMode = Watchdog_DEBUG_STALL_ON
  */
 extern void Watchdog_Params_init(Watchdog_Params *params);
 
@@ -325,6 +355,7 @@ extern void Watchdog_Params_init(Watchdog_Params *params);
  *  specific driver implementation for details.
  *
  *  @param      handle      Watchdog Handle
+ *
  *  @param      value       Value to be loaded into Watchdog timer
  */
 extern void Watchdog_setReload(Watchdog_Handle handle, uint32_t value);

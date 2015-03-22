@@ -165,8 +165,8 @@
  *
  *  Diagnostics Mask | Log details |
  *  ---------------- | ----------- |
- *  Diags_USER1      | basic PWM operations performed |
- *  Diags_USER2      | detailed PWM operations performed |
+ *  Diags_USER1      | basic operations performed |
+ *  Diags_USER2      | detailed operations performed |
  *
  *  ============================================================================
  */
@@ -206,11 +206,12 @@ typedef enum PWM_Polarity {
 } PWM_Polarity;
 
 /*!
- *  @brief
+ *  @brief PWM Parameters
+ *
  *  PWM Parameters are used to with the PWM_open() call. Default values for
  *  these parameters are set using PWM_Params_init().
  *
- *  @sa     PWM_Params_init
+ *  @sa     PWM_Params_init()
  */
 typedef struct PWM_Params {
     uint32_t     period;         /*!< PWM period in microseconds */
@@ -295,12 +296,18 @@ typedef struct PWM_FxnTable {
 } PWM_FxnTable;
 
 /*!
- *  @brief
+ *  @brief  PWM Global configuration
+ *
  *  The PWM_Config structure contains a set of pointers used to characterize
  *  the PWM driver implementation.
+ *
+ *  This structure needs to be defined before calling PWM_init() and it must
+ *  not be changed thereafter.
+ *
+ *  @sa     PWM_init()
  */
 typedef struct PWM_Config {
-    /*! Pointer to a table of driver-specific PWM function implementations */
+    /*! Pointer to a table of driver-specific implementations of PWM APIs */
     PWM_FxnTable const *fxnTablePtr;
 
     /*! Pointer to a driver specific data object */
@@ -311,8 +318,7 @@ typedef struct PWM_Config {
 } PWM_Config;
 
 /*!
- *  @brief  Function to close a given PWM peripheral specified by the
- *          PWM handle.
+ *  @brief  Function to close a PWM peripheral specified by the PWM handle
  *
  *  @pre    PWM_open() has to be called first.
  *
@@ -328,11 +334,13 @@ extern void PWM_close(PWM_Handle handle);
  *
  *  @pre    PWM_open() has to be called first.
  *
- *  @param  handle A PWM handle returned from PWM_open()
+ *  @param  handle      A PWM handle returned from PWM_open()
  *
- *  @param  cmd A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -366,9 +374,10 @@ extern unsigned int PWM_getPeriodMicroSecs(PWM_Handle handle);
 /*!
  *  @brief  This function initializes the PWM module.
  *
- *  @pre    The PWM needs to be powered up and clocked. The PWM_config structure
- *          must exist and be persistent before this function can be called.
- *          This function must also be called before any other PWM driver APIs.
+ *  @pre    The PWM_config structure must exist and be persistent before this
+ *          function can be called. This function must also be called before
+ *          any other PWM driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void PWM_init(void);
 
@@ -377,32 +386,31 @@ extern void PWM_init(void);
  *
  *  @pre    PWM controller has been initialized using PWM_init()
  *
- *  @param  index  Logical peripheral number indexed into the PWM_config
- *                 table
+ *  @param  index         Logical peripheral number for the PWM indexed into
+ *                        the PWM_config table
  *
- *  @param  params Pointer to a parameter block, if NULL it will use default
- *                 values
+ *  @param  params        Pointer to an parameter block, if NULL it will use
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
- *  @return A pointer to a PWM_Handle on success or a NULL it was already
- *          opened
+ *  @return A PWM_Handle on success or a NULL on an error or if it has been
+ *          opened already.
  *
- *  @sa     PWM_close()
  *  @sa     PWM_init()
+ *  @sa     PWM_close()
  */
 extern PWM_Handle PWM_open(unsigned int index, PWM_Params *params);
 
 /*!
  *  @brief  Function to initialize the PWM_Params struct to its defaults
  *
+ *  @param  params      An pointer to PWM_Params structure for
+ *                      initialization
+ *
  *  Defaults values are:
- *  @code
- *  period   = 10000 (microseconds)
- *  dutyMode = PWM_DUTY_TIME
- *  polarity = PWM_POL_ACTIVE_HIGH
- *
- *  @endcode
- *
- *  @param  params  Parameter structure to initialize
+ *      period   = 10000 (microseconds)
+ *      dutyMode = PWM_DUTY_TIME
+ *      polarity = PWM_POL_ACTIVE_HIGH
  */
 extern void PWM_Params_init(PWM_Params *params);
 

@@ -39,7 +39,7 @@ endif
 
 # Use the preprocessor to find the dependencies. What we are really after is what libraries the Sketch depends on
 define deps
-$(foreach SRC, $1, $(shell $(CC) $(MCU_FLAG) $(CCOPTS) -MM $(CPPFLAGS) $(SDK_INCS) $(CFG_INCS) $(SRC)))
+$(foreach SRC, $1, $(shell $(CC) $(MCU_FLAG) $(CCOPTS) -MM $(CPPFLAGS) $(CFLAGS) $(SDK_INCS) $(CFG_INCS) $(SRC)))
 endef
 
 # (Ab)use the dependency tree to figure out what libraries the file in question depends on and add them to LIBSRCS
@@ -62,7 +62,6 @@ $(eval _LIBDEP = $(call deps, $(_SRCS)))
 $(foreach dep, $(dir $(_LIBDEP)), $(call get_lib_dirs, $(dep)))
 # Filter out any library directories we already know about
 $(eval _LIBDIRS = $(filter-out $(LIBDIRS), $(_LIBDIRS)))
-$(info ------------------------ $(_LIBDIRS))
 # If there are dependencies then find out if they depend on anything otherwise fall through and return
 $(if $(_LIBDIRS), \
 	# Store the current dependencies for use later on
@@ -103,7 +102,8 @@ CPPFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
 
-CPPFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DENERGIA=14 $(MCU_FLAG) $(VFP)
+CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DENERGIA=14 $(MCU_FLAG) $(VFP)
+CPPFLAGS += -fno-exceptions -fno-rtti
 
 # define TI-RTOS and Energia wiring headers based on CLOSURE above
 CFG_INCS = -I "$(CLOSURE)" -I "$(CLOSURE)"
@@ -130,7 +130,6 @@ OBJ += $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(CORE_CPP_SRCS))
 
 CORE_C_SRCS = $(wildcard $(ARCH_CORE_PATH)/*.c)
 OBJ += $(patsubst $(APPLICATION_PATH)/%.c,build/%.o,$(CORE_C_SRCS))
-endif
 
 CORE_COMMON_C_SRCS = $(wildcard $(COMMON_CORE_DIR)/*.c)
 OBJ += $(patsubst $(APPLICATION_PATH)/%.c,build/%.o,$(CORE_COMMON_C_SRCS))
@@ -140,6 +139,7 @@ OBJ += $(patsubst $(APPLICATION_PATH)/%.S,build/%.o,$(CORE_COMMON_AS_SRCS))
 
 CORE_COMMON_CPP_SRCS = $(wildcard $(COMMON_CORE_DIR)/*.cpp)
 OBJ += $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(CORE_COMMON_CPP_SRCS))
+endif
 
 $(eval $(call compute_dependencies, $(MAINSKETCH) $(EXTRA_SOURCES)))
 $(eval $(call compute_srcs))
@@ -164,7 +164,7 @@ $(MAINSKETCH).elf: $(OBJ)
 
 %.obj: %.cpp
 	@echo armcl $*.cpp
-	$(CC) $(CCOPTS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
+	$(CC) $(CCOPTS) $(CFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
 #Core libraries and core sources
 build/%.o: $(APPLICATION_PATH)/%.c
@@ -220,7 +220,7 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(info Compiling $@)
-	$(CC) $(CCOPTS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
+	$(CC) $(CCOPTS) $(CFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
 clean:
 	$(info >>>> Clean <<<<)

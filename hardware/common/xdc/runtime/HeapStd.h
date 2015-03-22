@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -257,7 +257,7 @@ __extern xdc_Void xdc_runtime_HeapStd_Object__delete__S( xdc_Ptr instp );
 
 /* delete */
 xdc__CODESECT(xdc_runtime_HeapStd_delete, "xdc_runtime_HeapStd_delete")
-__extern Void xdc_runtime_HeapStd_delete(xdc_runtime_HeapStd_Handle *instp);
+__extern void xdc_runtime_HeapStd_delete(xdc_runtime_HeapStd_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(xdc_runtime_HeapStd_Object__destruct__S, "xdc_runtime_HeapStd_Object__destruct__S")
@@ -421,7 +421,7 @@ static inline xdc_runtime_Types_Label *xdc_runtime_HeapStd_Handle_label( xdc_run
 }
 
 /* Handle_name */
-static inline String xdc_runtime_HeapStd_Handle_name( xdc_runtime_HeapStd_Handle inst )
+static inline xdc_String xdc_runtime_HeapStd_Handle_name( xdc_runtime_HeapStd_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return xdc_runtime_HeapStd_Handle__label__S(inst, &lab)->iname;
@@ -543,6 +543,6 @@ struct xdc_runtime_HeapStd_Object {
 #endif /* xdc_runtime_HeapStd__localnames__done */
 #endif
 /*
- *  @(#) xdc.runtime; 2, 1, 0,501; 10-31-2014 13:33:25; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
+ *  @(#) xdc.runtime; 2, 1, 0,0; 3-22-2015 20:15:27; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
  */
 

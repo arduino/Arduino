@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -249,7 +249,7 @@ __extern xdc_Void xdc_runtime_knl_SyncSemThread_Object__delete__S( xdc_Ptr instp
 
 /* delete */
 xdc__CODESECT(xdc_runtime_knl_SyncSemThread_delete, "xdc_runtime_knl_SyncSemThread_delete")
-__extern Void xdc_runtime_knl_SyncSemThread_delete(xdc_runtime_knl_SyncSemThread_Handle *instp);
+__extern void xdc_runtime_knl_SyncSemThread_delete(xdc_runtime_knl_SyncSemThread_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(xdc_runtime_knl_SyncSemThread_Object__destruct__S, "xdc_runtime_knl_SyncSemThread_Object__destruct__S")
@@ -408,7 +408,7 @@ static inline xdc_runtime_Types_Label *xdc_runtime_knl_SyncSemThread_Handle_labe
 }
 
 /* Handle_name */
-static inline String xdc_runtime_knl_SyncSemThread_Handle_name( xdc_runtime_knl_SyncSemThread_Handle inst )
+static inline xdc_String xdc_runtime_knl_SyncSemThread_Handle_name( xdc_runtime_knl_SyncSemThread_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return xdc_runtime_knl_SyncSemThread_Handle__label__S(inst, &lab)->iname;
@@ -521,6 +521,6 @@ struct xdc_runtime_knl_SyncSemThread_Object {
 #endif /* xdc_runtime_knl_SyncSemThread__localnames__done */
 #endif
 /*
- *  @(#) xdc.runtime.knl; 1, 0, 0,311; 10-31-2014 13:33:29; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
+ *  @(#) xdc.runtime.knl; 1, 0, 0,0; 3-22-2015 20:15:34; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
  */
 

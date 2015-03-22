@@ -32,9 +32,22 @@
 /** ============================================================================
  *  @file       MutexP.h
  *
- *  @brief      Mutex interface for the OSAL
+ *  @brief      Mutex module for the RTOS Porting Interface
  *
- *  TODO. Talk about nesting also.
+ *  The MutexP module allows task to maintain critical region segments. The
+ *  MutexP module has two main functions: ::MutexP_lock and ::MutexP_unlock.
+ *
+ *  The MutexP module supports recursive calls to the MutexP_lock API by a
+ *  single task. The same number of MutexP_unlock calls must be done for the
+ *  mutex to be release. Note: the returned key must be provided in the LIFO
+ *  order. For example:
+ *  @code
+ *  uintptr_t key1, key2;
+ *  key1 = MutexP_lock();
+ *  key2 = MutexP_lock();
+ *  MutexP_lock(key2);
+ *  MutexP_lock(key1);
+ *  @endcode
  *
  *  ============================================================================
  */
@@ -54,7 +67,9 @@ extern "C" {
  *  @brief    Status codes for MutexP APIs
  */
 typedef enum MutexP_Status {
+    /*! API completed successfully */
     MutexP_OK = 0,
+    /*! API failed */
     MutexP_FAILURE = -1
 } MutexP_Status;
 
@@ -72,9 +87,9 @@ typedef void *MutexP_Handle;
  *
  *  Structure that contains the parameters are passed into ::MutexP_create
  *  when creating a MutexP instance. The ::MutexP_Params_init function should
- *  be used to initialize the fields to default values before the application sets
- *  the fields manually. The MutexP default parameters are noted in
- *  MutexP_Params_init.
+ *  be used to initialize the fields to default values before the application
+ *  sets the fields manually. The MutexP default parameters are noted in
+ *  ::MutexP_Params_init.
  */
 typedef struct MutexP_Params {
     char *name;           /*!< Name of the mutex instance. Memory must persist
@@ -87,7 +102,7 @@ typedef struct MutexP_Params {
  *
  *  @param  params  Pointer to the instance configuration parameters. NULL
  *                  denotes to use the default parameters. The MutexP default
- *                  parameters are noted in ::MutexP_Params.
+ *                  parameters are noted in ::MutexP_Params_init.
  *
  *  @return A MutexP_Handle on success or a NULL on an error
  */
@@ -100,6 +115,7 @@ extern MutexP_Handle MutexP_create(MutexP_Params *params);
  *
  *  @return Status of the functions
  *    - MutexP_OK: Deleted the mutex instance
+ *    - MutexP_FAILED: Failed to delete the mutex instance
  */
 extern MutexP_Status MutexP_delete(MutexP_Handle handle);
 
@@ -116,14 +132,15 @@ extern void MutexP_Params_init(MutexP_Params *params);
 /*!
  *  @brief  Function to lock a mutex.
  *
- *  This function can only be called from a Task. If cannot be called from
+ *  This function can only be called from a Task. It cannot be called from
  *  an interrupt. The lock will block until the mutex is available.
  *
  *  Users of a mutex should make every attempt to minimize the duration that
  *  that they have it locked. This is to minimize latency. It is recommended
  *  that the users of the mutex do not block while they have the mutex locked.
  *
- *  TODO talk about nesting
+ *  This function unlocks the mutex. If the mutex is locked multiple times
+ *  by the caller, the same number of unlocks must be called.
  *
  *  @param  handle  A MutexP_Handle returned from ::MutexP_create
  *
@@ -134,7 +151,16 @@ extern uintptr_t MutexP_lock(MutexP_Handle handle);
 /*!
  *  @brief  Function to unlock a mutex
  *
- *  TODO talk about nesting
+ *  This function unlocks the mutex. If the mutex is locked multiple times
+ *  by the caller, the same number of unlocks must be called. The order of
+ *  the keys must be reversed. For example
+ *  @code
+ *  uintptr_t key1, key2;
+ *  key1 = MutexP_lock();
+ *  key2 = MutexP_lock();
+ *  MutexP_lock(key2);
+ *  MutexP_lock(key1);
+ *  @endcode
  *
  *  @param  handle  A MutexP_Handle returned from ::MutexP_create
  *

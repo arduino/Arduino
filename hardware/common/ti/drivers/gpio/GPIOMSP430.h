@@ -84,12 +84,16 @@
  *           reduce memory usage.
  *  const GPIO_PinConfig gpioPinConfigs[] = {
  *      // Input pins
- *      GPIOMSP430_P2_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING, // MSP_EXP430F5529LP_S1
- *      GPIOMSP430_P1_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING, // MSP_EXP430F5529LP_S2
+ *      // MSP_EXP430F5529LP_S1
+ *      GPIOMSP430_P2_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+ *      // MSP_EXP430F5529LP_S2
+ *      GPIOMSP430_P1_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
  *
  *      // Output pins
- *      GPIOMSP430_P1_0 | GPIO_CFG_OUTPUT, // MSP_EXP430F5529LP_LED1
- *      GPIOMSP430_P4_7 | GPIO_CFG_OUTPUT  // MSP_EXP430F5529LP_LED2
+ *      // MSP_EXP430F5529LP_LED1
+ *      GPIOMSP430_P1_0 | GPIO_CFG_OUTPUT,
+ *      // MSP_EXP430F5529LP_LED2
+ *      GPIOMSP430_P4_7 | GPIO_CFG_OUTPUT
  *  };
  *
  *  // Array of callback function pointers
@@ -160,6 +164,8 @@ extern "C" {
 
 #include <stdint.h>
 
+#include <ti/drivers/GPIO.h>
+
 /*!
  *  @brief  GPIO device specific driver configuration structure
  */
@@ -170,10 +176,10 @@ typedef struct GPIOMSP430_Config {
     /*! Pointer to the board's callback array */
     GPIO_CallbackFxn *callbacks;
 
-    /*! number of configs defined */
+    /*! Number of configs defined */
     uint32_t numberOfPinConfigs;
 
-    /*! number of callbacks defined */
+    /*! Number of callbacks defined */
     uint32_t numberOfCallbacks;
 } GPIOMSP430_Config;
 
@@ -284,6 +290,7 @@ typedef struct GPIOMSP430_Config {
 #define GPIOMSP430_P11_6     0x0B40
 #define GPIOMSP430_P11_7     0x0B80
 
+/* Port J skips to 0xDxx because MSPWare defines port number to 13 (0xD) */
 #define GPIOMSP430_PJ_0      0x0D01
 #define GPIOMSP430_PJ_1      0x0D02
 #define GPIOMSP430_PJ_2      0x0D04

@@ -64,8 +64,7 @@
 enum ti_sysbios_family_arm_msp432_ClockFreqs_Clock {
     ti_sysbios_family_arm_msp432_ClockFreqs_Clock_ACLK,
     ti_sysbios_family_arm_msp432_ClockFreqs_Clock_SMCLK,
-    ti_sysbios_family_arm_msp432_ClockFreqs_Clock_HSMCLK,
-    ti_sysbios_family_arm_msp432_ClockFreqs_Clock_MCLK
+    ti_sysbios_family_arm_msp432_ClockFreqs_Clock_HSMCLK
 };
 typedef enum ti_sysbios_family_arm_msp432_ClockFreqs_Clock ti_sysbios_family_arm_msp432_ClockFreqs_Clock;
 
@@ -195,6 +194,11 @@ __extern xdc_Bool ti_sysbios_family_arm_msp432_ClockFreqs_Module__startupDone__S
 xdc__CODESECT(ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E, "ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency")
 __extern xdc_UInt32 ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E( ti_sysbios_family_arm_msp432_ClockFreqs_Clock clock );
 
+/* setFrequency__E */
+#define ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E
+xdc__CODESECT(ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E, "ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency")
+__extern xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E( ti_sysbios_family_arm_msp432_ClockFreqs_Clock clock, xdc_UInt32 frequency );
+
 
 /*
  * ======== SYSTEM FUNCTIONS ========
@@ -254,10 +258,20 @@ static inline xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_Module_setMask( x
 #ifndef ti_sysbios_family_arm_msp432_ClockFreqs__include_state
 #define ti_sysbios_family_arm_msp432_ClockFreqs__include_state
 
+/* Module_State */
+struct ti_sysbios_family_arm_msp432_ClockFreqs_Module_State {
+    xdc_UInt32 ACLK;
+    xdc_UInt32 SMCLK;
+    xdc_UInt32 HSMCLK;
+};
+
+/* Module__state__V */
+extern struct ti_sysbios_family_arm_msp432_ClockFreqs_Module_State__ ti_sysbios_family_arm_msp432_ClockFreqs_Module__state__V;
 
 #endif /* ti_sysbios_family_arm_msp432_ClockFreqs__include_state */
 
 #endif
+
 
 /*
  * ======== PREFIX ALIASES ========
@@ -270,14 +284,15 @@ static inline xdc_Void ti_sysbios_family_arm_msp432_ClockFreqs_Module_setMask( x
 
 /* module prefix */
 #define ClockFreqs_Clock ti_sysbios_family_arm_msp432_ClockFreqs_Clock
+#define ClockFreqs_Module_State ti_sysbios_family_arm_msp432_ClockFreqs_Module_State
 #define ClockFreqs_Clock_ACLK ti_sysbios_family_arm_msp432_ClockFreqs_Clock_ACLK
 #define ClockFreqs_Clock_SMCLK ti_sysbios_family_arm_msp432_ClockFreqs_Clock_SMCLK
 #define ClockFreqs_Clock_HSMCLK ti_sysbios_family_arm_msp432_ClockFreqs_Clock_HSMCLK
-#define ClockFreqs_Clock_MCLK ti_sysbios_family_arm_msp432_ClockFreqs_Clock_MCLK
 #define ClockFreqs_ACLK ti_sysbios_family_arm_msp432_ClockFreqs_ACLK
 #define ClockFreqs_SMCLK ti_sysbios_family_arm_msp432_ClockFreqs_SMCLK
 #define ClockFreqs_HSMCLK ti_sysbios_family_arm_msp432_ClockFreqs_HSMCLK
 #define ClockFreqs_getFrequency ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency
+#define ClockFreqs_setFrequency ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency
 #define ClockFreqs_Module_name ti_sysbios_family_arm_msp432_ClockFreqs_Module_name
 #define ClockFreqs_Module_id ti_sysbios_family_arm_msp432_ClockFreqs_Module_id
 #define ClockFreqs_Module_startup ti_sysbios_family_arm_msp432_ClockFreqs_Module_startup

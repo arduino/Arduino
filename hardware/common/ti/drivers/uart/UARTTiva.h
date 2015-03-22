@@ -60,9 +60,6 @@ extern "C" {
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
-/* Return codes for SPI_control() */
-#define UARTTiva_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
-
 /* UART function table pointer */
 extern const UART_FxnTable UARTTiva_fxnTable;
 
@@ -120,7 +117,7 @@ typedef struct UARTTiva_HWAttrs {
  *  The application must not access any member variables of this structure!
  */
 typedef struct UARTTiva_Object {
-    /* UART status variable */
+    /* UART state variable */
     struct {
         bool             opened:1;         /* Has the obj been opened */
         UART_Mode        readMode:1;       /* Mode for all read calls */
@@ -132,7 +129,7 @@ typedef struct UARTTiva_Object {
         bool             writeCR:1;        /* Write a return character */
         bool             bufTimeout:1;
         bool             callCallback:1;
-    } status;
+    } state;
 
     union {
         struct {
@@ -152,12 +149,12 @@ typedef struct UARTTiva_Object {
 
     /* UART read variables */
     RingBuf_Object       ringBuffer;
-    void                *readBuf;          /* Buffer data pointer */
+    unsigned char       *readBuf;          /* Buffer data pointer */
     size_t               readSize;         /* Desired number of bytes to read */
     size_t               readCount;        /* Number of bytes left to read */
 
     /* UART write variables */
-    const void          *writeBuf;         /* Buffer data pointer */
+    const unsigned char *writeBuf;         /* Buffer data pointer */
     size_t               writeSize;        /* Desired number of bytes to write*/
     size_t               writeCount;       /* Number of bytes left to write */
 

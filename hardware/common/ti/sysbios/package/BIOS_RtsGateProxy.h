@@ -213,7 +213,7 @@ __extern xdc_Void ti_sysbios_BIOS_RtsGateProxy_Object__delete__S( xdc_Ptr instp 
 
 /* delete */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_delete, "ti_sysbios_BIOS_RtsGateProxy_delete")
-__extern Void ti_sysbios_BIOS_RtsGateProxy_delete(ti_sysbios_BIOS_RtsGateProxy_Handle *instp);
+__extern void ti_sysbios_BIOS_RtsGateProxy_delete(ti_sysbios_BIOS_RtsGateProxy_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_BIOS_RtsGateProxy_Object__destruct__S, "ti_sysbios_BIOS_RtsGateProxy_Object__destruct__S")

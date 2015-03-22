@@ -43,10 +43,8 @@
  *  resolved to nothing.
  *
  *  This module sits on top of the assert checking of the underlying
- *  RTOS. Here is a overview on how the assert checking RTOS do their logging
- *    - TI-RTOS: Assert_isTrue() TODO
- *    - FreeRTOS:
- *    - NORTOS:
+ *  RTOS. Please refer to the underlying RTOS port implementation for
+ *  more details.
  *
  *  Similarly, DebugP_logN calls can be added into code. If the code
  *  is compiled with the compiler define DebugP_LOG_ENABLED set to a
@@ -55,10 +53,9 @@
  *  resolved to nothing.
 
  *  This module sits on top of the logging of the underlying
- *  RTOS. Here is a overview on how the different RTOS do their logging
- *    - TI-RTOS: TODO
- *    - FreeRTOS:
- *    - NORTOS:
+ *  RTOS. Please refer to the underlying RTOS port implementation for
+ *  more details.
+ *
  *  ============================================================================
  */
 
@@ -86,11 +83,13 @@ extern void _DebugP_assert(int expression, const char *file, int line);
 /*!
  *  @brief  Assert checking function
  *
- *  TODO add \ sa
+ *  If the expression is evaluated to true, the API does nothing.
+ *  If it is evaluated to false, the underlying RTOS port implementation
+ *  handles the assert via its mechanisms.
  *
  *  @param  expression Expression to evaluate
  */
-#define DebugP_assert(expression) (_DebugP_assert(int expression,      \
+#define DebugP_assert(expression) (_DebugP_assert(expression,      \
                                                   __FILE__, __LINE__))
 #else
 #define DebugP_assert(expression)
@@ -100,7 +99,8 @@ extern void _DebugP_assert(int expression, const char *file, int line);
 /*!
  *  @brief  Debug log function with 0 parameters
  *
- *  TODO more detail
+ *  The underlying RTOS port implementation handles the
+ *  logging via its mechanisms.
  *
  *  @param  format "printf" format string
  */
@@ -109,7 +109,8 @@ extern void DebugP_log0(const char *format);
 /*!
  *  @brief  Debug log function with 1 parameters
  *
- *  TODO more detail
+ *  The underlying RTOS port implementation handles the
+ *  logging via its mechanisms.
  *
  *  @param  format "printf" format string
  *  @param  p1 first parameter to format string
@@ -119,7 +120,8 @@ extern void DebugP_log1(const char *format, uintptr_t p1);
 /*!
  *  @brief  Debug log function with 2 parameters
  *
- *  TODO more detail
+ *  The underlying RTOS port implementation handles the
+ *  logging via its mechanisms.
  *
  *  @param  format "printf" format string
  *  @param  p1 first parameter to format string
@@ -130,7 +132,8 @@ extern void DebugP_log2(const char *format, uintptr_t p1, uintptr_t p2);
 /*!
  *  @brief  Debug log function with 3 parameters
  *
- *  TODO more detail
+ *  The underlying RTOS port implementation handles the
+ *  logging via its mechanisms.
  *
  *  @param  format "printf" format string
  *  @param  p1 first parameter to format string
@@ -142,7 +145,8 @@ extern void DebugP_log3(const char *format, uintptr_t p1, uintptr_t p2, uintptr_
 /*!
  *  @brief  Debug log function with 4 parameters
  *
- *  TODO more detail
+ *  The underlying RTOS port implementation handles the
+ *  logging via its mechanisms.
  *
  *  @param  format "printf" format string
  *  @param  p1 first parameter to format string
@@ -152,7 +156,6 @@ extern void DebugP_log3(const char *format, uintptr_t p1, uintptr_t p2, uintptr_
  */
 extern void DebugP_log4(const char *format, uintptr_t p1, uintptr_t p2, uintptr_t p3, uintptr_t p4);
 #else
-//TODO look at doxygen to see how this looks
 #define DebugP_log0(format)
 #define DebugP_log1(format, p1)
 #define DebugP_log2(format, p1, p2)

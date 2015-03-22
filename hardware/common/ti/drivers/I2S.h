@@ -263,6 +263,11 @@ typedef enum I2S_PinMode {
 
 /*!
  *  @brief    Basic I2S Parameters
+ *
+ *  I2S parameters are used to with the I2S_open() call. Default values for
+ *  these parameters are set using I2S_Params_init().
+ *
+ *  @sa       I2S_Params_init()
  */
 typedef struct I2S_Params {
     /*!< I2S operational mode */
@@ -300,7 +305,7 @@ typedef struct I2S_Params {
 
     /*!< Pointer to device specific custom params */
     void *                customParams;
-}I2S_Params;
+} I2S_Params;
 
 /*!
  *  @brief      A function pointer to a driver specific implementation of
@@ -373,7 +378,16 @@ typedef struct I2S_FxnTable {
 
 } I2S_FxnTable;
 
-/*! @brief I2S Global configuration */
+/*! @brief  I2S Global configuration
+ *
+ *  The I2S_Config structure contains a set of pointers used to characterize
+ *  the I2S driver implementation.
+ *
+ *  This structure needs to be defined before calling I2S_init() and it must
+ *  not be changed thereafter.
+ *
+ *  @sa     I2S_init()
+ */
 typedef struct I2S_Config {
     /*! Pointer to a table of a driver-specific implementation of I2S
         functions */
@@ -387,14 +401,14 @@ typedef struct I2S_Config {
 } I2S_Config;
 
 /*!
- *  @brief  Function to closes a given I2S peripheral specified by the I2S
+ *  @brief  Function to close a given I2S peripheral specified by the I2S
  *  handle.
  *
  *  @pre    I2S_open() had to be called first.
  *
  *  @param  handle  A I2S_Handle returned from I2S_open
  *
- *  @sa     I2S_open
+ *  @sa     I2S_open()
  */
 extern void I2S_close(I2S_Handle handle);
 
@@ -408,7 +422,8 @@ extern void I2S_close(I2S_Handle handle);
  *
  *  @param  cmd    A command value defined by the driver specific implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -420,10 +435,10 @@ extern int I2S_control(I2S_Handle handle, unsigned int cmd, void *arg);
 /*!
  *  @brief  Function to initializes the I2S module
  *
- *  @pre    The I2S controller needs to be powered up and clocked. The
- *          I2S_config structure must exist and be persistent before this
+ *  @pre    The I2S_config structure must exist and be persistent before this
  *          function can be called. This function must also be called before
- *          any other I2S driver APIs.
+ *          any other I2S driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void I2S_init(void);
 
@@ -434,21 +449,26 @@ extern void I2S_init(void);
  *
  *  @pre    I2S controller has been initialized
  *
- *  @param  index         Logical peripheral number indexed into the HWAttrs
- *                        table
+ *  @param  index         Logical peripheral number for the I2S indexed into
+ *                        the I2S_config table
  *
  *  @param  params        Pointer to an parameter block, if NULL it will use
- *                        default values
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
  *  @return A I2S_Handle on success or a NULL on an error or if it has been
- *          already opened
+ *          opened already.
  *
- *  @sa     I2S_close
+ *  @sa     I2S_init()
+ *  @sa     I2S_close()
  */
 extern I2S_Handle I2S_open(unsigned int index, I2S_Params *params);
 
 /*!
  *  @brief  Function to initialize the I2S_Params struct to its defaults
+ *
+ *  @param  params      An pointer to I2S_Params structure for
+ *                      initialization
  *
  *  Defaults values are:
  *  params.operationMode                     = I2S_MODE_TX_RX_SYNC;
@@ -469,7 +489,6 @@ extern I2S_Handle I2S_open(unsigned int index, I2S_Params *params);
 extern void I2S_Params_init(I2S_Params *params);
 
 /*!
-
  *  @brief Function to queue a buffer of data to the I2S in callback mode
  *         for reading.
  *
@@ -482,6 +501,20 @@ extern void I2S_Params_init(I2S_Params *params);
  *                      I2S_CMD_UNDEFINED on an error.
  */
 extern int I2S_read(I2S_Handle handle, I2S_BufDesc *desc);
+
+/*!
+
+ *  @brief Function to queue a buffer of data to the I2S in Issue/Reclaim
+ *          mode for reading.
+ *
+ *  @param  handle      A I2S_Handle
+ *
+ *  @param  desc        A pointer to a I2S_BufDesc object.  The bufPtr
+ *                      and bufSize fields must be set to a buffer and the
+ *                      size of the buffer before passing to this function.
+ *  @return             Returns 0 if successful else would return
+ *                      I2S_CMD_UNDEFINED on an error.
+ */
 
 extern int I2S_readIssue(I2S_Handle handle, I2S_BufDesc *desc);
 
@@ -511,6 +544,18 @@ extern size_t I2S_readReclaim(I2S_Handle handle, I2S_BufDesc **pDesc);
  */
 extern int I2S_write(I2S_Handle handle, I2S_BufDesc *desc);
 
+/*!
+ *  @brief Function to queue a buffer of data to the I2S in
+ *         Issue/Reclaim mode for writing.
+ *
+ *  @param  handle      A I2S_Handle
+ *
+ *  @param  desc        A pointer to a I2S_BufDesc object.  The bufPtr
+ *                      and bufSize fields must be set to a buffer and the
+ *                      size of the buffer before passing to this function.
+ *  @return             Returns 0 if successful else would return
+ *                      I2S_CMD_UNDEFINED on an error.
+ */
 extern int I2S_writeIssue(I2S_Handle handle, I2S_BufDesc *desc);
 
 /*!

@@ -123,8 +123,8 @@
  *
  *  Diagnostics Mask | Log details |
  *  ---------------- | ----------- |
- *  Diags_USER1      | basic I2C operations performed |
- *  Diags_USER2      | detailed I2C operations performed |
+ *  Diags_USER1      | basic operations performed |
+ *  Diags_USER2      | detailed operations performed |
  *
  *  ============================================================================
  */
@@ -222,6 +222,9 @@ typedef enum I2C_BitRate {
 /*!
  *  @brief  I2C Parameters
  *
+ *  I2C parameters are used to with the I2C_open() call. Default values for
+ *  these parameters are set using I2C_Params_init().
+ *
  *  If I2C_TransferMode is set to I2C_MODE_BLOCKING then I2C_transfer function
  *  calls will block thread execution until the transaction has completed.
  *
@@ -233,6 +236,8 @@ typedef enum I2C_BitRate {
  *  completed. (regardless of error state).
  *
  *  I2C_BitRate specifies the I2C bus rate used for I2C communications.
+ *
+ *  @sa     I2C_Params_init()
  */
 typedef struct I2C_Params {
     I2C_TransferMode    transferMode; /*!< Blocking or Callback mode */
@@ -299,12 +304,18 @@ typedef struct I2C_FxnTable {
 } I2C_FxnTable;
 
 /*!
- *  @brief
+ *  @brief  I2C Global configuration
+ *
  *  The I2C_Config structure contains a set of pointers used to characterize
  *  the I2C driver implementation.
+ *
+ *  This structure needs to be defined before calling I2C_init() and it must
+ *  not be changed thereafter.
+ *
+ *  @sa     I2C_init()
  */
 typedef struct I2C_Config {
-    /*! Pointer to a table of a driver-specific implementation of I2C functions */
+    /*! Pointer to a table of driver-specific implementations of I2C APIs */
     I2C_FxnTable const *fxnTablePtr;
 
     /*! Pointer to a driver specific data object */
@@ -316,14 +327,13 @@ typedef struct I2C_Config {
 
 
 /*!
- *  @brief  Function to closes a given I2C peripheral specified by the I2C
- *  handle.
+ *  @brief  Function to close a I2C peripheral specified by the I2C handle
  *
  *  @pre    I2C_open() had to be called first.
  *
  *  @param  handle  A I2C_Handle returned from I2C_open
  *
- *  @sa     I2C_open
+ *  @sa     I2C_open()
  */
 extern void I2C_close(I2C_Handle handle);
 
@@ -333,11 +343,13 @@ extern void I2C_close(I2C_Handle handle);
  *
  *  @pre    I2C_open() has to be called first.
  *
- *  @param  handle A I2C handle returned from I2C_open()
+ *  @param  handle      A I2C handle returned from I2C_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -349,10 +361,10 @@ extern int I2C_control(I2C_Handle handle, unsigned int cmd, void *arg);
 /*!
  *  @brief  Function to initializes the I2C module
  *
- *  @pre    The I2C controller needs to be powered up and clocked. The
- *          I2C_config structure must exist and be persistent before this
+ *  @pre    The I2C_config structure must exist and be persistent before this
  *          function can be called. This function must also be called before
- *          any other I2C driver APIs.
+ *          any other I2C driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void I2C_init(void);
 
@@ -363,28 +375,31 @@ extern void I2C_init(void);
  *
  *  @pre    I2C controller has been initialized
  *
- *  @param  index         Logical peripheral number indexed into the HWAttrs
- *                        table
+ *  @param  index         Logical peripheral number for the I2C indexed into
+ *                        the I2C_config table
  *
  *  @param  params        Pointer to an parameter block, if NULL it will use
- *                        default values
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
  *  @return A I2C_Handle on success or a NULL on an error or if it has been
- *          already opened
+ *          opened already.
  *
- *  @sa     I2C_close
+ *  @sa     I2C_init()
+ *  @sa     I2C_close()
  */
 extern I2C_Handle I2C_open(unsigned int index, I2C_Params *params);
 
 /*!
  *  @brief  Function to initialize the I2C_Params struct to its defaults
  *
- *  Defaults values are:
- *  transferMode = I2C_MODE_BLOCKING
- *  transferCallbackFxn = NULL
- *  bitRate = I2C_100kHz
+ *  @param  params      An pointer to I2C_Params structure for
+ *                      initialization
  *
- *  @param  params  Parameter structure to initialize
+ *  Defaults values are:
+ *      transferMode = I2C_MODE_BLOCKING
+ *      transferCallbackFxn = NULL
+ *      bitRate = I2C_100kHz
  */
 extern void I2C_Params_init(I2C_Params *params);
 
@@ -419,7 +434,9 @@ extern void I2C_Params_init(I2C_Params *params);
  *
  *  @param  handle      A I2C_Handle
  *
- *  @param  transaction A pointer to a I2C_Transaction
+ *  @param  transaction A pointer to a I2C_Transaction. All of the fields within
+ *                      transaction are WO (write-only) unless otherwise noted
+ *                      in the driver implementations.
  *
  *  @return true on successful transfer
  *          false on an error, such as a I2C bus fault

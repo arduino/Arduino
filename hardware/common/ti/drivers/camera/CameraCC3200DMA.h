@@ -79,9 +79,8 @@ extern const Camera_FxnTable CameraCC3200DMA_fxnTable;
  *      {
  *          CAMERA_BASE,
  *          INT_CAMERA,
- *          2,                   // Interrupt priority
- *          UDMA_CH22_CAMERA,
- *          PowerCC3200_PERIPH_CAMERA
+ *          ~0,                   // Interrupt priority
+ *          UDMA_CH22_CAMERA
  *      }
  *  };
  *  @endcode
@@ -95,8 +94,6 @@ typedef struct CameraCC3200DMA_HWAttrs {
     uint32_t    intPriority;
     /*! uDMA controlTable channel index */
     unsigned long channelIndex;
-    /*!< Camera Peripheral's power manager ID */
-    unsigned long   powerMngrId;
 } CameraCC3200DMA_HWAttrs;
 
 /*!

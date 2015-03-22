@@ -25,6 +25,10 @@
 #undef ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency
 #define ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency ti_sysbios_family_arm_msp432_ClockFreqs_getFrequency__E
 
+/* setFrequency */
+#undef ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency
+#define ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency ti_sysbios_family_arm_msp432_ClockFreqs_setFrequency__E
+
 /* Module_startup */
 #undef ti_sysbios_family_arm_msp432_ClockFreqs_Module_startup
 #define ti_sysbios_family_arm_msp432_ClockFreqs_Module_startup ti_sysbios_family_arm_msp432_ClockFreqs_Module_startup__E
@@ -37,6 +41,11 @@
 #undef ti_sysbios_family_arm_msp432_ClockFreqs_Instance_finalize
 #define ti_sysbios_family_arm_msp432_ClockFreqs_Instance_finalize ti_sysbios_family_arm_msp432_ClockFreqs_Instance_finalize__E
 
+/* module */
+#define ClockFreqs_module ((ti_sysbios_family_arm_msp432_ClockFreqs_Module_State *)(xdc__MODOBJADDR__(ti_sysbios_family_arm_msp432_ClockFreqs_Module__state__V)))
+#if !defined(__cplusplus) || !defined(ti_sysbios_family_arm_msp432_ClockFreqs__cplusplus)
+#define module ((ti_sysbios_family_arm_msp432_ClockFreqs_Module_State *)(xdc__MODOBJADDR__(ti_sysbios_family_arm_msp432_ClockFreqs_Module__state__V)))
+#endif
 /* per-module runtime symbols */
 #undef Module__MID
 #define Module__MID ti_sysbios_family_arm_msp432_ClockFreqs_Module__id__C

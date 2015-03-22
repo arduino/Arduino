@@ -13,7 +13,7 @@
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 #include <xdc/runtime/System.h>
-
+#include <ti/drivers/Power.h>
 /* Board Support Header files (from configuration closure) */
 #include "src/platform/Board.h"
 #include <Energia.h>
@@ -42,7 +42,7 @@ void (*func_ptr[NUM_SKETCHES][2])(void) = {
 };
 */
 
-Void the_task(UArg _task_setup, UArg _task_loop);
+xdc_Void the_task(xdc_UArg _task_setup, xdc_UArg _task_loop);
 
 /* set priority of simple link callbacks
  * must be >= 0 and < Task_numPriorities
@@ -52,12 +52,12 @@ Void the_task(UArg _task_setup, UArg _task_loop);
 //#define SIMPLELINK_PRI 3 
 
 /* Wiring-specific GPIO HW interrupt vectors */
-__extern void Wiring_GPIO_hwiIntFxn(UArg callbacks);
+__extern void Wiring_GPIO_hwiIntFxn(xdc_UArg callbacks);
 
 /*
  *  ======== main task ========
  */
-Void the_task(UArg _task_setup, UArg _task_loop)
+xdc_Void the_task(xdc_UArg _task_setup, xdc_UArg _task_loop)
 {
 	/* Call setup once */
 	(*(void(*)()) _task_setup)();
@@ -76,6 +76,7 @@ int main()
 {
 	/* initialize all device/board specific peripherals */
 	Board_init();  /* this function is generated as part of TI-RTOS config */
+	Power_enablePolicy();
 
 //	System_printf("unused memory: start = %p, end = %p\n", START, END);
 

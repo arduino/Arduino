@@ -76,6 +76,6 @@ typedef volatile struct ti_catalog_arm_peripherals_timers_TimerRegsM4 {
 
 #endif
 /*
- *  @(#) ti.catalog.arm.peripherals.timers; 1,0,0,1; 2-26-2015 15:08:23; /db/ztree/library/trees/platform/platform-p03/src/
+ *  @(#) ti.catalog.arm.peripherals.timers; 1,0,0,2; 3-13-2015 12:49:50; /db/ztree/library/trees/platform/platform-p04/src/
  */
 

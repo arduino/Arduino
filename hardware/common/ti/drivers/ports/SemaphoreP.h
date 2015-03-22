@@ -38,7 +38,10 @@
  *  semaphores keep track of the number of times the semaphore has been posted
  *  with post functions. This is useful, for example, if you have a group of
  *  resources that are shared between tasks. Such tasks might call pend() to see
- *  if a resource is available before using one.
+ *  if a resource is available before using one. A count of zero for a counting
+ *  semaphore denotes that it is not available. A positive count denotes
+ *  how many times a SemaphoreP_pend can be called before it is blocked (or
+ *  returns SemaphoreP_TIMEOUT).
  *
  *  Binary semaphores can have only two states: available (count = 1) and
  *  unavailable (count = 0). They can be used to share a single resource
@@ -46,6 +49,7 @@
  *  the semaphore can be posted multiple times. Binary semaphores do not keep
  *  track of the count; they simply track whether the semaphore has been posted
  *  or not.
+ *
  *  ============================================================================
  */
 
@@ -64,11 +68,13 @@ extern "C" {
  *  @brief    Status codes for SemaphoreP APIs
  */
 typedef enum SemaphoreP_Status {
+    /*! API completed successfully */
     SemaphoreP_OK = 0,
+    /*! API failed */
     SemaphoreP_FAILURE = -1,
+    /*! API failed because of a timeout */
     SemaphoreP_TIMEOUT = -2
 } SemaphoreP_Status;
-
 
 /*!
  *  @brief    Wait forever define
@@ -83,9 +89,9 @@ typedef enum SemaphoreP_Status {
 /*!
  *  @brief    Opaque client reference to an instance of a SemaphoreP
  *
- *  A SemaphoreP_Handle returned from the ::SemaphoreP_create represents that instance.
- *  and then is used in the other instance based functions (e.g. ::SemaphoreP_post,
- *  ::SemaphoreP_pend, etc.).
+ *  A SemaphoreP_Handle returned from the ::SemaphoreP_create represents that
+ *  instance and  is used in the other instance based functions (e.g.
+ *  ::SemaphoreP_post or ::SemaphoreP_pend, etc.).
  */
 typedef  void *SemaphoreP_Handle;
 
@@ -101,16 +107,16 @@ typedef enum SemaphoreP_Mode {
  *  @brief    Basic SemaphoreP Parameters
  *
  *  Structure that contains the parameters are passed into ::SemaphoreP_create
- *  when creating a SemaphoreP instance. The ::SemaphoreP_Params_init function should
- *  be used to initialize the fields to default values before the application sets
- *  the fields manually. The SemaphoreP default parameters are noted in
- *  SemaphoreP_Params_init.
+ *  when creating a SemaphoreP instance. The ::SemaphoreP_Params_init function
+ *  should be used to initialize the fields to default values before the
+ *  application sets the fields manually. The SemaphoreP default parameters are
+ *  noted in SemaphoreP_Params_init.
  */
 typedef struct SemaphoreP_Params {
-    SemaphoreP_Mode mode; /*!< Mode for the semaphore */
     char *name;           /*!< Name of the semaphore instance. Memory must
                                persist for the life of the semaphore instance */
-    uint32_t maxCount;  /*!< The maximum count allowed for counting semaphore */
+    SemaphoreP_Mode mode; /*!< Mode for the semaphore */
+    uint32_t maxCount;    /*!< The max count allowed for counting semaphore */
 } SemaphoreP_Params;
 
 /*!
@@ -121,7 +127,7 @@ typedef struct SemaphoreP_Params {
  *
  *  @param  params  Pointer to the instance configuration parameters. NULL
  *                  denotes to use the default parameters (SemaphoreP default
- *                  parameters as noted in ::SemaphoreP_Params.
+ *                  parameters as noted in ::SemaphoreP_Params_init.
  *
  *  @return A SemaphoreP_Handle on success or a NULL on an error
  */
@@ -135,6 +141,7 @@ extern SemaphoreP_Handle SemaphoreP_create(unsigned int count,
  *
  *  @return Status of the functions
  *    - SemaphoreP_OK: Deleted the semaphore instance
+ *    - SemaphoreP_FAILED: Failed to delete the semaphore instance
  */
 extern SemaphoreP_Status SemaphoreP_delete(SemaphoreP_Handle handle);
 
@@ -160,6 +167,7 @@ extern void SemaphoreP_Params_init(SemaphoreP_Params *params);
  *  @return Status of the functions
  *    - SemaphoreP_OK: Obtain the semaphore
  *    - SemaphoreP_TIMEOUT: Timed out. Semaphore was not obtained.
+ *    - SemaphoreP_FAILED: Non-time out failure.
  */
 extern SemaphoreP_Status SemaphoreP_pend(SemaphoreP_Handle handle,
                                          uint32_t timeout);
@@ -171,18 +179,9 @@ extern SemaphoreP_Status SemaphoreP_pend(SemaphoreP_Handle handle,
  *
  *  @return Status of the functions
  *    - SemaphoreP_OK: Released the semaphore
+ *    - SemaphoreP_FAILED: Failed to post the semaphore
  */
 extern SemaphoreP_Status SemaphoreP_post(SemaphoreP_Handle handle);
-
-/*!
- *  @brief  Function to post (signal) a semaphore from an ISR.
- *
- *  @param  handle  A SemaphoreP_Handle returned from ::SemaphoreP_create
- *
- *  @return Status of the functions
- *    - SemaphoreP_OK: Released the semaphore
- */
-extern SemaphoreP_Status SemaphoreP_postFromISR(SemaphoreP_Handle handle);
 
 /*!
  *  @brief  Function to post (signal) a semaphore from an ClockP function.
@@ -191,8 +190,20 @@ extern SemaphoreP_Status SemaphoreP_postFromISR(SemaphoreP_Handle handle);
  *
  *  @return Status of the functions
  *    - SemaphoreP_OK: Released the semaphore
+ *    - SemaphoreP_FAILED: Failed to post the semaphore
  */
 extern SemaphoreP_Status SemaphoreP_postFromClock(SemaphoreP_Handle handle);
+
+/*!
+ *  @brief  Function to post (signal) a semaphore from an ISR.
+ *
+ *  @param  handle  A SemaphoreP_Handle returned from ::SemaphoreP_create
+ *
+ *  @return Status of the functions
+ *    - SemaphoreP_OK: Released the semaphore
+ *    - SemaphoreP_FAILED: Failed to post the semaphore
+ */
+extern SemaphoreP_Status SemaphoreP_postFromISR(SemaphoreP_Handle handle);
 
 #ifdef __cplusplus
 }

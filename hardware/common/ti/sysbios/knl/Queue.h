@@ -208,7 +208,7 @@ __extern xdc_Void ti_sysbios_knl_Queue_Object__delete__S( xdc_Ptr instp );
 
 /* delete */
 xdc__CODESECT(ti_sysbios_knl_Queue_delete, "ti_sysbios_knl_Queue_delete")
-__extern Void ti_sysbios_knl_Queue_delete(ti_sysbios_knl_Queue_Handle *instp);
+__extern void ti_sysbios_knl_Queue_delete(ti_sysbios_knl_Queue_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_knl_Queue_Object__destruct__S, "ti_sysbios_knl_Queue_Object__destruct__S")
@@ -379,7 +379,7 @@ static inline xdc_runtime_Types_Label *ti_sysbios_knl_Queue_Handle_label( ti_sys
 }
 
 /* Handle_name */
-static inline String ti_sysbios_knl_Queue_Handle_name( ti_sysbios_knl_Queue_Handle inst )
+static inline xdc_String ti_sysbios_knl_Queue_Handle_name( ti_sysbios_knl_Queue_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return ti_sysbios_knl_Queue_Handle__label__S(inst, &lab)->iname;

@@ -58,9 +58,6 @@ extern "C" {
 
 #include <ti/sysbios/knl/Semaphore.h>
 
-/* Return codes for SPI_control() */
-#define UARTEUSCIA_CMD_UNDEFINED    -UART_RESERVATION_BASE - 1
-
 /* UARTEUSCIA function table pointer */
 extern const UART_FxnTable UARTEUSCIA_fxnTable;
 

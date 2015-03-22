@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,8 +100,8 @@
  *
  *  Diagnostics Mask | Log details |
  *  ---------------- | ----------- |
- *  Diags_USER1      | basic SDSPI operations performed |
- *  Diags_USER2      | detailed SDSPI operations performed |
+ *  Diags_USER1      | basic operations performed |
+ *  Diags_USER2      | detailed operations performed |
  *
  *  ============================================================================
  */
@@ -122,11 +122,12 @@ typedef struct SDSPI_Config      *SDSPI_Handle;
 
 
 /*!
- *  @brief
+ *  @brief SDSPI Parameters
+ *
  *  SDSPI Parameters are used to with the SDSPI_open() call. Default values for
  *  these parameters are set using SDSPI_Params_init().
  *
- *  @sa     SDSPI_Params_init
+ *  @sa         SDSPI_Params_init()
  */
 typedef struct SDSPI_Params {
     uint32_t bitRate; /*!< SPI bit rate in Hz */
@@ -181,18 +182,18 @@ typedef struct SDSPI_FxnTable {
 } SDSPI_FxnTable;
 
 /*!
- *  @brief
+ *  @brief  SDSPI Global configuration
+ *
  *  The SDSPI_Config structure contains a set of pointers used to characterize
  *  the SDSPI driver implementation.
  *
  *  This structure needs to be defined before calling SDSPI_init() and it must
  *  not be changed thereafter.
+ *
+ *  @sa     SDSPI_init()
  */
 typedef struct SDSPI_Config {
-    /*!
-     * Pointer to a function table of a driver specific implementation of SDSPI
-     * functions.
-     */
+    /*! Pointer to a table of driver-specific implementations of SDSPI APIs */
     SDSPI_FxnTable const *fxnTablePtr;
 
     /*! Pointer to a driver specific data object */
@@ -203,9 +204,9 @@ typedef struct SDSPI_Config {
 } SDSPI_Config;
 
 /*!
- *  @brief  Function to close a given SDSPI peripheral specified by the
- *          SDSPI handle. This function unmounts the file system mounted by
- *          SDSPI_open and unregisters the SDSPI driver from BIOS' FatFs module.
+ *  @brief  Function to close a SDSPI peripheral specified by the SDSPI handle.
+ *          This function unmounts the file system mounted by SDSPI_open and
+ *          unregisters the SDSPI driver from BIOS' FatFs module.
  *
  *  @pre    SDSPI_open() had to be called first.
  *
@@ -221,11 +222,13 @@ extern void SDSPI_close(SDSPI_Handle handle);
  *
  *  @pre    SDSPI_open() has to be called first.
  *
- *  @param  handle A SDSPI handle returned from SDSPI_open()
+ *  @param  handle      A SDSPI handle returned from SDSPI_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -237,10 +240,10 @@ extern int SDSPI_control(SDSPI_Handle handle, unsigned int cmd, void *arg);
 /*!
  *  @brief  This function initializes the SDSPI driver module.
  *
- *  @pre    The SDSPI needs to be powered up and clocked. The SDSPI_config
- *          structure must exist and be persistent before this function can be
- *          called. This function must also be called before any other SDSPI
- *          driver APIs.
+ *  @pre    The SDSPI_config structure must exist and be persistent before this
+ *          function can be called. This function must also be called before
+ *          any other SDSPI driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void SDSPI_init(void);
 
@@ -250,20 +253,21 @@ extern void SDSPI_init(void);
  *
  *  @pre    SDSPI controller has been initialized using SDSPI_init()
  *
- *  @param  index       Logical peripheral number indexed into the SDSPI_config
- *                      table
+ *  @param  index         Logical peripheral number for the SDSPI indexed into
+ *                        the SDSPI_config table
  *
- *  @param  drv         Drive number to be associated with the SDSPI FatFs
- *                      driver
+ *  @param  drv           Drive number to be associated with the SDSPI FatFs
+ *                        driver
  *
- *  @param  params      Pointer to an parameter block, if NULL it will use
- *                      default values
+ *  @param  params        Pointer to an parameter block, if NULL it will use
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
- *  @return A pointer to a SDSPI_Handle on success or a NULL it was already
- *          opened
+ *  @return A SDSPI_Handle on success or a NULL on an error or if it has been
+ *          opened already.
  *
- *  @sa     SDSPI_close()
  *  @sa     SDSPI_init()
+ *  @sa     SDSPI_close()
  */
 extern SDSPI_Handle SDSPI_open(unsigned int index, unsigned char drv,
                                SDSPI_Params *params);
@@ -271,12 +275,11 @@ extern SDSPI_Handle SDSPI_open(unsigned int index, unsigned char drv,
 /*!
  *  @brief  Function to initialize the SDSPI_Params struct to its defaults
  *
- *  Defaults values are:
- *  @code
- *  bitRate             = 12500000 (Hz)
- *  @endcode
+ *  @param  params      An pointer to SDSPI_Params structure for
+ *                      initialization
  *
- *  @param  params  Parameter structure to initialize
+ *  Defaults values are:
+ *      bitRate             = 12500000 (Hz)
  */
 extern void SDSPI_Params_init(SDSPI_Params *params);
 

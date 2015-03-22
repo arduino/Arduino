@@ -48,15 +48,15 @@
 extern "C" {
 #endif
 
-/*! latency times in microseconds */
+/* latency times in microseconds (derived from device datasheet) */
 #define PowerMSP432_RESUMETIMESLEEP           32
-#define PowerMSP432_TOTALTIMESLEEP            8
+#define PowerMSP432_TOTALTIMESLEEP            40
 #define PowerMSP432_RESUMETIMEDEEPSLEEP_0     16
 #define PowerMSP432_TOTALTIMEDEEPSLEEP_0      40
 #define PowerMSP432_RESUMETIMEDEEPSLEEP_1     16
 #define PowerMSP432_TOTALTIMEDEEPSLEEP_1      40
 
-/*! Power resources */
+/* Power resources (for declaring dependencies) */
 #define PowerMSP432_PERIPH_ADC14              0
 #define PowerMSP432_PERIPH_DMA                1
 #define PowerMSP432_PERIPH_EUSCI_A0           2
@@ -73,12 +73,7 @@ extern "C" {
 #define PowerMSP432_PERIPH_TIMER_A3           13
 #define PowerMSP432_PERIPH_TIMER_T32          14
 
-/*!
- *  @brief  Power constraints for MSP432
- *
- *  Each constraint must be a power of two and must be sequential
- *  without any gaps.
- */
+/* Power constraints */
 #define PowerMSP432_DISALLOW_SLEEP          0
 #define PowerMSP432_DISALLOW_DEEPSLEEP_0    1
 #define PowerMSP432_DISALLOW_DEEPSLEEP_1    2
@@ -88,14 +83,10 @@ extern "C" {
 #define PowerMSP432_DISALLOW_PERFLEVEL_2    6
 #define PowerMSP432_DISALLOW_PERFLEVEL_3    7
 #define PowerMSP432_DISALLOW_PERFLEVEL_4    8
-#define PowerMSP432_NUMCONSTRAINTS          9
+#define PowerMSP432_DISALLOW_PERF_CHANGES   9
+#define PowerMSP432_NUMCONSTRAINTS          10
 
-/*!
- *  @brief  Power events
- *
- *  Each event must be a power of two and must be sequential
- *  without any gaps.
- */
+/* Power events */
 #define PowerMSP432_ENTERING_SLEEP          0x1
 #define PowerMSP432_ENTERING_DEEPSLEEP      0x2
 #define PowerMSP432_ENTERING_SHUTDOWN       0x4
@@ -105,37 +96,29 @@ extern "C" {
 #define PowerMSP432_DONE_CHANGE_PERF_LEVEL  0x40
 #define PowerMSP432_NUMEVENTS               7
 
-/*! Power sleep states */
+/* Power sleep states */
 #define PowerMSP432_SLEEP                   0x1
 #define PowerMSP432_DEEPSLEEP_0             0x2
 #define PowerMSP432_DEEPSLEEP_1             0x4
 
-/*! Power shutdown states */
+/* Power shutdown states */
 #define PowerMSP432_SHUTDOWN_0              0x0
 #define PowerMSP432_SHUTDOWN_1              0x1
 
-/*! Active states */
-#define AM_DCDC_VCORE0        PCM_AM_DCDC_VCORE0
-#define AM_DCDC_VCORE1        PCM_AM_DCDC_VCORE1
-#define AM_LDO_VCORE0         PCM_AM_LDO_VCORE0
-#define AM_LDO_VCORE1         PCM_AM_LDO_VCORE1
-#define AM_LF_VCORE0          PCM_AM_LPR_VCORE0
-#define AM_LF_VCORE1          PCM_AM_LPR_VCORE1
-
 typedef struct PowerMSP432_PerfLevel {
-    unsigned int activeState;
-    unsigned int VCORE;
-    unsigned int clockSource;
-    unsigned int DCORESEL;
-    unsigned int DIVM;
-    unsigned int DIVHS;
-    unsigned int DIVS;
-    unsigned int flashWaitStates;
-    bool         enableFlashBuffer;
-    unsigned int MCLK;
-    unsigned int HSMCLK;
-    unsigned int SMCLK;
-    unsigned int ACLK;
+    unsigned int activeState;          /* device active state */
+    unsigned int VCORE;                /* VCORE level */
+    unsigned int clockSource;          /* clock source */
+    unsigned int DCORESEL;             /* DCO select bits */
+    unsigned int DIVM;                 /* MCLK divider */
+    unsigned int DIVHS;                /* HSMLK divider */
+    unsigned int DIVS;                 /* SMCLK divider */
+    unsigned int flashWaitStates;      /* flash wait states */
+    bool         enableFlashBuffer;    /* enable flash read buffers? */
+    unsigned int MCLK;                 /* resulting MCLK frequency */
+    unsigned int HSMCLK;               /* resulting HSMCLK frequency */
+    unsigned int SMCLK;                /* resulting SMCLK frequency */
+    unsigned int ACLK;                 /* resulting ACLK frequency */
 } PowerMSP432_PerfLevel;
 
 typedef struct PowerMSP432_Freqs {
@@ -145,24 +128,17 @@ typedef struct PowerMSP432_Freqs {
     unsigned int ACLK;
 } PowerMSP432_Freqs;
 
-typedef void (*PowerMSP432_SchedDisableFxn)(void);
-typedef void (*PowerMSP432_SchedRestoreFxn)(void);
-typedef void (*PowerMSP432_UpdateFreqsFxn)(PowerMSP432_Freqs *freqs);
-
-/*! @brief Power global configuration */
+/* Power global configuration */
 typedef struct PowerMSP432_Config {
-    Power_PolicyInitFxn policyInitFxn;    /*! Init function for power policy */
-    Power_PolicyFxn policyFxn;            /*! The power policy function */
-    PowerMSP432_SchedDisableFxn schedDisableFxn; /*! OS scheduler disable fxn */
-    PowerMSP432_SchedRestoreFxn schedRestoreFxn; /*! OS scheduler restore fxn */
-    PowerMSP432_UpdateFreqsFxn freqsFxn;  /*! OS frequency update function */
-    unsigned int initialPerfLevel;        /*! initial performance level */
-    bool enablePolicy; /*! Enables power policy function to run in idle loop */
-    bool enablePerf;   /*! Enables performance level control */
+    Power_PolicyInitFxn policyInitFxn;    /* init function for power policy */
+    Power_PolicyFxn policyFxn;                 /* the power policy function */
+    unsigned int initialPerfLevel;             /* initial performance level */
+    bool enablePolicy; /* enables power policy function to run in idle loop */
+    bool enablePerf;                   /* enables performance level control */
 } PowerMSP432_Config;
 
-/*! Module_State */
-typedef struct PowerMSP432_Module_State {
+/* Power module state */
+typedef struct PowerMSP432_ModuleState {
     ListP_List notifyList;
     uint32_t constraintMask;
     unsigned int state;
@@ -170,23 +146,34 @@ typedef struct PowerMSP432_Module_State {
     bool enablePolicy;
     bool perfInitialized;
     uint8_t constraintCounts[PowerMSP432_NUMCONSTRAINTS];
-} PowerMSP432_Module_State;
+} PowerMSP432_ModuleState;
 
-/*! default policy init function for config structure */
+/* default policy init function for config structure */
 void PowerMSP432_policyInitFxn(void);
 
-/*! default power policy function for config structure */
+/* default power policy function for config structure */
 void PowerMSP432_policyFxn(void);
 
-/*! default frequency update policy function for config structure */
+/* OS-specific frequency update function */
 void PowerMSP432_updateFreqs(PowerMSP432_Freqs *freqs);
 
-/*! default scheduling disable function for config structure */
+/* OS-specific scheduler disable function */
 void PowerMSP432_schedulerDisable(void);
 
-/*! default scheduler restore function for config structure */
+/* OS-specific scheduler restore function */
 void PowerMSP432_schedulerRestore(void);
 
+/* function to get the number of performance levels */
+unsigned int PowerMSP432_getNumPerfLevels(void);
+
+/* function to get the frequencies for a specific performance level */
+void PowerMSP432_getFreqs(unsigned int level, PowerMSP432_Freqs * freqs);
+
+/*
+ * On MSP432 peripheral clocks are managed automatically by the device; there
+ * is no need for software control.  Use #defines for the dependency APIs to
+ * eliminate any footprint.
+ */
 #define Power_getDependencyCount(resourceId)  0
 #define Power_releaseDependency(resourceId)
 #define Power_setDependency(resourceId)

@@ -32,9 +32,18 @@
 /** ============================================================================
  *  @file       HwiP.h
  *
- *  @brief      Hardware Interrupt interface for the OSAL
+ *  @brief      Hardware Interrupt module for the RTOS Porting Interface
  *
- *  TODO...mention key and nesting
+ *  The ::HwiP_disable/::HwiP_restore APIs can be called recursively. The order
+ *  of the HwiP_restore calls, must be in reversed order. For example:
+ *  @code
+ *  uintptr_t key1, key2;
+ *  key1 = HwiP_disable();
+ *  key2 = HwiP_disable();
+ *  HwiP_restore(key2);
+ *  HwiP_restore(key1);
+ *  @endcode
+ *
  *  ============================================================================
  */
 
@@ -88,9 +97,14 @@ typedef struct HwiP_Params {
 } HwiP_Params;
 
 /*!
- *  @brief  Function to register an interrupt on CortexM devices
+ *  @brief  Function to clear a single interrupt
  *
- *  TODO more detail
+ *  @param  handle returned from the HwiP_create call
+ */
+extern void HwiP_clearInterrupt(int interruptNum);
+
+/*!
+ *  @brief  Function to create an interrupt on CortexM devices
  *
  *  @param  interruptNum Interrupt Vector Id
  *
@@ -100,15 +114,13 @@ typedef struct HwiP_Params {
  *                    denotes to use the default parameters. The HwiP default
  *                    parameters are noted in ::HwiP_Params_init.
  *
- *  @return
+ *  @return A HwiP_Handle on success or a NULL on an error
  */
 extern HwiP_Handle HwiP_create(int interruptNum, HwiP_Fxn hwiFxn,
                                HwiP_Params *params);
 
 /*!
- *  @brief  Function to deregister a interrupt on CortexM devices
- *
- *  TODO more detail
+ *  @brief  Function to delete an interrupt on CortexM devices
  *
  *  @param  handle returned from the HwiP_create call
  *
@@ -117,40 +129,35 @@ extern HwiP_Handle HwiP_create(int interruptNum, HwiP_Fxn hwiFxn,
 extern HwiP_Status HwiP_delete(HwiP_Handle handle);
 
 /*!
- *  @brief  Function to clear a single interrupt
+ *  @brief  Function to disable interrupts to enter a critical region
  *
- *  TODO more detail
+ *  This function can be called multiple times, but must unwound in the reverse
+ *  order. For example
+ *  @code
+ *  uintptr_t key1, key2;
+ *  key1 = HwiP_disable();
+ *  key2 = HwiP_disable();
+ *  HwiP_restore(key2);
+ *  HwiP_restore(key1);
+ *  @endcode
  *
- *  @param  interruptNum
+ *  @return A key that must be passed to HwiP_restore to re-enable interrupts.
  */
-extern void HwiP_clearInterrupt(int interruptNum);
+extern uintptr_t HwiP_disable(void);
 
 /*!
  *  @brief  Function to disable a single interrupt
  *
- *  TODO more detail
- *
- *  @param  interruptNum
+ *  @param  handle returned from the HwiP_create call
  */
 extern void HwiP_disableInterrupt(int interruptNum);
 
 /*!
  *  @brief  Function to enable a single interrupt
  *
- *  TODO more detail
- *
- *  @param  interruptNum
+ *  @param  handle returned from the HwiP_create call
  */
 extern void HwiP_enableInterrupt(int interruptNum);
-
-/*!
- *  @brief  Function to disable interrupts to enter a critical region
- *
- *  TODO more details
- *
- *  @return todo key
- */
-extern uintptr_t HwiP_disable(void);
 
 /*!
  *  @brief  Initialize params structure to default values.
@@ -167,9 +174,7 @@ extern void HwiP_Params_init(HwiP_Params *params);
 /*!
  *  @brief  Function to restore interrupts to exit a critical region
  *
- *  TODO more details
- *
- *  @param  key
+ *  @param  key return from HwiP_disable
  */
 extern void HwiP_restore(uintptr_t key);
 

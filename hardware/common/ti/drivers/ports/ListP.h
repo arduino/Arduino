@@ -32,21 +32,40 @@
 /** ============================================================================
  *  @file       ListP.h
  *
- *  @brief      Linked List interface for the OSAL
+ *  @brief      Linked List interface for the RTOS Ports Interface
  *
- *  TODO...mention atomic functions
+ *  This module provides simple doubly-link list implementation. There are two
+ *  main structures:
+ *     - ::ListP_List: The structure that holds the start of a linked list. There
+ *  is no API to create one. It is up to the driver to provide the structure
+ *  itself.
+ *     - ::ListP_Elem: The structure that must be in the structure that is placed
+ *  onto a linked list. Generally it is the first field in the structure. For
+ *  example:
+ *  @code
+ *  typedef struct MyStruct {
+ *      ListP_Elem elem;
+ *      void *buffer;
+ *  } MyStruct;
+ *  @endcode
  *
- *  TODO add ASCII
- *      Queues are doubly linked with dummy node to eliminate special
- *      cases for speed.
+ *  The following shows how the link list with three elements.
+ *
+ *  @code
  *  + denotes null-terminated
  *          _______        _______        _______      _______
  *         |_______|----->|_______|----->|_______|--->|_______|--//---,
  *    ,----|_______|    ,-|_______|<-----|_______|<---|_______|<-//-, +
- *    |      List       +  queue          elem         next         |
+ *    |      List       +   elem           elem          elem       |
  *    |_____________________________________________________________|
+ *  @endcode
  *
- *  Initializing and added an element to the tail and removing it
+ *  The APIs ::ListP_get, ::ListP_put, and ::ListP_putHead are
+ *  atomic. The other APIs are not necessarily atomic. In other words, when
+ *  traversing a linked list, it is up to the application to provide
+ *  thread-safety (e.g. HwiP_disable/restore or MutexP_pend/post).
+ *
+ *  Initializing and adding an element to the tail and removing it
  *  @code
  *  typedef struct MyStruct {
  *      ListP_Elem elem;
@@ -62,7 +81,14 @@
  *  bar = (MyStruct *)ListP_get(&list);
  *  @endcode
  *
- *  Traversing a list from head to tail
+ *  The ::ListP_put and ::ListP_get APIs are used to maintain a first-in first-out
+ *  (FIFO) linked list.
+ *
+ *  The ::ListP_putHead and ::ListP_get APIs are used to maintain a last-in first-out
+ *  (LIFO) linked list.
+ *
+ *  Traversing a list from head to tail. Note: thread-safety calls are
+ *  not shown here.
  *  @code
  *  ListP_List list;
  *  ListP_Elem *temp;
@@ -72,7 +98,8 @@
  *  }
  *  @endcode
  *
- *  Traversing a list from tail to head
+ *  Traversing a list from tail to head. Note: thread-safety calls are
+ *  not shown here.
  *  @code
  *  ListP_List list;
  *  ListP_Elem *temp;
@@ -191,7 +218,7 @@ extern ListP_Elem *ListP_prev(ListP_Elem *elem);
 extern void ListP_put(ListP_List *list, ListP_Elem *elem);
 
 /*!
- *  @brief  Function to atomically put an elem onto the beginning of a linked list
+ *  @brief  Function to atomically put an elem onto the head of a linked list
  *
  *  @param  list A pointer to the linked list
  *

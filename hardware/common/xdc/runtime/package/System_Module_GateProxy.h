@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -213,7 +213,7 @@ __extern xdc_Void xdc_runtime_System_Module_GateProxy_Object__delete__S( xdc_Ptr
 
 /* delete */
 xdc__CODESECT(xdc_runtime_System_Module_GateProxy_delete, "xdc_runtime_System_Module_GateProxy_delete")
-__extern Void xdc_runtime_System_Module_GateProxy_delete(xdc_runtime_System_Module_GateProxy_Handle *instp);
+__extern void xdc_runtime_System_Module_GateProxy_delete(xdc_runtime_System_Module_GateProxy_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(xdc_runtime_System_Module_GateProxy_Object__destruct__S, "xdc_runtime_System_Module_GateProxy_Object__destruct__S")

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -242,6 +242,6 @@ static inline xdc_runtime_knl_ISync_wait_FxnT xdc_runtime_knl_ISync_wait_fxnP( x
 #endif /* xdc_runtime_knl_ISync__localnames__done */
 #endif
 /*
- *  @(#) xdc.runtime.knl; 1, 0, 0,311; 10-31-2014 13:33:29; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
+ *  @(#) xdc.runtime.knl; 1, 0, 0,0; 3-22-2015 20:15:34; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
  */
 

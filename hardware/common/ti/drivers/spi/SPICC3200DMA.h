@@ -153,8 +153,7 @@ typedef enum SPICC3200DMA_FrameSize {
  *      {
  *          GSPI_BASE,
  *          INT_GSPI,
- *          2,         // Interrupt priority
- *          PowerCC3200_PERIPH_GSPI,
+ *          ~0,         // Interrupt priority
  *          PRCM_GSPI,
  *          SPI_HW_CTRL_CS,
  *          SPI_CS_ACTIVELOW,
@@ -178,9 +177,6 @@ typedef struct SPICC3200DMA_HWAttrs {
 
     /*! SPICC3200DMA Peripheral's interrupt priority */
     uint32_t   intPriority;
-
-    /*! SPI Peripheral's power manager ID */
-    uint32_t   powerMngrId;
 
     /*! SPI PRCM peripheral number */
     uint32_t   spiPRCM;

@@ -739,7 +739,7 @@ __extern xdc_Void ti_sysbios_family_arm_m3_Hwi_Object__delete__S( xdc_Ptr instp 
 
 /* delete */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_delete, "ti_sysbios_family_arm_m3_Hwi_delete")
-__extern Void ti_sysbios_family_arm_m3_Hwi_delete(ti_sysbios_family_arm_m3_Hwi_Handle *instp);
+__extern void ti_sysbios_family_arm_m3_Hwi_delete(ti_sysbios_family_arm_m3_Hwi_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_family_arm_m3_Hwi_Object__destruct__S, "ti_sysbios_family_arm_m3_Hwi_Object__destruct__S")
@@ -1123,7 +1123,7 @@ static inline xdc_runtime_Types_Label *ti_sysbios_family_arm_m3_Hwi_Handle_label
 }
 
 /* Handle_name */
-static inline String ti_sysbios_family_arm_m3_Hwi_Handle_name( ti_sysbios_family_arm_m3_Hwi_Handle inst )
+static inline xdc_String ti_sysbios_family_arm_m3_Hwi_Handle_name( ti_sysbios_family_arm_m3_Hwi_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return ti_sysbios_family_arm_m3_Hwi_Handle__label__S(inst, &lab)->iname;

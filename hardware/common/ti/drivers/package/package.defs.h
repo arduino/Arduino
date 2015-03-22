@@ -45,6 +45,11 @@ typedef struct ti_drivers_I2C_I2CUSCIB_Object ti_drivers_I2C_I2CUSCIB_Object;
 typedef struct ti_drivers_I2C_I2CEUSCIB_Object ti_drivers_I2C_I2CEUSCIB_Object;
 
 /*
+ * ======== module ti.drivers.Power ========
+ */
+
+
+/*
  * ======== module ti.drivers.PWM ========
  */
 

@@ -41,7 +41,7 @@ bool Button::read()
 
 void Button::waitForPress()
 {
-  UInt events;
+  xdc_UInt events;
   events = Event_pend(_event, Event_Id_NONE,
     Event_Id_00, BIOS_WAIT_FOREVER);    
 }

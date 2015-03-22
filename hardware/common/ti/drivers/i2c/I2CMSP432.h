@@ -78,7 +78,8 @@ extern const I2C_FxnTable I2CMSP432_fxnTable;
  *      {
  *          .baseAddr = EUSCI_B0_BASE,
  *          .intNum = INT_EUSCIB0,
- *          .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK
+ *          .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
+ *          .intPriority = ~0
  *      }
  *  };
  *  @endcode

@@ -37,6 +37,7 @@ typedef const ti_sysbios_family_arm_msp432_TimestampProvider_Fxns__* ti_sysbios_
  * ======== module ti.sysbios.family.arm.msp432.ClockFreqs ========
  */
 
+typedef struct ti_sysbios_family_arm_msp432_ClockFreqs_Module_State ti_sysbios_family_arm_msp432_ClockFreqs_Module_State;
 
 
 #endif /* ti_sysbios_family_arm_msp432__ */ 

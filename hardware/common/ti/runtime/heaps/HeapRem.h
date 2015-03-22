@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -240,7 +240,7 @@ __extern xdc_Void ti_runtime_heaps_HeapRem_Object__delete__S( xdc_Ptr instp );
 
 /* delete */
 xdc__CODESECT(ti_runtime_heaps_HeapRem_delete, "ti_runtime_heaps_HeapRem_delete")
-__extern Void ti_runtime_heaps_HeapRem_delete(ti_runtime_heaps_HeapRem_Handle *instp);
+__extern void ti_runtime_heaps_HeapRem_delete(ti_runtime_heaps_HeapRem_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_runtime_heaps_HeapRem_Object__destruct__S, "ti_runtime_heaps_HeapRem_Object__destruct__S")
@@ -404,7 +404,7 @@ static inline xdc_runtime_Types_Label *ti_runtime_heaps_HeapRem_Handle_label( ti
 }
 
 /* Handle_name */
-static inline String ti_runtime_heaps_HeapRem_Handle_name( ti_runtime_heaps_HeapRem_Handle inst )
+static inline xdc_String ti_runtime_heaps_HeapRem_Handle_name( ti_runtime_heaps_HeapRem_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return ti_runtime_heaps_HeapRem_Handle__label__S(inst, &lab)->iname;

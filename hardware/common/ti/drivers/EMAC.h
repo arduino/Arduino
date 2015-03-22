@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,8 +58,8 @@
  *
  *  Diagnostics Mask | Log details |
  *  ---------------- | ----------- |
- *  Diags_USER1      | basic EMAC operations |
- *  Diags_USER2      | detailed EMAC operations |
+ *  Diags_USER1      | basic operations |
+ *  Diags_USER2      | detailed operations |
  *
  *  ============================================================================
  */
@@ -88,11 +88,22 @@ typedef struct EMAC_FxnTable {
 
 /*!
  *  @brief      EMAC Global configuration
+ *
+ *  The EMAC_Config structure contains a set of pointers used to characterize
+ *  the EMAC driver implementation.
+ *
+ *  This structure needs to be defined before calling EMAC_init() and it must
+ *  not be changed thereafter.
+ *
+ *  @sa     EMAC_init()
  */
 typedef struct EMAC_Config {
-    EMAC_FxnTable const *fxnTablePtr;      /*!< Pointer to EMAC function table */
-    void                *objects;          /*!< Pointer to EMAC object */
-    void          const *hwAttrs;          /*!< Pointer to hardware attribute */
+    /*! Pointer to a table of driver-specific implementations of EMAC APIs */
+    EMAC_FxnTable const *fxnTablePtr;
+    /*! Pointer to a driver specific data object */
+    void                *objects;
+    /*! Pointer to a driver specific hardware attributes structure */
+    void          const *hwAttrs;
 } EMAC_Config;
 
 /*!
@@ -101,8 +112,10 @@ typedef struct EMAC_Config {
  *  This function must be called by the application before the NDK stack
  *  thread is started.
  *
- *  The EMAC_config structure must be present and initialized before this
- *  function is called.
+ *  @pre    The EMAC_config structure must exist and be persistent before this
+ *          function can be called. This function must also be called before
+ *          any other EMAC driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void EMAC_init(void);
 

@@ -29,8 +29,8 @@ extern void itoa( int n, char s[] ) ;
 
 #else
 
-extern char* itoa1( int value, char *string, int radix ) ;
-extern char* ltoa1( long value, char *string, int radix ) ;
+extern char* itoa( int value, char *string, int radix ) ;
+extern char* ltoa( long value, char *string, int radix ) ;
 extern char* utoa( unsigned long value, char *string, int radix ) ;
 extern char* ultoa( unsigned long value, char *string, int radix ) ;
 #endif /* 0 */

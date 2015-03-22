@@ -78,8 +78,7 @@ extern const I2C_FxnTable I2CCC3200_fxnTable;
  *      {
  *          I2CA0_BASE,
  *          INT_I2CA0,
- *          2,               // Interrupt priority
- *          PowerCC3200_PERIPH_I2CA0
+ *          ~0               // Interrupt priority
  *      }
  *  };
  *  @endcode
@@ -91,8 +90,6 @@ typedef struct I2CCC3200_HWAttrs {
     unsigned int intNum;
     /*! I2C Peripheral's interrupt priority */
     unsigned int intPriority;
-    /*! I2C Peripheral's power manager ID */
-    uint32_t     powerMngrId;
 } I2CCC3200_HWAttrs;
 
 /*!

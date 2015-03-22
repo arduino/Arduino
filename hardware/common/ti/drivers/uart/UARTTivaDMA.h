@@ -60,9 +60,6 @@ extern "C" {
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
-/* Return codes for UART_control() */
-#define UARTTivaDMA_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
-
 /* UART function table pointer */
 extern const UART_FxnTable UARTTivaDMA_fxnTable;
 

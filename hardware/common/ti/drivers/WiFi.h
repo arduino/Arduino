@@ -123,11 +123,11 @@ extern "C" {
  *  more details, see Doxygen documentation for the specific driver\
  *  implementation in use.
  *
- *  @param eventType   Type of event
+ *  @param eventType    Type of event
  *
- *  @param data        Pointer to extra data that some events may supply
+ *  @param data         Pointer to extra data that some events may supply
  *
- *  @param length      Length of data
+ *  @param length       Length of data
  */
 typedef void (*WiFi_evntCallback) (long eventType, char *data, unsigned char length);
 
@@ -137,9 +137,18 @@ typedef void (*WiFi_evntCallback) (long eventType, char *data, unsigned char len
 typedef struct WiFi_Config *WiFi_Handle;
 
 /*!
- *  @brief  A typedef to a struct Wifi_Params
+ *  @brief WiFi Parameters
+ *
+ *  WiFi parameters are used to with the WiFi_open() call. Default values for
+ *  these parameters are set using WiFi_Params_init().
+ *
+ *  @sa     WiFi_Params_init()
  */
-typedef struct WiFi_Params  WiFi_Params;
+typedef struct WiFi_Params {
+    uint32_t         bitRate;       /*!< SPI bit rate in Hz */
+    void            *custom;        /*!< Custom argument used by driver
+                                         implementation */
+} WiFi_Params;
 
 /*!
  *  @brief  A function pointer to a driver specific implementation of
@@ -190,39 +199,27 @@ typedef struct WiFi_FxnTable {
 /*!
  *  @brief  WiFi Global configuration
  *
- *  The WiFi_Config structure defines the number and locations of the
- *  WiFi_Objects and hardware attributes needed by the WiFi driver.
+ *  The WiFi_Config structure contains a set of pointers used to
+ *  characterize the WiFi driver implementation.
  *
  *  This structure needs to be defined before calling WiFi_init() and it must
  *  not be changed thereafter.
+ *
+ *  @sa     WiFi_init()
  */
 typedef struct WiFi_Config {
-    /*! Pointer to a table of driver-specific implemenations of WiFi APIs */
+    /*! Pointer to a table of driver-specific implementations of WiFi APIs */
     WiFi_FxnTable const   *fxnTablePtr;
 
-    /*!< Pointer to a driver-specific WiFi data object */
+    /*! Pointer to a driver specific data object */
     void                  *object;
 
-    /*!< Pointer to a driver-specific hardware attributes structure */
+    /*! Pointer to a driver specific hardware attributes structure */
     void const            *hwAttrs;
 } WiFi_Config;
 
 /*!
- *  @brief WiFi Parameters
- *
- *  WiFi parameters are used to with the WiFi_open() call. Default values for
- *  these parameters are set using WiFi_Params_init().
- *
- *  @sa     WiFi_Params_init()
- */
-struct WiFi_Params {
-    uint32_t         bitRate;       /*!< SPI bit rate in Hz */
-    void            *custom;        /*!< Custom argument used by driver
-                                         implementation */
-};
-
-/*!
- *  @brief  Function to close a WiFi peripheral specified by handle
+ *  @brief  Function to close a WiFi peripheral specified by the WiFi handle
  *
  *  @pre    WiFi_open() has to be called first.
  *
@@ -238,11 +235,13 @@ extern void WiFi_close(WiFi_Handle handle);
  *
  *  @pre    WiFi_open() has to be called first.
  *
- *  @param  handle A WiFi handle returned from WiFi_open()
+ *  @param  handle      A WiFi handle returned from WiFi_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -256,7 +255,8 @@ extern int WiFi_control(WiFi_Handle handle, unsigned int cmd, void *arg);
  *
  *  @pre    The WiFi_config structure must exist and be persistent before this
  *          function can be called. This function must also be called before
- *          any other WiFi driver APIs.
+ *          any other WiFi driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void WiFi_init(void);
 
@@ -270,19 +270,20 @@ extern void WiFi_init(void);
  *
  *  @pre    WiFi_init() has been called
  *
- *  @param  wifiIndex       Logical peripheral number for the WiFi indexed into
- *                          the WiFi_config table
+ *  @param  wifiIndex   Logical peripheral number for the WiFi indexed into
+ *                      the WiFi_config table
  *
- *  @param  spiIndex        Logical peripheral number for SPI to be used with
- *                          the WiFi indexed into the SPI_config table
+ *  @param  spiIndex    Logical peripheral number for SPI to be used with
+ *                      the WiFi indexed into the SPI_config table
  *
- *  @param  evntCallback    Pointer to callback function to handle unsolicited
- *                          events from the WiFi device. For details, see
- *                          WiFi_evntCallback and the Doxygen documentation for
- *                          the specific driver implementation in use.
+ *  @param  evntCallback Pointer to callback function to handle unsolicited
+ *                      events from the WiFi device. For details, see
+ *                      WiFi_evntCallback and the Doxygen documentation for
+ *                      the specific driver implementation in use.
  *
- *  @param  params          Pointer to an parameter block for the WiFi, if
- *                          NULL it will use default values
+ *  @param  params      Pointer to an parameter block, if NULL it will use
+ *                      default values. All the fields in this structure are RO
+ *                      (read-only).
  *
  *  @return A WiFi_Handle on success or a NULL on an error or if it has been
  *          opened already.
@@ -297,14 +298,15 @@ extern WiFi_Handle WiFi_open(unsigned int wifiIndex, unsigned int spiIndex,
 /*!
  *  @brief  Function to initialize the WiFi_Params structure to its defaults
  *
+ *  @param  params      An pointer to WiFi_Params structure for
+ *                      initialization
+ *
  *  Default values are:
  *      bitRate = 1000000;
- *
- *  @param  params  Parameter structure to initialize
  */
 extern void WiFi_Params_init(WiFi_Params *params);
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

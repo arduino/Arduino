@@ -119,8 +119,8 @@
  *
  *  Diagnostics Mask | Log details |
  *  ---------------- | ----------- |
- *  Diags_USER1      | basic UART operations performed |
- *  Diags_USER2      | detailed UART operations performed |
+ *  Diags_USER1      | basic operations performed |
+ *  Diags_USER2      | detailed operations performed |
  *
  *  ============================================================================
  */
@@ -136,73 +136,118 @@ extern "C" {
 #include <stddef.h>
 
 /*!
- * Common UART_control command and status code reservation offset.
- * UART driver implementations should offset the return codes and CMD codes
- * with UART_RESERVATION_BASE.
+ * Common UART_control command code reservation offset.
+ * UART driver implementations should offset command codes with UART_CMD_RESERVE
+ * growing positively
  *
- * Examples:
- * #define UARTCC26XX_CMD_SUCCESS2  UART_RESERVATION_BASE + 2
- * #define UARTCC26XX_CMD_SUCCESS1  UART_RESERVATION_BASE + 1
- * #define UARTCC26XX_CMD_SUCCESS   UART_RESERVATION_BASE + 0
- * #define UARTCC26XX_CMD_ERROR0   -UART_RESERVATION_BASE - 0
- * #define UARTCC26XX_CMD_ERROR1   -UART_RESERVATION_BASE - 1
- * #define UARTCC26XX_CMD_ERROR2   -UART_RESERVATION_BASE - 2
- *
- * #define UARTCC26XX_COMMAND0      UART_RESERVATION_BASE + 0
- * #define UARTCC26XX_COMMAND1      UART_RESERVATION_BASE + 1
- * etc...
+ * Example implementation specific command codes:
+ * @code
+ * #define UARTXYZ_COMMAND0         UART_CMD_RESERVE + 0
+ * #define UARTXYZ_COMMAND1         UART_CMD_RESERVE + 1
+ * @endcode
  */
-#define UART_RESERVATION_BASE       32
-
-/*! Common UART_control return codes */
-#define UART_CMD_SUCCESS            0
-#define UART_CMD_UNDEFINED         -1
-
-/*! Common UART_control CMD codes */
-/*!
- * \brief   Command used by ::UART_control()
- *
- * arg is an int pointer. It contains UART_ERRO if no data is available, else
- * it contains the next character to be read from ::UART_read()
- */
-#define UART_PEEK                   0
+#define UART_CMD_RESERVE            32
 
 /*!
- * \brief   Command used by ::UART_control()
+ * Common UART_control status code reservation offset.
+ * UART driver implementations should offset status codes with
+ * UART_STATUS_RESERVE growing negatively.
  *
- * arg is a bool. It is set to true if data is available in the read buffer for
- * ::UART_read() to read; else it returns false.
+ * Example implementation specific status codes:
+ * @code
+ * #define UARTXYZ_STATUS_ERROR0    UART_STATUS_RESERVE - 0
+ * #define UARTXYZ_STATUS_ERROR1    UART_STATUS_RESERVE - 1
+ * #define UARTXYZ_STATUS_ERROR2    UART_STATUS_RESERVE - 2
+ * @endcode
  */
-#define UART_ISAVAILABLE            1
+#define UART_STATUS_RESERVE        -32
 
 /*!
- * \brief   Command used by ::UART_control()
+ * \brief   Successful status code returned by UART_control().
  *
- * arg is an int. It is set to the number of characters in the in the read
- * buffer for ::UART_read() to read.
+ * UART_control() returns UART_STATUS_SUCCESS if the control code was executed
+ * successfully.
  */
-#define UART_GETRXCOUNT             2
+#define UART_STATUS_SUCCESS         0
 
 /*!
- * \brief   Command used by ::UART_control()
- *          It enables the UART to no data is inserted into the read buffer.
- *          When calling ::UART_open(), the read buffer will be enabled.
+ * \brief   Generic error status code returned by UART_control().
+ *
+ * UART_control() returns UART_STATUS_ERROR if the control code was not executed
+ * successfully.
  */
-#define UART_RXENABLE               3
+#define UART_STATUS_ERROR          -1
 
 /*!
- * \brief   Command used by ::UART_control()
- *          It disables the UART to no data is inserted into the read buffer.
- *          A call to ::UART_read() will !!NOT!! re-enable the read buffer.
+ * \brief   An error status code returned by UART_control() for undefined
+ * command codes.
+ *
+ * UART_control() returns UART_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
  */
-#define UART_RXDISABLE              4
+#define UART_STATUS_UNDEFINEDCMD   -2
 
-#define UART_ERROR  -1
+/*!
+ * \brief   Command code used by UART_control() to read the next unsigned char.
+ *
+ * This command is used to read the next unsigned char from the UART's circular
+ * buffer without removing it. With this command code, arg is a pointer to an
+ * int. *arg contains the read unsigned char if data is present, else *arg is
+ * set to UART_ERROR.
+ */
+#define UART_CMD_PEEK               0
+
+/*!
+ * \brief   Command code used by UART_control() to determine if the read buffer
+ *          is empty.
+ *
+ * This command is used to determine if there are any unsigned chars available
+ * to read from the UART's circular buffer using UART_read(). With this command
+ * code, arg is a pointer to a bool. *arg contains true if data is available,
+ * else false.
+ */
+#define UART_CMD_ISAVAILABLE        1
+
+/*!
+ * \brief   Command code used by UART_control() to determine how many unsigned
+ *          chars are in the read buffer.
+ *
+ * This command is used to determine how many unsigned chars are available to
+ * read from the UART's circular buffer using UART_read(). With this command
+ * code, arg is a pointer to an int. *arg contains the number of unsignec chars
+ * available to read.
+ */
+#define UART_CMD_GETRXCOUNT         2
+
+/*!
+ * \brief   Command code used by UART_control() to enable data received by the
+ *          UART.
+ *
+ * This command is used to enable the UART in such a way that it stores received
+ * unsigned chars onto the circular buffer. For drivers that are aware of the
+ * power module, it means that the UART will maintain a power constraint in
+ * place while receive is enabled. UART_open() will always have this option
+ * enabled.
+ */
+#define UART_CMD_RXENABLE           3
+
+/*!
+ * \brief   Command code used by UART_control() to disable data received by the
+ *          UART.
+ *
+ * This command is used to disable the UART in such a way that ignores the data
+ * it received. For drivers that are aware of the power module, it means that
+ * the UART will release a power constraint to permit the system to enter low
+ * power modes. A call to UART_read() will !!NOT!! re-enable receive.
+ */
+#define UART_CMD_RXDISABLE          4
+
+#define UART_ERROR  UART_STATUS_ERROR
 
 /*!
  *  @brief    Wait forever define
  */
-#define UART_WAIT_FOREVER ~(0)
+#define UART_WAIT_FOREVER (~0)
 
 /*!
  *  @brief      A handle that is returned from a UART_open() call.
@@ -268,8 +313,8 @@ typedef enum UART_ReturnMode {
  *  all host PC line endings as CRLF.
  */
 typedef enum UART_DataMode {
-    UART_DATA_BINARY,  /*!< Data is not processed */
-    UART_DATA_TEXT     /*!< Data is processed according to above */
+    UART_DATA_BINARY = 0, /*!< Data is not processed */
+    UART_DATA_TEXT = 1    /*!< Data is processed according to above */
 } UART_DataMode;
 
 /*!
@@ -318,7 +363,12 @@ typedef enum UART_PAR {
 } UART_PAR;
 
 /*!
- *  @brief    Basic UART Parameters
+ *  @brief    UART Parameters
+ *
+ *  UART parameters are used to with the UART_open() call. Default values for
+ *  these parameters are set using UART_Params_init().
+ *
+ *  @sa       UART_Params_init()
  */
 typedef struct UART_Params {
     UART_Mode         readMode;         /*!< Mode for all read calls */
@@ -444,9 +494,19 @@ typedef struct UART_FxnTable {
     UART_WriteCancelFxn     writeCancelFxn;
 } UART_FxnTable;
 
-/*! @brief UART Global configuration */
+/*!
+ *  @brief  UART Global configuration
+ *
+ *  The UART_Config structure contains a set of pointers used to characterize
+ *  the UART driver implementation.
+ *
+ *  This structure needs to be defined before calling UART_init() and it must
+ *  not be changed thereafter.
+  *
+ *  @sa     UART_init()
+ */
 typedef struct UART_Config {
-    /*! Pointer to a table of a driver-specific implementation of UART functions */
+    /*! Pointer to a table of driver-specific implementations of UART APIs */
     UART_FxnTable const    *fxnTablePtr;
 
     /*! Pointer to a driver specific data object */
@@ -457,14 +517,13 @@ typedef struct UART_Config {
 } UART_Config;
 
 /*!
- *  @brief  Function to closes a given UART peripheral specified by the UART
- *  handle.
+ *  @brief  Function to close a UART peripheral specified by the UART handle
  *
  *  @pre    UART_open() had to be called first.
  *
- *  @param  handle  A UART_Handle returned from UART_open
+ *  @param  handle      A UART_Handle returned from UART_open
  *
- *  @sa     UART_open
+ *  @sa     UART_open()
  */
 extern void UART_close(UART_Handle handle);
 
@@ -474,12 +533,13 @@ extern void UART_close(UART_Handle handle);
  *
  *  @pre    UART_open() has to be called first.
  *
- *  @param  handle A UART handle returned from UART_open()
+ *  @param  handle      A UART handle returned from UART_open()
  *
- *  @param  cmd    A command value defined by the either the top=level driver
- *                 or by the specific implementation.
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -491,60 +551,61 @@ extern int UART_control(UART_Handle handle, unsigned int cmd, void *arg);
 /*!
  *  @brief  Function to initializes the UART module
  *
- *  @pre    The UART controller needs to be powered up and clocked. The
- *          UART_config structure must exist and be persistent before this
+ *  @pre    The UART_config structure must exist and be persistent before this
  *          function can be called. This function must also be called before
  *          any other UART driver APIs.
  */
 extern void UART_init(void);
 
 /*!
- *  @brief  Function to initialize a given UART peripheral specified by the
- *          particular index value. The parameter specifies which mode the UART
- *          will operate.
+ *  @brief  Function to initialize a given UART peripheral
  *
- *  @pre    UART controller has been initialized
+ *  Function to initialize a given UART peripheral specified by the
+ *  particular index value.
  *
- *  @param  index         Logical peripheral number indexed into the HWAttrs
- *                        table
+ *  @pre    UART_init() has been called
+ *
+ *  @param  index         Logical peripheral number for the UART indexed into
+ *                        the UART_config table
  *
  *  @param  params        Pointer to an parameter block, if NULL it will use
- *                        default values
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
  *  @return A UART_Handle on success or a NULL on an error or if it has been
- *          already opened
+ *          opened already.
  *
- *  @sa     UART_close
+ *  @sa     UART_init()
+ *  @sa     UART_close()
  */
 extern UART_Handle UART_open(unsigned int index, UART_Params *params);
 
 /*!
  *  @brief  Function to initialize the UART_Params struct to its defaults
  *
- *  Defaults values are:
- *  readMode = UART_MODE_BLOCKING;
- *  writeMode = UART_MODE_BLOCKING;
- *  readTimeout = UART_WAIT_FOREVER;
- *  writeTimeout = UART_WAIT_FOREVER;
- *  readCallback = NULL;
- *  writeCallback = NULL;
- *  readReturnMode = UART_RETURN_NEWLINE;
- *  writeDataMode = UART_DATA_TEXT;
- *  readDataMode = UART_DATA_TEXT;
- *  readEcho = UART_ECHO_ON;
- *  baudRate = 115200;
- *  stopBits = UART_STOP_ONE;
- *  parityType = UART_PAR_NONE;
+ *  @param  params      An pointer to UART_Params structure for
+ *                      initialization
  *
- *  @param  params  Parameter structure to initialize
+ *  Defaults values are:
+ *      readMode = UART_MODE_BLOCKING;
+ *      writeMode = UART_MODE_BLOCKING;
+ *      readTimeout = UART_WAIT_FOREVER;
+ *      writeTimeout = UART_WAIT_FOREVER;
+ *      readCallback = NULL;
+ *      writeCallback = NULL;
+ *      readReturnMode = UART_RETURN_NEWLINE;
+ *      writeDataMode = UART_DATA_TEXT;
+ *      readDataMode = UART_DATA_TEXT;
+ *      readEcho = UART_ECHO_ON;
+ *      baudRate = 115200;
+ *      stopBits = UART_STOP_ONE;
+ *      parityType = UART_PAR_NONE;
  */
 extern void UART_Params_init(UART_Params *params);
 
-
 /*!
- *  @brief  Function that writes data to a UART
- *
- *  This function initiates an operation to write data to a UART controller.
+ *  @brief  Function that writes data to a UART with interrupt enabled. This
+ *          API must be used mutually exclusive with UART_writePolling().
  *
  *  In UART_MODE_BLOCKING, UART_write will block task execution until all
  *  the data in buffer has been written.
@@ -552,28 +613,37 @@ extern void UART_Params_init(UART_Params *params);
  *  In UART_MODE_CALLBACK, UART_write does not block task execution an calls a
  *  callback function specified by writeCallback.
  *
+ *  @sa UART_writePolling()
+ *
  *  @param  handle      A UART_Handle
  *
- *  @param  buffer      A pointer to buffer containing data to be written
+ *  @param  buffer      A WO (write-only) pointer to buffer containing data to
+ *                      be written to the UART.
  *
  *  @param  size        The number of bytes in buffer that should be written
  *                      onto the UART.
  *
  *  @return Returns the number of bytes that have been written to the UART,
- *          UART_ERROR on an error.
+ *          UART_ERROR on an error. In UART_MODE_CALLBACK, the return value
+ *          is always 0.
  */
 extern int UART_write(UART_Handle handle, const void *buffer, size_t size);
 
 /*!
- *  @brief  Function that writes data to a UART
+ *  @brief  Function that writes data to a UART without interrupts. This API
+ *          must be used mutually exclusive with UART_write().
  *
  *  This function initiates an operation to write data to a UART controller.
  *
- *  UART_write will not return until all the data was written to the UART.
+ *  UART_writePolling will not return until all the data was written to the
+ *  UART (or its FIFO if applicable).
+ *
+ *  @sa UART_write()
  *
  *  @param  handle      A UART_Handle
  *
- *  @param  buffer      A pointer to buffer containing data to be written
+ *  @param  buffer      A WO (write-only) pointer to buffer containing data to
+ *                      be written to the UART.
  *
  *  @param  size        The number of bytes in buffer that should be written
  *                      onto the UART.
@@ -587,15 +657,16 @@ extern int UART_writePolling(UART_Handle handle, const void *buffer,
 /*!
  *  @brief  Function that cancels a UART_write function call.
  *
- *  This function cancels an operation to write data to a UART controller
- *  when in UART_MODE_CALLBACK.
+ *  This function cancels a UART_write() operation to a UART controller when in
+ *  UART_MODE_CALLBACK.
  *
  *  @param  handle      A UART_Handle
  */
 extern void UART_writeCancel(UART_Handle handle);
 
 /*!
- *  @brief  Function that read data from a UART
+ *  @brief  Function that reads data from a UART with interrupt enabled. This
+ *          API must be used mutually exclusive with UART_readPolling().
  *
  *  This function initiates an operation to read data from a UART controller.
  *
@@ -605,10 +676,12 @@ extern void UART_writeCancel(UART_Handle handle);
  *  In UART_MODE_CALLBACK, UART_read does not block task execution an calls a
  *  callback function specified by readCallback.
  *
+ *  @sa UART_readPolling()
+ *
  *  @param  handle      A UART_Handle
  *
- *  @param  buffer      A pointer to an empty buffer in which data should be
- *                      written to
+ *  @param  buffer      A RO (read-only) pointer to an empty buffer in which
+ *                      received data should be written to.
  *
  *  @param  size        The number of bytes to be written into buffer
  *
@@ -618,16 +691,19 @@ extern void UART_writeCancel(UART_Handle handle);
 extern int UART_read(UART_Handle handle, void *buffer, size_t size);
 
 /*!
- *  @brief  Function that reads data from a UART
+ *  @brief  Function that reads data from a UART without interrupts. This API
+ *          must be used mutually exclusive with UART_read().
  *
  *  This function initiates an operation to read data from a UART controller.
  *
  *  UART_readPolling will not return until size data was read to the UART.
  *
+ *  @sa UART_read()
+ *
  *  @param  handle      A UART_Handle
  *
- *  @param  buffer      A pointer to an empty buffer in which data should be
- *                      written to
+ *  @param  buffer      A RO (read-only) pointer to an empty buffer in which
+ *                      received data should be written to.
  *
  *  @param  size        The number of bytes to be written into buffer
  *
@@ -639,8 +715,8 @@ extern int UART_readPolling(UART_Handle handle, void *buffer, size_t size);
 /*!
  *  @brief  Function that cancels a UART_read function call.
  *
- *  This function cancels an operation to read data from a UART controller
- *  when in UART_MODE_CALLBACK.
+ *  This function cancels a UART_read() operation to a UART controller when in
+ *  UART_MODE_CALLBACK.
  *
  *  @param  handle      A UART_Handle
  */

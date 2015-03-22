@@ -167,9 +167,20 @@ typedef ti_sysbios_knl_Task_Handle __T1_ti_sysbios_knl_Task_Module_State__constr
 typedef ti_sysbios_knl_Task_Handle *__ARRAY1_ti_sysbios_knl_Task_Module_State__constructedTasks;
 typedef __ARRAY1_ti_sysbios_knl_Task_Module_State__constructedTasks __TA_ti_sysbios_knl_Task_Module_State__constructedTasks;
 
+/* RunQEntry */
+struct ti_sysbios_knl_Task_RunQEntry {
+    ti_sysbios_knl_Queue_Elem elem;
+    xdc_UInt coreId;
+    xdc_Int priority;
+};
+
 /* Module_StateSmp */
+typedef volatile ti_sysbios_knl_Task_RunQEntry __T1_ti_sysbios_knl_Task_Module_StateSmp__smpRunQ;
+typedef volatile ti_sysbios_knl_Task_RunQEntry *__ARRAY1_ti_sysbios_knl_Task_Module_StateSmp__smpRunQ;
+typedef __ARRAY1_ti_sysbios_knl_Task_Module_StateSmp__smpRunQ __TA_ti_sysbios_knl_Task_Module_StateSmp__smpRunQ;
 struct ti_sysbios_knl_Task_Module_StateSmp {
-    volatile xdc_UInt8 readyFlag;
+    ti_sysbios_knl_Queue_Object *sortedRunQ;
+    __TA_ti_sysbios_knl_Task_Module_StateSmp__smpRunQ smpRunQ;
 };
 
 
@@ -538,7 +549,7 @@ __extern xdc_Void ti_sysbios_knl_Task_Object__delete__S( xdc_Ptr instp );
 
 /* delete */
 xdc__CODESECT(ti_sysbios_knl_Task_delete, "ti_sysbios_knl_Task_delete")
-__extern Void ti_sysbios_knl_Task_delete(ti_sysbios_knl_Task_Handle *instp);
+__extern void ti_sysbios_knl_Task_delete(ti_sysbios_knl_Task_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_knl_Task_Object__destruct__S, "ti_sysbios_knl_Task_Object__destruct__S")
@@ -854,7 +865,7 @@ static inline xdc_runtime_Types_Label *ti_sysbios_knl_Task_Handle_label( ti_sysb
 }
 
 /* Handle_name */
-static inline String ti_sysbios_knl_Task_Handle_name( ti_sysbios_knl_Task_Handle inst )
+static inline xdc_String ti_sysbios_knl_Task_Handle_name( ti_sysbios_knl_Task_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return ti_sysbios_knl_Task_Handle__label__S(inst, &lab)->iname;
@@ -981,6 +992,7 @@ static inline ti_sysbios_knl_Queue_Handle ti_sysbios_knl_Task_Module_State_termi
 #define Task_PendElem ti_sysbios_knl_Task_PendElem
 #define Task_Instance_State ti_sysbios_knl_Task_Instance_State
 #define Task_Module_State ti_sysbios_knl_Task_Module_State
+#define Task_RunQEntry ti_sysbios_knl_Task_RunQEntry
 #define Task_Module_StateSmp ti_sysbios_knl_Task_Module_StateSmp
 #define Task_Mode_RUNNING ti_sysbios_knl_Task_Mode_RUNNING
 #define Task_Mode_READY ti_sysbios_knl_Task_Mode_READY

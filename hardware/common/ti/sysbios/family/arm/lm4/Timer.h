@@ -424,7 +424,7 @@ __extern xdc_Void ti_sysbios_family_arm_lm4_Timer_Object__delete__S( xdc_Ptr ins
 
 /* delete */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_delete, "ti_sysbios_family_arm_lm4_Timer_delete")
-__extern Void ti_sysbios_family_arm_lm4_Timer_delete(ti_sysbios_family_arm_lm4_Timer_Handle *instp);
+__extern void ti_sysbios_family_arm_lm4_Timer_delete(ti_sysbios_family_arm_lm4_Timer_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_family_arm_lm4_Timer_Object__destruct__S, "ti_sysbios_family_arm_lm4_Timer_Object__destruct__S")
@@ -738,7 +738,7 @@ static inline xdc_runtime_Types_Label *ti_sysbios_family_arm_lm4_Timer_Handle_la
 }
 
 /* Handle_name */
-static inline String ti_sysbios_family_arm_lm4_Timer_Handle_name( ti_sysbios_family_arm_lm4_Timer_Handle inst )
+static inline xdc_String ti_sysbios_family_arm_lm4_Timer_Handle_name( ti_sysbios_family_arm_lm4_Timer_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return ti_sysbios_family_arm_lm4_Timer_Handle__label__S(inst, &lab)->iname;

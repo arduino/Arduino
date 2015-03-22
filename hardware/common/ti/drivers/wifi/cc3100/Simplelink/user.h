@@ -1,7 +1,7 @@
 /*
  * user.h - CC31xx/CC32xx Host Driver Implementation
  *
- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+ * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/
  *
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -335,7 +335,7 @@ extern "C" {
 /*!
     \brief		Enable the Network Processor
 
-    \sa			sl_DeviceDisable
+    \sa			sl_DeviceEnable
 
     \note       belongs to \ref porting_sec
 
@@ -345,7 +345,7 @@ extern "C" {
 /*!
     \brief		Disable the Network Processor
 
-    \sa			sl_DeviceEnable
+    \sa			sl_DeviceDisable
 
     \note       belongs to \ref porting_sec
 */

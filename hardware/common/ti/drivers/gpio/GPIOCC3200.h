@@ -174,14 +174,16 @@ typedef struct GPIOCC3200_Config {
     /*! Pointer to the board's GPIO_CallbackFxn array */
     GPIO_CallbackFxn  *callbacks;
 
-    /*! number of GPIO_PinConfigs defined */
+    /*! Number of GPIO_PinConfigs defined */
     uint32_t numberOfPinConfigs;
 
-    /*! number of GPIO_Callbacks defined */
+    /*! Number of GPIO_Callbacks defined */
     uint32_t numberOfCallbacks;
 
-    /*! interrupt priority used for call back interrupts */
-    /*! a setting of ~0 will configure the lowest possible priority */
+    /*!
+     * Interrupt priority used for call back interrupts.  Setting ~0 will
+     * configure the lowest possible priority
+     */
     uint32_t intPriority;
 } GPIOCC3200_Config;
 

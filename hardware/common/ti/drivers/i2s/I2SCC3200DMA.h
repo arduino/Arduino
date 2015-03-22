@@ -108,10 +108,9 @@ extern I2S_BufDesc  I2SCC3200DMA_emptyBufDesc;
  *      {
  *          I2S_BASE,
  *          INT_I2S,
- *          2,                 // Interrupt priority
+ *          ~0,                 // Interrupt priority
  *          UDMA_CH4_I2S_RX,
- *          UDMA_CH5_I2S_TX,
- *          PowerCC3200_PERIPH_I2S
+ *          UDMA_CH5_I2S_TX
  *      }
  *  };
  *  @endcode
@@ -127,8 +126,6 @@ typedef struct I2SCC3200DMA_HWAttrs {
     unsigned long rxChannelIndex;
     /*! uDMA controlTable transmit channel index */
     unsigned long txChannelIndex;
-    /*!< I2S Peripheral's power manager ID */
-    unsigned long   powerMngrId;
 } I2SCC3200DMA_HWAttrs;
 
 /*!

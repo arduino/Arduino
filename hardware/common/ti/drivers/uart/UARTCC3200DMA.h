@@ -61,9 +61,6 @@ extern "C" {
 #include <ti/drivers/Power.h>
 #include <ti/drivers/UART.h>
 
-/* Return codes for UART_control() */
-#define UARTCC3200DMA_CMD_UNDEFINED      -UART_RESERVATION_BASE - 1
-
 /* UART function table pointer */
 extern const UART_FxnTable UARTCC3200DMA_fxnTable;
 
@@ -81,18 +78,16 @@ extern const UART_FxnTable UARTCC3200DMA_fxnTable;
  *      {
  *          UARTA0_BASE,
  *          INT_UARTA0,
- *          2,          // Interrupt priority
+ *          ~0,          // Interrupt priority
  *          UDMA_CH8_UARTA0_RX,
- *          UDMA_CH9_UARTA0_TX,
- *          PowerCC3200_PERIPH_UARTA0
+ *          UDMA_CH9_UARTA0_TX
  *      },
  *      {
  *          UARTA1_BASE,
  *          INT_UARTA1,
- *          2,          // Interrupt priority
+ *          ~0,          // Interrupt priority
  *          UDMA_CH10_UARTA1_RX,
- *          UDMA_CH11_UARTA1_TX,
- *          PowerCC3200_PERIPH_UARTA1
+ *          UDMA_CH11_UARTA1_TX
  *      },
  *  };
  *  @endcode
@@ -108,8 +103,6 @@ typedef struct UARTCC3200DMA_HWAttrs {
     unsigned long rxChannelIndex;
     /*! uDMA controlTable transmit channel index */
     unsigned long txChannelIndex;
-    /*!< UART Peripheral's power manager ID */
-    unsigned long   powerMngrId;
 } UARTCC3200DMA_HWAttrs;
 
 /*!

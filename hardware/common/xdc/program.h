@@ -29,6 +29,6 @@ static int DEPRECATED__use_the_global_h_header_in_the_xdc_cfg_package = 0;
 #include xdc_cfg__xheader__
 #endif
 /*
- *  @(#) xdc; 1, 1, 1,507; 10-31-2014 13:32:59; /db/ztree/library/trees/xdc/xdc-A54x/src/packages/
+ *  @(#) xdc; 1, 1, 1,0; 3-22-2015 20:14:56; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
  */
 

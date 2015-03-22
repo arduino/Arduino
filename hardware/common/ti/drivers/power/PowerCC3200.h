@@ -351,6 +351,9 @@ void PowerCC3200_parkPin(PowerCC3200_Pin pin, PowerCC3200_ParkState parkState);
 /*! OS specific default power policy function */
 void PowerCC3200_sleepPolicy(void);
 
+#define Power_getPerformanceLevel(void)   0
+#define Power_setPerformanceLevel(level)  Power_EFAIL
+
 #ifdef __cplusplus
 }
 #endif

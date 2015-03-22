@@ -132,8 +132,8 @@ typedef struct Camera_Config      *Camera_Handle;
  *  @param      bufferLength              length of frame
  *
  */
-typedef void        (*Camera_Callback)    (Camera_Handle, void *buf, \
-                                               size_t bufferLength);
+typedef void        (*Camera_Callback)    (Camera_Handle, void *buf,
+                                           size_t bufferLength);
 
 /*!
  *  @brief      Camera capture mode settings
@@ -236,6 +236,9 @@ typedef enum Camera_StartCaptureConfig {
 /*!
  *  @brief  Camera Parameters
  *
+ *  Camera parameters are used to with the Camera_open() call.
+ *  Default values for these parameters are set using Camera_Params_init().
+ *
  *  If Camera_CaptureMode is set to Camera_MODE_BLOCKING then Camera_capture
  *  function calls will block thread execution until the capture has completed.
  *
@@ -243,6 +246,7 @@ typedef enum Camera_StartCaptureConfig {
  *  will not block thread execution and it will call the function specified by
  *  captureCallbackFxn.
  *
+ *  @sa     Camera_Params_init()
  */
 typedef struct Camera_Params {
     /*!< Mode for camera capture */
@@ -339,31 +343,35 @@ typedef struct Camera_FxnTable {
 } Camera_FxnTable;
 
 /*!
- *  @brief
+ *  @brief  Camera Global configuration
+ *
  *  The Camera_Config structure contains a set of pointers used to characterize
  *  the Camera driver implementation.
+ *
+ *  This structure needs to be defined before calling Camera_init() and it must
+ *  not be changed thereafter.
+ *
+*  @sa     Camera_init()
  */
 typedef struct Camera_Config {
-    /*! Pointer to a table of a driver-specific implementation of Camera
-        functions */
+    /*! Pointer to a table of driver-specific implementations of Camera APIs */
     Camera_FxnTable const *fxnTablePtr;
 
     /*! Pointer to a driver specific data object */
-    void               *object;
+    void                  *object;
 
     /*! Pointer to a driver specific hardware attributes structure */
-    void         const *hwAttrs;
+    void            const *hwAttrs;
 } Camera_Config;
 
 /*!
- *  @brief  Function to closes a given Camera peripheral specified by the Camera
- *  handle.
+ *  @brief  Function to close a Camera peripheral specified by the Camera handle
  *
  *  @pre    Camera_open() had to be called first.
  *
  *  @param  handle  A Camera_Handle returned from Camera_open
  *
- *  @sa     Camera_open
+ *  @sa     Camera_open()
  */
 extern void Camera_close(Camera_Handle handle);
 
@@ -373,11 +381,13 @@ extern void Camera_close(Camera_Handle handle);
  *
  *  @pre    Camera_open() has to be called first.
  *
- *  @param  handle A Camera handle returned from Camera_open()
+ *  @param  handle      A Camera handle returned from Camera_open()
  *
- *  @param  cmd    A command value defined by the driver specific implementation
+ *  @param  cmd         A command value defined by the driver specific
+ *                      implementation
  *
- *  @param  arg    An optional argument that is accompanied with cmd
+ *  @param  arg         An optional R/W (read/write) argument that is
+ *                      accompanied with cmd
  *
  *  @return Implementation specific return codes. Negative values indicate
  *          unsuccessful operations.
@@ -389,10 +399,10 @@ extern int Camera_control(Camera_Handle handle, uint32_t cmd, void *arg);
 /*!
  *  @brief  Function to initializes the Camera module
  *
- *  @pre    The Camera controller needs to be powered up and clocked. The
- *          Camera_config structure must exist and be persistent before this
+ *  @pre    The Camera_config structure must exist and be persistent before this
  *          function can be called. This function must also be called before
- *          any other Camera driver APIs.
+ *          any other Camera driver APIs. This function call does not modify any
+ *          peripheral registers.
  */
 extern void Camera_init(void);
 
@@ -403,37 +413,39 @@ extern void Camera_init(void);
  *
  *  @pre    Camera controller has been initialized
  *
- *  @param  index         Logical peripheral number indexed into the HWAttrs
- *                        table
+ *  @param  index         Logical peripheral number for the Camera indexed into
+ *                        the Camera_config table
  *
  *  @param  params        Pointer to an parameter block, if NULL it will use
- *                        default values
+ *                        default values. All the fields in this structure are
+ *                        RO (read-only).
  *
  *  @return A Camera_Handle on success or a NULL on an error or if it has been
- *          already opened
+ *          opened already.
  *
- *  @sa     Camera_close
+ *  @sa     Camera_init()
+ *  @sa     Camera_close()
  */
 extern Camera_Handle Camera_open(uint32_t index, Camera_Params *params);
 
 /*!
- *  @brief  Function to initialize the Camera_Params struct to its defaults
+ *  @brief  Function to initialize the Camera_Params structure to its defaults
+ *
+ *  @param  params      An pointer to Camera_Params structure for
+ *                      initialization
  *
  *  Defaults values are:
- *  captureMode       =  Camera_MODE_BLOCKING;
- *  outputClock       =  24000000;
- *  hsyncPolarity     =  Camera_HSYNC_POLARITY_HIGH;
- *  vsyncPolarity     =  Camera_VSYNC_POLARITY_HIGH;
- *  pixelClkConfig    =  Camera_PCLK_CONFIG_RISING_EDGE;
- *  byteOrder         =  Camera_BYTE_ORDER_NORMAL;
- *  interfaceSync     =  Camera_INTERFACE_SYNC_ON;
- *  stopConfig        =  Camera_STOP_CAPTURE_FRAME_END;
- *  startConfig       =  Camera_START_CAPTURE_FRAME_START;
- *  captureTimeout    =  Camera_WAIT_FOREVER;
- *  captureCallback   =  NULL;
- *
- *
- *  @param  params  Parameter structure to initialize
+ *      captureMode       =  Camera_MODE_BLOCKING;
+ *      outputClock       =  24000000;
+ *      hsyncPolarity     =  Camera_HSYNC_POLARITY_HIGH;
+ *      vsyncPolarity     =  Camera_VSYNC_POLARITY_HIGH;
+ *      pixelClkConfig    =  Camera_PCLK_CONFIG_RISING_EDGE;
+ *      byteOrder         =  Camera_BYTE_ORDER_NORMAL;
+ *      interfaceSync     =  Camera_INTERFACE_SYNC_ON;
+ *      stopConfig        =  Camera_STOP_CAPTURE_FRAME_END;
+ *      startConfig       =  Camera_START_CAPTURE_FRAME_START;
+ *      captureTimeout    =  Camera_WAIT_FOREVER;
+ *      captureCallback   =  NULL;
  */
 extern void Camera_Params_init(Camera_Params *params);
 
@@ -450,16 +462,16 @@ extern void Camera_Params_init(Camera_Params *params);
  *
  *  @param  handle      A Camera_Handle
  *
- *  @param  buffer      A pointer to a buffer into which the captured frame
- *                      is placed
+ *  @param  buffer      A pointer to a WO (write-only) buffer into which the
+ *                      captured frame is placed
  *
- *  @param  bufferlen   Length of the capture buffer
+ *  @param  bufferlen   Length (in bytes) of the capture buffer
  *
  *  @return Number of bytes captured.
  *
  *  @sa     Camera_open
  */
-extern int Camera_capture(Camera_Handle handle, void *buffer,size_t bufferlen);
+extern int Camera_capture(Camera_Handle handle, void *buffer, size_t bufferlen);
 
 #ifdef __cplusplus
 }

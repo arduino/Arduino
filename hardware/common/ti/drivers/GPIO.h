@@ -36,8 +36,8 @@
  *
  *  The GPIO header file should be included in an application as follows:
  *  @code
-    #include <ti/drivers/GPIO.h>
-    @endcode
+ *  #include <ti/drivers/GPIO.h>
+ *  @endcode
  *
  *  # Operation #
  *
@@ -192,6 +192,10 @@ extern void GPIO_enableInt(unsigned int index);
  *
  *  The pins defined in the application-provided *GPIOXXX_config* structure
  *  are initialized accordingly.
+ *
+ *  @pre    The GPIO_config structure must exist and be persistent before this
+ *          function can be called. This function must also be called before
+ *          any other GPIO driver APIs.
  */
 extern void GPIO_init();
 

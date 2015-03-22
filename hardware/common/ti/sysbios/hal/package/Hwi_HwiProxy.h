@@ -289,7 +289,7 @@ __extern xdc_Void ti_sysbios_hal_Hwi_HwiProxy_Object__delete__S( xdc_Ptr instp )
 
 /* delete */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_delete, "ti_sysbios_hal_Hwi_HwiProxy_delete")
-__extern Void ti_sysbios_hal_Hwi_HwiProxy_delete(ti_sysbios_hal_Hwi_HwiProxy_Handle *instp);
+__extern void ti_sysbios_hal_Hwi_HwiProxy_delete(ti_sysbios_hal_Hwi_HwiProxy_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_Object__destruct__S, "ti_sysbios_hal_Hwi_HwiProxy_Object__destruct__S")

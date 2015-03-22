@@ -84,12 +84,16 @@
  *           reduce memory usage.
  *  const GPIO_PinConfig gpioPinConfigs[] = {
  *      // Input pins
- *      GPIOTiva_PJ_0 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING, // EK_TM4C1294XL_USR_SW1
- *      GPIOTiva_PJ_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING, // EK_TM4C1294XL_USR_SW2
+ *      // EK_TM4C1294XL_USR_SW1
+ *      GPIOTiva_PJ_0 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+ *      // EK_TM4C1294XL_USR_SW2
+ *      GPIOTiva_PJ_1 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
  *
  *      // Output pins
- *      GPIOTiva_PN_1 | GPIO_CFG_OUTPUT | GPIO_CFG_OUT_STR_HIGH, // EK_TM4C1294XL_USR_D1
- *      GPIOTiva_PN_0 | GPIO_CFG_OUTPUT | GPIO_CFG_OUT_STR_HIGH  // EK_TM4C1294XL_USR_D2
+ *      // EK_TM4C1294XL_USR_D1
+ *      GPIOTiva_PN_1 | GPIO_CFG_OUTPUT | GPIO_CFG_OUT_STR_HIGH,
+ *      // EK_TM4C1294XL_USR_D2
+ *      GPIOTiva_PN_0 | GPIO_CFG_OUTPUT | GPIO_CFG_OUT_STR_HIGH
  *  };
  *
  *  // Array of callback function pointers
@@ -151,6 +155,8 @@ extern "C" {
 
 #include <stdint.h>
 
+#include <ti/drivers/GPIO.h>
+
 /*!
  *  @brief  GPIO device specific driver configuration structure
  */
@@ -164,11 +170,12 @@ typedef struct GPIOTiva_Config {
     /*! Number of pin configs defined */
     uint32_t numberOfPinConfigs;
 
-    /*! number of callbacks defined */
+    /*! Number of callbacks defined */
     uint32_t numberOfCallbacks;
 
-    /*! interrupt priority used for call back interrupts */
-    /*! a setting of ~0 will configure the lowest possible priority */
+    /*! Interrupt priority used for call back interrupts.  Setting ~0 will
+     *  configure the lowest possible priority
+     */
     uint32_t intPriority;
 } GPIOTiva_Config;
 

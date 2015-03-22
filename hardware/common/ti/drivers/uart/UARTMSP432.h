@@ -61,9 +61,6 @@ extern "C" {
 #include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 
-/* Return codes for UART_control() */
-#define UARTMSP432_CMD_UNDEFINED    -UART_RESERVATION_BASE - 1
-
 /* UARTMSP432 function table pointer */
 extern const UART_FxnTable UARTMSP432_fxnTable;
 
@@ -165,7 +162,7 @@ typedef struct UARTMSP432_HWAttrs {
  *  Not intended to be used by the user.
  */
 typedef struct UARTMSP432_Object {
-    /* UART status variable */
+    /* UART state variable */
     struct {
         bool             opened:1;         /* Has the obj been opened */
         UART_Mode        readMode:1;       /* Mode for all read calls */
@@ -177,7 +174,7 @@ typedef struct UARTMSP432_Object {
         bool             writeCR:1;        /* Write a return character */
         bool             bufTimeout:1;
         bool             callCallback:1;
-    } status;
+    } state;
 
     union {
         struct {
@@ -204,12 +201,12 @@ typedef struct UARTMSP432_Object {
 
     /* UART read variables */
     RingBuf_Object       ringBuffer;
-    void                *readBuf;          /* Buffer data pointer */
+    unsigned char       *readBuf;          /* Buffer data pointer */
     size_t               readSize;         /* Desired number of bytes to read */
     size_t               readCount;        /* Number of bytes left to read */
 
     /* UART write variables */
-    const void          *writeBuf;         /* Buffer data pointer */
+    const unsigned char *writeBuf;         /* Buffer data pointer */
     size_t               writeSize;        /* Desired number of bytes to write*/
     size_t               writeCount;       /* Number of bytes left to write */
 

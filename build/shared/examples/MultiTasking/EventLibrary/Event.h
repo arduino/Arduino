@@ -7,7 +7,7 @@
 class Event {
   private:
     Event_Handle eventHandle;
-    static UInt eventId;
+    static xdc_UInt eventId;
   public:
     Event();
     void begin();

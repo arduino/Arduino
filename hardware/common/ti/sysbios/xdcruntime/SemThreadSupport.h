@@ -263,7 +263,7 @@ __extern xdc_Void ti_sysbios_xdcruntime_SemThreadSupport_Object__delete__S( xdc_
 
 /* delete */
 xdc__CODESECT(ti_sysbios_xdcruntime_SemThreadSupport_delete, "ti_sysbios_xdcruntime_SemThreadSupport_delete")
-__extern Void ti_sysbios_xdcruntime_SemThreadSupport_delete(ti_sysbios_xdcruntime_SemThreadSupport_Handle *instp);
+__extern void ti_sysbios_xdcruntime_SemThreadSupport_delete(ti_sysbios_xdcruntime_SemThreadSupport_Handle *instp);
 
 /* Object__destruct__S */
 xdc__CODESECT(ti_sysbios_xdcruntime_SemThreadSupport_Object__destruct__S, "ti_sysbios_xdcruntime_SemThreadSupport_Object__destruct__S")
@@ -445,7 +445,7 @@ static inline xdc_runtime_Types_Label *ti_sysbios_xdcruntime_SemThreadSupport_Ha
 }
 
 /* Handle_name */
-static inline String ti_sysbios_xdcruntime_SemThreadSupport_Handle_name( ti_sysbios_xdcruntime_SemThreadSupport_Handle inst )
+static inline xdc_String ti_sysbios_xdcruntime_SemThreadSupport_Handle_name( ti_sysbios_xdcruntime_SemThreadSupport_Handle inst )
 {
     xdc_runtime_Types_Label lab;
     return ti_sysbios_xdcruntime_SemThreadSupport_Handle__label__S(inst, &lab)->iname;
