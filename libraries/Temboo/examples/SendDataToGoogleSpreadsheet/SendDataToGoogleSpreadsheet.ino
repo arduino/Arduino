@@ -18,7 +18,7 @@
 
   3. Replace the values in the TembooAccount.h tab with your Temboo application details
 
-  4. You should also have a Google Spreadsheet that includes a heading in the first row 
+  4. You'll also need a Google Spreadsheet that includes a title in the first row 
      of each column that data will be written to. This example saves values to three columns:
      company, location, and contact. The spreadsheet should be set up with three column names:
   
@@ -26,12 +26,28 @@
      +---------+----------+---------+
                |          |        
  
-  5. Upload the sketch to your LaunchPad and open Energia's serial monitor
+  5. Google Spreadsheets requires you to authenticate via OAuth. Follow the steps
+     in the link below to find your ClientID, ClientSecret, and RefreshToken, and then 
+     use those values to overwrite the placeholders in the code below. 
+     
+     https://temboo.com/library/Library/Google/OAuth/
+     
+     For the scope field, you need to use: https://spreadsheets.google.com/feeds/
+     
+     Here's a video outlines how Temboo helps with the OAuth process: 
+     
+     https://www.temboo.com/videos#oauthchoreos
+     
+     And here's a more in-depth version of this example on our website: 
+     
+     https://temboo.com/hardware/ti/update-google-spreadsheet
  
-  NOTE: the first time you run this sketch, you may receive a warning from
-  Google, prompting you to authorize access from a third-party system.
+  6. Next, upload the sketch to your LaunchPad and open Energia's serial monitor
  
-  This example code is in the public domain.
+     Note: you can test this Choreo and find the latest instructions on our website:
+     https://temboo.com/library/Library/Google/Spreadsheets/AppendRow/
+ 
+     This example code is in the public domain.
 */
 
 #include <SPI.h>
@@ -47,11 +63,14 @@
 // note that for additional security and reusability, you could
 // use #define statements to specify these values in a .h file.
 
-// the full email address associated with your Google account, e.g., cormac@gmail.com
-const String GOOGLE_USERNAME = "your-google-username";
+// the clientID found in Google's Developer Console under APIs & Auth > Credentials
+const String CLIENT_ID = "your-client-id";
 
-// your Google account password
-const String GOOGLE_PASSWORD = "your-google-password";
+// the clientSecret found in Google's Developer Console under APIs & Auth > Credentials
+const String CLIENT_SECRET = "your-client-secret";
+
+// returned after running FinalizeOAuth
+const String REFRESH_TOKEN = "your-oauth-refresh-token";
 
 // the name of the spreadsheet in your Google Docs/Drive
 // that you you want to send data to
@@ -109,10 +128,12 @@ void loop() {
     // identify the Temboo Library choreo to run (Google > Spreadsheets > AppendRow)
     AppendRowChoreo.setChoreo("/Library/Google/Spreadsheets/AppendRow");
 
-    // your Google username (usually your email address)
-    AppendRowChoreo.addInput("Username", GOOGLE_USERNAME);
-    // your Google account password
-    AppendRowChoreo.addInput("Password", GOOGLE_PASSWORD);
+    // your Google application client ID
+    AppendRowChoreo.addInput("ClientID", CLIENT_ID);
+    // your Google application client secert
+    AppendRowChoreo.addInput("ClientSecret", CLIENT_SECRET);
+    // your Google OAuth refresh token
+    AppendRowChoreo.addInput("RefreshToken", REFRESH_TOKEN);
     // the data you want to append to the spreadsheet
     AppendRowChoreo.addInput("RowData", ROW_DATA);
     // the title of the spreadsheet you want to append to
@@ -136,6 +157,7 @@ void loop() {
     }
 
     AppendRowChoreo.close();
+    delay(30000);
   }
 
 /*

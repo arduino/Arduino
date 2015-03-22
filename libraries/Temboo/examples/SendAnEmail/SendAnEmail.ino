@@ -18,15 +18,30 @@
 
   3. Replace the values in the TembooAccount.h tab with your Temboo application details
  
-  4. You'll also need a Gmail account. Replace the placeholder Gmail account 
-     information below with your own details. 
+  4. You'll also need a Gmail account. Update the placeholder Gmail address in the code 
+     below with your own details.
      
      https://www.gmail.com
  
-  5. Upload the sketch to your LaunchPad and open Energia's serial monitor
+  5. Once you have a Gmail account, turn on 2-step authentication, and create an application-specific 
+     password to allow Temboo to access your Google account: https://www.google.com/landing/2step/.
+     
+  6. After you've enabled 2-Step authentication, you'll need to create an App Password:
+     https://security.google.com/settings/security/apppasswords
+  
+  7. In the "Select app" dropdown menu, choose "Other", and give your app a name (e.g., TembooApp).
+  
+  8. Click "Generate". You'll be given a 16-digit passcode that can be used to access your Google Account from Temboo.
+ 
+  9. Copy and paste this password into the code below, updating the GMAIL_APP_PASSWORD variable
+ 
+  10. Upload the sketch to your LaunchPad and open Energia's serial monitor
 
-  NOTE: the first time you run this sketch, you may receive a warning from
-  Google, prompting you to authorize access from a third-party system.
+  NOTE: You can test this Choreo and find the latest instructions on our website: 
+  https://temboo.com/library/Library/Google/Gmail/SendEmail
+  
+  You can also find an in-depth version of this example here:
+  https://temboo.com/hardware/ti/send-an-email
   
   This example code is in the public domain.
 */
@@ -46,8 +61,8 @@
 // your Gmail username, formatted as a complete email address, e.g., "john.bonham@gmail.com"
 const String GMAIL_USER_NAME = "xxxxxxxxxx";
 
-// your Gmail password
-const String GMAIL_PASSWORD = "xxxxxxxxxx";
+// your application specific password (see instructions above)
+const String GMAIL_APP_PASSWORD = "xxxxxxxxxx";
 
 // the email address you want to send the email to, e.g., "johnpauljones@temboo.com"
 const String TO_EMAIL_ADDRESS = "xxxxxxxxxx";
@@ -112,8 +127,8 @@ void loop() {
 
     // the first input is your Gmail email address    
     SendEmailChoreo.addInput("Username", GMAIL_USER_NAME);
-    // next is your Gmail password
-    SendEmailChoreo.addInput("Password", GMAIL_PASSWORD);
+    // next is your application specific password
+    SendEmailChoreo.addInput("Password", GMAIL_APP_PASSWORD);
     // next is who to send the email to
     SendEmailChoreo.addInput("ToAddress", TO_EMAIL_ADDRESS);
     // then a subject line
