@@ -41,6 +41,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
   protected JScrollPane scrollPane;
   protected JTextField textField;
   protected JButton sendButton;
+ 
   protected JCheckBox autoscrollBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
@@ -228,6 +229,9 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   public abstract void close() throws Exception;
   
+  public abstract void openSerial() throws Exception;
+  public abstract void closeSerial() throws Exception;
+    
   public synchronized void addToUpdateBuffer(char buff[], int n) {
     updateBuffer.append(buff, 0, n);
   }
