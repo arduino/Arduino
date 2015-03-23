@@ -225,7 +225,11 @@ endif
 clean:
 	$(info >>>> Clean <<<<)
 	$(RM)
+ifeq ($(OS),Windows_NT)
+	$(shell del /f *.obj *.elf *.map *.bin >nul 2>nul)
+else
 	@rm -f *.obj *.elf *.map *.bin
+endif
 
 .PHONY: upload
 upload:
