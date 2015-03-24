@@ -29,6 +29,7 @@
 
   <condition property="dep.common.default.ok" value="true"><os family="mac"/></condition>
   <condition property="dep.common.default.ok" value="true"><os family="windows"/></condition>
+  <condition property="dep.common.default.ok" value="true"><os family="unix"/></condition>
   <!-- Libraries required for running energia -->
   <fileset dir=".." id="runtime.jars">
     <include name="core/core.jar" />
@@ -399,7 +400,7 @@
     <fail message="wrong platform (${os.name})" />
   </target>
   
-  <target name="linux-build" depends="revision-check, linux-checkos, subprojects-build" description="Build linux version">
+  <target name="linux-build" depends="revision-check, linux-checkos, subprojects-build, unzip-common-tools-linux" description="Build linux version">
     <mkdir dir="linux/work" />
     
     <copy todir="linux/work">
@@ -440,6 +441,15 @@
   </and>
   </condition>
   <property name="dep.arm.default.ok" value="true"/>
+    <target name="download-common-tools-linux" depends="check-common-tools" unless="common-tools.exists">
+      <echo message="Downloading common tools"/>
+      <get src="http://energia.nu/files/tools-common-${platform}.tar.bz2" dest="${build-dir}/tools-common.tar.bz2"/>
+    </target>
+
+    <target name="unzip-common-tools-linux" if="dep.common.default.ok" depends="download-common-tools-linux">
+	    <untar src="${build-dir}/tools-common.tar.bz2" dest="${common-tools-dest}" compression="bzip2" overwrite="false"/>
+            <chmod file="linux/work/tools/common/DSLite/DebugServer/bin/DSLite" perm="755" />
+    </target>
 
   <target name="check.deps.linux"
     if="dep.arm.default.ok"
