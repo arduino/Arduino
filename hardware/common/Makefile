@@ -39,7 +39,7 @@ endif
 
 # Use the preprocessor to find the dependencies. What we are really after is what libraries the Sketch depends on
 define deps
-$(foreach SRC, $1, $(shell $(CC) $(MCU_FLAG) $(CCOPTS) -MM $(CPPFLAGS) $(CFLAGS) $(SDK_INCS) $(CFG_INCS) $(SRC)))
+$(foreach SRC, $1, $(shell $(CC) $(MCU_FLAG) $(CCOPTS) -MM $(CFLAGS) $(SDK_INCS) $(CFG_INCS) $(SRC)))
 endef
 
 # (Ab)use the dependency tree to figure out what libraries the file in question depends on and add them to LIBSRCS
@@ -90,15 +90,12 @@ $(eval TMP_OBJS = $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(DEP_LIB_CPP_S
 $(eval OBJ += $(patsubst $(USER_LIB_PATH)/%.cpp,build/user_libs/%.o,$(TMP_OBJS)))
 endef
 
-#CPPFLAGS = $(SDK_INCS) $(CFG_INCS)
-#BOARD_DIR := $(APPLICATION_PATH)/hardware/$(PLATFORM)/$(BOARD)
-#COMMON_LIB_PATH := $(APPLICATION_PATH)/libraries
 ARCH_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/libraries
 ARCH_CORE_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)
 COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/common
 DIRS := $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH) $(COMMON_CORE_DIR) $(ARCH_LIB_PATH)
 INCLUDE_DIRS = $(foreach dir, $(DIRS), ${sort ${dir ${wildcard ${dir}/*/ ${dir}/*/utility/}}})
-CPPFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
+CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
 
@@ -144,10 +141,6 @@ endif
 $(eval $(call compute_dependencies, $(MAINSKETCH) $(EXTRA_SOURCES)))
 $(eval $(call compute_srcs))
 
-#$(info sources $(SRC))
-#$(info objects $(OBJ))
-
-#CPPFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 LD_FLAGS += -L$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD) -L$(APPLICATION_PATH)/hardware/common/libs
 # build rules
 all: $(MAINSKETCH).bin
@@ -174,7 +167,7 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(info Compiling $@)
-	$(CC) $(CCOPTS) $(CFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
+	$(CC) $(CCOPTS) $(CFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
 build/%.o: $(APPLICATION_PATH)/%.S
 ifeq ($(OS),Windows_NT)
@@ -183,7 +176,7 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(info Compiling $@)
-	$(CC) $(CCOPTS) $(CFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
+	$(CC) $(CCOPTS) $(CFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
 build/%.o: $(APPLICATION_PATH)/%.cpp
 ifeq ($(OS),Windows_NT)
@@ -202,7 +195,7 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(info Compiling $@)
-	$(CC) $(CCOPTS) $(CFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
+	$(CC) $(CCOPTS) $(CFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
 build/user_libs/%.o: $(USER_LIB_PATH)/%.S
 ifeq ($(OS),Windows_NT)
@@ -211,7 +204,7 @@ else
 	@mkdir -p $(dir $@)
 endif
 	$(info Compiling $@)
-	$(CC) $(CCOPTS) $(ASFLAGS) $(CPPFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
+	$(CC) $(CCOPTS) $(ASFLAGS) -I "$(CCROOT)/include" $(CFG_INCS) $(SDK_INCS) $< -o $@
 
 build/user_libs/%.o: $(USER_LIB_PATH)/%.cpp
 ifeq ($(OS),Windows_NT)
