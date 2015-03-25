@@ -121,7 +121,7 @@ public class Serial implements SerialPortEventListener {
     try {
       port = new SerialPort(iname);
       port.openPort();
-      port.setParams(rate, databits, stopbits, parity, true, true);
+      port.setParams(rate, databits, stopbits, parity, true, false);
       port.addEventListener(this);
     } catch (Exception e) {
       throw new SerialException(I18n.format(_("Error opening serial port ''{0}''."), iname), e);

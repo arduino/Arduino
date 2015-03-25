@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 
 import static processing.app.I18n._;
 
+
 @SuppressWarnings("serial")
 public class SerialMonitor extends AbstractMonitor {
 
@@ -66,6 +67,17 @@ public class SerialMonitor extends AbstractMonitor {
       }
     });
 
+	onResetCommand(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+	  try {
+		  serial.setDTR(true);
+          Thread.sleep(207);    // Pfffffff.
+		  serial.setDTR(false);
+       } catch (Exception se) {
+          se.printStackTrace();  // we are in deep trouble if this happens....
+        }
+	  }
+    });
   }
 
   private void send(String s) {
