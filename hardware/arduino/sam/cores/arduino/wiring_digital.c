@@ -32,6 +32,12 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
 	switch ( ulMode )
     {
         case INPUT:
+	    #if defined __SAM3X8E__ || defined __SAM3X8H__
+	    
+	    if(g_APinDescription[ulPin].ulPinType != NO_ADC)
+	           adc_enable_channel( ADC, g_APinDescription[ulPin].ulADCChannelNumber);
+	    #endif
+
             /* Enable peripheral for clocking input */
             pmc_enable_periph_clk( g_APinDescription[ulPin].ulPeripheralId ) ;
             PIO_Configure(
@@ -52,6 +58,12 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
         break ;
 
         case OUTPUT:
+	    #if defined __SAM3X8E__ || defined __SAM3X8H__
+	    
+	    if(g_APinDescription[ulPin].ulPinType != NO_ADC)
+	           adc_disable_channel( ADC, g_APinDescription[ulPin].ulADCChannelNumber);
+	    #endif
+
             PIO_Configure(
             	g_APinDescription[ulPin].pPort,
             	PIO_OUTPUT_1,
