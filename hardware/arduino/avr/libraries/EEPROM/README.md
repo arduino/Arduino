@@ -4,10 +4,10 @@
 
 ### **What is the EEPROM library.**
 
-Th EEPROM library provides an easy to use interface to interact with the internal non-volatile storage found in AVR based Arduino boards. This library will work on many AVR devices like ATtiny and ATmega chips.
+The EEPROM library provides an easy to use interface to interact with the internal non-volatile storage found in AVR based Arduino boards. This library will work on many AVR devices like ATtiny and ATmega chips.
 
 ### **How to use it**
-The EEPROM library is included in your IDE download. To add its functionality to your sketch you'll need to reference the library header file. You do this by adding an include directive to the top of your sketch.
+This library is included in your IDE download. To add its functionality to your sketch you'll need to reference the library header file. You do this by adding an include directive to the top of your sketch.
 
 ```Arduino
 #include <EEPROM.h>
@@ -48,10 +48,24 @@ This function is similar to `EEPROM.write()` however this method will only write
 
 This function does not return any value.
 
+#### **`EEPROM.readBit( address, bit )`** [[_example_]](examples/eeprom_bits/eeprom_bits.ino)
+
+This function allows you to read a single bit value from the EEPROM.
+It requires two inputs: an `int` addressing the EEPROM cell, and an `unsigned char` specifiying the bit to read (in a range 0 - 7).
+
+The function returns a `bool` containing the value of the bit read.
+
+#### **`EEPROM.writeBit( address, bit, value )`** [[_example_]](examples/eeprom_bits/eeprom_bits.ino)
+
+The `writeBit()` method allows you to write a single bit of data to the EEPROM.
+Three parameters are needed. The first is an `int` containing the address that is to be written, and the second is the index of the bit to access. The Last parameter is the data to be written (`unsigned char`).
+
+This function does not return any value.
+
 #### **`EEPROM.get( address, object )`** [[_example_]](examples/eeprom_get/eeprom_get.ino)
 
 This function will retrieve any object from the EEPROM.
-Two parameters are needed to call this function. The first is an `int` containing the address that is to be written, and the second is the object you would like to read.
+Two parameters are needed to call this function. The first is an `int` containing the address that is to be read, and the second is the object you would like to read.
 
 This function returns a reference to the `object` passed in. It does not need to be used and is only returned for conveience.
 
@@ -90,17 +104,24 @@ if( val == EEPROM[ 0 ] ){
 
 This function returns an `unsigned int` containing the number of cells in the EEPROM.
 
+#### **`EEPROM.ready()`**
+
+EEPROM access takes longer than a single cycle. This function will return false if there is an operation still pending, if so, any future operations will have to wait until its completed. This may be useful for time critical applications, as all EEPROM methods wait until ready.
+
+This function returns a `bool`, with the value `true` if the EEPROM is accessible without delay.
+
+**Note:** Recapping what is said above, you _do not_ need to call this function to use the EEPROM library, it is provided as a convenience only.
+
 ---
 
 ### **Advanced features**
 
-This library uses a component based approach to provide its functionality. This means you can also use these components to design a customized approach. Two background classes are available for use: `EERef` & `EEPtr`.
+This library uses a component based approach to provide its functionality. This means you can also use these components to design a customized approach. Three background classes are available for use: `EERef`, `EEPtr` and `EEBit`. The three classes are implicitly used by the EEPROM object and it is essentially just a _wrapper_ of their functionality.
 
 #### **`EERef` class**
 
 This object references an EEPROM cell.
 Its purpose is to mimic a typical byte of RAM, however its storage is the EEPROM.
-This class has an overhead of two bytes, similar to storing a pointer to an EEPROM cell.
 
 ```C++
 EERef ref = EEPROM[ 10 ]; //Create a reference to 11th cell.
@@ -113,8 +134,7 @@ unsigned char val = ref; //Read referenced cell.
 #### **`EEPtr` class**
 
 This object is a bidirectional pointer to EEPROM cells represented by `EERef` objects.
-Just like a normal pointer type, this type can be dereferenced and repositioned using 
-increment/decrement operators.
+Just like a standard pointer type, this _pointer_ can be dereferenced, repositioned and modified.
 
 ```C++
 EEPtr ptr = 10; //Create a pointer to 11th cell.
@@ -123,7 +143,33 @@ EEPtr ptr = 10; //Create a pointer to 11th cell.
 
 unsigned char val = *ptr; //dereference and read.
 
-ptr++; //Move to next EEPROM cell.
+val = ptr[ 4 ]; //dereference using subscript.
+
+ptr++; //Move pointer to next EEPROM cell.
+
+```
+
+#### **`EEBit` class**
+
+This object is a reference object similar to EERef, however it references only a single bit of data in the EEPROM. It is a background element available through all other EEPROM interfaces.
+
+It essentially can be viewed as a boolean stored in the EEPROM.
+
+```C++
+/***
+  Create a reference to 11th cell, and its third bit.
+  Take care to note, both the cell and bit indices are
+  zero based.
+***/
+EEBit mySetting( 10, 2 ); 
+
+mySetting = true; //Write a single bit to the EEPROM.
+
+bool val = mySetting; //Read a single bit form the EEPROM.
+
+if( mySetting ){  //Use directly in comparisons, branching.
+  //Do something.
+}
 ```
 
 #### **`EEPROM.begin()`**
