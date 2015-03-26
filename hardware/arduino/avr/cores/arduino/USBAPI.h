@@ -208,8 +208,31 @@ typedef struct
 
 class Joystick_
 {
+private:
+	int8_t	 xAxis;
+	int8_t	 yAxis;
+	int8_t	 zAxis;
+	uint32_t buttons;
+	uint8_t  throttle;
+	uint8_t  rudder;
+
 public:
 	Joystick_();
+
+	void begin();
+	void end();
+
+	void setXAxis(int8_t value);
+	void setYAxis(int8_t value);
+	void setZAxis(int8_t value);
+
+	void pressButton(uint8_t button);
+	void releaseButton(uint8_t button);
+
+	void setThrottle(uint8_t value);
+	void setRudder(uint8_t value);
+
+	void sendState();
 
 	void setState(JoystickState *joystickState);
 };

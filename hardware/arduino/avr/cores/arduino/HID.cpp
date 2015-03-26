@@ -598,11 +598,89 @@ size_t Keyboard_::write(uint8_t c)
 //	Joystick
 //
 
+#define joystickStateSize 13
+
 Joystick_::Joystick_()
 {
 }
 
-#define joystickStateSize 13
+void Joystick_::begin()
+{
+	buttons = 0;
+	throttle = 0;
+	rudder = 0;
+	xAxis = 0;
+	yAxis = 0;
+	zAxis = 0;
+	sendState();
+}
+
+void Joystick_::end()
+{
+}
+
+void Joystick_::pressButton(byte button)
+{
+	bitSet(buttons, button);
+}
+
+void Joystick_::releaseButton(byte button)
+{
+	bitClear(buttons, button);
+}
+
+void Joystick_::setThrottle(uint8_t value)
+{
+	throttle = value;
+}
+void Joystick_::setRudder(uint8_t value)
+{
+	rudder = value;
+}
+
+void Joystick_::setXAxis(int8_t value)
+{
+	xAxis = value;
+}
+void Joystick_::setYAxis(int8_t value)
+{
+	yAxis = value;
+}
+void Joystick_::setZAxis(int8_t value)
+{
+	zAxis = value;
+}
+
+void Joystick_::sendState()
+{
+	uint8_t data[joystickStateSize];
+	uint32_t buttonTmp = buttons;
+
+	data[0] = buttonTmp & 0xFF;		// Break 32 bit button-state out into 4 bytes, to send over USB
+	buttonTmp >>= 8;
+	data[1] = buttonTmp & 0xFF;
+	buttonTmp >>= 8;
+	data[2] = buttonTmp & 0xFF;
+	buttonTmp >>= 8;
+	data[3] = buttonTmp & 0xFF;
+
+	data[4] = throttle;
+	data[5] = rudder;
+	/*
+	data[6] = (joystickState->hatSw2 << 4) | joystickState->hatSw1;		// Pack hat-switch states into a single byte
+	*/
+	data[7] = xAxis + 127;
+	data[8] = yAxis + 127;
+	data[9] = zAxis + 127;
+	/*
+	data[10] = joystickState->xRotAxis;		// rX axis
+	data[11] = joystickState->yRotAxis;		// rY axis
+	data[12] = joystickState->zRotAxis;		// rZ axis
+	*/
+	// HID_SendReport(Report number, array of values in same order as HID descriptor, length)
+	HID_SendReport(3, data, joystickStateSize);
+	// The joystick is specified as using report 3 in the descriptor. That's where the "3" comes from
+}
 
 void Joystick_::setState(JoystickState *joystickState)
 {
