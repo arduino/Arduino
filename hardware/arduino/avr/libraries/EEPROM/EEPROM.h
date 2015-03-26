@@ -1,7 +1,7 @@
 /*
   EEPROM.h - EEPROM library
-  Original Copyright (c) 2006 David A. Mellis.  All right reserved.
-  New version by Christopher Andrews 2015.
+  Version 1.0 Original Copyright (c) 2006 David A. Mellis.  All right reserved.
+  Version 2.0 Copyright (c) 2015 Christopher Andrews.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -33,6 +33,8 @@
     This class has an overhead of two bytes, similar to storing a pointer to an EEPROM cell.
 ***/
 
+struct EEBit; //Forward declaration for EERef::opreator[]
+
 struct EERef{
 
     EERef( const int index )
@@ -41,6 +43,7 @@ struct EERef{
     //Access/read members.
     uint8_t operator*() const            { return eeprom_read_byte( (uint8_t*) index ); }
     operator const uint8_t() const       { return **this; }
+    EEBit operator[]( const int bidx );
     
     //Assignment/write members.
     EERef &operator=( const EERef &ref ) { return *this = *ref; }
@@ -77,6 +80,34 @@ struct EERef{
 };
 
 /***
+    EEBit class.
+    
+    This object is a reference object similar to EERef, however it references
+	only a single bit.
+***/
+
+struct EEBit{
+
+	//Constructor, use by passing in index of EEPROM byte, then index of bit to read.
+    EEBit( int index, uint8_t bidx ) 
+        : ref( index ), bidx( 0x01 << bidx ) {}
+
+    operator const bool() const              { return ref & bidx; }
+    EEBit &operator =( const EEBit &copy )   { return *this = ( const bool ) copy; }
+	
+    EEBit &operator =( const bool &copy ){
+        if( copy )  ref |= bidx;
+        else  ref &= ~bidx;
+        return *this;
+    }
+    
+    EERef ref;     //Reference to EEPROM cell.
+    uint8_t bidx;  //Mask of bit to read/write.
+};
+
+inline EEBit EERef::operator[]( const int bidx ) { return EEBit( index, bidx ); } //Deferred definition till EEBit is available.
+
+/***
     EEPtr class.
     
     This object is a bidirectional pointer to EEPROM cells represented by EERef objects.
@@ -91,6 +122,8 @@ struct EEPtr{
         
     operator const int() const          { return index; }
     EEPtr &operator=( int in )          { return index = in, *this; }
+    
+    EERef operator[]( const int idx )    { return index + idx; }
     
     //Iterator functionality.
     bool operator!=( const EEPtr &ptr ) { return index != ptr.index; }
@@ -120,11 +153,18 @@ struct EEPROMClass{
     uint8_t read( int idx )              { return EERef( idx ); }
     void write( int idx, uint8_t val )   { (EERef( idx )) = val; }
     void update( int idx, uint8_t val )  { EERef( idx ).update( val ); }
-    
+	
+	//Bit access methods.
+	EEBit readBit( int idx, uint8_t bidx )                 { return EERef( idx )[ bidx ]; }
+	void writeBit( int idx, uint8_t bidx, const bool val ) { (EERef( idx )[ bidx ]) = val; }
+	
     //STL and C++11 iteration capability.
     EEPtr begin()                        { return 0x00; }
     EEPtr end()                          { return length(); } //Standards requires this to be the item after the last valid entry. The returned pointer is invalid.
+	
+	//Properties and state.
     uint16_t length()                    { return E2END + 1; }
+	const bool ready()                   { return eeprom_is_ready(); }
     
     //Functionality to 'get' and 'put' objects to and from EEPROM.
     template< typename T > T &get( int idx, T &t ){
