@@ -44,9 +44,10 @@ const byte GREEN_PIN  = 10;
 const byte BUZZER_PIN = 6;
 
 // non-multiplexer Esplora pins: 
-// Accelerometer: x-A5, y-A7, z-A6
+// Accelerometer: x-A5, y-A11, z-A6
 // External outputs: D3, D11
 // Buzzer: A8
+// The pin definition for the following green LED is incorrect in it's reference to A11. Needs corrected.
 // RGB Led: red-D5, green-D10/A11, blue-D9/A10
 // Led 13: D13
 
