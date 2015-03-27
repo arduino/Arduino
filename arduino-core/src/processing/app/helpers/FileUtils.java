@@ -249,5 +249,19 @@ public class FileUtils {
     return result;
   }
 
+  public static File saveToTempFile(String content, String prefix, String suffix) throws IOException {
+    File tempFile = File.createTempFile(prefix, suffix);
+    FileWriter fileWriter = null;
+    try {
+      fileWriter = new FileWriter(tempFile);
+      fileWriter.write(content);
+      return tempFile;
+    } finally {
+      if (fileWriter != null) {
+        fileWriter.close();
+      }
+    }
+  }
+
 
 }

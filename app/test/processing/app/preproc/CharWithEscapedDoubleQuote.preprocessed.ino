@@ -1,4 +1,3 @@
-
 #include <SoftwareSerial.h> // required to send and receive AT commands from the GPRS Shield
 #include <Wire.h> // required for I2C communication with the RTC
 
@@ -13,6 +12,8 @@
 #define DS3231_TEMPERATURE_ADDR    17 // 0x11
 
 // Declarations for GPRS shield
+#include <Arduino.h>
+#line 15
 SoftwareSerial GPRS( 7, 8 ); // A softwareSerial line is defined for the GPRS Shield
 byte buffer[ 64 ]; // Buffer is used to transfer data from the GPRS line to the serial line
 int count = 0, e = 0, count2 = 0, t = 0, q;
@@ -37,6 +38,28 @@ Code Exclusively for GPRS shield:
 //  Default set of instructions for GPRS Shield power control
 //
 
+void setPowerStateTo( int newState );
+int getPowerState();
+void powerUpOrDown();
+void clearBufferArray();
+void makeMissedCall( char num[] );
+void sendTextMessage( char number[], char messg[] );
+void analise(byte incoming[], int length);
+byte decToBcd( byte b );
+boolean getBit( byte addr, int pos );
+void setBit( byte addr, int pos, boolean newBit );
+byte getByte( byte addr );
+boolean getBytes( byte addr, int amount );
+void setByte( byte addr, byte newByte );
+void setBytes( byte addr, byte newBytes[], int amount );
+void getTime();
+void setTime( byte newTime[ 7 ] );
+void getRTCTemperature();
+void gprsListen();
+void printTime();
+void setup();
+void loop();
+#line 39
 void setPowerStateTo( int newState )
 {
   if( newState != 1 && newState != 0 ) { // tests for an invalid state. In this case no change is made to powerstate
@@ -337,7 +360,4 @@ void loop()
   gprsListen(); // GPRS Shield listener. Todo: replace w interrupt
   getTime();    // Updates the time. Todo: replace w interrupt
 }
-
-
-
 
