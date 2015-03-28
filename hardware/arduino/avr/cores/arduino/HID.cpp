@@ -42,6 +42,7 @@ Joystick_ Joystick;
 #define RAWHID_USAGE		0x0C00
 #define RAWHID_TX_SIZE 64
 #define RAWHID_RX_SIZE 64
+#define JOYSTICK_REPORT_ID 0x03
 
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
@@ -133,12 +134,10 @@ const u8 _hidReportDescriptor[] = {
 	// *** Check out www.usb.org/developers/hidpage/ for more than you'll ever need to know about USB HID
 	// *** HID descriptor created using the HID descriptor tool from www.usb.org/developers/hidpage/dt2_4.zip (win32)
 
-	// 32 buttons (and a throttle - just in case the game doesn't recognise a joystick with no analog axis)
-
 	0x05, 0x01,			// USAGE_PAGE (Generic Desktop)
 	0x09, 0x04,			// USAGE (Joystick)
 	0xa1, 0x01,			// COLLECTION (Application)
-	0x85, 0x03,			//   REPORT_ID (3)  (This is important when HID_SendReport() is called)
+	0x85, JOYSTICK_REPORT_ID,	//   REPORT_ID (3)
 
 	//Buttons:
 	0x05, 0x09,			//   USAGE_PAGE (Button)
@@ -198,7 +197,7 @@ const u8 _hidReportDescriptor[] = {
 	0x09, 0x33,		    //     USAGE (rx)
 	0x09, 0x34,		    //     USAGE (ry)
 	0x09, 0x35,		    //     USAGE (rz)
-	0x95, 0x06,		    //     REPORT_COUNT (2)
+	0x95, 0x06,		    //     REPORT_COUNT (6)
 	0x81, 0x02,		    //     INPUT (Data,Var,Abs)
 	0xc0,				//   END_COLLECTION
 
@@ -606,14 +605,17 @@ Joystick_::Joystick_()
 
 void Joystick_::begin()
 {
-	buttons = 0;
-	throttle = 0;
-	rudder = 0;
 	xAxis = 0;
 	yAxis = 0;
 	zAxis = 0;
-	hatSw[0] = -1;
-	hatSw[1] = -1;
+	xAxisRotation = 0;
+	yAxisRotation = 0;
+	zAxisRotation = 0;
+	buttons = 0;
+	throttle = 0;
+	rudder = 0;
+	hatSwitch[0] = -1;
+	hatSwitch[1] = -1;
 	sendState();
 }
 
@@ -653,9 +655,22 @@ void Joystick_::setZAxis(int8_t value)
 	zAxis = value;
 }
 
-void Joystick_::setHatSwitch(int8_t hatSwitch, int8_t value)
+void Joystick_::setXAxisRotation(int16_t value)
 {
-	hatSw[hatSwitch % 2] = value;
+	xAxisRotation = value;
+}
+void Joystick_::setYAxisRotation(int16_t value)
+{
+	yAxisRotation = value;
+}
+void Joystick_::setZAxisRotation(int16_t value)
+{
+	zAxisRotation = value;
+}
+
+void Joystick_::setHatSwitch(int8_t hatSwitchIndex, int16_t value)
+{
+	hatSwitch[hatSwitchIndex % 2] = value;
 }
 
 void Joystick_::sendState()
@@ -663,7 +678,7 @@ void Joystick_::sendState()
 	uint8_t data[joystickStateSize];
 	uint32_t buttonTmp = buttons;
 
-	// Break 32 bit button-state out into 4 bytes, to send over USB
+	// Split 32 bit button-state into 4 bytes
 	data[0] = buttonTmp & 0xFF;		
 	buttonTmp >>= 8;
 	data[1] = buttonTmp & 0xFF;
@@ -675,51 +690,33 @@ void Joystick_::sendState()
 	data[4] = throttle;
 	data[5] = rudder;
 
+	// Calculate hat-switch values
+	uint8_t convertedHatSwitch[2];
+	for (int hatSwitchIndex = 0; hatSwitchIndex < 2; hatSwitchIndex++)
+	{
+		if (hatSwitch[hatSwitchIndex] < 0)
+		{
+			convertedHatSwitch[hatSwitchIndex] = 8;
+		}
+		else
+		{
+			convertedHatSwitch[hatSwitchIndex] = (hatSwitch[hatSwitchIndex] % 360) / 45;
+		}
+	}
+
 	// Pack hat-switch states into a single byte
-	data[6] = (hatSw[1] << 4) | (B00001111 & hatSw[0]);		
+	data[6] = (convertedHatSwitch[1] << 4) | (B00001111 & convertedHatSwitch[0]);
 
 	data[7] = xAxis + 127;
 	data[8] = yAxis + 127;
 	data[9] = zAxis + 127;
-	/*
-	data[10] = joystickState->xRotAxis;		// rX axis
-	data[11] = joystickState->yRotAxis;		// rY axis
-	data[12] = joystickState->zRotAxis;		// rZ axis
-	*/
-	// HID_SendReport(Report number, array of values in same order as HID descriptor, length)
-	HID_SendReport(3, data, joystickStateSize);
-	// The joystick is specified as using report 3 in the descriptor. That's where the "3" comes from
-}
 
-void Joystick_::setState(JoystickState *joystickState)
-{
-	uint8_t data[joystickStateSize];
-	uint32_t buttonTmp;
-	buttonTmp = joystickState->buttons;
-
-	data[0] = buttonTmp & 0xFF;		// Break 32 bit button-state out into 4 bytes, to send over USB
-	buttonTmp >>= 8;
-	data[1] = buttonTmp & 0xFF;
-	buttonTmp >>= 8;
-	data[2] = buttonTmp & 0xFF;
-	buttonTmp >>= 8;
-	data[3] = buttonTmp & 0xFF;
-
-	data[4] = joystickState->throttle;		// Throttle
-	data[5] = joystickState->rudder;		// Steering
-
-	data[6] = (joystickState->hatSw2 << 4) | joystickState->hatSw1;		// Pack hat-switch states into a single byte
-
-	data[7] = joystickState->xAxis;		// X axis
-	data[8] = joystickState->yAxis;		// Y axis
-	data[9] = joystickState->zAxis;		// Z axis
-	data[10] = joystickState->xRotAxis;		// rX axis
-	data[11] = joystickState->yRotAxis;		// rY axis
-	data[12] = joystickState->zRotAxis;		// rZ axis
+	data[10] = (xAxisRotation % 360) * 0.708;
+	data[11] = (yAxisRotation % 360) * 0.708;
+	data[12] = (zAxisRotation % 360) * 0.708;
 
 	// HID_SendReport(Report number, array of values in same order as HID descriptor, length)
-	HID_SendReport(3, data, joystickStateSize);
-	// The joystick is specified as using report 3 in the descriptor. That's where the "3" comes from
+	HID_SendReport(JOYSTICK_REPORT_ID, data, joystickStateSize);
 }
 
 #endif
