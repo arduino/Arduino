@@ -214,6 +214,7 @@ public:
 	void setYAxisRotation(int16_t value);
 	void setZAxisRotation(int16_t value);
 
+	void setButton(uint8_t button, uint8_t value);
 	void pressButton(uint8_t button);
 	void releaseButton(uint8_t button);
 

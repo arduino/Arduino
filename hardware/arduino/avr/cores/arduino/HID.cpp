@@ -623,12 +623,22 @@ void Joystick_::end()
 {
 }
 
-void Joystick_::pressButton(byte button)
+void Joystick_::setButton(uint8_t button, uint8_t value)
+{
+	if (value == 0)
+	{
+		releaseButton(button);
+	}
+	else
+	{
+		pressButton(button);
+	}
+}
+void Joystick_::pressButton(uint8_t button)
 {
 	bitSet(buttons, button);
 }
-
-void Joystick_::releaseButton(byte button)
+void Joystick_::releaseButton(uint8_t button)
 {
 	bitClear(buttons, button);
 }
