@@ -612,6 +612,8 @@ void Joystick_::begin()
 	xAxis = 0;
 	yAxis = 0;
 	zAxis = 0;
+	hatSw[0] = -1;
+	hatSw[1] = -1;
 	sendState();
 }
 
@@ -651,12 +653,18 @@ void Joystick_::setZAxis(int8_t value)
 	zAxis = value;
 }
 
+void Joystick_::setHatSwitch(int8_t hatSwitch, int8_t value)
+{
+	hatSw[hatSwitch % 2] = value;
+}
+
 void Joystick_::sendState()
 {
 	uint8_t data[joystickStateSize];
 	uint32_t buttonTmp = buttons;
 
-	data[0] = buttonTmp & 0xFF;		// Break 32 bit button-state out into 4 bytes, to send over USB
+	// Break 32 bit button-state out into 4 bytes, to send over USB
+	data[0] = buttonTmp & 0xFF;		
 	buttonTmp >>= 8;
 	data[1] = buttonTmp & 0xFF;
 	buttonTmp >>= 8;
@@ -666,9 +674,10 @@ void Joystick_::sendState()
 
 	data[4] = throttle;
 	data[5] = rudder;
-	/*
-	data[6] = (joystickState->hatSw2 << 4) | joystickState->hatSw1;		// Pack hat-switch states into a single byte
-	*/
+
+	// Pack hat-switch states into a single byte
+	data[6] = (hatSw[1] << 4) | (B00001111 & hatSw[0]);		
+
 	data[7] = xAxis + 127;
 	data[8] = yAxis + 127;
 	data[9] = zAxis + 127;

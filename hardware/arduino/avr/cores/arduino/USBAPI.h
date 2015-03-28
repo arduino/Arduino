@@ -215,6 +215,7 @@ private:
 	uint32_t buttons;
 	uint8_t  throttle;
 	uint8_t  rudder;
+	int8_t	 hatSw[2];
 
 public:
 	Joystick_();
@@ -231,6 +232,8 @@ public:
 
 	void setThrottle(uint8_t value);
 	void setRudder(uint8_t value);
+
+	void setHatSwitch(int8_t hatSwitch, int8_t value);
 
 	void sendState();
 
