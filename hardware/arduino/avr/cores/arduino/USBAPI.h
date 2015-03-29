@@ -189,6 +189,7 @@ extern Keyboard_ Keyboard;
 class Joystick_
 {
 private:
+	bool     autoSendState;
 	int8_t	 xAxis;
 	int8_t	 yAxis;
 	int8_t	 zAxis;
@@ -203,7 +204,7 @@ private:
 public:
 	Joystick_();
 
-	void begin();
+	void begin(bool initAutoSendState = true);
 	void end();
 
 	void setXAxis(int8_t value);

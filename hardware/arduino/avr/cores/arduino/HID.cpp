@@ -22,9 +22,8 @@
 #ifdef HID_ENABLED
 
 //#define RAWHID_ENABLED
-#define JOYHID_ENABLED
 
-//	Singletons for mouse and keyboard
+//	Singletons for mouse, keyboard, and joystick
 
 Mouse_ Mouse;
 Keyboard_ Keyboard;
@@ -126,20 +125,14 @@ const u8 _hidReportDescriptor[] = {
 	0x09, 0x02,				// usage
 	0x91, 0x02,				// Output (array)
 	0xC0					// end collection
-#endif
-
-#ifdef JOYHID_ENABLED
-	// *** Here is where the RAW_HID has been converted to a Joystick device
-	// *** Inspired by helmpcb.com/electronics/usb-joystick
-	// *** Check out www.usb.org/developers/hidpage/ for more than you'll ever need to know about USB HID
-	// *** HID descriptor created using the HID descriptor tool from www.usb.org/developers/hidpage/dt2_4.zip (win32)
-
+#else
+	// Joystick
 	0x05, 0x01,			// USAGE_PAGE (Generic Desktop)
 	0x09, 0x04,			// USAGE (Joystick)
 	0xa1, 0x01,			// COLLECTION (Application)
 	0x85, JOYSTICK_REPORT_ID,	//   REPORT_ID (3)
 
-	//Buttons:
+	// 32 Buttons
 	0x05, 0x09,			//   USAGE_PAGE (Button)
 	0x19, 0x01,			//   USAGE_MINIMUM (Button 1)
 	0x29, 0x20,			//   USAGE_MAXIMUM (Button 32)
@@ -163,7 +156,7 @@ const u8 _hidReportDescriptor[] = {
 	0x81, 0x02,			//     INPUT (Data,Var,Abs)
 	0xc0,				//   END_COLLECTION
 
-	// Two Hat switches
+	// Two Hat switches (8 Positions)
 	0x05, 0x01,			//   USAGE_PAGE (Generic Desktop)
 	0x09, 0x39,			//   USAGE (Hat switch)
 	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
@@ -185,10 +178,10 @@ const u8 _hidReportDescriptor[] = {
 	0x95, 0x01,			//   REPORT_COUNT (1)
 	0x81, 0x02,			//   INPUT (Data,Var,Abs)
 
+	// X, Y, and Z Axis
 	0x15, 0x00,			//   LOGICAL_MINIMUM (0)
 	0x26, 0xff, 0x00,	//   LOGICAL_MAXIMUM (255)
 	0x75, 0x08,			//   REPORT_SIZE (8)
-
 	0x09, 0x01,			//   USAGE (Pointer)
 	0xA1, 0x00,			//   COLLECTION (Physical)
 	0x09, 0x30,		    //     USAGE (x)
@@ -601,10 +594,6 @@ size_t Keyboard_::write(uint8_t c)
 
 Joystick_::Joystick_()
 {
-}
-
-void Joystick_::begin()
-{
 	xAxis = 0;
 	yAxis = 0;
 	zAxis = 0;
@@ -616,6 +605,11 @@ void Joystick_::begin()
 	rudder = 0;
 	hatSwitch[0] = -1;
 	hatSwitch[1] = -1;
+}
+
+void Joystick_::begin(bool initAutoSendState)
+{
+	autoSendState = initAutoSendState;
 	sendState();
 }
 
@@ -637,50 +631,61 @@ void Joystick_::setButton(uint8_t button, uint8_t value)
 void Joystick_::pressButton(uint8_t button)
 {
 	bitSet(buttons, button);
+	if (autoSendState) sendState();
 }
 void Joystick_::releaseButton(uint8_t button)
 {
 	bitClear(buttons, button);
+	if (autoSendState) sendState();
 }
 
 void Joystick_::setThrottle(uint8_t value)
 {
 	throttle = value;
+	if (autoSendState) sendState();
 }
 void Joystick_::setRudder(uint8_t value)
 {
 	rudder = value;
+	if (autoSendState) sendState();
 }
 
 void Joystick_::setXAxis(int8_t value)
 {
 	xAxis = value;
+	if (autoSendState) sendState();
 }
 void Joystick_::setYAxis(int8_t value)
 {
 	yAxis = value;
+	if (autoSendState) sendState();
 }
 void Joystick_::setZAxis(int8_t value)
 {
 	zAxis = value;
+	if (autoSendState) sendState();
 }
 
 void Joystick_::setXAxisRotation(int16_t value)
 {
 	xAxisRotation = value;
+	if (autoSendState) sendState();
 }
 void Joystick_::setYAxisRotation(int16_t value)
 {
 	yAxisRotation = value;
+	if (autoSendState) sendState();
 }
 void Joystick_::setZAxisRotation(int16_t value)
 {
 	zAxisRotation = value;
+	if (autoSendState) sendState();
 }
 
 void Joystick_::setHatSwitch(int8_t hatSwitchIndex, int16_t value)
 {
 	hatSwitch[hatSwitchIndex % 2] = value;
+	if (autoSendState) sendState();
 }
 
 void Joystick_::sendState()
