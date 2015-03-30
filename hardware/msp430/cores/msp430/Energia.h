@@ -14,16 +14,6 @@
 extern "C"{
 #endif
 
-
-#ifndef PSTR
-typedef char * PSTR;
-#endif
-#define PROGMEM
-#define pgm_read_byte(x) (*x)
-#define pgm_read_dword(x) (*x)
-#define strcat_P strcat
-#define strlen_P strlen
-
 #define NOT_A_PORT 0
 #define NOT_A_PIN 0
 #define NOT_ON_TIMER 0

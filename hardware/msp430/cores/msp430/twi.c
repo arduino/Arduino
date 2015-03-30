@@ -204,7 +204,9 @@ void twi_init(void)
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
 
-    P1SEL1 |= BIT6 + BIT7;                  // Pin init
+    //P1SEL1 |= BIT6 + BIT7;                  // Pin init
+    pinMode_int(TWISDA, TWISDA_SET_MODE);
+    pinMode_int(TWISCL, TWISCL_SET_MODE);
 
     //Disable the USCI module and clears the other bits of control register
     UCB0CTLW0 = UCSWRST;
