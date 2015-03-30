@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.MissingResourceException;
 
 import processing.app.helpers.PreferencesMap;
@@ -18,7 +19,7 @@ import processing.app.legacy.PConstants;
 
 public class PreferencesData {
 
-  static final String PREFS_FILE = "preferences.txt";
+  private static final String PREFS_FILE = "preferences.txt";
 
   // data model
 
@@ -29,18 +30,25 @@ public class PreferencesData {
 
 
   static public void init(File file) {
-    if (file != null)
+    if (file != null) {
       preferencesFile = file;
-    else
+    } else {
       preferencesFile = BaseNoGui.getSettingsFile(PREFS_FILE);
+    }
+
+    try {
+      BaseNoGui.getPlatform().fixPrefsFilePermissions(preferencesFile);
+    } catch (Exception e) {
+      //ignore
+    }
 
     // start by loading the defaults, in case something
     // important was deleted from the user prefs
     try {
-      prefs.load(BaseNoGui.getLibStream("preferences.txt"));
+      prefs.load(BaseNoGui.getLibStream(PREFS_FILE));
     } catch (IOException e) {
       BaseNoGui.showError(null, _("Could not read default settings.\n" +
-                                  "You'll need to reinstall Arduino."), e);
+              "You'll need to reinstall Arduino."), e);
     }
 
     // set some runtime constants (not saved on preferences file)
@@ -143,6 +151,12 @@ public class PreferencesData {
 
     writer.flush();
     writer.close();
+
+    try {
+      BaseNoGui.getPlatform().fixPrefsFilePermissions(preferencesFile);
+    } catch (Exception e) {
+      //ignore
+    }
   }
 
 
@@ -203,6 +217,13 @@ public class PreferencesData {
   static public PreferencesMap getMap() 
   {
     return new PreferencesMap(prefs);
+  }
+
+  static public void removeAllKeysWithPrefix(String prefix) {
+    Iterator<String> keys = prefs.keySet().iterator();
+    while (keys.hasNext())
+      if (keys.next().startsWith(prefix))
+        keys.remove();
   }
 
   // Decide wether changed preferences will be saved. When value is

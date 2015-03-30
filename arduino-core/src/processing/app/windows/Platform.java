@@ -24,10 +24,8 @@ package processing.app.windows;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.Executor;
-
 import processing.app.PreferencesData;
 import processing.app.debug.TargetPackage;
 import processing.app.legacy.PApplet;
@@ -40,6 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -56,7 +56,7 @@ public class Platform extends processing.app.Platform {
     "\\arduino.exe \"%1\"";
   static final String DOC = "Arduino.Document";
 
-  public void init() {
+  public void init() throws IOException {
     super.init();
 
     checkAssociations();
@@ -350,5 +350,16 @@ public class Platform extends processing.app.Platform {
     } catch (Throwable e) {
       return super.preListAllCandidateDevices();
     }
+  }
+
+  @Override
+  public void fixPrefsFilePermissions(File prefsFile) throws IOException {
+    //noop
+  }
+
+  public List<File> postInstallScripts(File folder) {
+    List<File> scripts = new LinkedList<File>();
+    scripts.add(new File(folder, "post_install.bat"));
+    return scripts;
   }
 }

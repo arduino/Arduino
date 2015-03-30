@@ -73,17 +73,24 @@ public class FileUtils {
   }
 
   public static void recursiveDelete(File file) {
-    if (file == null)
+    if (file == null) {
       return;
+    }
     if (file.isDirectory()) {
-      for (File current : file.listFiles())
+      for (File current : file.listFiles()) {
         recursiveDelete(current);
+      }
     }
     file.delete();
   }
 
   public static File createTempFolder() throws IOException {
-    File tmpFolder = new File(System.getProperty("java.io.tmpdir"), "arduino_" + new Random().nextInt(1000000));
+    return createTempFolderIn(new File(System.getProperty("java.io.tmpdir")));
+  }
+
+  public static File createTempFolderIn(File parent) throws IOException {
+    File tmpFolder = new File(parent, "arduino_"
+                                      + new Random().nextInt(1000000));
     if (!tmpFolder.mkdir()) {
       throw new IOException("Unable to create temp folder " + tmpFolder);
     }
@@ -246,6 +253,15 @@ public class FileUtils {
       if (extensions.isEmpty() || hasExtension(file, extensions))
         result.add(file);
     }
+    return result;
+  }
+
+  public static File newFile(File parent, String... parts) {
+    File result = parent;
+    for (String part : parts) {
+      result = new File(result, part);
+    }
+
     return result;
   }
 
