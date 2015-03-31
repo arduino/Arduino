@@ -27,6 +27,7 @@ import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
 import processing.app.legacy.PApplet;
 
+import java.util.Arrays;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -81,6 +82,8 @@ public class Preferences {
     String originalName;
     String isoCode;
   }
+  String charsets[] = { "UTF-8", "ASCII", "windows-1250", "windows-1251", "windows-1252", "windows-1253", "windows-1254", "windows-1255", "windows-1256", "windows-1257", "CP 866(MS-DOS)", "ISO-8859-5", "KOI8-R", "KOI8-U", "ISO-8859-1", "ISO-8859-2", "ISO-8859-4", "ISO-8859-7", "GB2312", "EUC-KR", "Shift_JIS" };
+  String charsetsISO[] = { "UTF8", "ASCII", "Cp1250", "Cp1251", "Cp1252", "Cp1253", "Cp1254", "Cp1255", "Cp1256", "Cp1257", "Cp866", "ISO8859_5", "KOI8_R", "KOI8_U", "ISO8859_1", "ISO8859_2", "ISO8859_4", "ISO8859_7", "EUC_CN", "EUC_KR", "SJIS" };
 
   Language languages[] = {
       new Language(_("System Default"), "", ""),
@@ -212,6 +215,7 @@ public class Preferences {
   JCheckBox updateExtensionBox;
   JCheckBox autoAssociateBox;
   JComboBox comboLanguage;
+  JComboBox comboCharset;
   JCheckBox saveVerifyUploadBox;
   JTextField proxyHTTPServer;
   JTextField proxyHTTPPort;
@@ -322,7 +326,26 @@ public class Preferences {
     box.setBounds(left, top, d.width, d.height);
     right = Math.max(right, left + d.width);
     top += d.height + GUI_BETWEEN;
-
+    
+    // Code out charset [    ]
+    
+    box = Box.createHorizontalBox();
+    label = new JLabel(_("Code out Charset: "));
+    box.add(label);
+    comboCharset = new JComboBox(charsets);
+    String charset = PreferencesData.get("preproc.charset");
+    if (charset == "") {
+      charset = "UTF8";
+    }
+    comboCharset.setSelectedIndex(Arrays.asList(charsetsISO).indexOf(charset));
+    box.add(comboCharset);
+    pane.add(box);
+    d = box.getPreferredSize();
+    box.setForeground(Color.gray);
+    box.setBounds(left, top, d.width, d.height);
+    right = Math.max(right, left + d.width);
+    top += d.height + GUI_BETWEEN;
+    
     // Editor font size [    ]
 
     box = Box.createHorizontalBox();
@@ -730,7 +753,10 @@ public class Preferences {
     // adds the selected language to the preferences file
     Language newLanguage = (Language) comboLanguage.getSelectedItem();
     PreferencesData.set("editor.languages.current", newLanguage.isoCode);
-
+    
+    int posc = Arrays.asList(charsets).indexOf(comboCharset.getSelectedItem().toString());
+    PreferencesData.set("preproc.charset", (String)Arrays.asList(this.charsetsISO).get(posc));
+    
     Preferences.set("proxy.http.server", proxyHTTPServer.getText());
     try {
       Preferences.set("proxy.http.port", Integer.valueOf(proxyHTTPPort.getText()).toString());
