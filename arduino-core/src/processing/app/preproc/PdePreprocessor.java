@@ -89,9 +89,17 @@ public class PdePreprocessor {
     program = scrubComments(program);
     // If there are errors, an exception is thrown and this fxn exits.
 
-    if (PreferencesData.getBoolean("preproc.substitute_unicode")) {
+    String charset = PreferencesData.get("preproc.charset");
+    if (charset == "") {
+      charset = "UTF8";
+    }
+    if (charset != "UTF8") {
+      program = reencodeProgram(program, charset);
+    }
+    if ((PreferencesData.getBoolean("preproc.substitute_unicode")) && (charset == "UTF8")) {
       program = substituteUnicode(program);
     }
+
 
     //String importRegexp = "(?:^|\\s|;)(import\\s+)(\\S+)(\\s*;)";
     String importRegexp = "^\\s*#include\\s*[<\"](\\S+)[\">]";
@@ -119,6 +127,16 @@ public class PdePreprocessor {
     this.program = program;
 
     return headerCount + prototypeCount;
+  }
+  
+  static String reencodeProgram(String program, String charset)
+  {
+    try
+    {
+      program = new String(program.getBytes(charset));
+    }
+    catch (UnsupportedEncodingException e) {}
+    return program;
   }
 
 
