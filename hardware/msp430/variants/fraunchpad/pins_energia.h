@@ -45,6 +45,9 @@ static const uint8_t TWISDA  = 11;  /* P1.6 */
 static const uint8_t TWISCL  = 12;  /* P1.7 */
 #define TWISDA_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
 #define TWISCL_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
+#define SPISCK_SET_MODE  (PORT_SELECTION1)
+#define SPIMOSI_SET_MODE (PORT_SELECTION1)
+#define SPIMISO_SET_MODE (PORT_SELECTION1)
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_A0__)

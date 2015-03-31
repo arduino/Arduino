@@ -17,27 +17,3 @@
 
 SPIClass SPI;
 
-void SPIClass::begin()
-{
-    spi_initialize();
-}
-
-void SPIClass::end()
-{
-    spi_disable();
-}
-
-void SPIClass::setBitOrder(uint8_t bitOrder)
-{
-    spi_set_bitorder(bitOrder);
-}
-
-void SPIClass::setDataMode(uint8_t mode)
-{
-    spi_set_datamode(mode);
-}
-
-void SPIClass::setClockDivider(uint8_t rate)
-{
-    spi_set_divisor(rate);
-}
