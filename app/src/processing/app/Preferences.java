@@ -757,7 +757,7 @@ public class Preferences {
     PreferencesData.set("editor.languages.current", newLanguage.isoCode);
     
     int posc = Arrays.asList(charsets).indexOf(comboCharset.getSelectedItem().toString());
-    PreferencesData.set("preproc.charset", (String)Arrays.asList(this.charsetsISO).get(posc));
+    PreferencesData.set("preproc.charset", (String)Arrays.asList(charsetsISO).get(posc));
 
     Preferences.set("proxy.http.server", proxyHTTPServer.getText());
     try {
