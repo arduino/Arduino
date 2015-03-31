@@ -209,6 +209,9 @@ export.delete_target_folder = true
 # may be useful when attempting to debug the preprocessor
 preproc.save_build_files=false
 
+# code out chraset
+preproc.charset=UTF8
+
 # allows various preprocessor features to be toggled 
 # in case they are causing problems
 
