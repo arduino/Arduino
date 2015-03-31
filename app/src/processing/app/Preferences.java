@@ -27,6 +27,7 @@ import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
 import processing.app.legacy.PApplet;
 
+import java.util.Arrays;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
