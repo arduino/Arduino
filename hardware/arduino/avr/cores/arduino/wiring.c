@@ -322,4 +322,8 @@ void init()
 #elif defined(UCSR0B)
 	UCSR0B = 0;
 #endif
+
+  // this line is for backwards compatibility with legacy examples
+  // that expect this to have been done in SPI.begin() prior to PR2659
+  digitalWrite(SS, HIGH);  
 }
