@@ -31,19 +31,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 The latest version of this library can always be found at
 https://github.com/BlueVia/Official-Arduino
 */
-#include "GSM3SoftSerial.h"
-#include "GSM3IO.h"
-#include <avr/interrupt.h>
-#include <avr/pgmspace.h>
-#include "pins_arduino.h"
+#include <GSM3SoftSerial.h>
+#include <GSM3IO.h>
+#include <pins_arduino.h>
 #include <HardwareSerial.h>
 #include <Arduino.h>
+
+#ifndef __ARDUINO_X86__
+#include <avr/interrupt.h>
+#include <avr/pgmspace.h>
+#endif
 
 #define __XON__ 0x11
 #define __XOFF__ 0x13
 
 #define _GSMSOFTSERIALFLAGS_ESCAPED_ 0x01
 #define _GSMSOFTSERIALFLAGS_SENTXOFF_ 0x02
+
 
 //
 // Lookup table
@@ -124,6 +128,8 @@ static const DELAY_TABLE PROGMEM table[] =
 
 const int XMIT_START_ADJUSTMENT = 6;
 
+#elif __ARDUINO_X86__
+
 #else
 
 #error This version of GSM3SoftSerial supports only 20, 16 and 8MHz processors
@@ -131,6 +137,7 @@ const int XMIT_START_ADJUSTMENT = 6;
 #endif
 
 GSM3SoftSerial* GSM3SoftSerial::_activeObject=0;
+
 
 GSM3SoftSerial::GSM3SoftSerial():
 	_rx_delay_centering(0),
@@ -147,6 +154,9 @@ GSM3SoftSerial::GSM3SoftSerial():
 
 int GSM3SoftSerial::begin(long speed)
 {
+#ifdef __ARDUINO_X86__
+	Serial1.begin(9600);
+#else
   _rx_delay_centering = _rx_delay_intrabit = _rx_delay_stopbit = _tx_delay = 0;
 
   for (unsigned i=0; i<sizeof(table)/sizeof(table[0]); ++i)
@@ -171,7 +181,7 @@ int GSM3SoftSerial::begin(long speed)
     }
     tunedDelay(_tx_delay); // if we were low this establishes the end
   }
-  
+#endif
   _activeObject=this;
 
 }
@@ -183,8 +193,10 @@ void GSM3SoftSerial::close()
 
 size_t GSM3SoftSerial::write(uint8_t c)
 {
+#ifndef __ARDUINO_X86__
 	if (_tx_delay == 0)
 		return 0;
+#endif
 
 	// Characters to be escaped under XON/XOFF control with Quectel
 	if(c==0x11)
@@ -210,6 +222,9 @@ size_t GSM3SoftSerial::write(uint8_t c)
 
 size_t GSM3SoftSerial::finalWrite(uint8_t c)
 {
+#ifdef __ARDUINO_X86__
+	Serial1.write(c);
+#else
 	
 	uint8_t oldSREG = SREG;
 	cli();  // turn off interrupts for a clean txmit
@@ -232,13 +247,14 @@ size_t GSM3SoftSerial::finalWrite(uint8_t c)
 	
 	SREG = oldSREG; // turn interrupts back on
 	tunedDelay(_tx_delay);
-				
+#endif				
 	return 1;
+
 }
 
 /*inline*/ void GSM3SoftSerial::tunedDelay(uint16_t delay) { 
   uint8_t tmp=0;
-
+#ifndef __ARDUINO_X86__
   asm volatile("sbiw    %0, 0x01 \n\t"
     "ldi %1, 0xFF \n\t"
     "cpi %A0, 0xFF \n\t"
@@ -247,35 +263,42 @@ size_t GSM3SoftSerial::finalWrite(uint8_t c)
     : "+r" (delay), "+a" (tmp)
     : "0" (delay)
     );
+#endif
 }
 
 void GSM3SoftSerial::tx_pin_write(uint8_t pin_state)
 {
+#ifndef __ARDUINO_X86__
   // Direct port manipulation is faster than digitalWrite/Read
   if (pin_state == LOW)
     *_transmitPortRegister &= ~_transmitBitMask;
   else
     *_transmitPortRegister |= _transmitBitMask;
+#endif
 }
 
 void GSM3SoftSerial::setTX()
 {
+#ifndef __ARDUINO_X86__
   pinMode(__TXPIN__, OUTPUT);
   digitalWrite(__TXPIN__, HIGH);
   // For digital port direct manipulation
   _transmitBitMask = digitalPinToBitMask(__TXPIN__);
   uint8_t port = digitalPinToPort(__TXPIN__);
   _transmitPortRegister = portOutputRegister(port);
+#endif
 }
 
 void GSM3SoftSerial::setRX()
 {
+#ifndef __ARDUINO_X86__
   pinMode(__RXPIN__, INPUT);
   digitalWrite(__RXPIN__, HIGH);  // pullup for normal logic!
   // For digital port direct manipulation
   _receiveBitMask = digitalPinToBitMask(__RXPIN__);
   uint8_t port = digitalPinToPort(__RXPIN__);
   _receivePortRegister = portInputRegister(port);
+#endif
 
 #ifdef  __AVR_ATmega32U4__
 //#define __RXINT__ 1
@@ -293,14 +316,20 @@ void GSM3SoftSerial::handle_interrupt()
 
 uint8_t GSM3SoftSerial::rx_pin_read()
 {
+#ifndef __ARDUINO_X86__
   // Digital port manipulation
-  return *_receivePortRegister & _receiveBitMask;
+	return *_receivePortRegister & _receiveBitMask;
+#else
+	return 0;
+#endif
 }
 
 void GSM3SoftSerial::recv()
 {
 
 #if GCC_VERSION < 40302
+#ifndef __ARDUINO_X86__
+
 // Work-around for avr-gcc 4.3.0 OSX version bug
 // Preserve the registers that the compiler misses
 // (courtesy of Arduino forum user *etracer*)
@@ -314,6 +343,7 @@ void GSM3SoftSerial::recv()
     "push r26 \n\t"
     "push r27 \n\t"
     ::);
+#endif
 #endif  
 
   bool firstByte=true;
@@ -327,6 +357,62 @@ void GSM3SoftSerial::recv()
   int i;
   byte oldTail;
 
+#ifdef __ARDUINO_X86__
+  if (Serial1.available())
+  {
+	do
+	{
+		d=Serial1.read();
+		oldTail=cb.getTail();
+
+		fullbuffer=(cb.availableBytes()<6);
+
+		
+		if(fullbuffer&&(!capturado_fullbuffer))
+			Serial1.write(__XOFF__);
+	
+		// So, we know the buffer is full, and we have sent a XOFF
+		if (fullbuffer) 
+		{
+			capturado_fullbuffer =1;
+			_flags |=_GSMSOFTSERIALFLAGS_SENTXOFF_;
+		}
+		
+		
+		if(keepThisChar(&d))
+		{
+			cb.write(d);
+			if(firstByte)
+			{
+				firstByte=false;
+				thisHead=cb.getTail();
+			}
+		}
+		
+	}while(Serial1.available());
+	// If we find a line feed, we are at the end of a paragraph
+	// check!
+	
+	if (fullbuffer)
+	{
+		// And... go handle it!
+		if(mgr)
+			mgr->manageMsg(thisHead, cb.getTail());
+	}
+	else if(d==10)
+	{
+		// And... go handle it!
+		if(mgr)
+			mgr->manageMsg(thisHead, cb.getTail());
+	}
+	else if (d==32)
+	{
+		// And... go handle it!
+		if(mgr)
+			mgr->manageMsg(thisHead, cb.getTail());
+	}
+  };
+#else
   // If RX line is high, then we don't see any start bit
   // so interrupt is probably not for us
   if (!rx_pin_read())
@@ -430,7 +516,9 @@ void GSM3SoftSerial::recv()
 	}
   }
 
-#if GCC_VERSION < 40302
+#endif
+  #if GCC_VERSION < 40302
+  #ifndef __ARDUINO_X86__
 // Work-around for avr-gcc 4.3.0 OSX version bug
 // Restore the registers that the compiler misses
   asm volatile(
@@ -443,6 +531,7 @@ void GSM3SoftSerial::recv()
     "pop r19 \n\t"
     "pop r18 \n\t"
     ::);
+#endif
 #endif
 }
 
@@ -463,6 +552,10 @@ bool GSM3SoftSerial::keepThisChar(uint8_t* c)
 		_flags |= _GSMSOFTSERIALFLAGS_ESCAPED_;
 		return false;
 	}
+	
+	// Sometimes, modem sends DLE character when a 'w' is the final char of
+	// the buffer, because we send a XOFF at the same time.
+	if(*c==16) *c=0x77;
 	
 	// and these are the escaped codes
 	if(_flags & _GSMSOFTSERIALFLAGS_ESCAPED_)

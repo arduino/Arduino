@@ -169,6 +169,9 @@ class GSM3SoftSerial : public GSM3CircularBufferManager
 		/** Close serial connection
 		 */
 		void close();
+		
+		// For Galileo
+        void checkModemInput(){recv();};
 };
 
 #endif

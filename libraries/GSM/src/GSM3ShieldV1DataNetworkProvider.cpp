@@ -144,6 +144,9 @@ void GSM3ShieldV1DataNetworkProvider::attachGPRSContinue()
 			if(resp)
 			{
 				// AT+QIACT	
+				#ifdef __ARDUINO_X86__
+				delay(1000);
+				#endif
 				theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+QIACT"));
 				theGSM3ShieldV1ModemCore.setCommandCounter(10);
 			}
@@ -291,6 +294,8 @@ int GSM3ShieldV1DataNetworkProvider::inet_aton(const char* aIPAddrString, IPAddr
 {
     // See if we've been given a valid IP address
     const char* p =aIPAddrString;
+	uint8_t theAddr[4];
+	
     while (*p &&
            ( (*p == '.') || (*p >= '0') || (*p <= '9') ))
     {
@@ -315,7 +320,9 @@ int GSM3ShieldV1DataNetworkProvider::inet_aton(const char* aIPAddrString, IPAddr
                 }
                 else
                 {
-                    aResult[segment] = (byte)segmentValue;
+					// This doesn't run on Galileo
+					// aResult[segment] = (byte)segmentValue;
+					theAddr[segment]=(uint8_t)segmentValue;
                     segment++;
                     segmentValue = 0;
                 }
@@ -336,8 +343,11 @@ int GSM3ShieldV1DataNetworkProvider::inet_aton(const char* aIPAddrString, IPAddr
             return 0;
         }
         else
-        {
-            aResult[segment] = (byte)segmentValue;
+        {	
+			// This doesn't run on Galileo
+            //aResult[segment] = (byte)segmentValue;
+			theAddr[segment]=(uint8_t)segmentValue;
+			aResult=theAddr;
             return 1;
         }
     }
