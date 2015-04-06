@@ -38,12 +38,12 @@
 
 
 #if defined(__MSP430_HAS_EUSCI_B0__)
-static const uint8_t SS      = 8;   /* P1.3 */
-static const uint8_t SCK     = 26;  /* P2.2 */
-static const uint8_t MOSI    = 31;  /* P1.6 aka SIMO */
-static const uint8_t MISO    = 32;  /* P1.7 aka SOMI */
-static const uint8_t TWISDA  = 31;  /* P1.6 */
-static const uint8_t TWISCL  = 32;  /* P1.7 */
+static const uint8_t SS      = 8;   /* P3.4 */
+static const uint8_t SCK     = 7;   /* P2.2 */
+static const uint8_t MOSI    = 15;  /* P1.6 aka SIMO */
+static const uint8_t MISO    = 14;  /* P1.7 aka SOMI */
+static const uint8_t TWISDA  = 15;  /* P1.6 */
+static const uint8_t TWISCL  = 14;  /* P1.7 */
 #define TWISDA_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
 #define TWISCL_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
 #define SPISCK_SET_MODE  (PORT_SELECTION1)
@@ -54,8 +54,8 @@ static const uint8_t TWISCL  = 32;  /* P1.7 */
 #if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
 static const uint8_t DEBUG_UARTRXD = 22;  /* Receive  Data (RXD) at P2.1 */
 static const uint8_t DEBUG_UARTTXD = 21;  /* Transmit Data (TXD) at P2.0 */
-static const uint8_t AUX_UARTRXD = 3;  /* Receive  Data (RXD) at P4.5 */
-static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
+static const uint8_t AUX_UARTRXD = 3;     /* Receive  Data (RXD) at P4.5 */
+static const uint8_t AUX_UARTTXD = 4;     /* Transmit Data (TXD) at P4.4 */
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION1 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION1 | OUTPUT)
 #define AUX_UARTRXD_SET_MODE (PORT_SELECTION1 | INPUT)

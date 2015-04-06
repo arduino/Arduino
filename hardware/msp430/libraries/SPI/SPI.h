@@ -32,12 +32,12 @@ public:
 
   // SPI Configuration methods
 
-  static void begin(); // Default
-  static void end();
+  inline static void begin(); // Default
+  inline static void end();
 
-  static void setBitOrder(uint8_t);
-  static void setDataMode(uint8_t);
-  static void setClockDivider(uint8_t);
+  inline static void setBitOrder(uint8_t);
+  inline static void setDataMode(uint8_t);
+  inline static void setClockDivider(uint8_t);
 
   inline static void attachInterrupt();
   inline static void detachInterrupt();
@@ -49,6 +49,31 @@ uint8_t SPIClass::transfer(uint8_t _data) {
     return spi_send(_data);
 }
 
+void SPIClass::begin()
+{
+    spi_initialize();
+}
+
+void SPIClass::end()
+{
+    spi_disable();
+}
+
+void SPIClass::setBitOrder(uint8_t bitOrder)
+{
+    spi_set_bitorder(bitOrder);
+}
+
+void SPIClass::setDataMode(uint8_t mode)
+{
+    spi_set_datamode(mode);
+}
+
+void SPIClass::setClockDivider(uint8_t rate)
+{
+    spi_set_divisor(rate);
+}
+
 void SPIClass::attachInterrupt() {
     /* undocumented in Arduino 1.0 */
 }
@@ -56,5 +81,6 @@ void SPIClass::attachInterrupt() {
 void SPIClass::detachInterrupt() {
     /* undocumented in Arduino 1.0 */
 }
+
 
 #endif
