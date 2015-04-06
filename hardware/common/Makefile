@@ -33,8 +33,12 @@ $(info SDKROOT $(SDKROOT))
 $(info CLOSURE $(CLOSURE))
 $(info MAINSKETCH $(MAINSKETCH))
 
-ifeq ($(BUILD_DRVLIB),false)
-	DRV_LIB := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib/libdriverlib.a
+
+ifeq ($(BUILD_DRVLIB),true)
+export PATH := $(CCROOT)/bin:$(PATH)
+DRV_LIB := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib/yourlibdriverlib.a
+else
+DRV_LIB := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib/libdriverlib.a
 endif
 
 # Use the preprocessor to find the dependencies. What we are really after is what libraries the Sketch depends on
@@ -93,8 +97,9 @@ endef
 ARCH_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/libraries
 ARCH_CORE_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)
 COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/common
-DIRS := $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH) $(COMMON_CORE_DIR) $(ARCH_LIB_PATH)
+DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH)
 INCLUDE_DIRS = $(foreach dir, $(DIRS), ${sort ${dir ${wildcard ${dir}/*/ ${dir}/*/utility/}}})
+INCLUDE_DIRS += $(COMMON_CORE_DIR)
 CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
@@ -115,7 +120,7 @@ LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = no
+CORE_FROM_SOURCE = yes
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
@@ -138,6 +143,7 @@ CORE_COMMON_CPP_SRCS = $(wildcard $(COMMON_CORE_DIR)/*.cpp)
 OBJ += $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(CORE_COMMON_CPP_SRCS))
 endif
 
+
 $(eval $(call compute_dependencies, $(MAINSKETCH) $(EXTRA_SOURCES)))
 $(eval $(call compute_srcs))
 
@@ -151,7 +157,14 @@ all: $(MAINSKETCH).bin
 	$(call size)
 	$(info >>>> Done <<<<)
 
-$(MAINSKETCH).elf: $(OBJ)
+
+driverlib:
+ifeq ($(BUILD_DRVLIB),true)
+	$(MAKE) -C $(ARCH_CORE_PATH)/driverlib clean
+	$(MAKE) -C $(ARCH_CORE_PATH)/driverlib
+endif
+
+$(MAINSKETCH).elf: driverlib $(OBJ)
 	@echo armlink $(OBJ)
 	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
 
