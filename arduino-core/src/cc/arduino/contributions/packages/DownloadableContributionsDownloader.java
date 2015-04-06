@@ -57,9 +57,13 @@ public class DownloadableContributionsDownloader {
     // Ensure the existence of staging folder
     stagingFolder.mkdirs();
 
-    if (!alreadyDownloadedFileViable(outputFile, contribution)) {
-      download(url, outputFile, progress, statusText);
+    if (fileAlreadyDownloaded(outputFile, contribution)) {
+      contribution.setDownloaded(true);
+      contribution.setDownloadedFile(outputFile);
+      return outputFile;
     }
+
+    download(url, outputFile, progress, statusText);
 
     // Test checksum
     progress.setStatus(_("Verifying archive integrity..."));
@@ -82,10 +86,14 @@ public class DownloadableContributionsDownloader {
     return FileHash.hash(outputFile, algo).equals(checksum);
   }
 
-  private boolean alreadyDownloadedFileViable
+  private boolean fileAlreadyDownloaded
       (File outputFile,
        DownloadableContribution contribution) throws Exception {
     if (!outputFile.isFile()) {
+      return false;
+    }
+
+    if (outputFile.length() != contribution.getSize()) {
       return false;
     }
 
