@@ -432,7 +432,7 @@ public class Compiler implements MessageConsumer {
     }
 
     baseCommandLinker.add(runtimeLibraryName);
-    if(arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432"){
+    if(arch == "lm4f" || arch == "cc3200"){
       baseCommandLinker.add("-L" + buildPath);
       if(!Preferences.getBoolean("build.drvlib")) {
     	  String driverlib = corePath + File.separator + "driverlib" + File.separator + "libdriverlib.a";
