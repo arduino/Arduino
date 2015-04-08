@@ -64,6 +64,37 @@ public:
 };
 extern Serial_ SerialUSB;
 
+
+//Gurbrinder: Midi Interface
+//================================================================================
+//================================================================================
+//	MIDI USB class 
+
+typedef struct 
+{
+	uint8_t header;
+	uint8_t byte1;
+	uint8_t byte2;
+	uint8_t byte3;
+}midiEventPacket_t;
+
+class MIDI_
+{
+private:
+	RingBuffer *_midi_rx_buffer;
+public:
+	void begin();
+
+	virtual uint32_t available(void);
+	virtual void accept(void);
+	virtual midiEventPacket_t read(void);
+	virtual void flush(void);
+	virtual void sendMIDI(midiEventPacket_t event);
+	virtual size_t write(const uint8_t *buffer, size_t size);
+	operator bool();
+};
+extern MIDI_ MidiUSB;
+
 //================================================================================
 //================================================================================
 //	Mouse
@@ -195,6 +226,15 @@ int		CDC_GetInterface(uint8_t* interfaceNum);
 int		CDC_GetOtherInterface(uint8_t* interfaceNum);
 int		CDC_GetDescriptor(int i);
 bool	CDC_Setup(Setup& setup);
+
+//================================================================================
+//================================================================================
+//	MIDI 'Driver'
+
+int		MIDI_GetInterface(uint8_t* interfaceNum);
+int		MIDI_GetOtherInterface(uint8_t* interfaceNum);
+int		MIDI_GetDescriptor(int i);
+bool	MIDI_Setup(Setup& setup);
 
 //================================================================================
 //================================================================================
