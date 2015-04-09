@@ -57,23 +57,47 @@ public class DownloadableContributionsDownloader {
     // Ensure the existence of staging folder
     stagingFolder.mkdirs();
 
-    // Need to download or resume downloading?
-    if (!outputFile.isFile() || (outputFile.length() < contribution.getSize())) {
-      download(url, outputFile, progress, statusText);
+    if (fileAlreadyDownloaded(outputFile, contribution)) {
+      contribution.setDownloaded(true);
+      contribution.setDownloadedFile(outputFile);
+      return outputFile;
     }
+
+    download(url, outputFile, progress, statusText);
 
     // Test checksum
     progress.setStatus(_("Verifying archive integrity..."));
     onProgress(progress);
-    String checksum = contribution.getChecksum();
-    String algo = checksum.split(":")[0];
-    if (!FileHash.hash(outputFile, algo).equals(checksum)) {
+    if (checksumMatches(outputFile, contribution)) {
       throw new Exception(_("CRC doesn't match. File is corrupted."));
     }
 
     contribution.setDownloaded(true);
     contribution.setDownloadedFile(outputFile);
     return outputFile;
+  }
+
+  private boolean checksumMatches(File outputFile,
+                                  DownloadableContribution contribution)
+      throws Exception {
+    final String checksum = contribution.getChecksum();
+    final String algo = checksum.split(":")[0];
+
+    return FileHash.hash(outputFile, algo).equals(checksum);
+  }
+
+  private boolean fileAlreadyDownloaded
+      (File outputFile,
+       DownloadableContribution contribution) throws Exception {
+    if (!outputFile.isFile()) {
+      return false;
+    }
+
+    if (outputFile.length() != contribution.getSize()) {
+      return false;
+    }
+
+    return checksumMatches(outputFile, contribution);
   }
 
   public void download(URL url, File tmpFile, final Progress progress,
