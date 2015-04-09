@@ -63,8 +63,10 @@ extern "C" {
 /* UART function table pointer */
 extern const UART_FxnTable UARTCC3200_fxnTable;
 
-/*
- *  ======== UARTCC3200_FxnSet ========
+/*!
+ *  @brief Complement set of read functions to be used by the UART ISR and
+ *         UARTCC3200_read(). Internal use only.
+ *
  *  These functions should not be used by the user and are solely intended for
  *  the UARTCC3200 driver.
  *  The UARTCC3200_FxnSet is a pair of complement functions that are design to
@@ -150,7 +152,6 @@ typedef struct UARTCC3200_Object {
         UART_DataMode    writeDataMode:1;  /* Type of data being written */
         UART_ReturnMode  readReturnMode:1; /* Receive return mode */
         UART_Echo        readEcho:1;       /* Echo received data back */
-        bool             writeCR:1;        /* Write a return character */
         /*
          * Flag to determine if a timeout has occurred when the user called
          * UART_read(). This flag is set by the timeoutClk clock object.

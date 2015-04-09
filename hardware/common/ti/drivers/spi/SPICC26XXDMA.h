@@ -421,22 +421,20 @@ extern "C" {
 #include <ti/sysbios/knl/Semaphore.h>
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
-/*! Return code when SPI_control() was successful. */
-#define SPICC26XXDMA_CMD_SUCCESS              0
-/*! Return code when a SPI command or function is undefined/not-implemented. */
-#define SPICC26XXDMA_CMD_UNDEFINED            -1
-/*! Return code when SPI_control() was unsuccessful. */
-#define SPICC26XXDMA_CMD_NO_SUCCESS           -2
-
 /*! Enable RETURN_PARTIAL, used as cmd to SPI_control() */
-#define SPICC26XXDMA_RETURN_PARTIAL_ENABLE    0
+#define SPICC26XXDMA_RETURN_PARTIAL_ENABLE    SPI_CMD_RESERVED + 0
 /*! Disable RETURN_PARTIAL, used as cmd to SPI_control() */
-#define SPICC26XXDMA_RETURN_PARTIAL_DISABLE   1
+#define SPICC26XXDMA_RETURN_PARTIAL_DISABLE   SPI_CMD_RESERVED + 1
 /*! Re-configure chip select pin, used as cmd to SPI_control() */
-#define SPICC26XXDMA_SET_CSN_PIN              2
+#define SPICC26XXDMA_SET_CSN_PIN              SPI_CMD_RESERVED + 2
 /*! Enable/disable CSN wakeup on chip select assertion, used as cmd to SPI_control() */
-#define SPICC26XXDMA_SET_CSN_WAKEUP           3
+#define SPICC26XXDMA_SET_CSN_WAKEUP           SPI_CMD_RESERVED + 3
 
+/* FOR BACKWARDS COMPATIBILITY */
+#define SPICC26XXDMA_CMD_SUCCESS    SPI_STATUS_SUCCESS
+#define SPICC26XXDMA_CMD_NO_SUCCESS SPI_STATUS_ERROR
+#define SPICC26XXDMA_CMD_UNDEFINED  SPI_STATUS_UNDEFINEDCMD
+/* END */
 
 /*!
  *  \internal

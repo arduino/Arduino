@@ -157,7 +157,7 @@ void Power_enablePolicy(void);
  *
  *  @return A bitmask of the currently declared constraints.
  *
- *  @sa     Power_setContraint
+ *  @sa     Power_setConstraint
  */
 unsigned int Power_getConstraintMask(void);
 
@@ -339,7 +339,7 @@ unsigned int Power_registerNotify(Power_NotifyObj *pNotifyObj,
  *
  *  @param  constraintId      constraint id
  *
- *  @sa     Power_setContraint
+ *  @sa     Power_setConstraint
  */
 void Power_releaseConstraint(unsigned int constraintId);
 
@@ -376,7 +376,7 @@ void Power_releaseDependency(unsigned int resourceId);
  *
  *  @param  constraintId      constraint id
  *
- *  @sa     Power_releaseContraint
+ *  @sa     Power_releaseConstraint
  */
 void Power_setConstraint(unsigned int constraintId);
 

@@ -55,13 +55,10 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <ti/drivers/I2C.h>
 #include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
-
-#include <ti/drivers/I2C.h>
-
-/* Return codes for I2C_control() */
-#define I2CMSP432_CMD_UNDEFINED     -1
+#include <ti/drivers/Power.h>
 
 /* I2C function table pointer */
 extern const I2C_FxnTable I2CMSP432_fxnTable;
@@ -78,8 +75,8 @@ extern const I2C_FxnTable I2CMSP432_fxnTable;
  *      {
  *          .baseAddr = EUSCI_B0_BASE,
  *          .intNum = INT_EUSCIB0,
- *          .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK,
- *          .intPriority = ~0
+ *          .intPriority = ~0,
+ *          .clockSource = EUSCI_B_I2C_CLOCKSOURCE_SMCLK
  *      }
  *  };
  *  @endcode
@@ -102,12 +99,12 @@ typedef struct I2CMSP432_Object {
 
     HwiP_Handle       hwiHandle;
 
-    I2C_TransferMode  transferMode;         /* Blocking or Callback mode */
+    I2C_Transaction  *currentTransaction;   /* Ptr to current I2C transaction */
     I2C_CallbackFxn   transferCallbackFxn;  /* Callback function pointer */
 
-    volatile I2C_Mode mode;                 /* Stores the I2C state */
-
-    I2C_Transaction  *currentTransaction;   /* Ptr to current I2C transaction */
+    /* I2C transaction pointers for I2C_MODE_CALLBACK */
+    I2C_Transaction  *headPtr;              /* Head ptr for queued transactions */
+    I2C_Transaction  *tailPtr;              /* Tail ptr for queued transactions */
 
     uint8_t          *writeBufIdx;          /* Internal inc. writeBuf index */
     size_t            writeCountIdx;        /* Internal dec. writeCounter */
@@ -115,10 +112,12 @@ typedef struct I2CMSP432_Object {
     uint8_t          *readBufIdx;           /* Internal inc. readBuf index */
     size_t            readCountIdx;         /* Internal dec. readCounter */
 
-    /* I2C transaction pointers for I2C_MODE_CALLBACK */
-    I2C_Transaction  *headPtr;              /* Head ptr for queued transactions */
-    I2C_Transaction  *tailPtr;              /* Tail ptr for queued transactions */
+    Power_NotifyObj   perfChangeNotify;
+    uint32_t          perfConstraintMask;
 
+    volatile I2C_Mode mode;                 /* Stores the I2C state */
+    I2C_TransferMode  transferMode;         /* Blocking or Callback mode */
+    I2C_BitRate       bitRate;              /* SPI bit rate in Hz */
     bool              isOpen;               /* To determine if the SPI is open */
 } I2CMSP432_Object;
 

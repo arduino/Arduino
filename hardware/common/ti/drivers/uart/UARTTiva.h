@@ -64,6 +64,32 @@ extern "C" {
 extern const UART_FxnTable UARTTiva_fxnTable;
 
 /*!
+ *  @brief Complement set of read functions to be used by the UART ISR and
+ *         UARTTiva_read(). Internal use only.
+ *
+ *  These functions should not be used by the user and are solely intended for
+ *  the UARTTiva driver.
+ *  The UARTTiva_FxnSet is a pair of complement functions that are design to
+ *  operate with one another in a task context and in an ISR context. The
+ *  readTaskFxn is called by UARTTiva_read() to drain a circular buffer,
+ *  whereas the readIsrFxn is used by the UARTTiva_hwiIntFxn to fill up the
+ *  circular buffer.
+ *
+ *  readTaskFxn:    Function called by UART read
+ *                  These variables are set and avilalable for use to the
+ *                  readTaskFxn.
+ *                  object->readBuf = buffer; //Pointer to a user buffer
+ *                  object->readSize = size;  //Desired no. of bytes to read
+ *                  object->readCount = size; //Remaining no. of bytes to read
+ *
+ *  readIsrFxn:     The required ISR counterpart to readTaskFxn
+ */
+typedef struct UARTTiva_FxnSet {
+    bool (*readIsrFxn)  (UART_Handle handle);
+    int  (*readTaskFxn) (UART_Handle handle);
+} UARTTiva_FxnSet;
+
+/*!
  *  @brief      UARTTiva Hardware attributes
  *
  *  These fields are used by driverlib APIs and therefore must be populated by
@@ -74,7 +100,6 @@ extern const UART_FxnTable UARTTiva_fxnTable;
  *
  *  A sample structure is shown below:
  *  @code
- *  UARTTiva_Object uartTivaObjects[2];
  *  unsigned char uartTivaRingBuffer[2][32];
  *
  *  const UARTTiva_HWAttrs uartTivaHWAttrs[] = {
@@ -94,21 +119,22 @@ extern const UART_FxnTable UARTTiva_fxnTable;
  *          .ringBufPtr  = uartTivaRingBuffer[1],
  *          .ringBufSize = sizeof(uartTivaRingBuffer[1])
  *      }
+ *  };
  *  @endcode
  */
 typedef struct UARTTiva_HWAttrs {
     /*! UART Peripheral's base address */
-    unsigned int baseAddr;
+    unsigned int    baseAddr;
     /*! UART Peripheral's interrupt vector */
-    unsigned int intNum;
+    unsigned int    intNum;
     /*! UART Peripheral's interrupt priority */
-    unsigned int intPriority;
-    /*! Flow control setting provided by driverlib */
-    uint32_t     flowControl;
+    unsigned int    intPriority;
+    /*! Hardware flow control setting defined by driverlib */
+    uint32_t        flowControl;
     /*! Pointer to a application ring buffer */
-    void        *ringBufPtr;
+    unsigned char  *ringBufPtr;
     /*! Size of ringBufPtr */
-    size_t       ringBufSize;
+    size_t          ringBufSize;
 } UARTTiva_HWAttrs;
 
 /*!
@@ -126,37 +152,49 @@ typedef struct UARTTiva_Object {
         UART_DataMode    writeDataMode:1;  /* Type of data being written */
         UART_ReturnMode  readReturnMode:1; /* Receive return mode */
         UART_Echo        readEcho:1;       /* Echo received data back */
-        bool             writeCR:1;        /* Write a return character */
+        /*
+         * Flag to determine if a timeout has occurred when the user called
+         * UART_read(). This flag is set by the timeoutClk clock object.
+         */
         bool             bufTimeout:1;
+        /*
+         * Flag to determine when an ISR needs to perform a callback; in both
+         * UART_MODE_BLOCKING or UART_MODE_CALLBACK
+         */
         bool             callCallback:1;
+        /*
+         * Flag to determine if the ISR is in control draining the ring buffer
+         * when in UART_MODE_CALLBACK
+         */
+        bool             drainByISR:1;
+        /* Flag to keep the state of the read ring buffer */
+        bool             rxEnabled:1;
     } state;
 
-    union {
-        struct {
-            Clock_Struct     timeout;      /* Clock object to for timeouts */
-            Semaphore_Struct readSem;      /* UART read semaphore */
-            Semaphore_Struct writeSem;     /* UART write semaphore*/
-            unsigned int     readTimeout;  /* Timeout for read semaphore */
-            unsigned int     writeTimeout; /* Timeout for write semaphore */
-        } blocking;
-        struct {
-            bool             inIsrControl;
-        } callback;
-    };
-
-    UART_Callback        readCallback;     /* Pointer to read callback */
-    UART_Callback        writeCallback;    /* Pointer to write callback */
+    Clock_Struct         timeoutClk;       /* Clock object to for timeouts */
+    uint32_t             baudRate;         /* Baud rate for UART */
+    UART_LEN             dataLength;       /* Data length for UART */
+    UART_STOP            stopBits;         /* Stop bits for UART */
+    UART_PAR             parityType;       /* Parity bit type for UART */
 
     /* UART read variables */
-    RingBuf_Object       ringBuffer;
+    RingBuf_Object       ringBuffer;       /* local circular buffer object */
+    /* A complement pair of read functions for both the ISR and UART_read() */
+    UARTTiva_FxnSet      readFxns;
     unsigned char       *readBuf;          /* Buffer data pointer */
     size_t               readSize;         /* Desired number of bytes to read */
     size_t               readCount;        /* Number of bytes left to read */
+    Semaphore_Struct     readSem;          /* UART read semaphore */
+    unsigned int         readTimeout;      /* Timeout for read semaphore */
+    UART_Callback        readCallback;     /* Pointer to read callback */
 
     /* UART write variables */
     const unsigned char *writeBuf;         /* Buffer data pointer */
     size_t               writeSize;        /* Desired number of bytes to write*/
     size_t               writeCount;       /* Number of bytes left to write */
+    Semaphore_Struct     writeSem;         /* UART write semaphore*/
+    unsigned int         writeTimeout;     /* Timeout for write semaphore */
+    UART_Callback        writeCallback;    /* Pointer to write callback */
 
     ti_sysbios_family_arm_m3_Hwi_Struct hwi; /* Hwi object */
 } UARTTiva_Object, *UARTTiva_Handle;

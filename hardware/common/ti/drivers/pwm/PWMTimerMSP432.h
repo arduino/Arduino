@@ -51,15 +51,13 @@
  * This driver manages each output as an independent PWM instance.  However
  * since a single period and prescalar are used for all Timer outputs, there are
  * limitations in place to ensure proper operation:
- *   1.  The peripheral prescalar will be set according to the period of the
- *       first PWM instance opened.  Any subsequent outputs will fail to open if
- *       a greater prescalar is required to generate the PWM period.
- *   2.  The PWM period is set to the period of the first instance opened.
- *       Opening a second output will fail if the period used is not the same
- *       as what was set by the first output.
+ *   1.  The PWM period and prescalar are calculated and set based on the first
+ *       instance opened. Opening a second instance will fail if the period
+ *       is not the same as what was set by the first instance.
  *
  * The timer is automatically configured in count-up mode using the SMCLK clock
- * as the source.
+ * as the source.  In PWM mode, the timers capture/compare register 0 is used
+ * as the period register and cannot be used to generate a PWM output.
  *
  * The period and duty registers are 16 bits wide, thus a prescalar is used to
  * divide the input clock and allow for larger periods.  The maximum period
@@ -102,10 +100,7 @@ extern "C" {
 #define PWMTimerMSP432_NUM_TIMERS       4
 
 /* PWM_control commands */
-#define PWMTimerMSP432_CHANGE_PERIOD    1
-
-/* Return codes for PWM_control() */
-#define PWMTimerMSP432_CMD_UNDEFINED   -1
+#define PWMTimerMSP432_CHANGE_PERIOD    PWM_CMD_RESERVED + 0
 
 /* PWM function table pointer */
 extern const PWM_FxnTable PWMTimerMSP432_fxnTable;
@@ -141,7 +136,7 @@ typedef struct PWMTimerMSP432_Status {
     uint16_t period;
     uint8_t  prescalar;
     uint8_t  cyclesPerMicroSec;
-    uint8_t  activeOutputs;
+    uint8_t  activeOutputsMask;
 } PWMTimerMSP432_Status;
 
 /*!
@@ -150,10 +145,10 @@ typedef struct PWMTimerMSP432_Status {
  *  The application must not access any member variables of this structure!
  */
 typedef struct PWMTimerMSP432_Object {
-    PWMTimerMSP432_Status *pwmStatus;
-    uint16_t               pwmDuty;
-    uint8_t                pwmCompareRegisterBit;
+    PWMTimerMSP432_Status *pwmTimerStatus;
+    uint8_t                pwmCompareOutputBit;
     uint8_t                dutyMode;
+    bool                   isOpen;
 } PWMTimerMSP432_Object;
 
 #ifdef __cplusplus

@@ -7,7 +7,7 @@ __TI_STACK_SIZE = __STACK_SIZE;
 
 INPUT(
     configPkg/package/cfg/energia_pm4fg.om4fg
-    src/platform/Board_init.obj
+    src/emt432LP/Board_init.obj
     ti/runtime/wiring/msp432/lib/ti.runtime.wiring.msp432.lib
     ti/drivers/lib/drivers_MSP432P401R.am4fg
     ti/drivers/ports/tirtos/lib/tirtosport.am4fg
@@ -30,8 +30,7 @@ INCLUDE "../../MSP432P401R.lds"
 
 SECTIONS {
         .bootVecs (DSECT) : {*(.bootVecs)} 
-    xdc.meta (COPY) : {KEEP(*(xdc.meta))}  > REGION_TEXT
-    xdc.noload (COPY) : {KEEP(*(xdc.noload))}  > REGION_TEXT
+    xdc.meta (COPY) : {KEEP(*(xdc.meta))}  AT> REGION_TEXT
 
 
     /*
@@ -50,6 +49,7 @@ ti_sysbios_family_arm_m3_Hwi_nvic = 0xe000e000;
 
     __TI_STACK_BASE = __stack;
 }
+
 SECTIONS {
     /* create an empty sections at the end of SRAM and FLASH */
     .empty : { *(.empty) } > SRAM

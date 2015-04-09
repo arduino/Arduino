@@ -74,6 +74,58 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
+/*!
+ * Common EMAC_control command code reservation offset.
+ * EMAC driver implementations should offset command codes with EMAC_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define EMACXYZ_COMMAND0         EMAC_CMD_RESERVED + 0
+ * #define EMACXYZ_COMMAND1         EMAC_CMD_RESERVED + 1
+ * @endcode
+ */
+#define EMAC_CMD_RESERVED            32
+
+/*!
+ * Common EMAC_control status code reservation offset.
+ * EMAC driver implementations should offset status codes with
+ * EMAC_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define EMACXYZ_STATUS_ERROR0    EMAC_STATUS_RESERVED - 0
+ * #define EMACXYZ_STATUS_ERROR1    EMAC_STATUS_RESERVED - 1
+ * #define EMACXYZ_STATUS_ERROR2    EMAC_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define EMAC_STATUS_RESERVED        -32
+
+/*!
+ * \brief   Successful status code returned by EMAC_control().
+ *
+ * EMAC_control() returns EMAC_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define EMAC_STATUS_SUCCESS         0
+
+/*!
+ * \brief   Generic error status code returned by EMAC_control().
+ *
+ * EMAC_control() returns EMAC_STATUS_ERROR if the control code was not executed
+ * successfully.
+ */
+#define EMAC_STATUS_ERROR          -1
+
+/*!
+ * \brief   An error status code returned by EMAC_control() for undefined
+ * command codes.
+ *
+ * EMAC_control() returns EMAC_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define EMAC_STATUS_UNDEFINEDCMD   -2
+
 /* Prototypes of EMAC interface */
 typedef void (*EMAC_InitFxn)(uint32_t);
 typedef bool (*EMAC_isLinkUpFxn)(uint32_t);

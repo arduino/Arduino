@@ -116,6 +116,58 @@ extern "C" {
 #include <stdint.h>
 
 /*!
+ * Common WiFi_control command code reservation offset.
+ * WiFi driver implementations should offset command codes with WiFi_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define WiFiXYZ_COMMAND0         WiFi_CMD_RESERVED + 0
+ * #define WiFiXYZ_COMMAND1         WiFi_CMD_RESERVED + 1
+ * @endcode
+ */
+#define WiFi_CMD_RESERVED            32
+
+/*!
+ * Common WiFi_control status code reservation offset.
+ * WiFi driver implementations should offset status codes with
+ * WiFi_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define WiFiXYZ_STATUS_ERROR0    WiFi_STATUS_RESERVED - 0
+ * #define WiFiXYZ_STATUS_ERROR1    WiFi_STATUS_RESERVED - 1
+ * #define WiFiXYZ_STATUS_ERROR2    WiFi_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define WiFi_STATUS_RESERVED        -32
+
+/*!
+ * \brief   Successful status code returned by WiFi_control().
+ *
+ * WiFi_control() returns WiFi_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define WiFi_STATUS_SUCCESS         0
+
+/*!
+ * \brief   Generic error status code returned by WiFi_control().
+ *
+ * WiFi_control() returns WiFi_STATUS_ERROR if the control code was not executed
+ * successfully.
+ */
+#define WiFi_STATUS_ERROR          -1
+
+/*!
+ * \brief   An error status code returned by WiFi_control() for undefined
+ * command codes.
+ *
+ * WiFi_control() returns WiFi_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define WiFi_STATUS_UNDEFINEDCMD   -2
+
+/*!
  *  @brief  A typedef to a an unsolicited event callback function
  *
  *  This is the definition describing the function that is to be called when

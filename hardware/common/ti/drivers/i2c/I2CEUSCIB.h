@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,9 +82,6 @@ extern "C" {
 #include <ti/drivers/I2C.h>
 
 #include <ti/sysbios/knl/Semaphore.h>
-
-/* Return codes for I2C_control() */
-#define I2CEUSCIB_CMD_UNDEFINED     -1
 
 /* I2C function table pointer */
 extern const I2C_FxnTable I2CEUSCIB_fxnTable;

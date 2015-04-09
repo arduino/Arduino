@@ -112,9 +112,6 @@ extern "C" {
 #include <ti/drivers/Power.h>
 #include <ti/drivers/SPI.h>
 
-/* Return codes for SPI_control() */
-#define SPICC3200DMA_CMD_UNDEFINED    -1
-
 typedef unsigned long SPIBaseAddrType;
 typedef unsigned long SPIDataType;
 

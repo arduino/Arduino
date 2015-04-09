@@ -1594,7 +1594,7 @@ public class Sketch {
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
       String arch = Base.getArch();
-      if(arch != "secret" && arch != "msp432")
+      if(arch != "cc3200emt" && arch != "msp432")
     	size(buildPath, primaryClassName);
       return primaryClassName;
     }
@@ -1685,7 +1685,7 @@ public class Sketch {
         uploader = new DSLiteUploader();
     } else if(Base.getArch() == "c2000"){
     	uploader = new C2000Uploader();
-    } else if(Base.getArch() == "cc3200" || Base.getArch() == "secret"){
+    } else if(Base.getArch() == "cc3200" || Base.getArch() == "cc3200emt"){
     	uploader = new CC3200Uploader();
     }else {
     	uploader = new AvrdudeUploader();

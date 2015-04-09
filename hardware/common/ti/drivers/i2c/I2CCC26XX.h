@@ -300,13 +300,12 @@ extern "C" {
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 #include <ti/sysbios/knl/Semaphore.h>
 
-/*! Return code when command is not defined. Currently in use by I2CCC26XX_control().*/
-#define I2CCC26XX_CMD_UNDEFINED  -1
 
-/*! Success Return Code */
-#define I2CCC26XX_SUCCESS         0
-/*! Error Return Code */
-#define I2CCC26XX_ERROR          -1
+/* FOR BACKWARDS COMPATIBILITY */
+#define I2CCC26XX_SUCCESS        I2C_STATUS_SUCCESS
+#define I2CCC26XX_ERROR          I2C_STATUS_ERROR
+#define I2CCC26XX_CMD_UNDEFINED  I2C_STATUS_UNDEFINEDCMD
+/* END */
 
 /*! I2C Base Address type.*/
 typedef unsigned long   I2CBaseAddrType;
@@ -315,7 +314,6 @@ typedef unsigned long   I2CDataType;
 
 /*! @internal @brief I2C function table pointer */
 extern const I2C_FxnTable I2CCC26XX_fxnTable;
-
 
 /*!
  *  @brief  I2CCC26XX Pin Configuration

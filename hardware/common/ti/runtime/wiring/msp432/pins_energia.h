@@ -43,4 +43,29 @@ static const uint8_t YELLOW_LED = 78; /* Mapped to the other RED LED */
 static const uint8_t PUSH1 = 73;
 static const uint8_t PUSH2 = 74;
 
+static const uint8_t A0 = 30;
+static const uint8_t A1 = 29;
+//static const uint8_t A2 = n/a;
+static const uint8_t A3 = 12;
+static const uint8_t A4 = 33;
+static const uint8_t A5 = 13;
+static const uint8_t A6 = 28;
+static const uint8_t A7 = 8;
+static const uint8_t A8 = 27;
+static const uint8_t A9 = 27;
+static const uint8_t A10 = 6;
+static const uint8_t A11 = 25;
+static const uint8_t A12 = 5;
+static const uint8_t A13 = 24;
+static const uint8_t A14 = 23;
+static const uint8_t A15 = 2;
+static const uint8_t A16 = 59;
+static const uint8_t A17 = 42;
+static const uint8_t A18 = 58;
+static const uint8_t A19 = 57;
+static const uint8_t A20 = 41;
+static const uint8_t A21 = 43;
+static const uint8_t A22 = 69;
+static const uint8_t A23 = 44;
+
 #endif

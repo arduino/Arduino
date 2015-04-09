@@ -141,6 +141,58 @@ extern "C" {
 #include <stddef.h>
 
 /*!
+ * Common I2C_control command code reservation offset.
+ * I2C driver implementations should offset command codes with I2C_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define I2CXYZ_COMMAND0          I2C_CMD_RESERVED + 0
+ * #define I2CXYZ_COMMAND1          I2C_CMD_RESERVED + 1
+ * @endcode
+ */
+#define I2C_CMD_RESERVED             32
+
+/*!
+ * Common I2C_control status code reservation offset.
+ * I2C driver implementations should offset status codes with
+ * I2C_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define I2CXYZ_STATUS_ERROR0     I2C_STATUS_RESERVED - 0
+ * #define I2CXYZ_STATUS_ERROR1     I2C_STATUS_RESERVED - 1
+ * #define I2CXYZ_STATUS_ERROR2     I2C_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define I2C_STATUS_RESERVED         -32
+
+/*!
+ * \brief   Successful status code returned by I2C_control().
+ *
+ * I2C_control() returns I2C_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define I2C_STATUS_SUCCESS          0
+
+/*!
+ * \brief   Generic error status code returned by I2C_control().
+ *
+ * I2C_control() returns I2C_STATUS_ERROR if the control code was not executed
+ * successfully.
+ */
+#define I2C_STATUS_ERROR           -1
+
+/*!
+ * \brief   An error status code returned by I2C_control() for undefined
+ * command codes.
+ *
+ * I2C_control() returns I2C_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define I2C_STATUS_UNDEFINEDCMD   -2
+
+/*!
  *  @brief      A handle that is returned from a I2C_open() call.
  */
 typedef struct I2C_Config      *I2C_Handle;
@@ -162,7 +214,7 @@ typedef struct I2C_Transaction {
     void    *readBuf;     /*!< buffer to which data is to be read into */
     size_t  readCount;    /*!< Number of bytes to be read from the slave */
 
-    uint8_t slaveAddress; /*!< Address of the I2C slave device */
+    unsigned char slaveAddress; /*!< Address of the I2C slave device */
 
     void    *arg;         /*!< argument to be passed to the callback function */
     void    *nextPtr;     /*!< used for queuing in I2C_MODE_CALLBACK mode */

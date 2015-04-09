@@ -99,7 +99,7 @@ typedef struct HwiP_Params {
 /*!
  *  @brief  Function to clear a single interrupt
  *
- *  @param  handle returned from the HwiP_create call
+ *  @param  interruptNum interrupt number to clear
  */
 extern void HwiP_clearInterrupt(int interruptNum);
 
@@ -148,14 +148,14 @@ extern uintptr_t HwiP_disable(void);
 /*!
  *  @brief  Function to disable a single interrupt
  *
- *  @param  handle returned from the HwiP_create call
+ *  @param  interruptNum interrupt number to disable
  */
 extern void HwiP_disableInterrupt(int interruptNum);
 
 /*!
  *  @brief  Function to enable a single interrupt
  *
- *  @param  handle returned from the HwiP_create call
+ *  @param  interruptNum interrupt number to enable
  */
 extern void HwiP_enableInterrupt(int interruptNum);
 

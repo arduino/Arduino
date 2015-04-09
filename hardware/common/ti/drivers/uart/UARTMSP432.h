@@ -54,15 +54,43 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
-#include <ti/drivers/UART.h>
-#include <ti/drivers/uart/RingBuf.h>
 #include <ti/drivers/ports/ClockP.h>
 #include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
+#include <ti/drivers/Power.h>
+#include <ti/drivers/UART.h>
+#include <ti/drivers/uart/RingBuf.h>
 
-/* UARTMSP432 function table pointer */
+/* UART function table pointer */
 extern const UART_FxnTable UARTMSP432_fxnTable;
+
+/*!
+ *  @brief Complement set of read functions to be used by the UART ISR and
+ *         UARTMSP432_read(). Internal use only.
+ *
+ *  These functions should not be used by the user and are solely intended for
+ *  the UARTMSP432 driver.
+ *  The UARTMSP432_FxnSet is a pair of complement functions that are design to
+ *  operate with one another in a task context and in an ISR context. The
+ *  readTaskFxn is called by UARTMSP432_read() to drain a circular buffer,
+ *  whereas the readIsrFxn is used by the UARTMSP432_hwiIntFxn to fill up the
+ *  circular buffer.
+ *
+ *  readTaskFxn:    Function called by UART read
+ *                  These variables are set and available for use to the
+ *                  readTaskFxn.
+ *                  object->readBuf = buffer; //Pointer to a user buffer
+ *                  object->readSize = size;  //Desired no. of bytes to read
+ *                  object->readCount = size; //Remaining no. of bytes to read
+ *
+ *  readIsrFxn:     The required ISR counterpart to readTaskFxn
+ */
+typedef struct UARTMSP432_FxnSet {
+    bool (*readIsrFxn)  (UART_Handle handle);
+    int  (*readTaskFxn) (UART_Handle handle);
+} UARTMSP432_FxnSet;
 
 /*!
  *  @brief      UARTMSP432 Baudrate configuration
@@ -97,7 +125,7 @@ typedef struct UARTMSP432_BaudrateConfig {
     uint8_t   sampling;       /*! Oversampling mode (1: True; 0: False) */
 } UARTMSP432_BaudrateConfig;
 
-/*
+/*!
  *  @brief      UARTMSP432 Hardware attributes
  *
  *  These fields are used by driverlib APIs and therefore must be populated by
@@ -107,7 +135,8 @@ typedef struct UARTMSP432_BaudrateConfig {
  *  A sample structure is shown below:
  *  @code
  *
- *  unsigned char uartMSP432RingBuffer[2][32];
+ *  unsigned char uartMSP432RingBuffer0[32];
+ *  unsigned char uartMSP432RingBuffer1[32];
  *
  *  const UARTMSP432_HWAttrs uartMSP432HWAttrs[MSP_EXP432P401RLP_UARTCOUNT] = {
  *      {
@@ -119,47 +148,49 @@ typedef struct UARTMSP432_BaudrateConfig {
  *          .numBaudrateEntries = sizeof(uartMSP432Baudrates) /
  *                                sizeof(UARTMSP432_BaudrateConfig),
  *          .baudrateLUT = uartMSP432Baudrates,
- *          .ringBufPtr  = uartMSP432RingBuffer[0],
- *          .ringBufSize = sizeof(uartMSP432RingBuffer[0])
+ *          .ringBufPtr  = uartMSP432RingBuffer0,
+ *          .ringBufSize = sizeof(uartMSP432RingBuffer0)
  *      },
  *      {
  *          .baseAddr = EUSCI_A2_BASE,
+ *          .intNum = INT_EUSCIA2,
+ *          .intPriority = ~0,
  *          .clockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK,
  *          .bitOrder = EUSCI_A_UART_LSB_FIRST,
  *          .numBaudrateEntries = sizeof(uartMSP432Baudrates) /
  *                                sizeof(UARTMSP432_BaudrateConfig),
  *          .baudrateLUT = uartMSP432Baudrates
- *          .ringBufPtr  = uartMSP432RingBuffer[1],
- *          .ringBufSize = sizeof(uartMSP432RingBuffer[1])
+ *          .ringBufPtr  = uartMSP432RingBuffer1,
+ *          .ringBufSize = sizeof(uartMSP432RingBuffer1)
  *      }
  *  };
  *  @endcode
  */
 typedef struct UARTMSP432_HWAttrs {
     /*! UART Peripheral's base address */
-    uint32_t baseAddr;
+    unsigned int    baseAddr;
     /*! UART Peripheral's interrupt vector */
-    uint8_t  intNum;
+    unsigned int    intNum;
     /*! UART Peripheral's interrupt priority */
-    uint8_t  intPriority;
+    unsigned int    intPriority;
     /*! UART Clock source */
-    uint8_t  clockSource;
+    uint8_t         clockSource;
     /*!< UART Bit order */
-    uint32_t bitOrder;
+    uint32_t        bitOrder;
     /*!< Number of UARTMSP432_BaudrateConfig entries */
-    uint8_t  numBaudrateEntries;
+    uint8_t         numBaudrateEntries;
     /*!< Pointer to a table of possible UARTMSP432_BaudrateConfig entries */
     UARTMSP432_BaudrateConfig const *baudrateLUT;
     /*! Pointer to a application ring buffer */
-    void        *ringBufPtr;
+    unsigned char  *ringBufPtr;
     /*! Size of ringBufPtr */
-    size_t       ringBufSize;
+    size_t          ringBufSize;
 } UARTMSP432_HWAttrs;
 
 /*!
  *  @brief      UARTMSP432 Object
  *
- *  Not intended to be used by the user.
+ *  The application must not access any member variables of this structure!
  */
 typedef struct UARTMSP432_Object {
     /* UART state variable */
@@ -172,44 +203,55 @@ typedef struct UARTMSP432_Object {
         UART_ReturnMode  readReturnMode:1; /* Receive return mode */
         UART_Echo        readEcho:1;       /* Echo received data back */
         bool             writeCR:1;        /* Write a return character */
+        /*
+         * Flag to determine if a timeout has occurred when the user called
+         * UART_read(). This flag is set by the timeoutClk clock object.
+         */
         bool             bufTimeout:1;
+        /*
+         * Flag to determine when an ISR needs to perform a callback; in both
+         * UART_MODE_BLOCKING or UART_MODE_CALLBACK
+         */
         bool             callCallback:1;
+        /*
+         * Flag to determine if the ISR is in control draining the ring buffer
+         * when in UART_MODE_CALLBACK
+         */
+        bool             drainByISR:1;
+        /* Flag to keep the state of the read Power constraints */
+        bool             rxEnabled:1;
+        /* Flag to keep the state of the write Power constraints */
+        bool             txEnabled:1;
     } state;
 
-    union {
-        struct {
-            ClockP_Handle     timeoutClk;   /* Clock object to for timeouts */
-            SemaphoreP_Handle readSem;      /* UART read semaphore */
-            SemaphoreP_Handle writeSem;     /* UART write semaphore*/
-            unsigned int      readTimeout;  /* Timeout for read semaphore */
-            unsigned int      writeTimeout; /* Timeout for write semaphore */
-        } blocking;
-        struct {
-            bool             inIsrControl;
-        } callback;
-    };
-
-    HwiP_Handle          hwiHandle;
-
-    UART_Callback        readCallback;     /* Pointer to read callback */
-    UART_Callback        writeCallback;    /* Pointer to write callback */
-
-    uint32_t             baudRate;         /*!< Baud rate for UART */
-    UART_LEN             dataLength;       /*!< Data length for UART */
-    UART_STOP            stopBits;         /*!< Stop bits for UART */
-    UART_PAR             parityType;       /*!< Parity bit type for UART */
+    HwiP_Handle          hwiHandle;        /* Hwi handle for interrupts */
+    ClockP_Handle        timeoutClk;       /* Clock object to for timeouts */
+    uint32_t             baudRate;         /* Baud rate for UART */
+    UART_STOP            stopBits;         /* Stop bits for UART */
+    UART_PAR             parityType;       /* Parity bit type for UART */
 
     /* UART read variables */
-    RingBuf_Object       ringBuffer;
+    RingBuf_Object       ringBuffer;       /* local circular buffer object */
+    /* A complement pair of read functions for both the ISR and UART_read() */
+    UARTMSP432_FxnSet    readFxns;
     unsigned char       *readBuf;          /* Buffer data pointer */
     size_t               readSize;         /* Desired number of bytes to read */
     size_t               readCount;        /* Number of bytes left to read */
+    SemaphoreP_Handle    readSem;          /* UART read semaphore */
+    unsigned int         readTimeout;      /* Timeout for read semaphore */
+    UART_Callback        readCallback;     /* Pointer to read callback */
 
     /* UART write variables */
     const unsigned char *writeBuf;         /* Buffer data pointer */
     size_t               writeSize;        /* Desired number of bytes to write*/
     size_t               writeCount;       /* Number of bytes left to write */
+    SemaphoreP_Handle    writeSem;         /* UART write semaphore*/
+    unsigned int         writeTimeout;     /* Timeout for write semaphore */
+    UART_Callback        writeCallback;    /* Pointer to write callback */
+    unsigned int         writeEmptyClkTimeout; /* TX FIFO timeout tick count */
 
+    Power_NotifyObj      perfChangeNotify;
+    uint32_t             perfConstraintMask;
 } UARTMSP432_Object, *UARTMSP432_Handle;
 
 #ifdef __cplusplus

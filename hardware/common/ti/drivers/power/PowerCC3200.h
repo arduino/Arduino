@@ -98,7 +98,7 @@ extern "C" {
 #define PowerCC3200_TOTALTIMEDEEPSLEEP      1000
 
 /*! total latency time for LPDS in microseconds */
-#define PowerCC3200_TOTALTIMELPDS           3000
+#define PowerCC3200_TOTALTIMELPDS           5000
 
 /*! total latency time for Shutdown in microseconds */
 #define PowerCC3200_TOTALTIMESHUTDOWN       500000
@@ -130,9 +130,9 @@ extern "C" {
 /*
  *  Power constraints on the CC3200 device
  */
-#define PowerCC3200_DS_DISALLOW         0   /*!< disallow entering DeepSleep */
-#define PowerCC3200_LPDS_DISALLOW       1   /*!< disallow entering LPDS */
-#define PowerCC3200_SD_DISALLOW         2   /*!< disallow shutdown */
+#define PowerCC3200_DISALLOW_DEEPSLEEP  0   /*!< disallow entering DeepSleep */
+#define PowerCC3200_DISALLOW_LPDS       1   /*!< disallow entering LPDS */
+#define PowerCC3200_DISALLOW_SHUTDOWN   2   /*!< disallow shutdown */
 #define PowerCC3200_NUMCONSTRAINTS      3   /*!< number of constraints */
 
 /*

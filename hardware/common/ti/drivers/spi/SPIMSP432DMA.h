@@ -69,20 +69,18 @@
  *  </table>
  *
  *  ## DMA Interrupts #
- *  The MSP432 DMA controller 4 interrupt vectors to handle all DMA
+ *  The MSP432 DMA controller has 4 interrupt vectors to handle all DMA
  *  related IRQ. Due to the "shared" nature of the DMA interrupts, this driver
  *  implementation requires each SPI instance to explicitly use a single DMA
  *  interrupt.  It is up to the application to ensure no two peripherals are
  *  configured to respond to a given DMA interrupt at any moment.
  *
  *  ## Scratch Buffers #
- *  A uint32_t scratch buffer is used to allow SPI_transfers where txBuf or rxBuf
- *  are NULL. Rather than requiring txBuf or rxBuf to have a dummy buffer of size
- *  of the transfer count, a single DMA accessible uint32_t scratch buffer is used.
- *  When rxBuf is NULL, the uDMA will transfer all the SPI data receives into the
- *  scratch buffer as a "bit-bucket".
- *  When rxBuf is NULL, the scratch buffer is initialized to defaultTxBufValue
- *  so the DMA will send some known value.
+ *  A uint32_t scratch buffer is used to allow SPI_transfers where txBuf or
+ *  rxBuf are NULL. Rather than requiring txBuf or rxBuf to have a dummy buffer
+ *  of size of the transfer count, a single DMA accessible uint32_t scratch
+ *  buffer is used. When txBuf is NULL, an internal scratch buffer is
+ *  initialized to the defaultTxBufValue so the DMA will send some known value.
  *  Each SPI driver instance should uses its own scratch buffer.
  *
  *  ## SPI data frames #
@@ -118,11 +116,8 @@ extern "C" {
 
 #include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
-
+#include <ti/drivers/Power.h>
 #include <ti/drivers/SPI.h>
-
-/* Return codes for SPI_control() */
-#define SPIMSP432DMA_CMD_UNDEFINED  -1
 
 /* SPI function table pointer */
 extern const SPI_FxnTable SPIMSP432DMA_fxnTable;
@@ -142,7 +137,6 @@ extern const SPI_FxnTable SPIMSP432DMA_fxnTable;
  *          .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
  *          .bitOrder = EUSCI_B_SPI_MSB_FIRST,
  *
- *          .scratchBufPtr = &spiMSP432DMAscratchBuf[0],
  *          .defaultTxBufValue = 0,
  *
  *          .dmaIntNum = INT_DMA_INT1,
@@ -155,7 +149,6 @@ extern const SPI_FxnTable SPIMSP432DMA_fxnTable;
  *          .clockSource = EUSCI_B_SPI_CLOCKSOURCE_SMCLK,
  *          .bitOrder = EUSCI_B_SPI_MSB_FIRST,
  *
- *          .scratchBufPtr = &spiMSP432DMAscratchBuf[1],
  *          .defaultTxBufValue = 0,
  *
  *          .dmaIntNum = INT_DMA_INT2,
@@ -171,11 +164,10 @@ typedef struct SPIMSP432DMA_HWAttrs {
     uint16_t bitOrder;           /*!< EUSCI_B_SPI Bit order */
     uint8_t  clockSource;        /*!< EUSCI_B_SPI Clock source */
 
-    uint8_t *scratchBufPtr;      /*! Scratch buffer address */
     uint8_t  defaultTxBufValue;  /*! Default TX value if txBuf == NULL */
 
     uint8_t  dmaIntNum;          /*!< DMA interrupt number */
-    uint8_t  intPriority;        /*!< DMA interrupt priority */
+    uint32_t intPriority;        /*!< DMA interrupt priority */
     uint32_t rxDMAChannelIndex;  /*!< DMA rxDMAChannel for Rx data */
     uint32_t txDMAChannelIndex;  /*!< DMA txDMAChannel for Tx data */
 } SPIMSP432DMA_HWAttrs;
@@ -186,15 +178,25 @@ typedef struct SPIMSP432DMA_HWAttrs {
  *  The application must not access any member variables of this structure!
  */
 typedef struct SPIMSP432DMA_Object {
-    SemaphoreP_Handle transferComplete;       /* Notify finished SPI transfer */
+    SemaphoreP_Handle transferComplete;    /* Notify finished SPI transfer */
     HwiP_Handle       hwiHandle;
 
-    SPI_TransferMode  transferMode;           /* SPI transfer mode */
-    SPI_CallbackFxn   transferCallbackFxn;    /* Callback fxn in CALLBACK mode */
+    SPI_CallbackFxn   transferCallbackFxn; /* Callback fxn in CALLBACK mode */
+    SPI_Transaction  *transaction;         /* Ptr to the current transaction*/
 
-    SPI_Transaction  *transaction;            /* Ptr to the current transaction*/
+    SPI_TransferMode  transferMode;        /* SPI transfer mode */
+    SPI_Mode          spiMode;             /* Master or Slave mode */
+    uint8_t           scratchBuffer;       /* Scratch buffer */
 
     bool              isOpen;
+
+    uint32_t          bitRate;             /* SPI bit rate in Hz */
+    uint16_t          clockPhase;
+    uint16_t          clockPolarity;
+
+    Power_NotifyObj   perfChangeNotify;
+    uint32_t          perfConstraintMask;
+
 } SPIMSP432DMA_Object, *SPIMSP432DMA_Handle;
 
 #ifdef __cplusplus

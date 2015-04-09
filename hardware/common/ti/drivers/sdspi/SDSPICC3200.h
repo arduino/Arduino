@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,9 +59,6 @@ extern "C" {
 
 #include <ti/sysbios/fatfs/ff.h>
 #include <ti/sysbios/fatfs/diskio.h>
-
-/* Return codes for SDSPI_control() */
-#define SDSPICC3200_CMD_UNDEFINED   -1
 
 typedef unsigned long SDSPIBaseAddrType;
 typedef unsigned long SDSPIDataType;

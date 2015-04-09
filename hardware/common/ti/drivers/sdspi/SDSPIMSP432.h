@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,9 +60,6 @@ extern "C" {
 #include <ti/sysbios/fatfs/diskio.h>
 
 #include <ti/drivers/SDSPI.h>
-
-/* Return codes for SDSPI_control() */
-#define SDSPIMSP432_CMD_UNDEFINED   -1
 
 /* SDSPI function table */
 extern const SDSPI_FxnTable SDSPIMSP432_fxnTable;
@@ -156,6 +153,9 @@ typedef struct SDSPIMSP432_Object {
     SDSPIMSP432_CardType cardType;      /*!< SDCard Card Command Class (CCC) */
     uint32_t             bitRate;       /*!< SPI bus bit rate (Hz) */
     FATFS                filesystem;    /*!< FATFS data object */
+
+    Power_NotifyObj      perfChangeNotify;
+    uint32_t             perfConstraintMask;
 } SDSPIMSP432_Object, *SDSPIMSP432_Handle;
 
 #ifdef __cplusplus

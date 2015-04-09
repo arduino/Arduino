@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -89,9 +89,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 #include <ti/drivers/Watchdog.h>
-
-/* Return codes for WatchdogTiva_control() */
-#define WatchdogCC3200_CMD_UNDEFINED    -1
 
 /*! @brief  Watchdog function table for CC3200 */
 extern const Watchdog_FxnTable WatchdogCC3200_fxnTable;

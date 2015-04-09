@@ -182,6 +182,58 @@ extern "C" {
 #include <stddef.h>
 
 /*!
+ * Common PWM_control command code reservation offset.
+ * PWM driver implementations should offset command codes with PWM_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define PWMXYZ_COMMAND0         PWM_CMD_RESERVED + 0
+ * #define PWMXYZ_COMMAND1         PWM_CMD_RESERVED + 1
+ * @endcode
+ */
+#define PWM_CMD_RESERVED            32
+
+/*!
+ * Common PWM_control status code reservation offset.
+ * PWM driver implementations should offset status codes with
+ * PWM_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define PWMXYZ_STATUS_ERROR0    PWM_STATUS_RESERVED - 0
+ * #define PWMXYZ_STATUS_ERROR1    PWM_STATUS_RESERVED - 1
+ * #define PWMXYZ_STATUS_ERROR2    PWM_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define PWM_STATUS_RESERVED        -32
+
+/*!
+ * \brief   Successful status code returned by PWM_control().
+ *
+ * PWM_control() returns PWM_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define PWM_STATUS_SUCCESS         0
+
+/*!
+ * \brief   Generic error status code returned by PWM_control().
+ *
+ * PWM_control() returns PWM_STATUS_ERROR if the control code was not executed
+ * successfully.
+ */
+#define PWM_STATUS_ERROR          -1
+
+/*!
+ * \brief   An error status code returned by PWM_control() for undefined
+ * command codes.
+ *
+ * PWM_control() returns PWM_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define PWM_STATUS_UNDEFINEDCMD   -2
+
+/*!
  *  @brief      A handle that is returned from a PWM_open() call.
  */
 typedef struct PWM_Config      *PWM_Handle;

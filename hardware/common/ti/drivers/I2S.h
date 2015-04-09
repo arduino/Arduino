@@ -163,7 +163,59 @@ extern "C" {
 
 #include <ti/drivers/ports/ListP.h>
 
-#define I2S_ERROR  -1
+/*!
+ * Common I2S_control command code reservation offset.
+ * I2S driver implementations should offset command codes with I2S_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define I2SXYZ_COMMAND0         I2S_CMD_RESERVED + 0
+ * #define I2SXYZ_COMMAND1         I2S_CMD_RESERVED + 1
+ * @endcode
+ */
+#define I2S_CMD_RESERVED            32
+
+/*!
+ * Common I2S_control status code reservation offset.
+ * I2S driver implementations should offset status codes with
+ * I2S_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define I2SXYZ_STATUS_ERROR0    I2S_STATUS_RESERVED - 0
+ * #define I2SXYZ_STATUS_ERROR1    I2S_STATUS_RESERVED - 1
+ * #define I2SXYZ_STATUS_ERROR2    I2S_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define I2S_STATUS_RESERVED        -32
+
+/*!
+ * \brief   Successful status code returned by I2S_control().
+ *
+ * I2S_control() returns I2S_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define I2S_STATUS_SUCCESS         0
+
+/*!
+ * \brief   Generic error status code returned by I2S_control().
+ *
+ * I2S_control() returns I2S_STATUS_ERROR if the control code was not executed
+ * successfully.
+ */
+#define I2S_STATUS_ERROR          -1
+
+/*!
+ * \brief   An error status code returned by I2S_control() for undefined
+ * command codes.
+ *
+ * I2S_control() returns I2S_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define I2S_STATUS_UNDEFINEDCMD   -2
+
+#define I2S_ERROR  I2S_STATUS_ERROR
 
 /*!
  *  @brief    Wait forever define
@@ -498,7 +550,7 @@ extern void I2S_Params_init(I2S_Params *params);
  *                      and bufSize fields must be set to a buffer and the
  *                      size of the buffer before passing to this function.
  *  @return             Returns 0 if successful else would return
- *                      I2S_CMD_UNDEFINED on an error.
+ *                      I2S_STATUS_UNDEFINEDCMD on an error.
  */
 extern int I2S_read(I2S_Handle handle, I2S_BufDesc *desc);
 
@@ -513,7 +565,7 @@ extern int I2S_read(I2S_Handle handle, I2S_BufDesc *desc);
  *                      and bufSize fields must be set to a buffer and the
  *                      size of the buffer before passing to this function.
  *  @return             Returns 0 if successful else would return
- *                      I2S_CMD_UNDEFINED on an error.
+ *                      I2S_STATUS_UNDEFINEDCMD on an error.
  */
 
 extern int I2S_readIssue(I2S_Handle handle, I2S_BufDesc *desc);
@@ -540,7 +592,7 @@ extern size_t I2S_readReclaim(I2S_Handle handle, I2S_BufDesc **pDesc);
  *                      and bufSize fields must be set to a buffer and the
  *                      size of the buffer before passing to this function.
  *  @return             Returns 0 if successful else would return
- *                      I2S_CMD_UNDEFINED on an error.
+ *                      I2S_STATUS_UNDEFINEDCMD on an error.
  */
 extern int I2S_write(I2S_Handle handle, I2S_BufDesc *desc);
 
@@ -554,7 +606,7 @@ extern int I2S_write(I2S_Handle handle, I2S_BufDesc *desc);
  *                      and bufSize fields must be set to a buffer and the
  *                      size of the buffer before passing to this function.
  *  @return             Returns 0 if successful else would return
- *                      I2S_CMD_UNDEFINED on an error.
+ *                      I2S_STATUS_UNDEFINEDCMD on an error.
  */
 extern int I2S_writeIssue(I2S_Handle handle, I2S_BufDesc *desc);
 

@@ -113,10 +113,7 @@ extern "C" {
 #define PWMTiva_NUM_PWM_GENERATORS       4
 
 /* PWM_control commands */
-#define PWMTiva_CHANGE_GEN_PERIOD        1
-
-/* Return codes for PWM_control() */
-#define PWMTiva_CMD_UNDEFINED           -1
+#define PWMTiva_CHANGE_GEN_PERIOD        PWM_CMD_RESERVED + 0
 
 /* PWM function table pointer */
 extern const PWM_FxnTable PWMTiva_fxnTable;

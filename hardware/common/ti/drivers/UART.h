@@ -137,30 +137,30 @@ extern "C" {
 
 /*!
  * Common UART_control command code reservation offset.
- * UART driver implementations should offset command codes with UART_CMD_RESERVE
+ * UART driver implementations should offset command codes with UART_CMD_RESERVED
  * growing positively
  *
  * Example implementation specific command codes:
  * @code
- * #define UARTXYZ_COMMAND0         UART_CMD_RESERVE + 0
- * #define UARTXYZ_COMMAND1         UART_CMD_RESERVE + 1
+ * #define UARTXYZ_COMMAND0         UART_CMD_RESERVED + 0
+ * #define UARTXYZ_COMMAND1         UART_CMD_RESERVED + 1
  * @endcode
  */
-#define UART_CMD_RESERVE            32
+#define UART_CMD_RESERVED            32
 
 /*!
  * Common UART_control status code reservation offset.
  * UART driver implementations should offset status codes with
- * UART_STATUS_RESERVE growing negatively.
+ * UART_STATUS_RESERVED growing negatively.
  *
  * Example implementation specific status codes:
  * @code
- * #define UARTXYZ_STATUS_ERROR0    UART_STATUS_RESERVE - 0
- * #define UARTXYZ_STATUS_ERROR1    UART_STATUS_RESERVE - 1
- * #define UARTXYZ_STATUS_ERROR2    UART_STATUS_RESERVE - 2
+ * #define UARTXYZ_STATUS_ERROR0    UART_STATUS_RESERVED - 0
+ * #define UARTXYZ_STATUS_ERROR1    UART_STATUS_RESERVED - 1
+ * #define UARTXYZ_STATUS_ERROR2    UART_STATUS_RESERVED - 2
  * @endcode
  */
-#define UART_STATUS_RESERVE        -32
+#define UART_STATUS_RESERVED        -32
 
 /*!
  * \brief   Successful status code returned by UART_control().

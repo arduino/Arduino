@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -116,6 +116,58 @@ extern "C" {
 
 
 #include <stdint.h>
+
+/*!
+ * Common Watchdog_control command code reservation offset.
+ * Watchdog driver implementations should offset command codes with
+ * Watchdog_CMD_RESERVED growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define WatchdogXYZ_COMMAND0         Watchdog_CMD_RESERVED + 0
+ * #define WatchdogXYZ_COMMAND1         Watchdog_CMD_RESERVED + 1
+ * @endcode
+ */
+#define Watchdog_CMD_RESERVED            32
+
+/*!
+ * Common Watchdog_control status code reservation offset.
+ * Watchdog driver implementations should offset status codes with
+ * Watchdog_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define WatchdogXYZ_STATUS_ERROR0    Watchdog_STATUS_RESERVED - 0
+ * #define WatchdogXYZ_STATUS_ERROR1    Watchdog_STATUS_RESERVED - 1
+ * #define WatchdogXYZ_STATUS_ERROR2    Watchdog_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define Watchdog_STATUS_RESERVED        -32
+
+/*!
+ * \brief   Successful status code returned by Watchdog_control().
+ *
+ * Watchdog_control() returns Watchdog_STATUS_SUCCESS if the control code was
+ * executed successfully.
+ */
+#define Watchdog_STATUS_SUCCESS         0
+
+/*!
+ * \brief   Generic error status code returned by Watchdog_control().
+ *
+ * Watchdog_control() returns Watchdog_STATUS_ERROR if the control code was not
+ * executed successfully.
+ */
+#define Watchdog_STATUS_ERROR          -1
+
+/*!
+ * \brief   An error status code returned by Watchdog_control() for undefined
+ * command codes.
+ *
+ * Watchdog_control() returns Watchdog_STATUS_UNDEFINEDCMD if the control code
+ * is not recognized by the driver implementation.
+ */
+#define Watchdog_STATUS_UNDEFINEDCMD   -2
 
 /*!
 *  @brief      Watchdog Handle

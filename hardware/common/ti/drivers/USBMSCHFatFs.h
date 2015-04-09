@@ -116,6 +116,58 @@ extern "C" {
 #include <stdbool.h>
 
 /*!
+ * Common USBMSCHFatFs_control command code reservation offset.
+ * USBMSCHFatFs driver implementations should offset command codes with
+ * USBMSCHFatFs_CMD_RESERVED growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define USBMSCHFatFsXYZ_COMMAND0             USBMSCHFatFs_CMD_RESERVED + 0
+ * #define USBMSCHFatFsXYZ_COMMAND1             USBMSCHFatFs_CMD_RESERVED + 1
+ * @endcode
+ */
+#define USBMSCHFatFs_CMD_RESERVED                32
+
+/*!
+ * Common USBMSCHFatFs_control status code reservation offset.
+ * USBMSCHFatFs driver implementations should offset status codes with
+ * USBMSCHFatFs_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define USBMSCHFatFsXYZ_STATUS_ERROR0        USBMSCHFatFs_STATUS_RESERVED - 0
+ * #define USBMSCHFatFsXYZ_STATUS_ERROR1        USBMSCHFatFs_STATUS_RESERVED - 1
+ * #define USBMSCHFatFsXYZ_STATUS_ERROR2        USBMSCHFatFs_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define USBMSCHFatFs_STATUS_RESERVED            -32
+
+/*!
+ * \brief   Successful status code returned by USBMSCHFatFs_control().
+ *
+ * USBMSCHFatFs_control() returns USBMSCHFatFs_STATUS_SUCCESS if the control
+ * code was executed successfully.
+ */
+#define USBMSCHFatFs_STATUS_SUCCESS             0
+
+/*!
+ * \brief   Generic error status code returned by USBMSCHFatFs_control().
+ *
+ * USBMSCHFatFs_control() returns USBMSCHFatFs_STATUS_ERROR if the control code
+ * was not executed successfully.
+ */
+#define USBMSCHFatFs_STATUS_ERROR              -1
+
+/*!
+ * \brief   An error status code returned by USBMSCHFatFs_control() for
+ *          undefined command codes.
+ *
+ * USBMSCHFatFs_control() returns USBMSCHFatFs_STATUS_UNDEFINEDCMD if the
+ * control code is not recognized by the driver implementation.
+ */
+#define USBMSCHFatFs_STATUS_UNDEFINEDCMD       -2
+
+/*!
  *  @brief      USBMSCHFatFs Handler
  */
 typedef struct USBMSCHFatFs_Config *USBMSCHFatFs_Handle;

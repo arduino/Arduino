@@ -41,12 +41,13 @@
  *  @endcode
  *
  *  This WiFi driver implementation is designed for the SimpleLink Wi-Fi CC3100
- *  device on a host processor. Communication with the CC3100 is achieved
- *  through SPI (SSI) interface.  This means that in addition to a
- *  *WiFi_config* array, a *SPI_config* array with a host device-specific SPI
- *  entry must be provided. See @ref SPI.h, @ref SPIEUSCIADMA.h,
- *  @ref SPIEUSCIBDMA.h, @ref SPIUSCIADMA.h, @ref SPIUSCIBDMA.h,
- *  @ref SPIMSP432DMA.h and @ref SPITivaDMA.h for more details.
+ *  device on a host processor. One of the host device's SPI (SSI) peripherals
+ *  will be utilized by the driver as well as its corresponding DMA channels.
+ *  This means that in addition to a *WiFi_config* array, a *SPI_config* array
+ *  with a host device-specific SPI entry must be provided.
+ *  See @ref SPI.h, @ref SPIEUSCIADMA.h, @ref SPIEUSCIBDMA.h,
+ *  @ref SPIUSCIADMA.h, @ref SPIUSCIBDMA.h, @ref SPIMSP432DMA.h and
+ *  @ref SPITivaDMA.h for more details.
  *
  *  The SPI transport layer used by the CC3100 uses an IRQ line to signal the
  *  host processor to perform an action. The pin, port, and interrupt number
@@ -54,12 +55,15 @@
  *  that no other pins on this GPIO port will be able to use GPIO interrupts
  *  while the WiFi driver is in use.
  *
- *  In the case of unsolicited events that require the application to make a
- *  decision (such as an unsolicited disconnect from an AP), the SimpleLink
- *  Host Driver specifies callbacks which must be modified to fit application
- *  requirements.  Contrary to other WiFi driver implementations, callback
- *  function pointers are not provided to WiFi_open() as arguments.  An example
- *  of how to modify the SimpleLink Host Driver callbacks is shown below:
+ *  This WiFi driver implementation not only provides the SPI transport layer
+ *  required by the SimpleLink Host Driver but also provides many of the
+ *  necessary callbacks. In the case of unsolicited events that require the
+ *  application to make a decision (such as an unsolicited disconnect from
+ *  an AP), the SimpleLink Host Driver specifies callbacks which must be
+ *  modified to fit application requirements.  Contrary to other WiFi driver
+ *  implementations, callback function pointers are not provided to WiFi_open()
+ *  as arguments.  An example of how to modify the SimpleLink Host Driver
+ *  callbacks is shown below:
  *
  *  @code
  *  void SimpleLinkWlanEventHandler(SlWlanEvent_t *pArgs)
@@ -102,13 +106,10 @@
  *  reference guide on <a href="http://processors.wiki.ti.com/index.php/CC3100">
  *  SimpleLink Wi-Fi CC3100 Wiki</a>.
  *
- *  The WiFI_open() API creates the threading objects required to run in an OS
- *  environment.  The SimpleLink Host Driver API *sl_Start()* must be called by
- *  the user application to start the network processor.  Additionally, *sl_Start()* and
+ *  The SimpleLink Host Driver APIs *sl_Start()* must be called by the user
+ *  application to start the network processor.  Additionally, *sl_Start()* and
  *  *sl_Stop() can be called by the application to restart the CC3100 without
- *  having to close and reopen the WiFi Driver instance.  Finally, if an
- *  application must close the WiFi driver, *sl_Stop()* must be called prior to
- *  calling WiFi_close().
+ *  having to close and reopen the WiFi Driver instance.
  *
  *  The SimpleLink Host Driver for the CC3100 device is provided by TI-RTOS in
  *  the following directory in the TI-RTOS installation:
@@ -138,9 +139,6 @@ extern "C" {
 
 #include <ti/drivers/SPI.h>
 #include <ti/drivers/WiFi.h>
-
-/* Return codes for WiFi_control() */
-#define WiFiCC3100_CMD_UNDEFINED        -1
 
 /*! @brief  WiFi function table for CC3100 devices */
 extern const WiFi_FxnTable WiFiCC3100_fxnTable;

@@ -116,6 +116,58 @@ extern "C" {
 #include <stdint.h>
 
 /*!
+ * Common SDSPI_control command code reservation offset.
+ * SDSPI driver implementations should offset command codes with
+ * SDSPI_CMD_RESERVED growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define SDSPIXYZ_COMMAND0        SDSPI_CMD_RESERVED + 0
+ * #define SDSPIXYZ_COMMAND1        SDSPI_CMD_RESERVED + 1
+ * @endcode
+ */
+#define SDSPI_CMD_RESERVED           32
+
+/*!
+ * Common SDSPI_control status code reservation offset.
+ * SDSPI driver implementations should offset status codes with
+ * SDSPI_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define SDSPIXYZ_STATUS_ERROR0   SDSPI_STATUS_RESERVED - 0
+ * #define SDSPIXYZ_STATUS_ERROR1   SDSPI_STATUS_RESERVED - 1
+ * #define SDSPIXYZ_STATUS_ERROR2   SDSPI_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define SDSPI_STATUS_RESERVED       -32
+
+/*!
+ * \brief   Successful status code returned by SDSPI_control().
+ *
+ * SDSPI_control() returns SDSPI_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define SDSPI_STATUS_SUCCESS        0
+
+/*!
+ * \brief   Generic error status code returned by SDSPI_control().
+ *
+ * SDSPI_control() returns SDSPI_STATUS_ERROR if the control code was not
+ * executed successfully.
+ */
+#define SDSPI_STATUS_ERROR         -1
+
+/*!
+ * \brief   An error status code returned by SDSPI_control() for undefined
+ * command codes.
+ *
+ * SDSPI_control() returns SDSPI_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define SDSPI_STATUS_UNDEFINEDCMD  -2
+
+/*!
  *  @brief      A handle that is returned from a SDSPI_open() call.
  */
 typedef struct SDSPI_Config      *SDSPI_Handle;

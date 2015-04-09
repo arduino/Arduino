@@ -51,8 +51,8 @@
  *
  *  Opening the Watchdog driver with resets turned off (using the resetMode
  *  parameter) allows the Watchdog Timer to be used like another timer
- *  interrupt. To plug the ISR you wish to use, create a Hwi in your
- *  application's .cfg file with the appropriate WDT interrupt number.
+ *  interrupt.  The callback fxn provided in the params will be executed when
+ *  the timer expires.
  *
  *  <b>Note:</b> The Watchdog_Params callbackFxn and debugStallMode are not used
  *  in this implementation nor is the Watchdog_setReload() API.
@@ -73,9 +73,6 @@ extern "C" {
 #include <ti/drivers/Watchdog.h>
 
 #include <ti/drivers/ports/HwiP.h>
-
-/* Return codes for WatchdogTiva_control() */
-#define WatchdogMSP432_CMD_UNDEFINED    -1
 
 /*! @brief  Watchdog function table for MSP432 */
 extern const Watchdog_FxnTable WatchdogMSP432_fxnTable;

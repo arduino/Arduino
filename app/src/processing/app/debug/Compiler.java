@@ -111,7 +111,7 @@ public class Compiler implements MessageConsumer {
       }
     }
 
-    if (arch == "secret" || arch == "msp432") {
+    if (arch == "cc3200emt" || arch == "msp432") {
     	String commonBasePath = Base.getHardwarePath() + File.separator + "common";
         try {
             File makeVariables = new File(buildPath+File.separator+"Variables.mk");
@@ -292,7 +292,7 @@ public class Compiler implements MessageConsumer {
       "rcs",
       runtimeLibraryName
     }));
-    } else if(arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
+    } else if(arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432") {
       baseCommandAR = new ArrayList(Arrays.asList(new String[] { 
         basePath + "arm-none-eabi-ar",
         "rcs",
@@ -352,7 +352,7 @@ public class Compiler implements MessageConsumer {
         "-o",
         buildPath + File.separator + primaryClassName + ".elf"
       }));
-    }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") { 
+    }else if (arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432") { 
         baseCommandLinker = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-g++",
         "-Os",
@@ -486,7 +486,7 @@ public class Compiler implements MessageConsumer {
       "-O",
       "-R",
     }));
-    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
+    } else if (arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432") {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-objcopy",
         "-O",
@@ -506,7 +506,7 @@ public class Compiler implements MessageConsumer {
 
     }
     List commandObjcopy;
-    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200") || (arch == "secret") || (arch == "msp432")) {
+    if ((arch == "msp430") || (arch == "lm4f") || (arch == "c2000") || (arch == "cc3200") || (arch == "cc3200emt") || (arch == "msp432")) {
       //nothing 
     } else {
         // 5. extract EEPROM data (from EEMEM directive) to .eep file.
@@ -526,7 +526,7 @@ public class Compiler implements MessageConsumer {
     // 6. build the .hex or .bin file
     sketch.setCompilingProgress(80);
     commandObjcopy = new ArrayList(baseCommandObjcopy);
-    if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432"){
+    if (arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432"){
 	  	commandObjcopy.add(2, "binary");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
@@ -1052,7 +1052,7 @@ public class Compiler implements MessageConsumer {
         if(Preferences.getBoolean("build.debug"))
         	baseCommandCompiler.add("-g");
 
-    } else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
+    } else if (arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-gcc",
           "-c",
@@ -1160,7 +1160,7 @@ public class Compiler implements MessageConsumer {
       if(Preferences.getBoolean("build.debug"))
       	baseCommandCompiler.add("-g");
 
-      }else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
+      }else if (arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432") {
         baseCommandCompiler = new ArrayList(Arrays.asList(new String[] {
         basePath + "arm-none-eabi-gcc",
         "-c",
@@ -1277,7 +1277,7 @@ public class Compiler implements MessageConsumer {
       if(Preferences.getBoolean("build.debug"))
       	baseCommandCompilerCPP.add("-g");
     } 
-    else if (arch == "lm4f" || arch == "cc3200" || arch == "secret" || arch == "msp432") {
+    else if (arch == "lm4f" || arch == "cc3200" || arch == "cc3200emt" || arch == "msp432") {
         baseCommandCompilerCPP = new ArrayList(Arrays.asList(new String[] {
           basePath + "arm-none-eabi-g++",
           "-c",

@@ -161,6 +161,58 @@ extern "C" {
 #include <stddef.h>
 
 /*!
+ * Common SPI_control command code reservation offset.
+ * SPI driver implementations should offset command codes with SPI_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define SPIXYZ_COMMAND0         SPI_CMD_RESERVED + 0
+ * #define SPIXYZ_COMMAND1         SPI_CMD_RESERVED + 1
+ * @endcode
+ */
+#define SPI_CMD_RESERVED            32
+
+/*!
+ * Common SPI_control status code reservation offset.
+ * SPI driver implementations should offset status codes with
+ * SPI_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define SPIXYZ_STATUS_ERROR0    SPI_STATUS_RESERVED - 0
+ * #define SPIXYZ_STATUS_ERROR1    SPI_STATUS_RESERVED - 1
+ * #define SPIXYZ_STATUS_ERROR2    SPI_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define SPI_STATUS_RESERVED        -32
+
+/*!
+ * \brief   Successful status code returned by SPI_control().
+ *
+ * SPI_control() returns SPI_STATUS_SUCCESS if the control code was executed
+ * successfully.
+ */
+#define SPI_STATUS_SUCCESS         0
+
+/*!
+ * \brief   Generic error status code returned by SPI_control().
+ *
+ * SPI_control() returns SPI_STATUS_ERROR if the control code was not executed
+ * successfully.
+ */
+#define SPI_STATUS_ERROR          -1
+
+/*!
+ * \brief   An error status code returned by SPI_control() for undefined
+ * command codes.
+ *
+ * SPI_control() returns SPI_STATUS_UNDEFINEDCMD if the control code is not
+ * recognized by the driver implementation.
+ */
+#define SPI_STATUS_UNDEFINEDCMD   -2
+
+/*!
  *  @brief    Wait forever define
  */
 #define SPI_WAIT_FOREVER ~(0)

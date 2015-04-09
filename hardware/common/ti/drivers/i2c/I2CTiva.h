@@ -58,9 +58,6 @@ extern "C" {
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
-/* Return codes for I2C_control() */
-#define I2CTiva_CMD_UNDEFINED       -1
-
 /* I2C function table pointer */
 extern const I2C_FxnTable I2CTiva_fxnTable;
 

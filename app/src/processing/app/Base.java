@@ -71,7 +71,7 @@ public class Base {
     archMap.put("lm4f", "lm4f");
     archMap.put("c2000", "c2000");
     archMap.put("cc3200", "cc3200");
-    archMap.put("secret", "secret");
+    archMap.put("cc3200emt", "cc3200emt");
     archMap.put("msp432", "msp432");
   }
   static Platform platform;
@@ -262,8 +262,8 @@ public class Base {
     	targetLibDir = "hardware/c2000/";
     else if (Preferences.get("target").equals("cc3200")) 
     	targetLibDir = "hardware/cc3200/";
-    else if (Preferences.get("target").equals("secret")) 
-    	targetLibDir = "hardware/secret/";
+    else if (Preferences.get("target").equals("cc3200emt")) 
+    	targetLibDir = "hardware/cc3200emt/";
     else if (Preferences.get("target").equals("msp432")) 
     	targetLibDir = "hardware/msp432/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
@@ -1112,8 +1112,8 @@ public class Base {
             		  targetLibDir = "hardware/cc3200/";
 		  else if(n.equals("msp432")) 
             		  targetLibDir = "hardware/msp432/";
-		  else if(n.equals("secret")) 
-            		  targetLibDir = "hardware/secret/";
+		  else if(n.equals("cc3200emt")) 
+            		  targetLibDir = "hardware/cc3200emt/";
             	  librariesFolder = getContentFile(targetLibDir + "libraries");
             	  onArchChanged();
               }
@@ -1787,7 +1787,7 @@ public class Base {
       }
     } else if (Base.isWindows()) {
     	String arch = getArch();
-    	if (arch == "cc3200" || arch == "msp432" || arch == "secret")
+    	if (arch == "cc3200" || arch == "msp432" || arch == "cc3200emt")
     		arch = "lm4f";
       String ret = getHardwarePath() + File.separator + "tools"
           + File.separator + arch + File.separator + "bin"
@@ -1795,7 +1795,7 @@ public class Base {
       return ret;
     } else {
     	String arch = getArch();
-    	if (arch == "cc3200" || arch == "secret" || arch == "msp432")
+    	if (arch == "cc3200" || arch == "cc3200emt" || arch == "msp432")
     		arch = "lm4f";
     	return getHardwarePath() + File.separator + "tools" + File.separator
           + arch + File.separator + "bin" + File.separator;

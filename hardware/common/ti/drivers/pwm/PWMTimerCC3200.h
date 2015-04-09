@@ -89,10 +89,7 @@ extern "C" {
 #include <ti/drivers/PWM.h>
 
 /* PWM_control() commands */
-#define PWMTimerCC3200_CHANGE_PERIOD     1
-
-/* Return codes for PWM_control() */
-#define PWMTimerCC3200_CMD_UNDEFINED    -1
+#define PWMTimerCC3200_CHANGE_PERIOD        PWM_CMD_RESERVED + 0
 
 /* PWM function table pointer */
 extern const PWM_FxnTable PWMTimerCC3200_fxnTable;

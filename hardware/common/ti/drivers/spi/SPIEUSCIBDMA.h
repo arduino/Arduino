@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -135,9 +135,6 @@ extern "C" {
 #include <ti/drivers/SPI.h>
 
 #include <ti/sysbios/knl/Semaphore.h>
-
-/* Return codes for SPI_control() */
-#define SPIEUSCIBDMA_CMD_UNDEFINED  -1
 
 /* SPI function table pointer */
 extern const SPI_FxnTable SPIEUSCIBDMA_fxnTable;

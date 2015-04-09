@@ -15,7 +15,7 @@
 #include <xdc/runtime/System.h>
 #include <ti/drivers/Power.h>
 /* Board Support Header files (from configuration closure) */
-#include "src/platform/Board.h"
+#include "Board.h"
 #include <Energia.h>
 
 //#if defined(__TI_COMPILER_VERSION__) || defined(__GNUC__)

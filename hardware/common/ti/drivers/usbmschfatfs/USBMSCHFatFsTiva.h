@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,9 +67,6 @@ extern "C" {
 #include <ti/sysbios/knl/Semaphore.h>
 #include <ti/sysbios/fatfs/ff.h>
 #include <ti/sysbios/fatfs/diskio.h>
-
-/* Return codes for USBMSCHFatFs_control() */
-#define USBMSCHFatFsTiva_CMD_UNDEFINED      -1
 
 #if defined(TIVAWARE)
 #include <usblib/host/usbhmsc.h>

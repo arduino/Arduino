@@ -58,9 +58,6 @@ extern "C" {
 #include <ti/drivers/ports/SemaphoreP.h>
 #include <ti/drivers/Power.h>
 
-/* Return codes for I2C_control() */
-#define I2CCC3200_CMD_UNDEFINED     -1
-
 /* I2C function table pointer */
 extern const I2C_FxnTable I2CCC3200_fxnTable;
 

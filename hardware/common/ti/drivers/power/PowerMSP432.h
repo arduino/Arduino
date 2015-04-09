@@ -29,9 +29,12 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*
- *  ======== PowerMSP432.h ========
+/** ============================================================================
+ *  @file       PowerMSP432.h
  *
+ *  @brief      Power manager interface for the MSP432
+ *
+ *  ============================================================================
  */
 
 #ifndef ti_drivers_power_PowerMSP432__include
@@ -77,14 +80,15 @@ extern "C" {
 #define PowerMSP432_DISALLOW_SLEEP          0
 #define PowerMSP432_DISALLOW_DEEPSLEEP_0    1
 #define PowerMSP432_DISALLOW_DEEPSLEEP_1    2
-#define PowerMSP432_DISALLOW_SHUTDOWN       3
-#define PowerMSP432_DISALLOW_PERFLEVEL_0    4
-#define PowerMSP432_DISALLOW_PERFLEVEL_1    5
-#define PowerMSP432_DISALLOW_PERFLEVEL_2    6
-#define PowerMSP432_DISALLOW_PERFLEVEL_3    7
-#define PowerMSP432_DISALLOW_PERFLEVEL_4    8
-#define PowerMSP432_DISALLOW_PERF_CHANGES   9
-#define PowerMSP432_NUMCONSTRAINTS          10
+#define PowerMSP432_DISALLOW_SHUTDOWN_0     3
+#define PowerMSP432_DISALLOW_SHUTDOWN_1     4
+#define PowerMSP432_DISALLOW_PERFLEVEL_0    5
+#define PowerMSP432_DISALLOW_PERFLEVEL_1    6
+#define PowerMSP432_DISALLOW_PERFLEVEL_2    7
+#define PowerMSP432_DISALLOW_PERFLEVEL_3    8
+#define PowerMSP432_DISALLOW_PERFLEVEL_4    9
+#define PowerMSP432_DISALLOW_PERF_CHANGES   10
+#define PowerMSP432_NUMCONSTRAINTS          11
 
 /* Power events */
 #define PowerMSP432_ENTERING_SLEEP          0x1
@@ -105,6 +109,10 @@ extern "C" {
 #define PowerMSP432_SHUTDOWN_0              0x0
 #define PowerMSP432_SHUTDOWN_1              0x1
 
+/*!
+ *  @cond NODOC
+ *  Internal structure defining a performance level.
+ */
 typedef struct PowerMSP432_PerfLevel {
     unsigned int activeState;          /* device active state */
     unsigned int VCORE;                /* VCORE level */
@@ -120,7 +128,9 @@ typedef struct PowerMSP432_PerfLevel {
     unsigned int SMCLK;                /* resulting SMCLK frequency */
     unsigned int ACLK;                 /* resulting ACLK frequency */
 } PowerMSP432_PerfLevel;
+/*! @endcond */
 
+/*! @brief  Structure holding device frequencies (in Hz) */
 typedef struct PowerMSP432_Freqs {
     unsigned int MCLK;
     unsigned int HSMCLK;
@@ -128,7 +138,7 @@ typedef struct PowerMSP432_Freqs {
     unsigned int ACLK;
 } PowerMSP432_Freqs;
 
-/* Power global configuration */
+/*! @brief  Power global configuration (MSP432-specific) */
 typedef struct PowerMSP432_Config {
     Power_PolicyInitFxn policyInitFxn;    /* init function for power policy */
     Power_PolicyFxn policyFxn;                 /* the power policy function */
@@ -137,7 +147,10 @@ typedef struct PowerMSP432_Config {
     bool enablePerf;                   /* enables performance level control */
 } PowerMSP432_Config;
 
-/* Power module state */
+/*!
+ *  @cond NODOC
+ *  Internal structure defining Power module state.
+ */
 typedef struct PowerMSP432_ModuleState {
     ListP_List notifyList;
     uint32_t constraintMask;
@@ -147,6 +160,7 @@ typedef struct PowerMSP432_ModuleState {
     bool perfInitialized;
     uint8_t constraintCounts[PowerMSP432_NUMCONSTRAINTS];
 } PowerMSP432_ModuleState;
+/*! @endcond */
 
 /* default policy init function for config structure */
 void PowerMSP432_policyInitFxn(void);

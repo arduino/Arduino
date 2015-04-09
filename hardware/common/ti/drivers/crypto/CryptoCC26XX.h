@@ -251,11 +251,17 @@ extern "C" {
 #include <stdbool.h>
 #include <driverlib/crypto.h>
 
-#define CRYPTOCC26XX_ERROR   -1        /*!< Error Return Code             */
-#define CRYPTOCC26XX_SUCCESS 0         /*!< Success Return Code           */
+#define CRYPTOCC26XX_STATUS_SUCCESS  0 /*!< Success Return Code           */
+#define CRYPTOCC26XX_STATUS_ERROR   -1 /*!< Error Return Code             */
 #define CRYPTOCC26XX_TIMEOUT 20        /*!< Timeout Return Code           */
 
-#define CRYPTOCC26XX_CMD_UNDEFINED -2  /*!< Command Undefined Return Code */
+#define CRYPTOCC26XX_STATUS_UNDEFINEDCMD  -2  /*!< Command Undefined Return Code */
+
+/* FOR BACKWARDS COMPATIBILITY */
+#define CRYPTOCC26XX_SUCCESS        CRYPTOCC26XX_STATUS_SUCCESS
+#define CRYPTOCC26XX_ERROR          CRYPTOCC26XX_STATUS_ERROR
+#define CRYPTOCC26XX_CMD_UNDEFINED  CRYPTOCC26XX_STATUS_UNDEFINEDCMD
+/* END */
 
 #define CRYPTOCC26XX_OP_AES_CCM            0  /*!< AES-CCM Operation with Cryptation           */
 #define CRYPTOCC26XX_OP_AES_CCM_NOCRYPT    1  /*!< AES-CCM Operation without Cryptation        */

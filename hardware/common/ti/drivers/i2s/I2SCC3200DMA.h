@@ -58,9 +58,8 @@ extern "C" {
 #include <ti/drivers/ports/ListP.h>
 
 /* Return codes for I2S_control() */
-#define I2SCC3200DMA_SET_ZEROBUF_LEN      1
-#define I2SCC3200DMA_SET_EMPTYBUF_LEN     2
-#define I2SCC3200DMA_CMD_UNDEFINED      -1
+#define I2SCC3200DMA_SET_ZEROBUF_LEN      I2S_CMD_RESERVED + 0
+#define I2SCC3200DMA_SET_EMPTYBUF_LEN     I2S_CMD_RESERVED + 1
 
 /* Value for Invalid Index */
 #define I2SCC3200DMA_INDEX_INVALID      0xFF

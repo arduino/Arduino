@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -95,9 +95,6 @@ extern "C" {
  */
 #define ti_sysbios_family_arm_m3_Hwi__nolocalnames
 #include <ti/sysbios/family/arm/m3/Hwi.h>
-
-/* Return codes for WatchdogCC26XX_control() */
-#define WatchdogCC26XX_CMD_UNDEFINED      -1
 
 /*! @brief  Watchdog function table for CC26XX */
 extern const Watchdog_FxnTable WatchdogCC26XX_fxnTable;

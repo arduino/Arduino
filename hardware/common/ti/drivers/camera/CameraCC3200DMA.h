@@ -56,10 +56,7 @@ extern "C" {
 #include <ti/drivers/ports/HwiP.h>
 #include <ti/drivers/ports/SemaphoreP.h>
 
-/* Return codes for SPI_control() */
-#define CameraCC3200DMA_CMD_UNDEFINED      -1
-
-/*CC3200 camera DMA transfer size*/
+/* CC3200 camera DMA transfer size */
 #define CameraCC3200DMA_DMA_TRANSFER_SIZE  64
 
 /* Camera function table pointer */

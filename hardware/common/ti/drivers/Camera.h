@@ -112,6 +112,58 @@ extern "C" {
 #include <stddef.h>
 
 /*!
+ * Common Camera_control command code reservation offset.
+ * Camera driver implementations should offset command codes with CAMERA_CMD_RESERVED
+ * growing positively
+ *
+ * Example implementation specific command codes:
+ * @code
+ * #define CAMERAXYZ_COMMAND0       CAMERA_CMD_RESERVED + 0
+ * #define CAMERAXYZ_COMMAND1       CAMERA_CMD_RESERVED + 1
+ * @endcode
+ */
+#define CAMERA_CMD_RESERVED          32
+
+/*!
+ * Common Camera_control status code reservation offset.
+ * Camera driver implementations should offset status codes with
+ * CAMERA_STATUS_RESERVED growing negatively.
+ *
+ * Example implementation specific status codes:
+ * @code
+ * #define CAMERAXYZ_STATUS_ERROR0  CAMERA_STATUS_RESERVED - 0
+ * #define CAMERAXYZ_STATUS_ERROR1  CAMERA_STATUS_RESERVED - 1
+ * #define CAMERAXYZ_STATUS_ERROR2  CAMERA_STATUS_RESERVED - 2
+ * @endcode
+ */
+#define CAMERA_STATUS_RESERVED      -32
+
+/*!
+ * \brief   Successful status code returned by Camera_control().
+ *
+ * Camera_control() returns CAMERA_STATUS_SUCCESS if the control code was
+ * executed successfully.
+ */
+#define CAMERA_STATUS_SUCCESS       0
+
+/*!
+ * \brief   Generic error status code returned by Camera_control().
+ *
+ * Camera_control() returns CAMERA_STATUS_ERROR if the control code was not
+ * executed successfully.
+ */
+#define CAMERA_STATUS_ERROR        -1
+
+/*!
+ * \brief   An error status code returned by Camera_control() for undefined
+ * command codes.
+ *
+ * Camera_control() returns CAMERA_STATUS_UNDEFINEDCMD if the control code is
+ * not recognized by the driver implementation.
+ */
+#define CAMERA_STATUS_UNDEFINEDCMD -2
+
+/*!
  *  @brief    Wait forever define
  */
 #define Camera_WAIT_FOREVER ~(0)

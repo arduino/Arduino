@@ -278,9 +278,9 @@ extern "C" {
 #include <ti/sysbios/knl/Semaphore.h>
 
 /*! Enable RETURN_PARTIAL, used as cmd to UART_control() */
-#define UARTCC26XX_CMD_RETURN_PARTIAL_ENABLE    UART_CMD_RESERVE + 0
+#define UARTCC26XX_CMD_RETURN_PARTIAL_ENABLE    UART_CMD_RESERVED + 0
 /*! Disable RETURN_PARTIAL, used as cmd to UART_control() */
-#define UARTCC26XX_CMD_RETURN_PARTIAL_DISABLE   UART_CMD_RESERVE + 1
+#define UARTCC26XX_CMD_RETURN_PARTIAL_DISABLE   UART_CMD_RESERVED + 1
 /*! Size of the TX and RX FIFOs is 32 items */
 #define UARTCC26XX_FIFO_SIZE 32
 
