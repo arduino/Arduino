@@ -1,1 +1,1 @@
-/Users/robertinant/Energia/emt/src/ti/runtime/wiring/cc3200/WInterrupts.c
+../../../../emt/src/ti/runtime/wiring/cc3200/WInterrupts.c

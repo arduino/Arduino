@@ -1,1 +1,1 @@
-/Users/robertinant/Energia/emt/src/ti/runtime/wiring/cc3200/wiring_digital.c
+../../../../emt/src/ti/runtime/wiring/cc3200/wiring_digital.c

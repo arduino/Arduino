@@ -1,1 +1,1 @@
-/Users/robertinant/Energia/emt/src/ti/runtime/wiring/cc3200/binary.h
+../../../../emt/src/ti/runtime/wiring/cc3200/binary.h
