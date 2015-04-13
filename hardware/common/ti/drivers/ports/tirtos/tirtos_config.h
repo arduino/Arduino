@@ -52,7 +52,7 @@ extern "C" {
 //#define TIRTOS_CONFIG_DRIVERS_USE_STATIC_ALLOCATION
 
 #ifdef TIRTOS_CONFIG_DRIVERS_USE_STATIC_ALLOCATION
-#warning Static TI-RTOS kernel object allocation has not been completely \
+#warn Static TI-RTOS kernel object allocation has not been completely \
 tested. Please consider it at alpha quality.
 
 /* Set the number of SemaphoreP_Handles */
