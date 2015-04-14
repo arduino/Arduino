@@ -1,0 +1,78 @@
+#######################################
+# Syntax Coloring Map For WiFi
+#######################################
+
+#######################################
+# Library (KEYWORD3)
+#######################################
+
+WiFi	KEYWORD3
+WiFiUdp	KEYWORD3
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Client	KEYWORD1
+Server	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+firmwareVersion	KEYWORD2
+driverVersion	KEYWORD2
+status	KEYWORD2
+connect	KEYWORD2
+write	KEYWORD2
+available	KEYWORD2
+config	KEYWORD2
+setDNS	KEYWORD2
+read	KEYWORD2
+flush	KEYWORD2
+stop	KEYWORD2
+connected	KEYWORD2
+begin	KEYWORD2
+beginNetwork	KEYWORD2
+disconnect	KEYWORD2
+macAddress	KEYWORD2
+localIP	KEYWORD2
+subnetMask	KEYWORD2
+gatewayIP	KEYWORD2
+SSID	KEYWORD2
+BSSID		KEYWORD2
+RSSI	KEYWORD2
+encryptionType	KEYWORD2
+hostByName	KEYWORD2
+getResult	KEYWORD2
+getSocket	KEYWORD2
+WiFiClient	KEYWORD2
+WiFiServer	KEYWORD2
+WiFiUDP		KEYWORD2
+beginPacket	KEYWORD2
+endPacket	KEYWORD2
+parsePacket	KEYWORD2
+remoteIP	KEYWORD2
+remotePort	KEYWORD2
+startSmartConfig	KEYWORD2
+setDateTime	KEYWORD2
+sslConnect	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+WL_NO_SHIELD	LITERAL1
+WL_IDLE_STATUS	LITERAL1
+WL_NO_SSID_AVAIL	LITERAL1
+WL_SCAN_COMPLETED	LITERAL1
+WL_CONNECTED	LITERAL1
+WL_CONNECT_FAILED	LITERAL1
+WL_CONNECTION_LOST	LITERAL1
+WL_DISCONNECTED	LITERAL1
+WL_AP_MODE	LITERAL1
+ENC_TYPE_WEP	LITERAL1
+ENC_TYPE_TKIP	LITERAL1
+ENC_TYPE_CCMP	LITERAL1
+ENC_TYPE_NONE	LITERAL1
+ENC_TYPE_AUTO	LITERAL1
