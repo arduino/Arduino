@@ -1,10 +1,11 @@
 /*
-  Stepper.h - - Stepper library for Wiring/Arduino - Version 0.4
+  Stepper.h - - Stepper library for Wiring/Arduino - Version 0.5
   
   Original library     (0.1) by Tom Igoe.
   Two-wire modifications   (0.2) by Sebastian Gassner
   Combination version   (0.3) by Tom Igoe and David Mellis
   Bug fix for four-wire   (0.4) by Tom Igoe, bug fix from Noah Shibley
+  Half Step     for four-wire (0.5) by John Zandbergen 20091104
 
   Drives a unipolar or bipolar stepper motor using  2 wires or 4 wires
 
@@ -28,6 +29,17 @@
      3  0  1  0  1
      4  1  0  0  1
 
+  The sequence of halfstep control signals for 4 control wires is as follows:
+  Step C0 C1 C2 C3
+     1  1  0  1  0
+         2      0  0  1  0
+     3  0  1  1  0
+         4  0  1  0  0
+     5  0  1  0  1
+         6  0  0  0  1
+     7  1  0  0  1
+         8  1  0  0  0
+
   The sequence of controls signals for 2 control wires is as follows
   (columns C1 and C2 from above):
 
@@ -37,6 +49,7 @@
      3  1  0
      4  0  0
 
+  
   The circuits can be found at 
   http://www.arduino.cc/en/Tutorial/Stepper
 */
@@ -51,6 +64,7 @@ class Stepper {
     // constructors:
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int motor_pin_3, int motor_pin_4);
+    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int motor_pin_3, int motor_pin_4, int use_half_step);
 
     // speed setter method:
     void setSpeed(long whatSpeed);
@@ -69,6 +83,7 @@ class Stepper {
     int number_of_steps;      // total number of steps this motor can take
     int pin_count;        // whether you're driving the motor with 2 or 4 pins
     int step_number;        // which step the motor is on
+        int use_half_step;      // 1 when the stepper motor is to be driven with half steps (only 4-wire)
     
     // motor pin numbers:
     int motor_pin_1;
@@ -80,4 +95,3 @@ class Stepper {
 };
 
 #endif
-
