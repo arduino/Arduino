@@ -112,7 +112,7 @@ int main()
 	Task_Params_init(&taskParams);
 
 	/* All tasks have the same priority */
-	taskParams.priority = Task_numPriorities - 1;
+	taskParams.priority = Task_numPriorities - 2;
 	taskParams.stackSize = 0x800;
 
 	uint8_t i = 0;
