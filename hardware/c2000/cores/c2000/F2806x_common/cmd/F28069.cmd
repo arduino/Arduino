@@ -121,9 +121,9 @@ SECTIONS
 {
 
    /* Allocate program areas: */
-   .cinit              : > FLASHA,     PAGE = 0
-   .pinit              : > FLASHA,     PAGE = 0
-   .text               : > FLASHA,     PAGE = 0
+   .cinit              : > FLASHA | FLASHC | FLASHD | FLASHE | FLASHF | FLASHG | FLASHH,     PAGE = 0
+   .pinit              : > FLASHA | FLASHC | FLASHD | FLASHE | FLASHF | FLASHG | FLASHH,     PAGE = 0
+   .text               : >> FLASHA | FLASHC | FLASHD | FLASHE | FLASHF | FLASHG | FLASHH,     PAGE = 0
    codestart           : > BEGIN,      PAGE = 0
    ramfuncs            : LOAD = FLASHD,
                          RUN = RAML0,
@@ -138,16 +138,16 @@ SECTIONS
 
    /* Allocate uninitalized data sections: */
    .stack              : > RAMM0,      PAGE = 1
-   .ebss               : > RAML2,      PAGE = 1
-   .esysmem            : > RAML2,      PAGE = 1
+   .ebss               : >> RAML2 | RAML3 | RAML4 | RAML5 | RAML6 | RAML7 | RAML8,      PAGE = 1
+   .esysmem            : > RAML2 | RAML3 | RAML4 | RAML5 | RAML6 | RAML7 | RAML8,      PAGE = 1
 
    /* Initalized sections to go in Flash */
    /* For SDFlash to program these, they must be allocated to page 0 */
-   .econst             : > FLASHA,     PAGE = 0
-   .switch             : > FLASHA,     PAGE = 0
+   .econst             : >> FLASHA | FLASHC | FLASHD | FLASHE | FLASHF | FLASHG | FLASHH,     PAGE = 0
+   .switch             : >> FLASHA | FLASHC | FLASHD | FLASHE | FLASHF | FLASHG | FLASHH,     PAGE = 0
 
    /* Allocate IQ math areas: */
-   IQmath              : > FLASHA,     PAGE = 0            /* Math Code */
+   IQmath              : > FLASHA | FLASHC | FLASHD | FLASHE | FLASHF | FLASHG | FLASHH,     PAGE = 0            /* Math Code */
    IQmathTables        : > IQTABLES,   PAGE = 0, TYPE = NOLOAD
    
    /* Allocate FPU math areas: */
