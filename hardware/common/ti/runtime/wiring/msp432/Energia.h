@@ -134,6 +134,8 @@ void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
 
+void setDelayResolution(uint32_t milliseconds);
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
