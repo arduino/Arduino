@@ -1,8 +1,8 @@
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#ifndef AIR_430BOOST_FCC_H
+#define AIR_430BOOST_FCC_H
 /**
  *  ----------------------------------------------------------------------------
- *  Platform.h - AIR430Boost A110x2500 radio platform port interface.
+ *  AIR430BoostFCC.h - AIR430Boost A110x2500 radio FCC library.
  *  Copyright (C) 2012-2013 Anaren Microwave, Inc.
  *
  *  This library is free software; you can redistribute it and/or
@@ -26,26 +26,5 @@
  *
  *  Note: This file is part of AIR430Boost.
  */
-#include <Energia.h>
-#include <SPI.h>
-#include <rom_map.h>
-#include <driverlib/gpio.h>
-
-extern "C" { 
-  #include "CC1101.h"
-}
-
-#if defined( __MSP430FR5739__ )
-#error "TODO: MSP430FR5739 FRAM Launchpad currently not supported."
-#else
-#define RF_SPI_MISO   14
-#define RF_SPI_CSN    18
-#define RF_GDO0       19
-#endif
-
-extern "C" void A110x2500SpiInit();
-extern "C" void A110x2500SpiRead(unsigned char address, unsigned char *buffer, unsigned char count);
-extern "C" void A110x2500SpiWrite(unsigned char address, const unsigned char *buffer, unsigned char count);
-extern "C" void A110x2500Gdo0Init();
-
-#endif  /* PLATFORM_H */
+#include "utility/A110x2500Radio.h"
+#endif  /* AIR_430BOOST_FCC_H */

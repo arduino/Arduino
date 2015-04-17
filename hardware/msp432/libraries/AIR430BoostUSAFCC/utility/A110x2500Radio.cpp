@@ -53,11 +53,12 @@ const struct sCC1101Gdo *gGdo[3] = { &gGdo0, NULL, NULL };
 // ----------------------------------------------------------------------------
 // A110LR09 module driver
 
-static struct sA110LR09PhyInfo gPhyInfo;
-
-static volatile boolean gDataTransmitting = false;
-static volatile boolean gDataReceived = false;
+struct sA110LR09PhyInfo gPhyInfo;
+volatile boolean gDataTransmitting = false;
+volatile boolean gDataReceived = false;
 A110x2500Radio Radio;
+GateMutex_Struct mygate;
+Semaphore_Handle sem;
 
 // ----------------------------------------------------------------------------
 /**
@@ -68,12 +69,23 @@ void A110x2500Radio::begin(uint8_t address, channel_t channel, power_t power)
 {
   gDataTransmitting = false;
   gDataReceived = false;
-  
+  Task_Params taskParams;
+  Error_Block eb;
+  Error_init(&eb);
+  GateMutex_construct(&mygate, NULL);
+
+  sem = Semaphore_create(0, NULL, &eb);
   // Configure the radio and set the default address, channel, and TX power.
   A110LR09Init(&gPhyInfo, &gSpi, gGdo);
   setAddress(address);
   setChannel(channel);
   setPower(power);
+
+  Task_Params_init(&taskParams);
+  taskParams.priority = Task_numPriorities - 1;
+
+  taskParams.stackSize = 0x800;
+  Task_create(serviceInterrupt, &taskParams, &eb);
 
   attachInterrupt(RF_GDO0, gdo0Isr, FALLING);
   sleep();
@@ -140,8 +152,8 @@ void A110x2500Radio::transmit(uint8_t address,
   if (!busy())
   {
     // Bring the radio out of a low power state.
-    _wakeup();
-    
+    wakeup();
+
     // Set the transmit buffer.
     Radio._dataStream.length = 0;
     Radio._dataStream.address = 0;
@@ -162,7 +174,7 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
   if (!busy())
   {
     // Bring the radio out of a low power state.
-    _wakeup();
+    wakeup();
     
     // Set the receive buffer.
     Radio._dataStream.length = 0;
@@ -205,7 +217,7 @@ unsigned char A110x2500Radio::receiverOn(uint8_t *dataField,
  *  Private interface
  */
 
-void A110x2500Radio::_wakeup()
+void A110x2500Radio::wakeup()
 {
   struct sA110LR09PhyInfo *phyInfo = &gPhyInfo;
   
@@ -274,29 +286,40 @@ void A110x2500Radio::readDataStream(void)
   }
 }
 
+xdc_Void A110x2500Radio::serviceInterrupt(xdc_UArg arg0, xdc_UArg arg1) {
+  while(1) {
+    Semaphore_pend(sem, BIOS_WAIT_FOREVER);
+
+    GateMutex_enter(GateMutex_handle(&mygate));
+
+    // Note: It is assumed that interrupts are disabled.
+
+    // The GDO0 ISR will only look for the EOP edge. Therefore, if the radio
+    // is not transmitting the EOP, it must be receiving an EOP signal.
+    if (gDataTransmitting)
+    {
+      /**
+       *  Note: GDO0 is issued prior to the transmitter being completely
+       *  finished. The state machine will remain in TX_END until transmission
+       *  completes. The following waits for TX_END to correct the hardware
+       *  behavior.
+       */ 
+      while (CC1101GetMarcState(&gPhyInfo.cc1101) == eCC1101MarcStateTx_end);
+      gDataTransmitting = false;
+    }
+    else
+    {
+      gDataReceived = true;
+      readDataStream();
+    }
+
+    // Always go back to sleep.
+    sleep();
+    GateMutex_leave(GateMutex_handle(&mygate), 0);
+  }
+}
+
 void A110x2500Radio::gdo0Isr()
 {
-  // Note: It is assumed that interrupts are disabled.
-  
-  // The GDO0 ISR will only look for the EOP edge. Therefore, if the radio
-  // is not transmitting the EOP, it must be receiving an EOP signal.
-  if (gDataTransmitting)
-  {
-    /**
-     *  Note: GDO0 is issued prior to the transmitter being completely
-     *  finished. The state machine will remain in TX_END until transmission
-     *  completes. The following waits for TX_END to correct the hardware
-     *  behavior.
-     */ 
-    while (CC1101GetMarcState(&gPhyInfo.cc1101) == eCC1101MarcStateTx_end);
-    gDataTransmitting = false;
-  }
-  else
-  {
-    gDataReceived = true;
-    readDataStream();
-  }
-  
-  // Always go back to sleep.
-  sleep();
+  Semaphore_post(sem);
 }

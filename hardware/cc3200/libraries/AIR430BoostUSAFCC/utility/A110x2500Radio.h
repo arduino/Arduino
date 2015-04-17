@@ -198,12 +198,12 @@ private:
   /**
    *  wakeup - put the radio into an active state.
    */
-  static void wakeup(void);
+  static void _wakeup(void);
   
   /**
    *  sleep - put the radio into a low power state.
    */
-  static void sleep(void);
+  static void _sleep(void);
   
   /**
    *  buildDataStream - build a data stream. Populate header and data field
