@@ -46,34 +46,17 @@ public abstract class ContributedPackage {
 
   public abstract List<ContributedTool> getTools();
 
+  public abstract ContributedHelp getHelp();
+
   public ContributedPlatform findPlatform(String architecture, String version) {
+    if (architecture == null || version == null) {
+      return null;
+    }
     for (ContributedPlatform platform : getPlatforms()) {
       if (platform.getArchitecture().equals(architecture) && version.equals(platform.getParsedVersion()))
         return platform;
     }
     return null;
-  }
-
-  /**
-   * Return the latest version available of a platform
-   * 
-   * @param platform
-   * @return
-   */
-  public ContributedPlatform findPlatform(String platform) {
-    VersionComparator version = new VersionComparator();
-    ContributedPlatform found = null;
-    for (ContributedPlatform p : getPlatforms()) {
-      if (!p.getName().equals(platform))
-        continue;
-      if (found == null) {
-        found = p;
-        continue;
-      }
-      if (version.compare(p.getParsedVersion(), found.getParsedVersion()) > 0)
-        found = p;
-    }
-    return found;
   }
 
   public ContributedTool findTool(String name, String version) {

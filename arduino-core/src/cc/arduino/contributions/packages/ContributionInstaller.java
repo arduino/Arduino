@@ -61,7 +61,7 @@ public class ContributionInstaller {
     if (extenalPackageIndexUrl != null && !"".equals(extenalPackageIndexUrl)) {
       PACKAGE_INDEX_URL = extenalPackageIndexUrl;
     } else {
-      PACKAGE_INDEX_URL = "http://arduino.cc/download.php?f=/packages/package_index.json";
+      PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
     }
   }
 
@@ -205,6 +205,9 @@ public class ContributionInstaller {
   }
 
   public List<String> remove(ContributedPlatform platform) {
+    if (platform == null || platform.isReadOnly()) {
+      return new LinkedList<String>();
+    }
     List<String> errors = new LinkedList<String>();
     FileUtils.recursiveDelete(platform.getInstalledFolder());
     platform.setInstalled(false);

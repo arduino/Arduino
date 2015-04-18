@@ -47,6 +47,7 @@
   <property name="launch4j-download-unpack-target-name" value="launch4j-linux"/>
 
   <property name="MACOSX_BUNDLED_JVM" value="${java.home}/../"/>
+  <property name="WINDOWS_BUNDLED_JVM" value="${java.home}"/>
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -123,19 +124,19 @@
     <!-- Unzip documentation -->
     <antcall target="unzip">
       <param name="archive_file" value="shared/reference-1.6.0.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/reference-1.6.0.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/reference-1.6.0.zip" />
       <param name="final_folder" value="${target.path}/reference" />
       <param name="dest_folder" value="${target.path}" />
     </antcall>
     <antcall target="unzip">
       <param name="archive_file" value="shared/Galileo_help_files-1.6.2.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/Galileo_help_files-1.6.2.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/Galileo_help_files-1.6.2.zip" />
       <param name="final_folder" value="${target.path}/reference/Galileo_help_files" />
       <param name="dest_folder" value="${target.path}/reference/" />
     </antcall>
     <antcall target="unzip">
       <param name="archive_file" value="shared/Edison_help_files-1.6.2.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/Edison_help_files-1.6.2.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/Edison_help_files-1.6.2.zip" />
       <param name="final_folder" value="${target.path}/reference/Edison_help_files" />
       <param name="dest_folder" value="${target.path}/reference/" />
     </antcall>
@@ -265,7 +266,7 @@
 
     <antcall target="unzip">
       <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-upstream1.jar.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/appbundler-1.0ea-upstream1.jar.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/appbundler-1.0ea-upstream1.jar.zip" />
       <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-upstream1" />
       <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-upstream1" />
     </antcall>
@@ -351,7 +352,7 @@
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -395,13 +396,13 @@
   </target>
 
   <target name="macosx-run-common">
-    <exec executable="open" dir="macosx/work">
+    <exec executable="open" dir="macosx/work" failonerror="true">
       <arg value="Arduino.app"/>
     </exec>
   </target>
 
   <target name="macosx-debug-common">
-    <exec executable="open" dir="macosx/work" spawn="false">
+    <exec executable="open" dir="macosx/work" spawn="false" failonerror="true">
       <arg value="Arduino.app"/>
     </exec>
   </target>
@@ -417,17 +418,17 @@
     <delete dir="macosx/work/Arduino.app" />
 
     <!-- Unzip unsigned app into working dir -->
-    <exec executable="unzip" dir="macosx/work">
+    <exec executable="unzip" dir="macosx/work" failonerror="true">
       <arg line="../arduino-${version}-${platform}.zip" />
     </exec>
 
     <!-- Unlock keychain file -->
-    <exec executable="security" dir="macosx/work">
+    <exec executable="security" dir="macosx/work" failonerror="true">
       <arg line="unlock-keychain -p &quot;${macosx-sign-keychain-pass}&quot; &quot;${macosx-sign-keychain}&quot;" />
     </exec>
 
     <!-- Sign app -->
-    <exec executable="codesign" dir="macosx/work">
+    <exec executable="codesign" dir="macosx/work" failonerror="true">
       <arg line="--keychain &quot;${macosx-sign-keychain}&quot; --force -s &quot;${macosx-sign-id}&quot; --deep -v Arduino.app/" />
     </exec>
 
@@ -439,7 +440,7 @@
     <delete file="macosx/arduino-${version}-${platform}.zip" />
 
     <!-- Create signed zip file -->
-    <exec executable="zip" dir="macosx/work">
+    <exec executable="zip" dir="macosx/work" failonerror="true">
       <arg line="-q -r ../arduino-${version}-${platform}-signed.zip ." />
     </exec>
 
@@ -470,7 +471,7 @@
   </target>
 
   <target name="macosx-dist-common">
-    <exec executable="zip" dir="macosx/work">
+    <exec executable="zip" dir="macosx/work" failonerror="true">
       <arg line="-q -r ../arduino-${version}-${platform}.zip ." />
     </exec>
 
@@ -600,7 +601,7 @@
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -629,11 +630,11 @@
   </target>
 
   <target name="linux32-run" depends="linux32-build" description="Run Linux (32-bit) version">
-    <exec executable="./linux/work/arduino" spawn="false"/>
+    <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
   <target name="linux64-run" depends="linux64-build" description="Run Linux (64-bit) version">
-    <exec executable="./linux/work/arduino" spawn="false"/>
+    <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
   <!-- Set '${dist_file}_available' property if toolchain dist_file is downloaded              -->
@@ -665,7 +666,7 @@
   <!-- Ensure that the tool is downloaded and test checksums, if everything's ok unzip it on the tools folder  -->
   <target name="untar" depends="untar-unzip-checksum" unless="${archive_file}_installed">
     <echo>Untarring ${archive_file} into folder ${dest_folder}</echo>
-    <exec executable="tar">
+    <exec executable="tar" failonerror="true">
       <arg value="xf"/>
       <arg value="${archive_file}"/>
       <arg value="--directory=${dest_folder}"/>
@@ -675,7 +676,7 @@
   <target name="unzip" depends="untar-unzip-checksum" unless="${archive_file}_installed">
     <echo>Unzipping ${archive_file} into folder ${dest_folder}</echo>
     <mkdir dir="${dest_folder}" />
-    <exec executable="unzip">
+    <exec executable="unzip" failonerror="true">
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
@@ -693,33 +694,9 @@
   <target name="linux-dist" depends="build"
 	  description="Build .tar.xz of linux version">
 
-    <!--get src="http://dev.processing.org/build/jre-tools-6u18-linux-i586.tgz" 
-	 dest="linux/jre.tgz" 
-	 usetimestamp="true" />    
-    <untar compression="gzip" 
-	   dest="linux/work" 
-	   src="linux/jre.tgz" 
-	   overwrite="false"/-->
-
-<!--
-    <tar compression="gzip" basedir="linux/work"
-	 destfile="linux/arduino-${version}.tgz" />
-
-    <tar compression="gzip" destfile="linux/arduino-${version}-linux.tgz">
-      <tarfileset dir="linux/work"
-		  prefix="arduino-${version}"
-		  excludes="arduino,
-			    hardware/tools/avrdude,
-			    java/**"
-		  />
-      <tarfileset file="linux/work/arduino" filemode="755" prefix="arduino-${version}" />
-      <tarfileset file="linux/work/hardware/tools/avrdude" filemode="755"
-		  prefix="arduino-${version}/hardware/tools" />
-    </tar>
--->
     <move file="linux/work" tofile="linux/arduino-${version}" />
 
-    <exec executable="tar" dir="linux">
+    <exec executable="tar" dir="linux" failonerror="true">
       <arg value="--lzma"/>
       <arg value="-c"/>
       <arg value="-f"/>
@@ -818,7 +795,7 @@
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -873,19 +850,24 @@
 
   <target name="windows-run" depends="windows-build"
 	  description="Run windows version">
-    <exec executable="windows/work/arduino.exe"
-	  dir="windows/work" spawn="true"/>
+    <exec executable="windows/work/arduino.exe" dir="windows/work" spawn="true" failonerror="true"/>
   </target>
 
-  <target name="windows-dist" depends="windows-build"
-	  description="Create .zip files of windows version">
+  <target name="windows-dist" depends="windows-build" description="Create .zip files of windows version">
 
-    <antcall target="unzip">
-      <param name="archive_file" value="windows/jre-8u31.zip" />
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/jre-8u31.zip" />
-      <param name="final_folder" value="${staging_folder}/work/java" />
-      <param name="dest_folder" value="${staging_folder}/work/" />
-    </antcall>
+    <loadproperties srcfile="${WINDOWS_BUNDLED_JVM}/release" prefix="windows"/>
+
+    <fail message="It looks like ${WINDOWS_BUNDLED_JVM} does not contain a Windows JVM">
+      <condition>
+        <not>
+          <equals arg1="${windows.OS_NAME}" arg2="&quot;Windows&quot;"/>
+        </not>
+      </condition>
+    </fail>
+
+    <copy todir="${staging_folder}/work/java" includeemptydirs="true" preservelastmodified="true" overwrite="true" failonerror="true">
+      <fileset dir="${WINDOWS_BUNDLED_JVM}" includes="*/**"/>
+    </copy>
 
     <zip destfile="windows/arduino-${version}-${platform}.zip" level="9">
       <zipfileset dir="windows/work" prefix="arduino-${version}"/>
@@ -948,7 +930,7 @@
 
     <antcall target="${unpack_target}">
       <param name="archive_file" value="${staging_folder}/${gcc_archive_file}"/>
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/tools/${gcc_archive_file}"/>
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/${gcc_archive_file}"/>
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/${gcc_version}/"/>
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/"/>
     </antcall>
@@ -957,7 +939,7 @@
 
     <antcall target="${unpack_target}">
       <param name="archive_file" value="${staging_folder}/${avrdude_archive_file}"/>
-      <param name="archive_url" value="http://arduino.cc/download.php?f=/tools/${avrdude_archive_file}"/>
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/${avrdude_archive_file}"/>
       <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/${avrdude_version}"/>
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/"/>
     </antcall>
@@ -976,11 +958,11 @@
   </target>
 
   <target name="macosx-fix-bundled-toolchain-missing-symlinks" if="macosx">
-    <exec executable="mv">
+    <exec executable="mv" failonerror="true">
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb.dylib"/>
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
     </exec>
-    <exec executable="mv">
+    <exec executable="mv" failonerror="true">
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb-1.0.dylib"/>
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
     </exec>

@@ -27,34 +27,24 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.libraries.ui;
+package cc.arduino.contributions;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.filters.CategoryPredicate;
-import cc.arduino.contributions.libraries.filters.TypePredicate;
-import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+import cc.arduino.contributions.packages.DownloadableContribution;
 
-public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrary> {
+import java.util.Comparator;
 
-  private final String type;
+public class DownloadableContributionVersionComparator implements Comparator<DownloadableContribution> {
 
-  public DropdownLibraryOfTypeItem(String type) {
-    this.type = type;
-  }
+  private final VersionComparator versionComparator;
 
-  public String toString() {
-    return type;
+  public DownloadableContributionVersionComparator() {
+    versionComparator = new VersionComparator();
   }
 
   @Override
-  public Predicate<ContributedLibrary> getFilterPredicate() {
-    return new TypePredicate(type);
+  public int compare(DownloadableContribution lib1, DownloadableContribution lib2) {
+    return versionComparator.compare(lib1.getParsedVersion(), lib2.getParsedVersion());
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownLibraryOfTypeItem && ((DropdownLibraryOfTypeItem) obj).type.equals(type);
-  }
 
 }

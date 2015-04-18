@@ -165,6 +165,25 @@ public class Preferences {
       new Language(_("Western Frisian"), "Western Frisian", "fy"),
       };
 
+  private static class WarningItem {
+    private final String value;
+    private final String translation;
+
+    public WarningItem(String value, String translation) {
+      this.value = value;
+      this.translation = translation;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return translation;
+    }
+  }
+
   /**
    * Standardized width for buttons. Mac OS X 10.3 wants 70 as its default,
    * Windows XP needs 66, and my Ubuntu machine needs 80+, so 80 seems proper.
@@ -205,13 +224,12 @@ public class Preferences {
   JCheckBox displayLineNumbersBox;
   JCheckBox verifyUploadBox;
   JCheckBox externalEditorBox;
-  JCheckBox memoryOverrideBox;
-  JTextField memoryField;
   JCheckBox checkUpdatesBox;
   JTextField fontSizeField;
   JCheckBox updateExtensionBox;
   JCheckBox autoAssociateBox;
   JComboBox comboLanguage;
+  JComboBox comboWarnings;
   JCheckBox saveVerifyUploadBox;
   JTextField proxyHTTPServer;
   JTextField proxyHTTPPort;
@@ -352,6 +370,27 @@ public class Preferences {
     pane.add(box);
     d = box.getPreferredSize();
     box.setBounds(left, top, d.width, d.height);
+    top += d.height + GUI_BETWEEN;
+
+	// [ ] Enable all compiler warnings
+
+    box = Box.createHorizontalBox();
+    label = new JLabel(_("Compiler warnings: "));
+    box.add(label);
+    WarningItem[] warningItems = new WarningItem[]{new WarningItem("none", _("None")), new WarningItem("default", _("Default")), new WarningItem("more", _("More")), new WarningItem("all", _("All")), };
+    comboWarnings = new JComboBox(warningItems);
+    String currentWarningLevel = PreferencesData.get("compiler.warning_flags", "none");
+    for (WarningItem item : warningItems) {
+      if (currentWarningLevel.equals(item.getValue())) {
+        comboWarnings.setSelectedItem(item);
+      }
+    }
+    box.add(comboWarnings);
+    pane.add(box);
+    d = box.getPreferredSize();
+    box.setForeground(Color.gray);
+    box.setBounds(left, top, d.width, d.height);
+    right = Math.max(right, left + d.width);
     top += d.height + GUI_BETWEEN;
 
 	// [ ] Display line numbers
@@ -730,6 +769,9 @@ public class Preferences {
     // adds the selected language to the preferences file
     Language newLanguage = (Language) comboLanguage.getSelectedItem();
     PreferencesData.set("editor.languages.current", newLanguage.isoCode);
+
+    WarningItem warningItem = (WarningItem) comboWarnings.getSelectedItem();
+    PreferencesData.set("compiler.warning_flags", warningItem.getValue());
 
     Preferences.set("proxy.http.server", proxyHTTPServer.getText());
     try {

@@ -22,9 +22,19 @@
 
 package processing.app;
 
+import cc.arduino.contributions.VersionHelper;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.LibrariesIndexer;
+import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
-import cc.arduino.packages.DiscoveryManager;
+import cc.arduino.contributions.packages.ContributedPlatform;
+import cc.arduino.contributions.packages.ContributionInstaller;
+import cc.arduino.contributions.packages.ContributionsIndexer;
+import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.packages.ui.ContributionManagerUI;
+import cc.arduino.files.DeleteFilesOnShutdown;
+import cc.arduino.packages.DiscoveryManager;
+import cc.arduino.utils.Progress;
 import cc.arduino.view.SplashScreenHelper;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -118,6 +128,8 @@ public class Base {
   }
   
   static public void guardedMain(String args[]) throws Exception {
+    Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
+
     BaseNoGui.initLogger();
     
     BaseNoGui.notifier = new GUIUserNotifier();
@@ -193,7 +205,7 @@ public class Base {
 
     // Create a location for untitled sketches
     untitledFolder = createTempFolder("untitled");
-    untitledFolder.deleteOnExit();
+    DeleteFilesOnShutdown.add(untitledFolder);
 
     new Base(args);
   }
@@ -296,11 +308,103 @@ public class Base {
     // them.
     Preferences.save();
 
-      if (parser.isVerifyOrUploadMode()) {
+    if (parser.isInstallBoard()) {
+      ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder());
+      ContributionInstaller installer = new ContributionInstaller(indexer) {
+        private String lastStatus = "";
+        @Override
+        protected void onProgress(Progress progress) {
+          if (!lastStatus.equals(progress.getStatus())) {
+            System.out.println(progress.getStatus());
+          }
+          lastStatus = progress.getStatus();
+        }
+      };
+      installer.updateIndex();
+      indexer.parseIndex();
+      indexer.syncWithFilesystem(getHardwareFolder());
+
+      String[] boardToInstallParts = parser.getBoardToInstall().split(":");
+
+      ContributedPlatform selected = null;
+      if (boardToInstallParts.length == 3) {
+        selected = indexer.getIndex().findPlatform(boardToInstallParts[0], boardToInstallParts[1], VersionHelper.valueOf(boardToInstallParts[2]).toString());
+      } else if (boardToInstallParts.length == 2) {
+        List<ContributedPlatform> platformsByName = indexer.getIndex().findPlatforms(boardToInstallParts[0], boardToInstallParts[1]);
+        Collections.sort(platformsByName, new DownloadableContributionVersionComparator());
+        if (!platformsByName.isEmpty()) {
+          selected = platformsByName.get(platformsByName.size() - 1);
+        }
+      }
+      if (selected == null) {
+        System.out.println(_("Selected board is not available"));
+        System.exit(1);
+      }
+
+      ContributedPlatform installed = indexer.getIndex().getInstalled(boardToInstallParts[0], boardToInstallParts[1]);
+
+      if (!selected.isReadOnly()) {
+        installer.install(selected);
+      }
+
+      if (installed != null && !installed.isReadOnly()) {
+        installer.remove(installed);
+      }
+
+      System.exit(0);
+
+    } else if (parser.isInstallLibrary()) {
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
+      LibraryInstaller installer = new LibraryInstaller(indexer) {
+        private String lastStatus = "";
+        @Override
+        protected void onProgress(Progress progress) {
+          if (!lastStatus.equals(progress.getStatus())) {
+            System.out.println(progress.getStatus());
+          }
+          lastStatus = progress.getStatus();
+        }
+      };
+      indexer.parseIndex();
+      BaseNoGui.onBoardOrPortChange();
+      indexer.setSketchbookLibrariesFolder(BaseNoGui.getSketchbookLibrariesFolder());
+      indexer.setLibrariesFolders(BaseNoGui.getLibrariesPath());
+      installer.updateIndex();
+
+      for (String library : parser.getLibraryToInstall().split(",")) {
+        String[] libraryToInstallParts = library.split(":");
+
+        ContributedLibrary selected=null;
+        if (libraryToInstallParts.length == 2) {
+          selected = indexer.getIndex().find(libraryToInstallParts[0], VersionHelper.valueOf(libraryToInstallParts[1]).toString());
+        } else if (libraryToInstallParts.length == 1) {
+          List<ContributedLibrary> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
+          Collections.sort(librariesByName, new DownloadableContributionVersionComparator());
+          if (!librariesByName.isEmpty()) {
+            selected = librariesByName.get(librariesByName.size() - 1);
+          }
+        }
+        if (selected == null) {
+          System.out.println(_("Selected library is not available"));
+          System.exit(1);
+        }
+
+        ContributedLibrary installed = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
+        if (selected.isReadOnly()) {
+          installer.remove(installed);
+        } else {
+          installer.install(selected, installed);
+        }
+      }
+
+      System.exit(0);
+
+    } else if (parser.isVerifyOrUploadMode()) {
         splashScreenHelper.close();
         // Set verbosity for command line build
         Preferences.set("build.verbose", "" + parser.isDoVerboseBuild());
         Preferences.set("upload.verbose", "" + parser.isDoVerboseUpload());
+        Preferences.set("runtime.preserve.temp.files", Boolean.toString(parser.isPreserveTempFiles()));
 
         // Make sure these verbosity preferences are only for the
         // current session
@@ -1525,11 +1629,11 @@ public class Base {
           String complaining = I18n
               .format(
                       _("The sketch \"{0}\" cannot be used.\n"
-                          + "Sketch names must contain only basic letters and numbers\n"
-                          + "(ASCII-only with no spaces, "
-                          + "and it cannot start with a number).\n"
-                          + "To get rid of this message, remove the sketch from\n"
-                          + "{1}"), name, entry.getAbsolutePath());
+                              + "Sketch names must contain only basic letters and numbers\n"
+                              + "(ASCII-only with no spaces, "
+                              + "and it cannot start with a number).\n"
+                              + "To get rid of this message, remove the sketch from\n"
+                              + "{1}"), name, entry.getAbsolutePath());
           showMessage(_("Ignoring sketch with bad name"), complaining);
         }
         return false;

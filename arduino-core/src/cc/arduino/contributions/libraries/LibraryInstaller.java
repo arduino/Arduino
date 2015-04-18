@@ -26,22 +26,21 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
-package cc.arduino.contributions.libraries.ui;
+package cc.arduino.contributions.libraries;
 
-import static processing.app.I18n._;
+import cc.arduino.contributions.packages.DownloadableContributionsDownloader;
+import cc.arduino.utils.ArchiveExtractor;
+import cc.arduino.utils.MultiStepProgress;
+import cc.arduino.utils.Progress;
+import processing.app.BaseNoGui;
+import processing.app.I18n;
+import processing.app.helpers.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import processing.app.BaseNoGui;
-import processing.app.helpers.FileUtils;
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndexer;
-import cc.arduino.contributions.packages.DownloadableContributionsDownloader;
-import cc.arduino.utils.ArchiveExtractor;
-import cc.arduino.utils.MultiStepProgress;
-import cc.arduino.utils.Progress;
+import static processing.app.I18n._;
 
 public class LibraryInstaller {
 
@@ -52,7 +51,7 @@ public class LibraryInstaller {
     if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
       LIBRARY_INDEX_URL = externalLibraryIndexUrl;
     } else {
-      LIBRARY_INDEX_URL = "http://arduino.cc/download.php?f=/libraries/library_index.json";
+      LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
     }
   }
 
@@ -93,7 +92,7 @@ public class LibraryInstaller {
       outputFile.delete();
     if (!tmpFile.renameTo(outputFile))
       throw new Exception(
-          _("An error occurred while updating libraries index!"));
+              _("An error occurred while updating libraries index!"));
 
     // Step 2: Rescan index
     rescanLibraryIndex(progress);
@@ -101,14 +100,15 @@ public class LibraryInstaller {
 
   public void install(ContributedLibrary lib, ContributedLibrary replacedLib) throws Exception {
     if (lib.isInstalled()) {
-      throw new Exception(_("Library is already installed!"));
+      System.out.println(I18n.format(_("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
+      return;
     }
 
     final MultiStepProgress progress = new MultiStepProgress(3);
 
     // Step 1: Download library
     try {
-      downloader.download(lib, progress, _("Downloading library."));
+      downloader.download(lib, progress, I18n.format(_("Downloading library: {0}"), lib.getName()));
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
@@ -119,7 +119,7 @@ public class LibraryInstaller {
     // all the temporary folders and abort installation.
 
     // Step 2: Unpack library on the correct location
-    progress.setStatus(_("Installing library..."));
+    progress.setStatus(I18n.format(_("Installing library: {0}"), lib.getName()));
     onProgress(progress);
     File libsFolder = indexer.getSketchbookLibrariesFolder();
     File tmpFolder = FileUtils.createTempFolderIn(libsFolder);
@@ -133,26 +133,24 @@ public class LibraryInstaller {
 
     // Step 3: Remove replaced library and move installed one to the correct location
     // TODO: Fix progress bar...
-    if (replacedLib != null && !replacedLib.isReadOnly()) {
-      remove(replacedLib);
-    }
+    remove(replacedLib);
     File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
-    
+
     // Step 4: Rescan index
     rescanLibraryIndex(progress);
   }
 
   public void remove(ContributedLibrary lib) throws IOException {
-    if (lib.isReadOnly()) {
-      throw new IllegalArgumentException("Can't delete a built-in library");
+    if (lib == null || lib.isReadOnly()) {
+      return;
     }
 
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Remove library
-    progress.setStatus(_("Removing library..."));
+    progress.setStatus(I18n.format(_("Removing library: {0}"), lib.getName()));
     onProgress(progress);
     FileUtils.recursiveDelete(lib.getInstalledFolder());
     progress.stepDone();

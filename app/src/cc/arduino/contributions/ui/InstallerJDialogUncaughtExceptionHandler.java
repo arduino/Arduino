@@ -27,34 +27,39 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.libraries.ui;
+package cc.arduino.contributions.ui;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.filters.CategoryPredicate;
-import cc.arduino.contributions.libraries.filters.TypePredicate;
-import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+import cc.arduino.contributions.ui.InstallerJDialog;
 
-public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrary> {
+import javax.swing.*;
 
-  private final String type;
+import static processing.app.I18n._;
 
-  public DropdownLibraryOfTypeItem(String type) {
-    this.type = type;
-  }
+public class InstallerJDialogUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-  public String toString() {
-    return type;
-  }
+  private final InstallerJDialog parent;
+  private final String connectionErrorMessage;
 
-  @Override
-  public Predicate<ContributedLibrary> getFilterPredicate() {
-    return new TypePredicate(type);
+  public InstallerJDialogUncaughtExceptionHandler(InstallerJDialog parent, String connectionErrorMessage) {
+    this.parent = parent;
+    this.connectionErrorMessage = connectionErrorMessage;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownLibraryOfTypeItem && ((DropdownLibraryOfTypeItem) obj).type.equals(type);
+  public void uncaughtException(Thread t, final Throwable e) {
+    String errorMessage = _(e.getMessage().substring(e.getMessage().indexOf(":") + 1));
+    if (errorMessage.startsWith("Error downloading")) {
+      errorMessage = connectionErrorMessage;
+    }
+    final String finalErrorMessage = errorMessage;
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        System.err.println(finalErrorMessage);
+        e.printStackTrace();
+      }
+    });
+    parent.setErrorMessage(finalErrorMessage);
   }
 
 }
