@@ -29,7 +29,7 @@ void RobotControl::pointTo(int angle){
 		int currentAngle=compassRead();
 		int diff=target-currentAngle;
 		direction=180-(diff+360)%360;
-		if(direction>0){
+		if(direction<0){
 			motorsWrite(speed,-speed);//right
 			delay(10);
 		}else{
@@ -42,7 +42,10 @@ void RobotControl::pointTo(int angle){
 		//	diff -= 360;
 		//direction=-diff;
 		
-		if(abs(diff)<5){
+		currentAngle=compassRead();
+		diff=target-currentAngle;
+		
+		if(abs(diff)<1){
 			motorsStop();
 			return;
 		}
