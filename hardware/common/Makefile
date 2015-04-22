@@ -79,7 +79,7 @@ endef
 
 define size
 $(eval _SIZE = $(shell $(SIZE) $(MAINSKETCH).elf))
-$(eval $(info Binary sketch size: $(word 10, $(_SIZE)) bytes (of a $(FLASH_SIZE) byte maximum)))
+$(eval $(info Binary sketch size: $(word 7, $(_SIZE)) bytes (of a $(FLASH_SIZE) byte maximum)))
 endef
 
 define compute_srcs
