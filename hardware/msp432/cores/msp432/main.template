@@ -78,8 +78,6 @@ int main()
 	Board_init();  /* this function is generated as part of TI-RTOS config */
 	Power_enablePolicy();
 
-//	System_printf("unused memory: start = %p, end = %p\n", START, END);
-
 	/* The SimpleLink Host Driver requires a mechanism to allow functions to
 	 * execute in task context.  The SpawnTask is created to handle such
 	 * situations.  This task will remain blocked until the host driver
@@ -104,9 +102,6 @@ int main()
 //		Wiring_GPIO_hwiIntFxn, (UArg)&Board_gpioCallbacks3);
 
 	Task_Params taskParams;
-
-	System_printf("Startup\n");
-	System_flush();
 
 	/* initialize taskParams and set to default */
 	Task_Params_init(&taskParams);
