@@ -111,7 +111,7 @@ public:
 	void begin(void);
 	void end(void);
 #ifdef MOUSE_ABS_ENABLED
-	void moveAbs(unsigned int x, unsigned int y, signed char wheel, unsigned char buttons); // x and y have the range of 0 to 4095
+	void moveAbsolute(unsigned int x, unsigned int y, signed char wheel = 0, unsigned char buttons = 0); // x and y have the range of 0 to 4095
 #else
 	void click(uint8_t b = MOUSE_LEFT);
 	void move(signed char x, signed char y, signed char wheel = 0);	

@@ -155,20 +155,20 @@ const u8 _hidReportDescriptor[] = {
     0x06, LSB(RAWHID_USAGE_PAGE), MSB(RAWHID_USAGE_PAGE),	// 30
     0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
 
-    0xA1, 0x01,				// Collection 0x01
-    0x85, 0x03,             // REPORT_ID (3)
-    0x75, 0x08,				// report size = 8 bits
-    0x15, 0x00,				// logical minimum = 0
-    0x26, 0xFF, 0x00,		// logical maximum = 255
+    0xA1, 0x01,                    // COLLECTION 0x01
+    0x85, 0x03,                    //   REPORT_ID (3)
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xFF, 0x00,              //   LOGICAL_MAXIMUM (255)
 
-    0x95, 64,				// report count TX
-    0x09, 0x01,				// usage
-    0x81, 0x02,				// Input (array)
+    0x95, 64,                      //   REPORT_COUNT (TX)
+    0x09, 0x01,                    //   USAGE
+    0x81, 0x02,                    //   INPUT (array)
 
-    0x95, 64,				// report count RX
-    0x09, 0x02,				// usage
-    0x91, 0x02,				// Output (array)
-    0xC0					// end collection
+    0x95, 64,                      //   REPORT_COUNT (RX)
+    0x09, 0x02,                    //   USAGE
+    0x91, 0x02,                    //   OUTPUT (array)
+    0xC0                           // END_COLLECTION
 #endif
 };
 
@@ -259,7 +259,7 @@ void Mouse_::end(void)
 
 #ifdef MOUSE_ABS_ENABLED
 
-void Mouse_::moveAbs(unsigned int x, unsigned int y, signed char wheel, unsigned char buttons)
+void Mouse_::moveAbsolute(unsigned int x, unsigned int y, signed char wheel, unsigned char buttons)
 {
 	uint8_t m[6];
 	m[0] = buttons;
