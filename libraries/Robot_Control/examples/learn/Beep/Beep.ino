@@ -1,6 +1,6 @@
 /*
  Beep
- 
+
  Test different pre-configured beeps on
  the robot's speaker.
 
@@ -8,19 +8,21 @@
  - BEEP_SIMPLE
  - BEEP_DOUBLE
  - BEEP_LONG
- 
+
  Circuit:
  * Arduino Robot
- 
+
  created 1 May 2013
  by X. Yang
  modified 12 May 2013
  by D. Cuartielles
- 
+
  This example is in the public domain
  */
 
 #include <ArduinoRobot.h>
+#include <Wire.h>
+#include <SPI.h>
 
 void setup() {
   // initialize the robot
