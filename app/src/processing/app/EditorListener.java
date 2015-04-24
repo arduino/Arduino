@@ -235,6 +235,10 @@ public class EditorListener {
         event.consume();
         return true;
 
+      } else if (!tabsExpand) {
+        textarea.setSelectedText("\t");
+        event.consume();
+        return true;
       } else if (tabsIndent) {
         // this code is incomplete
 
