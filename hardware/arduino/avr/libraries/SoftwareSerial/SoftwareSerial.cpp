@@ -84,7 +84,7 @@ inline void SoftwareSerial::tunedDelay(uint16_t delay) {
 // one and returns true if it replaces another 
 bool SoftwareSerial::listen()
 {
-  if (!_rx_delay_stopbit)
+  if ((_receivePin < 0) || !_rx_delay_stopbit)
     return false;
 
   if (active_object != this)
@@ -106,7 +106,7 @@ bool SoftwareSerial::listen()
 // Stop listening. Returns true if we were actually listening.
 bool SoftwareSerial::stopListening()
 {
-  if (active_object == this)
+  if ((_receivePin >= 0) && (active_object == this))
   {
     setRxIntMsk(false);
     active_object = NULL;
@@ -270,22 +270,27 @@ void SoftwareSerial::setTX(uint8_t tx)
   // the pin would be output low for a short while before switching to
   // output hihg. Now, it is input with pullup for a short while, which
   // is fine. With inverse logic, either order is fine.
-  digitalWrite(tx, _inverse_logic ? LOW : HIGH);
-  pinMode(tx, OUTPUT);
-  _transmitBitMask = digitalPinToBitMask(tx);
-  uint8_t port = digitalPinToPort(tx);
-  _transmitPortRegister = portOutputRegister(port);
+  _transmitPin = tx;
+  if (tx >= 0) {
+	digitalWrite(tx, _inverse_logic ? LOW : HIGH);
+	pinMode(tx, OUTPUT);
+	_transmitBitMask = digitalPinToBitMask(tx);
+	uint8_t port = digitalPinToPort(tx);
+	_transmitPortRegister = portOutputRegister(port);
+  }
 }
 
 void SoftwareSerial::setRX(uint8_t rx)
 {
-  pinMode(rx, INPUT);
-  if (!_inverse_logic)
-    digitalWrite(rx, HIGH);  // pullup for normal logic!
   _receivePin = rx;
-  _receiveBitMask = digitalPinToBitMask(rx);
-  uint8_t port = digitalPinToPort(rx);
-  _receivePortRegister = portInputRegister(port);
+  if (rx >= 0) {
+	pinMode(rx, INPUT);
+	if (!_inverse_logic)
+	  digitalWrite(rx, HIGH);  // pullup for normal logic!
+	_receiveBitMask = digitalPinToBitMask(rx);
+	uint8_t port = digitalPinToPort(rx);
+	_receivePortRegister = portInputRegister(port);
+  }
 }
 
 uint16_t SoftwareSerial::subtract_cap(uint16_t num, uint16_t sub) {
@@ -314,7 +319,7 @@ void SoftwareSerial::begin(long speed)
   _tx_delay = subtract_cap(bit_delay, 15 / 4);
 
   // Only setup rx when we have a valid PCINT for this pin
-  if (digitalPinToPCICR(_receivePin)) {
+  if ((_receivePin >= 0) && digitalPinToPCICR(_receivePin)) {
     #if GCC_VERSION > 40800
     // Timings counted from gcc 4.8.2 output. This works up to 115200 on
     // 16Mhz and 57600 on 8Mhz.
@@ -374,10 +379,10 @@ void SoftwareSerial::begin(long speed)
 
 void SoftwareSerial::setRxIntMsk(bool enable)
 {
-    if (enable)
-      *_pcint_maskreg |= _pcint_maskvalue;
-    else
-      *_pcint_maskreg &= ~_pcint_maskvalue;
+  if (enable)
+	*_pcint_maskreg |= _pcint_maskvalue;
+  else
+	*_pcint_maskreg &= ~_pcint_maskvalue;
 }
 
 void SoftwareSerial::end()
@@ -412,7 +417,7 @@ int SoftwareSerial::available()
 
 size_t SoftwareSerial::write(uint8_t b)
 {
-  if (_tx_delay == 0) {
+  if ((_transmitPin < 0) || (_tx_delay == 0)) {
     setWriteError();
     return 0;
   }
