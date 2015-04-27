@@ -51,6 +51,7 @@ private:
   uint8_t _receivePin;
   uint8_t _receiveBitMask;
   volatile uint8_t *_receivePortRegister;
+  uint8_t _transmitPin;
   uint8_t _transmitBitMask;
   volatile uint8_t *_transmitPortRegister;
   volatile uint8_t *_pcint_maskreg;
@@ -92,7 +93,7 @@ public:
   void begin(long speed);
   bool listen();
   void end();
-  bool isListening() { return this == active_object; }
+  bool isListening() { return (_receivePin >= 0) && (this == active_object); }
   bool stopListening();
   bool overflow() { bool ret = _buffer_overflow; if (ret) _buffer_overflow = false; return ret; }
   int peek();
