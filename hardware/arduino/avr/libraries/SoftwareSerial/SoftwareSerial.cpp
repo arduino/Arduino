@@ -10,6 +10,7 @@ Multi-instance software serial library for Arduino/Wiring
 -- Pin change interrupt macros by Paul Stoffregen (http://www.pjrc.com)
 -- 20MHz processor support by Garrett Mace (http://www.macetech.com)
 -- ATmega1280/2560 support by Brett Hagman (http://www.roguerobotics.com/)
+-- Transmit or Receive Only by Scott Brynen (http://github.com/sbrynen)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -35,6 +36,7 @@ http://arduiniana.org.
 #define _DEBUG 0
 #define _DEBUG_PIN1 11
 #define _DEBUG_PIN2 13
+
 // 
 // Includes
 // 
@@ -84,7 +86,7 @@ inline void SoftwareSerial::tunedDelay(uint16_t delay) {
 // one and returns true if it replaces another 
 bool SoftwareSerial::listen()
 {
-  if ((_receivePin < 0) || !_rx_delay_stopbit)
+  if ((_receivePin == _SS_UNUSED) || !_rx_delay_stopbit)
     return false;
 
   if (active_object != this)
@@ -106,7 +108,7 @@ bool SoftwareSerial::listen()
 // Stop listening. Returns true if we were actually listening.
 bool SoftwareSerial::stopListening()
 {
-  if ((_receivePin >= 0) && (active_object == this))
+  if ((_receivePin != _SS_UNUSED) && (active_object == this))
   {
     setRxIntMsk(false);
     active_object = NULL;
@@ -252,6 +254,7 @@ SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inv
   _buffer_overflow(false),
   _inverse_logic(inverse_logic)
 {
+  // passing _SS_UNUSED for either the TX or RX pin makes the object RX or TX only
   setTX(transmitPin);
   setRX(receivePin);
 }
@@ -271,7 +274,7 @@ void SoftwareSerial::setTX(uint8_t tx)
   // output hihg. Now, it is input with pullup for a short while, which
   // is fine. With inverse logic, either order is fine.
   _transmitPin = tx;
-  if (tx >= 0) {
+  if (tx != _SS_UNUSED) {
 	digitalWrite(tx, _inverse_logic ? LOW : HIGH);
 	pinMode(tx, OUTPUT);
 	_transmitBitMask = digitalPinToBitMask(tx);
@@ -283,7 +286,7 @@ void SoftwareSerial::setTX(uint8_t tx)
 void SoftwareSerial::setRX(uint8_t rx)
 {
   _receivePin = rx;
-  if (rx >= 0) {
+  if (rx != _SS_UNUSED) {
 	pinMode(rx, INPUT);
 	if (!_inverse_logic)
 	  digitalWrite(rx, HIGH);  // pullup for normal logic!
@@ -319,7 +322,7 @@ void SoftwareSerial::begin(long speed)
   _tx_delay = subtract_cap(bit_delay, 15 / 4);
 
   // Only setup rx when we have a valid PCINT for this pin
-  if ((_receivePin >= 0) && digitalPinToPCICR(_receivePin)) {
+  if ((_receivePin != _SS_UNUSED) && digitalPinToPCICR(_receivePin)) {
     #if GCC_VERSION > 40800
     // Timings counted from gcc 4.8.2 output. This works up to 115200 on
     // 16Mhz and 57600 on 8Mhz.
@@ -417,7 +420,7 @@ int SoftwareSerial::available()
 
 size_t SoftwareSerial::write(uint8_t b)
 {
-  if ((_transmitPin < 0) || (_tx_delay == 0)) {
+  if ((_transmitPin == _SS_UNUSED) || (_tx_delay == 0)) {
     setWriteError();
     return 0;
   }
