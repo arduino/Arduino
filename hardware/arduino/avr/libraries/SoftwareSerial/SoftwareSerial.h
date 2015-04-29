@@ -40,8 +40,8 @@ http://arduiniana.org.
 * Definitions
 ******************************************************************************/
 
-#define _SS_MAX_RX_BUFF 64 // RX buffer size
-#define _SS_UNUSED -1      // flag for unused TX or RX pins
+#define _SS_MAX_RX_BUFF 64        // RX buffer size
+#define SOFTWARESERIAL_UNUSED -1  // flag for unused TX or RX pins
 
 #ifndef GCC_VERSION
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
@@ -96,7 +96,7 @@ public:
   void begin(long speed);
   bool listen();
   void end();
-  bool isListening() { return (_receivePin != _SS_UNUSED) && (this == active_object); }
+  bool isListening() { return (_receivePin != SOFTWARESERIAL_UNUSED) && (this == active_object); }
   bool stopListening();
   bool overflow() { bool ret = _buffer_overflow; if (ret) _buffer_overflow = false; return ret; }
   int peek();
