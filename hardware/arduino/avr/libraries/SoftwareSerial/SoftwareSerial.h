@@ -10,6 +10,7 @@ Multi-instance software serial library for Arduino/Wiring
 -- Pin change interrupt macros by Paul Stoffregen (http://www.pjrc.com)
 -- 20MHz processor support by Garrett Mace (http://www.macetech.com)
 -- ATmega1280/2560 support by Brett Hagman (http://www.roguerobotics.com/)
+-- Transmit or Receive Only by Scott Brynen (http://github.com/sbrynen)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -39,7 +40,9 @@ http://arduiniana.org.
 * Definitions
 ******************************************************************************/
 
-#define _SS_MAX_RX_BUFF 64 // RX buffer size
+#define _SS_MAX_RX_BUFF 64        // RX buffer size
+#define SOFTWARESERIAL_UNUSED -1  // flag for unused TX or RX pins
+
 #ifndef GCC_VERSION
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 #endif
@@ -51,6 +54,7 @@ private:
   uint8_t _receivePin;
   uint8_t _receiveBitMask;
   volatile uint8_t *_receivePortRegister;
+  uint8_t _transmitPin;
   uint8_t _transmitBitMask;
   volatile uint8_t *_transmitPortRegister;
   volatile uint8_t *_pcint_maskreg;
@@ -92,7 +96,7 @@ public:
   void begin(long speed);
   bool listen();
   void end();
-  bool isListening() { return this == active_object; }
+  bool isListening() { return (_receivePin != SOFTWARESERIAL_UNUSED) && (this == active_object); }
   bool stopListening();
   bool overflow() { bool ret = _buffer_overflow; if (ret) _buffer_overflow = false; return ret; }
   int peek();
