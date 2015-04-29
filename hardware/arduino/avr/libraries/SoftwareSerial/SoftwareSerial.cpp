@@ -1,15 +1,16 @@
 /*
-SoftwareSerial.cpp (formerly NewSoftSerial.cpp) - 
+SoftwareSerial.cpp (formerly NewSoftSerial.cpp) -
 Multi-instance software serial library for Arduino/Wiring
 -- Interrupt-driven receive and other improvements by ladyada
    (http://ladyada.net)
 -- Tuning, circular buffer, derivation from class Print/Stream,
    multi-instance support, porting to 8MHz processors,
-   various optimizations, PROGMEM delay tables, inverse logic and 
+   various optimizations, PROGMEM delay tables, inverse logic and
    direct port writing by Mikal Hart (http://www.arduiniana.org)
 -- Pin change interrupt macros by Paul Stoffregen (http://www.pjrc.com)
 -- 20MHz processor support by Garrett Mace (http://www.macetech.com)
 -- ATmega1280/2560 support by Brett Hagman (http://www.roguerobotics.com/)
+-- Transmit or Receive Only by Scott Brynen (http://github.com/sbrynen)
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -35,6 +36,7 @@ http://arduiniana.org.
 #define _DEBUG 0
 #define _DEBUG_PIN1 11
 #define _DEBUG_PIN2 13
+
 // 
 // Includes
 // 
@@ -48,7 +50,7 @@ http://arduiniana.org.
 // Statics
 //
 SoftwareSerial *SoftwareSerial::active_object = 0;
-char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF]; 
+char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF];
 volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;
 volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;
 
@@ -76,7 +78,7 @@ inline void DebugPulse(uint8_t pin, uint8_t count)
 //
 
 /* static */ 
-inline void SoftwareSerial::tunedDelay(uint16_t delay) { 
+inline void SoftwareSerial::tunedDelay(uint16_t delay) {
   _delay_loop_2(delay);
 }
 
@@ -84,7 +86,7 @@ inline void SoftwareSerial::tunedDelay(uint16_t delay) {
 // one and returns true if it replaces another 
 bool SoftwareSerial::listen()
 {
-  if (!_rx_delay_stopbit)
+  if ((_receivePin == SOFTWARESERIAL_UNUSED) || !_rx_delay_stopbit)
     return false;
 
   if (active_object != this)
@@ -106,7 +108,7 @@ bool SoftwareSerial::listen()
 // Stop listening. Returns true if we were actually listening.
 bool SoftwareSerial::stopListening()
 {
-  if (active_object == this)
+  if ((_receivePin != SOFTWARESERIAL_UNUSED) && (active_object == this))
   {
     setRxIntMsk(false);
     active_object = NULL;
@@ -252,6 +254,7 @@ SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inv
   _buffer_overflow(false),
   _inverse_logic(inverse_logic)
 {
+  // passing SOFTWARESERIAL_UNUSED for either the TX or RX pin makes the object RX or TX only
   setTX(transmitPin);
   setRX(receivePin);
 }
@@ -270,22 +273,44 @@ void SoftwareSerial::setTX(uint8_t tx)
   // the pin would be output low for a short while before switching to
   // output hihg. Now, it is input with pullup for a short while, which
   // is fine. With inverse logic, either order is fine.
-  digitalWrite(tx, _inverse_logic ? LOW : HIGH);
-  pinMode(tx, OUTPUT);
-  _transmitBitMask = digitalPinToBitMask(tx);
-  uint8_t port = digitalPinToPort(tx);
-  _transmitPortRegister = portOutputRegister(port);
+  _transmitPin = tx;
+  if (tx != SOFTWARESERIAL_UNUSED) {
+<<<<<<< HEAD
+	digitalWrite(tx, _inverse_logic ? LOW : HIGH);
+	pinMode(tx, OUTPUT);
+	_transmitBitMask = digitalPinToBitMask(tx);
+	uint8_t port = digitalPinToPort(tx);
+	_transmitPortRegister = portOutputRegister(port);
+=======
+    digitalWrite(tx, _inverse_logic ? LOW : HIGH);
+    pinMode(tx, OUTPUT);
+    _transmitBitMask = digitalPinToBitMask(tx);
+    uint8_t port = digitalPinToPort(tx);
+   _transmitPortRegister = portOutputRegister(port);
+>>>>>>> 269cde97b5f635643dd32c00abad5e4ece6c6139
+  }
 }
 
 void SoftwareSerial::setRX(uint8_t rx)
 {
-  pinMode(rx, INPUT);
-  if (!_inverse_logic)
-    digitalWrite(rx, HIGH);  // pullup for normal logic!
   _receivePin = rx;
-  _receiveBitMask = digitalPinToBitMask(rx);
-  uint8_t port = digitalPinToPort(rx);
-  _receivePortRegister = portInputRegister(port);
+  if (rx != SOFTWARESERIAL_UNUSED) {
+<<<<<<< HEAD
+	pinMode(rx, INPUT);
+	if (!_inverse_logic)
+	  digitalWrite(rx, HIGH);  // pullup for normal logic!
+	_receiveBitMask = digitalPinToBitMask(rx);
+	uint8_t port = digitalPinToPort(rx);
+	_receivePortRegister = portInputRegister(port);
+=======
+    pinMode(rx, INPUT);
+    if (!_inverse_logic)
+      digitalWrite(rx, HIGH);  // pullup for normal logic!
+    _receiveBitMask = digitalPinToBitMask(rx);
+    uint8_t port = digitalPinToPort(rx);
+    _receivePortRegister = portInputRegister(port);
+>>>>>>> 269cde97b5f635643dd32c00abad5e4ece6c6139
+  }
 }
 
 uint16_t SoftwareSerial::subtract_cap(uint16_t num, uint16_t sub) {
@@ -314,7 +339,7 @@ void SoftwareSerial::begin(long speed)
   _tx_delay = subtract_cap(bit_delay, 15 / 4);
 
   // Only setup rx when we have a valid PCINT for this pin
-  if (digitalPinToPCICR(_receivePin)) {
+  if ((_receivePin != SOFTWARESERIAL_UNUSED) && digitalPinToPCICR(_receivePin)) {
     #if GCC_VERSION > 40800
     // Timings counted from gcc 4.8.2 output. This works up to 115200 on
     // 16Mhz and 57600 on 8Mhz.
@@ -374,10 +399,10 @@ void SoftwareSerial::begin(long speed)
 
 void SoftwareSerial::setRxIntMsk(bool enable)
 {
-    if (enable)
-      *_pcint_maskreg |= _pcint_maskvalue;
-    else
-      *_pcint_maskreg &= ~_pcint_maskvalue;
+  if (enable)
+	*_pcint_maskreg |= _pcint_maskvalue;
+  else
+	*_pcint_maskreg &= ~_pcint_maskvalue;
 }
 
 void SoftwareSerial::end()
@@ -412,7 +437,7 @@ int SoftwareSerial::available()
 
 size_t SoftwareSerial::write(uint8_t b)
 {
-  if (_tx_delay == 0) {
+  if ((_transmitPin == SOFTWARESERIAL_UNUSED) || (_tx_delay == 0)) {
     setWriteError();
     return 0;
   }
