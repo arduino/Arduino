@@ -1,11 +1,11 @@
 /*
-SoftwareSerial.cpp (formerly NewSoftSerial.cpp) - 
+SoftwareSerial.cpp (formerly NewSoftSerial.cpp) -
 Multi-instance software serial library for Arduino/Wiring
 -- Interrupt-driven receive and other improvements by ladyada
    (http://ladyada.net)
 -- Tuning, circular buffer, derivation from class Print/Stream,
    multi-instance support, porting to 8MHz processors,
-   various optimizations, PROGMEM delay tables, inverse logic and 
+   various optimizations, PROGMEM delay tables, inverse logic and
    direct port writing by Mikal Hart (http://www.arduiniana.org)
 -- Pin change interrupt macros by Paul Stoffregen (http://www.pjrc.com)
 -- 20MHz processor support by Garrett Mace (http://www.macetech.com)
@@ -50,7 +50,7 @@ http://arduiniana.org.
 // Statics
 //
 SoftwareSerial *SoftwareSerial::active_object = 0;
-char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF]; 
+char SoftwareSerial::_receive_buffer[_SS_MAX_RX_BUFF];
 volatile uint8_t SoftwareSerial::_receive_buffer_tail = 0;
 volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;
 
@@ -78,7 +78,7 @@ inline void DebugPulse(uint8_t pin, uint8_t count)
 //
 
 /* static */ 
-inline void SoftwareSerial::tunedDelay(uint16_t delay) { 
+inline void SoftwareSerial::tunedDelay(uint16_t delay) {
   _delay_loop_2(delay);
 }
 
