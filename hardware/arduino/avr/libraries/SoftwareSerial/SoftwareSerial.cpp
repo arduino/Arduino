@@ -275,19 +275,11 @@ void SoftwareSerial::setTX(uint8_t tx)
   // is fine. With inverse logic, either order is fine.
   _transmitPin = tx;
   if (tx != SOFTWARESERIAL_UNUSED) {
-<<<<<<< HEAD
-	digitalWrite(tx, _inverse_logic ? LOW : HIGH);
-	pinMode(tx, OUTPUT);
-	_transmitBitMask = digitalPinToBitMask(tx);
-	uint8_t port = digitalPinToPort(tx);
-	_transmitPortRegister = portOutputRegister(port);
-=======
     digitalWrite(tx, _inverse_logic ? LOW : HIGH);
     pinMode(tx, OUTPUT);
     _transmitBitMask = digitalPinToBitMask(tx);
     uint8_t port = digitalPinToPort(tx);
    _transmitPortRegister = portOutputRegister(port);
->>>>>>> 269cde97b5f635643dd32c00abad5e4ece6c6139
   }
 }
 
@@ -295,21 +287,12 @@ void SoftwareSerial::setRX(uint8_t rx)
 {
   _receivePin = rx;
   if (rx != SOFTWARESERIAL_UNUSED) {
-<<<<<<< HEAD
-	pinMode(rx, INPUT);
-	if (!_inverse_logic)
-	  digitalWrite(rx, HIGH);  // pullup for normal logic!
-	_receiveBitMask = digitalPinToBitMask(rx);
-	uint8_t port = digitalPinToPort(rx);
-	_receivePortRegister = portInputRegister(port);
-=======
     pinMode(rx, INPUT);
     if (!_inverse_logic)
       digitalWrite(rx, HIGH);  // pullup for normal logic!
     _receiveBitMask = digitalPinToBitMask(rx);
     uint8_t port = digitalPinToPort(rx);
     _receivePortRegister = portInputRegister(port);
->>>>>>> 269cde97b5f635643dd32c00abad5e4ece6c6139
   }
 }
 
