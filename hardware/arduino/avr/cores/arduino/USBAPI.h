@@ -105,20 +105,24 @@ class Mouse_
 {
 private:
 	uint8_t _buttons;
+#ifdef MOUSE_ABS_ENABLED
+	int _x, _y;
+#endif
 	void buttons(uint8_t b);
 public:
 	Mouse_(void);
 	void begin(void);
 	void end(void);
 #ifdef MOUSE_ABS_ENABLED
-	void moveAbsolute(unsigned int x, unsigned int y, signed char wheel = 0, unsigned char buttons = 0); // x and y have the range of 0 to 4095
-#else
-	void click(uint8_t b = MOUSE_LEFT);
+	void moveAbsolute(int x, int y, signed char wheel = 0); // x and y have the range 0...4095
+	void moveAbsolute(int x, int y, signed char wheel, unsigned char buttons); // x and y have the range 0...4095
+#endif
 	void move(signed char x, signed char y, signed char wheel = 0);	
+	void click(uint8_t b = MOUSE_LEFT);		// click LEFT by default
 	void press(uint8_t b = MOUSE_LEFT);		// press LEFT by default
 	void release(uint8_t b = MOUSE_LEFT);	// release LEFT by default
 	bool isPressed(uint8_t b = MOUSE_LEFT);	// check LEFT by default
-#endif
+
 };
 extern Mouse_ Mouse;
 
