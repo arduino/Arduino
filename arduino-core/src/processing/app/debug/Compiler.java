@@ -54,7 +54,7 @@ import processing.app.preproc.PdePreprocessor;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LegacyUserLibrary;
 import processing.app.packages.UserLibrary;
-import processing.app.tools.ArgumentsWithSpaceAwareCommandLine;
+import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
 
 public class Compiler implements MessageConsumer {
 
@@ -723,7 +723,7 @@ public class Compiler implements MessageConsumer {
       }
     });
 
-    CommandLine commandLine = new ArgumentsWithSpaceAwareCommandLine(command[0]);
+    CommandLine commandLine = new DoubleQuotedArgumentsOnWindowsCommandLine(command[0]);
     for (int i = 1; i < command.length; i++) {
       commandLine.addArgument(command[i], false);
     }
@@ -903,8 +903,8 @@ public class Compiler implements MessageConsumer {
   }
 
   private void setupWarningFlags(PreferencesMap dict) {
-    if (dict.containsKey("compiler.warning_flags")) {
-      String key = "compiler.warning_flags." + dict.get("compiler.warning_flags");
+    if (dict.containsKey("compiler.warning_level")) {
+      String key = "compiler.warning_flags." + dict.get("compiler.warning_level");
       dict.put("compiler.warning_flags", dict.get(key));
     } else {
       dict.put("compiler.warning_flags", dict.get("compiler.warning_flags.none"));
