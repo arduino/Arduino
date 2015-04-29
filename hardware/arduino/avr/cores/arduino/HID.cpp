@@ -284,7 +284,7 @@ void Mouse_::moveAbsolute(int x, int y, signed char wheel)
 	m[3] = LSB(y);
 	m[4] = MSB(y);
 	m[5] = wheel;
-	HID_SendReport(1,m,6);
+	HID_SendReport(1, m, sizeof(m));
 }
 
 void Mouse_::moveAbsolute(int x, int y, signed char wheel, unsigned char buttons)
@@ -307,7 +307,7 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	m[1] = x;
 	m[2] = y;
 	m[3] = wheel;
-	HID_SendReport(1,m,4);
+	HID_SendReport(1, m, sizeof(m));
 }
 
 #endif
@@ -365,7 +365,7 @@ void Keyboard_::end(void)
 
 void Keyboard_::sendReport(KeyReport* keys)
 {
-	HID_SendReport(2,keys,sizeof(KeyReport));
+	HID_SendReport(2, keys, sizeof(KeyReport));
 }
 
 extern
