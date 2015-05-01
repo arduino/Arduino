@@ -41,6 +41,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
   protected JScrollPane scrollPane;
   protected JTextField textField;
   protected JButton sendButton;
+  protected JButton resetButton;
   protected JCheckBox autoscrollBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
@@ -101,10 +102,12 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
     textField = new JTextField(40);
     sendButton = new JButton(_("Send"));
+	resetButton = new JButton(_("Send Reset"));
 
     upperPane.add(textField);
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
     upperPane.add(sendButton);
+    upperPane.add(resetButton);
 
     getContentPane().add(upperPane, BorderLayout.NORTH);
 
@@ -188,6 +191,10 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     sendButton.addActionListener(listener);
   }
 
+  public void onResetCommand(ActionListener listener) {
+    resetButton.addActionListener(listener);
+  }  
+  
   protected void setPlacement(int[] location) {
     setBounds(location[0], location[1], location[2], location[3]);
   }
@@ -228,6 +235,9 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   public abstract void close() throws Exception;
   
+  public abstract void openSerial() throws Exception;
+  public abstract void closeSerial() throws Exception;
+    
   public synchronized void addToUpdateBuffer(char buff[], int n) {
     updateBuffer.append(buff, 0, n);
   }

@@ -121,6 +121,13 @@ public class NetworkMonitor extends AbstractMonitor implements MessageConsumer {
       });
     }
   }
+  
+  @Override
+  public void openSerial() throws Exception {}
+  
+  @Override
+  public void closeSerial() throws Exception {}
+  
 
   @Override
   public synchronized void message(String s) {

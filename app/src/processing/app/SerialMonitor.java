@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 
 import static processing.app.I18n._;
 
+
 @SuppressWarnings("serial")
 public class SerialMonitor extends AbstractMonitor {
 
@@ -65,6 +66,18 @@ public class SerialMonitor extends AbstractMonitor {
         textField.setText("");
       }
     });
+
+	onResetCommand(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+	  try {
+		  serial.setDTR(true);
+          Thread.sleep(207);    // Pfffffff.
+		  serial.setDTR(false);
+       } catch (Exception se) {
+          se.printStackTrace();  // we are in deep trouble if this happens....
+        }
+	  }
+    });
   }
 
   private void send(String s) {
@@ -88,7 +101,7 @@ public class SerialMonitor extends AbstractMonitor {
     }
   }
 
-  public void open() throws Exception {
+  public void openSerial() throws Exception {
     if (serial != null) return;
 
     serial = new Serial(port, serialRate) {
@@ -98,8 +111,8 @@ public class SerialMonitor extends AbstractMonitor {
       }
     };
   }
-
-  public void close() throws Exception {
+  
+  public void closeSerial() throws Exception {
     if (serial != null) {
       int[] location = getPlacement();
       String locationStr = PApplet.join(PApplet.str(location), ",");
@@ -108,6 +121,14 @@ public class SerialMonitor extends AbstractMonitor {
       serial.dispose();
       serial = null;
     }
+  }
+  
+  public void open() throws Exception {
+	  openSerial();
+  }
+
+  public void close() throws Exception {
+	  closeSerial();
   }
   
 }
