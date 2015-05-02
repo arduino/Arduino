@@ -35,28 +35,28 @@ void RobotControl::_setWrite(uint8_t posX, uint8_t posY){
 void RobotControl::text(int value, uint8_t posX, uint8_t posY, bool EW){
 	if(EW)
 		_setWrite(posX,posY);
-	else 
+	else
 		_setErase(posX,posY);
 	Arduino_LCD::print(value);
 }
 void RobotControl::text(long value, uint8_t posX, uint8_t posY, bool EW){
 	if(EW)
 		_setWrite(posX,posY);
-	else 
+	else
 		_setErase(posX,posY);
 	Arduino_LCD::print(value);
 }
 void RobotControl::text(char* value, uint8_t posX, uint8_t posY, bool EW){
 	if(EW)
 		_setWrite(posX,posY);
-	else 
+	else
 		_setErase(posX,posY);
 	Arduino_LCD::print(value);
 }
 void RobotControl::text(char value, uint8_t posX, uint8_t posY, bool EW){
 	if(EW)
 		_setWrite(posX,posY);
-	else 
+	else
 		_setErase(posX,posY);
 	Arduino_LCD::print(value);
 }
@@ -152,12 +152,12 @@ void RobotControl::_drawBMP(char* filename, uint8_t posX, uint8_t posY){
 		read32(file);//uint32_t aux = read32(file);
 		(void)read32(file); // Read & ignore creator bytes
 		bmpImageoffset = read32(file); // Start of image data
-		
+
 		// Read DIB header
 		(void)read32(file);//aux = read32(file);
 		bmpWidth  = read32(file);
 		bmpHeight = read32(file);
-		
+
 		if(read16(file) == 1) { // # planes -- must be '1'
 			bmpDepth = read16(file); // bits per pixel
 			if((bmpDepth == 24) && (read32(file) == 0)) { // 0 = uncompressed
@@ -179,14 +179,14 @@ void RobotControl::_drawBMP(char* filename, uint8_t posX, uint8_t posY){
 
 				//  Start drawing
 				//_enableLCD();
-				Arduino_LCD::setAddrWindow(posX, posY, posX+bmpWidth-1, posY+bmpHeight-1);  
+				Arduino_LCD::setAddrWindow(posX, posY, posX+bmpWidth-1, posY+bmpHeight-1);
 
 				for (row=0; row<h; row++) { // For each scanline...
 					if(flip) // Bitmap is stored bottom-to-top order (normal BMP)
 						pos = bmpImageoffset + (bmpHeight - 1 - row) * rowSize;
 					else     // Bitmap is stored top-to-bottom
 						pos = bmpImageoffset + row * rowSize;
-						
+
 					if(file.curPosition() != pos) { // Need seek?
 						//_enableSD();
 						file.seekSet(pos);
@@ -207,7 +207,7 @@ void RobotControl::_drawBMP(char* filename, uint8_t posX, uint8_t posY){
 						r = sdbuffer[buffidx++];
 
 						int  color = Arduino_LCD::Color565(r,g,b);
-						
+
 						Arduino_LCD::pushColor(color);
 					} // end pixel
 				} // end scanline
@@ -258,7 +258,7 @@ void RobotControl::beginBMPFromEEPROM(){
 	_eeprom_bmp=(EEPROM_BMP*)malloc(NUM_EEPROM_BMP*sizeof(EEPROM_BMP));
 	EEPROM_I2C::_beginTransmission(0);
 	EEPROM_I2C::_endTransmission();
-	
+
 	for(uint8_t j=0;j<NUM_EEPROM_BMP;j++){
 		Wire.requestFrom(DEVICEADDRESS, sizeof(EEPROM_BMP));
 		for(uint8_t i=0;i<8;i++){
@@ -266,12 +266,12 @@ void RobotControl::beginBMPFromEEPROM(){
 		}
 		_eeprom_bmp[j].width=Wire.read();//width
 		_eeprom_bmp[j].height=Wire.read();//height
-		
+
 		_eeprom_bmp[j].address=Wire.read();
 		_eeprom_bmp[j].address=_eeprom_bmp[j].address + (Wire.read() << 8);//address
 	}
 	_isEEPROM_BMP_Allocated=true;
-	
+
 }
 void RobotControl::endBMPFromEEPROM(){
 	free(_eeprom_bmp);

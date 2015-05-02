@@ -9,9 +9,9 @@
  * Copyright (C) 2010-2011 ARM Limited. All rights reserved.
  *
  * @par
- * ARM Limited (ARM) is supplying this software for use with Cortex-M 
- * processor based microcontrollers.  This file can be freely distributed 
- * within development tools that are supporting such ARM based processors. 
+ * ARM Limited (ARM) is supplying this software for use with Cortex-M
+ * processor based microcontrollers.  This file can be freely distributed
+ * within development tools that are supporting such ARM based processors.
  *
  * @par
  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
@@ -75,7 +75,7 @@ typedef enum IRQn
 /*--------------------- General Purpose Input and Ouptut ---------------------*/
 typedef union
 {
-  __IO uint32_t WORD;  
+  __IO uint32_t WORD;
   __IO uint8_t  BYTE[4];
 } GPIO_Data_TypeDef;
 

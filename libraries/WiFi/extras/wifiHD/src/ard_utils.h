@@ -248,8 +248,8 @@
 			TTCP->lpcb, (TTCP->lpcb)?TTCP->lpcb->state:0, \
 			(TTCP->tpcb[i])?TTCP->left[i]:0, (TTCP->tpcb[i])?TTCP->buff_sent[i]:0); \
 			} while(0);
-			
-#define Mode2Str(_Mode) ((_Mode==0)?"TRANSMIT":"RECEIVE")			
+
+#define Mode2Str(_Mode) ((_Mode==0)?"TRANSMIT":"RECEIVE")
 #define ProtMode2Str(_protMode) ((_protMode==0)?"TCP":"UDP")
 
 typedef struct sData

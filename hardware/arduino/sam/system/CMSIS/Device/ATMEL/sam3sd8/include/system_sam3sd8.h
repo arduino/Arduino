@@ -7,7 +7,7 @@
  *
  * \par Purpose
  *
- * This file provides basic support for Cortex-M processor based 
+ * This file provides basic support for Cortex-M processor based
  * microcontrollers.
  *
  * \author               Atmel Corporation: http://www.atmel.com \n
@@ -37,12 +37,12 @@ extern uint32_t SystemCoreClock;	/* System Clock Frequency (Core Clock) */
 void SystemInit(void);
 
 /**
- * @brief Updates the SystemCoreClock with current core Clock 
+ * @brief Updates the SystemCoreClock with current core Clock
  * retrieved from cpu registers.
  */
 void SystemCoreClockUpdate(void);
 
-/** 
+/**
  * Initialize flash.
  */
 void system_init_flash(uint32_t dw_clk);

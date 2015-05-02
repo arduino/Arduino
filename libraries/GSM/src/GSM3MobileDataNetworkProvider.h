@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -41,7 +41,7 @@ https://github.com/BlueVia/Official-Arduino
 class GSM3MobileDataNetworkProvider
 {
 	public:
-		
+
 		/** Attach to GPRS/GSM network
 			@param networkId 	APN GPRS
 			@param user			Username
@@ -49,12 +49,12 @@ class GSM3MobileDataNetworkProvider
 			@return connection status
 		 */
 		virtual GSM3_NetworkStatus_t networkAttach(char* networId, char* user, char* pass)=0;
-		
+
 		/** Detach GPRS/GSM network
 			@return connection status
 		 */
 		virtual GSM3_NetworkStatus_t networkDetach()=0;
-				
+
 };
 
 extern GSM3MobileDataNetworkProvider* theGSM3MobileDataNetworkProvider;

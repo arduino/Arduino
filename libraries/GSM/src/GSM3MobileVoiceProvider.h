@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -39,29 +39,29 @@ enum GSM3_voiceCall_st { IDLE_CALL, CALLING, RECEIVINGCALL, TALKING};
 class GSM3MobileVoiceProvider
 {
 	public:
-		
+
 		/** Initialize the object relating it to the general infrastructure
 			@param
 			@return void
 		*/
 		virtual void initialize(){};
-		
+
 		/** Launch a voice call
 			@param number	 	Phone number to be called
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		*/
 		virtual int voiceCall(const char* number)=0;
-		
+
 		/** Answer a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		*/
 		virtual int answerCall()=0;
-		
+
 		/** Hang a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		*/
 		virtual int hangCall()=0;
-		
+
 		/** Retrieve phone number of caller
 			@param buffer		Buffer for copy phone number
 			@param bufsize		Buffer size
@@ -73,7 +73,7 @@ class GSM3MobileVoiceProvider
 			@return voice call status
 		*/
 		virtual GSM3_voiceCall_st getvoiceCallStatus()=0;
-		
+
 		/**	Set voice call status
 			@param status		New status for voice call
 		*/

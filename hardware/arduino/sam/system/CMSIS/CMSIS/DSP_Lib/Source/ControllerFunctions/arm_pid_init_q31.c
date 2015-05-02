@@ -1,50 +1,50 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_pid_init_q31.c   
-*   
-* Description:	Q31 PID Control initialization function    
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_pid_init_q31.c
+*
+* Description:	Q31 PID Control initialization function
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * ------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
- /**   
- * @addtogroup PID   
- * @{   
+ /**
+ * @addtogroup PID
+ * @{
  */
 
-/**   
- * @brief  Initialization function for the Q31 PID Control.  
- * @param[in,out] *S points to an instance of the Q31 PID structure.  
- * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.  
- * @return none.   
- * \par Description:  
- * \par   
- * The <code>resetStateFlag</code> specifies whether to set state to zero or not. \n  
- * The function computes the structure fields: <code>A0</code>, <code>A1</code> <code>A2</code>   
- * using the proportional gain( \c Kp), integral gain( \c Ki) and derivative gain( \c Kd)   
- * also sets the state variables to all zeros.   
+/**
+ * @brief  Initialization function for the Q31 PID Control.
+ * @param[in,out] *S points to an instance of the Q31 PID structure.
+ * @param[in]     resetStateFlag  flag to reset the state. 0 = no change in state 1 = reset the state.
+ * @return none.
+ * \par Description:
+ * \par
+ * The <code>resetStateFlag</code> specifies whether to set state to zero or not. \n
+ * The function computes the structure fields: <code>A0</code>, <code>A1</code> <code>A2</code>
+ * using the proportional gain( \c Kp), integral gain( \c Ki) and derivative gain( \c Kd)
+ * also sets the state variables to all zeros.
  */
 
 void arm_pid_init_q31(
@@ -91,6 +91,6 @@ void arm_pid_init_q31(
 
 }
 
-/**   
- * @} end of PID group   
+/**
+ * @} end of PID group
  */

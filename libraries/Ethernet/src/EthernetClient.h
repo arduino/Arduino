@@ -1,6 +1,6 @@
 #ifndef ethernetclient_h
 #define ethernetclient_h
-#include "Arduino.h"	
+#include "Arduino.h"
 #include "Print.h"
 #include "Client.h"
 #include "IPAddress.h"
@@ -30,7 +30,7 @@ public:
   virtual bool operator!=(const EthernetClient& rhs) { return !this->operator==(rhs); };
 
   friend class EthernetServer;
-  
+
   using Print::write;
 
 private:

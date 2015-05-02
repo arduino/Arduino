@@ -1,74 +1,74 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_cfft_radix4_init_q31.c   
-*   
-* Description:	Radix-4 Decimation in Frequency Q31 FFT & IFFT initialization function   
-*   
-* Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-* 
-** Version 1.0.11 2011/08/17 
-*    Updated to support 4096 CFFT length.  
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
 *
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
-*   
-* Version 0.0.5  2010/04/26    
-* 	 incorporated review comments and updated with latest CMSIS layer   
-*   
-* Version 0.0.3  2010/03/10    
-*    Initial version   
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_cfft_radix4_init_q31.c
+*
+* Description:	Radix-4 Decimation in Frequency Q31 FFT & IFFT initialization function
+*
+* Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
+*
+** Version 1.0.11 2011/08/17
+*    Updated to support 4096 CFFT length.
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
+*
+* Version 0.0.5  2010/04/26
+* 	 incorporated review comments and updated with latest CMSIS layer
+*
+* Version 0.0.3  2010/03/10
+*    Initial version
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 #include "arm_common_tables.h"
 
-/**   
- * @ingroup groupTransforms   
+/**
+ * @ingroup groupTransforms
  */
 
-/**   
- * @addtogroup CFFT_CIFFT   
- * @{   
+/**
+ * @addtogroup CFFT_CIFFT
+ * @{
  */
 
-/*   
-* @brief  Twiddle factors Table   
+/*
+* @brief  Twiddle factors Table
 */
 
-/**   
-* \par  
-* Example code for Q31 Twiddle factors Generation::   
-* \par   
-* <pre>for(i = 0; i< N; i++)   
-* {   
-*    twiddleCoefQ31[2*i]= cos(i * 2*PI/(float)N);   
-*    twiddleCoefQ31[2*i+1]= sin(i * 2*PI/(float)N);   
-* } </pre>   
-* \par   
-* where N = 1024	and PI = 3.14159265358979   
-* \par   
-* Cos and Sin values are interleaved fashion   
-* \par   
-* Convert Floating point to Q31(Fixed point 1.31):   
-*	round(twiddleCoefQ31(i) * pow(2, 31))   
-*   
+/**
+* \par
+* Example code for Q31 Twiddle factors Generation::
+* \par
+* <pre>for(i = 0; i< N; i++)
+* {
+*    twiddleCoefQ31[2*i]= cos(i * 2*PI/(float)N);
+*    twiddleCoefQ31[2*i+1]= sin(i * 2*PI/(float)N);
+* } </pre>
+* \par
+* where N = 1024	and PI = 3.14159265358979
+* \par
+* Cos and Sin values are interleaved fashion
+* \par
+* Convert Floating point to Q31(Fixed point 1.31):
+*	round(twiddleCoefQ31(i) * pow(2, 31))
+*
 */
 
 static const q31_t twiddleCoefQ31[4096*2] = {
@@ -1099,26 +1099,26 @@ static const q31_t twiddleCoefQ31[4096*2] = {
 
 };
 
-/**   
-*   
-* @brief  Initialization function for the Q31 CFFT/CIFFT.  
-* @param[in,out] *S             points to an instance of the Q31 CFFT/CIFFT structure.  
-* @param[in]     fftLen         length of the FFT.  
-* @param[in]     ifftFlag       flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform.  
-* @param[in]     bitReverseFlag flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output.  
-* @return        The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>fftLen</code> is not a supported value.  
-*   
-* \par Description:  
-* \par   
-* The parameter <code>ifftFlag</code> controls whether a forward or inverse transform is computed.   
-* Set(=1) ifftFlag for calculation of CIFFT otherwise  CFFT is calculated  
-* \par   
-* The parameter <code>bitReverseFlag</code> controls whether output is in normal order or bit reversed order.   
-* Set(=1) bitReverseFlag for output to be in normal order otherwise output is in bit reversed order.   
-* \par   
-* The parameter <code>fftLen</code>	Specifies length of CFFT/CIFFT process. Supported FFT Lengths are 16, 64, 256, 1024.   
-* \par   
-* This Function also initializes Twiddle factor table pointer and Bit reversal table pointer.   
+/**
+*
+* @brief  Initialization function for the Q31 CFFT/CIFFT.
+* @param[in,out] *S             points to an instance of the Q31 CFFT/CIFFT structure.
+* @param[in]     fftLen         length of the FFT.
+* @param[in]     ifftFlag       flag that selects forward (ifftFlag=0) or inverse (ifftFlag=1) transform.
+* @param[in]     bitReverseFlag flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output.
+* @return        The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>fftLen</code> is not a supported value.
+*
+* \par Description:
+* \par
+* The parameter <code>ifftFlag</code> controls whether a forward or inverse transform is computed.
+* Set(=1) ifftFlag for calculation of CIFFT otherwise  CFFT is calculated
+* \par
+* The parameter <code>bitReverseFlag</code> controls whether output is in normal order or bit reversed order.
+* Set(=1) bitReverseFlag for output to be in normal order otherwise output is in bit reversed order.
+* \par
+* The parameter <code>fftLen</code>	Specifies length of CFFT/CIFFT process. Supported FFT Lengths are 16, 64, 256, 1024.
+* \par
+* This Function also initializes Twiddle factor table pointer and Bit reversal table pointer.
 */
 
 arm_status arm_cfft_radix4_init_q31(
@@ -1192,6 +1192,6 @@ arm_status arm_cfft_radix4_init_q31(
   return (status);
 }
 
-/**   
- * @} end of CFFT_CIFFT group   
+/**
+ * @} end of CFFT_CIFFT group
  */

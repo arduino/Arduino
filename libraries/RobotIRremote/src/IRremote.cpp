@@ -5,7 +5,7 @@
  * For details, see http://arcfn.com/2009/08/multi-protocol-infrared-remote-library.html
  *
  * Modified by Paul Stoffregen <paul@pjrc.com> to support other boards and timers
- * Modified  by Mitra Ardron <mitra@mitra.biz> 
+ * Modified  by Mitra Ardron <mitra@mitra.biz>
  * Added Sanyo and Mitsubishi controllers
  * Modified Sony to spot the repeat codes that some Sony's send
  *
@@ -133,7 +133,7 @@ ISR(TIMER_INTR_NAME)
       if (irparams.timer < GAP_TICKS) {
         // Not big enough to be a gap.
         irparams.timer = 0;
-      } 
+      }
       else {
         // gap just ended, record duration and start recording transmission
         irparams.rawlen = 0;
@@ -155,7 +155,7 @@ ISR(TIMER_INTR_NAME)
       irparams.rawbuf[irparams.rawlen++] = irparams.timer;
       irparams.timer = 0;
       irparams.rcvstate = STATE_MARK;
-    } 
+    }
     else { // SPACE
       if (irparams.timer > GAP_TICKS) {
         // big SPACE, indicates gap between codes
@@ -163,7 +163,7 @@ ISR(TIMER_INTR_NAME)
         // Switch to STOP
         // Don't reset timer; keep counting space width
         irparams.rcvstate = STATE_STOP;
-      } 
+      }
     }
     break;
   case STATE_STOP: // waiting, measuring gap
@@ -176,7 +176,7 @@ ISR(TIMER_INTR_NAME)
   if (irparams.blinkflag) {
     if (irdata == MARK) {
       BLINKLED_ON();  // turn pin 13 LED on
-    } 
+    }
     else {
       BLINKLED_OFF();  // turn pin 13 LED off
     }
@@ -231,7 +231,7 @@ int IRrecv::decode(decode_results *results) {
 /*
 #ifdef DEBUG
   Serial.println("Attempting RC5 decode");
-#endif  
+#endif
   if (decodeRC5(results)) {
     return DECODED;
   }
@@ -239,7 +239,7 @@ int IRrecv::decode(decode_results *results) {
 /*
 #ifdef DEBUG
   Serial.println("Attempting RC6 decode");
-#endif 
+#endif
   if (decodeRC6(results)) {
     return DECODED;
   }
@@ -247,7 +247,7 @@ int IRrecv::decode(decode_results *results) {
 /*
 #ifdef DEBUG
     Serial.println("Attempting Panasonic decode");
-#endif 
+#endif
     if (decodePanasonic(results)) {
         return DECODED;
     }
@@ -255,7 +255,7 @@ int IRrecv::decode(decode_results *results) {
 /*
 #ifdef DEBUG
     Serial.println("Attempting JVC decode");
-#endif 
+#endif
     if (decodeJVC(results)) {
         return DECODED;
     }*/
@@ -292,7 +292,7 @@ long IRrecv::decodeNEC(decode_results *results) {
   if (irparams.rawlen < 2 * NEC_BITS + 4) {
     return ERR;
   }
-  // Initial space  
+  // Initial space
   if (!MATCH_SPACE(results->rawbuf[offset], NEC_HDR_SPACE)) {
     return ERR;
   }
@@ -304,10 +304,10 @@ long IRrecv::decodeNEC(decode_results *results) {
     offset++;
     if (MATCH_SPACE(results->rawbuf[offset], NEC_ONE_SPACE)) {
       data = (data << 1) | 1;
-    } 
+    }
     else if (MATCH_SPACE(results->rawbuf[offset], NEC_ZERO_SPACE)) {
       data <<= 1;
-    } 
+    }
     else {
       return ERR;
     }
@@ -351,10 +351,10 @@ long IRrecv::decodeSony(decode_results *results) {
     offset++;
     if (MATCH_MARK(results->rawbuf[offset], SONY_ONE_MARK)) {
       data = (data << 1) | 1;
-    } 
+    }
     else if (MATCH_MARK(results->rawbuf[offset], SONY_ZERO_MARK)) {
       data <<= 1;
-    } 
+    }
     else {
       return ERR;
     }
@@ -381,13 +381,13 @@ long IRrecv::decodeSanyo(decode_results *results) {
     return ERR;
   }
   int offset = 0; // Skip first space
-  // Initial space  
+  // Initial space
   // Put this back in for debugging - note can't use #DEBUG as if Debug on we don't see the repeat cos of the delay
   //Serial.print("IR Gap: ");
   //Serial.println( results->rawbuf[offset]);
   //Serial.println( "test against:");
   //Serial.println(results->rawbuf[offset]);
-  
+
   if (results->rawbuf[offset] < SANYO_DOUBLE_SPACE_USECS) {
     // Serial.print("IR Gap found: ");
     results->bits = 0;
@@ -416,10 +416,10 @@ long IRrecv::decodeSanyo(decode_results *results) {
     offset++;
     if (MATCH_MARK(results->rawbuf[offset], SANYO_ONE_MARK)) {
       data = (data << 1) | 1;
-    } 
+    }
     else if (MATCH_MARK(results->rawbuf[offset], SANYO_ZERO_MARK)) {
       data <<= 1;
-    } 
+    }
     else {
       return ERR;
     }
@@ -446,13 +446,13 @@ long IRrecv::decodeMitsubishi(decode_results *results) {
     return ERR;
   }
   int offset = 0; // Skip first space
-  // Initial space  
+  // Initial space
   // Put this back in for debugging - note can't use #DEBUG as if Debug on we don't see the repeat cos of the delay
   //Serial.print("IR Gap: ");
   //Serial.println( results->rawbuf[offset]);
   //Serial.println( "test against:");
   //Serial.println(results->rawbuf[offset]);
-  
+
   // Not seeing double keys from Mitsubishi
   //if (results->rawbuf[offset] < MITSUBISHI_DOUBLE_SPACE_USECS) {
     // Serial.print("IR Gap found: ");
@@ -461,11 +461,11 @@ long IRrecv::decodeMitsubishi(decode_results *results) {
   //  results->decode_type = MITSUBISHI;
   //  return DECODED;
   //}
-  
+
   offset++;
 
   // Typical
-  // 14200 7 41 7 42 7 42 7 17 7 17 7 18 7 41 7 18 7 17 7 17 7 18 7 41 8 17 7 17 7 18 7 17 7 
+  // 14200 7 41 7 42 7 42 7 17 7 17 7 18 7 41 7 18 7 17 7 17 7 18 7 41 8 17 7 17 7 18 7 17 7
 
   // Initial Space
   if (!MATCH_MARK(results->rawbuf[offset], MITSUBISHI_HDR_SPACE)) {
@@ -475,10 +475,10 @@ long IRrecv::decodeMitsubishi(decode_results *results) {
   while (offset + 1 < irparams.rawlen) {
     if (MATCH_MARK(results->rawbuf[offset], MITSUBISHI_ONE_MARK)) {
       data = (data << 1) | 1;
-    } 
+    }
     else if (MATCH_MARK(results->rawbuf[offset], MITSUBISHI_ZERO_MARK)) {
       data <<= 1;
-    } 
+    }
     else {
       // Serial.println("A"); Serial.println(offset); Serial.println(results->rawbuf[offset]);
       return ERR;
@@ -522,13 +522,13 @@ int IRrecv::getRClevel(decode_results *results, int *offset, int *used, int t1) 
   int avail;
   if (MATCH(width, t1 + correction)) {
     avail = 1;
-  } 
+  }
   else if (MATCH(width, 2*t1 + correction)) {
     avail = 2;
-  } 
+  }
   else if (MATCH(width, 3*t1 + correction)) {
     avail = 3;
-  } 
+  }
   else {
     return -1;
   }
@@ -541,12 +541,12 @@ int IRrecv::getRClevel(decode_results *results, int *offset, int *used, int t1) 
 #ifdef DEBUG
   if (val == MARK) {
     Serial.println("MARK");
-  } 
+  }
   else {
     Serial.println("SPACE");
   }
 #endif
-  return val;   
+  return val;
 }
 /*
 long IRrecv::decodeRC5(decode_results *results) {
@@ -562,19 +562,19 @@ long IRrecv::decodeRC5(decode_results *results) {
   if (getRClevel(results, &offset, &used, RC5_T1) != MARK) return ERR;
   int nbits;
   for (nbits = 0; offset < irparams.rawlen; nbits++) {
-    int levelA = getRClevel(results, &offset, &used, RC5_T1); 
+    int levelA = getRClevel(results, &offset, &used, RC5_T1);
     int levelB = getRClevel(results, &offset, &used, RC5_T1);
     if (levelA == SPACE && levelB == MARK) {
       // 1 bit
       data = (data << 1) | 1;
-    } 
+    }
     else if (levelA == MARK && levelB == SPACE) {
       // zero bit
       data <<= 1;
-    } 
+    }
     else {
       return ERR;
-    } 
+    }
   }
 
   // Success
@@ -606,27 +606,27 @@ long IRrecv::decodeRC6(decode_results *results) {
   int nbits;
   for (nbits = 0; offset < results->rawlen; nbits++) {
     int levelA, levelB; // Next two levels
-    levelA = getRClevel(results, &offset, &used, RC6_T1); 
+    levelA = getRClevel(results, &offset, &used, RC6_T1);
     if (nbits == 3) {
       // T bit is double wide; make sure second half matches
       if (levelA != getRClevel(results, &offset, &used, RC6_T1)) return ERR;
-    } 
+    }
     levelB = getRClevel(results, &offset, &used, RC6_T1);
     if (nbits == 3) {
       // T bit is double wide; make sure second half matches
       if (levelB != getRClevel(results, &offset, &used, RC6_T1)) return ERR;
-    } 
+    }
     if (levelA == MARK && levelB == SPACE) { // reversed compared to RC5
       // 1 bit
       data = (data << 1) | 1;
-    } 
+    }
     else if (levelA == SPACE && levelB == MARK) {
       // zero bit
       data <<= 1;
-    } 
+    }
     else {
       return ERR; // Error
-    } 
+    }
   }
   // Success
   results->bits = nbits;
@@ -638,7 +638,7 @@ long IRrecv::decodeRC6(decode_results *results) {
 long IRrecv::decodePanasonic(decode_results *results) {
     unsigned long long data = 0;
     int offset = 1;
-    
+
     if (!MATCH_MARK(results->rawbuf[offset], PANASONIC_HDR_MARK)) {
         return ERR;
     }
@@ -647,7 +647,7 @@ long IRrecv::decodePanasonic(decode_results *results) {
         return ERR;
     }
     offset++;
-    
+
     // decode address
     for (int i = 0; i < PANASONIC_BITS; i++) {
         if (!MATCH_MARK(results->rawbuf[offset++], PANASONIC_BIT_MARK)) {
@@ -680,16 +680,16 @@ long IRrecv::decodeJVC(decode_results *results) {
         results->value = REPEAT;
         results->decode_type = JVC;
         return DECODED;
-    } 
+    }
     // Initial mark
     if (!MATCH_MARK(results->rawbuf[offset], JVC_HDR_MARK)) {
         return ERR;
     }
-    offset++; 
+    offset++;
     if (irparams.rawlen < 2 * JVC_BITS + 1 ) {
         return ERR;
     }
-    // Initial space 
+    // Initial space
     if (!MATCH_SPACE(results->rawbuf[offset], JVC_HDR_SPACE)) {
         return ERR;
     }
@@ -701,10 +701,10 @@ long IRrecv::decodeJVC(decode_results *results) {
         offset++;
         if (MATCH_SPACE(results->rawbuf[offset], JVC_ONE_SPACE)) {
             data = (data << 1) | 1;
-        } 
+        }
         else if (MATCH_SPACE(results->rawbuf[offset], JVC_ZERO_SPACE)) {
             data <<= 1;
-        } 
+        }
         else {
             return ERR;
         }
@@ -741,10 +741,10 @@ long IRrecv::decodeJVC(decode_results *results) {
 int IRrecv::compare(unsigned int oldval, unsigned int newval) {
   if (newval < oldval * .8) {
     return 0;
-  } 
+  }
   else if (oldval < newval * .8) {
     return 2;
-  } 
+  }
   else {
     return 1;
   }

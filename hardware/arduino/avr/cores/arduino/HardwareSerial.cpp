@@ -15,7 +15,7 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  
+
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
   Modified 14 August 2012 by Alarus
@@ -31,7 +31,7 @@
 #include "HardwareSerial.h"
 #include "HardwareSerial_private.h"
 
-// this next line disables the entire HardwareSerial.cpp, 
+// this next line disables the entire HardwareSerial.cpp,
 // this is so I can support Attiny series and any other chip without a uart
 #if defined(HAVE_HWSERIAL0) || defined(HAVE_HWSERIAL1) || defined(HAVE_HWSERIAL2) || defined(HAVE_HWSERIAL3)
 
@@ -128,7 +128,7 @@ void HardwareSerial::begin(unsigned long baud, byte config)
   config |= 0x80; // select UCSRC register (shared with UBRRH)
 #endif
   *_ucsrc = config;
-  
+
   sbi(*_ucsrb, RXEN0);
   sbi(*_ucsrb, TXEN0);
   sbi(*_ucsrb, RXCIE0);
@@ -145,7 +145,7 @@ void HardwareSerial::end()
   cbi(*_ucsrb, TXEN0);
   cbi(*_ucsrb, RXCIE0);
   cbi(*_ucsrb, UDRIE0);
-  
+
   // clear any received data
   _rx_buffer_head = _rx_buffer_tail;
 }
@@ -223,8 +223,8 @@ size_t HardwareSerial::write(uint8_t c)
     return 1;
   }
   tx_buffer_index_t i = (_tx_buffer_head + 1) % SERIAL_TX_BUFFER_SIZE;
-	
-  // If the output buffer is full, there's nothing for it other than to 
+
+  // If the output buffer is full, there's nothing for it other than to
   // wait for the interrupt handler to empty it a bit
   while (i == _tx_buffer_tail) {
     if (bit_is_clear(SREG, SREG_I)) {
@@ -241,10 +241,10 @@ size_t HardwareSerial::write(uint8_t c)
 
   _tx_buffer[_tx_buffer_head] = c;
   _tx_buffer_head = i;
-	
+
   sbi(*_ucsrb, UDRIE0);
   _written = true;
-  
+
   return 1;
 }
 

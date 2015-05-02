@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -38,24 +38,24 @@ https://github.com/BlueVia/Official-Arduino
 class GSM3MobileNetworkRegistry
 {
 	private:
-		
+
 		GSM3MobileNetworkProvider* theProvider; // Network provider
 
 	public:
-	
+
 		/** Constructor */
 		GSM3MobileNetworkRegistry();
-		
+
 		/** Register in mobile network provider
 			@param provider			Provider
 		 */
 		void registerMobileNetworkProvider(GSM3MobileNetworkProvider* provider);
-			
+
 		/** Returns network provider object pointer
 			@return mobile network provider
 		 */
 		GSM3MobileNetworkProvider* getMobileNetworkProvider();
-	
+
 };
 
 extern GSM3MobileNetworkRegistry theMobileNetworkRegistry;

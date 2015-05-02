@@ -44,11 +44,11 @@ init_sys_clocks(void)
 {
         /* switch to OSC0 to speed up the booting */
         pm_switch_to_osc0(&AVR32_PM, FOSC0, OSC0_STARTUP);
-    
+
 #ifndef USE_PLL
         return;
 #endif
-        
+
         /* For audio, ee have to use OSC1 on to generate the correct clockrate
          * for the SSC
          */
@@ -74,12 +74,12 @@ init_sys_clocks(void)
                           1,  /* pll_freq */
                           1,  /* pll_div2 */
                           0); /* pll_wbwdisable. */
-  
+
 
         /* start PLL0 and wait for the lock */
         pm_pll_enable(&AVR32_PM, 0);
         pm_wait_for_pll0_locked(&AVR32_PM);
-        
+
         /* Set all peripheral clocks torun at master clock rate */
         pm_cksel(&AVR32_PM,
                  0,   /* pbadiv */
@@ -87,11 +87,11 @@ init_sys_clocks(void)
                  0,   /* pbbdiv */
                  0,   /* pbbsel */
                  0,   /* hsbdiv */
-                 0);  /* hsbsel */ 
-        
+                 0);  /* hsbsel */
+
         /* Set one waitstate for the flash */
         flashc_set_wait_state(1);
-        
+
         /* Switch to PLL0 as the master clock */
         pm_switch_to_clock(&AVR32_PM, AVR32_PM_MCCTRL_MCSEL_PLL0);
 

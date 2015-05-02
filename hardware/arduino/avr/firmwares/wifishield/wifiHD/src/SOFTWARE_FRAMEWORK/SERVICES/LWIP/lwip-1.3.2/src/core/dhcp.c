@@ -168,14 +168,14 @@ static void
 dhcp_handle_nak(struct netif *netif)
 {
   struct dhcp *dhcp = netif->dhcp;
-  LWIP_DEBUGF(DHCP_DEBUG | LWIP_DBG_TRACE, ("dhcp_handle_nak(netif=%p) %c%c%"U16_F"\n", 
+  LWIP_DEBUGF(DHCP_DEBUG | LWIP_DBG_TRACE, ("dhcp_handle_nak(netif=%p) %c%c%"U16_F"\n",
     (void*)netif, netif->name[0], netif->name[1], (u16_t)netif->num));
   /* Set the interface down since the address must no longer be used, as per RFC2131 */
   netif_set_down(netif);
   /* remove IP address from interface */
   netif_set_ipaddr(netif, IP_ADDR_ANY);
   netif_set_gw(netif, IP_ADDR_ANY);
-  netif_set_netmask(netif, IP_ADDR_ANY); 
+  netif_set_netmask(netif, IP_ADDR_ANY);
   /* Change to a defined state */
   dhcp_set_state(dhcp, DHCP_BACKING_OFF);
   /* We can immediately restart discovery */
@@ -344,7 +344,7 @@ dhcp_coarse_tmr()
  *
  * A DHCP server is expected to respond within a short period of time.
  * This timer checks whether an outstanding DHCP request is timed out.
- * 
+ *
  */
 void
 dhcp_fine_tmr()
@@ -354,7 +354,7 @@ dhcp_fine_tmr()
   while (netif != NULL) {
     /* only act on DHCP configured interfaces */
     if (netif->dhcp != NULL) {
-      /* timer is active (non zero), and is about to trigger now */      
+      /* timer is active (non zero), and is about to trigger now */
       if (netif->dhcp->request_timeout > 1) {
         netif->dhcp->request_timeout--;
       }
@@ -548,7 +548,7 @@ dhcp_handle_ack(struct netif *netif)
   if (option_ptr != NULL) {
     dhcp->offered_bc_addr.addr = htonl(dhcp_get_option_long(&option_ptr[2]));
   }
-  
+
   /* DNS servers */
   option_ptr = dhcp_get_option_ptr(dhcp, DHCP_OPTION_DNS_SERVER);
   if (option_ptr != NULL) {
@@ -621,7 +621,7 @@ dhcp_start(struct netif *netif)
     LWIP_ASSERT("reply wasn't freed", dhcp->msg_in == NULL &&
       dhcp->options_in == NULL && dhcp->options_in_len == 0);
   }
-    
+
   /* clear data structure */
   memset(dhcp, 0, sizeof(struct dhcp));
   /* allocate UDP PCB */
@@ -1158,7 +1158,7 @@ dhcp_release(struct netif *netif)
   dhcp->offered_gw_addr.addr = dhcp->offered_bc_addr.addr = 0;
   dhcp->offered_t0_lease = dhcp->offered_t1_renew = dhcp->offered_t2_rebind = 0;
   dhcp->dns_count = 0;
-  
+
   /* create and initialize the DHCP message header */
   result = dhcp_create_request(netif);
   if (result == ERR_OK) {
@@ -1185,7 +1185,7 @@ dhcp_release(struct netif *netif)
   netif_set_ipaddr(netif, IP_ADDR_ANY);
   netif_set_gw(netif, IP_ADDR_ANY);
   netif_set_netmask(netif, IP_ADDR_ANY);
-  
+
   /* TODO: netif_down(netif); */
   return result;
 }

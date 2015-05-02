@@ -3,11 +3,11 @@
  basic graphics primitives (points, lines, circles, etc.). It needs
  to be paired with a hardware-specific library for each display
  device we carry (handling the lower-level functions).
- 
+
  Adafruit invests time and resources providing this open
  source code, please support Adafruit and open-source hardware
  by purchasing products from Adafruit!
- 
+
  Written by Limor Fried/Ladyada for Adafruit Industries.
  Processing-like API written by Enrico Gueli for Officine Arduino.
  BSD license, check license.txt for more information.
@@ -29,29 +29,29 @@
  * reading library (to load images). At the moment, only the
  * Arduino SD library is supported; it is included in
  * standard Arduino libraries.
- * 
+ *
  * The presence of the SD library is detected by looking at the
- * __SD_H__ preprocessor variable, defined into 
+ * __SD_H__ preprocessor variable, defined into
  * Arduino SD library to avoid double inclusion. This means
  * that in order to use the image-related API of Adafruit_GFX,
  * SD.h *must* be included before Adafruit_GFX.
- * 
+ *
  * The bottom part of this include file contains the actual image
  * loading code; if it was in a separate .cpp file, there were no
  * way to check if the SD library was present or not.
- * 
+ *
  * A partial solution was to include SD.h anyway, see if that works
  * (i.e. it is found in the include search path) and act accordingly.
  * But this solution relied on the preprocessor to issue only a
  * warning when an include file is not found. Avr-gcc, used for
  * Arduino 8-bit MCUs, does that, but the standard gcc-4.4, used for
  * Arduino Due, issues a fatal error and stops compilation.
- * 
+ *
  * The best solution so far is to put the code here. It works if this
  * include is used only in one .cpp file in the build (this is the
  * case of most Arduino sketches); if used in multiple .cpp files,
  * the linker may complain about duplicate definitions.
- * 
+ *
  */
 
 #if defined(__SD_H__)  // Arduino SD library
@@ -81,18 +81,18 @@ class Adafruit_GFX : public Print {
   // This MUST be defined by the subclass
   virtual void drawPixel(int16_t x, int16_t y, uint16_t color) = 0;
 
-  
+
 
   // These MAY be overridden by the subclass to provide device-specific
   // optimized code.  Otherwise 'generic' versions are used.
-  virtual void 
-	drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, 
+  virtual void
+	drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 		uint16_t color),
   	drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color),
 	drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color),
-	drawRect(int16_t x, int16_t y, int16_t w, int16_t h, 
+	drawRect(int16_t x, int16_t y, int16_t w, int16_t h,
 		uint16_t color),
-	fillRect(int16_t x, int16_t y, int16_t w, int16_t h, 
+	fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 		uint16_t color),
 	fillScreen(uint16_t color),
 	invertDisplay(boolean i);
@@ -115,7 +115,7 @@ class Adafruit_GFX : public Print {
 	fillRoundRect(int16_t x0, int16_t y0, int16_t w, int16_t h,
 		     int16_t radius, uint16_t color),
 
-	drawBitmap(int16_t x, int16_t y, 
+	drawBitmap(int16_t x, int16_t y,
 		  const uint8_t *bitmap, int16_t w, int16_t h,
 		  uint16_t color),
 	drawChar(int16_t x, int16_t y, unsigned char c,
@@ -133,25 +133,25 @@ class Adafruit_GFX : public Print {
   virtual void   write(uint8_t);
 #endif
 
-  int16_t 
+  int16_t
 	height(void),
 	width(void);
 
 
   uint8_t getRotation(void);
 
-  
+
   /*
    * Processing-like graphics primitives
    */
-  
+
   /// transforms a color in 16-bit form given the RGB components.
   /// The default implementation makes a 5-bit red, a 6-bit
   /// green and a 5-bit blue (MSB to LSB). Devices that use
-  /// different scheme should override this. 
+  /// different scheme should override this.
   virtual uint16_t newColor(uint8_t red, uint8_t green, uint8_t blue);
-  
-  
+
+
   void
 	// http://processing.org/reference/background_.html
 	background(uint8_t red, uint8_t green, uint8_t blue),
@@ -170,12 +170,12 @@ class Adafruit_GFX : public Print {
 
 	// http://processing.org/reference/noStroke_.html
 	noStroke(),
-  
+
 	text(const char * text, int16_t x, int16_t y),
 	textWrap(const char * text, int16_t x, int16_t y),
 
 	textSize(uint8_t size),
-  
+
 	// similar to ellipse() in Processing, but with
 	// a single radius.
 	// http://processing.org/reference/ellipse_.html
@@ -186,20 +186,20 @@ class Adafruit_GFX : public Print {
 rect(int16_t x, int16_t y, int16_t width, int16_t height),
 	rect(int16_t x, int16_t y, int16_t width, int16_t height, int16_t radius),
 	triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3);
-  
+
   /* TODO
   void rectMode(RectMode mode);
-  
+
   void pushStyle();
   void popStyle();
   */
 
 #if defined(__SD_H__)  // Arduino SD library
   PImage loadImage(const char * fileName) { return PImage::loadImage(fileName); }
-  
+
   void image(PImage & img, uint16_t x, uint16_t y);
 #endif
-  
+
  protected:
   int16_t
 	WIDTH, HEIGHT;   // this is the 'raw' display w/h - never changes
@@ -213,11 +213,11 @@ rect(int16_t x, int16_t y, int16_t width, int16_t height),
 	rotation;
   boolean
 	wrap; // If set, 'wrap' text at right edge of display
-  
+
   /*
    * Processing-style graphics state
    */
-  
+
   color strokeColor;
   bool useStroke;
   color fillColor;
@@ -245,7 +245,7 @@ void Adafruit_GFX::image(PImage & img, uint16_t x, uint16_t y) {
   // Set TFT address window to clipped image bounds
   setAddrWindow(x, y, x+w-1, y+h-1);
   */
-  
+
   for (row=0; row<h; row++) { // For each scanline...
     // Seek to start of scan line.  It might seem labor-
     // intensive to be doing this on every line, but this
@@ -275,7 +275,7 @@ void Adafruit_GFX::image(PImage & img, uint16_t x, uint16_t y) {
       r = sdbuffer[buffidx++];
       //pushColor(tft.Color565(r,g,b));
       drawPixel(x + col, y + row, newColor(r, g, b));
-      
+
     } // end pixel
   } // end scanline
 
@@ -320,15 +320,15 @@ PImage PImage::loadImage(const char * fileName) {
     Serial.println(fileName);
     return PImage(); // load error
   }
-  
-  
-  
+
+
+
   // Parse BMP header
   if(read16(bmpFile) != 0x4D42) { // BMP signature
     Serial.println(F("loadImage: file doesn't look like a BMP"));
     return PImage();
   }
-  
+
   Serial.print(F("File size: ")); Serial.println(read32(bmpFile));
   (void)read32(bmpFile); // Read & ignore creator bytes
   bmpImageoffset = read32(bmpFile); // Start of image data
@@ -341,7 +341,7 @@ PImage PImage::loadImage(const char * fileName) {
     Serial.println(F("loadImage: invalid n. of planes"));
     return PImage();
   }
-  
+
   bmpDepth = read16(bmpFile); // bits per pixel
   Serial.print(F("Bit Depth: ")); Serial.println(bmpDepth);
   if((bmpDepth != 24) || (read32(bmpFile) != 0)) { // 0 = uncompressed {
@@ -363,7 +363,7 @@ PImage PImage::loadImage(const char * fileName) {
     bmpHeight = -bmpHeight;
     flip      = false;
   }
-  
+
   return PImage(bmpFile, bmpWidth, bmpHeight, bmpDepth, bmpImageoffset, rowSize, flip);
 }
 

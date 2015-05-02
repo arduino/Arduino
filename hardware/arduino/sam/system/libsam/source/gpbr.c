@@ -54,7 +54,7 @@ extern "C" {
 /**
  * \defgroup sam_drivers_gpbr_group General Purpose Backup Registers (GPBR)
  *
- * Driver for the General Purpose Backup Registers. This driver provides access 
+ * Driver for the General Purpose Backup Registers. This driver provides access
  * to the main features of the GPBR controller.
  *
  * @{
@@ -64,7 +64,7 @@ extern "C" {
  * \brief Read the specified backup register.
  *
  * \param ul_reg_num General purpose backup register number.
- * 
+ *
  * \return Value of the specified backup register.
  */
 uint32_t gpbr_read(gpbr_num_t ul_reg_num)

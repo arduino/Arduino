@@ -1,62 +1,62 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_rfft_init_q15.c   
-*   
-* Description:	RFFT & RIFFT Q15 initialisation function   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_rfft_init_q15.c
+*
+* Description:	RFFT & RIFFT Q15 initialisation function
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated   
-*   
-* Version 0.0.7  2010/06/10    
-*    Misra-C changes done   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated
+*
+* Version 0.0.7  2010/06/10
+*    Misra-C changes done
 * -------------------------------------------------------------------- */
 
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupTransforms   
+/**
+ * @ingroup groupTransforms
  */
 
-/**   
- * @addtogroup RFFT_RIFFT   
- * @{   
+/**
+ * @addtogroup RFFT_RIFFT
+ * @{
  */
 
 
 
-/**   
-* \par   
-* Generation floating point real_CoefA array:   
-* \par   
-* n = 1024   
-* <pre>for (i = 0; i < n; i++)   
-*  {   
-*    pATable[2 * i] = 0.5 * (1.0 - sin (2 * PI / (double) (2 * n) * (double) i));   
-*    pATable[2 * i + 1] = 0.5 * (-1.0 * cos (2 * PI / (double) (2 * n) * (double) i));   
-*  } </pre>   
-* \par   
-* Convert to fixed point Q15 format   
-*       round(pATable[i] * pow(2, 15))   
+/**
+* \par
+* Generation floating point real_CoefA array:
+* \par
+* n = 1024
+* <pre>for (i = 0; i < n; i++)
+*  {
+*    pATable[2 * i] = 0.5 * (1.0 - sin (2 * PI / (double) (2 * n) * (double) i));
+*    pATable[2 * i + 1] = 0.5 * (-1.0 * cos (2 * PI / (double) (2 * n) * (double) i));
+*  } </pre>
+* \par
+* Convert to fixed point Q15 format
+*       round(pATable[i] * pow(2, 15))
 */
 
 
@@ -320,20 +320,20 @@ static const q15_t realCoefAQ15[2048] = {
   0x3f37, 0x3fff, 0x3f69, 0x3fff, 0x3f9b, 0x4000, 0x3fce, 0x4000
 };
 
-/**   
-* \par  
-* Generation of real_CoefB array:   
-* \par   
-* n = 1024   
-* <pre>for (i = 0; i < n; i++)   
-*  {   
-*    pBTable[2 * i] = 0.5 * (1.0 + sin (2 * PI / (double) (2 * n) * (double) i));   
-*    pBTable[2 * i + 1] = 0.5 * (1.0 * cos (2 * PI / (double) (2 * n) * (double) i));   
-*  } </pre>  
-* \par   
-* Convert to fixed point Q15 format   
-*       round(pBTable[i] * pow(2, 15))   
-*   
+/**
+* \par
+* Generation of real_CoefB array:
+* \par
+* n = 1024
+* <pre>for (i = 0; i < n; i++)
+*  {
+*    pBTable[2 * i] = 0.5 * (1.0 + sin (2 * PI / (double) (2 * n) * (double) i));
+*    pBTable[2 * i + 1] = 0.5 * (1.0 * cos (2 * PI / (double) (2 * n) * (double) i));
+*  } </pre>
+* \par
+* Convert to fixed point Q15 format
+*       round(pBTable[i] * pow(2, 15))
+*
 */
 
 static const q15_t realCoefBQ15[2048] = {
@@ -595,26 +595,26 @@ static const q15_t realCoefBQ15[2048] = {
   0x40c9, 0xc001, 0x4097, 0xc001, 0x4065, 0xc000, 0x4032, 0xc000
 };
 
-/**   
-* @brief  Initialization function for the Q15 RFFT/RIFFT.  
-* @param[in, out] *S             points to an instance of the Q15 RFFT/RIFFT structure.  
-* @param[in]      *S_CFFT        points to an instance of the Q15 CFFT/CIFFT structure.  
-* @param[in]      fftLenReal     length of the FFT.  
-* @param[in]      ifftFlagR      flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1) transform.  
-* @param[in]      bitReverseFlag flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output.  
-* @return		The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>fftLenReal</code> is not a supported value.  
-*   
-* \par Description:  
-* \par  
-* The parameter <code>fftLenReal</code>	Specifies length of RFFT/RIFFT Process. Supported FFT Lengths are 128, 512, 2048.   
-* \par   
-* The parameter <code>ifftFlagR</code> controls whether a forward or inverse transform is computed.   
-* Set(=1) ifftFlagR to calculate RIFFT, otherwise RFFT is calculated.   
-* \par   
-* The parameter <code>bitReverseFlag</code> controls whether output is in normal order or bit reversed order.   
-* Set(=1) bitReverseFlag for output to be in normal order otherwise output is in bit reversed order.  
-* \par   
-* This function also initializes Twiddle factor table.    
+/**
+* @brief  Initialization function for the Q15 RFFT/RIFFT.
+* @param[in, out] *S             points to an instance of the Q15 RFFT/RIFFT structure.
+* @param[in]      *S_CFFT        points to an instance of the Q15 CFFT/CIFFT structure.
+* @param[in]      fftLenReal     length of the FFT.
+* @param[in]      ifftFlagR      flag that selects forward (ifftFlagR=0) or inverse (ifftFlagR=1) transform.
+* @param[in]      bitReverseFlag flag that enables (bitReverseFlag=1) or disables (bitReverseFlag=0) bit reversal of output.
+* @return		The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if <code>fftLenReal</code> is not a supported value.
+*
+* \par Description:
+* \par
+* The parameter <code>fftLenReal</code>	Specifies length of RFFT/RIFFT Process. Supported FFT Lengths are 128, 512, 2048.
+* \par
+* The parameter <code>ifftFlagR</code> controls whether a forward or inverse transform is computed.
+* Set(=1) ifftFlagR to calculate RIFFT, otherwise RFFT is calculated.
+* \par
+* The parameter <code>bitReverseFlag</code> controls whether output is in normal order or bit reversed order.
+* Set(=1) bitReverseFlag for output to be in normal order otherwise output is in bit reversed order.
+* \par
+* This function also initializes Twiddle factor table.
 */
 
 arm_status arm_rfft_init_q15(
@@ -683,6 +683,6 @@ arm_status arm_rfft_init_q15(
 
 }
 
-  /**   
-   * @} end of RFFT_RIFFT group   
+  /**
+   * @} end of RFFT_RIFFT group
    */

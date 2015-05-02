@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -39,9 +39,9 @@ https://github.com/BlueVia/Official-Arduino
 #include <GSM3ShieldV1CellManagement.h>
 
 class GSM3ShieldV1CellManagement : public GSM3MobileCellManagement, public GSM3ShieldV1BaseProvider
-{		
+{
 	public:
-	
+
 		/** Constructor
 		*/
 		GSM3ShieldV1CellManagement();
@@ -51,42 +51,42 @@ class GSM3ShieldV1CellManagement : public GSM3MobileCellManagement, public GSM3S
 			@param to 			Final byte of buffer
 		 */
 		void manageResponse(byte from, byte to);
-		
+
 		/** getLocation
 		 @return current cell location
-		*/		
+		*/
 		int getLocation(char *country, char *network, char *area, char *cell);
-		
+
 		/** getICCID
 		*/
 		int getICCID(char *iccid);
-		
+
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		 */
 		int ready(){return GSM3ShieldV1BaseProvider::ready();};
 
-	private:	
-	
+	private:
+
 		char *countryCode;
 		char *networkCode;
 		char *locationArea;
 		char *cellId;
-		
+
 		char *bufferICCID;
-	
+
 		/** Continue to getLocation function
 		 */
 		void getLocationContinue();
-		
+
 		/** Continue to getICCID function
 		 */
 		void getICCIDContinue();
-		
+
 		bool parseQENG_available(bool& rsp);
-		
+
 		bool parseQCCID_available(bool& rsp);
-		
+
 };
 
 #endif

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -56,7 +56,7 @@ GSM3_voiceCall_st GSM3VoiceCallService::getvoiceCallStatus()
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return IDLE_CALL;
-	
+
 	return theGSM3MobileVoiceProvider->getvoiceCallStatus();
 }
 
@@ -64,7 +64,7 @@ int GSM3VoiceCallService::ready()
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
-	
+
 	return theGSM3MobileVoiceProvider->ready();
 }
 
@@ -72,7 +72,7 @@ int GSM3VoiceCallService::voiceCall(const char* to, unsigned long timeout)
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
-		
+
 	if(flags & GSM3VOICECALLSERVICE_SYNCH )
 	{
 		theGSM3MobileVoiceProvider->voiceCall(to);
@@ -81,24 +81,24 @@ int GSM3VoiceCallService::voiceCall(const char* to, unsigned long timeout)
 		// Wait an answer for timeout
 		while(((millis()-m)< timeout )&&(getvoiceCallStatus()==CALLING))
 			delay(100);
-		
+
 		if(getvoiceCallStatus()==TALKING)
 			return 1;
 		else
 			return 0;
 	}
 	else
-	{ 
+	{
 		return theGSM3MobileVoiceProvider->voiceCall(to);
 	}
-		
+
 }
 
 int GSM3VoiceCallService::answerCall()
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
-	
+
 	return waitForAnswerIfNeeded(theGSM3MobileVoiceProvider->answerCall());
 }
 
@@ -106,7 +106,7 @@ int GSM3VoiceCallService::hangCall()
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
-	
+
 	return waitForAnswerIfNeeded(theGSM3MobileVoiceProvider->hangCall());
 }
 
@@ -114,7 +114,7 @@ int GSM3VoiceCallService::retrieveCallingNumber(char* buffer, int bufsize)
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
-	
+
 	return waitForAnswerIfNeeded(theGSM3MobileVoiceProvider->retrieveCallingNumber(buffer, bufsize));
 }
 
@@ -126,7 +126,7 @@ int GSM3VoiceCallService::waitForAnswerIfNeeded(int returnvalue)
 		unsigned long m;
 		m=millis();
 		// Wait for __TOUT__
-		while(((millis()-m)< __TOUT__ )&&(ready()==0)) 
+		while(((millis()-m)< __TOUT__ )&&(ready()==0))
 			delay(100);
 		// If everything was OK, return 1
 		// else (timeout or error codes) return 0;

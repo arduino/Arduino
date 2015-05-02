@@ -216,7 +216,7 @@ void tc_sync_start(volatile avr32_tc_t *tc)
   // Enable the clock for each channel.
   for(i=0; i<TC_NUMBER_OF_CHANNELS;i++)
     tc->channel[i].ccr = AVR32_TC_CLKEN_MASK;
-    
+
   // Reset all channels of the selected timer/counter.
   tc->bcr = AVR32_TC_BCR_SYNC_MASK;
 }

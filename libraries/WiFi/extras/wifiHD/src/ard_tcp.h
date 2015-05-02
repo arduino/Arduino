@@ -31,7 +31,7 @@ typedef void (ard_tcp_done_cb_t)(void *opaque, int result);
 #define GET_CLIENT_ID(TTCP, PCB)	uint8_t id = NO_VALID_ID; do {		\
 		id = getNewClientConnId(TTCP, PCB);	\
 		if (id == NO_VALID_ID) return ERR_MEM;		\
-	}while(0);	
+	}while(0);
 #define GET_IDX_CONN(I) ((I+currConnId)<MAX_CLIENT_ACCEPTED ? (I+currConnId) : (I+currConnId-MAX_CLIENT_ACCEPTED))
 #define GET_CURR_PCB(TTCP) GET_CLIENT_TCP(TTCP,getCurrClientConnId())
 
@@ -41,14 +41,14 @@ typedef void (ard_tcp_done_cb_t)(void *opaque, int result);
 	if (TTCP->payload[id]) { \
 		free(TTCP->payload[id]); \
 		TTCP->payload[id] = NULL; } \
-}while(0);		
+}while(0);
 
 #define FREE_PAYLOAD_ID(TTCP,ID) do { \
 	INFO_TCP("Freeing payload %d-%p\n", ID, TTCP->payload[ID]); \
 	if (TTCP->payload[ID]) { \
 		free(TTCP->payload[ID]); \
 		TTCP->payload[ID] = NULL; } \
-}while(0);	
+}while(0);
 
 
 typedef struct ttcp {

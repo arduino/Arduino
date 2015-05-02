@@ -37,7 +37,7 @@ void SquawkSynthSD::convert(Fat16 in, Fat16 out) {
   out.write('1');
   out.write((uint8_t)0); // No meta data
   out.write((uint8_t)0);
-  
+
   // Write order list, count patterns
   in.seek(0x3B6);
   order_count = in.read();
@@ -48,13 +48,13 @@ void SquawkSynthSD::convert(Fat16 in, Fat16 out) {
     if(temp >= patterns) patterns = temp + 1;
     out.write(temp);
   }
-  
+
   // Write patterns
   in.seek(0x43C);
   for(ptn = 0; ptn < patterns; ptn++) {
     for(row = 0; row < 64; row++) {
       for(chn = 0; chn < 4; chn++) {
-        
+
         // Basic extraction
         temp         = in.read();          // sample.msb and period.msb
         period       = (temp & 0x0F) << 8;
@@ -68,7 +68,7 @@ void SquawkSynthSD::convert(Fat16 in, Fat16 out) {
           fxc[chn]    |= fxp[chn] >> 4;    // extended parameters
           fxp[chn]    &= 0x0F;
         }
-        
+
         #define DIF(A, B) ((A) > (B) ? ((int32_t)(A) - (int32_t)(B)) : ((int32_t)(B) - (int32_t)(A)))
         // Find closest matching period
         if(period == 0) {
@@ -83,7 +83,7 @@ void SquawkSynthSD::convert(Fat16 in, Fat16 out) {
             }
           }
         }
-        
+
         // Crunch volume/decimal commands
         if(fxc[chn] == 0x50 || fxc[chn] == 0x60 || fxc[chn] == 0xA0) {
           fxp[chn] = (fxp[chn] >> 1) & 0x77;
@@ -98,7 +98,7 @@ void SquawkSynthSD::convert(Fat16 in, Fat16 out) {
         // Re-nibblify - it's a word!
         if(chn != 3) {
           if((fxc[chn] & 0xF0) == 0xE0) fxp[chn] |= fxc[chn] << 4;
-          fxc[chn] >>= 4;       
+          fxc[chn] >>= 4;
         }
 
       }
@@ -134,7 +134,7 @@ void SquawkSynthSD::convert(Fat16 in, Fat16 out) {
             fxc[3] = 0x0;
             fxp[3] = 0x00;
           } else {
-            fxc[3] = 0x7;             
+            fxc[3] = 0x7;
           }
           break;
         case 0xE7:

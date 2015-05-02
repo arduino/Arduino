@@ -19,8 +19,8 @@
 //#include	"avrinterruptnames.h"
 
 //**************************************************************************************************
-//*	this defines the interrupt vectors and allows us to compile ONLY those strings that are actually 
-//*	in the target CPU. This way we do not have to keep making changes based on cpu, it will be 
+//*	this defines the interrupt vectors and allows us to compile ONLY those strings that are actually
+//*	in the target CPU. This way we do not have to keep making changes based on cpu, it will be
 //*	automatic even if we add a new CPU
 #ifndef _AVR_IO_H_
 	#include	<avr/io.h>
@@ -497,7 +497,7 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 
 //**************************************************************************************************
 #if defined(__AVR_ATmega324P__ ) || defined(__AVR_ATmega644__ ) || defined(__AVR_ATmega644P__)
-#pragma mark __AVR_ATmega324P__  __AVR_ATmega644__ __AVR_ATmega644P__ 
+#pragma mark __AVR_ATmega324P__  __AVR_ATmega644__ __AVR_ATmega644P__
 
 #define	_INTERRUPT_NAMES_DEFINED_
 
@@ -585,13 +585,13 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_USART1_RX,		//	29
 	gAvrInt_USART1_UDRE,	//	30
 	gAvrInt_USART1_TX,		//	31
-	//*	these are NOT documented in  doc8272.pdf 
+	//*	these are NOT documented in  doc8272.pdf
 	//*	they are in iom1284p.h
 	gAvrInt_TIMER3_CAPT,	//	32
 	gAvrInt_TIMER3_COMPA,	//	33
 	gAvrInt_TIMER3_COMPB,	//	34
 	gAvrInt_TIMER3_OVF,		//	35
-	
+
 
 };
 
@@ -754,7 +754,7 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_USART1_UDRE,	//	27
 	gAvrInt_USART1_TX,		//	28
 	gAvrInt_ANALOG_COMP,	//	29
-	
+
 	gAvrInt_ADC,			//	30
 	gAvrInt_EE_READY,		//	31
 
@@ -816,7 +816,7 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_USART1_UDRE,	//	27
 	gAvrInt_USART1_TX,		//	28
 	gAvrInt_ANALOG_COMP,	//	29
-	
+
 	gAvrInt_ADC,			//	30
 	gAvrInt_EE_READY,		//	31
 
@@ -1012,14 +1012,14 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_USART3_TX,		//	56
 #endif
 	gAvrInt_TRN_PLL_LOCK,	//	57
-	gAvrInt_TRN_PLL_UNLOCK,	//	58	
+	gAvrInt_TRN_PLL_UNLOCK,	//	58
 	gAvrInt_TRN_RX_START,	//	59
 	gAvrInt_TRN_RX_END,		//	60
 	gAvrInt_TRN_CAAED_DONE,	//	61
 	gAvrInt_TRN_FRAME_MATCH,//	62
 	gAvrInt_TRN_TX_END,		//	63
 	gAvrInt_TRN_AWAKE,		//	64
-	
+
 	gAvrInt_SCNT_CMP1,		//	65
 	gAvrInt_SCNT_CMP2,		//	66
 	gAvrInt_SCNT_CMP3,		//	67
@@ -1027,8 +1027,8 @@ PGM_P gInterruptNameTable[]	PROGMEM =
 	gAvrInt_SCNT_BACKOFF,	//	69
 	gAvrInt_AES_READY,		//	70
 	gAvrInt_BAT_LOW,		//	71
-	
-	
+
+
 };
 
 #endif

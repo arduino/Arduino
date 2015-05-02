@@ -95,14 +95,14 @@ private:
   byte lastGreen;
   byte lastBlue;
 
-  unsigned int readChannel(byte channel);    
-  
+  unsigned int readChannel(byte channel);
+
   boolean joyLowHalf(byte joyCh);
   boolean joyHighHalf(byte joyCh);
-    
+
 public:
   _Esplora();
-  
+
   /*
    * Returns a number corresponding to the position of the
    * linear potentiometer. 0 means full right, 1023 means
@@ -126,10 +126,10 @@ public:
    * Returns a number corresponding to the amount of ambient noise.
    */
   inline unsigned int readMicrophone() { return readChannel(CH_MIC); }
-  
+
   inline unsigned int readJoystickSwitch() { return readChannel(CH_JOYSTICK_SW); }
 
-  inline int readJoystickX() { 
+  inline int readJoystickX() {
     return readChannel(CH_JOYSTICK_X) - 512;
   }
   inline int readJoystickY() {
@@ -137,7 +137,7 @@ public:
   }
 
   int readAccelerometer(const byte axis);
-  
+
   /*
    * Reads the current state of a button. It will return
    * LOW if the button is pressed, and HIGH otherwise.
@@ -145,7 +145,7 @@ public:
   boolean readButton(byte channel);
 
   boolean readJoystickButton();
-  
+
   void writeRGB(byte red, byte green, byte blue);
   void writeRed(byte red);
   void writeGreen(byte green);
@@ -154,11 +154,11 @@ public:
   byte readRed();
   byte readGreen();
   byte readBlue();
-  
+
   void tone(unsigned int freq);
   void tone(unsigned int freq, unsigned long duration);
   void noTone();
-  
+
   inline unsigned int readTinkerkitInput(byte whichInput) {
     return readChannel(whichInput + CH_TINKERKIT_A);
   }

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -60,7 +60,7 @@ typedef struct _DELAY_TABLE
 
 #if F_CPU == 16000000
 
-static const DELAY_TABLE PROGMEM table[] = 
+static const DELAY_TABLE PROGMEM table[] =
 {
   //  baud    rxcenter   rxintra    rxstop    tx
   { 115200,   1,         17,        17,       12,    },
@@ -81,7 +81,7 @@ const int XMIT_START_ADJUSTMENT = 5;
 
 #elif F_CPU == 8000000
 
-static const DELAY_TABLE table[] PROGMEM = 
+static const DELAY_TABLE table[] PROGMEM =
 {
   //  baud    rxcenter    rxintra    rxstop  tx
   { 115200,   1,          5,         5,      3,      },
@@ -161,7 +161,7 @@ int GSM3SoftSerial::begin(long speed)
       break;
     }
   }
-  
+
   if (_rx_delay_stopbit)
   {
     if (digitalPinToPCICR(__RXPIN__))
@@ -171,7 +171,7 @@ int GSM3SoftSerial::begin(long speed)
     }
     tunedDelay(_tx_delay); // if we were low this establishes the end
   }
-  
+
   _activeObject=this;
 
 }
@@ -204,13 +204,13 @@ size_t GSM3SoftSerial::write(uint8_t c)
 		this->finalWrite(0x77);
 		return this->finalWrite(0x88);
 	}
-	
+
 	return this->finalWrite(c);
 }
 
 size_t GSM3SoftSerial::finalWrite(uint8_t c)
 {
-	
+
 	uint8_t oldSREG = SREG;
 	cli();  // turn off interrupts for a clean txmit
 
@@ -229,14 +229,14 @@ size_t GSM3SoftSerial::finalWrite(uint8_t c)
 	}
 
 	tx_pin_write(HIGH); // restore pin to natural state
-	
+
 	SREG = oldSREG; // turn interrupts back on
 	tunedDelay(_tx_delay);
-				
+
 	return 1;
 }
 
-/*inline*/ void GSM3SoftSerial::tunedDelay(uint16_t delay) { 
+/*inline*/ void GSM3SoftSerial::tunedDelay(uint16_t delay) {
   uint8_t tmp=0;
 
   asm volatile("sbiw    %0, 0x01 \n\t"
@@ -314,11 +314,11 @@ void GSM3SoftSerial::recv()
     "push r26 \n\t"
     "push r27 \n\t"
     ::);
-#endif  
+#endif
 
   bool firstByte=true;
   byte thisHead;
-  
+
   uint8_t d = 0;
   bool morebytes=false;
   //bool fullbuffer=(cb.availableBytes()<3);
@@ -336,14 +336,14 @@ void GSM3SoftSerial::recv()
 		oldTail=cb.getTail();
 		// Wait approximately 1/2 of a bit width to "center" the sample
 		tunedDelay(_rx_delay_centering);
-		
+
 		fullbuffer=(cb.availableBytes()<6);
 
-		
+
 		if(fullbuffer&&(!capturado_fullbuffer))
 			tx_pin_write(LOW);
 
-		
+
 		// Read each of the 8 bits
 		for (uint8_t i=0x1; i; i <<= 1)
 		{
@@ -353,7 +353,7 @@ void GSM3SoftSerial::recv()
 				d |= i;
 			else // else clause added to ensure function timing is ~balanced
 				d &= noti;
-			
+
 			if(fullbuffer&&(!capturado_fullbuffer))
 			{
 			  if((uint8_t)__XOFF__ & i)
@@ -366,11 +366,11 @@ void GSM3SoftSerial::recv()
 		if(fullbuffer&&(!capturado_fullbuffer))
 		{
 			tunedDelay(_rx_delay_intrabit);
-			tx_pin_write(HIGH);	
+			tx_pin_write(HIGH);
 		}
-		
+
 		// So, we know the buffer is full, and we have sent a XOFF
-		if (fullbuffer) 
+		if (fullbuffer)
 		{
 			capturado_fullbuffer =1;
 			_flags |=_GSMSOFTSERIALFLAGS_SENTXOFF_;
@@ -379,7 +379,7 @@ void GSM3SoftSerial::recv()
 
 		// skip the stop bit
 		if (!fullbuffer) tunedDelay(_rx_delay_stopbit);
-		
+
 		if(keepThisChar(&d))
 		{
 			cb.write(d);
@@ -389,16 +389,16 @@ void GSM3SoftSerial::recv()
 				thisHead=cb.getTail();
 			}
 		}
-		
-		
+
+
 		// This part is new. It is used to detect the end of a "paragraph"
-		// Caveat: the old fashion would let processor a bit of time between bytes, 
+		// Caveat: the old fashion would let processor a bit of time between bytes,
 		// that here is lost
 		// This active waiting avoids drifting
 		morebytes=false;
 		// TO-DO. This PARAGRAPHGUARD is empyric. We should test it for every speed
 		for(i=0;i<__PARAGRAPHGUARD__;i++)
-		{	
+		{
 			tunedDelay(1);
 			if(!rx_pin_read())
 			{
@@ -409,7 +409,7 @@ void GSM3SoftSerial::recv()
 	}while(morebytes);
 	// If we find a line feed, we are at the end of a paragraph
 	// check!
-	
+
 	if (fullbuffer)
 	{
 		// And... go handle it!
@@ -463,7 +463,7 @@ bool GSM3SoftSerial::keepThisChar(uint8_t* c)
 		_flags |= _GSMSOFTSERIALFLAGS_ESCAPED_;
 		return false;
 	}
-	
+
 	// and these are the escaped codes
 	if(_flags & _GSMSOFTSERIALFLAGS_ESCAPED_)
 	{
@@ -473,11 +473,11 @@ bool GSM3SoftSerial::keepThisChar(uint8_t* c)
 			*c=0x13;
 		else if(*c==0x88)
 			*c=0x77;
-			
+
 		_flags ^= _GSMSOFTSERIALFLAGS_ESCAPED_;
 		return true;
 	}
-	
+
 	return true;
 }
 

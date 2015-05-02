@@ -4,13 +4,13 @@
 # Temboo Arduino library
 #
 # Copyright 2015, Temboo Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -44,8 +44,8 @@ static const char SDK_ID[]                 PROGMEM = "?source_id=arduinoSDK1";
 
 unsigned long TembooSession::s_timeOffset = 0;
 
-TembooSession::TembooSession(Client& client, 
-        IPAddress serverAddr, 
+TembooSession::TembooSession(Client& client,
+        IPAddress serverAddr,
         uint16_t port) : m_client(client) {
     m_addr = serverAddr;
     m_port = port;
@@ -65,22 +65,22 @@ unsigned long TembooSession::getTime() {
 
 
 int TembooSession::executeChoreo(
-        const char* accountName, 
-        const char* appKeyName, 
-        const char* appKeyValue, 
-        const char* path, 
-        const ChoreoInputSet& inputSet, 
-        const ChoreoOutputSet& outputSet, 
+        const char* accountName,
+        const char* appKeyName,
+        const char* appKeyValue,
+        const char* path,
+        const ChoreoInputSet& inputSet,
+        const ChoreoOutputSet& outputSet,
         const ChoreoPreset& preset) {
 
     DataFormatter fmt(&inputSet, &outputSet, &preset);
     char auth[HMAC_HEX_SIZE_BYTES + 1];
     char buffer[11];
-    
+
     // We use the current time-of-day as salt on the app key.
     // We keep track of time-of-day by getting the current time
     // from the server and applying an offset (the length of time
-    // we've been running.) 
+    // we've been running.)
     uint32toa((uint32_t)TembooSession::getTime(), buffer);
 
     uint16_t contentLength = getAuth(fmt, appKeyValue, buffer, auth);
@@ -91,7 +91,7 @@ int TembooSession::executeChoreo(
     int connected = 0;
     TEMBOO_TRACE("Connecting: ");
 
-    // reserve space for the "host" string sufficient to hold either the 
+    // reserve space for the "host" string sufficient to hold either the
     // (dotted-quad) IP address + port, or the default <account>.temboolive.com
     // host string.
     int hostLen = (m_addr == INADDR_NONE ? (strlen_P(TEMBOO_DOMAIN) + strlen(accountName) + 1):21);
@@ -116,10 +116,10 @@ int TembooSession::executeChoreo(
 
         // replace the last '.' with ':'
         host[strlen(host)-1] = ':';
-        
+
         // append the port number
         uint16toa(m_port, &host[strlen(host)]);
-        
+
         TEMBOO_TRACELN(host);
         connected = m_client.connect(m_addr, m_port);
     }
@@ -132,39 +132,39 @@ int TembooSession::executeChoreo(
         qsend(path);
         qsendProgmem(SDK_ID);
         qsendlnProgmem(POSTAMBLE);
-        
+
         // Send our custom authentication header
         // (app-key-name:hmac)
         qsendProgmem(HEADER_AUTH);
         qsend(appKeyName);
         qsend(":");
         qsendln(auth);
-        
+
         // send the standard host header
         qsendProgmem(HEADER_HOST);
         qsendln(host);
-        
+
         // send the standard accept header
         qsendlnProgmem(HEADER_ACCEPT);
-        
+
         // send our custom account name neader
         qsendProgmem(HEADER_ORG);
         qsend(accountName);
         qsendlnProgmem(HEADER_DOM);
-        
+
         // send the standard content type header
         qsendlnProgmem(HEADER_CONTENT_TYPE);
-        
+
         // send our custom client time header
         qsendProgmem(HEADER_TIME);
         qsendln(buffer);
-        
+
         // send the standard content length header
         qsendProgmem(HEADER_CONTENT_LENGTH);
         qsendln(uint16toa(contentLength, buffer));
 
         qsendProgmem(EOL);
-        
+
         // Format and send the body of the request
         fmt.reset();
         while(fmt.hasNext()) {

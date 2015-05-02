@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -50,7 +50,7 @@ void GSM3ShieldV1ServerProvider::manageResponse(byte from, byte to)
 			break;
 		case CONNECTSERVER:
 			connectTCPServerContinue();
-			break;	
+			break;
 		/*case GETIP:
 			getIPContinue();
 			break;*/
@@ -61,7 +61,7 @@ void GSM3ShieldV1ServerProvider::manageResponse(byte from, byte to)
 int GSM3ShieldV1ServerProvider::connectTCPServer(int port)
 {
 	// We forget about LocalIP as it has no real use, the modem does whatever it likes
-	theGSM3ShieldV1ModemCore.setPort(port);			
+	theGSM3ShieldV1ModemCore.setPort(port);
 	theGSM3ShieldV1ModemCore.openCommand(this,CONNECTSERVER);
 	// From this moment on we wait for a call
 	connectTCPServerContinue();
@@ -103,8 +103,8 @@ void GSM3ShieldV1ServerProvider::connectTCPServerContinue()
 				theGSM3ShieldV1ModemCore.setCommandCounter(3);
 			}
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
-		break;	
+		}
+		break;
 	case 3:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
@@ -118,22 +118,22 @@ void GSM3ShieldV1ServerProvider::connectTCPServerContinue()
 				theGSM3ShieldV1ModemCore.setCommandCounter(4);
 			}
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
-		break;	
+		}
+		break;
 	case 4:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
 			// Response received
 			// OK received, kathapoon, chessespoon
-			if (resp) 
+			if (resp)
 			{
 				theGSM3ShieldV1ModemCore.registerUMProvider(this);
 				theGSM3ShieldV1ModemCore.closeCommand(1);
 			}
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
-		}		
-		break;	
+		}
+		break;
 	}
 }
 
@@ -142,7 +142,7 @@ void GSM3ShieldV1ServerProvider::connectTCPServerContinue()
 {
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("\r\n","\r\n", LocalIP, LocalIPlength)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	return true;
 }
@@ -173,14 +173,14 @@ void GSM3ShieldV1ServerProvider::getIPContinue()
 	case 2:
 		if(parseQILOCIP_rsp(theGSM3ShieldV1ModemCore.getPhoneNumber(), theGSM3ShieldV1ModemCore.getPort(), resp))
 	    {
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
-		break;	
+		break;
 	}
 }*/
 
@@ -188,7 +188,7 @@ bool GSM3ShieldV1ServerProvider::getSocketAsServerModemStatus(int s)
 {
 	if(theGSM3ShieldV1ModemCore.getStatus()==TRANSPARENT_CONNECTED)
 		return true;
-	else 
+	else
 		return false;
 }
 
@@ -199,7 +199,7 @@ bool GSM3ShieldV1ServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 
 	int nlength;
 	char auxLocate [15];
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -207,8 +207,8 @@ bool GSM3ShieldV1ServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		//To detect remote socket closed for example inside socket data.
 		theGSM3ShieldV1ModemCore.setStatus(GPRS_READY);
 	}
-	
-	
+
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("CONNECT\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -219,7 +219,7 @@ bool GSM3ShieldV1ServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		theGSM3ShieldV1ModemCore.setStatus(TRANSPARENT_CONNECTED);
 		return true;
 	}
-	
+
 	return false;
 }
 

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -37,8 +37,8 @@ https://github.com/BlueVia/Official-Arduino
 
 // Returns 0 if last command is still executing
 // 1 if success
-// >1 if error 
-int GSM3ShieldV1BaseProvider::ready() 
+// >1 if error
+int GSM3ShieldV1BaseProvider::ready()
 {
 	theGSM3ShieldV1ModemCore.manageReceivedData();
 
@@ -51,8 +51,8 @@ void GSM3ShieldV1BaseProvider::prepareAuxLocate(PGM_P str, char auxLocate[])
 	char c;
 
 	do
-	{	
-		c=pgm_read_byte_near(str + i); 
+	{
+		c=pgm_read_byte_near(str + i);
 		auxLocate[i]=c;
 		i++;
 	} while (c!=0);

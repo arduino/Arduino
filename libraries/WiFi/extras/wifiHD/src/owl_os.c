@@ -14,7 +14,7 @@ void *owl_os_realloc(void *ptr, size_t size)
 {
         return realloc(ptr, size);
 }
-     
+
 void owl_os_free(void *p)
 {
         free(p);

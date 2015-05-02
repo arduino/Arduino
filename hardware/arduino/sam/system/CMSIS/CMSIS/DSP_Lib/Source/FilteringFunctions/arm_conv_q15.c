@@ -1,68 +1,68 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:		arm_conv_q15.c   
-*   
-* Description:	Convolution of Q15 sequences.     
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_conv_q15.c
+*
+* Description:	Convolution of Q15 sequences.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated   
-*   
-* Version 0.0.7  2010/06/10    
-*    Misra-C changes done   
-*   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated
+*
+* Version 0.0.7  2010/06/10
+*    Misra-C changes done
+*
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFilters   
+/**
+ * @ingroup groupFilters
  */
 
-/**   
- * @addtogroup Conv   
- * @{   
+/**
+ * @addtogroup Conv
+ * @{
  */
 
-/**   
- * @brief Convolution of Q15 sequences.   
- * @param[in] *pSrcA points to the first input sequence.   
- * @param[in] srcALen length of the first input sequence.   
- * @param[in] *pSrcB points to the second input sequence.   
- * @param[in] srcBLen length of the second input sequence.   
- * @param[out] *pDst points to the location where the output result is written.  Length srcALen+srcBLen-1.   
- * @return none.   
- *   
- * @details   
- * <b>Scaling and Overflow Behavior:</b>   
- *   
- * \par   
- * The function is implemented using a 64-bit internal accumulator.   
- * Both inputs are in 1.15 format and multiplications yield a 2.30 result.   
- * The 2.30 intermediate results are accumulated in a 64-bit accumulator in 34.30 format.   
- * This approach provides 33 guard bits and there is no risk of overflow.   
- * The 34.30 result is then truncated to 34.15 format by discarding the low 15 bits and then saturated to 1.15 format.   
- *   
- * \par   
- * Refer to <code>arm_conv_fast_q15()</code> for a faster but less precise version of this function for Cortex-M3 and Cortex-M4.   
+/**
+ * @brief Convolution of Q15 sequences.
+ * @param[in] *pSrcA points to the first input sequence.
+ * @param[in] srcALen length of the first input sequence.
+ * @param[in] *pSrcB points to the second input sequence.
+ * @param[in] srcBLen length of the second input sequence.
+ * @param[out] *pDst points to the location where the output result is written.  Length srcALen+srcBLen-1.
+ * @return none.
+ *
+ * @details
+ * <b>Scaling and Overflow Behavior:</b>
+ *
+ * \par
+ * The function is implemented using a 64-bit internal accumulator.
+ * Both inputs are in 1.15 format and multiplications yield a 2.30 result.
+ * The 2.30 intermediate results are accumulated in a 64-bit accumulator in 34.30 format.
+ * This approach provides 33 guard bits and there is no risk of overflow.
+ * The 34.30 result is then truncated to 34.15 format by discarding the low 15 bits and then saturated to 1.15 format.
+ *
+ * \par
+ * Refer to <code>arm_conv_fast_q15()</code> for a faster but less precise version of this function for Cortex-M3 and Cortex-M4.
  */
 
 void arm_conv_q15(
@@ -115,30 +115,30 @@ void arm_conv_q15(
   }
 
   /* conv(x,y) at n = x[n] * y[0] + x[n-1] * y[1] + x[n-2] * y[2] + ...+ x[n-N+1] * y[N -1] */
-  /* The function is internally   
-   * divided into three stages according to the number of multiplications that has to be   
-   * taken place between inputA samples and inputB samples. In the first stage of the   
-   * algorithm, the multiplications increase by one for every iteration.   
-   * In the second stage of the algorithm, srcBLen number of multiplications are done.   
-   * In the third stage of the algorithm, the multiplications decrease by one   
+  /* The function is internally
+   * divided into three stages according to the number of multiplications that has to be
+   * taken place between inputA samples and inputB samples. In the first stage of the
+   * algorithm, the multiplications increase by one for every iteration.
+   * In the second stage of the algorithm, srcBLen number of multiplications are done.
+   * In the third stage of the algorithm, the multiplications decrease by one
    * for every iteration. */
 
-  /* The algorithm is implemented in three stages.   
+  /* The algorithm is implemented in three stages.
      The loop counters of each stage is initiated here. */
   blockSize1 = srcBLen - 1u;
   blockSize2 = srcALen - (srcBLen - 1u);
 
-  /* --------------------------   
-   * Initializations of stage1   
+  /* --------------------------
+   * Initializations of stage1
    * -------------------------*/
 
-  /* sum = x[0] * y[0]   
-   * sum = x[0] * y[1] + x[1] * y[0]   
-   * ....   
-   * sum = x[0] * y[srcBlen - 1] + x[1] * y[srcBlen - 2] +...+ x[srcBLen - 1] * y[0]   
+  /* sum = x[0] * y[0]
+   * sum = x[0] * y[1] + x[1] * y[0]
+   * ....
+   * sum = x[0] * y[srcBlen - 1] + x[1] * y[srcBlen - 2] +...+ x[srcBLen - 1] * y[0]
    */
 
-  /* In this stage the MAC operations are increased by 1 for every iteration.   
+  /* In this stage the MAC operations are increased by 1 for every iteration.
      The count variable holds the number of MAC operations performed */
   count = 1u;
 
@@ -149,8 +149,8 @@ void arm_conv_q15(
   py = pIn2;
 
 
-  /* ------------------------   
-   * Stage1 process   
+  /* ------------------------
+   * Stage1 process
    * ----------------------*/
 
   /* For loop unrolling by 4, this stage is divided into two. */
@@ -163,7 +163,7 @@ void arm_conv_q15(
     /* Accumulator is made zero for every iteration */
     sum = 0;
 
-    /* Loop over number of MAC operations between   
+    /* Loop over number of MAC operations between
      * inputA samples and inputB samples */
     k = count;
 
@@ -192,7 +192,7 @@ void arm_conv_q15(
 
   /* The second part of the stage starts here */
   /* The internal loop, over count, is unrolled by 4 */
-  /* To, read the last two inputB samples using SIMD:   
+  /* To, read the last two inputB samples using SIMD:
    * y[srcBLen] and y[srcBLen-1] coefficients, py is decremented by 1 */
   py = py - 1;
 
@@ -204,7 +204,7 @@ void arm_conv_q15(
     /* Apply loop unrolling and compute 4 MACs simultaneously. */
     k = count >> 2u;
 
-    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
      ** a second loop below computes MACs for the remaining 1 to 3 samples. */
     while(k > 0u)
     {
@@ -218,11 +218,11 @@ void arm_conv_q15(
       k--;
     }
 
-    /* For the next MAC operations, the pointer py is used without SIMD   
+    /* For the next MAC operations, the pointer py is used without SIMD
      * So, py is incremented by 1 */
     py = py + 1u;
 
-    /* If the count is not a multiple of 4, compute any remaining MACs here.   
+    /* If the count is not a multiple of 4, compute any remaining MACs here.
      ** No loop unrolling is used. */
     k = count % 0x4u;
 
@@ -249,14 +249,14 @@ void arm_conv_q15(
     blockSize1--;
   }
 
-  /* --------------------------   
-   * Initializations of stage2   
+  /* --------------------------
+   * Initializations of stage2
    * ------------------------*/
 
-  /* sum = x[0] * y[srcBLen-1] + x[1] * y[srcBLen-2] +...+ x[srcBLen-1] * y[0]   
-   * sum = x[1] * y[srcBLen-1] + x[2] * y[srcBLen-2] +...+ x[srcBLen] * y[0]   
-   * ....   
-   * sum = x[srcALen-srcBLen-2] * y[srcBLen-1] + x[srcALen] * y[srcBLen-2] +...+ x[srcALen-1] * y[0]   
+  /* sum = x[0] * y[srcBLen-1] + x[1] * y[srcBLen-2] +...+ x[srcBLen-1] * y[0]
+   * sum = x[1] * y[srcBLen-1] + x[2] * y[srcBLen-2] +...+ x[srcBLen] * y[0]
+   * ....
+   * sum = x[srcALen-srcBLen-2] * y[srcBLen-1] + x[srcALen] * y[srcBLen-2] +...+ x[srcALen-1] * y[0]
    */
 
   /* Working pointer of inputA */
@@ -273,12 +273,12 @@ void arm_conv_q15(
   count = 1u;
 
 
-  /* --------------------   
-   * Stage2 process   
+  /* --------------------
+   * Stage2 process
    * -------------------*/
 
-  /* Stage2 depends on srcBLen as in this stage srcBLen number of MACS are performed.   
-   * So, to loop unroll over blockSize2,   
+  /* Stage2 depends on srcBLen as in this stage srcBLen number of MACS are performed.
+   * So, to loop unroll over blockSize2,
    * srcBLen should be greater than or equal to 4 */
   if(srcBLen >= 4u)
   {
@@ -303,11 +303,11 @@ void arm_conv_q15(
       /* Apply loop unrolling and compute 4 MACs simultaneously. */
       k = srcBLen >> 2u;
 
-      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
        ** a second loop below computes MACs for the remaining 1 to 3 samples. */
       do
       {
-        /* Read the last two inputB samples using SIMD:   
+        /* Read the last two inputB samples using SIMD:
          * y[srcBLen - 1] and y[srcBLen - 2] */
         c0 = *(pb--);
 
@@ -352,12 +352,12 @@ void arm_conv_q15(
 
       } while(--k);
 
-      /* For the next MAC operations, SIMD is not used   
+      /* For the next MAC operations, SIMD is not used
        * So, the 16 bit pointer if inputB, py is updated */
       py = (q15_t *) pb;
       py = py + 1;
 
-      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.   
+      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.
        ** No loop unrolling is used. */
       k = srcBLen % 0x4u;
 
@@ -422,7 +422,7 @@ void arm_conv_q15(
         /* Read y[srcBLen - 7] */
         c0 = (*pb);
 
-        //c0 = (c0 & 0x0000FFFF)<<16; 
+        //c0 = (c0 & 0x0000FFFF)<<16;
         c0 = (c0) << 16;
 
 #else
@@ -473,7 +473,7 @@ void arm_conv_q15(
       blkCnt--;
     }
 
-    /* If the blockSize2 is not a multiple of 4, compute any remaining output samples here.   
+    /* If the blockSize2 is not a multiple of 4, compute any remaining output samples here.
      ** No loop unrolling is used. */
     blkCnt = blockSize2 % 0x4u;
 
@@ -485,7 +485,7 @@ void arm_conv_q15(
       /* Apply loop unrolling and compute 4 MACs simultaneously. */
       k = srcBLen >> 2u;
 
-      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
        ** a second loop below computes MACs for the remaining 1 to 3 samples. */
       while(k > 0u)
       {
@@ -499,7 +499,7 @@ void arm_conv_q15(
         k--;
       }
 
-      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.   
+      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.
        ** No loop unrolling is used. */
       k = srcBLen % 0x4u;
 
@@ -528,7 +528,7 @@ void arm_conv_q15(
   }
   else
   {
-    /* If the srcBLen is not a multiple of 4,   
+    /* If the srcBLen is not a multiple of 4,
      * the blockSize2 loop cannot be unrolled by 4 */
     blkCnt = blockSize2;
 
@@ -565,18 +565,18 @@ void arm_conv_q15(
   }
 
 
-  /* --------------------------   
-   * Initializations of stage3   
+  /* --------------------------
+   * Initializations of stage3
    * -------------------------*/
 
-  /* sum += x[srcALen-srcBLen+1] * y[srcBLen-1] + x[srcALen-srcBLen+2] * y[srcBLen-2] +...+ x[srcALen-1] * y[1]   
-   * sum += x[srcALen-srcBLen+2] * y[srcBLen-1] + x[srcALen-srcBLen+3] * y[srcBLen-2] +...+ x[srcALen-1] * y[2]   
-   * ....   
-   * sum +=  x[srcALen-2] * y[srcBLen-1] + x[srcALen-1] * y[srcBLen-2]   
-   * sum +=  x[srcALen-1] * y[srcBLen-1]   
+  /* sum += x[srcALen-srcBLen+1] * y[srcBLen-1] + x[srcALen-srcBLen+2] * y[srcBLen-2] +...+ x[srcALen-1] * y[1]
+   * sum += x[srcALen-srcBLen+2] * y[srcBLen-1] + x[srcALen-srcBLen+3] * y[srcBLen-2] +...+ x[srcALen-1] * y[2]
+   * ....
+   * sum +=  x[srcALen-2] * y[srcBLen-1] + x[srcALen-1] * y[srcBLen-2]
+   * sum +=  x[srcALen-1] * y[srcBLen-1]
    */
 
-  /* In this stage the MAC operations are decreased by 1 for every iteration.   
+  /* In this stage the MAC operations are decreased by 1 for every iteration.
      The blockSize3 variable holds the number of MAC operations performed */
 
   blockSize3 = srcBLen - 1u;
@@ -590,8 +590,8 @@ void arm_conv_q15(
   pIn2 = pSrc2 - 1u;
   py = pIn2;
 
-  /* -------------------   
-   * Stage3 process   
+  /* -------------------
+   * Stage3 process
    * ------------------*/
 
   /* For loop unrolling by 4, this stage is divided into two. */
@@ -609,14 +609,14 @@ void arm_conv_q15(
     /* Apply loop unrolling and compute 4 MACs simultaneously. */
     k = blockSize3 >> 2u;
 
-    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
      ** a second loop below computes MACs for the remaining 1 to 3 samples. */
     while(k > 0u)
     {
-      /* x[srcALen - srcBLen + 1], x[srcALen - srcBLen + 2] are multiplied   
+      /* x[srcALen - srcBLen + 1], x[srcALen - srcBLen + 2] are multiplied
        * with y[srcBLen - 1], y[srcBLen - 2] respectively */
       sum = __SMLALDX(*__SIMD32(px)++, *__SIMD32(py)--, sum);
-      /* x[srcALen - srcBLen + 3], x[srcALen - srcBLen + 4] are multiplied   
+      /* x[srcALen - srcBLen + 3], x[srcALen - srcBLen + 4] are multiplied
        * with y[srcBLen - 3], y[srcBLen - 4] respectively */
       sum = __SMLALDX(*__SIMD32(px)++, *__SIMD32(py)--, sum);
 
@@ -624,11 +624,11 @@ void arm_conv_q15(
       k--;
     }
 
-    /* For the next MAC operations, the pointer py is used without SIMD   
+    /* For the next MAC operations, the pointer py is used without SIMD
      * So, py is incremented by 1 */
     py = py + 1u;
 
-    /* If the blockSize3 is not a multiple of 4, compute any remaining MACs here.   
+    /* If the blockSize3 is not a multiple of 4, compute any remaining MACs here.
      ** No loop unrolling is used. */
     k = blockSize3 % 0x4u;
 
@@ -655,7 +655,7 @@ void arm_conv_q15(
   }
 
   /* The second part of the stage starts here */
-  /* SIMD is not used for the next MAC operations,   
+  /* SIMD is not used for the next MAC operations,
    * so pointer py is updated to read only one sample at a time */
   py = py + 1u;
 
@@ -722,6 +722,6 @@ void arm_conv_q15(
 
 }
 
-/**   
- * @} end of Conv group   
+/**
+ * @} end of Conv group
  */

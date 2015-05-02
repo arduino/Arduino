@@ -30,7 +30,7 @@ void RobotControl::drawCompass(uint16_t value){
 	debugPrint(value,57,76);
 }
 
-//display logos 
+//display logos
 void RobotControl::displayLogos(){
 	_drawBMP("lg0.bmp",0,0);
 	delay(2000);

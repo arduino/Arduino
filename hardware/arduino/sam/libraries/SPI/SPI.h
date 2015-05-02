@@ -22,7 +22,7 @@
 //   - SPISetting(clock, bitOrder, dataMode)
 #define SPI_HAS_TRANSACTION 1
 
-// SPI_HAS_EXTENDED_CS_PIN_HANDLING means SPI has automatic 
+// SPI_HAS_EXTENDED_CS_PIN_HANDLING means SPI has automatic
 // CS pin handling and provides the following methods:
 //   - begin(pin)
 //   - end(pin)

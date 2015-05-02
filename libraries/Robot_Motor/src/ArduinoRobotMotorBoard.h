@@ -78,29 +78,29 @@ class RobotMotorBoard:public LineFollow{
 	public:
 		RobotMotorBoard();
 		void begin();
-		
+
 		void process();
-		
+
 		void parseCommand();
-		
+
 		int IRread(uint8_t num);
-		
+
 		void setMode(uint8_t mode);
 		void pauseMode(bool onOff);
-		
+
 		void motorsWrite(int speedL, int speedR);
 		void motorsWritePct(int speedLpct, int speedRpct);//write motor values in percentage
-		void motorsStop();		
+		void motorsStop();
 	private:
 		float motorAdjustment;//-1.0 ~ 1.0, whether left is lowered or right is lowered
-		
+
 		//convert codename to actual pins
 		uint8_t parseCodename(uint8_t codename);
 		uint8_t codenameToAPin(uint8_t codename);
-		
+
 		void stopCurrentActions();
 		//void sendCommand(byte command,byte codename,int value);
-		
+
 		void _analogWrite(uint8_t codename, int value);
 		void _digitalWrite(uint8_t codename, bool value);
 		void _analogRead(uint8_t codename);
@@ -108,16 +108,16 @@ class RobotMotorBoard:public LineFollow{
 		int _IRread(uint8_t num);
 		void _readIR();
 		void _readTrim();
-		
+
 		void _refreshMotorAdjustment();
-		
+
 		Multiplexer IRs;
 		uint8_t mode;
 		uint8_t isPaused;
 		EasyTransfer2 messageIn;
 		EasyTransfer2 messageOut;
-		
-		//Line Following 
+
+		//Line Following
 		void reportActionDone();
 };
 

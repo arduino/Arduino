@@ -43,7 +43,7 @@ const byte GREEN_PIN  = 10;
 
 const byte BUZZER_PIN = 6;
 
-// non-multiplexer Esplora pins: 
+// non-multiplexer Esplora pins:
 // Accelerometer: x-A5, y-A11, z-A6
 // External outputs: D3, D11
 // Buzzer: D6
@@ -72,7 +72,7 @@ unsigned int _Esplora::readChannel(byte channel) {
   digitalWrite(MUX_ADDR_PINS[3], (channel & 8) ? HIGH : LOW);
   // workaround to cope with lack of pullup resistor on joystick switch
   if (channel == CH_JOYSTICK_SW) {
-    pinMode(MUX_COM_PIN, INPUT_PULLUP); 
+    pinMode(MUX_COM_PIN, INPUT_PULLUP);
     unsigned int joystickSwitchState = (digitalRead(MUX_COM_PIN) == HIGH) ? 1023 : 0;
     digitalWrite(MUX_COM_PIN, LOW);
     return joystickSwitchState;
@@ -95,7 +95,7 @@ boolean _Esplora::readButton(byte ch) {
   if (ch >= SWITCH_1 && ch <= SWITCH_4) {
     ch--;
   }
-  
+
   switch(ch) {
   case JOYSTICK_RIGHT:
     return joyLowHalf(CH_JOYSTICK_X);
@@ -106,7 +106,7 @@ boolean _Esplora::readButton(byte ch) {
   case JOYSTICK_DOWN:
     return joyHighHalf(CH_JOYSTICK_Y);
   }
-    
+
   unsigned int val = readChannel(ch);
   return (val > 512) ? HIGH : LOW;
 }
@@ -138,7 +138,7 @@ void _Esplora::write##name(byte val) { \
 byte _Esplora::read##name() { \
   return lastVar; \
 }
-  
+
 RGB_FUNC(Red,   RED_PIN,   lastRed)
 RGB_FUNC(Green, GREEN_PIN, lastGreen)
 RGB_FUNC(Blue,  BLUE_PIN,  lastBlue)

@@ -63,7 +63,7 @@ extern "C" {
   #include "pm.h"
 #else
 //! Device-specific data
-#if UC3L 
+#if UC3L
   #include "pm_uc3l.h"
   #include "scif_uc3l.h"
   #include "flashcdw.h"
@@ -141,7 +141,7 @@ typedef struct
 
   //! DFLL target frequency (input/output argument) (NOTE: the bigger, the most stable the frequency)
   unsigned long dfll_f;
-  
+
   //! Other parameters that might be necessary depending on the device (implementation-dependent).
   // For the UC3L DFLL setup, this parameter should be pointing to a structure of
   // type (scif_gclk_opt_t *).

@@ -158,7 +158,7 @@ size_t UARTClass::write( const uint8_t uc_data )
     // Make sure TX interrupt is enabled
     _pUart->UART_IER = UART_IER_TXRDY;
   }
-  else 
+  else
   {
      // Bypass buffering and send character directly
      _pUart->UART_THR = uc_data;
@@ -175,7 +175,7 @@ void UARTClass::IrqHandler( void )
     _rx_buffer->store_char(_pUart->UART_RHR);
 
   // Do we need to keep sending data?
-  if ((status & UART_SR_TXRDY) == UART_SR_TXRDY) 
+  if ((status & UART_SR_TXRDY) == UART_SR_TXRDY)
   {
     if (_tx_buffer->_iTail != _tx_buffer->_iHead) {
       _pUart->UART_THR = _tx_buffer->_aucBuffer[_tx_buffer->_iTail];

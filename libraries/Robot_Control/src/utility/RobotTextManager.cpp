@@ -26,7 +26,7 @@ void TextManager::writeText(int lineNum, int colNum, char* txt, bool onOff){
 
   Robot.setCursor(getCol(colNum),getLin(lineNum));
   Robot.print(txt);
-  
+
   Robot.setTextColor(BLACK);
 }
 
@@ -36,7 +36,7 @@ void TextManager::drawInput(bool onOff){
 
   Robot.setCursor(getCol(inputCol),getLin(inputLin)+1);
   Robot.print('_');
-  
+
   Robot.setTextColor(BLACK);
 
 }
@@ -79,16 +79,16 @@ void TextManager::refreshCurrentLetter(char letter){
 
 void TextManager::getInput(int lin, int col){
   writeText(lin,col,">");  //Input indicator
-  
+
   writeText(lin, col+1, inputPool);
-  
+
   inputLin=lin;  //Ini input cursor
   inputCol=col+1;
   inputPos=0;
   drawInput(true);
-  
+
   Vkey.display(100);//Vkey is a object of VirtualKeyboard class
-  
+
   while(true){
     switch(Robot.keyboardRead()){
       case BUTTON_LEFT:
@@ -170,7 +170,7 @@ void TextManager::showPicture(char * filename, int posX, int posY){
 }
 
 void TextManager::getPGMtext(int seq){
-  //It takes a string from program space, and fill it  
+  //It takes a string from program space, and fill it
   //in the buffer
   //if(in hello user example){
   if(true){
@@ -181,7 +181,7 @@ void TextManager::getPGMtext(int seq){
 void TextManager::writeScript(int seq, int line, int col){
   //print a string from program space to a specific line,
   //column on the LCD
-  
+
   //first fill the buffer with text from program space
   getPGMtext(seq);
   //then print it to the screen

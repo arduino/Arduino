@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -42,12 +42,12 @@ bool GSM3ShieldV1CellManagement::parseQCCID_available(bool& rsp)
 	char c;
 	bool iccidFound = false;
 	int i = 0;
-	
+
 	while(((c = theGSM3ShieldV1ModemCore.theBuffer().read()) != 0) & (i < 19))
 	{
 		if((c < 58) & (c > 47))
 			iccidFound = true;
-		
+
 		if(iccidFound)
 		{
 			bufferICCID[i] = c;
@@ -55,33 +55,33 @@ bool GSM3ShieldV1CellManagement::parseQCCID_available(bool& rsp)
 		}
 	}
 	bufferICCID[i]=0;
-	
+
 	return true;
-}			
+}
 
 bool GSM3ShieldV1CellManagement::parseQENG_available(bool& rsp)
 {
 	char c;
 	char location[50] = "";
 	int i = 0;
-	
+
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().chopUntil("+QENG: ", true)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
-	
+
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().chopUntil("+QENG:", true)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
-	
+
 	while(((c = theGSM3ShieldV1ModemCore.theBuffer().read()) != 0) & (i < 50))
 	{
 		location[i] = c;
 		i++;
 	}
 	location[i]=0;
-	
+
 	char* res_tok = strtok(location, ",");
 	res_tok=strtok(NULL, ",");
 	strcpy(countryCode, res_tok);
@@ -91,23 +91,23 @@ bool GSM3ShieldV1CellManagement::parseQENG_available(bool& rsp)
 	strcpy(locationArea, res_tok);
 	res_tok=strtok(NULL, ",");
 	strcpy(cellId, res_tok);
-	
+
 	return true;
-}			
+}
 
 int GSM3ShieldV1CellManagement::getLocation(char *country, char *network, char *area, char *cell)
 {
 	if((theGSM3ShieldV1ModemCore.getStatus() != GSM_READY) && (theGSM3ShieldV1ModemCore.getStatus() != GPRS_READY))
 		return 2;
-	
+
 	countryCode=country;
 	networkCode=network;
 	locationArea=area;
 	cellId=cell;
-	
+
 	theGSM3ShieldV1ModemCore.openCommand(this,GETLOCATION);
 	getLocationContinue();
-	
+
 	unsigned long timeOut = millis();
 	while(((millis() - timeOut) < 5000) & (ready() == 0));
 
@@ -117,7 +117,7 @@ int GSM3ShieldV1CellManagement::getLocation(char *country, char *network, char *
 void GSM3ShieldV1CellManagement::getLocationContinue()
 {
 	bool resp;
-	
+
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
     case 1:
 		theGSM3ShieldV1ModemCore.gss.tunedDelay(3000);
@@ -152,21 +152,21 @@ int GSM3ShieldV1CellManagement::getICCID(char *iccid)
 {
 	if((theGSM3ShieldV1ModemCore.getStatus() != GSM_READY) && (theGSM3ShieldV1ModemCore.getStatus() != GPRS_READY))
 		return 2;
-	
+
 	bufferICCID=iccid;
 	theGSM3ShieldV1ModemCore.openCommand(this,GETICCID);
 	getICCIDContinue();
-	
+
 	unsigned long timeOut = millis();
 	while(((millis() - timeOut) < 5000) & (ready() == 0));
-		
+
 	return theGSM3ShieldV1ModemCore.getCommandError();
 }
 
 void GSM3ShieldV1CellManagement::getICCIDContinue()
 {
 	bool resp;
-	
+
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
     case 1:
 		theGSM3ShieldV1ModemCore.setCommandCounter(2);

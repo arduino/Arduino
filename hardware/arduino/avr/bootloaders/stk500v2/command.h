@@ -56,7 +56,7 @@
 #define CMD_PROGRAM_LOCK_PP                 0x29
 #define CMD_READ_LOCK_PP                    0x2A
 #define CMD_READ_SIGNATURE_PP               0x2B
-#define CMD_READ_OSCCAL_PP                  0x2C    
+#define CMD_READ_OSCCAL_PP                  0x2C
 
 #define CMD_SET_CONTROL_STACK               0x2D
 

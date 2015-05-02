@@ -1,19 +1,19 @@
 /*
   Stepper.cpp - - Stepper library for Wiring/Arduino - Version 0.4
-  
+
   Original library     (0.1) by Tom Igoe.
   Two-wire modifications   (0.2) by Sebastian Gassner
   Combination version   (0.3) by Tom Igoe and David Mellis
-  Bug fix for four-wire   (0.4) by Tom Igoe, bug fix from Noah Shibley  
+  Bug fix for four-wire   (0.4) by Tom Igoe, bug fix from Noah Shibley
 
   Drives a unipolar or bipolar stepper motor using  2 wires or 4 wires
 
   When wiring multiple stepper motors to a microcontroller,
-  you quickly run out of output pins, with each motor requiring 4 connections. 
+  you quickly run out of output pins, with each motor requiring 4 connections.
 
   By making use of the fact that at any time two of the four motor
   coils are the inverse  of the other two, the number of
-  control connections can be reduced from 4 to 2. 
+  control connections can be reduced from 4 to 2.
 
   A slightly modified circuit around a Darlington transistor array or an L293 H-bridge
   connects to only 2 microcontroler pins, inverts the signals received,
@@ -37,8 +37,8 @@
      3  1  0
      4  0  0
 
-  The circuits can be found at 
- 
+  The circuits can be found at
+
 http://www.arduino.cc/en/Tutorial/Stepper
 
 This library is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- 
+
  */
 
 
@@ -72,7 +72,7 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2)
   this->direction = 0;      // motor direction
   this->last_step_time = 0;    // time stamp in ms of the last step taken
   this->number_of_steps = number_of_steps;    // total number of steps for this motor
-  
+
   // Arduino pins for the motor control connection:
   this->motor_pin_1 = motor_pin_1;
   this->motor_pin_2 = motor_pin_2;
@@ -80,11 +80,11 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2)
   // setup the pins on the microcontroller:
   pinMode(this->motor_pin_1, OUTPUT);
   pinMode(this->motor_pin_2, OUTPUT);
-  
+
   // When there are only 2 pins, set the other two to 0:
   this->motor_pin_3 = 0;
   this->motor_pin_4 = 0;
-  
+
   // pin_count is used by the stepMotor() method:
   this->pin_count = 2;
 }
@@ -102,7 +102,7 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int moto
   this->direction = 0;      // motor direction
   this->last_step_time = 0;    // time stamp in ms of the last step taken
   this->number_of_steps = number_of_steps;    // total number of steps for this motor
-  
+
   // Arduino pins for the motor control connection:
   this->motor_pin_1 = motor_pin_1;
   this->motor_pin_2 = motor_pin_2;
@@ -115,8 +115,8 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2, int moto
   pinMode(this->motor_pin_3, OUTPUT);
   pinMode(this->motor_pin_4, OUTPUT);
 
-  // pin_count is used by the stepMotor() method:  
-  this->pin_count = 4;  
+  // pin_count is used by the stepMotor() method:
+  this->pin_count = 4;
 }
 
 /*
@@ -129,18 +129,18 @@ void Stepper::setSpeed(long whatSpeed)
 }
 
 /*
-  Moves the motor steps_to_move steps.  If the number is negative, 
+  Moves the motor steps_to_move steps.  If the number is negative,
    the motor moves in the reverse direction.
  */
 void Stepper::step(int steps_to_move)
-{  
+{
   int steps_left = abs(steps_to_move);  // how many steps to take
-  
+
   // determine direction based on whether steps_to_mode is + or -:
   if (steps_to_move > 0) {this->direction = 1;}
   if (steps_to_move < 0) {this->direction = 0;}
-    
-    
+
+
   // decrement the number of steps, moving one step each time:
   while(steps_left > 0) {
   // move only if the appropriate delay has passed:
@@ -154,8 +154,8 @@ void Stepper::step(int steps_to_move)
         if (this->step_number == this->number_of_steps) {
           this->step_number = 0;
         }
-      } 
-      else { 
+      }
+      else {
         if (this->step_number == 0) {
           this->step_number = this->number_of_steps;
         }
@@ -192,7 +192,7 @@ void Stepper::stepMotor(int thisStep)
       digitalWrite(motor_pin_1, LOW);
       digitalWrite(motor_pin_2, LOW);
       break;
-    } 
+    }
   }
   if (this->pin_count == 4) {
     switch (thisStep) {
@@ -220,7 +220,7 @@ void Stepper::stepMotor(int thisStep)
       digitalWrite(motor_pin_3, LOW);
       digitalWrite(motor_pin_4, HIGH);
       break;
-    } 
+    }
   }
 }
 

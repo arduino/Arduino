@@ -1,65 +1,65 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_fir_decimate_fast_q31.c   
-*   
-* Description:	Fast Q31 FIR Decimator.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_fir_decimate_fast_q31.c
+*
+* Description:	Fast Q31 FIR Decimator.
+*
 * Target Processor: Cortex-M4/Cortex-M3
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFilters   
+/**
+ * @ingroup groupFilters
  */
 
-/**   
- * @addtogroup FIR_decimate   
- * @{   
+/**
+ * @addtogroup FIR_decimate
+ * @{
  */
 
-/**   
- * @brief Processing function for the Q31 FIR decimator (fast variant) for Cortex-M3 and Cortex-M4.   
- * @param[in] *S points to an instance of the Q31 FIR decimator structure.   
- * @param[in] *pSrc points to the block of input data.   
- * @param[out] *pDst points to the block of output data   
- * @param[in] blockSize number of input samples to process per call.   
- * @return none   
- *   
- * <b>Scaling and Overflow Behavior:</b>   
- *   
- * \par   
- * This function is optimized for speed at the expense of fixed-point precision and overflow protection.   
- * The result of each 1.31 x 1.31 multiplication is truncated to 2.30 format.   
- * These intermediate results are added to a 2.30 accumulator.   
- * Finally, the accumulator is saturated and converted to a 1.31 result.   
- * The fast version has the same overflow behavior as the standard version and provides less precision since it discards the low 32 bits of each multiplication result.   
- * In order to avoid overflows completely the input signal must be scaled down by log2(numTaps) bits (where log2 is read as log to the base 2).   
- *   
- * \par   
- * Refer to the function <code>arm_fir_decimate_q31()</code> for a slower implementation of this function which uses a 64-bit accumulator to provide higher precision.   
- * Both the slow and the fast versions use the same instance structure.   
- * Use the function <code>arm_fir_decimate_init_q31()</code> to initialize the filter structure.   
+/**
+ * @brief Processing function for the Q31 FIR decimator (fast variant) for Cortex-M3 and Cortex-M4.
+ * @param[in] *S points to an instance of the Q31 FIR decimator structure.
+ * @param[in] *pSrc points to the block of input data.
+ * @param[out] *pDst points to the block of output data
+ * @param[in] blockSize number of input samples to process per call.
+ * @return none
+ *
+ * <b>Scaling and Overflow Behavior:</b>
+ *
+ * \par
+ * This function is optimized for speed at the expense of fixed-point precision and overflow protection.
+ * The result of each 1.31 x 1.31 multiplication is truncated to 2.30 format.
+ * These intermediate results are added to a 2.30 accumulator.
+ * Finally, the accumulator is saturated and converted to a 1.31 result.
+ * The fast version has the same overflow behavior as the standard version and provides less precision since it discards the low 32 bits of each multiplication result.
+ * In order to avoid overflows completely the input signal must be scaled down by log2(numTaps) bits (where log2 is read as log to the base 2).
+ *
+ * \par
+ * Refer to the function <code>arm_fir_decimate_q31()</code> for a slower implementation of this function which uses a 64-bit accumulator to provide higher precision.
+ * Both the slow and the fast versions use the same instance structure.
+ * Use the function <code>arm_fir_decimate_init_q31()</code> to initialize the filter structure.
  */
 
 void arm_fir_decimate_fast_q31(
@@ -109,7 +109,7 @@ void arm_fir_decimate_fast_q31(
     /* Loop unrolling.  Process 4 taps at a time. */
     tapCnt = numTaps >> 2;
 
-    /* Loop over the number of taps.  Unroll by a factor of 4.   
+    /* Loop over the number of taps.  Unroll by a factor of 4.
      ** Repeat until we've computed numTaps-4 coefficients. */
     while(tapCnt > 0u)
     {
@@ -171,7 +171,7 @@ void arm_fir_decimate_fast_q31(
       tapCnt--;
     }
 
-    /* Advance the state pointer by the decimation factor   
+    /* Advance the state pointer by the decimation factor
      * to process the next group of decimation factor number samples */
     pState = pState + S->M;
 
@@ -182,8 +182,8 @@ void arm_fir_decimate_fast_q31(
     blkCnt--;
   }
 
-  /* Processing is complete.   
-   ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.   
+  /* Processing is complete.
+   ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.
    ** This prepares the state buffer for the next function call. */
 
   /* Points to the start of the state buffer */
@@ -215,6 +215,6 @@ void arm_fir_decimate_fast_q31(
   }
 }
 
-/**   
- * @} end of FIR_decimate group   
+/**
+ * @} end of FIR_decimate group
  */

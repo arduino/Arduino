@@ -1,6 +1,6 @@
 /*
   Stepper.h - - Stepper library for Wiring/Arduino - Version 0.4
-  
+
   Original library     (0.1) by Tom Igoe.
   Two-wire modifications   (0.2) by Sebastian Gassner
   Combination version   (0.3) by Tom Igoe and David Mellis
@@ -9,11 +9,11 @@
   Drives a unipolar or bipolar stepper motor using  2 wires or 4 wires
 
   When wiring multiple stepper motors to a microcontroller,
-  you quickly run out of output pins, with each motor requiring 4 connections. 
+  you quickly run out of output pins, with each motor requiring 4 connections.
 
   By making use of the fact that at any time two of the four motor
   coils are the inverse  of the other two, the number of
-  control connections can be reduced from 4 to 2. 
+  control connections can be reduced from 4 to 2.
 
   A slightly modified circuit around a Darlington transistor array or an L293 H-bridge
   connects to only 2 microcontroler pins, inverts the signals received,
@@ -37,7 +37,7 @@
      3  1  0
      4  0  0
 
-  The circuits can be found at 
+  The circuits can be found at
   http://www.arduino.cc/en/Tutorial/Stepper
 
 This library is free software; you can redistribute it and/or
@@ -76,20 +76,20 @@ class Stepper {
 
   private:
     void stepMotor(int this_step);
-    
+
     int direction;        // Direction of rotation
     int speed;          // Speed in RPMs
     unsigned long step_delay;    // delay between steps, in ms, based on speed
     int number_of_steps;      // total number of steps this motor can take
     int pin_count;        // whether you're driving the motor with 2 or 4 pins
     int step_number;        // which step the motor is on
-    
+
     // motor pin numbers:
     int motor_pin_1;
     int motor_pin_2;
     int motor_pin_3;
     int motor_pin_4;
-    
+
     long last_step_time;      // time stamp in ms of when the last step was taken
 };
 

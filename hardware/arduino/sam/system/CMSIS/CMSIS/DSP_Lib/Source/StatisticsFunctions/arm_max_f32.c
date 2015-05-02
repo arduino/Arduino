@@ -1,59 +1,59 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:		arm_max_f32.c   
-*   
-* Description:	Maximum value of a floating-point vector.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_max_f32.c
+*
+* Description:	Maximum value of a floating-point vector.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * ---------------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupStats   
+/**
+ * @ingroup groupStats
  */
 
-/**   
- * @defgroup Max Maximum   
- *   
- * Computes the maximum value of an array of data.    
- * The function returns both the maximum value and its position within the array.    
- * There are separate functions for floating-point, Q31, Q15, and Q7 data types.   
+/**
+ * @defgroup Max Maximum
+ *
+ * Computes the maximum value of an array of data.
+ * The function returns both the maximum value and its position within the array.
+ * There are separate functions for floating-point, Q31, Q15, and Q7 data types.
  */
 
-/**   
- * @addtogroup Max   
- * @{   
+/**
+ * @addtogroup Max
+ * @{
  */
 
 
-/**   
- * @brief Maximum value of a floating-point vector.   
- * @param[in]       *pSrc points to the input vector   
- * @param[in]       blockSize length of the input vector   
- * @param[out]      *pResult maximum value returned here   
- * @param[out]      *pIndex index of maximum value returned here   
- * @return none.   
+/**
+ * @brief Maximum value of a floating-point vector.
+ * @param[in]       *pSrc points to the input vector
+ * @param[in]       blockSize length of the input vector
+ * @param[out]      *pResult maximum value returned here
+ * @param[out]      *pIndex index of maximum value returned here
+ * @return none.
  */
 
 void arm_max_f32(
@@ -122,6 +122,6 @@ void arm_max_f32(
   *pIndex = outIndex;
 }
 
-/**   
- * @} end of Max group   
+/**
+ * @} end of Max group
  */

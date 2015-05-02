@@ -9,9 +9,9 @@
  * Copyright (C) 2010-2011 ARM Limited. All rights reserved.
  *
  * @par
- * ARM Limited (ARM) is supplying this software for use with Cortex-M 
- * processor based microcontrollers.  This file can be freely distributed 
- * within development tools that are supporting such ARM based processors. 
+ * ARM Limited (ARM) is supplying this software for use with Cortex-M
+ * processor based microcontrollers.  This file can be freely distributed
+ * within development tools that are supporting such ARM based processors.
  *
  * @par
  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
@@ -69,11 +69,11 @@ void SystemInit (void)
   ARM_GPIO0->DATA[0].WORD = 0;
   ARM_GPIO0->IE = 0;
   ARM_GPIO0->DIR = 0xff83;
-  
+
   ARM_GPIO1->DATA[0].WORD = 0;
   ARM_GPIO1->IE = 0;
   ARM_GPIO1->DIR = 0;
-  
+
   ARM_GPIO2->DATA[0].WORD = 0;
   ARM_GPIO2->IE = 0;
   ARM_GPIO2->DIR = 0;

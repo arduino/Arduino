@@ -39,7 +39,7 @@
 
 
 struct timeout_t {
-        U32 tick; 
+        U32 tick;
         U32 expire_at_tick;
         Bool expired;
         U8 type;
@@ -88,7 +88,7 @@ static __attribute__((__interrupt__)) void irq_handler(void)
 
         if(priv->tick_isr)
                 priv->tick_isr(priv->ctx);
-        
+
         rtc->icr = AVR32_RTC_ICR_TOPI_MASK;
         rtc->isr;
 }
@@ -99,7 +99,7 @@ void timer_init(void (*tick_isr) (void* ctx), void* ctx)
 {
         struct timer_t* priv = &TIMER;
         uint8_t id;
-        
+
 #ifndef FREERTOS_USED
         INTC_register_interrupt(&irq_handler, AVR32_RTC_IRQ, AVR32_INTC_INT0);
         if (!rtc_init(&AVR32_RTC, RTC_OSC_RC, 0))
@@ -132,11 +132,11 @@ void timer_delay(U32 ms)
         while (priv->tick < expire_at_tick);
 }
 
-/** 
+/**
  * Called from application main loop to invoke any scheduled timeout cbs.
  * This function might be called as often as possible rather than at each tick
  * to support the timeout value '0', e.g a timeout within less than one tick.
- * 
+ *
  */
 void timer_poll(void)
 {
@@ -147,13 +147,13 @@ void timer_poll(void)
                 struct timeout_t* tmo = &priv->timeout[i];
                 if (tmo->expired)
                         continue;
-        
+
                 if (tmo->expire_at_tick > priv->tick)
                         continue;
 
                 if (tmo->cb)
                         tmo->cb(tmo->ctx);
-                
+
                 if (tmo->type == TIMEOUT_PERIODIC)
                         tmo->expire_at_tick = priv->tick + tmo->tick;
                 else
@@ -168,7 +168,7 @@ static U32 timer_sched_timeout(U32 ms, U8 type)
         U8 id;
 
         Assert(type == TIMEOUT_ONESHOT || type == TIMEOUT_PERIODIC);
-        
+
         for (id = 0; id < ARRAY_SIZE(priv->timeout); id++) {
                 tmo = &priv->timeout[id];
                 if (tmo->expired)
@@ -206,7 +206,7 @@ U32 timer_mod(U32 id, U32 ms, U8 type, void (*cb)(void *ctx), void* ctx)
 
         if (id != INVALID_TIMER_ID && !priv->timeout[id].expired)
                 timer_cancel_timeout(id);
-        
+
         return timer_sched_timeout_cb(ms, type, cb, ctx);
 }
 
@@ -214,7 +214,7 @@ void timer_cancel_timeout(U32 id)
 {
         struct timer_t* priv = &TIMER;
         struct timeout_t* tmo;
-    
+
         tmo = &priv->timeout[id];
         tmo->expired = TRUE;
 }

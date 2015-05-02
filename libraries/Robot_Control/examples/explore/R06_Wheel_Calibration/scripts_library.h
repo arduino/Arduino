@@ -39,5 +39,5 @@ void writeScript(int seq){
 void writeAllScripts(){
   for(int i=0;i<8;i++){
     writeScript(i);
-  }  
+  }
 }

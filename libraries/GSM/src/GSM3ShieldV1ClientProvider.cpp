@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -52,21 +52,21 @@ void GSM3ShieldV1ClientProvider::manageResponse(byte from, byte to)
 			break;
 		case FLUSHSOCKET:
 			flushSocketContinue();
-			break;	
+			break;
 	}
 }
 
 //Connect TCP main function.
 int GSM3ShieldV1ClientProvider::connectTCPClient(const char* server, int port, int id_socket)
 {
-	theGSM3ShieldV1ModemCore.setPort(port);		
+	theGSM3ShieldV1ModemCore.setPort(port);
 	idSocket = id_socket;
-	
+
 	theGSM3ShieldV1ModemCore.setPhoneNumber((char*)server);
 	theGSM3ShieldV1ModemCore.openCommand(this,CONNECTTCPCLIENT);
 	theGSM3ShieldV1ModemCore.registerUMProvider(this);
 	connectTCPClientContinue();
-	return theGSM3ShieldV1ModemCore.getCommandError();	
+	return theGSM3ShieldV1ModemCore.getCommandError();
 }
 
 int GSM3ShieldV1ClientProvider::connectTCPClient(IPAddress add, int port, int id_socket)
@@ -81,7 +81,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 {
 	bool resp;
 	// 0: Dot or DNS notation activation
-	// 1: Disable SW flow control 
+	// 1: Disable SW flow control
 	// 2: Waiting for IFC OK
 	// 3: Start-up TCP connection "AT+QIOPEN"
 	// 4: Wait for connection OK
@@ -96,7 +96,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 			theGSM3ShieldV1ModemCore.print('1');
 			theGSM3ShieldV1ModemCore.print('\r');
 		}
-		else 
+		else
 		{
 			theGSM3ShieldV1ModemCore.print('0');
 			theGSM3ShieldV1ModemCore.print('\r');
@@ -108,7 +108,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 	    {
 			//Response received
 			if(resp)
-			{				
+			{
 				// AT+QIOPEN
 				theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+QIOPEN="),false);
 				theGSM3ShieldV1ModemCore.print("\"TCP\",\"");
@@ -127,9 +127,9 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 				theGSM3ShieldV1ModemCore.setCommandCounter(3);
 			}
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
+		}
 		break;
-	
+
 	case 3:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
@@ -141,7 +141,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 				theGSM3ShieldV1ModemCore.setCommandCounter(4);
 			}
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
+		}
 		break;
 	case 4:
 		char auxLocate [12];
@@ -157,21 +157,21 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 				theGSM3ShieldV1ModemCore.theBuffer().chopUntil(auxLocate, true);
 				theGSM3ShieldV1ModemCore.closeCommand(1);
 			}
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
-		}		
+		}
 		break;
-		
+
 	}
 }
 
 //Disconnect TCP main function.
 int GSM3ShieldV1ClientProvider::disconnectTCP(bool client1Server0, int id_socket)
-{		
+{
 	// id Socket does not really mean anything, in this case we have
 	// only one socket running
 	theGSM3ShieldV1ModemCore.openCommand(this,DISCONNECTTCP);
-	
+
 	// If we are not closed, launch the command
 //[ZZ]	if(theGSM3ShieldV1ModemCore.getStatus()==TRANSPARENT_CONNECTED)
 //	{
@@ -220,36 +220,36 @@ void GSM3ShieldV1ClientProvider::writeSocket(uint8_t c)
 
 //Write socket last chain main function.
 void GSM3ShieldV1ClientProvider::endWriteSocket()
-{		
+{
 }
 
 
 //Available socket main function.
 int GSM3ShieldV1ClientProvider::availableSocket(bool client1Server0, int id_socket)
 {
-		
+
 	if(!(theGSM3ShieldV1ModemCore.getStatus()==TRANSPARENT_CONNECTED))
 		theGSM3ShieldV1ModemCore.closeCommand(4);
-		
+
 	if(theGSM3ShieldV1ModemCore.theBuffer().storedBytes())
 		theGSM3ShieldV1ModemCore.closeCommand(1);
 	else
 		theGSM3ShieldV1ModemCore.closeCommand(4);
-		
+
 	return theGSM3ShieldV1ModemCore.getCommandError();
 }
 
 int GSM3ShieldV1ClientProvider::readSocket()
 {
 	char charSocket;
-		
+
 	if(theGSM3ShieldV1ModemCore.theBuffer().availableBytes()==0)
 	{
 		return 0;
 	}
-	
-	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read(); 
-	
+
+	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read();
+
 	if(theGSM3ShieldV1ModemCore.theBuffer().availableBytes()==100)
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
 
@@ -260,7 +260,7 @@ int GSM3ShieldV1ClientProvider::readSocket()
 //Read socket main function.
 int GSM3ShieldV1ClientProvider::peekSocket()
 {
-	return theGSM3ShieldV1ModemCore.theBuffer().peek(0); 
+	return theGSM3ShieldV1ModemCore.theBuffer().peek(0);
 }
 
 
@@ -283,9 +283,9 @@ void GSM3ShieldV1ClientProvider::flushSocketContinue()
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
 	}
-	else 
+	else
 	{
-		//We're done		
+		//We're done
 		theGSM3ShieldV1ModemCore.closeCommand(1);
 	}
 }
@@ -303,7 +303,7 @@ bool GSM3ShieldV1ClientProvider::recognizeUnsolicitedEvent(byte oldTail)
 		theGSM3ShieldV1ModemCore.unRegisterUMProvider(this);
 		return true;
 	}
-		
+
 	return false;
 }
 

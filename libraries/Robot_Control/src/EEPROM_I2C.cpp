@@ -22,7 +22,7 @@ byte EEPROM_I2C::readByte(unsigned int eeaddress){
   int rdata;
   this->_beginTransmission(eeaddress);
   this->_endTransmission();
-  
+
   Wire.requestFrom(DEVICEADDRESS,1);
   if (Wire.available()) rdata = Wire.read();
   return rdata;
@@ -30,14 +30,14 @@ byte EEPROM_I2C::readByte(unsigned int eeaddress){
 
 void EEPROM_I2C::writePage(unsigned int eeaddress, byte* data, byte length ){
   this->_beginTransmission(eeaddress);
-  
+
   byte c;
-  
+
   for ( c = 0; c < length; c++)
     Wire.write(data[c]);
-	
+
   this->_endTransmission();
-  
+
   delay(10);                           // need some delay
 }
 

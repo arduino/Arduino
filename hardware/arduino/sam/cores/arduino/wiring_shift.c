@@ -8,7 +8,7 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
@@ -56,13 +56,13 @@ void shiftOut( uint32_t ulDataPin, uint32_t ulClockPin, uint32_t ulBitOrder, uin
         {
 			digitalWrite( ulDataPin, !!(ulVal & (1 << i)) ) ;
         }
-		else	
+		else
         {
 			digitalWrite( ulDataPin, !!(ulVal & (1 << (7 - i))) ) ;
         }
 
 		digitalWrite( ulClockPin, HIGH ) ;
-		digitalWrite( ulClockPin, LOW ) ;		
+		digitalWrite( ulClockPin, LOW ) ;
 	}
 }
 

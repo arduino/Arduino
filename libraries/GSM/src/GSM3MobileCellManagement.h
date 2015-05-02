@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -39,11 +39,11 @@ https://github.com/BlueVia/Official-Arduino
 class GSM3MobileCellManagement
 {
 	public:
-		
+
 		virtual inline int getLocation() {return 0;};
-		
+
 		virtual inline int getICCID() {return 0;};
-		
+
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		 */

@@ -7,7 +7,7 @@ void Compass::begin(){
 float Compass::getReading(){
 	_beginTransmission();
 	_endTransmission();
-	
+
   //time delays required by HMC6352 upon receipt of the command
   //Get Data. Compensate and Calculate New Heading : 6ms
   delay(6);
@@ -20,8 +20,8 @@ float Compass::getReading(){
   byte LSB = Wire.read();
 
   float headingSum = (MSB << 8) + LSB; //(MSB / LSB sum)
-  float headingInt = headingSum / 10; 
-  
+  float headingInt = headingSum / 10;
+
   return headingInt;
 }
 

@@ -155,7 +155,7 @@ int8_t WiFiDrv::wifiSetKey(char* ssid, uint8_t ssid_len, uint8_t key_idx, const 
     SpiDrv::sendParam((uint8_t*)ssid, ssid_len, NO_LAST_PARAM);
     SpiDrv::sendParam(&key_idx, KEY_IDX_LEN, NO_LAST_PARAM);
     SpiDrv::sendParam((uint8_t*)key, len, LAST_PARAM);
-    
+
     //Wait the reply elaboration
     SpiDrv::waitForSlaveReady();
 
@@ -219,7 +219,7 @@ void WiFiDrv::setDNS(uint8_t validParams, uint32_t dns_server1, uint32_t dns_ser
 }
 
 
-                        
+
 int8_t WiFiDrv::disconnect()
 {
 	WAIT_FOR_SLAVE_SELECT();

@@ -36,12 +36,12 @@ void RobotControl::pointTo(int angle){
 			motorsWrite(-speed,speed);//left
 			delay(10);
 		}
-		//if(diff<-180) 
+		//if(diff<-180)
 		//	diff += 360;
-		//else if(diff> 180) 
+		//else if(diff> 180)
 		//	diff -= 360;
 		//direction=-diff;
-		
+
 		if(abs(diff)<5){
 			motorsStop();
 			return;
@@ -68,12 +68,12 @@ void RobotControl::turn(int angle){
 		}
 		int currentAngle=compassRead();
 		int diff=target-currentAngle;
-		if(diff<-180) 
+		if(diff<-180)
 			diff += 360;
-		else if(diff> 180) 
+		else if(diff> 180)
 			diff -= 360;
 		direction=-diff;
-		
+
 		if(abs(diff)<5){
 			motorsWrite(0,0);
 			return;
@@ -102,7 +102,7 @@ int RobotControl::getIRrecvResult(){
 	messageOut.sendData();
 	//delay(10);
 	while(!messageIn.receiveData());
-	
+
 	if(messageIn.readByte()==COMMAND_GET_IRRECV_RE){
 		return messageIn.readInt();
 	}

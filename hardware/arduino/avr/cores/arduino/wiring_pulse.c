@@ -38,22 +38,22 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
 	uint8_t port = digitalPinToPort(pin);
 	uint8_t stateMask = (state ? bit : 0);
 	unsigned long width = 0; // keep initialization out of time critical area
-	
+
 	// convert the timeout from microseconds to a number of times through
 	// the initial loop; it takes 16 clock cycles per iteration.
 	unsigned long numloops = 0;
 	unsigned long maxloops = microsecondsToClockCycles(timeout) / 16;
-	
+
 	// wait for any previous pulse to end
 	while ((*portInputRegister(port) & bit) == stateMask)
 		if (numloops++ == maxloops)
 			return 0;
-	
+
 	// wait for the pulse to start
 	while ((*portInputRegister(port) & bit) != stateMask)
 		if (numloops++ == maxloops)
 			return 0;
-	
+
 	// wait for the pulse to stop
 	while ((*portInputRegister(port) & bit) == stateMask) {
 		if (numloops++ == maxloops)

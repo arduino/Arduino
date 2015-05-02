@@ -64,7 +64,7 @@ struct ip_addr str2ip(const char* str)
         int a,b,c,d;
         uint32_t ip = 0;
         struct ip_addr addr;
-        
+
         if (siscanf(str,"%d.%d.%d.%d",&a,&b,&c,&d) != 4)
                 goto out;
 
@@ -113,7 +113,7 @@ void printbuf(const char *prefix, const void *data, size_t len)
         const unsigned char *s = data;
         int i, j;
 
-        for (i = 0; i < len; i += 16) 
+        for (i = 0; i < len; i += 16)
         {
                 printk("%s ", prefix);
                 for(j = 0; j < 16; j++) {
@@ -162,14 +162,14 @@ void print_network(struct wl_network_t* wl_network)
                 break;
         }
         printk("\n");
-        
+
 }
 
 void print_network_list(void)
 {
         struct wl_network_list_t* wl_network_list;
         uint8_t i;
-        
+
         wl_get_network_list(&wl_network_list);
 
         if (wl_network_list->cnt == 0)
@@ -194,8 +194,8 @@ int join_argv(char *dst, size_t dst_len, int argc, char* argv[]) {
                         return 0;
                 }
                 p += sniprintf(p,
-                               dst_len - (p - dst), 
-                               "%s ", 
+                               dst_len - (p - dst),
+                               "%s ",
                                argv[i]);
         }
         if (p == dst) {
@@ -240,7 +240,7 @@ char* enc_type2str(enum wl_enc_type enc_type)
         };
 }
 
-int equal_ssid(const struct wl_ssid_t* ssid1, 
+int equal_ssid(const struct wl_ssid_t* ssid1,
                 const struct wl_ssid_t* ssid2) {
         if (ssid1->len == ssid2->len &&
             (memcmp(ssid1->ssid, ssid2->ssid, ssid1->len) == 0)) {
@@ -249,7 +249,7 @@ int equal_ssid(const struct wl_ssid_t* ssid1,
         return 0;
 }
 
-int equal_bssid(const struct wl_mac_addr_t* bssid1, 
+int equal_bssid(const struct wl_mac_addr_t* bssid1,
                  const struct wl_mac_addr_t* bssid2) {
         if (memcmp(bssid1, bssid2, sizeof *bssid1) == 0) {
                 return 1;

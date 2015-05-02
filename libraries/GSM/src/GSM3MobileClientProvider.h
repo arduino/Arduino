@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -47,12 +47,12 @@ class GSM3MobileClientProvider
 
 		/** Constructor */
 		GSM3MobileClientProvider(){};
-		
+
 		/** Minimum socket
 			@return socket
 		 */
 		virtual inline int minSocket()=0;
-		
+
 		/** Maximum socket
 			@return socket
 		 */
@@ -62,7 +62,7 @@ class GSM3MobileClientProvider
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		*/
 		virtual int ready()=0;
-		
+
 		/** Get status socket client
 			@param socket		Socket
 			@return 1 if connected
@@ -70,20 +70,20 @@ class GSM3MobileClientProvider
 		virtual bool getStatusSocketClient(uint8_t socket)=0;
 
 		// Socket management
-		
+
 		/** Get socket
 			@param socket		Socket
 			@return socket
 		 */
 		virtual int getSocket(int socket=-1)=0;
-		
+
 		/** Release socket
 			@param socket		Socket
 		 */
 		virtual void releaseSocket(int socket)=0;
 
 		// Client socket functions
-		
+
 		/** Connect to a server via TCP connection
 			@param server		Server name or IP address in a String
 			@param port			Port
@@ -91,7 +91,7 @@ class GSM3MobileClientProvider
 			@return 0 if command running, 1 if success, otherwise error
 		 */
 		virtual int connectTCPClient(const char* server, int port, int id_socket)=0;
-		
+
 		/** Connect to a server (by IP address) via TCP connection
 			@param add			IP address in IPAddress format
 			@param port			Port
@@ -99,49 +99,49 @@ class GSM3MobileClientProvider
 			@return 0 if command running, 1 if success, otherwise error
 		 */
 		virtual int connectTCPClient(IPAddress add, int port, int id_socket)=0;
-		
+
 		/** Begin writing through a socket
 			@param client1Server0	1 if modem acts as client, 0 if acts as server
 			@param id_socket		Local socket number
 			@return 0 if command running, 1 if success, otherwise error
 		 */
 		virtual void beginWriteSocket(bool client1Server0, int id_socket)=0;
-		
+
 		/** Write through a socket. MUST go after beginWriteSocket()
 			@param c 				character to be written
 		 */
 		virtual void writeSocket(uint8_t c)=0;
-		
+
 		/** Write through a socket. MUST go after beginWriteSocket()
 			@param buf				characters to be written (final 0 will not be written)
 		 */
 		virtual void writeSocket(const char* buf)=0;
-		
+
 		/** Finish current writing
-		 */	
+		 */
 		virtual void endWriteSocket()=0;
-		
+
 		/** Check if there are data to be read in socket.
 			@param client1Server0	1 if modem acts as client, 0 if acts as server
 			@param id_socket		Local socket number
 			@return 0 if command running, 1 if there are data available, 4 if no data, otherwise error
 		 */
 		virtual int availableSocket(bool client, int id_socket)=0;
-		
+
 		/** Read data (get a character) available in socket
 			@return character
 		 */
 		virtual int readSocket()=0;
-		
+
 		/** Flush socket
 		 */
 		virtual void flushSocket()=0;
-		
+
 		/** Get a character but will not advance the buffer head
 			@return character
 		 */
 		virtual int peekSocket()=0;
-		
+
 		/** Close a socket
 			@param client1Server0	1 if modem acts as client, 0 if acts as server
 			@param id_socket		Socket

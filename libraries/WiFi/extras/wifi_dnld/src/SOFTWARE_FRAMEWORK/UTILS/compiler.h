@@ -975,7 +975,7 @@ typedef struct
   #define MSB1D(u64)      LSB6D(u64)            //!< Most significant byte of 2nd rank of \a u64.
   #define MSB0D(u64)      LSB7D(u64)            //!< Most significant byte of 1st rank of \a u64.
 
-#elif (BIG_ENDIAN_MCU==TRUE) 
+#elif (BIG_ENDIAN_MCU==TRUE)
   #define MSB(u16)        (((U8  *)&(u16))[0])  //!< Most significant byte of \a u16.
   #define LSB(u16)        (((U8  *)&(u16))[1])  //!< Least significant byte of \a u16.
 

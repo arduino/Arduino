@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -73,7 +73,7 @@ void GSM3ShieldV1DirectModemProvider::disconnect()
 
 //Write to the modem by means of SoftSerial
 size_t GSM3ShieldV1DirectModemProvider::write(uint8_t c)
-{	
+{
         theGSM3ShieldV1ModemCore.write(c);
 }
 
@@ -82,7 +82,7 @@ int/*bool*/ GSM3ShieldV1DirectModemProvider::available()
 {
 	if (theGSM3ShieldV1ModemCore.gss.cb.peek(1)) return 1;
 	else return 0;
-} 
+}
 
 //Read data
 int/*char*/ GSM3ShieldV1DirectModemProvider::read()
@@ -95,13 +95,13 @@ int/*char*/ GSM3ShieldV1DirectModemProvider::read()
 			delay(100);
 		}
 	return dataRead;
-} 
+}
 
 //Peek data
 int/*char*/ GSM3ShieldV1DirectModemProvider::peek()
 {
 	return theGSM3ShieldV1ModemCore.gss.cb.peek(0);
-} 
+}
 
 //Flush data
 void GSM3ShieldV1DirectModemProvider::flush()
@@ -114,10 +114,10 @@ String GSM3ShieldV1DirectModemProvider::writeModemCommand(String ATcommand, int 
 
   if(trace)
 	Serial.println(ATcommand);
-	
+
   // Flush other texts
   flush();
-  
+
   //Enter debug mode.
   connect();
   //Send the AT command.
