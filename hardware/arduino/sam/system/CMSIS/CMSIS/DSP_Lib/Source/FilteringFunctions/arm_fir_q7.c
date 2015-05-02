@@ -1,64 +1,64 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:        arm_fir_q7.c   
-*   
-* Description:  Q7 FIR filter processing function.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:        arm_fir_q7.c
+*
+* Description:  Q7 FIR filter processing function.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
-*   
-* Version 0.0.5  2010/04/26    
-* 	 incorporated review comments and updated with latest CMSIS layer   
-*   
-* Version 0.0.3  2010/03/10    
-*    Initial version   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
+*
+* Version 0.0.5  2010/04/26
+* 	 incorporated review comments and updated with latest CMSIS layer
+*
+* Version 0.0.3  2010/03/10
+*    Initial version
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFilters   
+/**
+ * @ingroup groupFilters
  */
 
-/**   
- * @addtogroup FIR   
- * @{   
+/**
+ * @addtogroup FIR
+ * @{
  */
 
-/**   
- * @param[in]   *S points to an instance of the Q7 FIR filter structure.   
- * @param[in]   *pSrc points to the block of input data.   
- * @param[out]  *pDst points to the block of output data.   
- * @param[in]   blockSize number of samples to process per call.   
- * @return 	none.   
- *   
- * <b>Scaling and Overflow Behavior:</b>   
- * \par   
- * The function is implemented using a 32-bit internal accumulator.   
- * Both coefficients and state variables are represented in 1.7 format and multiplications yield a 2.14 result.   
- * The 2.14 intermediate results are accumulated in a 32-bit accumulator in 18.14 format.   
- * There is no risk of internal overflow with this approach and the full precision of intermediate multiplications is preserved.   
- * The accumulator is converted to 18.7 format by discarding the low 7 bits.   
- * Finally, the result is truncated to 1.7 format.   
+/**
+ * @param[in]   *S points to an instance of the Q7 FIR filter structure.
+ * @param[in]   *pSrc points to the block of input data.
+ * @param[out]  *pDst points to the block of output data.
+ * @param[in]   blockSize number of samples to process per call.
+ * @return 	none.
+ *
+ * <b>Scaling and Overflow Behavior:</b>
+ * \par
+ * The function is implemented using a 32-bit internal accumulator.
+ * Both coefficients and state variables are represented in 1.7 format and multiplications yield a 2.14 result.
+ * The 2.14 intermediate results are accumulated in a 32-bit accumulator in 18.14 format.
+ * There is no risk of internal overflow with this approach and the full precision of intermediate multiplications is preserved.
+ * The accumulator is converted to 18.7 format by discarding the low 7 bits.
+ * Finally, the result is truncated to 1.7 format.
  */
 
 void arm_fir_q7(
@@ -87,17 +87,17 @@ void arm_fir_q7(
   /* pStateCurnt points to the location where the new input data should be written */
   pStateCurnt = &(S->pState[(numTaps - 1u)]);
 
-  /* Apply loop unrolling and compute 4 output values simultaneously.   
-   * The variables acc0 ... acc3 hold output values that are being computed:   
-   *   
-   *    acc0 =  b[numTaps-1] * x[n-numTaps-1] + b[numTaps-2] * x[n-numTaps-2] + b[numTaps-3] * x[n-numTaps-3] +...+ b[0] * x[0]   
-   *    acc1 =  b[numTaps-1] * x[n-numTaps] +   b[numTaps-2] * x[n-numTaps-1] + b[numTaps-3] * x[n-numTaps-2] +...+ b[0] * x[1]   
-   *    acc2 =  b[numTaps-1] * x[n-numTaps+1] + b[numTaps-2] * x[n-numTaps] +   b[numTaps-3] * x[n-numTaps-1] +...+ b[0] * x[2]   
-   *    acc3 =  b[numTaps-1] * x[n-numTaps+2] + b[numTaps-2] * x[n-numTaps+1] + b[numTaps-3] * x[n-numTaps]   +...+ b[0] * x[3]   
+  /* Apply loop unrolling and compute 4 output values simultaneously.
+   * The variables acc0 ... acc3 hold output values that are being computed:
+   *
+   *    acc0 =  b[numTaps-1] * x[n-numTaps-1] + b[numTaps-2] * x[n-numTaps-2] + b[numTaps-3] * x[n-numTaps-3] +...+ b[0] * x[0]
+   *    acc1 =  b[numTaps-1] * x[n-numTaps] +   b[numTaps-2] * x[n-numTaps-1] + b[numTaps-3] * x[n-numTaps-2] +...+ b[0] * x[1]
+   *    acc2 =  b[numTaps-1] * x[n-numTaps+1] + b[numTaps-2] * x[n-numTaps] +   b[numTaps-3] * x[n-numTaps-1] +...+ b[0] * x[2]
+   *    acc3 =  b[numTaps-1] * x[n-numTaps+2] + b[numTaps-2] * x[n-numTaps+1] + b[numTaps-3] * x[n-numTaps]   +...+ b[0] * x[3]
    */
   blkCnt = blockSize >> 2;
 
-  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.   
+  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
    ** a second loop below computes the remaining 1 to 3 samples. */
   while(blkCnt > 0u)
   {
@@ -119,7 +119,7 @@ void arm_fir_q7(
     /* Initialize coefficient pointer */
     pb = pCoeffs;
 
-    /* Read the first three samples from the state buffer:   
+    /* Read the first three samples from the state buffer:
      *  x[n-numTaps], x[n-numTaps-1], x[n-numTaps-2] */
     x0 = *(px++);
     x1 = *(px++);
@@ -215,7 +215,7 @@ void arm_fir_q7(
     /* Advance the state pointer by 4 to process the next group of 4 samples */
     pState = pState + 4;
 
-    /* The results in the 4 accumulators are in 2.62 format.  Convert to 1.31   
+    /* The results in the 4 accumulators are in 2.62 format.  Convert to 1.31
      ** Then store the 4 outputs in the destination buffer. */
     acc0 = __SSAT((acc0 >> 7u), 8);
     *pDst++ = acc0;
@@ -231,7 +231,7 @@ void arm_fir_q7(
   }
 
 
-  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.   
+  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
    ** No loop unrolling is used. */
   blkCnt = blockSize % 4u;
 
@@ -258,7 +258,7 @@ void arm_fir_q7(
       i--;
     } while(i > 0u);
 
-    /* The result is in 2.14 format.  Convert to 1.7   
+    /* The result is in 2.14 format.  Convert to 1.7
      ** Then store the output in the destination buffer. */
     *pDst++ = __SSAT((acc0 >> 7u), 8);
 
@@ -269,8 +269,8 @@ void arm_fir_q7(
     blkCnt--;
   }
 
-  /* Processing is complete.   
-   ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.   
+  /* Processing is complete.
+   ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.
    ** This prepares the state buffer for the next function call. */
 
   /* Points to the start of the state buffer */
@@ -357,8 +357,8 @@ void arm_fir_q7(
     blkCnt--;
   }
 
-  /* Processing is complete.        
-   ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.      
+  /* Processing is complete.
+   ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.
    ** This prepares the state buffer for the next function call. */
 
 
@@ -380,6 +380,6 @@ void arm_fir_q7(
 
 }
 
-/**   
- * @} end of FIR group   
+/**
+ * @} end of FIR group
  */

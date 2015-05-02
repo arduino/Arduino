@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -33,7 +33,7 @@ https://github.com/BlueVia/Official-Arduino
 */
 #include <GSM3ShieldV1SMSProvider.h>
 #include <Arduino.h>
-	
+
 GSM3ShieldV1SMSProvider::GSM3ShieldV1SMSProvider()
 {
 	theGSM3SMSProvider=this;
@@ -104,9 +104,9 @@ void GSM3ShieldV1SMSProvider::endSMSContinue()
 	case 2:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 		{
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}
 		break;
@@ -134,7 +134,7 @@ void GSM3ShieldV1SMSProvider::availableSMSContinue()
 	bool resp;
 	//int msglength_aux;
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
-    case 1:	
+    case 1:
 		theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+CMGL=\"REC UNREAD\",1"));
 		theGSM3ShieldV1ModemCore.setCommandCounter(2);
 		break;
@@ -146,16 +146,16 @@ void GSM3ShieldV1SMSProvider::availableSMSContinue()
 			}
 		break;
 	}
-	  
-}	
-		
+
+}
+
 //SMS available parse.
 bool GSM3ShieldV1SMSProvider::parseCMGL_available(bool& rsp)
 {
 	fullBufferSMS = (theGSM3ShieldV1ModemCore.theBuffer().availableBytes()<=4);
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().chopUntil("+CMGL:", true)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	idSMS=theGSM3ShieldV1ModemCore.theBuffer().readInt();
 
@@ -163,15 +163,15 @@ bool GSM3ShieldV1SMSProvider::parseCMGL_available(bool& rsp)
 	twoSMSinBuffer = theGSM3ShieldV1ModemCore.theBuffer().locate("\r\n\r\n+");
 
 	checkSecondBuffer = 0;
-	
+
 	return true;
 }
 
 //remoteNumber SMS function.
 int GSM3ShieldV1SMSProvider::remoteSMSNumber(char* number, int nlength)
 {
-	theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("READ\",\"", "\"", number, nlength);	
-	
+	theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("READ\",\"", "\"", number, nlength);
+
 	return 1;
 }
 
@@ -180,13 +180,13 @@ int GSM3ShieldV1SMSProvider::readSMS()
 {
 	char charSMS;
 	//First char.
-	if (!flagReadingSMS) 
+	if (!flagReadingSMS)
 	{
 		flagReadingSMS = 1;
 		theGSM3ShieldV1ModemCore.theBuffer().chopUntil("\n", true);
 	}
-	charSMS = theGSM3ShieldV1ModemCore.theBuffer().read(); 
-	
+	charSMS = theGSM3ShieldV1ModemCore.theBuffer().read();
+
 	//Second Buffer.
 	if (checkSecondBuffer)
 	{
@@ -203,17 +203,17 @@ int GSM3ShieldV1SMSProvider::readSMS()
 		theGSM3ShieldV1ModemCore.openCommand(this,XON);
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
 		delay(10);
-		
+
 		return charSMS;
 	}
 	//Case two SMS in buffer
 	else if (twoSMSinBuffer)
 	{
-		if (theGSM3ShieldV1ModemCore.theBuffer().locate("\r\n\r\n+")) 
+		if (theGSM3ShieldV1ModemCore.theBuffer().locate("\r\n\r\n+"))
 		{
 					return charSMS;
 		}
-		else 
+		else
 		{
 			theGSM3ShieldV1ModemCore.theBuffer().flush();
 			theGSM3ShieldV1ModemCore.openCommand(this,XON);
@@ -225,11 +225,11 @@ int GSM3ShieldV1SMSProvider::readSMS()
 	//Case 1 SMS and buffer not full
 	else if (!fullBufferSMS)
 	{
-		if (theGSM3ShieldV1ModemCore.theBuffer().locate("\r\n\r\nOK")) 
+		if (theGSM3ShieldV1ModemCore.theBuffer().locate("\r\n\r\nOK"))
 		{
 			return charSMS;
 		}
-		else 
+		else
 		{
 			theGSM3ShieldV1ModemCore.theBuffer().flush();
 			theGSM3ShieldV1ModemCore.openCommand(this,XON);
@@ -239,24 +239,24 @@ int GSM3ShieldV1SMSProvider::readSMS()
 		}
 	}
 	//Case to read all the chars in buffer to the end.
-	else 
+	else
 	{
-		return charSMS;		
+		return charSMS;
 	}
-}	
+}
 
 //Read socket main function.
 int GSM3ShieldV1SMSProvider::peekSMS()
 {
-	if (!flagReadingSMS) 
+	if (!flagReadingSMS)
 	{
 		flagReadingSMS = 1;
 		theGSM3ShieldV1ModemCore.theBuffer().chopUntil("\n", true);
 	}
 
-	return theGSM3ShieldV1ModemCore.theBuffer().peek(0); 
+	return theGSM3ShieldV1ModemCore.theBuffer().peek(0);
 }
-	
+
 //Flush SMS main function.
 void GSM3ShieldV1SMSProvider::flushSMS()
 {
@@ -268,7 +268,7 @@ void GSM3ShieldV1SMSProvider::flushSMS()
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
 		delay(10);
 	}
-		
+
 	theGSM3ShieldV1ModemCore.openCommand(this,FLUSHSMS);
 	flushSMSContinue();
 }
@@ -301,7 +301,7 @@ void GSM3ShieldV1SMSProvider::manageResponse(byte from, byte to)
 	switch(theGSM3ShieldV1ModemCore.getOngoingCommand())
 	{
 /*		case XON:
-			if (flagReadingSocket) 
+			if (flagReadingSocket)
 				{
 //					flagReadingSocket = 0;
 					fullBufferSocket = (theGSM3ShieldV1ModemCore.theBuffer().availableBytes()<3);

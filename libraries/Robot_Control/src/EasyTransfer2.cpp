@@ -6,10 +6,10 @@
 //Captures address and size of struct
 void EasyTransfer2::begin(HardwareSerial *theSerial){
 	_serial = theSerial;
-	
+
 	//dynamic creation of rx parsing buffer in RAM
 	//rx_buffer = (uint8_t*) malloc(size);
-	
+
 	resetData();
 }
 
@@ -59,12 +59,12 @@ void EasyTransfer2::sendData(){
   }
   //Serial.println("");
   _serial->write(CS);
-  
+
   resetData();
 }
 
 boolean EasyTransfer2::receiveData(){
-  
+
   //start off by looking for the header bytes. If they were already found in a previous call, skip it.
   if(rx_len == 0){
   //this size check may be redundant due to the size check below, but for now I'll leave it the way it is.
@@ -93,14 +93,14 @@ boolean EasyTransfer2::receiveData(){
     }
 	//Serial.println("nothing");
   }
-  
+
   //we get here if we already found the header bytes, the struct size matched what we know, and now we are byte aligned.
   if(rx_len != 0){
-	
+
     while(_serial->available() && rx_array_inx <= rx_len){
       data[rx_array_inx++] = _serial->read();
     }
-    
+
     if(rx_len == (rx_array_inx-1)){
       //seem to have got whole message
       //last uint8_t is CS
@@ -112,12 +112,12 @@ boolean EasyTransfer2::receiveData(){
 		//Serial.print("m");
 		//Serial.print(data[i]);
 		//Serial.print(",");
-      } 
+      }
 	  //Serial.println();
       //Serial.print(data[rx_array_inx-1]);
 	  //Serial.print(" ");
 	  //Serial.println(calc_CS);
-	  
+
       if(calc_CS == data[rx_array_inx-1]){//CS good
 		//resetData();
         //memcpy(data,d,rx_len);
@@ -131,7 +131,7 @@ boolean EasyTransfer2::receiveData(){
 		rx_array_inx = 0;
 		return true;
 		}
-		
+
 	  else{
   		//Serial.println("CS");
 		resetData();
@@ -140,7 +140,7 @@ boolean EasyTransfer2::receiveData(){
 		rx_array_inx = 0;
 		return false;
 	  }
-        
+
     }
   }
   //Serial.print(rx_len);

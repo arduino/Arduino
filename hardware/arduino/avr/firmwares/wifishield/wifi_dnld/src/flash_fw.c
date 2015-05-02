@@ -88,7 +88,7 @@ int main(void)
                         len = SECTOR_SIZE;
                 else
                         len = fw_len - pos;
-                
+
                 flash_write(pos, fw_buf + pos, len);
                 pos += len;
         }
@@ -103,7 +103,7 @@ int main(void)
                         len = SECTOR_SIZE;
                 else
                         len = fw_len - pos;
-                
+
                 flash_read(pos, page_buf, len);
 
                 for (i = 0; i < len; i++)
@@ -114,8 +114,8 @@ int main(void)
                                pos + i, *(page_buf + i), *(fw_buf + pos + i));
                         return 0;
                     }
-                        
-                
+
+
                 pos += len;
         }
         GREEN_OFF();

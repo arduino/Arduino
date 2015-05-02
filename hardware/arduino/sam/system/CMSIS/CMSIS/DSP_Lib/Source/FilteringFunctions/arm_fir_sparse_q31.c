@@ -1,58 +1,58 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_fir_sparse_q31.c   
-*   
-* Description:	Q31 sparse FIR filter processing function.  
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_fir_sparse_q31.c
+*
+* Description:	Q31 sparse FIR filter processing function.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated   
-*   
-* Version 0.0.7  2010/06/10    
-*    Misra-C changes done   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated
+*
+* Version 0.0.7  2010/06/10
+*    Misra-C changes done
 * ------------------------------------------------------------------- */
 #include "arm_math.h"
 
 
-/**   
- * @addtogroup FIR_Sparse   
- * @{   
+/**
+ * @addtogroup FIR_Sparse
+ * @{
  */
 
-/**  
- * @brief Processing function for the Q31 sparse FIR filter.  
- * @param[in]  *S          points to an instance of the Q31 sparse FIR structure.  
- * @param[in]  *pSrc       points to the block of input data.  
- * @param[out] *pDst       points to the block of output data  
- * @param[in]  *pScratchIn points to a temporary buffer of size blockSize.  
- * @param[in]  blockSize   number of input samples to process per call.  
- * @return none.  
- *   
- * <b>Scaling and Overflow Behavior:</b>   
- * \par   
- * The function is implemented using an internal 32-bit accumulator.  
- * The 1.31 x 1.31 multiplications are truncated to 2.30 format.  
- * This leads to loss of precision on the intermediate multiplications and provides only a single guard bit.   
- * If the accumulator result overflows, it wraps around rather than saturate.  
- * In order to avoid overflows the input signal or coefficients must be scaled down by log2(numTaps) bits.  
+/**
+ * @brief Processing function for the Q31 sparse FIR filter.
+ * @param[in]  *S          points to an instance of the Q31 sparse FIR structure.
+ * @param[in]  *pSrc       points to the block of input data.
+ * @param[out] *pDst       points to the block of output data
+ * @param[in]  *pScratchIn points to a temporary buffer of size blockSize.
+ * @param[in]  blockSize   number of input samples to process per call.
+ * @return none.
+ *
+ * <b>Scaling and Overflow Behavior:</b>
+ * \par
+ * The function is implemented using an internal 32-bit accumulator.
+ * The 1.31 x 1.31 multiplications are truncated to 2.30 format.
+ * This leads to loss of precision on the intermediate multiplications and provides only a single guard bit.
+ * If the accumulator result overflows, it wraps around rather than saturate.
+ * In order to avoid overflows the input signal or coefficients must be scaled down by log2(numTaps) bits.
  */
 
 void arm_fir_sparse_q31(
@@ -112,7 +112,7 @@ void arm_fir_sparse_q31(
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
 
-  /* Loop over the blockSize. Unroll by a factor of 4.   
+  /* Loop over the blockSize. Unroll by a factor of 4.
    * Compute 4 Multiplications at a time. */
   blkCnt = blockSize >> 2;
 
@@ -128,7 +128,7 @@ void arm_fir_sparse_q31(
     blkCnt--;
   }
 
-  /* If the blockSize is not a multiple of 4,   
+  /* If the blockSize is not a multiple of 4,
    * compute the remaining samples */
   blkCnt = blockSize % 0x4u;
 
@@ -141,7 +141,7 @@ void arm_fir_sparse_q31(
     blkCnt--;
   }
 
-  /* Load the coefficient value and   
+  /* Load the coefficient value and
    * increment the coefficient buffer for the next set of state values */
   coeff = *pCoeffs++;
 
@@ -173,7 +173,7 @@ void arm_fir_sparse_q31(
     /* Working pointer for scratch buffer of output values */
     pOut = pDst;
 
-    /* Loop over the blockSize. Unroll by a factor of 4.   
+    /* Loop over the blockSize. Unroll by a factor of 4.
      * Compute 4 MACS at a time. */
     blkCnt = blockSize >> 2;
 
@@ -199,7 +199,7 @@ void arm_fir_sparse_q31(
       blkCnt--;
     }
 
-    /* If the blockSize is not a multiple of 4,   
+    /* If the blockSize is not a multiple of 4,
      * compute the remaining samples */
     blkCnt = blockSize % 0x4u;
 
@@ -214,7 +214,7 @@ void arm_fir_sparse_q31(
       blkCnt--;
     }
 
-    /* Load the coefficient value and   
+    /* Load the coefficient value and
      * increment the coefficient buffer for the next set of state values */
     coeff = *pCoeffs++;
 
@@ -235,7 +235,7 @@ void arm_fir_sparse_q31(
   pOut = pDst;
 
   /* Output is converted into 1.31 format. */
-  /* Loop over the blockSize. Unroll by a factor of 4.   
+  /* Loop over the blockSize. Unroll by a factor of 4.
    * process 4 output samples at a time. */
   blkCnt = blockSize >> 2;
 
@@ -254,7 +254,7 @@ void arm_fir_sparse_q31(
     blkCnt--;
   }
 
-  /* If the blockSize is not a multiple of 4,   
+  /* If the blockSize is not a multiple of 4,
    * process the remaining output samples */
   blkCnt = blockSize % 0x4u;
 
@@ -281,7 +281,7 @@ void arm_fir_sparse_q31(
     blkCnt--;
   }
 
-  /* Load the coefficient value and          
+  /* Load the coefficient value and
    * increment the coefficient buffer for the next set of state values */
   coeff = *pCoeffs++;
 
@@ -326,7 +326,7 @@ void arm_fir_sparse_q31(
       blkCnt--;
     }
 
-    /* Load the coefficient value and          
+    /* Load the coefficient value and
      * increment the coefficient buffer for the next set of state values */
     coeff = *pCoeffs++;
 
@@ -362,6 +362,6 @@ void arm_fir_sparse_q31(
 
 }
 
-/**   
- * @} end of FIR_Sparse group   
+/**
+ * @} end of FIR_Sparse group
  */

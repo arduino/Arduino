@@ -8,7 +8,7 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
@@ -30,22 +30,22 @@ extern uint32_t pulseIn( uint32_t pin, uint32_t state, uint32_t timeout )
 	// digitalRead() instead yields much coarser resolution.
 	PinDescription p = g_APinDescription[pin];
 	uint32_t width = 0; // keep initialization out of time critical area
-	
+
 	// convert the timeout from microseconds to a number of times through
 	// the initial loop; it takes 22 clock cycles per iteration.
 	uint32_t numloops = 0;
 	uint32_t maxloops = microsecondsToClockCycles(timeout) / 22;
-	
+
 	// wait for any previous pulse to end
 	while (PIO_Get(p.pPort, PIO_INPUT, p.ulPin) == state)
 		if (numloops++ == maxloops)
 			return 0;
-	
+
 	// wait for the pulse to start
 	while (PIO_Get(p.pPort, PIO_INPUT, p.ulPin) != state)
 		if (numloops++ == maxloops)
 			return 0;
-	
+
 	// wait for the pulse to stop
 	while (PIO_Get(p.pPort, PIO_INPUT, p.ulPin) == state) {
 		if (numloops++ == maxloops)

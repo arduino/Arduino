@@ -73,7 +73,7 @@ private:
   long decodeHash(decode_results *results);
   int compare(unsigned int oldval, unsigned int newval);
 
-} 
+}
 ;
 
 // Only used for testing; can remove virtual for shorter code

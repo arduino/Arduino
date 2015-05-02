@@ -34,16 +34,16 @@ public:
   // Load and play specified melody
   // melody needs to point to PROGMEM data
   void play(const uint8_t *melody);
-  
+
   // Resume currently loaded melody (or enable direct osc manipulation by sketch)
   void play();
-    
+
   // Pause playback
   void pause();
-  
+
   // Stop playback (unloads song)
   void stop();
-  
+
   // Tune Squawk to a different frequency - default is 1.0
   void tune(float tuning);
 

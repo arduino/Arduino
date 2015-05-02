@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -48,7 +48,7 @@ https://github.com/BlueVia/Official-Arduino
 
 typedef enum GSM3GSMBand {UNDEFINED, EGSM_MODE, DCS_MODE, PCS_MODE, EGSM_DCS_MODE, GSM850_PCS_MODE, GSM850_EGSM_DCS_PCS_MODE};
 
-// 
+//
 // These are the bands and scopes:
 //
 //	E-GSM(900)
@@ -61,36 +61,36 @@ typedef enum GSM3GSMBand {UNDEFINED, EGSM_MODE, DCS_MODE, PCS_MODE, EGSM_DCS_MOD
 class GSM3ShieldV1BandManagement
 {
 	private:
-	
+
 		GSM3ShieldV1DirectModemProvider modem; // Direct access to modem
-		
+
 		char* quectelStrings[NUMBEROFBANDS];// = {"\"EGSM_MODE\"", "\"DCS_MODE\"", "\"PCS_MODE\"",
-								//"\"EGSM_DCS_MODE\"", "\"GSM850_PCS_MODE\"", 
+								//"\"EGSM_DCS_MODE\"", "\"GSM850_PCS_MODE\"",
 								//"\"GSM850_EGSM_DCS_PCS_MODE\""};
 
 
 	public:
-	
+
 		/** Constructor
 			@param trace		If true, dumps all AT dialogue to Serial
 		 */
 		GSM3ShieldV1BandManagement(bool trace=false);
-		
+
 		/** Forces modem hardware restart, so we begin from scratch
 			@return always returns IDLE status
 		 */
 		GSM3_NetworkStatus_t begin();
 
-		/** Get current modem work band 
+		/** Get current modem work band
 			@return current modem work band
-		 */		
+		 */
 		String getBand();
 
-		/** Changes the modem operating band 
+		/** Changes the modem operating band
 			@param band			Desired new band
 			@return true if success, false otherwise
-		 */			
+		 */
 		bool setBand(String band);
-			
+
 };
 #endif

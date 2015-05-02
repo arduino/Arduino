@@ -35,7 +35,7 @@ uint8_t* insertBuf(uint8_t sock, uint8_t* buf, uint16_t len)
 	{
 		WARN("Sock out of range: sock=%d", sock);
 		return NULL;
-	}		
+	}
 	if (pBufStore[headBuf[sock]][sock].data != NULL)
 	{
 		WARN("Overwriting buffer %p idx:%d!\n", pBufStore[headBuf[sock]][sock].data, headBuf[sock]);
@@ -181,7 +181,7 @@ void dumpPbuf(uint8_t sock)
 	do {
 	if (pBufStore[index][sock].data != NULL)
 	{
-		printk("%d] pcb:%p Buf: %p Len:%d\n", pBufStore[index][sock].idx, pBufStore[index][sock].pcb, 
+		printk("%d] pcb:%p Buf: %p Len:%d\n", pBufStore[index][sock].idx, pBufStore[index][sock].pcb,
 			pBufStore[index][sock].data, pBufStore[index][sock].len);
 	}
 	++index;
@@ -267,7 +267,7 @@ bool isAvailTcpDataByte(uint8_t sock)
 		{
 			INFO_UTIL("Free %p other buf %d tail:%d head:%d\n",
 					p->data, IS_BUF_AVAIL(sock), tailBuf[sock], headBuf[sock]);
-			ackAndFreeData(p->pcb, p->len, sock, p->data);						
+			ackAndFreeData(p->pcb, p->len, sock, p->data);
 			return (IS_BUF_AVAIL(sock));
 		}else{
 			return true;

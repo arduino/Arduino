@@ -1,71 +1,71 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:		arm_correlate_q31.c   
-*   
-* Description:	Correlation of Q31 sequences. 
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_correlate_q31.c
+*
+* Description:	Correlation of Q31 sequences.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated   
-*   
-* Version 0.0.7  2010/06/10    
-*    Misra-C changes done   
-*   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated
+*
+* Version 0.0.7  2010/06/10
+*    Misra-C changes done
+*
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFilters   
+/**
+ * @ingroup groupFilters
  */
 
-/**   
- * @addtogroup Corr   
- * @{   
+/**
+ * @addtogroup Corr
+ * @{
  */
 
-/**   
- * @brief Correlation of Q31 sequences.   
- * @param[in] *pSrcA points to the first input sequence.   
- * @param[in] srcALen length of the first input sequence.   
- * @param[in] *pSrcB points to the second input sequence.   
- * @param[in] srcBLen length of the second input sequence.   
- * @param[out] *pDst points to the location where the output result is written.  Length 2 * max(srcALen, srcBLen) - 1.   
- * @return none.   
- *   
- * @details   
- * <b>Scaling and Overflow Behavior:</b>   
- *   
- * \par   
- * The function is implemented using an internal 64-bit accumulator.   
- * The accumulator has a 2.62 format and maintains full precision of the intermediate multiplication results but provides only a single guard bit.   
- * There is no saturation on intermediate additions.   
- * Thus, if the accumulator overflows it wraps around and distorts the result.   
- * The input signals should be scaled down to avoid intermediate overflows.   
- * Scale down one of the inputs by 1/min(srcALen, srcBLen)to avoid overflows since a   
- * maximum of min(srcALen, srcBLen) number of additions is carried internally.   
- * The 2.62 accumulator is right shifted by 31 bits and saturated to 1.31 format to yield the final result.   
- *   
- * \par   
- * See <code>arm_correlate_fast_q31()</code> for a faster but less precise implementation of this function for Cortex-M3 and Cortex-M4.   
+/**
+ * @brief Correlation of Q31 sequences.
+ * @param[in] *pSrcA points to the first input sequence.
+ * @param[in] srcALen length of the first input sequence.
+ * @param[in] *pSrcB points to the second input sequence.
+ * @param[in] srcBLen length of the second input sequence.
+ * @param[out] *pDst points to the location where the output result is written.  Length 2 * max(srcALen, srcBLen) - 1.
+ * @return none.
+ *
+ * @details
+ * <b>Scaling and Overflow Behavior:</b>
+ *
+ * \par
+ * The function is implemented using an internal 64-bit accumulator.
+ * The accumulator has a 2.62 format and maintains full precision of the intermediate multiplication results but provides only a single guard bit.
+ * There is no saturation on intermediate additions.
+ * Thus, if the accumulator overflows it wraps around and distorts the result.
+ * The input signals should be scaled down to avoid intermediate overflows.
+ * Scale down one of the inputs by 1/min(srcALen, srcBLen)to avoid overflows since a
+ * maximum of min(srcALen, srcBLen) number of additions is carried internally.
+ * The 2.62 accumulator is right shifted by 31 bits and saturated to 1.31 format to yield the final result.
+ *
+ * \par
+ * See <code>arm_correlate_fast_q31()</code> for a faster but less precise implementation of this function for Cortex-M3 and Cortex-M4.
  */
 
 void arm_correlate_q31(
@@ -99,11 +99,11 @@ void arm_correlate_q31(
   /* So, when srcBLen > srcALen, output pointer is made to point to the end of the output buffer */
   /* and the destination pointer modifier, inc is set to -1 */
   /* If srcALen > srcBLen, zero pad has to be done to srcB to make the two inputs of same length */
-  /* But to improve the performance,   
+  /* But to improve the performance,
    * we include zeroes in the output instead of zero padding either of the the inputs*/
-  /* If srcALen > srcBLen,   
+  /* If srcALen > srcBLen,
    * (srcALen - srcBLen) zeroes has to included in the starting of the output buffer */
-  /* If srcALen < srcBLen,   
+  /* If srcALen < srcBLen,
    * (srcALen - srcBLen) zeroes has to included in the ending of the output buffer */
   if(srcALen >= srcBLen)
   {
@@ -116,9 +116,9 @@ void arm_correlate_q31(
     /* Number of output samples is calculated */
     outBlockSize = (2u * srcALen) - 1u;
 
-    /* When srcALen > srcBLen, zero padding is done to srcB   
-     * to make their lengths equal.   
-     * Instead, (outBlockSize - (srcALen + srcBLen - 1))   
+    /* When srcALen > srcBLen, zero padding is done to srcB
+     * to make their lengths equal.
+     * Instead, (outBlockSize - (srcALen + srcBLen - 1))
      * number of output samples are made zero */
     j = outBlockSize - (srcALen + (srcBLen - 1u));
 
@@ -148,30 +148,30 @@ void arm_correlate_q31(
 
   }
 
-  /* The function is internally   
-   * divided into three parts according to the number of multiplications that has to be   
-   * taken place between inputA samples and inputB samples. In the first part of the   
-   * algorithm, the multiplications increase by one for every iteration.   
-   * In the second part of the algorithm, srcBLen number of multiplications are done.   
-   * In the third part of the algorithm, the multiplications decrease by one   
+  /* The function is internally
+   * divided into three parts according to the number of multiplications that has to be
+   * taken place between inputA samples and inputB samples. In the first part of the
+   * algorithm, the multiplications increase by one for every iteration.
+   * In the second part of the algorithm, srcBLen number of multiplications are done.
+   * In the third part of the algorithm, the multiplications decrease by one
    * for every iteration.*/
-  /* The algorithm is implemented in three stages.   
+  /* The algorithm is implemented in three stages.
    * The loop counters of each stage is initiated here. */
   blockSize1 = srcBLen - 1u;
   blockSize2 = srcALen - (srcBLen - 1u);
   blockSize3 = blockSize1;
 
-  /* --------------------------   
-   * Initializations of stage1   
+  /* --------------------------
+   * Initializations of stage1
    * -------------------------*/
 
-  /* sum = x[0] * y[srcBlen - 1]   
-   * sum = x[0] * y[srcBlen - 2] + x[1] * y[srcBlen - 1]   
-   * ....   
-   * sum = x[0] * y[0] + x[1] * y[1] +...+ x[srcBLen - 1] * y[srcBLen - 1]   
+  /* sum = x[0] * y[srcBlen - 1]
+   * sum = x[0] * y[srcBlen - 2] + x[1] * y[srcBlen - 1]
+   * ....
+   * sum = x[0] * y[0] + x[1] * y[1] +...+ x[srcBLen - 1] * y[srcBLen - 1]
    */
 
-  /* In this stage the MAC operations are increased by 1 for every iteration.   
+  /* In this stage the MAC operations are increased by 1 for every iteration.
      The count variable holds the number of MAC operations performed */
   count = 1u;
 
@@ -182,8 +182,8 @@ void arm_correlate_q31(
   pSrc1 = pIn2 + (srcBLen - 1u);
   py = pSrc1;
 
-  /* ------------------------   
-   * Stage1 process   
+  /* ------------------------
+   * Stage1 process
    * ----------------------*/
 
   /* The first stage starts here */
@@ -195,7 +195,7 @@ void arm_correlate_q31(
     /* Apply loop unrolling and compute 4 MACs simultaneously. */
     k = count >> 2;
 
-    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
      ** a second loop below computes MACs for the remaining 1 to 3 samples. */
     while(k > 0u)
     {
@@ -212,7 +212,7 @@ void arm_correlate_q31(
       k--;
     }
 
-    /* If the count is not a multiple of 4, compute any remaining MACs here.   
+    /* If the count is not a multiple of 4, compute any remaining MACs here.
      ** No loop unrolling is used. */
     k = count % 0x4u;
 
@@ -242,14 +242,14 @@ void arm_correlate_q31(
     blockSize1--;
   }
 
-  /* --------------------------   
-   * Initializations of stage2   
+  /* --------------------------
+   * Initializations of stage2
    * ------------------------*/
 
-  /* sum = x[0] * y[0] + x[1] * y[1] +...+ x[srcBLen-1] * y[srcBLen-1]   
-   * sum = x[1] * y[0] + x[2] * y[1] +...+ x[srcBLen] * y[srcBLen-1]   
-   * ....   
-   * sum = x[srcALen-srcBLen-2] * y[0] + x[srcALen-srcBLen-1] * y[1] +...+ x[srcALen-1] * y[srcBLen-1]   
+  /* sum = x[0] * y[0] + x[1] * y[1] +...+ x[srcBLen-1] * y[srcBLen-1]
+   * sum = x[1] * y[0] + x[2] * y[1] +...+ x[srcBLen] * y[srcBLen-1]
+   * ....
+   * sum = x[srcALen-srcBLen-2] * y[0] + x[srcALen-srcBLen-1] * y[1] +...+ x[srcALen-1] * y[srcBLen-1]
    */
 
   /* Working pointer of inputA */
@@ -261,12 +261,12 @@ void arm_correlate_q31(
   /* count is index by which the pointer pIn1 to be incremented */
   count = 1u;
 
-  /* -------------------   
-   * Stage2 process   
+  /* -------------------
+   * Stage2 process
    * ------------------*/
 
-  /* Stage2 depends on srcBLen as in this stage srcBLen number of MACS are performed.   
-   * So, to loop unroll over blockSize2,   
+  /* Stage2 depends on srcBLen as in this stage srcBLen number of MACS are performed.
+   * So, to loop unroll over blockSize2,
    * srcBLen should be greater than or equal to 4 */
   if(srcBLen >= 4u)
   {
@@ -289,7 +289,7 @@ void arm_correlate_q31(
       /* Apply loop unrolling and compute 4 MACs simultaneously. */
       k = srcBLen >> 2u;
 
-      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
        ** a second loop below computes MACs for the remaining 1 to 3 samples. */
       do
       {
@@ -359,7 +359,7 @@ void arm_correlate_q31(
 
       } while(--k);
 
-      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.   
+      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.
        ** No loop unrolling is used. */
       k = srcBLen % 0x4u;
 
@@ -415,7 +415,7 @@ void arm_correlate_q31(
       blkCnt--;
     }
 
-    /* If the blockSize2 is not a multiple of 4, compute any remaining output samples here.   
+    /* If the blockSize2 is not a multiple of 4, compute any remaining output samples here.
      ** No loop unrolling is used. */
     blkCnt = blockSize2 % 0x4u;
 
@@ -427,7 +427,7 @@ void arm_correlate_q31(
       /* Apply loop unrolling and compute 4 MACs simultaneously. */
       k = srcBLen >> 2u;
 
-      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+      /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
        ** a second loop below computes MACs for the remaining 1 to 3 samples. */
       while(k > 0u)
       {
@@ -441,7 +441,7 @@ void arm_correlate_q31(
         k--;
       }
 
-      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.   
+      /* If the srcBLen is not a multiple of 4, compute any remaining MACs here.
        ** No loop unrolling is used. */
       k = srcBLen % 0x4u;
 
@@ -472,7 +472,7 @@ void arm_correlate_q31(
   }
   else
   {
-    /* If the srcBLen is not a multiple of 4,   
+    /* If the srcBLen is not a multiple of 4,
      * the blockSize2 loop cannot be unrolled by 4 */
     blkCnt = blockSize2;
 
@@ -510,18 +510,18 @@ void arm_correlate_q31(
     }
   }
 
-  /* --------------------------   
-   * Initializations of stage3   
+  /* --------------------------
+   * Initializations of stage3
    * -------------------------*/
 
-  /* sum += x[srcALen-srcBLen+1] * y[0] + x[srcALen-srcBLen+2] * y[1] +...+ x[srcALen-1] * y[srcBLen-1]   
-   * sum += x[srcALen-srcBLen+2] * y[0] + x[srcALen-srcBLen+3] * y[1] +...+ x[srcALen-1] * y[srcBLen-1]   
-   * ....   
-   * sum +=  x[srcALen-2] * y[0] + x[srcALen-1] * y[1]   
-   * sum +=  x[srcALen-1] * y[0]   
+  /* sum += x[srcALen-srcBLen+1] * y[0] + x[srcALen-srcBLen+2] * y[1] +...+ x[srcALen-1] * y[srcBLen-1]
+   * sum += x[srcALen-srcBLen+2] * y[0] + x[srcALen-srcBLen+3] * y[1] +...+ x[srcALen-1] * y[srcBLen-1]
+   * ....
+   * sum +=  x[srcALen-2] * y[0] + x[srcALen-1] * y[1]
+   * sum +=  x[srcALen-1] * y[0]
    */
 
-  /* In this stage the MAC operations are decreased by 1 for every iteration.   
+  /* In this stage the MAC operations are decreased by 1 for every iteration.
      The count variable holds the number of MAC operations performed */
   count = srcBLen - 1u;
 
@@ -532,8 +532,8 @@ void arm_correlate_q31(
   /* Working pointer of inputB */
   py = pIn2;
 
-  /* -------------------   
-   * Stage3 process   
+  /* -------------------
+   * Stage3 process
    * ------------------*/
 
   while(blockSize3 > 0u)
@@ -544,7 +544,7 @@ void arm_correlate_q31(
     /* Apply loop unrolling and compute 4 MACs simultaneously. */
     k = count >> 2u;
 
-    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.   
+    /* First part of the processing with loop unrolling.  Compute 4 MACs at a time.
      ** a second loop below computes MACs for the remaining 1 to 3 samples. */
     while(k > 0u)
     {
@@ -562,7 +562,7 @@ void arm_correlate_q31(
       k--;
     }
 
-    /* If the count is not a multiple of 4, compute any remaining MACs here.   
+    /* If the count is not a multiple of 4, compute any remaining MACs here.
      ** No loop unrolling is used. */
     k = count % 0x4u;
 
@@ -608,14 +608,14 @@ void arm_correlate_q31(
   /* But CORR(x, y) is reverse of CORR(y, x) */
   /* So, when srcBLen > srcALen, output pointer is made to point to the end of the output buffer */
   /* and a varaible, inv is set to 1 */
-  /* If lengths are not equal then zero pad has to be done to  make the two   
-   * inputs of same length. But to improve the performance, we include zeroes   
+  /* If lengths are not equal then zero pad has to be done to  make the two
+   * inputs of same length. But to improve the performance, we include zeroes
    * in the output instead of zero padding either of the the inputs*/
-  /* If srcALen > srcBLen, (srcALen - srcBLen) zeroes has to included in the   
+  /* If srcALen > srcBLen, (srcALen - srcBLen) zeroes has to included in the
    * starting of the output buffer */
-  /* If srcALen < srcBLen, (srcALen - srcBLen) zeroes has to included in the  
+  /* If srcALen < srcBLen, (srcALen - srcBLen) zeroes has to included in the
    * ending of the output buffer */
-  /* Once the zero padding is done the remaining of the output is calcualted  
+  /* Once the zero padding is done the remaining of the output is calcualted
    * using convolution but with the shorter signal time shifted. */
 
   /* Calculate the length of the remaining sequence */
@@ -678,6 +678,6 @@ void arm_correlate_q31(
 
 }
 
-/**   
- * @} end of Corr group   
+/**
+ * @} end of Corr group
  */

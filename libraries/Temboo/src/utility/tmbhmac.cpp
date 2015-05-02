@@ -4,13 +4,13 @@
 # Temboo Arduino library
 #
 # Copyright 2015, Temboo Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -32,12 +32,12 @@ HMAC::HMAC(const uint8_t* key, uint32_t keyLength) {
 }
 
 void HMAC::init(const uint8_t* key, uint32_t keyLength) {
-    
+
     m_key = key;
     m_keyLength = keyLength;
 
     uint8_t iKeyPad[HMAC_BLOCK_SIZE_BYTES];
-    
+
     constructKeyPad(iKeyPad, key, keyLength, (uint8_t)0x36);
 
     m_md5.init();
@@ -57,7 +57,7 @@ void HMAC::finish(uint8_t* dest) {
     uint8_t finalBlock[HMAC_BLOCK_SIZE_BYTES + HMAC_HASH_SIZE_BYTES];
     constructKeyPad(finalBlock, m_key, m_keyLength, (uint8_t)0x5C);
     m_md5.finish(finalBlock + HMAC_BLOCK_SIZE_BYTES);
-    
+
     m_md5.init();
     m_md5.process(finalBlock, HMAC_BLOCK_SIZE_BYTES + HMAC_HASH_SIZE_BYTES);
     m_md5.finish(dest);
@@ -85,14 +85,14 @@ void HMAC::toHex(uint8_t* hmac, char* dest) {
 void HMAC::constructKeyPad(uint8_t* dest, const uint8_t* key, uint32_t keyLength, uint8_t padByte) {
 
     if (keyLength > HMAC_BLOCK_SIZE_BYTES) {
-        // If the key is bigger than 1 block, 
+        // If the key is bigger than 1 block,
         // replace the key with the hash of the key.
         MD5 md5;
         md5.process(key, keyLength);
         md5.finish(dest);
         keyLength = HMAC_HASH_SIZE_BYTES;
     } else {
-        // If the key length is <= to the HMAC block length, 
+        // If the key length is <= to the HMAC block length,
         // just use the key as-is.
         memcpy(dest, key, keyLength);
     }

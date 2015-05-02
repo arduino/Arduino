@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -51,7 +51,7 @@ GSM3MobileServerService::GSM3MobileServerService(uint8_t port, bool synch)
 	mySocket=0;
 	_port=port;
 	flags = 0;
-	
+
 	// If synchronous
 	if(synch)
 		flags |= GSM3MOBILESERVERSERVICE_SYNCH;
@@ -59,30 +59,30 @@ GSM3MobileServerService::GSM3MobileServerService(uint8_t port, bool synch)
 
 // Returns 0 if last command is still executing
 // 1 if success
-// >1 if error 
+// >1 if error
 int GSM3MobileServerService::ready()
-{	
+{
 	return theGSM3MobileServerProvider->ready();
 }
 
 void GSM3MobileServerService::begin()
-{	
+{
 	if(theGSM3MobileServerProvider==0)
 		return;
 	theGSM3MobileServerProvider->connectTCPServer(_port);
-	
+
 	if(flags & GSM3MOBILESERVERSERVICE_SYNCH)
 		waitForAnswer();
 }
 
 GSM3MobileClientService GSM3MobileServerService::available(bool synch)
-{	
+{
 	int newSocket;
 	// In case we are debugging, we'll need to force a look at the buffer
 	ready();
-	
+
 	newSocket=theGSM3MobileServerProvider->getNewOccupiedSocketAsServer();
-	
+
 	// Instatiate new client. If we are synch, the client is synchronous/blocking
 	GSM3MobileClientService client((uint8_t)(newSocket), (flags & GSM3MOBILESERVERSERVICE_SYNCH));
 
@@ -91,7 +91,7 @@ GSM3MobileClientService GSM3MobileServerService::available(bool synch)
 
 size_t GSM3MobileServerService::write(uint8_t c)
 {
-// Adapt to the new, lean implementation	
+// Adapt to the new, lean implementation
 //	theGSM3MobileServerProvider->writeSocket(c);
 	return 1;
 }
@@ -123,7 +123,7 @@ void GSM3MobileServerService::endWrite()
 
 void GSM3MobileServerService::stop()
 {
-	
+
 	// Review, should be the server?
 	theGSM3MobileClientProvider->disconnectTCP(local1Remote0, mySocket);
 	if(flags & GSM3MOBILESERVERSERVICE_SYNCH)
@@ -143,10 +143,10 @@ int GSM3MobileServerService::waitForAnswer()
 	unsigned long m;
 	m=millis();
 	int res;
-	
-	while(((millis()-m)< __TOUTSERVER__ )&&(ready()==0)) 
+
+	while(((millis()-m)< __TOUTSERVER__ )&&(ready()==0))
 		delay(10);
-	
+
 	res=ready();
 
 	// If we get something different from a 1, we are having a problem

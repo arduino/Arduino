@@ -1,58 +1,58 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_fir_lattice_q31.c   
-*   
-* Description:	Q31 FIR lattice filter processing function.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_fir_lattice_q31.c
+*
+* Description:	Q31 FIR lattice filter processing function.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated   
-*   
-* Version 0.0.7  2010/06/10    
-*    Misra-C changes done   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated
+*
+* Version 0.0.7  2010/06/10
+*    Misra-C changes done
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFilters   
+/**
+ * @ingroup groupFilters
  */
 
-/**   
- * @addtogroup FIR_Lattice   
- * @{   
+/**
+ * @addtogroup FIR_Lattice
+ * @{
  */
 
 
-/**   
- * @brief Processing function for the Q31 FIR lattice filter.   
- * @param[in]  *S        points to an instance of the Q31 FIR lattice structure.   
- * @param[in]  *pSrc     points to the block of input data.   
- * @param[out] *pDst     points to the block of output data   
- * @param[in]  blockSize number of samples to process.   
- * @return none.   
- *   
- * @details   
- * <b>Scaling and Overflow Behavior:</b>   
- * In order to avoid overflows the input signal must be scaled down by 2*log2(numStages) bits.   
+/**
+ * @brief Processing function for the Q31 FIR lattice filter.
+ * @param[in]  *S        points to an instance of the Q31 FIR lattice structure.
+ * @param[in]  *pSrc     points to the block of input data.
+ * @param[out] *pDst     points to the block of output data
+ * @param[in]  blockSize number of samples to process.
+ * @return none.
+ *
+ * @details
+ * <b>Scaling and Overflow Behavior:</b>
+ * In order to avoid overflows the input signal must be scaled down by 2*log2(numStages) bits.
  */
 
 void arm_fir_lattice_q31(
@@ -82,7 +82,7 @@ void arm_fir_lattice_q31(
 
   blkCnt = blockSize >> 2u;
 
-  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.   
+  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
    ** a second loop below computes the remaining 1 to 3 samples. */
   while(blkCnt > 0u)
   {
@@ -119,7 +119,7 @@ void arm_fir_lattice_q31(
     fcurr3 = *pSrc++;
     fcurr4 = *pSrc++;
 
-    /* Copy only last input samples into the state buffer   
+    /* Copy only last input samples into the state buffer
        which will be used for next four samples processing */
     *px++ = (q31_t) fcurr4;
 
@@ -145,7 +145,7 @@ void arm_fir_lattice_q31(
     stageCnt = (numStages - 1u) >> 2u;
 
 
-    /* Loop over the number of taps.  Unroll by a factor of 4.   
+    /* Loop over the number of taps.  Unroll by a factor of 4.
      ** Repeat until we've computed numStages-3 coefficients. */
 
     /* Process 2nd, 3rd, 4th and 5th taps ... here */
@@ -299,7 +299,7 @@ void arm_fir_lattice_q31(
     blkCnt--;
   }
 
-  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.   
+  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
    ** No loop unrolling is used. */
   blkCnt = blockSize % 0x4u;
 
@@ -325,7 +325,7 @@ void arm_fir_lattice_q31(
     /* save g1(n) in state buffer */
     *px++ = fcurr1;
 
-    /* f1(n) is saved in fcurr1   
+    /* f1(n) is saved in fcurr1
        for next stage processing */
     fcurr1 = fnext1;
 
@@ -346,7 +346,7 @@ void arm_fir_lattice_q31(
       /* g2(n) = f1(n) * K2  +  g1(n-1) */
       gnext1 = (q31_t) (((q63_t) fcurr1 * (*pk++)) >> 31) + gcurr1;
 
-      /* f1(n) is saved in fcurr1   
+      /* f1(n) is saved in fcurr1
          for next stage processing */
       fcurr1 = fnext1;
 
@@ -395,7 +395,7 @@ void arm_fir_lattice_q31(
     /* save g1(n) in state buffer */
     *px++ = fcurr;
 
-    /* f1(n) is saved in fcurr1           
+    /* f1(n) is saved in fcurr1
        for next stage processing */
     fcurr = fnext;
 
@@ -416,7 +416,7 @@ void arm_fir_lattice_q31(
       /* g2(n) = f1(n) * K2  +  g1(n-1) */
       gnext = (q31_t) (((q63_t) fcurr * (*pk++)) >> 31) + gcurr;
 
-      /* f1(n) is saved in fcurr1           
+      /* f1(n) is saved in fcurr1
          for next stage processing */
       fcurr = fnext;
 
@@ -435,6 +435,6 @@ void arm_fir_lattice_q31(
 
 }
 
-/**   
- * @} end of FIR_Lattice group   
+/**
+ * @} end of FIR_Lattice group
  */

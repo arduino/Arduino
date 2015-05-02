@@ -21,7 +21,7 @@ int VirtualKeyboard::getColLin(int val){
 }
 void VirtualKeyboard::run(){
 /** visually select a letter on the keyboard
-*	The selection boarder is 1px higher than the character, 
+*	The selection boarder is 1px higher than the character,
 *	1px on the bottom, 2px to the left and 2px to the right.
 *
 */
@@ -31,7 +31,7 @@ void VirtualKeyboard::run(){
   uint8_t val=map(Robot.knobRead(),0,1023,0,38);
   if(val==38)val=37;	//The last value is jumpy when using batteries
   int colLin=getColLin(val);
-  
+
   if(oldColLin!=colLin){
     uint8_t x=(oldColLin>>8 & 0xFF)*11+10;//col*11+1+9
     uint8_t y=(oldColLin & 0xFF)*11+1+top;//lin*11+1+top
@@ -56,14 +56,14 @@ char VirtualKeyboard::getSelection(){
 
   uint8_t val=map(Robot.knobRead(),0,1023,0,38);
   if(0<=val && 9>=val)
-    val='0'+val;	
+    val='0'+val;
   else if(10<=val && 35>=val)
-    val='A'+val-10;	
+    val='A'+val-10;
   else if(val==36)
     val=' ';
   else if(val>=37)
     val='\0';
-  
+
   return val;
 }
 void VirtualKeyboard::hide(){
@@ -82,14 +82,14 @@ void VirtualKeyboard::display(uint8_t top, uint16_t showColor, uint16_t hideColo
 *	keyboard-margin-left=keyboard-margin-right==9
 *	so character-x=11*col+9+3=11*col+12
 *	character-y=11*lin+2+top
-*	
+*
 **/
   this->top=top;
   this->onOff=true;
-  
+
   this->showColor=showColor;
   this->hideColor=hideColor;
-  
+
   for(uint8_t i=0;i<36;i++){
 	Robot.setCursor(i%10*11+12,2+top+i/10*11);
 	if(i<10)
@@ -97,7 +97,7 @@ void VirtualKeyboard::display(uint8_t top, uint16_t showColor, uint16_t hideColo
 	else
 		Robot.print(char(55+i));//'A'-10=55
   }//for saving 58 bytes :(
-  
+
   /*for(int i=0;i<10;i++){
     Robot.setCursor(i*11+12,2+top);//11*0+2+top
     Robot.print(char('0'+i));//line_1: 0-9
@@ -117,7 +117,7 @@ void VirtualKeyboard::display(uint8_t top, uint16_t showColor, uint16_t hideColo
   //space and enter at the end of the last line.
   Robot.setCursor(78,35+top);//6*11+12=78
   Robot.print('_');//_
-  
+
   Robot.setCursor(89,35+top);//7*11+12=89
   Robot.print("Enter");//enter
 }

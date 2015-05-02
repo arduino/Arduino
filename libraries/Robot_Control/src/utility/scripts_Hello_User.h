@@ -33,7 +33,7 @@ const char * const scripts_Hello_User[] PROGMEM = {
 
 /*
 void getPGMtext(int seq){
-  //It takes a string from program space, and fill it  
+  //It takes a string from program space, and fill it
   //in the buffer
   strcpy_P(buffer,(char*)pgm_read_word(&(scripts[seq])));
 }
@@ -41,7 +41,7 @@ void getPGMtext(int seq){
 void writeScript(int seq, int line, int col){
   //print a string from program space to a specific line,
   //column on the LCD
-  
+
   //first fill the buffer with text from program space
   getPGMtext(seq);
   //then print it to the screen

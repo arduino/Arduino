@@ -7,14 +7,14 @@
 #include <Console.h>
 #include <Process.h>
 
-enum SBmsg { 
-	CONNECTION_START = char(28), 
-	CONNECTION_END = char(27), 
-	CONNECTION_ERROR = char(26), 
-	MSG_CONFIRM = char(7), 
-	MSG_START = char(29), 
-	MSG_DIV = char(30), 
-	MSG_END = char(31) 
+enum SBmsg {
+	CONNECTION_START = char(28),
+	CONNECTION_END = char(27),
+	CONNECTION_ERROR = char(26),
+	MSG_CONFIRM = char(7),
+	MSG_START = char(29),
+	MSG_DIV = char(30),
+	MSG_END = char(31)
 };
 
 struct Publisher {
@@ -126,7 +126,7 @@ class SpacebrewYun {
 		static char * createString(int len){
 			char * out = ( char * ) malloc ( len + 1 );
 			return out;
-		}		
+		}
 
 		static void emptyString(char * str, int len){
 			for (int i = 0; i < len; i++) {

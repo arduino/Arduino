@@ -4,13 +4,13 @@
 # Temboo Arduino library
 #
 # Copyright 2015, Temboo Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -242,35 +242,35 @@ int TembooChoreo::run(uint16_t timeoutSecs) {
 }
 
 int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
-    
+
     m_nextChar = NULL;
-    
+
     if (m_accountName == NULL || *m_accountName == '\0') {
         return TEMBOO_ERROR_ACCOUNT_MISSING;
     }
-    
+
     if (m_path == NULL || *m_path == '\0') {
         return TEMBOO_ERROR_CHOREO_MISSING;
     }
-    
+
     if (m_appKeyName == NULL || *m_appKeyName == '\0') {
         return TEMBOO_ERROR_APPKEY_NAME_MISSING;
     }
-    
+
     if (m_appKeyValue == NULL || *m_appKeyValue == '\0') {
         return TEMBOO_ERROR_APPKEY_MISSING;
     }
-    
+
     TembooSession session(m_client, addr, port);
     uint16_t httpCode = 0;
-    
+
     for (int i = 0; i < 2; i++) {
         unsigned long timeoutBeginSecs = session.getTime();
         if (0 != session.executeChoreo(m_accountName, m_appKeyName, m_appKeyValue, m_path, m_inputs, m_outputs, m_preset)) {
             httpCode = 0;
             break;
         }
-        
+
         while(!m_client.available()) {
             if((session.getTime() - timeoutBeginSecs) >= timeoutSecs) {
                 TEMBOO_TRACELN("Receive time out");
@@ -289,17 +289,17 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
         }
         //Don't care if the next byte is a '1' or a '0'
         m_client.read();
-        
+
         //Read the HTTP status code
         httpCode = (uint16_t)m_client.parseInt();
-        
+
         // We expect HTTP response codes to be <= 599, but
         // we need to be prepared for anything.
         if (httpCode >= 600) {
             TEMBOO_TRACELN("Invalid HTTP");
             httpCode = 0;
         }
-        
+
         // if we get an auth error AND there was an x-temboo-time header,
         // update the session timeOffset
         if ((httpCode == 401) && (i == 0)) {
@@ -314,20 +314,20 @@ int TembooChoreo::run(IPAddress addr, uint16_t port, uint16_t timeoutSecs) {
             break;
         }
     }
-    
+
     uint16toa(httpCode, m_httpCodeStr);
     strcat_P(m_httpCodeStr, PSTR("\x0A\x1E"));
     m_nextState = START;
     m_nextChar = HTTP_CODE;
-    
+
     if (httpCode < 200 || httpCode >= 300) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }
-    
+
     if (!m_client.find(HTTP_EOH)) {
         return TEMBOO_ERROR_HTTP_ERROR;
     }
-    
+
     return TEMBOO_ERROR_OK;
 }
 

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -51,14 +51,14 @@ GSM3SMSService::GSM3SMSService(bool synch)
 
 // Returns 0 if last command is still executing
 // 1 if success
-// >1 if error 
+// >1 if error
 int GSM3SMSService::ready()
-{	
+{
 	return theGSM3SMSProvider->ready();
 }
 
 int GSM3SMSService::beginSMS(const char *number)
-{	
+{
 	return waitForAnswerIfNeeded(theGSM3SMSProvider->beginSMS(number));
 };
 
@@ -74,7 +74,7 @@ size_t GSM3SMSService::write(uint8_t c)
 }
 
 void GSM3SMSService::flush()
-{		
+{
 	theGSM3SMSProvider->flushSMS();
 	waitForAnswerIfNeeded(1);
 };
@@ -95,7 +95,7 @@ int GSM3SMSService::read()
 	return theGSM3SMSProvider->readSMS();
 };
 int GSM3SMSService::peek()
-{		
+{
 	return theGSM3SMSProvider->peekSMS();
 };
 
@@ -107,7 +107,7 @@ int GSM3SMSService::waitForAnswerIfNeeded(int returnvalue)
 		unsigned long m;
 		m=millis();
 		// Wait for __TOUT__
-		while(((millis()-m)< __TOUT__ )&&(ready()==0)) 
+		while(((millis()-m)< __TOUT__ )&&(ready()==0))
 			delay(100);
 		// If everything was OK, return 1
 		// else (timeout or error codes) return 0;

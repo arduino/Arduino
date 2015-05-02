@@ -1,61 +1,61 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_mat_sub_q15.c   
-*   
-* Description:	Q15 Matrix subtraction   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_mat_sub_q15.c
+*
+* Description:	Q15 Matrix subtraction
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
-*   
-* Version 0.0.5  2010/04/26    
-*    incorporated review comments and updated with latest CMSIS layer   
-*   
-* Version 0.0.3  2010/03/10    
-*    Initial version   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
+*
+* Version 0.0.5  2010/04/26
+*    incorporated review comments and updated with latest CMSIS layer
+*
+* Version 0.0.3  2010/03/10
+*    Initial version
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupMatrix   
+/**
+ * @ingroup groupMatrix
  */
 
-/**   
- * @addtogroup MatrixSub   
- * @{   
+/**
+ * @addtogroup MatrixSub
+ * @{
  */
 
-/**   
- * @brief Q15 matrix subtraction.   
- * @param[in]       *pSrcA points to the first input matrix structure   
- * @param[in]       *pSrcB points to the second input matrix structure   
- * @param[out]      *pDst points to output matrix structure   
- * @return     		The function returns either   
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.   
- *   
- * <b>Scaling and Overflow Behavior:</b>   
- * \par   
- * The function uses saturating arithmetic.   
- * Results outside of the allowable Q15 range [0x8000 0x7FFF] will be saturated.   
+/**
+ * @brief Q15 matrix subtraction.
+ * @param[in]       *pSrcA points to the first input matrix structure
+ * @param[in]       *pSrcB points to the second input matrix structure
+ * @param[out]      *pDst points to output matrix structure
+ * @return     		The function returns either
+ * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
+ *
+ * <b>Scaling and Overflow Behavior:</b>
+ * \par
+ * The function uses saturating arithmetic.
+ * Results outside of the allowable Q15 range [0x8000 0x7FFF] will be saturated.
  */
 
 arm_status arm_mat_sub_q15(
@@ -96,7 +96,7 @@ arm_status arm_mat_sub_q15(
     /* Apply loop unrolling */
     blkCnt = numSamples >> 2u;
 
-    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.   
+    /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
      ** a second loop below computes the remaining 1 to 3 samples. */
     while(blkCnt > 0u)
     {
@@ -109,7 +109,7 @@ arm_status arm_mat_sub_q15(
       blkCnt--;
     }
 
-    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.   
+    /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
      ** No loop unrolling is used. */
     blkCnt = numSamples % 0x4u;
 
@@ -150,6 +150,6 @@ arm_status arm_mat_sub_q15(
   return (status);
 }
 
-/**   
- * @} end of MatrixSub group   
+/**
+ * @} end of MatrixSub group
  */

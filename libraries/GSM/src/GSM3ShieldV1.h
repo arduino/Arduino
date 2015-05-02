@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -47,34 +47,34 @@ class GSM3ShieldV1 : public GSM3MobileNetworkProvider, public GSM3ShieldV1BasePr
 
 		/** Delay inside an interrupt (2 seconds)
 		 */
-		void delayInsideInterrupt2seg(); 
-		
+		void delayInsideInterrupt2seg();
+
 	// Code for SMS Service
 	private:
 
 
 		long commandMillis;
 		bool commandSent;
-		
+
 		const char* pinConfig;		//PIN.
-		char* accessPoint;			//APN.					
+		char* accessPoint;			//APN.
 		char* userName;				//User.
 		char* passw;				//Password.
 		const char* remoteID;		//Server.
-		
+
 		char* dataSocket;			//Data socket.
 		int local_Port;				//Local Port.
 		char* local_IP;				//Local IP.
 		int local_IP_Length;		//Local IP length.
-				
-		
+
+
 		int socketDataSize; 		//Size of socket data to be read.
 		int socketDataSizeWritten;  //Number of socket data written in buffer not to overflow the buffer
-				
+
 		int socketsAccepted;		//Status for remote clients accepted of closed.
-			
+
 	public:
-	
+
 		/** Constructor **/
 		GSM3ShieldV1(bool debug=false);
 
@@ -83,12 +83,12 @@ class GSM3ShieldV1 : public GSM3MobileNetworkProvider, public GSM3ShieldV1BasePr
 			@param to 			Final byte of buffer
 		 */
 		void manageResponse(byte from, byte to);
-		
+
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		*/
 		int ready(){return GSM3ShieldV1BaseProvider::ready();};
-		
+
 		/** Parse modem response
 			@param rsp			Returns true if expected response exists
 			@param string1		Substring expected in response
@@ -96,41 +96,41 @@ class GSM3ShieldV1 : public GSM3MobileNetworkProvider, public GSM3ShieldV1BasePr
 			@return true if parsed successful
 		*/
 		bool genericParse_rsp2(bool& rsp, char* string1, char* string2);
-		
+
 		/** Recognize URC
-			@param oldTail		
+			@param oldTail
 			@return true if successful
-		*/		
+		*/
 		bool recognizeUnsolicitedEvent(byte oldTail);
-		
+
 		/** Receive answer
 			@return true if successful
-		*/		
+		*/
 		bool answerReceived();
-		
+
 		/** Receive socket
 			@param id_socket	Socket ID
 			@return true if successful
-		*/		
+		*/
 		bool socketReceived(int id_socket);
-		
+
 		/** Update active ID sockets
 			@param active		Active sockets
 			@param ID			Id for update
-		*/		
+		*/
 		void update_activeIDsockets (bool active, int ID);
-		
+
 		/** Assign ID to socket
 			@param ID			Id to assign to socket
 			@return true if successful
-		*/		
+		*/
 		bool assignIDsocket (int& ID);
-		
+
 		/** Close data socket
 			@return true if successful
-		*/		
-		bool closedDataSocket(); //Flag closed current data socket. 
-		
+		*/
+		bool closedDataSocket(); //Flag closed current data socket.
+
 		//bool writeIncomingCalls(char* bufferForCallerId) If isn't zero, doesn't wait calls
 };
 

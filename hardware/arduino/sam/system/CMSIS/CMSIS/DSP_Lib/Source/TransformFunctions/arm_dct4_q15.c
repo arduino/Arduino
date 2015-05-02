@@ -1,52 +1,52 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_dct4_q15.c   
-*   
-* Description:	Processing function of DCT4 & IDCT4 Q15.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_dct4_q15.c
+*
+* Description:	Processing function of DCT4 & IDCT4 Q15.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @addtogroup DCT4_IDCT4   
- * @{   
+/**
+ * @addtogroup DCT4_IDCT4
+ * @{
  */
 
-/**   
- * @brief Processing function for the Q15 DCT4/IDCT4.  
- * @param[in]       *S             points to an instance of the Q15 DCT4 structure.  
- * @param[in]       *pState        points to state buffer.  
- * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.  
- * @return none.  
- *    
- * \par Input an output formats:   
- * Internally inputs are downscaled in the RFFT process function to avoid overflows.   
- * Number of bits downscaled, depends on the size of the transform.   
- * The input and output formats for different DCT sizes and number of bits to upscale are mentioned in the table below:    
- *   
- * \image html dct4FormatsQ15Table.gif   
+/**
+ * @brief Processing function for the Q15 DCT4/IDCT4.
+ * @param[in]       *S             points to an instance of the Q15 DCT4 structure.
+ * @param[in]       *pState        points to state buffer.
+ * @param[in,out]   *pInlineBuffer points to the in-place input and output buffer.
+ * @return none.
+ *
+ * \par Input an output formats:
+ * Internally inputs are downscaled in the RFFT process function to avoid overflows.
+ * Number of bits downscaled, depends on the size of the transform.
+ * The input and output formats for different DCT sizes and number of bits to upscale are mentioned in the table below:
+ *
+ * \image html dct4FormatsQ15Table.gif
  */
 
 void arm_dct4_q15(
@@ -61,23 +61,23 @@ void arm_dct4_q15(
   q15_t in;                                      /* Temporary variable */
 
 
-  /* DCT4 computation involves DCT2 (which is calculated using RFFT)   
-   * along with some pre-processing and post-processing.   
-   * Computational procedure is explained as follows:   
-   * (a) Pre-processing involves multiplying input with cos factor,   
-   *     r(n) = 2 * u(n) * cos(pi*(2*n+1)/(4*n))   
-   *              where,   
-   *                 r(n) -- output of preprocessing   
-   *                 u(n) -- input to preprocessing(actual Source buffer)   
-   * (b) Calculation of DCT2 using FFT is divided into three steps:   
-   *                  Step1: Re-ordering of even and odd elements of input.   
-   *                  Step2: Calculating FFT of the re-ordered input.   
-   *                  Step3: Taking the real part of the product of FFT output and weights.   
-   * (c) Post-processing - DCT4 can be obtained from DCT2 output using the following equation:   
-   *                   Y4(k) = Y2(k) - Y4(k-1) and Y4(-1) = Y4(0)   
-   *                        where,   
-   *                           Y4 -- DCT4 output,   Y2 -- DCT2 output   
-   * (d) Multiplying the output with the normalizing factor sqrt(2/N).   
+  /* DCT4 computation involves DCT2 (which is calculated using RFFT)
+   * along with some pre-processing and post-processing.
+   * Computational procedure is explained as follows:
+   * (a) Pre-processing involves multiplying input with cos factor,
+   *     r(n) = 2 * u(n) * cos(pi*(2*n+1)/(4*n))
+   *              where,
+   *                 r(n) -- output of preprocessing
+   *                 u(n) -- input to preprocessing(actual Source buffer)
+   * (b) Calculation of DCT2 using FFT is divided into three steps:
+   *                  Step1: Re-ordering of even and odd elements of input.
+   *                  Step2: Calculating FFT of the re-ordered input.
+   *                  Step3: Taking the real part of the product of FFT output and weights.
+   * (c) Post-processing - DCT4 can be obtained from DCT2 output using the following equation:
+   *                   Y4(k) = Y2(k) - Y4(k-1) and Y4(-1) = Y4(0)
+   *                        where,
+   *                           Y4 -- DCT4 output,   Y2 -- DCT2 output
+   * (d) Multiplying the output with the normalizing factor sqrt(2/N).
    */
 
         /*-------- Pre-processing ------------*/
@@ -85,10 +85,10 @@ void arm_dct4_q15(
   arm_mult_q15(pInlineBuffer, cosFact, pInlineBuffer, S->N);
   arm_shift_q15(pInlineBuffer, 1, pInlineBuffer, S->N);
 
-  /* ----------------------------------------------------------------   
-   * Step1: Re-ordering of even and odd elements as   
-   *             pState[i] =  pInlineBuffer[2*i] and   
-   *             pState[N-i-1] = pInlineBuffer[2*i+1] where i = 0 to N/2   
+  /* ----------------------------------------------------------------
+   * Step1: Re-ordering of even and odd elements as
+   *             pState[i] =  pInlineBuffer[2*i] and
+   *             pState[N-i-1] = pInlineBuffer[2*i+1] where i = 0 to N/2
    ---------------------------------------------------------------------*/
 
   /* pS1 initialized to pState */
@@ -108,7 +108,7 @@ void arm_dct4_q15(
   /* Initializing the loop counter to N/2 >> 2 for loop unrolling by 4 */
   i = (uint32_t) S->Nby2 >> 2u;
 
-  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.   
+  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
    ** a second loop below computes the remaining 1 to 3 samples. */
   do
   {
@@ -140,7 +140,7 @@ void arm_dct4_q15(
   /* Initializing the loop counter to N/4 instead of N for loop unrolling */
   i = (uint32_t) S->N >> 2u;
 
-  /* Processing with loop unrolling 4 times as N is always multiple of 4.   
+  /* Processing with loop unrolling 4 times as N is always multiple of 4.
    * Compute 4 outputs at a time */
   do
   {
@@ -155,24 +155,24 @@ void arm_dct4_q15(
   } while(i > 0u);
 
 
-  /* ---------------------------------------------------------   
-   *     Step2: Calculate RFFT for N-point input   
+  /* ---------------------------------------------------------
+   *     Step2: Calculate RFFT for N-point input
    * ---------------------------------------------------------- */
   /* pInlineBuffer is real input of length N , pState is the complex output of length 2N */
   arm_rfft_q15(S->pRfft, pInlineBuffer, pState);
 
- /*----------------------------------------------------------------------   
-  *  Step3: Multiply the FFT output with the weights.   
+ /*----------------------------------------------------------------------
+  *  Step3: Multiply the FFT output with the weights.
   *----------------------------------------------------------------------*/
   arm_cmplx_mult_cmplx_q15(pState, weights, pState, S->N);
 
-  /* The output of complex multiplication is in 3.13 format.   
+  /* The output of complex multiplication is in 3.13 format.
    * Hence changing the format of N (i.e. 2*N elements) complex numbers to 1.15 format by shifting left by 2 bits. */
   arm_shift_q15(pState, 2, pState, S->N * 2);
 
   /* ----------- Post-processing ---------- */
-  /* DCT-IV can be obtained from DCT-II by the equation,   
-   *       Y4(k) = Y2(k) - Y4(k-1) and Y4(-1) = Y4(0)   
+  /* DCT-IV can be obtained from DCT-II by the equation,
+   *       Y4(k) = Y2(k) - Y4(k-1) and Y4(-1) = Y4(0)
    *       Hence, Y4(0) = Y2(0)/2  */
   /* Getting only real part from the output and Converting to DCT-IV */
 
@@ -193,7 +193,7 @@ void arm_dct4_q15(
   /* pState pointer is incremented twice as the real values are located alternatively in the array */
   pS1++;
 
-  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.   
+  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
    ** a second loop below computes the remaining 1 to 3 samples. */
   do
   {
@@ -220,7 +220,7 @@ void arm_dct4_q15(
     i--;
   } while(i > 0u);
 
-  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.   
+  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
    ** No loop unrolling is used. */
   i = ((uint32_t) S->N - 1u) % 0x4u;
 
@@ -305,24 +305,24 @@ void arm_dct4_q15(
   } while(i > 0u);
 
 
-  /* ---------------------------------------------------------   
-   *     Step2: Calculate RFFT for N-point input   
+  /* ---------------------------------------------------------
+   *     Step2: Calculate RFFT for N-point input
    * ---------------------------------------------------------- */
   /* pInlineBuffer is real input of length N , pState is the complex output of length 2N */
   arm_rfft_q15(S->pRfft, pInlineBuffer, pState);
 
- /*----------------------------------------------------------------------   
-  *  Step3: Multiply the FFT output with the weights.   
+ /*----------------------------------------------------------------------
+  *  Step3: Multiply the FFT output with the weights.
   *----------------------------------------------------------------------*/
   arm_cmplx_mult_cmplx_q15(pState, weights, pState, S->N);
 
-  /* The output of complex multiplication is in 3.13 format.   
+  /* The output of complex multiplication is in 3.13 format.
    * Hence changing the format of N (i.e. 2*N elements) complex numbers to 1.15 format by shifting left by 2 bits. */
   arm_shift_q15(pState, 2, pState, S->N * 2);
 
   /* ----------- Post-processing ---------- */
-  /* DCT-IV can be obtained from DCT-II by the equation,   
-   *       Y4(k) = Y2(k) - Y4(k-1) and Y4(-1) = Y4(0)   
+  /* DCT-IV can be obtained from DCT-II by the equation,
+   *       Y4(k) = Y2(k) - Y4(k-1) and Y4(-1) = Y4(0)
    *       Hence, Y4(0) = Y2(0)/2  */
   /* Getting only real part from the output and Converting to DCT-IV */
 
@@ -378,6 +378,6 @@ void arm_dct4_q15(
 
 }
 
-/**   
-   * @} end of DCT4_IDCT4 group   
+/**
+   * @} end of DCT4_IDCT4 group
    */

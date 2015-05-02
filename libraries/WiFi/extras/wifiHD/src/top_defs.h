@@ -105,7 +105,7 @@ int vfscanf(FILE *stream, const char *format, va_list ap) __attribute__ ((deprec
   } PACKED;
  #endif
 
- #define FEAT_SOCKETS 
+ #define FEAT_SOCKETS
 
 #else
  #define WL_ASSERT(cond) do {                                    \

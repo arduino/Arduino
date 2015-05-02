@@ -139,7 +139,7 @@ void at45dbx_read_multiple_sector_callback(const void *psector)
     {
       if(!Is_usb_endpoint_enabled(g_scsi_ep_ms_in))
          return; // USB Reset
-    }         
+    }
 
     Usb_reset_endpoint_fifo_access(g_scsi_ep_ms_in);
     data_to_transfer = usb_write_ep_txpacket(g_scsi_ep_ms_in, psector,
@@ -176,7 +176,7 @@ void at45dbx_write_multiple_sector_callback(void *psector)
     {
       if(!Is_usb_endpoint_enabled(g_scsi_ep_ms_out))
          return; // USB Reset
-    }         
+    }
 
     Usb_reset_endpoint_fifo_access(g_scsi_ep_ms_out);
     data_to_transfer = usb_read_ep_rxpacket(g_scsi_ep_ms_out, psector,

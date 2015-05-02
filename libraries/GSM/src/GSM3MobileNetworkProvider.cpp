@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -48,7 +48,7 @@ int GSM3MobileNetworkProvider::getNewOccupiedSocketAsServer()
 	{
 		if ((!(socketsAsServer&(0x0001<<i))) && getSocketAsServerModemStatus(i))
 		{
-			socketsAsServer|=((0x0001)<<i);	
+			socketsAsServer|=((0x0001)<<i);
 			//Serial.print("New occupied=");Serial.println(i);
 			return i;
 		}

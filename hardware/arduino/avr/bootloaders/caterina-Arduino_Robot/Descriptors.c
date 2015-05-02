@@ -194,7 +194,7 @@ const USB_Descriptor_String_t ProductString =
 	.Header                 = {.Size = USB_STRING_LEN(19), .Type = DTYPE_String},
 
 	#if DEVICE_PID == 0x0036
-	.UnicodeString          = L"Arduino Leonardo" 
+	.UnicodeString          = L"Arduino Leonardo"
 	#elif DEVICE_PID == 0x0037
 	.UnicodeString			= L"Arduino Micro   "
 	#elif DEVICE_PID == 0x0038
@@ -208,10 +208,10 @@ const USB_Descriptor_String_t ProductString =
 	#endif
 };
 
-const USB_Descriptor_String_t ManufacturerString = 
+const USB_Descriptor_String_t ManufacturerString =
 {
 	.Header					= {.Size = USB_STRING_LEN(11), .Type = DTYPE_String},
-	
+
 	#if DEVICE_VID == 0x2341
 	.UnicodeString			= L"Arduino LLC"
 	#else
@@ -251,7 +251,7 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 				Address = &LanguageString;
 				Size    = LanguageString.Header.Size;
 			}
-			else if (DescriptorNumber == DeviceDescriptor.ProductStrIndex) 
+			else if (DescriptorNumber == DeviceDescriptor.ProductStrIndex)
 			{
 				Address = &ProductString;
 				Size    = ProductString.Header.Size;

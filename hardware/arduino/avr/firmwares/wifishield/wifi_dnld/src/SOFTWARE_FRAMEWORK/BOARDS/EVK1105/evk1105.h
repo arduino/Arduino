@@ -369,7 +369,7 @@
 /*! \name Connections of the iPOD Authentication Coprocessor
  */
 //! @{
-        
+
 #define IPOD_AUTH_CHIP_TWI                  (&AVR32_TWI)
 #define IPOD_AUTH_CHIP_TWI_SCL_PIN          AVR32_TWI_SCL_0_0_PIN
 #define IPOD_AUTH_CHIP_TWI_SCL_FUNCTION     AVR32_TWI_SCL_0_0_FUNCTION

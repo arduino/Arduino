@@ -1,59 +1,59 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:		arm_cos_q31.c   
-*   
-* Description:	Fast cosine calculation for Q31 values.  
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_cos_q31.c
+*
+* Description:	Fast cosine calculation for Q31 values.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFastMath   
+/**
+ * @ingroup groupFastMath
  */
 
- /**   
- * @addtogroup cos   
- * @{   
+ /**
+ * @addtogroup cos
+ * @{
  */
 
-/**   
- * \par   
- * Table Values are in Q31(1.31 Fixed point format) and generation is done in three steps   
- * First Generate cos values in floating point:   
- * tableSize = 256;     
- * <pre>for(n = -1; n < (tableSize + 1); n++)   
- * {   
- *	cosTable[n+1]= cos(2*pi*n/tableSize);   
- * } </pre>    
- * where pi value is  3.14159265358979   
- * \par   
- * Secondly Convert Floating point to Q31(Fixed point):   
- *	(cosTable[i] * pow(2, 31))   
- * \par   
- * Finally Rounding to nearest integer is done   
- * 	cosTable[i] += (cosTable[i] > 0 ? 0.5 :-0.5);   
+/**
+ * \par
+ * Table Values are in Q31(1.31 Fixed point format) and generation is done in three steps
+ * First Generate cos values in floating point:
+ * tableSize = 256;
+ * <pre>for(n = -1; n < (tableSize + 1); n++)
+ * {
+ *	cosTable[n+1]= cos(2*pi*n/tableSize);
+ * } </pre>
+ * where pi value is  3.14159265358979
+ * \par
+ * Secondly Convert Floating point to Q31(Fixed point):
+ *	(cosTable[i] * pow(2, 31))
+ * \par
+ * Finally Rounding to nearest integer is done
+ * 	cosTable[i] += (cosTable[i] > 0 ? 0.5 :-0.5);
  */
 
 
@@ -125,12 +125,12 @@ static const q31_t cosTableQ31[259] = {
   0x7ff62182, 0x7fffffff, 0x7ff62182
 };
 
-/**  
- * @brief Fast approximation to the trigonometric cosine function for Q31 data.  
- * @param[in] x Scaled input value in radians.  
- * @return  cos(x).  
- *  
- * The Q31 input value is in the range [0 +1) and is mapped to a radian value in the range [0 2*pi).  
+/**
+ * @brief Fast approximation to the trigonometric cosine function for Q31 data.
+ * @param[in] x Scaled input value in radians.
+ * @return  cos(x).
+ *
+ * The Q31 input value is in the range [0 +1) and is mapped to a radian value in the range [0 2*pi).
  */
 
 q31_t arm_cos_q31(
@@ -220,6 +220,6 @@ q31_t arm_cos_q31(
 
 }
 
-/**   
- * @} end of cos group   
+/**
+ * @} end of cos group
  */

@@ -1,32 +1,32 @@
 /* ----------------------------------------------------------------------
-* Copyright (C) 2010 ARM Limited. All rights reserved.  
-*  
-* $Date:        29. November 2010  
-* $Revision: 	V1.0.3  
-*  
-* Project: 	    CMSIS DSP Library 
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        29. November 2010
+* $Revision: 	V1.0.3
+*
+* Project: 	    CMSIS DSP Library
 *
 * Title:	    math_helper.h
-* 
 *
-* Description:	Prototypes of all helper functions required.  
+*
+* Description:	Prototypes of all helper functions required.
 *
 * Target Processor: Cortex-M4/Cortex-M3
-*  
-* Version 1.0.3 2010/11/29 
-*    Re-organized the CMSIS folders and updated documentation.  
-*   
-* Version 1.0.2 2010/11/11  
-*    Documentation updated.   
-*  
-* Version 1.0.1 2010/10/05   
-*    Production release and review comments incorporated.  
-*  
-* Version 1.0.0 2010/09/20   
-*    Production release and review comments incorporated.  
-*  
-* Version 0.0.7  2010/06/10   
-*    Misra-C changes done 
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
+*
+* Version 0.0.7  2010/06/10
+*    Misra-C changes done
 * -------------------------------------------------------------------- */
 
 
@@ -35,7 +35,7 @@
 #ifndef MATH_HELPER_H
 #define MATH_HELPER_H
 
-float arm_snr_f32(float *pRef, float *pTest,  uint32_t buffSize);  
+float arm_snr_f32(float *pRef, float *pTest,  uint32_t buffSize);
 void arm_float_to_q12_20(float *pIn, q31_t * pOut, uint32_t numSamples);
 void arm_provide_guard_bits_q15(q15_t *input_buf, uint32_t blockSize, uint32_t guard_bits);
 void arm_provide_guard_bits_q31(q31_t *input_buf, uint32_t blockSize, uint32_t guard_bits);

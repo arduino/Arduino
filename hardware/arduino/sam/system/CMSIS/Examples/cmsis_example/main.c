@@ -37,7 +37,7 @@
  * basic cmsis utilities of SAM3 and SAM4 microcontrollers.
  *
  * The example will execute the following tests:
- * - The application will flash the LED per second. The second 
+ * - The application will flash the LED per second. The second
  * is calculated by the standard system tick interface of cmsis.
  *
  * \section Requirements

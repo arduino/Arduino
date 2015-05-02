@@ -524,7 +524,7 @@ void squawk_playroutine() {
               }
             }
             break;
-*/            
+*/
           case 0xEC: // Note cut
             if(fxp == tick) p_osc->vol = 0x00;
             break;

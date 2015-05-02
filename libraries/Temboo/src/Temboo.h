@@ -4,13 +4,13 @@
 # Temboo Arduino library
 #
 # Copyright 2015, Temboo Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -74,15 +74,15 @@ class TembooChoreo : public Process {
 
 class TembooChoreo : public Stream {
     public:
-        
+
         // Constructor.
         // client - an instance of an Arduino Client, usually an EthernetClient
         //          or a WiFiClient.  Used to communicate with Temboo.
         TembooChoreo(Client& client);
 
         // Does nothing. Just for source compatibility with Yun code.
-        void begin() {}; 
-        
+        void begin() {};
+
         // Sets the account name to use when communicating with Temboo.
         // (required)
         void setAccountName(const String& accountName);
@@ -92,17 +92,17 @@ class TembooChoreo : public Stream {
         // (required)
         void setAppKeyName(const String& appKeyName);
         void setAppKeyName(const char* appKeyName);
-        
+
         // Sets the application key value to use with choreo execution requests
         // (required)
         void setAppKey(const String& appKey);
         void setAppKey(const char* appKey);
-        
+
         // sets the name of the choreo to be executed.
         // (required)
         void setChoreo(const String& choreoPath);
         void setChoreo(const char* choreoPath);
-        
+
         // sets the name of the saved inputs to use when executing the choreo
         // (optional)
         void setSavedInputs(const String& savedInputsName);
@@ -120,7 +120,7 @@ class TembooChoreo : public Stream {
         void addInput(const char* inputName, const char* inputValue);
         void addInput(const char* inputName, const String& inputValue);
         void addInput(const String& inputName, const char* inputValue);
-        
+
         // sets an output filter to be used to process the choreo output
         // (optional)
         void addOutputFilter(const char* filterName, const char* filterPath, const char* variableName);
@@ -131,7 +131,7 @@ class TembooChoreo : public Stream {
         void addOutputFilter(const String& filterName, const char* filterPath, const String& variableName);
         void addOutputFilter(const char* filterName, const String& filterPath, const String& variableName);
         void addOutputFilter(const String& filterName, const String& filterPath, const String& variableName);
-       
+
         // run the choreo using the current input info
         int run();
 

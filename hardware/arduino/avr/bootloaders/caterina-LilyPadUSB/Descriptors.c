@@ -193,13 +193,13 @@ const USB_Descriptor_String_t ProductString =
 {
 	.Header                 = {.Size = USB_STRING_LEN(16), .Type = DTYPE_String},
 	#if DEVICE_PID == 0x9207
-	.UnicodeString          = L"LilyPadUSB      " 
+	.UnicodeString          = L"LilyPadUSB      "
 	#else
 	.UnicodeString			= L"USB IO board    "
 	#endif
 };
 
-const USB_Descriptor_String_t ManufNameString = 
+const USB_Descriptor_String_t ManufNameString =
 {
 	.Header					= {.Size = USB_STRING_LEN(20), .Type = DTYPE_String},
 	#if DEVICE_VID == 0x1B4F
@@ -241,7 +241,7 @@ uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 				Address = &LanguageString;
 				Size    = LanguageString.Header.Size;
 			}
-			else if (DescriptorNumber == DeviceDescriptor.ProductStrIndex) 
+			else if (DescriptorNumber == DeviceDescriptor.ProductStrIndex)
 			{
 				Address = &ProductString;
 				Size    = ProductString.Header.Size;

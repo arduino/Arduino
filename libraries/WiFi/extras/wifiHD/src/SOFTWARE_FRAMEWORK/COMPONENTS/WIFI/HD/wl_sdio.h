@@ -27,7 +27,7 @@
  * Maximum transfer size. This will set an upper limit on the len parameter
  * passed to owl_sdio_tx() and owl_sdio_rx().
  *
- */ 
+ */
 #define MAX_BLOCK_LEN 512
 
 
@@ -73,7 +73,7 @@
  *
  * @param flags is an out parameter that should hold any sdio flags upon return.
  *        The avaible flags are prefixed with SDIO_FLAG_
- * 
+ *
  *
  */
 void owl_sdio_init(uint8_t *flags);
@@ -133,11 +133,11 @@ void owl_sdio_rx(uint8_t *data, uint16_t len);
 
 /**
  * Invoked when sdio rx interrupts from the device should be enabled or
- * disabled. 
+ * disabled.
  *
  * If SDIO_FLAG_POLL was set in wl_spi_init(), then this function can be
  * left empty.
- * 
+ *
  * @param enable specifies if interrupts should be enabled or disabled.
  *
  */

@@ -44,7 +44,7 @@ int owl_spi_init(U8 *flags)
 #ifdef _ASSERT_ENABLE_ /* To silence warning if Assert() macro is empty */
         volatile avr32_pm_t *pm = &AVR32_PM;
 #endif
-        
+
         volatile avr32_spi_t *spi = &WL_SPI;
 #if WL_SPI_CS == 1
         volatile avr32_spi_csr1_t* CSR = &spi->CSR1;
@@ -55,12 +55,12 @@ int owl_spi_init(U8 *flags)
 #elif SPI_CS == 0
         volatile avr32_spi_csr0_t* CSR = &spi->CSR0;
 #endif
-        
+
 #ifndef WITH_NO_DMA
 	volatile avr32_pdca_channel_t *pdca_tx = &AVR32_PDCA.channel[0];
 	volatile avr32_pdca_channel_t *pdca_rx = &AVR32_PDCA.channel[1];
 #endif
-        
+
 #ifndef WL_IRQ_PIN
         *flags = SPI_FLAG_POLL;
 #else
@@ -93,7 +93,7 @@ int owl_spi_init(U8 *flags)
 #ifdef WL_NO_INTERNAL_RESET  /* never defined for SPB104/SPB105 */
         gpio_clr_gpio_pin(WL_SHUTDOWN_PIN);
 #endif
-        
+
 #ifdef WL_EXTERNAL_RESET
         gpio_enable_gpio_pin(WL_RESET_PIN);
 #endif
@@ -102,11 +102,11 @@ int owl_spi_init(U8 *flags)
 
 #ifdef WL_POWER_PIN
         /* power on the device */
-        gpio_clr_gpio_pin(WL_POWER_PIN); 
+        gpio_clr_gpio_pin(WL_POWER_PIN);
 #endif
 
 #ifdef WL_SHUTDOWN_PIN
-        
+
 #ifdef WL_NO_INTERNAL_RESET /* never defined for SPB104/SPB105 */
         owl_spi_mdelay(5);
         gpio_set_gpio_pin(WL_SHUTDOWN_PIN);
@@ -138,14 +138,14 @@ int owl_spi_init(U8 *flags)
                 }
         }
 #endif /* WL_NO_INTERNAL_RESET */
-        
+
 #else
         /* We need to make a guess about the time needed to power the device,
          * this will depend on the hardware design.
          */
         owl_spi_mdelay(5);
 #endif /* WL_SHUTDOWN_PIN */
-        
+
         /* Note: SPI0 clock enabled at reset in pm->pbamask (see 13.6.3) */
         Assert(pm->pbamask & (1 << 5));
 
@@ -162,7 +162,7 @@ int owl_spi_init(U8 *flags)
          */
         INTC_register_interrupt(&avr32_irq_handler, WL_IRQ, AVR32_INTC_INT0);
 #endif
-        
+
 #ifndef WITH_NO_DMA
         INTC_register_interrupt(&avr32_irq_handler, AVR32_PDCA_IRQ_0,
                                 AVR32_INTC_INT0);
@@ -179,7 +179,7 @@ int owl_spi_init(U8 *flags)
 #endif
 
         /* Use max width of TDR register, 16 bit transfers */
-	CSR->bits = 0x8; 
+	CSR->bits = 0x8;
 
         /* Make sure that we can hold CS low until transfer is completed, e.g
          * LASTXFER is set in TDR.
@@ -189,7 +189,7 @@ int owl_spi_init(U8 *flags)
         /* NRG component requires clock polarity high */
         CSR->cpol = 1;
 
-        
+
 #ifdef WL_IRQ_PIN
         /* make sure to clear any pending bits in ifr here. */
         gpio_clear_pin_interrupt_flag(WL_IRQ_PIN);
@@ -203,7 +203,7 @@ static void dma_txrx(const U8* in, U8* out, U16 len)
 {
 	volatile avr32_pdca_channel_t *pdca_tx = &AVR32_PDCA.channel[0];
 	volatile avr32_pdca_channel_t *pdca_rx = &AVR32_PDCA.channel[1];
-        
+
         /* setup tx */
         pdca_tx->mar = (U32) in;
         pdca_tx->PSR.pid = WL_PDCA_PID_TX;
@@ -242,7 +242,7 @@ static void dma_txrx(const U8* in, U8* out, U16 len)
  * by the device since a length field included in the packet header will inform
  * the device of the actual number of valid bytes (this implementation is
  * kind of hidden inside the library).
- */ 
+ */
 static void fifo_txrx(const U8 *in, U8* out, U16 len)
 {
         volatile avr32_spi_t *spi = &WL_SPI;
@@ -261,7 +261,7 @@ static void fifo_txrx(const U8 *in, U8* out, U16 len)
 			avr32_spi_tdr_t TDR;
 			U32 tdr;
 		} reg = { { 0 } };
-                
+
                 while (!spi->SR.tdre);
                 while (!spi->SR.txempty);
 
@@ -272,7 +272,7 @@ static void fifo_txrx(const U8 *in, U8* out, U16 len)
                 }
                 else
                         reg.TDR.td |= 0xffff;
-                
+
 		/* perform tx */
                 spi->tdr = reg.tdr;
 
@@ -286,13 +286,13 @@ static void fifo_txrx(const U8 *in, U8* out, U16 len)
                         out_ptr.u8ptr[1] = rdr & 0xff;
                         out_ptr.u16ptr++;
                 }
-                
+
                 if (len >= 2)
                         len -= 2;
                 else
                         len = 0;
         }
-        
+
         sr = spi->sr;
         Assert(!(sr & AVR32_SPI_SR_OVRES_MASK));
         Assert(!(sr & AVR32_SPI_SR_MODF_MASK));
@@ -317,7 +317,7 @@ void owl_spi_txrx(const U8 *in, U8* out, U16 len)
         }
 #else
         fifo_txrx(in, out, len);
-#endif        
+#endif
 }
 
 void owl_spi_irq(U8 enable)
@@ -331,9 +331,9 @@ void owl_spi_irq(U8 enable)
 #endif
 }
 
-void owl_spi_cs(U8 enable) 
+void owl_spi_cs(U8 enable)
 {
-	volatile avr32_spi_t *spi = &WL_SPI; 
+	volatile avr32_spi_t *spi = &WL_SPI;
 
         /*
          * PCS = xxx0 => NPCS[3:0] = 1110
@@ -342,35 +342,35 @@ void owl_spi_cs(U8 enable)
          * PCS = 0111 => NPCS[3:0] = 0111
          * PCS = 1111 => forbidden (no peripheral is selected)
          */
-            
-	if (enable) 
+
+	if (enable)
 #if WL_SPI_CS == 2
-	        spi->MR.pcs = 0x3; /* cs2 */ 
+	        spi->MR.pcs = 0x3; /* cs2 */
 #elif WL_SPI_CS == 1
-                spi->MR.pcs = 0x1; /* cs1 */ 
-#elif WL_SPI_CS == 3 
-                spi->MR.pcs = 0x7; /* cs3 */ 
+                spi->MR.pcs = 0x1; /* cs1 */
+#elif WL_SPI_CS == 3
+                spi->MR.pcs = 0x7; /* cs3 */
 #elif WL_SPI_CS == 0
                 spi->MR.pcs = 0x0; /* cs0 */
-#endif 
-	else 
-		spi->MR.pcs = 0xf; 
-} 
+#endif
+	else
+		spi->MR.pcs = 0xf;
+}
 
 void owl_spi_mdelay(uint32_t ms)
 {
-        volatile int a = 0;                     
-        int i;                                  
-        for (i = 0; i < ms * 5000; i++)         
-                a++;                                
-}      
+        volatile int a = 0;
+        int i;
+        for (i = 0; i < ms * 5000; i++)
+                a++;
+}
 
 __attribute__((__interrupt__)) void avr32_irq_handler(void)
 {
 #ifndef WITH_NO_DMA
 	volatile avr32_pdca_channel_t *pdca_tx = &AVR32_PDCA.channel[0];
 	volatile avr32_pdca_channel_t *pdca_rx = &AVR32_PDCA.channel[1];
-        
+
         /* tx xfer complete */
 	if (pdca_tx->IMR.trc && pdca_tx->ISR.trc) {
                 pdca_tx->IDR.trc = 1;
@@ -383,7 +383,7 @@ __attribute__((__interrupt__)) void avr32_irq_handler(void)
                 pdca_rx->CR.tdis = 1;  /* disable rx xfer */
 	}
 #endif
-        
+
 #ifdef WL_IRQ_PIN
         if (gpio_get_pin_interrupt_flag(WL_IRQ_PIN)) {
 		gpio_clear_pin_interrupt_flag(WL_IRQ_PIN);

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -35,7 +35,7 @@ https://github.com/BlueVia/Official-Arduino
 #include <GSM3ShieldV1ScanNetworks.h>
 
 GSM3ShieldV1ScanNetworks::GSM3ShieldV1ScanNetworks(bool trace): modem(trace)
-{	
+{
 }
 
 GSM3_NetworkStatus_t GSM3ShieldV1ScanNetworks::begin()
@@ -51,7 +51,7 @@ GSM3_NetworkStatus_t GSM3ShieldV1ScanNetworks::begin()
 String GSM3ShieldV1ScanNetworks::getCurrentCarrier()
 {
 	String modemResponse = modem.writeModemCommand("AT+COPS?", 2000);
-	
+
 	// Parse and check response
 	char res_to_split[modemResponse.length()];
 	modemResponse.toCharArray(res_to_split, modemResponse.length());
@@ -110,7 +110,7 @@ String GSM3ShieldV1ScanNetworks::readNetworks()
 					quoteCounter=0;
 				if(quoteCounter==1)
 					result+="\n";
-				
+
 			}
 		}
 		else

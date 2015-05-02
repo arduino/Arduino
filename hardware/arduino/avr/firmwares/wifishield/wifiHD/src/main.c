@@ -243,7 +243,7 @@ void tc_init(void)
 /**
  *
  */
-void 
+void
 poll(struct ctx_server* hs)
 {
         /* this will trigger any scheduled timer callbacks */
@@ -306,19 +306,19 @@ void initShell(void* ctx)
 /**
  *
  */
-void 
-wl_init_complete_cb(void* ctx) 
+void
+wl_init_complete_cb(void* ctx)
 {
 	struct ctx_server *hs = ctx;
     struct ip_addr ipaddr, netmask, gw;
 	wl_err_t wl_status;
-	
+
 	if (hs->net_cfg.dhcp_enabled == INIT_IP_CONFIG)
 	{
 		IP4_ADDR(&gw, 0,0,0,0);
 		IP4_ADDR(&ipaddr, 0,0,0,0);
 		IP4_ADDR(&netmask, 0,0,0,0);
-			
+
 		/* default is dhcp enabled */
 		hs->net_cfg.dhcp_enabled = DYNAMIC_IP_CONFIG;
 	}
@@ -410,7 +410,7 @@ main(void)
     initShell(hs);
 	timer_init(NULL, NULL);
     lwip_init();
-        
+
 	status = fw_download_init();
 	ASSERT(status == 0, "failed to prepare for firmware download\n");
 

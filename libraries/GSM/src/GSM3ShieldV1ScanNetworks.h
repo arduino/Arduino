@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -42,15 +42,15 @@ class GSM3ShieldV1ScanNetworks
 {
 	private:
 		GSM3ShieldV1DirectModemProvider modem;
-				
+
 	public:
-	
+
 		/** Constructor
 			@param trace		if true, dumps all AT dialogue to Serial
-			@return - 
+			@return -
 		*/
 		GSM3ShieldV1ScanNetworks(bool trace=false);
-		
+
 		/** begin (forces modem hardware restart, so we begin from scratch)
 			@return Always returns IDLE status
 		*/
@@ -60,12 +60,12 @@ class GSM3ShieldV1ScanNetworks
 			@return Current carrier
 		 */
 		String getCurrentCarrier();
-		
+
 		/** Obtain signal strength
 			@return Signal Strength
 		 */
 		String getSignalStrength();
-		
+
 		/** Search available carriers
 			@return A string with list of networks available
 		 */

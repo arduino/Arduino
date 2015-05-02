@@ -4,13 +4,13 @@
 # Temboo Arduino library
 #
 # Copyright 2015, Temboo Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -83,7 +83,7 @@ int  MD5::compress(const uint8_t* buf) {
         buf += 4;
     }
 
-    // copy current state 
+    // copy current state
     a = m_state[0];
     b = m_state[1];
     c = m_state[2];
@@ -120,7 +120,7 @@ int  MD5::compress(const uint8_t* buf) {
 int MD5::process (const uint8_t* msg, uint32_t msgLengthBytes) {
     uint32_t n;
     int err;
-    
+
     if (m_bufLength >= sizeof(m_buf)) {
        return MD5::MD5_INVALID_ARG;
     }
@@ -171,7 +171,7 @@ int MD5::finish(uint8_t* out) {
     // append a '1' bit (right-padded with zeros)
     m_buf[m_bufLength++] = (uint8_t)0x80;
 
-    // if the bufLength is > 56 bytes, pad with zeros then compress.  
+    // if the bufLength is > 56 bytes, pad with zeros then compress.
     // Then fall back to padding with zeros and length encoding like normal.
     if (m_bufLength > 56) {
         while (m_bufLength < 64) {
@@ -189,7 +189,7 @@ int MD5::finish(uint8_t* out) {
     }
 
     // add the length in an endian-agnostic way
-    m_buf[56] = (uint8_t)((m_msgLengthBits      ) & 255); 
+    m_buf[56] = (uint8_t)((m_msgLengthBits      ) & 255);
     m_buf[57] = (uint8_t)((m_msgLengthBits >>  8) & 255);
     m_buf[58] = (uint8_t)((m_msgLengthBits >> 16) & 255);
     m_buf[59] = (uint8_t)((m_msgLengthBits >> 24) & 255);

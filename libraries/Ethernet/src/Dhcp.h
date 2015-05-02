@@ -122,8 +122,8 @@ enum
 
 typedef struct __attribute__((packed)) _RIP_MSG_FIXED
 {
-	uint8_t  op; 
-	uint8_t  htype; 
+	uint8_t  op;
+	uint8_t  htype;
 	uint8_t  hlen;
 	uint8_t  hops;
 	uint32_t xid;
@@ -156,13 +156,13 @@ private:
   unsigned long _secTimeout;
   uint8_t _dhcp_state;
   EthernetUDP _dhcpUdpSocket;
-  
+
   int request_DHCP_lease();
   void reset_DHCP_lease();
   void presend_DHCP();
   void send_DHCP_MESSAGE(uint8_t, uint16_t);
   void printByte(char *, uint8_t);
-  
+
   uint8_t parseDHCPResponse(unsigned long responseTimeout, uint32_t& transactionId);
 public:
   IPAddress getLocalIp();
@@ -170,7 +170,7 @@ public:
   IPAddress getGatewayIp();
   IPAddress getDhcpServerIp();
   IPAddress getDnsServerIp();
-  
+
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
   int checkLease();
 };

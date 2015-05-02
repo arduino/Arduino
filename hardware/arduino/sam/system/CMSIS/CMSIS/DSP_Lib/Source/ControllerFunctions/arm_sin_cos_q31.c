@@ -1,51 +1,51 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:		arm_sin_cos_q31.c   
-*   
-* Description:	Cosine & Sine calculation for Q31 values.  
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_sin_cos_q31.c
+*
+* Description:	Cosine & Sine calculation for Q31 values.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupController   
+/**
+ * @ingroup groupController
  */
 
- /**   
- * @addtogroup SinCos   
- * @{   
+ /**
+ * @addtogroup SinCos
+ * @{
  */
 
-/**   
-* \par   
-* Sine Table is generated from following loop   
-* <pre>for(i = 0; i < 360; i++)   
-* {   
-*    sinTable[i]= sin((i-180) * PI/180.0);   
-* } </pre>  
-* Convert above coefficients to fixed point 1.31 format.   
+/**
+* \par
+* Sine Table is generated from following loop
+* <pre>for(i = 0; i < 360; i++)
+* {
+*    sinTable[i]= sin((i-180) * PI/180.0);
+* } </pre>
+* Convert above coefficients to fixed point 1.31 format.
 */
 
 static const int32_t sinTableQ31[360] = {
@@ -144,15 +144,15 @@ static const int32_t sinTableQ31[360] = {
 
 };
 
-/**   
-* \par   
-* Cosine Table is generated from following loop   
-* <pre>for(i = 0; i < 360; i++)   
-* {   
-*    cosTable[i]= cos((i-180) * PI/180.0);   
-* } </pre>  
-* \par   
-* Convert above coefficients to fixed point 1.31 format.   
+/**
+* \par
+* Cosine Table is generated from following loop
+* <pre>for(i = 0; i < 360; i++)
+* {
+*    cosTable[i]= cos((i-180) * PI/180.0);
+* } </pre>
+* \par
+* Convert above coefficients to fixed point 1.31 format.
 */
 static const int32_t cosTableQ31[360] = {
   0x80000000, 0x8004fda0, 0x8013f61d, 0x802ce84c, 0x804fd23a, 0x807cb130,
@@ -249,15 +249,15 @@ static const int32_t cosTableQ31[360] = {
 };
 
 
-/**   
- * @brief  Q31 sin_cos function.  
- * @param[in]  theta    scaled input value in degrees   
- * @param[out] *pSinVal points to the processed sine output.   
- * @param[out] *pCosVal points to the processed cosine output.   
- * @return none.  
- *   
- * The Q31 input value is in the range [-1 +1) and is mapped to a degree value in the range [-180 180).  
- *   
+/**
+ * @brief  Q31 sin_cos function.
+ * @param[in]  theta    scaled input value in degrees
+ * @param[out] *pSinVal points to the processed sine output.
+ * @param[out] *pCosVal points to the processed cosine output.
+ * @return none.
+ *
+ * The Q31 input value is in the range [-1 +1) and is mapped to a degree value in the range [-180 180).
+ *
  */
 
 
@@ -306,6 +306,6 @@ void arm_sin_cos_q31(
 
 }
 
-/**   
- * @} end of SinCos group   
+/**
+ * @} end of SinCos group
  */

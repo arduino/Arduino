@@ -23,7 +23,7 @@
     Firmata Hardware Abstraction Layer
 
 Firmata is built on top of the hardware abstraction functions of Arduino,
-specifically digitalWrite, digitalRead, analogWrite, analogRead, and 
+specifically digitalWrite, digitalRead, analogWrite, analogRead, and
 pinMode.  While these functions offer simple integer pin numbers, Firmata
 needs more information than is provided by Arduino.  This file provides
 all other hardware specific details.  To make Firmata support a new board,
@@ -163,7 +163,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p) - FIRST_ANALOG_PIN)
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
-#define PIN_TO_SERVO(p)         (p) 
+#define PIN_TO_SERVO(p)         (p)
 
 
 // old Arduinos
@@ -263,7 +263,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        (((p)<=23)?(p)-14:(p)-24)
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
-#define PIN_TO_SERVO(p)         (p) 
+#define PIN_TO_SERVO(p)         (p)
 
 
 // Teensy++ 1.0 and 2.0
@@ -297,7 +297,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        (p) - 18
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
-#define PIN_TO_SERVO(p)         (p)  
+#define PIN_TO_SERVO(p)         (p)
 
 
 // Sanguino

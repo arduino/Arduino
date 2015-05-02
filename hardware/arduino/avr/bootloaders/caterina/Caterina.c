@@ -71,13 +71,13 @@ volatile uint16_t *const bootKeyPtr = (volatile uint16_t *)0x0800;
 void StartSketch(void)
 {
 	cli();
-	
+
 	/* Undo TIMER1 setup and clear the count before running the sketch */
 	TIMSK1 = 0;
 	TCCR1B = 0;
 	TCNT1H = 0;		// 16-bit write to TCNT1 requires high byte be written first
 	TCNT1L = 0;
-	
+
 	/* Relocate the interrupt vector table to the application section */
 	MCUCR = (1 << IVCE);
 	MCUCR = 0;
@@ -116,30 +116,30 @@ int main(void)
 
 	/* Check the reason for the reset so we can act accordingly */
 	uint8_t  mcusr_state = MCUSR;		// store the initial state of the Status register
-	MCUSR = 0;							// clear all reset flags	
+	MCUSR = 0;							// clear all reset flags
 
 	/* Watchdog may be configured with a 15 ms period so must disable it before going any further */
 	wdt_disable();
-	
+
 	if (mcusr_state & (1<<EXTRF)) {
 		// External reset -  we should continue to self-programming mode.
-	} else if ((mcusr_state & (1<<PORF)) && (pgm_read_word(0) != 0xFFFF)) {		
-		// After a power-on reset skip the bootloader and jump straight to sketch 
-		// if one exists.	
+	} else if ((mcusr_state & (1<<PORF)) && (pgm_read_word(0) != 0xFFFF)) {
+		// After a power-on reset skip the bootloader and jump straight to sketch
+		// if one exists.
 		StartSketch();
-	} else if ((mcusr_state & (1<<WDRF)) && (bootKeyPtrVal != bootKey) && (pgm_read_word(0) != 0xFFFF)) {	
+	} else if ((mcusr_state & (1<<WDRF)) && (bootKeyPtrVal != bootKey) && (pgm_read_word(0) != 0xFFFF)) {
 		// If it looks like an "accidental" watchdog reset then start the sketch.
 		StartSketch();
 	}
-	
+
 	/* Setup hardware required for the bootloader */
 	SetupHardware();
 
 	/* Enable global interrupts so that the USB stack can function */
 	sei();
-	
+
 	Timeout = 0;
-	
+
 	while (RunBootloader)
 	{
 		CDC_Task();
@@ -154,7 +154,7 @@ int main(void)
 	/* Disconnect from the host - USB interface will be reset later along with the AVR */
 	USB_Detach();
 
-	/* Jump to beginning of application space to run the sketch - do not reset */	
+	/* Jump to beginning of application space to run the sketch - do not reset */
 	StartSketch();
 }
 
@@ -171,19 +171,19 @@ void SetupHardware(void)
 	/* Relocate the interrupt vector table to the bootloader section */
 	MCUCR = (1 << IVCE);
 	MCUCR = (1 << IVSEL);
-	
+
 	LED_SETUP();
-	CPU_PRESCALE(0); 
+	CPU_PRESCALE(0);
 	L_LED_OFF();
 	TX_LED_OFF();
 	RX_LED_OFF();
-	
-	/* Initialize TIMER1 to handle bootloader timeout and LED tasks.  
+
+	/* Initialize TIMER1 to handle bootloader timeout and LED tasks.
 	 * With 16 MHz clock and 1/64 prescaler, timer 1 is clocked at 250 kHz
 	 * Our chosen compare match generates an interrupt every 1 ms.
 	 * This interrupt is disabled selectively when doing memory reading, erasing,
 	 * or writing since SPM has tight timing requirements.
-	 */ 
+	 */
 	OCR1AH = 0;
 	OCR1AL = 250;
 	TIMSK1 = (1 << OCIE1A);					// enable timer 1 output compare A match interrupt
@@ -205,7 +205,7 @@ ISR(TIMER1_COMPA_vect, ISR_BLOCK)
 		TX_LED_OFF();
 	if (RxLEDPulse && !(--RxLEDPulse))
 		RX_LED_OFF();
-	
+
 	if (pgm_read_word(0) != 0xFFFF)
 		Timeout++;
 }
@@ -303,7 +303,7 @@ static void ReadWriteMemoryBlock(const uint8_t Command)
 
 	/* Check if command is to read memory */
 	if (Command == 'g')
-	{		
+	{
 		/* Re-enable RWW section */
 		boot_rww_enable();
 
@@ -361,7 +361,7 @@ static void ReadWriteMemoryBlock(const uint8_t Command)
 				{
 					LowByte = FetchNextCommandByte();
 				}
-				
+
 				HighByte = !HighByte;
 			}
 			else
@@ -388,7 +388,7 @@ static void ReadWriteMemoryBlock(const uint8_t Command)
 		WriteNextResponseByte('\r');
 	}
 
-	/* Re-enable timer 1 interrupt disabled earlier in this routine */	
+	/* Re-enable timer 1 interrupt disabled earlier in this routine */
 	TIMSK1 = (1 << OCIE1A);
 }
 #endif
@@ -443,7 +443,7 @@ static void WriteNextResponseByte(const uint8_t Response)
 
 	/* Write the next byte to the IN endpoint */
 	Endpoint_Write_8(Response);
-	
+
 	TX_LED_ON();
 	TxLEDPulse = TX_RX_LED_PULSE_PERIOD;
 }
@@ -473,7 +473,7 @@ void CDC_Task(void)
 	/* Check if endpoint has a command in it sent from the host */
 	if (!(Endpoint_IsOUTReceived()))
 	  return;
-	  
+
 	RX_LED_ON();
 	RxLEDPulse = TX_RX_LED_PULSE_PERIOD;
 
@@ -482,59 +482,59 @@ void CDC_Task(void)
 
 	if (Command == 'E')
 	{
-		/* We nearly run out the bootloader timeout clock, 
-		* leaving just a few hundred milliseconds so the 
-		* bootloder has time to respond and service any 
+		/* We nearly run out the bootloader timeout clock,
+		* leaving just a few hundred milliseconds so the
+		* bootloder has time to respond and service any
 		* subsequent requests */
 		Timeout = TIMEOUT_PERIOD - 500;
-	
-		/* Re-enable RWW section - must be done here in case 
-		 * user has disabled verification on upload.  */
-		boot_rww_enable_safe();		
 
-		// Send confirmation byte back to the host 
+		/* Re-enable RWW section - must be done here in case
+		 * user has disabled verification on upload.  */
+		boot_rww_enable_safe();
+
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 'T')
 	{
 		FetchNextCommandByte();
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if ((Command == 'L') || (Command == 'P'))
 	{
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 't')
 	{
-		// Return ATMEGA128 part code - this is only to allow AVRProg to use the bootloader 
+		// Return ATMEGA128 part code - this is only to allow AVRProg to use the bootloader
 		WriteNextResponseByte(0x44);
 		WriteNextResponseByte(0x00);
 	}
 	else if (Command == 'a')
 	{
-		// Indicate auto-address increment is supported 
+		// Indicate auto-address increment is supported
 		WriteNextResponseByte('Y');
 	}
 	else if (Command == 'A')
 	{
-		// Set the current address to that given by the host 
+		// Set the current address to that given by the host
 		CurrAddress   = (FetchNextCommandByte() << 9);
 		CurrAddress  |= (FetchNextCommandByte() << 1);
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 'p')
 	{
-		// Indicate serial programmer back to the host 
+		// Indicate serial programmer back to the host
 		WriteNextResponseByte('S');
 	}
 	else if (Command == 'S')
 	{
-		// Write the 7-byte software identifier to the endpoint 
+		// Write the 7-byte software identifier to the endpoint
 		for (uint8_t CurrByte = 0; CurrByte < 7; CurrByte++)
 		  WriteNextResponseByte(SOFTWARE_IDENTIFIER[CurrByte]);
 	}
@@ -551,7 +551,7 @@ void CDC_Task(void)
 	}
 	else if (Command == 'e')
 	{
-		// Clear the application section of flash 
+		// Clear the application section of flash
 		for (uint32_t CurrFlashAddress = 0; CurrFlashAddress < BOOT_START_ADDR; CurrFlashAddress += SPM_PAGESIZE)
 		{
 			boot_page_erase(CurrFlashAddress);
@@ -560,16 +560,16 @@ void CDC_Task(void)
 			boot_spm_busy_wait();
 		}
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	#if !defined(NO_LOCK_BYTE_WRITE_SUPPORT)
 	else if (Command == 'l')
 	{
-		// Set the lock bits to those given by the host 
+		// Set the lock bits to those given by the host
 		boot_lock_bits_set(FetchNextCommandByte());
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	#endif
@@ -594,7 +594,7 @@ void CDC_Task(void)
 	{
 		WriteNextResponseByte('Y');
 
-		// Send block size to the host 
+		// Send block size to the host
 		WriteNextResponseByte(SPM_PAGESIZE >> 8);
 		WriteNextResponseByte(SPM_PAGESIZE & 0xFF);
 	}
@@ -602,7 +602,7 @@ void CDC_Task(void)
 	{
 		// Keep resetting the timeout counter if we're receiving self-programming instructions
 		Timeout = 0;
-		// Delegate the block write/read to a separate function for clarity 
+		// Delegate the block write/read to a separate function for clarity
 		ReadWriteMemoryBlock(Command);
 	}
 	#endif
@@ -612,18 +612,18 @@ void CDC_Task(void)
 		// Write the high byte to the current flash page
 		boot_page_fill(CurrAddress, FetchNextCommandByte());
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 'c')
 	{
-		// Write the low byte to the current flash page 
+		// Write the low byte to the current flash page
 		boot_page_fill(CurrAddress | 0x01, FetchNextCommandByte());
 
-		// Increment the address 
+		// Increment the address
 		CurrAddress += 2;
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 'm')
@@ -631,10 +631,10 @@ void CDC_Task(void)
 		// Commit the flash page to memory
 		boot_page_write(CurrAddress);
 
-		// Wait until write operation has completed 
+		// Wait until write operation has completed
 		boot_spm_busy_wait();
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 'R')
@@ -652,30 +652,30 @@ void CDC_Task(void)
 	#if !defined(NO_EEPROM_BYTE_SUPPORT)
 	else if (Command == 'D')
 	{
-		// Read the byte from the endpoint and write it to the EEPROM 
+		// Read the byte from the endpoint and write it to the EEPROM
 		eeprom_write_byte((uint8_t*)((intptr_t)(CurrAddress >> 1)), FetchNextCommandByte());
 
 		// Increment the address after use
 		CurrAddress += 2;
 
-		// Send confirmation byte back to the host 
+		// Send confirmation byte back to the host
 		WriteNextResponseByte('\r');
 	}
 	else if (Command == 'd')
 	{
-		// Read the EEPROM byte and write it to the endpoint 
+		// Read the EEPROM byte and write it to the endpoint
 		WriteNextResponseByte(eeprom_read_byte((uint8_t*)((intptr_t)(CurrAddress >> 1))));
 
-		// Increment the address after use 
+		// Increment the address after use
 		CurrAddress += 2;
 	}
 	#endif
 	else if (Command != 27)
 	{
-		// Unknown (non-sync) command, return fail code 
+		// Unknown (non-sync) command, return fail code
 		WriteNextResponseByte('?');
 	}
-	
+
 
 	/* Select the IN endpoint */
 	Endpoint_SelectEndpoint(CDC_TX_EPNUM);

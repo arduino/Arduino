@@ -60,7 +60,7 @@ uint8_t RobotControl::_getTypeCode(uint8_t port){
 		case TK7:
 			return TYPE_TOP_TK;
 			break;
-			
+
 		case TKD0:
 		case TKD1:
 		case TKD2:
@@ -70,7 +70,7 @@ uint8_t RobotControl::_getTypeCode(uint8_t port){
 		case LED1:
 			return TYPE_TOP_TKD;
 			break;
-			
+
 		case B_TK1:
 		case B_TK2:
 		case B_TK3:
@@ -126,8 +126,8 @@ int* RobotControl::parseMBDPort(uint8_t port){
 			return &motorBoardData._B_TK3;
 		case B_TK4:
 			return &motorBoardData._B_TK4;
-		
-		/*		
+
+		/*
 		case B_IR0:
 			return &motorBoardData._B_IR0;
 		case B_IR1:
@@ -180,7 +180,7 @@ bool RobotControl::_requestDigitalRead(uint8_t port){
 		//Serial.println(cmd);
 		if(!(cmd==COMMAND_DIGITAL_READ_RE))
 			return false;
-			
+
 		uint8_t pt=messageIn.readByte(); //Bottom TK port codename
 		//Serial.print("pt: ");
 		//Serial.println(pt);
@@ -200,7 +200,7 @@ int RobotControl::_requestAnalogRead(uint8_t port){
 		//Serial.println(cmd);
 		if(!(cmd==COMMAND_ANALOG_READ_RE))
 			return false;
-			
+
 		uint8_t pt=messageIn.readByte();
 		//Serial.print("pt: ");
 		//Serial.println(pt);
@@ -244,7 +244,7 @@ int RobotControl::trimRead(){
 		uint8_t cmd=messageIn.readByte();
 		if(!(cmd==COMMAND_READ_TRIM_RE))
 			return false;
-			
+
 		uint16_t pt=messageIn.readInt();
 		return pt;
 	}
@@ -258,7 +258,7 @@ uint16_t RobotControl::compassRead(){
 void RobotControl::beginUR(uint8_t pinTrigger, uint8_t pinEcho){
 	pinTrigger_UR=pinTrigger;
 	pinEcho_UR=pinEcho;
-	
+
 	pinMode(pinEcho_UR, INPUT);
 	pinMode(pinTrigger_UR, OUTPUT);
 }

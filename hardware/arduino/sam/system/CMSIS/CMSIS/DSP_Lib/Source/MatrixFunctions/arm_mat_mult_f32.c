@@ -1,73 +1,73 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:	    arm_mat_mult_f32.c   
-*   
-* Description:  Floating-point matrix multiplication.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:	    arm_mat_mult_f32.c
+*
+* Description:  Floating-point matrix multiplication.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
-*   
-* Version 0.0.5  2010/04/26    
-*    incorporated review comments and updated with latest CMSIS layer   
-*   
-* Version 0.0.3  2010/03/10    
-*    Initial version   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
+*
+* Version 0.0.5  2010/04/26
+*    incorporated review comments and updated with latest CMSIS layer
+*
+* Version 0.0.3  2010/03/10
+*    Initial version
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupMatrix   
+/**
+ * @ingroup groupMatrix
  */
 
-/**   
- * @defgroup MatrixMult Matrix Multiplication   
- *   
- * Multiplies two matrices.   
- *   
- * \image html MatrixMultiplication.gif "Multiplication of two 3 x 3 matrices"   
-   
- * Matrix multiplication is only defined if the number of columns of the   
- * first matrix equals the number of rows of the second matrix.   
- * Multiplying an <code>M x N</code> matrix with an <code>N x P</code> matrix results   
- * in an <code>M x P</code> matrix.   
- * When matrix size checking is enabled, the functions check: (1) that the inner dimensions of   
- * <code>pSrcA</code> and <code>pSrcB</code> are equal; and (2) that the size of the output   
- * matrix equals the outer dimensions of <code>pSrcA</code> and <code>pSrcB</code>.   
+/**
+ * @defgroup MatrixMult Matrix Multiplication
+ *
+ * Multiplies two matrices.
+ *
+ * \image html MatrixMultiplication.gif "Multiplication of two 3 x 3 matrices"
+
+ * Matrix multiplication is only defined if the number of columns of the
+ * first matrix equals the number of rows of the second matrix.
+ * Multiplying an <code>M x N</code> matrix with an <code>N x P</code> matrix results
+ * in an <code>M x P</code> matrix.
+ * When matrix size checking is enabled, the functions check: (1) that the inner dimensions of
+ * <code>pSrcA</code> and <code>pSrcB</code> are equal; and (2) that the size of the output
+ * matrix equals the outer dimensions of <code>pSrcA</code> and <code>pSrcB</code>.
  */
 
 
-/**   
- * @addtogroup MatrixMult   
- * @{   
+/**
+ * @addtogroup MatrixMult
+ * @{
  */
 
-/**   
- * @brief Floating-point matrix multiplication.   
- * @param[in]       *pSrcA points to the first input matrix structure   
- * @param[in]       *pSrcB points to the second input matrix structure   
- * @param[out]      *pDst points to output matrix structure   
- * @return     		The function returns either   
- * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.   
+/**
+ * @brief Floating-point matrix multiplication.
+ * @param[in]       *pSrcA points to the first input matrix structure
+ * @param[in]       *pSrcB points to the second input matrix structure
+ * @param[out]      *pDst points to output matrix structure
+ * @return     		The function returns either
+ * <code>ARM_MATH_SIZE_MISMATCH</code> or <code>ARM_MATH_SUCCESS</code> based on the outcome of size checking.
  */
 
 arm_status arm_mat_mult_f32(
@@ -117,7 +117,7 @@ arm_status arm_mat_mult_f32(
       /* For every row wise process, the column loop counter is to be initiated */
       col = numColsB;
 
-      /* For every row wise process, the pIn2 pointer is set   
+      /* For every row wise process, the pIn2 pointer is set
        ** to the starting address of the pSrcB data */
       pIn2 = pSrcB->pData;
 
@@ -152,7 +152,7 @@ arm_status arm_mat_mult_f32(
           colCnt--;
         }
 
-        /* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.   
+        /* If the columns of pSrcA is not a multiple of 4, compute any remaining MACs here.
          ** No loop unrolling is used. */
         colCnt = numColsA % 0x4u;
 
@@ -210,7 +210,7 @@ arm_status arm_mat_mult_f32(
       /* For every row wise process, the column loop counter is to be initiated */
       col = numColsB;
 
-      /* For every row wise process, the pIn2 pointer is set    
+      /* For every row wise process, the pIn2 pointer is set
        ** to the starting address of the pSrcB data */
       pIn2 = pSrcB->pData;
 
@@ -265,6 +265,6 @@ arm_status arm_mat_mult_f32(
   return (status);
 }
 
-/**   
- * @} end of MatrixMult group   
+/**
+ * @} end of MatrixMult group
  */

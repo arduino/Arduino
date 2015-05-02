@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- 
+
 #include "rstc.h"
 
 /// @cond 0
@@ -54,7 +54,7 @@ extern "C" {
 /**
  * \defgroup sam_drivers_rstc_group Reset Controller (RSTC)
  *
- * Driver for the RSTC (Reset Controller). This driver provides access to the main 
+ * Driver for the RSTC (Reset Controller). This driver provides access to the main
  * features of the Reset controller.
  *
  * @{

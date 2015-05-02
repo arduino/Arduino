@@ -95,7 +95,7 @@ static err_t process_pqueue(struct netif* netif)
         /* remove packet from queue and dec refcnt */
         PQUEUE_DEQUEUE(priv->pqueue);
         pbuf_free(p);
-        
+
         LINK_STATS_INC(link.xmit);
 
         /* tell caller to process next packet */
@@ -129,7 +129,7 @@ low_level_init(struct netif *netif)
         /* device capabilities */
         netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP |
                 NETIF_FLAG_IGMP;
-        
+
         /* NETIF_FLAG_LINK_UP must be set only when we have an wlan assoc */
 
         /* set MAC hardware address length */
@@ -140,7 +140,7 @@ low_level_init(struct netif *netif)
 
         /* maximum transfer unit */
         netif->mtu = 1500;
-        
+
         return ERR_OK;
 }
 
@@ -163,7 +163,7 @@ low_level_init(struct netif *netif)
  */
 static err_t
 low_level_output(struct netif *netif, struct pbuf *p)
-{  
+{
 	struct wlif_t* priv = (struct wlif_t*) netif->state;
 
         /* must have a linear buffer containing up to and including
@@ -171,11 +171,11 @@ low_level_output(struct netif *netif, struct pbuf *p)
          */
         if (p->len < sizeof(struct eth_hdr))
                 return ERR_IF;
-        
+
         /* queue full? drop packet */
         if (PQUEUE_FULL(priv->pqueue))
                 return ERR_INPROGRESS; /* no one seems to check this anyway */
-		
+
         /* queue packet */
         PQUEUE_ENQUEUE(priv->pqueue, p);
         pbuf_ref(p);
@@ -226,8 +226,8 @@ low_level_input(struct netif *netif)
         status = wl_process_rx(
                 p->payload,             /* input buf */
                 len,                    /* input buf length */
-                &stripped_pkt,          
-                &stripped_pkt_len,      
+                &stripped_pkt,
+                &stripped_pkt_len,
                 &vlan);
 
         if (status == WL_ABSORBED) {
@@ -235,13 +235,13 @@ low_level_input(struct netif *netif)
                 pbuf_free(p);
                 return NULL;
         }
-		
+
         /* Data packet, remove padding */
         rx_hdr_size = stripped_pkt - (char*) p->payload;
         pbuf_realloc(p, stripped_pkt_len + rx_hdr_size);
-        
+
         LINK_STATS_INC(link.recv);
-        return p;  
+        return p;
 }
 
 
@@ -260,7 +260,7 @@ wlif_input(struct netif *netif)
 
         /* move received packet into a new pbuf */
         p = low_level_input(netif);
-        
+
         /* no packet could be read, silently ignore this */
         if (p == NULL)
                 return;
@@ -345,7 +345,7 @@ wlif_init(struct netif *netif)
          * is available...) */
         netif->output = etharp_output;
         netif->linkoutput = low_level_output;
-	
+
 	wl_register_rx_isr(rx_isr, netif);
         wl_register_pkt_read_cb(pkt_read_cb);
 

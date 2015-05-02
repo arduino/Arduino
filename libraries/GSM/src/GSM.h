@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -35,7 +35,7 @@ https://github.com/BlueVia/Official-Arduino
 #define _GSM3SIMPLIFIERFILE_
 
 // This file simplifies the use of the GSM3 library
-// First we include everything. 
+// First we include everything.
 
 #include <GSM3CircularBuffer.h>
 #include <GSM3MobileCellManagement.h>

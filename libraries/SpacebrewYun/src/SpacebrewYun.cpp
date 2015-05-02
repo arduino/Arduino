@@ -78,23 +78,23 @@ void SpacebrewYun::addPublish(const String& name, const String& type) {
 	p->confirmed = false;
 	p->time = 0;
 	if (type == "range") {
-		p->lastMsg = createString(sub_msg_int_max);	
-		emptyString(p->lastMsg, sub_msg_int_max);	
+		p->lastMsg = createString(sub_msg_int_max);
+		emptyString(p->lastMsg, sub_msg_int_max);
 	}
 	else if (type == "boolean") {
-		p->lastMsg = createString(sub_msg_bool_max);		
-		emptyString(p->lastMsg, sub_msg_bool_max);	
+		p->lastMsg = createString(sub_msg_bool_max);
+		emptyString(p->lastMsg, sub_msg_bool_max);
 	}
 	else {
-		p->lastMsg = createString(sub_msg_str_max);		
-		emptyString(p->lastMsg, sub_msg_str_max);	
+		p->lastMsg = createString(sub_msg_str_max);
+		emptyString(p->lastMsg, sub_msg_str_max);
 	}
 	name.toCharArray(p->name, name.length() + 1);
 	type.toCharArray(p->type, type.length() + 1);
 
 	if (publishers == NULL){
 		publishers = p;
-	} 
+	}
 	else {
 		struct Publisher *curr = publishers;
 		int counter = 1;
@@ -116,7 +116,7 @@ void SpacebrewYun::addSubscribe(const String& name, const String& type) {
 
 	if (subscribers == NULL){
 		subscribers = s;
-	} 
+	}
 	else {
 		struct Subscriber *curr = subscribers;
 		while(curr->next != NULL){
@@ -130,7 +130,7 @@ void SpacebrewYun::connect(String _server, int _port) {
 	Serial.println(F("v2.3"));
 	_started = true;
 	server = _server;
-	port = _port; 
+	port = _port;
 	connect_attempt = millis();
 
 	killPids();
@@ -223,7 +223,7 @@ void SpacebrewYun::monitor() {
 				_onOpen();
 			}
 			_connected = true;
-		} 	    
+		}
 
 		else if (c == char(CONNECTION_END) && _connected) {
 			_connected = false;
@@ -234,7 +234,7 @@ void SpacebrewYun::monitor() {
 			if (_onClose != NULL){
 				_onClose();
 			}
-		} 	 
+		}
 
 		if (_verbose) {
 			if (c == char(CONNECTION_ERROR)) {
@@ -246,7 +246,7 @@ void SpacebrewYun::monitor() {
 				Serial.println();
 			}
 			if (_error_msg) {
-			    Serial.print(c);			
+			    Serial.print(c);
 			}
 		}
 
@@ -291,13 +291,13 @@ void SpacebrewYun::monitor() {
 					sub_name += c;
 				} else if (read_msg == true) {
 					sub_msg += c;
-				} 
+				}
 				else if (_verbose) {
 					Serial.print(c);
-				}	    	
+				}
 			}
 		}
-	}	
+	}
 
 	// check if received confirmation that Linux received messages
 	if (publishers != NULL && _connected) {
@@ -306,9 +306,9 @@ void SpacebrewYun::monitor() {
 
 			if ( (curr->confirmed == 0) && ((millis() - curr->time) > 50) ) {
 				if (_verbose) {
-					Serial.print(F("resending msg: ")); 
+					Serial.print(F("resending msg: "));
 					Serial.println(curr->name);
-				} 
+				}
 				send(curr->name, curr->lastMsg);
 			}
 			curr = curr->next;
@@ -373,7 +373,7 @@ void SpacebrewYun::onMessage() {
 		}
 	} else if ( sub_type.equals("string") ) {
 		if (_onStringMessage != NULL) {
-			_onStringMessage( sub_name, sub_msg );	
+			_onStringMessage( sub_name, sub_msg );
 		} else {
 			Serial.println(F("ERROR :: String message, no callback"));
 		}
@@ -396,16 +396,16 @@ void SpacebrewYun::send(const String& name, const String& value){
 		Console.print(char(30));
 		Console.print(value);
 		Console.print(char(31));
-		Console.flush();			
+		Console.flush();
 
 		struct Publisher *curr = publishers;
 		while(curr != NULL){
 			if (name.equals(curr->name) == true) {
 				int msg_len = 0;
 
-				if (curr->type == "range") msg_len = sub_msg_int_max;	
-				else if (curr->type == "boolean") msg_len = sub_msg_bool_max;		
-				else msg_len = sub_msg_str_max;		
+				if (curr->type == "range") msg_len = sub_msg_int_max;
+				else if (curr->type == "boolean") msg_len = sub_msg_bool_max;
+				else msg_len = sub_msg_str_max;
 
 				if (value.length() < msg_len) msg_len = value.length() + 1;
 				value.toCharArray(curr->lastMsg, msg_len);
@@ -415,8 +415,8 @@ void SpacebrewYun::send(const String& name, const String& value){
 
 			}
 			curr = curr->next;
-		}	
-	}	
+		}
+	}
 }
 
 
@@ -446,13 +446,13 @@ void SpacebrewYun::getPids() {
 		if ( c >= '0' && c <= '9' ) {
 			pid[pidCharIndex] = c;
 			pidCharIndex = (pidCharIndex + 1) % pidLength;
-		} 
+		}
 
 		else if ( (c == ' ' || c == '\n') && pidCharIndex > 0) {
 			sbPids[sbPidsIndex] = atoi(pid);
-			if ( sbPidsIndex < (sbPidsLen - 1) ) sbPidsIndex = (sbPidsIndex + 1);    		
+			if ( sbPidsIndex < (sbPidsLen - 1) ) sbPidsIndex = (sbPidsIndex + 1);
 
-			for( int i = 0; i < pidLength; i++ ){ 
+			for( int i = 0; i < pidLength; i++ ){
 				pid[i] = '\0';
 				pidCharIndex = 0;
 			}
@@ -461,7 +461,7 @@ void SpacebrewYun::getPids() {
 }
 
 /**
- * method that kills all of the spacebrew.py instances that are running 
+ * method that kills all of the spacebrew.py instances that are running
  * on Linux.
  */
 void SpacebrewYun::killPids() {
@@ -481,9 +481,9 @@ void SpacebrewYun::killPids() {
 			p.begin("kill");
 			p.addParameter("-9");
 			p.addParameter(newPID);		// Process should launch the "curl" command
-			p.run();            		// Run the process and wait for its termination	
+			p.run();            		// Run the process and wait for its termination
 
-			delay(400);						
+			delay(400);
 		}
 	}
 }

@@ -198,7 +198,7 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop) {
 	TWI_StartWrite(twi, txAddress, 0, 0, txBuffer[0]);
 	if (!TWI_WaitByteSent(twi, XMIT_TIMEOUT))
 		error = 2;	// error, got NACK on address transmit
-	
+
 	if (error == 0) {
 		uint16_t sent = 1;
 		while (sent < txBufferLength) {
@@ -207,7 +207,7 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop) {
 				error = 3;	// error, got NACK during data transmmit
 		}
 	}
-	
+
 	if (error == 0) {
 		TWI_Stop(twi);
 		if (!TWI_WaitTransferComplete(twi, XMIT_TIMEOUT))

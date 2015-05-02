@@ -46,7 +46,7 @@ typedef struct
 	uint8_t		lineState;
 } LineInfo;
 
-static volatile LineInfo _usbLineInfo = { 
+static volatile LineInfo _usbLineInfo = {
     57600, // dWDTERate
     0x00,  // bCharFormat
     0x00,  // bParityType

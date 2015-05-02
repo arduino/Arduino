@@ -103,8 +103,8 @@ dhcp_coarse_tmr_cb(void *ctx)
         dhcp_coarse_tmr();
 }
 
-int start_ip_stack(struct net_cfg *cfg, 
-                   struct ip_addr ipaddr, 
+int start_ip_stack(struct net_cfg *cfg,
+                   struct ip_addr ipaddr,
                    struct ip_addr netmask,
                    struct ip_addr gw) {
 
@@ -113,12 +113,12 @@ int start_ip_stack(struct net_cfg *cfg,
                 IP4_ADDR(&ipaddr, 0,0,0,0);
                 IP4_ADDR(&netmask, 0,0,0,0);
         }
-        
+
         /* add wl to lwip interface list and set as default */
-        cfg->netif = netif_add(cfg->netif, 
-                               &ipaddr, 
-                               &netmask, 
-                               &gw, 
+        cfg->netif = netif_add(cfg->netif,
+                               &ipaddr,
+                               &netmask,
+                               &gw,
                                NULL,
                                wlif_init, /* init */
                                ethernet_input /* handles ARP and IP packets */);
@@ -128,11 +128,11 @@ int start_ip_stack(struct net_cfg *cfg,
         netif_set_default(cfg->netif);
 
         /* register lwip timer callbacks for tcp, arp and dhcp protocols */
-        timer_sched_timeout_cb(5000, TIMEOUT_PERIODIC, 
+        timer_sched_timeout_cb(5000, TIMEOUT_PERIODIC,
                                etharp_tmr_cb, NULL);
-        timer_sched_timeout_cb(TCP_TMR_INTERVAL, TIMEOUT_PERIODIC, 
+        timer_sched_timeout_cb(TCP_TMR_INTERVAL, TIMEOUT_PERIODIC,
                                tcp_tmr_cb, NULL);
-        timer_sched_timeout_cb(DHCP_FINE_TIMER_MSECS, TIMEOUT_PERIODIC, 
+        timer_sched_timeout_cb(DHCP_FINE_TIMER_MSECS, TIMEOUT_PERIODIC,
                                dhcp_fine_tmr_cb, NULL);
         timer_sched_timeout_cb(DHCP_COARSE_TIMER_MSECS, TIMEOUT_PERIODIC,
                                dhcp_coarse_tmr_cb, NULL);

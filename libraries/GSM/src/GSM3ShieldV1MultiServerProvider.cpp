@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -57,7 +57,7 @@ void GSM3ShieldV1MultiServerProvider::manageResponse(byte from, byte to)
 			break;
 		case CONNECTSERVER:
 			connectTCPServerContinue();
-			break;	
+			break;
 		case GETIP:
 			getIPContinue();
 			break;
@@ -68,7 +68,7 @@ void GSM3ShieldV1MultiServerProvider::manageResponse(byte from, byte to)
 int GSM3ShieldV1MultiServerProvider::connectTCPServer(int port)
 {
 	// We forget about LocalIP as it has no real use, the modem does whatever it likes
-	theGSM3ShieldV1ModemCore.setPort(port);			
+	theGSM3ShieldV1ModemCore.setPort(port);
 	theGSM3ShieldV1ModemCore.openCommand(this,CONNECTSERVER);
 	connectTCPServerContinue();
 	return theGSM3ShieldV1ModemCore.getCommandError();
@@ -109,8 +109,8 @@ void GSM3ShieldV1MultiServerProvider::connectTCPServerContinue()
 				theGSM3ShieldV1ModemCore.setCommandCounter(3);
 			}
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
-		break;	
+		}
+		break;
 	case 3:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
@@ -126,8 +126,8 @@ void GSM3ShieldV1MultiServerProvider::connectTCPServerContinue()
 				theGSM3ShieldV1ModemCore.setCommandCounter(4);
 			}
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
-		break;	
+		}
+		break;
 	case 4:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
@@ -135,8 +135,8 @@ void GSM3ShieldV1MultiServerProvider::connectTCPServerContinue()
 			// OK received, kathapoon, chessespoon
 			if (resp) theGSM3ShieldV1ModemCore.closeCommand(1);
 			else theGSM3ShieldV1ModemCore.closeCommand(3);
-		}		
-		break;	
+		}
+		break;
 	}
 }
 
@@ -145,7 +145,7 @@ bool GSM3ShieldV1MultiServerProvider::parseQILOCIP_rsp(char* LocalIP, int LocalI
 {
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("\r\n","\r\n", LocalIP, LocalIPlength)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	return true;
 }
@@ -176,18 +176,18 @@ void GSM3ShieldV1MultiServerProvider::getIPContinue()
 	case 2:
 		if(parseQILOCIP_rsp(theGSM3ShieldV1ModemCore.getPhoneNumber(), theGSM3ShieldV1ModemCore.getPort(), resp))
 	    {
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
-		}	
-		break;	
+		}
+		break;
 	}
 }
 
 bool GSM3ShieldV1MultiServerProvider::getSocketAsServerModemStatus(int s)
 {
-	if (socketsAccepted&(0x0001<<s)) 
+	if (socketsAccepted&(0x0001<<s))
 		return true;
 	else return false;
 }
@@ -199,8 +199,8 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 
 	int nlength;
 	char auxLocate [15];
-	
-	
+
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("0, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -210,9 +210,9 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted &= ~(0x0001);
 		//Serial.println("JCR_DB REMOTE CLOSED");
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
-	
+
 	prepareAuxLocate(PSTR("1, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
 	{
@@ -220,7 +220,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(1);
 		socketsAccepted &= ~(0x0002);
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("2, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -229,7 +229,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(2);
 		socketsAccepted &= ~(0x0004);
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("3, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -238,7 +238,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(3);
 		socketsAccepted &= ~(0x0008);
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("4, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -247,7 +247,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(4);
 		socketsAccepted &= ~(0x0010);
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("5, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -256,7 +256,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(5);
 		socketsAccepted &= ~(0x0020);
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("6, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -265,7 +265,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(6);
 		socketsAccepted &= ~(0x0040);
 	}
-	
+
 	//REMOTE SOCKET CLOSED.
 	prepareAuxLocate(PSTR("7, CLOSED\r\n"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -274,7 +274,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		releaseSocket(7);
 		socketsAccepted &= ~(0x0080);
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("0, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -284,7 +284,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0001);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("1, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -294,7 +294,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0002);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("2, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -304,7 +304,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0004);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("3, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -314,7 +314,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0008);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("4, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -324,7 +324,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0010);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("5, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -334,7 +334,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0020);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("6, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -344,7 +344,7 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0040);
 		return true;
 	}
-	
+
 	//REMOTE SOCKET ACCEPTED.
 	prepareAuxLocate(PSTR("7, REMOTE IP"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.gss.cb.locate(auxLocate))
@@ -354,8 +354,8 @@ bool GSM3ShieldV1MultiServerProvider::recognizeUnsolicitedEvent(byte oldTail)
 		socketsAccepted |= (0x0080);
 		return true;
 	}
-	
-	
+
+
 	return false;
 }
 
@@ -381,7 +381,7 @@ int GSM3ShieldV1MultiServerProvider::getNewOccupiedSocketAsServer()
 	{
 		if ((!(socketsAsServer&(0x0001<<i))) && getSocketAsServerModemStatus(i))
 		{
-			socketsAsServer|=((0x0001)<<i);	
+			socketsAsServer|=((0x0001)<<i);
 			return i;
 		}
 	}

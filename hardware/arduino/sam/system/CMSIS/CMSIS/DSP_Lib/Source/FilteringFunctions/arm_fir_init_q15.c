@@ -1,85 +1,85 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:        arm_fir_init_q15.c   
-*   
-* Description:  Q15 FIR filter initialization function.   
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:        arm_fir_init_q15.c
+*
+* Description:  Q15 FIR filter initialization function.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
-*   
-* Version 0.0.5  2010/04/26    
-* 	 incorporated review comments and updated with latest CMSIS layer   
-*   
-* Version 0.0.3  2010/03/10    
-*    Initial version   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
+*
+* Version 0.0.5  2010/04/26
+* 	 incorporated review comments and updated with latest CMSIS layer
+*
+* Version 0.0.3  2010/03/10
+*    Initial version
 * ------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupFilters   
+/**
+ * @ingroup groupFilters
  */
 
-/**   
- * @addtogroup FIR   
- * @{   
+/**
+ * @addtogroup FIR
+ * @{
  */
 
-/**   
- * @param[in,out]  *S points to an instance of the Q15 FIR filter structure.   
- * @param[in] 	   numTaps  Number of filter coefficients in the filter. Must be even and greater than or equal to 4.   
- * @param[in]      *pCoeffs points to the filter coefficients buffer.   
- * @param[in]      *pState points to the state buffer.   
- * @param[in]      blockSize is number of samples processed per call.   
- * @return The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if   
- * <code>numTaps</code> is not greater than or equal to 4 and even.   
- *   
- * <b>Description:</b>   
- * \par   
- * <code>pCoeffs</code> points to the array of filter coefficients stored in time reversed order:   
- * <pre>   
- *    {b[numTaps-1], b[numTaps-2], b[N-2], ..., b[1], b[0]}   
- * </pre>   
- * Note that <code>numTaps</code> must be even and greater than or equal to 4.   
- * To implement an odd length filter simply increase <code>numTaps</code> by 1 and set the last coefficient to zero.   
- * For example, to implement a filter with <code>numTaps=3</code> and coefficients   
- * <pre>   
- *     {0.3, -0.8, 0.3}   
- * </pre>   
- * set <code>numTaps=4</code> and use the coefficients:   
- * <pre>   
- *     {0.3, -0.8, 0.3, 0}.   
- * </pre>   
- * Similarly, to implement a two point filter   
- * <pre>   
- *     {0.3, -0.3}   
- * </pre>   
- * set <code>numTaps=4</code> and use the coefficients:   
- * <pre>   
- *     {0.3, -0.3, 0, 0}.   
- * </pre>   
- * \par   
- * <code>pState</code> points to the array of state variables.   
- * <code>pState</code> is of length <code>numTaps+blockSize-1</code>, where <code>blockSize</code> is the number of input samples processed by each call to <code>arm_fir_q15()</code>.   
+/**
+ * @param[in,out]  *S points to an instance of the Q15 FIR filter structure.
+ * @param[in] 	   numTaps  Number of filter coefficients in the filter. Must be even and greater than or equal to 4.
+ * @param[in]      *pCoeffs points to the filter coefficients buffer.
+ * @param[in]      *pState points to the state buffer.
+ * @param[in]      blockSize is number of samples processed per call.
+ * @return The function returns ARM_MATH_SUCCESS if initialization is successful or ARM_MATH_ARGUMENT_ERROR if
+ * <code>numTaps</code> is not greater than or equal to 4 and even.
+ *
+ * <b>Description:</b>
+ * \par
+ * <code>pCoeffs</code> points to the array of filter coefficients stored in time reversed order:
+ * <pre>
+ *    {b[numTaps-1], b[numTaps-2], b[N-2], ..., b[1], b[0]}
+ * </pre>
+ * Note that <code>numTaps</code> must be even and greater than or equal to 4.
+ * To implement an odd length filter simply increase <code>numTaps</code> by 1 and set the last coefficient to zero.
+ * For example, to implement a filter with <code>numTaps=3</code> and coefficients
+ * <pre>
+ *     {0.3, -0.8, 0.3}
+ * </pre>
+ * set <code>numTaps=4</code> and use the coefficients:
+ * <pre>
+ *     {0.3, -0.8, 0.3, 0}.
+ * </pre>
+ * Similarly, to implement a two point filter
+ * <pre>
+ *     {0.3, -0.3}
+ * </pre>
+ * set <code>numTaps=4</code> and use the coefficients:
+ * <pre>
+ *     {0.3, -0.3, 0, 0}.
+ * </pre>
+ * \par
+ * <code>pState</code> points to the array of state variables.
+ * <code>pState</code> is of length <code>numTaps+blockSize-1</code>, where <code>blockSize</code> is the number of input samples processed by each call to <code>arm_fir_q15()</code>.
  */
 
 arm_status arm_fir_init_q15(
@@ -144,6 +144,6 @@ arm_status arm_fir_init_q15(
 
 }
 
-/**   
- * @} end of FIR group   
+/**
+ * @} end of FIR group
  */

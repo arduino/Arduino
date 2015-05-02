@@ -68,8 +68,8 @@ WiFiClient WiFiServer::available(byte* status)
             }
 
             if (_status == ESTABLISHED)
-            {                
-                return client;  //TODO 
+            {
+                return client;  //TODO
             }
         }
     }
@@ -99,7 +99,7 @@ size_t WiFiServer::write(const uint8_t *buffer, size_t size)
 
             if (WiFiClass::_server_port[sock] == _port &&
                 client.status() == ESTABLISHED)
-            {                
+            {
                 n+=client.write(buffer, size);
             }
         }

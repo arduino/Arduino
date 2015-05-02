@@ -1,13 +1,13 @@
 /*#include <ArduinoRobot.h>
-//0 - 319: pic array, 
+//0 - 319: pic array,
 
-//320 - 337 username, 
+//320 - 337 username,
 #define ADDRESS_USERNAME 320
-//338 - 355 robotname, 
+//338 - 355 robotname,
 #define ADDRESS_ROBOTNAME 338
-//356 - 373 cityname, 
+//356 - 373 cityname,
 #define ADDRESS_CITYNAME 356
- //374- 391 countryname, 
+ //374- 391 countryname,
 #define ADDRESS_COUNTRYNAME 374
 //508-511 robot info
 #define ADDRESS_ROBOTINFO 508

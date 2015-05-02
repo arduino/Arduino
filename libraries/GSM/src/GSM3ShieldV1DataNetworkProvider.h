@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -42,18 +42,18 @@ https://github.com/BlueVia/Official-Arduino
 class GSM3ShieldV1DataNetworkProvider : public GSM3MobileDataNetworkProvider, public GSM3ShieldV1BaseProvider
 {
 	private:
-	
+
 		char* user; // Username for GPRS
 		char* passwd; // Password for GPRS
-	
+
 		/** Continue to attach GPRS function
 		 */
 		void attachGPRSContinue();
-		
+
 		/** Continue to detach GPRS function
 		 */
 		void detachGPRSContinue();
-		
+
 		/** Parse QILOCIP response
 			@param LocalIP			Buffer for save local IP address
 			@param LocalIPlength	Buffer size
@@ -61,20 +61,20 @@ class GSM3ShieldV1DataNetworkProvider : public GSM3MobileDataNetworkProvider, pu
 			@return true if command executed correctly
 		 */
 		bool parseQILOCIP_rsp(char* LocalIP, int LocalIPlength, bool& rsp);
-		
+
 		/** Continue to get IP function
 		 */
 		void getIPContinue();
-		
+
 		/** Implementation of inet_aton standard function
 			@param aIPAddrString	IP address in characters buffer
 			@param aResult			IP address in IPAddress format
 			@return 1 if the address is successfully converted, or 0 if the conversion failed
 		 */
 		int inet_aton(const char* aIPAddrString, IPAddress& aResult);
-	
+
 	public:
-	
+
 		/** Attach to GPRS/GSM network
 			@param networkId 	APN GPRS
 			@param user			Username
@@ -85,12 +85,12 @@ class GSM3ShieldV1DataNetworkProvider : public GSM3MobileDataNetworkProvider, pu
 		{
 			return attachGPRS(networkId, user, pass);
 		};
-		
+
 		/** Detach GPRS/GSM network
 			@return connection status
 		 */
 		GSM3_NetworkStatus_t networkDetach(){ return detachGPRS();};
-		
+
 		/** Attach to GPRS service
 			@param apn			APN GPRS
 			@param user_name	Username
@@ -99,18 +99,18 @@ class GSM3ShieldV1DataNetworkProvider : public GSM3MobileDataNetworkProvider, pu
 			@return connection status
 		 */
 		GSM3_NetworkStatus_t attachGPRS(char* apn, char* user_name, char* password, bool synchronous=true);
-		
+
 		/** Detach GPRS service
 			@param synchronous	Sync mode
 			@return connection status
 		 */
 		GSM3_NetworkStatus_t detachGPRS(bool synchronous=true);
-		
+
 		/** Returns 0 if last command is still executing
-			@return 1 if success, >1 if error 
+			@return 1 if success, >1 if error
 		 */
 		int ready(){return GSM3ShieldV1BaseProvider::ready();};
-		
+
 		/** Get network status (connection)
 			@return status
 		 */
@@ -122,12 +122,12 @@ class GSM3ShieldV1DataNetworkProvider : public GSM3MobileDataNetworkProvider, pu
 			@return command error if exists
 		 */
 		int getIP(char* LocalIP, int LocalIPlength);
-		
+
 		/** Get actual assigned IP address in IPAddress format
 			@return IP address in IPAddress format
 		 */
 		IPAddress getIPAddress();
-		
+
 		/** Manages modem response
 			@param from 		Initial byte of buffer
 			@param to 			Final byte of buffer

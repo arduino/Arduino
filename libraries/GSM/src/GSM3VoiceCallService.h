@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -41,13 +41,13 @@ class GSM3VoiceCallService
 {
 	private:
 		uint8_t flags;
-		
+
 		/** Make synchronous the functions, if needed
 			@param returnvalue	Return value
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		 */
 		int waitForAnswerIfNeeded(int returnvalue);
-		
+
 	public:
 		/** Service creation
 			@param synch		If true, the service calls are synchronois
@@ -64,29 +64,29 @@ class GSM3VoiceCallService
 			@return Returns 0 if last command is still executing, 1 success, >1 error
 		*/
 		int ready();
-		
+
 		/** Place a voice call. If asynchronous, returns while ringing. If synchronous
 			returns if the call is stablished or cancelled.
 			@param to			Receiver number. Country extension can be used or not.
 								Char buffer should not be released or used until command is over
-			@param timeout		In millisecods. Time ringing before closing the call. 
+			@param timeout		In millisecods. Time ringing before closing the call.
 								Only used in synchronous mode.
 								If zero, ring undefinitely
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
 					In synchronous mode returns 1 if the call is placed, 0 if not.
-		*/		
+		*/
 		int voiceCall(const char* to, unsigned long timeout=30000);
-		
+
 		/** Accept an incoming voice call
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
 					In synchronous mode returns 1 if the call is answered, 0 if not.
-		*/		
+		*/
 		int answerCall();
-		
+
 		/** Hang a stablished call or an incoming ring
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
 					In synchronous mode returns 1 if the call is answered, 0 if not.
-		*/		
+		*/
 		int hangCall();
 
 		/** Retrieve the calling number, put it in buffer
@@ -94,7 +94,7 @@ class GSM3VoiceCallService
 			@param bufsize		size of available memory area, at least should be 10 characters
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
 					In synchronous mode returns 1 if the number is correcty taken 0 if not
-		*/		
+		*/
 		int retrieveCallingNumber(char* buffer, int bufsize);
 };
 

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -63,32 +63,32 @@ GSM3MobileClientService::GSM3MobileClientService(int socket, bool synch)
 		flags |= GSM3MOBILECLIENTSERVICE_SYNCH;
 	mySocket=socket;
 	theGSM3MobileClientProvider->getSocket(socket);
-	
+
 }
 
 // Returns 0 if last command is still executing
 // 1 if success
-// >1 if error 
+// >1 if error
 int GSM3MobileClientService::ready()
-{	
+{
 	return theGSM3MobileClientProvider->ready();
 }
 
-int GSM3MobileClientService::connect(IPAddress add, uint16_t port) 
+int GSM3MobileClientService::connect(IPAddress add, uint16_t port)
 {
 	if(theGSM3MobileClientProvider==0)
 		return 2;
-		
+
 	// TODO: ask for the socket id
 	mySocket=theGSM3MobileClientProvider->getSocket();
 
 	if(mySocket<0)
 		return 2;
-	
+
 	int res=theGSM3MobileClientProvider->connectTCPClient(add, port, mySocket);
 	if(flags & GSM3MOBILECLIENTSERVICE_SYNCH)
 		res=waitForAnswer();
-	
+
 	return res;
 };
 
@@ -96,17 +96,17 @@ int GSM3MobileClientService::connect(const char *host, uint16_t port)
 {
 
 	if(theGSM3MobileClientProvider==0)
-		return 2;		
+		return 2;
 	// TODO: ask for the socket id
 	mySocket=theGSM3MobileClientProvider->getSocket();
 
 	if(mySocket<0)
 		return 2;
-	
+
 	int res=theGSM3MobileClientProvider->connectTCPClient(host, port, mySocket);
 	if(flags & GSM3MOBILECLIENTSERVICE_SYNCH)
 		res=waitForAnswer();
-		
+
 	return res;
 }
 
@@ -115,10 +115,10 @@ int GSM3MobileClientService::waitForAnswer()
 	unsigned long m;
 	m=millis();
 	int res;
-	
-	while(((millis()-m)< __TOUTBEGINWRITE__ )&&(ready()==0)) 
+
+	while(((millis()-m)< __TOUTBEGINWRITE__ )&&(ready()==0))
 		delay(100);
-	
+
 	res=ready();
 
 	// If we get something different from a 1, we are having a problem
@@ -137,7 +137,7 @@ void GSM3MobileClientService::beginWrite(bool sync)
 }
 
 size_t GSM3MobileClientService::write(uint8_t c)
-{	
+{
 	if(!(flags & GSM3MOBILECLIENTSERVICE_WRITING))
 		beginWrite(true);
 	theGSM3MobileClientProvider->writeSocket(c);
@@ -173,7 +173,7 @@ uint8_t GSM3MobileClientService::connected()
 {
 	if(mySocket==255)
 		return 0;
-	return theGSM3MobileClientProvider->getStatusSocketClient(mySocket);	 
+	return theGSM3MobileClientProvider->getStatusSocketClient(mySocket);
 }
 
 GSM3MobileClientService::operator bool()
@@ -186,7 +186,7 @@ int GSM3MobileClientService::available()
 	int res;
 
 	// Even if not connected, we are looking for available data
-	
+
 	if(flags & GSM3MOBILECLIENTSERVICE_WRITING)
 		endWrite(true);
 
@@ -201,7 +201,7 @@ int GSM3MobileClientService::read(uint8_t *buf, size_t size)
 {
 	int i;
 	uint8_t c;
-	
+
 	for(i=0;i<size;i++)
 	{
 		c=read();
@@ -209,7 +209,7 @@ int GSM3MobileClientService::read(uint8_t *buf, size_t size)
 			break;
 		buf[i]=c;
 	}
-	
+
 	return i;
 /* This is the old implementation, testing a simpler one
 	int res;

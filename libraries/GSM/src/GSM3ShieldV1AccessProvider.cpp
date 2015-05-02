@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -68,7 +68,7 @@ void GSM3ShieldV1AccessProvider::manageResponse(byte from, byte to)
 // Restart or start the modem
 // May be synchronous
 GSM3_NetworkStatus_t GSM3ShieldV1AccessProvider::begin(char* pin, bool restart, bool synchronous)
-{	
+{
 	pinMode(__RESETPIN__, OUTPUT);
 
 	#ifdef TTOPEN_V1
@@ -77,11 +77,11 @@ GSM3_NetworkStatus_t GSM3ShieldV1AccessProvider::begin(char* pin, bool restart, 
 	#endif
 
 	// If asked for modem restart, restart
-	if (restart) 
+	if (restart)
 		HWrestart();
-	else 
+	else
  		HWstart();
-  
+
 	theGSM3ShieldV1ModemCore.gss.begin(9600);
 	// Launch modem configuration commands
 	ModemConfiguration(pin);
@@ -89,8 +89,8 @@ GSM3_NetworkStatus_t GSM3ShieldV1AccessProvider::begin(char* pin, bool restart, 
 	if(synchronous)
 	{
 		// if we shorten this delay, the command fails
-		while(ready()==0) 
-			delay(1000); 
+		while(ready()==0)
+			delay(1000);
 	}
 	return getStatus();
 }
@@ -102,7 +102,7 @@ int GSM3ShieldV1AccessProvider::HWrestart()
 	digitalWrite(__POWERPIN__, HIGH);
 	delay(1000);
 	#endif
-	
+
 	theGSM3ShieldV1ModemCore.setStatus(IDLE);
 	digitalWrite(__RESETPIN__, HIGH);
 	delay(12000);
@@ -151,7 +151,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 	int ct=theGSM3ShieldV1ModemCore.getCommandCounter();
 	if(ct==1)
 	{
-		// Launch AT	
+		// Launch AT
 		theGSM3ShieldV1ModemCore.setCommandCounter(2);
 		theGSM3ShieldV1ModemCore.genericCommand_rq(_command_AT);
 	}
@@ -161,18 +161,18 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 	   if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	   {
 			if(resp)
-			{ 
+			{
 				// OK received
-				if(theGSM3ShieldV1ModemCore.getPhoneNumber() && (theGSM3ShieldV1ModemCore.getPhoneNumber()[0]!=0)) 
+				if(theGSM3ShieldV1ModemCore.getPhoneNumber() && (theGSM3ShieldV1ModemCore.getPhoneNumber()[0]!=0))
 					{
 						theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+CPIN="), false);
 						theGSM3ShieldV1ModemCore.setCommandCounter(3);
 						theGSM3ShieldV1ModemCore.genericCommand_rqc(theGSM3ShieldV1ModemCore.getPhoneNumber());
 					}
-				else 
+				else
 					{
-						//DEBUG	
-						//Serial.println("AT+CGREG?");	
+						//DEBUG
+						//Serial.println("AT+CGREG?");
 						theGSM3ShieldV1ModemCore.setCommandCounter(4);
 						theGSM3ShieldV1ModemCore.takeMilliseconds();
 						theGSM3ShieldV1ModemCore.genericCommand_rq(_command_CGREG);
@@ -215,13 +215,13 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 				{
 					theGSM3ShieldV1ModemCore.closeCommand(3);
 				}
-				else 
+				else
 				{
 					theGSM3ShieldV1ModemCore.delayInsideInterrupt(2000);
 					theGSM3ShieldV1ModemCore.genericCommand_rq(_command_CGREG);
 				}
 			}
-		}	
+		}
 	}
 	else if(ct==5)
 	{
@@ -241,7 +241,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 		{
 			//Calling line identification
-			theGSM3ShieldV1ModemCore.setCommandCounter(7);			
+			theGSM3ShieldV1ModemCore.setCommandCounter(7);
 			theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+CLIP=1"));
 		}
 	}
@@ -251,7 +251,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 		{
 			// Echo off
-			theGSM3ShieldV1ModemCore.setCommandCounter(8);			
+			theGSM3ShieldV1ModemCore.setCommandCounter(8);
 			theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("ATE0"));
 		}
 	}
@@ -271,7 +271,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 		// 9: Wait ATCOLP OK
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 		{
-			if (resp) 
+			if (resp)
 				{
 					theGSM3ShieldV1ModemCore.setStatus(GSM_READY);
 					theGSM3ShieldV1ModemCore.closeCommand(1);
@@ -316,7 +316,7 @@ bool GSM3ShieldV1AccessProvider::shutdown()
 	unsigned long m;
 	bool resp;
 	char auxLocate [18];
-	
+
 	// It makes no sense to have an asynchronous shutdown
 	pinMode(__RESETPIN__, OUTPUT);
 	digitalWrite(__RESETPIN__, HIGH);
@@ -324,7 +324,7 @@ bool GSM3ShieldV1AccessProvider::shutdown()
 	digitalWrite(__RESETPIN__, LOW);
 	theGSM3ShieldV1ModemCore.setStatus(IDLE);
 	theGSM3ShieldV1ModemCore.gss.close();
-	
+
 	m=millis();
 	prepareAuxLocate(PSTR("POWER DOWN"), auxLocate);
 	while((millis()-m) < __TOUTSHUTDOWN__)
@@ -351,6 +351,6 @@ bool GSM3ShieldV1AccessProvider::secureShutdown()
 	_delay_ms(12000);
 	digitalWrite(__POWERPIN__, LOW);
 #endif
-	
+
 	return true;
 }

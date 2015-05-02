@@ -1,18 +1,18 @@
 /* Arduino FAT16 Library
  * Copyright (C) 2008 by William Greiman
- *  
+ *
  * This file is part of the Arduino FAT16 Library
- *  
- * This Library is free software: you can redistribute it and/or modify 
- * it under the terms of the GNU General Public License as published by 
+ *
+ * This Library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This Library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- 
+
  * You should have received a copy of the GNU General Public License
  * along with the Arduino Fat16 Library.  If not, see
  * <http://www.gnu.org/licenses/>.
@@ -26,7 +26,7 @@
 \section Intro Introduction
 The Arduino Fat16 Library is a minimal implementation of the FAT16 file system
 on standard SD flash memory cards.  Fat16 supports read, write, file
-creation, deletion, and truncation. 
+creation, deletion, and truncation.
 
 The Fat16 class only supports access to files in the root directory and only
 supports short 8.3 names.  Directory time and date fields for creation
@@ -35,7 +35,7 @@ function \link Fat16::dateTimeCallback() dateTimeCallback()\endlink
 or calling \link Fat16::timestamp() timestamp()\endlink.
 
 Fat16 was designed to use the Arduino Print class which
-allows files to be written with \link Print::print() print() \endlink and 
+allows files to be written with \link Print::print() print() \endlink and
 \link Print::println()  println()\endlink.
 
 \section comment Bugs and Comments
@@ -64,7 +64,7 @@ a good SanDisk card.
 
 
 \section Hardware Hardware Configuration
-Fat16 was developed using an <A HREF = "http://www.adafruit.com/"> Adafruit Industries</A> 
+Fat16 was developed using an <A HREF = "http://www.adafruit.com/"> Adafruit Industries</A>
 <A HREF = "http://ladyada.net/make/gpsshield/modules.html"> GPS Shield</A>.
 
 The hardware interface to the SD card should not use a resistor based level
@@ -88,20 +88,20 @@ The class Fat16 is a minimal implementation of FAT16 on standard SD cards.
 High Capacity SD cards, SDHC, are not supported. It should work on all
 standard cards from 8MB to 2GB formatted with a FAT16 file system.
 
-\note 
+\note
   The Arduino Print class uses character
 at a time writes so it was necessary to use a \link Fat16::sync() sync() \endlink
 function to control when data is written to the SD card.
 
 \par
-An application which writes to a file using \link Print::print() print()\endlink, 
-\link Print::println() println() \endlink 
-or \link Fat16::write write() \endlink must call \link Fat16::sync() sync() \endlink 
-at the appropriate time to force data and directory information to be written 
+An application which writes to a file using \link Print::print() print()\endlink,
+\link Print::println() println() \endlink
+or \link Fat16::write write() \endlink must call \link Fat16::sync() sync() \endlink
+at the appropriate time to force data and directory information to be written
 to the SD Card.  Data and directory information are also written to the SD card
 when \link Fat16::close() close() \endlink is called.
 
-\par 
+\par
 Applications must use care calling \link Fat16::sync() sync() \endlink
 since 2048 bytes of I/O is required to update file and
 directory information.  This includes writing the current data block, reading
@@ -121,15 +121,15 @@ of letters and digits.  The following special characters are also allowed:
 $ % ' - _ @ ~ ` ! ( ) { } ^ # &
 
 Short names are always converted to upper case and their original case
-value is lost.  
+value is lost.
 
 Fat16 uses a slightly restricted form of short names.
 Only printable ASCII characters are supported. No characters with code point
-values greater than 127 are allowed.  Space is not allowed even though space 
+values greater than 127 are allowed.  Space is not allowed even though space
 was allowed in the API of early versions of DOS.
 
 Fat16 has been optimized for The Arduino ATmega168.  Minimizing RAM use is the
-highest priority goal followed by flash use and finally performance.  
+highest priority goal followed by flash use and finally performance.
 Most SD cards only support 512 byte block write operations so a 512 byte
 cache buffer is used by Fat16.  This is the main use of RAM.  A small
 amount of RAM is used to store key volume and file information.
@@ -137,18 +137,18 @@ Flash memory usage can be controlled by selecting options in Fat16Config.h.
 
 \section HowTo How to format SD Cards as FAT16 Volumes
 
-Microsoft operating systems support removable media formatted with a 
+Microsoft operating systems support removable media formatted with a
 Master Boot Record, MBR, or formatted as a super floppy with a FAT Boot Sector
 in block zero.
 
-Microsoft operating systems expect MBR formatted removable media 
+Microsoft operating systems expect MBR formatted removable media
 to have only one partition. The first partition should be used.
 
 Microsoft operating systems do not support partitioning SD flash cards.
 If you erase an SD card with a program like KillDisk, Most versions of
 Windows will format the card as a super floppy.
 
-The best way to restore an SD card's MBR is to use SDFormatter 
+The best way to restore an SD card's MBR is to use SDFormatter
 which can be downloaded from:
 
 http://www.sdcard.org/consumers/formatter/
@@ -157,9 +157,9 @@ SDFormatter does not have an option for FAT type so it may format
 small cards as FAT12.
 
 After the MBR is restored by SDFormatter you may need to reformat small
-cards that have been formatted FAT12 to force the volume type to be FAT16. 
+cards that have been formatted FAT12 to force the volume type to be FAT16.
 
-The FAT type, FAT12, FAT16, or FAT32, is determined by the count 
+The FAT type, FAT12, FAT16, or FAT32, is determined by the count
 of clusters on the volume and nothing else.
 
 Microsoft published the following code for determining FAT type:
@@ -176,14 +176,14 @@ else {
 }
 
 \endcode
-If you format a FAT volume with an OS utility , choose a cluster size that 
+If you format a FAT volume with an OS utility , choose a cluster size that
 will result in:
 
 4084 < CountOfClusters && CountOfClusters < 65525
 
 The volume will then be FAT16.
 
-If you are formatting an SD card on OS X or Linux, be sure to use the first 
+If you are formatting an SD card on OS X or Linux, be sure to use the first
 partition. Format this partition with a cluster count in above range.
 
 \section  References References
@@ -203,6 +203,6 @@ http://www.sdcard.org/developers/tech/sdcard/pls/Simplified_Physical_Layer_Spec.
 The ATmega328 datasheet:
 
 http://www.atmel.com/dyn/resources/prod_documents/doc8161.pdf
- 
 
- */  
+
+ */

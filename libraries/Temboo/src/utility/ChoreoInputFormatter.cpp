@@ -4,13 +4,13 @@
 # Temboo Arduino library
 #
 # Copyright 2015, Temboo Inc.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
 # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -52,15 +52,15 @@ char ChoreoInputFormatter::next() {
         case START:
             c = readStartTagChar(TAG_INPUTS_START, INPUTS_TAG);
             break;
-        
+
         case INPUTS_TAG:
             c = readTagChar(NAME_START);
             if (m_nextState == NAME_START) {
                 m_currentInput= m_inputSet->getFirstInput();
             }
             break;
-        
-        case NAME_START: 
+
+        case NAME_START:
             c = '"';
             m_nextChar = m_currentInput->getName();
             if ((NULL == m_nextChar) || ('\0' == *m_nextChar)) {
@@ -74,7 +74,7 @@ char ChoreoInputFormatter::next() {
             c = readValueChar(NAME_END);
             break;
 
-        case NAME_END: 
+        case NAME_END:
             c = '"';
             m_nextState = NAME_VALUE_SEPARATOR;
             break;
@@ -84,7 +84,7 @@ char ChoreoInputFormatter::next() {
             m_nextState = VALUE_START;
             break;
 
-        case VALUE_START: 
+        case VALUE_START:
             c = '"';
             m_nextChar = m_currentInput->getValue();
             if ((NULL == m_nextChar) || ('\0' == *m_nextChar)) {
@@ -98,7 +98,7 @@ char ChoreoInputFormatter::next() {
             c = readValueChar(VALUE_END);
             break;
 
-        case VALUE_END: 
+        case VALUE_END:
             c = '"';
             m_currentInput = m_currentInput->getNext();
             if (m_currentInput != NULL) {
@@ -117,7 +117,7 @@ char ChoreoInputFormatter::next() {
             c = '}';
             m_nextState = END;
             break;
-        case END: 
+        case END:
         default:
             c = '\0';
     }

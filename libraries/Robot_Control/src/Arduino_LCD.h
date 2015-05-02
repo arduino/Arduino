@@ -4,7 +4,7 @@
   ----> http://www.adafruit.com/products/358
   as well as Adafruit raw 1.8" TFT display
   ----> http://www.adafruit.com/products/618
- 
+
   Check out the links above for our tutorials and wiring diagrams
   These displays use SPI to communicate, 4 or 5 pins are required to
   interface (RST is optional)
@@ -88,7 +88,7 @@
 #define	ILI9163C_GREEN   0x07E0
 #define ILI9163C_CYAN    0x07FF
 #define ILI9163C_MAGENTA 0xF81F
-#define ILI9163C_YELLOW  0xFFE0  
+#define ILI9163C_YELLOW  0xFFE0
 #define ILI9163C_WHITE   0xFFFF
 
 

@@ -50,10 +50,10 @@ int board_putchar(char c)
                                 return USART_FAILURE;
                 } while (usart_write_char(&CONFIG_CONSOLE_PORT, '\r') !=
                          USART_SUCCESS);
-                
+
                 timeout = USART_DEFAULT_TIMEOUT;
         }
-        
+
         do {
                 if (!timeout--)
                         return USART_FAILURE;
@@ -72,17 +72,17 @@ init_sys_clocks(void)
         /* if we don't run on OSC0 don't switch to it since we don't know
          * what kind of oscillator we have here
          */
-          
+
 #if OSC == 0
         /* switch to OSC0 to speed up the booting */
         pm_switch_to_osc0(&AVR32_PM, FOSC0, OSC0_STARTUP);
 #endif
 
-        
+
 #ifndef USE_PLL
         return;
 #endif
-        
+
         /* For audio, ee have to use OSC1 on to generate the correct clockrate
          * for the SSC
          */
@@ -108,12 +108,12 @@ init_sys_clocks(void)
                           1,  /* pll_freq */
                           1,  /* pll_div2 */
                           0); /* pll_wbwdisable. */
-  
+
 
         /* start PLL0 and wait for the lock */
         pm_pll_enable(&AVR32_PM, 0);
         pm_wait_for_pll0_locked(&AVR32_PM);
-        
+
         /* Set all peripheral clocks torun at master clock rate */
         pm_cksel(&AVR32_PM,
                  0,   /* pbadiv */
@@ -121,11 +121,11 @@ init_sys_clocks(void)
                  0,   /* pbbdiv */
                  0,   /* pbbsel */
                  0,   /* hsbdiv */
-                 0);  /* hsbsel */ 
-        
+                 0);  /* hsbsel */
+
         /* Set one waitstate for the flash */
         flashc_set_wait_state(1);
-        
+
         /* Switch to PLL0 as the master clock */
         pm_switch_to_clock(&AVR32_PM, AVR32_PM_MCCTRL_MCSEL_PLL0);
 }
@@ -142,12 +142,12 @@ static void init_hmatrix(void)
 	union {
 		unsigned long                 scfg;
 		avr32_hmatrix_scfg_t          SCFG;
-	} u_avr32_hmatrix_scfg = { 
+	} u_avr32_hmatrix_scfg = {
 		AVR32_HMATRIX.scfg[AVR32_HMATRIX_SLAVE_FLASH]
 	};
-	u_avr32_hmatrix_scfg.SCFG.defmstr_type = 
+	u_avr32_hmatrix_scfg.SCFG.defmstr_type =
 		AVR32_HMATRIX_DEFMSTR_TYPE_LAST_DEFAULT;
-	AVR32_HMATRIX.scfg[AVR32_HMATRIX_SLAVE_FLASH] = 
+	AVR32_HMATRIX.scfg[AVR32_HMATRIX_SLAVE_FLASH] =
 		u_avr32_hmatrix_scfg.scfg;
 }
 
@@ -162,7 +162,7 @@ static void init_spi(void)
 #if defined(WL_SPI)
         int i;
 #endif
-        
+
 
 #if defined(AT45DBX_SPI)
         static const gpio_map_t AT45DBX_SPI_GPIO_MAP = {
@@ -173,8 +173,8 @@ static void init_spi(void)
         };
 #endif
 
-        
-#if defined(WL_SPI) 
+
+#if defined(WL_SPI)
 	const gpio_map_t WL_SPI_GPIO_MAP = {
 #if defined(WL_SPI_NPCS0)
             WL_SPI_NPCS0,
@@ -234,7 +234,7 @@ static void init_rs232(void)
                 BOARD_RS232_0_RTS,
                 BOARD_RS232_0_CTS
 #endif
-                
+
         };
 #endif
 
@@ -251,13 +251,13 @@ static void init_rs232(void)
 
 #if defined(BOARD_RS232_0)
 	gpio_enable_module(BOARD_RS232_0_GPIO_MAP,
-                           sizeof(BOARD_RS232_0_GPIO_MAP) / 
+                           sizeof(BOARD_RS232_0_GPIO_MAP) /
                            sizeof(BOARD_RS232_0_GPIO_MAP[0]));
 #endif
 
 #if defined(BOARD_RS232_1)
 	gpio_enable_module(BOARD_RS232_1_GPIO_MAP,
-                           sizeof(BOARD_RS232_1_GPIO_MAP) / 
+                           sizeof(BOARD_RS232_1_GPIO_MAP) /
                            sizeof(BOARD_RS232_1_GPIO_MAP[0]));
 #endif
 #endif /* NO_SERIAL */
@@ -281,7 +281,7 @@ static void init_printk(void)
 
 void board_init(void)
 {
-        
+
     init_exceptions();
     init_hmatrix();
     init_sys_clocks();
@@ -289,7 +289,7 @@ void board_init(void)
 
     init_rs232();
     init_printk();
-        
+
 #ifdef WITH_SDRAM
     sdramc_init(FHSB_HZ);
 #endif

@@ -1,10 +1,10 @@
-/*************************************************** 
+/***************************************************
   This is a library for the Adafruit 1.8" SPI display.
   This library works with the Adafruit 1.8" TFT Breakout w/SD card
   ----> http://www.adafruit.com/products/358
   as well as Adafruit raw 1.8" TFT display
   ----> http://www.adafruit.com/products/618
- 
+
   Check out the links above for our tutorials and wiring diagrams
   These displays use SPI to communicate, 4 or 5 pins are required to
   interface (RST is optional)
@@ -95,7 +95,7 @@ digitalWrite(_cs, LOW);
 //SPI.transfer(c);
 //  *csport |= cspinmask;
 digitalWrite(_cs, HIGH);
-} 
+}
 
 
 // Rather than a bazillion writecommand() and writedata() calls, screen
@@ -218,8 +218,8 @@ uint8_t
       0x17, 0x1b, 0x1d, 0x0e,
       0x14, 0x11, 0x2c, 0xa5,
       0x3d, 0x09, 0x27, 0x2d,
-      0x25, 0x2b, 0x3c, 
-      50, 
+      0x25, 0x2b, 0x3c,
+      50,
     ILI9163C_NORON  ,    DELAY, // 18: Normal display on, no args, w/delay
       10,                       //     10 ms delay
     ILI9163C_DISPON ,    DELAY, // 19: Main screen turn on, no args w/delay
@@ -250,7 +250,7 @@ Rcmd1[] = {                   // Init for 7735R, part 1 (red or green tab)
       0x00,                   //     Boost frequency
     ILI9163C_PWCTR4 , 2      ,  // 10: Power control, 2 args, no delay:
       0x8A,                   //     BCLK/2, Opamp current small & Medium low
-      0x2A,  
+      0x2A,
     ILI9163C_PWCTR5 , 2      ,  // 11: Power control, 2 args, no delay:
       0x8A, 0xEE,
     ILI9163C_VMCTR1 , 1      ,  // 12: Power control, 1 arg, no delay:
@@ -402,7 +402,7 @@ void Arduino_LCD::setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1,
 
   writecommand(ILI9163C_CASET); // Column addr set
   writedata(0x00);
-  writedata(x0+colstart);     // XSTART 
+  writedata(x0+colstart);     // XSTART
   writedata(0x00);
   writedata(x1+colstart);     // XEND
 
@@ -602,7 +602,7 @@ void Arduino_LCD::invertDisplay(boolean i) {
   writecommand(i ? ILI9163C_INVON : ILI9163C_INVOFF);
 }
 
-/* 
+/*
   18, // there are 17 commands
     ILI9163C_SWRESET,   DELAY,  //  1: Software reset, no args, w/delay
       50,                     //     50 ms delay

@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -41,7 +41,7 @@ GSM3ShieldV1BandManagement::GSM3ShieldV1BandManagement(bool trace): modem(trace)
 	quectelStrings[PCS_MODE]="\"PCS_MODE\"";
 	quectelStrings[EGSM_DCS_MODE]="\"EGSM_DCS_MODE\"";
 	quectelStrings[GSM850_PCS_MODE]="\"GSM850_PCS_MODE\"";
-	quectelStrings[GSM850_EGSM_DCS_PCS_MODE]="\"GSM850_EGSM_DCS_PCS_MODE\"";	
+	quectelStrings[GSM850_EGSM_DCS_PCS_MODE]="\"GSM850_EGSM_DCS_PCS_MODE\"";
 }
 
 GSM3_NetworkStatus_t GSM3ShieldV1BandManagement::begin()
@@ -58,7 +58,7 @@ GSM3_NetworkStatus_t GSM3ShieldV1BandManagement::begin()
 String GSM3ShieldV1BandManagement::getBand()
 {
   String modemResponse=modem.writeModemCommand("AT+QBAND?", 2000);
-	
+
   for(GSM3GSMBand i=GSM850_EGSM_DCS_PCS_MODE;i>UNDEFINED;i=(GSM3GSMBand)((int)i-1))
   {
     if(modemResponse.indexOf(quectelStrings[i])>=0)
@@ -67,7 +67,7 @@ String GSM3ShieldV1BandManagement::getBand()
 
   Serial.print("Unrecognized modem answer:");
   Serial.println(modemResponse);
-  
+
   return "";
 }
 
@@ -87,12 +87,12 @@ bool GSM3ShieldV1BandManagement::setBand(String band)
 			found=true;
 		}
 	}
-	
+
 	if(!found)
 		return false;
 	// Quad-band takes an awful lot of time
     modemResponse=modem.writeModemCommand(command, 15000);
-	
+
 	if(modemResponse.indexOf("QBAND")>=0)
       return true;
 	else

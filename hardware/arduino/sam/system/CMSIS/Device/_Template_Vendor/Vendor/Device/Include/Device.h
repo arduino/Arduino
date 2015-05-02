@@ -1,6 +1,6 @@
 /**************************************************************************//**
  * @file     <Device>.h
- * @brief    CMSIS Cortex-M# Core Peripheral Access Layer Header File 
+ * @brief    CMSIS Cortex-M# Core Peripheral Access Layer Header File
  *           for the Device Series ...
  * @version  V2.10
  * @date     20. July 2011
@@ -9,9 +9,9 @@
  * Copyright (C) 2010-2011 ARM Limited. All rights reserved.
  *
  * @par
- * ARM Limited (ARM) is supplying this software for use with Cortex-M 
- * processor based microcontrollers.  This file can be freely distributed 
- * within development tools that are supporting such ARM based processors. 
+ * ARM Limited (ARM) is supplying this software for use with Cortex-M
+ * processor based microcontrollers.  This file can be freely distributed
+ * within development tools that are supporting such ARM based processors.
  *
  * @par
  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
@@ -28,7 +28,7 @@
 
 #ifdef __cplusplus
  extern "C" {
-#endif 
+#endif
 
 /* ToDo: replace '<Device>' with your device name; add your doxyGen comment   */
 /** @addtogroup <Device>_Definitions <Device> Definitions
@@ -137,7 +137,7 @@ typedef enum IRQn
 */
 typedef struct
 {
-  __IO uint32_t EN;                         /*!< Offset: 0x0000   Timer Enable Register           */               
+  __IO uint32_t EN;                         /*!< Offset: 0x0000   Timer Enable Register           */
   __IO uint32_t RUN;                        /*!< Offset: 0x0004   Timer RUN Register              */
   __IO uint32_t CR;                         /*!< Offset: 0x0008   Timer Control Register          */
   __IO uint32_t MOD;                        /*!< Offset: 0x000C   Timer Mode Register             */
@@ -162,7 +162,7 @@ typedef struct
 /******************************************************************************/
 /*                         Peripheral memory map                              */
 /******************************************************************************/
-/* ToDo: add here your device peripherals base addresses                
+/* ToDo: add here your device peripherals base addresses
          following is an example for timer                                    */
 /** @addtogroup <Device>_MemoryMap <Device> Memory Mapping
   @{
@@ -183,7 +183,7 @@ typedef struct
 /******************************************************************************/
 /*                         Peripheral declaration                             */
 /******************************************************************************/
-/* ToDo: add here your device peripherals pointer definitions                
+/* ToDo: add here your device peripherals pointer definitions
          following is an example for timer                                    */
 
 /** @addtogroup <Device>_PeripheralDecl <Device> Peripheral Declaration

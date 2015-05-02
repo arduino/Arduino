@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -48,22 +48,22 @@ class GSM3MobileAccessProvider
 			@return If synchronous, GSM3_NetworkStatus_t. If asynchronous, returns 0.
 		 */
 		virtual inline GSM3_NetworkStatus_t begin(char* pin=0,bool restart=true, bool synchronous=true)=0;
-		
+
 		/** Check network access status
 			@return 1 if Alive, 0 if down
 		*/
 		virtual inline int isAccessAlive()=0;
-		
+
 		/** Shutdown the modem (power off really)
 			@return true if successful
 		 */
 		virtual inline bool shutdown()=0;
-		
+
 		/** Secure shutdown the modem (power off really)
 			@return always true
 		 */
 		virtual inline bool secureShutdown()=0;
-		
+
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		 */

@@ -1,60 +1,60 @@
-/* ----------------------------------------------------------------------   
-* Copyright (C) 2010 ARM Limited. All rights reserved.   
-*   
-* $Date:        15. July 2011  
-* $Revision: 	V1.0.10  
-*   
-* Project: 	    CMSIS DSP Library   
-* Title:		arm_mean_q31.c   
-*   
-* Description:	Mean value of a Q31 vector.  
-*   
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010 ARM Limited. All rights reserved.
+*
+* $Date:        15. July 2011
+* $Revision: 	V1.0.10
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_mean_q31.c
+*
+* Description:	Mean value of a Q31 vector.
+*
 * Target Processor: Cortex-M4/Cortex-M3/Cortex-M0
-*  
-* Version 1.0.10 2011/7/15 
-*    Big Endian support added and Merged M0 and M3/M4 Source code.  
-*   
-* Version 1.0.3 2010/11/29  
-*    Re-organized the CMSIS folders and updated documentation.   
-*    
-* Version 1.0.2 2010/11/11   
-*    Documentation updated.    
-*   
-* Version 1.0.1 2010/10/05    
-*    Production release and review comments incorporated.   
-*   
-* Version 1.0.0 2010/09/20    
-*    Production release and review comments incorporated.   
+*
+* Version 1.0.10 2011/7/15
+*    Big Endian support added and Merged M0 and M3/M4 Source code.
+*
+* Version 1.0.3 2010/11/29
+*    Re-organized the CMSIS folders and updated documentation.
+*
+* Version 1.0.2 2010/11/11
+*    Documentation updated.
+*
+* Version 1.0.1 2010/10/05
+*    Production release and review comments incorporated.
+*
+* Version 1.0.0 2010/09/20
+*    Production release and review comments incorporated.
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**   
- * @ingroup groupStats   
+/**
+ * @ingroup groupStats
  */
 
-/**   
- * @addtogroup mean   
- * @{   
+/**
+ * @addtogroup mean
+ * @{
  */
 
-/**   
- * @brief Mean value of a Q31 vector.   
- * @param[in]       *pSrc points to the input vector   
- * @param[in]       blockSize length of the input vector   
- * @param[out]      *pResult mean value returned here   
- * @return none.   
- *   
- * @details   
- * <b>Scaling and Overflow Behavior:</b>   
- *\par   
- * The function is implemented using a 64-bit internal accumulator.   
- * The input is represented in 1.31 format and is accumulated in a 64-bit   
- * accumulator in 33.31 format.   
- * There is no risk of internal overflow with this approach, and the    
- * full precision of intermediate result is preserved.    
- * Finally, the accumulator is truncated to yield a result of 1.31 format.   
- *   
+/**
+ * @brief Mean value of a Q31 vector.
+ * @param[in]       *pSrc points to the input vector
+ * @param[in]       blockSize length of the input vector
+ * @param[out]      *pResult mean value returned here
+ * @return none.
+ *
+ * @details
+ * <b>Scaling and Overflow Behavior:</b>
+ *\par
+ * The function is implemented using a 64-bit internal accumulator.
+ * The input is represented in 1.31 format and is accumulated in a 64-bit
+ * accumulator in 33.31 format.
+ * There is no risk of internal overflow with this approach, and the
+ * full precision of intermediate result is preserved.
+ * Finally, the accumulator is truncated to yield a result of 1.31 format.
+ *
  */
 
 
@@ -73,7 +73,7 @@ void arm_mean_q31(
   /*loop Unrolling */
   blkCnt = blockSize >> 2u;
 
-  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.   
+  /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
    ** a second loop below computes the remaining 1 to 3 samples. */
   while(blkCnt > 0u)
   {
@@ -87,7 +87,7 @@ void arm_mean_q31(
     blkCnt--;
   }
 
-  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.   
+  /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
    ** No loop unrolling is used. */
   blkCnt = blockSize % 0x4u;
 
@@ -114,6 +114,6 @@ void arm_mean_q31(
   *pResult = (q31_t) (sum / (int32_t) blockSize);
 }
 
-/**   
- * @} end of mean group   
+/**
+ * @} end of mean group
  */

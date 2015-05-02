@@ -43,7 +43,7 @@ extern const char* fwVersion;
 #  define ARD_USART_SPI_MOSI_FUNCTION   AVR32_USART1_RXD_0_0_FUNCTION
 #  define ARD_USART_SPI_NSS_PIN         AVR32_USART1_CTS_0_0_PIN
 #  define ARD_USART_SPI_NSS_FUNCTION    AVR32_USART1_CTS_0_0_FUNCTION
-#  define ARD_USART_SPI_IRQ             AVR32_USART1_IRQ 
+#  define ARD_USART_SPI_IRQ             AVR32_USART1_IRQ
 #endif
 #if BOARD == ARDUINO
 #  define ARD_SPI                 (&AVR32_SPI0)
@@ -286,7 +286,7 @@ void showTTCPstatus()
 			if (p)
 			{
 				ttcp_t* _ttcp = (ttcp_t* )p;
-				printk("Socket n.:%d(%d) [0x%x] %s %s addr:%s port:%d\n", i, ii, _ttcp, 
+				printk("Socket n.:%d(%d) [0x%x] %s %s addr:%s port:%d\n", i, ii, _ttcp,
 					ProtMode2Str(_ttcp->udp), Mode2Str(_ttcp->mode), ip2str(_ttcp->addr), _ttcp->port);
 				if (_ttcp->udp == TCP_MODE)
 				{
@@ -304,20 +304,20 @@ void showTTCPstatus()
 				}else{
 					if (_ttcp->upcb){
 						struct ip_addr loc = _ttcp->upcb->local_ip;
-						printk("[upcp-%p] flags:0x%x  local:%s[0x%x]-%d\n", 
+						printk("[upcp-%p] flags:0x%x  local:%s[0x%x]-%d\n",
 								_ttcp->upcb, _ttcp->upcb->flags,
-								ip2str(loc), loc, _ttcp->upcb->local_port);				
+								ip2str(loc), loc, _ttcp->upcb->local_port);
 						tRemoteClient remote = {0,0};;
 						getRemoteData(i, ii, &remote);
 						struct ip_addr ipaddr = { remote.ipaddr };
 						printk("remote:%s(0x%x)-%d\n", ip2str(ipaddr), remote.ipaddr, remote.port);
-						}					
+						}
 				}
 				//ard_tcp_print_stats(_ttcp);
 				printk("Data avail:%s\n", isAvailTcpDataByte(i)?"YES":"NO");
 				printk("------------------------------\n");
 			}
-		}			
+		}
 	}
 
 	tcp_debug_print_pcbs();
@@ -510,17 +510,17 @@ int set_passphrase_cmd_cb(int numParam, char* buf, void* ctx) {
 		RETURN_ERR(WL_FAILURE)
 	}
     params = (tParam*)((char*)buf+PARAM_LEN_SIZE+params->paramLen);
-    // PASSPHRASE     
-   
+    // PASSPHRASE
+
     strncpy(pass, (const char*)&params->param, params->paramLen);
     pass[(uint8_t)params->paramLen]='\0';
     INFO_SPI("Pass: %s %d\n", pass, params->paramLen);
 
-    if (wl_set_passphrase(&net, 
-                          pass, 
-                          params->paramLen, 
+    if (wl_set_passphrase(&net,
+                          pass,
+                          params->paramLen,
                           ENC_TYPE_AUTO,
-                          AUTH_MODE_AUTO) 
+                          AUTH_MODE_AUTO)
         != WL_SUCCESS) {
             WARN("%s : Failed to add passphrase\n", __func__);
 
@@ -551,7 +551,7 @@ int set_ip_config_cmd_cb(int numParam, char* buf, void* ctx) {
 	{
 		GET_PARAM_NEXT(BYTE, params, _parmsToChange);
 		parmsToChange = _parmsToChange;
-	}		
+	}
     else
     	RETURN_ERR(WL_FAILURE)
 
@@ -570,20 +570,20 @@ int set_ip_config_cmd_cb(int numParam, char* buf, void* ctx) {
     	    	switch (i)
     	    	{
     	    		case 0:	// local_ip
-					{ 	    			
+					{
     	    			netif_set_ipaddr(nif, &lwip_addr);
     	    			break;
-					}								
+					}
     	    		case 1:	// gateway
 					{
     	    			netif_set_gw(nif, &lwip_addr);
     	    			break;
-					}					
+					}
     	    		case 2:	// subnet
 					{
     	    			netif_set_netmask(nif, &lwip_addr);
     	    			break;
-					}					
+					}
     	    	}
     	    }else{
     	    	RETURN_ERR(WL_FAILURE)
@@ -594,7 +594,7 @@ int set_ip_config_cmd_cb(int numParam, char* buf, void* ctx) {
     	ncfg->dhcp_enabled = STATIC_IP_CONFIG;
     }else
     	RETURN_ERR(WL_FAILURE)
-		
+
     RETURN_ERR(err)
 }
 
@@ -613,7 +613,7 @@ int set_dns_config_cmd_cb(int numParam, char* buf, void* ctx) {
 	{
 		GET_PARAM_NEXT(BYTE, params, _parmsToChange);
 		parmsToChange = _parmsToChange;
-	}		
+	}
     else
     	RETURN_ERR(WL_FAILURE)
 
@@ -638,7 +638,7 @@ int set_dns_config_cmd_cb(int numParam, char* buf, void* ctx) {
     	ncfg->dhcp_enabled = STATIC_IP_CONFIG;
     }else
     	RETURN_ERR(WL_FAILURE)
-		
+
     RETURN_ERR(err)
 }
 
@@ -650,7 +650,7 @@ void set_result(wl_status_t _status)
 }
 
 
-void set_result_cmd(int err) 
+void set_result_cmd(int err)
 {
     wl_err_t _err = (wl_err_t)err;
     switch (_err)
@@ -778,7 +778,7 @@ int start_client_tcp(uint32_t _addr, uint16_t port, uint8_t sock, uint8_t protMo
 		setMapSock(sock, _ttcp);
 		err = WL_SUCCESS;
 	}else{
-		INFO_SPI("Start Client %s %p [0x%x, %d, %d] FAILED!\n", ProtMode2Str(protMode), 
+		INFO_SPI("Start Client %s %p [0x%x, %d, %d] FAILED!\n", ProtMode2Str(protMode),
 				_ttcp, addr, port, sock);
 		clearMapSockTcp(sock, TTCP_MODE_TRANSMIT);
 	}
@@ -876,7 +876,7 @@ int get_result_cmd_cb(int numParam, char* buf, void* ctx) {
 	return WIFI_SPI_ACK;
 }
 
-int disconnect_cmd_cb(int numParam, char* buf, void* ctx) 
+int disconnect_cmd_cb(int numParam, char* buf, void* ctx)
 {
 	return ((wl_disconnect()==WL_SUCCESS)? WIFI_SPI_ACK : WIFI_SPI_ERR);
 }
@@ -900,7 +900,7 @@ cmd_spi_state_t get_reply_cb(char* recv, char* reply, void* ctx, uint16_t* count
 }
 
 cmd_spi_state_t ack_reply_cb(char* recv, char* reply, void* ctx, uint16_t* count) {
-     
+
     CREATE_HEADER_REPLY(reply, recv, 1);
 
     reply[3] = 1; // paramLen
@@ -1284,7 +1284,7 @@ cmd_spi_state_t get_client_state_tcp_cmd_cb(char* recv, char* reply, void* ctx, 
     	void * p= getTTCP(_sock, TTCP_MODE_TRANSMIT);
     	if (p!=NULL)
     	{
-			_state = getStateTcp(p, 1);	
+			_state = getStateTcp(p, 1);
     	}else{
     		WARN_VER("TTCP not found for sock:%d\n", _sock);
     	}
@@ -1753,13 +1753,13 @@ inline int spi_slaveReceiveInt(volatile avr32_spi_t *spi)
 		}
 		//DEB_PIN_TG();
 		#if 0
-#ifdef _SPI_STATS_		
+#ifdef _SPI_STATS_
 		if (spi->sr & AVR32_SPI_SR_OVRES_MASK)
 		{
 			STATSPI_OVERRIDE_ERROR();
 		}
-#endif	
-#endif					
+#endif
+#endif
 		if (err == SPI_OK) {
 			_receiveBuffer[index] = (spi->rdr >> AVR32_SPI_RDR_RD_OFFSET) & 0x00ff;
 			DEB_PIN_UP(2);
@@ -1787,7 +1787,7 @@ inline int spi_slaveReceiveInt(volatile avr32_spi_t *spi)
 			bool islen16bit = ((_receiveBuffer[CMD_POS] & DATA_FLAG) == DATA_FLAG);
 			if (index >= idx)
 			{
-				numParams = _receiveBuffer[PARAM_LEN_POS];					
+				numParams = _receiveBuffer[PARAM_LEN_POS];
 				while (((index-1) > idx)&&(numParams>0))
 				{
 					if (islen16bit)
@@ -1802,10 +1802,10 @@ inline int spi_slaveReceiveInt(volatile avr32_spi_t *spi)
 			if (!endOfFrame){
 				WARN("Wrong termination index:%d nParam:%d idx:%d 16bit:%d\n", index, numParams, idx, islen16bit);
 				#ifdef _DEBUG_
-					dump((char*)_receiveBuffer, receivedChars); 
+					dump((char*)_receiveBuffer, receivedChars);
 					while(0);
 				#endif
-			}		
+			}
 		}
 	} while (!endOfFrame);
 	return err;

@@ -3,11 +3,11 @@
  basic graphics primitives (points, lines, circles, etc.). It needs
  to be paired with a hardware-specific library for each display
  device we carry (handling the lower-level functions).
- 
+
  Adafruit invests time and resources providing this open
  source code, please support Adafruit and open-source hardware
  by purchasing products from Adafruit!
- 
+
  Written by Limor Fried/Ladyada for Adafruit Industries.
  BSD license, check license.txt for more information.
  All text above must be included in any redistribution.
@@ -96,18 +96,18 @@ class Adafruit_GFX : public Print {
 
   uint8_t getRotation(void);
 
-  
+
   /*
    * Processing-like graphics primitives
    */
-  
+
   /// transforms a color in 16-bit form given the RGB components.
   /// The default implementation makes a 5-bit red, a 6-bit
   /// green and a 5-bit blue (MSB to LSB). Devices that use
-  /// different scheme should override this. 
+  /// different scheme should override this.
   virtual uint16_t newColor(uint8_t red, uint8_t green, uint8_t blue);
-  
-  
+
+
   // http://processing.org/reference/background_.html
   void background(uint8_t red, uint8_t green, uint8_t blue);
   void background(color c);
@@ -125,44 +125,44 @@ class Adafruit_GFX : public Print {
 
   // http://processing.org/reference/noStroke_.html
   void noStroke();
-  
+
   void text(const char * text, int16_t x, int16_t y);
   void text(int value, uint8_t posX, uint8_t posY);
   void text(long value, uint8_t posX, uint8_t posY);
   void text(char value, uint8_t posX, uint8_t posY);
-  
+
   void textWrap(const char * text, int16_t x, int16_t y);
 
   void textSize(uint8_t size);
-  
+
   // similar to ellipse() in Processing, but with
   // a single radius.
   // http://processing.org/reference/ellipse_.html
   void circle(int16_t x, int16_t y, int16_t r);
-  
+
   void point(int16_t x, int16_t y);
-  
+
   void line(int16_t x1, int16_t y1, int16_t x2, int16_t y2);
-  
+
   void quad(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, int16_t x4, int16_t y4);
-  
+
   void rect(int16_t x, int16_t y, int16_t width, int16_t height);
 
   void rect(int16_t x, int16_t y, int16_t width, int16_t height, int16_t radius);
-  
+
   void triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3);
-  
+
   /* TODO
   void rectMode(RectMode mode);
-  
+
   void pushStyle();
   void popStyle();
   */
 
 //  PImage loadImage(const char * fileName) { return PImage::loadImage(fileName); }
-  
+
 //  void image(PImage & img, uint16_t x, uint16_t y);
-  
+
  protected:
   const int16_t
     WIDTH, HEIGHT;   // This is the 'raw' display w/h - never changes
@@ -180,7 +180,7 @@ class Adafruit_GFX : public Print {
   /*
    * Processing-style graphics state
    */
-  
+
   color strokeColor;
   bool useStroke;
   color fillColor;

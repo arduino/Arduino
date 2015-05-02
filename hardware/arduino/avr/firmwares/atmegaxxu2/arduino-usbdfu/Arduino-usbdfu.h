@@ -1,7 +1,7 @@
 /*
              LUFA Library
      Copyright (C) Dean Camera, 2010.
-              
+
   dean [at] fourwalledcubicle [dot] com
       www.fourwalledcubicle.com
 */
@@ -9,13 +9,13 @@
 /*
   Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
-  Permission to use, copy, modify, distribute, and sell this 
+  Permission to use, copy, modify, distribute, and sell this
   software and its documentation for any purpose is hereby granted
-  without fee, provided that the above copyright notice appear in 
+  without fee, provided that the above copyright notice appear in
   all copies and that both that the copyright notice and this
-  permission notice and warranty disclaimer appear in supporting 
-  documentation, and that the name of the author not be used in 
-  advertising or publicity pertaining to distribution of the 
+  permission notice and warranty disclaimer appear in supporting
+  documentation, and that the name of the author not be used in
+  advertising or publicity pertaining to distribution of the
   software without specific, written prior permission.
 
   The author disclaim all warranties with regard to this
@@ -45,25 +45,25 @@
 		#include <avr/power.h>
 		#include <avr/interrupt.h>
 		#include <stdbool.h>
-	
+
 		#include "Descriptors.h"
-		
+
 		#include <LUFA/Drivers/Board/LEDs.h>
 		#include <LUFA/Drivers/USB/USB.h>
-	
+
 	/* Macros: */
 		/** LED mask for the library LED driver, to indicate TX activity. */
 		#define LEDMASK_TX               LEDS_LED1
 
 		/** LED mask for the library LED driver, to indicate RX activity. */
 		#define LEDMASK_RX               LEDS_LED2
-		
+
 		/** LED mask for the library LED driver, to indicate that an error has occurred in the USB interface. */
 		#define LEDMASK_ERROR            (LEDS_LED1 | LEDS_LED2)
-		
+
 		/** LED mask for the library LED driver, to indicate that the USB interface is busy. */
-		#define LEDMASK_BUSY             (LEDS_LED1 | LEDS_LED2)		
-	
+		#define LEDMASK_BUSY             (LEDS_LED1 | LEDS_LED2)
+
 		/** Configuration define. Define this token to true to case the bootloader to reject all memory commands
 		 *  until a memory erase has been performed. When used in conjunction with the lockbits of the AVR, this
 		 *  can protect the AVR's firmware from being dumped from a secured AVR. When false, memory operations are
@@ -77,7 +77,7 @@
 		/** Minor bootloader version number. */
 		#define BOOTLOADER_VERSION_REV   0
 
-		/** Complete bootloader version number expressed as a packed byte, constructed from the 
+		/** Complete bootloader version number expressed as a packed byte, constructed from the
 		 *  two individual bootloader version macros.
 		 */
 		#define BOOTLOADER_VERSION       ((BOOTLOADER_VERSION_MINOR << 4) | BOOTLOADER_VERSION_REV)
@@ -87,7 +87,7 @@
 
 		/** Second byte of the bootloader identification bytes, used to identify a device's bootloader. */
 		#define BOOTLOADER_ID_BYTE2      0xFB
-		
+
 		/** Convenience macro, used to determine if the issued command is the given one-byte long command.
 		 *
 		 *  \param[in] dataarr  Command byte array to check against
@@ -102,7 +102,7 @@
 		 *  \param[in] cb2      Second command byte to check
 		 */
 		#define IS_TWOBYTE_COMMAND(dataarr, cb1, cb2) ((dataarr[0] == (cb1)) && (dataarr[1] == (cb2)))
-	
+
 		/** Length of the DFU file suffix block, appended to the end of each complete memory write command.
 		 *  The DFU file suffix is currently unused (but is designed to give extra file information, such as
 		 *  a CRC of the complete firmware for error checking) and so is discarded.
@@ -113,7 +113,7 @@
 		 *  Filler bytes are added to the start of each complete memory write command, and must be discarded.
 		 */
 		#define DFU_FILLER_BYTES_SIZE    26
-	
+
 		/** DFU class command request to detach from the host. */
 		#define DFU_DETATCH              0x00
 
@@ -154,7 +154,7 @@
 	/* Type Defines: */
 		/** Type define for a non-returning function pointer to the loaded application. */
 		typedef void (*AppPtr_t)(void) ATTR_NO_RETURN;
-		
+
 		/** Type define for a structure containing a complete DFU command issued by the host. */
 		typedef struct
 		{
@@ -200,7 +200,7 @@
 			errUNKNOWN                   = 14,
 			errSTALLEDPKT	             = 15
 		};
-				
+
 	/* Function Prototypes: */
 		void SetupHardware(void);
 		void ResetHardware(void);
@@ -216,5 +216,5 @@
 			static void ProcessWriteCommand(void);
 			static void ProcessReadCommand(void);
 		#endif
-		
+
 #endif /* _ARDUINO_USB_DFU_BOOTLOADER_H_ */

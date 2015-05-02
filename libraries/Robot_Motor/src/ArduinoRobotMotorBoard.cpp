@@ -20,13 +20,13 @@ void RobotMotorBoard::begin(){
 	this->IRs.begin(MuxPins,MUX_IN,3);
 	pinMode(MUXI,INPUT);
 	digitalWrite(MUXI,LOW);
-	
+
 	isPaused=false;
 }
 
 void RobotMotorBoard::process(){
 	if(isPaused)return;//skip process if the mode is paused
-	
+
 	if(mode==MODE_SIMPLE){
 		//Serial.println("s");
 		//do nothing? Simple mode is just about getting commands
@@ -163,13 +163,13 @@ void RobotMotorBoard::motorsWrite(int speedL, int speedR){
 	Serial.println(speedR);*/
 	//motor adjustment, using percentage
 	_refreshMotorAdjustment();
-	
+
 	if(motorAdjustment<0){
 		speedR*=(1+motorAdjustment);
 	}else{
 		speedL*=(1-motorAdjustment);
 	}
-	
+
 	if(speedR>0){
 		analogWrite(IN_A1,speedR);
 		analogWrite(IN_A2,0);
@@ -177,7 +177,7 @@ void RobotMotorBoard::motorsWrite(int speedL, int speedR){
 		analogWrite(IN_A1,0);
 		analogWrite(IN_A2,-speedR);
 	}
-	
+
 	if(speedL>0){
 		analogWrite(IN_B1,speedL);
 		analogWrite(IN_B2,0);
@@ -234,7 +234,7 @@ int RobotMotorBoard::IRread(uint8_t num){
 }
 
 int RobotMotorBoard::_IRread(uint8_t num){
-	IRs.selectPin(num); 
+	IRs.selectPin(num);
 	return IRs.getAnalogValue();
 }
 
@@ -253,7 +253,7 @@ void RobotMotorBoard::_readTrim(){
 	int value=analogRead(TRIM);
 	messageOut.writeByte(COMMAND_READ_TRIM_RE);
 	messageOut.writeInt(value);
-	messageOut.sendData();	
+	messageOut.sendData();
 }
 
 void RobotMotorBoard::_refreshMotorAdjustment(){

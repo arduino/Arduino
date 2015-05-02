@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -41,24 +41,24 @@ class GSM3ShieldV1ModemVerification
 {
 
 	private:
-		
+
 		GSM3ShieldV1DirectModemProvider modemAccess;
 		GSM3ShieldV1AccessProvider gsm; // Access provider to GSM/GPRS network
-		
+
 	public:
 
 		/** Constructor */
 		GSM3ShieldV1ModemVerification();
-	
+
 		/** Check modem response and restart it
 		 */
 		int begin();
-		
+
 		/** Obtain modem IMEI (command AT)
 			@return modem IMEI number
 		 */
 		String getIMEI();
-		
+
 };
 
 #endif

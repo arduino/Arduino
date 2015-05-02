@@ -2,9 +2,9 @@
 
 /*
  * Copyright (c) 2001-2003 Swedish Institute of Computer Science.
- * All rights reserved. 
+ * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, 
+ * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -13,21 +13,21 @@
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission. 
+ *    derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED 
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
- * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+ * SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
  * OF SUCH DAMAGE.
  *
  * This file is derived from a part of the lwIP TCP/IP stack.
- * 
+ *
  */
 #ifdef PING_CMD
 #include "lwip/opt.h"
@@ -119,7 +119,7 @@ static u8_t ping_recv(void *arg, struct raw_pcb *pcb, struct pbuf *p,
                                        iecho->seqno,
                                        IPH_TTL(ip),
                                        us / 1000, us % 1000);
-                        
+
                         /* do some ping result processing */
                         ping_info->flags |= PING_REPLY;
                 }
@@ -193,11 +193,11 @@ static int init_ping_info(int argc, char* argv[], struct ping_info_t* ping_info)
                 case 'c':
                         ping_info->count = atoi(optarg);
                         break;
-                        
+
                 case 'i':
                         ping_info->interval = atoi(optarg);
                         break;
-                        
+
                 case 's':
                         ping_info->data_size = atoi(optarg);
                         break;
@@ -220,7 +220,7 @@ static int init_ping_info(int argc, char* argv[], struct ping_info_t* ping_info)
         ping_info->destination = str2ip(argv[optind]);
         if (!ping_info->destination.addr)
                 return -1;
-                
+
 
         ping_info->last_rx_tm = timer_get_ms();
 
@@ -256,7 +256,7 @@ cmd_state_t cmd_ping(int argc, char* argv[], void* ctx)
 
         struct ping_info_t *ping_info = &INFO;
         static struct raw_pcb *pcb;
-        
+
         switch (state) {
         case INIT:
                 if (init_ping_info(argc, argv, ping_info) != 0) {
@@ -280,7 +280,7 @@ cmd_state_t cmd_ping(int argc, char* argv[], void* ctx)
                        ping_info->size);
                 state = PING;
                 /* fall through */
-                
+
         case PING:
                 if (!netif_is_up(netif_default)) {
                         printk("netif is down\n");
@@ -288,7 +288,7 @@ cmd_state_t cmd_ping(int argc, char* argv[], void* ctx)
                         state = INIT;
                         return CMD_DONE;
                 }
-                
+
                 if (ping_info->count && ping_info->num_tx == ping_info->count) {
                         ping_finalize(ping_info);
                         raw_remove(pcb);
@@ -296,15 +296,15 @@ cmd_state_t cmd_ping(int argc, char* argv[], void* ctx)
                         return CMD_DONE;
                 }
 
-                
+
                 if (timer_get_ms() < ping_info->last_rx_tm + ping_info->interval) {
                         return CMD_INPROGRESS;
                 }
                 ping_send(pcb, ping_info);
-                        
+
                 state = WAIT_REPLY;
                 return CMD_INPROGRESS;
-                
+
         case WAIT_REPLY:
                 if (ping_info->flags & PING_REPLY) {
                         ping_info->flags &= (~PING_REPLY);

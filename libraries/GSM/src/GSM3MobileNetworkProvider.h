@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -38,49 +38,49 @@ https://github.com/BlueVia/Official-Arduino
 #include <inttypes.h>
 #include <stddef.h>
 #include <IPAddress.h>
-		
-class GSM3MobileNetworkProvider 
+
+class GSM3MobileNetworkProvider
 {
 	private:
-	
+
 		/** Restart hardware
 			@return 1 if successful
 		 */
 		int HWrestart();
-		
+
 		uint16_t socketsAsServer; // Server socket
-		
+
 		/** Get modem status
 			@param s			Socket
 			@return modem status (true if connected)
 		 */
 		virtual inline bool getSocketAsServerModemStatus(int s){return false;};
-		
+
 	public:
-		
+
 		/** minSocketAsServer
 			@return 0
 		 */
 		virtual inline int minSocketAsServer(){return 0;};
-		
+
 		/** maxSocketAsServer
 			@return 0
 		 */
 		virtual inline int maxSocketAsServer(){return 0;};
-		
+
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
 		 */
 		virtual int ready()=0;
-		
+
 		/** Constructor */
 		GSM3MobileNetworkProvider();
-		
+
 		/** Get network status
 			@return network status
 		 */
 		virtual inline GSM3_NetworkStatus_t getStatus(){return ERROR;};
-		
+
 		/** Get socket client status
 			@param socket		Socket
 			@return 1 if connected, 0 otherwise
@@ -91,7 +91,7 @@ class GSM3MobileNetworkProvider
 			@param code			Close code
 		 */
 		virtual inline void closeCommand(int code){};
-		
+
 		/** Establish a TCP connection
 			@param port				Port
 			@param localIP			IP address
@@ -99,31 +99,31 @@ class GSM3MobileNetworkProvider
 			@return	command error if exists
 		 */
 		virtual inline int connectTCPServer(int port, char* localIP, int localIPlength){return 0;};
-		
+
 		/** Get local IP address
 			@param LocalIP			Buffer for save IP address
 			@param LocalIPlength	Buffer size
 		 */
 		virtual inline int getIP(char* LocalIP, int LocalIPlength){return 0;};
-			
+
 		/** Get new occupied socket
 			@return -1 if no new socket has been occupied
 		 */
 		int getNewOccupiedSocketAsServer();
-		
+
 		/** Get socket status as server
 			@param socket			Socket to get status
 			@return socket status
 		 */
 		bool getStatusSocketAsServer(uint8_t socket);
-		
+
 		/** Close a socket
 			@param client1Server0	1 if modem acts as client, 0 if acts as server
 			@param id_socket		Local socket number
 			@return 0 if command running, 1 if success, otherwise error
 		 */
 		int disconnectTCP(bool client1Server0, int idsocket){return 1;};
-		
+
 		/** Release socket
 			@param socket		Socket
 		 */

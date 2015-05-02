@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -46,7 +46,7 @@ https://github.com/BlueVia/Official-Arduino
 #define __NCLIENTS_MAX__ 3
 
 //Constructor.
-GSM3ShieldV1::GSM3ShieldV1(bool db) 
+GSM3ShieldV1::GSM3ShieldV1(bool db)
 {
 	theGSM3ShieldV1ModemCore.setCommandCounter(1);
 	socketsAccepted=0;
@@ -69,8 +69,8 @@ void GSM3ShieldV1::manageResponse(byte from, byte to)
 //Function for 2 sec delay inside an interruption.
 void GSM3ShieldV1::delayInsideInterrupt2seg()
 {
-	for (int k=0;k<40;k++)  theGSM3ShieldV1ModemCore.gss.tunedDelay(50000); 
-} 
+	for (int k=0;k<40;k++)  theGSM3ShieldV1ModemCore.gss.tunedDelay(50000);
+}
 
 ///////////////////////////////////////////////////////UNSOLICITED RESULT CODE (URC) FUNCTIONS///////////////////////////////////////////////////////////////////
 
@@ -87,8 +87,8 @@ char auxLocate [15];
 		theGSM3ShieldV1ModemCore.gss.cb.flush();
 		return true;
 	}
-	
-	
+
+
 	return false;
 }
 

@@ -40,7 +40,7 @@ static void atcp_init_pend_flags(struct ttcp* _ttcp)
 	for (; i<MAX_CLIENT_ACCEPTED; ++i)
 	{
 		if (_ttcp) _ttcp->pending_close[i] = false;
-	}		
+	}
 }
 
 /**
@@ -66,7 +66,7 @@ static void ard_tcp_destroy(struct ttcp* ttcp) {
 			//TEMPORAQARY
 			//err = tcp_close(ttcp->tpcb);
 			INFO_TCP("Closing tpcb: state:0x%x err:%d\n", ttcp->tpcb[i]->state, err);
-		}		
+		}
 	}
 
 	if (ttcp->lpcb) {
@@ -100,17 +100,17 @@ static void ard_tcp_done(struct ttcp* ttcp, int result) {
 }
 
 /**
- * Only used in TCP mode. 
- * Will transmit a maximum of pbuf->tot_len bytes. 
+ * Only used in TCP mode.
+ * Will transmit a maximum of pbuf->tot_len bytes.
  * Called upon connect and when there's space available in the TCP send window
- * 
+ *
  */
 static err_t tcp_send_data_pcb(struct ttcp *ttcp, struct tcp_pcb *pcb) {
 	err_t err = ERR_OK;
 	uint32_t len;
 
 	GET_CLIENT_ID(ttcp, pcb);
-	
+
 	len = ttcp->left[id];
 	ttcp->buff_sent[id] = 0;
 
@@ -131,7 +131,7 @@ static err_t tcp_send_data_pcb(struct ttcp *ttcp, struct tcp_pcb *pcb) {
 	err = tcp_write(pcb, ttcp->payload[id], len, TCP_WRITE_FLAG_COPY);
 	if (err != ERR_OK)
 	{
-		INFO_TCP("tcp_write failed %p state:%d len:%d err:%d\n", 
+		INFO_TCP("tcp_write failed %p state:%d len:%d err:%d\n",
 				pcb, pcb->state, len, err);
 		ttcp->buff_sent[id] = 0;
 	}else{
@@ -174,7 +174,7 @@ static void cleanSockState_cb(void *ctx) {
 	_connected = false;
 }
 
-/** 
+/**
  * Only used in TCP mode.
  */
 
@@ -233,7 +233,7 @@ static void atcp_conn_cli_err_cb(void *arg, err_t err) {
 static err_t close_conn(struct ttcp *_ttcp, struct tcp_pcb* tpcb) {
 
 	if (_ttcp == NULL) return ERR_MEM;
-	
+
 	GET_CLIENT_ID(_ttcp, tpcb);
 
 	err_t err = close_conn_pcb(_ttcp->tpcb[id]);
@@ -242,7 +242,7 @@ static err_t close_conn(struct ttcp *_ttcp, struct tcp_pcb* tpcb) {
 	{
 		WARN("Cannot close id:%d-%p put pending\n", id, _ttcp->tpcb[id]);
 		_ttcp->pending_close[id] = true;
-	}		
+	}
 	else{
 		_ttcp->pending_close[id] = false;
 		removeNewClientConn(_ttcp, _ttcp->tpcb[id]);
@@ -320,7 +320,7 @@ static err_t atcp_poll(void *arg, struct tcp_pcb *pcb) {
 	struct ttcp* _ttcp = arg;
 
 	if (_ttcp == NULL) return ERR_ARG;
-	
+
 	GET_CLIENT_ID(_ttcp, pcb);
 
 	if (_ttcp->left[id]>0)
@@ -334,11 +334,11 @@ static err_t atcp_poll(void *arg, struct tcp_pcb *pcb) {
 		_ttcp->pending_close[id] = false;
 	    return ERR_ABRT;
 	}
-	
+
 	if (pcb)
-		INFO_TCP_POLL("keepAliveCnt:%d keep_idle:%d persist_cnt:%d\n", 
+		INFO_TCP_POLL("keepAliveCnt:%d keep_idle:%d persist_cnt:%d\n",
 						pcb->keep_cnt_sent, pcb->keep_idle, pcb->persist_cnt);
-	
+
 	if (_ttcp->left[id] > 0)
 		INFO_TCP("ARD TCP [%p-%p] arg=%p retries=%d pend.close:%d len:%d\n",
 			(_ttcp)?GET_FIRST_CLIENT_TCP(_ttcp):0, pcb, arg,
@@ -346,7 +346,7 @@ static err_t atcp_poll(void *arg, struct tcp_pcb *pcb) {
 	tcp_send_data_pcb(_ttcp, pcb);
 
 	if (_ttcp->pending_close[id])
-	{		
+	{
 		err_t err = ERR_OK;
 		if (id >=0){
 			err = tcp_close(pcb);
@@ -361,8 +361,8 @@ static err_t atcp_poll(void *arg, struct tcp_pcb *pcb) {
 				FREE_PAYLOAD_ID(_ttcp, id);
 				INFO_TCP("----------------------\n");
 			}
-		}	
-		INFO_TCP("ARD TCP [%p-%p] try to close pending:%d err:%d id:%d\n", pcb, 
+		}
+		INFO_TCP("ARD TCP [%p-%p] try to close pending:%d err:%d id:%d\n", pcb,
 			(_ttcp)?GET_FIRST_CLIENT_TCP(_ttcp):0, _ttcp->pending_close[id], err, id);
 	}
 	return ERR_OK;
@@ -374,7 +374,7 @@ static err_t atcp_poll_conn(void *arg, struct tcp_pcb *pcb) {
 	if (_ttcp == NULL) return ERR_ARG;
 
 	GET_CLIENT_ID(_ttcp, pcb)
-	
+
 	INFO_TCP_POLL("ARD TCP [%p-%p] arg=%p retries=%d pend.close:%d conn:%d\n",
 		(_ttcp)?GET_FIRST_CLIENT_TCP(_ttcp):0, pcb, arg,
 		_ttcp->tcp_poll_retries[id], _ttcp->pending_close[id], _connected);
@@ -430,7 +430,7 @@ int8_t getNewClientConnId(struct ttcp* _ttcp, struct tcp_pcb *newpcb)
 			{
 				INFO_TCP_VER("ttcp:%p id=%d, tpcb=%p\n", _ttcp, idx, newpcb);
 				return idx;
-			}				
+			}
 		}
 	}
 	WARN("No Valid Id for ttcp:%p pcb:%p\n",  _ttcp, newpcb);
@@ -449,7 +449,7 @@ struct tcp_pcb * getFirstClient(struct ttcp* _ttcp, bool verbose)
 				if (verbose) INFO_TCP("ttcp:%p id=%d, tpcb=%p\n", _ttcp, idx, _ttcp->tpcb[idx]);
 				currConnId = idx;
 				return _ttcp->tpcb[idx];
-			}				
+			}
 		}
 	}
 	if (verbose) WARN("No Valid client for ttcp:%p\n",  _ttcp);
@@ -554,7 +554,7 @@ static int atcp_start(struct ttcp* ttcp) {
 	err_t err = ERR_OK;
 
 	struct tcp_pcb * p = tcp_new();
-	
+
 	if (p == NULL) {
 		WARN("TTCP [%p]: could not allocate pcb\n", ttcp);
 		return -1;
@@ -572,7 +572,7 @@ static int atcp_start(struct ttcp* ttcp) {
 			WARN("TTCP [%p]: could not allocate payload\n", ttcp);
 			return -1;
 		}
-		
+
 		struct tcp_pcb * pcb = p;
 		tcp_err(pcb, atcp_conn_cli_err_cb);
 		tcp_recv(pcb, atcp_recv_cb);
@@ -664,8 +664,8 @@ static int udp_start(struct ttcp* ttcp) {
 		setRemoteClient(ttcp->sock, 0, 0);
 		udp_recv(ttcp->upcb, audp_recv_cb, ttcp);
 	}
-	INFO_TCP("%s, loc:0x%x-%d rem:0x%x-%d\n", __FUNCTION__, 
-		 ttcp->upcb->local_ip.addr, ttcp->upcb->local_port, 
+	INFO_TCP("%s, loc:0x%x-%d rem:0x%x-%d\n", __FUNCTION__,
+		 ttcp->upcb->local_ip.addr, ttcp->upcb->local_port,
 		 ttcp->upcb->remote_ip.addr, ttcp->upcb->remote_port);
 	return 0;
 }
@@ -674,7 +674,7 @@ static int udp_start(struct ttcp* ttcp) {
  * Start a new ttcp transfer. It should be possible to call this function
  * multiple times in order to get multiple ttcp streams. done_cb() will be
  * invoked upon completion.
- * 
+ *
  */
 int ard_tcp_start(struct ip_addr addr, uint16_t port, void *opaque,
 		ard_tcp_done_cb_t *done_cb, int mode, uint16_t nbuf, uint16_t buflen,
@@ -724,7 +724,7 @@ int ard_tcp_start(struct ip_addr addr, uint16_t port, void *opaque,
 		goto fail;
 	}
 	INFO_TCP("TTCP [%p-%p]: nbuf=%d, buflen=%d, port=%d (%s/%s)\n", ttcp,
-			((ttcp->udp==1)?(void*)ttcp->upcb:GET_FIRST_CLIENT_TCP(ttcp)), ttcp->nbuf, ttcp->buflen, 
+			((ttcp->udp==1)?(void*)ttcp->upcb:GET_FIRST_CLIENT_TCP(ttcp)), ttcp->nbuf, ttcp->buflen,
 			ttcp->port, ProtMode2Str(ttcp->udp), Mode2Str(ttcp->mode));
 
 	*_ttcp = (void*) ttcp;
@@ -776,11 +776,11 @@ uint8_t getStateTcp(void* p, bool client) {
 			if ((pcb->state != ESTABLISHED)&&(pcb->state != CLOSED))
 				DUMP_TCP_STATE(_ttcp);
 			return pcb->state;
-		}			
+		}
 		else
 		{
 			return _ttcp->lpcb->state;
-		}			
+		}
 	} else {
 		WARN_POLL("TCP not initialized ttcp:%p tpcb:%p lpcb:%p\n",
 				_ttcp, ((_ttcp)?pcb:0), ((_ttcp)?_ttcp->lpcb:0));
@@ -831,7 +831,7 @@ static err_t tcp_data_sent(void *arg, struct tcp_pcb *pcb, u16_t len) {
 	return ERR_OK;
 }
 
-int sendTcpData(void* p, uint8_t* buf, uint16_t len) 
+int sendTcpData(void* p, uint8_t* buf, uint16_t len)
 {
 	struct ttcp* _ttcp = (struct ttcp*) p;
 
@@ -840,10 +840,10 @@ int sendTcpData(void* p, uint8_t* buf, uint16_t len)
 		WARN("ttcp == NULL!\n");
 		return WL_FAILURE;
 	}
-	
+
 	struct tcp_pcb * pcb = GET_FIRST_CLIENT_TCP_NV(_ttcp);
 	GET_CLIENT_ID(_ttcp, pcb);
-	
+
 	INFO_TCP_VER("ttcp:%p pcb:%p buf:%p len:%d\n", _ttcp, pcb, buf, len);
 	DUMP_TCP(buf,len);
 	IF_TCP_VER(DUMP_TCP_STATE(_ttcp));

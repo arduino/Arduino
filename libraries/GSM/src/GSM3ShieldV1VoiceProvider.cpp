@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -39,12 +39,12 @@ GSM3ShieldV1VoiceProvider::GSM3ShieldV1VoiceProvider()
 	phonelength=0;
 	theGSM3MobileVoiceProvider=this;
  }
- 
+
  void GSM3ShieldV1VoiceProvider::initialize()
  {
  	theGSM3ShieldV1ModemCore.registerUMProvider(this);
  }
- 
+
 //Voice Call main function.
 int GSM3ShieldV1VoiceProvider::voiceCall(const char* to)
 {
@@ -76,7 +76,7 @@ void GSM3ShieldV1VoiceProvider::retrieveCallingNumberContinue()
 	bool resp;
 	//int msglength_aux;
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
-    case 1:	
+    case 1:
 		theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+CLCC"));
 		theGSM3ShieldV1ModemCore.setCommandCounter(2);
 		break;
@@ -86,16 +86,16 @@ void GSM3ShieldV1VoiceProvider::retrieveCallingNumberContinue()
 			theGSM3ShieldV1ModemCore.closeCommand(1);
 		}
 		break;
-	}	
-}	
+	}
+}
 
-//CLCC parse.	
+//CLCC parse.
 bool GSM3ShieldV1VoiceProvider::parseCLCC(char* number, int nlength)
 {
 	theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("+CLCC: 1,1,4,0,0,\"","\"", number, nlength);
 	theGSM3ShieldV1ModemCore.theBuffer().flush();
 	return true;
-}	
+}
 
 //Answer Call main function.
 int GSM3ShieldV1VoiceProvider::answerCall()
@@ -112,7 +112,7 @@ void GSM3ShieldV1VoiceProvider::answerCallContinue()
 {
 	// 1: ATA
 	// 2: Waiting for OK
-	
+
 	// This implementation really does not care much if the modem aswers trash to CMGL
 	bool resp;
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
@@ -131,8 +131,8 @@ void GSM3ShieldV1VoiceProvider::answerCallContinue()
 		break;
 	}
 }
-		
-//Hang Call main function.		
+
+//Hang Call main function.
 int GSM3ShieldV1VoiceProvider::hangCall()
 {
 	theGSM3ShieldV1ModemCore.setCommandError(0);
@@ -147,7 +147,7 @@ void GSM3ShieldV1VoiceProvider::hangCallContinue()
 {
 	// 1: ATH
 	// 2: Waiting for OK
-	
+
 	bool resp;
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
     case 1:
@@ -164,7 +164,7 @@ void GSM3ShieldV1VoiceProvider::hangCallContinue()
 		}
 		break;
 	}
-}		
+}
 
 //Response management.
 void GSM3ShieldV1VoiceProvider::manageResponse(byte from, byte to)
@@ -179,7 +179,7 @@ void GSM3ShieldV1VoiceProvider::manageResponse(byte from, byte to)
 			break;
 		case RETRIEVECALLINGNUMBER:
 			retrieveCallingNumberContinue();
-			break;	
+			break;
 
 	}
 }
@@ -199,7 +199,7 @@ bool GSM3ShieldV1VoiceProvider::recognizeUnsolicitedEvent(byte oldTail)
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		return true;
 	}
-	
+
 	//CALL ACEPTED.
 	prepareAuxLocate(PSTR("+COLP:"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.theBuffer().locate(auxLocate))
@@ -209,8 +209,8 @@ bool GSM3ShieldV1VoiceProvider::recognizeUnsolicitedEvent(byte oldTail)
 		setvoiceCallStatus(TALKING);
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		return true;
-	}	
-	
+	}
+
 	//NO CARRIER.
 	prepareAuxLocate(PSTR("NO CARRIER"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.theBuffer().locate(auxLocate))
@@ -221,18 +221,18 @@ bool GSM3ShieldV1VoiceProvider::recognizeUnsolicitedEvent(byte oldTail)
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		return true;
 	}
-	
+
 	//BUSY.
 	prepareAuxLocate(PSTR("BUSY"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.theBuffer().locate(auxLocate))
 	{
-		//DEBUG	
+		//DEBUG
 		//Serial.println("BUSY received.");
 		setvoiceCallStatus(IDLE_CALL);
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		return true;
-	}	
-	
+	}
+
 	//CALL RECEPTION.
 	prepareAuxLocate(PSTR("+CLIP:"), auxLocate);
 	if(theGSM3ShieldV1ModemCore.theBuffer().locate(auxLocate))
@@ -241,7 +241,7 @@ bool GSM3ShieldV1VoiceProvider::recognizeUnsolicitedEvent(byte oldTail)
 		setvoiceCallStatus(RECEIVINGCALL);
 		return true;
 	}
-	
+
 	return false;
 }
 

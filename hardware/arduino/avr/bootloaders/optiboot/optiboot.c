@@ -114,7 +114,7 @@
 /* 500,1000,2000,4000,8000 supported.                     */
 /*                                                        */
 /**********************************************************/
-
+
 /**********************************************************/
 /* Version Numbers!                                       */
 /*                                                        */
@@ -152,7 +152,7 @@
 asm("  .section .version\n"
     "optiboot_version:  .word " MAKEVER(OPTIBOOT_MAJVER, OPTIBOOT_MINVER) "\n"
     "  .section .text\n");
-
+
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
@@ -579,7 +579,7 @@ uint8_t getch(void) {
        */
     watchdogReset();
   }
-  
+
   ch = UDR0;
 #endif
 

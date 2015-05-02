@@ -16,12 +16,12 @@ uint8_t KD=5;
 uint8_t robotSpeed=50; //percentage
 uint8_t intergrationTime=10;*/
 
-#define NIVEL_PARA_LINEA 50 
+#define NIVEL_PARA_LINEA 50
 
 /*int lectura_sensor[5], last_error=0, acu=0;
 
 //Estos son los arrays que hay que rellenar con los valores de los sensores
-//de suelo sobre blanco y negro. 
+//de suelo sobre blanco y negro.
 int sensor_blanco[]={
   0,0,0,0,0};
 int sensor_negro[]={
@@ -40,7 +40,7 @@ LineFollow::LineFollow(){
 	robotSpeed=50; //percentage
 	intergrationTime=10;*/
 	config(11,5,50,10);
-		
+
 	for(int i=0;i<5;i++){
 		sensor_blanco[i]=0;
 		sensor_negro[i]=1023;
@@ -60,18 +60,18 @@ void LineFollow::config(uint8_t KP, uint8_t KD, uint8_t robotSpeed, uint8_t inte
 	Serial.print(robotSpeed);
 	Serial.print(' ');
 	Serial.println(intergrationTime);*/
-	
+
 }
 void LineFollow::calibIRs(){
 	static bool isInited=false;//So only init once
 	if(isInited)return ;
-	
+
 	delay(1000);
-	
+
 	doCalibration(30,500);
 	doCalibration(-30,800);
 	doCalibration(30,500);
-	
+
 	delay(1000);
 	isInited=true;
 }
@@ -120,7 +120,7 @@ void LineFollow::runLineFollow(){
 	reportActionDone();
 	//setMode(MODE_SIMPLE);
   }
-}  
+}
 
 
 void LineFollow::doCalibration(int speedPct, int time){
@@ -142,7 +142,7 @@ void LineFollow::ajusta_niveles()
 
 		if (lectura < sensor_negro[count])
 			sensor_negro[count]=lectura;
-	} 
+	}
 }
 
 

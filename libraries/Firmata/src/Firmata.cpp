@@ -1,7 +1,7 @@
 /*
   Firmata.cpp - Firmata library
   Copyright (C) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
- 
+
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -140,7 +140,7 @@ void FirmataClass::setFirmwareNameAndVersion(const char *name, byte major, byte 
   firmwareVersionVector[1] = minor;
   strncpy((char*)firmwareVersionVector + 2, filename, firmwareVersionCount - 2);
   // alas, no snprintf on Arduino
-  //    snprintf(firmwareVersionVector, MAX_DATA_BYTES, "%c%c%s", 
+  //    snprintf(firmwareVersionVector, MAX_DATA_BYTES, "%c%c%s",
   //             (char)major, (char)minor, firmwareVersionVector);
 }
 
@@ -148,10 +148,10 @@ void FirmataClass::setFirmwareNameAndVersion(const char *name, byte major, byte 
 // void FirmataClass::unsetFirmwareVersion()
 // {
 //   firmwareVersionCount = 0;
-//   free(firmwareVersionVector); 
+//   free(firmwareVersionVector);
 //   firmwareVersionVector = 0;
 // }
- 
+
 //------------------------------------------------------------------------------
 // Serial Receive Handling
 
@@ -193,12 +193,12 @@ void FirmataClass::processInput(void)
 {
   int inputData = FirmataSerial->read(); // this is 'int' to handle -1 when no data
   int command;
-    
+
   // TODO make sure it handles -1 properly
-  
+
   if (parsingSysex) {
     if(inputData == END_SYSEX) {
-      //stop sysex byte      
+      //stop sysex byte
       parsingSysex = false;
       //fire off handler function
       processSysexMessage();
@@ -207,7 +207,7 @@ void FirmataClass::processInput(void)
       storedInputData[sysexBytesRead] = inputData;
       sysexBytesRead++;
     }
-  } else if( (waitForData > 0) && (inputData < 128) ) {  
+  } else if( (waitForData > 0) && (inputData < 128) ) {
     waitForData--;
     storedInputData[waitForData] = inputData;
     if( (waitForData==0) && executeMultiByteCommand ) { // got the whole message
@@ -240,7 +240,7 @@ void FirmataClass::processInput(void)
         break;
       }
       executeMultiByteCommand = 0;
-    }	
+    }
   } else {
     // remove channel info from command byte if less than 0xF0
     if(inputData < 0xF0) {
@@ -280,7 +280,7 @@ void FirmataClass::processInput(void)
 // Serial Send Handling
 
 // send an analog message
-void FirmataClass::sendAnalog(byte pin, int value) 
+void FirmataClass::sendAnalog(byte pin, int value)
 {
   // pin can only be 0-15, so chop higher bits
   FirmataSerial->write(ANALOG_MESSAGE | (pin & 0xF));
@@ -288,7 +288,7 @@ void FirmataClass::sendAnalog(byte pin, int value)
 }
 
 // send a single digital pin in a digital message
-void FirmataClass::sendDigital(byte pin, int value) 
+void FirmataClass::sendDigital(byte pin, int value)
 {
   /* TODO add single pin digital messages to the protocol, this needs to
    * track the last digital data sent so that it can be sure to change just
@@ -320,25 +320,25 @@ void FirmataClass::sendDigitalPort(byte portNumber, int portData)
 }
 
 
-void FirmataClass::sendSysex(byte command, byte bytec, byte* bytev) 
+void FirmataClass::sendSysex(byte command, byte bytec, byte* bytev)
 {
   byte i;
   startSysex();
   FirmataSerial->write(command);
   for(i=0; i<bytec; i++) {
-    sendValueAsTwo7bitBytes(bytev[i]);        
+    sendValueAsTwo7bitBytes(bytev[i]);
   }
   endSysex();
 }
 
-void FirmataClass::sendString(byte command, const char* string) 
+void FirmataClass::sendString(byte command, const char* string)
 {
   sendSysex(command, strlen(string), (byte *)string);
 }
 
 
 // send a string as the protocol string type
-void FirmataClass::sendString(const char* string) 
+void FirmataClass::sendString(const char* string)
 {
   sendString(STRING_DATA, string);
 }
@@ -444,7 +444,7 @@ void FirmataClass::systemReset(void)
 
 // =============================================================================
 // used for flashing the pin for the version number
-void FirmataClass::strobeBlinkPin(int count, int onInterval, int offInterval) 
+void FirmataClass::strobeBlinkPin(int count, int onInterval, int offInterval)
 {
   byte i;
   pinMode(VERSION_BLINK_PIN, OUTPUT);

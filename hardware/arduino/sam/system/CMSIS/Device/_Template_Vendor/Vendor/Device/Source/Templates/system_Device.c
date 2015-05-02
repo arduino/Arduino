@@ -9,9 +9,9 @@
  * Copyright (C) 2010-2011 ARM Limited. All rights reserved.
  *
  * @par
- * ARM Limited (ARM) is supplying this software for use with Cortex-M 
- * processor based microcontrollers.  This file can be freely distributed 
- * within development tools that are supporting such ARM based processors. 
+ * ARM Limited (ARM) is supplying this software for use with Cortex-M
+ * processor based microcontrollers.  This file can be freely distributed
+ * within development tools that are supporting such ARM based processors.
  *
  * @par
  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
@@ -30,11 +30,11 @@
 /*----------------------------------------------------------------------------
   DEFINES
  *----------------------------------------------------------------------------*/
-    
+
 /*----------------------------------------------------------------------------
   Define clocks
  *----------------------------------------------------------------------------*/
-/* ToDo: add here your necessary defines for device initialization     
+/* ToDo: add here your necessary defines for device initialization
          following is an example for different system frequencies             */
 #define __HSI             ( 6000000UL)
 #define __XTAL            (12000000UL)    /* Oscillator frequency             */
