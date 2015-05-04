@@ -144,7 +144,7 @@ static const uint8_t MISO_B = 54; //J6.14
 
 //Array used to map physical pin numbers to GPIO/AIO numbers
 
-const uint16_t  pin_mapping[] = {
+static const uint16_t  pin_mapping[] = {
     //First set of headers
     NOT_A_PIN, //0
     NOT_A_PIN, //1

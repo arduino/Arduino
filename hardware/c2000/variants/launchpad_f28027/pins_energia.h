@@ -31,6 +31,11 @@
 
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef BV
 #define BV(x) ((uint32_t) 1 << (x))
 #endif
@@ -335,4 +340,9 @@ const uint32_t digital_pin_to_bit_mask[] = {
 	BV(34-32),     /* 34, port P1.7 */
 };
 #endif
+
+#ifdef __cplusplus
+}
+#endif /* extern "C" */
+
 #endif
