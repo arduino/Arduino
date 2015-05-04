@@ -153,13 +153,10 @@ void delay(uint32_t milliseconds);
 void attachInterrupt(uint8_t, void (*)(void), int);
 void detachInterrupt(uint8_t);
 
-extern const uint16_t pin_mapping[];
+
 extern const uint32_t digital_pin_to_timer[];
 extern const uint32_t digital_pin_to_port[];
 extern const uint32_t digital_pin_to_bit_mask[];
-//extern const uint16_t port_to_sel0[];
-//extern const uint16_t port_to_sel1[];
-//extern const uint16_t port_to_sel2[];
 extern const uint32_t* port_to_input[];
 extern const uint32_t* port_to_output[];
 

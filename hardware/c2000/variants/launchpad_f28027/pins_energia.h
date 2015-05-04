@@ -106,7 +106,7 @@ static const uint8_t P34 = 5;
 
 //Array used to map physical pin numbers to GPIO/AIO numbers
 
-static const uint16_t  pin_mapping[] = {
+static const uint16_t pin_mapping[] = {
 NOT_A_PIN, //0
 NOT_A_PIN, //1
 0x8006, //2
