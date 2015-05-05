@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
@@ -542,6 +544,17 @@ public class Compiler implements MessageConsumer {
       p.put("build.variant.path", "");
     }
     
+    // Build Time
+    Date d = new Date();
+    GregorianCalendar cal = new GregorianCalendar();
+    long current = d.getTime()/1000;
+    long timezone = cal.get(cal.ZONE_OFFSET)/1000;
+    long daylight = cal.get(cal.DST_OFFSET)/1000;
+    p.put("extra.time.utc", Long.toString(current));
+    p.put("extra.time.local", Long.toString(current + timezone + daylight));
+    p.put("extra.time.zone", Long.toString(timezone));
+    p.put("extra.time.dst", Long.toString(daylight));
+
     return p;
   }
 
@@ -1134,6 +1147,7 @@ public class Compiler implements MessageConsumer {
   void runRecipe(String recipe) throws RunnerException, PreferencesMapException {
     PreferencesMap dict = new PreferencesMap(prefs);
     dict.put("ide_version", "" + BaseNoGui.REVISION);
+    dict.put("sketch_path", sketch.getFolder().getAbsolutePath());
 
     String[] cmdArray;
     String cmd = prefs.getOrExcept(recipe);
