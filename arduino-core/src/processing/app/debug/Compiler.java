@@ -418,6 +418,9 @@ public class Compiler implements MessageConsumer {
     // 4. link it all together into the .elf file
     progressListener.progress(60);
     compileLink();
+    if (prefs.get("build.elfpatch") != null) {
+      runRecipe("recipe.elfpatch.pattern");
+    }
 
     // 5. run objcopy to generate output files
     progressListener.progress(75);
