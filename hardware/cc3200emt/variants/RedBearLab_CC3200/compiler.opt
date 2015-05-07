@@ -1,0 +1,1 @@
+ -mabi=aapcs -g  -mthumb -Dxdc_target_types__="gnu/targets/arm/std.h" -Dxdc_target_name__=M4 -Dxdc_cfg__xheader__="\"configPkg/package/cfg/energia_pm4g.h\""

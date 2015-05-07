@@ -34,6 +34,6 @@
 #define xdc_runtime_Gate_canBePreempted( ) \
     Module__GP_query(xdc_runtime_IGateProvider_Q_PREEMPTING)
 /*
- *  @(#) xdc.runtime; 2, 1, 0,0; 3-22-2015 20:15:27; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
+ *  @(#) xdc.runtime; 2, 1, 0,0; 4-24-2015 12:34:12; /db/ztree/library/trees/xdc/xdc-A71/src/packages/
  */
 

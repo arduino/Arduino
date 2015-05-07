@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -359,16 +359,6 @@ __extern __FAR__ const CT__ti_sysbios_knl_Task_A_badTimeout ti_sysbios_knl_Task_
 #define ti_sysbios_knl_Task_A_badAffinity (ti_sysbios_knl_Task_A_badAffinity__C)
 typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Task_A_badAffinity;
 __extern __FAR__ const CT__ti_sysbios_knl_Task_A_badAffinity ti_sysbios_knl_Task_A_badAffinity__C;
-
-/* A_setAffinityTaskDisabled */
-#define ti_sysbios_knl_Task_A_setAffinityTaskDisabled (ti_sysbios_knl_Task_A_setAffinityTaskDisabled__C)
-typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Task_A_setAffinityTaskDisabled;
-__extern __FAR__ const CT__ti_sysbios_knl_Task_A_setAffinityTaskDisabled ti_sysbios_knl_Task_A_setAffinityTaskDisabled__C;
-
-/* A_setPriTaskDisabled */
-#define ti_sysbios_knl_Task_A_setPriTaskDisabled (ti_sysbios_knl_Task_A_setPriTaskDisabled__C)
-typedef xdc_runtime_Assert_Id CT__ti_sysbios_knl_Task_A_setPriTaskDisabled;
-__extern __FAR__ const CT__ti_sysbios_knl_Task_A_setPriTaskDisabled ti_sysbios_knl_Task_A_setPriTaskDisabled__C;
 
 /* A_sleepTaskDisabled */
 #define ti_sysbios_knl_Task_A_sleepTaskDisabled (ti_sysbios_knl_Task_A_sleepTaskDisabled__C)
@@ -1019,8 +1009,6 @@ static inline ti_sysbios_knl_Queue_Handle ti_sysbios_knl_Task_Module_State_termi
 #define Task_A_badPriority ti_sysbios_knl_Task_A_badPriority
 #define Task_A_badTimeout ti_sysbios_knl_Task_A_badTimeout
 #define Task_A_badAffinity ti_sysbios_knl_Task_A_badAffinity
-#define Task_A_setAffinityTaskDisabled ti_sysbios_knl_Task_A_setAffinityTaskDisabled
-#define Task_A_setPriTaskDisabled ti_sysbios_knl_Task_A_setPriTaskDisabled
 #define Task_A_sleepTaskDisabled ti_sysbios_knl_Task_A_sleepTaskDisabled
 #define Task_A_invalidCoreId ti_sysbios_knl_Task_A_invalidCoreId
 #define Task_numPriorities ti_sysbios_knl_Task_numPriorities

@@ -31,6 +31,11 @@
 
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef BV
 #define BV(x) ((uint32_t) 1 << (x))
 #endif
@@ -101,7 +106,7 @@ static const uint8_t P34 = 5;
 
 //Array used to map physical pin numbers to GPIO/AIO numbers
 
-static const uint16_t  pin_mapping[] = {
+static const uint16_t pin_mapping[] = {
 NOT_A_PIN, //0
 NOT_A_PIN, //1
 0x8006, //2
@@ -335,4 +340,9 @@ const uint32_t digital_pin_to_bit_mask[] = {
 	BV(34-32),     /* 34, port P1.7 */
 };
 #endif
+
+#ifdef __cplusplus
+}
+#endif /* extern "C" */
+
 #endif

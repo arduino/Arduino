@@ -462,10 +462,18 @@ unsigned int Power_setPerformanceLevel(unsigned int level);
  *  be rebooted (through a device reset).  If the transition is not
  *  successful, one of the error codes listed below will be returned.
  *
- *  On some devices a timed wakeup from shutdown can be specified.  Where
- *  this is supported, this wakeup time is specified via the shutdownTime
- *  parameter.  Where timed wakeup is not supported, the shutdownTime parameter
- *  is ignored.
+ *  On some devices a timed wakeup from shutdown can be specified, using
+ *  the shutdownTime parameter.  This enables an autonomous application reboot
+ *  at a future time.  For example, an application can go to shutdown, and then
+ *  automatically reboot at a future time to do some work. And once that work
+ *  is done, the application can shutdown again, for another timed interval.
+ *  The time interval is specified via the shutdownTime parameter. (On devices
+ *  that do not support this feature, any value specified for shutdownTime will
+ *  be ignored.)  If the specified shutdownTime is less than the total
+ *  shutdown latency for the device, then shutdownTime will be ignored.  The
+ *  shutdown latency for the device can be found in the device-specific Power
+ *  include file.  For example, for the CC3200, this latency is defined in
+ *  PowerCC3200.h, as "PowerCC3200_TOTALTIMESHUTDOWN".)
  *
  *  @param  shutdownState  the device-specific shutdown state
  *

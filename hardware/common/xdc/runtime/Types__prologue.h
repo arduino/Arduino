@@ -15,6 +15,6 @@
  *  Hand crafted definitions for Types.xdc
  */
 /*
- *  @(#) xdc.runtime; 2, 1, 0,0; 3-22-2015 20:15:31; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
+ *  @(#) xdc.runtime; 2, 1, 0,0; 4-24-2015 12:34:13; /db/ztree/library/trees/xdc/xdc-A71/src/packages/
  */
 

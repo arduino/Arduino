@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A65
+ * @(#) xdc-A70
  */
 
 #ifndef ti_drivers_Power__INTERNAL__

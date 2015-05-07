@@ -1,1 +1,1 @@
-../../emt/src/ti/runtime/wiring/msp432/WCharacter.h
+../../emt/src/ti/runtime/wiring/WCharacter.h

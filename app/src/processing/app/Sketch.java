@@ -36,6 +36,7 @@ import processing.app.debug.Uploader;
 import processing.app.preproc.*;
 import processing.core.*;
 import static processing.app.I18n._;
+import java.util.regex.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -1378,9 +1379,43 @@ public class Sketch {
     for (SketchCode sc : code) {
       if (sc.isExtension("ino") || sc.isExtension("pde")) {
         sc.setPreprocOffset(bigCount);
-        // These #line directives help the compiler report errors with
-        // correct the filename and line number (issue 281 & 907)
-        bigCode.append("#line 1 \"" + sc.getFileName() + "\"\n");
+        String in = sc.getProgram();
+        if(Base.getArch() == "cc3200emt" || Base.getArch() == "msp432") {
+
+	        Pattern functionPattern  = Pattern.compile("\\s*void\\s+(loop)\\s*\\(\\s*(void)?\\s*\\)");
+	
+	//	    Pattern functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[lL]oop\\w*)\\s*\\(\\s*(void)?\\s*\\)");
+	
+		    // Find all functions and generate prototypes for them
+		    ArrayList<String> loopMatches = new ArrayList<String>();
+		    ArrayList<String> setupMatches = new ArrayList<String>();
+		    	    
+		    Matcher functionMatcher = functionPattern.matcher(in);
+		    while (functionMatcher.find()) {
+		      loopMatches.add(functionMatcher.group(1));
+		    }
+	
+		    
+		    functionPattern  = Pattern.compile("\\s*void\\s+(setup)\\s*\\(\\s*(void)?\\s*\\)");
+	
+		    // Find all functions and generate prototypes for them
+		    functionMatcher = functionPattern.matcher(in);
+		    
+		    while (functionMatcher.find())
+		      setupMatches.add(functionMatcher.group(1));
+	        
+	        
+	        // These #line directives help the compiler report errors with
+	        // correct the filename and line number (issue 281 & 907)
+		    bigCode.append("#line 1 \"" + sc.getFileName() + "\"\n");
+	        if(setupMatches.size() > 0 && loopMatches.size() > 0) {
+	        	String sketchName = sc.getFileName().substring(0, sc.getFileName().length()-4);
+	        	bigCode.append("#undef setup\n#undef loop\n");
+	        	bigCode.append("#define setup setup" +  sketchName + "\n");
+	        	bigCode.append("#define loop loop" +  sketchName + "\n");
+	        }
+        }
+        
         bigCode.append(sc.getProgram());
         bigCode.append('\n');
         bigCount += sc.getLineCount();

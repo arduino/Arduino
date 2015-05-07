@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -166,7 +166,7 @@ struct ti_sysbios_hal_Core_Fxns__ {
     const xdc_runtime_Types_SysFxns2 *__sysp;
     xdc_UInt (*getId)(void);
     xdc_Void (*interruptCore)(xdc_UInt);
-    xdc_Void (*lock)(void);
+    xdc_IArg (*lock)(void);
     xdc_Void (*unlock)(void);
     xdc_UInt (*hwiDisable)(void);
     xdc_UInt (*hwiEnable)(void);

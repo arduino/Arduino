@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A68
+ * @(#) xdc-A71
  */
 
 /*
@@ -545,6 +545,6 @@ struct xdc_runtime_LoggerCallback_Object {
 #endif /* xdc_runtime_LoggerCallback__localnames__done */
 #endif
 /*
- *  @(#) xdc.runtime; 2, 1, 0,0; 3-22-2015 20:15:28; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
+ *  @(#) xdc.runtime; 2, 1, 0,0; 4-24-2015 12:34:13; /db/ztree/library/trees/xdc/xdc-A71/src/packages/
  */
 

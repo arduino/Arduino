@@ -33,7 +33,7 @@
 #ifndef WiringPrivate_h
 #define WiringPrivate_h
 
-#include "Energia.h"
+#include <ti/runtime/wiring/Energia.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,10 +45,16 @@ extern "C" {
 #define PIN_FUNC_ANALOG_OUTPUT      3
 #define PIN_FUNC_ANALOG_INPUT       4
 
+#define NOT_A_PIN       0
+#define NOT_ON_ADC      0xff
+#define NOT_MAPPABLE    0xffff
+
 extern void stopAnalogWrite(uint8_t pin);
 extern void stopAnalogRead(uint8_t pin);
 
 extern uint8_t digital_pin_to_pin_function[];
+extern uint16_t digital_pin_to_pwm_index[];
+extern const uint8_t digital_pin_to_adc_index[];
 
 #ifdef __cplusplus
 } // extern "C"
