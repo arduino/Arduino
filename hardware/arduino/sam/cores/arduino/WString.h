@@ -78,6 +78,15 @@ public:
 	// is left unchanged).  reserve(0), if successful, will validate an
 	// invalid string (i.e., "if (s)" will be true afterwards)
 	unsigned char reserve(unsigned int size);
+	
+	// If reserved data is modified externally using c_str()/&str[x] 
+	// this function will allow the contents to be validated and ready
+	// for use with the String functionality.
+
+	// If remainder is true, only the reserved buffer is validated (capacity - len bytes)
+	// If remainder is false, the entire buffer is re-validated.
+	unsigned int validate( bool remainder = false );
+	
 	inline unsigned int length(void) const {return len;}
 
 	// creates a copy of the assigned value.  if the value is null or

@@ -154,6 +154,13 @@ unsigned char String::reserve(unsigned int size)
 	return 0;
 }
 
+unsigned int String::validate( bool remainder )
+{
+	if( !remainder ) len = 0;
+	while( len < capacity && buffer[ len ] ) ++len;
+	return len;	
+}
+
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
 	char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
