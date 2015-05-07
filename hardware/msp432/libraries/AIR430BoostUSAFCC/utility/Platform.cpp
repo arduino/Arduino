@@ -47,10 +47,6 @@ void A110x2500SpiInit()
 
   SPI.setDataMode(SPI_MODE0);
   SPI.begin();
-  pinMode(10, OUTPUT);
-  pinMode(9, OUTPUT);
-  digitalWrite(10, LOW);
-  digitalWrite(9, LOW);
 }
 
 void A110x2500SpiRead(unsigned char address,
@@ -63,7 +59,7 @@ void A110x2500SpiRead(unsigned char address,
   pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
   MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1, GPIO_PIN7, GPIO_PRIMARY_MODULE_FUNCTION);
-
+  SPI_enableModule(EUSCI_B0_BASE);
   // Write the address/command byte.
   SPI.transfer(address);
   
@@ -77,6 +73,7 @@ void A110x2500SpiRead(unsigned char address,
   // peripheral is done being busy before returning to the caller.
 
   digitalWrite(RF_SPI_CSN,HIGH);
+  SPI_disableModule(EUSCI_B0_BASE);
 }
 
 void A110x2500SpiWrite(unsigned char address,
@@ -89,6 +86,7 @@ void A110x2500SpiWrite(unsigned char address,
   pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
   MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1, GPIO_PIN7, GPIO_PRIMARY_MODULE_FUNCTION);
+  SPI_enableModule(EUSCI_B0_BASE);
   
   // Write the address/command byte.
   SPI.transfer(address);
@@ -103,6 +101,7 @@ void A110x2500SpiWrite(unsigned char address,
   // peripheral is done being busy before returning to the caller.
 
   digitalWrite(RF_SPI_CSN,HIGH);
+  SPI_disableModule(EUSCI_B0_BASE);
 }
 
 void A110x2500Gdo0Init()

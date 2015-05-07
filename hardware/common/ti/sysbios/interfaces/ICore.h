@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -70,7 +70,7 @@ struct ti_sysbios_interfaces_ICore_Fxns__ {
     const xdc_runtime_Types_SysFxns2 *__sysp;
     xdc_UInt (*getId)(void);
     xdc_Void (*interruptCore)(xdc_UInt);
-    xdc_Void (*lock)(void);
+    xdc_IArg (*lock)(void);
     xdc_Void (*unlock)(void);
     xdc_UInt (*hwiDisable)(void);
     xdc_UInt (*hwiEnable)(void);
@@ -105,9 +105,9 @@ static inline xdc_Void ti_sysbios_interfaces_ICore_interruptCore( ti_sysbios_int
 }
 
 /* lock */
-static inline xdc_Void ti_sysbios_interfaces_ICore_lock( ti_sysbios_interfaces_ICore_Module __inst )
+static inline xdc_IArg ti_sysbios_interfaces_ICore_lock( ti_sysbios_interfaces_ICore_Module __inst )
 {
-    __inst->lock();
+    return __inst->lock();
 }
 
 /* unlock */
@@ -161,7 +161,7 @@ static inline ti_sysbios_interfaces_ICore_interruptCore_FxnT ti_sysbios_interfac
 }
 
 /* lock_{FxnT,fxnP} */
-typedef xdc_Void (*ti_sysbios_interfaces_ICore_lock_FxnT)(void);
+typedef xdc_IArg (*ti_sysbios_interfaces_ICore_lock_FxnT)(void);
 static inline ti_sysbios_interfaces_ICore_lock_FxnT ti_sysbios_interfaces_ICore_lock_fxnP( ti_sysbios_interfaces_ICore_Module __inst )
 {
     return (ti_sysbios_interfaces_ICore_lock_FxnT)__inst->lock;

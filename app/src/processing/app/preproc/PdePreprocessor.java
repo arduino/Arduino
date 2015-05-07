@@ -351,6 +351,7 @@ public class PdePreprocessor {
   }
   
   public void writemain(String in) {
+	    String _in = in;
 	    in = collapseBraces(strip(in));
 	    
 	    String content = "";
@@ -376,8 +377,14 @@ public class PdePreprocessor {
 	    ArrayList<String> setupMatches = new ArrayList<String>();
 	    	    
 	    Matcher functionMatcher = functionPattern.matcher(in);
+
+	    // Leave setup alone since it is special
+	    // It will be processed using the next regex
+	    // See Sketch.java for the generation of the #define setupxxx
 	    while (functionMatcher.find()) {
-	      loopMatches.add(functionMatcher.group(1));
+	    	String func = functionMatcher.group(1);
+	    	if(func.equals("loop")) continue;
+	    	loopMatches.add(functionMatcher.group(1));
 	    }
 
 	    
@@ -387,9 +394,36 @@ public class PdePreprocessor {
 	    // Find all functions and generate prototypes for them
 	    functionMatcher = functionPattern.matcher(in);
 	    
-	    while (functionMatcher.find())
-	      setupMatches.add(functionMatcher.group(1));
+	    // Leave setup alone since it is special
+	    // It will be processed using the next regex
+	    // See Sketch.java for the generation of the #define setupxxx
+	    while (functionMatcher.find()) {
+	    	String func = functionMatcher.group(1);
+	    	if(func.equals("setup")) continue;
+	    	setupMatches.add(functionMatcher.group(1));
+	    }
 
+	    functionPattern  = Pattern.compile("(#define setup\\s)([a-zA-Z_*]\\w*)");
+
+	    // Find all functions and generate prototypes for them
+	    functionMatcher = functionPattern.matcher(_in);
+	    
+	    while (functionMatcher.find()) {
+	    	String func = functionMatcher.group(2);
+	    	setupMatches.add(func);
+	    }
+
+	    functionPattern  = Pattern.compile("(#define loop\\s)([a-zA-Z_*]\\w*)");
+
+	    // Find all functions and generate prototypes for them
+	    functionMatcher = functionPattern.matcher(_in);
+	    
+	    while (functionMatcher.find()) {
+	    	String func = functionMatcher.group(2);
+	    	loopMatches.add(func);
+	    }
+
+	    
 	    if(setupMatches.size() != loopMatches.size()) {
 	    	System.out.print("The number of loop functions does not match the number of setup functions\n" +
 	    			"Missing a loop or a setup in your Sketches?");
@@ -408,9 +442,7 @@ public class PdePreprocessor {
 	    	if(functionIndex < loopMatches.size() -1) {
 	    		funcArray += ",\n";
 	    		taskNameArray += ",\n";
-		}
-	    	//System.out.print(setupMatches.get(functionIndex) + "\n");
-	    	//System.out.print(loopMatches.get(functionIndex) + "\n");
+	    	}
 	    }
 
 	    String numSketches = "\n#define NUM_SKETCHES " + loopMatches.size() + "\n";

@@ -15,7 +15,7 @@ TREE_ROOT = $(firstword $(subst /src/, /src/,$(CURDIR)))
 
 # (if present) include definitions of the macros described above
 include Variables.mk
-BOARD_DIR := $(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)
+BOARD_DIR := $(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD)
 include $(BOARD_DIR)/Board.mk
 
 ifeq ($(OS),Windows_NT)
@@ -96,15 +96,16 @@ endef
 
 ARCH_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/libraries
 ARCH_CORE_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)
+DRV_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib
 COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/common
-DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH)
+DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH) $(DRV_LIB_PATH)
 INCLUDE_DIRS = $(foreach dir, $(DIRS), ${sort ${dir ${wildcard ${dir}/*/ ${dir}/*/utility/}}})
 INCLUDE_DIRS += $(COMMON_CORE_DIR)
 CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
 
-CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DENERGIA=14 $(MCU_FLAG) $(VFP)
+CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -D$(BOARD) -DENERGIA=14 $(MCU_FLAG) $(VFP)
 CPPFLAGS += -fno-exceptions -fno-rtti
 
 # define TI-RTOS and Energia wiring headers based on CLOSURE above
@@ -114,14 +115,14 @@ CFG_INCS = -I "$(CLOSURE)" -I "$(CLOSURE)"
 #    --cmd-file=...  - use the options defined in the specified file
 #    -g              - compile for debug
 #
-CCOPTS  = -Os @"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/compiler.opt"
+CCOPTS  = -Os @"$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD)/compiler.opt"
 CC      = $(CCROOT)/bin/arm-none-eabi-gcc -c
 #LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -Wl,--verbose -L/Users/robertinant/Energia/build/macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/lib/gcc/arm-none-eabi/4.8.4/armv7e-m/ -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = yes
+CORE_FROM_SOURCE = no
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
@@ -148,12 +149,12 @@ endif
 $(eval $(call compute_dependencies, $(MAINSKETCH) $(EXTRA_SOURCES)))
 $(eval $(call compute_srcs))
 
-LD_FLAGS += $(MCU_FLAG) -L$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD) -L$(APPLICATION_PATH)/hardware/common/libs 
+LD_FLAGS += $(MCU_FLAG) -L$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD) -L$(APPLICATION_PATH)/hardware/common/libs 
 # build rules
 all: $(MAINSKETCH).bin
 
 %.bin: %.elf
-	$(info Creating $@)
+#$(info Creating $@)
 	@$(OBJCOPY) $(OBJCOPY_FLAGS) $< $@
 	$(call size)
 	$(info >>>> Done <<<<)
@@ -167,7 +168,7 @@ endif
 
 $(MAINSKETCH).elf: driverlib $(OBJ)
 	@echo armlink $(OBJ)
-	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/targets/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
+	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
 
 %.obj: %.cpp
 	@echo armcl $*.cpp

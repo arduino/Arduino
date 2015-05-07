@@ -300,13 +300,6 @@ extern "C" {
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 #include <ti/sysbios/knl/Semaphore.h>
 
-
-/* FOR BACKWARDS COMPATIBILITY */
-#define I2CCC26XX_SUCCESS        I2C_STATUS_SUCCESS
-#define I2CCC26XX_ERROR          I2C_STATUS_ERROR
-#define I2CCC26XX_CMD_UNDEFINED  I2C_STATUS_UNDEFINEDCMD
-/* END */
-
 /*! I2C Base Address type.*/
 typedef unsigned long   I2CBaseAddrType;
 /*! @internal I2C Data type.*/

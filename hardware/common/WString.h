@@ -1,1 +1,1 @@
-../../emt/src/ti/runtime/wiring/msp432/WString.h
+../../emt/src/ti/runtime/wiring/WString.h

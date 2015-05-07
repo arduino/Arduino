@@ -34,6 +34,7 @@
  *
  *  @brief      Watchdog driver implementation for CC26XX
  *
+ *  # Driver include #
  *  The Watchdog header file for CC26XX should be included in an application
  *  as follows:
  *  @code
@@ -41,6 +42,15 @@
  *  #include <ti/drivers/watchdog/WatchdogCC26XX.h>
  *  @endcode
  *
+ *  # Overview #
+ *  ## Note that the watchdog driver has not been fully validated, and thus should be considered experimental. ##
+ *
+ *  The general SPI API should be used in application code, i.e. SPI_open()
+ *  should be used instead of SPICC26XXDMA_open(). The board file will define the device
+ *  specific config, and casting in the general API will ensure that the correct
+ *  device specific functions are called.
+ *
+ *  # General Behavior #
  *  This Watchdog driver implementation is designed to operate on a CC26XX
  *  device. Once opened, CC26XX Watchdog will count down from the reload
  *  value specified in the WatchdogCC26XX_HWAttrs. If it times out, the
@@ -60,6 +70,16 @@
  *  used like another timer interrupt. This functionality is <b>not</b> supported by
  *  all platforms, refer to device specific documentation for details.
  *
+ *  # Error handling #
+ *  Tbd
+ *
+ *  # Power Management #
+ *  Tbd
+ *
+ *  # Supported Functions #
+ *  Tbd
+ *
+ *  # Use Cases #
  *  To have a user-defined function run at the warning interrupt, first define
  *  a void-type function that takes a Watchdog_Handle cast to a UArg as an
  *  argument such as the one shown below.

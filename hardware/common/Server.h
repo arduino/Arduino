@@ -1,1 +1,1 @@
-../../emt/src/ti/runtime/wiring/msp432/Server.h
+../../emt/src/ti/runtime/wiring/Server.h

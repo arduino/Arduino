@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A54
+ * @(#) xdc-A68
  */
 
 /*
@@ -164,7 +164,7 @@ struct ti_sysbios_hal_CoreNull_Fxns__ {
     const xdc_runtime_Types_SysFxns2 *__sysp;
     xdc_UInt (*getId)(void);
     xdc_Void (*interruptCore)(xdc_UInt);
-    xdc_Void (*lock)(void);
+    xdc_IArg (*lock)(void);
     xdc_Void (*unlock)(void);
     xdc_UInt (*hwiDisable)(void);
     xdc_UInt (*hwiEnable)(void);
@@ -200,7 +200,7 @@ __extern xdc_Void ti_sysbios_hal_CoreNull_interruptCore__E( xdc_UInt coreId );
 /* lock__E */
 #define ti_sysbios_hal_CoreNull_lock ti_sysbios_hal_CoreNull_lock__E
 xdc__CODESECT(ti_sysbios_hal_CoreNull_lock__E, "ti_sysbios_hal_CoreNull_lock")
-__extern xdc_Void ti_sysbios_hal_CoreNull_lock__E( void );
+__extern xdc_IArg ti_sysbios_hal_CoreNull_lock__E( void );
 
 /* unlock__E */
 #define ti_sysbios_hal_CoreNull_unlock ti_sysbios_hal_CoreNull_unlock__E

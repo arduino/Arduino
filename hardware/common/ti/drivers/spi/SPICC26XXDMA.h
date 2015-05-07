@@ -430,12 +430,6 @@ extern "C" {
 /*! Enable/disable CSN wakeup on chip select assertion, used as cmd to SPI_control() */
 #define SPICC26XXDMA_SET_CSN_WAKEUP           SPI_CMD_RESERVED + 3
 
-/* FOR BACKWARDS COMPATIBILITY */
-#define SPICC26XXDMA_CMD_SUCCESS    SPI_STATUS_SUCCESS
-#define SPICC26XXDMA_CMD_NO_SUCCESS SPI_STATUS_ERROR
-#define SPICC26XXDMA_CMD_UNDEFINED  SPI_STATUS_UNDEFINEDCMD
-/* END */
-
 /*!
  *  \internal
  *  @brief

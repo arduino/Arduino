@@ -82,7 +82,7 @@
  *  - If the requested key location is available, the client will get a key index
  *    (uint8_t) returned.
  *  - If the requested key location is already occupied, the CryptoCC26XX_allocateKey()
- *    will fail and return ::CRYPTOCC26XX_ERROR.
+ *    will fail and return ::CRYPTOCC26XX_STATUS_ERROR.
  *  - The key locations available are defined in ::CryptoCC26XX_KeyLocation.
  *  - To select any available key location, call the allocate function with key
  *    location set to ::CRYPTOCC26XX_KEY_ANY.
@@ -98,7 +98,7 @@
  *    part of the transaction object.
  *  - When a transaction starts, a semaphore is used to ensure that only one transaction
  *    is performed at a given time. The polling transaction is using 0 wait time, and
- *    will return immediately with ::CRYPTOCC26XX_ERROR if the semaphore is not granted.
+ *    will return immediately with ::CRYPTOCC26XX_STATUS_ERROR if the semaphore is not granted.
  *  - In blocking mode a constraint is set to ensure that the device only enters idle mode
  *    if the CPU becomes inactive.
  *  - When the transaction ends, the device might enter standby.
@@ -212,7 +212,7 @@
  *      keyIndex = CryptoCC26XX_allocateKey(handle, sAESexample.ui8AESKeyLocation,
  *                                           (const uint32_t *) sAESexample.ui8AESKey);
  *
- *      if (keyIndex != CRYPTOCC26XX_ERROR) {
+ *      if (keyIndex != CRYPTOCC26XX_STATUS_ERROR) {
  *          // Setup transaction
  *          trans.keyIndex         = keyIndex;
  *          trans.msgIn            = (uint32_t *) sAESexample.ui8AESClearText;
@@ -251,17 +251,11 @@ extern "C" {
 #include <stdbool.h>
 #include <driverlib/crypto.h>
 
-#define CRYPTOCC26XX_STATUS_SUCCESS  0 /*!< Success Return Code           */
-#define CRYPTOCC26XX_STATUS_ERROR   -1 /*!< Error Return Code             */
 #define CRYPTOCC26XX_TIMEOUT 20        /*!< Timeout Return Code           */
 
+#define CRYPTOCC26XX_STATUS_SUCCESS        0  /*!< Success Return Code           */
+#define CRYPTOCC26XX_STATUS_ERROR         -1  /*!< Error Return Code             */
 #define CRYPTOCC26XX_STATUS_UNDEFINEDCMD  -2  /*!< Command Undefined Return Code */
-
-/* FOR BACKWARDS COMPATIBILITY */
-#define CRYPTOCC26XX_SUCCESS        CRYPTOCC26XX_STATUS_SUCCESS
-#define CRYPTOCC26XX_ERROR          CRYPTOCC26XX_STATUS_ERROR
-#define CRYPTOCC26XX_CMD_UNDEFINED  CRYPTOCC26XX_STATUS_UNDEFINEDCMD
-/* END */
 
 #define CRYPTOCC26XX_OP_AES_CCM            0  /*!< AES-CCM Operation with Cryptation           */
 #define CRYPTOCC26XX_OP_AES_CCM_NOCRYPT    1  /*!< AES-CCM Operation without Cryptation        */
@@ -474,8 +468,8 @@ typedef struct CryptoCC26XX_Config {
  *
  *  @param  handle  A CryptoCC26XX_Handle returned from CryptoCC26XX_open().
  *
- *  @return Returns CRYPTOCC26XX_SUCCESS if successful, otherwise will return
- *          CRYPTOCC26XX_ERROR.
+ *  @return Returns CRYPTOCC26XX_STATUS_SUCCESS if successful, otherwise will return
+ *          CRYPTOCC26XX_STATUS_ERROR.
  *
  *  @sa     CryptoCC26XX_open
  */
@@ -560,7 +554,7 @@ void CryptoCC26XX_Transac_init(CryptoCC26XX_Transaction *trans, CryptoCC26XX_Ope
  *  @param  keySrc       A pointer to buffer containing key to be written.
  *
  *  @return An integer representing the index allocated in key store or a
- *  CRYPTOCC26XX_ERROR on an error.
+ *  CRYPTOCC26XX_STATUS_ERROR on an error.
  *
  *  @sa     CryptoCC26XX_releaseKey()
  */
@@ -578,8 +572,8 @@ int CryptoCC26XX_allocateKey(CryptoCC26XX_Handle handle, CryptoCC26XX_KeyLocatio
  *
  *  @param  keyIndex     A pointer to the keyIndex to be released.
  *
- *  @return Returns CRYPTOCC26XX_SUCCESS if successful, otherwise will return
- *          CRYPTOCC26XX_ERROR.
+ *  @return Returns CRYPTOCC26XX_STATUS_SUCCESS if successful, otherwise will return
+ *          CRYPTOCC26XX_STATUS_ERROR.
  *
  *  @sa     CryptoCC26XX_allocateKey()
  */
@@ -601,7 +595,7 @@ int CryptoCC26XX_releaseKey(CryptoCC26XX_Handle handle, int *keyIndex);
  *
  *  @param  transaction     Pointer to a transaction descriptor.
  *
- *  @return Returns CRYPTOCC26XX_SUCCESS if successful, error code if not.
+ *  @return Returns CRYPTOCC26XX_STATUS_SUCCESS if successful, error code if not.
  *
  *  @sa     CryptoCC26XX_open(), CryptoCC26XX_allocateKey(), CryptoCC26XX_transactPolling()
  */
@@ -622,7 +616,7 @@ int CryptoCC26XX_transact(CryptoCC26XX_Handle handle, CryptoCC26XX_Transaction *
  *
  *  @param  transaction     Pointer to a transaction descriptor.
  *
- *  @return Returns CRYPTOCC26XX_SUCCESS if successful, error code if not.
+ *  @return Returns CRYPTOCC26XX_STATUS_SUCCESS if successful, error code if not.
  *
  *  @sa     CryptoCC26XX_open(), CryptoCC26XX_allocateKey(), CryptoCC26XX_transact()
  */
@@ -645,7 +639,7 @@ int CryptoCC26XX_transactPolling(CryptoCC26XX_Handle handle, CryptoCC26XX_Transa
  *
  *  @param  transaction     Pointer to a transaction descriptor.
  *
- *  @return Returns CRYPTOCC26XX_SUCCESS if successful, error code if not.
+ *  @return Returns CRYPTOCC26XX_STATUS_SUCCESS if successful, error code if not.
  *
  *  @note Currently not supported. Will replace CryptoCC26XX_transactPolling in the future.
  *

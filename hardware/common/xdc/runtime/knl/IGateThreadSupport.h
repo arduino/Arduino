@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A68
+ * @(#) xdc-A71
  */
 
 /*
@@ -280,6 +280,6 @@ static inline xdc_runtime_knl_IGateThreadSupport_Handle xdc_runtime_knl_IGateThr
 #endif /* xdc_runtime_knl_IGateThreadSupport__localnames__done */
 #endif
 /*
- *  @(#) xdc.runtime.knl; 1, 0, 0,0; 3-22-2015 20:15:34; /db/ztree/library/trees/xdc/xdc-A68/src/packages/
+ *  @(#) xdc.runtime.knl; 1, 0, 0,0; 4-24-2015 12:34:16; /db/ztree/library/trees/xdc/xdc-A71/src/packages/
  */
 

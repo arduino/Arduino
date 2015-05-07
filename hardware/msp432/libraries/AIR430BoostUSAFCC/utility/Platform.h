@@ -28,8 +28,9 @@
  */
 #include <Energia.h>
 #include <SPI.h>
-#include <rom_map.h>
+#include <driverlib/rom_map.h>
 #include <driverlib/gpio.h>
+#include <driverlib/spi.h>
 
 extern "C" { 
   #include "CC1101.h"

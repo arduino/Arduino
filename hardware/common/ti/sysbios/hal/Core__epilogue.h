@@ -58,10 +58,10 @@ extern "C" {
  *  ======== Core_lock ========
  */
 #ifdef ti_sysbios_hal_Core_delegate_lock
-    extern Void ti_sysbios_hal_Core_delegate_lock();
-#define ti_sysbios_hal_Core_lock() ti_sysbios_hal_Core_delegate_lock()
+    extern IArg ti_sysbios_hal_Core_delegate_lock();
+#define ti_sysbios_hal_Core_lock() (ti_sysbios_hal_Core_delegate_lock())
 #else /* !ti_sysbios_hal_Core_delegate_lock */
-#define ti_sysbios_hal_Core_lock() ti_sysbios_hal_Core_CoreProxy_lock()
+#define ti_sysbios_hal_Core_lock() (ti_sysbios_hal_Core_CoreProxy_lock())
 #endif /* ti_sysbios_hal_Core_delegate_lock */
 
 /*
