@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Ricardo JL Rufino (ricardo@criativasoft.com.br)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,45 +27,23 @@
  * the GNU General Public License.
  */
 
-package processing.app;
+package processing.app.helpers;
 
-import static org.junit.Assert.assertEquals;
+import java.awt.Component;
 
-import java.awt.Frame;
+import org.fest.swing.core.ComponentMatcher;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.JMenuItemFixture;
-import org.junit.Test;
+public class RSyntaxTextAreaComponentMatcher implements ComponentMatcher {
 
-import processing.app.helpers.RSyntaxTextAreaFixture;
+  private final String name;
 
-public class BlockCommentGeneratesOneUndoActionTest extends AbstractGUITest {
+  public RSyntaxTextAreaComponentMatcher(String name) {
+    this.name = name;
+  }
 
-  @Test
-  public void shouldUndoAndRedo() throws Exception {
-    JMenuItemFixture menuEditUndo = window.menuItem("menuEditUndo");
-    menuEditUndo.requireDisabled();
-
-    RSyntaxTextAreaFixture jEditTextArea = window.RSyntaxTextArea("editor");
-    String previousText = jEditTextArea.getText();
-
-    jEditTextArea.selectAll();
-
-    GuiActionRunner.execute(new GuiQuery<Frame>() {
-
-      protected Frame executeInEDT() {
-        window.getEditor().handleCommentUncomment();
-        return window.getEditor();
-      }
-
-    });
-
-    menuEditUndo.requireEnabled();
-    menuEditUndo.click();
-
-    assertEquals(previousText, jEditTextArea.getText());
-
-    menuEditUndo.requireDisabled();
+  @Override
+  public boolean matches(Component component) {
+    return component instanceof RSyntaxTextArea && name.equals(component.getName());
   }
 }

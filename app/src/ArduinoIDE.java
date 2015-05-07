@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Ricardo JL Rufino (ricardo@criativasoft.com.br)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,23 +27,18 @@
  * the GNU General Public License.
  */
 
-package processing.app.helpers;
+import processing.app.Base;
 
-import org.fest.swing.core.ComponentMatcher;
-import processing.app.syntax.JEditTextArea;
+/**
+ * Arduino IDE Launcher class
+ *
+ * @author Ricardo JL Rufino (ricardo@criativasoft.com.br)
+ * @date 23/01/2015
+ */
+public class ArduinoIDE {
 
-import java.awt.*;
-
-public class JEditTextAreaComponentMatcher implements ComponentMatcher {
-
-  private final String name;
-
-  public JEditTextAreaComponentMatcher(String name) {
-    this.name = name;
+  public static void main(String[] args) throws Exception {
+    Base.main(args);
   }
 
-  @Override
-  public boolean matches(Component component) {
-    return component instanceof JEditTextArea && name.equals(component.getName());
-  }
 }

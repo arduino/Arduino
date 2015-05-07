@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Ricardo JL Rufino (ricardo@criativasoft.com.br)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,45 +27,33 @@
  * the GNU General Public License.
  */
 
-package processing.app;
+package processing.app.helpers;
 
-import static org.junit.Assert.assertEquals;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.logging.LogRecord;
+import java.util.logging.StreamHandler;
 
-import java.awt.Frame;
+public class ConsoleLogger extends StreamHandler {
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.JMenuItemFixture;
-import org.junit.Test;
-
-import processing.app.helpers.RSyntaxTextAreaFixture;
-
-public class BlockCommentGeneratesOneUndoActionTest extends AbstractGUITest {
-
-  @Test
-  public void shouldUndoAndRedo() throws Exception {
-    JMenuItemFixture menuEditUndo = window.menuItem("menuEditUndo");
-    menuEditUndo.requireDisabled();
-
-    RSyntaxTextAreaFixture jEditTextArea = window.RSyntaxTextArea("editor");
-    String previousText = jEditTextArea.getText();
-
-    jEditTextArea.selectAll();
-
-    GuiActionRunner.execute(new GuiQuery<Frame>() {
-
-      protected Frame executeInEDT() {
-        window.getEditor().handleCommentUncomment();
-        return window.getEditor();
-      }
-
-    });
-
-    menuEditUndo.requireEnabled();
-    menuEditUndo.click();
-
-    assertEquals(previousText, jEditTextArea.getText());
-
-    menuEditUndo.requireDisabled();
+  public ConsoleLogger() {
+    setOutputStream(new PrintStream(new FileOutputStream(FileDescriptor.out)));
   }
+
+
+  public void publish(LogRecord record) {
+    super.publish(record);
+    flush();
+  }
+
+  /**
+   * Override <tt>StreamHandler.close</tt> to do a flush but not
+   * to close the output stream. That is, we do <b>not</b>
+   * close <tt>FileDescriptor.out</tt>.
+   */
+  public void close() {
+    flush();
+  }
+
 }

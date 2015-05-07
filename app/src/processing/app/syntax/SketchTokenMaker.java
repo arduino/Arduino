@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Ricardo JL Rufino (ricardo@criativasoft.com.br)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,45 +27,35 @@
  * the GNU General Public License.
  */
 
-package processing.app;
+package processing.app.syntax;
 
-import static org.junit.Assert.assertEquals;
+import org.fife.ui.rsyntaxtextarea.modes.CPlusPlusTokenMaker;
 
-import java.awt.Frame;
+import java.util.Arrays;
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.JMenuItemFixture;
-import org.junit.Test;
+/**
+ * Controls the syntax highlighting of {@link SketchTextArea} based on the {@link PdeKeywords}
+ *
+ * @author Ricardo JL Rufino (ricardo@criativasoft.com.br)
+ * @date 20/04/2015
+ * @since 1.6.4
+ */
+public class SketchTokenMaker extends CPlusPlusTokenMaker {
 
-import processing.app.helpers.RSyntaxTextAreaFixture;
+  private final PdeKeywords pdeKeywords;
 
-public class BlockCommentGeneratesOneUndoActionTest extends AbstractGUITest {
-
-  @Test
-  public void shouldUndoAndRedo() throws Exception {
-    JMenuItemFixture menuEditUndo = window.menuItem("menuEditUndo");
-    menuEditUndo.requireDisabled();
-
-    RSyntaxTextAreaFixture jEditTextArea = window.RSyntaxTextArea("editor");
-    String previousText = jEditTextArea.getText();
-
-    jEditTextArea.selectAll();
-
-    GuiActionRunner.execute(new GuiQuery<Frame>() {
-
-      protected Frame executeInEDT() {
-        window.getEditor().handleCommentUncomment();
-        return window.getEditor();
-      }
-
-    });
-
-    menuEditUndo.requireEnabled();
-    menuEditUndo.click();
-
-    assertEquals(previousText, jEditTextArea.getText());
-
-    menuEditUndo.requireDisabled();
+  public SketchTokenMaker(PdeKeywords pdeKeywords) {
+    this.pdeKeywords = pdeKeywords;
   }
+
+  @Override
+  public void addToken(char[] array, int start, int end, int tokenType, int startOffset, boolean hyperlink) {
+    // This assumes all of your extra tokens would normally be scanned as IDENTIFIER.
+    int newType = pdeKeywords.getTokenType(array, start, end);
+    if (newType > -1) {
+      tokenType = newType;
+    }
+    super.addToken(array, start, end, tokenType, startOffset, hyperlink);
+  }
+
 }

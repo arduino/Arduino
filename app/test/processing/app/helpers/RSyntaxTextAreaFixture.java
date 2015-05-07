@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Ricardo JL Rufino (ricardo@criativasoft.com.br)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,51 +31,51 @@ package processing.app.helpers;
 
 import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.ComponentFixture;
-import processing.app.syntax.JEditTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-public class JEditTextAreaFixture extends ComponentFixture {
+public class RSyntaxTextAreaFixture extends ComponentFixture {
 
-  private final JEditTextAreaComponentDriver driver;
+  private final RSyntaxTextAreaComponentDriver driver;
 
-  public JEditTextAreaFixture(Robot robot, Class type) {
+  public RSyntaxTextAreaFixture(Robot robot, Class type) {
     super(robot, type);
-    this.driver = new JEditTextAreaComponentDriver(robot);
+    this.driver = new RSyntaxTextAreaComponentDriver(robot);
   }
 
-  public JEditTextAreaFixture(Robot robot, String name, Class type) {
+  public RSyntaxTextAreaFixture(Robot robot, String name, Class type) {
     super(robot, name, type);
-    this.driver = new JEditTextAreaComponentDriver(robot);
+    this.driver = new RSyntaxTextAreaComponentDriver(robot);
   }
 
-  public JEditTextAreaFixture(Robot robot, JEditTextArea target) {
+  public RSyntaxTextAreaFixture(Robot robot, RSyntaxTextArea target) {
     super(robot, target);
-    this.driver = new JEditTextAreaComponentDriver(robot);
+    this.driver = new RSyntaxTextAreaComponentDriver(robot);
   }
 
-  public JEditTextAreaFixture enterText(String text) {
-    driver.enterText((JEditTextArea) target, text);
+  public RSyntaxTextAreaFixture enterText(String text) {
+    driver.enterText((RSyntaxTextArea) target, text);
     return this;
   }
 
-  public JEditTextAreaFixture setText(String text) {
-    driver.setText((JEditTextArea) target, text);
+  public RSyntaxTextAreaFixture setText(String text) {
+    driver.setText((RSyntaxTextArea) target, text);
     return this;
   }
 
   public String getText() {
-    return driver.getText((JEditTextArea) target);
+    return driver.getText((RSyntaxTextArea) target);
   }
 
-  public JEditTextAreaFixture selectAll() {
-    driver.selectAll((JEditTextArea) target);
+  public RSyntaxTextAreaFixture selectAll() {
+    driver.selectAll((RSyntaxTextArea) target);
     return this;
   }
 
   public int getCaretPosition() {
-    return driver.getCaretPosition((JEditTextArea) target);
+    return driver.getCaretPosition((RSyntaxTextArea) target);
   }
 
   public void setCaretPosition(int caretPosition) {
-    driver.setCaretPosition((JEditTextArea) target, caretPosition);
+    driver.setCaretPosition((RSyntaxTextArea) target, caretPosition);
   }
 }
