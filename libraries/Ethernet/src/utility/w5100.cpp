@@ -17,6 +17,7 @@ W5x00Class W5100;
 
 uint8_t W5x00Class::chipset = W5x00Chipset::W5100;
 uint8_t W5x00Class::sockets = 4;
+uint16_t W5x00Class::CH_BASE = 0;
 
 #define TX_RX_MAX_BUF_SIZE 2048
 #define TX_BUF 0x1100
@@ -79,6 +80,7 @@ void W5x00Class::init(void)
   // The default size for the RX and TX buffers is 2 kB
   if (chipset == W5x00Chipset::W5100) {
     sockets = 4;
+    CH_BASE = 0x0400;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
     SPI.endTransaction();
@@ -91,6 +93,7 @@ void W5x00Class::init(void)
     }
   } else if (chipset == W5x00Chipset::W5200) {
     sockets = 8;
+    CH_BASE = 0x4000;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
     SPI.endTransaction();
@@ -101,8 +104,9 @@ void W5x00Class::init(void)
       SBASE[i] = TXBUF_BASE + SSIZE * i;
       RBASE[i] = RXBUF_BASE + RSIZE * i;
     }
-  } else {
+  } else { // W5500
     sockets = 8;
+    CH_BASE = 0x0400;
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
     writeMR(1<<RST);
     SPI.endTransaction();
