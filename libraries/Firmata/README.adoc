@@ -1,14 +1,17 @@
 = Firmata Library for Arduino =
 
-The Firmata library implements the Firmata protocol for communicating with software on the host computer. This allows you to write custom firmware without having to create your own protocol and objects for the programming environment that you are using. 
+The Firmata library implements the Firmata protocol for communicating with software on the host computer. This allows you to write custom firmware without having to create your own protocol and objects for the programming environment that you are using.
 
-For more information about this library please visit us at
-http://arduino.cc/en/Reference/Firmata
+The Firmata source code is hosted outside of the Arduino code repository. Please visit the Firmata
+GitHub repository at https://github.com/firmata/arduino to file issues, make contributions or obtain the latest version of the library.
+
+To learn more about the Firmata protocol, see the protocol documentation site at https://github.com/firmata/protocol.
+
+Documentation is also available at http://arduino.cc/en/Reference/Firmata.
 
 == License ==
 
-Copyright (c) 2006-2008 Hans-Christoph Steiner. All rights reserved.
-Copyright (c) 2010 Arduino LLC. All right reserved.
+Copyright (c) 2006-2008 Hans-Christoph Steiner. All rights reserved. Copyright (c) 2010 Arduino LLC. All right reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public

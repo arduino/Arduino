@@ -22,7 +22,7 @@ byte pin;
 int analogValue;
 int previousAnalogValues[TOTAL_ANALOG_PINS];
 
-byte portStatus[TOTAL_PORTS];	// each bit: 1=pin is digital input, 0=other/ignore
+byte portStatus[TOTAL_PORTS]; // each bit: 1=pin is digital input, 0=other/ignore
 byte previousPINs[TOTAL_PORTS];
 
 /* timer variables */
@@ -45,7 +45,7 @@ void setup()
 {
   byte i, port, status;
 
-  Firmata.setFirmwareVersion(0, 1);
+  Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 
   for (pin = 0; pin < TOTAL_PINS; pin++) {
     if IS_PIN_DIGITAL(pin) pinMode(PIN_TO_DIGITAL(pin), INPUT);

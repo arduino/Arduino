@@ -53,7 +53,7 @@ void analogWriteCallback(byte pin, int value)
 void reportAnalogCallback(byte pin, int value)
 {
   if (value == 0) {
-    analogInputsToReport = analogInputsToReport &~ (1 << pin);
+    analogInputsToReport = analogInputsToReport & ~ (1 << pin);
   }
   else { // everything but 0 enables reporting of that pin
     analogInputsToReport = analogInputsToReport | (1 << pin);
@@ -66,7 +66,7 @@ void reportAnalogCallback(byte pin, int value)
  *============================================================================*/
 void setup()
 {
-  Firmata.setFirmwareVersion(0, 2);
+  Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
   Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
   Firmata.attach(REPORT_ANALOG, reportAnalogCallback);
 

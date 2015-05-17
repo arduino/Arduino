@@ -55,7 +55,7 @@ unsigned long previousMillis;    // for comparison with currentMillis
 
 void outputPort(byte portNumber, byte portValue)
 {
-  portValue = portValue &~ portStatus[portNumber];
+  portValue = portValue & ~ portStatus[portNumber];
   if (previousPINs[portNumber] != portValue) {
     Firmata.sendDigitalPort(portNumber, portValue);
     previousPINs[portNumber] = portValue;
@@ -72,7 +72,7 @@ void checkDigitalInputs(void)
   for (i = 0; i < TOTAL_PORTS; i++) {
     if (reportPINs[i]) {
       switch (i) {
-        case 0: outputPort(0, PIND &~ B00000011); break; // ignore Rx/Tx 0/1
+        case 0: outputPort(0, PIND & ~ B00000011); break; // ignore Rx/Tx 0/1
         case 1: outputPort(1, PINB); break;
         case 2: outputPort(2, PINC); break;
       }
@@ -104,7 +104,7 @@ void setPinModeCallback(byte pin, int mode) {
     switch (mode) {
       case INPUT:
         pinMode(pin, INPUT);
-        portStatus[port] = portStatus[port] &~ (1 << (pin - offset));
+        portStatus[port] = portStatus[port] & ~ (1 << (pin - offset));
         break;
       case OUTPUT:
         digitalWrite(pin, LOW); // disable PWM
@@ -112,7 +112,7 @@ void setPinModeCallback(byte pin, int mode) {
         pinMode(pin, OUTPUT);
         portStatus[port] = portStatus[port] | (1 << (pin - offset));
         break;
-        //case ANALOG: // TODO figure this out
+      //case ANALOG: // TODO figure this out
       default:
         Firmata.sendString("");
     }
@@ -131,7 +131,7 @@ void digitalWriteCallback(byte port, int value)
   switch (port) {
     case 0: // pins 2-7 (don't change Rx/Tx, pins 0 and 1)
       // 0xFF03 == B1111111100000011    0x03 == B00000011
-      PORTD = (value &~ 0xFF03) | (PORTD & 0x03);
+      PORTD = (value & ~ 0xFF03) | (PORTD & 0x03);
       break;
     case 1: // pins 8-13 (14,15 are disabled for the crystal)
       PORTB = (byte)value;
@@ -150,7 +150,7 @@ void digitalWriteCallback(byte port, int value)
 void reportAnalogCallback(byte pin, int value)
 {
   if (value == 0) {
-    analogInputsToReport = analogInputsToReport &~ (1 << pin);
+    analogInputsToReport = analogInputsToReport & ~ (1 << pin);
   }
   else { // everything but 0 enables reporting of that pin
     analogInputsToReport = analogInputsToReport | (1 << pin);
@@ -202,7 +202,7 @@ void setup()
   /* send digital inputs here, if enabled, to set the initial state on the
    * host computer, since once in the loop(), this firmware will only send
    * digital data on change. */
-  if (reportPINs[0]) outputPort(0, PIND &~ B00000011); // ignore Rx/Tx 0/1
+  if (reportPINs[0]) outputPort(0, PIND & ~ B00000011); // ignore Rx/Tx 0/1
   if (reportPINs[1]) outputPort(1, PINB);
   if (reportPINs[2]) outputPort(2, PINC);
 

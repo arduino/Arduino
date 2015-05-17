@@ -21,14 +21,14 @@ void stringCallback(char *myString)
 }
 
 
-void sysexCallback(byte command, byte argc, byte*argv)
+void sysexCallback(byte command, byte argc, byte *argv)
 {
   Firmata.sendSysex(command, argc, argv);
 }
 
 void setup()
 {
-  Firmata.setFirmwareVersion(0, 1);
+  Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
   Firmata.attach(STRING_DATA, stringCallback);
   Firmata.attach(START_SYSEX, sysexCallback);
   Firmata.begin(57600);
