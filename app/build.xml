@@ -6,7 +6,7 @@
       <include name="*.jar"/>
     </fileset>
     <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>
-    <pathelement path="../core/core.jar"/>
+    <pathelement path="../arduino-core/arduino-core.jar"/>
   </path>
 
   <path id="class.path.test">
@@ -25,9 +25,9 @@
 
   <target name="compile" description="Compile sources">
     <condition property="core-built">
-      <available file="../core/core.jar" />
+      <available file="../arduino-core/arduino-core.jar" />
     </condition>
-    <fail unless="core-built" message="Please build the core library first and make sure it sits in ../core/core.jar" />
+    <fail unless="core-built" message="Please build the Arduino-core library first and make sure it sits in ../arduino-core/arduino-core.jar" />
 
     <mkdir dir="bin" />
 
@@ -48,7 +48,7 @@
     <fail if="windows" unless="java_home"
 	  message="The JAVA_HOME variable must be set to the location of a full JDK. For instance, on Windows, this might be c:\jdk1.6.0_18." />
 
-    <condition property="work.dir" value="../build/macosx/work/Arduino.app/Contents/Resources/Java/">
+    <condition property="work.dir" value="../build/macosx/work/Arduino.app/Contents/Java/">
       <os family="mac"/>
     </condition>
     <condition property="java.additional.library.path" value=".">
@@ -80,9 +80,6 @@
 	   includeAntRuntime="false"
 	   debug="true"
 	   classpathref="class.path" />
-    <copy todir="bin" overwrite="true" verbose="true">
-      <fileset dir="src" includes="**/*.properties" />
-    </copy>
   </target>
 
   <target name="test" depends="compile" description="Runs the test">
@@ -102,10 +99,14 @@
       <fileset dir="test" includes="**/*.txt" />
       <fileset dir="test" includes="**/*.properties" />
       <fileset dir="test" includes="**/*.ino" />
+      <fileset dir="test" includes="**/*.json*" />
+      <fileset dir="test" includes="**/*.key" />
     </copy>
 
     <junit printsummary="yes" dir="${work.dir}" fork="true">
       <jvmarg value="-Djava.library.path=${java.additional.library.path}"/>
+      <jvmarg value="-DWORK_DIR=."/>
+      <jvmarg value="-ea"/>
       <classpath>
         <pathelement location="bin"/>
         <pathelement location="test-bin"/>

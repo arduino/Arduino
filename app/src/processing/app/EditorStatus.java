@@ -25,9 +25,13 @@ package processing.app;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
+import processing.app.helpers.OSUtils;
+
 import java.awt.datatransfer.*;
+
 import static processing.app.I18n._;
 
 
@@ -215,7 +219,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
   
   public void unprogress()
   {
-    if (Preferences.getBoolean("editor.beep.compile")) {
+    if (PreferencesData.getBoolean("editor.beep.compile")) {
       Toolkit.getDefaultToolkit().beep();
     }
     if (progressBar == null) return;
@@ -331,7 +335,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
 
       // !@#(* aqua ui #($*(( that turtle-neck wearing #(** (#$@)(
       // os9 seems to work if bg of component is set, but x still a bastard
-      if (Base.isMacOS()) {
+      if (OSUtils.isMacOS()) {
         //yesButton.setBackground(bgcolor[EDIT]);
         //noButton.setBackground(bgcolor[EDIT]);
         cancelButton.setBackground(bgcolor[EDIT]);
@@ -444,7 +448,7 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
 
       progressBar = new JProgressBar(JScrollBar.HORIZONTAL);
       progressBar.setIndeterminate(false);
-      if (Base.isMacOS()) {
+      if (OSUtils.isMacOS()) {
         //progressBar.setBackground(bgcolor[PROGRESS]);
         //progressBar.putClientProperty("JProgressBar.style", "circular");
       }
@@ -460,10 +464,10 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
       copyErrorButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           String message = "";
-          message += _("Arduino: ") + Base.VERSION_NAME + " (" + System.getProperty("os.name") + "), ";
+          message += _("Arduino: ") + BaseNoGui.VERSION_NAME_LONG + " (" + System.getProperty("os.name") + "), ";
           message += _("Board: ") + "\"" + Base.getBoardPreferences().get("name") + "\"\n\n";
           message += editor.console.consoleTextPane.getText().trim();
-          if ((Preferences.getBoolean("build.verbose")) == false) {
+          if ((PreferencesData.getBoolean("build.verbose")) == false) {
             message += "\n\n";
             message += "  " + _("This report would have more information with") + "\n";
             message += "  \"" + _("Show verbose output during compilation") + "\"\n";

@@ -157,16 +157,24 @@ uint32_t Sd2Card::cardSize(void) {
   }
 }
 //------------------------------------------------------------------------------
+static uint8_t chip_select_asserted = 0;
+
 void Sd2Card::chipSelectHigh(void) {
   digitalWrite(chipSelectPin_, HIGH);
 #ifdef USE_SPI_LIB
-  SPI.endTransaction();
+  if (chip_select_asserted) {
+    chip_select_asserted = 0;
+    SPI.endTransaction();
+  }
 #endif
 }
 //------------------------------------------------------------------------------
 void Sd2Card::chipSelectLow(void) {
 #ifdef USE_SPI_LIB
-  SPI.beginTransaction(settings);
+  if (!chip_select_asserted) {
+    chip_select_asserted = 1;
+    SPI.beginTransaction(settings);
+  }
 #endif
   digitalWrite(chipSelectPin_, LOW);
 }
@@ -275,7 +283,7 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
 
   // command to go idle in SPI mode
   while ((status_ = cardCommand(CMD0, 0)) != R1_IDLE_STATE) {
-    if (((uint16_t)millis() - t0) > SD_INIT_TIMEOUT) {
+    if (((uint16_t)(millis() - t0)) > SD_INIT_TIMEOUT) {
       error(SD_CARD_ERROR_CMD0);
       goto fail;
     }
@@ -297,7 +305,7 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
 
   while ((status_ = cardAcmd(ACMD41, arg)) != R1_READY_STATE) {
     // check for timeout
-    if (((uint16_t)millis() - t0) > SD_INIT_TIMEOUT) {
+    if (((uint16_t)(millis() - t0)) > SD_INIT_TIMEOUT) {
       error(SD_CARD_ERROR_ACMD41);
       goto fail;
     }
