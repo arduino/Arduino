@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A68
+ * @(#) xdc-A71
  */
 
 /*
@@ -237,6 +237,7 @@ struct ti_sysbios_hal_Hwi_HwiProxy_Fxns__ {
     xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2 *__sysp;
     xdc_Bool (*getStackInfo)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool);
+    xdc_Bool (*getCoreStackInfo)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool, xdc_UInt);
     xdc_Void (*startup)(void);
     xdc_UInt (*disable)(void);
     xdc_UInt (*enable)(void);
@@ -323,6 +324,11 @@ __extern xdc_Ptr ti_sysbios_hal_Hwi_HwiProxy_Proxy__delegate__S( void );
 #define ti_sysbios_hal_Hwi_HwiProxy_getStackInfo ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E, "ti_sysbios_hal_Hwi_HwiProxy_getStackInfo")
 __extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth );
+
+/* getCoreStackInfo__E */
+#define ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E
+xdc__CODESECT(ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E, "ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo")
+__extern xdc_Bool ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId );
 
 /* startup__E */
 #define ti_sysbios_hal_Hwi_HwiProxy_startup ti_sysbios_hal_Hwi_HwiProxy_startup__E
@@ -518,6 +524,7 @@ static inline void ti_sysbios_hal_Hwi_HwiProxy_Params_copy(ti_sysbios_hal_Hwi_Hw
 #define Hwi_HwiProxy_dispatcherIrpTrackingSupport ti_sysbios_hal_Hwi_HwiProxy_dispatcherIrpTrackingSupport
 #define Hwi_HwiProxy_Params ti_sysbios_hal_Hwi_HwiProxy_Params
 #define Hwi_HwiProxy_getStackInfo ti_sysbios_hal_Hwi_HwiProxy_getStackInfo
+#define Hwi_HwiProxy_getCoreStackInfo ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo
 #define Hwi_HwiProxy_startup ti_sysbios_hal_Hwi_HwiProxy_startup
 #define Hwi_HwiProxy_disable ti_sysbios_hal_Hwi_HwiProxy_disable
 #define Hwi_HwiProxy_enable ti_sysbios_hal_Hwi_HwiProxy_enable

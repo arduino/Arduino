@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A68
+ * @(#) xdc-A71
  */
 
 /*
@@ -133,6 +133,7 @@ struct ti_sysbios_interfaces_IHwi_Fxns__ {
     xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2 *__sysp;
     xdc_Bool (*getStackInfo)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool);
+    xdc_Bool (*getCoreStackInfo)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool, xdc_UInt);
     xdc_Void (*startup)(void);
     xdc_UInt (*disable)(void);
     xdc_UInt (*enable)(void);
@@ -190,6 +191,12 @@ static inline xdc_runtime_Types_ModuleId ti_sysbios_interfaces_IHwi_Module_id( t
 static inline xdc_Bool ti_sysbios_interfaces_IHwi_getStackInfo( ti_sysbios_interfaces_IHwi_Module __inst, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth )
 {
     return __inst->getStackInfo(stkInfo, computeStackDepth);
+}
+
+/* getCoreStackInfo */
+static inline xdc_Bool ti_sysbios_interfaces_IHwi_getCoreStackInfo( ti_sysbios_interfaces_IHwi_Module __inst, ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId )
+{
+    return __inst->getCoreStackInfo(stkInfo, computeStackDepth, coreId);
 }
 
 /* startup */
@@ -305,6 +312,13 @@ typedef xdc_Bool (*ti_sysbios_interfaces_IHwi_getStackInfo_FxnT)(ti_sysbios_inte
 static inline ti_sysbios_interfaces_IHwi_getStackInfo_FxnT ti_sysbios_interfaces_IHwi_getStackInfo_fxnP( ti_sysbios_interfaces_IHwi_Module __inst )
 {
     return (ti_sysbios_interfaces_IHwi_getStackInfo_FxnT)__inst->getStackInfo;
+}
+
+/* getCoreStackInfo_{FxnT,fxnP} */
+typedef xdc_Bool (*ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool, xdc_UInt);
+static inline ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT ti_sysbios_interfaces_IHwi_getCoreStackInfo_fxnP( ti_sysbios_interfaces_IHwi_Module __inst )
+{
+    return (ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT)__inst->getCoreStackInfo;
 }
 
 /* startup_{FxnT,fxnP} */
@@ -458,6 +472,9 @@ static inline ti_sysbios_interfaces_IHwi_getIrp_FxnT ti_sysbios_interfaces_IHwi_
 #define IHwi_getStackInfo ti_sysbios_interfaces_IHwi_getStackInfo
 #define IHwi_getStackInfo_fxnP ti_sysbios_interfaces_IHwi_getStackInfo_fxnP
 #define IHwi_getStackInfo_FxnT ti_sysbios_interfaces_IHwi_getStackInfo_FxnT
+#define IHwi_getCoreStackInfo ti_sysbios_interfaces_IHwi_getCoreStackInfo
+#define IHwi_getCoreStackInfo_fxnP ti_sysbios_interfaces_IHwi_getCoreStackInfo_fxnP
+#define IHwi_getCoreStackInfo_FxnT ti_sysbios_interfaces_IHwi_getCoreStackInfo_FxnT
 #define IHwi_startup ti_sysbios_interfaces_IHwi_startup
 #define IHwi_startup_fxnP ti_sysbios_interfaces_IHwi_startup_fxnP
 #define IHwi_startup_FxnT ti_sysbios_interfaces_IHwi_startup_FxnT

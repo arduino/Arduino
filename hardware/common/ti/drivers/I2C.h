@@ -221,19 +221,6 @@ typedef struct I2C_Transaction {
 } I2C_Transaction;
 
 /*!
- *  @brief  I2C mode
- *
- *  This enum defines the state of the I2C driver's state-machine. Do not
- *  modify.
- */
-typedef enum I2C_Mode {
-    I2C_IDLE_MODE = 0,  /* I2C is not performing a transaction */
-    I2C_WRITE_MODE,     /* I2C is currently performing write operations */
-    I2C_READ_MODE,      /* I2C is currently performing read operations */
-    I2C_ERROR = 0xFF    /* I2C error has occurred, exit gracefully */
-} I2C_Mode;
-
-/*!
  *  @brief  I2C transfer mode
  *
  *  I2C_MODE_BLOCKING block task execution while a I2C transfer is in progress

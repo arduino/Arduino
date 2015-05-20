@@ -65,7 +65,6 @@ extern void stopAnalogRead(uint8_t pin);
 extern uint8_t digital_pin_to_pin_function[];
 extern const uint8_t digital_pin_to_timer[];
 extern const uint16_t digital_pin_to_pin_num[];
-extern const uint32_t digital_pin_to_analog_in[];
 
 #ifdef __cplusplus
 } // extern "C"

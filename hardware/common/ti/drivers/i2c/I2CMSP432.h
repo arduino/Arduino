@@ -64,6 +64,19 @@ extern "C" {
 extern const I2C_FxnTable I2CMSP432_fxnTable;
 
 /*!
+ *  @brief  I2CMSP432 mode
+ *
+ *  This enum defines the state of the I2C driver's state-machine. Do not
+ *  modify.
+ */
+typedef enum I2CMSP432_Mode {
+    I2CMSP432_IDLE_MODE = 0,  /* I2C is not performing a transaction */
+    I2CMSP432_WRITE_MODE,     /* I2C is currently performing write operations */
+    I2CMSP432_READ_MODE,      /* I2C is currently performing read operations */
+    I2CMSP432_ERROR = 0xFF    /* I2C error has occurred, exit gracefully */
+} I2CMSP432_Mode;
+
+/*!
  *  @brief  I2CMSP432 Hardware attributes
  *  These fields are used by driverlib APIs and therefore must be populated by
  *  driverlib macro definitions. For MSP430Ware these definitions are found in:
@@ -115,7 +128,7 @@ typedef struct I2CMSP432_Object {
     Power_NotifyObj   perfChangeNotify;
     uint32_t          perfConstraintMask;
 
-    volatile I2C_Mode mode;                 /* Stores the I2C state */
+    volatile I2CMSP432_Mode mode;           /* Stores the I2C state */
     I2C_TransferMode  transferMode;         /* Blocking or Callback mode */
     I2C_BitRate       bitRate;              /* SPI bit rate in Hz */
     bool              isOpen;               /* To determine if the SPI is open */

@@ -62,6 +62,19 @@ extern "C" {
 extern const I2C_FxnTable I2CCC3200_fxnTable;
 
 /*!
+ *  @brief  I2CCC3200 mode
+ *
+ *  This enum defines the state of the I2C driver's state-machine. Do not
+ *  modify.
+ */
+typedef enum I2CCC3200_Mode {
+    I2CCC3200_IDLE_MODE = 0,  /* I2C is not performing a transaction */
+    I2CCC3200_WRITE_MODE,     /* I2C is currently performing write operations */
+    I2CCC3200_READ_MODE,      /* I2C is currently performing read operations */
+    I2CCC3200_ERROR = 0xFF    /* I2C error has occurred, exit gracefully */
+} I2CCC3200_Mode;
+
+/*!
  *  @brief  I2CCC3200 Hardware attributes
  *
  *  These fields are used by driverlib APIs and therefore must be populated by
@@ -103,7 +116,7 @@ typedef struct I2CCC3200_Object {
     I2C_TransferMode    transferMode;        /* Blocking or Callback mode */
     I2C_CallbackFxn     transferCallbackFxn; /* Callback function pointer */
 
-    volatile I2C_Mode   mode;           /* Stores the I2C state */
+    volatile I2CCC3200_Mode mode;         /* Stores the I2C state */
 
     I2C_Transaction    *currentTransaction; /* Pointer to current I2C transaction */
 

@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A68
+ * @(#) xdc-A71
  */
 
 #ifndef ti_sysbios_family_arm_lm4_Timer__INTERNAL__

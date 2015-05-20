@@ -87,6 +87,19 @@ extern "C" {
 extern const I2C_FxnTable I2CEUSCIB_fxnTable;
 
 /*!
+ *  @brief  I2CEUSCIB mode
+ *
+ *  This enum defines the state of the I2C driver's state-machine. Do not
+ *  modify.
+ */
+typedef enum I2CEUSCIB_Mode {
+    I2CEUSCIB_IDLE_MODE = 0,  /* I2C is not performing a transaction */
+    I2CEUSCIB_WRITE_MODE,     /* I2C is currently performing write operations */
+    I2CEUSCIB_READ_MODE,      /* I2C is currently performing read operations */
+    I2CEUSCIB_ERROR = 0xFF    /* I2C error has occurred, exit gracefully */
+} I2CEUSCIB_Mode;
+
+/*!
  *  @brief  I2CEUSCIB Hardware attributes
  *
  *  These fields are used by driverlib APIs and therefore must be populated by
@@ -129,7 +142,7 @@ typedef struct I2CEUSCIB_Object {
     I2C_TransferMode    transferMode;   /* Blocking or Callback mode */
     I2C_CallbackFxn     transferCallbackFxn; /* Callback function pointer */
 
-    volatile I2C_Mode   mode;           /* Stores the I2C state */
+    volatile I2CEUSCIB_Mode mode;       /* Stores the I2C state */
 
     I2C_Transaction    *currentTransaction; /* Ptr to current I2C transaction */
 
