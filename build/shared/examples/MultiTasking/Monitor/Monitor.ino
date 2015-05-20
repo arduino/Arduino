@@ -61,6 +61,8 @@ static int consoleHandler_aw(const char *line);
 
 #if WM_CMD == 1
 static int consoleHandler_wm(const char *line);
+static int consoleHandler_wm1(const char *line);
+static int consoleHandler_wm2(const char *line);
 #endif
 
 #if DM_CMD == 1
@@ -97,7 +99,9 @@ static const struct {
     GEN_COMMTABLE_ENTRY(dm,      "dump memory",                 "usage: dm <address (hex)> <num words> <word size (1/4)>"),
 #endif
 #if WM_CMD == 1
-    GEN_COMMTABLE_ENTRY(wm,      "write to memory",             "usage: wm <address (hex)> <words..>"),
+    GEN_COMMTABLE_ENTRY(wm,      "write to memory (32 bits)",   "usage: wm <address (hex)> <words..>"),
+    GEN_COMMTABLE_ENTRY(wm2,     "write to memory (16 bits)",   "usage: wm <address (hex)> <half words..>"),
+    GEN_COMMTABLE_ENTRY(wm1,     "write to memory (8 bits)",    "usage: wm <address (hex)> <bytes..>"),
 #endif
 #if DRW_CMDS == 1
     GEN_COMMTABLE_ENTRY(dw,      "digitalWrite to pin",         "usage: dw <pin> <value>"),
@@ -502,6 +506,27 @@ static void dumpMemory(uint32_t *address, uint32_t len, uint32_t size)
         }
     }
 
+    if (size == 2) {
+        for (i=0; i < len; i+=8) {
+            uint16_t *addr = (uint16_t *)base_addr+i;
+            uint8_t *baddr = (uint8_t *)addr;
+
+            // for printing literal values
+            uint8_t asciiBytes[16];
+            int j;
+            for (j=0; j<16; j++) {
+                asciiBytes[j] = (baddr[j] > 31 && baddr[j] < 127) ? baddr[j] : '.';
+            }
+
+            System_snprintf(response,sizeof(response),
+                "0x%x | %04x %04x  %04x %04x  %04x %04x  %04x %04x | %.16s",
+                (int)addr,
+                addr[0], addr[1], addr[2], addr[3], addr[4], addr[5], addr[6], addr[7],
+                asciiBytes);
+            Serial.println(response);
+        }
+    }
+
     if (size == 4) {
         for (i=0; i < len; i+=4) {
             uint32_t *addr = (uint32_t *)base_addr+i;
@@ -540,7 +565,7 @@ static int consoleHandler_dm(const char *line)
             len = strtoul(endptr, &endptr, 0);
             if (*endptr == ' ') {
                 size = strtoul(endptr, &endptr, 10);
-                if ((size !=1) && (size != 4)) {
+                if ((size !=1) && (size != 2) && (size != 4)) {
                     size = 4;
                 }
                 if (*endptr == ' ') {
@@ -586,7 +611,55 @@ static int consoleHandler_wm(const char *line)
     }
 
     while (*endptr)  {
-        word = strtol(endptr , &endptr, 0);
+        word = strtol(endptr , &endptr, 16);
+        *ptr++ = word;
+    }
+
+    return RETURN_SUCCESS;
+}
+
+static int consoleHandler_wm1(const char *line)
+{
+    char *endptr;
+    uint8_t word = 0;
+    uint8_t *ptr;
+
+    if (*line != ' ') {
+        return RETURN_FAIL_PRINT_USAGE;
+    }
+
+    ptr = (uint8_t *)strtoul(line, &endptr, 16);
+
+    if (*endptr != ' ') {
+        return RETURN_FAIL_PRINT_USAGE;
+    }
+
+    while (*endptr)  {
+        word = strtol(endptr , &endptr, 16);
+        *ptr++ = word;
+    }
+
+    return RETURN_SUCCESS;
+}
+
+static int consoleHandler_wm2(const char *line)
+{
+    char *endptr;
+    uint16_t word = 0;
+    uint16_t *ptr;
+
+    if (*line != ' ') {
+        return RETURN_FAIL_PRINT_USAGE;
+    }
+
+    ptr = (uint16_t *)strtoul(line, &endptr, 16);
+
+    if (*endptr != ' ') {
+        return RETURN_FAIL_PRINT_USAGE;
+    }
+
+    while (*endptr)  {
+        word = strtol(endptr , &endptr, 16);
         *ptr++ = word;
     }
 
