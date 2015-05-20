@@ -335,6 +335,19 @@ typedef struct I2CCC26XX_I2CPinCfg {
 } I2CCC26XX_I2CPinCfg;
 
 /*!
+ *  @brief  I2CCC26XX mode
+ *
+ *  This enum defines the state of the I2C driver's state-machine. Do not
+ *  modify.
+ */
+typedef enum I2CCC26XX_Mode {
+    I2CCC26XX_IDLE_MODE = 0,  /* I2C is not performing a transaction */
+    I2CCC26XX_WRITE_MODE,     /* I2C is currently performing write operations */
+    I2CCC26XX_READ_MODE,      /* I2C is currently performing read operations */
+    I2CCC26XX_ERROR = 0xFF    /* I2C error has occurred, exit gracefully */
+} I2CCC26XX_Mode;
+
+/*!
  *  @brief  I2CCC26XX Hardware attributes
  *
  *  These fields are used by driverlib APIs and therefore must be populated by
@@ -377,7 +390,7 @@ typedef struct I2CCC26XX_Object {
     /* I2C control variables */
     I2C_TransferMode    transferMode;        /*!< Blocking or Callback mode */
     I2C_CallbackFxn     transferCallbackFxn; /*!< Callback function pointer */
-    volatile I2C_Mode   mode;                /*!< Stores the I2C state */
+    volatile I2CCC26XX_Mode mode;            /*!< Stores the I2C state */
     uint32_t            bitRate;             /*!< Bitrate of the I2C module */
 
     /* I2C SYS/BIOS objects */

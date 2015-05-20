@@ -44,6 +44,9 @@ extern "C" {
 #define PIN_FUNC_ANALOG_OUTPUT      3
 #define PIN_FUNC_ANALOG_INPUT       4
 
+extern void stopAnalogWrite(uint8_t pin);
+extern void stopAnalogRead(uint8_t pin);
+
 extern uint8_t digital_pin_to_pin_function[];
 
 #ifdef __cplusplus

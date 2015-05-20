@@ -8,7 +8,7 @@ __TI_STACK_SIZE = __STACK_SIZE;
 INPUT(
     ../../configPkg/package/cfg/energia_pm4fg.om4fg
     ../../lib/msp432.m4fg.lib
-    lib/emt432LP.m4fg.lib
+    lib/board.m4fg.lib
     ti/drivers/lib/drivers_MSP432P401R.am4fg
     ti/drivers/lib/power_tirtos_MSP432P401R.am4fg
     ti/drivers/ports/tirtos/lib/tirtosport.am4fg

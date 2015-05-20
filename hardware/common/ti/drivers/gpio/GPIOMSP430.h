@@ -80,8 +80,8 @@
  *  // NOTE: The order of the pin configurations must coincide with what was
  *  //       defined in MSP_EXP4305529LP.h
  *  // NOTE: Pins not used for interrupts should be placed at the end of the
- *           array.  Callback entries can be omitted from callbacks array to
- *           reduce memory usage.
+ *  //       array.  Callback entries can be omitted from callbacks array to
+ *  //       reduce memory usage.
  *  const GPIO_PinConfig gpioPinConfigs[] = {
  *      // Input pins
  *      // MSP_EXP430F5529LP_S1
@@ -100,7 +100,7 @@
  *  // NOTE: The order of the pin configurations must coincide with what was
  *  //       defined in MSP_EXP4305529LP.h
  *  // NOTE: Pins not used for interrupts can be omitted from callbacks array to
- *           reduce memory usage (if placed at end of gpioPinConfigs array).
+ *  //       reduce memory usage (if placed at end of gpioPinConfigs array).
  *  const GPIO_callbackFxn gpioCallbackFunctions[] = {
  *      NULL,       // MSP_EXP430F5529LP_S1
  *      NULL        // MSP_EXP430F5529LP_S2
@@ -121,28 +121,32 @@
  *  }
  *  @endcode
  *
- *  GPIO interrupts must be statically created in the application specific
- *  configuration file for MSP430 devices.  The GPIO port number corresponding
- *  to the interrupt must also be provided as an interrupt argument.  The
- *  the following is an example for creating an interrupt for Port 2.
+ *  MSP430 devices require GPIO interrupts to be statically created in the
+ *  application specific configuration.  The interrupt service routine for
+ *  the Hwi must be set to "GPIO_hwiIntFxn".  Additionally, the GPIO port
+ *  number must be provided as a Hwi parameter.  When an interrupt is triggered,
+ *  the interrupt status of all (interrupt enabled) pins on a port will be read,
+ *  cleared, and the respective callbacks will be executed.  Callbacks will be
+ *  called in order from least significant bit to most significant bit.  Keep
+ *  in mind that the callback functions will be called in the context of an
+ *  interrupt service routine and should be designed accordingly.
+ *  The following  is an example for creating a Hwi for Port 2.
  *
  *  Application configuration file:
  *  @code
- *  //All Hwis must be created statically; including those for TI-RTOS drivers.
+ *  // All Hwis must be created statically; including those for TI-RTOS drivers.
  *  var hwiParams = new Hwi.Params();
- *  hwiParams.arg = 2;      // Add the GPIO port number as a Hwi argument.
+ *
+ *  // Add the GPIO port number as a Hwi argument.
+ *  hwiParams.arg = 2;
+ *
+ *  // Create the Hwi with GPIO Port interrupt number and using GPIO_hwiIntFxn
+ *  // as the Hwi function.
  *  Program.global.hwi0 = Hwi.create(42, "&GPIO_hwiIntFxn", hwiParams);
  *  @endcode
  *
  *  Callback functions can be assigned to interrupt enabled input pins on
  *  Port 2.
- *
- *  Keep in mind that the callback functions will be called in the context of
- *  an interrupt service routine and should be designed accordingly.  When an
- *  interrupt is triggered, the interrupt status of all (interrupt enabled) pins
- *  on a port will be read, cleared, and the respective callbacks will be
- *  executed.  Callbacks will be called in order from least significant bit to
- *  most significant bit.
  *
  *  # Instrumentation #
  *  The GPIO driver interface produces log statements if instrumentation is

@@ -100,7 +100,7 @@
  * # Power Management #
  * The TI-RTOS power management framework will try to put the device into the most
  * power efficient mode whenever possible. Please see the technical reference
- * manual for further details on each power mode.                                                   |
+ * manual for further details on each power mode.
  *
  *  The SPICC26XXDMA.h driver is setting a power constraint during transfers to keep
  *  the device out of standby. When the transfer has finished, the power
@@ -124,7 +124,13 @@
  *        - During SPI_transfer(): the device cannot enter standby, only idle.
  *        - After SPI_transfer() succeeds: the device can enter standby.
  *        - If SPI_transferCancel() is called: the device can enter standby.
-
+ *
+ *  @note The external hardware connected to the SPI might have some pull configured on the
+ *        SPI lines. When the SPI is inactive, this might cause leakage on the IO and the
+ *        current consumption to increase. The application must configure a pull configuration
+ *        that alignes with the external hardware.
+ *        See [Ensure low power during inactive periods] (@ref USE_CASE_LPWR) for code example.
+ *
  *  # SPI details #
  *  ## Chip Select #
  *  This SPI controller supports a hardware chip select pin. Refer to the
@@ -391,6 +397,53 @@
  *  }
  *  @endcode
  *
+ *  ### Ensure low power during inactive periods \anchor USE_CASE_LPWR #
+ *  External hardware connected on the SPI, i.e. SPI host/slave, might have configured
+ *  a pull on one or more of the SPI lines. Dependent on the hardware, it might conflict
+ *  with the pull used for the CC26XX SPI. To avoid increased leakage and ensure the lowest
+ *  possible power consumption when the SPI is inactive, the application must configure a
+ *  matching pull on the SPI IOs. An example of how this can be done is shown below.
+ *
+ *  @code
+ *  PIN_Handle pinHandle;
+ *  SPI_Handle handle;
+ *  SPI_Params params;
+ *  SPI_Transaction transaction;
+ *  uint8_t txBuf[] = "Heartbeat";    // Transmit buffer
+ *  uint8_t rxBuf[9];                 // Receive buffer
+ *  PIN_Id misoPinId;
+ *  uint32_t standbyDurationMs = 100;
+ *
+ *  // Init SPI and specify non-default parameters
+ *  SPI_Params_init(&params);
+ *  params.bitRate     = 1000000;
+ *  params.frameFormat = SPI_POL1_PHA1;
+ *  params.mode        = SPI_MASTER;
+ *
+ *  // Configure the transaction
+ *  transaction.count = sizeof(txBuf);
+ *  transaction.txBuf = txBuf;
+ *  transaction.rxBuf = rxBuf;
+ *
+ *  // Open the SPI and perform the transfer
+ *  handle = SPI_open(Board_SPI, &params);
+ *  // Get pinHandle
+ *  pinHandle = ((SPICC26XX_Object *)spiHandle->object)->pinHandle;
+ *  // Get miso pin id
+ *  misoPinId = ((SPICC26XX_HWAttrs *)spiHandle->hwAttrs)->misoPin;
+ *
+ *  // Apply low power sleep pull config for MISO
+ *  PIN_setConfig(pinHandle, PIN_BM_PULLING, PIN_PULLUP | misoPinId);
+ *
+ *  // Do forever
+ *  while(1) {
+ *    // Transfer data
+ *    SPI_transfer(handle, &transaction);
+ *    // Sleep
+ *    Task_sleep(standbyDurationMs*100);
+ *  }
+ *  @endcode
+ *
  *  # Instrumentation #
  *  The SPI driver interface produces log statements if instrumentation is
  *  enabled.
@@ -422,13 +475,20 @@ extern "C" {
 #include <ti/sysbios/family/arm/m3/Hwi.h>
 
 /*! Enable RETURN_PARTIAL, used as cmd to SPI_control() */
-#define SPICC26XXDMA_RETURN_PARTIAL_ENABLE    SPI_CMD_RESERVED + 0
+#define SPICC26XXDMA_CMD_RETURN_PARTIAL_ENABLE  SPI_CMD_RESERVED + 0
 /*! Disable RETURN_PARTIAL, used as cmd to SPI_control() */
-#define SPICC26XXDMA_RETURN_PARTIAL_DISABLE   SPI_CMD_RESERVED + 1
+#define SPICC26XXDMA_CMD_RETURN_PARTIAL_DISABLE SPI_CMD_RESERVED + 1
 /*! Re-configure chip select pin, used as cmd to SPI_control() */
-#define SPICC26XXDMA_SET_CSN_PIN              SPI_CMD_RESERVED + 2
+#define SPICC26XXDMA_CMD_SET_CSN_PIN            SPI_CMD_RESERVED + 2
 /*! Enable/disable CSN wakeup on chip select assertion, used as cmd to SPI_control() */
-#define SPICC26XXDMA_SET_CSN_WAKEUP           SPI_CMD_RESERVED + 3
+#define SPICC26XXDMA_CMD_SET_CSN_WAKEUP         SPI_CMD_RESERVED + 3
+
+/* BACKWARDS COMPATIBILITY */
+#define SPICC26XXDMA_RETURN_PARTIAL_ENABLE      SPICC26XXDMA_CMD_RETURN_PARTIAL_ENABLE
+#define SPICC26XXDMA_RETURN_PARTIAL_DISABLE     SPICC26XXDMA_CMD_RETURN_PARTIAL_DISABLE
+#define SPICC26XXDMA_SET_CSN_PIN                SPICC26XXDMA_CMD_SET_CSN_PIN
+#define SPICC26XXDMA_SET_CSN_WAKEUP             SPICC26XXDMA_CMD_SET_CSN_WAKEUP
+/* END BACKWARDS COMPATIBILITY */
 
 /*!
  *  \internal

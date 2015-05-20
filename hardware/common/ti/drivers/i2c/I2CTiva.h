@@ -62,6 +62,19 @@ extern "C" {
 extern const I2C_FxnTable I2CTiva_fxnTable;
 
 /*!
+ *  @brief  I2CTiva mode
+ *
+ *  This enum defines the state of the I2C driver's state-machine. Do not
+ *  modify.
+ */
+typedef enum I2CTiva_Mode {
+    I2CTiva_IDLE_MODE = 0,  /* I2C is not performing a transaction */
+    I2CTiva_WRITE_MODE,     /* I2C is currently performing write operations */
+    I2CTiva_READ_MODE,      /* I2C is currently performing read operations */
+    I2CTiva_ERROR = 0xFF    /* I2C error has occurred, exit gracefully */
+} I2CTiva_Mode;
+
+/*!
  *  @brief  I2CTiva Hardware attributes
  *
  *  These fields are used by driverlib APIs and therefore must be populated by
@@ -108,7 +121,7 @@ typedef struct I2CTiva_Object {
 
     ti_sysbios_family_arm_m3_Hwi_Struct hwi;  /* Hwi object handle */
 
-    volatile I2C_Mode   mode;           /* Stores the I2C state */
+    volatile I2CTiva_Mode mode;         /* Stores the I2C state */
 
     I2C_Transaction    *currentTransaction; /* Pointer to current I2C transaction */
 

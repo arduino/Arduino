@@ -29,6 +29,14 @@ extern void itoa( int n, char s[] ) ;
 
 #else
 
+#ifdef __TI_COMPILER_VERSION__
+/* the following hack is needed to prevent conflicting definitions of ltoa:
+ *     the TI stdlib.h declares a function named ltoa which is quite
+ *     different from the "standard" non-ANSI extension defined below
+ */
+#define ltoa _ltoa
+#endif
+
 extern char* itoa( int value, char *string, int radix ) ;
 extern char* ltoa( long value, char *string, int radix ) ;
 extern char* utoa( unsigned long value, char *string, int radix ) ;

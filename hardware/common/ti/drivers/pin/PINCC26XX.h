@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2015, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -342,9 +342,10 @@ extern PIN_Status PINCC26XX_setMux(PIN_Handle handle, PIN_Id pinId, int32_t nMux
 
 /** \anchor PINCC26XX_MUX_VALS
  *  \name Device-specific pin mux values for CC26xx family
- * \{
- * CC26XX-specific mux vakues used in conjunction with #PINCC26XX_setMux() to
- * map hardware peripheral ports, GPIO or observation signals to pins.
+ *  \ deprecated Use IOC_PORT_* defines from driverlib/ioc.h directly instead
+ *  \{
+ *  CC26XX-specific mux vakues used in conjunction with #PINCC26XX_setMux() to
+ *  map hardware peripheral ports, GPIO or observation signals to pins.
  */
 #define PINCC26XX_MUX_GPIO           IOC_PORT_GPIO            // Default general purpose IO usage
 #define PINCC26XX_MUX_AON_SCS        IOC_PORT_AON_SCS         // AON SPI-S SCS Pin
