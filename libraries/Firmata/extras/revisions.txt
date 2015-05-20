@@ -1,0 +1,141 @@
+FIRMATA 2.4.3 - Apr 11, 2015
+
+[core library]
+* Added debug macros (utility/firmataDebug.h)
+* Added Norbert Truchsess' EthernetClientStream lib from the configurable branch
+
+[examples]
+* Added StandardFirmataEthernet to enable Firmata over Ethernet
+* Minor updates to StandardFirmata and StandardFirmataYun
+
+FIRMATA 2.4.2 - Mar 16, 2015
+
+[core library]
+* Add support for Teesy 3.1 (Olivier Louvignes)
+
+FIRMATA 2.4.1 - Feb 7, 2015
+
+[core library]
+* Fixed off-by-one bug in setFirmwareNameAndVersion (Brian Schmalz)
+
+[StandardFirmata]
+* Prevent analog values from being reported during system reset
+
+FIRMATA 2.4.0 - Dec 21, 2014
+
+Changes from 2.3.6 to 2.4 that may impact existing Firmata client implementations:
+
+* When sending a string from the client application to the board (STRING_DATA) a
+static buffer is now used for the incoming string in place of a dynamically allocated
+block of memory (see Firmata.cpp lines 181 - 205). In Firmata 2.3.6 and older,
+the dynamically allocated block was never freed, causing a memory leak. If your
+client library had freed this memory in the string callback method, that code
+will break in Firmata 2.4. If the string data needs to persist beyond the string
+callback, it should be copied within the string callback.
+
+* As of Firmata 2.4, when digital port reporting or analog pin reporting is enabled,
+the value of the port (digital) or pin (analog) is immediately sent back to the client
+application. This will likely not have a negative impact on existing client
+implementations, but may be unexpected. This feature was added to better support
+non-serial streams (such as Ethernet, Wi-Fi, Bluetooth, etc) that may lose
+connectivity and need a quick way to get the current state of the pins upon
+reestablishing a connection.
+
+[core library]
+* Changed sendValueAsTwo7bitBytes, startSysex and endSysex from private to
+  public methods.
+* Added Intel Galileo to Boards.h
+* Renamed FirmataSerial to FirmataStream
+* Updated to latest Arduino library format
+* writePort function in Boards.h now returns 1 (to suppress compiler warning)
+* Updated syntax highlighting (keywords.txt)
+* Fixed IS_PIN_SPI ifndef condition in boards.h
+* Added constants to Firmata.h to reserve configurable firmata features
+* Fixed issue where firmwareName was not reported correctly in Windows
+* Ensure incoming String via STRING_DATA command is null-terminated
+* Fixed memory leak when receiving String via STRING_DATA command
+  (note this change may break existing code if you were manually deallocating
+  the incoming string in your string callback function. See code for details)
+* Added ability for user to specify a filename when calling setFirmwareNameAndVersion
+* Increased input data buffer size from 32 to 64 bytes
+
+[StandardFirmata]
+* Updated I2C_READ_CONTINUOUSLY to work with or without slaveRegister (Rick Waldron)
+* Added Yun variant of StandardFirmata
+* When a digital port is enabled, its value is now immediately sent to the client
+* When an analog pin is enabled, its value is now immediately sent to the client
+* Changed the way servo pins are mapped to enable use of servos on
+  a wider range of pins, including analog pins.
+* Fixed management of unexpected sized I2C replies (Nahuel Greco)
+* Fixed a bug when removing a monitored device with I2C_STOP_Reading (Nahuel Greco)
+* Fixed conditional expression in I2C_STOP_READING case
+* Changed samplingInterval from type int to type unsigned int
+* Shortened error message strings to save a few bytes
+
+[examples]
+* Updated FirmataServo example to use new pin mapping technique
+* Removed makefiles from examples (because they were not being updated)
+* Updated all examples to set current firmware version
+
+FIRMATA 2.3.6 - Jun 18, 2013 (Version included with Arduino core libraries)
+
+[core library]
+* Fixed bug introduced in 2.3.5 that broke ability to use Ethernet.
+
+FIRMATA 2.3.5 - May 21, 2013
+
+[core library]
+* Added Arduino Due to Boards.h
+* Added Teensy 3.0 to Boards.h
+* Updated unit tests to use ArduinoUnit v2.0
+* Renamed pin13strobe to strobeBlinkPin
+* Removed blinkVersion method from begin method for non-serial streams
+* Fixed memory leak in setting firmware version (Matthew Murdoch)
+* Added unit tests for a few core functions (Matthew Murdoch)
+* Added IS_PIN_SPI macro to all board definitions in Board.h (Norbert Truchsess)
+
+FIRMATA 2.3.4 - Feb 11, 2013
+
+[core library]
+* Fixed Stream implementation so Firmata can be used with Streams other than
+  Serial (Norbert Truchsess)
+
+FIRMATA 2.3.3 - Oct 6, 2012
+
+[core library]
+* Added write method to expose FirmataSerial.write
+* Added Arduino Leonardo to Boards.h
+
+[StandardFirmata]
+* Changed all instances of Serial.write to Firmata.write
+* Fixed delayMicroseconds(0) bug in readAndReportData
+
+FIRMATA 2.3.0 - 2.3.2
+
+* Removed angle from servo config
+* Changed file extensions from .pde to .ino
+* Added MEGA2560 to Boards.h
+* Added I2C pins to Boards.h
+* Modified examples to be compatible with Arduino 0022 and 1.0 or greater
+* Removed I2CFirmata example
+* Changes to StandardFirmata
+  * Added I2C support
+  * Added system reset message to reset all pins to default config on sysex reset
+
+FIRMATA 2.2 (changes prior to Firmata 2.3.0 were not well documented)
+
+* changes undocumented
+
+FIRMATA 2.1
+
+* added support for changing the sampling interval
+* added Servo support
+
+FIRMATA 2.0
+
+* changed to 8-bit port-based digital messages to mirror ports from previous 14-bit ports modeled after the standard Arduino board.
+* switched order of version message so major version is reported first
+
+FIRMATA 1.0
+
+* switched to MIDI-compatible packet format (though the message interpretation differs)

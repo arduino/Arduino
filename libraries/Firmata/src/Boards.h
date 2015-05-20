@@ -1,4 +1,14 @@
-/* Boards.h - Hardware Abstraction Layer for Firmata library */
+/*
+  Boards.h - Hardware Abstraction Layer for Firmata library
+  Copyright (c) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  See file LICENSE.txt for further informations on licensing terms.
+*/
 
 #ifndef Firmata_Boards_h
 #define Firmata_Boards_h
@@ -6,7 +16,7 @@
 #include <inttypes.h>
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"	// for digitalRead, digitalWrite, etc
+#include "Arduino.h"  // for digitalRead, digitalWrite, etc
 #else
 #include "WProgram.h"
 #endif
@@ -23,7 +33,7 @@
     Firmata Hardware Abstraction Layer
 
 Firmata is built on top of the hardware abstraction functions of Arduino,
-specifically digitalWrite, digitalRead, analogWrite, analogRead, and 
+specifically digitalWrite, digitalRead, analogWrite, analogRead, and
 pinMode.  While these functions offer simple integer pin numbers, Firmata
 needs more information than is provided by Arduino.  This file provides
 all other hardware specific details.  To make Firmata support a new board,
@@ -163,7 +173,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        ((p) - FIRST_ANALOG_PIN)
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
-#define PIN_TO_SERVO(p)         (p) 
+#define PIN_TO_SERVO(p)         (p)
 
 
 // old Arduinos
@@ -250,8 +260,8 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_SERVO(p)         (p)
 
 
-// Teensy 3.0
-#elif defined(__MK20DX128__)
+// Teensy 3.0 and 3.1
+#elif defined(__MK20DX128__) || defined(__MK20DX256__)
 #define TOTAL_ANALOG_PINS       14
 #define TOTAL_PINS              38 // 24 digital + 10 analog-digital + 4 analog
 #define VERSION_BLINK_PIN       13
@@ -263,7 +273,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        (((p)<=23)?(p)-14:(p)-24)
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
-#define PIN_TO_SERVO(p)         (p) 
+#define PIN_TO_SERVO(p)         (p)
 
 
 // Teensy++ 1.0 and 2.0
@@ -297,7 +307,24 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_DIGITAL(p)       (p)
 #define PIN_TO_ANALOG(p)        (p) - 18
 #define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
-#define PIN_TO_SERVO(p)         (p)  
+#define PIN_TO_SERVO(p)         (p)
+
+
+// Intel Galileo Board
+#elif defined(ARDUINO_LINUX)
+#define TOTAL_ANALOG_PINS       6
+#define TOTAL_PINS              20 // 14 digital + 6 analog
+#define VERSION_BLINK_PIN       13
+#define IS_PIN_DIGITAL(p)       ((p) >= 2 && (p) <= 19)
+#define IS_PIN_ANALOG(p)        ((p) >= 14 && (p) <= 19)
+#define IS_PIN_PWM(p)           digitalPinHasPWM(p)
+#define IS_PIN_SERVO(p)         (IS_PIN_DIGITAL(p) && (p) - 2 < MAX_SERVOS)
+#define IS_PIN_I2C(p)           ((p) == SDA || (p) == SCL)
+#define IS_PIN_SPI(p)           ((p) == SS || (p) == MOSI || (p) == MISO || (p) == SCK)
+#define PIN_TO_DIGITAL(p)       (p)
+#define PIN_TO_ANALOG(p)        ((p) - 14)
+#define PIN_TO_PWM(p)           PIN_TO_DIGITAL(p)
+#define PIN_TO_SERVO(p)         ((p) - 2)
 
 
 // Sanguino
@@ -338,7 +365,7 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #endif
 
 // as long this is not defined for all boards:
-#ifndef IS_PIN_SPI(p)
+#ifndef IS_PIN_SPI
 #define IS_PIN_SPI(p)           0
 #endif
 
@@ -350,21 +377,21 @@ static inline unsigned char readPort(byte, byte) __attribute__((always_inline, u
 static inline unsigned char readPort(byte port, byte bitmask)
 {
 #if defined(ARDUINO_PINOUT_OPTIMIZE)
-	if (port == 0) return (PIND & 0xFC) & bitmask; // ignore Rx/Tx 0/1
-	if (port == 1) return ((PINB & 0x3F) | ((PINC & 0x03) << 6)) & bitmask;
-	if (port == 2) return ((PINC & 0x3C) >> 2) & bitmask;
-	return 0;
+  if (port == 0) return (PIND & 0xFC) & bitmask; // ignore Rx/Tx 0/1
+  if (port == 1) return ((PINB & 0x3F) | ((PINC & 0x03) << 6)) & bitmask;
+  if (port == 2) return ((PINC & 0x3C) >> 2) & bitmask;
+  return 0;
 #else
-	unsigned char out=0, pin=port*8;
-	if (IS_PIN_DIGITAL(pin+0) && (bitmask & 0x01) && digitalRead(PIN_TO_DIGITAL(pin+0))) out |= 0x01;
-	if (IS_PIN_DIGITAL(pin+1) && (bitmask & 0x02) && digitalRead(PIN_TO_DIGITAL(pin+1))) out |= 0x02;
-	if (IS_PIN_DIGITAL(pin+2) && (bitmask & 0x04) && digitalRead(PIN_TO_DIGITAL(pin+2))) out |= 0x04;
-	if (IS_PIN_DIGITAL(pin+3) && (bitmask & 0x08) && digitalRead(PIN_TO_DIGITAL(pin+3))) out |= 0x08;
-	if (IS_PIN_DIGITAL(pin+4) && (bitmask & 0x10) && digitalRead(PIN_TO_DIGITAL(pin+4))) out |= 0x10;
-	if (IS_PIN_DIGITAL(pin+5) && (bitmask & 0x20) && digitalRead(PIN_TO_DIGITAL(pin+5))) out |= 0x20;
-	if (IS_PIN_DIGITAL(pin+6) && (bitmask & 0x40) && digitalRead(PIN_TO_DIGITAL(pin+6))) out |= 0x40;
-	if (IS_PIN_DIGITAL(pin+7) && (bitmask & 0x80) && digitalRead(PIN_TO_DIGITAL(pin+7))) out |= 0x80;
-	return out;
+  unsigned char out = 0, pin = port * 8;
+  if (IS_PIN_DIGITAL(pin + 0) && (bitmask & 0x01) && digitalRead(PIN_TO_DIGITAL(pin + 0))) out |= 0x01;
+  if (IS_PIN_DIGITAL(pin + 1) && (bitmask & 0x02) && digitalRead(PIN_TO_DIGITAL(pin + 1))) out |= 0x02;
+  if (IS_PIN_DIGITAL(pin + 2) && (bitmask & 0x04) && digitalRead(PIN_TO_DIGITAL(pin + 2))) out |= 0x04;
+  if (IS_PIN_DIGITAL(pin + 3) && (bitmask & 0x08) && digitalRead(PIN_TO_DIGITAL(pin + 3))) out |= 0x08;
+  if (IS_PIN_DIGITAL(pin + 4) && (bitmask & 0x10) && digitalRead(PIN_TO_DIGITAL(pin + 4))) out |= 0x10;
+  if (IS_PIN_DIGITAL(pin + 5) && (bitmask & 0x20) && digitalRead(PIN_TO_DIGITAL(pin + 5))) out |= 0x20;
+  if (IS_PIN_DIGITAL(pin + 6) && (bitmask & 0x40) && digitalRead(PIN_TO_DIGITAL(pin + 6))) out |= 0x40;
+  if (IS_PIN_DIGITAL(pin + 7) && (bitmask & 0x80) && digitalRead(PIN_TO_DIGITAL(pin + 7))) out |= 0x80;
+  return out;
 #endif
 }
 
@@ -376,40 +403,42 @@ static inline unsigned char writePort(byte, byte, byte) __attribute__((always_in
 static inline unsigned char writePort(byte port, byte value, byte bitmask)
 {
 #if defined(ARDUINO_PINOUT_OPTIMIZE)
-	if (port == 0) {
-		bitmask = bitmask & 0xFC;  // do not touch Tx & Rx pins
-		byte valD = value & bitmask;
-		byte maskD = ~bitmask;
-		cli();
-		PORTD = (PORTD & maskD) | valD;
-		sei();
-	} else if (port == 1) {
-		byte valB = (value & bitmask) & 0x3F;
-		byte valC = (value & bitmask) >> 6;
-		byte maskB = ~(bitmask & 0x3F);
-		byte maskC = ~((bitmask & 0xC0) >> 6);
-		cli();
-		PORTB = (PORTB & maskB) | valB;
-		PORTC = (PORTC & maskC) | valC;
-		sei();
-	} else if (port == 2) {
-		bitmask = bitmask & 0x0F;
-		byte valC = (value & bitmask) << 2;
-		byte maskC = ~(bitmask << 2);
-		cli();
-		PORTC = (PORTC & maskC) | valC;
-		sei();
-	}
+  if (port == 0) {
+    bitmask = bitmask & 0xFC;  // do not touch Tx & Rx pins
+    byte valD = value & bitmask;
+    byte maskD = ~bitmask;
+    cli();
+    PORTD = (PORTD & maskD) | valD;
+    sei();
+  } else if (port == 1) {
+    byte valB = (value & bitmask) & 0x3F;
+    byte valC = (value & bitmask) >> 6;
+    byte maskB = ~(bitmask & 0x3F);
+    byte maskC = ~((bitmask & 0xC0) >> 6);
+    cli();
+    PORTB = (PORTB & maskB) | valB;
+    PORTC = (PORTC & maskC) | valC;
+    sei();
+  } else if (port == 2) {
+    bitmask = bitmask & 0x0F;
+    byte valC = (value & bitmask) << 2;
+    byte maskC = ~(bitmask << 2);
+    cli();
+    PORTC = (PORTC & maskC) | valC;
+    sei();
+  }
+  return 1;
 #else
-	byte pin=port*8;
-	if ((bitmask & 0x01)) digitalWrite(PIN_TO_DIGITAL(pin+0), (value & 0x01));
-	if ((bitmask & 0x02)) digitalWrite(PIN_TO_DIGITAL(pin+1), (value & 0x02));
-	if ((bitmask & 0x04)) digitalWrite(PIN_TO_DIGITAL(pin+2), (value & 0x04));
-	if ((bitmask & 0x08)) digitalWrite(PIN_TO_DIGITAL(pin+3), (value & 0x08));
-	if ((bitmask & 0x10)) digitalWrite(PIN_TO_DIGITAL(pin+4), (value & 0x10));
-	if ((bitmask & 0x20)) digitalWrite(PIN_TO_DIGITAL(pin+5), (value & 0x20));
-	if ((bitmask & 0x40)) digitalWrite(PIN_TO_DIGITAL(pin+6), (value & 0x40));
-	if ((bitmask & 0x80)) digitalWrite(PIN_TO_DIGITAL(pin+7), (value & 0x80));
+  byte pin = port * 8;
+  if ((bitmask & 0x01)) digitalWrite(PIN_TO_DIGITAL(pin + 0), (value & 0x01));
+  if ((bitmask & 0x02)) digitalWrite(PIN_TO_DIGITAL(pin + 1), (value & 0x02));
+  if ((bitmask & 0x04)) digitalWrite(PIN_TO_DIGITAL(pin + 2), (value & 0x04));
+  if ((bitmask & 0x08)) digitalWrite(PIN_TO_DIGITAL(pin + 3), (value & 0x08));
+  if ((bitmask & 0x10)) digitalWrite(PIN_TO_DIGITAL(pin + 4), (value & 0x10));
+  if ((bitmask & 0x20)) digitalWrite(PIN_TO_DIGITAL(pin + 5), (value & 0x20));
+  if ((bitmask & 0x40)) digitalWrite(PIN_TO_DIGITAL(pin + 6), (value & 0x40));
+  if ((bitmask & 0x80)) digitalWrite(PIN_TO_DIGITAL(pin + 7), (value & 0x80));
+  return 1;
 #endif
 }
 

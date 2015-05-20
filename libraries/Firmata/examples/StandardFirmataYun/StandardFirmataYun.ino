@@ -11,7 +11,8 @@
   Copyright (C) 2006-2008 Hans-Christoph Steiner.  All rights reserved.
   Copyright (C) 2010-2011 Paul Stoffregen.  All rights reserved.
   Copyright (C) 2009 Shigeru Kobayashi.  All rights reserved.
-  Copyright (C) 2009-2015 Jeff Hoefs.  All rights reserved.
+  Copyright (C) 2009-2014 Jeff Hoefs.  All rights reserved.
+  Copyright (C) 2014 Alan Yorinks. All rights reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,6 +22,17 @@
   See file LICENSE.txt for further informations on licensing terms.
 
   Last updated by Jeff Hoefs: April 11, 2015
+ */
+
+/*
+  README
+
+  The Arduino Yun has both an Arduino (Atmega32u4) environment and a
+  Linux (Linino) environment.
+
+  StandardFirmataYun enables Firmata running on the Arduino environment
+  to communicate with a Firmata client application running on the Linux
+  environment.
 */
 
 #include <Servo.h>
@@ -667,6 +679,18 @@ void systemResetCallback()
 
 void setup()
 {
+  Serial1.begin(57600); // Set the baud.
+  while (!Serial1) {
+  }
+  // Wait for U-boot to finish startup.  Consume all bytes until we are done.
+  do {
+    while (Serial1.available() > 0) {
+      Serial1.read();
+    }
+    delay(1000);
+  }
+  while (Serial1.available() > 0);
+
   Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
 
   Firmata.attach(ANALOG_MESSAGE, analogWriteCallback);
@@ -677,7 +701,7 @@ void setup()
   Firmata.attach(START_SYSEX, sysexCallback);
   Firmata.attach(SYSTEM_RESET, systemResetCallback);
 
-  Firmata.begin(57600);
+  Firmata.begin(Serial1);
   systemResetCallback();  // reset to default config
 }
 

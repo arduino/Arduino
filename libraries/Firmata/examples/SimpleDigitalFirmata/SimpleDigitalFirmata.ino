@@ -52,7 +52,7 @@ void digitalWriteCallback(byte port, int value)
 
 void setup()
 {
-  Firmata.setFirmwareVersion(0, 1);
+  Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
   Firmata.attach(DIGITAL_MESSAGE, digitalWriteCallback);
   Firmata.attach(SET_PIN_MODE, setPinModeCallback);
   Firmata.begin(57600);
