@@ -515,7 +515,7 @@
   <target name="linux-checkos" unless="linux">
     <echo>
       =======================================================
-      Arduino for Linux can only be built on on unix systems.
+      Arduino for Linux can only be built on unix systems.
 
       Bye.
       =======================================================
@@ -537,6 +537,10 @@
       <fileset dir="linux/dist" includes="lib/**" />
     </copy>
 
+    <copy todir="linux/work/lib">
+      <fileset dir="shared" includes="icons/**/*.png" />
+    </copy>
+
     <copy todir="linux/work/lib" flatten="true">
       <fileset refid="runtime.jars" />
     </copy>
@@ -545,13 +549,17 @@
       <param name="target.path" value="linux/work" />
     </antcall>
 
-    <copy todir="linux/work" file="linux/dist/arduino" />
-    <copy todir="linux/work" file="linux/dist/arduino.desktop" />
-    <copy todir="linux/work" file="linux/dist/install.sh" />
-    <chmod perm="755" file="linux/work/arduino" />
+    <copy tofile="linux/work/lib/arduino-arduinoide.xml" file="linux/dist/mime.xml" />
+    <copy todir="linux/work/lib" file="linux/dist/desktop.template" />
 
     <copy todir="linux/work" file="linux/dist/arduino" />
-    <chmod perm="755" file="linux/work/arduino" />
+    <copy todir="linux/work" file="linux/dist/install.sh" />
+    <copy todir="linux/work" file="linux/dist/uninstall.sh" />
+
+    <chmod perm="ugo+x">
+        <fileset dir="linux/work" includes="arduino" />
+        <fileset dir="linux/work" includes="**/*.sh" />
+    </chmod>
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.1.zip" />
