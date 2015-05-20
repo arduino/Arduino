@@ -24,7 +24,8 @@ public class CC3200Uploader extends Uploader{
 		Collection params = new ArrayList();
 
 		String uploadPort = Preferences.get("serial.port");
-
+		String variant = boardPreferences.get("build.variant");
+		
 		if (Base.isMacOS() || Base.isLinux()) {
 			params.add(uploadPort);
 			if ( Base.isLinux()) {
@@ -37,6 +38,10 @@ public class CC3200Uploader extends Uploader{
 			params.add(uploadPort.substring(3));
 			params.add(buildPath + File.separator + className + ".bin");
 		}
+
+		if(variant.contains("RedBearLab"))
+			params.add("h");
+
 		return cc3200prog(params);
 	}
 
