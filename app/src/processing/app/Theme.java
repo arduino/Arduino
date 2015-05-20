@@ -1,5 +1,3 @@
-/* -*- mode: java; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
   Part of the Processing project - http://processing.org
 
@@ -23,14 +21,19 @@
 
 package processing.app;
 
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesHelper;
+import processing.app.helpers.PreferencesMap;
+
+import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.font.TextAttribute;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
-import processing.app.syntax.*;
-import processing.core.*;
 import static processing.app.I18n._;
-
 
 /**
  * Storage class for theme settings. This was separated from the Preferences
@@ -39,166 +42,132 @@ import static processing.app.I18n._;
  */
 public class Theme {
 
-  /** Copy of the defaults in case the user mangles a preference. */
-  static HashMap<String,String> defaults;
-  /** Table of attributes/values for the theme. */
-  static HashMap<String,String> table = new HashMap<String,String>();;
-
+  /**
+   * Copy of the defaults in case the user mangles a preference.
+   */
+  static PreferencesMap defaults;
+  /**
+   * Table of attributes/values for the theme.
+   */
+  static PreferencesMap table = new PreferencesMap();
 
   static protected void init() {
     try {
-      load(Base.getLibStream("theme/theme.txt"));
+      table.load(new File(BaseNoGui.getContentFile("lib"), "theme/theme.txt"));
     } catch (Exception te) {
       Base.showError(null, _("Could not read color theme settings.\n" +
-                             "You'll need to reinstall Arduino."), te);
-    }
-
-    // check for platform-specific properties in the defaults
-    String platformExt = "." + Base.getPlatformName();
-    int platformExtLength = platformExt.length();
-    for (String key : table.keySet()) {
-      if (key.endsWith(platformExt)) {
-        // this is a key specific to a particular platform
-        String actualKey = key.substring(0, key.length() - platformExtLength);
-        String value = get(key);
-        table.put(actualKey, value);
-      }
+              "You'll need to reinstall Arduino."), te);
     }
 
     // other things that have to be set explicitly for the defaults
     setColor("run.window.bgcolor", SystemColor.control);
 
     // clone the hash table
-    defaults = (HashMap<String, String>) table.clone();
+    defaults = new PreferencesMap(table);
   }
-
-
-  static protected void load(InputStream input) throws IOException {
-    String[] lines = PApplet.loadStrings(input);
-    for (String line : lines) {
-      if ((line.length() == 0) ||
-          (line.charAt(0) == '#')) continue;
-
-      // this won't properly handle = signs being in the text
-      int equals = line.indexOf('=');
-      if (equals != -1) {
-        String key = line.substring(0, equals).trim();
-        String value = line.substring(equals + 1).trim();
-        table.put(key, value);
-      }
-    }
-  }
-
 
   static public String get(String attribute) {
-    return (String) table.get(attribute);
+    return table.get(attribute);
   }
-
 
   static public String getDefault(String attribute) {
-    return (String) defaults.get(attribute);
+    return defaults.get(attribute);
   }
-
 
   static public void set(String attribute, String value) {
     table.put(attribute, value);
   }
 
-
   static public boolean getBoolean(String attribute) {
-    String value = get(attribute);
-    return (new Boolean(value)).booleanValue();
+    return table.getBoolean(attribute);
   }
-
 
   static public void setBoolean(String attribute, boolean value) {
-    set(attribute, value ? "true" : "false");
+    table.putBoolean(attribute, value);
   }
-
 
   static public int getInteger(String attribute) {
     return Integer.parseInt(get(attribute));
   }
 
-
   static public void setInteger(String key, int value) {
     set(key, String.valueOf(value));
   }
 
-
   static public Color getColor(String name) {
-    Color parsed = null;
-    String s = get(name);
-    if ((s != null) && (s.indexOf("#") == 0)) {
-      try {
-        int v = Integer.parseInt(s.substring(1), 16);
-        parsed = new Color(v);
-      } catch (Exception e) {
-      }
-    }
-    return parsed;
+    return PreferencesHelper.parseColor(get(name));
   }
 
-
-  static public void setColor(String attr, Color what) {
-    set(attr, "#" + PApplet.hex(what.getRGB() & 0xffffff, 6));
+  static public void setColor(String attr, Color color) {
+    PreferencesHelper.putColor(table, attr, color);
   }
-
 
   static public Font getFont(String attr) {
-    boolean replace = false;
-    String value = get(attr);
-    if (value == null) {
-      //System.out.println("reset 1");
-      value = getDefault(attr);
-      replace = true;
-    }
-
-    String[] pieces = PApplet.split(value, ',');
-    if (pieces.length != 3) {
-      value = getDefault(attr);
-      //System.out.println("reset 2 for " + attr);
-      pieces = PApplet.split(value, ',');
-      //PApplet.println(pieces);
-      replace = true;
-    }
-
-    String name = pieces[0];
-    int style = Font.PLAIN;  // equals zero
-    if (pieces[1].indexOf("bold") != -1) {
-      style |= Font.BOLD;
-    }
-    if (pieces[1].indexOf("italic") != -1) {
-      style |= Font.ITALIC;
-    }
-    int size = PApplet.parseInt(pieces[2], 12);
-    Font font = new Font(name, style, size);
-
-    // replace bad font with the default
-    if (replace) {
-      //System.out.println(attr + " > " + value);
-      //setString(attr, font.getName() + ",plain," + font.getSize());
+    Font font = PreferencesHelper.getFont(table, attr);
+    if (font == null) {
+      String value = getDefault(attr);
       set(attr, value);
+      font = PreferencesHelper.getFont(table, attr);
     }
-
     return font;
   }
 
+  /**
+   * Returns the default font for text areas.
+   *
+   * @return The default font.
+   */
+  public static final Font getDefaultFont() {
 
-  static public SyntaxStyle getStyle(String what) {
-    String str = get("editor." + what + ".style");
+    // Use StyleContext to get a composite font for better Asian language
+    // support; see Sun bug S282887.
+    StyleContext sc = StyleContext.getDefaultStyleContext();
+    Font font = null;
 
-    StringTokenizer st = new StringTokenizer(str, ",");
+    if (OSUtils.isMacOS()) {
+      // Snow Leopard (1.6) uses Menlo as default monospaced font,
+      // pre-Snow Leopard used Monaco.
+      font = sc.getFont("Menlo", Font.PLAIN, 12);
+      if (!"Menlo".equals(font.getFamily())) {
+        font = sc.getFont("Monaco", Font.PLAIN, 12);
+        if (!"Monaco".equals(font.getFamily())) { // Shouldn't happen
+          font = sc.getFont("Monospaced", Font.PLAIN, 13);
+        }
+      }
+    } else {
+      // Consolas added in Vista, used by VS2010+.
+      font = sc.getFont("Consolas", Font.PLAIN, 13);
+      if (!"Consolas".equals(font.getFamily())) {
+        font = sc.getFont("Monospaced", Font.PLAIN, 13);
+      }
+    }
 
-    String s = st.nextToken();
-    if (s.indexOf("#") == 0) s = s.substring(1);
-    Color color = new Color(Integer.parseInt(s, 16));
-
-    s = st.nextToken();
-    boolean bold = (s.indexOf("bold") != -1);
-    boolean italic = (s.indexOf("italic") != -1);
-    boolean underlined = (s.indexOf("underlined") != -1);
-
-    return new SyntaxStyle(color, italic, bold, underlined);
+    //System.out.println(font.getFamily() + ", " + font.getName());
+    return font;
   }
+
+  public static Map<String, Object> getStyledFont(String what, Font font) {
+    String split[] = get("editor." + what + ".style").split(",");
+
+    Color color = PreferencesHelper.parseColor(split[0]);
+
+    String style = split[1];
+    boolean bold = style.contains("bold");
+    boolean italic = style.contains("italic");
+    boolean underlined = style.contains("underlined");
+
+    Font styledFont = new Font(font.getFamily(), (bold ? Font.BOLD : 0) | (italic ? Font.ITALIC : 0), font.getSize());
+    if (underlined) {
+      Map<TextAttribute, Object> attr = new Hashtable<TextAttribute, Object>();
+      attr.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+      styledFont = styledFont.deriveFont(attr);
+    }
+
+    Map<String, Object> result = new HashMap<String, Object>();
+    result.put("color", color);
+    result.put("font", styledFont);
+
+    return result;
+  }
+
 }

@@ -57,3 +57,10 @@ buspirate.protocol=buspirate
 buspirate.program.protocol=buspirate
 buspirate.program.tool=avrdude
 buspirate.program.extra_params=-P{serial.port}
+
+usbGemma.name=Arduino Gemma
+usbGemma.protocol=arduinogemma
+usbGemma.program.tool=avrdude
+usbGemma.program.extra_params=
+usbGemma.config.path={runtime.platform.path}/bootloaders/gemma/avrdude.conf
+
