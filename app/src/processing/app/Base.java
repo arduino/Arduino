@@ -117,6 +117,7 @@ public class Base {
   private volatile Action openBoardsManager;
 
   private final PdeKeywords pdeKeywords;
+  private static processing.app.UIPlatform uiPlatform;
 
   static public void main(String args[]) throws Exception {
     System.setProperty("awt.useSystemAAFontSettings", "on");
@@ -142,12 +143,13 @@ public class Base {
     BaseNoGui.initLogger();
 
     initLogger();
-    
+
     BaseNoGui.notifier = new GUIUserNotifier();
 
     BaseNoGui.initPlatform();
-
     BaseNoGui.getPlatform().init();
+
+    Base.initUIPlatform();
 
     BaseNoGui.initPortableFolder();
 
@@ -223,15 +225,26 @@ public class Base {
     INSTANCE = new Base(args);
   }
 
-  
+  private static void initUIPlatform() {
+    if (OSUtils.isMacOS()) {
+      uiPlatform = new processing.app.macosx.UIPlatform();
+    } else if (OSUtils.isWindows()) {
+      uiPlatform = new processing.app.windows.UIPlatform();
+    } else if (OSUtils.isLinux()) {
+      uiPlatform = new processing.app.linux.UIPlatform();
+    } else {
+      throw new IllegalStateException("Unknown OS");
+    }
+  }
+
   static public void initLogger() {
     Handler consoleHandler = new ConsoleLogger();
     consoleHandler.setLevel(Level.ALL);
     consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
-    
+
     Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     globalLogger.setLevel(consoleHandler.getLevel());
-    
+
     // Remove default
     Handler[] handlers = globalLogger.getHandlers();
     for(Handler handler : handlers) {
@@ -242,13 +255,13 @@ public class Base {
     for(Handler handler : handlers) {
       root.removeHandler(handler);
     }
-    
+
     globalLogger.addHandler(consoleHandler);
-    
+
     Logger.getLogger("cc.arduino.packages.autocomplete").setParent(globalLogger);
     Logger.getLogger("br.com.criativasoft.cpluslibparser").setParent(globalLogger);
     Logger.getLogger(Base.class.getPackage().getName()).setParent(globalLogger);
-    
+
   }
 
 
@@ -487,6 +500,10 @@ public class Base {
     }
   }
 
+  public static processing.app.UIPlatform getUIPlatform() {
+    return uiPlatform;
+  }
+
   private void installKeyboardInputMap() {
     UIManager.put("RSyntaxTextAreaUI.inputMap", new SketchTextAreaDefaultInputMap());
   }
@@ -592,7 +609,12 @@ public class Base {
       }
       PreferencesData.set("last.sketch" + index + ".path", path);
 
-      int[] location = editor.getPlacement();
+      int[] location;
+      if (editor.isFullScreen() && editor.getPreviousPlacement() != null) {
+        location = editor.getPreviousPlacement();
+      } else {
+        location = editor.getPlacement();
+      }
       String locationStr = PApplet.join(PApplet.str(location), ",");
       PreferencesData.set("last.sketch" + index + ".location", locationStr);
       index++;
@@ -1828,7 +1850,7 @@ public class Base {
     // don't use the low-res icon on Mac OS X; the window should
     // already have the right icon from the .app file.
     if (OSUtils.isMacOS()) return;
-    
+
     // don't use the low-res icon on Linux
     if (OSUtils.isLinux()){
       String current = System.getProperty("user.dir");
@@ -1890,11 +1912,11 @@ public class Base {
     File referenceFile = new File(referenceFolder, filename);
     if (!referenceFile.exists())
       referenceFile = new File(referenceFolder, filename + ".html");
-    
+
     if(referenceFile.exists()){
       openURL(referenceFile.getAbsolutePath());
     }else{
-      showWarning(_("Problem Opening URL"), I18n.format(_("Could not open the URL\n{0}"), referenceFile), null); 
+      showWarning(_("Problem Opening URL"), I18n.format(_("Could not open the URL\n{0}"), referenceFile), null);
     }
   }
 

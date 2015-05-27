@@ -26,6 +26,7 @@ import com.apple.eawt.*;
 import processing.app.Base;
 import processing.app.Editor;
 
+import java.awt.*;
 import java.io.File;
 import java.util.List;
 
@@ -113,4 +114,7 @@ public class ThinkDifferent {
     }
   }
 
+  public static void requestToggleFullScreen(Window window) {
+    Application.getApplication().requestToggleFullScreen(window);
+  }
 }

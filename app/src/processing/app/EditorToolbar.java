@@ -38,12 +38,12 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
   /** Rollover titles for each button. */
   static final String title[] = {
-    _("Verify"), _("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
+    _("Verify"), _("Upload"), _("New"), _("Open"), _("Save"), _("Full screen"), _("Serial Monitor")
   };
 
-  /** Titles for each button when the shift key is pressed. */ 
+  /** Titles for each button when the shift key is pressed. */
   static final String titleShift[] = {
-    _("Verify"), _("Upload Using Programmer"), _("New"), _("Open in Another Window"), _("Save As..."), _("Serial Monitor")
+    _("Verify"), _("Upload Using Programmer"), _("New"), _("Open in Another Window"), _("Save As..."), _("Full screen"), _("Serial Monitor")
   };
 
   static final int BUTTON_COUNT  = title.length;
@@ -63,8 +63,9 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   static final int NEW      = 2;
   static final int OPEN     = 3;
   static final int SAVE     = 4;
+  static final int FULLSCREEN = 5;
 
-  static final int SERIAL   = 5;
+  static final int SERIAL   = 6;
 
   static final int INACTIVE = 0;
   static final int ROLLOVER = 1;
@@ -109,6 +110,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     which[buttonCount++] = NEW;
     which[buttonCount++] = OPEN;
     which[buttonCount++] = SAVE;
+    which[buttonCount++] = FULLSCREEN;
     which[buttonCount++] = SERIAL;
 
     currentRollover = -1;
@@ -129,8 +131,8 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       for (int state = 0; state < 3; state++) {
         Image image = createImage(BUTTON_WIDTH, BUTTON_HEIGHT);
         Graphics g = image.getGraphics();
-        g.drawImage(allButtons, 
-                    -(i*BUTTON_IMAGE_SIZE) - 3, 
+        g.drawImage(allButtons,
+                    -(i*BUTTON_IMAGE_SIZE) - 3,
                     (-2 + state)*BUTTON_IMAGE_SIZE, null);
         buttonImages[i][state] = image;
       }
@@ -167,11 +169,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       int offsetX = 3;
       for (int i = 0; i < buttonCount; i++) {
         x1[i] = offsetX;
-        if (i == 2 || i == 6) x1[i] += BUTTON_GAP;
+        if (i == 2 || i == 7) x1[i] += BUTTON_GAP;
         x2[i] = x1[i] + BUTTON_WIDTH;
         offsetX = x2[i];
       }
-      
+
       // Serial button must be on the right
       x1[SERIAL] = width - BUTTON_WIDTH - 14;
       x2[SERIAL] = width - 14;
@@ -211,7 +213,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     }
 
     screen.drawImage(offscreen, 0, 0, null);
-    
+
     if (!isEnabled()) {
       screen.setColor(new Color(0,0,0,100));
       screen.fillRect(0, 0, getWidth(), getHeight());
@@ -222,7 +224,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   public void mouseMoved(MouseEvent e) {
     if (!isEnabled())
       return;
-    
+
     // mouse events before paint();
     if (state == null) return;
 
@@ -306,11 +308,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public void mousePressed(MouseEvent e) {
-    
+
     // jdf
     if (!isEnabled())
       return;
-    
+
     final int x = e.getX();
     final int y = e.getY();
 
@@ -347,6 +349,10 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       } else {
         editor.handleSave(false);
       }
+      break;
+
+    case FULLSCREEN:
+      Base.getUIPlatform().toogleFullscreen(editor);
       break;
 
     case EXPORT:

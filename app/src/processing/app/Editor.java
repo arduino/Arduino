@@ -28,7 +28,6 @@ import cc.arduino.view.StubMenuListener;
 import com.google.common.base.Predicate;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
-import org.apache.commons.compress.utils.IOUtils;
 import processing.app.debug.*;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
@@ -71,6 +70,7 @@ import cc.arduino.packages.uploaders.SerialUploader;
 public class Editor extends JFrame implements RunnerListener {
 
   private final Platform platform;
+  private int[] previousPlacement;
 
   private static class ShouldSaveIfModified implements Predicate<Sketch> {
 
@@ -183,7 +183,7 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable stopHandler;
   Runnable exportHandler;
   Runnable exportAppHandler;
-
+  private boolean fullScreen;
 
   public Editor(Base ibase, File file, int[] location, Platform platform) throws Exception {
     super("Arduino");
@@ -191,6 +191,8 @@ public class Editor extends JFrame implements RunnerListener {
     this.platform = platform;
 
     Base.setIcon(this);
+
+    Base.getUIPlatform().setFullScreenable(this);
 
     // Install default actions for Run, Present, etc.
     resetHandlers();
@@ -2997,6 +2999,31 @@ public class Editor extends JFrame implements RunnerListener {
       }
     });
 
+  }
+
+  public boolean isFullScreen() {
+    return fullScreen;
+  }
+
+  public void setFullScreen(boolean fullScreen) {
+    this.fullScreen = fullScreen;
+    if (fullScreen) {
+      toolbar.activate(EditorToolbar.FULLSCREEN);
+    } else {
+      toolbar.deactivate(EditorToolbar.FULLSCREEN);
+    }
+  }
+
+  public void savePreviousPlacement() {
+    this.previousPlacement = getPlacement();
+  }
+
+  public void clearPreviousPlacement() {
+    this.previousPlacement = null;
+  }
+
+  public int[] getPreviousPlacement() {
+    return previousPlacement;
   }
 
 }
