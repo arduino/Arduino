@@ -394,10 +394,24 @@ public class PdePreprocessor {
           (p[index+1] == '/')) {
         p[index++] = ' ';
         p[index++] = ' ';
-        while ((index < p.length) &&
-               (p[index] != '\n')) {
-          p[index++] = ' ';
-        }
+		
+		char prev = ' ';
+		
+		while(index < p.length){
+		
+		  if(p[index] == '\n'){
+		  
+		    if( prev == '\\' ){
+			  p[index - 1] = prev;
+			  p[index - 2] = '/';
+			  p[index - 3] = '/';
+			}
+			break;
+		  }else{
+		    prev = p[index];
+		    p[index++] = ' ';
+		  }
+		}
 
         // check to see if this is the start of a new multiline comment.
         // if it is, then make sure it's actually terminated somewhere.
