@@ -307,6 +307,7 @@
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
       <option value="-Dcom.apple.macos.useScreenMenuBar=true" />
+      <option value="-Dsun.java2d.opengl=false" />
 
       <!--
       <option value="-Dapple.awt.showGrowBox=false"/>
