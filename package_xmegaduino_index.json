@@ -1,0 +1,44 @@
+{
+  "packages": [
+    {
+      "name": "Xmegaduino",
+      "maintainer": "Akafugu Corporation",
+      "websiteURL": "https://github.com/Xmegaduino/Xmegaduino/",
+      "email": "info@akafugu.jp",
+      "help": {
+        "online": "https://github.com/Xmegaduino/Xmegaduino/"
+      },
+      "platforms": [
+        {
+          "name": "Xmegaduino Boards",
+          "architecture": "xmega",
+          "version": "0.7.0",
+          "category": "Xmegaduino",
+          "url": "https://github.com/Xmegaduino/Xmegaduino/releases/download/0.7.0/xmegaduino-0.7.0.tar.bz2",
+          "archiveFileName": "xmegaduino-0.7.0.tar.bz2",
+          "checksum": "SHA-256:34b48e06848dc1daf7c1e0c54ebe74966811f57b574f4270af9ff8163b357845",
+          "size": "108128",
+          "boards": [
+            {"name": "Akafuino X"},
+            {"name": "Apitronics Bee"},
+            {"name": "Sparkfun Xmega"},
+            {"name": "XPlain"}
+          ]
+        }
+      ],
+      "toolsDependencies": [
+        {
+          "packager": "arduino",
+          "name": "avr-gcc",
+          "version": "4.8.1-arduino5"
+        },
+        {
+          "packager": "arduino",
+          "name": "avrdude",
+          "version": "6.0.1-arduino5"
+        }
+      ],
+      "tools": []
+    }
+  ]
+}

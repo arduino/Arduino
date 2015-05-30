@@ -58,6 +58,8 @@ avr-toolchain-*.zip
 /app/build/
 /arduino-core/build/
 
+output/
+
 manifest.mf
 nbbuild.xml
 nbproject
