@@ -30,13 +30,17 @@ import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
-import processing.app.packages.Library;
+import processing.app.packages.UserLibrary;
 import static processing.app.I18n._;
 
-import java.io.*;
-import java.util.*;
-
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -82,7 +86,7 @@ public class Sketch {
                         "the application to complete the repair.", null);
     }
     */
-    tempBuildFolder = Base.getBuildFolder();
+    tempBuildFolder = BaseNoGui.getBuildFolder();
     //Base.addBuildFolderToClassPath();
 
     load();
@@ -108,7 +112,7 @@ public class Sketch {
 
     for (SketchCode code : data.getCodes()) {
       if (code.getMetadata() == null)
-        code.setMetadata(new SketchCodeDocument(code));
+        code.setMetadata(new SketchCodeDocument(this, code));
     }
 
     // set the main file to be the current tab
@@ -405,7 +409,7 @@ public class Sketch {
         return;
       }
       ensureExistence();
-      data.addCode((new SketchCodeDocument(newFile)).getCode());
+      data.addCode((new SketchCodeDocument(this, newFile)).getCode());
     }
 
     // sort the entries
@@ -571,7 +575,7 @@ public class Sketch {
       });
 
       if (pdeFiles != null && pdeFiles.length > 0) {
-        if (Preferences.get("editor.update_extension") == null) {
+        if (PreferencesData.get("editor.update_extension") == null) {
           Object[] options = { _("OK"), _("Cancel") };
           int result = JOptionPane.showOptionDialog(editor,
                                                     _("In Arduino 1.0, the default file extension has changed\n" +
@@ -590,10 +594,10 @@ public class Sketch {
 
           if (result != JOptionPane.OK_OPTION) return false; // save cancelled
 
-          Preferences.setBoolean("editor.update_extension", true);
+          PreferencesData.setBoolean("editor.update_extension", true);
         }
 
-        if (Preferences.getBoolean("editor.update_extension")) {
+        if (PreferencesData.getBoolean("editor.update_extension")) {
           // Do rename of all .pde files to new .ino extension
           for (File pdeFile : pdeFiles)
             renameCodeToInoExtension(pdeFile);
@@ -632,42 +636,44 @@ public class Sketch {
    * because they can cause trouble.
    */
   protected boolean saveAs() throws IOException {
-    JFileChooser fd = new JFileChooser();
-    fd.setDialogTitle(_("Save sketch folder as..."));
-    fd.setDialogType(JFileChooser.SAVE_DIALOG);
+    String newParentDir = null;
+    String newName = null;
 
+    // get new name for folder
+    FileDialog fd = new FileDialog(editor, _("Save sketch folder as..."), FileDialog.SAVE);
     if (isReadOnly() || isUntitled()) {
       // default to the sketchbook folder
-      fd.setSelectedFile(new File(Base.getSketchbookFolder().getAbsolutePath(), data.getFolder().getName()));
+      fd.setDirectory(BaseNoGui.getSketchbookFolder().getAbsolutePath());
     } else {
       // default to the parent folder of where this was
-      fd.setSelectedFile(data.getFolder());
+      // on macs a .getParentFile() method is required
+
+      fd.setDirectory(data.getFolder().getParentFile().getAbsolutePath());
     }
+    String oldName = data.getName();
+    fd.setFile(oldName);
 
-    int returnVal = fd.showSaveDialog(editor);
+    fd.setVisible(true);
+    newParentDir = fd.getDirectory();
+    newName = fd.getFile();
 
-    if (returnVal != JFileChooser.APPROVE_OPTION) {
-      return false;
-    }
+    // user canceled selection
+    if (newName == null) return false;
+    newName = Sketch.checkName(newName);
 
-    File selectedFile = fd.getSelectedFile();
-
-    String newName = Sketch.checkName(selectedFile.getName());
-
-    File newFolder = new File(selectedFile.getParentFile(), newName);
+    File newFolder = new File(newParentDir, newName);
 
     // make sure there doesn't exist a .cpp file with that name already
     // but ignore this situation for the first tab, since it's probably being
     // resaved (with the same name) to another location/folder.
     for (SketchCode code : data.getCodes()) {
-      if (newName.equalsIgnoreCase(code.getPrettyName()) &&
-        code.isExtension("cpp")) {
+      if (newName.equalsIgnoreCase(code.getPrettyName()) && code.isExtension("cpp")) {
         Base.showMessage(_("Nope"),
-			 I18n.format(
-                           _("You can't save the sketch as \"{0}\"\n" +
-                             "because the sketch already has a .cpp file with that name."),
-			   newName
-			 ));
+                I18n.format(
+                        _("You can't save the sketch as \"{0}\"\n" +
+                                "because the sketch already has a .cpp file with that name."),
+                        newName
+                ));
         return false;
       }
     }
@@ -686,11 +692,12 @@ public class Sketch {
 
       if (newPath.indexOf(oldPath) == 0) {
         Base.showWarning(_("How very Borges of you"),
-                         _("You cannot save the sketch into a folder\n" +
-                           "inside itself. This would go on forever."), null);
+                _("You cannot save the sketch into a folder\n" +
+                        "inside itself. This would go on forever."), null);
         return false;
       }
-    } catch (IOException e) { }
+    } catch (IOException e) {
+    }
 
     // if the new folder already exists, then need to remove
     // its contents before copying everything over
@@ -742,10 +749,10 @@ public class Sketch {
     data.getCode(0).saveAs(newFile);
 
     editor.handleOpenUnchecked(newFile,
-                               currentIndex,
-                               editor.getSelectionStart(),
-                               editor.getSelectionStop(),
-                               editor.getScrollPosition());
+            currentIndex,
+            editor.getSelectionStart(),
+            editor.getSelectionStop(),
+            editor.getScrollPosition());
 
     // Name changed, rebuild the sketch menus
     //editor.sketchbook.rebuildMenusAsync();
@@ -778,27 +785,23 @@ public class Sketch {
     }
 
     // get a dialog, select a file to add to the sketch
-    String prompt =
-      _("Select an image or other data file to copy to your sketch");
-    JFileChooser fd = new JFileChooser(Preferences.get("last.folder"));
-    fd.setDialogTitle(prompt);
+    FileDialog fd = new FileDialog(editor, _("Select an image or other data file to copy to your sketch"), FileDialog.LOAD);
+    fd.setVisible(true);
 
-    int returnVal = fd.showOpenDialog(editor);
-
-    if (returnVal != JFileChooser.APPROVE_OPTION) {
-      return;
-    }
+    String directory = fd.getDirectory();
+    String filename = fd.getFile();
+    if (filename == null) return;
 
     // copy the file into the folder. if people would rather
     // it move instead of copy, they can do it by hand
-    File sourceFile = fd.getSelectedFile();
+    File sourceFile = new File(directory, filename);
 
     // now do the work of adding the file
     boolean result = addFile(sourceFile);
 
     if (result) {
       editor.statusNotice(_("One file added to the sketch."));
-      Preferences.set("last.folder", sourceFile.getAbsolutePath());
+      PreferencesData.set("last.folder", sourceFile.getAbsolutePath());
     }
   }
 
@@ -833,7 +836,7 @@ public class Sketch {
       destFile = new File(data.getCodeFolder(), filename);
 
     } else {
-      for (String extension : data.getExtensions()) {
+      for (String extension : SketchData.EXTENSIONS) {
         String lower = filename.toLowerCase();
         if (lower.endsWith("." + extension)) {
           destFile = new File(data.getFolder(), filename);
@@ -902,7 +905,7 @@ public class Sketch {
     }
 
     if (codeExtension != null) {
-      SketchCode newCode = (new SketchCodeDocument(destFile)).getCode();
+      SketchCode newCode = (new SketchCodeDocument(this, destFile)).getCode();
 
       if (replacement) {
         data.replaceCode(newCode);
@@ -930,7 +933,7 @@ public class Sketch {
   }
 
 
-  public void importLibrary(Library lib) throws IOException {
+  public void importLibrary(UserLibrary lib) throws IOException {
     importLibrary(lib.getSrcFolder());
   }
 
@@ -1056,7 +1059,7 @@ public class Sketch {
 
     // if an external editor is being used, need to grab the
     // latest version of the code from the file.
-    if (Preferences.getBoolean("editor.external")) {
+    if (PreferencesData.getBoolean("editor.external")) {
       // history gets screwed by the open..
       //String historySaved = history.lastRecorded;
       //handleOpen(sketch);
@@ -1130,8 +1133,8 @@ public class Sketch {
    * @return null if compilation failed, main class name if not
    * @throws RunnerException
    */
-  public String build(boolean verbose) throws RunnerException, PreferencesMapException {
-    return build(tempBuildFolder.getAbsolutePath(), verbose);
+  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
+    return build(tempBuildFolder.getAbsolutePath(), verbose, save);
   }
 
   /**
@@ -1143,7 +1146,7 @@ public class Sketch {
    *
    * @return null if compilation failed, main class name if not
    */
-  public String build(String buildPath, boolean verbose) throws RunnerException, PreferencesMapException {
+  public String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
     // run the preprocessor
     editor.status.progressUpdate(20);
 
@@ -1156,7 +1159,7 @@ public class Sketch {
       }
     };
     
-    return Compiler.build(data, buildPath, tempBuildFolder, pl, verbose);
+    return Compiler.build(data, buildPath, tempBuildFolder, pl, verbose, save);
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
@@ -1174,7 +1177,7 @@ public class Sketch {
 
     // build the sketch
     editor.status.progressNotice(_("Compiling sketch..."));
-    String foundName = build(appletPath, false);
+    String foundName = build(appletPath, false, false);
     // (already reported) error during export, exit this function
     if (foundName == null) return false;
 
@@ -1193,14 +1196,13 @@ public class Sketch {
     return success;
   }
 
-
   protected boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
 
     Uploader uploader = Compiler.getUploaderByPreferences(false);
 
     boolean success = false;
     do {
-      if (uploader.requiresAuthorization() && !Preferences.has(uploader.getAuthorizationKey())) {
+      if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) {
         PasswordAuthorizationDialog dialog = new PasswordAuthorizationDialog(editor, _("Type board password to upload a new sketch"));
         dialog.setLocationRelativeTo(editor);
         dialog.setVisible(true);
@@ -1210,7 +1212,7 @@ public class Sketch {
           return false;
         }
 
-        Preferences.set(uploader.getAuthorizationKey(), dialog.getPassword());
+        PreferencesData.set(uploader.getAuthorizationKey(), dialog.getPassword());
       }
 
       List<String> warningsAccumulator = new LinkedList<String>();
@@ -1218,7 +1220,7 @@ public class Sketch {
         success = Compiler.upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
-          Preferences.remove(uploader.getAuthorizationKey());
+          PreferencesData.remove(uploader.getAuthorizationKey());
         }
       }
 
@@ -1295,11 +1297,11 @@ public class Sketch {
    */
   public boolean isReadOnly() {
     String apath = data.getFolder().getAbsolutePath();
-    for (File folder : Base.getLibrariesPath()) {
+    for (File folder : BaseNoGui.getLibrariesPath()) {
       if (apath.startsWith(folder.getAbsolutePath()))
         return true;
     }
-    if (apath.startsWith(Base.getExamplesPath()) ||
+    if (apath.startsWith(BaseNoGui.getExamplesPath()) ||
         apath.startsWith(Base.getSketchbookLibrariesPath())) {
       return true;
     }
@@ -1343,7 +1345,7 @@ public class Sketch {
    * extensions.
    */
   public boolean validExtension(String what) {
-    return data.getExtensions().contains(what);
+    return SketchData.EXTENSIONS.contains(what);
   }
 
 

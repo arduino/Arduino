@@ -21,21 +21,18 @@
 */
 
 package processing.app;
-import static processing.app.I18n._;
 
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.UIManager;
-
-import com.sun.jna.Library;
-import com.sun.jna.Native;
+import cc.arduino.packages.BoardPort;
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.legacy.PConstants;
+
+import javax.swing.*;
+import java.io.*;
+import java.util.*;
+
+import static processing.app.I18n._;
 
 
 /**
@@ -73,7 +70,7 @@ public class Platform {
   }
   
   
-  public void init() {
+  public void init() throws IOException {
   }
   
   
@@ -134,7 +131,7 @@ public class Platform {
     }
   }
 
-  public String resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
     return null;
   }
 
@@ -142,17 +139,21 @@ public class Platform {
     return null;
   }
 
-  protected String resolveDeviceByVendorIdProductId(Map<String, TargetPackage> packages, String readVIDPID) {
+  protected Map<String, Object> resolveDeviceByVendorIdProductId(Map<String, TargetPackage> packages, String readVIDPID) {
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
-          List<String> vids = new LinkedList<String>(board.getPreferences().subTree("vid").values());
+          List<String> vids = new LinkedList<String>(board.getPreferences().subTree("vid", 1).values());
           if (!vids.isEmpty()) {
-            List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid").values());
-            for (int i = 0; i< vids.size(); i++) {
+            List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid", 1).values());
+            for (int i = 0; i < vids.size(); i++) {
               String vidPid = vids.get(i) + "_" + pids.get(i);
               if (vidPid.toUpperCase().equals(readVIDPID)) {
-                return board.getName();
+                Map<String, Object> boardData = new HashMap<String, Object>();
+                boardData.put("board", board);
+                boardData.put("vid", vids.get(i));
+                boardData.put("pid", pids.get(i));
+                return boardData;
               }
             }
           }
@@ -163,6 +164,8 @@ public class Platform {
   }
 
   public String resolveDeviceByBoardID(Map<String, TargetPackage> packages, String boardId) {
+    assert packages != null;
+    assert boardId != null;
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
@@ -177,33 +180,6 @@ public class Platform {
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-
-  public interface CLibrary extends Library {
-    CLibrary INSTANCE = (CLibrary)Native.loadLibrary("c", CLibrary.class);
-    int setenv(String name, String value, int overwrite);
-    String getenv(String name);
-    int unsetenv(String name);
-    int putenv(String string);
-  }
-
-  
-  public void setenv(String variable, String value) {
-    CLibrary clib = CLibrary.INSTANCE;
-    clib.setenv(variable, value, 1);
-  }
-
-  
-  public String getenv(String variable) {
-    CLibrary clib = CLibrary.INSTANCE;
-    return clib.getenv(variable);
-  }
-
-
-  public int unsetenv(String variable) {
-    CLibrary clib = CLibrary.INSTANCE;
-    return clib.unsetenv(variable);
-  }
-
   public String getName() {
     return PConstants.platformNames[PConstants.OTHER];
   }
@@ -216,5 +192,44 @@ public class Platform {
     BaseNoGui.showWarning(_("No launcher available"), 
                           _("Unspecified platform, no launcher available.\nTo enable opening URLs or folders, add a \n\"launcher=/path/to/app\" line to preferences.txt"),
                           null);
+  }
+
+  public List<BoardPort> filterPorts(List<BoardPort> ports, boolean aBoolean) {
+    return new LinkedList<BoardPort>(ports);
+  }
+
+  public void fixPrefsFilePermissions(File prefsFile) throws IOException, InterruptedException {
+    Process process = Runtime.getRuntime().exec(new String[]{"chmod", "600", prefsFile.getAbsolutePath()}, null, null);
+    process.waitFor();
+  }
+
+  public List<File> postInstallScripts(File folder) {
+    List<File> scripts = new LinkedList<File>();
+    scripts.add(new File(folder, "install_script.sh"));
+    scripts.add(new File(folder, "post_install.sh"));
+    return scripts;
+  }
+
+  public String getOsName() {
+    return System.getProperty("os.name");
+  }
+
+  public String getOsArch() {
+    return System.getProperty("os.arch");
+  }
+
+  public void symlink(String something, File somewhere) throws IOException, InterruptedException {
+    Process process = Runtime.getRuntime().exec(new String[]{"ln", "-s", something, somewhere.getAbsolutePath()}, null, somewhere.getParentFile());
+    process.waitFor();
+  }
+
+  public void link(File something, File somewhere) throws IOException, InterruptedException {
+    Process process = Runtime.getRuntime().exec(new String[]{"ln", something.getAbsolutePath(), somewhere.getAbsolutePath()}, null, null);
+    process.waitFor();
+  }
+
+  public void chmod(File file, int mode) throws IOException, InterruptedException {
+    Process process = Runtime.getRuntime().exec(new String[]{"chmod", Integer.toOctalString(mode), file.getAbsolutePath()}, null, null);
+    process.waitFor();
   }
 }

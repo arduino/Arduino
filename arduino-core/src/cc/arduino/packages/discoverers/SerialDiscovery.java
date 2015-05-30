@@ -29,53 +29,51 @@
 
 package cc.arduino.packages.discoverers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import processing.app.BaseNoGui;
-import processing.app.Platform;
-import processing.app.Serial;
-import processing.app.helpers.PreferencesMap;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
+import cc.arduino.packages.discoverers.serial.SerialBoardsLister;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Timer;
+
+import static processing.app.I18n._;
 
 public class SerialDiscovery implements Discovery {
 
-  @Override
-  public List<BoardPort> discovery() {
-    Platform os = BaseNoGui.getPlatform();
-    String devicesListOutput = os.preListAllCandidateDevices();
+  private Timer serialBoardsListerTimer;
+  private final List<BoardPort> serialBoardPorts;
 
-    List<BoardPort> res = new ArrayList<BoardPort>();
-
-    List<String> ports = Serial.list();
-
-    for (String port : ports) {
-      String boardName = os.resolveDeviceAttachedTo(port, BaseNoGui.packages, devicesListOutput);
-      String label = port;
-      if (boardName != null)
-        label += " (" + boardName + ")";
-
-      BoardPort boardPort = new BoardPort();
-      boardPort.setAddress(port);
-      boardPort.setProtocol("serial");
-      boardPort.setBoardName(boardName);
-      boardPort.setLabel(label);
-      res.add(boardPort);
-    }
-    return res;
+  public SerialDiscovery() {
+    this.serialBoardPorts = new LinkedList<BoardPort>();
   }
 
   @Override
-  public void setPreferences(PreferencesMap options) {
+  public List<BoardPort> listDiscoveredBoards() {
+    return getSerialBoardPorts();
+  }
+
+  public List<BoardPort> getSerialBoardPorts() {
+    synchronized (serialBoardPorts) {
+      return new LinkedList<BoardPort>(serialBoardPorts);
+    }
+  }
+
+  public void setSerialBoardPorts(List<BoardPort> newSerialBoardPorts) {
+    synchronized (serialBoardPorts) {
+      serialBoardPorts.clear();
+      serialBoardPorts.addAll(newSerialBoardPorts);
+    }
   }
 
   @Override
   public void start() {
+    this.serialBoardsListerTimer = new Timer(SerialBoardsLister.class.getName());
+    new SerialBoardsLister(this).start(serialBoardsListerTimer);
   }
 
   @Override
   public void stop() {
+    this.serialBoardsListerTimer.purge();
   }
-
 }
