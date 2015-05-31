@@ -1,6 +1,7 @@
 package processing.app;
 
 import cc.arduino.files.DeleteFilesOnShutdown;
+import org.apache.commons.compress.utils.IOUtils;
 
 import static processing.app.I18n._;
 
@@ -34,17 +35,17 @@ class EditorConsoleStream extends OutputStream {
       // sister IDEs) might collide with the file causing permissions problems.
       // The files and folders are not deleted on exit because they may be
       // needed for debugging or bug reporting.
-      tempFolder = Base.createTempFolder("console");
+      tempFolder = BaseNoGui.createTempFolder("console");
       DeleteFilesOnShutdown.add(tempFolder);
       try {
-        String outFileName = Preferences.get("console.output.file");
+        String outFileName = PreferencesData.get("console.output.file");
         if (outFileName != null) {
           outFile = new File(tempFolder, outFileName);
           DeleteFilesOnShutdown.add(outFile);
           stdoutFile = new FileOutputStream(outFile);
         }
 
-        String errFileName = Preferences.get("console.error.file");
+        String errFileName = PreferencesData.get("console.error.file");
         if (errFileName != null) {
           errFile = new File(tempFolder, errFileName);
           DeleteFilesOnShutdown.add(errFile);
@@ -58,7 +59,7 @@ class EditorConsoleStream extends OutputStream {
       consoleOut = new PrintStream(new EditorConsoleStream(false));
       consoleErr = new PrintStream(new EditorConsoleStream(true));
 
-      if (Preferences.getBoolean("console")) {
+      if (PreferencesData.getBoolean("console")) {
         try {
           System.setOut(consoleOut);
           System.setErr(consoleErr);
@@ -82,17 +83,13 @@ class EditorConsoleStream extends OutputStream {
     System.setErr(systemErr);
 
     // close the PrintStream
-    consoleOut.close();
-    consoleErr.close();
+    IOUtils.closeQuietly(consoleOut);
+    IOUtils.closeQuietly(consoleErr);
 
     // also have to close the original FileOutputStream
     // otherwise it won't be shut down completely
-    try {
-      stdoutFile.close();
-      stderrFile.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    IOUtils.closeQuietly(stdoutFile);
+    IOUtils.closeQuietly(stderrFile);
 
     outFile.delete();
     errFile.delete();

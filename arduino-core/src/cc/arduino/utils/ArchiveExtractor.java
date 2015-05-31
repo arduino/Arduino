@@ -35,6 +35,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.utils.IOUtils;
 import processing.app.I18n;
 import processing.app.Platform;
 
@@ -91,19 +92,13 @@ public class ArchiveExtractor {
 
       // Create an ArchiveInputStream with the correct archiving algorithm
       if (archiveFile.getName().endsWith("tar.bz2")) {
-        InputStream fin = new FileInputStream(archiveFile);
-        fin = new BZip2CompressorInputStream(fin);
-        in = new TarArchiveInputStream(fin);
+        in = new TarArchiveInputStream(new BZip2CompressorInputStream(new FileInputStream(archiveFile)));
       } else if (archiveFile.getName().endsWith("zip")) {
-        InputStream fin = new FileInputStream(archiveFile);
-        in = new ZipArchiveInputStream(fin);
+        in = new ZipArchiveInputStream(new FileInputStream(archiveFile));
       } else if (archiveFile.getName().endsWith("tar.gz")) {
-        InputStream fin = new FileInputStream(archiveFile);
-        fin = new GzipCompressorInputStream(fin);
-        in = new TarArchiveInputStream(fin);
+        in = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(archiveFile)));
       } else if (archiveFile.getName().endsWith("tar")) {
-        InputStream fin = new FileInputStream(archiveFile);
-        in = new TarArchiveInputStream(fin);
+        in = new TarArchiveInputStream(new FileInputStream(archiveFile));
       } else {
         throw new IOException("Archive format not supported.");
       }
@@ -264,9 +259,7 @@ public class ArchiveExtractor {
       }
 
     } finally {
-      if (in != null) {
-        in.close();
-      }
+      IOUtils.closeQuietly(in);
     }
 
     // Set folders timestamps
@@ -276,8 +269,9 @@ public class ArchiveExtractor {
   }
 
   private static void copyStreamToFile(InputStream in, long size, File outputFile) throws IOException {
-    FileOutputStream fos = new FileOutputStream(outputFile);
+    FileOutputStream fos = null;
     try {
+      fos = new FileOutputStream(outputFile);
       // if size is not available, copy until EOF...
       if (size == -1) {
         byte buffer[] = new byte[4096];
@@ -299,7 +293,7 @@ public class ArchiveExtractor {
         size -= length;
       }
     } finally {
-      fos.close();
+      IOUtils.closeQuietly(fos);
     }
   }
 

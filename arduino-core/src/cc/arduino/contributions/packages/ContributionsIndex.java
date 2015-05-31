@@ -29,9 +29,10 @@
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
+import cc.arduino.contributions.filters.DownloadableContributionWithVersionPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
+import cc.arduino.contributions.packages.filters.PlatformArchitecturePredicate;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -59,12 +60,7 @@ public abstract class ContributionsIndex {
     if (aPackage == null) {
       return null;
     }
-    Collection<ContributedPlatform> platforms = Collections2.filter(aPackage.getPlatforms(), new Predicate<ContributedPlatform>() {
-      @Override
-      public boolean apply(ContributedPlatform contributedPlatform) {
-        return platformArch.equals(contributedPlatform.getArchitecture());
-      }
-    });
+    Collection<ContributedPlatform> platforms = Collections2.filter(aPackage.getPlatforms(), new PlatformArchitecturePredicate(platformArch));
     return Lists.newLinkedList(platforms);
   }
 
@@ -79,12 +75,7 @@ public abstract class ContributionsIndex {
       return null;
     }
 
-    Collection<ContributedPlatform> platforms = Collections2.filter(platformsByName, new Predicate<ContributedPlatform>() {
-      @Override
-      public boolean apply(ContributedPlatform contributedPlatform) {
-        return platformVersion.equals(contributedPlatform.getParsedVersion());
-      }
-    });
+    Collection<ContributedPlatform> platforms = Collections2.filter(platformsByName, new DownloadableContributionWithVersionPredicate(platformVersion));
     if (platforms.isEmpty()) {
       return null;
     }
@@ -92,7 +83,11 @@ public abstract class ContributionsIndex {
     return platforms.iterator().next();
   }
 
-  public ContributedPlatform getInstalled(String packageName, String platformArch) {
+  public List<ContributedPlatform> getInstalledPlatforms() {
+    return Lists.newLinkedList(Collections2.filter(getPlatforms(), new InstalledPredicate()));
+  }
+
+  public ContributedPlatform getInstalledPlatform(String packageName, String platformArch) {
     List<ContributedPlatform> installedPlatforms = new LinkedList<ContributedPlatform>(Collections2.filter(findPlatforms(packageName, platformArch), new InstalledPredicate()));
     Collections.sort(installedPlatforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
@@ -137,10 +132,12 @@ public abstract class ContributionsIndex {
     }
   }
 
-  public ContributedPackage getPackage(String packager) {
-    for (ContributedPackage pack : getPackages())
-      if (pack.getName().equals(packager))
+  public ContributedPackage getPackage(String packageName) {
+    for (ContributedPackage pack : getPackages()) {
+      if (pack.getName().equals(packageName)) {
         return pack;
+      }
+    }
     return null;
   }
 

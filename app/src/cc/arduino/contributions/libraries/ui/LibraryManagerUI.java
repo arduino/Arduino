@@ -31,25 +31,29 @@ package cc.arduino.contributions.libraries.ui;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.LibraryInstaller;
-import cc.arduino.contributions.packages.DownloadableContribution;
+import cc.arduino.contributions.libraries.LibraryTypeComparator;
+import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.ui.InstallerJDialogUncaughtExceptionHandler;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
 import com.google.common.base.Predicate;
+import processing.app.BaseNoGui;
+import processing.app.Platform;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
+import java.util.*;
 
 import static processing.app.I18n._;
 
 @SuppressWarnings("serial")
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
-  private LibrariesIndexer indexer;
   private final JComboBox typeChooser;
+  private final Platform platform;
+  private LibrariesIndexer indexer;
   private Predicate<ContributedLibrary> typeFilter;
 
   @Override
@@ -85,8 +89,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibraryManagerUI(Frame parent) {
-    super(parent, "Library Manager", Dialog.ModalityType.APPLICATION_MODAL, _("No internet connection available, the list of available libraries is not complete. You will be able to manage only the libraries you've already installed."));
+  public LibraryManagerUI(Frame parent, Platform platform) {
+    super(parent, "Library Manager", Dialog.ModalityType.APPLICATION_MODAL, _("Unable to reach Arduino.cc due to possible network issues."));
+    this.platform = platform;
 
     filtersContainer.add(new JLabel(_("Topic")), 1);
     filtersContainer.remove(2);
@@ -160,7 +165,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllItem());
     typeChooser.addItem(new DropdownInstalledLibraryItem(indexer.getIndex()));
-    Collection<String> types = indexer.getIndex().getTypes();
+    java.util.List<String> types = new LinkedList<String>(indexer.getIndex().getTypes());
+    Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));
     }
@@ -175,7 +181,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     filterField.setEnabled(contribModel.getRowCount() > 0);
 
     // Create LibrariesInstaller tied with the provided index
-    installer = new LibraryInstaller(indexer) {
+    installer = new LibraryInstaller(indexer, platform) {
       @Override
       public void onProgress(Progress progress) {
         setProgress(progress);
@@ -252,7 +258,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     boolean managedByIndex = indexer.getIndex().getLibraries().contains(lib);
 
     if (!managedByIndex) {
-      int chosenOption = JOptionPane.showConfirmDialog(getParent(), _("This library is not listed on Library Manager. You won't be able to resinstall it from here.\nAre you sure you want to delete it?"), _("Please confirm library deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      int chosenOption = JOptionPane.showConfirmDialog(this, _("This library is not listed on Library Manager. You won't be able to resinstall it from here.\nAre you sure you want to delete it?"), _("Please confirm library deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
       if (chosenOption != JOptionPane.YES_OPTION) {
         return;
       }

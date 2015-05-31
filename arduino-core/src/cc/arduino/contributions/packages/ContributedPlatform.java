@@ -28,6 +28,8 @@
  */
 package cc.arduino.contributions.packages;
 
+import cc.arduino.contributions.DownloadableContribution;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -38,6 +40,8 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   public abstract String getName();
 
   public abstract String getCategory();
+
+  public abstract void setCategory(String category);
 
   public abstract String getArchitecture();
 

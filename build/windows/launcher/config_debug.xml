@@ -3,23 +3,16 @@
   <headerType>console</headerType>
   <jar>lib</jar>
   <outfile>arduino_debug.exe</outfile>
-  <errTitle></errTitle>
-  <cmdLine></cmdLine>
-  <chdir>.</chdir>
-  <priority>normal</priority>
-  <downloadUrl>http://java.sun.com/javase/downloads/</downloadUrl>
-  <supportUrl></supportUrl>
-  <customProcName>false</customProcName>
-  <stayAlive>false</stayAlive>
-  <manifest></manifest>
+  <errTitle>Arduino</errTitle>
+  <downloadUrl>http://www.oracle.com/technetwork/java/javase/downloads/index.html</downloadUrl>
   <icon>application.ico</icon>
   <classPath>
     <mainClass>processing.app.Base</mainClass>
     <cp>lib/antlr.jar</cp>
     <cp>lib/apple.jar</cp>
     <cp>lib/arduino-core.jar</cp>
-    <cp>lib/bcpg-jdk15on-149.jar</cp>
-    <cp>lib/bcprov-jdk15on-149.jar</cp>
+    <cp>lib/bcpg-jdk15on-152.jar</cp>
+    <cp>lib/bcprov-jdk15on-152.jar</cp>
     <cp>lib/commons-codec-1.7.jar</cp>
     <cp>lib/commons-compress-1.8.jar</cp>
     <cp>lib/commons-exec-1.1.jar</cp>
@@ -34,18 +27,24 @@
     <cp>lib/jackson-module-mrbean-2.2.3.jar</cp>
     <cp>lib/java-semver-0.8.0.jar</cp>
     <cp>lib/jmdns-3.4.1.jar</cp>
-    <cp>lib/jna.jar</cp>
     <cp>lib/jsch-0.1.50.jar</cp>
     <cp>lib/jssc-2.8.0.jar</cp>
     <cp>lib/pde.jar</cp>
+    <cp>lib/rsyntaxtextarea-2.5.6.1+arduino.jar</cp>
   </classPath>
   <jre>
     <path>java</path>
-    <minVersion>1.8.0</minVersion>
-    <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>32</runtimeBits>
     <opt>-Dsun.java2d.d3d=false</opt>
   </jre>
+  <versionInfo>
+    <fileDescription>Arduino IDE</fileDescription>
+    <copyright>Arduino LLC</copyright>
+    <productName>Arduino</productName>
+    <companyName>Arduino LLC</companyName>
+    <internalName>arduino</internalName>
+    <originalFilename>arduino.exe</originalFilename>
+  </versionInfo>
   <messages>
     <startupErr>An error occurred while starting the application.</startupErr>
     <bundledJreErr>This application was configured to use a bundled Java Runtime Environment but the runtime is missing or corrupted.</bundledJreErr>

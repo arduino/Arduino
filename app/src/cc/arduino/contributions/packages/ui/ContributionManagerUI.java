@@ -28,17 +28,15 @@
  */
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.ui.InstallerJDialogUncaughtExceptionHandler;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.ContributionsIndexer;
-import cc.arduino.contributions.packages.DownloadableContribution;
-import cc.arduino.contributions.ui.DropdownItem;
-import cc.arduino.contributions.ui.FilteredAbstractTableModel;
-import cc.arduino.contributions.ui.InstallerJDialog;
-import cc.arduino.contributions.ui.InstallerTableCell;
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
+import processing.app.Platform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +49,7 @@ import static processing.app.I18n._;
 @SuppressWarnings("serial")
 public class ContributionManagerUI extends InstallerJDialog {
 
-  // private ContributedPlatformTableCell cellEditor;
+  private final Platform platform;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -86,8 +84,9 @@ public class ContributionManagerUI extends InstallerJDialog {
     };
   }
 
-  public ContributionManagerUI(Frame parent) {
-    super(parent, _("Boards Manager"), Dialog.ModalityType.APPLICATION_MODAL, _("No internet connection available, the list of available boards is not complete. You will be able to manage only the boards you've already installed."));
+  public ContributionManagerUI(Frame parent, Platform platform) {
+    super(parent, _("Boards Manager"), Dialog.ModalityType.APPLICATION_MODAL, _("Unable to reach Arduino.cc due to possible network issues."));
+    this.platform = platform;
   }
 
   public void setIndexer(ContributionsIndexer indexer) {
@@ -95,7 +94,7 @@ public class ContributionManagerUI extends InstallerJDialog {
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
 
-    getContribModel().setIndex(indexer.getIndex());
+    getContribModel().setIndexer(indexer);
 
     categoryFilter = null;
     categoryChooser.removeAllItems();
@@ -106,7 +105,7 @@ public class ContributionManagerUI extends InstallerJDialog {
 
     // Enable categories combo only if there are two or more choices
     categoryChooser.addItem(new DropdownAllCoresItem());
-    Collection<String> categories = indexer.getIndex().getCategories();
+    Collection<String> categories = indexer.getCategories();
     for (String s : categories) {
       categoryChooser.addItem(new DropdownCoreOfCategoryItem(s));
     }
@@ -117,7 +116,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     }
 
     // Create ConstributionInstaller tied with the provided index
-    installer = new ContributionInstaller(indexer) {
+    installer = new ContributionInstaller(indexer, platform) {
       @Override
       public void onProgress(Progress progress) {
         setProgress(progress);
@@ -152,7 +151,8 @@ public class ContributionManagerUI extends InstallerJDialog {
       public void run() {
         try {
           setProgressVisible(true, "");
-          installer.updateIndex();
+          List<String> downloadedPackageIndexFiles = installer.updateIndex();
+          installer.deleteUnknownFiles(downloadedPackageIndexFiles);
           onIndexesUpdated();
         } catch (Exception e) {
           throw new RuntimeException(e);
@@ -196,7 +196,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     clearErrorMessage();
 
     if (showWarning) {
-      int chosenOption = JOptionPane.showConfirmDialog(getParent(), I18n.format(_("Do you want to remove {0}?\nIf you do so you won't be able to use {0} any more."), platform.getName()), _("Please confirm boards deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      int chosenOption = JOptionPane.showConfirmDialog(this, I18n.format(_("Do you want to remove {0}?\nIf you do so you won't be able to use {0} any more."), platform.getName()), _("Please confirm boards deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
       if (chosenOption != JOptionPane.YES_OPTION) {
         return;
       }

@@ -4,6 +4,10 @@
   <!--echo message="os.arch = ${os.arch}" /-->
   <!--echo message="os.version = ${os.version}" /-->
 
+  <tstamp>
+    <format property="BUILD_DATE" pattern="yyyy/MM/dd hh:mm"/>
+  </tstamp>
+
   <!-- Sets properties for macosx/windows/linux depending on current system -->
   <condition property="platform" value="macosx-old">
     <and>
@@ -59,6 +63,8 @@
 
   <target name="build" description="Build Arduino.">
     <antcall target="${platform}-build" />
+
+    <antcall target="generate-hourly-build-txt"/>
   </target>
 
   <target name="run" description="Run Arduino.">
@@ -324,7 +330,7 @@
       <bundledocument extensions="ino,c,cpp,h"
                       icon="macosx/template.app/Contents/Resources/pde.icns"
                       name="Arduino Source File"
-                      role="Editor">
+                      role="Editor" ispackage="false">
       </bundledocument>
 
     </bundleapp>
@@ -345,6 +351,8 @@
     <mkdir dir="${staging_folder}/work/${staging_hardware_folder}" />
 
     <antcall target="macosx-build-common-avr-toolchain" />
+
+    <antcall target="package-library-index-json-bundle"/>
 
     <antcall target="assemble">
       <param name="target.path" value="${staging_folder}/work/${staging_hardware_folder}/.." />
@@ -367,10 +375,10 @@
   <target name="macosx-build-common-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino3-i386-apple-darwin11.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino3"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino3-i386-apple-darwin11.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino3"/>
+      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i386-apple-darwin11.tar.bz2"/>
+      <param name="gcc_version" value="4.8.1-arduino5"/>
+      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i386-apple-darwin11.tar.bz2"/>
+      <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
 
     <chmod perm="+x">
@@ -383,7 +391,7 @@
     <antcall target="macosx-run-common"/>
   </target>
 
-  <target name="macosx-run" depends="macosx-build" description="Run Mac OS X version">
+  <target name="macosx-run" depends="build" description="Run Mac OS X version">
     <antcall target="macosx-run-common"/>
   </target>
 
@@ -391,7 +399,7 @@
     <antcall target="macosx-debug-common"/>
   </target>
 
-  <target name="macosx-debug" depends="macosx-build" description="Run Mac OS X version">
+  <target name="macosx-debug" depends="build" description="Run Mac OS X version">
     <antcall target="macosx-debug-common"/>
   </target>
 
@@ -466,7 +474,7 @@
     <antcall target="macosx-dist-common"/>
   </target>
 
-  <target name="macosx-dist" if="macosx" depends="macosx-build" description="Create a downloadable .zip for the Mac OS X version">
+  <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
     <antcall target="macosx-dist-common"/>
   </target>
 
@@ -594,6 +602,8 @@
     </antcall>
 
     <copy todir="linux/work" file="linux/dist/arduino" />
+    <copy todir="linux/work" file="linux/dist/arduino.desktop" />
+    <copy todir="linux/work" file="linux/dist/install.sh" />
     <chmod perm="755" file="linux/work/arduino" />
 
     <copy todir="linux/work" file="linux/dist/arduino" />
@@ -609,31 +619,35 @@
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
   </target>
 
-  <target name="linux32-build" depends="linux-build" unless="light_bundle" description="Build linux (32-bit) version">
+  <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino3-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino3"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino3-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino3"/>
+      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="4.8.1-arduino5"/>
+      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
+
+    <antcall target="package-library-index-json-bundle"/>
   </target>
 
-  <target name="linux64-build" depends="linux-build"  unless="light_bundle" description="Build linux (64-bit) version">
+  <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino3-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino3"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino3-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino3"/>
+      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="4.8.1-arduino5"/>
+      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
+
+    <antcall target="package-library-index-json-bundle"/>
   </target>
 
-  <target name="linux32-run" depends="linux32-build" description="Run Linux (32-bit) version">
+  <target name="linux32-run" depends="build" description="Run Linux (32-bit) version">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
-  <target name="linux64-run" depends="linux64-build" description="Run Linux (64-bit) version">
+  <target name="linux64-run" depends="build" description="Run Linux (64-bit) version">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
@@ -748,7 +762,7 @@
   <target name="download-launch4j-windows">
     <antcall target="unzip-with-ant-task">
       <param name="archive_file" value="windows/launch4j-3.7-win32.zip"/>
-      <param name="archive_url" value="http://switch.dl.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-win32.zip"/>
+      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-win32.zip"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -757,7 +771,7 @@
   <target name="download-launch4j-linux">
     <antcall target="untar">
       <param name="archive_file" value="windows/launch4j-3.7-linux.tgz"/>
-      <param name="archive_url" value="http://switch.dl.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-linux.tgz"/>
+      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-linux.tgz"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -827,8 +841,8 @@
       <fileset dir="windows/launcher"
 	       includes="application.ico, config.xml, config_debug.xml, arduino.l4j.ini"/>
     </copy>
-    <launch4j configFile="windows/work/config.xml" />
-    <launch4j configFile="windows/work/config_debug.xml" />
+    <launch4j configFile="windows/work/config.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
+    <launch4j configFile="windows/work/config_debug.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
     <delete dir="windows/work" includes="application.ico, config.xml, config_debug.xml" />
     <copy file="windows/work/arduino.l4j.ini" tofile="windows/work/arduino_debug.l4j.ini" />
 
@@ -836,24 +850,6 @@
     <chmod perm="755">
       <fileset dir="windows/work" includes="**/*.html, **/*.dll, **/*.exe" />
     </chmod>
-  </target>
-
-  <target name="windows-build-avr-toolchain">
-    <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="unzip"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino3-i686-mingw32.zip"/>
-      <param name="gcc_version" value="4.8.1-arduino3"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino3-i686-mingw32.zip"/>
-      <param name="avrdude_version" value="6.0.1-arduino3"/>
-    </antcall>
-  </target>
-
-  <target name="windows-run" depends="windows-build"
-	  description="Run windows version">
-    <exec executable="windows/work/arduino.exe" dir="windows/work" spawn="true" failonerror="true"/>
-  </target>
-
-  <target name="windows-dist" depends="windows-build" description="Create .zip files of windows version">
 
     <loadproperties srcfile="${WINDOWS_BUNDLED_JVM}/release" prefix="windows"/>
 
@@ -868,7 +864,26 @@
     <copy todir="${staging_folder}/work/java" includeemptydirs="true" preservelastmodified="true" overwrite="true" failonerror="true">
       <fileset dir="${WINDOWS_BUNDLED_JVM}" includes="*/**"/>
     </copy>
+  </target>
 
+  <target name="windows-build-avr-toolchain">
+    <antcall target="avr-toolchain-bundle">
+      <param name="unpack_target" value="unzip"/>
+      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-mingw32.zip"/>
+      <param name="gcc_version" value="4.8.1-arduino5"/>
+      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-mingw32.zip"/>
+      <param name="avrdude_version" value="6.0.1-arduino5"/>
+    </antcall>
+
+    <antcall target="package-library-index-json-bundle"/>
+  </target>
+
+  <target name="windows-run" depends="build"
+	  description="Run windows version">
+    <exec executable="windows/work/arduino.exe" dir="windows/work" failonerror="true"/>
+  </target>
+
+  <target name="windows-dist" depends="build" description="Create .zip files of windows version">
     <zip destfile="windows/arduino-${version}-${platform}.zip" level="9">
       <zipfileset dir="windows/work" prefix="arduino-${version}"/>
     </zip>
@@ -950,9 +965,20 @@
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avr-gcc=${gcc_version}${line.separator}"/>
+  </target>
 
-    <copy file="shared/bundled_package_index.json" tofile="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json"/>
-    <copy file="shared/bundled_library_index.json" tofile="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json"/>
+  <target name="package-library-index-json-bundle">
+    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
+
+    <get src="http://downloads.arduino.cc/packages/package_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
+    <gunzip src="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
+    <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz"/>
+
+    <get src="http://downloads.arduino.cc/packages/package_index.json.sig" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
+
+    <get src="http://downloads.arduino.cc/libraries/library_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
+    <gunzip src="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
+    <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"/>
 
     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
   </target>
@@ -966,6 +992,10 @@
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb-1.0.dylib"/>
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
     </exec>
+  </target>
+
+  <target name="generate-hourly-build-txt" if="hourly">
+    <echo file="${staging_folder}/work/${staging_hardware_folder}/../lib/hourlyBuild.txt">${BUILD_DATE}</echo>
   </target>
 
 </project>

@@ -44,6 +44,8 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
   protected JCheckBox autoscrollBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
+  private boolean monitorEnabled;
+  private boolean closed;
 
   private Timer updateTimer;
   private StringBuffer updateBuffer;
@@ -54,6 +56,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent event) {
         try {
+          closed = true;
           close();
         } catch (Exception e) {
           // ignore
@@ -78,7 +81,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     getContentPane().setLayout(new BorderLayout());
 
     Font consoleFont = Theme.getFont("console.font");
-    Font editorFont = Preferences.getFont("editor.font");
+    Font editorFont = PreferencesData.getFont("editor.font");
     Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
 
     textArea = new TextAreaFIFO(8000000);
@@ -124,18 +127,18 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     lineEndings = new JComboBox(new String[]{_("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR")});
     lineEndings.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
-        Preferences.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
+        PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
         noLineEndingAlert.setForeground(pane.getBackground());
       }
     });
-    if (Preferences.get("serial.line_ending") != null) {
-      lineEndings.setSelectedIndex(Preferences.getInteger("serial.line_ending"));
+    if (PreferencesData.get("serial.line_ending") != null) {
+      lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
     }
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 
     String[] serialRateStrings = {
             "300", "1200", "2400", "4800", "9600",
-            "19200", "38400", "57600", "115200"
+            "19200", "38400", "57600", "115200", "230400", "250000"
     };
 
     serialRates = new JComboBox();
@@ -160,23 +163,70 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     pack();
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    if (Preferences.get("last.screen.height") != null) {
+    if (PreferencesData.get("last.screen.height") != null) {
       // if screen size has changed, the window coordinates no longer
       // make sense, so don't use them unless they're identical
-      int screenW = Preferences.getInteger("last.screen.width");
-      int screenH = Preferences.getInteger("last.screen.height");
+      int screenW = PreferencesData.getInteger("last.screen.width");
+      int screenH = PreferencesData.getInteger("last.screen.height");
       if ((screen.width == screenW) && (screen.height == screenH)) {
-        String locationStr = Preferences.get("last.serial.location");
+        String locationStr = PreferencesData.get("last.serial.location");
         if (locationStr != null) {
           int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
           setPlacement(location);
         }
       }
     }
-    
+
     updateBuffer = new StringBuffer(1048576);
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
+
+    monitorEnabled = true;
+    closed = false;
+  }
+
+  public void enableWindow(boolean enable)
+  {
+    textArea.setEnabled(enable);
+    scrollPane.setEnabled(enable);
+    textField.setEnabled(enable);
+    sendButton.setEnabled(enable);
+    autoscrollBox.setEnabled(enable);
+    lineEndings.setEnabled(enable);
+    serialRates.setEnabled(enable);
+
+    monitorEnabled = enable;
+  }
+
+  // Puts the window in suspend state, closing the serial port
+  // to allow other entity (the programmer) to use it
+  public void suspend()
+  {
+   enableWindow(false);
+
+   try {
+        close();
+      }
+   catch(Exception e) {
+       //throw new SerialException("Failed closing the port");
+   }
+
+  }
+
+  public void resume() throws SerialException
+  {
+    // Enable the window
+    enableWindow(true);
+
+    // If the window is visible, try to open the serial port
+    if (isVisible())
+      try {
+        open();
+      }
+      catch(Exception e) {
+	  throw new SerialException("Failed opening the port");
+      }
+
   }
 
   public void onSerialRateChange(ActionListener listener) {
@@ -224,10 +274,14 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     return null;
   }
 
+  public boolean isClosed() {
+      return closed;
+  }
+
   public abstract void open() throws Exception;
 
   public abstract void close() throws Exception;
-  
+
   public synchronized void addToUpdateBuffer(char buff[], int n) {
     updateBuffer.append(buff, 0, n);
   }

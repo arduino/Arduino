@@ -3,11 +3,11 @@
 The library offers easy access to the data from the onboard Esplora's sensors, and provides the ability to change the state of the outputs.
 
 For more information about this library please visit us at
-http://arduino.cc/en/Reference/EsploraLibrary
+http://www.arduino.cc/en/Reference/EsploraLibrary
 
 == License ==
 
-Copyright (c) Arduino LLC. All right reserved.
+Copyright (c) 2012 Arduino LLC. All right reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public

@@ -28,6 +28,7 @@
  */
 package cc.arduino.contributions.packages;
 
+import cc.arduino.contributions.DownloadableContribution;
 import processing.app.Platform;
 
 public abstract class HostDependentDownloadableContribution extends DownloadableContribution {
@@ -41,7 +42,9 @@ public abstract class HostDependentDownloadableContribution extends Downloadable
 
   public boolean isCompatible(Platform platform) {
     String osName = platform.getOsName();
+    assert osName != null;
     String osArch = platform.getOsArch();
+    assert osArch != null;
 
     String host = getHost();
 

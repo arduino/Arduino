@@ -1,11 +1,14 @@
 package processing.app;
 
+import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
+import cc.arduino.contributions.packages.ContributedTool;
+import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.packages.Uploader;
-import cc.arduino.contributions.packages.ContributedTool;
-import cc.arduino.contributions.packages.ContributionsIndexer;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
 import processing.app.debug.Compiler;
@@ -28,9 +31,24 @@ import static processing.app.I18n._;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10604;
+  public static final int REVISION = 10605;
   /** Extended version string displayed on GUI */
-  static String VERSION_NAME = "1.6.4";
+  public static final String VERSION_NAME = "1.6.5";
+  public static final String VERSION_NAME_LONG;
+
+  static {
+    String versionNameLong = VERSION_NAME;
+    File hourlyBuildTxt = new File(getContentFile("lib"), "hourlyBuild.txt");
+    if (hourlyBuildTxt.exists() && hourlyBuildTxt.canRead()) {
+      versionNameLong += " Hourly Build";
+      try {
+        versionNameLong += " " + FileUtils.readFileToString(hourlyBuildTxt).trim();
+      } catch (IOException e) {
+        //noop
+      }
+    }
+    VERSION_NAME_LONG = versionNameLong;
+  }
 
   static File buildFolder;
 
@@ -62,7 +80,7 @@ public class BaseNoGui {
   static File portableFolder = null;
   static final String portableSketchbookFolder = "sketchbook";
 
-  static ContributionsIndexer indexer;
+  public static ContributionsIndexer indexer;
   static LibrariesIndexer librariesIndexer;
 
   // Returns a File object for the given pathname. If the pathname
@@ -232,13 +250,6 @@ public class BaseNoGui {
     return librariesFolders;
   }
 
-  /**
-   * Return an InputStream for a file inside the Processing lib folder.
-   */
-  static public InputStream getLibStream(String filename) throws IOException {
-    return new FileInputStream(new File(getContentFile("lib"), filename));
-  }
-
   static public Platform getPlatform() {
     return platform;
   }
@@ -305,14 +316,15 @@ public class BaseNoGui {
   static public File getSketchbookLibrariesFolder() {
     File libdir = new File(getSketchbookFolder(), "libraries");
     if (!libdir.exists()) {
+      FileWriter freadme = null;
       try {
         libdir.mkdirs();
-        File readme = new File(libdir, "readme.txt");
-        FileWriter freadme = new FileWriter(readme);
+        freadme = new FileWriter(new File(libdir, "readme.txt"));
         freadme.write(_("For information on installing libraries, see: " +
-                        "http://arduino.cc/en/Guide/Libraries\n"));
-        freadme.close();
+                        "http://www.arduino.cc/en/Guide/Libraries\n"));
       } catch (Exception e) {
+      } finally {
+        IOUtils.closeQuietly(freadme);
       }
     }
     return libdir;
@@ -407,7 +419,7 @@ public class BaseNoGui {
    * within the header files at the top-level).
    */
   static public String[] headerListFromIncludePath(File path) throws IOException {
-    String[] list = path.list(new OnlyFilesWithExtension(".h"));
+    String[] list = path.list(new OnlyFilesWithExtension(".h", ".hh", ".hpp"));
     if (list == null) {
       throw new IOException();
     }
@@ -415,8 +427,6 @@ public class BaseNoGui {
   }
 
   static public void init(String[] args) throws Exception {
-    getPlatform().init();
-  
     String sketchbookPath = getSketchbookPath();
   
     // If no path is set, get the default sketchbook folder for this platform
@@ -501,7 +511,7 @@ public class BaseNoGui {
           //  - calls Sketch.build(verbose=false) that calls Sketch.ensureExistence(), set progressListener and calls Compiler.build()
           //  - calls Sketch.upload() (see later...)
           if (!data.getFolder().exists()) showError(_("No sketch"), _("Can't find the sketch in the specified path"), null);
-          String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild());
+          String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
           if (suggestedClassName == null) showError(_("Error while verifying"), _("An error occurred while verifying the sketch"), null);
           showMessage(_("Done compiling"), _("Done compiling"));
 
@@ -546,7 +556,7 @@ public class BaseNoGui {
             //    if (!data.getFolder().exists()) showError(...);
             //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
             if (!data.getFolder().exists()) showError(_("No sketch"), _("Can't find the sketch in the specified path"), null);
-            String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild());
+            String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
             if (suggestedClassName == null) showError(_("Error while verifying"), _("An error occurred while verifying the sketch"), null);
             showMessage(_("Done compiling"), _("Done compiling"));
           } catch (Exception e) {
@@ -560,6 +570,12 @@ public class BaseNoGui {
       System.exit(0);
     }
     else if (parser.isGetPrefMode()) {
+      dumpPrefs(parser);
+    }
+  }
+
+  protected static void dumpPrefs(CommandlineParser parser) {
+    if (parser.getGetPref() != null) {
       String value = PreferencesData.get(parser.getGetPref(), null);
       if (value != null) {
         System.out.println(value);
@@ -567,6 +583,13 @@ public class BaseNoGui {
       } else {
         System.exit(4);
       }
+    } else {
+      System.out.println("#PREFDUMP#");
+      PreferencesMap prefs = PreferencesData.getMap();
+      for (Map.Entry<String, String> entry : prefs.entrySet()) {
+        System.out.println(entry.getKey() + "=" + entry.getValue());
+      }
+      System.exit(0);
     }
   }
 
@@ -576,53 +599,72 @@ public class BaseNoGui {
   }
 
   static public void initPackages() throws Exception {
-    indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder());
-    File indexFile = indexer.getIndexFile();
-    if (!indexFile.isFile()) {
-      File defaultPackageJsonFile = new File(getContentFile("dist"), "package_index.json");
-      if (defaultPackageJsonFile.isFile()) {
-        FileUtils.copyFile(defaultPackageJsonFile, indexFile);
-      } else {
-        // Otherwise create an empty packages index
-        FileOutputStream out = null;
-        try {
-          out = new FileOutputStream(indexFile);
-          out.write("{ \"packages\" : [ ] }".getBytes());
-          out.close();
-        } finally {
-          if (out != null) {
-            out.close();
-          }
-        }
+    indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform());
+    File indexFile = indexer.getIndexFile("package_index.json");
+    File defaultPackageJsonFile = new File(getContentFile("dist"), "package_index.json");
+    if (!indexFile.isFile() || (defaultPackageJsonFile.isFile() && defaultPackageJsonFile.lastModified() > indexFile.lastModified())) {
+      FileUtils.copyFile(defaultPackageJsonFile, indexFile);
+    } else if (!indexFile.isFile()) {
+      // Otherwise create an empty packages index
+      FileOutputStream out = null;
+      try {
+        out = new FileOutputStream(indexFile);
+        out.write("{ \"packages\" : [ ] }".getBytes());
+      } finally {
+        IOUtils.closeQuietly(out);
       }
     }
-    indexer.parseIndex();
+
+    File indexSignatureFile = indexer.getIndexFile("package_index.json.sig");
+    File defaultPackageJsonSignatureFile = new File(getContentFile("dist"), "package_index.json.sig");
+    if (!indexSignatureFile.isFile() || (defaultPackageJsonSignatureFile.isFile() && defaultPackageJsonSignatureFile.lastModified() > indexSignatureFile.lastModified())) {
+      FileUtils.copyFile(defaultPackageJsonSignatureFile, indexSignatureFile);
+    }
+
+    try {
+      indexer.parseIndex();
+    } catch (JsonProcessingException e) {
+      FileUtils.deleteIfExists(indexFile);
+      FileUtils.deleteIfExists(indexSignatureFile);
+      throw e;
+    } catch (SignatureVerificationFailedException e) {
+      FileUtils.deleteIfExists(indexFile);
+      FileUtils.deleteIfExists(indexSignatureFile);
+      throw e;
+    }
     indexer.syncWithFilesystem(getHardwareFolder());
 
-    packages = new HashMap<String, TargetPackage>();
+    packages = new LinkedHashMap<String, TargetPackage>();
     loadHardware(getHardwareFolder());
-    loadHardware(getSketchbookHardwareFolder());
     loadContributedHardware(indexer);
+    loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer);
 
-    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
+    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), indexer);
     File librariesIndexFile = librariesIndexer.getIndexFile();
     if (!librariesIndexFile.isFile()) {
       File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
       if (defaultLibraryJsonFile.isFile()) {
         FileUtils.copyFile(defaultLibraryJsonFile, librariesIndexFile);
       } else {
+        FileOutputStream out = null;
         try {
           // Otherwise create an empty packages index
-          FileOutputStream out = new FileOutputStream(librariesIndexFile);
+          out = new FileOutputStream(librariesIndexFile);
           out.write("{ \"libraries\" : [ ] }".getBytes());
-          out.close();
         } catch (IOException e) {
           e.printStackTrace();
+        } finally {
+          IOUtils.closeQuietly(out);
         }
       }
     }
-    librariesIndexer.parseIndex();
+    try {
+      librariesIndexer.parseIndex();
+    } catch (JsonProcessingException e) {
+      FileUtils.deleteIfExists(librariesIndexFile);
+      throw e;
+    }
   }
 
   static protected void initPlatform() {
@@ -706,7 +748,9 @@ public class BaseNoGui {
     Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
 
     initPlatform();
-    
+
+    getPlatform().init();
+
     initPortableFolder();
     
     initParameters(args);
@@ -766,9 +810,11 @@ public class BaseNoGui {
     PreferencesData.removeAllKeysWithPrefix(prefix);
 
     for (ContributedTool tool : indexer.getInstalledTools()) {
-      String path = tool.getDownloadableContribution().getInstalledFolder().getAbsolutePath();
-      PreferencesData.set(prefix + tool.getName() + ".path", path);
-      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", path);
+      File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      if (installedFolder != null) {
+        PreferencesData.set(prefix + tool.getName() + ".path", installedFolder.getAbsolutePath());
+        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", installedFolder.getAbsolutePath());
+      }
     }
   }
 
@@ -920,14 +966,18 @@ public class BaseNoGui {
     if (!dir.exists()) return;
 
     String files[] = dir.list();
-    for (int i = 0; i < files.length; i++) {
-      if (files[i].equals(".") || files[i].equals("..")) continue;
-      File dead = new File(dir, files[i]);
+    if (files == null) {
+      return;
+    }
+
+    for (String file : files) {
+      if (file.equals(".") || file.equals("..")) continue;
+      File dead = new File(dir, file);
       if (!dead.isDirectory()) {
         if (!PreferencesData.getBoolean("compiler.save_build_files")) {
           if (!dead.delete()) {
             // temporarily disabled
-        System.err.println(I18n.format(_("Could not delete {0}"), dead));
+            System.err.println(I18n.format(_("Could not delete {0}"), dead));
           }
         }
       } else {

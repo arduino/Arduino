@@ -1,3 +1,5 @@
+/* -*- mode: java; c-basic-offset: 2; indent-tabs-mode: nil -*- */
+
 /*
  * This file is part of Arduino.
  *
@@ -30,11 +32,13 @@
 package cc.arduino.packages.formatter;
 
 import processing.app.Base;
+import processing.app.BaseNoGui;
 import processing.app.Editor;
 import processing.app.helpers.FileUtils;
-import processing.app.syntax.JEditTextArea;
+import processing.app.syntax.SketchTextArea;
 import processing.app.tools.Tool;
 
+import javax.swing.text.BadLocationException;
 import java.io.File;
 import java.io.IOException;
 
@@ -50,7 +54,7 @@ public class AStyle implements Tool {
 
   public AStyle() {
     this.aStyleInterface = new AStyleInterface();
-    File customFormatterConf = Base.getSettingsFile(FORMATTER_CONF);
+    File customFormatterConf = BaseNoGui.getSettingsFile(FORMATTER_CONF);
     File defaultFormatterConf = new File(Base.getContentFile("lib"), FORMATTER_CONF);
 
     File formatterConf;
@@ -84,15 +88,48 @@ public class AStyle implements Tool {
       return;
     }
 
-    JEditTextArea textArea = editor.getTextArea();
-    int line = textArea.getLineOfOffset(textArea.getCaretPosition());
-    int lineOffset = textArea.getCaretPosition() - textArea.getLineStartOffset(line);
+    SketchTextArea textArea = editor.getTextArea();
 
+    int line = getLineOfOffset(textArea);
+    int lineOffset = getLineOffset(textArea, line);
+
+    editor.getTextArea().getUndoManager().beginInternalAtomicEdit();
     editor.setText(formattedText);
     editor.getSketch().setModified(true);
-    textArea.setCaretPosition(Math.min(textArea.getLineStartOffset(line) + lineOffset, textArea.getSafeLineStopOffset(line) - 1));
+    editor.getTextArea().getUndoManager().endInternalAtomicEdit();
+
+    if (line != -1 && lineOffset != -1) {
+      setCaretPosition(textArea, line, lineOffset);
+    }
+
     // mark as finished
     editor.statusNotice(_("Auto Format finished."));
+  }
+
+  private void setCaretPosition(SketchTextArea textArea, int line, int lineOffset) {
+    try {
+      textArea.setCaretPosition(Math.min(textArea.getLineStartOffset(line) + lineOffset, textArea.getLineEndOffset(line) - 1));
+    } catch (BadLocationException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private int getLineOffset(SketchTextArea textArea, int line) {
+    try {
+      return textArea.getCaretPosition() - textArea.getLineStartOffset(line);
+    } catch (BadLocationException e) {
+      e.printStackTrace();
+    }
+    return -1;
+  }
+
+  private int getLineOfOffset(SketchTextArea textArea) {
+    try {
+      return textArea.getLineOfOffset(textArea.getCaretPosition());
+    } catch (BadLocationException e) {
+      e.printStackTrace();
+    }
+    return -1;
   }
 
   @Override

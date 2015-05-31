@@ -34,14 +34,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
+import cc.arduino.MyStreamPumper;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteStreamHandler;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.exec.*;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
@@ -54,7 +56,7 @@ import processing.app.preproc.PdePreprocessor;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LegacyUserLibrary;
 import processing.app.packages.UserLibrary;
-import processing.app.tools.ArgumentsWithSpaceAwareCommandLine;
+import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
 
 public class Compiler implements MessageConsumer {
 
@@ -67,6 +69,7 @@ public class Compiler implements MessageConsumer {
   private SketchData sketch;
   private PreferencesMap prefs;
   private boolean verbose;
+  private boolean saveHex;
 
   private List<File> objectFiles;
 
@@ -83,7 +86,7 @@ public class Compiler implements MessageConsumer {
 
   private ProgressListener progressListener;
 
-  static public String build(SketchData data, String buildPath, File tempBuildFolder, ProgressListener progListener, boolean verbose) throws RunnerException, PreferencesMapException {
+  static public String build(SketchData data, String buildPath, File tempBuildFolder, ProgressListener progListener, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
     if (SketchData.checkSketchFile(data.getPrimaryFile()) == null)
       BaseNoGui.showError(_("Bad file selected"),
                           _("Bad sketch primary file or bad sketch directory structure"), null);
@@ -99,12 +102,14 @@ public class Compiler implements MessageConsumer {
     compiler.cleanup(prefsChanged, tempBuildFolder);
 
     if (prefsChanged) {
+      PrintWriter out = null;
       try {
-        PrintWriter out = new PrintWriter(buildPrefsFile);
+        out = new PrintWriter(buildPrefsFile);
         out.print(newBuildPrefs);
-        out.close();
       } catch (IOException e) {
         System.err.println(_("Could not write build preferences file"));
+      } finally {
+        IOUtils.closeQuietly(out);
       }
     }
 
@@ -113,7 +118,7 @@ public class Compiler implements MessageConsumer {
     // compile the program. errors will happen as a RunnerException
     // that will bubble up to whomever called build().
     try {
-      if (compiler.compile(verbose)) {
+      if (compiler.compile(verbose, save)) {
         compiler.size(compiler.getBuildPreferences());
         return primaryClassName;
       }
@@ -276,11 +281,13 @@ public class Compiler implements MessageConsumer {
       // used.  Keep everything else, which might be reusable
       if (tempBuildFolder.exists()) {
         String files[] = tempBuildFolder.list();
-        for (String file : files) {
-          if (file.endsWith(".c") || file.endsWith(".cpp") || file.endsWith(".s")) {
-            File deleteMe = new File(tempBuildFolder, file);
-            if (!deleteMe.delete()) {
-              System.err.println("Could not delete " + deleteMe);
+        if (files != null) {
+          for (String file : files) {
+            if (file.endsWith(".c") || file.endsWith(".cpp") || file.endsWith(".s")) {
+              File deleteMe = new File(tempBuildFolder, file);
+              if (!deleteMe.delete()) {
+                System.err.println("Could not delete " + deleteMe);
+              }
             }
           }
         }
@@ -350,10 +357,11 @@ public class Compiler implements MessageConsumer {
    * @return true if successful.
    * @throws RunnerException Only if there's a problem. Only then.
    */
-  public boolean compile(boolean _verbose) throws RunnerException, PreferencesMapException {
+  public boolean compile(boolean _verbose, boolean _save) throws RunnerException, PreferencesMapException {
     preprocess(prefs.get("build.path"));
     
     verbose = _verbose || PreferencesData.getBoolean("build.verbose");
+    saveHex = _save;
     sketchIsCompiled = false;
 
     // Hook runs at Start of Compilation
@@ -397,28 +405,46 @@ public class Compiler implements MessageConsumer {
         System.err.println();
       }
     }
-    
+
+    runActions("hooks.sketch.prebuild", prefs);
+
     // 1. compile the sketch (already in the buildPath)
-    progressListener.progress(30);
+    progressListener.progress(20);
     compileSketch(includeFolders);
     sketchIsCompiled = true;
 
+    runActions("hooks.sketch.postbuild", prefs);
+
+    runActions("hooks.libraries.prebuild", prefs);
+
     // 2. compile the libraries, outputting .o files to: <buildPath>/<library>/
     // Doesn't really use configPreferences
-    progressListener.progress(40);
+    progressListener.progress(30);
     compileLibraries(includeFolders);
+
+    runActions("hooks.libraries.postbuild", prefs);
+
+    runActions("hooks.core.prebuild", prefs);
 
     // 3. compile the core, outputting .o files to <buildPath> and then
     // collecting them into the core.a library file.
-    progressListener.progress(50);
+    progressListener.progress(40);
     compileCore();
 
+    runActions("hooks.core.postbuild", prefs);
+
+    runActions("hooks.linking.prelink", prefs);
+
     // 4. link it all together into the .elf file
-    progressListener.progress(60);
+    progressListener.progress(50);
     compileLink();
 
+    runActions("hooks.linking.postlink", prefs);
+
+    runActions("hooks.objcopy.preobjcopy", prefs);
+
     // 5. run objcopy to generate output files
-    progressListener.progress(75);
+    progressListener.progress(60);
     List<String> objcopyPatterns = new ArrayList<String>();
     for (String key : prefs.keySet()) {
       if (key.startsWith("recipe.objcopy.") && key.endsWith(".pattern"))
@@ -427,6 +453,18 @@ public class Compiler implements MessageConsumer {
     Collections.sort(objcopyPatterns);
     for (String recipe : objcopyPatterns) {
       runRecipe(recipe);
+    }
+
+    runActions("hooks.objcopy.postobjcopy", prefs);
+
+    // 7. save the hex file
+    if (saveHex) {
+      runActions("hooks.savehex.presavehex", prefs);
+
+      progressListener.progress(80);
+      saveHex();
+
+      runActions("hooks.savehex.postsavehex", prefs);
     }
 
     progressListener.progress(90);
@@ -542,6 +580,17 @@ public class Compiler implements MessageConsumer {
       p.put("build.variant.path", "");
     }
     
+    // Build Time
+    Date d = new Date();
+    GregorianCalendar cal = new GregorianCalendar();
+    long current = d.getTime()/1000;
+    long timezone = cal.get(cal.ZONE_OFFSET)/1000;
+    long daylight = cal.get(cal.DST_OFFSET)/1000;
+    p.put("extra.time.utc", Long.toString(current));
+    p.put("extra.time.local", Long.toString(current + timezone + daylight));
+    p.put("extra.time.zone", Long.toString(timezone));
+    p.put("extra.time.dst", Long.toString(daylight));
+
     return p;
   }
 
@@ -602,6 +651,7 @@ public class Compiler implements MessageConsumer {
 
   private boolean isAlreadyCompiled(File src, File obj, File dep, Map<String, String> prefs) {
     boolean ret=true;
+    BufferedReader reader = null;
     try {
       //System.out.println("\n  isAlreadyCompiled: begin checks: " + obj.getPath());
       if (!obj.exists()) return false;  // object file (.o) does not exist
@@ -610,7 +660,7 @@ public class Compiler implements MessageConsumer {
       long obj_modified = obj.lastModified();
       if (src_modified >= obj_modified) return false;  // source modified since object compiled
       if (src_modified >= dep.lastModified()) return false;  // src modified since dep compiled
-      BufferedReader reader = new BufferedReader(new FileReader(dep.getPath()));
+      reader = new BufferedReader(new FileReader(dep.getPath()));
       String line;
       boolean need_obj_parse = true;
       while ((line = reader.readLine()) != null) {
@@ -654,9 +704,10 @@ public class Compiler implements MessageConsumer {
           //System.out.println("  isAlreadyCompiled:  prerequisite ok");
         }
       }
-      reader.close();
     } catch (Exception e) {
       return false;  // any error reading dep file = recompile it
+    } finally {
+      IOUtils.closeQuietly(reader);
     }
     if (ret && verbose) {
       System.out.println(I18n.format(_("Using previously compiled file: {0}"), obj.getPath()));
@@ -688,42 +739,18 @@ public class Compiler implements MessageConsumer {
     }
 
     DefaultExecutor executor = new DefaultExecutor();
-    executor.setStreamHandler(new ExecuteStreamHandler() {
-      @Override
-      public void setProcessInputStream(OutputStream os) throws IOException {
-
-      }
+    executor.setStreamHandler(new PumpStreamHandler() {
 
       @Override
-      public void setProcessErrorStream(InputStream is) throws IOException {
-        forwardToMessage(is);
-      }
-
-      @Override
-      public void setProcessOutputStream(InputStream is) throws IOException {
-        forwardToMessage(is);
-      }
-
-      private void forwardToMessage(InputStream is) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = reader.readLine()) != null) {
-          message(line + "\n");
-        }
-      }
-
-      @Override
-      public void start() throws IOException {
-
-      }
-
-      @Override
-      public void stop() {
+      protected Thread createPump(InputStream is, OutputStream os, boolean closeWhenExhausted) {
+        final Thread result = new Thread(new MyStreamPumper(is, Compiler.this));
+        result.setDaemon(true);
+        return result;
 
       }
     });
 
-    CommandLine commandLine = new ArgumentsWithSpaceAwareCommandLine(command[0]);
+    CommandLine commandLine = new DoubleQuotedArgumentsOnWindowsCommandLine(command[0]);
     for (int i = 1; i < command.length; i++) {
       commandLine.addArgument(command[i], false);
     }
@@ -903,8 +930,8 @@ public class Compiler implements MessageConsumer {
   }
 
   private void setupWarningFlags(PreferencesMap dict) {
-    if (dict.containsKey("compiler.warning_flags")) {
-      String key = "compiler.warning_flags." + dict.get("compiler.warning_flags");
+    if (dict.containsKey("compiler.warning_level")) {
+      String key = "compiler.warning_flags." + dict.get("compiler.warning_level");
       dict.put("compiler.warning_flags", dict.get(key));
     } else {
       dict.put("compiler.warning_flags", dict.get("compiler.warning_flags.none"));
@@ -1134,6 +1161,7 @@ public class Compiler implements MessageConsumer {
   void runRecipe(String recipe) throws RunnerException, PreferencesMapException {
     PreferencesMap dict = new PreferencesMap(prefs);
     dict.put("ide_version", "" + BaseNoGui.REVISION);
+    dict.put("sketch_path", sketch.getFolder().getAbsolutePath());
 
     String[] cmdArray;
     String cmd = prefs.getOrExcept(recipe);
@@ -1144,6 +1172,32 @@ public class Compiler implements MessageConsumer {
     }
     execAsynchronously(cmdArray);
   }
+  
+  //7. Save the .hex file
+  void saveHex() throws RunnerException {
+    if (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file")) {
+      System.err.println(_("Warning: This core does not support exporting sketches. Please consider upgrading it or contacting its author"));
+      return;
+    }
+
+    PreferencesMap dict = new PreferencesMap(prefs);
+    dict.put("ide_version", "" + BaseNoGui.REVISION);
+
+    try {
+      String compiledSketch = prefs.getOrExcept("recipe.output.tmp_file");
+      compiledSketch = StringReplacer.replaceFromMapping(compiledSketch, dict);
+      String copyOfCompiledSketch = prefs.getOrExcept("recipe.output.save_file");
+      copyOfCompiledSketch = StringReplacer.replaceFromMapping(copyOfCompiledSketch, dict);
+
+      File compiledSketchFile = new File(prefs.get("build.path"), compiledSketch);
+      File copyOfCompiledSketchFile = new File(sketch.getFolder(), copyOfCompiledSketch);
+
+      FileUtils.copyFile(compiledSketchFile, copyOfCompiledSketchFile);
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+  }
+  
 
   private static String prepareIncludes(List<File> includeFolders) {
     String res = "";
@@ -1185,7 +1239,7 @@ public class Compiler implements MessageConsumer {
     StringBuffer bigCode = new StringBuffer();
     int bigCount = 0;
     for (SketchCode sc : sketch.getCodes()) {
-      if (sc.isExtension("ino") || sc.isExtension("pde")) {
+      if (sc.isExtension(SketchData.SKETCH_EXTENSIONS)) {
         sc.setPreprocOffset(bigCount);
         // These #line directives help the compiler report errors with
         // correct the filename and line number (issue 281 & 907)
@@ -1210,12 +1264,12 @@ public class Compiler implements MessageConsumer {
     // 2. run preproc on that code using the sugg class name
     //    to create a single .java file and write to buildpath
 
+    FileOutputStream outputStream = null;
     try {
       // Output file
       File streamFile = new File(buildPath, sketch.getName() + ".cpp");
-      FileOutputStream outputStream = new FileOutputStream(streamFile);
+      outputStream = new FileOutputStream(streamFile);
       preprocessor.write(outputStream);
-      outputStream.close();
     } catch (FileNotFoundException fnfe) {
       fnfe.printStackTrace();
       String msg = _("Build folder disappeared or could not be written");
@@ -1230,6 +1284,8 @@ public class Compiler implements MessageConsumer {
       System.err.println(I18n.format(_("Uncaught exception type: {0}"), ex.getClass()));
       ex.printStackTrace();
       throw new RunnerException(ex.toString());
+    } finally {
+      IOUtils.closeQuietly(outputStream);
     }
 
     // grab the imports from the code just preproc'd
@@ -1254,7 +1310,7 @@ public class Compiler implements MessageConsumer {
     // 3. then loop over the code[] and save each .java file
 
     for (SketchCode sc : sketch.getCodes()) {
-      if (sc.isExtension("c") || sc.isExtension("cpp") || sc.isExtension("h")) {
+      if (sc.isExtension(SketchData.OTHER_ALLOWED_EXTENSIONS)) {
         // no pre-processing services necessary for java files
         // just write the the contents of 'program' to a .java file
         // into the build directory. uses byte stream and reader/writer

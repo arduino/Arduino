@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CURDIR=`pwd`
 APPDIR="$(dirname -- "$(readlink -f -- "${0}")" )"
@@ -25,6 +25,8 @@ if [[ "$@" == *"--upload"* || "$@" == *"--verify"* || "$@" == *"--get-pref"* || 
 else
 	SPLASH="-splash:./lib/splash.png"
 fi
+
+export JAVA_TOOL_OPTIONS=`echo $JAVA_TOOL_OPTIONS | sed 's|-javaagent:/usr/share/java/jayatanaag.jar||g'`
 
 java -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel $SPLASH processing.app.Base --curdir $CURDIR "$@"
 

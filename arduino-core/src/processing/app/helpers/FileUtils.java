@@ -1,5 +1,7 @@
 package processing.app.helpers;
 
+import org.apache.commons.compress.utils.IOUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,12 +51,8 @@ public class FileUtils {
         fos.write(buf, 0, readBytes);
       }
     } finally {
-      if (fis != null) {
-        fis.close();
-      }
-      if (fos != null) {
-        fos.close();
-      }
+      IOUtils.closeQuietly(fis);
+      IOUtils.closeQuietly(fos);
     }
   }
 
@@ -77,7 +75,11 @@ public class FileUtils {
       return;
     }
     if (file.isDirectory()) {
-      for (File current : file.listFiles()) {
+      File[] files = file.listFiles();
+      if (files == null) {
+        return;
+      }
+      for (File current : files) {
         recursiveDelete(current);
       }
     }
@@ -167,7 +169,15 @@ public class FileUtils {
   }
 
   public static boolean isSCCSOrHiddenFile(File file) {
-    return file.isHidden() || file.getName().charAt(0) == '.' || (file.isDirectory() && SOURCE_CONTROL_FOLDERS.contains(file.getName()));
+    return isSCCSFolder(file) || isHiddenFile(file);
+  }
+
+  public static boolean isHiddenFile(File file) {
+    return file.isHidden() || file.getName().charAt(0) == '.';
+  }
+
+  public static boolean isSCCSFolder(File file) {
+    return file.isDirectory() && SOURCE_CONTROL_FOLDERS.contains(file.getName());
   }
 
   public static String readFileToString(File file) throws IOException {
@@ -181,13 +191,7 @@ public class FileUtils {
       }
       return sb.toString();
     } finally {
-      if (reader != null) {
-        try {
-          reader.close();
-        } catch (IOException e) {
-          // noop
-        }
-      }
+      IOUtils.closeQuietly(reader);
     }
   }
 
@@ -265,5 +269,12 @@ public class FileUtils {
     return result;
   }
 
+  public static boolean deleteIfExists(File file) {
+    if (file == null) {
+      return true;
+    }
+
+    return file.delete();
+  }
 
 }
