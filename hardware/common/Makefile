@@ -119,10 +119,10 @@ CCOPTS  = -Os @"$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD)/compi
 CC      = $(CCROOT)/bin/arm-none-eabi-gcc -c
 #LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -Wl,--verbose -L/Users/robertinant/Energia/build/macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/lib/gcc/arm-none-eabi/4.8.4/armv7e-m/ -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
-OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
-OBJCOPY_FLAGS = -O binary
+#OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
+#OBJCOPY_FLAGS = -O binary
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = no
+CORE_FROM_SOURCE = yes
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
