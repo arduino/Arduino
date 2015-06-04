@@ -94,14 +94,14 @@ int DhcpClass::request_DHCP_lease(){
                 if(_dhcpLeaseTime == 0){
                     _dhcpLeaseTime = DEFAULT_LEASE;
                 }
-                //calculate T1 & T2 if we didn't get it
+                // Calculate T1 & T2 if we didn't get it
                 if(_dhcpT1 == 0){
-                    //T1 should be 50% of _dhcpLeaseTime
+                    // T1 should be 50% of _dhcpLeaseTime
                     _dhcpT1 = _dhcpLeaseTime >> 1;
                 }
                 if(_dhcpT2 == 0){
-                    //T2 should be 87.5% (7/8ths) of _dhcpLeaseTime
-                    _dhcpT2 = _dhcpT1 << 1;
+                    // T2 should be 87.5% (7/8ths) of _dhcpLeaseTime
+                    _dhcpT2 = _dhcpLeaseTime - (_dhcpLeaseTime >> 3);
                 }
                 _renewInSec = _dhcpT1;
                 _rebindInSec = _dhcpT2;
