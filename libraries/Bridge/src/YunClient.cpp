@@ -114,6 +114,10 @@ void YunClient::flush() {
 uint8_t YunClient::connected() {
   if (!opened)
     return false;
+  // Client is "connected" if it has unread bytes
+  if (available())
+    return true;
+
   uint8_t cmd[] = {'L', handle};
   uint8_t res[1];
   bridge.transfer(cmd, 2, res, 1);
