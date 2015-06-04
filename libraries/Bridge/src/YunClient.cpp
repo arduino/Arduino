@@ -41,6 +41,8 @@ void YunClient::stop() {
     bridge.transfer(cmd, 2);
   }
   opened = false;
+  buffered = 0;
+  readPos = 0;
 }
 
 void YunClient::doBuffer() {
