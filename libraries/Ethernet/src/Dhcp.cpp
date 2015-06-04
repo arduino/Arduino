@@ -14,7 +14,6 @@ int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long 
     _dhcpLeaseTime=0;
     _dhcpT1=0;
     _dhcpT2=0;
-    _lastCheck=0;
     _timeout = timeout;
     _responseTimeout = responseTimeout;
 
@@ -125,6 +124,7 @@ int DhcpClass::request_DHCP_lease(){
     _dhcpUdpSocket.stop();
     _dhcpTransactionId++;
 
+    _secTimeout = millis() + 1000;
     return result;
 }
 
@@ -396,51 +396,45 @@ int DhcpClass::checkLease(){
     unsigned long now = millis();
     signed long snow = (long)now;
     int rc=DHCP_CHECK_NONE;
-    if (_lastCheck != 0){
-        signed long factor;
-        //calc how many ms past the timeout we are
-        factor = snow - (long)_secTimeout;
-        //if on or passed the timeout, reduce the counters
-        if ( factor >= 0 ){
-            //next timeout should be now plus 1000 ms minus parts of second in factor
-            _secTimeout = snow + 1000 - factor % 1000;
-            //how many seconds late are we, minimum 1
-            factor = factor / 1000 +1;
-            
-            //reduce the counters by that mouch
-            //if we can assume that the cycle time (factor) is fairly constant
-            //and if the remainder is less than cycle time * 2 
-            //do it early instead of late
-            if(_renewInSec < factor*2 )
-                _renewInSec = 0;
-            else
-                _renewInSec -= factor;
-            
-            if(_rebindInSec < factor*2 )
-                _rebindInSec = 0;
-            else
-                _rebindInSec -= factor;
-        }
 
-        //if we have a lease but should renew, do it
-        if (_dhcp_state == STATE_DHCP_LEASED && _renewInSec <=0){
-            _dhcp_state = STATE_DHCP_REREQUEST;
-            rc = 1 + request_DHCP_lease();
-        }
-
-        //if we have a lease or is renewing but should bind, do it
-        if( (_dhcp_state == STATE_DHCP_LEASED || _dhcp_state == STATE_DHCP_START) && _rebindInSec <=0){
-            //this should basically restart completely
-            _dhcp_state = STATE_DHCP_START;
-            reset_DHCP_lease();
-            rc = 3 + request_DHCP_lease();
-        }
-    }
-    else{
-        _secTimeout = snow + 1000;
+    signed long factor;
+    //calc how many ms past the timeout we are
+    factor = snow - (long)_secTimeout;
+    //if on or passed the timeout, reduce the counters
+    if ( factor >= 0 ){
+        //next timeout should be now plus 1000 ms minus parts of second in factor
+        _secTimeout = snow + 1000 - factor % 1000;
+        //how many seconds late are we, minimum 1
+        factor = factor / 1000 +1;
+        
+        //reduce the counters by that mouch
+        //if we can assume that the cycle time (factor) is fairly constant
+        //and if the remainder is less than cycle time * 2 
+        //do it early instead of late
+        if(_renewInSec < factor*2 )
+            _renewInSec = 0;
+        else
+            _renewInSec -= factor;
+        
+        if(_rebindInSec < factor*2 )
+            _rebindInSec = 0;
+        else
+            _rebindInSec -= factor;
     }
 
-    _lastCheck = now;
+    //if we have a lease but should renew, do it
+    if (_dhcp_state == STATE_DHCP_LEASED && _renewInSec <=0){
+        _dhcp_state = STATE_DHCP_REREQUEST;
+        rc = 1 + request_DHCP_lease();
+    }
+
+    //if we have a lease or is renewing but should bind, do it
+    if( (_dhcp_state == STATE_DHCP_LEASED || _dhcp_state == STATE_DHCP_START) && _rebindInSec <=0){
+        //this should basically restart completely
+        _dhcp_state = STATE_DHCP_START;
+        reset_DHCP_lease();
+        rc = 3 + request_DHCP_lease();
+    }
     return rc;
 }
 

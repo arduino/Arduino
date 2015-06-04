@@ -150,7 +150,6 @@ private:
   uint32_t _dhcpT1, _dhcpT2;
   signed long _renewInSec;
   signed long _rebindInSec;
-  signed long _lastCheck;
   unsigned long _timeout;
   unsigned long _responseTimeout;
   unsigned long _secTimeout;
