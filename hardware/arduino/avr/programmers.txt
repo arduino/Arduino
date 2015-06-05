@@ -51,3 +51,9 @@ usbGemma.program.tool=avrdude
 usbGemma.program.extra_params=
 usbGemma.config.path={runtime.platform.path}/bootloaders/gemma/avrdude.conf
 
+buspirate.name=Bus Pirate
+buspirate.communication=serial
+buspirate.protocol=buspirate
+buspirate.program.protocol=buspirate
+buspirate.program.tool=avrdude
+buspirate.program.extra_params=-P{serial.port}
