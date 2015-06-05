@@ -33,6 +33,7 @@ extern const u8 STRING_PRODUCT[] PROGMEM;
 extern const u8 STRING_MANUFACTURER[] PROGMEM;
 extern const DeviceDescriptor USB_DeviceDescriptor PROGMEM;
 extern const DeviceDescriptor USB_DeviceDescriptorA PROGMEM;
+extern const DeviceDescriptor USB_DeviceDescriptorB PROGMEM;
 
 const u16 STRING_LANGUAGE[2] = {
 	(3<<8) | (2+2),
@@ -76,6 +77,9 @@ const DeviceDescriptor USB_DeviceDescriptor =
 
 const DeviceDescriptor USB_DeviceDescriptorA =
 	D_DEVICE(DEVICE_CLASS,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
+
+const DeviceDescriptor USB_DeviceDescriptorB =
+	D_DEVICE(0xEF,0x02,0x01,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
 
 //==================================================================
 //==================================================================
@@ -489,7 +493,7 @@ bool SendDescriptor(Setup& setup)
 	{
 		if (setup.wLength == 8)
 			_cdcComposite = 1;
-		desc_addr = _cdcComposite ?  (const u8*)&USB_DeviceDescriptorA : (const u8*)&USB_DeviceDescriptor;
+		desc_addr = _cdcComposite ?  (const u8*)&USB_DeviceDescriptorB : (const u8*)&USB_DeviceDescriptor;
 	}
 	else if (USB_STRING_DESCRIPTOR_TYPE == t)
 	{
