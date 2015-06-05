@@ -18,6 +18,8 @@
 #ifndef __USBCORE_H__
 #define __USBCORE_H__
 
+#include "USBAPI.h"
+
 //	Standard requests
 #define GET_STATUS			0
 #define CLEAR_FEATURE		1

@@ -17,6 +17,7 @@
 */
 
 #include "USBAPI.h"
+#include "PluggableUSB.h"
 
 #if defined(USBCON)
 
@@ -323,8 +324,14 @@ u8 _initEndpoints[] =
 	EP_TYPE_BULK_IN,			// CDC_ENDPOINT_IN
 #endif
 
-#ifdef HID_ENABLED
-	EP_TYPE_INTERRUPT_IN		// HID_ENDPOINT_INT
+#ifdef PLUGGABLE_USB_ENABLED
+	//allocate 6 endpoints and remove const so they can be changed by the user
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
 #endif
 };
 
@@ -365,9 +372,8 @@ bool ClassInterfaceRequest(Setup& setup)
 		return CDC_Setup(setup);
 #endif
 
-#ifdef HID_ENABLED
-	if (HID_INTERFACE == i)
-		return HID_Setup(setup);
+#ifdef PLUGGABLE_USB_ENABLED
+	return PUSB_Setup(setup, i);
 #endif
 	return false;
 }
@@ -447,8 +453,8 @@ int SendInterfaces()
 	total = CDC_GetInterface(&interfaces);
 #endif
 
-#ifdef HID_ENABLED
-	total += HID_GetInterface(&interfaces);
+#ifdef PLUGGABLE_USB_ENABLED
+	PUSB_GetInterface(&interfaces);
 #endif
 
 	return interfaces;
@@ -477,14 +483,17 @@ u8 _cdcComposite = 0;
 static
 bool SendDescriptor(Setup& setup)
 {
+	int ret;
 	u8 t = setup.wValueH;
 	if (USB_CONFIGURATION_DESCRIPTOR_TYPE == t)
 		return SendConfiguration(setup.wLength);
 
 	InitControl(setup.wLength);
-#ifdef HID_ENABLED
-	if (HID_REPORT_DESCRIPTOR_TYPE == t)
-		return HID_GetDescriptor(t);
+#ifdef PLUGGABLE_USB_ENABLED
+	ret = PUSB_GetDescriptor(t);
+	if (ret != 0) {
+		return (ret > 0 ? true : false);
+	}
 #endif
 
 	const u8* desc_addr = 0;
