@@ -446,11 +446,10 @@ int USB_RecvControl(void* d, int len)
 
 int SendInterfaces()
 {
-	int total = 0;
 	u8 interfaces = 0;
 
 #ifdef CDC_ENABLED
-	total = CDC_GetInterface(&interfaces);
+	CDC_GetInterface(&interfaces);
 #endif
 
 #ifdef PLUGGABLE_USB_ENABLED
