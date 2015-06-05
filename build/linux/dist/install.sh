@@ -76,6 +76,11 @@ simple_install_f() {
   mkdir -p ~/.local/share/applications
   cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" ~/.local/share/applications/
 
+  # Create desktop icon if dir exists
+  if [ -d ~/Desktop ]; then
+   cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" ~/Desktop/
+  fi
+
   # Clean up
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
   rmdir "$TMP_DIR"
@@ -127,6 +132,14 @@ simple_uninstall_f() {
 
   if [ -f ~/.local/share/applications/${RESOURCE_NAME}.desktop ]; then
     rm ~/.local/share/applications/${RESOURCE_NAME}.desktop
+  fi
+
+  if [ -f ~/Desktop/arduino.desktop ]; then
+    rm ~/Desktop/arduino.desktop
+  fi
+
+  if [ -f ~/Desktop/${RESOURCE_NAME}.desktop ]; then
+    rm ~/Desktop/${RESOURCE_NAME}.desktop
   fi
 
 }
