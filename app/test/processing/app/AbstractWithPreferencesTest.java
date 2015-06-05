@@ -39,12 +39,12 @@ public abstract class AbstractWithPreferencesTest {
     Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
     BaseNoGui.initPlatform();
     BaseNoGui.getPlatform().init();
-    Preferences.init(null);
+    PreferencesData.init(null);
     Theme.init();
 
     BaseNoGui.initPackages();
 
-    Base.untitledFolder = Base.createTempFolder("untitled");
+    Base.untitledFolder = BaseNoGui.createTempFolder("untitled");
     DeleteFilesOnShutdown.add(Base.untitledFolder);
   }
 

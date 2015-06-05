@@ -570,6 +570,12 @@ public class BaseNoGui {
       System.exit(0);
     }
     else if (parser.isGetPrefMode()) {
+      dumpPrefs(parser);
+    }
+  }
+
+  protected static void dumpPrefs(CommandlineParser parser) {
+    if (parser.getGetPref() != null) {
       String value = PreferencesData.get(parser.getGetPref(), null);
       if (value != null) {
         System.out.println(value);
@@ -577,6 +583,13 @@ public class BaseNoGui {
       } else {
         System.exit(4);
       }
+    } else {
+      System.out.println("#PREFDUMP#");
+      PreferencesMap prefs = PreferencesData.getMap();
+      for (Map.Entry<String, String> entry : prefs.entrySet()) {
+        System.out.println(entry.getKey() + "=" + entry.getValue());
+      }
+      System.exit(0);
     }
   }
 
@@ -621,10 +634,10 @@ public class BaseNoGui {
     }
     indexer.syncWithFilesystem(getHardwareFolder());
 
-    packages = new HashMap<String, TargetPackage>();
+    packages = new LinkedHashMap<String, TargetPackage>();
     loadHardware(getHardwareFolder());
-    loadHardware(getSketchbookHardwareFolder());
     loadContributedHardware(indexer);
+    loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer);
 
     librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), indexer);
@@ -729,8 +742,10 @@ public class BaseNoGui {
   }
 
   static public void main(String args[]) throws Exception {
-    if (args.length == 0)
+    if (args.length == 0) {
       showError(_("No parameters"), _("No command line parameters found"), null);
+    }
+    System.setProperty("java.net.useSystemProxies", "true");
 
     Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
 
@@ -741,8 +756,31 @@ public class BaseNoGui {
     initPortableFolder();
     
     initParameters(args);
-    
+
+    checkInstallationFolder();
+
     init(args);
+  }
+
+  public static void checkInstallationFolder() {
+    if (isIDEInstalledIntoSettingsFolder()) {
+      showError(_("Incorrect IDE installation folder"), _("Your copy of the IDE is installed in a subfolder of your settings folder.\nPlease move the IDE to another folder."), 10);
+    }
+    if (isIDEInstalledIntoSketchbookFolder()) {
+      showError(_("Incorrect IDE installation folder"), _("Your copy of the IDE is installed in a subfolder of your sketchbook.\nPlease move the IDE to another folder."), 10);
+    }
+  }
+
+  public static boolean isIDEInstalledIntoSketchbookFolder() {
+    return PreferencesData.has("sketchbook.path") && FileUtils.isSubDirectory(new File(PreferencesData.get("sketchbook.path")), new File(PreferencesData.get("runtime.ide.path")));
+  }
+
+  public static boolean isIDEInstalledIntoSettingsFolder() {
+    try {
+      return FileUtils.isSubDirectory(BaseNoGui.getPlatform().getSettingsFolder(), new File(PreferencesData.get("runtime.ide.path")));
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   static public void onBoardOrPortChange() {
@@ -1069,10 +1107,11 @@ public class BaseNoGui {
 
   public static void selectSerialPort(String port) {
     PreferencesData.set("serial.port", port);
-    if (port.startsWith("/dev/"))
-      PreferencesData.set("serial.port.file", port.substring(5));
-    else
-      PreferencesData.set("serial.port.file", port);
+    String portFile = port;
+    if (port.startsWith("/dev/")) {
+      portFile = portFile.substring(5);
+    }
+    PreferencesData.set("serial.port.file", portFile);
   }
 
   public static void setBuildFolder(File newBuildFolder) {

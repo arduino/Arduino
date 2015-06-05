@@ -91,13 +91,20 @@ public class ContributionsIndexer {
     }
 
     List<ContributedPackage> packages = index.getPackages();
+    Collection<ContributedPackage> packagesWithTools = Collections2.filter(packages, new Predicate<ContributedPackage>() {
+      @Override
+      public boolean apply(ContributedPackage input) {
+        return input.getTools() != null;
+      }
+    });
+
     for (ContributedPackage pack : packages) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
         // Set a reference to parent packages
         platform.setParentPackage(pack);
 
         // Resolve tools dependencies (works also as a check for file integrity)
-        platform.resolveToolsDependencies(packages);
+        platform.resolveToolsDependencies(packagesWithTools);
       }
     }
 
@@ -320,6 +327,15 @@ public class ContributionsIndexer {
         packages.add(targetPackage);
       }
     }
+
+    Collections.sort(packages, new Comparator<TargetPackage>() {
+      @Override
+      public int compare(TargetPackage p1, TargetPackage p2) {
+        assert p1.getId() != null && p2.getId() != null;
+        return p1.getId().toLowerCase().compareTo(p2.getId().toLowerCase());
+      }
+    });
+
     return packages;
   }
 
