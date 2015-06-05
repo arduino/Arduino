@@ -313,8 +313,7 @@ int USB_Send(u8 ep, const void* d, int len)
 	return r;
 }
 
-extern const u8 _initEndpoints[] PROGMEM;
-const u8 _initEndpoints[] = 
+u8 _initEndpoints[] =
 {
 	0,
 	
@@ -344,11 +343,11 @@ void InitEP(u8 index, u8 type, u8 size)
 static
 void InitEndpoints()
 {
-	for (u8 i = 1; i < sizeof(_initEndpoints); i++)
+	for (u8 i = 1; i < sizeof(_initEndpoints) && _initEndpoints[i] != 0; i++)
 	{
 		UENUM = i;
 		UECONX = 1;
-		UECFG0X = pgm_read_byte(_initEndpoints+i);
+		UECFG0X = _initEndpoints[i];
 		UECFG1X = EP_DOUBLE_64;
 	}
 	UERST = 0x7E;	// And reset them
