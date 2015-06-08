@@ -76,6 +76,8 @@ extern const u8 _hidReportDescriptor[] PROGMEM;
 // MUST be declared by the module
 size_t getsizeof_hidReportDescriptor();
 
+#define WEAK __attribute__ ((weak))
+
 #endif
 
 #endif

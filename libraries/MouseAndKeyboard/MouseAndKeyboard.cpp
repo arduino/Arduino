@@ -1,6 +1,7 @@
 #if 1 //defined(USBCON)
 
 #include "MouseAndKeyboard.h"
+#include "HID.h"
 
 const u8 _hidReportDescriptor[] PROGMEM = {
   
@@ -87,7 +88,7 @@ const u8 _hidReportDescriptor[] PROGMEM = {
 };
 
 size_t getsizeof_hidReportDescriptor() {
-	return sizeof(_hidReportDescriptor);
+    return sizeof(_hidReportDescriptor);
 }
 
 void WEAK setupUSB() {
@@ -315,10 +316,6 @@ const uint8_t _asciimap[128] =
     0x35|SHIFT,    // ~
     0               // DEL
 };
-
-size_t getsizeof_hidReportDescriptor() {
-    return sizeof(_hidReportDescriptor);
-}
 
 uint8_t USBPutChar(uint8_t c);
 

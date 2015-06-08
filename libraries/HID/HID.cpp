@@ -51,8 +51,6 @@ HIDDescriptor _hidInterface;
 u8 _hid_protocol = 1;
 u8 _hid_idle = 1;
 
-#define WEAK __attribute__ ((weak))
-
 int8_t WEAK HID_GetInterface(u8* interfaceNum)
 {
 	interfaceNum[0] += 1;	// uses 1
