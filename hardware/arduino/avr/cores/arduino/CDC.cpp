@@ -20,7 +20,6 @@
 #include <avr/wdt.h>
 
 #if defined(USBCON)
-#ifdef CDC_ENABLED
 
 typedef struct
 {
@@ -207,5 +206,4 @@ Serial_::operator bool() {
 
 Serial_ Serial;
 
-#endif
 #endif /* if defined(USBCON) */

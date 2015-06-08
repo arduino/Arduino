@@ -66,11 +66,7 @@ const u8 STRING_PRODUCT[] PROGMEM = USB_PRODUCT;
 const u8 STRING_MANUFACTURER[] PROGMEM = USB_MANUFACTURER;
 
 
-#ifdef CDC_ENABLED
 #define DEVICE_CLASS 0x02
-#else
-#define DEVICE_CLASS 0x00
-#endif
 
 //	DEVICE DESCRIPTOR
 const DeviceDescriptor USB_DeviceDescriptor =
@@ -318,11 +314,9 @@ u8 _initEndpoints[] =
 {
 	0,
 	
-#ifdef CDC_ENABLED
 	EP_TYPE_INTERRUPT_IN,		// CDC_ENDPOINT_ACM
 	EP_TYPE_BULK_OUT,			// CDC_ENDPOINT_OUT
 	EP_TYPE_BULK_IN,			// CDC_ENDPOINT_IN
-#endif
 
 #ifdef PLUGGABLE_USB_ENABLED
 	//allocate 6 endpoints and remove const so they can be changed by the user
@@ -367,10 +361,8 @@ bool ClassInterfaceRequest(Setup& setup)
 {
 	u8 i = setup.wIndex;
 
-#ifdef CDC_ENABLED
 	if (CDC_ACM_INTERFACE == i)
 		return CDC_Setup(setup);
-#endif
 
 #ifdef PLUGGABLE_USB_ENABLED
 	return PUSB_Setup(setup, i);
@@ -448,9 +440,7 @@ int SendInterfaces()
 {
 	u8 interfaces = 0;
 
-#ifdef CDC_ENABLED
 	CDC_GetInterface(&interfaces);
-#endif
 
 #ifdef PLUGGABLE_USB_ENABLED
 	PUSB_GetInterface(&interfaces);
@@ -629,9 +619,7 @@ ISR(USB_GEN_vect)
 	//	Start of Frame - happens every millisecond so we use it for TX and RX LED one-shot timing, too
 	if (udint & (1<<SOFI))
 	{
-#ifdef CDC_ENABLED
 		USB_Flush(CDC_TX);				// Send a tx frame if found
-#endif
 		
 		// check whether the one-shot period has elapsed.  if so, turn off the LED
 		if (TxLEDPulse && !(--TxLEDPulse))
