@@ -31,6 +31,7 @@ typedef struct
   int8_t (*getInterface)(u8* interfaceNum);
   int8_t (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
+  int8_t numInterfaces;
   u8 endpointType[];
 } PUSBCallbacks;
 

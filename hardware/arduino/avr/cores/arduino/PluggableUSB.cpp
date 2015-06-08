@@ -95,13 +95,13 @@ int8_t PUSB_AddFunction(PUSBCallbacks *cb, u8* interface)
 	}
 
 	*interface = lastIf;
-	lastIf++;
+	lastIf += cb->numInterfaces;
 	for ( u8 i = 0; i< cb->numEndpoints; i++) {
 		_initEndpoints[lastEp] = cb->endpointType[i];
 		lastEp++;
 	}
 	modules_count++;
-	return lastEp-1;
+	return lastEp - cb->numEndpoints;
 	// restart USB layer???
 }
 

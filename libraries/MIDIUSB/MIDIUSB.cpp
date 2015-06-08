@@ -179,6 +179,7 @@ int8_t MIDI_plug(void)
 	cb.getInterface = &MIDI_GetInterface;
 	cb.getDescriptor = &MIDI_GetDescriptor;
 	cb.numEndpoints = 2;
+	cb.numInterfaces = 2;
 	cb.endpointType[0] = EP_TYPE_BULK_OUT_MIDI;		// MIDI_ENDPOINT_OUT
 	cb.endpointType[1] = EP_TYPE_BULK_IN_MIDI;		// MIDI_ENDPOINT_IN
 

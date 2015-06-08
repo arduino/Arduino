@@ -33,7 +33,6 @@ extern const u16 STRING_LANGUAGE[] PROGMEM;
 extern const u8 STRING_PRODUCT[] PROGMEM;
 extern const u8 STRING_MANUFACTURER[] PROGMEM;
 extern const DeviceDescriptor USB_DeviceDescriptor PROGMEM;
-extern const DeviceDescriptor USB_DeviceDescriptorA PROGMEM;
 extern const DeviceDescriptor USB_DeviceDescriptorB PROGMEM;
 
 const u16 STRING_LANGUAGE[2] = {
@@ -71,9 +70,6 @@ const u8 STRING_MANUFACTURER[] PROGMEM = USB_MANUFACTURER;
 //	DEVICE DESCRIPTOR
 const DeviceDescriptor USB_DeviceDescriptor =
 	D_DEVICE(0x00,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
-
-const DeviceDescriptor USB_DeviceDescriptorA =
-	D_DEVICE(DEVICE_CLASS,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
 
 const DeviceDescriptor USB_DeviceDescriptorB =
 	D_DEVICE(0xEF,0x02,0x01,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
