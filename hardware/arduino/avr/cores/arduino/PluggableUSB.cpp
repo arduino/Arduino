@@ -25,9 +25,6 @@
 
 #define MAX_MODULES	6
 
-static u8 startIf = CDC_ACM_INTERFACE + CDC_INTERFACE_COUNT;
-static u8 firstEp = CDC_FIRST_ENDPOINT + CDC_ENPOINT_COUNT;
-
 static u8 lastIf = CDC_ACM_INTERFACE + CDC_INTERFACE_COUNT;
 static u8 lastEp = CDC_FIRST_ENDPOINT + CDC_ENPOINT_COUNT;
 
@@ -36,18 +33,18 @@ extern u8 _initEndpoints[];
 PUSBCallbacks cbs[MAX_MODULES];
 u8 modules_count = 0;
 
-int PUSB_GetInterface(u8* interfaceNum)
+int8_t PUSB_GetInterface(u8* interfaceNum)
 {
-	int ret = 0;
+	int8_t ret = 0;
 	for (u8 i=0; i<modules_count; i++) {
 		ret = cbs[i].getInterface(interfaceNum);
 	}
 	return ret;
 }
 
-int PUSB_GetDescriptor(int t)
+int8_t PUSB_GetDescriptor(int8_t t)
 {
-	int ret = 0;
+	int8_t ret = 0;
 	for (u8 i=0; i<modules_count && ret == 0; i++) {
 		ret = cbs[i].getDescriptor(t);
 	}
@@ -63,7 +60,7 @@ bool PUSB_Setup(Setup& setup, u8 j)
 	return ret;
 }
 
-int PUSB_AddFunction(PUSBCallbacks *cb, u8* interface) 
+int8_t PUSB_AddFunction(PUSBCallbacks *cb, u8* interface) 
 {
 	if (modules_count >= MAX_MODULES) {
 		return 0;

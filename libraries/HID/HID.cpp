@@ -29,6 +29,8 @@ Mouse_ Mouse;
 Keyboard_ Keyboard;
 HID_ HID;
 
+static u8 HID_ENDPOINT_INT;
+
 //================================================================================
 //================================================================================
 
@@ -43,10 +45,6 @@ HID_ HID;
 #define RAWHID_RX_SIZE 64
 
 static u8 HID_INTERFACE;
-static u8 HID_FIRST_ENDPOINT;
-static u8 HID_ENDPOINT_INT;
-
-static PUSBCallbacks cb;
 
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
@@ -144,13 +142,13 @@ u8 _hid_idle = 1;
 
 #define WEAK __attribute__ ((weak))
 
-int WEAK HID_GetInterface(u8* interfaceNum)
+int8_t WEAK HID_GetInterface(u8* interfaceNum)
 {
 	interfaceNum[0] += 1;	// uses 1
 	return USB_SendControl(0,&_hidInterface,sizeof(_hidInterface));
 }
 
-int WEAK HID_GetDescriptor(int t)
+int8_t WEAK HID_GetDescriptor(int8_t t)
 {
 	if (HID_REPORT_DESCRIPTOR_TYPE == t) {
 		return USB_SendControl(TRANSFER_PGM,_hidReportDescriptor,sizeof(_hidReportDescriptor));
@@ -205,20 +203,16 @@ bool WEAK HID_Setup(Setup& setup, u8 i)
 }
 
 // to be called by begin(), will trigger USB disconnection and reconnection
-int HID_Plug(void)
+int8_t HID_Plug(void)
 {
-	u8 interface;
-	u8 res;
+	PUSBCallbacks cb;
 
 	cb.setup = &HID_Setup;
 	cb.getInterface = &HID_GetInterface;
 	cb.getDescriptor = &HID_GetDescriptor;
 	cb.numEndpoints = 1;
 	cb.endpointType[0] = EP_TYPE_INTERRUPT_IN;
-	res = PUSB_AddFunction(&cb, &interface);
-	HID_INTERFACE = interface;
-	HID_FIRST_ENDPOINT = res;
-	HID_ENDPOINT_INT = res;
+	HID_ENDPOINT_INT = PUSB_AddFunction(&cb, &HID_INTERFACE);
 
 	_hidInterface =
 	{
@@ -227,7 +221,7 @@ int HID_Plug(void)
 		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,0x40,0x01)
 	};
 
-	return res;
+	return HID_ENDPOINT_INT;
 }
 
 HID_::HID_(void)

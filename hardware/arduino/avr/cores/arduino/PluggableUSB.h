@@ -28,9 +28,9 @@
 typedef struct
 {
   bool (*setup)(Setup& setup, u8 i);
-  int (*getInterface)(u8* interfaceNum);
-  int (*getDescriptor)(int t);
-  int numEndpoints;
+  int8_t (*getInterface)(u8* interfaceNum);
+  int8_t (*getDescriptor)(int8_t t);
+  int8_t numEndpoints;
   u8 endpointType[6];
 } PUSBCallbacks;
 
@@ -40,11 +40,11 @@ typedef struct
   u8 firstEndpoint;
 } PUSBReturn;
 
-int PUSB_AddFunction(PUSBCallbacks *cb, u8 *interface);
+int8_t PUSB_AddFunction(PUSBCallbacks *cb, u8 *interface);
 
-int PUSB_GetInterface(u8* interfaceNum);
+int8_t PUSB_GetInterface(u8* interfaceNum);
 
-int PUSB_GetDescriptor(int t);
+int8_t PUSB_GetDescriptor(int8_t t);
 
 bool PUSB_Setup(Setup& setup, u8 i);
 
