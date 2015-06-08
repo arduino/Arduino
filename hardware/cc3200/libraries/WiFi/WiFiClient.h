@@ -64,7 +64,7 @@ public:
 
     boolean sslIsVerified;
     
-private:
+protected:
     int _socketIndex;
     uint8_t rx_buffer[TCP_RX_BUFF_MAX_SIZE] = {0};
     int rx_fillLevel;
