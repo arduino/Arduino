@@ -42,19 +42,19 @@
 # Note that this path must exist already otherwise it won't see
 # the sketchbook folder, and will instead assume the sketchbook
 # has gone missing, and that it should instead use the default.
-#sketchbook.path=
+#sketchbook.path = 
 
 # if you don't want settings to go into "application data" on windows
 # and "library" on macosx, set this to the alternate location.
-#settings.path=data
+#settings.path = data
 
 # temporary build path, normally this goes into the default
 # "temp" folder for that platform (as defined by java)
 # but this can be used to set a specific file in case of problems
-#build.path=build
+#build.path = build
 
 # By default, no sketches currently open
-last.sketch.count=0
+last.sketch.count = 0
 
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -72,11 +72,10 @@ platform.auto_file_type_associations = true
 
 
 # default size for the main window
-editor.window.width.default = 500
+editor.window.width.default  = 500
 editor.window.height.default = 600
-
-editor.window.width.min = 400
-editor.window.height.min = 290
+editor.window.width.min      = 400
+editor.window.height.min     = 290
 
 # the following commented out to better support netbooks
 # http://code.google.com/p/arduino/issues/detail?id=52
@@ -87,31 +86,32 @@ editor.window.height.min = 290
 #editor.window.height.min.windows = 530
 
 # Enable code folding 
-editor.code_folding=false
+editor.code_folding = false
 
 # font size for editor
-editor.font=Monospaced,plain,12
+editor.font = Monospaced,plain,12
+
 # Monaco is nicer on Mac OS X, so use that explicitly
 editor.font.macosx = Monaco,plain,12
 
 # anti-aliased text, turned on by default
-editor.antialias=true
+editor.antialias = true
 
 # color to be used for background when 'external editor' enabled
-editor.external=false
+editor.external = false
 
 # caret blinking
-editor.caret.blink=true
+editor.caret.blink = true
 
 # area that's not in use by the text (replaced with tildes)
-editor.invalid=false
+editor.invalid = false
 
 # show line numbers in editor
 editor.linenumbers = false
 
 # enable ctrl-ins, shift-ins, shift-delete for cut/copy/paste
 # on windows and linux, but disable on the mac
-editor.keys.alternative_cut_copy_paste = true
+editor.keys.alternative_cut_copy_paste        = true
 editor.keys.alternative_cut_copy_paste.macosx = false
 
 # true if shift-backspace sends the delete character, 
@@ -120,14 +120,15 @@ editor.keys.shift_backspace_is_delete = true
 
 # home and end keys should only travel to the start/end of the current line
 editor.keys.home_and_end_travel_far = false
+
 # the OS X HI Guidelines say that home/end are relative to the document
 # if you don't like it, this is the preference to change
 editor.keys.home_and_end_travel_far.macosx = true
 
-console			 = true
-console.output.file      = stdout.txt
-console.error.file       = stderr.txt
-console.lines            = 4
+console             = true
+console.output.file = stdout.txt
+console.error.file  = stderr.txt
+console.lines       = 4
 
 # set to false to disable automatically clearing the console
 # each time 'run' is hit
@@ -146,6 +147,7 @@ editor.indent = true
 
 # size of divider between editing area and the console
 editor.divider.size = 0
+
 # the larger divider on windows is ugly with the little arrows
 # this makes it large enough to see (mouse changes) and use, 
 # but keeps it from being annoyingly obtrusive
@@ -161,7 +163,7 @@ editor.save_on_verify = true
 run.options = 
 
 # settings for the -XmsNNNm and -XmxNNNm command line option
-run.options.memory = false
+run.options.memory         = false
 run.options.memory.initial = 64
 run.options.memory.maximum = 256
 
@@ -173,13 +175,13 @@ run.options.memory.maximum = 256
 run.display = 1
 
 # set internally
-#run.window.bgcolor=
+#run.window.bgcolor = 
 
 # set to false to open a new untitled window when closing the last window
 # (otherwise, the environment will quit)
 # default to the relative norm for the different platforms, 
 # but the setting can be changed in the prefs dialog anyway
-#sketchbook.closing_last_window_quits = true
+#sketchbook.closing_last_window_quits        = true
 #sketchbook.closing_last_window_quits.macosx = false
 
 
@@ -193,8 +195,8 @@ run.display = 1
 
 # which platforms to export by default
 export.application.platform.windows = true
-export.application.platform.macosx = true
-export.application.platform.linux = true
+export.application.platform.macosx  = true
+export.application.platform.linux   = true
 
 # whether or not to export as full screen (present) mode
 export.application.fullscreen = false
@@ -209,20 +211,20 @@ export.applet.separate_jar_files = false
 export.delete_target_folder = true
 
 # may be useful when attempting to debug the preprocessor
-preproc.save_build_files=false
+preproc.save_build_files = false
 
 # allows various preprocessor features to be toggled 
 # in case they are causing problems
 
 # preprocessor: pde.g
-preproc.color_datatype = true
-preproc.web_colors = true
+preproc.color_datatype   = true
+preproc.web_colors       = true
 preproc.enhanced_casting = true
 
 # preprocessor: PdeEmitter.java
 preproc.substitute_floats = true
 #preproc.substitute_image = false
-#preproc.substitute_font = false
+#preproc.substitute_font  = false
 
 # auto-convert non-ascii chars to unicode escape sequences
 preproc.substitute_unicode = true
@@ -242,31 +244,34 @@ browser.linux = mozilla
 #launcher.linux = xdg-open
 
 # FULL SCREEN (PRESENT MODE)
-run.present.bgcolor = #666666
+run.present.bgcolor    = #666666
 run.present.stop.color = #cccccc
+
 # starting in release 0159, don't use full screen exclusive anymore
 run.present.exclusive = false
+
 # use this by default to hide the menu bar and dock on osx
 run.present.exclusive.macosx = true
 
 # ARDUINO PREFERENCES
-target_package = arduino
+target_package  = arduino
 target_platform = avr
-board = uno
-software=ARDUINO
+board           = uno
+software        = ARDUINO
+
 # Warn when data segment uses greater than this percentage
 build.warn_data_percentage = 75
 
 programmer = arduino:avrispmkii
 
-upload.using = bootloader
+upload.using  = bootloader
 upload.verify = true
 
-serial.port=COM1
-serial.databits=8
-serial.stopbits=1
-serial.parity=N
-serial.debug_rate=9600
+serial.port       = COM1
+serial.databits   = 8
+serial.stopbits   = 1
+serial.parity     = N
+serial.debug_rate = 9600
 
 # I18 Preferences
 
