@@ -28,16 +28,27 @@
 static u8 lastIf = CDC_ACM_INTERFACE + CDC_INTERFACE_COUNT;
 static u8 lastEp = CDC_FIRST_ENDPOINT + CDC_ENPOINT_COUNT;
 
+class PUSBListNode {
+public:
+	PUSBListNode *next = NULL;
+	PUSBCallbacks cb;
+};
+
 extern u8 _initEndpoints[];
 
-PUSBCallbacks cbs[MAX_MODULES];
-u8 modules_count = 0;
+//PUSBCallbacks cbs[MAX_MODULES];
+static u8 modules_count = 0;
+
+static PUSBListNode* rootNode = NULL;
+static PUSBListNode* lastNode = NULL;
 
 int8_t PUSB_GetInterface(u8* interfaceNum)
 {
 	int8_t ret = 0;
+	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count; i++) {
-		ret = cbs[i].getInterface(interfaceNum);
+		ret = node->cb.getInterface(interfaceNum);
+		node = node->next;
 	}
 	return ret;
 }
@@ -45,8 +56,10 @@ int8_t PUSB_GetInterface(u8* interfaceNum)
 int8_t PUSB_GetDescriptor(int8_t t)
 {
 	int8_t ret = 0;
+	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count && ret == 0; i++) {
-		ret = cbs[i].getDescriptor(t);
+		ret = node->cb.getDescriptor(t);
+		node = node->next;
 	}
 	return ret;
 }
@@ -54,8 +67,10 @@ int8_t PUSB_GetDescriptor(int8_t t)
 bool PUSB_Setup(Setup& setup, u8 j)
 {
 	bool ret = false;
+	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count && ret == false; i++) {
-		ret = cbs[i].setup(setup, j);
+		ret = node->cb.setup(setup, j);
+		node = node->next;
 	}
 	return ret;
 }
@@ -65,7 +80,19 @@ int8_t PUSB_AddFunction(PUSBCallbacks *cb, u8* interface)
 	if (modules_count >= MAX_MODULES) {
 		return 0;
 	}
-	cbs[modules_count] = *cb;
+
+	PUSBListNode *node = new PUSBListNode;
+
+	node->cb.setup = cb->setup;
+	node->cb.getInterface = cb->getInterface;
+	node->cb.getDescriptor = cb->getDescriptor;
+
+	if (modules_count == 0) {
+		rootNode = node;
+		lastNode = node;
+	} else {
+		lastNode->next = node;
+	}
 
 	*interface = lastIf;
 	lastIf++;
