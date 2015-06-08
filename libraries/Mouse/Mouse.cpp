@@ -66,6 +66,10 @@ Mouse_ Mouse;
 //================================================================================
 //	Mouse
 
+void WEAK setupUSB() {
+  HID.begin();
+}
+
 Mouse_::Mouse_(void) : _buttons(0)
 {
 }

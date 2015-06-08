@@ -1,84 +1,97 @@
-extern const u8 _hidReportDescriptor[] PROGMEM;
-const u8 _hidReportDescriptor[] = {
-	
-	//	Mouse
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 54
-    0x09, 0x02,                    // USAGE (Mouse)
-    0xa1, 0x01,                    // COLLECTION (Application)
-    0x09, 0x01,                    //   USAGE (Pointer)
-    0xa1, 0x00,                    //   COLLECTION (Physical)
-    0x85, 0x01,                    //     REPORT_ID (1)
-    0x05, 0x09,                    //     USAGE_PAGE (Button)
-    0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
-    0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
-    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x75, 0x01,                    //     REPORT_SIZE (1)
-    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-    0x95, 0x01,                    //     REPORT_COUNT (1)
-    0x75, 0x05,                    //     REPORT_SIZE (5)
-    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
-    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-    0x09, 0x30,                    //     USAGE (X)
-    0x09, 0x31,                    //     USAGE (Y)
-    0x09, 0x38,                    //     USAGE (Wheel)
-    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-    0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
-    0x75, 0x08,                    //     REPORT_SIZE (8)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-    0xc0,                          //   END_COLLECTION
-    0xc0,                          // END_COLLECTION
+#ifndef MOUSEANDKEYBOARD_h
 
-	//	Keyboard
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 47
-    0x09, 0x06,                    // USAGE (Keyboard)
-    0xa1, 0x01,                    // COLLECTION (Application)
-    0x85, 0x02,                    //   REPORT_ID (2)
-    0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-   
-	0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
-    0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
-    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
-    0x75, 0x01,                    //   REPORT_SIZE (1)
-    
-	0x95, 0x08,                    //   REPORT_COUNT (8)
-    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
-    0x95, 0x01,                    //   REPORT_COUNT (1)
-    0x75, 0x08,                    //   REPORT_SIZE (8)
-    0x81, 0x03,                    //   INPUT (Cnst,Var,Abs)
-    
-	0x95, 0x06,                    //   REPORT_COUNT (6)
-    0x75, 0x08,                    //   REPORT_SIZE (8)
-    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-    0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
-    0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-    
-	0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
-    0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
-    0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
-    0xc0,                          // END_COLLECTION
+#if 1 //defined(USBCON)
 
-#ifdef RAWHID_ENABLED
-	//	RAW HID
-	0x06, LSB(RAWHID_USAGE_PAGE), MSB(RAWHID_USAGE_PAGE),	// 30
-	0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
+#include "HID.h"
+//================================================================================
+//================================================================================
+//  Mouse
 
-	0xA1, 0x01,				// Collection 0x01
-    0x85, 0x03,             // REPORT_ID (3)
-	0x75, 0x08,				// report size = 8 bits
-	0x15, 0x00,				// logical minimum = 0
-	0x26, 0xFF, 0x00,		// logical maximum = 255
+#define MOUSE_LEFT 1
+#define MOUSE_RIGHT 2
+#define MOUSE_MIDDLE 4
+#define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE)
 
-	0x95, 64,				// report count TX
-	0x09, 0x01,				// usage
-	0x81, 0x02,				// Input (array)
-
-	0x95, 64,				// report count RX
-	0x09, 0x02,				// usage
-	0x91, 0x02,				// Output (array)
-	0xC0					// end collection
-#endif
+class Mouse_
+{
+private:
+  uint8_t _buttons;
+  void buttons(uint8_t b);
+public:
+  Mouse_(void);
+  void begin(void);
+  void end(void);
+  void click(uint8_t b = MOUSE_LEFT);
+  void move(signed char x, signed char y, signed char wheel = 0); 
+  void press(uint8_t b = MOUSE_LEFT);   // press LEFT by default
+  void release(uint8_t b = MOUSE_LEFT); // release LEFT by default
+  bool isPressed(uint8_t b = MOUSE_LEFT); // check LEFT by default
 };
+extern Mouse_ Mouse;
+
+//================================================================================
+//================================================================================
+//  Keyboard
+
+#define KEY_LEFT_CTRL   0x80
+#define KEY_LEFT_SHIFT    0x81
+#define KEY_LEFT_ALT    0x82
+#define KEY_LEFT_GUI    0x83
+#define KEY_RIGHT_CTRL    0x84
+#define KEY_RIGHT_SHIFT   0x85
+#define KEY_RIGHT_ALT   0x86
+#define KEY_RIGHT_GUI   0x87
+
+#define KEY_UP_ARROW    0xDA
+#define KEY_DOWN_ARROW    0xD9
+#define KEY_LEFT_ARROW    0xD8
+#define KEY_RIGHT_ARROW   0xD7
+#define KEY_BACKSPACE   0xB2
+#define KEY_TAB       0xB3
+#define KEY_RETURN      0xB0
+#define KEY_ESC       0xB1
+#define KEY_INSERT      0xD1
+#define KEY_DELETE      0xD4
+#define KEY_PAGE_UP     0xD3
+#define KEY_PAGE_DOWN   0xD6
+#define KEY_HOME      0xD2
+#define KEY_END       0xD5
+#define KEY_CAPS_LOCK   0xC1
+#define KEY_F1        0xC2
+#define KEY_F2        0xC3
+#define KEY_F3        0xC4
+#define KEY_F4        0xC5
+#define KEY_F5        0xC6
+#define KEY_F6        0xC7
+#define KEY_F7        0xC8
+#define KEY_F8        0xC9
+#define KEY_F9        0xCA
+#define KEY_F10       0xCB
+#define KEY_F11       0xCC
+#define KEY_F12       0xCD
+
+//  Low level key report: up to 6 keys and shift, ctrl etc at once
+typedef struct
+{
+  uint8_t modifiers;
+  uint8_t reserved;
+  uint8_t keys[6];
+} KeyReport;
+
+class Keyboard_ : public Print
+{
+private:
+  KeyReport _keyReport;
+  void sendReport(KeyReport* keys);
+public:
+  Keyboard_(void);
+  void begin(void);
+  void end(void);
+  virtual size_t write(uint8_t k);
+  virtual size_t press(uint8_t k);
+  virtual size_t release(uint8_t k);
+  virtual void releaseAll(void);
+};
+extern Keyboard_ Keyboard;
+
+#endif
