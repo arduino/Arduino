@@ -129,7 +129,7 @@ static const uint8_t P3_0 = 15;
 static const uint8_t P7_4 = 17;
 static const uint8_t P2_2 = 18;
 static const uint8_t P2_0 = 19;
-/* PIN16 is GND */
+/* PIN20 is GND */
 
 /* PIN21 is 5.0v */
 /* PIN22 is GND */

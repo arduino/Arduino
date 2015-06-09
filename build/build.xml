@@ -228,7 +228,7 @@
 
 
   <property name="arm.tools.mac.local" value="arm_tools_mac.zip"/>
-  <property name="msp430.tools.mac.local" value="msp430_tools_mac.zip"/>
+  <property name="msp430.tools.mac.local" value="msp430_tools_mac_05_2015.zip"/>
 
   <condition property="exists.tools.mac">
   <and>
@@ -254,7 +254,7 @@
     if="dep.arm.default.ok"
     unless="exists.tools.mac">
     <property name="arm.tools.mac.remote" value="http://energia.nu/files/arm_tools_mac.zip"/>
-	<property name="msp430.tools.mac.remote" value="http://energia.nu/files/msp430_tools_mac.zip"/>
+	<property name="msp430.tools.mac.remote" value="http://energia.nu/files/msp430_tools_mac_05_2015.zip"/>
     <!-- Get tools tools -->
 	<get src="${arm.tools.mac.remote}" dest="macosx/${arm.tools.mac.local}"/>
 	<get src="${msp430.tools.mac.remote}" dest="macosx/${msp430.tools.mac.local}"/>
@@ -291,7 +291,7 @@
       <arg value="-n" />
       <arg value="-d" />
       <arg value="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools" />
-      <arg value="macosx/msp430_tools_mac.zip" />
+      <arg value="macosx/msp430_tools_mac_05_2015.zip" />
     </exec>
 
     <!-- Unzip arm tools -->
@@ -432,7 +432,7 @@
 
   <!-- Linux 32 build -->
   <property name="arm.tools.linux.local" value="arm_tools_linux32.tar.bz2"/>
-  <property name="msp430.tools.linux.local" value="msp430_tools_linux32.tar.bz2"/>
+  <property name="msp430.tools.linux.local" value="msp430_tools_linux32_05_2015.tar.bz2"/>
 
   <condition property="exists.tools.linux">
   <and>
@@ -455,7 +455,7 @@
     if="dep.arm.default.ok"
     unless="exists.tools.linux">
     <property name="arm.tools.linux.remote" value="http://energia.nu/files/arm_tools_linux32.tar.bz2"/>
-	<property name="msp430.tools.linux.remote" value="http://energia.nu/files/msp430_tools_linux32.tar.bz2"/>
+	<property name="msp430.tools.linux.remote" value="http://energia.nu/files/msp430_tools_linux32_05_2015.tar.bz2"/>
     <!-- Get tools -->
 	<get src="${arm.tools.linux.remote}" dest="linux/${arm.tools.linux.local}"/>
 	<get src="${msp430.tools.linux.remote}" dest="linux/${msp430.tools.linux.local}"/>
@@ -466,7 +466,7 @@
     <!-- Unzip msp430 tools -->
     <exec executable="tar" dir="linux/work/hardware/tools">
       <arg value="-xjf"/>
-      <arg value="${user.dir}/linux/msp430_tools_linux32.tar.bz2"/>
+      <arg value="${user.dir}/linux/msp430_tools_linux32_05_2015.tar.bz2"/>
     </exec>
     <!-- Unzip lm4f tools -->
     <exec executable="tar" dir="linux/work/hardware/tools">
@@ -477,7 +477,7 @@
 
   <!-- Linux 64 build -->
   <property name="arm.tools.linux64.local" value="arm_tools_linux64.tar.bz2"/>
-  <property name="msp430.tools.linux64.local" value="msp430_tools_linux64.tar.bz2"/>
+  <property name="msp430.tools.linux64.local" value="msp430_tools_linux64_05_2015.tar.bz2"/>
 
   <condition property="exists.tools.linux64">
   <and>
@@ -491,7 +491,7 @@
     if="dep.arm.default.ok"
     unless="exists.tools.linux64">
     <property name="arm.tools.linux64.remote" value="http://energia.nu/files/arm_tools_linux64.tar.bz2"/>
-	<property name="msp430.tools.linux64.remote" value="http://energia.nu/files/msp430_tools_linux64.tar.bz2"/>
+	<property name="msp430.tools.linux64.remote" value="http://energia.nu/files/msp430_tools_linux64_05_2015.tar.bz2"/>
     <!-- Get tools -->
 	<get src="${arm.tools.linux64.remote}" dest="linux/${arm.tools.linux64.local}"/>
 	<get src="${msp430.tools.linux64.remote}" dest="linux/${msp430.tools.linux64.local}"/>
@@ -502,7 +502,7 @@
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
     <exec executable="tar" dir="linux/work/hardware/tools">
       <arg value="-xjf"/>
-      <arg value="${user.dir}/linux/msp430_tools_linux64.tar.bz2"/>
+      <arg value="${user.dir}/linux/msp430_tools_linux64_05_2015.tar.bz2"/>
     </exec>
 
     <!-- Unzip lm4f tools -->
@@ -598,7 +598,7 @@
   </target>
   
   <property name="arm.tools.windows.local" value="arm_tools_windows.zip"/>
-  <property name="msp430.tools.windows.local" value="msp430_tools_windows.zip"/>
+  <property name="msp430.tools.windows.local" value="msp430_tools_windows_05_2015.zip"/>
 
   <condition property="exists.tools.windows">
   <and>
@@ -622,7 +622,7 @@
     if="dep.arm.default.ok"
     unless="exists.tools.windows">
     <property name="arm.tools.windows.remote" value="http://energia.nu/files/arm_tools_windows.zip"/>
-	<property name="msp430.tools.windows.remote" value="http://energia.nu/files/msp430_tools_windows.zip"/>
+	<property name="msp430.tools.windows.remote" value="http://energia.nu/files/msp430_tools_windows_05_2015.zip"/>
     <!-- Get tools tools -->
 	<get src="${arm.tools.windows.remote}" dest="windows/${arm.tools.windows.local}"/>
 	<get src="${msp430.tools.windows.remote}" dest="windows/${msp430.tools.windows.local}"/>
@@ -655,7 +655,7 @@
 
 
     <!-- Unzip tools -->
-    <unzip dest="windows/work/hardware/tools" src="windows/msp430_tools_windows.zip" overwrite="false"/>
+    <unzip dest="windows/work/hardware/tools" src="windows/msp430_tools_windows_05_2015.zip" overwrite="false"/>
     <unzip dest="windows/work/hardware/tools" src="windows/arm_tools_windows.zip" overwrite="false"/>
 
     <antcall target="assemble">
