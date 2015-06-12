@@ -315,10 +315,7 @@ u8 _initEndpoints[] =
 	EP_TYPE_BULK_IN,			// CDC_ENDPOINT_IN
 
 #ifdef PLUGGABLE_USB_ENABLED
-	//allocate 6 endpoints and remove const so they can be changed by the user
-	0,
-	0,
-	0,
+	//allocate 3 endpoints and remove const so they can be changed by the user
 	0,
 	0,
 	0,
