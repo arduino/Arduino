@@ -19,6 +19,7 @@
   <condition property="platform" value="windows"><os family="windows" /></condition>
   <condition property="platform" value="linux32"><os family="unix" arch="i386" /></condition>
   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
+  <condition property="platform" value="arm"><os family="unix" arch="arm" /></condition>
 
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx-old" /></condition>
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
@@ -27,21 +28,27 @@
   <condition property="linux64"><equals arg1="${platform}" arg2="linux64" /></condition>
   <condition property="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="linux"><equals arg1="${platform}" arg2="arm" /></condition>
 
   <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx-old" /></condition>
   <condition property="staging_folder" value="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="arm" /></condition>
 
   <condition property="staging_hardware_folder" value="Arduino.app/Contents/Java/hardware"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="staging_hardware_folder" value="Arduino.app/Contents/Resources/Java/hardware"><equals arg1="${platform}" arg2="macosx-old" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="arm" /></condition>
 
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
+  </condition>
+  <condition property="arch-bits" value="32">
+    <equals arg1="${platform}" arg2="arm"/>
   </condition>
   <condition property="arch-bits" value="64">
     <equals arg1="${platform}" arg2="linux64"/>
@@ -389,7 +396,6 @@
     <antcall target="assemble">
       <param name="target.path" value="${staging_folder}/work/${staging_hardware_folder}/.." />
     </antcall>
-
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
       <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
@@ -641,6 +647,7 @@
     <copy todir="linux/work" file="linux/dist/arduino" />
     <chmod perm="755" file="linux/work/arduino" />
 
+    <!--
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.zip" />
       <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
@@ -648,7 +655,25 @@
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
     <copy file="linux/libastylej/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
+    -->
+    <copy file="/usr/lib/jni/libastylej.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
+  </target>
+
+  <target name="arm-build" depends="linux-build" description="Build linux (32-bit) version">
+    <antcall target="linux-jvm-${linux-bundle-jvm-task}">
+      <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
+    </antcall>
+
+    <antcall target="avr-toolchain-bundle">
+      <param name="unpack_target" value="untar"/>
+      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="4.8.1-arduino5"/>
+      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="6.0.1-arduino5"/>
+    </antcall>
+
+    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
@@ -696,6 +721,10 @@
   </target>
 
   <target name="linux32-run" depends="build" description="Run Linux (32-bit) version">
+    <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
+  </target>
+
+  <target name="arm-run" depends="build" description="Run Linux ARM (32-bit) version">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
