@@ -18,6 +18,7 @@
 
 #include "USBAPI.h"
 #include <avr/wdt.h>
+#include <util/atomic.h>
 
 #if defined(USBCON)
 
@@ -203,6 +204,32 @@ Serial_::operator bool() {
 		result = true;
 	delay(10);
 	return result;
+}
+
+unsigned long Serial_::baud() {
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		return _usbLineInfo.dwDTERate;
+	}
+}
+
+uint8_t Serial_::stopbits() {
+	return _usbLineInfo.bCharFormat;
+}
+
+uint8_t Serial_::paritytype() {
+	return _usbLineInfo.bParityType;
+}
+
+uint8_t Serial_::numbits() {
+	return _usbLineInfo.bDataBits;
+}
+
+bool Serial_::dtr() {
+	return _usbLineInfo.lineState & 0x1;
+}
+
+bool Serial_::rts() {
+	return _usbLineInfo.lineState & 0x2;
 }
 
 Serial_ Serial;

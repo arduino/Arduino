@@ -101,6 +101,29 @@ public:
 	volatile uint8_t _rx_buffer_head;
 	volatile uint8_t _rx_buffer_tail;
 	unsigned char _rx_buffer[SERIAL_BUFFER_SIZE];
+
+	// These return the settings specified by the USB host for the
+	// serial port. These aren't really used, but are offered here
+	// in case a sketch wants to act on these settings.
+	uint32_t baud();
+	uint8_t stopbits();
+	uint8_t paritytype();
+	uint8_t numbits();
+	bool dtr();
+	bool rts();
+	enum {
+		ONE_STOP_BIT = 0,
+		ONE_AND_HALF_STOP_BIT = 1,
+		TWO_STOP_BITS = 2,
+	};
+	enum {
+		NO_PARITY = 0,
+		ODD_PARITY = 1,
+		EVEN_PARITY = 2,
+		MARK_PARITY = 3,
+		SPACE_PARITY = 4,
+	};
+
 };
 extern Serial_ Serial;
 
