@@ -358,7 +358,11 @@ public class Compiler implements MessageConsumer {
    * @throws RunnerException Only if there's a problem. Only then.
    */
   public boolean compile(boolean _verbose, boolean _save) throws RunnerException, PreferencesMapException {
-    preprocess(prefs.get("build.path"));
+    File sketchBuildFolder = new File(prefs.get("build.path"), "sketch");
+    if (!sketchBuildFolder.mkdirs()) {
+      throw new RunnerException("Unable to create folder " + sketchBuildFolder);
+    }
+    preprocess(sketchBuildFolder.getAbsolutePath());
     
     verbose = _verbose || PreferencesData.getBoolean("build.verbose");
     saveHex = _save;
@@ -410,7 +414,7 @@ public class Compiler implements MessageConsumer {
 
     // 1. compile the sketch (already in the buildPath)
     progressListener.progress(20);
-    compileSketch(includeFolders);
+    compileSketch(includeFolders, sketchBuildFolder);
     sketchIsCompiled = true;
 
     runActions("hooks.sketch.postbuild", prefs);
@@ -995,8 +999,7 @@ public class Compiler implements MessageConsumer {
   }
   
   // 1. compile the sketch (already in the buildPath)
-  void compileSketch(List<File> includeFolders) throws RunnerException, PreferencesMapException {
-    File buildPath = prefs.getFile("build.path");
+  void compileSketch(List<File> includeFolders, File buildPath) throws RunnerException, PreferencesMapException {
     objectFiles.addAll(compileFiles(buildPath, buildPath, false, includeFolders));
   }
 
