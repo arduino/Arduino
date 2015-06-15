@@ -1011,7 +1011,12 @@ public class Compiler implements MessageConsumer {
   private void compileLibrary(UserLibrary lib, List<File> includeFolders)
           throws RunnerException, PreferencesMapException {
     File libFolder = lib.getSrcFolder();
-    File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
+    File librariesFolder = new File(prefs.getFile("build.path"), "libraries");
+    if (!librariesFolder.exists() && !librariesFolder.mkdirs()) {
+      throw new RunnerException("Unable to create folder " + librariesFolder);
+    }
+
+    File libBuildFolder = new File(librariesFolder, lib.getName());
     
     if (lib.useRecursion()) {
       // libBuildFolder == {build.path}/LibName
@@ -1058,7 +1063,10 @@ public class Compiler implements MessageConsumer {
 
     File coreFolder = prefs.getFile("build.core.path");
     File variantFolder = prefs.getFile("build.variant.path");
-    File buildFolder = prefs.getFile("build.path");
+    File buildFolder = new File(prefs.getFile("build.path"), "core");
+    if (!buildFolder.exists() && !buildFolder.mkdirs()) {
+      throw new RunnerException("Unable to create folder " + buildFolder);
+    }
 
     List<File> includeFolders = new ArrayList<File>();
     includeFolders.add(coreFolder); // include core path only
@@ -1108,6 +1116,7 @@ public class Compiler implements MessageConsumer {
         dict.put("ide_version", "" + BaseNoGui.REVISION);
         dict.put("archive_file", afile.getName());
         dict.put("object_file", file.getAbsolutePath());
+        dict.put("build.path", buildFolder.getAbsolutePath());
 
         String[] cmdArray;
         String cmd = prefs.getOrExcept("recipe.ar.pattern");
@@ -1144,7 +1153,7 @@ public class Compiler implements MessageConsumer {
     PreferencesMap dict = new PreferencesMap(prefs);
     String flags = dict.get("compiler.c.elf.flags") + optRelax;
     dict.put("compiler.c.elf.flags", flags);
-    dict.put("archive_file", "core.a");
+    dict.put("archive_file", new File("core", "core.a").getPath());
     dict.put("object_files", objectFileList);
     dict.put("ide_version", "" + BaseNoGui.REVISION);
 
