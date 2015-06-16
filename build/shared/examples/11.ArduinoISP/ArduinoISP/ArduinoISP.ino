@@ -43,7 +43,6 @@
 // - The SPI functions herein were developed for the AVR910_ARD programmer
 // - More information at http://code.google.com/p/mega-isp
 
-#include "SPI.h"
 #include "pins_arduino.h"
 // Use pin 10 to reset the target
 #define RESET     10
@@ -52,6 +51,17 @@
 #define LED_ERR   8
 #define LED_PMODE 7
 #define PROG_FLICKER true
+
+#if defined(ARDUINO_ARCH_SAM) or defined(ARDUINO_ARCH_SAMD)
+
+#define SPI_CLOCK_DIV_MAX	255
+
+#else
+
+#define USE_HARDWARE_SPI
+#define SPI_CLOCK_DIV_MAX	SPI_CLOCK_DIV_128
+
+#endif
 
 #define HWVER 2
 #define SWMAJ 1
@@ -67,12 +77,52 @@
 
 void pulse(int pin, int times);
 
+#ifdef USE_HARDWARE_SPI
+#include "SPI.h"
+#else
+
+class BitBangedSPI {
+  public:
+    void setDataMode(uint8_t dataMode) {
+      (void) dataMode;
+    }
+    void setBitOrder(uint8_t bitOrder) {
+      (void) bitOrder;
+    }
+    void setClockDivider(uint8_t clockDiv) {
+      (void) clockDiv;
+    }
+
+    void begin() {
+      pinMode(MISO, INPUT);
+      pinMode(RESET, OUTPUT);
+      pinMode(SCK, OUTPUT);
+      pinMode(MOSI, OUTPUT);
+    }
+
+    void end() {}
+
+    uint8_t transfer (uint8_t b) {
+      for (unsigned int i = 0; i < 8; ++i) {
+        digitalWrite(MOSI, b & 0x80);
+        digitalWrite(SCK, HIGH);
+        b = (b << 1) | digitalRead(MISO);
+        digitalWrite(SCK, LOW); // slow pulse
+      }
+      return b;
+    }
+};
+
+static BitBangedSPI SPI;
+
+#endif
+
 void setup() {
   Serial.begin(19200);
   SPI.setDataMode(0);
   SPI.setBitOrder(MSBFIRST);
-  // Clock Div can be 2,4,8,16,32,64, or 128
-  SPI.setClockDivider(SPI_CLOCK_DIV128);
+  // Select the slowest possible clock
+  SPI.setClockDivider(SPI_CLOCK_DIV_MAX);
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
   pinMode(LED_ERR, OUTPUT);
