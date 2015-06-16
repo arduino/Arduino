@@ -54,7 +54,7 @@ int Stream::timedPeek()
 
 // returns peek of the next digit in the stream or -1 if timeout
 // discards non-numeric characters
-int Stream::peekNextDigit( bool detectDecimal )
+int Stream::peekNextDigit(LookaheadMode lookahead, bool detectDecimal)
 {
   int c;
   while (1) {
@@ -65,6 +65,17 @@ int Stream::peekNextDigit( bool detectDecimal )
         c >= '0' && c <= '9' ||
         detectDecimal && c == '.') return c;
 
+    switch( lookahead ){
+        case SKIP_NONE: return -1; // Fail code.
+        case SKIP_WHITESPACE:
+            switch( c ){
+                case ' ':
+                case '\t':
+                case '\r':
+                case '\n': break;
+                default: return -1; // Fail code.
+            }
+    }
     read();  // discard non-numeric
   }
 }
@@ -114,26 +125,26 @@ bool Stream::findUntil(char *target, size_t targetLen, char *terminator, size_t 
 // returns the first valid (long) integer value from the current position.
 // initial characters that are not digits (or the minus sign) are skipped
 // function is terminated by the first character that is not a digit.
-long Stream::parseInt()
+long Stream::parseInt(LookaheadMode lookahead)
 {
-  return parseInt(NO_SKIP_CHAR); // terminate on first non-digit character (or timeout)
+  return parseInt(lookahead, NO_SKIP_CHAR); // terminate on first non-digit character (or timeout)
 }
 
-// as above but a given skipChar is ignored
+// as above but 'ignore' is ignored
 // this allows format characters (typically commas) in values to be ignored
-long Stream::parseInt(char skipChar)
+long Stream::parseInt(LookaheadMode lookahead, char ignore)
 {
   bool isNegative = false;
   long value = 0;
   int c;
 
-  c = peekNextDigit(false);
+  c = peekNextDigit(lookahead, false);
   // ignore non numeric leading characters
   if(c < 0)
     return 0; // zero returned if timeout
 
   do{
-    if(c == skipChar)
+    if(c == ignore)
       ; // ignore this charactor
     else if(c == '-')
       isNegative = true;
@@ -142,7 +153,7 @@ long Stream::parseInt(char skipChar)
     read();  // consume the character we got with peek
     c = timedPeek();
   }
-  while( (c >= '0' && c <= '9') || c == skipChar );
+  while( (c >= '0' && c <= '9') || c == ignore );
 
   if(isNegative)
     value = -value;
@@ -151,27 +162,27 @@ long Stream::parseInt(char skipChar)
 
 
 // as parseInt but returns a floating point value
-float Stream::parseFloat()
+float Stream::parseFloat(LookaheadMode lookahead)
 {
-  return parseFloat(NO_SKIP_CHAR);
+  return parseFloat(lookahead, NO_SKIP_CHAR);
 }
 
-// as above but the given skipChar is ignored
+// as above but the given ignore is ignored
 // this allows format characters (typically commas) in values to be ignored
-float Stream::parseFloat(char skipChar){
+float Stream::parseFloat(LookaheadMode lookahead, char ignore){
   bool isNegative = false;
   bool isFraction = false;
   long value = 0;
   char c;
   float fraction = 1.0;
 
-  c = peekNextDigit(true);
+  c = peekNextDigit(lookahead, true);
     // ignore non numeric leading characters
   if(c < 0)
     return 0; // zero returned if timeout
 
   do{
-    if(c == skipChar)
+    if(c == ignore)
       ; // ignore
     else if(c == '-')
       isNegative = true;
@@ -185,7 +196,7 @@ float Stream::parseFloat(char skipChar){
     read();  // consume the character we got with peek
     c = timedPeek();
   }
-  while( (c >= '0' && c <= '9')  || c == '.' && !isFraction || c == skipChar );
+  while( (c >= '0' && c <= '9')  || c == '.' && !isFraction || c == ignore );
 
   if(isNegative)
     value = -value;
