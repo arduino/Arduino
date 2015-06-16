@@ -177,16 +177,20 @@ unsigned long ulRstReg;
 #define PRCM_GPIOA1               0x00000007
 #define PRCM_GPIOA2               0x00000008
 #define PRCM_GPIOA3               0x00000009
-#define PRCM_WDT                  0x0000000A
-#define PRCM_UARTA0               0x0000000B
-#define PRCM_UARTA1               0x0000000C
-#define PRCM_TIMERA0              0x0000000D
-#define PRCM_TIMERA1              0x0000000E
-#define PRCM_TIMERA2              0x0000000F
-#define PRCM_TIMERA3              0x00000010
-#define PRCM_DTHE                 0x00000011
-#define PRCM_SSPI                 0x00000012
-#define PRCM_I2CA0                0x00000013
+#define PRCM_GPIOA4               0x0000000A
+#define PRCM_WDT                  0x0000000B
+#define PRCM_UARTA0               0x0000000C
+#define PRCM_UARTA1               0x0000000D
+#define PRCM_TIMERA0              0x0000000E
+#define PRCM_TIMERA1              0x0000000F
+#define PRCM_TIMERA2              0x00000010
+#define PRCM_TIMERA3              0x00000011
+#define PRCM_DTHE                 0x00000012
+#define PRCM_SSPI                 0x00000013
+#define PRCM_I2CA0                0x00000014
+// Note : PRCM_ADC is a dummy define for pinmux utility code generation
+// PRCM_ADC should never be used in any user code.
+#define PRCM_ADC                  0x000000FF
 
 //*****************************************************************************
 //
@@ -233,6 +237,7 @@ extern void PRCMHibernateWakeupSourceDisable(unsigned long ulHIBWakupSrc);
 extern void PRCMHibernateIntervalSet(unsigned long long ullTicks);
 
 extern unsigned long long PRCMSlowClkCtrGet(void);
+extern unsigned long long PRCMSlowClkCtrFastGet(void);
 extern void PRCMSlowClkCtrMatchSet(unsigned long long ullTicks);
 extern unsigned long long PRCMSlowClkCtrMatchGet(void);
 
@@ -252,6 +257,10 @@ extern void PRCMRTCGet(unsigned long *ulSecs, unsigned short *usMsec);
 extern void PRCMRTCMatchSet(unsigned long ulSecs, unsigned short usMsec);
 extern void PRCMRTCMatchGet(unsigned long *ulSecs, unsigned short *usMsec);
 extern void PRCMCC3200MCUInit(void);
+extern unsigned long PRCMHIBRegRead(unsigned long ulRegAddr);
+extern void PRCMHIBRegWrite(unsigned long ulRegAddr, unsigned long ulValue);
+extern unsigned long PRCMCameraFreqSet(unsigned char ulDivider,
+                                                unsigned char ulWidth);
 
 
 //*****************************************************************************

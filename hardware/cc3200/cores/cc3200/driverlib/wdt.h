@@ -65,7 +65,6 @@ extern unsigned long WatchdogReloadGet(unsigned long ulBase);
 extern unsigned long WatchdogValueGet(unsigned long ulBase);
 extern void WatchdogIntRegister(unsigned long ulBase, void(*pfnHandler)(void));
 extern void WatchdogIntUnregister(unsigned long ulBase);
-extern void WatchdogIntEnable(unsigned long ulBase);
 extern unsigned long WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked);
 extern void WatchdogIntClear(unsigned long ulBase);
 extern void WatchdogStallEnable(unsigned long ulBase);

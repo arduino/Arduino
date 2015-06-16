@@ -762,15 +762,7 @@ SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
   // Enable software control Chip Select, Init delay
   // and 3-pin mode
   //
-  ulRegData |= (((ulConfig >> 24) | ulMode) & 0xFF);
-
-  //
-  // If slave, Chip Select has to H/W controlled
-  //
-  if(ulMode == SPI_MODE_MASTER)
-  {
-    ulRegData &= 0x1;
-  }
+  ulRegData |= (((ulConfig >> 24) | ulMode) & 0xFF); 
 
   //
   // Write the configuration
@@ -818,7 +810,7 @@ SPIConfigSetExpClk(unsigned long ulBase,unsigned long ulSPIClk,
   // and turbo mode
   //
   ulRegData = ((ulRegData  |
-                ulSubMode) | (ulConfig & 0x0000FFFF));
+                ulSubMode) | (ulConfig & 0x0008FFFF));
 
   //
   // Write back the CONF register

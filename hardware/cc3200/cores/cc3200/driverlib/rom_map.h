@@ -826,13 +826,6 @@
 #define MAP_WatchdogValueGet \
         WatchdogValueGet
 #endif
-#ifdef ROM_WatchdogIntEnable
-#define MAP_WatchdogIntEnable \
-        ROM_WatchdogIntEnable
-#else
-#define MAP_WatchdogIntEnable \
-        WatchdogIntEnable
-#endif
 #ifdef ROM_WatchdogIntStatus
 #define MAP_WatchdogIntStatus \
         ROM_WatchdogIntStatus
@@ -2687,13 +2680,6 @@
 // Macros for the PRCM API.
 //
 //*****************************************************************************
-#ifdef ROM_PRCMSOCReset
-#define MAP_PRCMSOCReset \
-        ROM_PRCMSOCReset
-#else
-#define MAP_PRCMSOCReset \
-        PRCMSOCReset
-#endif
 #ifdef ROM_PRCMMCUReset
 #define MAP_PRCMMCUReset \
         ROM_PRCMMCUReset
@@ -2980,6 +2966,22 @@
 #else
 #define MAP_PRCMLPDSRestoreInfoSet \
         PRCMLPDSRestoreInfoSet
+#endif
+
+#ifdef ROM_PRCMHIBRegRead
+#define MAP_PRCMHIBRegRead \
+        ROM_PRCMHIBRegRead
+#else
+#define MAP_PRCMHIBRegRead \
+        PRCMHIBRegRead
+#endif
+
+#ifdef ROM_PRCMHIBRegWrite
+#define MAP_PRCMHIBRegWrite \
+        ROM_PRCMHIBRegWrite
+#else
+#define MAP_PRCMHIBRegWrite \
+        PRCMHIBRegWrite
 #endif
 
 //*****************************************************************************
