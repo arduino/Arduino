@@ -27,5 +27,9 @@
 	<classpathentry kind="lib" path="app/lib/jackson-annotations-2.2.3.jar"/>
 	<classpathentry kind="lib" path="app/lib/commons-compress-1.8.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
+	<classpathentry kind="lib" path="app/lib/java-semver-0.8.0.jar"/>
+	<classpathentry kind="lib" path="app/lib/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="app/lib/rsyntaxtextarea-2.5.6.1+arduino.jar"/>
+	<classpathentry kind="lib" path="app/lib/commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="output" path="app/bin"/>
 </classpath>
