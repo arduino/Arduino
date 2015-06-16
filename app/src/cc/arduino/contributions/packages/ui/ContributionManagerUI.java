@@ -44,7 +44,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 @SuppressWarnings("serial")
 public class ContributionManagerUI extends InstallerJDialog {
@@ -85,7 +85,7 @@ public class ContributionManagerUI extends InstallerJDialog {
   }
 
   public ContributionManagerUI(Frame parent, Platform platform) {
-    super(parent, _("Boards Manager"), Dialog.ModalityType.APPLICATION_MODAL, _("Unable to reach Arduino.cc due to possible network issues."));
+    super(parent, getString("Boards Manager"), Dialog.ModalityType.APPLICATION_MODAL, getString("Unable to reach Arduino.cc due to possible network issues."));
     this.platform = platform;
   }
 
@@ -172,7 +172,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       public void run() {
         List<String> errors = new LinkedList<String>();
         try {
-          setProgressVisible(true, _("Installing..."));
+          setProgressVisible(true, getString("Installing..."));
           errors.addAll(installer.install(platformToInstall));
           if (platformToRemove != null && !platformToRemove.isReadOnly()) {
             errors.addAll(installer.remove(platformToRemove));
@@ -196,7 +196,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     clearErrorMessage();
 
     if (showWarning) {
-      int chosenOption = JOptionPane.showConfirmDialog(this, I18n.format(_("Do you want to remove {0}?\nIf you do so you won't be able to use {0} any more."), platform.getName()), _("Please confirm boards deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      int chosenOption = JOptionPane.showConfirmDialog(this, I18n.format(getString("Do you want to remove {0}?\nIf you do so you won't be able to use {0} any more."), platform.getName()), getString("Please confirm boards deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
       if (chosenOption != JOptionPane.YES_OPTION) {
         return;
       }
@@ -206,7 +206,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       @Override
       public void run() {
         try {
-          setProgressVisible(true, _("Removing..."));
+          setProgressVisible(true, getString("Removing..."));
           installer.remove(platform);
           onIndexesUpdated();
         } catch (Exception e) {

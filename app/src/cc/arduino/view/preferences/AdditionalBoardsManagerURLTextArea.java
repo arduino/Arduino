@@ -42,7 +42,7 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
 
@@ -77,7 +77,7 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
     javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle(_("Additional Boards Manager URLs"));
+    setTitle(getString("Additional Boards Manager URLs"));
     setModal(true);
     setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -86,21 +86,21 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
     additionalBoardsManagerURLs.setName(""); // NOI18N
     jScrollPane1.setViewportView(additionalBoardsManagerURLs);
 
-    cancel.setText(_("Cancel"));
+    cancel.setText(getString("Cancel"));
     cancel.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         cancelActionPerformed(evt);
       }
     });
 
-    ok.setText(_("OK"));
+    ok.setText(getString("OK"));
     ok.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         okActionPerformed(evt);
       }
     });
 
-    jLabel1.setText(_("Enter additional URLs, one for each row"));
+    jLabel1.setText(getString("Enter additional URLs, one for each row"));
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);

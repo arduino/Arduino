@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 @SuppressWarnings("serial")
 public class NetworkMonitor extends AbstractMonitor implements MessageConsumer {
@@ -110,7 +110,7 @@ public class NetworkMonitor extends AbstractMonitor implements MessageConsumer {
             // ignore
           }
           if (channel.isConnected()) {
-            NetworkMonitor.this.message(_("connected!") + '\n');
+            NetworkMonitor.this.message(getString("connected!") + '\n');
           }
         }
 
@@ -129,7 +129,7 @@ public class NetworkMonitor extends AbstractMonitor implements MessageConsumer {
         }
       }
       if (connectionAttempts < MAX_CONNECTION_ATTEMPTS) {
-        s = "\n" + _("Unable to connect: retrying") + " (" + connectionAttempts + ")... ";
+        s = "\n" + getString("Unable to connect: retrying") + " (" + connectionAttempts + ")... ";
 
         SwingUtilities.invokeLater(new Runnable() {
           @Override
@@ -144,7 +144,7 @@ public class NetworkMonitor extends AbstractMonitor implements MessageConsumer {
           }
         });
       } else {
-        s = "\n" + _("Unable to connect: is the sketch using the bridge?");
+        s = "\n" + getString("Unable to connect: is the sketch using the bridge?");
       }
     }
     super.message(s);

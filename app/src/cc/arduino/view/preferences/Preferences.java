@@ -41,7 +41,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.LinkedList;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 public class Preferences extends javax.swing.JDialog {
 
@@ -98,92 +98,92 @@ public class Preferences extends javax.swing.JDialog {
     this.base = base;
 
     this.languages = new Language[]{
-      new Language(_("System Default"), "", ""),
-      new Language(_("Albanian"), "shqip", "sq"),
-      new Language(_("Arabic"), "العربية", "ar"),
-      new Language(_("Aragonese"), "Aragonés", "an"),
-      new Language(_("Belarusian"), "Беларуская мова", "be"),
-      new Language(_("Bulgarian"), "български", "bg"),
-      new Language(_("Catalan"), "Català", "ca"),
-      new Language(_("Chinese Simplified"), "简体中文", "zh_CN"),
-      new Language(_("Chinese Traditional"), "繁體中文", "zh_TW"),
-      new Language(_("Croatian"), "Hrvatski", "hr_HR"),
-      new Language(_("Czech (Czech Republic)"), "český (Czech Republic)", "cs_CZ"),
-      new Language(_("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
-      new Language(_("Dutch"), "Nederlands", "nl"),
-      new Language(_("English"), "English", "en"),
-      new Language(_("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
-      new Language(_("Estonian"), "Eesti", "et"),
-      new Language(_("Estonian (Estonia)"), "Eesti keel", "et_EE"),
-      new Language(_("Filipino"), "Pilipino", "fil"),
-      new Language(_("Finnish"), "Suomi", "fi"),
-      new Language(_("French"), "Français", "fr"),
-      new Language(_("Canadian French"), "Canadienne-français", "fr_CA"),
-      new Language(_("Galician"), "Galego", "gl"),
-      new Language(_("Georgian"), "საქართველოს", "ka_GE"),
-      new Language(_("German"), "Deutsch", "de_DE"),
-      new Language(_("Greek"), "ελληνικά", "el_GR"),
-      new Language(_("Hebrew"), "עברית", "he"),
-      new Language(_("Hindi"), "हिंदी", "hi"),
-      new Language(_("Hungarian"), "Magyar", "hu"),
-      new Language(_("Indonesian"), "Bahasa Indonesia", "id"),
-      new Language(_("Italian"), "Italiano", "it_IT"),
-      new Language(_("Japanese"), "日本語", "ja_JP"),
-      new Language(_("Korean"), "한국어", "ko_KR"),
-      new Language(_("Latvian"), "Latviešu", "lv_LV"),
-      new Language(_("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
-      new Language(_("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
-      new Language(_("Persian"), "فارسی", "fa"),
-      new Language(_("Polish"), "Język Polski", "pl"),
-      new Language(_("Portuguese (Brazil)"), "Português (Brazil)", "pt_BR"),
-      new Language(_("Portuguese (Portugal)"), "Português (Portugal)", "pt_PT"),
-      new Language(_("Romanian"), "Română", "ro"),
-      new Language(_("Russian"), "Русский", "ru"),
-      new Language(_("Slovenian"), "Slovenščina", "sl_SI"),
-      new Language(_("Spanish"), "Español", "es"),
-      new Language(_("Swedish"), "Svenska", "sv"),
-      new Language(_("Tamil"), "தமிழ்", "ta"),
-      new Language(_("Turkish"), "Türk", "tr"),
-      new Language(_("Ukrainian"), "Український", "uk"),
-      new Language(_("Vietnamese"), "Tiếng Việt", "vi"),
+      new Language(getString("System Default"), "", ""),
+      new Language(getString("Albanian"), "shqip", "sq"),
+      new Language(getString("Arabic"), "العربية", "ar"),
+      new Language(getString("Aragonese"), "Aragonés", "an"),
+      new Language(getString("Belarusian"), "Беларуская мова", "be"),
+      new Language(getString("Bulgarian"), "български", "bg"),
+      new Language(getString("Catalan"), "Català", "ca"),
+      new Language(getString("Chinese Simplified"), "简体中文", "zh_CN"),
+      new Language(getString("Chinese Traditional"), "繁體中文", "zh_TW"),
+      new Language(getString("Croatian"), "Hrvatski", "hr_HR"),
+      new Language(getString("Czech (Czech Republic)"), "český (Czech Republic)", "cs_CZ"),
+      new Language(getString("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
+      new Language(getString("Dutch"), "Nederlands", "nl"),
+      new Language(getString("English"), "English", "en"),
+      new Language(getString("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
+      new Language(getString("Estonian"), "Eesti", "et"),
+      new Language(getString("Estonian (Estonia)"), "Eesti keel", "et_EE"),
+      new Language(getString("Filipino"), "Pilipino", "fil"),
+      new Language(getString("Finnish"), "Suomi", "fi"),
+      new Language(getString("French"), "Français", "fr"),
+      new Language(getString("Canadian French"), "Canadienne-français", "fr_CA"),
+      new Language(getString("Galician"), "Galego", "gl"),
+      new Language(getString("Georgian"), "საქართველოს", "ka_GE"),
+      new Language(getString("German"), "Deutsch", "de_DE"),
+      new Language(getString("Greek"), "ελληνικά", "el_GR"),
+      new Language(getString("Hebrew"), "עברית", "he"),
+      new Language(getString("Hindi"), "हिंदी", "hi"),
+      new Language(getString("Hungarian"), "Magyar", "hu"),
+      new Language(getString("Indonesian"), "Bahasa Indonesia", "id"),
+      new Language(getString("Italian"), "Italiano", "it_IT"),
+      new Language(getString("Japanese"), "日本語", "ja_JP"),
+      new Language(getString("Korean"), "한국어", "ko_KR"),
+      new Language(getString("Latvian"), "Latviešu", "lv_LV"),
+      new Language(getString("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
+      new Language(getString("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
+      new Language(getString("Persian"), "فارسی", "fa"),
+      new Language(getString("Polish"), "Język Polski", "pl"),
+      new Language(getString("Portuguese (Brazil)"), "Português (Brazil)", "pt_BR"),
+      new Language(getString("Portuguese (Portugal)"), "Português (Portugal)", "pt_PT"),
+      new Language(getString("Romanian"), "Română", "ro"),
+      new Language(getString("Russian"), "Русский", "ru"),
+      new Language(getString("Slovenian"), "Slovenščina", "sl_SI"),
+      new Language(getString("Spanish"), "Español", "es"),
+      new Language(getString("Swedish"), "Svenska", "sv"),
+      new Language(getString("Tamil"), "தமிழ்", "ta"),
+      new Language(getString("Turkish"), "Türk", "tr"),
+      new Language(getString("Ukrainian"), "Український", "uk"),
+      new Language(getString("Vietnamese"), "Tiếng Việt", "vi"),
     };
 
     this.missingLanguages = new Language[]{
-      new Language(_("Afrikaans"), "Afrikaans", "af"),
-      new Language(_("Armenian"), "Հայերեն", "hy"),
-      new Language(_("Asturian"), "Asturianu", "ast"),
-      new Language(_("Basque"), "Euskara", "eu"),
-      new Language(_("Bengali (India)"), "বাংলা (India)", "bn_IN"),
-      new Language(_("Bosnian"), "Bosanski", "bs"),
-      new Language(_("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
-      new Language(_("Chinese (China)"), "", "zh_CN"),
-      new Language(_("Chinese (Hong Kong)"), "", "zh_HK"),
-      new Language(_("Chinese (Taiwan)"), "", "zh_TW"),
-      new Language(_("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
-      new Language(_("Czech"), "český", "cs"),
-      new Language(_("Danish"), "Dansk", "da"),
-      new Language(_("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
-      new Language(_("Galician (Spain)"), "Galego (Spain)", "gl_ES"),
-      new Language(_("Nepali"), "नेपाली", "ne"),
-      new Language(_("N'Ko"), "ߒߞߏ", "nqo"),
-      new Language(_("Marathi"), "मराठी", "mr"),
-      new Language(_("Malay (Malaysia)"), "بهاس ملايو (Malaysia)", "ms_MY"),
-      new Language(_("Norwegian"), "Norsk", "no"),
-      new Language(_("Norwegian Nynorsk"), "Norsk Nynorsk", "nn"),
-      new Language(_("Portugese"), "Português", "pt"),
-      new Language(_("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
-      new Language(_("Slovak"), "Slovenčina", "sk"),
-      new Language(_("Swahili"), "كِسوَهِل", "sw"),
-      new Language(_("Talossan"), "Talossan", "tzl"),
-      new Language(_("Urdu (Pakistan)"), "اردو (Pakistan)", "ur_PK"),
-      new Language(_("Western Frisian"), "Western Frisian", "fy"),
+      new Language(getString("Afrikaans"), "Afrikaans", "af"),
+      new Language(getString("Armenian"), "Հայերեն", "hy"),
+      new Language(getString("Asturian"), "Asturianu", "ast"),
+      new Language(getString("Basque"), "Euskara", "eu"),
+      new Language(getString("Bengali (India)"), "বাংলা (India)", "bn_IN"),
+      new Language(getString("Bosnian"), "Bosanski", "bs"),
+      new Language(getString("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
+      new Language(getString("Chinese (China)"), "", "zh_CN"),
+      new Language(getString("Chinese (Hong Kong)"), "", "zh_HK"),
+      new Language(getString("Chinese (Taiwan)"), "", "zh_TW"),
+      new Language(getString("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
+      new Language(getString("Czech"), "český", "cs"),
+      new Language(getString("Danish"), "Dansk", "da"),
+      new Language(getString("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
+      new Language(getString("Galician (Spain)"), "Galego (Spain)", "gl_ES"),
+      new Language(getString("Nepali"), "नेपाली", "ne"),
+      new Language(getString("N'Ko"), "ߒߞߏ", "nqo"),
+      new Language(getString("Marathi"), "मराठी", "mr"),
+      new Language(getString("Malay (Malaysia)"), "بهاس ملايو (Malaysia)", "ms_MY"),
+      new Language(getString("Norwegian"), "Norsk", "no"),
+      new Language(getString("Norwegian Nynorsk"), "Norsk Nynorsk", "nn"),
+      new Language(getString("Portugese"), "Português", "pt"),
+      new Language(getString("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
+      new Language(getString("Slovak"), "Slovenčina", "sk"),
+      new Language(getString("Swahili"), "كِسوَهِل", "sw"),
+      new Language(getString("Talossan"), "Talossan", "tzl"),
+      new Language(getString("Urdu (Pakistan)"), "اردو (Pakistan)", "ur_PK"),
+      new Language(getString("Western Frisian"), "Western Frisian", "fy"),
     };
 
     this.warningItems = new WarningItem[]{
-      new WarningItem("none", _("None")),
-      new WarningItem("default", _("Default")),
-      new WarningItem("more", _("More")),
-      new WarningItem("all", _("All"))
+      new WarningItem("none", getString("None")),
+      new WarningItem("default", getString("Default")),
+      new WarningItem("more", getString("More")),
+      new WarningItem("all", getString("All"))
     };
 
     initComponents();
@@ -238,11 +238,11 @@ public class Preferences extends javax.swing.JDialog {
     saveVerifyUploadBox = new javax.swing.JCheckBox();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle(_("Preferences"));
+    setTitle(getString("Preferences"));
     setModal(true);
     setResizable(false);
 
-    sketchbookLocationLabel.setText(_("Sketchbook location:"));
+    sketchbookLocationLabel.setText(getString("Sketchbook location:"));
 
     sketchbookLocationField.setColumns(40);
 
@@ -253,26 +253,26 @@ public class Preferences extends javax.swing.JDialog {
       }
     });
 
-    comboLanguageLabel.setText(_("Editor language: "));
+    comboLanguageLabel.setText(getString("Editor language: "));
 
-    requiresRestartLabel.setText(_("  (requires restart of Arduino)"));
+    requiresRestartLabel.setText(getString("  (requires restart of Arduino)"));
 
-    fontSizeLabel.setText(_("Editor font size: "));
+    fontSizeLabel.setText(getString("Editor font size: "));
 
     fontSizeField.setColumns(4);
 
-    showVerboseLabel.setText(_("Show verbose output during: "));
+    showVerboseLabel.setText(getString("Show verbose output during: "));
 
-    verboseCompilationBox.setText(_("compilation "));
+    verboseCompilationBox.setText(getString("compilation "));
 
-    verboseUploadBox.setText(_("upload"));
+    verboseUploadBox.setText(getString("upload"));
 
-    comboWarningsLabel.setText(_("Compiler warnings: "));
+    comboWarningsLabel.setText(getString("Compiler warnings: "));
 
-    additionalBoardsManagerLabel.setText(_("Additional Boards Manager URLs: "));
-    additionalBoardsManagerLabel.setToolTipText(_("Enter a comma separated list of urls"));
+    additionalBoardsManagerLabel.setText(getString("Additional Boards Manager URLs: "));
+    additionalBoardsManagerLabel.setToolTipText(getString("Enter a comma separated list of urls"));
 
-    additionalBoardsManagerField.setToolTipText(_("Enter a comma separated list of urls"));
+    additionalBoardsManagerField.setToolTipText(getString("Enter a comma separated list of urls"));
 
     extendedAdditionalUrlFieldWindow.setIcon(new ImageIcon(Base.getThemeImage("newwindow.gif", this)));
     extendedAdditionalUrlFieldWindow.addActionListener(new java.awt.event.ActionListener() {
@@ -282,7 +282,7 @@ public class Preferences extends javax.swing.JDialog {
     });
 
     morePreferencesLabel.setForeground(Color.GRAY);
-    morePreferencesLabel.setText(_("More preferences can be edited directly in the file"));
+    morePreferencesLabel.setText(getString("More preferences can be edited directly in the file"));
 
     preferencesFileLabel.setText(PreferencesData.getPreferencesFile().getAbsolutePath());
     preferencesFileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -300,7 +300,7 @@ public class Preferences extends javax.swing.JDialog {
     });
 
     arduinoNotRunningLabel.setForeground(Color.GRAY);
-    arduinoNotRunningLabel.setText(_("(edit only when Arduino is not running)"));
+    arduinoNotRunningLabel.setText(getString("(edit only when Arduino is not running)"));
 
     okButton.setText(I18n.PROMPT_OK);
     okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -318,25 +318,25 @@ public class Preferences extends javax.swing.JDialog {
 
     checkboxesContainer.setLayout(new javax.swing.BoxLayout(checkboxesContainer, javax.swing.BoxLayout.Y_AXIS));
 
-    displayLineNumbersBox.setText(_("Display line numbers"));
+    displayLineNumbersBox.setText(getString("Display line numbers"));
     checkboxesContainer.add(displayLineNumbersBox);
 
-    enableCodeFoldingBox.setText(_("Enable Code Folding"));
+    enableCodeFoldingBox.setText(getString("Enable Code Folding"));
     checkboxesContainer.add(enableCodeFoldingBox);
 
-    verifyUploadBox.setText(_("Verify code after upload"));
+    verifyUploadBox.setText(getString("Verify code after upload"));
     checkboxesContainer.add(verifyUploadBox);
 
-    externalEditorBox.setText(_("Use external editor"));
+    externalEditorBox.setText(getString("Use external editor"));
     checkboxesContainer.add(externalEditorBox);
 
-    checkUpdatesBox.setText(_("Check for updates on startup"));
+    checkUpdatesBox.setText(getString("Check for updates on startup"));
     checkboxesContainer.add(checkUpdatesBox);
 
-    updateExtensionBox.setText(_("Update sketch files to new extension on save (.pde -> .ino)"));
+    updateExtensionBox.setText(getString("Update sketch files to new extension on save (.pde -> .ino)"));
     checkboxesContainer.add(updateExtensionBox);
 
-    saveVerifyUploadBox.setText(_("Save when verifying or uploading"));
+    saveVerifyUploadBox.setText(getString("Save when verifying or uploading"));
     checkboxesContainer.add(saveVerifyUploadBox);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -444,7 +444,7 @@ public class Preferences extends javax.swing.JDialog {
 
   private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
     File dflt = new File(sketchbookLocationField.getText());
-    File file = Base.selectFolder(_("Select new sketchbook location"), dflt, this);
+    File file = Base.selectFolder(getString("Select new sketchbook location"), dflt, this);
     if (file != null) {
       String path = file.getAbsolutePath();
       if (BaseNoGui.getPortableFolder() != null) {
@@ -488,7 +488,7 @@ public class Preferences extends javax.swing.JDialog {
   private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
     java.util.List<String> errors = validateData();
     if (!errors.isEmpty()) {
-      Base.showWarning(_("Error"), errors.get(0), null);
+      Base.showWarning(getString("Error"), errors.get(0), null);
       return;
     }
 
@@ -520,7 +520,7 @@ public class Preferences extends javax.swing.JDialog {
   private java.util.List<String> validateData() {
     java.util.List<String> errors = new LinkedList<String>();
     if (FileUtils.isSubDirectory(new File(sketchbookLocationField.getText()), new File(PreferencesData.get("runtime.ide.path")))) {
-      errors.add(_("The specified sketchbook folder contains your copy of the IDE.\nPlease choose a different folder for your sketchbook."));
+      errors.add(getString("The specified sketchbook folder contains your copy of the IDE.\nPlease choose a different folder for your sketchbook."));
     }
     return errors;
   }
@@ -551,7 +551,7 @@ public class Preferences extends javax.swing.JDialog {
       PreferencesData.set("editor.font", PApplet.join(pieces, ','));
 
     } catch (Exception e) {
-      System.err.println(I18n.format(_("ignoring invalid font size {0}"), newSizeText));
+      System.err.println(I18n.format(getString("ignoring invalid font size {0}"), newSizeText));
     }
 
     // put each of the settings into the table

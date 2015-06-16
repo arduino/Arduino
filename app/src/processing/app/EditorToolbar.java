@@ -22,7 +22,7 @@
 */
 
 package processing.app;
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -38,12 +38,12 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
   /** Rollover titles for each button. */
   static final String title[] = {
-    _("Verify"), _("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
+    getString("Verify"), getString("Upload"), getString("New"), getString("Open"), getString("Save"), getString("Serial Monitor")
   };
 
   /** Titles for each button when the shift key is pressed. */ 
   static final String titleShift[] = {
-    _("Verify"), _("Upload Using Programmer"), _("New"), _("Open in Another Window"), _("Save As..."), _("Serial Monitor")
+    getString("Verify"), getString("Upload Using Programmer"), getString("New"), getString("Open in Another Window"), getString("Save As..."), getString("Serial Monitor")
   };
 
   static final int BUTTON_COUNT  = title.length;

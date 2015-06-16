@@ -38,7 +38,7 @@ import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 import static processing.app.I18n.format;
 
 public class DownloadableContributionsDownloader {
@@ -64,12 +64,12 @@ public class DownloadableContributionsDownloader {
     }
 
     // Test checksum
-    progress.setStatus(_("Verifying archive integrity..."));
+    progress.setStatus(getString("Verifying archive integrity..."));
     onProgress(progress);
     String checksum = contribution.getChecksum();
     String algo = checksum.split(":")[0];
     if (!FileHash.hash(outputFile, algo).equalsIgnoreCase(checksum)) {
-      throw new Exception(_("CRC doesn't match. File is corrupted."));
+      throw new Exception(getString("CRC doesn't match. File is corrupted."));
     }
 
     contribution.setDownloaded(true);
@@ -88,7 +88,7 @@ public class DownloadableContributionsDownloader {
         if (me.getDownloadSize() != null) {
           long downloaded = (me.getInitialSize() + me.getDownloaded()) / 1000;
           long total = (me.getInitialSize() + me.getDownloadSize()) / 1000;
-          msg = format(_("Downloaded {0}kb of {1}kb."), downloaded, total);
+          msg = format(getString("Downloaded {0}kb of {1}kb."), downloaded, total);
         }
         progress.setStatus(statusText + " " + msg);
         progress.setProgress(me.getProgress());
@@ -97,7 +97,7 @@ public class DownloadableContributionsDownloader {
     });
     downloader.download();
     if (!downloader.isCompleted()) {
-      throw new Exception(format(_("Error downloading {0}"), url), downloader.getError());
+      throw new Exception(format(getString("Error downloading {0}"), url), downloader.getError());
     }
   }
 
