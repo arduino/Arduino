@@ -44,14 +44,22 @@ extern "C" {
 
 #ifndef SL_PLATFORM_MULTI_THREADED
 
-#define NONOS_WAIT_FOREVER   							0xFF
-#define NONOS_NO_WAIT        							0x01
+/* This function call the user defined function, if defined, from the sync wait loop  */
+/* The use case of this function is to allow nonos system to call a user function to put the device into sleep */
+/* The wake up should be activated after getting an interrupt from the device to Host */
+/* The user function must return without blocking to prevent a delay on the event handling */
+/*
+#define _SlSyncWaitLoopCallback  UserSleepFunction
+*/
 
+
+
+#define NONOS_WAIT_FOREVER   							0xFF
+#define NONOS_NO_WAIT        							0x00
 
 #define NONOS_RET_OK                            (0)
 #define NONOS_RET_ERR                           (0xFF)
 #define OSI_OK  NONOS_RET_OK
-
 
 #define __NON_OS_SYNC_OBJ_CLEAR_VALUE				0x11
 #define __NON_OS_SYNC_OBJ_SIGNAL_VALUE				0x22
@@ -61,12 +69,12 @@ extern "C" {
 /*!
 	\brief type definition for the return values of this adaptation layer
 */
-typedef char _SlNonOsRetVal_t;
+typedef _i8 _SlNonOsRetVal_t;
 
 /*!
 	\brief type definition for a time value
 */
-typedef unsigned char _SlNonOsTime_t;
+typedef _u8 _SlNonOsTime_t;
 
 /*!
 	\brief 	type definition for a sync object container
@@ -77,7 +85,7 @@ typedef unsigned char _SlNonOsTime_t;
 	The signal must be able to be sent from interrupt context.
 	This object is generally implemented by binary semaphore or events.
 */
-typedef unsigned char _SlNonOsSemObj_t;
+typedef _u8 _SlNonOsSemObj_t;
 
 
 #define _SlTime_t       _SlNonOsTime_t
@@ -244,7 +252,7 @@ typedef unsigned char _SlNonOsSemObj_t;
 	\note
 	\warning
 */
-_SlNonOsRetVal_t _SlNonOsSpawn(_SlSpawnEntryFunc_t pEntry , void* pValue , unsigned long flags);
+_SlNonOsRetVal_t _SlNonOsSpawn(_SlSpawnEntryFunc_t pEntry , void* pValue , _u32 flags);
 
 
 /*!
@@ -261,7 +269,11 @@ _SlNonOsRetVal_t _SlNonOsMainLoopTask(void);
 
 extern _SlNonOsRetVal_t _SlNonOsSemGet(_SlNonOsSemObj_t* pSyncObj, _SlNonOsSemObj_t WaitValue, _SlNonOsSemObj_t SetValue, _SlNonOsTime_t Timeout);
 extern _SlNonOsRetVal_t _SlNonOsSemSet(_SlNonOsSemObj_t* pSemObj , _SlNonOsSemObj_t Value);
-extern _SlNonOsRetVal_t _SlNonOsSpawn(_SlSpawnEntryFunc_t pEntry , void* pValue , unsigned long flags);
+extern _SlNonOsRetVal_t _SlNonOsSpawn(_SlSpawnEntryFunc_t pEntry , void* pValue , _u32 flags);
+  
+#if (defined(_SlSyncWaitLoopCallback))
+extern void _SlSyncWaitLoopCallback(void);
+#endif
 
 
 /*****************************************************************************

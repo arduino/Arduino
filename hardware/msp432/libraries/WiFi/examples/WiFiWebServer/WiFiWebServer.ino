@@ -18,10 +18,7 @@
 
  */
 
-#ifndef __CC3200R1M1RGC__
-// Do not include SPI for CC3200 LaunchPad
 #include <SPI.h>
-#endif
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiServer.h>
@@ -121,7 +118,7 @@ void loop() {
 
     // close the connection:
     client.stop();
-    Serial.println("client disconnected");
+    Serial.println("client disonnected");
   }
 }
 

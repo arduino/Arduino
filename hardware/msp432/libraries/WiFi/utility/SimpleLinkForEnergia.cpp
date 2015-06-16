@@ -18,11 +18,9 @@ extern "C" {
 //#define _VERBOSE_DEBUG_
 
 #ifdef _VERBOSE_DEBUG_
-#define DEBUG_TRACE(info) Serial.println(info)
-#define DEBUG_TRACE_X(info) Serial.println(info, HEX)
+#define DEBUG_TRACE(info) Serial.print(info)
 #else
 #define DEBUG_TRACE(info)
-#define DEBUG_TRACE_X(info)
 #endif
 
 
@@ -56,7 +54,6 @@ int spi_Open(char* pIfName , unsigned long flags)
     //
     pinMode(WiFiClass::pin_cs, OUTPUT);
     digitalWrite(WiFiClass::pin_cs, HIGH);
-    pinMode(WiFiClass::pin_irq, OUTPUT);
     pinMode(WiFiClass::pin_irq, INPUT);
     pinMode(WiFiClass::pin_nhib, OUTPUT);
     digitalWrite(WiFiClass::pin_nhib, LOW);
@@ -65,7 +62,6 @@ int spi_Open(char* pIfName , unsigned long flags)
     //set the spi port up using Energia functions
     //
     SPI.begin();
-//    SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
     
@@ -101,8 +97,8 @@ int spi_Read(int Fd , char* pBuff , int Len)\
     //read bytes into the buffer by transmitting NULL over and over
     //
     for (int i = 0; i < Len; i++) {
-        pBuff[i] = SPI.transfer(0);
-        DEBUG_TRACE_X(pBuff[i]);
+        pBuff[i] = SPI.transfer(NULL);
+        DEBUG_TRACE(pBuff[i]);
     }
     
     digitalWrite(WiFiClass::pin_cs, HIGH);
@@ -122,7 +118,7 @@ int spi_Write(int Fd , char* pBuff , int Len)
     //
     for (int i = 0; i < Len; i++) {
         SPI.transfer(pBuff[i]);
-        DEBUG_TRACE_X(pBuff[i]);
+        DEBUG_TRACE(pBuff[i]);
     }
     
     digitalWrite(WiFiClass::pin_cs, HIGH);

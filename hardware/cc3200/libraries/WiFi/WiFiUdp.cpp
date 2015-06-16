@@ -18,7 +18,7 @@
  */
 
 extern "C" {
-    #include "utility/SimpleLink.h"
+    #include "utility/simplelink.h"
     #include "utility/socket.h"
     #include "utility/wl_definitions.h"
 }
@@ -193,7 +193,7 @@ int WiFiUDP::endPacket()
     //use the simplelink library to send the tx buffer
     //
     int socketHandle = WiFiClass::_handleArray[_socketIndex];
-    int iRet = sl_SendTo(socketHandle, tx_buf, tx_fillLevel, NULL, (SlSockAddr_t*)&sendAddress, sizeof(SlSockAddrIn_t));
+    int iRet = sl_SendTo(socketHandle, tx_buf, tx_fillLevel, 0, (SlSockAddr_t*)&sendAddress, sizeof(SlSockAddrIn_t));
     if (iRet < 0) {
         return 0;
     }
@@ -285,7 +285,7 @@ int WiFiUDP::parsePacket()
     //
     SlSockAddrIn_t  address = {0};
     int AddrSize = sizeof(address);
-    int bytes = sl_RecvFrom(socketHandle, rx_buf, UDP_RX_PACKET_MAX_SIZE, NULL, (SlSockAddr_t*)&address, (SlSocklen_t*)&AddrSize);
+    int bytes = sl_RecvFrom(socketHandle, rx_buf, UDP_RX_PACKET_MAX_SIZE, 0, (SlSockAddr_t*)&address, (SlSocklen_t*)&AddrSize);
 
     //
     //store the sender's address (sl_HtonX reorders bits to processor order)

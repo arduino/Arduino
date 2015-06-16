@@ -36,7 +36,7 @@
  
 
 
-#include "SimpleLink.h"
+#include "simplelink.h"
 
 #ifndef __SIMPLELINK_TRACE_H__
 #define __SIMPLELINK_TRACE_H__
@@ -46,12 +46,12 @@
 extern "C" {
 #endif
 
-#define SL_SYNC_SCAN_THRESHOLD  (( UINT32 )2000)
+/*****************************************************************************/
+/* Macro declarations                                                        */
+/*****************************************************************************/
 
+#define SL_SYNC_SCAN_THRESHOLD  (( _u32 )2000)
   
-//*****************************************************************************
-//
-//*****************************************************************************
 #define _SlDrvAssert(line )  { while(1); }          
 
 #define _SL_ASSERT(expr)            { if(!(expr)){_SlDrvAssert(__LINE__); } }
@@ -61,6 +61,8 @@ extern "C" {
 #define SL_HANDLING_ERROR           1
 #define SL_HANDLING_NONE            0
 
+
+#ifndef SL_TINY_EXT
 #define SL_SELF_COND_HANDLING       SL_HANDLING_ASSERT
 #define SL_PROTOCOL_HANDLING        SL_HANDLING_ASSERT
 #define SL_DRV_RET_CODE_HANDLING    SL_HANDLING_ASSERT
@@ -68,6 +70,16 @@ extern "C" {
 #define SL_OSI_RET_OK_HANDLING      SL_HANDLING_ASSERT
 #define SL_MALLOC_OK_HANDLING       SL_HANDLING_ASSERT
 #define SL_USER_ARGS_HANDLING       SL_HANDLING_ASSERT
+#else
+#define SL_SELF_COND_HANDLING       SL_HANDLING_NONE
+#define SL_PROTOCOL_HANDLING        SL_HANDLING_NONE
+#define SL_DRV_RET_CODE_HANDLING    SL_HANDLING_NONE
+#define SL_NWP_IF_HANDLING          SL_HANDLING_NONE
+#define SL_OSI_RET_OK_HANDLING      SL_HANDLING_NONE
+#define SL_MALLOC_OK_HANDLING       SL_HANDLING_NONE
+#define SL_USER_ARGS_HANDLING       SL_HANDLING_NONE
+#endif
+
 
 #if (SL_DRV_RET_CODE_HANDLING == SL_HANDLING_ASSERT)
 #define VERIFY_RET_OK(Func)                     {_SlReturnVal_t _RetVal = (Func); _SL_ASSERT((_SlReturnVal_t)SL_OS_RET_CODE_OK == _RetVal)}
@@ -94,8 +106,8 @@ extern "C" {
 #endif
 
 #if (SL_NWP_IF_HANDLING == SL_HANDLING_ASSERT)
-#define NWP_IF_WRITE_CHECK(fd,pBuff,len)       { int RetSize, ExpSize = (len); RetSize = sl_IfWrite((fd),(pBuff),ExpSize); _SL_ASSERT(ExpSize == RetSize)}
-#define NWP_IF_READ_CHECK(fd,pBuff,len)        { int RetSize, ExpSize = (len); RetSize = sl_IfRead((fd),(pBuff),ExpSize);  _SL_ASSERT(ExpSize == RetSize)}
+#define NWP_IF_WRITE_CHECK(fd,pBuff,len)       { _i16 RetSize, ExpSize = (len); RetSize = sl_IfWrite((fd),(pBuff),ExpSize); _SL_ASSERT(ExpSize == RetSize)}
+#define NWP_IF_READ_CHECK(fd,pBuff,len)        { _i16 RetSize, ExpSize = (len); RetSize = sl_IfRead((fd),(pBuff),ExpSize);  _SL_ASSERT(ExpSize == RetSize)}
 #elif (SL_NWP_IF_HANDLING == SL_HANDLING_ERROR)
 #define NWP_IF_WRITE_CHECK(fd,pBuff,len)       { _SL_ERROR((len == sl_IfWrite((fd),(pBuff),(len))), SL_RET_CODE_NWP_IF_ERROR);}
 #define NWP_IF_READ_CHECK(fd,pBuff,len)        { _SL_ERROR((len == sl_IfRead((fd),(pBuff),(len))),  SL_RET_CODE_NWP_IF_ERROR);}
@@ -134,7 +146,7 @@ extern "C" {
 #define ARG_CHECK_PTR(Ptr)
 #endif
 
-//#define SL_DBG_TRACE_ENABLE
+/*#define SL_DBG_TRACE_ENABLE*/
 #ifdef SL_DBG_TRACE_ENABLE
 #define SL_TRACE0(level,msg_id,str)                     printf(str)
 #define SL_TRACE1(level,msg_id,str,p1)                  printf(str,(p1))
@@ -161,10 +173,10 @@ extern "C" {
 #define SL_TRACE_FLUSH()
 #endif
 
-//#define SL_DBG_CNT_ENABLE
+/* #define SL_DBG_CNT_ENABLE */
 #ifdef SL_DBG_CNT_ENABLE
 #define _SL_DBG_CNT_INC(Cnt)            g_DbgCnt. ## Cnt++
-#define _SL_DBG_SYNC_LOG(index,value)   {if(index < SL_DBG_SYNC_LOG_SIZE){*(UINT32 *)&g_DbgCnt.SyncLog[index] = *(UINT32 *)(value);}}
+#define _SL_DBG_SYNC_LOG(index,value)   {if(index < SL_DBG_SYNC_LOG_SIZE){*(_u32 *)&g_DbgCnt.SyncLog[index] = *(_u32 *)(value);}}
 
 #else
 #define _SL_DBG_CNT_INC(Cnt)
@@ -186,4 +198,5 @@ extern "C" {
 #endif
 
 
-#endif //__SIMPLELINK_TRACE_H__
+#endif /*__SIMPLELINK_TRACE_H__*/
+
