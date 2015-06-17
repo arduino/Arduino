@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-14 17:10+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2015-03-20 13:35+0000\n"
+"Last-Translator: Yhal Htet Aung <jumoun@gmail.com>\n"
 "Language-Team: Burmese (Myanmar) (http://www.transifex.com/projects/p/arduino-ide-15/language/my_MM/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,11 +99,11 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "အာဖရိကန်ဘာသာ"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "အယ်လ်ဘာနီရမ်ဘာသာ"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -134,11 +134,11 @@ msgstr ""
 
 #: Preferences.java:85
 msgid "Arabic"
-msgstr ""
+msgstr "အာရဗစ်ဘာသာ"
 
 #: Preferences.java:86
 msgid "Aragonese"
-msgstr ""
+msgstr "အာရဂိုးဘာသာ"
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr ""
+msgstr "အာဒူအီနို:"
 
 #: Sketch.java:588
 #, java-format
@@ -230,11 +230,11 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr ""
+msgstr "အာမေနီယမ်ဘာသာ"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr ""
+msgstr "အောက်စ်တူရီရန်ဘာသာ"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
@@ -242,7 +242,7 @@ msgstr ""
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
-msgstr ""
+msgstr "လိုလျောက်ပုံစံချ"
 
 #: tools/AutoFormat.java:934
 msgid "Auto Format Canceled: Too many left curly braces."
@@ -262,7 +262,7 @@ msgstr ""
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
-msgstr ""
+msgstr "လိုလျောက်ပုံစံချပြီးဆုံး။"
 
 #: Preferences.java:439
 msgid "Automatically associate .ino files with Arduino"
@@ -270,7 +270,7 @@ msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
-msgstr ""
+msgstr "လိုလျောက်ရွေ့လျား"
 
 #: Editor.java:2619
 #, java-format
@@ -287,20 +287,20 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "ဘတ်စ်ဘာသာ"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "ဘစ်လာရုစ်ဘာသာ"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "ဘင်ဂါလီ(အိန္ဒိယ)ဘာသာ"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr ""
+msgstr "အပြား"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -311,11 +311,11 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr ""
+msgstr "အပြား:"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr ""
+msgstr "ဘော်စ်နီယမ်ဘာသာ"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
@@ -323,7 +323,7 @@ msgstr ""
 
 #: Preferences.java:81
 msgid "Browse"
-msgstr ""
+msgstr "လျှောက်ကြည့်"
 
 #: Sketch.java:1392 Sketch.java:1423
 msgid "Build folder disappeared or could not be written"
@@ -335,11 +335,11 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
-msgstr ""
+msgstr "ဘူဂေနီးယားဘာသာ"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "မြန်မာ(မြန်မာ)ဘာသာ"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
@@ -361,12 +361,12 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
-msgstr ""
+msgstr "ကနေဒါပြင်သစ်ဘာသာ"
 
 #: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
-msgstr ""
+msgstr "ပယ်ဖျက်"
 
 #: Sketch.java:455
 msgid "Cannot Rename"
@@ -382,7 +382,7 @@ msgstr ""
 
 #: Preferences.java:87
 msgid "Catalan"
-msgstr ""
+msgstr "ကက်တလန်ဘာသာ"
 
 #: Preferences.java:419
 msgid "Check for updates on startup"
@@ -390,35 +390,35 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr ""
+msgstr "တရုတ်ဘာသာ (တရုတ်ပြည်)"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (Hong Kong)"
-msgstr ""
+msgstr "တရုတ်ဘာသာ (ဟောင်ကောင်)"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "တရုတ်ဘာသာ (ထိုင်ဝမ်)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr ""
+msgstr "တရုတ်ဘာသာ (ထိုင်ဝမ်) (Big5)"
 
 #: Preferences.java:88
 msgid "Chinese Simplified"
-msgstr ""
+msgstr "ရိုးရှင်းတရုတ်ဘာသာစကား"
 
 #: Preferences.java:89
 msgid "Chinese Traditional"
-msgstr ""
+msgstr "ရိုးရာတရုတ်ဘာသာစကား"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
-msgstr ""
+msgstr "ပိတ်"
 
 #: Editor.java:1208 Editor.java:2749
 msgid "Comment/Uncomment"
-msgstr ""
+msgstr "မှတ်ချက်ရေး/မှတ်ချက်ဖျက်သိမ်း"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
@@ -430,7 +430,7 @@ msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
-msgstr ""
+msgstr "ကူးယူ"
 
 #: Editor.java:1177 Editor.java:2723
 msgid "Copy as HTML"
@@ -583,27 +583,27 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
-msgstr ""
+msgstr "ခရိုးအေးရှားဘာသာ"
 
 #: Editor.java:1149 Editor.java:2699
 msgid "Cut"
-msgstr ""
+msgstr "ဖြတ်ယူ"
 
 #: ../../../processing/app/Preferences.java:83
 msgid "Czech"
-msgstr ""
+msgstr "ချက်ဘာသာ"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "ချက်(ချက်)ဘာသာ"
 
 #: Preferences.java:90
 msgid "Danish"
-msgstr ""
+msgstr "ဒိန်းမတ်ဘာသာ"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "ဒိန်းမတ်(ဒိန်းမတ်)ဘာသာ"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -611,7 +611,7 @@ msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
-msgstr ""
+msgstr "ဖျက်ပစ်"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -662,15 +662,15 @@ msgstr ""
 
 #: Preferences.java:91
 msgid "Dutch"
-msgstr ""
+msgstr "ဒတ်ချ်ဘာသာ"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "ဒတ်ချ်(နယ်သာလန်)ဘာသာ"
 
 #: Editor.java:1130
 msgid "Edit"
-msgstr ""
+msgstr "တည်းဖြတ်"
 
 #: Preferences.java:370
 msgid "Editor font size: "
@@ -682,21 +682,21 @@ msgstr ""
 
 #: Preferences.java:92
 msgid "English"
-msgstr ""
+msgstr "အင်္ဂလိပ်ဘာသာ"
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "အင်္ဂလိပ်(ယူကေ)ဘာသာ"
 
 #: Editor.java:1062
 msgid "Environment"
-msgstr ""
+msgstr "ပတ်ဝန်းကျင်"
 
 #: Base.java:2147 Preferences.java:256 Sketch.java:475 Sketch.java:481
 #: Sketch.java:496 Sketch.java:503 Sketch.java:526 Sketch.java:543
 #: Editor.java:2167 Editor.java:2178 Editor.java:2188 Editor.java:2206
 msgid "Error"
-msgstr ""
+msgstr "အမှား"
 
 #: Sketch.java:1065 Sketch.java:1088
 msgid "Error adding file"
@@ -801,7 +801,7 @@ msgstr ""
 
 #: Editor.java:516
 msgid "Examples"
-msgstr ""
+msgstr "ဥပမာများ"
 
 #: Editor.java:2482
 msgid "Export canceled, changes must first be saved."
@@ -814,15 +814,15 @@ msgstr ""
 
 #: Editor.java:491
 msgid "File"
-msgstr ""
+msgstr "ဖိုင်"
 
 #: Preferences.java:94
 msgid "Filipino"
-msgstr ""
+msgstr "ဖိလစ်ပိုင်ဘာသာ"
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
-msgstr ""
+msgstr "ရှာဖွေ"
 
 #: Editor.java:1249
 msgid "Find Next"
@@ -838,11 +838,11 @@ msgstr ""
 
 #: Editor.java:1234
 msgid "Find..."
-msgstr ""
+msgstr "ရှာဖွေ..."
 
 #: FindReplace.java:80
 msgid "Find:"
-msgstr ""
+msgstr "ရှာဖွေ:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
@@ -866,11 +866,11 @@ msgstr ""
 
 #: Preferences.java:95
 msgid "French"
-msgstr ""
+msgstr "ပြင်သစ်ဘာသာ"
 
 #: Editor.java:1097
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "မကြာခဏမေးမေးခွန်းများ"
 
 #: Preferences.java:96
 msgid "Galician"
@@ -914,7 +914,7 @@ msgstr ""
 
 #: Editor.java:1015
 msgid "Help"
-msgstr ""
+msgstr "ကူညီ"
 
 #: Preferences.java:99
 msgid "Hindi"
@@ -1566,7 +1566,7 @@ msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
-msgstr ""
+msgstr "စပိန်ဘာသာ"
 
 #: Base.java:540
 msgid "Sunshine"
@@ -1578,11 +1578,11 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr ""
+msgstr "ဆွီဒင်ဘာသာ"
 
 #: Preferences.java:84
 msgid "System Default"
-msgstr ""
+msgstr "စက်စနစ်မူလအနေအထား"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
@@ -1590,7 +1590,7 @@ msgstr ""
 
 #: Preferences.java:116
 msgid "Tamil"
-msgstr ""
+msgstr "တမီးဘာသာ"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -1706,11 +1706,11 @@ msgstr ""
 
 #: Editor.java:663
 msgid "Tools"
-msgstr ""
+msgstr "ကိရိယာများ"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
-msgstr ""
+msgstr "ပြစ်ချက်ရှာဖွေခြင်း"
 
 #: ../../../processing/app/Preferences.java:117
 msgid "Turkish"
@@ -1726,7 +1726,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
-msgstr ""
+msgstr "ယူကေနီယမ်ဘာသာ"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -1752,7 +1752,7 @@ msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
-msgstr ""
+msgstr "ပြန်မလုပ်"
 
 #: Platform.java:168
 msgid ""
@@ -1763,7 +1763,7 @@ msgstr ""
 
 #: UpdateCheck.java:111
 msgid "Update"
-msgstr ""
+msgstr "မွမ်းမံ"
 
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
@@ -1771,7 +1771,7 @@ msgstr ""
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
-msgstr ""
+msgstr "ကူးတင်"
 
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
@@ -1791,7 +1791,7 @@ msgstr ""
 
 #: Sketch.java:1622
 msgid "Uploading..."
-msgstr ""
+msgstr "ကူးတင်နေ..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
@@ -1817,7 +1817,7 @@ msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
-msgstr ""
+msgstr "အတည်ပြုပြီး"
 
 #: Editor.java:609
 msgid "Verify / Compile"
@@ -1829,11 +1829,11 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr ""
+msgstr "ဗီယက်နမ်ဘာသာ"
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
-msgstr ""
+msgstr "Arduino.cc ကိုသွားလည်ပတ်"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -1844,7 +1844,7 @@ msgstr ""
 
 #: Base.java:2128
 msgid "Warning"
-msgstr ""
+msgstr "သတိပေးချက်"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -1870,7 +1870,7 @@ msgstr ""
 
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
-msgstr ""
+msgstr "ဟုတ်ကဲ့"
 
 #: Sketch.java:1074
 msgid "You can't fool me"
@@ -1996,7 +1996,7 @@ msgstr ""
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
+msgstr "ဆက်သွယ်ပြီး!"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
@@ -2008,15 +2008,15 @@ msgstr ""
 
 #: Editor.java:1108
 msgid "http://arduino.cc/"
-msgstr ""
+msgstr "http://arduino.cc/"
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
-msgstr ""
+msgstr "http://www.arduino.cc/en/Main/Software"
 
 #: UpdateCheck.java:53
 msgid "http://www.arduino.cc/latest.txt"
-msgstr ""
+msgstr "http://www.arduino.cc/latest.txt"
 
 #: Preferences.java:625
 #, java-format
@@ -2044,7 +2044,7 @@ msgstr ""
 
 #: Preferences.java:391
 msgid "upload"
-msgstr ""
+msgstr "ကူးတင်"
 
 #: Editor.java:380
 #, java-format

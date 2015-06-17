@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-14 18:43+0000\n"
-"Last-Translator: renatose <renatose.com@gmail.com>\n"
+"PO-Revision-Date: 2015-02-24 13:15+0000\n"
+"Last-Translator: Nigel Randsley <nigel.randsley@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/projects/p/arduino-ide-15/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +63,7 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Quer guardar as alterações a este rascunho<BR> antes de terminar?</b><p>Se não guardar,as suas alterações serão perdidas."
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Quer guardar as alterações a este rascunho<BR> antes de terminar?</b><p>Se não as guardar as suas alterações serão perdidas."
 
 #: Sketch.java:398
 #, java-format
@@ -73,7 +73,7 @@ msgstr "Já existe um ficheiro com o nome \"{0}\" em \"{1}\""
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr "Pasta chamada \"{0}\" já existe. Não é possível abrir o rascunho."
+msgstr "Directoria chamada \"{0}\" já existe. Não é possível abrir o rascunho."
 
 #: Base.java:2690
 #, java-format
@@ -106,7 +106,7 @@ msgstr "Adicionar Biblioteca..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Africânder"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -183,13 +183,13 @@ msgstr "O Arduino só consegue abrir os seus próprios rascunhos e outros fichei
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your settings."
-msgstr "O Arduino não pode ser executado porque não foi\npossível criar uma pasta para guardar as configurações."
+msgstr "O Arduino não pode ser executado porque não foi\npossível criar uma directoria para guardar as configurações."
 
 #: Base.java:1889
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr "Arduino não pode ser executado, pois não foi possível\ncriar uma pasta para guardar o caderno de rascunhos"
+msgstr "Arduino não pode ser executado, pois não foi possível\ncriar uma directoria para guardar o caderno de rascunhos"
 
 #: Base.java:240
 msgid ""
@@ -241,7 +241,7 @@ msgstr "Arménio"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr ""
+msgstr "Asturiano"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
@@ -302,7 +302,7 @@ msgstr "Bielorrusso"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengali (Índia)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -334,11 +334,11 @@ msgstr "Procurar"
 
 #: Sketch.java:1392 Sketch.java:1423
 msgid "Build folder disappeared or could not be written"
-msgstr "Pasta de compilação desapareceu ou é apenas de leitura"
+msgstr "Directoria de compilação desapareceu ou é apenas de leitura"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr "Opções de compilação alteradas, compilando tudo"
+msgstr "Opções de compilação alteradas, a compilar tudo"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -346,7 +346,7 @@ msgstr "Búlgaro"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "Birmanês ( Mianmar)"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
@@ -462,7 +462,7 @@ msgstr "Não foi possível copiar para uma localização correta. "
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
-msgstr "Não é possível criar a pasta do rascunho."
+msgstr "Não é possível criar a directoria do rascunho."
 
 #: Editor.java:2206
 msgid "Could not create the sketch."
@@ -510,7 +510,7 @@ msgstr "Não foi possível abrir o URL\n{0}"
 msgid ""
 "Could not open the folder\n"
 "{0}"
-msgstr "Não foi possível abrir pasta\n{0}"
+msgstr "Não foi possível abrir a directoria\n{0}"
 
 #: Sketch.java:1769
 msgid ""
@@ -536,7 +536,7 @@ msgstr "Não foi possível ler as configurações predefinidas.⏎ Terás de rei
 
 #: ../../../processing/app/Sketch.java:1525
 msgid "Could not read prevous build preferences file, rebuilding all"
-msgstr "Falha ao ler as preferências de compilação anteriores, compilando tudo"
+msgstr "Falha ao ler as preferências de compilação anteriores, a compilar tudo"
 
 #: Base.java:2482
 #, java-format
@@ -602,7 +602,7 @@ msgstr "Checo"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Checo (República Checa)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -610,7 +610,7 @@ msgstr "Dinamarquês"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Dinamarqês (Dinamarca)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -715,7 +715,7 @@ msgstr "Erro ao compilar."
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
-msgstr "Erro ao obter a pasta de dados do Arduino"
+msgstr "Erro ao obter a directoria de dados do Arduino"
 
 #: Serial.java:593
 #, java-format
@@ -786,7 +786,7 @@ msgstr "Erro a enviar"
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr "Erro durante o upload: parâmetro de configuração '{0}' não encontrado"
+msgstr "Erro durante o envio: parâmetro de configuração '{0}' não encontrado"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
@@ -885,7 +885,7 @@ msgstr "Galego"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galego (Espanha)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1011,7 +1011,7 @@ msgstr "Pouca memória disponível, podem ocorrer problemas de estabilidade."
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malaio (Malásia)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1043,11 +1043,11 @@ msgstr "Ficheiros múltiplos não suportados"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr "Deve especificar exactamente um ficheiro de rascunho"
+msgstr "Deve especificar exatamente um ficheiro de rascunho"
 
 #: ../../../processing/app/Preferences.java:158
 msgid "N'Ko"
-msgstr ""
+msgstr "N'Ko"
 
 #: Sketch.java:282
 msgid "Name for new file:"
@@ -1059,11 +1059,11 @@ msgstr "Nepalês"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Portas de rede"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr "Upload de rede usando o programador não é suportado"
+msgstr "O envio pela rede usando o programador não é suportado"
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
@@ -1075,7 +1075,7 @@ msgstr "Nova janela do Editor"
 
 #: EditorHeader.java:292
 msgid "New Tab"
-msgstr "Nova Tab"
+msgstr "Novo Separador"
 
 #: SerialMonitor.java:112
 msgid "Newline"
@@ -1083,7 +1083,7 @@ msgstr "Nova linha"
 
 #: EditorHeader.java:340
 msgid "Next Tab"
-msgstr "Próxima Tab"
+msgstr "Próximo Separador"
 
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
@@ -1091,7 +1091,7 @@ msgstr "Não"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "No athorization data found"
-msgstr ""
+msgstr "Não foram encontrados dados de autorização"
 
 #: debug/Compiler.java:126
 msgid "No board selected; please choose a board from the Tools > Board menu."
@@ -1162,15 +1162,15 @@ msgstr "Nem pensar"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Noruegês"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
-msgstr "Bokmål Norueguês "
+msgstr "Norueguês Bokmål"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Norueguês Nynorsk"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1185,7 +1185,7 @@ msgstr "OK"
 
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
-msgstr "Um ficheiro adicionado ao rascunho."
+msgstr "Um ficheiro foi adicionado ao rascunho."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1278,7 +1278,7 @@ msgstr "Anterior"
 
 #: EditorHeader.java:326
 msgid "Previous Tab"
-msgstr "Tab anterior"
+msgstr "Separador anterior"
 
 #: Editor.java:571
 msgid "Print"
@@ -1294,7 +1294,7 @@ msgstr "A imprimir..."
 
 #: Base.java:1957
 msgid "Problem Opening Folder"
-msgstr "Problema ao abrir pasta"
+msgstr "Problema ao abrir directoria"
 
 #: Base.java:1933
 msgid "Problem Opening URL"
@@ -1314,12 +1314,12 @@ msgstr "Problema ao aceder aos ficheiros na directoria"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
-msgstr "Problema ao obter a pasta de dados"
+msgstr "Problema ao obter a directoria de dados"
 
 #: Sketch.java:1467
 #, java-format
 msgid "Problem moving {0} to the build folder"
-msgstr "Erro ao mover {0} para a pasta de compilação."
+msgstr "Erro ao mover {0} para a directoria de compilação."
 
 #: debug/Uploader.java:209
 msgid ""
@@ -1408,7 +1408,7 @@ msgstr "Deseja guardar as alterações a \"{0}\"? "
 
 #: Sketch.java:825
 msgid "Save sketch folder as..."
-msgstr "Guardar a pasta de rascunhos como..."
+msgstr "Guardar a directoria de rascunhos como..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
@@ -1420,11 +1420,11 @@ msgstr "A guardar..."
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "Procurar em todos os Separadores de Rascunhos"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
-msgstr "Escolhe uma (ou cria uma nova) pasta para os rascunhos..."
+msgstr "Escolhe uma (ou cria uma nova) directoria para os rascunhos..."
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
@@ -1432,7 +1432,7 @@ msgstr "Selecionar Tudo"
 
 #: Base.java:2636
 msgid "Select a zip file or a folder containing the library you'd like to add"
-msgstr "Escolhe um ficheiro zip ou pasta que contém a biblioteca que quer adicionar"
+msgstr "Escolhe um ficheiro zip ou directoria que contém a biblioteca que quer adicionar"
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
@@ -1470,7 +1470,7 @@ msgstr "Porta série {0} não encontrada.\nRepetir o carregamento com outra port
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Portas série"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1478,15 +1478,15 @@ msgstr "Problemas com as configurações"
 
 #: Editor.java:641
 msgid "Show Sketch Folder"
-msgstr "Ver pasta do Rascunho"
+msgstr "Ver directoria do Rascunho"
 
 #: ../../../processing/app/EditorStatus.java:468
 msgid "Show verbose output during compilation"
-msgstr "Mostrar output verboso durante a compilação"
+msgstr "Mostrar mensagens detalhadas durante a compilação"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
-msgstr "Mostrar saída detalhada durante:"
+msgstr "Mostrar mensagens detalhadas durante:"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1531,7 +1531,7 @@ msgstr "Bloco de rascunhos"
 
 #: Base.java:258
 msgid "Sketchbook folder disappeared"
-msgstr "A pasta do bloco de rascunhos desapareceu."
+msgstr "A directoria do bloco de rascunhos desapareceu."
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
@@ -1539,7 +1539,7 @@ msgstr "Localização do bloco de rascunhos:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr "Caminho do bloco de rascunhos não definido"
+msgstr "Caminho do bloco de rascunhos não está definido"
 
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
@@ -1547,7 +1547,7 @@ msgstr "Rascunhos (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Eslovaco"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1569,7 +1569,7 @@ msgstr "Alguns ficheiros estão \"leitura-apenas\", por isso \\n terá que grava
 #: Sketch.java:457
 #, java-format
 msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Lamento, já existe um rascunho (ou pasta) com o nome \"{0}\"."
+msgstr "Lamento, já existe um rascunho (ou directoria) com o nome \"{0}\"."
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1581,7 +1581,7 @@ msgstr "Sol"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "Suaíli"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1589,11 +1589,11 @@ msgstr "Sueco"
 
 #: Preferences.java:84
 msgid "System Default"
-msgstr "Omissão do Sistema"
+msgstr "Valor por omissão do Sistema"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossano"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1605,7 +1605,7 @@ msgstr "A palavra-chave 'BYTE' já não é permitida."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "A opção --upload permite apenas um único ficheiro de cada vez"
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1629,7 +1629,7 @@ msgid ""
 "The file \"{0}\" needs to be inside\n"
 "a sketch folder named \"{1}\".\n"
 "Create this folder, move the file, and continue?"
-msgstr "O ficheiro \"{0}\" tem de estar dentro\nde uma pasta de rascunhos chamada \"{1}\".\nCriar esta pasta, mover o ficheiro e continuar?"
+msgstr "O ficheiro \"{0}\" tem de estar dentro\nde uma directoria de rascunhos chamada \"{1}\".\nCriar esta directoria, mover o ficheiro e continuar?"
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -1655,7 +1655,7 @@ msgid ""
 "The selected sketch no longer exists.\n"
 "You may need to restart Arduino to update\n"
 "the sketchbook menu."
-msgstr "O rascunho selecionado já não existe.⏎ Poderá ter que reiniciar o Arduino para⏎ atualizar o menu caderno de rascunhos."
+msgstr "O rascunho selecionado já não existe.\nPoderá ter que reiniciar o Arduino para\natualizar o menu bloco de rascunhos."
 
 #: Base.java:1430
 #, java-format
@@ -1672,7 +1672,7 @@ msgid ""
 "The sketch folder has disappeared.\n"
 " Will attempt to re-save in the same location,\n"
 "but anything besides the code will be lost."
-msgstr "A pasta de rascunhos desapareceu.\nVou tentar guardar novamente no mesmo sítio,\nmas tudo para além do código será perdido."
+msgstr "A directoria de rascunhos desapareceu.\nVou tentar guardar novamente no mesmo sítio,\nmas tudo para além do código será perdido."
 
 #: ../../../processing/app/Sketch.java:2028
 msgid ""
@@ -1688,13 +1688,13 @@ msgid ""
 "location, and create a new sketchbook folder if\n"
 "necessary. Arduino will then stop talking about\n"
 "himself in the third person."
-msgstr "A pasta do bloco de rascunhos já não existe.\nO Arduino irá mudar para a localização por defeito, e\ncriar uma nova pasta de bloco de rascunhos, caso necessário.\nDepois disto o Arduino deverá parar de\nfalar de si mesmo na terceira pessoa."
+msgstr "A directoria do bloco de rascunhos já não existe.\nO Arduino irá mudar para a localização por defeito, e\ncriar uma nova directoria de bloco de rascunhos, caso necessário.\nDepois disto o Arduino deverá parar de\nfalar de si mesmo na terceira pessoa."
 
 #: ../../../processing/app/debug/Compiler.java:201
 msgid ""
 "Third-party platform.txt does not define compiler.path. Please report this "
 "to the third-party hardware maintainer."
-msgstr ""
+msgstr "O ficheiroa de terceiros platform.txt não define compiler.path. Reporte este problema ao serviço de apoio do hardware de terceiros."
 
 #: Sketch.java:1075
 msgid ""
@@ -1729,7 +1729,7 @@ msgstr "Introduza a palavra passe da placa para aceder à consola"
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr "Introduza a palavra passe da placa para fazer upload de um novo rascunho"
+msgstr "Introduza a palavra passe da placa para fazer envio de um novo rascunho"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
@@ -1766,7 +1766,7 @@ msgid ""
 "Unspecified platform, no launcher available.\n"
 "To enable opening URLs or folders, add a \n"
 "\"launcher=/path/to/app\" line to preferences.txt"
-msgstr "Plataforma não especificada, não há iniciador disponível.\nPara ativar a abertura de URLs ou de pastas adicionar uma\nlinha \"launcher=/caminho/para/a-aplicação\" ao ficheiro preferences.txt"
+msgstr "Plataforma não especificada, não há iniciador disponível.\nPara ativar a abertura de URLs ou de directorias adicionar uma\nlinha \"launcher=/caminho/para/a-aplicação\" ao ficheiro preferences.txt"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -1778,31 +1778,31 @@ msgstr "Actualizar os ficheiros de rascunho para uma nova extensão (.pde -> .in
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
-msgstr "Upload"
+msgstr "Envio"
 
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
-msgstr "Upload Usando o Programador"
+msgstr "Envio Usando o Programador"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
-msgstr "Carregamento cancelado"
+msgstr "Envio cancelado"
 
 #: ../../../processing/app/Sketch.java:1678
 msgid "Upload cancelled"
-msgstr "Upload cancelado"
+msgstr "Envio cancelado"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
-msgstr "A carregar para a placa E/S..."
+msgstr "A enviar para a placa E/S..."
 
 #: Sketch.java:1622
 msgid "Uploading..."
-msgstr "A carregar..."
+msgstr "A enviar..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Urdu (Paquistão)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1832,7 +1832,7 @@ msgstr "Verificar / Compilar"
 
 #: Preferences.java:400
 msgid "Verify code after upload"
-msgstr "Verificar o código após o upload"
+msgstr "Verificar o código após o envio"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
@@ -1847,7 +1847,7 @@ msgstr "Visitar Arduino.cc"
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr "AVISO: a biblioteca {0} diz que pode ser executada em {1} arquitectura(s) e pode ser incompatível com a sua placa actual que é executada em {2} arquitectura(s)."
+msgstr "AVISO: a biblioteca {0} diz que pode ser executada em arquitectura(s) {1} e pode ser incompatível com a sua placa actual que é executada em  arquitectura(s) {2}."
 
 #: Base.java:2128
 msgid "Warning"
@@ -1855,7 +1855,7 @@ msgstr "Aviso"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Frísio Ocidental"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1903,16 +1903,16 @@ msgstr "Não pode guardar o rascunho como \"{0}\"\nporque o rascunho já tem um 
 msgid ""
 "You cannot save the sketch into a folder\n"
 "inside itself. This would go on forever."
-msgstr "Não podes guardar o rascunho numa pasta \\n dentro de si própria. Isto continuaria para todo o sempre."
+msgstr "Não podes guardar o rascunho num directorio\ndentro de si próprio. Isto continuaria para todo o sempre."
 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
-msgstr "Esqueceste-te do teu caderno de rascunhos"
+msgstr "Esqueceste-te do teu bloco de rascunhos"
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr "Pressionou {0} mas nada foi enviado. Necessita seleccionar um caracter terminador?"
+msgstr "Pressionou {0} mas nada foi enviado. Não deveria seleccionar um caracter de fim de linha?"
 
 #: Base.java:536
 msgid ""
@@ -1922,7 +1922,7 @@ msgstr "Chegou ao limite para a atribuição automática de nomes de\nnovos rasc
 
 #: Base.java:2638
 msgid "ZIP files or folders"
-msgstr "Ficheiros ZIP ou pastas"
+msgstr "Ficheiros ZIP ou directorios"
 
 #: Base.java:2661
 msgid "Zip doesn't contain a library"
@@ -1940,7 +1940,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" contém caractéres não reconhecidos. Se este código foi criado com uma versão mais antiga do Arduino poderá ter de usar Ferramentas -> Corrigir Codificação e Recarregar para atualizar o rascunho para usar a codificação UTF-8. Caso contrário poderá ter de apagar os caractéres incorretos para desativar o aviso."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2078,12 +2078,12 @@ msgstr "{0}: Argumento inválido para --pref, deve ser da forma \"pref=valor\""
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr "{0}: Nome de placa inválido, deve ser da forma \"pacote:arquitectura:placa\" ou \"pacote:arquitectura:placa:opções\""
+msgstr "{0}: Nome de placa inválido, o nome deve ser da forma \"pacote:arquitectura:placa\" ou \"pacote:arquitectura:placa:opções\""
 
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: Opção inválida para \"{1}\" opção para placa \"{2}\""
+msgstr "{0}: Opção inválida para a opção \"{1}\" para a placa \"{2}\""
 
 #: ../../../processing/app/Base.java:507
 #, java-format
@@ -2108,4 +2108,4 @@ msgstr "{0}: Placa desconhecida"
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr "{0}: Pacote inválido"
+msgstr "{0}: Pacote desconhecido"

@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-15 13:01+0000\n"
-"Last-Translator: Ki-hyeok Park <khpark@ateamventures.com>\n"
+"PO-Revision-Date: 2015-05-20 10:19+0000\n"
+"Last-Translator: Jihoon Hyun <ryrhkqn@naver.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/projects/p/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -99,11 +99,11 @@ msgstr "라이브러리 추가…"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "아프리칸스어"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "알바니아어"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -120,11 +120,11 @@ msgstr "스케치를 업로드 하는 동안 에러가 발생하였습니다."
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "스케치를 검증 하는 동안 에러가 발생 하였습니다"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "스케치를 검증/업로드 하는 동안 에러가 발생 하였습니다"
 
 #: Base.java:228
 msgid ""
@@ -170,7 +170,7 @@ msgstr "아두이노 AVR 보드"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "아두이노는 자체의 스케치와 .ino 또는 .pde로 끝나는 다른 파일만 열 수 있습니다."
 
 #: Base.java:1682
 msgid ""
@@ -238,7 +238,7 @@ msgstr "오스트리아어"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "권한이 요구 됨"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -287,7 +287,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "바스크어"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
@@ -295,7 +295,7 @@ msgstr "벨로루시어"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengali (인도)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -357,7 +357,7 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "지정한 경로에서 스케치를 찾을 수 없음"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -374,7 +374,7 @@ msgstr "이름을 바꿀 수 없습니다"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "어떠한 스케치 파일도 선택 할 수 없음"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -519,7 +519,7 @@ msgstr "재 저장을 할 수 없습니다"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "컬러 테마를 읽을 수 없습니다.\n아두이노를 다시 설치해야 합니다."
 
 #: Preferences.java:219
 msgid ""
@@ -595,7 +595,7 @@ msgstr "체코어"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Czech (체코)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -603,7 +603,7 @@ msgstr "덴마크어"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Danish (덴마크)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -642,7 +642,7 @@ msgstr "부트로더 굽기 완료"
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "컴파일 완료"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -654,7 +654,7 @@ msgstr "인쇄 완료"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "업로드 완료"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -761,7 +761,7 @@ msgstr "부트로더를 구울때 오류: 설정 값'{0}' 이 없음"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "컴파일 오류: 설정 값'{0}' 이 없음"
 
 #: SketchCode.java:83
 #, java-format
@@ -774,7 +774,7 @@ msgstr "인홰하는 중에 오류 발생했습니다."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "업로드 오류"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -785,11 +785,11 @@ msgstr "업로드 오류: 설정 값'{0}' 이 없음"
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "검증 오류"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "검증/업로드 오류"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -862,7 +862,7 @@ msgstr "라이브러리 설치를 위해서 다음 사이트를 참고하세요:
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "포트 {0} 에서 1200bps를 사용하여 강제로 리셋"
 
 #: Preferences.java:95
 msgid "French"
@@ -878,7 +878,7 @@ msgstr "갈리시아어"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galician (스페인)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1000,11 +1000,11 @@ msgstr "리투아니아어"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "사용 가능한 메모리 부족, 안정성에 문제가 생길 수 있습니다."
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malay (말레이시아)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1020,7 +1020,7 @@ msgstr "*/ 가 주석 처리 끝에 빠졌습니다. (/* 주석 */)"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "지원하지 않는 모드"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1032,7 +1032,7 @@ msgstr "이동"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "지원하지 않는 여러 파일"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1052,7 +1052,7 @@ msgstr "네팔어"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "네트워크 포트"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1084,7 +1084,7 @@ msgstr "아니요"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "No athorization data found"
-msgstr ""
+msgstr "권한있는 데이터를 찾을 수 없음"
 
 #: debug/Compiler.java:126
 msgid "No board selected; please choose a board from the Tools > Board menu."
@@ -1096,7 +1096,7 @@ msgstr "자동 포맷을 위해 변경이 필요없습니다."
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
-msgstr ""
+msgstr "커맨드 라인 파라미터를 찾을 수 없음"
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -1112,7 +1112,7 @@ msgstr "No line ending"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "파라미터 없음"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1126,11 +1126,11 @@ msgstr "\"{0}\" 가 잠조에 존재하지 않습니다."
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "No sketch"
-msgstr ""
+msgstr "스케치 없음"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
-msgstr ""
+msgstr "스케치북 없음"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
@@ -1155,7 +1155,7 @@ msgstr "아니요"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "노르웨이어"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1163,7 +1163,7 @@ msgstr "노르웨이 브크몰어"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "뉘노르스크"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1182,7 +1182,7 @@ msgstr "파일이 스케치에 추가됐습니다."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr ""
+msgstr " --verify, --upload 또는 --get-pref 만 지원 됨"
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1222,7 +1222,7 @@ msgstr "페르시아어"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "Persian (이란)"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1239,7 +1239,7 @@ msgstr "JDK 1.5이상을 설치하시기 바랍니다."
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
-msgstr ""
+msgstr "도구->프로그래머 메뉴에서 프로그래머를 선택해주세요"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1405,7 +1405,7 @@ msgstr "스케치 폴더를 다른 이름으로 저장…"
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "검증 또는 업로드를 할때 저장하기"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1413,7 +1413,7 @@ msgstr "저장…"
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "모든 스케치 탭에서 검색"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1463,7 +1463,7 @@ msgstr "시리얼 포트 {0} 를 찾을 수 없습니다.\n다른 시리얼 포�
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "시리얼 포트"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1532,7 +1532,7 @@ msgstr "스케치북 위치: "
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr ""
+msgstr "스케치북 경로가 지정되지 않음"
 
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
@@ -1540,7 +1540,7 @@ msgstr "스케치 (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "슬로바키아어"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1574,7 +1574,7 @@ msgstr "햇살"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "스와힐리어"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1586,7 +1586,7 @@ msgstr "시스템 기본설정"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "탈로사어"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1598,7 +1598,7 @@ msgstr "'BYTE' 키워드는 더 이상 지원되지 않습니니다."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "--upload 옵션은 한번에 한 파일에서만 지원 됨"
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1795,7 +1795,7 @@ msgstr "업로딩…"
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Urdu (파키스탄)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1848,7 +1848,7 @@ msgstr "경고"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "서 프리지아어"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -2040,7 +2040,7 @@ msgstr "선택돤 시리얼 포트{0}는 존재하지 않거나 해당 보드가
 #: ../../../processing/app/Base.java:389
 #, java-format
 msgid "unknown option: {0}"
-msgstr ""
+msgstr "알 수 없는 옵션: {0}"
 
 #: Preferences.java:391
 msgid "upload"
@@ -2076,29 +2076,29 @@ msgstr ""
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
+msgstr "{0}: \"{2}\" 보드의 옵션 \"{1}\" 의 옵션이 잘못 됨"
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr ""
+msgstr "{0}: \"{1}' 보드의 옵션이 잘못 됨"
 
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr ""
+msgstr "{0}: 잘못 된 옵션, \"이름=값\"의 형태여야 합니다."
 
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr ""
+msgstr "{0}: 알 수 없는 아키텍쳐"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr ""
+msgstr "{0}: 알 수 없는 보드"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr ""
+msgstr "{0}: 알 수 없는 패키지"

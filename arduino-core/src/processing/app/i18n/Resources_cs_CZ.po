@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-30 15:14+0000\n"
+"PO-Revision-Date: 2015-02-26 22:05+0000\n"
 "Last-Translator: Zdeno Sekerák <etrsek@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/arduino-ide-15/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -102,7 +102,7 @@ msgstr "Přidat knihovnu..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikánština"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -298,7 +298,7 @@ msgstr "Běloruština"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengálština (India)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -598,7 +598,7 @@ msgstr "Čeština"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Česky (Česká Republika)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -606,7 +606,7 @@ msgstr "Dánština"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Dánština (Dánsko)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -881,7 +881,7 @@ msgstr "Galicijština"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galician (Španělsko)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1007,7 +1007,7 @@ msgstr "Mála dostupné paměti, múžou nastat problémy se stabilitou."
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malajština (Malajsie)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1055,7 +1055,7 @@ msgstr "Nepálština"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Síťový port"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1119,7 +1119,7 @@ msgstr "Žádné parametry"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
-msgstr "Opravdu, přišel váš čas na trošku čerstvého vzduchu."
+msgstr "Opravdu, přišel váš čas na trocha čerstvého vzduchu."
 
 #: Editor.java:1872
 #, java-format
@@ -1158,7 +1158,7 @@ msgstr "Ne"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Norština"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1166,7 +1166,7 @@ msgstr "Norwegian Bokmål"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Norština Nynorsk"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1466,7 +1466,7 @@ msgstr "Seriový port {0} nenalezen\nMám zkusit nahrávat na jiný seriový por
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Sériový port"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1543,7 +1543,7 @@ msgstr "Projekty (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Slovenština"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1577,7 +1577,7 @@ msgstr "Slunceee!"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "Swahiština"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1589,7 +1589,7 @@ msgstr "Podle operačního systému"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossan"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1798,7 +1798,7 @@ msgstr "Nahrávám..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Urdština (Pakistan)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1851,7 +1851,7 @@ msgstr "Upozornění"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Západní Fríština"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1908,7 +1908,7 @@ msgstr "Zapoměli jste si svůj projekt"
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr "Stiskli jste {0}, avšak nic nebylo posláno. Neměli byste nastavit natavení konce řádku?"
+msgstr "Stiskli jste {0}, avšak nic nebylo posláno. Neměli byste nastavit nastavení konce řádku?"
 
 #: Base.java:536
 msgid ""
@@ -1936,7 +1936,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr "\"{0}\" obsahuje neuznámé znaky. Pokud tento kód byl vytvořen pomocí starší verze Arduino, možná budete muset použít Nástroje -> Opravit Kódování & Načíst znovu aktualizovaný projekt za použití kódování UTF-8. Pokud ne, budete možná muset muset odstranit špatné znaky, tak se zbavíte tohoto varování."
+msgstr "\"{0}\" obsahuje neuznámé znaky. Pokud tento kód byl vytvořen pomocí starší verze Arduino, možná budete muset použít Nástroje -> Opravit Kódování & Načíst znovu aktualizovaný projekt za použití kódování UTF-8. Pokud ne, budete možná muset odstranit špatné znaky, tak se zbavíte tohoto varování."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -1944,7 +1944,7 @@ msgid ""
 "As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
 "You appear to be using it or another library that depends on the SPI library.\n"
 "\n"
-msgstr "\nOd verze Arduino 0019, knihovna Ethernet závisí na knihovně SPI.\nZdá se, že již vyuzžíváte jiné knihovny, která závisí na knihovně SPI.\n\n"
+msgstr "\nOd verze Arduino 0019, knihovna Ethernet závisí na knihovně SPI.\nZdá se, že již využíváte jiné knihovny, které závisí na knihovně SPI.\n\n"
 
 #: debug/Compiler.java:415
 msgid ""

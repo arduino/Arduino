@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-23 11:27+0000\n"
-"Last-Translator: Oğuzhan Gençel <genceloguzhan@gmail.com>\n"
+"PO-Revision-Date: 2015-06-03 09:13+0000\n"
+"Last-Translator: Mert Gülsoy <mgulsoy@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/arduino-ide-15/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +27,7 @@ msgstr "(Arduino'nun yeniden başlatılmasını gerektiriyor)"
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Klavye' sadece Arduino Leonardo tarafından desteklenmektedir."
+msgstr "'Klavye' sadece Arduino Leonardo tarafından desteklenmektedir"
 
 #: debug/Compiler.java:450
 msgid "'Mouse' only supported on the Arduino Leonardo"
@@ -35,13 +35,13 @@ msgstr "'Fare' sadece Arduino Leonardo tarafından desteklenmektedir."
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(sadece Arduino kapalıyken düzenleyin)"
+msgstr "(sadece Arduino çalışmıyorken düzenleyin)"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload ve --verbose-build yalnızca --verify ya da --upload  ile birlikte kullanılabilir"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -75,7 +75,7 @@ msgstr "\"{0}\" isminde bir klasör zaten var. Çalışma açılamıyor."
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr "{0} isimli kütüphane önceden var"
+msgstr "{0} isimli kütüphane zaten var"
 
 #: UpdateCheck.java:103
 msgid ""
@@ -103,7 +103,7 @@ msgstr "Kütüphane ekle..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaca"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -174,7 +174,7 @@ msgstr "Arduino AVR Kartlar"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr "Arduino yalnızca kendi taslaklarını açar\nve diğer .pde veya .ino uzantılı dosyaları."
+msgstr "Arduino yalnızca kendi taslaklarını ve .pde \nveya .ino uzantılı olan diğer dosyaları açabilir."
 
 #: Base.java:1682
 msgid ""
@@ -186,7 +186,7 @@ msgstr "Ayarların saklanması için dosya \noluşturulamadığından Arduino ba
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr "Arduino taslak defterinizi kaydetmek için bir klasör oluşturamadığından başlatılamıyor."
+msgstr "Arduino taslak çalışmanızı kaydetmek için bir \nklasör oluşturamadığından başlatılamıyor."
 
 #: Base.java:240
 msgid ""
@@ -218,7 +218,7 @@ msgstr "--curdir için argüman gereklidir."
 
 #: ../../../processing/app/Base.java:385
 msgid "Argument required for --get-pref"
-msgstr ""
+msgstr "--get-pref için argüman gereklidir."
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -230,7 +230,7 @@ msgstr "--pref için argüman gereklidir."
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr "Ayarlar dosyası için argüman gerekli"
+msgstr "--preferences-file için argüman gereklidir."
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -242,35 +242,35 @@ msgstr "Asturian"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "Yetki gerekli"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
-msgstr "Otomatik Düzenle"
+msgstr "Otomatik biçimlendir."
 
 #: tools/AutoFormat.java:934
 msgid "Auto Format Canceled: Too many left curly braces."
-msgstr "Otomatik düzenleme iptal edildi. Fazladan kıvrımlı sol parantez var."
+msgstr "Otomatik biçimlendirme iptal edildi. Fazladan kıvrımlı sol parantez var."
 
 #: tools/AutoFormat.java:925
 msgid "Auto Format Canceled: Too many left parentheses."
-msgstr "Otomatik düzenleme iptal edildi. Fazladan sol parantez var."
+msgstr "Otomatik biçimlendirme iptal edildi. Fazladan sol parantez var."
 
 #: tools/AutoFormat.java:931
 msgid "Auto Format Canceled: Too many right curly braces."
-msgstr "Otomatik düzenleme iptal edildi. Fazladan kıvrımlı sağ parantez var."
+msgstr "Otomatik biçimlendirme iptal edildi. Fazladan kıvrımlı sağ parantez var."
 
 #: tools/AutoFormat.java:922
 msgid "Auto Format Canceled: Too many right parentheses."
-msgstr "Otomatik düzenleme iptal edildi. Fazladan sağ parantez var."
+msgstr "Otomatik biçimlendirme iptal edildi. Fazladan sağ parantez var."
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
-msgstr "Otomatik düzenleme tamamlandı."
+msgstr "Otomatik biçimlendirme tamamlandı."
 
 #: Preferences.java:439
 msgid "Automatically associate .ino files with Arduino"
-msgstr "ino dosyalarını otomatik olarak Arduino ile ilişkilendir"
+msgstr ".ino dosyalarını otomatik olarak Arduino ile ilişkilendir"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -287,7 +287,7 @@ msgstr "Seçilen dosya uygun değil"
 
 #: ../../../processing/app/debug/Compiler.java:89
 msgid "Bad sketch primary file or bad sketch directory structure"
-msgstr ""
+msgstr "Taslak dosyası geçersiz ya da taslak klasör yapısı geçersiz."
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
@@ -299,7 +299,7 @@ msgstr "Belarusça"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengali(Hindistan)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -311,7 +311,7 @@ msgstr "Kart"
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr "Kart {0}: {1}: {2} 'build.board' tercihini tanımlamayacak. Otomatik ayar: {3}"
+msgstr "Kart {0}: {1}: {2} 'build.board' tercihini tanımlamıyor. Otomatik olarak : {3} ayarlandı."
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
@@ -323,7 +323,7 @@ msgstr "Boşnakça"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
-msgstr "Satır başı - yeni satır birlikte"
+msgstr "NL ve CR ile birlikte."
 
 #: Preferences.java:81
 msgid "Browse"
@@ -356,12 +356,12 @@ msgstr "Önyükleyici I/O kartına yazdırılıyor (biraz zaman alabilir)..."
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "{0} için sadece bir adet seçim yapabilirsiniz."
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Belirtilen yolda taslak bulunamıyor"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -378,7 +378,7 @@ msgstr "Yeniden Adlandırılamıyor"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "Hiç bir taslak dosyası belirtilemiyor"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -513,7 +513,7 @@ msgstr "Klasör açılamadı\n{0}"
 msgid ""
 "Could not properly re-save the sketch. You may be in trouble at this point,\n"
 "and it might be time to copy and paste your code to another text editor."
-msgstr "Taslak düzgün bir şekilde yeniden kaydedilemedi. Bu noktada bir sorununuz olabilir,\nve kodunuzu başka bir metin editörünüze kopyalamanın vakti gelmiş olabilir."
+msgstr "Taslak düzgün bir şekilde yeniden kaydedilemedi. Bu durumda kodunuzu kaybedebilirsiniz. Şimdi kodunuzu başka bir metin editörüne kopyala&yapıştır yapın bizce."
 
 #: Sketch.java:1768
 msgid "Could not re-save sketch"
@@ -523,7 +523,7 @@ msgstr "Çalışma yeniden kaydedilemedi"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "Renk konusu ayarları okunamıyor.\nArduino'yu yeniden kurmanız gerekecek"
 
 #: Preferences.java:219
 msgid ""
@@ -572,7 +572,7 @@ msgstr "Çalışma arşivlenemedi."
 
 #: Sketch.java:1647
 msgid "Couldn't determine program size: {0}"
-msgstr "Dosya boyutu belirlenemedi: {0}"
+msgstr "program dosya boyutu belirlenemedi: {0}"
 
 #: Sketch.java:616
 msgid "Couldn't do it"
@@ -583,7 +583,7 @@ msgid ""
 "Couldn't find a Board on the selected port. Check that you have the correct "
 "port selected.  If it is correct, try pressing the board's reset button "
 "after initiating the upload."
-msgstr "Seçilen portta bir Kart bulunamadı. Doğru portu seçtiğinizden emin olunuz. Eğer doğru ise, yükleme işlemini başlattıktan sonra kartın reset düğmesine basmayı deneyiniz."
+msgstr "Seçilen portta bir Kart bulunamadı. Doğru portu seçtiğinizden emin olunuz. Eğer port doğru ise, yükleme işlemini başlattıktan sonra kartın reset düğmesine basmayı deneyiniz."
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
@@ -599,7 +599,7 @@ msgstr "Çekçe"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Çekce(Çek Cumhuriyeti)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -607,7 +607,7 @@ msgstr "Danca"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Danimarkaca(Danimarka)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -625,7 +625,7 @@ msgstr "Cihaz cevap vermiyor, doğru seri portun seçili olduğundan emin olunuz
 
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
-msgstr "Tüm değişikliklerden vazgeçip taslağı yenilemek istiyor musunuz?"
+msgstr "Tüm değişikliklerden vazgeçip taslağı yeniden yüklemek istiyor musunuz?"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -765,7 +765,7 @@ msgstr "Önyükleyici yazdırılırken hata oluştu: Kayıp '{0}' yapılandırma
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Derlenirken hata: '{0}' ayar argümanı bulunamıyor."
 
 #: SketchCode.java:83
 #, java-format
@@ -778,7 +778,7 @@ msgstr "Yazdırma sırasında hata oluştu."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr "kod yüklenirken hata oluştu"
+msgstr "Kod yüklenirken hata oluştu"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -789,11 +789,11 @@ msgstr "Yükleme sırasında hata: eksik '{0}' yapılandırma parametresi"
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr "doğrulama yapılırken hata oluştu"
+msgstr "Doğrulama yapılırken hata oluştu"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Doğrulanırken/yüklenirken hata"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -814,7 +814,7 @@ msgstr "Dışa aktarma iptal edildi. Önce değişikliklerin kaydedilmesi gereki
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr "Program açılamadı : \"{0}\""
+msgstr "Taslak çalışma açılamadı : \"{0}\""
 
 #: Editor.java:491
 msgid "File"
@@ -866,7 +866,7 @@ msgstr "Kütüphanelerin kurulumu ile ilgili daha fazla bilgi için şu adresi z
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Port {0} üzerinde 1200bps aç/kapa yapılarak yeniden başlatılmaya zorlanıyor"
 
 #: Preferences.java:95
 msgid "French"
@@ -882,7 +882,7 @@ msgstr "Galik dili"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galiçyaca(İspanya)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -901,7 +901,7 @@ msgstr "Başlarken..."
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr ""
+msgstr "Global değişkenler belleğin {0} byte kadarını  ({2}%%) kullanıyor. Yerel değişkenler için {3} byte yer kalıyor. En fazla {1} byte kullanılabilir."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
@@ -963,7 +963,7 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr ""
+msgstr "Arduino 1.0'da varsayılan dosya uzantısı olan .pde .ino ile değiştirilmiştir. Yeni taslaklar (Farklı Kaydet ile oluşturulanlar dahil) yeni uzantıyla oluşturulacaktır. Mevcut taslaklara ait uzantılar kayıt sırasında güncellenecektir. Fakat Bu davranışı Ayarlar penceresinden değiştirebilirsiniz. Taslak kaydedilip uzantısı güncellensin mi?"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1004,11 +1004,11 @@ msgstr "Litvanca"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "Düşük hafıza mevcut, kararlılık problemlerine sebep olabilir"
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malayca(Malezya)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1036,7 +1036,7 @@ msgstr "Taşınıyor"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "Çoklu dosya desteklenmiyor"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1056,11 +1056,11 @@ msgstr "Nepalce"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Ağ portları"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr "Programcı kullanarak ağ yüklemesi desteklenmiyor"
+msgstr "Programlayıcı kullanarak ağ yüklemesi desteklenmiyor"
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
@@ -1088,7 +1088,7 @@ msgstr "Hayır"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "No athorization data found"
-msgstr ""
+msgstr "Yetkilendirme bilgisi bulunamadı"
 
 #: debug/Compiler.java:126
 msgid "No board selected; please choose a board from the Tools > Board menu."
@@ -1100,7 +1100,7 @@ msgstr "Otomatik düzenleme için değişikliğe gerek yok."
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
-msgstr ""
+msgstr "Hiç komut satırı parametresi bulunamadı"
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -1116,7 +1116,7 @@ msgstr "Satır sonu yok"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "Parametre yok"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1130,11 +1130,11 @@ msgstr "\"{0}\" için kaynak bulunmuyor"
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "No sketch"
-msgstr ""
+msgstr "Taslak yok"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
-msgstr ""
+msgstr "Taslak kitabı yok"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
@@ -1159,7 +1159,7 @@ msgstr "Yok"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Norveç"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1167,7 +1167,7 @@ msgstr "Norveççe"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Norveç Norveççesi"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1182,11 +1182,11 @@ msgstr "Tamam"
 
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
-msgstr "Sketch'e bir dosya eklendi."
+msgstr "Taslak çalışmaya bir dosya eklendi."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr ""
+msgstr "Sadece --verify, --upload veya --get-pref destekleniyor"
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1198,7 +1198,7 @@ msgstr "URL Aç"
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
-msgstr "Arduino Çalışma Dosyası Aç..."
+msgstr "Arduino Taslak Çalışma Dosyası Aç..."
 
 #: EditorToolbar.java:46
 msgid "Open in Another Window"
@@ -1230,7 +1230,7 @@ msgstr "İranca"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
-msgstr "Lütfen SPI kütüphanesini, Çalışma>Kütüphane Ekle menüsü altından  çalışma dosyasına ekleyin"
+msgstr "Lütfen Program > İçeri Aktar menüsünü kullanarak SPI  kütüphanesini içeri aktarın."
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
@@ -1243,7 +1243,7 @@ msgstr "Lütfen JDK'nın 1.5 veya daha yeni bir sürümünü kurun"
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
-msgstr ""
+msgstr "Lütfen Araçlar->Programlayıcı Menüsü'nden bir programlayıcı seçin"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1303,7 +1303,7 @@ msgstr "Platform ayarları yapılırken hata oluştu"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr ""
+msgstr "Kart dosyasına erişirken hata oluştu. /www/sd"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
 msgid "Problem accessing files in folder "
@@ -1409,7 +1409,7 @@ msgstr "Çalışma klasörünü kaydet..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "Doğrularken veya yüklerken kaydet"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1417,7 +1417,7 @@ msgstr "Kaydediliyor..."
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "Tüm taslak sekmelerini ara"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1441,7 +1441,7 @@ msgstr "Yeni taslak defteri konumu seç"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr ""
+msgstr "Seçili olan kart için '{0}' core gerekli. ( Yüklenmemiş )."
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1467,7 +1467,7 @@ msgstr "Seri port \"{0}\" bulunamadı.\nBaşka bir seri port ile denemek ister m
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Seri portlar"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1536,7 +1536,7 @@ msgstr "Taslak defteri konumu:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr ""
+msgstr "Taslakkitabı yolu tanımlanmadı"
 
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
@@ -1544,7 +1544,7 @@ msgstr "Çalışmalar (*.ino,*.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Slovakça"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1578,7 +1578,7 @@ msgstr "Gün Işığı"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "Svahilice"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1590,7 +1590,7 @@ msgstr "Sistem Varsayılanı"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossan"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1602,7 +1602,7 @@ msgstr "'BYTE' terimi artık desteklenmemektedir."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "--upload fonksiyonu aynı anda sadece tek dosya yüklemeyi destekler."
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1691,7 +1691,7 @@ msgstr "Çalışma klasörü bulunamadı.\nArduino varsayılan çalışma konumu
 msgid ""
 "Third-party platform.txt does not define compiler.path. Please report this "
 "to the third-party hardware maintainer."
-msgstr ""
+msgstr "Üçüncü-parti platform.txt dosyası compiler.path bilgisini tanımlamıyor. Bunu lütfen bu donanım sağlayıcısına bildirin."
 
 #: Sketch.java:1075
 msgid ""
@@ -1747,7 +1747,7 @@ msgstr "Bağlantı kurulamıyor: parola mı yanlış?"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr "Seri veri monitörü açılamıyor"
+msgstr "Seri port monitörü açılamıyor"
 
 #: Sketch.java:1432
 #, java-format
@@ -1799,7 +1799,7 @@ msgstr "Yükleniyor..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Urduca(Pakistan)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1852,7 +1852,7 @@ msgstr "Uyarı"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Batı Frizce"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1937,7 +1937,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" içinde tanınamayan karakterler/harfler bulunmakta. Eğer bu kod eski bir Arduino sürümü ile oluşturulduysa menüden Araçlar -> Karakter kodlamasını düzelt & Yeniden aç seçeneğini kullanarak çalışma kod dosyasını düzeltin ve UTF-8 kullanacak hale getirin. Eğer bunu yapmazsanız bu bozuk karakterleri silmeniz gerekebilir."
 
 #: debug/Compiler.java:409
 msgid ""

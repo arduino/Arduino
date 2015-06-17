@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-02-24 11:30+0000\n"
+"PO-Revision-Date: 2015-02-28 00:32+0000\n"
 "Last-Translator: Robin van der Vliet <info@robinvandervliet.nl>\n"
 "Language-Team: Western Frisian (http://www.transifex.com/projects/p/arduino-ide-15/language/fy/)\n"
 "MIME-Version: 1.0\n"
@@ -95,15 +95,15 @@ msgstr ""
 
 #: Base.java:963
 msgid "Add Library..."
-msgstr ""
+msgstr "Bibleteek tafoegje..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaansk"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "Albaneesk"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -142,11 +142,11 @@ msgstr "Aragoneesk"
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
-msgstr ""
+msgstr "Skets argivearje"
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr ""
+msgstr "Skets argivearje as:"
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
@@ -595,7 +595,7 @@ msgstr "Tsjechysk"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Tsjechysk (Tsjechje)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -603,7 +603,7 @@ msgstr "Deensk"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Deensk (Denemark)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -713,7 +713,7 @@ msgstr ""
 #: Serial.java:593
 #, java-format
 msgid "Error inside Serial.{0}()"
-msgstr ""
+msgstr "Flater yn Serial.{0}()"
 
 #: ../../../processing/app/Base.java:1232
 msgid "Error loading libraries"
@@ -801,7 +801,7 @@ msgstr "Estysk (Estlân)"
 
 #: Editor.java:516
 msgid "Examples"
-msgstr ""
+msgstr "Foarbylden"
 
 #: Editor.java:2482
 msgid "Export canceled, changes must first be saved."
@@ -822,27 +822,27 @@ msgstr "Filipynsk"
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
-msgstr ""
+msgstr "Sykje"
 
 #: Editor.java:1249
 msgid "Find Next"
-msgstr ""
+msgstr "Folgjende sykje"
 
 #: Editor.java:1259
 msgid "Find Previous"
-msgstr ""
+msgstr "Foarige sykje"
 
 #: Editor.java:1086 Editor.java:2775
 msgid "Find in Reference"
-msgstr ""
+msgstr "Sykje yn neislachwurk"
 
 #: Editor.java:1234
 msgid "Find..."
-msgstr ""
+msgstr "Sykje..."
 
 #: FindReplace.java:80
 msgid "Find:"
-msgstr ""
+msgstr "Sykje:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
@@ -878,7 +878,7 @@ msgstr "Galysysk"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galysysk (Spanje)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -967,7 +967,7 @@ msgstr ""
 
 #: Preferences.java:101
 msgid "Indonesian"
-msgstr ""
+msgstr "Yndonezysk"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -988,7 +988,7 @@ msgstr "Koreaansk"
 
 #: Preferences.java:105
 msgid "Latvian"
-msgstr ""
+msgstr "Letsk"
 
 #: Base.java:2699
 msgid "Library added to your libraries. Check \"Import library\" menu"
@@ -996,7 +996,7 @@ msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"
-msgstr ""
+msgstr "Litousk"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1052,7 +1052,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Netwurkpoarten"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1112,7 +1112,7 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "Gjin parameters"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1126,11 +1126,11 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "No sketch"
-msgstr ""
+msgstr "Gjin skets"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
-msgstr ""
+msgstr "Gjin sketsboek"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
@@ -1151,19 +1151,19 @@ msgstr ""
 
 #: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
 msgid "Nope"
-msgstr ""
+msgstr "Nee"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Noarsk"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
-msgstr ""
+msgstr "Noarsk Bokmål"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Noarsk Nynorsk"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1218,11 +1218,11 @@ msgstr ""
 
 #: Preferences.java:109
 msgid "Persian"
-msgstr ""
+msgstr "Perzysk"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "Perzysk (Iran)"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1326,7 +1326,7 @@ msgstr ""
 
 #: ../../../processing/app/I18n.java:86
 msgid "Processor"
-msgstr ""
+msgstr "Prosessor"
 
 #: Editor.java:704
 msgid "Programmer"
@@ -1346,15 +1346,15 @@ msgstr "Neislachwurk"
 
 #: EditorHeader.java:300
 msgid "Rename"
-msgstr ""
+msgstr "Omneame"
 
 #: FindReplace.java:121 FindReplace.java:130 Sketch.java:1046
 msgid "Replace"
-msgstr ""
+msgstr "Ferfange"
 
 #: FindReplace.java:122 FindReplace.java:129
 msgid "Replace & Find"
-msgstr ""
+msgstr "Sykje en ferfange"
 
 #: FindReplace.java:120 FindReplace.java:131
 msgid "Replace All"
@@ -1371,7 +1371,7 @@ msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
-msgstr ""
+msgstr "Roemeensk"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1445,7 +1445,7 @@ msgstr "Ferstjoere"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
-msgstr ""
+msgstr "Seriële monitor"
 
 #: Serial.java:194
 #, java-format
@@ -1463,7 +1463,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Seriële poarten"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1540,7 +1540,7 @@ msgstr "Sketsen (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Slowaaksk"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1586,7 +1586,7 @@ msgstr "Systeemstandert"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossaansk"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1795,7 +1795,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Oerdû (Pakistan)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1848,7 +1848,7 @@ msgstr "Warskôging"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Frysk"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."

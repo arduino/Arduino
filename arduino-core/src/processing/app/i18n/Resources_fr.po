@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-02-19 14:55+0000\n"
+"PO-Revision-Date: 2015-03-31 14:23+0000\n"
 "Last-Translator: Vincent Moulin <contact@nilux.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -106,7 +106,7 @@ msgstr "Ajouter bibliothèque..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -302,7 +302,7 @@ msgstr "biélorusse"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengali (Inde)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -359,7 +359,7 @@ msgstr "Grave la séquence d'initialisation vers la carte E/S\n(Cela pourrait pr
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "Un seul \"{0}\" peut être spécifié à la fois"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -602,7 +602,7 @@ msgstr "tchèque"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Tchèque (République Tchèque)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -610,7 +610,7 @@ msgstr "danois"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Danois (Danemark)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -869,7 +869,7 @@ msgstr "Pour plus de renseignement concernant l'installation de bibliothèque, v
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Redémarrage forcé en cours en 1200bps ouvert/fermé sur le port {0}"
 
 #: Preferences.java:95
 msgid "French"
@@ -885,7 +885,7 @@ msgstr "galicien"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galicien (Espagne)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1011,7 +1011,7 @@ msgstr "La mémoire disponible faible, des problèmes de stabilité pourraient s
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malais (Malaisie)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1059,7 +1059,7 @@ msgstr "népalais"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Ports réseau"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1162,7 +1162,7 @@ msgstr "Non"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Norvégien"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1170,7 +1170,7 @@ msgstr "norvégien Bokmål"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Nynorsk (Norvège)"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1470,7 +1470,7 @@ msgstr "Port série {0} introuvable.\nRéessayer le téléversement à partir d'
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Ports série"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1547,7 +1547,7 @@ msgstr "Croquis (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Slovaque"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1581,7 +1581,7 @@ msgstr "Soleil"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "Swahili"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1593,7 +1593,7 @@ msgstr "Langue du système"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossan"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1802,7 +1802,7 @@ msgstr "Téléversement..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Ourdou (Pakistan)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1855,7 +1855,7 @@ msgstr "Avertissement"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Frison occidental"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."

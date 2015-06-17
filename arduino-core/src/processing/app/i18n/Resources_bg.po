@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-17 14:15+0000\n"
+"PO-Revision-Date: 2015-02-25 19:51+0000\n"
 "Last-Translator: Valentin Laskov <laskov@festa.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/projects/p/arduino-ide-15/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -100,7 +100,7 @@ msgstr "Добавяне на библиотека..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -296,7 +296,7 @@ msgstr "Беларуски"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengali (India)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -596,7 +596,7 @@ msgstr "Чешки"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Czech (Czech Republic)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -604,7 +604,7 @@ msgstr "Датски"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Danish (Denmark)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -879,7 +879,7 @@ msgstr "Галицийски"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galician (Spain)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1005,7 +1005,7 @@ msgstr "Достъпната памет е малко. Възможни са п�
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malay (Malaysia)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1053,7 +1053,7 @@ msgstr "Непалски"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Мрежови портове"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1156,7 +1156,7 @@ msgstr "Няма"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Norwegian"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1164,7 +1164,7 @@ msgstr "Норвежки Bokmål"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Norwegian Nynorsk"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1464,7 +1464,7 @@ msgstr "Серийният порт {0} не е намерен.\nПробвай�
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Серийни портове"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1541,7 +1541,7 @@ msgstr "Скици (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Slovak"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1575,7 +1575,7 @@ msgstr "Слънчева светлина"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "Swahili"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1587,7 +1587,7 @@ msgstr "Подразбиращ се за системата"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossan"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1796,7 +1796,7 @@ msgstr "Качване..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "Urdu (Pakistan)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1849,7 +1849,7 @@ msgstr "Внимание"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Western Frisian"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."

@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-14 17:10+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2015-05-10 08:22+0000\n"
+"Last-Translator: belal affouri <belal@eshtre.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/arduino-ide-15/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +40,7 @@ msgstr "(لا يمكن التحرير والأردوينو تعمل)"
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload و --verbose-build يمكن فقط ان يستخدما معا مع  --verify او --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -102,7 +102,7 @@ msgstr "اضف مكتبة "
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "لغة جنوب إفريقيا‏"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -298,7 +298,7 @@ msgstr "بيلاروسي"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "بنغالي(الهند)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -310,7 +310,7 @@ msgstr "لوحة"
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "اللوحة {0}:{1}:{2} لا تعرّف ''build.board'' خاصية . Auto-set to: {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
@@ -355,12 +355,12 @@ msgstr "يتم تثبيت محمل برنامج الإقلاع على اللوح
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "يمكن ان تمرر واحدة من : {0}"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "لا يمكن ايجاد السكتش في المسار المحدد"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -377,7 +377,7 @@ msgstr "لا يمكن اعادة التسمية"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "لا يمكن تحديد اي ملفات سكتش "
 
 #: SerialMonitor.java:112
 msgid "Carriage return"

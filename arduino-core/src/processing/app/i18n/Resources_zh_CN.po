@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-02-11 17:54+0000\n"
-"Last-Translator: Zhuo Liu <lzhskywalker@gmail.com>\n"
+"PO-Revision-Date: 2015-04-05 04:53+0000\n"
+"Last-Translator: dongfengweixiao <dongfengweixiao@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/arduino-ide-15/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,11 +23,11 @@ msgstr "（需要重启Arduino）"
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr " 'Keyboard' 仅在 Arduino Leonardo 上支持"
+msgstr "仅有 Arduino Leonardo 支持 'Keyboard' 选项"
 
 #: debug/Compiler.java:450
 msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Mouse' 仅在 Arduino Leonardo 上支持"
+msgstr "仅有 Arduino Leonardo 支持 'Keyboard' 选项"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -37,7 +37,7 @@ msgstr "（只能在Arduino未运行时进行编辑）"
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "只有在使用--verify 或 --upload的时候，才能把--verbose, --verbose-upload 和 --verbose-build 一起用"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -99,7 +99,7 @@ msgstr "添加库"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "南非语"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -206,27 +206,27 @@ msgstr "确定要删除此项目码？"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr ""
+msgstr "需要 --board 参数"
 
 #: ../../../processing/app/Base.java:370
 msgid "Argument required for --curdir"
-msgstr ""
+msgstr "需要 --curdir 参数"
 
 #: ../../../processing/app/Base.java:385
 msgid "Argument required for --get-pref"
-msgstr ""
+msgstr "需要 --get-pref 参数"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr ""
+msgstr "需要 --port 参数"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr ""
+msgstr "需要 --pref 参数"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr ""
+msgstr "需要 --preferences-file 参数"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -275,7 +275,7 @@ msgstr "自动滚屏"
 #: Editor.java:2619
 #, java-format
 msgid "Bad error line: {0}"
-msgstr ""
+msgstr "Bad error line: {0}"
 
 #: Editor.java:2136
 msgid "Bad file selected"
@@ -287,7 +287,7 @@ msgstr "项目文件损坏 或 项目文件夹损坏"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "巴斯克语"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
@@ -295,7 +295,7 @@ msgstr "白俄罗斯语"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "孟加拉语(印度)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -307,7 +307,7 @@ msgstr "板"
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "{0}:{1}:{2} 开发板没有定义''build.board''偏好。自动设置为： {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
@@ -319,7 +319,7 @@ msgstr "波斯尼亚语"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
-msgstr ""
+msgstr "NL 和 CR"
 
 #: Preferences.java:81
 msgid "Browse"
@@ -352,7 +352,7 @@ msgstr "正在烧录引导程序到输入/输出板卡(可能需要几分钟)…
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "以下之一无法通过: {0}"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -595,7 +595,7 @@ msgstr "捷克语"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "捷克语(捷克共和国)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -603,7 +603,7 @@ msgstr "丹麦语"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "丹麦语(丹麦)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -713,7 +713,7 @@ msgstr "取得Arduino资料文件夹时发生错误。"
 #: Serial.java:593
 #, java-format
 msgid "Error inside Serial.{0}()"
-msgstr ""
+msgstr "串行错误 {0}()"
 
 #: ../../../processing/app/Base.java:1232
 msgid "Error loading libraries"
@@ -744,12 +744,12 @@ msgstr "读取首选项时出错。请删除（或移除）\n{0}并重启Arduino
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "开始发现方法错误:"
 
 #: Serial.java:125
 #, java-format
 msgid "Error touching serial port ''{0}''."
-msgstr ""
+msgstr "接触串口 ''{0}'' 释出错。"
 
 #: Editor.java:2512 Editor.java:2516 Editor.java:2520
 msgid "Error while burning bootloader."
@@ -757,11 +757,11 @@ msgstr "烧录引导程序出错。"
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "烧录引导程序时出错：缺少 '{0}' 配置参数"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "编译时出错：缺少 '{0}' 配置参数"
 
 #: SketchCode.java:83
 #, java-format
@@ -779,7 +779,7 @@ msgstr "上传出错"
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "上传时出错：缺少 '{0}' 配置参数"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
@@ -862,7 +862,7 @@ msgstr "安装库的详细信息，请参阅： http://arduino.cc/en/Guide/Libra
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "在端口 {0} 使用 1200bps 开/关来强行重置"
 
 #: Preferences.java:95
 msgid "French"
@@ -878,7 +878,7 @@ msgstr "加利西亚语"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "加利西亚语(西班牙)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -972,7 +972,7 @@ msgstr "印尼语"
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr ""
+msgstr "找到无效库在 {0}: {1}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1004,7 +1004,7 @@ msgstr "可用内存偏低，可能出现稳定性问题"
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "马来语(马来西亚)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1040,7 +1040,7 @@ msgstr "必须制定一个项目文件"
 
 #: ../../../processing/app/Preferences.java:158
 msgid "N'Ko"
-msgstr ""
+msgstr "N'Ko"
 
 #: Sketch.java:282
 msgid "Name for new file:"
@@ -1052,7 +1052,7 @@ msgstr "尼泊尔语"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "网络端口"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1155,7 +1155,7 @@ msgstr "不要"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "挪威语"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1163,7 +1163,7 @@ msgstr "挪威语"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "新挪威語"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1222,7 +1222,7 @@ msgstr "波斯语"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "波斯语(伊朗)"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1437,7 +1437,7 @@ msgstr "为草稿码目录选取新位置"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr ""
+msgstr "所选开发板依赖于 '{0}' 核心 (未安装)。"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1463,7 +1463,7 @@ msgstr "没有找到串口 {0} 。\n请尝试通过其他串口上传。"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "串行端口"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1516,7 +1516,7 @@ msgstr "项目太大了；阅读以下页面的提示减小文件大小。\nhttp
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr ""
+msgstr "草稿使用了 {0} 字节，占用了 ({2}%%) 程序存储空间。最大为 {1} 字节。"
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1540,7 +1540,7 @@ msgstr "项目 (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "斯洛伐克语"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1574,7 +1574,7 @@ msgstr "阳光"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "斯瓦西里语"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1586,7 +1586,7 @@ msgstr "系统预设"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "塔罗萨语"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1795,7 +1795,7 @@ msgstr "上传..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "乌尔都语(巴基斯坦)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1840,7 +1840,7 @@ msgstr "访问Arduino.cc"
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr ""
+msgstr "注意： {0} 库要求运行在 {1} 架构()，可能与你现在运行在 {2} 架构上的开发板()不兼容。"
 
 #: Base.java:2128
 msgid "Warning"
@@ -1848,7 +1848,7 @@ msgstr "警告"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "西弗里斯语"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1905,7 +1905,7 @@ msgstr "你忘记你的项目文件夹"
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr ""
+msgstr "你通过了 {0} 但是没有发送。你要选择行尾吗？"
 
 #: Base.java:536
 msgid ""
@@ -1933,7 +1933,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr ""
+msgstr "”{0}“含有无法识别的字符，若该代码为旧版Arduino所建立，你或许需要利用”工具->修正代码并重新载入“以UTF-8编码來更新草稿码，如不行，请刪除非法字符摆脱此警告信息。"
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2029,13 +2029,13 @@ msgstr "名称是空的"
 
 #: Editor.java:932
 msgid "serialMenu is null"
-msgstr ""
+msgstr "serialMenu 为空"
 
 #: debug/Uploader.java:195
 #, java-format
 msgid ""
 "the selected serial port {0} does not exist or your board is not connected"
-msgstr ""
+msgstr "选择的串口 {0} 不存在或开发板没有连接"
 
 #: ../../../processing/app/Base.java:389
 #, java-format
@@ -2064,29 +2064,29 @@ msgstr "{0} | Arduino {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr ""
+msgstr "{0}: --pref 参数错误，应该为 \"pref=value\" 形式"
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr ""
+msgstr "{0}: 开发板名称错误，应该是\"package:arch:board\" 或 \"package:arch:board:options\" 形式"
 
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
+msgstr "{0}: Invalid option for \"{1}\" option for board \"{2}\""
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr ""
+msgstr "{0}: \"{1}\" 开发板选项无效"
 
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr ""
+msgstr "{0}: 选项错误，应该为 \"name=value\" 形式"
 
 #: ../../../processing/app/Base.java:486
 #, java-format

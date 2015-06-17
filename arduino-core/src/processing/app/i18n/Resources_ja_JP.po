@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-14 18:03+0000\n"
-"Last-Translator: Masanori Ohgita <mp@ohgita.info>\n"
+"PO-Revision-Date: 2015-03-12 03:13+0000\n"
+"Last-Translator: Shigeru Kanemoto <sgk@switch-science.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/arduino-ide-15/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "編集する際には、Arduino IDEを終了させておいてくださ�
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr "--verbose、--verbose-upload および --verbose-build は --verify または --upload と一緒でのみ利用できます。"
+msgstr "「--verbose」「--verbose-upload」「--verbose-build」は、「--verify」または「--upload」と同時に指定してください。"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -100,7 +100,7 @@ msgstr "ライブラリをインストール..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "アフリカーンス語"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -115,17 +115,17 @@ msgstr "エンコーディングを修正しようとしましたが、エラー
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr "スケッチをアップロード中にエラーが発生しました"
+msgstr "スケッチの書き込み中にエラーが発生しました"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr "スケッチを検証中にエラーが発生しました"
+msgstr "スケッチの検証中にエラーが発生しました"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr "スケッチを検証中/アップロード中にエラーが発生しました"
+msgstr "スケッチの検証中または書き込み中にエラーが発生しました"
 
 #: Base.java:228
 msgid ""
@@ -161,11 +161,11 @@ msgstr "スケッチを保存できなかったため、スケッチのアーカ
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
-msgstr "Arduino ARM (32ビット) ボード"
+msgstr "Arduino ARM（32ビット）ボード"
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
-msgstr "Arduino AVR ボード"
+msgstr "Arduino AVRボード"
 
 #: Editor.java:2137
 msgid ""
@@ -194,7 +194,7 @@ msgstr "Arduino IDEを実行するにはJDKが必要です。\nJREでは動作�
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr "Arduino: "
+msgstr "Arduino："
 
 #: Sketch.java:588
 #, java-format
@@ -207,39 +207,39 @@ msgstr "このスケッチを本当に削除しますか？"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr "--boardのための引数は必須です"
+msgstr "オプション「--board」には引数が必要です。"
 
 #: ../../../processing/app/Base.java:370
 msgid "Argument required for --curdir"
-msgstr "--curdirのための引数は必須です"
+msgstr "オプション「--curdir」には引数が必要です。"
 
 #: ../../../processing/app/Base.java:385
 msgid "Argument required for --get-pref"
-msgstr "--get-prefのための引数は"
+msgstr "オプション「--get-pref」には引数が必要です。"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr "--portのための引数は"
+msgstr "オプション「--port」には引数が必要です。"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr "--prefのための引数は"
+msgstr "オプション「--pref」には引数が必要です。"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr "--preferences-fileのための引数は"
+msgstr "オプション「--preferences-file」には引数が必要です。"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr "アルメニア"
+msgstr "アルメニア語"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr ""
+msgstr "アストゥリアス語"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr "が必要です"
+msgstr "認証が必要です"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -288,20 +288,20 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "バスク語"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "ベラルーシ語"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "ベンガル語（インド）"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr "ボード"
+msgstr "マイコンボード"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -312,11 +312,11 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr "ボード:"
+msgstr "マイコンボード："
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr ""
+msgstr "ボスニア語"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
@@ -340,7 +340,7 @@ msgstr "ブルガリア語"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "ビルマ語（ミャンマー）"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
@@ -362,7 +362,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
-msgstr ""
+msgstr "フランス語（カナダ）"
 
 #: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
@@ -391,19 +391,19 @@ msgstr "起動時に最新バージョンの有無をチェックする"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr ""
+msgstr "中国語（中国）"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (Hong Kong)"
-msgstr ""
+msgstr "中国語（香港）"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "中国語（台湾）"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr ""
+msgstr "中国語（台湾）（Big5）"
 
 #: Preferences.java:88
 msgid "Chinese Simplified"
@@ -439,7 +439,7 @@ msgstr "HTML形式でコピーする"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr "コピーエラー"
+msgstr "エラーメッセージをコピーする"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -485,12 +485,12 @@ msgstr ""
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
 #, java-format
 msgid "Could not find tool {0}"
-msgstr "ツール {0} が見つかりませんでした"
+msgstr "ツール「{0}」が見つかりませんでした"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
 #, java-format
 msgid "Could not find tool {0} from package {1}"
-msgstr "ツール {0} が パッケージ {1} から 見つかりませんでした"
+msgstr "ツール「{0}」はパッケージ「{1}」にはありません。"
 
 #: Base.java:1934
 #, java-format
@@ -520,7 +520,7 @@ msgstr "スケッチを保存し直すことができませんでした。"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "色テーマ設定を読み込めません。Arduinoを再インストールする必要がります。"
+msgstr "色テーマの設定を読み込めません。\nArduinoを再インストールする必要があります。"
 
 #: Preferences.java:219
 msgid ""
@@ -530,7 +530,7 @@ msgstr "既定の設定を読み込むことができませんでした。\nArdu
 
 #: ../../../processing/app/Sketch.java:1525
 msgid "Could not read prevous build preferences file, rebuilding all"
-msgstr "前回のビルド設定ファイルを読み込めません。全体をリビルド"
+msgstr "前回のビルド設定ファイルを読み込めません。全体をリビルドします"
 
 #: Base.java:2482
 #, java-format
@@ -561,7 +561,7 @@ msgstr "「{0}」を置き換える事ができませんでした。"
 
 #: ../../../processing/app/Sketch.java:1579
 msgid "Could not write build preferences file"
-msgstr "ビルド設定ファイルを"
+msgstr "ビルド設定ファイルに書き込めませんでした"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -584,7 +584,7 @@ msgstr "指定されたポートには、マイコンボードが接続されて
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
-msgstr ""
+msgstr "クロアチア語"
 
 #: Editor.java:1149 Editor.java:2699
 msgid "Cut"
@@ -592,11 +592,11 @@ msgstr "切り取り"
 
 #: ../../../processing/app/Preferences.java:83
 msgid "Czech"
-msgstr ""
+msgstr "チェコ語"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "チェコ語（チェコ共和国）"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -604,7 +604,7 @@ msgstr "デンマーク語"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "デンマーク語（デンマーク）"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -626,7 +626,7 @@ msgstr "未保存の変更を破棄してスケッチを読み込み直します
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr "行番号の"
+msgstr "行番号を表示する"
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -643,11 +643,11 @@ msgstr "ブートローダの書き込みが完了しました。"
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr "コンパイル"
+msgstr "コンパイルが完了しました。"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
-msgstr "コンパイル終了。"
+msgstr "コンパイルが完了しました。"
 
 #: Editor.java:2564
 msgid "Done printing."
@@ -655,7 +655,7 @@ msgstr "印刷が完了しました。"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr "アップロード"
+msgstr "マイコンボードへの書き込みが完了しました。"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -667,7 +667,7 @@ msgstr "オランダ語"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "オランダ語（オランダ）"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -687,7 +687,7 @@ msgstr "英語"
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "英語（イギリス）"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -718,14 +718,14 @@ msgstr "Serial.{0}()でエラー"
 
 #: ../../../processing/app/Base.java:1232
 msgid "Error loading libraries"
-msgstr "ライブラリの読み込みエラー"
+msgstr "ライブラリの読み込み中にエラーが発生しました。"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
 #, java-format
 msgid "Error loading {0}"
-msgstr "{0}の読み込みエラー"
+msgstr "「{0}」を読み込む際にエラーが発生しました。"
 
 #: Serial.java:181
 #, java-format
@@ -745,7 +745,7 @@ msgstr "初期設定ファイルを読み込む際にエラーが発生しまし
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr "検出メソッドの開始中にエラー"
+msgstr "検出処理の開始中にエラーが発生しました。"
 
 #: Serial.java:125
 #, java-format
@@ -758,11 +758,11 @@ msgstr "ブートローダの書き込み中にエラーが発生しました。
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr "ブートローダの書き込み中にエラー: 設定パラメータ '{0}' が見つかりません"
+msgstr "ブートローダの書き込み中にエラーが発生ました：設定パラメータの「{0}」がありません。"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "コンパイル中にエラーが発生ました：設定パラメータの「{0}」がありません。"
 
 #: SketchCode.java:83
 #, java-format
@@ -775,22 +775,22 @@ msgstr "印刷中にエラーが発生しました。"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "書き込み中にエラーが発生しました。"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr "アップロード中にエラーが発生しました: '{0}' 設定パラメータが見つかりません"
+msgstr "書き込み中にエラーが発生しました：設定パラメータの「{0}」が見つかりません"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "検証中にエラーが発生しました。"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "検証中または書き込み中にエラーが発生しました。"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -798,7 +798,7 @@ msgstr "エストニア語"
 
 #: ../../../processing/app/Preferences.java:146
 msgid "Estonian (Estonia)"
-msgstr ""
+msgstr "エストニア語（エストニア）"
 
 #: Editor.java:516
 msgid "Examples"
@@ -811,7 +811,7 @@ msgstr "エクスポートを中止しました。エクスポートを行う前
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr ""
+msgstr "スケッチ「{0}」を開けませんでした。"
 
 #: Editor.java:491
 msgid "File"
@@ -847,7 +847,7 @@ msgstr "検索テキスト："
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
-msgstr ""
+msgstr "フィンランド語"
 
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
@@ -863,7 +863,7 @@ msgstr "ライブラリのインストール方法については、以下のペ
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "シリアルポート「{0}」を1200bpsで開いて閉じる事によって、リセットを行っています。"
 
 #: Preferences.java:95
 msgid "French"
@@ -879,11 +879,11 @@ msgstr "ガリシア語"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "ガリシア語（スペイン）"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
-msgstr ""
+msgstr "グルジア語"
 
 #: Preferences.java:97
 msgid "German"
@@ -898,12 +898,12 @@ msgstr "初心者向けガイド"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "グローバル変数が {0}バイト ({2}%%) の 動的メモリを使用しており、ローカル変数に {3} バイトが残っています。最高は {1}バイトです。"
+msgstr "最大{1}バイトのRAMのうち、グローバル変数が{0}バイト（{2}%%）を使っていて、ローカル変数で{3}バイト使うことができます。"
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr "グローバル変数は {0}バイトの動的メモリを使用しています"
+msgstr "グローバル変数は{0}バイトのRAMを使用しています。"
 
 #: Preferences.java:98
 msgid "Greek"
@@ -911,7 +911,7 @@ msgstr "ギリシア語"
 
 #: ../../../processing/app/Preferences.java:95
 msgid "Hebrew"
-msgstr ""
+msgstr "ヘブライ語"
 
 #: Editor.java:1015
 msgid "Help"
@@ -960,7 +960,7 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr "Arduino 1.0 において、デフォルトのファイル拡張子が .pde から .ino へ変更されました。\n新しいスケッチ (\"名前を付けて保存\"して作成した場合を含む) には、新しい拡張子が使われます。\n既存のスケッチも保存する際に拡張子が更新されます。但し、この動作は 設定 ダイアログで無効化できます。\n\nスケッチを保存してその拡張子を更新しますか？"
+msgstr "Arduino 1.0では、スケッチのファイルの拡張子を.pdeから.inoに\n変更しました。新しいスケッチおよび「名前を付けて保存」で保存\nしたスケッチには、新しい拡張子が使われます。また、既存のスケッチ\nを開いてから保存すると、新しい拡張子に自動的に変更されます。\nこの機能は、「環境設定」で無効にする事ができます。\n\n拡張子を変更してスケッチを保存しますか？"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -973,7 +973,7 @@ msgstr "インドネシア語"
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr "無効なライブラリが {0} に見つかりました: {1}"
+msgstr "「{0}」に、無効なライブラリ「{1}」があります。"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1001,11 +1001,11 @@ msgstr "リトアニア語"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "スケッチが使用できるメモリが少なくなっています。動作が不安定になる可能性があります。"
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "マレー語（マレーシア）"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1017,11 +1017,11 @@ msgstr "メッセージ"
 
 #: ../../../processing/app/preproc/PdePreprocessor.java:412
 msgid "Missing the */ from the end of a /* comment */"
-msgstr ""
+msgstr "「/* ... */」形式のコメントのうち、終わりの「*/」が有りません。"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "指示された動作モードは存在しません。"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1033,7 +1033,7 @@ msgstr "移動中"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "複数のファイルを指定することはできません。"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1041,7 +1041,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:158
 msgid "N'Ko"
-msgstr ""
+msgstr "ンコ語"
 
 #: Sketch.java:282
 msgid "Name for new file:"
@@ -1049,7 +1049,7 @@ msgstr "新規ファイルの名前："
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
-msgstr ""
+msgstr "ネパール語"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1139,12 +1139,12 @@ msgstr ""
 
 #: ../../../processing/app/Base.java:309
 msgid "No valid configured cores found! Exiting..."
-msgstr "有効な構成されたコアが見つかりません！ 終了しています..."
+msgstr "正しく構成されたコアが有りません。終了します。"
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
-msgstr "有効なハードウェア定義が フォルダ {0} に見つかりません。"
+msgstr "フォルダ「{0}」に、有効なハードウェア定義が有りません。"
 
 #: Base.java:191
 msgid "Non-fatal error while setting the Look & Feel."
@@ -1156,21 +1156,21 @@ msgstr "エラー"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "ノルウェー語"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
-msgstr ""
+msgstr "ノルウェー語（ブークモール）"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "ノルウェー語（ニーノシュク）"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr "十分なメモリがありません。\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size\nにてフットプリントを節約するための方法を閲覧できます。"
+msgstr "スケッチが使用するメモリが足りません。メモリを節約する方法については、以下のURLのページを参照してください。http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1183,7 +1183,7 @@ msgstr "スケッチにファイルを1個追加しました。"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr ""
+msgstr "「--verify」「--upload」「--get-pref」のいずれかを指定してください。"
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1211,7 +1211,7 @@ msgstr "プリンタの設定..."
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
-msgstr "パスワード:"
+msgstr "パスワード："
 
 #: Editor.java:1189 Editor.java:2731
 msgid "Paste"
@@ -1223,7 +1223,7 @@ msgstr "ペルシャ語"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "ペルシャ語（イラン）"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1231,7 +1231,7 @@ msgstr "「スケッチ」メニューの「ライブラリを使用」で、SPI
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
-msgstr ""
+msgstr "「スケッチ」メニューの「ライブラリを使用」で、Wireライブラリを読み込んでください。"
 
 #: Base.java:239
 msgid "Please install JDK 1.5 or later"
@@ -1240,7 +1240,7 @@ msgstr "JDKのバージョン1.5以降をインストールしてください。
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
-msgstr ""
+msgstr "「ツール」メニューの「書込装置」から、書込装置を選んでください。"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1248,19 +1248,19 @@ msgstr "ポーランド語"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr "ポート"
+msgstr "シリアルポート"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr ""
+msgstr "ポルトガル語"
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "ポルトガル語（ブラジル）"
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr ""
+msgstr "ポルトガル語（ポルトガル）"
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
@@ -1300,11 +1300,11 @@ msgstr "プラットフォームを設定する際に問題が発生しました
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr "ボードのフォルダ /www/sd へのアクセスに問題"
+msgstr "マイコンボードのフォルダ「/www/sd」にアクセスできません。"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
 msgid "Problem accessing files in folder "
-msgstr "フォルダのファイルへのアクセスに問題"
+msgstr "フォルダ内のファイルにアクセスできません。"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1406,7 +1406,7 @@ msgstr "スケッチのフォルダの保存先..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "検証または書き込みを行う前にスケッチを保存する"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1414,7 +1414,7 @@ msgstr "保存中です..."
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "全てのタブを検索"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1438,7 +1438,7 @@ msgstr "スケッチブックの保存場所を決める"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr "選択されたボードは '{0}' コア (未インストール) に依存しています。"
+msgstr "選択されたマイコンボードは「{0}」コアに依存していますが、インストールしてありません。"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1464,7 +1464,7 @@ msgstr "シリアルポート「{0}」が存在しません。\nシリアルポ�
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "シリアルポート"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1517,7 +1517,7 @@ msgstr "スケッチが大きすぎます。http://www.arduino.cc/en/Guide/Troub
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr "スケッチが プログラムストレージ領域の {0}バイト ({2}%%) を使用しています。最大は {1}バイト です。"
+msgstr "最大{1}バイトのフラッシュメモリのうち、スケッチが{0}バイト（{2}%%）を使っています。"
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1537,15 +1537,15 @@ msgstr ""
 
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
-msgstr "スケッチ (*.ino, *pde)"
+msgstr "スケッチ（*.inoおよび*pde）"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "スロバキア語"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
-msgstr ""
+msgstr "スロベニア語"
 
 #: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
 msgid ""
@@ -1575,11 +1575,11 @@ msgstr "終わりにしましょう"
 
 #: ../../../../../app/src/processing/app/Preferences.java:187
 msgid "Swahili"
-msgstr ""
+msgstr "スワヒリ語"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr ""
+msgstr "スウェーデン語"
 
 #: Preferences.java:84
 msgid "System Default"
@@ -1587,7 +1587,7 @@ msgstr "パソコンの設定に従う"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "タロッサ語"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -1599,7 +1599,7 @@ msgstr "「BYTE」キーワードは、使用できなくなりました。"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "「--upload」オプションでは、一度に1個のファイルだけを指定することができます。"
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1715,19 +1715,19 @@ msgstr "トラブルシューティング"
 
 #: ../../../processing/app/Preferences.java:117
 msgid "Turkish"
-msgstr ""
+msgstr "トルコ語"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
-msgstr "コンソールへアクセスするためにボードのパスワードを入力"
+msgstr "コンソールにアクセスするために、マイコンボードのパスワードを入力してください。"
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr "新しいスケッチをアップロードするためにボードのパスワードを入力"
+msgstr "スケッチを書き込むために、マイコンボードのパスワードを入力してください。"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
-msgstr ""
+msgstr "ウクライナ語"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -1736,15 +1736,15 @@ msgstr ""
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
-msgstr "接続出来ません：再試行中"
+msgstr "接続できません：再試行中"
 
 #: ../../../processing/app/Editor.java:2526
 msgid "Unable to connect: wrong password?"
-msgstr "接続できません: パスワードが間違っていませんか？"
+msgstr "接続できません：パスワードが間違っていませんか？"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr "シリアルモニタを開けません"
+msgstr "シリアルモニタを開けません。"
 
 #: Sketch.java:1432
 #, java-format
@@ -1784,7 +1784,7 @@ msgstr "書き込みを中止しました。"
 
 #: ../../../processing/app/Sketch.java:1678
 msgid "Upload cancelled"
-msgstr "アップロードがキャンセルされました"
+msgstr "書き込みを中止しました。"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
@@ -1796,7 +1796,7 @@ msgstr "マイコンボードに書き込んでいます..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "ウルドゥー語（パキスタン）"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -1830,7 +1830,7 @@ msgstr "書き込みを検証する"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr ""
+msgstr "ベトナム語"
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
@@ -1849,7 +1849,7 @@ msgstr "警告"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "西フリジア語"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1997,7 +1997,7 @@ msgstr "コンパイル "
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr "接続しました！"
+msgstr "接続されました！"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
@@ -2005,7 +2005,7 @@ msgstr "createNewFile()がfalseを返しました。"
 
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
-msgstr "ファイル > 設定 で有効にする"
+msgstr ""
 
 #: Editor.java:1108
 msgid "http://arduino.cc/"

@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-14 17:10+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2015-04-03 22:33+0000\n"
+"Last-Translator: Erick Simões <erick.simoes@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/arduino-ide-15/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,7 +43,7 @@ msgstr "(editar apenas quando o Arduino não estiver rodando)"
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload e --verbose-build só podem ser usados juntos com --verify ou --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -105,7 +105,7 @@ msgstr "Adicionar Biblioteca..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -120,17 +120,17 @@ msgstr "Um erro ocorreu ao tentar corrigir a codificação do arquivo.\nNão ten
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "Ocorreu um erro enquanto o sketch era carregado"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "Ocorreu um erro enquanto o sketch era verificado"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "Ocorreu um erro enquanto o sketch era verificado/carregado"
 
 #: Base.java:228
 msgid ""
@@ -176,7 +176,7 @@ msgstr "Placas Arduino AVR"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino só pode abrir seus próprios sketches\ne outros arquivos terminados por .ino ou .pde"
 
 #: Base.java:1682
 msgid ""
@@ -220,7 +220,7 @@ msgstr "Argumento requerido para --curdir"
 
 #: ../../../processing/app/Base.java:385
 msgid "Argument required for --get-pref"
-msgstr ""
+msgstr "Argumento requerido para --get-pref"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -244,7 +244,7 @@ msgstr "Asturiano"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "Requer autorização"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -301,7 +301,7 @@ msgstr "Bielorrusso"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengali (Índia)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -363,7 +363,7 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Não é possível encontrar o sketch no local especificado"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -601,7 +601,7 @@ msgstr "Tcheco"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Czech (República Tcheca)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -609,7 +609,7 @@ msgstr "Dinamarquês"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Dinamarquês (Dinamarca)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -648,7 +648,7 @@ msgstr "Gravação do bootloader concluída."
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "Compilação concluída"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -660,7 +660,7 @@ msgstr "Impressão terminada."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "Carregamento concluído"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -767,7 +767,7 @@ msgstr "Erro ao gravar bootloader: faltando o parâmetro de configuração '{0}'
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Erro durante a compilação: necessário configurar '{0}' parâmetros"
 
 #: SketchCode.java:83
 #, java-format
@@ -780,7 +780,7 @@ msgstr "Erro durante impressão."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "Erro durante o carregamento"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -791,11 +791,11 @@ msgstr "Erro ao carregar: faltando o parâmetro de configuração '{0}'"
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "Erro durante a verificação"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Erro durante a verificação/carregamento"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -884,7 +884,7 @@ msgstr "Galício"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galiza (Espanha)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1006,11 +1006,11 @@ msgstr "Lituano"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "Pouca memória disponível, problemas de estabilidade podem ocorrer."
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malay (Malásia)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1026,7 +1026,7 @@ msgstr "Falta o */ do final de um /* comentário */"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "Modo não suportado"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1038,7 +1038,7 @@ msgstr "Movendo"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "Múltiplos arquivos não suportados"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1118,7 +1118,7 @@ msgstr "Nenhum final-de-linha"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "Sem parâmetros"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1132,7 +1132,7 @@ msgstr "Sem referência disponível para \"{0}\""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "No sketch"
-msgstr ""
+msgstr "Sem sketch"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
@@ -1161,7 +1161,7 @@ msgstr "Nada"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
-msgstr ""
+msgstr "Norueguês"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1169,7 +1169,7 @@ msgstr "Norueguês (Bokmål)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:182
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Novo Norueguês"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1188,7 +1188,7 @@ msgstr "Um arquivo adicionado ao sketch."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr ""
+msgstr "Apenas --verify, --upload ou --get-pref são suportados"
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1469,7 +1469,7 @@ msgstr "Porta serial {0} não encontrada.\nTentar carregar usando outra porta se
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Portas seriais"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1546,7 +1546,7 @@ msgstr "Sketches (*.ino, *.pde)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Eslovaco"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
