@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 public class PasswordAuthorizationDialog extends JDialog {
 
@@ -41,7 +41,7 @@ public class PasswordAuthorizationDialog extends JDialog {
 
     icon.setIcon(new ImageIcon(new File(Base.getContentFile("lib"), "theme/lock.png").getAbsolutePath()));
 
-    passwordLabel.setText(_("Password:"));
+    passwordLabel.setText(getString("Password:"));
 
     passwordField.setText("");
     passwordField.addActionListener(new ActionListener() {
@@ -50,14 +50,14 @@ public class PasswordAuthorizationDialog extends JDialog {
       }
     });
 
-    uploadButton.setText(_("Upload"));
+    uploadButton.setText(getString("Upload"));
     uploadButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         uploadButtonPressed(evt);
       }
     });
 
-    cancelButton.setText(_("Cancel"));
+    cancelButton.setText(getString("Cancel"));
     cancelButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         cancelButtonPressed(evt);

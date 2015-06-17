@@ -3,7 +3,7 @@ package processing.app;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import org.apache.commons.compress.utils.IOUtils;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,8 +52,8 @@ class EditorConsoleStream extends OutputStream {
           stderrFile = new FileOutputStream(errFile);
         }
       } catch (IOException e) {
-        Base.showWarning(_("Console Error"),
-                         _("A problem occurred while trying to open the\nfiles used to store the console output."),
+        Base.showWarning(getString("Console Error"),
+                         getString("A problem occurred while trying to open the\nfiles used to store the console output."),
                          e);
       }
       consoleOut = new PrintStream(new EditorConsoleStream(false));

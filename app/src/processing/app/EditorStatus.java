@@ -32,7 +32,7 @@ import processing.app.helpers.OSUtils;
 
 import java.awt.datatransfer.*;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 
 /**
@@ -458,20 +458,20 @@ public class EditorStatus extends JPanel /*implements ActionListener*/ {
       add(progressBar);
       progressBar.setVisible(false);
       
-      copyErrorButton = new JButton(_("Copy error messages"));
+      copyErrorButton = new JButton(getString("Copy error messages"));
       add(copyErrorButton);
       copyErrorButton.setVisible(false);
       copyErrorButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           String message = "";
-          message += _("Arduino: ") + BaseNoGui.VERSION_NAME_LONG + " (" + System.getProperty("os.name") + "), ";
-          message += _("Board: ") + "\"" + BaseNoGui.getBoardPreferences().get("name") + "\"\n\n";
+          message += getString("Arduino: ") + BaseNoGui.VERSION_NAME_LONG + " (" + System.getProperty("os.name") + "), ";
+          message += getString("Board: ") + "\"" + BaseNoGui.getBoardPreferences().get("name") + "\"\n\n";
           message += editor.console.consoleTextPane.getText().trim();
           if ((PreferencesData.getBoolean("build.verbose")) == false) {
             message += "\n\n";
-            message += "  " + _("This report would have more information with") + "\n";
-            message += "  \"" + _("Show verbose output during compilation") + "\"\n";
-            message += "  " + _("enabled in File > Preferences.") + "\n";
+            message += "  " + getString("This report would have more information with") + "\n";
+            message += "  \"" + getString("Show verbose output during compilation") + "\"\n";
+            message += "  " + getString("enabled in File > Preferences.") + "\n";
           }
           Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
           StringSelection data = new StringSelection(message);

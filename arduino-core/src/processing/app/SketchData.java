@@ -2,7 +2,7 @@ package processing.app;
 
 import com.google.common.collect.FluentIterable;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 import java.io.File;
 import java.io.IOException;
@@ -135,7 +135,7 @@ public class SketchData {
     }
 
     if (getCodeCount() == 0)
-      throw new IOException(_("No valid code files found"));
+      throw new IOException(getString("No valid code files found"));
 
     // move the main class to the first tab
     // start at 1, if it's at zero, don't bother

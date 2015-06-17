@@ -48,7 +48,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 public class SSHUploader extends Uploader {
 
@@ -72,7 +72,7 @@ public class SSHUploader extends Uploader {
   @Override
   public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws RunnerException {
     if (usingProgrammer) {
-      throw new RunnerException(_("Network upload using programmer not supported"));
+      throw new RunnerException(getString("Network upload using programmer not supported"));
     }
 
     Session session = null;
@@ -160,11 +160,11 @@ public class SSHUploader extends Uploader {
       return false;
     }
     if (!www.canExecute()) {
-      warningsAccumulator.add(_("Problem accessing files in folder ") + www);
+      warningsAccumulator.add(getString("Problem accessing files in folder ") + www);
       return false;
     }
     if (!ssh.execSyncCommand("special-storage-available")) {
-      warningsAccumulator.add(_("Problem accessing board folder /www/sd"));
+      warningsAccumulator.add(getString("Problem accessing board folder /www/sd"));
       return false;
     }
     return true;

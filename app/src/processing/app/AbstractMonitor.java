@@ -1,6 +1,6 @@
 package processing.app;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -107,7 +107,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     upperPane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
     textField = new JTextField(40);
-    sendButton = new JButton(_("Send"));
+    sendButton = new JButton(getString("Send"));
 
     upperPane.add(textField);
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
@@ -119,16 +119,16 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
     pane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
-    autoscrollBox = new JCheckBox(_("Autoscroll"), true);
+    autoscrollBox = new JCheckBox(getString("Autoscroll"), true);
 
-    noLineEndingAlert = new JLabel(I18n.format(_("You've pressed {0} but nothing was sent. Should you select a line ending?"), _("Send")));
+    noLineEndingAlert = new JLabel(I18n.format(getString("You've pressed {0} but nothing was sent. Should you select a line ending?"), getString("Send")));
     noLineEndingAlert.setToolTipText(noLineEndingAlert.getText());
     noLineEndingAlert.setForeground(pane.getBackground());
     Dimension minimumSize = new Dimension(noLineEndingAlert.getMinimumSize());
     minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
     noLineEndingAlert.setMinimumSize(minimumSize);
 
-    lineEndings = new JComboBox(new String[]{_("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR")});
+    lineEndings = new JComboBox(new String[]{getString("No line ending"), getString("Newline"), getString("Carriage return"), getString("Both NL & CR")});
     lineEndings.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
@@ -144,7 +144,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
     serialRates = new JComboBox();
     for (String rate : serialRateStrings) {
-      serialRates.addItem(rate + " " + _("baud"));
+      serialRates.addItem(rate + " " + getString("baud"));
     }
 
     serialRates.setMaximumSize(serialRates.getMinimumSize());

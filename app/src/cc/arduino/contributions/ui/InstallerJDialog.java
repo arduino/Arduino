@@ -46,7 +46,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
-import static processing.app.I18n._;
+import static processing.app.I18n.getString;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -95,7 +95,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       categoryChooser.setMaximumRowCount(20);
       categoryChooser.setEnabled(false);
 
-      filterField = new FilterJTextField(_("Filter your search...")) {
+      filterField = new FilterJTextField(getString("Filter your search...")) {
         @Override
         protected void onFilter(String[] _filters) {
           filters = _filters;
@@ -109,7 +109,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       filtersContainer = new JPanel();
       filtersContainer.setLayout(new BoxLayout(filtersContainer, BoxLayout.X_AXIS));
       filtersContainer.add(Box.createHorizontalStrut(5));
-      filtersContainer.add(new JLabel(_("Type")));
+      filtersContainer.add(new JLabel(getString("Type")));
       filtersContainer.add(Box.createHorizontalStrut(5));
       filtersContainer.add(categoryChooser);
       filtersContainer.add(Box.createHorizontalStrut(5));
@@ -172,7 +172,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
     errorMessage.setForeground(Color.RED);
 
     {
-      JButton cancelButton = new JButton(_("Cancel"));
+      JButton cancelButton = new JButton(getString("Cancel"));
       cancelButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent arg0) {
@@ -185,7 +185,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       progressBox.add(Box.createHorizontalStrut(5));
       progressBox.add(cancelButton);
 
-      dismissErrorMessageButton = new JButton(_("OK"));
+      dismissErrorMessageButton = new JButton(getString("OK"));
       dismissErrorMessageButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent arg0) {
@@ -194,7 +194,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
         }
       });
 
-      closeButton = new JButton(_("Close"));
+      closeButton = new JButton(getString("Close"));
       closeButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent arg0) {
