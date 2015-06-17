@@ -44,7 +44,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 public class ArchiveExtractor {
 
@@ -194,7 +194,7 @@ public class ArchiveExtractor {
           // Symbolic links are referenced with relative paths
           outputLinkedFile = new File(linkName);
           if (outputLinkedFile.isAbsolute()) {
-            System.err.println(I18n.format(getString("Warning: file {0} links to an absolute path {1}"), outputFile, outputLinkedFile));
+            System.err.println(I18n.format(_("Warning: file {0} links to an absolute path {1}"), outputFile, outputLinkedFile));
             System.err.println();
           }
         }

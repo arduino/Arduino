@@ -61,7 +61,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 import static processing.app.I18n.format;
 
 @SuppressWarnings("serial")
@@ -79,7 +79,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
 
   public ContributedLibraryTableCell() {
     {
-      installButton = new JButton(getString("Install"));
+      installButton = new JButton(_("Install"));
       installButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -90,7 +90,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
-    downgradeButton = new JButton(getString("Install"));
+    downgradeButton = new JButton(_("Install"));
     downgradeButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -260,7 +260,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     Collections.sort(uninstalledReleases, new ReverseComparator<DownloadableContribution>(new DownloadableContributionVersionComparator()));
 
     downgradeChooser.removeAllItems();
-    downgradeChooser.addItem(getString("Select version"));
+    downgradeChooser.addItem(_("Select version"));
 
     final List<ContributedLibrary> uninstalledPreviousReleases = Lists.newLinkedList();
     final List<ContributedLibrary> uninstalledNewerReleases = Lists.newLinkedList();
@@ -323,10 +323,10 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
     }
     if (installable) {
-      installButton.setText(getString("Install"));
+      installButton.setText(_("Install"));
     }
     if (upgradable) {
-      installButton.setText(getString("Update"));
+      installButton.setText(_("Update"));
     }
     installButton.setVisible(installable || upgradable);
     installButtonPlaceholder.setVisible(!(installable || upgradable));
@@ -360,9 +360,9 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     if (installed != null) {
       String installedVer = installed.getParsedVersion();
       if (installedVer == null) {
-        desc += " " + getString("Version unknown");
+        desc += " " + _("Version unknown");
       } else {
-        desc += " " + format(getString("Version <b>{0}</b>"), installedVer);
+        desc += " " + format(_("Version <b>{0}</b>"), installedVer);
       }
     }
     desc += "</font>";

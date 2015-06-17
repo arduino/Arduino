@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 
 public class Archiver implements Tool {
@@ -53,7 +53,7 @@ public class Archiver implements Tool {
 
 
   public String getMenuTitle() {
-    return getString("Archive Sketch");
+    return _("Archive Sketch");
   }
   
   
@@ -79,8 +79,8 @@ public class Archiver implements Tool {
       e.printStackTrace();
     }
     if (!success) {
-      Base.showWarning(getString("Couldn't archive sketch"),
-                       getString("Archiving the sketch has been canceled because\nthe sketch couldn't save properly."), null);
+      Base.showWarning(_("Couldn't archive sketch"),
+                       _("Archiving the sketch has been canceled because\nthe sketch couldn't save properly."), null);
       return;
     }
 
@@ -113,7 +113,7 @@ public class Archiver implements Tool {
     } while (newbie.exists());
 
     // open up a prompt for where to save this fella
-    FileDialog fd = new FileDialog(editor, getString("Archive sketch as:"), FileDialog.SAVE);
+    FileDialog fd = new FileDialog(editor, _("Archive sketch as:"), FileDialog.SAVE);
     fd.setDirectory(parent.getAbsolutePath());
     fd.setFile(newbie.getName());
     fd.setVisible(true);
@@ -142,7 +142,7 @@ public class Archiver implements Tool {
         IOUtils.closeQuietly(zos);
       }
     } else {
-      editor.statusNotice(getString("Archive sketch canceled."));
+      editor.statusNotice(_("Archive sketch canceled."));
     }
   }
 

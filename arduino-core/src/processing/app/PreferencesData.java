@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.MissingResourceException;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 
 public class PreferencesData {
@@ -49,7 +49,7 @@ public class PreferencesData {
     try {
       prefs.load(new File(BaseNoGui.getContentFile("lib"), PREFS_FILE));
     } catch (IOException e) {
-      BaseNoGui.showError(null, getString("Could not read default settings.\n" +
+      BaseNoGui.showError(null, _("Could not read default settings.\n" +
         "You'll need to reinstall Arduino."), e);
     }
 
@@ -66,8 +66,8 @@ public class PreferencesData {
       try {
         prefs.load(preferencesFile);
       } catch (IOException ex) {
-        BaseNoGui.showError(getString("Error reading preferences"),
-          I18n.format(getString("Error reading the preferences file. "
+        BaseNoGui.showError(_("Error reading preferences"),
+          I18n.format(_("Error reading the preferences file. "
               + "Please delete (or move)\n"
               + "{0} and restart Arduino."),
             preferencesFile.getAbsolutePath()), ex);

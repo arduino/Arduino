@@ -42,7 +42,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 public class FindReplace extends javax.swing.JFrame {
 
@@ -142,25 +142,25 @@ public class FindReplace extends javax.swing.JFrame {
     replaceAllButton = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle(getString("Find"));
+    setTitle(_("Find"));
 
-    findLabel.setText(getString("Find:"));
+    findLabel.setText(_("Find:"));
 
     findField.setColumns(20);
 
-    replaceLabel.setText(getString("Replace with:"));
+    replaceLabel.setText(_("Replace with:"));
 
     replaceField.setColumns(20);
 
     ignoreCaseBox.setSelected(true);
-    ignoreCaseBox.setText(getString("Ignore Case"));
+    ignoreCaseBox.setText(_("Ignore Case"));
 
     wrapAroundBox.setSelected(true);
-    wrapAroundBox.setText(getString("Wrap Around"));
+    wrapAroundBox.setText(_("Wrap Around"));
 
-    searchAllFilesBox.setText(getString("Search all Sketch Tabs"));
+    searchAllFilesBox.setText(_("Search all Sketch Tabs"));
 
-    findButton.setText(getString("Find"));
+    findButton.setText(_("Find"));
     findButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         findButtonActionPerformed(evt);
@@ -168,7 +168,7 @@ public class FindReplace extends javax.swing.JFrame {
     });
     buttonsContainer.add(findButton);
 
-    previousButton.setText(getString("Previous"));
+    previousButton.setText(_("Previous"));
     previousButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         previousButtonActionPerformed(evt);
@@ -176,7 +176,7 @@ public class FindReplace extends javax.swing.JFrame {
     });
     buttonsContainer.add(previousButton);
 
-    replaceFindButton.setText(getString("Replace & Find"));
+    replaceFindButton.setText(_("Replace & Find"));
     replaceFindButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         replaceFindButtonActionPerformed(evt);
@@ -184,7 +184,7 @@ public class FindReplace extends javax.swing.JFrame {
     });
     buttonsContainer.add(replaceFindButton);
 
-    replaceButton.setText(getString("Replace"));
+    replaceButton.setText(_("Replace"));
     replaceButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         replaceButtonActionPerformed(evt);
@@ -192,7 +192,7 @@ public class FindReplace extends javax.swing.JFrame {
     });
     buttonsContainer.add(replaceButton);
 
-    replaceAllButton.setText(getString("Replace All"));
+    replaceAllButton.setText(_("Replace All"));
     replaceAllButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         replaceAllButtonActionPerformed(evt);

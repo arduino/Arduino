@@ -22,7 +22,7 @@
 
 package processing.app;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -89,7 +89,7 @@ public class Serial implements SerialPortEventListener {
       serialPort.closePort();
       return true;
     } catch (SerialPortException e) {
-      throw new SerialException(I18n.format(getString("Error touching serial port ''{0}''."), iname), e);
+      throw new SerialException(I18n.format(_("Error touching serial port ''{0}''."), iname), e);
     } finally {
       if (serialPort.isOpened()) {
         try {
@@ -124,11 +124,11 @@ public class Serial implements SerialPortEventListener {
       port.setParams(rate, databits, stopbits, parity, true, true);
       port.addEventListener(this);
     } catch (Exception e) {
-      throw new SerialException(I18n.format(getString("Error opening serial port ''{0}''."), iname), e);
+      throw new SerialException(I18n.format(_("Error opening serial port ''{0}''."), iname), e);
     }
 
     if (port == null) {
-      throw new SerialNotFoundException(I18n.format(getString("Serial port ''{0}'' not found. Did you select the right one from the Tools > Serial Port menu?"), iname));
+      throw new SerialNotFoundException(I18n.format(_("Serial port ''{0}'' not found. Did you select the right one from the Tools > Serial Port menu?"), iname));
     }
   }
 
@@ -240,7 +240,7 @@ public class Serial implements SerialPortEventListener {
    * I think of something slightly more intelligent to do.
    */
   static public void errorMessage(String where, Throwable e) {
-    System.err.println(I18n.format(getString("Error inside Serial.{0}()"), where));
+    System.err.println(I18n.format(_("Error inside Serial.{0}()"), where));
     e.printStackTrace();
   }
 }

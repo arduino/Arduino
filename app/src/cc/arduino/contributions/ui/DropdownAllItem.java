@@ -33,12 +33,12 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.filters.NoopPredicate;
 import com.google.common.base.Predicate;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
 
   public String toString() {
-    return getString("All");
+    return _("All");
   }
 
   @Override

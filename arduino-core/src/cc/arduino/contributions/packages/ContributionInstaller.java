@@ -54,7 +54,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 import static processing.app.I18n.format;
 
 public class ContributionInstaller {
@@ -88,7 +88,7 @@ public class ContributionInstaller {
       ContributedTool tool = toolsIterator.next();
       DownloadableContribution downloadable = tool.getDownloadableContribution(platform);
       if (downloadable == null) {
-        throw new Exception(format(getString("Tool {0} is not available for your operating system."), tool.getName()));
+        throw new Exception(format(_("Tool {0} is not available for your operating system."), tool.getName()));
       }
       if (downloadable.isInstalled()) {
         toolsIterator.remove();
@@ -101,13 +101,13 @@ public class ContributionInstaller {
     // Download all
     try {
       // Download platform
-      downloader.download(contributedPlatform, progress, getString("Downloading boards definitions."));
+      downloader.download(contributedPlatform, progress, _("Downloading boards definitions."));
       progress.stepDone();
 
       // Download tools
       int i = 1;
       for (ContributedTool tool : tools) {
-        String msg = format(getString("Downloading tools ({0}/{1})."), i, tools.size());
+        String msg = format(_("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
         downloader.download(tool.getDownloadableContribution(platform), progress, msg);
         progress.stepDone();
@@ -128,7 +128,7 @@ public class ContributionInstaller {
     File toolsFolder = new File(packageFolder, "tools");
     int i = 1;
     for (ContributedTool tool : tools) {
-      progress.setStatus(format(getString("Installing tools ({0}/{1})..."), i, tools.size()));
+      progress.setStatus(format(_("Installing tools ({0}/{1})..."), i, tools.size()));
       onProgress(progress);
       i++;
       DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
@@ -140,7 +140,7 @@ public class ContributionInstaller {
       try {
         executePostInstallScriptIfAny(destFolder);
       } catch (IOException e) {
-        errors.add(getString("Error running post install script"));
+        errors.add(_("Error running post install script"));
       }
       toolContrib.setInstalled(true);
       toolContrib.setInstalledFolder(destFolder);
@@ -148,7 +148,7 @@ public class ContributionInstaller {
     }
 
     // Unpack platform on the correct location
-    progress.setStatus(getString("Installing boards..."));
+    progress.setStatus(_("Installing boards..."));
     onProgress(progress);
     File platformFolder = new File(packageFolder, "hardware" + File.separator + contributedPlatform.getArchitecture());
     File destFolder = new File(platformFolder, contributedPlatform.getParsedVersion());
@@ -158,7 +158,7 @@ public class ContributionInstaller {
     contributedPlatform.setInstalledFolder(destFolder);
     progress.stepDone();
 
-    progress.setStatus(getString("Installation completed!"));
+    progress.setStatus(_("Installation completed!"));
     onProgress(progress);
 
     return errors;
@@ -263,7 +263,7 @@ public class ContributionInstaller {
         downloadedPackagedIndexFilesAccumulator.remove(packageIndex.getName());
         packageIndex.delete();
         packageIndexSignature.delete();
-        System.err.println(I18n.format(getString("{0} file signature verification failed. File ignored."), packageIndexUrl));
+        System.err.println(I18n.format(_("{0} file signature verification failed. File ignored."), packageIndexUrl));
       }
     } catch (Exception e) {
       //ignore errors
@@ -271,7 +271,7 @@ public class ContributionInstaller {
   }
 
   private File download(MultiStepProgress progress, String packageIndexUrl) throws Exception {
-    String statusText = getString("Downloading platforms index...");
+    String statusText = _("Downloading platforms index...");
     URL url = new URL(packageIndexUrl);
     String[] urlPathParts = url.getFile().split("/");
     File outputFile = indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);

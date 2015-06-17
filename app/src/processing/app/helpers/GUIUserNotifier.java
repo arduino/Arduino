@@ -2,7 +2,7 @@ package processing.app.helpers;
 
 import processing.app.Base;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 import java.awt.Frame;
 
@@ -22,7 +22,7 @@ public class GUIUserNotifier extends UserNotifier {
    * for errors that allow P5 to continue running.
    */
   public void showError(String title, String message, Throwable e, int exit_code) {
-    if (title == null) title = getString("Error");
+    if (title == null) title = _("Error");
 
     JOptionPane.showMessageDialog(base.getActiveEditor(), message, title,
                                   JOptionPane.ERROR_MESSAGE);
@@ -36,7 +36,7 @@ public class GUIUserNotifier extends UserNotifier {
    * much of a bummer, but something to notify the user about.
    */
   public void showMessage(String title, String message) {
-    if (title == null) title = getString("Message");
+    if (title == null) title = _("Message");
 
     JOptionPane.showMessageDialog(base.getActiveEditor(), message, title,
                                   JOptionPane.INFORMATION_MESSAGE);
@@ -46,7 +46,7 @@ public class GUIUserNotifier extends UserNotifier {
    * Non-fatal error message with optional stack trace side dish.
    */
   public void showWarning(String title, String message, Exception e) {
-    if (title == null) title = getString("Warning");
+    if (title == null) title = _("Warning");
 
     JOptionPane.showMessageDialog(base.getActiveEditor(), message, title,
                                   JOptionPane.WARNING_MESSAGE);

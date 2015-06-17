@@ -35,7 +35,7 @@ import cc.arduino.packages.discoverers.SerialDiscovery;
 import java.util.ArrayList;
 import java.util.List;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 public class DiscoveryManager {
 
@@ -51,7 +51,7 @@ public class DiscoveryManager {
       try {
         d.start();
       } catch (Exception e) {
-        System.err.println(getString("Error starting discovery method: ") + d.getClass());
+        System.err.println(_("Error starting discovery method: ") + d.getClass());
         e.printStackTrace();
       }
     }

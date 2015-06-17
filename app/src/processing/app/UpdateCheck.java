@@ -33,7 +33,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Random;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 
 /**
@@ -51,7 +51,7 @@ import static processing.app.I18n.getString;
  */
 public class UpdateCheck implements Runnable {
   Base base;
-  String downloadURL = getString("http://www.arduino.cc/latest.txt");
+  String downloadURL = _("http://www.arduino.cc/latest.txt");
 
   static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -101,22 +101,22 @@ public class UpdateCheck implements Runnable {
       PreferencesData.set("update.last", String.valueOf(now));
 
       String prompt =
-        getString("A new version of Arduino is available,\n" +
+        _("A new version of Arduino is available,\n" +
           "would you like to visit the Arduino download page?");
         
       if (base.activeEditor != null) {
         if (latest > BaseNoGui.REVISION) {
-          Object[] options = { getString("Yes"), getString("No") };
+          Object[] options = { _("Yes"), _("No") };
           int result = JOptionPane.showOptionDialog(base.activeEditor,
                                                     prompt,
-                                                    getString("Update"),
+                                                    _("Update"),
                                                     JOptionPane.YES_NO_OPTION,
                                                     JOptionPane.QUESTION_MESSAGE,
                                                     null,
                                                     options,
                                                     options[0]);
           if (result == JOptionPane.YES_OPTION) {
-            Base.openURL(getString("http://www.arduino.cc/en/Main/Software"));
+            Base.openURL(_("http://www.arduino.cc/en/Main/Software"));
           }
         }
       }

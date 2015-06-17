@@ -24,7 +24,7 @@ package processing.app.tools;
 
 import processing.app.*;
 import processing.core.*;
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 import java.io.*;
 

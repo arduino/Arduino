@@ -23,7 +23,7 @@
 
 package processing.app.debug;
 
-import static processing.app.I18n.getString;
+import static processing.app.I18n._;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -88,8 +88,8 @@ public class Compiler implements MessageConsumer {
 
   static public String build(SketchData data, String buildPath, File tempBuildFolder, ProgressListener progListener, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
     if (SketchData.checkSketchFile(data.getPrimaryFile()) == null)
-      BaseNoGui.showError(getString("Bad file selected"),
-                          getString("Bad sketch primary file or bad sketch directory structure"), null);
+      BaseNoGui.showError(_("Bad file selected"),
+                          _("Bad sketch primary file or bad sketch directory structure"), null);
 
     String primaryClassName = data.getName() + ".cpp";
     Compiler compiler = new Compiler(data, buildPath, primaryClassName);
@@ -107,7 +107,7 @@ public class Compiler implements MessageConsumer {
         out = new PrintWriter(buildPrefsFile);
         out.print(newBuildPrefs);
       } catch (IOException e) {
-        System.err.println(getString("Could not write build preferences file"));
+        System.err.println(_("Could not write build preferences file"));
       } finally {
         IOUtils.closeQuietly(out);
       }
@@ -151,8 +151,8 @@ public class Compiler implements MessageConsumer {
     boolean success = false;
 
     if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) {
-      BaseNoGui.showError(getString("Authorization required"),
-                          getString("No authorization data found"), null);
+      BaseNoGui.showError(_("Authorization required"),
+                          _("No authorization data found"), null);
     }
 
     boolean useNewWarningsAccumulator = false;
@@ -171,7 +171,7 @@ public class Compiler implements MessageConsumer {
 
     if (useNewWarningsAccumulator) {
       for (String warning : warningsAccumulator) {
-        System.out.print(getString("Warning"));
+        System.out.print(_("Warning"));
         System.out.print(": ");
         System.out.println(warning);
       }
@@ -215,12 +215,12 @@ public class Compiler implements MessageConsumer {
     try {
       previousPrefs = FileUtils.readFileToString(buildPrefsFile);
     } catch (IOException e) {
-      System.err.println(getString("Could not read prevous build preferences file, rebuilding all"));
+      System.err.println(_("Could not read prevous build preferences file, rebuilding all"));
       return true;
     }
 
     if (!previousPrefs.equals(newBuildPrefs)) {
-      System.out.println(getString("Build options changed, rebuilding all"));
+      System.out.println(_("Build options changed, rebuilding all"));
       return true;
     } else {
       return false;
@@ -309,7 +309,7 @@ public class Compiler implements MessageConsumer {
     try {
       sizes = sizer.computeSize();
     } catch (RunnerException e) {
-      System.err.println(I18n.format(getString("Couldn't determine program size: {0}"),
+      System.err.println(I18n.format(_("Couldn't determine program size: {0}"),
                                      e.getMessage()));
       return;
     }
@@ -318,33 +318,33 @@ public class Compiler implements MessageConsumer {
     long dataSize = sizes[1];
     System.out.println();
     System.out.println(I18n
-                       .format(getString("Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} bytes."),
+                       .format(_("Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} bytes."),
                                textSize, maxTextSize, textSize * 100 / maxTextSize));
     if (dataSize >= 0) {
       if (maxDataSize > 0) {
         System.out
             .println(I18n
                     .format(
-                            getString("Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes for local variables. Maximum is {1} bytes."),
+                            _("Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes for local variables. Maximum is {1} bytes."),
                             dataSize, maxDataSize, dataSize * 100 / maxDataSize,
                             maxDataSize - dataSize));
       } else {
         System.out.println(I18n
-            .format(getString("Global variables use {0} bytes of dynamic memory."), dataSize));
+            .format(_("Global variables use {0} bytes of dynamic memory."), dataSize));
       }
     }
 
     if (textSize > maxTextSize)
       throw new RunnerException(
-          getString("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
+          _("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
 
     if (maxDataSize > 0 && dataSize > maxDataSize)
       throw new RunnerException(
-          getString("Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing your footprint."));
+          _("Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing your footprint."));
 
     int warnDataPercentage = Integer.parseInt(prefs.get("build.warn_data_percentage"));
     if (maxDataSize > 0 && dataSize > maxDataSize*warnDataPercentage/100)
-      System.err.println(getString("Low memory available, stability problems may occur."));
+      System.err.println(_("Low memory available, stability problems may occur."));
   }
 
   /**
@@ -378,7 +378,7 @@ public class Compiler implements MessageConsumer {
         if (lib instanceof LegacyUserLibrary)
           legacy = "(legacy)";
         System.out.println(I18n
-            .format(getString("Using library {0} in folder: {1} {2}"), lib.getName(),
+            .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
                     lib.getInstalledFolder(), legacy));
       }
       includeFolders.add(lib.getSrcFolder());
@@ -395,7 +395,7 @@ public class Compiler implements MessageConsumer {
     for (UserLibrary lib : importedLibraries) {
       if (!lib.supportsArchitecture(archs)) {
         System.err.println(I18n
-            .format(getString("WARNING: library {0} claims to run on {1} "
+            .format(_("WARNING: library {0} claims to run on {1} "
                 + "architecture(s) and may be incompatible with your"
                 + " current board which runs on {2} architecture(s)."), lib
                 .getName(), lib.getArchitectures(), archs));
@@ -475,16 +475,16 @@ public class Compiler implements MessageConsumer {
 
   private void adviseDuplicateLibraries() {
     for (int i=0; i < importedDuplicateHeaders.size(); i++) {
-      System.out.println(I18n.format(getString("Multiple libraries were found for \"{0}\""),
+      System.out.println(I18n.format(_("Multiple libraries were found for \"{0}\""),
         importedDuplicateHeaders.get(i)));
       boolean first = true;
       for (UserLibrary lib : importedDuplicateLibraries.get(i)) {
         if (first) {
-          System.out.println(I18n.format(getString(" Used: {0}"),
+          System.out.println(I18n.format(_(" Used: {0}"),
             lib.getInstalledFolder().getPath()));
           first = false;
         } else {
-          System.out.println(I18n.format(getString(" Not used: {0}"),
+          System.out.println(I18n.format(_(" Not used: {0}"),
             lib.getInstalledFolder().getPath()));
         }
       }
@@ -497,7 +497,7 @@ public class Compiler implements MessageConsumer {
     
     if (BaseNoGui.getBoardPreferences() == null) {
       RunnerException re = new RunnerException(
-          getString("No board selected; please choose a board from the Tools > Board menu."));
+          _("No board selected; please choose a board from the Tools > Board menu."));
       re.hideStackTrace();
       throw re;
     }
@@ -513,7 +513,7 @@ public class Compiler implements MessageConsumer {
       corePlatform = BaseNoGui.getTargetPlatform(split[0], targetPlatform.getId());
       if (corePlatform == null) {
         RunnerException re = new RunnerException(I18n
-            .format(getString("Selected board depends on '{0}' core (not installed)."),
+            .format(_("Selected board depends on '{0}' core (not installed)."),
                     split[0]));
         re.hideStackTrace();
         throw re;
@@ -541,7 +541,7 @@ public class Compiler implements MessageConsumer {
     // avr-specific) default for it, but this should be removed at some
     // point.
     if (!p.containsKey("compiler.path")) {
-      System.err.println(getString("Third-party platform.txt does not define compiler.path. Please report this to the third-party hardware maintainer."));
+      System.err.println(_("Third-party platform.txt does not define compiler.path. Please report this to the third-party hardware maintainer."));
       p.put("compiler.path", BaseNoGui.getAvrBasePath());
     }
 
@@ -707,7 +707,7 @@ public class Compiler implements MessageConsumer {
       IOUtils.closeQuietly(reader);
     }
     if (ret && verbose) {
-      System.out.println(I18n.format(getString("Using previously compiled file: {0}"), obj.getPath()));
+      System.out.println(I18n.format(_("Using previously compiled file: {0}"), obj.getPath()));
     }
     return ret;
   }
@@ -775,11 +775,11 @@ public class Compiler implements MessageConsumer {
     if (result > 1) {
       // a failure in the tool (e.g. unable to locate a sub-executable)
       System.err
-          .println(I18n.format(getString("{0} returned {1}"), command[0], result));
+          .println(I18n.format(_("{0} returned {1}"), command[0], result));
     }
 
     if (result != 0) {
-      RunnerException re = new RunnerException(getString("Error compiling."));
+      RunnerException re = new RunnerException(_("Error compiling."));
       re.hideStackTrace();
       throw re;
     }
@@ -818,55 +818,55 @@ public class Compiler implements MessageConsumer {
       String error = pieces[pieces.length - 1], msg = "";
       
       if (error.trim().equals("SPI.h: No such file or directory")) {
-        error = getString("Please import the SPI library from the Sketch > Import Library menu.");
-        msg = getString("\nAs of Arduino 0019, the Ethernet library depends on the SPI library." +
+        error = _("Please import the SPI library from the Sketch > Import Library menu.");
+        msg = _("\nAs of Arduino 0019, the Ethernet library depends on the SPI library." +
               "\nYou appear to be using it or another library that depends on the SPI library.\n\n");
       }
       
       if (error.trim().equals("'BYTE' was not declared in this scope")) {
-        error = getString("The 'BYTE' keyword is no longer supported.");
-        msg = getString("\nAs of Arduino 1.0, the 'BYTE' keyword is no longer supported." +
+        error = _("The 'BYTE' keyword is no longer supported.");
+        msg = _("\nAs of Arduino 1.0, the 'BYTE' keyword is no longer supported." +
               "\nPlease use Serial.write() instead.\n\n");
       }
       
       if (error.trim().equals("no matching function for call to 'Server::Server(int)'")) {
-        error = getString("The Server class has been renamed EthernetServer.");
-        msg = getString("\nAs of Arduino 1.0, the Server class in the Ethernet library " +
+        error = _("The Server class has been renamed EthernetServer.");
+        msg = _("\nAs of Arduino 1.0, the Server class in the Ethernet library " +
               "has been renamed to EthernetServer.\n\n");
       }
       
       if (error.trim().equals("no matching function for call to 'Client::Client(byte [4], int)'")) {
-        error = getString("The Client class has been renamed EthernetClient.");
-        msg = getString("\nAs of Arduino 1.0, the Client class in the Ethernet library " +
+        error = _("The Client class has been renamed EthernetClient.");
+        msg = _("\nAs of Arduino 1.0, the Client class in the Ethernet library " +
               "has been renamed to EthernetClient.\n\n");
       }
       
       if (error.trim().equals("'Udp' was not declared in this scope")) {
-        error = getString("The Udp class has been renamed EthernetUdp.");
-        msg = getString("\nAs of Arduino 1.0, the Udp class in the Ethernet library " +
+        error = _("The Udp class has been renamed EthernetUdp.");
+        msg = _("\nAs of Arduino 1.0, the Udp class in the Ethernet library " +
               "has been renamed to EthernetUdp.\n\n");
       }
       
       if (error.trim().equals("'class TwoWire' has no member named 'send'")) {
-        error = getString("Wire.send() has been renamed Wire.write().");
-        msg = getString("\nAs of Arduino 1.0, the Wire.send() function was renamed " +
+        error = _("Wire.send() has been renamed Wire.write().");
+        msg = _("\nAs of Arduino 1.0, the Wire.send() function was renamed " +
               "to Wire.write() for consistency with other libraries.\n\n");
       }
       
       if (error.trim().equals("'class TwoWire' has no member named 'receive'")) {
-        error = getString("Wire.receive() has been renamed Wire.read().");
-        msg = getString("\nAs of Arduino 1.0, the Wire.receive() function was renamed " +
+        error = _("Wire.receive() has been renamed Wire.read().");
+        msg = _("\nAs of Arduino 1.0, the Wire.receive() function was renamed " +
               "to Wire.read() for consistency with other libraries.\n\n");
       }
 
       if (error.trim().equals("'Mouse' was not declared in this scope")) {
-        error = getString("'Mouse' only supported on the Arduino Leonardo");
-        //msg = getString("\nThe 'Mouse' class is only supported on the Arduino Leonardo.\n\n");
+        error = _("'Mouse' only supported on the Arduino Leonardo");
+        //msg = _("\nThe 'Mouse' class is only supported on the Arduino Leonardo.\n\n");
       }
       
       if (error.trim().equals("'Keyboard' was not declared in this scope")) {
-        error = getString("'Keyboard' only supported on the Arduino Leonardo");
-        //msg = getString("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
+        error = _("'Keyboard' only supported on the Arduino Leonardo");
+        //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
       
       RunnerException e = null;
@@ -895,13 +895,13 @@ public class Compiler implements MessageConsumer {
     
     if (s.contains("undefined reference to `SPIClass::begin()'") &&
         s.contains("libraries/Robot_Control")) {
-      String error = getString("Please import the SPI library from the Sketch > Import Library menu.");
+      String error = _("Please import the SPI library from the Sketch > Import Library menu.");
       exception = new RunnerException(error);
     }
 
     if (s.contains("undefined reference to `Wire'") &&
         s.contains("libraries/Robot_Control")) {
-      String error = getString("Please import the Wire library from the Sketch > Import Library menu.");
+      String error = _("Please import the Wire library from the Sketch > Import Library menu.");
       exception = new RunnerException(error);
     }
 		
@@ -1076,7 +1076,7 @@ public class Compiler implements MessageConsumer {
       // shouldn't be a problem.
       if (!changed) {
         if (verbose)
-          System.out.println(I18n.format(getString("Using previously compiled file: {0}"), afile.getPath()));
+          System.out.println(I18n.format(_("Using previously compiled file: {0}"), afile.getPath()));
         return;
       }
     }
@@ -1173,7 +1173,7 @@ public class Compiler implements MessageConsumer {
   //7. Save the .hex file
   void saveHex() throws RunnerException {
     if (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file")) {
-      System.err.println(getString("Warning: This core does not support exporting sketches. Please consider upgrading it or contacting its author"));
+      System.err.println(_("Warning: This core does not support exporting sketches. Please consider upgrading it or contacting its author"));
       return;
     }
 
@@ -1254,7 +1254,7 @@ public class Compiler implements MessageConsumer {
       headerOffset = preprocessor.writePrefix(bigCode.toString());
     } catch (FileNotFoundException fnfe) {
       fnfe.printStackTrace();
-      String msg = getString("Build folder disappeared or could not be written");
+      String msg = _("Build folder disappeared or could not be written");
       throw new RunnerException(msg);
     }
 
@@ -1269,7 +1269,7 @@ public class Compiler implements MessageConsumer {
       preprocessor.write(outputStream);
     } catch (FileNotFoundException fnfe) {
       fnfe.printStackTrace();
-      String msg = getString("Build folder disappeared or could not be written");
+      String msg = _("Build folder disappeared or could not be written");
       throw new RunnerException(msg);
     } catch (RunnerException pe) {
       // RunnerExceptions are caught here and re-thrown, so that they don't
@@ -1278,7 +1278,7 @@ public class Compiler implements MessageConsumer {
 
     } catch (Exception ex) {
       // TODO better method for handling this?
-      System.err.println(I18n.format(getString("Uncaught exception type: {0}"), ex.getClass()));
+      System.err.println(I18n.format(_("Uncaught exception type: {0}"), ex.getClass()));
       ex.printStackTrace();
       throw new RunnerException(ex.toString());
     } finally {
@@ -1317,7 +1317,7 @@ public class Compiler implements MessageConsumer {
           BaseNoGui.saveFile(sc.getProgram(), new File(buildPath, filename));
         } catch (IOException e) {
           e.printStackTrace();
-          throw new RunnerException(I18n.format(getString("Problem moving {0} to the build folder"), filename));
+          throw new RunnerException(I18n.format(_("Problem moving {0} to the build folder"), filename));
         }
 
       } else if (sc.isExtension("ino") || sc.isExtension("pde")) {
