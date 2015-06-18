@@ -826,6 +826,9 @@
   <target name="linux64-dist" depends="linux-dist"
 	  description="Build .tar.xz of linux version" />
 
+  <target name="arm-dist" depends="linux-dist"
+	  description="Build .tar.xz of linux version" />
+
   <!-- - - - - - - - -->
   <!-- Windows       -->
   <!-- - - - - - - - -->
