@@ -435,6 +435,9 @@ public class Compiler implements MessageConsumer {
     // 4. link it all together into the .elf file
     progressListener.progress(50);
     compileLink();
+    if (prefs.get("build.elfpatch") != null) {
+      runRecipe("recipe.elfpatch.pattern");
+    }
 
     runActions("hooks.linking.postlink", prefs);
 
