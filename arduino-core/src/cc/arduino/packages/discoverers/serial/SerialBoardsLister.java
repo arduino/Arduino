@@ -66,7 +66,7 @@ public class SerialBoardsLister extends TimerTask {
       return;
     }
 
-    List<BoardPort> boardPorts = new LinkedList<BoardPort>();
+    List<BoardPort> boardPorts = new LinkedList<>();
 
     List<String> ports = Serial.list();
 

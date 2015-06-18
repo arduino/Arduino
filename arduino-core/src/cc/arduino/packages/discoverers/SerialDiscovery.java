@@ -43,7 +43,7 @@ public class SerialDiscovery implements Discovery {
   private final List<BoardPort> serialBoardPorts;
 
   public SerialDiscovery() {
-    this.serialBoardPorts = new LinkedList<BoardPort>();
+    this.serialBoardPorts = new LinkedList<>();
   }
 
   @Override
@@ -51,9 +51,9 @@ public class SerialDiscovery implements Discovery {
     return getSerialBoardPorts();
   }
 
-  public List<BoardPort> getSerialBoardPorts() {
+  private List<BoardPort> getSerialBoardPorts() {
     synchronized (serialBoardPorts) {
-      return new LinkedList<BoardPort>(serialBoardPorts);
+      return new LinkedList<>(serialBoardPorts);
     }
   }
 

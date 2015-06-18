@@ -41,7 +41,7 @@ import java.io.PrintStream;
 
 public class SSH {
 
-  protected final Session session;
+  final Session session;
 
   public SSH(Session session) {
     this.session = session;
@@ -79,7 +79,7 @@ public class SSH {
     }
   }
 
-  protected int consumeOutputSyncAndReturnExitCode(Channel channel, InputStream stdout, PrintStream stdoutConsumer, InputStream stderr, PrintStream stderrConsumer) throws IOException {
+  private int consumeOutputSyncAndReturnExitCode(Channel channel, InputStream stdout, PrintStream stdoutConsumer, InputStream stderr, PrintStream stderrConsumer) throws IOException {
     byte[] tmp = new byte[102400];
     while (true) {
       consumeStream(tmp, stdout, stdoutConsumer);
@@ -96,7 +96,7 @@ public class SSH {
     }
   }
 
-  protected void consumeStream(byte[] buffer, InputStream in, PrintStream out) throws IOException {
+  private void consumeStream(byte[] buffer, InputStream in, PrintStream out) throws IOException {
     while (in.available() > 0) {
       int length = in.read(buffer, 0, buffer.length);
       if (length < 0) {

@@ -56,15 +56,15 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
 
   public NetworkDiscovery() {
     DNSTaskStarter.Factory.setClassDelegate(new ArduinoDNSTaskStarter());
-    this.boardPortsDiscoveredWithJmDNS = new LinkedList<BoardPort>();
-    this.mappedJmDNSs = new Hashtable<InetAddress, JmDNS>();
-    this.reachableBoardPorts = new LinkedList<BoardPort>();
+    this.boardPortsDiscoveredWithJmDNS = new LinkedList<>();
+    this.mappedJmDNSs = new Hashtable<>();
+    this.reachableBoardPorts = new LinkedList<>();
   }
 
   @Override
   public List<BoardPort> listDiscoveredBoards() {
     synchronized (reachableBoardPorts) {
-      return new LinkedList<BoardPort>(reachableBoardPorts);
+      return new LinkedList<>(reachableBoardPorts);
     }
   }
 
@@ -77,7 +77,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
 
   public List<BoardPort> getBoardPortsDiscoveredWithJmDNS() {
     synchronized (boardPortsDiscoveredWithJmDNS) {
-      return new LinkedList<BoardPort>(boardPortsDiscoveredWithJmDNS);
+      return new LinkedList<>(boardPortsDiscoveredWithJmDNS);
     }
   }
 
@@ -114,11 +114,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
   public void serviceRemoved(ServiceEvent serviceEvent) {
     String name = serviceEvent.getName();
     synchronized (boardPortsDiscoveredWithJmDNS) {
-      for (BoardPort port : boardPortsDiscoveredWithJmDNS) {
-        if (port.getBoardName().equals(name)) {
-          boardPortsDiscoveredWithJmDNS.remove(port);
-        }
-      }
+      boardPortsDiscoveredWithJmDNS.stream().filter(port -> port.getBoardName().equals(name)).forEach(boardPortsDiscoveredWithJmDNS::remove);
     }
   }
 

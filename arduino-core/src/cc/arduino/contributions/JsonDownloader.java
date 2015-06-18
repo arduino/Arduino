@@ -49,7 +49,6 @@ public class JsonDownloader {
       downloader.download(url, tmpFile, progress, statusText);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
-      return;
     }
   }
 }

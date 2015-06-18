@@ -204,7 +204,7 @@ public class SerialUploader extends Uploader {
     int elapsed = 0;
     while (elapsed < 10000) {
       List<String> now = Serial.list();
-      List<String> diff = new ArrayList<String>(now);
+      List<String> diff = new ArrayList<>(now);
       diff.removeAll(before);
       if (verbose) {
         System.out.print("PORTS {");
@@ -245,7 +245,7 @@ public class SerialUploader extends Uploader {
     throw new RunnerException(_("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."));
   }
 
-  public boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
+  private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
 
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     String programmer = PreferencesData.get("programmer");

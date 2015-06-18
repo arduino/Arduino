@@ -75,7 +75,10 @@ public class SSHUploader extends Uploader {
 
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     PreferencesMap prefs = PreferencesData.getMap();
-    prefs.putAll(BaseNoGui.getBoardPreferences());
+    PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
+    if (boardPreferences != null) {
+      prefs.putAll(boardPreferences);
+    }
     String tool = prefs.getOrExcept("upload.tool");
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
@@ -136,11 +139,7 @@ public class SSHUploader extends Uploader {
       throw new RunnerException(e);
     } finally {
       if (scp != null) {
-        try {
-          scp.close();
-        } catch (IOException e) {
-          throw new RunnerException(e);
-        }
+        scp.close();
       }
       if (session != null) {
         session.disconnect();

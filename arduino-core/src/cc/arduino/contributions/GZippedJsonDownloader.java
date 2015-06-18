@@ -67,7 +67,7 @@ public class GZippedJsonDownloader {
       os = new FileOutputStream(tmpFile);
       gzipIs = new GzipCompressorInputStream(new FileInputStream(gzipTmpFile));
       final byte[] buffer = new byte[4096];
-      int n = 0;
+      int n;
       while (-1 != (n = gzipIs.read(buffer))) {
         os.write(buffer, 0, n);
       }
