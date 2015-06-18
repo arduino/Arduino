@@ -141,9 +141,11 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
 
       PreferencesMap prefs = null;
       String board = null;
+      String description = null;
       if (info.hasData()) {
         prefs = new PreferencesMap();
         board = info.getPropertyString("board");
+        description = info.getPropertyString("description");
         prefs.put("board", board);
         prefs.put("distro_version", info.getPropertyString("distro_version"));
         prefs.put("port", "" + info.getPort());
@@ -155,6 +157,8 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
         if (boardName != null) {
           label += " (" + boardName + ")";
         }
+      } else if (description != null) {
+        label += " (" + description + ")";
       }
 
       BoardPort port = new BoardPort();

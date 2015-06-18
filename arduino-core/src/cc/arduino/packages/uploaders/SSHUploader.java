@@ -38,10 +38,8 @@ import com.jcraft.jsch.Session;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
-import processing.app.debug.RunnerException;
-import processing.app.debug.TargetPlatform;
-import processing.app.helpers.PreferencesMap;
-import processing.app.helpers.StringUtils;
+import processing.app.debug.*;
+import processing.app.helpers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,10 +68,32 @@ public class SSHUploader extends Uploader {
   }
 
   @Override
-  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws RunnerException {
+  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws RunnerException, PreferencesMapException {
     if (usingProgrammer) {
       throw new RunnerException(_("Network upload using programmer not supported"));
     }
+
+    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+    PreferencesMap prefs = PreferencesData.getMap();
+    prefs.putAll(BaseNoGui.getBoardPreferences());
+    String tool = prefs.getOrExcept("upload.tool");
+    if (tool.contains(":")) {
+      String[] split = tool.split(":", 2);
+      targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      tool = split[1];
+    }
+    prefs.putAll(targetPlatform.getTool(tool));
+
+    boolean coreMissesRemoteUploadTool = targetPlatform.getTool(tool + "_remote").isEmpty();
+
+    if (coreMissesRemoteUploadTool) {
+      prefs.put("upload.pattern", "/usr/bin/run-avrdude /tmp/sketch.hex");
+    } else {
+      prefs.putAll(targetPlatform.getTool(tool + "_remote"));
+    }
+
+    prefs.put("build.path", buildPath);
+    prefs.put("build.project_name", className);
 
     Session session = null;
     SCP scp = null;
@@ -88,9 +108,21 @@ public class SSHUploader extends Uploader {
       scp = new SCP(session);
       SSH ssh = new SSH(session);
 
-      scpFiles(scp, ssh, sourcePath, buildPath, className, warningsAccumulator);
+      File mergedSketch = new File(buildPath, className + ".with_bootloader.hex");
 
-      return runAVRDude(ssh);
+      File sketchToCopy;
+      if (!coreMissesRemoteUploadTool && mergedSketch.exists()) {
+        sketchToCopy = mergedSketch;
+      } else {
+        sketchToCopy = processing.app.debug.Compiler.findCompiledSketch(prefs);
+      }
+      scpFiles(scp, ssh, sourcePath, sketchToCopy, warningsAccumulator);
+
+      if (coreMissesRemoteUploadTool) {
+        ssh.execSyncCommand("merge-sketch-with-bootloader.lua /tmp/sketch.hex", System.out, System.err);
+      }
+
+      return runUploadTool(ssh, prefs);
     } catch (JSchException e) {
       String message = e.getMessage();
       if ("Auth cancel".equals(message) || "Auth fail".equals(message)) {
@@ -116,28 +148,32 @@ public class SSHUploader extends Uploader {
     }
   }
 
-  private boolean runAVRDude(SSH ssh) throws IOException, JSchException {
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
-    PreferencesMap prefs = PreferencesData.getMap();
-    PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
-    if (boardPreferences != null) {
-      prefs.putAll(boardPreferences);
-    }
-    prefs.putAll(targetPlatform.getTool(prefs.get("upload.tool")));
-
-    String additionalParams = verbose ? prefs.get("upload.params.verbose") : prefs.get("upload.params.quiet");
-
-    boolean success = ssh.execSyncCommand("merge-sketch-with-bootloader.lua /tmp/sketch.hex", System.out, System.err);
+  private boolean runUploadTool(SSH ssh, PreferencesMap prefs) throws Exception {
     ssh.execSyncCommand("kill-bridge");
-    success = success && ssh.execSyncCommand("run-avrdude /tmp/sketch.hex '" + additionalParams + "'", System.out, System.err);
-    return success;
+
+    if (verbose) {
+      prefs.put("upload.verbose", prefs.getOrExcept("upload.params.verbose"));
+    } else {
+      prefs.put("upload.verbose", prefs.getOrExcept("upload.params.quiet"));
+    }
+
+    String pattern = prefs.getOrExcept("upload.pattern");
+    String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+    return ssh.execSyncCommand(StringUtils.join(cmd, " "), System.out, System.err);
   }
 
-  private void scpFiles(SCP scp, SSH ssh, File sourcePath, String buildPath, String className, List<String> warningsAccumulator) throws JSchException, IOException {
+  private void scpFiles(SCP scp, SSH ssh, File sourcePath, File sketch, List<String> warningsAccumulator) throws JSchException, IOException {
+    String uploadedSketchFileName;
+    if (sketch.getName().endsWith("hex")) {
+      uploadedSketchFileName = "sketch.hex";
+    } else {
+      uploadedSketchFileName = "sketch.bin";
+    }
+
     try {
       scp.open();
       scp.startFolder("tmp");
-      scp.sendFile(new File(buildPath, className + ".hex"), "sketch.hex");
+      scp.sendFile(sketch, uploadedSketchFileName);
       scp.endFolder();
 
       if (canUploadWWWFiles(sourcePath, ssh, warningsAccumulator)) {

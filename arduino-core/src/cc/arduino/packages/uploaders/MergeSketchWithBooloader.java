@@ -24,27 +24,37 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  *
- * Copyright 2013 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
  */
 
-package cc.arduino.packages;
+package cc.arduino.packages.uploaders;
 
-import cc.arduino.packages.uploaders.SSHUploader;
-import cc.arduino.packages.uploaders.SerialUploader;
-import processing.app.debug.TargetBoard;
+import processing.app.helpers.FileUtils;
 
-public class UploaderFactory {
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
-  public Uploader newUploader(TargetBoard board, BoardPort port, boolean noUploadPort) {
-    if (noUploadPort) {
-      return new SerialUploader(true);
+public class MergeSketchWithBooloader {
+
+  public void merge(File sketch, File bootloader) throws IOException {
+    List<String> mergedSketch = FileUtils.readFileToListOfStrings(sketch);
+    mergedSketch.remove(mergedSketch.size() - 1);
+    mergedSketch.addAll(FileUtils.readFileToListOfStrings(bootloader));
+
+    FileWriter writer = null;
+    try {
+      writer = new FileWriter(sketch);
+      for (String line : mergedSketch) {
+        writer.write(line);
+        writer.write("\n");
+      }
+    } finally {
+      if (writer != null) {
+        writer.close();
+      }
     }
-
-    if (port != null && "network".equals(port.getProtocol())) {
-      return new SSHUploader(port);
-    }
-
-    return new SerialUploader();
   }
 
 }

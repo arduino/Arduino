@@ -24,27 +24,44 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  *
- * Copyright 2013 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
  */
 
-package cc.arduino.packages;
+package cc.arduino.packages.uploaders;
 
-import cc.arduino.packages.uploaders.SSHUploader;
-import cc.arduino.packages.uploaders.SerialUploader;
-import processing.app.debug.TargetBoard;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import processing.app.helpers.FileUtils;
 
-public class UploaderFactory {
+import java.io.File;
 
-  public Uploader newUploader(TargetBoard board, BoardPort port, boolean noUploadPort) {
-    if (noUploadPort) {
-      return new SerialUploader(true);
-    }
+import static org.junit.Assert.assertEquals;
 
-    if (port != null && "network".equals(port.getProtocol())) {
-      return new SSHUploader(port);
-    }
+public class MergeSketchWithUploaderTest {
 
-    return new SerialUploader();
+  private File sketch;
+
+  @Before
+  public void setup() throws Exception {
+    File originalSketch = new File(MergeSketchWithUploaderTest.class.getResource("/sketch.hex").getFile());
+    sketch = new File(System.getProperty("java.io.tmpdir"), "sketch.hex");
+    FileUtils.copyFile(originalSketch, sketch);
   }
+
+  @After
+  public void removeTmpFile() {
+    sketch.delete();
+  }
+
+  @Test
+  public void shouldMergeWithOptiboot() throws Exception {
+    assertEquals(11720, sketch.length());
+
+    File bootloader = new File(MergeSketchWithUploaderTest.class.getResource("/optiboot_atmega328.hex").getFile());
+    new MergeSketchWithBooloader().merge(sketch, bootloader);
+    assertEquals(13140, sketch.length());
+  }
+
 
 }

@@ -26,22 +26,14 @@ package processing.app.debug;
 import static processing.app.I18n._;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 import cc.arduino.MyStreamPumper;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
 
+import cc.arduino.packages.uploaders.MergeSketchWithBooloader;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.exec.*;
 import processing.app.BaseNoGui;
@@ -81,7 +73,7 @@ public class Compiler implements MessageConsumer {
    * Listener interface for progress update on the GUI
    */
   public interface ProgressListener {
-    public void progress(int percent);
+    void progress(int percent);
   }
 
   private ProgressListener progressListener;
@@ -179,6 +171,17 @@ public class Compiler implements MessageConsumer {
 
     return success;
   }
+
+  static public File findCompiledSketch(PreferencesMap prefs) throws PreferencesMapException {
+    List<String> paths = Arrays.asList("{build.path}/{build.project_name}.hex", "{build.path}/{build.project_name}.bin");
+    Optional<File> sketch = paths.stream().
+      map(path -> StringReplacer.replaceFromMapping(path, prefs)).
+      map(File::new).
+      filter(File::exists).
+      findFirst();
+    return sketch.orElseThrow(() -> new IllegalStateException(_("No compiled sketch found")));
+  }
+
 
   /**
    * Create a new Compiler
@@ -454,6 +457,14 @@ public class Compiler implements MessageConsumer {
 
     runActions("hooks.objcopy.postobjcopy", prefs);
 
+    progressListener.progress(70);
+    try {
+      mergeSketchWithBootloaderIfAppropriate(sketch.getName() + ".cpp", prefs);
+    } catch (IOException e) {
+      e.printStackTrace();
+      // ignore
+    }
+
     // 7. save the hex file
     if (saveHex) {
       runActions("hooks.savehex.presavehex", prefs);
@@ -545,20 +556,26 @@ public class Compiler implements MessageConsumer {
       p.put("compiler.path", BaseNoGui.getAvrBasePath());
     }
 
+    TargetPlatform referencePlatform = null;
+    if (corePlatform != null) {
+      referencePlatform = corePlatform;
+    } else {
+      referencePlatform = targetPlatform;
+    }
+
+    p.put("build.platform.path", referencePlatform.getFolder().getAbsolutePath());
+
     // Core folder
-    TargetPlatform tp = corePlatform;
-    if (tp == null)
-      tp = targetPlatform;
-    File coreFolder = new File(tp.getFolder(), "cores");
+    File coreFolder = new File(referencePlatform.getFolder(), "cores");
     coreFolder = new File(coreFolder, core);
     p.put("build.core", core);
     p.put("build.core.path", coreFolder.getAbsolutePath());
     
     // System Folder
-    File systemFolder = tp.getFolder();
+    File systemFolder = referencePlatform.getFolder();
     systemFolder = new File(systemFolder, "system");
     p.put("build.system.path", systemFolder.getAbsolutePath());
-    
+
     // Variant Folder
     String variant = p.get("build.variant");
     if (variant != null) {
@@ -1169,7 +1186,33 @@ public class Compiler implements MessageConsumer {
     }
     execAsynchronously(cmdArray);
   }
-  
+
+  private File mergeSketchWithBootloaderIfAppropriate(String className, PreferencesMap prefs) throws IOException {
+    if (!prefs.containsKey("bootloader.noblink") && !prefs.containsKey("bootloader.file")) {
+      return null;
+    }
+
+    String buildPath = prefs.get("build.path");
+    File sketch = new File(buildPath, className + ".hex");
+    if (!sketch.exists()) {
+      return null;
+    }
+
+    File mergedSketch = new File(buildPath, className + ".with_bootloader.hex");
+    FileUtils.copyFile(sketch, mergedSketch);
+
+    String bootloaderNoBlink = prefs.get("bootloader.noblink");
+    if (bootloaderNoBlink == null) {
+      bootloaderNoBlink = prefs.get("bootloader.file");
+    }
+
+    File bootloader = new File(new File(prefs.get("build.platform.path"), "bootloaders"), bootloaderNoBlink);
+
+    new MergeSketchWithBooloader().merge(mergedSketch, bootloader);
+
+    return mergedSketch;
+  }
+
   //7. Save the .hex file
   void saveHex() throws RunnerException {
     if (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file")) {
@@ -1181,9 +1224,23 @@ public class Compiler implements MessageConsumer {
     dict.put("ide_version", "" + BaseNoGui.REVISION);
 
     try {
-      String compiledSketch = prefs.getOrExcept("recipe.output.tmp_file");
+      List<String> compiledSketches = new ArrayList<String>(prefs.subTree("recipe.output.tmp_file", 1).values());
+      if (!compiledSketches.isEmpty()) {
+        List<String> copyOfCompiledSketches = new ArrayList<String>(prefs.subTree("recipe.output.save_file", 1).values());
+        for (int i = 0; i < compiledSketches.size(); i++) {
+          saveHex(compiledSketches.get(i), copyOfCompiledSketches.get(i), prefs);
+        }
+      } else {
+        saveHex(prefs.getOrExcept("recipe.output.tmp_file"), prefs.getOrExcept("recipe.output.save_file"), prefs);
+      }
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+  }
+
+  private void saveHex(String compiledSketch, String copyOfCompiledSketch, PreferencesMap dict) throws RunnerException {
+    try {
       compiledSketch = StringReplacer.replaceFromMapping(compiledSketch, dict);
-      String copyOfCompiledSketch = prefs.getOrExcept("recipe.output.save_file");
       copyOfCompiledSketch = StringReplacer.replaceFromMapping(copyOfCompiledSketch, dict);
 
       File compiledSketchFile = new File(prefs.get("build.path"), compiledSketch);
@@ -1194,7 +1251,6 @@ public class Compiler implements MessageConsumer {
       throw new RunnerException(e);
     }
   }
-  
 
   private static String prepareIncludes(List<File> includeFolders) {
     String res = "";

@@ -24,27 +24,19 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  *
- * Copyright 2013 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
  */
 
-package cc.arduino.packages;
+package processing.app.helpers;
 
-import cc.arduino.packages.uploaders.SSHUploader;
-import cc.arduino.packages.uploaders.SerialUploader;
-import processing.app.debug.TargetBoard;
+import org.junit.Test;
 
-public class UploaderFactory {
+import static org.junit.Assert.assertEquals;
 
-  public Uploader newUploader(TargetBoard board, BoardPort port, boolean noUploadPort) {
-    if (noUploadPort) {
-      return new SerialUploader(true);
-    }
+public class StringUtilsTest {
 
-    if (port != null && "network".equals(port.getProtocol())) {
-      return new SSHUploader(port);
-    }
-
-    return new SerialUploader();
+  @Test
+  public void shouldJoinAnArray() {
+    assertEquals("1 - 2 - 3", StringUtils.join(new String[]{"1", "2", "3"}, " - "));
   }
-
 }
