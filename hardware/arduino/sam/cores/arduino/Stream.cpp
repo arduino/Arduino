@@ -54,14 +54,17 @@ int Stream::timedPeek()
 
 // returns peek of the next digit in the stream or -1 if timeout
 // discards non-numeric characters
-int Stream::peekNextDigit()
+int Stream::peekNextDigit( bool detectDecimal )
 {
   int c;
   while (1) {
     c = timedPeek();
-    if (c < 0) return c;  // timeout
-    if (c == '-') return c;
-    if (c >= '0' && c <= '9') return c;
+
+    if( c < 0 ||
+        c == '-' ||
+        c >= '0' && c <= '9' ||
+        detectDecimal && c == '.') return c;
+
     read();  // discard non-numeric
   }
 }
@@ -124,7 +127,7 @@ long Stream::parseInt(char skipChar)
   long value = 0;
   int c;
 
-  c = peekNextDigit();
+  c = peekNextDigit(false);
   // ignore non numeric leading characters
   if(c < 0)
     return 0; // zero returned if timeout
@@ -162,7 +165,7 @@ float Stream::parseFloat(char skipChar){
   char c;
   float fraction = 1.0;
 
-  c = peekNextDigit();
+  c = peekNextDigit(true);
     // ignore non numeric leading characters
   if(c < 0)
     return 0; // zero returned if timeout
