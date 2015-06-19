@@ -723,9 +723,10 @@ public class Base {
     int day = cal.get(Calendar.DAY_OF_MONTH);  // 1..31
     int month = cal.get(Calendar.MONTH);  // 0..11
     String purty = months[month] + PApplet.nf(day, 2);
+
     do {
-      if (index == 26) {
-        // In 0159, avoid running past z by sending people outdoors.
+      if (index == 26*26) {
+        // In 0166, avoid running past zz by sending people outdoors.
         if (!breakTime) {
           showWarning(_("Time for a Break"),
                   _("You've reached the limit for auto naming of new sketches\n" +
@@ -737,7 +738,15 @@ public class Base {
         }
         return null;
       }
-      newbieName = "sketch_" + purty + ((char) ('a' + index));
+
+      int multiples = index / 26;
+
+      if(multiples > 0){
+        newbieName = ((char) ('a' + (multiples-1))) + "" + ((char) ('a' + (index % 26))) + "";
+      }else{
+        newbieName = ((char) ('a' + index)) + "";
+      }
+      newbieName = "sketch_" + purty + newbieName;
       newbieDir = new File(newbieParentDir, newbieName);
       index++;
       // Make sure it's not in the temp folder *and* it's not in the sketchbook
