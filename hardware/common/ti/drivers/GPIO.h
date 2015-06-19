@@ -100,8 +100,15 @@ typedef uint32_t GPIO_PinConfig;
 #define GPIO_CFG_OUT_BIT           19
 /*! @endcond */
 
-/** @name GPIO_PinConfig pin direction configuration macros
- *  @{
+/*!
+ *  \brief Do not configure this pin.
+ *  Use this PinConfig definition to inform GPIO_init()
+ *  NOT to configure the corresponding pin
+ */
+#define GPIO_DO_NOT_CONFIG         0x7fff0000 /*! Do not configure this Pin */
+
+/*!
+ *  \brief GPIO pin direction and configuration definitions
  */
 #define GPIO_CFG_OUTPUT            (((uint32_t) 0) << GPIO_CFG_IO_LSB) /*! Pin is an output. */
 #define GPIO_CFG_OUT_STD           (((uint32_t) 0) << GPIO_CFG_IO_LSB) /*! Output pin is not Open Drain */
@@ -120,36 +127,24 @@ typedef uint32_t GPIO_PinConfig;
 #define GPIO_CFG_IN_NOPULL         (((uint32_t) 1) << GPIO_CFG_IO_LSB) /*! Input pin has no PU/PD */
 #define GPIO_CFG_IN_PU             (((uint32_t) 3) << GPIO_CFG_IO_LSB) /*! Input pin has Pullup */
 #define GPIO_CFG_IN_PD             (((uint32_t) 5) << GPIO_CFG_IO_LSB) /*! Input pin has Pulldown */
-/** @} */
-
-/** @name GPIO_PinConfig pin interrupt configuration macros
- *  @{
- */
-#define GPIO_CFG_IN_INT_NONE       (((uint32_t) 0) << GPIO_CFG_INT_LSB)    /*! No Interrupt */
-#define GPIO_CFG_IN_INT_FALLING    (((uint32_t) 1) << GPIO_CFG_INT_LSB)    /*! Interrupt on falling edge */
-#define GPIO_CFG_IN_INT_RISING     (((uint32_t) 2) << GPIO_CFG_INT_LSB)    /*! Interrupt on rising edge */
-#define GPIO_CFG_IN_INT_BOTH_EDGES (((uint32_t) 3) << GPIO_CFG_INT_LSB)    /*! Interrupt on both edges */
-#define GPIO_CFG_IN_INT_LOW        (((uint32_t) 4) << GPIO_CFG_INT_LSB)    /*! Interrupt on low level */
-#define GPIO_CFG_IN_INT_HIGH       (((uint32_t) 5) << GPIO_CFG_INT_LSB)    /*! Interrupt on high level */
-/** @} */
-
-/** @name Special GPIO_PinConfig configuration macros
- *  @{
- */
 
 /*!
- *  \brief 'Or' in this GPIO_PinConfig definition to inform GPIO_setConfig()
- *  to only configure the interrupt attributes of a GPIO input pin.
+ *  @brief  GPIO interrupt configuration definitions
  */
-#define GPIO_CFG_IN_INT_ONLY       (((uint32_t) 1) << 27)                  /*! configure interrupt only */
+#define GPIO_CFG_IN_INT_NONE       (((uint32_t) 0) << GPIO_CFG_INT_LSB)    /*!< No Interrupt */
+#define GPIO_CFG_IN_INT_FALLING    (((uint32_t) 1) << GPIO_CFG_INT_LSB)    /*!< Interrupt on falling edge */
+#define GPIO_CFG_IN_INT_RISING     (((uint32_t) 2) << GPIO_CFG_INT_LSB)    /*!< Interrupt on rising edge */
+#define GPIO_CFG_IN_INT_BOTH_EDGES (((uint32_t) 3) << GPIO_CFG_INT_LSB)    /*!< Interrupt on both edges */
+#define GPIO_CFG_IN_INT_LOW        (((uint32_t) 4) << GPIO_CFG_INT_LSB)    /*!< Interrupt on low level */
+#define GPIO_CFG_IN_INT_HIGH       (((uint32_t) 5) << GPIO_CFG_INT_LSB)    /*!< Interrupt on high level */
 
 /*!
- *  \brief Use this GPIO_PinConfig definition to inform GPIO_init()
- *  NOT to configure the corresponding pin
+ *  @brief   Configure only the interrupt attributes.
+ *
+ *  Or in this definition when calling GPIO_setConfig() to only
+ *  configure the interrupt attributes of an input pin
  */
-#define GPIO_DO_NOT_CONFIG         0x7fff0000                              /*! Do not configure this Pin */
-
-/** @} */
+#define GPIO_CFG_IN_INT_ONLY       (((uint32_t) 1) << 27)                   /*!< configure interrupt */
 
 /*!
  *  @brief  GPIO callback function type

@@ -8,7 +8,7 @@ __TI_STACK_SIZE = __STACK_SIZE;
 INPUT(
     ../../configPkg/package/cfg/energia_pm4g.om4g
     ../../lib/cc3200.m4g.lib
-    lib/board.m4g.lib
+    lib/CC3200_LAUNCHXL.m4g.lib
     ti/drivers/lib/drivers_ccware.am4g
     ti/drivers/ports/tirtos/lib/tirtosport.am4g
     ti/drivers/lib/power_cc3200_tirtos.am4g

@@ -36,6 +36,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define LED  13
 static const uint8_t RED_LED = 13;
 static const uint8_t GREEN_LED = 13;
 static const uint8_t YELLOW_LED = 13;

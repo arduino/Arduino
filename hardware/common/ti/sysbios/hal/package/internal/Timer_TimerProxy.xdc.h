@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A71
+ * @(#) xdc-A68
  */
 
 #ifndef ti_sysbios_hal_Timer_TimerProxy__INTERNAL__

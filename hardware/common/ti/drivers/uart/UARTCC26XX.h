@@ -65,8 +65,6 @@
  *     again before FIFO goes full in order to avoid overflow. It is safe to
  *     call another UART_read() from the read callback, See
  *     [Receive Continously] (@ref USE_CASE_CB) use case below.
- *   - If a read times out (in ::UART_MODE_BLOCKING mode), RX will remain on.
- *     UART_read() must be called again before FIFO goes full in order to avoid overflow.
  *   - The UART_read() supports partial return, that can be used if the
  *     receive size is unknown. See [Use Cases](@ref USE_CASES) below.
  *   .
@@ -87,6 +85,8 @@
  *     while the RX error occurred, it will complete.
  *   - If a RX break error occurs, an extra 0 byte will also be returned by the
  *     UART_read().
+ *   - If a timeout occurs during a read, the number of bytes received will be
+ *     returned and the UART_Object.status will be set to ::UART_TIMED_OUT.
  *   .
  *
  * ## Write errors##
@@ -101,18 +101,13 @@
  *
  * ## General timeout ##
  * A timeout value can only be specified for reads and writes in ::UART_MODE_BLOCKING.
- * If a timeout occurs during a read when in ::UART_MODE_BLOCKING, the number of bytes received will be
- * returned and the UART_Object.status will be set to ::UART_TIMED_OUT.
- * After a read timeout, RX will remain on, but device is allowed to enter standby.
- * For more details see [Power Management](@ref POWER_MANAGEMENT) chapter below.
- *
  * In ::UART_MODE_CALLBACK there is no timeout and the application must call
  * UART_readCancel() or UART_writeCancel() to abort the operation.
  *
  * @note A new read or write will reset the UART_Object.status to UART_OK.
  *       Caution must be taken when doing parallell reads and writes.
  *
- * # Power Management \anchor POWER_MANAGEMENT #
+ * # Power Management #
  * The TI-RTOS power management framework will try to put the device into the most
  * power efficient mode whenever possible. Please see the technical reference
  * manual for further details on each power mode.
@@ -123,28 +118,21 @@
  * The following statements are valid:
  *   - After UART_open(): the device is still allowed to enter standby.
  *   - During UART_read(): the device cannot enter standby.
- *   - After an RX error (overrun, break, parity, framing): device is allowed to enter standby.
- *   - After a successful UART_read():
- *     The device is allowed to enter standby, but RX remains on.
+ *   - After an RX error: device is allowed to enter standby.
+ *   - After a successful UART_read(): the device is allowed
+ *     to enter standby, but RX remains on.
  *       - _Note_: Device might enter standby while a byte is being
  *         received if UART_read() is not called again after a successful
  *         read. This could result in corrupt data being received.
- *       - _Note_: Application thread should typically either issue another read after
+ *       - Application thread should typically either issue another read after
  *         UART_read() completes successfully, or call
  *         UART_readCancel() to disable RX and thus assuring that no data
  *         is received while entering standby.
- *   - After UART_read() times out in ::UART_MODE_BLOCKING:
- *     The device is allowed to enter standby, but RX remains on.
- *       - _Note_: Device might enter standby while a byte is being
- *         received if UART_read() is not called again after a timeout.
- *         This could result in corrupt data being received.
- *       - _Note_: Application thread should typically either issue another read after
- *         UART_read() times out to continue reception.
  *       .
  *   - During UART_write(): the device cannot enter standby.
  *   - After UART_write() succeeds: the device can enter standby.
  *   - If UART_writeCancel() is called: the device can enter standby.
- *   - After write timeout: the device can enter standby.
+ *   - After timeout: the device can enter standby.
  *
  * # Flow Control #
  * To enable Flow Control, the RTS and CTS pins must be assigned in the
@@ -195,14 +183,12 @@
  *  @code
  *  UART_Handle handle;
  *  UART_Params params;
- *  uint8_t rxBuf[100];         // Receive buffer
- *  uint32_t timeoutUs = 5000;  // 5ms timeout, default timeout is no timeout (BIOS_WAIT_FOREVER)
+ *  uint8_t rxBuf[100];     // Receive buffer
  *
  *  // Init UART and specify non-default parameters
  *  UART_Params_init(&params);
  *  params.baudRate      = 9600;
  *  params.writeDataMode = UART_DATA_BINARY;
- *  params.readTimeout   = timeoutUs / Clock_tickPeriod; // Default tick period is 10us
  *
  *  // Open the UART and do the read
  *  handle = UART_open(Board_UART, &params);
@@ -339,11 +325,6 @@ extern "C" {
 #define UARTCC26XX_CMD_RETURN_PARTIAL_DISABLE   UART_CMD_RESERVED + 1
 /*! Size of the TX and RX FIFOs is 32 items */
 #define UARTCC26XX_FIFO_SIZE 32
-
-/* BACKWARDS COMPATIBILITY */
-#define UARTCC26XX_RETURN_PARTIAL_ENABLE    UARTCC26XX_CMD_RETURN_PARTIAL_ENABLE
-#define UARTCC26XX_RETURN_PARTIAL_DISABLE   UARTCC26XX_CMD_RETURN_PARTIAL_DISABLE
-/* END BACKWARDS COMPATIBILITY */
 
 /* UART function table pointer */
 extern const UART_FxnTable UARTCC26XX_fxnTable;

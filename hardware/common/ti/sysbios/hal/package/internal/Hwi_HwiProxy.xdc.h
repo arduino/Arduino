@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A71
+ * @(#) xdc-A68
  */
 
 #ifndef ti_sysbios_hal_Hwi_HwiProxy__INTERNAL__
@@ -24,10 +24,6 @@
 /* getStackInfo */
 #undef ti_sysbios_hal_Hwi_HwiProxy_getStackInfo
 #define ti_sysbios_hal_Hwi_HwiProxy_getStackInfo ti_sysbios_hal_Hwi_HwiProxy_getStackInfo__E
-
-/* getCoreStackInfo */
-#undef ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo
-#define ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo ti_sysbios_hal_Hwi_HwiProxy_getCoreStackInfo__E
 
 /* startup */
 #undef ti_sysbios_hal_Hwi_HwiProxy_startup

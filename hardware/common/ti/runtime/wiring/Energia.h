@@ -109,6 +109,8 @@ typedef unsigned int word;
 #define bit(b) (1UL << (b))
 
 void init(void);
+void setup(void);
+void loop(void);
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
