@@ -52,11 +52,11 @@ extern "C"
 #endif
 
 #define DRIVERLIB_MAJOR_VERSION_NUM      1
-#define DRIVERLIB_MINOR_VERSION_NUM      0
-#define DRIVERLIB_SUBMINOR_VERSION_NUM   2
-#define DRIVERLIB_RELEASE_DAY            31
-#define DRIVERLIB_RELEASE_MONTH          7
-#define DRIVERLIB_RELEASE_YEAR           2014
+#define DRIVERLIB_MINOR_VERSION_NUM      1
+#define DRIVERLIB_SUBMINOR_VERSION_NUM   0
+#define DRIVERLIB_RELEASE_DAY            2
+#define DRIVERLIB_RELEASE_MONTH          3
+#define DRIVERLIB_RELEASE_YEAR           2015
 
 
 //*****************************************************************************

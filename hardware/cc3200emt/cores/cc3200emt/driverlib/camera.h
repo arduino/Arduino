@@ -82,12 +82,12 @@ extern "C"
 // Value that can be passed to CameraXClkConfig().
 //*****************************************************************************
 #define CAM_HS_POL_HI       0x00000000
-#define CAM_HS_POL_LO       0000000200
+#define CAM_HS_POL_LO       0x00000200
 #define CAM_VS_POL_HI       0x00000000
 #define CAM_VS_POL_LO       0x00000100
 
 #define CAM_PCLK_RISE_EDGE  0x00000000
-#define CAM_PCLK_FALL_EDGE  0000000400
+#define CAM_PCLK_FALL_EDGE  0x00000400
 
 #define CAM_ORDERCAM_SWAP   0x00000800
 #define CAM_NOBT_SYNCHRO    0x00002000

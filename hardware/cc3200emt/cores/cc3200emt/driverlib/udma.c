@@ -680,7 +680,7 @@ uDMAChannelControlSet(unsigned long ulChannelStructIndex,
 //! the pointers are pointing to storage of the appropriate data type.
 //!
 //! The \e ulTransferSize parameter is the number of data items, not the number
-//! of bytes.
+//! of bytes. The value of this parameter should not exceed 1024.
 //!
 //! The two scatter-gather modes, memory and peripheral, are actually different
 //! depending on whether the primary or alternate control structure is
