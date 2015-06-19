@@ -177,9 +177,13 @@ public class FileUtils {
   }
 
   public static String readFileToString(File file) throws IOException {
+    return readFileToString(file, "UTF-8");
+  }
+
+  public static String readFileToString(File file, String encoding) throws IOException {
     BufferedReader reader = null;
     try {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
       StringBuilder sb = new StringBuilder();
       String line;
       while ((line = reader.readLine()) != null) {
