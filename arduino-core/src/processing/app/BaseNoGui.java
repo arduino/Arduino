@@ -513,12 +513,15 @@ public class BaseNoGui {
           //  - calls Sketch.prepare() that calls Sketch.ensureExistence()
           //  - calls Sketch.build(verbose=false) that calls Sketch.ensureExistence(), set progressListener and calls Compiler.build()
           //  - calls Sketch.upload() (see later...)
-          if (!data.getFolder().exists()) showError(_("No sketch"), _("Can't find the sketch in the specified path"), null);
+          if (!data.getFolder().exists()) {
+            showError(_("No sketch"), _("Can't find the sketch in the specified path"), null);
+          }
           String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
-          if (suggestedClassName == null) showError(_("Error while verifying"), _("An error occurred while verifying the sketch"), null);
+          if (suggestedClassName == null) {
+            showError(_("Error while verifying"), _("An error occurred while verifying the sketch"), null);
+          }
           showMessage(_("Done compiling"), _("Done compiling"));
 
-          //  - chiama Sketch.upload() ... to be continued ...        
           Uploader uploader = Compiler.getUploaderByPreferences(parser.isNoUploadPort());
           if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
           try {
