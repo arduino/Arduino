@@ -185,7 +185,7 @@ float Stream::parseFloat(char skipChar){
     read();  // consume the character we got with peek
     c = timedPeek();
   }
-  while( (c >= '0' && c <= '9')  || c == '.' || c == skipChar );
+  while( (c >= '0' && c <= '9')  || c == '.' && !isFraction || c == skipChar );
 
   if(isNegative)
     value = -value;
