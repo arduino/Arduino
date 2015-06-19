@@ -157,8 +157,11 @@ public class SSHUploader extends Uploader {
     }
 
     String pattern = prefs.getOrExcept("upload.pattern");
-    String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
-    return ssh.execSyncCommand(StringUtils.join(cmd, " "), System.out, System.err);
+    String command = StringUtils.join(StringReplacer.formatAndSplit(pattern, prefs, true), " ");
+    if (verbose) {
+      System.out.println(command);
+    }
+    return ssh.execSyncCommand(command, System.out, System.err);
   }
 
   private void scpFiles(SCP scp, SSH ssh, File sourcePath, File sketch, List<String> warningsAccumulator) throws JSchException, IOException {
