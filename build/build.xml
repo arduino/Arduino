@@ -666,7 +666,7 @@
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="linux/libastylej/libastylej.so" tofile="linux/work/lib/libastylej.so" />
+    <copy file="linux/libastylej/libastylej_arm.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
   </target>
 
