@@ -38,13 +38,13 @@
 
 
 extern "C" {
-    #include "utility/SimpleLink.h"
+    #include "utility/simplelink.h"
     #include <string.h>
     #include "utility/wlan.h"
     #include "utility/netcfg.h"
     #include "utility/netapp.h"
     #include "utility/socket.h"
-    #include "udma_if.h"
+    #include "utility/udma_if.h"
 }
 
 //
@@ -167,31 +167,30 @@ uint8_t WiFiClass::getSocket()
 }
 
 
-char* WiFiClass::driverVersion()
+const char * WiFiClass::driverVersion()
 {
 	return SL_DRIVER_VERSION;
 }
 
 //--tested, working--//
-char* WiFiClass::firmwareVersion()
+const char* WiFiClass::firmwareVersion()
 {
     unsigned char ucConfigOpt = 0;
     unsigned char ucConfigLen = 0;
 
-    long lRetVal = -1;
-
     SlVersionFull ver = {0};
     ucConfigOpt = SL_DEVICE_GENERAL_VERSION;
     ucConfigLen = sizeof(ver);
-    lRetVal = sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, 
+    sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, 
                                 &ucConfigLen, (unsigned char *)(&ver));
     
-    sprintf(fwVersion, "%ld.%ld.%ld.%ld.31.%ld.%ld.%ld.%ld.%d.%d.%d.%d",
-    ver.NwpVersion[0],ver.NwpVersion[1],ver.NwpVersion[2],ver.NwpVersion[3],
-    ver.ChipFwAndPhyVersion.FwVersion[0],ver.ChipFwAndPhyVersion.FwVersion[1],
-    ver.ChipFwAndPhyVersion.FwVersion[2],ver.ChipFwAndPhyVersion.FwVersion[3],
-    ver.ChipFwAndPhyVersion.PhyVersion[0],ver.ChipFwAndPhyVersion.PhyVersion[1],
-    ver.ChipFwAndPhyVersion.PhyVersion[2],ver.ChipFwAndPhyVersion.PhyVersion[3]);
+    snprintf(fwVersion, sizeof(fwVersion),
+             "%ld.%ld.%ld.%ld:%ld.%ld.%ld.%ld:%d.%d.%d.%d",
+    ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3],
+    ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1],
+    ver.ChipFwAndPhyVersion.FwVersion[2], ver.ChipFwAndPhyVersion.FwVersion[3],
+    ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1],
+    ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
 
    return fwVersion;
 }
@@ -249,7 +248,7 @@ int WiFiClass::begin(char* ssid)
     //Connect to the access point (non enterprise, so 5th argument is NULL);
     //also mac address parameter set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, NULL, &SecParams, NULL);
+    int iRet = sl_WlanConnect((signed char*)ssid, NameLen, NULL, &SecParams, NULL);
     
     //
     //return appropriate status as described by arduino wifi library
@@ -257,7 +256,7 @@ int WiFiClass::begin(char* ssid)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        sl_WlanProfileAdd(ssid, NameLen, 0, &SecParams, 0, 6, 0);
+        sl_WlanProfileAdd((signed char*)ssid, NameLen, 0, &SecParams, 0, 6, 0);
         _connecting = true;
         return status();
     } else {
@@ -302,14 +301,14 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     int NameLen = strlen(ssid);
     SlSecParams_t SecParams = {0};
     SecParams.Type = SL_SEC_TYPE_WEP;
-    SecParams.Key = key;
+    SecParams.Key = (signed char *)key;
     SecParams.KeyLen = strlen(key);
     
     //
     //Connect to the access point (non enterprise, so 5th argument is NULL);
     //also mac address parameter set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, NULL, &SecParams, NULL);
+    int iRet = sl_WlanConnect((signed char*)ssid, NameLen, NULL, &SecParams, NULL);
     
     //
     //return appropriate status as described by arduino wifi library
@@ -317,7 +316,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        sl_WlanProfileAdd(ssid, NameLen, 0, &SecParams, 0, 6, 0);
+        sl_WlanProfileAdd((signed char*)ssid, NameLen, 0, &SecParams, 0, 6, 0);
         _connecting = true;
         return status();
     } else {
@@ -361,14 +360,14 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     int NameLen = strlen(ssid);
     SlSecParams_t SecParams = {0};
     SecParams.Type = SL_SEC_TYPE_WPA;
-    SecParams.Key = passphrase;
+    SecParams.Key = (signed char *)passphrase;
     SecParams.KeyLen = strlen(passphrase);
     
     //
     //connect to the access point (non enterprise, so 5th argument is NULL)
     //also mac address parameters set as null (3rd argument)
     //
-    int iRet = sl_WlanConnect(ssid, NameLen, NULL, &SecParams, NULL);
+    int iRet = sl_WlanConnect((signed char *)ssid, NameLen, NULL, &SecParams, NULL);
 
     //
     //return appropriate status as described by arduino wifi library
@@ -376,7 +375,7 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     //in SimpleLinkCallbacks.cpp. However, if iRet < 0, there was an error
     //
     if (iRet == 0) {
-        sl_WlanProfileAdd(ssid, NameLen, 0, &SecParams, 0, 6, 0);
+        sl_WlanProfileAdd((signed char *)ssid, NameLen, 0, &SecParams, 0, 6, 0);
         _connecting = true;
         return status();
     } else {
@@ -394,7 +393,7 @@ int WiFiClass::beginNetwork(char *ssid)
     }
 
     // Initialize the AP-mode Connected Device array
-    _connectedDeviceCount = 0;
+    WiFiClass::_connectedDeviceCount = 0;
     _latestConnect = 0;
     for (i = 0; i < MAX_AP_DEVICE_REGISTRY; i++) {
         _connectedDevices[i].in_use = false;
@@ -411,7 +410,7 @@ int WiFiClass::beginNetwork(char *ssid)
     retVal = sl_Stop(30);
 
     role = ROLE_AP;
-    return sl_Start(NULL,NULL,NULL);
+    return (retVal == 0 ? sl_Start(NULL, NULL, NULL) : retVal);
 }
 
 int WiFiClass::beginNetwork(char *ssid, char *passphrase)
@@ -424,7 +423,7 @@ int WiFiClass::beginNetwork(char *ssid, char *passphrase)
     }
 
     // Initialize the AP-mode Connected Device array
-    _connectedDeviceCount = 0;
+    WiFiClass::_connectedDeviceCount = 0;
     _latestConnect = 0;
     for (i = 0; i < MAX_AP_DEVICE_REGISTRY; i++) {
         _connectedDevices[i].in_use = false;
@@ -447,7 +446,7 @@ int WiFiClass::beginNetwork(char *ssid, char *passphrase)
     retVal = sl_Stop(30);
 
     role = ROLE_AP;
-    return sl_Start(NULL,NULL,NULL);
+    return (retVal == 0 ? sl_Start(NULL, NULL, NULL) : retVal);
 }
 
 
@@ -466,8 +465,8 @@ void WiFiClass::config(IPAddress local_ip)
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -475,7 +474,7 @@ void WiFiClass::config(IPAddress local_ip)
     //and use netcfgset to set the new configuration in memory
     //
     config.ipV4 = sl_Ntohl((uint32_t)local_ip);
-    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(SlNetCfgIpV4Args_t), (unsigned char*)&config);
 }
 
 void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
@@ -493,8 +492,8 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -503,7 +502,7 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
     //
     config.ipV4 = sl_Ntohl((uint32_t)local_ip);
     config.ipV4DnsServer = sl_Ntohl((uint32_t)dns_server);
-    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(SlNetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
 
@@ -522,8 +521,8 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -533,7 +532,7 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     config.ipV4 = sl_Ntohl((uint32_t)local_ip);
     config.ipV4DnsServer = sl_Ntohl((uint32_t)dns_server);
     config.ipV4Gateway = sl_Ntohl((uint32_t)gateway);
-    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(SlNetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
 
@@ -552,8 +551,8 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -564,7 +563,7 @@ void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gatew
     config.ipV4DnsServer = sl_Ntohl((uint32_t)dns_server);
     config.ipV4Gateway = sl_Ntohl((uint32_t)gateway);
     config.ipV4Mask = sl_Ntohl((uint32_t)subnet);
-    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(SlNetCfgIpV4Args_t), (unsigned char*)&config);
     
 }
 
@@ -577,8 +576,8 @@ void WiFiClass::setDNS(IPAddress dns_server1)
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -586,7 +585,7 @@ void WiFiClass::setDNS(IPAddress dns_server1)
     //and use netcfgset to set the new configuration in memory
     //
     config.ipV4DnsServer = (uint32_t)SL_IPV4_VAL(dns_server1[0], dns_server1[1], dns_server1[2], dns_server1[3]);
-    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(_NetCfgIpV4Args_t), (unsigned char*)&config);
+    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, 1, sizeof(SlNetCfgIpV4Args_t), (unsigned char*)&config);
 }
 
 
@@ -610,10 +609,17 @@ int WiFiClass::disconnect(void)
     //
     //disconnect from the wlan and return the current wlan_status
     //
-    int iRet = sl_WlanDisconnect();
+    sl_WlanDisconnect();
     return WiFi_status;
-    
-    
+}
+
+unsigned int WiFiClass::getTotalDevices(void)
+{
+#ifdef SL_PLATFORM_MULTI_THREADED
+#else
+    _SlNonOsMainLoopTask();
+#endif
+    return WiFiClass::_connectedDeviceCount;
 }
 
 uint8_t* WiFiClass::macAddress(uint8_t* mac)
@@ -645,8 +651,8 @@ IPAddress WiFiClass::localIP()
     //
     _SlNonOsMainLoopTask();
 
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
 
     //
@@ -666,8 +672,8 @@ IPAddress WiFiClass::subnetMask()
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -688,8 +694,8 @@ IPAddress WiFiClass::gatewayIP()
     //
     //get current configuration
     //
-    _NetCfgIpV4Args_t config = {0};
-    unsigned char len = sizeof(_NetCfgIpV4Args_t);
+    SlNetCfgIpV4Args_t config = {0};
+    unsigned char len = sizeof(SlNetCfgIpV4Args_t);
     sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, NULL, &len, (unsigned char*)&config);
     
     //
@@ -782,7 +788,7 @@ int8_t WiFiClass::scanNetworks()
     // set the scan policy for ten seconds. This starts the scan.
     //
     policyVal.uiPolicyLen = 10;
-    iRet = sl_WlanPolicySet(SL_POLICY_SCAN , SL_SCAN_POLICY(1), (UINT8*)(policyVal.ucPolicy), sizeof(policyVal));
+    iRet = sl_WlanPolicySet(SL_POLICY_SCAN , SL_SCAN_POLICY(1), (unsigned char *)(policyVal.ucPolicy), sizeof(policyVal));
     if(iRet != 0)
     {
         return 0;
@@ -826,7 +832,7 @@ char* WiFiClass::SSID(uint8_t networkItem)
     memset(&netInfo, 0, sizeof(netInfo));
     sl_WlanGetNetworkList(0, network_count, (Sl_WlanNetworkEntry_t*)&netInfo);
 
-    strcpy(string_output_buffer, (const char*)netInfo[networkItem].ssid);
+    strcpy(string_output_buffer, (char*)netInfo[networkItem].ssid);
     return  string_output_buffer;
     
 }
@@ -922,7 +928,7 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     //Use the netapp api to resolve an IP for the requested hostname
     //
     unsigned long DestinationIP;
-    int iRet = sl_NetAppDnsGetHostByName(aHostname, strlen(aHostname), &DestinationIP, SL_AF_INET);
+    int iRet = sl_NetAppDnsGetHostByName((signed char *)aHostname, strlen(aHostname), &DestinationIP, SL_AF_INET);
     aResult = sl_Htonl(DestinationIP);
     
     if (iRet >= 0) {
@@ -936,17 +942,18 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
 int WiFiClass::startSmartConfig()
 {
     unsigned char policyVal;
+
     if (!_initialized) {
         init();
     }
 
-    if(sl_WlanPolicySet(SL_POLICY_CONNECTION,
-        SL_CONNECTION_POLICY(1,0,0,0,1),
-        &policyVal,
-        1 /*PolicyValLen*/) < 0) return -1;
-
-    if(sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES) < 0)
+    if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,1), &policyVal, 1 /*PolicyValLen*/) < 0) {
         return -1;
+    }
+
+    if (sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES) < 0) {
+        return -1;
+    }
 
     sl_WlanSmartConfigStart(0,  //groupIdBitmask
         SMART_CONFIG_CIPHER_NONE, //cipher
@@ -958,16 +965,15 @@ int WiFiClass::startSmartConfig()
         NULL);                    //group2Key
 
     /* Block until connected */
-
-    uint8_t iCount;
-    while(WiFi.status() != WL_CONNECTED) {
+    while (WiFi.status() != WL_CONNECTED) {
         _SlNonOsMainLoopTask();
     }
 
-    if(sl_WlanPolicySet(SL_POLICY_CONNECTION,
-        SL_CONNECTION_POLICY(1,0,0,0,0),
-        &policyVal,
-        1 /*PolicyValLen*/) < 0) return -1;
+    if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,0), &policyVal, 1 /*PolicyValLen*/) < 0) {
+        return -1;
+    }
+
+    return (0);
 }
 
 /* This function takes uint16_t arguments for compactness on MSP430 w/ CC3100, but actual SlDateTime_t members are uint32_t.
@@ -999,7 +1005,7 @@ void WiFiClass::_registerNewDeviceIP(unsigned char *ip, unsigned char *mac)
 
     // Have we seen this client attach yet?
     for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
-        if (_connectedDevices[i].in_use && !memcmp((const uint8_t *)(_connectedDevices[i].mac), mac, 6)) {
+        if (_connectedDevices[i].in_use && !memcmp((uint8_t *)(_connectedDevices[i].mac), mac, 6)) {
             // We have; update the IP and exit.
             memcpy((uint8_t *)(_connectedDevices[i].ipAddress), ip, 4);
             _latestConnect = i;
@@ -1030,7 +1036,7 @@ void WiFiClass::_unregisterDevice(unsigned char *mac)
 
     // Find the client
     for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
-        if (_connectedDevices[i].in_use && !memcmp((const uint8_t *)(_connectedDevices[i].mac), mac, 6)) {
+        if (_connectedDevices[i].in_use && !memcmp((uint8_t *)(_connectedDevices[i].mac), mac, 6)) {
             // We have; set in_use to false.
             _connectedDevices[i].in_use = false;
             return;
@@ -1062,13 +1068,13 @@ IPAddress WiFiClass::deviceIpAddress(unsigned int idx)
 
 MACAddress WiFiClass::deviceMacAddress(unsigned int idx)
 {
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0;
 
     // Find the client
     do {
         if (_connectedDevices[i].in_use) {
             if (j == idx) {
-                return MACAddress((const uint8_t *)_connectedDevices[i].mac);
+                return MACAddress((uint8_t *)_connectedDevices[i].mac);
             }
             j++;
         }
@@ -1087,7 +1093,7 @@ IPAddress WiFiClass::deviceIpByMacAddress(MACAddress mac)
     // Search by MAC
     for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
         if (_connectedDevices[i].in_use) {
-            if ( mac == (const uint8_t *)_connectedDevices[i].mac ) {
+            if ( mac == (uint8_t *)_connectedDevices[i].mac ) {
                 return IPAddress((uint8_t *)_connectedDevices[i].ipAddress);
             }
         }
@@ -1100,13 +1106,13 @@ IPAddress WiFiClass::deviceIpByMacAddress(MACAddress mac)
 /* Return a MAC address based on a recorded IP address */
 MACAddress WiFiClass::deviceMacByIpAddress(IPAddress ip)
 {
-    int i = 0, j = 0, k = 0;
+    int i = 0;
 
     // Search by IP
     for (i=0; i < MAX_AP_DEVICE_REGISTRY; i++) {
         if (_connectedDevices[i].in_use) {
-            if ( ip == (const uint8_t *)_connectedDevices[i].ipAddress ) {
-                return MACAddress((const uint8_t *)_connectedDevices[i].mac);
+            if ( ip == (uint8_t *)_connectedDevices[i].ipAddress ) {
+                return MACAddress((uint8_t *)_connectedDevices[i].mac);
             }
         }
     }

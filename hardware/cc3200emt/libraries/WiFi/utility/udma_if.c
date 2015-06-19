@@ -65,7 +65,7 @@
 tDMAControlTable gpCtlTbl[CTL_TBL_SIZE] __attribute__(( aligned(1024)));
 #endif
 
-#if defined(ccs)
+#if defined(__TI_COMPILER_VERSION__)
 #pragma DATA_ALIGN(gpCtlTbl, 1024)
 tDMAControlTable gpCtlTbl[CTL_TBL_SIZE];
 #endif
