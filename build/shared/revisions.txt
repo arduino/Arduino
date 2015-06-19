@@ -1,5 +1,10 @@
 ARDUINO 1.6.6
 
+[ide]
+* Switched to Java 8, which is now both bundled and needed for compiling the IDE
+* Added link to unofficial boards support list in preferences
+* Limit of possible new sketches in a day raised to 676. Thanks @Chris--A
+
 ARDUINO 1.6.5-r2 - 2015.06.17
 
 [ide]
