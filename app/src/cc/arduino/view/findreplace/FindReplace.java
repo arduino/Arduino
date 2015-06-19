@@ -35,8 +35,6 @@ import processing.app.Sketch;
 import processing.app.helpers.OSUtils;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
@@ -70,12 +68,9 @@ public class FindReplace extends javax.swing.JFrame {
 
     getRootPane().setDefaultButton(findButton);
 
-    Base.registerWindowCloseKeys(getRootPane(), new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        setVisible(false);
-        Base.FIND_DIALOG_STATE = findDialogState();
-      }
+    Base.registerWindowCloseKeys(getRootPane(), e -> {
+      setVisible(false);
+      Base.FIND_DIALOG_STATE = findDialogState();
     });
 
     Base.setIcon(this);
@@ -91,7 +86,7 @@ public class FindReplace extends javax.swing.JFrame {
   }
 
   private Map<String, Object> findDialogState() {
-    Map<String, Object> state = new HashMap<String, Object>();
+    Map<String, Object> state = new HashMap<>();
     state.put(FIND_TEXT, findField.getText());
     state.put(REPLACE_TEXT, replaceField.getText());
     state.put(IGNORE_CASE, ignoreCaseBox.isSelected());
