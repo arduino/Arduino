@@ -7,7 +7,7 @@ __TI_STACK_SIZE = __STACK_SIZE;
 
 INPUT(
     ../../configPkg/package/cfg/energia_pm4g.om4g
-    ../../lib/cc3200.m4g.lib
+    ../../lib/board.m4g.lib
     lib/RedBearLab_CC3200.m4g.lib
     ti/drivers/lib/drivers_ccware.am4g
     ti/drivers/ports/tirtos/lib/tirtosport.am4g

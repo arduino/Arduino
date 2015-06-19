@@ -2,7 +2,7 @@
  *  Do not modify this file; it is automatically 
  *  generated and any modifications will be overwritten.
  *
- * @(#) xdc-A68
+ * @(#) xdc-A71
  */
 
 /*
@@ -268,6 +268,7 @@ struct ti_sysbios_hal_Hwi_Fxns__ {
     xdc_runtime_Types_Base* __base;
     const xdc_runtime_Types_SysFxns2 *__sysp;
     xdc_Bool (*getStackInfo)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool);
+    xdc_Bool (*getCoreStackInfo)(ti_sysbios_interfaces_IHwi_StackInfo*, xdc_Bool, xdc_UInt);
     xdc_Void (*startup)(void);
     xdc_UInt (*disable)(void);
     xdc_UInt (*enable)(void);
@@ -366,6 +367,11 @@ __extern xdc_Void ti_sysbios_hal_Hwi_Params__init__S( xdc_Ptr dst, const xdc_Voi
 #define ti_sysbios_hal_Hwi_getStackInfo ti_sysbios_hal_Hwi_getStackInfo__E
 xdc__CODESECT(ti_sysbios_hal_Hwi_getStackInfo__E, "ti_sysbios_hal_Hwi_getStackInfo")
 __extern xdc_Bool ti_sysbios_hal_Hwi_getStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth );
+
+/* getCoreStackInfo__E */
+#define ti_sysbios_hal_Hwi_getCoreStackInfo ti_sysbios_hal_Hwi_getCoreStackInfo__E
+xdc__CODESECT(ti_sysbios_hal_Hwi_getCoreStackInfo__E, "ti_sysbios_hal_Hwi_getCoreStackInfo")
+__extern xdc_Bool ti_sysbios_hal_Hwi_getCoreStackInfo__E( ti_sysbios_interfaces_IHwi_StackInfo *stkInfo, xdc_Bool computeStackDepth, xdc_UInt coreId );
 
 /* startup__E */
 #define ti_sysbios_hal_Hwi_startup ti_sysbios_hal_Hwi_startup__E
@@ -635,6 +641,7 @@ struct ti_sysbios_hal_Hwi_Object {
 #define Hwi_E_stackOverflow ti_sysbios_hal_Hwi_E_stackOverflow
 #define Hwi_Params ti_sysbios_hal_Hwi_Params
 #define Hwi_getStackInfo ti_sysbios_hal_Hwi_getStackInfo
+#define Hwi_getCoreStackInfo ti_sysbios_hal_Hwi_getCoreStackInfo
 #define Hwi_startup ti_sysbios_hal_Hwi_startup
 #define Hwi_switchFromBootStack ti_sysbios_hal_Hwi_switchFromBootStack
 #define Hwi_post ti_sysbios_hal_Hwi_post
