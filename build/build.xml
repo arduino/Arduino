@@ -661,8 +661,8 @@
 
   <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-arm-2.05.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-arm-2.05.zip" />
+      <param name="archive_file" value="./libastylej-2.05.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
