@@ -351,33 +351,33 @@ int main(void)
 	/* initialize UART(s) depending on CPU defined */
 #if defined(__AVR_ATmega128__) || defined(__AVR_ATmega1280__)
 	if(bootuart == 1) {
-		UBRR0L = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
-		UBRR0H = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
+		UBRR0L = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
+		UBRR0H = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8;
 		UCSR0A = 0x00;
 		UCSR0C = 0x06;
 		UCSR0B = _BV(TXEN0)|_BV(RXEN0);
 	}
 	if(bootuart == 2) {
-		UBRR1L = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
-		UBRR1H = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
+		UBRR1L = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
+		UBRR1H = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8;
 		UCSR1A = 0x00;
 		UCSR1C = 0x06;
 		UCSR1B = _BV(TXEN1)|_BV(RXEN1);
 	}
 #elif defined __AVR_ATmega163__
-	UBRR = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
-	UBRRHI = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
+	UBRR = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
+	UBRRHI = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8;
 	UCSRA = 0x00;
 	UCSRB = _BV(TXEN)|_BV(RXEN);	
 #elif defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)
 
 #ifdef DOUBLE_SPEED
 	UCSR0A = (1<<U2X0); //Double speed mode USART0
-	UBRR0L = (uint8_t)(F_CPU/(BAUD_RATE*8L)-1);
-	UBRR0H = (F_CPU/(BAUD_RATE*8L)-1) >> 8;
+	UBRR0L = (uint8_t)((F_CPU+BAUD_RATE*4L)/(BAUD_RATE*8L)-1);
+	UBRR0H = ((F_CPU+BAUD_RATE*4L)/(BAUD_RATE*8L)-1) >> 8;
 #else
-	UBRR0L = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
-	UBRR0H = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
+	UBRR0L = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
+	UBRR0H = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8;
 #endif
 
 	UCSR0B = (1<<RXEN0) | (1<<TXEN0);
@@ -390,14 +390,14 @@ int main(void)
 	PORTD |= _BV(PIND0);
 #elif defined __AVR_ATmega8__
 	/* m8 */
-	UBRRH = (((F_CPU/BAUD_RATE)/16)-1)>>8; 	// set baud rate
-	UBRRL = (((F_CPU/BAUD_RATE)/16)-1);
+	UBRRH = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8;  // set baud rate
+	UBRRL = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
 	UCSRB = (1<<RXEN)|(1<<TXEN);  // enable Rx & Tx
 	UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);  // config USART; 8N1
 #else
 	/* m16,m32,m169,m8515,m8535 */
-	UBRRL = (uint8_t)(F_CPU/(BAUD_RATE*16L)-1);
-	UBRRH = (F_CPU/(BAUD_RATE*16L)-1) >> 8;
+	UBRRL = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
+	UBRRH = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8;
 	UCSRA = 0x00;
 	UCSRC = 0x06;
 	UCSRB = _BV(TXEN)|_BV(RXEN);

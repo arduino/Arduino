@@ -144,8 +144,8 @@ int main(void)
 
   /* initialize UART(s) depending on CPU defined */
   /* m8 */
-  UBRRH = (((F_CPU/BAUD_RATE)/16)-1)>>8; 	// set baud rate
-  UBRRL = (((F_CPU/BAUD_RATE)/16)-1);
+  UBRRH = ((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1) >> 8; //set baud rate
+  UBRRL = (uint8_t)((F_CPU+BAUD_RATE*8L)/(BAUD_RATE*16L)-1);
   UCSRB = (1<<RXEN)|(1<<TXEN);  // enable Rx & Tx
   UCSRC = (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0);  // config USART; 8N1
 
