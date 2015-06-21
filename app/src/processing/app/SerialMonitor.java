@@ -96,6 +96,19 @@ public class SerialMonitor extends AbstractMonitor {
         addToUpdateBuffer(buff, n);
       }
     };
+	
+	int dtrState = PreferencesData.getInteger("serial.monitorDtr", -1);
+	if (dtrState == 0)
+		serial.setDTR(false);
+	if (dtrState == 1)
+		serial.setDTR(true);
+	
+	int rtsState = PreferencesData.getInteger("serial.monitorRts", -1);
+	if (rtsState == 0)
+		serial.setRTS(false);
+	if (rtsState == 1)
+		serial.setRTS(true);
+		
   }
 
   public void close() throws Exception {
