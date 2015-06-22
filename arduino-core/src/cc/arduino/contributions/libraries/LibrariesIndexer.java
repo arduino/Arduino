@@ -171,6 +171,10 @@ public class LibrariesIndexer {
       // Create a legacy library and exit
       LegacyUserLibrary lib = LegacyUserLibrary.create(folder);
       lib.setReadOnly(readOnly);
+      String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
+      if (headers.length == 0) {
+        throw new IOException(lib.getSrcFolder().getAbsolutePath());
+      }
       installedLibraries.addOrReplace(lib);
       if (isSketchbook) {
         installedLibrariesWithDuplicates.add(lib);
@@ -183,6 +187,10 @@ public class LibrariesIndexer {
     // Create a regular library
     UserLibrary lib = UserLibrary.create(folder);
     lib.setReadOnly(readOnly);
+    String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
+    if (headers.length == 0) {
+      throw new IOException(lib.getSrcFolder().getAbsolutePath());
+    }
     installedLibraries.addOrReplace(lib);
     if (isSketchbook) {
       installedLibrariesWithDuplicates.add(lib);
