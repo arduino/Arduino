@@ -1,5 +1,5 @@
 ![IMG](http://energia.nu/img/Energia.png)
-[![Stories in In Progress]https://badge.waffle.io/energia/energia.png?label=In%20Progress&title=In%20Progress)](https://waffle.io/energia/energia)
+[![Stories in In Progress](https://badge.waffle.io/energia/energia.png?label=In%20Progress&title=In%20Progress)](https://waffle.io/energia/energia)
 [![Stories in Ready to Commit](https://badge.waffle.io/energia/energia.png?label=Ready%20to%20Commit&title=Ready%20to%20Commit)](https://waffle.io/energia/energia)
 [![Stories in Done](https://badge.waffle.io/energia/energia.png?label=Done&title=Done)](https://waffle.io/energia/energia)
 
