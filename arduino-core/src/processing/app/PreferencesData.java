@@ -195,6 +195,18 @@ public class PreferencesData {
     set(key, String.valueOf(value));
   }
 
+  static public float getFloat(String attribute, float defaultValue) {
+    if (has(attribute)) {
+      return getFloat(attribute);
+    }
+
+    return defaultValue;
+  }
+
+  static public float getFloat(String attribute) {
+    return Float.parseFloat(get(attribute));
+  }
+
   // get a copy of the Preferences
   static public PreferencesMap getMap() {
     return new PreferencesMap(prefs);
