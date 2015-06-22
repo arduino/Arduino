@@ -1198,15 +1198,19 @@ public class Compiler implements MessageConsumer {
       return null;
     }
 
-    File mergedSketch = new File(buildPath, className + ".with_bootloader.hex");
-    FileUtils.copyFile(sketch, mergedSketch);
-
     String bootloaderNoBlink = prefs.get("bootloader.noblink");
     if (bootloaderNoBlink == null) {
       bootloaderNoBlink = prefs.get("bootloader.file");
     }
 
     File bootloader = new File(new File(prefs.get("build.platform.path"), "bootloaders"), bootloaderNoBlink);
+    if (!bootloader.exists()) {
+      System.err.println(I18n.format(_("Bootloader file specified but missing: {0}"), bootloader));
+      return null;
+    }
+
+    File mergedSketch = new File(buildPath, className + ".with_bootloader.hex");
+    FileUtils.copyFile(sketch, mergedSketch);
 
     new MergeSketchWithBooloader().merge(mergedSketch, bootloader);
 
