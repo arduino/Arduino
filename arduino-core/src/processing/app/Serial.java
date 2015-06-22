@@ -50,27 +50,27 @@ public class Serial implements SerialPortEventListener {
   public Serial() throws SerialException {
     this(PreferencesData.get("serial.port"),
       PreferencesData.getInteger("serial.debug_rate", 9600),
-      PreferencesData.get("serial.parity", "N").charAt(0),
+      PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1));
   }
 
   public Serial(int irate) throws SerialException {
     this(PreferencesData.get("serial.port"), irate,
-      PreferencesData.get("serial.parity", "N").charAt(0),
+      PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1));
   }
 
   public Serial(String iname, int irate) throws SerialException {
-    this(iname, irate, PreferencesData.get("serial.parity", "N").charAt(0),
+    this(iname, irate, PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1));
   }
 
   public Serial(String iname) throws SerialException {
     this(iname, PreferencesData.getInteger("serial.debug_rate", 9600),
-      PreferencesData.get("serial.parity", "N").charAt(0),
+      PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1));
   }

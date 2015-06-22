@@ -146,6 +146,11 @@ public class PreferencesData {
     return (value == null) ? defaultValue : value;
   }
 
+  static public String getNonEmpty(String attribute, String defaultValue) {
+    String value = get(attribute, defaultValue);
+    return ("".equals(value)) ? defaultValue : value;
+  }
+
   public static boolean has(String key) {
     return prefs.containsKey(key);
   }
