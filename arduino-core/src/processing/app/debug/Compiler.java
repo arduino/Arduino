@@ -1203,7 +1203,7 @@ public class Compiler implements MessageConsumer {
       bootloaderNoBlink = prefs.get("bootloader.file");
     }
 
-    File bootloader = new File(new File(prefs.get("build.platform.path"), "bootloaders"), bootloaderNoBlink);
+    File bootloader = new File(new File(prefs.get("runtime.platform.path"), "bootloaders"), bootloaderNoBlink);
     if (!bootloader.exists()) {
       System.err.println(I18n.format(_("Bootloader file specified but missing: {0}"), bootloader));
       return null;
