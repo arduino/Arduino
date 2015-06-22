@@ -118,6 +118,7 @@ public class Base {
   // actually used are determined by the preferences, which are shared)
   private List<JMenu> boardsCustomMenus;
   private volatile Action openBoardsManager;
+  private List<JMenuItem> programmerMenus;
 
   private final PdeKeywords pdeKeywords;
   private final List<JMenuItem> recentSketchesMenuItems;
@@ -299,6 +300,7 @@ public class Base {
     BaseNoGui.initPackages();
     splashScreenHelper.splashText(_("Preparing boards..."));
     rebuildBoardsMenu();
+    rebuildProgrammerMenu();
 
     // Setup board-dependent variables.
     onBoardOrPortChange();
@@ -1275,6 +1277,7 @@ public class Base {
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
         rebuildBoardsMenu();
+        rebuildProgrammerMenu();
         onBoardOrPortChange();
         setIndexer(BaseNoGui.librariesIndexer);
       }
@@ -1298,6 +1301,7 @@ public class Base {
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
         rebuildBoardsMenu();
+        rebuildProgrammerMenu();
         setIndexer(BaseNoGui.indexer);
         if (StringUtils.isNotEmpty(filterText)) {
           setFilterText(filterText);
@@ -1313,6 +1317,7 @@ public class Base {
     // Reload all boards (that may have been installed/updated/removed)
     BaseNoGui.initPackages();
     rebuildBoardsMenu();
+    rebuildProgrammerMenu();
     onBoardOrPortChange();
   }
 
@@ -1515,6 +1520,10 @@ public class Base {
     throw new Exception("Custom menu not found!");
   }
 
+  public List<JMenuItem> getProgrammerMenus() {
+    return programmerMenus;
+  }
+
   private static JMenuItem selectVisibleSelectedOrFirstMenuItem(JMenu menu) {
     JMenuItem firstVisible = null;
     for (int i = 0; i < menu.getItemCount(); i++) {
@@ -1546,8 +1555,9 @@ public class Base {
     throw new IllegalStateException("Menu has no enabled items");
   }
 
-  public void rebuildProgrammerMenu(JMenu menu) {
-    menu.removeAll();
+  public void rebuildProgrammerMenu() {
+    programmerMenus = new LinkedList<>();
+
     ButtonGroup group = new ButtonGroup();
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
@@ -1555,18 +1565,18 @@ public class Base {
           String id = targetPackage.getId() + ":" + programmer;
 
           @SuppressWarnings("serial")
-          AbstractAction action = new AbstractAction(targetPlatform
-                  .getProgrammer(programmer).get("name")) {
+          AbstractAction action = new AbstractAction(targetPlatform.getProgrammer(programmer).get("name")) {
             public void actionPerformed(ActionEvent actionevent) {
               PreferencesData.set("programmer", "" + getValue("id"));
             }
           };
           action.putValue("id", id);
           JMenuItem item = new JRadioButtonMenuItem(action);
-          if (PreferencesData.get("programmer").equals(id))
+          if (PreferencesData.get("programmer").equals(id)) {
             item.setSelected(true);
+          }
           group.add(item);
-          menu.add(item);
+          programmerMenus.add(item);
         }
       }
     }

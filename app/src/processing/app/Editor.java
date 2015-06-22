@@ -74,6 +74,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private final Platform platform;
   private JMenu recentSketchesMenu;
+  private JMenu programmersMenu;
 
   private static class ShouldSaveIfModified implements Predicate<Sketch> {
 
@@ -563,6 +564,8 @@ public class Editor extends JFrame implements RunnerListener {
         if (!components.contains(portMenu)) {
           toolsMenu.insert(portMenu, numTools + offset);
         }
+        programmersMenu.removeAll();
+        base.getProgrammerMenus().forEach(programmersMenu::add);
         toolsMenu.revalidate();
         validate();
       }
@@ -802,9 +805,10 @@ public class Editor extends JFrame implements RunnerListener {
     toolsMenu.add(portMenu);
     toolsMenu.addSeparator();
 
-    JMenu programmerMenu = new JMenu(_("Programmer"));
-    base.rebuildProgrammerMenu(programmerMenu);
-    toolsMenu.add(programmerMenu);
+    base.rebuildProgrammerMenu();
+    programmersMenu = new JMenu(_("Programmer"));
+    base.getProgrammerMenus().stream().forEach(programmersMenu::add);
+    toolsMenu.add(programmersMenu);
 
     item = new JMenuItem(_("Burn Bootloader"));
     item.addActionListener(e -> handleBurnBootloader());
