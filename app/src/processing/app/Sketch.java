@@ -204,7 +204,7 @@ public class Sketch {
     // (osx is case insensitive but preserving, windows insensitive,
     // *nix is sensitive and preserving.. argh)
     if (renamingCode) {
-      if (newName.equalsIgnoreCase(current.getCode().getFileName())) {
+      if (newName.equalsIgnoreCase(current.getCode().getFileName()) && OSUtils.isWindows()) {
         // exit quietly for the 'rename' case.
         // if it's a 'new' then an error will occur down below
         return;
@@ -256,7 +256,7 @@ public class Sketch {
     // extensions, so compare the full names (including extensions).  This
     // might cause problems: http://dev.processing.org/bugs/show_bug.cgi?id=543
     for (SketchCode c : data.getCodes()) {
-      if (newName.equalsIgnoreCase(c.getFileName())) {
+      if (newName.equalsIgnoreCase(c.getFileName()) && OSUtils.isWindows()) {
         Base.showMessage(_("Nope"),
                          I18n.format(
 			   _("A file named \"{0}\" already exists in \"{1}\""),
