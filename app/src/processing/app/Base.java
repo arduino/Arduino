@@ -558,7 +558,7 @@ public class Base {
         location = nextEditorLocation();
       }
       // If file did not exist, null will be returned for the Editor
-      if (handleOpen(new File(path), location, true, false, false) != null) {
+      if (handleOpen(new File(path), location, nextEditorLocation(), true, false, false) != null) {
         opened++;
       }
     }
@@ -890,10 +890,10 @@ public class Base {
   }
 
   protected Editor handleOpen(File file, int[] location, boolean showEditor, boolean untitled) throws Exception {
-    return handleOpen(file, location, showEditor, true, untitled);
+    return handleOpen(file, location, location, showEditor, true, untitled);
   }
 
-  protected Editor handleOpen(File file, int[] location, boolean showEditor, boolean storeOpenedSketches, boolean untitled) throws Exception {
+  protected Editor handleOpen(File file, int[] storedLocation, int[] defaultLocation, boolean showEditor, boolean storeOpenedSketches, boolean untitled) throws Exception {
     if (!file.exists()) return null;
 
     // Cycle through open windows to make sure that it's not already open.
@@ -905,7 +905,7 @@ public class Base {
       }
     }
 
-    final Editor editor = new Editor(this, file, location, BaseNoGui.getPlatform());
+    Editor editor = new Editor(this, file, storedLocation, defaultLocation, BaseNoGui.getPlatform());
 
     // Make sure that the sketch actually loaded
     if (editor.getSketch() == null) {

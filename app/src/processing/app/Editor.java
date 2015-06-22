@@ -179,7 +179,7 @@ public class Editor extends JFrame implements RunnerListener {
   private Runnable exportAppHandler;
 
 
-  public Editor(Base ibase, File file, int[] location, Platform platform) throws Exception {
+  public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
     this.base = ibase;
     this.platform = platform;
@@ -326,7 +326,7 @@ public class Editor extends JFrame implements RunnerListener {
 //    System.out.println("t2");
 
     // Set the window bounds and the divider location before setting it visible
-    setPlacement(location);
+    setPlacement(storedLocation, defaultLocation);
 
 
     // Set the minimum size for the editor window
@@ -414,6 +414,14 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  private void setPlacement(int[] storedLocation, int[] defaultLocation) {
+    if (storedLocation.length > 5 && storedLocation[5] != 0) {
+      setExtendedState(storedLocation[5]);
+      setPlacement(defaultLocation);
+    } else {
+      setPlacement(storedLocation);
+    }
+  }
 
   private void setPlacement(int[] location) {
     setBounds(location[0], location[1], location[2], location[3]);
@@ -422,9 +430,8 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
-
   protected int[] getPlacement() {
-    int[] location = new int[5];
+    int[] location = new int[6];
 
     // Get the dimensions of the Frame
     Rectangle bounds = getBounds();
@@ -435,6 +442,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Get the current placement of the divider
     location[4] = splitPane.getDividerLocation();
+    location[5] = getExtendedState() & MAXIMIZED_BOTH;
 
     return location;
   }
