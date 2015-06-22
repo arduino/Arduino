@@ -52,7 +52,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static processing.app.I18n._;
@@ -67,8 +67,8 @@ public class LibrariesIndexer {
   private final File indexFile;
   private final File stagingFolder;
   private File sketchbookLibrariesFolder;
-  
-  private final List<String> badLibNotified = new ArrayList<String>();
+
+  private final List<String> badLibNotified = new ArrayList<>();
 
   public LibrariesIndexer(File preferencesFolder, ContributionsIndexer contributionsIndexer) {
     this.contributionsIndexer = contributionsIndexer;
@@ -92,11 +92,10 @@ public class LibrariesIndexer {
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       index = mapper.readValue(indexIn, LibrariesIndex.class);
 
-      for (ContributedLibrary library : index.getLibraries()) {
-        if (library.getCategory() == null || "".equals(library.getCategory())) {
-          library.setCategory("Uncategorized");
-        }
-      }
+      index.getLibraries()
+        .stream()
+        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()))
+        .forEach(library -> library.setCategory("Uncategorized"));
     } finally {
       IOUtils.closeQuietly(indexIn);
     }
@@ -124,7 +123,7 @@ public class LibrariesIndexer {
       @Override
       public Object apply(UserLibrary userLibrary) {
         ContributedPlatform platform = contributionsIndexer.getPlatformByFolder(userLibrary.getInstalledFolder());
-        userLibrary.setTypes(Arrays.asList(platform.getCategory()));
+        userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
         return userLibrary;
       }
     }).toList();
@@ -140,14 +139,14 @@ public class LibrariesIndexer {
       if (!BaseNoGui.isSanitaryName(subfolder.getName())) {
 
         // Detect whether the current folder name has already had a notification.
-        if(!badLibNotified.contains(subfolder.getName())) { 
+        if (!badLibNotified.contains(subfolder.getName())) {
 
           badLibNotified.add(subfolder.getName());
 
           String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
-                        + "Library names must contain only basic letters and numbers.\n"
-                        + "(ASCII only and no spaces, and it cannot start with a number)"),
-                subfolder.getName());
+              + "Library names must contain only basic letters and numbers.\n"
+              + "(ASCII only and no spaces, and it cannot start with a number)"),
+            subfolder.getName());
           BaseNoGui.showMessage(_("Ignoring bad library name"), mess);
         }
         continue;
@@ -213,7 +212,7 @@ public class LibrariesIndexer {
     }
 
     if (lib.getTypes() == null) {
-      lib.setTypes(Arrays.asList("Contributed"));
+      lib.setTypes(Collections.singletonList("Contributed"));
     }
   }
 
