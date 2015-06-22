@@ -400,8 +400,8 @@ writePort(port, value, bitmask):  Write an 8 bit port.
 #define PIN_TO_SERVO(p)         (p)
 //#define TOTAL_PORTS				2
 
-// Tiva C TM4C123G - EK-TM4C123GXL
-#elif defined(__TM4C123GH6PM__)
+// Tiva C TM4C123G - EK-TM4C123GXL and Stellaris LM4F120H5QR
+#elif (defined(__TM4C123GH6PM__) || defined(__LM4F120H5QR__))
 #define TOTAL_ANALOG_PINS       13
 #define TOTAL_PINS              41
 #define VERSION_BLINK_PIN       40
