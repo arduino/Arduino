@@ -104,7 +104,7 @@ public class Sketch {
    * Another exception is when an external editor is in use,
    * in which case the load happens each time "run" is hit.
    */
-  protected void load() throws IOException {
+  private void load() throws IOException {
     load(false);
   }
 
@@ -569,10 +569,8 @@ public class Sketch {
       // rename .pde files to .ino
       File mainFile = new File(getMainFilePath());
       File mainFolder = mainFile.getParentFile();
-      File[] pdeFiles = mainFolder.listFiles(new FilenameFilter() {
-        public boolean accept(File dir, String name) {
-          return name.toLowerCase().endsWith(".pde");
-        }
+      File[] pdeFiles = mainFolder.listFiles((dir, name) -> {
+        return name.toLowerCase().endsWith(".pde");
       });
 
       if (pdeFiles != null && pdeFiles.length > 0) {
@@ -695,6 +693,7 @@ public class Sketch {
         return false;
       }
     } catch (IOException e) {
+      //ignore
     }
 
     // if the new folder already exists, then need to remove
@@ -939,7 +938,7 @@ public class Sketch {
    * Add import statements to the current tab for all of packages inside
    * the specified jar file.
    */
-  public void importLibrary(File jarPath) throws IOException {
+  private void importLibrary(File jarPath) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -983,7 +982,7 @@ public class Sketch {
     setCurrentCode(which, false);
   }
 
-  public void setCurrentCode(int which, boolean forceUpdate) {
+  private void setCurrentCode(int which, boolean forceUpdate) {
     // if current is null, then this is the first setCurrent(0)
     if (!forceUpdate && (currentIndex == which) && (current != null)) {
       return;
@@ -1096,18 +1095,13 @@ public class Sketch {
    *
    * @return null if compilation failed, main class name if not
    */
-  public String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
+  private String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
     // run the preprocessor
     editor.status.progressUpdate(20);
 
     ensureExistence();
     
-    ProgressListener pl = new ProgressListener() {
-      @Override
-      public void progress(int percent) {
-        editor.status.progressUpdate(percent);
-      }
-    };
+    ProgressListener pl = editor.status::progressUpdate;
     
     return Compiler.build(data, buildPath, tempBuildFolder, pl, verbose, save);
   }
@@ -1120,7 +1114,7 @@ public class Sketch {
   /**
    * Handle export to applet.
    */
-  public boolean exportApplet(String appletPath, boolean usingProgrammer)
+  private boolean exportApplet(String appletPath, boolean usingProgrammer)
     throws Exception {
 
     prepare();
@@ -1146,7 +1140,7 @@ public class Sketch {
     return success;
   }
 
-  protected boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
+  private boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
 
     Uploader uploader = Compiler.getUploaderByPreferences(false);
 
@@ -1165,7 +1159,7 @@ public class Sketch {
         PreferencesData.set(uploader.getAuthorizationKey(), dialog.getPassword());
       }
 
-      List<String> warningsAccumulator = new LinkedList<String>();
+      List<String> warningsAccumulator = new LinkedList<>();
       try {
         success = Compiler.upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
@@ -1191,7 +1185,7 @@ public class Sketch {
    * Only checks to see if the main folder is still around,
    * but not its contents.
    */
-  protected void ensureExistence() {
+  private void ensureExistence() {
     if (data.getFolder().exists()) return;
 
     Base.showWarning(_("Sketch Disappeared"),
@@ -1254,7 +1248,7 @@ public class Sketch {
   /**
    * True if the specified code has the default file extension.
    */
-  public boolean hasDefaultExtension(SketchCode code) {
+  private boolean hasDefaultExtension(SketchCode code) {
     return code.isExtension(getDefaultExtension());
   }
 
@@ -1262,7 +1256,7 @@ public class Sketch {
   /**
    * True if the specified extension is the default file extension.
    */
-  public boolean isDefaultExtension(String what) {
+  private boolean isDefaultExtension(String what) {
     return what.equals(getDefaultExtension());
   }
 
@@ -1271,7 +1265,7 @@ public class Sketch {
    * Check this extension (no dots, please) against the list of valid
    * extensions.
    */
-  public boolean validExtension(String what) {
+  private boolean validExtension(String what) {
     return SketchData.EXTENSIONS.contains(what);
   }
 
@@ -1324,7 +1318,7 @@ public class Sketch {
    * Create the data folder if it does not exist already. As a convenience,
    * it also returns the data folder, since it's likely about to be used.
    */
-  public File prepareDataFolder() {
+  private File prepareDataFolder() {
     if (!data.getDataFolder().exists()) {
       data.getDataFolder().mkdirs();
     }
@@ -1336,7 +1330,7 @@ public class Sketch {
    * Create the code folder if it does not exist already. As a convenience,
    * it also returns the code folder, since it's likely about to be used.
    */
-  public File prepareCodeFolder() {
+  private File prepareCodeFolder() {
     if (!data.getCodeFolder().exists()) {
       data.getCodeFolder().mkdirs();
     }
@@ -1369,7 +1363,7 @@ public class Sketch {
   }
 
 
-  public void setUntitled(boolean u) {
+  private void setUntitled(boolean u) {
     editor.untitled = u;
   }
 
@@ -1386,7 +1380,7 @@ public class Sketch {
    * Convert to sanitized name and alert the user
    * if changes were made.
    */
-  static public String checkName(String origName) {
+  private static String checkName(String origName) {
     String newName = BaseNoGui.sanitizeName(origName);
 
     if (!newName.equals(origName)) {
