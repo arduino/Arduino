@@ -134,7 +134,7 @@ public class Editor extends JFrame implements RunnerListener {
   static JMenu examplesMenu;
   static JMenu importMenu;
 
-  private static JMenu serialMenu;
+  private static JMenu portMenu;
 
   static AbstractMonitor serialMonitor;
 
@@ -223,7 +223,7 @@ public class Editor extends JFrame implements RunnerListener {
           for (Component menuItem : toolsMenuItemsToRemove) {
             toolsMenu.remove(menuItem);
           }
-          toolsMenu.remove(serialMenu);
+          toolsMenu.remove(portMenu);
         }
       });
 
@@ -552,7 +552,7 @@ public class Editor extends JFrame implements RunnerListener {
     toolsMenu.addMenuListener(new StubMenuListener() {
       @Override
       public void menuSelected(MenuEvent e) {
-        List<Component> components = Arrays.asList(fileMenu.getComponents());
+        List<Component> components = Arrays.asList(toolsMenu.getComponents());
         int offset = 0;
         for (JMenu menu : base.getBoardsCustomMenus()) {
           if (!components.contains(menu)) {
@@ -560,8 +560,8 @@ public class Editor extends JFrame implements RunnerListener {
             offset++;
           }
         }
-        if (!components.contains(serialMenu)) {
-          toolsMenu.insert(serialMenu, numTools + offset);
+        if (!components.contains(portMenu)) {
+          toolsMenu.insert(portMenu, numTools + offset);
         }
         toolsMenu.revalidate();
         validate();
@@ -780,11 +780,7 @@ public class Editor extends JFrame implements RunnerListener {
     addInternalTools(toolsMenu);
 
     JMenuItem item = newJMenuItemShift(_("Serial Monitor"), 'M');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSerial();
-        }
-      });
+    item.addActionListener(e -> handleSerial());
     toolsMenu.add(item);
 
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
@@ -798,14 +794,12 @@ public class Editor extends JFrame implements RunnerListener {
     // XXX: DAM: these should probably be implemented using the Tools plugin
     // API, if possible (i.e. if it supports custom actions, etc.)
 
-    for (JMenu menu : base.getBoardsCustomMenus()) {
-      toolsMenu.add(menu);
-    }
+    base.getBoardsCustomMenus().stream().forEach(toolsMenu::add);
 
-    if (serialMenu == null)
-      serialMenu = new JMenu(_("Port"));
+    if (portMenu == null)
+      portMenu = new JMenu(_("Port"));
     populatePortMenu();
-    toolsMenu.add(serialMenu);
+    toolsMenu.add(portMenu);
     toolsMenu.addSeparator();
 
     JMenu programmerMenu = new JMenu(_("Programmer"));
@@ -813,11 +807,7 @@ public class Editor extends JFrame implements RunnerListener {
     toolsMenu.add(programmerMenu);
 
     item = new JMenuItem(_("Burn Bootloader"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handleBurnBootloader();
-      }
-    });
+    item.addActionListener(e -> handleBurnBootloader());
     toolsMenu.add(item);
 
     toolsMenu.addMenuListener(new StubMenuListener() {
@@ -1098,7 +1088,7 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void selectSerialPort(String name) {
-    if(serialMenu == null) {
+    if(portMenu == null) {
       System.out.println(_("serialMenu is null"));
       return;
     }
@@ -1107,8 +1097,8 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     JCheckBoxMenuItem selection = null;
-    for (int i = 0; i < serialMenu.getItemCount(); i++) {
-      JMenuItem menuItem = serialMenu.getItem(i);
+    for (int i = 0; i < portMenu.getItemCount(); i++) {
+      JMenuItem menuItem = portMenu.getItem(i);
       if (!(menuItem instanceof JCheckBoxMenuItem)) {
         continue;
       }
@@ -1135,7 +1125,7 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private void populatePortMenu() {
-    serialMenu.removeAll();
+    portMenu.removeAll();
 
     String selectedPort = PreferencesData.get("serial.port");
 
@@ -1155,7 +1145,7 @@ public class Editor extends JFrame implements RunnerListener {
     for (BoardPort port : ports) {
       if (lastProtocol == null || !port.getProtocol().equals(lastProtocol)) {
         if (lastProtocol != null) {
-          serialMenu.addSeparator();
+          portMenu.addSeparator();
         }
         lastProtocol = port.getProtocol();
 
@@ -1166,17 +1156,17 @@ public class Editor extends JFrame implements RunnerListener {
         }
         JMenuItem lastProtocolMenuItem = new JMenuItem(_(lastProtocolTranslated));
         lastProtocolMenuItem.setEnabled(false);
-        serialMenu.add(lastProtocolMenuItem);
+        portMenu.add(lastProtocolMenuItem);
       }
       String address = port.getAddress();
       String label = port.getLabel();
 
       JCheckBoxMenuItem item = new JCheckBoxMenuItem(label, address.equals(selectedPort));
       item.addActionListener(new SerialMenuListener(address));
-      serialMenu.add(item);
+      portMenu.add(item);
     }
 
-    serialMenu.setEnabled(serialMenu.getMenuComponentCount() > 0);
+    portMenu.setEnabled(portMenu.getMenuComponentCount() > 0);
   }
 
 
@@ -2320,10 +2310,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private boolean serialPrompt() {
-    int count = serialMenu.getItemCount();
+    int count = portMenu.getItemCount();
     Object[] names = new Object[count];
     for (int i = 0; i < count; i++) {
-      names[i] = serialMenu.getItem(i).getText();
+      names[i] = portMenu.getItem(i).getText();
     }
 
     String result = (String)
@@ -2390,7 +2380,7 @@ public class Editor extends JFrame implements RunnerListener {
           statusNotice(_("Done uploading."));
         }
       } catch (SerialNotFoundException e) {
-        if (serialMenu.getItemCount() == 0) statusError(e);
+        if (portMenu.getItemCount() == 0) statusError(e);
         else if (serialPrompt()) run();
         else statusNotice(_("Upload canceled."));
       } catch (PreferencesMapException e) {
@@ -2460,7 +2450,7 @@ public class Editor extends JFrame implements RunnerListener {
           statusNotice(_("Done uploading."));
         }
       } catch (SerialNotFoundException e) {
-        if (serialMenu.getItemCount() == 0) statusError(e);
+        if (portMenu.getItemCount() == 0) statusError(e);
         else if (serialPrompt()) run();
         else statusNotice(_("Upload canceled."));
       } catch (PreferencesMapException e) {

@@ -1317,7 +1317,7 @@ public class Base {
   }
 
   public void rebuildBoardsMenu() throws Exception {
-    boardsCustomMenus = new LinkedList<JMenu>();
+    boardsCustomMenus = new LinkedList<>();
 
     // The first custom menu is the "Board" selection submenu
     JMenu boardMenu = new JMenu(_("Board"));
