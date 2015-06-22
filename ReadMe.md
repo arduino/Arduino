@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/energia/energia.png?label=ready&title=Ready)](https://waffle.io/energia/energia)
+[![Stories in Done](https://badge.waffle.io/energia/energia.png?label=Done&title=Done)](https://waffle.io/energia/energia)
 [![Stories in Ready](https://badge.waffle.io/energia/energia.png?label=ready&title=Ready)](https://waffle.io/energia/energia)
 ![IMG](http://energia.nu/img/Energia.png)
 
