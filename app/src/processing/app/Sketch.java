@@ -944,6 +944,9 @@ public class Sketch {
     ensureExistence();
 
     String list[] = Base.headerListFromIncludePath(jarPath);
+    if (list == null || list.length == 0) {
+      return;
+    }
 
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
