@@ -639,9 +639,6 @@ public class Base {
         // noop
       }
     }
-
-    // set the current window to be the console that's getting output
-    EditorConsoleStream.setCurrent(activeEditor.console);
   }
 
 
