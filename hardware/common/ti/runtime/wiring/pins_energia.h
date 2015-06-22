@@ -11,6 +11,8 @@
 #include <ti/runtime/wiring/cc3200/variants/RedBearLab_WiFi_Mini/pins_energia.h>
 #elif defined(BOARD_MSP432LP) || defined(BOARD_MSP_EXP432P401R)
 #include <ti/runtime/wiring/msp432/variants/MSP_EXP432P401R/pins_energia.h>
+#elif defined(BOARD_CC2650STK_BLE)
+#include <ti/runtime/wiring/cc26xx/variants/CC2650STK_BLE/pins_energia.h>
 #endif
 
 #endif
