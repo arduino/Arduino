@@ -26,6 +26,8 @@ class MIDI_
 // private:
 // 	RingBuffer *_midi_rx_buffer;
 public:
+	MIDI_(void);
+
 	int8_t begin();
 
 	virtual uint32_t available(void);

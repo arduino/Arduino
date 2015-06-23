@@ -111,8 +111,7 @@ bool WEAK HID_Setup(Setup& setup, u8 i)
 	}
 }
 
-// to be called by begin(), will trigger USB disconnection and reconnection
-int8_t HID_Plug(void)
+HID_::HID_(void)
 {
 	static uint8_t endpointType[1];
 
@@ -137,17 +136,10 @@ int8_t HID_Plug(void)
 		D_HIDREPORT(getsizeof_hidReportDescriptor()),
 		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,0x40,0x01)
 	};
-
-	return HID_ENDPOINT_INT;
-}
-
-HID_::HID_(void)
-{
 }
 
 int HID_::begin(void)
 {
-	return HID_Plug();
 }
 
 #endif /* if defined(USBCON) */

@@ -91,10 +91,6 @@ size_t getsizeof_hidReportDescriptor() {
     return sizeof(_hidReportDescriptor);
 }
 
-void WEAK setupUSB() {
-    HID.begin();
-}
-
 Mouse_ Mouse;
 
 //================================================================================

@@ -39,10 +39,6 @@ ring_bufferMIDI midi_rx_buffer = {{0,0,0,0 }, 0, 0};
 
 static MIDIDescriptor _midiInterface;
 
-void WEAK setupUSB() {
-	MidiUSB.begin();
-}
-
 int8_t WEAK MIDI_GetInterface(uint8_t* interfaceNum)
 {
 	interfaceNum[0] += 2;	// uses 2
@@ -171,9 +167,8 @@ void MIDI_::sendMIDI(midiEventPacket_t event)
 	write(data, 4);
 }
 
-int8_t MIDI_plug(void)
+MIDI_::MIDI_(void)
 {
-
 	static uint8_t endpointType[2];
 
 	endpointType[0] = EP_TYPE_BULK_OUT_MIDI;	// MIDI_ENDPOINT_OUT
@@ -210,13 +205,10 @@ int8_t MIDI_plug(void)
 		D_MIDI_JACK_EP(USB_ENDPOINT_IN(MIDI_ENDPOINT_IN),USB_ENDPOINT_TYPE_BULK,512),
 		D_MIDI_AC_JACK_EP (1, 3)
 	};
-
-	return MIDI_ENDPOINT_IN;
 }
 
 int8_t MIDI_::begin()
 {
-	return MIDI_plug();
 }
 
 

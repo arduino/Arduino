@@ -221,10 +221,6 @@ size_t getsizeof_hidReportDescriptor() {
 	return sizeof(_hidReportDescriptor);
 }
 
-void WEAK setupUSB() {
-	HID.begin();
-}
-
 uint8_t USBPutChar(uint8_t c);
 
 // press() adds the specified key (printing, non-printing, or modifier)
