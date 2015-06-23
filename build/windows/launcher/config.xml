@@ -28,6 +28,8 @@
     <cp>lib/jackson-module-mrbean-2.2.3.jar</cp>
     <cp>lib/java-semver-0.8.0.jar</cp>
     <cp>lib/jmdns-3.4.1.jar</cp>
+    <cp>lib/jna-4.1.0.jar</cp>
+    <cp>lib/jna-platform-4.1.0.jar</cp>
     <cp>lib/jsch-0.1.50.jar</cp>
     <cp>lib/jssc-2.8.0.jar</cp>
     <cp>lib/pde.jar</cp>

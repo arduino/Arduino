@@ -22,6 +22,8 @@
 
 package processing.app.windows;
 
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -52,23 +54,13 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws IOException {
-    String path = getFolderPathFromRegistry("AppData");
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
     this.settingsFolder = new File(path, "Arduino15");
   }
 
   private void recoverDefaultSketchbookFolder() throws IOException {
-    String path = getFolderPathFromRegistry("Personal");
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
     this.defaultSketchbookFolder = new File(path, "Arduino");
-  }
-
-  private String getFolderPathFromRegistry(String folderType) throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(baos, null));
-
-    CommandLine toDevicePath = CommandLine.parse("reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\" /v \"" + folderType + "\"");
-    executor.execute(toDevicePath);
-    return new RegQueryParser(new String(baos.toByteArray())).getValueOfKey();
   }
 
   /**
