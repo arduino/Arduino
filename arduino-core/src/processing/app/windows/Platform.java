@@ -35,6 +35,9 @@ import processing.app.legacy.PConstants;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +57,7 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
     this.settingsFolder = new File(path, "Arduino15");
   }
 
@@ -219,5 +222,24 @@ public class Platform extends processing.app.Platform {
   }
 
   public void chmod(File file, int mode) throws IOException, InterruptedException {
+  }
+
+  @Override
+  public void fixSettingsLocation() throws IOException {
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
+    Path previousSettingsFolder = Paths.get(path, "Arduino15");
+    if (!Files.exists(previousSettingsFolder)) {
+      return;
+    }
+
+    if (!Files.exists(previousSettingsFolder.resolve(Paths.get("preferences.txt")))) {
+      return;
+    }
+
+    if (settingsFolder.exists()) {
+      return;
+    }
+
+    Files.move(previousSettingsFolder, settingsFolder.toPath());
   }
 }

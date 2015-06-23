@@ -31,7 +31,10 @@ public class PreferencesData {
   static boolean doSave = true;
 
 
-  static public void init(File file) {
+  static public void init(File file) throws IOException {
+    if (file == null) {
+      BaseNoGui.getPlatform().fixSettingsLocation();
+    }
     if (file != null) {
       preferencesFile = file;
     } else {
