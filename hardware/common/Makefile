@@ -98,8 +98,10 @@ ARCH_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/libraries
 ARCH_CORE_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)
 DRV_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib
 COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/common
-DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH) $(DRV_LIB_PATH)
+DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH)
 INCLUDE_DIRS = $(foreach dir, $(DIRS), ${sort ${dir ${wildcard ${dir}/*/ ${dir}/*/utility/}}})
+# Exclude driverlib path from include paths
+INCLUDE_DIRS := $(filter-out $(DRV_LIB_PATH)/, $(INCLUDE_DIRS))
 INCLUDE_DIRS += $(COMMON_CORE_DIR)
 CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
@@ -120,7 +122,7 @@ CC      = $(CCROOT)/bin/arm-none-eabi-gcc -c
 #LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -Wl,--verbose -L/Users/robertinant/Energia/build/macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/lib/gcc/arm-none-eabi/4.8.4/armv7e-m/ -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
-CORE_FROM_SOURCE = yes
+CORE_FROM_SOURCE = no
 
 SRC = $(wildcard *.cpp)
 OBJ = $(patsubst %.cpp, %.obj, $(SRC))
@@ -240,5 +242,5 @@ else
 endif
 
 .PHONY: upload
-upload:
+upload: $(MAINSKETCH).bin
 	$(shell cd $(CCROOT)/bin; $(UPLOAD_COMMAND))
