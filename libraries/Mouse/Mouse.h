@@ -22,7 +22,13 @@
 #ifndef MOUSE_h
 #define MOUSE_h
 
-#if 1 //defined(USBCON)
+#if defined(_USING_HID)
+
+#error "Can only attach one submodule to HID module"
+
+#else
+
+#define _USING_HID
 
 #include "HID.h"
 //================================================================================

@@ -19,7 +19,13 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#if 1
+#if defined(_USING_HID)
+
+#error "Can only attach one submodule to HID module"
+
+#else
+
+#define _USING_HID
 
 #include "HID.h"
 
