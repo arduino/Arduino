@@ -137,7 +137,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private static JMenu portMenu;
 
-  static AbstractMonitor serialMonitor;
+  static volatile AbstractMonitor serialMonitor;
 
   final EditorHeader header;
   EditorStatus status;
@@ -2487,6 +2487,7 @@ public class Editor extends JFrame implements RunnerListener {
       // The serial monitor already exists
 
       if (serialMonitor.isClosed()) {
+        serialMonitor.dispose();
         // If it's closed, clear the refrence to the existing
         // monitor and create a new one
         serialMonitor = null;
