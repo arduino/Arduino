@@ -32,7 +32,7 @@ typedef struct
   int8_t (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
   int8_t numInterfaces;
-  u8 endpointType[];
+  uint8_t *endpointType;
 } PUSBCallbacks;
 
 typedef struct
@@ -41,7 +41,14 @@ typedef struct
   u8 firstEndpoint;
 } PUSBReturn;
 
-int8_t PUSB_AddFunction(PUSBCallbacks *cb, u8 *interface);
+class PUSBListNode {
+public:
+  PUSBListNode *next = NULL;
+  PUSBCallbacks *cb;
+  PUSBListNode(PUSBCallbacks *ncb) {cb = ncb;}
+};
+
+int8_t PUSB_AddFunction(PUSBListNode *node, u8 *interface);
 
 int8_t PUSB_GetInterface(u8* interfaceNum);
 

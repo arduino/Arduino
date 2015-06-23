@@ -114,15 +114,22 @@ bool WEAK HID_Setup(Setup& setup, u8 i)
 // to be called by begin(), will trigger USB disconnection and reconnection
 int8_t HID_Plug(void)
 {
-	PUSBCallbacks cb;
+	static uint8_t endpointType[1];
 
-	cb.setup = &HID_Setup;
-	cb.getInterface = &HID_GetInterface;
-	cb.getDescriptor = &HID_GetDescriptor;
-	cb.numEndpoints = 1;
-	cb.numInterfaces = 1;
-	cb.endpointType[0] = EP_TYPE_INTERRUPT_IN;
-	HID_ENDPOINT_INT = PUSB_AddFunction(&cb, &HID_INTERFACE);
+	endpointType[0] = EP_TYPE_INTERRUPT_IN;
+
+	static PUSBCallbacks cb = {
+		.setup = &HID_Setup,
+		.getInterface = &HID_GetInterface,
+		.getDescriptor = &HID_GetDescriptor,
+		.numEndpoints = 1,
+		.numInterfaces = 1,
+		.endpointType = endpointType,
+	};
+
+	static PUSBListNode node(&cb);
+
+	HID_ENDPOINT_INT = PUSB_AddFunction(&node, &HID_INTERFACE);
 
 	_hidInterface =
 	{

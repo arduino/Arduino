@@ -16,7 +16,7 @@
 #include "PluggableUSB.h"
 #include "MIDIUSB.h"
 
-#define MIDI_BUFFER_SIZE	128
+#define MIDI_BUFFER_SIZE	16
 
 
 static u8 MIDI_AC_INTERFACE;	// MIDI AC Interface
@@ -173,17 +173,24 @@ void MIDI_::sendMIDI(midiEventPacket_t event)
 
 int8_t MIDI_plug(void)
 {
-	PUSBCallbacks cb;
 
-	cb.setup = &MIDI_Setup;
-	cb.getInterface = &MIDI_GetInterface;
-	cb.getDescriptor = &MIDI_GetDescriptor;
-	cb.numEndpoints = 2;
-	cb.numInterfaces = 2;
-	cb.endpointType[0] = EP_TYPE_BULK_OUT_MIDI;		// MIDI_ENDPOINT_OUT
-	cb.endpointType[1] = EP_TYPE_BULK_IN_MIDI;		// MIDI_ENDPOINT_IN
+	static uint8_t endpointType[2];
 
-	MIDI_ENDPOINT_OUT = PUSB_AddFunction(&cb, &MIDI_AC_INTERFACE);
+	endpointType[0] = EP_TYPE_BULK_OUT_MIDI;	// MIDI_ENDPOINT_OUT
+	endpointType[1] = EP_TYPE_BULK_IN_MIDI;		// MIDI_ENDPOINT_IN
+
+	static PUSBCallbacks cb = {
+		.setup = &MIDI_Setup,
+		.getInterface = &MIDI_GetInterface,
+		.getDescriptor = &MIDI_GetDescriptor,
+		.numEndpoints = 1,
+		.numInterfaces = 2,
+		.endpointType = endpointType,
+	};
+
+	static PUSBListNode node(&cb);
+
+	MIDI_ENDPOINT_OUT = PUSB_AddFunction(&node, &MIDI_AC_INTERFACE);
 	MIDI_ENDPOINT_IN =  MIDI_ENDPOINT_OUT + 1;
 	MIDI_INTERFACE = MIDI_AC_INTERFACE + 1;
 
