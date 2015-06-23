@@ -79,7 +79,6 @@ ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/cpu.o
 ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/crc.o
 ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/des.o
 ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/gpio.o
-${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/gpio_hal.o
 ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/flash.o
 ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/hwspinlock.o
 ${COMPILER}-cm4f/libdriver-cm4f.a: ${COMPILER}-cm4f/i2c.o
