@@ -39,6 +39,8 @@ import static processing.app.I18n._;
 
 public abstract class ContributedLibrary extends DownloadableContribution {
 
+  public abstract String getGlobalName();
+
   public abstract String getName();
 
   public abstract String getMaintainer();
@@ -142,10 +144,10 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     boolean versionEquals = thisVersion == otherVersion ||
       (thisVersion != null && otherVersion != null && thisVersion.equals(otherVersion));
 
-    String thisName = getName();
-    String otherName = ((ContributedLibrary) obj).getName();
+    String thisName = getGlobalName();
+    String otherName = ((ContributedLibrary) obj).getGlobalName();
 
-    boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
+    boolean nameEquals = thisName != null && otherName != null && thisName.equals(otherName);
 
     return versionEquals && nameEquals;
   }

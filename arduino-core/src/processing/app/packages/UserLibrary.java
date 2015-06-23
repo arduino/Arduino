@@ -37,11 +37,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class UserLibrary extends ContributedLibrary {
 
+  private String globalName;
   private String name;
   private String version;
   private String author;
@@ -151,6 +153,12 @@ public class UserLibrary extends ContributedLibrary {
     }
 
     UserLibrary res = new UserLibrary();
+
+    String globalName = properties.get("global_name");
+    if (globalName != null) {
+      globalName = globalName.trim();
+    }
+
     res.setInstalledFolder(libFolder);
     res.setInstalled(true);
     res.name = properties.get("name").trim();
@@ -165,7 +173,58 @@ public class UserLibrary extends ContributedLibrary {
     res.architectures = archs;
     res.layout = layout;
     res.declaredTypes = typesList;
+    res.setGlobalName(globalName);
     return res;
+  }
+
+  /**
+   * Call this after setting website, author, and name.
+   */
+  public void setGlobalName(String gn) {
+    globalName = gn;
+    boolean invalid = false;
+    if (globalName == null) {
+      invalid = true;
+      String rest = website.replaceFirst(".*://", "").replaceFirst("\\.[^/.]*$", "");
+      List<String> parts = Arrays.asList(rest.split("/"));
+      List<String> hostParts = Arrays.asList(parts.get(0).split("\\."));
+      Collections.reverse(hostParts);
+      globalName = String.join(".", hostParts);
+      if (globalName.endsWith(".www")) {
+        // Remove www component
+        globalName = globalName.substring(0, globalName.length() - 4);
+      }
+      if (parts.size() > 1) {
+        // Path parts
+        globalName += "." + String.join(".", parts.subList(1, parts.size()));
+      }
+      if (globalName.startsWith("com.github.")) { 
+        // Better to use the user-only namespace.
+        globalName = "io.github." + globalName.substring(11);
+      }
+    }
+    if (globalName.equals("")) {
+      invalid = true;
+      // Fallback.  Note: the global name is used to test for equality,
+      // so it must have a value, and for the sake of legacy libraries, it
+      // should include the name more or less as-is.
+      globalName = author.replace('/', '_') + "/" + name;
+    }
+    if (invalid) {
+      System.err.println("WARNING: global_name not set in library " + name + ". Guessing '" + globalName + "'.\nPlease set this to a suitable Java-style package name, e.g. io.github.myaccount.myproject\nThe name should be set manually to avoid confusion when forking.");
+    }
+  }
+
+  @Override
+  public String getGlobalName() {
+    return globalName;
+  }
+
+  public String getDepSpec() {
+    if (globalName != null && version != null) {
+      return globalName + ":" + version;
+    }
+    return null;
   }
 
   @Override
@@ -289,6 +348,7 @@ public class UserLibrary extends ContributedLibrary {
   @Override
   public String toString() {
     String res = "Library: " + name + "\n";
+    res += "         (global_name=" + globalName + ")\n";
     res += "         (version=" + version + ")\n";
     res += "         (author=" + author + ")\n";
     res += "         (maintainer=" + maintainer + ")\n";
