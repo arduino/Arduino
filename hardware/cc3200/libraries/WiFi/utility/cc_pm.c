@@ -197,11 +197,25 @@ i32 try_S4_no_irq(void)
           }
 #endif
 
-// asm("rbit %0, %1" : "=r" (rxtxData) : "r" (rxtxData));
-// asm("movw %%r1, %0" : "=r" (vault_arm_registers)); 
-//asm("movw %%r1, %0" : "=r" (vault_arm_registers)); 
 #ifdef __GNUC__
-#define BACK_UP_ARM_REGISTERS() {}
+#define BACK_UP_ARM_REGISTERS() {\
+          asm("push {%%r0-%%r12,LR}\n" \
+          "mov %%r1, %0\n" \
+          "mrs %%r0, msp \n"\
+          "str %%r0, [%%r1] \n" \
+          "mrs %%r0, psp \n" \
+          "str %%r0, [%%r1, #4] \n" \
+          "mrs %%r0, primask \n" \
+          "str %%r0, [%%r1, #12] \n" \
+          "mrs %%r0, faultmask \n" \
+          "str %%r0, [%%r1, #16] \n" \
+          "mrs %%r0, basepri \n" \
+          "str %%r0, [%%r1, #20] \n" \
+          "mrs %%r0, control \n" \
+          "str %%r0, [%%r1, #24] \n" \
+          : \
+          : "r"(&vault_arm_registers)); \
+          }
 #endif
 
 //static inline void restore_arm_registers()
@@ -246,7 +260,26 @@ i32 try_S4_no_irq(void)
          }
 #endif
 
-#include <Energia.h>
+#ifdef __GNUC__
+#define RESTORE_ARM_REGISTERS() {\
+          asm("mov %%r1, %0\n" \
+          "ldr %%r0, [%%r1, #24] \n" \
+          "msr control, r0 \n" \
+          "ldr %%r0, [%%r1] \n" \
+          "msr msp, %%r0 \n" \
+          "ldr %%r0, [%%r1, #4] \n" \
+          "msr psp, %%r0 \n" \
+          "ldr %%r0, [%%r1, #12] \n" \
+          "msr primask, %%r0 \n" \
+          "ldr %%r0, [%%r1, #16] \n" \
+          "msr faultmask, %%r0 \n" \
+          "ldr %%r0, [%%r1, #20] \n" \
+          "msr basepri, %%r0 \n" \
+          "pop {%%r0-%%r12, LR}\n" \
+         : \
+          : "r"(&vault_arm_registers)); \
+          }
+#endif
 
 /* Called directly by boot ROM after waking from S3 state */
 void resume_from_S3(void)
@@ -255,7 +288,7 @@ void resume_from_S3(void)
         INTRODUCE_SYNC_BARRIER(); /* Data and instruction sync barriers */
 
 
-        //RESTORE_ARM_REGISTERS(); /* Core registers and code is in assembly */
+        RESTORE_ARM_REGISTERS(); /* Core registers and code is in assembly */
 
         INTRODUCE_SYNC_BARRIER(); /* Data and instruction sync barriers */
 
@@ -274,8 +307,6 @@ static void enter_into_S3(void)
         
         BACK_UP_ARM_REGISTERS(); /* Core registers and code is in assembly */         
 
-	digitalWrite(RED_LED, HIGH);
-	delay(1000);
         /* In OS mode psp has to be saved*/
         /* In NON-OS mode msp has to be saved */
         if(vault_arm_registers.control == 0){
