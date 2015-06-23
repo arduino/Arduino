@@ -148,7 +148,7 @@ uint16_t analogRead(uint8_t pin)
 
     PinTypeADC(pinNum,0xFF);
     ADCChannelEnable(ADC_BASE, channel);
-    ADCTimerConfig(ADC_BASE,2^17);
+    ADCTimerConfig(ADC_BASE,0x1ffff);
     ADCTimerEnable(ADC_BASE);
     ADCEnable(ADC_BASE);
 
