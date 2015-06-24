@@ -39,6 +39,7 @@ import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.*;
+import processing.app.packages.UserLibrary;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -396,6 +397,7 @@ public class SketchTextArea extends RSyntaxTextArea {
         t = new TokenImpl(t);
       }
       Cursor c2;
+      String tipText = null;
       if (t != null && t.isHyperlink()) {
         if (hoveredOverLinkOffset == -1 ||
           hoveredOverLinkOffset != t.getOffset()) {
@@ -432,12 +434,34 @@ public class SketchTextArea extends RSyntaxTextArea {
         c2 = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         hoveredOverLinkOffset = -1;
         //  linkGeneratorResult = null;
+
+        int pos = viewToModel(e.getPoint());
+        if (pos > -1) {
+          int lineNo = -1;
+          try {
+            lineNo = getLineOfOffset(pos);
+          } catch (BadLocationException ex) {}
+          String line = getTextLine(lineNo);
+          if (line != null) {
+            UserLibrary lib = BaseNoGui.firstLibraryByCode(line);
+            if (lib != null) {
+              String ver = lib.getVersion();
+              if (ver != null) {
+                ver = " " + ver;
+              } else {
+                ver = "";
+              }
+              tipText = lib.getName() + ver + ": " + lib.getSrcFolder().toString();
+            }
+          }
+        }
       }
       if (getCursor() != c2) {
         setCursor(c2);
         // TODO: Repaint just the affected line(s).
         repaint(); // Link either left or went into.
       }
+      setToolTipText(tipText);
     }
 
     private void stopScanningForLinks() {

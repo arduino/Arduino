@@ -97,13 +97,8 @@ public class PdePreprocessor {
     }
 
     //String importRegexp = "(?:^|\\s|;)(import\\s+)(\\S+)(\\s*;)";
-    programImports = new ArrayList<String>();
 
-    String[][] pieces = PApplet.matchAll(program, IMPORT_REGEX);
-
-    if (pieces != null)
-      for (int i = 0; i < pieces.length; i++)
-        programImports.add(pieces[i][1]);  // the package name
+    programImports = findIncludes(program);
 
     codeFolderImports = new ArrayList<String>();
 //    if (codeFolderPackages != null) {
@@ -127,7 +122,7 @@ public class PdePreprocessor {
    
     String[][] pieces = PApplet.matchAll(code, IMPORT_REGEX);
 
-    ArrayList programImports = new ArrayList<String>();
+    ArrayList<String> programImports = new ArrayList<>();
     
     if (pieces != null)
       for (int i = 0; i < pieces.length; i++)

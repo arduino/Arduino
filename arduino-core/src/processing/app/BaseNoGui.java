@@ -19,6 +19,7 @@ import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
+import processing.app.preproc.PdePreprocessor;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -960,6 +961,22 @@ public class BaseNoGui {
         } catch (IOException e) {
       }
     }
+  }
+
+  static public UserLibrary firstLibraryByImport(String importName) {
+    LibraryList list = importToLibraryTable.get(importName);
+    if (list == null || list.isEmpty()) {
+      return null;
+    }
+    return list.peekFirst();
+  }
+
+  static public UserLibrary firstLibraryByCode(String code) {
+    List<String> incs = PdePreprocessor.findIncludes(code);
+    if (incs.isEmpty()) {
+      return null;
+    }
+    return firstLibraryByImport(incs.get(0));
   }
 
   static public void initParameters(String args[]) throws IOException {
