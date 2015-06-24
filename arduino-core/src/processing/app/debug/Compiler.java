@@ -32,6 +32,7 @@ import cc.arduino.MyStreamPumper;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
+import cc.arduino.contributions.libraries.ContributedLibrary;
 
 import cc.arduino.packages.uploaders.MergeSketchWithBooloader;
 import org.apache.commons.compress.utils.IOUtils;
@@ -606,6 +607,36 @@ public class Compiler implements MessageConsumer {
     p.put("extra.time.dst", Long.toString(daylight));
 
     return p;
+  }
+
+  static public List<File> findAllSources(File sourcePath, boolean recurse) {
+    List<File> allSources = new ArrayList<>();
+    allSources.addAll(findFilesInFolder(sourcePath, "S", recurse));
+    allSources.addAll(findFilesInFolder(sourcePath, "c", recurse));
+    allSources.addAll(findFilesInFolder(sourcePath, "cpp", recurse));
+    allSources.addAll(findFilesInFolder(sourcePath, "h", recurse));
+    allSources.addAll(findFilesInFolder(sourcePath, "hh", recurse));
+    allSources.addAll(findFilesInFolder(sourcePath, "hpp", recurse));
+    return allSources;
+  }
+
+  static public List<ContributedLibrary> findRequiredLibs(File sourcePath, boolean recurse) {
+    List<File> files = findAllSources(sourcePath, recurse);
+    List<ContributedLibrary> result = new ArrayList<>();
+    for (File file : files) {
+      List<UserLibrary> libs = null;
+      try { 
+        libs = BaseNoGui.librariesByCode(file);
+      } catch (IOException e) {
+        continue;
+      }
+      for (ContributedLibrary lib : libs) {
+        if (!result.contains(lib)) {
+          result.add(lib);
+        }
+      }
+    }
+    return result;
   }
 
   private List<File> compileFiles(File outputPath, File sourcePath,

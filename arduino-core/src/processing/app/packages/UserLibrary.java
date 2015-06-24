@@ -32,6 +32,7 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
+import processing.app.debug.Compiler;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +44,7 @@ import java.util.List;
 
 public class UserLibrary extends ContributedLibrary {
 
-  private String globalName;
+  protected String globalName;
   private String name;
   private String version;
   private String author;
@@ -183,7 +184,7 @@ public class UserLibrary extends ContributedLibrary {
   public void setGlobalName(String gn) {
     globalName = gn;
     boolean invalid = false;
-    if (globalName == null) {
+    if (globalName == null || globalName.equals("")) {
       invalid = true;
       String rest = website.replaceFirst(".*://", "").replaceFirst("\\.[^/.]*$", "");
       List<String> parts = Arrays.asList(rest.split("/"));
@@ -203,11 +204,10 @@ public class UserLibrary extends ContributedLibrary {
         globalName = "io.github." + globalName.substring(11);
       }
     }
-    if (globalName.equals("")) {
+    if (globalName == null || globalName.equals("")) {
       invalid = true;
       // Fallback.  Note: the global name is used to test for equality,
-      // so it must have a value, and for the sake of legacy libraries, it
-      // should include the name more or less as-is.
+      // so it must have a value.
       globalName = author.replace('/', '_') + "/" + name;
     }
     if (invalid) {
@@ -318,6 +318,36 @@ public class UserLibrary extends ContributedLibrary {
   @Override
   public List<ContributedLibraryReference> getRequires() {
     return null;
+  }
+
+  private List<ContributedLibrary> requiredLibs = null;
+  private List<ContributedLibrary> requiredLibsRec = null;
+
+  @Override
+  public List<ContributedLibrary> getRequiredLibs() {
+    if (requiredLibs == null) {
+      requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion());
+      requiredLibs.remove(this);
+    }
+    return requiredLibs;
+  }
+
+  @Override
+  public List<ContributedLibrary> getRequiredLibsRec() {
+    if (requiredLibsRec == null) {
+      requiredLibsRec = new ArrayList<>();
+      for (ContributedLibrary lib : getRequiredLibs()) {
+        if (!requiredLibsRec.contains(lib) && lib != this) {
+          requiredLibsRec.add(lib);
+          for (ContributedLibrary libRec : lib.getRequiredLibsRec()) {
+            if (!requiredLibsRec.contains(libRec) && libRec != this) {
+              requiredLibsRec.add(libRec);
+            }
+          }
+        }
+      }
+    }
+    return requiredLibsRec;
   }
 
   public List<String> getDeclaredTypes() {

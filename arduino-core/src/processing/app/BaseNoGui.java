@@ -979,6 +979,22 @@ public class BaseNoGui {
     return firstLibraryByImport(incs.get(0));
   }
 
+  static public List<UserLibrary> librariesByCode(String code) throws IOException {
+    List<UserLibrary> libs = new ArrayList<>();
+    List<String> incs = PdePreprocessor.findIncludes(code);
+    for (String inc : incs) {
+      UserLibrary lib = firstLibraryByImport(inc);
+      if (lib != null) {
+        libs.add(lib);
+      }
+    }
+    return libs;
+  }
+
+  static public List<UserLibrary> librariesByCode(File file) throws IOException {
+    return librariesByCode(FileUtils.readFileToString(file));
+  }
+
   static public void initParameters(String args[]) throws IOException {
     String preferencesFile = null;
 

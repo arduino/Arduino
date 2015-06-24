@@ -40,6 +40,7 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.*;
 import processing.app.packages.UserLibrary;
+import cc.arduino.contributions.libraries.ContributedLibrary;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -443,16 +444,7 @@ public class SketchTextArea extends RSyntaxTextArea {
           } catch (BadLocationException ex) {}
           String line = getTextLine(lineNo);
           if (line != null) {
-            UserLibrary lib = BaseNoGui.firstLibraryByCode(line);
-            if (lib != null) {
-              String ver = lib.getVersion();
-              if (ver != null) {
-                ver = " " + ver;
-              } else {
-                ver = "";
-              }
-              tipText = lib.getName() + ver + ": " + lib.getSrcFolder().toString();
-            }
+            tipText = getImportInfo(line);
           }
         }
       }
@@ -462,6 +454,32 @@ public class SketchTextArea extends RSyntaxTextArea {
         repaint(); // Link either left or went into.
       }
       setToolTipText(tipText);
+    }
+
+    private String getImportInfo(String line) {
+      UserLibrary lib = BaseNoGui.firstLibraryByCode(line);
+      String info = null;
+      if (lib != null) {
+        info = getLibDescription(lib);
+        for (ContributedLibrary recLib : lib.getRequiredLibsRec()) {
+          info += "\n* " + getLibDescription(recLib);
+        }
+      }
+      return info;
+    }
+
+    private String getLibDescription(ContributedLibrary lib) {
+      String ver = lib.getVersion();
+      if (ver != null) {
+        ver = " " + ver;
+      } else {
+        ver = "";
+      }
+      String folder = "";
+      if (lib instanceof UserLibrary) {
+        folder = ": " + ((UserLibrary) lib).getSrcFolder().toString();
+      }
+      return lib.getName() + " (" + lib.getGlobalName() + ")" + ver + folder;
     }
 
     private void stopScanningForLinks() {
