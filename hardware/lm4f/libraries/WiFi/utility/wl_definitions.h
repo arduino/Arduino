@@ -40,7 +40,7 @@
 // Maximum size of a SSID list
 #define WL_NETWORKS_LIST_MAXNUM	10
 // Maxmium number of socket
-#define	MAX_SOCK_NUM		4
+#define	MAX_SOCK_NUM		8
 // Default state value for Wifi state field
 #define NA_STATE -1
 //Maximum number of attempts to establish wifi connection

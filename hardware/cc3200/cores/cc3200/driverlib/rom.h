@@ -594,10 +594,6 @@
         ((unsigned long (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[8])
 #endif
 #if defined(TARGET_IS_CC3200)
-#define ROM_WatchdogIntEnable                                                 \
-        ((void (*)(unsigned long ulBase))ROM_WATCHDOGTABLE[9])
-#endif
-#if defined(TARGET_IS_CC3200)
 #define ROM_WatchdogIntStatus                                                 \
         ((unsigned long (*)(unsigned long ulBase,                             \
                             tBoolean bMasked))ROM_WATCHDOGTABLE[10])
@@ -1927,10 +1923,6 @@
 // Macros for calling ROM functions in the PRCM API.
 //
 //*****************************************************************************
-#if defined(TARGET_IS_CC3200)
-#define ROM_PRCMSOCReset                                                      \
-        ((void (*)(void))ROM_PRCMTABLE[0])
-#endif
 #if defined(TARGET_IS_CC3200)
 #define ROM_PRCMMCUReset                                                      \
         ((void (*)(tBoolean bIncludeSubsystem))ROM_PRCMTABLE[1])

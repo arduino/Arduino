@@ -115,7 +115,7 @@ typedef double			DOUBLE;
 typedef UINT16  _SlOpcode_t;
 typedef UINT8   _SlArgSize_t;
 typedef INT16   _SlDataSize_t;
-typedef INT     _SlReturnVal_t;
+//typedef INT     _SlReturnVal_t;
 
 #ifdef	__cplusplus
 }

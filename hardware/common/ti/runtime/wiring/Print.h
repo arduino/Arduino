@@ -21,10 +21,11 @@
 #define Print_h
 
 #include <inttypes.h>
-#include <stdio.h> // for size_t
-#include <string.h>
-#include "Printable.h"
+#include <stddef.h>    // for size_t
+#include <string.h>    // for strlen
+
 #include "WString.h"
+#include "Printable.h"
 
 #define DEC 10
 #define HEX 16

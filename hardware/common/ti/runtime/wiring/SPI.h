@@ -55,6 +55,8 @@
 #define SPI_CLOCK_DIV16 16
 #define SPI_CLOCK_DIV32 32
 
+#define MAX_USING_INTERRUPTS 16
+
 class SPIClass
 {
     private:
@@ -64,6 +66,10 @@ class SPIClass
         uint8_t bitOrder;
         uint8_t dataMode;
         uint8_t clockDivider;
+
+        uint8_t usingInterruptPins[MAX_USING_INTERRUPTS];
+        uint8_t numUsingInterrupts;
+
         SPI_Handle spi;
         SPI_Params params;
         SPI_Transaction transaction;
@@ -71,6 +77,8 @@ class SPIClass
         void init(unsigned long);
 
     public:
+        bool transferComplete;
+
         SPIClass(void);
         SPIClass(unsigned long);
         void begin(); // Default
@@ -89,6 +97,7 @@ class SPIClass
         uint8_t transfer(uint8_t, uint8_t, uint8_t);
 
         void setModule(uint8_t);
+        void usingInterrupt(uint8_t);
 };
 
 extern SPIClass SPI;

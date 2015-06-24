@@ -70,7 +70,7 @@ UtilsDelay(unsigned long ulCount)
 }
 #endif
 
-#if defined(__GNUC__)
+#if defined(gcc)
 void __attribute__((naked))
 UtilsDelay(unsigned long ulCount)
 {

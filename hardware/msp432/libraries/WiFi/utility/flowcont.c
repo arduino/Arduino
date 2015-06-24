@@ -34,17 +34,21 @@
  *
 */
 
-#include "datatypes.h"
-#include "SimpleLink.h"
+
+
+/*****************************************************************************/
+/* Include files                                                             */
+/*****************************************************************************/
+#include "simplelink.h"
 #include "protocol.h"
 #include "driver.h"
 #include "flowcont.h"
 
 
-
 /*****************************************************************************/
 /* _SlDrvFlowContInit */
 /*****************************************************************************/
+#if 0
 void _SlDrvFlowContInit(void)
 {
     g_pCB->FlowContCB.TxPoolCnt = FLOW_CONT_MIN;
@@ -52,7 +56,6 @@ void _SlDrvFlowContInit(void)
     OSI_RET_OK_CHECK(sl_LockObjCreate(&g_pCB->FlowContCB.TxLockObj, "TxLockObj"));
 
     OSI_RET_OK_CHECK(sl_SyncObjCreate(&g_pCB->FlowContCB.TxSyncObj, "TxSyncObj"));
-
 }
 
 /*****************************************************************************/
@@ -65,7 +68,6 @@ void _SlDrvFlowContDeinit(void)
     OSI_RET_OK_CHECK(sl_LockObjDelete(&g_pCB->FlowContCB.TxLockObj));
 
     OSI_RET_OK_CHECK(sl_SyncObjDelete(&g_pCB->FlowContCB.TxSyncObj));
-
-
 }
+#endif
 

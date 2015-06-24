@@ -127,12 +127,16 @@ void delay(uint32_t milliseconds);
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);
 
-// Implemented in wiring.c
+/* Implemented in wiring.c */
 void delayMicroseconds(unsigned int us);
 unsigned long micros();
 unsigned long millis();
 
 void setDelayResolution(uint32_t milliseconds);
+
+/* implemented in WInterrupts.c */
+void disablePinInterrupt(uint8_t pin);
+void enablePinInterrupt(uint8_t pin);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -150,8 +154,7 @@ uint16_t makeWord(byte h, byte l);
 
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
 
-void tone(uint8_t _pin, unsigned int frequency);
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration);
+void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
 void noTone(uint8_t _pin);
 
 // WMath prototypes

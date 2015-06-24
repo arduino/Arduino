@@ -1243,8 +1243,8 @@ I2CMasterControl(uint32_t ui32Base, uint32_t ui32Cmd)
     //
     ASSERT(_I2CBaseValid(ui32Base));
     ASSERT((ui32Cmd == I2C_MASTER_CMD_SINGLE_SEND) ||
-           (ui32Cmd == I2C_MASTER_CMD_SINGLE_RECEIVE) ||
            (ui32Cmd == I2C_MASTER_CMD_BURST_SEND_START) ||
+           (ui32Cmd == I2C_MASTER_CMD_SINGLE_RECEIVE) ||
            (ui32Cmd == I2C_MASTER_CMD_BURST_SEND_CONT) ||
            (ui32Cmd == I2C_MASTER_CMD_BURST_SEND_FINISH) ||
            (ui32Cmd == I2C_MASTER_CMD_BURST_SEND_ERROR_STOP) ||

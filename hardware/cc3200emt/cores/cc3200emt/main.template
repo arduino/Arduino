@@ -3,7 +3,7 @@
  *  MT wiring Task framework
  */
 #include <stddef.h>
-#include <oslib/osi.h>
+//#include <oslib/osi.h>
 
 /* XDC Header files */
 #include <xdc/cfg/global.h>
@@ -111,7 +111,7 @@ int main()
 
 	/* All tasks have the same priority */
 	taskParams.priority = Task_numPriorities - 1;
-	taskParams.stackSize = 0x800;
+	taskParams.stackSize = 0xc00;
 
 	uint8_t i = 0;
 	for(i = 0; i < NUM_SKETCHES; i++) {

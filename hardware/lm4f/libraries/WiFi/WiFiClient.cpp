@@ -113,7 +113,6 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
         return false;
     }
     
-    
     //
     //get a socket index and attempt to create a socket
     //note that the socket is intentionally left as BLOCKING. This allows an
@@ -124,7 +123,6 @@ int WiFiClient::connect(IPAddress ip, uint16_t port)
     if (socketIndex == NO_SOCKET_AVAIL) {
         return false;
     }
-
 
     int socketHandle = sl_Socket(SL_AF_INET, SL_SOCK_STREAM, SL_IPPROTO_TCP);
     if (socketHandle < 0) {
@@ -356,12 +354,12 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size)
     //
     //write the buffer to the socket
     //
-    int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
+    int iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, 0);
 
     // Flow control signal; perform a paced-retry.
     while (iRet == SL_EAGAIN) {
         delay(10);
-        iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, NULL);
+        iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, 0);
     }
 
     if ((iRet < 0) || (iRet != size)) {
@@ -410,9 +408,9 @@ int WiFiClient::available()
         //Receive any pending information into the buffer
         //if the connection has died, call stop() to make the object aware it's dead
         //
-        int iRet = sl_Recv(WiFiClass::_handleArray[_socketIndex], rx_buffer, TCP_RX_BUFF_MAX_SIZE, NULL);
+        int iRet = sl_Recv(WiFiClass::_handleArray[_socketIndex], rx_buffer, TCP_RX_BUFF_MAX_SIZE, 0);
         if ((iRet <= 0)  &&  (iRet != SL_EAGAIN)) {
-            int iRet = sl_Close(WiFiClass::_handleArray[_socketIndex]);
+            sl_Close(WiFiClass::_handleArray[_socketIndex]);
 
             WiFiClass::_portArray[_socketIndex] = -1;
             WiFiClass::_handleArray[_socketIndex] = -1;
@@ -430,8 +428,6 @@ int WiFiClient::available()
         rx_currentIndex = 0;
         rx_fillLevel = (iRet != SL_EAGAIN) ? iRet : 0;
         bytesLeft = rx_fillLevel - rx_currentIndex;
-
-        
     }
     
     //

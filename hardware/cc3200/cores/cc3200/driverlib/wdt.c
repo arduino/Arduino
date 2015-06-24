@@ -354,36 +354,6 @@ WatchdogIntUnregister(unsigned long ulBase)
 
 //*****************************************************************************
 //
-//! Enables the watchdog timer interrupt.
-//!
-//! \param ulBase is the base address of the watchdog timer module.
-//!
-//! Enables the watchdog timer interrupt.
-//!
-//! \note This function will have no effect if the watchdog timer has
-//! been locked.
-//!
-//! \sa WatchdogLock(), WatchdogUnlock(), WatchdogEnable()
-//!
-//! \return None.
-//
-//*****************************************************************************
-void
-WatchdogIntEnable(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
-
-    //
-    // Enable the watchdog interrupt.
-    //
-    HWREG(ulBase + WDT_O_CTL) |= WDT_CTL_INTEN;
-}
-
-//*****************************************************************************
-//
 //! Gets the current watchdog timer interrupt status.
 //!
 //! \param ulBase is the base address of the watchdog timer module.

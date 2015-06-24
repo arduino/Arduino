@@ -189,8 +189,8 @@ unsigned long ulRstReg;
 #define PRCM_SSPI                 0x00000013
 #define PRCM_I2CA0                0x00000014
 // Note : PRCM_ADC is a dummy define for pinmux utility code generation
-// PRCM_ADC should never be used in any user code. 
-#define PRCM_ADC                  0x000000FF 
+// PRCM_ADC should never be used in any user code.
+#define PRCM_ADC                  0x000000FF
 
 //*****************************************************************************
 //
@@ -237,6 +237,7 @@ extern void PRCMHibernateWakeupSourceDisable(unsigned long ulHIBWakupSrc);
 extern void PRCMHibernateIntervalSet(unsigned long long ullTicks);
 
 extern unsigned long long PRCMSlowClkCtrGet(void);
+extern unsigned long long PRCMSlowClkCtrFastGet(void);
 extern void PRCMSlowClkCtrMatchSet(unsigned long long ullTicks);
 extern unsigned long long PRCMSlowClkCtrMatchGet(void);
 
@@ -258,6 +259,8 @@ extern void PRCMRTCMatchGet(unsigned long *ulSecs, unsigned short *usMsec);
 extern void PRCMCC3200MCUInit(void);
 extern unsigned long PRCMHIBRegRead(unsigned long ulRegAddr);
 extern void PRCMHIBRegWrite(unsigned long ulRegAddr, unsigned long ulValue);
+extern unsigned long PRCMCameraFreqSet(unsigned char ulDivider,
+                                                unsigned char ulWidth);
 
 
 //*****************************************************************************

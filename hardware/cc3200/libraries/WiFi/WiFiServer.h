@@ -23,11 +23,10 @@
 extern "C" {
     #include "utility/wl_definitions.h"
 }
-#include "Print.h"
-#include "Server.h"
+#include <Print.h>
+#include <Server.h>
 
 class WiFiClient;
-
 
 //
 //Inhereting from Print provides all the cool print format methods
@@ -44,7 +43,6 @@ public:
     virtual size_t write(uint8_t);
     size_t write(const uint8_t *buffer, size_t size);
     uint8_t status();
-
 };
 
 #endif

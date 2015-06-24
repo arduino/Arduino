@@ -1,7 +1,7 @@
 /*
  * user.h - CC31xx/CC32xx Host Driver Implementation
  *
- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
+ * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/ 
  * 
  * 
  *  Redistribution and use in source and binary forms, with or without 
@@ -43,26 +43,6 @@
 extern "C" {
 #endif
 
-
-
-
-
-/*!
- ******************************************************************************
-
-    \defgroup       porting_user_include        Porting - User Include Files
-
-    This section IS NOT REQUIRED in case user provided primitives are handled
-    in makefiles or project configurations (IDE)
-
-    PORTING ACTION:
-        - Include all required header files for the definition of:
-            -# Transport layer library API (e.g. SPI, UART)
-            -# OS primitives definitions (e.g. Task spawn, Semaphores)
-            -# Memory management primitives (e.g. alloc, free)
-
- ******************************************************************************
- */
   
 #include <string.h>  
 #include "cc_pal.h"
@@ -88,9 +68,22 @@ extern "C" {
 */
 #define MAX_CONCURRENT_ACTIONS 10
 /*!
+	\def		CPU_FREQ_IN_MHZ
+    \brief      Defines CPU frequency for Host side, for better accuracy of busy loops, if any
+    \sa             
+    \note       
+
+    \warning    If not set the default CPU frequency is set to 200MHz
+                This option will be deprecated in future release
+*/
+
+#define CPU_FREQ_IN_MHZ        80
+
+
+/*!
  ******************************************************************************
 
-    \defgroup       porting_capabilities        Porting - Capabilities Set
+    \defgroup       configuration_capabilities        Configuration - Capabilities Set
 
     This section IS NOT REQUIRED in case one of the following pre defined
     capabilities set is in use:
@@ -110,21 +103,21 @@ extern "C" {
 /*!
 	\def		SL_INC_ARG_CHECK
 
-    \brief      Defines whether the SimpleLink driver perform argument check
+    \brief      Defines whether the SimpleLink driver perform argument check 
                 or not
-
-                When defined, the SimpleLink driver perform argument check on
-                function call. Removing this define could reduce some code
-                size and improve slightly the performances but may impact in
+                    
+                When defined, the SimpleLink driver perform argument check on 
+                function call. Removing this define could reduce some code 
+                size and improve slightly the performances but may impact in 
                 unpredictable behavior in case of invalid arguments
 
-    \sa
+    \sa             
 
-    \note       belongs to \ref proting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning    Removing argument check may cause unpredictable behavior in
-                case of invalid arguments.
-                In this case the user is responsible to argument validity
+    \warning    Removing argument check may cause unpredictable behavior in 
+                case of invalid arguments. 
+                In this case the user is responsible to argument validity 
                 (for example all handlers must not be NULL)
 */
 #define SL_INC_ARG_CHECK
@@ -133,21 +126,21 @@ extern "C" {
 /*!
     \def		SL_INC_STD_BSD_API_NAMING
 
-    \brief      Defines whether SimpleLink driver should expose standard BSD
+    \brief      Defines whether SimpleLink driver should expose standard BSD 
                 APIs or not
-
+    
                 When defined, the SimpleLink driver in addtion to its alternative
                 BSD APIs expose also standard BSD APIs.
-    Stadrad BSD API includs the following functions:
-                socket , close , accept , bind , listen	, connect , select ,
-                setsockopt	, getsockopt , recv , recvfrom , write , send , sendto ,
+                Stadrad BSD API includs the following functions:
+                socket , close , accept , bind , listen	, connect , select , 
+                setsockopt	, getsockopt , recv , recvfrom , write , send , sendto , 
                 gethostbyname
 
-    \sa
+    \sa         
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 //#define SL_INC_STD_BSD_API_NAMING
 
@@ -155,150 +148,150 @@ extern "C" {
 /*!
     \brief      Defines whether to include extended API in SimpleLink driver
                 or not
-
-                When defined, the SimpleLink driver will include also all
+    
+                When defined, the SimpleLink driver will include also all 
                 exteded API of the included packages
 
-    \sa             ext_api
+    \sa         ext_api
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning    
 */
 #define SL_INC_EXT_API
 
 /*!
-    \brief      Defines whether to include WLAN package in SimpleLink driver
+    \brief      Defines whether to include WLAN package in SimpleLink driver 
                 or not
-
-                When defined, the SimpleLink driver will include also
+    
+                When defined, the SimpleLink driver will include also 
                 the WLAN package
 
-    \sa
+    \sa         
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_WLAN_PKG
 
 /*!
-    \brief      Defines whether to include SOCKET package in SimpleLink
+    \brief      Defines whether to include SOCKET package in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also
+    
+                When defined, the SimpleLink driver will include also 
                 the SOCKET package
 
-    \sa
+    \sa         
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_SOCKET_PKG
 
 /*!
-    \brief      Defines whether to include NET_APP package in SimpleLink
+    \brief      Defines whether to include NET_APP package in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also the
+    
+                When defined, the SimpleLink driver will include also the 
                 NET_APP package
 
-    \sa
+    \sa         
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_NET_APP_PKG
 
 /*!
-    \brief      Defines whether to include NET_CFG package in SimpleLink
+    \brief      Defines whether to include NET_CFG package in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also
+    
+                When defined, the SimpleLink driver will include also 
                 the NET_CFG package
 
-    \sa
+    \sa         
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_NET_CFG_PKG
 
 /*!
-    \brief      Defines whether to include NVMEM package in SimpleLink
+    \brief      Defines whether to include NVMEM package in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also the
+    
+                When defined, the SimpleLink driver will include also the 
                 NVMEM package
 
-    \sa
+    \sa         
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
-*/
+    \warning        
+*/ 
 #define SL_INC_NVMEM_PKG
 
 /*!
-    \brief      Defines whether to include socket server side APIs
+    \brief      Defines whether to include socket server side APIs 
                 in SimpleLink driver or not
-
-                When defined, the SimpleLink driver will include also socket
+    
+                When defined, the SimpleLink driver will include also socket 
                 server side APIs
 
-    \sa             server_side
+    \sa         server_side
 
-    \note
+    \note       
 
-    \warning
+    \warning        
 */
 #define SL_INC_SOCK_SERVER_SIDE_API
 
 /*!
-    \brief      Defines whether to include socket client side APIs in SimpleLink
+    \brief      Defines whether to include socket client side APIs in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also socket
+    
+                When defined, the SimpleLink driver will include also socket 
                 client side APIs
 
-    \sa             client_side
+    \sa         client_side
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_SOCK_CLIENT_SIDE_API
 
 /*!
-    \brief      Defines whether to include socket receive APIs in SimpleLink
+    \brief      Defines whether to include socket receive APIs in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also socket
+    
+                When defined, the SimpleLink driver will include also socket 
                 receive side APIs
 
-    \sa             recv_api
+    \sa         recv_api
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_SOCK_RECV_API
 
 /*!
-    \brief      Defines whether to include socket send APIs in SimpleLink
+    \brief      Defines whether to include socket send APIs in SimpleLink 
                 driver or not
-
-                When defined, the SimpleLink driver will include also socket
+    
+                When defined, the SimpleLink driver will include also socket 
                 send side APIs
 
-    \sa             send_api
+    \sa         send_api
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
-    \warning
+    \warning        
 */
 #define SL_INC_SOCK_SEND_API
 
@@ -313,12 +306,12 @@ extern "C" {
 /*!
  ******************************************************************************
 
-    \defgroup   ported_enable_device       Ported on CC32XX - Device Enable/Disable
+    \defgroup   configuration_enable_device       Configuration - Device Enable/Disable
 
     The enable/disable API provide mechanism to enable/disable the network processor
 
    
-    PORTING ACTION:
+    porting ACTION:
         - None
     @{
 
@@ -332,17 +325,21 @@ extern "C" {
 
     \sa			sl_DeviceEnable
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
 */
+#ifndef DISABLE_DEBUGGER_RECONNECT
 #define sl_DeviceEnablePreamble()		NwpPowerOnPreamble()
+#else
+#define sl_DeviceEnablePreamble()
+#endif
 
 /*!
     \brief		Enable the Network Processor
 
     \sa			sl_DeviceDisable
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
 */
 #define sl_DeviceEnable()			NwpPowerOn()
@@ -352,7 +349,7 @@ extern "C" {
 
     \sa			sl_DeviceEnable
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 */
 #define sl_DeviceDisable() 			NwpPowerOff()
 
@@ -366,19 +363,18 @@ extern "C" {
 /*!
  ******************************************************************************
 
-    \defgroup   ported_interface         Ported on CC32XX - Communication Interface
+    \defgroup   configuration_interface         Configuration - Communication Interface
 
-    The simple link device can work with different communication
-    channels (e.g. spi/uart). Texas Instruments provides single driver
-    that can work with all these types. This section bind between the
-    physical communication interface channel and the SimpleLink driver
+	The SimpleLink device supports several standard communication protocol among SPI and
+	UART. CC32XX Host Driver implements SPI Communication Interface
 
 
-    \note       Correct and efficient implementation of this driver is critical
-                for the performances of the SimpleLink device on this platform.
+    \note       	In CC32XX, SPI implementation uses DMA in order to increase the utilization
+ 			of the communication channel. If user prefers to user UART, these interfaces 
+ 			need to be redefined
 
 
-    PORTING ACTION:
+    porting ACTION:	
         - None
 
     @{
@@ -391,33 +387,33 @@ extern "C" {
 /*!
     \brief      Opens an interface communication port to be used for communicating
                 with a SimpleLink device
-
-	            Given an interface name and option flags, this function opens
-                the communication port and creates a file descriptor.
-                This file descriptor is used afterwards to read and write
+	
+	            Given an interface name and option flags, this function opens 
+                the communication port and creates a file descriptor. 
+                This file descriptor is used afterwards to read and write 
                 data from and to this specific communication channel.
-	            The speed, clock polarity, clock phase, chip select and all other
+	            The speed, clock polarity, clock phase, chip select and all other 
                 specific attributes of the channel are all should be set to hardcoded
                 in this function.
-
-	\param	 	ifName  -   points to the interface name/path. The interface name is an
+	
+	\param	 	ifName  -   points to the interface name/path. The interface name is an 
                             optional attributes that the simple link driver receives
-                            on opening the driver (sl_Start).
-                            In systems that the spi channel is not implemented as
+                            on opening the driver (sl_Start). 
+                            In systems that the spi channel is not implemented as 
                             part of the os device drivers, this parameter could be NULL.
 
 	\param      flags   -   optional flags parameters for future use
 
-	\return     upon successful completion, the function shall open the channel
+	\return     upon successful completion, the function shall open the channel 
                 and return a non-negative integer representing the file descriptor.
-                Otherwise, -1 shall be returned
-
+                Otherwise, -1 shall be returned 
+					
     \sa         sl_IfClose , sl_IfRead , sl_IfWrite
 
 	\note       The prototype of the function is as follow:
                     Fd_t xxx_IfOpen(char* pIfName , unsigned long flags);
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
@@ -425,44 +421,44 @@ extern "C" {
 
 /*!
     \brief      Closes an opened interface communication port
-
+	
 	\param	 	fd  -   file descriptor of opened communication channel
 
-	\return		upon successful completion, the function shall return 0.
-			    Otherwise, -1 shall be returned
-
+	\return		upon successful completion, the function shall return 0. 
+			    Otherwise, -1 shall be returned 
+					
     \sa         sl_IfOpen , sl_IfRead , sl_IfWrite
 
 	\note       The prototype of the function is as follow:
                     int xxx_IfClose(Fd_t Fd);
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
 #define sl_IfClose                          spi_Close
 
 /*!
-    \brief      Attempts to read up to len bytes from an opened communication channel
+    \brief      Attempts to read up to len bytes from an opened communication channel 
                 into a buffer starting at pBuff.
-
+	
 	\param	 	fd      -   file descriptor of an opened communication channel
-
-	\param		pBuff   -   pointer to the first location of a buffer that contains enough
+	
+	\param		pBuff   -   pointer to the first location of a buffer that contains enough 
                             space for all expected data
 
 	\param      len     -   number of bytes to read from the communication channel
 
-	\return     upon successful completion, the function shall return the number of read bytes.
-                Otherwise, 0 shall be returned
-
+	\return     upon successful completion, the function shall return the number of read bytes. 
+                Otherwise, 0 shall be returned 
+					
     \sa         sl_IfClose , sl_IfOpen , sl_IfWrite
 
 
 	\note       The prototype of the function is as follow:
                     int xxx_IfRead(Fd_t Fd , char* pBuff , int Len);
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
@@ -470,29 +466,29 @@ extern "C" {
 
 /*!
     \brief attempts to write up to len bytes to the SPI channel
-
+	
 	\param	 	fd      -   file descriptor of an opened communication channel
-
-	\param		pBuff   -   pointer to the first location of a buffer that contains
+	
+	\param		pBuff   -   pointer to the first location of a buffer that contains 
                             the data to send over the communication channel
 
 	\param      len     -   number of bytes to write to the communication channel
 
-	\return     upon successful completion, the function shall return the number of sent bytes.
-				therwise, 0 shall be returned
-
+	\return     upon successful completion, the function shall return the number of sent bytes. 
+				therwise, 0 shall be returned 
+					
     \sa         sl_IfClose , sl_IfOpen , sl_IfRead
 
 	\note       This function could be implemented as zero copy and return only upon successful completion
-                of writing the whole buffer, but in cases that memory allocation is not too tight, the
-                function could copy the data to internal buffer, return back and complete the write in
-                parallel to other activities as long as the other SPI activities would be blocked until
-                the entire buffer write would be completed
+                of writing the whole buffer, but in cases that memory allocation is not too tight, the 
+                function could copy the data to internal buffer, return back and complete the write in 
+                parallel to other activities as long as the other SPI activities would be blocked until 
+                the entire buffer write would be completed 
 
                The prototype of the function is as follow:
                     int xxx_IfWrite(Fd_t Fd , char* pBuff , int Len);
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
@@ -517,11 +513,11 @@ extern "C" {
 	\note       If the handler is a null pointer, the function should un-register the
 	            interrupt handler, and the interrupts can be disabled.
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
-#define sl_IfRegIntHdlr(InterruptHdl , pValue)          NwpRegisterInterruptHandler(InterruptHdl , pValue)
+#define sl_IfRegIntHdlr(InterruptHdl , pValue)          NwpRegisterInterruptHandler(InterruptHdl , pValue)   
 
 /*!
     \brief 		Masks the Host IRQ
@@ -530,7 +526,7 @@ extern "C" {
 
 
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
@@ -545,7 +541,7 @@ extern "C" {
 
 
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
@@ -564,12 +560,11 @@ extern "C" {
 
 	\note		An optional hooks for monitoring before and after write info
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 
     \warning        
 */
 /* #define SL_START_WRITE_STAT */
-
 
 /*!
 
@@ -578,28 +573,35 @@ extern "C" {
 
 */
 
+
+
 /*!
  ******************************************************************************
 
-    \defgroup   ported_os          Ported on CC32XX - Operating System
+    \defgroup   configuration_os          Configuration - Operating System
 
-    The simple link driver can run on multi-threaded environment as well
-    as non-os environment (mail loop)
+	The SimpleLink driver could run on two kind of platforms:
+	   -# Non-Os / Single Threaded (default)
+	   -# Multi-Threaded
+	
+	CC32XX SimpleLink Host Driver is ported on both Non-Os and Multi Threaded OS enviroment. 
+	The Host driver is made OS independent by implementing an OS Abstraction layer. 
+	Reference implementation for OS Abstraction is available for FreeRTOS and TI-RTOS. 
+	
+	
+	If you choose to work in multi-threaded environment under different operating system you 
+	will have to provide some basic adaptation routines to allow the driver to protect access to 
+	resources for different threads (locking object) and to allow synchronization between threads 
+	(sync objects). In additional the driver support running without dedicated thread allocated solely
+	to the simple link driver. If you choose to work in this mode, you should also supply a spawn 
+	method that will enable to run function on a temporary context.
 
-    This section IS NOT REQUIRED in case you are working on non-os environment.
-
-    If you choose to work in multi-threaded environment under any operating system
-    you will have to provide some basic adaptation routines to allow the driver
-    to protect access to resources from different threads (locking object) and
-    to allow synchronization between threads (sync objects).
-
-    PORTING ACTION:
-        -# Uncomment SL_PLATFORM_MULTI_THREADED define
-        -# Bind locking object routines
-        -# Bind synchronization object routines
-        -# Optional - Bind spawn thread routine
-
-    @{
+	\note - This Macro is defined in the IDE to generate Driver for both OS and Non-OS 
+	
+	 porting ACTION: 
+		 - None
+	 
+	 @{
 
  ******************************************************************************
 */
@@ -615,7 +617,7 @@ extern "C" {
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning
 */
 #define SL_OS_RET_CODE_OK                       ((int)OSI_OK)
@@ -623,7 +625,7 @@ extern "C" {
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning
 */
 #define SL_OS_WAIT_FOREVER                      ((OsiTime_t)OSI_WAIT_FOREVER)
@@ -631,7 +633,7 @@ extern "C" {
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning
 */
 #define SL_OS_NO_WAIT	                        ((OsiTime_t)OSI_NO_WAIT)
@@ -639,9 +641,9 @@ extern "C" {
 /*!
 	\brief type definition for a time value
 
-	\note	On each porting or platform the type could be whatever is needed - integer, pointer to structure etc.
+	\note	On each configuration or platform the type could be whatever is needed - integer, pointer to structure etc.
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 */
 #define _SlTime_t				OsiTime_t
 
@@ -654,13 +656,13 @@ extern "C" {
 	The signal must be able to be sent from interrupt context.
 	This object is generally implemented by binary semaphore or events.
 
-	\note	On each porting or platform the type could be whatever is needed - integer, structure etc.
+	\note	On each configuration or platform the type could be whatever is needed - integer, structure etc.
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
 */
 typedef OsiSyncObj_t                            _SlSyncObj_t;
 
-
+    
 /*!
 	\brief 	This function creates a sync object
 
@@ -672,7 +674,7 @@ typedef OsiSyncObj_t                            _SlSyncObj_t;
 	\return upon successful creation the function should return 0
 			Otherwise, a negative value indicating the error code shall be returned
 
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
 #define sl_SyncObjCreate(pSyncObj,pName)            osi_SyncObjCreate(pSyncObj)
@@ -685,7 +687,7 @@ typedef OsiSyncObj_t                            _SlSyncObj_t;
 
 	\return upon successful deletion the function should return 0
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
 #define sl_SyncObjDelete(pSyncObj)                  osi_SyncObjDelete(pSyncObj)
@@ -703,7 +705,7 @@ typedef OsiSyncObj_t                            _SlSyncObj_t;
 	\note		the function could be called from ISR context
     \warning
 */
-#define sl_SyncObjSignal(pSyncObj)                osi_SyncObjSignal(pSyncObj)
+#define sl_SyncObjSignal(pSyncObj)                osi_SyncObjSignal(pSyncObj)  
 
 /*!
 	\brief 		This function generates a sync signal for the object from Interrupt
@@ -731,10 +733,10 @@ typedef OsiSyncObj_t                            _SlSyncObj_t;
 
 	\return upon successful reception of the signal within the timeout window return 0
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
-#define sl_SyncObjWait(pSyncObj,Timeout)            osi_SyncObjWait(pSyncObj,Timeout)
+#define sl_SyncObjWait(pSyncObj,Timeout)            osi_SyncObjWait(pSyncObj,Timeout)  
 
 /*!
 	\brief 	type definition for a locking object container
@@ -743,8 +745,8 @@ typedef OsiSyncObj_t                            _SlSyncObj_t;
 	The locking object should suppurt reentrant locks by a signal thread.
 	This object is generally implemented by mutex semaphore
 
-	\note	On each porting or platform the type could be whatever is needed - integer, structure etc.
-    \note       belongs to \ref ported_sec
+	\note	On each configuration or platform the type could be whatever is needed - integer, structure etc.
+    \note       belongs to \ref configuration_sec
 */
 typedef OsiLockObj_t                            _SlLockObj_t;
 
@@ -758,7 +760,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
 	\return upon successful creation the function should return 0
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
 #define sl_LockObjCreate(pLockObj,pName)            osi_LockObjCreate(pLockObj)
@@ -770,7 +772,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
 	\return upon successful deletion the function should return 0
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
 #define sl_LockObjDelete(pLockObj)                  osi_LockObjDelete(pLockObj)
@@ -791,10 +793,10 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
 	\return upon successful reception of the locking object the function should return 0
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
-#define sl_LockObjLock(pLockObj,Timeout)           osi_LockObjLock(pLockObj,Timeout)
+#define sl_LockObjLock(pLockObj,Timeout)           osi_LockObjLock(pLockObj,Timeout) 
 
 /*!
 	\brief 	This function unlock a locking object.
@@ -803,11 +805,14 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
 	\return upon successful unlocking the function should return 0
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
 #define sl_LockObjUnlock(pLockObj)                   osi_LockObjUnlock(pLockObj)
-
+#else
+#ifdef NON_OS_PM
+#define _SlSyncWaitLoopCallback 		             SimpleLinkSyncWaitLoopCallback
+#endif
 #endif
 /*!
 	\brief 	This function call the pEntry callback from a different context
@@ -823,13 +828,13 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 			(the function is not blocked till the end of the execution of the function
 			and could be returned before the execution is actually completed)
 			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
+    \note       belongs to \ref configuration_sec
     \warning
 */
 #define SL_PLATFORM_EXTERNAL_SPAWN
 
 #ifdef SL_PLATFORM_EXTERNAL_SPAWN
-#define sl_Spawn(pEntry,pValue,flags)       osi_Spawn(pEntry,pValue,flags)
+#define sl_Spawn(pEntry,pValue,flags)       osi_Spawn(pEntry,pValue,flags)        
 #endif
 
 /*!
@@ -841,7 +846,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 /*!
  ******************************************************************************
 
-    \defgroup   porting_mem_mgm             Porting - Memory Management
+    \defgroup   configuration_mem_mgm             Configuration - Memory Management
 
     This section declare in which memory management model the SimpleLink driver
     will run:
@@ -852,8 +857,6 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
     The default memory model is Static
 
-    PORTING ACTION:
-        - If dynamic model is selected, define the alloc and free functions.
 
     @{
 
@@ -870,7 +873,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
     \sa
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
@@ -881,12 +884,13 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 #define SL_MEMORY_MGMT  SL_MEMORY_MGMT_DYNAMIC
 */
 #ifdef SL_MEMORY_MGMT_DYNAMIC
+
 #ifdef SL_PLATFORM_MULTI_THREADED
 
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning
 */
 #define sl_Malloc(Size)                                 mem_Malloc(Size)
@@ -894,16 +898,17 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning
 */
 #define sl_Free(pMem)                                   mem_Free(pMem)
+
 #else
 #include <stdlib.h>
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning        
 */
 #define sl_Malloc(Size)                                 malloc(Size)
@@ -911,30 +916,30 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 /*!
     \brief
     \sa
-    \note           belongs to \ref ported_sec
+    \note           belongs to \ref configuration_sec
     \warning        
 */
 #define sl_Free(pMem)                                   free(pMem)
 #endif
+                        
 #endif
+
 /*!
 
  Close the Doxygen group.
  @}
 
- */
-
+*/
 
 /*!
  ******************************************************************************
 
-    \defgroup       porting_events      Porting - Event Handlers
+    \defgroup       configuration_events      Configuration - Event Handlers
 
     This section includes the asynchronous event handlers routines
 
-    PORTING ACTION:
-        -Uncomment the required handler and define your routine as the value
-        of this handler
+    porting ACTION:
+        -define your routine as the value of this handler
 
     @{
 
@@ -942,73 +947,210 @@ typedef OsiLockObj_t                            _SlLockObj_t;
  */
 
 /*!
-    \brief
+    \brief General async event for inspecting general events
+    
+    \param[out]      pSlDeviceEvent   pointer to SlDeviceEvent_t 
+    
+    \par
+          Parameters: \n
+          <b>pSlDeviceEvent->Event = SL_DEVICE_FATAL_ERROR_EVENT </b>
+              - pSlDeviceEvent->EventData.deviceEvent fields:      
+                  - status: An error code indication from the device
+                  - sender: The sender originator which is based on SlErrorSender_e enum                   
+    
+    \par  Example:           
+    \code         
+    printf(General Event Handler - ID=%d Sender=%d\n\n",
+           pSlDeviceEvent->EventData.deviceEvent.status,  // status of the general event
+           pSlDeviceEvent->EventData.deviceEvent.sender); // sender type
+    \endcode
+
 
     \sa
 
-    \note       belongs to \ref porting_sec
+    \note       belongs to \ref configuration_sec
 
     \warning
 */
+
 /*
 #define sl_GeneralEvtHdlr
 */
 
 /*!
-    \brief          An event handler for WLAN connection or disconnection indication
-                    This event handles async WLAN events. 
-                    Possible events are:
-                    SL_WLAN_CONNECT_EVENT - indicates WLAN is connected 
-                    SL_WLAN_DISCONNECT_EVENT - indicates WLAN is disconnected
+    \brief WLAN Async event handler
+    
+    \param[out]      pSlWlanEvent   pointer to SlWlanEvent_t data 
+    
+    \par
+             Parameters:
+             
+             - <b>pSlWlanEvent->Event = SL_WLAN_CONNECT_EVENT </b>, STA or P2P client connection indication event
+                 - pSlWlanEvent->EventData.STAandP2PModeWlanConnected main fields:
+                      - ssid_name
+                      - ssid_len
+                      - bssid
+                      - go_peer_device_name
+                      - go_peer_device_name_len
+                       
+             - <b>pSlWlanEvent->Event = SL_WLAN_DISCONNECT_EVENT </b>, STA or P2P client disconnection event                          
+                 - pSlWlanEvent->EventData.STAandP2PModeDisconnected main fields:
+                      - ssid_name
+                      - ssid_len
+                      - reason_code
+
+             - <b>pSlWlanEvent->Event = SL_WLAN_STA_CONNECTED_EVENT </b>, AP/P2P(Go) connected STA/P2P(Client)                  
+                  - pSlWlanEvent->EventData.APModeStaConnected fields:
+                      - go_peer_device_name
+                      - mac
+                      - go_peer_device_name_len
+                      - wps_dev_password_id
+                      - own_ssid:  relevant for event sta-connected only
+                      - own_ssid_len:  relevant for event sta-connected only
+                      
+             - <b>pSlWlanEvent->Event = SL_WLAN_STA_DISCONNECTED_EVENT </b>, AP/P2P(Go) disconnected STA/P2P(Client)                        
+                  - pSlWlanEvent->EventData.APModestaDisconnected fields:
+                      - go_peer_device_name
+                      - mac
+                      - go_peer_device_name_len
+                      - wps_dev_password_id
+                      - own_ssid:  relevant for event sta-connected only
+                      - own_ssid_len:  relevant for event sta-connected only
+
+             - <b>pSlWlanEvent->Event = SL_WLAN_SMART_CONFIG_COMPLETE_EVENT </b>                             
+                  - pSlWlanEvent->EventData.smartConfigStartResponse fields:
+                     - status
+                     - ssid_len
+                     - ssid
+                     - private_token_len
+                     - private_token
+                     
+             - <b>pSlWlanEvent->Event = SL_WLAN_SMART_CONFIG_STOP_EVENT </b>                 
+                     - pSlWlanEvent->EventData.smartConfigStopResponse fields:       
+                         - status
+                         
+             - <b>pSlWlanEvent->Event = SL_WLAN_P2P_DEV_FOUND_EVENT </b>         
+                     - pSlWlanEvent->EventData.P2PModeDevFound fields:
+                         - go_peer_device_name
+                         - mac
+                         - go_peer_device_name_len
+                         - wps_dev_password_id
+                         - own_ssid:  relevant for event sta-connected only
+                         - own_ssid_len:  relevant for event sta-connected only
+                         
+             - <b>pSlWlanEvent->Event = SL_WLAN_P2P_NEG_REQ_RECEIVED_EVENT </b>                             
+                      - pSlWlanEvent->EventData.P2PModeNegReqReceived fields
+                          - go_peer_device_name
+                          - mac
+                          - go_peer_device_name_len
+                          - wps_dev_password_id
+                          - own_ssid:  relevant for event sta-connected only
+                           
+             - <b>pSlWlanEvent->Event = SL_WLAN_CONNECTION_FAILED_EVENT </b>, P2P only
+                       - pSlWlanEvent->EventData.P2PModewlanConnectionFailure fields:
+                           - status   
+
     \sa
 
-    \note           belongs to \ref porting_sec
+    \note           belongs to \ref configuration_sec
 
     \warning
 */
 
-#define sl_WlanEvtHdlr                     SimpleLinkWlanEventHandler
+#define sl_WlanEvtHdlr                     SimpleLinkWlanEventHandler         
 
 
 /*!
-    \brief          An event handler for IP address asynchronous event. Usually accepted after new WLAN connection.
-                    This event handles networking events.
-                    Possible events are:
-                    SL_NETAPP_IPV4_ACQUIRED - IP address was acquired (DHCP or Static)
+    \brief NETAPP Async event handler
+    
+    \param[out]      pSlNetApp   pointer to SlNetAppEvent_t data    
+    
+    \par
+             Parameters:
+              - <b>pSlWlanEvent->Event = SL_NETAPP_IPV4_IPACQUIRED_EVENT</b>, IPV4 acquired event
+                  - pSlWlanEvent->EventData.ipAcquiredV4 fields:
+                       - ip
+                       - gateway
+                       - dns
+                           
+              - <b>pSlWlanEvent->Event = SL_NETAPP_IP_LEASED_EVENT</b>, AP or P2P go dhcp lease event
+                  - pSlWlanEvent->EventData.ipLeased  fields:
+                       - ip_address
+                       - lease_time
+                       - mac
+
+              - <b>pSlWlanEvent->Event = SL_NETAPP_IP_RELEASED_EVENT</b>, AP or P2P go dhcp ip release event
+                   - pSlWlanEvent->EventData.ipReleased fields
+                       - ip_address
+                       - mac
+                       - reason
+
 
     \sa
 
-    \note           belongs to \ref porting_sec
+    \note           belongs to \ref configuration_sec
 
     \warning
 */
 
-#define sl_NetAppEvtHdlr              		SimpleLinkNetAppEventHandler
+#define sl_NetAppEvtHdlr              		SimpleLinkNetAppEventHandler              
 
 /*!
-    \brief          A callback for HTTP server events.
-                    Possible events are:
-                    SL_NETAPP_HTTPGETTOKENVALUE - NWP requests to get the value of a specific token
-					SL_NETAPP_HTTPPOSTTOKENVALUE - NWP post to the host a new value for a specific token
+    \brief HTTP server async event
 
-	\param			pServerEvent - Contains the relevant event information (SL_NETAPP_HTTPGETTOKENVALUE or SL_NETAPP_HTTPPOSTTOKENVALUE)
+    \param[out] pSlHttpServerEvent   pointer to SlHttpServerEvent_t
+    \param[in] pSlHttpServerResponse pointer to SlHttpServerResponse_t
 
-	\param			pServerResponse - Should be filled by the user with the relevant response information (i.e SL_NETAPP_HTTPSETTOKENVALUE as a response to SL_NETAPP_HTTPGETTOKENVALUE event)
+    \par
+          Parameters: \n
+
+          - <b>pSlHttpServerEvent->Event = SL_NETAPP_HTTPGETTOKENVALUE_EVENT</b>
+             - pSlHttpServerEvent->EventData fields:
+                 - httpTokenName
+                     - data
+                     - len
+             - pSlHttpServerResponse->ResponseData fields:
+                     - data
+                     - len
+             
+          - <b>pSlHttpServerEvent->Event = SL_NETAPP_HTTPPOSTTOKENVALUE_EVENT</b>
+              - pSlHttpServerEvent->EventData.httpPostData fields:
+                     - action
+                     - token_name
+                     - token_value                     
+              - pSlHttpServerResponse->ResponseData fields:
+                     - data
+                     - len  
+
 
     \sa
 
-    \note           belongs to \ref porting_sec
+    \note           belongs to \ref configuration_sec
 
     \warning
 */
 
 #define sl_HttpServerCallback   SimpleLinkHttpServerCallback
 /*!
-    \brief
+    \brief Socket Async event handler
+    
+    \param[out]      pSlSockEvent   pointer to SlSockEvent_t data 
+    
+    \par
+             Parameters:\n
+             - <b>pSlSockEvent->Event = SL_SOCKET_TX_FAILED_EVENT</b>
+                 - pSlSockEvent->EventData fields:
+                     - sd
+                     - status
+             - <b>pSlSockEvent->Event = SL_SOCKET_ASYNC_EVENT</b>
+                - pSlSockEvent->EventData fields:
+                     - sd
+                     - type: SSL_ACCEPT  or RX_FRAGMENTATION_TOO_BIG or OTHER_SIDE_CLOSE_SSL_DATA_NOT_ENCRYPTED 
+                     - val
 
     \sa
 
-    \note           belongs to \ref porting_sec
+    \note           belongs to \ref configuration_sec
 
     \warning
 */

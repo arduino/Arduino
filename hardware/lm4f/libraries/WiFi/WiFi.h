@@ -21,10 +21,10 @@
 #define WiFi_h
 
 #include <Energia.h>
-#include "IPAddress.h"
-#include "MACAddress.h"
+#include <IPAddress.h>
+#include <MACAddress.h>
 #include "utility/wl_definitions.h"
-#include "utility/SimpleLink.h"
+#include "utility/simplelink.h"
 #include "WiFiClient.h"
 #include "WiFiServer.h"
 #include "WiFiUdp.h"
@@ -54,6 +54,7 @@ private:
 public:
     static int16_t _handleArray[MAX_SOCK_NUM];
     static int16_t _portArray[MAX_SOCK_NUM];
+    static int16_t _serverPortArray[MAX_SOCK_NUM];
     static int16_t _typeArray[MAX_SOCK_NUM];
     
     static bool _initialized;
@@ -102,8 +103,8 @@ public:
     /*
      * Get firmware and driver version
      */
-    char* firmwareVersion();
-    char* driverVersion();
+    const char* firmwareVersion();
+    const char* driverVersion();
     
     /* Start WiFi in AP mode with OPEN network
      *
@@ -130,7 +131,7 @@ public:
     /* Query AP-mode station registration database
      */
     IPAddress getLatestDevice(void) { return IPAddress((const uint8_t *)_connectedDevices[_latestConnect].ipAddress); };
-    unsigned int getTotalDevices(void) { _SlNonOsMainLoopTask(); return _connectedDeviceCount; };
+    unsigned int getTotalDevices(void);
     IPAddress deviceIpAddress(unsigned int idx);
     MACAddress deviceMacAddress(unsigned int idx);
     IPAddress deviceIpByMacAddress(MACAddress mac);

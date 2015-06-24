@@ -21,7 +21,7 @@
 #define wifiudp_h
 
 #include "WiFi.h"
-#include "Stream.h"
+#include <Stream.h>
 
 //!!definitions from CC3000 library. Make sure these are right !!//
 #define MAX_SENDTO_SIZE 95

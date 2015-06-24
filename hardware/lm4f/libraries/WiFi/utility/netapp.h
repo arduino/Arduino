@@ -34,89 +34,198 @@
  *
 */
 
-#include "SimpleLink.h"
+/*****************************************************************************/
+/* Include files                                                             */
+/*****************************************************************************/
+
+#include "simplelink.h"
 
 #ifndef __NETAPP_H__
 #define    __NETAPP_H__
+
+
+
 
 #ifdef    __cplusplus
 extern "C" {
 #endif
 
-/*************************************************************************************************************/
+/*!
+
+    \addtogroup netapp
+    @{
+
+*/
+
+/*****************************************************************************/
+/* Macro declarations                                                        */
+/*****************************************************************************/
+
 /*ERROR code*/
-#define NETAPP_RX_BUFFER_LENGTH_ERROR -230
-/*************************************************************************************************************/
-
-typedef struct
-{
-    unsigned long   PacketsSent;
-    unsigned long   PacketsReceived;
-    unsigned short  MinRoundTime;
-    unsigned short  MaxRoundTime;
-    unsigned short  AvgRoundTime;
-    unsigned long   TestTime;
-}SlPingReport_t;
-
-
-typedef struct
-{
-    unsigned long  PingIntervalTime;       /* delay between pings, in miliseconds */
-    unsigned short PingSize;               /* ping packet size in bytes           */
-    unsigned short PingRequestTimeout;     /* timeout time for every ping in miliseconds  */
-    unsigned long  TotalNumberOfAttempts;  /* max number of ping requests. 0 - forever    */
-    unsigned long  Flags;                  /* flag - 0 report only when finished, 1 - return response for every ping, 2 - stop after 1 successful ping.  */
-    unsigned long  Ip;                     /* IPv4 address or IPv6 first 4 bytes  */
-    unsigned long  Ip1OrPaadding;
-    unsigned long  Ip2OrPaadding;
-    unsigned long  Ip3OrPaadding;
-}SlPingStartCommand_t;
-
+#define SL_ERROR_NETAPP_RX_BUFFER_LENGTH_ERROR (-230)
 
 /*  Http Server interface */
+#define MAX_INPUT_STRING                              (64) /*  because of WPA */
 
-#define MAX_INPUT_STRING          64 /*  because of WPA */
-
-#define MAX_AUTH_NAME_LEN        20
-#define MAX_AUTH_PASSWORD_LEN    20
-#define MAX_AUTH_REALM_LEN        20
+#define MAX_AUTH_NAME_LEN                             (20)
+#define MAX_AUTH_PASSWORD_LEN                         (20)
+#define MAX_AUTH_REALM_LEN                            (20)
 
 #define MAX_DEVICE_URN_LEN (15+1)
 #define MAX_DOMAIN_NAME_LEN    (24+1)
 
-#define MAX_ACTION_LEN            30
-#define MAX_TOKEN_NAME_LEN        20  /* Important: in case the max len is changed, make sure the struct sl_NetAppHttpServerSendToken_t in protocol.h is padded correctly!! */
+#define MAX_ACTION_LEN                                (30)
+/* Important: in case the max len is changed, make sure the struct sl_NetAppHttpServerSendToken_t in protocol.h is padded correctly! */
+#define MAX_TOKEN_NAME_LEN                            (20)  
 #define MAX_TOKEN_VALUE_LEN        MAX_INPUT_STRING
 
-/* Server Events */
-#define SL_NETAPP_HTTPGETTOKENVALUE        1
-#define SL_NETAPP_HTTPPOSTTOKENVALUE    2
-
-
-
-#define NETAPP_MAX_SERVICE_TEXT_SIZE           256
-#define NETAPP_MAX_SERVICE_NAME_SIZE           60
-#define NETAPP_MAX_SERVICE_HOST_NAME_SIZE      64
+#define NETAPP_MAX_SERVICE_TEXT_SIZE                  (256)
+#define NETAPP_MAX_SERVICE_NAME_SIZE                  (60)
+#define NETAPP_MAX_SERVICE_HOST_NAME_SIZE             (64)
 
 
 /* Server Responses */
-#define SL_NETAPP_RESPONSE_NONE            0
-#define SL_NETAPP_HTTPSETTOKENVALUE        1
+#define SL_NETAPP_RESPONSE_NONE                       (0)
+#define SL_NETAPP_HTTPSETTOKENVALUE                   (1)
 
-#define SL_NETAPP_FAMILY_MASK  0x80
+#define SL_NETAPP_FAMILY_MASK                         (0x80)
+
+/* mDNS types */
+#define SL_NET_APP_MASK_IPP_TYPE_OF_SERVICE           (0x00000001)
+#define SL_NET_APP_MASK_DEVICE_INFO_TYPE_OF_SERVICE   (0x00000002)
+#define SL_NET_APP_MASK_HTTP_TYPE_OF_SERVICE          (0x00000004)
+#define SL_NET_APP_MASK_HTTPS_TYPE_OF_SERVICE         (0x00000008)
+#define SL_NET_APP_MASK_WORKSATION_TYPE_OF_SERVICE    (0x00000010)
+#define SL_NET_APP_MASK_GUID_TYPE_OF_SERVICE          (0x00000020)
+#define SL_NET_APP_MASK_H323_TYPE_OF_SERVICE          (0x00000040)
+#define SL_NET_APP_MASK_NTP_TYPE_OF_SERVICE           (0x00000080)
+#define SL_NET_APP_MASK_OBJECITVE_TYPE_OF_SERVICE     (0x00000100)
+#define SL_NET_APP_MASK_RDP_TYPE_OF_SERVICE           (0x00000200)
+#define SL_NET_APP_MASK_REMOTE_TYPE_OF_SERVICE        (0x00000400)
+#define SL_NET_APP_MASK_RTSP_TYPE_OF_SERVICE          (0x00000800)
+#define SL_NET_APP_MASK_SIP_TYPE_OF_SERVICE           (0x00001000)
+#define SL_NET_APP_MASK_SMB_TYPE_OF_SERVICE           (0x00002000)
+#define SL_NET_APP_MASK_SOAP_TYPE_OF_SERVICE          (0x00004000)
+#define SL_NET_APP_MASK_SSH_TYPE_OF_SERVICE           (0x00008000)
+#define SL_NET_APP_MASK_TELNET_TYPE_OF_SERVICE        (0x00010000)
+#define SL_NET_APP_MASK_TFTP_TYPE_OF_SERVICE          (0x00020000)
+#define SL_NET_APP_MASK_XMPP_CLIENT_TYPE_OF_SERVICE   (0x00040000)
+#define SL_NET_APP_MASK_RAOP_TYPE_OF_SERVICE          (0x00080000)
+#define SL_NET_APP_MASK_ALL_TYPE_OF_SERVICE           (0xFFFFFFFF)
+
+/********************************************************************************************************/
+/* sl_NetAppDnsGetHostByName error codes     */
+
+#define SL_NET_APP_DNS_QUERY_NO_RESPONSE              (-159)  /* DNS query failed, no response                        */ 
+#define SL_NET_APP_DNS_NO_SERVER                      (-161)  /* No DNS server was specified                          */ 
+#define SL_NET_APP_DNS_PARAM_ERROR                    (-162)  /* mDNS parameters error                                */
+#define SL_NET_APP_DNS_QUERY_FAILED                   (-163)  /* DNS query failed; no DNS server sent an 'answer'     */ 
+#define SL_NET_APP_DNS_INTERNAL_1                     (-164)
+#define SL_NET_APP_DNS_INTERNAL_2                     (-165)
+#define SL_NET_APP_DNS_MALFORMED_PACKET               (-166)  /* Improperly formed or corrupted DNS packet received   */ 
+#define SL_NET_APP_DNS_INTERNAL_3                     (-167)
+#define SL_NET_APP_DNS_INTERNAL_4                     (-168)
+#define SL_NET_APP_DNS_INTERNAL_5                     (-169)
+#define SL_NET_APP_DNS_INTERNAL_6                     (-170)
+#define SL_NET_APP_DNS_INTERNAL_7                     (-171)
+#define SL_NET_APP_DNS_INTERNAL_8                     (-172)
+#define SL_NET_APP_DNS_INTERNAL_9                     (-173)
+#define SL_NET_APP_DNS_MISMATCHED_RESPONSE            (-174)  /* Server response type does not match the query request*/
+#define SL_NET_APP_DNS_INTERNAL_10                    (-175)
+#define SL_NET_APP_DNS_INTERNAL_11                    (-176)
+#define SL_NET_APP_DNS_NO_ANSWER                      (-177)  /* No response for one-shot query */
+#define SL_NET_APP_DNS_NO_KNOWN_ANSWER                (-178)  /* No known answer for query */
+#define SL_NET_APP_DNS_NAME_MISMATCH                  (-179)  /* Illegal service name according to the RFC            */
+#define SL_NET_APP_DNS_NOT_STARTED                    (-180)  /* mDNS is not running                                  */
+#define SL_NET_APP_DNS_HOST_NAME_ERROR                (-181)  /* Host name error. Host name format is not allowed according to RFC 1033,1034,1035, 6763 */
+#define SL_NET_APP_DNS_NO_MORE_ENTRIES                (-182)  /* No more entries be found.                            */
+                                                      
+#define SL_NET_APP_DNS_MAX_SERVICES_ERROR             (-200)  /* Maximum advertise services are already configured    */
+#define SL_NET_APP_DNS_IDENTICAL_SERVICES_ERROR       (-201)  /* Trying to register a service that is already exists  */
+#define SL_NET_APP_DNS_NOT_EXISTED_SERVICE_ERROR      (-203)  /* Trying to delete service that does not existed       */
+#define SL_NET_APP_DNS_ERROR_SERVICE_NAME_ERROR       (-204)  /* Illegal service name according to the RFC            */
+#define SL_NET_APP_DNS_RX_PACKET_ALLOCATION_ERROR     (-205)  /* Retry request                                        */
+#define SL_NET_APP_DNS_BUFFER_SIZE_ERROR              (-206)  /* List size buffer is bigger than internally allowed in the NWP */
+#define SL_NET_APP_DNS_NET_APP_SET_ERROR              (-207)  /* Illegal length of one of the mDNS Set functions      */
+#define SL_NET_APP_DNS_GET_SERVICE_LIST_FLAG_ERROR    (-208)
+#define SL_NET_APP_DNS_NO_CONFIGURATION_ERROR         (-209)
+
+/* Set Dev name error codes  (NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN) */
+#define SL_ERROR_DEVICE_NAME_LEN_ERR                   (-117) 
+#define SL_ERROR_DEVICE_NAME_INVALID                   (-118)
+/* Set domain name error codes (NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME) */
+#define SL_ERROR_DOMAIN_NAME_LEN_ERR                   (-119)
+#define SL_ERROR_DOMAIN_NAME_INVALID                   (-120)
+
+/********************************************************************************************************/
+
+/* NetApp application IDs */
+#define SL_NET_APP_HTTP_SERVER_ID                     (1)
+#define SL_NET_APP_DHCP_SERVER_ID                     (2)
+#define SL_NET_APP_MDNS_ID                            (4)
+#define SL_NET_APP_DNS_SERVER_ID                      (8)
+#define SL_NET_APP_DEVICE_CONFIG_ID                   (16)
+/* NetApp application set/get options */             
+#define NETAPP_SET_DHCP_SRV_BASIC_OPT                 (0)             
+/* HTTP server set/get options */                    
+#define NETAPP_SET_GET_HTTP_OPT_PORT_NUMBER           (0)
+#define NETAPP_SET_GET_HTTP_OPT_AUTH_CHECK            (1)
+#define NETAPP_SET_GET_HTTP_OPT_AUTH_NAME             (2)
+#define NETAPP_SET_GET_HTTP_OPT_AUTH_PASSWORD         (3)
+#define NETAPP_SET_GET_HTTP_OPT_AUTH_REALM            (4)
+#define NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS      (5)
+                                                     
+#define NETAPP_SET_GET_MDNS_CONT_QUERY_OPT            (1)
+#define NETAPP_SET_GET_MDNS_QEVETN_MASK_OPT           (2)
+#define NETAPP_SET_GET_MDNS_TIMING_PARAMS_OPT         (3)
+
+/* DNS server set/get options */
+#define NETAPP_SET_GET_DNS_OPT_DOMAIN_NAME            (0)
+
+/* Device Config set/get options */
+#define NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN        (0)
+#define NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME       (1)
+
+
+/*****************************************************************************/
+/* Structure/Enum declarations                                               */
+/*****************************************************************************/
+
+typedef struct
+{
+    _u32    PacketsSent;
+    _u32    PacketsReceived;
+    _u16    MinRoundTime;
+    _u16    MaxRoundTime;
+    _u16    AvgRoundTime;
+    _u32    TestTime;
+}SlPingReport_t;
+
+typedef struct
+{
+    _u32    PingIntervalTime;       /* delay between pings, in milliseconds */
+    _u16    PingSize;               /* ping packet size in bytes           */
+    _u16    PingRequestTimeout;     /* timeout time for every ping in milliseconds  */
+    _u32    TotalNumberOfAttempts;  /* max number of ping requests. 0 - forever    */
+    _u32    Flags;                  /* flag - 0 report only when finished, 1 - return response for every ping, 2 - stop after 1 successful ping.  */
+    _u32    Ip;                     /* IPv4 address or IPv6 first 4 bytes  */
+    _u32    Ip1OrPaadding;
+    _u32    Ip2OrPaadding;
+    _u32    Ip3OrPaadding;
+}SlPingStartCommand_t;
 
 typedef struct _slHttpServerString_t
 {
-    unsigned char len;
-    unsigned char *data;
+    _u8     len;
+    _u8     *data;
 } slHttpServerString_t;
 
 typedef struct _slHttpServerData_t
 {
-    unsigned char value_len;
-    unsigned char name_len;
-    unsigned char *token_value;
-    unsigned char *token_name;
+    _u8     value_len;
+    _u8     name_len;
+    _u8     *token_value;
+    _u8     *token_name;
 } slHttpServerData_t;
 
 typedef struct _slHttpServerPostData_t
@@ -139,28 +248,25 @@ typedef union
 
 typedef struct
 {
-   unsigned long            Event;
+   _u32                    Event;
    SlHttpServerEventData_u EventData;
 }SlHttpServerEvent_t;
 
 typedef struct
 {
-   unsigned long Response;
+   _u32                       Response;
    SlHttpServerResponsedata_u ResponseData;
 }SlHttpServerResponse_t;
 
 
 typedef struct
 {
-    unsigned long  lease_time;
-    unsigned long  ipv4_addr_start;
-    unsigned long  ipv4_addr_last;
+    _u32   lease_time;
+    _u32   ipv4_addr_start;
+    _u32   ipv4_addr_last;
 }SlNetAppDhcpServerBasicOpt_t; 
 
-/********************************************************************************************************/
 /*mDNS parameters*/
-
-
 typedef enum
 {
     SL_NET_APP_FULL_SERVICE_WITH_TEXT_IPV4_TYPE = 1,
@@ -171,30 +277,28 @@ typedef enum
 
 typedef struct
 {
-    unsigned long   service_ipv4;
-    unsigned short  service_port;
-    unsigned short  Reserved;
+    _u32   service_ipv4;
+    _u16   service_port;
+    _u16   Reserved;
 }SlNetAppGetShortServiceIpv4List_t;
-
-
 
 typedef struct
 {
-    unsigned long   service_ipv4;
-    unsigned short  service_port;
-    unsigned short  Reserved;
-    unsigned char   service_name[NETAPP_MAX_SERVICE_NAME_SIZE];
-    unsigned char   service_host[NETAPP_MAX_SERVICE_HOST_NAME_SIZE];
+    _u32   service_ipv4;
+    _u16   service_port;
+    _u16   Reserved;
+    _u8    service_name[NETAPP_MAX_SERVICE_NAME_SIZE];
+    _u8    service_host[NETAPP_MAX_SERVICE_HOST_NAME_SIZE];
 }SlNetAppGetFullServiceIpv4List_t;
 
 typedef struct
 {
-    unsigned long   service_ipv4;
-    unsigned short  service_port;
-    unsigned short  Reserved;
-    unsigned char   service_name[NETAPP_MAX_SERVICE_NAME_SIZE];
-    unsigned char   service_host[NETAPP_MAX_SERVICE_HOST_NAME_SIZE];
-    unsigned char   service_text[NETAPP_MAX_SERVICE_TEXT_SIZE];
+    _u32    service_ipv4;
+    _u16    service_port;
+    _u16    Reserved;
+    _u8     service_name[NETAPP_MAX_SERVICE_NAME_SIZE];
+    _u8     service_host[NETAPP_MAX_SERVICE_HOST_NAME_SIZE];
+    _u8     service_text[NETAPP_MAX_SERVICE_TEXT_SIZE];
 }SlNetAppGetFullServiceWithTextIpv4List_t;
 
 typedef struct
@@ -213,100 +317,33 @@ typedef struct
         advertise P time
         wait 16 * T  ... (till max time reached / configuration changed / query issued)
     */
-    unsigned long    t;              /* Number of ticks for the initial period. Default is 100 ticks for 1 second. */
-    unsigned long    p;              /* Number of repetitions. Default value is 1                                  */
-    unsigned long    k;              /* Telescopic factor. Default value is 2.                                     */
-    unsigned long    RetransInterval;/* Announcing retransmission interval                                         */
-    unsigned long   Maxinterval;     /* Announcing max period interval                                             */
-    unsigned long    max_time;       /* Announcing max time                                                        */
+    _u32    t;              /* Number of ticks for the initial period. Default is 100 ticks for 1 second. */
+    _u32    p;              /* Number of repetitions. Default value is 1                                  */
+    _u32    k;              /* Telescopic factor. Default value is 2.                                     */
+    _u32    RetransInterval;/* Announcing retransmission interval                                         */
+    _u32    Maxinterval;     /* Announcing max period interval                                            */
+    _u32    max_time;       /* Announcing max time                                                        */
 }SlNetAppServiceAdvertiseTimingParameters_t;
 
-#define SL_NET_APP_MASK_IPP_TYPE_OF_SERVICE    			0x00000001
-#define SL_NET_APP_MASK_DEVICE_INFO_TYPE_OF_SERVICE		0x00000002
-#define SL_NET_APP_MASK_HTTP_TYPE_OF_SERVICE			0x00000004
-#define SL_NET_APP_MASK_HTTPS_TYPE_OF_SERVICE			0x00000008
-#define SL_NET_APP_MASK_WORKSATION_TYPE_OF_SERVICE		0x00000010
-#define SL_NET_APP_MASK_GUID_TYPE_OF_SERVICE			0x00000020
-#define SL_NET_APP_MASK_H323_TYPE_OF_SERVICE			0x00000040
-#define SL_NET_APP_MASK_NTP_TYPE_OF_SERVICE				0x00000080
-#define SL_NET_APP_MASK_OBJECITVE_TYPE_OF_SERVICE		0x00000100
-#define SL_NET_APP_MASK_RDP_TYPE_OF_SERVICE				0x00000200
-#define SL_NET_APP_MASK_REMOTE_TYPE_OF_SERVICE			0x00000400
-#define SL_NET_APP_MASK_RTSP_TYPE_OF_SERVICE			0x00000800
-#define SL_NET_APP_MASK_SIP_TYPE_OF_SERVICE				0x00001000
-#define SL_NET_APP_MASK_SMB_TYPE_OF_SERVICE				0x00002000
-#define SL_NET_APP_MASK_SOAP_TYPE_OF_SERVICE			0x00004000
-#define SL_NET_APP_MASK_SSH_TYPE_OF_SERVICE				0x00008000
-#define SL_NET_APP_MASK_TELNET_TYPE_OF_SERVICE			0x00010000
-#define SL_NET_APP_MASK_TFTP_TYPE_OF_SERVICE			0x00020000
-#define SL_NET_APP_MASK_XMPP_CLIENT_TYPE_OF_SERVICE		0x00040000
-#define SL_NET_APP_MASK_RAOP_TYPE_OF_SERVICE			0x00080000
-#define SL_NET_APP_MASK_ALL_TYPE_OF_SERVICE				0xFFFFFFFF
-
-/********************************************************************************************************/
-/* sl_NetAppDnsGetHostByName error codes     */
-
-#define SL_NET_APP_DNS_QUERY_NO_RESPONSE         (-159)        /* DNS query failed, no response                        */ 
-#define SL_NET_APP_DNS_NO_SERVER                 (-161)        /* No DNS server was specified                          */ 
-#define SL_NET_APP_DNS_QUERY_FAILED              (-163)        /* DNS query failed; no DNS server sent an 'answer'     */ 
-#define SL_NET_APP_DNS_MALFORMED_PACKET          (-166)        /* Improperly formed or corrupted DNS packet received   */ 
-#define SL_NET_APP_DNS_MISMATCHED_RESPONSE       (-174)        /* Server response type does not match the query request*/
-
-/********************************************************************************************************/
-
-
-/* NetApp application IDs */
-#define SL_NET_APP_HTTP_SERVER_ID                (1)
-#define SL_NET_APP_DHCP_SERVER_ID                (2)
-#define SL_NET_APP_MDNS_ID                       (4)
-#define SL_NET_APP_DNS_SERVER_ID	             (8)
-#define SL_NET_APP_DEVICE_CONFIG_ID              (16)
-
-/* NetApp application set/get options */
-#define NETAPP_SET_DHCP_SRV_BASIC_OPT            (0)
-
-/* HTTP server set/get options */
-#define NETAPP_SET_GET_HTTP_OPT_PORT_NUMBER      (0)
-#define NETAPP_SET_GET_HTTP_OPT_AUTH_CHECK       (1)
-#define NETAPP_SET_GET_HTTP_OPT_AUTH_NAME        (2)
-#define NETAPP_SET_GET_HTTP_OPT_AUTH_PASSWORD    (3)
-#define NETAPP_SET_GET_HTTP_OPT_AUTH_REALM       (4)
-#define NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS (5)
- 
-#define NETAPP_SET_GET_MDNS_CONT_QUERY_OPT       (1)
-#define NETAPP_SET_GET_MDNS_QEVETN_MASK_OPT      (2)
-#define NETAPP_SET_GET_MDNS_TIMING_PARAMS_OPT    (3)
-
-/* DNS server set/get options */
-#define NETAPP_SET_GET_DNS_OPT_DOMAIN_NAME	     (0)
-
-/* Device Config set/get options */
-#define NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN   (0)
-#define NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME  (1)
-
+/*****************************************************************************/
+/* Types declarations                                               */
+/*****************************************************************************/
 typedef void (*P_SL_DEV_PING_CALLBACK)(SlPingReport_t*);
 
-/*****************************************************************************
+/*****************************************************************************/
+/* Function prototypes                                                       */
+/*****************************************************************************/
 
-    API Prototypes
 
- *****************************************************************************/
-
-/*!
-
-    \addtogroup netapp
-    @{
-
-*/
 /*!
     \brief Starts a network application
 
     Gets and starts network application for the current WLAN mode
 
     \param[in] AppBitMap      application bitmap, could be one or combination of the following: \n
-                              - SL_NET_APP_HTTP_SERVER_ID (1)
-                              - SL_NET_APP_DHCP_SERVER_ID (2)
-                              - SL_NET_APP_MDNS_ID        (4)
+                              - SL_NET_APP_HTTP_SERVER_ID   
+                              - SL_NET_APP_DHCP_SERVER_ID   
+                              - SL_NET_APP_MDNS_ID          
 
     \return                   On error, negative number is returned
 
@@ -321,7 +358,7 @@ typedef void (*P_SL_DEV_PING_CALLBACK)(SlPingReport_t*);
     \endcode
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppStart)
-int sl_NetAppStart(unsigned long AppBitMap);
+_i16 sl_NetAppStart(const _u32 AppBitMap);
 #endif
 /*!
     \brief Stops a network application
@@ -329,9 +366,9 @@ int sl_NetAppStart(unsigned long AppBitMap);
     Gets and stops network application for the current WLAN mode
 
     \param[in] AppBitMap    application id, could be one of the following: \n
-                            - SL_NET_APP_HTTP_SERVER_ID (1)
-                            - SL_NET_APP_DHCP_SERVER_ID (2)
-                            - SL_NET_APP_MDNS_ID (4)
+                            - SL_NET_APP_HTTP_SERVER_ID 
+                            - SL_NET_APP_DHCP_SERVER_ID 
+                            - SL_NET_APP_MDNS_ID 
 
     \return                 On error, negative number is returned
 
@@ -347,9 +384,8 @@ int sl_NetAppStart(unsigned long AppBitMap);
     \endcode
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppStop)
-int sl_NetAppStop(unsigned long AppBitMap);
+_i16 sl_NetAppStop(const _u32 AppBitMap);
 #endif
-
 
 /*!
     \brief Get host IP by name
@@ -363,7 +399,7 @@ int sl_NetAppStop(unsigned long AppBitMap);
                                 resolved, out_ip_addr is zero.
     \param[in]  family          protocol family
 
-    \return                     On success, positive is returned.
+    \return                     On success, 0 is returned.
                                 On error, negative is returned
                                 SL_POOL_IS_EMPTY may be return in case there are no resources in the system
                                 In this case try again later or increase MAX_CONCURRENT_ACTIONS
@@ -383,9 +419,11 @@ int sl_NetAppStop(unsigned long AppBitMap);
             In this case, MAX_CONCURRENT_ACTIONS can be increased (result in memory increase) or try
             again later to issue the command.
     \warning
+           In case an IP address in a string format is set as input, without any prefix (e.g. "1.2.3.4") the device will not 
+           try to access the DNS and it will return the input address on the 'out_ip_addr' field 
     \par  Example:
     \code
-    unsigned long DestinationIP;
+    _u32 DestinationIP;
     sl_NetAppDnsGetHostByName("www.google.com", strlen("www.google.com"), &DestinationIP,SL_AF_INET);
 
     Addr.sin_family = SL_AF_INET;
@@ -396,9 +434,8 @@ int sl_NetAppStop(unsigned long AppBitMap);
     \endcode
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppDnsGetHostByName)
-int sl_NetAppDnsGetHostByName(char * hostname, unsigned short usNameLen, unsigned long* out_ip_addr,unsigned char family );
+_i16 sl_NetAppDnsGetHostByName(_i8 * hostname,const  _u16 usNameLen, _u32*  out_ip_addr,const _u8 family );
 #endif
-
 
 /*!
         \brief Return service attributes like IP address, port and text according to service name
@@ -410,11 +447,8 @@ int sl_NetAppDnsGetHostByName(char * hostname, unsigned short usNameLen, unsigne
 
         Hence it can make a connection to the specific service and use it.
         It is similar to get host by name method.
-
         It is done by a single shot query with PTR type on the service name.
-
                   The command that is sent is from constant parameters and variables parameters.
-
 
         \param[in]     pService                   Service name can be full or partial. \n
                                                   Example for full service name:
@@ -442,7 +476,7 @@ int sl_NetAppDnsGetHostByName(char * hostname, unsigned short usNameLen, unsigne
         \return       On success, zero is returned
                       SL_POOL_IS_EMPTY may be return in case there are no resources in the system
                       In this case try again later or increase MAX_CONCURRENT_ACTIONS
-                      In case No service is found error -177 will be returned
+                      In case No service is found error SL_NET_APP_DNS_NO_ANSWER will be returned
 
         \note         The returns attributes belongs to the first service found.
                       There may be other services with the same service name that will response to the query.
@@ -459,21 +493,18 @@ int sl_NetAppDnsGetHostByName(char * hostname, unsigned short usNameLen, unsigne
         \warning      Text length can be 120 bytes only
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppDnsGetHostByService)
-long sl_NetAppDnsGetHostByService(char           *pServiceName,  /*  string containing all (or only part): name + subtype + service */
-                                  unsigned char  ServiceLen,
-                                  unsigned char  Family,        /*  4-IPv4 , 16-IPv6  */
-                                  unsigned long  pAddr[], 
-                                  unsigned long  *pPort,
-                                  unsigned short *pTextLen, /*  in: max len , out: actual len */
-                                  char           *pText
+_i32 sl_NetAppDnsGetHostByService(_i8  *pServiceName, /*  string containing all (or only part): name + subtype + service */
+                                  const _u8  ServiceLen,
+                                  const _u8  Family,        /*  4-IPv4 , 16-IPv6  */
+                                  _u32 pAddr[], 
+                                  _u32 *pPort,
+                                  _u16 *pTextLen,     /*  in: max len , out: actual len */
+                                  _i8  *pText
                                  );
 
 #endif
 
 /*!
-
- 
-
         \brief Get service List
         Insert into out pBuffer a list of peer's services that are the NWP.
         The list is in a form of service struct. The user should chose the type
@@ -489,33 +520,28 @@ long sl_NetAppDnsGetHostByService(char           *pServiceName,  /*  string cont
         The user also chose how many max services to get and start point index
         NWP peer cache.
         For example:
-            1.    Get max of 3 full services from index 0 – means up to 3 full services
+            1.    Get max of 3 full services from index 0.Up to 3 full services
             from index 0 are inserted into pBuffer (services that are in indexes 0,1,2).
-            2.    Get max of 4 full services from index 3 – means up to 4 full services
+            2.    Get max of 4 full services from index 3.Up to 4 full services
             from index 3 are inserted into pBuffer (services that are in indexes 3,4,5,6).
-            3.    Get max of 2 short services from index 6 – means up to 2 short services
+            3.    Get max of 2 int services from index 6.Up to 2 int services
             from index 6 are inserted into pBuffer (services that are in indexes 6,7).
 
         See below - command parameters.
                     
-
-
- 
-        \param[in] 1. indexOffset - The start index in the peer cache that from it the first service is returned.
-        \param[in] 2. MaxServiceCount - The Max services that can be returned if existed or if not exceed the max index 
+        \param[in] indexOffset - The start index in the peer cache that from it the first service is returned.
+        \param[in] MaxServiceCount - The Max services that can be returned if existed or if not exceed the max index 
                       in the peer cache
-        \param[in] 3. Flags - an ENUM number that means which service struct to use (means which types of service to fill)                                            
+        \param[in] Flags - an ENUM number that means which service struct to use (means which types of service to fill)                                            
                         - use SlNetAppGetFullServiceWithTextIpv4List_t
                         - use SlNetAppGetFullServiceIpv4List_t
                         - use SlNetAppGetShortServiceIpv4List_t
 
-       \param[out]4. Buffer - The Services are inserted into this buffer. In the struct form according to the bit that is set in the Flags 
+       \param[out]  Buffer - The Services are inserted into this buffer. In the struct form according to the bit that is set in the Flags 
                       input parameter.
  
         \return    ServiceFoundCount - The number of the services that were inserted into the buffer. zero means no service is found 
-                   negative number means ERROR:
-                   - (-208)    Illegal value of flags parameters in API get service list
-                   - (-230)    Returned list buffer is bigger than the user allocated buffer
+                    negative number means an error
         \sa           sl_NetAppMDNSRegisterService
         \note        
         \warning 
@@ -527,16 +553,14 @@ long sl_NetAppDnsGetHostByService(char           *pServiceName,  /*  string cont
 */
 
 #if _SL_INCLUDE_FUNC(sl_NetAppGetServiceList)
-int sl_NetAppGetServiceList(unsigned char  IndexOffest,
-                            unsigned char  MaxServiceCount,
-                            unsigned char  Flags,
-                            char           *pBuffer,
-                            unsigned long  RxBufferLength
+_i16 sl_NetAppGetServiceList(const _u8   IndexOffest,
+                             const _u8   MaxServiceCount,
+                             const  _u8   Flags,
+                                   _i8   *pBuffer,
+                             const _u32  RxBufferLength
                             );
 
-
 #endif
-
 
 /*!
         \brief Unregister mDNS service
@@ -557,18 +581,12 @@ int sl_NetAppGetServiceList(unsigned char  IndexOffest,
         \param[in]    ServiceLen              The length of the service. 
         \return    On success, zero is returned 
         \sa          sl_NetAppMDNSRegisterService
-
         \note        
         \warning 
         The size of the service length should be smaller than 255.
-
-
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppMDNSUnRegisterService)
-int sl_NetAppMDNSUnRegisterService(    const char        *pServiceName, 
-                                    unsigned char   ServiceNameLen);
-
-
+_i16 sl_NetAppMDNSUnRegisterService(const _i8 *pServiceName,const _u8 ServiceNameLen);
 #endif
 
 /*!
@@ -607,22 +625,22 @@ int sl_NetAppMDNSUnRegisterService(    const char        *pServiceName,
 
         \return     On success, zero is returned
                     Possible error codes:
-                    -200        Maximum advertise services are already configured. 
+                    - Maximum advertise services are already configured. 
                                 Delete another existed service that is registered and then register again the new service
-                    -201        Trying to register a service that is already exists
-                    -203        Trying to delete service that does not existed
-                    -204/-179    Illegal service name according to the RFC
-                    -205        Retry request
-                    -207        Illegal length of one of the mDNS Set functions
-                    -161        mDNS is not operational as the device has no IP.Connect the device to an AP to get an IP address.
-                    -162        mDNS parameters error
-                    -163/-182    mDNS internal cache error
-                    -164 to -176  mDNS internal error
-                    -178        Adding a service is not allowed as it is already exist (duplicate service)
-                    -180        mDNS is not running                    
-                    -181        Host name error. Host name format is not allowed according to RFC 1033,1034,1035, 6763
-                    
-                    -206        List size buffer is bigger than internally allowed in the NWP (API get service list)    Change the APIs’ parameters to decrease the size of the list
+                    - Trying to register a service that is already exists
+                    - Trying to delete service that does not existed
+                    - Illegal service name according to the RFC
+                    - Retry request
+                    - Illegal length of one of the mDNS Set functions
+                    - mDNS is not operational as the device has no IP.Connect the device to an AP to get an IP address.
+                    - mDNS parameters error
+                    - mDNS internal cache error
+                    - mDNS internal error
+                    - Adding a service is not allowed as it is already exist (duplicate service)
+                    - mDNS is not running                    
+                    - Host name error. Host name format is not allowed according to RFC 1033,1034,1035, 6763
+                    - List size buffer is bigger than internally allowed in the NWP (API get service list),
+                     change the APIs’ parameters to decrease the size of the list
                                         
 
         \sa              sl_NetAppMDNSUnRegisterService
@@ -636,30 +654,26 @@ int sl_NetAppMDNSUnRegisterService(    const char        *pServiceName,
                     attribute part (contain constant parameters)
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppMDNSRegisterService)
-int sl_NetAppMDNSRegisterService(    const char*        pServiceName, 
-                                    unsigned char   ServiceNameLen,
-                                    const char*        pText,
-                                    unsigned char   TextLen,
-                                    unsigned short  Port,
-                                    unsigned long    TTL,
-                                    unsigned long    Options);
-
+_i16 sl_NetAppMDNSRegisterService( const _i8*  pServiceName, 
+                                   const _u8   ServiceNameLen,
+                                   const _i8*  pText,
+                                   const _u8   TextLen,
+                                   const _u16  Port,
+                                   const _u32  TTL,
+                                         _u32  Options);
 #endif
-
 
 /*!
     \brief send ICMP ECHO_REQUEST to network hosts
 
     Ping uses the ICMP protocol's mandatory ECHO_REQUEST
 
-
     \param[in]   pPingParams     Pointer to the ping request structure: \n
                                  - if flags parameter is set to 0, ping will report back once all requested pings are done (as defined by TotalNumberOfAttempts). \n
                                  - if flags parameter is set to 1, ping will report back after every ping, for TotalNumberOfAttempts.
                                  - if flags parameter is set to 2, ping will stop after the first successful ping, and report back for the successful ping, as well as any preceding failed ones. 
-								 
-							    For stopping an ongoing ping activity, set parameters IP address to 0
-
+                                 For stopping an ongoing ping activity, set parameters IP address to 0
+                                 
     \param[in]   family          SL_AF_INET or  SL_AF_INET6
     \param[out]  pReport         Ping pReport
     \param[out]  pCallback       Callback function upon completion.
@@ -710,7 +724,7 @@ int sl_NetAppMDNSRegisterService(    const char*        pServiceName,
     \endcode
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppPingStart)
-int sl_NetAppPingStart(SlPingStartCommand_t* pPingParams,unsigned char family,SlPingReport_t *pReport,const P_SL_DEV_PING_CALLBACK pPingCallback);
+_i16 sl_NetAppPingStart(const SlPingStartCommand_t* pPingParams,const _u8 family,SlPingReport_t *pReport,const P_SL_DEV_PING_CALLBACK pPingCallback);
 #endif
 
 /*!
@@ -722,9 +736,27 @@ int sl_NetAppPingStart(SlPingStartCommand_t* pPingParams,unsigned char family,Sl
     \param[in] AppId          Application id, could be one of the following: \n
                               - SL_NET_APP_HTTP_SERVER_ID
                               - SL_NET_APP_DHCP_SERVER_ID
+                              - SL_NET_APP_MDNS_ID
+                              - SL_NET_APP_DEVICE_CONFIG_ID
 
     \param[in] SetOptions     set option, could be one of the following: \n
-                              NETAPP_SET_BASIC_OPT
+                              - SL_NET_APP_DHCP_SERVER_ID
+                                 - NETAPP_SET_DHCP_SRV_BASIC_OPT
+                              - SL_NET_APP_HTTP_SERVER_ID
+                                 - NETAPP_SET_GET_HTTP_OPT_PORT_NUMBER
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_CHECK
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_NAME
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_PASSWORD
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_REALM
+                                 - NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS
+                              - SL_NET_APP_MDNS_ID
+                                 - NETAPP_SET_GET_MDNS_CONT_QUERY_OPT
+                                 - NETAPP_SET_GET_MDNS_QEVETN_MASK_OPT
+                                 - NETAPP_SET_GET_MDNS_TIMING_PARAMS_OPT
+                              - SL_NET_APP_DEVICE_CONFIG_ID
+                                 - NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN
+                                 - NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME
+
 
     \param[in] OptionLen       option structure length
 
@@ -737,12 +769,12 @@ int sl_NetAppPingStart(SlPingStartCommand_t* pPingParams,unsigned char family,Sl
         Set DHCP Server (AP mode) parameters example:
                           
         SlNetAppDhcpServerBasicOpt_t dhcpParams; 
-        unsigned char outLen = sizeof(SlNetAppDhcpServerBasicOpt_t); 
+        _u8 outLen = sizeof(SlNetAppDhcpServerBasicOpt_t); 
         dhcpParams.lease_time      = 4096;                         // lease time (in seconds) of the IP Address
         dhcpParams.ipv4_addr_start =  SL_IPV4_VAL(192,168,1,10);   // first IP Address for allocation. IP Address should be set as Hex number - i.e. 0A0B0C01 for (10.11.12.1)
         dhcpParams.ipv4_addr_last  =  SL_IPV4_VAL(192,168,1,16);   // last IP Address for allocation. IP Address should be set as Hex number - i.e. 0A0B0C01 for (10.11.12.1)
         sl_NetAppStop(SL_NET_APP_DHCP_SERVER_ID);                  // Stop DHCP server before settings
-        sl_NetAppSet(SL_NET_APP_DHCP_SERVER_ID, NETAPP_SET_DHCP_SRV_BASIC_OPT, outLen, (unsigned char*)&dhcpParams);  // set parameters
+        sl_NetAppSet(SL_NET_APP_DHCP_SERVER_ID, NETAPP_SET_DHCP_SRV_BASIC_OPT, outLen, (_u8* )&dhcpParams);  // set parameters
         sl_NetAppStart(SL_NET_APP_DHCP_SERVER_ID);                 // Start DHCP server with new settings
     \endcode
     \code
@@ -753,13 +785,13 @@ int sl_NetAppPingStart(SlPingStartCommand_t* pPingParams,unsigned char family,Sl
         In case no device URN name set, the default name is "mysimplelink" 
         Allowed characters in device name are: 'a - z' , 'A - Z' , '0-9' and '-'
 
-        unsigned char *my_device = "MY-SIMPLELINK-DEV";
-        sl_NetAppSet (SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, strlen(my_device), (unsigned char *) my_device);
+        _u8 *my_device = "MY-SIMPLELINK-DEV";
+        sl_NetAppSet (SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, strlen(my_device), (_u8 *) my_device);
     \endcode
 
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppSet)
-long sl_NetAppSet(unsigned char AppId ,unsigned char Option,unsigned char OptionLen, unsigned char *pOptionValue);
+_i32 sl_NetAppSet(const _u8 AppId ,const _u8 Option,const _u8 OptionLen,const _u8 *pOptionValue);
 #endif
 
 /*!
@@ -771,9 +803,27 @@ long sl_NetAppSet(unsigned char AppId ,unsigned char Option,unsigned char Option
     \param[in] AppId          Application id, could be one of the following: \n
                               - SL_NET_APP_HTTP_SERVER_ID
                               - SL_NET_APP_DHCP_SERVER_ID
+                              - SL_NET_APP_MDNS_ID
+                              - SL_NET_APP_DEVICE_CONFIG_ID
 
-    \param[in] Options        Get option, could be one of the following: \n
-                              NETAPP_SET_BASIC_OPT
+    \param[in] SetOptions     set option, could be one of the following: \n
+                              - SL_NET_APP_DHCP_SERVER_ID
+                                 - NETAPP_SET_DHCP_SRV_BASIC_OPT
+                              - SL_NET_APP_HTTP_SERVER_ID
+                                 - NETAPP_SET_GET_HTTP_OPT_PORT_NUMBER
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_CHECK
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_NAME
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_PASSWORD
+                                 - NETAPP_SET_GET_HTTP_OPT_AUTH_REALM
+                                 - NETAPP_SET_GET_HTTP_OPT_ROM_PAGES_ACCESS
+                              - SL_NET_APP_MDNS_ID
+                                 - NETAPP_SET_GET_MDNS_CONT_QUERY_OPT
+                                 - NETAPP_SET_GET_MDNS_QEVETN_MASK_OPT
+                                 - NETAPP_SET_GET_MDNS_TIMING_PARAMS_OPT
+                              - SL_NET_APP_DEVICE_CONFIG_ID
+                                 - NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN
+                                 - NETAPP_SET_GET_DEV_CONF_OPT_DOMAIN_NAME
+
 
     \param[in] OptionLen     The length of the allocated memory as input, when the
                                         function complete, the value of this parameter would be
@@ -792,8 +842,8 @@ long sl_NetAppSet(unsigned char AppId ,unsigned char Option,unsigned char Option
          Get DHCP Server parameters example:
 
          SlNetAppDhcpServerBasicOpt_t dhcpParams;
-         unsigned char outLen = sizeof(SlNetAppDhcpServerBasicOpt_t);
-         sl_NetAppGet(SL_NET_APP_DHCP_SERVER_ID, NETAPP_SET_DHCP_SRV_BASIC_OPT, &outLen, (unsigned char*)&dhcpParams);
+         _u8 outLen = sizeof(SlNetAppDhcpServerBasicOpt_t);
+         sl_NetAppGet(SL_NET_APP_DHCP_SERVER_ID, NETAPP_SET_DHCP_SRV_BASIC_OPT, &outLen, (_u8* )&dhcpParams);
  
          printf("DHCP Start IP %d.%d.%d.%d End IP %d.%d.%d.%d Lease time seconds %d\n",                                                           
             SL_IPV4_BYTE(dhcpParams.ipv4_addr_start,3),SL_IPV4_BYTE(dhcpParams.ipv4_addr_start,2),
@@ -808,12 +858,12 @@ long sl_NetAppSet(unsigned char AppId ,unsigned char Option,unsigned char Option
          Device name affects URN name, own SSID name in AP mode, and WPS file "device name" in WPS I.E (STA-WPS / P2P)
          in case no device URN name set, the default name is "mysimplelink" 
 
-         unsigned char my_device_name[35];
-         sl_NetAppGet (SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, strlen(my_device_name), (unsigned char *)my_device_name); 
+         _u8 my_device_name[35];
+         sl_NetAppGet (SL_NET_APP_DEVICE_CONFIG_ID, NETAPP_SET_GET_DEV_CONF_OPT_DEVICE_URN, strlen(my_device_name), (_u8 *)my_device_name); 
     \endcode
 */
 #if _SL_INCLUDE_FUNC(sl_NetAppGet)
-long sl_NetAppGet(unsigned char AppId, unsigned char Option,unsigned char *pOptionLen, unsigned char *pOptionValue);
+_i32 sl_NetAppGet(const _u8 AppId,const  _u8 Option,_u8 *pOptionLen, _u8 *pOptionValue);
 #endif
 
 

@@ -20,7 +20,7 @@
 
 
 extern "C" {
-    #include "SimpleLink.h"
+    #include "simplelink.h"
     #include <string.h>
 }
 
@@ -30,6 +30,10 @@ extern "C" {
 #if (defined(sl_GeneralEvtHdlr))
 extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)
 {
+    /* TODO: this function is called on SL_OPCODE_DEVICE_DEVICEASYNCFATALERROR
+     *       and SL_OPCODE_DEVICE_ABORT events.  Sould probably not ignore
+     *       these events.
+     */
 }
 #endif
 
@@ -96,7 +100,6 @@ extern void sl_WlanEvtHdlr(SlWlanEvent_t *pSlWlanEvent)
             WiFiClass::_unregisterDevice(pSlWlanEvent->EventData.APModestaDisconnected.mac);
             WiFiClass::_connectedDeviceCount--;
             break;
-
             
         default:
             break;
@@ -112,15 +115,15 @@ extern void sl_NetAppEvtHdlr(SlNetAppEvent_t *pSlSockEvent)
         //IP address acquired. Copy the uint32 to the WiFiClass static variable
         //do the following for both IPV4 and IPV6
         //
-        case SL_NETAPP_IPV4_ACQUIRED:
-        case SL_NETAPP_IPV6_ACQUIRED:
+        case SL_NETAPP_IPV4_IPACQUIRED_EVENT:
+        case SL_NETAPP_IPV6_IPACQUIRED_EVENT:
         {
             WiFiClass::local_IP = pSlSockEvent->EventData.ipAcquiredV4.ip;
             break;
         }
 
         /* Track station IP leases in AP mode */
-        case SL_NETAPP_IP_LEASED:
+        case SL_NETAPP_IP_LEASED_EVENT:
             unsigned char ipAddrAry[4];
 
             ipAddrAry[0] = (pSlSockEvent->EventData.ipLeased.ip_address >> 24);

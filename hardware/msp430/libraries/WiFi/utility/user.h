@@ -629,7 +629,7 @@ extern "C" {
 
     \warning
 */
-#define sl_Malloc(Size)         malloc(size)
+#define sl_Malloc(size)         malloc(size)
 
 /*!
     \brief

@@ -33,22 +33,22 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
 */
+
+/*****************************************************************************/
+/* Include files                                                             */
+/*****************************************************************************/
+#include "simplelink.h"
+
     
-#include "SimpleLink.h"
-
 #ifndef __NETCFG_H__
-#define	__NETCFG_H__
+#define __NETCFG_H__
 
-#ifdef	__cplusplus
+
+#ifdef    __cplusplus
 extern "C" {
 #endif
 
 
-/*****************************************************************************
-
-    API Prototypes
-
- *****************************************************************************/
 
 /*!
 
@@ -57,36 +57,47 @@ extern "C" {
 
 */
 
+
+/*****************************************************************************/
+/* Macro declarations                                                        */
+/*****************************************************************************/
+
+#define SL_MAC_ADDR_LEN                          (6)
+#define SL_IPV4_VAL(add_3,add_2,add_1,add_0)     ((((_u32)add_3 << 24) & 0xFF000000) | (((_u32)add_2 << 16) & 0xFF0000) | (((_u32)add_1 << 8) & 0xFF00) | ((_u32)add_0 & 0xFF) )
+#define SL_IPV4_BYTE(val,index)                  ( (val >> (index*8)) & 0xFF )
+
+#define IPCONFIG_MODE_DISABLE_IPV4               (0)
+#define IPCONFIG_MODE_ENABLE_IPV4                (1)
+
+/*****************************************************************************/
+/* Structure/Enum declarations                                               */
+/*****************************************************************************/
 typedef enum
 {
-	SL_MAC_ADDRESS_SET          = 1,
-	SL_MAC_ADDRESS_GET          = 2,          
+    SL_MAC_ADDRESS_SET          = 1,
+    SL_MAC_ADDRESS_GET          = 2,          
     SL_IPV4_STA_P2P_CL_GET_INFO           = 3,
     SL_IPV4_STA_P2P_CL_DHCP_ENABLE        = 4,
     SL_IPV4_STA_P2P_CL_STATIC_ENABLE      = 5,
     SL_IPV4_AP_P2P_GO_GET_INFO            = 6,
     SL_IPV4_AP_P2P_GO_STATIC_ENABLE       = 7,
-	SL_SET_HOST_RX_AGGR                   = 8,
+    SL_SET_HOST_RX_AGGR                   = 8,
     MAX_SETTINGS = 0xFF
 }Sl_NetCfg_e;
 
 
 typedef struct
 {
-    unsigned long  ipV4;
-    unsigned long  ipV4Mask;
-    unsigned long  ipV4Gateway;
-    unsigned long  ipV4DnsServer;
-}_NetCfgIpV4Args_t;
+    _u32  ipV4;
+    _u32  ipV4Mask;
+    _u32  ipV4Gateway;
+    _u32  ipV4DnsServer;
+}SlNetCfgIpV4Args_t;
 
 
-#define SL_MAC_ADDR_LEN      6
-
-
-#define SL_IPV4_VAL(add_3,add_2,add_1,add_0)     ( (((unsigned long)add_3 << 24) & 0xFF000000) | (((unsigned long)add_2 << 16) & 0xFF0000) | (((unsigned long)add_1 << 8) & 0xFF00) | ((unsigned long)add_0 & 0xFF) )
-#define SL_IPV4_BYTE(val,index)                   ( (val >> (index*8)) & 0xFF )
-
-
+/*****************************************************************************/
+/* Function prototypes                                                       */
+/*****************************************************************************/
 
 /*!
     \brief     Internal function for setting network configurations
@@ -111,16 +122,16 @@ typedef struct
         The new MAC address will override the default MAC address and it be saved in the FileSystem.
         Requires restarting the device for updating this setting.
     
-	    unsigned char MAC_Address[6];
-	    MAC_Address[0] = 0x8;
-	    MAC_Address[1] = 0x0;
-	    MAC_Address[2] = 0x28;
-	    MAC_Address[3] = 0x22;
-	    MAC_Address[4] = 0x69;
-	    MAC_Address[5] = 0x31;
-        sl_NetCfgSet(SL_MAC_ADDRESS_SET,1,SL_MAC_ADDR_LEN,(unsigned char *)newMacAddress);
-        sl_Start(NULL,NULL,NULL);
+        _u8 MAC_Address[6];
+        MAC_Address[0] = 0x8;
+        MAC_Address[1] = 0x0;
+        MAC_Address[2] = 0x28;
+        MAC_Address[3] = 0x22;
+        MAC_Address[4] = 0x69;
+        MAC_Address[5] = 0x31;
+        sl_NetCfgSet(SL_MAC_ADDRESS_SET,1,SL_MAC_ADDR_LEN,(_u8 *)newMacAddress);
         sl_Stop(0);
+        sl_Start(NULL,NULL,NULL);
     \endcode 
 
     \code 
@@ -130,14 +141,15 @@ typedef struct
         The IP address will be stored in the FileSystem.
         In order to disable the static IP and get the address assigned from DHCP one should use SL_STA_P2P_CL_IPV4_DHCP_SET
 
-        _NetCfgIpV4Args_t ipV4;
-        ipV4.ipV4          = (unsigned long)SL_IPV4_VAL(10,1,1,201);            // unsigned long IP address 
-        ipV4.ipV4Mask      = (unsigned long)SL_IPV4_VAL(255,255,255,0);         // unsigned long Subnet mask for this STA/P2P
-        ipV4.ipV4Gateway   = (unsigned long)SL_IPV4_VAL(10,1,1,1);              // unsigned long Default gateway address
-        ipV4.ipV4DnsServer = (unsigned long)SL_IPV4_VAL(8,16,32,64);            // unsigned long DNS server address
+        SlNetCfgIpV4Args_t ipV4;
+        ipV4.ipV4          = (_u32)SL_IPV4_VAL(10,1,1,201);            // _u32 IP address 
+        ipV4.ipV4Mask      = (_u32)SL_IPV4_VAL(255,255,255,0);         // _u32 Subnet mask for this STA/P2P
+        ipV4.ipV4Gateway   = (_u32)SL_IPV4_VAL(10,1,1,1);              // _u32 Default gateway address
+        ipV4.ipV4DnsServer = (_u32)SL_IPV4_VAL(8,16,32,64);            // _u32 DNS server address
 
-        sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE,1,sizeof(_NetCfgIpV4Args_t),(unsigned char *)&ipV4); 
-
+        sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE,IPCONFIG_MODE_ENABLE_IPV4,sizeof(SlNetCfgIpV4Args_t),(_u8 *)&ipV4); 
+        sl_Stop(0);
+        sl_Start(NULL,NULL,NULL);
     \endcode
 
     \code 
@@ -146,10 +158,10 @@ typedef struct
         Setting IP address by DHCP to FileSystem using WLAN sta mode or P2P client.
                 This should be done once if using Serial Flash.
                 This is the system's default mode for acquiring an IP address after WLAN connection.
-
-        unsigned char val = 1;
-	    sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE,1,1,&val);
-
+        _u8 val = 1;
+        sl_NetCfgSet(SL_IPV4_STA_P2P_CL_DHCP_ENABLE,IPCONFIG_MODE_ENABLE_IPV4,1,&val);
+        sl_Stop(0);
+        sl_Start(NULL,NULL,NULL);
     \endcode
 
     \code       
@@ -157,14 +169,14 @@ typedef struct
 
         Setting a static IP address to the device working in AP mode or P2P go.
         The IP address will be stored in the FileSystem. Requires restart.
-	                                                                 
-        _NetCfgIpV4Args_t ipV4;
-        ipV4.ipV4          = (unsigned long)SL_IPV4_VAL(10,1,1,201);            // unsigned long IP address 
-        ipV4.ipV4Mask      = (unsigned long)SL_IPV4_VAL(255,255,255,0);         // unsigned long Subnet mask for this AP/P2P
-        ipV4.ipV4Gateway   = (unsigned long)SL_IPV4_VAL(10,1,1,1);              // unsigned long Default gateway address
-        ipV4.ipV4DnsServer = (unsigned long)SL_IPV4_VAL(8,16,32,64);            // unsigned long DNS server address
+                                                                     
+        SlNetCfgIpV4Args_t ipV4;
+        ipV4.ipV4          = (_u32)SL_IPV4_VAL(10,1,1,201);            // _u32 IP address 
+        ipV4.ipV4Mask      = (_u32)SL_IPV4_VAL(255,255,255,0);         // _u32 Subnet mask for this AP/P2P
+        ipV4.ipV4Gateway   = (_u32)SL_IPV4_VAL(10,1,1,1);              // _u32 Default gateway address
+        ipV4.ipV4DnsServer = (_u32)SL_IPV4_VAL(8,16,32,64);            // _u32 DNS server address
 
-        sl_NetCfgSet(SL_IPV4_AP_P2P_GO_STATIC_ENABLE,1,sizeof(_NetCfgIpV4Args_t),(unsigned char *)&ipV4);
+        sl_NetCfgSet(SL_IPV4_AP_P2P_GO_STATIC_ENABLE,IPCONFIG_MODE_ENABLE_IPV4,sizeof(SlNetCfgIpV4Args_t),(_u8 *)&ipV4);
         sl_Stop(0);
         sl_Start(NULL,NULL,NULL);
     \endcode
@@ -172,10 +184,8 @@ typedef struct
    
 */
 #if _SL_INCLUDE_FUNC(sl_NetCfgSet)
-long sl_NetCfgSet(unsigned char ConfigId ,unsigned char ConfigOpt, unsigned char ConfigLen, unsigned char *pValues);
+_i32 sl_NetCfgSet(const _u8 ConfigId,const _u8 ConfigOpt,const _u8 ConfigLen,const _u8 *pValues);
 #endif
-
-
 
 
 /*!
@@ -206,11 +216,11 @@ long sl_NetCfgSet(unsigned char ConfigId ,unsigned char ConfigOpt, unsigned char
         
        Get the device MAC address.
        The returned MAC address is taken from FileSystem first. If the MAC address was not set by SL_MAC_ADDRESS_SET, the default MAC address
-       is retreived from HW.
+       is retrieved from HW.
        
-       unsigned char macAddressVal[SL_MAC_ADDR_LEN];
-       unsigned char macAddressLen = SL_MAC_ADDR_LEN;
-       sl_NetCfgGet(SL_MAC_ADDRESS_GET,NULL,&macAddressLen,(unsigned char *)macAddressVal);
+       _u8 macAddressVal[SL_MAC_ADDR_LEN];
+       _u8 macAddressLen = SL_MAC_ADDR_LEN;
+       sl_NetCfgGet(SL_MAC_ADDRESS_GET,NULL,&macAddressLen,(_u8 *)macAddressVal);
     
     \endcode
 
@@ -219,10 +229,10 @@ long sl_NetCfgSet(unsigned char ConfigId ,unsigned char ConfigOpt, unsigned char
        
         Get IP address from WLAN station or P2P client. A DHCP flag is returned to indicate if the IP address is static or from DHCP. 
  
-        unsigned char len = sizeof(_NetCfgIpV4Args_t);
-        unsigned char dhcpIsOn = 0;
-        _NetCfgIpV4Args_t ipV4 = {0};
-        sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO,&dhcpIsOn,&len,(unsigned char *)&ipV4);
+        _u8 len = sizeof(SlNetCfgIpV4Args_t);
+        _u8 dhcpIsOn = 0;
+        SlNetCfgIpV4Args_t ipV4 = {0};
+        sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO,&dhcpIsOn,&len,(_u8 *)&ipV4);
                                           
         printf("DHCP is %s IP %d.%d.%d.%d MASK %d.%d.%d.%d GW %d.%d.%d.%d DNS %d.%d.%d.%d\n",        
                 (dhcpIsOn > 0) ? "ON" : "OFF",                                                           
@@ -238,10 +248,10 @@ long sl_NetCfgSet(unsigned char ConfigId ,unsigned char ConfigOpt, unsigned char
        
         Get static IP address for AP or P2P go.   
  
-        unsigned char len = sizeof(_NetCfgIpV4Args_t);
-        unsigned char dhcpIsOn = 0; // thig flag is meaningless on AP/P2P go.
-        _NetCfgIpV4Args_t ipV4 = {0};
-        sl_NetCfgGet(SL_IPV4_AP_P2P_GO_GET_INFO,&dhcpIsOn,&len,(unsigned char *)&ipV4);
+        _u8 len = sizeof(SlNetCfgIpV4Args_t);
+        _u8 dhcpIsOn = 0; // this flag is meaningless on AP/P2P go.
+        SlNetCfgIpV4Args_t ipV4 = {0};
+        sl_NetCfgGet(SL_IPV4_AP_P2P_GO_GET_INFO,&dhcpIsOn,&len,(_u8 *)&ipV4);
                                           
         printf("IP %d.%d.%d.%d MASK %d.%d.%d.%d GW %d.%d.%d.%d DNS %d.%d.%d.%d\n",                                                             
                 SL_IPV4_BYTE(ipV4.ipV4,3),SL_IPV4_BYTE(ipV4.ipV4,2),SL_IPV4_BYTE(ipV4.ipV4,1),SL_IPV4_BYTE(ipV4.ipV4,0), 
@@ -254,7 +264,7 @@ long sl_NetCfgSet(unsigned char ConfigId ,unsigned char ConfigOpt, unsigned char
    
 */
 #if _SL_INCLUDE_FUNC(sl_NetCfgGet)
-long sl_NetCfgGet(unsigned char ConfigId ,unsigned char *pConfigOpt, unsigned char *pConfigLen, unsigned char *pValues);
+_i32 sl_NetCfgGet(const _u8 ConfigId ,_u8 *pConfigOpt, _u8 *pConfigLen, _u8 *pValues);
 #endif
 
 /*!
@@ -269,5 +279,5 @@ long sl_NetCfgGet(unsigned char ConfigId ,unsigned char *pConfigOpt, unsigned ch
 }
 #endif /*  __cplusplus */
 
-#endif	/*  __NETAPP_H__ */
+#endif    /*  __NETCFG_H__ */
 

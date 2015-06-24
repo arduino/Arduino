@@ -1,0 +1,1 @@
+../../../../emt/src/ti/runtime/wiring/cc3200/wiring_private.h

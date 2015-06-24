@@ -105,7 +105,6 @@ void CameraReset(unsigned long ulBase)
 //! - \b CAM_PCLK_RISE_EDGE
 //! - \b CAM_PCLK_FALL_EDGE
 //! - \b CAM_ORDERCAM_SWAP
-//! - \b CAM_BT_CORRECT_EN
 //! - \b CAM_NOBT_SYNCHRO
 //! - \b CAM_IF_SYNCHRO
 //!

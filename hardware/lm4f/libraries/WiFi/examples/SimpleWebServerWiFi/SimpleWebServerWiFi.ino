@@ -95,8 +95,8 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
-            client.println("<html><head><title>Energia CC3100 WiFi Web Server</title></head><body align=center>");
-            client.println("<h1 align=center><font color=\"red\">Welcome to the CC3100 WiFi Web Server</font></h1>");
+            client.println("<html><head><title>Energia CC3200 WiFi Web Server</title></head><body align=center>");
+            client.println("<h1 align=center><font color=\"red\">Welcome to the CC3200 WiFi Web Server</font></h1>");
             client.print("RED LED <button onclick=\"location.href='/H'\">HIGH</button>");
             client.println(" <button onclick=\"location.href='/L'\">LOW</button><br>");
 
@@ -125,7 +125,7 @@ void loop() {
     }
     // close the connection:
     client.stop();
-    Serial.println("client disconnected");
+    Serial.println("client disonnected");
   }
 }
 

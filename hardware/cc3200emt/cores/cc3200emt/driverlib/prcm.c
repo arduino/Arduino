@@ -107,8 +107,23 @@
 //*****************************************************************************
 // Register Access and Updates
 //
-// Tick of SCC has a resolution of 32768Hz. Therefore, scaling SCC value by 32
-// yields ~1 msec resolution. All operations of SCC in RTC context use ms unit.
+// Tick of SCC has a resolution of 32768Hz, meaning 1 sec is equal to 32768
+// clock ticks. Ideal way of getting time in millisecond will involve floating
+// point arithmetic (division by 32.768). To avoid this, we simply divide it by
+// 32, which will give a range from 0 -1023(instead of 0-999). To use this
+// output correctly we have to take care of this inaccuracy externally.
+// following wrapper can be used to convert the value from cycles to
+// millisecond:
+//
+// CYCLES_U16MS(cycles)	((cycles *1000)/ 1024),
+//
+// Similarly, before setting the value, it must be first converted (from ms to
+// cycles).
+//
+// U16MS_CYCLES(msec)	((msec *1024)/1000)
+//
+// Note: There is a precision loss of 1 ms with the above scheme.
+//
 //*****************************************************************************
 #define SCC_U64MSEC_GET()                (PRCMSlowClkCtrGet() >> 5)
 #define SCC_U64MSEC_MATCH_SET(u64Msec)   (PRCMSlowClkCtrMatchSet(u64Msec << 5))
@@ -600,6 +615,14 @@ PRCMLPDSRestoreInfoSet(unsigned long ulStackPtr, unsigned long ulProgCntr)
 //! \sa PRCMLPDSRestoreInfoSet().
 //!
 //! \return None.
+//!
+//! \note The Test Power Domain is shutdown whenever the system
+//!  enters LPDS (by default). In order to avoid this and allow for
+//!  connecting back the debugger after waking up from LPDS,
+//!  the macro KEEP_TESTPD_ALIVE has to be defined while building the library.
+//!  This is recommended for development purposes only as it adds to
+//!  the current consumption of the system.
+//!
 //
 //*****************************************************************************
 void
@@ -610,8 +633,8 @@ PRCMLPDSEnter()
   //
   // Check if flash exists
   //
-  if(HWREG((GPRCM_BASE +
-            GPRCM_O_GPRCM_EFUSE_READ_REG2) & 0x00110000) == 0x00110000)
+  if( (HWREG(GPRCM_BASE + GPRCM_O_GPRCM_EFUSE_READ_REG2) & 0x00110000)
+                                                            == 0x00110000 )
   {
 
     //
@@ -1218,6 +1241,35 @@ PRCMSlowClkCtrGet()
   return ullRTCVal;
 }
 
+//*****************************************************************************
+//
+//! Gets the current value of the internal slow clock counter
+//!
+//! This function is similar to \sa PRCMSlowClkCtrGet() but reads the counter
+//! value from a relatively faster interface using an auto-latch mechainsm.
+//!
+//! \note Due to the nature of implemetation of auto latching, when using this
+//! API, the recommendation is to read the value thrice and identify the right
+//! value (as 2 out the 3 read values will always be correct and with a max. of
+//! 1 LSB change)
+//!
+//! \return 64-bit current counter vlaue.
+//
+//*****************************************************************************
+unsigned long long PRCMSlowClkCtrFastGet(void)
+{
+  unsigned long long ullRTCVal;
+
+  //
+  // Read as 2 32-bit values
+  //
+  ullRTCVal = HWREG(HIB1P2_BASE + HIB1P2_O_HIB_RTC_TIMER_MSW_1P2);
+  ullRTCVal = ullRTCVal << 32;
+  ullRTCVal |= HWREG(HIB1P2_BASE + HIB1P2_O_HIB_RTC_TIMER_LSW_1P2);
+
+  return ullRTCVal;
+
+}
 
 //*****************************************************************************
 //
@@ -1688,25 +1740,25 @@ void PRCMCC3200MCUInit()
     ulRegVal = (ulRegVal & ~0x3FF) | 0x155;
     HWREG(0x400F703C) = ulRegVal;
 
-   //
-   // Enable 32KHz internal RC oscillator
-   //
-   PRCMHIBReadRegWrite(HIB3P3_BASE+HIB3P3_O_MEM_INT_OSC_CONF, 0x00000101);
+    //
+    // Enable 32KHz internal RC oscillator
+    //
+    PRCMHIBRegWrite(HIB3P3_BASE+HIB3P3_O_MEM_INT_OSC_CONF, 0x00000101);
 
-  //
-  // Delay for a little bit.
-  //
-  UtilsDelay(8000);
+    //
+    // Delay for a little bit.
+    //
+    UtilsDelay(8000);
 
-  //
-  // Enable 16MHz clock
-  //
-  HWREG(HIB1P2_BASE+HIB1P2_O_CM_OSC_16M_CONFIG) = 0x00010008;
+    //
+    // Enable 16MHz clock
+    //
+    HWREG(HIB1P2_BASE+HIB1P2_O_CM_OSC_16M_CONFIG) = 0x00010008;
 
-  //
-  // Delay for a little bit.
-  //
-  UtilsDelay(8000);
+    //
+    // Delay for a little bit.
+    //
+    UtilsDelay(8000);
 
 
 
@@ -1867,6 +1919,63 @@ void PRCMHIBRegWrite(unsigned long ulRegAddr, unsigned long ulValue)
   // Wait for 200 uSec
   //
   UtilsDelay((80*200)/3);
+}
+
+//*****************************************************************************
+//
+//! \param ulDivider is clock frequency divider value
+//! \param ulWidth is the width of the high pulse
+//!
+//! This function sets the input frequency for camera module.
+//!
+//! The frequency is calculated as follows:
+//!
+//!        f_out = 240MHz/ulDivider;
+//!
+//! The parameter \e ulWidth sets the width of the high pulse.
+//!
+//! For e.g.:
+//!
+//!     ulDivider = 4;
+//!     ulWidth   = 2;
+//!
+//!     f_out = 30 MHz and 50% duty cycle
+//!
+//! And,
+//!
+//!     ulDivider = 4;
+//!     ulWidth   = 1;
+//!
+//!     f_out = 30 MHz and 25% duty cycle
+//!
+//! \return 0 on success, 1 on error
+//
+//*****************************************************************************
+unsigned long PRCMCameraFreqSet(unsigned char ulDivider, unsigned char ulWidth)
+{
+    if(ulDivider > ulWidth && ulWidth != 0 )
+    {
+      //
+      // Set  the hifh pulse width
+      //
+      HWREG(ARCM_BASE +
+            APPS_RCM_O_CAMERA_CLK_GEN) = (((ulWidth & 0x07) -1) << 8);
+
+      //
+      // Set the low pulse width
+      //
+      HWREG(ARCM_BASE +
+            APPS_RCM_O_CAMERA_CLK_GEN) = ((ulDivider - ulWidth - 1) & 0x07);
+      //
+      // Return success
+      //
+      return 0;
+    }
+
+    //
+    // Success;
+    //
+    return 1;
 }
 
 //*****************************************************************************
