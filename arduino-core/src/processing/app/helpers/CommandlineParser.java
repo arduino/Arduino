@@ -244,7 +244,7 @@ public class CommandlineParser {
     }
 
     TargetBoard targetBoard = targetPlatform.getBoard(split[2]);
-    if (targetBoard == null) {
+    if (targetBoard == null || !targetBoard.getId().equals(split[2])) {
       BaseNoGui.showError(null, I18n.format(_("{0}: Unknown board"), split[2]), 3);
     }
 
