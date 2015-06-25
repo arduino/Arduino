@@ -245,4 +245,8 @@ public class Platform {
     Process process = Runtime.getRuntime().exec(new String[]{"chmod", Integer.toOctalString(mode), file.getAbsolutePath()}, null, null);
     process.waitFor();
   }
+
+  public void fixSettingsLocation() throws IOException {
+    //noop
+  }
 }
