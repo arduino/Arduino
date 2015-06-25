@@ -18,6 +18,7 @@ import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibrarySelection;
 import processing.app.packages.UserLibrary;
 import processing.app.preproc.PdePreprocessor;
 
@@ -851,10 +852,10 @@ public class BaseNoGui {
   }
 
   static public void populateImportToLibraryTable() {
-    // Populate importToLibraryTable. Each header filename maps to
-    // a list of libraries. Compiler.java will use only the first
-    // library on each list. The others are used only to advise
-    // user of ambiguously matched and duplicate libraries.
+    // Populate importToLibraryTable. Each header filename maps to a list of
+    // libraries. Compiler.java will use the dependency specs in the source
+    // files to decide which library to use from the list. The list is also
+    // used to advise user of ambiguously matched and duplicate libraries.
     importToLibraryTable = new HashMap<String, LibraryList>();
     for (UserLibrary lib : librariesIndexer.getInstalledLibraries()) {
       try {
@@ -963,27 +964,36 @@ public class BaseNoGui {
     }
   }
 
-  static public UserLibrary findFirstLibraryByImport(String importName) {
-    LibraryList list = importToLibraryTable.get(importName);
+  static public LibrarySelection findLibraryByImport(String[] importSpec) {
+    LibraryList list = importToLibraryTable.get(importSpec[0]);
     if (list == null || list.isEmpty()) {
       return null;
     }
-    return list.peekFirst();
+    int index = 0;
+    if (importSpec[1] != null) {
+      for (int i = 0; i < list.size(); i++) {
+        if (list.get(i).matchesDepSpec(importSpec[1])) {
+          index = i;
+        }
+      }
+    }
+    return new LibrarySelection(list, index);
   }
 
-  static public UserLibrary findFirstLibraryByCode(String code) {
-    List<String> incs = PdePreprocessor.findIncludes(code);
+  static public LibrarySelection findLibraryByCode(String code) {
+    List<String[]> incs = PdePreprocessor.findIncludes(code);
     if (incs.isEmpty()) {
       return null;
     }
-    return findFirstLibraryByImport(incs.get(0));
+    return findLibraryByImport(incs.get(0));
   }
 
-  static public List<UserLibrary> findLibrariesByCode(String code) throws IOException {
-    List<UserLibrary> libs = new ArrayList<>();
-    List<String> incs = PdePreprocessor.findIncludes(code);
-    for (String inc : incs) {
-      UserLibrary lib = findFirstLibraryByImport(inc);
+  static public List<LibrarySelection> findLibrariesByCode(String code)
+  throws IOException {
+    List<LibrarySelection> libs = new ArrayList<>();
+    List<String[]> incs = PdePreprocessor.findIncludes(code);
+    for (String[] inc : incs) {
+      LibrarySelection lib = findLibraryByImport(inc);
       if (lib != null) {
         libs.add(lib);
       }
@@ -991,7 +1001,7 @@ public class BaseNoGui {
     return libs;
   }
 
-  static public List<UserLibrary> findLibrariesByCode(File file) throws IOException {
+  static public List<LibrarySelection> findLibrariesByCode(File file) throws IOException {
     return findLibrariesByCode(FileUtils.readFileToString(file));
   }
 

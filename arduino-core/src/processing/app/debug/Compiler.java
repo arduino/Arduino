@@ -48,6 +48,7 @@ import processing.app.preproc.PdePreprocessor;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LegacyUserLibrary;
 import processing.app.packages.UserLibrary;
+import processing.app.packages.LibrarySelection;
 import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
 
 public class Compiler implements MessageConsumer {
@@ -489,12 +490,15 @@ public class Compiler implements MessageConsumer {
       System.out.println(I18n.format(_("Multiple libraries were found for \"{0}\""),
         importedDuplicateHeaders.get(i)));
       boolean first = true;
-      for (UserLibrary lib : importedDuplicateLibraries.get(i)) {
-        if (first) {
-          System.out.println(I18n.format(_(" Used: {0}"),
-            lib.getInstalledFolder().getPath()));
-          first = false;
-        } else {
+      LibrarySelection libSel = importedDuplicateLibraries.get(i);
+
+      System.out.println(I18n.format(_(" Used: {0}"),
+        libSel.get().getInstalledFolder().getPath()));
+      first = false;
+
+      for (int j = 0; j < libSel.getList().size(); j++) {
+        if (j != libSel.getIndex()) {
+          UserLibrary lib = libSel.getList().get(j);
           System.out.println(I18n.format(_(" Not used: {0}"),
             lib.getInstalledFolder().getPath()));
         }
@@ -619,19 +623,19 @@ public class Compiler implements MessageConsumer {
     return allSources;
   }
 
-  static public List<UserLibrary> findRequiredLibs(File sourcePath, boolean recurse) {
+  static public List<LibrarySelection> findRequiredLibs(File sourcePath, boolean recurse) {
     List<File> files = findAllSources(sourcePath, recurse);
-    List<UserLibrary> result = new ArrayList<>();
+    List<LibrarySelection> result = new ArrayList<>();
     for (File file : files) {
-      List<UserLibrary> libs = null;
+      List<LibrarySelection> libSels = null;
       try { 
-        libs = BaseNoGui.findLibrariesByCode(file);
+        libSels = BaseNoGui.findLibrariesByCode(file);
       } catch (IOException e) {
         continue;
       }
-      for (UserLibrary lib : libs) {
-        if (!result.contains(lib)) {
-          result.add(lib);
+      for (LibrarySelection libSel : libSels) {
+        if (!result.contains(libSel)) {
+          result.add(libSel);
         }
       }
     }
@@ -1383,22 +1387,26 @@ public class Compiler implements MessageConsumer {
     // grab the imports from the code just preproc'd
 
     importedLibraries = new LibraryList();
-    importedDuplicateHeaders = new ArrayList<String>();
-    importedDuplicateLibraries = new ArrayList<LibraryList>();
-    for (String item : preprocessor.getExtraImports()) {
-      LibraryList list = BaseNoGui.importToLibraryTable.get(item);
-      if (list != null) {
-        UserLibrary lib = list.peekFirst();
-        if (lib != null && !importedLibraries.contains(lib)) {
+    importedDuplicateHeaders = new ArrayList<>();
+    importedDuplicateLibraries = new ArrayList<>();
+    for (String[] item : preprocessor.getExtraImports()) {
+      LibrarySelection libSel = BaseNoGui.findLibraryByImport(item);
+      if (libSel != null) {
+        UserLibrary lib = libSel.get();
+        if (!importedLibraries.contains(lib)) {
           importedLibraries.add(lib);
-          if (list.size() > 1) {
-            importedDuplicateHeaders.add(item);
-            importedDuplicateLibraries.add(list);
+          if (libSel.getList().size() > 1) {
+            importedDuplicateHeaders.add(item[0]);
+            importedDuplicateLibraries.add(libSel);
           }
           // Add recursive dependencies
-          for (UserLibrary libRec : lib.getRequiredLibsRec()) {
-            if (!importedLibraries.contains(libRec)) {
-              importedLibraries.add(libRec);
+          for (LibrarySelection libSelRec : lib.getRequiredLibsRec()) {
+            if (!importedLibraries.contains(libSelRec.get())) {
+              importedLibraries.add(libSelRec.get());
+              if (libSelRec.getList().size() > 1) {
+                importedDuplicateHeaders.add("UNKNOWN"); // FIXME
+                importedDuplicateLibraries.add(libSelRec);
+              }
             }
           }
         }
@@ -1434,7 +1442,7 @@ public class Compiler implements MessageConsumer {
    */
   private LibraryList importedLibraries;
   private List<String>      importedDuplicateHeaders;
-  private List<LibraryList> importedDuplicateLibraries;
+  private List<LibrarySelection> importedDuplicateLibraries;
 
   /**
    * Map an error from a set of processed .java files back to its location

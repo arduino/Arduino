@@ -30,6 +30,7 @@ package processing.app.packages;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
+import processing.app.packages.LibrarySelection;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.debug.Compiler;
@@ -235,6 +236,49 @@ public class UserLibrary extends ContributedLibrary {
     return depSpec;
   }
 
+  public boolean matchesDepSpec(String spec) {
+    String[] parts = spec.split(":", 2);
+    if (!getGlobalName().equals(parts[0])) {
+      // Global name does not match - reject.
+      return false;
+    }
+    if (parts.length == 1) {
+      // No version spec - accept any version.
+      return true;
+    }
+    if (getVersion() == null) {
+      // Unlabeled version - fails to match any version spec.
+      return false;
+    }
+    String[] vers = parts[1].split("-");
+    if (vers.length == 2) {
+      return versionsOrdered(vers[0], getVersion()) &&
+             versionsOrdered(getVersion(), vers[1]);
+    } else if (parts[1].endsWith("+")) {
+      return versionsOrdered(parts[1].substring(0, parts[1].length() - 1), getVersion());
+    } else if (parts[1].endsWith("*")) {
+      return getVersion().startsWith(parts[1].substring(0, parts[1].length() - 1));
+    } else {
+      return parts[1].equals(getVersion());
+    }
+  }
+
+  private boolean versionsOrdered(String ver1, String ver2) {
+    String[] c1 = ver1.split("\\.");
+    String[] c2 = ver2.split("\\.");
+    int i;
+    for (i = 0; i < c1.length && i < c2.length; i++) {
+      int n1 = Integer.parseInt(c1[i]);
+      int n2 = Integer.parseInt(c2[i]);
+      if (n1 > n2) {
+        return false;
+      } else if (n1 < n2) {
+        return true;
+      }
+    }
+    return c1.length <= c2.length;
+  }
+
   @Override
   public String getName() {
     return name;
@@ -330,8 +374,8 @@ public class UserLibrary extends ContributedLibrary {
 
   private Map<String,long[]> lastUpdateTimes = new TreeMap<String,long[]>();
 
-  private List<UserLibrary> requiredLibs = null;
-  private List<UserLibrary> requiredLibsRec = null;
+  private List<LibrarySelection> requiredLibs = null;
+  private List<LibrarySelection> requiredLibsRec = null;
 
   private boolean changedSinceLastUpdate(int idx) {
     List<File> files = Compiler.findAllSources(getSrcFolder(), useRecursion());
@@ -363,15 +407,15 @@ public class UserLibrary extends ContributedLibrary {
     if (changedSinceLastUpdate(idx)) {
       return true;
     }
-    for (UserLibrary lib : getRequiredLibs()) {
-      if (lib.changedSinceLastUpdateRec(idx, visited)) {
+    for (LibrarySelection libSel : getRequiredLibs()) {
+      if (libSel.get().changedSinceLastUpdateRec(idx, visited)) {
         return true;
       }
     }
     return false;
   }
 
-  public List<UserLibrary> getRequiredLibs() {
+  public List<LibrarySelection> getRequiredLibs() {
     if (requiredLibs == null || changedSinceLastUpdate(0)) {
       requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion());
       requiredLibs.remove(this);
@@ -379,11 +423,11 @@ public class UserLibrary extends ContributedLibrary {
     return requiredLibs;
   }
 
-  public List<UserLibrary> getRequiredLibsRec() {
+  public List<LibrarySelection> getRequiredLibsRec() {
     return getRequiredLibsRec(new TreeSet<>());
   }
 
-  public List<UserLibrary> getRequiredLibsRec(SortedSet<String> visited) {
+  public List<LibrarySelection> getRequiredLibsRec(SortedSet<String> visited) {
     // Prevent infinite recursion.
     if (visited.contains(getDepSpec())) {
       return new ArrayList<>();
@@ -392,12 +436,12 @@ public class UserLibrary extends ContributedLibrary {
 
     if (requiredLibsRec == null || changedSinceLastUpdateRec(1, new TreeSet<>(visited))) {
       requiredLibsRec = new ArrayList<>();
-      for (UserLibrary lib : getRequiredLibs()) {
-        if (!requiredLibsRec.contains(lib) && lib != this) {
-          requiredLibsRec.add(lib);
-          for (UserLibrary libRec : lib.getRequiredLibsRec(visited)) {
-            if (!requiredLibsRec.contains(libRec) && libRec != this) {
-              requiredLibsRec.add(libRec);
+      for (LibrarySelection libSel : getRequiredLibs()) {
+        if (!requiredLibsRec.contains(libSel) && libSel.get() != this) {
+          requiredLibsRec.add(libSel);
+          for (LibrarySelection libSelRec : libSel.get().getRequiredLibsRec(visited)) {
+            if (!requiredLibsRec.contains(libSelRec) && libSelRec.get() != this) {
+              requiredLibsRec.add(libSelRec);
             }
           }
         }

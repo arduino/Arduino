@@ -40,6 +40,7 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.*;
 import processing.app.packages.UserLibrary;
+import processing.app.packages.LibrarySelection;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -456,12 +457,13 @@ public class SketchTextArea extends RSyntaxTextArea {
     }
 
     private String getImportInfo(String line) {
-      UserLibrary lib = BaseNoGui.findFirstLibraryByCode(line);
+      LibrarySelection libSel = BaseNoGui.findLibraryByCode(line);
       String info = null;
-      if (lib != null) {
+      if (libSel != null) {
+        UserLibrary lib = libSel.get();
         info = getLibDescription(lib);
-        for (UserLibrary recLib : lib.getRequiredLibsRec()) {
-          info += "\n* " + getLibDescription(recLib);
+        for (LibrarySelection recLibSel : lib.getRequiredLibsRec()) {
+          info += "\n* " + getLibDescription(recLibSel.get());
         }
       }
       return info;
