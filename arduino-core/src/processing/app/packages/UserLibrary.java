@@ -330,8 +330,8 @@ public class UserLibrary extends ContributedLibrary {
 
   private Map<String,long[]> lastUpdateTimes = new TreeMap<String,long[]>();
 
-  private List<ContributedLibrary> requiredLibs = null;
-  private List<ContributedLibrary> requiredLibsRec = null;
+  private List<UserLibrary> requiredLibs = null;
+  private List<UserLibrary> requiredLibsRec = null;
 
   private boolean changedSinceLastUpdate(int idx) {
     List<File> files = Compiler.findAllSources(getSrcFolder(), useRecursion());
@@ -353,7 +353,6 @@ public class UserLibrary extends ContributedLibrary {
     return changed;
   }
 
-  @Override
   public boolean changedSinceLastUpdateRec(int idx, SortedSet<String> visited) {
     // Prevent infinite recursion.
     if (visited.contains(getDepSpec())) {
@@ -364,7 +363,7 @@ public class UserLibrary extends ContributedLibrary {
     if (changedSinceLastUpdate(idx)) {
       return true;
     }
-    for (ContributedLibrary lib : getRequiredLibs()) {
+    for (UserLibrary lib : getRequiredLibs()) {
       if (lib.changedSinceLastUpdateRec(idx, visited)) {
         return true;
       }
@@ -372,8 +371,7 @@ public class UserLibrary extends ContributedLibrary {
     return false;
   }
 
-  @Override
-  public List<ContributedLibrary> getRequiredLibs() {
+  public List<UserLibrary> getRequiredLibs() {
     if (requiredLibs == null || changedSinceLastUpdate(0)) {
       requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion());
       requiredLibs.remove(this);
@@ -381,13 +379,11 @@ public class UserLibrary extends ContributedLibrary {
     return requiredLibs;
   }
 
-  @Override
-  public List<ContributedLibrary> getRequiredLibsRec() {
+  public List<UserLibrary> getRequiredLibsRec() {
     return getRequiredLibsRec(new TreeSet<>());
   }
 
-  @Override
-  public List<ContributedLibrary> getRequiredLibsRec(SortedSet<String> visited) {
+  public List<UserLibrary> getRequiredLibsRec(SortedSet<String> visited) {
     // Prevent infinite recursion.
     if (visited.contains(getDepSpec())) {
       return new ArrayList<>();
@@ -396,10 +392,10 @@ public class UserLibrary extends ContributedLibrary {
 
     if (requiredLibsRec == null || changedSinceLastUpdateRec(1, new TreeSet<>(visited))) {
       requiredLibsRec = new ArrayList<>();
-      for (ContributedLibrary lib : getRequiredLibs()) {
+      for (UserLibrary lib : getRequiredLibs()) {
         if (!requiredLibsRec.contains(lib) && lib != this) {
           requiredLibsRec.add(lib);
-          for (ContributedLibrary libRec : lib.getRequiredLibsRec(visited)) {
+          for (UserLibrary libRec : lib.getRequiredLibsRec(visited)) {
             if (!requiredLibsRec.contains(libRec) && libRec != this) {
               requiredLibsRec.add(libRec);
             }

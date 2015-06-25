@@ -40,7 +40,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.*;
 import processing.app.packages.UserLibrary;
-import cc.arduino.contributions.libraries.ContributedLibrary;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -461,14 +460,14 @@ public class SketchTextArea extends RSyntaxTextArea {
       String info = null;
       if (lib != null) {
         info = getLibDescription(lib);
-        for (ContributedLibrary recLib : lib.getRequiredLibsRec()) {
+        for (UserLibrary recLib : lib.getRequiredLibsRec()) {
           info += "\n* " + getLibDescription(recLib);
         }
       }
       return info;
     }
 
-    private String getLibDescription(ContributedLibrary lib) {
+    private String getLibDescription(UserLibrary lib) {
       String ver = lib.getVersion();
       if (ver != null) {
         ver = " " + ver;
@@ -477,7 +476,7 @@ public class SketchTextArea extends RSyntaxTextArea {
       }
       String folder = "";
       if (lib instanceof UserLibrary) {
-        folder = ": " + ((UserLibrary) lib).getSrcFolder().toString();
+        folder = ": " + lib.getSrcFolder().toString();
       }
       return lib.getName() + " (" + lib.getGlobalName() + ")" + ver + folder;
     }

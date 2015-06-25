@@ -66,14 +66,6 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<ContributedLibraryReference> getRequires();
 
-  public abstract List<ContributedLibrary> getRequiredLibs();
-
-  public abstract List<ContributedLibrary> getRequiredLibsRec();
-
-  public abstract List<ContributedLibrary> getRequiredLibsRec(SortedSet<String> visited);
-
-  public abstract boolean changedSinceLastUpdateRec(int idx, SortedSet<String> visited);
-
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
 
   /**

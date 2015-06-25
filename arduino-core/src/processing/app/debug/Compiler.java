@@ -32,7 +32,6 @@ import cc.arduino.MyStreamPumper;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
-import cc.arduino.contributions.libraries.ContributedLibrary;
 
 import cc.arduino.packages.uploaders.MergeSketchWithBooloader;
 import org.apache.commons.compress.utils.IOUtils;
@@ -620,9 +619,9 @@ public class Compiler implements MessageConsumer {
     return allSources;
   }
 
-  static public List<ContributedLibrary> findRequiredLibs(File sourcePath, boolean recurse) {
+  static public List<UserLibrary> findRequiredLibs(File sourcePath, boolean recurse) {
     List<File> files = findAllSources(sourcePath, recurse);
-    List<ContributedLibrary> result = new ArrayList<>();
+    List<UserLibrary> result = new ArrayList<>();
     for (File file : files) {
       List<UserLibrary> libs = null;
       try { 
@@ -630,7 +629,7 @@ public class Compiler implements MessageConsumer {
       } catch (IOException e) {
         continue;
       }
-      for (ContributedLibrary lib : libs) {
+      for (UserLibrary lib : libs) {
         if (!result.contains(lib)) {
           result.add(lib);
         }
