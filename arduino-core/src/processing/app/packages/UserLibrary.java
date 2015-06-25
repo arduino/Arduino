@@ -43,6 +43,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.TreeSet;
+import java.util.SortedSet;
 
 public class UserLibrary extends ContributedLibrary {
 
@@ -351,13 +353,19 @@ public class UserLibrary extends ContributedLibrary {
     return changed;
   }
 
-  private boolean changedSinceLastUpdateRec(int idx) {
+  @Override
+  public boolean changedSinceLastUpdateRec(int idx, SortedSet<String> visited) {
+    // Prevent infinite recursion.
+    if (visited.contains(getDepSpec())) {
+      return false;
+    }
+    visited.add(getDepSpec());
+
     if (changedSinceLastUpdate(idx)) {
       return true;
     }
     for (ContributedLibrary lib : getRequiredLibs()) {
-      if (lib instanceof UserLibrary &&
-          ((UserLibrary) lib).changedSinceLastUpdateRec(idx)) {
+      if (lib.changedSinceLastUpdateRec(idx, visited)) {
         return true;
       }
     }
@@ -375,12 +383,23 @@ public class UserLibrary extends ContributedLibrary {
 
   @Override
   public List<ContributedLibrary> getRequiredLibsRec() {
-    if (requiredLibsRec == null || changedSinceLastUpdateRec(1)) {
+    return getRequiredLibsRec(new TreeSet<>());
+  }
+
+  @Override
+  public List<ContributedLibrary> getRequiredLibsRec(SortedSet<String> visited) {
+    // Prevent infinite recursion.
+    if (visited.contains(getDepSpec())) {
+      return new ArrayList<>();
+    }
+    visited.add(getDepSpec());
+
+    if (requiredLibsRec == null || changedSinceLastUpdateRec(1, new TreeSet<>(visited))) {
       requiredLibsRec = new ArrayList<>();
       for (ContributedLibrary lib : getRequiredLibs()) {
         if (!requiredLibsRec.contains(lib) && lib != this) {
           requiredLibsRec.add(lib);
-          for (ContributedLibrary libRec : lib.getRequiredLibsRec()) {
+          for (ContributedLibrary libRec : lib.getRequiredLibsRec(visited)) {
             if (!requiredLibsRec.contains(libRec) && libRec != this) {
               requiredLibsRec.add(libRec);
             }
