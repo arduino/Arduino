@@ -962,7 +962,7 @@ public class Sketch {
       buffer.append(aList);
       buffer.append(">");
       if (depSpec != null) {
-	buffer.append(" //!Lib '" + depSpec + "'");
+	buffer.append(" //!Lib \"" + depSpec + "\"");
       }
       buffer.append("\n");
     }

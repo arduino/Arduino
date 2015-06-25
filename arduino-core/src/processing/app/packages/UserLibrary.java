@@ -213,7 +213,7 @@ public class UserLibrary extends ContributedLibrary {
       invalid = true;
       // Fallback.  Note: the global name is used to test for equality,
       // so it must have a value.
-      globalName = author.replace('/', '_') + "/" + name;
+      globalName = author.replace('|', '_') + "|" + name;
     }
     if (invalid) {
       System.err.println("WARNING: global_name not set in library " + name + ". Guessing '" + globalName + "'.\nPlease set this to a suitable Java-style package name, e.g. io.github.myaccount.myproject\nThe name should be set manually to avoid confusion when forking.");
