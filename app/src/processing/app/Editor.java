@@ -1771,7 +1771,7 @@ public class Editor extends JFrame implements RunnerListener {
     textarea.requestFocus();  // get the caret blinking
      
     final int position = codeDoc.getScrollPosition();
-    
+
     // invokeLater: Expect the document to be rendered correctly to set the new position
     SwingUtilities.invokeLater(new Runnable() {
       @Override
@@ -1781,7 +1781,8 @@ public class Editor extends JFrame implements RunnerListener {
           redoAction.updateRedoState();
       }
     });
-  
+
+    updateTitle();
   }
 
 
@@ -2191,7 +2192,7 @@ public class Editor extends JFrame implements RunnerListener {
       return false;
     }
     header.rebuild();
-    setTitle(I18n.format(_("{0} | Arduino {1}"), sketch.getName(), BaseNoGui.VERSION_NAME_LONG));
+    updateTitle();
     // Disable untitled setting from previous document, if any
     untitled = false;
 
@@ -2203,6 +2204,17 @@ public class Editor extends JFrame implements RunnerListener {
 //      statusError(e);
 //      return false;
 //    }
+  }
+
+  private void updateTitle() {
+    if (sketch == null) {
+      return;
+    }
+    if (sketch.getName().equals(sketch.getCurrentCode().getPrettyName())) {
+      setTitle(I18n.format(_("{0} | Arduino {1}"), sketch.getName(), BaseNoGui.VERSION_NAME_LONG));
+    } else {
+      setTitle(I18n.format(_("{0} - {1} | Arduino {2}"), sketch.getName(), sketch.getCurrentCode().getFileName(), BaseNoGui.VERSION_NAME_LONG));
+    }
   }
 
 
