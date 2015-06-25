@@ -221,10 +221,14 @@ public class UserLibrary extends ContributedLibrary {
   }
 
   public String getDepSpec() {
-    if (globalName != null && version != null) {
-      return globalName + ":" + version;
+    String depSpec = null;
+    if (globalName != null) {
+      depSpec = globalName;
+      if (version != null) {
+        depSpec += ":" + version;
+      }
     }
-    return null;
+    return depSpec;
   }
 
   @Override
