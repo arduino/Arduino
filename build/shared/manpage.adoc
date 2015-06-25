@@ -53,7 +53,7 @@ When running in a one-off mode, it might be useful to set the
 between multiple runs and only recompile the files that changed.
 
 Note that on MacOS X, the main executable is
-'Arduino.app/Contents/MacOS/JavaApplicationStub' instead of 'arduino'.
+'Arduino.app/Contents/MacOS/Arduino' instead of 'arduino'.
 
 ACTIONS
 
@@ -317,6 +317,11 @@ HISTORY
 
 1.5.8::
 	Introduced *--save-prefs*.
+	
+1.6.2::
+  Main executable in MacOS X changed from
+  'Arduino.app/Contents/MacOS/JavaApplicationStub' to
+  'Arduino.app/Contents/MacOS/Arduino'.
 
 1.6.4::
 	Introduced *--install-boards* and *--install-library*.
