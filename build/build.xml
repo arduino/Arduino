@@ -905,7 +905,9 @@
       <fileset dir="windows/work" includes="**/*.html, **/*.dll, **/*.exe" />
     </chmod>
 
-    <loadproperties srcfile="${WINDOWS_BUNDLED_JVM}/release" prefix="windows"/>
+    <!-- For JVM within JDK, release file is in parent directory -->
+    <property file="${WINDOWS_BUNDLED_JVM}/release" prefix="windows"/>
+    <property file="${WINDOWS_BUNDLED_JVM}/../release" prefix="windows"/>
 
     <fail message="It looks like ${WINDOWS_BUNDLED_JVM} does not contain a Windows JVM">
       <condition>
