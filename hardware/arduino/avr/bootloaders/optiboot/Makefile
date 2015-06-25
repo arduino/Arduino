@@ -50,7 +50,7 @@ ifeq ($(ENV), arduino)
 # For Arduino, we assume that we're connected to the optiboot directory
 # included with the arduino distribution, which means that the full set
 # of avr-tools are "right up there" in standard places.
-TOOLROOT = ../../../tools
+TOOLROOT = ../../../../tools
 GCCROOT = $(TOOLROOT)/avr/bin/
 AVRDUDE_CONF = -C$(TOOLROOT)/avr/etc/avrdude.conf
 
@@ -108,7 +108,7 @@ STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET).hex \
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
 OBJ        = $(PROGRAM).o
-OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mshort-calls
+OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mrelax
 
 DEFS       = 
 LIBS       =
