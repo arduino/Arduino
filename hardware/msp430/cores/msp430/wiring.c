@@ -65,12 +65,14 @@ void enableWatchDogIntervalMode(void);
 
 void enableXtal()
 {
-#if (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__))
+#if (!defined(__MSP430FR2XX_4XX_FAMILY__) && (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__))) 
+	/* section for FR5xx and FR6xx devices */
+	
 	/* All pins as output to reduce power consumption */
 	PJDIR = 0xFF;
 	/* Set all pins low to reduce power consumption */
 	PJOUT = 0;
-	/* Enabel PJ.4/5 as XTAL pins */
+	/* Enable PJ.4/5 as XTAL pins */
 	PJSEL0 = BIT4 | BIT5;
 
 	/* Enable the XTAL driver LFXTOFF/XT1OFF */
@@ -99,6 +101,45 @@ void enableXtal()
 		vlo_freq = 8000;
 		/* Source ACLK from VLO */
 		CSCTL2 |= SELA__VLOCLK;
+	}
+#endif
+#if (defined(__MSP430FR2XX_4XX_FAMILY__) && (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__)))
+	/* section for FR2xx and FR4xx devices */
+ #if (defined(__MSP430_HAS_PORTJ_R__))
+	/* All pins as output to reduce power consumption */
+	PJDIR = 0xFF;
+	/* Set all pins low to reduce power consumption */
+	PJOUT = 0;
+	/* Enable PJ.4/5 as XTAL pins */
+	PJSEL0 = BIT4 | BIT5;
+ #else
+	/* Enabel P4.1/2 as XTAL pins = FR4311*/
+	P4SEL0 = BIT1 | BIT2;
+ #endif	
+
+	/* LFXT can take up to 1000ms to start.
+	 * Go to the loop below 4 times for a total of 2 sec timout.
+	 * If a timeout happens due to no XTAL present or a faulty XTAL
+	 * set ACLK source as VLO (~8kHz) */
+	uint16_t timeout = 0x4;
+	do {
+		timeout--;
+		/* Clear Oscillator fault flags */
+		CSCTL7 &= ~(DCOFFG|XT1OFFG|FLLULIFG);
+		/* Clear the Oscillator fault interrupt flag */
+		SFRIFG1 &= ~OFIFG;
+		/* @ 1MHz startup: delay for 500ms */
+		__delay_cycles(500000L * (F_CPU/1000000L));
+		if(!timeout) break;
+	/* Test the fault flag */
+	}while (SFRIFG1 & OFIFG);
+
+	/* If starting the XTAL timed out then fall back to VLO */
+	if(!timeout) {
+		/* ACLK = VLO = ~ 12 KHz */
+		vlo_freq = 8000;
+		/* Source ACLK from REFO */
+		CSCTL4 |= SELA__REFOCLK;
 	}
 #endif
 
@@ -256,7 +297,7 @@ void initClocks(void)
 //    CSCTL0 = 0;                    // Disable Access to CS Registers
 #endif // __MSP430_HAS_CS__
 
-#if (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__)) && defined(__MSP430_HAS_FRAM__)
+#if (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__)) && defined(__MSP430_HAS_FRAM__) && !defined(__MSP430FR2XX_4XX_FAMILY__)
     CSCTL0 = CSKEY;                // Enable Access to CS Registers
   
     CSCTL2 &= ~SELM_7;             // Clear selected Main CLK Source
@@ -281,7 +322,50 @@ void initClocks(void)
         #warning No Suitable Frequency found!
 #endif
 //    CSCTL0 = 0;                    // Disable Access to CS Registers
-#endif // __MSP430_HAS_CS__
+#endif // __MSP430_HAS_CS__ & __FR5xxx
+
+// FR4xxx
+#if (defined(__MSP430_HAS_CS__) || defined(__MSP430_HAS_CS_A__)) && defined(__MSP430_HAS_FRAM__) && defined(__MSP430FR2XX_4XX_FAMILY__)
+	/* section for FR2xx and FR4xx devices */
+#if F_CPU >= 16000000L
+    FRCTL0 = FWPW | NACCESS_1;     // add 1 waitstaite
+#elif F_CPU >= 12000000L
+    FRCTL0 = FWPW | NACCESS_1;     // add 1 waitstaite
+#elif F_CPU >= 8000000L
+#elif F_CPU >= 1000000L
+#else
+        #warning No Suitable Frequency found!
+#endif
+
+     CSCTL0 = 0;                     // set lowest Frequency
+#if F_CPU >= 16000000L
+     CSCTL1 = DCORSEL_6;             //Range 6
+     CSCTL2 = 0x11E7;                //Loop Control Setting
+	 CSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 CSCTL4 = SELA__XT1CLK|SELMS__DCOCLKDIV;  //Select clock sources
+	 CSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 12000000L
+     CSCTL1 = DCORSEL_6;             //Range 6
+     CSCTL2 = 0x116D;                //Loop Control Setting
+	 CSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 CSCTL4 = SELA__XT1CLK|SELMS__DCOCLKDIV;  //Select clock sources
+	 CSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 8000000L
+     CSCTL1 = DCORSEL_5;             //Range 6
+     CSCTL2 = 0x10F3;                //Loop Control Setting
+	 CSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 CSCTL4 = SELA__XT1CLK|SELMS__DCOCLKDIV;  //Select clock sources
+	 CSCTL7 &= ~(0x07);               //Clear Fault flags
+#elif F_CPU >= 1000000L
+     CSCTL1 = DCORSEL_2;             //Range 6
+     CSCTL2 = 0x101D;                //Loop Control Setting
+	 CSCTL3 = SELREF__REFOCLK;       //REFO for FLL
+	 CSCTL4 = SELA__XT1CLK|SELMS__DCOCLKDIV;  //Select clock sources
+	 CSCTL7 &= ~(0x07);               //Clear Fault flags
+#else
+        #warning No Suitable Frequency found!
+#endif
+#endif // __MSP430_HAS_CS__ & __FR4xxx
 
 #if defined(__MSP430_HAS_UCS__)
      PMMCTL0_H = PMMPW_H;             // open PMM
