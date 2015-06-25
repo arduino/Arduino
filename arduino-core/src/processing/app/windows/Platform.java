@@ -126,7 +126,7 @@ public class Platform extends processing.app.Platform {
       // open dos prompt, give it 'start' command, which will
       // open the url properly. start by itself won't work since
       // it appears to need cmd
-      Runtime.getRuntime().exec("cmd /c start " + url);
+      Runtime.getRuntime().exec("cmd /c start \"\" \"" + url + "\"");
     } else {
       // just launching the .html file via the shell works
       // but make sure to chmod +x the .html files first
