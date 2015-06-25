@@ -41,6 +41,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.Map;
 
 public class UserLibrary extends ContributedLibrary {
 
@@ -324,12 +326,47 @@ public class UserLibrary extends ContributedLibrary {
     return null;
   }
 
+  private Map<String,long[]> lastUpdateTimes = new TreeMap<String,long[]>();
+
   private List<ContributedLibrary> requiredLibs = null;
   private List<ContributedLibrary> requiredLibsRec = null;
 
+  private boolean changedSinceLastUpdate(int idx) {
+    List<File> files = Compiler.findAllSources(getSrcFolder(), useRecursion());
+    // Important: must update timestamps from ALL files before returning.
+    boolean changed = false;
+    for (File file : files) {
+      String fname = file.toString();
+      long modTime = file.lastModified();
+      if (!lastUpdateTimes.containsKey(fname)) {
+        long[] times = new long[2];
+        times[idx] = modTime;
+        lastUpdateTimes.put(fname, times);
+        changed = true;
+      } else if (lastUpdateTimes.get(fname)[idx] < modTime) {
+        lastUpdateTimes.get(fname)[idx] = modTime;
+        changed = true;
+      }
+    }
+    return changed;
+  }
+
+  private boolean changedSinceLastUpdateRec(int idx) {
+    if (changedSinceLastUpdate(idx)) {
+      return true;
+    }
+    for (ContributedLibrary lib : getRequiredLibs()) {
+      if (lib instanceof UserLibrary &&
+          ((UserLibrary) lib).changedSinceLastUpdateRec(idx)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public List<ContributedLibrary> getRequiredLibs() {
-    if (requiredLibs == null) {
+    if (requiredLibs == null || changedSinceLastUpdate(0)) {
       requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion());
       requiredLibs.remove(this);
     }
@@ -338,7 +375,7 @@ public class UserLibrary extends ContributedLibrary {
 
   @Override
   public List<ContributedLibrary> getRequiredLibsRec() {
-    if (requiredLibsRec == null) {
+    if (requiredLibsRec == null || changedSinceLastUpdateRec(1)) {
       requiredLibsRec = new ArrayList<>();
       for (ContributedLibrary lib : getRequiredLibs()) {
         if (!requiredLibsRec.contains(lib) && lib != this) {
