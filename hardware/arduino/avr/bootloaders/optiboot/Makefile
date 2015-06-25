@@ -376,7 +376,7 @@ pro8_isp: isp
 
 atmega328_pro8: TARGET = atmega328_pro_8MHz
 atmega328_pro8: MCU_TARGET = atmega328p
-atmega328_pro8: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
+atmega328_pro8: CFLAGS += '-DLED_START_FLASHES=0' '-DBAUD_RATE=115200'
 atmega328_pro8: AVR_FREQ = 8000000L
 atmega328_pro8: LDSECTIONS = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
 atmega328_pro8: $(PROGRAM)_atmega328_pro_8MHz.hex
