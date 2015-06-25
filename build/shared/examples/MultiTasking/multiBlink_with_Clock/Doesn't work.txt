@@ -1,0 +1,52 @@
+// Define variables and constants
+Clock myClockR;
+Clock myClockG;
+Clock myClockB;
+
+class LED_t
+{
+private:
+    uint8_t _pin;
+    uint8_t _status;
+public:
+    LED_t() { ; };
+    void begin(uint8_t pin);
+    void toggle();
+};
+
+void LED_t::begin(uint8_t pin)
+{
+    _status = 0;
+    _pin = pin;
+}
+
+void LED_t::toggle()
+{
+    _status = 1 - _status;
+    digitalWrite(_pin, _status);
+}
+
+LED_t myRed;
+LED_t myGreen;
+LED_t myBlue;
+
+void setup()
+{
+    myRed.begin(RED_LED);
+    myGreen.begin(GREEN_LED);
+    myBlue.begin(BLUE_LED);
+    
+    myClockR.begin((*(void(*)()) myRed->toggle)(), 1000, 100); // 1000 ms = 1 s
+    myClockG.begin(myGreen.toggle, 1000, 333); // 1000 ms = 1 s
+    myClockB.begin(myBlue.toggle, 1000, 500); // 1000 ms = 1 s
+    
+    myClockR.start();
+    myClockG.start();
+    myClockB.start();
+}
+
+void loop()
+{
+    ;
+}
+
