@@ -38,7 +38,7 @@
 
 
 #include "datatypes.h"
-#include "SimpleLink.h"
+#include "simplelink.h"
 #include "cc_pal.h"
 #include <inc/hw_ints.h>
 #include <inc/hw_udma.h>
