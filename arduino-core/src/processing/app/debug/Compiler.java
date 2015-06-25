@@ -1395,6 +1395,12 @@ public class Compiler implements MessageConsumer {
             importedDuplicateHeaders.add(item);
             importedDuplicateLibraries.add(list);
           }
+          // Add recursive dependencies
+          for (UserLibrary libRec : lib.getRequiredLibsRec()) {
+            if (!importedLibraries.contains(libRec)) {
+              importedLibraries.add(libRec);
+            }
+          }
         }
       }
     }
