@@ -140,7 +140,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     }
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 
-    String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "115200", "230400", "250000"};
+    String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000"};
 
     serialRates = new JComboBox();
     for (String rate : serialRateStrings) {
