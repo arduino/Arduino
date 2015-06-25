@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For OneMsTaskTimer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+OneMsTaskTimer                 KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+start                          KEYWORD2
+stop                           KEYWORD2
+add                            KEYWORD2
+remove                         KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+
