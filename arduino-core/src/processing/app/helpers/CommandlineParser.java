@@ -41,12 +41,12 @@ public class CommandlineParser {
   private String getPref;
   private String boardToInstall;
   private String libraryToInstall;
-  private List<String> filenames = new LinkedList<String>();
+  private final List<String> filenames = new LinkedList<>();
 
   public CommandlineParser(String[] args) {
     this.args = args;
 
-    actions = new HashMap<String, ACTION>();
+    actions = new HashMap<>();
     actions.put("--verify", ACTION.VERIFY);
     actions.put("--upload", ACTION.UPLOAD);
     actions.put("--get-pref", ACTION.GET_PREF);
@@ -236,16 +236,19 @@ public class CommandlineParser {
     TargetPackage targetPackage = BaseNoGui.getTargetPackage(split[0]);
     if (targetPackage == null) {
       BaseNoGui.showError(null, I18n.format(_("{0}: Unknown package"), split[0]), 3);
+      return;
     }
 
     TargetPlatform targetPlatform = targetPackage.get(split[1]);
     if (targetPlatform == null) {
       BaseNoGui.showError(null, I18n.format(_("{0}: Unknown architecture"), split[1]), 3);
+      return;
     }
 
     TargetBoard targetBoard = targetPlatform.getBoard(split[2]);
     if (targetBoard == null || !targetBoard.getId().equals(split[2])) {
       BaseNoGui.showError(null, I18n.format(_("{0}: Unknown board"), split[2]), 3);
+      return;
     }
 
     BaseNoGui.selectBoard(targetBoard);
@@ -314,7 +317,7 @@ public class CommandlineParser {
     return action == ACTION.UPLOAD;
   }
 
-  public boolean isVerifyMode() {
+  private boolean isVerifyMode() {
     return action == ACTION.VERIFY;
   }
 
