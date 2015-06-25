@@ -963,7 +963,7 @@ public class BaseNoGui {
     }
   }
 
-  static public UserLibrary firstLibraryByImport(String importName) {
+  static public UserLibrary findFirstLibraryByImport(String importName) {
     LibraryList list = importToLibraryTable.get(importName);
     if (list == null || list.isEmpty()) {
       return null;
@@ -971,19 +971,19 @@ public class BaseNoGui {
     return list.peekFirst();
   }
 
-  static public UserLibrary firstLibraryByCode(String code) {
+  static public UserLibrary findFirstLibraryByCode(String code) {
     List<String> incs = PdePreprocessor.findIncludes(code);
     if (incs.isEmpty()) {
       return null;
     }
-    return firstLibraryByImport(incs.get(0));
+    return findFirstLibraryByImport(incs.get(0));
   }
 
-  static public List<UserLibrary> librariesByCode(String code) throws IOException {
+  static public List<UserLibrary> findLibrariesByCode(String code) throws IOException {
     List<UserLibrary> libs = new ArrayList<>();
     List<String> incs = PdePreprocessor.findIncludes(code);
     for (String inc : incs) {
-      UserLibrary lib = firstLibraryByImport(inc);
+      UserLibrary lib = findFirstLibraryByImport(inc);
       if (lib != null) {
         libs.add(lib);
       }
@@ -991,8 +991,8 @@ public class BaseNoGui {
     return libs;
   }
 
-  static public List<UserLibrary> librariesByCode(File file) throws IOException {
-    return librariesByCode(FileUtils.readFileToString(file));
+  static public List<UserLibrary> findLibrariesByCode(File file) throws IOException {
+    return findLibrariesByCode(FileUtils.readFileToString(file));
   }
 
   static public void initParameters(String args[]) throws IOException {

@@ -625,7 +625,7 @@ public class Compiler implements MessageConsumer {
     for (File file : files) {
       List<UserLibrary> libs = null;
       try { 
-        libs = BaseNoGui.librariesByCode(file);
+        libs = BaseNoGui.findLibrariesByCode(file);
       } catch (IOException e) {
         continue;
       }

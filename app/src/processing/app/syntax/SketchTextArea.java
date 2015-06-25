@@ -456,7 +456,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     }
 
     private String getImportInfo(String line) {
-      UserLibrary lib = BaseNoGui.firstLibraryByCode(line);
+      UserLibrary lib = BaseNoGui.findFirstLibraryByCode(line);
       String info = null;
       if (lib != null) {
         info = getLibDescription(lib);
