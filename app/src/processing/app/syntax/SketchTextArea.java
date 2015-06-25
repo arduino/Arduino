@@ -41,6 +41,7 @@ import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.*;
 import processing.app.packages.UserLibrary;
 import processing.app.packages.LibrarySelection;
+import processing.app.preproc.PdePreprocessor;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -457,19 +458,24 @@ public class SketchTextArea extends RSyntaxTextArea {
     }
 
     private String getImportInfo(String line) {
-      LibrarySelection libSel = BaseNoGui.findLibraryByCode(line);
+      java.util.List<String[]> incs = PdePreprocessor.findIncludes(line);
+      LibrarySelection libSel = null;
+      if (!incs.isEmpty()) {
+        libSel = BaseNoGui.findLibraryByImport(incs.get(0));
+      }
       String info = null;
       if (libSel != null) {
         UserLibrary lib = libSel.get();
-        info = getLibDescription(lib);
+        info = getLibDescription(lib, incs.get(0));
         for (LibrarySelection recLibSel : lib.getRequiredLibsRec()) {
-          info += "\n* " + getLibDescription(recLibSel.get());
+          // TODO: also check import spec of recursive deps
+          info += "\n* " + getLibDescription(recLibSel.get(), null);
         }
       }
       return info;
     }
 
-    private String getLibDescription(UserLibrary lib) {
+    private String getLibDescription(UserLibrary lib, String[] importSpec) {
       String ver = lib.getVersion();
       if (ver != null) {
         ver = " " + ver;
@@ -480,7 +486,12 @@ public class SketchTextArea extends RSyntaxTextArea {
       if (lib instanceof UserLibrary) {
         folder = ": " + lib.getSrcFolder().toString();
       }
-      return lib.getName() + " (" + lib.getGlobalName() + ")" + ver + folder;
+      String desc = lib.getName() + " (" + lib.getGlobalName() + ")" + ver + folder;
+      if (importSpec != null && importSpec[1] != null &&
+          !lib.matchesDepSpecVersion(importSpec[1])) {
+        desc += "\nWARNING: "+lib.getGlobalName()+" is an incorrect version.";
+      }
+      return desc;
     }
 
     private void stopScanningForLinks() {

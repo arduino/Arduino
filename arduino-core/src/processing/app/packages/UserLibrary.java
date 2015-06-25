@@ -238,10 +238,11 @@ public class UserLibrary extends ContributedLibrary {
 
   public boolean matchesDepSpec(String spec) {
     String[] parts = spec.split(":", 2);
-    if (!getGlobalName().equals(parts[0])) {
-      // Global name does not match - reject.
-      return false;
-    }
+    return getGlobalName().equals(parts[0]);
+  }
+
+  public boolean matchesDepSpecVersion(String spec) {
+    String[] parts = spec.split(":", 2);
     if (parts.length == 1) {
       // No version spec - accept any version.
       return true;
