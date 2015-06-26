@@ -44,8 +44,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.SortedSet;
+import java.util.Set;
 
 public class UserLibrary extends ContributedLibrary {
 
@@ -418,7 +420,11 @@ public class UserLibrary extends ContributedLibrary {
 
   public List<LibrarySelection> getRequiredLibs() {
     if (requiredLibs == null || changedSinceLastUpdate(0)) {
-      requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion());
+      // Note: the "recursion" in useRecursion() refers to a strategy for
+      // finding files within an individual project
+      Set<UserLibrary> preferSet = new HashSet<>();
+      preferSet.add(this);
+      requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion(), preferSet);
       requiredLibs.remove(this);
     }
     return requiredLibs;

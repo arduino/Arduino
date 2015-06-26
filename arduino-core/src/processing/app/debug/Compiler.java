@@ -623,13 +623,13 @@ public class Compiler implements MessageConsumer {
     return allSources;
   }
 
-  static public List<LibrarySelection> findRequiredLibs(File sourcePath, boolean recurse) {
+  static public List<LibrarySelection> findRequiredLibs(File sourcePath, boolean recurse, Set<UserLibrary> preferSet) {
     List<File> files = findAllSources(sourcePath, recurse);
     List<LibrarySelection> result = new ArrayList<>();
     for (File file : files) {
       List<LibrarySelection> libSels = null;
       try { 
-        libSels = BaseNoGui.findLibrariesByCode(file);
+        libSels = BaseNoGui.findLibrariesByCode(file, preferSet);
       } catch (IOException e) {
         continue;
       }
@@ -1389,8 +1389,9 @@ public class Compiler implements MessageConsumer {
     importedLibraries = new LibraryList();
     importedDuplicateHeaders = new ArrayList<>();
     importedDuplicateLibraries = new ArrayList<>();
+    Set<UserLibrary> preferSet = new HashSet<UserLibrary>();
     for (String[] item : preprocessor.getExtraImports()) {
-      LibrarySelection libSel = BaseNoGui.findLibraryByImport(item);
+      LibrarySelection libSel = BaseNoGui.findLibraryByImport(item, preferSet);
       if (libSel != null) {
         UserLibrary lib = libSel.get();
         if (!importedLibraries.contains(lib)) {

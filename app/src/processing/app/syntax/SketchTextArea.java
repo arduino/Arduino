@@ -461,7 +461,8 @@ public class SketchTextArea extends RSyntaxTextArea {
       java.util.List<String[]> incs = PdePreprocessor.findIncludes(line);
       LibrarySelection libSel = null;
       if (!incs.isEmpty()) {
-        libSel = BaseNoGui.findLibraryByImport(incs.get(0));
+        // Note: does not have a valid preferSet, so answer may be inaccurate
+        libSel = BaseNoGui.findLibraryByImport(incs.get(0), new HashSet<UserLibrary>());
       }
       String info = null;
       if (libSel != null) {

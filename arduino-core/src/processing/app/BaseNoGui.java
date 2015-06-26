@@ -964,20 +964,31 @@ public class BaseNoGui {
     }
   }
 
-  static public LibrarySelection findLibraryByImport(String[] importSpec) {
+  static public LibrarySelection findLibraryByImport(String[] importSpec,
+                                                     Set<UserLibrary> preferSet) {
     LibraryList list = importToLibraryTable.get(importSpec[0]);
     if (list == null || list.isEmpty()) {
       return null;
     }
     int index = 0;
-    if (importSpec[1] != null) {
+    if (importSpec[1] != null && !importSpec[1].isEmpty()) {
       for (int i = 0; i < list.size(); i++) {
         if (list.get(i).matchesDepSpec(importSpec[1])) {
           index = i;
         }
       }
+    } else if (preferSet != null) {
+      // No dep spec - prefer library already imported in this context
+      for (int i = 0; i < list.size(); i++) {
+        if (preferSet.contains(list.get(i))) {
+          index = i;
+        }
+      }
     }
-    return new LibrarySelection(list, index);
+    // Keep track of libraries already imported in this context
+    LibrarySelection libSel = new LibrarySelection(list, index);
+    preferSet.add(libSel.get());
+    return libSel;
   }
 
   static public LibrarySelection findLibraryByCode(String code) {
@@ -985,15 +996,16 @@ public class BaseNoGui {
     if (incs.isEmpty()) {
       return null;
     }
-    return findLibraryByImport(incs.get(0));
+    return findLibraryByImport(incs.get(0), null);
   }
 
-  static public List<LibrarySelection> findLibrariesByCode(String code)
+  static public List<LibrarySelection> findLibrariesByCode(String code,
+                                                           Set<UserLibrary> preferSet)
   throws IOException {
     List<LibrarySelection> libs = new ArrayList<>();
     List<String[]> incs = PdePreprocessor.findIncludes(code);
     for (String[] inc : incs) {
-      LibrarySelection lib = findLibraryByImport(inc);
+      LibrarySelection lib = findLibraryByImport(inc, preferSet);
       if (lib != null) {
         libs.add(lib);
       }
@@ -1001,8 +1013,10 @@ public class BaseNoGui {
     return libs;
   }
 
-  static public List<LibrarySelection> findLibrariesByCode(File file) throws IOException {
-    return findLibrariesByCode(FileUtils.readFileToString(file));
+  static public List<LibrarySelection> findLibrariesByCode(File file,
+                                                           Set<UserLibrary> preferSet)
+  throws IOException {
+    return findLibrariesByCode(FileUtils.readFileToString(file), preferSet);
   }
 
   static public void initParameters(String args[]) throws IOException {
