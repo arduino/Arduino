@@ -1,7 +1,6 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>console</headerType>
-  <jar>lib</jar>
   <outfile>arduino_debug.exe</outfile>
   <errTitle>Arduino</errTitle>
   <downloadUrl>http://www.oracle.com/technetwork/java/javase/downloads/index.html</downloadUrl>

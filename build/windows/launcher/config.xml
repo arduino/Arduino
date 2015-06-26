@@ -1,7 +1,6 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>lib</jar>
   <outfile>arduino.exe</outfile>
   <errTitle>Arduino</errTitle>
   <downloadUrl>http://www.oracle.com/technetwork/java/javase/downloads/index.html</downloadUrl>
@@ -37,7 +36,7 @@
   <jre>
     <path>java</path>
     <runtimeBits>32</runtimeBits>
-    <opt>-splash:%EXEDIR%/lib/splash.png</opt>
+    <opt>-splash:"%EXEDIR%/lib/splash.png"</opt>
     <opt>-Dsun.java2d.d3d=false</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
