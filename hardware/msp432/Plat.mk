@@ -1,5 +1,5 @@
 SDK_LIBS := #$(APPLICATION_PATH)/hardware/secret/cc3200-sdk/simplelink/gcc/exe/libsimplelink.a
-SDK_INCS := -I$(APPLICATION_PATH)/hardware/msp432/cores/msp432/inc/CMSIS
+SDK_INCS := -I$(APPLICATION_PATH)/hardware/msp432/cores/msp432/inc/CMSIS -I$(APPLICATION_PATH)/hardware/msp432/cores/msp432/driverlib/MSP432P4xx
 
 VFP := -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant
 
