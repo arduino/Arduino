@@ -38,17 +38,17 @@
 
 
 #if defined(__MSP430_HAS_EUSCI_B0__)
-static const uint8_t SS      = 8;   /* P3.4 */
-static const uint8_t SCK     = 7;   /* P2.2 */
+static const uint8_t SS      = 8;   /* P2.0 */
+static const uint8_t SCK     = 7;   /* P1.4 */
 static const uint8_t MOSI    = 15;  /* P1.6 aka SIMO */
 static const uint8_t MISO    = 14;  /* P1.7 aka SOMI */
 static const uint8_t TWISDA  = 15;  /* P1.6 */
 static const uint8_t TWISCL  = 14;  /* P1.7 */
-#define TWISDA_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
-#define TWISCL_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
-#define SPISCK_SET_MODE  (PORT_SELECTION1)
-#define SPIMOSI_SET_MODE (PORT_SELECTION1)
-#define SPIMISO_SET_MODE (PORT_SELECTION1)
+#define TWISDA_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+#define SPISCK_SET_MODE  (PORT_SELECTION0)
+#define SPIMOSI_SET_MODE (PORT_SELECTION0)
+#define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
