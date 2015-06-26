@@ -1404,10 +1404,12 @@ public class Compiler implements MessageConsumer {
           for (LibrarySelection libSelRec : lib.getRequiredLibsRec()) {
             if (!importedLibraries.contains(libSelRec.get())) {
               importedLibraries.add(libSelRec.get());
-              if (libSelRec.getList().size() > 1) {
-                importedDuplicateHeaders.add("UNKNOWN"); // FIXME
-                importedDuplicateLibraries.add(libSelRec);
-              }
+              // This is probably just confusing. People can examine the
+              // tooltips if they need this information.
+              //if (libSelRec.getList().size() > 1) {
+              //  importedDuplicateHeaders.add("UNKNOWN"); // FIXME
+              //  importedDuplicateLibraries.add(libSelRec);
+              //}
             }
           }
         }
