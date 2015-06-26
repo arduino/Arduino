@@ -39,8 +39,8 @@ public:
 };
 
 int8_t   HID_Plug(void);
-int8_t   HID_GetInterface(u8* interfaceNum);
-int8_t   HID_GetDescriptor(int8_t t);
+int   HID_GetInterface(u8* interfaceNum);
+int   HID_GetDescriptor(int8_t t);
 bool  HID_Setup(Setup& setup, u8 i);
 void  HID_SendReport(uint8_t id, const void* data, int len);
 

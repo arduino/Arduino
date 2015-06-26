@@ -39,18 +39,18 @@ ring_bufferMIDI midi_rx_buffer = {{0,0,0,0 }, 0, 0};
 
 static MIDIDescriptor _midiInterface;
 
-int8_t WEAK MIDI_GetInterface(uint8_t* interfaceNum)
+int MIDI_GetInterface(uint8_t* interfaceNum)
 {
 	interfaceNum[0] += 2;	// uses 2
 	return USB_SendControl(0,&_midiInterface,sizeof(_midiInterface));
 }
-bool WEAK MIDI_Setup(Setup& setup, u8 i)
+bool MIDI_Setup(Setup& setup, u8 i)
 {
 	//Support requests here if needed. Typically these are optional
 	return false;
 }
 
-int8_t WEAK MIDI_GetDescriptor(int8_t t)
+int MIDI_GetDescriptor(int8_t t)
 {
 	return 0;
 }

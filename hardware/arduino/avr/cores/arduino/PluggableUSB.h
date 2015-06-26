@@ -28,8 +28,8 @@
 typedef struct
 {
   bool (*setup)(Setup& setup, u8 i);
-  int8_t (*getInterface)(u8* interfaceNum);
-  int8_t (*getDescriptor)(int8_t t);
+  int (*getInterface)(u8* interfaceNum);
+  int (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
   int8_t numInterfaces;
   uint8_t *endpointType;
@@ -50,9 +50,9 @@ public:
 
 int8_t PUSB_AddFunction(PUSBListNode *node, u8 *interface);
 
-int8_t PUSB_GetInterface(u8* interfaceNum);
+int PUSB_GetInterface(u8* interfaceNum);
 
-int8_t PUSB_GetDescriptor(int8_t t);
+int PUSB_GetDescriptor(int8_t t);
 
 bool PUSB_Setup(Setup& setup, u8 i);
 

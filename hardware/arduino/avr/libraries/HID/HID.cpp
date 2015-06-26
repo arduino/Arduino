@@ -51,13 +51,13 @@ HIDDescriptor _hidInterface;
 u8 _hid_protocol = 1;
 u8 _hid_idle = 1;
 
-int8_t WEAK HID_GetInterface(u8* interfaceNum)
+int HID_GetInterface(u8* interfaceNum)
 {
 	interfaceNum[0] += 1;	// uses 1
 	return USB_SendControl(0,&_hidInterface,sizeof(_hidInterface));
 }
 
-int8_t WEAK HID_GetDescriptor(int8_t t)
+int HID_GetDescriptor(int8_t t)
 {
 	if (HID_REPORT_DESCRIPTOR_TYPE == t) {
 		return USB_SendControl(TRANSFER_PGM,_hidReportDescriptor,getsizeof_hidReportDescriptor());
@@ -66,13 +66,13 @@ int8_t WEAK HID_GetDescriptor(int8_t t)
 	}
 }
 
-void WEAK HID_SendReport(u8 id, const void* data, int len)
+void HID_SendReport(u8 id, const void* data, int len)
 {
 	USB_Send(HID_TX, &id, 1);
 	USB_Send(HID_TX | TRANSFER_RELEASE,data,len);
 }
 
-bool WEAK HID_Setup(Setup& setup, u8 i)
+bool HID_Setup(Setup& setup, u8 i)
 {
 	if (HID_INTERFACE != i) {
 		return false;

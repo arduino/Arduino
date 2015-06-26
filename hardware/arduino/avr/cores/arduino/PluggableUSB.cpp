@@ -36,9 +36,9 @@ static u8 modules_count = 0;
 static PUSBListNode* rootNode = NULL;
 static PUSBListNode* lastNode = NULL;
 
-int8_t PUSB_GetInterface(u8* interfaceNum)
+int PUSB_GetInterface(u8* interfaceNum)
 {
-	int8_t ret = 0;
+	int ret = 0;
 	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count; i++) {
 		ret = node->cb->getInterface(interfaceNum);
@@ -47,9 +47,9 @@ int8_t PUSB_GetInterface(u8* interfaceNum)
 	return ret;
 }
 
-int8_t PUSB_GetDescriptor(int8_t t)
+int PUSB_GetDescriptor(int8_t t)
 {
-	int8_t ret = 0;
+	int ret = 0;
 	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count && ret == 0; i++) {
 		ret = node->cb->getDescriptor(t);
