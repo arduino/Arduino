@@ -78,6 +78,8 @@ const DeviceDescriptor USB_DeviceDescriptorB =
 //==================================================================
 
 volatile u8 _usbConfiguration = 0;
+volatile u8 _usbCurrentStatus = 0; // meaning of bits see usb_20.pdf, Figure 9-4. Information Returned by a GetStatus() Request to a Device
+volatile u8 _usbSuspendState = 0; // copy of UDINT to check SUSPI and WAKEUPI bits
 
 static inline void WaitIN(void)
 {
@@ -329,7 +331,7 @@ static
 void InitEP(u8 index, u8 type, u8 size)
 {
 	UENUM = index;
-	UECONX = 1;
+	UECONX = (1<<EPEN);
 	UECFG0X = type;
 	UECFG1X = size;
 }
@@ -340,7 +342,7 @@ void InitEndpoints()
 	for (u8 i = 1; i < sizeof(_initEndpoints) && _initEndpoints[i] != 0; i++)
 	{
 		UENUM = i;
-		UECONX = 1;
+		UECONX = (1<<EPEN);
 		UECFG0X = _initEndpoints[i];
 		UECFG1X = EP_DOUBLE_64;
 	}
@@ -530,16 +532,37 @@ ISR(USB_COM_vect)
 	{
 		//	Standard Requests
 		u8 r = setup.bRequest;
+		u16 wValue = setup.wValueL | (setup.wValueH << 8);
 		if (GET_STATUS == r)
 		{
-			Send8(0);		// TODO
-			Send8(0);
+			if (requestType == (REQUEST_DEVICETOHOST | REQUEST_STANDARD | REQUEST_DEVICE))
+			{
+				Send8(_usbCurrentStatus);
+				Send8(0);
+			}
+			else
+			{
+				// TODO: handle the HALT state of an endpoint here
+				// see "Figure 9-6. Information Returned by a GetStatus() Request to an Endpoint" in usb_20.pdf for more information
+				Send8(0);
+				Send8(0);
+			}
 		}
 		else if (CLEAR_FEATURE == r)
 		{
+			if((requestType == (REQUEST_HOSTTODEVICE | REQUEST_STANDARD | REQUEST_DEVICE))
+				&& (wValue == DEVICE_REMOTE_WAKEUP))
+			{
+				_usbCurrentStatus &= ~FEATURE_REMOTE_WAKEUP_ENABLED;
+			}
 		}
 		else if (SET_FEATURE == r)
 		{
+			if((requestType == (REQUEST_HOSTTODEVICE | REQUEST_STANDARD | REQUEST_DEVICE))
+				&& (wValue == DEVICE_REMOTE_WAKEUP))
+			{
+				_usbCurrentStatus |= FEATURE_REMOTE_WAKEUP_ENABLED;
+			}
 		}
 		else if (SET_ADDRESS == r)
 		{
@@ -595,11 +618,73 @@ void USB_Flush(u8 ep)
 		ReleaseTX();
 }
 
+static inline void USB_ClockDisable()
+{
+	USBCON = (USBCON & ~(1<<OTGPADE)) | (1<<FRZCLK); // freeze clock and disable VBUS Pad
+	PLLCSR &= ~(1<<PLLE);  // stop PLL
+}
+
+static inline void USB_ClockEnable()
+{
+	UHWCON |= (1<<UVREGE);			// power internal reg
+	USBCON = (1<<USBE) | (1<<FRZCLK);	// clock frozen, usb enabled
+
+// ATmega32U4
+#if defined(PINDIV)
+#if F_CPU == 16000000UL
+	PLLCSR |= (1<<PINDIV);                   // Need 16 MHz xtal
+#elif F_CPU == 8000000UL
+	PLLCSR &= ~(1<<PINDIV);                  // Need  8 MHz xtal
+#else
+#error "Clock rate of F_CPU not supported"
+#endif
+
+// AT90USB646, AT90USB647, AT90USB1286, AT90USB1287
+#elif defined(PLLP2)
+#if F_CPU == 16000000UL
+#if defined(__AVR_AT90USB1286__) || defined(__AVR_AT90USB1287__)
+	// For Atmel AT90USB128x only. Do not use with Atmel AT90USB64x.
+	PLLCSR = (PLLCSR & ~(1<<PLLP1)) | ((1<<PLLP2) | (1<<PLLP0)); // Need 16 MHz xtal
+#elif defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB647__)
+	// For AT90USB64x only. Do not use with AT90USB128x.
+	PLLCSR = (PLLCSR & ~(1<<PLLP0)) | ((1<<PLLP2) | (1<<PLLP1)); // Need 16 MHz xtal
+#else
+#error "USB Chip not supported, please defined method of USB PLL initialization"
+#endif
+#elif F_CPU == 8000000UL
+	// for Atmel AT90USB128x and AT90USB64x
+	PLLCSR = (PLLCSR & ~(1<<PLLP2)) | ((1<<PLLP1) | (1<<PLLP0)); // Need 8 MHz xtal
+#else
+#error "Clock rate of F_CPU not supported"
+#endif
+#else
+#error "USB Chip not supported, please defined method of USB PLL initialization"
+#endif
+
+	PLLCSR |= (1<<PLLE);
+	while (!(PLLCSR & (1<<PLOCK)))		// wait for lock pll
+	{
+	}
+
+	// Some tests on specific versions of macosx (10.7.3), reported some
+	// strange behaviors when the board is reset using the serial
+	// port touch at 1200 bps. This delay fixes this behavior.
+	delay(1);
+	USBCON = (USBCON & ~(1<<FRZCLK)) | (1<<OTGPADE);	// start USB clock, enable VBUS Pad
+
+#if defined(RSTCPU)
+	UDCON &= ~((1<<RSTCPU) | (1<<LSM) | (1<<RMWKUP) | (1<<DETACH));	// enable attach resistor, set full speed mode
+#else
+	// AT90USB64x and AT90USB128x don't have RSTCPU
+	UDCON &= ~((1<<LSM) | (1<<RMWKUP) | (1<<DETACH));	// enable attach resistor, set full speed mode
+#endif
+}
+
 //	General interrupt
 ISR(USB_GEN_vect)
 {
 	u8 udint = UDINT;
-	UDINT = 0;
+	UDINT = UDINT &= ~((1<<EORSTI) | (1<<SOFI)); // clear the IRQ flags for the IRQs which are handled here, except WAKEUPI and SUSPI (see below)
 
 	//	End of Reset
 	if (udint & (1<<EORSTI))
@@ -619,6 +704,30 @@ ISR(USB_GEN_vect)
 			TXLED0;
 		if (RxLEDPulse && !(--RxLEDPulse))
 			RXLED0;
+	}
+
+	// the WAKEUPI interrupt is triggered as soon as there are non-idle patterns on the data
+	// lines. Thus, the WAKEUPI interrupt can occur even if the controller is not in the "suspend" mode.
+	// Therefore the we enable it only when USB is suspended
+	if (udint & (1<<WAKEUPI))
+	{
+		UDIEN = (UDIEN & ~(1<<WAKEUPE)) | (1<<SUSPE); // Disable interrupts for WAKEUP and enable interrupts for SUSPEND
+
+		//TODO
+		// WAKEUPI shall be cleared by software (USB clock inputs must be enabled before).
+		//USB_ClockEnable();
+		UDINT &= ~(1<<WAKEUPI);
+		_usbSuspendState = (_usbSuspendState & ~(1<<SUSPI)) | (1<<WAKEUPI);
+	}
+	else if (udint & (1<<SUSPI)) // only one of the WAKEUPI / SUSPI bits can be active at time
+	{
+		UDIEN = (UDIEN & ~(1<<SUSPE)) | (1<<WAKEUPE); // Disable interrupts for SUSPEND and enable interrupts for WAKEUP
+
+		//TODO
+		//USB_ClockDisable();
+
+		UDINT &= ~((1<<WAKEUPI) | (1<<SUSPI)); // clear any already pending WAKEUP IRQs and the SUSPI request
+		_usbSuspendState = (_usbSuspendState & ~(1<<WAKEUPI)) | (1<<SUSPI);
 	}
 }
 
@@ -643,24 +752,12 @@ USBDevice_::USBDevice_()
 void USBDevice_::attach()
 {
 	_usbConfiguration = 0;
-	UHWCON = 0x01;						// power internal reg
-	USBCON = (1<<USBE)|(1<<FRZCLK);		// clock frozen, usb enabled
-#if F_CPU == 16000000UL
-	PLLCSR = 0x12;						// Need 16 MHz xtal
-#elif F_CPU == 8000000UL
-	PLLCSR = 0x02;						// Need 8 MHz xtal
-#endif
-	while (!(PLLCSR & (1<<PLOCK)))		// wait for lock pll
-		;
+	_usbCurrentStatus = 0;
+	_usbSuspendState = 0;
+	USB_ClockEnable();
 
-	// Some tests on specific versions of macosx (10.7.3), reported some
-	// strange behaviuors when the board is reset using the serial
-	// port touch at 1200 bps. This delay fixes this behaviour.
-	delay(1);
-
-	USBCON = ((1<<USBE)|(1<<OTGPADE));	// start USB clock
-	UDIEN = (1<<EORSTE)|(1<<SOFE);		// Enable interrupts for EOR (End of Reset) and SOF (start of frame)
-	UDCON = 0;							// enable attach resistor
+	UDINT &= ~((1<<WAKEUPI) | (1<<SUSPI)); // clear already pending WAKEUP / SUSPEND requests
+	UDIEN = (1<<EORSTE) | (1<<SOFE) | (1<<SUSPE);	// Enable interrupts for EOR (End of Reset), SOF (start of frame) and SUSPEND
 	
 	TX_RX_LED_INIT;
 }
@@ -678,6 +775,26 @@ bool USBDevice_::configured()
 
 void USBDevice_::poll()
 {
+}
+
+bool USBDevice_::wakeupHost()
+{
+	// clear any previous wakeup request which might have been set but could be processed at that time
+	// e.g. because the host was not suspended at that time
+	UDCON &= ~(1 << RMWKUP);
+
+	if(!(UDCON & (1 << RMWKUP))
+	  && (_usbSuspendState & (1<<SUSPI))
+	  && (_usbCurrentStatus & FEATURE_REMOTE_WAKEUP_ENABLED))
+	{
+		// This short version will only work, when the device has not been suspended. Currently the
+		// Arduino core doesn't handle SUSPEND at all, so this is ok.
+		USB_ClockEnable();
+		UDCON |= (1 << RMWKUP); // send the wakeup request
+		return true;
+	}
+
+	return false;
 }
 
 #endif /* if defined(USBCON) */

@@ -81,6 +81,15 @@
 #define USB_INTERFACE_DESCRIPTOR_TYPE          4
 #define USB_ENDPOINT_DESCRIPTOR_TYPE           5
 
+// usb_20.pdf Table 9.6 Standard Feature Selectors
+#define DEVICE_REMOTE_WAKEUP                   1
+#define ENDPOINT_HALT                          2
+#define TEST_MODE                              3
+
+// usb_20.pdf Figure 9-4. Information Returned by a GetStatus() Request to a Device
+#define FEATURE_SELFPOWERED_ENABLED     (1 << 0)
+#define FEATURE_REMOTE_WAKEUP_ENABLED   (1 << 1)
+
 #define USB_DEVICE_CLASS_COMMUNICATIONS        0x02
 #define USB_DEVICE_CLASS_HUMAN_INTERFACE       0x03
 #define USB_DEVICE_CLASS_STORAGE               0x08
@@ -264,7 +273,7 @@ typedef struct
 	{ 18, 1, 0x200, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
 
 #define D_CONFIG(_totalLength,_interfaces) \
-	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_BUS_POWERED, USB_CONFIG_POWER_MA(500) }
+	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_BUS_POWERED | USB_CONFIG_REMOTE_WAKEUP, USB_CONFIG_POWER_MA(500) }
 
 #define D_INTERFACE(_n,_numEndpoints,_class,_subClass,_protocol) \
 	{ 9, 4, _n, 0, _numEndpoints, _class,_subClass, _protocol, 0 }
