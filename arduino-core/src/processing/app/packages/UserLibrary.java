@@ -238,6 +238,11 @@ public class UserLibrary extends ContributedLibrary {
     return depSpec;
   }
 
+  @Override
+  public int hashCode() {
+    return getDepSpec().hashCode();
+  }
+
   public boolean matchesDepSpec(String spec) {
     String[] parts = spec.split(":", 2);
     return getGlobalName().equals(parts[0]);
@@ -266,7 +271,7 @@ public class UserLibrary extends ContributedLibrary {
     }
   }
 
-  private boolean versionsOrdered(String ver1, String ver2) {
+  static private boolean versionsOrdered(String ver1, String ver2) {
     String[] c1 = ver1.split("\\.");
     String[] c2 = ver2.split("\\.");
     int i;

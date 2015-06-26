@@ -1389,7 +1389,7 @@ public class Compiler implements MessageConsumer {
     importedLibraries = new LibraryList();
     importedDuplicateHeaders = new ArrayList<>();
     importedDuplicateLibraries = new ArrayList<>();
-    Set<UserLibrary> preferSet = new HashSet<UserLibrary>();
+    Set<UserLibrary> preferSet = new HashSet<>();
     for (String[] item : preprocessor.getExtraImports()) {
       LibrarySelection libSel = BaseNoGui.findLibraryByImport(item, preferSet);
       if (libSel != null) {

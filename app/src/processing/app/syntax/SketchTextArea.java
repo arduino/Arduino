@@ -462,7 +462,7 @@ public class SketchTextArea extends RSyntaxTextArea {
       LibrarySelection libSel = null;
       if (!incs.isEmpty()) {
         // Note: does not have a valid preferSet, so answer may be inaccurate
-        libSel = BaseNoGui.findLibraryByImport(incs.get(0), new HashSet<UserLibrary>());
+        libSel = BaseNoGui.findLibraryByImport(incs.get(0), new HashSet<>());
       }
       String info = null;
       if (libSel != null) {
