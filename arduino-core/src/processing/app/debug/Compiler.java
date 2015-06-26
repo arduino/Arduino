@@ -1219,7 +1219,10 @@ public class Compiler implements MessageConsumer {
 
   //7. Save the .hex file
   void saveHex() throws RunnerException {
-    if (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file")) {
+    List<String> compiledSketches = new ArrayList<>(prefs.subTree("recipe.output.tmp_file", 1).values());
+    List<String> copyOfCompiledSketches = new ArrayList<>(prefs.subTree("recipe.output.save_file", 1).values());
+
+    if (isExportCompiledSketchSupported(compiledSketches, copyOfCompiledSketches)) {
       System.err.println(_("Warning: This core does not support exporting sketches. Please consider upgrading it or contacting its author"));
       return;
     }
@@ -1227,19 +1230,21 @@ public class Compiler implements MessageConsumer {
     PreferencesMap dict = new PreferencesMap(prefs);
     dict.put("ide_version", "" + BaseNoGui.REVISION);
 
-    try {
-      List<String> compiledSketches = new ArrayList<String>(prefs.subTree("recipe.output.tmp_file", 1).values());
-      if (!compiledSketches.isEmpty()) {
-        List<String> copyOfCompiledSketches = new ArrayList<String>(prefs.subTree("recipe.output.save_file", 1).values());
-        for (int i = 0; i < compiledSketches.size(); i++) {
-          saveHex(compiledSketches.get(i), copyOfCompiledSketches.get(i), prefs);
-        }
-      } else {
-        saveHex(prefs.getOrExcept("recipe.output.tmp_file"), prefs.getOrExcept("recipe.output.save_file"), prefs);
+    if (!compiledSketches.isEmpty()) {
+      for (int i = 0; i < compiledSketches.size(); i++) {
+        saveHex(compiledSketches.get(i), copyOfCompiledSketches.get(i), prefs);
       }
-    } catch (Exception e) {
-      throw new RunnerException(e);
+    } else {
+      try {
+        saveHex(prefs.getOrExcept("recipe.output.tmp_file"), prefs.getOrExcept("recipe.output.save_file"), prefs);
+      } catch (PreferencesMapException e) {
+        throw new RunnerException(e);
+      }
     }
+  }
+
+  private boolean isExportCompiledSketchSupported(List<String> compiledSketches, List<String> copyOfCompiledSketches) {
+    return (compiledSketches.isEmpty() || copyOfCompiledSketches.isEmpty() || copyOfCompiledSketches.size() < compiledSketches.size()) && (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file"));
   }
 
   private void saveHex(String compiledSketch, String copyOfCompiledSketch, PreferencesMap dict) throws RunnerException {
