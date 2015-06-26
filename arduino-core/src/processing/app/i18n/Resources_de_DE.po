@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-02-24 13:04+0000\n"
-"Last-Translator: Lukas Bestle <lukas@lu-x.me>\n"
+"PO-Revision-Date: 2015-06-17 19:12+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/projects/p/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +67,7 @@ msgstr "Eine Datei namens \"{0}\" existiert bereits in \"{1}\""
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr "Ein Ordner mit dem Namen \"{0}\" existiert bereits. Der Sketch kann nicht geladen werden."
+msgstr "Ein Ordner mit dem Namen \"{0}\" ist bereits vorhanden. Der Sketch kann nicht geöffnet werden."
 
 #: Base.java:2690
 #, java-format
@@ -121,11 +121,11 @@ msgstr "Beim Hochladen des Sketches ist ein Fehler aufgetreten"
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr "Beim Verifizieren des Sketches ist ein Fehler aufgetreten"
+msgstr "Beim Überprüfen des Sketches ist ein Fehler aufgetreten"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr "Beim Verifizieren/Hochladen des Sketches ist ein Fehler aufgetreten"
+msgstr "Beim Überprüfen/Hochladen des Sketches ist ein Fehler aufgetreten"
 
 #: Base.java:228
 msgid ""
@@ -239,7 +239,7 @@ msgstr "Asturisch"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr "Autorisierung benötigt"
+msgstr "Autorisierung erforderlich"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -786,11 +786,11 @@ msgstr "Fehler beim Hochladen: Fehlender Konfigurationsparameter '{0}'"
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr "Fehler beim Verifizieren"
+msgstr "Fehler beim Überprüfen"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr "Fehler beim Verifizieren/Hochladen"
+msgstr "Fehler beim Überprüfen/Hochladen"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -811,7 +811,7 @@ msgstr "Export abgebrochen, Änderungen müssen erst gespeichert werden."
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr "Sketch: \"{0}\" konnte nicht geöffnet werden"
+msgstr "Fehler beim Öffnen des Sketches: \"{0}\""
 
 #: Editor.java:491
 msgid "File"
@@ -1191,11 +1191,11 @@ msgstr "Öffnen"
 
 #: Editor.java:2688
 msgid "Open URL"
-msgstr "Öffne URL"
+msgstr "URL öffnen"
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
-msgstr "Einen Arduino Sketch öffnen..."
+msgstr "Arduino-Sketch öffnen..."
 
 #: EditorToolbar.java:46
 msgid "Open in Another Window"
@@ -1203,7 +1203,7 @@ msgstr "In einem neuen Fenster öffnen"
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
-msgstr "Öffnen ..."
+msgstr "Öffnen..."
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1438,7 +1438,7 @@ msgstr "Neuen Speicherort für das Sketchbook auswählen"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr "Die ausgewählte Platine benötigt den '{0}'-Kern (nicht installiert)."
+msgstr "Die ausgewählte Platine benötigt den Kern '{0}' (nicht installiert)."
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1525,7 +1525,7 @@ msgstr "Sketchbook"
 
 #: Base.java:258
 msgid "Sketchbook folder disappeared"
-msgstr "Der Sketchbook-Ordner ist nicht auffindbar"
+msgstr "Sketchbook-Ordner ist nicht auffindbar"
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
@@ -1688,7 +1688,7 @@ msgstr "Der Sketchbook-Ordner existiert nicht mehr.\nArduino wird auf den Standa
 msgid ""
 "Third-party platform.txt does not define compiler.path. Please report this "
 "to the third-party hardware maintainer."
-msgstr "Die Fremdhersteller-platform.txt definiert keinen compiler.path. Bitte melden Sie dies an den Fremdhersteller."
+msgstr "Die Dritt-platform.txt definiert keinen compiler.path. Bitte melden Sie dies an den Dritthardware-Maintainer."
 
 #: Sketch.java:1075
 msgid ""
@@ -1760,7 +1760,7 @@ msgid ""
 "Unspecified platform, no launcher available.\n"
 "To enable opening URLs or folders, add a \n"
 "\"launcher=/path/to/app\" line to preferences.txt"
-msgstr "Unbekannte Plattform, kein Starter verfügbar. Um das Öffnen einer URL oder eines Ordners zu ermöglichen, muss der Datei preferences.txt eine Zeile\n\"launcher=/pfad/zur/app\" hinzugefügt werden"
+msgstr "Unbekannte Plattform, kein Starter verfügbar. Um das Öffnen einer URL oder eines Ordners zu ermöglichen, fügen Sie die Zeile \"launcher=/pfad/zur/app\" zur Datei preferences.txt hinzu"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -1818,7 +1818,7 @@ msgstr "Verwende die zuvor kompilierte Datei: {0}"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
-msgstr "Verifizieren"
+msgstr "Überprüfen"
 
 #: Editor.java:609
 msgid "Verify / Compile"

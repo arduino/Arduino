@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-03-18 18:23+0000\n"
+"PO-Revision-Date: 2015-06-21 17:43+0000\n"
 "Last-Translator: Michele Michielin <michele.michielin@gmail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/projects/p/arduino-ide-15/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -522,7 +522,7 @@ msgstr "Impossibile salvare nuovamente lo sketch"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "Impossibile leggere le impostazioni del tema dei colori.\nPotrebbe essere necessario reinstallare Arduino"
+msgstr "Impossibile leggere le impostazioni del tema dei colori.\nDevi reinstallare Arduino"
 
 #: Preferences.java:219
 msgid ""
@@ -1031,7 +1031,7 @@ msgstr "Altre impostazioni possono essere modificate direttamente nel file"
 
 #: Editor.java:2156
 msgid "Moving"
-msgstr "Sto spostando"
+msgstr "Sto spostando..."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
@@ -2104,4 +2104,4 @@ msgstr "{0}: scheda sconosciuta"
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr "{0}: package sconosciuto"
+msgstr "{0}: pacchetto sconosciuto"
