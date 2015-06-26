@@ -305,16 +305,17 @@
     <mkdir dir="${staging_folder}/work" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-upstream1.jar.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/appbundler-1.0ea-upstream1.jar.zip" />
-      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-upstream1" />
-      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-upstream1" />
+      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino3.jar.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/appbundler-1.0ea-arduino3.jar.zip" />
+      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-arduino3" />
+      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-arduino3" />
     </antcall>
 
-    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-upstream1/appbundler-1.0ea-upstream1.jar"/>
+    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-arduino3/appbundler-1.0ea-arduino3.jar"/>
 
     <bundleapp
             jvmRequired="1.8"
+            jrepreferred="true"
             outputdirectory="${staging_folder}/work"
             name="Arduino"
             displayname="Arduino"
@@ -326,6 +327,7 @@
             icon="macosx/template.app/Contents/Resources/processing.icns"
             mainclassname="processing.app.Base"
             copyright="Arduino LLC"
+            applicationCategory="public.app-category.education"
             minimumsystemversion="10.7"
             highresolutioncapable="true">
 
@@ -336,11 +338,12 @@
 
       <classpath refid="runtime.jars"/>
 
-      <option value="-Dapple.awt.application.name=Arduino" />
+      <option value="-Dapple.awt.application.name=Arduino"/>
       <option value="-Dapple.laf.useScreenMenuBar=true"/>
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
-      <option value="-Dcom.apple.macos.useScreenMenuBar=true" />
+      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+      <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
 
       <!--
       <option value="-Dapple.awt.showGrowBox=false"/>
