@@ -359,7 +359,7 @@ public class Compiler implements MessageConsumer {
    */
   public boolean compile(boolean _verbose, boolean _save) throws RunnerException, PreferencesMapException {
     File sketchBuildFolder = new File(prefs.get("build.path"), "sketch");
-    if (!sketchBuildFolder.mkdirs()) {
+    if (!sketchBuildFolder.exists() && !sketchBuildFolder.mkdirs()) {
       throw new RunnerException("Unable to create folder " + sketchBuildFolder);
     }
     preprocess(sketchBuildFolder.getAbsolutePath());
@@ -489,6 +489,9 @@ public class Compiler implements MessageConsumer {
   }
 
   private void adviseDuplicateLibraries() {
+    if (importedDuplicateHeaders == null) {
+      return;
+    }
     for (int i=0; i < importedDuplicateHeaders.size(); i++) {
       System.out.println(I18n.format(_("Multiple libraries were found for \"{0}\""),
         importedDuplicateHeaders.get(i)));
