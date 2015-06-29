@@ -358,7 +358,11 @@ public class Compiler implements MessageConsumer {
    * @throws RunnerException Only if there's a problem. Only then.
    */
   public boolean compile(boolean _verbose, boolean _save) throws RunnerException, PreferencesMapException {
-    preprocess(prefs.get("build.path"));
+    File sketchBuildFolder = new File(prefs.get("build.path"), "sketch");
+    if (!sketchBuildFolder.exists() && !sketchBuildFolder.mkdirs()) {
+      throw new RunnerException("Unable to create folder " + sketchBuildFolder);
+    }
+    preprocess(sketchBuildFolder.getAbsolutePath());
     
     verbose = _verbose || PreferencesData.getBoolean("build.verbose");
     saveHex = _save;
@@ -410,7 +414,7 @@ public class Compiler implements MessageConsumer {
 
     // 1. compile the sketch (already in the buildPath)
     progressListener.progress(20);
-    compileSketch(includeFolders);
+    compileSketch(includeFolders, sketchBuildFolder);
     sketchIsCompiled = true;
 
     runActions("hooks.sketch.postbuild", prefs);
@@ -485,6 +489,9 @@ public class Compiler implements MessageConsumer {
   }
 
   private void adviseDuplicateLibraries() {
+    if (importedDuplicateHeaders == null) {
+      return;
+    }
     for (int i=0; i < importedDuplicateHeaders.size(); i++) {
       System.out.println(I18n.format(_("Multiple libraries were found for \"{0}\""),
         importedDuplicateHeaders.get(i)));
@@ -995,8 +1002,7 @@ public class Compiler implements MessageConsumer {
   }
   
   // 1. compile the sketch (already in the buildPath)
-  void compileSketch(List<File> includeFolders) throws RunnerException, PreferencesMapException {
-    File buildPath = prefs.getFile("build.path");
+  void compileSketch(List<File> includeFolders, File buildPath) throws RunnerException, PreferencesMapException {
     objectFiles.addAll(compileFiles(buildPath, buildPath, false, includeFolders));
   }
 
@@ -1011,7 +1017,12 @@ public class Compiler implements MessageConsumer {
   private void compileLibrary(UserLibrary lib, List<File> includeFolders)
           throws RunnerException, PreferencesMapException {
     File libFolder = lib.getSrcFolder();
-    File libBuildFolder = prefs.getFile(("build.path"), lib.getName());
+    File librariesFolder = new File(prefs.getFile("build.path"), "libraries");
+    if (!librariesFolder.exists() && !librariesFolder.mkdirs()) {
+      throw new RunnerException("Unable to create folder " + librariesFolder);
+    }
+
+    File libBuildFolder = new File(librariesFolder, lib.getName());
     
     if (lib.useRecursion()) {
       // libBuildFolder == {build.path}/LibName
@@ -1058,7 +1069,10 @@ public class Compiler implements MessageConsumer {
 
     File coreFolder = prefs.getFile("build.core.path");
     File variantFolder = prefs.getFile("build.variant.path");
-    File buildFolder = prefs.getFile("build.path");
+    File buildFolder = new File(prefs.getFile("build.path"), "core");
+    if (!buildFolder.exists() && !buildFolder.mkdirs()) {
+      throw new RunnerException("Unable to create folder " + buildFolder);
+    }
 
     List<File> includeFolders = new ArrayList<File>();
     includeFolders.add(coreFolder); // include core path only
@@ -1108,6 +1122,7 @@ public class Compiler implements MessageConsumer {
         dict.put("ide_version", "" + BaseNoGui.REVISION);
         dict.put("archive_file", afile.getName());
         dict.put("object_file", file.getAbsolutePath());
+        dict.put("build.path", buildFolder.getAbsolutePath());
 
         String[] cmdArray;
         String cmd = prefs.getOrExcept("recipe.ar.pattern");
@@ -1144,7 +1159,7 @@ public class Compiler implements MessageConsumer {
     PreferencesMap dict = new PreferencesMap(prefs);
     String flags = dict.get("compiler.c.elf.flags") + optRelax;
     dict.put("compiler.c.elf.flags", flags);
-    dict.put("archive_file", "core.a");
+    dict.put("archive_file", new File("core", "core.a").getPath());
     dict.put("object_files", objectFileList);
     dict.put("ide_version", "" + BaseNoGui.REVISION);
 
