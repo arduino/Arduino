@@ -28,6 +28,7 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import processing.app.BaseNoGui;
 import processing.app.debug.TargetPackage;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
@@ -194,7 +195,7 @@ public class Platform extends processing.app.Platform {
     executor.setStreamHandler(new PumpStreamHandler(baos, null));
 
     try {
-      String listComPorts = new File(System.getProperty("user.dir"), "hardware/tools/listComPorts.exe").getCanonicalPath();
+      String listComPorts = BaseNoGui.getContentFile("hardware/tools/listComPorts.exe").getCanonicalPath();
 
       CommandLine toDevicePath = CommandLine.parse(listComPorts);
       executor.execute(toDevicePath);
