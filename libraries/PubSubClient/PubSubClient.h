@@ -67,7 +67,7 @@ public:
    boolean publish(char *, uint8_t *, unsigned int, boolean);
    boolean publish_P(char *, uint8_t *, unsigned int, boolean);
    boolean subscribe(char *);
-   boolean loop();
+   boolean poll();
    boolean connected();
 };
 

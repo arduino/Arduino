@@ -81,7 +81,7 @@ void loop()
   
   // Check if any message were received
   // on the topic we subsrcived to
-  client.loop();
+  client.poll();
 }
 
 void printWifiStatus() {

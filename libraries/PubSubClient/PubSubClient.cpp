@@ -146,7 +146,7 @@ uint16_t PubSubClient::readPacket() {
    return len;
 }
 
-boolean PubSubClient::loop() {
+boolean PubSubClient::poll() {
    if (connected()) {
       unsigned long t = millis();
       if ((t - lastInActivity > MQTT_KEEPALIVE * 1000UL) || (t - lastOutActivity > MQTT_KEEPALIVE * 1000UL)) {
