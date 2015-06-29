@@ -30,12 +30,12 @@ void A110x2500SpiInit()
 {
   // Setup CSn line.
   pinMode (RF_SPI_CSN, OUTPUT);
-  
-  #if defined(PART_TM4C1233H6PM) || defined (PART_LM4F120H5QR) || defined (PART_TM4C129XNCZAD) || defined (PART_TM4C1294NCPDT)
+
+#if defined(PART_TM4C1233H6PM) || defined (PART_LM4F120H5QR) || defined (PART_TM4C129XNCZAD) || defined (PART_TM4C1294NCPDT)
   // Select the correct SPI port to interface with AIR Booster Pack.
   SPI.setModule(2);
-  #endif
-  
+#endif
+
   /**
    *  Setup the SPI peripheral and SCLK, MISO, and MOSI lines. This is assumed
    *  to be taken care of by the Energia SPI driver.
@@ -43,19 +43,7 @@ void A110x2500SpiInit()
    *  Note: It is assumed that the peripheral clock is running at 16MHz. The
    *  radio SPI bus cannot exceed 10MHz.
    */
-   #if (F_CPU == 1000000)
-   SPI.setClockDivider(SPI_CLOCK_DIV1); //1 MHz SPI Clock  
-   #elif (F_CPU == 16000000)
-   SPI.setClockDivider(SPI_CLOCK_DIV2); //8 MHz SPI Clock
-   #elif (F_CPU == 24000000)   
-   SPI.setClockDivider(SPI_CLOCK_DIV4); //6 MHz SPI Clock
-   #elif (F_CPU == 80000000)
-   SPI.setClockDivider(SPI_CLOCK_DIV16); //5 MHz SPI Clock
-   #elif (F_CPU == 120000000)
-   SPI.setClockDivider(SPI_CLOCK_DIV16); //7.5 MHz SPI Clock
-   #else
-   #error "Radio SPI clock unable to be set < 10MHz"      
-   #endif
+//  SPI.setClockDivider(SPI_CLOCK_DIV4); //7.5 MHz SPI Clock
 
   SPI.setDataMode(SPI_MODE0);
   SPI.begin();
@@ -66,11 +54,12 @@ void A110x2500SpiRead(unsigned char address,
                       unsigned char count)
 {
   digitalWrite(RF_SPI_CSN,LOW);
+
   // Look for CHIP_RDYn from radio.
   pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
-  MAP_PinTypeSPI(PIN_06, PIN_MODE_7);
- 
+  MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1, GPIO_PIN7, GPIO_PRIMARY_MODULE_FUNCTION);
+  SPI_enableModule(EUSCI_B0_BASE);
   // Write the address/command byte.
   SPI.transfer(address);
   
@@ -84,6 +73,7 @@ void A110x2500SpiRead(unsigned char address,
   // peripheral is done being busy before returning to the caller.
 
   digitalWrite(RF_SPI_CSN,HIGH);
+  SPI_disableModule(EUSCI_B0_BASE);
 }
 
 void A110x2500SpiWrite(unsigned char address,
@@ -91,10 +81,12 @@ void A110x2500SpiWrite(unsigned char address,
                        unsigned char count)
 {
   digitalWrite(RF_SPI_CSN,LOW);
+
   // Look for CHIP_RDYn from radio.
   pinMode(RF_SPI_MISO, INPUT);
   while (digitalRead(RF_SPI_MISO));
-  MAP_PinTypeSPI(PIN_06, PIN_MODE_7);
+  MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P1, GPIO_PIN7, GPIO_PRIMARY_MODULE_FUNCTION);
+  SPI_enableModule(EUSCI_B0_BASE);
   
   // Write the address/command byte.
   SPI.transfer(address);
@@ -109,6 +101,7 @@ void A110x2500SpiWrite(unsigned char address,
   // peripheral is done being busy before returning to the caller.
 
   digitalWrite(RF_SPI_CSN,HIGH);
+  SPI_disableModule(EUSCI_B0_BASE);
 }
 
 void A110x2500Gdo0Init()

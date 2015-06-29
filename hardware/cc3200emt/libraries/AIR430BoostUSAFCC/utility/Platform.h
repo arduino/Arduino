@@ -28,7 +28,7 @@
  */
 #include <Energia.h>
 #include <SPI.h>
-#include <rom_map.h>
+#include <driverlib/rom_map.h>
 #include <inc/hw_types.h>
 #include <driverlib/pin.h>
 

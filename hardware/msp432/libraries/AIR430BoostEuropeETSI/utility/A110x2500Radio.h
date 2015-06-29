@@ -26,6 +26,11 @@
  *  Note: This file is part of AIR430Boost.
  */
 #include <inttypes.h>
+#include <xdc/std.h>
+#include <ti/sysbios/knl/Semaphore.h>
+#include <ti/sysbios/BIOS.h>
+#include <xdc/runtime/Error.h>
+#include <ti/sysbios/gates/GateMutex.h>
 
 /**
  *  sDataStream - message sent over-the-air.
@@ -95,6 +100,7 @@ public:
    *    @param  power     Default output power level to transmit at.
    */
   static void begin(uint8_t address, channel_t channel, power_t power);
+  static xdc_Void serviceInterrupt(xdc_UArg arg0, xdc_UArg arg1);
   
   /**
    *  end - close a radio session.
@@ -106,7 +112,7 @@ public:
    *
    *    @return	True if the transmitter is currently in use; false otherwise.
    */
-  static boolean busy(void);
+  static uint8_t busy(void);
 
   /**
    *  setAddress - set device address. This address is used for hardware message
@@ -192,7 +198,6 @@ public:
  */
 
 private:
-    
   struct sDataStream _dataStream; // Data stream used for RX/TX
   
   /**
