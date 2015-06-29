@@ -146,11 +146,8 @@ public class CommandlineParser {
         continue;
       }
       if (args[i].equals("--curdir")) {
-        i++;
-        if (i >= args.length)
-          BaseNoGui.showError(null, _("Argument required for --curdir"), 3);
-        // Argument should be already processed by Base.main(...)
-        continue;
+        BaseNoGui.showError(null, _("--curdir no longer supported"), 3);
+        return;
       }
       if (args[i].equals("--buildpath")) {
         i++;

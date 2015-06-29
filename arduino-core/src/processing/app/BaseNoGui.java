@@ -963,11 +963,6 @@ public class BaseNoGui {
         preferencesFile = args[i];
         continue;
       }
-      if (args[i].equals("--curdir")) {
-        i++;
-        currentDirectory = args[i];
-        continue;
-      }
     }
 
     // run static initialization that grabs all the prefs
