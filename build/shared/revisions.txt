@@ -13,6 +13,7 @@ ARDUINO 1.6.6
 * Added 74880 baud rate to serial monitor. Thanks @Chris--A
 * When changing tab, file name is shown in window title
 * IDE groups compiled files into "libraries", "core" and "sketch" folders
+* Added Serial Plotter. Thanks @henningpohl
 
 ARDUINO 1.6.5-r2 - 2015.06.17
 
