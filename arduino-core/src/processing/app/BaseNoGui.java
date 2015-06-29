@@ -186,7 +186,11 @@ public class BaseNoGui {
   }
 
   static public File getContentFile(String name) {
-    File installationFolder = new File(System.getProperty("APP_DIR"));
+    String appDir = System.getProperty("APP_DIR");
+    if (appDir == null || appDir.length() == 0) {
+      appDir = currentDirectory;
+    }
+    File installationFolder = new File(appDir);
     return new File(installationFolder, name);
   }
 
