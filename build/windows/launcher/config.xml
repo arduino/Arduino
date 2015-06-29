@@ -1,45 +1,44 @@
 <launch4jConfig>
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>lib</jar>
   <outfile>arduino.exe</outfile>
-  <chdir>.</chdir>
   <errTitle>Arduino</errTitle>
   <downloadUrl>http://www.oracle.com/technetwork/java/javase/downloads/index.html</downloadUrl>
   <icon>application.ico</icon>
   <classPath>
     <mainClass>processing.app.Base</mainClass>
-    <cp>lib/antlr.jar</cp>
-    <cp>lib/apple.jar</cp>
-    <cp>lib/arduino-core.jar</cp>
-    <cp>lib/bcpg-jdk15on-152.jar</cp>
-    <cp>lib/bcprov-jdk15on-152.jar</cp>
-    <cp>lib/commons-codec-1.7.jar</cp>
-    <cp>lib/commons-compress-1.8.jar</cp>
-    <cp>lib/commons-exec-1.1.jar</cp>
-    <cp>lib/commons-httpclient-3.1.jar</cp>
-    <cp>lib/commons-lang3-3.3.2.jar</cp>
-    <cp>lib/commons-logging-1.0.4.jar</cp>
-    <cp>lib/ecj.jar</cp>
-    <cp>lib/guava-18.0.jar</cp>
-    <cp>lib/jackson-annotations-2.2.3.jar</cp>
-    <cp>lib/jackson-core-2.2.3.jar</cp>
-    <cp>lib/jackson-databind-2.2.3.jar</cp>
-    <cp>lib/jackson-module-mrbean-2.2.3.jar</cp>
-    <cp>lib/java-semver-0.8.0.jar</cp>
-    <cp>lib/jmdns-3.4.1.jar</cp>
-    <cp>lib/jna-4.1.0.jar</cp>
-    <cp>lib/jna-platform-4.1.0.jar</cp>
-    <cp>lib/jsch-0.1.50.jar</cp>
-    <cp>lib/jssc-2.8.0.jar</cp>
-    <cp>lib/pde.jar</cp>
-    <cp>lib/rsyntaxtextarea-2.5.6.1+arduino.jar</cp>
+    <cp>%EXEDIR%/lib/antlr.jar</cp>
+    <cp>%EXEDIR%/lib/apple.jar</cp>
+    <cp>%EXEDIR%/lib/arduino-core.jar</cp>
+    <cp>%EXEDIR%/lib/bcpg-jdk15on-152.jar</cp>
+    <cp>%EXEDIR%/lib/bcprov-jdk15on-152.jar</cp>
+    <cp>%EXEDIR%/lib/commons-codec-1.7.jar</cp>
+    <cp>%EXEDIR%/lib/commons-compress-1.8.jar</cp>
+    <cp>%EXEDIR%/lib/commons-exec-1.1.jar</cp>
+    <cp>%EXEDIR%/lib/commons-httpclient-3.1.jar</cp>
+    <cp>%EXEDIR%/lib/commons-lang3-3.3.2.jar</cp>
+    <cp>%EXEDIR%/lib/commons-logging-1.0.4.jar</cp>
+    <cp>%EXEDIR%/lib/ecj.jar</cp>
+    <cp>%EXEDIR%/lib/guava-18.0.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-annotations-2.2.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-core-2.2.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-databind-2.2.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-module-mrbean-2.2.3.jar</cp>
+    <cp>%EXEDIR%/lib/java-semver-0.8.0.jar</cp>
+    <cp>%EXEDIR%/lib/jmdns-3.4.1.jar</cp>
+    <cp>%EXEDIR%/lib/jna-4.1.0.jar</cp>
+    <cp>%EXEDIR%/lib/jna-platform-4.1.0.jar</cp>
+    <cp>%EXEDIR%/lib/jsch-0.1.50.jar</cp>
+    <cp>%EXEDIR%/lib/jssc-2.8.0.jar</cp>
+    <cp>%EXEDIR%/lib/pde.jar</cp>
+    <cp>%EXEDIR%/lib/rsyntaxtextarea-2.5.6.1+arduino.jar</cp>
   </classPath>
   <jre>
     <path>java</path>
     <runtimeBits>32</runtimeBits>
-    <opt>-splash:./lib/splash.png</opt>
+    <opt>-splash:"%EXEDIR%/lib/splash.png"</opt>
     <opt>-Dsun.java2d.d3d=false</opt>
+    <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
   <versionInfo>
     <fileDescription>Arduino IDE</fileDescription>

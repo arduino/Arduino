@@ -186,21 +186,8 @@ public class BaseNoGui {
   }
 
   static public File getContentFile(String name) {
-    File path = new File(System.getProperty("user.dir"));
-
-    if (OSUtils.isMacOS()) {
-      if (System.getProperty("WORK_DIR") != null) {
-        path = new File(System.getProperty("WORK_DIR"));
-      } else {
-        try {
-          path = new File(BaseNoGui.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile();
-        } catch (URISyntaxException e) {
-          throw new RuntimeException(e);
-        }
-      }
-    }
-
-    return new File(path, name);
+    File installationFolder = new File(System.getProperty("APP_DIR"));
+    return new File(installationFolder, name);
   }
 
   static public TargetPlatform getCurrentTargetPlatformFromPackage(String pack) {
@@ -974,11 +961,6 @@ public class BaseNoGui {
       if (args[i].equals("--preferences-file")) {
         ++i;
         preferencesFile = args[i];
-        continue;
-      }
-      if (args[i].equals("--curdir")) {
-        i++;
-        currentDirectory = args[i];
         continue;
       }
     }
