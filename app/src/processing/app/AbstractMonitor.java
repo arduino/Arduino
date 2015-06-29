@@ -40,6 +40,8 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
   private Timer updateTimer;
 
   private BoardPort boardPort;
+  
+  protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000"};
 
   public AbstractMonitor(BoardPort boardPort) {
     super(boardPort.getLabel());

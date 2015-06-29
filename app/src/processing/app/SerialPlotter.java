@@ -163,11 +163,6 @@ public class SerialPlotter extends AbstractMonitor {
     JPanel pane = new JPanel();
     pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
     pane.setBorder(new EmptyBorder(4, 4, 4, 4));
-         
-    String[] serialRateStrings = {
-      "300","1200","2400","4800","9600","14400",
-      "19200","28800","38400","57600","115200"
-    };
     
     serialRates = new JComboBox();
     for (int i = 0; i < serialRateStrings.length; i++)
