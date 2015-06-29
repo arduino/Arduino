@@ -479,6 +479,7 @@ public class Editor extends JFrame implements RunnerListener {
     saveAsMenuItem.setEnabled(!external);
 
     textarea.setCodeFoldingEnabled(PreferencesData.getBoolean("editor.code_folding"));
+    scrollPane.setFoldIndicatorEnabled(PreferencesData.getBoolean("editor.code_folding"));
     scrollPane.setLineNumbersEnabled(PreferencesData.getBoolean("editor.linenumbers"));
 
     if (external) {
