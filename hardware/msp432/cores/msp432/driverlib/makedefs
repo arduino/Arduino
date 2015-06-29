@@ -184,7 +184,7 @@ CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
 # The rule for building the object file from each C source file.
 #
 VERBOSE=foo
-${COMPILER}${SUFFIX}/%.o: MSP432P4xx/%.c
+${COMPILER}${SUFFIX}/%.o: %.c
 	@if [ 'x${VERBOSE}' = x ];                            \
 	 then                                                 \
 	     echo "  CC    ${<}";                             \
@@ -199,7 +199,7 @@ endif
 #
 # The rule for building the object file from each assembly source file.
 #
-${COMPILER}${SUFFIX}/%.o: MSP432P4xx/%.S
+${COMPILER}${SUFFIX}/%.o: %.S
 	@if [ 'x${VERBOSE}' = x ];                               \
 	 then                                                    \
 	     echo "  AS    ${<}";                                \

@@ -46,7 +46,7 @@ include ${ROOT}/makedefs
 #
 # Where to find header files that do not live in the source directory.
 #
-IPATH=. ../inc ../inc/CMSIS MSP432P4xx
+IPATH=. ../inc ../inc/CMSIS .
 
 #
 # The default rule, which causes the driver library to be built.
