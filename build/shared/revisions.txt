@@ -4,6 +4,15 @@ ARDUINO 1.6.6
 * Switched to Java 8, which is now both bundled and needed for compiling the IDE
 * Added link to unofficial boards support list in preferences
 * Limit of possible new sketches in a day raised to 676. Thanks @Chris--A
+* Windows: fixed a bug when running username had non ASCII chars
+* Lots of fixes
+* ArduinoISP examples moved under 11.ArduinoISP folder
+* MacOSX: binary is now able to tell the IDE its current working directory. Eases life to those using the IDE from the CLI
+* CLI: if specified board doesn't exist, fail instead of using a default one
+* Windows: IDE stores its stuff under %LOCALAPPDATA% instead of %APPDATA% (which was a roaming folder). %APPDATA% content is automatically migrated to new location
+* Added 74880 baud rate to serial monitor. Thanks @Chris--A
+* When changing tab, file name is shown in window title
+* IDE groups compiled files into "libraries", "core" and "sketch" folders
 
 ARDUINO 1.6.5-r2 - 2015.06.17
 
