@@ -36,6 +36,10 @@ public class BaseNoGui {
   public static final String VERSION_NAME = "1.6.6";
   public static final String VERSION_NAME_LONG;
 
+  // Current directory to use for relative paths specified on the
+  // commandline
+  static String currentDirectory = System.getProperty("user.dir");
+
   static {
     String versionNameLong = VERSION_NAME;
     File hourlyBuildTxt = new File(getContentFile("lib"), "hourlyBuild.txt");
@@ -51,10 +55,6 @@ public class BaseNoGui {
   }
 
   static File buildFolder;
-
-  // Current directory to use for relative paths specified on the
-  // commandline
-  static String currentDirectory = System.getProperty("user.dir");
 
   private static DiscoveryManager discoveryManager = new DiscoveryManager();
   
