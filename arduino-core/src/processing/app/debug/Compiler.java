@@ -29,6 +29,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -1416,11 +1417,10 @@ public class Compiler implements MessageConsumer {
       throw new RunnerException(e);
     }
     otherFilesStream.map((path) -> new Pair<>(path, Paths.get(buildPath, sketchPath.relativize(path).toString())))
-      .filter((pair) -> !Files.exists(pair.value))
       .forEach((pair) -> {
         try {
           Files.createDirectories(pair.value.getParent());
-          Files.copy(pair.key, pair.value);
+          Files.copy(pair.key, pair.value, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
           e.printStackTrace();
           throw new RuntimeException(I18n.format(_("Problem moving {0} to the build folder"), sketchPath.relativize(pair.key).toString()));
