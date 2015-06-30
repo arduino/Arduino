@@ -1397,22 +1397,35 @@ public class Compiler implements MessageConsumer {
       }
     }
 
-    copyAdditionalFilesToBuildFolderSavingOriginalFolderStructure(sketch, buildPath);
-
     // 3. then loop over the code[] and save each .java file
     for (SketchCode sc : sketch.getCodes()) {
-      if (sc.isExtension("ino") || sc.isExtension("pde")) {
+      if (sc.isExtension(SketchData.OTHER_ALLOWED_EXTENSIONS)) {
+        // no pre-processing services necessary for java files
+        // just write the the contents of 'program' to a .java file
+        // into the build directory. uses byte stream and reader/writer
+        // shtuff so that unicode bunk is properly handled
+        String filename = sc.getFileName(); //code[i].name + ".java";
+        try {
+          BaseNoGui.saveFile(sc.getProgram(), new File(buildPath, filename));
+        } catch (IOException e) {
+          e.printStackTrace();
+          throw new RunnerException(I18n.format(_("Problem moving {0} to the build folder"), filename));
+        }
+
+      } else if (sc.isExtension("ino") || sc.isExtension("pde")) {
         // The compiler and runner will need this to have a proper offset
         sc.addPreprocOffset(headerOffset);
       }
     }
+
+    copyAdditionalFilesToBuildFolderSavingOriginalFolderStructure(sketch, buildPath);
   }
 
   private void copyAdditionalFilesToBuildFolderSavingOriginalFolderStructure(SketchData sketch, String buildPath) throws RunnerException {
     Path sketchPath = Paths.get(sketch.getFolder().getAbsolutePath());
     Stream<Path> otherFilesStream;
     try {
-      otherFilesStream = Files.find(sketchPath, ADDITIONAL_FILES_COPY_MAX_DEPTH, (path, attribs) -> !attribs.isDirectory() && FileUtils.hasExtension(path.toFile(), SketchData.OTHER_ALLOWED_EXTENSIONS));
+      otherFilesStream = Files.find(sketchPath, ADDITIONAL_FILES_COPY_MAX_DEPTH, (path, attribs) -> !attribs.isDirectory() && isPathInASubfolder(sketchPath, path) && FileUtils.hasExtension(path.toFile(), SketchData.OTHER_ALLOWED_EXTENSIONS));
     } catch (IOException e) {
       throw new RunnerException(e);
     }
@@ -1428,6 +1441,9 @@ public class Compiler implements MessageConsumer {
       });
   }
 
+  private boolean isPathInASubfolder(Path sketchPath, Path path) {
+    return sketchPath.relativize(path).getNameCount() > 1;
+  }
 
   /**
    * List of library folders.
