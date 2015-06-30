@@ -159,6 +159,11 @@ else
 	$(info Creating $@)
 	$(OBJCOPY) $(OBJCOPY_FLAGS) $< $@
 endif
+ifeq ($(OS),Windows_NT)
+	xcopy $(APPLICATION_PATH)\hardware\$(PLATFORM)\configPkg\package\cfg\energia_pm4fg.rov.xs . /Y 
+else
+	cp $(APPLICATION_PATH)/hardware/$(PLATFORM)/configPkg/package/cfg/energia_pm4fg.rov.xs .
+endif
 	$(call size)
 	$(info >>>> Done <<<<)
 
