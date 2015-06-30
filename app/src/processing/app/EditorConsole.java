@@ -21,236 +21,106 @@
 
 package processing.app;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import cc.arduino.ConsoleOutputStream;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Element;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-
-import processing.app.helpers.OSUtils;
-
+import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
+import java.io.PrintStream;
 
 /**
  * Message console that sits below the editing area.
- * <P>
- * Debugging this class is tricky... If it's throwing exceptions,
- * don't take over System.err, and debug while watching just System.out
- * or just write println() or whatever directly to systemOut or systemErr.
  */
-@SuppressWarnings("serial")
 public class EditorConsole extends JScrollPane {
-  Editor editor;
 
-  JTextPane consoleTextPane;
-  BufferedStyledDocument consoleDoc;
+  private static ConsoleOutputStream out;
+  private static ConsoleOutputStream err;
 
-  SimpleAttributeSet stdStyle;
-  SimpleAttributeSet errStyle;
+  public static synchronized void init(SimpleAttributeSet outStyle, PrintStream outStream, SimpleAttributeSet errStyle, PrintStream errStream) {
+    if (out != null) {
+      return;
+    }
 
-  // Single static instance shared because there's only one real System.out.
-  // Within the input handlers, the currentConsole variable will be used to
-  // echo things to the correct location.
-  
-  public EditorConsole(Editor _editor) {
-    editor = _editor;
+    out = new ConsoleOutputStream(outStyle, outStream);
+    System.setOut(new PrintStream(out, true));
 
-    int maxLineCount = PreferencesData.getInteger("console.length");
+    err = new ConsoleOutputStream(errStyle, errStream);
+    System.setErr(new PrintStream(err, true));
+  }
 
-    consoleDoc = new BufferedStyledDocument(4000, maxLineCount);
-    consoleTextPane = new JTextPane(consoleDoc);
+  public static void setCurrentEditorConsole(EditorConsole console) {
+    out.setCurrentEditorConsole(console);
+    err.setCurrentEditorConsole(console);
+  }
+
+  private final DefaultStyledDocument document;
+  private final JTextPane consoleTextPane;
+
+  public EditorConsole() {
+    document = new DefaultStyledDocument();
+
+    consoleTextPane = new JTextPane(document);
     consoleTextPane.setEditable(false);
+    DefaultCaret caret = (DefaultCaret) consoleTextPane.getCaret();
+    caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
-    // necessary?
-    SimpleAttributeSet leftAlignAttr = new SimpleAttributeSet();
-    StyleConstants.setAlignment(leftAlignAttr, StyleConstants.ALIGN_LEFT);
-    consoleDoc.setParagraphAttributes(0, 0, leftAlignAttr, true);
+    Color backgroundColour = Theme.getColor("console.color");
+    consoleTextPane.setBackground(backgroundColour);
 
-    // build styles for different types of console output
-    Color bgColor    = Theme.getColor("console.color");
-    Color fgColorOut = Theme.getColor("console.output.color");
-    Color fgColorErr = Theme.getColor("console.error.color");
     Font consoleFont = Theme.getFont("console.font");
     Font editorFont = PreferencesData.getFont("editor.font");
-    Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
+    Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
 
-    stdStyle = new SimpleAttributeSet();
-    StyleConstants.setForeground(stdStyle, fgColorOut);
-    StyleConstants.setBackground(stdStyle, bgColor);
-    StyleConstants.setFontSize(stdStyle, font.getSize());
-    StyleConstants.setFontFamily(stdStyle, font.getFamily());
-    StyleConstants.setBold(stdStyle, font.isBold());
-    StyleConstants.setItalic(stdStyle, font.isItalic());
+    SimpleAttributeSet stdOutStyle = new SimpleAttributeSet();
+    StyleConstants.setForeground(stdOutStyle, Theme.getColor("console.output.color"));
+    StyleConstants.setBackground(stdOutStyle, backgroundColour);
+    StyleConstants.setFontSize(stdOutStyle, actualFont.getSize());
+    StyleConstants.setFontFamily(stdOutStyle, actualFont.getFamily());
+    StyleConstants.setBold(stdOutStyle, actualFont.isBold());
+    StyleConstants.setItalic(stdOutStyle, actualFont.isItalic());
 
-    errStyle = new SimpleAttributeSet();
-    StyleConstants.setForeground(errStyle, fgColorErr);
-    StyleConstants.setBackground(errStyle, bgColor);
-    StyleConstants.setFontSize(errStyle, font.getSize());
-    StyleConstants.setFontFamily(errStyle, font.getFamily());
-    StyleConstants.setBold(errStyle, font.isBold());
-    StyleConstants.setItalic(errStyle, font.isItalic());
+    consoleTextPane.setParagraphAttributes(stdOutStyle, true);
 
-    consoleTextPane.setBackground(bgColor);
+    SimpleAttributeSet stdErrStyle = new SimpleAttributeSet();
+    StyleConstants.setForeground(stdErrStyle, Theme.getColor("console.error.color"));
+    StyleConstants.setBackground(stdErrStyle, backgroundColour);
+    StyleConstants.setFontSize(stdErrStyle, actualFont.getSize());
+    StyleConstants.setFontFamily(stdErrStyle, actualFont.getFamily());
+    StyleConstants.setBold(stdErrStyle, actualFont.isBold());
+    StyleConstants.setItalic(stdErrStyle, actualFont.isItalic());
 
-    // add the jtextpane to this scrollpane
-    setViewportView(consoleTextPane);
+    JPanel noWrapPanel = new JPanel(new BorderLayout());
+    noWrapPanel.add(consoleTextPane);
+
+    setViewportView(noWrapPanel);
+    getVerticalScrollBar().setUnitIncrement(7);
 
     // calculate height of a line of text in pixels
     // and size window accordingly
-    FontMetrics metrics = getFontMetrics(font);
+    FontMetrics metrics = getFontMetrics(actualFont);
     int height = metrics.getAscent() + metrics.getDescent();
     int lines = PreferencesData.getInteger("console.lines");
     int sizeFudge = 6; //10; // unclear why this is necessary, but it is
     setPreferredSize(new Dimension(1024, (height * lines) + sizeFudge));
-    setMinimumSize(new Dimension(1024, (height * 4) + sizeFudge));
+    setMinimumSize(new Dimension(1024, (height * 5) + sizeFudge));
 
-    EditorConsoleStream.init();
-
-    // to fix ugliness.. normally macosx java 1.3 puts an
-    // ugly white border around this object, so turn it off.
-    if (OSUtils.isMacOS()) {
-      setBorder(null);
-    }
-
-    // periodically post buffered messages to the console
-    // should the interval come from the preferences file?
-    new Timer(250, new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        SwingUtilities.invokeLater(new Runnable() {
-          @Override
-          public void run() {
-            // only if new text has been added
-            if (consoleDoc.isChanged()) {
-              // insert the text that's been added in the meantime
-              consoleDoc.insertAll();
-              // always move to the end of the text as it's added
-              consoleTextPane.setCaretPosition(consoleDoc.getLength());
-            }
-          }
-        });
-      }
-    }).start();
+    EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
   }
-
-
-  /**
-   * Append a piece of text to the console.
-   * <P>
-   * Swing components are NOT thread-safe, and since the MessageSiphon
-   * instantiates new threads, and in those callbacks, they often print
-   * output to stdout and stderr, which are wrapped by EditorConsoleStream
-   * and eventually leads to EditorConsole.appendText(), which directly
-   * updates the Swing text components, causing deadlock.
-   * <P>
-   * Updates are buffered to the console and displayed at regular
-   * intervals on Swing's event-dispatching thread. (patch by David Mellis)
-   */
-  synchronized void appendText(String txt, boolean e) {
-    consoleDoc.appendString(txt, e ? errStyle : stdStyle);
-  }
-
 
   public void clear() {
     try {
-      consoleDoc.remove(0, consoleDoc.getLength());
+      document.remove(0, document.getLength());
     } catch (BadLocationException e) {
       // ignore the error otherwise this will cause an infinite loop
       // maybe not a good idea in the long run?
     }
   }
-}
 
-
-// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-
-/**
- * Buffer updates to the console and output them in batches. For info, see:
- * http://java.sun.com/products/jfc/tsc/articles/text/element_buffer and
- * http://javatechniques.com/public/java/docs/gui/jtextpane-speed-part2.html
- * appendString() is called from multiple threads, and insertAll from the
- * swing event thread, so they need to be synchronized
- */
-@SuppressWarnings("serial")
-class BufferedStyledDocument extends DefaultStyledDocument {
-  private List<ElementSpec> elements = new ArrayList<ElementSpec>();
-  private int maxLineLength, maxLineCount;
-  private int currentLineLength = 0;
-  private boolean changed = false;
-
-  public BufferedStyledDocument(int _maxLineLength, int _maxLineCount) {
-    maxLineLength = _maxLineLength;
-    maxLineCount = _maxLineCount;
+  public String getText() {
+    return consoleTextPane.getText().trim();
   }
 
-  /** buffer a string for insertion at the end of the DefaultStyledDocument */
-  public synchronized void appendString(String text, AttributeSet a) {
-    changed = true;
-    char[] chars = text.toCharArray();
-    int start = 0;
-    int stop = 0;
-    while (stop < chars.length) {
-      char c = chars[stop];
-      stop++;
-      currentLineLength++;
-      if (c == '\n' || c == '\r' || currentLineLength > maxLineLength) {
-        elements.add(new ElementSpec(a, ElementSpec.ContentType, chars, start,
-            stop - start));
-        elements.add(new ElementSpec(a, ElementSpec.EndTagType));
-        elements.add(new ElementSpec(a, ElementSpec.StartTagType));
-        currentLineLength = 0;
-        start = stop;
-      }
-    }
-    elements.add(new ElementSpec(a, ElementSpec.ContentType, chars, start,
-        stop - start));
-  }
-
-  /** insert the buffered strings */
-  public synchronized void insertAll() {
-    try {
-      // Insert new elements at the bottom
-      ElementSpec[] elementArray = elements.toArray(new ElementSpec[0]);
-      insert(getLength(), elementArray);
-      
-      // check how many lines have been used
-      // if too many, shave off a few lines from the beginning
-      Element root = getDefaultRootElement();
-      int lineCount = root.getElementCount();
-      int overage = lineCount - maxLineCount;
-      if (overage > 0) {
-        // if 1200 lines, and 1000 lines is max,
-        // find the position of the end of the 200th line
-        Element lineElement = root.getElement(overage);
-        if (lineElement == null)
-          return; // do nuthin
-
-        // remove to the end of the 200th line
-        int endOffset = lineElement.getEndOffset();
-        remove(0, endOffset);
-      }
-    } catch (BadLocationException e) {
-      // ignore the error otherwise this will cause an infinite loop
-      // maybe not a good idea in the long run?
-    }
-    elements.clear();
-    changed = false;
-  }
-
-  public boolean isChanged() {
-    return changed;
+  public Document getDocument() {
+    return document;
   }
 }

@@ -641,7 +641,7 @@ public class Base {
     }
 
     // set the current window to be the console that's getting output
-    EditorConsoleStream.setCurrent(activeEditor.console);
+    EditorConsole.setCurrentEditorConsole(activeEditor.console);
   }
 
 
