@@ -1924,8 +1924,7 @@ public class Base {
     
     // don't use the low-res icon on Linux
     if (OSUtils.isLinux()){
-      String current = System.getProperty("user.dir");
-      Image image = Toolkit.getDefaultToolkit().createImage(current + "/lib/arduino.png");
+      Image image = Toolkit.getDefaultToolkit().createImage(BaseNoGui.getContentFile("/lib/arduino.png").getAbsolutePath());
       frame.setIconImage(image);
       return;
     }
