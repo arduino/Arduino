@@ -388,16 +388,22 @@ public class Compiler implements MessageConsumer {
     for (UserLibrary lib : importedLibraries) {
       if (verbose) {
         String legacy = "";
-        if (lib instanceof LegacyUserLibrary)
+        if (lib instanceof LegacyUserLibrary) {
           legacy = "(legacy)";
-        System.out.println(I18n
-            .format(_("Using library {0} in folder: {1} {2}"), lib.getName(),
-                    lib.getInstalledFolder(), legacy));
+        }
+
+        if (lib.getParsedVersion() == null) {
+          System.out.println(I18n.format(_("Using library {0} in folder: {1} {2}"), lib.getName(), lib.getInstalledFolder(), legacy));
+        } else {
+          System.out.println(I18n.format(_("Using library {0} at version {1} in folder: {2} {3}"), lib.getName(), lib.getParsedVersion(), lib.getInstalledFolder(), legacy));
+        }
       }
       includeFolders.add(lib.getSrcFolder());
     }
-    if (verbose)
+
+    if (verbose) {
       System.out.println();
+    }
 
     List<String> archs = new ArrayList<String>();
     archs.add(BaseNoGui.getTargetPlatform().getId());
