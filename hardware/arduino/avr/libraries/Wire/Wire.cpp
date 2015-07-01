@@ -80,8 +80,24 @@ void TwoWire::setClock(uint32_t frequency)
   TWBR = ((F_CPU / frequency) - 16) / 2;
 }
 
-uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop)
 {
+  
+  // send internal address if specified
+  if (isize > 0) {
+	beginTransmission(address);
+
+	// clamp to max internal register address length
+	if (isize > 3){
+		isize = 3;
+	}
+
+	// write internal register address
+	while (isize-- > 0)
+		write((uint8_t)(iaddress >> (isize*8)));
+	endTransmission(false);
+  }
+
   // clamp to buffer length
   if(quantity > BUFFER_LENGTH){
     quantity = BUFFER_LENGTH;
@@ -93,6 +109,10 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
   rxBufferLength = read;
 
   return read;
+}
+
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop) {
+	return requestFrom((uint8_t)address, (uint8_t)quantity, (uint32_t)0, (uint8_t)0, (uint8_t)sendStop);
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
