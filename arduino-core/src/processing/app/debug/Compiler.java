@@ -34,6 +34,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import cc.arduino.MyStreamPumper;
+import cc.arduino.contributions.packages.ContributedPlatform;
+import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
@@ -613,7 +615,13 @@ public class Compiler implements MessageConsumer {
     } else {
       p.put("build.variant.path", "");
     }
-    
+
+    ContributedPlatform installedPlatform = BaseNoGui.indexer.getInstalled(referencePlatform.getContainerPackage().getId(), referencePlatform.getId());
+    if (installedPlatform != null) {
+      List<ContributedTool> tools = installedPlatform.getResolvedTools();
+      BaseNoGui.createToolPreferences(tools, false);
+    }
+
     // Build Time
     Date d = new Date();
     GregorianCalendar cal = new GregorianCalendar();
@@ -1215,15 +1223,22 @@ public class Compiler implements MessageConsumer {
     execAsynchronously(cmdArray);
   }
 
-  private File mergeSketchWithBootloaderIfAppropriate(String className, PreferencesMap prefs) throws IOException {
+  private void mergeSketchWithBootloaderIfAppropriate(String className, PreferencesMap prefs) throws IOException {
     if (!prefs.containsKey("bootloader.noblink") && !prefs.containsKey("bootloader.file")) {
-      return null;
+      return;
     }
 
     String buildPath = prefs.get("build.path");
-    File sketch = new File(buildPath, className + ".hex");
-    if (!sketch.exists()) {
-      return null;
+
+    Path sketch;
+    Path sketchInSubfolder = Paths.get(buildPath, "sketch", className + ".hex");
+    Path sketchInBuildPath = Paths.get(buildPath, className + ".hex");
+    if (Files.exists(sketchInSubfolder)) {
+      sketch = sketchInSubfolder;
+    } else if (Files.exists(sketchInBuildPath)) {
+      sketch = sketchInBuildPath;
+    } else {
+      return;
     }
 
     String bootloaderNoBlink = prefs.get("bootloader.noblink");
@@ -1231,18 +1246,22 @@ public class Compiler implements MessageConsumer {
       bootloaderNoBlink = prefs.get("bootloader.file");
     }
 
-    File bootloader = new File(new File(prefs.get("runtime.platform.path"), "bootloaders"), bootloaderNoBlink);
-    if (!bootloader.exists()) {
+    Path bootloader = Paths.get(prefs.get("runtime.platform.path"), "bootloaders", bootloaderNoBlink);
+    if (!Files.exists(bootloader)) {
       System.err.println(I18n.format(_("Bootloader file specified but missing: {0}"), bootloader));
-      return null;
+      return;
     }
 
-    File mergedSketch = new File(buildPath, className + ".with_bootloader.hex");
-    FileUtils.copyFile(sketch, mergedSketch);
+    Path mergedSketch;
+    if ("sketch".equals(sketch.getParent().getFileName().toString())) {
+      mergedSketch = Paths.get(buildPath, "sketch", className + ".with_bootloader.hex");
+    } else {
+      mergedSketch = Paths.get(buildPath, className + ".with_bootloader.hex");
+    }
 
-    new MergeSketchWithBooloader().merge(mergedSketch, bootloader);
+    Files.copy(sketch, mergedSketch, StandardCopyOption.REPLACE_EXISTING);
 
-    return mergedSketch;
+    new MergeSketchWithBooloader().merge(mergedSketch.toFile(), bootloader.toFile());
   }
 
   //7. Save the .hex file
@@ -1280,11 +1299,19 @@ public class Compiler implements MessageConsumer {
       compiledSketch = StringReplacer.replaceFromMapping(compiledSketch, dict);
       copyOfCompiledSketch = StringReplacer.replaceFromMapping(copyOfCompiledSketch, dict);
 
-      File compiledSketchFile = new File(prefs.get("build.path"), compiledSketch);
-      File copyOfCompiledSketchFile = new File(sketch.getFolder(), copyOfCompiledSketch);
+      Path compiledSketchPath;
+      Path compiledSketchPathInSubfolder = Paths.get(prefs.get("build.path"), "sketch", compiledSketch);
+      Path compiledSketchPathInBuildPath = Paths.get(prefs.get("build.path"), compiledSketch);
+      if (Files.exists(compiledSketchPathInSubfolder)) {
+        compiledSketchPath = compiledSketchPathInSubfolder;
+      } else {
+        compiledSketchPath = compiledSketchPathInBuildPath;
+      }
 
-      FileUtils.copyFile(compiledSketchFile, copyOfCompiledSketchFile);
-    } catch (Exception e) {
+      Path copyOfCompiledSketchFilePath = Paths.get(this.sketch.getFolder().getAbsolutePath(), copyOfCompiledSketch);
+
+      Files.copy(compiledSketchPath, copyOfCompiledSketchFilePath, StandardCopyOption.REPLACE_EXISTING);
+    } catch (IOException e) {
       throw new RunnerException(e);
     }
   }

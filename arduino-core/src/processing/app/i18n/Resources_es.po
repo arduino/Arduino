@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-17 18:24+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-06-30 22:38+0000\n"
+"Last-Translator: Erik Fargas <efargaspro@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/arduino-ide-15/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +39,7 @@ msgstr "(editar sólo cuando Arduino no está corriendo)"
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload y --verbose-build sólo pueden ser usados junto a --verify o --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -116,17 +116,17 @@ msgstr "Ha ocurrido un error mientras se solucionaba la codificación del archiv
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr "Ha ocurrido un error mientras se enviava el sketch"
+msgstr "Ha ocurrido un error mientras se enviaba el sketch"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "Ha ocurrido un error mientras se verificaba el sketch"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "Ha ocurrido un error mientras se verificaba/enviaba el sketch"
 
 #: Base.java:228
 msgid ""
@@ -172,7 +172,7 @@ msgstr "Placas Arduino AVR"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino sólo puede abrir sus propios programas\ny otros ficheros terminados en .ino o .pde"
 
 #: Base.java:1682
 msgid ""
@@ -240,7 +240,7 @@ msgstr "Asturiano"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "Autorización requerida"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -285,7 +285,7 @@ msgstr "Fichero mal Seleccionado"
 
 #: ../../../processing/app/debug/Compiler.java:89
 msgid "Bad sketch primary file or bad sketch directory structure"
-msgstr ""
+msgstr "Fichero primario del sketch malo o mala estructura de directorios en el sketch"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
@@ -297,7 +297,7 @@ msgstr "Beloruso"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengalí (India)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -309,7 +309,7 @@ msgstr "Placa"
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "Board {0}:{1}:{2} no define el ajuste ''build.board''. Auto-ajuste a: {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
@@ -354,7 +354,7 @@ msgstr "Quemando bootloader a la Placa I/O (esto debería tardar un minuto)..."
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "Sólo puede pasar uno de: {0}"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -776,22 +776,22 @@ msgstr "Error al imprimir."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "Error mientras se enviaba"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Error mientras se enviaba: falta el parámetro de configuración '{0}'"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "Error mientras se verificaba"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Error mientras se verificaba/enviaba"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -812,7 +812,7 @@ msgstr "Cancelada exportación, los cambios se han de salvar antes."
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr ""
+msgstr "Falló al abrir el sketch: \"{0}\""
 
 #: Editor.java:491
 msgid "File"
@@ -864,7 +864,7 @@ msgstr "Para información de cómo instalar librerías, visite: http://arduino.c
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Forzando reinicio usando 1200bps apertura / cierre en el puerto {0}"
 
 #: Preferences.java:95
 msgid "French"
@@ -880,7 +880,7 @@ msgstr "Gallego"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Gallego (España)"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -899,7 +899,7 @@ msgstr "Inicio Rápido"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr ""
+msgstr "Las variables Globales usan {0} bytes ({2}%%) de la memoria dinámica, dejando {3} bytes para las variables locales. El máximo es {1} bytes."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
@@ -1002,11 +1002,11 @@ msgstr "Lituano"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "Poca memoria disponible, se pueden producir problemas de estabilidad."
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malayo (Malasia)"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1022,7 +1022,7 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "Modo no soportado"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
