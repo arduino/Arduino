@@ -34,6 +34,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import cc.arduino.MyStreamPumper;
+import cc.arduino.contributions.packages.ContributedPlatform;
+import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
@@ -613,7 +615,13 @@ public class Compiler implements MessageConsumer {
     } else {
       p.put("build.variant.path", "");
     }
-    
+
+    ContributedPlatform installedPlatform = BaseNoGui.indexer.getInstalled(referencePlatform.getContainerPackage().getId(), referencePlatform.getId());
+    if (installedPlatform != null) {
+      List<ContributedTool> tools = installedPlatform.getResolvedTools();
+      BaseNoGui.createToolPreferences(tools, false);
+    }
+
     // Build Time
     Date d = new Date();
     GregorianCalendar cal = new GregorianCalendar();
