@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-17 18:24+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-06-30 13:52+0000\n"
+"Last-Translator: Kristofers <kristozz@gmail.com>\n"
 "Language-Team: Latvian (Latvia) (http://www.transifex.com/projects/p/arduino-ide-15/language/lv_LV/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,11 +161,11 @@ msgstr "Skices arhivēšana neizdevās, jo\nskici nevarēja korekti saglabāt."
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
-msgstr ""
+msgstr "Arduino ARM (32-bitu) plates"
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
-msgstr ""
+msgstr "Arduino AVR plates"
 
 #: Editor.java:2137
 msgid ""
@@ -194,7 +194,7 @@ msgstr "Arduino nepieciešams pilns JDK (ne tikai JRE),\nlai darbotos. Lūdzu, i
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr ""
+msgstr "Arduino: "
 
 #: Sketch.java:588
 #, java-format
@@ -239,7 +239,7 @@ msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "Nepieciešams autorizēties"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -301,7 +301,7 @@ msgstr ""
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr ""
+msgstr "Plate"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -312,7 +312,7 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr ""
+msgstr "Plate:"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
@@ -332,7 +332,7 @@ msgstr "Būvējamā mape pazuda, vai nevarēja tajā ierakstīt"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "Būvējuma opcijas ir izmainījušās, pārbūvē visu"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -358,7 +358,7 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Nevar atrast skici norādītajā adresē"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -439,7 +439,7 @@ msgstr "Kopēt kā HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr ""
+msgstr "Kopēt kļūdu ziņojumus"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -626,7 +626,7 @@ msgstr "Atcelt visas izmaiņas un pārlādēt skici?"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr ""
+msgstr "Rādīt rindu numurus"
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -643,7 +643,7 @@ msgstr "Sāknēšanas ielādētājs iededzināts."
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "Kompilēšana pabeigta"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -655,7 +655,7 @@ msgstr "Drukāšana pabeigta."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "Augšupielāde pabeigta"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -775,7 +775,7 @@ msgstr "Drukājot radās kļūda."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "Kļūda augšupielādējot"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -786,11 +786,11 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "Kļūda pārbaudot"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Kļūda pārbaudot/augšupielādējot"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -1001,7 +1001,7 @@ msgstr "Lithuaninan"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "Atlicis maz atmiņas, var rasties stabilitātes problēmas."
 
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
@@ -1021,7 +1021,7 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "Režīms nav atblastīts"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1037,7 +1037,7 @@ msgstr ""
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr ""
+msgstr "Jānorāda precīzi viens skices fails"
 
 #: ../../../processing/app/Preferences.java:158
 msgid "N'Ko"
@@ -1053,7 +1053,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Tīkla porti"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1211,7 +1211,7 @@ msgstr "Lapas iestatījumi"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
-msgstr ""
+msgstr "Parole:"
 
 #: Editor.java:1189 Editor.java:2731
 msgid "Paste"
@@ -1248,7 +1248,7 @@ msgstr "Polish"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr ""
+msgstr "Ports"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1327,7 +1327,7 @@ msgstr "Problēma ar pārsaukšanu"
 
 #: ../../../processing/app/I18n.java:86
 msgid "Processor"
-msgstr ""
+msgstr "Procesors"
 
 #: Editor.java:704
 msgid "Programmer"
@@ -1406,7 +1406,7 @@ msgstr "Saglabāt skices mapi kā..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "Saglabāt, kad pārbauda vai augšupielādē"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1464,7 +1464,7 @@ msgstr "Seriālais ports {0} netika atrasts.\nAtkārtot augšupielādi ar citu s
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Seriālie porti"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1476,7 +1476,7 @@ msgstr "Parādīt skiču mapi"
 
 #: ../../../processing/app/EditorStatus.java:468
 msgid "Show verbose output during compilation"
-msgstr ""
+msgstr "Rādīt detalizētāku izvadi, veicot kompilēšanu"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1517,7 +1517,7 @@ msgstr "Skice ir pārāk liela; apmeklējiet http://www.arduino.cc/en/Guide/Trou
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr ""
+msgstr "Skice izmanto {0} baitus ({2}%%) no programmas glabātuves vietas. Maksimums ir {1} baiti."
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1744,7 +1744,7 @@ msgstr ""
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr ""
+msgstr "Neizdevās atvērt seriālo monitoru"
 
 #: Sketch.java:1432
 #, java-format
@@ -1784,7 +1784,7 @@ msgstr "Augšupielādēšana atcelta."
 
 #: ../../../processing/app/Sketch.java:1678
 msgid "Upload cancelled"
-msgstr ""
+msgstr "Augšupielāde atcelta"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
@@ -1997,7 +1997,7 @@ msgstr "kompilē"
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
+msgstr "pievienots!"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
@@ -2041,7 +2041,7 @@ msgstr "izvēlētais seriālais ports {0} neeksistē, vai arī jūsu plate nav p
 #: ../../../processing/app/Base.java:389
 #, java-format
 msgid "unknown option: {0}"
-msgstr ""
+msgstr "nezināma opcija: {0}"
 
 #: Preferences.java:391
 msgid "upload"
