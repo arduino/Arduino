@@ -192,20 +192,6 @@ void NwpPowerOff(void);
 
 void NwpPowerOn(void);
 
-void cc_UDMAChannelSelect(unsigned int uiChannel);
-
-void cc_SetupTransfer(
-                  unsigned long ulChannel,
-                  unsigned long ulMode,
-                  unsigned long ulItemCount,
-                  unsigned long ulItemSize,
-                  unsigned long ulArbSize,
-                  void *pvSrcBuf,
-                  unsigned long ulSrcInc,
-                  void *pvDstBuf,
-                  unsigned long ulDstInc);
-
-
 
 #ifdef  __cplusplus
 }

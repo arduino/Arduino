@@ -23,8 +23,8 @@
 extern "C" {
     #include "utility/wl_definitions.h"
 }
-#include <Print.h>
-#include <Server.h>
+#include <ti/runtime/wiring/Print.h>
+#include <ti/runtime/wiring/Server.h>
 
 class WiFiClient;
 

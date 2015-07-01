@@ -20,9 +20,9 @@
 #ifndef WiFi_h
 #define WiFi_h
 
-#include <Energia.h>
-#include <IPAddress.h>
-#include <MACAddress.h>
+#include <ti/runtime/wiring/Energia.h>
+#include <ti/runtime/wiring/IPAddress.h>
+#include <ti/runtime/wiring/MACAddress.h>
 #include "utility/wl_definitions.h"
 #include "utility/simplelink.h"
 #include "WiFiClient.h"

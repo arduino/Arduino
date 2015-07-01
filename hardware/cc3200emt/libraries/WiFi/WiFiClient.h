@@ -19,10 +19,10 @@
 
 #ifndef wificlient_h
 #define wificlient_h
-#include <Arduino.h>
-#include <IPAddress.h>
-#include <Stream.h>
-#include <Client.h>
+#include <ti/runtime/wiring/Arduino.h>
+#include <ti/runtime/wiring/IPAddress.h>
+#include <ti/runtime/wiring/Stream.h>
+#include <ti/runtime/wiring/Client.h>
 
 #define TCP_RX_BUFF_MAX_SIZE 255
 
@@ -63,7 +63,7 @@ public:
 
     boolean sslIsVerified;
     
-protected:
+private:
     int _socketIndex;
     uint8_t rx_buffer[TCP_RX_BUFF_MAX_SIZE];
     int rx_fillLevel;

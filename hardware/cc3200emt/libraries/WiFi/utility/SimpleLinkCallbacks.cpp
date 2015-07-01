@@ -25,7 +25,7 @@ extern "C" {
 }
 
 #include "WiFi.h"
-#include <Energia.h>
+#include <ti/runtime/wiring/Energia.h>
 
 #if (defined(sl_GeneralEvtHdlr))
 extern void sl_GeneralEvtHdlr(SlDeviceEvent_t *pSlDeviceEvent)

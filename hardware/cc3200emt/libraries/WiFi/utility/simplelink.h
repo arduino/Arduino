@@ -447,10 +447,10 @@ extern "C"
 #endif
 
 
-
+#ifndef __CONCAT
 #define __CONCAT(x,y)	x ## y
 #define __CONCAT2(x,y)	__CONCAT(x,y)
-
+#endif
 
 /*
  * The section below handles the external lib event registration
