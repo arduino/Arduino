@@ -1,4 +1,5 @@
-#ifndef MOUSEANDKEYBOARD_h
+#ifndef COMPLETEHID_h
+#define COMPLETEHID_h
 
 #if defined(_USING_HID)
 

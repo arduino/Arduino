@@ -61,13 +61,6 @@
 #define MSC_RESET					0xFF
 #define MSC_GET_MAX_LUN				0xFE
 
-#define HID_GET_REPORT				0x01
-#define HID_GET_IDLE				0x02
-#define HID_GET_PROTOCOL			0x03
-#define HID_SET_REPORT				0x09
-#define HID_SET_IDLE				0x0A
-#define HID_SET_PROTOCOL			0x0B
-
 //	Descriptors
 
 #define USB_DEVICE_DESC_SIZE 18
@@ -130,11 +123,6 @@
 
 #define MSC_SUBCLASS_SCSI						0x06 
 #define MSC_PROTOCOL_BULK_ONLY					0x50 
-
-#define HID_HID_DESCRIPTOR_TYPE					0x21
-#define HID_REPORT_DESCRIPTOR_TYPE				0x22
-#define HID_PHYSICAL_DESCRIPTOR_TYPE			0x23
-
 
 //	Device
 typedef struct {

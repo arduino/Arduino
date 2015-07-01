@@ -1,7 +1,6 @@
 #if 1 //defined(USBCON)
 
 #include "CompleteHID.h"
-#include "HIDTables.h"
 #include "HID.h"
 
 #define HID_MOUSE_ABS_ENABLED

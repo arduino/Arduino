@@ -19,6 +19,9 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#ifndef KEYBOARD_h
+#define KEYBOARD_h
+
 #if defined(_USING_HID)
 
 #error "Can only attach one submodule to HID module"

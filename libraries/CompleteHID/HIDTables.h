@@ -1,5 +1,5 @@
 #ifndef __HIDTables__
-#define HID___HIDTables__
+#define __HIDTables__
 
 
 // These mappings were extracted and transcribed from 
@@ -453,9 +453,9 @@
 #define HID_CONSUMER_CHANNEL_TOP	0x169	// HID type CL
 #define HID_CONSUMER_CHANNEL_UNKNOWN	0x16A	// HID type CL
 // Reserved	0x16B-16F
-#define HID_CONSUMER_SUB-CHANNEL	0x170	// HID type LC
-#define HID_CONSUMER_SUB-CHANNEL_INCREMENT	0x171	// HID type OSC
-#define HID_CONSUMER_SUB-CHANNEL_DECREMENT	0x172	// HID type OSC
+#define HID_CONSUMER_SUB_CHANNEL	0x170	// HID type LC
+#define HID_CONSUMER_SUB_CHANNEL_INCREMENT	0x171	// HID type OSC
+#define HID_CONSUMER_SUB_CHANNEL_DECREMENT	0x172	// HID type OSC
 #define HID_CONSUMER_ALTERNATE_AUDIO_INCREMENT	0x173	// HID type OSC
 #define HID_CONSUMER_ALTERNATE_AUDIO_DECREMENT	0x174	// HID type OSC
 // Reserved	0x175-17F
