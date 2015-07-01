@@ -95,6 +95,7 @@ bool CDC_Setup(USBSetup& setup)
 			// We check DTR state to determine if host port is open (bit 0 of lineState).
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
+				*(uint16_t *)(RAMEND-1) = *(uint16_t *)0x0800;
 				*(uint16_t *)0x0800 = 0x7777;
 				wdt_enable(WDTO_120MS);
 			}
@@ -107,7 +108,7 @@ bool CDC_Setup(USBSetup& setup)
 
 				wdt_disable();
 				wdt_reset();
-				*(uint16_t *)0x0800 = 0x0;
+				*(uint16_t *)0x0800 = *(uint16_t *)(RAMEND-1);
 			}
 		}
 		return true;
