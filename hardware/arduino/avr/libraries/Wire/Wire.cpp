@@ -92,14 +92,13 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddres
 	beginTransmission(address);
 
 	uint8_t *ptr = (uint8_t *) &iaddress;
-	// advance pointer to first byte of internal register address
-	ptr += isize - 1;
-
+	
 	// write internal register address(es) bytes
-	for (size_t i = 0; i < isize; i++)
+	for (size_t i = isize; i > 0; i--)
 	{
-	  write(*ptr--);
+	    write(ptr[i - 1]);
 	}
+
 	endTransmission(false);
   }
 
