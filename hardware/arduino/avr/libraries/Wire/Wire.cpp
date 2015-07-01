@@ -82,19 +82,24 @@ void TwoWire::setClock(uint32_t frequency)
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop)
 {
-  
   // send internal address if specified
   if (isize > 0) {
-	beginTransmission(address);
-
-	// clamp to max internal register address length
+    // clamp to max internal register address length
 	if (isize > 3){
-		isize = 3;
+	  isize = 3;
 	}
 
-	// write internal register address
-	while (isize-- > 0)
-		write((uint8_t)(iaddress >> (isize*8)));
+	beginTransmission(address);
+
+	uint8_t *ptr = (uint8_t *) &iaddress;
+	// advance pointer to first byte of internal register address
+	ptr += isize - 1;
+
+	// write internal register address(es) bytes
+	for (size_t i = 0; i < isize; i++)
+	{
+	  write(*ptr--);
+	}
 	endTransmission(false);
   }
 
