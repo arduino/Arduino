@@ -93,7 +93,7 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	m[1] = x;
 	m[2] = y;
 	m[3] = wheel;
-	HID_SendReport(1,m,4);
+	HID.SendReport(1,m,4);
 }
 
 void Mouse_::buttons(uint8_t b)

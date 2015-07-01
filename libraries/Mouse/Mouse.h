@@ -56,6 +56,7 @@ public:
   bool isPressed(uint8_t b = MOUSE_LEFT); // check LEFT by default
 };
 extern Mouse_ Mouse;
+extern HID_ HID;
 
 #endif
 #endif

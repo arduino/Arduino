@@ -44,7 +44,7 @@ void Keyboard_::end(void)
 
 void Keyboard_::sendReport(KeyReport* keys)
 {
-	HID_SendReport(2,keys,sizeof(KeyReport));
+	HID.SendReport(2,keys,sizeof(KeyReport));
 }
 
 const u8 _hidReportDescriptor[] PROGMEM = {

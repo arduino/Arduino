@@ -66,7 +66,7 @@ int HID_GetDescriptor(int8_t t)
 	}
 }
 
-void HID_SendReport(u8 id, const void* data, int len)
+void HID_::SendReport(u8 id, const void* data, int len)
 {
 	USB_Send(HID_TX, &id, 1);
 	USB_Send(HID_TX | TRANSFER_RELEASE,data,len);
