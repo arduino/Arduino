@@ -58,7 +58,7 @@ int PUSB_GetDescriptor(int8_t t)
 	return ret;
 }
 
-bool PUSB_Setup(Setup& setup, u8 j)
+bool PUSB_Setup(USBSetup& setup, u8 j)
 {
 	bool ret = false;
 	PUSBListNode* node = rootNode;

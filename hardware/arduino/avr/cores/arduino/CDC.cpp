@@ -53,13 +53,13 @@ const CDCDescriptor _cdcInterface =
 	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,0x40,0)
 };
 
-int WEAK CDC_GetInterface(u8* interfaceNum)
+int CDC_GetInterface(u8* interfaceNum)
 {
 	interfaceNum[0] += 2;	// uses 2
 	return USB_SendControl(TRANSFER_PGM,&_cdcInterface,sizeof(_cdcInterface));
 }
 
-bool WEAK CDC_Setup(Setup& setup)
+bool CDC_Setup(USBSetup& setup)
 {
 	u8 r = setup.bRequest;
 	u8 requestType = setup.bmRequestType;

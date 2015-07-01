@@ -118,7 +118,7 @@ typedef struct
 	uint8_t wValueH;
 	uint16_t wIndex;
 	uint16_t wLength;
-} Setup;
+} USBSetup;
 
 //================================================================================
 //================================================================================
@@ -126,7 +126,7 @@ typedef struct
 
 int		MSC_GetInterface(uint8_t* interfaceNum);
 int		MSC_GetDescriptor(int i);
-bool	MSC_Setup(Setup& setup);
+bool	MSC_Setup(USBSetup& setup);
 bool	MSC_Data(uint8_t rx,uint8_t tx);
 
 //================================================================================
@@ -135,7 +135,7 @@ bool	MSC_Data(uint8_t rx,uint8_t tx);
 
 int		CDC_GetInterface(uint8_t* interfaceNum);
 int		CDC_GetDescriptor(int i);
-bool	CDC_Setup(Setup& setup);
+bool	CDC_Setup(USBSetup& setup);
 
 //================================================================================
 //================================================================================

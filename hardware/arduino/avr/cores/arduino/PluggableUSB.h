@@ -27,7 +27,7 @@
 
 typedef struct
 {
-  bool (*setup)(Setup& setup, u8 i);
+  bool (*setup)(USBSetup& setup, u8 i);
   int (*getInterface)(u8* interfaceNum);
   int (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
@@ -54,7 +54,7 @@ int PUSB_GetInterface(u8* interfaceNum);
 
 int PUSB_GetDescriptor(int8_t t);
 
-bool PUSB_Setup(Setup& setup, u8 i);
+bool PUSB_Setup(USBSetup& setup, u8 i);
 
 void PUSB_Begin();
 

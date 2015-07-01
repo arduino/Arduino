@@ -72,7 +72,7 @@ void HID_SendReport(u8 id, const void* data, int len)
 	USB_Send(HID_TX | TRANSFER_RELEASE,data,len);
 }
 
-bool HID_Setup(Setup& setup, u8 i)
+bool HID_Setup(USBSetup& setup, u8 i)
 {
 	if (HID_INTERFACE != i) {
 		return false;
