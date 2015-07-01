@@ -5,6 +5,7 @@ from transifex import Transifex
 import requests
 import getpass
 import sys
+import time
 
 def main():
   print 'Use your account to talk with Transifex.'
@@ -36,6 +37,7 @@ def pull(trans, lang, fname):
       return
     except requests.exceptions.HTTPError, e:
       print " *** Retrying %s from Transifex...\n" % fname,
+      time.sleep(3)
       sys.stdout.flush()
 
   if count >= 5:
