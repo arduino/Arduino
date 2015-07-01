@@ -16,7 +16,7 @@ rtosSetup() is called before all other tasks
 *   Optional declaration
 *   Defined in main sketch or in rtosGlobals.h
 *   No delay() in rtosSetup()!
-
+*   Tested on MSP432 and CC3200
 
 Output
 
