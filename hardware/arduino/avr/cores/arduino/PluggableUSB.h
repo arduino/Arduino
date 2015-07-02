@@ -25,7 +25,7 @@
 
 #if defined(USBCON)
 
-typedef struct
+typedef struct __attribute__((packed))
 {
   bool (*setup)(USBSetup& setup, u8 i);
   int (*getInterface)(u8* interfaceNum);
