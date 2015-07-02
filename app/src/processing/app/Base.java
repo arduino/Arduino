@@ -1122,32 +1122,26 @@ public class Base {
     menu.addSeparator();
 
     // Add a list of all sketches and subfolders
-    try {
-      boolean sketches = addSketches(menu, BaseNoGui.getSketchbookFolder(), true);
-      if (sketches) menu.addSeparator();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    boolean sketches = addSketches(menu, BaseNoGui.getSketchbookFolder(), true);
+    if (sketches) menu.addSeparator();
 
     // Add each of the subfolders of examples directly to the menu
-    try {
-      boolean found = addSketches(menu, BaseNoGui.getExamplesFolder(), true);
-      if (found) menu.addSeparator();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder(), true);
+    if (found) menu.addSeparator();
   }
 
 
   protected void rebuildSketchbookMenu(JMenu menu) {
-    //System.out.println("rebuilding sketchbook menu");
-    //new Exception().printStackTrace();
-    try {
-      menu.removeAll();
-      addSketches(menu, BaseNoGui.getSketchbookFolder(), false);
-      //addSketches(menu, getSketchbookFolder());
-    } catch (IOException e) {
-      e.printStackTrace();
+    menu.removeAll();
+    addSketches(menu, BaseNoGui.getSketchbookFolder(), false);
+
+    JMenu librariesMenu = JMenuUtils.findSubMenuWithLabel(menu, "libraries");
+    if (librariesMenu != null) {
+      menu.remove(librariesMenu);
+    }
+    JMenu hardwareMenu = JMenuUtils.findSubMenuWithLabel(menu, "hardware");
+    if (hardwareMenu != null) {
+      menu.remove(hardwareMenu);
     }
   }
 
@@ -1234,30 +1228,28 @@ public class Base {
   }
 
   public void rebuildExamplesMenu(JMenu menu) {
-    if (menu == null)
+    if (menu == null) {
       return;
-    try {
-      menu.removeAll();
+    }
 
-      // Add examples from distribution "example" folder
-      boolean found = addSketches(menu, BaseNoGui.getExamplesFolder(), false);
-      if (found) menu.addSeparator();
+    menu.removeAll();
 
-      // Add examples from libraries
-      LibraryList ideLibs = getIDELibs();
-      ideLibs.sort();
-      for (UserLibrary lib : ideLibs)
+    // Add examples from distribution "example" folder
+    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder(), false);
+    if (found) menu.addSeparator();
+
+    // Add examples from libraries
+    LibraryList ideLibs = getIDELibs();
+    ideLibs.sort();
+    for (UserLibrary lib : ideLibs)
+      addSketchesSubmenu(menu, lib, false);
+
+    LibraryList userLibs = getUserLibs();
+    if (userLibs.size() > 0) {
+      menu.addSeparator();
+      userLibs.sort();
+      for (UserLibrary lib : userLibs)
         addSketchesSubmenu(menu, lib, false);
-
-      LibraryList userLibs = getUserLibs();
-      if (userLibs.size() > 0) {
-        menu.addSeparator();
-        userLibs.sort();
-        for (UserLibrary lib : userLibs)
-          addSketchesSubmenu(menu, lib, false);
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
     }
   }
 
@@ -1588,7 +1580,7 @@ public class Base {
    * should replace the sketch in the current window, or false when the
    * sketch should open in a new window.
    */
-  protected boolean addSketches(JMenu menu, File folder, final boolean replaceExisting) throws IOException {
+  protected boolean addSketches(JMenu menu, File folder, final boolean replaceExisting) {
     if (folder == null)
       return false;
 
@@ -1624,14 +1616,13 @@ public class Base {
   }
 
   private boolean addSketchesSubmenu(JMenu menu, UserLibrary lib,
-                                     boolean replaceExisting)
-          throws IOException {
+                                     boolean replaceExisting) {
     return addSketchesSubmenu(menu, lib.getName(), lib.getInstalledFolder(),
             replaceExisting);
   }
 
   private boolean addSketchesSubmenu(JMenu menu, String name, File folder,
-                                     final boolean replaceExisting) throws IOException {
+                                     final boolean replaceExisting) {
 
     ActionListener listener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
