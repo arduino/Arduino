@@ -101,6 +101,18 @@ TwoWire::TwoWire(Twi *_twi, void(*_beginCb)(void)) :
 void TwoWire::begin(void) {
 	if (onBeginCallback)
 		onBeginCallback();
+/*make sure all slaves can finish their messages started before a reset*/
+	pinMode(SCL, OUTPUT);
+	for (int i = 0; i < 8; i++)
+	  {
+		digitalWrite(SCL, HIGH);
+		delayMicroseconds(3);
+		digitalWrite(SCL, LOW);
+		delayMicroseconds(3);
+	  }
+  	pinMode(SCL, INPUT);
+/*End of: make sure all slaves can finish their messages started before a reset*/
+
 
 	// Disable PDC channel
 	twi->TWI_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
@@ -112,7 +124,6 @@ void TwoWire::begin(void) {
 void TwoWire::begin(uint8_t address) {
 	if (onBeginCallback)
 		onBeginCallback();
-
 	// Disable PDC channel
 	twi->TWI_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
 
