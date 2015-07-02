@@ -44,7 +44,7 @@ int MIDI_GetInterface(uint8_t* interfaceNum)
 	interfaceNum[0] += 2;	// uses 2
 	return USB_SendControl(0,&_midiInterface,sizeof(_midiInterface));
 }
-bool MIDI_Setup(Setup& setup, u8 i)
+bool MIDI_Setup(USBSetup& setup, u8 i)
 {
 	//Support requests here if needed. Typically these are optional
 	return false;

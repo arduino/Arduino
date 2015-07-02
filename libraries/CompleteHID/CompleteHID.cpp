@@ -1,7 +1,6 @@
 #if 1 //defined(USBCON)
 
 #include "CompleteHID.h"
-#include "HID.h"
 
 #define HID_MOUSE_ABS_ENABLED
 
@@ -197,9 +196,6 @@ const u8 _hidReportDescriptor[] = {
 #endif
 };
 
-size_t getsizeof_hidReportDescriptor() {
-    return sizeof(_hidReportDescriptor);
-}
 
 //================================================================================
 //================================================================================
@@ -207,6 +203,12 @@ size_t getsizeof_hidReportDescriptor() {
 
 Mouse_::Mouse_(void) : _buttons(0)
 {
+    static HID_Descriptor cb = {
+        .length = sizeof(_hidReportDescriptor),
+        .descriptor = _hidReportDescriptor,
+    };
+    static HIDDescriptorListNode node(&cb);
+    HID.AppendDescriptor(&node);
 }
 
 void Mouse_::begin(void) 
@@ -232,7 +234,7 @@ void Mouse_::move(signed char x, signed char y, signed char wheel)
 	m[1] = x;
 	m[2] = y;
 	m[3] = wheel;
-	HID_SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
+	HID.SendReport(HID_REPORTID_MOUSE,m,sizeof(m));
 }
 
 // X and Y have the range of 0 to 32767. 
@@ -261,7 +263,7 @@ void Mouse_::moveAbsolute(uint16_t x, uint16_t y)
     m[2] = MSB(x);
     m[3] = LSB(y);
     m[4] = MSB(y);
-    HID_SendReport(HID_REPORTID_MOUSE_ABS,m,sizeof(m));
+    HID.SendReport(HID_REPORTID_MOUSE_ABS,m,sizeof(m));
 }
 
 void Mouse_::buttons(uint8_t b)
@@ -308,7 +310,7 @@ void Keyboard_::end(void)
 
 void Keyboard_::sendReport(KeyReport* keys)
 {
-    HID_SendReport(HID_REPORTID_KEYBOARD,keys,sizeof(*keys));
+    HID.SendReport(HID_REPORTID_KEYBOARD,keys,sizeof(*keys));
 }
 
 extern
@@ -549,12 +551,12 @@ size_t Keyboard_::systemControl(uint8_t k)
 
         m[0] = LSB(mask);
         m[1] = MSB(mask);
-        HID_SendReport(HID_REPORTID_SYSTEMCONTROL,m,sizeof(m));
+        HID.SendReport(HID_REPORTID_SYSTEMCONTROL,m,sizeof(m));
 
         // these are all OSCs, so send a clear to make it possible to send it again later
         m[0] = 0;
         m[1] = 0;
-        HID_SendReport(HID_REPORTID_SYSTEMCONTROL,m,sizeof(m));
+        HID.SendReport(HID_REPORTID_SYSTEMCONTROL,m,sizeof(m));
         return 1;
     }
     else
@@ -581,12 +583,12 @@ size_t Keyboard_::consumerControl(uint8_t k)
 
         m[0] = LSB(mask);
         m[1] = MSB(mask);
-        HID_SendReport(HID_REPORTID_CONSUMERCONTROL,m,sizeof(m));
+        HID.SendReport(HID_REPORTID_CONSUMERCONTROL,m,sizeof(m));
 
         // these are all OSCs, so send a clear to make it possible to send it again later
         m[0] = 0;
         m[1] = 0;
-        HID_SendReport(HID_REPORTID_CONSUMERCONTROL,m,sizeof(m));
+        HID.SendReport(HID_REPORTID_CONSUMERCONTROL,m,sizeof(m));
         return 1;
     }
     else

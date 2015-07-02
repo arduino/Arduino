@@ -30,12 +30,12 @@ public:
 
 	int8_t begin();
 
-	virtual uint32_t available(void);
-	virtual void accept(void);
-	virtual midiEventPacket_t read(void);
-	virtual void flush(void);
-	virtual void sendMIDI(midiEventPacket_t event);
-	virtual size_t write(const uint8_t *buffer, size_t size);
+	uint32_t available(void);
+	void accept(void);
+	midiEventPacket_t read(void);
+	void flush(void);
+	void sendMIDI(midiEventPacket_t event);
+	size_t write(const uint8_t *buffer, size_t size);
 	operator bool();
 };
 extern MIDI_ MidiUSB;

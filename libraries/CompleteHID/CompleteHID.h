@@ -1,7 +1,7 @@
 #ifndef COMPLETEHID_h
 #define COMPLETEHID_h
 
-#if defined(_USING_HID)
+#if 0 //defined(_USING_HID)
 
 #error "Can only attach one submodule to HID module"
 
@@ -11,6 +11,8 @@
 
 #include "HID.h"
 #include "HIDTables.h"
+
+extern HID_ HID;
 
 //================================================================================
 //================================================================================
@@ -98,17 +100,17 @@ public:
   Keyboard_(void);
   void begin(void);
   void end(void);
-  virtual size_t write(uint8_t k);
-  virtual size_t press(uint8_t k);
-  virtual size_t release(uint8_t k);
-  virtual size_t writeKeycode(uint8_t k);
-  virtual size_t pressKeycode(uint8_t k);
-  virtual size_t releaseKeycode(uint8_t k);
-  virtual size_t addKeycodeToReport(uint8_t k);
-  virtual size_t removeKeycodeFromReport(uint8_t k);
-  virtual void releaseAll(void);
-  virtual size_t systemControl(uint8_t k);
-  virtual size_t consumerControl(uint8_t k);
+  size_t write(uint8_t k);
+  size_t press(uint8_t k);
+  size_t release(uint8_t k);
+  size_t writeKeycode(uint8_t k);
+  size_t pressKeycode(uint8_t k);
+  size_t releaseKeycode(uint8_t k);
+  size_t addKeycodeToReport(uint8_t k);
+  size_t removeKeycodeFromReport(uint8_t k);
+  void releaseAll(void);
+  size_t systemControl(uint8_t k);
+  size_t consumerControl(uint8_t k);
 };
 extern Keyboard_ Keyboard;
 
