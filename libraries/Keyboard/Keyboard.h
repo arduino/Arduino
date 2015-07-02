@@ -22,7 +22,7 @@
 #ifndef KEYBOARD_h
 #define KEYBOARD_h
 
-#if defined(_USING_HID)
+#if 0 //defined(_USING_HID)
 
 #error "Can only attach one submodule to HID module"
 
@@ -90,10 +90,10 @@ public:
   Keyboard_(void);
   void begin(void);
   void end(void);
-  virtual size_t write(uint8_t k);
-  virtual size_t press(uint8_t k);
-  virtual size_t release(uint8_t k);
-  virtual void releaseAll(void);
+  size_t write(uint8_t k);
+  size_t press(uint8_t k);
+  size_t release(uint8_t k);
+  void releaseAll(void);
 };
 extern Keyboard_ Keyboard;
 extern HID_ HID;

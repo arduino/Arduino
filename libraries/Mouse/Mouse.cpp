@@ -23,7 +23,7 @@
 
 #include "Mouse.h"
 
-const u8 _hidReportDescriptor[] PROGMEM = {
+static const u8 _hidReportDescriptor[] PROGMEM = {
   
   //  Mouse
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)  // 54
@@ -56,18 +56,18 @@ const u8 _hidReportDescriptor[] PROGMEM = {
     0xc0,                          // END_COLLECTION
 };
 
-size_t getsizeof_hidReportDescriptor() {
-	return sizeof(_hidReportDescriptor);
-}
-
-Mouse_ Mouse;
-
 //================================================================================
 //================================================================================
 //	Mouse
 
 Mouse_::Mouse_(void) : _buttons(0)
 {
+    const static HID_Descriptor cb = {
+        .length = sizeof(_hidReportDescriptor),
+        .descriptor = _hidReportDescriptor,
+    };
+    static HIDDescriptorListNode node(&cb);
+    HID.AppendDescriptor(&node);
 }
 
 void Mouse_::begin(void) 
@@ -121,5 +121,7 @@ bool Mouse_::isPressed(uint8_t b)
 		return true;
 	return false;
 }
+
+Mouse_ Mouse;
 
 #endif

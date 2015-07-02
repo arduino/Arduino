@@ -42,15 +42,26 @@
 #define HID_REPORT_DESCRIPTOR_TYPE      0x22
 #define HID_PHYSICAL_DESCRIPTOR_TYPE    0x23
 
+typedef struct __attribute__((packed)) {
+  u8 length;
+  const void* descriptor;
+} HID_Descriptor;
+
+class HIDDescriptorListNode {
+public:
+  HIDDescriptorListNode *next = NULL;
+  const HID_Descriptor * cb;
+  HIDDescriptorListNode(const HID_Descriptor *ncb) {cb = ncb;}
+};
+
 class HID_
 {
 public:
   HID_(void);
   int begin(void);
   void SendReport(uint8_t id, const void* data, int len);
+  void AppendDescriptor(HIDDescriptorListNode* node);
 };
-
-extern HID_ HID;
 
 typedef struct
 {
@@ -76,11 +87,6 @@ typedef struct
 
 #define D_HIDREPORT(_descriptorLength) \
   { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength, 0 }
-
-extern const u8 _hidReportDescriptor[] PROGMEM;
-
-// MUST be declared by the module
-size_t getsizeof_hidReportDescriptor();
 
 #define WEAK __attribute__ ((weak))
 

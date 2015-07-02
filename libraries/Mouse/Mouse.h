@@ -22,7 +22,7 @@
 #ifndef MOUSE_h
 #define MOUSE_h
 
-#if defined(_USING_HID)
+#if 0 //defined(_USING_HID)
 
 #error "Can only attach one submodule to HID module"
 
