@@ -368,7 +368,9 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     for (ContributedBoard board : selected.getBoards()) {
       desc += board.getName() + ", ";
     }
-    desc = desc.substring(0, desc.lastIndexOf(',')) + ".<br />";
+    if (desc.lastIndexOf(',') != -1) {
+      desc = desc.substring(0, desc.lastIndexOf(',')) + ".<br />";
+    }
 
     ContributedHelp help = null;
     if (selected.getHelp() != null) {
