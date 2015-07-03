@@ -22,47 +22,60 @@
 
 package processing.app;
 
+import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.MonitorFactory;
-
+import cc.arduino.packages.Uploader;
+import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
 import com.google.common.base.Predicate;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
-import processing.app.debug.*;
-import processing.app.forms.PasswordAuthorizationDialog;
-import processing.app.helpers.OSUtils;
-import processing.app.helpers.PreferencesMapException;
-import processing.app.legacy.PApplet;
-import processing.app.syntax.*;
-import processing.app.tools.*;
-import static processing.app.I18n._;
-
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.event.*;
-import java.awt.print.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.List;
-import java.util.zip.*;
-
-import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import javax.swing.undo.*;
-
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import processing.app.debug.RunnerException;
+import processing.app.debug.RunnerListener;
+import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesMapException;
+import processing.app.legacy.PApplet;
+import processing.app.syntax.ArduinoTokenMakerFactory;
+import processing.app.syntax.SketchTextArea;
+import processing.app.tools.DiscourseFormat;
+import processing.app.tools.MenuScroller;
+import processing.app.tools.Tool;
 
-import cc.arduino.packages.BoardPort;
-import cc.arduino.packages.Uploader;
-import cc.arduino.packages.uploaders.SerialUploader;
+import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.*;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import static processing.app.I18n._;
 
 /**
  * Main editor panel for the Processing Development Environment.
@@ -1937,7 +1950,7 @@ public class Editor extends JFrame implements RunnerListener {
     if (shouldSavePredicate.apply(sketch)) {
       handleSave(true);
     }
-    toolbar.activate(EditorToolbar.RUN);
+    toolbar.activateRun();
     status.progress(_("Compiling sketch..."));
 
     // do this to advance/clear the terminal window / dos prompt / etc
@@ -1988,7 +2001,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
 
       status.unprogress();
-      toolbar.deactivate(EditorToolbar.RUN);
+      toolbar.deactivateRun();
     }
   }
 
@@ -2008,7 +2021,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     internalCloseRunner();
 
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivateRun();
 //    toolbar.deactivate(EditorToolbar.STOP);
 
     // focus the PDE again after quitting presentation mode [toxi 030903]
@@ -2272,7 +2285,7 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private boolean handleSave2() {
-    toolbar.activate(EditorToolbar.SAVE);
+    toolbar.activateSave();
     statusNotice(_("Saving..."));
     boolean saved = false;
     try {
@@ -2306,7 +2319,7 @@ public class Editor extends JFrame implements RunnerListener {
       // this is used when another operation calls a save
     }
     //toolbar.clear();
-    toolbar.deactivate(EditorToolbar.SAVE);
+    toolbar.deactivateSave();
     return saved;
   }
 
@@ -2315,7 +2328,7 @@ public class Editor extends JFrame implements RunnerListener {
     //stopRunner();  // formerly from 0135
     handleStop();
 
-    toolbar.activate(EditorToolbar.SAVE);
+    toolbar.activateSave();
 
     //SwingUtilities.invokeLater(new Runnable() {
     //public void run() {
@@ -2339,7 +2352,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     } finally {
       // make sure the toolbar button deactivates
-      toolbar.deactivate(EditorToolbar.SAVE);
+      toolbar.deactivateSave();
     }
 
     return true;
@@ -2393,7 +2406,7 @@ public class Editor extends JFrame implements RunnerListener {
         handleSave(true);
       }
     }
-    toolbar.activate(EditorToolbar.EXPORT);
+    toolbar.activateExport();
     console.clear();
     status.progress(_("Uploading to I/O Board..."));
 
@@ -2440,7 +2453,7 @@ public class Editor extends JFrame implements RunnerListener {
       status.unprogress();
       uploading = false;
       //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
+      toolbar.deactivateExport();
 
       resumeOrCloseSerialMonitor();
       resumeOrCloseSerialPlotter();
@@ -2535,7 +2548,7 @@ public class Editor extends JFrame implements RunnerListener {
       status.unprogress();
       uploading = false;
       //toolbar.clear();
-      toolbar.deactivate(EditorToolbar.EXPORT);
+      toolbar.deactivateExport();
 
       resumeOrCloseSerialMonitor();
       resumeOrCloseSerialPlotter();
@@ -2815,7 +2828,7 @@ public class Editor extends JFrame implements RunnerListener {
     System.err.println(what);
     status.error(what);
     //new Exception("deactivating RUN").printStackTrace();
-    toolbar.deactivate(EditorToolbar.RUN);
+    toolbar.deactivateRun();
   }
 
 
