@@ -931,14 +931,14 @@ public class Sketch {
 
 
   public void importLibrary(UserLibrary lib) throws IOException {
-    importLibrary(lib.getSrcFolder());
+    importLibrary(lib.getSrcFolder(), lib.getDepSpec());
   }
 
   /**
    * Add import statements to the current tab for all of packages inside
    * the specified jar file.
    */
-  private void importLibrary(File jarPath) throws IOException {
+  private void importLibrary(File jarPath, String depSpec) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -960,7 +960,11 @@ public class Sketch {
     for (String aList : list) {
       buffer.append("#include <");
       buffer.append(aList);
-      buffer.append(">\n");
+      buffer.append(">");
+      if (depSpec != null) {
+	buffer.append(" //!Lib \"" + depSpec + "\"");
+      }
+      buffer.append("\n");
     }
     buffer.append('\n');
     buffer.append(editor.getText());

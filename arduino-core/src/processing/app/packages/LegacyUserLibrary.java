@@ -43,6 +43,7 @@ public class LegacyUserLibrary extends UserLibrary {
     res.setInstalled(true);
     res.layout = LibraryLayout.FLAT;
     res.name = libFolder.getName();
+    res.globalName = res.name;
     res.setTypes(Arrays.asList("Contributed"));
     res.setCategory("Uncategorized");
     return res;

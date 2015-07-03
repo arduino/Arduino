@@ -43,7 +43,7 @@ import java.util.regex.*;
  */
 public class PdePreprocessor {
   
-  private static final String IMPORT_REGEX = "^\\s*#include\\s*[<\"](\\S+)[\">]";
+  private static final String IMPORT_REGEX = "^\\s*#include\\s*[<\"](\\S+)[\">](?:[ \\t]*//!Lib[ \\t]+[\"']([^\"']*)[\"'])?";
   
   // stores number of built user-defined function prototypes
   public int prototypeCount = 0;
@@ -58,7 +58,7 @@ public class PdePreprocessor {
   // these ones have the .* at the end, since a class name might be at the end
   // instead of .* which would make trouble other classes using this can lop
   // off the . and anything after it to produce a package name consistently.
-  List<String> programImports;
+  List<String[]> programImports;
 
   // imports just from the code folder, treated differently
   // than the others, since the imports are auto-generated.
@@ -85,6 +85,12 @@ public class PdePreprocessor {
     // http://dev.processing.org/bugs/show_bug.cgi?id=5
     program += "\n";
 
+    //String importRegexp = "(?:^|\\s|;)(import\\s+)(\\S+)(\\s*;)";
+
+    // This must come before scrubbing the comments, so that we get the
+    // dependency specs (//!Lib comments)
+    programImports = findIncludes(program);
+
     // if the program ends with an unterminated multi-line comment,
     // an OutOfMemoryError or NullPointerException will happen.
     // again, not gonna bother tracking this down, but here's a hack.
@@ -95,15 +101,6 @@ public class PdePreprocessor {
     if (PreferencesData.getBoolean("preproc.substitute_unicode")) {
       program = substituteUnicode(program);
     }
-
-    //String importRegexp = "(?:^|\\s|;)(import\\s+)(\\S+)(\\s*;)";
-    programImports = new ArrayList<String>();
-
-    String[][] pieces = PApplet.matchAll(program, IMPORT_REGEX);
-
-    if (pieces != null)
-      for (int i = 0; i < pieces.length; i++)
-        programImports.add(pieces[i][1]);  // the package name
 
     codeFolderImports = new ArrayList<String>();
 //    if (codeFolderPackages != null) {
@@ -123,15 +120,16 @@ public class PdePreprocessor {
     return headerCount + prototypeCount;
   }
 
-  public static List<String> findIncludes(String code){
+  public static List<String[]> findIncludes(String code){
    
     String[][] pieces = PApplet.matchAll(code, IMPORT_REGEX);
 
-    ArrayList programImports = new ArrayList<String>();
+    ArrayList<String[]> programImports = new ArrayList<>();
     
     if (pieces != null)
       for (int i = 0; i < pieces.length; i++)
-        programImports.add(pieces[i][1]);  // the package name
+        programImports.add(new String[] { pieces[i][1], pieces[i][2] });
+        // the include file name, and the dependency spec (if any)
 
     return programImports;
   }
@@ -213,7 +211,7 @@ public class PdePreprocessor {
   protected void writeFooter(PrintStream out) throws java.lang.Exception {}
 
 
-  public List<String> getExtraImports() {
+  public List<String[]> getExtraImports() {
     return programImports;
   }
 

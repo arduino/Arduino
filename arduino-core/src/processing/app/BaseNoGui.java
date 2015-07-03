@@ -18,7 +18,9 @@ import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
+import processing.app.packages.LibrarySelection;
 import processing.app.packages.UserLibrary;
+import processing.app.preproc.PdePreprocessor;
 
 import java.io.*;
 import java.util.*;
@@ -841,10 +843,10 @@ public class BaseNoGui {
   }
 
   static public void populateImportToLibraryTable() {
-    // Populate importToLibraryTable. Each header filename maps to
-    // a list of libraries. Compiler.java will use only the first
-    // library on each list. The others are used only to advise
-    // user of ambiguously matched and duplicate libraries.
+    // Populate importToLibraryTable. Each header filename maps to a list of
+    // libraries. Compiler.java will use the dependency specs in the source
+    // files to decide which library to use from the list. The list is also
+    // used to advise user of ambiguously matched and duplicate libraries.
     importToLibraryTable = new HashMap<String, LibraryList>();
     for (UserLibrary lib : librariesIndexer.getInstalledLibraries()) {
       try {
@@ -951,6 +953,61 @@ public class BaseNoGui {
         } catch (IOException e) {
       }
     }
+  }
+
+  static public LibrarySelection findLibraryByImport(String[] importSpec,
+                                                     Set<UserLibrary> preferSet) {
+    LibraryList list = importToLibraryTable.get(importSpec[0]);
+    if (list == null || list.isEmpty()) {
+      return null;
+    }
+    int index = 0;
+    if (importSpec[1] != null && !importSpec[1].isEmpty()) {
+      for (int i = 0; i < list.size(); i++) {
+        if (list.get(i).matchesDepSpec(importSpec[1])) {
+          index = i;
+        }
+      }
+    } else if (preferSet != null) {
+      // No dep spec - prefer library already imported in this context
+      for (int i = 0; i < list.size(); i++) {
+        if (preferSet.contains(list.get(i))) {
+          index = i;
+        }
+      }
+    }
+    // Keep track of libraries already imported in this context
+    LibrarySelection libSel = new LibrarySelection(list, index);
+    preferSet.add(libSel.get());
+    return libSel;
+  }
+
+  static public LibrarySelection findLibraryByCode(String code) {
+    List<String[]> incs = PdePreprocessor.findIncludes(code);
+    if (incs.isEmpty()) {
+      return null;
+    }
+    return findLibraryByImport(incs.get(0), null);
+  }
+
+  static public List<LibrarySelection> findLibrariesByCode(String code,
+                                                           Set<UserLibrary> preferSet)
+  throws IOException {
+    List<LibrarySelection> libs = new ArrayList<>();
+    List<String[]> incs = PdePreprocessor.findIncludes(code);
+    for (String[] inc : incs) {
+      LibrarySelection lib = findLibraryByImport(inc, preferSet);
+      if (lib != null) {
+        libs.add(lib);
+      }
+    }
+    return libs;
+  }
+
+  static public List<LibrarySelection> findLibrariesByCode(File file,
+                                                           Set<UserLibrary> preferSet)
+  throws IOException {
+    return findLibrariesByCode(FileUtils.readFileToString(file), preferSet);
   }
 
   static public void initParameters(String args[]) throws IOException {

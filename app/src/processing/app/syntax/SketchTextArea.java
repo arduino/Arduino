@@ -39,6 +39,9 @@ import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.*;
+import processing.app.packages.UserLibrary;
+import processing.app.packages.LibrarySelection;
+import processing.app.preproc.PdePreprocessor;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -396,6 +399,7 @@ public class SketchTextArea extends RSyntaxTextArea {
         t = new TokenImpl(t);
       }
       Cursor c2;
+      String tipText = null;
       if (t != null && t.isHyperlink()) {
         if (hoveredOverLinkOffset == -1 ||
           hoveredOverLinkOffset != t.getOffset()) {
@@ -432,12 +436,63 @@ public class SketchTextArea extends RSyntaxTextArea {
         c2 = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
         hoveredOverLinkOffset = -1;
         //  linkGeneratorResult = null;
+
+        int pos = viewToModel(e.getPoint());
+        if (pos > -1) {
+          int lineNo = -1;
+          try {
+            lineNo = getLineOfOffset(pos);
+          } catch (BadLocationException ex) {}
+          String line = getTextLine(lineNo);
+          if (line != null) {
+            tipText = getImportInfo(line);
+          }
+        }
       }
       if (getCursor() != c2) {
         setCursor(c2);
         // TODO: Repaint just the affected line(s).
         repaint(); // Link either left or went into.
       }
+      setToolTipText(tipText);
+    }
+
+    private String getImportInfo(String line) {
+      java.util.List<String[]> incs = PdePreprocessor.findIncludes(line);
+      LibrarySelection libSel = null;
+      if (!incs.isEmpty()) {
+        // Note: does not have a valid preferSet, so answer may be inaccurate
+        libSel = BaseNoGui.findLibraryByImport(incs.get(0), new HashSet<>());
+      }
+      String info = null;
+      if (libSel != null) {
+        UserLibrary lib = libSel.get();
+        info = getLibDescription(lib, incs.get(0));
+        for (LibrarySelection recLibSel : lib.getRequiredLibsRec()) {
+          // TODO: also check import spec of recursive deps
+          info += "\n* " + getLibDescription(recLibSel.get(), null);
+        }
+      }
+      return info;
+    }
+
+    private String getLibDescription(UserLibrary lib, String[] importSpec) {
+      String ver = lib.getVersion();
+      if (ver != null) {
+        ver = " " + ver;
+      } else {
+        ver = "";
+      }
+      String folder = "";
+      if (lib instanceof UserLibrary) {
+        folder = ": " + lib.getSrcFolder().toString();
+      }
+      String desc = lib.getName() + " (" + lib.getGlobalName() + ")" + ver + folder;
+      if (importSpec != null && importSpec[1] != null &&
+          !lib.matchesDepSpecVersion(importSpec[1])) {
+        desc += "\nWARNING: "+lib.getGlobalName()+" is an incorrect version.";
+      }
+      return desc;
     }
 
     private void stopScanningForLinks() {

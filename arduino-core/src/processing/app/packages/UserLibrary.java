@@ -30,18 +30,28 @@ package processing.app.packages;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
+import processing.app.packages.LibrarySelection;
 import processing.app.helpers.FileUtils;
 import processing.app.helpers.PreferencesMap;
+import processing.app.debug.Compiler;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.TreeSet;
+import java.util.SortedSet;
+import java.util.Set;
 
 public class UserLibrary extends ContributedLibrary {
 
+  protected String globalName;
   private String name;
   private String version;
   private String author;
@@ -151,6 +161,12 @@ public class UserLibrary extends ContributedLibrary {
     }
 
     UserLibrary res = new UserLibrary();
+
+    String globalName = properties.get("global_name");
+    if (globalName != null) {
+      globalName = globalName.trim();
+    }
+
     res.setInstalledFolder(libFolder);
     res.setInstalled(true);
     res.name = properties.get("name").trim();
@@ -165,7 +181,110 @@ public class UserLibrary extends ContributedLibrary {
     res.architectures = archs;
     res.layout = layout;
     res.declaredTypes = typesList;
+    res.setGlobalName(globalName);
     return res;
+  }
+
+  /**
+   * Call this after setting website, author, and name.
+   */
+  public void setGlobalName(String gn) {
+    globalName = gn;
+    boolean invalid = false;
+    if (globalName == null || globalName.equals("")) {
+      invalid = true;
+      String rest = website.replaceFirst(".*://", "").replaceFirst("\\.[^/.]*$", "");
+      List<String> parts = Arrays.asList(rest.split("/"));
+      List<String> hostParts = Arrays.asList(parts.get(0).split("\\."));
+      Collections.reverse(hostParts);
+      globalName = String.join(".", hostParts);
+      if (globalName.endsWith(".www")) {
+        // Remove www component
+        globalName = globalName.substring(0, globalName.length() - 4);
+      }
+      if (parts.size() > 1) {
+        // Path parts
+        globalName += "." + String.join(".", parts.subList(1, parts.size()));
+      }
+      if (globalName.startsWith("com.github.")) { 
+        // Better to use the user-only namespace.
+        globalName = "io.github." + globalName.substring(11);
+      }
+    }
+    if (globalName == null || globalName.equals("")) {
+      invalid = true;
+      // Fallback.  Note: the global name is used to test for equality,
+      // so it must have a value.
+      globalName = author.replace('|', '_') + "|" + name;
+    }
+    if (invalid) {
+      System.err.println("WARNING: global_name not set in library " + name + ". Guessing '" + globalName + "'.\nPlease set this to a suitable Java-style package name, e.g. io.github.myaccount.myproject\nThe name should be set manually to avoid confusion when forking.");
+    }
+  }
+
+  @Override
+  public String getGlobalName() {
+    return globalName;
+  }
+
+  public String getDepSpec() {
+    String depSpec = null;
+    if (globalName != null) {
+      depSpec = globalName;
+      if (version != null) {
+        depSpec += ":" + version;
+      }
+    }
+    return depSpec;
+  }
+
+  @Override
+  public int hashCode() {
+    return getDepSpec().hashCode();
+  }
+
+  public boolean matchesDepSpec(String spec) {
+    String[] parts = spec.split(":", 2);
+    return getGlobalName().equals(parts[0]);
+  }
+
+  public boolean matchesDepSpecVersion(String spec) {
+    String[] parts = spec.split(":", 2);
+    if (parts.length == 1) {
+      // No version spec - accept any version.
+      return true;
+    }
+    if (getVersion() == null) {
+      // Unlabeled version - fails to match any version spec.
+      return false;
+    }
+    String[] vers = parts[1].split("-");
+    if (vers.length == 2) {
+      return versionsOrdered(vers[0], getVersion()) &&
+             versionsOrdered(getVersion(), vers[1]);
+    } else if (parts[1].endsWith("+")) {
+      return versionsOrdered(parts[1].substring(0, parts[1].length() - 1), getVersion());
+    } else if (parts[1].endsWith("*")) {
+      return getVersion().startsWith(parts[1].substring(0, parts[1].length() - 1));
+    } else {
+      return parts[1].equals(getVersion());
+    }
+  }
+
+  static private boolean versionsOrdered(String ver1, String ver2) {
+    String[] c1 = ver1.split("\\.");
+    String[] c2 = ver2.split("\\.");
+    int i;
+    for (i = 0; i < c1.length && i < c2.length; i++) {
+      int n1 = Integer.parseInt(c1[i]);
+      int n2 = Integer.parseInt(c2[i]);
+      if (n1 > n2) {
+        return false;
+      } else if (n1 < n2) {
+        return true;
+      }
+    }
+    return c1.length <= c2.length;
   }
 
   @Override
@@ -261,6 +380,88 @@ public class UserLibrary extends ContributedLibrary {
     return null;
   }
 
+  private Map<String,long[]> lastUpdateTimes = new TreeMap<String,long[]>();
+
+  private List<LibrarySelection> requiredLibs = null;
+  private List<LibrarySelection> requiredLibsRec = null;
+
+  private boolean changedSinceLastUpdate(int idx) {
+    List<File> files = Compiler.findAllSources(getSrcFolder(), useRecursion());
+    // Important: must update timestamps from ALL files before returning.
+    boolean changed = false;
+    for (File file : files) {
+      String fname = file.toString();
+      long modTime = file.lastModified();
+      if (!lastUpdateTimes.containsKey(fname)) {
+        long[] times = new long[2];
+        times[idx] = modTime;
+        lastUpdateTimes.put(fname, times);
+        changed = true;
+      } else if (lastUpdateTimes.get(fname)[idx] < modTime) {
+        lastUpdateTimes.get(fname)[idx] = modTime;
+        changed = true;
+      }
+    }
+    return changed;
+  }
+
+  public boolean changedSinceLastUpdateRec(int idx, SortedSet<String> visited) {
+    // Prevent infinite recursion.
+    if (visited.contains(getDepSpec())) {
+      return false;
+    }
+    visited.add(getDepSpec());
+
+    if (changedSinceLastUpdate(idx)) {
+      return true;
+    }
+    for (LibrarySelection libSel : getRequiredLibs()) {
+      if (libSel.get().changedSinceLastUpdateRec(idx, visited)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public List<LibrarySelection> getRequiredLibs() {
+    if (requiredLibs == null || changedSinceLastUpdate(0)) {
+      // Note: the "recursion" in useRecursion() refers to a strategy for
+      // finding files within an individual project
+      Set<UserLibrary> preferSet = new HashSet<>();
+      preferSet.add(this);
+      requiredLibs = Compiler.findRequiredLibs(getSrcFolder(), useRecursion(), preferSet);
+      requiredLibs.remove(this);
+    }
+    return requiredLibs;
+  }
+
+  public List<LibrarySelection> getRequiredLibsRec() {
+    return getRequiredLibsRec(new TreeSet<>());
+  }
+
+  public List<LibrarySelection> getRequiredLibsRec(SortedSet<String> visited) {
+    // Prevent infinite recursion.
+    if (visited.contains(getDepSpec())) {
+      return new ArrayList<>();
+    }
+    visited.add(getDepSpec());
+
+    if (requiredLibsRec == null || changedSinceLastUpdateRec(1, new TreeSet<>(visited))) {
+      requiredLibsRec = new ArrayList<>();
+      for (LibrarySelection libSel : getRequiredLibs()) {
+        if (!requiredLibsRec.contains(libSel) && libSel.get() != this) {
+          requiredLibsRec.add(libSel);
+          for (LibrarySelection libSelRec : libSel.get().getRequiredLibsRec(visited)) {
+            if (!requiredLibsRec.contains(libSelRec) && libSelRec.get() != this) {
+              requiredLibsRec.add(libSelRec);
+            }
+          }
+        }
+      }
+    }
+    return requiredLibsRec;
+  }
+
   public List<String> getDeclaredTypes() {
     return declaredTypes;
   }
@@ -289,6 +490,7 @@ public class UserLibrary extends ContributedLibrary {
   @Override
   public String toString() {
     String res = "Library: " + name + "\n";
+    res += "         (global_name=" + globalName + ")\n";
     res += "         (version=" + version + ")\n";
     res += "         (author=" + author + ")\n";
     res += "         (maintainer=" + maintainer + ")\n";
