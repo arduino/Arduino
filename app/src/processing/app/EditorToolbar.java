@@ -22,13 +22,15 @@
 */
 
 package processing.app;
-import static processing.app.I18n._;
-
-import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputListener;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+
+import static processing.app.I18n._;
 
 
 /**
@@ -43,7 +45,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
   /** Titles for each button when the shift key is pressed. */ 
   static final String titleShift[] = {
-    _("Verify"), _("Upload Using Programmer"), _("New"), _("Open in Another Window"), _("Save As..."), _("Serial Monitor")
+    _("Verify"), _("Upload Using Programmer"), _("New"), _("Open"), _("Save As..."), _("Serial Monitor")
   };
 
   static final int BUTTON_COUNT  = title.length;

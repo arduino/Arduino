@@ -34,8 +34,9 @@ import cc.arduino.contributions.packages.ui.ContributionManagerUI;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.utils.Progress;
-import cc.arduino.view.*;
 import cc.arduino.view.Event;
+import cc.arduino.view.JMenuUtils;
+import cc.arduino.view.SplashScreenHelper;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
@@ -58,7 +59,6 @@ import processing.app.tools.MenuScroller;
 import processing.app.tools.ZipDeflater;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -1122,18 +1122,18 @@ public class Base {
     menu.addSeparator();
 
     // Add a list of all sketches and subfolders
-    boolean sketches = addSketches(menu, BaseNoGui.getSketchbookFolder(), true);
+    boolean sketches = addSketches(menu, BaseNoGui.getSketchbookFolder());
     if (sketches) menu.addSeparator();
 
     // Add each of the subfolders of examples directly to the menu
-    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder(), true);
+    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
     if (found) menu.addSeparator();
   }
 
 
   protected void rebuildSketchbookMenu(JMenu menu) {
     menu.removeAll();
-    addSketches(menu, BaseNoGui.getSketchbookFolder(), false);
+    addSketches(menu, BaseNoGui.getSketchbookFolder());
 
     JMenu librariesMenu = JMenuUtils.findSubMenuWithLabel(menu, "libraries");
     if (librariesMenu != null) {
@@ -1235,21 +1235,21 @@ public class Base {
     menu.removeAll();
 
     // Add examples from distribution "example" folder
-    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder(), false);
+    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
     if (found) menu.addSeparator();
 
     // Add examples from libraries
     LibraryList ideLibs = getIDELibs();
     ideLibs.sort();
     for (UserLibrary lib : ideLibs)
-      addSketchesSubmenu(menu, lib, false);
+      addSketchesSubmenu(menu, lib);
 
     LibraryList userLibs = getUserLibs();
     if (userLibs.size() > 0) {
       menu.addSeparator();
       userLibs.sort();
       for (UserLibrary lib : userLibs)
-        addSketchesSubmenu(menu, lib, false);
+        addSketchesSubmenu(menu, lib);
     }
   }
 
@@ -1580,7 +1580,7 @@ public class Base {
    * should replace the sketch in the current window, or false when the
    * sketch should open in a new window.
    */
-  protected boolean addSketches(JMenu menu, File folder, final boolean replaceExisting) {
+  protected boolean addSketches(JMenu menu, File folder) {
     if (folder == null)
       return false;
 
@@ -1607,7 +1607,7 @@ public class Base {
 
       if (!subfolder.isDirectory()) continue;
 
-      if (addSketchesSubmenu(menu, subfolder.getName(), subfolder, replaceExisting)) {
+      if (addSketchesSubmenu(menu, subfolder.getName(), subfolder)) {
         ifound = true;
       }
     }
@@ -1615,32 +1615,21 @@ public class Base {
     return ifound;
   }
 
-  private boolean addSketchesSubmenu(JMenu menu, UserLibrary lib,
-                                     boolean replaceExisting) {
-    return addSketchesSubmenu(menu, lib.getName(), lib.getInstalledFolder(),
-            replaceExisting);
+  private boolean addSketchesSubmenu(JMenu menu, UserLibrary lib) {
+    return addSketchesSubmenu(menu, lib.getName(), lib.getInstalledFolder());
   }
 
-  private boolean addSketchesSubmenu(JMenu menu, String name, File folder,
-                                     final boolean replaceExisting) {
+  private boolean addSketchesSubmenu(JMenu menu, String name, File folder) {
 
     ActionListener listener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         String path = e.getActionCommand();
         File file = new File(path);
         if (file.exists()) {
-          boolean replace = replaceExisting;
-          if ((e.getModifiers() & ActionEvent.SHIFT_MASK) != 0) {
-            replace = !replace;
-          }
-          if (replace) {
-            handleOpenReplace(file);
-          } else {
-            try {
-              handleOpen(file);
-            } catch (Exception e1) {
-              e1.printStackTrace();
-            }
+          try {
+            handleOpen(file);
+          } catch (Exception e1) {
+            e1.printStackTrace();
           }
         } else {
           showWarning(_("Sketch Does Not Exist"),
@@ -1682,11 +1671,11 @@ public class Base {
 
     // don't create an extra menu level for a folder named "examples"
     if (folder.getName().equals("examples"))
-      return addSketches(menu, folder, replaceExisting);
+      return addSketches(menu, folder);
 
     // not a sketch folder, but maybe a subfolder containing sketches
     JMenu submenu = new JMenu(name);
-    boolean found = addSketches(submenu, folder, replaceExisting);
+    boolean found = addSketches(submenu, folder);
     if (found) {
       menu.add(submenu);
       MenuScroller.setScrollerFor(submenu);
