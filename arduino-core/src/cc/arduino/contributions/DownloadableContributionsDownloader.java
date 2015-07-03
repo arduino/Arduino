@@ -35,6 +35,10 @@ import cc.arduino.utils.network.FileDownloader;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -49,36 +53,50 @@ public class DownloadableContributionsDownloader {
     stagingFolder = _stagingFolder;
   }
 
-  public File download(DownloadableContribution contribution,
-                       final Progress progress, final String statusText)
-          throws Exception {
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText) throws Exception {
     URL url = new URL(contribution.getUrl());
-    final File outputFile = new File(stagingFolder, contribution.getArchiveFileName());
+    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
 
     // Ensure the existence of staging folder
-    stagingFolder.mkdirs();
+    Files.createDirectories(stagingFolder.toPath());
+
+    if (!hasChecksum(contribution) && Files.exists(outputFile)) {
+      Files.delete(outputFile);
+    }
 
     // Need to download or resume downloading?
-    if (!outputFile.isFile() || (outputFile.length() < contribution.getSize())) {
-      download(url, outputFile, progress, statusText);
+    if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
+      download(url, outputFile.toFile(), progress, statusText);
     }
 
     // Test checksum
     progress.setStatus(_("Verifying archive integrity..."));
     onProgress(progress);
     String checksum = contribution.getChecksum();
-    String algo = checksum.split(":")[0];
-    if (!FileHash.hash(outputFile, algo).equalsIgnoreCase(checksum)) {
-      throw new Exception(_("CRC doesn't match. File is corrupted."));
+    if (hasChecksum(contribution)) {
+      String algo = checksum.split(":")[0];
+      if (!FileHash.hash(outputFile.toFile(), algo).equalsIgnoreCase(checksum)) {
+        throw new Exception(_("CRC doesn't match. File is corrupted."));
+      }
     }
 
     contribution.setDownloaded(true);
-    contribution.setDownloadedFile(outputFile);
-    return outputFile;
+    contribution.setDownloadedFile(outputFile.toFile());
+    return outputFile.toFile();
   }
 
-  public void download(URL url, File tmpFile, final Progress progress,
-                       final String statusText) throws Exception {
+  private boolean hasChecksum(DownloadableContribution contribution) {
+    String checksum = contribution.getChecksum();
+    if (checksum == null || checksum.isEmpty()) {
+      return false;
+    }
+
+    String algo = checksum.split(":")[0];
+
+    return algo != null && algo.isEmpty();
+  }
+
+  public void download(URL url, File tmpFile, Progress progress, String statusText) throws Exception {
     FileDownloader downloader = new FileDownloader(url, tmpFile);
     downloader.addObserver(new Observer() {
       @Override
