@@ -27,9 +27,8 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.packages.contributions;
+package cc.arduino.contributions;
 
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import org.junit.Before;
 import org.junit.Test;
 

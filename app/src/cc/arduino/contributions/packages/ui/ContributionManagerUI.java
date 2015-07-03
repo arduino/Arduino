@@ -30,6 +30,7 @@
 package cc.arduino.contributions.packages.ui;
 
 import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.ContributionsIndexer;
@@ -116,7 +117,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     }
 
     // Create ConstributionInstaller tied with the provided index
-    installer = new ContributionInstaller(indexer, platform) {
+    installer = new ContributionInstaller(indexer, platform, new GPGDetachedSignatureVerifier()) {
       @Override
       public void onProgress(Progress progress) {
         setProgress(progress);

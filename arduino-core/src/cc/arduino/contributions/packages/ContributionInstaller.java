@@ -29,9 +29,8 @@
 
 package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.DownloadableContributionsDownloader;
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
+import cc.arduino.contributions.*;
+import cc.arduino.contributions.Constants;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -41,7 +40,6 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
-import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
 import processing.app.PreferencesData;
@@ -52,6 +50,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.*;
 
 import static processing.app.I18n._;
@@ -62,9 +61,11 @@ public class ContributionInstaller {
   private final ContributionsIndexer indexer;
   private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
+  private final SignatureVerifier signatureVerifier;
 
-  public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform) {
+  public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier) {
     this.platform = platform;
+    this.signatureVerifier = signatureVerifier;
     File stagingFolder = contributionsIndexer.getStagingFolder();
     indexer = contributionsIndexer;
     downloader = new DownloadableContributionsDownloader(stagingFolder) {
@@ -76,13 +77,13 @@ public class ContributionInstaller {
   }
 
   public List<String> install(ContributedPlatform contributedPlatform) throws Exception {
-    List<String> errors = new LinkedList<String>();
+    List<String> errors = new LinkedList<>();
     if (contributedPlatform.isInstalled()) {
       throw new Exception("Platform is already installed!");
     }
 
     // Do not download already installed tools
-    List<ContributedTool> tools = new LinkedList<ContributedTool>(contributedPlatform.getResolvedTools());
+    List<ContributedTool> tools = new LinkedList<>(contributedPlatform.getResolvedTools());
     Iterator<ContributedTool> toolsIterator = tools.iterator();
     while (toolsIterator.hasNext()) {
       ContributedTool tool = toolsIterator.next();
@@ -134,11 +135,11 @@ public class ContributionInstaller {
       DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
       File destFolder = new File(toolsFolder, tool.getName() + File.separator + tool.getVersion());
 
-      destFolder.mkdirs();
+      Files.createDirectories(destFolder.toPath());
       assert toolContrib.getDownloadedFile() != null;
       new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder, 1);
       try {
-        executePostInstallScriptIfAny(destFolder);
+        findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
       } catch (IOException e) {
         errors.add(_("Error running post install script"));
       }
@@ -152,10 +153,16 @@ public class ContributionInstaller {
     onProgress(progress);
     File platformFolder = new File(packageFolder, "hardware" + File.separator + contributedPlatform.getArchitecture());
     File destFolder = new File(platformFolder, contributedPlatform.getParsedVersion());
-    destFolder.mkdirs();
+    Files.createDirectories(destFolder.toPath());
     new ArchiveExtractor(platform).extract(contributedPlatform.getDownloadedFile(), destFolder, 1);
     contributedPlatform.setInstalled(true);
     contributedPlatform.setInstalledFolder(destFolder);
+    try {
+      findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+    } catch (IOException e) {
+      e.printStackTrace();
+      errors.add(_("Error running post install script"));
+    }
     progress.stepDone();
 
     progress.setStatus(_("Installation completed!"));
@@ -164,20 +171,49 @@ public class ContributionInstaller {
     return errors;
   }
 
-  private void executePostInstallScriptIfAny(File folder) throws IOException {
-    Collection<File> postInstallScripts = Collections2.filter(platform.postInstallScripts(folder), new FileExecutablePredicate());
+  private void findAndExecutePostInstallScriptIfAny(File folder, boolean trusted, boolean trustAll) throws IOException {
+    Collection<File> scripts = Collections2.filter(platform.postInstallScripts(folder), new FileExecutablePredicate());
 
-    if (postInstallScripts.isEmpty()) {
+    if (scripts.isEmpty()) {
       String[] subfolders = folder.list(new OnlyDirs());
       if (subfolders.length != 1) {
         return;
       }
 
-      executePostInstallScriptIfAny(new File(folder, subfolders[0]));
+      findAndExecutePostInstallScriptIfAny(new File(folder, subfolders[0]), trusted, trustAll);
       return;
     }
 
-    File postInstallScript = postInstallScripts.iterator().next();
+    executeScripts(folder, scripts, trusted, trustAll);
+  }
+
+  private void findAndExecutePreUninstallScriptIfAny(File folder, boolean trusted, boolean trustAll) throws IOException {
+    Collection<File> scripts = Collections2.filter(platform.preUninstallScripts(folder), new FileExecutablePredicate());
+
+    if (scripts.isEmpty()) {
+      String[] subfolders = folder.list(new OnlyDirs());
+      if (subfolders.length != 1) {
+        return;
+      }
+
+      findAndExecutePreUninstallScriptIfAny(new File(folder, subfolders[0]), trusted, trustAll);
+      return;
+    }
+
+    executeScripts(folder, scripts, trusted, trustAll);
+  }
+
+  private void executeScripts(File folder, Collection<File> postInstallScripts, boolean trusted, boolean trustAll) throws IOException {
+    File script = postInstallScripts.iterator().next();
+
+    if (!trusted && !trustAll) {
+      System.err.println(I18n.format(_("Warning: non trusted contribution, skipping script execution ({0})"), script));
+      return;
+    }
+
+    if (trustAll) {
+      System.err.println(I18n.format(_("Warning: forced untrusted script execution ({0})"), script));
+    }
 
     ByteArrayOutputStream stdout = new ByteArrayOutputStream();
     ByteArrayOutputStream stderr = new ByteArrayOutputStream();
@@ -185,7 +221,7 @@ public class ContributionInstaller {
     executor.setStreamHandler(new PumpStreamHandler(stdout, stderr));
     executor.setWorkingDirectory(folder);
     executor.setExitValues(null);
-    int exitValue = executor.execute(new CommandLine(postInstallScript));
+    int exitValue = executor.execute(new CommandLine(script));
     executor.setExitValues(new int[0]);
 
     System.out.write(stdout.toByteArray());
@@ -198,9 +234,15 @@ public class ContributionInstaller {
 
   public List<String> remove(ContributedPlatform contributedPlatform) {
     if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
-      return new LinkedList<String>();
+      return new LinkedList<>();
     }
-    List<String> errors = new LinkedList<String>();
+    List<String> errors = new LinkedList<>();
+    try {
+      findAndExecutePreUninstallScriptIfAny(contributedPlatform.getInstalledFolder(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+    } catch (IOException e) {
+      errors.add(_("Error running post install script"));
+    }
+
     FileUtils.recursiveDelete(contributedPlatform.getInstalledFolder());
     contributedPlatform.setInstalled(false);
     contributedPlatform.setInstalledFolder(null);
@@ -221,8 +263,8 @@ public class ContributionInstaller {
       // now try to remove the containing TOOL_NAME folder
       // (and silently fail if another version of the tool is installed)
       try {
-        destFolder.getParentFile().delete();
-      } catch (SecurityException e) {
+        Files.delete(destFolder.getParentFile().toPath());
+      } catch (Exception e) {
         // ignore
       }
     }
@@ -233,11 +275,11 @@ public class ContributionInstaller {
   public List<String> updateIndex() throws Exception {
     MultiStepProgress progress = new MultiStepProgress(1);
 
-    List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<String>();
-    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL);
+    List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
+    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, cc.arduino.contributions.Constants.PACKAGE_INDEX_URL);
 
-    Set<String> packageIndexURLs = new HashSet<String>();
-    String additionalURLs = PreferencesData.get(Constants.PREFERENCES_BOARDS_MANAGER_ADDITIONAL_URLS, "");
+    Set<String> packageIndexURLs = new HashSet<>();
+    String additionalURLs = PreferencesData.get(cc.arduino.contributions.Constants.PREFERENCES_BOARDS_MANAGER_ADDITIONAL_URLS, "");
     if (!"".equals(additionalURLs)) {
       packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
     }
@@ -256,13 +298,13 @@ public class ContributionInstaller {
     downloadedPackagedIndexFilesAccumulator.add(packageIndex.getName());
     try {
       File packageIndexSignature = download(progress, packageIndexUrl + ".sig");
-      boolean signatureVerified = new GPGDetachedSignatureVerifier().verify(packageIndex, packageIndexSignature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+      boolean signatureVerified = signatureVerifier.isSigned(packageIndex);
       if (signatureVerified) {
         downloadedPackagedIndexFilesAccumulator.add(packageIndexSignature.getName());
       } else {
         downloadedPackagedIndexFilesAccumulator.remove(packageIndex.getName());
-        packageIndex.delete();
-        packageIndexSignature.delete();
+        Files.delete(packageIndex.toPath());
+        Files.delete(packageIndexSignature.toPath());
         System.err.println(I18n.format(_("{0} file signature verification failed. File ignored."), packageIndexUrl));
       }
     } catch (Exception e) {
@@ -295,15 +337,15 @@ public class ContributionInstaller {
     // Empty
   }
 
-  public void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) {
+  public void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
     File preferencesFolder = indexer.getIndexFile(".").getParentFile();
-    File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME));
+    File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME));
     if (additionalPackageIndexFiles == null) {
       return;
     }
     for (File additionalPackageIndexFile : additionalPackageIndexFiles) {
       if (!downloadedPackageIndexFiles.contains(additionalPackageIndexFile.getName())) {
-        additionalPackageIndexFile.delete();
+        Files.delete(additionalPackageIndexFile.toPath());
       }
     }
   }

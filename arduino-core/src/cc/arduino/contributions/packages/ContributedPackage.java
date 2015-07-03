@@ -47,6 +47,8 @@ public abstract class ContributedPackage {
 
   public abstract ContributedHelp getHelp();
 
+  private boolean trusted;
+
   public ContributedPlatform findPlatform(String architecture, String version) {
     if (architecture == null || version == null) {
       return null;
@@ -64,6 +66,14 @@ public abstract class ContributedPackage {
         return tool;
     }
     return null;
+  }
+
+  public boolean isTrusted() {
+    return trusted;
+  }
+
+  public void setTrusted(boolean trusted) {
+    this.trusted = trusted;
   }
 
   @Override

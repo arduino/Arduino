@@ -211,8 +211,14 @@ public class Platform extends processing.app.Platform {
   }
 
   public List<File> postInstallScripts(File folder) {
-    List<File> scripts = new LinkedList<File>();
+    List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "post_install.bat"));
+    return scripts;
+  }
+
+  public List<File> preUninstallScripts(File folder) {
+    List<File> scripts = new LinkedList<>();
+    scripts.add(new File(folder, "pre_uninstall.bat"));
     return scripts;
   }
 

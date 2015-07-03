@@ -33,7 +33,6 @@ import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomCompar
 import cc.arduino.contributions.filters.DownloadableContributionWithVersionPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.filters.PlatformArchitecturePredicate;
-import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -89,7 +88,7 @@ public abstract class ContributionsIndex {
   }
 
   public ContributedPlatform getInstalledPlatform(String packageName, String platformArch) {
-    List<ContributedPlatform> installedPlatforms = new LinkedList<ContributedPlatform>(Collections2.filter(findPlatforms(packageName, platformArch), new InstalledPredicate()));
+    List<ContributedPlatform> installedPlatforms = new LinkedList<>(Collections2.filter(findPlatforms(packageName, platformArch), new InstalledPredicate()));
     Collections.sort(installedPlatforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedPlatforms.isEmpty()) {
@@ -99,25 +98,11 @@ public abstract class ContributionsIndex {
     return installedPlatforms.get(0);
   }
 
-  public List<ContributedPlatform> getPlatforms() {
-    return Lists.newLinkedList(Iterables.concat(Collections2.transform(getPackages(), new Function<ContributedPackage, List<ContributedPlatform>>() {
-      @Override
-      public List<ContributedPlatform> apply(ContributedPackage contributedPackage) {
-        return contributedPackage.getPlatforms();
-      }
-    })));
+  private List<ContributedPlatform> getPlatforms() {
+    return Lists.newLinkedList(Iterables.concat(Collections2.transform(getPackages(), ContributedPackage::getPlatforms)));
   }
 
-
-  public ContributedTool findTool(String packageName, String name,
-                                  String version) {
-    ContributedPackage pack = findPackage(packageName);
-    if (pack == null)
-      return null;
-    return pack.findTool(name, version);
-  }
-
-  private final List<String> categories = new ArrayList<String>();
+  private final List<String> categories = new ArrayList<>();
 
   public List<String> getCategories() {
     return categories;
@@ -126,10 +111,9 @@ public abstract class ContributionsIndex {
   public void fillCategories() {
     categories.clear();
     for (ContributedPackage pack : getPackages()) {
-      for (ContributedPlatform platform : pack.getPlatforms()) {
-        if (!categories.contains(platform.getCategory()))
-          categories.add(platform.getCategory());
-      }
+      pack.getPlatforms().stream()
+        .filter(platform -> !categories.contains(platform.getCategory()))
+        .forEach(platform -> categories.add(platform.getCategory()));
     }
   }
 
@@ -152,5 +136,9 @@ public abstract class ContributionsIndex {
     for (ContributedPackage pack : getPackages())
       res += pack + "\n";
     return res;
+  }
+
+  public void setTrusted() {
+    getPackages().stream().forEach(pack -> pack.setTrusted(true));
   }
 }

@@ -24,6 +24,7 @@ package processing.app;
 
 import cc.arduino.contributions.BuiltInCoreIsNewerCheck;
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
+import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.libraries.*;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
@@ -345,8 +346,8 @@ public class Base {
     PreferencesData.save();
 
     if (parser.isInstallBoard()) {
-      ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform());
-      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform()) {
+      ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()) {
         private String lastStatus = "";
 
         @Override
@@ -392,7 +393,7 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isInstallLibrary()) {
-      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform()));
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()));
       LibraryInstaller installer = new LibraryInstaller(indexer, BaseNoGui.getPlatform()) {
         private String lastStatus = "";
 

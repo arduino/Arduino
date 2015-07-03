@@ -29,10 +29,7 @@
 
 package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
-import cc.arduino.contributions.SignatureVerificationFailedException;
+import cc.arduino.contributions.*;
 import cc.arduino.contributions.filters.BuiltInPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -46,8 +43,9 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimaps;
 import org.apache.commons.compress.utils.IOUtils;
-import processing.app.BaseNoGui;
+import processing.app.I18n;
 import processing.app.Platform;
+import processing.app.PreferencesData;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.debug.TargetPlatformException;
@@ -60,6 +58,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static processing.app.I18n._;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
 public class ContributionsIndexer {
@@ -68,23 +67,26 @@ public class ContributionsIndexer {
   private final File stagingFolder;
   private final File preferencesFolder;
   private final Platform platform;
+  private final SignatureVerifier signatureVerifier;
   private ContributionsIndex index;
 
-  public ContributionsIndexer(File preferencesFolder, Platform platform) {
+  public ContributionsIndexer(File preferencesFolder, Platform platform, SignatureVerifier signatureVerifier) {
     this.preferencesFolder = preferencesFolder;
     this.platform = platform;
+    this.signatureVerifier = signatureVerifier;
     packagesFolder = new File(preferencesFolder, "packages");
     stagingFolder = new File(preferencesFolder, "staging" + File.separator + "packages");
   }
 
   public void parseIndex() throws Exception {
-    File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
-    if (!isSigned(defaultIndexFile)) {
-      throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
+    File defaultIndexFile = getIndexFile(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME);
+    if (!signatureVerifier.isSigned(defaultIndexFile)) {
+      throw new SignatureVerificationFailedException(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME);
     }
     index = parseIndex(defaultIndexFile);
+    index.setTrusted();
 
-    File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
+    File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME)));
 
     for (File indexFile : indexFiles) {
       ContributionsIndex contributionsIndex = parseIndex(indexFile);
@@ -113,10 +115,12 @@ public class ContributionsIndexer {
   }
 
   private void mergeContributions(ContributionsIndex contributionsIndex, File indexFile) {
-    boolean signed = isSigned(indexFile);
+    boolean signed = signatureVerifier.isSigned(indexFile);
+    boolean trustall = PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL);
 
     for (ContributedPackage contributedPackage : contributionsIndex.getPackages()) {
-      if (!signed) {
+      contributedPackage.setTrusted(signed || trustall);
+      if (!contributedPackage.isTrusted()) {
         for (ContributedPlatform contributedPlatform : contributedPackage.getPlatforms()) {
           contributedPlatform.setCategory("Contributed");
         }
@@ -127,7 +131,10 @@ public class ContributionsIndexer {
       if (targetPackage == null) {
         index.getPackages().add(contributedPackage);
       } else {
-        if (signed || !isPackageNameProtected(contributedPackage)) {
+        if (contributedPackage.isTrusted() || !isPackageNameProtected(contributedPackage)) {
+          if (isPackageNameProtected(contributedPackage) && trustall) {
+            System.err.println(I18n.format(_("Warning: forced trusting untrusted contributions")));
+          }
           List<ContributedPlatform> platforms = contributedPackage.getPlatforms();
           if (platforms == null) {
             platforms = new LinkedList<ContributedPlatform>();
@@ -156,21 +163,7 @@ public class ContributionsIndexer {
   }
 
   private boolean isPackageNameProtected(ContributedPackage contributedPackage) {
-    return Constants.PROTECTED_PACKAGE_NAMES.contains(contributedPackage.getName());
-  }
-
-  private boolean isSigned(File indexFile) {
-    File signature = new File(indexFile.getParent(), indexFile.getName() + ".sig");
-    if (!signature.exists()) {
-      return false;
-    }
-
-    try {
-      return new GPGDetachedSignatureVerifier().verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
-    } catch (Exception e) {
-      BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
-      return false;
-    }
+    return cc.arduino.contributions.Constants.PROTECTED_PACKAGE_NAMES.contains(contributedPackage.getName());
   }
 
   private ContributionsIndex parseIndex(File indexFile) throws IOException {

@@ -27,26 +27,29 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.packages;
+package cc.arduino.contributions;
 
-import java.util.Arrays;
-import java.util.List;
+import processing.app.BaseNoGui;
 
-public class Constants {
+import java.io.File;
+import java.io.IOException;
 
-  public static final String DEFAULT_INDEX_FILE_NAME = "package_index.json";
-  public static final List<String> PROTECTED_PACKAGE_NAMES = Arrays.asList("arduino", "Intel");
-  public static final String PACKAGE_INDEX_URL;
+public abstract class SignatureVerifier {
 
-  public static final String PREFERENCES_BOARDS_MANAGER_ADDITIONAL_URLS = "boardsmanager.additional.urls";
+  public boolean isSigned(File indexFile) {
+    File signature = new File(indexFile.getParent(), indexFile.getName() + ".sig");
+    if (!signature.exists()) {
+      return false;
+    }
 
-  static {
-    String extenalPackageIndexUrl = System.getProperty("PACKAGE_INDEX_URL");
-    if (extenalPackageIndexUrl != null && !"".equals(extenalPackageIndexUrl)) {
-      PACKAGE_INDEX_URL = extenalPackageIndexUrl;
-    } else {
-      PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
+    try {
+      return verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+    } catch (Exception e) {
+      BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
+      return false;
     }
   }
+
+  protected abstract boolean verify(File signedFile, File signature, File publicKey) throws IOException;
 
 }

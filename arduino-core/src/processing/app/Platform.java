@@ -217,9 +217,15 @@ public class Platform {
   }
 
   public List<File> postInstallScripts(File folder) {
-    List<File> scripts = new LinkedList<File>();
+    List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "install_script.sh"));
     scripts.add(new File(folder, "post_install.sh"));
+    return scripts;
+  }
+
+  public List<File> preUninstallScripts(File folder) {
+    List<File> scripts = new LinkedList<>();
+    scripts.add(new File(folder, "pre_uninstall.sh"));
     return scripts;
   }
 
