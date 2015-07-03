@@ -32,13 +32,15 @@ package processing.app.syntax;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
-import processing.app.*;
+import processing.app.Base;
+import processing.app.BaseNoGui;
+import processing.app.EditorListener;
+import processing.app.PreferencesData;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -107,6 +109,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     }
 
     setBackground(processing.app.Theme.getColor("editor.bgcolor"));
+    setHighlightCurrentLine(processing.app.Theme.getBoolean("editor.linehighlight"));
     setCurrentLineHighlightColor(processing.app.Theme.getColor("editor.linehighlight.color"));
     setCaretColor(processing.app.Theme.getColor("editor.caret.color"));
     setSelectedTextColor(null);

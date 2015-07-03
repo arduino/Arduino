@@ -504,7 +504,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     } else {
       textarea.setBackground(Theme.getColor("editor.bgcolor"));
-      textarea.setHighlightCurrentLine(PreferencesData.getBoolean("editor.linehighlight"));
+      textarea.setHighlightCurrentLine(Theme.getBoolean("editor.linehighlight"));
       textarea.setEditable(true);
     }
 
