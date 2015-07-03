@@ -131,13 +131,13 @@ void TwoWire::setClock(uint32_t frequency) {
 	TWI_SetClock(twi, twiClock, VARIANT_MCK);
 }
 
-uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop) {
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop) {
 	if (quantity > BUFFER_LENGTH)
 		quantity = BUFFER_LENGTH;
 
 	// perform blocking read into buffer
 	int readed = 0;
-	TWI_StartRead(twi, address, 0, 0);
+	TWI_StartRead(twi, address, iaddress, isize);
 	do {
 		// Stop condition must be set during the reception of last byte
 		if (readed + 1 == quantity)
@@ -155,6 +155,10 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop
 	rxBufferLength = readed;
 
 	return readed;
+}
+
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop) {
+	return requestFrom((uint8_t) address, (uint8_t) quantity, (uint32_t) 0, (uint8_t) 0, (uint8_t) sendStop);
 }
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity) {
