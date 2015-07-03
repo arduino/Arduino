@@ -88,7 +88,11 @@ public abstract class ContributionsIndex {
   }
 
   public ContributedPlatform getInstalledPlatform(String packageName, String platformArch) {
-    List<ContributedPlatform> installedPlatforms = new LinkedList<>(Collections2.filter(findPlatforms(packageName, platformArch), new InstalledPredicate()));
+    List<ContributedPlatform> platforms = findPlatforms(packageName, platformArch);
+    if (platforms == null) {
+      return null;
+    }
+    List<ContributedPlatform> installedPlatforms = new LinkedList<>(Collections2.filter(platforms, new InstalledPredicate()));
     Collections.sort(installedPlatforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedPlatforms.isEmpty()) {
