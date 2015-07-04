@@ -92,6 +92,7 @@ public:
 	virtual int available(void);
 	virtual int peek(void);
 	virtual int read(void);
+	int availableForWrite(void);
 	virtual void flush(void);
 	virtual size_t write(uint8_t);
 	virtual size_t write(const uint8_t*, size_t);
@@ -188,6 +189,7 @@ int USB_SendControl(uint8_t flags, const void* d, int len);
 int USB_RecvControl(void* d, int len);
 
 uint8_t	USB_Available(uint8_t ep);
+uint8_t USB_SendSpace(uint8_t ep);
 int USB_Send(uint8_t ep, const void* data, int len);	// blocking
 int USB_Recv(uint8_t ep, void* data, int len);		// non-blocking
 int USB_Recv(uint8_t ep);							// non-blocking

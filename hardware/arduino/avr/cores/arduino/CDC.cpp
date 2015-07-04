@@ -163,6 +163,11 @@ int Serial_::read(void)
 	return USB_Recv(CDC_RX);
 }
 
+int Serial_::availableForWrite(void)
+{
+	return USB_SendSpace(CDC_TX);
+}
+
 void Serial_::flush(void)
 {
 	USB_Flush(CDC_TX);
