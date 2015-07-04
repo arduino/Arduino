@@ -242,7 +242,7 @@ public class SerialUploader extends Uploader {
     }
 
     // Something happened while detecting port
-    throw new RunnerException(_("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."));
+    throw new RunnerException(_("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."), false);
   }
 
   private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
