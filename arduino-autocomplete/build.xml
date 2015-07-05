@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project name="Arduino IDE Autocomplete" default="build">
+
+  <path id="class.path">
+    <!--
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>-->
+    <fileset dir="../app/lib">
+      <include name="rsyntax-autocomplete-2.6.0-SNAPSHOT.jar" />
+      <include name="rsyntaxtextarea-2.5.6.1+arduino.jar" />
+      <include name="cplus-libparser-0.0.1.jar" />
+    </fileset>
+    <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>
+    <pathelement path="../arduino-core/arduino-core.jar"/>
+  </path>
+
+  <target name="clean" description="Clean out the build directories">
+    <delete dir="bin" />
+    <delete file="arduino-autocomplete.jar" />
+  </target>
+
+  <target name="compile" description="Compile sources">
+    <condition property="core-built">
+      <available file="../arduino-core/arduino-core.jar" />
+    </condition>
+    <fail unless="core-built" message="Please build the Arduino-core library first and make sure it sits in ../arduino-core/arduino-core.jar" />
+
+<!--
+    <taskdef name="methods"
+             classname="PAppletMethods"
+             classpath="methods/methods.jar" />
+    <methods dir="${basedir}/src/processing/autocomplete" />
+-->
+    <mkdir dir="bin" />
+
+    <!-- ant seems to nuke ${java.home} for some reason, pointing at the JRE
+	 subfolder instead of the actual JDK found at JAVA_HOME. 
+	 To avoid this, we grab the actual JAVA_HOME environment variable 
+	 and use that to specify the location of tools.jar. -->
+
+    <!-- if someone is better with ant please help clean this up -->
+    <property environment="env" />
+    <property name="java_home" value="${env.JAVA_HOME}" />
+
+    <javac source="1.6"
+           target="1.6"
+           encoding="UTF-8"
+           includeAntRuntime="false"
+           srcdir="src"
+           classpathref="class.path"
+           destdir="bin">
+    </javac>
+
+    <copy todir="bin" overwrite="true" verbose="true">
+      <fileset dir="src">
+        <include name="cc/arduino/packages/autocomplete/icons/**/*.gif" />
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="build" depends="compile" description="Build autocomplete library">
+    <jar basedir="bin" destfile="arduino-autocomplete.jar" />
+  </target>
+
+</project>

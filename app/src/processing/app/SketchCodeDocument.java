@@ -7,7 +7,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.undo.UndoManager;
 
-public class SketchCodeDocument implements DocumentListener{
+public class SketchCodeDocument implements DocumentListener, SketchDocumentProvider{
 
   private SketchCode code;
   private Sketch sketch;

@@ -1,5 +1,8 @@
 package processing.app;
 
+import br.com.criativasoft.cpluslibparser.LibraryCache;
+import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
+
 import com.google.common.collect.FluentIterable;
 
 import static processing.app.I18n._;
@@ -7,6 +10,11 @@ import static processing.app.I18n._;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import processing.app.packages.LibraryList;
+import processing.app.packages.SketchListener;
+import processing.app.packages.UserLibrary;
+import processing.app.preproc.PdePreprocessor;
 
 public class SketchData {
 
@@ -33,6 +41,21 @@ public class SketchData {
   private String name;
 
   private List<SketchCode> codes = new ArrayList<SketchCode>();
+  
+  private Set<SketchListener> listeners = new LinkedHashSet<SketchListener>();
+  
+  /**
+   * List of library folders.
+   */
+  private LibraryList importedLibraries = new LibraryList();
+  
+  /** Sketch source metadata(classes, variables, functions), this is set in {@link SketchCompletionProvider#onLoadLibrary(TLibrary)} */
+  private transient TLibrary sketchMetadata;
+
+  /** Sketch and 'Libraries currently used' Metadata Cache - This is used by autocomplete */
+  private transient LibraryCache libraryCacheContext;
+  
+  private transient SketchCode currentCode;
 
   private static final Comparator<SketchCode> CODE_DOCS_COMPARATOR = new Comparator<SketchCode>() {
     @Override
@@ -49,6 +72,9 @@ public class SketchData {
     String mainFilename = primaryFile.getName();
     int suffixLength = getDefaultExtension().length() + 1;
     name = mainFilename.substring(0, mainFilename.length() - suffixLength);
+    
+    libraryCacheContext = new LibraryCache();
+    libraryCacheContext.setName(name);
 
     folder = new File(file.getParent());
     //System.out.println("sketch dir is " + folder);
@@ -146,6 +172,21 @@ public class SketchData {
         break;
       }
     }
+    
+    // Find used libraries
+    for (SketchCode code : getCodes()) {
+      List<String> includes = PdePreprocessor.findIncludes(code.getProgram());
+      if(includes != null){
+        for (String include : includes) {
+          LibraryList libs = BaseNoGui.importToLibraryTable.get(include);
+          if(libs == null) continue;
+          UserLibrary lib = libs.get(0);
+          if (lib != null && !importedLibraries.contains(lib)) {
+            importedLibraries.add(lib);
+          }
+        }
+      }
+    }
 
     // sort the entries at the top
     sortCode();
@@ -153,8 +194,10 @@ public class SketchData {
 
   public void save() throws IOException {
     for (SketchCode code : getCodes()) {
-      if (code.isModified())
+      if (code.isModified()){
         code.save();
+        notifyListeners(SketchListener.Event.SAVED, code);
+      }
     }
   }
 
@@ -190,6 +233,7 @@ public class SketchData {
 
   public void addCode(SketchCode sketchCode) {
     codes.add(sketchCode);
+    notifyListeners(SketchListener.Event.INSERTED, sketchCode);
   }
 
   public void moveCodeToFront(SketchCode codeDoc) {
@@ -201,6 +245,7 @@ public class SketchData {
     for (SketchCode code : codes) {
       if (code.getFileName().equals(newCode.getFileName())) {
         codes.set(codes.indexOf(code), newCode);
+        notifyListeners(SketchListener.Event.SAVED, newCode);
         return;
       }
     }
@@ -235,6 +280,32 @@ public class SketchData {
     }
     return -1;
   }
+  
+  public boolean addListener(SketchListener listener){
+    return listeners.add(listener);
+  }
+
+  public boolean removeListener(SketchListener listener){
+    return listeners.add(listener);
+  }
+  
+  public void notifyListeners(SketchListener.Event event, SketchCode code){
+    
+    for (SketchListener listener : listeners) {
+      
+      if(event == SketchListener.Event.LOAD){
+        listener.onSketchLoad(this);
+      }
+      if(event == SketchListener.Event.INSERTED){
+        listener.onSketchInserted(this, code);
+      }
+      if(event == SketchListener.Event.SAVED){
+        listener.onSketchSaved(this, code);
+      }
+      
+    }
+    
+  }
 
   public String getName() {
     return name;
@@ -258,5 +329,34 @@ public class SketchData {
 
   public File getCodeFolder() {
     return codeFolder;
+  }
+  
+  public void setSketchMetadata(TLibrary sketchMetadata) {
+    this.sketchMetadata = sketchMetadata;
+  }
+  
+  public TLibrary getSketchMetadata() {
+    return sketchMetadata;
+  }
+  
+  public LibraryCache getLibraryCacheContext() {
+    return libraryCacheContext;
+  }
+  
+  public LibraryList getImportedLibraries() {
+    return importedLibraries;
+  }
+  
+  public void addLibrary(UserLibrary lib) {
+    if(lib != null){
+      importedLibraries.add(lib);
+    }
+  }
+  public void setCurrentCode(SketchCode currentCode) {
+	this.currentCode = currentCode;
+  }
+  
+  public SketchCode getCurrentCode() {
+	return currentCode;
   }
 }

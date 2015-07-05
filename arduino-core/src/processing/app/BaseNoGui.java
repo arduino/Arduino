@@ -7,10 +7,16 @@ import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.packages.Uploader;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import nojunit.ConsoleLogger;
+import nojunit.LogFormatter;
+
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
+
 import processing.app.debug.Compiler;
 import processing.app.debug.*;
 import processing.app.helpers.*;
@@ -23,6 +29,7 @@ import processing.app.packages.UserLibrary;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,15 +72,14 @@ public class BaseNoGui {
   // maps #included files to their library folder
   public static Map<String, LibraryList> importToLibraryTable;
 
-  // maps library name to their library folder
-  static private LibraryList libraries;
-
   // XXX: Remove this field
   static private List<File> librariesFolders;
 
   static UserNotifier notifier = new BasicUserNotifier();
 
   static public Map<String, TargetPackage> packages;
+  
+  static List<Logger> enabledLoggers = new ArrayList<Logger>(); 
 
   static Platform platform;
 
@@ -243,7 +249,7 @@ public class BaseNoGui {
   }
 
   static public LibraryList getLibraries() {
-    return libraries;
+    return librariesIndexer.getInstalledLibraries();
   }
 
   static public List<File> getLibrariesPath() {
@@ -599,6 +605,43 @@ public class BaseNoGui {
   static public void initLogger() {
     System.setProperty(LogFactoryImpl.LOG_PROPERTY, NoOpLog.class.getCanonicalName());
     Logger.getLogger("javax.jmdns").setLevel(Level.OFF);
+    
+    Handler consoleHandler = new ConsoleLogger();
+    consoleHandler.setLevel(Level.ALL);
+    consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
+    
+    Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    globalLogger.setLevel(consoleHandler.getLevel());
+    
+    // Remove default
+    Handler[] handlers = globalLogger.getHandlers();
+    for(Handler handler : handlers) {
+        globalLogger.removeHandler(handler);
+    }
+    Logger root = Logger.getLogger("");
+    handlers = root.getHandlers();
+    for(Handler handler : handlers) {
+      root.removeHandler(handler);
+    }
+    
+    globalLogger.addHandler(consoleHandler);
+    //root.addHandler(consoleHandler);
+    
+    enableLogger("cc.arduino.packages.autocomplete");
+    enableLogger("br.com.criativasoft.cpluslibparser");
+    enableLogger(BaseNoGui.class.getPackage().getName());
+    
+  }
+  
+  static public void enableLogger(String name){
+	  
+	  Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	  
+	  Logger logger = Logger.getLogger(name);
+	  
+	  enabledLoggers.add(logger);
+	  
+	  logger.setParent(globalLogger);
   }
 
   static public void initPackages() throws Exception {

@@ -30,25 +30,12 @@
 
 package processing.app.syntax;
 
-import org.apache.commons.compress.utils.IOUtils;
-import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rsyntaxtextarea.Theme;
-import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
-import org.fife.ui.rtextarea.RTextArea;
-import org.fife.ui.rtextarea.RTextAreaUI;
-import org.fife.ui.rtextarea.RUndoManager;
-import processing.app.*;
-
-import javax.swing.*;
-import javax.swing.event.EventListenerList;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Segment;
-import javax.swing.undo.UndoManager;
-import java.awt.*;
+import java.awt.AWTKeyStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -57,9 +44,53 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Segment;
+import javax.swing.undo.UndoManager;
+
+import org.apache.commons.compress.utils.IOUtils;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.AutoCompletionEvent;
+import org.fife.ui.autocomplete.AutoCompletionListener;
+import org.fife.ui.autocomplete.ParameterizedCompletion;
+import org.fife.ui.autocomplete.ParameterizedCompletionEvent;
+import org.fife.ui.rsyntaxtextarea.LinkGenerator;
+import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Style;
+import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenImpl;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaUI;
+import org.fife.ui.rtextarea.RUndoManager;
+
+import processing.app.Base;
+import processing.app.BaseNoGui;
+import processing.app.EditorListener;
+import processing.app.PreferencesData;
+import processing.app.packages.UserLibrary;
+import br.com.criativasoft.cpluslibparser.metadata.TAttribute;
+import br.com.criativasoft.cpluslibparser.metadata.TFunction;
+import cc.arduino.packages.autocomplete.CompletionsRenderer;
+import cc.arduino.packages.autocomplete.RealtimeCompletionsListener;
+import cc.arduino.packages.autocomplete.SketchCompletionProvider;
+import cc.arduino.packages.autocomplete.TDynamicLocation;
+import cc.arduino.packages.autocomplete.template.GenerateVarTemplate;
+import cc.arduino.packages.autocomplete.template.IncludeTemplate;
 
 /**
  * Arduino Sketch code editor based on RSyntaxTextArea (http://fifesoft.com/rsyntaxtextarea)
@@ -80,6 +111,8 @@ public class SketchTextArea extends RSyntaxTextArea {
   private EditorListener editorListener;
 
   private final PdeKeywords pdeKeywords;
+
+  private SketchCompletionProvider completionProvider;
 
   public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
     this.pdeKeywords = pdeKeywords;
@@ -138,6 +171,73 @@ public class SketchTextArea extends RSyntaxTextArea {
     style.font = (Font) styledFont.get("font");
 
     getSyntaxScheme().setStyle(tokenType, style);
+  }
+  
+  public void setupAutoComplete(SketchCompletionProvider provider) {
+    
+    if(this.completionProvider != null){
+      completionProvider.uninstall();
+    }
+    
+    this.completionProvider = provider;
+    AutoCompletion ac = new AutoCompletion(provider);
+    provider.setAutoCompletion(ac);
+    
+    ac.setAutoActivationEnabled(true);
+    ac.setShowDescWindow(false);
+    ac.setListCellRenderer(new CompletionsRenderer());
+    ac.setParamChoicesRenderer(new CompletionsRenderer());
+    ac.setAutoCompleteSingleChoices(true);
+    ac.setParameterAssistanceEnabled(true);
+    
+    // NOTE: Monitor changes. On 'SketchCompletionProvider.onSketchInserted' was installed a DocumentListener
+    this.addKeyListener(new RealtimeCompletionsListener(provider.getSketchData())); 
+    
+    ac.addAutoCompletionListener(new AutoCompletionListener() {
+      @Override
+      public void autoCompleteUpdate(AutoCompletionEvent e) {
+        
+        if(e instanceof ParameterizedCompletionEvent){
+          ParameterizedCompletionEvent event = (ParameterizedCompletionEvent) e;
+          
+          ParameterizedCompletion completion = event.getCompletion();
+          
+          if(e.getEventType() == AutoCompletionEvent.Type.PARAMETER_COMPLETION_FINISH){
+            List<String> parameterValues = event.getContext().getParameterValues();
+            
+            // Force parser/load new Lib for autocomplete.
+            if(completion instanceof IncludeTemplate && !parameterValues.isEmpty()){
+              UserLibrary library = Base.getLibraries().getByName(parameterValues.get(0));
+              completionProvider.getSketchData().addLibrary(library);
+            }
+            
+            if(completion instanceof GenerateVarTemplate && !parameterValues.isEmpty()){
+              GenerateVarTemplate varTemplate = (GenerateVarTemplate) completion;
+              TAttribute var =  new TAttribute(varTemplate.getType(), parameterValues.iterator().next());
+              
+              // Insert new var in current function scope
+              TFunction functionScope = completionProvider.getCurrentFunctionScope(SketchTextArea.this);
+              if(functionScope != null){
+                TDynamicLocation location = new TDynamicLocation(SketchTextArea.this.getDocument(), functionScope.getLocation());
+                var.setLocation(location);
+                functionScope.addLocalVariable(var);
+              }
+              
+            }
+            
+          }
+          
+          if(e.getEventType() == AutoCompletionEvent.Type.PARAMETER_COMPLETION_SELECT){
+            
+          }
+        }
+      }
+    });
+    ac.install(this);
+  }
+  
+  public SketchCompletionProvider getCompletionProvider() {
+	return completionProvider;
   }
 
   // Removing the default focus traversal keys

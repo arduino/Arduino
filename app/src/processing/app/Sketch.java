@@ -997,6 +997,7 @@ public class Sketch {
     current = (SketchCodeDocument) data.getCode(which).getMetadata();
     currentIndex = which;
 
+    data.setCurrentCode(current.getCode());
     editor.setCode(current);
 
     editor.header.rebuild();
@@ -1375,6 +1376,9 @@ public class Sketch {
     return editor.untitled;
   }
 
+  public SketchData getSketchData() {
+    return data;
+  }
 
   // .................................................................
 

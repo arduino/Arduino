@@ -5,7 +5,13 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.text.BadLocationException;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.Token;
+
 import processing.app.syntax.SketchTextArea;
+import cc.arduino.packages.autocomplete.SketchCompletionProvider;
 
 public class EditorListener implements KeyListener {
   
@@ -67,7 +73,26 @@ public class EditorListener implements KeyListener {
 //      int line = textarea.getCaretLineNumber();
 //      textarea.setActiveLineRange(line, line + 3); 
 //    }
-    
+
+    // Generate New Variable
+    if (event.isAltDown() && code == KeyEvent.VK_ENTER) {
+      
+      int line = textarea.getCaretLineNumber();
+      
+      Token tokenListForLine = textarea.getTokenListForLine(line);
+      int start = RSyntaxUtilities.getNextImportantToken(tokenListForLine, textarea, line).getOffset();
+      int end = textarea.getLineEndOffsetOfCurrentLine();
+      
+      try {
+        String expression = textarea.getText(start, end - start);
+        SketchCompletionProvider provider = textarea.getCompletionProvider();
+        provider.generateNewVariableFor(expression, start);
+        
+        
+        
+      } catch (BadLocationException e) {}
+      
+    }    
   }
 
   @Override

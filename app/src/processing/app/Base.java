@@ -36,11 +36,14 @@ import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.utils.Progress;
 import cc.arduino.view.*;
 import cc.arduino.view.Event;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
+
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -64,10 +67,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import static processing.app.I18n._;
 
 
@@ -146,8 +145,6 @@ public class Base {
 
     BaseNoGui.initLogger();
 
-    initLogger();
-
     BaseNoGui.initPlatform();
 
     BaseNoGui.getPlatform().init();
@@ -225,35 +222,6 @@ public class Base {
 
     INSTANCE = new Base(args);
   }
-
-  
-  static public void initLogger() {
-    Handler consoleHandler = new ConsoleLogger();
-    consoleHandler.setLevel(Level.ALL);
-    consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
-    
-    Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    globalLogger.setLevel(consoleHandler.getLevel());
-    
-    // Remove default
-    Handler[] handlers = globalLogger.getHandlers();
-    for(Handler handler : handlers) {
-        globalLogger.removeHandler(handler);
-    }
-    Logger root = Logger.getLogger("");
-    handlers = root.getHandlers();
-    for(Handler handler : handlers) {
-      root.removeHandler(handler);
-    }
-    
-    globalLogger.addHandler(consoleHandler);
-    
-    Logger.getLogger("cc.arduino.packages.autocomplete").setParent(globalLogger);
-    Logger.getLogger("br.com.criativasoft.cpluslibparser").setParent(globalLogger);
-    Logger.getLogger(Base.class.getPackage().getName()).setParent(globalLogger);
-    
-  }
-
 
   static protected void setCommandLine() {
     commandLine = true;

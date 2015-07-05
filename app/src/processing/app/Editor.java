@@ -22,12 +22,17 @@
 
 package processing.app;
 
+import br.com.criativasoft.cpluslibparser.LibraryIndex;
+import br.com.criativasoft.cpluslibparser.metadata.TElementLocation;
+import br.com.criativasoft.cpluslibparser.metadata.TError;
+import br.com.criativasoft.cpluslibparser.metadata.TLibrary;
 import cc.arduino.packages.MonitorFactory;
-
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
+
 import com.google.common.base.Predicate;
 import com.jcraft.jsch.JSchException;
+
 import jssc.SerialPortException;
 import processing.app.debug.*;
 import processing.app.forms.PasswordAuthorizationDialog;
@@ -62,6 +67,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
+import cc.arduino.packages.autocomplete.SketchCompletionProvider;
 import cc.arduino.packages.uploaders.SerialUploader;
 
 /**
@@ -148,6 +154,7 @@ public class Editor extends JFrame implements RunnerListener {
   Sketch sketch;
 
   private EditorLineStatus lineStatus;
+  SyntaxErrorMarker errorMarker;
 
   //JEditorPane editorPane;
 
@@ -204,6 +211,11 @@ public class Editor extends JFrame implements RunnerListener {
     addWindowListener(new WindowAdapter() {
         public void windowActivated(WindowEvent e) {
           base.handleActivated(Editor.this);
+          
+          if(sketch != null){
+            LibraryIndex.setContextCache(sketch.getSketchData().getLibraryCacheContext());
+          }
+          
         }
 
         // added for 1.0.5
@@ -995,6 +1007,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private SketchTextArea createTextArea() throws IOException {
     final SketchTextArea textArea = new SketchTextArea(base.getPdeKeywords());
+    textArea.addParser(new TokenErrorMarker(textArea));
     textArea.setFocusTraversalKeysEnabled(false);
     textArea.requestFocusInWindow();
     textArea.setMarkOccurrences(PreferencesData.getBoolean("editor.advanced"));
@@ -1756,7 +1769,7 @@ public class Editor extends JFrame implements RunnerListener {
     if(codeDoc.getUndo() == null){
       codeDoc.setUndo(new LastUndoableEditAwareUndoManager(textarea, this));
       document.addUndoableEditListener(codeDoc.getUndo());
-		}
+	}
     
     // Update the document object that's in use
     textarea.switchDocument(document, codeDoc.getUndo());
@@ -1767,6 +1780,8 @@ public class Editor extends JFrame implements RunnerListener {
     
     textarea.select(codeDoc.getSelectionStart(), codeDoc.getSelectionStop());
     textarea.requestFocus();  // get the caret blinking
+    
+    if(errorMarker != null) errorMarker.setCurrentCode(codeDoc.getCode());
      
     final int position = codeDoc.getScrollPosition();
     
@@ -1951,6 +1966,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
       try {
         textarea.removeAllLineHighlights();
+        errorMarker.removeAll();
         sketch.prepare();
         sketch.build(verbose, saveHex);
         statusNotice(_("Done compiling."));
@@ -2184,6 +2200,18 @@ public class Editor extends JFrame implements RunnerListener {
 
     try {
       sketch = new Sketch(this, file);
+      
+      LibraryIndex.setContextCache(sketch.getSketchData().getLibraryCacheContext());
+      
+      // This needs to be after the ' LibraryIndex.setContextCache' for listeners work properly (on SketchCompletionProvider)
+      textarea.setupAutoComplete(new SketchCompletionProvider(sketch.getSketchData()));
+
+      // This needs to be after the ' LibraryIndex.setContextCache' for listeners work properly
+      if(errorMarker == null){
+        errorMarker = new SyntaxErrorMarker(textarea);
+        textarea.addParser(errorMarker);
+      }
+      
     } catch (IOException e) {
       Base.showWarning(_("Error"), _("Could not create the sketch."), e);
       return false;
@@ -2686,8 +2714,22 @@ public class Editor extends JFrame implements RunnerListener {
           System.err.println(I18n.format(_("Bad error line: {0}"), line));
         } else {
           try {
-             textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+            // textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
             textarea.setCaretPosition(textarea.getLineStartOffset(line));
+            
+            TLibrary metadata = sketch.getSketchData().getSketchMetadata();
+            int startOffset = textarea.getLineStartOffset(line);
+            int endOffset = textarea.getLineEndOffset(line);
+            String path  = sketch.getCurrentCode().getFile().getPath();
+
+            TError error = new TError(re.getMessage(), TError.COMPILER_ERROR);
+            error.setLocation(new TElementLocation(path, startOffset, endOffset - startOffset));
+            errorMarker.addError(error);
+            textarea.forceReparsing(errorMarker);
+            
+            if(metadata != null){
+              metadata.getErrors().add(error);
+            }       
           } catch (BadLocationException e1) {
             e1.printStackTrace();
           }

@@ -74,6 +74,7 @@
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
     <include name="arduino-core/arduino-core.jar" />
+    <include name="arduino-autocomplete/arduino-autocomplete.jar" />
     <include name="app/pde.jar" />
     <include name="app/lib/*.jar" />
     <include name="arduino-core/lib/*.jar" />
@@ -112,11 +113,13 @@
 
   <target name="subprojects-clean">
     <subant buildpath="../arduino-core" target="clean"/>
+    <subant buildpath="../arduino-autocomplete" target="clean"/>
     <subant buildpath="../app" target="clean"/>
   </target>
 
   <target name="subprojects-build">
     <subant buildpath="../arduino-core" target="build"/>
+    <subant buildpath="../arduino-autocomplete" target="build"/>
     <subant buildpath="../app" target="build"/>
   </target>
 
