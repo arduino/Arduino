@@ -15,7 +15,8 @@ public class SketchTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
 
   private static final Action[] defaultActions = {
     new DeleteNextWordAction(),
-    new DeleteLineToCursorAction()
+    new DeleteLineToCursorAction(),
+    new SelectWholeLineAction()
   };
 
   @Override
@@ -96,6 +97,31 @@ public class SketchTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
     @Override
     public String getMacroID() {
       return rtaDeleteLineToCursorAction;
+    }
+
+  }
+
+  /**
+   * Selects the line around the caret.
+   */
+  public static class SelectWholeLineAction extends RecordableTextAction {
+
+    public SelectWholeLineAction() {
+      super(selectLineAction);
+    }
+
+    @Override
+    public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+      Document document = textArea.getDocument();
+      Element map = document.getDefaultRootElement();
+      int currentLineNum = map.getElementIndex(textArea.getCaretPosition());
+      Element currentLineElement = map.getElement(currentLineNum);
+      textArea.select(currentLineElement.getStartOffset(), currentLineElement.getEndOffset());
+    }
+
+    @Override
+    public final String getMacroID() {
+      return DefaultEditorKit.selectLineAction;
     }
 
   }
