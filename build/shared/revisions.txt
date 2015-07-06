@@ -14,6 +14,8 @@ ARDUINO 1.6.6
 * When changing tab, file name is shown in window title
 * IDE groups compiled files into "libraries", "core" and "sketch" folders
 * Added Serial Plotter. Thanks @henningpohl
+* Editor: triple click selects whole line
+* Windows: IDE startup feels faster
 
 [libraries]
 
