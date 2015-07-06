@@ -33,8 +33,7 @@ void setup() {
   EsploraTFT.background(0, 0, 0);
 }
 
-void loop()
-{
+void loop() {
   // read the x-axis of te accelerometer
   int tilt = Esplora.readAccelerometer(X_AXIS);
 

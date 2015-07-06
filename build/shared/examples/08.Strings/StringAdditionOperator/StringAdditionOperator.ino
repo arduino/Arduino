@@ -25,7 +25,7 @@ void setup() {
 
   stringOne = String("stringThree = ");
   stringTwo = String("this string");
-  stringThree = String ();
+  stringThree = String();
   // send an intro:
   Serial.println("\n\nAdding strings together (concatenation):");
   Serial.println();

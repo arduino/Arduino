@@ -1,35 +1,35 @@
 /*
   Arduino Yún USB-to-Serial
 
- Allows you to use the Yún's 32U4 processor as a
- serial terminal for the Linux side on the Yún.
+  Allows you to use the Yún's 32U4 processor as a
+  serial terminal for the Linux side on the Yún.
 
- Upload this to an Arduino Yún via serial (not WiFi) then open
- the serial monitor at 115200 to see the boot process of Linux.
- You can also use the serial monitor as a basic command line
- interface for Linux using this sketch.
+  Upload this to an Arduino Yún via serial (not WiFi) then open
+  the serial monitor at 115200 to see the boot process of Linux.
+  You can also use the serial monitor as a basic command line
+  interface for Linux using this sketch.
 
- From the serial monitor the following commands can be issued:
+  From the serial monitor the following commands can be issued:
 
- '~' followed by '0' -> Set the UART speed to 57600 baud
- '~' followed by '1' -> Set the UART speed to 115200 baud
- '~' followed by '2' -> Set the UART speed to 250000 baud
- '~' followed by '3' -> Set the UART speed to 500000 baud
- '~' followed by '~' -> Sends the bridge's shutdown command to
+  '~' followed by '0' -> Set the UART speed to 57600 baud
+  '~' followed by '1' -> Set the UART speed to 115200 baud
+  '~' followed by '2' -> Set the UART speed to 250000 baud
+  '~' followed by '3' -> Set the UART speed to 500000 baud
+  '~' followed by '~' -> Sends the bridge's shutdown command to
                         obtain the console.
 
- The circuit:
- * Arduino Yún
+  The circuit:
+   Arduino Yún
 
- created March 2013
- by Massimo Banzi
- modified by Cristian Maglie
+  created March 2013
+  by Massimo Banzi
+  modified by Cristian Maglie
 
- This example code is in the public domain.
+  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/YunSerialTerminal
+  http://www.arduino.cc/en/Tutorial/YunSerialTerminal
 
- */
+*/
 
 
 long linuxBaud = 250000;
@@ -65,8 +65,7 @@ void loop() {
         Serial1.begin(500000);        //        set speed to 500000
         Serial.println("Speed set to 500000");
       } else if (c == '~') {          //     '~` key pressed?
-                                      //        send "bridge shutdown" command
-        Serial1.write((uint8_t *)"\xff\0\0\x05XXXXX\x7f\xf9", 11);
+        Serial1.write((uint8_t *)"\xff\0\0\x05XXXXX\x7f\xf9", 11); // send "bridge shutdown" command
         Serial.println("Sending bridge's shutdown command");
       } else {                        //     any other key pressed?
         Serial1.write('~');           //        write '~' to UART

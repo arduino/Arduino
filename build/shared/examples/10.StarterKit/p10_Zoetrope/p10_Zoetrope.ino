@@ -84,8 +84,7 @@ void loop() {
   if (motorDirection == 1) {
     digitalWrite(controlPin1, HIGH);
     digitalWrite(controlPin2, LOW);
-  }
-  else {
+  } else {
     digitalWrite(controlPin1, LOW);
     digitalWrite(controlPin2, HIGH);
   }
@@ -94,8 +93,7 @@ void loop() {
   if (motorEnabled == 1) {
     // PWM the enable pin to vary the speed
     analogWrite(enablePin, motorSpeed);
-  }
-  else { // if the motor is not supposed to be on
+  } else { // if the motor is not supposed to be on
     //turn the motor off
     analogWrite(enablePin, 0);
   }

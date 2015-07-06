@@ -84,8 +84,7 @@ void loop() {
         if (c == '\n') {
           // you're starting a new line
           currentLineIsBlank = true;
-        }
-        else if (c != '\r') {
+        } else if (c != '\r') {
           // you've gotten a character on the current line
           currentLineIsBlank = false;
         }

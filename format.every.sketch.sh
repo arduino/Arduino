@@ -1,2 +1,2 @@
 # you need to have astyle installed before running this
-find libraries/ hardware/ -name '*.ino' -exec astyle --options=build/shared/lib/formatter.conf {} \;
+find -name '*.ino' -exec /home/federico/materiale/works_Arduino/astyle/astyle-code/AStyle/build/gcc/bin/astyle --options=examples_formatter.conf {} \;

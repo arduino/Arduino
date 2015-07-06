@@ -43,11 +43,9 @@ void loop() {
   String message;
 
   // if there is a message in the Mailbox
-  if (Mailbox.messageAvailable())
-  {
+  if (Mailbox.messageAvailable()) {
     // read all the messages present in the queue
-    while (Mailbox.messageAvailable())
-    {
+    while (Mailbox.messageAvailable()) {
       Mailbox.readMessage(message);
       Serial.println(message);
     }

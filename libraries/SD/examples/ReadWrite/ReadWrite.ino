@@ -23,8 +23,7 @@
 
 File myFile;
 
-void setup()
-{
+void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -73,8 +72,7 @@ void setup()
   }
 }
 
-void loop()
-{
+void loop() {
   // nothing happens after setup
 }
 

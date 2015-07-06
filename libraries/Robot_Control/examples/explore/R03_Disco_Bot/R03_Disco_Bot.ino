@@ -99,17 +99,19 @@ void runScript() {
     // get the next 2 commands (direction and duration)
     parseCommand(danceScript[currentScript], danceScript[currentScript + 1]);
     currentScript += 2;
-    if (danceScript[currentScript] == '\0') // at the end of the array
-      currentScript = 0; // start again at the beginning
+    if (danceScript[currentScript] == '\0') { // at the end of the array
+      currentScript = 0;  // start again at the beginning
+    }
   }
 }
 
 // instead of delay, use this timer
 boolean waiting() {
-  if (millis() - waitFrom >= waitTime)
+  if (millis() - waitFrom >= waitTime) {
     return false;
-  else
+  } else {
     return true;
+  }
 }
 
 // how long to wait

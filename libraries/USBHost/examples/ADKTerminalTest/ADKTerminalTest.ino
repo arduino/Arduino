@@ -31,8 +31,7 @@ char url[] = "http://labs.arduino.cc/uploads/ADK/ArduinoTerminal/ThibaultTermina
 USBHost Usb;
 ADK adk(&Usb, companyName, applicationName, accessoryName, versionNumber, url, serialNumber);
 
-void setup()
-{
+void setup() {
   cpu_irq_enable();
   printf("\r\nADK demo start\r\n");
   delay(200);
@@ -40,16 +39,14 @@ void setup()
 
 #define RCVSIZE 128
 
-void loop()
-{
+void loop() {
   uint8_t buf[RCVSIZE];
   uint32_t nbread = 0;
   char helloworld[] = "Hello World!\r\n";
 
   Usb.Task();
 
-  if (adk.isReady())
-  {
+  if (adk.isReady()) {
     /* Write hello string to ADK */
     adk.write(strlen(helloworld), (uint8_t *)helloworld);
 
@@ -57,11 +54,9 @@ void loop()
 
     /* Read data from ADK and print to UART */
     adk.read(&nbread, RCVSIZE, buf);
-    if (nbread > 0)
-    {
+    if (nbread > 0) {
       printf("RCV: ");
-      for (uint32_t i = 0; i < nbread; ++i)
-      {
+      for (uint32_t i = 0; i < nbread; ++i) {
         printf("%c", (char)buf[i]);
       }
       printf("\r\n");

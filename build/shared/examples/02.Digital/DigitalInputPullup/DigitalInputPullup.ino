@@ -42,8 +42,7 @@ void loop() {
   // button's pressed, and off when it's not:
   if (sensorVal == HIGH) {
     digitalWrite(13, LOW);
-  }
-  else {
+  } else {
     digitalWrite(13, HIGH);
   }
 }

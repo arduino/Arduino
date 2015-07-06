@@ -41,7 +41,7 @@ void loop() {
   analogWrite(analogOutPin, outputValue);
 
   // print the results to the serial monitor:
-  Serial.print("sensor = " );
+  Serial.print("sensor = ");
   Serial.print(sensorValue);
   Serial.print("\t output = ");
   Serial.println(outputValue);

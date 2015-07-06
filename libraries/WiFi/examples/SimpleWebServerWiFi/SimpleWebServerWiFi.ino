@@ -41,11 +41,12 @@ void setup() {
   }
 
   String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
+  if (fv != "1.1.0") {
     Serial.println("Please upgrade the firmware");
+  }
 
   // attempt to connect to Wifi network:
-  while ( status != WL_CONNECTED) {
+  while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to Network named: ");
     Serial.println(ssid);                   // print the network name (SSID);
 
@@ -88,12 +89,10 @@ void loop() {
             client.println();
             // break out of the while loop:
             break;
-          }
-          else {      // if you got a newline, then clear currentLine:
+          } else {    // if you got a newline, then clear currentLine:
             currentLine = "";
           }
-        }
-        else if (c != '\r') {    // if you got anything else but a carriage return character,
+        } else if (c != '\r') {  // if you got anything else but a carriage return character,
           currentLine += c;      // add it to the end of the currentLine
         }
 

@@ -59,15 +59,13 @@ void setup() {
     client.println("Host: www.google.com");
     client.println("Connection: close");
     client.println();
-  }
-  else {
+  } else {
     // kf you didn't get a connection to the server:
     Serial.println("connection failed");
   }
 }
 
-void loop()
-{
+void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
   if (client.available()) {

@@ -85,7 +85,7 @@ void loop() {
 }
 
 //Read from or write to register from the SCP1000:
-unsigned int readRegister(byte thisRegister, int bytesToRead ) {
+unsigned int readRegister(byte thisRegister, int bytesToRead) {
   byte inByte = 0;           // incoming byte from the SPI
   unsigned int result = 0;   // result to return
   Serial.print(thisRegister, BIN);
@@ -117,7 +117,7 @@ unsigned int readRegister(byte thisRegister, int bytesToRead ) {
   // take the chip select high to de-select:
   digitalWrite(chipSelectPin, HIGH);
   // return the result:
-  return(result);
+  return (result);
 }
 
 

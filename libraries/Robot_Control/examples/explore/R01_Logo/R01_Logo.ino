@@ -56,8 +56,9 @@ void loop() {
 
 // empty the commands array
 void iniCommands() {
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 20; i++) {
     commands[i] = -1;
+  }
 }
 
 // add commands to the array

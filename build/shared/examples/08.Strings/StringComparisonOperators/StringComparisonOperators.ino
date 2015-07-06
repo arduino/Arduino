@@ -49,16 +49,14 @@ void loop() {
   // you can also use equals() to see if two strings are the same:
   if (stringOne.equals(stringTwo)) {
     Serial.println(stringOne + " equals " + stringTwo);
-  }
-  else {
+  } else {
     Serial.println(stringOne + " does not equal " + stringTwo);
   }
 
   // or perhaps you want to ignore case:
   if (stringOne.equalsIgnoreCase(stringTwo)) {
     Serial.println(stringOne + " equals (ignoring case) " + stringTwo);
-  }
-  else {
+  } else {
     Serial.println(stringOne + " does not equal (ignoring case) " + stringTwo);
   }
 
@@ -103,10 +101,9 @@ void loop() {
   // comes first in alphanumeric order, then compareTo() is greater than 0:
   stringOne = "Cucumber";
   stringTwo = "Cucuracha";
-  if (stringOne.compareTo(stringTwo) < 0 ) {
+  if (stringOne.compareTo(stringTwo) < 0) {
     Serial.println(stringOne + " comes before " + stringTwo);
-  }
-  else {
+  } else {
     Serial.println(stringOne + " comes after " + stringTwo);
   }
 
@@ -121,10 +118,9 @@ void loop() {
     stringOne += analogRead(A0);
     stringTwo += analogRead(A5);
 
-    if (stringOne.compareTo(stringTwo) < 0 ) {
+    if (stringOne.compareTo(stringTwo) < 0) {
       Serial.println(stringOne + " comes before " + stringTwo);
-    }
-    else {
+    } else {
       Serial.println(stringOne + " comes after " + stringTwo);
 
     }

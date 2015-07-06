@@ -12,15 +12,13 @@
 
 #include <Wire.h>
 
-void setup()
-{
+void setup() {
   Wire.begin(); // join i2c bus (address optional for master)
 }
 
 byte x = 0;
 
-void loop()
-{
+void loop() {
   Wire.beginTransmission(8); // transmit to device #8
   Wire.write("x is ");        // sends five bytes
   Wire.write(x);              // sends one byte

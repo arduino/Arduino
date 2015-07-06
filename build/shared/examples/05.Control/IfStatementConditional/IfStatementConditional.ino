@@ -44,8 +44,7 @@ void loop() {
   // if the analog value is high enough, turn on the LED:
   if (analogValue > threshold) {
     digitalWrite(ledPin, HIGH);
-  }
-  else {
+  } else {
     digitalWrite(ledPin, LOW);
   }
 

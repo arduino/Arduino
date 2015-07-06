@@ -41,11 +41,10 @@ void loop() {
   // endsWith() checks to see if a String ends with a particular character:
   String sensorReading = "sensor = ";
   sensorReading += analogRead(A0);
-  Serial.print (sensorReading);
+  Serial.print(sensorReading);
   if (sensorReading.endsWith("0")) {
     Serial.println(". This reading is divisible by ten");
-  }
-  else {
+  } else {
     Serial.println(". This reading is not divisible by ten");
   }
 

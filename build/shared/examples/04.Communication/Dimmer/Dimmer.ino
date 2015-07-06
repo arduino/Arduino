@@ -23,8 +23,7 @@
 
 const int ledPin = 9;      // the pin that the LED is attached to
 
-void setup()
-{
+void setup() {
   // initialize the serial communication:
   Serial.begin(9600);
   // initialize the ledPin as an output:

@@ -41,8 +41,7 @@ void loop() {
     // if the String's longer than 140 characters, complain:
     if (txtMsg.length() < 140) {
       Serial.println("That's a perfectly acceptable text message");
-    }
-    else {
+    } else {
       Serial.println("That's too long for a text message.");
     }
     // note the length for next time through the loop:

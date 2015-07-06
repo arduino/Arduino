@@ -42,8 +42,7 @@ void loop() {
   if (switchState == HIGH) {
     // turn motor on:
     digitalWrite(motorPin, HIGH);
-  }
-  else {
+  } else {
     // turn motor off:
     digitalWrite(motorPin, LOW);
   }

@@ -114,17 +114,19 @@ void loop() {
 
     // let the RGB led blink green once per second, for 200ms.
     unsigned int ms = millis() % 1000;
-    if (ms < 200)
+    if (ms < 200) {
       Esplora.writeGreen(50);
-    else
+    } else {
       Esplora.writeGreen(0);
+    }
 
     Esplora.writeBlue(0);
-  }
-  else
+  } else
     // while not active, keep a reassuring blue color coming
     // from the Esplora...
+  {
     Esplora.writeBlue(20);
+  }
 
 }
 
@@ -203,8 +205,9 @@ void checkSwitchPress() {
   if (startBtn != lastStartBtn) {
     if (startBtn == HIGH) { // button released
       active = !active;
-      if (active)
+      if (active) {
         justActivated = true;
+      }
     }
 
     lastStartBtn = startBtn;

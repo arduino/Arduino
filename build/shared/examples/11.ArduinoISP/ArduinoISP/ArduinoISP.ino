@@ -105,8 +105,12 @@ parameter param;
 uint8_t hbval = 128;
 int8_t hbdelta = 8;
 void heartbeat() {
-  if (hbval > 192) hbdelta = -hbdelta;
-  if (hbval < 32) hbdelta = -hbdelta;
+  if (hbval > 192) {
+    hbdelta = -hbdelta;
+  }
+  if (hbval < 32) {
+    hbdelta = -hbdelta;
+  }
   hbval += hbdelta;
   analogWrite(LED_HB, hbval);
   delay(20);
@@ -115,11 +119,17 @@ void heartbeat() {
 
 void loop(void) {
   // is pmode active?
-  if (pmode) digitalWrite(LED_PMODE, HIGH);
-  else digitalWrite(LED_PMODE, LOW);
+  if (pmode) {
+    digitalWrite(LED_PMODE, HIGH);
+  } else {
+    digitalWrite(LED_PMODE, LOW);
+  }
   // is there an error?
-  if (error) digitalWrite(LED_ERR, HIGH);
-  else digitalWrite(LED_ERR, LOW);
+  if (error) {
+    digitalWrite(LED_ERR, HIGH);
+  } else {
+    digitalWrite(LED_ERR, LOW);
+  }
 
   // light the heartbeat LED
   heartbeat();
@@ -145,13 +155,13 @@ void pulse(int pin, int times) {
     delay(PTIME);
     digitalWrite(pin, LOW);
     delay(PTIME);
-  }
-  while (times--);
+  } while (times--);
 }
 
 void prog_lamp(int state) {
-  if (PROG_FLICKER)
+  if (PROG_FLICKER) {
     digitalWrite(LED_PMODE, state);
+  }
 }
 
 void spi_init() {
@@ -163,8 +173,7 @@ void spi_init() {
 
 void spi_wait() {
   do {
-  }
-  while (!(SPSR & (1 << SPIF)));
+  } while (!(SPSR & (1 << SPIF)));
 }
 
 uint8_t spi_send(uint8_t b) {
@@ -188,8 +197,7 @@ void empty_reply() {
   if (CRC_EOP == getch()) {
     Serial.print((char)STK_INSYNC);
     Serial.print((char)STK_OK);
-  }
-  else {
+  } else {
     error++;
     Serial.print((char)STK_NOSYNC);
   }
@@ -200,8 +208,7 @@ void breply(uint8_t b) {
     Serial.print((char)STK_INSYNC);
     Serial.print((char)b);
     Serial.print((char)STK_OK);
-  }
-  else {
+  } else {
     error++;
     Serial.print((char)STK_NOSYNC);
   }
@@ -291,7 +298,9 @@ void flash(uint8_t hilo, int addr, uint8_t data) {
                   data);
 }
 void commit(int addr) {
-  if (PROG_FLICKER) prog_lamp(LOW);
+  if (PROG_FLICKER) {
+    prog_lamp(LOW);
+  }
   spi_transaction(0x4C, (addr >> 8) & 0xFF, addr & 0xFF, 0);
   if (PROG_FLICKER) {
     delay(PTIME);
@@ -301,10 +310,18 @@ void commit(int addr) {
 
 //#define _current_page(x) (here & 0xFFFFE0)
 int current_page(int addr) {
-  if (param.pagesize == 32)  return here & 0xFFFFFFF0;
-  if (param.pagesize == 64)  return here & 0xFFFFFFE0;
-  if (param.pagesize == 128) return here & 0xFFFFFFC0;
-  if (param.pagesize == 256) return here & 0xFFFFFF80;
+  if (param.pagesize == 32) {
+    return here & 0xFFFFFFF0;
+  }
+  if (param.pagesize == 64) {
+    return here & 0xFFFFFFE0;
+  }
+  if (param.pagesize == 128) {
+    return here & 0xFFFFFFC0;
+  }
+  if (param.pagesize == 256) {
+    return here & 0xFFFFFF80;
+  }
   return here;
 }
 
@@ -314,8 +331,7 @@ void write_flash(int length) {
   if (CRC_EOP == getch()) {
     Serial.print((char) STK_INSYNC);
     Serial.print((char) write_flash_pages(length));
-  }
-  else {
+  } else {
     error++;
     Serial.print((char) STK_NOSYNC);
   }
@@ -386,8 +402,7 @@ void program_page() {
     if (CRC_EOP == getch()) {
       Serial.print((char) STK_INSYNC);
       Serial.print(result);
-    }
-    else {
+    } else {
       error++;
       Serial.print((char) STK_NOSYNC);
     }
@@ -437,8 +452,12 @@ void read_page() {
     return;
   }
   Serial.print((char) STK_INSYNC);
-  if (memtype == 'F') result = flash_read_page(length);
-  if (memtype == 'E') result = eeprom_read_page(length);
+  if (memtype == 'F') {
+    result = flash_read_page(length);
+  }
+  if (memtype == 'E') {
+    result = eeprom_read_page(length);
+  }
   Serial.print(result);
   return;
 }
@@ -533,20 +552,21 @@ int avrisp() {
       read_signature();
       break;
 
-      // expecting a command, not CRC_EOP
-      // this is how we can get back in sync
+    // expecting a command, not CRC_EOP
+    // this is how we can get back in sync
     case CRC_EOP:
       error++;
       Serial.print((char) STK_NOSYNC);
       break;
 
-      // anything else we will return STK_UNKNOWN
+    // anything else we will return STK_UNKNOWN
     default:
       error++;
-      if (CRC_EOP == getch())
+      if (CRC_EOP == getch()) {
         Serial.print((char)STK_UNKNOWN);
-      else
+      } else {
         Serial.print((char)STK_NOSYNC);
+      }
   }
 }
 

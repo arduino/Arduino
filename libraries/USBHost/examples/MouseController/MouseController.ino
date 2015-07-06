@@ -78,15 +78,13 @@ void mouseReleased() {
   Serial.println();
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
   Serial.println("Program started");
   delay(200);
 }
 
-void loop()
-{
+void loop() {
   // Process USB tasks
   usb.Task();
 }

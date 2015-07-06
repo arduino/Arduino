@@ -46,22 +46,30 @@ void printKey() {
 
   Serial.print(" => ");
 
-  if (mod & LeftCtrl)
+  if (mod & LeftCtrl) {
     Serial.print("L-Ctrl ");
-  if (mod & LeftShift)
+  }
+  if (mod & LeftShift) {
     Serial.print("L-Shift ");
-  if (mod & Alt)
+  }
+  if (mod & Alt) {
     Serial.print("Alt ");
-  if (mod & LeftCmd)
+  }
+  if (mod & LeftCmd) {
     Serial.print("L-Cmd ");
-  if (mod & RightCtrl)
+  }
+  if (mod & RightCtrl) {
     Serial.print("R-Ctrl ");
-  if (mod & RightShift)
+  }
+  if (mod & RightShift) {
     Serial.print("R-Shift ");
-  if (mod & AltGr)
+  }
+  if (mod & AltGr) {
     Serial.print("AltGr ");
-  if (mod & RightCmd)
+  }
+  if (mod & RightCmd) {
     Serial.print("R-Cmd ");
+  }
 
   // getKey() returns the ASCII translation of OEM key
   // combined with modifiers.
@@ -69,15 +77,13 @@ void printKey() {
   Serial.println();
 }
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
   Serial.println("Program started");
   delay(200);
 }
 
-void loop()
-{
+void loop() {
   // Process USB tasks
   usb.Task();
 }

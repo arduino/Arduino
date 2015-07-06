@@ -41,13 +41,19 @@ void loop() {
 
   if (lastSecond != seconds) { // if a second has passed
     // print the time:
-    if (hours <= 9) Serial.print("0");    // adjust for 0-9
+    if (hours <= 9) {
+      Serial.print("0");  // adjust for 0-9
+    }
     Serial.print(hours);
     Serial.print(":");
-    if (minutes <= 9) Serial.print("0");  // adjust for 0-9
+    if (minutes <= 9) {
+      Serial.print("0");  // adjust for 0-9
+    }
     Serial.print(minutes);
     Serial.print(":");
-    if (seconds <= 9) Serial.print("0");  // adjust for 0-9
+    if (seconds <= 9) {
+      Serial.print("0");  // adjust for 0-9
+    }
     Serial.println(seconds);
 
     // restart the date process:

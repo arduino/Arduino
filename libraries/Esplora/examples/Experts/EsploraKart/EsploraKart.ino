@@ -103,8 +103,7 @@ void loop() {
        */
       if (newState == PRESSED) {
         Keyboard.press(keystrokes[thisButton]);
-      }
-      else if (newState == RELEASED) {
+      } else if (newState == RELEASED) {
         Keyboard.release(keystrokes[thisButton]);
       }
     }

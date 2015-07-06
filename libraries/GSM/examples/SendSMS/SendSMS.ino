@@ -30,8 +30,7 @@
 GSM gsmAccess;
 GSM_SMS sms;
 
-void setup()
-{
+void setup() {
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -45,12 +44,10 @@ void setup()
 
   // Start GSM shield
   // If your SIM has PIN, pass it as a parameter of begin() in quotes
-  while (notConnected)
-  {
-    if (gsmAccess.begin(PINNUMBER) == GSM_READY)
+  while (notConnected) {
+    if (gsmAccess.begin(PINNUMBER) == GSM_READY) {
       notConnected = false;
-    else
-    {
+    } else {
       Serial.println("Not connected");
       delay(1000);
     }
@@ -59,8 +56,7 @@ void setup()
   Serial.println("GSM initialized");
 }
 
-void loop()
-{
+void loop() {
 
   Serial.print("Enter a mobile number: ");
   char remoteNum[20];  // telephone number to send sms
@@ -86,22 +82,17 @@ void loop()
 /*
   Read input serial
  */
-int readSerial(char result[])
-{
+int readSerial(char result[]) {
   int i = 0;
-  while (1)
-  {
-    while (Serial.available() > 0)
-    {
+  while (1) {
+    while (Serial.available() > 0) {
       char inChar = Serial.read();
-      if (inChar == '\n')
-      {
+      if (inChar == '\n') {
         result[i] = '\0';
         Serial.flush();
         return 0;
       }
-      if (inChar != '\r')
-      {
+      if (inChar != '\r') {
         result[i] = inChar;
         i++;
       }

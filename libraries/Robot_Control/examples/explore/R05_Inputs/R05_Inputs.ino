@@ -85,7 +85,9 @@ void keyDown(int keyCode) {
     case BUTTON_LEFT:
       //left button pressed, reduces tempo
       tempo -= 5;
-      if (tempo < 20) tempo = 20; //lowest tempo 20
+      if (tempo < 20) {
+        tempo = 20;  //lowest tempo 20
+      }
       Robot.fill(255, 190, 0);
 
       Robot.rect(53, 58, 13, 13);
@@ -93,14 +95,18 @@ void keyDown(int keyCode) {
     case BUTTON_RIGHT:
       //right button pressed, increases tempo
       tempo += 5;
-      if (tempo > 100) tempo = 100; //highest tempo 100
+      if (tempo > 100) {
+        tempo = 100;  //highest tempo 100
+      }
       Robot.fill(255, 190, 0);
       Robot.rect(93, 58, 13, 13);
       break;
     case BUTTON_UP:
       //up button pressed, increases pitch
       pitch += 120;
-      if (pitch > 2000) pitch = 2000;
+      if (pitch > 2000) {
+        pitch = 2000;
+      }
       Robot.fill(0, 0, 255);
 
       Robot.rect(73, 38, 13, 13);

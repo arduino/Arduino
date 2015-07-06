@@ -19,7 +19,7 @@
  by Tom Igoe
  Updated 8 March 2014
  by Scott Fitzgerald
- 
+
  http://www.arduino.cc/en/Reference/EsploraReadJoystickSwitch
 
  This example is in the public domain.
@@ -27,14 +27,12 @@
 
 #include <Esplora.h>
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);       // initialize serial communication with your computer
   Mouse.begin();            // take control of the mouse
 }
 
-void loop()
-{
+void loop() {
   int xValue = Esplora.readJoystickX();        // read the joystick's X position
   int yValue = Esplora.readJoystickY();        // read the joystick's Y position
   int button = Esplora.readJoystickSwitch();   // read the joystick pushbutton
@@ -52,7 +50,7 @@ void loop()
   if (button == 0) {                           // if the joystick button is pressed
     Mouse.press();                             // send a mouse click
   } else {
-    Mouse.release();                           // if it's not pressed, release the mouse button 
+    Mouse.release();                           // if it's not pressed, release the mouse button
   }
 
   delay(10);                                  // a short delay before moving again

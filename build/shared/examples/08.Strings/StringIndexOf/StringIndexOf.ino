@@ -33,7 +33,7 @@ void loop() {
 
   stringOne = "<HTML><HEAD><BODY>";
   int secondOpeningBracket = firstClosingBracket + 1;
-  int secondClosingBracket = stringOne.indexOf('>', secondOpeningBracket );
+  int secondClosingBracket = stringOne.indexOf('>', secondOpeningBracket);
   Serial.println("The index of  the second > in the string " + stringOne + " is " + secondClosingBracket);
 
   // you can also use indexOf() to search for Strings:
@@ -43,7 +43,7 @@ void loop() {
 
   stringOne = "<UL><LI>item<LI>item<LI>item</UL>";
   int firstListItem = stringOne.indexOf("<LI>");
-  int secondListItem = stringOne.indexOf("item", firstListItem + 1 );
+  int secondListItem = stringOne.indexOf("item", firstListItem + 1);
   Serial.println("The index of the second list item in the string " + stringOne + " is " + secondClosingBracket);
 
   // lastIndexOf() gives you the last occurrence of a character or string:

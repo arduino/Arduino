@@ -34,13 +34,13 @@ int average = 0;                // the average
 
 int inputPin = A0;
 
-void setup()
-{
+void setup() {
   // initialize serial communication with computer:
   Serial.begin(9600);
   // initialize all the readings to 0:
-  for (int thisReading = 0; thisReading < numReadings; thisReading++)
+  for (int thisReading = 0; thisReading < numReadings; thisReading++) {
     readings[thisReading] = 0;
+  }
 }
 
 void loop() {
@@ -54,9 +54,10 @@ void loop() {
   readIndex = readIndex + 1;
 
   // if we're at the end of the array...
-  if (readIndex >= numReadings)
+  if (readIndex >= numReadings) {
     // ...wrap around to the beginning:
     readIndex = 0;
+  }
 
   // calculate the average:
   average = total / numReadings;

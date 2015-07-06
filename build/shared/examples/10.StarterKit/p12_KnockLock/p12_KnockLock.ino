@@ -100,7 +100,7 @@ void loop() {
       Serial.println("the box is locked!");
 
       // wait for the servo to move into position
-      delay (1000);
+      delay(1000);
     }
   }
 

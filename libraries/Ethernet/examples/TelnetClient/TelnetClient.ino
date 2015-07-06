@@ -54,15 +54,13 @@ void setup() {
   // if you get a connection, report back via serial:
   if (client.connect(server, 10002)) {
     Serial.println("connected");
-  }
-  else {
+  } else {
     // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
 }
 
-void loop()
-{
+void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
   if (client.available()) {

@@ -22,8 +22,7 @@
 #include <SPI.h>
 #include <Audio.h>
 
-void setup()
-{
+void setup() {
   // debug output at 9600 baud
   Serial.begin(9600);
 
@@ -42,8 +41,7 @@ void setup()
   Audio.begin(88200, 100);
 }
 
-void loop()
-{
+void loop() {
   int count = 0;
 
   // open wave file from sdcard

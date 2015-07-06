@@ -98,8 +98,7 @@ void httpRequest() {
 
     // note the time that the connection was made:
     lastConnectionTime = millis();
-  }
-  else {
+  } else {
     // if you couldn't make a connection:
     Serial.println("connection failed");
   }

@@ -73,9 +73,9 @@ void setup() {
   logo = EsploraTFT.loadImage("arduino.bmp");
   if (logo.isValid()) {
     Esplora.writeGreen(255);
-  }
-  else
+  } else {
     Esplora.writeRed(255);
+  }
 
 }
 

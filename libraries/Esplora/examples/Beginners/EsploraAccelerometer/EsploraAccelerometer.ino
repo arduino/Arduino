@@ -14,13 +14,11 @@
 
 #include <Esplora.h>
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);        // initialize serial communications with your computer
 }
 
-void loop()
-{
+void loop() {
   int xAxis = Esplora.readAccelerometer(X_AXIS);    // read the X axis
   int yAxis = Esplora.readAccelerometer(Y_AXIS);    // read the Y axis
   int zAxis = Esplora.readAccelerometer(Z_AXIS);    // read the Z axis

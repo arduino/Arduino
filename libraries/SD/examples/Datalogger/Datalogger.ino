@@ -25,8 +25,7 @@
 
 const int chipSelect = 4;
 
-void setup()
-{
+void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -45,8 +44,7 @@ void setup()
   Serial.println("card initialized.");
 }
 
-void loop()
-{
+void loop() {
   // make a string for assembling the data to log:
   String dataString = "";
 

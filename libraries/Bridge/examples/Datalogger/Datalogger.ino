@@ -43,7 +43,7 @@ void setup() {
 }
 
 
-void loop () {
+void loop() {
   // make a string that start with a timestamp for assembling the data to log:
   String dataString;
   dataString += getTimeStamp();
@@ -93,8 +93,9 @@ String getTimeStamp() {
   // read the output of the command
   while (time.available() > 0) {
     char c = time.read();
-    if (c != '\n')
+    if (c != '\n') {
       result += c;
+    }
   }
 
   return result;

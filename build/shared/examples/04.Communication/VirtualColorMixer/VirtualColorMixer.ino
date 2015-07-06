@@ -20,13 +20,11 @@ const int redPin = A0;		// sensor to control red color
 const int greenPin = A1;	// sensor to control green color
 const int bluePin = A2;		// sensor to control blue color
 
-void setup()
-{
+void setup() {
   Serial.begin(9600);
 }
 
-void loop()
-{
+void loop() {
   Serial.print(analogRead(redPin));
   Serial.print(",");
   Serial.print(analogRead(greenPin));
@@ -52,7 +50,7 @@ void loop()
  // List all the available serial ports
  // if using Processing 2.1 or later, use Serial.printArray()
  println(Serial.list());
- 
+
  // I know that the first port in the serial list on my mac
  // is always my  Arduino, so I open Serial.list()[0].
  // Open whatever port is the one you're using.

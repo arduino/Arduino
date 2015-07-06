@@ -35,8 +35,7 @@ GSMServer server(80); // port 80 (http default)
 // timeout
 const unsigned long __TIMEOUT__ = 10 * 1000;
 
-void setup()
-{
+void setup() {
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -49,13 +48,11 @@ void setup()
 
   // Start GSM shield
   // If your SIM has PIN, pass it as a parameter of begin() in quotes
-  while (!connected)
-  {
+  while (!connected) {
     if ((gsmAccess.begin(PINNUMBER) == GSM_READY) &
-        (gprs.attachGPRS(GPRS_APN, GPRS_LOGIN, GPRS_PASSWORD) == GPRS_READY))
+        (gprs.attachGPRS(GPRS_APN, GPRS_LOGIN, GPRS_PASSWORD) == GPRS_READY)) {
       connected = true;
-    else
-    {
+    } else {
       Serial.println("Not connected");
       delay(1000);
     }
