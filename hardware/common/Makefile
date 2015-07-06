@@ -107,7 +107,7 @@ CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
 
-CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -D$(BOARD) -DENERGIA=14 $(MCU_FLAG) $(VFP)
+CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DBOARD_$(BOARD) -DENERGIA=14 $(MCU_FLAG) $(VFP)
 CPPFLAGS += -fno-exceptions -fno-rtti
 
 # define TI-RTOS and Energia wiring headers based on CLOSURE above
