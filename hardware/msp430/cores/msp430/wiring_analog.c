@@ -68,7 +68,7 @@ uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_
 #endif
 
 #if defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__)
-uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_0, analog_res=0x3FF; // devide clock with 0, 2, 4, 8
+uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_0, analog_res=0xFF; // devide clock with 0, 2, 4, 8
 #endif
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC12_PLUS__) || defined(__MSP430_HAS_ADC12_B__) || defined(__MSP430_HAS_ADC__)
