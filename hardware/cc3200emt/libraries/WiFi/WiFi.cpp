@@ -32,10 +32,10 @@
 
 #define DEBUG
 
-#include <Energia.h>
+#include <ti/runtime/wiring/Energia.h>
+#include <xdc/runtime/System.h>
 #include "WiFi.h"
 #include "utility/wl_definitions.h"
-
 
 extern "C" {
     #include "utility/simplelink.h"
@@ -108,11 +108,12 @@ bool WiFiClass::init()
     if (_initialized) {
         return true;
     }
-   
+
     //
     //Initialize the UDMA
     //
     UDMAInit();
+
     //
     //start the SimpleLink driver (no callback)
     //
@@ -190,7 +191,7 @@ const char* WiFiClass::firmwareVersion()
     sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &ucConfigOpt, 
                                 &ucConfigLen, (unsigned char *)(&ver));
     
-    snprintf(fwVersion, sizeof(fwVersion),
+    System_snprintf(fwVersion, sizeof(fwVersion),
              "%ld.%ld.%ld.%ld:%ld.%ld.%ld.%ld:%d.%d.%d.%d",
     ver.NwpVersion[0], ver.NwpVersion[1], ver.NwpVersion[2], ver.NwpVersion[3],
     ver.ChipFwAndPhyVersion.FwVersion[0], ver.ChipFwAndPhyVersion.FwVersion[1],
@@ -621,10 +622,10 @@ int WiFiClass::disconnect(void)
 
 unsigned int WiFiClass::getTotalDevices(void)
 {
-#ifdef SL_PLATFORM_MULTI_THREADED
-#else
-    _SlNonOsMainLoopTask();
+#ifndef SL_PLATFORM_MULTI_THREADED
+    sl_Task();
 #endif
+
     return WiFiClass::_connectedDeviceCount;
 }
 
@@ -651,11 +652,13 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
 //--tested, working--//
 IPAddress WiFiClass::localIP()
 {
+#ifndef SL_PLATFORM_MULTI_THREADED
     //
-    //the local IP is maintained with callbacks, so _SlNonOsMainLoopTask()
+    //the local IP is maintained with callbacks, so sl_Task()
     //is critical. The IP is "written" into the buffer to avoid memory errors
     //
-    _SlNonOsMainLoopTask();
+    sl_Task();
+#endif
 
     SlNetCfgIpV4Args_t config = {0};
     unsigned char len = sizeof(SlNetCfgIpV4Args_t);
@@ -750,6 +753,8 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid)
     
 }
 
+
+//!! How to get the current connection??!!//
 int32_t WiFiClass::RSSI()
 {
     long lRetVal = -1;
@@ -929,12 +934,17 @@ uint8_t WiFiClass::status()
         init();
     }
 
-    if(role == ROLE_AP)
+    if (role == ROLE_AP) {
         return WL_AP_MODE;
+    }
+
+#ifndef SL_PLATFORM_MULTI_THREADED
     //
-    //This class variable is maintained by the slWlanEvenHandler
+    // The class variable WiFi_status is maintained by the slWlanEvenHandler
     //
-    _SlNonOsMainLoopTask();
+    sl_Task();
+#endif
+
     return WiFi_status;
 }
 
@@ -986,7 +996,13 @@ int WiFiClass::startSmartConfig()
 
     /* Block until connected */
     while (WiFi.status() != WL_CONNECTED) {
-        _SlNonOsMainLoopTask();
+#ifndef SL_PLATFORM_MULTI_THREADED
+        // TODO: this call appears unnecessary: status() already calls sl_Task
+        sl_Task();
+#else
+        // TODO: is 10 appropriate?  to save power, shouldn't we always delay?
+        delay(10);
+#endif
     }
 
     if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,0), &policyVal, 1 /*PolicyValLen*/) < 0) {
