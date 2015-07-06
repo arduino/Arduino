@@ -15,12 +15,14 @@
       <matches string="${os.version}" pattern="^10.[56]." />
     </and>
   </condition>
+  <condition property="macosx-old"><equals arg1="${platform}" arg2="macosx-old" /></condition>
+  <fail if="macosx-old" message="MacOSX older than 10.7 are not supported"/>
+
   <condition property="platform" value="macosx"><os family="mac" /></condition>
   <condition property="platform" value="windows"><os family="windows" /></condition>
   <condition property="platform" value="linux32"><os family="unix" arch="i386" /></condition>
   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
 
-  <condition property="macosx"><equals arg1="${platform}" arg2="macosx-old" /></condition>
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="linux32"><equals arg1="${platform}" arg2="linux32" /></condition>
@@ -29,13 +31,11 @@
   <condition property="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
 
   <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
-  <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx-old" /></condition>
   <condition property="staging_folder" value="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
 
   <condition property="staging_hardware_folder" value="Arduino.app/Contents/Java/hardware"><equals arg1="${platform}" arg2="macosx" /></condition>
-  <condition property="staging_hardware_folder" value="Arduino.app/Contents/Resources/Java/hardware"><equals arg1="${platform}" arg2="macosx-old" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
@@ -247,10 +247,7 @@
   <!-- - - - - - - - -->
   <!-- Mac OS X      -->
   <!-- - - - - - - - -->
-
-  <target name="macosx-clean" depends="macosx-old-clean" description="Clean Mac OS X build"/>
-
-  <target name="macosx-old-clean" depends="subprojects-clean" description="Clean Mac OS X build">
+  <target name="macosx-clean" depends="subprojects-clean" description="Clean Mac OS X build">
     <delete dir="macosx/work" />
     <delete dir="macosx/working_dir" />
     <delete dir="macosx/working.dmg" />
@@ -269,35 +266,6 @@
       =======================================================
     </echo>
     <fail message="wrong platform (${os.name})" />
-  </target>
-
-  <target name="macosx-old-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
-    <mkdir dir="macosx/work" />
-    <mkdir dir="macosx/work/${staging_hardware_folder}" />
-
-    <!-- assemble the pde -->
-    <copy todir="macosx/work/Arduino.app">
-      <fileset dir="macosx/template.app" includes="**"/>
-    </copy>
-
-    <chmod file="macosx/work/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="755" />
-
-    <copy todir="macosx/work/Arduino.app/Contents/Resources/Java" flatten="true">
-      <fileset refid="runtime.jars"/>
-    </copy>
-
-    <copy todir="macosx/work/Arduino.app/Contents/Resources/Java">
-      <fileset dir="shared" includes="lib/**" />
-      <fileset file="shared/revisions.txt" />
-    </copy>
-
-    <antcall target="macosx-build-common"/>
-
-    <replace file="macosx/work/Arduino.app/Contents/Info.plist"
-             token="VERSION" value="${version}" />
-    <replace file="macosx/work/Arduino.app/Contents/Info.plist"
-             token="REVISION" value="${revision}" />
-
   </target>
 
   <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
@@ -324,7 +292,7 @@
             shortversion="${version}"
             version="${revision}"
             signature="Pde1"
-            icon="macosx/template.app/Contents/Resources/processing.icns"
+            icon="macosx/processing.icns"
             mainclassname="processing.app.Base"
             copyright="Arduino LLC"
             applicationCategory="public.app-category.education"
@@ -365,7 +333,7 @@
       <option value="-splash:$APP_ROOT/Contents/Java/lib/splash.png"/>
 
       <bundledocument extensions="ino,c,cpp,h"
-                      icon="macosx/template.app/Contents/Resources/pde.icns"
+                      icon="macosx/pde.icns"
                       name="Arduino Source File"
                       role="Editor" ispackage="false">
       </bundledocument>
@@ -424,16 +392,8 @@
     </chmod>
   </target>
 
-  <target name="macosx-old-run" depends="macosx-old-build" description="Run Mac OS X version">
-    <antcall target="macosx-run-common"/>
-  </target>
-
   <target name="macosx-run" depends="build" description="Run Mac OS X version">
     <antcall target="macosx-run-common"/>
-  </target>
-
-  <target name="macosx-old-debug" depends="macosx-old-build" description="Run Mac OS X version">
-    <antcall target="macosx-debug-common"/>
   </target>
 
   <target name="macosx-debug" depends="build" description="Run Mac OS X version">
@@ -507,10 +467,6 @@
   <!-- - - - - - - - - - - - - - - - - - - -->
   <!-- Build distribution file for MacOSX. -->
   <!-- - - - - - - - - - - - - - - - - - - -->
-  <target name="macosx-old-dist" if="macosx" depends="macosx-old-build" description="Create a downloadable .zip for the Mac OS X version">
-    <antcall target="macosx-dist-common"/>
-  </target>
-
   <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
     <antcall target="macosx-dist-common"/>
   </target>
@@ -528,71 +484,6 @@
       =======================================================
     </echo>
   </target>
-
-  <!--<target name="macosx-dist-old" if="macosx" depends="macosx-build" description="Create a .dmg of the Mac OS X version">-->
-    <!--&lt;!&ndash; now build the dmg &ndash;&gt;-->
-    <!--<gunzip src="macosx/template.dmg.gz" dest="macosx/working.dmg" />-->
-
-    <!--<mkdir dir="macosx/working_dir" />-->
-    <!--<exec executable="hdiutil">-->
-      <!--<arg line="attach macosx/working.dmg -noautoopen -mountpoint macosx/working_dir" />-->
-      <!--&lt;!&ndash;<arg line="attach macosx/working.dmg -noautoopen -quiet -mountpoint macosx/working_dir" />&ndash;&gt;-->
-    <!--</exec>-->
-
-    <!--<copy todir="macosx/working_dir">-->
-      <!--<fileset dir="macosx/work" />-->
-    <!--</copy>-->
-
-    <!--&lt;!&ndash; The ant copy command does not preserve permissions. &ndash;&gt;-->
-    <!--<chmod file="macosx/working_dir/Arduino.app/Contents/MacOS/JavaApplicationStub" perm="+x" />-->
-    <!--<chmod perm="+x">-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />-->
-    <!--</chmod>-->
-
-    <!--&lt;!&ndash; Pause briefly for the OS to catch up with the DMG changes. -->
-	 <!--This prevents "hdiutil: couldn't eject "disk3" - Resource busy"-->
-	 <!--errors when ejecting the disk in the next step.-->
-         <!--You may need to set this value higher for your system. &ndash;&gt;-->
-    <!--<sleep seconds="3" />-->
-
-    <!--<exec executable="hdiutil">-->
-      <!--&lt;!&ndash;<arg line="detach macosx/working_dir -quiet -force" />&ndash;&gt;-->
-      <!--<arg line="detach macosx/working_dir" />-->
-    <!--</exec>-->
-
-    <!--<delete file="macosx/arduino-*.dmg" />-->
-    <!--<exec executable="hdiutil">-->
-      <!--<arg line="convert macosx/working.dmg -quiet -format UDZO -imagekey zlib-level=9 -o macosx/arduino-${version}.dmg" />-->
-    <!--</exec>-->
-
-    <!--&lt;!&ndash; Clean up the interim files. &ndash;&gt;-->
-    <!--<delete file="macosx/working.dmg" />-->
-    <!--<delete dir="macosx/working_dir" />-->
-
-    <!--<echo>-->
-      <!--=======================================================-->
-      <!--Arduino for Mac OS X was built. Grab the image from-->
-
-      <!--macosx/arduino-${version}.dmg-->
-      <!--=======================================================-->
-    <!--</echo>-->
-  <!--</target>-->
-
-  <!--<target name="macosx-dist-old-fix-perms" unless="light_bundle">-->
-    <!--<chmod perm="+x">-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-3/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/avr-4/bin" includes="**/*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/3.4.6/" includes="**/cc1*" />-->
-      <!--<fileset dir="macosx/working_dir/Arduino.app/Contents/Resources/Java/hardware/tools/avr/libexec/gcc/avr/4.3.2/" includes="**/cc1*" />-->
-    <!--</chmod>-->
-  <!--</target>-->
 
   <!-- - - - - - - - -->
   <!-- Linux         -->
