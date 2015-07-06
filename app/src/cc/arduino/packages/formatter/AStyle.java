@@ -99,19 +99,25 @@ public class AStyle implements Tool {
     editor.getTextArea().getUndoManager().endInternalAtomicEdit();
 
     if (line != -1 && lineOffset != -1) {
-      setCaretPosition(textArea, line, lineOffset);
+      try {
+        setCaretPosition(textArea, line, lineOffset);
+      } catch (BadLocationException e) {
+        e.printStackTrace();
+      }
     }
 
     // mark as finished
     editor.statusNotice(_("Auto Format finished."));
   }
 
-  private void setCaretPosition(SketchTextArea textArea, int line, int lineOffset) {
-    try {
-      textArea.setCaretPosition(Math.min(textArea.getLineStartOffset(line) + lineOffset, textArea.getLineEndOffset(line) - 1));
-    } catch (BadLocationException e) {
-      e.printStackTrace();
+  private void setCaretPosition(SketchTextArea textArea, int line, int lineOffset) throws BadLocationException {
+    int caretPosition;
+    if (line < textArea.getLineCount()) {
+      caretPosition = Math.min(textArea.getLineStartOffset(line) + lineOffset, textArea.getLineEndOffset(line) - 1);
+    } else {
+      caretPosition = textArea.getText().length() - 1;
     }
+    textArea.setCaretPosition(caretPosition);
   }
 
   private int getLineOffset(SketchTextArea textArea, int line) {
