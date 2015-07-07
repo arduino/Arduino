@@ -43,7 +43,9 @@
 // - The SPI functions herein were developed for the AVR910_ARD programmer
 // - More information at http://code.google.com/p/mega-isp
 
-#include "pins_arduino.h"
+#include "Arduino.h"
+#undef SERIAL
+
 // Use pin 10 to reset the target
 #define RESET     10
 
@@ -62,6 +64,26 @@
 #define SPI_CLOCK_DIV_MAX	SPI_CLOCK_DIV_128
 
 #endif
+
+
+// Configure the serial port to use.
+//
+// Prefer the USB virtual serial port (aka. native USB port), if the Arduino has one:
+//   - it does not autoreset (except for the magic baud rate of 1200).
+//   - it is more reliable because of USB handshaking.
+//
+// Leonardo and similar have an USB virtual serial port: 'Serial'.
+// Due and Zero have an USB virtual serial port: 'SerialUSB'.
+//
+// On the Due and Zero, 'Serial' can be used too, provided you disable autoreset.
+// To use 'Serial': #define SERIAL Serial
+
+#ifdef SERIAL_PORT_USBVIRTUAL
+#define SERIAL SERIAL_PORT_USBVIRTUAL
+#else
+#define SERIAL Serial
+#endif
+
 
 #define HWVER 2
 #define SWMAJ 1
@@ -118,7 +140,7 @@ static BitBangedSPI SPI;
 #endif
 
 void setup() {
-  Serial.begin(19200);
+  SERIAL.begin(19200);
   SPI.setDataMode(0);
   SPI.setBitOrder(MSBFIRST);
   // Select the slowest possible clock
@@ -196,14 +218,14 @@ void loop(void) {
 
   // light the heartbeat LED
   heartbeat();
-  if (Serial.available()) {
+  if (SERIAL.available()) {
     avrisp();
   }
 }
 
 uint8_t getch() {
-  while (!Serial.available());
-  return Serial.read();
+  while (!SERIAL.available());
+  return SERIAL.read();
 }
 void fill(int n) {
   for (int x = 0; x < n; x++) {
@@ -238,22 +260,22 @@ uint8_t spi_transaction(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
 
 void empty_reply() {
   if (CRC_EOP == getch()) {
-    Serial.print((char)STK_INSYNC);
-    Serial.print((char)STK_OK);
+    SERIAL.print((char)STK_INSYNC);
+    SERIAL.print((char)STK_OK);
   } else {
     error++;
-    Serial.print((char)STK_NOSYNC);
+    SERIAL.print((char)STK_NOSYNC);
   }
 }
 
 void breply(uint8_t b) {
   if (CRC_EOP == getch()) {
-    Serial.print((char)STK_INSYNC);
-    Serial.print((char)b);
-    Serial.print((char)STK_OK);
+    SERIAL.print((char)STK_INSYNC);
+    SERIAL.print((char)b);
+    SERIAL.print((char)STK_OK);
   } else {
     error++;
-    Serial.print((char)STK_NOSYNC);
+    SERIAL.print((char)STK_NOSYNC);
   }
 }
 
@@ -380,11 +402,11 @@ int current_page(int addr) {
 void write_flash(int length) {
   fill(length);
   if (CRC_EOP == getch()) {
-    Serial.print((char) STK_INSYNC);
-    Serial.print((char) write_flash_pages(length));
+    SERIAL.print((char) STK_INSYNC);
+    SERIAL.print((char) write_flash_pages(length));
   } else {
     error++;
-    Serial.print((char) STK_NOSYNC);
+    SERIAL.print((char) STK_NOSYNC);
   }
 }
 
@@ -451,15 +473,15 @@ void program_page() {
   if (memtype == 'E') {
     result = (char)write_eeprom(length);
     if (CRC_EOP == getch()) {
-      Serial.print((char) STK_INSYNC);
-      Serial.print(result);
+      SERIAL.print((char) STK_INSYNC);
+      SERIAL.print(result);
     } else {
       error++;
-      Serial.print((char) STK_NOSYNC);
+      SERIAL.print((char) STK_NOSYNC);
     }
     return;
   }
-  Serial.print((char)STK_FAILED);
+  SERIAL.print((char)STK_FAILED);
   return;
 }
 
@@ -473,9 +495,9 @@ uint8_t flash_read(uint8_t hilo, int addr) {
 char flash_read_page(int length) {
   for (int x = 0; x < length; x += 2) {
     uint8_t low = flash_read(LOW, here);
-    Serial.print((char) low);
+    SERIAL.print((char) low);
     uint8_t high = flash_read(HIGH, here);
-    Serial.print((char) high);
+    SERIAL.print((char) high);
     here++;
   }
   return STK_OK;
@@ -487,7 +509,7 @@ char eeprom_read_page(int length) {
   for (int x = 0; x < length; x++) {
     int addr = start + x;
     uint8_t ee = spi_transaction(0xA0, (addr >> 8) & 0xFF, addr & 0xFF, 0xFF);
-    Serial.print((char) ee);
+    SERIAL.print((char) ee);
   }
   return STK_OK;
 }
@@ -499,34 +521,29 @@ void read_page() {
   char memtype = getch();
   if (CRC_EOP != getch()) {
     error++;
-    Serial.print((char) STK_NOSYNC);
+    SERIAL.print((char) STK_NOSYNC);
     return;
   }
-  Serial.print((char) STK_INSYNC);
-  if (memtype == 'F') {
-    result = flash_read_page(length);
-  }
-  if (memtype == 'E') {
-    result = eeprom_read_page(length);
-  }
-  Serial.print(result);
-  return;
+  SERIAL.print((char) STK_INSYNC);
+  if (memtype == 'F') result = flash_read_page(length);
+  if (memtype == 'E') result = eeprom_read_page(length);
+  SERIAL.print(result);
 }
 
 void read_signature() {
   if (CRC_EOP != getch()) {
     error++;
-    Serial.print((char) STK_NOSYNC);
+    SERIAL.print((char) STK_NOSYNC);
     return;
   }
-  Serial.print((char) STK_INSYNC);
+  SERIAL.print((char) STK_INSYNC);
   uint8_t high = spi_transaction(0x30, 0x00, 0x00, 0x00);
-  Serial.print((char) high);
+  SERIAL.print((char) high);
   uint8_t middle = spi_transaction(0x30, 0x00, 0x01, 0x00);
-  Serial.print((char) middle);
+  SERIAL.print((char) middle);
   uint8_t low = spi_transaction(0x30, 0x00, 0x02, 0x00);
-  Serial.print((char) low);
-  Serial.print((char) STK_OK);
+  SERIAL.print((char) low);
+  SERIAL.print((char) STK_OK);
 }
 //////////////////////////////////////////
 //////////////////////////////////////////
@@ -544,13 +561,13 @@ int avrisp() {
       break;
     case '1':
       if (getch() == CRC_EOP) {
-        Serial.print((char) STK_INSYNC);
-        Serial.print("AVR ISP");
-        Serial.print((char) STK_OK);
+        SERIAL.print((char) STK_INSYNC);
+        SERIAL.print("AVR ISP");
+        SERIAL.print((char) STK_OK);
       }
       else {
         error++;
-        Serial.print((char) STK_NOSYNC);
+        SERIAL.print((char) STK_NOSYNC);
       }
       break;
     case 'A':
@@ -615,17 +632,16 @@ int avrisp() {
     // this is how we can get back in sync
     case CRC_EOP:
       error++;
-      Serial.print((char) STK_NOSYNC);
+      SERIAL.print((char) STK_NOSYNC);
       break;
 
     // anything else we will return STK_UNKNOWN
     default:
       error++;
-      if (CRC_EOP == getch()) {
-        Serial.print((char)STK_UNKNOWN);
-      } else {
-        Serial.print((char)STK_NOSYNC);
-      }
+      if (CRC_EOP == getch())
+        SERIAL.print((char)STK_UNKNOWN);
+      else
+        SERIAL.print((char)STK_NOSYNC);
   }
 }
 
