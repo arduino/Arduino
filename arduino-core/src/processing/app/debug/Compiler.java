@@ -182,7 +182,14 @@ public class Compiler implements MessageConsumer {
   }
 
   static public File findCompiledSketch(PreferencesMap prefs) throws PreferencesMapException {
-    List<String> paths = Arrays.asList("{build.path}/{build.project_name}.hex", "{build.path}/{build.project_name}.bin");
+    List<String> paths = Arrays.asList(
+      "{build.path}/sketch/{build.project_name}.with_bootloader.hex",
+      "{build.path}/sketch/{build.project_name}.hex",
+      "{build.path}/{build.project_name}.with_bootloader.hex",
+      "{build.path}/{build.project_name}.hex",
+      "{build.path}/sketch/{build.project_name}.bin",
+      "{build.path}/{build.project_name}.bin"
+    );
     Optional<File> sketch = paths.stream().
       map(path -> StringReplacer.replaceFromMapping(path, prefs)).
       map(File::new).
