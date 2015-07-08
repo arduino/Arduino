@@ -31,16 +31,16 @@ import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.packages.UserLibrary;
-import static processing.app.I18n._;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import static processing.app.I18n._;
 
 
 /**
@@ -999,7 +999,15 @@ public class Sketch {
     current = (SketchCodeDocument) data.getCode(which).getMetadata();
     currentIndex = which;
 
-    SwingUtilities.invokeLater(() -> editor.setCode(current));
+    if (SwingUtilities.isEventDispatchThread()) {
+      editor.setCode(current);
+    } else {
+      try {
+        SwingUtilities.invokeAndWait(() -> editor.setCode(current));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
 
     editor.header.rebuild();
   }
