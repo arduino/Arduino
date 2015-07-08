@@ -75,9 +75,9 @@ enum LCD_ICONS {
   LCD_SEG_COLON4,
 };
 
-class LCD_Launchpad : public Print {
+class LCD_LAUNCHPAD : public Print {
 public:
-    LCD_Launchpad();
+    LCD_LAUNCHPAD();
     void init();
 
     void displayText(String s);
