@@ -122,12 +122,12 @@ void initVariant(void);
 
 int atexit(void (*func)()) __attribute__((weak));
 
-void pinMode(uint8_t, uint8_t);
-void digitalWrite(uint8_t, uint8_t);
-int digitalRead(uint8_t);
-int analogRead(uint8_t);
+void pinMode(uint8_t pin, uint8_t mode);
+void digitalWrite(uint8_t pin, uint8_t value);
+int digitalRead(uint8_t pin);
+int analogRead(uint8_t pin);
 void analogReference(uint8_t mode);
-void analogWrite(uint8_t, int);
+void analogWrite(uint8_t pin, int value);
 
 unsigned long millis(void);
 unsigned long micros(void);
@@ -239,10 +239,10 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration = 0);
 void noTone(uint8_t _pin);
 
 // WMath prototypes
-long random(long);
-long random(long, long);
-void randomSeed(unsigned long);
-long map(long, long, long, long, long);
+long random(long max);
+long random(long min, long max);
+void randomSeed(unsigned long seed);
+long map(long value, long fromLow, long fromHigh, long toLow, long toHigh);
 
 #endif
 
