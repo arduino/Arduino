@@ -999,7 +999,7 @@ public class Sketch {
     current = (SketchCodeDocument) data.getCode(which).getMetadata();
     currentIndex = which;
 
-    editor.setCode(current);
+    SwingUtilities.invokeLater(() -> editor.setCode(current));
 
     editor.header.rebuild();
   }
