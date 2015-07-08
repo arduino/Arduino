@@ -36,7 +36,6 @@ import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
-import com.google.common.base.Predicate;
 import processing.app.Platform;
 
 import javax.swing.*;
@@ -46,6 +45,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.function.Predicate;
 
 import static processing.app.I18n._;
 

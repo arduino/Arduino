@@ -29,7 +29,7 @@
 
 package cc.arduino.contributions.ui;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 public interface DropdownItem<T> {
 

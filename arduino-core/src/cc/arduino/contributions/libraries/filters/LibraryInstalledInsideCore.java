@@ -31,7 +31,8 @@ package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.packages.ContributionsIndexer;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 public class LibraryInstalledInsideCore implements Predicate<ContributedLibrary> {
 
@@ -42,7 +43,7 @@ public class LibraryInstalledInsideCore implements Predicate<ContributedLibrary>
   }
 
   @Override
-  public boolean apply(ContributedLibrary contributedLibrary) {
+  public boolean test(ContributedLibrary contributedLibrary) {
     return indexer.isFolderInsidePlatform(contributedLibrary.getInstalledFolder());
   }
 

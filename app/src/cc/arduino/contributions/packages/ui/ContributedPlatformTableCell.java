@@ -41,8 +41,6 @@ import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
 import cc.arduino.utils.ReverseComparator;
 import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import processing.app.Base;
 
@@ -60,6 +58,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import static processing.app.I18n._;
 import static processing.app.I18n.format;
@@ -265,9 +264,9 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     final ContributedPlatform installed = editorValue.getInstalled();
 
     java.util.List<ContributedPlatform> releases = new LinkedList<ContributedPlatform>(editorValue.releases);
-    java.util.List<ContributedPlatform> uninstalledReleases = new LinkedList<ContributedPlatform>(Collections2.filter(releases, Predicates.not(new InstalledPredicate())));
+    java.util.List<ContributedPlatform> uninstalledReleases = releases.stream().filter(new InstalledPredicate().negate()).collect(Collectors.toList());
 
-    java.util.List<ContributedPlatform> installedBuiltIn = new LinkedList<ContributedPlatform>(Collections2.filter(releases, Predicates.and(new InstalledPredicate(), new BuiltInPredicate())));
+    java.util.List<ContributedPlatform> installedBuiltIn = releases.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
 
     if (installed != null && !installedBuiltIn.contains(installed)) {
       uninstalledReleases.addAll(installedBuiltIn);

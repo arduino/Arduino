@@ -3,10 +3,10 @@ package cc.arduino.contributions.libraries.filters;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
-import com.google.common.base.Predicate;
 import processing.app.packages.UserLibrary;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
 
@@ -19,7 +19,7 @@ public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> 
   }
 
   @Override
-  public boolean apply(ContributedLibrary contributedLibrary) {
+  public boolean test(ContributedLibrary contributedLibrary) {
     String libraryName = contributedLibrary.getName();
     UserLibrary installed = indexer.getInstalledLibraries().getByName(libraryName);
     if (installed == null) {

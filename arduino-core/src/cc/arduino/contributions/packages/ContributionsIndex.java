@@ -37,7 +37,11 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class ContributionsIndex {
 
@@ -84,7 +88,7 @@ public abstract class ContributionsIndex {
   }
 
   public List<ContributedPlatform> getInstalledPlatforms() {
-    return Lists.newLinkedList(Collections2.filter(getPlatforms(), new InstalledPredicate()));
+    return getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
   }
 
   public ContributedPlatform getInstalledPlatform(String packageName, String platformArch) {
@@ -92,7 +96,7 @@ public abstract class ContributionsIndex {
     if (platforms == null) {
       return null;
     }
-    List<ContributedPlatform> installedPlatforms = new LinkedList<>(Collections2.filter(platforms, new InstalledPredicate()));
+    List<ContributedPlatform> installedPlatforms = platforms.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
     Collections.sort(installedPlatforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedPlatforms.isEmpty()) {

@@ -4,7 +4,8 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
 import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 import static processing.app.I18n._;
 

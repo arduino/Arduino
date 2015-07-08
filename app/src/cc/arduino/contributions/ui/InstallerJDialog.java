@@ -30,9 +30,6 @@
 package cc.arduino.contributions.ui;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import processing.app.Base;
 import processing.app.Theme;
 
@@ -42,8 +39,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
 import static processing.app.I18n._;
@@ -241,8 +238,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
   }
 
   public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {
-    Collection<Predicate<T>> notNullAdditionalFilters = Collections2.filter(Arrays.asList(additionalFilters), Predicates.notNull());
-    contribModel.updateIndexFilter(filters, notNullAdditionalFilters.toArray(new Predicate[notNullAdditionalFilters.size()]));
+    Stream<Predicate<T>> notNullAdditionalFilters = Stream.of(additionalFilters).filter(filter -> filter != null);
+    contribModel.updateIndexFilter(filters, notNullAdditionalFilters);
   }
 
   public void setErrorMessage(String message) {

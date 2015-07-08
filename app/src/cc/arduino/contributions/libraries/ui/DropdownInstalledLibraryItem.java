@@ -33,7 +33,8 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibrariesIndex;
 import cc.arduino.contributions.libraries.filters.InstalledLibraryPredicate;
 import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 import static processing.app.I18n._;
 

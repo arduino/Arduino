@@ -37,7 +37,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
@@ -57,6 +56,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static processing.app.I18n._;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
@@ -304,7 +304,7 @@ public class ContributionsIndexer {
     for (ContributedPackage aPackage : index.getPackages()) {
       ContributedTargetPackage targetPackage = new ContributedTargetPackage(aPackage.getName());
 
-      List<ContributedPlatform> platforms = new LinkedList<ContributedPlatform>(Collections2.filter(aPackage.getPlatforms(), new InstalledPredicate()));
+      List<ContributedPlatform> platforms = aPackage.getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
       Collections.sort(platforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
       for (ContributedPlatform platform : platforms) {
@@ -363,7 +363,7 @@ public class ContributionsIndexer {
       return tools;
     }
     for (ContributedPackage pack : index.getPackages()) {
-      Collection<ContributedPlatform> platforms = Collections2.filter(pack.getPlatforms(), new InstalledPredicate());
+      Collection<ContributedPlatform> platforms = pack.getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
       ImmutableListMultimap<String, ContributedPlatform> platformsByName = Multimaps.index(platforms, new Function<ContributedPlatform, String>() {
         @Override
         public String apply(ContributedPlatform contributedPlatform) {
@@ -374,7 +374,7 @@ public class ContributionsIndexer {
       for (Map.Entry<String, Collection<ContributedPlatform>> entry : platformsByName.asMap().entrySet()) {
         Collection<ContributedPlatform> platformsWithName = entry.getValue();
         if (platformsWithName.size() > 1) {
-          platformsWithName = Collections2.filter(platformsWithName, Predicates.not(new BuiltInPredicate()));
+          platformsWithName = platformsWithName.stream().filter(new BuiltInPredicate().negate()).collect(Collectors.toList());
         }
         for (ContributedPlatform platform : platformsWithName) {
           tools.addAll(platform.getResolvedTools());

@@ -36,8 +36,6 @@ import cc.arduino.contributions.packages.ContributionsIndexer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -119,14 +117,10 @@ public class LibrariesIndexer {
       scanInstalledLibraries(folder, folder.equals(sketchbookLibrariesFolder));
     }
 
-    FluentIterable.from(installedLibraries).filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore(contributionsIndexer)).transform(new Function<UserLibrary, Object>() {
-      @Override
-      public Object apply(UserLibrary userLibrary) {
-        ContributedPlatform platform = contributionsIndexer.getPlatformByFolder(userLibrary.getInstalledFolder());
-        userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
-        return userLibrary;
-      }
-    }).toList();
+    installedLibraries.stream().filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore(contributionsIndexer)).forEach(userLibrary -> {
+      ContributedPlatform platform = contributionsIndexer.getPlatformByFolder(userLibrary.getInstalledFolder());
+      userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
+    });
   }
 
   private void scanInstalledLibraries(File folder, boolean isSketchbook) {

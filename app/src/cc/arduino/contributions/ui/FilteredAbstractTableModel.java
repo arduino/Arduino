@@ -31,17 +31,18 @@ package cc.arduino.contributions.ui;
 
 import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.VersionComparator;
-import com.google.common.base.Predicate;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public abstract class FilteredAbstractTableModel<T> extends AbstractTableModel {
 
-  abstract public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters);
+  abstract public void updateIndexFilter(String[] filters, Stream<Predicate<T>> additionalFilters);
 
   protected static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
     contribs = new LinkedList<T>(contribs);

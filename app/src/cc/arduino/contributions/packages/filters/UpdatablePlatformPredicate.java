@@ -3,9 +3,9 @@ package cc.arduino.contributions.packages.filters;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionsIndexer;
-import com.google.common.base.Predicate;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform> {
 
@@ -18,7 +18,7 @@ public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform
   }
 
   @Override
-  public boolean apply(ContributedPlatform contributedPlatform) {
+  public boolean test(ContributedPlatform contributedPlatform) {
     String packageName = contributedPlatform.getParentPackage().getName();
     String architecture = contributedPlatform.getArchitecture();
 
