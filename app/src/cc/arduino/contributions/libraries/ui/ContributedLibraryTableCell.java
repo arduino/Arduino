@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.filters.BuiltInPredicate;
@@ -39,22 +38,18 @@ import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
 import cc.arduino.utils.ReverseComparator;
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import processing.app.Base;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,59 +60,43 @@ import static processing.app.I18n.format;
 @SuppressWarnings("serial")
 public class ContributedLibraryTableCell extends InstallerTableCell {
 
-  private JPanel panel;
-  private JButton installButton;
-  private Component installButtonPlaceholder;
+  private final JPanel panel;
+  private final JButton installButton;
+  private final Component installButtonPlaceholder;
   private JComboBox downgradeChooser;
-  private JComboBox versionToInstallChooser;
-  private JButton downgradeButton;
-  private JPanel buttonsPanel;
-  private JPanel inactiveButtonsPanel;
-  private JLabel statusLabel;
+  private final JComboBox versionToInstallChooser;
+  private final JButton downgradeButton;
+  private final JPanel buttonsPanel;
+  private final JPanel inactiveButtonsPanel;
+  private final JLabel statusLabel;
 
   public ContributedLibraryTableCell() {
     {
       installButton = new JButton(_("Install"));
-      installButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          onInstall(editorValue.getSelected(), editorValue.getInstalled());
-        }
-      });
+      installButton.addActionListener(e -> onInstall(editorValue.getSelected(), editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
     downgradeButton = new JButton(_("Install"));
-    downgradeButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        ContributedLibrary selected = (ContributedLibrary) downgradeChooser.getSelectedItem();
-        onInstall(selected, editorValue.getInstalled());
-      }
+    downgradeButton.addActionListener(e -> {
+      ContributedLibrary selected = (ContributedLibrary) downgradeChooser.getSelectedItem();
+      onInstall(selected, editorValue.getInstalled());
     });
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
     downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
-    downgradeChooser.addItemListener(new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        Object selectVersionItem = downgradeChooser.getItemAt(0);
-        boolean disableDowngrade = (e.getItem() == selectVersionItem);
-        downgradeButton.setEnabled(!disableDowngrade);
-      }
+    downgradeChooser.addItemListener(e -> {
+      Object selectVersionItem = downgradeChooser.getItemAt(0);
+      boolean disableDowngrade = (e.getItem() == selectVersionItem);
+      downgradeButton.setEnabled(!disableDowngrade);
     });
 
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
     versionToInstallChooser.setMaximumSize(versionToInstallChooser.getPreferredSize());
-    versionToInstallChooser.addItemListener(new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        editorValue.select((ContributedLibrary) versionToInstallChooser.getSelectedItem());
-      }
-    });
+    versionToInstallChooser.addItemListener(e -> editorValue.select((ContributedLibrary) versionToInstallChooser.getSelectedItem()));
 
     panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -186,12 +165,9 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     description.setBorder(new EmptyBorder(4, 7, 7, 7));
     description.setHighlighter(null);
     description.setEditable(false);
-    description.addHyperlinkListener(new HyperlinkListener() {
-      @Override
-      public void hyperlinkUpdate(HyperlinkEvent e) {
-        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-          Base.openURL(e.getDescription());
-        }
+    description.addHyperlinkListener(e -> {
+      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+        Base.openURL(e.getDescription());
       }
     });
     description.addKeyListener(new DelegatingKeyListener(parentTable));
@@ -255,7 +231,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       uninstalledReleases.addAll(installedBuiltIn);
     }
 
-    Collections.sort(uninstalledReleases, new ReverseComparator<DownloadableContribution>(new DownloadableContributionVersionComparator()));
+    Collections.sort(uninstalledReleases, new ReverseComparator<>(new DownloadableContributionVersionComparator()));
 
     downgradeChooser.removeAllItems();
     downgradeChooser.addItem(_("Select version"));
@@ -264,32 +240,23 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     final List<ContributedLibrary> uninstalledNewerReleases = Lists.newLinkedList();
 
     final VersionComparator versionComparator = new VersionComparator();
-    Lists.newLinkedList(Lists.transform(uninstalledReleases, new Function<ContributedLibrary, ContributedLibrary>() {
-      @Override
-      public ContributedLibrary apply(ContributedLibrary input) {
-        if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
-          uninstalledPreviousReleases.add(input);
-        } else {
-          uninstalledNewerReleases.add(input);
-        }
-
-        return input;
+    Lists.newLinkedList(Lists.transform(uninstalledReleases, input -> {
+      if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
+        uninstalledPreviousReleases.add(input);
+      } else {
+        uninstalledNewerReleases.add(input);
       }
+
+      return input;
     }));
-    for (ContributedLibrary release : uninstalledNewerReleases) {
-      downgradeChooser.addItem(release);
-    }
-    for (ContributedLibrary release : uninstalledPreviousReleases) {
-      downgradeChooser.addItem(release);
-    }
+    uninstalledNewerReleases.forEach(downgradeChooser::addItem);
+    uninstalledPreviousReleases.forEach(downgradeChooser::addItem);
 
     downgradeChooser.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
     downgradeButton.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
 
     versionToInstallChooser.removeAllItems();
-    for (ContributedLibrary release : uninstalledReleases) {
-      versionToInstallChooser.addItem(release);
-    }
+    uninstalledReleases.forEach(versionToInstallChooser::addItem);
     versionToInstallChooser.setVisible(installed == null && uninstalledReleases.size() > 1);
 
     Component component = getUpdatedCellComponent(value, true, row, !installedBuiltIn.isEmpty());
@@ -310,14 +277,12 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     ContributedLibrary selected = releases.getSelected();
     ContributedLibrary installed = releases.getInstalled();
 
-    boolean removable, installable, upgradable;
+    boolean installable, upgradable;
     if (installed == null) {
       installable = true;
-      removable = false;
       upgradable = false;
     } else {
       installable = false;
-      removable = !installed.isReadOnly() && !hasBuiltInRelease;
       upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
     }
     if (installable) {
@@ -405,7 +370,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     return panel;
   }
 
-  private Timer enabler = new Timer(100, new ActionListener() {
+  private final Timer enabler = new Timer(100, new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
       enable(true);

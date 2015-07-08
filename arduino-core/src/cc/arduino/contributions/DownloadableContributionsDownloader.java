@@ -39,8 +39,6 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Observable;
-import java.util.Observer;
 
 import static processing.app.I18n._;
 import static processing.app.I18n.format;
@@ -98,20 +96,17 @@ public class DownloadableContributionsDownloader {
 
   public void download(URL url, File tmpFile, Progress progress, String statusText) throws Exception {
     FileDownloader downloader = new FileDownloader(url, tmpFile);
-    downloader.addObserver(new Observer() {
-      @Override
-      public void update(Observable o, Object arg) {
-        FileDownloader me = (FileDownloader) o;
-        String msg = "";
-        if (me.getDownloadSize() != null) {
-          long downloaded = (me.getInitialSize() + me.getDownloaded()) / 1000;
-          long total = (me.getInitialSize() + me.getDownloadSize()) / 1000;
-          msg = format(_("Downloaded {0}kb of {1}kb."), downloaded, total);
-        }
-        progress.setStatus(statusText + " " + msg);
-        progress.setProgress(me.getProgress());
-        onProgress(progress);
+    downloader.addObserver((o, arg) -> {
+      FileDownloader me = (FileDownloader) o;
+      String msg = "";
+      if (me.getDownloadSize() != null) {
+        long downloaded = (me.getInitialSize() + me.getDownloaded()) / 1000;
+        long total = (me.getInitialSize() + me.getDownloadSize()) / 1000;
+        msg = format(_("Downloaded {0}kb of {1}kb."), downloaded, total);
       }
+      progress.setStatus(statusText + " " + msg);
+      progress.setProgress(me.getProgress());
+      onProgress(progress);
     });
     downloader.download();
     if (!downloader.isCompleted()) {

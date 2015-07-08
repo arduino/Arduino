@@ -59,8 +59,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
     public ContributedLibraryReleases(ContributedLibrary library) {
       this.name = library.getName();
-      this.versions = new LinkedList<String>();
-      this.releases = new LinkedList<ContributedLibrary>();
+      this.versions = new LinkedList<>();
+      this.releases = new LinkedList<>();
       this.selected = null;
       add(library);
     }
@@ -112,7 +112,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
     }
   }
 
-  private final List<ContributedLibraryReleases> contributions = new ArrayList<ContributedLibraryReleases>();
+  private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
   private final String[] columnNames = {"Description"};
 
@@ -267,12 +267,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   private void updateContributions() {
     contributions.clear();
-    for (ContributedLibrary l : indexer.getIndex().getLibraries()) {
-      applyFilterToLibrary(l);
-    }
-    for (ContributedLibrary l : indexer.getInstalledLibraries()) {
-      applyFilterToLibrary(l);
-    }
+    indexer.getIndex().getLibraries().forEach(this::applyFilterToLibrary);
+    indexer.getInstalledLibraries().forEach(this::applyFilterToLibrary);
     Collections.sort(contributions);
   }
 

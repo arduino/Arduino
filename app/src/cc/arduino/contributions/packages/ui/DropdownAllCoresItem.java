@@ -45,7 +45,7 @@ public class DropdownAllCoresItem implements DropdownItem<ContributedPlatform> {
 
   @Override
   public Predicate<ContributedPlatform> getFilterPredicate() {
-    return new NoopPredicate<ContributedPlatform>();
+    return new NoopPredicate<>();
   }
 
   @Override

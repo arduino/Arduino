@@ -167,7 +167,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     typeChooser.addItem(new DropdownAllItem());
     typeChooser.addItem(new DropdownUpdatableLibrariesItem(indexer));
     typeChooser.addItem(new DropdownInstalledLibraryItem(indexer.getIndex()));
-    java.util.List<String> types = new LinkedList<String>(indexer.getIndex().getTypes());
+    java.util.List<String> types = new LinkedList<>(indexer.getIndex().getTypes());
     Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));
@@ -217,18 +217,15 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   @Override
   protected void onUpdatePressed() {
     super.onUpdatePressed();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, "");
-          installer.updateIndex();
-          onIndexesUpdated();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, "");
+        installer.updateIndex();
+        onIndexesUpdated();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
@@ -237,19 +234,16 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   public void onInstallPressed(final ContributedLibrary lib, final ContributedLibrary replaced) {
     clearErrorMessage();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, _("Installing..."));
-          installer.install(lib, replaced);
-          onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-          //getContribModel().updateLibrary(lib);
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, _("Installing..."));
+        installer.install(lib, replaced);
+        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
+        //getContribModel().updateLibrary(lib);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
@@ -267,19 +261,16 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     }
 
     clearErrorMessage();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, _("Removing..."));
-          installer.remove(lib);
-          onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-          //getContribModel().updateLibrary(lib);
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, _("Removing..."));
+        installer.remove(lib);
+        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
+        //getContribModel().updateLibrary(lib);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));

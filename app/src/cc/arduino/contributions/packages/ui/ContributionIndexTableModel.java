@@ -59,8 +59,8 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
     public ContributedPlatformReleases(ContributedPlatform platform) {
       this.packager = platform.getParentPackage();
       this.arch = platform.getArchitecture();
-      this.releases = new LinkedList<ContributedPlatform>();
-      this.versions = new LinkedList<String>();
+      this.releases = new LinkedList<>();
+      this.versions = new LinkedList<>();
       add(platform);
     }
 
@@ -108,11 +108,11 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
     }
   }
 
-  private List<ContributedPlatformReleases> contributions = new ArrayList<ContributedPlatformReleases>();
+  private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
 
-  private String[] columnNames = {"Description"};
+  private final String[] columnNames = {"Description"};
 
-  private Class<?>[] columnTypes = {ContributedPlatform.class};
+  private final Class<?>[] columnTypes = {ContributedPlatform.class};
 
   private ContributionsIndexer indexer;
 

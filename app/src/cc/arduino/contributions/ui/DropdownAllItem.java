@@ -44,7 +44,7 @@ public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
 
   @Override
   public Predicate<DownloadableContribution> getFilterPredicate() {
-    return new NoopPredicate<DownloadableContribution>();
+    return new NoopPredicate<>();
   }
 
   @Override

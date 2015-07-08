@@ -50,12 +50,9 @@ public class InstallerJDialogUncaughtExceptionHandler implements Thread.Uncaught
       errorMessage = connectionErrorMessage;
     }
     final String finalErrorMessage = errorMessage;
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        System.err.println(finalErrorMessage);
-        e.printStackTrace();
-      }
+    SwingUtilities.invokeLater(() -> {
+      System.err.println(finalErrorMessage);
+      e.printStackTrace();
     });
     parent.setErrorMessage(finalErrorMessage);
   }

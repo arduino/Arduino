@@ -170,12 +170,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
     {
       JButton cancelButton = new JButton(_("Cancel"));
-      cancelButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          onCancelPressed();
-        }
-      });
+      cancelButton.addActionListener(arg0 -> onCancelPressed());
 
       progressBox = Box.createHorizontalBox();
       progressBox.add(progressBar);
@@ -183,21 +178,13 @@ public abstract class InstallerJDialog<T> extends JDialog {
       progressBox.add(cancelButton);
 
       dismissErrorMessageButton = new JButton(_("OK"));
-      dismissErrorMessageButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          clearErrorMessage();
-          setErrorMessageVisible(false);
-        }
+      dismissErrorMessageButton.addActionListener(arg0 -> {
+        clearErrorMessage();
+        setErrorMessageVisible(false);
       });
 
       closeButton = new JButton(_("Close"));
-      closeButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING));
-        }
-      });
+      closeButton.addActionListener(arg0 -> InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING)));
 
       errorMessageBox = Box.createHorizontalBox();
       errorMessageBox.add(Box.createHorizontalGlue());
@@ -222,19 +209,9 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-    Base.registerWindowCloseKeys(getRootPane(), new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING));
-      }
-    });
+    Base.registerWindowCloseKeys(getRootPane(), e -> InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING)));
 
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        onUpdatePressed();
-      }
-    });
+    SwingUtilities.invokeLater(InstallerJDialog.this::onUpdatePressed);
   }
 
   public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {

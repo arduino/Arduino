@@ -34,7 +34,6 @@ import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.view.Event;
-import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -73,12 +72,7 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       return;
     }
 
-    LinkedList<ContributedPlatform> contributedPlatforms = Lists.newLinkedList(Iterables.concat(Collections2.transform(BaseNoGui.indexer.getPackages(), new Function<ContributedPackage, List<ContributedPlatform>>() {
-      @Override
-      public List<ContributedPlatform> apply(ContributedPackage input) {
-        return input.getPlatforms();
-      }
-    })));
+    LinkedList<ContributedPlatform> contributedPlatforms = Lists.newLinkedList(Iterables.concat(Collections2.transform(BaseNoGui.indexer.getPackages(), ContributedPackage::getPlatforms)));
 
     List<ContributedPlatform> installedBuiltInPlatforms = contributedPlatforms.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
     if (installedBuiltInPlatforms.size() != 1) {
@@ -96,18 +90,15 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
     }
 
     if (VersionHelper.valueOf(installedBuiltIn.getParsedVersion()).greaterThan(VersionHelper.valueOf(installedNotBuiltIn.getParsedVersion()))) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          PreferencesData.setInteger("builtin_platform_is_newer", BaseNoGui.REVISION);
-          assert base.hasActiveEditor();
-          int chosenOption = JOptionPane.showConfirmDialog(base.getActiveEditor(), I18n.format(_("The IDE includes an updated {0} package, but you're using an older one.\nDo you want to upgrade {0}?"), installedBuiltIn.getName()), I18n.format(_("A newer {0} package is available"), installedBuiltIn.getName()), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-          if (chosenOption == JOptionPane.YES_OPTION) {
-            Action openBoardsManager = base.getOpenBoardsManager();
-            Event event = new Event(base.getActiveEditor(), ActionEvent.ACTION_PERFORMED, installedBuiltIn.getName());
-            event.getPayload().put("filterText", installedBuiltIn.getName());
-            openBoardsManager.actionPerformed(event);
-          }
+      SwingUtilities.invokeLater(() -> {
+        PreferencesData.setInteger("builtin_platform_is_newer", BaseNoGui.REVISION);
+        assert base.hasActiveEditor();
+        int chosenOption = JOptionPane.showConfirmDialog(base.getActiveEditor(), I18n.format(_("The IDE includes an updated {0} package, but you're using an older one.\nDo you want to upgrade {0}?"), installedBuiltIn.getName()), I18n.format(_("A newer {0} package is available"), installedBuiltIn.getName()), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (chosenOption == JOptionPane.YES_OPTION) {
+          Action openBoardsManager = base.getOpenBoardsManager();
+          Event event = new Event(base.getActiveEditor(), ActionEvent.ACTION_PERFORMED, installedBuiltIn.getName());
+          event.getPayload().put("filterText", installedBuiltIn.getName());
+          openBoardsManager.actionPerformed(event);
         }
       });
     }

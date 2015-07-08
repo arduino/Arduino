@@ -148,19 +148,16 @@ public class ContributionManagerUI extends InstallerJDialog {
   @Override
   public void onUpdatePressed() {
     super.onUpdatePressed();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, "");
-          List<String> downloadedPackageIndexFiles = installer.updateIndex();
-          installer.deleteUnknownFiles(downloadedPackageIndexFiles);
-          onIndexesUpdated();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, "");
+        List<String> downloadedPackageIndexFiles = installer.updateIndex();
+        installer.deleteUnknownFiles(downloadedPackageIndexFiles);
+        onIndexesUpdated();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
@@ -169,24 +166,21 @@ public class ContributionManagerUI extends InstallerJDialog {
 
   public void onInstallPressed(final ContributedPlatform platformToInstall, final ContributedPlatform platformToRemove) {
     clearErrorMessage();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        List<String> errors = new LinkedList<String>();
-        try {
-          setProgressVisible(true, _("Installing..."));
-          errors.addAll(installer.install(platformToInstall));
-          if (platformToRemove != null && !platformToRemove.isReadOnly()) {
-            errors.addAll(installer.remove(platformToRemove));
-          }
-          onIndexesUpdated();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-          if (!errors.isEmpty()) {
-            setErrorMessage(errors.get(0));
-          }
+    installerThread = new Thread(() -> {
+      List<String> errors = new LinkedList<>();
+      try {
+        setProgressVisible(true, _("Installing..."));
+        errors.addAll(installer.install(platformToInstall));
+        if (platformToRemove != null && !platformToRemove.isReadOnly()) {
+          errors.addAll(installer.remove(platformToRemove));
+        }
+        onIndexesUpdated();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
+        if (!errors.isEmpty()) {
+          setErrorMessage(errors.get(0));
         }
       }
     });
@@ -204,18 +198,15 @@ public class ContributionManagerUI extends InstallerJDialog {
       }
     }
 
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, _("Removing..."));
-          installer.remove(platform);
-          onIndexesUpdated();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, _("Removing..."));
+        installer.remove(platform);
+        onIndexesUpdated();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
