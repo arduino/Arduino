@@ -23,6 +23,8 @@
 
 package processing.app.debug;
 
+import java.util.List;
+
 
 /**
  * An exception with a line number attached that occurs
@@ -31,9 +33,9 @@ package processing.app.debug;
 @SuppressWarnings("serial")
 public class RunnerException extends Exception {
   protected String message;
-  protected int codeIndex;
-  protected int codeLine;
-  protected int codeColumn;
+  
+  protected List<CompilerError> errors;
+  
   protected boolean showStackTrace;
 
   
@@ -42,27 +44,10 @@ public class RunnerException extends Exception {
   }
 
   public RunnerException(String message, boolean showStackTrace) {
-    this(message, -1, -1, -1, showStackTrace);
-  }
-
-  public RunnerException(String message, int file, int line) {
-    this(message, file, line, -1, true);
-  }
-
-  
-  public RunnerException(String message, int file, int line, int column) {
-    this(message, file, line, column, true);
-  }
-  
-  
-  public RunnerException(String message, int file, int line, int column, 
-                         boolean showStackTrace) {
     this.message = message;
-    this.codeIndex = file;
-    this.codeLine = line;
-    this.codeColumn = column;
     this.showStackTrace = showStackTrace;
   }
+
   
   
   public RunnerException(Exception e) {
@@ -82,47 +67,6 @@ public class RunnerException extends Exception {
   public void setMessage(String message) {
     this.message = message;
   }
-  
-  
-  public int getCodeIndex() {
-    return codeIndex;
-  }
-  
-  
-  public void setCodeIndex(int index) {
-    codeIndex = index;
-  }
-  
-  
-  public boolean hasCodeIndex() {
-    return codeIndex != -1;
-  }
-  
-  
-  public int getCodeLine() {
-    return codeLine;
-  }
-  
-  
-  public void setCodeLine(int line) {
-    this.codeLine = line;
-  }
-  
-  
-  public boolean hasCodeLine() {
-    return codeLine != -1;
-  }
-  
-  
-  public void setCodeColumn(int column) {
-    this.codeColumn = column;
-  }
-  
-  
-  public int getCodeColumn() {
-    return codeColumn;
-  }
-
   
   public void showStackTrace() {
     showStackTrace = true;
@@ -152,6 +96,13 @@ public class RunnerException extends Exception {
   }
   */
 
+  public void setErrors( List<CompilerError> errors ) {
+    this.errors = errors;
+  }
+  
+  public List<CompilerError> getErrors() {
+    return errors;
+  }
 
   public void printStackTrace() {
     if (showStackTrace) {

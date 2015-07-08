@@ -35,6 +35,7 @@ import com.jcraft.jsch.JSchException;
 
 import jssc.SerialPortException;
 import processing.app.debug.*;
+import processing.app.debug.Compiler;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
@@ -2687,53 +2688,57 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void statusError(Exception e) {
     e.printStackTrace();
-//    if (e == null) {
-//      System.err.println("Editor.statusError() was passed a null exception.");
-//      return;
-//    }
 
     if (e instanceof RunnerException) {
       RunnerException re = (RunnerException) e;
-      if (re.hasCodeIndex()) {
-        sketch.setCurrentCode(re.getCodeIndex());
-      }
-      if (re.hasCodeLine()) {
-        int line = re.getCodeLine();
-        // subtract one from the end so that the \n ain't included
-        if (line >= textarea.getLineCount()) {
-          // The error is at the end of this current chunk of code,
-          // so the last line needs to be selected.
-          line = textarea.getLineCount() - 1;
-          if (getLineText(line).length() == 0) {
-            // The last line may be zero length, meaning nothing to select.
-            // If so, back up one more line.
-            line--;
-          }
-        }
-        if (line < 0 || line >= textarea.getLineCount()) {
-          System.err.println(I18n.format(_("Bad error line: {0}"), line));
-        } else {
-          try {
-            // textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
-            textarea.setCaretPosition(textarea.getLineStartOffset(line));
-            
-            TLibrary metadata = sketch.getSketchData().getSketchMetadata();
-            int startOffset = textarea.getLineStartOffset(line);
-            int endOffset = textarea.getLineEndOffset(line);
-            String path  = sketch.getCurrentCode().getFile().getPath();
 
-            TError error = new TError(re.getMessage(), TError.COMPILER_ERROR);
-            error.setLocation(new TElementLocation(path, startOffset, endOffset - startOffset));
-            errorMarker.addError(error);
-            textarea.forceReparsing(errorMarker);
-            
-            if(metadata != null){
-              metadata.getErrors().add(error);
-            }       
-          } catch (BadLocationException e1) {
-            e1.printStackTrace();
+      if (re.getErrors() != null && ! re.getErrors().isEmpty()) {
+        
+        List<CompilerError> errors = re.getErrors();
+        
+        for (CompilerError compilerError : errors) {
+          
+          sketch.setCurrentCode(compilerError.getFileName());
+          
+          int line = compilerError.getLine();
+          // subtract one from the end so that the \n ain't included
+          if (line >= textarea.getLineCount()) {
+            // The error is at the end of this current chunk of code,
+            // so the last line needs to be selected.
+            line = textarea.getLineCount() - 1;
+            if (getLineText(line).length() == 0) {
+              // The last line may be zero length, meaning nothing to select.
+              // If so, back up one more line.
+              line--;
+            }
           }
+          if (line < 0 || line >= textarea.getLineCount()) {
+            System.err.println(I18n.format(_("Bad error line: {0}"), line));
+          } else {
+            try {
+              // textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+              textarea.setCaretPosition(textarea.getLineStartOffset(line));
+              
+              TLibrary metadata = sketch.getSketchData().getSketchMetadata();
+              int startOffset = textarea.getLineStartOffset(line);
+              int endOffset = textarea.getLineEndOffset(line);
+              String path  = sketch.getCurrentCode().getFile().getPath();
+
+              TError error = new TError(compilerError.getMessage(), TError.COMPILER_ERROR);
+              error.setLocation(new TElementLocation(path, startOffset, endOffset - startOffset));
+              errorMarker.addError(error);
+              textarea.forceReparsing(errorMarker);
+              
+              if(metadata != null){
+                metadata.getErrors().add(error);
+              }       
+            } catch (BadLocationException e1) {
+              e1.printStackTrace();
+            }
+          }
+          
         }
+       
       }
     }
 

@@ -72,6 +72,7 @@ public class Compiler implements MessageConsumer {
   private boolean saveHex;
 
   private List<File> objectFiles;
+  private List<CompilerError> errors = new LinkedList<CompilerError>();
 
   private boolean sketchIsCompiled;
   
@@ -125,6 +126,7 @@ public class Compiler implements MessageConsumer {
     } catch (RunnerException e) {
       // when the compile fails, take this opportunity to show
       // any helpful info possible before throwing the exception
+      e.setErrors(compiler.getErrors());
       compiler.adviseDuplicateLibraries();
       throw e;
     }
@@ -259,6 +261,8 @@ public class Compiler implements MessageConsumer {
     // if the java runtime is holding onto any files in the build dir, we
     // won't be able to delete them, so we need to force a gc here
     System.gc();
+    
+    errors.clear();
 
     if (force) {
       // delete the entire directory and all contents
@@ -869,28 +873,33 @@ public class Compiler implements MessageConsumer {
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
       
-      RunnerException e = null;
+      CompilerError e = null;
       if (!sketchIsCompiled) {
         // Place errors when compiling the sketch, but never while compiling libraries
         // or the core.  The user's sketch might contain the same filename!
-        e = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+        //e = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+        
+        e = new CompilerError(error, PApplet.parseInt(pieces[2]) - 1, pieces[1]);
+        errors.add(e);
+        
       }
 
       // replace full file path with the name of the sketch tab (unless we're
       // in verbose mode, in which case don't modify the compiler output)
       if (e != null && !verbose) {
-        SketchCode code = sketch.getCode(e.getCodeIndex());
+    	  
+        SketchCode code = null;
+        for (SketchCode curr : sketch.getCodes()) {
+          if (e.getFileName().equals(curr.getFileName())) {
+            code = curr;
+          }
+        }
+    	     
         String fileName = (code.isExtension("ino") || code.isExtension("pde")) ? code.getPrettyName() : code.getFileName();
-        int lineNum = e.getCodeLine() + 1;
+        int lineNum = e.getLine() + 1;
         s = fileName + ":" + lineNum + ": error: " + error + msg;
       }
 
-      if (e != null) {
-        if (exception == null || exception.getMessage().equals(e.getMessage())) {
-          exception = e;
-          exception.hideStackTrace();
-        }
-      }
     }
     
     if (s.contains("undefined reference to `SPIClass::begin()'") &&
@@ -1209,6 +1218,10 @@ public class Compiler implements MessageConsumer {
     return prefs;
   }
   
+  public List<CompilerError> getErrors() {
+    return errors;
+  }
+  
   /**
    * Build all the code for this sketch.
    *
@@ -1335,27 +1348,6 @@ public class Compiler implements MessageConsumer {
   private List<String>      importedDuplicateHeaders;
   private List<LibraryList> importedDuplicateLibraries;
 
-  /**
-   * Map an error from a set of processed .java files back to its location
-   * in the actual sketch.
-   * @param message The error message.
-   * @param dotJavaFilename The .java file where the exception was found.
-   * @param dotJavaLine Line number of the .java file for the exception (0-indexed!)
-   * @return A RunnerException to be sent to the editor, or null if it wasn't
-   *         possible to place the exception to the sketch code.
-   */
-  public RunnerException placeException(String message,
-                                        String dotJavaFilename,
-                                        int dotJavaLine) {
-     // Placing errors is simple, because we inserted #line directives
-     // into the preprocessed source.  The compiler gives us correct
-     // the file name and line number.  :-)
-     for (SketchCode code : sketch.getCodes()) {
-       if (dotJavaFilename.equals(code.getFileName())) {
-         return new RunnerException(message, sketch.indexOfCode(code), dotJavaLine);
-       }
-     }
-     return null;
-  }
+
 
 }
