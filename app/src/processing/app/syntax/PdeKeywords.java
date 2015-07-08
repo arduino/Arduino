@@ -54,6 +54,7 @@ public class PdeKeywords {
     KNOWN_TOKEN_TYPES.put("DATA_TYPE", TokenTypes.DATA_TYPE);
     KNOWN_TOKEN_TYPES.put("LITERAL_BOOLEAN", TokenTypes.LITERAL_BOOLEAN);
     KNOWN_TOKEN_TYPES.put("LITERAL_CHAR", TokenTypes.LITERAL_CHAR);
+    KNOWN_TOKEN_TYPES.put("PREPROCESSOR", TokenTypes.PREPROCESSOR);
   }
 
   // lookup table for the TokenMarker subclass, handles coloring
@@ -112,6 +113,9 @@ public class PdeKeywords {
         String pieces[] = PApplet.split(line, '\t');
 
         String keyword = pieces[0].trim();
+        if (keyword.startsWith("\\#")) {
+          keyword = keyword.replace("\\#", "#");
+        }
 
         if (pieces.length >= 2) {
           keywordOldToken.put(keyword, pieces[1]);

@@ -125,6 +125,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     setSyntaxTheme(TokenTypes.LITERAL_BOOLEAN, "literal_boolean");
     setSyntaxTheme(TokenTypes.LITERAL_CHAR, "literal_char");
     setSyntaxTheme(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE, "literal_string_double_quote");
+    setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");
 
     Style style = getSyntaxScheme().getStyle(TokenTypes.IDENTIFIER);
     style.foreground = processing.app.Theme.getColor("editor.fgcolor");
