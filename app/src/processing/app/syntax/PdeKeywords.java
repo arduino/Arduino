@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 
 public class PdeKeywords {
 
-  private static final Map<String, Integer> KNOWN_TOKEN_TYPES = new HashMap<String, Integer>();
+  private static final Map<String, Integer> KNOWN_TOKEN_TYPES = new HashMap<>();
   private static final Pattern ALPHA = Pattern.compile("\\w");
 
   static {
@@ -67,9 +67,9 @@ public class PdeKeywords {
 
   public PdeKeywords() {
     this.keywordTokenType = new TokenMap();
-    this.keywordOldToken = new HashMap<String, String>();
-    this.keywordTokenTypeAsString = new HashMap<String, String>();
-    this.keywordToReference = new HashMap<String, String>();
+    this.keywordOldToken = new HashMap<>();
+    this.keywordTokenTypeAsString = new HashMap<>();
+    this.keywordToReference = new HashMap<>();
   }
 
   /**
