@@ -10,9 +10,6 @@ import cc.arduino.packages.Uploader;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import nojunit.ConsoleLogger;
-import nojunit.LogFormatter;
-
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
