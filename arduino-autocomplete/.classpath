@@ -5,6 +5,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
 	<classpathentry kind="lib" path="../app/lib/rsyntax-autocomplete-2.6.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="../app/lib/rsyntaxtextarea-2.5.6.1+arduino.jar"/>
+	<classpathentry kind="lib" path="../app/lib/cplus-libparser-0.0.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cplus-libparser"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

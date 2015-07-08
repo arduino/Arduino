@@ -19,6 +19,7 @@
 	<classpathentry kind="lib" path="../app/lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="../app/lib/bcprov-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="../app/lib/rsyntax-autocomplete-2.6.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="../app/lib/cplus-libparser-0.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
