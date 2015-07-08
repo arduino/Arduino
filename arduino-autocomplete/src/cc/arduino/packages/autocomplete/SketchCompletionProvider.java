@@ -54,6 +54,7 @@ import processing.app.PreferencesData;
 import processing.app.SketchCode;
 import processing.app.SketchData;
 import processing.app.SketchDocumentProvider;
+import processing.app.debug.TargetPlatform;
 import processing.app.helpers.StringUtils;
 import processing.app.packages.LibraryList;
 import processing.app.packages.LibraryListener;
@@ -124,7 +125,8 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
     
     // Arduino Core
     //=======================
-    File folder = BaseNoGui.getTargetPlatform().getFolder();
+    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+    File folder = targetPlatform.getFolder();
     File coreFolder = new File(folder,"cores"+File.separator+"arduino");
     if(coreFolder.exists()){
       UserLibrary coreLib;
@@ -149,12 +151,15 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
   
 
   /**
-   * Remove all added listeners
+   * Remove all listeners
    */
   public void uninstall() {
-    LibraryIndex.removeListener(this); 
+    LibraryIndex.removeListener(this);
+    LibraryIndex.removeLibrary(sketchLibrary);
     sketchData.removeListener(this);
-    importedLibraries.addListener(this);
+    importedLibraries.removeListener(this);
+    
+    autoCompletion.getTextComponent().removeKeyListener(realtimeCompletionsListener);
     
     for (SketchCode code : sketchData.getCodes()) {
       Document document = getDocument(code);
@@ -222,8 +227,9 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
     Object metadata = code.getMetadata();
     if(metadata instanceof SketchDocumentProvider){
       Document document = ((SketchDocumentProvider) metadata).getDocument();
-      if(document != null)
-      document.addDocumentListener(realtimeCompletionsListener);
+      if(document != null){
+    	  document.addDocumentListener(realtimeCompletionsListener);
+      }
     }
     
   }
@@ -244,7 +250,7 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
   
   
   // ==========================================
-  // LibraryIndex Listener
+  // LibraryIndex Listener (Parser)
   // ==========================================
   
   @Override
@@ -544,6 +550,7 @@ public class SketchCompletionProvider extends LanguageAwareCompletionProvider im
 
   public void setAutoCompletion(AutoCompletion autoCompletion) {
     this.autoCompletion = autoCompletion;
+    autoCompletion.getTextComponent().addKeyListener(realtimeCompletionsListener);
   }
   
   public AutoCompletion getAutoCompletion() {

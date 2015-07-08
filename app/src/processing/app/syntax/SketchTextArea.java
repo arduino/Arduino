@@ -181,7 +181,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     
     this.completionProvider = provider;
     AutoCompletion ac = new AutoCompletion(provider);
-    provider.setAutoCompletion(ac);
+    
     
     ac.setAutoActivationEnabled(true);
     ac.setShowDescWindow(false);
@@ -190,8 +190,8 @@ public class SketchTextArea extends RSyntaxTextArea {
     ac.setAutoCompleteSingleChoices(true);
     ac.setParameterAssistanceEnabled(true);
     
-    // NOTE: Monitor changes. On 'SketchCompletionProvider.onSketchInserted' was installed a DocumentListener
-    this.addKeyListener(new RealtimeCompletionsListener(provider.getSketchData())); 
+    ac.install(this);
+    provider.setAutoCompletion(ac);
     
     ac.addAutoCompletionListener(new AutoCompletionListener() {
       @Override
@@ -207,8 +207,8 @@ public class SketchTextArea extends RSyntaxTextArea {
             
             // Force parser/load new Lib for autocomplete.
             if(completion instanceof IncludeTemplate && !parameterValues.isEmpty()){
-              UserLibrary library = Base.getLibraries().getByName(parameterValues.get(0));
-              completionProvider.getSketchData().addLibrary(library);
+              UserLibrary library = Base.getLibraries().getByName(parameterValues.get(0).replaceAll("(<|>|\\.h)", ""));
+              getCompletionProvider().getSketchData().addLibrary(library);
             }
             
             if(completion instanceof GenerateVarTemplate && !parameterValues.isEmpty()){
@@ -216,7 +216,7 @@ public class SketchTextArea extends RSyntaxTextArea {
               TAttribute var =  new TAttribute(varTemplate.getType(), parameterValues.iterator().next());
               
               // Insert new var in current function scope
-              TFunction functionScope = completionProvider.getCurrentFunctionScope(SketchTextArea.this);
+              TFunction functionScope = getCompletionProvider().getCurrentFunctionScope(SketchTextArea.this);
               if(functionScope != null){
                 TDynamicLocation location = new TDynamicLocation(SketchTextArea.this.getDocument(), functionScope.getLocation());
                 var.setLocation(location);
@@ -233,11 +233,11 @@ public class SketchTextArea extends RSyntaxTextArea {
         }
       }
     });
-    ac.install(this);
+    
   }
   
   public SketchCompletionProvider getCompletionProvider() {
-	return completionProvider;
+    return completionProvider;
   }
 
   // Removing the default focus traversal keys

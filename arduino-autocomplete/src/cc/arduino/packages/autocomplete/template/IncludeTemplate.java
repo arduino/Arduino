@@ -52,7 +52,7 @@ import cc.arduino.packages.autocomplete.TemplateChoicesCompletion;
 public class IncludeTemplate extends TemplateChoicesCompletion {
 
   public IncludeTemplate(CompletionProvider provider) {
-    super(provider, "#include", "#include <>", "#include ${include}");
+    super(provider, "#include", "#include <>", "#include ${<}");
   }
 
   @Override
