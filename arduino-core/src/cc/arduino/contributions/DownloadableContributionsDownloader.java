@@ -91,7 +91,7 @@ public class DownloadableContributionsDownloader {
 
     String algo = checksum.split(":")[0];
 
-    return algo != null && algo.isEmpty();
+    return algo != null && !algo.isEmpty();
   }
 
   public void download(URL url, File tmpFile, Progress progress, String statusText) throws Exception {
