@@ -2082,8 +2082,6 @@ public class Editor extends JFrame implements RunnerListener {
       // suck--workarounds for the Mac and Apple's snobby attitude about it!
       // I think it's nifty that they treat their developers like dirt.
 
-      // Pane formatting adapted from the quaqua guide
-      // http://www.randelshofer.ch/quaqua/guide/joptionpane.html
       JOptionPane pane =
         new JOptionPane(_("<html> " +
                           "<head> <style type=\"text/css\">"+
@@ -2102,11 +2100,6 @@ public class Editor extends JFrame implements RunnerListener {
 
       // highlight the safest option ala apple hig
       pane.setInitialValue(options[0]);
-
-      // on macosx, setting the destructive property places this option
-      // away from the others at the lefthand side
-      pane.putClientProperty("Quaqua.OptionPane.destructiveOption",
-        2);
 
       JDialog dialog = pane.createDialog(this, null);
       dialog.setVisible(true);

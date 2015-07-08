@@ -213,12 +213,7 @@ public class Base {
     try {
       BaseNoGui.getPlatform().setLookAndFeel();
     } catch (Exception e) {
-      String mess = e.getMessage();
-      if (mess.indexOf("ch.randelshofer.quaqua.QuaquaLookAndFeel") == -1) {
-        System.err.println(_("Non-fatal error while setting the Look & Feel."));
-        System.err.println(_("The error message follows, however Arduino should run fine."));
-        System.err.println(mess);
-      }
+      // ignore
     }
 
     // Create a location for untitled sketches
@@ -2068,8 +2063,6 @@ public class Base {
 //    }
 
     } else {
-      // Pane formatting adapted from the Quaqua guide
-      // http://www.randelshofer.ch/quaqua/guide/joptionpane.html
       JOptionPane pane =
               new JOptionPane("<html> " +
                       "<head> <style type=\"text/css\">" +
@@ -2088,11 +2081,6 @@ public class Base {
 
       // highlight the safest option ala apple hig
       pane.setInitialValue(options[0]);
-
-      // on macosx, setting the destructive property places this option
-      // away from the others at the lefthand side
-      pane.putClientProperty("Quaqua.OptionPane.destructiveOption",
-              new Integer(2));
 
       JDialog dialog = pane.createDialog(editor, null);
       dialog.setVisible(true);
@@ -2133,8 +2121,6 @@ public class Base {
               JOptionPane.YES_NO_OPTION,
               JOptionPane.QUESTION_MESSAGE);
     } else {
-      // Pane formatting adapted from the Quaqua guide
-      // http://www.randelshofer.ch/quaqua/guide/joptionpane.html
       JOptionPane pane =
               new JOptionPane("<html> " +
                       "<head> <style type=\"text/css\">" +
