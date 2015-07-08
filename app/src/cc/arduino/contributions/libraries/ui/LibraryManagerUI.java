@@ -165,6 +165,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     typeFilter = null;
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllItem());
+    typeChooser.addItem(new DropdownUpdatableLibrariesItem(indexer));
     typeChooser.addItem(new DropdownInstalledLibraryItem(indexer.getIndex()));
     java.util.List<String> types = new LinkedList<String>(indexer.getIndex().getTypes());
     Collections.sort(types, new LibraryTypeComparator());
