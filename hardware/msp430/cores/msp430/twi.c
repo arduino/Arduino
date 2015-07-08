@@ -204,7 +204,6 @@ void twi_init(void)
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
 
-    //P1SEL1 |= BIT6 + BIT7;                  // Pin init
     pinMode_int(TWISDA, TWISDA_SET_MODE);
     pinMode_int(TWISCL, TWISCL_SET_MODE);
 
@@ -213,15 +212,11 @@ void twi_init(void)
 
     //Configure Automatic STOP condition generation
     UCB0CTLW1 &= ~UCASTP_3;
-    //UCB0CTLW1 |= autoSTOPGeneration;
 
-    //Byte Count Threshold
-    //UCB0TBCNT = byteCounterThreshold;
     /*
      * Configure as I2C master mode.
-     * UCMST = Master mode
      * UCMODE_3 = I2C mode
-     * UCSYNC = Synchronous mode
+     * UCSYNC = Synchronous mode (read/write 1 for eUSCI_B)
      * UCCLK = SMCLK
      */
     UCB0CTLW0 = UCMODE_3 | UCSSEL__SMCLK | UCSYNC | UCSWRST;
@@ -293,12 +288,12 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 #endif
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
-    UCB0CTLW0 = UCSWRST;                      // Enable SW reset
-    UCB0CTLW0 |= (UCMST | UCMODE_3 | UCSYNC | UCSSEL__SMCLK);   // I2C Master, synchronous mode
+    UCB0CTLW0 |= UCSWRST;                     // Enable SW reset
+    UCB0CTLW0 |= (UCMST);                     // I2C Master, synchronous mode
     UCB0CTLW0 &= ~(UCTR);                     // Configure in receive mode
     UCB0I2CSA = address;                      // Set Slave Address
     UCB0CTLW0 &= ~UCSWRST;                    // Clear SW reset, resume operation
-    UCB0IE |= (UCRXIE0|UCALIE|UCNACKIFG|UCSTTIFG|UCSTPIFG); // Enable I2C interrupts
+    UCB0IE |= (UCRXIE0|UCALIE|UCNACKIE|UCSTTIE|UCSTPIE); // Enable I2C interrupts
 #endif
 	// ensure data will fit into buffer
 	if(TWI_BUFFER_LENGTH < length){
@@ -399,12 +394,11 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
 #endif
 #endif
 #ifdef __MSP430_HAS_EUSCI_B0__
-    UCB0CTLW0 = UCSWRST;                      // Enable SW reset
-    UCB0CTLW0 |= (UCMST | UCMODE_3 | UCSSEL__SMCLK | UCSYNC);   // I2C Master, synchronous mode
-    UCB0CTLW0 |= UCTR;                        // Configure in transmit mode
+    UCB0CTLW0 |= UCSWRST;                     // Enable SW reset
+    UCB0CTLW0 |= (UCMST | UCTR);              //  I2C Master, transmit mode
     UCB0I2CSA = address;                      // Set Slave Address
     UCB0CTLW0 &= ~UCSWRST;                    // Clear SW reset, resume operation
-    UCB0IE |= (UCTXIE0|UCALIE|UCNACKIE|UCSTPIE); // Enable I2C interrupts
+    UCB0IE |= (UCRXIE|UCTXIE0|UCALIE|UCNACKIE|UCSTPIE |UCBCNTIE); // Enable I2C interrupts
 #endif
 	if(length == 0) {
 		return 0;
