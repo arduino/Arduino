@@ -222,6 +222,8 @@ export	KEYWORD3		RESERVED_WORD
 =		assign
 &		BitwiseAnd
 |		BitwiseAnd
+^		BitwiseAnd
+~		BitwiseXorNot
 ,
 //		Comments
 ?:
@@ -230,14 +232,14 @@ export	KEYWORD3		RESERVED_WORD
 /		Arithmetic
 /*		Comments
 .		dot
-==
-<		greaterthan
-<=		greaterthanorequalto
+==		If
+<		If
+<=		If
 ++		Increment
-!=		inequality
+!=		If
 <<		Bitshift
-<		lessthan
-<=		lessthanorequalto
+>		If
+>=		If
 &&		Boolean
 !		Boolean
 ||		Boolean
