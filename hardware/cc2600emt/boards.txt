@@ -1,0 +1,9 @@
+##############################################################
+CC2650STK_BLE.name=SensorTag w/ cc2640 EMT (48MHz)
+CC2650STK_BLE.upload.maximum_size=262144
+CC2650STK_BLE.build.mcu=cortex-m3
+CC2650STK_BLE.build.f_cpu=48000000L
+CC2650STK_BLE.build.core=cc2600emt
+CC2650STK_BLE.build.variant=CC2650STK_BLE
+CC2650STK_BLE.build.hardware=CC2650STK_BLE
+CC2650STK_BLE.ldscript=MSP432P401R.lds

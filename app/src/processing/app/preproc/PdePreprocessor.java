@@ -126,7 +126,7 @@ public class PdePreprocessor {
 //      }
 //    }
 
-    if(Base.getArch() == "cc3200emt" || Base.getArch() == "msp432")
+    if(Base.getArch() == "cc3200emt" || Base.getArch() == "msp432" || Base.getArch() == "cc2600emt")
     	writemain(program);
     
     prototypes = prototypes(program);

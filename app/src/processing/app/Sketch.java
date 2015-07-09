@@ -1380,7 +1380,7 @@ public class Sketch {
       if (sc.isExtension("ino") || sc.isExtension("pde")) {
         sc.setPreprocOffset(bigCount);
         String in = sc.getProgram();
-        if(Base.getArch() == "cc3200emt" || Base.getArch() == "msp432") {
+        if(Base.getArch() == "cc3200emt" || Base.getArch() == "msp432" || Base.getArch() == "cc2600emt") {
 
 	        Pattern functionPattern  = Pattern.compile("\\s*void\\s+(loop)\\s*\\(\\s*(void)?\\s*\\)");
 	
@@ -1629,7 +1629,7 @@ public class Sketch {
     Compiler compiler = new Compiler();
     if (compiler.compile(this, buildPath, primaryClassName, verbose)) {
       String arch = Base.getArch();
-      if(arch != "cc3200emt" && arch != "msp432")
+      if(arch != "cc3200emt" && arch != "msp432" && arch != "cc2600emt")
     	size(buildPath, primaryClassName);
       return primaryClassName;
     }
@@ -1716,7 +1716,7 @@ public class Sketch {
     	uploader = new MSP430Uploader(editor);
     }else if (Base.getArch() == "lm4f"){
         uploader = new LM4FUploader();
-    }else if (Base.getArch() == "msp432"){
+    }else if (Base.getArch() == "msp432" || Base.getArch() == "cc2600emt"){
         uploader = new DSLiteUploader();
     } else if(Base.getArch() == "c2000"){
     	uploader = new C2000Uploader();

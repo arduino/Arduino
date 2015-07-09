@@ -73,6 +73,7 @@ public class Base {
     archMap.put("cc3200", "cc3200");
     archMap.put("cc3200emt", "cc3200emt");
     archMap.put("msp432", "msp432");
+    archMap.put("cc2600emt", "cc2600emt");
   }
   static Platform platform;
 
@@ -266,6 +267,8 @@ public class Base {
     	targetLibDir = "hardware/cc3200emt/";
     else if (Preferences.get("target").equals("msp432")) 
     	targetLibDir = "hardware/msp432/";
+    else if (Preferences.get("target").equals("cc2600emt")) 
+    	targetLibDir = "hardware/cc2600emt/";
     librariesFolder = getContentFile(targetLibDir + "libraries");
     toolsFolder = getContentFile("tools");
 
@@ -1114,6 +1117,8 @@ public class Base {
             		  targetLibDir = "hardware/msp432/";
 		  else if(n.equals("cc3200emt")) 
             		  targetLibDir = "hardware/cc3200emt/";
+		  else if(n.equals("cc2600emt")) 
+            		  targetLibDir = "hardware/cc2600emt/";
             	  librariesFolder = getContentFile(targetLibDir + "libraries");
             	  onArchChanged();
               }

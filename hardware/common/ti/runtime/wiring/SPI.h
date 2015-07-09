@@ -77,7 +77,7 @@ class SPIClass
         void init(unsigned long);
 
     public:
-        bool transferComplete;
+        volatile bool transferComplete;
 
         SPIClass(void);
         SPIClass(unsigned long);

@@ -1,0 +1,1 @@
+-mcpu=cortex-m3 -mthumb -mabi=aapcs -g  -Dgcc     -Dxdc_target_types__="gnu/targets/arm/std.h" -Dxdc_target_name__=M3 -Dxdc_cfg__xheader__="\"configPkg/package/cfg/energia_pm3g.h\""

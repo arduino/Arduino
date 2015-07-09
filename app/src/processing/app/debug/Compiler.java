@@ -111,7 +111,7 @@ public class Compiler implements MessageConsumer {
       }
     }
 
-    if (arch == "cc3200emt" || arch == "msp432") {
+    if (arch == "cc3200emt" || arch == "msp432" || arch == "cc2600emt") {
     	String commonBasePath = Base.getHardwarePath() + File.separator + "common";
         try {
             File makeVariables = new File(buildPath+File.separator+"Variables.mk");
