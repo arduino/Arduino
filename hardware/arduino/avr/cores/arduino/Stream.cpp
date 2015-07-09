@@ -26,7 +26,6 @@
 #include "Stream.h"
 
 #define PARSE_TIMEOUT 1000  // default number of milli-seconds to wait
-#define NO_SKIP_CHAR  1  // a magic char not found in a valid ASCII numeric field
 
 // private method to read stream with timeout
 int Stream::timedRead()
@@ -121,17 +120,11 @@ bool Stream::findUntil(char *target, size_t targetLen, char *terminator, size_t 
   }
 }
 
-
 // returns the first valid (long) integer value from the current position.
-// initial characters that are not digits (or the minus sign) are skipped
-// function is terminated by the first character that is not a digit.
-long Stream::parseInt(LookaheadMode lookahead)
-{
-  return parseInt(lookahead, NO_SKIP_CHAR); // terminate on first non-digit character (or timeout)
-}
-
-// as above but 'ignore' is ignored
-// this allows format characters (typically commas) in values to be ignored
+// lookahead determines how parseInt looks ahead in the stream.
+// See LookaheadMode enumeration at the top of the file.
+// Lookahead is terminated by the first character that is not a valid part of an integer.
+// Once parsing commences, 'ignore' will be skipped in the stream.
 long Stream::parseInt(LookaheadMode lookahead, char ignore)
 {
   bool isNegative = false;
@@ -160,16 +153,9 @@ long Stream::parseInt(LookaheadMode lookahead, char ignore)
   return value;
 }
 
-
 // as parseInt but returns a floating point value
-float Stream::parseFloat(LookaheadMode lookahead)
+float Stream::parseFloat(LookaheadMode lookahead, char ignore)
 {
-  return parseFloat(lookahead, NO_SKIP_CHAR);
-}
-
-// as above but the given ignore is ignored
-// this allows format characters (typically commas) in values to be ignored
-float Stream::parseFloat(LookaheadMode lookahead, char ignore){
   bool isNegative = false;
   bool isFraction = false;
   long value = 0;
