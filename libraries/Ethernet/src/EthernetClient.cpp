@@ -171,3 +171,7 @@ EthernetClient::operator bool() {
 bool EthernetClient::operator==(const EthernetClient& rhs) {
   return _sock == rhs._sock && _sock != MAX_SOCK_NUM && rhs._sock != MAX_SOCK_NUM;
 }
+
++uint8_t EthernetClient::getSocketNumber () {
++	return _sock;
++}

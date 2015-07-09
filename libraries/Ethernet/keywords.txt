@@ -30,6 +30,7 @@ endPacket	KEYWORD2
 parsePacket	KEYWORD2
 remoteIP	KEYWORD2
 remotePort	KEYWORD2
+getSocketNumber	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
