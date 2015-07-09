@@ -39,8 +39,6 @@ import cc.arduino.contributions.filters.InstalledPredicate;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Iterables;
@@ -98,12 +96,7 @@ public class ContributionsIndexer {
     }
 
     List<ContributedPackage> packages = index.getPackages();
-    Collection<ContributedPackage> packagesWithTools = Collections2.filter(packages, new Predicate<ContributedPackage>() {
-      @Override
-      public boolean apply(ContributedPackage input) {
-        return input.getTools() != null;
-      }
-    });
+    Collection<ContributedPackage> packagesWithTools = Collections2.filter(packages, input -> input.getTools() != null);
 
     for (ContributedPackage pack : packages) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
@@ -141,7 +134,7 @@ public class ContributionsIndexer {
           }
           List<ContributedPlatform> platforms = contributedPackage.getPlatforms();
           if (platforms == null) {
-            platforms = new LinkedList<ContributedPlatform>();
+            platforms = new LinkedList<>();
           }
           for (ContributedPlatform contributedPlatform : platforms) {
             ContributedPlatform platform = targetPackage.findPlatform(contributedPlatform.getArchitecture(), contributedPlatform.getVersion());
@@ -152,7 +145,7 @@ public class ContributionsIndexer {
           }
           List<ContributedTool> tools = contributedPackage.getTools();
           if (tools == null) {
-            tools = new LinkedList<ContributedTool>();
+            tools = new LinkedList<>();
           }
           for (ContributedTool contributedTool : tools) {
             ContributedTool tool = targetPackage.findTool(contributedTool.getName(), contributedTool.getVersion());
@@ -191,7 +184,7 @@ public class ContributionsIndexer {
     syncLocalPackagesFolder();
   }
 
-  public void syncBuiltInHardwareFolder(File hardwareFolder) throws IOException {
+  private void syncBuiltInHardwareFolder(File hardwareFolder) throws IOException {
     if (index == null) {
       return;
     }
@@ -228,7 +221,7 @@ public class ContributionsIndexer {
     }
   }
 
-  public void syncLocalPackagesFolder() {
+  private void syncLocalPackagesFolder() {
     if (!packagesFolder.isDirectory()) {
       return;
     }
@@ -299,7 +292,7 @@ public class ContributionsIndexer {
   }
 
   public List<TargetPackage> createTargetPackages() {
-    List<TargetPackage> packages = new ArrayList<TargetPackage>();
+    List<TargetPackage> packages = new ArrayList<>();
 
     if (index == null) {
       return packages;
@@ -330,23 +323,14 @@ public class ContributionsIndexer {
       }
     }
 
-    Collections.sort(packages, new Comparator<TargetPackage>() {
-      @Override
-      public int compare(TargetPackage p1, TargetPackage p2) {
-        assert p1.getId() != null && p2.getId() != null;
-        return p1.getId().toLowerCase().compareTo(p2.getId().toLowerCase());
-      }
+    Collections.sort(packages, (package1, package2) -> {
+      assert package1.getId() != null && package2.getId() != null;
+      return package1.getId().toLowerCase().compareTo(package2.getId().toLowerCase());
     });
 
     return packages;
   }
 
-  /**
-   * Check if a ContributedTool is currently in use by an installed platform
-   *
-   * @param tool
-   * @return
-   */
   public boolean isContributedToolUsed(ContributedTool tool) {
     for (ContributedPackage pack : index.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
@@ -362,18 +346,13 @@ public class ContributionsIndexer {
   }
 
   public Set<ContributedTool> getInstalledTools() {
-    Set<ContributedTool> tools = new HashSet<ContributedTool>();
+    Set<ContributedTool> tools = new HashSet<>();
     if (index == null) {
       return tools;
     }
     for (ContributedPackage pack : index.getPackages()) {
       Collection<ContributedPlatform> platforms = pack.getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
-      ImmutableListMultimap<String, ContributedPlatform> platformsByName = Multimaps.index(platforms, new Function<ContributedPlatform, String>() {
-        @Override
-        public String apply(ContributedPlatform contributedPlatform) {
-          return contributedPlatform.getName();
-        }
-      });
+      ImmutableListMultimap<String, ContributedPlatform> platformsByName = Multimaps.index(platforms, ContributedPlatform::getName);
 
       for (Map.Entry<String, Collection<ContributedPlatform>> entry : platformsByName.asMap().entrySet()) {
         Collection<ContributedPlatform> platformsWithName = entry.getValue();
@@ -406,14 +385,14 @@ public class ContributionsIndexer {
 
   public List<ContributedPackage> getPackages() {
     if (index == null) {
-      return new LinkedList<ContributedPackage>();
+      return new LinkedList<>();
     }
     return index.getPackages();
   }
 
   public List<String> getCategories() {
     if (index == null) {
-      return new LinkedList<String>();
+      return new LinkedList<>();
     }
     return index.getCategories();
   }
@@ -425,9 +404,9 @@ public class ContributionsIndexer {
     return index.getInstalledPlatform(packageName, platformArch);
   }
 
-  public List<ContributedPlatform> getInstalledPlatforms() {
+  private List<ContributedPlatform> getInstalledPlatforms() {
     if (index == null) {
-      return new LinkedList<ContributedPlatform>();
+      return new LinkedList<>();
     }
     return index.getInstalledPlatforms();
   }
@@ -437,12 +416,9 @@ public class ContributionsIndexer {
   }
 
   public ContributedPlatform getPlatformByFolder(final File folder) {
-    com.google.common.base.Optional<ContributedPlatform> platformOptional = Iterables.tryFind(getInstalledPlatforms(), new Predicate<ContributedPlatform>() {
-      @Override
-      public boolean apply(ContributedPlatform contributedPlatform) {
-        assert contributedPlatform.getInstalledFolder() != null;
-        return FileUtils.isSubDirectory(contributedPlatform.getInstalledFolder(), folder);
-      }
+    com.google.common.base.Optional<ContributedPlatform> platformOptional = Iterables.tryFind(getInstalledPlatforms(), contributedPlatform -> {
+      assert contributedPlatform.getInstalledFolder() != null;
+      return FileUtils.isSubDirectory(contributedPlatform.getInstalledFolder(), folder);
     });
 
     return platformOptional.orNull();
