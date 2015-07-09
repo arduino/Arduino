@@ -456,9 +456,9 @@ public class Base {
       }
 
       // Error during build or upload
-      int res = editor.status.mode;
-      if (res == EditorStatus.ERR)
+      if (editor.status.isErr()) {
         System.exit(1);
+      }
 
       // No errors exit gracefully
       System.exit(0);

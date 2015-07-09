@@ -250,9 +250,9 @@ public class Editor extends JFrame implements RunnerListener {
     // For rev 0120, placing things inside a JPanel
     Container contentPain = getContentPane();
     contentPain.setLayout(new BorderLayout());
-    JPanel pain = new JPanel();
-    pain.setLayout(new BorderLayout());
-    contentPain.add(pain, BorderLayout.CENTER);
+    JPanel pane = new JPanel();
+    pane.setLayout(new BorderLayout());
+    contentPain.add(pane, BorderLayout.CENTER);
 
     Box box = Box.createVerticalBox();
     Box upper = Box.createVerticalBox();
@@ -326,12 +326,12 @@ public class Editor extends JFrame implements RunnerListener {
     // hopefully these are no longer needed w/ swing
     // (har har har.. that was wishful thinking)
     // listener = new EditorListener(this, textarea);
-    pain.add(box);
+    pane.add(box);
 
     // get shift down/up events so we can show the alt version of toolbar buttons
     textarea.addKeyListener(toolbar);
 
-    pain.setTransferHandler(new FileDropHandler());
+    pane.setTransferHandler(new FileDropHandler());
 
 //    System.out.println("t1");
 
