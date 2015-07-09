@@ -11,7 +11,7 @@ import java.util.*;
 public class SketchData {
 
   public static final List<String> SKETCH_EXTENSIONS = Arrays.asList("ino", "pde");
-  public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "s");
+  public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
   public static final List<String> EXTENSIONS = new LinkedList<String>(FluentIterable.from(SKETCH_EXTENSIONS).append(OTHER_ALLOWED_EXTENSIONS).toList());
 
   /** main pde file for this sketch. */
