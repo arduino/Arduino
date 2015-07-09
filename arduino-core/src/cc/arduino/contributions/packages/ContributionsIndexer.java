@@ -29,7 +29,11 @@
 
 package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.*;
+import cc.arduino.Constants;
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
+import cc.arduino.contributions.SignatureVerificationFailedException;
+import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.contributions.filters.BuiltInPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -79,14 +83,14 @@ public class ContributionsIndexer {
   }
 
   public void parseIndex() throws Exception {
-    File defaultIndexFile = getIndexFile(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME);
+    File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
     if (!signatureVerifier.isSigned(defaultIndexFile)) {
-      throw new SignatureVerificationFailedException(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME);
+      throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
     }
     index = parseIndex(defaultIndexFile);
     index.setTrusted();
 
-    File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME)));
+    File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
 
     for (File indexFile : indexFiles) {
       ContributionsIndex contributionsIndex = parseIndex(indexFile);
@@ -163,7 +167,7 @@ public class ContributionsIndexer {
   }
 
   private boolean isPackageNameProtected(ContributedPackage contributedPackage) {
-    return cc.arduino.contributions.Constants.PROTECTED_PACKAGE_NAMES.contains(contributedPackage.getName());
+    return Constants.PROTECTED_PACKAGE_NAMES.contains(contributedPackage.getName());
   }
 
   private ContributionsIndex parseIndex(File indexFile) throws IOException {

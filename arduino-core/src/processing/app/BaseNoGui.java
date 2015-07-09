@@ -1,5 +1,6 @@
 package processing.app;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
@@ -837,10 +838,14 @@ public class BaseNoGui {
 
     for (ContributedTool tool : installedTools) {
       File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      String absolutePath;
       if (installedFolder != null) {
-        PreferencesData.set(prefix + tool.getName() + ".path", installedFolder.getAbsolutePath());
-        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", installedFolder.getAbsolutePath());
+        absolutePath = installedFolder.getAbsolutePath();
+      } else {
+        absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
       }
+      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
+      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
     }
   }
 

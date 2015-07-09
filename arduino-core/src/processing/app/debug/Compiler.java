@@ -23,7 +23,31 @@
 
 package processing.app.debug;
 
-import static processing.app.I18n._;
+import cc.arduino.Constants;
+import cc.arduino.MyStreamPumper;
+import cc.arduino.contributions.packages.ContributedPlatform;
+import cc.arduino.contributions.packages.ContributedTool;
+import cc.arduino.packages.BoardPort;
+import cc.arduino.packages.Uploader;
+import cc.arduino.packages.UploaderFactory;
+import cc.arduino.packages.uploaders.MergeSketchWithBooloader;
+import cc.arduino.utils.Pair;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.PumpStreamHandler;
+import processing.app.*;
+import processing.app.helpers.FileUtils;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
+import processing.app.helpers.filefilters.OnlyDirs;
+import processing.app.legacy.PApplet;
+import processing.app.packages.LegacyUserLibrary;
+import processing.app.packages.LibraryList;
+import processing.app.packages.UserLibrary;
+import processing.app.preproc.PdePreprocessor;
+import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -31,32 +55,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import cc.arduino.MyStreamPumper;
-import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.contributions.packages.ContributedTool;
-import cc.arduino.packages.BoardPort;
-import cc.arduino.packages.Uploader;
-import cc.arduino.packages.UploaderFactory;
-
-import cc.arduino.packages.uploaders.MergeSketchWithBooloader;
-import cc.arduino.utils.Pair;
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.exec.*;
-import processing.app.BaseNoGui;
-import processing.app.I18n;
-import processing.app.PreferencesData;
-import processing.app.SketchCode;
-import processing.app.SketchData;
-import processing.app.helpers.*;
-import processing.app.helpers.filefilters.OnlyDirs;
-import processing.app.packages.LibraryList;
-import processing.app.preproc.PdePreprocessor;
-import processing.app.legacy.PApplet;
-import processing.app.packages.LegacyUserLibrary;
-import processing.app.packages.UserLibrary;
-import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
+import static processing.app.I18n._;
 
 public class Compiler implements MessageConsumer {
 
@@ -561,28 +563,30 @@ public class Compiler implements MessageConsumer {
     }
     
     // Merge all the global preference configuration in order of priority
-    PreferencesMap p = new PreferencesMap();
-    p.putAll(PreferencesData.getMap());
-    if (corePlatform != null)
-      p.putAll(corePlatform.getPreferences());
-    p.putAll(targetPlatform.getPreferences());
-    p.putAll(BaseNoGui.getBoardPreferences());
-    for (String k : p.keySet()) {
-      if (p.get(k) == null)
-        p.put(k, "");
+    PreferencesMap buildPref = new PreferencesMap();
+    buildPref.putAll(PreferencesData.getMap());
+    if (corePlatform != null) {
+      buildPref.putAll(corePlatform.getPreferences());
+    }
+    buildPref.putAll(targetPlatform.getPreferences());
+    buildPref.putAll(BaseNoGui.getBoardPreferences());
+    for (String k : buildPref.keySet()) {
+      if (buildPref.get(k) == null) {
+        buildPref.put(k, "");
+      }
     }
 
-    p.put("build.path", _buildPath);
-    p.put("build.project_name", _primaryClassName);
-    p.put("build.arch", targetPlatform.getId().toUpperCase());
+    buildPref.put("build.path", _buildPath);
+    buildPref.put("build.project_name", _primaryClassName);
+    buildPref.put("build.arch", targetPlatform.getId().toUpperCase());
     
     // Platform.txt should define its own compiler.path. For
     // compatibility with earlier 1.5 versions, we define a (ugly,
     // avr-specific) default for it, but this should be removed at some
     // point.
-    if (!p.containsKey("compiler.path")) {
+    if (!buildPref.containsKey("compiler.path")) {
       System.err.println(_("Third-party platform.txt does not define compiler.path. Please report this to the third-party hardware maintainer."));
-      p.put("compiler.path", BaseNoGui.getAvrBasePath());
+      buildPref.put("compiler.path", BaseNoGui.getAvrBasePath());
     }
 
     TargetPlatform referencePlatform = null;
@@ -592,21 +596,21 @@ public class Compiler implements MessageConsumer {
       referencePlatform = targetPlatform;
     }
 
-    p.put("build.platform.path", referencePlatform.getFolder().getAbsolutePath());
+    buildPref.put("build.platform.path", referencePlatform.getFolder().getAbsolutePath());
 
     // Core folder
     File coreFolder = new File(referencePlatform.getFolder(), "cores");
     coreFolder = new File(coreFolder, core);
-    p.put("build.core", core);
-    p.put("build.core.path", coreFolder.getAbsolutePath());
+    buildPref.put("build.core", core);
+    buildPref.put("build.core.path", coreFolder.getAbsolutePath());
     
     // System Folder
     File systemFolder = referencePlatform.getFolder();
     systemFolder = new File(systemFolder, "system");
-    p.put("build.system.path", systemFolder.getAbsolutePath());
+    buildPref.put("build.system.path", systemFolder.getAbsolutePath());
 
     // Variant Folder
-    String variant = p.get("build.variant");
+    String variant = buildPref.get("build.variant");
     if (variant != null) {
       TargetPlatform t;
       if (!variant.contains(":")) {
@@ -618,9 +622,9 @@ public class Compiler implements MessageConsumer {
       }
       File variantFolder = new File(t.getFolder(), "variants");
       variantFolder = new File(variantFolder, variant);
-      p.put("build.variant.path", variantFolder.getAbsolutePath());
+      buildPref.put("build.variant.path", variantFolder.getAbsolutePath());
     } else {
-      p.put("build.variant.path", "");
+      buildPref.put("build.variant.path", "");
     }
 
     ContributedPlatform installedPlatform = BaseNoGui.indexer.getInstalled(referencePlatform.getContainerPackage().getId(), referencePlatform.getId());
@@ -630,17 +634,28 @@ public class Compiler implements MessageConsumer {
     }
 
     // Build Time
-    Date d = new Date();
     GregorianCalendar cal = new GregorianCalendar();
-    long current = d.getTime()/1000;
-    long timezone = cal.get(cal.ZONE_OFFSET)/1000;
-    long daylight = cal.get(cal.DST_OFFSET)/1000;
-    p.put("extra.time.utc", Long.toString(current));
-    p.put("extra.time.local", Long.toString(current + timezone + daylight));
-    p.put("extra.time.zone", Long.toString(timezone));
-    p.put("extra.time.dst", Long.toString(daylight));
+    long current = new Date().getTime() / 1000;
+    long timezone = cal.get(Calendar.ZONE_OFFSET) / 1000;
+    long daylight = cal.get(Calendar.DST_OFFSET) / 1000;
+    buildPref.put("extra.time.utc", Long.toString(current));
+    buildPref.put("extra.time.local", Long.toString(current + timezone + daylight));
+    buildPref.put("extra.time.zone", Long.toString(timezone));
+    buildPref.put("extra.time.dst", Long.toString(daylight));
 
-    return p;
+    List<Map.Entry<String, String>> unsetPrefs = buildPref.entrySet().stream()
+      .filter(entry -> Constants.PREF_REMOVE_PLACEHOLDER.equals(entry.getValue()))
+      .collect(Collectors.toList());
+
+    buildPref.entrySet().stream()
+      .filter(entry -> {
+        return unsetPrefs.stream()
+          .filter(unsetPrefEntry -> entry.getValue().contains(unsetPrefEntry.getKey()))
+          .count() > 0;
+        })
+      .forEach(invalidEntry -> buildPref.put(invalidEntry.getKey(), ""));
+
+    return buildPref;
   }
 
   private List<File> compileFiles(File outputPath, File sourcePath,

@@ -29,8 +29,10 @@
 
 package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.*;
-import cc.arduino.contributions.Constants;
+import cc.arduino.Constants;
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.DownloadableContributionsDownloader;
+import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -276,10 +278,10 @@ public class ContributionInstaller {
     MultiStepProgress progress = new MultiStepProgress(1);
 
     List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
-    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, cc.arduino.contributions.Constants.PACKAGE_INDEX_URL);
+    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL);
 
     Set<String> packageIndexURLs = new HashSet<>();
-    String additionalURLs = PreferencesData.get(cc.arduino.contributions.Constants.PREFERENCES_BOARDS_MANAGER_ADDITIONAL_URLS, "");
+    String additionalURLs = PreferencesData.get(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS, "");
     if (!"".equals(additionalURLs)) {
       packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
     }
@@ -339,7 +341,7 @@ public class ContributionInstaller {
 
   public void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
     File preferencesFolder = indexer.getIndexFile(".").getParentFile();
-    File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(cc.arduino.contributions.Constants.DEFAULT_INDEX_FILE_NAME));
+    File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME));
     if (additionalPackageIndexFiles == null) {
       return;
     }

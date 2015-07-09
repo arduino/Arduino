@@ -27,19 +27,20 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions;
+package cc.arduino;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Constants {
 
+  public static final String PREF_REMOVE_PLACEHOLDER = "___REMOVE___";
+  public static final String PREF_BOARDS_MANAGER_ADDITIONAL_URLS = "boardsmanager.additional.urls";
+  public static final String PREF_CONTRIBUTIONS_TRUST_ALL = "contributions.trust.all";
+
   public static final String DEFAULT_INDEX_FILE_NAME = "package_index.json";
   public static final List<String> PROTECTED_PACKAGE_NAMES = Arrays.asList("arduino", "Intel");
   public static final String PACKAGE_INDEX_URL;
-
-  public static final String PREFERENCES_BOARDS_MANAGER_ADDITIONAL_URLS = "boardsmanager.additional.urls";
-  public static final String PREF_CONTRIBUTIONS_TRUST_ALL = "contributions.trust.all";
 
   static {
     String extenalPackageIndexUrl = System.getProperty("PACKAGE_INDEX_URL");
@@ -49,5 +50,6 @@ public class Constants {
       PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
     }
   }
+
 
 }
