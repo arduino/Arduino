@@ -32,8 +32,6 @@ uint16_t 	WiFiClass::_server_port[MAX_SOCK_NUM] = { 0, 0, 0, 0 };
 
 WiFiClass::WiFiClass()
 {
-	// Driver initialization
-	init();
 }
 
 void WiFiClass::init()
