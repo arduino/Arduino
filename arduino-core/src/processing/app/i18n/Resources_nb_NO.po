@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-30 12:41+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
-"Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/arduino-ide-15/language/nb_NO/)\n"
+"PO-Revision-Date: 2015-07-03 07:15+0000\n"
+"Last-Translator: Rune Fauske <runfa@runfa.net>\n"
+"Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/p/arduino-ide-15/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,7 +38,7 @@ msgstr "(redigeres kun når Arduino ikke kjører)"
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload og --verbose-build kan kun benyttes sammen med --verify eller --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -100,11 +100,11 @@ msgstr "Legg til Bibliotek..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "Albansk"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -115,17 +115,17 @@ msgstr "Det oppstod en feil under reparering av tegnkoding for filen.\nIkke fors
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "Det oppstod en feil under opplasting av skissen"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "Det oppstod en feil under verifisering av skissen"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "Det oppstod en feil under opplasting/verifisering av skissen"
 
 #: Base.java:228
 msgid ""
@@ -171,7 +171,7 @@ msgstr "Arduino AVR kort"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino kan kun åpne sine egne skisser\nog filer med endingen .ino eller .pde"
 
 #: Base.java:1682
 msgid ""
@@ -207,7 +207,7 @@ msgstr "Er du sikker på at du vil slette denne skissen?"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr ""
+msgstr "Verdi er påkrevd for --board"
 
 #: ../../../processing/app/Base.java:370
 msgid "Argument required for --curdir"
@@ -219,27 +219,27 @@ msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr ""
+msgstr "Verdi er påkrevd for --port"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr ""
+msgstr "Verdi er påkrevd for --pref"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr ""
+msgstr "Verdi er påkrevd for --preferences-file"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr ""
+msgstr "Armensk"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr ""
+msgstr "Asturiansk"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "Tilatelse er påkrevd"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -284,19 +284,19 @@ msgstr "Ugyldig fil valgt"
 
 #: ../../../processing/app/debug/Compiler.java:89
 msgid "Bad sketch primary file or bad sketch directory structure"
-msgstr ""
+msgstr "Ugyldig fil eller ugyldig katalogstruktur for skissen"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "Baskisk"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "Hviterussisk"
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "Bengalsk (India)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707

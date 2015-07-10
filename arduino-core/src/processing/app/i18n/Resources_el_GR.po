@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-30 12:41+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
-"Language-Team: Greek (Greece) (http://www.transifex.com/projects/p/arduino-ide-15/language/el_GR/)\n"
+"PO-Revision-Date: 2015-07-07 19:50+0000\n"
+"Last-Translator: Spyridon Papanastasiou <spyridon.papanastasiou@gmail.com>\n"
+"Language-Team: Greek (Greece) (http://www.transifex.com/p/arduino-ide-15/language/el_GR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,21 +24,21 @@ msgstr "(Απαιτείται επαεκκίνηση του Arduino)"
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr ""
+msgstr "Το «Keyboard» υποστηρίζεται μόνο από το Arduino Leonardo"
 
 #: debug/Compiler.java:450
 msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr ""
+msgstr "Το «Mouse» υποστηρίζεται μόνο από το Arduino Leonardo"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr ""
+msgstr "(επεξεραστείτε μόνο όταν το Arduino δεν τρέχει)"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "τα --verbose, --verbose-upload και --verbose-build μπορούν να μόνο μαζί με τα --verify ή --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -57,17 +57,17 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr ""
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Θες να αποθηκεύσεις τις αλλαγές σε αυτό το σχέδιο<BR> πριν να κλείσεις;</b><p>Αν δεν αποθηκεύσεις, οι αλλαγές σου θα χαθούν."
 
 #: Sketch.java:398
 #, java-format
 msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr ""
+msgstr "Ένα αρχείο ονόματι «{0}» ήδη υπάρχει στο «{1}»"
 
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr ""
+msgstr "Υπάρχει ήδη ένα φάκελος «{0}». Αδυναμία ανοιγματος σχεδίου."
 
 #: Base.java:2690
 #, java-format
@@ -78,7 +78,7 @@ msgstr "Η Βιβλιοθήκη με το όνομα {0} υπάρχει"
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr ""
+msgstr "Μια νέα έκδοση του Arduino είναι διαθέσιμη, θα θέλατε να επισκευτείτε τη σελίδα μεταμόρφωσης του Arduino;"
 
 #: EditorConsole.java:153
 msgid ""
