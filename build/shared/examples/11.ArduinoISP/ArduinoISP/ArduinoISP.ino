@@ -54,14 +54,9 @@
 #define LED_PMODE 7
 #define PROG_FLICKER true
 
-#if defined(ARDUINO_ARCH_SAM) or defined(ARDUINO_ARCH_SAMD)
-
-#define SPI_CLOCK_DIV_MAX	255
-
-#else
+#if !defined(ARDUINO_ARCH_SAM) and !defined(ARDUINO_ARCH_SAMD)
 
 #define USE_HARDWARE_SPI
-#define SPI_CLOCK_DIV_MAX	SPI_CLOCK_DIV_128
 
 #endif
 
@@ -101,7 +96,10 @@ void pulse(int pin, int times);
 
 #ifdef USE_HARDWARE_SPI
 #include "SPI.h"
+#define SPI_CLOCK_DIV_MAX	SPI_CLOCK_DIV128
 #else
+
+#define SPI_CLOCK_DIV_MAX	255
 
 class BitBangedSPI {
   public:
