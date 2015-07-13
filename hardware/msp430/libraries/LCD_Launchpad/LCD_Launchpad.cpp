@@ -163,9 +163,9 @@ void LCD_LAUNCHPAD::init()
                    | LCDLP | LCDSON | LCDDIV_0 | LCDPRE_4);
 
 	// pin assignment for FR6989 - if more Launchpads gets LCDs added this may should go to the energia_pins.h file
-	LCDCPCTL0 |= 0xFFD0;
-	LCDCPCTL1 |= 0xF83F;
-	LCDCPCTL2 |= 0x00F0;
+	LCDCPCTL0 = 0xFFD0;
+	LCDCPCTL1 = 0xF83F;
+	LCDCPCTL2 = 0x00FF;
 
     LCDCCTL0 &= ~LCDON;
     LCDCVCTL &= ~(VLCDEXT | LCDREXT | LCDEXTBIAS |R03EXT);
@@ -229,8 +229,8 @@ const uint8_t symbol_loc[] [2] =
     {  12,   0x08},   //  LCD_SEG_CLOCK,
     {   9,   0x01},   //  LCD_SEG_DOT3,
     {   9,   0x04},   //  LCD_SEG_RADIO,
-    {  10,   0x01},   //  LCD_SEG_DOT2,
-    {  10,   0x04},   //  LCD_SEG_COLON2,
+    {   7,   0x01},   //  LCD_SEG_DOT2,
+    {   7,   0x04},   //  LCD_SEG_COLON2,
     {  19,   0x01},   //  LCD_SEG_RX,
     {  19,   0x04},   //  LCD_SEG_TX,
     {   5,   0x01},   //  LCD_SEG_DOT1,
@@ -306,6 +306,8 @@ void LCD_LAUNCHPAD::init()
 	LCDPCTL1 |= 0x07FF;
 	LCDPCTL2 |= 0x00F0;
 
+	LCDCSSEL0 = 0x000F;
+	
     LCDCTL0 = (LCDMX0 | LCDMX1 | LCDSSEL_0
                    | LCDLP | LCDSON | LCDDIV_2);
 
