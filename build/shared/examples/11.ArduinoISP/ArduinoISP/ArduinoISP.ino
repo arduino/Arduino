@@ -581,12 +581,8 @@ int avrisp() {
       empty_reply();
       break;
     case 'P':
-      if (pmode) {
-        pulse(LED_ERR, 3);
-      }
-      else {
+      if (!pmode)
         start_pmode();
-      }
       empty_reply();
       break;
     case 'U': // set address (word)
