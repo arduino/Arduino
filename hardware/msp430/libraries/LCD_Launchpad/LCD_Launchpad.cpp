@@ -162,9 +162,10 @@ void LCD_LAUNCHPAD::init()
     LCDCCTL0 = (LCDMX0 | LCDMX1
                    | LCDLP | LCDSON | LCDDIV_0 | LCDPRE_4);
 
-	LCDCPCTL0 |= 0xFFFF;
-	LCDCPCTL1 |= 0xFC3F;
-	LCDCPCTL2 |= 0x0FFF;
+	// pin assignment for FR6989 - if more Launchpads gets LCDs added this may should go to the energia_pins.h file
+	LCDCPCTL0 |= 0xFFD0;
+	LCDCPCTL1 |= 0xF83F;
+	LCDCPCTL2 |= 0x00F0;
 
     LCDCCTL0 &= ~LCDON;
     LCDCVCTL &= ~(VLCDEXT | LCDREXT | LCDEXTBIAS |R03EXT);
@@ -300,6 +301,7 @@ LCD_LAUNCHPAD::LCD_LAUNCHPAD(void) {
 void LCD_LAUNCHPAD::init()
 {
     LCDCTL0 &= ~LCDON;
+	// pin assignment for FR4133 - if more Launchpads gets LCDs added this may should go to the energia_pins.h file
 	LCDPCTL0 |= 0xFFFF;
 	LCDPCTL1 |= 0x07FF;
 	LCDPCTL2 |= 0x00F0;
