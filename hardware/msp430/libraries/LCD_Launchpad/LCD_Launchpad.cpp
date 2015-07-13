@@ -165,7 +165,7 @@ void LCD_LAUNCHPAD::init()
 	// pin assignment for FR6989 - if more Launchpads gets LCDs added this may should go to the energia_pins.h file
 	LCDCPCTL0 = 0xFFD0;
 	LCDCPCTL1 = 0xF83F;
-	LCDCPCTL2 = 0x00FF;
+	LCDCPCTL2 = 0x00F8;
 
     LCDCCTL0 &= ~LCDON;
     LCDCVCTL &= ~(VLCDEXT | LCDREXT | LCDEXTBIAS |R03EXT);
