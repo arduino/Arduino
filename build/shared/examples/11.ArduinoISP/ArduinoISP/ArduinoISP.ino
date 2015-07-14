@@ -114,6 +114,10 @@ class BitBangedSPI {
     }
 
     void begin() {
+      // slow enough for an attiny85 @ 1MHz
+      // (pulseWidth should be > 2 cpu cycles, so take 3 cycles:)
+      pulseWidth = 3;
+      
       pinMode(MISO, INPUT);
       pinMode(RESET, OUTPUT);
       pinMode(SCK, OUTPUT);
@@ -126,11 +130,16 @@ class BitBangedSPI {
       for (unsigned int i = 0; i < 8; ++i) {
         digitalWrite(MOSI, b & 0x80);
         digitalWrite(SCK, HIGH);
+        delayMicroseconds(pulseWidth);
         b = (b << 1) | digitalRead(MISO);
         digitalWrite(SCK, LOW); // slow pulse
+        delayMicroseconds(pulseWidth);
       }
       return b;
     }
+
+  private:
+    unsigned long pulseWidth; // in microseconds
 };
 
 static BitBangedSPI SPI;
