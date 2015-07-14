@@ -54,12 +54,32 @@
 #define LED_PMODE 7
 #define PROG_FLICKER true
 
-#if !defined(ARDUINO_ARCH_SAM) and !defined(ARDUINO_ARCH_SAMD)
+// Configure SPI clock.
+//   E.g. for an attiny @128 kHz:
+//   (pulseWidth should be > 2 cpu cycles, so take 3 cycles:)
+//   #define SPI_CLOCK            (128000/3) 
+//
+//   A clock slow enough for an attiny85 @ 1MHz, is a reasonable default:
 
+#define SPI_CLOCK 		(1000000/3)
+
+// Select hardware or software SPI, depending on SPI clock.
+// Currently only for AVR, for other archs (Due, Zero,...),
+// hardware SPI is probably too fast anyway.
+
+#if defined(ARDUINO_ARCH_AVR)
+
+#if SPI_CLOCK > (F_CPU / 128)
 #define USE_HARDWARE_SPI
+#endif
 
 #endif
 
+#ifdef USE_HARDWARE_SPI
+#warning  hw spi !!!
+#else
+#warning NOT usung hw spi
+#endif
 
 // Configure the serial port to use.
 //
@@ -96,27 +116,34 @@ void pulse(int pin, int times);
 
 #ifdef USE_HARDWARE_SPI
 #include "SPI.h"
-#define SPI_CLOCK_DIV_MAX	SPI_CLOCK_DIV128
 #else
 
-#define SPI_CLOCK_DIV_MAX	255
+#define SPI_MODE0 0x00
+
+class SPISettings {
+public:
+  // clock is in Hz
+  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) : clock(clock){
+    (void) bitOrder;
+    (void) dataMode;
+  };
+
+private:
+  uint32_t clock;
+
+friend class BitBangedSPI;
+};
 
 class BitBangedSPI {
   public:
-    void setDataMode(uint8_t dataMode) {
-      (void) dataMode;
-    }
-    void setBitOrder(uint8_t bitOrder) {
-      (void) bitOrder;
-    }
-    void setClockDivider(uint8_t clockDiv) {
-      (void) clockDiv;
+
+    void beginTransaction(SPISettings settings) {
+	pulseWidth = 1000 / (settings.clock / 1000);
+        if (pulseWidth == 0)
+          pulseWidth = 1;
     }
 
     void begin() {
-      // slow enough for an attiny85 @ 1MHz
-      // (pulseWidth should be > 2 cpu cycles, so take 3 cycles:)
-      pulseWidth = 3;
       
       pinMode(MISO, INPUT);
       pinMode(RESET, OUTPUT);
@@ -148,10 +175,9 @@ static BitBangedSPI SPI;
 
 void setup() {
   SERIAL.begin(19200);
-  SPI.setDataMode(0);
-  SPI.setBitOrder(MSBFIRST);
-  // Select the slowest possible clock
-  SPI.setClockDivider(SPI_CLOCK_DIV_MAX);
+
+  SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
+
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
   pinMode(LED_ERR, OUTPUT);
