@@ -50,6 +50,7 @@ public:
 	void attach();
 	void detach();	// Serial port goes down too...
 	void poll();
+	bool wakeupHost(); // returns false, when wakeup cannot be processed
 };
 extern USBDevice_ USBDevice;
 
@@ -117,6 +118,7 @@ public:
 	void end(void);
 	void click(uint8_t b = MOUSE_LEFT);
 	void move(signed char x, signed char y, signed char wheel = 0);	
+	void moveAbsolute(uint16_t x, uint16_t y);
 	void press(uint8_t b = MOUSE_LEFT);		// press LEFT by default
 	void release(uint8_t b = MOUSE_LEFT);	// release LEFT by default
 	bool isPressed(uint8_t b = MOUSE_LEFT);	// check LEFT by default
@@ -127,6 +129,7 @@ extern Mouse_ Mouse;
 //================================================================================
 //	Keyboard
 
+// Legacy keycodes. These are what you use with 'press()' and 'release()'
 #define KEY_LEFT_CTRL		0x80
 #define KEY_LEFT_SHIFT		0x81
 #define KEY_LEFT_ALT		0x82
@@ -164,12 +167,55 @@ extern Mouse_ Mouse;
 #define KEY_F11				0xCC
 #define KEY_F12				0xCD
 
+
+// System Control values for Keyboard_::systemControl()
+//  these defines come from the HID usage table "Generic Desktop Page (0x01)"
+//  in the USB standard document "HID Usage Tables" (HUT1_12v2.pdf)
+//  Currently this list contains only OSC (one shot control) values,
+//  the implementation of systemControl will have to be changed when
+//  adding OOC or RTC values.
+#define SYSTEM_CONTROL_POWER_DOWN              1
+#define SYSTEM_CONTROL_SLEEP                   2
+#define SYSTEM_CONTROL_WAKEUP                  3
+#define SYSTEM_CONTROL_COLD_RESTART            4
+#define SYSTEM_CONTROL_WARM_RESTART            5
+#define SYSTEM_CONTROL_DOCK                    6
+#define SYSTEM_CONTROL_UNDOCK                  7
+#define SYSTEM_CONTROL_SPEAKER_MUTE            8
+#define SYSTEM_CONTROL_HIBERNATE               9
+#define SYSTEM_CONTROL_DISPLAY_INVERT         10
+#define SYSTEM_CONTROL_DISPLAY_INTERNAL       11
+#define SYSTEM_CONTROL_DISPLAY_EXTERNAL       12
+#define SYSTEM_CONTROL_DISPLAY_BOTH           13
+#define SYSTEM_CONTROL_DISPLAY_DUAL           14
+#define SYSTEM_CONTROL_DISPLAY_TOGGLE_INT_EXT 15
+#define SYSTEM_CONTROL_DISPLAY_SWAP           16
+
+
+
+// Consumer Control values for Keyboard_::systemControl()
+//  these defines come from the HID usage table "Consumer Device Page (0x0c)"
+//  in the USB standard document "HID Usage Tables" (HUT1_12v2.pdf)
+//  Currently this list contains only OSC (one shot control) values,
+//  the implementation of systemControl will have to be changed when
+//  adding OOC or RTC values.
+
+#define CONSUMER_CONTROL_VOLUME_MUTE        1
+#define CONSUMER_CONTROL_VOLUME_UP          2
+#define CONSUMER_CONTROL_VOLUME_DOWN        3
+#define CONSUMER_CONTROL_PLAY_PAUSE         4
+#define CONSUMER_CONTROL_STOP               5
+#define CONSUMER_CONTROL_PREV_TRACK         6
+#define CONSUMER_CONTROL_NEXT_TRACK         7
+#define CONSUMER_CONTROL_EJECT              8
+
 //	Low level key report: up to 6 keys and shift, ctrl etc at once
+#define KEYREPORT_KEYCOUNT	0x06
 typedef struct
 {
 	uint8_t modifiers;
 	uint8_t reserved;
-	uint8_t keys[6];
+	uint8_t keys[KEYREPORT_KEYCOUNT];
 } KeyReport;
 
 class Keyboard_ : public Print
@@ -184,7 +230,14 @@ public:
 	virtual size_t write(uint8_t k);
 	virtual size_t press(uint8_t k);
 	virtual size_t release(uint8_t k);
+	virtual size_t writeKeycode(uint8_t k);
+	virtual size_t pressKeycode(uint8_t k);
+	virtual size_t releaseKeycode(uint8_t k);
+	virtual size_t addKeycodeToReport(uint8_t k);
+	virtual size_t removeKeycodeFromReport(uint8_t k);
 	virtual void releaseAll(void);
+	virtual size_t systemControl(uint8_t k);
+    virtual size_t consumerControl(uint8_t k);
 };
 extern Keyboard_ Keyboard;
 
@@ -244,6 +297,7 @@ int USB_Recv(uint8_t ep, void* data, int len);		// non-blocking
 int USB_Recv(uint8_t ep);							// non-blocking
 void USB_Flush(uint8_t ep);
 
-#endif
 
 #endif /* if defined(USBCON) */
+
+#endif

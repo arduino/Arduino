@@ -177,11 +177,17 @@ Keyboard	KEYWORD1		DATA_TYPE
 Mouse	KEYWORD1		DATA_TYPE
 press	KEYWORD2
 release	KEYWORD2
+pressKeycode	KEYWORD2
+releaseKeycode	KEYWORD2
 releaseAll	KEYWORD2
 accept	KEYWORD2
 click	KEYWORD2
 move	KEYWORD2
+moveAbsolute	KEYWORD2
+write	KEYWORD2
 isPressed	KEYWORD2
+systemControl	KEYWORD2
+consumerControl	KEYWORD2
 
 # KEYWORD3 specifies structures
 
