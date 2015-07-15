@@ -22,15 +22,13 @@
 #ifndef KEYBOARD_h
 #define KEYBOARD_h
 
-#if 0 //defined(_USING_HID)
+#include "HID.h"
 
-#error "Can only attach one submodule to HID module"
+#if !defined(_USING_HID)
+
+#warning "Using legacy HID core (non pluggable)"
 
 #else
-
-#define _USING_HID
-
-#include "HID.h"
 
 //================================================================================
 //================================================================================

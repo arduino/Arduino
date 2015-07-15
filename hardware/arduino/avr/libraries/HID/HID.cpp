@@ -21,8 +21,6 @@
 
 #if defined(USBCON)
 
-//#define RAWHID_ENABLED
-
 HID_ HID;
 
 static u8 HID_ENDPOINT_INT;

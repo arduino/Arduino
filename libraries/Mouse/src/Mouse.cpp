@@ -19,9 +19,9 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#if 1 //defined(USBCON)
-
 #include "Mouse.h"
+
+#if defined(_USING_HID)
 
 static const u8 _hidReportDescriptor[] PROGMEM = {
   
