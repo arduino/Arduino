@@ -24,6 +24,9 @@
 
  */
 
+#include "Mouse.h"
+#include "HID.h"
+
 // set pin numbers for the five buttons:
 const int upButton = 2;
 const int downButton = 3;

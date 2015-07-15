@@ -27,6 +27,9 @@
  http://www.arduino.cc/en/Tutorial/KeyboardReprogram
  */
 
+#include "Keyboard.h"
+#include "HID.h"
+
 // use this option for OSX.
 // Comment it out if using Windows or Linux:
 char ctrlKey = KEY_LEFT_GUI;

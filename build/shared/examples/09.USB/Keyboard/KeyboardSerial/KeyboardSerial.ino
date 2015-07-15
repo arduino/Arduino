@@ -19,6 +19,9 @@
  http://www.arduino.cc/en/Tutorial/KeyboardSerial
  */
 
+#include "Keyboard.h"
+#include "HID.h"
+
 void setup() {
   // open the serial port:
   Serial.begin(9600);
