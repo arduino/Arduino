@@ -70,7 +70,7 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
         case OUTPUT:
             PIO_Configure(
             	g_APinDescription[ulPin].pPort,
-              g_pinStatus[ulPin] = ((g_pinStatus[ulPin] & 0xF0) >> 4 ? PIO_OUTPUT_1 : PIO_OUTPUT_0),
+              (g_pinStatus[ulPin] & 0xF0) >> 4 ? PIO_OUTPUT_1 : PIO_OUTPUT_0,
             	g_APinDescription[ulPin].ulPin,
             	g_APinDescription[ulPin].ulPinConfiguration ) ;
 
