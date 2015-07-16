@@ -1,7 +1,7 @@
 
 
 /* Copyright (c) 2011, Peter Barrett  
-**  
+** 
 ** Permission to use, copy, modify, and/or distribute this software for  
 ** any purpose with or without fee is hereby granted, provided that the  
 ** above copyright notice and this permission notice appear in all copies.  
@@ -44,7 +44,51 @@ Keyboard_ Keyboard;
 extern const u8 _hidReportDescriptor[] PROGMEM;
 const u8 _hidReportDescriptor[] = {
 	
-	//	Mouse
+#ifdef MOUSE_ABS_ENABLED
+    //  Mouse absolute
+    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
+    0x09, 0x02,                    // USAGE (Mouse)
+    0xa1, 0x01,                    // COLLECTION (Application)
+    0x09, 0x01,                    //   USAGE (Pointer)
+    0xa1, 0x00,                    //   COLLECTION (Physical)
+    0x85, 0x01,                    //     REPORT_ID (1)
+    0x05, 0x09,                    //     USAGE_PAGE (Button)
+    0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
+    0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
+    0x95, 0x03,                    //     REPORT_COUNT (3)
+    0x75, 0x01,                    //     REPORT_SIZE (1)
+    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+    0x95, 0x01,                    //     REPORT_COUNT (1)
+    0x75, 0x05,                    //     REPORT_SIZE (5)
+    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
+
+    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+    0x09, 0x30,                    //     USAGE (X)
+    0x09, 0x31,                    //     USAGE (Y)
+    0x35, 0x00,                    //     PHYSICAL_MINIMUM (0)
+    0x46, 0xff, 0x0f,              //     PHYSICAL_MAXIMUM (4095)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x0f,              //     LOGICAL_MAXIMUM (4095)
+    0x75, 0x10,                    //     REPORT_SIZE (16)
+    0x95, 0x02,                    //     REPORT_COUNT (2)
+    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+
+    0x09, 0x38,                    //     USAGE (Wheel)
+    0x35, 0x00,                    //     PHYSICAL_MINIMUM (0)
+    0x45, 0x00,                    //     PHYSICAL_MAXIMUM (0)
+    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
+    0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
+    0x75, 0x08,                    //     REPORT_SIZE (8)
+    0x95, 0x01,                    //     REPORT_COUNT (1)
+    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
+
+    0xc0,                          //   END_COLLECTION
+    0xc0,                          // END_COLLECTION 
+
+#else
+    //  Mouse relative
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 54
     0x09, 0x02,                    // USAGE (Mouse)
     0xa1, 0x01,                    // COLLECTION (Application)
@@ -74,55 +118,57 @@ const u8 _hidReportDescriptor[] = {
     0xc0,                          //   END_COLLECTION
     0xc0,                          // END_COLLECTION
 
+#endif
+
 	//	Keyboard
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)	// 47
     0x09, 0x06,                    // USAGE (Keyboard)
     0xa1, 0x01,                    // COLLECTION (Application)
     0x85, 0x02,                    //   REPORT_ID (2)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-   
-	0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
+
+    0x19, 0xe0,                    //   USAGE_MINIMUM (Keyboard LeftControl)
     0x29, 0xe7,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
     0x25, 0x01,                    //   LOGICAL_MAXIMUM (1)
     0x75, 0x01,                    //   REPORT_SIZE (1)
-    
-	0x95, 0x08,                    //   REPORT_COUNT (8)
+
+    0x95, 0x08,                    //   REPORT_COUNT (8)
     0x81, 0x02,                    //   INPUT (Data,Var,Abs)
     0x95, 0x01,                    //   REPORT_COUNT (1)
     0x75, 0x08,                    //   REPORT_SIZE (8)
     0x81, 0x03,                    //   INPUT (Cnst,Var,Abs)
-    
-	0x95, 0x06,                    //   REPORT_COUNT (6)
+
+    0x95, 0x06,                    //   REPORT_COUNT (6)
     0x75, 0x08,                    //   REPORT_SIZE (8)
     0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
     0x25, 0x65,                    //   LOGICAL_MAXIMUM (101)
     0x05, 0x07,                    //   USAGE_PAGE (Keyboard)
-    
-	0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
+
+    0x19, 0x00,                    //   USAGE_MINIMUM (Reserved (no event indicated))
     0x29, 0x65,                    //   USAGE_MAXIMUM (Keyboard Application)
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
     0xc0,                          // END_COLLECTION
 
 #ifdef RAWHID_ENABLED
-	//	RAW HID
-	0x06, LSB(RAWHID_USAGE_PAGE), MSB(RAWHID_USAGE_PAGE),	// 30
-	0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
+    //	RAW HID
+    0x06, LSB(RAWHID_USAGE_PAGE), MSB(RAWHID_USAGE_PAGE),	// 30
+    0x0A, LSB(RAWHID_USAGE), MSB(RAWHID_USAGE),
 
-	0xA1, 0x01,				// Collection 0x01
-    0x85, 0x03,             // REPORT_ID (3)
-	0x75, 0x08,				// report size = 8 bits
-	0x15, 0x00,				// logical minimum = 0
-	0x26, 0xFF, 0x00,		// logical maximum = 255
+    0xA1, 0x01,                    // COLLECTION 0x01
+    0x85, 0x03,                    //   REPORT_ID (3)
+    0x75, 0x08,                    //   REPORT_SIZE (8)
+    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
+    0x26, 0xFF, 0x00,              //   LOGICAL_MAXIMUM (255)
 
-	0x95, 64,				// report count TX
-	0x09, 0x01,				// usage
-	0x81, 0x02,				// Input (array)
+    0x95, 64,                      //   REPORT_COUNT (TX)
+    0x09, 0x01,                    //   USAGE
+    0x81, 0x02,                    //   INPUT (array)
 
-	0x95, 64,				// report count RX
-	0x09, 0x02,				// usage
-	0x91, 0x02,				// Output (array)
-	0xC0					// end collection
+    0x95, 64,                      //   REPORT_COUNT (RX)
+    0x09, 0x02,                    //   USAGE
+    0x91, 0x02,                    //   OUTPUT (array)
+    0xC0                           // END_COLLECTION
 #endif
 };
 
@@ -200,6 +246,9 @@ bool WEAK HID_Setup(Setup& setup)
 //	Mouse
 
 Mouse_::Mouse_(void) : _buttons(0)
+#ifdef MOUSE_ABS_ENABLED
+, _x(0), _y(0)
+#endif
 {
 }
 
@@ -211,22 +260,64 @@ void Mouse_::end(void)
 {
 }
 
+#ifdef MOUSE_ABS_ENABLED
+
+void Mouse_::moveAbsolute(int x, int y, signed char wheel)
+{
+	uint8_t m[6];
+
+	if (x < 0)
+		x = 0;
+	else if (x > 4095)
+		x = 4095;
+	_x = x;
+
+	if (y < 0)
+		y = 0;
+	else if (y > 4095)
+		y = 4095;
+	_y = y;
+
+	m[0] = _buttons;
+	m[1] = LSB(x);
+	m[2] = MSB(x);
+	m[3] = LSB(y);
+	m[4] = MSB(y);
+	m[5] = wheel;
+	HID_SendReport(1, m, sizeof(m));
+}
+
+void Mouse_::moveAbsolute(int x, int y, signed char wheel, unsigned char buttons)
+{
+	_buttons = buttons;
+	moveAbsolute(x, y, wheel);
+}
+
+void Mouse_::move(signed char x, signed char y, signed char wheel)
+{
+	moveAbsolute((_x+x), (_y+y), wheel);
+}
+
+#else
+
+void Mouse_::move(signed char x, signed char y, signed char wheel)
+{
+	uint8_t m[4];
+	m[0] = _buttons;
+	m[1] = x;
+	m[2] = y;
+	m[3] = wheel;
+	HID_SendReport(1, m, sizeof(m));
+}
+
+#endif
+
 void Mouse_::click(uint8_t b)
 {
 	_buttons = b;
 	move(0,0,0);
 	_buttons = 0;
 	move(0,0,0);
-}
-
-void Mouse_::move(signed char x, signed char y, signed char wheel)
-{
-	u8 m[4];
-	m[0] = _buttons;
-	m[1] = x;
-	m[2] = y;
-	m[3] = wheel;
-	HID_SendReport(1,m,4);
 }
 
 void Mouse_::buttons(uint8_t b)
@@ -255,6 +346,7 @@ bool Mouse_::isPressed(uint8_t b)
 	return false;
 }
 
+
 //================================================================================
 //================================================================================
 //	Keyboard
@@ -273,7 +365,7 @@ void Keyboard_::end(void)
 
 void Keyboard_::sendReport(KeyReport* keys)
 {
-	HID_SendReport(2,keys,sizeof(KeyReport));
+	HID_SendReport(2, keys, sizeof(KeyReport));
 }
 
 extern
