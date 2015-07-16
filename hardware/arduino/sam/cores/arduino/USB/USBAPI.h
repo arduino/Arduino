@@ -20,7 +20,7 @@
 #define __USBAPI__
 
 #if defined __cplusplus
-
+#if defined(USBCON)
 #include "RingBuffer.h"
 
 //================================================================================
@@ -63,6 +63,43 @@ public:
 	operator bool();
 };
 extern Serial_ SerialUSB;
+
+//================================================================================
+//================================================================================
+//	Joystick
+//  Implemented in HID.cpp
+//  The list of parameters here needs to match the implementation in HID.cpp
+
+
+typedef struct JoyState 		// Pretty self explanitory. Simple state to store all the joystick parameters
+{
+	uint8_t		xAxis;
+	uint8_t		yAxis;
+	uint8_t		zAxis;
+
+	uint8_t		xRotAxis;
+	uint8_t		yRotAxis;
+	uint8_t		zRotAxis;
+
+	uint8_t		throttle;
+	uint8_t		rudder;
+
+	uint8_t		hatSw1;
+	uint8_t		hatSw2;
+
+	uint32_t	buttons;		// 32 general buttons
+
+} JoyState_t;
+
+class Joystick_
+{
+public:
+	Joystick_();
+
+	void setState(JoyState_t *joySt);
+
+};
+extern Joystick_ Joystick;
 
 //================================================================================
 //================================================================================
@@ -199,6 +236,7 @@ bool	CDC_Setup(Setup& setup);
 //================================================================================
 //================================================================================
 
+#define TRANSFER_PGM		0x80
 #define TRANSFER_RELEASE	0x40
 #define TRANSFER_ZERO		0x20
 
@@ -207,7 +245,14 @@ int USBD_SendControl(uint8_t flags, const void* d, uint32_t len);
 int USBD_RecvControl(void* d, uint32_t len);
 int USBD_SendInterfaces(void);
 bool USBD_ClassInterfaceRequest(Setup& setup);
+int USB_SendControl(uint8_t flags, const void* d, int len);
+int USB_RecvControl(void* d, int len);
 
+uint8_t	USB_Available(uint8_t ep);
+int USB_Send(uint8_t ep, const void* data, int len);	// blocking
+int USB_Recv(uint8_t ep, void* data, int len);		// non-blocking
+int USB_Recv(uint8_t ep);							// non-blocking
+void USB_Flush(uint8_t ep);
 
 uint32_t USBD_Available(uint32_t ep);
 uint32_t USBD_SendSpace(uint32_t ep);
@@ -219,3 +264,4 @@ uint32_t USBD_Connected(void);
 
 #endif
 #endif
+#endif /* if defined(USBCON) */
