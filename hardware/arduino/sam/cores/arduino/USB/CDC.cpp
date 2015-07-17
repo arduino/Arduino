@@ -17,6 +17,7 @@
 #include "Arduino.h"
 #include "USBAPI.h"
 #include "Reset.h"
+#include "Print.h"
 
 #ifdef CDC_ENABLED
 
@@ -103,7 +104,7 @@ int WEAK CDC_GetOtherInterface(uint8_t* interfaceNum)
 	return USBD_SendControl(0,&_cdcOtherInterface,sizeof(_cdcOtherInterface));
 }
 
-bool WEAK CDC_Setup(Setup& setup)
+bool WEAK CDC_Setup(USBSetup& setup)
 {
 	uint8_t r = setup.bRequest;
 	uint8_t requestType = setup.bmRequestType;
