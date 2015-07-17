@@ -198,23 +198,22 @@ i32 try_S4_no_irq(void)
 #endif
 
 #ifdef __GNUC__
-#define BACK_UP_ARM_REGISTERS() {\
-          asm("push {%%r0-%%r12,LR}\n" \
-          "mov %%r1, %0\n" \
-          "mrs %%r0, msp \n"\
-          "str %%r0, [%%r1] \n" \
-          "mrs %%r0, psp \n" \
-          "str %%r0, [%%r1, #4] \n" \
-          "mrs %%r0, primask \n" \
-          "str %%r0, [%%r1, #12] \n" \
-          "mrs %%r0, faultmask \n" \
-          "str %%r0, [%%r1, #16] \n" \
-          "mrs %%r0, basepri \n" \
-          "str %%r0, [%%r1, #20] \n" \
-          "mrs %%r0, control \n" \
-          "str %%r0, [%%r1, #24] \n" \
-          : \
-          : "r"(&vault_arm_registers)); \
+#define BACK_UP_ARM_REGISTERS() {     \
+        __asm(" push {r0-r12,LR} \n" \
+          " movw  r1, #:lower16:vault_arm_registers \n" \
+          " movt  r1, #:upper16:vault_arm_registers \n" \
+          " mrs  r0,msp \n" \
+          " str  r0,[r1] \n" \
+          " mrs  r0,psp \n" \
+          " str  r0,[r1, #4] \n" \
+          " mrs  r0,primask \n" \
+          " str  r0,[r1, #12] \n" \
+          " mrs  r0,faultmask \n" \
+          " str  r0,[r1, #16] \n" \
+          " mrs  r0,basepri \n" \
+          " str  r0,[r1, #20] \n" \
+          " mrs  r0,control \n" \
+          " str  r0,[r1, #24] \n"); \
           }
 #endif
 
@@ -261,24 +260,23 @@ i32 try_S4_no_irq(void)
 #endif
 
 #ifdef __GNUC__
-#define RESTORE_ARM_REGISTERS() {\
-          asm("mov %%r1, %0\n" \
-          "ldr %%r0, [%%r1, #24] \n" \
-          "msr control, r0 \n" \
-          "ldr %%r0, [%%r1] \n" \
-          "msr msp, %%r0 \n" \
-          "ldr %%r0, [%%r1, #4] \n" \
-          "msr psp, %%r0 \n" \
-          "ldr %%r0, [%%r1, #12] \n" \
-          "msr primask, %%r0 \n" \
-          "ldr %%r0, [%%r1, #16] \n" \
-          "msr faultmask, %%r0 \n" \
-          "ldr %%r0, [%%r1, #20] \n" \
-          "msr basepri, %%r0 \n" \
-          "pop {%%r0-%%r12, LR}\n" \
-         : \
-          : "r"(&vault_arm_registers)); \
-          }
+#define RESTORE_ARM_REGISTERS() {          \
+    __asm(" movw  r1, #:lower16:vault_arm_registers \n" \
+          " movt  r1, #:upper16:vault_arm_registers \n" \
+          " ldr  r0,[r1, #24] \n" \
+          " msr  control,r0 \n" \
+          " ldr  r0,[r1] \n" \
+          " msr  msp,r0 \n" \
+          " ldr  r0,[r1,#4] \n" \
+          " msr  psp,r0 \n" \
+          " ldr  r0,[r1, #12] \n" \
+          " msr  primask,r0 \n" \
+          " ldr  r0,[r1, #16] \n" \
+          " msr  faultmask,r0 \n" \
+          " ldr  r0,[r1, #20] \n" \
+          " msr  basepri,r0 \n" \
+          " pop  {r0-r12,LR} \n"); \
+         }
 #endif
 
 /* Called directly by boot ROM after waking from S3 state */
