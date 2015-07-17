@@ -4,7 +4,7 @@
   
   Released into the public domain.
 */
-#include "opt3001.h"
+#include "OPT3001.h"
 #define slaveAdr 0x44
 
 #define RESULT_REG 0x00
