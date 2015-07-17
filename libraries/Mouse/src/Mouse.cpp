@@ -23,7 +23,7 @@
 
 #if defined(_USING_HID)
 
-static const u8 _hidReportDescriptor[] PROGMEM = {
+static const uint8_t _hidReportDescriptor[] PROGMEM = {
   
   //  Mouse
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)  // 54
@@ -88,7 +88,7 @@ void Mouse_::click(uint8_t b)
 
 void Mouse_::move(signed char x, signed char y, signed char wheel)
 {
-	u8 m[4];
+	uint8_t m[4];
 	m[0] = _buttons;
 	m[1] = x;
 	m[2] = y;
