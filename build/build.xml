@@ -670,7 +670,7 @@
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
   </target>
 
-  <target name="arm-build" depends="linux-build linux-libastyle-arm" description="Build linux (32-bit) version">
+  <target name="arm-build" depends="linux-libastyle-arm" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
@@ -686,7 +686,7 @@
     <antcall target="package-library-index-json-bundle"/>
   </target>
 
-  <target name="linux32-build" depends="linux-build linux-libastyle-x86" description="Build linux (32-bit) version">
+  <target name="linux32-build" depends="linux-libastyle-x86" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
@@ -702,7 +702,7 @@
     <antcall target="package-library-index-json-bundle"/>
   </target>
 
-  <target name="linux64-build" depends="linux-build linux-libastyle-x86" description="Build linux (64-bit) version">
+  <target name="linux64-build" depends="linux-libastyle-x86" description="Build linux (64-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX64_BUNDLED_JVM}"/>
     </antcall>
