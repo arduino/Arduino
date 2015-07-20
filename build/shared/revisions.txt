@@ -1,3 +1,8 @@
+ARDUINO 1.6.5-r3 - 2015.07.20
+
+[ide]
+* Fixed Mac signature for OSX >=10.10.4
+
 ARDUINO 1.6.5-r2 - 2015.06.17
 
 [ide]
