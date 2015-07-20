@@ -495,6 +495,11 @@
       <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/bin/*"/>
       <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/libexec/gcc/avr/4.8.1/*"/>
     </chmod>
+
+    <!-- macosx gatekeeper workaround. See https://github.com/arduino/Arduino/issues/3468 -->
+    <chmod perm="-x">
+      <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/bin/avrdude_bin" />
+    </chmod>
   </target>
 
   <target name="macosx-run" depends="build,start"/>
