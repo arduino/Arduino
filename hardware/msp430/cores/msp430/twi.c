@@ -195,9 +195,13 @@ void twi_init(void)
     pinMode_int(TWISDA, INPUT_PULLUP);
     if (digitalRead(TWISDA) == 0){ // toggle SCL if SDA is low at startup
         pinMode_int(TWISCL, INPUT_PULLUP);
-        pinMode(TWISCL, OUTPUT);
         digitalWrite(TWISCL, LOW);
+        pinMode(TWISCL, OUTPUT);
         pinMode_int(TWISCL, INPUT_PULLUP);
+    }
+    if ((TWISDA_SET_MODE & INPUT_PULLUP) == 0) {
+    	pinMode(TWISDA, INPUT);          // some device do not allow the pull up to be enabled
+    	pinMode(TWISCL, INPUT);
     }
     pinMode_int(TWISDA, TWISDA_SET_MODE);
     pinMode_int(TWISCL, TWISCL_SET_MODE);
