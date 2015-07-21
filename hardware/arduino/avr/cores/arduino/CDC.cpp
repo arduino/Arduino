@@ -49,8 +49,8 @@ const CDCDescriptor _cdcInterface =
 
 	//	CDC data interface
 	D_INTERFACE(CDC_DATA_INTERFACE,2,CDC_DATA_INTERFACE_CLASS,0,0),
-	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT),USB_ENDPOINT_TYPE_BULK,0x40,0),
-	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,0x40,0)
+	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT), USB_ENDPOINT_TYPE_BULK, USB_EP_SIZE, 0),
+	D_ENDPOINT(USB_ENDPOINT_IN(CDC_ENDPOINT_IN), USB_ENDPOINT_TYPE_BULK, USB_EP_SIZE, 0)
 };
 
 int CDC_GetInterface(u8* interfaceNum)
@@ -78,11 +78,13 @@ bool CDC_Setup(USBSetup& setup)
 		if (CDC_SET_LINE_CODING == r)
 		{
 			USB_RecvControl((void*)&_usbLineInfo,7);
+			CDC_LineEncodingEvent();
 		}
 
 		if (CDC_SET_CONTROL_LINE_STATE == r)
 		{
 			_usbLineInfo.lineState = setup.wValueL;
+			CDC_LineStateEvent();
 		}
 
 		if (CDC_SET_LINE_CODING == r || CDC_SET_CONTROL_LINE_STATE == r)
@@ -92,11 +94,19 @@ bool CDC_Setup(USBSetup& setup)
 			// with a relatively long period so it can finish housekeeping tasks
 			// like servicing endpoints before the sketch ends
 
+#define MAGIC_KEY 0x7777
+
 			// We check DTR state to determine if host port is open (bit 0 of lineState).
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
+#if defined(__AVR_ATmega32U4__)
 				*(uint16_t *)(RAMEND-1) = *(uint16_t *)0x0800;
-				*(uint16_t *)0x0800 = 0x7777;
+				*(uint16_t *)0x0800 = MAGIC_KEY;
+#else
+				// for future boards save the key in the inproblematic RAMEND
+				// which is reserved for the main() return value (which will never return)
+				*(uint16_t *)(RAMEND-1) = MAGIC_KEY;
+#endif
 				wdt_enable(WDTO_120MS);
 			}
 			else
@@ -108,7 +118,11 @@ bool CDC_Setup(USBSetup& setup)
 
 				wdt_disable();
 				wdt_reset();
+#if defined(__AVR_ATmega32U4__)
 				*(uint16_t *)0x0800 = *(uint16_t *)(RAMEND-1);
+#else
+				*(uint16_t *)(RAMEND-1) = 0x0000;
+#endif
 			}
 		}
 		return true;
@@ -116,6 +130,15 @@ bool CDC_Setup(USBSetup& setup)
 	return false;
 }
 
+void WEAK CDC_LineEncodingEvent(void)
+{
+	// has to be implemented by the user
+}
+
+void WEAK CDC_LineStateEvent(void)
+{
+	// has to be implemented by the user
+}
 
 void Serial_::begin(unsigned long /* baud_count */)
 {
@@ -188,6 +211,36 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 	}
 	setWriteError();
 	return 0;
+}
+
+uint32_t Serial_::baud(void)
+{
+	return _usbLineInfo.dwDTERate;
+}
+
+uint8_t Serial_::stopbits(void)
+{
+	return _usbLineInfo.bCharFormat;
+}
+
+uint8_t Serial_::paritytype(void)
+{
+	return _usbLineInfo.bParityType;
+}
+
+uint8_t Serial_::numbits(void)
+{
+	return _usbLineInfo.bDataBits;
+}
+
+bool Serial_::dtr(void)
+{
+	return (_usbLineInfo.lineState & CDC_CONTROL_LINE_OUT_DTR) ? true : false;
+}
+
+bool Serial_::rts(void)
+{
+	return (_usbLineInfo.lineState & CDC_CONTROL_LINE_OUT_RTS) ? true : false;
 }
 
 // This operator is a convenient way for a sketch to check whether the
