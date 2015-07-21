@@ -88,7 +88,7 @@ typedef struct
 #define HID_TX HID_ENDPOINT_INT
 
 #define D_HIDREPORT(_descriptorLength) \
-  { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength, 0 }
+  { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength, _descriptorLength >> 8 }
 
 #define WEAK __attribute__ ((weak))
 
