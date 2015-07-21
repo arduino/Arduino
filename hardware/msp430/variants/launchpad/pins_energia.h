@@ -41,8 +41,8 @@ static const uint8_t SS      = 8;  /* P2.0 */
 static const uint8_t SCK     = 7;  /* P1.5 */
 static const uint8_t MOSI    = 15; /* P1.7 */
 static const uint8_t MISO    = 14; /* P1.6 */
-static const uint8_t TWISDA  = 15;  /* P1.6 */
-static const uint8_t TWISCL  = 14;  /* P1.7 */
+static const uint8_t TWISDA  = 15;  /* P1.7 */
+static const uint8_t TWISCL  = 14;  /* P1.6 */
 static const uint8_t DEBUG_UARTRXD = 3;  /* Receive  Data (RXD) at P1.1 */
 static const uint8_t DEBUG_UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
 #define TWISDA_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
@@ -59,8 +59,8 @@ static const uint8_t DEBUG_UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
 #if defined(__MSP430_HAS_USI__)
 static const uint8_t SS      = 8;  /* P2.0 */
 static const uint8_t SCK     = 7;  /* P1.5 */
-static const uint8_t MOSI    = 15; /* P1.6 */
-static const uint8_t MISO    = 14; /* P1.7 */
+static const uint8_t MOSI    = 15; /* P1.7 */
+static const uint8_t MISO    = 14; /* P1.6 */
 static const uint8_t TWISDA  = 15; /* P1.7 */
 static const uint8_t TWISCL  = 14; /* P1.6 */
 static const uint8_t DEBUG_UARTRXD = 4;  /* Receive  Data (RXD) at P1.2 */
