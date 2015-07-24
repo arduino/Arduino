@@ -124,6 +124,8 @@ public class Compiler implements MessageConsumer {
             fw.write("BOARD ?=" + boardPreferences.get("build.hardware") +"\n");
             fw.write("PLATFORM ?=" + Preferences.get("target") + "\n");
             fw.write("BUILD_DRVLIB ?= " + Preferences.getBoolean("build.drvlib") + "\n");
+            fw.write("ENERGIA_VERSION ?=" + Base.EREVISION + "\n");
+            fw.write("ARDUINO_VERSION ?=" + Base.REVISION + "\n");
 
             // Add all Sketch tabs that match the extension list to EXTRA_SOURCES
             List<String> allowedExtensions = Arrays.asList("c", "cpp", "S");
