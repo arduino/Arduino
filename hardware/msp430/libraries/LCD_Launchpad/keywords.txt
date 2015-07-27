@@ -1,0 +1,31 @@
+##################################################
+# Syntax Coloring Map For LCD_Launchpad
+##################################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LCD_LAUNCHPAD  KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+init               KEYWORD2
+clear              KEYWORD2
+displayText        KEYWORD2
+displayScrollText  KEYWORD2
+showChar           KEYWORD2
+showSymbol         KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+pos1  LITERAL1
+pos2  LITERAL1
+pos3  LITERAL1
+pos4  LITERAL1
+pos5  LITERAL1
+pos6  LITERAL1

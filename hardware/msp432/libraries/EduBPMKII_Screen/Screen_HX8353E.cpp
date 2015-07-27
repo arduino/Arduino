@@ -65,11 +65,11 @@
 #define HX8353E_GETHID   0xd0
 #define HX8353E_SETGAMMA 0xE0
 Screen_HX8353E::Screen_HX8353E() {
-#if defined(__LM4F120H5QR__) || defined(__MSP430F5529__) || defined(__TM4C123GH6PM__) || defined(__TM4C1294NCPDT__) || defined(__TM4C1294XNCZAD__)
+#if defined(__MSP432P401R__) || defined(__LM4F120H5QR__) || defined(__MSP430F5529__) || defined(__TM4C123GH6PM__) || defined(__TM4C1294NCPDT__) || defined(__TM4C1294XNCZAD__)
     _pinReset          = 17;
     _pinDataCommand    = 31;
     _pinChipSelect     = 13;
-    _pinBacklight      = NULL;
+    _pinBacklight      = 0;
 #else
 #error Platform not supported
 #endif
@@ -90,16 +90,16 @@ void Screen_HX8353E::begin()
     SPI.setClockDivider(SPI_CLOCK_DIV2);
     SPI.setBitOrder(MSBFIRST);
     SPI.setDataMode(SPI_MODE0);
-    if (_pinReset!=NULL) pinMode(_pinReset, OUTPUT);
-    if (_pinBacklight!=NULL) pinMode(_pinBacklight, OUTPUT);
+    if (_pinReset!=0) pinMode(_pinReset, OUTPUT);
+    if (_pinBacklight!=0) pinMode(_pinBacklight, OUTPUT);
     pinMode(_pinDataCommand, OUTPUT);
     pinMode(_pinChipSelect, OUTPUT);
-    if (_pinBacklight!=NULL) digitalWrite(_pinBacklight, HIGH);
-    if (_pinReset!=NULL) digitalWrite(_pinReset, 1);
+    if (_pinBacklight!=0) digitalWrite(_pinBacklight, HIGH);
+    if (_pinReset!=0) digitalWrite(_pinReset, 1);
     delay(100);
-    if (_pinReset!=NULL) digitalWrite(_pinReset, 0);
+    if (_pinReset!=0) digitalWrite(_pinReset, 0);
     delay(50);
-    if (_pinReset!=NULL) digitalWrite(_pinReset, 1);
+    if (_pinReset!=0) digitalWrite(_pinReset, 1);
     delay(120);
     _writeCommand(HX8353E_SWRESET);
     delay(150);
@@ -142,11 +142,11 @@ void Screen_HX8353E::invert(boolean flag)
 }
 void Screen_HX8353E::setBacklight(boolean flag)
 {
-    if (_pinBacklight!=NULL) digitalWrite(_pinBacklight, flag);
+    if (_pinBacklight!=0) digitalWrite(_pinBacklight, flag);
 }
 void Screen_HX8353E::setDisplay(boolean flag)
 {
-    if (_pinBacklight!=NULL) setBacklight(flag);
+    if (_pinBacklight!=0) setBacklight(flag);
 }
 void Screen_HX8353E::setOrientation(uint8_t orientation)
 {
