@@ -135,38 +135,37 @@ friend class BitBangedSPI;
 };
 
 class BitBangedSPI {
-  public:
+public:
+  void begin() {
+    digitalWrite(SCK, LOW);
+    digitalWrite(MOSI, LOW);
+    pinMode(SCK, OUTPUT);
+    pinMode(MOSI, OUTPUT);
+    pinMode(MISO, INPUT);
+  }
 
-    void beginTransaction(SPISettings settings) {
-	pulseWidth = 1000 / (settings.clock / 1000);
-        if (pulseWidth == 0)
-          pulseWidth = 1;
+  void beginTransaction(SPISettings settings) {
+    pulseWidth = 1000 / (settings.clock / 1000);
+    if (pulseWidth == 0)
+      pulseWidth = 1;
+  }
+
+  void end() {}
+
+  uint8_t transfer (uint8_t b) {
+    for (unsigned int i = 0; i < 8; ++i) {
+      digitalWrite(MOSI, b & 0x80);
+      digitalWrite(SCK, HIGH);
+      delayMicroseconds(pulseWidth);
+      b = (b << 1) | digitalRead(MISO);
+      digitalWrite(SCK, LOW); // slow pulse
+      delayMicroseconds(pulseWidth);
     }
+    return b;
+  }
 
-    void begin() {
-      
-      pinMode(MISO, INPUT);
-      pinMode(RESET, OUTPUT);
-      pinMode(SCK, OUTPUT);
-      pinMode(MOSI, OUTPUT);
-    }
-
-    void end() {}
-
-    uint8_t transfer (uint8_t b) {
-      for (unsigned int i = 0; i < 8; ++i) {
-        digitalWrite(MOSI, b & 0x80);
-        digitalWrite(SCK, HIGH);
-        delayMicroseconds(pulseWidth);
-        b = (b << 1) | digitalRead(MISO);
-        digitalWrite(SCK, LOW); // slow pulse
-        delayMicroseconds(pulseWidth);
-      }
-      return b;
-    }
-
-  private:
-    unsigned long pulseWidth; // in microseconds
+private:
+  unsigned long pulseWidth; // in microseconds
 };
 
 static BitBangedSPI SPI;
