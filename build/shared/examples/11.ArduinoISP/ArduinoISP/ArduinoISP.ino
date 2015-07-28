@@ -176,7 +176,6 @@ static BitBangedSPI SPI;
 void setup() {
   SERIAL.begin(19200);
 
-  SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
 
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
@@ -360,6 +359,7 @@ void set_parameters() {
 
 void start_pmode() {
   SPI.begin();
+  SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
   // SPI.begin() has configured SS as output,
   // so SPI master mode is selected.
   // We have defined RESET as pin 10,
