@@ -75,12 +75,6 @@
 
 #endif
 
-#ifdef USE_HARDWARE_SPI
-#warning  hw spi !!!
-#else
-#warning NOT usung hw spi
-#endif
-
 // Configure the serial port to use.
 //
 // Prefer the USB virtual serial port (aka. native USB port), if the Arduino has one:
@@ -188,7 +182,7 @@ void setup() {
 int error = 0;
 int pmode = 0;
 // address for reading and writing, set by 'U' command
-int here;
+unsigned int here;
 uint8_t buff[256]; // global block storage
 
 #define beget16(addr) (*addr * 256 + *(addr+1) )
@@ -228,8 +222,7 @@ void heartbeat() {
 
 static bool rst_active_high;
 
-void reset_target(bool reset)
-{
+void reset_target(bool reset) {
   digitalWrite(RESET, ((reset && rst_active_high) || (!reset && !rst_active_high)) ? HIGH : LOW);
 }
 
@@ -281,11 +274,9 @@ void prog_lamp(int state) {
 }
 
 uint8_t spi_transaction(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
-  uint8_t n;
   SPI.transfer(a);
-  n = SPI.transfer(b);
-  //if (n != a) error = -1;
-  n = SPI.transfer(c);
+  SPI.transfer(b);
+  SPI.transfer(c);
   return SPI.transfer(d);
 }
 
@@ -388,7 +379,6 @@ void end_pmode() {
 }
 
 void universal() {
-  int w;
   uint8_t ch;
 
   fill(4);
@@ -396,13 +386,13 @@ void universal() {
   breply(ch);
 }
 
-void flash(uint8_t hilo, int addr, uint8_t data) {
+void flash(uint8_t hilo, unsigned int addr, uint8_t data) {
   spi_transaction(0x40 + 8 * hilo,
                   addr >> 8 & 0xFF,
                   addr & 0xFF,
                   data);
 }
-void commit(int addr) {
+void commit(unsigned int addr) {
   if (PROG_FLICKER) {
     prog_lamp(LOW);
   }
@@ -413,8 +403,7 @@ void commit(int addr) {
   }
 }
 
-//#define _current_page(x) (here & 0xFFFFE0)
-int current_page(int addr) {
+unsigned int current_page() {
   if (param.pagesize == 32) {
     return here & 0xFFFFFFF0;
   }
@@ -444,11 +433,11 @@ void write_flash(int length) {
 
 uint8_t write_flash_pages(int length) {
   int x = 0;
-  int page = current_page(here);
+  unsigned int page = current_page();
   while (x < length) {
-    if (page != current_page(here)) {
+    if (page != current_page()) {
       commit(page);
-      page = current_page(here);
+      page = current_page();
     }
     flash(LOW, here, buff[x++]);
     flash(HIGH, here, buff[x++]);
@@ -461,10 +450,10 @@ uint8_t write_flash_pages(int length) {
 }
 
 #define EECHUNK (32)
-uint8_t write_eeprom(int length) {
+uint8_t write_eeprom(unsigned int length) {
   // here is a word address, get the byte address
-  int start = here * 2;
-  int remaining = length;
+  unsigned int start = here * 2;
+  unsigned int remaining = length;
   if (length > param.eepromsize) {
     error++;
     return STK_FAILED;
@@ -478,13 +467,13 @@ uint8_t write_eeprom(int length) {
   return STK_OK;
 }
 // write (length) bytes, (start) is a byte address
-uint8_t write_eeprom_chunk(int start, int length) {
+uint8_t write_eeprom_chunk(unsigned int start, unsigned int length) {
   // this writes byte-by-byte,
   // page writing may be faster (4 bytes at a time)
   fill(length);
   prog_lamp(LOW);
-  for (int x = 0; x < length; x++) {
-    int addr = start + x;
+  for (unsigned int x = 0; x < length; x++) {
+    unsigned int addr = start + x;
     spi_transaction(0xC0, (addr >> 8) & 0xFF, addr & 0xFF, buff[x]);
     delay(45);
   }
@@ -494,7 +483,7 @@ uint8_t write_eeprom_chunk(int start, int length) {
 
 void program_page() {
   char result = (char) STK_FAILED;
-  int length = 256 * getch();
+  unsigned int length = 256 * getch();
   length += getch();
   char memtype = getch();
   // flash memory @here, (length) bytes
@@ -517,7 +506,7 @@ void program_page() {
   return;
 }
 
-uint8_t flash_read(uint8_t hilo, int addr) {
+uint8_t flash_read(uint8_t hilo, unsigned int addr) {
   return spi_transaction(0x20 + hilo * 8,
                          (addr >> 8) & 0xFF,
                          addr & 0xFF,
@@ -583,8 +572,7 @@ void read_signature() {
 
 ////////////////////////////////////
 ////////////////////////////////////
-int avrisp() {
-  uint8_t data, low, high;
+void avrisp() {
   uint8_t ch = getch();
   switch (ch) {
     case '0': // signon
@@ -626,12 +614,12 @@ int avrisp() {
       break;
 
     case 0x60: //STK_PROG_FLASH
-      low = getch();
-      high = getch();
+      getch(); // low addr
+      getch(); // high addr
       empty_reply();
       break;
     case 0x61: //STK_PROG_DATA
-      data = getch();
+      getch(); // data
       empty_reply();
       break;
 
