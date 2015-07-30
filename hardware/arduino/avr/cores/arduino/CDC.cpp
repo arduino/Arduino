@@ -32,6 +32,7 @@ typedef struct
 } LineInfo;
 
 static volatile LineInfo _usbLineInfo = { 57600, 0x00, 0x00, 0x00, 0x00 };
+static volatile int32_t breakValue = -1;
 
 #define WEAK __attribute__ ((weak))
 
@@ -76,6 +77,11 @@ bool CDC_Setup(USBSetup& setup)
 
 	if (REQUEST_HOSTTODEVICE_CLASS_INTERFACE == requestType)
 	{
+		if (CDC_SEND_BREAK == r)
+		{
+			breakValue = ((uint16_t)setup.wValueH << 8) | setup.wValueL;
+		}
+
 		if (CDC_SET_LINE_CODING == r)
 		{
 			USB_RecvControl((void*)&_usbLineInfo,7);
@@ -207,6 +213,7 @@ Serial_::operator bool() {
 }
 
 unsigned long Serial_::baud() {
+	// Disable interrupts while reading a multi-byte value
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 		return _usbLineInfo.dwDTERate;
 	}
@@ -230,6 +237,17 @@ bool Serial_::dtr() {
 
 bool Serial_::rts() {
 	return _usbLineInfo.lineState & 0x2;
+}
+
+int32_t Serial_::readBreak() {
+	int32_t ret;
+	// Disable IRQs while reading and clearing breakValue to make
+	// sure we don't overwrite a value just set by the ISR.
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		ret = breakValue;
+		breakValue = -1;
+	}
+	return ret;
 }
 
 Serial_ Serial;

@@ -102,6 +102,23 @@ public:
 	volatile uint8_t _rx_buffer_tail;
 	unsigned char _rx_buffer[SERIAL_BUFFER_SIZE];
 
+	// This method allows processing "SEND_BREAK" requests sent by
+	// the USB host. Those requests indicate that the host wants to
+	// send a BREAK signal and are accompanied by a single uint16_t
+	// value, specifying the duration of the break. The value 0
+	// means to end any current break, while the value 0xffff means
+	// to start an indefinite break.
+	// readBreak() will return the value of the most recent break
+	// request, but will return it at most once, returning -1 when
+	// readBreak() is called again (until another break request is
+	// received, which is again returned once).
+	// This also mean that if two break requests are received
+	// without readBreak() being called in between, the value of the
+	// first request is lost.
+	// Note that the value returned is a long, so it can return
+	// 0-0xffff as well as -1.
+	int32_t readBreak();
+
 	// These return the settings specified by the USB host for the
 	// serial port. These aren't really used, but are offered here
 	// in case a sketch wants to act on these settings.
