@@ -125,7 +125,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   @Override
   public void updateIndexFilter(String[] filters, Predicate<ContributedLibrary>... additionalFilters) {
     if (additionalFilters.length == 1) {
-      additionalFilters = new Predicate[] { additionalFilters[0], typeFilter };
+      additionalFilters = new Predicate[]{additionalFilters[0], typeFilter};
     }
     super.updateIndexFilter(filters, additionalFilters);
   }
@@ -191,17 +191,13 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibrariesIndexer getIndexer() {
-    return indexer;
+  public void selectDropdownItemByClassName(String dropdownItem) {
+    selectDropdownItemByClassName(typeChooser, dropdownItem);
   }
 
   public void setProgress(Progress progress) {
     progressBar.setValue(progress);
   }
-
-  /*
-   * Installer methods follows
-   */
 
   private LibraryInstaller installer;
   private Thread installerThread = null;

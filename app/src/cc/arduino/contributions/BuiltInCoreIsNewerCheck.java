@@ -92,10 +92,11 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
         assert base.hasActiveEditor();
         int chosenOption = JOptionPane.showConfirmDialog(base.getActiveEditor(), I18n.format(tr("The IDE includes an updated {0} package, but you're using an older one.\nDo you want to upgrade {0}?"), installedBuiltIn.getName()), I18n.format(tr("A newer {0} package is available"), installedBuiltIn.getName()), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (chosenOption == JOptionPane.YES_OPTION) {
-          Action openBoardsManager = base.getOpenBoardsManager();
-          Event event = new Event(base.getActiveEditor(), ActionEvent.ACTION_PERFORMED, installedBuiltIn.getName());
-          event.getPayload().put("filterText", installedBuiltIn.getName());
-          openBoardsManager.actionPerformed(event);
+          try {
+            base.openBoardsManager(installedBuiltIn.getName(), "");
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
         }
       });
     }

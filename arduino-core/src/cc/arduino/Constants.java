@@ -44,6 +44,9 @@ public class Constants {
 
   public static final String LIBRARY_DEVELOPMENT_FLAG_FILE = ".development";
 
+  public static final long BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD = 60000;
+  public static final int NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
+
   static {
     String extenalPackageIndexUrl = System.getProperty("PACKAGE_INDEX_URL");
     if (extenalPackageIndexUrl != null && !"".equals(extenalPackageIndexUrl)) {
@@ -52,6 +55,5 @@ public class Constants {
       PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
     }
   }
-
 
 }

@@ -136,6 +136,8 @@
       <fileset dir="shared/tools" />
     </copy>
 
+    <copy file="shared/icons/48x48/apps/arduino.png" tofile="${target.path}/lib/arduino_small.png"/>
+
     <antcall target="assemble-hardware" />
 
     <copy file="../hardware/platform.keys.rewrite.txt" todir="${staging_folder}/work/${staging_hardware_folder}"/>
