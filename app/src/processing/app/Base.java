@@ -1259,6 +1259,9 @@ public class Base {
   }
 
   public void openLibraryManager(String dropdownItem) {
+    if (selfCheckTimer != null) {
+      selfCheckTimer.cancel();
+    }
     @SuppressWarnings("serial")
     LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.getPlatform()) {
       @Override
@@ -1285,7 +1288,9 @@ public class Base {
   }
 
   public void openBoardsManager(final String filterText, String dropdownItem) throws Exception {
-    // Create dialog for contribution manager
+    if (selfCheckTimer != null) {
+      selfCheckTimer.cancel();
+    }
     @SuppressWarnings("serial")
     ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.getPlatform()) {
       @Override

@@ -322,15 +322,8 @@ public class ContributionInstaller {
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     downloader.download(url, tmpFile, progress, statusText);
 
-    // Replace old index with the updated one
-    if (outputFile.exists()) {
-      if (!outputFile.delete()) {
-        throw new Exception("An error occurred while updating platforms index! I can't delete file " + outputFile);
-      }
-    }
-    if (!tmpFile.renameTo(outputFile)) {
-      throw new Exception("An error occurred while updating platforms index! I can't rename file " + tmpFile);
-    }
+    Files.deleteIfExists(outputFile.toPath());
+    Files.move(tmpFile.toPath(), outputFile.toPath());
 
     return outputFile;
   }
