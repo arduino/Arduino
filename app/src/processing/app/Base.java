@@ -94,7 +94,7 @@ public class Base {
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<String, Object>();
   private final ContributionInstaller contributionInstaller;
   private final LibraryInstaller libraryInstaller;
-  private Timer selfCheckTimer;
+  private ContributionsSelfCheck contributionsSelfCheck;
 
   // set to true after the first time the menu is built.
   // so that the errors while building don't show up again.
@@ -466,8 +466,8 @@ public class Base {
 
       new Thread(new BuiltInCoreIsNewerCheck(this)).start();
 
-      selfCheckTimer = new Timer(false);
-      selfCheckTimer.schedule(new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller), Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
+      contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller);
+      new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
 
     } else if (parser.isNoOpMode()) {
       // Do nothing (intended for only changing preferences)
@@ -1228,8 +1228,8 @@ public class Base {
   }
 
   public void openLibraryManager(String dropdownItem) {
-    if (selfCheckTimer != null) {
-      selfCheckTimer.cancel();
+    if (contributionsSelfCheck != null) {
+      contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
     LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.librariesIndexer, libraryInstaller) {
@@ -1257,8 +1257,8 @@ public class Base {
   }
 
   public void openBoardsManager(final String filterText, String dropdownItem) throws Exception {
-    if (selfCheckTimer != null) {
-      selfCheckTimer.cancel();
+    if (contributionsSelfCheck != null) {
+      contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
     ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.indexer, contributionInstaller) {

@@ -26,6 +26,9 @@ public class ContributionsSelfCheck extends TimerTask {
   private final LibraryInstaller libraryInstaller;
   private final ProgressListener progressListener;
 
+  private volatile boolean cancelled;
+  private volatile NotificationPopup notificationPopup;
+
   public ContributionsSelfCheck(Base base, HyperlinkListener hyperlinkListener, ContributionsIndexer contributionsIndexer, ContributionInstaller contributionInstaller, LibrariesIndexer librariesIndexer, LibraryInstaller libraryInstaller) {
     this.base = base;
     this.hyperlinkListener = hyperlinkListener;
@@ -34,6 +37,7 @@ public class ContributionsSelfCheck extends TimerTask {
     this.librariesIndexer = librariesIndexer;
     this.libraryInstaller = libraryInstaller;
     this.progressListener = new NoopProgressListener();
+    this.cancelled = false;
   }
 
   @Override
@@ -62,12 +66,29 @@ public class ContributionsSelfCheck extends TimerTask {
       text = I18n.format(_("Some {0}boards{1} and some {2}libraries{3} may be updated"), "<a href=\"http://boardsmanager\">", "</a>", "<a href=\"http://librarymanager\">", "</a>");
     }
 
+    if (cancelled) {
+      return;
+    }
+
     SwingUtilities.invokeLater(() -> {
-      new NotificationPopup(base.getActiveEditor(), hyperlinkListener, _("Updates available"), text).setVisible(true);
+      notificationPopup = new NotificationPopup(base.getActiveEditor(), hyperlinkListener, _("Updates available"), text);
+      notificationPopup.setVisible(true);
     });
   }
 
+  @Override
+  public boolean cancel() {
+    cancelled = true;
+    if (notificationPopup != null) {
+      notificationPopup.close();
+    }
+    return super.cancel();
+  }
+
   private void updateLibrariesIndex() {
+    if (cancelled) {
+      return;
+    }
     try {
       libraryInstaller.updateIndex(progressListener);
     } catch (Exception e) {
@@ -76,6 +97,9 @@ public class ContributionsSelfCheck extends TimerTask {
   }
 
   private void updateContributionIndex() {
+    if (cancelled) {
+      return;
+    }
     try {
       contributionInstaller.updateIndex(progressListener);
     } catch (Exception e) {

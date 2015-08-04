@@ -98,7 +98,7 @@ public class NotificationPopup extends JDialog {
     setLocation(parentX + parent.getWidth() - getWidth(), parentY + parent.getHeight() - getHeight());
   }
 
-  private void close() {
+  public void close() {
     if (autoCloseAfterTimeout.isRunning()) {
       autoCloseAfterTimeout.stop();
     }
