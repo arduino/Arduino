@@ -29,7 +29,6 @@
 
 package cc.arduino.view;
 
-import cc.arduino.Constants;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 
@@ -43,9 +42,8 @@ import java.nio.file.Paths;
 public class NotificationPopup extends JDialog {
 
   private final ComponentAdapter parentMovedListener;
-  private final Timer autoCloseAfterTimeout;
 
-  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener, String titleText, String message) {
+  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener, String message) {
     super(parent, false);
     initComponents();
 
@@ -58,10 +56,15 @@ public class NotificationPopup extends JDialog {
     };
     parent.addComponentListener(parentMovedListener);
 
-    title.setText(titleText);
-    text.setText("<html><body style=\"font-family:sans-serif;font-size:12pt\">" + message.replace("\n", "<br/>") + "</body></html>");
+    text.setText("<html><body style=\"font-family:sans-serif;font-size:12pt\">" + message + "</body></html>");
 
     text.addHyperlinkListener(hyperlinkListener);
+    text.addHyperlinkListener(e -> {
+      if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) {
+        return;
+      }
+      close();
+    });
 
     addWindowListener(new WindowAdapter() {
       @Override
@@ -70,24 +73,17 @@ public class NotificationPopup extends JDialog {
       }
     });
 
-    autoCloseAfterTimeout = new Timer(Constants.NOTIFICATION_POPUP_AUTOCLOSE_DELAY, (e) -> close());
-    autoCloseAfterTimeout.start();
-
-    text.addHyperlinkListener(e -> {
-      if (e.getEventType() != HyperlinkEvent.EventType.ACTIVATED) {
-        return;
-      }
-      close();
-    });
-
     Base.registerWindowCloseKeys(getRootPane(), e -> close());
 
-    addMouseListener(new MouseAdapter() {
+    MouseAdapter closeOnClick = new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
         close();
       }
-    });
+    };
+    addMouseListener(closeOnClick);
+    text.addMouseListener(closeOnClick);
+    icon.addMouseListener(closeOnClick);
   }
 
   private void updateLocation(Frame parent) {
@@ -95,14 +91,10 @@ public class NotificationPopup extends JDialog {
 
     int parentX = Double.valueOf(parentLocation.getX()).intValue();
     int parentY = Double.valueOf(parentLocation.getY()).intValue();
-    setLocation(parentX + parent.getWidth() - getWidth(), parentY + parent.getHeight() - getHeight());
+    setLocation(parentX, parentY + parent.getHeight() - getHeight());
   }
 
   public void close() {
-    if (autoCloseAfterTimeout.isRunning()) {
-      autoCloseAfterTimeout.stop();
-    }
-
     dispatchEvent(new WindowEvent(NotificationPopup.this, WindowEvent.WINDOW_CLOSING));
   }
 
@@ -115,8 +107,7 @@ public class NotificationPopup extends JDialog {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    title = new javax.swing.JLabel();
-    javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
+    icon = new javax.swing.JLabel();
     text = new javax.swing.JEditorPane();
     closeButton = new javax.swing.JButton();
 
@@ -125,16 +116,21 @@ public class NotificationPopup extends JDialog {
     setFocusable(false);
     setFocusableWindowState(false);
     setUndecorated(true);
+    setPreferredSize(new java.awt.Dimension(350, 70));
     setResizable(false);
+    setSize(new java.awt.Dimension(350, 70));
+    getContentPane().setLayout(null);
 
-    title.setFont(title.getFont().deriveFont(title.getFont().getStyle() | java.awt.Font.BOLD));
-
-    jLabel1.setIcon(new ImageIcon(Paths.get(BaseNoGui.getContentFile("lib").getAbsolutePath(), "arduino_small.png").toFile().getAbsolutePath()));
+    icon.setIcon(new ImageIcon(Paths.get(BaseNoGui.getContentFile("lib").getAbsolutePath(), "arduino_small.png").toFile().getAbsolutePath()));
+    getContentPane().add(icon);
+    icon.setBounds(10, 10, 50, 50);
 
     text.setEditable(false);
     text.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 0, true));
     text.setContentType("text/html"); // NOI18N
     text.setOpaque(false);
+    getContentPane().add(text);
+    text.setBounds(70, 10, 270, 50);
 
     closeButton.setIcon(new ImageIcon(Paths.get(BaseNoGui.getContentFile("lib").getAbsolutePath(), "theme", "close.png").toFile().getAbsolutePath()));
     closeButton.setBorder(null);
@@ -145,41 +141,8 @@ public class NotificationPopup extends JDialog {
         closeButtonActionPerformed(evt);
       }
     });
-
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-          .addContainerGap()
-          .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-          .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-              .addComponent(text, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-              .addComponent(title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addGap(24, 24, 24)
-              .addComponent(closeButton))))
-    );
-    layout.setVerticalGroup(
-      layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-          .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-              .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                  .addContainerGap()
-                  .addComponent(title))
-                .addComponent(closeButton))
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-              .addComponent(text, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-              .addContainerGap()
-              .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-          .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-    );
+    getContentPane().add(closeButton);
+    closeButton.setBounds(328, 0, 22, 22);
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
@@ -196,7 +159,7 @@ public class NotificationPopup extends JDialog {
         /* Create and display the dialog */
     EventQueue.invokeLater(new Runnable() {
       public void run() {
-        NotificationPopup dialog = new NotificationPopup(new JFrame(), System.out::println, "title", "<a href='arduinoide://boardsmanager'>test</a> test test test test test test test test\n" +
+        NotificationPopup dialog = new NotificationPopup(new JFrame(), System.out::println, "<a href='arduinoide://boardsmanager'>test</a> test test test test test test test test\n" +
           " test test test test test test test test test test test");
         dialog.addWindowListener(new WindowAdapter() {
           @Override
@@ -211,8 +174,8 @@ public class NotificationPopup extends JDialog {
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton closeButton;
+  private javax.swing.JLabel icon;
   private javax.swing.JEditorPane text;
-  private javax.swing.JLabel title;
   // End of variables declaration//GEN-END:variables
 
 }

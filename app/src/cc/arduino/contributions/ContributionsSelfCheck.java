@@ -59,11 +59,11 @@ public class ContributionsSelfCheck extends TimerTask {
 
     String text;
     if (updatableLibraries > 0 && updatablePlatforms <= 0) {
-      text = I18n.format(_("Some {0}libraries{1} may be updated"), "<a href=\"http://librarymanager\">", "</a>");
+      text = I18n.format(_("<br/>Update available for some of your {0}libraries{1}"), "<a href=\"http://librarymanager\">", "</a>");
     } else if (updatableLibraries <= 0 && updatablePlatforms > 0) {
-      text = I18n.format(_("Some {0}boards{1} may be updated"), "<a href=\"http://boardsmanager\">", "</a>");
+      text = I18n.format(_("<br/>Update available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager\">", "</a>");
     } else {
-      text = I18n.format(_("Some {0}boards{1} and some {2}libraries{3} may be updated"), "<a href=\"http://boardsmanager\">", "</a>", "<a href=\"http://librarymanager\">", "</a>");
+      text = I18n.format(_("<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager\">", "</a>", "<a href=\"http://librarymanager\">", "</a>");
     }
 
     if (cancelled) {
@@ -71,7 +71,7 @@ public class ContributionsSelfCheck extends TimerTask {
     }
 
     SwingUtilities.invokeLater(() -> {
-      notificationPopup = new NotificationPopup(base.getActiveEditor(), hyperlinkListener, _("Updates available"), text);
+      notificationPopup = new NotificationPopup(base.getActiveEditor(), hyperlinkListener, text);
       notificationPopup.setVisible(true);
     });
   }
