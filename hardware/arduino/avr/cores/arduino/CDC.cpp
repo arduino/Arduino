@@ -94,18 +94,24 @@ bool CDC_Setup(USBSetup& setup)
 			// with a relatively long period so it can finish housekeeping tasks
 			// like servicing endpoints before the sketch ends
 
+#ifndef MAGIC_KEY
 #define MAGIC_KEY 0x7777
+#endif
+#ifndef MAGIC_KEY_POS
+#define MAGIC_KEY_POS (uint16_t *)0x0800
+#endif
+// NO_MAGIC_KEY_BACKUP can be used if you want to store the key in the safer RAMEND directly, so no backup is needed
 
 			// We check DTR state to determine if host port is open (bit 0 of lineState).
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
-#if defined(__AVR_ATmega32U4__)
-				*(uint16_t *)(RAMEND-1) = *(uint16_t *)0x0800;
-				*(uint16_t *)0x0800 = MAGIC_KEY;
+#if !defined(NO_MAGIC_KEY_BACKUP)
+				*(uint16_t *)(RAMEND-1) = *MAGIC_KEY_POS;
+				*MAGIC_KEY_POS = MAGIC_KEY;
 #else
 				// for future boards save the key in the inproblematic RAMEND
 				// which is reserved for the main() return value (which will never return)
-				*(uint16_t *)(RAMEND-1) = MAGIC_KEY;
+				*MAGIC_KEY_POS = MAGIC_KEY;
 #endif
 				wdt_enable(WDTO_120MS);
 			}
@@ -118,10 +124,10 @@ bool CDC_Setup(USBSetup& setup)
 
 				wdt_disable();
 				wdt_reset();
-#if defined(__AVR_ATmega32U4__)
-				*(uint16_t *)0x0800 = *(uint16_t *)(RAMEND-1);
+#if !defined(NO_MAGIC_KEY_BACKUP)
+				*MAGIC_KEY_POS = *(uint16_t *)(RAMEND-1);
 #else
-				*(uint16_t *)(RAMEND-1) = 0x0000;
+				*MAGIC_KEY_POS = 0x0000;
 #endif
 			}
 		}
