@@ -232,7 +232,9 @@ public class SketchCode {
    */
   public void saveAs(File newFile) throws IOException {
     BaseNoGui.saveFile(program, newFile);
+    file = newFile;
     lastModified = newFile.lastModified();
+    setModified(false);
   }
 
 

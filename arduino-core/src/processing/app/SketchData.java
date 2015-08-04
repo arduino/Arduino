@@ -259,4 +259,16 @@ public class SketchData {
   public File getCodeFolder() {
     return codeFolder;
   }
+  
+  public void setFolder(File folder) {
+    this.folder = folder;
+  }
+  
+  public void setDataFolder(File dataFolder) {
+    this.dataFolder = dataFolder;
+  }
+  
+  public void setCodeFolder(File codeFolder) {
+    this.codeFolder = codeFolder;
+  }
 }

@@ -26,7 +26,7 @@ public class ChangeDetector implements WindowFocusListener {
   private boolean skip = false;
 
 
-  public ChangeDetector(Editor editor) {
+  public ChangeDetector(Editor editor) {    
     this.sketch = editor.sketch;
     this.editor = editor;
   }
@@ -36,7 +36,8 @@ public class ChangeDetector implements WindowFocusListener {
   public void windowGainedFocus(WindowEvent e) {
     // Keep the listener instantiated and check this to avoid a maze of
     // adding and removing and re-adding with Preferences changes.
-    if (Preferences.getBoolean("editor.watcher")) {
+    //TODO add preference
+    if (true || Preferences.getBoolean("editor.watcher")) {
       // if they selected no, skip the next focus event
       if (skip) {
         skip = false;
@@ -60,6 +61,7 @@ public class ChangeDetector implements WindowFocusListener {
 
 
   private void checkFileChange() {
+    
     //check that the content of each of the files in sketch matches what is in memory
     if (sketch == null) {
       return;
@@ -99,7 +101,7 @@ public class ChangeDetector implements WindowFocusListener {
         try{
           sketch.load(true);
         }catch(IOException e){
-          showWarningEDT("Reload Failed", "The reload has failed!\nSketch will not be reloaded");
+          showWarningEDT("Reload Failed", "The reload has failed!\nSketch will not be reloaded and may work incorrectly!");
           return;
         }
         showWarningEDT("Modified Reload",
@@ -144,14 +146,14 @@ public class ChangeDetector implements WindowFocusListener {
   private boolean reloadSketch(SketchCode changed) {
     int response = blockingYesNoPrompt(editor,
                                        "File Modified",
-                                       "Your sketch has been modified externally.<br>" +
+                                       "Your sketch has been modified externally.\n" +
                                        "Would you like to reload the sketch?",
                                        "If you reload the sketch, any unsaved changes will be lost.");
     if (response == 0) {
       try{
         sketch.load(true);
       }catch(IOException e){
-        showWarningEDT("Reload Failed", "The reload has failed!\nSketch will not be reloaded");
+        showWarningEDT("Reload Failed", "The reload has failed!\nSketch will not be reloaded (has it been deleted externally?) and may work incorrectly!");
         return false;
       }
       rebuildHeaderEDT();
