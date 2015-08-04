@@ -37,7 +37,7 @@ public class ChangeDetector implements WindowFocusListener {
     // Keep the listener instantiated and check this to avoid a maze of
     // adding and removing and re-adding with Preferences changes.
     //TODO add preference
-    if (true || Preferences.getBoolean("editor.watcher")) {
+    if (Preferences.getBoolean("editor.watcher")) {
       // if they selected no, skip the next focus event
       if (skip) {
         skip = false;

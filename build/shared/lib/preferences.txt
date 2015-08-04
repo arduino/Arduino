@@ -89,6 +89,9 @@ editor.window.height.min = 290
 # Enable code folding 
 editor.code_folding=false
 
+# Whether to check files to see if they've been modified externally
+editor.watcher=true
+
 # font size for editor
 editor.font=Monospaced,plain,12
 # Monaco is nicer on Mac OS X, so use that explicitly
