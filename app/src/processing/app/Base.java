@@ -341,17 +341,18 @@ public class Base {
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()) {
+      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier(), new ProgressListener() {
         private String lastStatus = "";
 
         @Override
-        protected void onProgress(Progress progress) {
+        public void onProgress(Progress progress) {
           if (!lastStatus.equals(progress.getStatus())) {
             System.out.println(progress.getStatus());
           }
           lastStatus = progress.getStatus();
         }
-      };
+      });
+
       List<String> downloadedPackageIndexFiles = installer.updateIndex();
       installer.deleteUnknownFiles(downloadedPackageIndexFiles);
       indexer.parseIndex();

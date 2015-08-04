@@ -32,6 +32,7 @@ package cc.arduino.contributions.packages;
 import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
+import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
@@ -64,16 +65,23 @@ public class ContributionInstaller {
   private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
+  private final ProgressListener progressListener;
 
   public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier) {
+    this(contributionsIndexer, platform, signatureVerifier, progress -> {
+    });
+  }
+
+  public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier, ProgressListener progressListener) {
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
+    this.progressListener = progressListener;
     File stagingFolder = contributionsIndexer.getStagingFolder();
     indexer = contributionsIndexer;
     downloader = new DownloadableContributionsDownloader(stagingFolder) {
       @Override
       protected void onProgress(Progress progress) {
-        ContributionInstaller.this.onProgress(progress);
+        progressListener.onProgress(progress);
       }
     };
   }
@@ -132,7 +140,7 @@ public class ContributionInstaller {
     int i = 1;
     for (ContributedTool tool : tools) {
       progress.setStatus(format(tr("Installing tools ({0}/{1})..."), i, tools.size()));
-      onProgress(progress);
+      progressListener.onProgress(progress);
       i++;
       DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
       File destFolder = new File(toolsFolder, tool.getName() + File.separator + tool.getVersion());
@@ -152,7 +160,7 @@ public class ContributionInstaller {
 
     // Unpack platform on the correct location
     progress.setStatus(tr("Installing boards..."));
-    onProgress(progress);
+    progressListener.onProgress(progress);
     File platformFolder = new File(packageFolder, "hardware" + File.separator + contributedPlatform.getArchitecture());
     File destFolder = new File(platformFolder, contributedPlatform.getParsedVersion());
     Files.createDirectories(destFolder.toPath());
@@ -168,7 +176,7 @@ public class ContributionInstaller {
     progress.stepDone();
 
     progress.setStatus(tr("Installation completed!"));
-    onProgress(progress);
+    progressListener.onProgress(progress);
 
     return errors;
   }
@@ -326,10 +334,6 @@ public class ContributionInstaller {
     Files.move(tmpFile.toPath(), outputFile.toPath());
 
     return outputFile;
-  }
-
-  protected void onProgress(Progress progress) {
-    // Empty
   }
 
   public void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {

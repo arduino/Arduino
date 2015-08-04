@@ -118,12 +118,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     }
 
     // Create ConstributionInstaller tied with the provided index
-    installer = new ContributionInstaller(indexer, platform, new GPGDetachedSignatureVerifier()) {
-      @Override
-      public void onProgress(Progress progress) {
-        setProgress(progress);
-      }
-    };
+    installer = new ContributionInstaller(indexer, platform, new GPGDetachedSignatureVerifier(), this::setProgress);
   }
 
   public void setProgress(Progress progress) {
