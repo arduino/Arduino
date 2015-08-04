@@ -48,6 +48,7 @@ public class SketchCode {
   private String program;
 
   private boolean modified;
+  private long lastModified;
 
   /**
    * where this code starts relative to the concat'd code
@@ -207,6 +208,7 @@ public class SketchCode {
       System.err.println();
     }
 
+    lastModified = file.lastModified();
     setModified(false);
   }
 
@@ -220,6 +222,7 @@ public class SketchCode {
     //history.record(s, SketchHistory.SAVE);
 
     BaseNoGui.saveFile(program, file);
+    lastModified = file.lastModified();
     setModified(false);
   }
 
@@ -229,6 +232,7 @@ public class SketchCode {
    */
   public void saveAs(File newFile) throws IOException {
     BaseNoGui.saveFile(program, newFile);
+    lastModified = newFile.lastModified();
   }
 
 
@@ -239,5 +243,9 @@ public class SketchCode {
 
   public void setMetadata(Object metadata) {
     this.metadata = metadata;
+  }
+  
+  public long lastModified(){
+    return lastModified;
   }
 }

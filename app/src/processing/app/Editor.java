@@ -362,6 +362,9 @@ public class Editor extends JFrame implements RunnerListener {
 
     // All set, now show the window
     //setVisible(true);
+    
+    // Add a window listener to watch for changes to the files in the sketch
+    addWindowFocusListener(new ChangeDetector(this));
   }
 
 
