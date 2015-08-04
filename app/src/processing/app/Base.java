@@ -92,6 +92,8 @@ public class Base {
 
   public static SplashScreenHelper splashScreenHelper = new SplashScreenHelper(SplashScreen.getSplashScreen());
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<String, Object>();
+  private final ContributionInstaller contributionInstaller;
+  private final LibraryInstaller libraryInstaller;
   private Timer selfCheckTimer;
 
   // set to true after the first time the menu is built.
@@ -302,6 +304,9 @@ public class Base {
     this.pdeKeywords = new PdeKeywords();
     this.pdeKeywords.reload();
 
+    contributionInstaller = new ContributionInstaller(BaseNoGui.indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+    libraryInstaller = new LibraryInstaller(BaseNoGui.librariesIndexer, BaseNoGui.getPlatform());
+
     parser.parseArgumentsPhase2();
 
     for (String path : parser.getFilenames()) {
@@ -341,10 +346,9 @@ public class Base {
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
       ProgressListener progressListener = new ConsoleProgressListener();
-      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
 
-      List<String> downloadedPackageIndexFiles = installer.updateIndex(progressListener);
-      installer.deleteUnknownFiles(downloadedPackageIndexFiles);
+      List<String> downloadedPackageIndexFiles = contributionInstaller.updateIndex(progressListener);
+      contributionInstaller.deleteUnknownFiles(downloadedPackageIndexFiles);
       indexer.parseIndex();
       indexer.syncWithFilesystem(BaseNoGui.getHardwareFolder());
 
@@ -368,11 +372,11 @@ public class Base {
       ContributedPlatform installed = indexer.getInstalled(boardToInstallParts[0], boardToInstallParts[1]);
 
       if (!selected.isReadOnly()) {
-        installer.install(selected, progressListener);
+        contributionInstaller.install(selected, progressListener);
       }
 
       if (installed != null && !installed.isReadOnly()) {
-        installer.remove(installed);
+        contributionInstaller.remove(installed);
       }
 
       System.exit(0);
@@ -380,12 +384,11 @@ public class Base {
     } else if (parser.isInstallLibrary()) {
       LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()));
       ProgressListener progressListener = new ConsoleProgressListener();
-      LibraryInstaller installer = new LibraryInstaller(indexer, BaseNoGui.getPlatform());
       indexer.parseIndex();
       BaseNoGui.onBoardOrPortChange();
       indexer.setSketchbookLibrariesFolder(BaseNoGui.getSketchbookLibrariesFolder());
       indexer.setLibrariesFolders(BaseNoGui.getLibrariesPath());
-      installer.updateIndex(progressListener);
+      libraryInstaller.updateIndex(progressListener);
 
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");
@@ -407,9 +410,9 @@ public class Base {
 
         ContributedLibrary installed = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
         if (selected.isReadOnly()) {
-          installer.remove(installed, progressListener);
+          libraryInstaller.remove(installed, progressListener);
         } else {
-          installer.install(selected, installed, progressListener);
+          libraryInstaller.install(selected, installed, progressListener);
         }
       }
 
@@ -464,8 +467,6 @@ public class Base {
       new Thread(new BuiltInCoreIsNewerCheck(this)).start();
 
       selfCheckTimer = new Timer(false);
-      ContributionInstaller contributionInstaller = new ContributionInstaller(BaseNoGui.indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-      LibraryInstaller libraryInstaller = new LibraryInstaller(BaseNoGui.librariesIndexer, BaseNoGui.getPlatform());
       selfCheckTimer.schedule(new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller), Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
 
     } else if (parser.isNoOpMode()) {
@@ -682,13 +683,6 @@ public class Base {
           "jul", "aug", "sep", "oct", "nov", "dec"
   };
 
-  /**
-   * Handle creating a sketch folder, return its base .pde file
-   * or null if the operation was canceled.
-   *
-   * @param shift    whether shift is pressed, which will invert prompt setting
-   * @param noPrompt disable prompt, no matter the setting
-   */
   protected File createNewUntitled() throws IOException {
     File newbieDir = null;
     String newbieName = null;
@@ -791,20 +785,13 @@ public class Base {
         activeEditor.handleOpenInternal(file);
         activeEditor.untitled = true;
       }
-//      return true;
 
     } catch (IOException e) {
       activeEditor.statusError(e);
-//      return false;
     }
   }
 
 
-  /**
-   * Open a sketch, replacing the sketch in the current window.
-   *
-   * @param path Location of the primary pde file for the sketch.
-   */
   public void handleOpenReplace(File file) {
     if (!activeEditor.checkModified()) {
       return;  // sketch was modified, and user canceled
@@ -1245,21 +1232,21 @@ public class Base {
       selfCheckTimer.cancel();
     }
     @SuppressWarnings("serial")
-    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.getPlatform()) {
+    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.librariesIndexer, libraryInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
         rebuildBoardsMenu();
         rebuildProgrammerMenu();
         onBoardOrPortChange();
-        setIndexer(BaseNoGui.librariesIndexer);
+        updateUI();
         if (StringUtils.isNotEmpty(dropdownItem)) {
           selectDropdownItemByClassName(dropdownItem);
         }
       }
     };
     managerUI.setLocationRelativeTo(activeEditor);
-    managerUI.setIndexer(BaseNoGui.librariesIndexer);
+    managerUI.updateUI();
     managerUI.setVisible(true);
     // Manager dialog is modal, waits here until closed
 
@@ -1274,13 +1261,13 @@ public class Base {
       selfCheckTimer.cancel();
     }
     @SuppressWarnings("serial")
-    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.getPlatform()) {
+    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.indexer, contributionInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
         rebuildBoardsMenu();
         rebuildProgrammerMenu();
-        setIndexer(BaseNoGui.indexer);
+        updateUI();
         if (StringUtils.isNotEmpty(dropdownItem)) {
           selectDropdownItemByClassName(dropdownItem);
         }
@@ -1290,7 +1277,7 @@ public class Base {
       }
     };
     managerUI.setLocationRelativeTo(activeEditor);
-    managerUI.setIndexer(BaseNoGui.indexer);
+    managerUI.updateUI();
     managerUI.setVisible(true);
     // Installer dialog is modal, waits here until closed
 

@@ -36,7 +36,6 @@ import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
-import processing.app.Platform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +52,8 @@ import static processing.app.I18n.tr;
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   private final JComboBox typeChooser;
-  private final Platform platform;
-  private LibrariesIndexer indexer;
+  private final LibrariesIndexer indexer;
+  private final LibraryInstaller installer;
   private Predicate<ContributedLibrary> typeFilter;
 
   @Override
@@ -90,9 +89,10 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibraryManagerUI(Frame parent, Platform platform) {
+  public LibraryManagerUI(Frame parent, LibrariesIndexer indexer, LibraryInstaller installer) {
     super(parent, "Library Manager", Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.platform = platform;
+    this.indexer = indexer;
+    this.installer = installer;
 
     filtersContainer.add(new JLabel(tr("Topic")), 1);
     filtersContainer.remove(2);
@@ -130,9 +130,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     super.updateIndexFilter(filters, additionalFilters);
   }
 
-  public void setIndexer(LibrariesIndexer indexer) {
-    this.indexer = indexer;
-
+  public void updateUI() {
     DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser.getSelectedItem();
     DropdownItem<DownloadableContribution> previouslySelectedType = (DropdownItem<DownloadableContribution>) typeChooser.getSelectedItem();
 
@@ -181,9 +179,6 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     }
 
     filterField.setEnabled(contribModel.getRowCount() > 0);
-
-    // Create LibrariesInstaller tied with the provided index
-    installer = new LibraryInstaller(indexer, platform);
   }
 
   public void selectDropdownItemByClassName(String dropdownItem) {
@@ -194,7 +189,6 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     progressBar.setValue(progress);
   }
 
-  private LibraryInstaller installer;
   private Thread installerThread = null;
 
   @Override

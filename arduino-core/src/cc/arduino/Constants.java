@@ -47,6 +47,9 @@ public class Constants {
   public static final long BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD = 60000;
   public static final int NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
 
+  public static final String LIBRARY_INDEX_URL;
+  public static final String LIBRARY_INDEX_URL_GZ;
+
   static {
     String extenalPackageIndexUrl = System.getProperty("PACKAGE_INDEX_URL");
     if (extenalPackageIndexUrl != null && !"".equals(extenalPackageIndexUrl)) {
@@ -54,6 +57,14 @@ public class Constants {
     } else {
       PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
     }
+
+    String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
+    if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
+      LIBRARY_INDEX_URL = externalLibraryIndexUrl;
+    } else {
+      LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
+    }
+    LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
   }
 
 }

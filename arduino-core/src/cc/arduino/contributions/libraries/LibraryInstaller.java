@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions.libraries;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
@@ -46,19 +47,6 @@ import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
 
-  private static final String LIBRARY_INDEX_URL;
-  private static final String LIBRARY_INDEX_URL_GZ;
-
-  static {
-    String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
-    if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
-      LIBRARY_INDEX_URL = externalLibraryIndexUrl;
-    } else {
-      LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
-    }
-    LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
-  }
-
   private final LibrariesIndexer indexer;
   private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
@@ -70,14 +58,14 @@ public class LibraryInstaller {
     downloader = new DownloadableContributionsDownloader(stagingFolder);
   }
 
-  public void updateIndex(ProgressListener progressListener) throws Exception {
+  public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Download index
     File outputFile = indexer.getIndexFile();
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     try {
-      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(LIBRARY_INDEX_URL), new URL(LIBRARY_INDEX_URL_GZ));
+      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(Constants.LIBRARY_INDEX_URL), new URL(Constants.LIBRARY_INDEX_URL_GZ));
       gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."), progressListener);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
@@ -97,7 +85,7 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
+  public synchronized void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
     if (lib.isInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
       return;
@@ -141,7 +129,7 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
+  public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
     if (lib == null || lib.isReadOnly()) {
       return;
     }

@@ -73,7 +73,7 @@ public class ContributionInstaller {
     downloader = new DownloadableContributionsDownloader(stagingFolder);
   }
 
-  public List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
+  public synchronized List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
     List<String> errors = new LinkedList<>();
     if (contributedPlatform.isInstalled()) {
       throw new Exception("Platform is already installed!");
@@ -229,7 +229,7 @@ public class ContributionInstaller {
     }
   }
 
-  public List<String> remove(ContributedPlatform contributedPlatform) {
+  public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
     if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
       return new LinkedList<>();
     }
@@ -269,7 +269,7 @@ public class ContributionInstaller {
     return errors;
   }
 
-  public List<String> updateIndex(ProgressListener progressListener) throws Exception {
+  public synchronized List<String> updateIndex(ProgressListener progressListener) throws Exception {
     MultiStepProgress progress = new MultiStepProgress(1);
 
     List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
@@ -323,7 +323,7 @@ public class ContributionInstaller {
     return outputFile;
   }
 
-  public void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
+  public synchronized void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
     File preferencesFolder = indexer.getIndexFile(".").getParentFile();
     File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME));
     if (additionalPackageIndexFiles == null) {
