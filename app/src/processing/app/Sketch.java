@@ -725,12 +725,14 @@ public class Sketch {
     if (data.getDataFolder().exists()) {
       File newDataFolder = new File(newFolder, "data");
       Base.copyDir(data.getDataFolder(), newDataFolder);
+      data.setDataFolder(newDataFolder);
     }
 
     // re-copy the code folder
     if (data.getCodeFolder().exists()) {
       File newCodeFolder = new File(newFolder, "code");
       Base.copyDir(data.getCodeFolder(), newCodeFolder);
+      data.setCodeFolder(newCodeFolder);
     }
 
     // copy custom applet.html file if one exists
@@ -757,7 +759,8 @@ public class Sketch {
 
     // Make sure that it's not an untitled sketch
     setUntitled(false);
-
+    data.setFolder(newFolder);
+    
     // let Editor know that the save was successful
     return true;
   }
