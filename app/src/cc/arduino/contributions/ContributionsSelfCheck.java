@@ -24,6 +24,7 @@ public class ContributionsSelfCheck extends TimerTask {
   private final ContributionInstaller contributionInstaller;
   private final LibrariesIndexer librariesIndexer;
   private final LibraryInstaller libraryInstaller;
+  private final ProgressListener progressListener;
 
   public ContributionsSelfCheck(Base base, HyperlinkListener hyperlinkListener, ContributionsIndexer contributionsIndexer, ContributionInstaller contributionInstaller, LibrariesIndexer librariesIndexer, LibraryInstaller libraryInstaller) {
     this.base = base;
@@ -32,6 +33,7 @@ public class ContributionsSelfCheck extends TimerTask {
     this.contributionInstaller = contributionInstaller;
     this.librariesIndexer = librariesIndexer;
     this.libraryInstaller = libraryInstaller;
+    this.progressListener = new NoopProgressListener();
   }
 
   @Override
@@ -67,7 +69,7 @@ public class ContributionsSelfCheck extends TimerTask {
 
   private void updateLibrariesIndex() {
     try {
-      libraryInstaller.updateIndex();
+      libraryInstaller.updateIndex(progressListener);
     } catch (Exception e) {
       // ignore
     }
@@ -75,7 +77,7 @@ public class ContributionsSelfCheck extends TimerTask {
 
   private void updateContributionIndex() {
     try {
-      contributionInstaller.updateIndex();
+      contributionInstaller.updateIndex(progressListener);
     } catch (Exception e) {
       // ignore
     }

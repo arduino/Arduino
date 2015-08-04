@@ -183,12 +183,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     filterField.setEnabled(contribModel.getRowCount() > 0);
 
     // Create LibrariesInstaller tied with the provided index
-    installer = new LibraryInstaller(indexer, platform) {
-      @Override
-      public void onProgress(Progress progress) {
-        setProgress(progress);
-      }
-    };
+    installer = new LibraryInstaller(indexer, platform);
   }
 
   public void selectDropdownItemByClassName(String dropdownItem) {
@@ -216,7 +211,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        installer.updateIndex();
+        installer.updateIndex(this::setProgress);
         onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
@@ -233,7 +228,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, replaced);
+        installer.install(lib, replaced, this::setProgress);
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {
@@ -260,7 +255,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Removing..."));
-        installer.remove(lib);
+        installer.remove(lib, this::setProgress);
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {

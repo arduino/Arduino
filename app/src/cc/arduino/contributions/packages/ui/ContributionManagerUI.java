@@ -118,7 +118,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     }
 
     // Create ConstributionInstaller tied with the provided index
-    installer = new ContributionInstaller(indexer, platform, new GPGDetachedSignatureVerifier(), this::setProgress);
+    installer = new ContributionInstaller(indexer, platform, new GPGDetachedSignatureVerifier());
   }
 
   public void setProgress(Progress progress) {
@@ -146,7 +146,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        List<String> downloadedPackageIndexFiles = installer.updateIndex();
+        List<String> downloadedPackageIndexFiles = installer.updateIndex(this::setProgress);
         installer.deleteUnknownFiles(downloadedPackageIndexFiles);
         onIndexesUpdated();
       } catch (Exception e) {
@@ -165,7 +165,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       List<String> errors = new LinkedList<>();
       try {
         setProgressVisible(true, tr("Installing..."));
-        errors.addAll(installer.install(platformToInstall));
+        errors.addAll(installer.install(platformToInstall, this::setProgress));
         if (platformToRemove != null && !platformToRemove.isReadOnly()) {
           errors.addAll(installer.remove(platformToRemove));
         }

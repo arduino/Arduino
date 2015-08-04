@@ -33,7 +33,6 @@ import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.packages.ui.ContributionManagerUI;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
-import cc.arduino.utils.Progress;
 import cc.arduino.view.Event;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
@@ -341,19 +340,10 @@ public class Base {
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier(), new ProgressListener() {
-        private String lastStatus = "";
+      ProgressListener progressListener = new ConsoleProgressListener();
+      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
 
-        @Override
-        public void onProgress(Progress progress) {
-          if (!lastStatus.equals(progress.getStatus())) {
-            System.out.println(progress.getStatus());
-          }
-          lastStatus = progress.getStatus();
-        }
-      });
-
-      List<String> downloadedPackageIndexFiles = installer.updateIndex();
+      List<String> downloadedPackageIndexFiles = installer.updateIndex(progressListener);
       installer.deleteUnknownFiles(downloadedPackageIndexFiles);
       indexer.parseIndex();
       indexer.syncWithFilesystem(BaseNoGui.getHardwareFolder());
@@ -378,7 +368,7 @@ public class Base {
       ContributedPlatform installed = indexer.getInstalled(boardToInstallParts[0], boardToInstallParts[1]);
 
       if (!selected.isReadOnly()) {
-        installer.install(selected);
+        installer.install(selected, progressListener);
       }
 
       if (installed != null && !installed.isReadOnly()) {
@@ -389,22 +379,13 @@ public class Base {
 
     } else if (parser.isInstallLibrary()) {
       LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()));
-      LibraryInstaller installer = new LibraryInstaller(indexer, BaseNoGui.getPlatform()) {
-        private String lastStatus = "";
-
-        @Override
-        protected void onProgress(Progress progress) {
-          if (!lastStatus.equals(progress.getStatus())) {
-            System.out.println(progress.getStatus());
-          }
-          lastStatus = progress.getStatus();
-        }
-      };
+      ProgressListener progressListener = new ConsoleProgressListener();
+      LibraryInstaller installer = new LibraryInstaller(indexer, BaseNoGui.getPlatform());
       indexer.parseIndex();
       BaseNoGui.onBoardOrPortChange();
       indexer.setSketchbookLibrariesFolder(BaseNoGui.getSketchbookLibrariesFolder());
       indexer.setLibrariesFolders(BaseNoGui.getLibrariesPath());
-      installer.updateIndex();
+      installer.updateIndex(progressListener);
 
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");
@@ -426,9 +407,9 @@ public class Base {
 
         ContributedLibrary installed = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
         if (selected.isReadOnly()) {
-          installer.remove(installed);
+          installer.remove(installed, progressListener);
         } else {
-          installer.install(selected, installed);
+          installer.install(selected, installed, progressListener);
         }
       }
 

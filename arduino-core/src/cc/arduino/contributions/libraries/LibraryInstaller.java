@@ -31,9 +31,9 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.GZippedJsonDownloader;
+import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
-import cc.arduino.utils.Progress;
 import processing.app.I18n;
 import processing.app.Platform;
 import processing.app.helpers.FileUtils;
@@ -67,15 +67,10 @@ public class LibraryInstaller {
     this.indexer = indexer;
     this.platform = platform;
     File stagingFolder = indexer.getStagingFolder();
-    downloader = new DownloadableContributionsDownloader(stagingFolder) {
-      @Override
-      protected void onProgress(Progress progress) {
-        LibraryInstaller.this.onProgress(progress);
-      }
-    };
+    downloader = new DownloadableContributionsDownloader(stagingFolder);
   }
 
-  public void updateIndex() throws Exception {
+  public void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Download index
@@ -83,7 +78,7 @@ public class LibraryInstaller {
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     try {
       GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(LIBRARY_INDEX_URL), new URL(LIBRARY_INDEX_URL_GZ));
-      gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."));
+      gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."), progressListener);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
@@ -99,10 +94,10 @@ public class LibraryInstaller {
       throw new Exception(tr("An error occurred while updating libraries index!"));
 
     // Step 2: Rescan index
-    rescanLibraryIndex(progress);
+    rescanLibraryIndex(progress, progressListener);
   }
 
-  public void install(ContributedLibrary lib, ContributedLibrary replacedLib) throws Exception {
+  public void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
     if (lib.isInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
       return;
@@ -112,7 +107,7 @@ public class LibraryInstaller {
 
     // Step 1: Download library
     try {
-      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()));
+      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
@@ -124,7 +119,7 @@ public class LibraryInstaller {
 
     // Step 2: Unpack library on the correct location
     progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
-    onProgress(progress);
+    progressListener.onProgress(progress);
     File libsFolder = indexer.getSketchbookLibrariesFolder();
     File tmpFolder = FileUtils.createTempFolderIn(libsFolder);
     try {
@@ -137,16 +132,16 @@ public class LibraryInstaller {
 
     // Step 3: Remove replaced library and move installed one to the correct location
     // TODO: Fix progress bar...
-    remove(replacedLib);
+    remove(replacedLib, progressListener);
     File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
 
     // Step 4: Rescan index
-    rescanLibraryIndex(progress);
+    rescanLibraryIndex(progress, progressListener);
   }
 
-  public void remove(ContributedLibrary lib) throws IOException {
+  public void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
     if (lib == null || lib.isReadOnly()) {
       return;
     }
@@ -155,22 +150,18 @@ public class LibraryInstaller {
 
     // Step 1: Remove library
     progress.setStatus(I18n.format(tr("Removing library: {0}"), lib.getName()));
-    onProgress(progress);
+    progressListener.onProgress(progress);
     FileUtils.recursiveDelete(lib.getInstalledFolder());
     progress.stepDone();
 
     // Step 2: Rescan index
-    rescanLibraryIndex(progress);
+    rescanLibraryIndex(progress, progressListener);
   }
 
-  private void rescanLibraryIndex(MultiStepProgress progress) {
+  private void rescanLibraryIndex(MultiStepProgress progress, ProgressListener progressListener) {
     progress.setStatus(tr("Updating list of installed libraries"));
-    onProgress(progress);
+    progressListener.onProgress(progress);
     indexer.rescanLibraries();
     progress.stepDone();
-  }
-
-  protected void onProgress(Progress progress) {
-    // Empty
   }
 }

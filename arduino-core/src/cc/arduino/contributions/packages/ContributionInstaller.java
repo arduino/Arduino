@@ -37,7 +37,6 @@ import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
-import cc.arduino.utils.Progress;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -65,28 +64,16 @@ public class ContributionInstaller {
   private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
-  private final ProgressListener progressListener;
 
   public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier) {
-    this(contributionsIndexer, platform, signatureVerifier, progress -> {
-    });
-  }
-
-  public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier, ProgressListener progressListener) {
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
-    this.progressListener = progressListener;
     File stagingFolder = contributionsIndexer.getStagingFolder();
     indexer = contributionsIndexer;
-    downloader = new DownloadableContributionsDownloader(stagingFolder) {
-      @Override
-      protected void onProgress(Progress progress) {
-        progressListener.onProgress(progress);
-      }
-    };
+    downloader = new DownloadableContributionsDownloader(stagingFolder);
   }
 
-  public List<String> install(ContributedPlatform contributedPlatform) throws Exception {
+  public List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
     List<String> errors = new LinkedList<>();
     if (contributedPlatform.isInstalled()) {
       throw new Exception("Platform is already installed!");
@@ -112,7 +99,7 @@ public class ContributionInstaller {
     // Download all
     try {
       // Download platform
-      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."));
+      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."), progressListener);
       progress.stepDone();
 
       // Download tools
@@ -120,7 +107,7 @@ public class ContributionInstaller {
       for (ContributedTool tool : tools) {
         String msg = format(tr("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
-        downloader.download(tool.getDownloadableContribution(platform), progress, msg);
+        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener);
         progress.stepDone();
       }
     } catch (InterruptedException e) {
@@ -282,11 +269,11 @@ public class ContributionInstaller {
     return errors;
   }
 
-  public List<String> updateIndex() throws Exception {
+  public List<String> updateIndex(ProgressListener progressListener) throws Exception {
     MultiStepProgress progress = new MultiStepProgress(1);
 
     List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
-    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL);
+    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL, progressListener);
 
     Set<String> packageIndexURLs = new HashSet<>();
     String additionalURLs = PreferencesData.get(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS, "");
@@ -295,7 +282,7 @@ public class ContributionInstaller {
     }
 
     for (String packageIndexURL : packageIndexURLs) {
-      downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL);
+      downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
     }
 
     progress.stepDone();
@@ -303,11 +290,11 @@ public class ContributionInstaller {
     return downloadedPackageIndexFilesAccumulator;
   }
 
-  private void downloadIndexAndSignature(MultiStepProgress progress, List<String> downloadedPackagedIndexFilesAccumulator, String packageIndexUrl) throws Exception {
-    File packageIndex = download(progress, packageIndexUrl);
+  private void downloadIndexAndSignature(MultiStepProgress progress, List<String> downloadedPackagedIndexFilesAccumulator, String packageIndexUrl, ProgressListener progressListener) throws Exception {
+    File packageIndex = download(progress, packageIndexUrl, progressListener);
     downloadedPackagedIndexFilesAccumulator.add(packageIndex.getName());
     try {
-      File packageIndexSignature = download(progress, packageIndexUrl + ".sig");
+      File packageIndexSignature = download(progress, packageIndexUrl + ".sig", progressListener);
       boolean signatureVerified = signatureVerifier.isSigned(packageIndex);
       if (signatureVerified) {
         downloadedPackagedIndexFilesAccumulator.add(packageIndexSignature.getName());
@@ -322,13 +309,13 @@ public class ContributionInstaller {
     }
   }
 
-  private File download(MultiStepProgress progress, String packageIndexUrl) throws Exception {
+  private File download(MultiStepProgress progress, String packageIndexUrl, ProgressListener progressListener) throws Exception {
     String statusText = tr("Downloading platforms index...");
     URL url = new URL(packageIndexUrl);
     String[] urlPathParts = url.getFile().split("/");
     File outputFile = indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
-    downloader.download(url, tmpFile, progress, statusText);
+    downloader.download(url, tmpFile, progress, statusText, progressListener);
 
     Files.deleteIfExists(outputFile.toPath());
     Files.move(tmpFile.toPath(), outputFile.toPath());

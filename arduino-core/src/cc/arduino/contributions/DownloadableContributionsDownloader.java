@@ -51,7 +51,7 @@ public class DownloadableContributionsDownloader {
     stagingFolder = _stagingFolder;
   }
 
-  public File download(DownloadableContribution contribution, Progress progress, final String statusText) throws Exception {
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener) throws Exception {
     URL url = new URL(contribution.getUrl());
     Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
 
@@ -64,12 +64,12 @@ public class DownloadableContributionsDownloader {
 
     // Need to download or resume downloading?
     if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
-      download(url, outputFile.toFile(), progress, statusText);
+      download(url, outputFile.toFile(), progress, statusText, progressListener);
     }
 
     // Test checksum
     progress.setStatus(tr("Verifying archive integrity..."));
-    onProgress(progress);
+    progressListener.onProgress(progress);
     String checksum = contribution.getChecksum();
     if (hasChecksum(contribution)) {
       String algo = checksum.split(":")[0];
@@ -94,7 +94,7 @@ public class DownloadableContributionsDownloader {
     return algo != null && !algo.isEmpty();
   }
 
-  public void download(URL url, File tmpFile, Progress progress, String statusText) throws Exception {
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
     FileDownloader downloader = new FileDownloader(url, tmpFile);
     downloader.addObserver((o, arg) -> {
       FileDownloader me = (FileDownloader) o;
@@ -106,16 +106,12 @@ public class DownloadableContributionsDownloader {
       }
       progress.setStatus(statusText + " " + msg);
       progress.setProgress(me.getProgress());
-      onProgress(progress);
+      progressListener.onProgress(progress);
     });
     downloader.download();
     if (!downloader.isCompleted()) {
       throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }
-  }
-
-  protected void onProgress(Progress progress) {
-    // Empty
   }
 
 }
