@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-30 12:41+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
-"Language-Team: Korean (Korea) (http://www.transifex.com/p/arduino-ide-15/language/ko_KR/)\n"
+"PO-Revision-Date: 2015-08-01 10:53+0000\n"
+"Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
+"Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -120,7 +120,7 @@ msgstr "스케치를 업로드 하는 동안 에러가 발생하였습니다."
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr "스케치를 검증 하는 동안 에러가 발생 하였습니다"
+msgstr "스케치를 검증 하는 동안 에러가 발생하였습니다"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
@@ -130,7 +130,7 @@ msgstr "스케치를 검증/업로드 하는 동안 에러가 발생 하였습�
 msgid ""
 "An unknown error occurred while trying to load\n"
 "platform-specific code for your machine."
-msgstr "플랫폼에 특정한 코드를 로드하는 동안\n알수 없는 에러가 발생했습니니다."
+msgstr "플랫폼 종속저인 코드를 로드하는 동안\n알수 없는 에러가 발생했습니니다."
 
 #: Preferences.java:85
 msgid "Arabic"
@@ -170,7 +170,7 @@ msgstr "아두이노 AVR 보드"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr "아두이노는 자체의 스케치와 .ino 또는 .pde로 끝나는 다른 파일만 열 수 있습니다."
+msgstr "아두이노는 자체의 스케치와 .ino 또는 .pde로 끝나는 파일만 열 수 있습니다."
 
 #: Base.java:1682
 msgid ""
@@ -206,7 +206,7 @@ msgstr "정말로 스케치를 삭제하시겠습니까?"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr ""
+msgstr "--board 에 인수가 필요함"
 
 #: ../../../processing/app/Base.java:370
 msgid "Argument required for --curdir"
@@ -218,15 +218,15 @@ msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr ""
+msgstr "--port 에 인수가 필요함"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr ""
+msgstr "--pref 에 인수가 필요함"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr ""
+msgstr "--preferences-file 에 인수가 필요함"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -283,7 +283,7 @@ msgstr "잘못된 파일이 선택됐습니다"
 
 #: ../../../processing/app/debug/Compiler.java:89
 msgid "Bad sketch primary file or bad sketch directory structure"
-msgstr ""
+msgstr "잘못된 스케치 파일 또는 스케치 디렉토리 구조"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
@@ -352,7 +352,7 @@ msgstr "I/O 보드에 부트로더 굽기 (이것은 시간이 걸릴 수 있습
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "Can only pass one of: {0}"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -509,7 +509,7 @@ msgstr "폴더 {0}를\n열 수 없습니다."
 msgid ""
 "Could not properly re-save the sketch. You may be in trouble at this point,\n"
 "and it might be time to copy and paste your code to another text editor."
-msgstr "스케치를 제대로 다시 저장할 수 없습니다. 문제가 있어서 아마도 다른 텍스트 에디터에,\n 복사하여 붙여넣을 수 있습니다."
+msgstr "스케치를 제대로 다시 저장할 수 없습니다. 다른 텍스트 에디터에,\n 복사하여 붙여넣을 수 있습니다."
 
 #: Sketch.java:1768
 msgid "Could not re-save sketch"
@@ -579,7 +579,7 @@ msgid ""
 "Couldn't find a Board on the selected port. Check that you have the correct "
 "port selected.  If it is correct, try pressing the board's reset button "
 "after initiating the upload."
-msgstr "선택한 포트에 보드를 찾을 수 없습니다. 올바른 포트를 선택했는지 확인하세요. 만약 맞다면 보드에 새로 업로드를 하고 보드의 리셋버튼을 누르세요."
+msgstr "선택한 포트에 보드를 찾을 수 없습니다. 올바른 포트를 선택했는지 확인하세요. 만약 맞다면 보드에 업로드를 개시하고 리셋버튼을 누르세요."
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
@@ -607,7 +607,7 @@ msgstr "Danish (덴마크)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
-msgstr "들여쓰기 삭제"
+msgstr "들여쓰기 줄이기"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -646,11 +646,11 @@ msgstr "컴파일 완료"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
-msgstr "컴파일 완료"
+msgstr "컴파일 완료."
 
 #: Editor.java:2564
 msgid "Done printing."
-msgstr "인쇄 완료"
+msgstr "인쇄 완료."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
@@ -658,7 +658,7 @@ msgstr "업로드 완료"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
-msgstr "업로드 완료"
+msgstr "업로드 완료."
 
 #: Preferences.java:91
 msgid "Dutch"
@@ -744,7 +744,7 @@ msgstr "환경설정을 읽는 중 오류. {0}을 삭제(또는 이동)하고\n�
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr "디스커버리 방법을 할때 오류:"
+msgstr "디스커버리 방법을 시작할때 오류:"
 
 #: Serial.java:125
 #, java-format
@@ -810,7 +810,7 @@ msgstr "내보내기 취소, 변경 사항은 먼저 저장되야 합니다."
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr "열기 실패 스케치: \"{0}\""
+msgstr "스케치: \"{0}\" 열기 실패"
 
 #: Editor.java:491
 msgid "File"
@@ -1016,7 +1016,7 @@ msgstr "메시지"
 
 #: ../../../processing/app/preproc/PdePreprocessor.java:412
 msgid "Missing the */ from the end of a /* comment */"
-msgstr "*/ 가 주석 처리 끝에 빠졌습니다. (/* 주석 */)"
+msgstr "*/ 가 주석의 끝에 빠졌습니다. /* 주석 */"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
@@ -1032,7 +1032,7 @@ msgstr "이동"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr "지원하지 않는 여러 파일"
+msgstr "복수의 파일은 지원하지 않음"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1040,7 +1040,7 @@ msgstr "단 1개의 스케치 파일을 선택해야 합니다. "
 
 #: ../../../processing/app/Preferences.java:158
 msgid "N'Ko"
-msgstr ""
+msgstr "N'Ko"
 
 #: Sketch.java:282
 msgid "Name for new file:"
@@ -1108,7 +1108,7 @@ msgstr "런처를 사용할 수 없습니다"
 
 #: SerialMonitor.java:112
 msgid "No line ending"
-msgstr "No line ending"
+msgstr "line ending 없음"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
@@ -1230,7 +1230,7 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 SPI 라이브러�
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
-msgstr "Sketch > Import Library 메뉴에서 the Wire library를 들여오십시요. "
+msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가겨오기하십시오. "
 
 #: Base.java:239
 msgid "Please install JDK 1.5 or later"
@@ -1318,7 +1318,7 @@ msgstr "빌드 폴더로 {0}를 이동할때 문제 발생"
 msgid ""
 "Problem uploading to board.  See "
 "http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "보드에 업로딩중에 문제 발생. 다음을  참고하세요.http://www.arduino.cc/en/Guide/Troubleshooting#upload"
+msgstr "보드에 업로딩중에 문제 발생. 다음을  참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#upload"
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1405,7 +1405,7 @@ msgstr "스케치 폴더를 다른 이름으로 저장…"
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr "검증 또는 업로드를 할때 저장하기"
+msgstr "검증 또는 업로드 할 때 저장하기"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1429,7 +1429,7 @@ msgstr "추가하려는 zip 파일 또는 라이브러리를 포함하는 폴더
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
-msgstr "스케치에 복사하기위해 이미지 또는 다른 데이터 파일을 선택"
+msgstr "스케치에 복사하기 위해 이미지 또는 다른 데이터 파일을 선택"
 
 #: Preferences.java:330
 msgid "Select new sketchbook location"
@@ -1687,7 +1687,7 @@ msgstr "스케치북 폴더가 더 이상 존재하지 않습니다.\n아두이�
 msgid ""
 "Third-party platform.txt does not define compiler.path. Please report this "
 "to the third-party hardware maintainer."
-msgstr ""
+msgstr "써드 파티 platform.txt 파일에 컴파일러 경로가 정의되어 있지 않습니다. 써드 파티 하드웨어 메인테이너에게 보고 하십시오."
 
 #: Sketch.java:1075
 msgid ""
@@ -1706,11 +1706,11 @@ msgstr "휴식 시간"
 
 #: Editor.java:663
 msgid "Tools"
-msgstr "도구"
+msgstr "툴"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
-msgstr "문제해결"
+msgstr "트러블슈팅"
 
 #: ../../../processing/app/Preferences.java:117
 msgid "Turkish"
@@ -1799,7 +1799,7 @@ msgstr "Urdu (파키스탄)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
-msgstr "찾기위해 선택된 부분을 사용"
+msgstr "찾기를 위해 선택된 부분을 사용"
 
 #: Preferences.java:409
 msgid "Use external editor"
@@ -1825,7 +1825,7 @@ msgstr "확인 / 컴파일"
 
 #: Preferences.java:400
 msgid "Verify code after upload"
-msgstr "업로드 후 코드 검증하기"
+msgstr "업로드 후 코드 확인하기"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
@@ -1840,7 +1840,7 @@ msgstr "Arduino.cc 방문하기"
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr ""
+msgstr "경고: 라이브러리 {0}가 {1} 아키텍처에서 실행되며 {2}아키텍처에서 실행되는 현재보드에서는 호환되지 않을 수 있습니다."
 
 #: Base.java:2128
 msgid "Warning"
@@ -1874,7 +1874,7 @@ msgstr "예"
 
 #: Sketch.java:1074
 msgid "You can't fool me"
-msgstr "날 속일 생각 말게"
+msgstr "You can't fool me"
 
 #: Sketch.java:411
 msgid "You can't have a .cpp file with the same name as the sketch."
@@ -1933,7 +1933,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\"에 인식할 수 없는 문자가 포함되어 있습니다. 만약 이 코드가 이전 버전의 아두이노로 만들어졌다면, 툴 -> 인코딩 수정 & 다시 로드 로 UTF-8 인코딩으로 업데이트 할 수 있습니다.아니면 잘못된 문자를 삭제하여 이 경고를 제거할 수 있습니다."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -1988,7 +1988,7 @@ msgstr "\n아두이노 1.0 경우, Wire.send()함수는 다른 라이브러리�
 
 #: SerialMonitor.java:130 SerialMonitor.java:133
 msgid "baud"
-msgstr "보드 레이트"
+msgstr "보드레이트"
 
 #: Preferences.java:389
 msgid "compilation "
@@ -2064,14 +2064,14 @@ msgstr "{0} | 아두이노 {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr ""
+msgstr "{0}: --pref의 잘못된 인자, \"pref=value\"의 형태이어야 합니다."
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr ""
+msgstr "{0}: 잘못된 보드 이름, \"package:arch:board\" 또는 \"package:arch:board:options\" 형태가 되야 합니다."
 
 #: ../../../processing/app/Base.java:509
 #, java-format

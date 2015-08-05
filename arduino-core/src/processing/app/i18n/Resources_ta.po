@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-30 12:41+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
-"Language-Team: Tamil (http://www.transifex.com/p/arduino-ide-15/language/ta/)\n"
+"PO-Revision-Date: 2015-07-28 19:53+0000\n"
+"Last-Translator: Shankar C <c.shankar7@hotmail.com>\n"
+"Language-Team: Tamil (http://www.transifex.com/mbanzi/arduino-ide-15/language/ta/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -134,7 +134,7 @@ msgstr "உங்கள் கணினிக்கு இயங்குதள�
 
 #: Preferences.java:85
 msgid "Arabic"
-msgstr ""
+msgstr "அரபி"
 
 #: Preferences.java:86
 msgid "Aragonese"
@@ -295,7 +295,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:165
 msgid "Bengali (India)"
-msgstr ""
+msgstr "வங்காளி (இந்தியா)"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -654,7 +654,7 @@ msgstr "அச்சிட்டுவிட்டது."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "பதிவேறிவிட்டது"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -662,7 +662,7 @@ msgstr "மேலேற்றி முடித்துவிட்டது."
 
 #: Preferences.java:91
 msgid "Dutch"
-msgstr "உலாந்தியம்"
+msgstr "டச்சு"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"

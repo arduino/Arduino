@@ -11,9 +11,9 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-06-30 12:41+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
-"Language-Team: Arabic (http://www.transifex.com/p/arduino-ide-15/language/ar/)\n"
+"PO-Revision-Date: 2015-08-04 21:49+0000\n"
+"Last-Translator: Mubarak Qahtani <abu-q76@hotmail.com>\n"
+"Language-Team: Arabic (http://www.transifex.com/mbanzi/arduino-ide-15/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -117,17 +117,17 @@ msgstr "حدث خطأ اثناء محاولة اصلاح ترميز \"تشفير
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "حدث خطأ أثناء رفع الرسمة"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "حدث خطأ أثناء التحقق من الرسمة"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "حدث خطأ أثناء رفع او التحقق من الرسمة"
 
 #: Base.java:228
 msgid ""
@@ -645,7 +645,7 @@ msgstr "انتهى تثبيت محمل برنامج الإقلاع"
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "تمت الترجمة"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -657,7 +657,7 @@ msgstr "...انتهاء الطباعة"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "تم الرفع"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -777,7 +777,7 @@ msgstr ".خطأ خلال الطباعة "
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "خطأ أثناء التحميل"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -788,11 +788,11 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "خطأ أثناء التحقق"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "خطأ أثناء التحقق أو الرفع"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -1055,7 +1055,7 @@ msgstr "النيبالية"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "منفذ الشبكة"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1798,7 +1798,7 @@ msgstr "رفع..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:189
 msgid "Urdu (Pakistan)"
-msgstr ""
+msgstr "أوردو (باكستان)"
 
 #: Editor.java:1269
 msgid "Use Selection For Find"

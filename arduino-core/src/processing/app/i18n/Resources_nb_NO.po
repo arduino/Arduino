@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-07-03 07:15+0000\n"
+"PO-Revision-Date: 2015-07-23 10:42+0000\n"
 "Last-Translator: Rune Fauske <runfa@runfa.net>\n"
-"Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/p/arduino-ide-15/language/nb_NO/)\n"
+"Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/mbanzi/arduino-ide-15/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -332,7 +332,7 @@ msgstr "Byggemappen forsvant eller kunne ikke skrives til"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "Innstillinger for bygging er endret, bygger alt på nytt"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -353,12 +353,12 @@ msgstr "Skriver oppstartslaster til I/O kort (dette kan ta et minutt..."
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "Kan bare videresende en av: {0}"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Finner ikke skissen i den oppgitte stien"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -375,7 +375,7 @@ msgstr "Kan ikke døpe om"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "Kan ikke oppgi noen skissefiler"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -439,7 +439,7 @@ msgstr "Kopier som HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr ""
+msgstr "Kopier feilmeldinger"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -520,7 +520,7 @@ msgstr "Kunne ikke lagre skissen på nytt"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "Kan ikke lese innstillinger for fargeskjema.\nDu må installere Arduino på nytt."
 
 #: Preferences.java:219
 msgid ""
@@ -530,7 +530,7 @@ msgstr "Kunne ikke lese standard innstillinger.\nDu må installere Arduino på n
 
 #: ../../../processing/app/Sketch.java:1525
 msgid "Could not read prevous build preferences file, rebuilding all"
-msgstr ""
+msgstr "Klarte ikke å lese fil med innstillinger fra forrige bygg, bygger alt på nytt."
 
 #: Base.java:2482
 #, java-format
@@ -561,7 +561,7 @@ msgstr "Kunne ikke erstatte {0}"
 
 #: ../../../processing/app/Sketch.java:1579
 msgid "Could not write build preferences file"
-msgstr ""
+msgstr "Klarte ikke å skrive innstillinger for bygg til fil."
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -596,7 +596,7 @@ msgstr "Tsjekkisk"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Tsjekkisk (Tsjekkisk Republikk)"
 
 #: Preferences.java:90
 msgid "Danish"
@@ -604,7 +604,7 @@ msgstr "Dansk"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Dansk (Danmark)"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -626,7 +626,7 @@ msgstr "Forkast alle endringer og last skissen på nytt?"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr ""
+msgstr "Vis linjenummer"
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -643,7 +643,7 @@ msgstr "Skriving av oppstartslaster er ferdig"
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "Kompilering er ferdig"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -655,7 +655,7 @@ msgstr "Utskrift ferdig."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "Opplasting er ferdig"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -745,7 +745,7 @@ msgstr "Feil ved lesing av filen med innstillinger. Vennligst slett (eller flytt
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "Det oppstod en feil under start av deteksjonsprosessen:"
 
 #: Serial.java:125
 #, java-format
@@ -758,7 +758,7 @@ msgstr "Feil oppstod under skriving av oppstartslaster."
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Feil under skriving av oppstartslaster: mangler konfigurasjonsparameter '{0}"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -775,22 +775,22 @@ msgstr "Feil under utskrift."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "Det oppstod en feil under opplasting"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Det oppstod en feil under opplasting: mangler '{0}' konfigurasjonsparameter"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "Feil under verifisering"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Feil under verifisering/opplasting"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -1849,7 +1849,7 @@ msgstr "Advarsel"
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Vestfrisisk"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1906,7 +1906,7 @@ msgstr "Du glemte skisseboken din"
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr ""
+msgstr "Du har trykket {0}, men ingenting ble sendt. Burde du valgt et linjeskift?"
 
 #: Base.java:536
 msgid ""
@@ -1934,7 +1934,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" inneholder ukjente tegn. Hvis denne kildekoden ble laget med en eldre vesjon av Arduino, må du kanskje benytte Verktøy -> Reparer tekstkoding & Last på nytt for å oppdatere skissen til å benytte UTF-8 tekstkoding. Hvis ikke, må du kanskje slette de ukjente tegnene for å bli kvitt advarselen."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -1997,7 +1997,7 @@ msgstr "kompilering "
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
+msgstr "tilkoblet!"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
@@ -2041,7 +2041,7 @@ msgstr "den valgte serieporten {0} eksisterer ikke, eller kortet ditt er ikke ti
 #: ../../../processing/app/Base.java:389
 #, java-format
 msgid "unknown option: {0}"
-msgstr ""
+msgstr "ukjent opsjon: {0}"
 
 #: Preferences.java:391
 msgid "upload"
@@ -2065,41 +2065,41 @@ msgstr "{0} | Arduino {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr ""
+msgstr "{0}: Ugyldig argument til --pref, må være på formen \"pref=verdi\""
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr ""
+msgstr "{0}: Ugyldig navn på kort, det bør ha formen \"pakke:arkitektur:kort\" eller \"pakke:arkitektur:kort:opsjon\""
 
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
+msgstr "{0}: Ugyldig opsjon for \"{1}\" opsjon for kortet \"{2}\""
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr ""
+msgstr "{0}: Ugyldig opsjon for kort \"{1}\""
 
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr ""
+msgstr "{0}: Ugyldig opsjon, må ha formen \"navn=verdi\""
 
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr ""
+msgstr "{0}: Ukjent arkitektur"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr ""
+msgstr "{0}: Ukjent kort"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr ""
+msgstr "{0}: Ukjent pakke"
