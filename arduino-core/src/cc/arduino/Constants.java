@@ -42,6 +42,8 @@ public class Constants {
   public static final List<String> PROTECTED_PACKAGE_NAMES = Arrays.asList("arduino", "Intel");
   public static final String PACKAGE_INDEX_URL;
 
+  public static final String LIBRARY_DEVELOPMENT_FLAG_FILE = ".development";
+
   static {
     String extenalPackageIndexUrl = System.getProperty("PACKAGE_INDEX_URL");
     if (extenalPackageIndexUrl != null && !"".equals(extenalPackageIndexUrl)) {

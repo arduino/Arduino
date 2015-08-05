@@ -93,7 +93,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     @Override
     public boolean test(Sketch sketch) {
-      return PreferencesData.getBoolean("editor.save_on_verify") && sketch.isModified() && !sketch.isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath());
+      return PreferencesData.getBoolean("editor.save_on_verify") && sketch.isModified() && !sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
     }
   }
 
@@ -101,7 +101,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     @Override
     public boolean test(Sketch sketch) {
-      return sketch.isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath());
+      return sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
     }
   }
 
@@ -2282,7 +2282,7 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
-      boolean wasReadOnly = sketch.isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath());
+      boolean wasReadOnly = sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketch.save();
       if (saved) {
@@ -2395,7 +2395,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
     if (PreferencesData.getBoolean("editor.save_on_verify")) {
-      if (sketch.isModified() && !sketch.isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
+      if (sketch.isModified() && !sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
         handleSave(true);
       }
     }

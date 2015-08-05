@@ -28,6 +28,7 @@
  */
 package processing.app.packages;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
 import processing.app.helpers.FileUtils;
@@ -35,6 +36,8 @@ import processing.app.helpers.PreferencesMap;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -54,6 +57,7 @@ public class UserLibrary extends ContributedLibrary {
   private List<String> architectures;
   private List<String> types;
   private List<String> declaredTypes;
+  private boolean onGoingDevelopment;
 
   private static final List<String> MANDATORY_PROPERTIES = Arrays
     .asList("name", "version", "author", "maintainer",
@@ -124,7 +128,7 @@ public class UserLibrary extends ContributedLibrary {
     String architectures = properties.get("architectures");
     if (architectures == null)
       architectures = "*"; // defaults to "any"
-    List<String> archs = new ArrayList<String>();
+    List<String> archs = new ArrayList<>();
     for (String arch : architectures.split(","))
       archs.add(arch.trim());
 
@@ -145,7 +149,7 @@ public class UserLibrary extends ContributedLibrary {
     if (types == null) {
       types = "Contributed";
     }
-    List<String> typesList = new LinkedList<String>();
+    List<String> typesList = new LinkedList<>();
     for (String type : types.split(",")) {
       typesList.add(type.trim());
     }
@@ -165,6 +169,7 @@ public class UserLibrary extends ContributedLibrary {
     res.architectures = archs;
     res.layout = layout;
     res.declaredTypes = typesList;
+    res.onGoingDevelopment = Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE));
     return res;
   }
 
@@ -263,6 +268,10 @@ public class UserLibrary extends ContributedLibrary {
 
   public List<String> getDeclaredTypes() {
     return declaredTypes;
+  }
+
+  public boolean onGoingDevelopment() {
+    return onGoingDevelopment;
   }
 
   protected enum LibraryLayout {

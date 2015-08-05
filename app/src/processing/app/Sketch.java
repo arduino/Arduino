@@ -30,6 +30,7 @@ import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
+import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
 import javax.swing.*;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
@@ -133,7 +135,7 @@ public class Sketch {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -162,7 +164,7 @@ public class Sketch {
     }
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -432,7 +434,7 @@ public class Sketch {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -558,7 +560,7 @@ public class Sketch {
     // don't do anything if not actually modified
     //if (!modified) return false;
 
-    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is read-only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -637,7 +639,7 @@ public class Sketch {
   protected boolean saveAs() throws IOException {
     // get new name for folder
     FileDialog fd = new FileDialog(editor, tr("Save sketch folder as..."), FileDialog.SAVE);
-    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath()) || isUntitled()) {
+    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath()) || isUntitled()) {
       // default to the sketchbook folder
       fd.setDirectory(BaseNoGui.getSketchbookFolder().getAbsolutePath());
     } else {
@@ -772,7 +774,7 @@ public class Sketch {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -1226,12 +1228,12 @@ public class Sketch {
    * @param librariesPaths
    * @param examplesPath
    */
-  public boolean isReadOnly(List<File> librariesPaths, String examplesPath) {
+  public boolean isReadOnly(LibraryList libraries, String examplesPath) {
     String apath = data.getFolder().getAbsolutePath();
-    for (File folder : librariesPaths) {
-      if (apath.startsWith(folder.getAbsolutePath())) {
-        return true;
-      }
+
+    Optional<UserLibrary> libraryThatIncludesSketch = libraries.stream().filter(lib -> apath.startsWith(lib.getInstalledFolder().getAbsolutePath())).findFirst();
+    if (libraryThatIncludesSketch.isPresent() && !libraryThatIncludesSketch.get().onGoingDevelopment()) {
+      return true;
     }
 
     return sketchIsSystemExample(apath, examplesPath) || sketchFilesAreReadOnly();
