@@ -1772,10 +1772,6 @@ public class Base {
     return boardsCustomMenus;
   }
 
-  static public String getSketchbookLibrariesPath() {
-    return BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath();
-  }
-
   public File getDefaultSketchbookFolderOrPromptForIt() {
 
     File sketchbookFolder = BaseNoGui.getDefaultSketchbookFolder();

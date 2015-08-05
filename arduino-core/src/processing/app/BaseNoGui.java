@@ -69,9 +69,6 @@ public class BaseNoGui {
   // maps #included files to their library folder
   public static Map<String, LibraryList> importToLibraryTable;
 
-  // maps library name to their library folder
-  static private LibraryList libraries;
-
   // XXX: Remove this field
   static private List<File> librariesFolders;
 
@@ -235,10 +232,6 @@ public class BaseNoGui {
 
   static public String getHardwarePath() {
     return getHardwareFolder().getAbsolutePath();
-  }
-
-  static public LibraryList getLibraries() {
-    return libraries;
   }
 
   static public List<File> getLibrariesPath() {

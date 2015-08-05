@@ -133,7 +133,7 @@ public class Sketch {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly()) {
+    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -162,7 +162,7 @@ public class Sketch {
     }
 
     // if read-only, give an error
-    if (isReadOnly()) {
+    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -432,7 +432,7 @@ public class Sketch {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly()) {
+    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -558,7 +558,7 @@ public class Sketch {
     // don't do anything if not actually modified
     //if (!modified) return false;
 
-    if (isReadOnly()) {
+    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is read-only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -637,7 +637,7 @@ public class Sketch {
   protected boolean saveAs() throws IOException {
     // get new name for folder
     FileDialog fd = new FileDialog(editor, tr("Save sketch folder as..."), FileDialog.SAVE);
-    if (isReadOnly() || isUntitled()) {
+    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath()) || isUntitled()) {
       // default to the sketchbook folder
       fd.setDirectory(BaseNoGui.getSketchbookFolder().getAbsolutePath());
     } else {
@@ -772,7 +772,7 @@ public class Sketch {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly()) {
+    if (isReadOnly(BaseNoGui.getLibrariesPath(), BaseNoGui.getExamplesPath())) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -1223,25 +1223,27 @@ public class Sketch {
    * Returns true if this is a read-only sketch. Used for the
    * examples directory, or when sketches are loaded from read-only
    * volumes or folders without appropriate permissions.
+   * @param librariesPaths
+   * @param examplesPath
    */
-  public boolean isReadOnly() {
+  public boolean isReadOnly(List<File> librariesPaths, String examplesPath) {
     String apath = data.getFolder().getAbsolutePath();
-    for (File folder : BaseNoGui.getLibrariesPath()) {
-      if (apath.startsWith(folder.getAbsolutePath()))
+    for (File folder : librariesPaths) {
+      if (apath.startsWith(folder.getAbsolutePath())) {
         return true;
-    }
-    if (apath.startsWith(BaseNoGui.getExamplesPath()) ||
-        apath.startsWith(Base.getSketchbookLibrariesPath())) {
-      return true;
+      }
     }
 
-    // canWrite() doesn't work on directories
-    // } else if (!folder.canWrite()) {
+    return sketchIsSystemExample(apath, examplesPath) || sketchFilesAreReadOnly();
+  }
 
-    // check to see if each modified code file can be written to
+  private boolean sketchIsSystemExample(String apath, String examplesPath) {
+    return apath.startsWith(examplesPath);
+  }
+
+  private boolean sketchFilesAreReadOnly() {
     for (SketchCode code : data.getCodes()) {
       if (code.isModified() && code.fileReadOnly() && code.fileExists()) {
-        // System.err.println("found a read-only file " + code[i].file);
         return true;
       }
     }
