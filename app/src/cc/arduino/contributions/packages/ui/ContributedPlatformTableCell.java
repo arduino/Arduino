@@ -39,7 +39,6 @@ import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
 import cc.arduino.utils.ReverseComparator;
-import com.google.common.collect.Lists;
 import processing.app.Base;
 
 import javax.swing.*;
@@ -55,8 +54,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCell extends InstallerTableCell {
@@ -170,8 +169,8 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       HTMLDocument html = (HTMLDocument) doc;
       StyleSheet stylesheet = html.getStyleSheet();
       stylesheet.addRule("body { margin: 0; padding: 0;"
-              + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
-              + "font-size: 100%;" + "font-size: 0.95em; }");
+        + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+        + "font-size: 100%;" + "font-size: 0.95em; }");
     }
     description.setOpaque(false);
     description.setBorder(new EmptyBorder(4, 7, 7, 7));
@@ -248,19 +247,17 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     downgradeChooser.removeAllItems();
     downgradeChooser.addItem(tr("Select version"));
 
-    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = Lists.newLinkedList();
-    final java.util.List<ContributedPlatform> uninstalledNewerReleases = Lists.newLinkedList();
+    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
+    final java.util.List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
 
     final VersionComparator versionComparator = new VersionComparator();
-    Lists.newLinkedList(Lists.transform(uninstalledReleases, input -> {
+    uninstalledReleases.stream().forEach(input -> {
       if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
         uninstalledPreviousReleases.add(input);
       } else {
         uninstalledNewerReleases.add(input);
       }
-
-      return input;
-    }));
+    });
     uninstalledNewerReleases.forEach(downgradeChooser::addItem);
     uninstalledPreviousReleases.forEach(downgradeChooser::addItem);
 

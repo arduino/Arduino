@@ -37,7 +37,6 @@ import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.Progress;
-import com.google.common.collect.Collections2;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -54,9 +53,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 public class ContributionInstaller {
 
@@ -174,7 +174,7 @@ public class ContributionInstaller {
   }
 
   private void findAndExecutePostInstallScriptIfAny(File folder, boolean trusted, boolean trustAll) throws IOException {
-    Collection<File> scripts = Collections2.filter(platform.postInstallScripts(folder), new FileExecutablePredicate());
+    Collection<File> scripts = platform.postInstallScripts(folder).stream().filter(new FileExecutablePredicate()).collect(Collectors.toList());
 
     if (scripts.isEmpty()) {
       String[] subfolders = folder.list(new OnlyDirs());
@@ -190,7 +190,7 @@ public class ContributionInstaller {
   }
 
   private void findAndExecutePreUninstallScriptIfAny(File folder, boolean trusted, boolean trustAll) throws IOException {
-    Collection<File> scripts = Collections2.filter(platform.preUninstallScripts(folder), new FileExecutablePredicate());
+    Collection<File> scripts = platform.preUninstallScripts(folder).stream().filter(new FileExecutablePredicate()).collect(Collectors.toList());
 
     if (scripts.isEmpty()) {
       String[] subfolders = folder.list(new OnlyDirs());

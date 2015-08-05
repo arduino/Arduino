@@ -1,6 +1,5 @@
 package processing.app;
 
-import com.google.common.base.Joiner;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
@@ -15,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.MissingResourceException;
+import java.util.stream.Collectors;
 
 import static processing.app.I18n.tr;
 
@@ -248,7 +248,7 @@ public class PreferencesData {
   }
 
   public static void setCollection(String key, Collection<String> values) {
-    String value = Joiner.on(',').join(values);
+    String value = values.stream().collect(Collectors.joining(","));
     set(key, value);
   }
 }

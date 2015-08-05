@@ -28,7 +28,6 @@ import cc.arduino.packages.Uploader;
 import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
-import com.google.common.base.Predicate;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -72,6 +71,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -92,7 +92,7 @@ public class Editor extends JFrame implements RunnerListener {
   private static class ShouldSaveIfModified implements Predicate<Sketch> {
 
     @Override
-    public boolean apply(Sketch sketch) {
+    public boolean test(Sketch sketch) {
       return PreferencesData.getBoolean("editor.save_on_verify") && sketch.isModified() && !sketch.isReadOnly();
     }
   }
@@ -100,7 +100,7 @@ public class Editor extends JFrame implements RunnerListener {
   private static class ShouldSaveReadOnly implements Predicate<Sketch> {
 
     @Override
-    public boolean apply(Sketch sketch) {
+    public boolean test(Sketch sketch) {
       return sketch.isReadOnly();
     }
   }
@@ -1947,7 +1947,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private void handleRun(final boolean verbose, Predicate<Sketch> shouldSavePredicate, Runnable verboseHandler, Runnable nonVerboseHandler) {
     internalCloseRunner();
-    if (shouldSavePredicate.apply(sketch)) {
+    if (shouldSavePredicate.test(sketch)) {
       handleSave(true);
     }
     toolbar.activateRun();

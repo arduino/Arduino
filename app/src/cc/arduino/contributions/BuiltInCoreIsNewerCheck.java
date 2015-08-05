@@ -34,9 +34,6 @@ import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.view.Event;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -44,7 +41,7 @@ import processing.app.PreferencesData;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,7 +69,7 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       return;
     }
 
-    LinkedList<ContributedPlatform> contributedPlatforms = Lists.newLinkedList(Iterables.concat(Collections2.transform(BaseNoGui.indexer.getPackages(), ContributedPackage::getPlatforms)));
+    List<ContributedPlatform> contributedPlatforms = BaseNoGui.indexer.getPackages().stream().map(ContributedPackage::getPlatforms).flatMap(Collection::stream).collect(Collectors.toList());
 
     List<ContributedPlatform> installedBuiltInPlatforms = contributedPlatforms.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
     if (installedBuiltInPlatforms.size() != 1) {

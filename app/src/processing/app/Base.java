@@ -38,9 +38,6 @@ import cc.arduino.utils.Progress;
 import cc.arduino.view.Event;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import processing.app.debug.TargetBoard;
@@ -65,9 +62,11 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static processing.app.I18n.tr;
 
@@ -82,7 +81,7 @@ public class Base {
 
   public static final Predicate<UserLibrary> CONTRIBUTED = new Predicate<UserLibrary>() {
     @Override
-    public boolean apply(UserLibrary library) {
+    public boolean test(UserLibrary library) {
       return library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
     }
   };
@@ -1143,13 +1142,13 @@ public class Base {
 
   public LibraryList getIDELibs() {
     LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = new LinkedList<UserLibrary>(Collections2.filter(new LinkedList<UserLibrary>(installedLibraries), Predicates.not(CONTRIBUTED)));
+    List<UserLibrary> libs = installedLibraries.stream().filter(CONTRIBUTED.negate()).collect(Collectors.toList());
     return new LibraryList(libs);
   }
 
   public LibraryList getUserLibs() {
     LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = new LinkedList<UserLibrary>(Collections2.filter(new LinkedList<UserLibrary>(installedLibraries), CONTRIBUTED));
+    List<UserLibrary> libs = installedLibraries.stream().filter(CONTRIBUTED).collect(Collectors.toList());
     return new LibraryList(libs);
   }
 
