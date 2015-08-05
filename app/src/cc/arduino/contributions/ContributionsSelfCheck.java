@@ -14,7 +14,7 @@ import javax.swing.*;
 import javax.swing.event.HyperlinkListener;
 import java.util.TimerTask;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class ContributionsSelfCheck extends TimerTask {
 
@@ -59,11 +59,11 @@ public class ContributionsSelfCheck extends TimerTask {
 
     String text;
     if (updatableLibraries > 0 && updatablePlatforms <= 0) {
-      text = I18n.format(_("<br/>Update available for some of your {0}libraries{1}"), "<a href=\"http://librarymanager\">", "</a>");
+      text = I18n.format(tr("<br/>Update available for some of your {0}libraries{1}"), "<a href=\"http://librarymanager\">", "</a>");
     } else if (updatableLibraries <= 0 && updatablePlatforms > 0) {
-      text = I18n.format(_("<br/>Update available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager\">", "</a>");
+      text = I18n.format(tr("<br/>Update available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager\">", "</a>");
     } else {
-      text = I18n.format(_("<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager\">", "</a>", "<a href=\"http://librarymanager\">", "</a>");
+      text = I18n.format(tr("<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager\">", "</a>", "<a href=\"http://librarymanager\">", "</a>");
     }
 
     if (cancelled) {
