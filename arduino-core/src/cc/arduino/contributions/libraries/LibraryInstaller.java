@@ -42,7 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
 
@@ -83,7 +83,7 @@ public class LibraryInstaller {
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     try {
       GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(LIBRARY_INDEX_URL), new URL(LIBRARY_INDEX_URL_GZ));
-      gZippedJsonDownloader.download(tmpFile, progress, _("Downloading libraries index..."));
+      gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."));
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
@@ -96,7 +96,7 @@ public class LibraryInstaller {
     if (outputFile.exists())
       outputFile.delete();
     if (!tmpFile.renameTo(outputFile))
-      throw new Exception(_("An error occurred while updating libraries index!"));
+      throw new Exception(tr("An error occurred while updating libraries index!"));
 
     // Step 2: Rescan index
     rescanLibraryIndex(progress);
@@ -104,7 +104,7 @@ public class LibraryInstaller {
 
   public void install(ContributedLibrary lib, ContributedLibrary replacedLib) throws Exception {
     if (lib.isInstalled()) {
-      System.out.println(I18n.format(_("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
+      System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
@@ -112,7 +112,7 @@ public class LibraryInstaller {
 
     // Step 1: Download library
     try {
-      downloader.download(lib, progress, I18n.format(_("Downloading library: {0}"), lib.getName()));
+      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()));
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
@@ -123,7 +123,7 @@ public class LibraryInstaller {
     // all the temporary folders and abort installation.
 
     // Step 2: Unpack library on the correct location
-    progress.setStatus(I18n.format(_("Installing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
     onProgress(progress);
     File libsFolder = indexer.getSketchbookLibrariesFolder();
     File tmpFolder = FileUtils.createTempFolderIn(libsFolder);
@@ -154,7 +154,7 @@ public class LibraryInstaller {
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Remove library
-    progress.setStatus(I18n.format(_("Removing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Removing library: {0}"), lib.getName()));
     onProgress(progress);
     FileUtils.recursiveDelete(lib.getInstalledFolder());
     progress.stepDone();
@@ -164,7 +164,7 @@ public class LibraryInstaller {
   }
 
   private void rescanLibraryIndex(MultiStepProgress progress) {
-    progress.setStatus(_("Updating list of installed libraries"));
+    progress.setStatus(tr("Updating list of installed libraries"));
     onProgress(progress);
     indexer.rescanLibraries();
     progress.stepDone();

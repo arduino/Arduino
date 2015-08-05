@@ -29,7 +29,7 @@
 
 package processing.app.preproc;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import processing.app.*;
 import processing.app.legacy.PApplet;
 
@@ -423,7 +423,7 @@ public class PdePreprocessor {
           }
         }
         if (!endOfRainbow) {
-          throw new RuntimeException(_("Missing the */ from the end of a " +
+          throw new RuntimeException(tr("Missing the */ from the end of a " +
                                        "/* comment */"));
         }
       } else {  // any old character, move along

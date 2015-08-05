@@ -60,7 +60,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
 public class ContributionsIndexer {
@@ -130,7 +130,7 @@ public class ContributionsIndexer {
       } else {
         if (contributedPackage.isTrusted() || !isPackageNameProtected(contributedPackage)) {
           if (isPackageNameProtected(contributedPackage) && trustall) {
-            System.err.println(I18n.format(_("Warning: forced trusting untrusted contributions")));
+            System.err.println(I18n.format(tr("Warning: forced trusting untrusted contributions")));
           }
           List<ContributedPlatform> platforms = contributedPackage.getPlatforms();
           if (platforms == null) {

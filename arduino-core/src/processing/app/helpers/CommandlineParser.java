@@ -11,7 +11,7 @@ import processing.app.legacy.PApplet;
 import java.io.File;
 import java.util.*;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class CommandlineParser {
 
@@ -61,7 +61,7 @@ public class CommandlineParser {
         if (action != ACTION.GUI && action != ACTION.NOOP) {
           Set<String> strings = actions.keySet();
           String[] valid = strings.toArray(new String[strings.size()]);
-          String mess = I18n.format(_("Can only pass one of: {0}"), PApplet.join(valid, ", "));
+          String mess = I18n.format(tr("Can only pass one of: {0}"), PApplet.join(valid, ", "));
           BaseNoGui.showError(null, mess, 3);
         }
         if (a == ACTION.GET_PREF) {
@@ -73,14 +73,14 @@ public class CommandlineParser {
         if (a == ACTION.INSTALL_BOARD) {
           i++;
           if (i >= args.length) {
-            BaseNoGui.showError(null, I18n.format(_("Argument required for {0}"), a.value), 3);
+            BaseNoGui.showError(null, I18n.format(tr("Argument required for {0}"), a.value), 3);
           }
           boardToInstall = args[i];
         }
         if (a == ACTION.INSTALL_LIBRARY) {
           i++;
           if (i >= args.length) {
-            BaseNoGui.showError(null, I18n.format(_("Argument required for {0}"), a.value), 3);
+            BaseNoGui.showError(null, I18n.format(tr("Argument required for {0}"), a.value), 3);
           }
           libraryToInstall = args[i];
         }
@@ -131,7 +131,7 @@ public class CommandlineParser {
       if (args[i].equals("--board")) {
         i++;
         if (i >= args.length)
-          BaseNoGui.showError(null, _("Argument required for --board"), 3);
+          BaseNoGui.showError(null, tr("Argument required for --board"), 3);
         if (action == ACTION.GUI)
           action = ACTION.NOOP;
         continue;
@@ -139,14 +139,14 @@ public class CommandlineParser {
       if (args[i].equals("--port")) {
         i++;
         if (i >= args.length)
-          BaseNoGui.showError(null, _("Argument required for --port"), 3);
+          BaseNoGui.showError(null, tr("Argument required for --port"), 3);
         BaseNoGui.selectSerialPort(args[i]);
         if (action == ACTION.GUI)
           action = ACTION.NOOP;
         continue;
       }
       if (args[i].equals("--curdir")) {
-        BaseNoGui.showError(null, _("--curdir no longer supported"), 3);
+        BaseNoGui.showError(null, tr("--curdir no longer supported"), 3);
         return;
       }
       if (args[i].equals("--buildpath")) {
@@ -167,7 +167,7 @@ public class CommandlineParser {
       if (args[i].equals("--pref")) {
         i++;
         if (i >= args.length)
-          BaseNoGui.showError(null, _("Argument required for --pref"), 3);
+          BaseNoGui.showError(null, tr("Argument required for --pref"), 3);
         processPrefArgument(args[i]);
         if (action == ACTION.GUI)
           action = ACTION.NOOP;
@@ -180,12 +180,12 @@ public class CommandlineParser {
       if (args[i].equals("--preferences-file")) {
         i++;
         if (i >= args.length)
-          BaseNoGui.showError(null, _("Argument required for --preferences-file"), 3);
+          BaseNoGui.showError(null, tr("Argument required for --preferences-file"), 3);
         // Argument should be already processed by Base.main(...)
         continue;
       }
       if (args[i].startsWith("--"))
-        BaseNoGui.showError(null, I18n.format(_("unknown option: {0}"), args[i]), 3);
+        BaseNoGui.showError(null, I18n.format(tr("unknown option: {0}"), args[i]), 3);
 
       filenames.add(args[i]);
     }
@@ -198,7 +198,7 @@ public class CommandlineParser {
       if (args[i].equals("--board")) {
         i++;
         if (i >= args.length) {
-          BaseNoGui.showError(null, _("Argument required for --board"), 3);
+          BaseNoGui.showError(null, tr("Argument required for --board"), 3);
         }
         processBoardArgument(args[i]);
         if (action == ACTION.GUI) {
@@ -210,13 +210,13 @@ public class CommandlineParser {
 
   private void checkAction() {
     if ((action == ACTION.UPLOAD || action == ACTION.VERIFY) && filenames.size() != 1)
-      BaseNoGui.showError(null, _("Must specify exactly one sketch file"), 3);
+      BaseNoGui.showError(null, tr("Must specify exactly one sketch file"), 3);
 
     if ((action == ACTION.NOOP || action == ACTION.GET_PREF) && filenames.size() != 0)
-      BaseNoGui.showError(null, _("Cannot specify any sketch files"), 3);
+      BaseNoGui.showError(null, tr("Cannot specify any sketch files"), 3);
 
     if ((action != ACTION.UPLOAD && action != ACTION.VERIFY) && (doVerboseBuild || doVerboseUpload))
-      BaseNoGui.showError(null, _("--verbose, --verbose-upload and --verbose-build can only be used together with --verify or --upload"), 3);
+      BaseNoGui.showError(null, tr("--verbose, --verbose-upload and --verbose-build can only be used together with --verify or --upload"), 3);
   }
 
   private void processBoardArgument(String selectBoard) {
@@ -227,24 +227,24 @@ public class CommandlineParser {
     String[] split = selectBoard.split(":", 4);
 
     if (split.length < 3) {
-      BaseNoGui.showError(null, I18n.format(_("{0}: Invalid board name, it should be of the form \"package:arch:board\" or \"package:arch:board:options\""), selectBoard), 3);
+      BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid board name, it should be of the form \"package:arch:board\" or \"package:arch:board:options\""), selectBoard), 3);
     }
 
     TargetPackage targetPackage = BaseNoGui.getTargetPackage(split[0]);
     if (targetPackage == null) {
-      BaseNoGui.showError(null, I18n.format(_("{0}: Unknown package"), split[0]), 3);
+      BaseNoGui.showError(null, I18n.format(tr("{0}: Unknown package"), split[0]), 3);
       return;
     }
 
     TargetPlatform targetPlatform = targetPackage.get(split[1]);
     if (targetPlatform == null) {
-      BaseNoGui.showError(null, I18n.format(_("{0}: Unknown architecture"), split[1]), 3);
+      BaseNoGui.showError(null, I18n.format(tr("{0}: Unknown architecture"), split[1]), 3);
       return;
     }
 
     TargetBoard targetBoard = targetPlatform.getBoard(split[2]);
     if (targetBoard == null || !targetBoard.getId().equals(split[2])) {
-      BaseNoGui.showError(null, I18n.format(_("{0}: Unknown board"), split[2]), 3);
+      BaseNoGui.showError(null, I18n.format(tr("{0}: Unknown board"), split[2]), 3);
       return;
     }
 
@@ -256,14 +256,14 @@ public class CommandlineParser {
         String[] keyValue = option.split("=", 2);
 
         if (keyValue.length != 2)
-          BaseNoGui.showError(null, I18n.format(_("{0}: Invalid option, should be of the form \"name=value\""), option, targetBoard.getId()), 3);
+          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option, should be of the form \"name=value\""), option, targetBoard.getId()), 3);
         String key = keyValue[0].trim();
         String value = keyValue[1].trim();
 
         if (!targetBoard.hasMenu(key))
-          BaseNoGui.showError(null, I18n.format(_("{0}: Invalid option for board \"{1}\""), key, targetBoard.getId()), 3);
+          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option for board \"{1}\""), key, targetBoard.getId()), 3);
         if (targetBoard.getMenuLabel(key, value) == null)
-          BaseNoGui.showError(null, I18n.format(_("{0}: Invalid option for \"{1}\" option for board \"{2}\""), value, key, targetBoard.getId()), 3);
+          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option for \"{1}\" option for board \"{2}\""), value, key, targetBoard.getId()), 3);
 
         PreferencesData.set("custom_" + key, targetBoard.getId() + "_" + value);
       }
@@ -273,7 +273,7 @@ public class CommandlineParser {
   private void processPrefArgument(String arg) {
     String[] split = arg.split("=", 2);
     if (split.length != 2 || split[0].isEmpty())
-      BaseNoGui.showError(null, I18n.format(_("{0}: Invalid argument to --pref, should be of the form \"pref=value\""), arg), 3);
+      BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid argument to --pref, should be of the form \"pref=value\""), arg), 3);
 
     PreferencesData.set(split[0], split[1]);
   }

@@ -35,12 +35,12 @@ import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class DropdownAllCoresItem implements DropdownItem<ContributedPlatform> {
 
   public String toString() {
-    return _("All");
+    return tr("All");
   }
 
   @Override

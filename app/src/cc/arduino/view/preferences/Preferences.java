@@ -42,7 +42,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.LinkedList;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class Preferences extends javax.swing.JDialog {
 
@@ -99,92 +99,92 @@ public class Preferences extends javax.swing.JDialog {
     this.base = base;
 
     this.languages = new Language[]{
-      new Language(_("System Default"), "", ""),
-      new Language(_("Albanian"), "shqip", "sq"),
-      new Language(_("Arabic"), "العربية", "ar"),
-      new Language(_("Aragonese"), "Aragonés", "an"),
-      new Language(_("Belarusian"), "Беларуская мова", "be"),
-      new Language(_("Bulgarian"), "български", "bg"),
-      new Language(_("Catalan"), "Català", "ca"),
-      new Language(_("Chinese Simplified"), "简体中文", "zh_CN"),
-      new Language(_("Chinese Traditional"), "繁體中文", "zh_TW"),
-      new Language(_("Croatian"), "Hrvatski", "hr_HR"),
-      new Language(_("Czech (Czech Republic)"), "český (Czech Republic)", "cs_CZ"),
-      new Language(_("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
-      new Language(_("Dutch"), "Nederlands", "nl"),
-      new Language(_("English"), "English", "en"),
-      new Language(_("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
-      new Language(_("Estonian"), "Eesti", "et"),
-      new Language(_("Estonian (Estonia)"), "Eesti keel", "et_EE"),
-      new Language(_("Filipino"), "Pilipino", "fil"),
-      new Language(_("Finnish"), "Suomi", "fi"),
-      new Language(_("French"), "Français", "fr"),
-      new Language(_("Canadian French"), "Canadienne-français", "fr_CA"),
-      new Language(_("Galician"), "Galego", "gl"),
-      new Language(_("Georgian"), "საქართველოს", "ka_GE"),
-      new Language(_("German"), "Deutsch", "de_DE"),
-      new Language(_("Greek"), "ελληνικά", "el_GR"),
-      new Language(_("Hebrew"), "עברית", "he"),
-      new Language(_("Hindi"), "हिंदी", "hi"),
-      new Language(_("Hungarian"), "Magyar", "hu"),
-      new Language(_("Indonesian"), "Bahasa Indonesia", "id"),
-      new Language(_("Italian"), "Italiano", "it_IT"),
-      new Language(_("Japanese"), "日本語", "ja_JP"),
-      new Language(_("Korean"), "한국어", "ko_KR"),
-      new Language(_("Latvian"), "Latviešu", "lv_LV"),
-      new Language(_("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
-      new Language(_("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
-      new Language(_("Persian"), "فارسی", "fa"),
-      new Language(_("Polish"), "Język Polski", "pl"),
-      new Language(_("Portuguese (Brazil)"), "Português (Brazil)", "pt_BR"),
-      new Language(_("Portuguese (Portugal)"), "Português (Portugal)", "pt_PT"),
-      new Language(_("Romanian"), "Română", "ro"),
-      new Language(_("Russian"), "Русский", "ru"),
-      new Language(_("Slovenian"), "Slovenščina", "sl_SI"),
-      new Language(_("Spanish"), "Español", "es"),
-      new Language(_("Swedish"), "Svenska", "sv"),
-      new Language(_("Tamil"), "தமிழ்", "ta"),
-      new Language(_("Turkish"), "Türk", "tr"),
-      new Language(_("Ukrainian"), "Український", "uk"),
-      new Language(_("Vietnamese"), "Tiếng Việt", "vi"),
+      new Language(tr("System Default"), "", ""),
+      new Language(tr("Albanian"), "shqip", "sq"),
+      new Language(tr("Arabic"), "العربية", "ar"),
+      new Language(tr("Aragonese"), "Aragonés", "an"),
+      new Language(tr("Belarusian"), "Беларуская мова", "be"),
+      new Language(tr("Bulgarian"), "български", "bg"),
+      new Language(tr("Catalan"), "Català", "ca"),
+      new Language(tr("Chinese Simplified"), "简体中文", "zh_CN"),
+      new Language(tr("Chinese Traditional"), "繁體中文", "zh_TW"),
+      new Language(tr("Croatian"), "Hrvatski", "hr_HR"),
+      new Language(tr("Czech (Czech Republic)"), "český (Czech Republic)", "cs_CZ"),
+      new Language(tr("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
+      new Language(tr("Dutch"), "Nederlands", "nl"),
+      new Language(tr("English"), "English", "en"),
+      new Language(tr("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
+      new Language(tr("Estonian"), "Eesti", "et"),
+      new Language(tr("Estonian (Estonia)"), "Eesti keel", "et_EE"),
+      new Language(tr("Filipino"), "Pilipino", "fil"),
+      new Language(tr("Finnish"), "Suomi", "fi"),
+      new Language(tr("French"), "Français", "fr"),
+      new Language(tr("Canadian French"), "Canadienne-français", "fr_CA"),
+      new Language(tr("Galician"), "Galego", "gl"),
+      new Language(tr("Georgian"), "საქართველოს", "ka_GE"),
+      new Language(tr("German"), "Deutsch", "de_DE"),
+      new Language(tr("Greek"), "ελληνικά", "el_GR"),
+      new Language(tr("Hebrew"), "עברית", "he"),
+      new Language(tr("Hindi"), "हिंदी", "hi"),
+      new Language(tr("Hungarian"), "Magyar", "hu"),
+      new Language(tr("Indonesian"), "Bahasa Indonesia", "id"),
+      new Language(tr("Italian"), "Italiano", "it_IT"),
+      new Language(tr("Japanese"), "日本語", "ja_JP"),
+      new Language(tr("Korean"), "한국어", "ko_KR"),
+      new Language(tr("Latvian"), "Latviešu", "lv_LV"),
+      new Language(tr("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
+      new Language(tr("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
+      new Language(tr("Persian"), "فارسی", "fa"),
+      new Language(tr("Polish"), "Język Polski", "pl"),
+      new Language(tr("Portuguese (Brazil)"), "Português (Brazil)", "pt_BR"),
+      new Language(tr("Portuguese (Portugal)"), "Português (Portugal)", "pt_PT"),
+      new Language(tr("Romanian"), "Română", "ro"),
+      new Language(tr("Russian"), "Русский", "ru"),
+      new Language(tr("Slovenian"), "Slovenščina", "sl_SI"),
+      new Language(tr("Spanish"), "Español", "es"),
+      new Language(tr("Swedish"), "Svenska", "sv"),
+      new Language(tr("Tamil"), "தமிழ்", "ta"),
+      new Language(tr("Turkish"), "Türk", "tr"),
+      new Language(tr("Ukrainian"), "Український", "uk"),
+      new Language(tr("Vietnamese"), "Tiếng Việt", "vi"),
     };
 
     this.missingLanguages = new Language[]{
-      new Language(_("Afrikaans"), "Afrikaans", "af"),
-      new Language(_("Armenian"), "Հայերեն", "hy"),
-      new Language(_("Asturian"), "Asturianu", "ast"),
-      new Language(_("Basque"), "Euskara", "eu"),
-      new Language(_("Bengali (India)"), "বাংলা (India)", "bn_IN"),
-      new Language(_("Bosnian"), "Bosanski", "bs"),
-      new Language(_("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
-      new Language(_("Chinese (China)"), "", "zh_CN"),
-      new Language(_("Chinese (Hong Kong)"), "", "zh_HK"),
-      new Language(_("Chinese (Taiwan)"), "", "zh_TW"),
-      new Language(_("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
-      new Language(_("Czech"), "český", "cs"),
-      new Language(_("Danish"), "Dansk", "da"),
-      new Language(_("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
-      new Language(_("Galician (Spain)"), "Galego (Spain)", "gl_ES"),
-      new Language(_("Nepali"), "नेपाली", "ne"),
-      new Language(_("N'Ko"), "ߒߞߏ", "nqo"),
-      new Language(_("Marathi"), "मराठी", "mr"),
-      new Language(_("Malay (Malaysia)"), "بهاس ملايو (Malaysia)", "ms_MY"),
-      new Language(_("Norwegian"), "Norsk", "no"),
-      new Language(_("Norwegian Nynorsk"), "Norsk Nynorsk", "nn"),
-      new Language(_("Portugese"), "Português", "pt"),
-      new Language(_("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
-      new Language(_("Slovak"), "Slovenčina", "sk"),
-      new Language(_("Swahili"), "كِسوَهِل", "sw"),
-      new Language(_("Talossan"), "Talossan", "tzl"),
-      new Language(_("Urdu (Pakistan)"), "اردو (Pakistan)", "ur_PK"),
-      new Language(_("Western Frisian"), "Western Frisian", "fy"),
+      new Language(tr("Afrikaans"), "Afrikaans", "af"),
+      new Language(tr("Armenian"), "Հայերեն", "hy"),
+      new Language(tr("Asturian"), "Asturianu", "ast"),
+      new Language(tr("Basque"), "Euskara", "eu"),
+      new Language(tr("Bengali (India)"), "বাংলা (India)", "bn_IN"),
+      new Language(tr("Bosnian"), "Bosanski", "bs"),
+      new Language(tr("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
+      new Language(tr("Chinese (China)"), "", "zh_CN"),
+      new Language(tr("Chinese (Hong Kong)"), "", "zh_HK"),
+      new Language(tr("Chinese (Taiwan)"), "", "zh_TW"),
+      new Language(tr("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
+      new Language(tr("Czech"), "český", "cs"),
+      new Language(tr("Danish"), "Dansk", "da"),
+      new Language(tr("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
+      new Language(tr("Galician (Spain)"), "Galego (Spain)", "gl_ES"),
+      new Language(tr("Nepali"), "नेपाली", "ne"),
+      new Language(tr("N'Ko"), "ߒߞߏ", "nqo"),
+      new Language(tr("Marathi"), "मराठी", "mr"),
+      new Language(tr("Malay (Malaysia)"), "بهاس ملايو (Malaysia)", "ms_MY"),
+      new Language(tr("Norwegian"), "Norsk", "no"),
+      new Language(tr("Norwegian Nynorsk"), "Norsk Nynorsk", "nn"),
+      new Language(tr("Portugese"), "Português", "pt"),
+      new Language(tr("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
+      new Language(tr("Slovak"), "Slovenčina", "sk"),
+      new Language(tr("Swahili"), "كِسوَهِل", "sw"),
+      new Language(tr("Talossan"), "Talossan", "tzl"),
+      new Language(tr("Urdu (Pakistan)"), "اردو (Pakistan)", "ur_PK"),
+      new Language(tr("Western Frisian"), "Western Frisian", "fy"),
     };
 
     this.warningItems = new WarningItem[]{
-      new WarningItem("none", _("None")),
-      new WarningItem("default", _("Default")),
-      new WarningItem("more", _("More")),
-      new WarningItem("all", _("All"))
+      new WarningItem("none", tr("None")),
+      new WarningItem("default", tr("Default")),
+      new WarningItem("more", tr("More")),
+      new WarningItem("all", tr("All"))
     };
 
     initComponents();
@@ -234,11 +234,11 @@ public class Preferences extends javax.swing.JDialog {
     saveVerifyUploadBox = new javax.swing.JCheckBox();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle(_("Preferences"));
+    setTitle(tr("Preferences"));
     setModal(true);
     setResizable(false);
 
-    sketchbookLocationLabel.setText(_("Sketchbook location:"));
+    sketchbookLocationLabel.setText(tr("Sketchbook location:"));
 
     sketchbookLocationField.setColumns(40);
 
@@ -249,26 +249,26 @@ public class Preferences extends javax.swing.JDialog {
       }
     });
 
-    comboLanguageLabel.setText(_("Editor language: "));
+    comboLanguageLabel.setText(tr("Editor language: "));
 
-    requiresRestartLabel.setText(_("  (requires restart of Arduino)"));
+    requiresRestartLabel.setText(tr("  (requires restart of Arduino)"));
 
-    fontSizeLabel.setText(_("Editor font size: "));
+    fontSizeLabel.setText(tr("Editor font size: "));
 
     fontSizeField.setColumns(4);
 
-    showVerboseLabel.setText(_("Show verbose output during: "));
+    showVerboseLabel.setText(tr("Show verbose output during: "));
 
-    verboseCompilationBox.setText(_("compilation "));
+    verboseCompilationBox.setText(tr("compilation "));
 
-    verboseUploadBox.setText(_("upload"));
+    verboseUploadBox.setText(tr("upload"));
 
-    comboWarningsLabel.setText(_("Compiler warnings: "));
+    comboWarningsLabel.setText(tr("Compiler warnings: "));
 
-    additionalBoardsManagerLabel.setText(_("Additional Boards Manager URLs: "));
-    additionalBoardsManagerLabel.setToolTipText(_("Enter a comma separated list of urls"));
+    additionalBoardsManagerLabel.setText(tr("Additional Boards Manager URLs: "));
+    additionalBoardsManagerLabel.setToolTipText(tr("Enter a comma separated list of urls"));
 
-    additionalBoardsManagerField.setToolTipText(_("Enter a comma separated list of urls"));
+    additionalBoardsManagerField.setToolTipText(tr("Enter a comma separated list of urls"));
 
     extendedAdditionalUrlFieldWindow.setIcon(new ImageIcon(Base.getThemeImage("newwindow.gif", this)));
     extendedAdditionalUrlFieldWindow.setMargin(new java.awt.Insets(1, 1, 1, 1));
@@ -279,7 +279,7 @@ public class Preferences extends javax.swing.JDialog {
     });
 
     morePreferencesLabel.setForeground(Color.GRAY);
-    morePreferencesLabel.setText(_("More preferences can be edited directly in the file"));
+    morePreferencesLabel.setText(tr("More preferences can be edited directly in the file"));
 
     preferencesFileLabel.setText(PreferencesData.getPreferencesFile().getAbsolutePath());
     preferencesFileLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -298,7 +298,7 @@ public class Preferences extends javax.swing.JDialog {
     });
 
     arduinoNotRunningLabel.setForeground(Color.GRAY);
-    arduinoNotRunningLabel.setText(_("(edit only when Arduino is not running)"));
+    arduinoNotRunningLabel.setText(tr("(edit only when Arduino is not running)"));
 
     okButton.setText(I18n.PROMPT_OK);
     okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -316,25 +316,25 @@ public class Preferences extends javax.swing.JDialog {
 
     checkboxesContainer.setLayout(new javax.swing.BoxLayout(checkboxesContainer, javax.swing.BoxLayout.Y_AXIS));
 
-    displayLineNumbersBox.setText(_("Display line numbers"));
+    displayLineNumbersBox.setText(tr("Display line numbers"));
     checkboxesContainer.add(displayLineNumbersBox);
 
-    enableCodeFoldingBox.setText(_("Enable Code Folding"));
+    enableCodeFoldingBox.setText(tr("Enable Code Folding"));
     checkboxesContainer.add(enableCodeFoldingBox);
 
-    verifyUploadBox.setText(_("Verify code after upload"));
+    verifyUploadBox.setText(tr("Verify code after upload"));
     checkboxesContainer.add(verifyUploadBox);
 
-    externalEditorBox.setText(_("Use external editor"));
+    externalEditorBox.setText(tr("Use external editor"));
     checkboxesContainer.add(externalEditorBox);
 
-    checkUpdatesBox.setText(_("Check for updates on startup"));
+    checkUpdatesBox.setText(tr("Check for updates on startup"));
     checkboxesContainer.add(checkUpdatesBox);
 
-    updateExtensionBox.setText(_("Update sketch files to new extension on save (.pde -> .ino)"));
+    updateExtensionBox.setText(tr("Update sketch files to new extension on save (.pde -> .ino)"));
     checkboxesContainer.add(updateExtensionBox);
 
-    saveVerifyUploadBox.setText(_("Save when verifying or uploading"));
+    saveVerifyUploadBox.setText(tr("Save when verifying or uploading"));
     checkboxesContainer.add(saveVerifyUploadBox);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -442,7 +442,7 @@ public class Preferences extends javax.swing.JDialog {
 
   private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseButtonActionPerformed
     File dflt = new File(sketchbookLocationField.getText());
-    File file = Base.selectFolder(_("Select new sketchbook location"), dflt, this);
+    File file = Base.selectFolder(tr("Select new sketchbook location"), dflt, this);
     if (file != null) {
       String path = file.getAbsolutePath();
       if (BaseNoGui.getPortableFolder() != null) {
@@ -481,7 +481,7 @@ public class Preferences extends javax.swing.JDialog {
   private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
     java.util.List<String> errors = validateData();
     if (!errors.isEmpty()) {
-      Base.showWarning(_("Error"), errors.get(0), null);
+      Base.showWarning(tr("Error"), errors.get(0), null);
       return;
     }
 
@@ -511,7 +511,7 @@ public class Preferences extends javax.swing.JDialog {
   private java.util.List<String> validateData() {
     java.util.List<String> errors = new LinkedList<>();
     if (FileUtils.isSubDirectory(new File(sketchbookLocationField.getText()), new File(PreferencesData.get("runtime.ide.path")))) {
-      errors.add(_("The specified sketchbook folder contains your copy of the IDE.\nPlease choose a different folder for your sketchbook."));
+      errors.add(tr("The specified sketchbook folder contains your copy of the IDE.\nPlease choose a different folder for your sketchbook."));
     }
     return errors;
   }
@@ -542,7 +542,7 @@ public class Preferences extends javax.swing.JDialog {
       PreferencesData.set("editor.font", PApplet.join(pieces, ','));
 
     } catch (Exception e) {
-      System.err.println(I18n.format(_("ignoring invalid font size {0}"), newSizeText));
+      System.err.println(I18n.format(tr("ignoring invalid font size {0}"), newSizeText));
     }
 
     // put each of the settings into the table

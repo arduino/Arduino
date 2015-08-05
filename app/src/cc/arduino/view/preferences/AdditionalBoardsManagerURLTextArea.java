@@ -40,7 +40,7 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
 
@@ -70,7 +70,7 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
     unofficialListURLLabel = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle(_("Additional Boards Manager URLs"));
+    setTitle(tr("Additional Boards Manager URLs"));
     setModal(true);
     setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -79,23 +79,23 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
     additionalBoardsManagerURLs.setName(""); // NOI18N
     jScrollPane1.setViewportView(additionalBoardsManagerURLs);
 
-    cancel.setText(_("Cancel"));
+    cancel.setText(tr("Cancel"));
     cancel.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         cancelActionPerformed(evt);
       }
     });
 
-    ok.setText(_("OK"));
+    ok.setText(tr("OK"));
     ok.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         okActionPerformed(evt);
       }
     });
 
-    jLabel1.setText(_("Enter additional URLs, one for each row"));
+    jLabel1.setText(tr("Enter additional URLs, one for each row"));
 
-    unofficialListURLLabel.setText(_("Click for a list of unofficial boards support URLs"));
+    unofficialListURLLabel.setText(tr("Click for a list of unofficial boards support URLs"));
     unofficialListURLLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     unofficialListURLLabel.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {

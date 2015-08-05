@@ -48,7 +48,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class BuiltInCoreIsNewerCheck implements Runnable {
 
@@ -93,7 +93,7 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       SwingUtilities.invokeLater(() -> {
         PreferencesData.setInteger("builtin_platform_is_newer", BaseNoGui.REVISION);
         assert base.hasActiveEditor();
-        int chosenOption = JOptionPane.showConfirmDialog(base.getActiveEditor(), I18n.format(_("The IDE includes an updated {0} package, but you're using an older one.\nDo you want to upgrade {0}?"), installedBuiltIn.getName()), I18n.format(_("A newer {0} package is available"), installedBuiltIn.getName()), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int chosenOption = JOptionPane.showConfirmDialog(base.getActiveEditor(), I18n.format(tr("The IDE includes an updated {0} package, but you're using an older one.\nDo you want to upgrade {0}?"), installedBuiltIn.getName()), I18n.format(tr("A newer {0} package is available"), installedBuiltIn.getName()), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (chosenOption == JOptionPane.YES_OPTION) {
           Action openBoardsManager = base.getOpenBoardsManager();
           Event event = new Event(base.getActiveEditor(), ActionEvent.ACTION_PERFORMED, installedBuiltIn.getName());

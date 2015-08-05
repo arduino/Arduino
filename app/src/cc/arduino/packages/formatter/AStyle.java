@@ -42,7 +42,7 @@ import javax.swing.text.BadLocationException;
 import java.io.File;
 import java.io.IOException;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class AStyle implements Tool {
 
@@ -84,7 +84,7 @@ public class AStyle implements Tool {
     String formattedText = aStyleInterface.AStyleMain(originalText, formatterConfiguration);
 
     if (formattedText.equals(originalText)) {
-      editor.statusNotice(_("No changes necessary for Auto Format."));
+      editor.statusNotice(tr("No changes necessary for Auto Format."));
       return;
     }
 
@@ -107,7 +107,7 @@ public class AStyle implements Tool {
     }
 
     // mark as finished
-    editor.statusNotice(_("Auto Format finished."));
+    editor.statusNotice(tr("Auto Format finished."));
   }
 
   private void setCaretPosition(SketchTextArea textArea, int line, int lineOffset) throws BadLocationException {
@@ -140,7 +140,7 @@ public class AStyle implements Tool {
 
   @Override
   public String getMenuTitle() {
-    return _("Auto Format");
+    return tr("Auto Format");
   }
 
 }

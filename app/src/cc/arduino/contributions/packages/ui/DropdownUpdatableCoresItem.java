@@ -7,7 +7,7 @@ import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class DropdownUpdatableCoresItem implements DropdownItem<ContributedPlatform> {
 
@@ -24,7 +24,7 @@ public class DropdownUpdatableCoresItem implements DropdownItem<ContributedPlatf
 
   @Override
   public String toString() {
-    return _("Updatable");
+    return tr("Updatable");
   }
 
   @Override

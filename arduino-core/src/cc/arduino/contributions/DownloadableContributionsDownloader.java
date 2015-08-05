@@ -40,7 +40,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
 
 public class DownloadableContributionsDownloader {
@@ -68,13 +68,13 @@ public class DownloadableContributionsDownloader {
     }
 
     // Test checksum
-    progress.setStatus(_("Verifying archive integrity..."));
+    progress.setStatus(tr("Verifying archive integrity..."));
     onProgress(progress);
     String checksum = contribution.getChecksum();
     if (hasChecksum(contribution)) {
       String algo = checksum.split(":")[0];
       if (!FileHash.hash(outputFile.toFile(), algo).equalsIgnoreCase(checksum)) {
-        throw new Exception(_("CRC doesn't match. File is corrupted."));
+        throw new Exception(tr("CRC doesn't match. File is corrupted."));
       }
     }
 
@@ -102,7 +102,7 @@ public class DownloadableContributionsDownloader {
       if (me.getDownloadSize() != null) {
         long downloaded = (me.getInitialSize() + me.getDownloaded()) / 1000;
         long total = (me.getInitialSize() + me.getDownloadSize()) / 1000;
-        msg = format(_("Downloaded {0}kb of {1}kb."), downloaded, total);
+        msg = format(tr("Downloaded {0}kb of {1}kb."), downloaded, total);
       }
       progress.setStatus(statusText + " " + msg);
       progress.setProgress(me.getProgress());
@@ -110,7 +110,7 @@ public class DownloadableContributionsDownloader {
     });
     downloader.download();
     if (!downloader.isCompleted()) {
-      throw new Exception(format(_("Error downloading {0}"), url), downloader.getError());
+      throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }
   }
 

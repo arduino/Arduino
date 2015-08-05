@@ -55,7 +55,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
 
 @SuppressWarnings("serial")
@@ -75,20 +75,20 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
 
   public ContributedPlatformTableCell() {
     {
-      installButton = new JButton(_("Install"));
+      installButton = new JButton(tr("Install"));
       installButton.addActionListener(e -> onInstall(editorValue.getSelected(), editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
     {
-      removeButton = new JButton(_("Remove"));
+      removeButton = new JButton(tr("Remove"));
       removeButton.addActionListener(e -> onRemove(editorValue.getInstalled()));
       int width = removeButton.getPreferredSize().width;
       removeButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
-    downgradeButton = new JButton(_("Install"));
+    downgradeButton = new JButton(tr("Install"));
     downgradeButton.addActionListener(e -> {
       ContributedPlatform selected = (ContributedPlatform) downgradeChooser.getSelectedItem();
       onInstall(selected, editorValue.getInstalled());
@@ -246,7 +246,7 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     Collections.sort(uninstalledReleases, new ReverseComparator<>(new DownloadableContributionVersionComparator()));
 
     downgradeChooser.removeAllItems();
-    downgradeChooser.addItem(_("Select version"));
+    downgradeChooser.addItem(tr("Select version"));
 
     final java.util.List<ContributedPlatform> uninstalledPreviousReleases = Lists.newLinkedList();
     final java.util.List<ContributedPlatform> uninstalledNewerReleases = Lists.newLinkedList();
@@ -300,10 +300,10 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
     }
     if (installable) {
-      installButton.setText(_("Install"));
+      installButton.setText(tr("Install"));
     }
     if (upgradable) {
-      installButton.setText(_("Update"));
+      installButton.setText(tr("Update"));
     }
     installButton.setVisible(installable || upgradable);
     installButtonPlaceholder.setVisible(!(installable || upgradable));
@@ -321,11 +321,11 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       desc += " " + format("by <b>{0}</b>", author);
     }
     if (installed != null) {
-      desc += " " + format(_("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
+      desc += " " + format(tr("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
     desc += "<br />";
 
-    desc += _("Boards included in this package:") + "<br />";
+    desc += tr("Boards included in this package:") + "<br />";
     for (ContributedBoard board : selected.getBoards()) {
       desc += board.getName() + ", ";
     }
