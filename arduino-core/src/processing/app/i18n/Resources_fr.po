@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 12:01+0000\n"
+"PO-Revision-Date: 2015-08-06 20:18+0000\n"
 "Last-Translator: Lucas Mascaro <mascaro.lucas@yahoo.fr>\n"
 "Language-Team: French (http://www.transifex.com/mbanzi/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -87,13 +87,6 @@ msgstr "<br/> Mise a jour disponible pour certaine des vos {0}cartes{1} et {2}bi
 msgid "<br/>Update available for some of your {0}libraries{1}"
 msgstr "<br/> Mise a jour disponible pour certaine des vos {0}bibliothèques{1}"
 
-#: Base.java:773
-msgid ""
-"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
-" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
-"sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Êtes-vous certain de vouloir quitter? </b><p> Fermer le dernier croquis ouvert quittera l'environnement Arduino."
-
 #: Editor.java:2053
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
@@ -128,12 +121,6 @@ msgstr "Une nouvelle version d'Arduino est disponible,\nvoulez-vous visiter la p
 msgid "A newer {0} package is available"
 msgstr "Un nouveau paquet {0} est disponible"
 
-#: EditorConsole.java:153
-msgid ""
-"A problem occurred while trying to open the\n"
-"files used to store the console output."
-msgstr "Un problème est survenu lors de l'ouverture\ndes fichiers contenant la sortie de console."
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "Un sous-dossier de votre carnet de croquis n'est pas une bibliothèque valide"
@@ -149,10 +136,6 @@ msgstr "Ajouter la bibliothèque .ZIP"
 #: Editor.java:650
 msgid "Add File..."
 msgstr "Ajouter un fichier..."
-
-#: Base.java:963
-msgid "Add Library..."
-msgstr "Ajouter bibliothèque..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
@@ -259,13 +242,6 @@ msgid ""
 "create a folder to store your sketchbook."
 msgstr "Arduino n'a pas pu s'exécuter car il n'a pas pu\ncréer de dossier pour enregistrer votre carnet de croquis."
 
-#: Base.java:240
-msgid ""
-"Arduino requires a full JDK (not just a JRE)\n"
-"to run. Please install JDK 1.5 or later.\n"
-"More information can be found in the reference."
-msgstr "Arduino nécessite le JDK complet (pas seulement un JRE)\nafin de s'exécuter. Veuillez installer JDK 1.5 ou ultérieur.\nPlus d'informations peuvent être trouvées dans la documentation."
-
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
 msgstr "Arduino : "
@@ -282,14 +258,6 @@ msgstr "Êtes-vous certain de vouloir supprimer ce croquis ?"
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
 msgstr "Paramètre obligatoire avec --board"
-
-#: ../../../processing/app/Base.java:370
-msgid "Argument required for --curdir"
-msgstr "Paramètre obligatoire avec --curdir"
-
-#: ../../../processing/app/Base.java:385
-msgid "Argument required for --get-pref"
-msgstr "Paramètre obligatoire avec --get-pref"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -325,29 +293,9 @@ msgstr "Autorisation requise"
 msgid "Auto Format"
 msgstr "Formatage automatique"
 
-#: tools/AutoFormat.java:934
-msgid "Auto Format Canceled: Too many left curly braces."
-msgstr "Formatage automatique annulé, trop d'accolades ouvrantes."
-
-#: tools/AutoFormat.java:925
-msgid "Auto Format Canceled: Too many left parentheses."
-msgstr "Formatage automatique annulé, trop de parenthèses ouvrantes."
-
-#: tools/AutoFormat.java:931
-msgid "Auto Format Canceled: Too many right curly braces."
-msgstr "Formatage automatique annulé, trop d'accolades fermantes."
-
-#: tools/AutoFormat.java:922
-msgid "Auto Format Canceled: Too many right parentheses."
-msgstr "Formatage automatique annulé, trop de parenthèses fermantes."
-
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "Formatage automatique terminé."
-
-#: Preferences.java:439
-msgid "Automatically associate .ino files with Arduino"
-msgstr "Associer automatiquement les fichiers .ino avec Arduino"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -533,10 +481,6 @@ msgstr "Avertissement du compilateur:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Compilation du croquis..."
-
-#: EditorConsole.java:152
-msgid "Console Error"
-msgstr "Erreur de console"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -885,10 +829,6 @@ msgstr "Problème d'obtention du dossier de données d'Arduino"
 msgid "Error inside Serial.{0}()"
 msgstr "Erreur dans Serial.{0}()"
 
-#: ../../../processing/app/Base.java:1232
-msgid "Error loading libraries"
-msgstr "Erreur lors du chargement de bibliothèque"
-
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -986,10 +926,6 @@ msgstr "estonien (Estonie)"
 msgid "Examples"
 msgstr "Exemples"
 
-#: Editor.java:2482
-msgid "Export canceled, changes must first be saved."
-msgstr "Exportation annulée, les changements doivent d'abord être enregistrés."
-
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
 msgstr "Exporter les binaires compilées"
@@ -1043,12 +979,6 @@ msgstr "finnois"
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
 msgstr "Réparer encodage & recharger"
-
-#: Base.java:1851
-msgid ""
-"For information on installing libraries, see: "
-"http://arduino.cc/en/Guide/Libraries\n"
-msgstr "Pour plus de renseignement concernant l'installation de bibliothèque, veuillez vous référer à : http://arduino.cc/en/Guide/Libraries\n"
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1147,10 +1077,6 @@ msgstr "Ignore la bibliothèque mal nommée"
 msgid "Ignoring sketch with bad name"
 msgstr "Ignore un croquis mal nommé"
 
-#: Editor.java:636
-msgid "Import Library..."
-msgstr "Importer bibliothèque..."
-
 #: ../../../processing/app/Sketch.java:736
 msgid ""
 "In Arduino 1.0, the default file extension has changed\n"
@@ -1243,10 +1169,6 @@ msgstr "letton"
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
 msgstr "Gestionnaire de bibliothèque"
-
-#: Base.java:2699
-msgid "Library added to your libraries. Check \"Import library\" menu"
-msgstr "La bibliothèque a été ajoutée à votre dossier de bibliothèques. Veuillez regarder le menu « Importer bibliothèque »"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1342,10 +1264,6 @@ msgstr "Le téléversement par réseau en utilisant le programmateur n'est pas p
 msgid "New"
 msgstr "Nouveau"
 
-#: EditorToolbar.java:46
-msgid "New Editor Window"
-msgstr "Nouvelle fenêtre d'édition"
-
 #: EditorHeader.java:292
 msgid "New Tab"
 msgstr "Nouvel onglet"
@@ -1361,10 +1279,6 @@ msgstr "Onglet suivant"
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
 msgstr "Non"
-
-#: ../../../processing/app/debug/Compiler.java:146
-msgid "No athorization data found"
-msgstr "Aucun donnée d'autenfication trouvée"
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
@@ -1424,26 +1338,14 @@ msgstr "Aucun carnet de croquis"
 msgid "No valid code files found"
 msgstr "Aucun fichiers de code valides trouvés"
 
-#: ../../../processing/app/Base.java:309
-msgid "No valid configured cores found! Exiting..."
-msgstr "Aucun cœur configuré valide n'a été trouvé ! On quitte..."
-
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
 msgstr "Aucune définition de matériel valide n''a été trouvée dans le dossier {0}."
 
-#: Base.java:191
-msgid "Non-fatal error while setting the Look & Feel."
-msgstr "Erreur non fatale pendant les réglages d'apparence."
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
 msgstr "Rien"
-
-#: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
-msgid "Nope"
-msgstr "Non"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
@@ -1492,10 +1394,6 @@ msgstr "Ouvrir URL"
 msgid "Open an Arduino sketch..."
 msgstr "Ouvrir un croquis Arduino..."
 
-#: EditorToolbar.java:46
-msgid "Open in Another Window"
-msgstr "Ouvrir dans une nouvelle fenêtre"
-
 #: Base.java:903 Editor.java:501
 msgid "Open..."
 msgstr "Ouvrir..."
@@ -1535,10 +1433,6 @@ msgstr "Veuillez importer la bibliothèque SPI depuis le menu Croquis > Importer
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Veuillez importer la bibliothèque Wire depuis le menu Croquis > Importer bibliothèque..."
-
-#: Base.java:239
-msgid "Please install JDK 1.5 or later"
-msgstr "Veuillez installer JDK 1.5 ou ultérieur"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1712,10 +1606,6 @@ msgstr "Enregistrer sous..."
 msgid "Save Canceled."
 msgstr "Sauvegarde annulée."
 
-#: Editor.java:2467
-msgid "Save changes before export?"
-msgstr "Enregistrer les changements avant d'exporter ?"
-
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
@@ -1873,10 +1763,6 @@ msgstr "Emplacement du carnet de croquis"
 msgid "Sketchbook path not defined"
 msgstr "Le chemin du carnet de croquis n'est pas défini"
 
-#: ../../../processing/app/Base.java:785
-msgid "Sketches (*.ino, *.pde)"
-msgstr "Croquis (*.ino, *.pde)"
-
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "Slovaque"
@@ -1965,10 +1851,6 @@ msgstr "La classe Server a été renommée EthernetServer."
 #: debug/Compiler.java:432
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "La classe Udp a été renommée EthernetUdp."
-
-#: Base.java:192
-msgid "The error message follows, however Arduino should run fine."
-msgstr "Il y a un message d'erreur, toutefois Arduino devrait fonctionner normalement"
 
 #: Editor.java:2147
 #, java-format
@@ -2222,13 +2104,13 @@ msgstr "Utilisation du fichier déjà compilé : {0}"
 msgid "Verify"
 msgstr "Vérifier"
 
-#: Editor.java:609
-msgid "Verify / Compile"
-msgstr "Vérifier / Compiler"
-
 #: Preferences.java:400
 msgid "Verify code after upload"
 msgstr "Vérifier le code après téléversement"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr "Vérifier/Compiler"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2489,10 +2371,6 @@ msgstr "createNewFile() a renvoyé false"
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
 msgstr "était activée dans Fichier > Préférences."
-
-#: Editor.java:1108
-msgid "http://arduino.cc/"
-msgstr "http://arduino.cc/"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"

@@ -49,10 +49,7 @@ class Transifex(object):
     new = map(lambda a: a + '\n', new.split('\n'))
     new = update.read_po(new)
 
-    catalog = update.read_po(fname)
-    update.merge(catalog, new)
-
-    update.dump(catalog, fname)
+    update.dump(new, fname)
 
   def push(self, lang, data):
     r = requests.put(

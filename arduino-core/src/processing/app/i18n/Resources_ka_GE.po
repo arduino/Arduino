@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 11:24+0000\n"
+"PO-Revision-Date: 2015-08-06 14:27+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
@@ -81,13 +81,6 @@ msgstr ""
 msgid "<br/>Update available for some of your {0}libraries{1}"
 msgstr ""
 
-#: Base.java:773
-msgid ""
-"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
-" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
-"sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr ""
-
 #: Editor.java:2053
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
@@ -122,12 +115,6 @@ msgstr "ხელმისაწვდომია Arduino-ს ახალი �
 msgid "A newer {0} package is available"
 msgstr ""
 
-#: EditorConsole.java:153
-msgid ""
-"A problem occurred while trying to open the\n"
-"files used to store the console output."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr ""
@@ -143,10 +130,6 @@ msgstr ""
 #: Editor.java:650
 msgid "Add File..."
 msgstr "ფაილის დამატება..."
-
-#: Base.java:963
-msgid "Add Library..."
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
@@ -253,13 +236,6 @@ msgid ""
 "create a folder to store your sketchbook."
 msgstr "Arduino ვერ გაიშვება, რადგან მან ვერ შეძლო\nალბომისთვის საქაღალდის შექმნა."
 
-#: Base.java:240
-msgid ""
-"Arduino requires a full JDK (not just a JRE)\n"
-"to run. Please install JDK 1.5 or later.\n"
-"More information can be found in the reference."
-msgstr ""
-
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
 msgstr "Arduino: "
@@ -276,14 +252,6 @@ msgstr "ნამდვილად გსურთ მოცემული ჩ
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
 msgstr "ბრძანება --board მოითხოვს არგუმენტს"
-
-#: ../../../processing/app/Base.java:370
-msgid "Argument required for --curdir"
-msgstr ""
-
-#: ../../../processing/app/Base.java:385
-msgid "Argument required for --get-pref"
-msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -319,29 +287,9 @@ msgstr ""
 msgid "Auto Format"
 msgstr "ავტოდაფორმატება"
 
-#: tools/AutoFormat.java:934
-msgid "Auto Format Canceled: Too many left curly braces."
-msgstr ""
-
-#: tools/AutoFormat.java:925
-msgid "Auto Format Canceled: Too many left parentheses."
-msgstr ""
-
-#: tools/AutoFormat.java:931
-msgid "Auto Format Canceled: Too many right curly braces."
-msgstr ""
-
-#: tools/AutoFormat.java:922
-msgid "Auto Format Canceled: Too many right parentheses."
-msgstr ""
-
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "ავტო-ფორმატირება დასრულებულია."
-
-#: Preferences.java:439
-msgid "Automatically associate .ino files with Arduino"
-msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -527,10 +475,6 @@ msgstr ""
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "ჩანახატის დაკომპილება..."
-
-#: EditorConsole.java:152
-msgid "Console Error"
-msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -879,10 +823,6 @@ msgstr "Arduino მონაცემთა საქაღალდის წ�
 msgid "Error inside Serial.{0}()"
 msgstr "შეცდომა Serial.{0}()-ში"
 
-#: ../../../processing/app/Base.java:1232
-msgid "Error loading libraries"
-msgstr ""
-
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -980,10 +920,6 @@ msgstr "ესტონური (ესტონეთი)"
 msgid "Examples"
 msgstr "მაგალითები"
 
-#: Editor.java:2482
-msgid "Export canceled, changes must first be saved."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
 msgstr ""
@@ -1037,12 +973,6 @@ msgstr "ფინური"
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
 msgstr "კოდირების შეკეთება & გადატვირთვა"
-
-#: Base.java:1851
-msgid ""
-"For information on installing libraries, see: "
-"http://arduino.cc/en/Guide/Libraries\n"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1141,10 +1071,6 @@ msgstr "ბიბლიოთეკის ბათილი სახელი 
 msgid "Ignoring sketch with bad name"
 msgstr "ჩანახატის ბათილი სახელი უგულებელყოფილია"
 
-#: Editor.java:636
-msgid "Import Library..."
-msgstr ""
-
 #: ../../../processing/app/Sketch.java:736
 msgid ""
 "In Arduino 1.0, the default file extension has changed\n"
@@ -1236,10 +1162,6 @@ msgstr "ლატვიური"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
-
-#: Base.java:2699
-msgid "Library added to your libraries. Check \"Import library\" menu"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:2349
@@ -1336,10 +1258,6 @@ msgstr "მხარდაუჭერელია პროგრამატ�
 msgid "New"
 msgstr "ახალი"
 
-#: EditorToolbar.java:46
-msgid "New Editor Window"
-msgstr ""
-
 #: EditorHeader.java:292
 msgid "New Tab"
 msgstr "ახალი ჩანართი"
@@ -1355,10 +1273,6 @@ msgstr "შემდეგი ჩანართი"
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
 msgstr "არა"
-
-#: ../../../processing/app/debug/Compiler.java:146
-msgid "No athorization data found"
-msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
@@ -1418,26 +1332,14 @@ msgstr ""
 msgid "No valid code files found"
 msgstr "არ მოიძებნა მართებული კოდური ფაილები"
 
-#: ../../../processing/app/Base.java:309
-msgid "No valid configured cores found! Exiting..."
-msgstr ""
-
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
 msgstr "საქაღალდეში {0} არ მოიძებნა მართებული მოწყობილობათა განსაზღვრები."
 
-#: Base.java:191
-msgid "Non-fatal error while setting the Look & Feel."
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
 msgstr ""
-
-#: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
-msgid "Nope"
-msgstr "არა"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
@@ -1486,10 +1388,6 @@ msgstr "URL-ის გახსნა"
 msgid "Open an Arduino sketch..."
 msgstr "Arduino ჩანახატის გახსნა..."
 
-#: EditorToolbar.java:46
-msgid "Open in Another Window"
-msgstr ""
-
 #: Base.java:903 Editor.java:501
 msgid "Open..."
 msgstr "გახსნა..."
@@ -1529,10 +1427,6 @@ msgstr "შემოიტანეთ SPI ბიბლიოთეკა მე
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "შემოიტანეთ Wire ბიბლიოთეკა მენიუდან 'ჩანახატი' -> 'ბიბლიოთეკის შემოტანა'"
-
-#: Base.java:239
-msgid "Please install JDK 1.5 or later"
-msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1706,10 +1600,6 @@ msgstr "შენახვა როგორც..."
 msgid "Save Canceled."
 msgstr "შენახვა შეწყდა."
 
-#: Editor.java:2467
-msgid "Save changes before export?"
-msgstr ""
-
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
@@ -1867,10 +1757,6 @@ msgstr "ალბომის მდებარეობა:"
 msgid "Sketchbook path not defined"
 msgstr ""
 
-#: ../../../processing/app/Base.java:785
-msgid "Sketches (*.ino, *.pde)"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr ""
@@ -1959,10 +1845,6 @@ msgstr "Server კლასის ახალი სახელი არი�
 #: debug/Compiler.java:432
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Udp კლასის ახალი სახელია EthernetUdp."
-
-#: Base.java:192
-msgid "The error message follows, however Arduino should run fine."
-msgstr ""
 
 #: Editor.java:2147
 #, java-format
@@ -2216,13 +2098,13 @@ msgstr "გამოიყენება წინასწარ დაკო�
 msgid "Verify"
 msgstr "შემოწმება"
 
-#: Editor.java:609
-msgid "Verify / Compile"
-msgstr "შემოწმება / დაკომპილება"
-
 #: Preferences.java:400
 msgid "Verify code after upload"
 msgstr "კოდის შემოწმება ატვირთვის შემდეგ"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2483,10 +2365,6 @@ msgstr "createNewFile() დააბრუნა უარყოფა"
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
 msgstr "ჩართულია მენიუში ფაილი > პარამეტრები."
-
-#: Editor.java:1108
-msgid "http://arduino.cc/"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"

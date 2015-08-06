@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 11:25+0000\n"
+"PO-Revision-Date: 2015-08-06 14:27+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -79,13 +79,6 @@ msgstr ""
 msgid "<br/>Update available for some of your {0}libraries{1}"
 msgstr ""
 
-#: Base.java:773
-msgid ""
-"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
-" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
-"sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr ""
-
 #: Editor.java:2053
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
@@ -120,12 +113,6 @@ msgstr "새로운 버젼의 아두이노가 다운로드 가능합니다,\n아�
 msgid "A newer {0} package is available"
 msgstr "새로운 {0} 패키지가 사용가능합니다"
 
-#: EditorConsole.java:153
-msgid ""
-"A problem occurred while trying to open the\n"
-"files used to store the console output."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr "스케치북의 하위 폴더가 유효한 라이브러리가 아닙니다"
@@ -141,10 +128,6 @@ msgstr ".ZIP 라이브러리 추가..."
 #: Editor.java:650
 msgid "Add File..."
 msgstr "파일 추가…"
-
-#: Base.java:963
-msgid "Add Library..."
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
@@ -251,13 +234,6 @@ msgid ""
 "create a folder to store your sketchbook."
 msgstr "스케치를  저장하기 위한 폴더를 생성하지 못해서\n아두이노를 실행할 수 없습니다."
 
-#: Base.java:240
-msgid ""
-"Arduino requires a full JDK (not just a JRE)\n"
-"to run. Please install JDK 1.5 or later.\n"
-"More information can be found in the reference."
-msgstr ""
-
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
 msgstr "아두이노:"
@@ -274,14 +250,6 @@ msgstr "정말로 스케치를 삭제하시겠습니까?"
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
 msgstr "--board 에 인수가 필요함"
-
-#: ../../../processing/app/Base.java:370
-msgid "Argument required for --curdir"
-msgstr ""
-
-#: ../../../processing/app/Base.java:385
-msgid "Argument required for --get-pref"
-msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -317,29 +285,9 @@ msgstr "권한이 요구 됨"
 msgid "Auto Format"
 msgstr "자동 포맷"
 
-#: tools/AutoFormat.java:934
-msgid "Auto Format Canceled: Too many left curly braces."
-msgstr ""
-
-#: tools/AutoFormat.java:925
-msgid "Auto Format Canceled: Too many left parentheses."
-msgstr ""
-
-#: tools/AutoFormat.java:931
-msgid "Auto Format Canceled: Too many right curly braces."
-msgstr ""
-
-#: tools/AutoFormat.java:922
-msgid "Auto Format Canceled: Too many right parentheses."
-msgstr ""
-
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "자동 포맷 완료"
-
-#: Preferences.java:439
-msgid "Automatically associate .ino files with Arduino"
-msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -525,10 +473,6 @@ msgstr "컴파일러 경고:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "스케치를 컴파일 중…"
-
-#: EditorConsole.java:152
-msgid "Console Error"
-msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -877,10 +821,6 @@ msgstr "아두이노 데이터 폴더를 가져올 때 에러 발생"
 msgid "Error inside Serial.{0}()"
 msgstr "시리얼 내부 에러.{0}()"
 
-#: ../../../processing/app/Base.java:1232
-msgid "Error loading libraries"
-msgstr ""
-
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -978,10 +918,6 @@ msgstr "에스토니아어(에스토니아)"
 msgid "Examples"
 msgstr "예제"
 
-#: Editor.java:2482
-msgid "Export canceled, changes must first be saved."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
 msgstr "컴파일된 바이너리 내보내기"
@@ -1035,12 +971,6 @@ msgstr "종료"
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
 msgstr "인코딩 수정 & 새로 고침"
-
-#: Base.java:1851
-msgid ""
-"For information on installing libraries, see: "
-"http://arduino.cc/en/Guide/Libraries\n"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1139,10 +1069,6 @@ msgstr "잘못된 라이브러리 이름을 무시"
 msgid "Ignoring sketch with bad name"
 msgstr "잘못된 이름의 스케치를 무시"
 
-#: Editor.java:636
-msgid "Import Library..."
-msgstr ""
-
 #: ../../../processing/app/Sketch.java:736
 msgid ""
 "In Arduino 1.0, the default file extension has changed\n"
@@ -1234,10 +1160,6 @@ msgstr "라트비아어"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
-
-#: Base.java:2699
-msgid "Library added to your libraries. Check \"Import library\" menu"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:2349
@@ -1334,10 +1256,6 @@ msgstr "프로그래머를 사용한 네트워크 업로드는 지원하지 않�
 msgid "New"
 msgstr "새 파일"
 
-#: EditorToolbar.java:46
-msgid "New Editor Window"
-msgstr ""
-
 #: EditorHeader.java:292
 msgid "New Tab"
 msgstr "새 탭"
@@ -1353,10 +1271,6 @@ msgstr "다음 탭"
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
 msgstr "아니요"
-
-#: ../../../processing/app/debug/Compiler.java:146
-msgid "No athorization data found"
-msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
@@ -1416,26 +1330,14 @@ msgstr "스케치북 없음"
 msgid "No valid code files found"
 msgstr "유효한 코드 파일을 찾지 못하였습니다. "
 
-#: ../../../processing/app/Base.java:309
-msgid "No valid configured cores found! Exiting..."
-msgstr ""
-
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
 msgstr "폴더 {0}에 유효한 하드웨어 정의가 발견되지 않음."
 
-#: Base.java:191
-msgid "Non-fatal error while setting the Look & Feel."
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
 msgstr "None"
-
-#: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
-msgid "Nope"
-msgstr "아니요"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
@@ -1484,10 +1386,6 @@ msgstr "URL 열기"
 msgid "Open an Arduino sketch..."
 msgstr "아두이노 스케치를 여세요…"
 
-#: EditorToolbar.java:46
-msgid "Open in Another Window"
-msgstr ""
-
 #: Base.java:903 Editor.java:501
 msgid "Open..."
 msgstr "열기…"
@@ -1527,10 +1425,6 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 SPI 라이브러�
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가겨오기하십시오. "
-
-#: Base.java:239
-msgid "Please install JDK 1.5 or later"
-msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1704,10 +1598,6 @@ msgstr "다른 이름으로 저장…"
 msgid "Save Canceled."
 msgstr "저장 취소."
 
-#: Editor.java:2467
-msgid "Save changes before export?"
-msgstr ""
-
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
@@ -1865,10 +1755,6 @@ msgstr "스케치북 위치: "
 msgid "Sketchbook path not defined"
 msgstr "스케치북 경로가 지정되지 않음"
 
-#: ../../../processing/app/Base.java:785
-msgid "Sketches (*.ino, *.pde)"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "슬로바키아어"
@@ -1957,10 +1843,6 @@ msgstr "Server 클래스는 EthernetServer로 이름이 변경되었습니다."
 #: debug/Compiler.java:432
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Udp 클래스는 EthernetUdp로 이름이 변경되었습니다."
-
-#: Base.java:192
-msgid "The error message follows, however Arduino should run fine."
-msgstr ""
 
 #: Editor.java:2147
 #, java-format
@@ -2214,13 +2096,13 @@ msgstr "이전에 컴파일된 파일: {0} 사용"
 msgid "Verify"
 msgstr "확인"
 
-#: Editor.java:609
-msgid "Verify / Compile"
-msgstr "확인 / 컴파일"
-
 #: Preferences.java:400
 msgid "Verify code after upload"
 msgstr "업로드 후 코드 확인하기"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2481,10 +2363,6 @@ msgstr "createNewFile()가 false를 반환했습니다"
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
 msgstr "파일 > 설정에 사용가능하게 됨"
-
-#: Editor.java:1108
-msgid "http://arduino.cc/"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"

@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 11:24+0000\n"
+"PO-Revision-Date: 2015-08-06 14:27+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Albanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -82,13 +82,6 @@ msgstr ""
 msgid "<br/>Update available for some of your {0}libraries{1}"
 msgstr ""
 
-#: Base.java:773
-msgid ""
-"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
-" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
-"sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr ""
-
 #: Editor.java:2053
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
@@ -123,12 +116,6 @@ msgstr "Nje version i ri i arduinos eshte i mundur,\ndo te deshironit te viziton
 msgid "A newer {0} package is available"
 msgstr ""
 
-#: EditorConsole.java:153
-msgid ""
-"A problem occurred while trying to open the\n"
-"files used to store the console output."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
 msgstr ""
@@ -144,10 +131,6 @@ msgstr ""
 #: Editor.java:650
 msgid "Add File..."
 msgstr "Shto Dokument.."
-
-#: Base.java:963
-msgid "Add Library..."
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
@@ -254,13 +237,6 @@ msgid ""
 "create a folder to store your sketchbook."
 msgstr "Arduino nuk mund te punoj sepse ai nuk mund\nte krijoj nje folder per te ruajtur librarin tuaj te skicave."
 
-#: Base.java:240
-msgid ""
-"Arduino requires a full JDK (not just a JRE)\n"
-"to run. Please install JDK 1.5 or later.\n"
-"More information can be found in the reference."
-msgstr ""
-
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
 msgstr "Arduino:"
@@ -277,14 +253,6 @@ msgstr "Jeni i sigurte se doni ta fshini kete skice"
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
 msgstr "Kerkohet argument per --bordin"
-
-#: ../../../processing/app/Base.java:370
-msgid "Argument required for --curdir"
-msgstr ""
-
-#: ../../../processing/app/Base.java:385
-msgid "Argument required for --get-pref"
-msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -320,29 +288,9 @@ msgstr ""
 msgid "Auto Format"
 msgstr "Formatim automatik"
 
-#: tools/AutoFormat.java:934
-msgid "Auto Format Canceled: Too many left curly braces."
-msgstr ""
-
-#: tools/AutoFormat.java:925
-msgid "Auto Format Canceled: Too many left parentheses."
-msgstr ""
-
-#: tools/AutoFormat.java:931
-msgid "Auto Format Canceled: Too many right curly braces."
-msgstr ""
-
-#: tools/AutoFormat.java:922
-msgid "Auto Format Canceled: Too many right parentheses."
-msgstr ""
-
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "Formatimi automatik perfundoi."
-
-#: Preferences.java:439
-msgid "Automatically associate .ino files with Arduino"
-msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -528,10 +476,6 @@ msgstr ""
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Duke kompiluar skicen..."
-
-#: EditorConsole.java:152
-msgid "Console Error"
-msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -880,10 +824,6 @@ msgstr "Gabim duke marre folderim me te dhenat e Arduinos"
 msgid "Error inside Serial.{0}()"
 msgstr "Gabim brendra Serial.{0}()"
 
-#: ../../../processing/app/Base.java:1232
-msgid "Error loading libraries"
-msgstr ""
-
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -981,10 +921,6 @@ msgstr "Estonez (Estonia)"
 msgid "Examples"
 msgstr "Shembuj"
 
-#: Editor.java:2482
-msgid "Export canceled, changes must first be saved."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
 msgstr ""
@@ -1038,12 +974,6 @@ msgstr "Finlandisht"
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
 msgstr "Rregullo kodimin & Rifreskoje"
-
-#: Base.java:1851
-msgid ""
-"For information on installing libraries, see: "
-"http://arduino.cc/en/Guide/Libraries\n"
-msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1142,10 +1072,6 @@ msgstr "Injoro librarine me emer te keq"
 msgid "Ignoring sketch with bad name"
 msgstr "Duke injoruar skicen me emer te keq"
 
-#: Editor.java:636
-msgid "Import Library..."
-msgstr ""
-
 #: ../../../processing/app/Sketch.java:736
 msgid ""
 "In Arduino 1.0, the default file extension has changed\n"
@@ -1237,10 +1163,6 @@ msgstr "Letonisht"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
-
-#: Base.java:2699
-msgid "Library added to your libraries. Check \"Import library\" menu"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:2349
@@ -1337,10 +1259,6 @@ msgstr "Ngarkimi ne rrjet duke perdorur programuesin nuk suportohet"
 msgid "New"
 msgstr "E re"
 
-#: EditorToolbar.java:46
-msgid "New Editor Window"
-msgstr ""
-
 #: EditorHeader.java:292
 msgid "New Tab"
 msgstr "Tab i ri"
@@ -1356,10 +1274,6 @@ msgstr "Tabi pasardhes"
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
 msgstr "Jo"
-
-#: ../../../processing/app/debug/Compiler.java:146
-msgid "No athorization data found"
-msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
@@ -1419,26 +1333,14 @@ msgstr ""
 msgid "No valid code files found"
 msgstr "Asnje kode i sakte nuk u gjet."
 
-#: ../../../processing/app/Base.java:309
-msgid "No valid configured cores found! Exiting..."
-msgstr ""
-
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
 msgstr "Nuk ka percaktime te duhura per pajisjen hard ne skede {0}."
 
-#: Base.java:191
-msgid "Non-fatal error while setting the Look & Feel."
-msgstr ""
-
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
 msgstr ""
-
-#: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
-msgid "Nope"
-msgstr "Jo lale"
 
 #: ../../../../../app/src/processing/app/Preferences.java:181
 msgid "Norwegian"
@@ -1487,10 +1389,6 @@ msgstr "Hap URL"
 msgid "Open an Arduino sketch..."
 msgstr "Hap nje skice Arduino..."
 
-#: EditorToolbar.java:46
-msgid "Open in Another Window"
-msgstr ""
-
 #: Base.java:903 Editor.java:501
 msgid "Open..."
 msgstr "Hap..."
@@ -1530,10 +1428,6 @@ msgstr "Ju lutem importoni librarin SPI nga menuja Sktech > Import Library"
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Ju lutem importoni librarine Wire nga menuja Sketch > Import Library."
-
-#: Base.java:239
-msgid "Please install JDK 1.5 or later"
-msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1707,10 +1601,6 @@ msgstr "Ruaje si..."
 msgid "Save Canceled."
 msgstr "Ruajta u anullua."
 
-#: Editor.java:2467
-msgid "Save changes before export?"
-msgstr ""
-
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
@@ -1868,10 +1758,6 @@ msgstr "Vendodhja e librit te skicave"
 msgid "Sketchbook path not defined"
 msgstr ""
 
-#: ../../../processing/app/Base.java:785
-msgid "Sketches (*.ino, *.pde)"
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr ""
@@ -1960,10 +1846,6 @@ msgstr "Klasa e serverit eshte riemeruar EthernetServer."
 #: debug/Compiler.java:432
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Klasa Udp eshte riemeruar ne EthernetUdp."
-
-#: Base.java:192
-msgid "The error message follows, however Arduino should run fine."
-msgstr ""
 
 #: Editor.java:2147
 #, java-format
@@ -2217,13 +2099,13 @@ msgstr "Duke perdorur skedarin e kompiluar se fundmi: {0}"
 msgid "Verify"
 msgstr "Verifiko"
 
-#: Editor.java:609
-msgid "Verify / Compile"
-msgstr "Verifiko / Kompilo"
-
 #: Preferences.java:400
 msgid "Verify code after upload"
 msgstr "Verifiko kodin mbas ngarkimit"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2484,10 +2366,6 @@ msgstr "createNewFile() riktheu false"
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
 msgstr "e aktivizuar ne Skedar > Preferencat"
-
-#: Editor.java:1108
-msgid "http://arduino.cc/"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
