@@ -54,11 +54,10 @@ def dump(d, dstFile):
 
   out.close()
 
-def merge(d, dd):
-  for key in dd.keys():
-    if d.has_key(key):
-      d[key] = dd[key]
-  return d
+def merge(old, new):
+  for key in new.keys():
+    old[key] = new[key]
+  return old
 
 # Remove currently unused catalog text lines from ".po" file.
 def main():
