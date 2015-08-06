@@ -1328,14 +1328,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.addSeparator();
 
     item = newJMenuItemShift(tr("Find in Reference"), 'F');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-//          if (textarea.isSelectionActive()) {
-//            handleFindReference();
-//          }
-        	handleFindReference();
-        }
-      });
+    item.addActionListener(this::handleFindReference);
     menu.add(item);
 
     item = new JMenuItem(tr("Frequently Asked Questions"));
@@ -1920,16 +1913,20 @@ public class Editor extends JFrame implements RunnerListener {
 		return text;
 	}
 
-	private void handleFindReference() {
-		String text = getCurrentKeyword();
+  private void handleFindReference(ActionEvent e) {
+    String text = getCurrentKeyword();
 
-		String referenceFile = base.getPdeKeywords().getReference(text);
-		if (referenceFile == null) {
-			statusNotice(I18n.format(tr("No reference available for \"{0}\""), text));
-		} else {
-			Base.showReference("Reference/" + referenceFile);
-		}
-	}
+    String referenceFile = base.getPdeKeywords().getReference(text);
+    if (referenceFile == null) {
+      statusNotice(I18n.format(tr("No reference available for \"{0}\""), text));
+    } else {
+      if (referenceFile.startsWith("Serial_")) {
+        Base.showReference("Serial/" + referenceFile.substring("Serial_".length()));
+      } else {
+        Base.showReference("Reference/" + referenceFile);
+      }
+    }
+  }
 
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -2969,11 +2966,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     final JMenuItem referenceItem = new JMenuItem(tr("Find in Reference"));
-    referenceItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handleFindReference();
-      }
-    });
+    referenceItem.addActionListener(this::handleFindReference);
     menu.add(referenceItem);  
 
     final JMenuItem openURLItem = new JMenuItem(tr("Open URL"));
