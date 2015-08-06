@@ -1,1 +1,0 @@
-../../emt/src/ti/runtime/wiring/pins_energia.h

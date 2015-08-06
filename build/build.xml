@@ -41,26 +41,27 @@
     <include name="app/lib/ant-launcher.jar" />
   </fileset>
 
+  <property name="closure-version" value="emt-a55"/>
   <target name="check-closure">
     <condition property="closure.exists">
-      <available file="${build-dir}/closure.zip"/>
+      <available file="${build-dir}/closure-${closure-version}.tar.gz"/>
     </condition>
   </target>
 
-  <condition property="closure-dest" value="macosx/work/Energia.app/Contents/Resources/Java/hardware/secret/gnu">
+  <condition property="closure-dest" value="macosx/work/Energia.app/Contents/Resources/Java/hardware/emt">
              <os family="mac" /></condition>
-  <condition property="closure-dest" value="linux/work/hardware/secret/gnu">
+  <condition property="closure-dest" value="linux/work/hardware/emt">
              <os family="unix" /></condition>
-  <condition property="closure-dest" value="windows/work/hardware/secret/gnu">
+  <condition property="closure-dest" value="windows/work/hardware/emt">
              <os family="windows" /></condition>
 
   <target name="download-closure" depends="check-closure" unless="closure.exists">
     <echo message="Downloading closure"/>
-    <get src="http://energia.nu/files/closure.zip" dest="${build-dir}/closure.zip"/>
+    <get src="http://energia.nu/files/closure-${closure-version}.tar.gz" dest="${build-dir}/closure-${closure-version}.tar.gz"/>
   </target>
 
   <target name="unzip-closure" depends="download-closure">
-    <unzip dest="${closure-dest}" src="${build-dir}/closure.zip" overwrite="false"/>
+    <untar compression="gzip" dest="${closure-dest}" src="${build-dir}/closure-${closure-version}.tar.gz" overwrite="false"/>
   </target>
 
   <condition property="common-tools-dest" value="macosx/work/Energia.app/Contents/Resources/Java">
@@ -142,9 +143,18 @@
       	<exclude name="**/arduino/" />
       </fileset>
     </copy>
-    
+
+    <!-- create the emt directory -->
+    <mkdir dir="${target.path}/hardware/emt" />
+    <!-- copy emt sources -->
+    <copy todir="${target.path}/hardware/emt/ti/runtime/wiring/">
+      <fileset dir="../emt/src/ti/runtime/wiring/">
+      </fileset>
+    </copy>
+
+
     <!-- download and unzip TI-RTOS closure -->
-    <!--<antcall target="unzip-closure"/>-->
+    <antcall target="unzip-closure"/>
 
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">

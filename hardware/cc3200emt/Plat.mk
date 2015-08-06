@@ -12,3 +12,4 @@ CPPFLAGS +=
 CFLAGS += -DF_CPU=$(F_CPU) -DTARGET_IS_CC3200 -Dxdc__nolocalstring=1
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
+PLAT := cc3200

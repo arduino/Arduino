@@ -7,3 +7,4 @@ CPPFLAGS +=
 CFLAGS += -DF_CPU=$(F_CPU) -Dxdc__nolocalstring=1
 OBJCOPY =
 OBJCOPY_FLAGS =
+PLAT := cc26xx

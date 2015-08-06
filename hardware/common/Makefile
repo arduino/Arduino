@@ -94,18 +94,21 @@ $(eval TMP_OBJS = $(patsubst $(APPLICATION_PATH)/%.cpp,build/%.o,$(DEP_LIB_CPP_S
 $(eval OBJ += $(patsubst $(USER_LIB_PATH)/%.cpp,build/user_libs/%.o,$(TMP_OBJS)))
 endef
 
+include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
+
+WIRING_DIR := $(APPLICATION_PATH)/hardware/emt/ti/runtime/wiring/
 ARCH_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/libraries
 ARCH_CORE_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)
 DRV_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib
-COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/common
+COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/emt
+ARCH_EMT_DIR := $(COMMON_CORE_DIR)/ti/runtime/wiring/$(PLAT)
 DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH)
 INCLUDE_DIRS = $(foreach dir, $(DIRS), ${sort ${dir ${wildcard ${dir}/*/ ${dir}/*/utility/}}})
 # Exclude driverlib path from include paths
 INCLUDE_DIRS := $(filter-out $(DRV_LIB_PATH)/, $(INCLUDE_DIRS))
-INCLUDE_DIRS += $(COMMON_CORE_DIR)
+INCLUDE_DIRS += $(COMMON_CORE_DIR) $(ARCH_EMT_DIR) $(WIRING_DIR)
 CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
-include $(APPLICATION_PATH)/hardware/$(PLATFORM)/Plat.mk
 
 CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=$(ENERGIA_VERSION) -DBOARD_$(BOARD) -DENERGIA=$(ENERGIA_VERSION) $(MCU_FLAG) $(VFP)
 CPPFLAGS += -fno-exceptions -fno-rtti
@@ -117,9 +120,8 @@ CFG_INCS = -I "$(CLOSURE)" -I "$(CLOSURE)"
 #    --cmd-file=...  - use the options defined in the specified file
 #    -g              - compile for debug
 #
-CCOPTS  = -Os @"$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD)/compiler.opt"
+CCOPTS  = -Os @"$(COMMON_CORE_DIR)/ti/runtime/wiring/$(PLAT)/compiler.opt"
 CC      = $(CCROOT)/bin/arm-none-eabi-gcc -c
-#LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -Wl,--verbose -L/Users/robertinant/Energia/build/macosx/work/Energia.app/Contents/Resources/Java/hardware/tools/lm4f/lib/gcc/arm-none-eabi/4.8.4/armv7e-m/ -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 LINK    = $(CCROOT)/bin/arm-none-eabi-gcc $(CCOPTS) -nostartfiles -Wl,--no-wchar-size-warning -Wl,-static -Wl,--gc-sections -L"$(CLOSURE)" -L"$(CCROOT)/lib"
 SIZE := $(CCROOT)/bin/arm-none-eabi-size
 CORE_FROM_SOURCE = no
@@ -149,7 +151,7 @@ endif
 $(eval $(call compute_dependencies, $(MAINSKETCH) $(EXTRA_SOURCES)))
 $(eval $(call compute_srcs))
 
-LD_FLAGS += $(MCU_FLAG) -L$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD) -L$(APPLICATION_PATH)/hardware/common/libs 
+LD_FLAGS += -L$(COMMON_CORE_DIR)/ti/runtime/wiring/$(PLAT) -L$(COMMON_CORE_DIR)/ti/runtime/wiring/$(PLAT)/variants/$(BOARD) -L$(COMMON_CORE_DIR) $(MCU_FLAG) -L$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD) -L$(APPLICATION_PATH)/hardware/common/libs 
 # build rules
 all: $(MAINSKETCH).bin
 
@@ -160,9 +162,9 @@ else
 	$(OBJCOPY) $(OBJCOPY_FLAGS) $< $@
 endif
 ifeq ($(OS),Windows_NT)
-	xcopy $(APPLICATION_PATH)\hardware\$(PLATFORM)\configPkg\package\cfg\energia_*.rov.xs . /Y 
+	xcopy $(ARCH_EMT_DIR)\configPkg\package\cfg\energia_*.rov.xs . /Y 
 else
-	cp $(APPLICATION_PATH)/hardware/$(PLATFORM)/configPkg/package/cfg/energia_*.rov.xs .
+	cp $(ARCH_EMT_DIR)/configPkg/package/cfg/energia_*.rov.xs .
 endif
 	$(call size)
 	$(info >>>> Done <<<<)
@@ -175,7 +177,7 @@ endif
 
 $(MAINSKETCH).elf: driverlib $(OBJ)
 	@echo armlink $(OBJ)
-	$(LINK) $(OBJ) -Wl,-T"$(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/$(BOARD)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
+	$(LINK) $(OBJ) -Wl,-T"$(COMMON_CORE_DIR)/ti/runtime/wiring/$(PLAT)/linker.cmd" $(LD_FLAGS) $(DRV_LIB) $(SDK_LIBS) -lstdc++ -lgcc -lc -lm -lnosys -Wl,-Map=$(MAINSKETCH).map -o $@
 
 %.obj: %.cpp
 	@echo armcl $*.cpp

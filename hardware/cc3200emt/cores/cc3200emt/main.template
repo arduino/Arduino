@@ -15,8 +15,8 @@
 #include <xdc/runtime/System.h>
 
 /* Board Support Header files (from configuration closure) */
-#include "Board.h"
-#include <Energia.h>
+//#include "Board.h"
+#include <ti/runtime/wiring/Energia.h>
 
 //#if defined(__TI_COMPILER_VERSION__) || defined(__GNUC__)
 //__extern int __UNUSED_start__, __UNUSED_end__;

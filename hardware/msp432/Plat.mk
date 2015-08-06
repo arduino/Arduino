@@ -8,3 +8,4 @@ CFLAGS += -DF_CPU=$(F_CPU) -D__MSP432P401R__ -DTARGET_IS_MSP432P4XX -Dxdc__noloc
 #SDK_LIBS := ti/runtime/wiring/msp432/lib/ti.runtime.wiring.msp432.lib
 OBJCOPY =
 OBJCOPY_FLAGS =
+PLAT := msp432
