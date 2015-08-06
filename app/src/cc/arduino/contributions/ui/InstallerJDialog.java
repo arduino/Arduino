@@ -276,6 +276,19 @@ public abstract class InstallerJDialog<T> extends JDialog {
     filterField.setText(filterText);
   }
 
+  public void selectDropdownItemByClassName(String dropdownItem) {
+    selectDropdownItemByClassName(categoryChooser, dropdownItem);
+  }
+
+  public void selectDropdownItemByClassName(JComboBox combo, String dropdownItem) {
+    for (int i = 0; i < combo.getItemCount(); i++) {
+      if (dropdownItem.equals(combo.getItemAt(i).getClass().getSimpleName())) {
+        combo.setSelectedIndex(i);
+        return;
+      }
+    }
+  }
+
   /**
    * Action performed when the Cancel button is pressed.
    */

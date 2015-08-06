@@ -30,14 +30,12 @@
 package cc.arduino.contributions.packages.ui;
 
 import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
 import processing.app.I18n;
-import processing.app.Platform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +48,8 @@ import static processing.app.I18n.tr;
 @SuppressWarnings("serial")
 public class ContributionManagerUI extends InstallerJDialog {
 
-  private final Platform platform;
+  private final ContributionsIndexer indexer;
+  private final ContributionInstaller installer;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -85,12 +84,13 @@ public class ContributionManagerUI extends InstallerJDialog {
     };
   }
 
-  public ContributionManagerUI(Frame parent, Platform platform) {
+  public ContributionManagerUI(Frame parent, ContributionsIndexer indexer, ContributionInstaller installer) {
     super(parent, tr("Boards Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.platform = platform;
+    this.indexer = indexer;
+    this.installer = installer;
   }
 
-  public void setIndexer(ContributionsIndexer indexer) {
+  public void updateUI() {
     DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser.getSelectedItem();
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
@@ -116,14 +116,6 @@ public class ContributionManagerUI extends InstallerJDialog {
     } else {
       categoryChooser.setSelectedIndex(0);
     }
-
-    // Create ConstributionInstaller tied with the provided index
-    installer = new ContributionInstaller(indexer, platform, new GPGDetachedSignatureVerifier()) {
-      @Override
-      public void onProgress(Progress progress) {
-        setProgress(progress);
-      }
-    };
   }
 
   public void setProgress(Progress progress) {
@@ -134,7 +126,6 @@ public class ContributionManagerUI extends InstallerJDialog {
    * Installer methods follows
    */
 
-  private ContributionInstaller installer;
   private Thread installerThread = null;
 
   @Override
@@ -151,7 +142,7 @@ public class ContributionManagerUI extends InstallerJDialog {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        List<String> downloadedPackageIndexFiles = installer.updateIndex();
+        List<String> downloadedPackageIndexFiles = installer.updateIndex(this::setProgress);
         installer.deleteUnknownFiles(downloadedPackageIndexFiles);
         onIndexesUpdated();
       } catch (Exception e) {
@@ -170,7 +161,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       List<String> errors = new LinkedList<>();
       try {
         setProgressVisible(true, tr("Installing..."));
-        errors.addAll(installer.install(platformToInstall));
+        errors.addAll(installer.install(platformToInstall, this::setProgress));
         if (platformToRemove != null && !platformToRemove.isReadOnly()) {
           errors.addAll(installer.remove(platformToRemove));
         }

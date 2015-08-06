@@ -31,24 +31,8 @@ package cc.arduino.contributions;
 
 import cc.arduino.utils.Progress;
 
-import java.io.File;
-import java.net.URL;
+public interface ProgressListener {
 
-public class JsonDownloader {
+  void onProgress(Progress progress);
 
-  private final DownloadableContributionsDownloader downloader;
-  private final URL url;
-
-  public JsonDownloader(DownloadableContributionsDownloader downloader, URL url) {
-    this.downloader = downloader;
-    this.url = url;
-  }
-
-  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
-    try {
-      downloader.download(url, tmpFile, progress, statusText, progressListener);
-    } catch (InterruptedException e) {
-      // Download interrupted... just exit
-    }
-  }
 }

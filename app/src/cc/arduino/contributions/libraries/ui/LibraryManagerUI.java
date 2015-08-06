@@ -36,7 +36,6 @@ import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
-import processing.app.Platform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +52,8 @@ import static processing.app.I18n.tr;
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   private final JComboBox typeChooser;
-  private final Platform platform;
-  private LibrariesIndexer indexer;
+  private final LibrariesIndexer indexer;
+  private final LibraryInstaller installer;
   private Predicate<ContributedLibrary> typeFilter;
 
   @Override
@@ -90,9 +89,10 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibraryManagerUI(Frame parent, Platform platform) {
+  public LibraryManagerUI(Frame parent, LibrariesIndexer indexer, LibraryInstaller installer) {
     super(parent, "Library Manager", Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.platform = platform;
+    this.indexer = indexer;
+    this.installer = installer;
 
     filtersContainer.add(new JLabel(tr("Topic")), 1);
     filtersContainer.remove(2);
@@ -125,14 +125,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   @Override
   public void updateIndexFilter(String[] filters, Predicate<ContributedLibrary>... additionalFilters) {
     if (additionalFilters.length == 1) {
-      additionalFilters = new Predicate[] { additionalFilters[0], typeFilter };
+      additionalFilters = new Predicate[]{additionalFilters[0], typeFilter};
     }
     super.updateIndexFilter(filters, additionalFilters);
   }
 
-  public void setIndexer(LibrariesIndexer indexer) {
-    this.indexer = indexer;
-
+  public void updateUI() {
     DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser.getSelectedItem();
     DropdownItem<DownloadableContribution> previouslySelectedType = (DropdownItem<DownloadableContribution>) typeChooser.getSelectedItem();
 
@@ -181,29 +179,16 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     }
 
     filterField.setEnabled(contribModel.getRowCount() > 0);
-
-    // Create LibrariesInstaller tied with the provided index
-    installer = new LibraryInstaller(indexer, platform) {
-      @Override
-      public void onProgress(Progress progress) {
-        setProgress(progress);
-      }
-    };
   }
 
-  public LibrariesIndexer getIndexer() {
-    return indexer;
+  public void selectDropdownItemByClassName(String dropdownItem) {
+    selectDropdownItemByClassName(typeChooser, dropdownItem);
   }
 
   public void setProgress(Progress progress) {
     progressBar.setValue(progress);
   }
 
-  /*
-   * Installer methods follows
-   */
-
-  private LibraryInstaller installer;
   private Thread installerThread = null;
 
   @Override
@@ -220,7 +205,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        installer.updateIndex();
+        installer.updateIndex(this::setProgress);
         onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
@@ -237,7 +222,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, replaced);
+        installer.install(lib, replaced, this::setProgress);
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {
@@ -264,7 +249,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Removing..."));
-        installer.remove(lib);
+        installer.remove(lib, this::setProgress);
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {

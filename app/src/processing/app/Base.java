@@ -22,10 +22,9 @@
 
 package processing.app;
 
-import cc.arduino.contributions.BuiltInCoreIsNewerCheck;
-import cc.arduino.contributions.DownloadableContributionVersionComparator;
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
-import cc.arduino.contributions.VersionHelper;
+import cc.arduino.Constants;
+import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.*;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -34,7 +33,6 @@ import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.packages.ui.ContributionManagerUI;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
-import cc.arduino.utils.Progress;
 import cc.arduino.view.Event;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
@@ -62,6 +60,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 import java.util.function.Predicate;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -93,6 +92,9 @@ public class Base {
 
   public static SplashScreenHelper splashScreenHelper = new SplashScreenHelper(SplashScreen.getSplashScreen());
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<String, Object>();
+  private final ContributionInstaller contributionInstaller;
+  private final LibraryInstaller libraryInstaller;
+  private ContributionsSelfCheck contributionsSelfCheck;
 
   // set to true after the first time the menu is built.
   // so that the errors while building don't show up again.
@@ -117,7 +119,6 @@ public class Base {
   // are the same for all windows (since the board and serial port that are
   // actually used are determined by the preferences, which are shared)
   private List<JMenu> boardsCustomMenus;
-  private volatile Action openBoardsManager;
   private List<JMenuItem> programmerMenus;
 
   private final PdeKeywords pdeKeywords;
@@ -303,6 +304,9 @@ public class Base {
     this.pdeKeywords = new PdeKeywords();
     this.pdeKeywords.reload();
 
+    contributionInstaller = new ContributionInstaller(BaseNoGui.indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+    libraryInstaller = new LibraryInstaller(BaseNoGui.librariesIndexer, BaseNoGui.getPlatform());
+
     parser.parseArgumentsPhase2();
 
     for (String path : parser.getFilenames()) {
@@ -341,19 +345,10 @@ public class Base {
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-      ContributionInstaller installer = new ContributionInstaller(indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()) {
-        private String lastStatus = "";
+      ProgressListener progressListener = new ConsoleProgressListener();
 
-        @Override
-        protected void onProgress(Progress progress) {
-          if (!lastStatus.equals(progress.getStatus())) {
-            System.out.println(progress.getStatus());
-          }
-          lastStatus = progress.getStatus();
-        }
-      };
-      List<String> downloadedPackageIndexFiles = installer.updateIndex();
-      installer.deleteUnknownFiles(downloadedPackageIndexFiles);
+      List<String> downloadedPackageIndexFiles = contributionInstaller.updateIndex(progressListener);
+      contributionInstaller.deleteUnknownFiles(downloadedPackageIndexFiles);
       indexer.parseIndex();
       indexer.syncWithFilesystem(BaseNoGui.getHardwareFolder());
 
@@ -377,33 +372,23 @@ public class Base {
       ContributedPlatform installed = indexer.getInstalled(boardToInstallParts[0], boardToInstallParts[1]);
 
       if (!selected.isReadOnly()) {
-        installer.install(selected);
+        contributionInstaller.install(selected, progressListener);
       }
 
       if (installed != null && !installed.isReadOnly()) {
-        installer.remove(installed);
+        contributionInstaller.remove(installed);
       }
 
       System.exit(0);
 
     } else if (parser.isInstallLibrary()) {
       LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()));
-      LibraryInstaller installer = new LibraryInstaller(indexer, BaseNoGui.getPlatform()) {
-        private String lastStatus = "";
-
-        @Override
-        protected void onProgress(Progress progress) {
-          if (!lastStatus.equals(progress.getStatus())) {
-            System.out.println(progress.getStatus());
-          }
-          lastStatus = progress.getStatus();
-        }
-      };
+      ProgressListener progressListener = new ConsoleProgressListener();
       indexer.parseIndex();
       BaseNoGui.onBoardOrPortChange();
       indexer.setSketchbookLibrariesFolder(BaseNoGui.getSketchbookLibrariesFolder());
       indexer.setLibrariesFolders(BaseNoGui.getLibrariesPath());
-      installer.updateIndex();
+      libraryInstaller.updateIndex(progressListener);
 
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");
@@ -425,9 +410,9 @@ public class Base {
 
         ContributedLibrary installed = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
         if (selected.isReadOnly()) {
-          installer.remove(installed);
+          libraryInstaller.remove(installed, progressListener);
         } else {
-          installer.install(selected, installed);
+          libraryInstaller.install(selected, installed, progressListener);
         }
       }
 
@@ -480,6 +465,9 @@ public class Base {
       }
 
       new Thread(new BuiltInCoreIsNewerCheck(this)).start();
+
+      contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller);
+      new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
 
     } else if (parser.isNoOpMode()) {
       // Do nothing (intended for only changing preferences)
@@ -695,13 +683,6 @@ public class Base {
           "jul", "aug", "sep", "oct", "nov", "dec"
   };
 
-  /**
-   * Handle creating a sketch folder, return its base .pde file
-   * or null if the operation was canceled.
-   *
-   * @param shift    whether shift is pressed, which will invert prompt setting
-   * @param noPrompt disable prompt, no matter the setting
-   */
   protected File createNewUntitled() throws IOException {
     File newbieDir = null;
     String newbieName = null;
@@ -804,20 +785,13 @@ public class Base {
         activeEditor.handleOpenInternal(file);
         activeEditor.untitled = true;
       }
-//      return true;
 
     } catch (IOException e) {
       activeEditor.statusError(e);
-//      return false;
     }
   }
 
 
-  /**
-   * Open a sketch, replacing the sketch in the current window.
-   *
-   * @param path Location of the primary pde file for the sketch.
-   */
   public void handleOpenReplace(File file) {
     if (!activeEditor.checkModified()) {
       return;  // sketch was modified, and user canceled
@@ -1165,11 +1139,7 @@ public class Base {
     importMenu.removeAll();
 
     JMenuItem menu = new JMenuItem(tr("Manage Libraries..."));
-    menu.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        openManageLibrariesDialog();
-      }
-    });
+    menu.addActionListener(e -> openLibraryManager(""));
     importMenu.add(menu);
     importMenu.addSeparator();
 
@@ -1257,20 +1227,26 @@ public class Base {
     }
   }
 
-  private void openManageLibrariesDialog() {
+  public void openLibraryManager(String dropdownItem) {
+    if (contributionsSelfCheck != null) {
+      contributionsSelfCheck.cancel();
+    }
     @SuppressWarnings("serial")
-    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.getPlatform()) {
+    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.librariesIndexer, libraryInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
         rebuildBoardsMenu();
         rebuildProgrammerMenu();
         onBoardOrPortChange();
-        setIndexer(BaseNoGui.librariesIndexer);
+        updateUI();
+        if (StringUtils.isNotEmpty(dropdownItem)) {
+          selectDropdownItemByClassName(dropdownItem);
+        }
       }
     };
     managerUI.setLocationRelativeTo(activeEditor);
-    managerUI.setIndexer(BaseNoGui.librariesIndexer);
+    managerUI.updateUI();
     managerUI.setVisible(true);
     // Manager dialog is modal, waits here until closed
 
@@ -1280,24 +1256,28 @@ public class Base {
     rebuildExamplesMenu(Editor.examplesMenu);
   }
 
-  private void openInstallBoardDialog(final String filterText) throws Exception {
-    // Create dialog for contribution manager
+  public void openBoardsManager(final String filterText, String dropdownItem) throws Exception {
+    if (contributionsSelfCheck != null) {
+      contributionsSelfCheck.cancel();
+    }
     @SuppressWarnings("serial")
-    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.getPlatform()) {
+    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.indexer, contributionInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
         rebuildBoardsMenu();
         rebuildProgrammerMenu();
-        setIndexer(BaseNoGui.indexer);
+        updateUI();
+        if (StringUtils.isNotEmpty(dropdownItem)) {
+          selectDropdownItemByClassName(dropdownItem);
+        }
         if (StringUtils.isNotEmpty(filterText)) {
           setFilterText(filterText);
         }
-
       }
     };
     managerUI.setLocationRelativeTo(activeEditor);
-    managerUI.setIndexer(BaseNoGui.indexer);
+    managerUI.updateUI();
     managerUI.setVisible(true);
     // Installer dialog is modal, waits here until closed
 
@@ -1316,21 +1296,22 @@ public class Base {
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
     MenuScroller.setScrollerFor(boardMenu);
 
-    openBoardsManager = new AbstractAction(tr("Boards Manager...")) {
+    boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
         String filterText = "";
-        if (actionevent instanceof cc.arduino.view.Event) {
+        String dropdownItem = "";
+        if (actionevent instanceof Event) {
           filterText = ((Event) actionevent).getPayload().get("filterText").toString();
+          dropdownItem = ((Event) actionevent).getPayload().get("dropdownItem").toString();
         }
         try {
-          openInstallBoardDialog(filterText);
+          openBoardsManager(filterText, dropdownItem);
         } catch (Exception e) {
           //TODO show error
           e.printStackTrace();
         }
       }
-    };
-    boardMenu.add(new JMenuItem(openBoardsManager));
+    }));
     boardsCustomMenus.add(boardMenu);
 
     // If there are no platforms installed we are done
@@ -2363,11 +2344,7 @@ public class Base {
   }
 
   public List<Editor> getEditors() {
-    return new LinkedList<Editor>(editors);
-  }
-
-  public Action getOpenBoardsManager() {
-    return openBoardsManager;
+    return new LinkedList<>(editors);
   }
 
   public PdeKeywords getPdeKeywords() {
@@ -2377,4 +2354,5 @@ public class Base {
   public List<JMenuItem> getRecentSketchesMenuItems() {
     return recentSketchesMenuItems;
   }
+
 }

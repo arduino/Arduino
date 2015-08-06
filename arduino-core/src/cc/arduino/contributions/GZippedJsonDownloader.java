@@ -49,14 +49,14 @@ public class GZippedJsonDownloader {
     this.gzippedUrl = gzippedUrl;
   }
 
-  public void download(File tmpFile, Progress progress, String statusText) throws Exception {
+  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
     try {
-      new JsonDownloader(downloader, gzippedUrl).download(tmpFile, progress, statusText);
+      new JsonDownloader(downloader, gzippedUrl).download(tmpFile, progress, statusText, progressListener);
       File gzipTmpFile = new File(tmpFile.getParentFile(), GzipUtils.getCompressedFilename(tmpFile.getName()));
       tmpFile.renameTo(gzipTmpFile);
       decompress(gzipTmpFile, tmpFile);
     } catch (Exception e) {
-      new JsonDownloader(downloader, url).download(tmpFile, progress, statusText);
+      new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener);
     }
   }
 
