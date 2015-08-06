@@ -722,7 +722,7 @@ public class Editor extends JFrame implements RunnerListener {
   private void buildSketchMenu(JMenu sketchMenu) {
     sketchMenu.removeAll();
 
-    JMenuItem item = newJMenuItem(tr("Verify / Compile"), 'R');
+    JMenuItem item = newJMenuItem(tr("Verify/Compile"), 'R');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           handleRun(false, Editor.this.presentHandler, Editor.this.runHandler);
