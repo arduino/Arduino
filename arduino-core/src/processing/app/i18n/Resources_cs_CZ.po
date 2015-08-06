@@ -3,16 +3,22 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Adam  <horcicaa@gmail.com>, 2012.
-#   <mcha@4makers.cz>, 2012.
-# Michal Kocer <mcha@4makers.cz>, 2012.
+# Translators:
+# Translators:
+# horcicaa <horcicaa@gmail.com>, 2012
+# fatalwir <fatalwir@seznam.cz>, 2014
+# Michal Kočer <mcha@4makers.cz>, 2012
+# Michal Kočer <mcha@4makers.cz>, 2012
+# Michal Kočer <mcha@4makers.cz>, 2013-2014
+# Ondrej Novy <novy@ondrej.org>, 2015
+# Zdeno Sekerák <etrsek@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-07-09 07:35+0000\n"
-"Last-Translator: Ondrej Novy <novy@ondrej.org>\n"
+"PO-Revision-Date: 2015-08-06 11:25+0000\n"
+"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/mbanzi/arduino-ide-15/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,6 +29,16 @@ msgstr ""
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
 msgstr " (vyžaduje restart programu Arduino)"
+
+#: ../../../processing/app/debug/Compiler.java:529
+#, java-format
+msgid " Not used: {0}"
+msgstr ""
+
+#: ../../../processing/app/debug/Compiler.java:525
+#, java-format
+msgid " Used: {0}"
+msgstr ""
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
@@ -36,6 +52,10 @@ msgstr "'Mouse' je podporováno pouze u Arduino Leonardo!"
 msgid "(edit only when Arduino is not running)"
 msgstr "(editujte pouze když program Arduino není spuštěn)"
 
+#: ../../../processing/app/helpers/CommandlineParser.java:149
+msgid "--curdir no longer supported"
+msgstr ""
+
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
@@ -46,12 +66,28 @@ msgstr "--verbose, --verbose-upload a --verbose-build může být použito jenom
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
+#, java-format
+msgid "<br/>Update available for some of your {0}boards{1}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
+#, java-format
+msgid ""
+"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
+#, java-format
+msgid "<br/>Update available for some of your {0}libraries{1}"
+msgstr ""
+
 #: Base.java:773
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
 "sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Jste si jisti, že chcete Ukončit?</b><p>Uzavřením posledního projektu se uzavře celé Arduino."
+msgstr ""
 
 #: Editor.java:2053
 msgid ""
@@ -82,15 +118,28 @@ msgid ""
 "would you like to visit the Arduino download page?"
 msgstr "K dispozici je nová verze Arduina,\nChcete otevřít stránku s novou verzí Arduina?"
 
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid "A newer {0} package is available"
+msgstr ""
+
 #: EditorConsole.java:153
 msgid ""
 "A problem occurred while trying to open the\n"
 "files used to store the console output."
-msgstr "Nastal problém během toho co se systém pokoušel\nuložit soubory z výstupu konzole."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:2307
+msgid "A subfolder of your sketchbook is not a valid library"
+msgstr ""
 
 #: Editor.java:1116
 msgid "About Arduino"
 msgstr "O Arduinu"
+
+#: ../../../../../app/src/processing/app/Base.java:1177
+msgid "Add .ZIP Library..."
+msgstr ""
 
 #: Editor.java:650
 msgid "Add File..."
@@ -98,7 +147,15 @@ msgstr "Přidat soubor..."
 
 #: Base.java:963
 msgid "Add Library..."
-msgstr "Přidat knihovnu..."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
+msgid "Additional Boards Manager URLs"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
+msgid "Additional Boards Manager URLs: "
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -108,12 +165,22 @@ msgstr "Afrikánština"
 msgid "Albanian"
 msgstr "Albánština"
 
+#: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
+msgid "All"
+msgstr ""
+
 #: tools/FixEncoding.java:77
 msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "Během opravy kódování souboru se vyskytla chyba.\nNepokoušejte se o uložení tohot projektu, abyste nepřepsali\npůvodní verzi. Použijte Otevřít k znovuotevření projektu a zkuste to znovu.\n"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -192,7 +259,7 @@ msgid ""
 "Arduino requires a full JDK (not just a JRE)\n"
 "to run. Please install JDK 1.5 or later.\n"
 "More information can be found in the reference."
-msgstr "Arduino vyžaduje k běhu plné JDK (nestačí jen JRE)\nNainstalujte si prosím plnou verzi JDK 1.5 či novější.\nVíce informací nalezenete v referenční příručce."
+msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
@@ -213,11 +280,11 @@ msgstr "Pro je --board nutný argument"
 
 #: ../../../processing/app/Base.java:370
 msgid "Argument required for --curdir"
-msgstr "Pro je --curdir nutný argument"
+msgstr ""
 
 #: ../../../processing/app/Base.java:385
 msgid "Argument required for --get-pref"
-msgstr "Vyžaduje se argument pro --get-pref"
+msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
@@ -230,6 +297,12 @@ msgstr "Pro --pref je nutný argument  "
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
 msgstr "Pro --preferences-file je nutný argument"
+
+#: ../../../processing/app/helpers/CommandlineParser.java:76
+#: ../../../processing/app/helpers/CommandlineParser.java:83
+#, java-format
+msgid "Argument required for {0}"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -249,19 +322,19 @@ msgstr "Automatické formátování"
 
 #: tools/AutoFormat.java:934
 msgid "Auto Format Canceled: Too many left curly braces."
-msgstr "Autoformátování přerušeno: Příliš mnoho levých složených závorek."
+msgstr ""
 
 #: tools/AutoFormat.java:925
 msgid "Auto Format Canceled: Too many left parentheses."
-msgstr "Autoformátování přerušeno: Příliš mnoho levých závorek."
+msgstr ""
 
 #: tools/AutoFormat.java:931
 msgid "Auto Format Canceled: Too many right curly braces."
-msgstr "Autoformátování přerušeno: Příliš mnoho pravých složených závorek."
+msgstr ""
 
 #: tools/AutoFormat.java:922
 msgid "Auto Format Canceled: Too many right parentheses."
-msgstr "Autoformátování přerušeno: Příliš mnoho pravých závorek."
+msgstr ""
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
@@ -269,7 +342,7 @@ msgstr "Autoformátování dokončeno."
 
 #: Preferences.java:439
 msgid "Automatically associate .ino files with Arduino"
-msgstr "Automaticky asociuj příponu .ino s programem Arduino"
+msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -316,6 +389,23 @@ msgstr "Vývojová deska {0}:{1}:{2} nedefinuje volbu ''build.board''. Automatic
 msgid "Board: "
 msgstr "Vývojová deska: "
 
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Boards Manager"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1320
+msgid "Boards Manager..."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
+msgid "Boards included in this package:"
+msgstr ""
+
+#: ../../../processing/app/debug/Compiler.java:1273
+#, java-format
+msgid "Bootloader file specified but missing: {0}"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
 msgstr "Bosenština"
@@ -351,6 +441,10 @@ msgstr "Vypálit zavaděč"
 #: Editor.java:2504
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Vypaluji zavaděč na I/O boardu /vývojové desky/ (chvilku to potrvá)..."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
+msgid "CRC doesn't match. File is corrupted."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -415,6 +509,10 @@ msgstr "Čínština (zjednodušené znaky)"
 msgid "Chinese Traditional"
 msgstr "Činština (tradiční znaky)"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
+msgid "Click for a list of unofficial boards support URLs"
+msgstr ""
+
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
 msgstr "Zavřít"
@@ -423,13 +521,17 @@ msgstr "Zavřít"
 msgid "Comment/Uncomment"
 msgstr "Zakomentovat/Odkomentovat"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
+msgid "Compiler warnings: "
+msgstr ""
+
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Kompiluji projekt..."
 
 #: EditorConsole.java:152
 msgid "Console Error"
-msgstr "Chyba Konzole"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -612,6 +714,10 @@ msgstr "Dánština (Dánsko)"
 msgid "Decrease Indent"
 msgstr "Zmenšit odsazení"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
+msgid "Default"
+msgstr ""
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Smazat"
@@ -629,6 +735,13 @@ msgstr "Zapomenout všechny změny a projekt znovu nahrát?"
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
 msgstr "Zobrazit čísla řádků"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+#, java-format
+msgid ""
+"Do you want to remove {0}?\n"
+"If you do so you won't be able to use {0} any more."
+msgstr ""
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -663,6 +776,33 @@ msgstr "Nahrávání ukončeno"
 msgid "Done uploading."
 msgstr "Konec nahrávaní."
 
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
+#, java-format
+msgid "Downloaded {0}kb of {1}kb."
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
+msgid "Downloading boards definitions."
+msgstr ""
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
+msgid "Downloading libraries index..."
+msgstr ""
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
+#, java-format
+msgid "Downloading library: {0}"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
+msgid "Downloading platforms index..."
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
+#, java-format
+msgid "Downloading tools ({0}/{1})."
+msgstr ""
+
 #: Preferences.java:91
 msgid "Dutch"
 msgstr "Nizozemština"
@@ -670,6 +810,10 @@ msgstr "Nizozemština"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "Nizozemština (Nizozemí)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr ""
 
 #: Editor.java:1130
 msgid "Edit"
@@ -683,6 +827,10 @@ msgstr "Velikost fontu editoru:"
 msgid "Editor language: "
 msgstr "Jazyk editoru: "
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
+msgid "Enable Code Folding"
+msgstr ""
+
 #: Preferences.java:92
 msgid "English"
 msgstr "Angličtina"
@@ -690,6 +838,15 @@ msgstr "Angličtina"
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
 msgstr "Angličtina (Velká Británie)"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
+msgid "Enter a comma separated list of urls"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
+msgid "Enter additional URLs, one for each row"
+msgstr ""
 
 #: Editor.java:1062
 msgid "Environment"
@@ -709,6 +866,11 @@ msgstr "Chyba při přidávání souboru"
 msgid "Error compiling."
 msgstr "Chyba kompilace."
 
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
+#, java-format
+msgid "Error downloading {0}"
+msgstr ""
+
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
 msgstr "Chyba v přistupu do datového adresáře Arduina."
@@ -720,7 +882,7 @@ msgstr "Chyba v Serial.{0}()"
 
 #: ../../../processing/app/Base.java:1232
 msgid "Error loading libraries"
-msgstr "Chyba při přidávání knihoven"
+msgstr ""
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -734,6 +896,13 @@ msgstr "Chyba při nahrávání {0}"
 msgid "Error opening serial port ''{0}''."
 msgstr "Chyba při otevírání seriového portu ''{0}''."
 
+#: ../../../processing/app/Serial.java:119
+#, java-format
+msgid ""
+"Error opening serial port ''{0}''. Try consulting the documentation at "
+"http://playground.arduino.cc/Linux/All#Permission"
+msgstr ""
+
 #: Preferences.java:277
 msgid "Error reading preferences"
 msgstr "Chyba při čtení nastavení"
@@ -744,6 +913,12 @@ msgid ""
 "Error reading the preferences file. Please delete (or move)\n"
 "{0} and restart Arduino."
 msgstr "Chyba při čtení souboru s nastavením. Prosím smažte (či přesuňte)\n{0} a restartujte program Arduino."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
+msgid "Error running post install script"
+msgstr ""
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
@@ -808,7 +983,11 @@ msgstr "Příklady"
 
 #: Editor.java:2482
 msgid "Export canceled, changes must first be saved."
-msgstr "Export byl přerušen, je třeba nejprve uložit soubor."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:750
+msgid "Export compiled Binary"
+msgstr ""
 
 #: ../../../processing/app/Base.java:416
 #, java-format
@@ -822,6 +1001,10 @@ msgstr "Soubor"
 #: Preferences.java:94
 msgid "Filipino"
 msgstr "Filipínština"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
+msgid "Filter your search..."
+msgstr ""
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -860,7 +1043,13 @@ msgstr "Uprav kódování a znovu nahraj"
 msgid ""
 "For information on installing libraries, see: "
 "http://arduino.cc/en/Guide/Libraries\n"
-msgstr "Více informací o tom jak instalovat knihovny naleznete na:\nhttp://arduino.cc/en/Guide/Libraries \\n"
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:318
+msgid ""
+"For information on installing libraries, see: "
+"http://www.arduino.cc/en/Guide/Libraries\n"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
@@ -882,6 +1071,10 @@ msgstr "Galicijština"
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
 msgstr "Galician (Španělsko)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -951,7 +1144,7 @@ msgstr "Ignoruji skicu chybného jména"
 
 #: Editor.java:636
 msgid "Import Library..."
-msgstr "Import knihovny..."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -964,6 +1157,15 @@ msgid ""
 "Save sketch and update its extension?"
 msgstr "V Arduino 1.0 se změnila defaultní přípona pro soubory\nz .pde na .ino. Nové projekty (a to platí i pro ty, které vznikly\npomocí \"Ulož jako\") budou obsahovat tuto novou příponu.\nPřípona existujících projektů se změní při jejich novém uložení,\ntuto vlastnost lze změnit v nastavení.\n\nUložit projekt a změnit jeho příponu na .ino?"
 
+#: ../../../../../app/src/processing/app/Editor.java:778
+msgid "Include Library"
+msgstr "Přidat knihovnu"
+
+#: ../../../processing/app/BaseNoGui.java:768
+#: ../../../processing/app/BaseNoGui.java:771
+msgid "Incorrect IDE installation folder"
+msgstr ""
+
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
 msgstr "Zvětšit odsazení"
@@ -971,6 +1173,46 @@ msgstr "Zvětšit odsazení"
 #: Preferences.java:101
 msgid "Indonesian"
 msgstr "Indonéština"
+
+#: ../../../../../app/src/processing/app/Base.java:295
+msgid "Initializing packages..."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:289
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:78
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
+msgid "Install"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
+msgid "Installation completed!"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
+msgid "Installed"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
+msgid "Installing boards..."
+msgstr ""
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#, java-format
+msgid "Installing library: {0}"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
+#, java-format
+msgid "Installing tools ({0}/{1})..."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
+msgid "Installing..."
+msgstr ""
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -993,13 +1235,30 @@ msgstr "Korejština"
 msgid "Latvian"
 msgstr "Lotyština"
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
+msgid "Library Manager"
+msgstr ""
+
 #: Base.java:2699
 msgid "Library added to your libraries. Check \"Import library\" menu"
-msgstr "Knihovna byla přidána k vašim knihovnám. Zkontrolujte si v menu \"Importovat knihovnu\""
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:2349
+msgid "Library added to your libraries. Check \"Include library\" menu"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#, java-format
+msgid "Library is already installed: {0} version {1}"
+msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"
 msgstr "Litevština"
+
+#: ../../../../../app/src/processing/app/Base.java:132
+msgid "Loading configuration..."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1008,6 +1267,10 @@ msgstr "Mála dostupné paměti, múžou nastat problémy se stabilitou."
 #: ../../../../../app/src/processing/app/Preferences.java:180
 msgid "Malay (Malaysia)"
 msgstr "Malajština (Malajsie)"
+
+#: ../../../../../app/src/processing/app/Base.java:1168
+msgid "Manage Libraries..."
+msgstr "Spravovat knihovny..."
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1025,6 +1288,10 @@ msgstr "Chybí ukončující znaky \"*/\" komentáře"
 msgid "Mode not supported"
 msgstr "Mód není podporován"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
+msgid "More"
+msgstr ""
+
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
 msgstr "Další volby mohou být měněny přímo v souboru"
@@ -1036,6 +1303,11 @@ msgstr "Přesouvám"
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
 msgstr "Vícenásobní soubory nejsou podporováný"
+
+#: ../../../processing/app/debug/Compiler.java:520
+#, java-format
+msgid "Multiple libraries were found for \"{0}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1067,7 +1339,7 @@ msgstr "Nový"
 
 #: EditorToolbar.java:46
 msgid "New Editor Window"
-msgstr "Nové okno editoru"
+msgstr ""
 
 #: EditorHeader.java:292
 msgid "New Tab"
@@ -1087,7 +1359,11 @@ msgstr "Ne"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "No athorization data found"
-msgstr "Autorizační data nebyly nalezeny"
+msgstr ""
+
+#: ../../../processing/app/debug/Compiler.java:158
+msgid "No authorization data found"
+msgstr ""
 
 #: debug/Compiler.java:126
 msgid "No board selected; please choose a board from the Tools > Board menu."
@@ -1100,6 +1376,10 @@ msgstr "Pro autoformátování nejsou třeba změny."
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
 msgstr "Nabyly nalezeny žádné parametry pro příkazovou řádku"
+
+#: ../../../processing/app/debug/Compiler.java:200
+msgid "No compiled sketch found"
+msgstr ""
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -1141,7 +1421,7 @@ msgstr "Nebyly nalezeny soubory obsahující validní kód"
 
 #: ../../../processing/app/Base.java:309
 msgid "No valid configured cores found! Exiting..."
-msgstr "Nenalezena správná jádra (cores)! Ukončuji..."
+msgstr ""
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
@@ -1150,7 +1430,11 @@ msgstr "V adresáři {0} byla nalezena neplatná definice hardware."
 
 #: Base.java:191
 msgid "Non-fatal error while setting the Look & Feel."
-msgstr "Nezávažná chyba, ke které došlo při nastavení Look & Feel."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
+msgid "None"
+msgstr ""
 
 #: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
 msgid "Nope"
@@ -1191,6 +1475,10 @@ msgstr "Jenom --verify, --upload nebo --get-pref jsou podporováný"
 msgid "Open"
 msgstr "Otevřít"
 
+#: ../../../../../app/src/processing/app/Editor.java:625
+msgid "Open Recent"
+msgstr ""
+
 #: Editor.java:2688
 msgid "Open URL"
 msgstr "Otevři URL"
@@ -1201,7 +1489,7 @@ msgstr "Otevři Arduino projekt..."
 
 #: EditorToolbar.java:46
 msgid "Open in Another Window"
-msgstr "Otevři v novém okně"
+msgstr ""
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
@@ -1227,6 +1515,14 @@ msgstr "Perština"
 msgid "Persian (Iran)"
 msgstr "Perština (Irán)"
 
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+msgid "Please confirm boards deletion"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid "Please confirm library deletion"
+msgstr ""
+
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
 msgstr "Prosím importujte knihovnu SPI z Projektů (Sketch) > Import knihovny (Import Library)."
@@ -1237,7 +1533,7 @@ msgstr "Importujte knihovnu pro Wire z menu:  Projekt > Vlož knihovnu."
 
 #: Base.java:239
 msgid "Please install JDK 1.5 or later"
-msgstr "Nainstalujte si prosím JDK 1.5 či novější."
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1267,6 +1563,10 @@ msgstr "Portugalština (Portugalsko)"
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
 msgstr "Vlastnosti"
+
+#: ../../../../../app/src/processing/app/Base.java:297
+msgid "Preparing boards..."
+msgstr ""
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1347,6 +1647,20 @@ msgstr "Znovu"
 msgid "Reference"
 msgstr "Reference"
 
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
+msgid "Remove"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#, java-format
+msgid "Removing library: {0}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
+msgid "Removing..."
+msgstr ""
+
 #: EditorHeader.java:300
 msgid "Rename"
 msgstr "Přejmenovat"
@@ -1395,7 +1709,7 @@ msgstr "Uložení přerušeno."
 
 #: Editor.java:2467
 msgid "Save changes before export?"
-msgstr "Uložit změny před exportem?"
+msgstr ""
 
 #: Editor.java:2020
 #, java-format
@@ -1438,9 +1752,22 @@ msgstr "Vyberte obrázek a nebo jiný datový soubor k nakopírování do vašeh
 msgid "Select new sketchbook location"
 msgstr "Vyberte nové umístení pro vaše projekty"
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
+msgid "Select version"
+msgstr ""
+
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
 msgstr "Vybraná vývojová deska závisí na jádře '{0}'  (neinstalováno)."
+
+#: ../../../../../app/src/processing/app/Base.java:374
+msgid "Selected board is not available"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:423
+msgid "Selected library is not available"
+msgstr ""
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1449,6 +1776,10 @@ msgstr "Pošli"
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Seriový monitor"
+
+#: ../../../../../app/src/processing/app/Editor.java:804
+msgid "Serial Plotter"
+msgstr ""
 
 #: Serial.java:194
 #, java-format
@@ -1539,7 +1870,7 @@ msgstr "Adresář ke knize projektů není definován"
 
 #: ../../../processing/app/Base.java:785
 msgid "Sketches (*.ino, *.pde)"
-msgstr "Projekty (*.ino, *.pde)"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1570,6 +1901,14 @@ msgstr "Pardon, projekt (či adresář) jména \"{0}\" již existuje."
 #: Preferences.java:115
 msgid "Spanish"
 msgstr "Španělština"
+
+#: ../../../../../app/src/processing/app/Base.java:2333
+msgid "Specified folder/zip file does not contain a valid library"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:466
+msgid "Starting..."
+msgstr ""
 
 #: Base.java:540
 msgid "Sunshine"
@@ -1607,6 +1946,13 @@ msgstr "parametr --upload je podporován jenom na jednom souboru"
 msgid "The Client class has been renamed EthernetClient."
 msgstr "U třídy Client byl změněn název na EthernetClient."
 
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid ""
+"The IDE includes an updated {0} package, but you're using an older one.\n"
+"Do you want to upgrade {0}?"
+msgstr ""
+
 #: debug/Compiler.java:420
 msgid "The Server class has been renamed EthernetServer."
 msgstr "U třídy Server byl změněn název na EthernetServer."
@@ -1617,7 +1963,7 @@ msgstr "U třídy Udp byl změněn název na EthernetUdp."
 
 #: Base.java:192
 msgid "The error message follows, however Arduino should run fine."
-msgstr "Následuje chybové hlášení, Arduino by mělo běžet v pohodě."
+msgstr ""
 
 #: Editor.java:2147
 #, java-format
@@ -1686,6 +2032,12 @@ msgid ""
 "himself in the third person."
 msgstr "Adresář projektů (Sketchbook folder) již neexistuje.\nArduino se pokusí přepnout do defaultního umístění projektového adresáře\na adresář pro projekty (Sketchbook) vytvoří na tomto místě.\nArduino pak o sobě přestane mluvit \nve třetí osobě."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
+msgid ""
+"The specified sketchbook folder contains your copy of the IDE.\n"
+"Please choose a different folder for your sketchbook."
+msgstr ""
+
 #: ../../../processing/app/debug/Compiler.java:201
 msgid ""
 "Third-party platform.txt does not define compiler.path. Please report this "
@@ -1699,6 +2051,12 @@ msgid ""
 "I ain't not doin nuthin'."
 msgstr "Tento soubor byl již na toto místo nakopírován\nze kterého jsi jej zkoušel přidat.\nNemohu to udělat."
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid ""
+"This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
+"Are you sure you want to delete it?"
+msgstr ""
+
 #: ../../../processing/app/EditorStatus.java:467
 msgid "This report would have more information with"
 msgstr "Tento výpis by měl více informací s"
@@ -1707,9 +2065,18 @@ msgstr "Tento výpis by měl více informací s"
 msgid "Time for a Break"
 msgstr "Čas na přestávku (Break)"
 
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
+#, java-format
+msgid "Tool {0} is not available for your operating system."
+msgstr ""
+
 #: Editor.java:663
 msgid "Tools"
 msgstr "Nástroje"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
+msgid "Topic"
+msgstr ""
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -1718,6 +2085,11 @@ msgstr "Řešení problémů - Troubleshooting"
 #: ../../../processing/app/Preferences.java:117
 msgid "Turkish"
 msgstr "Turečtina"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
+msgid "Type"
+msgstr ""
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
@@ -1748,6 +2120,15 @@ msgstr "Nemohu se připojit: špatné heslo?"
 msgid "Unable to open serial monitor"
 msgstr "Nemohu otevřít seriový monitor"
 
+#: ../../../../../app/src/processing/app/Editor.java:2709
+msgid "Unable to open serial plotter"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Unable to reach Arduino.cc due to possible network issues."
+msgstr ""
+
 #: Sketch.java:1432
 #, java-format
 msgid "Uncaught exception type: {0}"
@@ -1764,6 +2145,11 @@ msgid ""
 "\"launcher=/path/to/app\" line to preferences.txt"
 msgstr "Nespecifikovaná platforma, není k dispozici launcher.\nAby bylo možné otevření URL či adresáře, přidej do souboru\npreferences.txt \"launcher=/path/to/app\""
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
+msgid "Updatable"
+msgstr ""
+
 #: UpdateCheck.java:111
 msgid "Update"
 msgstr "Aktualizovat"
@@ -1771,6 +2157,10 @@ msgstr "Aktualizovat"
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "Při ukládání aktualizuj příponu souboru projektu (.pde -> .ino)"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
+msgid "Updating list of installed libraries"
+msgstr ""
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
@@ -1808,6 +2198,11 @@ msgstr "Pro vyhledání užij výběr"
 msgid "Use external editor"
 msgstr "Použít externí editor"
 
+#: ../../../processing/app/debug/Compiler.java:410
+#, java-format
+msgid "Using library {0} at version {1} in folder: {2} {3}"
+msgstr ""
+
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
 msgid "Using library {0} in folder: {1} {2}"
@@ -1830,6 +2225,32 @@ msgstr "Ověřit / Kompilovat"
 msgid "Verify code after upload"
 msgstr "Ověřit kód po nahrátí"
 
+#: ../../../../../app/src/processing/app/Base.java:451
+msgid "Verifying and uploading..."
+msgstr ""
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
+msgid "Verifying archive integrity..."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:454
+msgid "Verifying..."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
+#, java-format
+msgid "Version <b>{0}</b>"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
+msgid "Version unknown"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
+#, java-format
+msgid "Version {0}"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
 msgstr "Vietnamština"
@@ -1848,6 +2269,45 @@ msgstr "VAROVÁNÍ: knihovna {0} je určena pro běh na architektuře {1} a mů�
 #: Base.java:2128
 msgid "Warning"
 msgstr "Upozornění"
+
+#: ../../../processing/app/debug/Compiler.java:1295
+msgid ""
+"Warning: This core does not support exporting sketches. Please consider "
+"upgrading it or contacting its author"
+msgstr ""
+
+#: ../../../cc/arduino/utils/ArchiveExtractor.java:197
+#, java-format
+msgid "Warning: file {0} links to an absolute path {1}"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
+msgid "Warning: forced trusting untrusted contributions"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
+#, java-format
+msgid "Warning: forced untrusted script execution ({0})"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
+#, java-format
+msgid "Warning: non trusted contribution, skipping script execution ({0})"
+msgstr ""
+
+#: ../../../processing/app/debug/LegacyTargetPlatform.java:158
+#, java-format
+msgid ""
+"Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
+" converted to {2}. Consider upgrading this core."
+msgstr ""
+
+#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
+#, java-format
+msgid ""
+"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
+" to {2}. Consider upgrading this core."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -1883,6 +2343,10 @@ msgstr "Mne nepřechytračíš."
 msgid "You can't have a .cpp file with the same name as the sketch."
 msgstr "Soubor s příponou .cpp nesmí mít stejné jméno jako projekt."
 
+#: ../../../../../app/src/processing/app/Base.java:2312
+msgid "You can't import a folder that contains your sketchbook"
+msgstr ""
+
 #: Sketch.java:421
 msgid ""
 "You can't rename the sketch to \"{0}\"\n"
@@ -1915,6 +2379,18 @@ msgid ""
 "You've reached the limit for auto naming of new sketches\n"
 "for the day. How about going for a walk instead?"
 msgstr "Pro dnešek jste se dostali na limit možných automatických\njmen pro pojmenovávání projektů. Co se jít trošku projít?"
+
+#: ../../../processing/app/BaseNoGui.java:768
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your settings folder.\n"
+"Please move the IDE to another folder."
+msgstr ""
+
+#: ../../../processing/app/BaseNoGui.java:771
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
+"Please move the IDE to another folder."
+msgstr ""
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -2011,7 +2487,11 @@ msgstr "povoleno v Soubor > Vlastnosti"
 
 #: Editor.java:1108
 msgid "http://arduino.cc/"
-msgstr "http://arduino.cc/"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr ""
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
@@ -2049,10 +2529,36 @@ msgstr "neznámá volba: {0}"
 msgid "upload"
 msgstr "nahrávání (upload)"
 
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
+#, java-format
+msgid "version <b>{0}</b>"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2243
+#, java-format
+msgid "{0} - {1} | Arduino {2}"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
+#, java-format
+msgid "{0} file signature verification failed. File ignored."
+msgstr ""
+
 #: Editor.java:380
 #, java-format
 msgid "{0} files added to the sketch."
 msgstr "{0} souborů přidáno ke skice"
+
+#: ../../../../../app/src/processing/app/Base.java:1201
+#, java-format
+msgid "{0} libraries"
+msgstr ""
 
 #: debug/Compiler.java:365
 #, java-format
