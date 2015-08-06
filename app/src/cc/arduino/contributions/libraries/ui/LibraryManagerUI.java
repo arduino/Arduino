@@ -90,7 +90,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   public LibraryManagerUI(Frame parent, LibrariesIndexer indexer, LibraryInstaller installer) {
-    super(parent, "Library Manager", Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
+    super(parent, tr("Library Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
     this.indexer = indexer;
     this.installer = installer;
 
