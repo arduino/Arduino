@@ -259,7 +259,7 @@ public class Sketch {
     // might cause problems: http://dev.processing.org/bugs/show_bug.cgi?id=543
     for (SketchCode c : data.getCodes()) {
       if (newName.equalsIgnoreCase(c.getFileName()) && OSUtils.isWindows()) {
-        Base.showMessage(tr("Nope"),
+        Base.showMessage(tr("Error"),
                          I18n.format(
 			   tr("A file named \"{0}\" already exists in \"{1}\""),
 			   c.getFileName(),
@@ -273,7 +273,7 @@ public class Sketch {
     // because the sketch is concatenated into a file with that name as part
     // of the build process.  
     if (newName.equals(getName() + ".cpp")) {
-      Base.showMessage(tr("Nope"),
+      Base.showMessage(tr("Error"),
                        tr("You can't have a .cpp file with the same name as the sketch."));
       return;
     }
@@ -282,7 +282,7 @@ public class Sketch {
       for (SketchCode code : data.getCodes()) {
         if (sanitaryName.equalsIgnoreCase(code.getPrettyName()) &&
           code.isExtension("cpp")) {
-          Base.showMessage(tr("Nope"),
+          Base.showMessage(tr("Error"),
                            I18n.format(tr("You can't rename the sketch to \"{0}\"\n"
                                            + "because the sketch already has a .cpp file with that name."),
                                        sanitaryName));
@@ -294,7 +294,7 @@ public class Sketch {
 
     File newFile = new File(data.getFolder(), newName);
 //    if (newFile.exists()) {  // yay! users will try anything
-//      Base.showMessage("Nope",
+//      Base.showMessage("Error",
 //                       "A file named \"" + newFile + "\" already exists\n" +
 //                       "in \"" + folder.getAbsolutePath() + "\"");
 //      return;
@@ -666,7 +666,7 @@ public class Sketch {
     // resaved (with the same name) to another location/folder.
     for (SketchCode code : data.getCodes()) {
       if (newName.equalsIgnoreCase(code.getPrettyName()) && code.isExtension("cpp")) {
-        Base.showMessage(tr("Nope"),
+        Base.showMessage(tr("Error"),
                 I18n.format(
                         tr("You can't save the sketch as \"{0}\"\n" +
                                 "because the sketch already has a .cpp file with that name."),
