@@ -110,7 +110,7 @@ static inline void ClearOUT(void)
 	UEINTX = ~(1<<RXOUTI);
 }
 
-void Recv(volatile u8* data, u8 count)
+static inline void Recv(volatile u8* data, u8 count)
 {
 	while (count--)
 		*data++ = UEDATX;
