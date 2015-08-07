@@ -29,6 +29,7 @@
 
 package cc.arduino.view.preferences;
 
+import cc.arduino.Constants;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -45,20 +46,6 @@ import java.util.LinkedList;
 import static processing.app.I18n.tr;
 
 public class Preferences extends javax.swing.JDialog {
-
-  public static final String PROXY_TYPE_NONE = "none";
-  public static final String PROXY_TYPE_AUTO = "auto";
-  public static final String PROXY_TYPE_MANUAL = "manual";
-  public static final String PROXY_MANUAL_TYPE_HTTP = "HTTP";
-  public static final String PROXY_MANUAL_TYPE_SOCKS = "SOCKS";
-
-  public static final String PREF_PROXY_MANUAL_TYPE = "proxy.manual.type";
-  public static final String PREF_PROXY_TYPE = "proxy.type";
-  public static final String PREF_PROXY_PAC_URL = "proxy.pac.url";
-  public static final String PREF_PROXY_MANUAL_HOSTNAME = "proxy.manual.hostname";
-  public static final String PREF_PROXY_MANUAL_PORT = "proxy.manual.port";
-  public static final String PREF_PROXY_MANUAL_USERNAME = "proxy.manual.username";
-  public static final String PREF_PROXY_MANUAL_PASSWORD = "proxy.manual.password";
 
   private final Language[] languages;
   private final Language[] missingLanguages;
@@ -460,11 +447,11 @@ public class Preferences extends javax.swing.JDialog {
 
     proxyTypeButtonGroup.add(noProxy);
     noProxy.setText(tr("No proxy"));
-    noProxy.setActionCommand(PROXY_TYPE_NONE);
+    noProxy.setActionCommand(Constants.PROXY_TYPE_NONE);
 
     proxyTypeButtonGroup.add(autoProxy);
     autoProxy.setText(tr("Auto-detect proxy settings"));
-    autoProxy.setActionCommand(PROXY_TYPE_AUTO);
+    autoProxy.setActionCommand(Constants.PROXY_TYPE_AUTO);
     autoProxy.addItemListener(new java.awt.event.ItemListener() {
       public void itemStateChanged(java.awt.event.ItemEvent evt) {
         autoProxyItemStateChanged(evt);
@@ -473,7 +460,7 @@ public class Preferences extends javax.swing.JDialog {
 
     proxyTypeButtonGroup.add(manualProxy);
     manualProxy.setText(tr("Manual proxy configuration"));
-    manualProxy.setActionCommand(PROXY_TYPE_MANUAL);
+    manualProxy.setActionCommand(Constants.PROXY_TYPE_MANUAL);
     manualProxy.addItemListener(new java.awt.event.ItemListener() {
       public void itemStateChanged(java.awt.event.ItemEvent evt) {
         manualProxyItemStateChanged(evt);
@@ -489,11 +476,11 @@ public class Preferences extends javax.swing.JDialog {
 
     manualProxyTypeButtonGroup.add(manualProxyHTTP);
     manualProxyHTTP.setText("HTTP");
-    manualProxyHTTP.setActionCommand(PROXY_MANUAL_TYPE_HTTP);
+    manualProxyHTTP.setActionCommand(Constants.PROXY_MANUAL_TYPE_HTTP);
 
     manualProxyTypeButtonGroup.add(manualProxySOCKS);
     manualProxySOCKS.setText("SOCKS");
-    manualProxySOCKS.setActionCommand(PROXY_MANUAL_TYPE_SOCKS);
+    manualProxySOCKS.setActionCommand(Constants.PROXY_MANUAL_TYPE_SOCKS);
 
     manualProxyHostNameLabel.setText(tr("Host name:"));
 
@@ -803,13 +790,13 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.set("boardsmanager.additional.urls", additionalBoardsManagerField.getText().replace("\r\n", "\n").replace("\r", "\n").replace("\n", ","));
 
-    PreferencesData.set(PREF_PROXY_TYPE, proxyTypeButtonGroup.getSelection().getActionCommand());
-    PreferencesData.set(PREF_PROXY_PAC_URL, autoProxyUsePAC.isSelected() ? autoProxyPACURL.getText() : "");
-    PreferencesData.set(PREF_PROXY_MANUAL_TYPE, manualProxyTypeButtonGroup.getSelection().getActionCommand());
-    PreferencesData.set(PREF_PROXY_MANUAL_HOSTNAME, manualProxyHostName.getText());
-    PreferencesData.set(PREF_PROXY_MANUAL_PORT, manualProxyPort.getText());
-    PreferencesData.set(PREF_PROXY_MANUAL_USERNAME, manualProxyUsername.getText());
-    PreferencesData.set(PREF_PROXY_MANUAL_PASSWORD, String.valueOf(manualProxyPassword.getPassword()));
+    PreferencesData.set(Constants.PREF_PROXY_TYPE, proxyTypeButtonGroup.getSelection().getActionCommand());
+    PreferencesData.set(Constants.PREF_PROXY_PAC_URL, autoProxyUsePAC.isSelected() ? autoProxyPACURL.getText() : "");
+    PreferencesData.set(Constants.PREF_PROXY_MANUAL_TYPE, manualProxyTypeButtonGroup.getSelection().getActionCommand());
+    PreferencesData.set(Constants.PREF_PROXY_MANUAL_HOSTNAME, manualProxyHostName.getText());
+    PreferencesData.set(Constants.PREF_PROXY_MANUAL_PORT, manualProxyPort.getText());
+    PreferencesData.set(Constants.PREF_PROXY_MANUAL_USERNAME, manualProxyUsername.getText());
+    PreferencesData.set(Constants.PREF_PROXY_MANUAL_PASSWORD, String.valueOf(manualProxyPassword.getPassword()));
   }
 
   private void showPrerefencesData() {
@@ -852,29 +839,29 @@ public class Preferences extends javax.swing.JDialog {
     additionalBoardsManagerField.setText(PreferencesData.get("boardsmanager.additional.urls"));
 
     disableAllProxyFields();
-    String proxyType = PreferencesData.get(PREF_PROXY_TYPE, PROXY_TYPE_AUTO);
+    String proxyType = PreferencesData.get(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_AUTO);
 
-    if (PROXY_TYPE_NONE.equals(proxyType)) {
+    if (Constants.PROXY_TYPE_NONE.equals(proxyType)) {
       noProxy.setSelected(true);
-    } else if (PROXY_TYPE_AUTO.equals(proxyType)) {
+    } else if (Constants.PROXY_TYPE_AUTO.equals(proxyType)) {
       autoProxy.setSelected(true);
       autoProxyFieldsSetEnabled(true);
-      if (!PreferencesData.get(PREF_PROXY_PAC_URL, "").isEmpty()) {
+      if (!PreferencesData.get(Constants.PREF_PROXY_PAC_URL, "").isEmpty()) {
         autoProxyUsePAC.setSelected(true);
-        autoProxyPACURL.setText(PreferencesData.get(PREF_PROXY_PAC_URL));
+        autoProxyPACURL.setText(PreferencesData.get(Constants.PREF_PROXY_PAC_URL));
       }
     } else {
       manualProxy.setSelected(true);
       manualProxyFieldsSetEnabled(true);
-      manualProxyHostName.setText(PreferencesData.get(PREF_PROXY_MANUAL_HOSTNAME));
-      manualProxyPort.setText(PreferencesData.get(PREF_PROXY_MANUAL_PORT));
-      manualProxyUsername.setText(PreferencesData.get(PREF_PROXY_MANUAL_USERNAME));
-      manualProxyPassword.setText(PreferencesData.get(PREF_PROXY_MANUAL_PASSWORD));
+      manualProxyHostName.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_HOSTNAME));
+      manualProxyPort.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_PORT));
+      manualProxyUsername.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_USERNAME));
+      manualProxyPassword.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_PASSWORD));
     }
 
-    String selectedManualProxyType = PreferencesData.get(PREF_PROXY_MANUAL_TYPE, PROXY_MANUAL_TYPE_HTTP);
-    manualProxyHTTP.setSelected(PROXY_MANUAL_TYPE_HTTP.equals(selectedManualProxyType));
-    manualProxySOCKS.setSelected(PROXY_MANUAL_TYPE_SOCKS.equals(selectedManualProxyType));
+    String selectedManualProxyType = PreferencesData.get(Constants.PREF_PROXY_MANUAL_TYPE, Constants.PROXY_MANUAL_TYPE_HTTP);
+    manualProxyHTTP.setSelected(Constants.PROXY_MANUAL_TYPE_HTTP.equals(selectedManualProxyType));
+    manualProxySOCKS.setSelected(Constants.PROXY_MANUAL_TYPE_SOCKS.equals(selectedManualProxyType));
   }
 
   private void manualProxyFieldsSetEnabled(boolean enabled) {
