@@ -26,11 +26,17 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-typedef unsigned char u8;
+typedef unsigned char u8; //TODO remove
 typedef unsigned short u16;
 typedef unsigned long u32;
 
 #include "Arduino.h"
+
+// this definitions is usefull if you want to reduce the EP_SIZE to 16
+// at the moment only 64 and 16 as EP_SIZE for all EPs are supported except the control endpoint
+#ifndef USB_EP_SIZE
+#define USB_EP_SIZE 64
+#endif
 
 #if defined(USBCON)
 
@@ -41,13 +47,13 @@ typedef unsigned long u32;
 //================================================================================
 //	USB
 
-#define EP_TYPE_CONTROL				0x00
-#define EP_TYPE_BULK_IN				0x81
-#define EP_TYPE_BULK_OUT			0x80
-#define EP_TYPE_INTERRUPT_IN		0xC1
-#define EP_TYPE_INTERRUPT_OUT		0xC0
-#define EP_TYPE_ISOCHRONOUS_IN		0x41
-#define EP_TYPE_ISOCHRONOUS_OUT		0x40
+#define EP_TYPE_CONTROL				(0x00)
+#define EP_TYPE_BULK_IN				((1<<EPTYPE1) | (1<<EPDIR))
+#define EP_TYPE_BULK_OUT			(1<<EPTYPE1)
+#define EP_TYPE_INTERRUPT_IN		((1<<EPTYPE1) | (1<<EPTYPE0) | (1<<EPDIR))
+#define EP_TYPE_INTERRUPT_OUT		((1<<EPTYPE1) | (1<<EPTYPE0))
+#define EP_TYPE_ISOCHRONOUS_IN		((1<<EPTYPE0) | (1<<EPDIR))
+#define EP_TYPE_ISOCHRONOUS_OUT		(1<<EPTYPE0)
 
 class USBDevice_
 {
@@ -96,6 +102,12 @@ public:
 	virtual size_t write(uint8_t);
 	virtual size_t write(const uint8_t*, size_t);
 	using Print::write; // pull in write(str) and write(buf, size) from Print
+	uint32_t baud(void);
+	uint8_t stopbits(void);
+	uint8_t paritytype(void);
+	uint8_t numbits(void);
+	bool dtr(void);
+	bool rts(void);
 	operator bool();
 
 	volatile uint8_t _rx_buffer_head;
@@ -136,6 +148,8 @@ bool	MSC_Data(uint8_t rx,uint8_t tx);
 int		CDC_GetInterface(uint8_t* interfaceNum);
 int		CDC_GetDescriptor(int i);
 bool	CDC_Setup(USBSetup& setup);
+void	CDC_LineEncodingEvent(void);
+void	CDC_LineStateEvent(void);
 
 //================================================================================
 //================================================================================

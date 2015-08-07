@@ -58,6 +58,9 @@
 #define CDC_GET_LINE_CODING			0x21
 #define CDC_SET_CONTROL_LINE_STATE	0x22
 
+#define CDC_CONTROL_LINE_OUT_DTR   (1 << 0)
+#define CDC_CONTROL_LINE_OUT_RTS   (1 << 1)
+
 #define MSC_RESET					0xFF
 #define MSC_GET_MAX_LUN				0xFE
 
@@ -87,6 +90,20 @@
 #define USB_DEVICE_CLASS_HUMAN_INTERFACE       0x03
 #define USB_DEVICE_CLASS_STORAGE               0x08
 #define USB_DEVICE_CLASS_VENDOR_SPECIFIC       0xFF
+
+// added new definitions for correct USB descriptors
+// there are even more, these are the ones we need
+#define USB_DEVICE_CLASS_IAD                   0xEF
+#define USB_DEVICE_SUB_CLASS_IAD               0x02
+#define USB_DEVICE_PROTOCOL_IAD                0x01
+
+#define USB_DEVICE_CDC_CLASS                   0x02
+#define USB_DEVICE_CDC_SUB_CLASS               0x00
+#define USB_DEVICE_CDC_PROTOCOL                0x00 // NoSpecific Protocol
+
+#define USB_DEVICE_NO_CLASS                    0x00
+#define USB_DEVICE_NO_SUB_CLASS                0x00
+#define USB_DEVICE_NO_PROTOCOL                 0x00
 
 #define USB_CONFIG_POWERED_MASK                0x40
 #define USB_CONFIG_BUS_POWERED                 0x80
