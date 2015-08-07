@@ -45,7 +45,7 @@
 #define HID_PHYSICAL_DESCRIPTOR_TYPE    0x23
 
 typedef struct __attribute__((packed)) {
-  u8 length;
+  uint16_t length;
   const void* descriptor;
 } HID_Descriptor;
 
@@ -88,7 +88,7 @@ typedef struct
 #define HID_TX HID_ENDPOINT_INT
 
 #define D_HIDREPORT(_descriptorLength) \
-  { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength, 0 }
+  { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength & 0xFF, _descriptorLength >> 8 }
 
 #define WEAK __attribute__ ((weak))
 

@@ -43,7 +43,7 @@ static u8 HID_INTERFACE;
 HIDDescriptor _hidInterface;
 
 static HIDDescriptorListNode* rootNode = NULL;
-static uint8_t sizeof_hidReportDescriptor = 0;
+static uint16_t sizeof_hidReportDescriptor = 0;
 static uint8_t modules_count = 0;
 //================================================================================
 //================================================================================
@@ -91,7 +91,7 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 		current->next = node;
 	}
 	modules_count++;
-	sizeof_hidReportDescriptor += node->cb->length;
+	sizeof_hidReportDescriptor += (uint16_t)node->cb->length;
 }
 
 void HID_::SendReport(u8 id, const void* data, int len)
