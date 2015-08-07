@@ -51,6 +51,22 @@ public class CustomProxySelectorTest {
   }
 
   @Test
+  public void testProxyPACHTTPWithLogin() throws Exception {
+    preferences.put(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_AUTO);
+    preferences.put(Constants.PREF_PROXY_PAC_URL, CustomProxySelectorTest.class.getResource("proxy_http.pac").toExternalForm());
+    preferences.put(Constants.PREF_PROXY_AUTO_USERNAME, "auto");
+    preferences.put(Constants.PREF_PROXY_AUTO_PASSWORD, "autopassword");
+    CustomProxySelector proxySelector = new CustomProxySelector(preferences);
+    Proxy proxy = proxySelector.getProxyFor(uri);
+
+    assertEquals(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy.example.com", 8080)), proxy);
+
+    PasswordAuthentication authentication = Authenticator.requestPasswordAuthentication(null, 8080, uri.toURL().getProtocol(), "ciao", "");
+    assertEquals(authentication.getUserName(), "auto");
+    assertEquals(String.valueOf(authentication.getPassword()), "autopassword");
+  }
+
+  @Test
   public void testProxyPACSOCKS() throws Exception {
     preferences.put(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_AUTO);
     preferences.put(Constants.PREF_PROXY_PAC_URL, CustomProxySelectorTest.class.getResource("proxy_socks.pac").toExternalForm());

@@ -43,6 +43,8 @@ public class CustomProxySelector {
   }
 
   private Proxy pacProxy(String pac, URI uri) throws IOException, ScriptException, NoSuchMethodException {
+    setAuthenticator(preferences.get(Constants.PREF_PROXY_AUTO_USERNAME), preferences.get(Constants.PREF_PROXY_AUTO_PASSWORD));
+
     URLConnection urlConnection = new URL(pac).openConnection();
     urlConnection.connect();
     if (urlConnection instanceof HttpURLConnection) {
@@ -90,7 +92,7 @@ public class CustomProxySelector {
   }
 
   private Proxy manualProxy() {
-    setAuthenticator();
+    setAuthenticator(preferences.get(Constants.PREF_PROXY_MANUAL_USERNAME), preferences.get(Constants.PREF_PROXY_MANUAL_PASSWORD));
     Proxy.Type type = Proxy.Type.valueOf(preferences.get(Constants.PREF_PROXY_MANUAL_TYPE));
     return new Proxy(type, new InetSocketAddress(preferences.get(Constants.PREF_PROXY_MANUAL_HOSTNAME), Integer.valueOf(preferences.get(Constants.PREF_PROXY_MANUAL_PORT))));
   }
@@ -99,12 +101,20 @@ public class CustomProxySelector {
     Authenticator.setDefault(null);
   }
 
-  private void setAuthenticator() {
+  private void setAuthenticator(String username, String password) {
+    if (username == null || username.isEmpty()) {
+      return;
+    }
+    String actualPassword;
+    if (password == null) {
+      actualPassword = "";
+    } else {
+      actualPassword = password;
+    }
     Authenticator.setDefault(
       new Authenticator() {
         public PasswordAuthentication getPasswordAuthentication() {
-          return new PasswordAuthentication(
-            preferences.get(Constants.PREF_PROXY_MANUAL_USERNAME), preferences.get(Constants.PREF_PROXY_MANUAL_PASSWORD).toCharArray());
+          return new PasswordAuthentication(username, actualPassword.toCharArray());
         }
       }
     );

@@ -483,25 +483,39 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="autoProxyUsePAC" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="autoProxyUsernameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="autoProxyPasswordLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="autoProxyPACURL" max="32767" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="autoProxyUsername" min="-2" pref="178" max="-2" attributes="0"/>
+                                              <Component id="autoProxyPassword" min="-2" pref="180" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="noProxy" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="autoProxy" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="manualProxy" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="autoProxyUsePAC" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="autoProxyPACURL" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
                                                   <Component id="manualProxyHTTP" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="manualProxySOCKS" min="-2" max="-2" attributes="0"/>
@@ -518,15 +532,15 @@
                                                       <Component id="manualProxyHostName" min="-2" pref="541" max="-2" attributes="0"/>
                                                       <Component id="manualProxyPort" alignment="0" min="-2" pref="74" max="-2" attributes="0"/>
                                                       <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                                          <Component id="manualProxyPassword" alignment="0" pref="180" max="32767" attributes="0"/>
-                                                          <Component id="manualProxyUsername" alignment="0" max="32767" attributes="0"/>
+                                                          <Component id="manualProxyPassword" alignment="0" max="32767" attributes="0"/>
+                                                          <Component id="manualProxyUsername" alignment="0" min="-2" pref="180" max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -544,6 +558,16 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="autoProxyUsePAC" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="autoProxyPACURL" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="autoProxyUsername" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="autoProxyUsernameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="autoProxyPasswordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="autoProxyPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="manualProxy" min="-2" max="-2" attributes="0"/>
@@ -572,7 +596,7 @@
                               <Component id="manualProxyPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="manualProxyPasswordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="225" max="32767" attributes="0"/>
+                          <EmptySpace pref="163" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -587,7 +611,7 @@
                       <Connection code="tr(&quot;No proxy&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="PROXY_TYPE_NONE" type="code"/>
+                      <Connection code="Constants.PROXY_TYPE_NONE" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -600,7 +624,7 @@
                       <Connection code="tr(&quot;Auto-detect proxy settings&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="PROXY_TYPE_AUTO" type="code"/>
+                      <Connection code="Constants.PROXY_TYPE_AUTO" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -616,7 +640,7 @@
                       <Connection code="tr(&quot;Manual proxy configuration&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="PROXY_TYPE_MANUAL" type="code"/>
+                      <Connection code="Constants.PROXY_TYPE_MANUAL" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -642,7 +666,7 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="HTTP"/>
                     <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="PROXY_MANUAL_TYPE_HTTP" type="code"/>
+                      <Connection code="Constants.PROXY_MANUAL_TYPE_HTTP" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -653,7 +677,7 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="SOCKS"/>
                     <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="PROXY_MANUAL_TYPE_SOCKS" type="code"/>
+                      <Connection code="Constants.PROXY_MANUAL_TYPE_SOCKS" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -694,6 +718,27 @@
                 <Component class="javax.swing.JPasswordField" name="manualProxyPassword">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="autoProxyUsernameLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="tr(&quot;Username:&quot;)" type="code"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="autoProxyUsername">
+                </Component>
+                <Component class="javax.swing.JPasswordField" name="autoProxyPassword">
+                  <Properties>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="autoProxyPasswordLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="tr(&quot;Password:&quot;)" type="code"/>
+                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>

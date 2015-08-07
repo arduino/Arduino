@@ -252,6 +252,10 @@ public class Preferences extends javax.swing.JDialog {
     manualProxyUsername = new javax.swing.JTextField();
     manualProxyPasswordLabel = new javax.swing.JLabel();
     manualProxyPassword = new javax.swing.JPasswordField();
+    autoProxyUsernameLabel = new javax.swing.JLabel();
+    autoProxyUsername = new javax.swing.JTextField();
+    autoProxyPassword = new javax.swing.JPasswordField();
+    autoProxyPasswordLabel = new javax.swing.JLabel();
     javax.swing.JPanel jPanel3 = new javax.swing.JPanel();
     javax.swing.JButton okButton = new javax.swing.JButton();
     javax.swing.JButton cancelButton = new javax.swing.JButton();
@@ -492,6 +496,12 @@ public class Preferences extends javax.swing.JDialog {
 
     manualProxyPassword.setToolTipText("");
 
+    autoProxyUsernameLabel.setText(tr("Username:"));
+
+    autoProxyPassword.setToolTipText("");
+
+    autoProxyPasswordLabel.setText(tr("Password:"));
+
     javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
     jPanel4.setLayout(jPanel4Layout);
     jPanel4Layout.setHorizontalGroup(
@@ -500,19 +510,29 @@ public class Preferences extends javax.swing.JDialog {
           .addContainerGap()
           .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+              .addGap(12, 12, 12)
+              .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(autoProxyUsePAC)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                  .addGap(12, 12, 12)
+                  .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(autoProxyUsernameLabel)
+                    .addComponent(autoProxyPasswordLabel))))
+              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+              .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(autoProxyPACURL)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                  .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(autoProxyUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(autoProxyPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                  .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(jPanel4Layout.createSequentialGroup()
               .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(noProxy)
                 .addComponent(autoProxy)
-                .addComponent(manualProxy))
-              .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-              .addGap(12, 12, 12)
-              .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(manualProxy)
                 .addGroup(jPanel4Layout.createSequentialGroup()
-                  .addComponent(autoProxyUsePAC)
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(autoProxyPACURL))
-                .addGroup(jPanel4Layout.createSequentialGroup()
+                  .addGap(12, 12, 12)
                   .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                       .addComponent(manualProxyHTTP)
@@ -529,9 +549,9 @@ public class Preferences extends javax.swing.JDialog {
                         .addComponent(manualProxyHostName, javax.swing.GroupLayout.PREFERRED_SIZE, 541, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(manualProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                          .addComponent(manualProxyPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                          .addComponent(manualProxyUsername, javax.swing.GroupLayout.Alignment.LEADING)))))
-                  .addGap(0, 0, Short.MAX_VALUE)))))
+                          .addComponent(manualProxyPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                          .addComponent(manualProxyUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+              .addGap(0, 0, Short.MAX_VALUE)))
           .addContainerGap())
     );
     jPanel4Layout.setVerticalGroup(
@@ -545,6 +565,14 @@ public class Preferences extends javax.swing.JDialog {
           .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
             .addComponent(autoProxyUsePAC)
             .addComponent(autoProxyPACURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+          .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(autoProxyUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(autoProxyUsernameLabel))
+          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+          .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(autoProxyPasswordLabel)
+            .addComponent(autoProxyPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
           .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
           .addComponent(manualProxy)
           .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -567,7 +595,7 @@ public class Preferences extends javax.swing.JDialog {
           .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
             .addComponent(manualProxyPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(manualProxyPasswordLabel))
-          .addContainerGap(225, Short.MAX_VALUE))
+          .addContainerGap(163, Short.MAX_VALUE))
     );
 
     jTabbedPane1.addTab(tr("Network"), jPanel4);
@@ -690,14 +718,18 @@ public class Preferences extends javax.swing.JDialog {
   }//GEN-LAST:event_manualProxyItemStateChanged
 
   private void autoProxyUsePACItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_autoProxyUsePACItemStateChanged
-    autoProxyPACURL.setEnabled(autoProxyUsePAC.isSelected());
+    autoProxyPACFieldsSetEnabled(autoProxyUsePAC.isSelected());
   }//GEN-LAST:event_autoProxyUsePACItemStateChanged
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JTextField additionalBoardsManagerField;
   private javax.swing.JRadioButton autoProxy;
   private javax.swing.JTextField autoProxyPACURL;
+  private javax.swing.JPasswordField autoProxyPassword;
+  private javax.swing.JLabel autoProxyPasswordLabel;
   private javax.swing.JCheckBox autoProxyUsePAC;
+  private javax.swing.JTextField autoProxyUsername;
+  private javax.swing.JLabel autoProxyUsernameLabel;
   private javax.swing.JCheckBox checkUpdatesBox;
   private javax.swing.JComboBox comboLanguage;
   private javax.swing.JComboBox comboWarnings;
@@ -797,6 +829,8 @@ public class Preferences extends javax.swing.JDialog {
     PreferencesData.set(Constants.PREF_PROXY_MANUAL_PORT, manualProxyPort.getText());
     PreferencesData.set(Constants.PREF_PROXY_MANUAL_USERNAME, manualProxyUsername.getText());
     PreferencesData.set(Constants.PREF_PROXY_MANUAL_PASSWORD, String.valueOf(manualProxyPassword.getPassword()));
+    PreferencesData.set(Constants.PREF_PROXY_AUTO_USERNAME, autoProxyUsername.getText());
+    PreferencesData.set(Constants.PREF_PROXY_AUTO_PASSWORD, String.valueOf(autoProxyPassword.getPassword()));
   }
 
   private void showPrerefencesData() {
@@ -849,6 +883,8 @@ public class Preferences extends javax.swing.JDialog {
       if (!PreferencesData.get(Constants.PREF_PROXY_PAC_URL, "").isEmpty()) {
         autoProxyUsePAC.setSelected(true);
         autoProxyPACURL.setText(PreferencesData.get(Constants.PREF_PROXY_PAC_URL));
+        autoProxyUsername.setText(PreferencesData.get(Constants.PREF_PROXY_AUTO_USERNAME));
+        autoProxyPassword.setText(PreferencesData.get(Constants.PREF_PROXY_AUTO_PASSWORD));
       }
     } else {
       manualProxy.setSelected(true);
@@ -879,7 +915,15 @@ public class Preferences extends javax.swing.JDialog {
 
   private void autoProxyFieldsSetEnabled(boolean enabled) {
     autoProxyUsePAC.setEnabled(enabled);
-    autoProxyPACURL.setEnabled(enabled && autoProxyUsePAC.isSelected());
+    autoProxyPACFieldsSetEnabled(enabled && autoProxyUsePAC.isSelected());
+  }
+
+  private void autoProxyPACFieldsSetEnabled(boolean enabled) {
+    autoProxyPACURL.setEnabled(enabled);
+    autoProxyUsername.setEnabled(enabled);
+    autoProxyUsernameLabel.setEnabled(enabled);
+    autoProxyPassword.setEnabled(enabled);
+    autoProxyPasswordLabel.setEnabled(enabled);
   }
 
   private void disableAllProxyFields() {
