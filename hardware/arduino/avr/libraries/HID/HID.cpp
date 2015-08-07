@@ -59,7 +59,7 @@ int HID_GetInterface(u8* interfaceNum)
 	{
 		D_INTERFACE(HID_INTERFACE,1,3,0,0),
 		D_HIDREPORT(sizeof_hidReportDescriptor),
-		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,0x40,0x01)
+		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,USB_EP_SIZE,0x01)
 	};
 	return USB_SendControl(0,&_hidInterface,sizeof(_hidInterface));
 }

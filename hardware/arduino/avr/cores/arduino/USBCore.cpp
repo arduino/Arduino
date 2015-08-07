@@ -253,7 +253,7 @@ u8 USB_SendSpace(u8 ep)
 	LockEP lock(ep);
 	if (!ReadWriteAllowed())
 		return 0;
-	return 64 - FifoByteCount();
+	return USB_EP_SIZE - FifoByteCount();
 }
 
 //	Blocking Send of data to an endpoint
@@ -326,6 +326,7 @@ u8 _initEndpoints[] =
 
 #define EP_SINGLE_64 0x32	// EP0
 #define EP_DOUBLE_64 0x36	// Other endpoints
+#define EP_SINGLE_16 0x12
 
 static
 void InitEP(u8 index, u8 type, u8 size)
@@ -344,7 +345,13 @@ void InitEndpoints()
 		UENUM = i;
 		UECONX = (1<<EPEN);
 		UECFG0X = _initEndpoints[i];
+#if USB_EP_SIZE == 16
+		UECFG1X = EP_SINGLE_16;
+#elif USB_EP_SIZE == 64
 		UECFG1X = EP_DOUBLE_64;
+#else
+#error Unsupported value for USB_EP_SIZE
+#endif
 	}
 	UERST = 0x7E;	// And reset them
 	UERST = 0;
