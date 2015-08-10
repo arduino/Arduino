@@ -29,6 +29,13 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
         return ;
     }
 
+#if defined __SAM3X8E__ || defined __SAM3X8H__
+  if(g_APinDescription[ulPin].ulPinType != NO_ADC && adc_get_channel_status(ADC, g_APinDescription[ulPin].ulADCChannelNumber))
+    {
+      adc_disable_channel( ADC, g_APinDescription[ulPin].ulADCChannelNumber);
+    }
+#endif
+
 	switch ( ulMode )
     {
         case INPUT:

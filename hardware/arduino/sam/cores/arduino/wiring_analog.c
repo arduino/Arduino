@@ -148,9 +148,9 @@ uint32_t analogRead(uint32_t ulPin)
 		case ADC11 :
 
 			// Enable the corresponding channel
-			if (ulChannel != latestSelectedChannel) {
+			if (adc_get_channel_status(ADC, ulChannel) != 1) {
 				adc_enable_channel( ADC, ulChannel );
-				if ( latestSelectedChannel != (uint32_t)-1 )
+				if ( latestSelectedChannel != (uint32_t)-1 && ulChannel != latestSelectedChannel)
 					adc_disable_channel( ADC, latestSelectedChannel );
 				latestSelectedChannel = ulChannel;
 			}
