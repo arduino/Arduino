@@ -186,12 +186,12 @@
       </fileset>
     </copy>
     <antcall target="unzip">
-      <param name="archive_file" value="Firmata-2.4.3.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/Firmata/archive/v2.4.3.zip" />
-      <param name="final_folder" value="${target.path}/libraries/Firmata-2.4.3" />
+      <param name="archive_file" value="Firmata-2.4.4.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/Firmata/archive/v2.4.4.zip" />
+      <param name="final_folder" value="${target.path}/libraries/Firmata-2.4.4" />
       <param name="dest_folder" value="${target.path}/libraries" />
     </antcall>
-    <move file="${target.path}/libraries/Firmata-2.4.3" tofile="${target.path}/libraries/Firmata" />
+    <move file="${target.path}/libraries/Firmata-2.4.4" tofile="${target.path}/libraries/Firmata" />
     <antcall target="unzip">
       <param name="archive_file" value="Temboo-1.1.2.zip" />
       <param name="archive_url" value="https://github.com/temboo/Temboo/archive/1.1.2.zip" />
