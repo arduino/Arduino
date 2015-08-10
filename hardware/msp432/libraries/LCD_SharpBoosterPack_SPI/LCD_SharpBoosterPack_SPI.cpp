@@ -16,10 +16,21 @@
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //  Licence CC = BY SA NC
 //
+//  Edited 2015-07-10 by ReiVilo
+//  Use of Clock from Galaxia library for MSP432
+//  The OneMsTaskTimer is superseeded by the clock element myClock.
+//
 
 #include <energia.h>
 #include "LCD_SharpBoosterPack_SPI.h"
 #include "SPI.h"
+
+#if defined(__MSP432P401R__)
+// Let's use the RTOS Clock element from the Galaxia library instead!
+#include "Clock.h"
+#else
+#include <OneMsTaskTimer.h>
+#endif
 
 uint8_t _pinReset;
 uint8_t _pinSerialData;
@@ -323,22 +334,38 @@ static void SendToggleVCOMCommand(void)
     }
 }
 
+#if defined(__MSP432P401R__)
+// Let's use the RTOS Clock element from the Galaxia library instead!
+Clock myClock;
+#else
 struct OneMsTaskTimer_t timer_task = {1000, SendToggleVCOMCommand, 0, 0};
+#endif
 
 void LCD_SharpBoosterPack_SPI::TA0_enableVCOMToggle()
 {
+#if defined(__MSP432P401R__)
+    // Let's use the RTOS Clock element from the Galaxia library instead!
+    myClock.begin(SendToggleVCOMCommand, 0, 1000);
+    myClock.start();
+#else
     // generate Int. each 4096*8*32768Hz = 1 sec
     //
     // Base address for first timer
     //
     OneMsTaskTimer::add(&timer_task);
-	OneMsTaskTimer::start();
+    OneMsTaskTimer::start();
+#endif
 }
 
 
 void LCD_SharpBoosterPack_SPI::TA0_turnOff()
 {
-  OneMsTaskTimer::stop();
+#if defined(__MSP432P401R__)
+    // Let's use the RTOS Clock element from the Galaxia library instead!
+    myClock.stop();
+#else
+    OneMsTaskTimer::stop();
+#endif
 }
 
 

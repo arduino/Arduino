@@ -15,10 +15,19 @@
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //  Licence CC = BY SA NC
 //
+//  Edited 2015-07-10 by ReiVilo
+//  Use of Clock from Galaxia library for MSP432
+//  The OneMsTaskTimer is superseeded by the clock element myClock.
+//
 
 // Include application, user and local libraries
 #include "SPI.h"
-#include "OneMsTaskTimer.h"
+#if defined(__MSP432P401R__)
+// Let's use the RTOS Clock element from the Galaxia library instead!
+#include "Clock.h"
+#else
+#include <OneMsTaskTimer.h>
+#endif
 #include "LCD_SharpBoosterPack_SPI.h"
 
 // Variables
