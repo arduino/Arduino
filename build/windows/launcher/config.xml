@@ -7,7 +7,6 @@
   <icon>application.ico</icon>
   <classPath>
     <mainClass>processing.app.Base</mainClass>
-    <cp>%EXEDIR%/lib/antlr.jar</cp>
     <cp>%EXEDIR%/lib/apple.jar</cp>
     <cp>%EXEDIR%/lib/arduino-core.jar</cp>
     <cp>%EXEDIR%/lib/bcpg-jdk15on-152.jar</cp>
