@@ -3,14 +3,12 @@ package cc.arduino.net;
 import cc.arduino.Constants;
 import org.apache.commons.compress.utils.IOUtils;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
 import java.io.IOException;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class CustomProxySelector {
 
@@ -22,11 +20,16 @@ public class CustomProxySelector {
   }
 
   public Proxy getProxyFor(URI uri) throws IOException, ScriptException, NoSuchMethodException {
-    if (Constants.PROXY_TYPE_NONE.equals(preferences.get(Constants.PREF_PROXY_TYPE))) {
+    String proxyType = preferences.get(Constants.PREF_PROXY_TYPE);
+    if (proxyType == null || proxyType.isEmpty()) {
+      proxyType = Constants.PROXY_TYPE_AUTO;
+    }
+
+    if (Constants.PROXY_TYPE_NONE.equals(proxyType)) {
       return Proxy.NO_PROXY;
     }
 
-    if (Constants.PROXY_TYPE_AUTO.equals(preferences.get(Constants.PREF_PROXY_TYPE))) {
+    if (Constants.PROXY_TYPE_AUTO.equals(proxyType)) {
       String pac = preferences.get(Constants.PREF_PROXY_PAC_URL);
       if (pac == null || pac.isEmpty()) {
         return ProxySelector.getDefault().select(uri).get(0);
@@ -35,7 +38,7 @@ public class CustomProxySelector {
       return pacProxy(pac, uri);
     }
 
-    if (preferences.get(Constants.PREF_PROXY_TYPE).equals(Constants.PROXY_TYPE_MANUAL)) {
+    if (Constants.PROXY_TYPE_MANUAL.equals(proxyType)) {
       return manualProxy();
     }
 
@@ -56,9 +59,31 @@ public class CustomProxySelector {
     String pacScript = new String(IOUtils.toByteArray(urlConnection.getInputStream()), Charset.forName("ASCII"));
 
     ScriptEngine nashorn = new ScriptEngineManager().getEngineByName("nashorn");
+    nashorn.getBindings(ScriptContext.ENGINE_SCOPE).put("pac", new PACSupportMethods());
+    Stream.of("isPlainHostName(host)",
+      "dnsDomainIs(host, domain)",
+      "localHostOrDomainIs(host, hostdom)",
+      "isResolvable(host)",
+      "isInNet(host, pattern, mask)",
+      "dnsResolve(host)",
+      "myIpAddress()",
+      "dnsDomainLevels(host)",
+      "shExpMatch(str, shexp)").forEach((fn) -> {
+      try {
+        nashorn.eval("function " + fn + " { return pac." + fn + "; }");
+      } catch (ScriptException e) {
+        throw new RuntimeException(e);
+      }
+    });
     nashorn.eval(pacScript);
     String proxyConfigs = callFindProxyForURL(uri, nashorn);
     return makeProxyFrom(proxyConfigs);
+  }
+
+  private String callFindProxyForURL(URI uri, ScriptEngine nashorn) throws ScriptException, NoSuchMethodException {
+    Invocable script = (Invocable) nashorn;
+    URL url = toUrl(uri);
+    return (String) script.invokeFunction("FindProxyForURL", url.toExternalForm(), url.getHost());
   }
 
   private Proxy makeProxyFrom(String proxyConfigs) {
@@ -76,11 +101,6 @@ public class CustomProxySelector {
     }
     String[] hostPort = proxyConfig.split(":");
     return new Proxy(type, new InetSocketAddress(hostPort[0], Integer.valueOf(hostPort[1])));
-  }
-
-  private String callFindProxyForURL(URI uri, ScriptEngine nashorn) throws ScriptException, NoSuchMethodException {
-    Invocable script = (Invocable) nashorn;
-    return (String) script.invokeFunction("FindProxyForURL", toUrl(uri).toExternalForm());
   }
 
   private URL toUrl(URI uri) {

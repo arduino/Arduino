@@ -87,6 +87,26 @@ public class CustomProxySelectorTest {
   }
 
   @Test
+  public void testProxyPACComplex() throws Exception {
+    preferences.put(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_AUTO);
+    preferences.put(Constants.PREF_PROXY_PAC_URL, CustomProxySelectorTest.class.getResource("proxy_complex.pac").toExternalForm());
+    CustomProxySelector proxySelector = new CustomProxySelector(preferences);
+    Proxy proxy = proxySelector.getProxyFor(uri);
+
+    assertEquals(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("4.5.6.7", 8080)), proxy);
+  }
+
+  @Test
+  public void testProxyPACComplex2() throws Exception {
+    preferences.put(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_AUTO);
+    preferences.put(Constants.PREF_PROXY_PAC_URL, CustomProxySelectorTest.class.getResource("proxy_complex.pac").toExternalForm());
+    CustomProxySelector proxySelector = new CustomProxySelector(preferences);
+    Proxy proxy = proxySelector.getProxyFor(new URL("http://www.intranet.domain.com/ciao").toURI());
+
+    assertEquals(Proxy.NO_PROXY, proxy);
+  }
+
+  @Test
   public void testManualProxy() throws Exception {
     preferences.put(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_MANUAL);
     preferences.put(Constants.PREF_PROXY_MANUAL_TYPE, Constants.PROXY_MANUAL_TYPE_HTTP);

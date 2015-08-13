@@ -102,6 +102,7 @@
       <fileset dir="test" includes="**/*.json*" />
       <fileset dir="test" includes="**/*.key" />
       <fileset dir="test" includes="**/*.hex" />
+      <fileset dir="test" includes="**/*.pac" />
     </copy>
 
     <junit printsummary="yes" dir="${work.dir}" fork="true">
