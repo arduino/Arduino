@@ -28,9 +28,10 @@ typedef struct
 	u8 	bParityType;
 	u8 	bDataBits;
 	u8	lineState;
+    u8  prevLineState;
 } LineInfo;
 
-static volatile LineInfo _usbLineInfo = { 57600, 0x00, 0x00, 0x00, 0x00 };
+static volatile LineInfo _usbLineInfo = { 57600, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 #define WEAK __attribute__ ((weak))
 
@@ -194,7 +195,7 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 	// TODO - ZE - check behavior on different OSes and test what happens if an
 	// open connection isn't broken cleanly (cable is yanked out, host dies
 	// or locks up, or host virtual serial port hangs)
-	if (_usbLineInfo.lineState > 0)	{
+	if (this) {
 		int r = USB_Send(CDC_TX,buffer,size);
 		if (r > 0) {
 			return r;
@@ -213,13 +214,19 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 // setup() before printing to ensure that an application on the host is
 // actually ready to receive and display the data.
 // We add a short delay before returning to fix a bug observed by Federico
-// where the port is configured (lineState != 0) but not quite opened.
+// where the port is configured (lineState != 0) but not quite opened.  This
+// only happens when the line state transitions from ==0 to >0 otherwise you
+// get a nasty delay when one isn't needed.
 Serial_::operator bool() {
-	bool result = false;
-	if (_usbLineInfo.lineState > 0) 
-		result = true;
-	delay(10);
-	return result;
+    bool res = false;
+    if (_usbLineInfo.lineState > 0) {
+        res = true;
+        if (_usbLineInfo.prevLineState == 0) {
+            delay(10);
+        }
+    }
+    _usbLineInfo.prevLineState = _usbLineInfo.lineState;
+    return res;
 }
 
 Serial_ Serial;
