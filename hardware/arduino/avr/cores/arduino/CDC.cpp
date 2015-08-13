@@ -49,8 +49,8 @@ const CDCDescriptor _cdcInterface =
 
 	//	CDC data interface
 	D_INTERFACE(CDC_DATA_INTERFACE,2,CDC_DATA_INTERFACE_CLASS,0,0),
-	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT),USB_ENDPOINT_TYPE_BULK,0x40,0),
-	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,0x40,0)
+	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT),USB_ENDPOINT_TYPE_BULK,USB_EP_SIZE,0),
+	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,USB_EP_SIZE,0)
 };
 
 int CDC_GetInterface(u8* interfaceNum)
@@ -92,11 +92,24 @@ bool CDC_Setup(USBSetup& setup)
 			// with a relatively long period so it can finish housekeeping tasks
 			// like servicing endpoints before the sketch ends
 
+#ifndef MAGIC_KEY
+#define MAGIC_KEY 0x7777
+#endif
+#ifndef MAGIC_KEY_POS
+#define MAGIC_KEY_POS 0x0800
+#endif
+
 			// We check DTR state to determine if host port is open (bit 0 of lineState).
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
-				*(uint16_t *)(RAMEND-1) = *(uint16_t *)0x0800;
-				*(uint16_t *)0x0800 = 0x7777;
+#if MAGIC_KEY_POS != (RAMEND-1)
+				*(uint16_t *)(RAMEND-1) = *(uint16_t *)MAGIC_KEY_POS;
+				*(uint16_t *)MAGIC_KEY_POS = MAGIC_KEY;
+#else
+				// for future boards save the key in the inproblematic RAMEND
+				// which is reserved for the main() return value (which will never return)
+				*(uint16_t *)MAGIC_KEY_POS = MAGIC_KEY;
+#endif
 				wdt_enable(WDTO_120MS);
 			}
 			else
@@ -108,7 +121,11 @@ bool CDC_Setup(USBSetup& setup)
 
 				wdt_disable();
 				wdt_reset();
-				*(uint16_t *)0x0800 = *(uint16_t *)(RAMEND-1);
+#if MAGIC_KEY_POS != (RAMEND-1)
+				*(uint16_t *)MAGIC_KEY_POS = *(uint16_t *)(RAMEND-1);
+#else
+				*(uint16_t *)MAGIC_KEY_POS = 0x0000;
+#endif
 			}
 		}
 		return true;

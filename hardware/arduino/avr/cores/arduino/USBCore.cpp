@@ -110,7 +110,7 @@ static inline void ClearOUT(void)
 	UEINTX = ~(1<<RXOUTI);
 }
 
-void Recv(volatile u8* data, u8 count)
+static inline void Recv(volatile u8* data, u8 count)
 {
 	while (count--)
 		*data++ = UEDATX;
@@ -253,7 +253,7 @@ u8 USB_SendSpace(u8 ep)
 	LockEP lock(ep);
 	if (!ReadWriteAllowed())
 		return 0;
-	return 64 - FifoByteCount();
+	return USB_EP_SIZE - FifoByteCount();
 }
 
 //	Blocking Send of data to an endpoint
@@ -326,6 +326,7 @@ u8 _initEndpoints[] =
 
 #define EP_SINGLE_64 0x32	// EP0
 #define EP_DOUBLE_64 0x36	// Other endpoints
+#define EP_SINGLE_16 0x12
 
 static
 void InitEP(u8 index, u8 type, u8 size)
@@ -344,7 +345,13 @@ void InitEndpoints()
 		UENUM = i;
 		UECONX = (1<<EPEN);
 		UECFG0X = _initEndpoints[i];
+#if USB_EP_SIZE == 16
+		UECFG1X = EP_SINGLE_16;
+#elif USB_EP_SIZE == 64
 		UECFG1X = EP_DOUBLE_64;
+#else
+#error Unsupported value for USB_EP_SIZE
+#endif
 	}
 	UERST = 0x7E;	// And reset them
 	UERST = 0;
@@ -620,13 +627,19 @@ void USB_Flush(u8 ep)
 
 static inline void USB_ClockDisable()
 {
+#if defined(OTGPADE)
 	USBCON = (USBCON & ~(1<<OTGPADE)) | (1<<FRZCLK); // freeze clock and disable VBUS Pad
+#else // u2 Series
+	USBCON = (1 << FRZCLK); // freeze clock
+#endif
 	PLLCSR &= ~(1<<PLLE);  // stop PLL
 }
 
 static inline void USB_ClockEnable()
 {
+#if defined(UHWCON)
 	UHWCON |= (1<<UVREGE);			// power internal reg
+#endif
 	USBCON = (1<<USBE) | (1<<FRZCLK);	// clock frozen, usb enabled
 
 // ATmega32U4
@@ -637,6 +650,16 @@ static inline void USB_ClockEnable()
 	PLLCSR &= ~(1<<PINDIV);                  // Need  8 MHz xtal
 #else
 #error "Clock rate of F_CPU not supported"
+#endif
+
+#elif defined(__AVR_AT90USB82__) || defined(__AVR_AT90USB162__) || defined(__AVR_ATmega32U2__) || defined(__AVR_ATmega16U2__) || defined(__AVR_ATmega8U2__)
+	// for the u2 Series the datasheet is confusing. On page 40 its called PINDIV and on page 290 its called PLLP0
+#if F_CPU == 16000000UL
+	// Need 16 MHz xtal
+	PLLCSR |= (1 << PLLP0);
+#elif F_CPU == 8000000UL
+	// Need 8 MHz xtal
+	PLLCSR &= ~(1 << PLLP0);
 #endif
 
 // AT90USB646, AT90USB647, AT90USB1286, AT90USB1287
@@ -670,10 +693,18 @@ static inline void USB_ClockEnable()
 	// strange behaviors when the board is reset using the serial
 	// port touch at 1200 bps. This delay fixes this behavior.
 	delay(1);
+#if defined(OTGPADE)
 	USBCON = (USBCON & ~(1<<FRZCLK)) | (1<<OTGPADE);	// start USB clock, enable VBUS Pad
+#else
+	USBCON &= ~(1 << FRZCLK);	// start USB clock
+#endif
 
 #if defined(RSTCPU)
+#if defined(LSM)
 	UDCON &= ~((1<<RSTCPU) | (1<<LSM) | (1<<RMWKUP) | (1<<DETACH));	// enable attach resistor, set full speed mode
+#else // u2 Series
+	UDCON &= ~((1 << RSTCPU) | (1 << RMWKUP) | (1 << DETACH));	// enable attach resistor, set full speed mode
+#endif
 #else
 	// AT90USB64x and AT90USB128x don't have RSTCPU
 	UDCON &= ~((1<<LSM) | (1<<RMWKUP) | (1<<DETACH));	// enable attach resistor, set full speed mode
