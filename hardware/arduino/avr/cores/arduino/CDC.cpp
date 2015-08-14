@@ -18,6 +18,7 @@
 
 #include "USBAPI.h"
 #include <avr/wdt.h>
+#include <util/atomic.h>
 
 #if defined(USBCON)
 
@@ -31,6 +32,7 @@ typedef struct
 } LineInfo;
 
 static volatile LineInfo _usbLineInfo = { 57600, 0x00, 0x00, 0x00, 0x00 };
+static volatile int32_t breakValue = -1;
 
 #define WEAK __attribute__ ((weak))
 
@@ -75,6 +77,11 @@ bool CDC_Setup(USBSetup& setup)
 
 	if (REQUEST_HOSTTODEVICE_CLASS_INTERFACE == requestType)
 	{
+		if (CDC_SEND_BREAK == r)
+		{
+			breakValue = ((uint16_t)setup.wValueH << 8) | setup.wValueL;
+		}
+
 		if (CDC_SET_LINE_CODING == r)
 		{
 			USB_RecvControl((void*)&_usbLineInfo,7);
@@ -173,6 +180,11 @@ int Serial_::read(void)
 	return USB_Recv(CDC_RX);
 }
 
+int Serial_::availableForWrite(void)
+{
+	return USB_SendSpace(CDC_TX);
+}
+
 void Serial_::flush(void)
 {
 	USB_Flush(CDC_TX);
@@ -220,6 +232,44 @@ Serial_::operator bool() {
 		result = true;
 	delay(10);
 	return result;
+}
+
+unsigned long Serial_::baud() {
+	// Disable interrupts while reading a multi-byte value
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		return _usbLineInfo.dwDTERate;
+	}
+}
+
+uint8_t Serial_::stopbits() {
+	return _usbLineInfo.bCharFormat;
+}
+
+uint8_t Serial_::paritytype() {
+	return _usbLineInfo.bParityType;
+}
+
+uint8_t Serial_::numbits() {
+	return _usbLineInfo.bDataBits;
+}
+
+bool Serial_::dtr() {
+	return _usbLineInfo.lineState & 0x1;
+}
+
+bool Serial_::rts() {
+	return _usbLineInfo.lineState & 0x2;
+}
+
+int32_t Serial_::readBreak() {
+	int32_t ret;
+	// Disable IRQs while reading and clearing breakValue to make
+	// sure we don't overwrite a value just set by the ISR.
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		ret = breakValue;
+		breakValue = -1;
+	}
+	return ret;
 }
 
 Serial_ Serial;
