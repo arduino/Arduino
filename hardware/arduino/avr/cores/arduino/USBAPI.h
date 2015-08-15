@@ -67,6 +67,7 @@ public:
 	bool wakeupHost(); // returns false, when wakeup cannot be processed
 };
 extern USBDevice_ USBDevice;
+void setupUSB();
 
 //================================================================================
 //================================================================================
