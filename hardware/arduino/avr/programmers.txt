@@ -38,9 +38,9 @@ parallel.program.extra_params=-F
 
 arduinoasisp.name=Arduino as ISP
 arduinoasisp.communication=serial
-arduinoasisp.protocol=stk500v1
+arduinoasisp.protocol=arduino
 arduinoasisp.speed=19200
-arduinoasisp.program.protocol=stk500v1
+arduinoasisp.program.protocol=arduino
 arduinoasisp.program.speed=19200
 arduinoasisp.program.tool=avrdude
 arduinoasisp.program.extra_params=-P{serial.port} -b{program.speed}
