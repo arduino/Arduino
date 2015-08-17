@@ -561,48 +561,46 @@ public class Sketch {
     //if (!modified) return false;
 
     if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
-      // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is read-only"),
-                       tr("Some files are marked \"read-only\", so you'll\n" +
-                         "need to re-save this sketch to another location."));
-      // if the user cancels, give up on the save()
-      if (!saveAs()) return false;
-    } else {
-      // rename .pde files to .ino
-      File mainFile = new File(getMainFilePath());
-      File mainFolder = mainFile.getParentFile();
-      File[] pdeFiles = mainFolder.listFiles((dir, name) -> {
-        return name.toLowerCase().endsWith(".pde");
-      });
+        tr("Some files are marked \"read-only\", so you'll\n" +
+          "need to re-save this sketch to another location."));
+      return saveAs();
+    }
 
-      if (pdeFiles != null && pdeFiles.length > 0) {
-        if (PreferencesData.get("editor.update_extension") == null) {
-          Object[] options = { tr("OK"), tr("Cancel") };
-          int result = JOptionPane.showOptionDialog(editor,
-                                                    tr("In Arduino 1.0, the default file extension has changed\n" +
-                                                      "from .pde to .ino.  New sketches (including those created\n" +
-                                                      "by \"Save-As\") will use the new extension.  The extension\n" +
-                                                      "of existing sketches will be updated on save, but you can\n" +
-                                                      "disable this in the Preferences dialog.\n" +
-                                                      "\n" +
-                                                      "Save sketch and update its extension?"),
-                                                    tr(".pde -> .ino"),
-                                                    JOptionPane.OK_CANCEL_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE,
-                                                    null,
-                                                    options,
-                                                    options[0]);
+    // rename .pde files to .ino
+    File mainFile = new File(getMainFilePath());
+    File mainFolder = mainFile.getParentFile();
+    File[] pdeFiles = mainFolder.listFiles((dir, name) -> {
+      return name.toLowerCase().endsWith(".pde");
+    });
 
-          if (result != JOptionPane.OK_OPTION) return false; // save cancelled
+    if (pdeFiles != null && pdeFiles.length > 0) {
+      if (PreferencesData.get("editor.update_extension") == null) {
+        Object[] options = {tr("OK"), tr("Cancel")};
+        int result = JOptionPane.showOptionDialog(editor,
+          tr("In Arduino 1.0, the default file extension has changed\n" +
+            "from .pde to .ino.  New sketches (including those created\n" +
+            "by \"Save-As\") will use the new extension.  The extension\n" +
+            "of existing sketches will be updated on save, but you can\n" +
+            "disable this in the Preferences dialog.\n" +
+            "\n" +
+            "Save sketch and update its extension?"),
+          tr(".pde -> .ino"),
+          JOptionPane.OK_CANCEL_OPTION,
+          JOptionPane.QUESTION_MESSAGE,
+          null,
+          options,
+          options[0]);
 
-          PreferencesData.setBoolean("editor.update_extension", true);
-        }
+        if (result != JOptionPane.OK_OPTION) return false; // save cancelled
 
-        if (PreferencesData.getBoolean("editor.update_extension")) {
-          // Do rename of all .pde files to new .ino extension
-          for (File pdeFile : pdeFiles)
-            renameCodeToInoExtension(pdeFile);
-        }
+        PreferencesData.setBoolean("editor.update_extension", true);
+      }
+
+      if (PreferencesData.getBoolean("editor.update_extension")) {
+        // Do rename of all .pde files to new .ino extension
+        for (File pdeFile : pdeFiles)
+          renameCodeToInoExtension(pdeFile);
       }
     }
 
