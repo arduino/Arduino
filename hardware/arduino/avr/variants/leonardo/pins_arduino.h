@@ -171,8 +171,10 @@ extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
 // MOSI		D16		PB2					MOSI,PCINT2
 // SS		D17		PB0					RXLED,SS/PCINT0
 //
-// TXLED			PD5
-// RXLED		    PB0
+// Connected LEDs on board for TX and RX
+// TXLED	D24		PD5					XCK1
+// RXLED	D17		PB0
+//
 // HWB				PE2					HWB
 
 // these arrays map port names (e.g. port B) to the
@@ -274,7 +276,7 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(1), // D22 - A4 - PF1
 	_BV(0), // D23 - A5 - PF0
 	
-	_BV(4), // D24 / D4 - A6 - PD4
+	_BV(5), // D24 - PD5
 	_BV(7), // D25 / D6 - A7 - PD7
 	_BV(4), // D26 / D8 - A8 - PB4
 	_BV(5), // D27 / D9 - A9 - PB5
