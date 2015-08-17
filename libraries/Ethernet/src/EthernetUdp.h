@@ -43,11 +43,13 @@
 
 class EthernetUDP : public UDP {
 private:
-  uint8_t _sock;  // socket ID for Wiz5100
   uint16_t _port; // local port to listen on
   IPAddress _remoteIP; // remote IP address for the incoming packet whilst it's being processed
   uint16_t _remotePort; // remote port for the incoming packet whilst it's being processed
   uint16_t _offset; // offset into the packet being sent
+
+protected:
+  uint8_t _sock;  // socket ID for Wiz5100
   uint16_t _remaining; // remaining bytes of incoming packet yet to be processed
 
 public:
