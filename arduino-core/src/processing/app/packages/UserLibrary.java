@@ -58,6 +58,7 @@ public class UserLibrary extends ContributedLibrary {
   private List<String> types;
   private List<String> declaredTypes;
   private boolean onGoingDevelopment;
+  private boolean alinkage;
 
   private static final List<String> MANDATORY_PROPERTIES = Arrays
     .asList("name", "version", "author", "maintainer",
@@ -154,6 +155,12 @@ public class UserLibrary extends ContributedLibrary {
       typesList.add(type.trim());
     }
 
+    String alinkageString = properties.get("alinkage");
+    boolean alinkage = false;
+    if(alinkageString != null && alinkageString.equals("true")) {
+      alinkage = true;
+    }
+
     UserLibrary res = new UserLibrary();
     res.setInstalledFolder(libFolder);
     res.setInstalled(true);
@@ -170,6 +177,7 @@ public class UserLibrary extends ContributedLibrary {
     res.layout = layout;
     res.declaredTypes = typesList;
     res.onGoingDevelopment = Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE));
+    res.alinkage = alinkage;
     return res;
   }
 
@@ -272,6 +280,10 @@ public class UserLibrary extends ContributedLibrary {
 
   public boolean onGoingDevelopment() {
     return onGoingDevelopment;
+  }
+
+  public boolean alinkage() {
+    return alinkage;
   }
 
   protected enum LibraryLayout {
