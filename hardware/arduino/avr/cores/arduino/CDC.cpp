@@ -201,15 +201,15 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 // only happens when the line state transitions from ==0 to >0 otherwise you
 // get a nasty delay when one isn't needed.
 Serial_::operator bool() {
-    bool res = false;
+    bool result = false;
     if (_usbLineInfo.lineState > 0) {
-        res = true;
+        result = true;
         if (_usbLineInfo.prevLineState == 0) {
             delay(10);
         }
     }
     _usbLineInfo.prevLineState = _usbLineInfo.lineState;
-    return res;
+    return result;
 }
 
 Serial_ Serial;
