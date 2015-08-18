@@ -485,6 +485,7 @@ void noTone(uint8_t _pin)
     if (tone_pins[i] == _pin) {
       _timer = pgm_read_byte(tone_pin_to_timer_PGM + i);
       tone_pins[i] = 255;
+      break;
     }
   }
   
