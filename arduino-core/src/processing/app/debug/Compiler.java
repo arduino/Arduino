@@ -395,6 +395,7 @@ public class Compiler implements MessageConsumer {
     progressListener.progress(20);
     List<File> includeFolders = new ArrayList<File>();
     includeFolders.add(prefs.getFile("build.core.path"));
+    includeFolders.add(sketch.getFolder());
     if (prefs.getFile("build.variant.path") != null)
       includeFolders.add(prefs.getFile("build.variant.path"));
     for (UserLibrary lib : importedLibraries) {
