@@ -39,17 +39,13 @@ void setup() {
 
   // Print WiFi MAC address:
   printMacAddress();
-
-  // scan for existing networks:
-  Serial.println("Scanning available networks...");
-  listNetworks();
 }
 
 void loop() {
-  delay(10000);
   // scan for existing networks:
   Serial.println("Scanning available networks...");
   listNetworks();
+  delay(10000);
 }
 
 void printMacAddress() {
