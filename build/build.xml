@@ -415,9 +415,7 @@
   </target>
 
   <target name="macosx-debug-common">
-    <exec executable="open" dir="macosx/work" spawn="false" failonerror="true">
-      <arg value="Arduino.app"/>
-    </exec>
+    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false"/>
   </target>
 
   <!-- - - - - - - - - - - - - - - - -->
