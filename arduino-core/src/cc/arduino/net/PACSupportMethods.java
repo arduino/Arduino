@@ -29,6 +29,7 @@
 
 package cc.arduino.net;
 
+import edazdarevic.commons.net.CIDRUtils;
 import org.apache.commons.net.util.SubnetUtils;
 
 import java.net.InetAddress;
@@ -62,10 +63,10 @@ public class PACSupportMethods {
     }
   }
 
-  public boolean isInNet(String host, String pattern, String mask) {
+  public boolean isInNet(String host, String pattern, String mask) throws UnknownHostException {
     SubnetUtils subnetUtils = new SubnetUtils(pattern, mask);
     subnetUtils.setInclusiveHostCount(true);
-    return subnetUtils.getInfo().isInRange(host);
+    return new CIDRUtils(subnetUtils.getInfo().getCidrSignature()).isInRange(host);
   }
 
   public String dnsResolve(String host) throws UnknownHostException {
