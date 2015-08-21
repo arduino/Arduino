@@ -350,15 +350,10 @@
       <fileset file="shared/revisions.txt" />
     </copy>
 
-    <antcall target="macosx-build-common"/>
-
-  </target>
-
-  <target name="macosx-build-common">
     <mkdir dir="${staging_folder}/work" />
     <mkdir dir="${staging_folder}/work/${staging_hardware_folder}" />
 
-    <antcall target="macosx-build-common-avr-toolchain" />
+    <antcall target="macosx-build-avr-toolchain" />
 
     <antcall target="package-library-index-json-bundle"/>
 
@@ -380,7 +375,7 @@
   </target>
 
   <!-- Unzip AVR tools -->
-  <target name="macosx-build-common-avr-toolchain" unless="light_bundle">
+  <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
       <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i386-apple-darwin11.tar.bz2"/>
@@ -401,21 +396,13 @@
   </target>
 
   <target name="macosx-run" depends="build" description="Run Mac OS X version">
-    <antcall target="macosx-run-common"/>
+    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false" failonerror="true"/>
   </target>
 
-  <target name="macosx-debug" depends="build" description="Run Mac OS X version">
-    <antcall target="macosx-debug-common"/>
-  </target>
-
-  <target name="macosx-run-common">
-    <exec executable="open" dir="macosx/work" failonerror="true">
-      <arg value="Arduino.app"/>
-    </exec>
-  </target>
-
-  <target name="macosx-debug-common">
-    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false"/>
+  <!-- FIXME -->
+  <target name="macosx-debug">
+    <antcall target="macosx-run"/>
+    <echo>'ant macosx-debug' is deprecated. Please use 'ant run' instead</echo>
   </target>
 
   <!-- - - - - - - - - - - - - - - - -->
@@ -474,10 +461,6 @@
   <!-- Build distribution file for MacOSX. -->
   <!-- - - - - - - - - - - - - - - - - - - -->
   <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
-    <antcall target="macosx-dist-common"/>
-  </target>
-
-  <target name="macosx-dist-common">
     <exec executable="zip" dir="macosx/work" failonerror="true">
       <arg line="-q -r ../arduino-${version}-${platform}.zip ." />
     </exec>
@@ -836,7 +819,7 @@
 
   <target name="windows-run" depends="build"
 	  description="Run windows version">
-    <exec executable="windows/work/arduino.exe" dir="windows/work" failonerror="true"/>
+    <exec executable="windows/work/arduino.exe" dir="windows/work" spawn="false" failonerror="true"/>
   </target>
 
   <target name="windows-dist" depends="build" description="Create .zip files of windows version">
