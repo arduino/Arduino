@@ -285,6 +285,14 @@ msgstr "Auto Format"
 msgid "Auto Format finished."
 msgstr "Auto Format finished."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr ""
+
 #: SerialMonitor.java:110
 msgid "Autoscroll"
 msgstr "Autoscroll"
@@ -1039,6 +1047,10 @@ msgstr "Help"
 msgid "Hindi"
 msgstr "Hindi"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr ""
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -1187,6 +1199,10 @@ msgstr "Malay (Malaysia)"
 msgid "Manage Libraries..."
 msgstr "Manage Libraries..."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr ""
+
 #: Preferences.java:107
 msgid "Marathi"
 msgstr "Marathi"
@@ -1239,6 +1255,10 @@ msgstr "Name for new file:"
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "Nepali"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1303,6 +1323,10 @@ msgstr "No line ending"
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
 msgstr "No parameters"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr ""
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1434,6 +1458,10 @@ msgstr "Polish"
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
 msgstr "Port"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1681,6 +1709,10 @@ msgstr "Serial port {0} not found.\nRetry the upload with another serial port?"
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
 msgstr "Serial ports"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr ""
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2072,6 +2104,11 @@ msgstr "Use Selection For Find"
 #: Preferences.java:409
 msgid "Use external editor"
 msgstr "Use external editor"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format

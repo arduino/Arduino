@@ -10,14 +10,15 @@
 # Eyal Halfon <logme3@gmail.com>, 2013
 # Itay Asayag <mirpaa.itay@gmail.com>, 2015
 # Eyal Halfon <logme3@gmail.com>, 2012
+# Roy Zahor <roy.zahor@gmail.com>, 2015
 # saarsa <saarsabo1919@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 14:27+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-08-13 12:55+0000\n"
+"Last-Translator: Roy Zahor <roy.zahor@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/mbanzi/arduino-ide-15/language/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,16 +33,16 @@ msgstr "(דורש אתחול ל-ארדואינו)"
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "לא בשימוש: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "בשימוש: {0}"
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'מקלדת' נתמכת רק ב Arduino Leonardo"
+msgstr "'מקלדת' נתמכת ב Arduino Leonardo בלבד."
 
 #: debug/Compiler.java:450
 msgid "'Mouse' only supported on the Arduino Leonardo"
@@ -53,7 +54,7 @@ msgstr "(ערוך רק כשארדואינו אינו במצב ריצה)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir לא נתמך יותר"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
@@ -151,7 +152,7 @@ msgstr "אלבנית"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "הכל"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -166,17 +167,17 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "שגיאה במהלך העלאת סקיצה"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "שגיאה במהלך אימות הסקיצה"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "שגיאה במהלך אימות/העלאת הסקיצה"
 
 #: Base.java:228
 msgid ""
@@ -669,7 +670,7 @@ msgstr "מחק"
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
 "the board right before exporting"
-msgstr "ההתקן אינו מגיב, יש לבצע בדיקה שבחרת את הפורט הנכון, לחילופין יש לבצע ריסט ללוח ממש לפני הייצוא"
+msgstr "ההתקן אינו מגיב, יש לבצע בדיקה שבחרת את הפורט הנכון, לחילופין יש לבצע אתחול ללוח רגע לפני הייצוא"
 
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
@@ -701,7 +702,7 @@ msgstr "צריבת תוכנת הפעלה הסתיימה."
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "קומפילציה הסתיימה."
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -713,7 +714,7 @@ msgstr "ההדפסה הסתיימה."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "העלאה הסתיימה."
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -840,7 +841,7 @@ msgstr "שגיאה בפתיחת פורט סיריאלי \"{0}\"."
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr ""
+msgstr "שגיאה בפתיחת פורט סיריאלי ''{0}''. נסו להתייעץ בתיעוד בכתובת http://playground.arduino.cc/Linux/All#Permission "
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -874,7 +875,7 @@ msgstr "שגיאה אירעה בעת צריבת תוכנת הפעלה."
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr "שגיה במהלך צריבת bootloader: פרמטר הגדרות '{0}' חסר"
+msgstr "שגיאה במהלך צריבת bootloader: פרמטר הגדרות '{0}' חסר"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -891,7 +892,7 @@ msgstr "שגיאה בתהליך ההדפסה."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "שגיאה במהלך העלאת תוכנית"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -902,11 +903,11 @@ msgstr "שגיאה במהלך העלאת תכנית: פרמטר הגדרות '{0
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "שגיאה בתהליך האימות"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "שגיאה במהלך אימות/הידור"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -1439,7 +1440,7 @@ msgstr "פולנית"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr "פתחה"
+msgstr "פורט"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1698,7 +1699,7 @@ msgstr "הצג את תיקיית הסקיצה"
 
 #: ../../../processing/app/EditorStatus.java:468
 msgid "Show verbose output during compilation"
-msgstr ""
+msgstr "הראה פלט מפורט במהלך קומפילציה"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1759,11 +1760,11 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "סלובקית"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
-msgstr ""
+msgstr "סלובנית"
 
 #: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
 msgid ""
@@ -1793,7 +1794,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr ""
+msgstr "מתחיל..."
 
 #: Base.java:540
 msgid "Sunshine"
@@ -1957,7 +1958,7 @@ msgstr "כלים"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr ""
+msgstr "נושא"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -1970,7 +1971,7 @@ msgstr "טורקית"
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
 msgid "Type"
-msgstr ""
+msgstr "סוג"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
@@ -2104,7 +2105,7 @@ msgstr "אמת את הקוד בסיום ההעלאה"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "בצע אימות/קומפילציה"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2116,7 +2117,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
-msgstr ""
+msgstr "מאמת..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
@@ -2130,7 +2131,7 @@ msgstr ""
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
 msgid "Version {0}"
-msgstr ""
+msgstr "גירסה {0}"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
@@ -2259,7 +2260,7 @@ msgstr ""
 msgid ""
 "You've reached the limit for auto naming of new sketches\n"
 "for the day. How about going for a walk instead?"
-msgstr "הגעת למקסימום היומי של שמות אוטומטיים ליצירות חדשות.\nאולי תצא להליכה במקום?"
+msgstr "הגעת למקסימום היומי של שמות אוטומטיים לסקיצות חדשות.\nאולי תצא להליכה במקום?"
 
 #: ../../../processing/app/BaseNoGui.java:768
 msgid ""
@@ -2409,7 +2410,7 @@ msgstr "העלאה"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
 #, java-format
 msgid "version <b>{0}</b>"
-msgstr ""
+msgstr "גרסה <b>{0}</b>"
 
 #: ../../../../../app/src/processing/app/Editor.java:2243
 #, java-format
@@ -2435,7 +2436,7 @@ msgstr "{0} קבצים התווספו לסקיצה."
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
 msgid "{0} libraries"
-msgstr ""
+msgstr "{0} ספריות"
 
 #: debug/Compiler.java:365
 #, java-format
@@ -2477,14 +2478,14 @@ msgstr ""
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr ""
+msgstr "{0}: ארכיטקטורה לא ידועה"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr ""
+msgstr "{0}: לוח לא יודע"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr ""
+msgstr "{0}: חבילה לא ידועה"

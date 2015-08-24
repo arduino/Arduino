@@ -12,14 +12,15 @@
 # Jack R. <dny1020@aol.com>, 2013
 # Miguel Ángel Barrio Vázquez <descartex1@gmail.com>, 2013
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
+# Pedro Luis <plizze@gmail.com>, 2015
 # Salvador Parra Camacho <sparrac@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 14:27+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-08-17 10:52+0000\n"
+"Last-Translator: Pedro Luis <plizze@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/mbanzi/arduino-ide-15/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,18 +71,18 @@ msgstr ".pde -> .ino"
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
 #, java-format
 msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
+msgstr "<br/>Actualización disponible para alguna de tus {0}tarjetas{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
 #, java-format
 msgid ""
 "<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "<br/>Actualización disponible para alguna de tus {0}tarjetas{1} y {2}librerías{3}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
 #, java-format
 msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
+msgstr "<br/>Actualización disponible para alguna de tus {0}librerías{1}"
 
 #: Editor.java:2053
 msgid ""
@@ -119,7 +120,7 @@ msgstr "Un nuevo paquete {0} está disponible"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr "Un subdirectorio de su sketchbook no es una librería válida"
+msgstr "Un subdirectorio de su 'cuaderno de bocetos' no es una librería válida"
 
 #: Editor.java:1116
 msgid "About Arduino"
@@ -127,7 +128,7 @@ msgstr "Sobre Arduino"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr "Añadir Librería .ZIP"
+msgstr "Añadir libreria .ZIP..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -135,19 +136,19 @@ msgstr "Añadir fichero..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr "URLs Boards Manager Adicionales"
+msgstr "Gestor de URLs Adicionales de Tarjetas:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr "URLs Boards Manager Adicionales:"
+msgstr "Gestor de URLs Adicionales de Tarjetas:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr "Afrikaans"
+msgstr "Afrikáans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr "Albano"
+msgstr "Albanés"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
@@ -340,15 +341,15 @@ msgstr "Placa:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr "Boards Manager"
+msgstr "Gestor de tarjetas"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr "Boards Manager..."
+msgstr "Gestor de tarjetas..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr "Boards incluidas en éste paquete"
+msgstr "Tarjetas incluidas en éste paquete"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
@@ -460,7 +461,7 @@ msgstr "Chino Tradicional"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr "Clique para obtener una lista de las URLs de soporte para las placas no oficiales"
+msgstr "Clique para obtener una lista de las URLs de soporte para las tarjetas no oficiales"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -728,7 +729,7 @@ msgstr "Descargado {0}kb of {1}kb."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr "Descargando definiciones de placas."
+msgstr "Descargando definiciones de tarjetas."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
@@ -1124,7 +1125,7 @@ msgstr "Instalado"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
-msgstr "Instalando boards..."
+msgstr "Instalando tarjetas..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
 #, java-format
@@ -1164,7 +1165,7 @@ msgstr "Letón"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
+msgstr "Gestor de Liberías"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1328,7 +1329,7 @@ msgstr "No sketch"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
-msgstr "No sketchbook"
+msgstr "No hay 'cuaderno de bocetos'"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
@@ -1416,7 +1417,7 @@ msgstr "Persa (Irán)"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
-msgstr "Por favor confirme la eliminación de placas"
+msgstr "Por favor confirme la eliminación de tarjetas"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid "Please confirm library deletion"
@@ -1461,7 +1462,7 @@ msgstr "Preferencias"
 
 #: ../../../../../app/src/processing/app/Base.java:297
 msgid "Preparing boards..."
-msgstr "Preparando placas..."
+msgstr "Preparando tarjetas..."
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1497,7 +1498,7 @@ msgstr "Problema Ajustando la Plataforma"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr "Problema accediendo a la carpeta de placas /www/sd"
+msgstr "Problema accediendo a la carpeta de tarjetas /www/sd"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
 msgid "Problem accessing files in folder "
@@ -1650,11 +1651,11 @@ msgstr "Seleccione versión"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr "La placa seleccionada depende del núcleo '{0}' (no instalado)."
+msgstr "La tarjeta seleccionada depende del núcleo '{0}' (no instalado)."
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
-msgstr "La placa seleccionada no está disponible"
+msgstr "La tarjeta seleccionada no está disponible"
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
@@ -1757,7 +1758,7 @@ msgstr "Localización de proyecto"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr "Ruta al Sketchbook no definida"
+msgstr "Ruta de bocetos no definida"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1919,13 +1920,13 @@ msgstr "La carpeta de proyecto ya no existe. Arduino cambiará la ubicación por
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
-msgstr ""
+msgstr "La carpeta sketchbook especificada contiene tu copia del IDE.\nPor favor, escoge otra carpeta diferente para tus bocetos."
 
 #: ../../../processing/app/debug/Compiler.java:201
 msgid ""
 "Third-party platform.txt does not define compiler.path. Please report this "
 "to the third-party hardware maintainer."
-msgstr ""
+msgstr "Third-party platform.txt does no define un compiler.path. Por favor, reporta esto al mantenedor de hardware third-party.javascript:;"
 
 #: Sketch.java:1075
 msgid ""
@@ -1938,11 +1939,11 @@ msgstr "Ese fichero ya se había copiado a la ubicación\ndesde la que lo querí
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr ""
+msgstr "Esta libreria no está listada en el Gestor de Librerías. No te será posible reinstalarla desde aquí.\n¿Estás seguro que quieres borrarla?"
 
 #: ../../../processing/app/EditorStatus.java:467
 msgid "This report would have more information with"
-msgstr ""
+msgstr "Este informe podría tener más información con"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -1976,11 +1977,11 @@ msgstr "Tipo"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
-msgstr "Teclee la contraseña de la placa para acceder a su consola"
+msgstr "Teclee la contraseña de la tarjeta para acceder a su consola"
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr "Teclee la contraseña de la placa para subir un nuevo proyecto"
+msgstr "Teclee la contraseña de la tarjeta para subir un nuevo proyecto"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
@@ -1989,7 +1990,7 @@ msgstr "Ucraniano"
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr ""
+msgstr "Imposible de conectar: ¿está el sketch usando el puente?"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
@@ -2031,7 +2032,7 @@ msgstr "No se ha especificado plataforma, no hay lanzador disponible.\nPara acti
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
 msgid "Updatable"
-msgstr ""
+msgstr "Actualizable"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -2106,7 +2107,7 @@ msgstr "Verificar código después de subir"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "Verificar/Compilar"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2147,7 +2148,7 @@ msgstr "Visita Arduino.cc"
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr ""
+msgstr "ATENCIÓN: la librería {0} pretende ejecutarse sobre arquitectura(s) {1} y puede ser incompatible con tu actual tarjeta la cual corre sobre arquitectura(s) {2}."
 
 #: Base.java:2128
 msgid "Warning"
@@ -2157,7 +2158,7 @@ msgstr "alerta"
 msgid ""
 "Warning: This core does not support exporting sketches. Please consider "
 "upgrading it or contacting its author"
-msgstr ""
+msgstr "ATENCIÓN: Este núcle no soporta a exportación de bocetos. Por favor considera actualizarlo o contacta con su autor"
 
 #: ../../../cc/arduino/utils/ArchiveExtractor.java:197
 #, java-format
@@ -2166,31 +2167,31 @@ msgstr "Advertencia: el archivo {0} enlaza con la ruta absoluta {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "ATENCIÓN: forzar a seguras contribuciones no seguras"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "ATENCIÓN: forzar ejecución de script no seguro ({0})"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr ""
+msgstr "ATENCIÓN: contribución no segura, saltando la ejecución del script ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
 msgid ""
 "Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
 " converted to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "Atención: platform.txt del núcleo '{0}' contiene {1} desfasada, automáticamente convertida a {2}. Considera el actualizar este núcleo."
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:170
 #, java-format
 msgid ""
 "Warning: platform.txt from core '{0}' misses property {1}, automatically set"
 " to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "Atención: platform.txt del núcleo '{0}' pierde la propiedad {1}, automáticamente fijada a {2}. Considera el actualizar este núcleo."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -2228,7 +2229,7 @@ msgstr "No puede tener un fichero .cpp con el mismo nombre que el programa."
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr "Usted no puede importar una carpeta que contenga su sketchbook"
+msgstr "Usted no puede importar una carpeta que contenga sus bocetos"
 
 #: Sketch.java:421
 msgid ""
@@ -2255,7 +2256,7 @@ msgstr "Olvidó su proyecto."
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr ""
+msgstr "Has pulsado {0} pero no se envió nada. ¿Debería seleccionar una línea de finalización?"
 
 #: Base.java:536
 msgid ""
@@ -2267,13 +2268,13 @@ msgstr "Has alcanzado el límite de auto nombrado de programas del día...\n¿Po
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "La copia del IDE está instalado en un subdirectorio de tu carpeta de configuración.\nPor favor, mueve el IDE a otra carpeta."
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "La copia del IDE está instalado en una subcarpeta del cuaderno de bocetos\nPor favor, mueve el IDE a otra carpeta."
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -2295,7 +2296,7 @@ msgid ""
 "older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
 "to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
 " bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" contiene characteres no reconocidos. Si este código fue creado con una versión anterior de Arduino, puede que tengas que utilizar Herramientas -> Corregir Codificación y Recargar para actualizar el boceto usando codificación UTF-8. Si no, es posible que necesites borrar los caracteres erróneos para deshacerse de esta advertencia."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2358,7 +2359,7 @@ msgstr "Compilación"
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr "Conectado!"
+msgstr "¡Conectado!"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
@@ -2464,12 +2465,12 @@ msgstr "{0}: Nombre de placa invalido, debe ser de la forma \"paquete:arq:placa\
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: Opción inválida para la opción \"´{1}\" de la placa \"{2}\""
+msgstr "{0}: Opción no valida para opción \"´{1}\" de la tarjeta \"{2}\""
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr "{0}: Opcion invalida ara la placa \"{1}\""
+msgstr "{0}: Opcion no valida para la tarjeta \"{1}\""
 
 #: ../../../processing/app/Base.java:502
 #, java-format
@@ -2484,7 +2485,7 @@ msgstr "{0}: Arquitectura desconocida"
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr "{0}: Placa desconocida"
+msgstr "{0}: Tarjeta desconocida"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
