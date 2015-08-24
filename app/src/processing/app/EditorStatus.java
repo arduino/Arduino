@@ -93,8 +93,9 @@ public class EditorStatus extends JPanel {
     initialize();
   }
 
-  private void clearState() {
+  public void clearState() {
     changeState(NOTICE);
+    repaint();
   }
 
   private void changeState(int newMode) {

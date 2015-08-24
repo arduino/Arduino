@@ -131,6 +131,7 @@ public class Sketch {
    * Handler for the New Code menu option.
    */
   public void handleNewCode() {
+    editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -153,6 +154,7 @@ public class Sketch {
    * Handler for the Rename Code menu option.
    */
   public void handleRenameCode() {
+    editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -430,6 +432,7 @@ public class Sketch {
    * Remove a piece of code from the sketch and from the disk.
    */
   public void handleDeleteCode() {
+    editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
@@ -1223,8 +1226,6 @@ public class Sketch {
    * Returns true if this is a read-only sketch. Used for the
    * examples directory, or when sketches are loaded from read-only
    * volumes or folders without appropriate permissions.
-   * @param librariesPaths
-   * @param examplesPath
    */
   public boolean isReadOnly(LibraryList libraries, String examplesPath) {
     String apath = data.getFolder().getAbsolutePath();
