@@ -17,15 +17,18 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
+  Modified 2014 by Nicola Corna (nicola@corna.info)
+    Moved pullups enable from twi.c to Wire.cpp
+    Updated deprecated include <compat/twi.c>
+    Added multi address slave
 */
 
 #include <math.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <inttypes.h>
-#include <avr/io.h>
 #include <avr/interrupt.h>
-#include <compat/twi.h>
-#include "Arduino.h" // for digitalWrite
+#include <util/twi.h>
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -35,7 +38,6 @@
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #endif
 
-#include "pins_arduino.h"
 #include "twi.h"
 
 static volatile uint8_t twi_state;
@@ -59,6 +61,10 @@ static volatile uint8_t twi_rxBufferIndex;
 
 static volatile uint8_t twi_error;
 
+#ifdef TWAMR
+static volatile uint8_t twi_lastSlaveAddress;
+#endif
+
 /* 
  * Function twi_init
  * Desc     readys twi pins and sets twi bitrate
@@ -71,10 +77,6 @@ void twi_init(void)
   twi_state = TWI_READY;
   twi_sendStop = true;		// default value
   twi_inRepStart = false;
-  
-  // activate internal pullups for twi.
-  digitalWrite(SDA, 1);
-  digitalWrite(SCL, 1);
 
   // initialize twi prescaler and bit rate
   cbi(TWSR, TWPS0);
@@ -88,11 +90,16 @@ void twi_init(void)
 
   // enable twi module, acks, and twi interrupt
   TWCR = _BV(TWEN) | _BV(TWIE) | _BV(TWEA);
+  
+#ifdef TWAMR
+  // initialize to 0
+  twi_lastSlaveAddress = 0x00;
+#endif
 }
 
 /* 
- * Function twi_slaveInit
- * Desc     sets slave address and enables interrupt
+ * Function twi_setAddress
+ * Desc     set the slave address
  * Input    none
  * Output   none
  */
@@ -100,6 +107,40 @@ void twi_setAddress(uint8_t address)
 {
   // set twi slave address (skip over TWGCE bit)
   TWAR = address << 1;
+}
+
+/* 
+ * Function twi_setAddressAndMask
+ * Desc     sets slave address and slave address mask
+ * Input    address: slave address
+ * 	    mask: slave address mask
+ * Output   none
+ */
+void twi_setAddressAndMask(uint8_t address, uint8_t mask)
+{
+  // set twi slave address (skip over TWGCE bit)
+  TWAR = address << 1;
+#ifdef TWAMR
+  //set twi slave address mask
+  TWAMR = mask << 1;
+#endif
+}
+
+/* 
+ * Function twi_slaveAddress
+ * Desc     return the last called slave address
+ * Input    none
+ * Output   the slave address
+ */
+uint8_t twi_slaveAddress(void)
+{
+  //If address masking is not supported, returns the only address
+  //supported (saved in TWAR)
+#ifdef TWAMR
+  return twi_lastSlaveAddress;
+#else
+  return TWAR >> 1;
+#endif
 }
 
 /* 
@@ -443,6 +484,10 @@ ISR(TWI_vect)
     case TW_SR_ARB_LOST_GCALL_ACK: // lost arbitration, returned ack
       // enter slave receiver mode
       twi_state = TWI_SRX;
+#ifdef TWAMR
+      // save the current TWDR (slave address)
+      twi_lastSlaveAddress = TWDR >> 1;
+#endif
       // indicate that rx buffer can be overwritten and ack
       twi_rxBufferIndex = 0;
       twi_reply(1);
@@ -484,6 +529,10 @@ ISR(TWI_vect)
     case TW_ST_ARB_LOST_SLA_ACK: // arbitration lost, returned ack
       // enter slave transmitter mode
       twi_state = TWI_STX;
+#ifdef TWAMR
+      // save the current TWDR (slave address)
+      twi_lastSlaveAddress = TWDR >> 1;
+#endif
       // ready the tx buffer index for iteration
       twi_txBufferIndex = 0;
       // set tx buffer length to be zero, to verify if user changes it

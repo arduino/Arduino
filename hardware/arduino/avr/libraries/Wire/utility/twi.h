@@ -15,13 +15,17 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  
+  Modified 2014 by Nicola Corna (nicola@corna.info)
+    Added multi address slave
 */
 
 #ifndef twi_h
 #define twi_h
 
   #include <inttypes.h>
-
+  #include <avr/io.h>
+  
   //#define ATMEGA8
 
   #ifndef TWI_FREQ
@@ -40,6 +44,12 @@
   
   void twi_init(void);
   void twi_setAddress(uint8_t);
+#ifdef TWAMR
+  void twi_setAddressAndMask(uint8_t, uint8_t);
+#else
+  void twi_setAddressAndMask(uint8_t, uint8_t) __attribute__((warning("I2C address masking is unsupported on this microcontroller. Mask 0x00 will be used.")));
+#endif
+  uint8_t twi_slaveAddress(void);
   uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t, uint8_t);
   uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t, uint8_t);
   uint8_t twi_transmit(const uint8_t*, uint8_t);
