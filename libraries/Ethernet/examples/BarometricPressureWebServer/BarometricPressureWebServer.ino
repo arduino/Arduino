@@ -33,8 +33,6 @@ byte mac[] = {
 };
 // assign an IP address for the controller:
 IPAddress ip(192, 168, 1, 20);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
 
 
 // Initialize the Ethernet server library
