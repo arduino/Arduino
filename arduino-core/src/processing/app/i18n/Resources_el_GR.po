@@ -5,6 +5,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Dimitris Zervas <01ttouch@gmail.com>, 2012
 # Spyridon Papanastasiou <spyridon.papanastasiou@gmail.com>, 2015
 # Γιάννης Σφακιανάκης <ysfakianakis@gmail.com>, 2013
@@ -13,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 14:26+0000\n"
+"PO-Revision-Date: 2015-08-24 14:35+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/mbanzi/arduino-ide-15/language/el_GR/)\n"
 "MIME-Version: 1.0\n"
@@ -286,6 +287,14 @@ msgstr ""
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
 msgstr ""
 
 #: SerialMonitor.java:110
@@ -1042,6 +1051,10 @@ msgstr ""
 msgid "Hindi"
 msgstr "Χίντι"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr ""
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -1190,6 +1203,10 @@ msgstr ""
 msgid "Manage Libraries..."
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr ""
+
 #: Preferences.java:107
 msgid "Marathi"
 msgstr ""
@@ -1241,6 +1258,10 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
@@ -1305,6 +1326,10 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
 msgstr ""
 
 #: Base.java:541
@@ -1436,6 +1461,10 @@ msgstr "Πολωνέζικα"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
 msgstr ""
 
 #: ../../../processing/app/Preferences.java:151
@@ -1683,6 +1712,10 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
 msgstr ""
 
 #: Base.java:1681
@@ -2074,6 +2107,11 @@ msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
 msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:410

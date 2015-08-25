@@ -5,6 +5,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015
 # angry_snake <inactive+angry_snake@transifex.com>, 2014
@@ -21,7 +22,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 14:31+0000\n"
+"PO-Revision-Date: 2015-08-24 15:06+0000\n"
 "Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -295,6 +296,14 @@ msgstr "АвтоФорматирование"
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "АвтоФорматирование завершено."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr "Автоопределение настроек прокси"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr "URL автоматической конфигурации прокси:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -1050,6 +1059,10 @@ msgstr "Помощь"
 msgid "Hindi"
 msgstr "Хинди"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr "Имя хоста:"
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -1198,6 +1211,10 @@ msgstr "Малазийский (Малайзия)"
 msgid "Manage Libraries..."
 msgstr "Управлять библиотеками..."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr "Ручная конфигурация прокси"
+
 #: Preferences.java:107
 msgid "Marathi"
 msgstr "Mаратхи"
@@ -1250,6 +1267,10 @@ msgstr "Имя для нового файла:"
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "Непальский"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr "Сеть"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1314,6 +1335,10 @@ msgstr "Нет конца строки"
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
 msgstr "Нет параметров"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr "Без прокси"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1445,6 +1470,10 @@ msgstr "Польский"
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
 msgstr "Порт"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr "Номер порта:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1692,6 +1721,10 @@ msgstr "Последовательный порт {0} не обнаружен.\n
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
 msgstr "Последовательные порты"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr "Настройки"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2083,6 +2116,11 @@ msgstr "Искать выделенное"
 #: Preferences.java:409
 msgid "Use external editor"
 msgstr "Использовать внешний редактор"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr "Имя пользователя:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format

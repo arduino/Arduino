@@ -5,6 +5,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ettore Atalan <atalanttore@googlemail.com>, 2014-2015
 # Lukas Bestle <lukas@lu-x.me>, 2013,2015
 # Dr. Mathias Wilhelm <mathias.wilhelm@freenet.de>, 2012
@@ -13,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 16:57+0000\n"
+"PO-Revision-Date: 2015-08-24 18:58+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -287,6 +288,14 @@ msgstr "Automatische Formatierung"
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "Automatische Formatierung abgeschlossen."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr "Proxy-Einstellungen automatisch erkennen"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr "Automatische Proxy-Konfigurations-URL:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -1042,6 +1051,10 @@ msgstr "Hilfe"
 msgid "Hindi"
 msgstr "Hinduistisch"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr "Hostname:"
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -1190,6 +1203,10 @@ msgstr "Malaysisch (Malaysia)"
 msgid "Manage Libraries..."
 msgstr "Bibliotheken verwalten..."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr "Manuelle Proxy-Konfiguration"
+
 #: Preferences.java:107
 msgid "Marathi"
 msgstr "Marathisch"
@@ -1242,6 +1259,10 @@ msgstr "Name der neuen Datei:"
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "Nepali"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr "Netzwerk"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1306,6 +1327,10 @@ msgstr "Kein Zeilenende"
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
 msgstr "Keine Parameter"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr "Kein Proxy"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1437,6 +1462,10 @@ msgstr "Polnisch"
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
 msgstr "Port"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr "Portnummer:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1684,6 +1713,10 @@ msgstr "Serieller Port {0} nicht gefunden.\nMit einem anderen seriellen Port ver
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
 msgstr "Serielle Schnittstellen"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr "Einstellungen"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2075,6 +2108,11 @@ msgstr "Auswahl für Suche verwenden"
 #: Preferences.java:409
 msgid "Use external editor"
 msgstr "Externen Editor verwenden"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr "Benutzername:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format

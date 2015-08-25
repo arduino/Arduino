@@ -5,6 +5,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
 # Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
@@ -14,7 +15,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-13 05:02+0000\n"
+"PO-Revision-Date: 2015-08-25 03:38+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -288,6 +289,14 @@ msgstr "자동 포맷"
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "자동 포맷 완료"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr "프록시 설정을 자동 감지"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr "자동 프록시 설정 URL:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -1043,6 +1052,10 @@ msgstr "도움말"
 msgid "Hindi"
 msgstr "힌디어"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr "호스트 이름:"
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -1191,6 +1204,10 @@ msgstr "Malay (말레이시아)"
 msgid "Manage Libraries..."
 msgstr "라이브러리 관리..."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr "수동 프록시 설정"
+
 #: Preferences.java:107
 msgid "Marathi"
 msgstr "마라티어"
@@ -1243,6 +1260,10 @@ msgstr "새로운 파일을 위한 이름:"
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "네팔어"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr "네트워크"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1307,6 +1328,10 @@ msgstr "line ending 없음"
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
 msgstr "파라미터 없음"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr "프록시 없음"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1438,6 +1463,10 @@ msgstr "폴란드어"
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
 msgstr "포트"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr "포트 번호:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1685,6 +1714,10 @@ msgstr "시리얼 포트 {0} 를 찾을 수 없습니다.\n다른 시리얼 포�
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
 msgstr "시리얼 포트"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr "설정"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2076,6 +2109,11 @@ msgstr "찾기를 위해 선택된 부분을 사용"
 #: Preferences.java:409
 msgid "Use external editor"
 msgstr "외부 에디터 사용"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr "사용자 이름:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format

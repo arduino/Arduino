@@ -5,6 +5,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Wong Min <alpha080@gmail.com>, 2013
 # 陈吕洲 <clz@clz.me>, 2015
 # dongfengweixiao <dongfengweixiao@gmail.com>, 2013-2015
@@ -20,7 +21,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-06 14:27+0000\n"
+"PO-Revision-Date: 2015-08-24 14:35+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -294,6 +295,14 @@ msgstr "自动格式化"
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "自动格式化完成。"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -1049,6 +1058,10 @@ msgstr "帮助"
 msgid "Hindi"
 msgstr "印度语"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr ""
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -1197,6 +1210,10 @@ msgstr "马来语(马来西亚)"
 msgid "Manage Libraries..."
 msgstr "管理库..."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr ""
+
 #: Preferences.java:107
 msgid "Marathi"
 msgstr "马拉地语"
@@ -1249,6 +1266,10 @@ msgstr "新文件的名字"
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "尼泊尔语"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1313,6 +1334,10 @@ msgstr "没有结束符"
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
 msgstr "找不到参数"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr ""
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1444,6 +1469,10 @@ msgstr "波兰语"
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
 msgstr "端口"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1691,6 +1720,10 @@ msgstr "没有找到串口 {0} 。\n要尝试通过其他串口上传吗？"
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
 msgstr "串行端口"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr ""
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2082,6 +2115,11 @@ msgstr "查找选中单元"
 #: Preferences.java:409
 msgid "Use external editor"
 msgstr "使用外部编辑器"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
