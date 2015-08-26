@@ -169,7 +169,6 @@ static BitBangedSPI SPI;
 void setup() {
   SERIAL.begin(19200);
 
-
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
   pinMode(LED_ERR, OUTPUT);
@@ -348,21 +347,33 @@ void set_parameters() {
 }
 
 void start_pmode() {
-  SPI.begin();
-  SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
-  // SPI.begin() has configured SS as output,
+
+  // Reset target before driving SCK or MOSI
+
+  // SPI.begin() will configure SS as output,
   // so SPI master mode is selected.
   // We have defined RESET as pin 10,
   // which for many arduino's is not the SS pin.
   // So we have to configure RESET as output here,
-  // (reset_target() first sets the level correct)
-  reset_target(false);
-  pinMode(RESET, OUTPUT);
-
-  digitalWrite(SCK, LOW);
-  delay(20);
+  // (reset_target() first sets the correct level)
   reset_target(true);
-  delay(50);
+  pinMode(RESET, OUTPUT);
+  SPI.begin();
+  SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
+
+  // See avr datasheets, chapter "SERIAL_PRG Programming Algorithm":
+
+  // Pulse RESET after SCK is low:
+  digitalWrite(SCK, LOW);
+  delay(20); // discharge SCK, value arbitrally chosen
+  reset_target(false);
+  // Pulse must be minimum 2 target CPU clock cycles
+  // so 100 usec is ok for CPU speeds above 20KHz
+  delayMicroseconds(100);
+  reset_target(true);
+
+  // Send the enable programming command:
+  delay(50); // datasheet: must be > 20 msec
   spi_transaction(0xAC, 0x53, 0x00, 0x00);
   pmode = 1;
 }
