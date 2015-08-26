@@ -37,6 +37,7 @@ import java.util.TreeSet;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import cc.arduino.LoadVIDPIDSpecificPreferences;
 import cc.arduino.MyStreamPumper;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
@@ -587,6 +588,8 @@ public class Compiler implements MessageConsumer {
     p.put("extra.time.local", Long.toString(current + timezone + daylight));
     p.put("extra.time.zone", Long.toString(timezone));
     p.put("extra.time.dst", Long.toString(daylight));
+
+    new LoadVIDPIDSpecificPreferences().load(p);
 
     return p;
   }
