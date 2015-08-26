@@ -126,6 +126,10 @@ void TwoWire::begin(int address) {
 	begin((uint8_t) address);
 }
 
+void TwoWire::end(void) {
+	TWI_Disable(twi);
+}
+
 void TwoWire::setClock(uint32_t frequency) {
 	twiClock = frequency;
 	TWI_SetClock(twi, twiClock, VARIANT_MCK);
