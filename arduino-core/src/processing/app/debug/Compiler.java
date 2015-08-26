@@ -24,6 +24,7 @@
 package processing.app.debug;
 
 import cc.arduino.Constants;
+import cc.arduino.LoadVIDPIDSpecificPreferences;
 import cc.arduino.MyStreamPumper;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributedTool;
@@ -536,7 +537,7 @@ public class Compiler implements MessageConsumer {
   private PreferencesMap createBuildPreferences(String _buildPath,
                                                 String _primaryClassName)
       throws RunnerException {
-    
+
     if (BaseNoGui.getBoardPreferences() == null) {
       RunnerException re = new RunnerException(
           tr("No board selected; please choose a board from the Tools > Board menu."));
@@ -561,7 +562,7 @@ public class Compiler implements MessageConsumer {
         throw re;
       }
     }
-    
+
     // Merge all the global preference configuration in order of priority
     PreferencesMap buildPref = new PreferencesMap();
     buildPref.putAll(PreferencesData.getMap());
@@ -579,7 +580,7 @@ public class Compiler implements MessageConsumer {
     buildPref.put("build.path", _buildPath);
     buildPref.put("build.project_name", _primaryClassName);
     buildPref.put("build.arch", targetPlatform.getId().toUpperCase());
-    
+
     // Platform.txt should define its own compiler.path. For
     // compatibility with earlier 1.5 versions, we define a (ugly,
     // avr-specific) default for it, but this should be removed at some
@@ -603,7 +604,7 @@ public class Compiler implements MessageConsumer {
     coreFolder = new File(coreFolder, core);
     buildPref.put("build.core", core);
     buildPref.put("build.core.path", coreFolder.getAbsolutePath());
-    
+
     // System Folder
     File systemFolder = referencePlatform.getFolder();
     systemFolder = new File(systemFolder, "system");
@@ -648,12 +649,12 @@ public class Compiler implements MessageConsumer {
       .collect(Collectors.toList());
 
     buildPref.entrySet().stream()
-      .filter(entry -> {
-        return unsetPrefs.stream()
-          .filter(unsetPrefEntry -> entry.getValue().contains(unsetPrefEntry.getKey()))
-          .count() > 0;
-        })
+      .filter(entry -> unsetPrefs.stream()
+        .filter(unsetPrefEntry -> entry.getValue().contains(unsetPrefEntry.getKey()))
+        .count() > 0)
       .forEach(invalidEntry -> buildPref.put(invalidEntry.getKey(), ""));
+
+    new LoadVIDPIDSpecificPreferences().load(buildPref);
 
     return buildPref;
   }
