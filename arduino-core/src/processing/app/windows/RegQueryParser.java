@@ -1,8 +1,5 @@
 package processing.app.windows;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,12 +14,7 @@ public class RegQueryParser {
   private void parse(String regQueryOutput) {
     List<String> rows = Arrays.asList(regQueryOutput.replace("    ", "\t").replace("\r", "\n").replace("\n\n", "\n").split("\n"));
 
-    String row = Iterables.find(rows, new Predicate<String>() {
-      @Override
-      public boolean apply(String input) {
-        return input.startsWith("\t");
-      }
-    });
+    String row = rows.stream().filter(input -> input.startsWith("\t")).findFirst().get();
 
     String[] cols = row.split("\t");
     assert cols.length == 4;

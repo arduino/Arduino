@@ -36,7 +36,7 @@ import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLibrary> {
 
@@ -47,7 +47,7 @@ public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLib
   }
 
   public String toString() {
-    return _("Installed");
+    return tr("Installed");
   }
 
   @Override

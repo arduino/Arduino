@@ -1,38 +1,29 @@
 package processing.app;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 
 import cc.arduino.packages.BoardPort;
 import processing.app.debug.TextAreaFIFO;
-import processing.app.legacy.PApplet;
 
 @SuppressWarnings("serial")
 public abstract class AbstractTextMonitor extends AbstractMonitor {
@@ -76,7 +67,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     upperPane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
     textField = new JTextField(40);
-    sendButton = new JButton(_("Send"));
+    sendButton = new JButton(tr("Send"));
 
     upperPane.add(textField);
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
@@ -88,16 +79,16 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
     pane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
-    autoscrollBox = new JCheckBox(_("Autoscroll"), true);
+    autoscrollBox = new JCheckBox(tr("Autoscroll"), true);
 
-    noLineEndingAlert = new JLabel(I18n.format(_("You've pressed {0} but nothing was sent. Should you select a line ending?"), _("Send")));
+    noLineEndingAlert = new JLabel(I18n.format(tr("You've pressed {0} but nothing was sent. Should you select a line ending?"), tr("Send")));
     noLineEndingAlert.setToolTipText(noLineEndingAlert.getText());
     noLineEndingAlert.setForeground(pane.getBackground());
     Dimension minimumSize = new Dimension(noLineEndingAlert.getMinimumSize());
     minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
     noLineEndingAlert.setMinimumSize(minimumSize);
 
-    lineEndings = new JComboBox(new String[]{_("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR")});
+    lineEndings = new JComboBox(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
     lineEndings.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
@@ -111,7 +102,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     serialRates = new JComboBox();
     for (String rate : serialRateStrings) {
-      serialRates.addItem(rate + " " + _("baud"));
+      serialRates.addItem(rate + " " + tr("baud"));
     }
 
     serialRates.setMaximumSize(serialRates.getMinimumSize());

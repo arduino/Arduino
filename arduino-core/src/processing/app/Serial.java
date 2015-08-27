@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
 
 public class Serial implements SerialPortEventListener {
@@ -84,7 +84,7 @@ public class Serial implements SerialPortEventListener {
       serialPort.closePort();
       return true;
     } catch (SerialPortException e) {
-      throw new SerialException(format(_("Error touching serial port ''{0}''."), iname), e);
+      throw new SerialException(format(tr("Error touching serial port ''{0}''."), iname), e);
     } finally {
       if (serialPort.isOpened()) {
         try {
@@ -116,13 +116,13 @@ public class Serial implements SerialPortEventListener {
       port.addEventListener(this);
     } catch (SerialPortException e) {
       if (e.getPortName().startsWith("/dev") && SerialPortException.TYPE_PERMISSION_DENIED.equals(e.getExceptionType())) {
-        throw new SerialException(format(_("Error opening serial port ''{0}''. Try consulting the documentation at http://playground.arduino.cc/Linux/All#Permission"), iname));
+        throw new SerialException(format(tr("Error opening serial port ''{0}''. Try consulting the documentation at http://playground.arduino.cc/Linux/All#Permission"), iname));
       }
-      throw new SerialException(format(_("Error opening serial port ''{0}''."), iname), e);
+      throw new SerialException(format(tr("Error opening serial port ''{0}''."), iname), e);
     }
 
     if (port == null) {
-      throw new SerialNotFoundException(format(_("Serial port ''{0}'' not found. Did you select the right one from the Tools > Serial Port menu?"), iname));
+      throw new SerialNotFoundException(format(tr("Serial port ''{0}'' not found. Did you select the right one from the Tools > Serial Port menu?"), iname));
     }
   }
 
@@ -231,7 +231,7 @@ public class Serial implements SerialPortEventListener {
    * I think of something slightly more intelligent to do.
    */
   private static void errorMessage(String where, Throwable e) {
-    System.err.println(format(_("Error inside Serial.{0}()"), where));
+    System.err.println(format(tr("Error inside Serial.{0}()"), where));
     e.printStackTrace();
   }
 }

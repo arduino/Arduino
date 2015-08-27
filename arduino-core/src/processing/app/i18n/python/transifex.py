@@ -37,8 +37,7 @@ class Transifex(object):
 
   def translation(self, lang):
     r = requests.get(
-      'http://www.transifex.com/api/2/project/'
-          'arduino-ide-15/resource/ide-15/translation/%s/?file' % lang,
+      'https://www.transifex.com/api/2/project/arduino-ide-15/resource/ide-15/translation/%s/?file' % lang,
       auth=self.auth_
     )
     r.raise_for_status()
@@ -50,15 +49,7 @@ class Transifex(object):
     new = map(lambda a: a + '\n', new.split('\n'))
     new = update.read_po(new)
 
-    # remove the key '' to preserve the first comment block.
-    first = new.pop('', ('', '', ''))  
-
-    catalog = update.read_po(fname)
-    update.merge(catalog, new)
-    (comment, rkey, rvalue) = catalog.get('', ('', 'msgid ""\n', ''))
-    catalog[''] = (comment, rkey, first[2])
-
-    update.dump(catalog, fname)
+    update.dump(new, fname)
 
   def push(self, lang, data):
     r = requests.put(

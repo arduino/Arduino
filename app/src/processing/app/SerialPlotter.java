@@ -21,17 +21,14 @@ package processing.app;
 import cc.arduino.packages.BoardPort;
 import processing.app.legacy.PApplet;
 
-import processing.app.debug.MessageConsumer;
 import processing.app.helpers.*;
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
 
 public class SerialPlotter extends AbstractMonitor {
   private StringBuffer messageBuffer;
@@ -126,7 +123,7 @@ public class SerialPlotter extends AbstractMonitor {
     super(port);
 
     serialRate = PreferencesData.getInteger("serial.debug_rate");
-    serialRates.setSelectedItem(serialRate + " " + _("baud"));
+    serialRates.setSelectedItem(serialRate + " " + tr("baud"));
     onSerialRateChange(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         String wholeString = (String) serialRates.getSelectedItem();
@@ -166,7 +163,7 @@ public class SerialPlotter extends AbstractMonitor {
     
     serialRates = new JComboBox();
     for (int i = 0; i < serialRateStrings.length; i++)
-      serialRates.addItem(serialRateStrings[i] + " " + _("baud"));
+      serialRates.addItem(serialRateStrings[i] + " " + tr("baud"));
     
     serialRates.setMaximumSize(serialRates.getMinimumSize());
 

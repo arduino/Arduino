@@ -20,7 +20,7 @@
  */
 package processing.app.debug;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
 import java.io.File;
@@ -57,7 +57,7 @@ public class LegacyTargetPackage implements TargetPackage {
 
     if (platforms.size() == 0) {
       throw new TargetPlatformException(I18n
-          .format(_("No valid hardware definitions found in folder {0}."),
+          .format(tr("No valid hardware definitions found in folder {0}."),
                   _folder.getName()));
     }
   }

@@ -232,7 +232,9 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
     if (selectedCategoryFilter != null && !selectedCategoryFilter.test(lib)) {
       return;
     }
-    if (!stringContainsAll(lib.getName(), selectedFilters) && !stringContainsAll(lib.getParagraph(), selectedFilters) && !stringContainsAll(lib.getSentence(), selectedFilters)) {
+
+    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph() + "\n" + lib.getSentence();
+    if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
       return;
     }
     addContribution(lib);

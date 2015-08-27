@@ -28,6 +28,7 @@ package cc.arduino.packages.uploaders;
 
 import cc.arduino.packages.Uploader;
 import processing.app.*;
+import cc.arduino.LoadVIDPIDSpecificPreferences;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.OSUtils;
@@ -38,7 +39,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class SerialUploader extends Uploader {
 
@@ -116,7 +117,7 @@ public class SerialUploader extends Uploader {
         if (before.contains(userSelectedUploadPort)) {
           if (verbose)
             System.out.println(
-              I18n.format(_("Forcing reset using 1200bps open/close on port {0}"), userSelectedUploadPort));
+              I18n.format(tr("Forcing reset using 1200bps open/close on port {0}"), userSelectedUploadPort));
           Serial.touchForCDCReset(userSelectedUploadPort);
         }
         Thread.sleep(400);
@@ -242,7 +243,7 @@ public class SerialUploader extends Uploader {
     }
 
     // Something happened while detecting port
-    throw new RunnerException(_("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."), false);
+    throw new RunnerException(tr("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."), false);
   }
 
   private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
@@ -263,7 +264,7 @@ public class SerialUploader extends Uploader {
     PreferencesMap programmerPrefs = targetPlatform.getProgrammer(programmer);
     if (programmerPrefs == null)
       throw new RunnerException(
-          _("Please select a programmer from Tools->Programmer menu"));
+          tr("Please select a programmer from Tools->Programmer menu"));
     prefs.putAll(targetPlatform.getTool(programmerPrefs.getOrExcept("program.tool")));
     prefs.putAll(programmerPrefs);
 
@@ -308,7 +309,7 @@ public class SerialUploader extends Uploader {
     }
     if (programmerPrefs == null)
       throw new RunnerException(
-          _("Please select a programmer from Tools->Programmer menu"));
+          tr("Please select a programmer from Tools->Programmer menu"));
 
     // Build configuration for the current programmer
     PreferencesMap prefs = PreferencesData.getMap();
@@ -327,11 +328,11 @@ public class SerialUploader extends Uploader {
       tool = split[1];
       toolPrefs.putAll(platform.getTool(tool));
       if (toolPrefs.size() == 0)
-        throw new RunnerException(I18n.format(_("Could not find tool {0} from package {1}"), tool, split[0]));
+        throw new RunnerException(I18n.format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
     }
     toolPrefs.putAll(targetPlatform.getTool(tool));
     if (toolPrefs.size() == 0)
-      throw new RunnerException(I18n.format(_("Could not find tool {0}"), tool));
+      throw new RunnerException(I18n.format(tr("Could not find tool {0}"), tool));
 
     // Merge tool with global configuration
     prefs.putAll(toolPrefs);
@@ -342,6 +343,8 @@ public class SerialUploader extends Uploader {
       prefs.put("erase.verbose", prefs.getOrExcept("erase.params.quiet"));
       prefs.put("bootloader.verbose", prefs.getOrExcept("bootloader.params.quiet"));
     }
+
+    new LoadVIDPIDSpecificPreferences().load(prefs);
 
     String pattern = prefs.getOrExcept("erase.pattern");
     String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);

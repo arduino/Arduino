@@ -7,7 +7,6 @@
   <icon>application.ico</icon>
   <classPath>
     <mainClass>processing.app.Base</mainClass>
-    <cp>%EXEDIR%/lib/antlr.jar</cp>
     <cp>%EXEDIR%/lib/apple.jar</cp>
     <cp>%EXEDIR%/lib/arduino-core.jar</cp>
     <cp>%EXEDIR%/lib/bcpg-jdk15on-152.jar</cp>
@@ -18,8 +17,8 @@
     <cp>%EXEDIR%/lib/commons-httpclient-3.1.jar</cp>
     <cp>%EXEDIR%/lib/commons-lang3-3.3.2.jar</cp>
     <cp>%EXEDIR%/lib/commons-logging-1.0.4.jar</cp>
+    <cp>%EXEDIR%/lib/commons-net-3.3.jar</cp>
     <cp>%EXEDIR%/lib/ecj.jar</cp>
-    <cp>%EXEDIR%/lib/guava-18.0.jar</cp>
     <cp>%EXEDIR%/lib/jackson-annotations-2.2.3.jar</cp>
     <cp>%EXEDIR%/lib/jackson-core-2.2.3.jar</cp>
     <cp>%EXEDIR%/lib/jackson-databind-2.2.3.jar</cp>
@@ -38,6 +37,7 @@
     <runtimeBits>32</runtimeBits>
     <opt>-Dsun.java2d.d3d=false</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
+    <opt>-DDEBUG=true</opt>
   </jre>
   <versionInfo>
     <fileDescription>Arduino IDE</fileDescription>

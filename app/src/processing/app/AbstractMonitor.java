@@ -1,11 +1,7 @@
 package processing.app;
 
-import static processing.app.I18n._;
-
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,20 +10,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultCaret;
 
 import cc.arduino.packages.BoardPort;
-import processing.app.debug.TextAreaFIFO;
 import processing.app.legacy.PApplet;
 
 @SuppressWarnings("serial")

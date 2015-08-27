@@ -16,11 +16,18 @@ ARDUINO 1.6.6
 * Added Serial Plotter. Thanks @henningpohl
 * Editor: triple click selects whole line
 * Windows: IDE startup feels faster
+* Examples of libraries with a .development flag file in their root folder won't get marked as read-only. See #2619
+* Update notifications: when updates are available from either Library or Boards Managers, a popup will be shown
 
 [libraries]
 
 * Bridge: YunClient.connected() returns true if there are bytes available for read. Thanks @RobAtticus
 * Bridge: YunClient.stop() now empties all buffers. Thanks @RobAtticus
+
+ARDUINO 1.6.5-r4 - 2015.08.27
+
+[ide]
+* Added support to Genuino boards
 
 ARDUINO 1.6.5-r3 - 2015.07.20
 

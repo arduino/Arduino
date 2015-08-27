@@ -136,6 +136,8 @@
       <fileset dir="shared/tools" />
     </copy>
 
+    <copy file="shared/icons/48x48/apps/arduino.png" tofile="${target.path}/lib/arduino_small.png"/>
+
     <antcall target="assemble-hardware" />
 
     <copy file="../hardware/platform.keys.rewrite.txt" todir="${staging_folder}/work/${staging_hardware_folder}"/>
@@ -149,8 +151,8 @@
 
     <!-- Unzip documentation -->
     <antcall target="unzip">
-      <param name="archive_file" value="shared/reference-1.6.6-tmp1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/reference-1.6.6-tmp1.zip" />
+      <param name="archive_file" value="shared/reference-1.6.6-2.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/reference-1.6.6-2.zip" />
       <param name="final_folder" value="${target.path}/reference/www.arduino.cc" />
       <param name="dest_folder" value="${target.path}/reference/" />
     </antcall>
@@ -184,12 +186,12 @@
       </fileset>
     </copy>
     <antcall target="unzip">
-      <param name="archive_file" value="Firmata-2.4.3.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/Firmata/archive/v2.4.3.zip" />
-      <param name="final_folder" value="${target.path}/libraries/Firmata-2.4.3" />
+      <param name="archive_file" value="Firmata-2.4.4.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/Firmata/archive/v2.4.4.zip" />
+      <param name="final_folder" value="${target.path}/libraries/Firmata-2.4.4" />
       <param name="dest_folder" value="${target.path}/libraries" />
     </antcall>
-    <move file="${target.path}/libraries/Firmata-2.4.3" tofile="${target.path}/libraries/Firmata" />
+    <move file="${target.path}/libraries/Firmata-2.4.4" tofile="${target.path}/libraries/Firmata" />
     <antcall target="unzip">
       <param name="archive_file" value="Temboo-1.1.2.zip" />
       <param name="archive_url" value="https://github.com/temboo/Temboo/archive/1.1.2.zip" />
@@ -273,13 +275,13 @@
     <mkdir dir="${staging_folder}/work" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino3.jar.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/appbundler-1.0ea-arduino3.jar.zip" />
-      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-arduino3" />
-      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-arduino3" />
+      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino4.jar.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/appbundler-1.0ea-arduino4.jar.zip" />
+      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-arduino4" />
+      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-arduino4" />
     </antcall>
 
-    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-arduino3/appbundler-1.0ea-arduino3.jar"/>
+    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-arduino4/appbundler-1.0ea-arduino4.jar"/>
 
     <bundleapp
             jvmRequired="1.8"
@@ -312,6 +314,7 @@
       <option value="-Dcom.apple.smallTabs=true"/>
       <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
+      <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
 
       <!--
       <option value="-Dapple.awt.showGrowBox=false"/>
@@ -347,15 +350,10 @@
       <fileset file="shared/revisions.txt" />
     </copy>
 
-    <antcall target="macosx-build-common"/>
-
-  </target>
-
-  <target name="macosx-build-common">
     <mkdir dir="${staging_folder}/work" />
     <mkdir dir="${staging_folder}/work/${staging_hardware_folder}" />
 
-    <antcall target="macosx-build-common-avr-toolchain" />
+    <antcall target="macosx-build-avr-toolchain" />
 
     <antcall target="package-library-index-json-bundle"/>
 
@@ -377,7 +375,7 @@
   </target>
 
   <!-- Unzip AVR tools -->
-  <target name="macosx-build-common-avr-toolchain" unless="light_bundle">
+  <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
       <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i386-apple-darwin11.tar.bz2"/>
@@ -398,23 +396,13 @@
   </target>
 
   <target name="macosx-run" depends="build" description="Run Mac OS X version">
-    <antcall target="macosx-run-common"/>
+    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false" failonerror="true"/>
   </target>
 
-  <target name="macosx-debug" depends="build" description="Run Mac OS X version">
-    <antcall target="macosx-debug-common"/>
-  </target>
-
-  <target name="macosx-run-common">
-    <exec executable="open" dir="macosx/work" failonerror="true">
-      <arg value="Arduino.app"/>
-    </exec>
-  </target>
-
-  <target name="macosx-debug-common">
-    <exec executable="open" dir="macosx/work" spawn="false" failonerror="true">
-      <arg value="Arduino.app"/>
-    </exec>
+  <!-- FIXME -->
+  <target name="macosx-debug">
+    <antcall target="macosx-run"/>
+    <echo>'ant macosx-debug' is deprecated. Please use 'ant run' instead</echo>
   </target>
 
   <!-- - - - - - - - - - - - - - - - -->
@@ -473,10 +461,6 @@
   <!-- Build distribution file for MacOSX. -->
   <!-- - - - - - - - - - - - - - - - - - - -->
   <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
-    <antcall target="macosx-dist-common"/>
-  </target>
-
-  <target name="macosx-dist-common">
     <exec executable="zip" dir="macosx/work" failonerror="true">
       <arg line="-q -r ../arduino-${version}-${platform}.zip ." />
     </exec>
@@ -835,7 +819,7 @@
 
   <target name="windows-run" depends="build"
 	  description="Run windows version">
-    <exec executable="windows/work/arduino.exe" dir="windows/work" failonerror="true"/>
+    <exec executable="windows/work/arduino.exe" dir="windows/work" spawn="false" failonerror="true"/>
   </target>
 
   <target name="windows-dist" depends="build" description="Create .zip files of windows version">

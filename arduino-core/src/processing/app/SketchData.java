@@ -1,29 +1,37 @@
 package processing.app;
 
-import com.google.common.collect.FluentIterable;
-
-import static processing.app.I18n._;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static processing.app.I18n.tr;
 
 public class SketchData {
 
   public static final List<String> SKETCH_EXTENSIONS = Arrays.asList("ino", "pde");
   public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
-  public static final List<String> EXTENSIONS = new LinkedList<String>(FluentIterable.from(SKETCH_EXTENSIONS).append(OTHER_ALLOWED_EXTENSIONS).toList());
+  public static final List<String> EXTENSIONS = Stream.concat(SKETCH_EXTENSIONS.stream(), OTHER_ALLOWED_EXTENSIONS.stream()).collect(Collectors.toList());
 
-  /** main pde file for this sketch. */
+  /**
+   * main pde file for this sketch.
+   */
   private File primaryFile;
 
-  /** folder that contains this sketch */
+  /**
+   * folder that contains this sketch
+   */
   private File folder;
 
-  /** data folder location for this sketch (may not exist yet) */
+  /**
+   * data folder location for this sketch (may not exist yet)
+   */
   private File dataFolder;
 
-  /** code folder location for this sketch (may not exist yet) */
+  /**
+   * code folder location for this sketch (may not exist yet)
+   */
   private File codeFolder;
 
   /**
@@ -79,15 +87,15 @@ public class SketchData {
 
   /**
    * Build the list of files.
-   * <P>
+   * <p>
    * Generally this is only done once, rather than
    * each time a change is made, because otherwise it gets to be
    * a nightmare to keep track of what files went where, because
    * not all the data will be saved to disk.
-   * <P>
+   * <p>
    * This also gets called when the main sketch file is renamed,
    * because the sketch has to be reloaded from a different folder.
-   * <P>
+   * <p>
    * Another exception is when an external editor is in use,
    * in which case the load happens each time "run" is hit.
    */
@@ -106,7 +114,7 @@ public class SketchData {
 //    codeDocs = new SketchCodeDoc[list.length];
     clearCodeDocs();
 //    data.setCodeDocs(codeDocs);
-    
+
     for (String filename : list) {
       // Ignoring the dot prefix files is especially important to avoid files
       // with the ._ prefix on Mac OS X. (You'll see this with Mac files on
@@ -135,7 +143,7 @@ public class SketchData {
     }
 
     if (getCodeCount() == 0)
-      throw new IOException(_("No valid code files found"));
+      throw new IOException(tr("No valid code files found"));
 
     // move the main class to the first tab
     // start at 1, if it's at zero, don't bother

@@ -43,7 +43,7 @@ static u8 HID_INTERFACE;
 HIDDescriptor _hidInterface;
 
 static HIDDescriptorListNode* rootNode = NULL;
-static uint8_t sizeof_hidReportDescriptor = 0;
+static uint16_t sizeof_hidReportDescriptor = 0;
 static uint8_t modules_count = 0;
 //================================================================================
 //================================================================================
@@ -59,7 +59,7 @@ int HID_GetInterface(u8* interfaceNum)
 	{
 		D_INTERFACE(HID_INTERFACE,1,3,0,0),
 		D_HIDREPORT(sizeof_hidReportDescriptor),
-		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,0x40,0x01)
+		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,USB_EP_SIZE,0x01)
 	};
 	return USB_SendControl(0,&_hidInterface,sizeof(_hidInterface));
 }
@@ -91,7 +91,7 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 		current->next = node;
 	}
 	modules_count++;
-	sizeof_hidReportDescriptor += node->cb->length;
+	sizeof_hidReportDescriptor += (uint16_t)node->cb->length;
 }
 
 void HID_::SendReport(u8 id, const void* data, int len)

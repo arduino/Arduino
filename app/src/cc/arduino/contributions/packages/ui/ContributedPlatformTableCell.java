@@ -39,7 +39,6 @@ import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
 import cc.arduino.utils.ReverseComparator;
-import com.google.common.collect.Lists;
 import processing.app.Base;
 
 import javax.swing.*;
@@ -55,8 +54,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCell extends InstallerTableCell {
@@ -75,20 +74,20 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
 
   public ContributedPlatformTableCell() {
     {
-      installButton = new JButton(_("Install"));
+      installButton = new JButton(tr("Install"));
       installButton.addActionListener(e -> onInstall(editorValue.getSelected(), editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
     {
-      removeButton = new JButton(_("Remove"));
+      removeButton = new JButton(tr("Remove"));
       removeButton.addActionListener(e -> onRemove(editorValue.getInstalled()));
       int width = removeButton.getPreferredSize().width;
       removeButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
-    downgradeButton = new JButton(_("Install"));
+    downgradeButton = new JButton(tr("Install"));
     downgradeButton.addActionListener(e -> {
       ContributedPlatform selected = (ContributedPlatform) downgradeChooser.getSelectedItem();
       onInstall(selected, editorValue.getInstalled());
@@ -170,8 +169,8 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       HTMLDocument html = (HTMLDocument) doc;
       StyleSheet stylesheet = html.getStyleSheet();
       stylesheet.addRule("body { margin: 0; padding: 0;"
-              + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
-              + "font-size: 100%;" + "font-size: 0.95em; }");
+        + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+        + "font-size: 100%;" + "font-size: 0.95em; }");
     }
     description.setOpaque(false);
     description.setBorder(new EmptyBorder(4, 7, 7, 7));
@@ -246,21 +245,19 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     Collections.sort(uninstalledReleases, new ReverseComparator<>(new DownloadableContributionVersionComparator()));
 
     downgradeChooser.removeAllItems();
-    downgradeChooser.addItem(_("Select version"));
+    downgradeChooser.addItem(tr("Select version"));
 
-    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = Lists.newLinkedList();
-    final java.util.List<ContributedPlatform> uninstalledNewerReleases = Lists.newLinkedList();
+    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
+    final java.util.List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
 
     final VersionComparator versionComparator = new VersionComparator();
-    Lists.newLinkedList(Lists.transform(uninstalledReleases, input -> {
+    uninstalledReleases.stream().forEach(input -> {
       if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
         uninstalledPreviousReleases.add(input);
       } else {
         uninstalledNewerReleases.add(input);
       }
-
-      return input;
-    }));
+    });
     uninstalledNewerReleases.forEach(downgradeChooser::addItem);
     uninstalledPreviousReleases.forEach(downgradeChooser::addItem);
 
@@ -300,10 +297,10 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
     }
     if (installable) {
-      installButton.setText(_("Install"));
+      installButton.setText(tr("Install"));
     }
     if (upgradable) {
-      installButton.setText(_("Update"));
+      installButton.setText(tr("Update"));
     }
     installButton.setVisible(installable || upgradable);
     installButtonPlaceholder.setVisible(!(installable || upgradable));
@@ -321,11 +318,11 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       desc += " " + format("by <b>{0}</b>", author);
     }
     if (installed != null) {
-      desc += " " + format(_("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
+      desc += " " + format(tr("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
     desc += "<br />";
 
-    desc += _("Boards included in this package:") + "<br />";
+    desc += tr("Boards included in this package:") + "<br />";
     for (ContributedBoard board : selected.getBoards()) {
       desc += board.getName() + ", ";
     }

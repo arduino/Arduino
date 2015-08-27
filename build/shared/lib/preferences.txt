@@ -118,11 +118,8 @@ editor.keys.alternative_cut_copy_paste.macosx = false
 # false if shift-backspace just means backspace
 editor.keys.shift_backspace_is_delete = true
 
-# home and end keys should only travel to the start/end of the current line
-editor.keys.home_and_end_travel_far = false
-# the OS X HI Guidelines say that home/end are relative to the document
-# if you don't like it, this is the preference to change
-editor.keys.home_and_end_travel_far.macosx = true
+# if set to true, home/end keys will go to the start/end of current line
+editor.keys.home_and_end_beginning_end_of_doc = false
 
 console			 = true
 console.output.file      = stdout.txt

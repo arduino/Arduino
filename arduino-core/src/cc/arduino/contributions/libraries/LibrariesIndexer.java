@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class LibrariesIndexer {
 
@@ -137,11 +137,11 @@ public class LibrariesIndexer {
 
           badLibNotified.add(subfolder.getName());
 
-          String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
+          String mess = I18n.format(tr("The library \"{0}\" cannot be used.\n"
               + "Library names must contain only basic letters and numbers.\n"
               + "(ASCII only and no spaces, and it cannot start with a number)"),
             subfolder.getName());
-          BaseNoGui.showMessage(_("Ignoring bad library name"), mess);
+          BaseNoGui.showMessage(tr("Ignoring bad library name"), mess);
         }
         continue;
       }
@@ -149,7 +149,7 @@ public class LibrariesIndexer {
       try {
         scanLibrary(subfolder, isSketchbook);
       } catch (IOException e) {
-        System.out.println(I18n.format(_("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
+        System.out.println(I18n.format(tr("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
       }
     }
   }
