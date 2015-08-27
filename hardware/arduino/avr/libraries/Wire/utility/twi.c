@@ -476,6 +476,8 @@ ISR(TWI_vect)
       }
       break;
     case TW_SR_STOP: // stop or repeated start condition received
+      // ack future responses and leave slave receiver state
+      twi_releaseBus();
       // put a null char after data if there's room
       if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
         twi_rxBuffer[twi_rxBufferIndex] = '\0';
@@ -484,8 +486,6 @@ ISR(TWI_vect)
       twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
       // since we submit rx buffer to "wire" library, we can reset it
       twi_rxBufferIndex = 0;
-      // ack future responses and leave slave receiver state
-      twi_releaseBus();
       break;
     case TW_SR_DATA_NACK:       // data received, returned nack
     case TW_SR_GCALL_DATA_NACK: // data received generally, returned nack
