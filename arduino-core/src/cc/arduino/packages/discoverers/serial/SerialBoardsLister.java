@@ -35,7 +35,6 @@ import processing.app.BaseNoGui;
 import processing.app.Platform;
 import processing.app.Serial;
 import processing.app.debug.TargetBoard;
-import processing.app.helpers.PreferencesMap;
 
 import java.util.*;
 
@@ -84,11 +83,9 @@ public class SerialBoardsLister extends TimerTask {
 
       String label = port;
 
-      PreferencesMap prefs = new PreferencesMap();
-
       if (boardData != null) {
-        prefs.put("vid", boardData.get("vid").toString());
-        prefs.put("pid", boardData.get("pid").toString());
+        boardPort.getPrefs().put("vid", boardData.get("vid").toString());
+        boardPort.getPrefs().put("pid", boardData.get("pid").toString());
 
         TargetBoard board = (TargetBoard) boardData.get("board");
         if (board != null) {
@@ -101,7 +98,6 @@ public class SerialBoardsLister extends TimerTask {
       }
 
       boardPort.setLabel(label);
-      boardPort.setPrefs(prefs);
 
       boardPorts.add(boardPort);
     }
