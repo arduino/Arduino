@@ -1,3 +1,8 @@
+ARDUINO 1.6.5-r5 - 2015.08.28
+
+[ide]
+* Fixed a but preventing upload on boards that do not supply VID/PID. See #3738
+
 ARDUINO 1.6.5-r4 - 2015.08.27
 
 [ide]
