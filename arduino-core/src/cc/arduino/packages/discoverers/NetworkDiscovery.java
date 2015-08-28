@@ -35,7 +35,6 @@ import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
 import cc.arduino.packages.discoverers.network.NetworkChecker;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
-import processing.app.helpers.PreferencesMap;
 import processing.app.zeroconf.jmdns.ArduinoDNSTaskStarter;
 
 import javax.jmdns.*;
@@ -139,14 +138,14 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
       String address = inetAddress.getHostAddress();
       String name = serviceEvent.getName();
 
-      PreferencesMap prefs = null;
+      BoardPort port = new BoardPort();
+
       String board = null;
       if (info.hasData()) {
-        prefs = new PreferencesMap();
         board = info.getPropertyString("board");
-        prefs.put("board", board);
-        prefs.put("distro_version", info.getPropertyString("distro_version"));
-        prefs.put("port", "" + info.getPort());
+        port.getPrefs().put("board", board);
+        port.getPrefs().put("distro_version", info.getPropertyString("distro_version"));
+        port.getPrefs().put("port", "" + info.getPort());
       }
 
       String label = name + " at " + address;
@@ -157,11 +156,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
         }
       }
 
-      BoardPort port = new BoardPort();
       port.setAddress(address);
       port.setBoardName(name);
       port.setProtocol("network");
-      port.setPrefs(prefs);
       port.setLabel(label);
 
       synchronized (boardPortsDiscoveredWithJmDNS) {

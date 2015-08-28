@@ -30,6 +30,7 @@
 package cc.arduino;
 
 import cc.arduino.packages.BoardPort;
+import org.apache.commons.lang3.StringUtils;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 import processing.app.helpers.PreferencesMap;
@@ -45,7 +46,13 @@ public class LoadVIDPIDSpecificPreferences {
       return;
     }
 
-    int VIDPIDIndex = findVIDPIDIndex(prefs, boardPort.getPrefs().get("vid").toUpperCase(), boardPort.getPrefs().get("pid").toUpperCase());
+    String vid = boardPort.getPrefs().get("vid");
+    String pid = boardPort.getPrefs().get("pid");
+    if (StringUtils.isEmpty(vid) || StringUtils.isEmpty(pid)) {
+      return;
+    }
+
+    int VIDPIDIndex = findVIDPIDIndex(prefs, vid.toUpperCase(), pid.toUpperCase());
     if (VIDPIDIndex < 0) {
       return;
     }
