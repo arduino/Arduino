@@ -181,7 +181,7 @@ public:
 
   uint8_t transfer (uint8_t b) {
     for (unsigned int i = 0; i < 8; ++i) {
-      digitalWrite(MOSI, b & 0x80);
+      digitalWrite(MOSI, (b & 0x80) ? HIGH : LOW);
       digitalWrite(SCK, HIGH);
       delayMicroseconds(pulseWidth);
       b = (b << 1) | digitalRead(MISO);
