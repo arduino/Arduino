@@ -1,4 +1,4 @@
-// ArduinoISP version 04m3
+// ArduinoISP
 // Copyright (c) 2008-2011 Randall Bohn
 // If you require a license, see
 //     http://www.opensource.org/licenses/bsd-license.php
@@ -6,42 +6,31 @@
 // This sketch turns the Arduino into a AVRISP
 // using the following arduino pins:
 //
-// pin name:    not-mega:         mega(1280 and 2560)
-// slave reset: 10:               10
-// MOSI:        11:               51
-// MISO:        12:               50
-// SCK:         13:               52
+// Pin 10 is used to reset the target microcontroller.
+//
+// The MISO, MOSI and SCK pins are used to communicate with the target,
+// on all Arduinos, these pins can be found on the ICSP header:
+//
+//               MISO °. . 5V (!) Avoid this pin on Due, Zero...
+//               SCK   . . MOSI
+//                     . . GND
+//
+// On some Arduinos (Uno,...), pins MOSI, MISO and SCK are the same pins
+// as digital pin 11, 12 and 13, respectively. That is why many tutorials
+// instruct you to hook up the target to these pins. If you find this wiring
+// more practical, have a define USE_OLD_STYLE_WIRING. This will work even
+// even when not using an Uno. (On an Uno this is not needed).
+// 
+// IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...)
+// as the programmer, make sure to not expose any of the programmer's pins to 5V.
+// A simple way to accomplish this is to power the complete system (programmer
+// and target) at 3V3.
 //
 // Put an LED (with resistor) on the following pins:
 // 9: Heartbeat   - shows the programmer is running
 // 8: Error       - Lights up if something goes wrong (use red if that makes sense)
 // 7: Programming - In communication with the slave
 //
-// 23 July 2011 Randall Bohn
-// -Address Arduino issue 509 :: Portability of ArduinoISP
-// http://code.google.com/p/arduino/issues/detail?id=509
-//
-// October 2010 by Randall Bohn
-// - Write to EEPROM > 256 bytes
-// - Better use of LEDs:
-// -- Flash LED_PMODE on each flash commit
-// -- Flash LED_PMODE while writing EEPROM (both give visual feedback of writing progress)
-// - Light LED_ERR whenever we hit a STK_NOSYNC. Turn it off when back in sync.
-// - Use pins_arduino.h (should also work on Arduino Mega)
-//
-// October 2009 by David A. Mellis
-// - Added support for the read signature command
-//
-// February 2009 by Randall Bohn
-// - Added support for writing to EEPROM (what took so long?)
-// Windows users should consider WinAVR's avrdude instead of the
-// avrdude included with Arduino software.
-//
-// January 2008 by Randall Bohn
-// - Thanks to Amplificar for helping me with the STK500 protocol
-// - The AVRISP/STK500 (mk I) protocol is used in the arduino bootloader
-// - The SPI functions herein were developed for the AVR910_ARD programmer
-// - More information at http://code.google.com/p/mega-isp
 
 #include "Arduino.h"
 #undef SERIAL
