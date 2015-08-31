@@ -1,6 +1,8 @@
 package processing.app;
 
+import cc.arduino.Compiler;
 import cc.arduino.Constants;
+import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
@@ -13,7 +15,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
-import processing.app.debug.Compiler;
 import processing.app.debug.*;
 import processing.app.helpers.*;
 import processing.app.helpers.filefilters.OnlyDirs;
@@ -504,16 +505,16 @@ public class BaseNoGui {
           if (!data.getFolder().exists()) {
             showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
           }
-          String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
+          String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
           if (suggestedClassName == null) {
             showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
           }
           showMessage(tr("Done compiling"), tr("Done compiling"));
 
-          Uploader uploader = Compiler.getUploaderByPreferences(parser.isNoUploadPort());
+          Uploader uploader = new UploaderUtils().getUploaderByPreferences(parser.isNoUploadPort());
           if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
           try {
-            success = Compiler.upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
+            success = new UploaderUtils().upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
             showMessage(tr("Done uploading"), tr("Done uploading"));
           } finally {
             if (uploader.requiresAuthorization() && !success) {
@@ -550,7 +551,7 @@ public class BaseNoGui {
             //    if (!data.getFolder().exists()) showError(...);
             //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
             if (!data.getFolder().exists()) showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-            String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
+            String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
             if (suggestedClassName == null) showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
             showMessage(tr("Done compiling"), tr("Done compiling"));
           } catch (Exception e) {

@@ -750,6 +750,10 @@ public class Editor extends JFrame implements RunnerListener {
     item = newJMenuItemAlt(tr("Export compiled Binary"), 'S');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
+          if (new ShouldSaveReadOnly().test(sketch) && !handleSave(true)) {
+            System.out.println(tr("Export canceled, changes must first be saved."));
+            return;
+          }
           handleRun(false, new ShouldSaveReadOnly(), Editor.this.presentAndSaveHandler, Editor.this.runAndSaveHandler);
         }
       });
