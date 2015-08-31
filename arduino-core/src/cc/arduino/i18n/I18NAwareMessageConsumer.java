@@ -27,25 +27,44 @@
  * the GNU General Public License.
  */
 
-package processing.app.debug;
+package cc.arduino.i18n;
 
-import static org.junit.Assert.assertEquals;
-import static processing.app.debug.Compiler.unescapeDepFile;
+import processing.app.I18n;
+import processing.app.debug.MessageConsumer;
 
-import org.junit.Test;
+import java.io.PrintStream;
+import java.util.Map;
 
-import processing.app.AbstractWithPreferencesTest;
+import static processing.app.I18n.tr;
 
-public class CompilerTest extends AbstractWithPreferencesTest {
+public class I18NAwareMessageConsumer implements MessageConsumer {
 
-  @Test
-  public void makeDepUnescapeTest() throws Exception {
-    assertEquals("C:\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Stream.cpp",
-                 unescapeDepFile("C:\\Arduino\\hardware\\arduino\\avr\\cores\\arduino\\Stream.cpp"));
-    assertEquals("C:\\Arduino 1.5.3\\hardware\\arduino\\avr\\cores\\arduino\\Stream.cpp",
-                 unescapeDepFile("C:\\Arduino\\ 1.5.3\\hardware\\arduino\\avr\\cores\\arduino\\Stream.cpp"));
-    assertEquals("C:\\Ard$ui#\\\\ no 1.5.3\\hardware\\arduino\\avr\\cores\\arduino\\Stream.cpp",
-                 unescapeDepFile("C:\\Ard$$ui\\#\\\\\\\\\\ no 1.5.3\\hardware\\arduino\\avr\\cores\\arduino\\Stream.cpp"));
+  private final PrintStream ps;
+  private final MessageConsumer parent;
+  private final ExternalProcessOutputParser parser;
+
+  public I18NAwareMessageConsumer(PrintStream ps) {
+    this(ps, null);
   }
 
+  public I18NAwareMessageConsumer(PrintStream ps, MessageConsumer parent) {
+    this.ps = ps;
+    this.parent = parent;
+    this.parser = new ExternalProcessOutputParser();
+  }
+
+  @Override
+  public void message(String s) {
+    if (s.startsWith("===")) {
+      Map<String, Object> parsedMessage = parser.parse(s);
+      ps.println(I18n.format(tr((String) parsedMessage.get("msg")), (Object[]) parsedMessage.get("args")));
+      return;
+    }
+
+    if (parent != null) {
+      parent.message(s);
+    } else {
+      ps.println(s);
+    }
+  }
 }

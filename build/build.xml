@@ -71,6 +71,8 @@
     </or>
   </condition>
 
+  <property name="ARDUINO-BUILDER-VERSION" value="1.0.0-beta3" />
+
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
     <include name="arduino-core/arduino-core.jar" />
@@ -372,6 +374,21 @@
     <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" tofile="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
 
+    <mkdir dir="${staging_folder}/arduino-builder-macosx"/>
+    <antcall target="untar">
+      <param name="archive_file" value="./arduino-builder-macosx-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-macosx-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="final_folder" value="${staging_folder}/arduino-builder-macosx/arduino-builder" />
+      <param name="dest_folder" value="${staging_folder}/arduino-builder-macosx" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-builder-macosx/arduino-builder" tofile="macosx/work/${staging_hardware_folder}/../arduino-builder" />
+    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../arduino-builder" />
+    <move file="${staging_folder}/arduino-builder-macosx/tools" tofile="macosx/work/${staging_hardware_folder}/../tools-builder"/>
+    <copy todir="macosx/work/${staging_hardware_folder}" overwrite="true">
+      <fileset dir="${staging_folder}/arduino-builder-macosx/hardware" includes="*.txt"/>
+    </copy>
+    <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
+
   </target>
 
   <!-- Unzip AVR tools -->
@@ -483,6 +500,9 @@
     <delete>
       <fileset dir="linux" includes="arduino-*linux*.tar.xz"/>
     </delete>
+    <delete>
+      <fileset dir="linux" includes="arduino-*linux*.tar.xz"/>
+    </delete>
   </target>
 
   <target name="linux-checkos" unless="linux">
@@ -541,6 +561,21 @@
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
 
+    <mkdir dir="${staging_folder}/arduino-builder-linux32"/>
+    <antcall target="untar">
+      <param name="archive_file" value="./arduino-builder-linux32-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-linux32-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="final_folder" value="${staging_folder}/arduino-builder-linux32/arduino-builder" />
+      <param name="dest_folder" value="${staging_folder}/arduino-builder-linux32" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-builder-linux32/arduino-builder" tofile="linux/work/arduino-builder" />
+    <chmod perm="755" file="linux/work/arduino-builder" />
+    <move file="${staging_folder}/arduino-builder-linux32/tools" tofile="linux/work/tools-builder"/>
+    <copy todir="linux/work/hardware" overwrite="true">
+      <fileset dir="${staging_folder}/arduino-builder-linux32/hardware" includes="*.txt"/>
+    </copy>
+    <delete dir="${staging_folder}/arduino-builder-linux32" includeemptydirs="true"/>
+
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
       <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
@@ -556,6 +591,21 @@
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX64_BUNDLED_JVM}"/>
     </antcall>
+
+    <mkdir dir="${staging_folder}/arduino-builder-linux64"/>
+    <antcall target="untar">
+      <param name="archive_file" value="./arduino-builder-linux64-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-linux64-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="final_folder" value="${staging_folder}/arduino-builder-linux64/arduino-builder" />
+      <param name="dest_folder" value="${staging_folder}/arduino-builder-linux64" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-builder-linux64/arduino-builder" tofile="linux/work/arduino-builder" />
+    <chmod perm="755" file="linux/work/arduino-builder" />
+    <move file="${staging_folder}/arduino-builder-linux64/tools" tofile="linux/work/tools-builder"/>
+    <copy todir="linux/work/hardware" overwrite="true">
+      <fileset dir="${staging_folder}/arduino-builder-linux64/hardware" includes="*.txt"/>
+    </copy>
+    <delete dir="${staging_folder}/arduino-builder-linux64" includeemptydirs="true"/>
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
@@ -761,6 +811,21 @@
     <chmod perm="755">
       <fileset file="windows/work/hardware/tools/listComPorts.exe" />
     </chmod>
+
+    <mkdir dir="${staging_folder}/arduino-builder-windows"/>
+    <antcall target="unzip">
+      <param name="archive_file" value="./arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/arduino-builder-windows/arduino-builder.exe" />
+      <param name="dest_folder" value="${staging_folder}/arduino-builder-windows" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
+    <chmod perm="755" file="windows/work/arduino-builder.exe" />
+    <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
+    <copy todir="windows/work/hardware" overwrite="true">
+      <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
+    </copy>
+    <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
 
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />

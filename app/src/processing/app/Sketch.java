@@ -23,11 +23,14 @@
 
 package processing.app;
 
+import cc.arduino.Compiler;
+import cc.arduino.CompilerProgressListener;
+import cc.arduino.UploaderUtils;
+import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.Uploader;
-import processing.app.debug.Compiler;
-import processing.app.debug.Compiler.ProgressListener;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.FileUtils;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.packages.LibraryList;
@@ -37,10 +40,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static processing.app.I18n.tr;
 
@@ -60,7 +67,7 @@ public class Sketch {
   private int currentIndex;
 
   private final SketchData data;
-  
+
   /**
    * path is location of the main .pde file, because this is also
    * simplest to use when opening the file from the finder/explorer.
@@ -1093,7 +1100,7 @@ public class Sketch {
    * @return null if compilation failed, main class name if not
    * @throws RunnerException
    */
-  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
+  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
     return build(tempBuildFolder.getAbsolutePath(), verbose, save);
   }
 
@@ -1106,15 +1113,32 @@ public class Sketch {
    *
    * @return null if compilation failed, main class name if not
    */
-  private String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
+  private String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
     // run the preprocessor
     editor.status.progressUpdate(20);
 
     ensureExistence();
-    
-    ProgressListener pl = editor.status::progressUpdate;
-    
-    return Compiler.build(data, buildPath, tempBuildFolder, pl, verbose, save);
+
+    CompilerProgressListener progressListener = editor.status::progressUpdate;
+
+    String pathToSketch = data.getMainFilePath();
+    if (isModified()) {
+      pathToSketch = saveSketchInTempFolder();
+    }
+
+    return new Compiler(pathToSketch, data, buildPath).build(progressListener, save);
+  }
+
+  private String saveSketchInTempFolder() throws IOException {
+    File tempFolder = FileUtils.createTempFolder();
+    DeleteFilesOnShutdown.add(tempFolder);
+    FileUtils.copy(getFolder(), tempFolder);
+
+    for (SketchCode sc : Stream.of(data.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {
+      Files.write(Paths.get(tempFolder.getAbsolutePath(), sc.getFileName()), sc.getProgram().getBytes());
+    }
+
+    return Paths.get(tempFolder.getAbsolutePath(), data.getPrimaryFile().getName()).toString();
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
@@ -1153,7 +1177,7 @@ public class Sketch {
 
   private boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
 
-    Uploader uploader = Compiler.getUploaderByPreferences(false);
+    Uploader uploader = new UploaderUtils().getUploaderByPreferences(false);
 
     boolean success = false;
     do {
@@ -1172,7 +1196,7 @@ public class Sketch {
 
       List<String> warningsAccumulator = new LinkedList<>();
       try {
-        success = Compiler.upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
+        success = new UploaderUtils().upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
           PreferencesData.remove(uploader.getAuthorizationKey());
