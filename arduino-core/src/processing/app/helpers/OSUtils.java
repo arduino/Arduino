@@ -7,7 +7,7 @@ public class OSUtils {
    */
   static public boolean isWindows() {
     //return PApplet.platform == PConstants.WINDOWS;
-    return System.getProperty("os.name").indexOf("Windows") != -1;
+    return System.getProperty("os.name").contains("Windows");
   }
 
   /**
@@ -15,7 +15,7 @@ public class OSUtils {
    */
   static public boolean isLinux() {
     //return PApplet.platform == PConstants.LINUX;
-    return System.getProperty("os.name").indexOf("Linux") != -1;
+    return System.getProperty("os.name").contains("Linux");
   }
 
   /**
@@ -23,7 +23,7 @@ public class OSUtils {
    */
   static public boolean isMacOS() {
     //return PApplet.platform == PConstants.MACOSX;
-    return System.getProperty("os.name").indexOf("Mac") != -1;
+    return System.getProperty("os.name").contains("Mac");
   }
 
 }
