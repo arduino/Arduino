@@ -249,6 +249,7 @@ public class CommandlineParser {
     }
 
     BaseNoGui.selectBoard(targetBoard);
+    BaseNoGui.onBoardOrPortChange();
 
     if (split.length > 3) {
       String[] options = split[3].split(",");
