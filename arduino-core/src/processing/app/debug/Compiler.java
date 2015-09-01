@@ -396,6 +396,20 @@ public class Compiler implements MessageConsumer {
     progressListener.progress(20);
     List<File> includeFolders = new ArrayList<File>();
     includeFolders.add(prefs.getFile("build.core.path"));
+    includeFolders.add(sketchBuildFolder);
+    
+    // Create empty LibrarySettings.h file if it does not exist yet to avoid compile errors
+    File librarySettingsFile = new File(sketchBuildFolder, "LibrarySettings.h");
+    if (librarySettingsFile.exists() == false)
+    {
+        try{
+            librarySettingsFile.createNewFile();
+        }
+        catch (IOException e) {
+            throw new RunnerException("Unable to create file " + librarySettingsFile);
+        }
+    }
+    
     if (prefs.getFile("build.variant.path") != null)
       includeFolders.add(prefs.getFile("build.variant.path"));
     for (UserLibrary lib : importedLibraries) {
