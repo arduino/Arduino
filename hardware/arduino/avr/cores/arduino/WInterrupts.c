@@ -61,7 +61,9 @@ static volatile voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS] = {
 #if EXTERNAL_NUM_INTERRUPTS > 1
     nothing,
 #endif
+#if EXTERNAL_NUM_INTERRUPTS > 0
     nothing
+#endif
 };
 // volatile static voidFuncPtr twiIntFunc;
 
