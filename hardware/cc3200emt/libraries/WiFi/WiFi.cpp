@@ -47,6 +47,8 @@ extern "C" {
     #include "utility/udma_if.h"
 }
 
+#define SPAWN_TASK_PRI 1 /* TODO: review w.r.t. default sketch priorities */
+
 //
 //initialize WiFi_status to the disconnected flag
 //
@@ -107,6 +109,17 @@ bool WiFiClass::init()
     //
     if (_initialized) {
         return true;
+    }
+
+    /* The SimpleLink Host Driver requires a mechanism to allow functions to
+     * execute in temporary context.  The SpawnTask is created to handle such
+     * situations.  This task will remain blocked until the host driver
+     * posts a function.  If the SpawnTask priority is higher than other tasks,
+     * it will immediately execute the function and return to a blocked state.
+     * Otherwise, it will remain ready until it is scheduled.
+     */
+    if (VStartSimpleLinkSpawnTask(SPAWN_TASK_PRI)) {
+        return false;
     }
 
     //
@@ -176,7 +189,7 @@ uint8_t WiFiClass::getSocket()
 
 const char * WiFiClass::driverVersion()
 {
-	return SL_DRIVER_VERSION;
+    return SL_DRIVER_VERSION;
 }
 
 //--tested, working--//

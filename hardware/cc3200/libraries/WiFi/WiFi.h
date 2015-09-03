@@ -114,6 +114,7 @@ public:
     volatile static unsigned int _connectedDeviceCount;
     volatile static wlanAttachedDevice_t _connectedDevices[MAX_AP_DEVICE_REGISTRY];
     volatile static unsigned int _latestConnect;
+    volatile static bool _SimpleConfigComplete;
     static void _registerNewDeviceIP(uint8_t *ip, uint8_t *mac);
     static void _unregisterDevice(uint8_t *mac);
 
@@ -126,6 +127,8 @@ public:
     IPAddress deviceIpByMacAddress(MACAddress mac);
     MACAddress deviceMacByIpAddress(IPAddress ip);
 
+    /* Attempt to connect to the stored profile */
+    int begin();
 
     /* Start Wifi connection for OPEN network
      *
@@ -316,7 +319,7 @@ public:
      * Start Smartconfig.
      * return: 1 if SmartConfig was successfully configured, otherwise -1.
      */
-    int startSmartConfig();
+    int startSmartConfig(bool block = true);
 
     /*
      * Set WiFi network processor Date/Time

@@ -46,6 +46,8 @@ extern "C" {
     #include "utility/udma_if.h"
 }
 
+#define SPAWN_TASK_PRI 1 /* TODO: review w.r.t. default sketch priorities */
+
 //
 //initialize WiFi_status to the disconnected flag
 //
@@ -61,6 +63,7 @@ char WiFiClass::fwVersion[] = {0};
 // initialize AP mode static client registry variables
 //
 volatile unsigned int WiFiClass::_connectedDeviceCount = 0;
+volatile bool WiFiClass::_SimpleConfigComplete =  false;
 volatile unsigned int WiFiClass::_latestConnect = 0;
 volatile wlanAttachedDevice_t WiFiClass::_connectedDevices[MAX_AP_DEVICE_REGISTRY];
 
@@ -135,11 +138,6 @@ bool WiFiClass::init()
     }
     
     //
-    //Delete all profiles$
-    //
-    sl_WlanProfileDel(0xff);
-
-    //
     //disconnect from anything if for some reason it's connected
     //
     sl_WlanDisconnect();
@@ -148,11 +146,6 @@ bool WiFiClass::init()
 
     _initialized = true;
     
-    //
-    // Start collecting statistics
-    //
-    sl_WlanRxStatStart();
-
     return true;
 }
 
@@ -175,7 +168,7 @@ uint8_t WiFiClass::getSocket()
 
 const char * WiFiClass::driverVersion()
 {
-	return SL_DRIVER_VERSION;
+    return SL_DRIVER_VERSION;
 }
 
 //--tested, working--//
@@ -215,6 +208,34 @@ void WiFiClass::setIpDefaults()
     }
 }
 
+int WiFiClass::begin()
+{
+    int8_t name[32];
+    int16_t NameLen;
+
+    if(_connecting) {
+        delay(500);
+        return status();
+    }
+
+    bool init_success = init();
+    if (!init_success) {
+        return WL_CONNECT_FAILED;
+    }
+
+    int16_t ret = sl_WlanProfileGet(0, name, &NameLen, NULL, NULL, NULL, NULL);
+
+    if(ret < 0) {
+        return WL_CONNECT_FAILED;
+    }
+
+    sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
+
+    _connecting = true;
+
+    return WL_IDLE_STATUS;
+
+}
 //--tested, working--//
 int WiFiClass::begin(char* ssid)
 {
@@ -235,6 +256,8 @@ int WiFiClass::begin(char* ssid)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
+
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
 
     //
     // Set IP address configuration to DHCP if needed
@@ -292,7 +315,9 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
-    
+
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
+
     //
     // Set IP address configuration to DHCP if needed
     //
@@ -351,6 +376,8 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
+
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
 
     setIpDefaults();
 
@@ -756,20 +783,7 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid)
 //!! How to get the current connection??!!//
 int32_t WiFiClass::RSSI()
 {
-    long lRetVal = -1;
-
-    if (WiFi.status() != WL_CONNECTED) {
-        return 0;
-    }
-
-    SlGetRxStatResponse_t rxStatResp;
-
-    lRetVal = sl_WlanRxStatGet(&rxStatResp,0);
-    if (lRetVal < 0) {
-        return 0;
-    }
-
-    return rxStatResp.AvarageMgMntRssi;
+    return 0;
 }
 
 //!! How to get the current connection??!!//
@@ -802,7 +816,6 @@ int8_t WiFiClass::scanNetworks()
     iRet = sl_WlanPolicySet(SL_POLICY_CONNECTION , ucpolicyOpt, NULL, 0);
     if(iRet != 0)
     {
-        sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
         return 0;
     }
 
@@ -813,7 +826,6 @@ int8_t WiFiClass::scanNetworks()
     iRet = sl_WlanPolicySet(SL_POLICY_SCAN , SL_SCAN_POLICY(1), (unsigned char *)(policyVal.ucPolicy), sizeof(policyVal));
     if(iRet != 0)
     {
-        sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
         return 0;
     }
     delay(300);
@@ -830,7 +842,6 @@ int8_t WiFiClass::scanNetworks()
     //
     ucpolicyOpt = SL_SCAN_POLICY(0);
     sl_WlanPolicySet(SL_POLICY_SCAN , ucpolicyOpt, NULL, 0);
-    sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
     
     return network_count;
     
@@ -929,6 +940,10 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
 //--tested, working--//
 uint8_t WiFiClass::status()
 {
+    int8_t name[33];
+    int16_t NameLen;
+    uint8_t i;
+
     if (!_initialized) {
         init();
     }
@@ -943,7 +958,30 @@ uint8_t WiFiClass::status()
     //
     sl_Task();
 #endif
-
+#if 0
+    /* If SimpleConfig was started then wait for SimpleConfig to be complete.
+     * Only delete the existing profile if the connection was successfull */
+    if(_SimpleConfigComplete && (WiFi_status == WL_CONNECTED)) {
+        for (i = 0; i < 7; i++) {
+            _SimpleConfigComplete = false;
+            int16_t ret = sl_WlanProfileGet(i, name, &NameLen, NULL, NULL, NULL, NULL);
+            if (ret < 0) {
+                continue;
+            }
+            name[NameLen] = '\0';
+            Serial.print("\nProfile: ");
+            Serial.print(i);
+            Serial.print("    SSID: ");
+            Serial.println((char*)name);
+            /* Delete the profiles that do not match the SSID that the board is connected to */
+            if (strcmp((char *)name, connected_ssid) != 0) {
+                sl_WlanProfileDel(i);
+                Serial.print("Deleting Profile: ");
+                Serial.println(i);
+            }
+        }
+    }
+#endif
     return WiFi_status;
 }
 
@@ -968,7 +1006,7 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     
 }
 
-int WiFiClass::startSmartConfig()
+int WiFiClass::startSmartConfig(bool block)
 {
     unsigned char policyVal;
 
@@ -976,11 +1014,9 @@ int WiFiClass::startSmartConfig()
         init();
     }
 
-    if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,1), &policyVal, 1 /*PolicyValLen*/) < 0) {
-        return -1;
-    }
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
 
-    if (sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES) < 0) {
+    if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,1), &policyVal, 1 /*PolicyValLen*/) < 0) {
         return -1;
     }
 
@@ -993,6 +1029,10 @@ int WiFiClass::startSmartConfig()
         NULL,                     //group1Key
         NULL);                    //group2Key
 
+    if(!block) {
+        return 0;
+    }
+
     /* Block until connected */
     while (WiFi.status() != WL_CONNECTED) {
 #ifndef SL_PLATFORM_MULTI_THREADED
@@ -1004,11 +1044,7 @@ int WiFiClass::startSmartConfig()
 #endif
     }
 
-    if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,0), &policyVal, 1 /*PolicyValLen*/) < 0) {
-        return -1;
-    }
-
-    return (0);
+    return 0;
 }
 
 /* This function takes uint16_t arguments for compactness on MSP430 w/ CC3100, but actual SlDateTime_t members are uint32_t.
