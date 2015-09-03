@@ -8,8 +8,8 @@
 #VFP := -mcpu=cortex-m4 -mfloat-abi=soft
 VFP := -mfloat-abi=soft
 
-CPPFLAGS +=
-CFLAGS += -DF_CPU=$(F_CPU) -DTARGET_IS_CC3200 -Dxdc__nolocalstring=1
+CPPFLAGS +=-DSL_PLATFORM_MULTI_THREADED
+CFLAGS += -DSL_PLATFORM_MULTI_THREADED -DF_CPU=$(F_CPU) -DTARGET_IS_CC3200 -Dxdc__nolocalstring=1
 OBJCOPY = $(CCROOT)/bin/arm-none-eabi-objcopy
 OBJCOPY_FLAGS = -O binary
 PLAT := cc3200
