@@ -15,6 +15,9 @@
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //  Licence CC = BY SA NC
 //
+//  Edited 2015-07-11 by ReiVilo
+//  Added setOrientation(), setReverse() and flushReverse()
+//
 
 // Include application, user and local libraries
 #include "SPI.h"
@@ -23,45 +26,76 @@
 
 // Variables
 LCD_SharpBoosterPack_SPI myScreen;
-uint8_t k = 0;
-uint16_t count = 0;
+uint8_t myOrientation = 0;
+uint16_t myCount = 0;
 
 
 // Add setup code
 void setup() {
+    Serial.begin(9600);
+
     myScreen.begin();
+    myScreen.clearBuffer();
     
     myScreen.setFont(1);
     myScreen.text(10, 10, "Hello!");
-    myScreen.flush();  
+    myScreen.flush();
     
-    delay(1000);
+    for (uint8_t i=0; i<20; i++) delay(100);
+    myScreen.reverseFlush();
+    for (uint8_t i=0; i<20; i++) delay(100);
+    
     myScreen.clear();
+    
+    for (uint8_t i=0; i<4; i++)
+    {
+        myScreen.setOrientation(i);
+        myScreen.text(10, 10, String(i));
+        myScreen.flush();
+    }
+    for (uint8_t i=0; i<20; i++) delay(100);
+    
+    Serial.print("myCount = ");
 }
 
 // Add loop code
-void loop() {
-    k++;
+void loop()
+{
+    myCount++;
+    Serial.print(-myCount, DEC);
+    if (myCount > 16)
+    {
+        myOrientation++;
+ //       if (myOrientation > 4) myOrientation = 0;
+        myOrientation %= 4;
+        myScreen.setOrientation(myOrientation);
+        myCount = 0;
+        Serial.println();
+        Serial.print("** myOrientation = ");
+        Serial.println(myOrientation, DEC);
+        Serial.print("myCount = ");
+    }
     myScreen.clearBuffer();
     myScreen.setFont(0);
-    myScreen.text(k, 10, "ABCDE", LCDWrapNone);
+    
+    myScreen.text(myCount, 10, "ABCDE", LCDWrapNone);
     for (uint8_t i=10; i<LCD_HORIZONTAL_MAX-10; i++) {
-      myScreen.setXY(i,20,1);
+        myScreen.setXY(i,20,1);
     }
-
-    myScreen.text(10,30,String(count++,10));
+    
+    myScreen.text(10,30,String(myCount,10));
     
     for (uint8_t i=0; i<=20; i++) {
-      myScreen.setXY(50+i,30,1);
-    }
-    for (uint8_t i=0; i<=20; i++) {
-      myScreen.setXY(50,30+i,1);
-    }
-    for (uint8_t i=0; i<=20; i++) {
-      myScreen.setXY(50+i,50,1);
-    }
-    for (uint8_t i=0; i<=20; i++) {
-      myScreen.setXY(70,30+i,1);
+        myScreen.setXY(50+i,30,1);
+        //    }
+        //    for (uint8_t i=0; i<=20; i++) {
+        myScreen.setXY(50,30+i,1);
+        //    }
+        //    for (uint8_t i=0; i<=20; i++) {
+        myScreen.setXY(50+i,50,1);
+        //    }
+        //    for (uint8_t i=0; i<=20; i++) {
+        myScreen.setXY(70,30+i,1);
     }
     
     myScreen.setFont(1);
@@ -74,6 +108,7 @@ void loop() {
     myScreen.setCharXY(10, 60);
     myScreen.println("Break!");
     myScreen.print("ABC\nabc");
-    myScreen.flush();  
-    delay(200);
+    myScreen.flush();
+    
+    for (uint8_t i=0; i<2; i++) delay(100);
 }

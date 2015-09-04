@@ -15,19 +15,13 @@
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //  Licence CC = BY SA NC
 //
-//  Edited 2015-07-10 by ReiVilo
-//  Use of Clock from Galaxia library for MSP432
-//  The OneMsTaskTimer is superseeded by the clock element myClock.
+//  Edited 2015-07-11 by ReiVilo
+//  Added setOrientation(), setReverse() and flushReverse()
 //
 
 // Include application, user and local libraries
 #include "SPI.h"
-#if defined(__MSP432P401R__)
-// Let's use the RTOS Clock element from the Galaxia library instead!
-#include "Clock.h"
-#else
-#include <OneMsTaskTimer.h>
-#endif
+#include "OneMsTaskTimer.h"
 #include "LCD_SharpBoosterPack_SPI.h"
 
 // Variables
@@ -42,7 +36,6 @@ void setup() {
 
     myScreen.begin();
     myScreen.clearBuffer();
-    
     
     myScreen.setFont(1);
     myScreen.text(10, 10, "Hello!");
