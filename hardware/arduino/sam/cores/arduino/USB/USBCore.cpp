@@ -19,6 +19,20 @@
 #include "Reset.h"
 #include <stdio.h>
 
+// CDC Endpoints
+#define EP_TYPE_BULK_IN_MIDI		(UOTGHS_DEVEPTCFG_EPSIZE_64_BYTE | \
+									UOTGHS_DEVEPTCFG_EPDIR_IN |         \
+									UOTGHS_DEVEPTCFG_EPTYPE_BLK |       \
+									UOTGHS_DEVEPTCFG_EPBK_1_BANK |      \
+									UOTGHS_DEVEPTCFG_NBTRANS_1_TRANS |  \
+									UOTGHS_DEVEPTCFG_ALLOC)
+
+#define EP_TYPE_BULK_OUT_MIDI       (UOTGHS_DEVEPTCFG_EPSIZE_64_BYTE | \
+									UOTGHS_DEVEPTCFG_EPTYPE_BLK |       \
+									UOTGHS_DEVEPTCFG_EPBK_1_BANK |      \
+									UOTGHS_DEVEPTCFG_NBTRANS_1_TRANS |  \
+									UOTGHS_DEVEPTCFG_ALLOC)
+
 //#define TRACE_CORE(x)	x
 #define TRACE_CORE(x)
 
@@ -33,7 +47,12 @@ static const uint32_t EndPoints[] =
 #endif
 
 #ifdef HID_ENABLED
-	EP_TYPE_INTERRUPT_IN_HID        // HID_ENDPOINT_INT
+	EP_TYPE_INTERRUPT_IN_HID,        // HID_ENDPOINT_INT
+#endif
+
+#ifdef MIDI_ENABLED
+	EP_TYPE_BULK_OUT_MIDI,               // MIDI_ENDPOINT_OUT
+	EP_TYPE_BULK_IN_MIDI                 // MIDI_ENDPOINT_IN
 #endif
 };
 
@@ -51,6 +70,7 @@ extern const uint8_t STRING_PRODUCT[];
 extern const uint8_t STRING_MANUFACTURER[];
 extern const DeviceDescriptor USB_DeviceDescriptor;
 extern const DeviceDescriptor USB_DeviceDescriptorA;
+extern const DeviceDescriptor USB_DeviceDescriptorB;
 
 const uint16_t STRING_LANGUAGE[2] = {
 	(3<<8) | (2+2),
@@ -92,6 +112,10 @@ const DeviceDescriptor USB_DeviceDescriptor =
 
 const DeviceDescriptor USB_DeviceDescriptorA =
 	D_DEVICE(DEVICE_CLASS,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
+	
+const DeviceDescriptor USB_DeviceDescriptorB =
+	D_DEVICE(0xEF,0x02,0x01,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
+
 
 const DeviceDescriptor USB_DeviceQualifier =
 	D_QUALIFIER(0x00,0x00,0x00,64,1);
@@ -245,21 +269,31 @@ int USBD_SendControl(uint8_t flags, const void* d, uint32_t len)
 
 	return length;
 }
-
+//Bug
 // Send a USB descriptor string. The string is stored as a
 // plain ASCII string but is sent out as UTF-16 with the
 // correct 2-byte prefix
+// static bool USB_SendStringDescriptor(const uint8_t *string, int wLength) {
+// 	uint16_t buff[64];
+// 	int l = 1;
+// 	wLength-=2;
+// 	while (*string && wLength>0) {
+// 		buff[l++] = (uint8_t)(*string++);
+// 		wLength-=2;
+// 	}
+// 	buff[0] = (3<<8) | (l*2);
+// 	return USBD_SendControl(0, (uint8_t*)buff, l*2);
+// }
 static bool USB_SendStringDescriptor(const uint8_t *string, int wLength) {
 	uint16_t buff[64];
 	int l = 1;
-	wLength-=2;
-	while (*string && wLength>0) {
+	while (*string) {
 		buff[l++] = (uint8_t)(*string++);
-		wLength-=2;
 	}
 	buff[0] = (3<<8) | (l*2);
-	return USBD_SendControl(0, (uint8_t*)buff, l*2);
+	return USBD_SendControl(0, (uint8_t*)buff, wLength);
 }
+
 
 //	Does not timeout or cross fifo boundaries
 //	Will only work for transfers <= 64 bytes
@@ -293,6 +327,12 @@ bool USBD_ClassInterfaceRequest(Setup& setup)
 		return HID_Setup(setup);
 	}
 #endif
+#ifdef MIDI_ENABLED
+	if (MIDI_AC_INTERFACE == i)
+	{
+		return MIDI_Setup(setup);
+	}
+#endif
 
 	return false;
 }
@@ -308,6 +348,10 @@ int USBD_SendInterfaces(void)
 
 #ifdef HID_ENABLED
 	total += HID_GetInterface(&interfaces);
+#endif
+
+#ifdef MIDI_ENABLED
+	total += MIDI_GetInterface(&interfaces);
 #endif
 
 	total = total; // Get rid of compiler warning
@@ -326,6 +370,10 @@ int USBD_SendOtherInterfaces(void)
 
 #ifdef HID_ENABLED
 	total += HID_GetInterface(&interfaces);
+#endif
+
+#ifdef MIDI_ENABLED
+	total += MIDI_GetInterface(&interfaces);
 #endif
 
 	total = total; // Get rid of compiler warning
@@ -410,10 +458,15 @@ static bool USBD_SendDescriptor(Setup& setup)
 		{
 			_cdcComposite = 1;
 		}
+		
+#if 1
+		desc_addr = (const uint8_t*)&USB_DeviceDescriptorB;
+#else
 		desc_addr = _cdcComposite ?  (const uint8_t*)&USB_DeviceDescriptorA : (const uint8_t*)&USB_DeviceDescriptor;
-        if( *desc_addr > setup.wLength ) {
-            desc_length = setup.wLength;
-        }
+#endif
+		if( *desc_addr > setup.wLength ) {
+			desc_length = setup.wLength;
+		}
 	}
 	else if (USB_STRING_DESCRIPTOR_TYPE == t)
 	{
@@ -632,6 +685,23 @@ static void USB_ISR(void)
 	}
 #endif
 
+#ifdef MIDI_ENABLED
+  	if (Is_udd_endpoint_interrupt(MIDI_RX))
+	{
+		udd_ack_out_received(MIDI_RX);
+
+		// Handle received bytes
+		if (USBD_Available(MIDI_RX))
+			MidiUSB.accept();
+	}
+
+	if (Is_udd_sof())
+	{
+		udd_ack_sof();
+	//	USBD_Flush(CDC_TX); // jcb
+	}
+#endif
+
 	// EP 0 Interrupt
 	if (Is_udd_endpoint_interrupt(0) )
 	{
@@ -772,6 +842,11 @@ static void USB_ISR(void)
 					// Enable interrupt for CDC reception from host (OUT packet)
 					udd_enable_out_received_interrupt(CDC_RX);
 					udd_enable_endpoint_interrupt(CDC_RX);
+#endif
+#ifdef MIDI_ENABLED
+					// Enable interrupt for CDC reception from host (OUT packet)
+					udd_enable_out_received_interrupt(MIDI_RX);
+					udd_enable_endpoint_interrupt(MIDI_RX);
 #endif
 				}
 				else
