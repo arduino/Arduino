@@ -14,6 +14,8 @@
  created 21 May 2011
  modified 9 Apr 2012
  by Tom Igoe
+ modified 02 Sept 2015
+ by Arturo Guadalupi
  Based on ChatServer example by David A. Mellis
 
  */
@@ -83,6 +85,7 @@ void loop() {
     server.write(thisChar);
     // echo the bytes to the server as well:
     Serial.print(thisChar);
+    Ethernet.maintain();
   }
 }
 
