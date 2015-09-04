@@ -1,7 +1,7 @@
 #!/bin/bash
 
-LIBRARIES="CogLCD aJson PubNub Temboo MQTTClient PubSubClient OPT3001 M2XStreamClient OneMsTaskTimer LCD_SharpBoosterPack_SPI"
-ARCHES="msp430 lm4f cc3200 msp432 cc3200emt"
+LIBRARIES="OneWire CogLCD aJson PubNub Temboo MQTTClient PubSubClient OPT3001 M2XStreamClient OneMsTaskTimer LCD_SharpBoosterPack_SPI"
+ARCHES="cc2600emt msp430 lm4f cc3200 msp432 cc3200emt"
 OSTYPE=`uname`
 
 if [[ "$OSTYPE" == "Linux" ]]; then
