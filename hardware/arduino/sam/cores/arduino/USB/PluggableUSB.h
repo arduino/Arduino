@@ -32,7 +32,7 @@ typedef struct __attribute__((packed))
   int (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
   int8_t numInterfaces;
-  uint8_t *endpointType;
+  uint32_t *endpointType;
 } PUSBCallbacks;
 
 typedef struct
