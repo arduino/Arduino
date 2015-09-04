@@ -46,125 +46,6 @@
 volatile int8_t overflowing;
 OneMsTaskTimer_t * p_initial_OneMsTaskTimer = 0;
 
-#if defined(__MSP432P401R__)
-#include <driverlib/timer_a.h>
-
-#ifndef F_CPU 
-#define F_CPU 48000000ul
-#endif
-
-#define DEFAULT_TIMER TIMER_A0_MODULE
-uint32_t timer_index_ = DEFAULT_TIMER;
-
-static volatile uint32_t g_ulBase = TIMER_A0_MODULE;
-
-void OneMsTaskTimer_int(void);
-
-// lifted from wiring_analog.c so that the do not step on each other
-// there should probably be a processor check here but that also exists in MsTimer.h
-#define PWM_DIV 0
-#define PWM_PERIOD F_CPU/1000
-
-
-void OneMsTaskTimer::start(uint32_t timer_index) {
-  uint32_t load = (F_CPU / 1000);
-  //// !!!! count = 0;
-  const Timer_A_UpModeConfig timer_config = {
-    TIMER_A_CLOCKSOURCE_SMCLK,
-    TIMER_A_CLOCKSOURCE_DIVIDER_1,
-    PWM_PERIOD,                //timerPeriod
-    TIMER_A_TAIE_INTERRUPT_DISABLE,
-    TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE,
-    TIMER_A_DO_CLEAR,
-  };
-  
-  overflowing = 0;
-  // Base address for first timer
-  if (timer_index == 0) g_ulBase = TIMER_A0_MODULE;
-  if (timer_index == 1) g_ulBase = TIMER_A1_MODULE;
-  if (timer_index == 2) g_ulBase = TIMER_A2_MODULE;
-  if (timer_index == 3) g_ulBase = TIMER_A3_MODULE;
-
-  // Configuring the timers
-  Timer_A_configureUpMode(g_ulBase, &timer_config);
-  Timer_A_startCounter(g_ulBase, TIMER_A_UP_MODE);  
-  Timer_A_registerInterrupt(g_ulBase, TIMER_A_CCR0_INTERRUPT, OneMsTaskTimer_int);
-}
-
-// turn off the interrupts but don't turn of the timer because may
-// be in use for pwm.
-void OneMsTaskTimer::stop() {
-  // disable interrupt
-  Timer_A_disableCaptureCompareInterrupt(g_ulBase, TIMER_A_CAPTURECOMPARE_REGISTER_0);
-  Timer_A_stopTimer(g_ulBase);
-}
-
-// Timer interrupt service routine
-void OneMsTaskTimer_int(void)
-{
-  // Clear the timer interrupt.
-  Timer_A_clearCaptureCompareInterrupt(g_ulBase, TIMER_A_CAPTURECOMPARE_REGISTER_0);
-  OneMsTaskTimer::_ticHandler();
-}
-
-#endif
-
-
-#if defined(__xxxMSP432P401R__)
-#include <driverlib/timer32.h>
-
-#ifndef F_CPU 
-#define F_CPU 48000000ul
-#endif
-
-#define DEFAULT_TIMER 0
-uint32_t timer_index_ = DEFAULT_TIMER;
-
-static volatile uint32_t g_ulBase = TIMER32_0_MODULE;
-
-void OneMsTaskTimer_int(void);
-
-// lifted from wiring_analog.c so that the do not step on each other
-// there should probably be a processor check here but that also exists in MsTimer.h
-#define PWM_DIV 0
-#define PWM_PERIOD F_CPU/1000
-
-
-void OneMsTaskTimer::start(uint32_t timer_index) {
-  uint32_t load = (F_CPU / 1000);
-  //// !!!! count = 0;
-  overflowing = 0;
-  // Base address for first timer
-  if (timer_index == 0) g_ulBase = TIMER32_0_MODULE;
-  if (timer_index == 1) g_ulBase = TIMER32_1_MODULE;
-
-  // Configuring the timers
-  Timer32_initModule(g_ulBase, TIMER32_PRESCALER_1,
-        TIMER32_1_MODULE6BIT, TIMER32_PERIODIC_MODE);
-  Timer32_setCount(g_ulBase, load);
-  Timer32_enableInterrupt(g_ulBase);
-  Timer32_startTimer(g_ulBase, false);  
-  if (timer_index == 0) Timer32_registerInterrupt(TIMER32_0_INTERRUPT, OneMsTaskTimer_int);
-  if (timer_index == 1) Timer32_registerInterrupt(TIMER32_1_INTERRUPT, OneMsTaskTimer_int);
-}
-
-// turn off the interrupts but don't turn of the timer because may
-// be in use for pwm.
-void OneMsTaskTimer::stop() {
-  // disable interrupt
-  Timer32_disableInterrupt(g_ulBase);
-  Timer32_haltTimer(g_ulBase);
-}
-
-// Timer interrupt service routine
-void OneMsTaskTimer_int(void)
-{
-  // Clear the timer interrupt.
-  Timer32_clearInterruptFlag(g_ulBase);
-  OneMsTaskTimer::_ticHandler();
-}
-
-#endif
 #if defined(__MSP430__)
 
 #define DEFAULT_TIMER 1
@@ -380,7 +261,38 @@ void OneMsTaskTimer_int(void)
 }
 #endif //#if defined(__TM4C123GH6PM__)
 
+#if defined(ti_sysbios_BIOS___VERS)
+#include <xdc/runtime/Error.h>
+#include <ti/sysbios/BIOS.h>
+#include <ti/sysbios/knl/Clock.h>
+#include <xdc/runtime/Error.h>
+#include <xdc/runtime/Types.h>
 
+#define DEFAULT_TIMER 1
+uint32_t timer_index_ = DEFAULT_TIMER;
+static volatile uint32_t g_ulBase;
+void OneMsTaskTimer_int(UArg arg);
+
+void OneMsTaskTimer::start(uint32_t timer_index) {
+    Clock_Params clockParams;
+    Clock_Handle myClock;
+    Error_Block eb;
+    Error_init(&eb);
+
+    Clock_Params_init(&clockParams);
+    clockParams.period = 1;
+    clockParams.startFlag = TRUE;
+    clockParams.arg = (UArg)0x5555;
+
+    myClock = Clock_create(OneMsTaskTimer_int, 1, &clockParams, &eb);
+}
+
+void OneMsTaskTimer_int(UArg arg)
+{
+  OneMsTaskTimer::_ticHandler();
+}
+
+#endif //#if defined(ti_sysbios_BIOS___VERS)
 // ---------------------------------------------------------------------
 // Common Functions
 // ---------------------------------------------------------------------
@@ -427,22 +339,22 @@ void OneMsTaskTimer::remove(OneMsTaskTimer_t * task) {
     p_nexttask = p_task->nextTask;
   }
   if (p_nexttask != 0){
-	  if (p_nexttask == p_initial_OneMsTaskTimer){
-		  if (p_nexttask != 0){
-			  p_initial_OneMsTaskTimer = p_nexttask->nextTask;
-		  }else{
-			  p_initial_OneMsTaskTimer = 0;
-		  }
-	  }else{
-		  p_task->nextTask = p_nexttask->nextTask;
-	  }
+    if (p_nexttask == p_initial_OneMsTaskTimer){
+      if (p_nexttask != 0){
+        p_initial_OneMsTaskTimer = p_nexttask->nextTask;
+      }else{
+        p_initial_OneMsTaskTimer = 0;
+      }
+    }else{
+      p_task->nextTask = p_nexttask->nextTask;
+    }
   }
 }
 
 // called by the ISR every time we get an interrupt
 void OneMsTaskTimer::_ticHandler() {
   OneMsTaskTimer_t * p_task = p_initial_OneMsTaskTimer;
-  
+
   while (p_task != 0){
     // It is a 1000hz interrupt so each interrupt is 1msec
     p_task->count += 1;
@@ -450,7 +362,7 @@ void OneMsTaskTimer::_ticHandler() {
       overflowing = 1;
       // subtract ms to catch missed overflows. set to 0 if you don't want this.
       // do this before running supplied function so don't take into account handler time
-      p_task->count = p_task->count - p_task->msecs; 
+      p_task->count = p_task->count - p_task->msecs;
       // call the program supplied function
       (*p_task->func)();
       overflowing = 0;
@@ -458,6 +370,3 @@ void OneMsTaskTimer::_ticHandler() {
     p_task = (OneMsTaskTimer_t *)p_task->nextTask;
   }
 }
-
-
-
