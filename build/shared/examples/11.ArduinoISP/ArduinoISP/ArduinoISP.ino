@@ -138,6 +138,13 @@
 #endif
 
 
+// Configure the baud rate:
+
+#define BAUDRATE	19200
+// #define BAUDRATE	115200
+// #define BAUDRATE	1000000
+
+
 #define HWVER 2
 #define SWMAJ 1
 #define SWMIN 18
@@ -211,7 +218,7 @@ static BitBangedSPI SPI;
 #endif
 
 void setup() {
-  SERIAL.begin(19200);
+  SERIAL.begin(BAUDRATE);
 
   pinMode(LED_PMODE, OUTPUT);
   pulse(LED_PMODE, 2);
