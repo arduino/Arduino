@@ -8,8 +8,9 @@
 //
 // Pin 10 is used to reset the target microcontroller.
 //
-// The MISO, MOSI and SCK pins are used to communicate with the target,
-// on all Arduinos, these pins can be found on the ICSP header:
+// By default, the hardware SPI pins MISO, MOSI and SCK pins are used
+// to communicate with the target. On all Arduinos, these pins can be found
+// on the ICSP/SPI header:
 //
 //               MISO °. . 5V (!) Avoid this pin on Due, Zero...
 //               SCK   . . MOSI
@@ -20,6 +21,9 @@
 // instruct you to hook up the target to these pins. If you find this wiring
 // more practical, have a define USE_OLD_STYLE_WIRING. This will work even
 // even when not using an Uno. (On an Uno this is not needed).
+//
+// Alternatively you can use any other digital pin by configuring software ('BitBanged')
+// SPI and having appropriate defines for PIN_MOSI, PIN_MISO and PIN_SCK.
 // 
 // IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...)
 // as the programmer, make sure to not expose any of the programmer's pins to 5V.
@@ -61,7 +65,7 @@
 
 #endif
 
-// Configure which pins to use
+// Configure which pins to use:
 
 // The standard pin configuration.
 #ifndef ARDUINO_HOODLOADER2 
@@ -71,19 +75,17 @@
 #define LED_ERR   8
 #define LED_PMODE 7
 
-// Uncomment following line to use the old uno style wiring
+// Uncomment following line to use the old Uno style wiring
 // (using pin 11, 12 and 13 instead of the SPI header) on Leonardo, Due...
 
 // #define USE_OLD_STYLE_WIRING
 
 #ifdef USE_OLD_STYLE_WIRING
-#undef USE_HARDWARE_SPI
-#undef MOSI
-#undef MISO
-#undef SCK
-#define MOSI	11
-#define MISO	12
-#define SCK	13
+
+#define PIN_MOSI	11
+#define PIN_MISO	12
+#define PIN_SCK		13
+
 #endif
 
 // HOODLOADER2 means running sketches on the atmega16u2 
@@ -91,11 +93,29 @@
 // We must use pins that are broken out:
 #else 
 
-#define RESET     4
-#define LED_HB    7
-#define LED_ERR   6
-#define LED_PMODE 5
+#define RESET     	4
+#define LED_HB    	7
+#define LED_ERR   	6
+#define LED_PMODE 	5
 
+#endif
+
+// By default, use hardware SPI pins:
+#ifndef PIN_MOSI
+#define PIN_MOSI 	MOSI
+#endif
+
+#ifndef PIN_MISO
+#define PIN_MISO 	MISO
+#endif
+
+#ifndef PIN_SCK
+#define PIN_SCK 	SCK
+#endif
+
+// Force bitbanged SPI if not using the hardware SPI pins:
+#if (PIN_MISO != MISO) ||  (PIN_MOSI != MOSI) || (PIN_SCK != SCK)
+#undef USE_HARDWARE_SPI
 #endif
 
 
@@ -155,11 +175,11 @@ friend class BitBangedSPI;
 class BitBangedSPI {
 public:
   void begin() {
-    digitalWrite(SCK, LOW);
-    digitalWrite(MOSI, LOW);
-    pinMode(SCK, OUTPUT);
-    pinMode(MOSI, OUTPUT);
-    pinMode(MISO, INPUT);
+    digitalWrite(PIN_SCK, LOW);
+    digitalWrite(PIN_MOSI, LOW);
+    pinMode(PIN_SCK, OUTPUT);
+    pinMode(PIN_MOSI, OUTPUT);
+    pinMode(PIN_MISO, INPUT);
   }
 
   void beginTransaction(SPISettings settings) {
@@ -172,11 +192,11 @@ public:
 
   uint8_t transfer (uint8_t b) {
     for (unsigned int i = 0; i < 8; ++i) {
-      digitalWrite(MOSI, (b & 0x80) ? HIGH : LOW);
-      digitalWrite(SCK, HIGH);
+      digitalWrite(PIN_MOSI, (b & 0x80) ? HIGH : LOW);
+      digitalWrite(PIN_SCK, HIGH);
       delayMicroseconds(pulseWidth);
-      b = (b << 1) | digitalRead(MISO);
-      digitalWrite(SCK, LOW); // slow pulse
+      b = (b << 1) | digitalRead(PIN_MISO);
+      digitalWrite(PIN_SCK, LOW); // slow pulse
       delayMicroseconds(pulseWidth);
     }
     return b;
@@ -372,7 +392,7 @@ void set_parameters() {
 
 void start_pmode() {
 
-  // Reset target before driving SCK or MOSI
+  // Reset target before driving PIN_SCK or PIN_MOSI
 
   // SPI.begin() will configure SS as output,
   // so SPI master mode is selected.
@@ -387,9 +407,9 @@ void start_pmode() {
 
   // See avr datasheets, chapter "SERIAL_PRG Programming Algorithm":
 
-  // Pulse RESET after SCK is low:
-  digitalWrite(SCK, LOW);
-  delay(20); // discharge SCK, value arbitrally chosen
+  // Pulse RESET after PIN_SCK is low:
+  digitalWrite(PIN_SCK, LOW);
+  delay(20); // discharge PIN_SCK, value arbitrally chosen
   reset_target(false);
   // Pulse must be minimum 2 target CPU clock cycles
   // so 100 usec is ok for CPU speeds above 20KHz
@@ -406,8 +426,8 @@ void end_pmode() {
   SPI.end();
   // We're about to take the target out of reset
   // so configure SPI pins as input
-  pinMode(MOSI, INPUT);
-  pinMode(SCK, INPUT);
+  pinMode(PIN_MOSI, INPUT);
+  pinMode(PIN_SCK, INPUT);
   reset_target(false);
   pinMode(RESET, INPUT);
   pmode = 0;
