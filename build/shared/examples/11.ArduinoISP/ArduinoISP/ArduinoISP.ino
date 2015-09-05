@@ -38,14 +38,16 @@
 
 #define PROG_FLICKER true
 
-// Configure SPI clock.
-//   E.g. for an attiny @128 kHz:
-//   (pulseWidth should be > 2 cpu cycles, so take 3 cycles:)
-//   #define SPI_CLOCK            (128000/3) 
+// Configure SPI clock (in Hz).
+// E.g. for an attiny @128 kHz: the datasheet states that both the high
+// and low spi clock pulse must be > 2 cpu cycles, so take 3 cycles i.e.
+// divide target f_cpu by 6:
+//     #define SPI_CLOCK            (128000/6)
 //
-//   A clock slow enough for an attiny85 @ 1MHz, is a reasonable default:
+// A clock slow enough for an attiny85 @ 1MHz, is a reasonable default:
 
-#define SPI_CLOCK 		(1000000/3)
+#define SPI_CLOCK 		(1000000/6)
+
 
 // Select hardware or software SPI, depending on SPI clock.
 // Currently only for AVR, for other archs (Due, Zero,...),
@@ -161,7 +163,7 @@ public:
   }
 
   void beginTransaction(SPISettings settings) {
-    pulseWidth = 1000 / (settings.clock / 1000);
+    pulseWidth = (500000 + settings.clock - 1) / settings.clock;
     if (pulseWidth == 0)
       pulseWidth = 1;
   }
