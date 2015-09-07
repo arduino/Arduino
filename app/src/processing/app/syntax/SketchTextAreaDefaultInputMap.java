@@ -50,7 +50,7 @@ public class SketchTextAreaDefaultInputMap extends RSyntaxTextAreaDefaultInputMa
       put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, defaultModifier | shift), DefaultEditorKit.selectionBeginAction);
       put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, defaultModifier | shift), DefaultEditorKit.selectionEndAction);
 
-      if (PreferencesData.getBoolean("editor.keys.home_and_end_to_start_end_of_doc")) {
+      if (!PreferencesData.getBoolean("editor.keys.home_and_end_beginning_end_of_doc")) {
         put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), DefaultEditorKit.beginLineAction);
         put(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0), DefaultEditorKit.endLineAction);
       }

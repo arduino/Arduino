@@ -27,7 +27,7 @@
 //================================================================================
 //	Keyboard
 
-static const u8 _hidReportDescriptor[] PROGMEM = {
+static const uint8_t _hidReportDescriptor[] PROGMEM = {
 
   //  Keyboard
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)  // 47

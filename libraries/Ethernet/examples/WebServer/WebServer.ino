@@ -12,6 +12,8 @@
  by David A. Mellis
  modified 9 Apr 2012
  by Tom Igoe
+ modified 02 Sept 2015
+ by Arturo Guadalupi
 
  */
 
@@ -95,6 +97,7 @@ void loop() {
     // close the connection:
     client.stop();
     Serial.println("client disconnected");
+    Ethernet.maintain();
   }
 }
 
