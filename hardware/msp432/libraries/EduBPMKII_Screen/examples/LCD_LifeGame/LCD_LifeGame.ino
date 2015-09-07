@@ -39,7 +39,9 @@
 /// @see		ReadMe.txt for references
 /// @n
 ///
-
+/// @b  Updated Sep 07, 2015
+/// @n  Support for MSP432 with 128x128
+///
 
 // Core library for code-sense
 #if defined(ENERGIA) // LaunchPad MSP430, Stellaris and Tiva, Experimeter Board FR5739 specific
@@ -126,6 +128,9 @@ Screen_PicasoSGC myScreen(20, &mySerial);
 #elif defined(__LM4F120H5QR__)
 #define ROWS 64 // max 80
 #define COLS 64 // max 60
+#elif defined(__MSP432P401R__)
+#define ROWS 128 // max 80
+#define COLS 128 // max 60
 #else
 #error Board not supported
 #endif
