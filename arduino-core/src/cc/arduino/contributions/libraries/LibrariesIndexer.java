@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions.libraries;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.libraries.filters.LibraryInstalledInsideCore;
 import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -92,7 +93,7 @@ public class LibrariesIndexer {
 
       index.getLibraries()
         .stream()
-        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()))
+        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()) || !Constants.LIBRARY_CATEGORIES.contains(library.getCategory()))
         .forEach(library -> library.setCategory("Uncategorized"));
     } finally {
       IOUtils.closeQuietly(indexIn);
