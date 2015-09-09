@@ -145,7 +145,7 @@ public class FileDownloader extends Observable {
       if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
         URL newUrl = new URL(connection.getHeaderField("Location"));
 
-        proxy = ProxySelector.getDefault().select(newUrl.toURI()).get(0);
+        proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(newUrl.toURI());
 
         // open the new connnection again
         connection = (HttpURLConnection) newUrl.openConnection(proxy);
