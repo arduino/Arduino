@@ -45,6 +45,9 @@ public:
     IPAddress(uint32_t address);
     IPAddress(const uint8_t *address);
 
+    bool fromString(const char *address);
+    bool fromString(const String &address) { return fromString(address.c_str()); }
+
     // Overloaded cast operator to allow IPAddress objects to be used where a pointer
     // to a four-byte uint8_t array is expected
     operator uint32_t() const { return _address.dword; };
@@ -70,6 +73,5 @@ public:
 };
 
 const IPAddress INADDR_NONE(0,0,0,0);
-
 
 #endif
