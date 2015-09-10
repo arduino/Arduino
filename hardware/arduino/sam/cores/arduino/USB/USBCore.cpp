@@ -18,11 +18,13 @@
 #include "USBAPI.h"
 #include "Reset.h"
 #include <stdio.h>
+#include "PluggableUSB.h"
+#include <stdint.h>
 
 //#define TRACE_CORE(x)	x
 #define TRACE_CORE(x)
 
-static const uint32_t EndPoints[] =
+uint32_t EndPoints[] =
 {
 	EP_TYPE_CONTROL,
 
@@ -32,8 +34,14 @@ static const uint32_t EndPoints[] =
 	EP_TYPE_BULK_IN,                // CDC_ENDPOINT_IN
 #endif
 
-#ifdef HID_ENABLED
-	EP_TYPE_INTERRUPT_IN_HID        // HID_ENDPOINT_INT
+#ifdef PLUGGABLE_USB_ENABLED
+	//allocate 6 endpoints and remove const so they can be changed by the user
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
 #endif
 };
 
@@ -91,7 +99,7 @@ const DeviceDescriptor USB_DeviceDescriptor =
 	D_DEVICE(0x00,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
 
 const DeviceDescriptor USB_DeviceDescriptorA =
-	D_DEVICE(DEVICE_CLASS,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
+	D_DEVICE(0xEF,0x02,0x01,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
 
 const DeviceDescriptor USB_DeviceQualifier =
 	D_QUALIFIER(0x00,0x00,0x00,64,1);
@@ -274,7 +282,7 @@ int USBD_RecvControl(void* d, uint32_t len)
 }
 
 //	Handle CLASS_INTERFACE requests
-bool USBD_ClassInterfaceRequest(Setup& setup)
+bool USBD_ClassInterfaceRequest(USBSetup& setup)
 {
 	uint8_t i = setup.wIndex;
 
@@ -287,11 +295,8 @@ bool USBD_ClassInterfaceRequest(Setup& setup)
 	}
 #endif
 
-#ifdef HID_ENABLED
-	if (HID_INTERFACE == i)
-	{
-		return HID_Setup(setup);
-	}
+#ifdef PLUGGABLE_USB_ENABLED
+	return PUSB_Setup(setup, i);
 #endif
 
 	return false;
@@ -299,37 +304,33 @@ bool USBD_ClassInterfaceRequest(Setup& setup)
 
 int USBD_SendInterfaces(void)
 {
-	int total = 0;
 	uint8_t interfaces = 0;
 
 #ifdef CDC_ENABLED
-	total = CDC_GetInterface(&interfaces);
+	CDC_GetInterface(&interfaces);
 #endif
 
-#ifdef HID_ENABLED
-	total += HID_GetInterface(&interfaces);
+#ifdef PLUGGABLE_USB_ENABLED
+	PUSB_GetInterface(&interfaces);
 #endif
 
-	total = total; // Get rid of compiler warning
-	TRACE_CORE(printf("=> USBD_SendInterfaces, total=%d interfaces=%d\r\n", total, interfaces);)
+	TRACE_CORE(printf("=> USBD_SendInterfaces, interfaces=%d\r\n", interfaces);)
 	return interfaces;
 }
 
 int USBD_SendOtherInterfaces(void)
 {
-	int total = 0;
 	uint8_t interfaces = 0;
 
 #ifdef CDC_ENABLED
-	total = CDC_GetOtherInterface(&interfaces);
+	CDC_GetOtherInterface(&interfaces);
 #endif
 
-#ifdef HID_ENABLED
-	total += HID_GetInterface(&interfaces);
+#ifdef PLUGGABLE_USB_ENABLED
+	PUSB_GetInterface(&interfaces);
 #endif
 
-	total = total; // Get rid of compiler warning
-	TRACE_CORE(printf("=> USBD_SendInterfaces, total=%d interfaces=%d\r\n", total, interfaces);)
+	TRACE_CORE(printf("=> USBD_SendInterfaces, interfaces=%d\r\n", interfaces);)
 	return interfaces;
 }
 
@@ -382,10 +383,11 @@ _Pragma("pack()")
 	return true;
 }
 
-static bool USBD_SendDescriptor(Setup& setup)
+static bool USBD_SendDescriptor(USBSetup& setup)
 {
 	uint8_t t = setup.wValueH;
 	uint8_t desc_length = 0;
+	int ret = 0;
 	const uint8_t* desc_addr = 0;
 
 	if (USB_CONFIGURATION_DESCRIPTOR_TYPE == t)
@@ -395,11 +397,11 @@ static bool USBD_SendDescriptor(Setup& setup)
 	}
 
 	USBD_InitControl(setup.wLength);
-#ifdef HID_ENABLED
-	if (HID_REPORT_DESCRIPTOR_TYPE == t)
-	{
-		TRACE_CORE(puts("=> USBD_SendDescriptor : HID_REPORT_DESCRIPTOR_TYPE\r\n");)
-		return HID_GetDescriptor(t);
+
+#ifdef PLUGGABLE_USB_ENABLED
+	ret = PUSB_GetDescriptor(t);
+	if (ret != 0) {
+		return (ret > 0 ? true : false);
 	}
 #endif
 
@@ -640,7 +642,7 @@ static void USB_ISR(void)
 			return;
 		}
 
-		Setup setup;
+		USBSetup setup;
 		UDD_Recv(EP0, (uint8_t*)&setup, 8);
 		UDD_ClearSetupInt();
 
@@ -765,7 +767,11 @@ static void USB_ISR(void)
 				{
 					TRACE_CORE(printf(">>> EP0 Int: SET_CONFIGURATION REQUEST_DEVICE %d\r\n", setup.wValueL);)
 
-					UDD_InitEndpoints(EndPoints, (sizeof(EndPoints) / sizeof(EndPoints[0])));
+					uint32_t num_endpoints = 0;
+					while (EndPoints[num_endpoints] != 0) {
+						num_endpoints++;
+					}
+					UDD_InitEndpoints(EndPoints, num_endpoints);
 					_usbConfiguration = setup.wValueL;
 
 #ifdef CDC_ENABLED
