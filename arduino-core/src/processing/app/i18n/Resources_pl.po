@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-24 15:30+0000\n"
+"PO-Revision-Date: 2015-09-08 11:37+0000\n"
 "Last-Translator: Tom Box <wptom@wp.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -1950,7 +1950,7 @@ msgstr "Folder szkicownika nie istnieje.\nArduino przełączy się na domyślny 
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
-msgstr ""
+msgstr "Podany katalog na szkice zawiera twoją kopię środowiska programistycznego.\nProszę wybrać inny katalog na twoje szkice."
 
 #: ../../../processing/app/debug/Compiler.java:201
 msgid ""
@@ -1969,7 +1969,7 @@ msgstr "Ten plik został już skopiowany do \nlokalizacji z której próbowałe�
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr ""
+msgstr "Ta biblioteka nie figuruje w Zarządcy Bibliotek. Nie będziesz mógł jej stąd przeinstalować.\nCzy na pewno chcesz ją usunąć?"
 
 #: ../../../processing/app/EditorStatus.java:467
 msgid "This report would have more information with"
@@ -2193,7 +2193,7 @@ msgstr "Ostrzeżenia"
 msgid ""
 "Warning: This core does not support exporting sketches. Please consider "
 "upgrading it or contacting its author"
-msgstr ""
+msgstr "Uwaga: Ten rdzeń nie obsługuje eksportowania szkiców. Proszę rozważyć jego aktualizację lub skontaktować się z autorem."
 
 #: ../../../cc/arduino/utils/ArchiveExtractor.java:197
 #, java-format
@@ -2202,31 +2202,31 @@ msgstr "Uwaga: plik {0} połączony jest ze ścieżką {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "Uwaga: wymuszanie zaufania do niezaufanego dodatku"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "Uwaga: wymuszenie wykonania niezaufanego skryptu ({0})"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr ""
+msgstr "Uwaga: niezaufany dodatek, pominięcie wykonania skryptu ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
 msgid ""
 "Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
 " converted to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "Uwaga: platform.txt z rdzenia '{0}' zawiera przestarzałe {1}, przekonwertowane automatycznie na {2}. Rozważ uaktualnienie tego rdzenia."
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:170
 #, java-format
 msgid ""
 "Warning: platform.txt from core '{0}' misses property {1}, automatically set"
 " to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "Uwaga: w platform.txt z rdzenia '{0}' brakuje właściwości {1}, zostanie automatycznie ustawione na {2}. Rozważ aktualizację tego rdzenia."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -2303,13 +2303,13 @@ msgstr "Wykorzystałeś limit automatycznego nazewnictwa nowych szkiców\nna dzi
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "Twoja kopia środowiska programistycznego została zainstalowana w podkatalogu twojego katalogu z ustawieniami.\nProszę przenieść środowisko do innego katalogu."
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "Twoja kopia środowiska programistycznego została zainstalowana w podkatalogu twojego katalogu ze szkicami.\nProszę przenieść środowisko do innego katalogu."
 
 #: Base.java:2638
 msgid "ZIP files or folders"
