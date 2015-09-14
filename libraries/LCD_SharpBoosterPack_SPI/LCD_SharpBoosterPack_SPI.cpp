@@ -17,7 +17,7 @@
 //  Licence CC = BY SA NC
 //
 
-#include <energia.h>
+#include <Energia.h>
 #include "LCD_SharpBoosterPack_SPI.h"
 #include "SPI.h"
 

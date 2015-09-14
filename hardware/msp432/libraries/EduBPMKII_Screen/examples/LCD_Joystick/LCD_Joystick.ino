@@ -35,7 +35,8 @@
 /// @see		ReadMe.txt for references
 /// @n
 ///
-
+/// @b  Updated Sep 07, 2015 Rei Vilo
+/// @n  Added analogReadResolution() for MSP432
 
 // Core library for code-sense
 #if defined(ENERGIA) // LaunchPad MSP430, Stellaris and Tiva, Experimeter Board FR5739 specific
@@ -67,6 +68,12 @@ void setup()
     myScreen.begin();
     x00 = 0;
     y00 = 0;
+
+    // MSP432 14-bit set to 12-bit
+#if defined(__MSP432P401R__)
+    analogReadResolution(12);
+#endif
+
     
 }
 
@@ -81,7 +88,7 @@ void loop()
     if (y > 126)    y = 126;
     
     if ((x00 != x) || (y00 != y)) {
-        z = (uint32_t)((x-64)*(x-64)+(y-64)*(y-64)) >> 8;
+        z = (uint32_t)((x-64)*(x-64) + (y-64)*(y-64)) >> 8;
         if (z > 4)      colour = redColour;
         else if (z > 1) colour = yellowColour;
         else            colour = greenColour;
@@ -94,6 +101,6 @@ void loop()
     
     
     myScreen.gText(0, myScreen.screenSizeY()-myScreen.fontSizeY(),
-                   "x=" + i32toa((int16_t)x-64, 10, 1, 6) +" y=" + i32toa(64-(int16_t)y, 10, 1, 6),
+                   "x=" + i32toa((int16_t)x-64, 10, 1, 6) + " y=" + i32toa(64-(int16_t)y, 10, 1, 6),
                    colour);
 }

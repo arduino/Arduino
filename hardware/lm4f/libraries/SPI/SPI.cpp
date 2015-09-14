@@ -49,15 +49,12 @@
 */
 
 static const unsigned long g_ulSSIBase[] = {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     SSI0_BASE, SSI1_BASE, SSI2_BASE, SSI3_BASE
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     SSI0_BASE, SSI1_BASE, SSI2_BASE, SSI3_BASE, SSI2_BASE, SSI3_BASE
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     SSI0_BASE, SSI1_BASE, SSI2_BASE, SSI3_BASE, SSI3_BASE
-#endif
 #endif
 };
 
@@ -67,15 +64,12 @@ static const unsigned long g_ulSSIBase[] = {
 //
 //*****************************************************************************
 static const unsigned long g_ulSSIPeriph[] = {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     SYSCTL_PERIPH_SSI0, SYSCTL_PERIPH_SSI1, SYSCTL_PERIPH_SSI2, SYSCTL_PERIPH_SSI3
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     SYSCTL_PERIPH_SSI0, SYSCTL_PERIPH_SSI1, SYSCTL_PERIPH_SSI2, SYSCTL_PERIPH_SSI3, SYSCTL_PERIPH_SSI2, SYSCTL_PERIPH_SSI3
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     SYSCTL_PERIPH_SSI0, SYSCTL_PERIPH_SSI1, SYSCTL_PERIPH_SSI2, SYSCTL_PERIPH_SSI3, SYSCTL_PERIPH_SSI3
-#endif
 #endif
 
 };
@@ -86,13 +80,12 @@ static const unsigned long g_ulSSIPeriph[] = {
 //
 //*****************************************************************************
 static const unsigned long g_ulSSIConfig[][4] = {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     {GPIO_PA2_SSI0CLK, GPIO_PA3_SSI0FSS, GPIO_PA4_SSI0RX, GPIO_PA5_SSI0TX},
     {GPIO_PF2_SSI1CLK, GPIO_PF3_SSI1FSS, GPIO_PF0_SSI1RX, GPIO_PF1_SSI1TX},
     {GPIO_PB4_SSI2CLK, GPIO_PB5_SSI2FSS, GPIO_PB6_SSI2RX, GPIO_PB7_SSI2TX},
     {GPIO_PD0_SSI3CLK, GPIO_PD1_SSI3FSS, GPIO_PD2_SSI3RX, GPIO_PD3_SSI3TX}
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
 // from Table 20-1. SSI Signals (212BGA)
     {GPIO_PA2_SSI0CLK, GPIO_PA3_SSI0FSS, GPIO_PA4_SSI0XDAT0, GPIO_PA5_SSI0XDAT1},
     {GPIO_PB5_SSI1CLK, GPIO_PB4_SSI1FSS, GPIO_PE4_SSI1XDAT0, GPIO_PE5_SSI1XDAT1},
@@ -100,15 +93,13 @@ static const unsigned long g_ulSSIConfig[][4] = {
     {GPIO_PF3_SSI3CLK, GPIO_PF2_SSI3FSS, GPIO_PF1_SSI3XDAT0, GPIO_PF0_SSI3XDAT1},
     {GPIO_PG7_SSI2CLK, GPIO_PG6_SSI2FSS, GPIO_PG5_SSI2XDAT0, GPIO_PG4_SSI2XDAT1},
     {GPIO_PQ0_SSI3CLK, GPIO_PQ1_SSI3FSS, GPIO_PQ2_SSI3XDAT0, GPIO_PQ3_SSI3XDAT1}
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
 // from Table 17-1. SSI Signals (128TQFP)
     {GPIO_PA2_SSI0CLK, GPIO_PA3_SSI0FSS, GPIO_PA4_SSI0XDAT0, GPIO_PA5_SSI0XDAT1},
     {GPIO_PB5_SSI1CLK, GPIO_PB4_SSI1FSS, GPIO_PE4_SSI1XDAT0, GPIO_PE5_SSI1XDAT1},
     {GPIO_PD3_SSI2CLK, GPIO_PD2_SSI2FSS, GPIO_PD1_SSI2XDAT0, GPIO_PD0_SSI2XDAT1},
     {GPIO_PF3_SSI3CLK, GPIO_PF2_SSI3FSS, GPIO_PF1_SSI3XDAT0, GPIO_PF0_SSI3XDAT1},
     {GPIO_PQ0_SSI3CLK, GPIO_PQ1_SSI3FSS, GPIO_PQ2_SSI3XDAT0, GPIO_PQ3_SSI3XDAT1}
-#endif
 #endif
 ,};
 
@@ -118,15 +109,12 @@ static const unsigned long g_ulSSIConfig[][4] = {
 //
 //*****************************************************************************
 static const unsigned long g_ulSSIPort[] = {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     GPIO_PORTA_BASE, GPIO_PORTF_BASE, GPIO_PORTB_BASE, GPIO_PORTD_BASE
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     GPIO_PORTA_BASE, GPIO_PORTB_BASE, GPIO_PORTD_BASE, GPIO_PORTF_BASE, GPIO_PORTG_BASE, GPIO_PORTQ_BASE
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     GPIO_PORTA_BASE, GPIO_PORTB_BASE, GPIO_PORTD_BASE, GPIO_PORTF_BASE, GPIO_PORTQ_BASE
-#endif
 #endif
 };
 
@@ -136,27 +124,24 @@ static const unsigned long g_ulSSIPort[] = {
 //
 //*****************************************************************************
 static const unsigned long g_ulSSIPins[] = {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
 	GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5,
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3,
 	GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7,
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
 	GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5,
 	GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_4 | GPIO_PIN_5,
 	GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_0,
 	GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_0,
 	GPIO_PIN_7 | GPIO_PIN_6 | GPIO_PIN_5 | GPIO_PIN_4,
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
 	GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5,
 	GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_4 | GPIO_PIN_5,
 	GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_0,
 	GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_0,
 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3
-#endif
 #endif
 };
 
@@ -183,17 +168,15 @@ void SPIClass::begin() {
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][1]);
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][2]);
 	ROM_GPIOPinConfigure(g_ulSSIConfig[SSIModule][3]);
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
 	ROM_GPIOPinTypeSSI(g_ulSSIPort[SSIModule], g_ulSSIPins[SSIModule]);
-#else
-#if defined(__TM4C129XNCZAD__) || defined(__TM4C1294NCPDT__)
+#elif defined(__TM4C129XNCZAD__) || defined(__TM4C1294NCPDT__)
     if (SSIModule == 1) { // 1 is a split port 
 	    ROM_GPIOPinTypeSSI(GPIO_PORTB_BASE, GPIO_PIN_5 | GPIO_PIN_4);
 	    ROM_GPIOPinTypeSSI(GPIO_PORTE_BASE, GPIO_PIN_4 | GPIO_PIN_5);
     } else {
 	    ROM_GPIOPinTypeSSI(g_ulSSIPort[SSIModule], g_ulSSIPins[SSIModule]);
     }
-#endif
 #endif
 
 
@@ -212,7 +195,7 @@ void SPIClass::begin() {
 	*/
 	ROM_SSIClockSourceSet(SSIBASE, SSI_CLOCK_SYSTEM);
 
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
 	ROM_SSIConfigSetExpClk(SSIBASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, 4000000, 8);
 #else
 	ROM_SSIConfigSetExpClk(SSIBASE, F_CPU, SSI_FRF_MOTO_MODE_0, SSI_MODE_MASTER, 4000000, 8);
