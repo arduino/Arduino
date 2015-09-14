@@ -1071,8 +1071,23 @@ public class Compiler implements MessageConsumer {
     if (lib.useRecursion()) {
       // libBuildFolder == {build.path}/LibName
       // libFolder      == {lib.path}/src
-      recursiveCompileFilesInFolder(libBuildFolder, libFolder, includeFolders);
-      
+
+      // Compile the library with .a linkage if a flag was set in library.properties
+      if(lib.alinkage()){
+
+        createFolder(libBuildFolder);
+        File afile = compileThroughAFile(libBuildFolder, libFolder, lib.getName(), includeFolders);
+
+        // This is not a .o object file, but a .a file with all .o files inside.
+        // This way libraries can be optimized better, similar as the core files.
+        objectFiles.add(afile);
+      }
+
+      // no alinkage, old, default .o file linkage
+      else{
+        recursiveCompileFilesInFolder(libBuildFolder, libFolder, includeFolders);
+      }
+
     } else {
       // libFolder          == {lib.path}/
       // utilityFolder      == {lib.path}/utility
@@ -1104,6 +1119,65 @@ public class Compiler implements MessageConsumer {
     objectFiles.addAll(objects);
   }
 
+  private File compileThroughAFile(File buildFolder, File srcFolder, String name, List<File> includeFolders)
+            throws RunnerException, PreferencesMapException {
+    File afile = new File(buildFolder, name + ".a");
+
+    List<File> aObjectFiles = compileFiles(buildFolder, srcFolder, true,
+                                              includeFolders);
+
+    // See if the .a file is already uptodate
+    if (afile.exists()) {
+      boolean changed = false;
+      for (File file : aObjectFiles) {
+        if (file.lastModified() > afile.lastModified()) {
+          changed = true;
+          break;
+        }
+      }
+
+      // If none of the object files is newer than the .a file, don't
+      // bother rebuilding the .a file. There is a small corner case
+      // here: If a source file was removed, but no other source file
+      // was modified, this will not rebuild core.a even when it
+      // should. It's hard to fix and not a realistic case, so it
+      // shouldn't be a problem.
+      if (!changed) {
+        if (verbose)
+          System.out.println(I18n.format(tr("Using previously compiled file: {0}"), afile.getPath()));
+        return afile;
+      }
+    }
+
+    // Delete the .a file, to prevent any previous code from lingering
+    afile.delete();
+
+    try {
+      for (File file : aObjectFiles) {
+
+        PreferencesMap dict = new PreferencesMap(prefs);
+        dict.put("ide_version", "" + BaseNoGui.REVISION);
+        dict.put("archive_file", afile.getName());
+        dict.put("object_file", file.getAbsolutePath());
+        dict.put("build.path", buildFolder.getAbsolutePath());
+
+        String[] cmdArray;
+        String cmd = prefs.getOrExcept("recipe.ar.pattern");
+        try {
+          cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+        } catch (Exception e) {
+          throw new RunnerException(e);
+        }
+        execAsynchronously(cmdArray);
+      }
+    } catch (RunnerException e) {
+      afile.delete();
+      throw e;
+    }
+
+    return afile;
+  }
+
   // 3. compile the core, outputting .o files to <buildPath> and then
   // collecting them into the core.a library file.
   // Also compiles the variant (if it supplies actual source files),
@@ -1128,59 +1202,7 @@ public class Compiler implements MessageConsumer {
       objectFiles.addAll(compileFiles(buildFolder, variantFolder, true,
                                       includeFolders));
 
-    File afile = new File(buildFolder, "core.a");
-
-    List<File> coreObjectFiles = compileFiles(buildFolder, coreFolder, true,
-                                              includeFolders);
-
-    // See if the .a file is already uptodate
-    if (afile.exists()) {
-      boolean changed = false;
-      for (File file : coreObjectFiles) {
-        if (file.lastModified() > afile.lastModified()) {
-          changed = true;
-          break;
-        }
-      }
-
-      // If none of the object files is newer than the .a file, don't
-      // bother rebuilding the .a file. There is a small corner case
-      // here: If a source file was removed, but no other source file
-      // was modified, this will not rebuild core.a even when it
-      // should. It's hard to fix and not a realistic case, so it
-      // shouldn't be a problem.
-      if (!changed) {
-        if (verbose)
-          System.out.println(I18n.format(tr("Using previously compiled file: {0}"), afile.getPath()));
-        return;
-      }
-    }
-
-    // Delete the .a file, to prevent any previous code from lingering
-    afile.delete();
-
-    try {
-      for (File file : coreObjectFiles) {
-
-        PreferencesMap dict = new PreferencesMap(prefs);
-        dict.put("ide_version", "" + BaseNoGui.REVISION);
-        dict.put("archive_file", afile.getName());
-        dict.put("object_file", file.getAbsolutePath());
-        dict.put("build.path", buildFolder.getAbsolutePath());
-
-        String[] cmdArray;
-        String cmd = prefs.getOrExcept("recipe.ar.pattern");
-        try {
-          cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
-        } catch (Exception e) {
-          throw new RunnerException(e);
-        }
-        execAsynchronously(cmdArray);
-      }
-    } catch (RunnerException e) {
-      afile.delete();
-      throw e;
-    }
+    compileThroughAFile(buildFolder, coreFolder, "core", includeFolders);
   }
 			
   // 4. link it all together into the .elf file
