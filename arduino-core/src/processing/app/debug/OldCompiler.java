@@ -61,7 +61,8 @@ import java.util.stream.Stream;
 
 import static processing.app.I18n.tr;
 
-public class Compiler implements MessageConsumer {
+@Deprecated
+public class OldCompiler implements MessageConsumer {
 
   /**
    * File inside the build directory that contains the build options
@@ -96,7 +97,7 @@ public class Compiler implements MessageConsumer {
                           tr("Bad sketch primary file or bad sketch directory structure"), null);
 
     String primaryClassName = data.getName() + ".cpp";
-    Compiler compiler = new Compiler(data, buildPath, primaryClassName);
+    OldCompiler compiler = new OldCompiler(data, buildPath, primaryClassName);
     File buildPrefsFile = new File(buildPath, BUILD_PREFS_FILE);
     String newBuildPrefs = compiler.buildPrefsString();
 
@@ -208,7 +209,7 @@ public class Compiler implements MessageConsumer {
    * @param _buildPath Where the temporary files live and will be built from.
    * @param _primaryClassName the name of the combined sketch file w/ extension
    */
-  public Compiler(SketchData _sketch, String _buildPath, String _primaryClassName)
+  public OldCompiler(SketchData _sketch, String _buildPath, String _primaryClassName)
       throws RunnerException {
     sketch = _sketch;
     prefs = createBuildPreferences(_buildPath, _primaryClassName);
@@ -808,7 +809,7 @@ public class Compiler implements MessageConsumer {
 
       @Override
       protected Thread createPump(InputStream is, OutputStream os, boolean closeWhenExhausted) {
-        final Thread result = new Thread(new MyStreamPumper(is, Compiler.this));
+        final Thread result = new Thread(new MyStreamPumper(is, OldCompiler.this));
         result.setDaemon(true);
         return result;
 
