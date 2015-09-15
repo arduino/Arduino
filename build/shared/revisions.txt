@@ -21,9 +21,11 @@ ARDUINO 1.6.6
 * Introducing arduino-builder, a command line tool that properly calls gcc. Fixes lots of issues about buggy preprocessing.
 
 [libraries]
-
 * Bridge: YunClient.connected() returns true if there are bytes available for read. Thanks @RobAtticus
 * Bridge: YunClient.stop() now empties all buffers. Thanks @RobAtticus
+
+[core]
+AVR: fixed wrong turnOffPWM() for TIMER0B. Thanks @gonzoveliki
 
 ARDUINO 1.6.5-r5 - 2015.08.28
 
