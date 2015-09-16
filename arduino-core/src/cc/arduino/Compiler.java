@@ -172,41 +172,55 @@ public class Compiler implements MessageConsumer {
     File executable = BaseNoGui.getContentFile("arduino-builder");
     CommandLine commandLine = new CommandLine(executable);
     commandLine.addArgument(action.value, false);
-    commandLine.addArgument("-logger=machine", false);
+    commandLine.addArgument("-logger", false);
+    commandLine.addArgument("machine", false);
 
     Stream.of(BaseNoGui.getHardwarePath(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath(), BaseNoGui.getSketchbookHardwareFolder().getAbsolutePath())
       .forEach(p -> {
         if (Files.exists(Paths.get(p))) {
-          commandLine.addArgument("-hardware=\"" + p + "\"", false);
+          commandLine.addArgument("-hardware", false);
+          commandLine.addArgument("\"" + p + "\"", false);
         }
       });
 
     Stream.of(BaseNoGui.getContentFile("tools-builder").getAbsolutePath(), Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toAbsolutePath().toString(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath())
       .forEach(p -> {
         if (Files.exists(Paths.get(p))) {
-          commandLine.addArgument("-tools=\"" + p + "\"", false);
+          commandLine.addArgument("-tools", false);
+          commandLine.addArgument("\"" + p + "\"", false);
         }
       });
 
-    commandLine.addArgument("-libraries=\"" + BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath() + "\"", false);
-    commandLine.addArgument("-libraries=\"" + BaseNoGui.getContentFile("libraries").getAbsolutePath() + "\"", false);
+    commandLine.addArgument("-libraries", false);
+    commandLine.addArgument("\"" + BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath() + "\"", false);
+    commandLine.addArgument("-libraries", false);
+    commandLine.addArgument("\"" + BaseNoGui.getContentFile("libraries").getAbsolutePath() + "\"", false);
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
-    commandLine.addArgument("-fqbn=" + fqbn, false);
+    commandLine.addArgument("-fqbn", false);
+    commandLine.addArgument(fqbn, false);
 
-    commandLine.addArgument("-ide-version=" + BaseNoGui.REVISION, false);
-    commandLine.addArgument("-build-path=\"" + buildPath + "\"", false);
-    commandLine.addArgument("-warnings=" + PreferencesData.get("compiler.warning_level"), false);
+    commandLine.addArgument("-ide-version", false);
+    commandLine.addArgument(Integer.toString(BaseNoGui.REVISION), false);
+    commandLine.addArgument("-build-path", false);
+    commandLine.addArgument("\"" + buildPath + "\"", false);
+    commandLine.addArgument("-warnings", false);
+    commandLine.addArgument(PreferencesData.get("compiler.warning_level"), false);
 
     PreferencesData.getMap()
       .subTree("build_properties_custom")
       .entrySet()
       .stream()
-      .forEach(kv -> commandLine.addArgument("-prefs=\"" + kv.getKey() + "=" + kv.getValue() + "\"", false));
+      .forEach(kv -> {
+        commandLine.addArgument("-prefs", false);
+        commandLine.addArgument("\"" + kv.getKey() + "=" + kv.getValue() + "\"", false);
+      });
 
-    commandLine.addArgument("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
+    commandLine.addArgument("-prefs", false);
+    commandLine.addArgument("build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"), false);
 
-    //commandLine.addArgument("-debug-level=10", false);
+    //commandLine.addArgument("-debug-level", false);
+    //commandLine.addArgument("10", false);
 
     if (verbose) {
       commandLine.addArgument("-verbose", false);
