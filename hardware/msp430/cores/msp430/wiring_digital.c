@@ -82,6 +82,7 @@ void pinMode(uint8_t pin, uint8_t mode)
 
 	if (mode == INPUT) {
 		*dir &= ~bit;
+        *ren &= ~bit;
 	} else if (mode == INPUT_PULLUP) {
 		*dir &= ~bit;
                 *out |= bit;
@@ -121,6 +122,8 @@ void pinMode_int(uint8_t pin, uint16_t mode)
 		} else if (mode & INPUT_PULLDOWN) {
 			*out &= ~bit;
 			*ren |= bit;
+		} else {
+	        *ren &= ~bit;
 		}
 	}
 

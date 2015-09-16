@@ -112,6 +112,7 @@ void USCIB1_ISR(void)
 __attribute__((interrupt(USCIAB0TX_VECTOR))) 
 void USCIAB0TX_ISR(void)
 {
+	uint16_t stay_active = false;
 	still_asleep = stay_asleep;
 
 	/* USCI_A0 UART interrupt? */
@@ -120,15 +121,16 @@ void USCIAB0TX_ISR(void)
 
 	/* USCI_B0 I2C TX RX interrupt. */
 	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UC0IFG & (UCB0TXIFG | UCB0RXIFG)) != 0)
-		i2c_txrx_isr();
+		stay_active = i2c_txrx_isr();
 
-	if (still_asleep != stay_asleep)
+	if (still_asleep != stay_asleep || stay_active)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 
 __attribute__((interrupt(USCIAB0RX_VECTOR)))
 void USCIAB0RX_ISR(void)
 {
+	uint16_t stay_active = false;
 	still_asleep = stay_asleep;
 
 	/* USCI_A0 UART interrupt? */
@@ -137,9 +139,9 @@ void USCIAB0RX_ISR(void)
 
 	/* USCI_B0 I2C state change interrupt. */
 	if ((UCB0STAT & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
-		i2c_state_isr(); 
+		stay_active = i2c_state_isr(); 
 
-	if (still_asleep != stay_asleep)
+	if (still_asleep != stay_asleep || stay_active)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif // __MSP430_HAS_USCI__

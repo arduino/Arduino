@@ -10,8 +10,8 @@ extern "C" {
 #endif
 void uart_tx_isr(uint8_t offset);
 void uart_rx_isr(uint8_t offset);
-void i2c_txrx_isr(void);
-void i2c_state_isr(void);
+uint16_t i2c_txrx_isr(void);
+uint16_t i2c_state_isr(void);
 void usci_isr_install(void);
 #ifdef __cplusplus
 }
