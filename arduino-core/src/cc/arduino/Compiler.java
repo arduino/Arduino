@@ -107,7 +107,7 @@ public class Compiler implements MessageConsumer {
   private final String pathToSketch;
   private final SketchData sketch;
   private final String buildPath;
-  private boolean verbose;
+  private final boolean verbose;
   private RunnerException exception;
 
   public Compiler(SketchData data, String buildPath) {
@@ -172,8 +172,7 @@ public class Compiler implements MessageConsumer {
     File executable = BaseNoGui.getContentFile("arduino-builder");
     CommandLine commandLine = new CommandLine(executable);
     commandLine.addArgument(action.value, false);
-    commandLine.addArgument("-logger", false);
-    commandLine.addArgument("machine", false);
+    commandLine.addArgument("-logger=machine", false);
 
     Stream.of(BaseNoGui.getHardwarePath(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath(), BaseNoGui.getSketchbookHardwareFolder().getAbsolutePath())
       .forEach(p -> {
@@ -197,30 +196,22 @@ public class Compiler implements MessageConsumer {
     commandLine.addArgument("\"" + BaseNoGui.getContentFile("libraries").getAbsolutePath() + "\"", false);
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
-    commandLine.addArgument("-fqbn", false);
-    commandLine.addArgument(fqbn, false);
+    commandLine.addArgument("-fqbn=" + fqbn, false);
 
-    commandLine.addArgument("-ide-version", false);
-    commandLine.addArgument(Integer.toString(BaseNoGui.REVISION), false);
+    commandLine.addArgument("-ide-version=" + BaseNoGui.REVISION, false);
     commandLine.addArgument("-build-path", false);
     commandLine.addArgument("\"" + buildPath + "\"", false);
-    commandLine.addArgument("-warnings", false);
-    commandLine.addArgument(PreferencesData.get("compiler.warning_level"), false);
+    commandLine.addArgument("-warnings=" + PreferencesData.get("compiler.warning_level"), false);
 
     PreferencesData.getMap()
       .subTree("build_properties_custom")
       .entrySet()
       .stream()
-      .forEach(kv -> {
-        commandLine.addArgument("-prefs", false);
-        commandLine.addArgument("\"" + kv.getKey() + "=" + kv.getValue() + "\"", false);
-      });
+      .forEach(kv -> commandLine.addArgument("-prefs=\"" + kv.getKey() + "=" + kv.getValue() + "\"", false));
 
-    commandLine.addArgument("-prefs", false);
-    commandLine.addArgument("build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"), false);
+    commandLine.addArgument("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
 
-    //commandLine.addArgument("-debug-level", false);
-    //commandLine.addArgument("10", false);
+    //commandLine.addArgument("-debug-level=10", false);
 
     if (verbose) {
       commandLine.addArgument("-verbose", false);
@@ -260,7 +251,7 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  protected void size(PreferencesMap prefs) throws RunnerException {
+  private void size(PreferencesMap prefs) throws RunnerException {
     String maxTextSizeString = prefs.get("upload.maximum_size");
     String maxDataSizeString = prefs.get("upload.maximum_data_size");
 
@@ -310,7 +301,7 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  void saveHex(PreferencesMap prefs) throws RunnerException {
+  private void saveHex(PreferencesMap prefs) throws RunnerException {
     List<String> compiledSketches = new ArrayList<>(prefs.subTree("recipe.output.tmp_file", 1).values());
     List<String> copyOfCompiledSketches = new ArrayList<>(prefs.subTree("recipe.output.save_file", 1).values());
 
@@ -365,19 +356,15 @@ public class Compiler implements MessageConsumer {
     return (compiledSketches.isEmpty() || copyOfCompiledSketches.isEmpty() || copyOfCompiledSketches.size() < compiledSketches.size()) && (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file"));
   }
 
-  void runActions(String recipeClass, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
-    List<String> patterns = new ArrayList<>();
-    for (String key : prefs.keySet()) {
-      if (key.startsWith("recipe." + recipeClass) && key.endsWith(".pattern"))
-        patterns.add(key);
-    }
+  private void runActions(String recipeClass, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
+    List<String> patterns = prefs.keySet().stream().filter(key -> key.startsWith("recipe." + recipeClass) && key.endsWith(".pattern")).collect(Collectors.toList());
     Collections.sort(patterns);
     for (String recipe : patterns) {
       runRecipe(recipe, prefs);
     }
   }
 
-  void runRecipe(String recipe, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
+  private void runRecipe(String recipe, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
     PreferencesMap dict = new PreferencesMap(prefs);
     dict.put("ide_version", "" + BaseNoGui.REVISION);
     dict.put("sketch_path", sketch.getFolder().getAbsolutePath());
@@ -394,7 +381,7 @@ public class Compiler implements MessageConsumer {
 
   private void exec(String[] command) throws RunnerException {
     // eliminate any empty array entries
-    List<String> stringList = new ArrayList<String>();
+    List<String> stringList = new ArrayList<>();
     for (String string : command) {
       string = string.trim();
       if (string.length() != 0)
@@ -582,9 +569,9 @@ public class Compiler implements MessageConsumer {
     System.err.println(s);
   }
 
-  public RunnerException placeException(String message,
-                                        String dotJavaFilename,
-                                        int dotJavaLine) {
+  private RunnerException placeException(String message,
+                                         String dotJavaFilename,
+                                         int dotJavaLine) {
     // Placing errors is simple, because we inserted #line directives
     // into the preprocessed source.  The compiler gives us correct
     // the file name and line number.  :-)
