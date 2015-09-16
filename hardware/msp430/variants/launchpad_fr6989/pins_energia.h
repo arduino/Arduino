@@ -42,10 +42,14 @@ static const uint8_t SS      = 8;   /* P2.0 */
 static const uint8_t SCK     = 7;   /* P1.4 */
 static const uint8_t MOSI    = 15;  /* P1.6 aka SIMO */
 static const uint8_t MISO    = 14;  /* P1.7 aka SOMI */
-static const uint8_t TWISDA  = 15;  /* P1.6 */
-static const uint8_t TWISCL  = 14;  /* P1.7 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
-#define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+static const uint8_t TWISDA  = 10;  /* P4.0 */
+static const uint8_t TWISCL  = 9;   /* P4.1 */
+#define TWISDA_SET_MODE  TWISDA1_SET_MODE
+#define TWISCL_SET_MODE  TWISCL1_SET_MODE
+#define TWISDA0_SET_MODE (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISCL0_SET_MODE (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISDA1_SET_MODE (PORT_SELECTION1 | INPUT_PULLUP)
+#define TWISCL1_SET_MODE (PORT_SELECTION1 | INPUT_PULLUP)
 #define SPISCK_SET_MODE  (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
@@ -64,6 +68,8 @@ static const uint8_t AUX_UARTTXD = 4;     /* Transmit Data (TXD) at P4.2 */
 #define AUX_UART_MODULE_OFFSET 0x00
 #define SERIAL1_AVAILABLE 1
 #endif
+#define DEFAULT_I2C_USCI_B1
+#define DEFAULT_I2C_1
 
 
 /* Analog pins */
@@ -97,8 +103,8 @@ static const uint8_t A15  = 128 + 15; // Not available on BoosterPack header
                     (A11) P9.3 |6   26| P8.7 (A4)          (TB0.4) P2.2 |35  15| P1.6 (UCB0SIMO) (UCB0SDA)
                           P1.4 |7   27| P9.0 (A8)          (A3)    P1.3 |34  14| P1.7 (UCB0SOMI) (UCB0SCL)
                   (TB0.6) P2.0 |8   28| P9.1 (A9)                  P3.1 |33  13| P2.5 (TB0.4)
-             (PM_UCB1SCL) P4.1 |9   29| P9.5 (A13)                 P3.2 |32  12| P2.4 (TB0.3)
-             (PM_UCB1SDA) P4.0 |10  30| P9.6 (A14)                 P3.3 |31  11| P4.7 (TA1.2)
+                (UCB1SCL) P4.1 |9   29| P9.5 (A13)                 P3.2 |32  12| P2.4 (TB0.3)
+                (UCB1SDA) P4.0 |10  30| P9.6 (A14)                 P3.3 |31  11| P4.7 (TA1.2)
                                +------+                                 +------+
 
                                  ----+
