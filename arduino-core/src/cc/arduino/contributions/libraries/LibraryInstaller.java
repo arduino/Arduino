@@ -109,7 +109,7 @@ public class LibraryInstaller {
     progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
     progressListener.onProgress(progress);
     File libsFolder = indexer.getSketchbookLibrariesFolder();
-    File tmpFolder = FileUtils.createTempFolderIn(libsFolder);
+    File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
       new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
     } catch (Exception e) {

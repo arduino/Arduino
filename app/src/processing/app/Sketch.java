@@ -28,6 +28,7 @@ import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.Uploader;
+import org.apache.commons.codec.digest.DigestUtils;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.FileUtils;
@@ -1130,7 +1131,7 @@ public class Sketch {
   }
 
   private String saveSketchInTempFolder() throws IOException {
-    File tempFolder = FileUtils.createTempFolder();
+    File tempFolder = FileUtils.createTempFolder("arduino_", DigestUtils.md5Hex(data.getMainFilePath()));
     DeleteFilesOnShutdown.add(tempFolder);
     FileUtils.copy(getFolder(), tempFolder);
 
