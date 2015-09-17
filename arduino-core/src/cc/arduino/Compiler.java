@@ -135,6 +135,9 @@ public class Compiler implements MessageConsumer {
     MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out), progListener), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
+    // Hook runs at Start of Compilation
+    runActions("hooks.prebuild", prefs);
+
     callArduinoBuilder(board, platform, aPackage, BuilderAction.COMPILE, new PumpStreamHandler(out, err));
 
     out.flush();
