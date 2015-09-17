@@ -8,7 +8,7 @@ uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
 uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = { 
   0, 0, 0, 0 };
 
-int EthernetClass::begin(uint8_t *mac_address)
+int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned long responseTimeout)
 {
   static DhcpClass s_dhcp;
   _dhcp = &s_dhcp;
@@ -22,7 +22,7 @@ int EthernetClass::begin(uint8_t *mac_address)
   SPI.endTransaction();
 
   // Now try to get our config info from a DHCP server
-  int ret = _dhcp->beginWithDHCP(mac_address);
+  int ret = _dhcp->beginWithDHCP(mac_address, timeout, responseTimeout);
   if(ret == 1)
   {
     // We've successfully found a DHCP server and got our configuration info, so set things
