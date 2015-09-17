@@ -79,7 +79,11 @@ public class SplashScreenHelper {
     splashGraphics.drawString(str, (int) splashTextArea.getX() + 10, (int) splashTextArea.getY() + (30 - metrics.getHeight()) + 4);
 
     // make sure it's displayed
-    splash.update();
+    synchronized (SplashScreen.class) {
+      if (splash.isVisible()) {
+        splash.update();
+      }
+    }
   }
 
   public void close() {
