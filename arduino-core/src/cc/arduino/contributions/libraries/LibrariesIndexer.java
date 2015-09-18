@@ -216,7 +216,7 @@ public class LibrariesIndexer {
   }
 
   public LibraryList getInstalledLibraries() {
-    return installedLibraries;
+    return new LibraryList(installedLibraries);
   }
 
   // Same as getInstalledLibraries(), but allow duplicates between
@@ -236,8 +236,6 @@ public class LibrariesIndexer {
    * Set the sketchbook library folder. <br />
    * New libraries will be installed here. <br />
    * Libraries not found on this folder will be marked as read-only.
-   *
-   * @param folder
    */
   public void setSketchbookLibrariesFolder(File folder) {
     this.sketchbookLibrariesFolder = folder;
