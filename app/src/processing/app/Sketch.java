@@ -57,8 +57,6 @@ import static processing.app.I18n.tr;
  * Stores information about files in the current sketch
  */
 public class Sketch {
-  static private File tempBuildFolder;
-
   private final Editor editor;
 
   /** true if any of the files have been modified. */
@@ -76,26 +74,6 @@ public class Sketch {
   public Sketch(Editor _editor, File file) throws IOException {
     editor = _editor;
     data = new SketchData(file);
-
-    // lib/build must exist when the application is started
-    // it is added to the CLASSPATH by default, but if it doesn't
-    // exist when the application is started, then java will remove
-    // the entry from the CLASSPATH, causing Runner to fail.
-    //
-    /*
-    tempBuildFolder = new File(TEMP_BUILD_PATH);
-    if (!tempBuildFolder.exists()) {
-      tempBuildFolder.mkdirs();
-      Base.showError("Required folder missing",
-                        "A required folder was missing from \n" +
-                        "from your installation of Processing.\n" +
-                        "It has now been replaced, please restart    \n" +
-                        "the application to complete the repair.", null);
-    }
-    */
-    tempBuildFolder = BaseNoGui.getBuildFolder();
-    //Base.addBuildFolderToClassPath();
-
     load();
   }
 
@@ -439,7 +417,7 @@ public class Sketch {
   /**
    * Remove a piece of code from the sketch and from the disk.
    */
-  public void handleDeleteCode() {
+  public void handleDeleteCode() throws IOException {
     editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
@@ -485,7 +463,7 @@ public class Sketch {
 
       } else {
         // delete the file
-        if (!current.getCode().deleteFile(tempBuildFolder)) {
+        if (!current.getCode().deleteFile(BaseNoGui.getBuildFolder(data))) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getCode().getFileName()));
           return;
@@ -1102,7 +1080,7 @@ public class Sketch {
    * @throws RunnerException
    */
   public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
-    return build(tempBuildFolder.getAbsolutePath(), verbose, save);
+    return build(BaseNoGui.getBuildFolder(data).getAbsolutePath(), verbose, save);
   }
 
   /**
@@ -1143,7 +1121,7 @@ public class Sketch {
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
-    return exportApplet(tempBuildFolder.getAbsolutePath(), usingProgrammer);
+    return exportApplet(BaseNoGui.getBuildFolder(data).getAbsolutePath(), usingProgrammer);
   }
 
 
