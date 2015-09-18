@@ -161,7 +161,7 @@ public class CommandlineParser {
         if (!buildFolder.isDirectory()) {
           BaseNoGui.showError(null, "The build path is not a folder", 3);
         }
-        BaseNoGui.setBuildFolder(buildFolder);
+        PreferencesData.set("build.path", buildFolder.getAbsolutePath());
         continue;
       }
       if (args[i].equals("--pref")) {

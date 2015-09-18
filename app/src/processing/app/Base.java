@@ -217,7 +217,7 @@ public class Base {
     }
 
     // Create a location for untitled sketches
-    untitledFolder = BaseNoGui.createTempFolder("untitled");
+    untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(untitledFolder);
 
     INSTANCE = new Base(args);

@@ -97,17 +97,26 @@ public class SketchCode {
       return false;
     }
 
-    File[] compiledFiles = tempBuildFolder.listFiles(new FileFilter() {
-      public boolean accept(File pathname) {
-        return pathname.getName().startsWith(getFileName());
-      }
+    if (!deleteCompiledFilesFrom(tempBuildFolder)) {
+      return false;
+    }
+
+    if (!deleteCompiledFilesFrom(new File(tempBuildFolder, "sketch"))) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private boolean deleteCompiledFilesFrom(File tempBuildFolder) {
+    File[] compiledFiles = tempBuildFolder.listFiles(pathname -> {
+      return pathname.getName().startsWith(getFileName());
     });
     for (File compiledFile : compiledFiles) {
       if (!compiledFile.delete()) {
         return false;
       }
     }
-
     return true;
   }
 
