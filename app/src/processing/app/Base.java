@@ -1200,21 +1200,36 @@ public class Base {
     menu.removeAll();
 
     // Add examples from distribution "example" folder
+    JMenuItem label = new JMenuItem(tr("Built-in Examples"));
+    label.setEnabled(false);
+    menu.add(label);
     boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
-    if (found) menu.addSeparator();
+    if (found) {
+      menu.addSeparator();
+    }
 
     // Add examples from libraries
     LibraryList ideLibs = getIDELibs();
     ideLibs.sort();
-    for (UserLibrary lib : ideLibs)
+    if (!ideLibs.isEmpty()) {
+      label = new JMenuItem(tr("Examples from Libraries"));
+      label.setEnabled(false);
+      menu.add(label);
+    }
+    for (UserLibrary lib : ideLibs) {
       addSketchesSubmenu(menu, lib);
+    }
 
     LibraryList userLibs = getUserLibs();
     if (userLibs.size() > 0) {
       menu.addSeparator();
       userLibs.sort();
-      for (UserLibrary lib : userLibs)
+      label = new JMenuItem(tr("Examples from Custom Libraries"));
+      label.setEnabled(false);
+      menu.add(label);
+      for (UserLibrary lib : userLibs) {
         addSketchesSubmenu(menu, lib);
+      }
     }
   }
 
