@@ -62,11 +62,7 @@ static const uint8_t _hidReportDescriptor[] PROGMEM = {
 
 Mouse_::Mouse_(void) : _buttons(0)
 {
-    const static HID_Descriptor descriptor = {
-        .length = sizeof(_hidReportDescriptor),
-        .data   = _hidReportDescriptor,
-    };
-    static HIDDescriptorListNode node(&descriptor);
+    static HIDDescriptorListNode node(_hidReportDescriptor, sizeof(_hidReportDescriptor));
     HID.AppendDescriptor(&node);
 }
 
