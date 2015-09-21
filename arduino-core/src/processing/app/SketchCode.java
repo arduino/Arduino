@@ -25,7 +25,6 @@ package processing.app;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

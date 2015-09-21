@@ -29,7 +29,6 @@
 
 package cc.arduino.packages.uploaders;
 
-import cc.arduino.Compiler;
 import cc.arduino.CompilerUtils;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
