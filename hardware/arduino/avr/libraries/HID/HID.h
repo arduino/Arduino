@@ -46,14 +46,14 @@
 
 typedef struct __attribute__((packed)) {
   uint16_t length;
-  const void* descriptor;
+  const void* data;
 } HID_Descriptor;
 
 class HIDDescriptorListNode {
 public:
   HIDDescriptorListNode *next = NULL;
-  const HID_Descriptor * cb;
-  HIDDescriptorListNode(const HID_Descriptor *ncb) {cb = ncb;}
+  const HID_Descriptor *descriptor;
+  HIDDescriptorListNode(const HID_Descriptor *d) : descriptor(d) { }
 };
 
 class HID_
