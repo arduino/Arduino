@@ -68,7 +68,7 @@ int HID_GetDescriptor(int8_t t)
 		HIDDescriptorListNode* current = rootNode;
 		int total = 0;
 		while(current != NULL) {
-			total += USBD_SendControl(0,current->cb->descriptor,current->cb->length);
+			total += USBD_SendControl(0,current->descriptor->data,current->descriptor->length);
 			current = current->next;
 		}
 		return total;
@@ -89,7 +89,7 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 		current->next = node;
 	}
 	modules_count++;
-	sizeof_hidReportDescriptor += node->cb->length;
+	sizeof_hidReportDescriptor += node->descriptor->length;
 }
 
 void HID_::SendReport(uint8_t id, const void* data, int len)
