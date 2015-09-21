@@ -72,13 +72,8 @@
   </condition>
 
   <property name="ARDUINO-BUILDER-VERSION" value="1.0.0-beta9" />
-  <property name="LIB-VERSION-FIRMATA" value="2.4.4" />
+
   <property name="LIB-VERSION-TEMBOO" value="1.1.3" />
-  <property name="LIB-VERSION-BRIDGE" value="1.0.7" />
-  <property name="LIB-VERSION-ROBOT_CONTROL" value="1.0.2" />
-  <property name="LIB-VERSION-ROBOT_MOTOR" value="1.0.2" />
-  <property name="LIB-VERSION-ROBOTIRREMOTE" value="1.0.2" />
-  <property name="LIB-VERSION-SPACEBREWYUN" value="1.0.0" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -192,13 +187,31 @@
         <exclude name="**/USBHost/**"/>
       </fileset>
     </copy>
-    <antcall target="unzip">
-      <param name="archive_file" value="Firmata-${LIB-VERSION-FIRMATA}.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/Firmata/archive/v${LIB-VERSION-FIRMATA}.zip" />
-      <param name="final_folder" value="${target.path}/libraries/Firmata-${LIB-VERSION-FIRMATA}" />
-      <param name="dest_folder" value="${target.path}/libraries" />
+
+    <antcall target="download-library">
+      <param name="name" value="Firmata"/>
+      <param name="version" value="2.4.4"/>
     </antcall>
-    <move file="${target.path}/libraries/Firmata-${LIB-VERSION-FIRMATA}" tofile="${target.path}/libraries/Firmata" />
+    <antcall target="download-library">
+      <param name="name" value="Bridge"/>
+      <param name="version" value="1.0.7"/>
+    </antcall>
+    <antcall target="download-library">
+      <param name="name" value="Robot_Control"/>
+      <param name="version" value="1.0.2"/>
+    </antcall>
+    <antcall target="download-library">
+      <param name="name" value="Robot_Motor"/>
+      <param name="version" value="1.0.2"/>
+    </antcall>
+    <antcall target="download-library">
+      <param name="name" value="RobotIRremote"/>
+      <param name="version" value="1.0.2"/>
+    </antcall>
+    <antcall target="download-library">
+      <param name="name" value="SpacebrewYun"/>
+      <param name="version" value="1.0.0"/>
+    </antcall>
 
     <antcall target="unzip">
       <param name="archive_file" value="Temboo-${LIB-VERSION-TEMBOO}.zip" />
@@ -207,46 +220,16 @@
       <param name="dest_folder" value="${target.path}/libraries" />
     </antcall>
     <move file="${target.path}/libraries/Temboo-${LIB-VERSION-TEMBOO}" tofile="${target.path}/libraries/Temboo" />
+  </target>
 
+  <target name="download-library">
     <antcall target="unzip">
-      <param name="archive_file" value="Bridge-${LIB-VERSION-BRIDGE}.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/Bridge/archive/${LIB-VERSION-BRIDGE}.zip" />
-      <param name="final_folder" value="${target.path}/libraries/Bridge-${LIB-VERSION-BRIDGE}" />
+      <param name="archive_file" value="${name}-${version}.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/${name}/archive/${version}.zip" />
+      <param name="final_folder" value="${target.path}/libraries/${name}-${version}" />
       <param name="dest_folder" value="${target.path}/libraries" />
     </antcall>
-    <move file="${target.path}/libraries/Bridge-${LIB-VERSION-BRIDGE}" tofile="${target.path}/libraries/Bridge" />
-
-    <antcall target="unzip">
-      <param name="archive_file" value="Robot_Control-${LIB-VERSION-ROBOT_CONTROL}.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/Robot_Control/archive/${LIB-VERSION-ROBOT_CONTROL}.zip" />
-      <param name="final_folder" value="${target.path}/libraries/Robot_Control-${LIB-VERSION-ROBOT_CONTROL}" />
-      <param name="dest_folder" value="${target.path}/libraries" />
-    </antcall>
-    <move file="${target.path}/libraries/Robot_Control-${LIB-VERSION-ROBOT_CONTROL}" tofile="${target.path}/libraries/Robot_Control" />
-
-    <antcall target="unzip">
-      <param name="archive_file" value="Robot_Motor-${LIB-VERSION-ROBOT_MOTOR}.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/Robot_Motor/archive/${LIB-VERSION-ROBOT_MOTOR}.zip" />
-      <param name="final_folder" value="${target.path}/libraries/Robot_Motor-${LIB-VERSION-ROBOT_MOTOR}" />
-      <param name="dest_folder" value="${target.path}/libraries" />
-    </antcall>
-    <move file="${target.path}/libraries/Robot_Motor-${LIB-VERSION-ROBOT_MOTOR}" tofile="${target.path}/libraries/Robot_Motor" />
-
-    <antcall target="unzip">
-      <param name="archive_file" value="RobotIRremote-${LIB-VERSION-ROBOTIRREMOTE}.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/RobotIRremote/archive/${LIB-VERSION-ROBOTIRREMOTE}.zip" />
-      <param name="final_folder" value="${target.path}/libraries/RobotIRremote-${LIB-VERSION-ROBOTIRREMOTE}" />
-      <param name="dest_folder" value="${target.path}/libraries" />
-    </antcall>
-    <move file="${target.path}/libraries/RobotIRremote-${LIB-VERSION-ROBOTIRREMOTE}" tofile="${target.path}/libraries/RobotIRremote" />
-
-    <antcall target="unzip">
-      <param name="archive_file" value="SpacebrewYun-${LIB-VERSION-SPACEBREWYUN}.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/SpacebrewYun/archive/${LIB-VERSION-SPACEBREWYUN}.zip" />
-      <param name="final_folder" value="${target.path}/libraries/SpacebrewYun-${LIB-VERSION-SPACEBREWYUN}" />
-      <param name="dest_folder" value="${target.path}/libraries" />
-    </antcall>
-    <move file="${target.path}/libraries/SpacebrewYun-${LIB-VERSION-SPACEBREWYUN}" tofile="${target.path}/libraries/SpacebrewYun" />
+    <move file="${target.path}/libraries/${name}-${version}" tofile="${target.path}/libraries/${name}" />
   </target>
 
   <!-- copy hardware folder -->
