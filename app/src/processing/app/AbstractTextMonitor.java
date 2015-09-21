@@ -23,7 +23,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 
 import cc.arduino.packages.BoardPort;
-import processing.app.debug.TextAreaFIFO;
 
 @SuppressWarnings("serial")
 public abstract class AbstractTextMonitor extends AbstractMonitor {

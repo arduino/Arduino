@@ -143,7 +143,7 @@ public class DiscourseFormat {
     } else if (c == '&') {
       buffer.append("&amp;");
     } else if (c > 127) {
-      buffer.append("&#" + ((int) c) + ";");  // use unicode entity
+      buffer.append("&#").append((int) c).append(";");  // use unicode entity
     } else {
       buffer.append(c);  // normal character
     }

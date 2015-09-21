@@ -18,7 +18,7 @@
 
 // adapted from https://community.oracle.com/thread/1479784
 
-package processing.app.debug;
+package processing.app;
 
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;

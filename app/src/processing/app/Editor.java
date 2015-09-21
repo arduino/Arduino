@@ -36,7 +36,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import processing.app.debug.RunnerException;
-import processing.app.debug.RunnerListener;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
