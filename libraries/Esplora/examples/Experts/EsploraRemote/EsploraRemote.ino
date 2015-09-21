@@ -32,8 +32,8 @@
 #include <Esplora.h>
 
 void setup() {
-  while (!Serial); // needed for Leonardo-based board like Esplora
   Serial.begin(9600);
+  while (!Serial); // needed for native USB port only
 }
 
 void loop() {
