@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-08-24 14:35+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-09-15 19:41+0000\n"
+"Last-Translator: Zdeno Sekerák <etrsek@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/mbanzi/arduino-ide-15/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,18 +64,18 @@ msgstr ".pde -> .ino"
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
 #, java-format
 msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
+msgstr "<br/>Dostupná aktualizácia pre niektorú z tvojích {0}dosiek{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
 #, java-format
 msgid ""
 "<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "<br/>Dostupná aktualizácia pre niektorú z tvojích  {0}dosiek{1} a {2}knižníc{3}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
 #, java-format
 msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
+msgstr "<br/>Dostupná aktualizácia pre niektorú z tvojích {0}knižníc{1}"
 
 #: Editor.java:2053
 msgid ""
@@ -289,11 +289,11 @@ msgstr "Automatické Formátovanie ukončené."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Autodetekcia nastavenia proxy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "Automatická konfigurácia proxy URL:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -1051,7 +1051,7 @@ msgstr "Hindština"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
-msgstr ""
+msgstr "Host name:"
 
 #: Sketch.java:295
 msgid ""
@@ -1170,11 +1170,11 @@ msgstr "Lotyština"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
+msgstr "Správca knižníc"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
-msgstr "Knižnica pridaná do zoznamu knižníc. Skontrolujte menu \"Includnuté knižnice\""
+msgstr "Knižnica pridaná do zoznamu knižníc. Skontrolujte menu \"Pridané knižnice\""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1203,7 +1203,7 @@ msgstr "Spravovať Knižnice..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr ""
+msgstr "Ručné nastavenie proxy"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1260,7 +1260,7 @@ msgstr "Nepálština"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
-msgstr ""
+msgstr "Sieť"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1328,7 +1328,7 @@ msgstr "Žiadne parametre"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
-msgstr ""
+msgstr "Bez proxy"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1463,7 +1463,7 @@ msgstr "Port"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Číslo portu:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1714,7 +1714,7 @@ msgstr "Sériový port"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Nastavenia"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2110,7 +2110,7 @@ msgstr "Použiť externý editor"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
 msgid "Username:"
-msgstr ""
+msgstr "Uživateľské meno:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
@@ -2137,7 +2137,7 @@ msgstr "Verifikovať kód po nahratí"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "Kontrola/Kompilácia"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2197,7 +2197,7 @@ msgstr "Varovanie: súbor {0} odkazuje na absolútnu cestu {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr "Varovanie: vynútená dôvera v nedôveryhodné príspevky"
+msgstr "Varovanie: vypnutá bezpečnostná kontrola"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
@@ -2207,7 +2207,7 @@ msgstr "Varovanie: vynútené spustenie neovereného skriptu ({0})"
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr "Varovanie: nedôveryhodný príspevok, spustenie skriptu zastavené ({0})"
+msgstr "Varovanie: neoverený skript, spustenie skriptu zastavené ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
@@ -2221,7 +2221,7 @@ msgstr "Varovanie: platform.txt z jadra '{0}' obsahuje zastaralý {1}, automatic
 msgid ""
 "Warning: platform.txt from core '{0}' misses property {1}, automatically set"
 " to {2}. Consider upgrading this core."
-msgstr "Varovanie: platform.txt z jadra '{0}' chýbajúce nastavenie {1}, automatický nastavujem na {2}. Zvážte aktualizáciu tohto jadra."
+msgstr "Varovanie: platform.txt z jadra '{0}' chýbajúce nastavenie {1}, automaticky nastavujem na {2}. Zvážte aktualizáciu tohoto jadra."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"

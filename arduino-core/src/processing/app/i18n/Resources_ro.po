@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-13 20:46+0000\n"
+"PO-Revision-Date: 2015-09-19 21:40+0000\n"
 "Last-Translator: Pop Gheorghe <office@roroid.ro>\n"
 "Language-Team: Romanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -70,18 +70,18 @@ msgstr ".pde -> .ino"
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
 #, java-format
 msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
+msgstr "<br/>Actualizări disponibile pentru o parte din {0}plăci{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
 #, java-format
 msgid ""
 "<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "<br/>Actualizări disponibile pentru o parte din {0}plăci{1} și {2}librării{3}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
 #, java-format
 msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
+msgstr "<br/>Actualizări disponibile pentru o parte din {0}librării{1}"
 
 #: Editor.java:2053
 msgid ""
@@ -295,11 +295,11 @@ msgstr "Auto formatare terminată"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Auto detectare setări proxy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "URL de configurare proxy automată:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -1057,7 +1057,7 @@ msgstr "Hindusă"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
-msgstr ""
+msgstr "Nume gazda:"
 
 #: Sketch.java:295
 msgid ""
@@ -1176,7 +1176,7 @@ msgstr "Letonă"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
+msgstr "Manager Librari"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1209,7 +1209,7 @@ msgstr "Gestionare blibioteci..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr ""
+msgstr "Configurare proxy manuală"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1266,7 +1266,7 @@ msgstr "Nepaleză"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
-msgstr ""
+msgstr "Rețea"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1334,7 +1334,7 @@ msgstr "Paramettrii lipsă"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
-msgstr ""
+msgstr "Fara proxy"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1469,7 +1469,7 @@ msgstr "Port"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Număr port:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1720,7 +1720,7 @@ msgstr "Porturi seriale"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Setări"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -2063,7 +2063,7 @@ msgstr "Platformă nespecificată, lansator indisponibil.\nPentru a permite desc
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
 msgid "Updatable"
-msgstr ""
+msgstr "Actualizabil"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -2116,7 +2116,7 @@ msgstr "Foloseşte un editor extern"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
 msgid "Username:"
-msgstr ""
+msgstr "Nume utilizator:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
@@ -2143,7 +2143,7 @@ msgstr "Verifică codul după încarcare"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "Verifica/Compilează"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2203,17 +2203,17 @@ msgstr "Avertizare: fișier {0} legat către o cale absolută {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "Atenție: forțați încrederea în contribuții care nu prezintă încredere"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "Atenție: forțați execuția unui script care nu prezintă încredere ({0})"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr ""
+msgstr "Atenție: contribuție care nu prezintă încredere, scriptul nu v-a fi executat ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
