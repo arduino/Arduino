@@ -321,10 +321,6 @@ int MQTT::Client<Network, Timer, a, b>::sendPacket(int length, Timer& timer)
     else
         rc = FAILURE;
         
-#if defined(MQTT_DEBUG)
-    char printbuf[150];
-    DEBUG("Rc %d from sending packet %s\n", rc, MQTTFormat_toServerString(printbuf, sizeof(printbuf), sendbuf, length));
-#endif
     return rc;
 }
 
@@ -397,14 +393,6 @@ int MQTT::Client<Network, Timer, MAX_MQTT_PACKET_SIZE, b>::readPacket(Timer& tim
     if (this->keepAliveInterval > 0)
         last_received.countdown(this->keepAliveInterval); // record the fact that we have successfully received a packet
 exit:
-        
-#if defined(MQTT_DEBUG)
-	if (rc >= 0)
-	{
-		char printbuf[50];
-		DEBUG("Rc %d from receiving packet %s\n", rc, MQTTFormat_toClientString(printbuf, sizeof(printbuf), readbuf, len));
-	}
-#endif
     return rc;
 }
 
@@ -531,8 +519,6 @@ int MQTT::Client<Network, Timer, MAX_MQTT_PACKET_SIZE, b>::cycle(Timer& timer)
             {
                 if (useQoS2msgid(msg.id))
                     deliverMessage(topicName, msg);
-                else
-                    WARN("Maximum number of incoming QoS2 messages exceeded");
             }
 #endif
 #if MQTTCLIENT_QOS1 || MQTTCLIENT_QOS2
