@@ -43,7 +43,7 @@ void setup() {
   Serial.begin(9600);
   // this check is only needed on the Leonardo:
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
 
