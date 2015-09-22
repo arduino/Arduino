@@ -16,6 +16,10 @@
 //  Copyright (c) 2012 http://embeddedcomputing.weebly.com
 //  Licence CC = BY SA NC
 //
+//  Edited 2015-07-11 by ReiVilo
+//  Added setOrientation(), setReverse() and flushReverse()
+//  Unchanged #include <OneMsTaskTimer.h>
+//
 
 #include <Energia.h>
 #include "LCD_SharpBoosterPack_SPI.h"
@@ -81,11 +85,60 @@ LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_
     _pinVCC  = pinVCC;
 }
 
-void LCD_SharpBoosterPack_SPI::setXY(uint8_t x, uint8_t y, uint8_t  ulValue) {
-    if( ulValue != 0)
-        DisplayBuffer[y][x>>3] &= ~(0x80 >> (x & 0x7));
-    else
-        DisplayBuffer[y][x>>3] |= (0x80 >> (x & 0x7));
+void LCD_SharpBoosterPack_SPI::setOrientation(uint8_t orientation)
+{
+    _orientation = orientation % 4;
+}
+
+void LCD_SharpBoosterPack_SPI::setReverse(bool reverse)
+{
+    _reverse = reverse;
+}
+
+void LCD_SharpBoosterPack_SPI::reverseFlush()
+{
+    for (uint8_t i=0; i< LCD_VERTICAL_MAX; i++)
+    {
+        for (uint8_t j=0; j< (LCD_HORIZONTAL_MAX>>3); j++)
+        {
+            DisplayBuffer[i][j] = 0xff ^ DisplayBuffer[i][j];
+        }
+    }
+    flush();
+}
+
+void LCD_SharpBoosterPack_SPI::setXY(uint8_t x, uint8_t y, uint8_t  ulValue)
+{
+    uint8_t x0;
+    uint8_t y0;
+
+    switch (_orientation)
+    {
+        case 1:
+            x0 = LCD_HORIZONTAL_MAX - y;
+            y0 = x;
+            break;
+
+        case 2:
+            x0 = LCD_HORIZONTAL_MAX - x;
+            y0 = LCD_VERTICAL_MAX   - y;
+            break;
+            
+        case 3:
+            x0 = y;
+            y0 = LCD_VERTICAL_MAX   - x;
+            break;
+            
+        default:
+            x0 = x;
+            y0 = y;
+            break;
+    }
+
+    if (_reverse) ulValue = (ulValue == 0);
+    
+    if (ulValue != 0)   DisplayBuffer[y0][x0>>3] &= ~(0x80 >> (x0 & 0x7));
+    else                DisplayBuffer[y0][x0>>3] |=  (0x80 >> (x0 & 0x7));
 }
 
 void LCD_SharpBoosterPack_SPI::begin() {
@@ -106,6 +159,8 @@ void LCD_SharpBoosterPack_SPI::begin() {
     
     clear();
     _font = 0;
+    _orientation = 0;
+    _reverse = false;
 }
 
 String LCD_SharpBoosterPack_SPI::WhoAmI() {
@@ -142,10 +197,9 @@ void LCD_SharpBoosterPack_SPI::clear() {
 }
 
 void LCD_SharpBoosterPack_SPI::clearBuffer() {
-    unsigned int i=0,j=0;
-    for(i =0; i< LCD_VERTICAL_MAX; i++)
-    for(j =0; j< (LCD_HORIZONTAL_MAX>>3); j++)
-       DisplayBuffer[i][j] = 0xff;
+    for (uint8_t i = 0; i< LCD_VERTICAL_MAX; i++)
+        for (uint8_t j = 0; j< (LCD_HORIZONTAL_MAX>>3); j++)
+            DisplayBuffer[i][j] = _reverse ? 0x00 : 0xff;
 }
 
 void LCD_SharpBoosterPack_SPI::setFont(tNumOfFontsType font) {
