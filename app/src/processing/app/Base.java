@@ -78,12 +78,8 @@ import static processing.app.I18n.tr;
  */
 public class Base {
 
-  public static final Predicate<UserLibrary> CONTRIBUTED = new Predicate<UserLibrary>() {
-    @Override
-    public boolean test(UserLibrary library) {
-      return library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
-    }
-  };
+  public static final Predicate<UserLibrary> CONTRIBUTED = library -> library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
+  public static final Predicate<UserLibrary> RETIRED = library -> library.getTypes() != null && library.getTypes().contains("Retired");
 
   private static final int RECENT_SKETCHES_MAX_SIZE = 5;
 
@@ -1116,7 +1112,18 @@ public class Base {
 
   public LibraryList getIDELibs() {
     LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = installedLibraries.stream().filter(CONTRIBUTED.negate()).collect(Collectors.toList());
+    List<UserLibrary> libs = installedLibraries.stream()
+      .filter(CONTRIBUTED.negate())
+      .filter(RETIRED.negate())
+      .collect(Collectors.toList());
+    return new LibraryList(libs);
+  }
+
+  public LibraryList getIDERetiredLibs() {
+    LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    List<UserLibrary> libs = installedLibraries.stream()
+      .filter(RETIRED)
+      .collect(Collectors.toList());
     return new LibraryList(libs);
   }
 
@@ -1218,6 +1225,16 @@ public class Base {
     }
     for (UserLibrary lib : ideLibs) {
       addSketchesSubmenu(menu, lib);
+    }
+
+    LibraryList retiredIdeLibs = getIDERetiredLibs();
+    retiredIdeLibs.sort();
+    if (!retiredIdeLibs.isEmpty()) {
+      JMenu retired = new JMenu(tr("RETIRED"));
+      menu.add(retired);
+      for (UserLibrary lib : retiredIdeLibs) {
+        addSketchesSubmenu(retired, lib);
+      }
     }
 
     LibraryList userLibs = getUserLibs();
