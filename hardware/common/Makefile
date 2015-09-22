@@ -110,7 +110,7 @@ INCLUDE_DIRS += $(COMMON_CORE_DIR) $(ARCH_EMT_DIR) $(WIRING_DIR)
 CFLAGS += $(foreach includedir,$(INCLUDE_DIRS),-I$(includedir))
 
 
-CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=$(ENERGIA_VERSION) -DBOARD_$(BOARD) -DENERGIA=$(ENERGIA_VERSION) $(MCU_FLAG) $(VFP)
+CFLAGS += -ffunction-sections -fdata-sections -DARDUINO=101 -DBOARD_$(BOARD) -DENERGIA=$(ENERGIA_VERSION) $(MCU_FLAG) $(VFP)
 CPPFLAGS += -fno-exceptions -fno-rtti
 
 # define TI-RTOS and Energia wiring headers based on CLOSURE above
