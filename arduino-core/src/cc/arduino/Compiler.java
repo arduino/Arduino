@@ -83,7 +83,7 @@ public class Compiler implements MessageConsumer {
     tr("Running: {0}");
     tr("Running recipe: {0}");
     tr("Setting build path to {0}");
-    tr("Unhandled type {0} in context {1} key");
+    tr("Unhandled type {0} in context key {1}");
     tr("Unknown sketch file extension: {0}");
     tr("Using library {0} at version {1} in folder: {2} {3}");
     tr("Using library {0} in folder: {1} {2}");
