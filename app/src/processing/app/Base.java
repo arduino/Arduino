@@ -117,7 +117,7 @@ public class Base {
   private List<JMenu> boardsCustomMenus;
   private List<JMenuItem> programmerMenus;
 
-  private final PdeKeywords pdeKeywords;
+  private PdeKeywords pdeKeywords;
   private final List<JMenuItem> recentSketchesMenuItems;
 
   static public void main(String args[]) throws Exception {
@@ -1250,8 +1250,24 @@ public class Base {
     }
   }
 
+  private static String priorPlatformFolder;
+
   public void onBoardOrPortChange() {
     BaseNoGui.onBoardOrPortChange();
+
+    // reload keywords when package/platform changes
+    TargetPlatform tp = BaseNoGui.getTargetPlatform();
+    if (tp != null) {
+      String platformFolder = tp.getFolder().getAbsolutePath();
+      if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder)) {
+        pdeKeywords = new PdeKeywords();
+        pdeKeywords.reload();
+        priorPlatformFolder = platformFolder;
+        for (Editor editor : editors) {
+          editor.updateKeywords(pdeKeywords);
+        }
+      }
+    }
 
     // Update editors status bar
     for (Editor editor : editors) {
