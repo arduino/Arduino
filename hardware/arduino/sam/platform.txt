@@ -55,7 +55,7 @@ compiler.libsam.c.flags="-I{build.system.path}/libsam" "-I{build.system.path}/CM
 build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} -DUSBCON '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 
 # Default usb manufacturer will be replaced at compile time using
-# numeric vendor ID if available or by board's specific value. 
+# numeric vendor ID if available or by board's specific value.
 build.usb_manufacturer="Unknown"
 
 
@@ -92,6 +92,7 @@ recipe.size.regex=\.text\s+([0-9]+).*
 # SAM3 Uploader tools
 # -------------------
 
+# BOSSA
 tools.bossac.path={runtime.tools.bossac.path}
 tools.bossac.cmd=bossac
 tools.bossac.cmd.windows=bossac.exe
