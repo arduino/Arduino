@@ -74,11 +74,16 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   private EditorListener editorListener;
 
-  private final PdeKeywords pdeKeywords;
+  private PdeKeywords pdeKeywords;
 
   public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
     this.pdeKeywords = pdeKeywords;
     installFeatures();
+  }
+
+  public void setKeywords(PdeKeywords keywords) {
+    pdeKeywords = keywords;
+    setLinkGenerator(new DocLinkGenerator(pdeKeywords));
   }
 
   private void installFeatures() throws IOException {
