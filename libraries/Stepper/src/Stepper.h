@@ -91,7 +91,7 @@ class Stepper {
                                  int motor_pin_5);
 
     // speed setter method:
-    void setSpeed(long whatSpeed);
+    void setSpeed(float whatSpeed);
 
     // mover method:
     void step(int number_of_steps);
