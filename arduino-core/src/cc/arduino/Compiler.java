@@ -72,7 +72,7 @@ public class Compiler implements MessageConsumer {
     tr("WARNING: library {0} claims to run on {1} architecture(s) and may be incompatible with your current board which runs on {2} architecture(s).");
     tr("Looking for recipes like {0}*{1}");
     tr("Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to: {3}");
-    tr("Third-party platform.txt does not define compiler.path. Please report this to the third-party hardware maintainer.");
+    tr("Third-party platform.txt (package '{0}' platform '{1}') does not define compiler.path. Please report this to the third-party hardware maintainer.");
     tr("Selected board depends on '{0}' core (not installed).");
     tr("{0} must be a folder");
     tr("{0}: Unknown package");
