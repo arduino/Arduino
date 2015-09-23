@@ -102,7 +102,6 @@ class Stepper {
     void stepMotor(int this_step);
 
     int direction;            // Direction of rotation
-    int speed;                // Speed in RPMs
     unsigned long step_delay; // delay between steps, in ms, based on speed
     int number_of_steps;      // total number of steps this motor can take
     int pin_count;            // how many pins are in use.
