@@ -42,6 +42,8 @@
 #define TIMER_INTERVAL_RELOAD   40035//255*157
 #define DUTYCYCLE_GRANULARITY   157
 
+static int _readResolution = 12;
+
 void PWMWrite(uint8_t pin, uint32_t analog_res, uint32_t duty, uint32_t freq)
 {
 	analog_res = analog_res * 1000;
@@ -129,6 +131,19 @@ void analogWrite(uint8_t pin, int val) {
 	PWMWrite(pin, 255, val, 490);
 }
 
+void analogReadResolution(int res) {
+    _readResolution = res;
+}
+
+static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to) {
+    if (from == to)
+        return value;
+    if (from > to)
+        return value >> (from-to);
+    else
+        return value << (to-from);
+}
+
 uint16_t analogRead(uint8_t pin)
 {
     uint16_t channel,val;
@@ -160,6 +175,6 @@ uint16_t analogRead(uint8_t pin)
     ADCTimerDisable(ADC_BASE);
 
     val = val >> 2;
-    return val;
+    return mapResolution(val, 12, _readResolution);
 }
 

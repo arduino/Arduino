@@ -32,6 +32,8 @@
 #include "wiring_private.h"
 #include "pins_energia.h"
 
+#define DEFAULT_READ_RESOLUTION 10
+
 #if defined(__MSP430_HAS_ADC10__) && !defined(ADC10ENC)
 #define ADC10ENC ENC 
 #endif
@@ -50,11 +52,13 @@
 #define REFV_MASK 0x0070
 #define REF_MASK 0xB1
 #define ADCxMEM0 ADC12MEM0 
+#define DEFAULT_READ_RESOLUTION 12
 #endif
 #if defined(__MSP430_HAS_ADC12_B__)
 #define REFV_MASK 0x0F00
 #define REF_MASK 0x31
 #define ADCxMEM0 ADC12MEM0 
+#define DEFAULT_READ_RESOLUTION 12
 #endif
 #if defined(__MSP430_HAS_ADC__)
 #define REFV_MASK 0x70
@@ -62,6 +66,7 @@
 #define ADCxMEM0 ADCMEM0
 #endif
 
+static int _readResolution = DEFAULT_READ_RESOLUTION;
 
 #if defined(__MSP430_HAS_ADC10__) || defined(__MSP430_HAS_ADC10_B__) || defined(__MSP430_HAS_ADC__)
 uint16_t analog_reference = DEFAULT, analog_period = F_CPU/490, analog_div = ID_0, analog_res=0xFF; // devide clock with 0, 2, 4, 8
@@ -289,6 +294,19 @@ void analogWrite(uint8_t pin, int val)
         }
 }
 
+void analogReadResolution(int res) {
+	_readResolution = res;
+}
+
+static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to) {
+	if (from == to)
+		return value;
+	if (from > to)
+		return value >> (from-to);
+	else
+		return value << (to-from);
+}
+
 uint16_t analogRead(uint8_t pin)
 {
 // make sure we have an ADC
@@ -432,7 +450,7 @@ uint16_t analogRead(uint8_t pin)
     ADC12CTL0 &= ~(ADC12ON);
     REFCTL0 &= ~(REFON);
 #endif
-    return ADCxMEM0;  // return sampled value after returning to active mode in ADC10_ISR
+    return mapResolution(ADCxMEM0, DEFAULT_READ_RESOLUTION, _readResolution);
 #else
     // no ADC
     return 0;
