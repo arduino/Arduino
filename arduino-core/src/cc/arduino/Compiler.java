@@ -536,9 +536,7 @@ public class Compiler implements MessageConsumer {
 
       RunnerException exception = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
-      // replace full file path with the name of the sketch tab (unless we're
-      // in verbose mode, in which case don't modify the compiler output)
-      if (exception != null && !verbose) {
+      if (exception != null) {
         SketchCode code = sketch.getCode(exception.getCodeIndex());
         String fileName = (code.isExtension("ino") || code.isExtension("pde")) ? code.getPrettyName() : code.getFileName();
         int lineNum = exception.getCodeLine() + 1;
@@ -568,15 +566,10 @@ public class Compiler implements MessageConsumer {
     System.err.println(s);
   }
 
-  private RunnerException placeException(String message,
-                                         String dotJavaFilename,
-                                         int dotJavaLine) {
-    // Placing errors is simple, because we inserted #line directives
-    // into the preprocessed source.  The compiler gives us correct
-    // the file name and line number.  :-)
+  private RunnerException placeException(String message, String fileName, int line) {
     for (SketchCode code : sketch.getCodes()) {
-      if (dotJavaFilename.equals(code.getFileName())) {
-        return new RunnerException(message, sketch.indexOfCode(code), dotJavaLine);
+      if (new File(fileName).getName().equals(code.getFileName())) {
+        return new RunnerException(message, sketch.indexOfCode(code), line);
       }
     }
     return null;
