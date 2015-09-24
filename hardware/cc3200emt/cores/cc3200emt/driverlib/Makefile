@@ -53,7 +53,7 @@ IPATH=..
 all: ${COMPILER}-cm4f
 all: ${COMPILER}-cm4f/libdriver-cm4f.a
 all:
-	cp ${COMPILER}-cm4f/libdriver-cm4f.a libdriverlib.a
+	cp ${COMPILER}-cm4f/libdriver-cm4f.a yourlibdriverlib.a
 #
 # The rule to clean out all the build products.
 #
