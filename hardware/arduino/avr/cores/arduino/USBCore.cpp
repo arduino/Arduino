@@ -372,8 +372,8 @@ bool ClassInterfaceRequest(USBSetup& setup)
 	return false;
 }
 
-int _cmark;
-int _cend;
+static int _cmark;
+static int _cend;
 void InitControl(int end)
 {
 	SetEP(0);
@@ -438,7 +438,7 @@ int USB_RecvControl(void* d, int len)
 	return len;
 }
 
-int SendInterfaces()
+static u8 SendInterfaces()
 {
 	u8 interfaces = 0;
 
@@ -459,7 +459,7 @@ bool SendConfiguration(int maxlen)
 {
 	//	Count and measure interfaces
 	InitControl(0);	
-	int interfaces = SendInterfaces();
+	u8 interfaces = SendInterfaces();
 	ConfigDescriptor config = D_CONFIG(_cmark + sizeof(ConfigDescriptor),interfaces);
 
 	//	Now send them
@@ -469,7 +469,7 @@ bool SendConfiguration(int maxlen)
 	return true;
 }
 
-u8 _cdcComposite = 0;
+static u8 _cdcComposite = 0;
 
 static
 bool SendDescriptor(USBSetup& setup)
