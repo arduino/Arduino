@@ -29,7 +29,7 @@ void initVariant() { }
 
 void setupUSB() __attribute__((weak));
 void setupUSB() {
-#if defined(USBCON) && (MAGIC_KEY_POS != (RAMEND-1))
+#if defined(USBCON) && defined(DYNAMIC_USB_CORE_INCLUDE))
 	USBDevice.attach();
 #endif
 }
