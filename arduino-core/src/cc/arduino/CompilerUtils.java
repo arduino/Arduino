@@ -49,7 +49,9 @@ public class CompilerUtils {
       "{build.path}/{build.project_name}.with_bootloader.hex",
       "{build.path}/{build.project_name}.hex",
       "{build.path}/sketch/{build.project_name}.bin",
-      "{build.path}/{build.project_name}.bin"
+      "{build.path}/{build.project_name}.bin",
+      "{build.path}/sketch/{build.project_name}.elf",
+      "{build.path}/{build.project_name}.elf"
     );
     Optional<File> sketch = paths.stream().
       map(path -> StringReplacer.replaceFromMapping(path, prefs)).
