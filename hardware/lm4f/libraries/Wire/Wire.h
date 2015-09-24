@@ -12,7 +12,7 @@
 #define MASTER_RX 2
 #define SLAVE_RX 3
 
-#define BOOST_PACK_WIRE 3
+#define BOOST_PACK_WIRE 1
 
 class TwoWire : public Stream
 {
