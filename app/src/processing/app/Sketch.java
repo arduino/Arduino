@@ -525,6 +525,7 @@ public class Sketch {
       // http://developer.apple.com/qa/qa2001/qa1146.html
       Object modifiedParam = modified ? Boolean.TRUE : Boolean.FALSE;
       editor.getRootPane().putClientProperty("windowModified", modifiedParam);
+      editor.getRootPane().putClientProperty("Window.documentModified", modifiedParam);
     }
   }
 
