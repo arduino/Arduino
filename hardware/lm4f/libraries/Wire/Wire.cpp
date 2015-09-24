@@ -63,34 +63,28 @@
 
 static const unsigned long g_uli2cMasterBase[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     I2C0_BASE, I2C1_BASE, 
 	I2C2_BASE, I2C3_BASE
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     I2C0_BASE, I2C1_BASE, 
 	I2C2_BASE, I2C3_BASE
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     I2C0_BASE, I2C2_BASE, 
 	I2C8_BASE, I2C7_BASE
-#endif
 #endif
 };
 static const unsigned long g_uli2cSlaveBase[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     I2C0_BASE, I2C1_BASE, 
 	I2C2_BASE, I2C3_BASE
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     I2C0_BASE, I2C1_BASE, 
 	I2C2_BASE, I2C3_BASE
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     I2C0_BASE, I2C2_BASE, 
 	I2C8_BASE, I2C7_BASE
-#endif
 #endif
 };
 
@@ -101,15 +95,12 @@ static const unsigned long g_uli2cSlaveBase[4] =
 //*****************************************************************************
 static const unsigned long g_uli2cInt[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     INT_I2C0, INT_I2C1, INT_I2C2, INT_I2C3
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     INT_I2C0, INT_I2C1, INT_I2C2, INT_I2C3
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     INT_I2C0, INT_I2C2, INT_I2C8, INT_I2C7
-#endif
 #endif
 
 };
@@ -121,97 +112,82 @@ static const unsigned long g_uli2cInt[4] =
 //*****************************************************************************
 static const unsigned long g_uli2cPeriph[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     SYSCTL_PERIPH_I2C0, SYSCTL_PERIPH_I2C1, 
     SYSCTL_PERIPH_I2C2, SYSCTL_PERIPH_I2C3
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     SYSCTL_PERIPH_I2C0, SYSCTL_PERIPH_I2C1, 
     SYSCTL_PERIPH_I2C2, SYSCTL_PERIPH_I2C3
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     SYSCTL_PERIPH_I2C0, SYSCTL_PERIPH_I2C2, 
     SYSCTL_PERIPH_I2C8, SYSCTL_PERIPH_I2C7
-#endif
 #endif
 };
 
 //*****************************************************************************
 //
-// The list of i2c gpio configurations.
+// The list of i2c gpio configurations (GPIO Port/Pin+Function assignments).
 //
 //*****************************************************************************
 static const unsigned long g_uli2cConfig[4][2] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     {GPIO_PB2_I2C0SCL, GPIO_PB3_I2C0SDA},
     {GPIO_PA6_I2C1SCL, GPIO_PA7_I2C1SDA},
     {GPIO_PE4_I2C2SCL, GPIO_PE5_I2C2SDA},
     {GPIO_PD0_I2C3SCL, GPIO_PD1_I2C3SDA}
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     {GPIO_PB2_I2C0SCL, GPIO_PB3_I2C0SDA},
     {GPIO_PG0_I2C1SCL, GPIO_PG1_I2C1SDA},
     {GPIO_PL1_I2C2SCL, GPIO_PL0_I2C2SDA},
     {GPIO_PG4_I2C3SCL, GPIO_PG5_I2C3SDA}
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     {GPIO_PB2_I2C0SCL, GPIO_PB3_I2C0SDA},
     {GPIO_PN5_I2C2SCL, GPIO_PN4_I2C2SDA},
     {GPIO_PA2_I2C8SCL, GPIO_PA3_I2C8SDA},
     {GPIO_PD0_I2C7SCL, GPIO_PD1_I2C7SDA}
 #endif
-#endif
 };
 
 //*****************************************************************************
 //
-// The list of i2c gpio configurations.
+// The list of i2c gpio configurations (GPIO Base registers).
 //
 //*****************************************************************************
 static const unsigned long g_uli2cBase[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     GPIO_PORTB_BASE, GPIO_PORTA_BASE, GPIO_PORTE_BASE, GPIO_PORTD_BASE
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     GPIO_PORTB_BASE, GPIO_PORTG_BASE, GPIO_PORTL_BASE, GPIO_PORTG_BASE
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     GPIO_PORTB_BASE, GPIO_PORTN_BASE, GPIO_PORTA_BASE, GPIO_PORTD_BASE
-#endif
 #endif
 };
 
 //*****************************************************************************
 //
-// The list of i2c gpio configurations.
+// The list of i2c gpio configurations (SDA, SCL pins).
 //
 //*****************************************************************************
 static const unsigned long g_uli2cSDAPins[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     GPIO_PIN_3, GPIO_PIN_7, GPIO_PIN_5, GPIO_PIN_1
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     GPIO_PIN_3, GPIO_PIN_1, GPIO_PIN_0, GPIO_PIN_5
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     GPIO_PIN_3, GPIO_PIN_4, GPIO_PIN_3, GPIO_PIN_1
-#endif
 #endif
 };
 static const unsigned long g_uli2cSCLPins[4] =
 {
-#ifdef TARGET_IS_BLIZZARD_RB1
+#if defined(TARGET_IS_BLIZZARD_RB1)
     GPIO_PIN_2, GPIO_PIN_6, GPIO_PIN_4, GPIO_PIN_0
-#else
-#ifdef __TM4C129XNCZAD__
+#elif defined(__TM4C129XNCZAD__)
     GPIO_PIN_2, GPIO_PIN_0, GPIO_PIN_1, GPIO_PIN_4
-#endif
-#ifdef __TM4C1294NCPDT__
+#elif defined(__TM4C1294NCPDT__)
     GPIO_PIN_2, GPIO_PIN_5, GPIO_PIN_2, GPIO_PIN_0
-#endif
 #endif
 };
 
