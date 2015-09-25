@@ -303,8 +303,6 @@ void init()
 	// put timer 1 in 8-bit phase correct pwm mode
 #if defined(TCCR1A) && defined(WGM10)
 	sbi(TCCR1A, WGM10);
-#elif defined(TCCR1)
-	#warning this needs to be finished
 #endif
 
 	// set timer 2 prescale factor to 64
