@@ -209,7 +209,7 @@ static int8_t toneBegin(uint8_t _pin)
         #if defined(WGM42)
           bitWrite(TCCR4B, WGM42, 1);
         #elif defined(CS43)
-          #warning this may not be correct
+          // TODO this may not be correct
           // atmega32u4
           bitWrite(TCCR4B, CS43, 1);
         #endif
