@@ -71,7 +71,7 @@ volatile wlanAttachedDevice_t WiFiClass::_connectedDevices[MAX_AP_DEVICE_REGISTR
 //initialize the ssid and bssid to blank and 0s respectively
 //
 char WiFiClass::connected_ssid[32] = "";
-unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
+unsigned char WiFiClass::connected_bssid[BSSID_LEN] = {0,0,0,0,0,0};
 
 //
 //a better way of keeping track of servers, clients, ports, and handles
@@ -775,13 +775,12 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid)
     if (!_initialized) {
         init();
     }
-    //
-    //because the bssid 6 char array is maintained by the callback
-    //passing in a 6 char array is unecessary and only kept for
-    //compatability with the Arduino WiFi library
-    //
-    return WiFiClass::connected_bssid;
-    
+
+    if (bssid != NULL) {
+        memcpy(bssid, WiFiClass::connected_bssid, BSSID_LEN);
+    }
+
+    return bssid;
 }
 
 int32_t WiFiClass::RSSI()

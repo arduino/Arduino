@@ -68,7 +68,7 @@ volatile wlanAttachedDevice_t WiFiClass::_connectedDevices[MAX_AP_DEVICE_REGISTR
 //initialize the ssid and bssid to blank and 0s respectively
 //
 char WiFiClass::connected_ssid[32] = "";
-unsigned char WiFiClass::connected_bssid[6] = {0,0,0,0,0,0};
+unsigned char WiFiClass::connected_bssid[BSSID_LEN] = {0,0,0,0,0,0};
 
 //
 //a better way of keeping track of servers, clients, ports, and handles
@@ -115,6 +115,7 @@ bool WiFiClass::init()
     if (_initialized) {
         return true;
     }
+
     //
     //start the SimpleLink driver (no callback)
     //
@@ -136,11 +137,6 @@ bool WiFiClass::init()
         sl_Start(NULL, NULL, NULL);
     }
     
-    //
-    //Delete all profiles$
-    //
-    sl_WlanProfileDel(0xff);
-
     //
     //disconnect from anything if for some reason it's connected
     //
@@ -192,7 +188,7 @@ uint8_t WiFiClass::getSocket()
 
 const char * WiFiClass::driverVersion()
 {
-	return SL_DRIVER_VERSION;
+    return SL_DRIVER_VERSION;
 }
 
 //--tested, working--//
@@ -232,6 +228,34 @@ void WiFiClass::setIpDefaults()
     }
 }
 
+int WiFiClass::begin()
+{
+    int8_t name[32];
+    int16_t NameLen;
+
+    if(_connecting) {
+        delay(500);
+        return status();
+    }
+
+    bool init_success = init();
+    if (!init_success) {
+        return WL_CONNECT_FAILED;
+    }
+
+    int16_t ret = sl_WlanProfileGet(0, name, (short int*)&NameLen, NULL, NULL, NULL, NULL);
+
+    if(ret < 0) {
+        return WL_CONNECT_FAILED;
+    }
+
+    sl_WlanPolicySet(SL_POLICY_CONNECTION , SL_CONNECTION_POLICY(1,1,0,0,0), 0, 0);
+
+    _connecting = true;
+
+    return WL_IDLE_STATUS;
+
+}
 //--tested, working--//
 int WiFiClass::begin(char* ssid)
 {
@@ -252,6 +276,8 @@ int WiFiClass::begin(char* ssid)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
+
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
 
     //
     // Set IP address configuration to DHCP if needed
@@ -309,7 +335,9 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, char* key)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
-    
+
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
+
     //
     // Set IP address configuration to DHCP if needed
     //
@@ -368,6 +396,8 @@ int WiFiClass::begin(char* ssid, char *passphrase)
     if (!init_success) {
         return WL_CONNECT_FAILED;
     }
+
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
 
     setIpDefaults();
 
@@ -758,17 +788,15 @@ uint8_t* WiFiClass::BSSID(uint8_t* bssid)
     if (!_initialized) {
         init();
     }
-    //
-    //because the bssid 6 char array is maintained by the callback
-    //passing in a 6 char array is unecessary and only kept for
-    //compatability with the Arduino WiFi library
-    //
-    return WiFiClass::connected_bssid;
-    
+
+    if (bssid != NULL) {
+        memcpy(bssid, WiFiClass::connected_bssid, BSSID_LEN);
+    }
+
+    return bssid;
 }
 
 
-//!! How to get the current connection??!!//
 int32_t WiFiClass::RSSI()
 {
     long lRetVal = -1;
@@ -978,7 +1006,7 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     
 }
 
-int WiFiClass::startSmartConfig()
+int WiFiClass::startSmartConfig(bool block)
 {
     unsigned char policyVal;
 
@@ -986,13 +1014,7 @@ int WiFiClass::startSmartConfig()
         init();
     }
 
-    if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,1), &policyVal, 1 /*PolicyValLen*/) < 0) {
-        return -1;
-    }
-
-    if (sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES) < 0) {
-        return -1;
-    }
+    sl_WlanProfileDel(WLAN_DEL_ALL_PROFILES);
 
     sl_WlanSmartConfigStart(0,  //groupIdBitmask
         SMART_CONFIG_CIPHER_NONE, //cipher
@@ -1003,16 +1025,27 @@ int WiFiClass::startSmartConfig()
         NULL,                     //group1Key
         NULL);                    //group2Key
 
-    /* Block until connected */
-    while (WiFi.status() != WL_CONNECTED) {
-        _SlNonOsMainLoopTask();
-    }
-
     if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,0), &policyVal, 1 /*PolicyValLen*/) < 0) {
         return -1;
     }
 
-    return (0);
+
+    if(!block) {
+        return 0;
+    }
+
+    /* Block until connected */
+    while (WiFi.status() != WL_CONNECTED) {
+#ifndef SL_PLATFORM_MULTI_THREADED
+        // TODO: this call appears unnecessary: status() already calls sl_Task
+        sl_Task();
+#else
+        // TODO: is 10 appropriate?  to save power, shouldn't we always delay?
+        delay(10);
+#endif
+    }
+
+    return 0;
 }
 
 /* This function takes uint16_t arguments for compactness on MSP430 w/ CC3100, but actual SlDateTime_t members are uint32_t.
