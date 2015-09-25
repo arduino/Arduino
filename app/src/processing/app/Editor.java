@@ -26,6 +26,7 @@ import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.MonitorFactory;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.uploaders.SerialUploader;
+import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
 import com.jcraft.jsch.JSchException;
@@ -1445,6 +1446,14 @@ public class Editor extends JFrame implements RunnerListener {
         }
       });
     menu.add(selectAllItem);
+
+    JMenuItem gotoLine = newJMenuItem(tr("Go to line..."), 'L');
+    gotoLine.addActionListener(e -> {
+      GoToLineNumber goToLineNumber = new GoToLineNumber(Editor.this);
+      goToLineNumber.setLocationRelativeTo(Editor.this);
+      goToLineNumber.setVisible(true);
+    });
+    menu.add(gotoLine);
 
     menu.addSeparator();
 
@@ -3006,6 +3015,17 @@ public class Editor extends JFrame implements RunnerListener {
       }
     });
 
+  }
+
+  public void goToLine(int line) {
+    if (line <= 0) {
+      return;
+    }
+    try {
+      textarea.setCaretPosition(textarea.getLineStartOffset(line - 1));
+    } catch (BadLocationException e) {
+      //ignore
+    }
   }
 
 }

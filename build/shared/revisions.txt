@@ -20,6 +20,7 @@ ARDUINO 1.6.6
 * Update notifications: when updates are available from either Library or Boards Managers, a popup will be shown
 * Introducing arduino-builder, a command line tool that properly calls gcc. Fixes lots of issues about buggy preprocessing.
 * Each open sketch gets built in its own folder, allowing the IDE to recycle previous compilations and being much faster
+* "Go to line": CTRL+L or Edit > Go to line... will open a dialog where you can type the line number where you want the editor to jump to
 
 [libraries]
 * Bridge: YunClient.connected() returns true if there are bytes available for read. Thanks @RobAtticus
