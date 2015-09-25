@@ -39,3 +39,19 @@ No problem! There are a variety of resources available to get you up and running
 * [LaunchPad forum at 43oh](http://forum.43oh.com/forum/28-energia/) - A community around the original LaunchPad  but also the newer ones.
 * [StellarPad forum at Stellaristi](http://forum.stellarisiti.com/forum/63-energia/) - A community more focused on the newer Stellaris LaunchPad.
 * [Bug report](http://github.com/energia/Energia/issues) - Is something not working as it ought to? Or better yet, is there something we could make better?
+
+## Clone instructions:
+
+Energia consists of the main repository and a submodule called emt. The emt tree contains the sources for the Energia MT (Multi Tasking) feature that is based on TI-RTOS/SYSBIOS.
+To clone Energia and the emt submodule:
+```
+git clone --recursive https://github.com/energia/Energia.git
+```
+If you already have a clone of Energia then:
+```
+git submodule update --init --recursive
+git submodule sync
+cd emt
+git pull
+cd ..
+```
