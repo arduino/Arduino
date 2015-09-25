@@ -109,6 +109,11 @@ public class LibrariesIndexer {
     // Clear all installed flags
     installedLibraries.clear();
     installedLibrariesWithDuplicates.clear();
+
+    if (index.getLibraries() == null) {
+      return;
+    }
+
     for (ContributedLibrary lib : index.getLibraries()) {
       lib.setInstalled(false);
     }
