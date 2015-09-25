@@ -312,8 +312,8 @@ void init()
 	sbi(TCCR2, CS22);
 #elif defined(TCCR2B) && defined(CS22)
 	sbi(TCCR2B, CS22);
-#else
-	#warning Timer 2 not finished (may not be present on this CPU)
+//#else
+	// Timer 2 not finished (may not be present on this CPU)
 #endif
 
 	// configure timer 2 for phase correct pwm (8-bit)
@@ -321,8 +321,8 @@ void init()
 	sbi(TCCR2, WGM20);
 #elif defined(TCCR2A) && defined(WGM20)
 	sbi(TCCR2A, WGM20);
-#else
-	#warning Timer 2 not finished (may not be present on this CPU)
+//#else
+	// Timer 2 not finished (may not be present on this CPU)
 #endif
 
 #if defined(TCCR3B) && defined(CS31) && defined(WGM30)
