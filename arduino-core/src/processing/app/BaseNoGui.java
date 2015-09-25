@@ -702,6 +702,7 @@ public class BaseNoGui {
         targetPackage = packages.get(target);
       } else {
         targetPackage = new LegacyTargetPackage(target);
+        packages.put(target, targetPackage);
       }
       try {
         loadTargetPackage(targetPackage, subfolder);
