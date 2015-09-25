@@ -592,11 +592,7 @@ public class BaseNoGui {
 
     try {
       indexer.parseIndex();
-    } catch (JsonProcessingException e) {
-      FileUtils.deleteIfExists(indexFile);
-      FileUtils.deleteIfExists(indexSignatureFile);
-      throw e;
-    } catch (SignatureVerificationFailedException e) {
+    } catch (JsonProcessingException | SignatureVerificationFailedException e) {
       FileUtils.deleteIfExists(indexFile);
       FileUtils.deleteIfExists(indexSignatureFile);
       throw e;
@@ -611,6 +607,17 @@ public class BaseNoGui {
 
     librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), indexer);
     File librariesIndexFile = librariesIndexer.getIndexFile();
+    copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
+    try {
+      librariesIndexer.parseIndex();
+    } catch (JsonProcessingException e) {
+      FileUtils.deleteIfExists(librariesIndexFile);
+      copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
+      librariesIndexer.parseIndex();
+    }
+  }
+
+  private static void copyStockLibraryIndexIfUpstreamIsMissing(File librariesIndexFile) throws IOException {
     if (!librariesIndexFile.isFile()) {
       File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
       if (defaultLibraryJsonFile.isFile()) {
@@ -627,12 +634,6 @@ public class BaseNoGui {
           IOUtils.closeQuietly(out);
         }
       }
-    }
-    try {
-      librariesIndexer.parseIndex();
-    } catch (JsonProcessingException e) {
-      FileUtils.deleteIfExists(librariesIndexFile);
-      throw e;
     }
   }
 
