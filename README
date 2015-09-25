@@ -32,6 +32,7 @@ git clone --recursive https://github.com/energia/Energia.git
 If you already have a clone of Energia then:
 ```
 git submodule update --init --recursive
+git submodule sync
 cd emt
 git pull
 cd ..
