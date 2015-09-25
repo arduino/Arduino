@@ -69,22 +69,24 @@ uint32_t pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout)
 	uint32_t bit = p.ulPin;
 	uint32_t stateMask = state ? bit : 0;
 
-	unsigned long maxMicros = micros() + timeout;
+	unsigned long startMicros = micros();
 
 	// wait for any previous pulse to end
-	while ((p.pPort->PIO_PDSR & bit) == stateMask)
-		if (micros() > maxMicros)
+	while ((p.pPort->PIO_PDSR & bit) == stateMask) {
+		if (micros() - startMicros > timeout)
 			return 0;
+	}
 
 	// wait for the pulse to start
-	while ((p.pPort->PIO_PDSR & bit) != stateMask)
-		if (micros() > maxMicros)
+	while ((p.pPort->PIO_PDSR & bit) != stateMask) {
+		if (micros() - startMicros > timeout)
 			return 0;
+	}
 
 	unsigned long start = micros();
 	// wait for the pulse to stop
 	while ((p.pPort->PIO_PDSR & bit) == stateMask) {
-		if (micros() > maxMicros)
+		if (micros() - startMicros > timeout)
 			return 0;
 	}
 	return micros() - start;
