@@ -276,7 +276,6 @@ void A110x2500Radio::readDataStream(void)
 
 void A110x2500Radio::gdo0Isr()
 {
-  digitalWrite(10, HIGH);
   // Note: It is assumed that interrupts are disabled.
   
   // The GDO0 ISR will only look for the EOP edge. Therefore, if the radio
@@ -300,5 +299,4 @@ void A110x2500Radio::gdo0Isr()
   
   // Always go back to sleep.
   sleep();
-  digitalWrite(10, LOW);
 }
