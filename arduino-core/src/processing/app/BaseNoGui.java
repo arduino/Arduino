@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static processing.app.I18n.tr;
+import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
 public class BaseNoGui {
 
@@ -674,12 +675,16 @@ public class BaseNoGui {
   }
 
   static protected void loadHardware(File folder) {
-    if (!folder.isDirectory()) return;
+    if (!folder.isDirectory()) {
+      return;
+    }
 
     String list[] = folder.list(new OnlyDirs());
 
     // if a bad folder or something like that, this might come back null
-    if (list == null) return;
+    if (list == null) {
+      return;
+    }
 
     // alphabetize list, since it's not always alpha order
     // replaced hella slow bubble sort with this feller for 0093
@@ -687,16 +692,47 @@ public class BaseNoGui {
 
     for (String target : list) {
       // Skip reserved 'tools' folder.
-      if (target.equals("tools"))
+      if (target.equals("tools")) {
         continue;
+      }
       File subfolder = new File(folder, target);
-      
+
+      TargetPackage targetPackage;
+      if (packages.containsKey(target)) {
+        targetPackage = packages.get(target);
+      } else {
+        targetPackage = new LegacyTargetPackage(target);
+      }
       try {
-        packages.put(target, new LegacyTargetPackage(target, subfolder));
+        loadTargetPackage(targetPackage, subfolder);
       } catch (TargetPlatformException e) {
         System.out.println("WARNING: Error loading hardware folder " + new File(folder, target));
         System.out.println("  " + e.getMessage());
       }
+    }
+  }
+
+  private static void loadTargetPackage(TargetPackage targetPackage, File _folder) throws TargetPlatformException {
+    File[] folders = _folder.listFiles(ONLY_DIRS);
+    if (folders == null) {
+      return;
+    }
+
+    for (File subFolder : folders) {
+      if (!subFolder.exists() || !subFolder.canRead()) {
+        continue;
+      }
+      String arch = subFolder.getName();
+      try {
+        TargetPlatform platform = new LegacyTargetPlatform(arch, subFolder, targetPackage);
+        targetPackage.getPlatforms().put(arch, platform);
+      } catch (TargetPlatformException e) {
+        System.err.println(e.getMessage());
+      }
+    }
+
+    if (targetPackage.getPlatforms().size() == 0) {
+      throw new TargetPlatformException(I18n.format(tr("No valid hardware definitions found in folder {0}."), _folder.getName()));
     }
   }
 

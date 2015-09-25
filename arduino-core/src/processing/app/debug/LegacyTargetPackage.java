@@ -20,46 +20,18 @@
  */
 package processing.app.debug;
 
-import static processing.app.I18n.tr;
-import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
-
-import java.io.File;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import processing.app.I18n;
-
 public class LegacyTargetPackage implements TargetPackage {
 
-  private String id;
-  private Map<String, TargetPlatform> platforms;
+  private final String id;
+  private final Map<String, TargetPlatform> platforms;
 
-  public LegacyTargetPackage(String _id, File _folder) throws TargetPlatformException {
+  public LegacyTargetPackage(String _id) {
     id = _id;
-    platforms = new LinkedHashMap<String, TargetPlatform>();
-
-    File[] folders = _folder.listFiles(ONLY_DIRS);
-    if (folders == null)
-      return;
-
-    for (File subFolder : folders) {
-      if (!subFolder.exists() || !subFolder.canRead())
-        continue;
-      String arch = subFolder.getName();
-      try {
-        TargetPlatform platform = new LegacyTargetPlatform(arch, subFolder, this);
-        platforms.put(arch, platform);
-      } catch (TargetPlatformException e) {
-        System.err.println(e.getMessage());
-      }
-    }
-
-    if (platforms.size() == 0) {
-      throw new TargetPlatformException(I18n
-          .format(tr("No valid hardware definitions found in folder {0}."),
-                  _folder.getName()));
-    }
+    platforms = new LinkedHashMap<>();
   }
 
   @Override
