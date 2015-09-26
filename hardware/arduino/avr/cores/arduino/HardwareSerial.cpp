@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+#include <util/atomic.h>
 #include "Arduino.h"
 
 #include "HardwareSerial.h"
@@ -178,13 +179,12 @@ int HardwareSerial::read(void)
 int HardwareSerial::availableForWrite(void)
 {
 #if (SERIAL_TX_BUFFER_SIZE>256)
-  uint8_t oldSREG = SREG;
-  cli();
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 #endif
   tx_buffer_index_t head = _tx_buffer_head;
   tx_buffer_index_t tail = _tx_buffer_tail;
 #if (SERIAL_TX_BUFFER_SIZE>256)
-  SREG = oldSREG;
+  }
 #endif
   if (head >= tail) return SERIAL_TX_BUFFER_SIZE - 1 - head + tail;
   return tail - head - 1;
@@ -218,11 +218,10 @@ size_t HardwareSerial::write(uint8_t c)
   // significantly improve the effective datarate at high (>
   // 500kbit/s) bitrates, where interrupt overhead becomes a slowdown.
   if (_tx_buffer_head == _tx_buffer_tail && bit_is_set(*_ucsra, UDRE0)) {
-    uint8_t oldSREG = SREG;
-    cli();
-    *_udr = c;
-    sbi(*_ucsra, TXC0);
-    SREG = oldSREG;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        *_udr = c;
+        sbi(*_ucsra, TXC0);
+    }
     return 1;
   }
   tx_buffer_index_t i = (_tx_buffer_head + 1) % SERIAL_TX_BUFFER_SIZE;
@@ -243,12 +242,11 @@ size_t HardwareSerial::write(uint8_t c)
   }
 
   _tx_buffer[_tx_buffer_head] = c;
-  uint8_t oldSREG = SREG;
-  cli();
-  _tx_buffer_head = i;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      _tx_buffer_head = i;
 	
-  sbi(*_ucsrb, UDRIE0);
-  SREG = oldSREG;
+      sbi(*_ucsrb, UDRIE0);
+  }
   
   return 1;
 }
