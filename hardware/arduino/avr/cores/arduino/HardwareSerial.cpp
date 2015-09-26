@@ -217,7 +217,14 @@ size_t HardwareSerial::write(uint8_t c)
   // to the data register and be done. This shortcut helps
   // significantly improve the effective datarate at high (>
   // 500kbit/s) bitrates, where interrupt overhead becomes a slowdown.
-  if (_tx_buffer_head == _tx_buffer_tail && bit_is_set(*_ucsra, UDRE0)) {
+#if (SERIAL_TX_BUFFER_SIZE>256)
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+#endif
+    bool emptyBuffer = _tx_buffer_head == _tx_buffer_tail;
+#if (SERIAL_TX_BUFFER_SIZE>256)
+  }
+#endif
+  if (emptyBuffer && bit_is_set(*_ucsra, UDRE0)) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         *_udr = c;
         sbi(*_ucsra, TXC0);
