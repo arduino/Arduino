@@ -235,10 +235,12 @@ Serial_::operator bool() {
 }
 
 unsigned long Serial_::baud() {
+	unsigned long baudrate;
 	// Disable interrupts while reading a multi-byte value
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		return _usbLineInfo.dwDTERate;
+		baudrate = _usbLineInfo.dwDTERate;
 	}
+	return baudrate;
 }
 
 uint8_t Serial_::stopbits() {
