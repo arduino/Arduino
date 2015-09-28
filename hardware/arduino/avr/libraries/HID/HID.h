@@ -64,22 +64,22 @@ public:
 
 typedef struct
 {
-  u8 len;     // 9
-  u8 dtype;   // 0x21
-  u8 addr;
-  u8  versionL; // 0x101
-  u8  versionH; // 0x101
-  u8  country;
-  u8  desctype; // 0x22 report
-  u8  descLenL;
-  u8  descLenH;
+  uint8_t len;      // 9
+  uint8_t dtype;    // 0x21
+  uint8_t addr;
+  uint8_t versionL; // 0x101
+  uint8_t versionH; // 0x101
+  uint8_t country;
+  uint8_t desctype; // 0x22 report
+  uint8_t descLenL;
+  uint8_t descLenH;
 } HIDDescDescriptor;
 
 typedef struct 
 {
-  InterfaceDescriptor     hid;
-  HIDDescDescriptor     desc;
-  EndpointDescriptor      in;
+  InterfaceDescriptor hid;
+  HIDDescDescriptor   desc;
+  EndpointDescriptor  in;
 } HIDDescriptor;
 
 #define HID_TX HID_ENDPOINT_INT
