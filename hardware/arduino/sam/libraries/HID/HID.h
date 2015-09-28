@@ -46,8 +46,9 @@ class HIDDescriptorListNode {
 public:
   HIDDescriptorListNode *next = NULL;
   HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
-  uint16_t length;
+
   const void* data;
+  const uint16_t length;
 };
 
 class HID_
