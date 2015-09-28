@@ -41,17 +41,21 @@ static const uint8_t SS      = 8;  /* P2.0 */
 static const uint8_t SCK     = 7;  /* P1.5 */
 static const uint8_t MOSI    = 15; /* P1.7 */
 static const uint8_t MISO    = 14; /* P1.6 */
-static const uint8_t TWISDA  = 15;  /* P1.7 */
-static const uint8_t TWISCL  = 14;  /* P1.6 */
+static const uint8_t TWISDA0  = 15;  /* P1.7 */
+static const uint8_t TWISCL0  = 14;  /* P1.6 */
 static const uint8_t DEBUG_UARTRXD = 3;  /* Receive  Data (RXD) at P1.1 */
 static const uint8_t DEBUG_UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
-#define TWISCL_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/)
+#define TWISDA0_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
+#define TWISCL0_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/)
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | OUTPUT)
 #define SPISCK_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #define SPIMISO_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
+#define TWISDA TWISDA0
+#define TWISCL TWISCL0
+#define TWISDA_SET_MODE  TWISDA0_SET_MODE
+#define TWISCL_SET_MODE  TWISCL1_SET_MODE
 #endif
 
 #define DEBUG_UART_MODULE_OFFSET 0x0

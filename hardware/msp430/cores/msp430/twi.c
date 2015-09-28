@@ -68,87 +68,129 @@ static volatile uint8_t twi_error;
 #ifdef __MSP430_HAS_USI__
 static uint8_t twi_slarw;
 static uint8_t twi_my_addr;
+#endif
 
+
+
+
+#if defined(UCB0CTLW0_) || defined(UCB1CTLW0_)
+/* #if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__) \
+  || defined(__MSP430_HAS_EUSCI_B0__)|| defined(__MSP430_HAS_EUSCI_B1__)
+*/
+
+#if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_EUSCI_B0__)
+#define UCB0_BASE UCB0CTLW0_
+#endif
+#if defined(__MSP430_HAS_USCI_B1__) || defined(__MSP430_HAS_EUSCI_B1__)
+#define UCB1_BASE UCB1CTLW0_
+#endif
+  
+#define UCBxCTLW0     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_  - UCB0_BASE))))
+#define UCBxCTLW1     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0CTLW1_  - UCB0_BASE))))
+#define UCBxCTL0      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_+1- UCB0_BASE))))
+#define UCBxCTL1      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_  - UCB0_BASE))))
+#define UCBxBRW       (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0BRW_    - UCB0_BASE))))
+#define UCBxBR0       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0BRW_    - UCB0_BASE))))
+#define UCBxBR1       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0BRW_+1  - UCB0_BASE))))
+#define UCBxMCTL      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0MCTL_   - UCB0_BASE))))
+#define UCBxMCTLW     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0MCTLW_  - UCB0_BASE))))
+#define UCBxSTAT      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0STAT_   - UCB0_BASE))))
+#define UCBxTBCNT     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0TBCNT_  - UCB0_BASE))))
+#define UCBxRXBUF     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0RXBUF_  - UCB0_BASE))))
+#define UCBxTXBUF     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0TXBUF_  - UCB0_BASE))))
+#define UCBxABCTL     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0ABCTL_  - UCB0_BASE))))
+#define UCBxIRCTL     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IRCTL_  - UCB0_BASE))))
+#define UCBxIRTCTL    (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IRTCTL_ - UCB0_BASE))))
+#define UCBxIRRCTL    (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IRRCTL_ - UCB0_BASE))))
+//#define UCBxICTL      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0ICTL_   - UCB0_BASE))))
+#define UCBxI2COA     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0I2COA_  - UCB0_BASE))))
+#define UCBxI2COA0    (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0I2COA0_ - UCB0_BASE))))
+#define UCBxI2CSA     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0I2CSA_  - UCB0_BASE))))
+#ifdef UCB0ICTL_
+#define UCBxIE        (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0ICTL_   - UCB0_BASE))))
+#define UCBxIFG       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0ICTL_+1 - UCB0_BASE))))
+#else
+#define UCBxIE        (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IE_     - UCB0_BASE))))
+#define UCBxIFG       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IFG_    - UCB0_BASE))))
+#endif
+#define UCBxI2CIE     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0I2CIE_  - UCB0_BASE)))) 
+#define UCBxIV        (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0IV_     - UCB0_BASE)))) 
+
+
+#else // #if defined(UCB0CTLW0_)
+
+#if defined __MSP430_HAS_USCI__
+#define UCB0_BASE UCB0CTL0_
+#define UCB1_BASE UCB1CTL0_
+
+#define UCBxCTL0      (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0CTL0_   - UCB0_BASE)))) 
+#define UCBxCTL1      (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0CTL1_   - UCB0_BASE)))) 
+#define UCBxBR0       (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0BR0_    - UCB0_BASE)))) 
+#define UCBxBR1       (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0BR1_    - UCB0_BASE)))) 
+#define UCBxMCTL      (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0MCTL_   - UCB0_BASE)))) 
+#define UCBxSTAT      (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0STAT_   - UCB0_BASE)))) 
+#define UCBxRXBUF     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0RXBUF_  - UCB0_BASE)))) 
+#define UCBxTXBUF     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0TXBUF_  - UCB0_BASE)))) 
+//#define UCBxICTL      (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0ICTL_   - UCB0_BASE)))) 
+#define UCBxI2COA     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0I2COA_  - UCB0_BASE)))) 
+#define UCBxI2CSA     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0I2CSA_  - UCB0_BASE)))) 
+
+#define UCxIE         UC0IE
+#define UCBxI2CIE     UC0IE
+#define UCxIFG        UC0IFG
+#ifdef UCB1RXIE
+#define UCBxRXIE      UCB0RXIE  ? (I2C_baseAddress == UCB0_BASE) : UCB1RXIE
+#define UCBxRXIFG     UCB0RXIFG ? (I2C_baseAddress == UCB0_BASE) : UCB1RXIFG
+#else
+#define UCBxRXIE      UCB0RXIE
+#define UCBxRXIFG     UCB0RXIFG
+#endif
+#ifdef UCB1TXIE
+#define UCBxTXIE      UCB0TXIE  ? (I2C_baseAddress == UCB0_BASE) : UCB1TXIE
+#define UCBxTXIFG     UCB0TXIFG ? (I2C_baseAddress == UCB0_BASE) : UCB1TXIFG
+#else
+#define UCBxTXIE      UCB0TXIE
+#define UCBxTXIFG     UCB0TXIFG
+#endif
+
+
+#endif //#if defined __MSP430_HAS_USCI__
+#endif // #if defined(UCB0CTLW0_) || defined(UCB1CTLW0_)
+
+
+#if defined __MSP430_HAS_EUSCI_B0__
 #endif
 
 #if defined(__MSP430_HAS_USCI__) \
  || defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__) \
- || defined(__MSP430_HAS_EUSCI_B0__)
-#ifndef USE_USCI_B1
-#define UCBxCTLW0     UCB0CTLW0
-#define UCBxCTLW1     UCB0CTLW1
-#define UCBxCTL0      UCB0CTL0
-#define UCBxCTL1      UCB0CTL1
-#define UCBxCTL0      UCB0CTL0
-#define UCBxBRW       UCB0BRW
-#define UCBxBR0       UCB0BR0
-#define UCBxBR1       UCB0BR1
-#define UCBxMCTL      UCB0MCTL
-#define UCBxMCTLW     UCB0MCTLW
-#define UCBxSTAT      UCB0STAT
-#define UCBxTBCNT     UCB0TBCNT
-#define UCBxRXBUF     UCB0RXBUF
-#define UCBxTXBUF     UCB0TXBUF
-#define UCBxABCTL     UCB0ABCTL
-#define UCBxIRCTL     UCB0IRCTL
-#define UCBxIRTCTL    UCB0IRTCTL
-#define UCBxIRRCTL    UCB0IRRCTL
-#define UCBxICTL      UCB0ICTL
-#define UCBxI2COA     UCB0I2COA
-#define UCBxI2COA0    UCB0I2COA0
-#define UCBxI2CSA     UCB0I2CSA
-#define UCBxIE        UCB0IE
-#define UCBxIFG       UCB0IFG
-#define UCBxI2CIE     UCB0I2CIE
-#define UCxIE         UC0IE
-#define UCxIFG        UC0IFG
-#define UCBxRXIE      UCB0RXIE
-#define UCBxTXIE      UCB0TXIE
-#define UCBxRXIFG     UCB0RXIFG
-#define UCBxTXIFG     UCB0TXIFG
-#define UCBxIV        UCB0IV
-#else
-#define UCBxCTLW0     UCB1CTLW0
-#define UCBxCTLW1     UCB1CTLW1
-#define UCBxCTL0      UCB1CTL0
-#define UCBxCTL1      UCB1CTL1
-#define UCBxCTL0      UCB1CTL0
-#define UCBxBRW       UCB1BRW
-#define UCBxBR0       UCB1BR0
-#define UCBxBR1       UCB1BR1
-#define UCBxMCTL      UCB1MCTL
-#define UCBxMCTLW     UCB1MCTLW
-#define UCBxSTAT      UCB1STAT
-#define UCBxTBCNT     UCB1TBCNT
-#define UCBxRXBUF     UCB1RXBUF
-#define UCBxTXBUF     UCB1TXBUF
-#define UCBxABCTL     UCB1ABCTL
-#define UCBxIRCTL     UCB1IRCTL
-#define UCBxIRTCTL    UCB1IRTCTL
-#define UCBxIRRCTL    UCB1IRRCTL
-#define UCBxICTL      UCB1ICTL
-#define UCBxI2COA     UCB1I2COA
-#define UCBxI2COA0    UCB1I2COA0
-#define UCBxI2CSA     UCB1I2CSA
-#define UCBxIE        UCB1IE
-#define UCBxIFG       UCB1IFG
-#define UCBxI2CIE     UCB1I2CIE
-#define UCxIE         UC1IE
-#define UCxIFG        UC1IFG
-#define UCBxRXIE      UCB1RXIE
-#define UCBxTXIE      UCB1TXIE
-#define UCBxRXIFG     UCB1RXIFG
-#define UCBxTXIFG     UCB1TXIFG
-#define UCBxIV        UCB1IV
+ || defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
+
+#if DEFAULT_I2C == 0
+uint16_t I2C_baseAddress = UCB0_BASE;
 #endif
+#if DEFAULT_I2C == 1
+uint16_t I2C_baseAddress = UCB1_BASE;
 #endif
 
-#ifdef __MSP430_HAS_USCI__
 #endif
 
-#ifdef __MSP430_HAS_EUSCI_B0__
-#endif
 
+
+void twi_setModule(uint8_t _i2cModule)
+{
+	if (_i2cModule == 0)
+	{
+#if defined(__MSP430_HAS_USCI_B0__)|| defined(__MSP430_HAS_EUSCI_B0__)
+		I2C_baseAddress = UCB0_BASE;
+#endif
+	}
+	if (_i2cModule == 1)
+	{
+#if defined(__MSP430_HAS_USCI_B1__)|| defined(__MSP430_HAS_EUSCI_B1__)
+		I2C_baseAddress = UCB1_BASE;
+#endif
+	}
+}
 /*
  * Function twi_init
  * Desc     readys twi pins and sets twi bitrate
@@ -186,25 +228,55 @@ void twi_init(void)
 	USICTL1 |= USIIE;
 #endif
 
-#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__)
+#if defined(__MSP430_HAS_USCI__) \
+ || defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__)
+
     /* Calling this dummy function prevents the linker
      * from stripping the USCI interupt vectors.*/ 
     usci_isr_install();
 
-    /* Set pins to I2C mode */
-    pinMode_int(TWISDA, INPUT_PULLUP);
-    if (digitalRead(TWISDA) == 0){ // toggle SCL if SDA is low at startup
-        pinMode_int(TWISCL, INPUT_PULLUP);
-        digitalWrite(TWISCL, LOW);
-        pinMode(TWISCL, OUTPUT);
-        pinMode_int(TWISCL, INPUT_PULLUP);
-    }
-    if ((TWISDA_SET_MODE & INPUT_PULLUP) == 0) {
-    	pinMode(TWISDA, INPUT);          // some device do not allow the pull up to be enabled
-    	pinMode(TWISCL, INPUT);
-    }
-    pinMode_int(TWISDA, TWISDA_SET_MODE);
-    pinMode_int(TWISCL, TWISCL_SET_MODE);
+#if defined(__MSP430_HAS_USCI__)
+	pinMode_int(TWISDA, TWISDA_SET_MODE);
+	pinMode_int(TWISCL, TWISCL_SET_MODE);
+#endif
+#if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B0__)
+	if (I2C_baseAddress == UCB0_BASE)
+	{
+		/* Set pins to I2C mode */
+		pinMode_int(TWISDA0, INPUT_PULLUP);
+		if (digitalRead(TWISDA0) == 0){ // toggle SCL if SDA is low at startup
+			pinMode_int(TWISCL0, INPUT_PULLUP);
+			digitalWrite(TWISCL0, LOW);
+			pinMode(TWISCL0, OUTPUT);
+			pinMode_int(TWISCL0, INPUT_PULLUP);
+		}
+		if ((TWISDA0_SET_MODE & INPUT_PULLUP) == 0) {
+			pinMode(TWISDA0, INPUT);          // some device do not allow the pull up to be enabled
+			pinMode(TWISCL0, INPUT);
+		}
+		pinMode_int(TWISDA0, TWISDA0_SET_MODE);
+		pinMode_int(TWISCL0, TWISCL0_SET_MODE);
+	}
+#endif
+#if defined(__MSP430_HAS_USCI_B1__) || defined(__MSP430_HAS_EUSCI_B1__)
+	if (I2C_baseAddress == UCB1_BASE)
+	{
+		/* Set pins to I2C mode */
+		pinMode_int(TWISDA1, INPUT_PULLUP);
+		if (digitalRead(TWISDA1) == 0){ // toggle SCL if SDA is low at startup
+			pinMode_int(TWISCL1, INPUT_PULLUP);
+			digitalWrite(TWISCL1, LOW);
+			pinMode(TWISCL1, OUTPUT);
+			pinMode_int(TWISCL1, INPUT_PULLUP);
+		}
+		if ((TWISDA1_SET_MODE & INPUT_PULLUP) == 0) {
+			pinMode(TWISDA1, INPUT);          // some device do not allow the pull up to be enabled
+			pinMode(TWISCL1, INPUT);
+		}
+		pinMode_int(TWISDA1, TWISDA1_SET_MODE);
+		pinMode_int(TWISCL1, TWISCL1_SET_MODE);
+	}
+#endif
 
     //Disable the USCI module and clears the other bits of control register
     UCBxCTL1 = UCSWRST;
@@ -236,21 +308,46 @@ void twi_init(void)
     /* Set I2C state change interrupt mask and TX/RX interrupts */
     UCBxIE |= (UCALIE|UCNACKIE|UCSTTIE|UCSTPIE|UCRXIE|UCTXIE);
 #endif
-
 #endif
-#ifdef __MSP430_HAS_EUSCI_B0__
-
-    pinMode_int(TWISDA, INPUT_PULLUP);
-    if (digitalRead(TWISDA) == 0){ // toggle SCL if SDA is low at startup
-        pinMode_int(TWISCL, INPUT_PULLUP);
-        pinMode(TWISCL, OUTPUT);
-        digitalWrite(TWISCL, LOW);
-        pinMode_int(TWISCL, INPUT_PULLUP);
-    }
-    pinMode_int(TWISDA, TWISDA_SET_MODE);
-    pinMode_int(TWISCL, TWISCL_SET_MODE);
-
-    //Disable the USCI module and clears the other bits of control register
+#if defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
+#if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_EUSCI_B0__)
+	if (I2C_baseAddress == UCB0_BASE)
+	{
+		/* Set pins to I2C mode */
+		pinMode_int(TWISDA0, INPUT_PULLUP);
+		if (digitalRead(TWISDA0) == 0){ // toggle SCL if SDA is low at startup
+			pinMode_int(TWISCL0, INPUT_PULLUP);
+			digitalWrite(TWISCL0, LOW);
+			pinMode(TWISCL0, OUTPUT);
+			pinMode_int(TWISCL0, INPUT_PULLUP);
+		}
+		if ((TWISDA0_SET_MODE & INPUT_PULLUP) == 0) {
+			pinMode(TWISDA0, INPUT);          // some device do not allow the pull up to be enabled
+			pinMode(TWISCL0, INPUT);
+		}
+		pinMode_int(TWISDA0, TWISDA0_SET_MODE);
+		pinMode_int(TWISCL0, TWISCL0_SET_MODE);
+	}
+#endif
+#if defined(__MSP430_HAS_USCI_B1__) || defined(__MSP430_HAS_EUSCI_B1__)
+	if (I2C_baseAddress == UCB1_BASE)
+	{
+		/* Set pins to I2C mode */
+		pinMode_int(TWISDA1, INPUT_PULLUP);
+		if (digitalRead(TWISDA1) == 0){ // toggle SCL if SDA is low at startup
+			pinMode_int(TWISCL1, INPUT_PULLUP);
+			digitalWrite(TWISCL1, LOW);
+			pinMode(TWISCL1, OUTPUT);
+			pinMode_int(TWISCL1, INPUT_PULLUP);
+		}
+		if ((TWISDA1_SET_MODE & INPUT_PULLUP) == 0) {
+			pinMode(TWISDA1, INPUT);          // some device do not allow the pull up to be enabled
+			pinMode(TWISCL1, INPUT);
+		}
+		pinMode_int(TWISDA1, TWISDA1_SET_MODE);
+		pinMode_int(TWISCL1, TWISCL1_SET_MODE);
+	}
+#endif    //Disable the USCI module and clears the other bits of control register
     UCBxCTLW0 = UCSWRST;
 
     //Configure Automatic STOP condition generation
@@ -330,7 +427,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     UCBxIE |= (UCALIE|UCNACKIE|UCSTPIE|UCRXIE|UCTXIE);  // Enable I2C interrupts
 #endif
 #endif
-#ifdef __MSP430_HAS_EUSCI_B0__
+#if defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
     UCBxCTLW0 |= UCSWRST;                     // Enable SW reset
     UCBxCTLW0 |= (UCMST);                     // I2C Master, synchronous mode
     UCBxCTLW0 &= ~(UCTR);                     // Configure in receive mode
@@ -371,7 +468,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
         UCBxCTL1 |= UCTXSTP;                  // Send I2C stop condition after recv
     }
 #endif
-#ifdef __MSP430_HAS_EUSCI_B0__
+#if defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
     twi_state =  TWI_MRX;                     // Master receive mode
     //while (UCBxCTLW0 & UCTXSTP);              // Ensure stop condition got sent
     UCBxCTLW0 |= UCTXSTT;                     // I2C start condition
@@ -436,7 +533,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     UCBxIE |= (UCALIE|UCNACKIE|UCSTPIE|UCTXIE);  // Enable I2C interrupts
 #endif
 #endif
-#ifdef __MSP430_HAS_EUSCI_B0__
+#if defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
     UCBxCTLW0 |= UCSWRST;                     // Enable SW reset
     UCBxCTLW0 |= (UCMST | UCTR);              //  I2C Master, transmit mode
     UCBxI2CSA = address;                      // Set Slave Address
@@ -480,7 +577,7 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     twi_state =  TWI_MTX;                     // Master Transmit mode
     UCBxCTL1 |= UCTXSTT;                      // I2C start condition
 #endif
-#ifdef __MSP430_HAS_EUSCI_B0__
+#if defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
     twi_state =  TWI_MTX;                     // Master Transmit mode
     //while (UCBxCTLW0 & UCTXSTP);           // Ensure stop condition got sent
     UCBxCTLW0 |= UCTXSTT;                  // I2C start condition
@@ -999,3 +1096,157 @@ void USCI_B0_ISR(void)
 } 
 #endif
 
+#ifdef __MSP430_HAS_EUSCI_B1__
+__attribute__((interrupt(USCI_B1_VECTOR)))
+void USCI_B1_ISR(void)
+{
+//	switch(twi_state){
+  switch(UCBxIV){
+    case USCI_NONE:            // No Interrupt pending
+      break;
+    case USCI_I2C_UCALIFG:     // USCI I2C Mode: UCALIFG
+      // enter slave transmitter mode
+      twi_state = TWI_STX;
+      // ready the tx buffer index for iteration
+      twi_txBufferIndex = 0;
+      // set tx buffer length to be zero, to verify if user changes it
+      twi_txBufferLength = 0;
+      // request for txBuffer to be filled and length to be set
+      // note: user must call twi_transmit(bytes, length) to do this
+      twi_onSlaveTransmit();
+      // if they didn't change buffer & length, initialize it
+      if(0 == twi_txBufferLength){
+        twi_txBufferLength = 1;
+        twi_txBuffer[0] = 0x00;
+      }
+      // transmit first byte from buffer, fall
+      // copy data to output register
+      UCBxTXBUF = twi_txBuffer[twi_txBufferIndex++];
+      // if there is more to send, ack, otherwise nack
+      if(twi_txBufferIndex < twi_txBufferLength){
+        //twi_reply(1);
+      } else {
+		UCBxCTLW0 |= UCTXNACK;                // Generate NACK condition
+      }
+      // leave slave receiver state
+      twi_state = TWI_IDLE;
+
+      break;
+    case USCI_I2C_UCNACKIFG:   // USCI I2C Mode: UCNACKIFG
+        // leave slave receiver state
+        twi_state = TWI_IDLE;
+		twi_error = TWI_ERROR_DATA_NACK;
+        __bic_SR_register_on_exit(LPM4_bits); // Exit LPM
+      break;
+    case USCI_I2C_UCSTTIFG:    // USCI I2C Mode: UCSTTIFG
+		UCBxIFG &= ~UCSTTIFG;
+		if (twi_state ==  TWI_IDLE){
+			if (UCBxCTLW0 &  UCTR){
+				twi_state =  TWI_STX;      // Slave Transmit mode
+				// ready the tx buffer index for iteration
+				twi_txBufferIndex = 0;
+				// set tx buffer length to be zero, to verify if user changes it
+				twi_txBufferLength = 0;
+				// request for txBuffer to be filled and length to be set
+				// note: user must call twi_transmit(bytes, length) to do this
+				twi_onSlaveTransmit();
+				// if they didn't change buffer & length, initialize it
+				if(0 == twi_txBufferLength){
+					twi_txBufferLength = 1;
+					twi_txBuffer[0] = 0x00;
+				}
+			} else {
+				twi_state =  TWI_SRX;      // Slave receive mode
+				// indicate that rx buffer can be overwritten and ack
+				twi_rxBufferIndex = 0;
+			}
+		}
+      break;
+    case USCI_I2C_UCSTPIFG:    // USCI I2C Mode: UCSTPIFG
+        //UCBxIFG &= ~UCSTPIFG;
+		if (twi_state ==  TWI_SRX){
+			// callback to user defined callback
+			twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
+		}
+		twi_state =  TWI_IDLE; // IDLE mode
+		/* Work around for:
+		 * If the master does a read and then a write the START interrupt occurs
+		 * but the RX interrupt never fires. Clearing bit 4 and 5 of UCBxCTLW0 solves this.
+		 * bit 4 and 5 are however marked as reserved in the datasheet.
+		 */
+		UCBxCTLW0 &= ~0x18;
+
+		__bic_SR_register_on_exit(LPM4_bits); // Exit LPMx
+      break;
+    case USCI_I2C_UCRXIFG3:    // USCI I2C Mode: UCRXIFG3
+      break;
+    case USCI_I2C_UCTXIFG3:    // USCI I2C Mode: UCTXIFG3
+      break;
+    case USCI_I2C_UCRXIFG2:    // USCI I2C Mode: UCRXIFG2
+      break;
+    case USCI_I2C_UCTXIFG2:    // USCI I2C Mode: UCTXIFG2
+      break;
+    case USCI_I2C_UCRXIFG1:    // USCI I2C Mode: UCRXIFG1
+      break;
+    case USCI_I2C_UCTXIFG1:    // USCI I2C Mode: UCTXIFG1
+      break;
+    case USCI_I2C_UCRXIFG0:    // USCI I2C Mode: UCRXIFG0
+		//UCBxIFG &= ~UCRXIFG;                  // Clear USCI_B0 TX int flag
+		if (twi_state ==  TWI_MRX) {      // Master receive mode
+			twi_masterBuffer[twi_masterBufferIndex++] = UCBxRXBUF; // Get RX data
+			if(twi_masterBufferIndex == twi_masterBufferLength )
+				UCBxCTLW0 |= UCTXSTP;  // Generate I2C stop condition
+			if(twi_masterBufferIndex > twi_masterBufferLength ) {
+				twi_state = TWI_IDLE; //Idle
+			} else {
+			}
+		} else {
+			// if there is still room in the rx buffer
+			if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
+				// put byte in buffer and ack
+				twi_rxBuffer[twi_rxBufferIndex++] = UCBxRXBUF;
+			} else {
+				// otherwise nack
+				UCBxCTLW0 |= UCTXNACK;                // Generate NACK condition
+			}
+		}
+      break;
+    case USCI_I2C_UCTXIFG0:    // USCI I2C Mode: UCTXIFG0
+		//UCBxIFG &= ~UCTXIFG;                  // Clear USCI_B0 TX int flag
+		if (twi_state == TWI_MTX) {      // Master receive mode
+			// if there is data to send, send it, otherwise stop
+			if(twi_masterBufferIndex < twi_masterBufferLength){
+				// copy data to output register and ack
+				UCBxTXBUF = twi_masterBuffer[twi_masterBufferIndex++];                 // Transmit data at address PTxData
+			}else{
+			   if (twi_sendStop) {
+				//UCBxCTLW0 |= UCTXSTP;                // Generate I2C stop condition
+			   } else {
+				 twi_inRepStart = true;   // we're gonna send the START
+				 // don't enable the interrupt. We'll generate the start, but we
+				 // avoid handling the interrupt until we're in the next transaction,
+				 // at the point where we would normally issue the start.
+				 UCBxCTLW0 |= UCTXSTT;
+				 twi_state = TWI_IDLE;
+				 __bic_SR_register_on_exit(LPM4_bits); // Exit LPM
+			   }
+			}
+		} else {
+			// copy data to output register
+			UCBxTXBUF = twi_txBuffer[twi_txBufferIndex++];
+			// if there is more to send, ack, otherwise nack
+			if(twi_txBufferIndex < twi_txBufferLength){
+			} else {
+				UCBxCTLW0 |= UCTXNACK;                // Generate NACK condition
+			}
+		}
+      break;
+    case USCI_I2C_UCBCNTIFG:   // USCI I2C Mode: UCBCNTIFG
+      break;
+    case USCI_I2C_UCCLTOIFG:   // USCI I2C Mode: UCCLTOIFG/
+      break;
+    case USCI_I2C_UCBIT9IFG:   // USCI I2C Mode: UCBIT9IFG
+      break;
+	}
+}
+#endif

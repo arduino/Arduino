@@ -59,9 +59,9 @@ void USCIA1_ISR(void)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif
+#endif //defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 
-#if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__)
-#ifndef USE_USCI_B1
+#if defined(__MSP430_HAS_USCI_B0__)
 __attribute__((interrupt(USCI_B0_VECTOR)))
 void USCIB0_ISR(void)
 {
@@ -77,7 +77,8 @@ void USCIB0_ISR(void)
 	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
-#else
+#endif
+#if defined(__MSP430_HAS_USCI_B1__)
 __attribute__((interrupt(USCI_B1_VECTOR)))
 void USCIB1_ISR(void)
 {
@@ -94,9 +95,7 @@ void USCIB1_ISR(void)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif
-#endif
 
-#endif //defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 
 #ifdef __MSP430_HAS_USCI__
 /* USCI_Ax and USCI_Bx share the same TX interrupt vector.

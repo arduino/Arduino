@@ -42,10 +42,10 @@ static const uint8_t SS      = 8;   /* P2.0 */
 static const uint8_t SCK     = 7;   /* P1.4 */
 static const uint8_t MOSI    = 15;  /* P1.6 aka SIMO */
 static const uint8_t MISO    = 14;  /* P1.7 aka SOMI */
-static const uint8_t TWISDA  = 10;  /* P4.0 */
-static const uint8_t TWISCL  = 9;   /* P4.1 */
-#define TWISDA_SET_MODE  TWISDA1_SET_MODE
-#define TWISCL_SET_MODE  TWISCL1_SET_MODE
+static const uint8_t TWISDA1  = 10;  /* P4.0 */
+static const uint8_t TWISCL1  = 9;   /* P4.1 */
+static const uint8_t TWISDA0  = 15;  /* P1.6 */
+static const uint8_t TWISCL0  = 14;  /* P1.7 */
 #define TWISDA0_SET_MODE (PORT_SELECTION0 | INPUT_PULLUP)
 #define TWISCL0_SET_MODE (PORT_SELECTION0 | INPUT_PULLUP)
 #define TWISDA1_SET_MODE (PORT_SELECTION1 | INPUT_PULLUP)
@@ -53,6 +53,10 @@ static const uint8_t TWISCL  = 9;   /* P4.1 */
 #define SPISCK_SET_MODE  (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
+#define TWISDA TWISDA1
+#define TWISCL TWISCL1
+#define TWISDA_SET_MODE  TWISDA1_SET_MODE
+#define TWISCL_SET_MODE  TWISCL1_SET_MODE
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
@@ -68,8 +72,7 @@ static const uint8_t AUX_UARTTXD = 4;     /* Transmit Data (TXD) at P4.2 */
 #define AUX_UART_MODULE_OFFSET 0x00
 #define SERIAL1_AVAILABLE 1
 #endif
-#define DEFAULT_I2C_USCI_B1
-#define DEFAULT_I2C_1
+#define DEFAULT_I2C 1
 
 
 /* Analog pins */

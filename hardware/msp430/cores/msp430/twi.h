@@ -89,6 +89,7 @@
 
 
 
+void twi_setModule(uint8_t _i2cModule);
 void twi_init(void);
 void twi_setAddress(uint8_t);
 uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t, uint8_t);
