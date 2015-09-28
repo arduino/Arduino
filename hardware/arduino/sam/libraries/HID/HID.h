@@ -56,7 +56,7 @@ class HID_
 public:
   HID_(void);
   int begin(void);
-  void SendReport(uint8_t id, const void* data, int len);
+  void SendReport(uint8_t id, const void* data, const uint16_t len);
   void AppendDescriptor(HIDDescriptorListNode* node);
 };
 
