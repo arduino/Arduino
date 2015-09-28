@@ -92,13 +92,13 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 	sizeof_hidReportDescriptor += node->length;
 }
 
-void HID_::SendReport(uint8_t id, const void* data, int len)
+void HID_::SendReport(uint8_t id, const void* data, const uint16_t len)
 {
 	uint8_t p[64];
 	const uint8_t *d = reinterpret_cast<const uint8_t *>(data);
 
 	p[0] = id;
-	for (uint32_t i=0; i<len; i++)
+	for (uint16_t i=0; i<len; i++)
 		p[i+1] = d[i];
 	USBD_Send(HID_TX, p, len+1);
 }
