@@ -41,6 +41,7 @@ import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.legacy.PApplet;
+import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.SketchTextArea;
 import processing.app.tools.DiscourseFormat;
@@ -1059,6 +1060,15 @@ public class Editor extends JFrame implements RunnerListener {
 
     configurePopupMenu(textArea);
     return textArea;
+  }
+
+  public void updateKeywords(PdeKeywords keywords) {
+    // update GUI for "Find In Reference"
+    textarea.setKeywords(keywords);
+    // update document for syntax highlighting
+    RSyntaxDocument document = (RSyntaxDocument) textarea.getDocument();
+    document.setTokenMakerFactory(new ArduinoTokenMakerFactory(keywords));
+    document.setSyntaxStyle(RSyntaxDocument.SYNTAX_STYLE_CPLUSPLUS);
   }
 
   private JMenuItem createToolMenuItem(String className) {

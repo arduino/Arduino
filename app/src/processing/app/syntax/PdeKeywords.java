@@ -31,6 +31,7 @@ import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.legacy.PApplet;
+import processing.app.debug.TargetPlatform;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -84,6 +85,11 @@ public class PdeKeywords {
   public void reload() {
     try {
       parseKeywordsTxt(new File(BaseNoGui.getContentFile("lib"), "keywords.txt"));
+      TargetPlatform tp = BaseNoGui.getTargetPlatform();
+      if (tp != null) {
+        File platformKeywords = new File(tp.getFolder(), "keywords.txt");
+        if (platformKeywords.exists()) parseKeywordsTxt(platformKeywords);
+      }
       for (ContributedLibrary lib : Base.getLibraries()) {
         File keywords = new File(lib.getInstalledFolder(), "keywords.txt");
         if (keywords.exists()) {
