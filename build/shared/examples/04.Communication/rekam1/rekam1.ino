@@ -53,6 +53,7 @@ Module's Tx and Rx pins to pins 3 and 4 of your Launchpad, Connect VCC and Groun
 #define CCx 1
 
 //Uncomment these lines if using CC3200 Launchpad
+#include <SPI.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
 
