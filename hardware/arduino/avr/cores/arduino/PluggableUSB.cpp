@@ -87,7 +87,7 @@ int8_t PUSB_AddFunction(PUSBListNode *node, u8* interface)
 	*interface = lastIf;
 	lastIf += node->cb->numInterfaces;
 	for ( u8 i = 0; i< node->cb->numEndpoints; i++) {
-		_initEndpoints[lastEp] = node->cb->endpointType[i];
+		_initEndpoints[lastEp] = node->cb->endpointType[1];
 		lastEp++;
 	}
 	modules_count++;
