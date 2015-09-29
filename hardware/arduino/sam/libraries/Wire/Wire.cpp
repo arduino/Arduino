@@ -398,12 +398,9 @@ static void Wire_Deinit(void) {
 
 	pmc_disable_periph_clk(WIRE_INTERFACE_ID);
 
-	// disable pull ups
-	pinMode(PIN_WIRE_SDA, OUTPUT);
-	pinMode(PIN_WIRE_SCL, OUTPUT);
-
-	digitalWrite(PIN_WIRE_SDA, LOW);
-	digitalWrite(PIN_WIRE_SCL, LOW);
+	// no need to undo PIO_Configure, 
+	// as Peripheral A was enable by default before,
+	// and pullups were not enabled
 }
 
 TwoWire Wire = TwoWire(WIRE_INTERFACE, Wire_Init, Wire_Deinit);
@@ -439,12 +436,9 @@ static void Wire1_Deinit(void) {
 
 	pmc_disable_periph_clk(WIRE1_INTERFACE_ID);
 
-	// disable pull ups
-	pinMode(PIN_WIRE1_SDA, OUTPUT);
-	pinMode(PIN_WIRE1_SCL, OUTPUT);
-
-	digitalWrite(PIN_WIRE1_SDA, LOW);
-	digitalWrite(PIN_WIRE1_SCL, LOW);
+	// no need to undo PIO_Configure, 
+	// as Peripheral A was enable by default before,
+	// and pullups were not enabled
 }
 
 TwoWire Wire1 = TwoWire(WIRE1_INTERFACE, Wire1_Init, Wire1_Deinit);
