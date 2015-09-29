@@ -34,7 +34,7 @@
 
 class TwoWire : public Stream {
 public:
-	TwoWire(Twi *twi, void(*begin_cb)(void));
+	TwoWire(Twi *twi, void(*begin_cb)(void), void(*end_cb)(void));
 	void begin();
 	void begin(uint8_t);
 	void begin(int);
@@ -88,6 +88,9 @@ private:
 
 	// Called before initialization
 	void (*onBeginCallback)(void);
+
+	// Called after deinitialization
+	void (*onEndCallback)(void);
 
 	// TWI instance
 	Twi *twi;

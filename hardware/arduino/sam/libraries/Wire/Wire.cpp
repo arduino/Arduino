@@ -92,10 +92,11 @@ static inline bool TWI_STATUS_NACK(uint32_t status) {
 	return (status & TWI_SR_NACK) == TWI_SR_NACK;
 }
 
-TwoWire::TwoWire(Twi *_twi, void(*_beginCb)(void)) :
+TwoWire::TwoWire(Twi *_twi, void(*_beginCb)(void), void(*_endCb)(void)) :
 	twi(_twi), rxBufferIndex(0), rxBufferLength(0), txAddress(0),
 			txBufferLength(0), srvBufferIndex(0), srvBufferLength(0), status(
-					UNINITIALIZED), onBeginCallback(_beginCb), twiClock(TWI_CLOCK) {
+					UNINITIALIZED), onBeginCallback(_beginCb), 
+						onEndCallback(_endCb), twiClock(TWI_CLOCK) {
 }
 
 void TwoWire::begin(void) {
@@ -128,6 +129,12 @@ void TwoWire::begin(int address) {
 
 void TwoWire::end(void) {
 	TWI_Disable(twi);
+
+	// Enable PDC channel
+	twi->TWI_PTCR &= ~(UART_PTCR_RXTDIS | UART_PTCR_TXTDIS);
+
+	if (onEndCallback)
+		onEndCallback();
 }
 
 void TwoWire::setClock(uint32_t frequency) {
@@ -385,7 +392,21 @@ static void Wire_Init(void) {
 	NVIC_EnableIRQ(WIRE_ISR_ID);
 }
 
-TwoWire Wire = TwoWire(WIRE_INTERFACE, Wire_Init);
+static void Wire_Deinit(void) {
+	NVIC_DisableIRQ(WIRE_ISR_ID);
+	NVIC_ClearPendingIRQ(WIRE_ISR_ID);
+
+	pmc_disable_periph_clk(WIRE_INTERFACE_ID);
+
+	// disable pull ups
+	pinMode(PIN_WIRE_SDA, OUTPUT);
+	pinMode(PIN_WIRE_SCL, OUTPUT);
+
+	digitalWrite(PIN_WIRE_SDA, LOW);
+	digitalWrite(PIN_WIRE_SCL, LOW);
+}
+
+TwoWire Wire = TwoWire(WIRE_INTERFACE, Wire_Init, Wire_Deinit);
 
 void WIRE_ISR_HANDLER(void) {
 	Wire.onService();
@@ -412,7 +433,21 @@ static void Wire1_Init(void) {
 	NVIC_EnableIRQ(WIRE1_ISR_ID);
 }
 
-TwoWire Wire1 = TwoWire(WIRE1_INTERFACE, Wire1_Init);
+static void Wire1_Deinit(void) {
+	NVIC_DisableIRQ(WIRE1_ISR_ID);
+	NVIC_ClearPendingIRQ(WIRE1_ISR_ID);
+
+	pmc_disable_periph_clk(WIRE1_INTERFACE_ID);
+
+	// disable pull ups
+	pinMode(PIN_WIRE1_SDA, OUTPUT);
+	pinMode(PIN_WIRE1_SCL, OUTPUT);
+
+	digitalWrite(PIN_WIRE1_SDA, LOW);
+	digitalWrite(PIN_WIRE1_SCL, LOW);
+}
+
+TwoWire Wire1 = TwoWire(WIRE1_INTERFACE, Wire1_Init, Wire1_Deinit);
 
 void WIRE1_ISR_HANDLER(void) {
 	Wire1.onService();
