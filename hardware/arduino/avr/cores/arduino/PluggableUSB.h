@@ -35,13 +35,22 @@ public:
   int8_t numInterfaces;
   uint8_t *endpointType;
 
+  inline uint8_t interface() const { return pluggedInterface; }
+  inline int8_t endpoint()   const { return pluggedEndpoint; }
+
+protected:
+  uint8_t pluggedInterface;
+  int8_t pluggedEndpoint;
+
 public:
   PUSBListNode *next = NULL;
+
+  friend class PluggableUSB_;
 };
 
 class PluggableUSB_ {
 public:
-  static int8_t addFunction(PUSBListNode *node, u8 *interface);
+  static bool plug(PUSBListNode *node);
   static int getInterface(u8* interfaceNum);
   static int getDescriptor(int8_t t);
   static bool setup(USBSetup& setup, u8 i);

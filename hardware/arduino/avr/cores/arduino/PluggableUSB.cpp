@@ -68,10 +68,10 @@ bool PluggableUSB_::setup(USBSetup& setup, u8 j)
 	return ret;
 }
 
-int8_t PluggableUSB_::addFunction(PUSBListNode *node, u8* interface)
+bool PluggableUSB_::plug(PUSBListNode *node)
 {
 	if (modules_count >= MAX_MODULES) {
-		return 0;
+		return false;
 	}
 
 	if (modules_count == 0) {
@@ -84,14 +84,15 @@ int8_t PluggableUSB_::addFunction(PUSBListNode *node, u8* interface)
 		current->next = node;
 	}
 
-	*interface = lastIf;
+	node->pluggedInterface = lastIf;
+	node->pluggedEndpoint = lastEp;
 	lastIf += node->numInterfaces;
-	for ( u8 i = 0; i< node->numEndpoints; i++) {
+	for (uint8_t i=0; i<node->numEndpoints; i++) {
 		_initEndpoints[lastEp] = node->endpointType[i];
 		lastEp++;
 	}
 	modules_count++;
-	return lastEp - node->numEndpoints;
+	return true;
 	// restart USB layer???
 }
 

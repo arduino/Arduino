@@ -23,13 +23,9 @@
 
 HID_ HID;
 
-static uint8_t HID_ENDPOINT_INT;
-
 //================================================================================
 //================================================================================
 //	HID Interface
-
-static uint8_t HID_INTERFACE;
 
 HIDDescriptor _hidInterface;
 
@@ -50,9 +46,9 @@ int HID_GetInterface(uint8_t* interfaceNum)
 	interfaceNum[0] += 1;	// uses 1
 	_hidInterface =
 	{
-		D_INTERFACE(HID_INTERFACE,1,3,0,0),
+		D_INTERFACE(HID.interface(), 1, 3, 0, 0),
 		D_HIDREPORT(sizeof_hidReportDescriptor),
-		D_ENDPOINT(USB_ENDPOINT_IN (HID_ENDPOINT_INT),USB_ENDPOINT_TYPE_INTERRUPT,USB_EP_SIZE,0x01)
+		D_ENDPOINT(USB_ENDPOINT_IN(HID.endpoint()), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
 	};
 	return USB_SendControl(0,&_hidInterface,sizeof(_hidInterface));
 }
@@ -89,13 +85,13 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 
 void HID_::SendReport(u8 id, const void* data, int len)
 {
-	USB_Send(HID_TX, &id, 1);
-	USB_Send(HID_TX | TRANSFER_RELEASE,data,len);
+	USB_Send(HID.endpoint(), &id, 1);
+	USB_Send(HID.endpoint() | TRANSFER_RELEASE,data,len);
 }
 
 bool HID_Setup(USBSetup& setup, uint8_t i)
 {
-	if (HID_INTERFACE != i) {
+	if (HID.interface() != i) {
 		return false;
 	} else {
 		uint8_t r = setup.bRequest;
@@ -141,7 +137,7 @@ HID_::HID_(void)
 	numInterfaces = 1;
 	endpointType = epType;
 
-	HID_ENDPOINT_INT = PluggableUSB.addFunction(this, &HID_INTERFACE);
+	PluggableUSB.plug(this);
 }
 
 int HID_::begin(void)

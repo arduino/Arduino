@@ -83,8 +83,6 @@ typedef struct
   EndpointDescriptor  in;
 } HIDDescriptor;
 
-#define HID_TX HID_ENDPOINT_INT
-
 #define D_HIDREPORT(_descriptorLength) \
   { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength & 0xFF, _descriptorLength >> 8 }
 
