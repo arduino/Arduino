@@ -24,6 +24,7 @@
 
 #include <stdint.h>
 #include <Arduino.h>
+#include "PluggableUSB.h"
 
 #if defined(USBCON)
 
@@ -53,7 +54,7 @@ public:
   uint16_t length;
 };
 
-class HID_
+class HID_ : public PUSBListNode
 {
 public:
   HID_(void);
