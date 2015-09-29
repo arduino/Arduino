@@ -30,7 +30,7 @@
 const int groundpin = 18;             // analog input pin 4 -- ground
 const int powerpin = 19;              // analog input pin 5 -- voltage
 const int xpin = A3;                  // x-axis of the accelerometer
-const int ypin = A2;                  // y-axis
+const int ypin = A0;                  // y-axis
 const int zpin = A1;                  // z-axis (only on 3-axis models)
 
 void setup()
