@@ -50,8 +50,6 @@ int PUSB_GetDescriptor(int8_t t);
 
 bool PUSB_Setup(USBSetup& setup, uint8_t i);
 
-void PUSB_Begin();
-
 #endif
 
 #endif
