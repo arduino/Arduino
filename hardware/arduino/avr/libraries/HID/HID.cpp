@@ -133,19 +133,15 @@ bool HID_Setup(USBSetup& setup, uint8_t i)
 HID_::HID_(void)
 {
 	static uint8_t endpointType[1];
-
 	endpointType[0] = EP_TYPE_INTERRUPT_IN;
 
-	static PUSBCallbacks cb = {
-		.setup = &HID_Setup,
-		.getInterface = &HID_GetInterface,
-		.getDescriptor = &HID_GetDescriptor,
-		.numEndpoints = 1,
-		.numInterfaces = 1,
-		.endpointType = endpointType,
-	};
-
-	static PUSBListNode node(&cb);
+	static PUSBListNode node;
+	node.setup = &HID_Setup,
+	node.getInterface = &HID_GetInterface,
+	node.getDescriptor = &HID_GetDescriptor,
+	node.numEndpoints = 1,
+	node.numInterfaces = 1,
+	node.endpointType = endpointType,
 
 	HID_ENDPOINT_INT = PUSB_AddFunction(&node, &HID_INTERFACE);
 }

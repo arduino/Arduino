@@ -40,7 +40,7 @@ int PUSB_GetInterface(u8* interfaceNum)
 	int ret = 0;
 	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count; i++) {
-		ret = node->cb->getInterface(interfaceNum);
+		ret = node->getInterface(interfaceNum);
 		node = node->next;
 	}
 	return ret;
@@ -51,7 +51,7 @@ int PUSB_GetDescriptor(int8_t t)
 	int ret = 0;
 	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count && ret == 0; i++) {
-		ret = node->cb->getDescriptor(t);
+		ret = node->getDescriptor(t);
 		node = node->next;
 	}
 	return ret;
@@ -62,7 +62,7 @@ bool PUSB_Setup(USBSetup& setup, u8 j)
 	bool ret = false;
 	PUSBListNode* node = rootNode;
 	for (u8 i=0; i<modules_count && ret == false; i++) {
-		ret = node->cb->setup(setup, j);
+		ret = node->setup(setup, j);
 		node = node->next;
 	}
 	return ret;
@@ -85,13 +85,13 @@ int8_t PUSB_AddFunction(PUSBListNode *node, u8* interface)
 	}
 
 	*interface = lastIf;
-	lastIf += node->cb->numInterfaces;
-	for ( u8 i = 0; i< node->cb->numEndpoints; i++) {
-		_initEndpoints[lastEp] = node->cb->endpointType[i];
+	lastIf += node->numInterfaces;
+	for ( u8 i = 0; i< node->numEndpoints; i++) {
+		_initEndpoints[lastEp] = node->endpointType[i];
 		lastEp++;
 	}
 	modules_count++;
-	return lastEp - node->cb->numEndpoints;
+	return lastEp - node->numEndpoints;
 	// restart USB layer???
 }
 

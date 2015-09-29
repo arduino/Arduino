@@ -25,21 +25,18 @@
 
 #if defined(USBCON)
 
-typedef struct __attribute__((packed))
-{
+class PUSBListNode {
+public:
+  PUSBListNode() { }
   bool (*setup)(USBSetup& setup, u8 i);
   int (*getInterface)(u8* interfaceNum);
   int (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
   int8_t numInterfaces;
   uint8_t *endpointType;
-} PUSBCallbacks;
 
-class PUSBListNode {
 public:
   PUSBListNode *next = NULL;
-  PUSBCallbacks *cb;
-  PUSBListNode(PUSBCallbacks *ncb) {cb = ncb;}
 };
 
 int8_t PUSB_AddFunction(PUSBListNode *node, u8 *interface);
