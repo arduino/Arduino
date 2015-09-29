@@ -115,7 +115,7 @@ void loop() {
     stringTwo= "Sensor: ";
 
     stringOne += analogRead(A0); 
-    stringTwo += analogRead(A5);
+    stringTwo += analogRead(A1);
 
     if (stringOne.compareTo(stringTwo) < 0 ) {
       Serial.println(stringOne + " comes before " + stringTwo); 
