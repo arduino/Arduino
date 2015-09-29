@@ -70,8 +70,23 @@ public class LegacyTargetPlatform implements TargetPlatform {
 
     // Load boards
     try {
-      Map<String, PreferencesMap> boardsPreferences = new PreferencesMap(
-          boardsFile).firstLevelMap();
+      PreferencesMap bPrefs = new PreferencesMap(
+          boardsFile);
+
+      // Allow overriding values in boards.txt. This allows changing
+      // boards.txt (e.g. to add user-specific items to a menu), without
+      // having to modify boards.txt (which, when running from git,
+      // prevents files being marked as changed).
+      File localboardsFile = new File(folder, "boards.local.txt");
+      try {
+        if (localboardsFile.exists() && localboardsFile.canRead()) {
+          bPrefs.load(localboardsFile);
+        }
+      } catch (IOException e) {
+        throw new TargetPlatformException(
+            format(tr("Error loading {0}"), localboardsFile.getAbsolutePath()), e);
+      }
+      Map<String, PreferencesMap> boardsPreferences = bPrefs.firstLevelMap();
 
       // Create custom menus for this platform
       PreferencesMap menus = boardsPreferences.get("menu");
