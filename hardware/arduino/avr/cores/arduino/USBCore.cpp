@@ -367,7 +367,7 @@ bool ClassInterfaceRequest(USBSetup& setup)
 		return CDC_Setup(setup);
 
 #ifdef PLUGGABLE_USB_ENABLED
-	return PUSB_Setup(setup, i);
+	return PluggableUSB.setup(setup, i);
 #endif
 	return false;
 }
@@ -445,7 +445,7 @@ static u8 SendInterfaces()
 	CDC_GetInterface(&interfaces);
 
 #ifdef PLUGGABLE_USB_ENABLED
-	PUSB_GetInterface(&interfaces);
+	PluggableUSB.getInterface(&interfaces);
 #endif
 
 	return interfaces;
@@ -481,7 +481,7 @@ bool SendDescriptor(USBSetup& setup)
 
 	InitControl(setup.wLength);
 #ifdef PLUGGABLE_USB_ENABLED
-	ret = PUSB_GetDescriptor(t);
+	ret = PluggableUSB.getDescriptor(t);
 	if (ret != 0) {
 		return (ret > 0 ? true : false);
 	}

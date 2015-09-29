@@ -39,13 +39,15 @@ public:
   PUSBListNode *next = NULL;
 };
 
-int8_t PUSB_AddFunction(PUSBListNode *node, u8 *interface);
+class PluggableUSB_ {
+public:
+  static int8_t addFunction(PUSBListNode *node, u8 *interface);
+  static int getInterface(u8* interfaceNum);
+  static int getDescriptor(int8_t t);
+  static bool setup(USBSetup& setup, u8 i);
+};
 
-int PUSB_GetInterface(u8* interfaceNum);
-
-int PUSB_GetDescriptor(int8_t t);
-
-bool PUSB_Setup(USBSetup& setup, u8 i);
+extern PluggableUSB_ PluggableUSB;
 
 #endif
 

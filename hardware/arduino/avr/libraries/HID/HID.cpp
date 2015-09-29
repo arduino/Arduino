@@ -143,7 +143,7 @@ HID_::HID_(void)
 	node.numInterfaces = 1,
 	node.endpointType = endpointType,
 
-	HID_ENDPOINT_INT = PUSB_AddFunction(&node, &HID_INTERFACE);
+	HID_ENDPOINT_INT = PluggableUSB.addFunction(&node, &HID_INTERFACE);
 }
 
 int HID_::begin(void)

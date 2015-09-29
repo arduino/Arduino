@@ -35,7 +35,7 @@ static u8 modules_count = 0;
 
 static PUSBListNode* rootNode = NULL;
 
-int PUSB_GetInterface(u8* interfaceNum)
+int PluggableUSB_::getInterface(u8* interfaceNum)
 {
 	int ret = 0;
 	PUSBListNode* node = rootNode;
@@ -46,7 +46,7 @@ int PUSB_GetInterface(u8* interfaceNum)
 	return ret;
 }
 
-int PUSB_GetDescriptor(int8_t t)
+int PluggableUSB_::getDescriptor(int8_t t)
 {
 	int ret = 0;
 	PUSBListNode* node = rootNode;
@@ -57,7 +57,7 @@ int PUSB_GetDescriptor(int8_t t)
 	return ret;
 }
 
-bool PUSB_Setup(USBSetup& setup, u8 j)
+bool PluggableUSB_::setup(USBSetup& setup, u8 j)
 {
 	bool ret = false;
 	PUSBListNode* node = rootNode;
@@ -68,7 +68,7 @@ bool PUSB_Setup(USBSetup& setup, u8 j)
 	return ret;
 }
 
-int8_t PUSB_AddFunction(PUSBListNode *node, u8* interface)
+int8_t PluggableUSB_::addFunction(PUSBListNode *node, u8* interface)
 {
 	if (modules_count >= MAX_MODULES) {
 		return 0;
