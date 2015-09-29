@@ -25,7 +25,7 @@
 
 const int redPin = A0;  // sensor to control red color
 const int greenPin = A1; // sensor to control green color
-const int bluePin = A2; // sensor to control blue color
+const int bluePin = A3; // sensor to control blue color
 
 void setup()
 {
