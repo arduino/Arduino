@@ -63,7 +63,6 @@ char WiFiClass::fwVersion[] = {0};
 // initialize AP mode static client registry variables
 //
 volatile unsigned int WiFiClass::_connectedDeviceCount = 0;
-volatile bool WiFiClass::_SimpleConfigComplete =  false;
 volatile unsigned int WiFiClass::_latestConnect = 0;
 volatile wlanAttachedDevice_t WiFiClass::_connectedDevices[MAX_AP_DEVICE_REGISTRY];
 
@@ -241,6 +240,7 @@ int WiFiClass::begin()
     return WL_IDLE_STATUS;
 
 }
+
 //--tested, working--//
 int WiFiClass::begin(char* ssid)
 {
@@ -958,10 +958,6 @@ int32_t WiFiClass::RSSI(uint8_t networkItem)
 //--tested, working--//
 uint8_t WiFiClass::status()
 {
-    int8_t name[33];
-    int16_t NameLen;
-    uint8_t i;
-
     if (!_initialized) {
         init();
     }
@@ -975,30 +971,6 @@ uint8_t WiFiClass::status()
     // The class variable WiFi_status is maintained by the slWlanEvenHandler
     //
     sl_Task();
-#endif
-#if 0
-    /* If SimpleConfig was started then wait for SimpleConfig to be complete.
-     * Only delete the existing profile if the connection was successfull */
-    if(_SimpleConfigComplete && (WiFi_status == WL_CONNECTED)) {
-        for (i = 0; i < 7; i++) {
-            _SimpleConfigComplete = false;
-            int16_t ret = sl_WlanProfileGet(i, name, &NameLen, NULL, NULL, NULL, NULL);
-            if (ret < 0) {
-                continue;
-            }
-            name[NameLen] = '\0';
-            Serial.print("\nProfile: ");
-            Serial.print(i);
-            Serial.print("    SSID: ");
-            Serial.println((char*)name);
-            /* Delete the profiles that do not match the SSID that the board is connected to */
-            if (strcmp((char *)name, connected_ssid) != 0) {
-                sl_WlanProfileDel(i);
-                Serial.print("Deleting Profile: ");
-                Serial.println(i);
-            }
-        }
-    }
 #endif
     return WiFi_status;
 }
@@ -1021,7 +993,7 @@ int WiFiClass::hostByName(char* aHostname, IPAddress& aResult)
     } else {
         return iRet;
     }
-    
+
 }
 
 int WiFiClass::startSmartConfig(bool block)
@@ -1046,7 +1018,6 @@ int WiFiClass::startSmartConfig(bool block)
     if (sl_WlanPolicySet(SL_POLICY_CONNECTION, SL_CONNECTION_POLICY(1,0,0,0,0), &policyVal, 1 /*PolicyValLen*/) < 0) {
         return -1;
     }
-
 
     if(!block) {
         return 0;

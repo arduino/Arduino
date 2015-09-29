@@ -114,7 +114,6 @@ public:
     volatile static unsigned int _connectedDeviceCount;
     volatile static wlanAttachedDevice_t _connectedDevices[MAX_AP_DEVICE_REGISTRY];
     volatile static unsigned int _latestConnect;
-    volatile static bool _SimpleConfigComplete;
     static void _registerNewDeviceIP(uint8_t *ip, uint8_t *mac);
     static void _unregisterDevice(uint8_t *mac);
 
