@@ -23,9 +23,6 @@
 #if defined(USBCON)	
 #ifdef PLUGGABLE_USB_ENABLED
 
-// TODO: set correct value for different CPUs
-#define MAX_EP 6
-
 extern uint8_t _initEndpoints[];
 
 PluggableUSB_ PluggableUSB;
@@ -64,7 +61,7 @@ bool PluggableUSB_::setup(USBSetup& setup, uint8_t j)
 
 bool PluggableUSB_::plug(PUSBListNode *node)
 {
-	if ((lastEp + node->numEndpoints) >= MAX_EP) {
+	if ((lastEp + node->numEndpoints) > USB_ENDPOINTS) {
 		return false;
 	}
 

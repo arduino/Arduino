@@ -18,6 +18,11 @@
 
 #define PLUGGABLE_USB_ENABLED
 
+#if defined(EPRST6)
+#define USB_ENDPOINTS 7 // AtMegaxxU4
+#else
+#define USB_ENDPOINTS 5 // AtMegaxxU2
+#endif
 
 #define CDC_INTERFACE_COUNT	2
 #define CDC_ENPOINT_COUNT	3
