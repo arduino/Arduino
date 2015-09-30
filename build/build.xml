@@ -87,8 +87,12 @@
     <antcall target="generate-hourly-build-txt"/>
   </target>
 
-  <target name="run" description="Run Arduino.">
+  <target name="run" description="Packs and runs Arduino">
     <antcall target="${platform}-run" />
+  </target>
+
+  <target name="start" description="Starts Arduino">
+    <antcall target="${platform}-start" />
   </target>
 
   <target name="dist" depends="revision-check"
@@ -421,14 +425,10 @@
     </chmod>
   </target>
 
-  <target name="macosx-run" depends="build" description="Run Mac OS X version">
-    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false" failonerror="true"/>
-  </target>
+  <target name="macosx-run" depends="build,start"/>
 
-  <!-- FIXME -->
-  <target name="macosx-debug">
-    <antcall target="macosx-run"/>
-    <echo>'ant macosx-debug' is deprecated. Please use 'ant run' instead</echo>
+  <target name="macosx-start">
+    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false" failonerror="true"/>
   </target>
 
   <!-- - - - - - - - - - - - - - - - -->
@@ -639,11 +639,15 @@
     </exec>
   </target>
 
-  <target name="linux32-run" depends="build" description="Run Linux (32-bit) version">
+  <target name="linux32-run" depends="build,start"/>
+
+  <target name="linux64-run" depends="build,start"/>
+
+  <target name="linux32-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
-  <target name="linux64-run" depends="build" description="Run Linux (64-bit) version">
+  <target name="linux64-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
@@ -892,8 +896,9 @@
     <antcall target="package-library-index-json-bundle"/>
   </target>
 
-  <target name="windows-run" depends="build"
-	  description="Run windows version">
+  <target name="windows-run" depends="build,start"/>
+
+  <target name="windows-start">
     <exec executable="windows/work/arduino.exe" dir="windows/work" spawn="false" failonerror="true"/>
   </target>
 
