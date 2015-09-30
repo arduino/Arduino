@@ -41,13 +41,19 @@ static const uint8_t SS      = 20;  /* P1.3 */
 static const uint8_t SCK     = 6;   /* P2.2 */
 static const uint8_t MOSI    = 11;  /* P1.6 aka SIMO */
 static const uint8_t MISO    = 12;  /* P1.7 aka SOMI */
-static const uint8_t TWISDA  = 11;  /* P1.6 */
-static const uint8_t TWISCL  = 12;  /* P1.7 */
-#define TWISDA_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
-#define TWISCL_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
+static const uint8_t TWISDA0  = 11;  /* P1.6 */
+static const uint8_t TWISCL0  = 12;  /* P1.7 */
+#define TWISDA0_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
+#define TWISCL0_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
 #define SPISCK_SET_MODE  (PORT_SELECTION1)
 #define SPIMOSI_SET_MODE (PORT_SELECTION1)
 #define SPIMISO_SET_MODE (PORT_SELECTION1)
+/* Define the default I2C settings */
+#define DEFAULT_I2C 0
+#define TWISDA TWISDA0
+#define TWISCL TWISCL0
+#define TWISDA_SET_MODE  TWISDA0_SET_MODE
+#define TWISCL_SET_MODE  TWISCL0_SET_MODE
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_A0__)

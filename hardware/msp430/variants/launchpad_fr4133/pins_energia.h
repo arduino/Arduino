@@ -42,13 +42,23 @@ static const uint8_t SS      = 8;   /* P2.5 */
 static const uint8_t SCK     = 7;   /* P5.1 */
 static const uint8_t MOSI    = 15;  /* P5.2 aka SIMO */
 static const uint8_t MISO    = 14;  /* P5.3 aka SOMI */
-static const uint8_t TWISDA  = 15;  /* P5.2 */
-static const uint8_t TWISCL  = 14;  /* P5.3 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
-#define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+static const uint8_t TWISCL1  = 9;   /* P8.2 SW I2C */
+static const uint8_t TWISDA1  = 10;  /* P8.3 SW I2C */
+static const uint8_t TWISDA0  = 15;  /* P5.2 UCB0 */
+static const uint8_t TWISCL0  = 14;  /* P5.3 UCB0 */
+#define TWISDA0_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISCL0_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISDA1_SET_MODE  (INPUT_PULLUP)
+#define TWISCL1_SET_MODE  (INPUT_PULLUP)
 #define SPISCK_SET_MODE  (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
+/* Define the default I2C settings */
+#define DEFAULT_I2C -1 /* indicates SW I2C on pseudo module 1 */
+#define TWISDA TWISDA1
+#define TWISCL TWISCL1
+#define TWISDA_SET_MODE  TWISDA1_SET_MODE
+#define TWISCL_SET_MODE  TWISCL1_SET_MODE
 #endif
 
 #if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)

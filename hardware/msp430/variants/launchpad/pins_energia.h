@@ -55,7 +55,8 @@ static const uint8_t DEBUG_UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
 #define TWISDA TWISDA0
 #define TWISCL TWISCL0
 #define TWISDA_SET_MODE  TWISDA0_SET_MODE
-#define TWISCL_SET_MODE  TWISCL1_SET_MODE
+#define TWISCL_SET_MODE  TWISCL0_SET_MODE
+#define DEFAULT_I2C 0
 #endif
 
 #define DEBUG_UART_MODULE_OFFSET 0x0
