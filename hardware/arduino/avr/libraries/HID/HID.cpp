@@ -83,7 +83,7 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 	sizeof_hidReportDescriptor += (uint16_t)node->length;
 }
 
-void HID_::SendReport(u8 id, const void* data, int len)
+void HID_::SendReport(uint8_t id, const void* data, int len)
 {
 	USB_Send(HID.endpoint(), &id, 1);
 	USB_Send(HID.endpoint() | TRANSFER_RELEASE,data,len);

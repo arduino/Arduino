@@ -28,8 +28,8 @@
 class PUSBListNode {
 public:
   PUSBListNode() { }
-  bool (*setup)(USBSetup& setup, u8 i);
-  int (*getInterface)(u8* interfaceNum);
+  bool (*setup)(USBSetup& setup, uint8_t i);
+  int (*getInterface)(uint8_t* interfaceNum);
   int (*getDescriptor)(int8_t t);
   int8_t numEndpoints;
   int8_t numInterfaces;
@@ -51,9 +51,9 @@ public:
 class PluggableUSB_ {
 public:
   static bool plug(PUSBListNode *node);
-  static int getInterface(u8* interfaceNum);
+  static int getInterface(uint8_t* interfaceNum);
   static int getDescriptor(int8_t t);
-  static bool setup(USBSetup& setup, u8 i);
+  static bool setup(USBSetup& setup, uint8_t i);
 };
 
 extern PluggableUSB_ PluggableUSB;
