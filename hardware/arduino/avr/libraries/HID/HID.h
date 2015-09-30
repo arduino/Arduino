@@ -87,15 +87,14 @@ protected:
   bool setup(USBSetup& setup, uint8_t i);
 
 private:
-  static HIDDescriptor hidInterface;
+  HIDDescriptor hidInterface;
 
-  static HIDDescriptorListNode* rootNode;
-  static uint16_t sizeof_hidReportDescriptor;
-  static uint8_t modules_count;
-  static uint8_t epType[];
+  HIDDescriptorListNode* rootNode;
+  uint16_t sizeof_hidReportDescriptor;
+  uint8_t modules_count;
 
-  static uint8_t protocol;
-  static uint8_t idle;
+  uint8_t protocol;
+  uint8_t idle;
 };
 
 #define D_HIDREPORT(_descriptorLength) \

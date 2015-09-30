@@ -23,24 +23,6 @@
 
 HID_ HID;
 
-//================================================================================
-//================================================================================
-//	HID Interface
-
-HIDDescriptor HID_::hidInterface;
-
-HIDDescriptorListNode* HID_::rootNode = NULL;
-uint16_t HID_::sizeof_hidReportDescriptor = 0;
-uint8_t HID_::modules_count = 0;
-uint8_t HID_::epType[] = { EP_TYPE_INTERRUPT_IN };
-
-//================================================================================
-//================================================================================
-//	Driver
-
-uint8_t HID_::protocol = 1;
-uint8_t HID_::idle = 1;
-
 int HID_::getInterface(uint8_t* interfaceNum)
 {
 	interfaceNum[0] += 1;	// uses 1
@@ -128,7 +110,13 @@ bool HID_::setup(USBSetup& setup, uint8_t i)
 	}
 }
 
-HID_::HID_(void) : PUSBListNode(1, 1, epType)
+// XXX: I've found no way to pass literal value directly in
+//      the PUSBListNode constructor
+static uint8_t epTypeDef[] = { EP_TYPE_INTERRUPT_IN };
+
+HID_::HID_(void) : PUSBListNode(1, 1, epTypeDef),
+                   rootNode(NULL), sizeof_hidReportDescriptor(0),
+                   modules_count(0), protocol(1), idle(1)
 {
 	// XXX: Shall this be done in PUSBListNode(...) constructor?
 	PluggableUSB.plug(this);
