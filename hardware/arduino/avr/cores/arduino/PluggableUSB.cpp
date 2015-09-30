@@ -23,58 +23,56 @@
 #if defined(USBCON)	
 #ifdef PLUGGABLE_USB_ENABLED
 
-#define MAX_MODULES	6
+// TODO: set correct value for different CPUs
+#define MAX_EP 6
 
 extern uint8_t _initEndpoints[];
-
-//PUSBCallbacks cbs[MAX_MODULES];
 
 PluggableUSB_ PluggableUSB;
 
 int PluggableUSB_::getInterface(uint8_t* interfaceNum)
 {
 	int ret = 0;
-	PUSBListNode* node = rootNode;
-	for (uint8_t i=0; i<modulesCount; i++) {
+	PUSBListNode* node;
+	for (node = rootNode; node; node = node->next) {
 		ret = node->getInterface(interfaceNum);
-		node = node->next;
 	}
 	return ret;
 }
 
 int PluggableUSB_::getDescriptor(int8_t t)
 {
-	int ret = 0;
-	PUSBListNode* node = rootNode;
-	for (uint8_t i=0; i<modulesCount && ret == 0; i++) {
-		ret = node->getDescriptor(t);
-		node = node->next;
+	PUSBListNode* node;
+	for (node = rootNode; node; node = node->next) {
+		int ret = node->getDescriptor(t);
+		if (ret)
+			return ret;
 	}
-	return ret;
+	return 0;
 }
 
 bool PluggableUSB_::setup(USBSetup& setup, uint8_t j)
 {
-	bool ret = false;
-	PUSBListNode* node = rootNode;
-	for (uint8_t i=0; i<modulesCount && ret == false; i++) {
-		ret = node->setup(setup, j);
-		node = node->next;
+	PUSBListNode* node;
+	for (node = rootNode; node; node = node->next) {
+		if (node->setup(setup, j)) {
+			return true;
+		}
 	}
-	return ret;
+	return false;
 }
 
 bool PluggableUSB_::plug(PUSBListNode *node)
 {
-	if (modulesCount >= MAX_MODULES) {
+	if ((lastEp + node->numEndpoints) >= MAX_EP) {
 		return false;
 	}
 
-	if (modulesCount == 0) {
+	if (!rootNode) {
 		rootNode = node;
 	} else {
 		PUSBListNode *current = rootNode;
-		while(current->next != NULL) {
+		while (current->next) {
 			current = current->next;
 		}
 		current->next = node;
@@ -83,18 +81,17 @@ bool PluggableUSB_::plug(PUSBListNode *node)
 	node->pluggedInterface = lastIf;
 	node->pluggedEndpoint = lastEp;
 	lastIf += node->numInterfaces;
-	for (uint8_t i=0; i<node->numEndpoints; i++) {
+	for (uint8_t i = 0; i < node->numEndpoints; i++) {
 		_initEndpoints[lastEp] = node->endpointType[i];
 		lastEp++;
 	}
-	modulesCount++;
 	return true;
 	// restart USB layer???
 }
 
 PluggableUSB_::PluggableUSB_() : lastIf(CDC_ACM_INTERFACE + CDC_INTERFACE_COUNT),
                                  lastEp(CDC_FIRST_ENDPOINT + CDC_ENPOINT_COUNT),
-                                 modulesCount(0), rootNode(NULL)
+                                 rootNode(NULL)
 {
 	// Empty
 }

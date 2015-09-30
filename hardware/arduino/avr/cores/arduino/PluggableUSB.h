@@ -63,7 +63,6 @@ public:
 private:
   uint8_t lastIf;
   uint8_t lastEp;
-  uint8_t modulesCount;
   PUSBListNode* rootNode;
 };
 
