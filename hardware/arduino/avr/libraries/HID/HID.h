@@ -80,11 +80,13 @@ public:
   void SendReport(uint8_t id, const void* data, int len);
   void AppendDescriptor(HIDDescriptorListNode* node);
 
-private:
-  static int GetInterface(uint8_t* interfaceNum);
-  static int GetDescriptor(int8_t t);
-  static bool Setup(USBSetup& setup, uint8_t i);
+protected:
+  // Implementation of the PUSBListNode
+  int getInterface(uint8_t* interfaceNum);
+  int getDescriptor(int8_t t);
+  bool setup(USBSetup& setup, uint8_t i);
 
+private:
   static HIDDescriptor hidInterface;
 
   static HIDDescriptorListNode* rootNode;

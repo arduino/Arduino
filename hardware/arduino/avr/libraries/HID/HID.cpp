@@ -41,19 +41,19 @@ uint8_t HID_::epType[] = { EP_TYPE_INTERRUPT_IN };
 uint8_t HID_::protocol = 1;
 uint8_t HID_::idle = 1;
 
-int HID_::GetInterface(uint8_t* interfaceNum)
+int HID_::getInterface(uint8_t* interfaceNum)
 {
 	interfaceNum[0] += 1;	// uses 1
 	hidInterface =
 	{
-		D_INTERFACE(HID.interface(), 1, 3, 0, 0),
+		D_INTERFACE(interface(), 1, 3, 0, 0),
 		D_HIDREPORT(sizeof_hidReportDescriptor),
-		D_ENDPOINT(USB_ENDPOINT_IN(HID.endpoint()), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
+		D_ENDPOINT(USB_ENDPOINT_IN(endpoint()), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
 	};
 	return USB_SendControl(0, &hidInterface, sizeof(hidInterface));
 }
 
-int HID_::GetDescriptor(int8_t t)
+int HID_::getDescriptor(int8_t t)
 {
 	if (HID_REPORT_DESCRIPTOR_TYPE == t) {
 		HIDDescriptorListNode* current = rootNode;
@@ -85,13 +85,13 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 
 void HID_::SendReport(uint8_t id, const void* data, int len)
 {
-	USB_Send(HID.endpoint(), &id, 1);
-	USB_Send(HID.endpoint() | TRANSFER_RELEASE,data,len);
+	USB_Send(endpoint(), &id, 1);
+	USB_Send(endpoint() | TRANSFER_RELEASE,data,len);
 }
 
-bool HID_::Setup(USBSetup& setup, uint8_t i)
+bool HID_::setup(USBSetup& setup, uint8_t i)
 {
-	if (HID.interface() != i) {
+	if (interface() != i) {
 		return false;
 	} else {
 		uint8_t r = setup.bRequest;
@@ -130,9 +130,6 @@ bool HID_::Setup(USBSetup& setup, uint8_t i)
 
 HID_::HID_(void)
 {
-	setup = HID_::Setup;
-	getInterface = HID_::GetInterface;
-	getDescriptor = HID_::GetDescriptor;
 	numEndpoints = 1;
 	numInterfaces = 1;
 	endpointType = epType;
