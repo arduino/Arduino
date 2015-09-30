@@ -7,6 +7,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
 # Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
@@ -16,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:28+0000\n"
+"PO-Revision-Date: 2015-09-30 07:37+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -51,7 +52,7 @@ msgstr "'마우스' 는 Arduino Leonardo에서만 사용가능합니다."
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "'arch' 폴더는 더 이상 지원되지 않습니다! 자세한 내용은 http://goo.gl/gfFJzU 를 참조하십시오"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -59,7 +60,7 @@ msgstr "(아두이노가 실행되지 않는 경우에만 수정 가능)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(레거시)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -338,7 +339,7 @@ msgstr "보드"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "알수없는 보드 {0} (플랫폼 {1}, 패키지 {2})"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -386,7 +387,7 @@ msgstr "빌드 선택사항 변경됨, 모두 다시 빌드합니다. "
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "내장된 예제"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -909,15 +910,15 @@ msgstr "예제"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "사용자 지정 라이브러리의 예제"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "라이브러리 예제"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "내보내기 취소, 변경은 먼저 저장해야합니다. "
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
@@ -1027,6 +1028,14 @@ msgstr "전역 변수는 ({2}%%)의 동적 메모리중 {0}바이트를 사용, 
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "전역 변수는 {0} 바이트의 동적 메모리를 사용."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr ""
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1150,7 +1159,7 @@ msgstr "잘못된 라이브러리가 {0}에서 발견: {1}"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
-msgstr ""
+msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1178,12 +1187,16 @@ msgstr "라이브러리가 추가되었습니다. \"라이브러리 포함하기
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
 msgid "Library can't use both 'src' and 'utility' folders."
-msgstr ""
+msgstr "라이브러리는 'src' 나 'utility' 폴더를 사용할 수 없습니다."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
 msgstr "라이브러리가 이미 설치됐습니다: {0} 버전 {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1196,7 +1209,7 @@ msgstr "설정파일 로딩..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "{0}*{1} 같은 레시피 찾기"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1221,7 +1234,7 @@ msgstr "메시지"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
 msgid "Missing '{0}' from library in {1}"
-msgstr ""
+msgstr "라이브러리 {1}에서 '{0}'가 없음"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
@@ -1425,7 +1438,7 @@ msgstr "Persian (이란)"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
 msgid "Platform {0} (package {1}) is unknown"
-msgstr ""
+msgstr "알 수 없는 플랫폼 {0} (패키지 {1})"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
@@ -1545,7 +1558,7 @@ msgstr "프로그래머"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "진행 {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1553,7 +1566,7 @@ msgstr "종료"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "RETIRED"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1609,12 +1622,12 @@ msgstr "루마니아어"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "레시피 실행: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "실행: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1724,7 +1737,7 @@ msgstr "시리얼 포트"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "빌드 경로를 {0}에 설정"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
@@ -2032,7 +2045,7 @@ msgstr "연결할 수 없음: 패스워드 확인"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr ""
+msgstr "{1} 에서 {0} 를 찾을 수 없음"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2054,12 +2067,12 @@ msgstr "취소"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr ""
+msgstr "컨텍스트 키 {1} 에서 처리되지 않은 타입 {0} "
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "알수없는 스케치파일 확장자: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2186,12 +2199,12 @@ msgstr "Arduino.cc 방문하기"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
 msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
-msgstr ""
+msgstr "경고: 라이브러리 {1}에서 카테고리 '{0}'가 유효하지 않습니다. '{2}'로 설정"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "경고: '{1}' 라이브러리에 {0} 허위 폴더"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2240,7 +2253,7 @@ msgstr "경고: 코어 '{0}'의 platform.txt는 오래된 {1}를 포함하며, �
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
+msgstr "경고 : 코어 '{0}'의 platform.txt는 프로퍼티 '{1}'이 없어서, 기본값 '{2}' 를 사용합니다. 이 코어를 업그레이드하는 것이 좋습니다."
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:170
 #, java-format
@@ -2499,12 +2512,12 @@ msgstr "{0} 라이브러리"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} 는 폴더이어야 합니다"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "{0} 패턴이 없습니다"
 
 #: debug/Compiler.java:365
 #, java-format

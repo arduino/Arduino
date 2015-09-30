@@ -7,6 +7,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # corneliu.e <corneliueva@yahoo.com>, 2013-2014
 # kobalt <kobalt_mstr@yahoo.it>, 2012
 # Liviu Roman, 2015
@@ -19,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:28+0000\n"
+"PO-Revision-Date: 2015-09-30 07:37+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Romanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -1031,6 +1032,14 @@ msgstr "Variabilele globale folosesc {0} bytes ({2}%%) din memoria dinamică, l�
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "Variabila globală foloseşte {0} bytes din memoria dinamică."
 
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr ""
+
 #: Preferences.java:98
 msgid "Greek"
 msgstr "Greacă"
@@ -1187,6 +1196,10 @@ msgstr ""
 #, java-format
 msgid "Library is already installed: {0} version {1}"
 msgstr "Biblioteca este deja instalată: {0} versiunea {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"

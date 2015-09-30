@@ -7,6 +7,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 #   Alexis Morin <mail@alexismorin.com>, 2012
 # AntoineM <antoine.meillet+transifex@gmail.com>, 2012
 # dbarbier <bouzim@gmail.com>, 2013-2014
@@ -24,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:28+0000\n"
+"PO-Revision-Date: 2015-09-30 07:37+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: French (http://www.transifex.com/mbanzi/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +60,7 @@ msgstr "« Mouse » n'est pris en compte que par l'Arduino Leonardo"
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "le dossier 'arch' n'est plus supporté! Pour plus d'informations  http://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -67,7 +68,7 @@ msgstr "(éditer uniquement lorsque Arduino ne s'exécute pas)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(héritage)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -346,7 +347,7 @@ msgstr "Type de carte"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "Carte {0} (plateforme {1}, package {2}) est inconnue"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -394,7 +395,7 @@ msgstr "Les options de compilation ont été modifiées, tout sera recompilé"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Exemples inclus"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -917,15 +918,15 @@ msgstr "Exemples"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Exemples depuis les bibliothèques personnalisées "
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "Exemples depuis les bibliothèques"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Exportation annulée, les changements doivent d'abord être enregistrés."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
@@ -1035,6 +1036,14 @@ msgstr "Les variables globales utilisent {0} octets ({2}%%) de mémoire dynamiqu
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "Les variables globales utilisent {0} octets de mémoire dynamique."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr ""
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1158,7 +1167,7 @@ msgstr "Bibliothèque non valide trouvée dans {0} : {1}"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
-msgstr ""
+msgstr "Guillement invalide: charactère [{0}] de fermeture non trouvé."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1186,12 +1195,16 @@ msgstr "La bibliothèque a été ajoutée à votre dossier de bibliothèques. Ve
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
 msgid "Library can't use both 'src' and 'utility' folders."
-msgstr ""
+msgstr "Une librairie ne peut pas utiliser les dossiers 'src' et 'utility' ensemble."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
 msgstr "La bibliothèque est déja installé: {0} version {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"

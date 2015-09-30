@@ -7,13 +7,14 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # debconf <prach.by@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:27+0000\n"
+"PO-Revision-Date: 2015-09-30 07:37+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Belarusian (http://www.transifex.com/mbanzi/arduino-ide-15/language/be/)\n"
 "MIME-Version: 1.0\n"
@@ -1025,6 +1026,14 @@ msgstr "Глабальныя пераменныя ўжываюць {0} байт�
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "Глабальныя пераменныя ўжываюць {0} байтаў дынамічнай памяці"
 
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr ""
+
 #: Preferences.java:98
 msgid "Greek"
 msgstr "Грэцкая"
@@ -1180,6 +1189,10 @@ msgstr ""
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
 msgstr ""
 
 #: Preferences.java:106

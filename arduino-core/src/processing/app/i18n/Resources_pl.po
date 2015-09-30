@@ -7,6 +7,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Jan Bielak <sharkie103@gmail.com>, 2013-2014
 # Krzysztof Zbudniewek <krzysztof.zbudniewek@gmail.com>, 2015
 # thedead4fun <matizochol@gmail.com>, 2015
@@ -18,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:28+0000\n"
+"PO-Revision-Date: 2015-09-30 07:37+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +54,7 @@ msgstr "'Myszka\" wspierana tylko na Arduino Leonardo"
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "folder 'arch' nie jest już obsługiwany! Więcej informacji pod adresem http://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -61,7 +62,7 @@ msgstr "(edytuj tylko kiedy Arduino nie pracuje)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(przestarzałe)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -340,7 +341,7 @@ msgstr "Płyta"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "Nieznana płytka {0} (platforma {1}, pakiet {2})"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -388,7 +389,7 @@ msgstr "Opcje projektu zmienione, przeładuj całość"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Wbudowane przykłady"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -911,15 +912,15 @@ msgstr "Przykłady"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Przykłady z niestandardowych bibliotek"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "Przykłady z bibliotek"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Eksport został anulowany, najpierw trzeba zachować zmiany."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
@@ -1029,6 +1030,14 @@ msgstr "Globalne zmienne używają {0} bajtów z ({2}%%) dynamicznej pamięci, p
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "Globalne zmienne używają {0} bajtów  dynamicznej pamięci."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr ""
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1152,7 +1161,7 @@ msgstr "Błędna biblioteka znaleziona w {0}: {1}"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
-msgstr ""
+msgstr "Nieprawidłowe cytowanie: nie znaleziono zamykającego znaku [{0}]."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1180,12 +1189,16 @@ msgstr "Biblioteka została dodana do bibliotek. Sprawdź menu \"Załącz biblio
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
 msgid "Library can't use both 'src' and 'utility' folders."
-msgstr ""
+msgstr "Biblioteka nie może używać jednocześnie folderów 'src' i 'utility'."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
 msgstr "Biblioteka jest już zainstalowana: {0} wersja {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1198,7 +1211,7 @@ msgstr "Ładowanie konfiguracji"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "Poszukiwanie przepisów typu {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1223,7 +1236,7 @@ msgstr "Wiadomości"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
 msgid "Missing '{0}' from library in {1}"
-msgstr ""
+msgstr "Brakuje '{0}' z biblioteki w {1}"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
@@ -1427,7 +1440,7 @@ msgstr "Perski (Iran)"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
 msgid "Platform {0} (package {1}) is unknown"
-msgstr ""
+msgstr "Nieznana platforma {0} (pakiet {1})"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
@@ -1547,7 +1560,7 @@ msgstr "Programrator"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Postęp {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1555,7 +1568,7 @@ msgstr "Wyjdź"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "WYCOFANE"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1611,12 +1624,12 @@ msgstr "Rumuński"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "Uruchomiony przepis: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "Uruchomiony: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1726,7 +1739,7 @@ msgstr "Porty seryjne"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "Ustawienie ścieżki budowania na {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
@@ -2034,7 +2047,7 @@ msgstr "Nie można się połączyć: złe hasło?"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr ""
+msgstr "Nie można znaleźć {0} w {1}"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2056,12 +2069,12 @@ msgstr "Cofnij"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr ""
+msgstr "Nieobsługiwany typ {0} w kontekście klucza {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "Nieznane rozszerzenie pliku ze szkicem: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2188,12 +2201,12 @@ msgstr "Odwiedź Arduino.cc"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
 msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
-msgstr ""
+msgstr "UWAGA: Kategoria '{0}' w bibliotece {1} jest nieprawidłowa. Ustawiono na '{2}'"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "UWAGA: Błędny folder {0} w bibliotece '{1}'"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2242,7 +2255,7 @@ msgstr "Uwaga: platform.txt z rdzenia '{0}' zawiera przestarzałe {1}, przekonwe
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
+msgstr "Uwaga: platform.txt z rdzenia '{0}' ma brakującą własność '{1}', użyto domyślnej wartości '{2}'. Rozważ aktualizację tego rdzenia."
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:170
 #, java-format
@@ -2501,12 +2514,12 @@ msgstr "{0} bibliotek"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} musi być folderem"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "Brakujący wzorzec {0}"
 
 #: debug/Compiler.java:365
 #, java-format

@@ -7,6 +7,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2013-2015
 # Davide Velluto <davide.network@gmail.com>, 2012
 # Federico Fissore <f.fissore@arduino.cc>, 2015
@@ -18,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:34+0000\n"
+"PO-Revision-Date: 2015-09-30 07:39+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/mbanzi/arduino-ide-15/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -911,11 +912,11 @@ msgstr "Esempi"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr "Esempi delle librerie custom"
+msgstr "Esempi da librerie personalizzate"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr "Esempi delle librerie"
+msgstr "Esempi da librerie"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1029,6 +1030,14 @@ msgstr "Le variabili globali usano {0} byte ({2}%%) di memoria dinamica, lascian
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "Le variabili globali usano {0} byte di memoria dinamica."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr "Vai alla linea"
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr "Vai alla linea..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1186,6 +1195,10 @@ msgstr "La libreria non può usare sia la cartella 'src' che la cartella 'utilit
 #, java-format
 msgid "Library is already installed: {0} version {1}"
 msgstr "Libreria già installata: {0} versione {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr "Linea numero:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1555,7 +1568,7 @@ msgstr "Esci"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr "RITARATI"
+msgstr "RITIRATI"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"

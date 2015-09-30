@@ -7,6 +7,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ethan <ethan42411@gmail.com>, 2014
 # Hank Lu <hankbox@gmail.com>, 2013
 # james58899 <james59988@gmail.com>, 2014
@@ -18,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-23 13:27+0000\n"
+"PO-Revision-Date: 2015-09-30 07:37+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -1030,6 +1031,14 @@ msgstr "全域變數使用了 {0} bytes ({2}%%) 動態記憶體，剩餘 {3} byt
 msgid "Global variables use {0} bytes of dynamic memory."
 msgstr "全域變數使用了 {0} bytes 動態內存。"
 
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr ""
+
 #: Preferences.java:98
 msgid "Greek"
 msgstr "希臘語"
@@ -1185,6 +1194,10 @@ msgstr ""
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
 msgstr ""
 
 #: Preferences.java:106
