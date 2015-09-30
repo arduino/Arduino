@@ -42,6 +42,8 @@ static const uint8_t SS      = 8;   /* P3.4 */
 static const uint8_t SCK     = 7;   /* P2.2 */
 static const uint8_t MOSI    = 15;  /* P1.6 aka SIMO */
 static const uint8_t MISO    = 14;  /* P1.7 aka SOMI */
+static const uint8_t TWISCL1  = 9;   /* P3.5 SW I2C */
+static const uint8_t TWISDA1  = 10;  /* P3.6 SW I2C */
 static const uint8_t TWISDA0  = 15;  /* P1.6 UCB0 */
 static const uint8_t TWISCL0  = 14;  /* P1.7 UCB0 */
 #define TWISDA0_SET_MODE  (PORT_SELECTION1 | INPUT_PULLUP)
