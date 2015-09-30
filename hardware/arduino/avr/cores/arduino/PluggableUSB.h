@@ -54,10 +54,17 @@ public:
 
 class PluggableUSB_ {
 public:
-  static bool plug(PUSBListNode *node);
-  static int getInterface(uint8_t* interfaceNum);
-  static int getDescriptor(int8_t t);
-  static bool setup(USBSetup& setup, uint8_t i);
+  PluggableUSB_();
+  bool plug(PUSBListNode *node);
+  int getInterface(uint8_t* interfaceNum);
+  int getDescriptor(int8_t t);
+  bool setup(USBSetup& setup, uint8_t i);
+
+private:
+  uint8_t lastIf;
+  uint8_t lastEp;
+  uint8_t modulesCount;
+  PUSBListNode* rootNode;
 };
 
 extern PluggableUSB_ PluggableUSB;
