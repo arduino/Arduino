@@ -30,10 +30,8 @@
 
 #define _USING_HID
 
-//================================================================================
-//================================================================================
-//  HID 'Driver'
-
+// HID 'Driver'
+// ------------
 #define HID_GET_REPORT        0x01
 #define HID_GET_IDLE          0x02
 #define HID_GET_PROTOCOL      0x03
@@ -44,24 +42,6 @@
 #define HID_HID_DESCRIPTOR_TYPE         0x21
 #define HID_REPORT_DESCRIPTOR_TYPE      0x22
 #define HID_PHYSICAL_DESCRIPTOR_TYPE    0x23
-
-class HIDDescriptorListNode {
-public:
-  HIDDescriptorListNode *next = NULL;
-  HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
-
-  const void* data;
-  uint16_t length;
-};
-
-class HID_ : public PUSBListNode
-{
-public:
-  HID_(void);
-  int begin(void);
-  void SendReport(uint8_t id, const void* data, int len);
-  void AppendDescriptor(HIDDescriptorListNode* node);
-};
 
 typedef struct
 {
@@ -82,6 +62,39 @@ typedef struct
   HIDDescDescriptor   desc;
   EndpointDescriptor  in;
 } HIDDescriptor;
+
+class HIDDescriptorListNode {
+public:
+  HIDDescriptorListNode *next = NULL;
+  HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
+
+  const void* data;
+  uint16_t length;
+};
+
+class HID_ : public PUSBListNode
+{
+public:
+  HID_(void);
+  int begin(void);
+  void SendReport(uint8_t id, const void* data, int len);
+  void AppendDescriptor(HIDDescriptorListNode* node);
+
+private:
+  static int GetInterface(uint8_t* interfaceNum);
+  static int GetDescriptor(int8_t t);
+  static bool Setup(USBSetup& setup, uint8_t i);
+
+  static HIDDescriptor hidInterface;
+
+  static HIDDescriptorListNode* rootNode;
+  static uint16_t sizeof_hidReportDescriptor;
+  static uint8_t modules_count;
+  static uint8_t epType[];
+
+  static uint8_t protocol;
+  static uint8_t idle;
+};
 
 #define D_HIDREPORT(_descriptorLength) \
   { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength & 0xFF, _descriptorLength >> 8 }

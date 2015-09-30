@@ -27,33 +27,33 @@ HID_ HID;
 //================================================================================
 //	HID Interface
 
-HIDDescriptor _hidInterface;
+HIDDescriptor HID_::hidInterface;
 
-static HIDDescriptorListNode* rootNode = NULL;
-static uint16_t sizeof_hidReportDescriptor = 0;
-static uint8_t modules_count = 0;
-static uint8_t epType[] = { EP_TYPE_INTERRUPT_IN };
+HIDDescriptorListNode* HID_::rootNode = NULL;
+uint16_t HID_::sizeof_hidReportDescriptor = 0;
+uint8_t HID_::modules_count = 0;
+uint8_t HID_::epType[] = { EP_TYPE_INTERRUPT_IN };
 
 //================================================================================
 //================================================================================
 //	Driver
 
-uint8_t _hid_protocol = 1;
-uint8_t _hid_idle = 1;
+uint8_t HID_::protocol = 1;
+uint8_t HID_::idle = 1;
 
-int HID_GetInterface(uint8_t* interfaceNum)
+int HID_::GetInterface(uint8_t* interfaceNum)
 {
 	interfaceNum[0] += 1;	// uses 1
-	_hidInterface =
+	hidInterface =
 	{
 		D_INTERFACE(HID.interface(), 1, 3, 0, 0),
 		D_HIDREPORT(sizeof_hidReportDescriptor),
 		D_ENDPOINT(USB_ENDPOINT_IN(HID.endpoint()), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
 	};
-	return USB_SendControl(0,&_hidInterface,sizeof(_hidInterface));
+	return USB_SendControl(0, &hidInterface, sizeof(hidInterface));
 }
 
-int HID_GetDescriptor(int8_t t)
+int HID_::GetDescriptor(int8_t t)
 {
 	if (HID_REPORT_DESCRIPTOR_TYPE == t) {
 		HIDDescriptorListNode* current = rootNode;
@@ -89,7 +89,7 @@ void HID_::SendReport(uint8_t id, const void* data, int len)
 	USB_Send(HID.endpoint() | TRANSFER_RELEASE,data,len);
 }
 
-bool HID_Setup(USBSetup& setup, uint8_t i)
+bool HID_::Setup(USBSetup& setup, uint8_t i)
 {
 	if (HID.interface() != i) {
 		return false;
@@ -100,12 +100,12 @@ bool HID_Setup(USBSetup& setup, uint8_t i)
 		{
 			if (HID_GET_REPORT == r)
 			{
-			//HID_GetReport();
+				//HID_GetReport();
 				return true;
 			}
 			if (HID_GET_PROTOCOL == r)
 			{
-			//Send8(_hid_protocol);	// TODO
+				//Send8(protocol);	// TODO
 				return true;
 			}
 		}
@@ -114,13 +114,13 @@ bool HID_Setup(USBSetup& setup, uint8_t i)
 		{
 			if (HID_SET_PROTOCOL == r)
 			{
-				_hid_protocol = setup.wValueL;
+				protocol = setup.wValueL;
 				return true;
 			}
 
 			if (HID_SET_IDLE == r)
 			{
-				_hid_idle = setup.wValueL;
+				idle = setup.wValueL;
 				return true;
 			}
 		}
@@ -130,9 +130,9 @@ bool HID_Setup(USBSetup& setup, uint8_t i)
 
 HID_::HID_(void)
 {
-	setup = &HID_Setup;
-	getInterface = &HID_GetInterface;
-	getDescriptor = &HID_GetDescriptor;
+	setup = HID_::Setup;
+	getInterface = HID_::GetInterface;
+	getDescriptor = HID_::GetDescriptor;
 	numEndpoints = 1;
 	numInterfaces = 1;
 	endpointType = epType;
