@@ -27,10 +27,9 @@
 
 class PUSBListNode {
 public:
-  PUSBListNode() { }
-  int8_t numEndpoints;
-  int8_t numInterfaces;
-  uint8_t *endpointType;
+  PUSBListNode(int8_t numEps, int8_t numIfs, uint8_t *epType) :
+    numEndpoints(numEps), numInterfaces(numIfs), endpointType(epType)
+  { }
 
   inline uint8_t interface() const { return pluggedInterface; }
   inline int8_t endpoint()   const { return pluggedEndpoint; }
@@ -42,6 +41,10 @@ protected:
 
   uint8_t pluggedInterface;
   int8_t pluggedEndpoint;
+
+  const int8_t numEndpoints;
+  const int8_t numInterfaces;
+  const uint8_t *endpointType;
 
 public:
   PUSBListNode *next = NULL;

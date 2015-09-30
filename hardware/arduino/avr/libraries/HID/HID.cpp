@@ -128,12 +128,9 @@ bool HID_::setup(USBSetup& setup, uint8_t i)
 	}
 }
 
-HID_::HID_(void)
+HID_::HID_(void) : PUSBListNode(1, 1, epType)
 {
-	numEndpoints = 1;
-	numInterfaces = 1;
-	endpointType = epType;
-
+	// XXX: Shall this be done in PUSBListNode(...) constructor?
 	PluggableUSB.plug(this);
 }
 
