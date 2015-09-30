@@ -88,6 +88,7 @@ protected:
 
 private:
   HIDDescriptor hidInterface;
+  uint8_t epType[1];
 
   HIDDescriptorListNode* rootNode;
   uint16_t sizeof_hidReportDescriptor;

@@ -110,15 +110,11 @@ bool HID_::setup(USBSetup& setup, uint8_t i)
 	}
 }
 
-// XXX: I've found no way to pass literal value directly in
-//      the PUSBListNode constructor
-static uint8_t epTypeDef[] = { EP_TYPE_INTERRUPT_IN };
-
-HID_::HID_(void) : PUSBListNode(1, 1, epTypeDef),
+HID_::HID_(void) : PUSBListNode(1, 1, epType),
                    rootNode(NULL), sizeof_hidReportDescriptor(0),
                    modules_count(0), protocol(1), idle(1)
 {
-	// XXX: Shall this be done in PUSBListNode(...) constructor?
+	epType[0] = EP_TYPE_INTERRUPT_IN;
 	PluggableUSB.plug(this);
 }
 
