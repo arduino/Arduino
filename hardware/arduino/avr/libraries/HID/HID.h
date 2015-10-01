@@ -92,7 +92,6 @@ private:
 
   HIDDescriptorListNode* rootNode;
   uint16_t sizeof_hidReportDescriptor;
-  uint8_t modules_count;
 
   uint8_t protocol;
   uint8_t idle;

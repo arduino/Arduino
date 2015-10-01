@@ -56,7 +56,7 @@ int HID_::getDescriptor(int8_t type)
 
 void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 {
-	if (modules_count == 0) {
+	if (!rootNode) {
 		rootNode = node;
 	} else {
 		HIDDescriptorListNode *current = rootNode;
@@ -65,7 +65,6 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 		}
 		current->next = node;
 	}
-	modules_count++;
 	sizeof_hidReportDescriptor += (uint16_t)node->length;
 }
 
@@ -116,7 +115,7 @@ bool HID_::setup(USBSetup& setup, uint8_t interfaceNum)
 
 HID_::HID_(void) : PUSBListNode(1, 1, epType),
                    rootNode(NULL), sizeof_hidReportDescriptor(0),
-                   modules_count(0), protocol(1), idle(1)
+                   protocol(1), idle(1)
 {
 	epType[0] = EP_TYPE_INTERRUPT_IN;
 	PluggableUSB.plug(this);
