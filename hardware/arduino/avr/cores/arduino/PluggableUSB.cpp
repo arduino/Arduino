@@ -29,19 +29,23 @@ PluggableUSB_ PluggableUSB;
 
 int PluggableUSB_::getInterface(uint8_t* interfaceNum)
 {
-	int ret = 0;
+	int sent = 0;
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
-		ret = node->getInterface(interfaceNum);
+		int res = node->getInterface(interfaceNum);
+		if (res == -1)
+			return -1;
+		sent += res;
 	}
-	return ret;
+	return sent;
 }
 
-int PluggableUSB_::getDescriptor(int8_t t)
+int PluggableUSB_::getDescriptor(int8_t type)
 {
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
-		int ret = node->getDescriptor(t);
+		int ret = node->getDescriptor(type);
+		// ret!=0 -> request has been processed
 		if (ret)
 			return ret;
 	}

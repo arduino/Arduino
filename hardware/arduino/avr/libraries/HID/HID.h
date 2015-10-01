@@ -83,8 +83,8 @@ public:
 protected:
   // Implementation of the PUSBListNode
   int getInterface(uint8_t* interfaceNum);
-  int getDescriptor(int8_t t);
-  bool setup(USBSetup& setup, uint8_t i);
+  int getDescriptor(int8_t type);
+  bool setup(USBSetup& setup, uint8_t interfaceNum);
 
 private:
   HIDDescriptor hidInterface;
