@@ -84,7 +84,6 @@ protected:
   bool setup(USBSetup& setup, uint8_t interfaceNum);
 
 private:
-  HIDDescriptor hidInterface;
   uint8_t epType[1];
 
   HIDDescriptorListNode* rootNode;

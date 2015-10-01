@@ -26,7 +26,7 @@ HID_ HID;
 int HID_::getInterface(uint8_t* interfaceNum)
 {
 	*interfaceNum += 1; // uses 1
-	hidInterface = {
+	HIDDescriptor hidInterface = {
 		D_INTERFACE(interface(), 1, 3, 0, 0),
 		D_HIDREPORT(descriptorSize),
 		D_ENDPOINT(USB_ENDPOINT_IN(endpoint()), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
