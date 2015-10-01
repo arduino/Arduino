@@ -28,7 +28,7 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "Energia.h" // for digitalWrite
+#include "Energia.h"  // for digitalWrite
  
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -42,6 +42,9 @@
 #include "pins_energia.h"
 #include "twi.h"
 #include "usci_isr_handler.h"
+#if DEFAULT_I2C == -1 // SW I2C implementation on default port
+#include "twi_sw.h"   // software I2C interface
+#endif
 
 static volatile uint8_t twi_state;
 static volatile uint8_t twi_sendStop;           // should the transaction end with a stop
@@ -84,13 +87,13 @@ static uint8_t twi_my_addr;
   
 #define UCBxCTLW0     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_  - UCB0_BASE))))
 #define UCBxCTLW1     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0CTLW1_  - UCB0_BASE))))
-//#define UCBxCTL0      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_+1- UCB0_BASE))))
-//#define UCBxCTL1      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_  - UCB0_BASE))))
+#define UCBxCTL0      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_+1- UCB0_BASE))))
+#define UCBxCTL1      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0CTLW0_  - UCB0_BASE))))
 #define UCBxBRW       (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0BRW_    - UCB0_BASE))))
-//#define UCBxBR0       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0BRW_    - UCB0_BASE))))
-//#define UCBxBR1       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0BRW_+1  - UCB0_BASE))))
-//#define UCBxMCTL      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0MCTL_   - UCB0_BASE))))
-//#define UCBxMCTLW     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0MCTLW_  - UCB0_BASE))))
+#define UCBxBR0       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0BRW_    - UCB0_BASE))))
+#define UCBxBR1       (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0BRW_+1  - UCB0_BASE))))
+#define UCBxMCTL      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0MCTL_   - UCB0_BASE))))
+#define UCBxMCTLW     (*((volatile uint16_t *)((uint16_t)(I2C_baseAddress + UCB0MCTLW_  - UCB0_BASE))))
 #define UCBxSTAT      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0STAT_   - UCB0_BASE))))
 #define UCBxTBCNT     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0TBCNT_  - UCB0_BASE))))
 #define UCBxRXBUF     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0RXBUF_  - UCB0_BASE))))
@@ -99,7 +102,7 @@ static uint8_t twi_my_addr;
 #define UCBxIRCTL     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IRCTL_  - UCB0_BASE))))
 #define UCBxIRTCTL    (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IRTCTL_ - UCB0_BASE))))
 #define UCBxIRRCTL    (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0IRRCTL_ - UCB0_BASE))))
-//#define UCBxICTL      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0ICTL_   - UCB0_BASE))))
+#define UCBxICTL      (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0ICTL_   - UCB0_BASE))))
 #define UCBxI2COA     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0I2COA_  - UCB0_BASE))))
 #define UCBxI2COA0    (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0I2COA0_ - UCB0_BASE))))
 #define UCBxI2CSA     (*((volatile uint8_t  *)((uint16_t)(I2C_baseAddress + UCB0I2CSA_  - UCB0_BASE))))
@@ -153,13 +156,6 @@ static uint8_t twi_my_addr;
 #endif // #if defined(UCB0CTLW0_) || defined(UCB1CTLW0_)
 
 
-#if defined(__MSP430_HAS_EUSCI_B0__)
-#endif
-
-#if defined(__MSP430_HAS_USCI__) \
- || defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__) \
- || defined(__MSP430_HAS_EUSCI_B0__) || defined(__MSP430_HAS_EUSCI_B1__)
-
 #if DEFAULT_I2C == -1 // SW I2C implementation on default port
 uint16_t I2C_baseAddress = -1;
 #endif
@@ -170,10 +166,13 @@ uint16_t I2C_baseAddress = UCB0_BASE;
 uint16_t I2C_baseAddress = UCB1_BASE;
 #endif
 
-#endif
 
-
-
+/*
+ * Function twi_setModule
+ * Desc     Selects the I2C module to use
+ * Input    Module instance
+ * Output   none
+ */
 void twi_setModule(uint8_t _i2cModule)
 {
 #if DEFAULT_I2C == -1 // SW I2C implementation on default port
