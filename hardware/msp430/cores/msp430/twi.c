@@ -183,13 +183,13 @@ void twi_setModule(uint8_t _i2cModule)
 #endif
 	if (_i2cModule == 0)
 	{
-#if defined(__MSP430_HAS_USCI_B0__)|| defined(__MSP430_HAS_EUSCI_B0__)
+#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_EUSCI_B0__)
 		I2C_baseAddress = UCB0_BASE;
 #endif
 	}
 	if (_i2cModule == 1)
 	{
-#if defined(__MSP430_HAS_USCI_B1__)|| defined(__MSP430_HAS_EUSCI_B1__)
+#if defined(__MSP430_HAS_USCI_B1__) || defined(__MSP430_HAS_EUSCI_B1__)
 		I2C_baseAddress = UCB1_BASE;
 #endif
 	}
@@ -206,14 +206,19 @@ static void twi_init_port(void)
 #if DEFAULT_I2C == -1 // SW I2C implementation on default port
 	if (I2C_baseAddress == -1)
 	{
-		pinMode_int(TWISDA1, TWISDA1_SET_MODE);
-		pinMode_int(TWISCL1, TWISCL1_SET_MODE);
+		//pinMode_int(TWISDA1, TWISDA1_SET_MODE);
+		//pinMode_int(TWISCL1, TWISCL1_SET_MODE);
+		i2c_sw_init();
 		return;
 	}
 #endif
 #if defined(__MSP430_HAS_USCI__)
-	pinMode_int(TWISDA, TWISDA_SET_MODE);
-	pinMode_int(TWISCL, TWISCL_SET_MODE);
+	if (I2C_baseAddress == UCB0_BASE)
+	{
+		pinMode_int(TWISDA0, TWISDA0_SET_MODE);
+		pinMode_int(TWISCL0, TWISCL0_SET_MODE);
+		return;
+	}
 #endif
 #if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_EUSCI_B0__)
 	if (I2C_baseAddress == UCB0_BASE)
@@ -410,9 +415,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
 #if (DEFAULT_I2C == -1)
 	if (I2C_baseAddress == -1)
 	{
-		startI2C(address, 1);     // start I2C in read mode
-		readI2C_sw(data, length);
-	    if (sendStop) stopI2C();
+		i2c_sw_read(address, length, data, sendStop);
 		return length;
 	}
 #endif
@@ -525,12 +528,10 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
 #if (DEFAULT_I2C == -1)	
 	if (I2C_baseAddress == -1)
 	{
-		uint8_t i = 0;
-		startI2C(address, 0);     // start I2C in write mode
-		while (i < length)
-			writeI2C(data[i++]);
-	    if (sendStop) stopI2C();
-		return twi_error;
+		if (i2c_sw_write(address, length, data, sendStop))
+			return TWI_ERROR_OTHER;
+		else
+			return TWI_ERRROR_NO_ERROR;
 	}
 #endif
 #if defined(__MSP430_HAS_USI__)
