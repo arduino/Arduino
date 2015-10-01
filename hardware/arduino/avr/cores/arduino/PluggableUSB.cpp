@@ -25,8 +25,6 @@
 
 extern uint8_t _initEndpoints[];
 
-PluggableUSB_ PluggableUSB;
-
 int PluggableUSB_::getInterface(uint8_t* interfaceNum)
 {
 	int sent = 0;
@@ -88,6 +86,12 @@ bool PluggableUSB_::plug(PUSBListNode *node)
 	}
 	return true;
 	// restart USB layer???
+}
+
+PluggableUSB_& PluggableUSB()
+{
+	static PluggableUSB_ obj;
+	return obj;
 }
 
 PluggableUSB_::PluggableUSB_() : lastIf(CDC_ACM_INTERFACE + CDC_INTERFACE_COUNT),

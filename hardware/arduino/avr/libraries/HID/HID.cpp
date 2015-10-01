@@ -21,7 +21,11 @@
 
 #if defined(USBCON)
 
-HID_ HID;
+HID_& HID()
+{
+	static HID_ obj;
+	return obj;
+}
 
 int HID_::getInterface(uint8_t* interfaceNum)
 {
@@ -113,7 +117,7 @@ HID_::HID_(void) : PUSBListNode(1, 1, epType),
                    protocol(1), idle(1)
 {
 	epType[0] = EP_TYPE_INTERRUPT_IN;
-	PluggableUSB.plug(this);
+	PluggableUSB().plug(this);
 }
 
 int HID_::begin(void)

@@ -66,7 +66,10 @@ private:
   PUSBListNode* rootNode;
 };
 
-extern PluggableUSB_ PluggableUSB;
+// Replacement for global singleton.
+// This function prevents static-initialization-order-fiasco
+// https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
+PluggableUSB_& PluggableUSB();
 
 #endif
 

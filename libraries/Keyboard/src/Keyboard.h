@@ -94,7 +94,6 @@ public:
   void releaseAll(void);
 };
 extern Keyboard_ Keyboard;
-extern HID_ HID;
 
 #endif
 #endif
