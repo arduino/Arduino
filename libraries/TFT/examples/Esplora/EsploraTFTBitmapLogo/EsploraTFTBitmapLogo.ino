@@ -23,7 +23,6 @@
 
 // include the necessary libraries
 #include <Esplora.h>
-#include <SPI.h>
 #include <SD.h>
 #include <TFT.h>            // Arduino LCD library
 
@@ -50,7 +49,7 @@ void setup() {
   // print some diagnostic info
   Serial.begin(9600);
   while (!Serial) {
-    // wait for serial monitor to be open
+    // wait for serial port to connect. Needed for native USB port only
   }
 
   // try to access the SD card. If that fails (e.g.

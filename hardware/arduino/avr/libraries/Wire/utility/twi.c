@@ -91,6 +91,22 @@ void twi_init(void)
 }
 
 /* 
+ * Function twi_disable
+ * Desc     disables twi pins
+ * Input    none
+ * Output   none
+ */
+void twi_disable(void)
+{
+  // disable twi module, acks, and twi interrupt
+  TWCR &= ~(_BV(TWEN) | _BV(TWIE) | _BV(TWEA));
+
+  // deactivate internal pullups for twi.
+  digitalWrite(SDA, 0);
+  digitalWrite(SCL, 0);
+}
+
+/* 
  * Function twi_slaveInit
  * Desc     sets slave address and enables interrupt
  * Input    none
@@ -464,8 +480,6 @@ ISR(TWI_vect)
       if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
         twi_rxBuffer[twi_rxBufferIndex] = '\0';
       }
-      // sends ack and stops interface for clock stretching
-      twi_stop();
       // callback to user defined callback
       twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
       // since we submit rx buffer to "wire" library, we can reset it

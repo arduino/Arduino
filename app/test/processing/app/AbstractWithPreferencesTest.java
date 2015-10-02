@@ -31,6 +31,9 @@ package processing.app;
 
 import cc.arduino.files.DeleteFilesOnShutdown;
 import org.junit.Before;
+import processing.app.helpers.FileUtils;
+
+import java.util.Random;
 
 public abstract class AbstractWithPreferencesTest {
 
@@ -44,7 +47,7 @@ public abstract class AbstractWithPreferencesTest {
 
     BaseNoGui.initPackages();
 
-    Base.untitledFolder = BaseNoGui.createTempFolder("untitled");
+    Base.untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(Base.untitledFolder);
   }
 

@@ -35,7 +35,7 @@ import processing.app.I18n;
 import java.util.Comparator;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public abstract class ContributedLibrary extends DownloadableContribution {
 
@@ -94,7 +94,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   @Override
   public String toString() {
-    return I18n.format(_("Version {0}"), getParsedVersion());
+    return I18n.format(tr("Version {0}"), getParsedVersion());
   }
 
   public String info() {

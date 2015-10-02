@@ -51,7 +51,7 @@ void setup() {
   // start serial port:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   // give the ethernet module time to boot up:

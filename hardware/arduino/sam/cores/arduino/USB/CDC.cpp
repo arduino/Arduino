@@ -17,6 +17,7 @@
 #include "Arduino.h"
 #include "USBAPI.h"
 #include "Reset.h"
+#include "Print.h"
 
 #ifdef CDC_ENABLED
 
@@ -103,7 +104,7 @@ int WEAK CDC_GetOtherInterface(uint8_t* interfaceNum)
 	return USBD_SendControl(0,&_cdcOtherInterface,sizeof(_cdcOtherInterface));
 }
 
-bool WEAK CDC_Setup(Setup& setup)
+bool WEAK CDC_Setup(USBSetup& setup)
 {
 	uint8_t r = setup.bRequest;
 	uint8_t requestType = setup.bmRequestType;
@@ -297,6 +298,30 @@ Serial_::operator bool()
 
 	delay(10);
 	return result;
+}
+
+unsigned long Serial_::baud() {
+	return _usbLineInfo.dwDTERate;
+}
+
+uint8_t Serial_::stopbits() {
+	return _usbLineInfo.bCharFormat;
+}
+
+uint8_t Serial_::paritytype() {
+	return _usbLineInfo.bParityType;
+}
+
+uint8_t Serial_::numbits() {
+	return _usbLineInfo.bDataBits;
+}
+
+bool Serial_::dtr() {
+	return _usbLineInfo.lineState & 0x1;
+}
+
+bool Serial_::rts() {
+	return _usbLineInfo.lineState & 0x2;
 }
 
 Serial_ SerialUSB;

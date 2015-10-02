@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 /**
  * Storage class for theme settings. This was separated from the Preferences
@@ -55,7 +55,7 @@ public class Theme {
     try {
       table.load(new File(BaseNoGui.getContentFile("lib"), "theme/theme.txt"));
     } catch (Exception te) {
-      Base.showError(null, _("Could not read color theme settings.\n" +
+      Base.showError(null, tr("Could not read color theme settings.\n" +
               "You'll need to reinstall Arduino."), te);
     }
 

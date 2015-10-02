@@ -27,6 +27,7 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 IPAddress ip(192, 168, 1, 177);
+IPAddress myDns(192,168,1, 1);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 0, 0);
 
@@ -37,13 +38,13 @@ boolean alreadyConnected = false; // whether or not the client was connected pre
 
 void setup() {
   // initialize the ethernet device
-  Ethernet.begin(mac, ip, gateway, subnet);
+  Ethernet.begin(mac, ip, myDns, gateway, subnet);
   // start listening for clients
   server.begin();
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
 

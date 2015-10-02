@@ -102,7 +102,7 @@ public class FilterJTextField extends JTextField {
     // Empty
   }
 
-  public void updateStyle() {
+  private void updateStyle() {
     if (showingHint) {
       setText(filterHint);
       setForeground(Color.gray);

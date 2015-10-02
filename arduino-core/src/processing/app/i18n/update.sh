@@ -20,9 +20,9 @@ catalog()
 {
   # Generate the new text catalog without the already translated texts.
   # The 'merge existing' option for xgetext does not work propery for our purpose.
-  find ../../../ -name '*.java' -print > "$files"
-  find ../../../../../app/src -name '*.java' -print >> "$files"
-  xgettext -s -L Java --from-code=utf-8 -k_ --output="$catalog" --files-from="$files"
+  find ../../../../../app/ -name '*.java' -print > "$files"
+  find ../../../../../arduino-core/ -name '*.java' -print >> "$files"
+  xgettext -s -L Java --from-code=utf-8 --keyword=tr --output="$catalog" --files-from="$files"
 }
 
 update()

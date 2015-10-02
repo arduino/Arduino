@@ -29,6 +29,7 @@
 
 package cc.arduino.packages.uploaders;
 
+import cc.arduino.CompilerUtils;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.ssh.*;
@@ -46,7 +47,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class SSHUploader extends Uploader {
 
@@ -70,7 +71,7 @@ public class SSHUploader extends Uploader {
   @Override
   public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws RunnerException, PreferencesMapException {
     if (usingProgrammer) {
-      throw new RunnerException(_("Network upload using programmer not supported"));
+      throw new RunnerException(tr("Network upload using programmer not supported"));
     }
 
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
@@ -117,7 +118,7 @@ public class SSHUploader extends Uploader {
       if (!coreMissesRemoteUploadTool && mergedSketch.exists()) {
         sketchToCopy = mergedSketch;
       } else {
-        sketchToCopy = processing.app.debug.Compiler.findCompiledSketch(prefs);
+        sketchToCopy = new CompilerUtils().findCompiledSketch(prefs);
       }
       scpFiles(scp, ssh, sourcePath, sketchToCopy, warningsAccumulator);
 
@@ -198,11 +199,11 @@ public class SSHUploader extends Uploader {
       return false;
     }
     if (!www.canExecute()) {
-      warningsAccumulator.add(_("Problem accessing files in folder ") + www);
+      warningsAccumulator.add(tr("Problem accessing files in folder ") + www);
       return false;
     }
     if (!ssh.execSyncCommand("special-storage-available")) {
-      warningsAccumulator.add(_("Problem accessing board folder /www/sd"));
+      warningsAccumulator.add(tr("Problem accessing board folder /www/sd"));
       return false;
     }
     return true;

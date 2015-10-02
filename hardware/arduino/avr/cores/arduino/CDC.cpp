@@ -18,9 +18,9 @@
 
 #include "USBAPI.h"
 #include <avr/wdt.h>
+#include <util/atomic.h>
 
 #if defined(USBCON)
-#ifdef CDC_ENABLED
 
 typedef struct
 {
@@ -32,6 +32,7 @@ typedef struct
 } LineInfo;
 
 static volatile LineInfo _usbLineInfo = { 57600, 0x00, 0x00, 0x00, 0x00 };
+static volatile int32_t breakValue = -1;
 
 #define WEAK __attribute__ ((weak))
 
@@ -50,17 +51,17 @@ const CDCDescriptor _cdcInterface =
 
 	//	CDC data interface
 	D_INTERFACE(CDC_DATA_INTERFACE,2,CDC_DATA_INTERFACE_CLASS,0,0),
-	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT),USB_ENDPOINT_TYPE_BULK,0x40,0),
-	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,0x40,0)
+	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT),USB_ENDPOINT_TYPE_BULK,USB_EP_SIZE,0),
+	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,USB_EP_SIZE,0)
 };
 
-int WEAK CDC_GetInterface(u8* interfaceNum)
+int CDC_GetInterface(u8* interfaceNum)
 {
 	interfaceNum[0] += 2;	// uses 2
 	return USB_SendControl(TRANSFER_PGM,&_cdcInterface,sizeof(_cdcInterface));
 }
 
-bool WEAK CDC_Setup(Setup& setup)
+bool CDC_Setup(USBSetup& setup)
 {
 	u8 r = setup.bRequest;
 	u8 requestType = setup.bmRequestType;
@@ -76,6 +77,11 @@ bool WEAK CDC_Setup(Setup& setup)
 
 	if (REQUEST_HOSTTODEVICE_CLASS_INTERFACE == requestType)
 	{
+		if (CDC_SEND_BREAK == r)
+		{
+			breakValue = ((uint16_t)setup.wValueH << 8) | setup.wValueL;
+		}
+
 		if (CDC_SET_LINE_CODING == r)
 		{
 			USB_RecvControl((void*)&_usbLineInfo,7);
@@ -93,10 +99,24 @@ bool WEAK CDC_Setup(Setup& setup)
 			// with a relatively long period so it can finish housekeeping tasks
 			// like servicing endpoints before the sketch ends
 
+#ifndef MAGIC_KEY
+#define MAGIC_KEY 0x7777
+#endif
+#ifndef MAGIC_KEY_POS
+#define MAGIC_KEY_POS 0x0800
+#endif
+
 			// We check DTR state to determine if host port is open (bit 0 of lineState).
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
-				*(uint16_t *)0x0800 = 0x7777;
+#if MAGIC_KEY_POS != (RAMEND-1)
+				*(uint16_t *)(RAMEND-1) = *(uint16_t *)MAGIC_KEY_POS;
+				*(uint16_t *)MAGIC_KEY_POS = MAGIC_KEY;
+#else
+				// for future boards save the key in the inproblematic RAMEND
+				// which is reserved for the main() return value (which will never return)
+				*(uint16_t *)MAGIC_KEY_POS = MAGIC_KEY;
+#endif
 				wdt_enable(WDTO_120MS);
 			}
 			else
@@ -108,7 +128,11 @@ bool WEAK CDC_Setup(Setup& setup)
 
 				wdt_disable();
 				wdt_reset();
-				*(uint16_t *)0x0800 = 0x0;
+#if MAGIC_KEY_POS != (RAMEND-1)
+				*(uint16_t *)MAGIC_KEY_POS = *(uint16_t *)(RAMEND-1);
+#else
+				*(uint16_t *)MAGIC_KEY_POS = 0x0000;
+#endif
 			}
 		}
 		return true;
@@ -154,6 +178,11 @@ int Serial_::read(void)
 		return c;
 	}
 	return USB_Recv(CDC_RX);
+}
+
+int Serial_::availableForWrite(void)
+{
+	return USB_SendSpace(CDC_TX);
 }
 
 void Serial_::flush(void)
@@ -205,7 +234,46 @@ Serial_::operator bool() {
 	return result;
 }
 
+unsigned long Serial_::baud() {
+	// Disable interrupts while reading a multi-byte value
+	uint32_t baudrate;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		baudrate =  _usbLineInfo.dwDTERate;
+	}
+	return baudrate;
+}
+
+uint8_t Serial_::stopbits() {
+	return _usbLineInfo.bCharFormat;
+}
+
+uint8_t Serial_::paritytype() {
+	return _usbLineInfo.bParityType;
+}
+
+uint8_t Serial_::numbits() {
+	return _usbLineInfo.bDataBits;
+}
+
+bool Serial_::dtr() {
+	return _usbLineInfo.lineState & 0x1;
+}
+
+bool Serial_::rts() {
+	return _usbLineInfo.lineState & 0x2;
+}
+
+int32_t Serial_::readBreak() {
+	int32_t ret;
+	// Disable IRQs while reading and clearing breakValue to make
+	// sure we don't overwrite a value just set by the ISR.
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		ret = breakValue;
+		breakValue = -1;
+	}
+	return ret;
+}
+
 Serial_ Serial;
 
-#endif
 #endif /* if defined(USBCON) */

@@ -16,11 +16,35 @@ ARDUINO 1.6.6
 * Added Serial Plotter. Thanks @henningpohl
 * Editor: triple click selects whole line
 * Windows: IDE startup feels faster
+* Examples of libraries with a .development flag file in their root folder won't get marked as read-only. See #2619
+* Update notifications: when updates are available from either Library or Boards Managers, a popup will be shown
+* Introducing arduino-builder, a command line tool that properly calls gcc. Fixes lots of issues about buggy preprocessing.
+* Each open sketch gets built in its own folder, allowing the IDE to recycle previous compilations and being much faster
+* "Go to line": CTRL+L or Edit > Go to line... will open a dialog where you can type the line number where you want the editor to jump to
+* Added boards.local.txt support: like platform.local.txt, allows to enrich a boards.txt definition without modifying the original file. Thanks @Wackerbarth
+* Library to library dependencies: when your sketch imports a library, and that library uses another, the IDE will find out without you having to add a useless #include to your sketch
 
 [libraries]
-
 * Bridge: YunClient.connected() returns true if there are bytes available for read. Thanks @RobAtticus
 * Bridge: YunClient.stop() now empties all buffers. Thanks @RobAtticus
+
+[core]
+AVR: fixed wrong turnOffPWM() for TIMER0B. Thanks @gonzoveliki
+
+ARDUINO 1.6.5-r5 - 2015.08.28
+
+[ide]
+* Fixed a but preventing upload on boards that do not supply VID/PID. See #3738
+
+ARDUINO 1.6.5-r4 - 2015.08.27
+
+[ide]
+* Added support to Genuino boards
+
+ARDUINO 1.6.5-r3 - 2015.07.20
+
+[ide]
+* Fixed Mac signature for OSX >=10.10.4
 
 ARDUINO 1.6.5-r2 - 2015.06.17
 

@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.filters.BuiltInPredicate;
@@ -40,100 +39,73 @@ import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
 import cc.arduino.utils.ReverseComparator;
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import processing.app.Base;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCell extends InstallerTableCell {
 
-  private JPanel panel;
-  private JButton installButton;
-  private JButton removeButton;
-  private Component removeButtonPlaceholder;
-  private Component installButtonPlaceholder;
+  private final JPanel panel;
+  private final JButton installButton;
+  private final JButton removeButton;
+  private final Component removeButtonPlaceholder;
+  private final Component installButtonPlaceholder;
   private JComboBox downgradeChooser;
-  private JComboBox versionToInstallChooser;
-  private JButton downgradeButton;
-  private JPanel buttonsPanel;
-  private JPanel inactiveButtonsPanel;
-  private JLabel statusLabel;
+  private final JComboBox versionToInstallChooser;
+  private final JButton downgradeButton;
+  private final JPanel buttonsPanel;
+  private final JPanel inactiveButtonsPanel;
+  private final JLabel statusLabel;
 
   public ContributedPlatformTableCell() {
     {
-      installButton = new JButton(_("Install"));
-      installButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          onInstall(editorValue.getSelected(), editorValue.getInstalled());
-        }
-      });
+      installButton = new JButton(tr("Install"));
+      installButton.addActionListener(e -> onInstall(editorValue.getSelected(), editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
     {
-      removeButton = new JButton(_("Remove"));
-      removeButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          onRemove(editorValue.getInstalled());
-        }
-      });
+      removeButton = new JButton(tr("Remove"));
+      removeButton.addActionListener(e -> onRemove(editorValue.getInstalled()));
       int width = removeButton.getPreferredSize().width;
       removeButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
-    downgradeButton = new JButton(_("Install"));
-    downgradeButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        ContributedPlatform selected = (ContributedPlatform) downgradeChooser.getSelectedItem();
-        onInstall(selected, editorValue.getInstalled());
-      }
+    downgradeButton = new JButton(tr("Install"));
+    downgradeButton.addActionListener(e -> {
+      ContributedPlatform selected = (ContributedPlatform) downgradeChooser.getSelectedItem();
+      onInstall(selected, editorValue.getInstalled());
     });
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
     downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
-    downgradeChooser.addItemListener(new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        Object selectVersionItem = downgradeChooser.getItemAt(0);
-        boolean disableDowngrade = (e.getItem() == selectVersionItem);
-        downgradeButton.setEnabled(!disableDowngrade);
-      }
+    downgradeChooser.addItemListener(e -> {
+      Object selectVersionItem = downgradeChooser.getItemAt(0);
+      boolean disableDowngrade = (e.getItem() == selectVersionItem);
+      downgradeButton.setEnabled(!disableDowngrade);
     });
 
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
     versionToInstallChooser.setMaximumSize(versionToInstallChooser.getPreferredSize());
-    versionToInstallChooser.addItemListener(new ItemListener() {
-      @Override
-      public void itemStateChanged(ItemEvent e) {
-        editorValue.select((ContributedPlatform) versionToInstallChooser.getSelectedItem());
-      }
-    });
+    versionToInstallChooser.addItemListener(e -> editorValue.select((ContributedPlatform) versionToInstallChooser.getSelectedItem()));
 
     panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -197,19 +169,16 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       HTMLDocument html = (HTMLDocument) doc;
       StyleSheet stylesheet = html.getStyleSheet();
       stylesheet.addRule("body { margin: 0; padding: 0;"
-              + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
-              + "font-size: 100%;" + "font-size: 0.95em; }");
+        + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+        + "font-size: 100%;" + "font-size: 0.95em; }");
     }
     description.setOpaque(false);
     description.setBorder(new EmptyBorder(4, 7, 7, 7));
     description.setHighlighter(null);
     description.setEditable(false);
-    description.addHyperlinkListener(new HyperlinkListener() {
-      @Override
-      public void hyperlinkUpdate(HyperlinkEvent e) {
-        if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-          Base.openURL(e.getDescription());
-        }
+    description.addHyperlinkListener(e -> {
+      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+        Base.openURL(e.getDescription());
       }
     });
     description.addKeyListener(new DelegatingKeyListener(parentTable));
@@ -264,50 +233,39 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
 
     final ContributedPlatform installed = editorValue.getInstalled();
 
-    java.util.List<ContributedPlatform> releases = new LinkedList<ContributedPlatform>(editorValue.releases);
-    java.util.List<ContributedPlatform> uninstalledReleases = new LinkedList<ContributedPlatform>(Collections2.filter(releases, Predicates.not(new InstalledPredicate())));
+    java.util.List<ContributedPlatform> releases = new LinkedList<>(editorValue.releases);
+    java.util.List<ContributedPlatform> uninstalledReleases = releases.stream().filter(new InstalledPredicate().negate()).collect(Collectors.toList());
 
-    java.util.List<ContributedPlatform> installedBuiltIn = new LinkedList<ContributedPlatform>(Collections2.filter(releases, Predicates.and(new InstalledPredicate(), new BuiltInPredicate())));
+    java.util.List<ContributedPlatform> installedBuiltIn = releases.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
 
     if (installed != null && !installedBuiltIn.contains(installed)) {
       uninstalledReleases.addAll(installedBuiltIn);
     }
 
-    Collections.sort(uninstalledReleases, new ReverseComparator<DownloadableContribution>(new DownloadableContributionVersionComparator()));
+    Collections.sort(uninstalledReleases, new ReverseComparator<>(new DownloadableContributionVersionComparator()));
 
     downgradeChooser.removeAllItems();
-    downgradeChooser.addItem(_("Select version"));
+    downgradeChooser.addItem(tr("Select version"));
 
-    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = Lists.newLinkedList();
-    final java.util.List<ContributedPlatform> uninstalledNewerReleases = Lists.newLinkedList();
+    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
+    final java.util.List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
 
     final VersionComparator versionComparator = new VersionComparator();
-    Lists.newLinkedList(Lists.transform(uninstalledReleases, new Function<ContributedPlatform, ContributedPlatform>() {
-      @Override
-      public ContributedPlatform apply(ContributedPlatform input) {
-        if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
-          uninstalledPreviousReleases.add(input);
-        } else {
-          uninstalledNewerReleases.add(input);
-        }
-
-        return input;
+    uninstalledReleases.stream().forEach(input -> {
+      if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
+        uninstalledPreviousReleases.add(input);
+      } else {
+        uninstalledNewerReleases.add(input);
       }
-    }));
-    for (ContributedPlatform release : uninstalledNewerReleases) {
-      downgradeChooser.addItem(release);
-    }
-    for (ContributedPlatform release : uninstalledPreviousReleases) {
-      downgradeChooser.addItem(release);
-    }
+    });
+    uninstalledNewerReleases.forEach(downgradeChooser::addItem);
+    uninstalledPreviousReleases.forEach(downgradeChooser::addItem);
 
     downgradeChooser.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
     downgradeButton.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
 
     versionToInstallChooser.removeAllItems();
-    for (ContributedPlatform release : uninstalledReleases) {
-      versionToInstallChooser.addItem(release);
-    }
+    uninstalledReleases.forEach(versionToInstallChooser::addItem);
     versionToInstallChooser.setVisible(installed == null && uninstalledReleases.size() > 1);
 
     Component component = getUpdatedCellComponent(value, true, row, !installedBuiltIn.isEmpty());
@@ -339,10 +297,10 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
     }
     if (installable) {
-      installButton.setText(_("Install"));
+      installButton.setText(tr("Install"));
     }
     if (upgradable) {
-      installButton.setText(_("Update"));
+      installButton.setText(tr("Update"));
     }
     installButton.setVisible(installable || upgradable);
     installButtonPlaceholder.setVisible(!(installable || upgradable));
@@ -360,11 +318,11 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       desc += " " + format("by <b>{0}</b>", author);
     }
     if (installed != null) {
-      desc += " " + format(_("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
+      desc += " " + format(tr("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
     desc += "<br />";
 
-    desc += _("Boards included in this package:") + "<br />";
+    desc += tr("Boards included in this package:") + "<br />";
     for (ContributedBoard board : selected.getBoards()) {
       desc += board.getName() + ", ";
     }
@@ -413,7 +371,7 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     return panel;
   }
 
-  private Timer enabler = new Timer(100, new ActionListener() {
+  private final Timer enabler = new Timer(100, new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent e) {
       enable(true);

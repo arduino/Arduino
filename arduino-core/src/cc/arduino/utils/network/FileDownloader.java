@@ -29,8 +29,10 @@
 
 package cc.arduino.utils.network;
 
+import cc.arduino.net.CustomProxySelector;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
+import processing.app.PreferencesData;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,7 +122,10 @@ public class FileDownloader extends Observable {
 
       setStatus(Status.CONNECTING);
 
-      Proxy proxy = ProxySelector.getDefault().select(downloadUrl.toURI()).get(0);
+      Proxy proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(downloadUrl.toURI());
+      if ("true".equals(System.getProperty("DEBUG"))) {
+        System.err.println("Using proxy " + proxy);
+      }
 
       HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection(proxy);
 
@@ -140,7 +145,7 @@ public class FileDownloader extends Observable {
       if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
         URL newUrl = new URL(connection.getHeaderField("Location"));
 
-        proxy = ProxySelector.getDefault().select(newUrl.toURI()).get(0);
+        proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(newUrl.toURI());
 
         // open the new connnection again
         connection = (HttpURLConnection) newUrl.openConnection(proxy);

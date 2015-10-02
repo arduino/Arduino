@@ -100,6 +100,7 @@ editor.reserved_word_2.style = #00979C,plain
 editor.literal_boolean.style = #00979C,plain
 editor.literal_char.style = #00979C,plain
 editor.literal_string_double_quote.style = #00979C,plain
+editor.preprocessor.style = #5E6D03,plain
 
 # http://www.arduino.cc/
 editor.url.style = #0000ff,underlined

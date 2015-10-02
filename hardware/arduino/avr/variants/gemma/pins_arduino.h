@@ -42,6 +42,8 @@
 //            GND  4|    |5  PB0 (D 0) pwm0
 //                  +----+
 
+#define LED_BUILTIN 1
+
 static const uint8_t A0 = 6;
 static const uint8_t A1 = 7;
 static const uint8_t A2 = 8;

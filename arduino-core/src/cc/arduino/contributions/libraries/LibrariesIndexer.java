@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions.libraries;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.libraries.filters.LibraryInstalledInsideCore;
 import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -36,8 +37,6 @@ import cc.arduino.contributions.packages.ContributionsIndexer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -55,7 +54,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class LibrariesIndexer {
 
@@ -94,7 +93,7 @@ public class LibrariesIndexer {
 
       index.getLibraries()
         .stream()
-        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()))
+        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()) || !Constants.LIBRARY_CATEGORIES.contains(library.getCategory()))
         .forEach(library -> library.setCategory("Uncategorized"));
     } finally {
       IOUtils.closeQuietly(indexIn);
@@ -110,6 +109,11 @@ public class LibrariesIndexer {
     // Clear all installed flags
     installedLibraries.clear();
     installedLibrariesWithDuplicates.clear();
+
+    if (index.getLibraries() == null) {
+      return;
+    }
+
     for (ContributedLibrary lib : index.getLibraries()) {
       lib.setInstalled(false);
     }
@@ -119,14 +123,10 @@ public class LibrariesIndexer {
       scanInstalledLibraries(folder, folder.equals(sketchbookLibrariesFolder));
     }
 
-    FluentIterable.from(installedLibraries).filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore(contributionsIndexer)).transform(new Function<UserLibrary, Object>() {
-      @Override
-      public Object apply(UserLibrary userLibrary) {
-        ContributedPlatform platform = contributionsIndexer.getPlatformByFolder(userLibrary.getInstalledFolder());
-        userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
-        return userLibrary;
-      }
-    }).toList();
+    installedLibraries.stream().filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore(contributionsIndexer)).forEach(userLibrary -> {
+      ContributedPlatform platform = contributionsIndexer.getPlatformByFolder(userLibrary.getInstalledFolder());
+      userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
+    });
   }
 
   private void scanInstalledLibraries(File folder, boolean isSketchbook) {
@@ -143,11 +143,11 @@ public class LibrariesIndexer {
 
           badLibNotified.add(subfolder.getName());
 
-          String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
+          String mess = I18n.format(tr("The library \"{0}\" cannot be used.\n"
               + "Library names must contain only basic letters and numbers.\n"
               + "(ASCII only and no spaces, and it cannot start with a number)"),
             subfolder.getName());
-          BaseNoGui.showMessage(_("Ignoring bad library name"), mess);
+          BaseNoGui.showMessage(tr("Ignoring bad library name"), mess);
         }
         continue;
       }
@@ -155,7 +155,7 @@ public class LibrariesIndexer {
       try {
         scanLibrary(subfolder, isSketchbook);
       } catch (IOException e) {
-        System.out.println(I18n.format(_("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
+        System.out.println(I18n.format(tr("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
       }
     }
   }
@@ -221,7 +221,7 @@ public class LibrariesIndexer {
   }
 
   public LibraryList getInstalledLibraries() {
-    return installedLibraries;
+    return new LibraryList(installedLibraries);
   }
 
   // Same as getInstalledLibraries(), but allow duplicates between
@@ -241,8 +241,6 @@ public class LibrariesIndexer {
    * Set the sketchbook library folder. <br />
    * New libraries will be installed here. <br />
    * Libraries not found on this folder will be marked as read-only.
-   *
-   * @param folder
    */
   public void setSketchbookLibrariesFolder(File folder) {
     this.sketchbookLibrariesFolder = folder;

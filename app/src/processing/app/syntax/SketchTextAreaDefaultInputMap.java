@@ -15,6 +15,7 @@ public class SketchTextAreaDefaultInputMap extends RSyntaxTextAreaDefaultInputMa
 
   public SketchTextAreaDefaultInputMap() {
     int defaultModifier = getDefaultModifier();
+    int ctrl = InputEvent.CTRL_MASK;
     int alt = InputEvent.ALT_MASK;
     int shift = InputEvent.SHIFT_MASK;
     boolean isOSX = RTextArea.isOSX();
@@ -49,6 +50,14 @@ public class SketchTextAreaDefaultInputMap extends RSyntaxTextAreaDefaultInputMa
 
       put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, defaultModifier | shift), DefaultEditorKit.selectionBeginAction);
       put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, defaultModifier | shift), DefaultEditorKit.selectionEndAction);
+
+      if (!PreferencesData.getBoolean("editor.keys.home_and_end_beginning_end_of_doc")) {
+        put(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0), DefaultEditorKit.beginLineAction);
+        put(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0), DefaultEditorKit.endLineAction);
+      }
+
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_A, ctrl), DefaultEditorKit.beginLineAction);
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_E, ctrl), DefaultEditorKit.endLineAction);
     }
 
     put(KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, defaultModifier), RSyntaxTextAreaEditorKit.rstaToggleCommentAction);

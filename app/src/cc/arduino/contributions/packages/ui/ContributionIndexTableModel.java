@@ -31,18 +31,19 @@ package cc.arduino.contributions.packages.ui;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.filters.InstalledPredicate;
+import cc.arduino.contributions.packages.ContributedBoard;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
 public class ContributionIndexTableModel extends FilteredAbstractTableModel<ContributedPlatform> {
@@ -59,8 +60,8 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
     public ContributedPlatformReleases(ContributedPlatform platform) {
       this.packager = platform.getParentPackage();
       this.arch = platform.getArchitecture();
-      this.releases = new LinkedList<ContributedPlatform>();
-      this.versions = new LinkedList<String>();
+      this.releases = new LinkedList<>();
+      this.versions = new LinkedList<>();
       add(platform);
     }
 
@@ -80,7 +81,7 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
     }
 
     public ContributedPlatform getInstalled() {
-      List<ContributedPlatform> installedReleases = new LinkedList<ContributedPlatform>(Collections2.filter(releases, new InstalledPredicate()));
+      List<ContributedPlatform> installedReleases = releases.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
       Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
 
       if (installedReleases.isEmpty()) {
@@ -108,11 +109,11 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
     }
   }
 
-  private List<ContributedPlatformReleases> contributions = new ArrayList<ContributedPlatformReleases>();
+  private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
 
-  private String[] columnNames = {"Description"};
+  private final String[] columnNames = {"Description"};
 
-  private Class<?>[] columnTypes = {ContributedPlatform.class};
+  private final Class<?>[] columnTypes = {ContributedPlatform.class};
 
   private ContributionsIndexer indexer;
 
@@ -120,15 +121,16 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
     this.indexer = indexer;
   }
 
-  public void updateIndexFilter(String filters[], Predicate<ContributedPlatform>... additionalFilters) {
+  public void updateIndexFilter(String[] filters, Stream<Predicate<ContributedPlatform>> additionalFilters) {
     contributions.clear();
-    Predicate<ContributedPlatform> filter = Predicates.and(additionalFilters);
+    Predicate<ContributedPlatform> filter = additionalFilters.reduce(Predicate::and).get();
     for (ContributedPackage pack : indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
-        if (!filter.apply(platform)) {
+        String compoundTargetSearchText = platform.getName() + "\n" + platform.getBoards().stream().map(ContributedBoard::getName).collect(Collectors.joining(" "));
+        if (!filter.test(platform)) {
           continue;
         }
-        if (!stringContainsAll(platform.getName(), filters))
+        if (!stringContainsAll(compoundTargetSearchText, filters))
           continue;
         addContribution(platform);
       }

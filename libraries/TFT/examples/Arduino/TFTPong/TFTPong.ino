@@ -17,7 +17,6 @@
  */
 
 #include <TFT.h>  // Arduino LCD library
-#include <SPI.h>
 
 // pin definition for the Uno
 #define cs   10

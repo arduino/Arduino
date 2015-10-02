@@ -30,9 +30,6 @@
 package cc.arduino.contributions.ui;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import processing.app.Base;
 import processing.app.Theme;
 
@@ -42,11 +39,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -95,7 +92,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       categoryChooser.setMaximumRowCount(20);
       categoryChooser.setEnabled(false);
 
-      filterField = new FilterJTextField(_("Filter your search...")) {
+      filterField = new FilterJTextField(tr("Filter your search...")) {
         @Override
         protected void onFilter(String[] _filters) {
           filters = _filters;
@@ -109,7 +106,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       filtersContainer = new JPanel();
       filtersContainer.setLayout(new BoxLayout(filtersContainer, BoxLayout.X_AXIS));
       filtersContainer.add(Box.createHorizontalStrut(5));
-      filtersContainer.add(new JLabel(_("Type")));
+      filtersContainer.add(new JLabel(tr("Type")));
       filtersContainer.add(Box.createHorizontalStrut(5));
       filtersContainer.add(categoryChooser);
       filtersContainer.add(Box.createHorizontalStrut(5));
@@ -172,35 +169,22 @@ public abstract class InstallerJDialog<T> extends JDialog {
     errorMessage.setForeground(Color.RED);
 
     {
-      JButton cancelButton = new JButton(_("Cancel"));
-      cancelButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          onCancelPressed();
-        }
-      });
+      JButton cancelButton = new JButton(tr("Cancel"));
+      cancelButton.addActionListener(arg0 -> onCancelPressed());
 
       progressBox = Box.createHorizontalBox();
       progressBox.add(progressBar);
       progressBox.add(Box.createHorizontalStrut(5));
       progressBox.add(cancelButton);
 
-      dismissErrorMessageButton = new JButton(_("OK"));
-      dismissErrorMessageButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          clearErrorMessage();
-          setErrorMessageVisible(false);
-        }
+      dismissErrorMessageButton = new JButton(tr("OK"));
+      dismissErrorMessageButton.addActionListener(arg0 -> {
+        clearErrorMessage();
+        setErrorMessageVisible(false);
       });
 
-      closeButton = new JButton(_("Close"));
-      closeButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-          InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING));
-        }
-      });
+      closeButton = new JButton(tr("Close"));
+      closeButton.addActionListener(arg0 -> InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING)));
 
       errorMessageBox = Box.createHorizontalBox();
       errorMessageBox.add(Box.createHorizontalGlue());
@@ -225,24 +209,14 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-    Base.registerWindowCloseKeys(getRootPane(), new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING));
-      }
-    });
+    Base.registerWindowCloseKeys(getRootPane(), e -> InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING)));
 
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        onUpdatePressed();
-      }
-    });
+    SwingUtilities.invokeLater(InstallerJDialog.this::onUpdatePressed);
   }
 
   public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {
-    Collection<Predicate<T>> notNullAdditionalFilters = Collections2.filter(Arrays.asList(additionalFilters), Predicates.notNull());
-    contribModel.updateIndexFilter(filters, notNullAdditionalFilters.toArray(new Predicate[notNullAdditionalFilters.size()]));
+    Stream<Predicate<T>> notNullAdditionalFilters = Stream.of(additionalFilters).filter(filter -> filter != null);
+    contribModel.updateIndexFilter(filters, notNullAdditionalFilters);
   }
 
   public void setErrorMessage(String message) {
@@ -300,6 +274,19 @@ public abstract class InstallerJDialog<T> extends JDialog {
       listener.focusGained(new FocusEvent(filterField, FocusEvent.FOCUS_GAINED));
     }
     filterField.setText(filterText);
+  }
+
+  public void selectDropdownItemByClassName(String dropdownItem) {
+    selectDropdownItemByClassName(categoryChooser, dropdownItem);
+  }
+
+  public void selectDropdownItemByClassName(JComboBox combo, String dropdownItem) {
+    for (int i = 0; i < combo.getItemCount(); i++) {
+      if (dropdownItem.equals(combo.getItemAt(i).getClass().getSimpleName())) {
+        combo.setSelectedIndex(i);
+        return;
+      }
+    }
   }
 
   /**

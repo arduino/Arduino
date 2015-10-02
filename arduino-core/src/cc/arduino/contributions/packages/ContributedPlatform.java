@@ -78,8 +78,9 @@ public abstract class ContributedPlatform extends DownloadableContribution {
       ContributedTool tool = dep.resolve(packages);
       if (tool == null) {
         System.err.println("Index error: could not find referenced tool " + dep);
+      } else {
+        resolvedTools.add(tool);
       }
-      resolvedTools.add(tool);
     }
   }
 

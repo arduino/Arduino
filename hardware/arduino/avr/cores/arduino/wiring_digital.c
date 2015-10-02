@@ -94,7 +94,7 @@ static void turnOffPWM(uint8_t timer)
 		case  TIMER0A:  cbi(TCCR0A, COM0A1);    break;
 		#endif
 		
-		#if defined(TIMER0B) && defined(COM0B1)
+		#if defined(TCCR0A) && defined(COM0B1)
 		case  TIMER0B:  cbi(TCCR0A, COM0B1);    break;
 		#endif
 		#if defined(TCCR2A) && defined(COM2A1)
