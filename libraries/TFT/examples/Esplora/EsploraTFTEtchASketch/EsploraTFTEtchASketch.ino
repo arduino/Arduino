@@ -17,7 +17,6 @@
 
 #include <Esplora.h>
 #include <TFT.h>  // Arduino LCD library
-#include <SPI.h>
 
 // initial position of the cursor
 int xPos = EsploraTFT.width() / 2;

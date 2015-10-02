@@ -20,7 +20,6 @@
  */
 
 // include the necessary libraries
-#include <SPI.h>
 #include <SD.h>
 #include <TFT.h>  // Arduino LCD library
 

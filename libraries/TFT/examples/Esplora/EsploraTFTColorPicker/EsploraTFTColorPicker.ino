@@ -16,7 +16,6 @@
 
 #include <Esplora.h>
 #include <TFT.h>  // Arduino LCD library
-#include <SPI.h>
 
 void setup() {
   Serial.begin(9600);

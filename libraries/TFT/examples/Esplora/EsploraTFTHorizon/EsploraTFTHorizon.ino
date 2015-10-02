@@ -16,7 +16,6 @@
 
 #include <Esplora.h>
 #include <TFT.h>            // Arduino LCD library
-#include <SPI.h>
 
 // horizontal start and end positions
 int yStart = EsploraTFT.height() / 2;

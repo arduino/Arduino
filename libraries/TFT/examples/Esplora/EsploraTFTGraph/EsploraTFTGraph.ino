@@ -16,7 +16,6 @@
 
 #include <Esplora.h>
 #include <TFT.h>  // Arduino LCD library
-#include <SPI.h>
 
 // position of the line on screen
 int xPos = 0;
