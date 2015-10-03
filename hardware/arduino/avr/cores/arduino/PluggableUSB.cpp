@@ -31,7 +31,7 @@ int PluggableUSB_::getInterface(uint8_t* interfaceNum)
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
 		int res = node->getInterface(interfaceNum);
-		if (res == -1)
+		if (res < 0)
 			return -1;
 		sent += res;
 	}
