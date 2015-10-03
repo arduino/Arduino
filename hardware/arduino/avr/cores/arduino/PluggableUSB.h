@@ -46,7 +46,6 @@ protected:
   const int8_t numInterfaces;
   const uint8_t *endpointType;
 
-public:
   PUSBListNode *next = NULL;
 
   friend class PluggableUSB_;
