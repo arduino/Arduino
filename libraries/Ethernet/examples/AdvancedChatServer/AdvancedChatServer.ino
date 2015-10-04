@@ -3,13 +3,12 @@
 
  A more advanced server that distributes any incoming messages
  to all connected clients but the client the message comes from.
- To use telnet to  your device's IP address and type.
+ To use, telnet to your device's IP address and type.
  You can see the client's input in the serial monitor as well.
  Using an Arduino Wiznet Ethernet shield.
 
  Circuit:
  * Ethernet shield attached to pins 10, 11, 12, 13
- * Analog inputs attached to pins A0 through A5 (optional)
 
  created 18 Dec 2009
  by David A. Mellis
@@ -41,7 +40,7 @@ EthernetServer server(23);
 EthernetClient clients[4];
 
 void setup() {
-  // initialize the ethernet device
+  // initialize the Ethernet device
   Ethernet.begin(mac, ip, myDns, gateway, subnet);
   // start listening for clients
   server.begin();
@@ -77,7 +76,7 @@ void loop() {
       for (byte i = 0; i < 4; i++) {
         if (!clients[i] && clients[i] != client) {
           clients[i] = client;
-          // clead out the input buffer:
+          // clear out the input buffer:
           client.flush();
           Serial.println("We have a new client");
           client.print("Hello, client number: ");

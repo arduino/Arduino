@@ -34,7 +34,7 @@ IPAddress server(1, 1, 1, 1);
 // Initialize the Ethernet client library
 // with the IP address and port of the server
 // that you want to connect to (port 23 is default for telnet;
-// if you're using Processing's ChatServer, use  port 10002):
+// if you're using Processing's ChatServer, use port 10002):
 EthernetClient client;
 
 void setup() {
