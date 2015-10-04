@@ -60,7 +60,7 @@ void setup() {
     client.println("Connection: close");
     client.println();
   } else {
-    // kf you didn't get a connection to the server:
+    // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
 }
