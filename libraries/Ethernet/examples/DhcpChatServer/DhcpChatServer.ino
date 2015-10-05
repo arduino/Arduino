@@ -2,7 +2,7 @@
  DHCP Chat  Server
 
  A simple server that distributes any incoming messages to all
- connected clients.  To use telnet to  your device's IP address and type.
+ connected clients.  To use, telnet to your device's IP address and type.
  You can see the client's input in the serial monitor as well.
  Using an Arduino Wiznet Ethernet shield.
 
@@ -51,7 +51,7 @@ void setup() {
   Serial.println("Trying to get an IP address using DHCP");
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
-    // initialize the ethernet device not using DHCP:
+    // initialize the Ethernet device not using DHCP:
     Ethernet.begin(mac, ip, myDns, gateway, subnet);
   }
   // print your local IP address:

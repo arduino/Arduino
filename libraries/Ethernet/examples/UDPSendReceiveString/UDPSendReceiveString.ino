@@ -1,5 +1,5 @@
 /*
-  UDPSendReceive.pde:
+ UDPSendReceiveString:
  This sketch receives UDP message strings, prints them to the serial port
  and sends an "acknowledge" string back to the sender
 
@@ -28,7 +28,7 @@ IPAddress ip(192, 168, 1, 177);
 unsigned int localPort = 8888;      // local port to listen on
 
 // buffers for receiving and sending data
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; //buffer to hold incoming packet,
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  //buffer to hold incoming packet,
 char  ReplyBuffer[] = "acknowledged";       // a string to send back
 
 // An EthernetUDP instance to let us send and receive packets over UDP
@@ -64,7 +64,7 @@ void loop() {
     Serial.println("Contents:");
     Serial.println(packetBuffer);
 
-    // send a reply, to the IP address and port that sent us the packet we received
+    // send a reply to the IP address and port that sent us the packet we received
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(ReplyBuffer);
     Udp.endPacket();
