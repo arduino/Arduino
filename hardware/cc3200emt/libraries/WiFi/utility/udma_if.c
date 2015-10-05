@@ -135,7 +135,7 @@ void UDMAInit()
     //
     // Enable McASP at the PRCM module
     //
-    MAP_PRCMPeripheralClkEnable(PRCM_UDMA,PRCM_RUN_MODE_CLK);
+    MAP_PRCMPeripheralClkEnable(PRCM_UDMA,PRCM_RUN_MODE_CLK | PRCM_SLP_MODE_CLK);
     MAP_PRCMPeripheralReset(PRCM_UDMA);
     //
     // Register interrupt handlers

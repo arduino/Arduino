@@ -126,6 +126,8 @@ public:
     IPAddress deviceIpByMacAddress(MACAddress mac);
     MACAddress deviceMacByIpAddress(IPAddress ip);
 
+    /* Attempt to connect to the stored profile */
+    int begin();
 
     /* Start Wifi connection for OPEN network
      *
@@ -316,7 +318,7 @@ public:
      * Start Smartconfig.
      * return: 1 if SmartConfig was successfully configured, otherwise -1.
      */
-    int startSmartConfig();
+    int startSmartConfig(bool block = true);
 
     /*
      * Set WiFi network processor Date/Time
