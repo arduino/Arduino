@@ -444,6 +444,12 @@ typedef _i16   _SlReturnVal_t;
 
 
 
+#ifndef __CONCAT
+#define __CONCAT(x,y)	x ## y
+#define __CONCAT2(x,y)	__CONCAT(x,y)
+#endif
+
+
 /*
  * The section below handles the external lib event registration
  * according to the desired events it specified in its API header file.

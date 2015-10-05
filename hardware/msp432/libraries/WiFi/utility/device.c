@@ -39,8 +39,7 @@
 /*****************************************************************************/
 /* Include files                                                             */
 /*****************************************************************************/
-#include "SimpleLinkForEnergia.h"
-#include "SimpleLink.h"
+#include "simplelink.h"
 #include "protocol.h"
 #include "flowcont.h"
 #include "driver.h"

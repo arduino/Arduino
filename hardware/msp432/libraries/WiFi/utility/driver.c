@@ -376,6 +376,9 @@ typedef struct
     _u8 AsyncRespBuf[SL_ASYNC_MAX_MSG_LEN];
 }_SlStatMem_t;
 
+#ifdef __MSP430_HAS_FRAM__
+__attribute__((section(".text")))
+#endif
 _SlStatMem_t g_StatMem;
 #endif
 

@@ -364,7 +364,6 @@ size_t WiFiClient::write(const uint8_t *buffer, size_t size)
         sl_Task();
 #endif
         iRet = sl_Send(WiFiClass::_handleArray[_socketIndex], buffer, size, 0);
-
     }
 
     if ((iRet < 0) || (iRet != size)) {

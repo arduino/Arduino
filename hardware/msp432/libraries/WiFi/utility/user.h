@@ -619,7 +619,7 @@ extern "C" {
 
 
 #ifdef SL_MEMORY_MGMT_DYNAMIC
-
+#include <stdlib.h>
 /*!
     \brief
 
