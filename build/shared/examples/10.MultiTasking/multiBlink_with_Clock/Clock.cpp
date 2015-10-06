@@ -26,22 +26,20 @@ Clock::Clock()
     ;
 }
 
-void Clock::begin(void (*ClockFunction)(void), uint32_t clockTimeOut_ms, uint32_t clockPeriod_ms)
+void Clock::begin(void (*ClockFunction)(void), uint32_t ClockTimeOut_ms, uint32_t ClockPeriod_ms)
 {
     Error_Block eb;
     Error_init(&eb);
-    
-    Clock_Params params;
-    Clock_Params_init(&params);
+        
+    Clock_Params_init(&ClockParams);
+    ClockParams.startFlag = false; // Requires Clock_start
 
-    // ClockParams.period = microsecondsToClockCycles(clockPeriod_ms); // ms to be translated into ticks
-    // ClockHandle = Clock_create( (Clock_FuncPtr)ClockFunction, microsecondsToClockCycles(clockTimeOut_ms), &ClockParams, &eb);
+    // ClockParams.period = microsecondsToClockCycles(ClockPeriod_ms); // ms to be translated into ticks
+    // ClockHandle = Clock_create( (Clock_FuncPtr)ClockFunction, microsecondsToClockCycles(ClockTimeOut_ms), &ClockParams, &eb);
 
     // Surprisingly, period already defined in ms for ClockParams.period andClockTimeOut_ms
-    params.startFlag = false; // Requires Clock_start
-    params.period = clockPeriod_ms;
-
-    ClockHandle = Clock_create( (Clock_FuncPtr)ClockFunction, clockTimeOut_ms, &params, &eb);
+    ClockParams.period = ClockPeriod_ms;
+    ClockHandle = Clock_create( (Clock_FuncPtr)ClockFunction, ClockTimeOut_ms, &ClockParams, &eb); 
 
     if (ClockHandle == NULL)
     {

@@ -1,7 +1,7 @@
 ///
 /// @file		Mailbox.h
-/// @brief		Library header
-/// @details	RTOS mailbox as C++ object for Energia MT
+/// @brief		RTOS Mailbox, part of the Galaxia Library Suite
+/// @details	RTOS Mailbox as C++ object for Energia MT
 /// @n
 /// @n @b		Project Energia MT 0101E0016
 ///
@@ -32,8 +32,8 @@
 ///
 
 ///
-/// @brief      RTOS mailbox as an object
-/// @details    The RTOS mailbox is encapsulated as a C++ object for easier use
+/// @brief      RTOS Mailbox as an object
+/// @details    The RTOS Mailbox is encapsulated as a C++ object for easier use
 /// @warning    Messages must be of type typename used in declaration
 /// @note       Only a single task can pend on an Mailbox object at a time.
 ///

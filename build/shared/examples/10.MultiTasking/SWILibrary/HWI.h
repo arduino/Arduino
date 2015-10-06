@@ -1,6 +1,6 @@
 ///
 /// @file		HWI.h
-/// @brief		Library header
+/// @brief		RTOS HWI, part of the Galaxia Library Suite
 /// @details	RTOS HWI as C++ object for Energia MT
 /// @n
 /// @n @b		Project EMT-HWI

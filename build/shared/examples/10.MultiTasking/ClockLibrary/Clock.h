@@ -1,7 +1,7 @@
 ///
 /// @file		Clock.h
-/// @brief		Library header
-/// @details	Clock Library for Energia MT
+/// @brief		RTOS Clock, part of the Galaxia Library Suite
+/// @details	RTOS Clock as C++ object for Energia MT
 /// @n	
 /// @n @b		Project EMT-ClockLibrary
 /// @n @a		Developed with [embedXcode+](http://embedXcode.weebly.com)
@@ -38,6 +38,7 @@ class Clock
 {
 private:
     Clock_Handle ClockHandle;
+    Clock_Params ClockParams;
     
 public:
     ///
@@ -50,14 +51,15 @@ public:
     /// @param      ClockFunction function to be called
     /// @param      ClockTimeOut_ms initial start delay
     /// @param      ClockPeriod_ms period in ms, default = 0 for one-shot
-    /// @note       The function must be void ClockFunction()
-    /// @code   void ClockFunction()
+    /// @note       The function must be void ClockPeriod_ms()
+    /// @code   void ClockPeriod_ms()
     ///         {
     ///             digitalWrite(RED_LED, HIGH);
     ///         }
     /// @endcode
+    /// @bug        Some functions like Serial.print(); don't work :(
     ///
-    void begin(void (*ClockFunction)(void), uint32_t clockTimeOut_ms, uint32_t clockPeriod_ms = 0);
+    void begin(void (*ClockFunction)(void), uint32_t ClockTimeOut_ms, uint32_t ClockPeriod_ms = 0);
 
     ///
     /// @brief      Start the Clock

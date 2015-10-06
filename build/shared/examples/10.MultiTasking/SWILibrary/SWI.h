@@ -1,6 +1,6 @@
 ///
 /// @file		SWI.h
-/// @brief		Library header
+/// @brief		RTOS SWI, part of the Galaxia Library Suite
 /// @details	RTOS SWI as C++ object for Energia MT
 /// @n
 /// @n @b		Project EMT-SWI
@@ -47,7 +47,7 @@ void restoreSWI();
 ///
 /// @brief      RTOS SWI as object
 /// @details    The RTOS SWI is encapsulated as a C++ object for easier use
-/// @todo       Implement trigger and inc(), dec(), getTrigger()
+/// @note       For w SWI with trigger, see the SWItrigger library.
 ///
 class SWI
 {

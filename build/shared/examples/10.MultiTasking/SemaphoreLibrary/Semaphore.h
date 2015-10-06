@@ -1,7 +1,7 @@
 ///
 /// @file		Semaphore.h
-/// @brief		Library header
-/// @details	RTOS semaphore as C++ object for Energia MT
+/// @brief		RTOS Semaphore, part of the Galaxia Library Suite
+/// @details	RTOS Semaphore as C++ object for Energia MT
 /// @n
 /// @n @b		Project EMT-Semaphore
 /// @n @a		Developed with [embedXcode+](http://embedXcode.weebly.com)
@@ -31,8 +31,8 @@
 #include <ti/sysbios/BIOS.h>
 
 ///
-/// @brief      RTOS semaphore as object
-/// @details    The RTOS semaphore is encapsulated as a C++ object for easier use
+/// @brief      RTOS Semaphore as object
+/// @details    The RTOS Semaphore is encapsulated as a C++ object for easier use
 ///
 class Semaphore
 {

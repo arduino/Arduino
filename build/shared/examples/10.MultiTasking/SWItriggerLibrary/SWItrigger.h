@@ -1,7 +1,7 @@
 ///
 /// @file		SWItrigger.h
-/// @brief		Library header
-/// @details	RTOS SWItrigger as C++ object for Energia MT
+/// @brief		RTOS SWI with trigger (SWItrigger), part of the Galaxia Library Suite
+/// @details	RTOS SWI with trigger as C++ object for Energia MT
 /// @n
 /// @n @b		Project EMT-SWItrigger
 /// @n @a		Developed with [embedXcode+](http://embedXcode.weebly.com)
@@ -34,7 +34,7 @@
 ///
 /// @brief		Available count
 /// @return		number of available count
-/// @bug        Disabling SWItrigger disables all SWItriggers, included those used by Energia MT
+/// @bug        Disabling SWItrigger disables all triggers, included those used by Energia MT
 ///
 void disableSWItrigger();
 
@@ -45,8 +45,8 @@ void restoreSWItrigger();
 */
 
 ///
-/// @brief      RTOS SWItrigger as object
-/// @details    The RTOS SWItrigger is encapsulated as a C++ object for easier use
+/// @brief      RTOS SWI with trigger as object
+/// @details    The RTOS SWI with trigger is encapsulated as a C++ object for easier use
 ///
 class SWItrigger
 {

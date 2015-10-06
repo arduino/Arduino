@@ -1,8 +1,8 @@
 ///
 /// @file		Timer.h
-/// @brief		Library header
-/// @details	<#details#>
-/// @n	
+/// @brief		RTOS Timer, part of the Galaxia Library Suite
+/// @details	RTOS Timer as C++ object for Energia MT
+/// @n
 /// @n @b		Project EMT-TimerLibrary
 /// @n @a		Developed with [embedXcode+](http://embedXcode.weebly.com)
 /// 
@@ -30,8 +30,8 @@
 #define Timer_h
 
 ///
-/// @brief      RTOS timer as an object
-/// @details    The RTOS timer is encapsulated as a C++ object for easier use
+/// @brief      RTOS Timer as an object
+/// @details    The RTOS Timer is encapsulated as a C++ object for easier use
 /// @note       Only one single timer available on the MSP432.
 ///
 class Timer
@@ -49,7 +49,8 @@ public:
     ///
     /// @brief      Create the timer
     /// @param      timerFunction function to be called
-    /// @param      timerPeriod_ms period in ms, 1 s = 1000 ms
+    /// @param      timerPeriod_unit period in unit
+    /// @param      unit in us, us = 1, ms = 1000, s = 1000000
     /// @note       The function must be void timerPeriod_ms()
     /// @code   void timerPeriod_ms()
     ///         {
@@ -58,7 +59,7 @@ public:
     /// @endcode
     /// @bug        Some fucntions like Serial.print(); don't work :(
     ///
-    void begin(void (*timerFunction)(void), uint32_t timerPeriod_ms);
+    void begin(void (*timerFunction)(void), uint32_t timerPeriod_unit, uint32_t unit = 1000);
 
     ///
     /// @brief      Start the timer

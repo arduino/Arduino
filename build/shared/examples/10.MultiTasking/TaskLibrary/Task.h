@@ -1,6 +1,6 @@
 ///
 /// @file		Task.h
-/// @brief		Library header
+/// @brief		RTOS Task, part of the Galaxia Library Suite
 /// @details	RTOS Task as C++ object for Energia MT
 /// @n
 /// @n @b		Project EMT-Task
@@ -47,9 +47,9 @@ void restoreTask();
 ///
 /// @brief      RTOS Task as object
 /// @details    The RTOS Task is encapsulated as a C++ object for easier use
-/// @bug        functionTask() runs once only unless a while() { ... } is included
-/// @bug        Program freezes after a while, even with System_flush();
-/// @bug        Not clear: why the_task() in main.cpp includes for(;;) { ... }
+/// @note       functionTask() runs once only, unless a while() { ... } is included
+/// @note       This implementation of Task differs from Energia MT.
+/// @n          Each sketch (.ino file) includes setup() and loop() for Energia MT.
 ///
 class Task
 {

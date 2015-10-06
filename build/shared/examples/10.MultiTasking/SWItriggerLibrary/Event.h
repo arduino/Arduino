@@ -1,7 +1,7 @@
 ///
 /// @file		Event.h
-/// @brief		Library header
-/// @details	RTOS event as C++ object for Energia MT
+/// @brief		RTOS Event, part of the Galaxia Library Suite
+/// @details	RTOS Event as C++ object for Energia MT
 /// @n
 /// @n @b		Project Energia MT 0101E0016
 ///
@@ -25,8 +25,8 @@
 #define Event_h
 
 ///
-/// @brief      RTOS event as object
-/// @details    The RTOS event is encapsulated as a C++ object for easier use
+/// @brief      RTOS Event as object
+/// @details    The RTOS Event is encapsulated as a C++ object for easier use
 /// @note       Only a single Task can pend on an Event object at a time.
 ///
 class Event
@@ -58,7 +58,9 @@ public:
     /// @param      andMask AND condition, default = Event_Id_00
     /// @param      orMask  OR  condition, default = Event_Id_NONE
     /// @return     events identifiers as bit, 32-bit
-    /// @example    0b=1100 = Event_Id_03 + Event_Id_02
+    /// @code
+    ///     0b=1100 = Event_Id_03 + Event_Id_02
+    /// @endcode
     ///
     uint32_t waitFor(xdc_UInt andMask = Event_Id_00, xdc_UInt orMask  = Event_Id_NONE);
 };
