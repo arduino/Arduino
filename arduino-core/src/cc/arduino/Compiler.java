@@ -30,9 +30,11 @@
 package cc.arduino;
 
 import cc.arduino.i18n.I18NAwareMessageConsumer;
+import cc.arduino.packages.BoardPort;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.lang3.StringUtils;
 import processing.app.*;
 import processing.app.debug.*;
 import processing.app.helpers.PreferencesMap;
@@ -128,13 +130,14 @@ public class Compiler implements MessageConsumer {
 
     TargetPlatform platform = board.getContainerPlatform();
     TargetPackage aPackage = platform.getContainerPackage();
+    String vidpid = VIDPID();
 
-    PreferencesMap prefs = loadPreferences(board, platform, aPackage);
+    PreferencesMap prefs = loadPreferences(board, platform, aPackage, vidpid);
 
     MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out), progListener), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
-    callArduinoBuilder(board, platform, aPackage, BuilderAction.COMPILE, new PumpStreamHandler(out, err));
+    callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, new PumpStreamHandler(out, err));
 
     out.flush();
     err.flush();
@@ -152,12 +155,27 @@ public class Compiler implements MessageConsumer {
     return sketch.getName() + ".ino";
   }
 
-  private PreferencesMap loadPreferences(TargetBoard board, TargetPlatform platform, TargetPackage aPackage) throws RunnerException, IOException {
+  private String VIDPID() {
+    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+    if (boardPort == null) {
+      return "";
+    }
+
+    String vid = boardPort.getPrefs().get("vid");
+    String pid = boardPort.getPrefs().get("pid");
+    if (StringUtils.isEmpty(vid) || StringUtils.isEmpty(pid)) {
+      return "";
+    }
+
+    return vid.toUpperCase() + "_" + pid.toUpperCase();
+  }
+
+  private PreferencesMap loadPreferences(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid) throws RunnerException, IOException {
     ByteArrayOutputStream stdout = new ByteArrayOutputStream();
     ByteArrayOutputStream stderr = new ByteArrayOutputStream();
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(new PrintStream(stderr), Compiler.this), "\n");
     try {
-      callArduinoBuilder(board, platform, aPackage, BuilderAction.DUMP_PREFS, new PumpStreamHandler(stdout, err));
+      callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.DUMP_PREFS, new PumpStreamHandler(stdout, err));
     } catch (RunnerException e) {
       System.err.println(new String(stderr.toByteArray()));
       throw e;
@@ -167,7 +185,7 @@ public class Compiler implements MessageConsumer {
     return prefs;
   }
 
-  private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, BuilderAction action, PumpStreamHandler streamHandler) throws RunnerException {
+  private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, PumpStreamHandler streamHandler) throws RunnerException {
     File executable = BaseNoGui.getContentFile("arduino-builder");
     CommandLine commandLine = new CommandLine(executable);
     commandLine.addArgument(action.value, false);
@@ -196,6 +214,10 @@ public class Compiler implements MessageConsumer {
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     commandLine.addArgument("-fqbn=" + fqbn, false);
+
+    if (!"".equals(vidpid)) {
+      commandLine.addArgument("-vid-pid=" + vidpid, false);
+    }
 
     commandLine.addArgument("-ide-version=" + BaseNoGui.REVISION, false);
     commandLine.addArgument("-build-path", false);
