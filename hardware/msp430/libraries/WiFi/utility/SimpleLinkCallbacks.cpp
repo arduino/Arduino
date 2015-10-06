@@ -24,7 +24,7 @@ extern "C" {
     #include <string.h>
 }
 
-#include "../WiFi.h"
+#include "WiFi.h"
 #include <Energia.h>
 
 #if (defined(sl_GeneralEvtHdlr))

@@ -97,7 +97,7 @@ int spi_Read(int Fd , char* pBuff , int Len)\
     //read bytes into the buffer by transmitting NULL over and over
     //
     for (int i = 0; i < Len; i++) {
-        pBuff[i] = SPI.transfer(NULL);
+        pBuff[i] = SPI.transfer(0);
         DEBUG_TRACE(pBuff[i]);
     }
     
