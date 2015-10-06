@@ -25,9 +25,6 @@
 #include <xdc/runtime/Error.h>
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/hal/Timer.h>
-/// @warning   for MSP432
-#include <ti/sysbios/family/arm/msp432/Timer.h>
-//#include <ti/sysbios/family/arm/lm4/Timer.h>
 
 #ifndef Timer_h
 #define Timer_h
