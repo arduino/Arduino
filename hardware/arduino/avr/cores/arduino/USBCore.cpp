@@ -308,20 +308,15 @@ int USB_Send(u8 ep, const void* d, int len)
 	return r;
 }
 
-u8 _initEndpoints[] =
+u8 _initEndpoints[USB_ENDPOINTS] =
 {
-	0,
+	0,                      // Control Endpoint
 	
-	EP_TYPE_INTERRUPT_IN,		// CDC_ENDPOINT_ACM
-	EP_TYPE_BULK_OUT,			// CDC_ENDPOINT_OUT
-	EP_TYPE_BULK_IN,			// CDC_ENDPOINT_IN
+	EP_TYPE_INTERRUPT_IN,   // CDC_ENDPOINT_ACM
+	EP_TYPE_BULK_OUT,       // CDC_ENDPOINT_OUT
+	EP_TYPE_BULK_IN,        // CDC_ENDPOINT_IN
 
-#ifdef PLUGGABLE_USB_ENABLED
-	//allocate 3 endpoints and remove const so they can be changed by the user
-	0,
-	0,
-	0,
-#endif
+	// Following endpoints are automatically initialized to 0
 };
 
 #define EP_SINGLE_64 0x32	// EP0
@@ -367,7 +362,7 @@ bool ClassInterfaceRequest(USBSetup& setup)
 		return CDC_Setup(setup);
 
 #ifdef PLUGGABLE_USB_ENABLED
-	return PUSB_Setup(setup, i);
+	return PluggableUSB().setup(setup, i);
 #endif
 	return false;
 }
@@ -445,7 +440,7 @@ static u8 SendInterfaces()
 	CDC_GetInterface(&interfaces);
 
 #ifdef PLUGGABLE_USB_ENABLED
-	PUSB_GetInterface(&interfaces);
+	PluggableUSB().getInterface(&interfaces);
 #endif
 
 	return interfaces;
@@ -481,7 +476,7 @@ bool SendDescriptor(USBSetup& setup)
 
 	InitControl(setup.wLength);
 #ifdef PLUGGABLE_USB_ENABLED
-	ret = PUSB_GetDescriptor(t);
+	ret = PluggableUSB().getDescriptor(t);
 	if (ret != 0) {
 		return (ret > 0 ? true : false);
 	}

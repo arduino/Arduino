@@ -1,38 +1,34 @@
 /*
-  HID.h
-
   Copyright (c) 2015, Arduino LLC
   Original code (pre-library): Copyright (c) 2011, Peter Barrett
 
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+  Permission to use, copy, modify, and/or distribute this software for
+  any purpose with or without fee is hereby granted, provided that the
+  above copyright notice and this permission notice appear in all copies.
 
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+  WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR
+  BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES
+  OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+  WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+  SOFTWARE.
+ */
 
 #ifndef HID_h
 #define HID_h
 
 #include <stdint.h>
 #include <Arduino.h>
+#include "PluggableUSB.h"
 
 #if defined(USBCON)
 
 #define _USING_HID
 
-//================================================================================
-//================================================================================
-//  HID 'Driver'
-
+// HID 'Driver'
+// ------------
 #define HID_GET_REPORT        0x01
 #define HID_GET_IDLE          0x02
 #define HID_GET_PROTOCOL      0x03
@@ -43,24 +39,6 @@
 #define HID_HID_DESCRIPTOR_TYPE         0x21
 #define HID_REPORT_DESCRIPTOR_TYPE      0x22
 #define HID_PHYSICAL_DESCRIPTOR_TYPE    0x23
-
-class HIDDescriptorListNode {
-public:
-  HIDDescriptorListNode *next = NULL;
-  HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
-
-  const void* data;
-  uint16_t length;
-};
-
-class HID_
-{
-public:
-  HID_(void);
-  int begin(void);
-  void SendReport(uint8_t id, const void* data, int len);
-  void AppendDescriptor(HIDDescriptorListNode* node);
-};
 
 typedef struct
 {
@@ -82,13 +60,46 @@ typedef struct
   EndpointDescriptor  in;
 } HIDDescriptor;
 
-#define HID_TX HID_ENDPOINT_INT
+class HIDDescriptorListNode {
+public:
+  HIDDescriptorListNode *next = NULL;
+  HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
 
-#define D_HIDREPORT(_descriptorLength) \
-  { 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength & 0xFF, _descriptorLength >> 8 }
+  const void* data;
+  uint16_t length;
+};
 
-#define WEAK __attribute__ ((weak))
+class HID_ : public PUSBListNode
+{
+public:
+  HID_(void);
+  int begin(void);
+  void SendReport(uint8_t id, const void* data, int len);
+  void AppendDescriptor(HIDDescriptorListNode* node);
 
-#endif
+protected:
+  // Implementation of the PUSBListNode
+  int getInterface(uint8_t* interfaceCount);
+  int getDescriptor(int8_t type);
+  bool setup(USBSetup& setup, uint8_t interfaceNum);
 
-#endif
+private:
+  uint8_t epType[1];
+
+  HIDDescriptorListNode* rootNode;
+  uint16_t descriptorSize;
+
+  uint8_t protocol;
+  uint8_t idle;
+};
+
+// Replacement for global singleton.
+// This function prevents static-initialization-order-fiasco
+// https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
+HID_& HID();
+
+#define D_HIDREPORT(length) { 9, 0x21, 0x01, 0x01, 0, 1, 0x22, lowByte(length), highByte(length) }
+
+#endif // USBCON
+
+#endif // HID_h

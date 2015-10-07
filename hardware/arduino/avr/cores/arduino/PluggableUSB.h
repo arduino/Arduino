@@ -25,30 +25,50 @@
 
 #if defined(USBCON)
 
-typedef struct __attribute__((packed))
-{
-  bool (*setup)(USBSetup& setup, u8 i);
-  int (*getInterface)(u8* interfaceNum);
-  int (*getDescriptor)(int8_t t);
-  int8_t numEndpoints;
-  int8_t numInterfaces;
-  uint8_t *endpointType;
-} PUSBCallbacks;
-
 class PUSBListNode {
 public:
+  PUSBListNode(int8_t numEps, int8_t numIfs, uint8_t *epType) :
+    numEndpoints(numEps), numInterfaces(numIfs), endpointType(epType)
+  { }
+
+  inline uint8_t interface() const { return pluggedInterface; }
+  inline int8_t endpoint()   const { return pluggedEndpoint; }
+
+protected:
+  virtual bool setup(USBSetup& setup, uint8_t interfaceNum) = 0;
+  virtual int getInterface(uint8_t* interfaceCount) = 0;
+  virtual int getDescriptor(int8_t t) = 0;
+
+  uint8_t pluggedInterface;
+  int8_t pluggedEndpoint;
+
+  const int8_t numEndpoints;
+  const int8_t numInterfaces;
+  const uint8_t *endpointType;
+
   PUSBListNode *next = NULL;
-  PUSBCallbacks *cb;
-  PUSBListNode(PUSBCallbacks *ncb) {cb = ncb;}
+
+  friend class PluggableUSB_;
 };
 
-int8_t PUSB_AddFunction(PUSBListNode *node, u8 *interface);
+class PluggableUSB_ {
+public:
+  PluggableUSB_();
+  bool plug(PUSBListNode *node);
+  int getInterface(uint8_t* interfaceCount);
+  int getDescriptor(int8_t type);
+  bool setup(USBSetup& setup, uint8_t interfaceNum);
 
-int PUSB_GetInterface(u8* interfaceNum);
+private:
+  uint8_t lastIf;
+  uint8_t lastEp;
+  PUSBListNode* rootNode;
+};
 
-int PUSB_GetDescriptor(int8_t t);
-
-bool PUSB_Setup(USBSetup& setup, u8 i);
+// Replacement for global singleton.
+// This function prevents static-initialization-order-fiasco
+// https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
+PluggableUSB_& PluggableUSB();
 
 #endif
 
