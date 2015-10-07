@@ -38,11 +38,11 @@ int PluggableUSB_::getInterface(uint8_t* interfaceCount)
 	return sent;
 }
 
-int PluggableUSB_::getDescriptor(int8_t type)
+int PluggableUSB_::getDescriptor(USBSetup& setup)
 {
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
-		int ret = node->getDescriptor(type);
+		int ret = node->getDescriptor(setup);
 		// ret!=0 -> request has been processed
 		if (ret)
 			return ret;
@@ -50,11 +50,11 @@ int PluggableUSB_::getDescriptor(int8_t type)
 	return 0;
 }
 
-bool PluggableUSB_::setup(USBSetup& setup, uint8_t interfaceNum)
+bool PluggableUSB_::setup(USBSetup& setup)
 {
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
-		if (node->setup(setup, interfaceNum)) {
+		if (node->setup(setup)) {
 			return true;
 		}
 	}

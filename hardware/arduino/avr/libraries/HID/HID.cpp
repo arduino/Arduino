@@ -38,22 +38,21 @@ int HID_::getInterface(uint8_t* interfaceCount)
 	return USB_SendControl(0, &hidInterface, sizeof(hidInterface));
 }
 
-int HID_::getDescriptor(int8_t type)
+int HID_::getDescriptor(USBSetup& setup)
 {
-	if (HID_REPORT_DESCRIPTOR_TYPE == type) {
-		int total = 0;
-		HIDDescriptorListNode* node;
-		for (node = rootNode; node; node = node->next) {
-			int res = USB_SendControl(TRANSFER_PGM, node->data, node->length);
-			if (res == -1)
-				return -1;
-			total += res;
-		}
-		return total;
+	if (interface() != setup.wIndex) {
+		return 0;
 	}
 
-	// Ignored
-	return 0;
+	int total = 0;
+	HIDDescriptorListNode* node;
+	for (node = rootNode; node; node = node->next) {
+		int res = USB_SendControl(TRANSFER_PGM, node->data, node->length);
+		if (res == -1)
+			return -1;
+		total += res;
+	}
+	return total;
 }
 
 void HID_::AppendDescriptor(HIDDescriptorListNode *node)
@@ -76,9 +75,9 @@ void HID_::SendReport(uint8_t id, const void* data, int len)
 	USB_Send(endpoint() | TRANSFER_RELEASE, data, len);
 }
 
-bool HID_::setup(USBSetup& setup, uint8_t interfaceNum)
+bool HID_::setup(USBSetup& setup)
 {
-	if (interface() != interfaceNum) {
+	if (interface() != setup.wIndex) {
 		return false;
 	}
 
