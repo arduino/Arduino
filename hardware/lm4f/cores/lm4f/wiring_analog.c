@@ -43,6 +43,7 @@
 
 
 #define PWM_MODE 0x20A
+static int _readResolution = 12;
 
 #ifdef __TM4C1294NCPDT__
 uint32_t getTimerBase(uint32_t offset) {
@@ -175,6 +176,19 @@ void analogWrite(uint8_t pin, int val) {
     PWMWrite(pin, 255, val, 490);
 }
 
+void analogReadResolution(int res) {
+    _readResolution = res;
+}
+
+static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to) {
+    if (from == to)
+        return value;
+    if (from > to)
+        return value >> (from-to);
+    else
+        return value << (to-from);
+}
+
 uint16_t analogRead(uint8_t pin) {
     uint8_t port = digitalPinToPort(pin);
     uint16_t value[1];
@@ -195,5 +209,6 @@ uint16_t analogRead(uint8_t pin) {
     }
 	ROM_ADCIntClear(ADC0_BASE, 3);
     ROM_ADCSequenceDataGet(ADC0_BASE, 3, (unsigned long*) value);
-    return value[0];
+
+    return mapResolution(value[0], 12, _readResolution);
 }

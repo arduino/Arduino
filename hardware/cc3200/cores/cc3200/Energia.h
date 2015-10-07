@@ -110,6 +110,7 @@ void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
 uint16_t analogRead(uint8_t);
+void analogReadResolution(int res);
 void analogWrite(uint8_t, int);
 void analogReference(uint16_t);
 void analogFrequency(uint32_t);
