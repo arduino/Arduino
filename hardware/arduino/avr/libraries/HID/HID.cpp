@@ -106,6 +106,9 @@ bool HID_::setup(USBSetup& setup)
 			idle = setup.wValueL;
 			return true;
 		}
+		if (request == HID_SET_REPORT)
+		{
+		}
 	}
 
 	return false;
