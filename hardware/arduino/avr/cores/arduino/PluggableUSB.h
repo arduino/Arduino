@@ -31,9 +31,6 @@ public:
     numEndpoints(numEps), numInterfaces(numIfs), endpointType(epType)
   { }
 
-  inline uint8_t interface() const { return pluggedInterface; }
-  inline uint8_t endpoint()   const { return pluggedEndpoint; }
-
 protected:
   virtual bool setup(USBSetup& setup) = 0;
   virtual int getInterface(uint8_t* interfaceCount) = 0;
