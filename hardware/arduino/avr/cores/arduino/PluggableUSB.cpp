@@ -25,12 +25,12 @@
 
 extern uint8_t _initEndpoints[];
 
-int PluggableUSB_::getInterface(uint8_t* interfaceNum)
+int PluggableUSB_::getInterface(uint8_t* interfaceCount)
 {
 	int sent = 0;
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
-		int res = node->getInterface(interfaceNum);
+		int res = node->getInterface(interfaceCount);
 		if (res < 0)
 			return -1;
 		sent += res;
@@ -50,11 +50,11 @@ int PluggableUSB_::getDescriptor(int8_t type)
 	return 0;
 }
 
-bool PluggableUSB_::setup(USBSetup& setup, uint8_t j)
+bool PluggableUSB_::setup(USBSetup& setup, uint8_t interfaceNum)
 {
 	PUSBListNode* node;
 	for (node = rootNode; node; node = node->next) {
-		if (node->setup(setup, j)) {
+		if (node->setup(setup, interfaceNum)) {
 			return true;
 		}
 	}

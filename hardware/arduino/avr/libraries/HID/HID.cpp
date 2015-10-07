@@ -27,9 +27,9 @@ HID_& HID()
 	return obj;
 }
 
-int HID_::getInterface(uint8_t* interfaceNum)
+int HID_::getInterface(uint8_t* interfaceCount)
 {
-	*interfaceNum += 1; // uses 1
+	*interfaceCount += 1; // uses 1
 	HIDDescriptor hidInterface = {
 		D_INTERFACE(interface(), 1, 3, 0, 0),
 		D_HIDREPORT(descriptorSize),
