@@ -27,12 +27,12 @@
 
 class PUSBListNode {
 public:
-  PUSBListNode(int8_t numEps, int8_t numIfs, uint8_t *epType) :
+  PUSBListNode(uint8_t numEps, uint8_t numIfs, uint8_t *epType) :
     numEndpoints(numEps), numInterfaces(numIfs), endpointType(epType)
   { }
 
   inline uint8_t interface() const { return pluggedInterface; }
-  inline int8_t endpoint()   const { return pluggedEndpoint; }
+  inline uint8_t endpoint()   const { return pluggedEndpoint; }
 
 protected:
   virtual bool setup(USBSetup& setup, uint8_t interfaceNum) = 0;
@@ -40,10 +40,10 @@ protected:
   virtual int getDescriptor(int8_t t) = 0;
 
   uint8_t pluggedInterface;
-  int8_t pluggedEndpoint;
+  uint8_t pluggedEndpoint;
 
-  const int8_t numEndpoints;
-  const int8_t numInterfaces;
+  const uint8_t numEndpoints;
+  const uint8_t numInterfaces;
   const uint8_t *endpointType;
 
   PUSBListNode *next = NULL;
