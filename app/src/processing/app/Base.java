@@ -44,9 +44,9 @@ import static processing.app.I18n._;
  */
 public class Base {
   public static final int REVISION = 101;
-  public static final int EREVISION = 16;
+  public static final int EREVISION = 17;
   /** This might be replaced by main() if there's a lib/version.txt file. */
-  static String VERSION_NAME = "0101E0016";
+  static String VERSION_NAME = "0101E0017";
   /** Set true if this a proper release rather than a numbered revision. */
   static public boolean RELEASE = false;
 
