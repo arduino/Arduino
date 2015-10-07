@@ -361,8 +361,10 @@ public class Compiler implements MessageConsumer {
       Path compiledSketchPathInBuildPath = Paths.get(prefs.get("build.path"), compiledSketch);
       if (Files.exists(compiledSketchPathInSubfolder)) {
         compiledSketchPath = compiledSketchPathInSubfolder;
-      } else {
+      } else if (Files.exists(compiledSketchPathInBuildPath)) {
         compiledSketchPath = compiledSketchPathInBuildPath;
+      } else {
+        return;
       }
 
       Path copyOfCompiledSketchFilePath = Paths.get(this.sketch.getFolder().getAbsolutePath(), copyOfCompiledSketch);
