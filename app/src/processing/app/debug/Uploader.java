@@ -293,7 +293,7 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
     if (s.indexOf("Error") != -1) {
       //exception = new RunnerException(s+" Check the serial port selected or your Board is connected");
       //System.out.println(s);
-      notFoundError = true;
+      //notFoundError = true;
       return;
     }
     if(notFoundError) {
