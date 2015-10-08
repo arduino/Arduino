@@ -9,7 +9,7 @@
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
 #include <ti/sysbios/utils/Load.h>
-
+#include <ti/sysbios/hal/Hwi.h>
 /*
  * This is the sketch for the UART debug console. Nothing else should be using the same
  * serial connection.
