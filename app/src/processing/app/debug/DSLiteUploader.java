@@ -23,14 +23,13 @@ public class DSLiteUploader extends Uploader{
 		Target target = Base.getTarget();
 		Collection params = new ArrayList();
 
-		params.add("-c");
+		params.add("load");
 		if(Base.getArch() == "msp432") {
 			params.add(Base.getToolsPath() + File.separator + "common" + File.separator + "DSLite" + File.separator + "MSP432P401R.ccxml");
 		} else if (Base.getArch() == "cc2600emt") {
 			params.add(Base.getToolsPath() + File.separator + "common" + File.separator + "DSLite" + File.separator + "CC2650F128_TIXDS110_Connection.ccxml");
 		}
 
-		params.add("-f");
 		if (Base.isMacOS() || Base.isLinux()) {
 			if ( Base.isLinux()) {
 				params.add(buildPath + File.separator + className + ".elf");
