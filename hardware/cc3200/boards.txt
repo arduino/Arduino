@@ -28,6 +28,12 @@ RBLWiFiMini.build.variant=RedBearLab_WiFiMini
 RBLWiFiMini.ldscript=cc3200.ld
 #RBLWiFiMini.upload.maximum_ram_size=32768
 
-
-
-
+##############################################################
+RBLWiFiMicro.name=RedBearLab WiFi Micro w/ cc3200 (80MHz)
+RBLWiFiMicro.upload.maximum_size=262144
+RBLWiFiMicro.build.mcu=cortex-m4
+RBLWiFiMicro.build.f_cpu=80000000L
+RBLWiFiMicro.build.core=cc3200
+RBLWiFiMicro.build.variant=RedBearLab_WiFiMicro
+RBLWiFiMicro.ldscript=cc3200.ld
+#RBLWiFiMicro.upload.maximum_ram_size=32768

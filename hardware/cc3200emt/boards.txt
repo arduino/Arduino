@@ -30,3 +30,14 @@ RBLWiFiMiniEMT.build.variant=RedBearLab_WiFi_Mini
 RBLWiFiMiniEMT.build.hardware=RedBearLab_WiFi_Mini
 RBLWiFiMiniEMT.ldscript=cc3200.ld
 #rmmini.upload.maximum_ram_size=262144
+
+##############################################################
+RBLWiFiMicroEMT.name=RedBearLab WiFi Micro EMT (80MHz)
+RBLWiFiMicroEMT.upload.maximum_size=262144
+RBLWiFiMicroEMT.build.mcu=cortex-m4
+RBLWiFiMicroEMT.build.f_cpu=80000000L
+RBLWiFiMicroEMT.build.core=cc3200emt
+RBLWiFiMicroEMT.build.variant=RedBearLab_WiFi_Micro
+RBLWiFiMicroEMT.build.hardware=RedBearLab_WiFi_Micro
+RBLWiFiMicroEMT.ldscript=cc3200.ld
+#RBLWiFiMicro.upload.maximum_ram_size=32768
