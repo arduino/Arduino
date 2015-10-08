@@ -58,6 +58,11 @@ TwoWire::TwoWire()
 {
 }
 
+TwoWire::TwoWire(uint8_t module)
+{
+   twi_setModule(module);
+}
+
 // Public Methods //////////////////////////////////////////////////////////////
 
 void TwoWire::begin(void)
@@ -301,7 +306,12 @@ void TwoWire::onRequest( void (*function)(void) )
   user_onRequest = function;
 }
 
-// Preinstantiate Objects //////////////////////////////////////////////////////
 
+void TwoWire::setModule(uint8_t i2cModule)
+{
+	twi_setModule(i2cModule);
+}
+
+// Preinstantiate Objects //////////////////////////////////////////////////////
 TwoWire Wire = TwoWire();
 

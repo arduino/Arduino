@@ -59,9 +59,9 @@ void USCIA1_ISR(void)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif
+#endif //defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 
-#if defined(__MSP430_HAS_USCI_B0__) || defined(__MSP430_HAS_USCI_B1__)
-#ifndef USE_USCI_B1
+#if defined(__MSP430_HAS_USCI_B0__)
 __attribute__((interrupt(USCI_B0_VECTOR)))
 void USCIB0_ISR(void)
 {
@@ -77,7 +77,8 @@ void USCIB0_ISR(void)
 	if (still_asleep != stay_asleep)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
-#else
+#endif
+#if defined(__MSP430_HAS_USCI_B1__)
 __attribute__((interrupt(USCI_B1_VECTOR)))
 void USCIB1_ISR(void)
 {
@@ -94,9 +95,7 @@ void USCIB1_ISR(void)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif
-#endif
 
-#endif //defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__)
 
 #ifdef __MSP430_HAS_USCI__
 /* USCI_Ax and USCI_Bx share the same TX interrupt vector.
@@ -112,6 +111,7 @@ void USCIB1_ISR(void)
 __attribute__((interrupt(USCIAB0TX_VECTOR))) 
 void USCIAB0TX_ISR(void)
 {
+	uint16_t stay_active = false;
 	still_asleep = stay_asleep;
 
 	/* USCI_A0 UART interrupt? */
@@ -120,15 +120,16 @@ void USCIAB0TX_ISR(void)
 
 	/* USCI_B0 I2C TX RX interrupt. */
 	if ((UCB0CTL0 & UCMODE_3) == UCMODE_3 && (UC0IFG & (UCB0TXIFG | UCB0RXIFG)) != 0)
-		i2c_txrx_isr();
+		stay_active = i2c_txrx_isr();
 
-	if (still_asleep != stay_asleep)
+	if (still_asleep != stay_asleep || stay_active)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 
 __attribute__((interrupt(USCIAB0RX_VECTOR)))
 void USCIAB0RX_ISR(void)
 {
+	uint16_t stay_active = false;
 	still_asleep = stay_asleep;
 
 	/* USCI_A0 UART interrupt? */
@@ -137,9 +138,9 @@ void USCIAB0RX_ISR(void)
 
 	/* USCI_B0 I2C state change interrupt. */
 	if ((UCB0STAT & (UCALIFG | UCNACKIFG | UCSTTIFG | UCSTPIFG)) != 0)
-		i2c_state_isr(); 
+		stay_active = i2c_state_isr(); 
 
-	if (still_asleep != stay_asleep)
+	if (still_asleep != stay_asleep || stay_active)
 		__bic_SR_register_on_exit(LPM4_bits);
 }
 #endif // __MSP430_HAS_USCI__

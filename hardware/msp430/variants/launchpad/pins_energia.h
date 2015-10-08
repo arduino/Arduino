@@ -1,9 +1,9 @@
 /*
   ************************************************************************
-  *	pins_energia.h
+  *   pins_energia.h
   *
-  *	Energia core files for MSP430
-  *		Copyright (c) 2012 Robert Wessels. All right reserved.
+  *   Energia core files for MSP430
+  *      Copyright (c) 2012 Robert Wessels. All right reserved.
   *
   *     Contribution: Rei VILO
   *
@@ -36,43 +36,45 @@
 #define BV(x) (1 << (x))
 #endif
 
-#if defined(__MSP430_HAS_USCI__)
 static const uint8_t SS      = 8;  /* P2.0 */
 static const uint8_t SCK     = 7;  /* P1.5 */
 static const uint8_t MOSI    = 15; /* P1.7 */
 static const uint8_t MISO    = 14; /* P1.6 */
-static const uint8_t TWISDA  = 14;  /* P1.6 */
-static const uint8_t TWISCL  = 15;  /* P1.7 */
+static const uint8_t TWISCL1  = 9;   /* P2.1 SW I2C */
+static const uint8_t TWISDA1  = 10;  /* P2.2 SW I2C */
+static const uint8_t TWISDA0  = 15;  /* P1.7 */
+static const uint8_t TWISCL0  = 14;  /* P1.6 */
 static const uint8_t DEBUG_UARTRXD = 3;  /* Receive  Data (RXD) at P1.1 */
 static const uint8_t DEBUG_UARTTXD = 4;  /* Transmit Data (TXD) at P1.2 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
-#define TWISCL_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/)
+#define TWISDA1_SET_MODE  (INPUT)
+#define TWISCL1_SET_MODE  (INPUT)
+#if defined(__MSP430_HAS_USCI__)
+#define TWISDA0_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/) /* do not enable the pull ups for this device */
+#define TWISCL0_SET_MODE  (PORT_SELECTION0 | PORT_SELECTION1 /* | INPUT_PULLUP*/)
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1 | OUTPUT)
 #define SPISCK_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #define SPIMISO_SET_MODE (PORT_SELECTION0 | PORT_SELECTION1)
 #endif
-
-#define DEBUG_UART_MODULE_OFFSET 0x0
-
 #if defined(__MSP430_HAS_USI__)
-static const uint8_t SS   = 8;  /* P2.0 */
-static const uint8_t SCK  = 7;  /* P1.5 */
-static const uint8_t MOSI = 14; /* P1.6 */
-static const uint8_t MISO = 15; /* P1.7 */
-static const uint8_t TWISDA  = 14;  /* P1.7 */
-static const uint8_t TWISCL  = 15;  /* P1.6 */
-static const uint8_t DEBUG_UARTRXD = 4;  /* Receive  Data (RXD) at P1.2 */
-static const uint8_t DEBUG_UARTTXD = 3;  /* Transmit Data (TXD) at P1.1 */
-#define TWISDA_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
-#define TWISCL_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISDA0_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
+#define TWISCL0_SET_MODE  (PORT_SELECTION0 | INPUT_PULLUP)
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | OUTPUT)
 #define SPISCK_SET_MODE (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
 #endif
+
+/* Define the default I2C settings */
+#define DEFAULT_I2C -1 /* indicates SW I2C on pseudo module 1 */
+#define TWISDA TWISDA1
+#define TWISCL TWISCL1
+#define TWISDA_SET_MODE  TWISDA1_SET_MODE
+#define TWISCL_SET_MODE  TWISCL1_SET_MODE
+
+#define DEBUG_UART_MODULE_OFFSET 0x0
 
 #define DEBUG_UART_MODULE 0x0
 
@@ -128,64 +130,64 @@ static const uint8_t TEMPSENSOR = 128 + 10; // depends on chip
 #ifdef ARDUINO_MAIN
 
 const uint16_t port_to_input[] = {
-	NOT_A_PORT,
-	(uint16_t) &P1IN,
-	(uint16_t) &P2IN,
+   NOT_A_PORT,
+   (uint16_t) &P1IN,
+   (uint16_t) &P2IN,
 #ifdef __MSP430_HAS_PORT3_R__
-	(uint16_t) &P3IN,
+   (uint16_t) &P3IN,
 #endif
 };
 
 const uint16_t port_to_output[] = {
-	NOT_A_PORT,
-	(uint16_t) &P1OUT,
-	(uint16_t) &P2OUT,
+   NOT_A_PORT,
+   (uint16_t) &P1OUT,
+   (uint16_t) &P2OUT,
 #ifdef __MSP430_HAS_PORT3_R__
-	(uint16_t) &P3OUT,
+   (uint16_t) &P3OUT,
 #endif
 };
 
 const uint16_t port_to_dir[] = {
-	NOT_A_PORT,
-	(uint16_t) &P1DIR,
-	(uint16_t) &P2DIR,
+   NOT_A_PORT,
+   (uint16_t) &P1DIR,
+   (uint16_t) &P2DIR,
 #ifdef __MSP430_HAS_PORT3_R__
-	(uint16_t) &P3DIR,
+   (uint16_t) &P3DIR,
 #endif
 };
 
 const uint16_t port_to_ren[] = {
-	NOT_A_PORT,
-	(uint16_t) &P1REN,
-	(uint16_t) &P2REN,
+   NOT_A_PORT,
+   (uint16_t) &P1REN,
+   (uint16_t) &P2REN,
 #ifdef __MSP430_HAS_PORT3_R__
-	(uint16_t) &P3REN,
+   (uint16_t) &P3REN,
 #endif
 };
 
 const uint16_t port_to_sel0[] = {  /* put this PxSEL register under the group of PxSEL0 */
-	NOT_A_PORT,
-	(uint16_t) &P1SEL,
-	(uint16_t) &P2SEL,
+   NOT_A_PORT,
+   (uint16_t) &P1SEL,
+   (uint16_t) &P2SEL,
 #ifdef __MSP430_HAS_PORT3_R__
-	(uint16_t) &P3SEL,
+   (uint16_t) &P3SEL,
 #endif
 };
 
 const uint16_t port_to_sel2[] = {
-	NOT_A_PORT,
+   NOT_A_PORT,
 #ifdef P1SEL2_
-	(uint16_t) &P1SEL2,
+   (uint16_t) &P1SEL2,
 #else
         NOT_A_PORT,
 #endif
 #ifdef P2SEL2_
-	(uint16_t) &P2SEL2,
+   (uint16_t) &P2SEL2,
 #else 
         NOT_A_PORT,
 #endif
 #ifdef P3SEL2_
-	(uint16_t) &P3SEL2,
+   (uint16_t) &P3SEL2,
 #else
         NOT_A_PORT,
 #endif
@@ -197,107 +199,107 @@ const uint16_t port_to_sel2[] = {
  * T0A1, T1A1 and T1A2 
  */
 const uint8_t digital_pin_to_timer[] = {
-	NOT_ON_TIMER, /*  dummy */
-	NOT_ON_TIMER, /*  1 - VCC */
-	NOT_ON_TIMER, /*  2 - P1.0 */
-	T0A0,         /*  3 - P1.1, note: A0 output cannot be used with analogWrite */
-	T0A1,         /*  4 - P1.2 */
-	NOT_ON_TIMER, /*  5 - P1.3 */
-	NOT_ON_TIMER, /*  6 - P1.4 note: special case. Leaving as no timer due to difficulty determining if available */
-	T0A0,         /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
+   NOT_ON_TIMER, /*  dummy */
+   NOT_ON_TIMER, /*  1 - VCC */
+   NOT_ON_TIMER, /*  2 - P1.0 */
+   T0A0,         /*  3 - P1.1, note: A0 output cannot be used with analogWrite */
+   T0A1,         /*  4 - P1.2 */
+   NOT_ON_TIMER, /*  5 - P1.3 */
+   NOT_ON_TIMER, /*  6 - P1.4 note: special case. Leaving as no timer due to difficulty determining if available */
+   T0A0,         /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
 #if defined(__MSP430_HAS_T1A3__) 
-	T1A0,         /*  8 - P2.0 note: A0 output cannot be used with analogWrite */
-	T1A1,         /*  9 - P2.1 */
-	T1A1,         /* 10 - P2.2 */
-	T1A0,         /* 11 - P2.3 note: A0 output cannot be used with analogWrite  */
-	T1A2,         /* 12 - P2.4 */
-	T1A2,         /* 13 - P2.5 */
+   T1A0,         /*  8 - P2.0 note: A0 output cannot be used with analogWrite */
+   T1A1,         /*  9 - P2.1 */
+   T1A1,         /* 10 - P2.2 */
+   T1A0,         /* 11 - P2.3 note: A0 output cannot be used with analogWrite  */
+   T1A2,         /* 12 - P2.4 */
+   T1A2,         /* 13 - P2.5 */
 #else
-	NOT_ON_TIMER, /*  8 - P2.0 */
-	NOT_ON_TIMER, /*  9 - P2.1 */
-	NOT_ON_TIMER, /* 10 - P2.3 */
-	NOT_ON_TIMER, /* 11 - P2.4 */
-	NOT_ON_TIMER, /* 12 - P2.5 */
-	NOT_ON_TIMER, /* 13 - P2.6 */
+   NOT_ON_TIMER, /*  8 - P2.0 */
+   NOT_ON_TIMER, /*  9 - P2.1 */
+   NOT_ON_TIMER, /* 10 - P2.3 */
+   NOT_ON_TIMER, /* 11 - P2.4 */
+   NOT_ON_TIMER, /* 12 - P2.5 */
+   NOT_ON_TIMER, /* 13 - P2.6 */
 #endif
-	T0A1,         /* 14 - P1.6 */
-	NOT_ON_TIMER, /* 15 - P1.7 */
-	NOT_ON_TIMER, /* 16 - /RESET */  
-	NOT_ON_TIMER, /* 17 - TEST */  
-	NOT_ON_TIMER, /* 18 - XOUT - P2.7 */
-	T0A1,         /* 19 - XIN - P2.6: */
-	NOT_ON_TIMER, /* 20 - GND */
+   T0A1,         /* 14 - P1.6 */
+   NOT_ON_TIMER, /* 15 - P1.7 */
+   NOT_ON_TIMER, /* 16 - /RESET */  
+   NOT_ON_TIMER, /* 17 - TEST */  
+   NOT_ON_TIMER, /* 18 - XOUT - P2.7 */
+   T0A1,         /* 19 - XIN - P2.6: */
+   NOT_ON_TIMER, /* 20 - GND */
 };
 
 const uint8_t digital_pin_to_port[] = {
-	NOT_A_PIN, /* dummy */
-	NOT_A_PIN, /* 1 */
-	P1, /* 2 */
-	P1, /* 3 */
-	P1, /* 4 */
-	P1, /* 5 */
-	P1, /* 6 */
-	P1, /* 7 */
-	P2, /* 8 */
-	P2, /* 9 */
-	P2, /* 10 */
-	P2, /* 11 */
-	P2, /* 12 */
-	P2, /* 13 */
-	P1, /* 14 */
-	P1, /* 15 */
-	NOT_A_PIN, /* 16 */
-	NOT_A_PIN, /* 17 */
-	P2, /* 18 */
-	P2, /* 19 */
-	NOT_A_PIN, /* 20 */
+   NOT_A_PIN, /* dummy */
+   NOT_A_PIN, /* 1 */
+   P1, /* 2 */
+   P1, /* 3 */
+   P1, /* 4 */
+   P1, /* 5 */
+   P1, /* 6 */
+   P1, /* 7 */
+   P2, /* 8 */
+   P2, /* 9 */
+   P2, /* 10 */
+   P2, /* 11 */
+   P2, /* 12 */
+   P2, /* 13 */
+   P1, /* 14 */
+   P1, /* 15 */
+   NOT_A_PIN, /* 16 */
+   NOT_A_PIN, /* 17 */
+   P2, /* 18 */
+   P2, /* 19 */
+   NOT_A_PIN, /* 20 */
 };
 
 const uint8_t digital_pin_to_bit_mask[] = {
-	NOT_A_PIN, /* 0,  pin count starts at 1 */
-	NOT_A_PIN, /* 1,  VCC */
-	BV(0),     /* 2,  port P1.0 */
-	BV(1),     /* 3,  port P1.1 */
-	BV(2),     /* 4,  port P1.2 */
-	BV(3),     /* 5,  port P1.3*/
-	BV(4),     /* 6,  port P1.4 */
-	BV(5),     /* 7,  port P1.5 */
-	BV(0),     /* 8,  port P2.0 */
-	BV(1),     /* 9,  port P2.1 */
-	BV(2),     /* 10, port P2.2 */
-	BV(3),     /* 11, port P2.3 */
-	BV(4),     /* 12, port P2.4 */
-	BV(5),     /* 13, port P2.5 */
-	BV(6),     /* 14, port P1.6 */
-	BV(7),     /* 15, port P1.7 */
-	NOT_A_PIN, /* 16, RST */
-	NOT_A_PIN, /* 17, TEST */
-	BV(7),     /* 18, XOUT */
-	BV(6),     /* 19, XIN */
-	NOT_A_PIN, /* 20, GND */
+   NOT_A_PIN, /* 0,  pin count starts at 1 */
+   NOT_A_PIN, /* 1,  VCC */
+   BV(0),     /* 2,  port P1.0 */
+   BV(1),     /* 3,  port P1.1 */
+   BV(2),     /* 4,  port P1.2 */
+   BV(3),     /* 5,  port P1.3*/
+   BV(4),     /* 6,  port P1.4 */
+   BV(5),     /* 7,  port P1.5 */
+   BV(0),     /* 8,  port P2.0 */
+   BV(1),     /* 9,  port P2.1 */
+   BV(2),     /* 10, port P2.2 */
+   BV(3),     /* 11, port P2.3 */
+   BV(4),     /* 12, port P2.4 */
+   BV(5),     /* 13, port P2.5 */
+   BV(6),     /* 14, port P1.6 */
+   BV(7),     /* 15, port P1.7 */
+   NOT_A_PIN, /* 16, RST */
+   NOT_A_PIN, /* 17, TEST */
+   BV(7),     /* 18, XOUT */
+   BV(6),     /* 19, XIN */
+   NOT_A_PIN, /* 20, GND */
 };
 const uint32_t digital_pin_to_analog_in[] = {
         NOT_ON_ADC,     /*  dummy   */
         NOT_ON_ADC,     /*  1 - 3.3V*/
-        0,				/*  2 - A0 */
-        1,     			/*  3 - A1 */
-        2, 				/*  4 - A2 */
-        3, 				/*  5 - A3 */
-        4, 				/*  6 - A4 */
-        5,   			/*  7 - A5 */
-        NOT_ON_ADC, 	/*  8 - P2.0 */
-        NOT_ON_ADC, 	/*  9 - P2.1 */
-        NOT_ON_ADC, 	/*  10 - P2.2 */
-        NOT_ON_ADC, 	/*  11 - P2.3 */
-        NOT_ON_ADC, 	/*  12 - P2.4 */
-        NOT_ON_ADC, 	/*  13 - P2.5 */
-        6,     			/*  14 - A6 */
-        7,     			/*  15 - A7 */
-        NOT_ON_ADC, 	/*  16 - RST */
+        0,            /*  2 - A0 */
+        1,              /*  3 - A1 */
+        2,             /*  4 - A2 */
+        3,             /*  5 - A3 */
+        4,             /*  6 - A4 */
+        5,            /*  7 - A5 */
+        NOT_ON_ADC,    /*  8 - P2.0 */
+        NOT_ON_ADC,    /*  9 - P2.1 */
+        NOT_ON_ADC,    /*  10 - P2.2 */
+        NOT_ON_ADC,    /*  11 - P2.3 */
+        NOT_ON_ADC,    /*  12 - P2.4 */
+        NOT_ON_ADC,    /*  13 - P2.5 */
+        6,              /*  14 - A6 */
+        7,              /*  15 - A7 */
+        NOT_ON_ADC,    /*  16 - RST */
         NOT_ON_ADC,     /*  17 - PF0 */
-        NOT_ON_ADC, 	/*  18 - PE0 */
+        NOT_ON_ADC,    /*  18 - PE0 */
         NOT_ON_ADC,     /*  19 - PB2 */
-        NOT_ON_ADC  	/*  20 - GND */
+        NOT_ON_ADC     /*  20 - GND */
 };
 
 #endif

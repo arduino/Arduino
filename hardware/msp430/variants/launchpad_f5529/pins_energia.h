@@ -41,14 +41,18 @@ static const uint8_t SS      = 8;  /* P2.7 */
 static const uint8_t SCK     = 7;  /* P3.2 */
 static const uint8_t MOSI    = 15;  /* P3.0 */
 static const uint8_t MISO    = 14;  /* P3.1 */
-static const uint8_t TWISDA  = 15;  /* P3.0 */
-static const uint8_t TWISCL  = 14;  /* P3.1 */
+static const uint8_t TWISDA1  = 10;  /* P4.1 UCB1 */
+static const uint8_t TWISCL1  = 9;   /* P4.2 UCB1 */
+static const uint8_t TWISDA0  = 15;  /* P3.0 UCB0 */
+static const uint8_t TWISCL0  = 14;  /* P3.1 UCB0 */
 static const uint8_t DEBUG_UARTRXD = 45;  /* Receive  Data (RXD) at P4.5 */
 static const uint8_t DEBUG_UARTTXD = 46;  /* Transmit Data (TXD) at P4.4 */
 static const uint8_t AUX_UARTRXD = 3;  /* Receive  Data (RXD) at P4.5 */
 static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
-#define TWISDA_SET_MODE (PORT_SELECTION0)
-#define TWISCL_SET_MODE (PORT_SELECTION0)
+#define TWISDA0_SET_MODE (PORT_SELECTION0)
+#define TWISCL0_SET_MODE (PORT_SELECTION0)
+#define TWISDA1_SET_MODE (PORT_SELECTION0 | (PM_UCB1SDA << 8)) 
+#define TWISCL1_SET_MODE (PORT_SELECTION0 | (PM_UCB1SCL << 8))
 #define DEBUG_UARTRXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1RXD << 8) | INPUT)
 #define DEBUG_UARTTXD_SET_MODE (PORT_SELECTION0 | (PM_UCA1TXD << 8) | OUTPUT)
 #define AUX_UARTRXD_SET_MODE (PORT_SELECTION0 | INPUT)
@@ -56,6 +60,12 @@ static const uint8_t AUX_UARTTXD = 4;  /* Transmit Data (TXD) at P4.4 */
 #define SPISCK_SET_MODE (PORT_SELECTION0)
 #define SPIMOSI_SET_MODE (PORT_SELECTION0)
 #define SPIMISO_SET_MODE (PORT_SELECTION0)
+/* Define the default I2C settings */
+#define DEFAULT_I2C 1
+#define TWISDA TWISDA1
+#define TWISCL TWISCL1
+#define TWISDA_SET_MODE  TWISDA1_SET_MODE
+#define TWISCL_SET_MODE  TWISCL1_SET_MODE
 #endif
 
 #define DEBUG_UART_MODULE_OFFSET 0x40
