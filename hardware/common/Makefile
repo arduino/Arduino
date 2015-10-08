@@ -71,10 +71,7 @@ $(if $(_LIBDIRS), \
 	# Store the current dependencies for use later on
 	$(eval LIBDIRS += $(_LIBDIRS)) \
 	# Compute the source files
-	$(eval _SRCS = $(wildcard $(patsubst %,%*.c,$(_LIBDIRS)))) \
-	$(eval _SRCS += $(wildcard $(patsubst %,%*.cpp,$(_LIBDIRS)))) \
-	# Recursively call this function to compute dependencies for the source files
-	$(call compute_dependencies, $(_SRCS)),)
+	$(eval _SRCS += $(wildcard $(patsubst %,%*.cpp,$(_LIBDIRS)))),)
 endef
 
 define size
