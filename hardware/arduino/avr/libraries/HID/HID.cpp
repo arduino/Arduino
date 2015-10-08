@@ -40,9 +40,12 @@ int HID_::getInterface(uint8_t* interfaceCount)
 
 int HID_::getDescriptor(USBSetup& setup)
 {
-	if (pluggedInterface != setup.wIndex) {
-		return 0;
-	}
+	// Check if this is a HID Class Descriptor request
+	if (setup.bmRequestType != REQUEST_DEVICETOHOST_STANDARD_INTERFACE) { return 0; }
+	if (setup.wValueH != HID_REPORT_DESCRIPTOR_TYPE) { return 0; }
+
+	// In a HID Class Descriptor wIndex cointains the interface number
+	if (setup.wIndex != pluggedInterface) { return 0; }
 
 	int total = 0;
 	HIDDescriptorListNode* node;
