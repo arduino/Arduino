@@ -362,7 +362,7 @@ bool ClassInterfaceRequest(USBSetup& setup)
 		return CDC_Setup(setup);
 
 #ifdef PLUGGABLE_USB_ENABLED
-	return PluggableUSB().setup(setup, i);
+	return PluggableUSB().setup(setup);
 #endif
 	return false;
 }
@@ -476,7 +476,7 @@ bool SendDescriptor(USBSetup& setup)
 
 	InitControl(setup.wLength);
 #ifdef PLUGGABLE_USB_ENABLED
-	ret = PluggableUSB().getDescriptor(t);
+	ret = PluggableUSB().getDescriptor(setup);
 	if (ret != 0) {
 		return (ret > 0 ? true : false);
 	}

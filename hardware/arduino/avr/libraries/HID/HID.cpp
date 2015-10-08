@@ -31,29 +31,28 @@ int HID_::getInterface(uint8_t* interfaceCount)
 {
 	*interfaceCount += 1; // uses 1
 	HIDDescriptor hidInterface = {
-		D_INTERFACE(interface(), 1, 3, 0, 0),
+		D_INTERFACE(pluggedInterface, 1, 3, 0, 0),
 		D_HIDREPORT(descriptorSize),
-		D_ENDPOINT(USB_ENDPOINT_IN(endpoint()), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
+		D_ENDPOINT(USB_ENDPOINT_IN(pluggedEndpoint), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
 	};
 	return USB_SendControl(0, &hidInterface, sizeof(hidInterface));
 }
 
-int HID_::getDescriptor(int8_t type)
+int HID_::getDescriptor(USBSetup& setup)
 {
-	if (HID_REPORT_DESCRIPTOR_TYPE == type) {
-		int total = 0;
-		HIDDescriptorListNode* node;
-		for (node = rootNode; node; node = node->next) {
-			int res = USB_SendControl(TRANSFER_PGM, node->data, node->length);
-			if (res == -1)
-				return -1;
-			total += res;
-		}
-		return total;
+	if (pluggedInterface != setup.wIndex) {
+		return 0;
 	}
 
-	// Ignored
-	return 0;
+	int total = 0;
+	HIDDescriptorListNode* node;
+	for (node = rootNode; node; node = node->next) {
+		int res = USB_SendControl(TRANSFER_PGM, node->data, node->length);
+		if (res == -1)
+			return -1;
+		total += res;
+	}
+	return total;
 }
 
 void HID_::AppendDescriptor(HIDDescriptorListNode *node)
@@ -72,13 +71,13 @@ void HID_::AppendDescriptor(HIDDescriptorListNode *node)
 
 void HID_::SendReport(uint8_t id, const void* data, int len)
 {
-	USB_Send(endpoint(), &id, 1);
-	USB_Send(endpoint() | TRANSFER_RELEASE, data, len);
+	USB_Send(pluggedEndpoint, &id, 1);
+	USB_Send(pluggedEndpoint | TRANSFER_RELEASE, data, len);
 }
 
-bool HID_::setup(USBSetup& setup, uint8_t interfaceNum)
+bool HID_::setup(USBSetup& setup)
 {
-	if (interface() != interfaceNum) {
+	if (pluggedInterface != setup.wIndex) {
 		return false;
 	}
 
@@ -106,6 +105,9 @@ bool HID_::setup(USBSetup& setup, uint8_t interfaceNum)
 		if (request == HID_SET_IDLE) {
 			idle = setup.wValueL;
 			return true;
+		}
+		if (request == HID_SET_REPORT)
+		{
 		}
 	}
 
