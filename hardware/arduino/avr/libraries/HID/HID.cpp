@@ -16,7 +16,6 @@
    SOFTWARE.
  */
 
-#include "PluggableUSB.h"
 #include "HID.h"
 
 #if defined(USBCON)
