@@ -107,7 +107,7 @@ static const uint8_t A15 = 128 + 15; // Not available on BoosterPack header
                     (SCK)          P5.1  7|        |14  P5.3 (SCL) (MISO)
                                    P2.5  8|        |13  P1.3            (A3) 
                                    P8.2  9|        |12  P1.4            (A4) 
-                                   P8.3 10|        |11  P1.5            (A5) 
+                    (PWM)          P8.3 10|        |11  P1.5            (A5) 
                                           +--------+
 
 
@@ -350,7 +350,7 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER,  /*  7 - P5.1 */
 	NOT_ON_TIMER,  /*  8 - P2.5 */
 	NOT_ON_TIMER,  /*  9 - P8.2 */
-	NOT_ON_TIMER,  /* 10 - P8.3 */
+	T1A2,          /* 10 - P8.3 */
 	NOT_ON_TIMER,  /* 11 - P1.5 */
 	NOT_ON_TIMER,  /* 12 - P1.4 */
 	NOT_ON_TIMER,  /* 13 - P1.3 */
@@ -364,7 +364,7 @@ const uint8_t digital_pin_to_timer[] = {
 	
 	NOT_ON_TIMER,  /* 21 - P2.4 */
 	NOT_ON_TIMER,  /* 22 - P2.3 */
-	NOT_ON_TIMER,  /* 23 - P4.0 */
+	T1A1,          /* 23 - P4.0 */
 	NOT_ON_TIMER,  /* 24 - P1.2 */
 	NOT_ON_TIMER,  /* 25 - P2.6 */
 };
@@ -432,31 +432,31 @@ const uint8_t digital_pin_to_bit_mask[] = {
 const uint32_t digital_pin_to_analog_in[] = {
         NOT_ON_ADC,     /*  0 - pin count starts at 1 */
         NOT_ON_ADC,     /*  1 - Vcc */
-        9,				/*  2 - P8.1 */
-        0,              /*  3 - P1.1 */
-        0, 	            /*  4 - P1.0 */
+        9,              /*  2 - P8.1 */
+        1,              /*  3 - P1.1 */
+        0, 	        /*  4 - P1.0 */
         NOT_ON_ADC,     /*  5 - P2.7 */
         8,   	        /*  6 - P8.0 */
         NOT_ON_ADC,   	/*  7 - P5.1 */
         NOT_ON_ADC, 	/*  8 - P2.5 */
         NOT_ON_ADC, 	/*  9 - P8.2 */
         NOT_ON_ADC, 	/* 10 - P8.3 */
-        5, 				/* 11 - P1.5 */
-        4, 				/* 12 - P1.4 */
-        3, 				/* 13 - P1.3 */
+        5,              /* 11 - P1.5 */
+        4,              /* 12 - P1.4 */
+        3,              /* 13 - P1.3 */
         NOT_ON_ADC,     /* 14 - P5.3 */
         NOT_ON_ADC,     /* 15 - P5.2 */
         NOT_ON_ADC, 	/* 16 - RST */
         NOT_ON_ADC,     /* 17 - P5.0 */
-        6,		 		/* 18 - P1.6 */
-        7,     			/* 19 - P1.7 */
+        6,		/* 18 - P1.6 */
+        7,     		/* 19 - P1.7 */
         NOT_ON_ADC, 	/* 20 - GND */
 		                
         NOT_ON_ADC, 	/* 21 - P2.4 */
-		NOT_ON_ADC, 	/* 22 - P2.3 */
-        8,    			/* 23 - P4.0 */
-        9,    			/* 24 - P1.2 */
-        2,          	/* 25 - P2.6 */
+        NOT_ON_ADC, 	/* 22 - P2.3 */
+        NOT_ON_ADC,	/* 23 - P4.0 */
+        2,    		/* 24 - P1.2 */
+        NOT_ON_ADC,    	/* 25 - P2.6 */
 };
 #endif // #ifdef ARDUINO_MAIN
 #endif // #ifndef Pins_Energia_h
