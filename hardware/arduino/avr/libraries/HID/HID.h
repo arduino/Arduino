@@ -40,6 +40,20 @@
 #define HID_REPORT_DESCRIPTOR_TYPE      0x22
 #define HID_PHYSICAL_DESCRIPTOR_TYPE    0x23
 
+// HID subclass HID1.11 Page 8 4.2 Subclass
+#define HID_SUBCLASS_NONE 0
+#define HID_SUBCLASS_BOOT_INTERFACE 1
+
+// HID Keyboard/Mouse bios compatible protocols HID1.11 Page 9 4.3 Protocols
+#define HID_PROTOCOL_NONE 0
+#define HID_PROTOCOL_KEYBOARD 1
+#define HID_PROTOCOL_MOUSE 2
+
+// Normal or bios protocol (Keyboard/Mouse) HID1.11 Page 54 7.2.5 Get_Protocol Request
+// "protocol" variable is used for this purpose.
+#define HID_BOOT_PROTOCOL	0
+#define HID_REPORT_PROTOCOL	1
+
 typedef struct
 {
   uint8_t len;      // 9

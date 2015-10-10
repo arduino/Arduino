@@ -30,7 +30,7 @@ int HID_::getInterface(uint8_t* interfaceCount)
 {
 	*interfaceCount += 1; // uses 1
 	HIDDescriptor hidInterface = {
-		D_INTERFACE(pluggedInterface, 1, 3, 0, 0),
+		D_INTERFACE(pluggedInterface, 1, USB_DEVICE_CLASS_HUMAN_INTERFACE, HID_SUBCLASS_NONE, HID_PROTOCOL_NONE),
 		D_HIDREPORT(descriptorSize),
 		D_ENDPOINT(USB_ENDPOINT_IN(pluggedEndpoint), USB_ENDPOINT_TYPE_INTERRUPT, USB_EP_SIZE, 0x01)
 	};
