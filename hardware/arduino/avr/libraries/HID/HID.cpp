@@ -101,6 +101,8 @@ bool HID_::setup(USBSetup& setup)
 	if (requestType == REQUEST_HOSTTODEVICE_CLASS_INTERFACE)
 	{
 		if (request == HID_SET_PROTOCOL) {
+			// The USB Host tells us if we are in boot or report mode.
+			// This only works with a real boot compatible device.
 			protocol = setup.wValueL;
 			return true;
 		}
@@ -110,6 +112,13 @@ bool HID_::setup(USBSetup& setup)
 		}
 		if (request == HID_SET_REPORT)
 		{
+			//uint8_t reportID = setup.wValueL;
+			//uint16_t length = setup.wLength;
+			//uint8_t data[length];
+			// Make sure to not read more data than USB_EP_SIZE.
+			// You can read multiple times through a loop.
+			// The first byte (may!) contain the reportID on a multreport.
+			//USB_RecvControl(data, length);
 		}
 	}
 
