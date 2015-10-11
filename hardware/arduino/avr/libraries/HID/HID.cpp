@@ -96,6 +96,9 @@ bool HID_::setup(USBSetup& setup)
 			// TODO: Send8(protocol);
 			return true;
 		}
+		if (request == HID_GET_IDLE) {
+			// TODO: Send8(idle);
+		}
 	}
 
 	if (requestType == REQUEST_HOSTTODEVICE_CLASS_INTERFACE)
