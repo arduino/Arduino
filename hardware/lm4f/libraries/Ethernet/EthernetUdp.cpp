@@ -6,6 +6,7 @@ EthernetUDP::EthernetUDP() {
 	_read = 0;
 	front = 0;
 	count = 0;
+	_p = NULL;
 }
 
 void EthernetUDP::do_recv(void *arg, struct udp_pcb *upcb, struct pbuf *p, struct ip_addr* addr, uint16_t port)
