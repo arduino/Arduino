@@ -80,7 +80,7 @@ public:
   HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
 
   const void* data;
-  uint16_t length;
+  const uint16_t length;
 };
 
 class HID_ : public PUSBListNode
