@@ -47,7 +47,7 @@ int HID_::getDescriptor(USBSetup& setup)
 	if (setup.wIndex != pluggedInterface) { return 0; }
 
 	int total = 0;
-	HIDDescriptorListNode* node;
+	HIDSubDescriptor* node;
 	for (node = rootNode; node; node = node->next) {
 		int res = USB_SendControl(TRANSFER_PGM, node->data, node->length);
 		if (res == -1)
@@ -57,12 +57,12 @@ int HID_::getDescriptor(USBSetup& setup)
 	return total;
 }
 
-void HID_::AppendDescriptor(HIDDescriptorListNode *node)
+void HID_::AppendDescriptor(HIDSubDescriptor *node)
 {
 	if (!rootNode) {
 		rootNode = node;
 	} else {
-		HIDDescriptorListNode *current = rootNode;
+		HIDSubDescriptor *current = rootNode;
 		while (current->next) {
 			current = current->next;
 		}

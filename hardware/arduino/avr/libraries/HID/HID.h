@@ -74,10 +74,10 @@ typedef struct
   EndpointDescriptor  in;
 } HIDDescriptor;
 
-class HIDDescriptorListNode {
+class HIDSubDescriptor {
 public:
-  HIDDescriptorListNode *next = NULL;
-  HIDDescriptorListNode(const void *d, const uint16_t l) : data(d), length(l) { }
+  HIDSubDescriptor *next = NULL;
+  HIDSubDescriptor(const void *d, const uint16_t l) : data(d), length(l) { }
 
   const void* data;
   const uint16_t length;
@@ -89,7 +89,7 @@ public:
   HID_(void);
   int begin(void);
   void SendReport(uint8_t id, const void* data, int len);
-  void AppendDescriptor(HIDDescriptorListNode* node);
+  void AppendDescriptor(HIDSubDescriptor* node);
 
 protected:
   // Implementation of the PluggableUSBModule
@@ -100,7 +100,7 @@ protected:
 private:
   uint8_t epType[1];
 
-  HIDDescriptorListNode* rootNode;
+  HIDSubDescriptor* rootNode;
   uint16_t descriptorSize;
 
   uint8_t protocol;
