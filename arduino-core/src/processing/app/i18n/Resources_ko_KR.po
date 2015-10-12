@@ -1,7 +1,7 @@
 # English translations for PACKAGE package.
 # Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Translators:
 # Translators:
@@ -12,6 +12,7 @@
 # Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
 # shibaboy <shibaboy@gmail.com>, 2014
+# Jason Nam <contact@jasonnam.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
@@ -193,7 +194,7 @@ msgstr "스케치를 검증/업로드 하는 동안 에러가 발생 하였습�
 msgid ""
 "An unknown error occurred while trying to load\n"
 "platform-specific code for your machine."
-msgstr "플랫폼 종속저인 코드를 로드하는 동안\n알수 없는 에러가 발생했습니니다."
+msgstr "플랫폼 종속적인 코드를 로드하는 동안\n알수 없는 에러가 발생했습니다."
 
 #: Preferences.java:85
 msgid "Arabic"
@@ -284,7 +285,7 @@ msgstr "{0} 에 인수가 필요함"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr "아르메니안"
+msgstr "아르메니안어"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
@@ -490,7 +491,7 @@ msgstr "HTML로 복사"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr " 복사 오류 메시지"
+msgstr "오류 메시지 복사"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -1022,7 +1023,7 @@ msgstr "시작하기"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "전역 변수는 ({2}%%)의 동적 메모리중 {0}바이트를 사용, {3}바이트의 지역변수가 남은. 최대는 {1} 바이트. "
+msgstr "전역 변수는 ({2}%%)의 동적 메모리중 {0}바이트를 사용, {3}바이트는 지역변수가 사용. 최대는 {1} 바이트. "
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
@@ -1348,7 +1349,7 @@ msgstr "당신의 신선한 공기를 위한 시간입니다."
 #: Editor.java:1872
 #, java-format
 msgid "No reference available for \"{0}\""
-msgstr "\"{0}\" 가 잠조에 존재하지 않습니다."
+msgstr "\"{0}\"에 대한 레퍼런스가 존재하지 않습니다."
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -1380,7 +1381,7 @@ msgstr "노르웨이 브크몰어"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁을 위해 참고 http://www.arduino.cc/en/Guide/Troubleshooting#size"
+msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁은 다음을 참고 http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1433,7 +1434,7 @@ msgstr "페르시아어"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr "Persian (이란)"
+msgstr "페르시아어 (이란)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
@@ -1454,7 +1455,7 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 SPI 라이브러�
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
-msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가겨오기하십시오. "
+msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가져오시기 바랍니다. "
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1475,15 +1476,15 @@ msgstr "포트 번호:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr "포루투칼어"
+msgstr "포르투갈어"
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr "포루투칼어(브라질)"
+msgstr "포르투갈어(브라질)"
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr "포루투칼어(포루투칼)"
+msgstr "포르투갈어(포르투갈)"
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
@@ -1541,7 +1542,7 @@ msgstr "데이터 폴더를 가져오는데 문제 발생"
 msgid ""
 "Problem uploading to board.  See "
 "http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "보드에 업로딩중에 문제 발생. 다음을  참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#upload"
+msgstr "보드에 업로딩중 문제 발생. 다음을 참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#upload"
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1609,7 +1610,7 @@ msgstr "전부 바꾸기"
 #: Sketch.java:1043
 #, java-format
 msgid "Replace the existing version of {0}?"
-msgstr "{0}의 기존 버전을 교체하시겠습니까?"
+msgstr "기존 {0} 버전을 교체하시겠습니까?"
 
 #: FindReplace.java:81
 msgid "Replace with:"
@@ -1694,7 +1695,7 @@ msgstr "버전 선택"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr "선택된 보드가 '{0}' 코어(인스톨 되지 않은)를 의존합니다"
+msgstr "선택된 보드가 인스톨 되지 않은 '{0}' 코어에 의존 합니다."
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
@@ -1757,7 +1758,7 @@ msgstr "컴파일하는 동안 상세 출력 보이기"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
-msgstr "다음 동작중 자세한  출력 보이기: "
+msgstr "다음 동작중 자세한 출력 보이기: "
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1787,7 +1788,7 @@ msgstr "스케치는 읽기전용입니다"
 msgid ""
 "Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
 "tips on reducing it."
-msgstr "스케치가 너무 큼; 이것을 줄이기 위해 다음을 참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#size"
+msgstr "스케치가 너무 큼; 스케치 사이즈를 줄이는 방법은 다음을 참고하세요. http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -1806,7 +1807,7 @@ msgstr "스케치북 폴더가 사라졌습니니다."
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
-msgstr "스케치북 위치: "
+msgstr "스케치북 위치:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
@@ -1872,7 +1873,7 @@ msgstr "타밀어"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
-msgstr "'BYTE' 키워드는 더 이상 지원되지 않습니니다."
+msgstr "'BYTE' 키워드는 더 이상 지원되지 않습니다."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
@@ -1981,11 +1982,11 @@ msgstr "이 파일은 이미 당신이 추가하려는\n장소에 복사되었�
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr "이 라이브러리는 라이브러리 매니저에 있지 않습니다.  다시 설치 할 수 없습니다.\n삭제 하시겠습니까?"
+msgstr "이 라이브러리는 라이브러리 매니저에 있지 않아 다시 설치 할 수 없습니다.\n삭제 하시겠습니까?"
 
 #: ../../../processing/app/EditorStatus.java:467
 msgid "This report would have more information with"
-msgstr "이 리포트는 많은 정보를 포함합니다"
+msgstr "이 리포트는 더 많은 정보를 포함합니다"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -1994,7 +1995,7 @@ msgstr "휴식 시간"
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
-msgstr "툴 {0} 를 이 운영체제에 사용할 수 없습니다. "
+msgstr "툴 {0} 를 이 운영체제에서 사용할 수 없습니다."
 
 #: Editor.java:663
 msgid "Tools"
@@ -2027,7 +2028,7 @@ msgstr "새로운 스케치를 업로드하기 위해 보드의 패스워드를 
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
-msgstr "우크라이아어"
+msgstr "우크라이나어"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2049,7 +2050,7 @@ msgstr "{1} 에서 {0} 를 찾을 수 없음"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr "시리얼 모니터를 열 수 없음"
+msgstr "시리얼 모니터를 열 수 없습니다"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
@@ -2072,7 +2073,7 @@ msgstr "컨텍스트 키 {1} 에서 처리되지 않은 타입 {0} "
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr "알수없는 스케치파일 확장자: {0}"
+msgstr "알 수 없는 스케치파일 확장자: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2181,7 +2182,7 @@ msgstr "버전 <b>{0}</b>"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
 msgid "Version unknown"
-msgstr "알수없는 버전"
+msgstr "알 수 없는 버전"
 
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
@@ -2211,7 +2212,7 @@ msgstr "경고: '{1}' 라이브러리에 {0} 허위 폴더"
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr "경고: 라이브러리 {0}가 {1} 아키텍처에서 실행되며 {2}아키텍처에서 실행되는 현재보드에서는 호환되지 않을 수 있습니다."
+msgstr "경고: 라이브러리 {0}가 {1} 아키텍처에서 실행되며 {2} 아키텍처에서 실행되는 현재보드에서는 호환되지 않을 수 있습니다."
 
 #: Base.java:2128
 msgid "Warning"
@@ -2294,7 +2295,7 @@ msgstr "You can't fool me"
 
 #: Sketch.java:411
 msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "스케치와 동일한 이름의 .cpp 파일을 가질수 없습니다."
+msgstr "스케치와 동일한 이름의 .cpp 파일을 가질 수 없습니다."
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
@@ -2373,7 +2374,7 @@ msgid ""
 "As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
 "You appear to be using it or another library that depends on the SPI library.\n"
 "\n"
-msgstr "\n아두이노 0019 경우, 이더넷 라이브러리는 SPI라이브러리에 의존합니다.\n이 사이브러리를 사용하거나 SPI 라이브러리에 의존적인\n다른 라이브러리를 사용하는 것 같습니다.\n"
+msgstr "\n아두이노 0019 경우, 이더넷 라이브러리는 SPI라이브러리에 의존합니다.\n이 라이브러리를 사용하거나 SPI 라이브러리에 의존적인\n다른 라이브러리를 사용하는 것 같습니다.\n"
 
 #: debug/Compiler.java:415
 msgid ""
@@ -2436,7 +2437,7 @@ msgstr "createNewFile()가 false를 반환했습니다"
 
 #: ../../../processing/app/EditorStatus.java:469
 msgid "enabled in File > Preferences."
-msgstr "파일 > 설정에 사용가능하게 됨"
+msgstr "파일 > 설정에서 사용가능하게 됨"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2467,7 +2468,7 @@ msgstr "serialMenu가 Null입니다"
 #, java-format
 msgid ""
 "the selected serial port {0} does not exist or your board is not connected"
-msgstr "선택돤 시리얼 포트{0}는 존재하지 않거나 해당 보드가 연결되지 않았습니다."
+msgstr "선택된 시리얼 포트{0}는 존재하지 않거나 해당 보드가 연결되지 않았습니다."
 
 #: ../../../processing/app/Base.java:389
 #, java-format
