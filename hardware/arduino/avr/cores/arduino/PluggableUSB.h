@@ -25,9 +25,9 @@
 
 #if defined(USBCON)
 
-class PUSBListNode {
+class PluggableUSBModule {
 public:
-  PUSBListNode(uint8_t numEps, uint8_t numIfs, uint8_t *epType) :
+  PluggableUSBModule(uint8_t numEps, uint8_t numIfs, uint8_t *epType) :
     numEndpoints(numEps), numInterfaces(numIfs), endpointType(epType)
   { }
 
@@ -43,7 +43,7 @@ protected:
   const uint8_t numInterfaces;
   const uint8_t *endpointType;
 
-  PUSBListNode *next = NULL;
+  PluggableUSBModule *next = NULL;
 
   friend class PluggableUSB_;
 };
@@ -51,7 +51,7 @@ protected:
 class PluggableUSB_ {
 public:
   PluggableUSB_();
-  bool plug(PUSBListNode *node);
+  bool plug(PluggableUSBModule *node);
   int getInterface(uint8_t* interfaceCount);
   int getDescriptor(USBSetup& setup);
   bool setup(USBSetup& setup);
@@ -59,7 +59,7 @@ public:
 private:
   uint8_t lastIf;
   uint8_t lastEp;
-  PUSBListNode* rootNode;
+  PluggableUSBModule* rootNode;
 };
 
 // Replacement for global singleton.
