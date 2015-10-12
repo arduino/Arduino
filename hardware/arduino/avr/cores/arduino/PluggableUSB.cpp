@@ -28,7 +28,7 @@ extern uint8_t _initEndpoints[];
 int PluggableUSB_::getInterface(uint8_t* interfaceCount)
 {
 	int sent = 0;
-	PUSBListNode* node;
+	PluggableUSBModule* node;
 	for (node = rootNode; node; node = node->next) {
 		int res = node->getInterface(interfaceCount);
 		if (res < 0)
@@ -40,7 +40,7 @@ int PluggableUSB_::getInterface(uint8_t* interfaceCount)
 
 int PluggableUSB_::getDescriptor(USBSetup& setup)
 {
-	PUSBListNode* node;
+	PluggableUSBModule* node;
 	for (node = rootNode; node; node = node->next) {
 		int ret = node->getDescriptor(setup);
 		// ret!=0 -> request has been processed
@@ -52,7 +52,7 @@ int PluggableUSB_::getDescriptor(USBSetup& setup)
 
 bool PluggableUSB_::setup(USBSetup& setup)
 {
-	PUSBListNode* node;
+	PluggableUSBModule* node;
 	for (node = rootNode; node; node = node->next) {
 		if (node->setup(setup)) {
 			return true;
@@ -61,7 +61,7 @@ bool PluggableUSB_::setup(USBSetup& setup)
 	return false;
 }
 
-bool PluggableUSB_::plug(PUSBListNode *node)
+bool PluggableUSB_::plug(PluggableUSBModule *node)
 {
 	if ((lastEp + node->numEndpoints) > USB_ENDPOINTS) {
 		return false;
@@ -70,7 +70,7 @@ bool PluggableUSB_::plug(PUSBListNode *node)
 	if (!rootNode) {
 		rootNode = node;
 	} else {
-		PUSBListNode *current = rootNode;
+		PluggableUSBModule *current = rootNode;
 		while (current->next) {
 			current = current->next;
 		}

@@ -83,7 +83,7 @@ public:
   const uint16_t length;
 };
 
-class HID_ : public PUSBListNode
+class HID_ : public PluggableUSBModule
 {
 public:
   HID_(void);
@@ -92,7 +92,7 @@ public:
   void AppendDescriptor(HIDDescriptorListNode* node);
 
 protected:
-  // Implementation of the PUSBListNode
+  // Implementation of the PluggableUSBModule
   int getInterface(uint8_t* interfaceCount);
   int getDescriptor(USBSetup& setup);
   bool setup(USBSetup& setup);

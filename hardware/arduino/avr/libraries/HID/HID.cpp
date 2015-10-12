@@ -128,7 +128,7 @@ bool HID_::setup(USBSetup& setup)
 	return false;
 }
 
-HID_::HID_(void) : PUSBListNode(1, 1, epType),
+HID_::HID_(void) : PluggableUSBModule(1, 1, epType),
                    rootNode(NULL), descriptorSize(0),
                    protocol(1), idle(1)
 {
