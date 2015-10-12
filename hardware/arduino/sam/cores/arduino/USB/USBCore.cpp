@@ -296,7 +296,7 @@ bool USBD_ClassInterfaceRequest(USBSetup& setup)
 #endif
 
 #ifdef PLUGGABLE_USB_ENABLED
-	return PUSB_Setup(setup, i);
+	return PluggableUSB().setup(setup);
 #endif
 
 	return false;
@@ -311,7 +311,7 @@ int USBD_SendInterfaces(void)
 #endif
 
 #ifdef PLUGGABLE_USB_ENABLED
-	PUSB_GetInterface(&interfaces);
+	PluggableUSB().getInterface(&interfaces);
 #endif
 
 	TRACE_CORE(printf("=> USBD_SendInterfaces, interfaces=%d\r\n", interfaces);)
@@ -327,7 +327,7 @@ int USBD_SendOtherInterfaces(void)
 #endif
 
 #ifdef PLUGGABLE_USB_ENABLED
-	PUSB_GetInterface(&interfaces);
+	PluggableUSB().getInterface(&interfaces);
 #endif
 
 	TRACE_CORE(printf("=> USBD_SendInterfaces, interfaces=%d\r\n", interfaces);)
@@ -399,7 +399,7 @@ static bool USBD_SendDescriptor(USBSetup& setup)
 	USBD_InitControl(setup.wLength);
 
 #ifdef PLUGGABLE_USB_ENABLED
-	ret = PUSB_GetDescriptor(t);
+	ret = PluggableUSB().getDescriptor(setup);
 	if (ret != 0) {
 		return (ret > 0 ? true : false);
 	}
