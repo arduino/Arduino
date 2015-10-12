@@ -24,7 +24,7 @@
  * analog pins 2 through 5 used as digital 16 through 19
  Potentiometers:
  * center pins are attached to analog pins 0 and 1, respectively
- * side pins attached to +5V and ground, respectively.
+ * side pins attached to +3.3V and ground, respectively.
  
  This example code is in the public domain.
  

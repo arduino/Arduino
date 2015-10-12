@@ -8,7 +8,7 @@
  
  The circuit:
  * LED attached from pin 13 to ground
- * pushbutton attached from pin 2 to +5V
+ * pushbutton attached from pin 2 to +3.3V
  * 10K resistor attached from pin 2 to ground
  
  * Note: On most Arduino boards, there is already an LED on the board
