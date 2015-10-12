@@ -149,6 +149,18 @@ typedef struct {
 	uint8_t	maxPower;
 } ConfigDescriptor;
 
+//	Device Qualifier (only needed for USB2.0 devices)
+typedef struct {
+	uint8_t	bLength;
+	uint8_t	dtype;
+	uint16_t bDescriptorType;
+	uint8_t	bDeviceClass;
+	uint8_t	bDeviceSubClass;
+	uint8_t	bDeviceProtocol;
+	uint8_t	bMaxPacketSize0;
+	uint8_t	bNumConfigurations;
+} QualifierDescriptor;
+
 //	String
 
 //	Interface
@@ -257,16 +269,16 @@ _Pragma("pack()")
 	{ 18, 1, 0x200, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
 
 #define D_CONFIG(_totalLength,_interfaces) \
-	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_SELF_POWERED, USB_CONFIG_POWER_MA(500) }
+	{ 9, 2, (uint16_t)(_totalLength),_interfaces, 1, 0, USB_CONFIG_SELF_POWERED, USB_CONFIG_POWER_MA(500) }
 
 #define D_OTHERCONFIG(_totalLength,_interfaces) \
-	{ 9, 7, _totalLength,_interfaces, 1, 0, USB_CONFIG_SELF_POWERED, USB_CONFIG_POWER_MA(500) }
+	{ 9, 7, (uint16_t)(_totalLength),_interfaces, 1, 0, USB_CONFIG_SELF_POWERED, USB_CONFIG_POWER_MA(500) }
 
 #define D_INTERFACE(_n,_numEndpoints,_class,_subClass,_protocol) \
 	{ 9, 4, _n, 0, _numEndpoints, _class,_subClass, _protocol, 0 }
 
 #define D_ENDPOINT(_addr,_attr,_packetSize, _interval) \
-	{ 7, 5, _addr,_attr,_packetSize, _interval }
+	{ 7, 5, (uint8_t)(_addr),_attr,_packetSize, _interval }
 
 #define D_QUALIFIER(_class,_subClass,_proto,_packetSize0,_configs) \
 	{ 10, 6, 0x200, _class,_subClass,_proto,_packetSize0,_configs }

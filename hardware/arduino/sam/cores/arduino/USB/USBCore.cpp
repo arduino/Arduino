@@ -101,7 +101,7 @@ const DeviceDescriptor USB_DeviceDescriptor =
 const DeviceDescriptor USB_DeviceDescriptorA =
 	D_DEVICE(0xEF,0x02,0x01,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,0,1);
 
-const DeviceDescriptor USB_DeviceQualifier =
+const QualifierDescriptor USB_DeviceQualifier =
 	D_QUALIFIER(0x00,0x00,0x00,64,1);
 
 //! 7.1.20 Test Mode Support
@@ -130,7 +130,7 @@ class LockEP
 {
 	irqflags_t flags;
 public:
-	LockEP(uint32_t ep) : flags(cpu_irq_save())
+	LockEP(uint32_t ep __attribute__ ((unused))) : flags(cpu_irq_save())
 	{
 	}
 	~LockEP()
@@ -219,8 +219,8 @@ uint32_t USBD_Send(uint32_t ep, const void* d, uint32_t len)
 	return r;
 }
 
-int _cmark;
-int _cend;
+uint16_t _cmark;
+uint16_t _cend;
 
 void USBD_InitControl(int end)
 {
@@ -229,7 +229,7 @@ void USBD_InitControl(int end)
 }
 
 //	Clipped by _cmark/_cend
-int USBD_SendControl(uint8_t flags, const void* d, uint32_t len)
+int USBD_SendControl(uint8_t flags __attribute__ ((unused)), const void* d, uint32_t len)
 {
 	const uint8_t* data = (const uint8_t*)d;
 	uint32_t length = len;
@@ -302,7 +302,7 @@ bool USBD_ClassInterfaceRequest(USBSetup& setup)
 	return false;
 }
 
-int USBD_SendInterfaces(void)
+uint8_t USBD_SendInterfaces(void)
 {
 	uint8_t interfaces = 0;
 
@@ -318,7 +318,7 @@ int USBD_SendInterfaces(void)
 	return interfaces;
 }
 
-int USBD_SendOtherInterfaces(void)
+uint8_t USBD_SendOtherInterfaces(void)
 {
 	uint8_t interfaces = 0;
 
@@ -342,7 +342,7 @@ static bool USBD_SendConfiguration(int maxlen)
 	//	Count and measure interfaces
 	USBD_InitControl(0);
 	//TRACE_CORE(printf("=> USBD_SendConfiguration _cmark1=%d\r\n", _cmark);)
-	int interfaces = USBD_SendInterfaces();
+	uint8_t interfaces = USBD_SendInterfaces();
 	//TRACE_CORE(printf("=> USBD_SendConfiguration _cmark2=%d\r\n", _cmark);)
 	//TRACE_CORE(printf("=> USBD_SendConfiguration sizeof=%d\r\n", sizeof(ConfigDescriptor));)
 
@@ -365,7 +365,7 @@ static bool USBD_SendOtherConfiguration(int maxlen)
 	//	Count and measure interfaces
 	USBD_InitControl(0);
 	//TRACE_CORE(printf("=> USBD_SendConfiguration _cmark1=%d\r\n", _cmark);)
-	int interfaces = USBD_SendOtherInterfaces();
+	uint8_t interfaces = USBD_SendOtherInterfaces();
 	//TRACE_CORE(printf("=> USBD_SendConfiguration _cmark2=%d\r\n", _cmark);)
 	//TRACE_CORE(printf("=> USBD_SendConfiguration sizeof=%d\r\n", sizeof(ConfigDescriptor));)
 
