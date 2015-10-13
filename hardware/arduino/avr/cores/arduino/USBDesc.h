@@ -24,6 +24,8 @@
 #define USB_ENDPOINTS 5 // AtMegaxxU2
 #endif
 
+#define ISERIAL_MAX_LEN     20
+
 #define CDC_INTERFACE_COUNT	2
 #define CDC_ENPOINT_COUNT	3
 
@@ -39,6 +41,6 @@
 #define CDC_RX CDC_ENDPOINT_OUT
 #define CDC_TX CDC_ENDPOINT_IN
 
-#define IMANUFACTURER	1
-#define IPRODUCT		2
-
+#define IMANUFACTURER   1
+#define IPRODUCT        2
+#define ISERIAL         3

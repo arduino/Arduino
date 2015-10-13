@@ -50,6 +50,15 @@ int PluggableUSB_::getDescriptor(USBSetup& setup)
 	return 0;
 }
 
+void PluggableUSB_::getShortName(char *iSerialNum)
+{
+	PluggableUSBModule* node;
+	for (node = rootNode; node; node = node->next) {
+		iSerialNum += node->getShortName(iSerialNum);
+	}
+	*iSerialNum = 0;
+}
+
 bool PluggableUSB_::setup(USBSetup& setup)
 {
 	PluggableUSBModule* node;
