@@ -82,7 +82,8 @@ interrupt void Port_3(void)
 
 
 
-void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode) {
+void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode)
+{
     uint16_t gpio_number = pin_mapping[pin];
  	uint32_t bit = digitalPinToPort(gpio_number);
     int i;    	
@@ -98,7 +99,39 @@ void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode) {
             {
                 extInts[i] = gpio_number;
                 i++;
-                switch(i) {
+#ifdef TMS320F28377S
+                switch(i)
+                {
+                    case 1:
+                    	PieVectTable.XINT1_INT = Port_1;
+                    	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
+                    	IER |= M_INT1;
+                    	XintRegs.XINT1CR.bit.POLARITY = mode;
+				    	intFuncP1 = userFunc;
+				    	XintRegs.XINT1CR.bit.ENABLE = 1;
+				    	break;
+                    case 2:
+                    	PieVectTable.XINT2_INT = Port_2;
+                    	PieCtrlRegs.PIEIER1.bit.INTx5 = 1;
+                    	IER |= M_INT1;
+                    	XintRegs.XINT2CR.bit.POLARITY = mode;
+				    	intFuncP2 = userFunc;
+				    	XintRegs.XINT2CR.bit.ENABLE = 1;
+				    	break;
+                    case 3:
+                    	PieVectTable.XINT3_INT = Port_3;
+                    	PieCtrlRegs.PIEIER12.bit.INTx1 = 1;
+                    	IER |= M_INT12;
+                    	XintRegs.XINT3CR.bit.POLARITY = mode;
+				    	intFuncP3 = userFunc;
+                    	XintRegs.XINT3CR.bit.ENABLE = 1;
+				    	break;
+                    default:
+                        break;
+                }
+#else
+                switch(i)
+                {
                     case 1:
                     	PieVectTable.XINT1 = Port_1;
                     	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;
@@ -129,6 +162,7 @@ void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode) {
                     default:
                         break;
                 }
+#endif //TMS320F28377S
             }
 
 
@@ -138,7 +172,8 @@ void attachInterrupt(uint8_t pin, void (*userFunc)(void), int mode) {
        EINT;
 }
 
-void detachInterrupt(uint8_t pin) {
+void detachInterrupt(uint8_t pin)
+{
      uint16_t gpio_number = pin_mapping[pin];
     int i;    
     for(i = 0; i < AVAILABLE_EXT_INTS; i++)
@@ -147,7 +182,27 @@ void detachInterrupt(uint8_t pin) {
         {
             extInts[i] = 255;
             i++;
-            switch(i) {
+#ifdef TMS320F28377S
+            switch(i)
+            {
+            case 1:
+            	XintRegs.XINT1CR.bit.ENABLE = 0;
+            	intFuncP1 = PIE_RESERVED_ISR;
+            	break;
+            case 2:
+            	XintRegs.XINT2CR.bit.ENABLE = 0;
+            	intFuncP2 = PIE_RESERVED_ISR;
+            	break;
+            case 3:
+            	XintRegs.XINT3CR.bit.ENABLE = 0;
+            	intFuncP3 = PIE_RESERVED_ISR;
+            	break;
+            default:
+            	break;
+            }
+#else
+            switch(i)
+            {
                 case 1:
                 	XIntruptRegs.XINT1CR.bit.ENABLE = 0;
 					intFuncP1 = rsvd_ISR;
@@ -163,6 +218,7 @@ void detachInterrupt(uint8_t pin) {
                 default:
                         break;
             }
+#endif
 
         }
 

@@ -142,8 +142,13 @@ void noTone(uint8_t _pin)
 static void inline initToneTimers()
 {
    EALLOW;  // This is needed to write to EALLOW protected registers
+#ifdef TMS320F28377S
+   PieVectTable.TIMER1_INT = &cpu_timer1_isr;
+   PieVectTable.TIMER2_INT = &cpu_timer2_isr;
+#else
    PieVectTable.TINT1 = &cpu_timer1_isr;
    PieVectTable.TINT2 = &cpu_timer2_isr;
+#endif
    IER |= M_INT13;
    IER |= M_INT14;
    EDIS;    // This is needed to disable write to EALLOW protected registers

@@ -1719,7 +1719,8 @@ public class Sketch {
     }else if (Base.getArch() == "msp432" || Base.getArch() == "cc2600emt"){
         uploader = new DSLiteUploader();
     } else if(Base.getArch() == "c2000"){
-    	uploader = new C2000Uploader();
+    	//uploader = new C2000Uploader();
+    	uploader = new DSLiteUploader();
     } else if(Base.getArch() == "cc3200" || Base.getArch() == "cc3200emt"){
     	uploader = new CC3200Uploader();
     }else {

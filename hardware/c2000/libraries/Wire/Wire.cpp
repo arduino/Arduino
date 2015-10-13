@@ -19,7 +19,9 @@
   Modified 2012 by Todd Krein (todd@krein.org) to implement repeated starts
 */
 
-extern "C" {
+#include "Energia.h"
+extern "C"
+{
   #include <stdlib.h>
   #include <string.h>
   #include <inttypes.h>
@@ -78,7 +80,8 @@ void TwoWire::begin(int address)
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
 {
   // clamp to buffer length
-  if(quantity > BUFFER_LENGTH){
+    if(quantity > BUFFER_LENGTH)
+    {
     quantity = BUFFER_LENGTH;
   }
   // perform blocking read into buffer
@@ -159,10 +162,12 @@ uint8_t TwoWire::endTransmission(void)
 // or after beginTransmission(address)
 size_t TwoWire::write(uint8_t data)
 {
-  if(transmitting){
+    if(transmitting)
+    {
   // in master transmitter mode
     // don't bother if buffer is full
-    if(txBufferLength >= BUFFER_LENGTH){
+        if(txBufferLength >= BUFFER_LENGTH)
+        {
       setWriteError();
       return 0;
     }
@@ -171,7 +176,9 @@ size_t TwoWire::write(uint8_t data)
     ++txBufferIndex;
     // update amount in buffer   
     txBufferLength = txBufferIndex;
-  }else{
+    }
+    else
+    {
   // in slave send mode
     // reply to master
     twi_transmit(&data, 1);
@@ -184,12 +191,16 @@ size_t TwoWire::write(uint8_t data)
 // or after beginTransmission(address)
 size_t TwoWire::write(const uint8_t *data, size_t quantity)
 {
-  if(transmitting){
+    if(transmitting)
+    {
   // in master transmitter mode
-    for(size_t i = 0; i < quantity; ++i){
+        for(size_t i = 0; i < quantity; ++i)
+        {
       write(data[i]);
     }
-  }else{
+    }
+    else
+    {
   // in slave send mode
     // reply to master
     twi_transmit(data, quantity);
@@ -213,7 +224,8 @@ int TwoWire::read(void)
   int value = -1;
   
   // get each successive byte on each call
-  if(rxBufferIndex < rxBufferLength){
+    if(rxBufferIndex < rxBufferLength)
+    {
     value = rxBuffer[rxBufferIndex];
     ++rxBufferIndex;
   }
@@ -228,7 +240,8 @@ int TwoWire::peek(void)
 {
   int value = -1;
   
-  if(rxBufferIndex < rxBufferLength){
+    if(rxBufferIndex < rxBufferLength)
+    {
     value = rxBuffer[rxBufferIndex];
   }
 
@@ -244,13 +257,15 @@ void TwoWire::flush(void)
 void TwoWire::onReceiveService(uint8_t* inBytes, int numBytes)
 {
   // don't bother if user hasn't registered a callback
-  if(!user_onReceive){
+    if(!user_onReceive)
+    {
     return;
   }
   // don't bother if rx buffer is in use by a master requestFrom() op
   // i know this drops data, but it allows for slight stupidity
   // meaning, they may not have read all the master requestFrom() data yet
-  if(rxBufferIndex < rxBufferLength){
+    if(rxBufferIndex < rxBufferLength)
+    {
     return;
   }
   // copy twi rx buffer into local read buffer
@@ -269,7 +284,8 @@ void TwoWire::onReceiveService(uint8_t* inBytes, int numBytes)
 void TwoWire::onRequestService(void)
 {
   // don't bother if user hasn't registered a callback
-  if(!user_onRequest){
+    if(!user_onRequest)
+    {
     return;
   }
   // reset tx buffer iterator vars
@@ -290,6 +306,54 @@ void TwoWire::onReceive( void (*function)(int) )
 void TwoWire::onRequest( void (*function)(void) )
 {
   user_onRequest = function;
+}
+
+// internal rxBuffer helper access functions
+inline uint8_t* TwoWire::getrxBuffer()
+{
+	return rxBuffer;
+}
+inline uint8_t TwoWire::getrxBufferIndex()
+{
+	return rxBufferIndex;
+}
+inline void TwoWire::setrxBufferLength(uint8_t length)
+{
+	rxBufferLength = length;
+}
+
+// internal txBuffer helper access functions
+inline uint8_t* TwoWire::gettxBuffer()
+{
+	return txBuffer;
+}
+inline uint8_t TwoWire::gettxBufferIndex()
+{
+	return txBufferIndex;
+}
+
+// C-friendly functions
+// external rxBuffer helper access functions
+void updaterxBuffer(uint8_t* twi_rxBuffer, uint8_t twi_rxBufferIndex)
+{
+	uint8_t* temp = Wire.getrxBuffer();
+	uint8_t temp2 = Wire.getrxBufferIndex();
+	while(temp2 < twi_rxBufferIndex)
+	{
+		temp[temp2] = twi_rxBuffer[temp2];
+		temp2++;
+	}
+	Wire.setrxBufferLength(temp2);
+}
+// external txBuffer helper get functions
+void accesstxBuffer(uint8_t* twi_txBuffer, uint8_t twi_txBufferIndex)
+{
+	uint8_t* temp = Wire.gettxBuffer();
+	while(twi_txBufferIndex <= Wire.gettxBufferIndex())
+	{
+		twi_txBuffer[twi_txBufferIndex] = temp[twi_txBufferIndex];
+		twi_txBufferIndex++; //this does not affect the original, just for loop control
+	}
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////

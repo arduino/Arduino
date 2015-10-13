@@ -13,4 +13,11 @@ lptms320f28069.build.core=c2000
 lptms320f28069.build.variant=launchpad_f28069
 lptms320f28069.build.rts=rts2800_ml.lib
 ##############################################################
-
+##############################################################
+lptms320f28377s.name=LaunchPad (C2000) w/ TMS320F28377S (200MHz)
+lptms320f28377s.build.mcu=TMS320F28377S
+lptms320f28377s.build.f_cpu=200000000
+lptms320f28377s.build.core=c2000
+lptms320f28377s.build.variant=launchpad_f28377S
+lptms320f28377s.build.rts=rts2800_ml.lib
+##############################################################

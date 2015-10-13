@@ -329,6 +329,10 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 		{
 			flashKernel = new File(new File(new File(target.getFolder(), "F28069_flash_kernel"),"Debug"), "2806_flash_kernel.txt");
 		}
+		else if(name.equals("TMS320F28377S"))
+		{
+			flashKernel = new File(new File(new File(new File(target.getFolder(), "F2837xS_sci_flash_kernel"), "ccs"), "CPU1_RAM"), "F2837xS_sci_flash_kernel_cpu01.txt");
+		}
 		else
 		{
 			flashKernel = new File(new File(new File(target.getFolder(), "F28027_flash_kernel"),"Debug"), "flash_kernel.txt");
@@ -340,13 +344,23 @@ public class C2000Uploader extends Uploader implements MessageConsumer{
 	    
 	    if( osName.equals( "Windows NT" ) || osName.equals( "Windows 7" ) || osName.equals("Windows 95"))
         {
+	    	if(name.equals("TMS320F28377S"))
+	    	{
+	    		File serialLoader = new File(new File(new File(target.getFolder(), "serial_loader2000"), "F28377S"), "serial_loader2000.exe");
+	    		loaderPath = serialLoader.getAbsolutePath();
+	    	}
+	    	else
+	    	{
 	    	File serialLoader = new File(new File(new File(target.getFolder(), "serial_loader2000"),"Release"), "serial_loader2000.exe");
 	    	loaderPath = serialLoader.getAbsolutePath();
-        }else if(osName.equals("Linux"))
+	    	}
+        }
+	    else if(osName.equals("Linux"))
         {
         	File serialLoader = new File(new File(new File(new File(target.getFolder(), "serial_loader2000"),"linux"), "64 bit"), "serial_loader2000");
 	    	loaderPath = serialLoader.getAbsolutePath();
-        }else if(osName.equals("Mac OS X"))
+        }
+	    else if(osName.equals("Mac OS X"))
         {
         	File serialLoader = new File(new File(new File(target.getFolder(), "serial_loader2000"),"macos"), "serial_loader2000");
 	    	loaderPath = serialLoader.getAbsolutePath();

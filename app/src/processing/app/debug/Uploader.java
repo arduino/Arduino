@@ -143,7 +143,14 @@ public abstract boolean uploadUsingPreferences(String buildPath, String classNam
 
       } else {
         ProcessBuilder builder = new ProcessBuilder(commandArray);
+        if(Base.getArch() == "c2000")
+        {
+        	builder.directory(new File(Base.getC2000BasePath()));
+        }
+        else
+        {
         builder.directory(new File(Base.getLM4FBasePath()));
+        }
         process = builder.start();
       }
 

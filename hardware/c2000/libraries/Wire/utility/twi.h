@@ -29,11 +29,9 @@
 #ifndef twi_h
 #define twi_h
 
-#ifdef __cplusplus
-typedef unsigned char _Bool;
-#endif
-#include "F2802x_device.h"
+
 #include <inttypes.h>
+#include "Energia.h"
 
 #ifndef TWI_FREQ
 #define TWI_FREQ 100000L
@@ -42,13 +40,6 @@ typedef unsigned char _Bool;
 #ifndef TWI_BUFFER_LENGTH
   #define TWI_BUFFER_LENGTH 32
 #endif
-
-
-#define TWI_READY 0
-#define TWI_MRX   1
-#define TWI_MTX   2
-#define TWI_SRX   3
-#define TWI_STX   4
 
 // Error Messages
 #define I2C_ERROR               0xFFFF
@@ -88,33 +79,6 @@ typedef unsigned char _Bool;
 #define I2C_ADDR_AS_SLAVE 1
 #define I2C_ST_MSG_READY  2
 
-// I2C Slave Receiver messages defines
-#define I2C_SND_MSG1 1
-#define I2C_SND_MSG2 2
-
-// I2C State defines
-#define I2C_IDLE               0
-#define I2C_SLAVE_RECEIVER     1
-#define I2C_SLAVE_TRANSMITTER  2
-#define I2C_MASTER_RECEIVER    3
-#define I2C_MASTER_TRANSMITTER 4
-
-// I2C  Message Commands for I2CMSG struct
-#define I2C_MSGSTAT_INACTIVE          0x0000
-#define I2C_MSGSTAT_SEND_WITHSTOP     0x0010
-#define I2C_MSGSTAT_WRITE_BUSY        0x0011
-#define I2C_MSGSTAT_SEND_NOSTOP       0x0020
-#define I2C_MSGSTAT_SEND_NOSTOP_BUSY  0x0021
-#define I2C_MSGSTAT_RESTART           0x0022
-#define I2C_MSGSTAT_READ_BUSY         0x0023
-
-// Generic defines
-#define I2C_TRUE  1
-#define I2C_FALSE 0
-#define I2C_YES   1
-#define I2C_NO    0
-#define I2C_DUMMY_BYTE 0
-
 void twi_init(void);
 void twi_setAddress(uint8_t);
 uint8_t twi_readFrom(uint8_t, uint8_t*, uint8_t, uint8_t);
@@ -122,9 +86,7 @@ uint8_t twi_writeTo(uint8_t, uint8_t*, uint8_t, uint8_t, uint8_t);
 uint8_t twi_transmit(const uint8_t*, uint8_t);
 void twi_attachSlaveRxEvent( void (*)(uint8_t*, int) );
 void twi_attachSlaveTxEvent( void (*)(void) );
-void twi_reply(uint8_t);
 void twi_stop(void);
-void twi_releaseBus(void);
 
 #endif
 

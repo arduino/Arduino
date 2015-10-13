@@ -253,8 +253,12 @@ public class Compiler implements MessageConsumer {
 
 			  core_commonPath += "/F2806x_common";
 			  core_headersPath += "/F2806x_headers";
-      
-
+      }
+      else if(boardPreferences.get("build.mcu").equals("TMS320F28377S"))
+      {
+    	  core_commonPath += "/F2837xS_common";
+    	  core_headersPath += "/F2837xS_headers";
+    	  includePaths.add(corePath + "/F2837xS_common/include");
       }
 	  ArrayList<File> corePathfiles_S = findFilesInPath(corePath, "S", false);
 	  corePathfiles_S.addAll(findFilesInPath(core_commonPath, "S", true));
@@ -462,7 +466,11 @@ public class Compiler implements MessageConsumer {
         	
 	       	baseCommandLinker.add(corePath + "//F2806x_common//cmd//F28069.cmd");
 	        baseCommandLinker.add(corePath + "//F2806x_headers//cmd//F2806x_Headers_nonBIOS.cmd");
-        	
+        }
+        else if(boardPreferences.get("build.mcu").equals("TMS320F28377S"))
+        {
+        	baseCommandLinker.add(corePath + "//F2837xS_common//cmd//2837xS_Generic_Flash_lnk.cmd");
+        	baseCommandLinker.add(corePath + "//F2837xS_headers//cmd//F2837xS_Headers_nonBIOS.cmd");
         }
         else
         {

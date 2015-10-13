@@ -100,7 +100,7 @@ struct SCIFFTX_BITS {     // bits description
 	Uint16	TXFFINTCLR:1;		// 6	Clear INT flag
 	Uint16	TXFFINT:1;			// 7	INT flag
 	Uint16	TXFFST:5;			// 12:8	FIFO status
-	Uint16	TXFIFOXRESET:1;		// 13	FIFO reset
+	Uint16	TXFIFORESET:1;		// 13	FIFO reset
 	Uint16	SCIFFENA:1;			// 14	Enhancement enable
 	Uint16	SCIRST:1;			// 15	SCI reset rx/tx channels
 };

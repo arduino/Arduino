@@ -11,6 +11,9 @@ typedef unsigned char _Bool;
 #elif defined(TMS320F28069)
 #include <F2806x_Device.h>
 #include "F2806x_common/include/F2806x_DefaultISR.h"
+#elif defined(TMS320F28377S)
+#include <F2837xS_device.h>
+#include "F2837xS_common/include/F2837xS_defaultisr.h"
 #endif
 #include <stdint.h>
 #include <string.h>
@@ -69,7 +72,15 @@ enum{
   PWM7A,
   PWM7B,
   PWM8A,
-  PWM8B
+    PWM8B,
+    PWM9A,
+    PWM9B,
+    PWM10A,
+    PWM10B,
+    PWM11A,
+    PWM11B,
+	PWM12A,
+	PWM12B
   };
 
 enum{
@@ -81,7 +92,11 @@ enum{
 };
 
 // The following pointer to a function call calibrates the ADC and internal oscillators
+#ifdef TMS320F28377S
+#define Device_cal (void   (*)(void))0x070282
+#else
 #define Device_cal (void   (*)(void))0x3D7C80
+#endif
 
 // DO NOT MODIFY THIS LINE.
 //#define DELAY_US(A)  DSP28x_usDelay((unsigned long)((((long double) A * 1000.0L) / (long double)(1000000000L/F_CPU)) - 9.0L) / 5.0L)
@@ -89,9 +104,11 @@ enum{
 #define DELAY_US(A)  DSP28x_usDelay((uint32_t)((((long double) A * 1000.0L) / (long double)16.667L) - 9.0L) / 5.0L)
 #elif defined(TMS320F28069)
 #define DELAY_US(A)  DSP28x_usDelay((uint32_t)((((long double) A * 1000.0L) / (long double)11.111L) - 9.0L) / 5.0L)
+#elif defined(TMS320F28377S)
+#define DELAY_US(A)  F28x_usDelay((uint32_t)((((long double) A * 1000.0L) / (long double)5.0L) - 9.0L) / 5.0L)
 #endif
 
-// These are defined by the linker (see F2808.cmd)
+// These are defined by the linker (see .cmd files)
 extern void* RamfuncsLoadStart;
 extern void* RamfuncsLoadSize;
 extern void* RamfuncsRunStart;
@@ -193,12 +210,8 @@ void enableWatchDog();
 #ifdef __cplusplus
 #include "WCharacter.h"
 #include "WString.h"
-//#if defined(__MSP430_HAS_USCI__) || defined(__MSP430_HAS_EUSCI_A0__)
-#include "HardwareSerial.h"
-//#else
-//#include "TimerSerial.h"
-//#include "Wire.h"
-//#endif
+#include "HardwareSerial.h" //uses Hardware SCI
+#include "TimerSerial.h" //uses timer to emulate SCI
 
 uint16_t makeWord(uint16_t w);
 uint16_t makeWord(byte h, byte l);
@@ -223,6 +236,14 @@ long map(long, long, long, long, long);
 
 #include "pins_energia.h"
 
+#ifdef TMS320F28027
+#include "../../variants/launchpad_f28027/pins_energia.h"
+#elif defined(TMS320F28069)
+#include "../../variants/launchpad_f28069/pins_energia.h"
+#elif defined(TMS320F28377S)
+#include "../../variants/launchpad_f28377S/pins_energia.h"
+#else
+#warning Device not supported!
 #endif
 
-
+#endif //#ifndef Energia_h

@@ -100,7 +100,11 @@ void timer( unsigned int frequency, void (*userFunc)(void))
 static void inline initTimers()
 {
    EALLOW;  // This is needed to write to EALLOW protected registers
+#ifdef TMS320F28377S
+   PieVectTable.TIMER0_INT = &cpu_timer0_isr;
+#else
    PieVectTable.TINT0 = &cpu_timer0_isr;
+#endif
    PieCtrlRegs.PIEIER1.bit.INTx7 = 1;
    IER |= M_INT1;
    EDIS;    // This is needed to disable write to EALLOW protected registers

@@ -71,7 +71,19 @@ class TwoWire : public Stream
     inline size_t write(unsigned int n) { return write((uint8_t)n); }
     inline size_t write(int n) { return write((uint8_t)n); }
     using Print::write;
+
+    inline uint8_t* getrxBuffer(void);
+    inline uint8_t getrxBufferIndex(void);
+    inline void setrxBufferLength(uint8_t);
+    inline uint8_t* gettxBuffer(void);
+    inline uint8_t gettxBufferIndex(void);
 };
+
+extern "C"
+{
+	void updaterxBuffer(uint8_t*, uint8_t);
+	void accesstxBuffer(uint8_t*, uint8_t);
+}
 
 extern TwoWire Wire;
 

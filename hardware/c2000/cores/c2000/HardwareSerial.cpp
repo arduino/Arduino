@@ -85,6 +85,10 @@ HardwareSerial::HardwareSerial(ring_buffer *rx_buffer, ring_buffer *tx_buffer)
 // Public Methods //////////////////////////////////////////////////////////////
 #ifdef TMS320F28069
 #define CPU_FREQ     90E6        // Set to 90 MHz for F28069
+#elif defined(TMS320F28027)
+#define CPU_FREQ     60E6        // Default = 60 MHz. Change to 50E6 for 50 MHz devices
+#elif defined(TMS320F28377S)
+#define CPU_FREQ	 200E6		 // Set to 200 MHz for F28377S
 #else
 #define CPU_FREQ     60E6        // Default = 60 MHz. Change to 50E6 for 50 MHz devices
 #endif
@@ -94,6 +98,17 @@ void HardwareSerial::begin(unsigned long baud)
 {
 
 	   EALLOW;
+#ifdef TMS320F28377S
+	   //Configure GPIO84 as SCITXDA (Output pin)
+	   //Configure GPIO85 as SCIRXDA (Input pin)
+	   GpioCtrlRegs.GPCGMUX2.bit.GPIO84 = 1;
+	   GpioCtrlRegs.GPCMUX2.bit.GPIO84 = 1;
+	   GpioCtrlRegs.GPCGMUX2.bit.GPIO85 = 1;
+	   GpioCtrlRegs.GPCMUX2.bit.GPIO85 = 1;
+
+	   // Configure GPIO85 (SCIRXDA) as async pin
+	   GpioCtrlRegs.GPCQSEL2.bit.GPIO85 = 3;
+#else
 	/* Enable internal pull-up for the selected pins */
 	/* Disable internal pull-up for the selected output pins
 	   to reduce power consumption. */
@@ -114,19 +129,30 @@ void HardwareSerial::begin(unsigned long baud)
 		GpioCtrlRegs.GPAMUX2.bit.GPIO28 = 1;   // Configure GPIO28 for SCIRXDA operation
 		GpioCtrlRegs.GPAMUX2.bit.GPIO29 = 1;   // Configure GPIO29 for SCITXDA operation
 
+#endif //TMS320F28377S
 	    EDIS;
 
 	// ISR functions found within this file.
 	    EALLOW;	// This is needed to write to EALLOW protected registers
+#ifdef TMS320F28377S
+	    PieVectTable.SCIA_RX_INT = &uart_rx_isr;
+	    PieVectTable.SCIA_TX_INT = &uart_tx_isr;
+#else
 	    PieVectTable.SCIRXINTA = &uart_rx_isr;
 	    PieVectTable.SCITXINTA = &uart_tx_isr;
+#endif
 	    EDIS;   // This is needed to disable write to EALLOW protected registers
 
 	// Note: Clocks were turned on to the SCIA peripheral
 	// in the InitSysCtrl() function
 	    EALLOW;
+#ifdef TMS320F28377S
+	    CpuSysRegs.PCLKCR7.bit.SCI_A = 1;
+	    ClkCfgRegs.LOSPCP.bit.LSPCLKDIV = 1;
+#else
 	    SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;      // SCI-A
 	    SysCtrlRegs.LOSPCP.bit.LSPCLK = 1;          //LSPCLK = SYSCLK/2
+#endif
 	    EDIS;
 
 	   	SciaRegs.SCICCR.all =0x0007;   // 1 stop bit,  No loopback
@@ -137,8 +163,13 @@ void HardwareSerial::begin(unsigned long baud)
 	  	SciaRegs.SCICTL2.all =0x0003;
 	  	SciaRegs.SCICTL2.bit.TXINTENA =1;
 	  	SciaRegs.SCICTL2.bit.RXBKINTENA =1;
+#ifdef TMS320F28377S
+	  	SciaRegs.SCIHBAUD.all    = (unsigned int)((F_CPU/(ClkCfgRegs.LOSPCP.bit.LSPCLKDIV * 2))/(baud*8)-1)>>8 ;
+	  	SciaRegs.SCILBAUD.all    = (unsigned int)((F_CPU/(ClkCfgRegs.LOSPCP.bit.LSPCLKDIV * 2))/(baud*8)-1)&0x00FF;
+#else
 	    SciaRegs.SCIHBAUD    = (unsigned int)((F_CPU/(SysCtrlRegs.LOSPCP.bit.LSPCLK * 2))/(baud*8)-1)>>8 ;
 	    SciaRegs.SCILBAUD    = (unsigned int)((F_CPU/(SysCtrlRegs.LOSPCP.bit.LSPCLK * 2))/(baud*8)-1)&0x00FF;
+#endif
 	  	//SciaRegs.SCICCR.bit.LOOPBKENA =0; // Disable loop back
 	    SciaRegs.SCIFFTX.all=0xC020;
 	    SciaRegs.SCIFFRX.all=0x0021;
@@ -147,7 +178,7 @@ void HardwareSerial::begin(unsigned long baud)
 	  	SciaRegs.SCICTL1.all =0x0023;     // Relinquish SCI from Reset
 
 
-	  	SciaRegs.SCIFFTX.bit.TXFIFOXRESET=1;
+	  	SciaRegs.SCIFFTX.bit.TXFIFORESET=1;
 	  	SciaRegs.SCIFFRX.bit.RXFIFORESET=1;
 
 	  	// Enable interrupts required for the sci
@@ -253,7 +284,11 @@ interrupt void uart_tx_isr(void)
 
 	unsigned char c = tx_buffer.buffer[tx_buffer.tail];
 	tx_buffer.tail = (tx_buffer.tail + 1) % SERIAL_BUFFER_SIZE;
+#ifdef TMS320F28377S
+	SciaRegs.SCITXBUF.all = c;
+#else
 	SciaRegs.SCITXBUF = c;
+#endif
 
 	SciaRegs.SCIFFTX.bit.TXFFINTCLR=1;	// Clear SCI Interrupt flag
 	PieCtrlRegs.PIEACK.all|=0x100;       // Issue PIE ack

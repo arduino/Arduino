@@ -47,7 +47,11 @@ interrupt void rsvd_ISR(void)      // For test
 void disableWatchDog()
 {
 	EALLOW;
+#ifdef TMS320F28377S
+	WdRegs.WDCR.all = 0x0068;
+#else
 	SysCtrlRegs.WDCR= 0x0068;
+#endif
 	EDIS;
 
 }
@@ -55,8 +59,13 @@ void disableWatchDog()
 void serviceWatchDog(void)
 {
     EALLOW;
+#ifdef TMS320F28377S
+    WdRegs.WDKEY.all = 0x0055;
+    WdRegs.WDKEY.all = 0x00AA;
+#else
     SysCtrlRegs.WDKEY = 0x0055;
     SysCtrlRegs.WDKEY = 0x00AA;
+#endif
     EDIS;
 }
 
@@ -64,7 +73,11 @@ void serviceWatchDog(void)
 void enableWatchDog()
 {
 	EALLOW;
+#ifdef TMS320F28377S
+	WdRegs.WDCR.all = 0x0028;
+#else
 	SysCtrlRegs.WDCR= 0x0028;
+#endif
 	EDIS;
 }
 
@@ -79,7 +92,11 @@ interrupt void wdInt()
   //Service the watchdog
   //serviceWatchDog();
 
+#ifdef TMS320F28377S
+  PieCtrlRegs.PIEACK.all = 0x1U;
+#else
   PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+#endif
 }
 
 
@@ -94,6 +111,15 @@ interrupt void wdInt()
 #pragma CODE_SECTION(initFlash, "ramfuncs");
 void initFlash(void)
 {
+
+#ifdef TMS320F28377S
+
+// Call Flash Initialization to setup flash waitstates
+// This function must reside in RAM
+    InitFlash_Bank0();
+
+#else
+    
    EALLOW;
    //Enable Flash Pipeline mode to improve performance
    //of code executed from Flash.
@@ -153,6 +179,8 @@ void initFlash(void)
    //the last register configured occurs before returning.
 
    asm(" RPT #7 || NOP");
+#endif //defined tms320f28377s
+   
 }
 
 void initPie(void)
@@ -216,6 +244,11 @@ void initPie(void)
 
 void initClocks(void)
 {
+
+#ifdef TMS320F28377S   
+    InitSysPll(1,40,0,1);
+
+#else 
 
     volatile Uint16 iVol;
 
@@ -301,7 +334,7 @@ void initClocks(void)
 	EDIS;
 
 
-
+#endif //TMS320f28377s
 
 
 
@@ -311,15 +344,23 @@ void initWatchDog()
 {
 
     EALLOW;
+#ifdef TMS320F28377S
+    PieVectTable.WAKE_INT = &wdInt;
+#else
     PieVectTable.WAKEINT = &wdInt;
+#endif
     EDIS;
 
     EALLOW;
     // Configure the watchdog to interrupt the CPU...not reset
+#ifdef TMS320F28377S
+    WdRegs.SCSR.all = 0x0002;
+#else
     SysCtrlRegs.SCSR = 0x0002;
+#endif
     EDIS;
 
-    PieCtrlRegs.PIEIER1.bit.INTx8 = 1;   // Enable PIE Gropu 1 INT8
+    PieCtrlRegs.PIEIER1.bit.INTx8 = 1;   // Enable PIE Group 1 INT8
     IER |= M_INT1;                       // Enable CPU INT1
 
     
@@ -327,7 +368,11 @@ void initWatchDog()
 
     // Enable the watchdog
    EALLOW;
+#ifdef TMS320F28377S
+   WdRegs.WDCR.all = 0x0028;
+#else
    SysCtrlRegs.WDCR = 0x0028;
+#endif
    EDIS;
 
 }
@@ -369,14 +414,14 @@ void disablePullups(void)
 void init()
 {
 	disableWatchDog();
-
-	initClocks();
-
-	//Copy RAM functions
+    
+    //Copy RAM functions
 	memcpy(&RamfuncsRunStart, &RamfuncsLoadStart, (size_t)&RamfuncsLoadSize);
 
-	//Setup flash waitstates
+    //Setup flash waitstates
 	initFlash();
+
+	initClocks();
 
 	initPie();
 

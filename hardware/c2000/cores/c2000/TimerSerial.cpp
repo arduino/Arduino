@@ -34,8 +34,13 @@
 
 #define SERIAL_BUFFER_SIZE 16
 
+#ifdef TMS320F28377S
+#define DISABLE_EXTERNAL1_INTERRUPT( )  XintRegs.XINT1CR.bit.ENABLE = 0
+#define ENABLE_EXTERNAL1_INTERRUPT( )   XintRegs.XINT1CR.bit.ENABLE = 1
+#else
 #define DISABLE_EXTERNAL1_INTERRUPT( )  XIntruptRegs.XINT1CR.bit.ENABLE = 0
 #define ENABLE_EXTERNAL1_INTERRUPT( )   XIntruptRegs.XINT1CR.bit.ENABLE = 1
+#endif
 #define ENABLE_TIMER_INTERRUPT( )       CpuTimer0Regs.TCR.bit.TIE = 1
 #define DISABLE_TIMER_INTERRUPT( )      CpuTimer0Regs.TCR.bit.TIE = 0
 struct ring_buffer_ts
@@ -80,7 +85,9 @@ static volatile AsynchronousStates_t state;     //!< Holds the state of the UART
 static volatile unsigned int USARTTXBUF;
 static volatile unsigned int BaudRate;
 unsigned int RxStart = 0;
+#ifndef TMS320F28377S
 struct CPUTIMER_VARS CpuTimer0;
+#endif
 
 //static ring_buffer_ts timer_rx_buffer
 ring_buffer_ts timer_rx_buffer =  {  0, 0, { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 } }; //this rx_buffer is different as the one in the HardwareSerial
@@ -110,14 +117,27 @@ TimerSerial::TimerSerial()
 #endif
 }
 
+#ifdef TMS320F28069
+#define CPU_FREQ     90E6        // Set to 90 MHz for F28069
+#elif defined(TMS320F28027)
 #define CPU_FREQ     60E6        // Default = 60 MHz. Change to 50E6 for 50 MHz devices
+#elif defined(TMS320F28377S)
+#define CPU_FREQ	 200E6		 // Set to 200 MHz for F28377S
+#else
+#define CPU_FREQ	 60E6
+#endif
 
 void TimerSerial::begin(register unsigned long baud)
 {
 
 	EALLOW;	// This is needed to write to EALLOW protected registers
+#ifdef TMS320F28377S
+	PieVectTable.XINT1_INT = &xint1_isr;
+	PieVectTable.TIMER0_INT = &cpu_timer0_isr;
+#else
 	PieVectTable.XINT1 = &xint1_isr;
 	PieVectTable.TINT0 = &cpu_timer0_isr;
+#endif
 	EDIS;   // This is needed to disable write to EALLOW protected registers
 	PieCtrlRegs.PIECTRL.bit.ENPIE = 1;          // Enable the PIE block
 	PieCtrlRegs.PIEIER1.bit.INTx4 = 1;          // Enable PIE Gropu 1 INT4
@@ -127,6 +147,26 @@ void TimerSerial::begin(register unsigned long baud)
 
 	/* Serial port*/
 	EALLOW;
+#ifdef TMS320F28377S
+	//Configure GPIO85 as SCIRXDA (Input pin)
+	//Configure GPIO84 as SCITXDA (Output pin)
+
+	GpioCtrlRegs.GPCPUD.bit.GPIO85 = 0; //Enable pull-up for GPIO85 (SCIRXDA)
+	GpioCtrlRegs.GPCPUD.bit.GPIO84 = 1; //Disable pull-up for GPIO84 (SCITXDA)
+
+	GpioCtrlRegs.GPCMUX2.bit.GPIO85 = 0; //Configure GPIO85 for timer-UART RX operation
+	GpioCtrlRegs.GPCMUX2.bit.GPIO84 = 0; //Configure GPIO84 for timer-UART TX operation
+
+	// GPIO85 is input, GPIO84 is output
+	GpioCtrlRegs.GPCDIR.bit.GPIO85 = 0;
+	GpioCtrlRegs.GPCDIR.bit.GPIO84 = 1;
+
+	// Set GPIO84 TX IDLE state as Mark = "1"
+	GpioDataRegs.GPCSET.bit.GPIO84 = 1;
+
+	//XINT1 Synch to SYSCLKOUT only
+	GpioCtrlRegs.GPCQSEL2.bit.GPIO85 = 0;
+#else
 	/* Enable internal pull-up for the selected pins */
 	GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;    // Enable pull-up for GPIO28 (SCIRXDA)
 	GpioCtrlRegs.GPAPUD.bit.GPIO29 = 1;	   // Disable pull-up for GPIO29 (SCITXDA)
@@ -144,11 +184,14 @@ void TimerSerial::begin(register unsigned long baud)
 	GpioDataRegs.GPASET.bit.GPIO29 = 1;
 
 	GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 0;        // XINT1 Synch to SYSCLKOUT only
+#endif //TMS320F28377S
 	EDIS;
 
 	/* CPU timer0 */
 	// Initialize address pointers to respective timer registers:
+#ifndef TMS320F28377S
 	CpuTimer0.RegsAddr = &CpuTimer0Regs;
+#endif
 	// Initialize timer period to maximum:
 	BaudRate = baud;
 	CpuTimer0Regs.PRD.all  = CPU_FREQ/BaudRate;
@@ -160,15 +203,26 @@ void TimerSerial::begin(register unsigned long baud)
 	// Reload all counter register with period value:
 	CpuTimer0Regs.TCR.bit.TRB = 1;
 	// Reset interrupt counters:
+#ifndef TMS320F28377S
 	CpuTimer0.InterruptCount = 0;
+#endif
 
 	/* External interrupt*/
 	EALLOW;
+#ifdef TMS320F28377S
+	XintRegs.XINT1CR.bit.ENABLE = 1;
+	InputXbarRegs.INPUT4SELECT = 84; //connect GPIO84 to XINT1
+#else
 	GpioIntRegs.GPIOXINT1SEL.bit.GPIOSEL = 28;   // XINT1 is GPIO28
+#endif
 	EDIS;
 
 	// Configure XINT1
+#ifdef TMS320F28377S
+	XintRegs.XINT1CR.bit.POLARITY = 0;
+#else
 	XIntruptRegs.XINT1CR.bit.POLARITY = 0;      // Falling edge interrupt
+#endif
 
 	// Enable XINT1
 	ENABLE_EXTERNAL1_INTERRUPT( );       // Enable XINT1
@@ -187,7 +241,11 @@ void TimerSerial::end()
 	DISABLE_EXTERNAL1_INTERRUPT( );     // disable Receive
     DISABLE_TIMER_INTERRUPT( );
     EALLOW;
+#ifdef TMS320F28377S
+    GpioCtrlRegs.GPCDIR.bit.GPIO84 = 0;
+#else
     GpioCtrlRegs.GPADIR.bit.GPIO29 = 0; // TX pin as input
+#endif
     EDIS;
 }
 
@@ -277,33 +335,54 @@ interrupt void xint1_isr(void)
 	ENABLE_TIMER_INTERRUPT( );        // Use write-only instruction to set TSS bit = 0 and enable the CPU timer0 interrupt
 
 	// Acknowledge this interrupt to get more from group 1
+#ifdef TMS320F28377S
+	PieCtrlRegs.PIEACK.all = 0x1U;
+#else
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+#endif
 }
 
 interrupt void cpu_timer0_isr(void)
 {
 	static uint8x2_t rx_bits;                      // persistent storage for data and mask. fits in one 16 bit register
-	switch (state) { 
+	switch (state)
+	{
 	  // Transmit Byte.
 	  case TRANSMIT:
-	     if( USARTTXBUF & 0x01 ) {                 // If the LSB of the TX buffer is 1:
+		  if( USARTTXBUF & 0x01 )
+		  {										// If the LSB of the TX buffer is 1:
+#ifdef TMS320F28377S
+			  GpioDataRegs.GPCSET.bit.GPIO84 = 1;	// Send a logic 1 on the TX_PIN.
+#else
 	        GpioDataRegs.GPASET.bit.GPIO29 = 1;    // Send a logic 1 on the TX_PIN.
+#endif
 	        }
-	     else {                                    // Otherwise:
+		  else
+		  {										// Otherwise:
+#ifdef TMS320F28377S
+			  GpioDataRegs.GPCCLEAR.bit.GPIO84 = 1;
+#else
 	        GpioDataRegs.GPACLEAR.bit.GPIO29 = 1;  // Send a logic 0 on the TX_PIN.
+#endif
 	        }
 
-	     if (!(USARTTXBUF >>= 1)) {                // All bits transmitted ?
+		  if (!(USARTTXBUF >>= 1))
+		  {											// All bits transmitted ?
 	    	 DISABLE_TIMER_INTERRUPT( );           // Stop the timer interrupts.
 	    	 state = IDLE;                         // Go back to idle.
 	    	 ENABLE_EXTERNAL1_INTERRUPT( );        // Enable reception again.
 	         }
+#ifdef TMS320F28377S
+         PieCtrlRegs.PIEACK.all = 0x1U;
+#else
 	   PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+#endif
 	   break;
 
     //Receive Byte.
 	 case RECEIVE:
-		if(RxStart == 1){
+		if(RxStart == 1)
+		{
 			rx_bits.mask_data = 0x0001;         // initialize both values, set data to 0x00 and mask to 0x01
 			RxStart = 0;
 			CpuTimer0Regs.PRD.all  = CPU_FREQ/BaudRate;
@@ -311,17 +390,27 @@ interrupt void cpu_timer0_isr(void)
 			CpuTimer0Regs.TCR.bit.TSS = 0;    // Start the timer0
 		}
 
-	    if (GpioDataRegs.GPADAT.bit.GPIO28 ==1 ) {  // sampled bit value from receive latch
+#ifdef TMS320F28377S
+		if(GpioDataRegs.GPCDAT.bit.GPIO85 == 1)
+#else
+		if(GpioDataRegs.GPADAT.bit.GPIO28 == 1)
+#endif
+	    {										  // sampled bit value from receive latch
 	        rx_bits.b.data|=rx_bits.b.mask;         // if latch is high, then set the bit using the sliding mask
 	        }
 
-	    if (!(rx_bits.b.mask <<= 1)) {       // Are all bits received? Use the mask to end loop
+	    if (!(rx_bits.b.mask <<= 1))
+	    {       							// Are all bits received? Use the mask to end loop
 	       store_rxchar(rx_bits.b.data);     // Store the bits into the rx_buffer
 	       state = IDLE;
 	       DISABLE_TIMER_INTERRUPT( );
 	       ENABLE_EXTERNAL1_INTERRUPT( );         // Enable XINT1 to receive the next byte
 	       }
+#ifdef TMS320F28377S
+         PieCtrlRegs.PIEACK.all = 0x1U;
+#else
 	    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+#endif
 	    break;
 
 	    // Unknown state.
@@ -329,6 +418,10 @@ interrupt void cpu_timer0_isr(void)
 	  state = IDLE;                           // Error, should not occur. Going to a safe state.
 
    // Acknowledge this interrupt to receive more interrupts from group 1
+#ifdef TMS320F28377S
+	  PieCtrlRegs.PIEACK.all = 0x1U;
+#else
    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+#endif
 	}
 }

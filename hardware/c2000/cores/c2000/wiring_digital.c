@@ -42,6 +42,12 @@ void pinMode(uint8_t pin, uint8_t mode)
 
     	EALLOW;
         //Analog Pins
+#ifdef TMS320F28377S
+    	AdcaRegs.ADCCTL1.bit.ADCPWDNZ = 1;
+    	AdcaRegs.ADCCTL2.bit.SIGNALMODE = 0; //single-ended
+    	AdcaRegs.ADCCTL2.bit.RESOLUTION = 0; //12-bit
+    	AdcaRegs.ADCSOC0CTL.bit.CHSEL = gpio_number & 0xF;
+#else
         gpio_number &= 0x7FFF;
 
         if(mode == HARDWARE)
@@ -64,6 +70,7 @@ void pinMode(uint8_t pin, uint8_t mode)
             }
 
         }
+#endif
         EDIS;
 
     }
@@ -80,23 +87,27 @@ void pinMode(uint8_t pin, uint8_t mode)
 
 	    if (port == NOT_A_PORT) return;
 
-    	if(gpio_number > 31){
-    		gpio_number -= 32;
-    	}
+	    gpio_number %= 32; //limits gpio_number to 32 bits
 
     	EALLOW;
     	//Turn off peripheral function
-    	if(port == PORT_A_2){
+    	if(port == PORT_A_2)
+    	{
     		*sel &= ~((uint32_t)0x03 << ((gpio_number-16) * 2));
-    	}else{
+    	}
+    	else
+    	{
     		*sel &= ~((uint32_t)0x03 << (gpio_number * 2));
     	}
     	*dir &= ~((uint32_t)1 << gpio_number);
     	*dir |= ((uint32_t)(mode & 0x01) << gpio_number);
 
-    	if(mode == INPUT_PULLUP){
+    	if(mode == INPUT_PULLUP)
+    	{
     		*pud &= ~((uint32_t)1 << gpio_number);
-    	}else{
+    	}
+    	else
+    	{
     		*pud |= ((uint32_t)1 << gpio_number);
     	}
 
@@ -119,11 +130,15 @@ void pinMode_int(uint8_t pin, uint8_t mode)
 	dir = portDirRegister(port);
 	out = portOutputRegister(port);
 
-	if (mode & OUTPUT) {
+	if(mode & OUTPUT)
+	{
 		*dir |= bit;
-	} else {
+	}
+	else
+	{
 		*dir &= ~bit;
-		if (mode & INPUT_PULLUP) {
+		if (mode & INPUT_PULLUP)
+		{
                 *out |= bit;
         }
 	}
@@ -142,7 +157,12 @@ int digitalRead(uint8_t pin)
         //Analog Pins
         gpio_number &= 0x7FFF;
 
+#ifdef TMS320F28377S
+        AdcaRegs.ADCSOCFRC1.bit.SOC0 = 1;
+        if(AdcaResultRegs.ADCRESULT0 & (1UL << gpio_number))
+#else
         if(GpioDataRegs.AIODAT.all & (1UL << gpio_number))
+#endif
             return HIGH;
         else
             return LOW;
@@ -176,9 +196,13 @@ void digitalWrite(uint8_t pin, uint8_t val)
     if(gpio_number & 0x8000)
     {
         //Analog Pins
+#ifdef TMS320F28377S
+    	//The analog pins on this device are not writeable
+#else
         gpio_number &= 0x7FFF;
 
         GpioDataRegs.AIODAT.all = (GpioDataRegs.AIODAT.all & ~(1UL << gpio_number)) | ((uint32_t)val << gpio_number);
+#endif
 
     }
     else
@@ -188,9 +212,12 @@ void digitalWrite(uint8_t pin, uint8_t val)
         //Digital Pins
 	    out = portOutputRegister(port);
 
-    	if (val == LOW) {
+    	if (val == LOW)
+    	{
     		*out &= ~bit;
-    	} else {
+    	}
+    	else
+    	{
 	    	*out |= bit;
     	}
     }
