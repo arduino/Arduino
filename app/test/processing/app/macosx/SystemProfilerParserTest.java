@@ -74,6 +74,10 @@ public class SystemProfilerParserTest {
 
     output = getFileContent("system_profiler_output8.txt");
     assertEquals("0X03EB_0X2157", extractVIDAndPID(output, "/dev/tty.usbmodemfd132"));
+
+    // OSX El Capitan
+    output = getFileContent("system_profiler_output9.txt");
+    assertEquals("0X2341_0X8036", extractVIDAndPID(output, "/dev/tty.usbmodemFA121"));
   }
 
   private String getFileContent(String filename) throws IOException {
