@@ -748,7 +748,7 @@ public class Base {
     try {
       File file = createNewUntitled();
       if (file != null) {
-        Editor editor = handleOpen(file, true);
+        handleOpen(file, true);
       }
 
     } catch (IOException e) {

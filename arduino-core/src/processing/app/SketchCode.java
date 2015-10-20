@@ -53,11 +53,6 @@ public class SketchCode {
 
   private boolean modified;
 
-  /**
-   * where this code starts relative to the concat'd code
-   */
-  private int preprocOffset;
-
   private Object metadata;
 
   public SketchCode(File file) {
@@ -187,16 +182,6 @@ public class SketchCode {
 
   public boolean isModified() {
     return modified;
-  }
-
-
-  public void setPreprocOffset(int preprocOffset) {
-    this.preprocOffset = preprocOffset;
-  }
-
-
-  public void addPreprocOffset(int extra) {
-    preprocOffset += extra;
   }
 
 
