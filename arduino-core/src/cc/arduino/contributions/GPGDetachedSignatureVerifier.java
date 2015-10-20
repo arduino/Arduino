@@ -97,13 +97,13 @@ public class GPGDetachedSignatureVerifier extends SignatureVerifier {
   private PGPPublicKey readPublicKey(InputStream input, String keyId) throws IOException, PGPException {
     PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(input), new BcKeyFingerprintCalculator());
 
-    Iterator keyRingIter = pgpPub.getKeyRings();
+    Iterator<PGPPublicKeyRing> keyRingIter = pgpPub.getKeyRings();
     while (keyRingIter.hasNext()) {
-      PGPPublicKeyRing keyRing = (PGPPublicKeyRing) keyRingIter.next();
+      PGPPublicKeyRing keyRing = keyRingIter.next();
 
-      Iterator keyIter = keyRing.getPublicKeys();
+      Iterator<PGPPublicKey> keyIter = keyRing.getPublicKeys();
       while (keyIter.hasNext()) {
-        PGPPublicKey key = (PGPPublicKey) keyIter.next();
+        PGPPublicKey key = keyIter.next();
 
         if (Long.toHexString(key.getKeyID()).toUpperCase().endsWith(keyId)) {
           return key;
