@@ -42,7 +42,10 @@
 #define CDC_TX CDC_ENDPOINT_IN
 #endif
 
+#define ISERIAL_MAX_LEN	20
+
 #define IMANUFACTURER	1
 #define IPRODUCT		2
+#define ISERIAL			3
 
 #endif /* __USBDESC_H__ */
