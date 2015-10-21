@@ -33,6 +33,7 @@ import processing.app.I18n;
 
 import static processing.app.I18n.tr;
 
+@SuppressWarnings("serial")
 public class SignatureVerificationFailedException extends Exception {
 
   public SignatureVerificationFailedException(String filename) {

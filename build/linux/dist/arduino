@@ -3,9 +3,9 @@
 APPDIR="$(dirname -- "$(readlink -f -- "${0}")" )"
 
 for LIB in \
-    $APPDIR/java/lib/rt.jar \
-    $APPDIR/java/lib/tools.jar \
-    $APPDIR/lib/*.jar \
+    "$APPDIR"/java/lib/rt.jar \
+    "$APPDIR"/java/lib/tools.jar \
+    "$APPDIR"/lib/*.jar \
     ;
 do
     CLASSPATH="${CLASSPATH}:${LIB}"
@@ -17,18 +17,19 @@ export LD_LIBRARY_PATH
 
 export PATH="${APPDIR}/java/bin:${PATH}"
 
-if [[ "$@" == *"--upload"* || "$@" == *"--verify"* || "$@" == *"--get-pref"* || "$@" == *"--install-board"* || "$@" == *"--install-library"* ]] ; then
-	SPLASH=""
-else
-	SPLASH="-splash:$APPDIR/lib/splash.png"
-fi
-
 export JAVA_TOOL_OPTIONS=`echo $JAVA_TOOL_OPTIONS | sed 's|-javaagent:/usr/share/java/jayatanaag.jar||g'`
 
 JAVA=java
-if [ -x $APPDIR/java/bin/java ]; then
+if [ -x "$APPDIR/java/bin/java" ]; then
   JAVA=$APPDIR/java/bin/java
 fi
 
-$JAVA -DAPP_DIR="$APPDIR" -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel $SPLASH processing.app.Base "$@"
+# Collect options to java in an array, to properly handle whitespace in options
+JAVA_OPTIONS=("-DAPP_DIR=$APPDIR" "-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
+
+if [[ "$@" != *"--upload"* && "$@" != *"--verify"* && "$@" != *"--get-pref"* && "$@" != *"--install-board"* && "$@" != *"--install-library"* ]] ; then
+	JAVA_OPTIONS+=("-splash:$APPDIR/lib/splash.png")
+fi
+
+"$JAVA" "${JAVA_OPTIONS[@]}" processing.app.Base "$@"
 

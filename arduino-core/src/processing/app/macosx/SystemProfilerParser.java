@@ -19,19 +19,12 @@ public class SystemProfilerParser {
   private static final String DEV_TTY_USBMODEM = "/dev/tty.usbmodem";
   private static final String DEV_CU_USBMODEM = "/dev/cu.usbmodem";
 
-  private final Pattern vidRegex;
-  private final Pattern serialNumberRegex;
-  private final Pattern locationRegex;
-  private final Pattern pidRegex;
+  private static final Pattern serialNumberRegex = Pattern.compile("^Serial Number: (.+)$");
+  private static final Pattern locationRegex = Pattern.compile("^Location ID: (.+)$");
+  private static final Pattern pidRegex = Pattern.compile("^Product ID: (.+)$");
+  private static final Pattern vidRegex = Pattern.compile("^Vendor ID: (.+)$");
 
-  public SystemProfilerParser() {
-    this.serialNumberRegex = Pattern.compile("^Serial Number: (.+)$");
-    this.locationRegex = Pattern.compile("^Location ID: (.+)$");
-    this.pidRegex = Pattern.compile("^Product ID: (.+)$");
-    this.vidRegex = Pattern.compile("^Vendor ID: (.+)$");
-  }
-
-  public String extractVIDAndPID(String output, String serial) throws IOException {
+  public synchronized static String extractVIDAndPID(String output, String serial) throws IOException {
     BufferedReader reader = new BufferedReader(new StringReader(output));
 
     String devicePrefix;
@@ -80,7 +73,7 @@ public class SystemProfilerParser {
           String computedDevicePath = device.get(DEVICE_PATH);
           String computedDevicePathMinusChar = computedDevicePath.substring(0, computedDevicePath.length() - 1);
           String serialMinusChar = serial.substring(0, serial.length() - 1);
-          if (computedDevicePath.equals(serial) || computedDevicePathMinusChar.equals(serialMinusChar)) {
+          if (computedDevicePath.equalsIgnoreCase(serial) || computedDevicePathMinusChar.equalsIgnoreCase(serialMinusChar)) {
             return (device.get(VID) + "_" + device.get(PID)).toUpperCase();
           }
         }

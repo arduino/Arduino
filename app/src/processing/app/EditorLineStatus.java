@@ -24,13 +24,10 @@ package processing.app;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.util.Map;
-
 import javax.swing.JComponent;
 
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
-import processing.app.syntax.SketchTextArea;
 
 
 /**

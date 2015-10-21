@@ -13,7 +13,6 @@ import java.awt.event.WindowEvent;
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
-  private boolean monitorEnabled;
   private boolean closed;
 
   private StringBuffer updateBuffer;
@@ -78,7 +77,6 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
 
-    monitorEnabled = true;
     closed = false;
   }
 
@@ -86,7 +84,6 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   public void enableWindow(boolean enable) {
     onEnableWindow(enable);
-    monitorEnabled = enable;
   }
 
   protected abstract void onEnableWindow(boolean enable);

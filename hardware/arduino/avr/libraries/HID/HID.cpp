@@ -54,6 +54,11 @@ int HID_::getDescriptor(USBSetup& setup)
 			return -1;
 		total += res;
 	}
+	
+	// Reset the protocol on reenumeration. Normally the host should not assume the state of the protocol
+	// due to the USB specs, but Windows and Linux just assumes its in report mode.
+	protocol = HID_REPORT_PROTOCOL;
+	
 	return total;
 }
 
@@ -140,7 +145,7 @@ bool HID_::setup(USBSetup& setup)
 
 HID_::HID_(void) : PluggableUSBModule(1, 1, epType),
                    rootNode(NULL), descriptorSize(0),
-                   protocol(1), idle(1)
+                   protocol(HID_REPORT_PROTOCOL), idle(1)
 {
 	epType[0] = EP_TYPE_INTERRUPT_IN;
 	PluggableUSB().plug(this);
