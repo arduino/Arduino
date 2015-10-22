@@ -9,8 +9,8 @@
  10 kilohm potentiometer
 
  Software required :
- Processing http://processing.org
- Active internet connection
+ Processing  (3.0 or newer) http://processing.org
+ Active internet connection 
 
  Created 18 September 2012
  by Scott Fitzgerald
