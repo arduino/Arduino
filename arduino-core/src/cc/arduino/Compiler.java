@@ -549,12 +549,12 @@ public class Compiler implements MessageConsumer {
       }
 
       if (error.trim().equals("'Mouse' was not declared in this scope")) {
-        error = tr("'Mouse' only supported on the Arduino Leonardo");
+        error = tr("'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?");
         //msg = _("\nThe 'Mouse' class is only supported on the Arduino Leonardo.\n\n");
       }
 
       if (error.trim().equals("'Keyboard' was not declared in this scope")) {
-        error = tr("'Keyboard' only supported on the Arduino Leonardo");
+        error = tr("'Keyboard' not found. Does your sketch include the line '#include <Keyboard.h>'?");
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
 
