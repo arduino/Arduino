@@ -94,6 +94,19 @@ public class Theme {
     set(key, String.valueOf(value));
   }
 
+  static public Color getColorCycleColor(String name, int i) {
+    int cycleSize = getInteger(name + ".size");
+    name = String.format("%s.%02d", name, i % cycleSize);
+    return PreferencesHelper.parseColor(get(name));
+  }
+
+  static public void setColorCycleColor(String name, int i, Color color) {
+    name = String.format("%s.%02d", name, i);
+    PreferencesHelper.putColor(table, name, color);
+    int cycleSize = getInteger(name + ".size");
+    setInteger(name + ".size", (i + 1) > cycleSize ? (i + 1) : cycleSize);
+  }
+
   static public Color getColor(String name) {
     return PreferencesHelper.parseColor(get(name));
   }
