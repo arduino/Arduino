@@ -54,6 +54,8 @@ static const uint8_t A3 = 9;
 #define digitalPinToPCMSK(p)    ( ((p) <= 4) ? (&PCMSK) : ((uint8_t *)0) )
 #define digitalPinToPCMSKbit(p) ( (p) )
 
+#define digitalPinToInterrupt(p)  ((p) == 2 ? 0 : NOT_AN_INTERRUPT)
+
 #define analogPinToChannel(p)   ( (p) < 6 ? (p) : (p) - 6 )
 
 #define TCCR1A GTCCR
