@@ -88,7 +88,7 @@
 #undef OCR2_6
 #undef OCR2_7
 
-#define NUM_DIGITAL_PINS  30
+#define NUM_DIGITAL_PINS  31
 #define NUM_ANALOG_INPUTS 12
 
 #define TX_RX_LED_INIT	DDRD |= (1<<5), DDRB |= (1<<0)
