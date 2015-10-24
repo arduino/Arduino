@@ -131,6 +131,10 @@ void EthernetClient::do_dns(const char *name, struct ip_addr *ipaddr,
 }
 
 int EthernetClient::connect(const char* host, uint16_t port) {
+  return connect(host, port, CONNECTION_TIMEOUT);
+}
+
+int EthernetClient::connect(const char* host, uint16_t port, unsigned long timeout) {
 	ip_addr_t ip;
 	ip.addr = 0;
 
@@ -143,10 +147,14 @@ int EthernetClient::connect(const char* host, uint16_t port) {
 	if (ip.addr == IPADDR_NONE)
 		return false;
 
-	return (connect(IPAddress(ip.addr), port));
+	return (connect(IPAddress(ip.addr), port, timeout));
 }
 
 int EthernetClient::connect(IPAddress ip, uint16_t port) {
+  return connect(ip, port, CONNECTION_TIMEOUT);
+}
+
+int EthernetClient::connect(IPAddress ip, uint16_t port, unsigned long timeout) {
 	ip_addr_t dest;
 	dest.addr = ip;
 
@@ -169,13 +177,13 @@ int EthernetClient::connect(IPAddress ip, uint16_t port) {
 	}
 
 	/* Wait for the connection.
-	 * Abort if the connection does not succeed within 10 sec */
+	 * Abort if the connection does not succeed within the prescribed timeout */
 	unsigned long then = millis();
 
 	while (!_connected) {
 		unsigned long now = millis();
 		delay(10);
-		if (now - then > CONNECTION_TIMEOUT) {
+		if (now - then > timeout) {
 			tcp_close((tcp_pcb*)cs->cpcb);
 			cs->cpcb = NULL;
 			return false;
