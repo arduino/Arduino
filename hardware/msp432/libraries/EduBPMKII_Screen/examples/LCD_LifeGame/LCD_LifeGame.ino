@@ -125,12 +125,12 @@ Screen_PicasoSGC myScreen(20, &mySerial);
 #if defined(__MSP430F5529__)
 #define ROWS 32 // max 80
 #define COLS 32 // max 60
-#elif defined(__LM4F120H5QR__)
+#elif defined(__LM4F120H5QR__) || defined(__TM4C123GH6PM__) 
 #define ROWS 64 // max 80
 #define COLS 64 // max 60
-#elif defined(__MSP432P401R__)
-#define ROWS 128 // max 80
-#define COLS 128 // max 60
+#elif defined(__TM4C1294NCPDT__) || defined(__TM4C1294XNCZAD__) || defined(__MSP432P401R__)
+#define ROWS 128 // max 128
+#define COLS 128 // max 128
 #else
 #error Board not supported
 #endif
