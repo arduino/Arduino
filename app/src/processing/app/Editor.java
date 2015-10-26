@@ -41,8 +41,8 @@ import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.legacy.PApplet;
-import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.ArduinoTokenMakerFactory;
+import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.tools.DiscourseFormat;
 import processing.app.tools.MenuScroller;
@@ -2006,7 +2006,7 @@ public class Editor extends JFrame implements RunnerListener {
     @Override
     public void run() {
       try {
-        textarea.removeAllLineHighlights();
+        removeAllLineHighlights();
         sketch.prepare();
         sketch.build(verbose, saveHex);
         statusNotice(tr("Done compiling."));
@@ -2022,6 +2022,15 @@ public class Editor extends JFrame implements RunnerListener {
       status.unprogress();
       toolbar.deactivateRun();
     }
+  }
+
+  public void removeAllLineHighlights() {
+    textarea.removeAllLineHighlights();
+  }
+
+  public void addLineHighlight(int line) throws BadLocationException {
+    textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+    textarea.setCaretPosition(textarea.getLineStartOffset(line));
   }
 
   private class DefaultStopHandler implements Runnable {
@@ -2276,7 +2285,7 @@ public class Editor extends JFrame implements RunnerListener {
   public boolean handleSave(boolean immediately) {
     //stopRunner();
     handleStop();  // 0136
-    textarea.removeAllLineHighlights();
+    removeAllLineHighlights();
 
     if (untitled) {
       return handleSaveAs();
@@ -2430,7 +2439,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
 
       try {
-        textarea.removeAllLineHighlights();
+        removeAllLineHighlights();
         if (serialMonitor != null) {
           serialMonitor.suspend();
         }
@@ -2876,8 +2885,7 @@ public class Editor extends JFrame implements RunnerListener {
           System.err.println(I18n.format(tr("Bad error line: {0}"), line));
         } else {
           try {
-             textarea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
-            textarea.setCaretPosition(textarea.getLineStartOffset(line));
+            addLineHighlight(line);
           } catch (BadLocationException e1) {
             e1.printStackTrace();
           }
