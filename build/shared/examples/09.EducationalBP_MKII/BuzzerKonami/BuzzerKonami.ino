@@ -70,7 +70,7 @@ pinMode(buzzerPin,OUTPUT);
 }
 void loop() 
 {
-  for (int thisNote = 0; thisNote < 80; thisNote++) {
+  for (int thisNote = 0; (sizeof(melody)/sizeof(int)); thisNote++) {
 
     // to calculate the note duration, take one second 
     // divided by the note type.
