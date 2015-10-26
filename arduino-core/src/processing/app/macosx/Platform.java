@@ -172,7 +172,7 @@ public class Platform extends processing.app.Platform {
     }
 
     try {
-      String vidPid = SystemProfilerParser.extractVIDAndPID(devicesListOutput, serial);
+      String vidPid = new SystemProfilerParser().extractVIDAndPID(devicesListOutput, serial);
 
       if (vidPid == null) {
         return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
