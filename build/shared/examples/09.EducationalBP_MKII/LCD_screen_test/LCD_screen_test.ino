@@ -313,7 +313,7 @@ void setup()
     
 #if defined(PicasoSPE)
     mySerial.begin(9600);
-#endif;
+#endif
     
     myScreen.begin();
     Serial.println(myScreen.WhoAmI());
@@ -325,7 +325,7 @@ void setup()
     myScreen.setSpeed((uint32_t) 38400); // 38400 ok, 57600 ok, 115200 nok, 256000 nok
     mySerial.begin((uint32_t) 38400);
     Serial.println((uint32_t) 38400, DEC);
-#endif;
+#endif
     
     myScreen.setFontSize(myScreen.fontMax());
     myScreen.clear(darkGrayColour);
