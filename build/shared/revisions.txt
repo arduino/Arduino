@@ -31,6 +31,7 @@ ARDUINO 1.6.6
 [core]
 * AVR: fixed wrong turnOffPWM() for TIMER0B. Thanks @gonzoveliki
 * ArduinoISP is now compatible with every architecture (not only AVR) and is much more stable. Thanks @PeterVH
+* Print not aborting on write() failure. Thanks @stickbreaker
 
 ARDUINO 1.6.5-r5 - 2015.08.28
 
