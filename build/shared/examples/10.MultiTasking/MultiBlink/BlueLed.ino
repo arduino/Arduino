@@ -1,3 +1,4 @@
+#undef LED
 #define LED BLUE_LED
 
 void setupBlueLed() {                

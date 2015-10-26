@@ -1,3 +1,4 @@
+#undef LED
 #define LED RED_LED
 
 void setupRedLed() {                
