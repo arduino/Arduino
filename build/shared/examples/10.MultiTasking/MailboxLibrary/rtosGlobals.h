@@ -33,7 +33,7 @@
 ///
 /// @brief	myMessage type for mailbox
 ///
-typedef struct myMessage_t
+struct myMessage_t
 {
 	uint32_t chrono; ///< for millis()
 	char buffer[10]; ///< for origin
