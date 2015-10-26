@@ -355,6 +355,7 @@ public class Compiler implements MessageConsumer {
     try {
       compiledSketch = StringReplacer.replaceFromMapping(compiledSketch, prefs);
       copyOfCompiledSketch = StringReplacer.replaceFromMapping(copyOfCompiledSketch, prefs);
+      copyOfCompiledSketch = copyOfCompiledSketch.replaceAll(":", "_");
 
       Path compiledSketchPath;
       Path compiledSketchPathInSubfolder = Paths.get(prefs.get("build.path"), "sketch", compiledSketch);
