@@ -30,7 +30,11 @@
 #define ARW_CMDS 1   /* analog read/write cmds */
 #define SPI_CMD 1    /* SPI transfer cmd */
 #define PRI_CMD 1    /* Set Task priority cmd */
+#ifdef BOARD_CC2650STK_BLE
+#define STATS_CMD 0  /* CPU and task utilzation stats cmd */
+#else
 #define STATS_CMD 1  /* CPU and task utilzation stats cmd */
+#endif
 
 #define MAX_COMMAND_LEN 48
 #define MAX_COMMAND_NAME_LEN 8
