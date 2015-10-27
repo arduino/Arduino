@@ -9,13 +9,14 @@
 # Translators:
 # Translators:
 # zepyur <jrvezh@yahoo.com>, 2012
+# Levon <deimusmeister@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-10-27 15:40+0000\n"
+"Last-Translator: Levon <deimusmeister@gmail.com>\n"
 "Language-Team: Armenian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hy/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,69 +26,69 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr ""
+msgstr "(պահանջվում է Արդուինոի վերագործարկում)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "Չօգտագործված: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "Օգտագործված: {0}"
 
 #: debug/Compiler.java:455
 msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr ""
+msgstr "'Ստեղնաշար'-ը աջակցվում է միայն Արդուինո Լեոնարդոյում"
 
 #: debug/Compiler.java:450
 msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr ""
+msgstr "'Մկնիկ'-ը աջակցվում է միայն Արդուինո Լեոնարդոյում"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "'arch' պանակը այլեւս չի աջակվում! Լրացուցիչ ինֆորմացիայի համար այցելեք http://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr ""
+msgstr "(խմբագրել միայն երբ Արդուինոն միացված է)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(ժառանգություն)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir -ը այլեւս չի աջակցվում"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload եւ --verbose-build կարող կիրառվել միասին միայն --verify կամ --upload -ի հետ"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
-msgstr ""
+msgstr ".pde -> .ino"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
 #, java-format
 msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
+msgstr "<br/>Թարմացում է հասանելի ձեր որոշ {0}հարթակների համար{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
 #, java-format
 msgid ""
 "<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "<br/>Թարմացում է հասանելի ձեր որոշ {0}հարթակների{1} եւ {2}գրադարանների համար{3}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
 #, java-format
 msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
+msgstr "<br/>Թարմացում է հասանելի ձեր որոշ {0}գրադարանների համար{1}"
 
 #: Editor.java:2053
 msgid ""
@@ -95,37 +96,37 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr ""
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Ցանկանում եք պահպանել փոփոխությունները այս գծանկարի համար<BR> նախկան փակելը?</b><p>Եթե ոչ, ապա ձեր փոփոխությունները կչեղարկվեն:"
 
 #: Sketch.java:398
 #, java-format
 msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr ""
+msgstr "\"{0}\" անունով ֆայլը արդեն գոյություն ունի \"{1}\"-ում"
 
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr ""
+msgstr "\"{0}\" անունով պանակը արդեն գոյություն ունի: Հնարավոր չէ բացել գծանկարը:"
 
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr ""
+msgstr "{0} անունով գրադարանը արդեն գոյություն ունի"
 
 #: UpdateCheck.java:103
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr ""
+msgstr "Արդուինոի նոր տարբերակը արդեն հասանելի է,\nցանկանում եք այցելել Արդուինոի ներբեռման էջը?"
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "Նոր {0} փաթեթը հասանելի է"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "Ձեր գծագրի ենթապանակը արդի գրադարան չէ"
 
 #: Editor.java:1116
 msgid "About Arduino"
@@ -133,7 +134,7 @@ msgstr "Արդուինոյի մասին"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr "Ավելացնել .ZIP գրադարան..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -141,25 +142,25 @@ msgstr "Ավելացնել նիշք․․․"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "Լրացուցիչ հարթակների կառավարիչների URL-ներ"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "Լրացուցիչ հարթակների կառավարիչների URL-ներ:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Աֆրիկաանս"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "Ալբաներեն"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "Բոլորը"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -198,39 +199,39 @@ msgstr "Արաբերեն"
 
 #: Preferences.java:86
 msgid "Aragonese"
-msgstr ""
+msgstr "Արագոներեն"
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
-msgstr ""
+msgstr "Արխիվացնել գծանկարը"
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr ""
+msgstr "Արխիվացնել գծանկարը որպես:"
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
-msgstr ""
+msgstr "Գծանկարի արխիվացումը չեղարկել"
 
 #: tools/Archiver.java:75
 msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
-msgstr ""
+msgstr "Գծանկարի արխիվացումը չեղարկվել է, քանի որ\nգծանկարը հնարավոր չէր ճիշտ պահել"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
-msgstr ""
+msgstr "Արդուինո ARM (32-bit) հարթակները"
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
-msgstr ""
+msgstr "Արդուինո AVR հարթակներ"
 
 #: Editor.java:2137
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Արդուինով կարող է բացել միայն սեփական գծանկարները\nեւ այլ ֆայլեր .ino կամ .pde վերջավորությամբ"
 
 #: Base.java:1682
 msgid ""
@@ -246,42 +247,42 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr ""
+msgstr "Արդուինո:"
 
 #: Sketch.java:588
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
-msgstr ""
+msgstr "Վստահ եք որ ցանկանում եք ջնջել \"{0}\"?"
 
 #: Sketch.java:587
 msgid "Are you sure you want to delete this sketch?"
-msgstr ""
+msgstr "Վստահ եք որ ցանկանում եք ջնջել այս գծանկարը ?"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr ""
+msgstr "--board -ի համար արգումենտ է պահանջվում"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr ""
+msgstr "--port -ի համար արգումենտ է պահանջվում"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr ""
+msgstr "--pref -ի համար արգումենտ է պահանջվում"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr ""
+msgstr "--preferences-file -ի համար արգումենտ է պահանջվում"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:76
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr ""
+msgstr "{0}-ի համար արգումենտ է պահանջվում"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr ""
+msgstr "Հայերեն"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
@@ -293,50 +294,50 @@ msgstr ""
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
-msgstr ""
+msgstr "Ավտոֆորմատավորում"
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
-msgstr ""
+msgstr "Ավտոֆորմատավորումը ավարտված է:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Պրոքսի պարամետրերի ավտոմատ ճանաչում"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "Ավտոմատ պրոքսի կոնֆիգուրացիայի URL:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
-msgstr ""
+msgstr "Ավտոգալարում"
 
 #: Editor.java:2619
 #, java-format
 msgid "Bad error line: {0}"
-msgstr ""
+msgstr "Վատ սխալի տող: {0}"
 
 #: Editor.java:2136
 msgid "Bad file selected"
-msgstr ""
+msgstr "Վատ ֆայլ է ընտրված"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "Բասկերեն"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "Բելառուսերեն"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr ""
+msgstr "Հարթակ"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "Հարթակ {0} (պլատֆորմ {1}, փաթեթ {2}) -ը ճանաչված չէ"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -347,32 +348,32 @@ msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr ""
+msgstr "Հարթակ:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Հարթակների կառավարիչ"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Հարթակների կառավարիչ..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "Հարթակները ներառված են այս փաթեթում:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr ""
+msgstr "Bootloader ֆայլը նշված է սակայն գտնված չէ: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr ""
+msgstr "Բոսներեն"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
-msgstr ""
+msgstr "Երկուսն էլ NL & CR"
 
 #: Preferences.java:81
 msgid "Browse"
@@ -380,45 +381,45 @@ msgstr "Զննել"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "Կառուցման տարբերակները փոփոխվել են, վերակառուցել ամբողջը"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Ներդրվաց օրինակներ"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
-msgstr ""
+msgstr "Բուլղարերեն"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "Բուռմերեն (Մյանմար)"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
-msgstr ""
+msgstr "Վառել Bootloader-ը"
 
 #: Editor.java:2504
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
-msgstr ""
+msgstr "bootloader-ը վառվում է I/O հարթակին (սա կարող է տեւել միքանի րոպե)..."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
 msgid "CRC doesn't match. File is corrupted."
-msgstr ""
+msgstr "CRC -ին չի համապատասխանում: Ֆայլը վնասված է:"
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "Հնարավոր է փոխանցել {0}-ից միայն մեկը"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Հնարավոր չէ գտնել գծանկար նշված ճանապարհին"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
-msgstr ""
+msgstr "Կանադական ֆրանսերեն"
 
 #: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
@@ -427,15 +428,15 @@ msgstr "Չեղարկել"
 
 #: Sketch.java:455
 msgid "Cannot Rename"
-msgstr ""
+msgstr "Հնարավոր չէ վերանվանել"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "Հնարավոր չէ նշել որեւէ գծագրի ֆայլ"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
-msgstr ""
+msgstr "Նոր տող"
 
 #: Preferences.java:87
 msgid "Catalan"
@@ -443,23 +444,23 @@ msgstr "Կատալոներեն"
 
 #: Preferences.java:419
 msgid "Check for updates on startup"
-msgstr ""
+msgstr "Վերսկսման ժամանակ ստուգել թարմացումները"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Չիներեն (Չինաստան)"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Չիներեն (Թայվան)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr ""
+msgstr "Chinese (Taiwan) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Սեղմեք ոչ օֆիցիալ հարթակների սպասարկման URL-ների ցուցակի համար"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -467,15 +468,15 @@ msgstr "Փակել"
 
 #: Editor.java:1208 Editor.java:2749
 msgid "Comment/Uncomment"
-msgstr ""
+msgstr "Մեկնաբանել/Մեկնաբանությունը չեղարկել"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "Կոմպիլիացիայի նախազգուշացումներ:"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
-msgstr ""
+msgstr "Գծանկարը կոմպիլիացվում է..."
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -483,15 +484,15 @@ msgstr "Պատճենել"
 
 #: Editor.java:1177 Editor.java:2723
 msgid "Copy as HTML"
-msgstr ""
+msgstr "Պատճենել որպես HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr ""
+msgstr "Պատճենման սխալի հաղորդագրություններ"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
-msgstr ""
+msgstr "Պատճենել ֆորումի համար"
 
 #: Sketch.java:1089
 #, java-format
@@ -788,16 +789,16 @@ msgstr "Սխալ"
 
 #: Sketch.java:1065 Sketch.java:1088
 msgid "Error adding file"
-msgstr ""
+msgstr "Ֆայլի ավելացման սխալ"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
-msgstr ""
+msgstr "Կոմպիլիացիայի սխալ:"
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "Ներբեռման սխալ {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -899,7 +900,7 @@ msgstr "Էստոներեն"
 
 #: ../../../processing/app/Preferences.java:146
 msgid "Estonian (Estonia)"
-msgstr ""
+msgstr "Էստոներեն (Էստոնիա)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -911,7 +912,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "Օրինակներ գրադարանից"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -932,11 +933,11 @@ msgstr "Նիշք"
 
 #: Preferences.java:94
 msgid "Filipino"
-msgstr ""
+msgstr "Ֆիլիպիներեն"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
-msgstr ""
+msgstr "Ֆիլտրել ձեր որոնումը"
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -960,16 +961,16 @@ msgstr "Գտնել․․․"
 
 #: FindReplace.java:80
 msgid "Find:"
-msgstr ""
+msgstr "Գտնել:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
-msgstr ""
+msgstr "Ֆիններեն"
 
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
-msgstr ""
+msgstr "Ուղղել կոդավորումը եւ վերաբեռնել"
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1004,7 +1005,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
-msgstr ""
+msgstr "Վրացերեն"
 
 #: Preferences.java:97
 msgid "German"
@@ -1012,7 +1013,7 @@ msgstr "Գերմաներեն"
 
 #: Editor.java:1054
 msgid "Getting Started"
-msgstr ""
+msgstr "Ինչից սկսել"
 
 #: ../../../processing/app/Sketch.java:1646
 #, java-format
@@ -1028,7 +1029,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Անցնել դեպի տող"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
@@ -1048,7 +1049,7 @@ msgstr "Օգնություն"
 
 #: Preferences.java:99
 msgid "Hindi"
-msgstr ""
+msgstr "Հինդի"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
@@ -1119,24 +1120,24 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
 msgid "Install"
-msgstr ""
+msgstr "Տեղադրել"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
-msgstr ""
+msgstr "Տեղադրումը ավարտվեց!"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
 msgid "Installed"
-msgstr ""
+msgstr "Տեղադրված"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
-msgstr ""
+msgstr "Հարտակները տեղադրվում են..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
 #, java-format
 msgid "Installing library: {0}"
-msgstr ""
+msgstr "Տեղադրվում է գրադարանը: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1146,7 +1147,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
 msgid "Installing..."
-msgstr ""
+msgstr "Տեղադրվում է..."
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1176,7 +1177,7 @@ msgstr "Լատվերեն"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
+msgstr "Գրադարանի կառավարիչ"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1193,7 +1194,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Տող համար:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1239,7 +1240,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
-msgstr ""
+msgstr "Ավելին"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1264,15 +1265,15 @@ msgstr ""
 
 #: Sketch.java:282
 msgid "Name for new file:"
-msgstr ""
+msgstr "Նոր անվանում ֆայլի համար:"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
-msgstr ""
+msgstr "Նեպալերեն"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
-msgstr ""
+msgstr "Ցանց"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1292,7 +1293,7 @@ msgstr ""
 
 #: SerialMonitor.java:112
 msgid "Newline"
-msgstr ""
+msgstr "նոր տող"
 
 #: EditorHeader.java:340
 msgid "Next Tab"
@@ -1332,7 +1333,7 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "Պարամետրերը չկան"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
@@ -1402,11 +1403,11 @@ msgstr ""
 
 #: Editor.java:2688
 msgid "Open URL"
-msgstr ""
+msgstr "Բացել URL"
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
-msgstr ""
+msgstr "Բացել Արդուինոի գծագիր..."
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
@@ -1418,7 +1419,7 @@ msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
-msgstr ""
+msgstr "Գաղտնաբառ:"
 
 #: Editor.java:1189 Editor.java:2731
 msgid "Paste"
@@ -1430,7 +1431,7 @@ msgstr "Պարսկերեն"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "Պարսկերեն (Իրան)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
@@ -1464,23 +1465,23 @@ msgstr "Լեհերեն"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr ""
+msgstr "Պորտ"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Պորտի համար:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr ""
+msgstr "Պորտուգալերեն"
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Պորտուգալերեն (Բրազիլիա)"
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr ""
+msgstr "Պորտուգալերեն (Պորտուգալիա)"
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
@@ -1500,15 +1501,15 @@ msgstr ""
 
 #: Editor.java:571
 msgid "Print"
-msgstr ""
+msgstr "Տպել"
 
 #: Editor.java:2571
 msgid "Printing canceled."
-msgstr ""
+msgstr "Տպումը չեղարկված է"
 
 #: Editor.java:2547
 msgid "Printing..."
-msgstr ""
+msgstr "Տպվում է"
 
 #: Base.java:1957
 msgid "Problem Opening Folder"
@@ -1687,7 +1688,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
 msgid "Select version"
-msgstr ""
+msgstr "Նշել տարբերակը"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
@@ -1699,7 +1700,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
-msgstr ""
+msgstr "Նշված գրադարանը հասանելի չէ"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1738,7 +1739,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Կարգավորումներ"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1837,7 +1838,7 @@ msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
-msgstr ""
+msgstr "Իսպաներեն"
 
 #: ../../../../../app/src/processing/app/Base.java:2333
 msgid "Specified folder/zip file does not contain a valid library"
@@ -1845,7 +1846,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr ""
+msgstr "Միանում է..."
 
 #: Base.java:540
 msgid "Sunshine"
@@ -1853,7 +1854,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr ""
+msgstr "Շվեդերեն"
 
 #: Preferences.java:84
 msgid "System Default"
@@ -2130,7 +2131,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
 msgid "Username:"
-msgstr ""
+msgstr "Օգտանուն"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
@@ -2153,7 +2154,7 @@ msgstr "Ստուգել"
 
 #: Preferences.java:400
 msgid "Verify code after upload"
-msgstr ""
+msgstr "Ստուգել կոդը վերբեռնումից հետո"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
@@ -2174,24 +2175,24 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
 msgid "Version <b>{0}</b>"
-msgstr ""
+msgstr "Տարբերակ <b>{0}</b>"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
 msgid "Version unknown"
-msgstr ""
+msgstr "Տարբերակը ճանաչված չէ"
 
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
 msgid "Version {0}"
-msgstr ""
+msgstr "Տարբերակ {0}"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr ""
+msgstr "Վիետնամերեն"
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
-msgstr ""
+msgstr "Այցելեք Arduino.cc"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
@@ -2425,7 +2426,7 @@ msgstr ""
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
+msgstr "կապնվեց!"
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
