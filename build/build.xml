@@ -41,7 +41,7 @@
     <include name="app/lib/ant-launcher.jar" />
   </fileset>
 
-  <property name="closure-version" value="emt-a59"/>
+  <property name="closure-version" value="emt-a61"/>
   <target name="check-closure">
     <condition property="closure.exists">
       <available file="${build-dir}/closure-${closure-version}.tar.gz"/>
