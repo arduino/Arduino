@@ -468,8 +468,8 @@ typedef struct{
 	_u8	PasswordLen;
 }_WlanConnectCommon_t;
 
-//#define  SSID_STRING(pCmd)       (((char *)((_WlanConnectCommon_t *)(pCmd) + 1)) - 1)
-#define SSID_STRING(pCmd)       (_i8 *)((_WlanConnectCommon_t *)(pCmd) + 1)
+#define  SSID_STRING(pCmd)       (((char *)((_WlanConnectCommon_t *)(pCmd) + 1)) - 1)
+//#define SSID_STRING(pCmd)       (_i8 *)((_WlanConnectCommon_t *)(pCmd) + 1)
 #define PASSWORD_STRING(pCmd)   (SSID_STRING(pCmd) + ((_WlanConnectCommon_t *)(pCmd))->SsidLen)
 
 typedef struct{

@@ -8,7 +8,7 @@
  The circuit:
  * potentiometer connected to analog pin 0.
    Center pin of the potentiometer goes to the analog pin.
-   side pins of the potentiometer go to +5V and ground
+   side pins of the potentiometer go to +3.3V and ground
  * LED connected from digital pin 9 to ground
  
  created 29 Dec. 2008

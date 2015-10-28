@@ -7,7 +7,7 @@
    the distance of the object from the sensor.
      
    The circuit:
-	* +V connection of the PING))) attached to +5V
+	* +V connection of the PING))) attached to +3.3V
 	* GND connection of the PING))) attached to ground
 	* SIG connection of the PING))) attached to digital pin 7
 
