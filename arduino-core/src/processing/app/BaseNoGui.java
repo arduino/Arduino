@@ -618,8 +618,8 @@ public class BaseNoGui {
   }
 
   private static void copyStockLibraryIndexIfUpstreamIsMissing(File librariesIndexFile) throws IOException {
-    if (!librariesIndexFile.isFile()) {
-      File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
+    File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
+    if (!librariesIndexFile.isFile() || (defaultLibraryJsonFile.isFile() && defaultLibraryJsonFile.lastModified() > librariesIndexFile.lastModified())) {
       if (defaultLibraryJsonFile.isFile()) {
         FileUtils.copyFile(defaultLibraryJsonFile, librariesIndexFile);
       } else {

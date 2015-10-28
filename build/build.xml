@@ -182,22 +182,19 @@
   <!-- copy library folder -->
   <target name="assemble-libraries" unless="light_bundle">
     <copy todir="${target.path}/libraries">
-      <fileset dir="../libraries">
-        <!-- exluding non AVR libraries -->
-        <exclude name="**/Audio/**"/>
-        <exclude name="**/Scheduler/**"/>
-        <exclude name="**/USBHost/**"/>
-      </fileset>
+      <fileset dir="../libraries"/>
     </copy>
 
     <download-library name="Firmata" version="2.4.4" tag="v2.4.4"/>
-    <download-library name="Bridge" version="1.0.7"/>
+    <download-library name="Bridge" version="1.1.0"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
     <download-library name="SpacebrewYun" version="1.0.0"/>
-    <download-library name="Temboo" version="1.1.3" githubuser="temboo"/>
+    <download-library name="Temboo" version="1.1.4" githubuser="temboo"/>
     <download-library name="Esplora" version="1.0.4"/>
+    <download-library name="Mouse" version="1.0.0"/>
+    <download-library name="Keyboard" version="1.0.0"/>
   </target>
 
   <macrodef name="download-library">
