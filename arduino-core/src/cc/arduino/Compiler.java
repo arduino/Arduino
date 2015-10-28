@@ -208,9 +208,9 @@ public class Compiler implements MessageConsumer {
       });
 
     commandLine.addArgument("-libraries", false);
-    commandLine.addArgument("\"" + BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath() + "\"", false);
-    commandLine.addArgument("-libraries", false);
     commandLine.addArgument("\"" + BaseNoGui.getContentFile("libraries").getAbsolutePath() + "\"", false);
+    commandLine.addArgument("-libraries", false);
+    commandLine.addArgument("\"" + BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath() + "\"", false);
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     commandLine.addArgument("-fqbn=" + fqbn, false);

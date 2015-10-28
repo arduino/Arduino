@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-10-17 18:07+0000\n"
+"Last-Translator: Pop Gheorghe <office@roroid.ro>\n"
 "Language-Team: Romanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +55,7 @@ msgstr "'Mouse' este compatibil doar cu Arduino Leonardo"
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "directorul 'arch' nu mai este suportat! Vezi http://goo.gl/gfFJzU pentru mai multe informaţii"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -63,7 +63,7 @@ msgstr "(editează doar atunci când Arduino IDE nu funcţionează)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(moștenire)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -342,7 +342,7 @@ msgstr "Placă"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "Placa {0} (platforma {1}, pachetul {2}) este necunoscut"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -390,7 +390,7 @@ msgstr "Opțiunea pentru build a fost modificată, se execută rebuild all"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Exemple interne"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -913,15 +913,15 @@ msgstr "Exemple"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Exemple din librării realizate de comunitate"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "Exemple din librării"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Exportul a fost anulat, modificările trebuiesc întâi salvate."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
@@ -1034,11 +1034,11 @@ msgstr "Variabila globală foloseşte {0} bytes din memoria dinamică."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Mergi la linia"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Mergi la linia..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1162,7 +1162,7 @@ msgstr "Bibliotecă invalidă în {0}: {1}"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
-msgstr ""
+msgstr "Bloc invalid: caracterul  [{0}] de închidere nu a fost găsit."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1190,7 +1190,7 @@ msgstr "Fișier adăugat în bibliotecă. Verifică meniul \"Include biblioteca\
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
 msgid "Library can't use both 'src' and 'utility' folders."
-msgstr ""
+msgstr "Librăria nu poate folosi concomitent directoarele 'src' şi 'utility'."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1199,7 +1199,7 @@ msgstr "Biblioteca este deja instalată: {0} versiunea {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Număr linie:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1212,7 +1212,7 @@ msgstr "Încărcare configurație..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "Caut rețete precum {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1237,7 +1237,7 @@ msgstr "Mesaj"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
 msgid "Missing '{0}' from library in {1}"
-msgstr ""
+msgstr "Lipsă '{0}' din librărie in {1}"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
@@ -1441,7 +1441,7 @@ msgstr "Persană (Iran)"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
 msgid "Platform {0} (package {1}) is unknown"
-msgstr ""
+msgstr "Platforma {0} (pachetul {1}) este necunoscut"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
@@ -1561,7 +1561,7 @@ msgstr "Programator"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Progres {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1569,7 +1569,7 @@ msgstr "Ieşire"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "RETRAS"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1625,12 +1625,12 @@ msgstr "Română"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "Se execută rețeta: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "Rulează: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1740,7 +1740,7 @@ msgstr "Porturi seriale"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "Setez calea de asamblare la {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
@@ -2048,7 +2048,7 @@ msgstr "Imposibil de realizat conexiunea: parola greșită?"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr ""
+msgstr "Nu am găsit {0} în {1}"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2070,12 +2070,12 @@ msgstr "Anulează"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr ""
+msgstr "Tipul {0} este neprocesat în contextul cheie {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "Extensia schiţei: {0} este necunoscuta."
 
 #: Platform.java:168
 msgid ""
@@ -2202,12 +2202,12 @@ msgstr "Vizitaţi Arduino.cc"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
 msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
-msgstr ""
+msgstr "ATENŢIE: Categoria '{0}' în librăria {1} nu este validă. Setat la '{2}'"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "ATENȚIE: Directorul {0} este fals în librăria '{1}'"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2256,7 +2256,7 @@ msgstr "Atenție: platform.txt din nucleul \"{0}\" conține deprecieri {1}, conv
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
+msgstr "Atenție: platform.txt din nucleul '{0}' lipsă proprietate {1}, se folosește valoarea implicită {2}. Luați în considerare modernizarea acestui nucleu."
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:170
 #, java-format
@@ -2515,12 +2515,12 @@ msgstr "{0} Biblioteci"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} trebuie să fie un director"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "{0} îi lipsește o schemă"
 
 #: debug/Compiler.java:365
 #, java-format

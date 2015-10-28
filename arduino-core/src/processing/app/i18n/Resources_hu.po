@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-10-22 01:18+0000\n"
+"Last-Translator: benewfy <benewfy@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +63,7 @@ msgstr ""
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir továbbiakban nem támogatott"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
@@ -97,7 +97,7 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Szeretné menteni a változtatásokat ezen a Sketchen<BR> mielött bezárná?</b><p>Ha nem menti el, a változtatások elvesznek."
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Szeretné menteni a változtatásokat ezen a vázlaton<BR> mielött bezárná?</b><p>Ha nem menti el, a változtatások elvesznek."
 
 #: Sketch.java:398
 #, java-format
@@ -107,7 +107,7 @@ msgstr "A \"{0}\" file már létezik a \"{1}\" mappában!"
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr "Ez a mappa \"{0}\" már létezik. Sketchet nem lehet megnyitni."
+msgstr "\"{0}\" nevű mappa már létezik. Vázlatot nem lehet megnyitni."
 
 #: Base.java:2690
 #, java-format
@@ -127,7 +127,7 @@ msgstr "Egy új {0} csomag elérhető"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "A vázlatfüzetének egy almappája nem egy érvényes könyvtár"
 
 #: Editor.java:1116
 msgid "About Arduino"
@@ -135,7 +135,7 @@ msgstr "Arduinoról"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr ".ZIP könyvtár hozzáadása..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -151,7 +151,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -204,11 +204,11 @@ msgstr "Aragóniai"
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
-msgstr "Sketch arhiválása"
+msgstr "Vázlat arhiválása"
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr "Sketch arhiválása másként:"
+msgstr "Vázlat archiválása másként:"
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
@@ -244,7 +244,7 @@ msgstr "Arduino nem futtatható, mert nem hozható létre\\na felhasználói be�
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr "Arduino nem futtatható, mert nem hozható létre\\na felhasználói Sketch mentések mappája."
+msgstr "Arduino nem futtatható, mert nem hozható létre\nfelhasználói mappa a vázlatfüzete tárolására."
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
@@ -510,7 +510,7 @@ msgstr ""
 
 #: Editor.java:2206
 msgid "Could not create the sketch."
-msgstr "Sketch nem hozható létre."
+msgstr "A vázlat nem hozható létre."
 
 #: Sketch.java:617
 #, java-format
@@ -1060,7 +1060,7 @@ msgstr ""
 msgid ""
 "How about saving the sketch first \n"
 "before trying to rename it?"
-msgstr "A Sketch csak mentés után\\nnevezhető át!"
+msgstr "Mi lenne, ha mentené a vázlatot, \nmielőtt megpróbálja átnevezni?"
 
 #: Sketch.java:882
 msgid "How very Borges of you"
@@ -1080,7 +1080,7 @@ msgstr "Hibás könyvtárnév kihagyása"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr "Hibás Sketch név kihagyása"
+msgstr "Hibás nevű vázlat kihagyása"
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -1408,7 +1408,7 @@ msgstr ""
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
-msgstr "Arduino Sketch megnyitása..."
+msgstr "Arduino vázlat megnyitása..."
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
@@ -1449,7 +1449,7 @@ msgstr ""
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
-msgstr "Az SPI függvények használatához a Sketch > Függvény import alatt az SPI-re van szüksége."
+msgstr "Kérem importálja az SPI könyvtárat a Vázlat > Könyvtár Importálása menüből."
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
@@ -1668,7 +1668,7 @@ msgstr ""
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
-msgstr "Válassz (vagy hozz létre) mappát a Sketch-eknek..."
+msgstr "Válasszon (vagy hozzon létre) mappát a vázlatoknak..."
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
@@ -1684,7 +1684,7 @@ msgstr ""
 
 #: Preferences.java:330
 msgid "Select new sketchbook location"
-msgstr "Válasszon új SketchBook mappát"
+msgstr "Válasszon új vázlatfüzet helyet"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
@@ -1768,15 +1768,15 @@ msgstr ""
 
 #: Base.java:1411
 msgid "Sketch Does Not Exist"
-msgstr "Sketch nem nyitható meg"
+msgstr "A vázlat nem létezik"
 
 #: Sketch.java:274 Sketch.java:303 Sketch.java:577 Sketch.java:966
 msgid "Sketch is Read-Only"
-msgstr "A Sketch írásvédett"
+msgstr "A vázlat csak olvasható"
 
 #: Sketch.java:294
 msgid "Sketch is Untitled"
-msgstr "A Sketch most Névtelen (Untitled)"
+msgstr "A vázlat Névtelen"
 
 #: Sketch.java:720
 msgid "Sketch is read-only"
@@ -1801,11 +1801,11 @@ msgstr ""
 
 #: Base.java:258
 msgid "Sketchbook folder disappeared"
-msgstr "A SketchBook mappa elérhetetlen"
+msgstr "A vázlatfüzet mappa eltűnt"
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
-msgstr "SketchBook helye:"
+msgstr "Vázlatfüzet helye:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
@@ -1824,7 +1824,7 @@ msgid ""
 "Some files are marked \"read-only\", so you'll\n"
 "need to re-save the sketch in another location,\n"
 "and try again."
-msgstr "Néhány file csak olvasható, így más helyre mentés után\\nújra meg kell próbálni."
+msgstr "Néhány fájl \"csak olvasható\"-nak van jelölve, így\nújra kell mentenie a vázlatot másik helyre és\nújrapróbálni."
 
 #: Sketch.java:721
 msgid ""
@@ -1928,7 +1928,7 @@ msgid ""
 "The selected sketch no longer exists.\n"
 "You may need to restart Arduino to update\n"
 "the sketchbook menu."
-msgstr "A kiválasztott Sketch nem érhető el.\\nA SketchBook menü frissítéséhez az Arduino\\nújraindítása szükséges."
+msgstr "A kiválasztott vázlat már nem létezik.\nLehet, hogy újra kell indítania az Arduino-t,\nhogy frissítse a vázlatfüzet menüt."
 
 #: Base.java:1430
 #, java-format
@@ -1938,7 +1938,7 @@ msgid ""
 "(ASCII-only with no spaces, and it cannot start with a number).\n"
 "To get rid of this message, remove the sketch from\n"
 "{1}"
-msgstr "A \"{0}\" Sketch nem használható.\\nA Sketch neve csak angol abc betűit, számokat\\ntartalmazhat, szóköz nélkül és az első betűje nem lehet szám.\\nA hibás Sketch-et távolítsd el\\na(z) {1} mappából!"
+msgstr "A \"{0}\" vázlat nem használható.\nA vázlatok neve csak angol abc betűit és számokat tartalmazhat\n(csak ASCII szóköz nélkül és nem kezdődhet számmal). Ahhoz,\nhogy megszabaduljon ettől az üzenettőt, távolítsa el a vázlatot innen:\n{1}"
 
 #: Sketch.java:1755
 msgid ""
@@ -1961,7 +1961,7 @@ msgid ""
 "location, and create a new sketchbook folder if\n"
 "necessary. Arduino will then stop talking about\n"
 "himself in the third person."
-msgstr "A SketchBook mappa nem érhető el.\\nAz alapértelmezett hely lesz kiválasztva, és\\nitt létrehozva a sketch mappa."
+msgstr "A vázlatfüzet mappa már nem létezik.\nAz Arduino átvált az alapértelmezett vázlatfüzet\nhelyre, és készít egy új vázlatfüzet mappát, ha\nszükséges. Az Arduino ekkor befejezi magáról a\nharmadik személyként való említést."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
 msgid ""
@@ -2091,7 +2091,7 @@ msgstr ""
 
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "Sketch frissítése az új kiterjesztéssel (.pde -> .ino)"
+msgstr "Vázlat fájlok frissítés új kiterjesztésre mentésnél (.pde -> .ino)"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
@@ -2319,7 +2319,7 @@ msgstr ""
 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
-msgstr "Felejtsd el a SketchBook-odat"
+msgstr "Felejtse el a vázlatfüzetét"
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2330,7 +2330,7 @@ msgstr ""
 msgid ""
 "You've reached the limit for auto naming of new sketches\n"
 "for the day. How about going for a walk instead?"
-msgstr "Meghaladtad az egy napra jutó új Sketch-ek létrehozási\\n\nszámot. Nem kéne sétálni egyet - pihenésül?"
+msgstr "Meghaladta a napi korlátot az új vázlatok automatikus\nnévadásához. Mi lenne, ha inkább sétálna egyet?"
 
 #: ../../../processing/app/BaseNoGui.java:768
 msgid ""
@@ -2501,7 +2501,7 @@ msgstr ""
 #: Editor.java:380
 #, java-format
 msgid "{0} files added to the sketch."
-msgstr ""
+msgstr "{0} fájl hozzáadva a vázlathoz."
 
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
