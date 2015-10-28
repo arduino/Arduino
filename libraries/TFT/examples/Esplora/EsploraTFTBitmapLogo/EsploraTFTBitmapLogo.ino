@@ -23,6 +23,7 @@
 
 // include the necessary libraries
 #include <Esplora.h>
+#include <SPI.h>
 #include <SD.h>
 #include <TFT.h>            // Arduino LCD library
 

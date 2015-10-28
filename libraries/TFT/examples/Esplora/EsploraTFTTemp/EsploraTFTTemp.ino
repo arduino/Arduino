@@ -20,6 +20,7 @@
 // include the necessary libraries
 #include <Esplora.h>
 #include <TFT.h>            // Arduino LCD library
+#include <SPI.h>
 
 char tempPrintout[3];  // array to hold the temperature data
 

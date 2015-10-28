@@ -21,6 +21,7 @@
  This example code is in the public domain.
 
  */
+#include <SPI.h>
 #include <SD.h>
 
 File root;
