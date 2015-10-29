@@ -332,27 +332,25 @@ void TwoWire::onService(void) {
 		}
 	}
 
-	if (status != SLAVE_IDLE) {
-		if (TWI_STATUS_TXCOMP(sr) && TWI_STATUS_EOSACC(sr)) {
-			if (status == SLAVE_RECV && onReceiveCallback) {
-				// Copy data into rxBuffer
-				// (allows to receive another packet while the
-				// user program reads actual data)
-				for (uint8_t i = 0; i < srvBufferLength; ++i)
-					rxBuffer[i] = srvBuffer[i];
-				rxBufferIndex = 0;
-				rxBufferLength = srvBufferLength;
+	if (status != SLAVE_IDLE && TWI_STATUS_EOSACC(sr)) {
+		if (status == SLAVE_RECV && onReceiveCallback) {
+			// Copy data into rxBuffer
+			// (allows to receive another packet while the
+			// user program reads actual data)
+			for (uint8_t i = 0; i < srvBufferLength; ++i)
+				rxBuffer[i] = srvBuffer[i];
+			rxBufferIndex = 0;
+			rxBufferLength = srvBufferLength;
 
-				// Alert calling program
-				onReceiveCallback( rxBufferLength);
-			}
-
-			// Transfer completed
-			TWI_EnableIt(twi, TWI_SR_SVACC);
-			TWI_DisableIt(twi, TWI_IDR_RXRDY | TWI_IDR_GACC | TWI_IDR_NACK
-					| TWI_IDR_EOSACC | TWI_IDR_SCL_WS | TWI_IER_TXCOMP);
-			status = SLAVE_IDLE;
+			// Alert calling program
+			onReceiveCallback( rxBufferLength);
 		}
+
+		// Transfer completed
+		TWI_EnableIt(twi, TWI_SR_SVACC);
+		TWI_DisableIt(twi, TWI_IDR_RXRDY | TWI_IDR_GACC | TWI_IDR_NACK
+				| TWI_IDR_EOSACC | TWI_IDR_SCL_WS | TWI_IER_TXCOMP);
+		status = SLAVE_IDLE;
 	}
 
 	if (status == SLAVE_RECV) {
