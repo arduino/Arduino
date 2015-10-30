@@ -34,10 +34,12 @@ ARDUINO 1.6.6
 * Ethernet: Added missing keywords. Thanks @per1234
 * Ethernet: Fixed DNSClient.inet_aton() function. Thanks @jhorck
 * Ethernet: Expose optional DHCP timout parameters to Ethernet:begin(). Thanks @chaveiro
-* Wire: Implemented Wire.end() for AVR.
+* Wire: Implemented Wire.end().
 * Wire: Fixed bug with repeated START for AVR. Thanks Nate Williams
 * Wire: Resolved timing issues on AVR. See #2173 #1477.
+* Wire: Fixed bug in repeated start in slave mode on SAM. See #3908
 * SD: Change "char *" to "const char *" on methods accepting a string as a parameter. Thanks @Ivan-Perez
+* Scheduler: Added support for cortex-M0. Thanks @PeterVH
 
 [core]
 * Added new PluggableUSB and HID support. This change introduces a more powerful API for
