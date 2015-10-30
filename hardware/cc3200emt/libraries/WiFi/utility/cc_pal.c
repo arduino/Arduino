@@ -236,6 +236,66 @@ void DmaSpiSwIntHandler()
 #endif
 }
 
+//*****************************************************************************
+//
+//! Configures the uDMA channel
+//!
+//! \param uiChannel is the DMA channel to be selected
+//! \param pfpAppCb is the application callback to be invoked on transfer
+//!
+//! This function
+//!        1. Configures the uDMA channel
+//!
+//! \return None.
+//
+//*****************************************************************************
+void cc_UDMAChannelSelect(unsigned int uiChannel)
+{
+    if((uiChannel & 0xFF) > MAX_NUM_CH)
+    {
+        return;
+    }
+    MAP_uDMAChannelAssign(uiChannel);
+    MAP_uDMAChannelAttributeDisable(uiChannel,UDMA_ATTR_ALTSELECT);
+
+}
+
+//*****************************************************************************
+//
+//! Does the actual Memory transfer
+//!
+//! \param TBD
+//!
+//! This function
+//!        1. Sets up the uDMA registers to perform the actual transfer
+//!
+//! \return None.
+//
+//*****************************************************************************
+void cc_SetupTransfer(
+                  unsigned long ulChannel,
+                  unsigned long ulMode,
+                  unsigned long ulItemCount,
+                  unsigned long ulItemSize,
+                  unsigned long ulArbSize,
+                  void *pvSrcBuf,
+                  unsigned long ulSrcInc,
+                  void *pvDstBuf,
+                  unsigned long ulDstInc)
+{
+
+    MAP_uDMAChannelControlSet(ulChannel,
+                              ulItemSize | ulSrcInc | ulDstInc | ulArbSize);
+
+    MAP_uDMAChannelAttributeEnable(ulChannel,UDMA_ATTR_USEBURST);
+
+    MAP_uDMAChannelTransferSet(ulChannel, ulMode,
+                               pvSrcBuf, pvDstBuf, ulItemCount);
+
+    MAP_uDMAChannelEnable(ulChannel);
+
+}
+
 void SetupDMAReceive(unsigned char *ucBuff,int len)
 {
 
@@ -739,62 +799,4 @@ void NwpPowerOff(void)
 }
 
 
-//*****************************************************************************
-//
-//! Configures the uDMA channel
-//!
-//! \param uiChannel is the DMA channel to be selected
-//! \param pfpAppCb is the application callback to be invoked on transfer
-//!
-//! This function
-//!        1. Configures the uDMA channel
-//!
-//! \return None.
-//
-//*****************************************************************************
-void cc_UDMAChannelSelect(unsigned int uiChannel)
-{
-    if((uiChannel & 0xFF) > MAX_NUM_CH)
-    {
-        return;
-    }
-    MAP_uDMAChannelAssign(uiChannel);
-    MAP_uDMAChannelAttributeDisable(uiChannel,UDMA_ATTR_ALTSELECT);
 
-}
-
-//*****************************************************************************
-//
-//! Does the actual Memory transfer
-//!
-//! \param TBD
-//!
-//! This function
-//!        1. Sets up the uDMA registers to perform the actual transfer
-//!
-//! \return None.
-//
-//*****************************************************************************
-void cc_SetupTransfer(
-                  unsigned long ulChannel,
-                  unsigned long ulMode,
-                  unsigned long ulItemCount,
-                  unsigned long ulItemSize,
-                  unsigned long ulArbSize,
-                  void *pvSrcBuf,
-                  unsigned long ulSrcInc,
-                  void *pvDstBuf,
-                  unsigned long ulDstInc)
-{
-
-    MAP_uDMAChannelControlSet(ulChannel,
-                              ulItemSize | ulSrcInc | ulDstInc | ulArbSize);
-
-    MAP_uDMAChannelAttributeEnable(ulChannel,UDMA_ATTR_USEBURST);
-
-    MAP_uDMAChannelTransferSet(ulChannel, ulMode,
-                               pvSrcBuf, pvDstBuf, ulItemCount);
-
-    MAP_uDMAChannelEnable(ulChannel);
-
-}
