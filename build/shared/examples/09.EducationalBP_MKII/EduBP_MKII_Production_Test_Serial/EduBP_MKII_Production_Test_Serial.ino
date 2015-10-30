@@ -1,7 +1,7 @@
 
 #include "pitches.h"
 #include <Wire.h>
-#include <tmp006.h>
+#include <Adafruit_TMP006.h>
 //#include "OPT3001.h"
 #define USE_USCI_B1 
 #define USING_MSP430F5529_LAUNCHPAD
@@ -281,7 +281,7 @@ float tempReading = 0;
 
 // OPT3001
 //opt3001 opt3001;
-tmp006 tmp006;
+Adafruit_TMP006 tmp006;
 unsigned long readings = 0;
 
 int melody[] = {
@@ -309,7 +309,7 @@ void setup()
   pinMode(BUZZ, OUTPUT);
   Serial.println("Welcome to the Educational BoosterPack MKII Production Test:");
 
-  tmp006.begin(EIGHT_SAMPLES);  // Takes 8 averaged samples for measurement
+  tmp006.begin(TMP006_CFG_8SAMPLE);  // Takes 8 averaged samples for measurement
 //  opt3001.begin(); 
 }
 
@@ -417,7 +417,7 @@ void loop()
   //TEST TMP006 TEMP SENSOR
   Serial.println("Press SW1 to test the TMP006.");
   while(digitalRead(SW1) == 1);
-  float temp = tmp006.getTemp();
+  float temp = tmp006.readObjTempC();
   Serial.print("Temp Reading = ");
   Serial.print(temp);
   Serial.println("*C    ");    
