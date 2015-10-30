@@ -384,6 +384,7 @@
     <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" tofile="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
 
+    <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-macosx"/>
     <antcall target="untar">
       <param name="archive_file" value="./arduino-builder-macosx-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
@@ -567,6 +568,7 @@
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
 
+    <delete dir="${staging_folder}/arduino-builder-linux32" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-linux32"/>
     <antcall target="untar">
       <param name="archive_file" value="./arduino-builder-linux32-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
@@ -598,6 +600,7 @@
       <param name="JVM" value="${LINUX64_BUNDLED_JVM}"/>
     </antcall>
 
+    <delete dir="${staging_folder}/arduino-builder-linux64" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-linux64"/>
     <antcall target="untar">
       <param name="archive_file" value="./arduino-builder-linux64-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
@@ -822,6 +825,7 @@
       <fileset file="windows/work/hardware/tools/listComPorts.exe" />
     </chmod>
 
+    <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-windows"/>
     <antcall target="unzip-with-ant-task">
       <param name="archive_file" value="./arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
@@ -832,7 +836,7 @@
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
     <chmod perm="755" file="windows/work/arduino-builder.exe" />
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino1/ctags.exe" />
+    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino2/ctags.exe" />
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>
