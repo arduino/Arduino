@@ -81,12 +81,12 @@ void HID_::AppendDescriptor(HIDSubDescriptor *node)
 	descriptorSize += node->length;
 }
 
-void HID_::SendReport(uint8_t id, const void* data, int len)
+int HID_::SendReport(uint8_t id, const void* data, int len)
 {
 	uint8_t p[64];
 	p[0] = id;
 	memcpy(&p[1], data, len);
-	USBD_Send(pluggedEndpoint, p, len+1);
+	return USBD_Send(pluggedEndpoint, p, len+1);
 }
 
 bool HID_::setup(USBSetup& setup)

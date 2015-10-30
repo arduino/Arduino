@@ -88,7 +88,7 @@ class HID_ : public PluggableUSBModule
 public:
   HID_(void);
   int begin(void);
-  void SendReport(uint8_t id, const void* data, int len);
+  int SendReport(uint8_t id, const void* data, int len);
   void AppendDescriptor(HIDSubDescriptor* node);
 
 protected:
