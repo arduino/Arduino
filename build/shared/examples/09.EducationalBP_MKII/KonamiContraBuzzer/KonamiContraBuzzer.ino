@@ -222,7 +222,7 @@ void loop()
       break; 
     case 11:      
       digitalWrite(RGB_BLUE_LED, 1);
-	  for (int thisNote = 0; thisNote < 80; thisNote++) 
+	  for (int thisNote = 0; (sizeof(melody)/sizeof(int)); thisNote++)
 	  {
 
 		// to calculate the note duration, take one second 

@@ -72,10 +72,10 @@ Screen_HX8353E myScreen;
 // Beware of RAM limitations
 #if defined(HX8353E)                                                            // Educational BoosterPack MKII
 
-#if defined(__MSP430F5529__)
+#if defined(__MSP430F5529__) || defined(__CC2650__)
 #define ROWS 32 // max 80
 #define COLS 32 // max 60
-#elif defined(__LM4F120H5QR__) || defined(__TM4C123GH6PM__) 
+#elif defined(__LM4F120H5QR__) || defined(__TM4C123GH6PM__) || defined(__CC3200R1MXRGCR__)
 #define ROWS 64 // max 80
 #define COLS 64 // max 60
 #elif defined(__TM4C1294NCPDT__) || defined(__TM4C1294XNCZAD__) || defined(__MSP432P401R__)

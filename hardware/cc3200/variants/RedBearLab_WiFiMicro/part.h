@@ -1,0 +1,1 @@
+#define __CC3200R1MXRGCR__

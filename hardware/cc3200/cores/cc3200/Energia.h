@@ -8,6 +8,7 @@
 #include <string.h> 
 #include <math.h>
 #include <itoa.h>
+#include "part.h"
 #include <avr/dtostrf.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
