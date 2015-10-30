@@ -207,7 +207,7 @@ public class Compiler implements MessageConsumer {
         }
       });
 
-    commandLine.addArgument("-libraries", false);
+    commandLine.addArgument("-built-in-libraries", false);
     commandLine.addArgument("\"" + BaseNoGui.getContentFile("libraries").getAbsolutePath() + "\"", false);
     commandLine.addArgument("-libraries", false);
     commandLine.addArgument("\"" + BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath() + "\"", false);
