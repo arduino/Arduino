@@ -75,7 +75,7 @@ extern USBDevice_ USBDevice;
 struct ring_buffer;
 
 #ifndef SERIAL_BUFFER_SIZE
-#if (RAMEND < 1000)
+#if ((RAMEND - RAMSTART) < 1023)
 #define SERIAL_BUFFER_SIZE 16
 #else
 #define SERIAL_BUFFER_SIZE 64

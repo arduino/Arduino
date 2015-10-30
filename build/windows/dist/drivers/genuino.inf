@@ -35,6 +35,8 @@ unoR3.name="Genuino Uno"
 mega2560rev3.name="Genuino Mega 2560"
 micro.bootloader.name="Genuino Micro bootloader"
 micro.sketch.name="Genuino Micro"
+zero.sketch.name="Genuino Zero"
+zero.bootloader.name="Genuino Zero bootloader"
 
 [DefaultInstall]
 CopyINF=genuino.inf
@@ -46,7 +48,7 @@ Signature="$Windows NT$"
 Provider=%ManufacturerName%
 DriverPackageDisplayName=%DriverPackageDisplayName%
 CatalogFile=genuino.cat
-DriverVer=08/25/2015,1.0.1.0
+DriverVer=10/25/2015,1.0.2.0
 
 [Manufacturer]
 %ManufacturerName%=DeviceList, NTamd64, NTia64
@@ -60,18 +62,24 @@ DefaultDestDir=12
 %micro.bootloader.name%=DriverInstall, USB\VID_2341&PID_0237
 %micro.sketch.name%=DriverInstall, USB\VID_2341&PID_8237&MI_00
 %unoR3.name%=DriverInstall, USB\VID_2341&PID_0243
+%zero.sketch.name%=DriverInstall, USB\VID_2341&PID_824D&MI_00
+%zero.bootloader.name%=DriverInstall, USB\VID_2341&PID_024D
 
 [DeviceList.NTamd64]
 %mega2560rev3.name%=DriverInstall, USB\VID_2341&PID_0242
 %micro.bootloader.name%=DriverInstall, USB\VID_2341&PID_0237
 %micro.sketch.name%=DriverInstall, USB\VID_2341&PID_8237&MI_00
 %unoR3.name%=DriverInstall, USB\VID_2341&PID_0243
+%zero.sketch.name%=DriverInstall, USB\VID_2341&PID_824D&MI_00
+%zero.bootloader.name%=DriverInstall, USB\VID_2341&PID_024D
 
 [DeviceList.NTia64]
 %mega2560rev3.name%=DriverInstall, USB\VID_2341&PID_0242
 %micro.bootloader.name%=DriverInstall, USB\VID_2341&PID_0237
 %micro.sketch.name%=DriverInstall, USB\VID_2341&PID_8237&MI_00
 %unoR3.name%=DriverInstall, USB\VID_2341&PID_0243
+%zero.sketch.name%=DriverInstall, USB\VID_2341&PID_824D&MI_00
+%zero.bootloader.name%=DriverInstall, USB\VID_2341&PID_024D
 
 [DriverInstall]
 include=mdmcpq.inf,usb.inf

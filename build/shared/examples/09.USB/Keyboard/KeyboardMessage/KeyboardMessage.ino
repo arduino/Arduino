@@ -21,7 +21,6 @@
  */
 
 #include "Keyboard.h"
-#include "HID.h"
 
 const int buttonPin = 4;          // input pin for pushbutton
 int previousButtonState = HIGH;   // for checking the state of a pushButton

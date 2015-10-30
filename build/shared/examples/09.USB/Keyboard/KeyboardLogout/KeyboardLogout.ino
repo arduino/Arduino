@@ -30,7 +30,6 @@
 #define UBUNTU 2
 
 #include "Keyboard.h"
-#include "HID.h"
 
 // change this to match your platform:
 int platform = OSX;

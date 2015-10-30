@@ -28,7 +28,6 @@
  */
 
 #include "Keyboard.h"
-#include "HID.h"
 
 // use this option for OSX.
 // Comment it out if using Windows or Linux:

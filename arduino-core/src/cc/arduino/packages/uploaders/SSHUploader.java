@@ -29,6 +29,7 @@
 
 package cc.arduino.packages.uploaders;
 
+import cc.arduino.CompilerUtils;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.ssh.*;
@@ -117,7 +118,7 @@ public class SSHUploader extends Uploader {
       if (!coreMissesRemoteUploadTool && mergedSketch.exists()) {
         sketchToCopy = mergedSketch;
       } else {
-        sketchToCopy = processing.app.debug.Compiler.findCompiledSketch(prefs);
+        sketchToCopy = new CompilerUtils().findCompiledSketch(prefs);
       }
       scpFiles(scp, ssh, sourcePath, sketchToCopy, warningsAccumulator);
 

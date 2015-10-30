@@ -20,7 +20,6 @@
  */
 
 #include "Keyboard.h"
-#include "HID.h"
 
 void setup() {
   // open the serial port:

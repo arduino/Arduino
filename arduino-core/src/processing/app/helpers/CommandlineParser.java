@@ -161,7 +161,7 @@ public class CommandlineParser {
         if (!buildFolder.isDirectory()) {
           BaseNoGui.showError(null, "The build path is not a folder", 3);
         }
-        BaseNoGui.setBuildFolder(buildFolder);
+        PreferencesData.set("build.path", buildFolder.getAbsolutePath());
         continue;
       }
       if (args[i].equals("--pref")) {
@@ -249,6 +249,7 @@ public class CommandlineParser {
     }
 
     BaseNoGui.selectBoard(targetBoard);
+    BaseNoGui.onBoardOrPortChange();
 
     if (split.length > 3) {
       String[] options = split[3].split(",");
@@ -276,6 +277,7 @@ public class CommandlineParser {
       BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid argument to --pref, should be of the form \"pref=value\""), arg), 3);
 
     PreferencesData.set(split[0], split[1]);
+    PreferencesData.set("build_properties_custom." + split[0], split[1]);
   }
 
   public boolean isDoVerboseBuild() {

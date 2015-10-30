@@ -1,6 +1,8 @@
 package processing.app;
 
+import cc.arduino.Compiler;
 import cc.arduino.Constants;
+import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
@@ -10,10 +12,10 @@ import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.packages.Uploader;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
-import processing.app.debug.Compiler;
 import processing.app.debug.*;
 import processing.app.helpers.*;
 import processing.app.helpers.filefilters.OnlyDirs;
@@ -26,11 +28,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static processing.app.I18n.tr;
+import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
 public class BaseNoGui {
 
@@ -57,8 +61,6 @@ public class BaseNoGui {
     }
     VERSION_NAME_LONG = versionNameLong;
   }
-
-  static File buildFolder;
 
   private static DiscoveryManager discoveryManager = new DiscoveryManager();
   
@@ -110,28 +112,6 @@ public class BaseNoGui {
     return count;
   }
 
-  /**
-   * Get the path to the platform's temporary folder, by creating
-   * a temporary temporary file and getting its parent folder.
-   * <br/>
-   * Modified for revision 0094 to actually make the folder randomized
-   * to avoid conflicts in multi-user environments. (Bug 177)
-   */
-  static public File createTempFolder(String name) {
-    try {
-      File folder = File.createTempFile(name, null);
-      //String tempPath = ignored.getParent();
-      //return new File(tempPath);
-      folder.delete();
-      folder.mkdirs();
-      return folder;
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
   static public String getAvrBasePath() {
     String path = getHardwarePath() + File.separator + "tools" +
                   File.separator + "avr" + File.separator + "bin" + File.separator;
@@ -141,19 +121,14 @@ public class BaseNoGui {
     return path;
   }
 
-  static public File getBuildFolder() {
-    if (buildFolder == null) {
-      String buildPath = PreferencesData.get("build.path");
-      if (buildPath != null) {
-        buildFolder = absoluteFile(buildPath);
-        if (!buildFolder.exists())
-          buildFolder.mkdirs();
-      } else {
-        //File folder = new File(getTempFolder(), "build");
-        //if (!folder.exists()) folder.mkdirs();
-        buildFolder = createTempFolder("build");
-        DeleteFilesOnShutdown.add(buildFolder);
-      }
+  static public File getBuildFolder(SketchData data) throws IOException {
+    File buildFolder;
+    if (PreferencesData.get("build.path") != null) {
+      buildFolder = absoluteFile(PreferencesData.get("build.path"));
+      Files.createDirectories(buildFolder.toPath());
+    } else {
+      buildFolder = FileUtils.createTempFolder("build", DigestUtils.md5Hex(data.getMainFilePath()) + ".tmp");
+      DeleteFilesOnShutdown.add(buildFolder);
     }
     return buildFolder;
   }
@@ -494,7 +469,7 @@ public class BaseNoGui {
           //   File tempBuildFolder = getBuildFolder();
           //   data.load();
           SketchData data = new SketchData(absoluteFile(parser.getFilenames().get(0)));
-          File tempBuildFolder = getBuildFolder();
+          File tempBuildFolder = getBuildFolder(data);
           data.load();
 
           // Sketch.exportApplet()
@@ -504,16 +479,16 @@ public class BaseNoGui {
           if (!data.getFolder().exists()) {
             showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
           }
-          String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
+          String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
           if (suggestedClassName == null) {
             showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
           }
           showMessage(tr("Done compiling"), tr("Done compiling"));
 
-          Uploader uploader = Compiler.getUploaderByPreferences(parser.isNoUploadPort());
+          Uploader uploader = new UploaderUtils().getUploaderByPreferences(parser.isNoUploadPort());
           if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
           try {
-            success = Compiler.upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
+            success = new UploaderUtils().upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
             showMessage(tr("Done uploading"), tr("Done uploading"));
           } finally {
             if (uploader.requiresAuthorization() && !success) {
@@ -541,7 +516,7 @@ public class BaseNoGui {
             //   File tempBuildFolder = getBuildFolder();
             //   data.load();
             SketchData data = new SketchData(absoluteFile(path));
-            File tempBuildFolder = getBuildFolder();
+            File tempBuildFolder = getBuildFolder(data);
             data.load();
 
             // Sketch.prepare() calls Sketch.ensureExistence()
@@ -550,7 +525,7 @@ public class BaseNoGui {
             //    if (!data.getFolder().exists()) showError(...);
             //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
             if (!data.getFolder().exists()) showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-            String suggestedClassName = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, parser.isDoVerboseBuild(), false);
+            String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
             if (suggestedClassName == null) showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
             showMessage(tr("Done compiling"), tr("Done compiling"));
           } catch (Exception e) {
@@ -617,11 +592,7 @@ public class BaseNoGui {
 
     try {
       indexer.parseIndex();
-    } catch (JsonProcessingException e) {
-      FileUtils.deleteIfExists(indexFile);
-      FileUtils.deleteIfExists(indexSignatureFile);
-      throw e;
-    } catch (SignatureVerificationFailedException e) {
+    } catch (JsonProcessingException | SignatureVerificationFailedException e) {
       FileUtils.deleteIfExists(indexFile);
       FileUtils.deleteIfExists(indexSignatureFile);
       throw e;
@@ -636,8 +607,19 @@ public class BaseNoGui {
 
     librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), indexer);
     File librariesIndexFile = librariesIndexer.getIndexFile();
-    if (!librariesIndexFile.isFile()) {
-      File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
+    copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
+    try {
+      librariesIndexer.parseIndex();
+    } catch (JsonProcessingException e) {
+      FileUtils.deleteIfExists(librariesIndexFile);
+      copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
+      librariesIndexer.parseIndex();
+    }
+  }
+
+  private static void copyStockLibraryIndexIfUpstreamIsMissing(File librariesIndexFile) throws IOException {
+    File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
+    if (!librariesIndexFile.isFile() || (defaultLibraryJsonFile.isFile() && defaultLibraryJsonFile.lastModified() > librariesIndexFile.lastModified())) {
       if (defaultLibraryJsonFile.isFile()) {
         FileUtils.copyFile(defaultLibraryJsonFile, librariesIndexFile);
       } else {
@@ -652,12 +634,6 @@ public class BaseNoGui {
           IOUtils.closeQuietly(out);
         }
       }
-    }
-    try {
-      librariesIndexer.parseIndex();
-    } catch (JsonProcessingException e) {
-      FileUtils.deleteIfExists(librariesIndexFile);
-      throw e;
     }
   }
 
@@ -700,12 +676,16 @@ public class BaseNoGui {
   }
 
   static protected void loadHardware(File folder) {
-    if (!folder.isDirectory()) return;
+    if (!folder.isDirectory()) {
+      return;
+    }
 
     String list[] = folder.list(new OnlyDirs());
 
     // if a bad folder or something like that, this might come back null
-    if (list == null) return;
+    if (list == null) {
+      return;
+    }
 
     // alphabetize list, since it's not always alpha order
     // replaced hella slow bubble sort with this feller for 0093
@@ -713,16 +693,48 @@ public class BaseNoGui {
 
     for (String target : list) {
       // Skip reserved 'tools' folder.
-      if (target.equals("tools"))
+      if (target.equals("tools")) {
         continue;
+      }
       File subfolder = new File(folder, target);
-      
+
+      TargetPackage targetPackage;
+      if (packages.containsKey(target)) {
+        targetPackage = packages.get(target);
+      } else {
+        targetPackage = new LegacyTargetPackage(target);
+        packages.put(target, targetPackage);
+      }
       try {
-        packages.put(target, new LegacyTargetPackage(target, subfolder));
+        loadTargetPackage(targetPackage, subfolder);
       } catch (TargetPlatformException e) {
         System.out.println("WARNING: Error loading hardware folder " + new File(folder, target));
         System.out.println("  " + e.getMessage());
       }
+    }
+  }
+
+  private static void loadTargetPackage(TargetPackage targetPackage, File _folder) throws TargetPlatformException {
+    File[] folders = _folder.listFiles(ONLY_DIRS);
+    if (folders == null) {
+      return;
+    }
+
+    for (File subFolder : folders) {
+      if (!subFolder.exists() || !subFolder.canRead()) {
+        continue;
+      }
+      String arch = subFolder.getName();
+      try {
+        TargetPlatform platform = new LegacyTargetPlatform(arch, subFolder, targetPackage);
+        targetPackage.getPlatforms().put(arch, platform);
+      } catch (TargetPlatformException e) {
+        System.err.println(e.getMessage());
+      }
+    }
+
+    if (targetPackage.getPlatforms().size() == 0) {
+      throw new TargetPlatformException(I18n.format(tr("No valid hardware definitions found in folder {0}."), _folder.getName()));
     }
   }
 
@@ -1106,10 +1118,6 @@ public class BaseNoGui {
       portFile = portFile.substring(5);
     }
     PreferencesData.set("serial.port.file", portFile);
-  }
-
-  public static void setBuildFolder(File newBuildFolder) {
-    buildFolder = newBuildFolder;
   }
 
   static public void showError(String title, String message, int exit_code) {

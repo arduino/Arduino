@@ -26,7 +26,7 @@ void setup() {
 
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   float f = 123.456f;  //Variable to store in EEPROM.

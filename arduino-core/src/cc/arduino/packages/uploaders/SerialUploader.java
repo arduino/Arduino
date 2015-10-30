@@ -1,5 +1,3 @@
-/* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
   BasicUploader - generic command line uploader implementation
   Part of the Arduino project - http://www.arduino.cc/

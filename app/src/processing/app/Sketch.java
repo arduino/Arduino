@@ -23,11 +23,15 @@
 
 package processing.app;
 
+import cc.arduino.Compiler;
+import cc.arduino.CompilerProgressListener;
+import cc.arduino.UploaderUtils;
+import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.Uploader;
-import processing.app.debug.Compiler;
-import processing.app.debug.Compiler.ProgressListener;
+import org.apache.commons.codec.digest.DigestUtils;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.FileUtils;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.packages.LibraryList;
@@ -37,10 +41,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static processing.app.I18n.tr;
 
@@ -49,8 +57,6 @@ import static processing.app.I18n.tr;
  * Stores information about files in the current sketch
  */
 public class Sketch {
-  static private File tempBuildFolder;
-
   private final Editor editor;
 
   /** true if any of the files have been modified. */
@@ -60,7 +66,7 @@ public class Sketch {
   private int currentIndex;
 
   private final SketchData data;
-  
+
   /**
    * path is location of the main .pde file, because this is also
    * simplest to use when opening the file from the finder/explorer.
@@ -68,26 +74,6 @@ public class Sketch {
   public Sketch(Editor _editor, File file) throws IOException {
     editor = _editor;
     data = new SketchData(file);
-
-    // lib/build must exist when the application is started
-    // it is added to the CLASSPATH by default, but if it doesn't
-    // exist when the application is started, then java will remove
-    // the entry from the CLASSPATH, causing Runner to fail.
-    //
-    /*
-    tempBuildFolder = new File(TEMP_BUILD_PATH);
-    if (!tempBuildFolder.exists()) {
-      tempBuildFolder.mkdirs();
-      Base.showError("Required folder missing",
-                        "A required folder was missing from \n" +
-                        "from your installation of Processing.\n" +
-                        "It has now been replaced, please restart    \n" +
-                        "the application to complete the repair.", null);
-    }
-    */
-    tempBuildFolder = BaseNoGui.getBuildFolder();
-    //Base.addBuildFolderToClassPath();
-
     load();
   }
 
@@ -431,7 +417,7 @@ public class Sketch {
   /**
    * Remove a piece of code from the sketch and from the disk.
    */
-  public void handleDeleteCode() {
+  public void handleDeleteCode() throws IOException {
     editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
@@ -477,7 +463,7 @@ public class Sketch {
 
       } else {
         // delete the file
-        if (!current.getCode().deleteFile(tempBuildFolder)) {
+        if (!current.getCode().deleteFile(BaseNoGui.getBuildFolder(data))) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getCode().getFileName()));
           return;
@@ -539,6 +525,7 @@ public class Sketch {
       // http://developer.apple.com/qa/qa2001/qa1146.html
       Object modifiedParam = modified ? Boolean.TRUE : Boolean.FALSE;
       editor.getRootPane().putClientProperty("windowModified", modifiedParam);
+      editor.getRootPane().putClientProperty("Window.documentModified", modifiedParam);
     }
   }
 
@@ -665,14 +652,13 @@ public class Sketch {
     // make sure there doesn't exist a .cpp file with that name already
     // but ignore this situation for the first tab, since it's probably being
     // resaved (with the same name) to another location/folder.
-    for (SketchCode code : data.getCodes()) {
-      if (newName.equalsIgnoreCase(code.getPrettyName()) && code.isExtension("cpp")) {
+    for (int i = 1; i < data.getCodeCount(); i++) {
+      SketchCode code = data.getCode(i);
+      if (newName.equalsIgnoreCase(code.getPrettyName())) {
         Base.showMessage(tr("Error"),
-                I18n.format(
-                        tr("You can't save the sketch as \"{0}\"\n" +
-                                "because the sketch already has a .cpp file with that name."),
-                        newName
-                ));
+          I18n.format(tr("You can't save the sketch as \"{0}\"\n" +
+            "because the sketch already has a file with that name."), newName
+          ));
         return false;
       }
     }
@@ -1093,8 +1079,8 @@ public class Sketch {
    * @return null if compilation failed, main class name if not
    * @throws RunnerException
    */
-  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
-    return build(tempBuildFolder.getAbsolutePath(), verbose, save);
+  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
+    return build(BaseNoGui.getBuildFolder(data).getAbsolutePath(), verbose, save);
   }
 
   /**
@@ -1106,19 +1092,36 @@ public class Sketch {
    *
    * @return null if compilation failed, main class name if not
    */
-  private String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException {
+  private String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
     // run the preprocessor
     editor.status.progressUpdate(20);
 
     ensureExistence();
-    
-    ProgressListener pl = editor.status::progressUpdate;
-    
-    return Compiler.build(data, buildPath, tempBuildFolder, pl, verbose, save);
+
+    CompilerProgressListener progressListener = editor.status::progressUpdate;
+
+    String pathToSketch = data.getMainFilePath();
+    if (isModified()) {
+      pathToSketch = saveSketchInTempFolder();
+    }
+
+    return new Compiler(pathToSketch, data, buildPath).build(progressListener, save);
+  }
+
+  private String saveSketchInTempFolder() throws IOException {
+    File tempFolder = FileUtils.createTempFolder("arduino_", DigestUtils.md5Hex(data.getMainFilePath()));
+    DeleteFilesOnShutdown.add(tempFolder);
+    FileUtils.copy(getFolder(), tempFolder);
+
+    for (SketchCode sc : Stream.of(data.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {
+      Files.write(Paths.get(tempFolder.getAbsolutePath(), sc.getFileName()), sc.getProgram().getBytes());
+    }
+
+    return Paths.get(tempFolder.getAbsolutePath(), data.getPrimaryFile().getName()).toString();
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
-    return exportApplet(tempBuildFolder.getAbsolutePath(), usingProgrammer);
+    return exportApplet(BaseNoGui.getBuildFolder(data).getAbsolutePath(), usingProgrammer);
   }
 
 
@@ -1153,7 +1156,7 @@ public class Sketch {
 
   private boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
 
-    Uploader uploader = Compiler.getUploaderByPreferences(false);
+    Uploader uploader = new UploaderUtils().getUploaderByPreferences(false);
 
     boolean success = false;
     do {
@@ -1172,7 +1175,7 @@ public class Sketch {
 
       List<String> warningsAccumulator = new LinkedList<>();
       try {
-        success = Compiler.upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
+        success = new UploaderUtils().upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
           PreferencesData.remove(uploader.getAuthorizationKey());

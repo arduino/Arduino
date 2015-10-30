@@ -1,5 +1,3 @@
-/* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
   Uploader - abstract uploading baseclass (common to both uisp and avrdude)
   Part of the Arduino project - http://www.arduino.cc/

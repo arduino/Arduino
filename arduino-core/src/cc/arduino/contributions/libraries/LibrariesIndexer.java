@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions.libraries;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.libraries.filters.LibraryInstalledInsideCore;
 import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -92,7 +93,7 @@ public class LibrariesIndexer {
 
       index.getLibraries()
         .stream()
-        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()))
+        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()) || !Constants.LIBRARY_CATEGORIES.contains(library.getCategory()))
         .forEach(library -> library.setCategory("Uncategorized"));
     } finally {
       IOUtils.closeQuietly(indexIn);
@@ -108,6 +109,11 @@ public class LibrariesIndexer {
     // Clear all installed flags
     installedLibraries.clear();
     installedLibrariesWithDuplicates.clear();
+
+    if (index.getLibraries() == null) {
+      return;
+    }
+
     for (ContributedLibrary lib : index.getLibraries()) {
       lib.setInstalled(false);
     }
@@ -215,7 +221,7 @@ public class LibrariesIndexer {
   }
 
   public LibraryList getInstalledLibraries() {
-    return installedLibraries;
+    return new LibraryList(installedLibraries);
   }
 
   // Same as getInstalledLibraries(), but allow duplicates between
@@ -235,8 +241,6 @@ public class LibrariesIndexer {
    * Set the sketchbook library folder. <br />
    * New libraries will be installed here. <br />
    * Libraries not found on this folder will be marked as read-only.
-   *
-   * @param folder
    */
   public void setSketchbookLibrariesFolder(File folder) {
     this.sketchbookLibrariesFolder = folder;

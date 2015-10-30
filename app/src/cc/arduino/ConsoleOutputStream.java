@@ -116,9 +116,9 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
     if (document != null) {
       SwingUtilities.invokeLater(() -> {
         try {
-          String lineWithoutSlashR = line.replace("\r\n", "\n").replace("\r", "\n");
+          String lineWithoutCR = line.replace("\r\n", "\n").replace("\r", "\n");
           int offset = document.getLength();
-          document.insertString(offset, lineWithoutSlashR, attributes);
+          document.insertString(offset, lineWithoutCR, attributes);
         } catch (BadLocationException ble) {
           //ignore
         }

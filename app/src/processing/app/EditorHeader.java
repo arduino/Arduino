@@ -28,6 +28,7 @@ import static processing.app.I18n.tr;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -317,8 +318,12 @@ public class EditorHeader extends JComponent {
 
     item = new JMenuItem(tr("Delete"));
     item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.getSketch().handleDeleteCode();
+        public void actionPerformed(ActionEvent event) {
+          try {
+            editor.getSketch().handleDeleteCode();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       });
     menu.add(item);

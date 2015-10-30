@@ -4,8 +4,9 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="_(&quot;Find&quot;)" type="code"/>
+      <Connection code="tr(&quot;Find&quot;)" type="code"/>
     </Property>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -84,7 +85,7 @@
     <Component class="javax.swing.JLabel" name="findLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Find:&quot;)" type="code"/>
+          <Connection code="tr(&quot;Find:&quot;)" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -100,7 +101,7 @@
     <Component class="javax.swing.JLabel" name="replaceLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Replace with:&quot;)" type="code"/>
+          <Connection code="tr(&quot;Replace with:&quot;)" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -117,7 +118,7 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Ignore Case&quot;)" type="code"/>
+          <Connection code="tr(&quot;Ignore Case&quot;)" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -125,14 +126,14 @@
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Wrap Around&quot;)" type="code"/>
+          <Connection code="tr(&quot;Wrap Around&quot;)" type="code"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="searchAllFilesBox">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Search all Sketch Tabs&quot;)" type="code"/>
+          <Connection code="tr(&quot;Search all Sketch Tabs&quot;)" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -143,7 +144,7 @@
         <Component class="javax.swing.JButton" name="findButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Find&quot;)" type="code"/>
+              <Connection code="tr(&quot;Find&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -153,7 +154,7 @@
         <Component class="javax.swing.JButton" name="previousButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Previous&quot;)" type="code"/>
+              <Connection code="tr(&quot;Previous&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -163,7 +164,7 @@
         <Component class="javax.swing.JButton" name="replaceFindButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Replace &amp; Find&quot;)" type="code"/>
+              <Connection code="tr(&quot;Replace &amp; Find&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -173,7 +174,7 @@
         <Component class="javax.swing.JButton" name="replaceButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Replace&quot;)" type="code"/>
+              <Connection code="tr(&quot;Replace&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -183,7 +184,7 @@
         <Component class="javax.swing.JButton" name="replaceAllButton">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Replace All&quot;)" type="code"/>
+              <Connection code="tr(&quot;Replace All&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>

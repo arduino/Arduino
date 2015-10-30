@@ -74,11 +74,16 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   private EditorListener editorListener;
 
-  private final PdeKeywords pdeKeywords;
+  private PdeKeywords pdeKeywords;
 
   public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
     this.pdeKeywords = pdeKeywords;
     installFeatures();
+  }
+
+  public void setKeywords(PdeKeywords keywords) {
+    pdeKeywords = keywords;
+    setLinkGenerator(new DocLinkGenerator(pdeKeywords));
   }
 
   private void installFeatures() throws IOException {
@@ -101,6 +106,7 @@ public class SketchTextArea extends RSyntaxTextArea {
       IOUtils.closeQuietly(defaultXmlInputStream);
     }
 
+    setEOLMarkersVisible(processing.app.Theme.getBoolean("editor.eolmarkers"));
     setBackground(processing.app.Theme.getColor("editor.bgcolor"));
     setHighlightCurrentLine(processing.app.Theme.getBoolean("editor.linehighlight"));
     setCurrentLineHighlightColor(processing.app.Theme.getColor("editor.linehighlight.color"));
@@ -127,9 +133,14 @@ public class SketchTextArea extends RSyntaxTextArea {
     setSyntaxTheme(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE, "literal_string_double_quote");
     setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");
 
-    Style style = getSyntaxScheme().getStyle(TokenTypes.IDENTIFIER);
-    style.foreground = processing.app.Theme.getColor("editor.fgcolor");
-    getSyntaxScheme().setStyle(TokenTypes.IDENTIFIER, style);
+    setColorForToken(TokenTypes.IDENTIFIER, "editor.fgcolor");
+    setColorForToken(TokenTypes.WHITESPACE, "editor.eolmarkers.color");
+  }
+
+  private void setColorForToken(int tokenType, String colorKeyFromTheme) {
+    Style style = getSyntaxScheme().getStyle(tokenType);
+    style.foreground = processing.app.Theme.getColor(colorKeyFromTheme);
+    getSyntaxScheme().setStyle(tokenType, style);
   }
 
   private void setSyntaxTheme(int tokenType, String id) {

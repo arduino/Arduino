@@ -42,6 +42,8 @@
 //            GND  4|    |5  PB0 (D 0) pwm0
 //                  +----+
 
+#define LED_BUILTIN 1
+
 static const uint8_t A0 = 6;
 static const uint8_t A1 = 7;
 static const uint8_t A2 = 8;
@@ -51,6 +53,8 @@ static const uint8_t A3 = 9;
 #define digitalPinToPCICRbit(p) ( PCIE )
 #define digitalPinToPCMSK(p)    ( ((p) <= 4) ? (&PCMSK) : ((uint8_t *)0) )
 #define digitalPinToPCMSKbit(p) ( (p) )
+
+#define digitalPinToInterrupt(p)  ((p) == 2 ? 0 : NOT_AN_INTERRUPT)
 
 #define analogPinToChannel(p)   ( (p) < 6 ? (p) : (p) - 6 )
 

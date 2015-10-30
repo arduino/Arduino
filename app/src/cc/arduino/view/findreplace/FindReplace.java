@@ -138,6 +138,7 @@ public class FindReplace extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle(tr("Find"));
+    setResizable(false);
 
     findLabel.setText(tr("Find:"));
 

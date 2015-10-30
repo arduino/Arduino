@@ -73,7 +73,7 @@ public class MyStreamPumper implements Runnable {
     try {
       String line;
       while ((line = reader.readLine()) != null) {
-        messageConsumer.message(line + "\n");
+        messageConsumer.message(line);
       }
     } catch (Exception e) {
       // nothing to do - happens quite often with watchdog

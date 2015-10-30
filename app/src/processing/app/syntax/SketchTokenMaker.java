@@ -30,7 +30,11 @@
 
 package processing.app.syntax;
 
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import org.fife.ui.rsyntaxtextarea.modes.CPlusPlusTokenMaker;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Controls the syntax highlighting of {@link SketchTextArea} based on the {@link PdeKeywords}
@@ -41,6 +45,8 @@ import org.fife.ui.rsyntaxtextarea.modes.CPlusPlusTokenMaker;
  */
 public class SketchTokenMaker extends CPlusPlusTokenMaker {
 
+  private static final List<Integer> COMMENT_TOKEN_TYPES = Arrays.asList(TokenTypes.COMMENT_DOCUMENTATION, TokenTypes.COMMENT_EOL, TokenTypes.COMMENT_KEYWORD, TokenTypes.COMMENT_MARKUP, TokenTypes.COMMENT_MULTILINE);
+
   private final PdeKeywords pdeKeywords;
 
   public SketchTokenMaker(PdeKeywords pdeKeywords) {
@@ -50,6 +56,11 @@ public class SketchTokenMaker extends CPlusPlusTokenMaker {
   @Override
   public void addToken(char[] array, int start, int end, int tokenType, int startOffset, boolean hyperlink) {
     if (start > end) {
+      super.addToken(array, start, end, tokenType, startOffset, hyperlink);
+      return;
+    }
+
+    if (COMMENT_TOKEN_TYPES.contains(tokenType)) {
       super.addToken(array, start, end, tokenType, startOffset, hyperlink);
       return;
     }

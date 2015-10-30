@@ -78,12 +78,8 @@ import static processing.app.I18n.tr;
  */
 public class Base {
 
-  public static final Predicate<UserLibrary> CONTRIBUTED = new Predicate<UserLibrary>() {
-    @Override
-    public boolean test(UserLibrary library) {
-      return library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
-    }
-  };
+  public static final Predicate<UserLibrary> CONTRIBUTED = library -> library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
+  public static final Predicate<UserLibrary> RETIRED = library -> library.getTypes() != null && library.getTypes().contains("Retired");
 
   private static final int RECENT_SKETCHES_MAX_SIZE = 5;
 
@@ -121,7 +117,7 @@ public class Base {
   private List<JMenu> boardsCustomMenus;
   private List<JMenuItem> programmerMenus;
 
-  private final PdeKeywords pdeKeywords;
+  private PdeKeywords pdeKeywords;
   private final List<JMenuItem> recentSketchesMenuItems;
 
   static public void main(String args[]) throws Exception {
@@ -217,7 +213,7 @@ public class Base {
     }
 
     // Create a location for untitled sketches
-    untitledFolder = BaseNoGui.createTempFolder("untitled");
+    untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(untitledFolder);
 
     INSTANCE = new Base(args);
@@ -459,15 +455,15 @@ public class Base {
         handleNew();
       }
 
+      new Thread(new BuiltInCoreIsNewerCheck(this)).start();
+
       // Check for updates
       if (PreferencesData.getBoolean("update.check")) {
         new UpdateCheck(this);
+
+        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller);
+        new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
       }
-
-      new Thread(new BuiltInCoreIsNewerCheck(this)).start();
-
-      contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller);
-      new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
 
     } else if (parser.isNoOpMode()) {
       // Do nothing (intended for only changing preferences)
@@ -752,7 +748,7 @@ public class Base {
     try {
       File file = createNewUntitled();
       if (file != null) {
-        Editor editor = handleOpen(file, true);
+        handleOpen(file, true);
       }
 
     } catch (IOException e) {
@@ -1116,7 +1112,18 @@ public class Base {
 
   public LibraryList getIDELibs() {
     LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = installedLibraries.stream().filter(CONTRIBUTED.negate()).collect(Collectors.toList());
+    List<UserLibrary> libs = installedLibraries.stream()
+      .filter(CONTRIBUTED.negate())
+      .filter(RETIRED.negate())
+      .collect(Collectors.toList());
+    return new LibraryList(libs);
+  }
+
+  public LibraryList getIDERetiredLibs() {
+    LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    List<UserLibrary> libs = installedLibraries.stream()
+      .filter(RETIRED)
+      .collect(Collectors.toList());
     return new LibraryList(libs);
   }
 
@@ -1200,26 +1207,67 @@ public class Base {
     menu.removeAll();
 
     // Add examples from distribution "example" folder
+    JMenuItem label = new JMenuItem(tr("Built-in Examples"));
+    label.setEnabled(false);
+    menu.add(label);
     boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
-    if (found) menu.addSeparator();
+    if (found) {
+      menu.addSeparator();
+    }
 
     // Add examples from libraries
     LibraryList ideLibs = getIDELibs();
     ideLibs.sort();
-    for (UserLibrary lib : ideLibs)
+    if (!ideLibs.isEmpty()) {
+      label = new JMenuItem(tr("Examples from Libraries"));
+      label.setEnabled(false);
+      menu.add(label);
+    }
+    for (UserLibrary lib : ideLibs) {
       addSketchesSubmenu(menu, lib);
+    }
+
+    LibraryList retiredIdeLibs = getIDERetiredLibs();
+    retiredIdeLibs.sort();
+    if (!retiredIdeLibs.isEmpty()) {
+      JMenu retired = new JMenu(tr("RETIRED"));
+      menu.add(retired);
+      for (UserLibrary lib : retiredIdeLibs) {
+        addSketchesSubmenu(retired, lib);
+      }
+    }
 
     LibraryList userLibs = getUserLibs();
     if (userLibs.size() > 0) {
       menu.addSeparator();
       userLibs.sort();
-      for (UserLibrary lib : userLibs)
+      label = new JMenuItem(tr("Examples from Custom Libraries"));
+      label.setEnabled(false);
+      menu.add(label);
+      for (UserLibrary lib : userLibs) {
         addSketchesSubmenu(menu, lib);
+      }
     }
   }
 
+  private static String priorPlatformFolder;
+
   public void onBoardOrPortChange() {
     BaseNoGui.onBoardOrPortChange();
+
+    // reload keywords when package/platform changes
+    TargetPlatform tp = BaseNoGui.getTargetPlatform();
+    if (tp != null) {
+      String platformFolder = tp.getFolder().getAbsolutePath();
+      if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder)) {
+        pdeKeywords = new PdeKeywords();
+        pdeKeywords.reload();
+        priorPlatformFolder = platformFolder;
+        for (Editor editor : editors) {
+          editor.updateKeywords(pdeKeywords);
+        }
+      }
+    }
 
     // Update editors status bar
     for (Editor editor : editors) {

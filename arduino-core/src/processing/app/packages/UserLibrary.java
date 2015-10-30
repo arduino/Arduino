@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,15 +57,6 @@ public class UserLibrary extends ContributedLibrary {
   private List<String> types;
   private List<String> declaredTypes;
   private boolean onGoingDevelopment;
-
-  private static final List<String> MANDATORY_PROPERTIES = Arrays
-    .asList("name", "version", "author", "maintainer",
-      "sentence", "paragraph", "url");
-
-  private static final List<String> CATEGORIES = Arrays.asList(
-    "Display", "Communication", "Signal Input/Output", "Sensors",
-    "Device Control", "Timing", "Data Storage", "Data Processing", "Other",
-    "Uncategorized");
 
   public static UserLibrary create(File libFolder) throws IOException {
     // Parse metadata
@@ -90,7 +80,7 @@ public class UserLibrary extends ContributedLibrary {
       throw new IOException("'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information");
 
     // Check mandatory properties
-    for (String p : MANDATORY_PROPERTIES)
+    for (String p : Constants.LIBRARY_MANDATORY_PROPERTIES)
       if (!properties.containsKey(p))
         throw new IOException("Missing '" + p + "' from library");
 
@@ -135,7 +125,7 @@ public class UserLibrary extends ContributedLibrary {
     String category = properties.get("category");
     if (category == null)
       category = "Uncategorized";
-    if (!CATEGORIES.contains(category)) {
+    if (!Constants.LIBRARY_CATEGORIES.contains(category)) {
       System.out.println("WARNING: Category '" + category + "' in library " + properties.get("name") + " is not valid. Setting to 'Uncategorized'");
       category = "Uncategorized";
     }
@@ -220,10 +210,6 @@ public class UserLibrary extends ContributedLibrary {
   @Override
   public String getLicense() {
     return license;
-  }
-
-  public static List<String> getCategories() {
-    return CATEGORIES;
   }
 
   @Override
