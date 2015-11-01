@@ -34,11 +34,14 @@ import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
 import java.awt.*;
-import java.io.*;
-import java.lang.reflect.Method;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -98,45 +101,13 @@ public class Platform extends processing.app.Platform {
 
 
   public void openURL(String url) throws Exception {
-    if (PApplet.javaVersion < 1.6f) {
-      if (url.startsWith("http")) {
-        // formerly com.apple.eio.FileManager.openURL(url);
-        // but due to deprecation, instead loading dynamically
-        try {
-          Class<?> eieio = Class.forName("com.apple.eio.FileManager");
-          Method openMethod =
-            eieio.getMethod("openURL", new Class[] { String.class });
-          openMethod.invoke(null, new Object[] { url });
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      } else {
-      // Assume this is a file instead, and just open it.
-      // Extension of http://dev.processing.org/bugs/show_bug.cgi?id=1010
-      PApplet.open(url);
-      }
+    Desktop desktop = Desktop.getDesktop();
+    if (url.startsWith("http") || url.startsWith("file:")) {
+      desktop.browse(new URI(url));
     } else {
-      try {
-        Class<?> desktopClass = Class.forName("java.awt.Desktop");
-        Method getMethod = desktopClass.getMethod("getDesktop");
-        Object desktop = getMethod.invoke(null, new Object[] { });
-
-        // for Java 1.6, replacing with java.awt.Desktop.browse() 
-        // and java.awt.Desktop.open()
-        if (url.startsWith("http")) {  // browse to a location
-          Method browseMethod =
-            desktopClass.getMethod("browse", new Class[] { URI.class });
-          browseMethod.invoke(desktop, new Object[] { new URI(url) });
-        } else {  // open a file
-          Method openMethod =
-            desktopClass.getMethod("open", new Class[] { File.class });
-          openMethod.invoke(desktop, new Object[] { new File(url) });
-          }
-      } catch (Exception e) {
-        e.printStackTrace();
-        }
-      }
+      desktop.open(new File(url));
     }
+  }
 
 
   public boolean openFolderAvailable() {
@@ -156,13 +127,13 @@ public class Platform extends processing.app.Platform {
   // Some of these are supposedly constants in com.apple.eio.FileManager,
   // however they don't seem to link properly from Eclipse.
 
-  static final int kDocumentsFolderType =
+  private static final int kDocumentsFolderType =
     ('d' << 24) | ('o' << 16) | ('c' << 8) | 's';
   //static final int kPreferencesFolderType =
   //  ('p' << 24) | ('r' << 16) | ('e' << 8) | 'f';
-  static final int kDomainLibraryFolderType =
+  private static final int kDomainLibraryFolderType =
     ('d' << 24) | ('l' << 16) | ('i' << 8) | 'b';
-  static final short kUserDomain = -32763;
+  private static final short kUserDomain = -32763;
 
 
   // apple java extensions documentation
@@ -179,12 +150,12 @@ public class Platform extends processing.app.Platform {
   //   /Versions/Current/Frameworks/CarbonCore.framework/Headers/
 
 
-  protected String getLibraryFolder() throws FileNotFoundException {
+  private String getLibraryFolder() throws FileNotFoundException {
     return FileManager.findFolder(kUserDomain, kDomainLibraryFolderType);
   }
 
 
-  protected String getDocumentsFolder() throws FileNotFoundException {
+  private String getDocumentsFolder() throws FileNotFoundException {
     return FileManager.findFolder(kUserDomain, kDocumentsFolderType);
   }
 
@@ -197,7 +168,7 @@ public class Platform extends processing.app.Platform {
   public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
     assert packages != null;
     if (devicesListOutput == null) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
+      return super.resolveDeviceAttachedTo(serial, packages, null);
     }
 
     try {

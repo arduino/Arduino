@@ -25,10 +25,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 @SuppressWarnings("serial")
-public class SerialMonitor extends AbstractMonitor {
+public class SerialMonitor extends AbstractTextMonitor {
 
   private Serial serial;
   private int serialRate;
@@ -37,7 +37,7 @@ public class SerialMonitor extends AbstractMonitor {
     super(port);
 
     serialRate = PreferencesData.getInteger("serial.debug_rate");
-    serialRates.setSelectedItem(serialRate + " " + _("baud"));
+    serialRates.setSelectedItem(serialRate + " " + tr("baud"));
     onSerialRateChange(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
         String wholeString = (String) serialRates.getSelectedItem();

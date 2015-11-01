@@ -67,13 +67,6 @@ void LiquidCrystal::init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t en
   _data_pins[6] = d6;
   _data_pins[7] = d7; 
 
-  pinMode(_rs_pin, OUTPUT);
-  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
-  if (_rw_pin != 255) { 
-    pinMode(_rw_pin, OUTPUT);
-  }
-  pinMode(_enable_pin, OUTPUT);
-  
   if (fourbitmode)
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
   else 
@@ -94,6 +87,19 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   if ((dotsize != LCD_5x8DOTS) && (lines == 1)) {
     _displayfunction |= LCD_5x10DOTS;
   }
+
+  pinMode(_rs_pin, OUTPUT);
+  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
+  if (_rw_pin != 255) { 
+    pinMode(_rw_pin, OUTPUT);
+  }
+  pinMode(_enable_pin, OUTPUT);
+  
+  // Do these once, instead of every time a character is drawn for speed reasons.
+  for (int i=0; i<((_displayfunction & LCD_8BITMODE) ? 8 : 4); ++i)
+  {
+    pinMode(_data_pins[i], OUTPUT);
+   } 
 
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
@@ -158,12 +164,6 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 
 }
 
-/*
-   in some 16x4 LCD when line 3 and 4 are not placed correctly you may try:
-     setRowOffsets(0x00, 0x40, 0x14, 0x54)
-   or
-     setRowOffsets(0x00, 0x40, 0x10, 0x50)
- */
 void LiquidCrystal::setRowOffsets(int row0, int row1, int row2, int row3)
 {
   _row_offsets[0] = row0;
@@ -311,7 +311,6 @@ void LiquidCrystal::pulseEnable(void) {
 
 void LiquidCrystal::write4bits(uint8_t value) {
   for (int i = 0; i < 4; i++) {
-    pinMode(_data_pins[i], OUTPUT);
     digitalWrite(_data_pins[i], (value >> i) & 0x01);
   }
 
@@ -320,7 +319,6 @@ void LiquidCrystal::write4bits(uint8_t value) {
 
 void LiquidCrystal::write8bits(uint8_t value) {
   for (int i = 0; i < 8; i++) {
-    pinMode(_data_pins[i], OUTPUT);
     digitalWrite(_data_pins[i], (value >> i) & 0x01);
   }
   

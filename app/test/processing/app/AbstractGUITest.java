@@ -36,8 +36,10 @@ import org.fest.swing.edt.GuiQuery;
 import org.junit.After;
 import org.junit.Before;
 import processing.app.helpers.ArduinoFrameFixture;
+import processing.app.helpers.FileUtils;
 
 import javax.swing.*;
+import java.util.Random;
 
 public abstract class AbstractGUITest {
 
@@ -56,7 +58,7 @@ public abstract class AbstractGUITest {
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     Theme.init();
     BaseNoGui.getPlatform().setLookAndFeel();
-    Base.untitledFolder = BaseNoGui.createTempFolder("untitled");
+    Base.untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(Base.untitledFolder);
 
     window = GuiActionRunner.execute(new GuiQuery<ArduinoFrameFixture>() {

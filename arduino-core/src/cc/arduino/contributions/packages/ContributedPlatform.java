@@ -26,6 +26,7 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
@@ -53,19 +54,18 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract ContributedHelp getHelp();
 
-  private List<ContributedTool> resolvedTools = null;
-
+  private List<ContributedTool> resolvedTools;
   private ContributedPackage parentPackage;
 
   public List<ContributedTool> getResolvedTools() {
     if (resolvedTools == null) {
       return null;
     }
-    return new LinkedList<ContributedTool>(resolvedTools);
+    return new LinkedList<>(resolvedTools);
   }
 
   public void resolveToolsDependencies(Collection<ContributedPackage> packages) {
-    resolvedTools = new ArrayList<ContributedTool>();
+    resolvedTools = new ArrayList<>();
 
     // If there are no dependencies return empty list
     if (getToolsDependencies() == null) {
@@ -78,8 +78,9 @@ public abstract class ContributedPlatform extends DownloadableContribution {
       ContributedTool tool = dep.resolve(packages);
       if (tool == null) {
         System.err.println("Index error: could not find referenced tool " + dep);
+      } else {
+        resolvedTools.add(tool);
       }
-      resolvedTools.add(tool);
     }
   }
 

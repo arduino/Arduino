@@ -36,7 +36,7 @@ void setup() {
 void loop() {
   // step one step:
   myStepper.step(1);
-  Serial.print("steps:" );
+  Serial.print("steps:");
   Serial.println(stepCount);
   stepCount++;
   delay(500);

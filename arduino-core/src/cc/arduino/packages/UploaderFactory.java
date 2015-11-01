@@ -40,7 +40,7 @@ public class UploaderFactory {
       return new SerialUploader(true);
     }
 
-    if ("true".equals(board.getPreferences().get("upload.via_ssh")) && port != null && "network".equals(port.getProtocol())) {
+    if (port != null && "network".equals(port.getProtocol())) {
       return new SSHUploader(port);
     }
 

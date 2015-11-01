@@ -13,7 +13,8 @@ hardware/arduino/bootloaders/caterina_LUFA/Caterina.lss
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.elf
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.eep
 hardware/arduino/bootloaders/caterina_LUFA/.dep/
-build/libastylej-*.zip
+build/*.zip
+build/*.tar.bz2
 build/windows/work/
 build/windows/*.zip
 build/windows/*.tgz
@@ -33,8 +34,9 @@ build/macosx/libastylej*
 build/macosx/appbundler*.jar
 build/macosx/appbundler*.zip
 build/macosx/appbundler
-build/macosx/appbundler-1.0ea-arduino2
-build/macosx/appbundler-1.0ea-upstream1
+build/macosx/appbundler-1.0ea-arduino?
+build/macosx/appbundler-1.0ea-arduino*.zip
+build/macosx/appbundler-1.0ea-upstream*.zip
 build/linux/work/
 build/linux/dist/*.tar.gz
 build/linux/dist/*.tar.bz2

@@ -26,9 +26,8 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
-package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.VersionComparator;
+package cc.arduino.contributions.packages;
 
 import java.util.List;
 
@@ -47,6 +46,8 @@ public abstract class ContributedPackage {
   public abstract List<ContributedTool> getTools();
 
   public abstract ContributedHelp getHelp();
+
+  private boolean trusted;
 
   public ContributedPlatform findPlatform(String architecture, String version) {
     if (architecture == null || version == null) {
@@ -67,6 +68,14 @@ public abstract class ContributedPackage {
     return null;
   }
 
+  public boolean isTrusted() {
+    return trusted;
+  }
+
+  public void setTrusted(boolean trusted) {
+    this.trusted = trusted;
+  }
+
   @Override
   public String toString() {
     String res;
@@ -80,16 +89,16 @@ public abstract class ContributedPackage {
         }
         res += "\n                    category     : " + plat.getCategory();
         res += "\n                    architecture : " +
-            plat.getArchitecture() + " " + plat.getParsedVersion() + "\n";
+          plat.getArchitecture() + " " + plat.getParsedVersion() + "\n";
         if (plat.getToolsDependencies() != null)
           for (ContributedToolReference t : plat.getToolsDependencies()) {
             res += "                    tool dep     : " + t.getName() + " " +
-                t.getVersion() + "\n";
+              t.getVersion() + "\n";
           }
         if (plat.getBoards() != null)
           for (ContributedBoard board : plat.getBoards())
             res += "                    board        : " + board.getName() +
-                "\n";
+              "\n";
       }
     }
     if (getTools() != null) {

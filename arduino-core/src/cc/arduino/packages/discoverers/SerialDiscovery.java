@@ -37,15 +37,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 
-import static processing.app.I18n._;
-
 public class SerialDiscovery implements Discovery {
 
   private Timer serialBoardsListerTimer;
   private final List<BoardPort> serialBoardPorts;
 
   public SerialDiscovery() {
-    this.serialBoardPorts = new LinkedList<BoardPort>();
+    this.serialBoardPorts = new LinkedList<>();
   }
 
   @Override
@@ -53,9 +51,9 @@ public class SerialDiscovery implements Discovery {
     return getSerialBoardPorts();
   }
 
-  public List<BoardPort> getSerialBoardPorts() {
+  private List<BoardPort> getSerialBoardPorts() {
     synchronized (serialBoardPorts) {
-      return new LinkedList<BoardPort>(serialBoardPorts);
+      return new LinkedList<>(serialBoardPorts);
     }
   }
 

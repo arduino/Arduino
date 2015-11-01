@@ -55,64 +55,46 @@ void DNSClient::begin(const IPAddress& aDNSServer)
 }
 
 
-int DNSClient::inet_aton(const char* aIPAddrString, IPAddress& aResult)
+int DNSClient::inet_aton(const char* address, IPAddress& result)
 {
-    // See if we've been given a valid IP address
-    const char* p =aIPAddrString;
-    while (*p &&
-           ( (*p == '.') || (*p >= '0') || (*p <= '9') ))
-    {
-        p++;
-    }
+    // TODO: add support for "a", "a.b", "a.b.c" formats
 
-    if (*p == '\0')
+    uint16_t acc = 0; // Accumulator
+    uint8_t dots = 0;
+
+    while (*address)
     {
-        // It's looking promising, we haven't found any invalid characters
-        p = aIPAddrString;
-        int segment =0;
-        int segmentValue =0;
-        while (*p && (segment < 4))
+        char c = *address++;
+        if (c >= '0' && c <= '9')
         {
-            if (*p == '.')
-            {
-                // We've reached the end of a segment
-                if (segmentValue > 255)
-                {
-                    // You can't have IP address segments that don't fit in a byte
-                    return 0;
-                }
-                else
-                {
-                    aResult[segment] = (byte)segmentValue;
-                    segment++;
-                    segmentValue = 0;
-                }
+            acc = acc * 10 + (c - '0');
+            if (acc > 255) {
+                // Value out of [0..255] range
+                return 0;
             }
-            else
-            {
-                // Next digit
-                segmentValue = (segmentValue*10)+(*p - '0');
-            }
-            p++;
         }
-        // We've reached the end of address, but there'll still be the last
-        // segment to deal with
-        if ((segmentValue > 255) || (segment > 3))
+        else if (c == '.')
         {
-            // You can't have IP address segments that don't fit in a byte,
-            // or more than four segments
-            return 0;
+            if (dots == 3) {
+                // Too much dots (there must be 3 dots)
+                return 0;
+            }
+            result[dots++] = acc;
+            acc = 0;
         }
         else
         {
-            aResult[segment] = (byte)segmentValue;
-            return 1;
+            // Invalid char
+            return 0;
         }
     }
-    else
-    {
+
+    if (dots != 3) {
+        // Too few dots (there must be 3 dots)
         return 0;
     }
+    result[3] = acc;
+    return 1;
 }
 
 int DNSClient::getHostByName(const char* aHostname, IPAddress& aResult)

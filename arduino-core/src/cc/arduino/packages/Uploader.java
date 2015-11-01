@@ -1,5 +1,3 @@
-/* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
   Uploader - abstract uploading baseclass (common to both uisp and avrdude)
   Part of the Arduino project - http://www.arduino.cc/
@@ -37,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public abstract class Uploader implements MessageConsumer {
 
@@ -145,19 +143,19 @@ public abstract class Uploader implements MessageConsumer {
       return;
     }
     if (notFoundError) {
-      error = I18n.format(_("the selected serial port {0} does not exist or your board is not connected"), s);
+      error = I18n.format(tr("the selected serial port {0} does not exist or your board is not connected"), s);
       return;
     }
     if (s.contains("Device is not responding")) {
-      error = _("Device is not responding, check the right serial port is selected or RESET the board right before exporting");
+      error = tr("Device is not responding, check the right serial port is selected or RESET the board right before exporting");
       return;
     }
     if (StringUtils.stringContainsOneOf(s, AVRDUDE_PROBLEMS)) {
-      error = _("Problem uploading to board.  See http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions.");
+      error = tr("Problem uploading to board.  See http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions.");
       return;
     }
     if (s.contains("Expected signature")) {
-      error = _("Wrong microcontroller found.  Did you select the right board from the Tools > Board menu?");
+      error = tr("Wrong microcontroller found.  Did you select the right board from the Tools > Board menu?");
       return;
     }
   }

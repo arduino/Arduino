@@ -18,6 +18,8 @@
 #ifndef __USBCORE_H__
 #define __USBCORE_H__
 
+#include "USBAPI.h"
+
 //	Standard requests
 #define GET_STATUS			0
 #define CLEAR_FEATURE		1
@@ -47,24 +49,19 @@
 #define REQUEST_OTHER			0x03
 #define REQUEST_RECIPIENT		0x03
 
-#define REQUEST_DEVICETOHOST_CLASS_INTERFACE  (REQUEST_DEVICETOHOST + REQUEST_CLASS + REQUEST_INTERFACE)
-#define REQUEST_HOSTTODEVICE_CLASS_INTERFACE  (REQUEST_HOSTTODEVICE + REQUEST_CLASS + REQUEST_INTERFACE)
+#define REQUEST_DEVICETOHOST_CLASS_INTERFACE    (REQUEST_DEVICETOHOST | REQUEST_CLASS | REQUEST_INTERFACE)
+#define REQUEST_HOSTTODEVICE_CLASS_INTERFACE    (REQUEST_HOSTTODEVICE | REQUEST_CLASS | REQUEST_INTERFACE)
+#define REQUEST_DEVICETOHOST_STANDARD_INTERFACE (REQUEST_DEVICETOHOST | REQUEST_STANDARD | REQUEST_INTERFACE)
 
 //	Class requests
 
 #define CDC_SET_LINE_CODING			0x20
 #define CDC_GET_LINE_CODING			0x21
 #define CDC_SET_CONTROL_LINE_STATE	0x22
+#define CDC_SEND_BREAK				0x23
 
 #define MSC_RESET					0xFF
 #define MSC_GET_MAX_LUN				0xFE
-
-#define HID_GET_REPORT				0x01
-#define HID_GET_IDLE				0x02
-#define HID_GET_PROTOCOL			0x03
-#define HID_SET_REPORT				0x09
-#define HID_SET_IDLE				0x0A
-#define HID_SET_PROTOCOL			0x0B
 
 //	Descriptors
 
@@ -78,6 +75,15 @@
 #define USB_STRING_DESCRIPTOR_TYPE             3
 #define USB_INTERFACE_DESCRIPTOR_TYPE          4
 #define USB_ENDPOINT_DESCRIPTOR_TYPE           5
+
+// usb_20.pdf Table 9.6 Standard Feature Selectors
+#define DEVICE_REMOTE_WAKEUP                   1
+#define ENDPOINT_HALT                          2
+#define TEST_MODE                              3
+
+// usb_20.pdf Figure 9-4. Information Returned by a GetStatus() Request to a Device
+#define FEATURE_SELFPOWERED_ENABLED     (1 << 0)
+#define FEATURE_REMOTE_WAKEUP_ENABLED   (1 << 1)
 
 #define USB_DEVICE_CLASS_COMMUNICATIONS        0x02
 #define USB_DEVICE_CLASS_HUMAN_INTERFACE       0x03
@@ -94,8 +100,8 @@
 
 // bEndpointAddress in Endpoint Descriptor
 #define USB_ENDPOINT_DIRECTION_MASK            0x80
-#define USB_ENDPOINT_OUT(addr)                 ((addr) | 0x00)
-#define USB_ENDPOINT_IN(addr)                  ((addr) | 0x80)
+#define USB_ENDPOINT_OUT(addr)                 (lowByte((addr) | 0x00))
+#define USB_ENDPOINT_IN(addr)                  (lowByte((addr) | 0x80))
 
 #define USB_ENDPOINT_TYPE_MASK                 0x03
 #define USB_ENDPOINT_TYPE_CONTROL              0x00
@@ -119,11 +125,6 @@
 
 #define MSC_SUBCLASS_SCSI						0x06 
 #define MSC_PROTOCOL_BULK_ONLY					0x50 
-
-#define HID_HID_DESCRIPTOR_TYPE					0x21
-#define HID_REPORT_DESCRIPTOR_TYPE				0x22
-#define HID_PHYSICAL_DESCRIPTOR_TYPE			0x23
-
 
 //	Device
 typedef struct {
@@ -257,32 +258,12 @@ typedef struct
 	EndpointDescriptor			out;
 } MSCDescriptor;
 
-typedef struct
-{
-	u8 len;			// 9
-	u8 dtype;		// 0x21
-	u8 addr;
-	u8	versionL;	// 0x101
-	u8	versionH;	// 0x101
-	u8	country;
-	u8	desctype;	// 0x22 report
-	u8	descLenL;
-	u8	descLenH;
-} HIDDescDescriptor;
-
-typedef struct 
-{
-	InterfaceDescriptor			hid;
-	HIDDescDescriptor			desc;
-	EndpointDescriptor			in;
-} HIDDescriptor;
-
 
 #define D_DEVICE(_class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs) \
 	{ 18, 1, 0x200, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
 
 #define D_CONFIG(_totalLength,_interfaces) \
-	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_BUS_POWERED, USB_CONFIG_POWER_MA(500) }
+	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_BUS_POWERED | USB_CONFIG_REMOTE_WAKEUP, USB_CONFIG_POWER_MA(500) }
 
 #define D_INTERFACE(_n,_numEndpoints,_class,_subClass,_protocol) \
 	{ 9, 4, _n, 0, _numEndpoints, _class,_subClass, _protocol, 0 }
@@ -292,9 +273,6 @@ typedef struct
 
 #define D_IAD(_firstInterface, _count, _class, _subClass, _protocol) \
 	{ 8, 11, _firstInterface, _count, _class, _subClass, _protocol, 0 }
-
-#define D_HIDREPORT(_descriptorLength) \
-	{ 9, 0x21, 0x1, 0x1, 0, 1, 0x22, _descriptorLength, 0 }
 
 #define D_CDCCS(_subtype,_d0,_d1)	{ 5, 0x24, _subtype, _d0, _d1 }
 #define D_CDCCS4(_subtype,_d0)		{ 4, 0x24, _subtype, _d0 }

@@ -30,7 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
 
 public class LegacyTargetPlatform implements TargetPlatform {
@@ -65,13 +65,28 @@ public class LegacyTargetPlatform implements TargetPlatform {
     File boardsFile = new File(folder, "boards.txt");
     if (!boardsFile.exists() || !boardsFile.canRead())
       throw new TargetPlatformException(
-          format(_("Could not find boards.txt in {0}. Is it pre-1.5?"),
+          format(tr("Could not find boards.txt in {0}. Is it pre-1.5?"),
                  folder.getAbsolutePath()));
 
     // Load boards
     try {
-      Map<String, PreferencesMap> boardsPreferences = new PreferencesMap(
-          boardsFile).firstLevelMap();
+      PreferencesMap bPrefs = new PreferencesMap(
+          boardsFile);
+
+      // Allow overriding values in boards.txt. This allows changing
+      // boards.txt (e.g. to add user-specific items to a menu), without
+      // having to modify boards.txt (which, when running from git,
+      // prevents files being marked as changed).
+      File localboardsFile = new File(folder, "boards.local.txt");
+      try {
+        if (localboardsFile.exists() && localboardsFile.canRead()) {
+          bPrefs.load(localboardsFile);
+        }
+      } catch (IOException e) {
+        throw new TargetPlatformException(
+            format(tr("Error loading {0}"), localboardsFile.getAbsolutePath()), e);
+      }
+      Map<String, PreferencesMap> boardsPreferences = bPrefs.firstLevelMap();
 
       // Create custom menus for this platform
       PreferencesMap menus = boardsPreferences.get("menu");
@@ -91,7 +106,7 @@ public class LegacyTargetPlatform implements TargetPlatform {
           defaultBoard = board;
       }
     } catch (IOException e) {
-      throw new TargetPlatformException(format(_("Error loading {0}"),
+      throw new TargetPlatformException(format(tr("Error loading {0}"),
                                                boardsFile.getAbsolutePath()), e);
     }
 
@@ -102,7 +117,7 @@ public class LegacyTargetPlatform implements TargetPlatform {
       }
     } catch (IOException e) {
       throw new TargetPlatformException(
-          format(_("Error loading {0}"), platformsFile.getAbsolutePath()), e);
+          format(tr("Error loading {0}"), platformsFile.getAbsolutePath()), e);
     }
 
     // Allow overriding values in platform.txt. This allows changing
@@ -116,7 +131,7 @@ public class LegacyTargetPlatform implements TargetPlatform {
       }
     } catch (IOException e) {
       throw new TargetPlatformException(
-          format(_("Error loading {0}"), localPlatformsFile.getAbsolutePath()), e);
+          format(tr("Error loading {0}"), localPlatformsFile.getAbsolutePath()), e);
     }
 
     if (!preferences.containsKey("rewriting") || !"disabled".equals(preferences.get("rewriting"))) {
@@ -135,7 +150,7 @@ public class LegacyTargetPlatform implements TargetPlatform {
         programmers = prefs.firstLevelMap();
       }
     } catch (IOException e) {
-      throw new TargetPlatformException(format(_("Error loading {0}"),
+      throw new TargetPlatformException(format(tr("Error loading {0}"),
                                                progFile.getAbsolutePath()), e);
     }
   }
@@ -155,7 +170,7 @@ public class LegacyTargetPlatform implements TargetPlatform {
     for (Map.Entry<String, String> entry : oldProps.entrySet()) {
       String preferencesKey = entry.getKey().substring(entry.getKey().indexOf(".") + 1);
       if (preferences.containsKey(preferencesKey) && entry.getValue().equals(preferences.get(preferencesKey))) {
-        System.err.println(I18n.format(_("Warning: platform.txt from core '{0}' contains deprecated {1}, automatically converted to {2}. Consider upgrading this core."), platformName, preferencesKey + "=" + entry.getValue(), preferencesKey + "=" + newProps.get(entry.getKey())));
+        System.err.println(I18n.format(tr("Warning: platform.txt from core '{0}' contains deprecated {1}, automatically converted to {2}. Consider upgrading this core."), platformName, preferencesKey + "=" + entry.getValue(), preferencesKey + "=" + newProps.get(entry.getKey())));
         preferences.put(preferencesKey, newProps.get(entry.getKey()));
       }
     }
@@ -167,7 +182,7 @@ public class LegacyTargetPlatform implements TargetPlatform {
       String keyToAddFirstLevel = keyToAddParts[0];
       String keyToAddSecondLevel = keyToAddParts[0] + "." + keyToAddParts[1];
       if (!preferences.subTree(keyToAddFirstLevel).isEmpty() && !preferences.subTree(keyToAddSecondLevel).isEmpty() && !preferences.containsKey(keyToAdd)) {
-        System.err.println(I18n.format(_("Warning: platform.txt from core '{0}' misses property {1}, automatically set to {2}. Consider upgrading this core."), platformName, keyToAdd, entry.getValue()));
+        System.err.println(I18n.format(tr("Warning: platform.txt from core '{0}' misses property {1}, automatically set to {2}. Consider upgrading this core."), platformName, keyToAdd, entry.getValue()));
         preferences.put(keyToAdd, entry.getValue());
       }
     }

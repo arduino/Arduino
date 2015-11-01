@@ -18,8 +18,6 @@
   Public License along with this library; if not, write to the
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
-
-  $Id$
 */
 
 #include "wiring_private.h"
@@ -305,8 +303,6 @@ void init()
 	// put timer 1 in 8-bit phase correct pwm mode
 #if defined(TCCR1A) && defined(WGM10)
 	sbi(TCCR1A, WGM10);
-#elif defined(TCCR1)
-	#warning this needs to be finished
 #endif
 
 	// set timer 2 prescale factor to 64
@@ -314,8 +310,8 @@ void init()
 	sbi(TCCR2, CS22);
 #elif defined(TCCR2B) && defined(CS22)
 	sbi(TCCR2B, CS22);
-#else
-	#warning Timer 2 not finished (may not be present on this CPU)
+//#else
+	// Timer 2 not finished (may not be present on this CPU)
 #endif
 
 	// configure timer 2 for phase correct pwm (8-bit)
@@ -323,8 +319,8 @@ void init()
 	sbi(TCCR2, WGM20);
 #elif defined(TCCR2A) && defined(WGM20)
 	sbi(TCCR2A, WGM20);
-#else
-	#warning Timer 2 not finished (may not be present on this CPU)
+//#else
+	// Timer 2 not finished (may not be present on this CPU)
 #endif
 
 #if defined(TCCR3B) && defined(CS31) && defined(WGM30)

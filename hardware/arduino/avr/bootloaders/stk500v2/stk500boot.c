@@ -2,7 +2,6 @@
 Title:     STK500v2 compatible bootloader
            Modified for Wiring board ATMega128-16MHz
 Author:    Peter Fleury <pfleury@gmx.ch>   http://jump.to/fleury
-File:      $Id: stk500boot.c,v 1.11 2006/06/25 12:39:17 peter Exp $
 Compiler:  avr-gcc 3.4.5 or 4.1 / avr-libc 1.4.3
 Hardware:  All AVRs with bootloader support, tested with ATmega8
 License:   GNU General Public License

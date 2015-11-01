@@ -54,6 +54,6 @@ public class HittingEscapeOnCloseConfirmationDialogTest extends AbstractGUITest 
 
     EditorConsole console = (EditorConsole) window.scrollPane("console").component();
 
-    assertEquals("", console.consoleDoc.getText(0, console.consoleDoc.getLength()));
+    assertEquals("", console.getText());
   }
 }

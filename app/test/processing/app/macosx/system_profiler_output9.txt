@@ -1,0 +1,117 @@
+USB:
+
+    USB 2.0 Bus:
+
+      Host Controller Driver: AppleUSBEHCIPCI
+      PCI Device ID: 0x1c2d 
+      PCI Revision ID: 0x0005 
+      PCI Vendor ID: 0x8086 
+
+        Hub:
+
+          Product ID: 0x2513
+          Vendor ID: 0x0424  (SMSC)
+          Version: b.b3
+          Speed: Up to 480 Mb/sec
+          Location ID: 0xfa100000 / 1
+          Current Available (mA): 1000
+          Current Required (mA): 2
+          Extra Operating Current (mA): 0
+          Built-In: Yes
+
+            Arduino Leonardo:
+
+              Product ID: 0x8036
+              Vendor ID: 0x2341
+              Version: 1.00
+              Speed: Up to 12 Mb/sec
+              Manufacturer: Arduino LLC
+              Location ID: 0xfa120000 / 3
+              Current Available (mA): 1000
+              Current Required (mA): 500
+              Extra Operating Current (mA): 0
+
+            BRCM20702 Hub:
+
+              Product ID: 0x4500
+              Vendor ID: 0x0a5c  (Broadcom Corp.)
+              Version: 1.00
+              Speed: Up to 12 Mb/sec
+              Manufacturer: Apple Inc.
+              Location ID: 0xfa110000 / 4
+              Current Available (mA): 1000
+              Current Required (mA): 94
+              Extra Operating Current (mA): 0
+              Built-In: Yes
+
+                Bluetooth USB Host Controller:
+
+                  Product ID: 0x8281
+                  Vendor ID: 0x05ac  (Apple Inc.)
+                  Version: 1.51
+                  Speed: Up to 12 Mb/sec
+                  Manufacturer: Apple Inc.
+                  Location ID: 0xfa113000 / 2
+                  Current Available (mA): 1000
+                  Current Required (mA): 0
+                  Extra Operating Current (mA): 0
+                  Built-In: Yes
+
+    USB 2.0 Bus:
+
+      Host Controller Driver: AppleUSBEHCIPCI
+      PCI Device ID: 0x1c26 
+      PCI Revision ID: 0x0005 
+      PCI Vendor ID: 0x8086 
+
+        Hub:
+
+          Product ID: 0x2513
+          Vendor ID: 0x0424  (SMSC)
+          Version: b.b3
+          Speed: Up to 480 Mb/sec
+          Location ID: 0xfd100000 / 1
+          Current Available (mA): 1000
+          Current Required (mA): 2
+          Extra Operating Current (mA): 0
+          Built-In: Yes
+
+            USB Keyboard:
+
+              Product ID: 0x2000
+              Vendor ID: 0x040b  (Weltrend Semiconductor)
+              Version: 2.05
+              Speed: Up to 1.5 Mb/sec
+              Manufacturer: Generic
+              Location ID: 0xfd130000 / 4
+              Current Available (mA): 1000
+              Current Required (mA): 100
+              Extra Operating Current (mA): 0
+
+            USB OPTICAL MOUSE:
+
+              Product ID: 0x2510
+              Vendor ID: 0x093a  (Pixart Imaging, Inc.)
+              Version: 1.00
+              Speed: Up to 1.5 Mb/sec
+              Manufacturer: PIXART
+              Location ID: 0xfd120000 / 3
+              Current Available (mA): 1000
+              Current Required (mA): 100
+              Extra Operating Current (mA): 0
+
+            IR Receiver:
+
+              Product ID: 0x8242
+              Vendor ID: 0x05ac  (Apple Inc.)
+              Version: 0.16
+              Speed: Up to 1.5 Mb/sec
+              Manufacturer: Apple Computer, Inc.
+              Location ID: 0xfd110000 / 2
+              Current Available (mA): 1000
+              Current Required (mA): 100
+              Extra Operating Current (mA): 0
+              Built-In: Yes
+
+
+

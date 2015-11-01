@@ -1,5 +1,3 @@
-/* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
   BasicUploader - generic command line uploader implementation
   Part of the Arduino project - http://www.arduino.cc/
@@ -26,23 +24,20 @@
 
 package cc.arduino.packages.uploaders;
 
-import static processing.app.I18n._;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import processing.app.BaseNoGui;
-import processing.app.I18n;
-import processing.app.PreferencesData;
-import processing.app.Serial;
-import processing.app.SerialException;
+import cc.arduino.packages.Uploader;
+import processing.app.*;
+import cc.arduino.LoadVIDPIDSpecificPreferences;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.StringReplacer;
-import cc.arduino.packages.Uploader;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static processing.app.I18n.tr;
 
 public class SerialUploader extends Uploader {
 
@@ -110,17 +105,18 @@ public class SerialUploader extends Uploader {
     t = prefs.get("upload.wait_for_upload_port");
     boolean waitForUploadPort = (t != null) && t.equals("true");
 
-    String uploadPort = prefs.getOrExcept("serial.port");
+    String userSelectedUploadPort = prefs.getOrExcept("serial.port");
+    String actualUploadPort = null;
 
     if (doTouch) {
       try {
         // Toggle 1200 bps on selected serial port to force board reset.
         List<String> before = Serial.list();
-        if (before.contains(uploadPort)) {
+        if (before.contains(userSelectedUploadPort)) {
           if (verbose)
             System.out.println(
-              I18n.format(_("Forcing reset using 1200bps open/close on port {0}"), uploadPort));
-          Serial.touchForCDCReset(uploadPort);
+              I18n.format(tr("Forcing reset using 1200bps open/close on port {0}"), userSelectedUploadPort));
+          Serial.touchForCDCReset(userSelectedUploadPort);
         }
         Thread.sleep(400);
         if (waitForUploadPort) {
@@ -128,18 +124,21 @@ public class SerialUploader extends Uploader {
           // otherwise assert DTR, which would cancel the WDT reset if
           // it happened within 250 ms. So we wait until the reset should
           // have already occured before we start scanning.
-          uploadPort = waitForUploadPort(uploadPort, before);
+          actualUploadPort = waitForUploadPort(userSelectedUploadPort, before);
         }
       } catch (SerialException e) {
         throw new RunnerException(e);
       } catch (InterruptedException e) {
         throw new RunnerException(e.getMessage());
       }
-      prefs.put("serial.port", uploadPort);
-      if (uploadPort.startsWith("/dev/")) {
-        prefs.put("serial.port.file", uploadPort.substring(5));
+      if (actualUploadPort == null) {
+        actualUploadPort = userSelectedUploadPort;
+      }
+      prefs.put("serial.port", actualUploadPort);
+      if (actualUploadPort.startsWith("/dev/")) {
+        prefs.put("serial.port.file", actualUploadPort.substring(5));
       } else {
-        prefs.put("serial.port.file", uploadPort);
+        prefs.put("serial.port.file", actualUploadPort);
       }
     }
 
@@ -162,9 +161,9 @@ public class SerialUploader extends Uploader {
       throw new RunnerException(e);
     }
 
+    String finalUploadPort = null;
     if (uploadResult && doTouch) {
       try {
-        String previousUploadPort = PreferencesData.get("serial.port");
         if (waitForUploadPort) {
           // For Due/Leonardo wait until the bootloader serial port disconnects and the
           // sketch serial port reconnects (or timeout after a few seconds if the
@@ -174,7 +173,11 @@ public class SerialUploader extends Uploader {
           long started = System.currentTimeMillis();
           while (System.currentTimeMillis() - started < 2000) {
             List<String> portList = Serial.list();
-            if (portList.contains(previousUploadPort)) {
+            if (portList.contains(actualUploadPort)) {
+              finalUploadPort = actualUploadPort;
+              break;
+            } else if (portList.contains(userSelectedUploadPort)) {
+              finalUploadPort = userSelectedUploadPort;
               break;
             }
             Thread.sleep(250);
@@ -185,7 +188,13 @@ public class SerialUploader extends Uploader {
       }
     }
 
-    BaseNoGui.selectSerialPort(uploadPort);
+    if (finalUploadPort == null) {
+      finalUploadPort = actualUploadPort;
+    }
+    if (finalUploadPort == null) {
+      finalUploadPort = userSelectedUploadPort;
+    }
+    BaseNoGui.selectSerialPort(finalUploadPort);
     return uploadResult;
   }
 
@@ -194,7 +203,7 @@ public class SerialUploader extends Uploader {
     int elapsed = 0;
     while (elapsed < 10000) {
       List<String> now = Serial.list();
-      List<String> diff = new ArrayList<String>(now);
+      List<String> diff = new ArrayList<>(now);
       diff.removeAll(before);
       if (verbose) {
         System.out.print("PORTS {");
@@ -232,10 +241,10 @@ public class SerialUploader extends Uploader {
     }
 
     // Something happened while detecting port
-    throw new RunnerException(_("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."));
+    throw new RunnerException(tr("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."), false);
   }
 
-  public boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
+  private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
 
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     String programmer = PreferencesData.get("programmer");
@@ -253,7 +262,7 @@ public class SerialUploader extends Uploader {
     PreferencesMap programmerPrefs = targetPlatform.getProgrammer(programmer);
     if (programmerPrefs == null)
       throw new RunnerException(
-          _("Please select a programmer from Tools->Programmer menu"));
+          tr("Please select a programmer from Tools->Programmer menu"));
     prefs.putAll(targetPlatform.getTool(programmerPrefs.getOrExcept("program.tool")));
     prefs.putAll(programmerPrefs);
 
@@ -298,7 +307,7 @@ public class SerialUploader extends Uploader {
     }
     if (programmerPrefs == null)
       throw new RunnerException(
-          _("Please select a programmer from Tools->Programmer menu"));
+          tr("Please select a programmer from Tools->Programmer menu"));
 
     // Build configuration for the current programmer
     PreferencesMap prefs = PreferencesData.getMap();
@@ -317,11 +326,11 @@ public class SerialUploader extends Uploader {
       tool = split[1];
       toolPrefs.putAll(platform.getTool(tool));
       if (toolPrefs.size() == 0)
-        throw new RunnerException(I18n.format(_("Could not find tool {0} from package {1}"), tool, split[0]));
+        throw new RunnerException(I18n.format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
     }
     toolPrefs.putAll(targetPlatform.getTool(tool));
     if (toolPrefs.size() == 0)
-      throw new RunnerException(I18n.format(_("Could not find tool {0}"), tool));
+      throw new RunnerException(I18n.format(tr("Could not find tool {0}"), tool));
 
     // Merge tool with global configuration
     prefs.putAll(toolPrefs);
@@ -332,6 +341,8 @@ public class SerialUploader extends Uploader {
       prefs.put("erase.verbose", prefs.getOrExcept("erase.params.quiet"));
       prefs.put("bootloader.verbose", prefs.getOrExcept("bootloader.params.quiet"));
     }
+
+    new LoadVIDPIDSpecificPreferences().load(prefs);
 
     String pattern = prefs.getOrExcept("erase.pattern");
     String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);

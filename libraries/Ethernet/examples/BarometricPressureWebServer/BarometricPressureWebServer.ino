@@ -26,15 +26,13 @@
 #include <SPI.h>
 
 
-// assign a MAC address for the ethernet controller.
+// assign a MAC address for the Ethernet controller.
 // fill in your address here:
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 // assign an IP address for the controller:
 IPAddress ip(192, 168, 1, 20);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
 
 
 // Initialize the Ethernet server library
@@ -156,8 +154,7 @@ void listenForEthernetClients() {
         if (c == '\n') {
           // you're starting a new line
           currentLineIsBlank = true;
-        }
-        else if (c != '\r') {
+        } else if (c != '\r') {
           // you've gotten a character on the current line
           currentLineIsBlank = false;
         }
@@ -219,5 +216,5 @@ unsigned int readRegister(byte registerName, int numBytes) {
   // take the chip select high to de-select:
   digitalWrite(chipSelectPin, HIGH);
   // return the result:
-  return(result);
+  return (result);
 }

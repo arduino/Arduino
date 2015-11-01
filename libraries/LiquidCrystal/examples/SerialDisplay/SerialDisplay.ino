@@ -48,8 +48,7 @@ void setup() {
   Serial.begin(9600);
 }
 
-void loop()
-{
+void loop() {
   // when characters arrive over the serial port...
   if (Serial.available()) {
     // wait a bit for the entire message to arrive

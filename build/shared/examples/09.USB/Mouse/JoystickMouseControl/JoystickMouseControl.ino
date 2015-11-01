@@ -28,6 +28,8 @@
 
  */
 
+#include "Mouse.h"
+
 // set pin numbers for switch, joystick axes, and LED:
 const int switchPin = 2;      // switch to turn on and off mouse control
 const int mouseButton = 3;    // input pin for the mouse pushButton

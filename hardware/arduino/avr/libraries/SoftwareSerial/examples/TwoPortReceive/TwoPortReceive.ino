@@ -42,12 +42,11 @@ SoftwareSerial portOne(10, 11);
 // on the Mega, use other pins instead, since 8 and 9 don't work on the Mega
 SoftwareSerial portTwo(8, 9);
 
-void setup()
-{
+void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
 
@@ -56,8 +55,7 @@ void setup()
   portTwo.begin(9600);
 }
 
-void loop()
-{
+void loop() {
   // By default, the last intialized port is listening.
   // when you want to listen on a port, explicitly select it:
   portOne.listen();

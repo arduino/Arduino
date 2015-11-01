@@ -441,6 +441,10 @@ public class MenuScroller {
       firstIndex = Math.max(topFixedCount, firstIndex);
       firstIndex = Math.min(menuItems.length - bottomFixedCount - scrollCount, firstIndex);
 
+      if (firstIndex < 0) {
+        return;
+      }
+
       upItem.setEnabled(firstIndex > topFixedCount);
       downItem.setEnabled(firstIndex + scrollCount < menuItems.length - bottomFixedCount);
 

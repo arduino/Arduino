@@ -61,7 +61,7 @@ public class SCP extends SSH {
     }
   }
 
-  public void close() throws IOException {
+  public void close() {
     IOUtils.closeQuietly(out);
     IOUtils.closeQuietly(in);
     if (channel != null) {
@@ -69,7 +69,7 @@ public class SCP extends SSH {
     }
   }
 
-  protected void ensureAcknowledged() throws IOException {
+  private void ensureAcknowledged() throws IOException {
     out.flush();
 
     int b = in.read();

@@ -21,11 +21,13 @@
  by Tom Igoe
  modified 3 May 2014
  by Scott Fitzgerald
- 
+
  This example is in the public domain
 
  http://www.arduino.cc/en/Tutorial/KeyboardReprogram
  */
+
+#include "Keyboard.h"
 
 // use this option for OSX.
 // Comment it out if using Windows or Linux:
@@ -58,7 +60,7 @@ void loop() {
   // wait for new window to open:
   delay(1000);
 
-  // versions of the Arduino IDE after 1.5 pre-populate  
+  // versions of the Arduino IDE after 1.5 pre-populate
   // new sketches with setup() and loop() functions
   // let's clear the window before typing anything new
   //  select all

@@ -19,8 +19,6 @@
   Public License along with this library; if not, write to the
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
-
-  $Id: pins_arduino.h 1 2013-03-16 20:47:51Z cuartielles $
 */
 
 #ifndef Pins_Arduino_h

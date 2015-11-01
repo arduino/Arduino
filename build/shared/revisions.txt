@@ -1,4 +1,82 @@
-ARDUINO 1.6.5
+ARDUINO 1.6.6
+
+[ide]
+* Switched to Java 8, which is now both bundled and needed for compiling the IDE
+* Added link to unofficial boards support list in preferences
+* Limit of possible new sketches in a day raised to 676. Thanks @Chris--A
+* Windows: fixed a bug when running username had non ASCII chars
+* Lots of fixes
+* ArduinoISP examples moved under 11.ArduinoISP folder
+* MacOSX: binary is now able to tell the IDE its current working directory. Eases life to those using the IDE from the CLI
+* CLI: if specified board doesn't exist, fail instead of using a default one
+* Windows: IDE stores its stuff under %LOCALAPPDATA% instead of %APPDATA% (which was a roaming folder). %APPDATA% content is automatically migrated to new location
+* Added 74880 baud rate to serial monitor. Thanks @Chris--A
+* When changing tab, file name is shown in window title
+* IDE groups compiled files into "libraries", "core" and "sketch" folders
+* Added Serial Plotter. Thanks @henningpohl
+* Editor: triple click selects whole line
+* Windows: IDE startup feels faster
+* Examples of libraries with a .development flag file in their root folder won't get marked as read-only. See #2619
+* Update notifications: when updates are available from either Library or Boards Managers, a popup will be shown
+* Introducing arduino-builder, a command line tool that properly calls gcc. Fixes lots of issues about buggy preprocessing.
+* Each open sketch gets built in its own folder, allowing the IDE to recycle previous compilations and being much faster
+* "Go to line": CTRL+L or Edit > Go to line... will open a dialog where you can type the line number where you want the editor to jump to
+* Added boards.local.txt support: like platform.local.txt, allows to enrich a boards.txt definition without modifying the original file. Thanks @Wackerbarth
+* Library to library dependencies: when your sketch imports a library, and that library uses another, the IDE will find out without you having to add a useless #include to your sketch
+* Allow per-platform keywords.txt. Thanks @PaulStoffregen
+* Allow spaces in IDE install path on Linux. Thanks @matthijskooijman
+* Fixed a lot of documentation. Thanks to @per1234 @q2dg
+* Fixed parsing for SystemProfiler when scanning for available serial ports on Macosx El Capitan
+
+[libraries]
+* Bridge: YunClient.connected() returns true if there are bytes available for read. Thanks @RobAtticus
+* Bridge: YunClient.stop() now empties all buffers. Thanks @RobAtticus
+* Ethernet: Added missing keywords. Thanks @per1234
+* Ethernet: Fixed DNSClient.inet_aton() function. Thanks @jhorck
+* Ethernet: Expose optional DHCP timout parameters to Ethernet:begin(). Thanks @chaveiro
+* Wire: Implemented Wire.end().
+* Wire: Fixed bug with repeated START for AVR. Thanks Nate Williams
+* Wire: Resolved timing issues on AVR. See #2173 #1477.
+* Wire: Fixed bug in repeated start in slave mode on SAM. See #3908
+* SD: Change "char *" to "const char *" on methods accepting a string as a parameter. Thanks @Ivan-Perez
+* Scheduler: Added support for cortex-M0. Thanks @PeterVH
+
+[core]
+* Added new PluggableUSB and HID support. This change introduces a more powerful API for
+  libraries that wants use advanced features of USB-Device.
+  Thanks to @obra @NicoHood @matthijskooijman @nospam2000 @weizenspreu
+* AVR: fixed wrong turnOffPWM() for TIMER0B. Thanks @gonzoveliki
+* AVR: added support for AtmegaXXu2. Thanks @NicoHood
+* AVR: a bunch of USB Core bug fix. Thanks @NicoHood
+* AVR: Expose serial setting from USB-CDC serial port. Thanks @matthijskooijman
+* ArduinoISP is now compatible with every architecture (not only AVR) and is much more stable. Thanks @PeterVH
+* Print not aborting on write() failure. Thanks @stickbreaker
+* AVR: Faster interrupts patch. Thanks @xxxajk
+* AVR: Fixed pulseInLong wrong measurements.
+* AVR: Removed a bunch of compiler warnings. Thanks @NicoHood
+* Improved variants files for Boards Gemma and Ethernet
+
+ARDUINO 1.6.5-r5 - 2015.08.28
+
+[ide]
+* Fixed a but preventing upload on boards that do not supply VID/PID. See #3738
+
+ARDUINO 1.6.5-r4 - 2015.08.27
+
+[ide]
+* Added support to Genuino boards
+
+ARDUINO 1.6.5-r3 - 2015.07.20
+
+[ide]
+* Fixed Mac signature for OSX >=10.10.4
+
+ARDUINO 1.6.5-r2 - 2015.06.17
+
+[ide]
+* Windows: fixed a problem that prevented opening the IDE when double clicking a .ino file
+
+ARDUINO 1.6.5 - 2015.06.15
 
 [ide]
 * File, Sketch and Tools menu items are properly handled when switching between different windows
@@ -15,11 +93,23 @@ ARDUINO 1.6.5
 * CLI: --get-pref can now be called without a pref name. If pref name is missing, IDE dumps all preferences
 * Holding SHIFT when hovering the save icon will trigger a "Save As"
 * Removed proxy settings from File > Preferences: IDE will use system settings
+* Linux versions bundle the latest JVM, 1.8.0_45
+* Local docs: if your sketch has a "docs" folder, you can add local links to it. For example file://./docs/index.html
+  will use your browser to open file index.html from the "docs" folder of your sketch
+* When using "external editor" mode, sketch code is updated when the IDE gets focused
+* Added keyboard shortcuts to IDE menus: ALT+F for File, ALT+E for Edit and so on
+* Added support for Dangerous Prototypes Bus Pirate as ISP
+* Added "Close" button to Boards/Libs Managers, in order to help linux people with weird Window Managers
+* Added File > Open Recent menu, showing the last 5 opened sketches
+* Windows: added Arduino Zero drivers
 * Tons of minor fixes
 
 [libraries]
 * LiquidCrystal fixes. Thanks @newbie15
 * Added SPI Transactions to TFT lib
+* Stepper: support for 5-phase/5-wires motors. Thanks @rdodesigns
+* Stepper: increased precision in timing calculations. Thanks @ekozlenko
+* Firmata and Temboo: dropped our vesions, tagged released are downloaded from their respective git repos
 
 [core]
 * AVR: delayMicroseconds(..) doesn't hang if called with 0. Thanks @cano64

@@ -19,8 +19,6 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: pins_arduino.c 565 2009-03-25 10:50:00Z dmellis $
-
   Modified 28-08-2009 for attiny84 R.Wiersma
   Modified 09-10-2009 for attiny45 A.Saporetti
 */
@@ -44,6 +42,8 @@
 //            GND  4|    |5  PB0 (D 0) pwm0
 //                  +----+
 
+#define LED_BUILTIN 1
+
 static const uint8_t A0 = 6;
 static const uint8_t A1 = 7;
 static const uint8_t A2 = 8;
@@ -53,6 +53,8 @@ static const uint8_t A3 = 9;
 #define digitalPinToPCICRbit(p) ( PCIE )
 #define digitalPinToPCMSK(p)    ( ((p) <= 4) ? (&PCMSK) : ((uint8_t *)0) )
 #define digitalPinToPCMSKbit(p) ( (p) )
+
+#define digitalPinToInterrupt(p)  ((p) == 2 ? 0 : NOT_AN_INTERRUPT)
 
 #define analogPinToChannel(p)   ( (p) < 6 ? (p) : (p) - 6 )
 

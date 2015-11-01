@@ -34,15 +34,20 @@
 // location from which to read.
 // NOTE: a "power of 2" buffer size is reccomended to dramatically
 //       optimize all the modulo operations for ring buffers.
+// WARNING: When buffer sizes are increased to > 256, the buffer index
+// variables are automatically increased in size, but the extra
+// atomicity guards needed for that are not implemented. This will
+// often work, but occasionally a race condition can occur that makes
+// Serial behave erratically. See https://github.com/arduino/Arduino/issues/2405
 #if !defined(SERIAL_TX_BUFFER_SIZE)
-#if (RAMEND < 1000)
+#if ((RAMEND - RAMSTART) < 1023)
 #define SERIAL_TX_BUFFER_SIZE 16
 #else
 #define SERIAL_TX_BUFFER_SIZE 64
 #endif
 #endif
 #if !defined(SERIAL_RX_BUFFER_SIZE)
-#if (RAMEND < 1000)
+#if ((RAMEND - RAMSTART) < 1023)
 #define SERIAL_RX_BUFFER_SIZE 16
 #else
 #define SERIAL_RX_BUFFER_SIZE 64

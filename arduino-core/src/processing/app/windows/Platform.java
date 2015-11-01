@@ -22,10 +22,13 @@
 
 package processing.app.windows;
 
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import processing.app.BaseNoGui;
 import processing.app.debug.TargetPackage;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
@@ -33,6 +36,9 @@ import processing.app.legacy.PConstants;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -52,23 +58,13 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws IOException {
-    String path = getFolderPathFromRegistry("AppData");
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
     this.settingsFolder = new File(path, "Arduino15");
   }
 
   private void recoverDefaultSketchbookFolder() throws IOException {
-    String path = getFolderPathFromRegistry("Personal");
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
     this.defaultSketchbookFolder = new File(path, "Arduino");
-  }
-
-  private String getFolderPathFromRegistry(String folderType) throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(baos, null));
-
-    CommandLine toDevicePath = CommandLine.parse("reg query \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders\" /v \"" + folderType + "\"");
-    executor.execute(toDevicePath);
-    return new RegQueryParser(new String(baos.toByteArray())).getValueOfKey();
   }
 
   /**
@@ -130,11 +126,11 @@ public class Platform extends processing.app.Platform {
     // "Access is denied" in both cygwin and the "dos" prompt.
     //Runtime.getRuntime().exec("cmd /c " + currentDir + "\\reference\\" +
     //                    referenceFile + ".html");
-    if (url.startsWith("http")) {
+    if (url.startsWith("http") || url.startsWith("file:")) {
       // open dos prompt, give it 'start' command, which will
       // open the url properly. start by itself won't work since
       // it appears to need cmd
-      Runtime.getRuntime().exec("cmd /c start " + url);
+      Runtime.getRuntime().exec("cmd /c start \"\" \"" + url + "\"");
     } else {
       // just launching the .html file via the shell works
       // but make sure to chmod +x the .html files first
@@ -199,7 +195,7 @@ public class Platform extends processing.app.Platform {
     executor.setStreamHandler(new PumpStreamHandler(baos, null));
 
     try {
-      String listComPorts = new File(System.getProperty("user.dir"), "hardware/tools/listComPorts.exe").getCanonicalPath();
+      String listComPorts = BaseNoGui.getContentFile("hardware/tools/listComPorts.exe").getCanonicalPath();
 
       CommandLine toDevicePath = CommandLine.parse(listComPorts);
       executor.execute(toDevicePath);
@@ -215,8 +211,14 @@ public class Platform extends processing.app.Platform {
   }
 
   public List<File> postInstallScripts(File folder) {
-    List<File> scripts = new LinkedList<File>();
+    List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "post_install.bat"));
+    return scripts;
+  }
+
+  public List<File> preUninstallScripts(File folder) {
+    List<File> scripts = new LinkedList<>();
+    scripts.add(new File(folder, "pre_uninstall.bat"));
     return scripts;
   }
 
@@ -227,5 +229,24 @@ public class Platform extends processing.app.Platform {
   }
 
   public void chmod(File file, int mode) throws IOException, InterruptedException {
+  }
+
+  @Override
+  public void fixSettingsLocation() throws IOException {
+    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
+    Path previousSettingsFolder = Paths.get(path, "Arduino15");
+    if (!Files.exists(previousSettingsFolder)) {
+      return;
+    }
+
+    if (!Files.exists(previousSettingsFolder.resolve(Paths.get("preferences.txt")))) {
+      return;
+    }
+
+    if (settingsFolder.exists()) {
+      return;
+    }
+
+    Files.move(previousSettingsFolder, settingsFolder.toPath());
   }
 }

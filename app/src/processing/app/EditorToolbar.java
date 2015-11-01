@@ -22,13 +22,15 @@
 */
 
 package processing.app;
-import static processing.app.I18n._;
-
-import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.MouseInputListener;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+
+import static processing.app.I18n.tr;
 
 
 /**
@@ -36,65 +38,80 @@ import javax.swing.event.*;
  */
 public class EditorToolbar extends JComponent implements MouseInputListener, KeyListener {
 
-  /** Rollover titles for each button. */
-  static final String title[] = {
-    _("Verify"), _("Upload"), _("New"), _("Open"), _("Save"), _("Serial Monitor")
+  /**
+   * Rollover titles for each button.
+   */
+  private static final String[] title = {
+    tr("Verify"), tr("Upload"), tr("New"), tr("Open"), tr("Save"), tr("Serial Monitor")
   };
 
-  /** Titles for each button when the shift key is pressed. */ 
-  static final String titleShift[] = {
-    _("Verify"), _("Upload Using Programmer"), _("New"), _("Open in Another Window"), _("Save As..."), _("Serial Monitor")
+  /**
+   * Titles for each button when the shift key is pressed.
+   */
+  private static final String[] titleShift = {
+    tr("Verify"), tr("Upload Using Programmer"), tr("New"), tr("Open"), tr("Save As..."), tr("Serial Monitor")
   };
 
-  static final int BUTTON_COUNT  = title.length;
-  /** Width of each toolbar button. */
-  static final int BUTTON_WIDTH  = 27;
-  /** Height of each toolbar button. */
-  static final int BUTTON_HEIGHT = 32;
-  /** The amount of space between groups of buttons on the toolbar. */
-  static final int BUTTON_GAP    = 5;
-  /** Size of the button image being chopped up. */
-  static final int BUTTON_IMAGE_SIZE = 33;
+  private static final int BUTTON_COUNT = title.length;
+  /**
+   * Width of each toolbar button.
+   */
+  private static final int BUTTON_WIDTH = 27;
+  /**
+   * Height of each toolbar button.
+   */
+  private static final int BUTTON_HEIGHT = 32;
+  /**
+   * The amount of space between groups of buttons on the toolbar.
+   */
+  private static final int BUTTON_GAP = 5;
+  /**
+   * Size of the button image being chopped up.
+   */
+  private static final int BUTTON_IMAGE_SIZE = 33;
 
 
-  static final int RUN      = 0;
-  static final int EXPORT   = 1;
+  private static final int RUN = 0;
+  private static final int EXPORT = 1;
 
-  static final int NEW      = 2;
-  static final int OPEN     = 3;
-  static final int SAVE     = 4;
+  private static final int NEW = 2;
+  private static final int OPEN = 3;
+  private static final int SAVE = 4;
 
-  static final int SERIAL   = 5;
+  private static final int SERIAL = 5;
 
-  static final int INACTIVE = 0;
-  static final int ROLLOVER = 1;
-  static final int ACTIVE   = 2;
+  private static final int INACTIVE = 0;
+  private static final int ROLLOVER = 1;
+  private static final int ACTIVE = 2;
 
-  Editor editor;
+  private final Editor editor;
 
-  Image offscreen;
-  int width, height;
+  private Image offscreen;
+  private int width;
+  private int height;
 
-  Color bgcolor;
+  private final Color bgcolor;
 
-  static Image[][] buttonImages;
-  int currentRollover;
+  private static Image[][] buttonImages;
+  private int currentRollover;
 
-  JPopupMenu popup;
-  JMenu menu;
+  private JPopupMenu popup;
+  private final JMenu menu;
 
-  int buttonCount;
-  int[] state = new int[BUTTON_COUNT];
-  Image[] stateImage;
-  int which[]; // mapping indices to implementation
+  private int buttonCount;
+  private int[] state = new int[BUTTON_COUNT];
+  private Image[] stateImage;
+  private final int[] which; // mapping indices to implementation
 
-  int x1[], x2[];
-  int y1, y2;
+  private int[] x1;
+  private int[] x2;
+  private int y1;
+  private int y2;
 
-  Font statusFont;
-  Color statusColor;
+  private final Font statusFont;
+  private final Color statusColor;
 
-  boolean shiftPressed;
+  private boolean shiftPressed;
 
   public EditorToolbar(Editor editor, JMenu menu) {
     this.editor = editor;
@@ -121,17 +138,17 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     addMouseMotionListener(this);
   }
 
-  protected void loadButtons() {
+  private void loadButtons() {
     Image allButtons = Base.getThemeImage("buttons.gif", this);
     buttonImages = new Image[BUTTON_COUNT][3];
 
-      for (int i = 0; i < BUTTON_COUNT; i++) {
+    for (int i = 0; i < BUTTON_COUNT; i++) {
       for (int state = 0; state < 3; state++) {
         Image image = createImage(BUTTON_WIDTH, BUTTON_HEIGHT);
         Graphics g = image.getGraphics();
-        g.drawImage(allButtons, 
-                    -(i*BUTTON_IMAGE_SIZE) - 3, 
-                    (-2 + state)*BUTTON_IMAGE_SIZE, null);
+        g.drawImage(allButtons,
+          -(i * BUTTON_IMAGE_SIZE) - 3,
+          (-2 + state) * BUTTON_IMAGE_SIZE, null);
         buttonImages[i][state] = image;
       }
     }
@@ -159,7 +176,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     Dimension size = getSize();
     if ((offscreen == null) ||
-        (size.width != width) || (size.height != height)) {
+      (size.width != width) || (size.height != height)) {
       offscreen = createImage(size.width, size.height);
       width = size.width;
       height = size.height;
@@ -171,7 +188,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
         x2[i] = x1[i] + BUTTON_WIDTH;
         offsetX = x2[i];
       }
-      
+
       // Serial button must be on the right
       x1[SERIAL] = width - BUTTON_WIDTH - 14;
       x2[SERIAL] = width - 14;
@@ -202,7 +219,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       int statusY = (BUTTON_HEIGHT + g.getFontMetrics().getAscent()) / 2;
       String status = shiftPressed ? titleShift[currentRollover] : title[currentRollover];
       if (currentRollover != SERIAL)
-        g.drawString(status, (buttonCount-1) * BUTTON_WIDTH + 3 * BUTTON_GAP, statusY);
+        g.drawString(status, (buttonCount - 1) * BUTTON_WIDTH + 3 * BUTTON_GAP, statusY);
       else {
         int statusX = x1[SERIAL] - BUTTON_GAP;
         statusX -= g.getFontMetrics().stringWidth(status);
@@ -211,18 +228,18 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     }
 
     screen.drawImage(offscreen, 0, 0, null);
-    
+
     if (!isEnabled()) {
-      screen.setColor(new Color(0,0,0,100));
+      screen.setColor(new Color(0, 0, 0, 100));
       screen.fillRect(0, 0, getWidth(), getHeight());
-  }
+    }
   }
 
 
   public void mouseMoved(MouseEvent e) {
     if (!isEnabled())
       return;
-    
+
     // mouse events before paint();
     if (state == null) return;
 
@@ -234,16 +251,17 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   }
 
 
-  public void mouseDragged(MouseEvent e) { }
+  public void mouseDragged(MouseEvent e) {
+  }
 
 
-  public void handleMouse(MouseEvent e) {
+  private void handleMouse(MouseEvent e) {
     int x = e.getX();
     int y = e.getY();
 
     if (currentRollover != -1) {
       if ((x > x1[currentRollover]) && (y > y1) &&
-          (x < x2[currentRollover]) && (y < y2)) {
+        (x < x2[currentRollover]) && (y < y2)) {
         return;
 
       } else {
@@ -268,7 +286,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     for (int i = 0; i < buttonCount; i++) {
       if ((y > y1) && (x > x1[i]) &&
-          (y < y2) && (x < x2[i])) {
+        (y < y2) && (x < x2[i])) {
         //System.out.println("sel is " + i);
         return i;
       }
@@ -302,15 +320,13 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     handleMouse(e);
   }
 
-  int wasDown = -1;
-
 
   public void mousePressed(MouseEvent e) {
-    
+
     // jdf
     if (!isEnabled())
       return;
-    
+
     final int x = e.getX();
     final int y = e.getY();
 
@@ -320,71 +336,95 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     currentRollover = -1;
 
     switch (sel) {
-    case RUN:
-      editor.handleRun(false, editor.presentHandler, editor.runHandler);
-      break;
+      case RUN:
+        editor.handleRun(false, editor.presentHandler, editor.runHandler);
+        break;
 
 //    case STOP:
 //      editor.handleStop();
 //      break;
 //
-    case OPEN:
-      popup = menu.getPopupMenu();
-      popup.show(EditorToolbar.this, x, y);
-      break;
+      case OPEN:
+        popup = menu.getPopupMenu();
+        popup.show(EditorToolbar.this, x, y);
+        break;
 
-    case NEW:
-      try {
-        editor.base.handleNew();
-      } catch (Exception e1) {
-        throw new RuntimeException(e1);
-      }
-      break;
+      case NEW:
+        try {
+          editor.base.handleNew();
+        } catch (Exception e1) {
+          throw new RuntimeException(e1);
+        }
+        break;
 
-    case SAVE:
-      if (e.isShiftDown()) {
-        editor.handleSaveAs();
-      } else {
-        editor.handleSave(false);
-      }
-      break;
+      case SAVE:
+        if (e.isShiftDown()) {
+          editor.handleSaveAs();
+        } else {
+          editor.handleSave(false);
+        }
+        break;
 
-    case EXPORT:
-      editor.handleExport(e.isShiftDown());
-      break;
+      case EXPORT:
+        editor.handleExport(e.isShiftDown());
+        break;
 
-    case SERIAL:
-      editor.handleSerial();
-      break;
+      case SERIAL:
+        editor.handleSerial();
+        break;
     }
   }
 
 
-  public void mouseClicked(MouseEvent e) { }
-
-
-  public void mouseReleased(MouseEvent e) { }
-
-
-  /**
-   * Set a particular button to be active.
-   */
-  public void activate(int what) {
-    if (buttonImages != null) {
-    setState(what, ACTIVE, true);
+  public void mouseClicked(MouseEvent e) {
   }
+
+
+  public void mouseReleased(MouseEvent e) {
   }
 
 
   /**
    * Set a particular button to be active.
    */
-  public void deactivate(int what) {
+  private void activate(int what) {
     if (buttonImages != null) {
-    setState(what, INACTIVE, true);
-  }
+      setState(what, ACTIVE, true);
+    }
   }
 
+  public void activateRun() {
+    activate(RUN);
+  }
+
+  public void activateSave() {
+    activate(SAVE);
+  }
+
+  public void activateExport() {
+    activate(EXPORT);
+  }
+
+  /**
+   * Set a particular button to be active.
+   */
+  private void deactivate(int what) {
+    if (buttonImages != null) {
+      setState(what, INACTIVE, true);
+    }
+  }
+
+  public void deactivateRun() {
+    deactivate(RUN);
+  }
+
+  public void deactivateSave() {
+    deactivate(SAVE);
+  }
+
+  public void deactivateExport() {
+    deactivate(EXPORT);
+  }
 
   public Dimension getPreferredSize() {
     return getMinimumSize();
@@ -392,7 +432,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public Dimension getMinimumSize() {
-    return new Dimension((BUTTON_COUNT + 1)*BUTTON_WIDTH, BUTTON_HEIGHT);
+    return new Dimension((BUTTON_COUNT + 1) * BUTTON_WIDTH, BUTTON_HEIGHT);
   }
 
 
@@ -405,7 +445,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
       shiftPressed = true;
       repaint();
-}
+    }
   }
 
 
@@ -417,5 +457,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   }
 
 
-  public void keyTyped(KeyEvent e) { }
+  public void keyTyped(KeyEvent e) {
+  }
+
 }

@@ -47,7 +47,6 @@ public class UploaderFactoryTest extends AbstractWithPreferencesTest {
   @Test
   public void shouldCreateAnInstanceOfSSHUploader() throws Exception {
     TargetBoard board = new LegacyTargetBoard("yun", new PreferencesMap(new HashMap<String, String>()), new TargetPlatformStub("id", new TargetPackageStub("id")));
-    board.getPreferences().put("upload.via_ssh", "true");
 
     BoardPort boardPort = new BoardPort();
     boardPort.setBoardName("yun");
@@ -59,23 +58,8 @@ public class UploaderFactoryTest extends AbstractWithPreferencesTest {
   }
 
   @Test
-  public void shouldCreateAnInstanceOfBasicUploaderWhenSSHIsUnsupported() throws Exception {
-    TargetBoard board = new LegacyTargetBoard("uno", new PreferencesMap(new HashMap<String, String>()), new TargetPlatformStub("id", new TargetPackageStub("id")));
-    board.getPreferences().put("upload.via_ssh", "false");
-
-    BoardPort boardPort = new BoardPort();
-    boardPort.setBoardName("myyun");
-    boardPort.setAddress("192.168.0.1");
-    boardPort.setProtocol("network");
-    Uploader uploader = new UploaderFactory().newUploader(board, boardPort, false);
-
-    assertTrue(uploader instanceof SerialUploader);
-  }
-
-  @Test
   public void shouldCreateAnInstanceOfBasicUploaderWhenPortIsSerial() throws Exception {
     TargetBoard board = new LegacyTargetBoard("uno", new PreferencesMap(new HashMap<String, String>()), new TargetPlatformStub("id", new TargetPackageStub("id")));
-    board.getPreferences().put("upload.via_ssh", "false");
 
     BoardPort boardPort = new BoardPort();
     boardPort.setBoardName("Arduino Leonardo");

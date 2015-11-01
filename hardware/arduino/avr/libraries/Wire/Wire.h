@@ -27,6 +27,9 @@
 
 #define BUFFER_LENGTH 32
 
+// WIRE_HAS_END means Wire has end()
+#define WIRE_HAS_END 1
+
 class TwoWire : public Stream
 {
   private:
@@ -49,6 +52,7 @@ class TwoWire : public Stream
     void begin();
     void begin(uint8_t);
     void begin(int);
+    void end();
     void setClock(uint32_t);
     void beginTransmission(uint8_t);
     void beginTransmission(int);
@@ -56,6 +60,7 @@ class TwoWire : public Stream
     uint8_t endTransmission(uint8_t);
     uint8_t requestFrom(uint8_t, uint8_t);
     uint8_t requestFrom(uint8_t, uint8_t, uint8_t);
+	uint8_t requestFrom(uint8_t, uint8_t, uint32_t, uint8_t, uint8_t);
     uint8_t requestFrom(int, int);
     uint8_t requestFrom(int, int, int);
     virtual size_t write(uint8_t);

@@ -30,7 +30,8 @@
 package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 public class LibraryWithNamePredicate implements Predicate<ContributedLibrary> {
 
@@ -41,7 +42,7 @@ public class LibraryWithNamePredicate implements Predicate<ContributedLibrary> {
   }
 
   @Override
-  public boolean apply(ContributedLibrary contributedLibrary) {
+  public boolean test(ContributedLibrary contributedLibrary) {
     return name.equals(contributedLibrary.getName());
   }
 

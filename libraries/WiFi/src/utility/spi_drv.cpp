@@ -43,8 +43,8 @@ void SpiDrv::begin()
 	  pinMode(SLAVEREADY, INPUT);
 	  pinMode(WIFILED, OUTPUT);
 
-	  digitalWrite(SCK, LOW);
-	  digitalWrite(MOSI, LOW);
+	  // digitalWrite(SCK, LOW);
+	  // digitalWrite(MOSI, LOW);
 	  digitalWrite(SS, HIGH);
 	  digitalWrite(SLAVESELECT, HIGH);
 	  digitalWrite(WIFILED, LOW);

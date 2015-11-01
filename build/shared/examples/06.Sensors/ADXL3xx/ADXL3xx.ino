@@ -33,8 +33,7 @@ const int xpin = A3;                  // x-axis of the accelerometer
 const int ypin = A2;                  // y-axis
 const int zpin = A1;                  // z-axis (only on 3-axis models)
 
-void setup()
-{
+void setup() {
   // initialize the serial communications:
   Serial.begin(9600);
 
@@ -48,8 +47,7 @@ void setup()
   digitalWrite(powerpin, HIGH);
 }
 
-void loop()
-{
+void loop() {
   // print the sensor values:
   Serial.print(analogRead(xpin));
   // print a tab between values:

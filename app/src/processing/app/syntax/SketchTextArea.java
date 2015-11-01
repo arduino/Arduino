@@ -32,13 +32,14 @@ package processing.app.syntax;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
-import processing.app.*;
+import processing.app.Base;
+import processing.app.BaseNoGui;
+import processing.app.EditorListener;
+import processing.app.PreferencesData;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -65,28 +66,27 @@ import java.util.logging.Logger;
  * Arduino Sketch code editor based on RSyntaxTextArea (http://fifesoft.com/rsyntaxtextarea)
  *
  * @author Ricardo JL Rufino (ricardo@criativasoft.com.br)
- * @date 20/04/2015
  * @since 1.6.4
  */
 public class SketchTextArea extends RSyntaxTextArea {
 
   private final static Logger LOG = Logger.getLogger(SketchTextArea.class.getName());
 
-  /**
-   * The last docTooltip displayed.
-   */
-  private FocusableTip docTooltip;
-
   private EditorListener editorListener;
 
-  private final PdeKeywords pdeKeywords;
+  private PdeKeywords pdeKeywords;
 
   public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
     this.pdeKeywords = pdeKeywords;
     installFeatures();
   }
 
-  protected void installFeatures() throws IOException {
+  public void setKeywords(PdeKeywords keywords) {
+    pdeKeywords = keywords;
+    setLinkGenerator(new DocLinkGenerator(pdeKeywords));
+  }
+
+  private void installFeatures() throws IOException {
     setTheme(PreferencesData.get("editor.syntax_theme", "default"));
 
     setLinkGenerator(new DocLinkGenerator(pdeKeywords));
@@ -96,7 +96,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     setSyntaxEditingStyle(SYNTAX_STYLE_CPLUSPLUS);
   }
 
-  public void setTheme(String name) throws IOException {
+  private void setTheme(String name) throws IOException {
     FileInputStream defaultXmlInputStream = null;
     try {
       defaultXmlInputStream = new FileInputStream(new File(BaseNoGui.getContentFile("lib"), "theme/syntax/" + name + ".xml"));
@@ -106,8 +106,9 @@ public class SketchTextArea extends RSyntaxTextArea {
       IOUtils.closeQuietly(defaultXmlInputStream);
     }
 
-    setForeground(processing.app.Theme.getColor("editor.fgcolor"));
+    setEOLMarkersVisible(processing.app.Theme.getBoolean("editor.eolmarkers"));
     setBackground(processing.app.Theme.getColor("editor.bgcolor"));
+    setHighlightCurrentLine(processing.app.Theme.getBoolean("editor.linehighlight"));
     setCurrentLineHighlightColor(processing.app.Theme.getColor("editor.linehighlight.color"));
     setCaretColor(processing.app.Theme.getColor("editor.caret.color"));
     setSelectedTextColor(null);
@@ -126,8 +127,20 @@ public class SketchTextArea extends RSyntaxTextArea {
     setSyntaxTheme(TokenTypes.COMMENT_EOL, "comment1");
     setSyntaxTheme(TokenTypes.COMMENT_KEYWORD, "comment1");
     setSyntaxTheme(TokenTypes.COMMENT_MARKUP, "comment1");
+    setSyntaxTheme(TokenTypes.COMMENT_MULTILINE, "comment2");
+    setSyntaxTheme(TokenTypes.LITERAL_BOOLEAN, "literal_boolean");
     setSyntaxTheme(TokenTypes.LITERAL_CHAR, "literal_char");
     setSyntaxTheme(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE, "literal_string_double_quote");
+    setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");
+
+    setColorForToken(TokenTypes.IDENTIFIER, "editor.fgcolor");
+    setColorForToken(TokenTypes.WHITESPACE, "editor.eolmarkers.color");
+  }
+
+  private void setColorForToken(int tokenType, String colorKeyFromTheme) {
+    Style style = getSyntaxScheme().getStyle(tokenType);
+    style.foreground = processing.app.Theme.getColor(colorKeyFromTheme);
+    getSyntaxScheme().setStyle(tokenType, style);
   }
 
   private void setSyntaxTheme(int tokenType, String id) {
@@ -142,7 +155,7 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   // Removing the default focus traversal keys
   // This is because the DefaultKeyboardFocusManager handles the keypress and consumes the event
-  protected void fixControlTab() {
+  private void fixControlTab() {
     removeCTRLTabFromFocusTraversal();
 
     removeCTRLSHIFTTabFromFocusTraversal();
@@ -150,34 +163,20 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   private void removeCTRLSHIFTTabFromFocusTraversal() {
     KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-    Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+    Set<AWTKeyStroke> backwardKeys = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
     backwardKeys.remove(ctrlShiftTab);
   }
 
   private void removeCTRLTabFromFocusTraversal() {
     KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-    Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+    Set<AWTKeyStroke> forwardKeys = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
     forwardKeys.remove(ctrlTab);
     this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
   }
 
 
-  @Override
-  public void select(int selectionStart, int selectionEnd) {
-    super.select(selectionStart, selectionEnd);
-  }
-
   public boolean isSelectionActive() {
     return this.getSelectedText() != null;
-  }
-
-  public void setSelectedText(String text) {
-
-    int old = getTextMode();
-    setTextMode(OVERWRITE_MODE);
-    replaceSelection(text);
-    setTextMode(old);
-
   }
 
   public void processKeyEvent(KeyEvent evt) {
@@ -221,17 +220,6 @@ public class SketchTextArea extends RSyntaxTextArea {
   }
 
   @Override
-  protected JPopupMenu createPopupMenu() {
-    JPopupMenu menu = super.createPopupMenu();
-    return menu;
-  }
-
-  @Override
-  protected void configurePopupMenu(JPopupMenu popupMenu) {
-    super.configurePopupMenu(popupMenu);
-  }
-
-  @Override
   protected RTAMouseListener createMouseListener() {
     return new SketchTextAreaMouseListener(this);
   }
@@ -241,17 +229,7 @@ public class SketchTextArea extends RSyntaxTextArea {
       int offset = getLineStartOffset(line);
       int end = getLineEndOffset(line);
       getDocument().getText(offset, end - offset, segment);
-    } catch (BadLocationException e) {
-    }
-  }
-
-  public String getTextLine(int line) {
-    try {
-      int offset = getLineStartOffset(line);
-      int end = getLineEndOffset(line);
-      return getDocument().getText(offset, end - offset);
-    } catch (BadLocationException e) {
-      return null;
+    } catch (BadLocationException ignored) {
     }
   }
 
@@ -270,16 +248,16 @@ public class SketchTextArea extends RSyntaxTextArea {
 
     @Override
     public LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, final int offs) {
+      Token token = textArea.modelToToken(offs);
+      if (token == null) {
+        return null;
+      }
 
-      final Token token = textArea.modelToToken(offs);
+      String reference = pdeKeywords.getReference(token.getLexeme());
 
-      final String reference = pdeKeywords.getReference(token.getLexeme());
+      if (reference != null || (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION)) {
 
-      // LOG.fine("reference: " + reference + ", match: " + (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION));
-
-      if (token != null && (reference != null || (token.getType() == TokenTypes.DATA_TYPE || token.getType() == TokenTypes.VARIABLE || token.getType() == TokenTypes.FUNCTION))) {
-
-        LinkGeneratorResult generatorResult = new LinkGeneratorResult() {
+        return new LinkGeneratorResult() {
 
           @Override
           public int getSourceOffset() {
@@ -296,8 +274,6 @@ public class SketchTextArea extends RSyntaxTextArea {
             return null;
           }
         };
-
-        return generatorResult;
       }
 
       return null;
@@ -315,7 +291,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     private boolean isScanningForLinks;
     private int hoveredOverLinkOffset = -1;
 
-    protected SketchTextAreaMouseListener(RTextArea textArea) {
+    SketchTextAreaMouseListener(RTextArea textArea) {
       super(textArea);
       insets = new Insets(0, 0, 0, 0);
     }
@@ -408,7 +384,7 @@ public class SketchTextArea extends RSyntaxTextArea {
         // Copy token, viewToModel() unfortunately modifies Token
         t = new TokenImpl(t);
       }
-      Cursor c2 = null;
+      Cursor c2;
       if (t != null && t.isHyperlink()) {
         if (hoveredOverLinkOffset == -1 ||
           hoveredOverLinkOffset != t.getOffset()) {
@@ -457,7 +433,7 @@ public class SketchTextArea extends RSyntaxTextArea {
       if (isScanningForLinks) {
         Cursor c = getCursor();
         isScanningForLinks = false;
-        if (c != null && c.getType() == Cursor.HAND_CURSOR) {
+        if (c.getType() == Cursor.HAND_CURSOR) {
           setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
           repaint(); // TODO: Repaint just the affected line.
         }

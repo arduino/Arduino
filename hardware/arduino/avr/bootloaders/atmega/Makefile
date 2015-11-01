@@ -1,6 +1,5 @@
 # Makefile for ATmegaBOOT
 # E.Lins, 18.7.2005
-# $Id$
 #
 # Instructions
 #
@@ -49,9 +48,9 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 
 
 OBJ        = $(PROGRAM).o
-OPTIMIZE   = -O2
+OPTIMIZE   = -Os
 
-DEFS       = 
+DEFS       =
 LIBS       =
 
 CC         = avr-gcc
@@ -129,7 +128,7 @@ pro20_isp: isp
 
 diecimila: TARGET = diecimila
 diecimila: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=1'
-diecimila: AVR_FREQ = 16000000L 
+diecimila: AVR_FREQ = 16000000L
 diecimila: $(PROGRAM)_diecimila.hex
 
 diecimila_isp: diecimila
@@ -154,7 +153,7 @@ ng_isp: isp
 atmega328: TARGET = atmega328
 atmega328: MCU_TARGET = atmega328p
 atmega328: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=1' -DBAUD_RATE=57600
-atmega328: AVR_FREQ = 16000000L 
+atmega328: AVR_FREQ = 16000000L
 atmega328: LDSECTION  = --section-start=.text=0x7800
 atmega328: $(PROGRAM)_atmega328.hex
 
@@ -166,10 +165,25 @@ atmega328_isp: LFUSE = FF
 atmega328_isp: EFUSE = 05
 atmega328_isp: isp
 
+atmega328_notp: TARGET = atmega328_notp
+atmega328_notp: MCU_TARGET = atmega328
+atmega328_notp: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=1' -DBAUD_RATE=57600
+atmega328_notp: AVR_FREQ = 16000000L
+atmega328_notp: LDSECTION  = --section-start=.text=0x7800
+atmega328_notp: $(PROGRAM)_atmega328_notp.hex
+
+atmega328_notp_isp: atmega328_notp
+atmega328_notp_isp: TARGET = atmega328
+atmega328_notp_isp: MCU_TARGET = atmega328
+atmega328_notp_isp: HFUSE = DA
+atmega328_notp_isp: LFUSE = FF
+atmega328_notp_isp: EFUSE = 05
+atmega328_notp_isp: isp
+
 atmega328_pro8: TARGET = atmega328_pro_8MHz
 atmega328_pro8: MCU_TARGET = atmega328p
 atmega328_pro8: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=1' -DBAUD_RATE=57600 -DDOUBLE_SPEED
-atmega328_pro8: AVR_FREQ = 8000000L 
+atmega328_pro8: AVR_FREQ = 8000000L
 atmega328_pro8: LDSECTION  = --section-start=.text=0x7800
 atmega328_pro8: $(PROGRAM)_atmega328_pro_8MHz.hex
 
@@ -184,7 +198,7 @@ atmega328_pro8_isp: isp
 mega: TARGET = atmega1280
 mega: MCU_TARGET = atmega1280
 mega: CFLAGS += '-DMAX_TIME_COUNT=F_CPU>>4' '-DNUM_LED_FLASHES=0' -DBAUD_RATE=57600
-mega: AVR_FREQ = 16000000L 
+mega: AVR_FREQ = 16000000L
 mega: LDSECTION  = --section-start=.text=0x1F000
 mega: $(PROGRAM)_atmega1280.hex
 

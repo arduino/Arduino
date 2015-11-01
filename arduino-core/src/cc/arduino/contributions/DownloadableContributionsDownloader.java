@@ -26,6 +26,7 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions;
 
 import cc.arduino.utils.FileHash;
@@ -34,10 +35,12 @@ import cc.arduino.utils.network.FileDownloader;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
 
 public class DownloadableContributionsDownloader {
@@ -48,60 +51,67 @@ public class DownloadableContributionsDownloader {
     stagingFolder = _stagingFolder;
   }
 
-  public File download(DownloadableContribution contribution,
-                       final Progress progress, final String statusText)
-          throws Exception {
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener) throws Exception {
     URL url = new URL(contribution.getUrl());
-    final File outputFile = new File(stagingFolder, contribution.getArchiveFileName());
+    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
 
     // Ensure the existence of staging folder
-    stagingFolder.mkdirs();
+    Files.createDirectories(stagingFolder.toPath());
+
+    if (!hasChecksum(contribution) && Files.exists(outputFile)) {
+      Files.delete(outputFile);
+    }
 
     // Need to download or resume downloading?
-    if (!outputFile.isFile() || (outputFile.length() < contribution.getSize())) {
-      download(url, outputFile, progress, statusText);
+    if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
+      download(url, outputFile.toFile(), progress, statusText, progressListener);
     }
 
     // Test checksum
-    progress.setStatus(_("Verifying archive integrity..."));
-    onProgress(progress);
+    progress.setStatus(tr("Verifying archive integrity..."));
+    progressListener.onProgress(progress);
     String checksum = contribution.getChecksum();
-    String algo = checksum.split(":")[0];
-    if (!FileHash.hash(outputFile, algo).equalsIgnoreCase(checksum)) {
-      throw new Exception(_("CRC doesn't match. File is corrupted."));
+    if (hasChecksum(contribution)) {
+      String algo = checksum.split(":")[0];
+      if (!FileHash.hash(outputFile.toFile(), algo).equalsIgnoreCase(checksum)) {
+        throw new Exception(tr("CRC doesn't match. File is corrupted."));
+      }
     }
 
     contribution.setDownloaded(true);
-    contribution.setDownloadedFile(outputFile);
-    return outputFile;
+    contribution.setDownloadedFile(outputFile.toFile());
+    return outputFile.toFile();
   }
 
-  public void download(URL url, File tmpFile, final Progress progress,
-                       final String statusText) throws Exception {
+  private boolean hasChecksum(DownloadableContribution contribution) {
+    String checksum = contribution.getChecksum();
+    if (checksum == null || checksum.isEmpty()) {
+      return false;
+    }
+
+    String algo = checksum.split(":")[0];
+
+    return algo != null && !algo.isEmpty();
+  }
+
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
     FileDownloader downloader = new FileDownloader(url, tmpFile);
-    downloader.addObserver(new Observer() {
-      @Override
-      public void update(Observable o, Object arg) {
-        FileDownloader me = (FileDownloader) o;
-        String msg = "";
-        if (me.getDownloadSize() != null) {
-          long downloaded = (me.getInitialSize() + me.getDownloaded()) / 1000;
-          long total = (me.getInitialSize() + me.getDownloadSize()) / 1000;
-          msg = format(_("Downloaded {0}kb of {1}kb."), downloaded, total);
-        }
-        progress.setStatus(statusText + " " + msg);
-        progress.setProgress(me.getProgress());
-        onProgress(progress);
+    downloader.addObserver((o, arg) -> {
+      FileDownloader me = (FileDownloader) o;
+      String msg = "";
+      if (me.getDownloadSize() != null) {
+        long downloaded = (me.getInitialSize() + me.getDownloaded()) / 1000;
+        long total = (me.getInitialSize() + me.getDownloadSize()) / 1000;
+        msg = format(tr("Downloaded {0}kb of {1}kb."), downloaded, total);
       }
+      progress.setStatus(statusText + " " + msg);
+      progress.setProgress(me.getProgress());
+      progressListener.onProgress(progress);
     });
     downloader.download();
     if (!downloader.isCompleted()) {
-      throw new Exception(format(_("Error downloading {0}"), url), downloader.getError());
+      throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }
-  }
-
-  protected void onProgress(Progress progress) {
-    // Empty
   }
 
 }

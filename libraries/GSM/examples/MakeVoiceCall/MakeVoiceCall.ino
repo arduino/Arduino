@@ -32,13 +32,12 @@ GSMVoiceCall vcs;
 String remoteNumber = "";  // the number you will call
 char charbuffer[20];
 
-void setup()
-{
+void setup() {
 
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   Serial.println("Make Voice Call");
@@ -48,12 +47,10 @@ void setup()
 
   // Start GSM shield
   // If your SIM has PIN, pass it as a parameter of begin() in quotes
-  while (notConnected)
-  {
-    if (gsmAccess.begin(PINNUMBER) == GSM_READY)
+  while (notConnected) {
+    if (gsmAccess.begin(PINNUMBER) == GSM_READY) {
       notConnected = false;
-    else
-    {
+    } else {
       Serial.println("Not connected");
       delay(1000);
     }
@@ -64,19 +61,15 @@ void setup()
 
 }
 
-void loop()
-{
+void loop() {
 
   // add any incoming characters to the String:
-  while (Serial.available() > 0)
-  {
+  while (Serial.available() > 0) {
     char inChar = Serial.read();
     // if it's a newline, that means you should make the call:
-    if (inChar == '\n')
-    {
+    if (inChar == '\n') {
       // make sure the phone number is not too long:
-      if (remoteNumber.length() < 20)
-      {
+      if (remoteNumber.length() < 20) {
         // let the user know you're calling:
         Serial.print("Calling to : ");
         Serial.println(remoteNumber);
@@ -87,8 +80,7 @@ void loop()
 
 
         // Check if the receiving end has picked up the call
-        if (vcs.voiceCall(charbuffer))
-        {
+        if (vcs.voiceCall(charbuffer)) {
           Serial.println("Call Established. Enter line to end");
           // Wait for some input from the line
           while (Serial.read() != '\n' && (vcs.getvoiceCallStatus() == TALKING));
@@ -98,18 +90,15 @@ void loop()
         Serial.println("Call Finished");
         remoteNumber = "";
         Serial.println("Enter phone number to call.");
-      }
-      else
-      {
+      } else {
         Serial.println("That's too long for a phone number. I'm forgetting it");
         remoteNumber = "";
       }
-    }
-    else
-    {
+    } else {
       // add the latest character to the message to send:
-      if (inChar != '\r')
+      if (inChar != '\r') {
         remoteNumber += inChar;
+      }
     }
   }
 }

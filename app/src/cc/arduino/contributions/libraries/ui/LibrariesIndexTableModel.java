@@ -26,24 +26,23 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
-import com.github.zafarkhaja.semver.Version;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
 public class LibrariesIndexTableModel extends FilteredAbstractTableModel<ContributedLibrary> {
@@ -60,8 +59,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
     public ContributedLibraryReleases(ContributedLibrary library) {
       this.name = library.getName();
-      this.versions = new LinkedList<String>();
-      this.releases = new LinkedList<ContributedLibrary>();
+      this.versions = new LinkedList<>();
+      this.releases = new LinkedList<>();
       this.selected = null;
       add(library);
     }
@@ -80,7 +79,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
     }
 
     public ContributedLibrary getInstalled() {
-      List<ContributedLibrary> installedReleases = new LinkedList<ContributedLibrary>(Collections2.filter(releases, new InstalledPredicate()));
+      List<ContributedLibrary> installedReleases = releases.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
       Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
 
       if (installedReleases.isEmpty()) {
@@ -113,7 +112,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
     }
   }
 
-  private final List<ContributedLibraryReleases> contributions = new ArrayList<ContributedLibraryReleases>();
+  private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
   private final String[] columnNames = {"Description"};
 
@@ -128,8 +127,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
   Predicate<ContributedLibrary> selectedCategoryFilter = null;
   String selectedFilters[] = null;
 
-  public void updateIndexFilter(String filters[], Predicate<ContributedLibrary>... additionalFilters) {
-    selectedCategoryFilter = Predicates.and(additionalFilters);
+  public void updateIndexFilter(String filters[], Stream<Predicate<ContributedLibrary>> additionalFilters) {
+    selectedCategoryFilter = additionalFilters.reduce(Predicate::and).get();
     selectedFilters = filters;
     update();
   }
@@ -230,10 +229,12 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
   }
 
   private void applyFilterToLibrary(ContributedLibrary lib) {
-    if (selectedCategoryFilter != null && !selectedCategoryFilter.apply(lib)) {
+    if (selectedCategoryFilter != null && !selectedCategoryFilter.test(lib)) {
       return;
     }
-    if (!stringContainsAll(lib.getName(), selectedFilters) && !stringContainsAll(lib.getParagraph(), selectedFilters) && !stringContainsAll(lib.getSentence(), selectedFilters)) {
+
+    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph() + "\n" + lib.getSentence();
+    if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
       return;
     }
     addContribution(lib);
@@ -268,12 +269,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   private void updateContributions() {
     contributions.clear();
-    for (ContributedLibrary l : indexer.getIndex().getLibraries()) {
-      applyFilterToLibrary(l);
-    }
-    for (ContributedLibrary l : indexer.getInstalledLibraries()) {
-      applyFilterToLibrary(l);
-    }
+    indexer.getIndex().getLibraries().forEach(this::applyFilterToLibrary);
+    indexer.getInstalledLibraries().forEach(this::applyFilterToLibrary);
     Collections.sort(contributions);
   }
 

@@ -31,8 +31,7 @@ void setup() {
   Serial.begin(9600);
 }
 
-void loop()
-{
+void loop() {
   // establish variables for duration of the ping,
   // and the distance result in inches and centimeters:
   long duration, inches, cm;
@@ -65,8 +64,7 @@ void loop()
   delay(100);
 }
 
-long microsecondsToInches(long microseconds)
-{
+long microsecondsToInches(long microseconds) {
   // According to Parallax's datasheet for the PING))), there are
   // 73.746 microseconds per inch (i.e. sound travels at 1130 feet per
   // second).  This gives the distance travelled by the ping, outbound
@@ -75,8 +73,7 @@ long microsecondsToInches(long microseconds)
   return microseconds / 74 / 2;
 }
 
-long microsecondsToCentimeters(long microseconds)
-{
+long microsecondsToCentimeters(long microseconds) {
   // The speed of sound is 340 m/s or 29 microseconds per centimeter.
   // The ping travels out and back, so to find the distance of the
   // object we take half of the distance travelled.

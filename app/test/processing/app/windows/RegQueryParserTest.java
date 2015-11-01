@@ -1,6 +1,9 @@
 package processing.app.windows;
 
 import org.junit.Test;
+import processing.app.helpers.FileUtils;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,6 +40,14 @@ public class RegQueryParserTest {
 
     String folderPath = new RegQueryParser(output).getValueOfKey();
     assertEquals("C:\\Documents and Settings\\username\\My Documents", folderPath);
+  }
+
+  @Test
+  public void testRegQueryParserGerman() throws Exception {
+    String output = FileUtils.readFileToString(new File(RegQueryParserTest.class.getResource("german.reg.query.output.txt").getFile()), "Cp852");
+
+    String folderPath = new RegQueryParser(output).getValueOfKey();
+    assertEquals("C:\\Users\\René\\AppData\\Roaming", folderPath);
   }
 
 }

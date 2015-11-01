@@ -32,7 +32,8 @@ package cc.arduino.contributions.packages.ui;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.filters.CategoryPredicate;
 import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 public class DropdownCoreOfCategoryItem implements DropdownItem<ContributedPlatform> {
 

@@ -19,7 +19,7 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   // send an intro:
@@ -41,8 +41,7 @@ void loop() {
     // if the String's longer than 140 characters, complain:
     if (txtMsg.length() < 140) {
       Serial.println("That's a perfectly acceptable text message");
-    }
-    else {
+    } else {
       Serial.println("That's too long for a text message.");
     }
     // note the length for next time through the loop:
